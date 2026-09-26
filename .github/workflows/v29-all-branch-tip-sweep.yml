@@ -1,0 +1,36 @@
+name: V29 entire GitHub branch-tip snapshot red-team
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_V29_ALL_BRANCH_TIP_AUTHORITY_SCOPE_20260926.json'
+      - 'docs/agent/JEPA_V29_ALL_BRANCH_TIP_SCOPE_REVIEW_20260926.md'
+      - 'tests/test_v29_all_branch_tip_scope.py'
+      - '.github/workflows/v29-all-branch-tip-sweep.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  branch-root-inventory-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Fifteen fail-closed static-snapshot adversaries
+        run: PYTHONPATH=. python -m pytest -q tests/test_v29_all_branch_tip_scope.py --junitxml=/tmp/v29_branches.xml
+      - name: Exact test census
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as E
+          x=E.parse('/tmp/v29_branches.xml').getroot()
+          if x.tag!='testsuite':x=x.find('testsuite')
+          c={k:int(x.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          req={'test_complete_snapshot_positive_control','test_historical_candidate_cannot_be_own_class_promoted','test_synthetic_old_critical_manifest_cannot_be_training_authority','test_false_gpu_disk_scan_rejected','test_false_training_authority_rejected'}
+          names={z.get('name') for z in x.iter('testcase')}
+          if c!={'tests':15,'skipped':0,'errors':0,'failures':0} or not req<=names:
+              raise SystemExit(f'STOP_V29_FALSE_BRANCH_GREEN {c} missing={req-names}')
+          print('PASS_15_15_ALL_BRANCH_SNAPSHOT__NO_NEW_V5_ROOT')
+          PY

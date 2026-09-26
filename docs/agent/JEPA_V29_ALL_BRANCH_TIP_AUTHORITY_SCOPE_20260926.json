@@ -1,0 +1,1892 @@
+{
+  "schema": "JEPA_V29_ALL_GITHUB_BRANCH_TIP_SCOPE_AUDIT_V1",
+  "date": "2026-09-26",
+  "base_open_pr_sweep_head": "265b131b4f3c5674cde8b5b188762a5b0a5a092f",
+  "reference_pr149_head": "938fe5d3a7288826fef86b2650fb3a9a21fd3794",
+  "source_original_scan_blob_sha1": "4c36c5bff8890f6cff989dd24c3c491375effd95",
+  "source_prior_open_pr_scan_blob_sha1": "c81a506f0118d404c49f829611865166c492f71d",
+  "scan_population": "ALL_263_GITHUB_BRANCH_TIPS_AT_FIXED_SNAPSHOT__EXCLUDES_REMOTE_GPU_DISK_AND_PAST_NON_TIP_COMMITS",
+  "scope_filter": "Same 20260926 V29 path-scoped JSON candidate filter as PR154; docs/agent, analysis/v5*, analysis/v26*, results/v2*; excludes docs/history; compare blob SHA to PR149 exact reference",
+  "branch_count": 263,
+  "distinct_branch_tip_heads": 232,
+  "covered_by_previous_open_pr_tip_scans": 114,
+  "new_unique_branch_tip_heads_scanned": 118,
+  "new_tree_failures_or_truncations": 0,
+  "new_branch_tip_candidate_appearances": 233,
+  "distinct_additional_branch_tip_candidate_blobs": 41,
+  "prior_open_pr_distinct_novel_blobs": 18,
+  "new_unique_path_blob_candidates_not_seen_on_prior_open_pr_tips": 31,
+  "union_unique_novel_path_blobs": 49,
+  "exact_source_roles_actually_schema_inspected_here": 9,
+  "new_current_v5_defining_class_validations_executed": 0,
+  "new_current_v5_closure_roots_validated": 0,
+  "source_parent_bytes_physically_authenticated": false,
+  "remote_gpu_disk_scanned": false,
+  "all_263_branch_tips_rechecked_unchanged_before_publication": true,
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "original_six_pr149_own_class_candidates_still_open": true,
+  "all_branch_heads": [
+    {
+      "branch": "analysis/gse178317-33target-supported-reference-20260924",
+      "head": "f599d3c3b62b78384e81ac01179eff59a86ef0af"
+    },
+    {
+      "branch": "analysis/gse178317-support33-receipt-ci-20260924",
+      "head": "f2794bcf86aae2ee43ef5428c9f14ea7780dd6a5"
+    },
+    {
+      "branch": "analysis/gse301119-guide-donor-support-audit-20260923",
+      "head": "56600f66492b18af20edcfe5d11761d2cdca9383"
+    },
+    {
+      "branch": "analysis/layer2-method-redteam-20260915",
+      "head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4"
+    },
+    {
+      "branch": "analysis/perturbation-etl-gse301119-claude-20260923",
+      "head": "9a2a30e4c4c99be2a8f948aba680524c786d2737"
+    },
+    {
+      "branch": "analysis/therapeutic-perturbation-etl-20260923",
+      "head": "45354a9c5948ae1545135a9e40c83e78b3c05825"
+    },
+    {
+      "branch": "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+      "head": "219831b899b914984369c7a41828bf750554d1d9"
+    },
+    {
+      "branch": "analysis/v5-masking-successor-spike-20260917",
+      "head": "8abd3fd6f7036fdea2a00682b1e0059c449c60f6"
+    },
+    {
+      "branch": "analysis/v5-ridge8-expanded-validation-20260917",
+      "head": "73a78cbb4866f6a73d661f3320d5378e74a74b42"
+    },
+    {
+      "branch": "analysis/v26-104-donor-linear-baseline-parallel-20260925",
+      "head": "ac3088df739c4e1f0d964d5d22f8d56727435eb4"
+    },
+    {
+      "branch": "audit/cross-study-etl-metadata-20260924",
+      "head": "9c524f49dd1486e6c7f4a4b211ef70bff4082db6"
+    },
+    {
+      "branch": "audit/etl-wpf-comparability-bin1-redteam-20260924",
+      "head": "3248ded9c563df1c569cf62d13a5f1d6d8862035"
+    },
+    {
+      "branch": "audit/etl-wpf-source-pinning-exposure-20260924",
+      "head": "d6bfbcec5a407b7a0aa2a3cde9f1602a759d3928"
+    },
+    {
+      "branch": "audit/v5-full104-audit-b-n1-executor-freeze-20260922",
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971"
+    },
+    {
+      "branch": "audit/v5-full104-b2-b4-resolution-20260922",
+      "head": "0180158f61f50ea4e5ad403fb11eb9d525b004c6"
+    },
+    {
+      "branch": "audit/v5-full104-b2-scientific-decision-memo-20260922",
+      "head": "5e7612c909c3ed677a91c6dec42e298dc02a6f24"
+    },
+    {
+      "branch": "audit/v5-full104-information-channel-redteam-20260920",
+      "head": "ae5dc5c624fff341b8ef30c5359c55528383920a"
+    },
+    {
+      "branch": "audit/v5-full104-n1-end-to-end-review-20260922",
+      "head": "a978ad254bd6d5f29d656fcbbe8c692b84810026"
+    },
+    {
+      "branch": "audit/v5-full104-posthandoff-hardening-20260921",
+      "head": "ebae1f9667a6e483ec35a6918234c40b99ae9ea2"
+    },
+    {
+      "branch": "audit/v5-full104-rare-tail-structural-preflight-20260921",
+      "head": "1196870266b7ad354811464fa47d99c23805acea"
+    },
+    {
+      "branch": "audit/v5-n1-source-lineage-crosscheck-20260922",
+      "head": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa"
+    },
+    {
+      "branch": "audit/v5-rare-tail-readonly-preflight-20260922",
+      "head": "bc0fb71e9bd34ba37709ac2f5e04895e2403d096"
+    },
+    {
+      "branch": "audit/v5-stage-a-spillover-firewall-20260916",
+      "head": "c15233aa7cd9cfcbc3363771a3af3393d8d1c1b8"
+    },
+    {
+      "branch": "audit/v26-frozen-pass1-donor-count-bridge-20260925",
+      "head": "1e9080caeeea40e2a3a0879e236b1bc0a90e919f"
+    },
+    {
+      "branch": "audit/v26-independent-reader-source-crosstab-20260925",
+      "head": "fae890159b6c8ff42921b26a9472347a140796f7"
+    },
+    {
+      "branch": "audit/v26-provisional-diagnostic-parameter-firewall-20260925",
+      "head": "af103e16709d128c0f0f66a201907aad7982b29d"
+    },
+    {
+      "branch": "audit/v26-reader-fit-population-preflight-20260925",
+      "head": "106df4971728be014ef438cb2e0c36c74d6e0455"
+    },
+    {
+      "branch": "audit/v29-mechanical-precommit-and-checkpoint-20260926",
+      "head": "9f6c1b6b545736841feee78a841e586fd10589bb"
+    },
+    {
+      "branch": "audit/v29-open-pr-root-artifact-sweep-20260926",
+      "head": "265b131b4f3c5674cde8b5b188762a5b0a5a092f"
+    },
+    {
+      "branch": "audit/v29-pr149-class-compatibility-20260926",
+      "head": "a4fe887bf3c4d079fec0a2ab8f219a71c07ca803"
+    },
+    {
+      "branch": "authority/v5-masking-qualification-20260916",
+      "head": "897bb0c1ee46001f9ea3d686be7e1d4c47c30224"
+    },
+    {
+      "branch": "authority/v5-masking-shortcut-predictability-v2-20260916",
+      "head": "8abd3fd6f7036fdea2a00682b1e0059c449c60f6"
+    },
+    {
+      "branch": "bundle/pr146-full104-standalone-20260926",
+      "head": "47f3fe9ccb1ea481ded726f16617b83c5e56fcbb"
+    },
+    {
+      "branch": "claude/v5-full104-blocker-clearance-20260921",
+      "head": "cdac29eba5f08994bc3d8309a31c05cd21da50aa"
+    },
+    {
+      "branch": "claude/v5-phase4-preexecution-audit-20260921",
+      "head": "885c307583f9a773aebe2f9acf9885bbce30473c"
+    },
+    {
+      "branch": "coord/v26-verified-parallel-lane-collision-map-20260925",
+      "head": "d2731f50d94736ec525ff0a151e56d154c93e6d3"
+    },
+    {
+      "branch": "dev/v26-reader-fit-deterministic-sampling-20260925",
+      "head": "4b4c6fa93f1e93d5feba1db0ff456d23e46de983"
+    },
+    {
+      "branch": "docs/t0-closeout-handoff-20260911",
+      "head": "49793395fc822b78c222e00a76d423e0ec0e718c"
+    },
+    {
+      "branch": "docs/v5-scientific-acceptance-framework-20260923",
+      "head": "d565f37714a79195844336977852fc0921b2d087"
+    },
+    {
+      "branch": "docs/v25-audit-addendum-20260924",
+      "head": "9df1c518e01c969184adbb1fa4910a28d646e7fb"
+    },
+    {
+      "branch": "docs/v25-detailed-new-chat-takeover-20260924",
+      "head": "36071f5c6220155d88aa495d9414a5f42daa7063"
+    },
+    {
+      "branch": "evidence/v26-full104-physical-diagnostic-metadata-20260925",
+      "head": "8369efe5839f9aca5912cc8280a05330b2b104a3"
+    },
+    {
+      "branch": "feature/v5-v3-null-t0-stressbench-20260914",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "fix/f1-review-closeout-20260911",
+      "head": "06012a11199eefc18eb72d243d1cb4e9c5e5961d"
+    },
+    {
+      "branch": "fix/gse254205-assay-detection-exposure-v2-20260923",
+      "head": "0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91"
+    },
+    {
+      "branch": "fix/perturbation-gse301119-count-parity-rawpb-20260923",
+      "head": "9d3440991378405bcba4ebff030922dc8085d670"
+    },
+    {
+      "branch": "fix/v5-current-optimizer-step-replay-20260925",
+      "head": "eebe40a92c7d590a480657c08d9fcacdefa5e7a9"
+    },
+    {
+      "branch": "fix/v5-full104-rng-v3-parameter-digest-key-20260921",
+      "head": "18b9476625d14ecf90b0b6b1efd12d5a7495b548"
+    },
+    {
+      "branch": "fix/v5-n1-canonical-source-derivative-20260923-claude",
+      "head": "83b85382f22a7672a5beb1ef9154e5b8bf36e16f"
+    },
+    {
+      "branch": "fix/v5-n1-canonical-source-derivative-20260923",
+      "head": "344fc1c2aef6cbabdd6c4d2fcc6cae3408229d30"
+    },
+    {
+      "branch": "fix/v5-n1-independent-qualification-gates-20260923",
+      "head": "f2e227f4f379f637d676c9768acb38bc14151a84"
+    },
+    {
+      "branch": "fix/v5-n1-pr78-independent-hardening-20260923",
+      "head": "64148023740d57777666faff15395262d4b0e3da"
+    },
+    {
+      "branch": "fix/v5-pr74-pass1-wholefile-gate-20260923",
+      "head": "9f4572a24aee10bee81abb874855e730746a810d"
+    },
+    {
+      "branch": "fix/v5-rare-tail-gateway-windows-fsync-20260922",
+      "head": "f13c8364fe997d800cb84ad5370da43e75e17d3e"
+    },
+    {
+      "branch": "fix/v5-schedule-metadata-hash-revalidation-20260910",
+      "head": "bede5a1b3b361cb650651058e3566b0112c5f3a9"
+    },
+    {
+      "branch": "governance/integrated-target-discovery-v5-handoff-20260911",
+      "head": "dac11696ecb31ed6e417e6f7b34611d0f44c36e4"
+    },
+    {
+      "branch": "governance/project-lineage-reconstruction-20260911",
+      "head": "95ffa93261d087725b763398afeb6b09b253a6a1"
+    },
+    {
+      "branch": "governance/v5-current-state-refresh-20260913",
+      "head": "f78eb52098e0beff25fb49a8fab0c5b26e7be553"
+    },
+    {
+      "branch": "gpt/gse178317-33target-comparison-20260924",
+      "head": "685914ffc241d5341408c70f13940d8d70a09ba9"
+    },
+    {
+      "branch": "gpt/v5-full104-dataset-etl-atlas-20260921",
+      "head": "40fe29750be35626be6f55d84644b9a47716b49a"
+    },
+    {
+      "branch": "gpt/v5-full104-safe-lane-20260921",
+      "head": "0c2f5fb8419ea7d1572479e6ef1b13768e52f3c5"
+    },
+    {
+      "branch": "gpu/v5-full104-b3-v1-receipts-20260922",
+      "head": "ed65f1ba97b95bf135aaa15209bc8cc6ca5c670b"
+    },
+    {
+      "branch": "gpu/v5-full104-b4-runtime-preflight-20260922",
+      "head": "979cacbc924c45e55ad57e239a2ed4b0429e88ef"
+    },
+    {
+      "branch": "gpu/v5-full104-metadata-receipts-20260921",
+      "head": "87de6cfd91e4a1f23e02467ca24e9cacf8a32582"
+    },
+    {
+      "branch": "gpu/v5-full104-n1-physical-burden-preflight-20260922-claude",
+      "head": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933"
+    },
+    {
+      "branch": "gpu/v5-full104-rare-tail-structural-20260922",
+      "head": "5503cd8c99506d172616b1e2edd8090eeaa41a05"
+    },
+    {
+      "branch": "gpu/v5-n1-physical-preflight-exec-20260922-claude",
+      "head": "9c94a26553bdaa23d46a4efc59e85364d0c0df9b"
+    },
+    {
+      "branch": "gpu/v5-pr73-metadata-requalification-20260923-claude",
+      "head": "9073150ffccb6a82f0c114ff3b69940b8c4ca865"
+    },
+    {
+      "branch": "gpu/v5-rare-tail-readonly-preflight-exec-20260922-claude",
+      "head": "7a8b97ef268d3ec34be1d62d4edf0688e83978b8"
+    },
+    {
+      "branch": "gpu/v5-rare-tail-v2-review-20260922-claude",
+      "head": "29ec6a0d49b006e49e34143b30a950ad156dbd3f"
+    },
+    {
+      "branch": "handoff/claude-full-pipeline-audit-20260918",
+      "head": "adcd333b777c2d6c8932bf89ac41217af9a9e04b"
+    },
+    {
+      "branch": "handoff/jepa-20260925-pr121-runtime-inventory",
+      "head": "5a008de7568d90f3ecd0207a744fec28e7d9e5ed"
+    },
+    {
+      "branch": "handoff/jepa-current-ledger-layer2-20260915",
+      "head": "a974217dffe3e9312526eb6ca17b3c17fb221a00"
+    },
+    {
+      "branch": "handoff/jepa-full104-b4-n1-rare-tail-20260922-v2",
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971"
+    },
+    {
+      "branch": "handoff/jepa-full104-b4-n1-rare-tail-20260922",
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971"
+    },
+    {
+      "branch": "handoff/jepa-full-takeover-20260923-v23",
+      "head": "e5d6a1d111c37a9eb6270342e254f212049a6048"
+    },
+    {
+      "branch": "handoff/jepa-new-chat-20260910-t0-v21-v5",
+      "head": "0dc40fae8d227b7dfc728e5c3bc87a7702131184"
+    },
+    {
+      "branch": "handoff/jepa-new-chat-20260911-asap-repair-status",
+      "head": "5ee85fc84bdcf3fd3c5222bbf3c8c2ba27a3b8d9"
+    },
+    {
+      "branch": "handoff/jepa-new-chat-20260911-post-v21-repair-current",
+      "head": "a47e9a1672e109be982da4514f5df6a8d77f7064"
+    },
+    {
+      "branch": "handoff/jepa-new-chat-20260913-full-lineage-current",
+      "head": "40b7959fea747eb3080abc34b6fffd15ed465a79"
+    },
+    {
+      "branch": "handoff/jepa-new-chat-r2-20260908",
+      "head": "2f7aeaf011dac89d988adc310b5b87060c18bbb0"
+    },
+    {
+      "branch": "handoff/jepa-parallel-lanes-20260923-v21",
+      "head": "5e599e5d1cd98db229cbabc7073b9ec925ce57e4"
+    },
+    {
+      "branch": "handoff/jepa-parallel-postbulk-20260923-v22",
+      "head": "9a4415a87e666249124fa342bd898933192b9f89"
+    },
+    {
+      "branch": "handoff/jepa-t0-v2-claude-ready-20260911",
+      "head": "f727a820d7af22299ef6015c959ff81c4c6be4b8"
+    },
+    {
+      "branch": "handoff/jepa-v5-current-authority-successor-20260915",
+      "head": "f6f0cb736cb993d0fadb0407d29951087c9719b1"
+    },
+    {
+      "branch": "handoff/jepa-v5-f16-f17-closed-governance-20260918",
+      "head": "380418c6cb51358a9ed403fc0e648cc0394b9aac"
+    },
+    {
+      "branch": "handoff/jepa-v5-f16-f17-governance-takeover-20260918",
+      "head": "6a25317caec9f649e6f1d7b712050db006808cae"
+    },
+    {
+      "branch": "handoff/jepa-v5-f16-f17-repaired-governance-20260918",
+      "head": "a8de144538c7b971516831f301dae5ff4ec1df38"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-audited-20260919",
+      "head": "86f657363d7462413b1d983a0d692630de6a263c"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-b4-n1-rare-tail-20260922-v18",
+      "head": "027a18217fcc25eb1f99f377da68123ae98631a0"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-20260918",
+      "head": "7d834d3d53999c45567859636a468330ca8843b5"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-audited-20260918",
+      "head": "c8346518e9099a48ea92c8db8344d405eaa28ab6"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-audited-r2-20260918",
+      "head": "8ec393d54f41f2cc1cb3ea98ca7221c132225fd9"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-final-audited-20260918",
+      "head": "6e76c7de92e699a8d1f12d1ed2495e844f1619fb"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-takeover-ready-20260918",
+      "head": "9c84f2c05fb64fbec15612745a721139360ceffd"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-calibration-takeover-ready-v2-20260918",
+      "head": "85b8dd8c73f7a691dc12cf1ed199382aa6b9f5f4"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-etl-safe-lane-20260921",
+      "head": "cf493457a0fc1ff1075ff6aa461471bd207a92d2"
+    },
+    {
+      "branch": "handoff/jepa-v5-full104-target-etl-20260921",
+      "head": "034be1949c389c93a26d8476ceedbcd402c55505"
+    },
+    {
+      "branch": "handoff/jepa-v5-full-pipeline-audit-20260918",
+      "head": "1d2613dab261ebeaef5ceeb72be405781d846bc0"
+    },
+    {
+      "branch": "handoff/jepa-v5-gpt-parallel-audit-20260920",
+      "head": "79cf81158cbe7294508f5d6b7c1ad1f21c8fea08"
+    },
+    {
+      "branch": "handoff/jepa-v5-new-chat-20260916",
+      "head": "42cd1dec9dfe3227d820c890947422b680c0dcbb"
+    },
+    {
+      "branch": "handoff/jepa-v5-null-margin-authority-blocker-20260918",
+      "head": "53e8e827339bfbb920db6811aea1454dcd0ce168"
+    },
+    {
+      "branch": "handoff/jepa-v5-post-claude-72338541-20260918",
+      "head": "4932aa3aa517b5457e0ad532c2976cd7a52bd75a"
+    },
+    {
+      "branch": "handoff/jepa-v5-post-claude-full104-takeover-20260918",
+      "head": "aa05d193948f383e36f4ca8382c47530379b2176"
+    },
+    {
+      "branch": "handoff/jepa-v5-preterminal-runtime-closure-20260918",
+      "head": "fbeb5e78b54ce788a2725adec7b6e1b14dcbbf9b"
+    },
+    {
+      "branch": "handoff/jepa-v5-source-repair-raretail-20260923-v19",
+      "head": "d565f37714a79195844336977852fc0921b2d087"
+    },
+    {
+      "branch": "handoff/jepa-v5-target-authority-build-20260915",
+      "head": "af0ae024808e6642509121db8278c15259959632"
+    },
+    {
+      "branch": "handoff/jepa-v24-20260924-current",
+      "head": "d1827e5b4ab01c5c00cb5bc906334d5c7dc1790a"
+    },
+    {
+      "branch": "handoff/jepa-v25-20260924-results-data-scripts",
+      "head": "10afb843e938ba92901127cdb18da437f154e5c5"
+    },
+    {
+      "branch": "handoff/jepa-v25-audited-20260924",
+      "head": "abe3fedaff3fe97a0f9570aeb710333b3e8cef67"
+    },
+    {
+      "branch": "handoff/jepa-v28-verified-evidence-and-new-chat-20260926",
+      "head": "fecd8aadaed5581fc00611bc64063c69fb119faf"
+    },
+    {
+      "branch": "handoff/v5-masking-successor-ridge8-20260917",
+      "head": "ba0d1f74e7149cb89fa065c06edfd1a9987af7c6"
+    },
+    {
+      "branch": "handoff/v27-independent-audit-claude-instructions-20260925",
+      "head": "081091fef050a78f6e02ff6a86d1c2d01801b6f2"
+    },
+    {
+      "branch": "impl/perturbation-exposure-ledger-guard-20260923",
+      "head": "3669e5c2a9f3e9466ce269efcbd696c4c28746b2"
+    },
+    {
+      "branch": "impl/perturbation-feature-identity-contract-20260923",
+      "head": "f1cb98bf895e16b275c99228c20c7dc750aa4369"
+    },
+    {
+      "branch": "impl/perturbation-target-heldout-benchmark-cpu-20260923",
+      "head": "4c350e0b3efd992ea02b128c3fbbed21e6a67c5b"
+    },
+    {
+      "branch": "impl/v5-current-target-authority-core-20260915",
+      "head": "c8898923fc10ffa5ef0662b04908b0d94bcb158b"
+    },
+    {
+      "branch": "impl/v5-current-target-authority-successors-20260915",
+      "head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3"
+    },
+    {
+      "branch": "impl/v5-full104-f16-f17-prospective-repair-20260918",
+      "head": "b21b0e13c187b8fd4ecfaaf42a71d3029c711486"
+    },
+    {
+      "branch": "impl/v5-full104-masking-budget-freeze-20260917",
+      "head": "9336b60062da5c0bc1f1729d5ec7db359a9df43c"
+    },
+    {
+      "branch": "impl/v5-full104-masking-f16-f17-receipt-hardening-20260918",
+      "head": "64affd70cce578459658668f0e1076d212c1ab28"
+    },
+    {
+      "branch": "impl/v5-full104-masking-f16-f17-repair-20260918",
+      "head": "144873cec377e2cd098ce66220377f10723f413a"
+    },
+    {
+      "branch": "impl/v5-full104-masking-redteam2-20260918",
+      "head": "3084c1f497a3db6056fd100fb896ccdf67318c8a"
+    },
+    {
+      "branch": "impl/v5-full104-masking-redteam-freeze-20260918",
+      "head": "644ed1123302dc37071842db987c5a05a82de291"
+    },
+    {
+      "branch": "impl/v5-full104-n1-cpu-burden-assembly-20260922",
+      "head": "601cccf4fff98a471fa0cf2595374efa9ef9be59"
+    },
+    {
+      "branch": "impl/v5-full104-n1-crashsafe-runtime-20260922",
+      "head": "59e16ab6edf3979d5cfc6d18c2f7ac2add6bb159"
+    },
+    {
+      "branch": "impl/v5-full104-n1-physical-binding-cpu-20260922",
+      "head": "8348c7308156a23df08a83897027e55260e3c203"
+    },
+    {
+      "branch": "impl/v5-full104-null-equivalence-margin-authority-20260918",
+      "head": "6379e5b1d62f7d97b5aad70e688fa8d7880618e8"
+    },
+    {
+      "branch": "impl/v5-full104-pass1-review-repairs-20260920",
+      "head": "a215bb77c4dbaa4bb60ad5b7ed54c2d574c8bf2a"
+    },
+    {
+      "branch": "impl/v5-full104-pass1-selection-row-rebuild-20260920",
+      "head": "2267583ac5856d9890967a9d940c67cab5a8d612"
+    },
+    {
+      "branch": "impl/v5-full104-post-claude-binding-repair-20260918",
+      "head": "72338541c3a161cf461dde5215e6841ee9704ee7"
+    },
+    {
+      "branch": "impl/v5-full104-provenance-spillover-repair-20260919",
+      "head": "a51cdbe8bbfac1c77980711cca13df8bc58caa1d"
+    },
+    {
+      "branch": "impl/v5-full104-terminal-runtime-closure-20260918",
+      "head": "c7750142e7a585beb53f97aa2b4acb8660004ea3"
+    },
+    {
+      "branch": "impl/v5-n1-crashsafe-context-v2-20260923",
+      "head": "24594c073fdf42628de17c83728c14eba16f0512"
+    },
+    {
+      "branch": "impl/v5-n1-physical-lineage-adapter-20260923-claude",
+      "head": "4f1d8321e480d8e74380bf30fae27573fe8bb2be"
+    },
+    {
+      "branch": "impl/v5-pr74-crashsafe-synthetic-adapter-20260923",
+      "head": "2096d86e38124bbbb21da3be15c96b4c31fd6be7"
+    },
+    {
+      "branch": "impl/v5-primary-representation-authority-20260915",
+      "head": "c8898923fc10ffa5ef0662b04908b0d94bcb158b"
+    },
+    {
+      "branch": "impl/v5-remaining-rna-target-semantics-20260917",
+      "head": "30be018ade4303e1659c67d179e3a6ca943a0a3e"
+    },
+    {
+      "branch": "integrate/v5-full104-gpt-claude-20260921",
+      "head": "3bf6b659de9bdd2711face82b50b47ec567ea449"
+    },
+    {
+      "branch": "integration/perturbation-reviewed-cpu-20260924",
+      "head": "462e7e9a976664d6dff99e6856f33ca3c1553c52"
+    },
+    {
+      "branch": "lane/therapeutic-crispr-phase0-20260923",
+      "head": "9cc98fbee75fa513491e45d6110773c206fe2813"
+    },
+    {
+      "branch": "main",
+      "head": "c49b13bd75c2d23716c777336db8fbfc78c09cd0"
+    },
+    {
+      "branch": "part3/layer2-lodo-baseline-authentication-20260925",
+      "head": "b71291a927b56f67e645f9c468350c76a29b9a63"
+    },
+    {
+      "branch": "physical/etl-completion-claude-20260924",
+      "head": "d719ce1619f8cf6b6b101bc7188b903bc906891b"
+    },
+    {
+      "branch": "planning/teacher-student-v5-dataset-schedule-20260909",
+      "head": "78981dcbeb3f8f5dd9a4ad2f72a2792d029c6d69"
+    },
+    {
+      "branch": "planning/teacher-student-v5-gpu-rng-mechanics-20260908",
+      "head": "19671b507da2b841b6323a0798bb4e8a014cb45c"
+    },
+    {
+      "branch": "planning/v5-dataset-first-production-closure-20260912",
+      "head": "43d499e83b374c317747bb71faa5164b9da1870f"
+    },
+    {
+      "branch": "planning/v5-full-population-cheat-proofing-20260909",
+      "head": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534"
+    },
+    {
+      "branch": "planning/v5-preexecution-hardening-20260909",
+      "head": "782f2c5242dc7f157786cd8e29ef1a1c2c0ebd45"
+    },
+    {
+      "branch": "planning/v5-pretraining-qualification-20260909",
+      "head": "ae1709e2fa2dcc43e57b87852aeb6919eaf5bcfc"
+    },
+    {
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "head": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab"
+    },
+    {
+      "branch": "planning/v5-teacher-student-objective-authority-20260915",
+      "head": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae"
+    },
+    {
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "head": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae"
+    },
+    {
+      "branch": "planning/v29-prospective-teacher-science-20260926",
+      "head": "1f857176db255e039d5411fe6ea2984f9164daa1"
+    },
+    {
+      "branch": "repair/pr118-audit-fixes-20260925",
+      "head": "aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d"
+    },
+    {
+      "branch": "repair/pr121-versioned-v3-readiness-20260925",
+      "head": "32582e23235d3417d62938459fc3b2311968222b"
+    },
+    {
+      "branch": "repair/t0-v21-authority-hardening-20260911",
+      "head": "9f98320f03e19577527b2153159ea0df2c62babd"
+    },
+    {
+      "branch": "repair/t0-v21-authority-restoration-20260911",
+      "head": "b27978af0a53ffd9aaa28a3538604429aaefd27a"
+    },
+    {
+      "branch": "repair/t0-v21-integrated-authority-regression-20260911",
+      "head": "9a861b41607b16cb40a8240ecda025c9447514ae"
+    },
+    {
+      "branch": "repair/v5-authority-evidence-integration-20260912",
+      "head": "b2b990d4b62d838ea0627fd969615ded40ff4dd2"
+    },
+    {
+      "branch": "repair/v5-dshared-authority-v2-20260914",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-executable-power-authority-20260911",
+      "head": "52fca8ab7f23f2235ff37be0521ca9444165b2ef"
+    },
+    {
+      "branch": "repair/v5-execution-evidence-failclosed-20260913",
+      "head": "9001b0cc7bb9b2b548adef86bb3b423e80668b35"
+    },
+    {
+      "branch": "repair/v5-full104-census-authority-rederive-20260920",
+      "head": "de0e36448cb703468ffc2e908a2a03f49d48d9bf"
+    },
+    {
+      "branch": "repair/v5-full104-post-audit-provenance-20260919",
+      "head": "37e8ea1f9991e43600fcf610b4bc49a775500e95"
+    },
+    {
+      "branch": "repair/v5-full104-source-library-parser-20260920",
+      "head": "1fef4452e7d9b178adc532eef9786996e412943f"
+    },
+    {
+      "branch": "repair/v5-installed-target-root-binding-20260912",
+      "head": "bb9748960c2255c42126a780dc761cbd4d446fce"
+    },
+    {
+      "branch": "repair/v5-prospective-precision-authority-20260913",
+      "head": "f78eb52098e0beff25fb49a8fab0c5b26e7be553"
+    },
+    {
+      "branch": "repair/v5-qualified-target-guard-20260911",
+      "head": "da8bd7dfe138fc4b36c11007d0a0165cd2365bcc"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-clean",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-copy",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-exec",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-execution",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-final",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-impl",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-last",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-main",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-ok",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-plan",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-work",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-x",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914-z",
+      "head": "3717c9c0a292dfcd883949d5d0bf36d263f79300"
+    },
+    {
+      "branch": "repair/v5-v3-null-t0-stressbench-20260914",
+      "head": "5124ef830db4e2f9fe3279162adc30bbdd528f62"
+    },
+    {
+      "branch": "result/crisprbrain-screen-reliability-20260925",
+      "head": "e130f55c7471b74b387f0bd0aca586c4a1614921"
+    },
+    {
+      "branch": "result/gse301119-nt-null-executed-20260925",
+      "head": "702e6527889962d8741a64c23a2d0e00f6b12765"
+    },
+    {
+      "branch": "result/gse301119-tiesafe-null-executed-20260925",
+      "head": "7072820d9e674895d466c46ea2ea94663e193de0"
+    },
+    {
+      "branch": "result/p16-bulk-independent-recompute-20260925",
+      "head": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03"
+    },
+    {
+      "branch": "result/v5-integration-and-diagnostic-contract-20260925",
+      "head": "9f7818472bdf515680b85eddbbf761eae2208020"
+    },
+    {
+      "branch": "review/crisprbrain-clean-head-replay-20260925",
+      "head": "3fffc35010bd4d4b1bb6d9574277ac99cf2cecb5"
+    },
+    {
+      "branch": "review/full104-transport-region-metadata-preflight-20260925",
+      "head": "be676442bab703eecb063d1fe9c40c4f8fba91d3"
+    },
+    {
+      "branch": "review/gse178317-design-authority-20260924",
+      "head": "bce11cb82bf2c2858c6b3b80c6966e81e8acc1b7"
+    },
+    {
+      "branch": "review/gse178317-physical-safe-reissue-20260924",
+      "head": "295632213edffee9e31e886ad31b5840e87bccaa"
+    },
+    {
+      "branch": "review/gse178317-real-data-baseline-audit-20260924",
+      "head": "4773a59961a2cc6522ed249ffd5cbf1b357e73ae"
+    },
+    {
+      "branch": "review/gse178317-safe-reissue-from-committed-matrix-20260924",
+      "head": "30f9899542163be4ac0bdf2be1cd2ecaea596b78"
+    },
+    {
+      "branch": "review/gse178317-support33-independent-20260924",
+      "head": "747aad259e4260b1efb6add3ff99aa1e722ad571"
+    },
+    {
+      "branch": "review/gse178317-trusted-count-migration-20260924",
+      "head": "f3017e9de6b3db60211fbf8b2f25744d5cdd1a99"
+    },
+    {
+      "branch": "review/gse178317-v2-count-binding-20260924",
+      "head": "f3017e9de6b3db60211fbf8b2f25744d5cdd1a99"
+    },
+    {
+      "branch": "review/gse178317-v2-count-binding-current-20260924",
+      "head": "e6466f4c18b9e888bcc4c25d6a59d5580120ff44"
+    },
+    {
+      "branch": "review/gse178317-v2-integrated-redteam-20260924",
+      "head": "192c4be4100ed639ed5270da358a6cdc8989f13c"
+    },
+    {
+      "branch": "review/gse178317-v2-lane-unit-firewall-20260924",
+      "head": "7798daf4a90cf31f3f064313520c4ff4e3e9bbbf"
+    },
+    {
+      "branch": "review/gse178317-v2-lane-usability-20260924",
+      "head": "4d452d614d9fd4839d3eb47542b2e418be301cfb"
+    },
+    {
+      "branch": "review/gse240609-public-geo-sample-identity-v2-20260923",
+      "head": "9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf"
+    },
+    {
+      "branch": "review/gse301119-depth-only-null-20260925",
+      "head": "737a2943a6ad8d7d74ade527462de3d36c765f9c"
+    },
+    {
+      "branch": "review/gse301119-matched-nt-null-20260925",
+      "head": "0978fbd0321f80d2d272dc73070c5f232d7c4277"
+    },
+    {
+      "branch": "review/gse301119-nt-null-estimand-20260925",
+      "head": "9c1327f555b182c7292c3e0675e629725b791e72"
+    },
+    {
+      "branch": "review/gse311359-guide-feature-identity-stop-20260923",
+      "head": "bc09c0f432db6e17bec3047baeb0812975043937"
+    },
+    {
+      "branch": "review/integrated-target-v5-repairs-20260911",
+      "head": "01192bbeebedaf1751d0e65e99fd8700b1641a94"
+    },
+    {
+      "branch": "review/integrated-target-v5-repairs-code-20260911",
+      "head": "2ccf942e663afa257fe7abcd8d3ffdc2a8908cfc"
+    },
+    {
+      "branch": "review/integrated-target-v5-repairs-exec-20260911",
+      "head": "2ccf942e663afa257fe7abcd8d3ffdc2a8908cfc"
+    },
+    {
+      "branch": "review/integrated-target-v5-repairs-finalwork-20260911",
+      "head": "2ccf942e663afa257fe7abcd8d3ffdc2a8908cfc"
+    },
+    {
+      "branch": "review/integrated-target-v5-repairs-work-20260911",
+      "head": "2ccf942e663afa257fe7abcd8d3ffdc2a8908cfc"
+    },
+    {
+      "branch": "review/n1-all104-exact-raw-audit-20260925",
+      "head": "136d1257467a7d80690d9f287ca7399c7138e038"
+    },
+    {
+      "branch": "review/n1-all104-physical-raw-count-execution-20260925",
+      "head": "eba86cc3b51964ed2571a182e5ad589230fe3322"
+    },
+    {
+      "branch": "review/n1-pr83-physical-authority-redteam-20260923",
+      "head": "0bccba8ce62d9006539b8d7a0f649faf906255fd"
+    },
+    {
+      "branch": "review/perturbation-authority-spoof-hardening-20260923",
+      "head": "9fb2a372c705612b76c485e1191c81a6ca3b0eaa"
+    },
+    {
+      "branch": "review/perturbation-baseline-ledger-integration-20260924",
+      "head": "fdd7534847242321289ccd3f0e3405fed92c1693"
+    },
+    {
+      "branch": "review/perturbation-benchmark-donor-balanced-20260923",
+      "head": "03c5ff97decbad38cd0b688c16e1bcd226654c51"
+    },
+    {
+      "branch": "review/perturbation-domain-and-gene-authority-20260924",
+      "head": "3fe23a8bbd1303926987c2dabf243c80ea557812"
+    },
+    {
+      "branch": "review/perturbation-entrez-namespace-20260924",
+      "head": "037c048cf163009525874d51280b0cf6f8bebc11"
+    },
+    {
+      "branch": "review/perturbation-feature-lookup-scale-20260923",
+      "head": "e078e23b6329878e8a818a5c2618ca3bb29b9b65"
+    },
+    {
+      "branch": "review/perturbation-full-binary-digests-20260924",
+      "head": "d33d0495231624c719bfb9076be3675499adafd3"
+    },
+    {
+      "branch": "review/perturbation-preflight-not-effect-pass-20260923",
+      "head": "9100b9c0f2dfa93a69867d9017b73483d6abba57"
+    },
+    {
+      "branch": "review/pr118-inventory-failclosed-20260925",
+      "head": "ed3e7b8ccf5b8fe2ecc367a911fec9c1a9a98255"
+    },
+    {
+      "branch": "review/pr120-source-metadata-binding-20260925",
+      "head": "8ad966faa9763e46cf097ede034691e7d151ce4a"
+    },
+    {
+      "branch": "review/pr121-receipt-readiness-audit-20260925",
+      "head": "1ed179f019f22fc220709799598db47309ddc51f"
+    },
+    {
+      "branch": "review/pr125-tie-aware-null-and-runbook-20260925",
+      "head": "1317d54d6ab61687015edd9a46c14a85401fd25d"
+    },
+    {
+      "branch": "review/t0-r4-dataset-bound-hardening-20260909",
+      "head": "fedad5ed9e4687660be9dff6bf7b93a0fb0d6b69"
+    },
+    {
+      "branch": "review/t0-r4-dataset-bound-inputs-20260908",
+      "head": "68d6206e083d4a143897aa5f1c839d93782cfc49"
+    },
+    {
+      "branch": "review/t0-r4-independent-reds-20260909",
+      "head": "f7d8dfb537c1052c656c8bb194f6e154b200086a"
+    },
+    {
+      "branch": "review/t0-r4-independent-review-20260909",
+      "head": "37da1b61739fa45ef9438e1608641b6622d12fbe"
+    },
+    {
+      "branch": "review/t0-r5-dataset-chain-hardening-20260909",
+      "head": "1f4b47db7d8b1cc363eb08f11183d4e07516b70b"
+    },
+    {
+      "branch": "review/t0-r5-dataset-first-framework-20260909",
+      "head": "5038642c0164e8a58c3ae6dd041b1808c0c144a2"
+    },
+    {
+      "branch": "review/t0-r5-external-hardening-20260909",
+      "head": "61797f356da379a1954eac92973e06685ecdddd1"
+    },
+    {
+      "branch": "review/t0-v2-api-surface-portability-20260911",
+      "head": "2797c4d715770c9481b53b75a8bd2cac5cfeda74"
+    },
+    {
+      "branch": "review/t0-v20-replay-equivalence-20260910",
+      "head": "3b5933f6be45c2ec5589ddd4f200e9ff5eb49f46"
+    },
+    {
+      "branch": "review/t0-v21-integrated-candidate-20260911",
+      "head": "c8a1947ea109e11f20277917410ebc1992ae400f"
+    },
+    {
+      "branch": "review/t0-v21-integrated-restored-20260911",
+      "head": "93abcf50e89778585bda1e20f2eab824cc6bae77"
+    },
+    {
+      "branch": "review/t0-v21-integrated-restored-v2-20260911",
+      "head": "42efc55f0aae7770c485855be873cccba4abd732"
+    },
+    {
+      "branch": "review/t0-v21-successor-20260911",
+      "head": "3a8c8e3e5ca84d38eb363e9791e1c86c854a55af"
+    },
+    {
+      "branch": "review/v5-n1-repair-independent-gates-20260923",
+      "head": "a620290b18154bee27201bb3a287369cf94db2ac"
+    },
+    {
+      "branch": "review/v5-pr74-receipt-independent-review-20260923",
+      "head": "17399463dafb785eda01711aa7ddfefc989f2e04"
+    },
+    {
+      "branch": "review/v5-rare-tail-molecular-runtime-preflight-20260922",
+      "head": "bc0fb71e9bd34ba37709ac2f5e04895e2403d096"
+    },
+    {
+      "branch": "review/v5-rare-tail-pr51-ci-repair-20260922",
+      "head": "213552a46903cd92b8a0338df185f0fce9655832"
+    },
+    {
+      "branch": "review/v26-crisprbrain-cross-pr-provenance-20260925",
+      "head": "d4f8bb3f22bc3ddcb55264cc53176cdce80b7e02"
+    },
+    {
+      "branch": "review/v26-g3-explicit-streaming-attacker-integration-20260926",
+      "head": "21efb1047c73cfe7b88047f0aeee1978b035971f"
+    },
+    {
+      "branch": "review/v26-g3-objective-matched-attacker-preflight-20260926",
+      "head": "8776d27384a1543bb6716ad724eb2a521fb7c4ac"
+    },
+    {
+      "branch": "review/v26-new104-linear-baseline-redteam-20260925",
+      "head": "85af8b1683cb6dc70867194a0b04ebc6a16f541b"
+    },
+    {
+      "branch": "review/v26-reader-fit-prepared-schedule-20260925",
+      "head": "9a36c7c71d5d0b10baef9db2fce232c99c200c5f"
+    },
+    {
+      "branch": "review/v27-authority-root-inventory-20260925",
+      "head": "e00ba4ad3f6cb536a65fb25b5f80621c631893c5"
+    },
+    {
+      "branch": "review/v27-independent-physical-replay-and-root-validation-20260926",
+      "head": "938fe5d3a7288826fef86b2650fb3a9a21fd3794"
+    },
+    {
+      "branch": "t0/v20-pathology-blind-materialization-20260908",
+      "head": "d5d67e21398da92e39095afd864b4fb9ebe3da02"
+    },
+    {
+      "branch": "t0/v21-closeout-candidate-20260911",
+      "head": "66169daa7d63912e7cd669afe54f0eadca21cb67"
+    },
+    {
+      "branch": "t0/v21-prospective-design-20260910",
+      "head": "11e76d36ace556ac48cdd2992995e63c1e35df18"
+    },
+    {
+      "branch": "target/v5-full104-rare-tail-guarded-exec-20260922",
+      "head": "bf248a97f6e5249dc7922e4499fc18128cc89fc5"
+    },
+    {
+      "branch": "target/v5-full104-rare-tail-molecular-freeze-20260922",
+      "head": "bc0fb71e9bd34ba37709ac2f5e04895e2403d096"
+    },
+    {
+      "branch": "target/v5-full104-rare-tail-readonly-preflight-20260922",
+      "head": "4a2eabbec081eb62e5c250cbe67e98231aba8f8e"
+    },
+    {
+      "branch": "target/v5-full104-rare-tail-structural-preflight-20260922",
+      "head": "e48c15975b440160e48e29ace74196314d5fa9a6"
+    },
+    {
+      "branch": "tmp-never-use",
+      "head": "c8898923fc10ffa5ef0662b04908b0d94bcb158b"
+    },
+    {
+      "branch": "tmp-noop",
+      "head": "d9938dd782443b5310919ecf6c14099c0b4c23ec"
+    },
+    {
+      "branch": "verify/v5-rare-tail-windows-native-20260923-claude",
+      "head": "f1cc749843e6a9329e646da3b3efc8d3d775dabe"
+    }
+  ],
+  "additional_unique_candidate_path_blobs": [
+    {
+      "path": "analysis/v5_layer2_cross_view_shortcut_20260915/results/aud_geometry.json",
+      "sha": "e7cf70505e939814c6df6dbc3002ff0cbcfa1b0e",
+      "size": 22226,
+      "branches": [
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/evidence/t0_measurement_estimator_qualification_20260912.json",
+      "sha": "e874282c1930406c0975e0c604ccd55faf37a588",
+      "size": 46062,
+      "branches": [
+        "t0/v21-closeout-candidate-20260911"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+      "sha": "375ae9e567d7aacc5860d2f5053e9781497c5dd5",
+      "size": 10226,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+      "sha": "f72233b1d09e678fc80f77b3e4a29ac3a17e743c",
+      "size": 12236,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-audited-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+      "sha": "d8fff7967aaf8d96d1cfd8fef35de57773675427",
+      "size": 12504,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-final-audited-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+      "sha": "01978a77128587b2663ebe2a0baaf924869bd3ee",
+      "size": 13071,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-takeover-ready-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+      "sha": "4fee1c25f0742be84fe088f915fff229c4898933",
+      "size": 13143,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-takeover-ready-v2-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_V5_TARGET_AUTHORITY_CURRENT.json",
+      "sha": "8c2c8f0d4257e1f92f219c9e366d0d4d880a3bcf",
+      "size": 9632,
+      "branches": [
+        "handoff/jepa-v5-target-authority-build-20260915"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json",
+      "sha": "aed7c84ba47a504bd79a46cbacf34d818bcc3dfd",
+      "size": 5226,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json",
+      "sha": "95eb3c27966308b5477b3a20e8f15c66c2c69c1b",
+      "size": 6438,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-audited-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json",
+      "sha": "f097d1c8b1b2a1fd84b6b58abfe1256aa69f51d5",
+      "size": 6954,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-final-audited-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json",
+      "sha": "8461b9758982c3e1942b15bdd423139eb55b1e08",
+      "size": 7454,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-takeover-ready-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json",
+      "sha": "89b0796711b78a138903bb6484b29f1063b91967",
+      "size": 7458,
+      "branches": [
+        "handoff/jepa-v5-full104-calibration-takeover-ready-v2-20260918"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
+      "sha": "5dbd04bdf99636dbdb2ebee89a5af7fe7b7cde5f",
+      "size": 3636,
+      "branches": [
+        "handoff/jepa-new-chat-20260910-t0-v21-v5"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/JEPA_V29_ALL_OPEN_PR_AUTHORITY_CANDIDATE_SWEEP_20260926.json",
+      "sha": "ad206323b75cb0ecece5e7079fb470842b09ed4a",
+      "size": 35981,
+      "branches": [
+        "audit/v29-open-pr-root-artifact-sweep-20260926"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/TARGET_DISCOVERY_TO_V5_INTEGRATION_CONTRACT_V1.json",
+      "sha": "3c01072e3b36d0b550a192eb2b93b5e449b5228f",
+      "size": 3046,
+      "branches": [
+        "planning/v5-pretraining-qualification-20260909"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_C2_GPU_CRITICAL_TEST_EXECUTION_MANIFEST_V1.json",
+      "sha": "c44741e9fd6eeeae85d0ab1ade13bdff2b0b93aa",
+      "size": 1425,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_C2_GPU_CRITICAL_TEST_EXECUTION_MANIFEST_V1",
+        "status": "GPU_EXECUTION_REQUIRED__NO_TRAINING_AUTHORITY",
+        "distinct_role": "HISTORICAL_128X8_48_PROTECTED_GPU_TEST_REQUIREMENT__NOT_CURRENT_GEOMETRY"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_CRITICAL_TEST_EXECUTION_MANIFEST_V1.json",
+      "sha": "395e10174fde1a21aefb7ee822d4c60142446238",
+      "size": 792,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_CRITICAL_TEST_EXECUTION_MANIFEST_V1",
+        "status": "CRITICAL_TEST_SET_DECLARED__NO_TRAINING_AUTHORITY",
+        "distinct_role": "HISTORICAL_PROTECTED48_TEST_SET__NOT_EXECUTED_CURRENT_V5_CRITICAL_TEST_AUTHORITY"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_DATASET_FIRST_SCHEDULE_CANDIDATE_V3.json",
+      "sha": "a1dff6a04897e513645bae167eaf7f46c290d4cd",
+      "size": 6675,
+      "branches": [
+        "planning/teacher-student-v5-dataset-schedule-20260909"
+      ],
+      "inspect": {
+        "schema": "TEACHER_STUDENT_V5_DATASET_FIRST_SCHEDULE_CANDIDATE_V3",
+        "status": "INITIAL_BASE_TEACHER_DATASET_SCHEDULE_IMPLEMENTED_FOR_BOUNDED_MECHANICS__AWAITING_INDEPENDENT_SCIENTIFIC_AND_IMPLEMENTATION_VERIFICATION__NO_EXECUTION_AUTHORITY",
+        "distinct_role": "HISTORICAL_BOUNDED_MECHANICS_SCHEDULE_CANDIDATE"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_SINGLETON_TARGET_BLOCK_POLICY_CANDIDATE_V3.json",
+      "sha": "e468621b02a06b3c5b45c983db6aa3bf3dc67926",
+      "size": 1098,
+      "branches": [
+        "planning/teacher-student-v5-dataset-schedule-20260909"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/v5_anticheat/results/V5_ACTUAL_PRESENTATION_EXPOSURE_GEOMETRY_SUMMARY_V2.json",
+      "sha": "db21a470c0972a1c675bbd2b384d0d7f14df5f3e",
+      "size": 1821,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/v5_anticheat/results/V5_REAL_DATA_SMOKE_NON_AUTHORITY_V1.json",
+      "sha": "88de801582144134e1e525fefef81e9ee41ee134",
+      "size": 5979,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_REAL_DATA_SMOKE_NON_AUTHORITY_V1",
+        "status": "PASS_REAL_DATA_SMOKE_NON_AUTHORITY_MECHANICS_ONLY",
+        "distinct_role": "HISTORICAL_BOUNDED_REAL_SMOKE_NONAUTHORITY__NOT_FULL104_TRAINING"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_D_SHARED_MEASUREMENT_QUALIFICATION_REQUIREMENTS_V1.json",
+      "sha": "358ab40e391f0c74fdab2b73862ac0327bd33d67",
+      "size": 2229,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_EMA_EXPOSURE_DERIVATION_CANDIDATE_V1.json",
+      "sha": "f230e4e7a26dfd7cd211950c204f736ca061d1c7",
+      "size": 1980,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_EMA_EXPOSURE_DERIVATION_CANDIDATE_V1",
+        "status": "PROSPECTIVE_RULE_CANDIDATE__NUMERIC_HALF_LIFE_UNFROZEN",
+        "distinct_role": "UNFROZEN_EMA_PROPOSAL__NOT_CURRENT_EMA_TIMESCALE_AUTHORITY"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_FULL104_RECONNAISSANCE_AUTHORITY_V1.json",
+      "sha": "c8ac43378cadf1d83b85a5e8391b82438920ec5a",
+      "size": 1590,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_FULL104_RECONNAISSANCE_AUTHORITY_V1",
+        "status": "FROZEN_BEFORE_D_SHARED_OUTCOME_ACCESS",
+        "distinct_role": "RECONNAISSANCE_NOT_DSHARED_OUTCOME_OR_TRAINING_AUTHORITY"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json",
+      "sha": "9422d086f173c85e9aab19e0bcf86551f9bcebfb",
+      "size": 3792,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_PROSPECTIVE_DIMENSION_PRECISION_AUTHORITY_V1.json",
+      "sha": "c9aadf2d56bd6e554430f67cab484d33ed383f15",
+      "size": 3581,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_PROSPECTIVE_DIMENSION_PRECISION_AUTHORITY_V1",
+        "status": "FROZEN_BEFORE_DIMENSION_OUTCOME_ACCESS",
+        "distinct_role": "D_SHARED_DIMENSION_PRECISION__NOT_AUTOMATIC_BASE_JEPA_PRECISION_ROOT"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_SCHEDULE_GOVERNANCE_RESOLUTION_CANDIDATE_V1.json",
+      "sha": "45d7db1cdcebcba6c744e30b2ca8907f586466ab",
+      "size": 3244,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_SCHEDULE_GOVERNANCE_RESOLUTION_CANDIDATE_V1",
+        "status": "NO_ACTIVE_PRODUCTION_SCHEDULE_AUTHORITY__V3_FULL_COVERAGE_CANDIDATE_PENDING_INDEPENDENT_REVIEW",
+        "distinct_role": "NO_ACTIVE_PRODUCTION_SCHEDULE_ROOT"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_SINGLETON_QUERY_PRECISION_AUTHORITY_CANDIDATE_V1.json",
+      "sha": "69561f77846a98ad56a9b517057bc708e0933e14",
+      "size": 1566,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_SUPPORT_FAMILY_MASS_AUTHORITY_CANDIDATE_V1.json",
+      "sha": "bd1c2c4f974036b58db928230748790d67df422b",
+      "size": 2947,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "fix/v5-schedule-metadata-hash-revalidation-20260910",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-full-population-cheat-proofing-20260909",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-executable-power-authority-20260911",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-installed-target-root-binding-20260912",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-qualified-target-guard-20260911",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": {
+        "schema": "JEPA_V5_SUPPORT_FAMILY_MASS_AUTHORITY_CANDIDATE_V1",
+        "status": "REAL_104_DONOR_SUPPORT_FAMILY_MASS_DERIVED__NO_TRAINING_AUTHORITY",
+        "distinct_role": "SUPPORT_FAMILY_MASS_PROPOSAL__NOT_BASE_TRAINING_AUTHORITY"
+      },
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    },
+    {
+      "path": "docs/agent/V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_CONTRACT_V1.json",
+      "sha": "19d8c1def5887ddcabea4fc9ffaaa453930cd678",
+      "size": 2940,
+      "branches": [
+        "analysis/layer2-method-redteam-20260915",
+        "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+        "feature/v5-v3-null-t0-stressbench-20260914",
+        "governance/v5-current-state-refresh-20260913",
+        "handoff/jepa-current-ledger-layer2-20260915",
+        "handoff/jepa-new-chat-20260913-full-lineage-current",
+        "planning/v5-dataset-first-production-closure-20260912",
+        "planning/v5-teacher-student-ema-canonical-20260915",
+        "planning/v5-teacher-student-objective-authority-20260915",
+        "planning/v5-teacher-target-redteam-20260915",
+        "repair/v5-authority-evidence-integration-20260912",
+        "repair/v5-dshared-authority-v2-20260914",
+        "repair/v5-execution-evidence-failclosed-20260913",
+        "repair/v5-prospective-precision-authority-20260913",
+        "repair/v5-v3-null-t0-stressbench-20260914",
+        "repair/v5-v3-null-t0-stressbench-20260914-authoritative",
+        "repair/v5-v3-null-t0-stressbench-20260914-clean",
+        "repair/v5-v3-null-t0-stressbench-20260914-copy",
+        "repair/v5-v3-null-t0-stressbench-20260914-exec",
+        "repair/v5-v3-null-t0-stressbench-20260914-execution",
+        "repair/v5-v3-null-t0-stressbench-20260914-final",
+        "repair/v5-v3-null-t0-stressbench-20260914-finalwork",
+        "repair/v5-v3-null-t0-stressbench-20260914-impl",
+        "repair/v5-v3-null-t0-stressbench-20260914-last",
+        "repair/v5-v3-null-t0-stressbench-20260914-main",
+        "repair/v5-v3-null-t0-stressbench-20260914-ok",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan",
+        "repair/v5-v3-null-t0-stressbench-20260914-plan2",
+        "repair/v5-v3-null-t0-stressbench-20260914-work",
+        "repair/v5-v3-null-t0-stressbench-20260914-x",
+        "repair/v5-v3-null-t0-stressbench-20260914-z",
+        "tmp-noop"
+      ],
+      "inspect": null,
+      "current_v5_own_class_validated_in_this_branch_sweep": false,
+      "current_v5_closure_qualified_in_this_branch_sweep": false
+    }
+  ],
+  "limitations": [
+    "Only current GitHub branch tip trees and path-scoped JSONs, not every history commit or offsite GPU disk",
+    "Even inspected historical schema is not exact-current own-class validation or upstream physical authentication",
+    "Prospective EMA and schedule proposals have unfrozen values and MUST NOT become real104 defaults",
+    "Old 48-protected/128x8 critical-test artifacts are historical, not new current model geometry",
+    "PR149 six candidate validators pass individually, but downstream V3/V1 class conflicts and all B1/B2 gates remain"
+  ]
+}
