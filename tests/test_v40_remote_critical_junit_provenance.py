@@ -119,6 +119,7 @@ def test_missing_or_duplicated_test_id_fails():
     ids = sorted(REQUIRED_NAMES)
     ids[-1] = ids[0]
     fake.archive = make_archive(junit(names=ids))
+    fake.artifacts["artifacts"][0]["digest"] = "sha256:" + hashlib.sha256(fake.archive).hexdigest()
     with pytest.raises(RemoteEvidenceError, match="test identities"):
         verify(fake)
 
@@ -126,6 +127,7 @@ def test_missing_or_duplicated_test_id_fails():
 def test_xml_claiming_skips_fails():
     fake = StubGithub()
     fake.archive = make_archive(junit(skipped=1))
+    fake.artifacts["artifacts"][0]["digest"] = "sha256:" + hashlib.sha256(fake.archive).hexdigest()
     with pytest.raises(RemoteEvidenceError, match="JUnit count mismatch"):
         verify(fake)
 
@@ -151,6 +153,7 @@ def test_xml_extra_member_archive_fails():
         z.writestr("v40-junit.xml", junit())
         z.writestr("attacker.xml", junit())
     fake.archive = buff.getvalue()
+    fake.artifacts["artifacts"][0]["digest"] = "sha256:" + hashlib.sha256(fake.archive).hexdigest()
     with pytest.raises(RemoteEvidenceError, match="exactly one"):
         verify(fake)
 
