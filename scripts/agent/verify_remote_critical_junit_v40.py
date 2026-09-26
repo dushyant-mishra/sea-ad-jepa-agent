@@ -119,7 +119,8 @@ class GithubTransport:
             return json.loads(value)
 
 
-def checked_payload(transport, *, run_id: int, expected_sha: str):
+def checked_payload(transport, *, run_id: int, expected_sha: str,
+                    downloaded_junit: bytes | None = None):
     if isinstance(run_id, bool) or not isinstance(run_id, int) or run_id < 1:
         fail("invalid run ID")
     if not isinstance(expected_sha, str) or not SHA.fullmatch(expected_sha):
@@ -165,17 +166,31 @@ def checked_payload(transport, *, run_id: int, expected_sha: str):
     artifact_id = artifact.get("id")
     if isinstance(artifact_id, bool) or not isinstance(artifact_id, int) or artifact_id < 1:
         fail("invalid artifact ID")
-    archive = transport.read(f"{API}/actions/artifacts/{artifact_id}/zip", binary=True)
-    with zipfile.ZipFile(io.BytesIO(archive)) as z:
-        names = z.namelist()
-        if names != ["v40-junit.xml"]:
-            fail("JUnit archive must have exactly one expected member")
-        info = z.getinfo(names[0])
-        if info.file_size > MAX_XML_BYTES or info.is_dir() or info.external_attr >> 16 & 0o170000 == 0o120000:
-            fail("oversize or unsafe JUnit archive member")
-        xml_bytes = z.read(info)
-        if len(xml_bytes) > MAX_XML_BYTES:
-            fail("decompressed JUnit exceeded limit")
+    digest = artifact.get("digest")
+    if digest is not None and not re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
+        fail("GitHub artifact digest malformed")
+    if downloaded_junit is None:
+        # Preferred path: independently download the exact GitHub API artifact.
+        archive = transport.read(f"{API}/actions/artifacts/{artifact_id}/zip", binary=True)
+        with zipfile.ZipFile(io.BytesIO(archive)) as z:
+            names = z.namelist()
+            if names != ["v40-junit.xml"]:
+                fail("JUnit archive must have exactly one expected member")
+            info = z.getinfo(names[0])
+            if info.file_size > MAX_XML_BYTES or info.is_dir() or info.external_attr >> 16 & 0o170000 == 0o120000:
+                fail("oversize or unsafe JUnit archive member")
+            xml_bytes = z.read(info)
+            if len(xml_bytes) > MAX_XML_BYTES:
+                fail("decompressed JUnit exceeded limit")
+        delivery = "GH_API_SIGNED_ARCHIVE_DIRECT"
+    else:
+        # Experimental fallback for hosted CI only: official GitHub download
+        # action fetched this run's named artifact before this script. This
+        # check does NOT cryptographically verify its zip against REST digest.
+        if not isinstance(downloaded_junit, bytes) or len(downloaded_junit) > MAX_XML_BYTES:
+            fail("externally downloaded JUnit invalid or oversize")
+        xml_bytes = downloaded_junit
+        delivery = "OFFICIAL_ACTION_DOWNLOAD_EXPERIMENTAL_NO_ZIP_DIGEST_REPLAY"
     try:
         document = ET.fromstring(xml_bytes)
     except ET.ParseError as exc:
@@ -221,7 +236,9 @@ def checked_payload(transport, *, run_id: int, expected_sha: str):
         "test_source_sha256": sha256(source_bytes),
         "test_source_git_blob_sha1": src["sha"],
         "exact_test_ids": sorted(REQUIRED_NAMES), "tests": len(REQUIRED_NAMES),
-        "verified_from_remote_api": True,
+        "remote_run_job_artifact_metadata_and_source_verified": True,
+        "junit_delivery": delivery,
+        "remote_archive_byte_digest_replayed": downloaded_junit is None,
         "training_authorized": False,
         "production_critical_test_root_authorized": False,
     }
@@ -232,10 +249,17 @@ def main():
     parser.add_argument("--run-id", required=True, type=int)
     parser.add_argument("--expected-sha", required=True)
     parser.add_argument("--receipt-out", type=Path)
+    parser.add_argument("--downloaded-junit", type=Path,
+                        help="experimental official GitHub download-artifact action path")
     args = parser.parse_args()
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    downloaded = None
+    if args.downloaded_junit:
+        if os.environ.get("GITHUB_ACTIONS") != "true":
+            fail("external artifact fallback is only permitted in hosted GitHub Actions")
+        downloaded = args.downloaded_junit.read_bytes()
     report = checked_payload(GithubTransport(token), run_id=args.run_id,
-                             expected_sha=args.expected_sha)
+                             expected_sha=args.expected_sha, downloaded_junit=downloaded)
     output = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.receipt_out:
         args.receipt_out.write_text(output, encoding="utf-8")
