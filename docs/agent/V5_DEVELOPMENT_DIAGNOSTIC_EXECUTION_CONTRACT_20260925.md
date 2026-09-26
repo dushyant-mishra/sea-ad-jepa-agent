@@ -62,12 +62,32 @@ behind a closed gate.
 width/depth is encoded*. The diagnostic binds its own declared constants and the
 receipt asserts all three legacy-inheritance checks are **false**:
 
+The values below are transcribed from `declared_geometry` in the published
+receipt `results/v26/V5_MECHANICAL_INTEGRATION_DIAGNOSTIC_V1.json`, which is the
+authority for what actually ran. Script and receipt were verified to agree
+field-by-field.
+
 | quantity | historical value | diagnostic value | inherited? |
 |---|---|---|---|
 | EMA momentum | 0.996 | **0.99** | no — deliberately distinct so inheritance would show as a mismatch |
 | block depth | 6 | **2** | no |
-| batch geometry | 128 x 8 | **24 cells/update** | no |
-| width / heads / ffn | historical | 64 / 8 / 128 | declared |
+| cells per update | 128 x 8 | **12** | no |
+| vocabulary_size | — | 96 | declared |
+| width / heads / ffn_width | historical | **32 / 4 / 64** | declared |
+| dropout | — | 0.10 | declared |
+| target_block_count / mask_fraction | — | 4 / 0.40 | declared |
+| views_per_update | — | 2 | declared |
+| max_teacher_tokens_per_microbatch | — | 48 | declared |
+| AdamW lr / betas / eps / weight_decay | — | 3e-4 / (0.9, 0.999) / 1e-8 / 0.01 | declared |
+
+**Correction, raised by the independent audit of PR #147.** An earlier version of
+this table read `24 cells/update` and `64 / 8 / 128` for width/heads/ffn. Those
+were the values of a *first* geometry that was measured at 169.6 s per update and
+reduced for tractability before the reported run. I updated the producer and its
+budget note but left this table stale, so the document disagreed with the code it
+described. The table above is now transcribed from the receipt. This was a
+documentation defect only — the receipt, the producer and the executed run were
+consistent with each other throughout, and no reported measurement changes.
 
 Every one of these is labelled `DECLARED_WITHOUT_EXTERNAL_JUSTIFICATION` in the
 producer. They are conventional diagnostic choices, they carry **no** production
