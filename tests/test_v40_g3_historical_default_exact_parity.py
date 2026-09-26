@@ -11,6 +11,7 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import sys
 
 import pytest
 
@@ -45,6 +46,8 @@ def historical_source(tmp_path_factory):
     )
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    # dataclasses resolves annotations through sys.modules during import.
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
