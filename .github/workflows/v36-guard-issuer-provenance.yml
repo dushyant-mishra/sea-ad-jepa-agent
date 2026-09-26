@@ -1,0 +1,69 @@
+name: V36 optimizer live issuer proof and red-team (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/qualified_optimizer_guard_v3.py'
+      - 'src/sea_ad_jepa/v5/current_training_authority_v1.py'
+      - 'tests/test_v36_guard_issuer_provenance.py'
+      - 'tests/test_v30_issuance_source_provenance.py'
+      - 'tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py'
+      - '.github/workflows/v36-guard-issuer-provenance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-provenance-redteam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deterministic test runner
+        run: python -m pip install pytest==8.3.4
+      - name: Exactly 20 non-authorizing tests; zero skips
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s --strict-markers \
+            tests/test_v30_issuance_source_provenance.py \
+            tests/test_v36_guard_issuer_provenance.py \
+            tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py \
+            --junitxml=/tmp/v36.xml | tee /tmp/v36.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse("/tmp/v36.xml").getroot()
+          if root.tag!="testsuite": root=root.find("testsuite")
+          actual={k:int(root.get(k,0)) for k in ("tests","errors","failures","skipped")}
+          expected={"tests":20,"errors":0,"failures":0,"skipped":0}
+          if actual != expected: raise SystemExit(f"STOP_V36_MISSING_OR_SKIPPED_TESTS: {actual}")
+          required = {
+              "test_v30_issuance_source_provenance::test_synthetic_envelope_rejected_without_live_closure_validation",
+              "test_v30_issuance_source_provenance::test_mutated_hash_is_still_rejected_positive_safety_control",
+              "test_v30_issuance_source_provenance::test_inconsistent_closure_digest_is_rejected_positive_safety_control",
+              "test_v30_issuance_source_provenance::test_incomplete_live_graph_rejected",
+              "test_v30_issuance_source_provenance::test_runtime_object_substitution_rejected_even_if_hash_matches",
+              "test_v30_issuance_source_provenance::test_live_validator_is_invoked_not_merely_digested",
+              "test_v30_issuance_source_provenance::test_validator_output_must_exactly_equal_supplied_closure",
+              "test_v36_guard_issuer_provenance::test_forged_public_token_without_live_graph_cannot_register_hooks",
+              "test_v36_guard_issuer_provenance::test_complete_fake_role_vocabulary_cannot_pass_real_graph_validator",
+              "test_v36_guard_issuer_provenance::test_public_constructor_does_not_bypass_guard_live_issuer",
+              "test_v36_guard_issuer_provenance::test_fake_test_only_issuer_must_return_exact_presented_token",
+              "test_v36_guard_issuer_provenance::test_step_revalidates_issuer_after_install_and_detects_change",
+              "test_v36_guard_issuer_provenance::test_reinstallation_with_spliced_evidence_identity_fails",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_preexecution_v2_requires_exact_v2_root_vocabulary_and_live_closure_binding",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_receipt_v2_seals_v2_roots_preexecution_and_closure_and_rejects_v1_receipt",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_final_issuer_rejects_legacy_synthetic_hash_only_closure",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authority",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_optimizer_v3_step_proof_is_single_use_and_rejects_replayed_cursor",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_optimizer_v3_must_acknowledge_completed_step_before_arming_next",
+              "test_v5_current_preexecution_receipt_training_optimizer_v2::test_optimizer_v3_wrong_step_cursor_fails_before_step_and_does_not_advance",
+          }
+          observed = [f"{case.get('classname','').split('.')[-1]}::{case.get('name','')}" for case in root.iter('testcase')]
+          if len(observed) != 20 or len(set(observed)) != 20 or set(observed) != required:
+              raise SystemExit(f"STOP_V36_TEST_IDENTITY_DRIFT missing={sorted(required-set(observed))} extra={sorted(set(observed)-required)}")
+          print("V36_EXACT_20_OF_20_NEGATIVE_AND_MECHANICS_CONTROLS")
+          PY
+          grep -q 'V34_INVENTED_CLOSURE_REJECTED__TRAINING_REMAINS_OFF' /tmp/v36.log

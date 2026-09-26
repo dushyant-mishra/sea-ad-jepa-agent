@@ -1,3 +1,6 @@
+"""Synthetic hash/optimizer mechanics tests. Guard issuer is MOCKED in this file ONLY.
+No test here demonstrates actual live source qualification or final authorization.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -17,7 +20,8 @@ from sea_ad_jepa.v5.current_teacher_target_receipt_v2 import (
     seal_current_teacher_target_receipt_v2,
     validate_current_teacher_target_receipt_v2,
 )
-from sea_ad_jepa.v5.current_training_authority_v1 import (CurrentTrainingAuthorityV1, ISSUANCE_POLICY_ID, issue_training_authority_v1)
+from sea_ad_jepa.v5.current_training_authority_v1 import (CurrentTrainingAuthorityV1, ISSUANCE_POLICY_ID, CLOSURE_INPUT_ROLES, issue_training_authority_v1)
+import sea_ad_jepa.v5.qualified_optimizer_guard_v3 as optimizer_guard_module
 from sea_ad_jepa.v5.qualified_optimizer_guard_v3 import install_current_optimizer_guard_v3
 
 
@@ -150,6 +154,34 @@ def synthetic_guard_token_for_mechanics_only(roots, closure, pre, receipt):
     return token
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_optimizer_mechanics_issuer_only(monkeypatch):
+    """MOCK only the optimizer's issuer import, not production issuer tests.
+
+    A real typed closure is intentionally absent in this synthetic-mechanics
+    file. Separate V36 guard provenance tests call the original unmocked guard.
+    """
+    def issue_synthetic_mechanics_only(**kwargs):
+        c, pre, receipt = kwargs["closure_v2"], kwargs["preexecution"], kwargs["receipt_v2"]
+        pre.bind_closure_v2(c)
+        live = kwargs["closure_inputs"]
+        if set(live) != CLOSURE_INPUT_ROLES:
+            raise AssertionError("mechanics-only fake requires exact role vocabulary")
+        if live["critical_test"] is not kwargs["critical_test"] or live["runtime_source"] is not kwargs["runtime_source"]:
+            raise AssertionError("mechanics-only fake requires same critical/runtime objects")
+        return synthetic_guard_token_for_mechanics_only(c["authority_roots"], c, pre, receipt)
+    monkeypatch.setattr(optimizer_guard_module, "issue_training_authority_v1", issue_synthetic_mechanics_only)
+
+
+def _mechanics_live_inputs(roots):
+    # Correct role names, deliberately fake scientific authority values.
+    # The REAL validator would reject these; only the test spy accepts them.
+    inputs = {role: object() for role in CLOSURE_INPUT_ROLES}
+    inputs["critical_test"] = critical_for(roots)
+    inputs["runtime_source"] = runtime_for(roots)
+    return inputs
+
+
 def test_preexecution_v2_requires_exact_v2_root_vocabulary_and_live_closure_binding() -> None:
     roots = roots_v2()
     pre = make_preexecution(roots)
@@ -221,6 +253,7 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
     expected_roots["preexecution_authority_sha256"] = pre.canonical_digest()
 
     optimizer = FakeOptimizer()
+    fake_live = _mechanics_live_inputs(roots)
     guard = install_current_optimizer_guard_v3(
         optimizer,
         receipt,
@@ -228,6 +261,11 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
         expected_target_package_root=h("target-package"),
         expected_authority_roots=expected_roots,
         expected_closure_v2_sha256=closure["closure_digest"],
+        closure_v2=closure,
+        preexecution=pre,
+        critical_test=fake_live["critical_test"],
+        runtime_source=fake_live["runtime_source"],
+        closure_inputs=fake_live,
     )
     guard.arm_for_step(schedule_cursor=3)
     optimizer.step(v5_current_guard_schedule_cursor=3)
@@ -257,6 +295,7 @@ def _guard_for_cursor_redteam():
     receipt_roots = dict(roots)
     receipt_roots["preexecution_authority_sha256"] = pre.canonical_digest()
     optimizer = FakeOptimizer()
+    fake_live = _mechanics_live_inputs(roots)
     guard = install_current_optimizer_guard_v3(
         optimizer,
         receipt,
@@ -264,6 +303,11 @@ def _guard_for_cursor_redteam():
         expected_target_package_root=h("target-package"),
         expected_authority_roots=receipt_roots,
         expected_closure_v2_sha256=closure["closure_digest"],
+        closure_v2=closure,
+        preexecution=pre,
+        critical_test=fake_live["critical_test"],
+        runtime_source=fake_live["runtime_source"],
+        closure_inputs=fake_live,
     )
     return optimizer, guard
 
