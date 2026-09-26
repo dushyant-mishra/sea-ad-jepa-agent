@@ -96,24 +96,16 @@ def fabricated_envelope():
     return critical, runtime, closure, pre, receipt, target_package_root
 
 
-def test_synthetic_envelope_accepted_without_live_closure_validation():
+def test_synthetic_envelope_rejected_without_live_closure_validation():
     critical, runtime, closure, pre, receipt, target = fabricated_envelope()
-    # This test calls the *real* issuer but NEVER runs the actual closure graph
-    # validator, never builds a teacher, and never invokes an optimizer.
-    issued = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=target,
-        critical_test=critical,
-        runtime_source=runtime,
-    )
-    assert issued.training_authorized is True
-    assert issued.closure_v2_sha256 == closure["closure_digest"]
-    assert issued.target_package_root == target
-    # Reaching here proves an issuance-source provenance gap, NOT actual B1
-    # population permission or successful execution.
-    print("V30_FINDING_SELF_CONSISTENT_INVENTED_CLOSURE_ACCEPTED__B1_STILL_OFF")
+    # Formerly this exact fabricated envelope issued training_authorized=True.
+    with pytest.raises(ValueError, match="live closure_inputs required"):
+        issue_training_authority_v1(
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
+            expected_target_package_root=target,
+            critical_test=critical, runtime_source=runtime,
+        )
+    print("V34_INVENTED_CLOSURE_REJECTED__TRAINING_REMAINS_OFF")
 
 
 def test_mutated_hash_is_still_rejected_positive_safety_control():
@@ -137,4 +129,72 @@ def test_inconsistent_closure_digest_is_rejected_positive_safety_control():
             closure_v2=bad, preexecution=pre, receipt_v2=receipt,
             expected_target_package_root=target,
             critical_test=critical, runtime_source=runtime,
+        )
+
+
+def _required_fake_inputs(critical, runtime):
+    # This does not create real current authority objects; it is deliberately
+    # incapable of passing the genuine graph validator.
+    import inspect
+    from sea_ad_jepa.v5.current_authority_closure_v2 import validate_current_v5_authority_closure_v2
+    fake = {name: object() for name in inspect.signature(validate_current_v5_authority_closure_v2).parameters}
+    fake["critical_test"] = critical
+    fake["runtime_source"] = runtime
+    return fake
+
+
+def test_incomplete_live_graph_rejected():
+    critical, runtime, closure, pre, receipt, target = fabricated_envelope()
+    with pytest.raises(ValueError, match="live closure_inputs role set mismatch"):
+        issue_training_authority_v1(
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
+            expected_target_package_root=target, critical_test=critical,
+            runtime_source=runtime, closure_inputs={"critical_test": critical},
+        )
+
+
+def test_runtime_object_substitution_rejected_even_if_hash_matches():
+    critical, runtime, closure, pre, receipt, target = fabricated_envelope()
+    inputs = _required_fake_inputs(critical, synthetic_runtime())
+    assert inputs["runtime_source"].canonical_digest() == runtime.canonical_digest()
+    with pytest.raises(ValueError, match="runtime-source object differs"):
+        issue_training_authority_v1(
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
+            expected_target_package_root=target, critical_test=critical,
+            runtime_source=runtime, closure_inputs=inputs,
+        )
+
+
+def test_live_validator_is_invoked_not_merely_digested(monkeypatch):
+    critical, runtime, closure, pre, receipt, target = fabricated_envelope()
+    inputs = _required_fake_inputs(critical, runtime)
+    calls = []
+    def reject_untyped_graph(**kwargs):
+        calls.append(set(kwargs))
+        raise ValueError("synthetic graph lacks typed parents")
+    monkeypatch.setattr(
+        "sea_ad_jepa.v5.current_training_authority_v1.validate_current_v5_authority_closure_v2",
+        reject_untyped_graph,
+    )
+    with pytest.raises(ValueError, match="synthetic graph lacks typed parents"):
+        issue_training_authority_v1(
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
+            expected_target_package_root=target, critical_test=critical,
+            runtime_source=runtime, closure_inputs=inputs,
+        )
+    assert calls == [set(inputs)]
+
+
+def test_validator_output_must_exactly_equal_supplied_closure(monkeypatch):
+    critical, runtime, closure, pre, receipt, target = fabricated_envelope()
+    inputs = _required_fake_inputs(critical, runtime)
+    monkeypatch.setattr(
+        "sea_ad_jepa.v5.current_training_authority_v1.validate_current_v5_authority_closure_v2",
+        lambda **kwargs: {**closure, "closure_digest": digest("different validated graph")},
+    )
+    with pytest.raises(ValueError, match="live validated closure differs"):
+        issue_training_authority_v1(
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
+            expected_target_package_root=target, critical_test=critical,
+            runtime_source=runtime, closure_inputs=inputs,
         )
