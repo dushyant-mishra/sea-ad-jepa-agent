@@ -48,10 +48,12 @@ jobs:
             "test_capacity_violation_rejected_before_rng_draw",
             "test_overflowing_schedule_and_zero_horizon_fail",
             "test_real_factory_requires_actual_frozen_sources",
+            "test_prepared_arrays_cannot_be_reopened_for_writing",
+            "test_explicit_schedule_materialization_cap_enforced_before_rng",
             "test_exact_positive_control_and_no_training_authority",
             "test_even_potential_capacity_oversubscription_rejected_before_draw",
           }
-          if count["tests"]!=99 or any(count[k] for k in ("skipped","failures","errors")) or not required<=cases:
+          if count["tests"]!=101 or any(count[k] for k in ("skipped","failures","errors")) or not required<=cases:
             raise SystemExit(f"STOP_PREPARED_SCHEDULE_INCOMPLETE {count} missing={sorted(required-cases)}")
           print(f"PASS_PREPARED_READER_FIT_SYNTHETIC_ONLY {count['tests']} passed; zero skipped")
           PY
