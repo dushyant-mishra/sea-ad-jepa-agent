@@ -4,15 +4,15 @@
   "scope": "CURRENT_CHAT_CONTAINER_PHYSICAL_18_UNIQUE_BASENAMES",
   "git_branch": "handoff/jepa-v42-exclusive-chat-asset-custody-20260926",
   "files_count": 18,
-  "original_text_files_uploaded_exact": 10,
-  "binary_files_manifest_only": 8,
+  "original_text_files_uploaded_exact": 11,
+  "binary_files_manifest_only": 7,
   "training_authorized": false,
   "protected_outcomes_opened": false,
   "split_archive_integrity": "PART001_PART002_AND_COMBINED_SHA256_PHYSICALLY_VERIFIED_LOCAL",
   "split_combined_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
   "split_combined_bytes": 607959761,
   "v33_zip_integrity": "ZIP_CRC_PASS_5_MEMBERS_INTERNAL_SHA256_MANIFEST_PRESENT",
-  "historical_scope_warning": "V33 scientific/env notes and WSL history contain withdrawn/superseded S9 claims; current S9 is INVOCATION_PATH_REQUIRED_NOT_ENVIRONMENT_DEFECT",
+  "historical_scope_warning": "V33 scientific/env notes and WSL history contain withdrawn/superseded S9 claims; current S9 is INVOCATION_PATH_REQUIRED_NOT_ENVIRONMENT_DEFECT V33 ZIP bytes now GitHub verified but historical scientific role only.",
   "entries": [
     {
       "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
@@ -98,11 +98,11 @@
       "name": "JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip",
       "bytes": 11938,
       "sha256": "99dd996038ab55478b2e9fe17601c8e696c431cc8451073dabd50078b58712d0",
-      "git_blob_sha": null,
-      "git_path": null,
-      "custody_status": "MANIFEST_ONLY_BYTES_STILL_IN_CHAT",
+      "git_blob_sha": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip",
+      "custody_status": "UPLOADED_EXACT_BYTES",
       "scientific_authority": "NONE_FROM_PRESENCE_ALONE",
-      "transfer_note": "Small binary not ingestible by available connector; preserve chat original and plan external artifact custody"
+      "transfer_note": "Original V33 research-only ZIP actual binary bytes uploaded via SHA-verified Git blob"
     },
     {
       "name": "JEPA_V33_INDEPENDENT_ENVIRONMENT_AUDIT_20260926.md",
