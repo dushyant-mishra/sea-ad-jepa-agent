@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """V42 read-only exact-byte custody check for chat-exclusive original text files.
 
-Eight original binary uploads are MANIFEST_ONLY, not in this Git checkout.
+Seven original binary uploads are MANIFEST_ONLY, not in this Git checkout.
 This script must not treat their inventory hashes as proof the bytes are here.
 """
 from __future__ import annotations
@@ -13,8 +13,8 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "docs/agent/chat-local-source-preservation-20260926/JEPA_CHAT_LOCAL_18_FILE_CUSTODY_MANIFEST_V42.json"
-EXPECTED_TEXT = 10
-EXPECTED_BINARY = 8
+EXPECTED_TEXT = 11
+EXPECTED_BINARY = 7
 
 
 def main() -> None:
@@ -55,8 +55,8 @@ def main() -> None:
     }
     approved = {x["name"] for x in entries if x["git_path"] is not None}
     assert present == approved, f"untracked binary or missing original: {present ^ approved}"
-    print("V42_EXACT_10_OF_10_ORIGINAL_SHA256_AND_GIT_BLOB_MATCH")
-    print("V42_8_BINARY_FILES_MANIFEST_ONLY_NOT_FALSELY_REPORTED_AS_GITHUB_UPLOADS")
+    print("V42_EXACT_11_OF_11_ORIGINAL_SHA256_AND_GIT_BLOB_MATCH")
+    print("V42_7_BINARY_FILES_MANIFEST_ONLY_NOT_FALSELY_REPORTED_AS_GITHUB_UPLOADS")
     print("V42_TRAINING_AUTHORIZED_FALSE")
 if __name__ == "__main__":
     main()
