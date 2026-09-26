@@ -100,6 +100,9 @@ def _closure_types(source: str) -> tuple[dict[str, str], dict[str, str], dict[st
                         typed[arg.id] = cls.id
     if not typed:
         raise ValueError("STOP_CLOSURE_TYPED_GUARD_NOT_RECOVERED")
+    for param, cls in typed.items():
+        if param in ann and ann[param] not in ("Any", cls):
+            raise ValueError("STOP_CLOSURE_TYPED_ANNOTATION_DRIFT_" + param)
     return ann, typed, imported
 
 
