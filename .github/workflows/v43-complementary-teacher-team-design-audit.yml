@@ -4,7 +4,8 @@ on:
     paths:
       - 'docs/agent/JEPA_V43_*'
       - 'scripts/agent/verify_v43_teacher_team_research_contract.py'
-      - 'tests/test_v43_teacher_team_*.py'
+      - 'scripts/agent/v43_support_aware_teacher_fusion_research.py'
+      - 'tests/test_v43_*.py'
       - '.github/workflows/v43-complementary-teacher-team-design-audit.yml'
   workflow_dispatch:
 permissions:
@@ -28,8 +29,8 @@ jobs:
       - name: Hostile mutations and planted scientific failure-mode fixtures
         run: |
           set -euo pipefail
-          python -m unittest discover -s tests -p 'test_v43_teacher_team_*.py' -v 2>&1 | tee /tmp/v43_tests.log
-          grep -q '^Ran 35 tests' /tmp/v43_tests.log
+          python -m unittest discover -s tests -p 'test_v43_*.py' -v 2>&1 | tee /tmp/v43_tests.log
+          grep -q '^Ran 60 tests' /tmp/v43_tests.log
           grep -q '^OK$' /tmp/v43_tests.log
           if grep -q 'skipped=' /tmp/v43_tests.log; then echo 'V43_TEST_SKIPPED_FAIL_CLOSED'; exit 1; fi
-          echo V43_35_DESIGN_MUTATION_AND_PLANTED_FAILURE_TESTS_NO_SKIPS_RESEARCH_ONLY
+          echo V43_60_DESIGN_AND_FUSION_SYNTHETIC_TESTS_NO_SKIPS_RESEARCH_ONLY
