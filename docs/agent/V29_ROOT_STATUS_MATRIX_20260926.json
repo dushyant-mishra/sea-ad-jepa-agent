@@ -332,5 +332,66 @@
       ],
       "note": "these require a literal status too, but the status they enforce is a NEGATIVE outcome - asserting that nothing qualified. Forging that direction withholds permission rather than granting it, so the risk is not symmetric. Recorded, not flagged."
     }
+  },
+  "stage73_resolution": {
+    "classification": "ARCHIVALLY_VERIFIED_NO_QUALIFIED_GRAPH_ADVANTAGE",
+    "supersedes": "my earlier PRIORITY_VERIFY status and my overstatement that the graph 'LOST to its own control'",
+    "verified_by_me_from_committed_primary_tables": true,
+    "not": "a new raw-data replay",
+    "original_stage73": {
+      "file": "results/tables/stage73_graph_control_results_v1.csv",
+      "context_grn_aux": 0.3236108129998988,
+      "gene_label_permuted_grn_aux": 0.3236108129998988,
+      "target_shuffled_grn_aux": 0.3236108129998988,
+      "finding": "all three BIT-IDENTICAL across mean, median, min, max, n_cells and all three score components - the controls were the same computation and could not fail"
+    },
+    "corrected_stage73r": {
+      "file": "results/tables/stage73r_graph_control_results_v1.csv",
+      "target_shuffled": 0.3322895616077756,
+      "string": 0.33180925382201076,
+      "context": 0.3236108129998988,
+      "gene_label_permuted": 0.3134020451554116,
+      "no_graph": 0.3112540245013668
+    },
+    "bootstrap": {
+      "comparison": "context_grn_vs_target_shuffled",
+      "mean_delta": -0.008366299078667596,
+      "ci": [
+        -0.01959704363673176,
+        0.00016928217069961393
+      ],
+      "includes_zero": true,
+      "SUPPORTED_CONCLUSION": "FAILURE TO ESTABLISH a graph-specific advantage",
+      "NOT_SUPPORTED": "a statistically established loss - my earlier wording was wrong"
+    },
+    "the_actual_lesson": {
+      "beats_no_graph_mean": true,
+      "bootstrap_vs_no_graph_positive": true,
+      "bootstrap_vs_all_graph_controls_positive": false,
+      "reading": "the graph DOES beat no-graph (0.3236 vs 0.3113, CI excludes zero) and still fails, because beating a no-graph baseline is not the test - it must beat SHUFFLED-GRAPH controls, and it does not"
+    },
+    "decision_record": {
+      "file": "results/tables/stage73r_prediction_lock_decision_v1.csv",
+      "context_graph_prediction_lock": false
+    },
+    "outstanding_action": "trace downstream reuse of the Stage72B/Stage73 graph; if any current candidate treats it as a biological truth prior, remove the authorization inference or run a prospectively qualified graph-specific negative control"
+  },
+  "external_dataset_states_are_three_not_one": {
+    "correction_to_my_summary": "I wrote that every external benchmark candidate has failed qualification. That conflated three distinct states.",
+    "DISQUALIFIED": [
+      "GSE301119 CPM estimator (NT-vs-NT null failed)",
+      "CRISPRbrain iTF/iPSC pair (not independent replication)"
+    ],
+    "CONDITIONAL": [
+      "Morabito GSE174367 - 18-donor SEPARATE-NUCLEI conditional secondary benchmark, 5 of 6 readiness gates unsatisfied",
+      "GSE289721 - within-line perturbation candidate, n=2 differentiations, engagement not yet demonstrated"
+    ],
+    "NEEDS_AUTHENTICATION": [
+      "GSE214637 / GSE214979 (possibly two views of one 15-donor study)",
+      "GSE272082 (9 donors)"
+    ],
+    "UNRECOVERABLE": [
+      "historical Layer-2 LODO inputs - absent from both drives"
+    ]
   }
 }
