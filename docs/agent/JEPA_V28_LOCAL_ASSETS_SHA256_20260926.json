@@ -1,0 +1,93 @@
+{
+  "schema": "JEPA_V28_LOCAL_ASSET_VERIFICATION_V1",
+  "date": "2026-09-26",
+  "method": "whole-file SHA256 on 14 top-level /mnt/data regular files; no protected array opened",
+  "count": 14,
+  "assets": [
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "role": "PROVENANCE_MISMATCH_DO_NOT_USE"
+    },
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "role": "FULL104_AUTHENTICATED_METADATA_SOURCE"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "role": "DISCOVERY_SAMPLE_NOT_CURRENT_FULL104_TRAINING"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "role": "DISCOVERY_SAMPLE_NOT_CURRENT_FULL104_TRAINING"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "role": "PARTS_HASH_MANIFEST"
+    },
+    {
+      "filename": "FULL104_physically_authenticated_diagnostic_parameters_20260925.zip",
+      "bytes": 39033,
+      "sha256": "d8cb60a757b0cdc9d5d397c721639019a0fdb9ee6c2473d2c5ba9c7a5478ec3f",
+      "role": "NINE_MEMBER_LOCAL_ARCHIVE__TENTH_RUN_LOG_SEPARATE_ON_PR146"
+    },
+    {
+      "filename": "Pasted text(9).txt",
+      "bytes": 12703,
+      "sha256": "f7686ed55016bc99956f47a99d685e48c63404ad99131d4916957793caef8a01",
+      "role": "LOCAL_CONTEXT_NOT_COMMITTED"
+    },
+    {
+      "filename": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "role": "HISTORICAL_TEXT_ONLY"
+    },
+    {
+      "filename": "V26_G3_weighted_attacker_stress_20260926.zip",
+      "bytes": 14329,
+      "sha256": "aa8c7722b859c4c4850c7d8228e3527e43ef491f07c8d4540fe9d437fe1b201f",
+      "role": "G3_SYNTHETIC_SUPPORTING_ONLY"
+    },
+    {
+      "filename": "V26_reader_fit_linear_baseline_PR136_standalone.zip",
+      "bytes": 10047,
+      "sha256": "256f95aedaba46822e47a09e790de3548d422863b5ccd969602ffb45685450c4",
+      "role": "BASELINE_SYNTHETIC_SUPPORTING_ONLY"
+    },
+    {
+      "filename": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "role": "HISTORICAL_RUNTIME_NOT_NUMERIC_AUTHORITY"
+    },
+    {
+      "filename": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "role": "HISTORICAL_CHECKPOINT_NOT_CURRENT_V5"
+    },
+    {
+      "filename": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "role": "OTHER_SCOPE_NOT_CURRENT_FULL104"
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "role": "HISTORICAL_T1_CHECKPOINT_NOT_CURRENT_V5"
+    }
+  ],
+  "provenance_limit": "Local runtime files are not GitHub outputs or current-training authority. GitHub stores this manifest, not 1.3GB source archives."
+}
