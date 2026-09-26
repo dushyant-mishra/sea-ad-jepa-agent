@@ -232,6 +232,56 @@
       "caught_by": "Lane B, independently, not by me",
       "consequence_direction": "the correction IMPROVES the picture: two of the two newly-found consumers are themselves own-schema-validated candidates, so three rather than four consumers lack artifacts",
       "status": "corrected in this commit"
+    },
+    "S20": {
+      "finding": "my earlier framing implied that populating the 33 roots would make issuance meaningful",
+      "correction": "populating the roots is necessary but NOT sufficient: the critical-test root can be satisfied by a caller-written string, so root population alone cannot establish that required tests ran",
+      "status": "recorded"
+    }
+  },
+  "verified_findings_from_lane_b": {
+    "status": "INDEPENDENTLY_VERIFIED_BY_THIS_LANE_AGAINST_SOURCE",
+    "substrate_consumers_six": {
+      "claim": "6 consumers not 4",
+      "verified": true,
+      "lines": [
+        195,
+        196,
+        202,
+        209,
+        210,
+        245
+      ],
+      "carry_authentic_substrate": [
+        "representation",
+        "support_estimability",
+        "canonical_address_registry"
+      ],
+      "no_committed_artifact_blocks": [
+        "outer_split",
+        "target_panel",
+        "masking_qualification_design"
+      ],
+      "substrate_root_closed": false
+    },
+    "issuance_re_derives_only_two_of_32": {
+      "claim": "issue_training_authority_v1 re-derives 2 of 32 roots from live objects",
+      "verified": true,
+      "evidence": "_live_digest appears exactly twice in current_training_authority_v1.py, at lines 106 (critical_test) and 107 (runtime_source); the other 30 roots are accepted as digests carried in the closure mapping"
+    },
+    "critical_test_authority_is_forgeable": {
+      "claim": "CriticalTestExecutionAuthorityV1 accepts caller-supplied EXECUTED_PASS strings with no binding to a test run",
+      "verified": true,
+      "severity": "HIGH - this sits at the authorization boundary",
+      "evidence": [
+        "status_by_test is a plain Mapping[str,str] supplied by the caller",
+        "the ONLY status check is `if status != 'EXECUTED_PASS': raise` - it requires the caller to write that literal string, it does not verify anything ran",
+        "test_suite_source_sha256 is validated only for SHA-256 SHAPE, never against an actual suite",
+        "no junit, run digest, executed_at, report SHA or any other binding to a test-run artifact exists in the module"
+      ],
+      "consequence": "even if all 33 roots were populated, issuance would NOT prove the critical tests ever executed; the authority records a CLAIM, not an EXECUTION",
+      "this_is_the_pattern": "a check that cannot fail, now located at the authorization boundary rather than in a test",
+      "action_taken": "REPORTED, NOT PATCHED - deciding what a valid test-run binding must be is an owner scientific/governance decision, and editing the gate to look stronger would be the same error this project has repeatedly warned against"
     }
   }
 }
