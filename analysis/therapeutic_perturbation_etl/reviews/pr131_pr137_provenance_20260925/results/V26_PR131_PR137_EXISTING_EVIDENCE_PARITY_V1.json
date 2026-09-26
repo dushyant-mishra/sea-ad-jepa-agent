@@ -1,0 +1,88 @@
+{
+  "all_existing_output_csvs_byte_identical": true,
+  "biologically_independent_replication": false,
+  "clean_commit": "e130f55c7471b74b387f0bd0aca586c4a1614921",
+  "clean_executed_producer_sha256": "edf78bf839b7c99c4dd99c3d7da76f5eca2458dbb2420cd337122254116c2985",
+  "clean_receipt_anchor": "1cdc85fa97a915df972f4c3a4a9291a8e7dacdd3",
+  "clean_source_at_declared_anchor_verified": true,
+  "disposition": "Keep original PR131 dirty receipt as immutable historical evidence; use PR137 clean receipt for CURRENT reproducible scientific numbers. PR134's failed attempt to replay the dirty producer must not be silently relabeled a pass.",
+  "historical_committed_producer_sha256": "80fb2bff17727a123ad877d86c90d22dfaf3c5b710719fe6a3a7a974f3af5736",
+  "historical_dirty_receipt": true,
+  "historical_executed_producer_sha256": "633e1a841104183f11f4acf59f1eee0819d645e532592ad4435e2021fd9a6093",
+  "historical_original_dirty_producer_replay": "NOT_REPRODUCED",
+  "joint_table_crosscheck": {
+    "counts_by_target": {
+      "STAT2": 1,
+      "ZNF532": 3,
+      "ZNF644": 50
+    },
+    "distinct_readout_genes": 54,
+    "distinct_targets": 3,
+    "target_gene_rows": 54
+  },
+  "original_commit": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03",
+  "output_files": [
+    {
+      "name": "concordance_by_abundance.csv",
+      "rows": 7,
+      "sha256": "574d453b2885abf53a27f45d5a5a38f999969f3c32f0bbe2997f60d22e929fa1"
+    },
+    {
+      "name": "fdr_threshold_sensitivity.csv",
+      "rows": 3,
+      "sha256": "3432f93b29c3346ba122f9c339ef6c1e2ba52d2461ebfee9470a4f18fe07df83"
+    },
+    {
+      "name": "jointly_significant_rows.csv",
+      "rows": 54,
+      "sha256": "cf4e2abf568d61f194f45901da1f085d28807f89a3e3df43e8b87b5d9029f69a"
+    },
+    {
+      "name": "non_replication_classification.csv",
+      "rows": 2757,
+      "sha256": "3f97caa695b4aeee8b940552790e455cce11f30957b1c9ca09ab0488e8190e40"
+    },
+    {
+      "name": "per_target_concordance.csv",
+      "rows": 31,
+      "sha256": "20115662655d440c6a08738ddc47a7d2ad6f111bac2b8ec3766f35d4019c31fc"
+    },
+    {
+      "name": "target_engagement.csv",
+      "rows": 31,
+      "sha256": "69ac16ea8846aadd95e1ccaad2fc5f1772387b3206d975e1aa0b6daeb8d6a5b9"
+    },
+    {
+      "name": "target_identity.csv",
+      "rows": 31,
+      "sha256": "691dce1fcb1c403a7cc8adb2afc6be1347fd2e4ad23ba20d308f70df898e0282"
+    }
+  ],
+  "protected_outcomes_opened": false,
+  "raw_deposited_screens_reexecuted_by_this_script": false,
+  "schema": "JEPA_V26_PR131_PR137_EXISTING_EVIDENCE_RECONCILIATION_V1",
+  "science": {
+    "exact_common_science_sections": [
+      "inputs",
+      "S1_identity",
+      "S2_engagement",
+      "S4_power",
+      "S5_abundance",
+      "S6_independence",
+      "S7_cross_screen_overlap",
+      "POSITIVE_CONTROLS",
+      "PRELIMINARY_CLAIMS_CHECK",
+      "VERDICT"
+    ],
+    "s3_allowed_new_annotation_fields": [
+      "hypergeom_caveat",
+      "joint_count_unit",
+      "n_distinct_readout_genes_among_jointly_significant",
+      "n_distinct_targets_among_jointly_significant",
+      "n_jointly_significant_rows"
+    ],
+    "s3_original_fields_equal": 46
+  },
+  "status": "PASS_EXISTING_OUTPUT_BYTES_AND_COMMON_SCIENCE_MATCH",
+  "training_authorized": false
+}
