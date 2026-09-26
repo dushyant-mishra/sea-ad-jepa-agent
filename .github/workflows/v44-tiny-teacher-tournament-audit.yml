@@ -4,6 +4,7 @@ on:
     paths:
       - 'analysis/v44_tiny_teacher_team_tournament_20260926/**'
       - 'tests/test_v44_historical_teacher_tournament_v1.py'
+      - 'docs/agent/JEPA_V44_*'
       - '.github/workflows/v44-tiny-teacher-tournament-audit.yml'
   workflow_dispatch:
 permissions:
@@ -28,6 +29,26 @@ jobs:
           grep -q 'V44_15_EXACT_ORIGINAL_ROWS_FIVE_ARMS_THREE_HELDOUT_SPLITS' /tmp/v44_evidence.txt
           grep -q 'V44_48_UNIQUE_REPEATED_DONOR_CAVEAT_AND_RICH_EVIDENCE_BIAS' /tmp/v44_evidence.txt
           grep -q 'V44_NO_REAL_IPB_NO_Q_SPECIFICITY_NO_TRAINING_AUTHORITY' /tmp/v44_evidence.txt
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('analysis/v44_tiny_teacher_team_tournament_20260926')
+          state=json.loads((root/'tournament_machine_state_v1.json').read_text())
+          script=(root/'run_historical_tournament_v1.py').read_text()
+          prepared=state['originals']['prepared_derived_CSR_npy_sha256']
+          assert set(prepared)=={'data.npy','indices.npy','indptr.npy','shape.npy'}
+          for name,digest in prepared.items():
+              assert digest in script, 'derived array is not pinned by GitHub reproducer: '+name
+          assert state['local_exact_artifacts']['github_reproducer_status'].endswith('NOT_PHYSICAL_ORIGINAL_SOURCE_EXECUTION')
+          pointer=json.loads(pathlib.Path('docs/agent/JEPA_V44_LATEST_EXPERIMENTAL_POINTER_20260926.json').read_text())
+          assert pointer['training_authorized'] is False
+          assert pointer['actual_current_v5_ipb_tournament_tested'] is False
+          assert pointer['scientific_champion_selected'] is False
+          assert pointer['local_result_zip_sha256']==state['local_exact_artifacts']['portable_sha256']
+          handoff=pathlib.Path('docs/agent/JEPA_V44_TINY_TOURNAMENT_NEW_CHAT_HANDOFF_20260926.md').read_text()
+          for phrase in ('PR #177','48 unique','0.407823','NOT actual','TRAINING=OFF'):
+              assert phrase in handoff,phrase
+          print('V44_NEW_CHAT_ORIGINAL_CUSTODY_FAIRNESS_AND_NO_FAKE_IPB_VERIFIED')
+          PY
       - name: Adversarial false-green mutation suite
         run: |
           set -euo pipefail
