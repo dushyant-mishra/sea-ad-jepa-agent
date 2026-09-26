@@ -13,7 +13,7 @@ from sea_ad_jepa.v5.prepared_reader_fit_development_schedule_v1 import (
 def tiny():
     counts = {"D0": 4, "D1": 5, "D2": 7}
     names = np.array(["D2", "D0", "D1"], dtype="U2")
-    codes = np.array([0, 2, 0, 1, 2, 0, 1, 2, 0, 2, 0, 2, 1, 0, 2, 1])
+    codes = np.array([0, 2, 0, 1, 2, 0, 1, 2, 0, 2, 0, 2, 1, 0, 0, 1])
     # Code order: D2=7, D0=4, D1=5
     return counts, names, codes.astype(np.int64)
 
