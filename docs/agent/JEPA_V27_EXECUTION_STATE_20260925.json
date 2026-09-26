@@ -1,0 +1,233 @@
+{
+  "schema": "JEPA_V27_EXECUTION_STATE",
+  "date": "2026-09-25",
+  "status": "ONE_EXECUTION_CYCLE__UNMERGED__REAL_DATA_DIAGNOSTIC_BLOCKED_BY_AUTHORIZATION",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "controlling_startup_document": "START_HERE.md on main (V25) until a reviewed successor merges",
+  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V27_EXECUTION_CYCLE.md",
+  "execution_flags": {
+    "training": "OFF",
+    "audit_b_n1": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "rare_tail_molecular": "UNOPENED",
+    "therapeutic_ranking": "OFF",
+    "real_reader_fit_expression_consumed": false,
+    "protected_outcome_opened": false,
+    "prs_merged_this_cycle": 0
+  },
+  "completed_and_physically_executed": {
+    "v5_suite_zero_skip_census": {
+      "collected": 1620, "passed": 1617, "skipped": 0, "failed": 3,
+      "failures": ["test_teacher_student_integration_freeze_v1",
+                   "test_teacher_student_integration_freeze_v2",
+                   "test_teacher_student_integration_freeze_v3"],
+      "failure_interpretation": "SUPERSEDED_NOT_DRIFT",
+      "environment": "sea-ad-jepa-v3 (numpy 2.4.6, torch 2.7.0+cu128, CUDA available)"
+    },
+    "integration_freeze_audit_v4": {
+      "terminal": "PASS_TEACHER_STUDENT_INTEGRATION_FREEZE_AUDIT_V4",
+      "source_rows": 21, "active_tests": 7, "failures": 0
+    },
+    "phase1a_input_authentication": {
+      "frozen_pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+      "frozen_pass1_bytes": 18029576,
+      "frozen_pass1_copies_byte_identical": 2,
+      "quarantined_sept17_pass1_sha256": "0e99d12b9b74e3cc6ae95ab436effa84c9e71c461496258653022ae56d396811",
+      "quarantined_correctly_rejected": true,
+      "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "calibration_bundle_bytes": 410278055,
+      "calibration_bundle_recovery": "REASSEMBLED_FROM_7_PART_SPLIT_ARCHIVE_IN_DOWNLOADS",
+      "misnamed_artifact_at_exports_path": {
+        "bytes": 1093202356,
+        "sha256": "faa52d8e3a68839356c63b7be7f4df6318f7e0ea12a05814cba6dd26ae6281b2",
+        "note": "DIFFERENT_ARTIFACT_SHARING_THE_NAME; ARCHIVE_SHA256 was NOT relaxed to accept it"
+      },
+      "reader_donor_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+      "reader_donor_split_copies_matching": 2
+    },
+    "pr132_pass1_reader_fit_count_bridge": {
+      "source_pr": 132,
+      "source_head": "1e9080caeeea",
+      "status": "BYTE_BOUND_PASS1_AND_METADATA_COUNTS_ONLY",
+      "per_donor_exact_count_match": true,
+      "donor_count": 104,
+      "cell_count": 4553407,
+      "reader_fit_membership_sha256": "9332e77c71769f5084e6c94afc9c1aa825f369fe08c8b25bb70682d981d8e977",
+      "reader_fit_donor_counts_sha256": "b2da4aa99c66df435497cf52059c35c11f548b0c7771cb101eee9a6ff14de875",
+      "raw_level4_blocks_opened": 0,
+      "declared_limits": [
+        "balanced_reciprocal_cell_swaps NOT_DETECTABLE_BY_HISTOGRAM",
+        "pass1_to_raw_level4_binding NOT_REVALIDATED_BY_THIS_GATE",
+        "per_cell_donor_lineage_validation NOT_PERFORMED_BY_THIS_GATE",
+        "source_library_validation NOT_PERFORMED",
+        "proposal_q_validation NOT_PERFORMED"
+      ],
+      "is_raw_count_integrity_proof": false
+    },
+    "gse301119_tiesafe_null": {
+      "protocol_pr": 127,
+      "protocol_head": "1317d54d6ab6",
+      "identity_certificate": "GSE301119_NEUTRAL_IDENTITY_CERTIFICATION_V2",
+      "certificate_equality": "ALL_FOUR_NEUTRAL_EXPORT_FILES_RECONSTRUCTED_BYTE_IDENTICAL_FROM_ORIGINAL_RDS",
+      "receipt_sha256": "1a649776b97dc93b4ddf486a0e43c59d9a3e77ff3aa398aca54abbfc17f31e4c",
+      "receipt_bytes": 6663276,
+      "verdict": "NEGATIVE_CONTROL_FAILS",
+      "observed_median_log2fc": -1.3446,
+      "cell_sampling_null_median": -1.5040,
+      "depth_only_null_median": -0.0461,
+      "exceedance_ge_0_50_cell_sampling": 0.728,
+      "exceedance_ge_0_50_depth_only": 0.264,
+      "observed_top25_down": 0.174642415681,
+      "null_top25_down": 0.174469789277,
+      "observed_top25_up": 0.036023309200,
+      "null_top25_up": 0.048036083832,
+      "effects_bit_identical_to_tie_unsafe_run": true,
+      "bias_decomposition": {
+        "depth_only_term": -0.046,
+        "depth_plus_composition_term": -1.504,
+        "leading_explanation": "CELL_STATE_UNDER_SAMPLING",
+        "ruled_out_fixes": ["expression_stratification", "nb_glm_with_library_size_offsets"],
+        "ruled_out_reason": "each addresses only the ~5 percent depth term and would pass its own diagnostic"
+      },
+      "superseded_runs_do_not_cite": [
+        {"head": "6cd4424b", "bytes": 4149646, "sha256": "5ff0e7b7dd2c9bbd12ad312010654194b649e58430d1e7dbb7130d7e45d66f29", "why": "single-arm"},
+        {"head": "5260e70c", "bytes": 6663852, "sha256": "4155670bf29784807e5376b691ff69698054d250800a4a13a87755be90119e85", "why": "tie-unsafe tail"}
+      ],
+      "cpm_effects_status": "SCIENTIFIC_HOLD_NOT_BENCHMARK_TRUTH"
+    },
+    "p1_6_bulk_recompute": {
+      "pr": 131,
+      "verdict": "IMPLEMENTATION_REPRODUCED_TO_STORED_PRECISION",
+      "rows_compared": 179384,
+      "disagreements": 0,
+      "declared_tolerance": 1e-9,
+      "declared_tolerance_met": false,
+      "tolerance_widened": false,
+      "replacement_check": "round(independent,6) == stored, 141294/141294 and 38090/38090",
+      "scientifically_qualified": false
+    },
+    "crisprbrain_screen_reliability": {
+      "pr": 137,
+      "verdict": "CANNOT_SERVE_AS_BENCHMARK_TRUTH",
+      "shared_targets_by_symbol": 31,
+      "shared_targets_ensembl_anchored": 30,
+      "jointly_engaged_targets": ["STAT2"],
+      "pearson": 0.0723,
+      "spearman": 0.0438,
+      "sign_agreement": 0.5181,
+      "jointly_significant_rows_fdr05": 54,
+      "rows_belonging_to_ZNF644": 50,
+      "znf644_profile_correlation": 0.0016,
+      "preliminary_figure_discrepancy_root_cause": "preliminary numbers were computed at FDR<0.10; all reproduce exactly at that cut",
+      "independent_replication": false,
+      "shared_between_arms": ["lab", "publication", "guide library row-for-row", "vector pMK1334", "WTC11 line", "Mixscale pipeline"]
+    },
+    "layer2_lodo_baseline": {
+      "pr": 133,
+      "verdict": "PENDING_PHYSICAL_INPUT_AUTHENTICATION",
+      "inputs_absent": ["bind_population.npz", "screen_out.npz", "final_manifest.csv"],
+      "producers_absent_from_git_and_disk": ["screen.py", "rebuild.py"],
+      "search_scope": "completed full scan of D: and C:/Users, zero hits",
+      "replayed_r2": "UNMEASURED",
+      "historical_values_caveats": {
+        "donors": 94,
+        "cells": 196817,
+        "model_class": "RIDGE_LINEAR_PROXY_NOT_TRAINED_JEPA",
+        "target": "256-dim VALUE_ONLY view-1 of the SAME cell, not pathology",
+        "weighting": "unweighted on a probability sample",
+        "scored_per": "cell, not donor"
+      },
+      "usable_as_like_for_like_benchmark": false
+    }
+  },
+  "synthetic_tested_only": {
+    "v5_mechanical_integration_diagnostic": {
+      "verdict": "PASS_V5_MECHANICAL_INTEGRATION_SYNTHETIC",
+      "producer_sha256": "b967c8954872fb7af9e13794da02ac672958356a79c2ee39f71096ae9a38ef0f",
+      "receipt_bytes": 54990,
+      "updates": 40,
+      "wall_clock_seconds": 1488.754,
+      "device_used": "cpu",
+      "device_rationale": "inactive_update_reference is a documented bounded CPU mechanics harness",
+      "gpu_memory_bytes_used": 0,
+      "invariants": {
+        "optimizer_steps_exactly_once_per_update": true,
+        "optimizer_step_sequence": "1..40, every delta +1",
+        "ema_advanced_on_every_successful_step": true,
+        "max_ema_residual": 0.0,
+        "online_parameters_moved_every_update": true,
+        "min_max_param_delta": 0.0002935,
+        "adam_moments_populated": "59/59 every update",
+        "checkpoint_restart_reproduces_uninterrupted_run": true,
+        "protected_gradient_gate_affirmative": "40/40",
+        "gradient_gate_counters": {"missing": 0, "nonfinite": 0, "exact_zero": 0, "teacher_gradients": 0},
+        "max_abs_gradient_range": [0.065887, 0.189149]
+      },
+      "loss_first_last": [1.988835, 0.741762],
+      "loss_interpretation_guard": "gradient flow on synthetic tensors, not biology",
+      "legacy_inheritance": {
+        "ema_momentum": 0.99,
+        "ema_momentum_is_historical_0_996": false,
+        "block_depth": 2,
+        "block_depth_is_historical_six": false,
+        "cells_per_update": 12,
+        "batch_geometry_is_historical_128x8": false,
+        "all_geometry_labelled": "DECLARED_WITHOUT_EXTERNAL_JUSTIFICATION"
+      }
+    },
+    "not_promoted": ["PR132 51 tests", "PR136 baseline", "other lanes' synthetic suites"]
+  },
+  "blocked_by_authorization": {
+    "real_reader_fit_v5_diagnostic": {
+      "gate_b1_governance": {
+        "document": "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_V1_20260907.json",
+        "path": "populations.reader_fit",
+        "current_state": "ELIGIBLE_POOL__NOT_EXECUTION_AUTHORITY",
+        "blocking_clause": "forbidden_without_new_authority includes 'new teacher training'",
+        "named_remedy": "separate frozen training contract",
+        "clause_the_synthetic_work_ran_under": "D1-A synthetic/u0-safe development when no real reader-fit expression is consumed"
+      },
+      "gate_b2_code": {
+        "module": "src/sea_ad_jepa/v5/current_training_authority_v1.py",
+        "function": "issue_training_authority_v1",
+        "binding_constraint": "requires receipt_v2 validated against a frozen teacher-target package root",
+        "empirical_finding": "target_package_root appears ONLY in source code, in no committed artifact; no V5_CURRENT_AUTHORITY_CLOSURE_V2 artifact exists",
+        "behaviour": "fail-closed, would raise"
+      },
+      "gates_modified": false,
+      "unblock_sequence": [
+        "freeze the teacher-target package and record its root so receipt_v2 can validate (a scientific decision about target semantics)",
+        "issue a named frozen training contract scoped to a development diagnostic on reader_fit"
+      ],
+      "remaining_engineering_after_unblock": "one adapter: FULL104 streaming readers -> run_inactive_reference_update signature"
+    }
+  },
+  "not_executed": {
+    "full104_all104_raw_count_verification": {
+      "pr": 120,
+      "state": "LANE_TERMINATED_ON_SESSION_LIMIT_BEFORE_COMPLETION",
+      "observed_throughput": "~25 minutes per 1000 blocks under concurrent load",
+      "verdict_exists": false,
+      "warning": "no verdict exists; do not infer one",
+      "authorization_note": "raw-count integrity task; does NOT authorize N1 masking outcomes"
+    },
+    "full104_to_harness_adapter": "deliberately not built - it is what gate B1/B2 withhold",
+    "per_cell_donor_lineage": "declared NOT_PERFORMED by the count bridge",
+    "pass1_to_raw_level4_binding": "declared NOT_REVALIDATED by the count bridge"
+  },
+  "self_audit": {
+    "S8": {"finding": "read three failing freeze audits as byte drift; current freeze is V4 and passes; V1-V3 superseded", "status": "corrected_before_reporting"},
+    "S9": {"finding": "CUDA env sea-ad-jepa has a broken numpy BLAS: every matmul crashes 0xc06d007f including 3x3, while torch is fine", "healthy_env": "sea-ad-jepa-v3", "action_required": "re-check earlier results computed there using numpy linear algebra", "status": "open"},
+    "S10": {"finding": "V1-V3 freeze tests fail permanently instead of declaring supersession, masking a real V4 regression", "status": "open"},
+    "S11": {"finding": "scripts/v4/contextual_target_f1_preflight_core_v1.py imports POSIX-only 'resource'; uncollectable on Windows", "status": "open"},
+    "S12": {"finding": "harness unit tests pass ema_momentum=.996 as a fixture; historical constant still readable as an example", "status": "mitigated"},
+    "S13": {"finding": "published 17.69/17.69 agreement might have been a shared tie-breaking artifact; collapse check ruled out aliasing but not mechanism-sharing", "resolution": "rerun under tie-safe rule; survives. Original check was insufficient, not wrong", "status": "resolved"},
+    "S14": {"finding": "driver read two nonexistent report keys; optimizer_step defaulted to -1 and failed loudly, gradient_report defaulted to None and SILENTLY recorded nothing so the protected-gradient gate was never inspected", "status": "fixed_missing_keys_now_raise"},
+    "S15": {"finding": "gate assertion was 'is not None', close to a tautology; would pass on an object reporting dead gradients", "status": "fixed_strict_predicate_re_evaluated_40_of_40"},
+    "S16": {"finding": "two subagents were pointed at one worktree and collided; one committed onto the other's branch and reset its ref; PR #131 carries two commits from an unrelated workstream", "resolution": "disclosed and carried, NOT rebased away, because receipts cite exact commits and rewriting would make a truthful record point at hashes that no longer exist", "status": "disclosed"}
+  },
+  "lanes_not_owned_by_this_cycle": [135, 136, 138, 139, 140, 141, 142, 143, 144, 145, 146, 120, 124],
+  "this_cycle_prs": [147, 137, 133, 131, 127],
+  "heavy_artifacts_policy": "kept on the GPU laptop and referenced by path, size and SHA-256; only small receipts committed"
+}
