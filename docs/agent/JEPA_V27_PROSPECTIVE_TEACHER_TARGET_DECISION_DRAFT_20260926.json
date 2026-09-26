@@ -1,0 +1,118 @@
+{
+  "schema": "V27_PROSPECTIVE_TEACHER_TARGET_DECISION_DRAFT_V1",
+  "document_role": "SCIENTIFIC_DECISION_REQUEST_ONLY__NOT_A_TARGET_PACKAGE_OR_AUTHORITY_RECEIPT",
+  "date": "2026-09-26",
+  "training_authorized": false,
+  "execution_authorized": false,
+  "protected_outcomes_authorized": false,
+  "exact_source_branch": "review/v27-authority-root-inventory-20260925",
+  "exact_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+  "current_v5_governance": {
+    "reader_fit": "ELIGIBLE_POOL__NOT_EXECUTION_AUTHORITY",
+    "development_contract": "NOT_ISSUED",
+    "frozen_teacher_target_package": "NOT_ISSUED",
+    "closure_v2": "NOT_ISSUED",
+    "receipt_v2": "NOT_ISSUED",
+    "authority_root_slots": 33,
+    "validated_own_schema_candidates": 6,
+    "closed_roots": 0
+  },
+  "scientific_goal": {
+    "state_semantics_id": "BIOLOGICAL_CELLULAR_LATENT_STATE_V1",
+    "query_local_semantics_id": "QUERY_LOCAL_STATE_CONDITIONED_ON_CANONICAL_ADDRESS_V1",
+    "query_identity_policy_id": "QUERY_IDENTITY_SUPPLIED_V1",
+    "query_scalar_policy_id": "QUERY_SCALAR_WITHHELD_BEFORE_CONTEXT_MIXING_V1",
+    "non_query_rna_policy_id": "NON_QUERY_LAWFUL_RNA_VISIBLE_V1",
+    "teacher_gradient_policy_id": "TEACHER_STOPGRAD_V1",
+    "scalar_expression_objective_policy_id": "SCALAR_EXPRESSION_OBJECTIVE_ABSENT_V1",
+    "target_state_policy_id": "QUERY_LOCAL_BIOLOGICAL_LATENT_STATE_V1",
+    "remaining_rna_necessity": "REMAINING_RNA_REQUIRED__IDENTITY_ONLY_AND_GLOBAL_ONLY_INSUFFICIENT_V1",
+    "status": "PROPOSED_SEMANTICS__TARGET_CONSTRUCTION_SOURCE_AND_LEARNED_TEACHER_NOT_QUALIFIED"
+  },
+  "full104_existing_metadata": {
+    "fit_donors": 104,
+    "fit_cells": 4553407,
+    "operators": 42,
+    "donor_operator_groups": 1400,
+    "groups_eligible_ge3": 1361,
+    "strict_common_measured_all42": 17186,
+    "any_operator_each_source": 17346,
+    "smallest_donor_cells": 81,
+    "fit_source_donors": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "current_full104_level4_manifest_reference_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "level4_manifest_physically_rehashed_in_this_cycle": false
+  },
+  "weighting": {
+    "primary_law": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "per_training_cell_formula": "1 / (number_of_prospectively_frozen_training_donors * n_d)",
+    "actually_frozen_training_donors": null,
+    "development_holdout_inside_reader_fit": "SCIENTIFIC_CHOICE_REQUIRED",
+    "unseen_donor_claim_permitted_for_all104_training": false,
+    "d1_operator_equal_mass_not_base_jepa": true,
+    "sampler_q_over_p_correction": "REQUIRED_IF_SAMPLER_PROPOSAL_DIFFERS_FROM_SCIENTIFIC_P"
+  },
+  "visibility_and_support": {
+    "measured_zero": "OBSERVED_ZERO_NOT_STRUCTURALLY_MISSING",
+    "structurally_unmeasured": "NOT_OBSERVED",
+    "collision_unresolved": "EXCLUDE_FROM_MEASURED_SCALAR",
+    "source_support_fingerprint": "ADVERSARIAL_NEGATIVE_CONTROL_NOT_PRIMARY_TEACHER_TARGET",
+    "operator_role": "ADMISSIBILITY_ONLY_CLASS_IN_HVS_NPH52_REGION_IN_SEAAD"
+  },
+  "masking": {
+    "scientifically_qualified_policy": null,
+    "first_development_candidate": null,
+    "mask_fraction": null,
+    "rationale": "Frozen September-16 nine-cell result had no qualified policy. Any unqualified diagnostic proposal must have explicit separate developmental scope and no terminal score look.",
+    "terminal_masking_outcomes": "UNOPENED"
+  },
+  "model_and_schedule": {
+    "provisional_width": null,
+    "provisional_depth": null,
+    "provisional_heads": null,
+    "provisional_ffn_width": null,
+    "model_geometry_authority": null,
+    "ema_half_life_accepted_presentations": null,
+    "optimizer_lr": null,
+    "update_budget": null,
+    "gpu_token_microbatch_budget": null,
+    "seeds": null,
+    "rationale": "No copying historical .996 / 128x8 / depth6 or synthetic .99 / .40 / width32. Derive measured token costs from PR146 and choose remaining compute/science settings prospectively."
+  },
+  "evaluation": {
+    "development_scoring_plan": null,
+    "g3_fit_objective": "PRODUCTION_OBJECTIVE_MATCHED__CANDIDATE_NOT_PHYSICALLY_QUALIFIED",
+    "g3_primary_and_ridge8_integration": "DRAFT_PR143_PR144_SYNTHETIC_TESTED_ONLY",
+    "six_state_estimability_required": true,
+    "source_balanced_fit_not_primary": true,
+    "heldout_donors_if_unseen_donor_claim": true,
+    "measurement_only_source_only_identity_only_and_global_only_negative_controls": "REQUIRED",
+    "historical94_linear_proxy_as_current104_benchmark": false,
+    "external_gse301119_as_benchmark_truth": false,
+    "protected_reader_validation22": "CLOSED",
+    "protected_reader_oracle23": "SEALED"
+  },
+  "scientific_decisions_to_record_before_authorization": [
+    "Exact teacher latent-state target construction and remaining-RNA/hidden-query stop-gradient implementation source",
+    "One explicitly bounded masking candidate, qualification or developmental-only exception and prospective negative controls",
+    "Fit-vs-development donor split and honest target population for scientific score",
+    "Model capacity and per-operator token/microbatch limits justified from actual real support and GPU capacity",
+    "EMA presentation half-life, optimizer settings, update budget and explicit RNG seed chosen prospectively",
+    "Scoring metrics, negative controls and G3 objective-matched six-state evidence qualification",
+    "Review all 33 roots including 6 candidate parent bindings and 2 unresolved defining roles; emit actual closure V2 only after all validators pass",
+    "Separate named reader_fit training contract through approved project governance"
+  ],
+  "prohibited": [
+    "Treating this draft JSON as target-package authority",
+    "Issuing current training authority with unvalidated or synthetic roots",
+    "Opening protected data or N1 terminal masking results",
+    "Training V5 on reader_fit absent new frozen contract",
+    "Borrowing older cohort numerical settings, old94 donor sample or synthetic .40 mask as full104 authority",
+    "Calling all-104 trained data a held-out donor test"
+  ]
+}
