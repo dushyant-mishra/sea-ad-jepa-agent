@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_V31_CROSS_LANE_AUDIT_SNAPSHOT_V1",
+  "as_of": "2026-09-26",
+  "main_governance_sha": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "training_authorized": false,
+  "b1_frozen_contract_issued": false,
+  "b2_upstream": 32,
+  "b2_receipt": 33,
+  "b2_own_schema_candidates": 6,
+  "b2_fully_closed": 0,
+  "v3_v1_direct_class_conflicts": 2,
+  "pr156_synthetic_issuance_source_provenance_gap_confirmed": true,
+  "issuer_source_provenance_gap_fixed": false,
+  "pr144_broad_full104_masking_workflow": {
+    "id": 36208393701,
+    "conclusion": "failure",
+    "root_cause": "UNRECOVERED"
+  },
+  "source_scope": {
+    "open_pr_heads_scanned": 114,
+    "all_github_branch_names": 263,
+    "distinct_branch_tip_commits": 232,
+    "extra_path_blob_versions_in_combined_sweep": 49,
+    "new_qualified_v5_roots_from_sweep": 0,
+    "remote_gpu_disk_scanned": false,
+    "historical_off_tip_commits_exhaustively_scanned": false
+  },
+  "physical": {
+    "metadata_original_zip_replayed_independently": true,
+    "derived_relational_v2_full_1400_rows_independently_replayed": true,
+    "all8915_raw_blocks_reaggregated": false,
+    "real_current_v5_gpu_teacher_run": false
+  },
+  "science": {
+    "teacher_target_approved": false,
+    "mask_policy_qualified": false,
+    "train_donors_frozen": false,
+    "g3_six_state_real_qualified": false
+  },
+  "environment": {
+    "s9": "RETRACTED",
+    "historical_science_rerun_due_s9": false
+  },
+  "protected": {
+    "N1": "UNOPENED",
+    "D_shared_G5": "SEALED",
+    "reader_validation22": "CLOSED",
+    "reader_oracle23": "SEALED",
+    "siletti": "SEALED"
+  },
+  "exact_reviewed_heads": {
+    "pr146": "8369efe5839f9aca5912cc8280a05330b2b104a3",
+    "pr149": "938fe5d3a7288826fef86b2650fb3a9a21fd3794",
+    "pr150": "fecd8aadaed5581fc00611bc64063c69fb119faf",
+    "pr151": "a4fe887bf3c4d079fec0a2ab8f219a71c07ca803",
+    "pr152": "1f857176db255e039d5411fe6ea2984f9164daa1",
+    "pr153": "9f6c1b6b545736841feee78a841e586fd10589bb",
+    "pr154": "265b131b4f3c5674cde8b5b188762a5b0a5a092f",
+    "pr155": "35233b9a3b317cbacb68d7c1a3de5277bb5e8916",
+    "pr156": "a5af773adfd66d0e727113610f5e62d7353b13b8"
+  }
+}
