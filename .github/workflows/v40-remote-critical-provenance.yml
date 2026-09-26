@@ -47,7 +47,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pytest==8.3.4
-      - name: Exact twelve TEST-ONLY transport and redirect adversaries
+      - uses: actions/download-artifact@v4
+        with:
+          name: v40-critical-junit
+          path: /tmp/v40-download
+      - name: Exact fourteen TEST-ONLY transport and redirect adversaries
         env:
           PYTHONPATH: src:.
         run: |
@@ -58,15 +62,15 @@ jobs:
           root=ET.parse('/tmp/v40-offline.xml').getroot()
           if root.tag!='testsuite': root=root.find('testsuite')
           values={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
-          if values!={'tests':12,'errors':0,'failures':0,'skipped':0}:
+          if values!={'tests':14,'errors':0,'failures':0,'skipped':0}:
               raise SystemExit(f'STOP_V40_TEST_COUNT: {values}')
-          print('V40_OFFLINE_TWELVE_EXACT_NO_SKIPS')
+          print('V40_OFFLINE_FOURTEEN_EXACT_NO_SKIPS')
           PY
-      - name: Independently refetch actual workflow, producing job, JUnit and pinned test source via GitHub API
+      - name: Refetch run/job/artifact metadata and source via API; verify original JUnit delivered by official GitHub action
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
-          python scripts/agent/verify_remote_critical_junit_v40.py --run-id "$GITHUB_RUN_ID" --expected-sha "$EXPECTED_SHA" | tee /tmp/v40-remote.log
+          python scripts/agent/verify_remote_critical_junit_v40.py --run-id "$GITHUB_RUN_ID" --expected-sha "$EXPECTED_SHA" --downloaded-junit /tmp/v40-download/v40-junit.xml | tee /tmp/v40-remote.log
           grep -q 'V40_REMOTE_GITHUB_RUN_JOB_JUNIT_SOURCE_VERIFIED__NO_B2' /tmp/v40-remote.log
