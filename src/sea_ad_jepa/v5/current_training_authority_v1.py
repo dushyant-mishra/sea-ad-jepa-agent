@@ -18,6 +18,7 @@ from .current_teacher_target_receipt_v2 import validate_current_teacher_target_r
 from .current_trainer_preexecution_contract_v2 import CurrentTrainerPreexecutionAuthorityV2
 
 ISSUANCE_POLICY_ID = "CURRENT_V5_ALL_GATES_PASS_BEFORE_TRAINING_V1"
+CLOSURE_INPUT_ROLES = frozenset(inspect.signature(validate_current_v5_authority_closure_v2).parameters)
 
 
 def _sha(value: object, name: str) -> str:
@@ -111,8 +112,7 @@ def issue_training_authority_v1(*, closure_v2: Mapping[str, Any], preexecution: 
     # rejection of legacy callers; missing evidence NEVER issues authority.
     if not isinstance(closure_inputs, Mapping):
         raise ValueError("live closure_inputs required for final issuance")
-    required = set(inspect.signature(validate_current_v5_authority_closure_v2).parameters)
-    if set(closure_inputs) != required:
+    if set(closure_inputs) != CLOSURE_INPUT_ROLES:
         raise ValueError("live closure_inputs role set mismatch")
     if closure_inputs["critical_test"] is not critical_test:
         raise ValueError("live closure critical-test object differs from issuer")
