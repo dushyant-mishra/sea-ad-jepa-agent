@@ -84,5 +84,5 @@ def test_mask_parameters_cannot_assert_terminal_exposure(tmp_path):
 def test_missing_candidate_cannot_be_reported_valid(tmp_path):
     setup(tmp_path)
     (tmp_path/CANDIDATES["representation_authority_sha256"][0]).unlink()
-    r=run(tmp_path)
-    assert r["candidate_valid"]==5 and r["closed_roots"]==0
+    with pytest.raises(SystemExit, match="STOP_CANDIDATE_VALIDATION_FAILED"):
+        run(tmp_path)
