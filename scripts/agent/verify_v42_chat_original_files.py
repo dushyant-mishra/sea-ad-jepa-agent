@@ -13,8 +13,8 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "docs/agent/chat-local-source-preservation-20260926/JEPA_CHAT_LOCAL_18_FILE_CUSTODY_MANIFEST_V42.json"
-EXPECTED_TEXT = 11
-EXPECTED_BINARY = 7
+EXPECTED_UPLOADED = 11
+EXPECTED_MISSING = 7
 
 
 def main() -> None:
@@ -23,7 +23,7 @@ def main() -> None:
     assert data["training_authorized"] is False
     assert data["protected_outcomes_opened"] is False
     entries = data["entries"]
-    assert len(entries) == data["files_count"] == EXPECTED_TEXT + EXPECTED_BINARY
+    assert len(entries) == data["files_count"] == EXPECTED_UPLOADED + EXPECTED_MISSING
     assert len({x["name"] for x in entries}) == len(entries)
     exact = 0
     absent = 0
@@ -45,8 +45,10 @@ def main() -> None:
         git_blob = hashlib.sha1(f"blob {len(original)}".encode() + bytes([0]) + original).hexdigest()
         assert git_blob == rec["git_blob_sha"], f"Git blob SHA mismatch {path}"
         exact += 1
-    assert exact == data["original_text_files_uploaded_exact"] == EXPECTED_TEXT
-    assert absent == data["binary_files_manifest_only"] == EXPECTED_BINARY
+    assert exact == data["original_files_uploaded_exact"] == EXPECTED_UPLOADED
+    assert sum(x["git_path"] is not None and x["name"].endswith(".zip") for x in entries) == data["original_binary_files_uploaded_exact"] == 1
+    assert sum(x["git_path"] is not None and not x["name"].endswith(".zip") for x in entries) == data["original_text_files_uploaded_exact"] == 10
+    assert absent == data["binary_files_manifest_only"] == EXPECTED_MISSING
     # No silent binary placeholder is present in the committed preservation folder.
     folder = MANIFEST.parent
     present = {
