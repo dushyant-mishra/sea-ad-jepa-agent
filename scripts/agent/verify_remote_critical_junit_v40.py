@@ -52,7 +52,7 @@ def sha256(raw: bytes) -> str:
 
 
 def git_blob_sha(raw: bytes) -> str:
-    return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
 
 
 class GithubTransport:
@@ -205,7 +205,7 @@ def main():
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     report = checked_payload(GithubTransport(token), run_id=args.run_id,
                              expected_sha=args.expected_sha)
-    output = json.dumps(report, indent=2, sort_keys=True) + "\\n"
+    output = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.receipt_out:
         args.receipt_out.write_text(output, encoding="utf-8")
     print(output, end="")
