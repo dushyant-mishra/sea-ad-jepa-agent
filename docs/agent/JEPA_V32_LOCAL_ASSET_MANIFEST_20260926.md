@@ -1,6 +1,6 @@
 # V32 exact local asset manifest — 2026-09-26
 
-This manifest documents actual files in the chat container. **The files below are NOT all uploaded to GitHub**; GitHub contains this manifest, handoff, and existing historical Stage75 results. Retrieve the complete scripts/results from the chat attachments or transfer the named ZIPs and rehash on the GPU laptop. Do not fabricate links or silently substitute history copies.
+This manifest documents actual files in the chat container. **Successor transfer status, 2026-09-26:** all three small V32 research ZIPs are now physically uploaded at `docs/agent/v32-downloads/` at verified commit `04ccf242b6494e4c2aae558e0a8a3944b85edd8d`. The historical August calibration bundle and large expression/Morabito/FULL104 datasets remain external and are not implied uploaded. Preserve the original local checksums as transfer receipts; independently rehash downloaded bytes before executing on another machine.
 
 | File | SHA-256 | Scope |
 |---|---|---|
@@ -18,6 +18,6 @@ Historical committed sources:
 - `results/tables/stage75_integrated_tf_target_summary_v1.csv` (Git blob fd0f8e12c1161629f53f568f30cbc0bf8e3ff1a1)
 - `results/reports/stage75_integrated_evidence_manifest_v1.json`
 
-No GitHub-hosted binary upload is claimed for the chat-local ZIPs. SHA-256 is a transfer verification key, not evidence that the recipient has the file.
+All three small V32 research ZIPs are now committed on PR #159. The GitHub binary fetch at `04ccf242` returned exact sizes and matching published Git blob identities: combined `d5433975def9fc51551be3f608948b3a1809a999`, V4 `d38a446ca365c53a806f9d05645053737b5da7aa`, Stage75 `ec2be3cef08af4bf887a9286cbabefb3b2b53f29`. SHA-256 remains the download verification key; GitHub presence does not establish local GPU availability.
 
-Final chat-local transfer bundle: `JEPA_V32_COMPLETE_LOCAL_EVIDENCE_AND_HANDOFF_20260926.zip`, 36,717 bytes, SHA-256 `d49c7a1bba1e48f21fdf8fceb92e8c1176a3c309c2c662249099d6c109b5dc79`. Its members were re-read and rehashed after creation. This bundle is **not committed to GitHub**; transfer from the originating chat and verify digest before use.
+Final chat-local transfer bundle: `JEPA_V32_COMPLETE_LOCAL_EVIDENCE_AND_HANDOFF_20260926.zip`, 36,717 bytes, SHA-256 `d49c7a1bba1e48f21fdf8fceb92e8c1176a3c309c2c662249099d6c109b5dc79`. Its members were re-read and rehashed after creation. This bundle **is now committed** as `docs/agent/v32-downloads/JEPA_V32_COMPLETE_LOCAL_EVIDENCE_AND_HANDOFF_20260926.zip` on PR #159. Download and verify the original digest before use.
