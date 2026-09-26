@@ -22,6 +22,32 @@ relaying it and have not checked it.
 | **E** (PR #158) | guide library complete, 6×3 + 6 controls | **VERIFIED_BY_ME** — 72 rows, 24 unique protospacers, every name ×3, from the archived deposit file |
 | **D, 2, 4, 5, 6** | — | **INCOMPLETE_INTERRUPTED**; no number citable |
 
+
+## 1b. Lane D (PR #164) — added after delivery
+
+| claim | my status |
+|---|---|
+| 10/10 assets authenticated, zero downloads; all 10 inventory figures reproduce (58,721x61,770; 219,070x143,401; 4,126/18; 12,232/20) | `LANE_CLAIM_UNVERIFIED` |
+| gene coverage 38,838/41,238 = 94.18%, 294 unresolved collisions | `LANE_CLAIM_UNVERIFIED` |
+| zero GSE174367 donors in FULL104; no cell-level pairing (16-mer overlap 190 vs 9,893 expected) | `LANE_CLAIM_UNVERIFIED` |
+| coordinate-perturbation control: +50 kb shift moves 99.99% of distances | `LANE_CLAIM_UNVERIFIED` |
+| independence: no Stage75F script reads ATAC counts | `LANE_CLAIM_UNVERIFIED` — lane states it grepped the code rather than relaying |
+| **Stage73 shuffled controls were bit-identical (deltas 0.0, CI [0.0,0.0] over 1,000 iters); after Stage73R repair the graph LOST to its own target-shuffled control, 0.32361 vs 0.33229** | **`LANE_CLAIM_UNVERIFIED` — I attempted verification and FAILED** |
+
+**My failed verification, recorded because the failure matters.** I grepped for
+`0.32361` and `0.33229` across `results/`, `outputs/` and `docs/`. The hits were
+those digit strings appearing inside unrelated embedding-coordinate CSVs, not
+Stage73 control results. **A grep that matches the right characters in the wrong
+file is not verification**, and had I reported those hits as confirmation it
+would have been the S17/S19/S21 pattern a fourth time. Marked unverified.
+
+This claim deserves priority verification by whoever continues: it asserts that a
+historical control **could not fail**, and that once repaired the graph lost to
+its own null. If true it is the most consequential correction in the cycle and it
+invalidates a direction the project previously took. It corrects my own brief to
+the lanes, which described the Stage73 error as accepting a graph over a no-graph
+baseline — the actual failure was worse.
+
 ## 2. The nine required red-team checks
 
 | check | finding |
@@ -41,7 +67,8 @@ relaying it and have not checked it.
 ```
 41,238 canonical addresses
    → matched external RNA                         UNKNOWN  (Agent 2, interrupted)
-   → gene-mapped ATAC                             UNKNOWN  (Lane D, interrupted)
+   → gene-mapped ATAC                             38,838 of 41,238 claimed by Lane D
+                                                  (94.18%) - UNVERIFIED BY LANE F
    → context-specific ATAC activity               UNKNOWN
    → motif-supported regulatory candidates        UNKNOWN  (Agent 4, interrupted)
    → independently evaluable genes                UNKNOWN
