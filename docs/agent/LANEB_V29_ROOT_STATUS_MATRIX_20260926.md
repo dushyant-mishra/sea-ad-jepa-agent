@@ -2,7 +2,54 @@
 
 Revision `258f84fa4b4df2ea2a421df5b2f66bcd6538689f` (branch `lane-b/v29-root-closure-20260926`).
 
+Artifact index built at the same revision `258f84fa4b4df2ea2a421df5b2f66bcd6538689f`, scanning 629 committed JSON blobs. The matrix refuses to build if those two revisions disagree, so it cannot cite a commit that was not the one actually searched.
+
 **Bottom line: no root is fully closed. `fully_closed = 0`. No training authority is issued or issuable.**
+
+## Reproduce every check in this document
+
+```bash
+# 1. exclusive worktree at the reviewed head
+git -C "/d/Jepa project" worktree add --detach /d/jepa_laneB_20260926 \
+    origin/review/v27-authority-root-inventory-20260925
+cd /d/jepa_laneB_20260926 && git checkout -b lane-b/v29-root-closure-20260926
+
+# 2. extract the closure root graph straight from source with ast
+python scripts/agent/laneb_v29_closure_root_extract_v1.py OUT/CLOSURE_ROOT_GRAPH.json
+
+# 3. index every committed JSON by the schema its defining class stamps
+#    (629 blobs at this head; role-based, never filename-based)
+python scripts/agent/laneb_v29_schema_artifact_resolver_v1.py HEAD OUT/SCHEMA_INDEX.json
+
+# 4. Task 1: substrate root downstream bindings, per consumer
+python scripts/agent/laneb_v29_substrate_consumer_verify_v1.py HEAD \
+    OUT/SCHEMA_INDEX.json OUT/SUBSTRATE_CONSUMER_BINDING.json
+
+# 5. Task 2: V3-vs-V1 masking reconciliation
+python scripts/agent/laneb_v29_masking_v3_v1_reconcile_v1.py OUT/RECONCILIATION.json
+
+# 6. the 33-root matrix, then this markdown view of it
+python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD OUT/SCHEMA_INDEX.json OUT
+python scripts/agent/laneb_v29_render_matrix_md_v1.py OUT \
+    docs/agent/LANEB_V29_ROOT_STATUS_MATRIX_20260926.md
+```
+
+Each root below also carries its own single-command validator. The two
+forms were both executed and both reproduce:
+
+```bash
+# a root WITH a committed artifact -> recompute its authentic digest
+PYTHONPATH=src python -c "import json;\
+from sea_ad_jepa.v5.primary_representation_authority_v1 import \
+  PrimaryRepresentationAuthorityV1 as C;\
+d=json.load(open('docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json'));\
+o=C(**{f:d[f] for f in C.__dataclass_fields__});o.validate();print(o.canonical_digest())"
+# -> 92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1
+
+# a root WITHOUT one -> prove the absence
+git grep -l '"schema": *"V5_OUTER_DONOR_SPLIT_AUTHORITY_V1"' HEAD -- '*.json'
+# -> no output. That is a FAILURE TO VERIFY, not "0 defects".
+```
 
 ## Ledger
 
@@ -135,7 +182,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=full104_substrate_sha256
+  sha256sum "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"   # substrate slot; expect 66f589e56badb148...
   ```
 
 * validation outcome: **VALUE_AND_BYTES_AUTHENTICATED**
@@ -164,7 +211,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=representation_authority_sha256
+  PYTHONPATH=src python -c "import json,sys;from sea_ad_jepa.v5.primary_representation_authority_v1 import PrimaryRepresentationAuthorityV1 as C;d=json.load(open('docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json'));o=C(**{f:d[f] for f in C.__dataclass_fields__});o.validate();print(o.canonical_digest())"   # expect 92756711fde939e2...
   ```
 
 * validation outcome: **OWN_SCHEMA_VALIDATED_CANDIDATE**
@@ -192,7 +239,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=support_estimability_authority_sha256
+  PYTHONPATH=src python -c "import json,sys;from sea_ad_jepa.v5.support_estimability_authority_v1 import SupportEstimabilityAuthorityV1 as C;d=json.load(open('docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json'));o=C(**{f:d[f] for f in C.__dataclass_fields__});o.validate();print(o.canonical_digest())"   # expect cab2cecdd5ff31c2...
   ```
 
 * validation outcome: **OWN_SCHEMA_VALIDATED_CANDIDATE**
@@ -224,7 +271,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=canonical_address_registry_authority_sha256
+  PYTHONPATH=src:scripts/agent python scripts/agent/laneb_v29_substrate_consumer_verify_v1.py 258f84fa <index.json> <out.json>   # adapter-mediated root=canonical_address_registry_authority_sha256
   ```
 
 * validation outcome: **OWN_SCHEMA_VALIDATED_CANDIDATE**
@@ -252,7 +299,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=base_training_estimand_sha256
+  PYTHONPATH=src python -c "import json,sys;from sea_ad_jepa.v5.base_training_estimand_authority_v1 import BaseTrainingEstimandAuthorityV1 as C;d=json.load(open('docs/agent/V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json'));o=C(**{f:d[f] for f in C.__dataclass_fields__});o.validate();print(o.canonical_digest())"   # expect a766d42f9f8e37aa...
   ```
 
 * validation outcome: **OWN_SCHEMA_VALIDATED_CANDIDATE**
@@ -273,7 +320,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_address_provider_authority_sha256
+  git grep -l '"schema": *"V5_CURRENT_TARGET_ADDRESS_PROVIDER_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -293,7 +340,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_evidence_budget_authority_sha256
+  git grep -l '"schema": *"V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -311,7 +358,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=precision_authority_sha256
+  git grep -l '"schema": *"V5_QUALIFICATION_PRECISION_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -331,7 +378,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=outer_split_authority_sha256
+  git grep -l '"schema": *"V5_OUTER_DONOR_SPLIT_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -350,7 +397,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_panel_authority_sha256
+  git grep -l '"schema": *"V5_TARGET_PANEL_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -369,7 +416,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=address_universe_ladder_authority_sha256
+  git grep -l '"schema": *"V5_ADDRESS_UNIVERSE_LADDER_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -388,7 +435,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_rng_replay_authority_sha256
+  git grep -l '"schema": *"V5_MASKING_RNG_REPLAY_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -406,7 +453,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_design_authority_sha256
+  git grep -l '"schema": *"V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -425,7 +472,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_parameters_authority_sha256
+  git grep -l '"schema": *"V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -443,7 +490,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_run_contract_authority_sha256
+  git grep -l '"schema": *"V5_MASKING_QUALIFICATION_RUN_CONTRACT_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -461,7 +508,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_execution_authority_sha256
+  git grep -l '"schema": *"V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -480,7 +527,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_authority_sha256
+  git grep -l '"schema": *"V5_CURRENT_MASKING_POLICY_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -502,7 +549,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_construction_authority_sha256
+  git grep -l '"schema": *"V5_TARGET_CONSTRUCTION_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -520,7 +567,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=remaining_rna_necessity_authority_sha256
+  git grep -l '"schema": *"V5_REMAINING_RNA_NECESSITY_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -539,7 +586,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=remaining_rna_execution_authority_sha256
+  git grep -l '"schema": *"V5_REMAINING_RNA_EXECUTION_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -558,7 +605,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=teacher_target_semantics_authority_sha256
+  git grep -l '"schema": *"V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -579,7 +626,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=schedule_authority_sha256
+  git grep -l '"schedule_authority_sha256"' 258f84fa -- '*.json'   # expect: no output
   ```
 
 * validation outcome: **UNBOUND__NO_COMMITTED_ARTIFACT_CARRIES_THE_KEY**
@@ -598,7 +645,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=ema_authority_sha256
+  git grep -l '"schema": *"V5_EMA_TIMESCALE_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -617,7 +664,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=measurement_robustness_authority_sha256
+  git grep -l '"schema": *"V5_MEASUREMENT_ROBUSTNESS_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -636,7 +683,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_identity_gate_authority_sha256
+  git grep -l '"schema": *"V5_TARGET_IDENTITY_SHORTCUT_GATE_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -655,7 +702,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=anti_cheat_authority_sha256
+  git grep -l '"schema": *"V5_ANTI_CHEAT_AUTHORITY_BUNDLE_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -673,7 +720,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=model_geometry_authority_sha256
+  git grep -l '"schema": *"V5_MODEL_GEOMETRY_AUTHORITY_V2"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -691,7 +738,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=geometry_memorization_qualification_authority_sha256
+  git grep -l '"schema": *"V5_GEOMETRY_MEMORIZATION_QUALIFICATION_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -710,7 +757,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=protected_registry_authority_sha256
+  git grep -l '"schema": *"V5_PRODUCTION_PROTECTED_REGISTRY_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -730,7 +777,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=critical_test_authority_sha256
+  git grep -l '"schema": *"V5_CRITICAL_TEST_EXECUTION_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -749,7 +796,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=observation_gradient_firewall_authority_sha256
+  git grep -l '"observation_gradient_firewall_authority_sha256"' 258f84fa -- '*.json'   # expect: no output
   ```
 
 * validation outcome: **UNBOUND__NO_COMMITTED_ARTIFACT_CARRIES_THE_KEY**
@@ -768,7 +815,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=runtime_source_authority_sha256
+  git grep -l '"schema": *"V5_CURRENT_RUNTIME_SOURCE_AUTHORITY_V1"' 258f84fa -- '*.json'   # expect: no output => NO_COMMITTED_ARTIFACT
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**
@@ -786,7 +833,7 @@ The closure equality-checks the substrate against **6** consuming authorities, n
 * validator command:
 
   ```bash
-  python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>
+  python scripts/agent/laneb_v29_root_status_matrix_v2.py 258f84fa <index.json> <out_dir>
   ```
 
 * validation outcome: **NO_COMMITTED_ARTIFACT**

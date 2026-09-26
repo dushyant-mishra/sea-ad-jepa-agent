@@ -180,6 +180,15 @@ def build(rev, index_path):
     index = json.loads(pathlib.Path(index_path).read_text(encoding="utf-8"))
     schema_to_paths = index["schema_to_paths"]
     head = _git(["rev-parse", rev]).strip()
+    # The artifact index and this matrix must describe the SAME revision. A
+    # matrix that cites one commit while consuming an index built at another
+    # would be a provenance record of an execution that did not happen.
+    if index["revision"] != head:
+        raise SystemExit(
+            "STOP: artifact index was built at %s but the matrix was asked for "
+            "%s. Rebuild the index at the same revision rather than citing a "
+            "revision that was not the one searched." % (index["revision"], head)
+        )
 
     # substrate byte authentication
     sub = pathlib.Path(SUBSTRATE_FILE)
@@ -312,10 +321,41 @@ def build(rev, index_path):
                 ),
             }
 
-        validator_cmd = (
-            "python scripts/agent/laneb_v29_root_status_matrix_v2.py "
-            "%s <index.json> <out_dir>   # root=%s" % (rev, root)
-        )
+        if raw_meta:
+            validator_cmd = (
+                "sha256sum \"%s\"   # substrate slot; expect %s"
+                % (SUBSTRATE_FILE, AUTHENTIC_SUBSTRATE[:16] + "...")
+                if root == "full104_substrate_sha256"
+                else "git grep -l '\"%s\"' %s -- '*.json'   # expect: no output"
+                % (root, rev)
+            )
+        elif validated:
+            validator_cmd = (
+                "PYTHONPATH=src python -c \"import json,sys;"
+                "from %s import %s as C;"
+                "d=json.load(open('%s'));"
+                "o=C(**{f:d[f] for f in C.__dataclass_fields__});"
+                "o.validate();print(o.canonical_digest())\"   # expect %s"
+                % (
+                    meta["module"],
+                    class_name,
+                    validated[0]["source_path"],
+                    (validated[0]["authentic_digest"] or "")[:16] + "...",
+                )
+                if validated[0].get("reconstruction_route")
+                == "DIRECT_INSTANCE_SERIALIZATION"
+                else (
+                    "PYTHONPATH=src:scripts/agent python "
+                    "scripts/agent/laneb_v29_substrate_consumer_verify_v1.py %s "
+                    "<index.json> <out.json>   # adapter-mediated root=%s"
+                    % (rev, root)
+                )
+            )
+        else:
+            validator_cmd = (
+                "git grep -l '\"schema\": *\"%s\"' %s -- '*.json'   "
+                "# expect: no output => NO_COMMITTED_ARTIFACT" % (schema, rev)
+            )
         rows.append(
             {
                 "root": root,
@@ -416,6 +456,8 @@ def build(rev, index_path):
         "date": "2026-09-26",
         "lane": "LANE_B_AUTHORITY_AND_PROVENANCE",
         "revision": head,
+        "artifact_index_revision": index["revision"],
+        "committed_json_blobs_scanned": index["committed_json_blobs_scanned"],
         "status": "NO_ROOT_FULLY_CLOSED__NO_TRAINING_AUTHORITY",
         "substrate_byte_authentication": substrate_auth,
         "known_decoy_sha256": KNOWN_DECOY,
