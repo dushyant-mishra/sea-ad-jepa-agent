@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import base64
+import hashlib
 import io
 import zipfile
 import urllib.request
@@ -51,6 +52,7 @@ class StubGithub:
         }]}
         self.artifacts = {"total_count": 1, "artifacts": [{
             "id": 444, "name": EXPECTED_ARTIFACT, "expired": False,
+            "digest": "sha256:" + hashlib.sha256(self.archive).hexdigest(),
             "workflow_run": {"id": RUN},
         }]}
         self.source = {"path": EXPECTED_SOURCE, "sha": git_blob_sha(SOURCE_BYTES),
@@ -192,3 +194,9 @@ def test_invalid_rest_artifact_digest_fails_even_with_downloaded_junit():
     with pytest.raises(RemoteEvidenceError, match="digest malformed"):
         checked_payload(fake, run_id=RUN, expected_sha=HEAD,
                         downloaded_junit=junit())
+
+def test_remote_zip_bytes_not_accepted_without_matching_github_digest():
+    fake = StubGithub()
+    fake.artifacts["artifacts"][0]["digest"] = "sha256:" + "0" * 64
+    with pytest.raises(RemoteEvidenceError, match="ZIP does not match"):
+        verify(fake)
