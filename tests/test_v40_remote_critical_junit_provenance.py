@@ -80,7 +80,8 @@ def verify(fake):
 def test_valid_test_only_fake_transport_exercises_complete_parser():
     report = verify(StubGithub())
     assert report["tests"] == 7 and report["training_authorized"] is False
-    assert report["verified_from_remote_api"] is True  # test transport only!
+    assert report["remote_run_job_artifact_metadata_and_source_verified"] is True  # test transport only!
+    assert report["remote_archive_byte_digest_replayed"] is True
 
 
 def test_run_sha_substitution_fails():
@@ -173,3 +174,21 @@ def test_arbitrary_archive_redirect_host_is_rejected():
             initial, None, 302, "redirect", {},
             "https://attacker.example/download?token=stolen",
         )
+
+def test_externally_downloaded_junit_keeps_archive_replay_explicitly_false():
+    fake = StubGithub()
+    fake.artifacts["artifacts"][0]["digest"] = "sha256:" + "b" * 64
+    report = checked_payload(
+        fake, run_id=RUN, expected_sha=HEAD,
+        downloaded_junit=junit(),
+    )
+    assert report["remote_archive_byte_digest_replayed"] is False
+    assert "EXPERIMENTAL" in report["junit_delivery"]
+
+
+def test_invalid_rest_artifact_digest_fails_even_with_downloaded_junit():
+    fake = StubGithub()
+    fake.artifacts["artifacts"][0]["digest"] = "unverified"
+    with pytest.raises(RemoteEvidenceError, match="digest malformed"):
+        checked_payload(fake, run_id=RUN, expected_sha=HEAD,
+                        downloaded_junit=junit())
