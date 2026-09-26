@@ -1,0 +1,195 @@
+{
+  "schema": "JEPA_V43_NEW_CHAT_MACHINE_STATE_20260926",
+  "date": "2026-09-26",
+  "status": "V43_RESEARCH_ONLY__60_HOSTED_SYNTHETIC_TESTS__84_PHYSICAL_HISTORICAL_SUPPORT__NO_CURRENT_V5_SCIENTIFIC_TRAINING",
+  "governance": {
+    "training_authorized": false,
+    "audit_b_n1_opened": false,
+    "d_shared_g5_opened": false,
+    "protected_full104_outcomes_opened": false,
+    "rare_tail_molecular_protected_opened": false,
+    "therapeutic_ranking_authorized": false,
+    "scientific_target_selected": false,
+    "architecture_selected": false,
+    "current_v5_scientific_authority_roots_fully_closed": 0,
+    "total_current_v5_roots": 33
+  },
+  "github": {
+    "repository": "dushyant-mishra/sea-ad-jepa-agent",
+    "main_at_v43_start": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+    "v43_pr": 176,
+    "v43_branch": "research/v43-complementary-teacher-student-design-20260926",
+    "v43_snapshot_before_machine_commit": "ddaef45ff1e8bb390b4a91cf810d40c30d73d3ae",
+    "v42_custody_pr": 174,
+    "v42_head": "f08361408f87b2b01c2d2ce035ca2b39479ecaf8",
+    "v42_original_manifest_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_CHAT_LOCAL_18_FILE_CUSTODY_MANIFEST_V42.json",
+    "v42_original_manifest_git_blob_sha": "198e8f9b2f7c718a5e47b620309a032bc346affc",
+    "original_pr169_masking_head": "e14c4003daf1248502ee83161fda8eb52376bb84",
+    "scientific_lane_a_pr163_head": "560a92cb3bf463f3f9506c303b452649bbb37493",
+    "official_source_of_live_head": "REFETCH_GITHUB",
+    "v43_hosted_successful_baseline_run": 36258217079,
+    "hosted_run_head": "bb5f80e9ffca421491811ef94945356493cb0b5f",
+    "hosted_exact_synthetic_tests_passed": 60,
+    "hosted_skipped": 0,
+    "first_expanded_ci_red_run": 36258154911,
+    "first_ci_red_reason": "synthetic_RARE_test_factory_used_non_hex_r_in_dummy_sha__FIXTURE_FIXED_WITHOUT_WEAKENING_VALIDATOR"
+  },
+  "research": {
+    "arms": [
+      "A_SINGLE_RICH",
+      "B_SHARED_MULTIPLE_HEADS",
+      "C_COMPLEMENTARY_TEACHER_TEAM"
+    ],
+    "mandatory_controls": 15,
+    "external_primary_methods": [
+      "Theia_CoRL_2025",
+      "M3_JEPA_ICML_2025",
+      "MultiVI_Nature_Methods_2023",
+      "scGLUE_Nature_Biotechnology_2022",
+      "Cell_JEPA_arxiv_2026_02",
+      "CoMAD_arxiv_2025_08"
+    ],
+    "local_teacher_fusion_executable": true,
+    "teacher_team_trained": false,
+    "quantitative_biological_superiority_claim": false,
+    "original_historical_84_cell_receipt": "docs/agent/JEPA_V43_ORIGINAL_HISTORICAL_84_CELL_SUPPORT_RECEIPT_20260926.json",
+    "original_historical_84_cell_source_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "original_historical_common_core": 17186,
+    "original_historical_operators": 42,
+    "original_historical_cells": 84,
+    "original_historical_support_measured_range": [
+      18736,
+      35076
+    ],
+    "original_historical_same_cell_rare_teacher_validated": false
+  },
+  "exclusive_original_files": {
+    "all_local_independently_sha256_size_rechecked": 18,
+    "github_exact_originals": 11,
+    "github_original_files": [
+      {
+        "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+        "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+        "bytes": 437,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv"
+      },
+      {
+        "name": "JEPA_QUERY_LOCAL_TEACHER_TARGET_NONAUTHORIZING_PROPOSAL_20260926.md",
+        "sha256": "2fe3447e96b5514c08393d5533cb03ab560ea2bf0d5ebfd0fe1e27c1e9a89e89",
+        "bytes": 8147,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_QUERY_LOCAL_TEACHER_TARGET_NONAUTHORIZING_PROPOSAL_20260926.md"
+      },
+      {
+        "name": "JEPA_TEACHER_TARGET_V2_LOCAL_EVIDENCE_AND_EXECUTION_CONTRACT_20260926.md",
+        "sha256": "81fac097139bc6f5b693e9bc3aa682b37cef7fa42baa88f3707c54c29104ed95",
+        "bytes": 12279,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_TEACHER_TARGET_V2_LOCAL_EVIDENCE_AND_EXECUTION_CONTRACT_20260926.md"
+      },
+      {
+        "name": "JEPA_TEACHER_TARGET_V4_SOURCE_AUDIT_PHYSICAL_PILOT_20260926.md",
+        "sha256": "28b282759c62160c53f661efd98db4ae5ae122cbbb19ac9377838051bb7118f4",
+        "bytes": 14906,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_TEACHER_TARGET_V4_SOURCE_AUDIT_PHYSICAL_PILOT_20260926.md"
+      },
+      {
+        "name": "JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip",
+        "sha256": "99dd996038ab55478b2e9fe17601c8e696c431cc8451073dabd50078b58712d0",
+        "bytes": 11938,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip"
+      },
+      {
+        "name": "JEPA_V33_INDEPENDENT_ENVIRONMENT_AUDIT_20260926.md",
+        "sha256": "5cf2d3d3eba9adc9e94359388af8866b13366f0925dc5938ce0dd1d0863e1f30",
+        "bytes": 14297,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_V33_INDEPENDENT_ENVIRONMENT_AUDIT_20260926.md"
+      },
+      {
+        "name": "README(1).md",
+        "sha256": "3b43f40409fdc4cb2812e6877189cc44b0a23abaa4504434ddd983c054c317de",
+        "bytes": 4802,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/README(1).md"
+      },
+      {
+        "name": "Status and Repair Plan.txt",
+        "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+        "bytes": 5233,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/Status and Repair Plan.txt"
+      },
+      {
+        "name": "WSL execution issue.txt",
+        "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+        "bytes": 14576,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/WSL execution issue.txt"
+      },
+      {
+        "name": "teacher_target_preflight_v1.py",
+        "sha256": "255e21c45d0a7ada88e6b75e51aa8bf3c1a1b9a52060bc460815af931d5f7235",
+        "bytes": 6098,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/teacher_target_preflight_v1.py"
+      },
+      {
+        "name": "teacher_target_preflight_v1_results.json",
+        "sha256": "5268a685686106dd308b828b71e10855b7b052347b4ddf04797d53780242d81e",
+        "bytes": 1554,
+        "git_path": "docs/agent/chat-local-source-preservation-20260926/teacher_target_preflight_v1_results.json"
+      }
+    ],
+    "local_only_binary_count": 7,
+    "local_only_binaries": [
+      {
+        "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+        "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+        "bytes": 1531109
+      },
+      {
+        "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+        "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+        "bytes": 410278055
+      },
+      {
+        "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+        "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+        "bytes": 303979881
+      },
+      {
+        "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+        "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+        "bytes": 303979880
+      },
+      {
+        "name": "checkpoints.zip",
+        "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+        "bytes": 71356460
+      },
+      {
+        "name": "expression.zip",
+        "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+        "bytes": 3599456
+      },
+      {
+        "name": "t1_checkpoint_u0200.zip",
+        "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+        "bytes": 233729581
+      }
+    ],
+    "portable_v42_archive_filename": "JEPA_V42_PORTABLE_SOURCE_AND_SMALL_ARCHIVES_20260926.zip",
+    "portable_v42_archive_sha256": "8644bfb5a3adcb9c4ebcf553d4383025f97aae579cc9ebf705d9e791ea5e7bd5",
+    "portable_v42_archive_scope": "13 original small files plus 3 generated manifests; not a replacement for 7 missing remote binary originals",
+    "public_release_authorized_for_missing_seven": false
+  },
+  "governing_handoff": "docs/agent/JEPA_V43_NEW_CHAT_TAKEOVER_AND_EXCLUSIVE_FILES_20260926.md",
+  "research_docs": [
+    "docs/agent/JEPA_V43_COMPLEMENTARY_TEACHER_STUDENT_RESEARCH_20260926.md",
+    "docs/agent/JEPA_V43_EXTERNAL_METHODS_AND_LEAKAGE_BOUNDARIES_20260926.md",
+    "docs/agent/JEPA_V43_TEAM_ARCHITECTURE_COMPARISON_CONTRACT_20260926.json"
+  ],
+  "next_steps": [
+    "review_scientist_teacher_target_and_q_value_policy_per_head_before_training",
+    "validate_real_provenance_for_teacher_source_sha_slots_not_syntactic_hash_only",
+    "build_true_original_historical_84_replay_on_CPU_using_local_calibration_bundle_script",
+    "preapprove_independent_development_teacher_only_biological_fidelity_test",
+    "never_use_unpaired_atac_as_same_nucleus_or_both_train_and_independent_validation",
+    "prospective_rare_donor_recurrence_and_student_support_abstention",
+    "current_V5_33_role_source_critical_masking_closure_before_full_training"
+  ]
+}
