@@ -43,7 +43,8 @@ ROOT_VOCAB = "src/sea_ad_jepa/v5/current_authority_roots_v2.py"
 def _imports(tree: ast.AST) -> dict[str, str]:
     result = {}
     for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.module and node.level == 1:
+        if (isinstance(node, ast.ImportFrom) and node.module and
+                (node.level == 1 or node.module.startswith('sea_ad_jepa.v5.'))):
             for item in node.names:
                 result[item.asname or item.name] = node.module + "." + item.name
     return result
