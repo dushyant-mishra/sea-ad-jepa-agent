@@ -128,6 +128,22 @@ def main() -> None:
     for token in ("#176","#174","36258217079","18 individual ORIGINAL","SEVEN","TRAINING=OFF"):
         if token not in takeover:
             raise ValueError("incomplete new-chat takeover: "+token)
+    # Exact-source original-data replay is a separate physical local result, not
+    # a simulated GitHub CI execution of original untransferred 410MB data.
+    replay=json.loads((ROOT/"docs/agent/JEPA_V43_ORIGINAL_84_EXACT_REPLAY_AUDIT_20260926.json").read_text())
+    if machine["research"].get("original_historical_84_cell_exact_github_script_and_receipt_locally_replayed") is not True:
+        raise ValueError("V43 latest machine state omits physical original replay")
+    if replay["source_script"]["git_blob_sha1"]!="4a17ec41778dc214cc52726e003734c99d18e314" or replay["receipt"]["git_blob_sha1"]!="4e336208b98ff27c6e4aade3ebb422a362241391":
+        raise ValueError("V43 exact original replay source/receipt blob mismatch")
+    if replay["exact_positive"]["exit_code"]!=0 or replay["exact_positive"]["common_core"]!=17186:
+        raise ValueError("V43 physical historical original proof incomplete")
+    if replay["negative_controls_passed"]!=2 or any(x.get("failed_closed") is not True for x in replay["physical_negative_controls"]):
+        raise ValueError("V43 original source-mutation negative control missing")
+    if replay["original_bytes_mutated"] is not False or replay["training_authorized"] is not False:
+        raise ValueError("historical physical replay changed protected original or raised authority")
+    if "## V43 exact-original replay correction" not in takeover:
+        raise ValueError("new chat handoff falsely leaves exact physical replay pending")
+    print("V43_EXACT_GITHUB_SCRIPT_AND_RECEIPT_84_ORIGINAL_LOCAL_REPLAY_TWO_NEGATIVE_CONTROLS")
     print("V43_LITERATURE_AND_84_ORIGINAL_RECEIPT_SCOPE_VERIFIED")
     print("V43_EXACT_18_ORIGINAL_CUSTODY_11_GITHUB_7_LOCAL")
     print("V43_EXACT_THREE_ARMS_AND_15_MANDATORY_CONTROLS")
