@@ -1,0 +1,114 @@
+{
+  "D1_P002_metadata_ready": {
+    "group_cell_weight_law": "1 / (104 * number_of_operators_for_donor * cells_in_that_donor_operator_group)",
+    "not_equal_to_base_JEPA_p": "base JEPA is 1/(104*donor_cells) and does not equalize operator groups",
+    "qualification": "METADATA_DERIVED_ONLY__NO_TEACHER_STATES_OR_D1_RANK"
+  },
+  "candidate_bound_not_execution_schedule": {
+    "conditional_on": "exact currently proposed PR135/139 within-update no-replacement donor sample law, not a full-training run authorization",
+    "proposal": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "unique_cells_per_donor_draw_without_replacement_limit": 81
+  },
+  "census": {
+    "cell_uniform_source_mass": {
+      "HVS": "198718/4553407",
+      "NPH52": "236476/4553407",
+      "SEA_AD": "4118213/4553407"
+    },
+    "cells_in_ge3_groups": 4553348,
+    "donor_operator_groups": 1400,
+    "donor_scientific_source_mass": {
+      "HVS": "41/104",
+      "NPH52": "17/104",
+      "SEA_AD": "46/104"
+    },
+    "fit_cells": 4553407,
+    "fit_donors": 104,
+    "group_count_ge3": 1361,
+    "largest_donor_cells": 174111,
+    "operators": 42,
+    "oracle_source_donors_metadata_only": {
+      "HVS": 11,
+      "NPH52": 2,
+      "SEA_AD": 10
+    },
+    "smallest_donor_cells": 81,
+    "source_cell_counts": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "source_donor_counts": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "source_group_count": {
+      "HVS": 948,
+      "NPH52": 109,
+      "SEA_AD": 343
+    },
+    "source_group_count_ge3": {
+      "HVS": 909,
+      "NPH52": 109,
+      "SEA_AD": 343
+    },
+    "validation_source_donors_metadata_only": {
+      "HVS": 10,
+      "SEA_AD": 12
+    }
+  },
+  "d_shared_evaluated": false,
+  "deferred_parameters": {
+    "D_obs": "UNRESOLVED",
+    "D_private": "UNRESOLVED",
+    "D_shared": "SEALED_NOT_DERIVABLE_FROM_METADATA",
+    "ema_half_life_presentations": "REQUIRES_PROSPECTIVE_SCHEDULE",
+    "learning_rate": "REQUIRES_SEPARATE_TRAINING_DESIGN",
+    "mask_fraction": "NOT_DERIVED_FROM_HISTORICAL_40_PCT",
+    "masked_views_per_cell": "REQUIRES_PROSPECTIVE_TARGET_AND_MASK_CONTRACT",
+    "microbatch_token_budget": "REQUIRES_VERIFIED_GPU_RESOURCE_BUDGET",
+    "model_width": "PROVISIONAL_GPU_RESOURCE_CHOICE_NOT_BIOLOGICAL_DIMENSION"
+  },
+  "limitations": [
+    "Source registry and SQL metadata authenticate source/identity/size, not protected biological outcomes",
+    "No full Level4 raw-count reaggregation, expression target, physical training proof or D_shared result",
+    "Source/native support patterns can identify source; operator has distinct class/region semantics",
+    "Any per-donor CSV must not be replaced by historical 94-donor sample or synthetic test fixture"
+  ],
+  "masking_policy_selected": false,
+  "protected_expression_or_outcomes_opened": false,
+  "schema": "FULL104_AUTHENTICATED_READER_FIT_METADATA_PARAMETER_RECEIPT_V1",
+  "source_roots": {
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "metadata/FOUNDATION_METADATA_DONOR.csv_sha256": "c9cbe47d4727aabec8a0c3fed5474c2dab4f9f2b8848357e08b0cec6ef044508",
+    "splits/foundation_split_registry.csv_sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+    "splits/reader_donor_split.csv_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "sqlite_member_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "support/FOUNDATION_SUPPORT_ADDRESS_RECURRENCE.csv_sha256": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da",
+    "support/FOUNDATION_SUPPORT_BY_OPERATOR.csv_sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+  },
+  "status": "PHYSICALLY_REDERIVED_FROM_AUTHENTIC_CALIBRATION_AND_SQLITE__METADATA_ONLY",
+  "support": {
+    "any_operator_in_each_source_measured": 17346,
+    "not_measured_by_any_operator": 289,
+    "operator_rows": 42,
+    "source_operator_measured_address_ranges": {
+      "HVS": [
+        18736,
+        18736
+      ],
+      "NPH52": [
+        30294,
+        34405
+      ],
+      "SEA_AD": [
+        35076,
+        35076
+      ]
+    },
+    "strict_all42_operator_measured": 17186,
+    "total_addresses": 41238
+  },
+  "training_authorized": false
+}

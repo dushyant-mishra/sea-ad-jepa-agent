@@ -1,0 +1,22 @@
+[
+  {
+    "file": "FULL104_AUTHENTICATED_READER_FIT_METADATA_PARAMETER_RECEIPT_V1.json",
+    "bytes": 4324,
+    "sha256": "d1c863e528486f24f97b3a48c6c6d7f181f68dce58efc09e78114ff3f0e1a832"
+  },
+  {
+    "file": "fit104_donor_operator_relational_capacity.csv",
+    "bytes": 75063,
+    "sha256": "e40acc06844f4a13cb956453fe54e74abed357c3777a80ec6c4a2778dcae8f65"
+  },
+  {
+    "file": "fit104_donor_scientific_masses.csv",
+    "bytes": 6989,
+    "sha256": "386e52ecb56031fba7bde855c7af314b08f1773427d367e0679e6de47f79c7b7"
+  },
+  {
+    "file": "fit104_operator_token_support.csv",
+    "bytes": 3075,
+    "sha256": "e26814f33c0d665a99923f6fb41a59c31407dbc04e21aa6526cf166e252732fa"
+  }
+]
