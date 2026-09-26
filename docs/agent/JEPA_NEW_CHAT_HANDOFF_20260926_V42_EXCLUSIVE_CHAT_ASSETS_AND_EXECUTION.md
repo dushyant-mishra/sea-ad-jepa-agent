@@ -45,12 +45,11 @@ All branch heads below are **snapshots as of this handoff**; ALWAYS re-fetch Git
 
 In this chat's `/mnt/data` there are **18 distinct original file basenames totaling ~1.3 GB**. Ten original UTF-8/CSV documents, script/results and issue notes, plus the intact 11,938-byte V33 original research ZIP have now been **copied byte-for-byte** to `docs/agent/chat-local-source-preservation-20260926/` on V42, verified against **both original SHA-256 and Git blob SHA-1**. These include original q-local proposal, V2 evidence contract, V4 physical pilot report, README, teacher-target preflight script and JSON, V33 independent environment report, Windows/WSL issue notes and historical status/repair plan, and the ORIGINAL checksum CSV (with BOM/quoted CRLF preserved). Their exact paths and SHA are in the 18-file JSON manifest; CI independently checks them against their actual committed bytes.
 
-The **seven binary originals not uploaded** are:
+The **seven binary originals not uploaded** are (original SHA-256 values, not substitute downloads):
 - `66e64913-959f-4a7c-bbfe-6ff906fb281d.npz` (1,531,109 bytes; SHA256 `001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70`);
 - `FOUNDATION_CALIBRATION_BUNDLE_20260824.zip` (410,278,055 bytes; `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444`);
 - `FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001` (303,979,881; `b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e`);
 - `FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002` (303,979,880; `5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875`);
-- `JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip` (11,938; `99dd996038ab55478b2e9fe17601c8e696c431cc8451073dabd50078b58712d0`);
 - `checkpoints.zip` (71,356,460; `ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c`);
 - `expression.zip` (3,599,456; `1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4`);
 - `t1_checkpoint_u0200.zip` (233,729,581; `0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c`).
