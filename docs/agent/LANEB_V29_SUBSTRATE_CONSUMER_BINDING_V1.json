@@ -1,0 +1,147 @@
+{
+  "schema": "JEPA_LANEB_V29_SUBSTRATE_CONSUMER_BINDING_V1",
+  "revision": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+  "authentic_substrate_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "known_decoy_sha256": "e482d9da21232bdeb6b3f198f42b9fbcf1530ba1b3e86e104ffbb651ca9df808",
+  "closure_enforced_consumer_count": 6,
+  "consumers_with_authentic_binding": 3,
+  "consumers_blocking": 3,
+  "substrate_root_closed": false,
+  "consumers": [
+    {
+      "consumer_parameter": "representation",
+      "closure_read_attribute": "substrate_authority_sha256",
+      "attribute_access": "getattr_default_none",
+      "closure_line": 195,
+      "closure_failure_message": "representation substrate root mismatch",
+      "defining_class": "PrimaryRepresentationAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.primary_representation_authority_v1",
+      "class_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "schema_searched": "V5_PRIMARY_REPRESENTATION_AUTHORITY_V1",
+      "committed_candidates_found": 1,
+      "artifacts": [
+        {
+          "path": "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json",
+          "closure_read_attribute": "substrate_authority_sha256",
+          "attribute_resolution_route": "TOP_LEVEL_FIELD",
+          "observed_value": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+          "substrate_binding": "CARRIES_AUTHENTIC_SUBSTRATE",
+          "own_class_recompute": {
+            "recomputed": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+            "route": "DIRECT_INSTANCE_SERIALIZATION",
+            "note": "own-class validate() PASSED and canonical_digest recomputed via DIRECT_INSTANCE_SERIALIZATION"
+          },
+          "declared_digest_fields": {}
+        }
+      ],
+      "outcome": "ARTIFACT_CARRIES_AUTHENTIC_SUBSTRATE",
+      "blocks_substrate_root": false
+    },
+    {
+      "consumer_parameter": "support_estimability",
+      "closure_read_attribute": "full104_substrate_sha256",
+      "attribute_access": "getattr_default_none",
+      "closure_line": 196,
+      "closure_failure_message": "support substrate root mismatch",
+      "defining_class": "SupportEstimabilityAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.support_estimability_authority_v1",
+      "class_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "schema_searched": "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1",
+      "committed_candidates_found": 1,
+      "artifacts": [
+        {
+          "path": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+          "closure_read_attribute": "full104_substrate_sha256",
+          "attribute_resolution_route": "TOP_LEVEL_FIELD",
+          "observed_value": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+          "substrate_binding": "CARRIES_AUTHENTIC_SUBSTRATE",
+          "own_class_recompute": {
+            "recomputed": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+            "route": "DIRECT_INSTANCE_SERIALIZATION",
+            "note": "own-class validate() PASSED and canonical_digest recomputed via DIRECT_INSTANCE_SERIALIZATION"
+          },
+          "declared_digest_fields": {}
+        }
+      ],
+      "outcome": "ARTIFACT_CARRIES_AUTHENTIC_SUBSTRATE",
+      "blocks_substrate_root": false
+    },
+    {
+      "consumer_parameter": "canonical_address_registry",
+      "closure_read_attribute": "full104_block_manifest_sha256",
+      "attribute_access": "direct",
+      "closure_line": 202,
+      "closure_failure_message": "registry FULL104 substrate root mismatch",
+      "defining_class": "CanonicalAddressRegistryAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.canonical_address_registry_authority_v1",
+      "class_enforcement": "ISINSTANCE_ENFORCED",
+      "schema_searched": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1",
+      "committed_candidates_found": 1,
+      "artifacts": [
+        {
+          "path": "docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json",
+          "closure_read_attribute": "full104_block_manifest_sha256",
+          "attribute_resolution_route": "EXTERNAL_DOCUMENT_ADAPTER",
+          "observed_value": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+          "substrate_binding": "CARRIES_AUTHENTIC_SUBSTRATE_VIA_DOCUMENT_ADAPTER",
+          "own_class_recompute": {
+            "recomputed": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+            "route": "EXTERNAL_DOCUMENT_ADAPTER",
+            "note": "own-class validate() PASSED and canonical_digest recomputed via EXTERNAL_DOCUMENT_ADAPTER",
+            "document_declared_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+            "adapter_digest_agrees_with_document": true,
+            "caveat": "the role-to-field mapping lives in adapter code outside the artifact; this artifact's bytes are NOT its own canonical digest"
+          },
+          "declared_digest_fields": {}
+        }
+      ],
+      "outcome": "CARRIES_AUTHENTIC_SUBSTRATE_VIA_DOCUMENT_ADAPTER",
+      "blocks_substrate_root": false
+    },
+    {
+      "consumer_parameter": "outer_split",
+      "closure_read_attribute": "full104_substrate_sha256",
+      "attribute_access": "direct",
+      "closure_line": 209,
+      "closure_failure_message": "outer split FULL104 root mismatch",
+      "defining_class": "OuterDonorSplitAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.outer_split_authority_v1",
+      "class_enforcement": "ISINSTANCE_ENFORCED",
+      "schema_searched": "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1",
+      "committed_candidates_found": 0,
+      "artifacts": [],
+      "outcome": "NO_COMMITTED_ARTIFACT",
+      "blocks_substrate_root": true
+    },
+    {
+      "consumer_parameter": "target_panel",
+      "closure_read_attribute": "full104_substrate_sha256",
+      "attribute_access": "direct",
+      "closure_line": 210,
+      "closure_failure_message": "target panel FULL104 root mismatch",
+      "defining_class": "TargetPanelAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v1",
+      "class_enforcement": "ISINSTANCE_ENFORCED",
+      "schema_searched": "V5_TARGET_PANEL_AUTHORITY_V1",
+      "committed_candidates_found": 0,
+      "artifacts": [],
+      "outcome": "NO_COMMITTED_ARTIFACT",
+      "blocks_substrate_root": true
+    },
+    {
+      "consumer_parameter": "masking_qualification_design",
+      "closure_read_attribute": "full104_substrate_sha256",
+      "attribute_access": "direct",
+      "closure_line": 245,
+      "closure_failure_message": "masking design FULL104 root mismatch",
+      "defining_class": "MaskingQualificationDesignAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_design_authority_v1",
+      "class_enforcement": "ISINSTANCE_ENFORCED",
+      "schema_searched": "V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1",
+      "committed_candidates_found": 0,
+      "artifacts": [],
+      "outcome": "NO_COMMITTED_ARTIFACT",
+      "blocks_substrate_root": true
+    }
+  ]
+}

@@ -1,0 +1,3486 @@
+{
+  "schema": "JEPA_LANEB_V29_SCHEMA_ARTIFACT_INDEX_V1",
+  "revision": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+  "committed_json_blobs_scanned": 629,
+  "distinct_schema_values_found": 261,
+  "classes_with_schema_literal": 103,
+  "class_to_candidates": {
+    "AddressUniverseLadderAuthorityV1": {
+      "schema": "V5_ADDRESS_UNIVERSE_LADDER_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.address_universe_ladder_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/address_universe_ladder_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "ladder_artifact_sha256",
+        "ordered_universe_ids",
+        "ordered_universe_sha256",
+        "ordered_universe_sizes",
+        "support_state_policy_id",
+        "terminal_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AntiCheatAuthorityBundleV1": {
+      "schema": "V5_ANTI_CHEAT_AUTHORITY_BUNDLE_V1",
+      "defining_module": "sea_ad_jepa.v5.anti_cheat_authority_bundle_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/anti_cheat_authority_bundle_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "target_identity_gate_authority_sha256",
+        "masking_authority_sha256",
+        "measurement_robustness_authority_sha256",
+        "observation_gradient_firewall_authority_sha256",
+        "critical_test_authority_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AntiCheatAuthorityBundleV2": {
+      "schema": "V5_ANTI_CHEAT_AUTHORITY_BUNDLE_V2",
+      "defining_module": "sea_ad_jepa.v5.anti_cheat_authority_bundle_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/anti_cheat_authority_bundle_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "target_identity_gate_authority_sha256",
+        "masking_authority_sha256",
+        "masking_qualification_execution_authority_sha256",
+        "remaining_rna_execution_authority_sha256",
+        "measurement_robustness_authority_sha256",
+        "observation_gradient_firewall_authority_sha256",
+        "critical_test_authority_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBExecutionContractV1": {
+      "schema": "V5_AUDIT_B_EXECUTION_CONTRACT_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_execution_contract_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py",
+      "declared_fields": [
+        "contract_id",
+        "phase_iv_sample_freeze_digest",
+        "phase_iv_sample_artifact_sha256",
+        "full104_manifest_sha256",
+        "canonical_registry_sha256",
+        "heavy_artifact_sha256",
+        "heavy_qualification_receipt_sha256",
+        "rng_authority_sha256",
+        "mask_plan_generator_sha256",
+        "burden_estimator_source_sha256",
+        "phase_iv_sample_schema_id",
+        "heavy_qualification_schema_id",
+        "heavy_qualification_verdict_id",
+        "rng_authority_schema_id",
+        "rng_target_panel_dependency_id",
+        "precision_scope_id",
+        "primary_metric_id",
+        "secondary_metric_id",
+        "normalization_id",
+        "target_aggregation_id",
+        "precision_estimator_id",
+        "max_relative_standard_error",
+        "sample_ladder",
+        "execution_requirements",
+        "terminal_masking_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "AuditBExecutionContractV2": {
+      "schema": "V5_AUDIT_B_EXECUTION_CONTRACT_V2",
+      "defining_module": "sea_ad_jepa.v5.audit_b_execution_contract_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_execution_contract_v2.py",
+      "declared_fields": [
+        "contract_id",
+        "parent_preexecution_contract_sha256",
+        "scientific_resolution_sha256",
+        "precision_rule_authority_sha256",
+        "phase_iv_sample_freeze_digest",
+        "phase_iv_sample_artifact_sha256",
+        "full104_manifest_sha256",
+        "canonical_registry_sha256",
+        "heavy_artifact_sha256",
+        "heavy_qualification_receipt_sha256",
+        "rng_authority_sha256",
+        "mask_plan_generator_sha256",
+        "burden_estimator_source_sha256",
+        "precision_scope_id",
+        "target_aggregation_id",
+        "mandatory_robustness_aggregation_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "precision_estimator_id",
+        "relative_se_tolerance_numerator",
+        "relative_se_tolerance_denominator",
+        "absolute_se_tolerance_numerator",
+        "absolute_se_tolerance_denominator",
+        "absolute_tolerance_origin_id",
+        "zero_mean_rule_id",
+        "reporting_scope_id",
+        "source_stratified_reporting_id",
+        "phase_iv_sample_schema_id",
+        "heavy_qualification_schema_id",
+        "heavy_qualification_verdict_id",
+        "rng_authority_schema_id",
+        "rng_target_panel_dependency_id",
+        "scientific_resolution_schema_id",
+        "precision_rule_authority_schema_id",
+        "initial_sample_level_id",
+        "initial_sample_size",
+        "direct_n2_n3_execution_authorized",
+        "primary_metric_id",
+        "secondary_metric_id",
+        "normalization_id",
+        "sample_ladder",
+        "execution_requirements",
+        "audit_b_burden_outcomes_inspected_before_freeze",
+        "terminal_masking_outcomes_inspected_before_freeze",
+        "terminal_masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V2.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "AuditBN1ExecutionAuthorityV1": {
+      "schema": "V5_AUDIT_B_N1_EXECUTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_n1_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "b4_contract_sha256",
+        "b4_runtime_preflight_source_sha",
+        "b4_runtime_preflight_state",
+        "sample_level",
+        "target_count",
+        "precision_scope_id",
+        "precision_estimator_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "reporting_scope_id",
+        "result_scope_id",
+        "primary_decision_role_id",
+        "target_rng_id_rule_id",
+        "n2_directly_authorized",
+        "terminal_masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_N1_EXECUTION_AUTHORITY_V1.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "AuditBN1PrimaryPrecisionReceiptV1": {
+      "schema": "V5_AUDIT_B_N1_PRIMARY_PRECISION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_n1_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py",
+      "declared_fields": [
+        "n1_result_sha256",
+        "policy_id",
+        "rung_numerator",
+        "rung_denominator",
+        "n_targets",
+        "mean_normalized_delta_detected",
+        "target_sample_sd",
+        "standard_error",
+        "absolute_se_tolerance",
+        "relative_se_tolerance",
+        "relative_threshold",
+        "applied_precision_threshold",
+        "threshold_branch",
+        "precision_passed"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBN1RuntimeRngBridgeV1": {
+      "schema": "V5_AUDIT_B_N1_RUNTIME_RNG_BRIDGE_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_n1_runtime_rng_bridge_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_n1_runtime_rng_bridge_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "rng_v3_authority_sha256",
+        "rng_v3_global_seed",
+        "b4_contract_sha256",
+        "mask_plan_generator_sha256",
+        "streaming_planner_source_sha256",
+        "target_id_rule_id",
+        "root_seed_role_id",
+        "typed_derive_seed_runtime_role_id",
+        "base_mask_namespace",
+        "base_mask_preimage_id",
+        "prefix3_namespace",
+        "prefix3_preimage_id",
+        "removal_namespace",
+        "removal_preimage_id",
+        "seed_digest_id",
+        "removal_order_digest_id",
+        "method_in_base_mask_seed",
+        "target_panel_in_any_runtime_seed",
+        "masks_executed_before_freeze",
+        "burden_outcomes_inspected_before_freeze",
+        "terminal_masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBN1ToN2EscalationReceiptV1": {
+      "schema": "V5_AUDIT_B_N1_TO_N2_ESCALATION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_n1_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py",
+      "declared_fields": [
+        "receipt_id",
+        "n1_result_sha256",
+        "n1_primary_precision_receipt_sha256",
+        "precision_passed",
+        "authorized_next_sample_level",
+        "authorized_next_target_count",
+        "b4_contract_sha256",
+        "parent_preexecution_contract_sha256",
+        "terminal_masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBPrecisionRuleAuthorityV2": {
+      "schema": "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.audit_b_precision_rule_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_precision_rule_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "strict_core_addresses",
+        "precision_scope_id",
+        "reporting_scope_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "primary_mask_cardinality",
+        "precision_estimator_id",
+        "relative_se_tolerance_numerator",
+        "relative_se_tolerance_denominator",
+        "absolute_se_tolerance_numerator",
+        "absolute_se_tolerance_denominator",
+        "absolute_tolerance_origin_id",
+        "zero_mean_rule_id"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "AuditBScientificResolutionV1": {
+      "schema": "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V1",
+      "defining_module": "sea_ad_jepa.v5.audit_b_scientific_resolution_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v1.py",
+      "declared_fields": [
+        "resolution_id",
+        "parent_preexecution_contract_sha256",
+        "resolver_id",
+        "resolved_at_utc",
+        "rationale",
+        "precision_scope_id",
+        "target_aggregation_id",
+        "zero_mean_rule_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "audit_b_burden_outcomes_inspected_before_resolution",
+        "terminal_masking_outcomes_inspected_before_resolution",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBScientificResolutionV2": {
+      "schema": "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V2",
+      "defining_module": "sea_ad_jepa.v5.audit_b_scientific_resolution_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v2.py",
+      "declared_fields": [
+        "resolution_id",
+        "parent_preexecution_contract_sha256",
+        "resolver_id",
+        "resolved_at_utc",
+        "rationale",
+        "precision_scope_id",
+        "target_aggregation_id",
+        "zero_mean_rule_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "audit_b_burden_outcomes_inspected_before_resolution",
+        "terminal_masking_outcomes_inspected_before_resolution",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "AuditBScientificResolutionV3": {
+      "schema": "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V3",
+      "defining_module": "sea_ad_jepa.v5.audit_b_scientific_resolution_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v3.py",
+      "declared_fields": [
+        "resolution_id",
+        "parent_preexecution_contract_sha256",
+        "resolver_id",
+        "resolved_at_utc",
+        "rationale",
+        "delegation_basis_id",
+        "precision_scope_id",
+        "target_aggregation_id",
+        "mandatory_robustness_aggregation_id",
+        "primary_policy_id",
+        "primary_rung_numerator",
+        "primary_rung_denominator",
+        "primary_cell_origin_id",
+        "precision_estimator_id",
+        "relative_se_tolerance_numerator",
+        "relative_se_tolerance_denominator",
+        "absolute_se_tolerance_numerator",
+        "absolute_se_tolerance_denominator",
+        "absolute_tolerance_origin_id",
+        "zero_mean_rule_id",
+        "reporting_scope_id",
+        "source_stratified_reporting_id",
+        "all_policy_rung_cells_reported",
+        "source_stratified_reporting_required",
+        "audit_b_burden_outcomes_inspected_before_resolution",
+        "terminal_masking_outcomes_inspected_before_resolution",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "BaseTrainingEstimandAuthorityV1": {
+      "schema": "V5_BASE_TRAINING_ESTIMAND_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.base_training_estimand_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/base_training_estimand_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "population_authority_sha256",
+        "support_estimability_authority_sha256",
+        "support_eligibility_authority_sha256",
+        "estimand_id",
+        "scientific_weight_artifact_sha256",
+        "scientific_weight_schema_id",
+        "weight_normalization_id",
+        "weight_unit_id",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "docs/agent/V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "BiologicalNegligibilityAuthorityV1": {
+      "schema": "V5_BIOLOGICAL_NEGLIGIBILITY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.shortcut_consequence_curve_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/shortcut_consequence_curve_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "fidelity_functional_id",
+        "epsilon_numerator",
+        "epsilon_denominator",
+        "scientific_rationale_id",
+        "scientific_rationale_sha256",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CanonicalAddressRegistryAuthorityV1": {
+      "schema": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.canonical_address_registry_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/canonical_address_registry_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "registry_sha256",
+        "registry_row_count",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "recovery_provenance",
+        "informative_path",
+        "ordering_invariant",
+        "identifier_invariant",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "ControlCalibrationIntervalReceiptV1": {
+      "schema": "V5_CONTROL_CALIBRATION_INTERVAL_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.control_calibration_interval_receipt_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/control_calibration_interval_receipt_v1.py",
+      "declared_fields": [
+        "scope_id",
+        "candidate_value",
+        "raw_control_evidence_sha256",
+        "precision_root_sha256",
+        "negative_lower_two_sided",
+        "negative_upper_two_sided",
+        "planted_detect_lower_one_sided",
+        "planted_after_mask_upper_one_sided",
+        "donor_count",
+        "target_count",
+        "bootstrap_replicates",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "real_masking_policy_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ControlCalibrationPrecisionPlanV1": {
+      "schema": "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V1",
+      "defining_module": "sea_ad_jepa.v5.control_calibration_precision_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "census_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "outer_split_authority_sha256",
+        "uncertainty_method_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "donor_count",
+        "terminal_policy_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ControlCalibrationPrecisionPlanV2": {
+      "schema": "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2",
+      "defining_module": "sea_ad_jepa.v5.control_calibration_precision_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "census_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "fold_assignment_artifact_sha256",
+        "calibration_cache_manifest_sha256",
+        "uncertainty_method_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "donor_count",
+        "terminal_policy_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ControlCapacityCalibrationReceiptV1": {
+      "schema": "V5_CONTROL_CAPACITY_CALIBRATION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.control_capacity_calibration_receipt_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py",
+      "declared_fields": [
+        "scope_id",
+        "candidate_value",
+        "calibration_cache_manifest_sha256",
+        "calibration_cache_role_id",
+        "raw_planted_evidence_sha256",
+        "raw_shuffled_evidence_sha256",
+        "precision_root_sha256",
+        "planted_minus_shuffled_mean",
+        "planted_minus_shuffled_lower_one_sided",
+        "donor_count",
+        "target_count",
+        "bootstrap_replicates",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "replay_exact",
+        "real_masking_policy_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CriticalTestExecutionAuthorityV1": {
+      "schema": "V5_CRITICAL_TEST_EXECUTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.critical_test_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/critical_test_execution_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "required_test_ids",
+        "test_suite_source_sha256",
+        "status_by_test",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentMaskingPolicyAuthorityV2": {
+      "schema": "V5_CURRENT_MASKING_POLICY_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.current_masking_policy_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_masking_policy_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "shortcut_artifact_sha256",
+        "masking_policy_id",
+        "target_evidence_budget_authority_id",
+        "target_evidence_budget_authority_sha256",
+        "rng_replay_authority_id",
+        "eligibility_policy_id",
+        "fallback_policy_id",
+        "rng_replay_authority_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentRuntimeSourceAuthorityV1": {
+      "schema": "V5_CURRENT_RUNTIME_SOURCE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.current_runtime_source_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_runtime_source_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "source_manifest_sha256",
+        "source_root_sha256",
+        "runtime_environment_artifact_sha256",
+        "entrypoint_source_sha256",
+        "source_packaging_policy_id",
+        "entrypoint_policy_id",
+        "runtime_abi_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentTargetAddressProviderAuthorityV1": {
+      "schema": "V5_CURRENT_TARGET_ADDRESS_PROVIDER_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.current_target_address_provider_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_target_address_provider_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "address_registry_authority_sha256",
+        "query_provider_id",
+        "query_artifact_sha256",
+        "replay_policy_id",
+        "parameter_sharing_policy_id",
+        "gradient_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentTrainerPreexecutionAuthorityV1": {
+      "schema": "V5_CURRENT_TRAINER_PREEXECUTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.current_trainer_preexecution_contract_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v1.py",
+      "declared_fields": [
+        "authority_roots",
+        "protected_registry_authority_sha256",
+        "critical_test_authority_sha256",
+        "relational_training_active",
+        "optimizer_started",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentTrainerPreexecutionAuthorityV2": {
+      "schema": "V5_CURRENT_TRAINER_PREEXECUTION_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.current_trainer_preexecution_contract_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v2.py",
+      "declared_fields": [
+        "authority_roots",
+        "closure_v2_sha256",
+        "protected_registry_authority_sha256",
+        "critical_test_authority_sha256",
+        "relational_training_active",
+        "optimizer_started",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "CurrentTrainingAuthorityV1": {
+      "schema": "V5_CURRENT_TRAINING_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.current_training_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/current_training_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "closure_v2_sha256",
+        "preexecution_authority_sha256",
+        "receipt_v2_sha256",
+        "target_package_root",
+        "critical_test_authority_sha256",
+        "runtime_source_authority_sha256",
+        "issuance_policy_id",
+        "issuance_proof_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "EmaTimescaleAuthorityV1": {
+      "schema": "V5_EMA_TIMESCALE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.ema_timescale_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/ema_timescale_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "base_training_estimand_sha256",
+        "schedule_authority_sha256",
+        "momentum_function_id",
+        "presentation_unit_id",
+        "half_life_presentations",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "EmaTimescaleAuthorityV2": {
+      "schema": "V5_EMA_TIMESCALE_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.ema_timescale_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/ema_timescale_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "base_training_estimand_sha256",
+        "schedule_authority_sha256",
+        "momentum_function_id",
+        "presentation_unit_id",
+        "half_life_presentations",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "Full104ControlCalibrationCacheManifestV1": {
+      "schema": "V5_FULL104_CONTROL_CALIBRATION_CACHE_MANIFEST_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_control_calibration_cache_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "cache_role_id",
+        "source_substrate_role_id",
+        "normalization_id",
+        "x_dtype_id",
+        "full104_block_manifest_sha256",
+        "canonical_registry_sha256",
+        "census_authority_sha256",
+        "pass1_physical_binding_sha256",
+        "support_estimability_authority_sha256",
+        "split_receipt_sha256",
+        "target_eligibility_receipt_sha256",
+        "row_selection_namespace",
+        "distractor_namespace",
+        "max_rows_per_donor",
+        "max_target_count",
+        "distractor_count",
+        "retained_row_count",
+        "retained_donor_count",
+        "min_retained_rows_per_donor",
+        "max_retained_rows_observed_per_donor",
+        "cache_column_count",
+        "x_shape_rows",
+        "x_shape_cols",
+        "target_cols_semantic_sha256",
+        "target_ids_semantic_sha256",
+        "proxy_cols_semantic_sha256",
+        "distractor_cols_semantic_sha256",
+        "cache_cols_semantic_sha256",
+        "x_file_sha256",
+        "selection_rows_file_sha256",
+        "donor_code_file_sha256",
+        "row_rank_file_sha256",
+        "retained_count_by_donor_file_sha256",
+        "fold_by_donor_file_sha256",
+        "donor_source_code_file_sha256",
+        "full_donor_n_file_sha256",
+        "full_donor_sum_file_sha256",
+        "full_donor_sumsq_file_sha256",
+        "target_cols_file_sha256",
+        "proxy_cols_file_sha256",
+        "distractor_cols_file_sha256",
+        "cache_cols_file_sha256",
+        "target_ids_file_sha256",
+        "terminal_masking_qualification_authorized",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/cache_manifest.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "Full104PhysicalShakedownReceiptV1": {
+      "schema": "V5_FULL104_PHYSICAL_SHAKEDOWN_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_physical_shakedown_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_physical_shakedown_v1.py",
+      "declared_fields": [
+        "full104_block_manifest_sha256",
+        "canonical_registry_sha256",
+        "observation_state_sha256",
+        "block_count",
+        "row_count",
+        "donor_count",
+        "operator_count",
+        "address_count",
+        "source_names",
+        "total_nnz",
+        "elapsed_seconds",
+        "rows_per_second",
+        "blocks_per_second",
+        "peak_rss_bytes",
+        "peak_current_process_gpu_memory_mib",
+        "normalization_probe_columns",
+        "terminal_masking_outcomes_inspected",
+        "target_panel_ladder_authorized",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_physical_shakedown_receipt_v1.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "Full104RareBiologyPreservationAuthorityV1": {
+      "schema": "V5_FULL104_RARE_BIOLOGY_PRESERVATION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_rare_biology_preservation_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_rare_biology_preservation_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_population_authority_sha256",
+        "dataset_etl_atlas_sha256",
+        "td59_protocol_sha256",
+        "teacher_relational_target_authority_sha256",
+        "outer_split_receipt_sha256",
+        "qualification_sample_authority_sha256",
+        "selector_id",
+        "stratification_id",
+        "tail_id",
+        "tail_count_rule_id",
+        "tail_tiebreak_id",
+        "molecular_gate_id",
+        "null_id",
+        "primary_weighting_id",
+        "evaluation_partition_id",
+        "label_firewall_id",
+        "tail_quantile",
+        "min_tail_anchors",
+        "min_resolved_triplets_per_donor",
+        "min_measurable_donors_per_source_fold",
+        "null_replicates",
+        "pathology_labels_used",
+        "disease_labels_used",
+        "native_class_labels_used",
+        "rare_state_labels_used",
+        "molecular_prequalification_complete",
+        "teacher_tail_evaluation_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "Full104RuntimeEnvelopeV1": {
+      "schema": "V5_FULL104_RUNTIME_ENVELOPE_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_runtime_envelope_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_runtime_envelope_v1.py",
+      "declared_fields": [
+        "scientific_anchor_git_oid",
+        "full104_block_manifest_sha256",
+        "canonical_registry_sha256",
+        "observation_state_sha256",
+        "runtime_role_id",
+        "spillover_policy_id",
+        "target_panel_ladder_authorized",
+        "terminal_masking_authorized",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_pass1_rebuild_20260920/evidence/FULL104_RUNTIME_ENVELOPE_V1.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "Full104TargetQualificationSampleAuthorityV1": {
+      "schema": "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_target_qualification_sample_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "population_authority_sha256",
+        "full104_block_manifest_sha256",
+        "dataset_etl_atlas_sha256",
+        "outer_split_receipt_sha256",
+        "sample_role_id",
+        "selection_namespace_id",
+        "weighting_id",
+        "reader_fit_cells",
+        "reader_fit_donors",
+        "per_donor_cap",
+        "expected_donors_at_cap",
+        "expected_short_donor_cells",
+        "expected_sample_cells",
+        "expression_used_for_selection",
+        "library_size_used_for_selection",
+        "nnz_used_for_selection",
+        "operator_used_for_selection",
+        "region_used_for_selection",
+        "class_used_for_selection",
+        "pathology_used_for_selection",
+        "masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "Full104TargetQualificationSampleReceiptV1": {
+      "schema": "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_target_qualification_sample_authority_v1.py",
+      "declared_fields": [
+        "sample_authority_sha256",
+        "full104_block_manifest_sha256",
+        "population_authority_sha256",
+        "dataset_etl_atlas_sha256",
+        "outer_split_receipt_sha256",
+        "retained_cells",
+        "retained_donors",
+        "donors_at_cap",
+        "min_retained_per_donor",
+        "max_retained_per_donor",
+        "selection_rows_file_sha256",
+        "donor_code_file_sha256",
+        "row_rank_file_sha256",
+        "retained_count_by_donor_file_sha256",
+        "full_donor_n_file_sha256",
+        "fold_by_donor_file_sha256",
+        "donor_source_code_file_sha256",
+        "builder_source_sha256",
+        "expression_opened_by_builder",
+        "masking_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/sample_receipt.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "Full104TeacherRelationalTargetQualificationAuthorityV1": {
+      "schema": "V5_FULL104_TEACHER_RELATIONAL_TARGET_QUALIFICATION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.full104_teacher_relational_target_qualification_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/full104_teacher_relational_target_qualification_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_population_authority_sha256",
+        "canonical_address_registry_sha256",
+        "operator_address_support_authority_sha256",
+        "dataset_etl_atlas_sha256",
+        "scientific_weight_law_sha256",
+        "teacher_target_semantics_authority_sha256",
+        "outer_split_receipt_sha256",
+        "qualification_sample_authority_sha256",
+        "td57b_protocol_sha256",
+        "td59_protocol_sha256",
+        "td60_legacy_prospective_protocol_sha256",
+        "state_semantics_id",
+        "teacher_state_id",
+        "primary_weighting_id",
+        "source_policy_id",
+        "evaluation_partition_id",
+        "relational_policy_id",
+        "rare_biology_policy_id",
+        "label_firewall_id",
+        "locality_policy_id",
+        "promotion_policy_id",
+        "reader_fit_cells",
+        "reader_fit_donors",
+        "operators",
+        "source_donors",
+        "pathology_labels_allowed_in_target",
+        "disease_labels_allowed_in_target",
+        "native_class_labels_allowed_in_target",
+        "rare_state_labels_allowed_in_target",
+        "new_gene_panel_search_allowed",
+        "new_locality_search_allowed",
+        "cell_uniform_population_weighting_allowed",
+        "source_cell_mass_weighting_allowed",
+        "relational_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "GeometryMemorizationQualificationAuthorityV1": {
+      "schema": "V5_GEOMETRY_MEMORIZATION_QUALIFICATION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.geometry_memorization_qualification_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/geometry_memorization_qualification_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "geometry_artifact_sha256",
+        "protected_registry_authority_sha256",
+        "execution_source_sha256",
+        "result_artifact_sha256",
+        "qualification_protocol_id",
+        "execution_status",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingAuthorityV1": {
+      "schema": "V5_MASKING_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_authority_v1.py",
+      "declared_fields": [
+        "policy_id",
+        "dependency_source_authority_id",
+        "random_mixture_numerator",
+        "structural_mixture_numerator",
+        "mixture_denominator",
+        "target_evidence_budget_authority_id",
+        "rng_authority_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingBurdenLadderAuthorityV1": {
+      "schema": "V5_MASKING_BURDEN_LADDER_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_burden_ladder_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "ladder_id",
+        "census_authority_sha256",
+        "selection_rule_id",
+        "escalation_rule_id",
+        "no_qualifier_policy_id",
+        "terminal_universe_size",
+        "rungs",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingBurdenLadderAuthorityV2": {
+      "schema": "V5_MASKING_BURDEN_LADDER_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_burden_ladder_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "census_authority_sha256",
+        "ladder_id",
+        "selection_rule_id",
+        "escalation_rule_id",
+        "no_qualifier_policy_id",
+        "terminal_universe_size",
+        "rungs",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_BURDEN_LADDER_AUTHORITY_V2.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "MaskingPolicyDecisionReceiptV1": {
+      "schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_decision_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_decision_v1.py",
+      "declared_fields": [
+        "policy_id",
+        "burden_numerator",
+        "burden_denominator",
+        "qualified",
+        "controls_passed",
+        "primary_null_level_passed",
+        "targeted_improvement_passed",
+        "heterogeneity_guardrail_passed",
+        "nonlinear_guardrail_passed",
+        "mean_effective_targeted_n",
+        "delta_lower_one_sided",
+        "decision_rule_id",
+        "evidence_digest"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingPolicyDecisionReceiptV2": {
+      "schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V5",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_decision_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
+      "declared_fields": [
+        "policy_id",
+        "burden_numerator",
+        "burden_denominator",
+        "qualified",
+        "controls_passed",
+        "negative_control_precision_passed",
+        "primary_null_level_passed",
+        "targeted_improvement_passed",
+        "source_improvement_guardrail_passed",
+        "heterogeneity_guardrail_passed",
+        "nonlinear_guardrail_passed",
+        "null_noise_tolerance",
+        "target_heterogeneity_floor",
+        "target_heterogeneity_floor_rule_id",
+        "mean_effective_targeted_n",
+        "total_effective_targeted_n",
+        "targeting_complexity_observation_count",
+        "delta_lower_one_sided",
+        "decision_rule_id",
+        "evidence_digest"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationDesignAuthorityV1": {
+      "schema": "V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_design_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_design_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "canonical_registry_authority_sha256",
+        "teacher_target_semantics_authority_sha256",
+        "target_evidence_budget_authority_sha256",
+        "precision_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "address_universe_ladder_authority_sha256",
+        "rng_replay_authority_sha256",
+        "qualification_runner_source_sha256",
+        "scientific_semantics_id",
+        "expression_attacker_role_id",
+        "policy_arms",
+        "primary_attacker_id",
+        "primary_attacker_application_policy_id",
+        "secondary_attacker_id",
+        "primary_score_id",
+        "paired_estimand_id",
+        "controls",
+        "nonlinear_retuning_policy_id",
+        "pooled_mean_guardrail_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationDesignAuthorityV2": {
+      "schema": "V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_design_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_design_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "canonical_registry_authority_sha256",
+        "teacher_target_semantics_authority_sha256",
+        "target_evidence_budget_template_sha256",
+        "burden_ladder_authority_sha256",
+        "precision_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "rng_replay_authority_sha256",
+        "qualification_runner_source_sha256",
+        "scientific_semantics_id",
+        "expression_attacker_role_id",
+        "policy_arms",
+        "primary_attacker_id",
+        "primary_attacker_application_policy_id",
+        "secondary_attacker_id",
+        "primary_score_id",
+        "paired_estimand_id",
+        "controls",
+        "nonlinear_retuning_policy_id",
+        "pooled_mean_guardrail_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationExecutionAuthorityV1": {
+      "schema": "V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "qualification_design_authority_sha256",
+        "execution_source_sha256",
+        "result_artifact_sha256",
+        "execution_status",
+        "selected_policy_id",
+        "terminal_universe_status_id",
+        "controls_status_id",
+        "nonlinear_status_id",
+        "precision_status_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationExecutionAuthorityV2": {
+      "schema": "V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "run_contract_authority_sha256",
+        "result_artifact_sha256",
+        "execution_status",
+        "selected_policy_id",
+        "terminal_universe_status_id",
+        "controls_status_id",
+        "nonlinear_status_id",
+        "precision_status_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationExecutionAuthorityV3": {
+      "schema": "V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V3",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "run_contract_authority_sha256",
+        "raw_result_artifact_sha256",
+        "rung_decision_receipt_sha256",
+        "selected_policy_id",
+        "selected_burden_numerator",
+        "selected_burden_denominator",
+        "execution_status",
+        "terminal_universe_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationExecutionAuthorityV4": {
+      "schema": "V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V4",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v4",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v4.py",
+      "declared_fields": [
+        "authority_id",
+        "run_contract_authority_sha256",
+        "raw_result_artifact_sha256",
+        "rung_decision_receipt_sha256",
+        "selected_policy_id",
+        "selected_burden_numerator",
+        "selected_burden_denominator",
+        "execution_status",
+        "decision_rule_id",
+        "terminal_universe_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationParametersAuthorityV1": {
+      "schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_parameters_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_attacker_id",
+        "primary_score_id",
+        "targeted_partner_cap",
+        "ridge_candidate_pool_count",
+        "ridge_score_feature_count",
+        "ridge_alpha_numerator",
+        "ridge_alpha_denominator",
+        "prefix_inner_fold_count",
+        "prefix_candidate_count",
+        "prefix_floor_numerator",
+        "prefix_floor_denominator",
+        "prefix_reduction_numerator",
+        "prefix_reduction_denominator",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationParametersAuthorityV2": {
+      "schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_parameters_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_attacker_id",
+        "primary_score_id",
+        "targeted_partner_cap",
+        "ridge_candidate_pool_count",
+        "ridge_score_feature_count",
+        "ridge_alpha_numerator",
+        "ridge_alpha_denominator",
+        "prefix_inner_fold_count",
+        "prefix_candidate_count",
+        "prefix_floor_numerator",
+        "prefix_floor_denominator",
+        "prefix_reduction_numerator",
+        "prefix_reduction_denominator",
+        "discovery_expanded_validation_report_sha256",
+        "discovery_universe_scale_script_sha256",
+        "discovery_outside800_unified_script_sha256",
+        "discovery_provenance_note_sha256",
+        "parameter_origin_policy_id",
+        "confirmation_role_id",
+        "burden_separation_policy_id",
+        "terminal_full104_masking_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationParametersAuthorityV3": {
+      "schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_parameters_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "support_estimability_authority_sha256",
+        "terminal_universe_id",
+        "terminal_universe_size",
+        "primary_attacker_id",
+        "primary_score_id",
+        "targeted_partner_cap",
+        "ridge_candidate_pool_count",
+        "ridge_score_feature_count",
+        "ridge_alpha_numerator",
+        "ridge_alpha_denominator",
+        "prefix_inner_fold_count",
+        "prefix_candidate_count",
+        "prefix_floor_numerator",
+        "prefix_floor_denominator",
+        "prefix_reduction_numerator",
+        "prefix_reduction_denominator",
+        "discovery_expanded_validation_report_sha256",
+        "discovery_universe_scale_script_sha256",
+        "discovery_outside800_unified_script_sha256",
+        "discovery_provenance_note_sha256",
+        "parameter_origin_policy_id",
+        "confirmation_role_id",
+        "burden_separation_policy_id",
+        "historical_provenance_role_id",
+        "terminal_full104_masking_outcomes_inspected",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "MaskingQualificationRunContractV1": {
+      "schema": "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "qualification_design_authority_sha256",
+        "qualification_parameters_authority_sha256",
+        "runner_source_sha256",
+        "freeze_policy_id",
+        "support_state_policy_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationRunContractV2": {
+      "schema": "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "qualification_design_authority_sha256",
+        "qualification_parameters_authority_sha256",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "support_estimability_authority_sha256",
+        "census_authority_sha256",
+        "target_evidence_budget_template_sha256",
+        "burden_ladder_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "precision_authority_sha256",
+        "rng_replay_authority_sha256",
+        "machine_worktree_checkpoint_sha256",
+        "canonical_reference_source_sha256",
+        "full104_streaming_execution_source_sha256",
+        "execution_source_role_id",
+        "freeze_policy_id",
+        "support_state_policy_id",
+        "terminal_universe_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationRunContractV3": {
+      "schema": "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V3",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "qualification_design_authority_sha256",
+        "qualification_parameters_authority_sha256",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "support_estimability_authority_sha256",
+        "census_authority_sha256",
+        "target_evidence_budget_template_sha256",
+        "burden_ladder_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "precision_authority_sha256",
+        "nonlinear_challenge_authority_sha256",
+        "rng_replay_authority_sha256",
+        "machine_worktree_checkpoint_sha256",
+        "canonical_reference_source_sha256",
+        "full104_streaming_execution_source_sha256",
+        "precision_evaluator_source_sha256",
+        "donor_evidence_source_sha256",
+        "control_executor_source_sha256",
+        "nonlinear_executor_source_sha256",
+        "decision_evaluator_source_sha256",
+        "execution_authority_source_sha256",
+        "anti_spillover_test_source_sha256",
+        "execution_source_role_id",
+        "decision_rule_id",
+        "freeze_policy_id",
+        "support_state_policy_id",
+        "terminal_universe_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingQualificationRunContractV4": {
+      "schema": "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V4",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v4",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py",
+      "declared_fields": [
+        "authority_id",
+        "qualification_design_authority_sha256",
+        "qualification_parameters_authority_sha256",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "support_estimability_authority_sha256",
+        "census_authority_sha256",
+        "control_calibration_cache_manifest_sha256",
+        "target_evidence_budget_template_sha256",
+        "burden_ladder_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_sizing_plan_sha256",
+        "control_calibration_precision_plan_sha256",
+        "target_panel_sizing_receipt_sha256",
+        "target_panel_authority_sha256",
+        "precision_authority_sha256",
+        "nonlinear_sampling_calibration_plan_sha256",
+        "nonlinear_sampling_calibration_receipt_sha256",
+        "nonlinear_challenge_authority_sha256",
+        "rng_replay_authority_sha256",
+        "machine_worktree_checkpoint_sha256",
+        "canonical_reference_source_sha256",
+        "full104_streaming_execution_source_sha256",
+        "target_panel_sizing_source_sha256",
+        "control_calibration_precision_source_sha256",
+        "control_capacity_calibration_source_sha256",
+        "control_calibration_cache_builder_source_sha256",
+        "control_calibration_cache_evaluator_source_sha256",
+        "target_panel_authority_source_sha256",
+        "precision_evaluator_source_sha256",
+        "donor_evidence_source_sha256",
+        "control_executor_source_sha256",
+        "nonlinear_sampling_calibration_source_sha256",
+        "nonlinear_authority_source_sha256",
+        "nonlinear_executor_source_sha256",
+        "decision_evaluator_source_sha256",
+        "terminal_evidence_assembly_source_sha256",
+        "terminal_mechanical_controls_source_sha256",
+        "terminal_one_rung_executor_source_sha256",
+        "execution_authority_source_sha256",
+        "anti_spillover_test_source_sha256",
+        "execution_source_role_id",
+        "execution_input_role_id",
+        "decision_rule_id",
+        "freeze_policy_id",
+        "support_state_policy_id",
+        "terminal_universe_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingRngReplayAuthorityV1": {
+      "schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_rng_replay_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "canonical_registry_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "seed_namespace_id",
+        "method_exclusion_policy_id",
+        "replay_policy_id",
+        "global_seed",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingRngReplayAuthorityV2": {
+      "schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_rng_replay_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "canonical_registry_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "burden_ladder_authority_sha256",
+        "seed_namespace_id",
+        "method_exclusion_policy_id",
+        "replay_policy_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingRngReplayAuthorityV3": {
+      "schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V3",
+      "defining_module": "sea_ad_jepa.v5.masking_rng_replay_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "canonical_registry_sha256",
+        "outer_split_receipt_sha256",
+        "qualification_parameters_authority_sha256",
+        "burden_ladder_authority_sha256",
+        "seed_namespace_id",
+        "method_exclusion_policy_id",
+        "replay_policy_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "MaskingRungDecisionReceiptV1": {
+      "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_decision_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_decision_v1.py",
+      "declared_fields": [
+        "burden_numerator",
+        "burden_denominator",
+        "qualified",
+        "selected_policy_id",
+        "policy_receipt_sha256",
+        "policy_selection_rule_id"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MaskingRungDecisionReceiptV2": {
+      "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V5",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_decision_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
+      "declared_fields": [
+        "burden_numerator",
+        "burden_denominator",
+        "qualified",
+        "selected_policy_id",
+        "policy_receipt_sha256",
+        "decision_rule_id",
+        "policy_selection_rule_id",
+        "targeting_complexity_materiality_rule_id",
+        "targeting_complexity_equivalence_events"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MeasurementRobustnessAuthorityV2": {
+      "schema": "V5_MEASUREMENT_ROBUSTNESS_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.measurement_robustness_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/measurement_robustness_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "teacher_target_semantics_sha256",
+        "precision_authority_sha256",
+        "perturbation_protocol_authority_sha256",
+        "stratification_guardrail_authority_sha256",
+        "execution_source_sha256",
+        "result_artifact_sha256",
+        "primary_metric_id",
+        "perturbation_semantics_id",
+        "failure_semantics_id",
+        "execution_status",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "MeasurementRobustnessDecisionAuthorityV1": {
+      "schema": "V5_MEASUREMENT_ROBUSTNESS_DECISION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.measurement_robustness_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/measurement_robustness_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "teacher_target_semantics_sha256",
+        "perturbation_protocol_authority_sha256",
+        "primary_metric_id",
+        "acceptance_margin_numerator",
+        "acceptance_margin_denominator",
+        "stratification_guardrail_authority_sha256",
+        "failure_semantics_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ModelGeometryAuthorityV1": {
+      "schema": "V5_MODEL_GEOMETRY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.model_geometry_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/model_geometry_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "qualified_dimension_authority_sha256",
+        "dimension_selection_artifact_sha256",
+        "rank_to_geometry_rule_authority_sha256",
+        "geometry_schema_id",
+        "geometry_artifact_sha256",
+        "protected_registry_authority_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ModelGeometryAuthorityV2": {
+      "schema": "V5_MODEL_GEOMETRY_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.model_geometry_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/model_geometry_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "qualified_dimension_authority_sha256",
+        "dimension_selection_artifact_sha256",
+        "rank_to_geometry_rule_authority_sha256",
+        "geometry_artifact_sha256",
+        "protected_registry_authority_sha256",
+        "memorization_qualification_authority_sha256",
+        "geometry_schema_id",
+        "rank_to_geometry_rule_id",
+        "memorization_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearCapControlVerdictV1": {
+      "schema": "V5_NONLINEAR_CAP_CONTROL_VERDICT_V1",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v1.py",
+      "declared_fields": [
+        "max_cells_per_donor",
+        "capacity_receipt_sha256",
+        "planted_minus_shuffled_lower_one_sided",
+        "replay_exact",
+        "all_donors_represented",
+        "real_masking_policy_outcomes_inspected"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearCapacityModelAuthorityV1": {
+      "schema": "V5_NONLINEAR_CAPACITY_MODEL_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_capacity_model_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_parameters_authority_sha256",
+        "historical_nonlinear_script_sha256",
+        "historical_nonlinear_summary_sha256",
+        "model_family_id",
+        "capacity_scope_id",
+        "retuning_policy_id",
+        "feature_count",
+        "learning_rate_numerator",
+        "learning_rate_denominator",
+        "max_iter",
+        "max_leaf_nodes",
+        "min_samples_leaf",
+        "l2_regularization_numerator",
+        "l2_regularization_denominator",
+        "max_bins",
+        "early_stopping",
+        "discovery_dataset_authorized_for_full104",
+        "discovery_target_list_authorized_for_full104",
+        "discovery_burden_authorized_for_full104",
+        "discovery_seed_authorized_for_full104",
+        "discovery_fold_assignment_authorized_for_full104",
+        "row_cap_frozen_here",
+        "terminal_masking_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearMaskingChallengeAuthorityV1": {
+      "schema": "V5_NONLINEAR_MASKING_CHALLENGE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_parameters_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "challenge_id",
+        "model_family_id",
+        "sampling_policy_id",
+        "donor_weighting_policy_id",
+        "retuning_policy_id",
+        "feature_count",
+        "max_cells_per_donor",
+        "learning_rate_numerator",
+        "learning_rate_denominator",
+        "max_iter",
+        "max_leaf_nodes",
+        "min_samples_leaf",
+        "l2_regularization_numerator",
+        "l2_regularization_denominator",
+        "max_bins",
+        "random_seed",
+        "early_stopping",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearMaskingChallengeAuthorityV2": {
+      "schema": "V5_NONLINEAR_MASKING_CHALLENGE_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_parameters_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "historical_nonlinear_script_sha256",
+        "historical_nonlinear_summary_sha256",
+        "challenge_id",
+        "model_family_id",
+        "sampling_policy_id",
+        "donor_weighting_policy_id",
+        "retuning_policy_id",
+        "parameter_origin_policy_id",
+        "feature_count",
+        "max_cells_per_donor",
+        "learning_rate_numerator",
+        "learning_rate_denominator",
+        "max_iter",
+        "max_leaf_nodes",
+        "min_samples_leaf",
+        "l2_regularization_numerator",
+        "l2_regularization_denominator",
+        "max_bins",
+        "early_stopping",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearMaskingChallengeAuthorityV3": {
+      "schema": "V5_FULL104_NONLINEAR_ROOT_DERIVED_SEED_V3",
+      "defining_module": "sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "primary_parameters_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256",
+        "historical_nonlinear_script_sha256",
+        "historical_nonlinear_summary_sha256",
+        "sampling_calibration_plan_sha256",
+        "sampling_calibration_receipt_sha256",
+        "max_cells_per_donor",
+        "challenge_id",
+        "model_family_id",
+        "sampling_policy_id",
+        "donor_weighting_policy_id",
+        "retuning_policy_id",
+        "parameter_origin_policy_id",
+        "feature_count",
+        "learning_rate_numerator",
+        "learning_rate_denominator",
+        "max_iter",
+        "max_leaf_nodes",
+        "min_samples_leaf",
+        "l2_regularization_numerator",
+        "l2_regularization_denominator",
+        "max_bins",
+        "early_stopping",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearSamplingCalibrationPlanV1": {
+      "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V1",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "target_panel_authority_sha256",
+        "outer_split_authority_sha256",
+        "primary_parameters_authority_sha256",
+        "ladder_id",
+        "selection_rule_id",
+        "outcome_firewall_policy_id",
+        "cap_ladder",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearSamplingCalibrationPlanV2": {
+      "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "target_panel_authority_sha256",
+        "precision_authority_sha256",
+        "outer_split_authority_sha256",
+        "primary_parameters_authority_sha256",
+        "model_capacity_authority_sha256",
+        "calibration_cache_manifest_sha256",
+        "calibration_evaluator_source_sha256",
+        "ladder_id",
+        "selection_rule_id",
+        "outcome_firewall_policy_id",
+        "cap_ladder",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearSamplingCalibrationReceiptV1": {
+      "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v1.py",
+      "declared_fields": [
+        "plan_authority_sha256",
+        "selected_max_cells_per_donor",
+        "evaluated_caps",
+        "verdict_digest_by_cap",
+        "real_masking_policy_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "NonlinearSamplingCalibrationReceiptV2": {
+      "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_RECEIPT_V2",
+      "defining_module": "sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v2.py",
+      "declared_fields": [
+        "plan_authority_sha256",
+        "calibration_cache_manifest_sha256",
+        "precision_authority_sha256",
+        "model_capacity_authority_sha256",
+        "selected_max_cells_per_donor",
+        "evaluated_caps",
+        "verdict_digest_by_cap",
+        "real_masking_policy_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "OuterDonorSplitAuthorityV1": {
+      "schema": "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.outer_split_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/outer_split_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "donor_registry_sha256",
+        "fold_assignment_artifact_sha256",
+        "split_semantics_id",
+        "screening_scope_policy_id",
+        "heldout_scope_policy_id",
+        "n_folds",
+        "n_donors",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "PrimaryRepresentationAuthorityV1": {
+      "schema": "V5_PRIMARY_REPRESENTATION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.primary_representation_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/primary_representation_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "substrate_authority_sha256",
+        "support_authority_sha256",
+        "feature_artifact_sha256",
+        "feature_selection_artifact_sha256",
+        "representation_semantics_id",
+        "primary_channel_role_id",
+        "observation_channel_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "PrimaryRepresentationRoutingAuthorityV1": {
+      "schema": "V5_PRIMARY_REPRESENTATION_ROUTING_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.primary_representation_routing_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/primary_representation_routing_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_block_manifest_sha256",
+        "canonical_registry_sha256",
+        "observation_state_sha256",
+        "feature_parent_manifest_sha256",
+        "value_only_selection_artifact_sha256",
+        "v0_full_parent_sha256",
+        "v1_full_parent_sha256",
+        "full104_streaming_source_sha256",
+        "rna_value_route_id",
+        "global_context_route_id",
+        "visibility_policy_id",
+        "value_start",
+        "value_stop",
+        "visibility_start",
+        "visibility_stop",
+        "parent_width",
+        "model_geometry_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "ProductionProtectedRegistryAuthorityV1": {
+      "schema": "V5_PRODUCTION_PROTECTED_REGISTRY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.production_protected_registry_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/production_protected_registry_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "model_depth",
+        "records",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "QualificationPrecisionAuthorityV1": {
+      "schema": "V5_QUALIFICATION_PRECISION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/precision_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "uncertainty_method_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "min_target_count",
+        "min_target_fold_unit_count",
+        "min_outer_fold_count",
+        "insufficient_support_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "QualificationPrecisionAuthorityV2": {
+      "schema": "V5_QUALIFICATION_PRECISION_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/precision_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "target_panel_authority_sha256",
+        "outer_split_authority_sha256",
+        "uncertainty_method_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "bootstrap_seed",
+        "min_target_count",
+        "min_donor_count",
+        "min_outer_fold_count",
+        "insufficient_support_policy_id",
+        "terminal_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "QualificationPrecisionAuthorityV3": {
+      "schema": "V5_QUALIFICATION_PRECISION_AUTHORITY_V3",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/precision_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "target_panel_authority_sha256",
+        "outer_split_authority_sha256",
+        "uncertainty_method_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "min_target_count",
+        "min_donor_count",
+        "min_outer_fold_count",
+        "insufficient_support_policy_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "QualificationPrecisionAuthorityV4": {
+      "schema": "V5_FULL104_PRECISION_ROOT_DERIVED_SEED_V4",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v4",
+      "defining_source_file": "src/sea_ad_jepa/v5/precision_authority_v4.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "target_panel_authority_sha256",
+        "target_panel_sizing_receipt_sha256",
+        "outer_split_authority_sha256",
+        "required_target_count",
+        "null_equivalence_margin_numerator",
+        "null_equivalence_margin_denominator",
+        "uncertainty_method_id",
+        "source_population_frame_id",
+        "source_aggregation_estimand_id",
+        "confidence_level_numerator",
+        "confidence_level_denominator",
+        "bootstrap_replicates",
+        "min_donor_count",
+        "min_outer_fold_count",
+        "insufficient_support_policy_id",
+        "negative_control_precision_policy_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "RecoveredScientificWeightLawV1": {
+      "schema": "V5_RECOVERED_SCIENTIFIC_WEIGHT_LAW_V1",
+      "defining_module": "sea_ad_jepa.v5.base_training_estimand_recovery_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/base_training_estimand_recovery_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "source_scientific_target_authority_sha256",
+        "source_full_reader_replay_sha256",
+        "population_authority_sha256",
+        "support_estimability_authority_sha256",
+        "support_eligibility_authority_sha256",
+        "estimand_id",
+        "target_probability_formula",
+        "weight_normalization_id",
+        "weight_unit_id",
+        "source_mass_policy_id",
+        "operator_mass_policy_id",
+        "proposal_separation_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "docs/agent/V5_RECOVERED_BASE_TRAINING_SCIENTIFIC_WEIGHT_LAW_20260915.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "RemainingRnaExecutionAuthorityV1": {
+      "schema": "V5_REMAINING_RNA_EXECUTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_execution_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/remaining_rna_execution_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "remaining_rna_necessity_authority_sha256",
+        "precision_authority_sha256",
+        "target_construction_authority_sha256",
+        "target_panel_authority_sha256",
+        "outer_split_authority_sha256",
+        "healthy_teacher_source_authority_sha256",
+        "result_artifact_sha256",
+        "evidence_source_id",
+        "execution_status",
+        "state_metric_id",
+        "comparator_set_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "RemainingRnaNecessityAuthorityV1": {
+      "schema": "V5_REMAINING_RNA_NECESSITY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_necessity_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/remaining_rna_necessity_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_address_provider_authority_sha256",
+        "masking_authority_sha256",
+        "precision_authority_sha256",
+        "protocol_id",
+        "metric_id",
+        "min_median_advantage_numerator",
+        "min_median_advantage_denominator",
+        "min_win_fraction_numerator",
+        "min_win_fraction_denominator",
+        "identity_only_comparator_id",
+        "global_context_no_rna_comparator_id",
+        "failure_semantics_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "SupportEstimabilityAuthorityV1": {
+      "schema": "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.support_estimability_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/support_estimability_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "measurement_support_authority_sha256",
+        "comparable_common_core_artifact_sha256",
+        "target_eligibility_rule_id",
+        "missing_value_semantics_id",
+        "common_core_role_semantics_id",
+        "native_support_role_semantics_id",
+        "support_to_latent_semantics_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 1,
+      "candidate_paths": [
+        "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json"
+      ],
+      "outcome": "CANDIDATE_FOUND"
+    },
+    "TargetAddressQueryAuthorityV1": {
+      "schema": "V5_TARGET_ADDRESS_QUERY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_address_query_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_address_query_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "address_registry_authority_sha256",
+        "query_provider_id",
+        "query_artifact_sha256",
+        "replay_policy_id",
+        "parameter_sharing_policy_id",
+        "gradient_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetConstructionAuthorityV1": {
+      "schema": "V5_TARGET_CONSTRUCTION_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_construction_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_construction_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_address_provider_authority_sha256",
+        "implementation_source_sha256",
+        "query_identity_policy_id",
+        "query_scalar_policy_id",
+        "non_query_rna_policy_id",
+        "global_context_policy_id",
+        "teacher_gradient_policy_id",
+        "scalar_expression_objective_policy_id",
+        "target_state_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetEvidenceBudgetAuthorityV1": {
+      "schema": "V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_evidence_budget_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "budget_semantics_id",
+        "rounding_policy_id",
+        "mask_fraction_numerator",
+        "mask_fraction_denominator",
+        "min_retained_non_target_rna_count",
+        "infeasible_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetEvidenceBudgetAuthorityV2": {
+      "schema": "V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V2_TEMPLATE",
+      "defining_module": "sea_ad_jepa.v5.target_evidence_budget_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "support_semantics_id",
+        "census_authority_sha256",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "terminal_universe_id",
+        "budget_semantics_id",
+        "eligibility_rule_id",
+        "rounding_policy_id",
+        "mask_fraction_numerator",
+        "mask_fraction_denominator",
+        "min_retained_non_target_address_count",
+        "infeasible_policy_id",
+        "excluded_observation_state_ids",
+        "measured_zero_is_measured_evidence",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetEvidenceBudgetTemplateAuthorityV1": {
+      "schema": "V5_TARGET_EVIDENCE_BUDGET_TEMPLATE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_evidence_budget_template_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_evidence_budget_template_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "support_estimability_authority_sha256",
+        "support_semantics_id",
+        "census_authority_sha256",
+        "full104_block_manifest_sha256",
+        "observation_state_sha256",
+        "terminal_universe_id",
+        "budget_semantics_id",
+        "eligibility_rule_id",
+        "rounding_policy_id",
+        "min_retained_non_target_address_count",
+        "min_retained_policy_id",
+        "infeasible_policy_id",
+        "excluded_observation_state_ids",
+        "measured_zero_is_measured_evidence",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetIdentityShortcutGateAuthorityV1": {
+      "schema": "V5_TARGET_IDENTITY_SHORTCUT_GATE_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_identity_shortcut_gate_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_identity_shortcut_gate_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "teacher_target_semantics_sha256",
+        "representation_authority_sha256",
+        "base_training_estimand_sha256",
+        "masking_authority_sha256",
+        "comparator_ids",
+        "null_reference_id",
+        "primary_metric_id",
+        "molecular_memory_margin_numerator",
+        "molecular_memory_margin_denominator",
+        "max_identity_contribution_numerator",
+        "max_identity_contribution_denominator",
+        "rare_address_guardrail_authority_sha256",
+        "shared_current_failure_semantics_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelAuthorityV1": {
+      "schema": "V5_TARGET_PANEL_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "eligible_universe_authority_sha256",
+        "selector_artifact_sha256",
+        "target_list_artifact_sha256",
+        "support_state_policy_id",
+        "selection_policy_id",
+        "outcome_firewall_policy_id",
+        "target_count",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelAuthorityV2": {
+      "schema": "V5_TARGET_PANEL_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "target_panel_sizing_authority_sha256",
+        "target_selection_receipt_sha256",
+        "selector_source_sha256",
+        "support_state_policy_id",
+        "selection_policy_id",
+        "outcome_firewall_policy_id",
+        "target_count",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelAuthorityV3": {
+      "schema": "V5_TARGET_PANEL_AUTHORITY_V3",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v3",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_authority_v3.py",
+      "declared_fields": [
+        "authority_id",
+        "full104_substrate_sha256",
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "target_panel_sizing_plan_sha256",
+        "target_panel_sizing_receipt_sha256",
+        "target_selection_receipt_sha256",
+        "selector_source_sha256",
+        "support_state_policy_id",
+        "selection_policy_id",
+        "outcome_firewall_policy_id",
+        "target_count",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelControlVerdictV2": {
+      "schema": "V5_TARGET_PANEL_CONTROL_VERDICT_V2",
+      "defining_module": "sea_ad_jepa.v5.target_panel_sizing_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py",
+      "declared_fields": [
+        "target_count",
+        "capacity_receipt_sha256",
+        "planted_minus_shuffled_lower_one_sided",
+        "replay_exact",
+        "donor_coverage_complete",
+        "bootstrap_finite",
+        "real_masking_policy_outcomes_inspected"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelSelectionReceiptV2": {
+      "schema": "V5_TARGET_PANEL_SELECTION_RECEIPT_V2",
+      "defining_module": "sea_ad_jepa.v5.target_panel_selector_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_selector_v2.py",
+      "declared_fields": [
+        "eligibility_receipt_sha256",
+        "target_count",
+        "selected_target_cols",
+        "selector_id",
+        "namespace",
+        "terminal_masking_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelSizingAuthorityV1": {
+      "schema": "V5_TARGET_PANEL_SIZING_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.target_panel_sizing_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "census_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "sizing_rule_id",
+        "independent_donor_count",
+        "eligible_target_count",
+        "target_count",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelSizingPlanAuthorityV2": {
+      "schema": "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.target_panel_sizing_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "census_authority_sha256",
+        "target_eligibility_receipt_sha256",
+        "independent_donor_count",
+        "eligible_target_count",
+        "ladder_id",
+        "selection_rule_id",
+        "outcome_firewall_policy_id",
+        "panel_count_ladder",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetPanelSizingReceiptV2": {
+      "schema": "V5_TARGET_PANEL_SIZING_RECEIPT_V2",
+      "defining_module": "sea_ad_jepa.v5.target_panel_sizing_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py",
+      "declared_fields": [
+        "plan_authority_sha256",
+        "selected_target_count",
+        "evaluated_counts",
+        "verdict_digest_by_count",
+        "real_masking_policy_outcomes_inspected",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TargetingComplexityMaterialityAuthorityV1": {
+      "schema": "V5_TARGETING_COMPLEXITY_MATERIALITY_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.targeting_complexity_materiality_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/targeting_complexity_materiality_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "relative_band_numerator",
+        "relative_band_denominator",
+        "scientific_rationale_id",
+        "scientific_rationale_sha256",
+        "rule_id",
+        "terminal_outcomes_inspected_before_freeze",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TeacherTargetSemanticsAuthorityV1": {
+      "schema": "V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V1",
+      "defining_module": "sea_ad_jepa.v5.teacher_target_semantics_authority_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/teacher_target_semantics_authority_v1.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "teacher_input_support_authority_sha256",
+        "teacher_state_location_id",
+        "target_aggregation_id",
+        "target_normalization_id",
+        "target_address_query_authority_sha256",
+        "student_visible_support_authority_sha256",
+        "scientific_weight_authority_sha256",
+        "masking_authority_sha256",
+        "gradient_boundary_authority_id",
+        "ema_boundary_authority_sha256",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TeacherTargetSemanticsAuthorityV2": {
+      "schema": "V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V2",
+      "defining_module": "sea_ad_jepa.v5.teacher_target_semantics_authority_v2",
+      "defining_source_file": "src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py",
+      "declared_fields": [
+        "authority_id",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "teacher_input_support_authority_sha256",
+        "target_address_query_authority_sha256",
+        "student_visible_support_authority_sha256",
+        "scientific_weight_authority_sha256",
+        "masking_authority_sha256",
+        "ema_boundary_authority_sha256",
+        "target_construction_authority_sha256",
+        "gradient_boundary_authority_sha256",
+        "remaining_rna_necessity_authority_sha256",
+        "state_semantics_id",
+        "query_local_semantics_id",
+        "scalar_expression_objective_policy_id",
+        "route_sufficiency_policy_id",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    },
+    "TerminalMechanicalControlReceiptV1": {
+      "schema": "V5_FULL104_TERMINAL_MECHANICAL_CONTROL_RECEIPT_V1",
+      "defining_module": "sea_ad_jepa.v5.masking_terminal_mechanical_controls_v1",
+      "defining_source_file": "src/sea_ad_jepa/v5/masking_terminal_mechanical_controls_v1.py",
+      "declared_fields": [
+        "run_contract_sha256",
+        "terminal_input_manifest_sha256",
+        "mask_grid_sha256",
+        "replay_exact",
+        "untreated_identity_exact",
+        "no_privileged_metadata",
+        "replay_control_id",
+        "untreated_identity_control_id",
+        "no_privileged_metadata_control_id",
+        "control_policy_id",
+        "protected_outcomes_authorized",
+        "training_authorized"
+      ],
+      "candidate_count": 0,
+      "candidate_paths": [],
+      "outcome": "NO_COMMITTED_ARTIFACT_FOUND"
+    }
+  },
+  "schema_to_paths": {
+    "ATOMIC_CHECKPOINT_TELEMETRY_GUARD_REVIEW_V1": [
+      "docs/agent/v5_anticheat/results/ATOMIC_CHECKPOINT_TELEMETRY_GUARD_REVIEW_V1.json"
+    ],
+    "BENCHMARK_TRAINING_OVERLAP_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/benchmark_training_overlap/benchmark_training_overlap_receipt_v1.json"
+    ],
+    "BULK_DISEASE_CONTEXT_EFFECTS_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/bulk_disease/BULK_DISEASE_CONTEXT_SUMMARY.json"
+    ],
+    "CRISPRBRAIN_ACQUISITION_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/crisprbrain/crisprbrain_acquisition_receipt_v1.json"
+    ],
+    "CRISPRBRAIN_SCREEN_RETROSPECTIVE_BASELINES_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/baselines/gse178317_development_baselines_v1.json"
+    ],
+    "CURRENT_WORK_CHECKPOINT_STATE_SUPERSESSION_20260908": [
+      "docs/agent/CURRENT_WORK_CHECKPOINT_STATE_SUPERSESSION_20260908.json"
+    ],
+    "CURRENT_WORK_CHECKPOINT_STATE_V2_20260908": [
+      "docs/agent/CURRENT_WORK_CHECKPOINT_STATE_V2_20260908.json"
+    ],
+    "F1_EVIDENCE_TREND_NUMERICAL_TOLERANCE_AUTHORITY_V1": [
+      "docs/agent/F1_EVIDENCE_TREND_NUMERICAL_TOLERANCE_AUTHORITY_20260902.json"
+    ],
+    "F1_EVIDENCE_TREND_PREIMPLEMENTATION_FREEZE_V1": [
+      "docs/agent/F1_EVIDENCE_TREND_PREIMPLEMENTATION_FREEZE_20260902.json"
+    ],
+    "F1_EVIDENCE_TREND_REPAIR_AUTHORITY_BINDING_V1": [
+      "outputs/contextual_teacher_target_v1_f1_evidence_trend_numerical_repair_20260903/F1_EVIDENCE_TREND_REPAIR_AUTHORITY_BINDING.json"
+    ],
+    "F1_EVIDENCE_TREND_REPAIR_HISTORICAL_HASH_BINDING_V1": [
+      "outputs/contextual_teacher_target_v1_f1_evidence_trend_numerical_repair_20260903/F1_EVIDENCE_TREND_REPAIR_HISTORICAL_HASH_BINDING.json"
+    ],
+    "F1_FINAL_DECISION_TRUTH_TABLE_V2": [
+      "docs/history/contextual_teacher_target_v1_f1_decision_truth_table_repair_20260902/F1_FINAL_DECISION_TRUTH_TABLE_V2.json"
+    ],
+    "F1_HC3_15B_PROVENANCE_REPAIR_EXTERNAL_LOCAL_ROOT_V1": [
+      "docs/agent/provenance-anchors/F1_HC3_15B_PROVENANCE_REPAIR_ROOT_20260902.json"
+    ],
+    "F1_HC3_15B_STRUCTURED_REVIEW_INDEX_V1": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15b_provenance_repair_20260902/F1_HC3_15B_STRUCTURED_REVIEW_INDEX.json"
+    ],
+    "F1_HC3_15B_STRUCTURED_REVIEW_V1": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15b_provenance_repair_20260902/review_records/01_historian_authority.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15b_provenance_repair_20260902/review_records/07_review_1_prospective_selection_statistics_and_authority_chronology.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15b_provenance_repair_20260902/review_records/08_review_2_numerical_linear_algebra_and_hc3.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15b_provenance_repair_20260902/review_records/09_review_3_provenance_firewall_dataset_and_biology_semantics.json"
+    ],
+    "F1_HC3_15C_NUMERICAL_TOLERANCE_AUTHORITY_V1": [
+      "outputs/contextual_teacher_target_v1_f1_hc3_15c_numerical_robustness_repair_20260902/F1_HC3_15C_NUMERICAL_TOLERANCE_AUTHORITY.json"
+    ],
+    "F1_HC3_15C_PREIMPLEMENTATION_FREEZE_V1": [
+      "outputs/contextual_teacher_target_v1_f1_hc3_15c_numerical_robustness_repair_20260902/F1_HC3_15C_PREIMPLEMENTATION_FREEZE.json"
+    ],
+    "FULL104_DATASET_ETL_ATLAS_V3": [
+      "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_ATLAS_SUMMARY_V3.json"
+    ],
+    "FULL104_DATASET_ETL_REPRODUCIBILITY_RECEIPT_V1": [
+      "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_REPRODUCIBILITY_RECEIPT_V1.json"
+    ],
+    "FUTURE_FULL_RUN_FLEXIBILITY_POLICY_REVIEW_20260909": [
+      "docs/agent/memory-os/FUTURE_FULL_RUN_FLEXIBILITY_POLICY_20260909.json"
+    ],
+    "GSE178317_CRISPRBRAIN_REFERENCE_COMPARISON_V2": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_crisprbrain_reference_comparison_receipt_v2.json"
+    ],
+    "GSE178317_CRISPRBRAIN_SUPPORT_QUALIFIED_COMPARISON_V3": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_crisprbrain_support_qualified_receipt_v3.json"
+    ],
+    "GSE178317_CRISPRBRAIN_VALIDATION_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_crisprbrain_validation_receipt_v1.json"
+    ],
+    "GSE178317_GUIDE_ASSIGNMENT_RECOVERY_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v1.json"
+    ],
+    "GSE178317_GUIDE_ASSIGNMENT_V2": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v2.json",
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v2_lanegate.json"
+    ],
+    "GSE178317_GUIDE_COUNT_STAGE_V2": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_count_stage_receipt_v2.json",
+      "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_count_stage_receipt_v2_safe_reissue.json"
+    ],
+    "GSE178317_INTERVENTION_EFFECTS_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_intervention_effects_receipt_v1.json"
+    ],
+    "GSE178317_INTERVENTION_EFFECTS_V2_DEVELOPMENT": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_intervention_effects_receipt_v2.json"
+    ],
+    "GSE178317_SAFE_COUNT_REISSUE_V1": [
+      "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_safe_reissue_provenance.json"
+    ],
+    "GSE254205_BULK_DRUG_RESPONSE_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse254205/GSE254205_drug_response_summary.json"
+    ],
+    "GSE293118_NONCODING_CRISPRI_INTERVENTION_EFFECTS_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse293118/GSE293118_etl_summary.json"
+    ],
+    "GSE301119_RAW_PSEUDOBULK_PROVENANCE_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse301119_rawpb_v1/RAW_PSEUDOBULK_PROVENANCE_MANIFEST.json"
+    ],
+    "GSE311359_PERTURB_SEQ_INTERVENTION_EFFECTS_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/gse311359/GSE311359_etl_summary.json"
+    ],
+    "HEALTHY_TEACHER_TRAINING_AUTHORITY_RECOVERY_V1": [
+      "docs/agent/HEALTHY_TEACHER_TRAINING_AUTHORITY_RECOVERY_20260907.json"
+    ],
+    "HEALTHY_TEACHER_TRAINING_BASE_CONTRACT_V1": [
+      "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json"
+    ],
+    "HEALTHY_TEACHER_TRAINING_BASE_FREEZE_V1": [
+      "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_FREEZE_20260907.json"
+    ],
+    "JEPA_BRANCH_CONSOLIDATION_V2": [
+      "docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json"
+    ],
+    "JEPA_BRANCH_PRUNE_RESULT_V1": [
+      "docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json"
+    ],
+    "JEPA_CHAT_LOCAL_ARTIFACT_BINDING_V1": [
+      "docs/agent/JEPA_CHAT_LOCAL_ARTIFACT_BINDING_20260908.json"
+    ],
+    "JEPA_GLOBAL_BLOCKER_LEDGER_V2": [
+      "docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json"
+    ],
+    "JEPA_LATEST_HANDOFF_POINTER_V19": [
+      "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_SNAPSHOT_V1": [
+      "docs/agent/NEW_CHAT_HANDOFF_20260908.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_POINTER_R2": [
+      "docs/agent/memory-os/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_POINTER.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R3": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R3.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V4": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT_V1": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_20260917_RIDGE8_T1_SPILLOVER_V1": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_RIDGE8_T1_SPILLOVER_CURRENT.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_R2": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_R2_20260908.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_V1": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260908.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_V11": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_V12": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json"
+    ],
+    "JEPA_NEW_CHAT_HANDOFF_STATE_V16": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.json"
+    ],
+    "JEPA_NEXT_ALLOWED_ACTION_V7": [
+      "docs/agent/memory-os/NEXT_ALLOWED_ACTION.json"
+    ],
+    "JEPA_POPULATION_ACCESS_REGISTRY_FREEZE_V1": [
+      "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_FREEZE_20260907.json"
+    ],
+    "JEPA_POPULATION_ACCESS_REGISTRY_V1": [
+      "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_V1_20260907.json"
+    ],
+    "JEPA_PROJECT_COORDINATION_CONSOLIDATION_FREEZE_V1": [
+      "docs/agent/PROJECT_CONSOLIDATION_FREEZE_20260907.json"
+    ],
+    "JEPA_PROJECT_COORDINATION_SNAPSHOT_V1": [
+      "docs/agent/PROJECT_CONSOLIDATED_STATE_20260907.json"
+    ],
+    "JEPA_RUNTIME_ASSET_STATUS_CURRENT_V3": [
+      "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json"
+    ],
+    "JEPA_SAFE_BRANCH_DELETE_LIST_V1": [
+      "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json"
+    ],
+    "JEPA_T0_CONSUMER_DECLARATION_FIXTURE_V1": [
+      "tests/v4/fixtures/t0_consumer_declarations_v1.json"
+    ],
+    "JEPA_TARGET_DISCOVERY_CURRENT_STATUS_20260908": [
+      "target_discovery/CURRENT_STATUS_20260908.json"
+    ],
+    "JEPA_V19_DATA_RESULTS_SCRIPTS_MANIFEST_V1": [
+      "docs/agent/JEPA_V19_DATA_RESULTS_SCRIPTS_MANIFEST_20260923.json"
+    ],
+    "JEPA_V19_FULL104_SOURCE_REPAIR_HANDOFF_STATE_V1": [
+      "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V19.json"
+    ],
+    "JEPA_V27_EXECUTION_STATE": [
+      "docs/agent/JEPA_V27_EXECUTION_STATE_20260925.json"
+    ],
+    "JEPA_V29_AUTHORITY_ROOT_STATUS_MATRIX_V1": [
+      "docs/agent/V29_ROOT_STATUS_MATRIX_20260926.json"
+    ],
+    "JEPA_V5_MASKING_SUCCESSOR_EXPLORATORY_STATE_V1": [
+      "docs/agent/JEPA_V5_MASKING_SUCCESSOR_STATE_20260917.json"
+    ],
+    "JEPA_V5_NEW_CHAT_HANDOFF_ARTIFACT_MANIFEST_V1": [
+      "docs/agent/handoff_artifacts/20260917/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json"
+    ],
+    "JEPA_V5_PRIMARY_REPRESENTATION_FEATURE_PARENTS_V1": [
+      "docs/agent/V5_PRIMARY_REPRESENTATION_FEATURE_PARENTS_20260915.json"
+    ],
+    "JEPA_V5_PRIMARY_REPRESENTATION_FREEZE_RECEIPT_V1": [
+      "docs/agent/V5_PRIMARY_REPRESENTATION_FREEZE_RECEIPT_20260915.json"
+    ],
+    "JEPA_V5_PRIMARY_REPRESENTATION_SELECTION_V1": [
+      "docs/agent/V5_PRIMARY_REPRESENTATION_SELECTION_20260915.json"
+    ],
+    "PERTURBATION_COMMITTED_OUTPUTS_SHA256_MANIFEST_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json"
+    ],
+    "READER_FIT_BASE_PROPOSAL_COVERAGE_PROFILE_V1": [
+      "docs/agent/READER_FIT_BASE_PROPOSAL_COVERAGE_PROFILE_V1.json"
+    ],
+    "READER_FIT_DATA_GEOMETRY_PROFILE_V1": [
+      "docs/agent/READER_FIT_DATA_GEOMETRY_PROFILE_V1.json"
+    ],
+    "READER_FIT_DONOR_PROPOSAL_PARETO_V1": [
+      "docs/agent/READER_FIT_DONOR_PROPOSAL_PARETO_V1.json"
+    ],
+    "READER_FIT_OPERATOR_SEMANTICS_PROFILE_V1": [
+      "docs/agent/READER_FIT_OPERATOR_SEMANTICS_PROFILE_V1.json"
+    ],
+    "READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1": [
+      "docs/agent/READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1.json"
+    ],
+    "READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1": [
+      "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1.json"
+    ],
+    "READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2": [
+      "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2.json"
+    ],
+    "READER_FIT_SUPPORT_OVERLAP_PROFILE_V1": [
+      "docs/agent/READER_FIT_SUPPORT_OVERLAP_PROFILE_V1.json"
+    ],
+    "T0_EXTERNAL_REVIEW_LEDGER_V1": [
+      "docs/agent/T0_EXTERNAL_REVIEW_LEDGER_24B2C9.json"
+    ],
+    "T1_TRAJECTORY_JSON_REVIEW_V1": [
+      "docs/agent/v5_anticheat/results/T1_TRAJECTORY_JSON_REVIEW_V1.json"
+    ],
+    "TD59_PREOUTCOME_BINDING_V1": [
+      "target_discovery/iterations/td59_mesoscale_half_locality/TD59_PREOUTCOME_BINDING.json"
+    ],
+    "TEACHER_STUDENT_EXTERNAL_REVIEW_FREEZE_V2": [
+      "docs/agent/TEACHER_STUDENT_EXTERNAL_REVIEW_FREEZE_V2.json"
+    ],
+    "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V1": [
+      "docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V1.json"
+    ],
+    "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V2": [
+      "docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V2.json"
+    ],
+    "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3": [
+      "docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3.json"
+    ],
+    "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V4": [
+      "docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V4.json"
+    ],
+    "TEACHER_STUDENT_LOCAL_SUPERSESSION_REGISTER_V2": [
+      "docs/agent/TEACHER_STUDENT_LOCAL_SUPERSESSION_REGISTER_V2.json"
+    ],
+    "TEACHER_STUDENT_RELATIONAL_TARGET_AUTHORITY_V2": [
+      "docs/agent/TEACHER_STUDENT_RELATIONAL_TARGET_AUTHORITY_V2.json"
+    ],
+    "TEACHER_STUDENT_UNIFIED_V4_REVIEW_PACKAGE_IDENTITY_20260908": [
+      "docs/agent/TEACHER_STUDENT_V4_SELF_CONTAINED_REVIEW_PACKAGE_IDENTITY_20260908.json"
+    ],
+    "TEACHER_STUDENT_V5_ANTI_CHEAT_CONSOLIDATED_STATUS_20260909_R2": [
+      "docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json"
+    ],
+    "TEACHER_STUDENT_V5_COMMON_CORE_ANCHOR_CANDIDATE_V1": [
+      "docs/agent/TEACHER_STUDENT_V5_COMMON_CORE_ANCHOR_CANDIDATE_V1.json"
+    ],
+    "TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE_V2": [
+      "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE.json"
+    ],
+    "TEACHER_STUDENT_V5_DONOR_PRIMARY_OBJECTIVE_CANDIDATE_V1": [
+      "docs/agent/TEACHER_STUDENT_V5_DONOR_PRIMARY_OBJECTIVE_CANDIDATE_V1.json"
+    ],
+    "TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1": [
+      "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json"
+    ],
+    "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V1": [
+      "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V1.json"
+    ],
+    "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2": [
+      "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2.json"
+    ],
+    "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3": [
+      "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3.json"
+    ],
+    "TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1": [
+      "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1.json"
+    ],
+    "TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2": [
+      "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json"
+    ],
+    "THERAPEUTIC_PERTURBATION_ETL_ATLAS_V1": [
+      "analysis/therapeutic_perturbation_etl/evidence/PERTURBATION_ETL_ATLAS_SUMMARY_V1.json"
+    ],
+    "V26_FROZEN_PASS1_READER_FIT_DONOR_COUNT_BRIDGE_V1": [
+      "results/v26/PASS1_READER_FIT_COUNT_BRIDGE_V1.json"
+    ],
+    "V5_ANTI_CHEAT_LOCAL_ARTIFACT_MANIFEST_20260909": [
+      "docs/agent/v5_anticheat/LOCAL_ARTIFACT_MANIFEST_20260909.json"
+    ],
+    "V5_AUDIT_B_B4_RUNTIME_PREFLIGHT_PROVENANCE_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B4_RUNTIME_PREFLIGHT_PROVENANCE.json"
+    ],
+    "V5_AUDIT_B_EXECUTION_CONTRACT_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json"
+    ],
+    "V5_AUDIT_B_EXECUTION_CONTRACT_V2": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V2.json"
+    ],
+    "V5_AUDIT_B_FROZEN_TARGET_SAMPLE_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_FROZEN_TARGET_SAMPLE.json"
+    ],
+    "V5_AUDIT_B_N1_EXECUTION_AUTHORITY_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_N1_EXECUTION_AUTHORITY_V1.json"
+    ],
+    "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json"
+    ],
+    "V5_AUDIT_B_PREEXECUTION_STATUS_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PREEXECUTION_STATUS_V1.json"
+    ],
+    "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V3": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json"
+    ],
+    "V5_B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE.json"
+    ],
+    "V5_BASE_TRAINING_ESTIMAND_AUTHORITY_V1": [
+      "docs/agent/V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json"
+    ],
+    "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1": [
+      "docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json"
+    ],
+    "V5_COLLECTION_EVIDENCE_V1": [
+      "docs/history/v5_support_geometry_superseded_test_20260920/COLLECTION_EVIDENCE.json"
+    ],
+    "V5_DENSE_RIDGE_BACKEND_EQUIVALENCE_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/solver_environment/ridge_backend_qualification_8c1feae6.json"
+    ],
+    "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/solver_environment/solver_preflight_OLD_sea-ad-jepa.json"
+    ],
+    "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V2": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/solver_environment/solver_preflight_CANONICAL_8c1feae6.json"
+    ],
+    "V5_DENSE_SOLVER_ENVIRONMENT_DIAGNOSIS_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/solver_environment/SOLVER_ENVIRONMENT_DIAGNOSIS_OLD.json"
+    ],
+    "V5_FULL104_ATTACKER_STANDARDIZATION_ESTIMAND_AUDIT_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_d/ATTACKER_STANDARDIZATION_CALIBRATION_RESULTS.json"
+    ],
+    "V5_FULL104_AUDIT_G_HOSTED_EQUAL_DONOR_FIXTURE_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/HOSTED_AUDIT_G_EQUAL_DONOR_FIXTURE_V1.json"
+    ],
+    "V5_FULL104_C2_ROW_LEVEL_VARIANCE_VERIFICATION_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/C2_ROW_LEVEL_VARIANCE_VERIFICATION.json"
+    ],
+    "V5_FULL104_CALIBRATION_CACHE_COVERAGE_AUDIT_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/CALIBRATION_CACHE_COVERAGE_SUMMARY.json"
+    ],
+    "V5_FULL104_CONTROL_CALIBRATION_CACHE_EVIDENCE_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/CALIBRATION_CACHE_EVIDENCE.json"
+    ],
+    "V5_FULL104_CONTROL_CALIBRATION_CACHE_MANIFEST_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/cache_manifest.json"
+    ],
+    "V5_FULL104_DONOR_UMI_INDEPENDENT_QUALIFICATION_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/DONOR_UMI_INDEPENDENT_QUALIFICATION_V1.json"
+    ],
+    "V5_FULL104_FAILED_SHAKEDOWN_ATTEMPT_RECORD_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/FAILED_SHAKEDOWN_USB_ATTEMPT_20260919.json"
+    ],
+    "V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION.json"
+    ],
+    "V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2.json"
+    ],
+    "V5_FULL104_HISTORICAL_INVALID_PASS1_RECORD_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/HISTORICAL_INVALID_PASS1_RECORD.json"
+    ],
+    "V5_FULL104_MASKING_PROSPECTIVE_FREEZE_STATUS_V1": [
+      "docs/agent/FULL104_MASKING_PROSPECTIVE_FREEZE_STATUS_20260917.json"
+    ],
+    "V5_FULL104_MASKING_SUCCESSOR_QUALIFICATION_CONTRACT_DRAFT_V1": [
+      "analysis/v5_masking_successor_spike_20260917/contracts/V5_FULL104_MASKING_SUCCESSOR_CONTRACT_DRAFT_20260917.json"
+    ],
+    "V5_FULL104_MASK_EFFECTIVE_BURDEN_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_b/MASK_EFFECTIVE_BURDEN.json"
+    ],
+    "V5_FULL104_NORMALIZATION_DENOMINATOR_AUDIT_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_SUMMARY.json"
+    ],
+    "V5_FULL104_OPERATOR_SUPPORT_CANDIDATE_V1__NOT_AUTHORITY": [
+      "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/OPERATOR_SUPPORT_CANDIDATE_V1.json"
+    ],
+    "V5_FULL104_PARTNER_CODETECTION_DECOMPOSITION_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_e/PARTNER_CODETECTION_DECOMPOSITION.json"
+    ],
+    "V5_FULL104_PASS1_PHYSICAL_BINDING_RECEIPT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/cleanhead_a1de0340/full104_pass1_physical_binding_v1.json",
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_pass1_physical_binding_v1.json"
+    ],
+    "V5_FULL104_PHYSICAL_SHAKEDOWN_RECEIPT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_physical_shakedown_receipt_v1.json"
+    ],
+    "V5_FULL104_READONLY_CENSUS_AUTHORITY_V1": [
+      "docs/agent/FULL104_READONLY_CENSUS_AUTHORITY_20260917.json"
+    ],
+    "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_census_authority_v2.json"
+    ],
+    "V5_FULL104_READONLY_CENSUS_SUMMARY_RECEIPT_V2": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/cleanhead_a1de0340/full104_census_summary_v2.json",
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_census_summary_v2.json"
+    ],
+    "V5_FULL104_REDTEAM_EXTERNAL_ARTIFACTS_V2_IMMUTABLE_PROVENANCE": [
+      "analysis/v5_full104_information_channel_redteam_20260920/EXTERNAL_ARTIFACTS.json"
+    ],
+    "V5_FULL104_REGRESSION_SUITE_RESULT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/REGRESSION_SUITE_8c1feae6.json"
+    ],
+    "V5_FULL104_RUNTIME_ENVELOPE_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/FULL104_RUNTIME_ENVELOPE_V1.json"
+    ],
+    "V5_FULL104_SOURCE_LIBRARY_PARSER_EQUIVALENCE_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/SOURCE_LIBRARY_PARSER_EQUIVALENCE.json"
+    ],
+    "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/cleanhead_a1de0340/full104_split_receipt_v1.json",
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_split_receipt_v1.json"
+    ],
+    "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/cleanhead_a1de0340/full104_target_eligibility_v1.json",
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_target_eligibility_v1.json"
+    ],
+    "V5_FULL104_TARGET_IDENTITY_ZERO_DECOMPOSITION_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_f/TARGET_IDENTITY_ZERO_DECOMPOSITION_FIXTURES.json"
+    ],
+    "V5_FULL104_TARGET_QUALIFICATION_EXECUTION_PROVENANCE_V1": [
+      "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/EXECUTION_PROVENANCE.json"
+    ],
+    "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_RECEIPT_V1": [
+      "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/sample_receipt.json"
+    ],
+    "V5_FULL104_TARGET_SOURCE_ESTIMABILITY_V1": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_ESTIMABILITY.json"
+    ],
+    "V5_MASKING_BURDEN_LADDER_AUTHORITY_V2": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_BURDEN_LADDER_AUTHORITY_V2.json"
+    ],
+    "V5_MASKING_QUALIFICATION_CONTRACT_V1": [
+      "docs/agent/V5_MASKING_QUALIFICATION_CONTRACT_20260916.json"
+    ],
+    "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json"
+    ],
+    "V5_MASKING_RNG_REPLAY_AUTHORITY_V3": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json"
+    ],
+    "V5_MASKING_V2_EXECUTION_CLARIFICATION_V1": [
+      "docs/agent/V5_MASKING_V2_CAP_RULE_CLARIFICATION_20260916.json"
+    ],
+    "V5_MASKING_V2_SHORTCUT_PREDICTABILITY_CONTRACT_V1": [
+      "docs/agent/V5_MASKING_V2_SHORTCUT_PREDICTABILITY_CONTRACT_20260916.json"
+    ],
+    "V5_MECHANICAL_INTEGRATION_DIAGNOSTIC_V1": [
+      "results/v26/V5_MECHANICAL_INTEGRATION_DIAGNOSTIC_V1.json"
+    ],
+    "V5_NUMERICAL_ENVIRONMENT_QUALIFICATION_V1": [
+      "analysis/v5_full104_pass1_rebuild_20260920/evidence/solver_environment/NUMERICAL_ENVIRONMENT_QUALIFICATION_8c1feae6.json"
+    ],
+    "V5_PHASE_III_V2_POLICY_CONSEQUENCE_ON_REAL_C2_GEOMETRY_V2": [
+      "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iii/POLICY_CONSEQUENCE_ON_REAL_GEOMETRY.json"
+    ],
+    "V5_PRIMARY_REPRESENTATION_AUTHORITY_V1": [
+      "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json"
+    ],
+    "V5_RECOVERED_SCIENTIFIC_WEIGHT_LAW_V1": [
+      "docs/agent/V5_RECOVERED_BASE_TRAINING_SCIENTIFIC_WEIGHT_LAW_20260915.json"
+    ],
+    "V5_STAGE_A_REGISTRY_BINDING_FAIL_CLOSED_CONTRACT_V1": [
+      "docs/agent/V5_STAGE_A_REGISTRY_BINDING_FAIL_CLOSED_CONTRACT_20260916.json"
+    ],
+    "V5_SUPERSEDED_TEST_RECORD_V1": [
+      "docs/history/v5_support_geometry_superseded_test_20260920/SUPERSEDED_TEST_RECORD.json"
+    ],
+    "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1": [
+      "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json"
+    ],
+    "contextual-target-v1-f0-implementation-manifest-v1": [
+      "docs/history/exact_bytes/outputs/CONTEXTUAL_TEACHER_TARGET_V1_F0_REVIEW_PACKAGE_20260901/contextual_teacher_target_v1_f0_implementation_20260901/CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_implementation_20260901/CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_superseded_attempt_3_pre_review/CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_superseded_attempt_4_pre_final_exact_semantics/CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_MANIFEST.json"
+    ],
+    "contextual-target-v1-f0-run-manifest-v1": [
+      "docs/history/exact_bytes/outputs/CONTEXTUAL_TEACHER_TARGET_V1_F0_REVIEW_PACKAGE_20260901/contextual_teacher_target_v1_f0_implementation_20260901/CONTEXTUAL_TARGET_V1_F0_RUN_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_failed_attempt_2_identical_state_attack/CONTEXTUAL_TARGET_V1_F0_RUN_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_implementation_20260901/CONTEXTUAL_TARGET_V1_F0_RUN_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_superseded_attempt_3_pre_review/CONTEXTUAL_TARGET_V1_F0_RUN_MANIFEST.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f0_superseded_attempt_4_pre_final_exact_semantics/CONTEXTUAL_TARGET_V1_F0_RUN_MANIFEST.json"
+    ],
+    "contextual-target-v1-f1-preflight-source-authority-v1": [
+      "docs/history/contextual_teacher_target_v1_f1_preflight_20260901/CONTEXTUAL_TARGET_V1_F1_PREFLIGHT_SOURCE_AUTHORITY.json"
+    ],
+    "d1-implementation-status-v2": [
+      "docs/agent/D1_IMPLEMENTATION_STATUS_20260907.json"
+    ],
+    "f1-15c-external-root-v1": [
+      "docs/agent/provenance-anchors/F1_HC3_15C_DECISION_INTEGRATION_ROOT_20260902.json"
+    ],
+    "f1-address-namespace-audit-v2": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_ADDRESS_NAMESPACE_AUDIT.json"
+    ],
+    "f1-implementation-verifier-support-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_SUPPORT.json"
+    ],
+    "f1-independent-repair-validation-v1": [
+      "docs/history/contextual_teacher_target_v1_f1_prospective_repair_20260901_pre_council_repair1/F1_INDEPENDENT_REPAIR_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_INDEPENDENT_REPAIR_VALIDATION.json"
+    ],
+    "f1-matched-null-balance-audit-v1": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_MATCHED_NULL_BALANCE_AUDIT.json",
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901_pre_council_repair1/F1_MATCHED_NULL_BALANCE_AUDIT.json"
+    ],
+    "f1-mechanics-finalizer-failclosed-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FINALIZER_FAILCLOSED.json"
+    ],
+    "f1-mechanics-firewall-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FIREWALL.json"
+    ],
+    "f1-mechanics-full-forward-topology-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FULL_FORWARD_TOPOLOGY.json"
+    ],
+    "f1-mechanics-full-synthetic-topology-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FULL_SYNTHETIC_TOPOLOGY.json"
+    ],
+    "f1-mechanics-independent-validation-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_INDEPENDENT_VALIDATION.json"
+    ],
+    "f1-mechanics-runtime-projection-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_RUNTIME_PROJECTION.json"
+    ],
+    "f1-mechanics-wsl-gpu-stability-soak-v1": [
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_WSL_GPU_STABILITY_SOAK.json"
+    ],
+    "f1-nuisance-column-schema-v1": [
+      "docs/history/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_COLUMN_SCHEMA.json"
+    ],
+    "f1-preflight-evidence-mask-binding-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_EVIDENCE_MASK_BINDING.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_EVIDENCE_MASK_BINDING.json"
+    ],
+    "f1-preflight-executor-plan-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_EXECUTOR_PLAN.json"
+    ],
+    "f1-preflight-expression-justification-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_EXPRESSION_JUSTIFICATION.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_EXPRESSION_JUSTIFICATION.json"
+    ],
+    "f1-preflight-firewall-audit-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_FIREWALL_AUDIT.json"
+    ],
+    "f1-preflight-independent-validation-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_INDEPENDENT_VALIDATION.json"
+    ],
+    "f1-preflight-materialized-reader-plan-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_READER_PLAN_BINDING.json"
+    ],
+    "f1-preflight-query-safe-parity-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_QUERY_SAFE_PARITY.json"
+    ],
+    "f1-preflight-real-forward-root-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_REAL_FORWARD_ROOT.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_REAL_FORWARD_ROOT.json"
+    ],
+    "f1-preflight-resource-selection-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_RESOURCE_SELECTION.json"
+    ],
+    "f1-preflight-resource-snapshot-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_RESOURCE_SNAPSHOT.json"
+    ],
+    "f1-preflight-role-throughput-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_ROLE_THROUGHPUT.json"
+    ],
+    "f1-preflight-runtime-projection-v2": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_RUNTIME_PROJECTION.json"
+    ],
+    "f1-preflight-shard-resume-test-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_SHARD_RESUME_TEST.json"
+    ],
+    "f1-preflight-storage-envelope-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_STORAGE_ENVELOPE.json"
+    ],
+    "f1-preflight-sufficient-statistics-parity-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_SUFFICIENT_STATISTICS_PARITY.json"
+    ],
+    "f1-preflight-sufficient-statistics-schema-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_SUFFICIENT_STATISTICS_SCHEMA.json"
+    ],
+    "f1-preflight-technical-fixture-binding-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_TECHNICAL_FIXTURE_BINDING.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_TECHNICAL_FIXTURE_BINDING.json"
+    ],
+    "f1-preflight-wsl-environment-v1": [
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_WSL_ENVIRONMENT_AUTHENTICATION.json"
+    ],
+    "f1-query-assignment-audit-v2": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_ASSIGNMENT_AUDIT.json"
+    ],
+    "f1-query-randomization-authority-v1": [
+      "docs/history/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_RANDOMIZATION_AUTHORITY.json"
+    ],
+    "f1-querydesign-independent-validation-v2": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERYDESIGN_INDEPENDENT_VALIDATION.json"
+    ],
+    "f1-querydesign-repair-source-authority-v2": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERYDESIGN_REPAIR_SOURCE_AUTHORITY.json"
+    ],
+    "f1-real-forward-preflight-authority-binding-v1": [
+      "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_AUTHORITY_BINDING.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_AUTHORITY_BINDING.json"
+    ],
+    "f1-repair-source-authority-v1": [
+      "docs/history/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_REPAIR_SOURCE_AUTHORITY.json",
+      "docs/history/contextual_teacher_target_v1_f1_prospective_repair_20260901_pre_council_repair1/F1_REPAIR_SOURCE_AUTHORITY.json"
+    ],
+    "f1-weight-sign-integer-mass-audit-v2": [
+      "docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_WEIGHT_SIGN_AND_INTEGER_MASS_AUDIT.json"
+    ],
+    "full104-active-shared-d-code-authority-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_d_p0_repair_v1/ACTIVE_SHARED_D_CODE_AUTHORITY.json"
+    ],
+    "full104-block-major-wsl-implementation-gate-v1": [
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v1/IMPLEMENTATION_PREFLIGHT_STATUS.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v2/IMPLEMENTATION_PREFLIGHT_STATUS.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v3/IMPLEMENTATION_PREFLIGHT_STATUS.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v4/IMPLEMENTATION_PREFLIGHT_STATUS.json"
+    ],
+    "full104-candidate-dimension-authority-resolution-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_freeze_v1/CANDIDATE_DIMENSION_AUTHORITY_RESOLUTION.json"
+    ],
+    "full104-checkpoint-payload-ledger-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_1024/CHECKPOINT_PAYLOAD_LEDGER.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_16/CHECKPOINT_PAYLOAD_LEDGER.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_256/CHECKPOINT_PAYLOAD_LEDGER.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_4/CHECKPOINT_PAYLOAD_LEDGER.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_64/CHECKPOINT_PAYLOAD_LEDGER.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_ALL/CHECKPOINT_PAYLOAD_LEDGER.json"
+    ],
+    "full104-contiguous-prefix-rule-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_d_p0_repair_v1/CONTIGUOUS_PREFIX_RULE_AUDIT.json"
+    ],
+    "full104-cross-blas-decision-invariance-v1": [
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v1/artifacts/08_CROSS_BLAS_DECISION_INVARIANCE.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v2/artifacts/08_CROSS_BLAS_DECISION_INVARIANCE.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v3/artifacts/09_CROSS_BLAS_DECISION_INVARIANCE.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v4/artifacts/09_CROSS_BLAS_DECISION_INVARIANCE.json",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/wsl_cross_blas_promotion_check_v1/CROSS_BLAS_DECISION_INVARIANCE.json"
+    ],
+    "full104-expression-interface-freeze-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v1_concern_unexecuted/FULL104_EXPRESSION_INTERFACE_FREEZE.json"
+    ],
+    "full104-expression-interface-freeze-v2": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v3/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v4/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v5/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v6/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v7/FULL104_EXPRESSION_INTERFACE_FREEZE.json"
+    ],
+    "full104-expression-interface-freeze-v8": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/full104_expression_interface_v8_verified/FULL104_EXPRESSION_INTERFACE_V8/failed_review_round0/interface_check/FULL104_EXPRESSION_INTERFACE_FREEZE.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/full104_expression_interface_v8_verified/FULL104_EXPRESSION_INTERFACE_V8/interface_check_v8r1/FULL104_EXPRESSION_INTERFACE_FREEZE.json"
+    ],
+    "full104-expression-interface-preflight-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/02_expression_interface_preflight_v7/FULL104_EXPRESSION_INTERFACE_PREFLIGHT.json"
+    ],
+    "full104-expression-interface-preflight-v8": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/full104_expression_interface_v8_verified/FULL104_EXPRESSION_INTERFACE_V8/failed_review_round0/interface_check/FULL104_EXPRESSION_INTERFACE_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/full104_expression_interface_v8_verified/FULL104_EXPRESSION_INTERFACE_V8/interface_check_v8r1/FULL104_EXPRESSION_INTERFACE_PREFLIGHT.json"
+    ],
+    "full104-feature-matrix-failed-final-validation-v1": [
+      "docs/history/preservation_20260902/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level4/FAILED_FINAL_VALIDATION_ATTEMPT_1.json"
+    ],
+    "full104-feature-matrix-final-validation-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level4/FULL104_FEATURE_MATRIX_FINAL_VALIDATION.json"
+    ],
+    "full104-independent-shared-validator-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/independent_shared_validation_level2_v1/INDEPENDENT_SHARED_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/independent_shared_validation_level3_v1/INDEPENDENT_SHARED_VALIDATION.json"
+    ],
+    "full104-lossless-plan-authority-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v1/artifacts/18_LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v2/artifacts/18_LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v3/artifacts/19_LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/block_major_wsl_implementation_gate_v4/artifacts/19_LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_1024/LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_16/LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_256/LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_4/LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_64/LOSSLESS_PLAN_AUTHORITY.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_null_sensitivity_results_v2_lossless_scoped/cap_ALL/LOSSLESS_PLAN_AUTHORITY.json"
+    ],
+    "full104-metadata-scope-terminal-status-v1": [
+      "docs/history/full104_v014_20260826/01_full104_metadata_adapter/FULL104_METADATA_SCOPE_STATUS.json"
+    ],
+    "full104-phase2-derivation-freeze-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/preexpression_freeze/PHASE2_DERIVATION_FREEZE.json"
+    ],
+    "full104-phase2-expression-materialization-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level0/MATERIALIZATION_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level0/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level0/provenance/MATERIALIZATION_CONTRACT_FAILED_R_PATH.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level1/MATERIALIZATION_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level1/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level2/MATERIALIZATION_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level2/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level3/MATERIALIZATION_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level3/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/MATERIALIZATION_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json"
+    ],
+    "full104-phase2-feature-boundary-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_boundary_level4_final/FEATURE_BOUNDARY_INTEGRITY_AUDIT.json"
+    ],
+    "full104-phase2-feature-matrix-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level0/PHASE2_FEATURE_MATRIX_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level1/PHASE2_FEATURE_MATRIX_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level2/PHASE2_FEATURE_MATRIX_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level3/PHASE2_FEATURE_MATRIX_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level4/PHASE2_FEATURE_MATRIX_AUDIT.json"
+    ],
+    "full104-phase2-feature-storage-memory-preflight-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/full104_feature_storage_memory_preflight_v1/FULL104_FEATURE_STORAGE_MEMORY_PREFLIGHT.json"
+    ],
+    "full104-phase2-materialization-boundary-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/materialization_boundary_level4_b8179/BOUNDARY_INTEGRITY_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/materialization_boundary_level4_b8451/BOUNDARY_INTEGRITY_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/materialization_boundary_level4_final_b8915/BOUNDARY_INTEGRITY_AUDIT.json"
+    ],
+    "full104-phase2-metadata-selection-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/metadata_selection_level0/PHASE2_METADATA_SELECTION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/metadata_selection_level1/PHASE2_METADATA_SELECTION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/metadata_selection_level2/PHASE2_METADATA_SELECTION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/metadata_selection_level3/PHASE2_METADATA_SELECTION_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/metadata_selection_level4/PHASE2_METADATA_SELECTION_AUDIT.json"
+    ],
+    "full104-phase2-multiview-features-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level0/MULTIVIEW_FEATURE_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level0/PHASE2_MULTIVIEW_FEATURE_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level1/MULTIVIEW_FEATURE_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level1/PHASE2_MULTIVIEW_FEATURE_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level2/MULTIVIEW_FEATURE_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level2/PHASE2_MULTIVIEW_FEATURE_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level3/MULTIVIEW_FEATURE_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level3/PHASE2_MULTIVIEW_FEATURE_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level4/MULTIVIEW_FEATURE_CONTRACT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/multiview_features_level4/PHASE2_MULTIVIEW_FEATURE_AUDIT.json"
+    ],
+    "full104-refit-null-compute-preflight-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v2/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v3/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v4/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v5/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v6/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v7/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_compute_preflight_v8/COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v1/artifacts/09_COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v2_scoped/artifacts/09_COMPUTE_STORAGE_RUNTIME_PREFLIGHT.json"
+    ],
+    "full104-refit-null-implementation-preflight-status-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v1/IMPLEMENTATION_PREFLIGHT_STATUS.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v2_scoped/IMPLEMENTATION_PREFLIGHT_STATUS.json"
+    ],
+    "full104-refit-null-independent-implementation-validator-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v1/artifacts/07_INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_implementation_gate_v2_scoped/artifacts/07_INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v2/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v4/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v5/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v6/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v7/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v8/INDEPENDENT_IMPLEMENTATION_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/refit_null_sensitivity_independent_validator_v9/INDEPENDENT_IMPLEMENTATION_VALIDATION.json"
+    ],
+    "full104-refit-null-scale-and-geometry-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_d_p0_repair_v1/REFIT_NULL_SCALE_AND_GEOMETRY_AUDIT.json"
+    ],
+    "full104-reuse-authority-v1": [
+      "docs/history/exact_bytes/outputs/full104_parallel_reuse_delta_20260902/FULL104_REUSE_AUTHORITY.json"
+    ],
+    "full104-reuse-delta-independent-validation-v1": [
+      "docs/history/exact_bytes/outputs/full104_parallel_reuse_delta_20260902/FULL104_REUSE_DELTA_INDEPENDENT_VALIDATION.json"
+    ],
+    "full104-shared-empirical-null-refit-validation-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_empirical_null_level1/SHARED_REFIT_EMPIRICAL_NULL_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_empirical_null_level1_v2/SHARED_REFIT_EMPIRICAL_NULL_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_empirical_null_level2_v1/SHARED_REFIT_EMPIRICAL_NULL_VALIDATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_refit_empirical_null_level3_v1/SHARED_REFIT_EMPIRICAL_NULL_VALIDATION.json"
+    ],
+    "full104-shared-ladder-refit-harness-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/ladder_refit_adjudication_level2_v1/SHARED_LADDER_REFIT_ADJUDICATION.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/ladder_refit_adjudication_level3_v1/SHARED_LADDER_REFIT_ADJUDICATION.json"
+    ],
+    "full104-shared-numerical-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/_staging_shared_level0/SHARED_NUMERICAL_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_analytic_level0_v2/SHARED_NUMERICAL_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_analytic_level1_v2/SHARED_NUMERICAL_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_analytic_level2_v1/SHARED_NUMERICAL_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_analytic_level3_v1/SHARED_NUMERICAL_AUDIT.json",
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_analytic_level4_v1/SHARED_NUMERICAL_AUDIT.json"
+    ],
+    "full104-shared-observation-shortcut-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/shared_shortcut_fold_audit_level1/PHASE2_SHARED_OBSERVATION_SHORTCUT_AUDIT.json"
+    ],
+    "full104-shared-state-final-adjudication-v1": [
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/full104_shared_state_final_adjudication_v1/FULL104_SHARED_STATE_FINAL_ADJUDICATION.json"
+    ],
+    "independent-full104-refit-null-real-result-adjudication-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/independent_full104_real_result_adjudication_v1/INDEPENDENT_FULL104_REAL_RESULT_ADJUDICATION.json"
+    ],
+    "jepa-full104-v014-phase0-preflight-v1": [
+      "docs/history/full104_v014_20260826/00_environment/PHASE0_PREFLIGHT.json"
+    ],
+    "jepa-implementation-verifier-mutation-catalog-v1": [
+      "docs/agent/governance/IMPLEMENTATION_VERIFIER_MUTATION_CATALOG_V1.json"
+    ],
+    "jepa-implementation-verifier-report-v1": [
+      "docs/agent/governance/IMPLEMENTATION_VERIFIER_REPORT_TEMPLATE_V1.json",
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_IMPLEMENTATION_VERIFIER_REPORT.json",
+      "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_IMPLEMENTATION_VERIFIER_REPORT_STOP_ROUND1.json",
+      "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_REPORT.json"
+    ],
+    "jepa-mandatory-implementation-verifier-policy-v1": [
+      "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_POLICY_V1.json"
+    ],
+    "jepa-population-access-registry-authority-validation-v1": [
+      "docs/agent/POPULATION_ACCESS_REGISTRY_AUTHORITY_VALIDATION_20260907.json"
+    ],
+    "phase2-materialization-semantics-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/pregeometry_audits/PHASE2_MATERIALIZATION_SEMANTICS_AUDIT.json"
+    ],
+    "phase2-production-capacity-interface-audit-v1": [
+      "docs/history/exact_bytes/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/pregeometry_audits/PHASE2_PRODUCTION_CAPACITY_INTERFACE_AUDIT.json"
+    ],
+    "td13-history-gated-donorblock-qc-subspace-v1": [
+      "target_discovery/iterations/td13_history_gated/SUMMARY.json"
+    ],
+    "td13b-history-gated-subspace-ablation-v1": [
+      "target_discovery/iterations/td13b_ablation/SUMMARY.json"
+    ],
+    "td14-power-matched-class-subspace-v1": [
+      "target_discovery/iterations/td14_power_matched/SUMMARY.json"
+    ],
+    "td16-claude-memo-discriminating-attacks-v1": [
+      "target_discovery/iterations/td16_claude_memo_attacks/SUMMARY.json"
+    ],
+    "td17-relational-biological-state-geometry-v1": [
+      "target_discovery/iterations/td17_relational_geometry/SUMMARY.json"
+    ],
+    "td18-three-source-relational-scaffold-v1": [
+      "target_discovery/iterations/td18_three_source_scaffold/SUMMARY.json"
+    ],
+    "td33-global-row-binding-guard-v1": [
+      "target_discovery/iterations/td33_global_row_binding_guard/TD33_SUMMARY.json"
+    ],
+    "td37a-independent-adjudication-v1": [
+      "target_discovery/iterations/td37a_split_ledger_confirmatory/TD37A_INDEPENDENT_ADJUDICATION.json"
+    ],
+    "td37a-transfer-gate-v1": [
+      "target_discovery/iterations/td37a_split_ledger_confirmatory/TD37A_TRANSFER_DECISION.json"
+    ],
+    "td37a-within-source-gate-v1": [
+      "target_discovery/iterations/td37a_split_ledger_confirmatory/TD37A_WITHIN_DECISION.json"
+    ]
+  }
+}

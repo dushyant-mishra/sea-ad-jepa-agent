@@ -1,0 +1,889 @@
+{
+  "schema": "JEPA_LANEB_V29_CLOSURE_ROOT_GRAPH_V1",
+  "source_file": "src/sea_ad_jepa/v5/current_authority_closure_v2.py",
+  "upstream_root_count": 32,
+  "receipt_root_count": 33,
+  "receipt_only_roots": [
+    "preexecution_authority_sha256"
+  ],
+  "enforcement_census": {
+    "isinstance_enforced": 24,
+    "duck_typed_no_class_check": 5,
+    "raw_str_cross_binding_constant": 3
+  },
+  "total_equality_assertions": 59,
+  "roots": [
+    {
+      "root": "full104_substrate_sha256",
+      "closure_local": "full",
+      "closure_parameter": "full104_substrate_sha256",
+      "parameter_annotation": "str",
+      "enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "representation",
+          "consumer_attribute": "substrate_authority_sha256",
+          "access": "getattr_default_none",
+          "line": 195,
+          "message": "representation substrate root mismatch"
+        },
+        {
+          "consumer_param": "support_estimability",
+          "consumer_attribute": "full104_substrate_sha256",
+          "access": "getattr_default_none",
+          "line": 196,
+          "message": "support substrate root mismatch"
+        },
+        {
+          "consumer_param": "canonical_address_registry",
+          "consumer_attribute": "full104_block_manifest_sha256",
+          "access": "direct",
+          "line": 202,
+          "message": "registry FULL104 substrate root mismatch"
+        },
+        {
+          "consumer_param": "outer_split",
+          "consumer_attribute": "full104_substrate_sha256",
+          "access": "direct",
+          "line": 209,
+          "message": "outer split FULL104 root mismatch"
+        },
+        {
+          "consumer_param": "target_panel",
+          "consumer_attribute": "full104_substrate_sha256",
+          "access": "direct",
+          "line": 210,
+          "message": "target panel FULL104 root mismatch"
+        },
+        {
+          "consumer_param": "masking_qualification_design",
+          "consumer_attribute": "full104_substrate_sha256",
+          "access": "direct",
+          "line": 245,
+          "message": "masking design FULL104 root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 6
+    },
+    {
+      "root": "representation_authority_sha256",
+      "closure_local": "rep",
+      "closure_parameter": "representation",
+      "parameter_annotation": "Any",
+      "enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [
+        "substrate_authority_sha256",
+        "support_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "remaining_rna_necessity",
+          "consumer_attribute": "representation_authority_sha256",
+          "access": "direct",
+          "line": 226,
+          "message": "remaining-RNA representation root mismatch"
+        },
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "representation_authority_sha256",
+          "access": "direct",
+          "line": 237,
+          "message": "teacher representation root mismatch"
+        },
+        {
+          "consumer_param": "masking_qualification_design",
+          "consumer_attribute": "representation_authority_sha256",
+          "access": "direct",
+          "line": 246,
+          "message": "masking design representation root mismatch"
+        },
+        {
+          "consumer_param": "measurement_robustness",
+          "consumer_attribute": "representation_authority_sha256",
+          "access": "direct",
+          "line": 303,
+          "message": "measurement representation root mismatch"
+        },
+        {
+          "consumer_param": "target_identity_gate",
+          "consumer_attribute": "representation_authority_sha256",
+          "access": "direct",
+          "line": 309,
+          "message": "identity gate representation root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 5
+    },
+    {
+      "root": "support_estimability_authority_sha256",
+      "closure_local": "support",
+      "closure_parameter": "support_estimability",
+      "parameter_annotation": "Any",
+      "enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [
+        "full104_substrate_sha256",
+        "measurement_support_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "base_training_estimand",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "getattr_default_none",
+          "line": 203,
+          "message": "estimand support root mismatch"
+        },
+        {
+          "consumer_param": "target_evidence_budget",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 207,
+          "message": "budget support root mismatch"
+        },
+        {
+          "consumer_param": "precision",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 208,
+          "message": "precision support root mismatch"
+        },
+        {
+          "consumer_param": "target_panel",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 212,
+          "message": "target panel support root mismatch"
+        },
+        {
+          "consumer_param": "address_universe_ladder",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 214,
+          "message": "address ladder support root mismatch"
+        },
+        {
+          "consumer_param": "remaining_rna_necessity",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 227,
+          "message": "remaining-RNA support root mismatch"
+        },
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 238,
+          "message": "teacher support root mismatch"
+        },
+        {
+          "consumer_param": "masking_qualification_design",
+          "consumer_attribute": "support_estimability_authority_sha256",
+          "access": "direct",
+          "line": 247,
+          "message": "masking design support root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 8
+    },
+    {
+      "root": "canonical_address_registry_authority_sha256",
+      "closure_local": "registry",
+      "closure_parameter": "canonical_address_registry",
+      "parameter_annotation": "CanonicalAddressRegistryAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "CanonicalAddressRegistryAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.canonical_address_registry_authority_v1",
+      "attributes_read_by_closure": [
+        "full104_block_manifest_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "target_panel",
+          "consumer_attribute": "canonical_registry_authority_sha256",
+          "access": "direct",
+          "line": 211,
+          "message": "target panel registry root mismatch"
+        },
+        {
+          "consumer_param": "address_universe_ladder",
+          "consumer_attribute": "canonical_registry_authority_sha256",
+          "access": "direct",
+          "line": 213,
+          "message": "address ladder registry root mismatch"
+        },
+        {
+          "consumer_param": "masking_rng_replay",
+          "consumer_attribute": "canonical_registry_authority_sha256",
+          "access": "direct",
+          "line": 215,
+          "message": "masking RNG registry root mismatch"
+        },
+        {
+          "consumer_param": "masking",
+          "consumer_attribute": "canonical_registry_authority_sha256",
+          "access": "direct",
+          "line": 223,
+          "message": "masking registry root mismatch"
+        },
+        {
+          "consumer_param": "masking_qualification_design",
+          "consumer_attribute": "canonical_registry_authority_sha256",
+          "access": "direct",
+          "line": 248,
+          "message": "masking design registry root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 5
+    },
+    {
+      "root": "base_training_estimand_sha256",
+      "closure_local": "est",
+      "closure_parameter": "base_training_estimand",
+      "parameter_annotation": "Any",
+      "enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [
+        "support_estimability_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "scientific_weight_authority_sha256",
+          "access": "direct",
+          "line": 240,
+          "message": "teacher estimand root mismatch"
+        },
+        {
+          "consumer_param": "ema",
+          "consumer_attribute": "base_training_estimand_sha256",
+          "access": "direct",
+          "line": 300,
+          "message": "EMA estimand root mismatch"
+        },
+        {
+          "consumer_param": "target_identity_gate",
+          "consumer_attribute": "base_training_estimand_sha256",
+          "access": "direct",
+          "line": 310,
+          "message": "identity gate estimand root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 3
+    },
+    {
+      "root": "target_address_provider_authority_sha256",
+      "closure_local": "address",
+      "closure_parameter": "target_address",
+      "parameter_annotation": "CurrentTargetAddressProviderAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "CurrentTargetAddressProviderAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.current_target_address_provider_authority_v1",
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "remaining_rna_necessity",
+          "consumer_attribute": "target_address_provider_authority_sha256",
+          "access": "direct",
+          "line": 228,
+          "message": "remaining-RNA target-address root mismatch"
+        },
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "target_address_query_authority_sha256",
+          "access": "direct",
+          "line": 239,
+          "message": "teacher target-address root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 2
+    },
+    {
+      "root": "target_evidence_budget_authority_sha256",
+      "closure_local": "budget",
+      "closure_parameter": "target_evidence_budget",
+      "parameter_annotation": "TargetEvidenceBudgetAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "TargetEvidenceBudgetAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.target_evidence_budget_authority_v1",
+      "attributes_read_by_closure": [
+        "support_estimability_authority_sha256"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "precision_authority_sha256",
+      "closure_local": "precision_sha",
+      "closure_parameter": "precision",
+      "parameter_annotation": "QualificationPrecisionAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "QualificationPrecisionAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v1",
+      "attributes_read_by_closure": [
+        "support_estimability_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "remaining_rna_necessity",
+          "consumer_attribute": "precision_authority_sha256",
+          "access": "direct",
+          "line": 230,
+          "message": "remaining-RNA precision root mismatch"
+        },
+        {
+          "consumer_param": "measurement_robustness",
+          "consumer_attribute": "precision_authority_sha256",
+          "access": "direct",
+          "line": 305,
+          "message": "measurement precision root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 2
+    },
+    {
+      "root": "outer_split_authority_sha256",
+      "closure_local": "split",
+      "closure_parameter": "outer_split",
+      "parameter_annotation": "OuterDonorSplitAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "OuterDonorSplitAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.outer_split_authority_v1",
+      "attributes_read_by_closure": [
+        "full104_substrate_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "masking_rng_replay",
+          "consumer_attribute": "outer_split_authority_sha256",
+          "access": "direct",
+          "line": 216,
+          "message": "masking RNG split root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "target_panel_authority_sha256",
+      "closure_local": "panel",
+      "closure_parameter": "target_panel",
+      "parameter_annotation": "TargetPanelAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "TargetPanelAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v1",
+      "attributes_read_by_closure": [
+        "canonical_registry_authority_sha256",
+        "full104_substrate_sha256",
+        "support_estimability_authority_sha256",
+        "support_state_policy_id"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "masking_rng_replay",
+          "consumer_attribute": "target_panel_authority_sha256",
+          "access": "direct",
+          "line": 217,
+          "message": "masking RNG target-panel root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "address_universe_ladder_authority_sha256",
+      "closure_local": "ladder",
+      "closure_parameter": "address_universe_ladder",
+      "parameter_annotation": "AddressUniverseLadderAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "AddressUniverseLadderAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.address_universe_ladder_authority_v1",
+      "attributes_read_by_closure": [
+        "canonical_registry_authority_sha256",
+        "support_estimability_authority_sha256",
+        "support_state_policy_id"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "masking_rng_replay_authority_sha256",
+      "closure_local": "rng",
+      "closure_parameter": "masking_rng_replay",
+      "parameter_annotation": "MaskingRngReplayAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MaskingRngReplayAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.masking_rng_replay_authority_v1",
+      "attributes_read_by_closure": [
+        "canonical_registry_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "masking_qualification_design_authority_sha256",
+      "closure_local": "design",
+      "closure_parameter": "masking_qualification_design",
+      "parameter_annotation": "MaskingQualificationDesignAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MaskingQualificationDesignAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_design_authority_v1",
+      "attributes_read_by_closure": [
+        "bind_live_authorities",
+        "canonical_registry_authority_sha256",
+        "full104_substrate_sha256",
+        "primary_attacker_id",
+        "primary_score_id",
+        "qualification_runner_source_sha256",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "teacher_target_semantics_authority_sha256"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "masking_qualification_parameters_authority_sha256",
+      "closure_local": "parameters",
+      "closure_parameter": "masking_qualification_parameters",
+      "parameter_annotation": "MaskingQualificationParametersAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MaskingQualificationParametersAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_parameters_authority_v1",
+      "attributes_read_by_closure": [
+        "primary_attacker_id",
+        "primary_score_id"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "masking_qualification_run_contract_authority_sha256",
+      "closure_local": "run_contract",
+      "closure_parameter": "masking_qualification_run_contract",
+      "parameter_annotation": "MaskingQualificationRunContractV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MaskingQualificationRunContractV1",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v1",
+      "attributes_read_by_closure": [
+        "bind_design",
+        "bind_parameters",
+        "runner_source_sha256",
+        "support_state_policy_id"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "masking_qualification_execution_authority_sha256",
+      "closure_local": "mask_exec",
+      "closure_parameter": "masking_qualification_execution",
+      "parameter_annotation": "MaskingQualificationExecutionAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MaskingQualificationExecutionAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v2",
+      "attributes_read_by_closure": [
+        "bind_run_contract",
+        "passed"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "masking_qualification_execution_authority_sha256",
+          "access": "direct",
+          "line": 314,
+          "message": "anti-cheat masking execution root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "masking_authority_sha256",
+      "closure_local": "mask",
+      "closure_parameter": "masking",
+      "parameter_annotation": "CurrentMaskingPolicyAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "CurrentMaskingPolicyAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.current_masking_policy_authority_v2",
+      "attributes_read_by_closure": [
+        "bind_live_authorities",
+        "canonical_registry_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "remaining_rna_necessity",
+          "consumer_attribute": "masking_authority_sha256",
+          "access": "direct",
+          "line": 229,
+          "message": "remaining-RNA masking root mismatch"
+        },
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "masking_authority_sha256",
+          "access": "direct",
+          "line": 241,
+          "message": "teacher masking root mismatch"
+        },
+        {
+          "consumer_param": "target_identity_gate",
+          "consumer_attribute": "masking_authority_sha256",
+          "access": "direct",
+          "line": 311,
+          "message": "identity gate masking root mismatch"
+        },
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "masking_authority_sha256",
+          "access": "direct",
+          "line": 313,
+          "message": "anti-cheat masking root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 4
+    },
+    {
+      "root": "target_construction_authority_sha256",
+      "closure_local": "construction",
+      "closure_parameter": "target_construction",
+      "parameter_annotation": "TargetConstructionAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "TargetConstructionAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.target_construction_authority_v1",
+      "attributes_read_by_closure": [
+        "bind_live_authorities"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "remaining_rna_necessity_authority_sha256",
+      "closure_local": "necessity",
+      "closure_parameter": "remaining_rna_necessity",
+      "parameter_annotation": "RemainingRnaNecessityAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "RemainingRnaNecessityAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_necessity_v1",
+      "attributes_read_by_closure": [
+        "masking_authority_sha256",
+        "precision_authority_sha256",
+        "representation_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_address_provider_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "remaining_rna_necessity_authority_sha256",
+          "access": "direct",
+          "line": 242,
+          "message": "teacher remaining-RNA root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "remaining_rna_execution_authority_sha256",
+      "closure_local": "rna_exec",
+      "closure_parameter": "remaining_rna_execution",
+      "parameter_annotation": "RemainingRnaExecutionAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "RemainingRnaExecutionAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_execution_authority_v1",
+      "attributes_read_by_closure": [
+        "bind_live_authorities",
+        "passed"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "remaining_rna_execution_authority_sha256",
+          "access": "direct",
+          "line": 315,
+          "message": "anti-cheat remaining-RNA execution root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "teacher_target_semantics_authority_sha256",
+      "closure_local": "teacher",
+      "closure_parameter": "teacher_target",
+      "parameter_annotation": "TeacherTargetSemanticsAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "TeacherTargetSemanticsAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.teacher_target_semantics_authority_v2",
+      "attributes_read_by_closure": [
+        "ema_boundary_authority_sha256",
+        "masking_authority_sha256",
+        "remaining_rna_necessity_authority_sha256",
+        "representation_authority_sha256",
+        "scientific_weight_authority_sha256",
+        "support_estimability_authority_sha256",
+        "target_address_query_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "masking_qualification_design",
+          "consumer_attribute": "teacher_target_semantics_authority_sha256",
+          "access": "direct",
+          "line": 249,
+          "message": "masking design teacher root mismatch"
+        },
+        {
+          "consumer_param": "measurement_robustness",
+          "consumer_attribute": "teacher_target_semantics_sha256",
+          "access": "direct",
+          "line": 304,
+          "message": "measurement teacher root mismatch"
+        },
+        {
+          "consumer_param": "target_identity_gate",
+          "consumer_attribute": "teacher_target_semantics_sha256",
+          "access": "direct",
+          "line": 308,
+          "message": "identity gate teacher root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 3
+    },
+    {
+      "root": "schedule_authority_sha256",
+      "closure_local": "schedule",
+      "closure_parameter": "schedule_authority_sha256",
+      "parameter_annotation": "str",
+      "enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "ema",
+          "consumer_attribute": "schedule_authority_sha256",
+          "access": "direct",
+          "line": 301,
+          "message": "EMA schedule root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "ema_authority_sha256",
+      "closure_local": "ema_sha",
+      "closure_parameter": "ema",
+      "parameter_annotation": "EmaTimescaleAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "EmaTimescaleAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.ema_timescale_authority_v2",
+      "attributes_read_by_closure": [
+        "base_training_estimand_sha256",
+        "schedule_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "teacher_target",
+          "consumer_attribute": "ema_boundary_authority_sha256",
+          "access": "direct",
+          "line": 302,
+          "message": "teacher EMA root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "measurement_robustness_authority_sha256",
+      "closure_local": "measurement",
+      "closure_parameter": "measurement_robustness",
+      "parameter_annotation": "MeasurementRobustnessAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "MeasurementRobustnessAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.measurement_robustness_authority_v2",
+      "attributes_read_by_closure": [
+        "passed",
+        "precision_authority_sha256",
+        "representation_authority_sha256",
+        "teacher_target_semantics_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "measurement_robustness_authority_sha256",
+          "access": "direct",
+          "line": 316,
+          "message": "anti-cheat measurement root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "target_identity_gate_authority_sha256",
+      "closure_local": "identity",
+      "closure_parameter": "target_identity_gate",
+      "parameter_annotation": "TargetIdentityShortcutGateAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "TargetIdentityShortcutGateAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.target_identity_shortcut_gate_authority_v1",
+      "attributes_read_by_closure": [
+        "base_training_estimand_sha256",
+        "masking_authority_sha256",
+        "representation_authority_sha256",
+        "teacher_target_semantics_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "target_identity_gate_authority_sha256",
+          "access": "direct",
+          "line": 312,
+          "message": "anti-cheat identity root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "anti_cheat_authority_sha256",
+      "closure_local": "anti",
+      "closure_parameter": "anti_cheat",
+      "parameter_annotation": "AntiCheatAuthorityBundleV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "AntiCheatAuthorityBundleV2",
+      "defining_module": "sea_ad_jepa.v5.anti_cheat_authority_bundle_v2",
+      "attributes_read_by_closure": [
+        "bind_execution_evidence",
+        "critical_test_authority_sha256",
+        "masking_authority_sha256",
+        "masking_qualification_execution_authority_sha256",
+        "measurement_robustness_authority_sha256",
+        "observation_gradient_firewall_authority_sha256",
+        "remaining_rna_execution_authority_sha256",
+        "target_identity_gate_authority_sha256"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "model_geometry_authority_sha256",
+      "closure_local": "geometry",
+      "closure_parameter": "model_geometry",
+      "parameter_annotation": "ModelGeometryAuthorityV2",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "ModelGeometryAuthorityV2",
+      "defining_module": "sea_ad_jepa.v5.model_geometry_authority_v2",
+      "attributes_read_by_closure": [
+        "geometry_artifact_sha256",
+        "memorization_qualification_authority_sha256",
+        "protected_registry_authority_sha256"
+      ],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    },
+    {
+      "root": "geometry_memorization_qualification_authority_sha256",
+      "closure_local": "mem",
+      "closure_parameter": "geometry_memorization_qualification",
+      "parameter_annotation": "GeometryMemorizationQualificationAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "GeometryMemorizationQualificationAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.geometry_memorization_qualification_authority_v1",
+      "attributes_read_by_closure": [
+        "geometry_artifact_sha256",
+        "passed",
+        "protected_registry_authority_sha256"
+      ],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "model_geometry",
+          "consumer_attribute": "memorization_qualification_authority_sha256",
+          "access": "direct",
+          "line": 326,
+          "message": "geometry memorization root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "protected_registry_authority_sha256",
+      "closure_local": "protected",
+      "closure_parameter": "protected_registry",
+      "parameter_annotation": "Any",
+      "enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "model_geometry",
+          "consumer_attribute": "protected_registry_authority_sha256",
+          "access": "direct",
+          "line": 325,
+          "message": "geometry protected-registry root mismatch"
+        },
+        {
+          "consumer_param": "geometry_memorization_qualification",
+          "consumer_attribute": "protected_registry_authority_sha256",
+          "access": "direct",
+          "line": 332,
+          "message": "geometry memorization protected-registry root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 2
+    },
+    {
+      "root": "critical_test_authority_sha256",
+      "closure_local": "critical",
+      "closure_parameter": "critical_test",
+      "parameter_annotation": "Any",
+      "enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "critical_test_authority_sha256",
+          "access": "direct",
+          "line": 318,
+          "message": "anti-cheat critical-test root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "observation_gradient_firewall_authority_sha256",
+      "closure_local": "firewall",
+      "closure_parameter": "observation_gradient_firewall_authority_sha256",
+      "parameter_annotation": "str",
+      "enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "isinstance_class": null,
+      "defining_module": null,
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [
+        {
+          "consumer_param": "anti_cheat",
+          "consumer_attribute": "observation_gradient_firewall_authority_sha256",
+          "access": "direct",
+          "line": 317,
+          "message": "anti-cheat observation firewall root mismatch"
+        }
+      ],
+      "downstream_equality_binding_count": 1
+    },
+    {
+      "root": "runtime_source_authority_sha256",
+      "closure_local": "runtime",
+      "closure_parameter": "runtime_source",
+      "parameter_annotation": "CurrentRuntimeSourceAuthorityV1",
+      "enforcement": "ISINSTANCE_ENFORCED",
+      "isinstance_class": "CurrentRuntimeSourceAuthorityV1",
+      "defining_module": "sea_ad_jepa.v5.current_runtime_source_authority_v1",
+      "attributes_read_by_closure": [],
+      "downstream_equality_bindings": [],
+      "downstream_equality_binding_count": 0
+    }
+  ]
+}

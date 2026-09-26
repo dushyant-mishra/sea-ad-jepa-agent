@@ -1,0 +1,115 @@
+{
+  "schema": "JEPA_LANEB_V29_MASKING_V3_V1_RECONCILIATION_V1",
+  "prohibition_honoured": "no cast, no reclassification, no fabricated V1 instance; the V3 objects are measured against the closure contract as they are",
+  "pairs": [
+    {
+      "root": "masking_rng_replay_authority_sha256",
+      "closure_parameter": "masking_rng_replay",
+      "v1_class": "MaskingRngReplayAuthorityV1",
+      "v3_class": "MaskingRngReplayAuthorityV3",
+      "closure_data_attributes_read": [
+        "canonical_registry_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256"
+      ],
+      "closure_method_interface_read": [],
+      "v3_supplies": [],
+      "v3_missing": [
+        "canonical_registry_authority_sha256",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256"
+      ],
+      "v1_only_fields": [
+        "canonical_registry_authority_sha256",
+        "global_seed",
+        "outer_split_authority_sha256",
+        "target_panel_authority_sha256"
+      ],
+      "v3_only_fields": [
+        "burden_ladder_authority_sha256",
+        "canonical_registry_sha256",
+        "full104_substrate_sha256",
+        "outer_split_receipt_sha256",
+        "qualification_parameters_authority_sha256",
+        "terminal_outcomes_inspected_before_freeze"
+      ],
+      "shared_fields": [
+        "authority_id",
+        "method_exclusion_policy_id",
+        "replay_policy_id",
+        "seed_namespace_id",
+        "training_authorized"
+      ],
+      "v3_is_field_superset_of_v1": false,
+      "v3_subclasses_v1": false,
+      "v3_artifact_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json",
+      "v3_artifact_exists": true,
+      "v3_artifact_own_class_validate": true,
+      "v3_artifact_recomputed_digest": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+      "v3_artifact_declared_digest": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+      "v3_artifact_digest_agrees": true,
+      "classification": "SCIENTIFIC_DIVERGENCE",
+      "rationale": "V3 does not expose 3 attribute(s) the closure compares: canonical_registry_authority_sha256, outer_split_authority_sha256, target_panel_authority_sha256. Even with the isinstance check removed the closure would raise. This is a design decision, not a type mismatch."
+    },
+    {
+      "root": "masking_qualification_parameters_authority_sha256",
+      "closure_parameter": "masking_qualification_parameters",
+      "v1_class": "MaskingQualificationParametersAuthorityV1",
+      "v3_class": "MaskingQualificationParametersAuthorityV3",
+      "closure_data_attributes_read": [
+        "primary_attacker_id",
+        "primary_score_id"
+      ],
+      "closure_method_interface_read": [],
+      "v3_supplies": [
+        "primary_attacker_id",
+        "primary_score_id"
+      ],
+      "v3_missing": [],
+      "v1_only_fields": [],
+      "v3_only_fields": [
+        "burden_separation_policy_id",
+        "confirmation_role_id",
+        "discovery_expanded_validation_report_sha256",
+        "discovery_outside800_unified_script_sha256",
+        "discovery_provenance_note_sha256",
+        "discovery_universe_scale_script_sha256",
+        "full104_substrate_sha256",
+        "historical_provenance_role_id",
+        "parameter_origin_policy_id",
+        "protected_outcomes_authorized",
+        "support_estimability_authority_sha256",
+        "terminal_full104_masking_outcomes_inspected",
+        "terminal_universe_id",
+        "terminal_universe_size"
+      ],
+      "shared_fields": [
+        "authority_id",
+        "prefix_candidate_count",
+        "prefix_floor_denominator",
+        "prefix_floor_numerator",
+        "prefix_inner_fold_count",
+        "prefix_reduction_denominator",
+        "prefix_reduction_numerator",
+        "primary_attacker_id",
+        "primary_score_id",
+        "ridge_alpha_denominator",
+        "ridge_alpha_numerator",
+        "ridge_candidate_pool_count",
+        "ridge_score_feature_count",
+        "targeted_partner_cap",
+        "training_authorized"
+      ],
+      "v3_is_field_superset_of_v1": true,
+      "v3_subclasses_v1": false,
+      "v3_artifact_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json",
+      "v3_artifact_exists": true,
+      "v3_artifact_own_class_validate": true,
+      "v3_artifact_recomputed_digest": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+      "v3_artifact_declared_digest": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+      "v3_artifact_digest_agrees": true,
+      "classification": "NOMINAL_TYPING_CONFLICT",
+      "rationale": "V3 exposes every attribute the closure compares (primary_attacker_id, primary_score_id). The sole obstruction is the isinstance(MaskingQualificationParametersAuthorityV1) check."
+    }
+  ]
+}
