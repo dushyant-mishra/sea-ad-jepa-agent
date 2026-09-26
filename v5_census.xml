@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="12.644" timestamp="2026-09-25T17:54:54.415072-04:00" hostname="dushyant-legion"><testcase classname="" name="tests.test_contextual_target_f1_preflight_core_v1" time="0.000"><error message="collection failure">ImportError while importing test module 'D:\jepa_v5_wt_20260925\tests\test_contextual_target_f1_preflight_core_v1.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\dushy\anaconda3\envs\sea-ad-jepa\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_contextual_target_f1_preflight_core_v1.py:10: in &lt;module&gt;
+    from scripts.v4.contextual_target_f1_preflight_core_v1 import evidence_mask, lean_query_local, validate_authority_file, validate_fixture_binding, validate_runtime_facts, validate_encoder_architecture, validate_semantic_root
+scripts\v4\contextual_target_f1_preflight_core_v1.py:8: in &lt;module&gt;
+    import resource
+E   ModuleNotFoundError: No module named 'resource'</error></testcase></testsuite></testsuites>

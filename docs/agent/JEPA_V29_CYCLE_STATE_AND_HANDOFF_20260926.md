@@ -31,6 +31,37 @@ computing digests elsewhere (verified: registry digest `7d61ed7b…` appears in
 3+ producer receipts). The defect is confined to `critical_test`, because what it
 attests — execution — has no artifact in existence.
 
+
+## 1b. The most important SCIENTIFIC finding: the teacher can see the answer
+
+`KeyedIPBEncoderV2Reference.forward(gene_ids, expression, measurement_mask,
+hidden_target_mask, view, ...)` — and `inactive_update_reference.py:167` passes
+`torch.zeros_like(true_t)` as `hidden_target_mask`. **Nothing is hidden from the
+teacher**, while `expression` carries every measured value including the query
+gene's count. Verified against source.
+
+**The teacher target is therefore a smooth function of the number the student is
+asked to predict.** The current construction is indirect *scalar regression*, not
+query-local latent-state prediction. It does not implement the stated goal.
+
+**All four named controls are blind to it** — a model that recovers the count
+passes every one. This could not have been caught downstream; it had to be found
+by reading the construction. Found before any training run: the cost is one
+scientific decision plus a value-blind token path, not a retraction.
+
+Related, same family: `GLOBAL_CONTEXT_ONLY` does **not** fire on the failure it
+was written to catch (0.5887 vs 0.7980 full, delta +0.2093 [+0.1801, +0.2378]),
+because a query-conditioned predictor plus a pooled cell summary already suffices
+to emit a query-local answer. Demoted to diagnostic; `QUERY_EXCHANGEABILITY`
+takes the falsifying role and does fire. Caught by *planting* the failure.
+
+The seam that defeats **all** candidate constructions: **per-cell total-count
+normalization leaks the query scalar into every other token**, so dropping the
+query token does not remove it. The normalization rule must be decided *before*
+the target construction.
+
+Lane A: PR #163, 170 passed / 0 failed / 0 skipped.
+
 ## 2. Authority state
 
 | | |
