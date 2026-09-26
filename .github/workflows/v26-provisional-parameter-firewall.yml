@@ -1,0 +1,53 @@
+name: V26 provisional diagnostic parameter no-spillover firewall
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/provisional_diagnostic_parameter_firewall_v1.py'
+      - 'tests/test_v26_provisional_diagnostic_parameter_firewall_v1.py'
+      - '.github/workflows/v26-provisional-parameter-firewall.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prevent-historical-dimension-spillover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Run no-default and no-production-claims adversaries
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q tests/test_v26_provisional_diagnostic_parameter_firewall_v1.py \
+            --junitxml=/tmp/v26-provisional.xml
+      - name: Fail on missing, skipped, or bypassed evidence controls
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          tree=ET.parse('/tmp/v26-provisional.xml')
+          root=tree.getroot()
+          suite=root if root.tag=='testsuite' else root.find('testsuite')
+          if suite is None: raise SystemExit('STOP_NO_PROVISIONAL_JUNIT')
+          count={k:int(suite.attrib.get(k,0)) for k in ('tests','skipped','failures','errors')}
+          names={x.attrib.get('name','').split('[')[0] for x in suite.iter('testcase')}
+          required={
+            'test_scientific_development_requires_explicit_g3_and_six_state_roots',
+            'test_historical_or_synthetic_rank_cannot_enter_diagnostic',
+            'test_zero_or_omitted_numeric_parameter_cannot_be_inherited',
+            'test_forged_or_malformed_source_root_rejected',
+            'test_scientific_development_missing_g3_or_six_state_root_rejected',
+            'test_scientific_development_rejects_historical_cell_weight_primary',
+            'test_holdout_or_external_role_rejected',
+            'test_training_authorization_cannot_be_set_even_on_healthy_smoke',
+            'test_provenance_cannot_be_replaced_with_historical_import',
+            'test_unknown_payload_keys_rejected_before_object_creation',
+            'test_real_data_derivation_not_asserted_by_matching_fixture_sha',
+          }
+          if count['tests']!=43 or any(count[k] for k in ('skipped','failures','errors')) or not required<=names:
+            raise SystemExit(f'STOP_PROVISIONAL_PARAMETER_FIREWALL {count} missing={sorted(required-names)}')
+          print(f'PASS_PROVISIONAL_NO_SPILLOVER {count["tests"]} passed; zero skipped')
+          PY
