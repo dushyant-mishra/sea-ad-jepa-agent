@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""V42 read-only exact-byte custody check for chat-exclusive original text files.
+"""V42 read-only exact-byte custody check for chat-exclusive original files (ten text plus one V33 ZIP).
 
 Seven original binary uploads are MANIFEST_ONLY, not in this Git checkout.
 This script must not treat their inventory hashes as proof the bytes are here.
