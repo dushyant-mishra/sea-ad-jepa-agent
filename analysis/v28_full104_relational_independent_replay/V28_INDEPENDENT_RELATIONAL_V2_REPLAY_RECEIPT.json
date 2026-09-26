@@ -1,0 +1,20 @@
+{
+  "byte_identical": true,
+  "donors": 104,
+  "eligible_cells": 4553348,
+  "eligible_groups": 1361,
+  "expected_pr149_csv_sha256": "af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94",
+  "groups": 1400,
+  "method": "INDEPENDENT_DONOR_STRATUM_EXACT_FRACTIONS_FULL_OUTPUT_BYTE_COMPARISON",
+  "noneligible_cells": 59,
+  "per_donor_three_laws_each_sum": "1/104",
+  "protected_outcomes_opened": false,
+  "recomputed_csv_sha256": "af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94",
+  "schema": "V28_INDEPENDENT_PR149_RELATIONAL_V2_REPLAY_V1",
+  "scope": "METADATA_ONLY_NOT_ACTUAL_RELATIONAL_SAMPLING_OR_TRAINING",
+  "source_files": {
+    "fit104_donor_operator_relational_capacity.csv": "e40acc06844f4a13cb956453fe54e74abed357c3777a80ec6c4a2778dcae8f65",
+    "fit104_donor_scientific_masses.csv": "386e52ecb56031fba7bde855c7af314b08f1773427d367e0679e6de47f79c7b7"
+  },
+  "training_authorized": false
+}
