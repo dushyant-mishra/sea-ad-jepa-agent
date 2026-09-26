@@ -42,9 +42,7 @@ def main() -> None:
         original = (ROOT / path).read_bytes()
         assert len(original) == rec["bytes"], f"byte count mismatch {path}"
         assert hashlib.sha256(original).hexdigest() == rec["sha256"], f"SHA256 mismatch {path}"
-        git_blob = hashlib.sha1(
-            f"blob {len(original)}\\0".encode().replace(b"\\0", b"\\x00") + original
-        ).hexdigest()
+        git_blob = hashlib.sha1(f"blob {len(original)}".encode() + bytes([0]) + original).hexdigest()
         assert git_blob == rec["git_blob_sha"], f"Git blob SHA mismatch {path}"
         exact += 1
     assert exact == data["original_text_files_uploaded_exact"] == EXPECTED_TEXT
