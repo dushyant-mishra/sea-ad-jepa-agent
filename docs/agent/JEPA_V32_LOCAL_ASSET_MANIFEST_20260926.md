@@ -19,3 +19,5 @@ Historical committed sources:
 - `results/reports/stage75_integrated_evidence_manifest_v1.json`
 
 No GitHub-hosted binary upload is claimed for the chat-local ZIPs. SHA-256 is a transfer verification key, not evidence that the recipient has the file.
+
+Final chat-local transfer bundle: `JEPA_V32_COMPLETE_LOCAL_EVIDENCE_AND_HANDOFF_20260926.zip`, 36,717 bytes, SHA-256 `d49c7a1bba1e48f21fdf8fceb92e8c1176a3c309c2c662249099d6c109b5dc79`. Its members were re-read and rehashed after creation. This bundle is **not committed to GitHub**; transfer from the originating chat and verify digest before use.
