@@ -138,10 +138,36 @@ def build_candidate(repo_root: Path = ROOT, *, freeze_override: Mapping[str, Any
     return payload
 
 
+def verify_candidate(candidate: Mapping[str, Any], repo_root: Path = ROOT) -> None:
+    """Recompute every candidate field from exact physical source bytes.
+
+    A valid proposal is still unapproved and cannot authorize N1 or training.
+    """
+    if not isinstance(candidate, Mapping):
+        raise ValueError("candidate must be a mapping")
+    if candidate != build_candidate(repo_root):
+        raise ValueError("candidate differs from independently rederived draft proposal")
+    core = {key: value for key, value in candidate.items() if key != "proposal_digest"}
+    if digest(canonical(core)) != candidate.get("proposal_digest"):
+        raise ValueError("proposal canonical digest mismatch")
+    for flag in ("prospective_scientist_signoff_present", "new_frozen_sample_issued",
+                 "audit_b_n1_execution_authorized", "terminal_masking_outcomes_inspected",
+                 "training_authorized"):
+        if candidate.get(flag) is not False:
+            raise ValueError(f"draft proposal cannot set {flag} true")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--output", type=Path, help="optional local draft JSON path; never overwrite old freeze")
+    ap.add_argument("--verify", type=Path, help="verify externally provided draft against all original physical parents")
     args = ap.parse_args()
+    if args.verify is not None:
+        if args.output is not None:
+            raise ValueError("--verify cannot be combined with --output")
+        verify_candidate(json.loads(args.verify.read_text(encoding="utf-8")))
+        print("V41_INDEPENDENT_DRAFT_CANDIDATE_REDERIVATION_PASS__NOT_FROZEN")
+        return
     proposal = build_candidate()
     if args.output is not None:
         out = args.output.resolve()
