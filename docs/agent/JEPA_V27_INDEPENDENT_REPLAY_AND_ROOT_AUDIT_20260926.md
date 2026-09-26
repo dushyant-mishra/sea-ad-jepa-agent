@@ -1,6 +1,6 @@
 # JEPA V27 independent execution and self-audit — September 26, 2026
 
-**Entry point:** [draft PR #149](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/149), based on `review/v27-authority-root-inventory-20260925 @ ed9df043075cd55e16be7a61af62594640421c18`. Main V25 `START_HERE.md` remains controlling until a reviewed successor merges. This is a bounded independent source/metadata-only continuation; it **does not** merge PR #147/#146, run a GPU teacher, open protected results, grant reader_fit expression training access or settle biological masking.
+**Entry point:** [draft PR #149](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/149), based on `review/v27-authority-root-inventory-20260925 @ ed9df043075cd55e16be7a61af62594640421c18`. Main V25 `START_HERE.md` remains controlling until a reviewed successor merges. **Historical handoff trap:** this implementation-lineage branch itself inherits a September-23 *V19* `START_HERE.md`; do **not** follow or overwrite it as if it were the latest canonical startup. Explicitly fetch `main:START_HERE.md` separately and consult the latest current handoff pointer before executing anything. The PR index and exact file paths below are the only navigation additions owned here. This is a bounded independent source/metadata-only continuation; it **does not** merge PR #147/#146, run a GPU teacher, open protected results, grant reader_fit expression training access or settle biological masking.
 
 ## 1. What was really executed and independently checked
 
