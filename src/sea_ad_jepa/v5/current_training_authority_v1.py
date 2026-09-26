@@ -7,15 +7,18 @@ critical-test execution and runtime-source roots agree.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import inspect
 import hashlib
 import json
 from typing import Any, Mapping
 
 from .current_authority_roots_v2 import CURRENT_V5_RECEIPT_AUTHORITY_ROOTS_V2, CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS_V2
+from .current_authority_closure_v2 import validate_current_v5_authority_closure_v2
 from .current_teacher_target_receipt_v2 import validate_current_teacher_target_receipt_v2
 from .current_trainer_preexecution_contract_v2 import CurrentTrainerPreexecutionAuthorityV2
 
 ISSUANCE_POLICY_ID = "CURRENT_V5_ALL_GATES_PASS_BEFORE_TRAINING_V1"
+CLOSURE_INPUT_ROLES = frozenset(inspect.signature(validate_current_v5_authority_closure_v2).parameters)
 
 
 def _sha(value: object, name: str) -> str:
@@ -82,7 +85,7 @@ class CurrentTrainingAuthorityV1:
         return _digest({**self._proof_payload(), "issuance_proof_sha256": self.issuance_proof_sha256})
 
 
-def issue_training_authority_v1(*, closure_v2: Mapping[str, Any], preexecution: CurrentTrainerPreexecutionAuthorityV2, receipt_v2: Mapping[str, Any], expected_target_package_root: str, critical_test: Any, runtime_source: Any) -> CurrentTrainingAuthorityV1:
+def issue_training_authority_v1(*, closure_v2: Mapping[str, Any], preexecution: CurrentTrainerPreexecutionAuthorityV2, receipt_v2: Mapping[str, Any], expected_target_package_root: str, critical_test: Any, runtime_source: Any, closure_inputs: Mapping[str, Any] | None = None) -> CurrentTrainingAuthorityV1:
     if not isinstance(closure_v2, Mapping) or closure_v2.get("schema") != "V5_CURRENT_AUTHORITY_CLOSURE_V2":
         raise ValueError("closure_v2 schema mismatch")
     if closure_v2.get("training_authorized") is not False:
@@ -103,6 +106,24 @@ def issue_training_authority_v1(*, closure_v2: Mapping[str, Any], preexecution: 
         expected_authority_roots=receipt_roots,
         expected_closure_v2_sha256=closure_digest,
     )
+    # SHA coherence is necessary but insufficient: validate the live, typed
+    # 32-role scientific/runtime dependency graph INSIDE final issuance.
+    # An optional argument is used only for backwards-compatible fail-closed
+    # rejection of legacy callers; missing evidence NEVER issues authority.
+    if not isinstance(closure_inputs, Mapping):
+        raise ValueError("live closure_inputs required for final issuance")
+    if set(closure_inputs) != CLOSURE_INPUT_ROLES:
+        raise ValueError("live closure_inputs role set mismatch")
+    if closure_inputs["critical_test"] is not critical_test:
+        raise ValueError("live closure critical-test object differs from issuer")
+    if closure_inputs["runtime_source"] is not runtime_source:
+        raise ValueError("live closure runtime-source object differs from issuer")
+    live_closure = validate_current_v5_authority_closure_v2(**closure_inputs)
+    if live_closure != dict(closure_v2):
+        raise ValueError("live validated closure differs from supplied closure_v2")
+    # The validator checks typed authority objects, parent/root joins,
+    # executed masking/remaining-RNA/measurement/geometry predicates,
+    # and the canonical digest. Never replace it with caller-supplied SHA.
     critical = _live_digest(critical_test, "critical test")
     runtime = _live_digest(runtime_source, "runtime source")
     if critical != roots["critical_test_authority_sha256"]:
