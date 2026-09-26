@@ -17,7 +17,7 @@ from sea_ad_jepa.v5.current_teacher_target_receipt_v2 import (
     seal_current_teacher_target_receipt_v2,
     validate_current_teacher_target_receipt_v2,
 )
-from sea_ad_jepa.v5.current_training_authority_v1 import issue_training_authority_v1
+from sea_ad_jepa.v5.current_training_authority_v1 import (CurrentTrainingAuthorityV1, ISSUANCE_POLICY_ID, issue_training_authority_v1)
 from sea_ad_jepa.v5.qualified_optimizer_guard_v3 import install_current_optimizer_guard_v3
 
 
@@ -116,6 +116,40 @@ def make_receipt(roots: dict[str, str], pre: CurrentTrainerPreexecutionAuthority
     )
 
 
+
+def synthetic_guard_token_for_mechanics_only(roots, closure, pre, receipt):
+    """Never call production issuer here: no real typed closure exists.
+
+    This constructed token isolates optimizer hook/cursor mechanics only.
+    Its acceptance is NOT a provenance or issuance positive control.
+    """
+    core = {
+        "schema": "V5_CURRENT_TRAINING_AUTHORITY_V1",
+        "authority_id": "SYNTHETIC_GUARD_FIXTURE_ONLY",
+        "closure_v2_sha256": closure["closure_digest"],
+        "preexecution_authority_sha256": pre.canonical_digest(),
+        "receipt_v2_sha256": receipt["receipt_digest"],
+        "target_package_root": h("target-package"),
+        "critical_test_authority_sha256": roots["critical_test_authority_sha256"],
+        "runtime_source_authority_sha256": roots["runtime_source_authority_sha256"],
+        "issuance_policy_id": ISSUANCE_POLICY_ID,
+        "training_authorized": True,
+    }
+    token = CurrentTrainingAuthorityV1(
+        authority_id=core["authority_id"],
+        closure_v2_sha256=core["closure_v2_sha256"],
+        preexecution_authority_sha256=core["preexecution_authority_sha256"],
+        receipt_v2_sha256=core["receipt_v2_sha256"],
+        target_package_root=core["target_package_root"],
+        critical_test_authority_sha256=core["critical_test_authority_sha256"],
+        runtime_source_authority_sha256=core["runtime_source_authority_sha256"],
+        issuance_policy_id=ISSUANCE_POLICY_ID,
+        issuance_proof_sha256=canonical_digest(core),
+    )
+    token.validate()
+    return token
+
+
 def test_preexecution_v2_requires_exact_v2_root_vocabulary_and_live_closure_binding() -> None:
     roots = roots_v2()
     pre = make_preexecution(roots)
@@ -160,35 +194,19 @@ def test_receipt_v2_seals_v2_roots_preexecution_and_closure_and_rejects_v1_recei
         )
 
 
-def test_training_authority_is_issued_only_after_closure_preexecution_receipt_critical_and_runtime_match() -> None:
+def test_final_issuer_rejects_legacy_synthetic_hash_only_closure() -> None:
     roots = roots_v2()
     closure = closure_for(roots)
     pre = make_preexecution(roots)
     pre.bind_closure_v2(closure)
     receipt = make_receipt(roots, pre)
-
-    authority = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=h("target-package"),
-        critical_test=critical_for(roots),
-        runtime_source=runtime_for(roots),
-    )
-    authority.validate()
-    assert authority.training_authorized is True
-    assert authority.closure_v2_sha256 == closure["closure_digest"]
-    assert authority.preexecution_authority_sha256 == pre.canonical_digest()
-
-    bad_runtime = AuthorityStub(h("wrong-runtime"))
-    with pytest.raises(ValueError, match="runtime"):
+    # This is the original legacy hash-only synthetic positive control.
+    # It must now fail even though closure, receipt and SHA roots agree.
+    with pytest.raises(ValueError, match="live closure_inputs required"):
         issue_training_authority_v1(
-            closure_v2=closure,
-            preexecution=pre,
-            receipt_v2=receipt,
+            closure_v2=closure, preexecution=pre, receipt_v2=receipt,
             expected_target_package_root=h("target-package"),
-            critical_test=critical_for(roots),
-            runtime_source=bad_runtime,
+            critical_test=critical_for(roots), runtime_source=runtime_for(roots),
         )
 
 
@@ -198,14 +216,7 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
     pre = make_preexecution(roots)
     pre.bind_closure_v2(closure)
     receipt = make_receipt(roots, pre)
-    authority = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=h("target-package"),
-        critical_test=critical_for(roots),
-        runtime_source=runtime_for(roots),
-    )
+    authority = synthetic_guard_token_for_mechanics_only(roots, closure, pre, receipt)
     expected_roots = dict(roots)
     expected_roots["preexecution_authority_sha256"] = pre.canonical_digest()
 
@@ -242,14 +253,7 @@ def _guard_for_cursor_redteam():
     pre = make_preexecution(roots)
     pre.bind_closure_v2(closure)
     receipt = make_receipt(roots, pre)
-    authority = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=h("target-package"),
-        critical_test=critical_for(roots),
-        runtime_source=runtime_for(roots),
-    )
+    authority = synthetic_guard_token_for_mechanics_only(roots, closure, pre, receipt)
     receipt_roots = dict(roots)
     receipt_roots["preexecution_authority_sha256"] = pre.canonical_digest()
     optimizer = FakeOptimizer()
