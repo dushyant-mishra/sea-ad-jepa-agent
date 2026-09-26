@@ -1,0 +1,37 @@
+{
+  "scope": "SYNTHETIC_ONLY__NONAUTHORIZING__NO_REAL_JEPA_TRAINING",
+  "query_counterfactual": {
+    "legacy_full_library_log1p10k_nonquery_max_abs_change": 0.6820381593337599,
+    "query_excluded_denominator_nonquery_max_abs_change": 0.0,
+    "full_derived_global_context_max_abs_change": 1.8908503718722858,
+    "query_excluded_global_context_max_abs_change": 0.0,
+    "interpretation": "Existing full-library normalization and full-expression-derived global context are NOT automatically query-counterfactual invariant. No production routing changed."
+  },
+  "heldout_donor_synthetic_conditional_state_test": [
+    {
+      "query": 0,
+      "full_remaining_rna_r2": 0.8154219143455317,
+      "technical_only_r2": -0.1925627818984723,
+      "identity_only_r2": -0.1791317231489027,
+      "within_donor_shuffled_r2": -0.14429805393640183,
+      "heldout_donors": 4
+    },
+    {
+      "query": 1,
+      "full_remaining_rna_r2": 0.9032294733880564,
+      "technical_only_r2": 0.09692768690315712,
+      "identity_only_r2": -0.04474458406379678,
+      "within_donor_shuffled_r2": 0.014299006057904684,
+      "heldout_donors": 4
+    }
+  ],
+  "teacher_stopgrad_positive_control": true,
+  "planted_teacher_gradient_detected": true,
+  "assertions_passed": true,
+  "limits": [
+    "Generated program loadings provide an oracle not available for real RNA",
+    "Disjoint gene views alone cannot prove biological semantics",
+    "No real dataset, no genuine EMA training or source authority closure",
+    "No numerical full104 gate or mask policy selected"
+  ]
+}
