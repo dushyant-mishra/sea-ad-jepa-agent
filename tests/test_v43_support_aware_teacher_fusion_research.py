@@ -16,7 +16,7 @@ assemble = m.assemble_same_cell_target
 recurs = m.verify_independent_rare_donor_support
 
 def head(which, vector=(1.0, 2.0), **kwargs):
-    return Teacher(which, "donor01|cell001|operatorX", 6186, which.lower()[0] * 64, tuple(vector), **kwargs)
+    return Teacher(which, "donor01|cell001|operatorX", 6186, {"CORE": "c", "FINE": "f", "RARE": "a"}[which] * 64, tuple(vector), **kwargs)
 
 class V43FusionFixtureTests(unittest.TestCase):
     def test_01_one_teacher_baseline(self):
