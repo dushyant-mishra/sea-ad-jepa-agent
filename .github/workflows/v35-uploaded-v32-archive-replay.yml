@@ -1,0 +1,28 @@
+name: V35 exact uploaded V32 research ZIP replay (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/v32-downloads/*.zip'
+      - 'scripts/agent/verify_v32_uploaded_archives_v35.py'
+      - '.github/workflows/v35-uploaded-v32-archive-replay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  uploaded-v32-physical-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded adapter-test dependencies
+        run: python -m pip install numpy==2.2.6 scipy==1.15.3 scikit-learn==1.7.1
+      - name: Physically audit all three GitHub ZIPs and execute exact V4 suite
+        run: |
+          set -euo pipefail
+          python scripts/agent/verify_v32_uploaded_archives_v35.py | tee /tmp/v35.log
+          grep -q 'V4_UPLOADED_SOURCE_15_OF_15_PASS_NONAUTHORIZING' /tmp/v35.log
+          grep -q 'COMBINED_TRANSFER_EXACT_NESTED_BYTE_PARITY_PASS' /tmp/v35.log
+          grep -q 'NO_TRAINING_AUTHORITY__NO_PROTECTED_OUTCOMES__NO_FULL104_EXECUTION' /tmp/v35.log
