@@ -117,6 +117,25 @@ def split_ensembl_version(raw):
     return m.group(1), m.group(2), m.group(2) is not None
 
 
+def parse_assay_feature_id(raw):
+    """Parse an assay feature identifier into (stable_id, version, par_y).
+
+    CellRanger emits the pseudoautosomal Y copy of a PAR gene as
+    'ENSG00000182378.13_PAR_Y'. That is the SAME Ensembl stable ID as the X
+    copy, so a canonical address for a PAR gene genuinely resolves to TWO
+    assay features. Both are indexed under the one stable ID so the ambiguity
+    surfaces as AMBIGUOUSLY_MAPPED rather than being silently reduced to
+    whichever copy happened to be encountered first.
+    """
+    s = (raw or "").strip()
+    par_y = False
+    if s.endswith("_PAR_Y"):
+        par_y = True
+        s = s[: -len("_PAR_Y")]
+    gid, ver, _had = split_ensembl_version(s)
+    return gid, ver, par_y
+
+
 def norm_symbol(s):
     return (s or "").strip().upper()
 
@@ -670,16 +689,26 @@ def build(paths, out_dir, microglia_label="MG", skip_matrix_scan=False,
 
     mor_by_gid = collections.defaultdict(list)
     mor_by_symbol = collections.defaultdict(list)
-    rna_version_of = {}
     n_versioned = 0
+    n_par_y = 0
+    par_y_feature = {}
     for i, fid in enumerate(rna_ids):
-        gid, ver, had = split_ensembl_version(fid)
-        if had:
+        gid, ver, par_y = parse_assay_feature_id(fid)
+        if ver is not None:
             n_versioned += 1
+        if par_y:
+            n_par_y += 1
+        par_y_feature[i] = par_y
         mor_by_gid[gid].append(i)
-        rna_version_of[gid] = ver
         mor_by_symbol[norm_symbol(rna_names[i])].append(i)
     prov["counts"]["morabito_rna_features_with_version_suffix"] = n_versioned
+    prov["counts"]["morabito_rna_par_y_features"] = n_par_y
+    prov["notes"].append(
+        "%d snRNA features carry the CellRanger _PAR_Y suffix. They share an "
+        "Ensembl stable ID with their X-copy, so the affected canonical "
+        "addresses resolve to two assay features and are reported "
+        "AMBIGUOUSLY_MAPPED rather than silently collapsed to one copy."
+        % n_par_y)
     prov["counts"]["morabito_rna_unique_stable_ids"] = len(mor_by_gid)
     prov["counts"]["morabito_rna_unique_symbols"] = len(mor_by_symbol)
 
@@ -687,8 +716,11 @@ def build(paths, out_dir, microglia_label="MG", skip_matrix_scan=False,
     collisions = []
     for gid, feats in mor_by_gid.items():
         if len(feats) > 1:
+            any_par = any(par_y_feature.get(f) for f in feats)
             collisions.append({
-                "collision_type": "ensembl_stable_id_multi_feature",
+                "collision_type": ("ensembl_stable_id_multi_feature_par_y"
+                                   if any_par else
+                                   "ensembl_stable_id_multi_feature"),
                 "key": gid,
                 "n_features": len(feats),
                 "feature_ids": "|".join(rna_ids[f] for f in feats),
@@ -921,13 +953,16 @@ def build(paths, out_dir, microglia_label="MG", skip_matrix_scan=False,
                     "molecular_address_id": aid,
                     "symbol": asym,
                     "route": route,
+                    "reason": ("par_y_x_copy_pair"
+                               if any(par_y_feature.get(f) for f in feats)
+                               else "identifier_resolves_to_multiple_features"),
                     "n_features": len(feats),
                     "feature_ids": "|".join(rna_ids[f] for f in feats),
                     "feature_symbols": "|".join(rna_names[f] for f in feats),
                 })
             else:
                 f0 = feats[0]
-                srcver = split_ensembl_version(rna_ids[f0])[1]
+                srcver = parse_assay_feature_id(rna_ids[f0])[1]
                 row["rna_source_version"] = srcver or ""
                 if erec and erec["version"] and srcver:
                     row["rna_version_matches_ens116"] = (
@@ -1104,7 +1139,7 @@ def build(paths, out_dir, microglia_label="MG", skip_matrix_scan=False,
     with open(amb_csv, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=["molecular_address_index",
                                            "molecular_address_id", "symbol",
-                                           "route", "n_features",
+                                           "route", "reason", "n_features",
                                            "feature_ids", "feature_symbols"])
         w.writeheader()
         for a in ambiguous_rows:
