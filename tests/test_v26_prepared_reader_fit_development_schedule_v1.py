@@ -44,7 +44,7 @@ def test_prepared_replays_original_pr135_exactly(cursor):
 def test_planned_contiguous_cursors_match_separate_single_update_replay():
     p = prep()
     plan = p.plan(run_seed=42, first_update_index=5, update_count=8, presentations_per_update=3,
-        maximum_authorized_presentations=24)
+        maximum_declared_presentations=24)
     assert [x.update_index for x in plan] == list(range(5, 13))
     for u in plan:
         assert u.nontraining_report() == p.proposal(
@@ -118,11 +118,11 @@ def test_overflowing_schedule_and_zero_horizon_fail():
     p = prep()
     for args in (
         dict(run_seed=1, first_update_index=0, update_count=0, presentations_per_update=2,
-             maximum_authorized_presentations=100),
+             maximum_declared_presentations=100),
         dict(run_seed=1, first_update_index=0, update_count=1, presentations_per_update=5,
-             maximum_authorized_presentations=100),
+             maximum_declared_presentations=100),
         dict(run_seed=1, first_update_index=(1 << 63)-1, update_count=1, presentations_per_update=1,
-             maximum_authorized_presentations=100),
+             maximum_declared_presentations=100),
     ):
         with pytest.raises(ValueError):
             p.plan(**args)
@@ -168,9 +168,9 @@ def test_explicit_schedule_materialization_cap_enforced_before_rng(monkeypatch):
     def forbidden_rng(*args, **kwargs):
         raise AssertionError("schedule allocated RNG before budget preflight")
     monkeypatch.setattr(np.random, "PCG64", forbidden_rng)
-    with pytest.raises(ValueError, match="authorized materialization limit"):
+    with pytest.raises(ValueError, match="declared materialization limit"):
         p.plan(run_seed=1, first_update_index=0, update_count=10,
-               presentations_per_update=4, maximum_authorized_presentations=39)
+               presentations_per_update=4, maximum_declared_presentations=39)
 
 
 def test_public_constructor_cannot_forge_physical_byte_binding():
