@@ -1,0 +1,36 @@
+HEAD=21efb1047c73cfe7b88047f0aeee1978b035971f
+planner_sha=de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8
+env=C:/Users/dushy/anaconda3/envs/sea-ad-jepa/python.exe
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+........................................................................ [ 43%]
+........................................................................ [ 51%]
+........................................................................ [ 60%]
+........................................................................ [ 69%]
+.................................................................F...... [ 77%]
+....................................................................FFF. [ 86%]
+......F................................................................. [ 95%]
+.......................................                                  [100%]
+================================== FAILURES ===================================
+E   AssertionError: bound inputs changed since the freeze; the sample must be re-frozen and the change explained rather than silently reused: ['planner_source: recorded 143645becff6… now de2f019e2867…']
+    assert not ['planner_source: recorded 143645becff6… now de2f019e2867…']
+D:\jepa_laneC_20260926\tests\test_v5_audit_b_frozen_target_sample_v1.py:153: AssertionError: bound inputs changed since the freeze; the sample must be re-frozen and the change explained rather than silently reused: ['planner_source: recorded 143645becff6… now de2f019e2867…']
+E   AssertionError: Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8
+      
+    assert 1 == 0
+     +  where 1 = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe', 'D:\\jepa_laneC_20260926\\scripts...fe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n').returncode
+D:\jepa_laneC_20260926\tests\test_v5_audit_b_execution_contract_builder_v1.py:100: AssertionError: Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8
+E   AssertionError: assert 'qualification V2 is required' in ('' + 'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n')
+     +  where '' = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe', 'D:\\jepa_laneC_20260926\\scripts...fe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n').stdout
+     +  and   'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n' = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe', 'D:\\jepa_laneC_20260926\\scripts...fe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n').stderr
+D:\jepa_laneC_20260926\tests\test_v5_audit_b_execution_contract_builder_v1.py:115: AssertionError: assert 'qualification V2 is required' in ('' + 'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n')
+E   AssertionError: assert 'RNG authority V3 is required' in ('' + 'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n')
+     +  where '' = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe', 'D:\\jepa_laneC_20260926\\scripts...fe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n').stdout
+     +  and   'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n' = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe', 'D:\\jepa_laneC_20260926\\scripts...fe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n').stderr
+D:\jepa_laneC_20260926\tests\test_v5_audit_b_execution_contract_builder_v1.py:121: AssertionError: assert 'RNG authority V3 is required' in ('' + 'Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6...bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8\n')
+E   ValueError: Phase-IV bound input drift for planner_source: expected 143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8
+D:\jepa_laneC_20260926\src\sea_ad_jepa\v5\audit_b_execution_preflight_v1.py:114: ValueError: Phase-IV bound input drift for planner_source: expected 143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8
+5 failed, 826 passed in 200.45s (0:03:20)
+EXIT=1

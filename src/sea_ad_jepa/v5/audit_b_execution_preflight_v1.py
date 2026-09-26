@@ -12,6 +12,10 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
+from .audit_b_bound_input_successor_v2 import (
+    assert_no_uncovered_supersessions,
+    resolve_drift,
+)
 from .audit_b_execution_contract_v1 import (
     PHASE_IV_SAMPLE_FREEZE_DIGEST,
     AuditBExecutionContractV1,
@@ -65,11 +69,21 @@ def verify_phase_iv_sample_freeze(
     sample_freeze: str | Path,
     *,
     repo_root: str | Path,
+    successor: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
     """Verify the immutable sample receipt and every file it bound.
 
     The sample digest proves what hashes were frozen; this function proves the
     runtime checkout still contains exactly those bytes.
+
+    ``successor`` is an optional, already-validated bound-input successor record
+    (see :mod:`audit_b_bound_input_successor_v2`). It defaults to ``None``, so
+    behaviour without one is exactly what it has always been: drift in any bound
+    input is a refusal. Supplying a successor narrows rather than widens what is
+    accepted - it permits one named role to move from one exact digest to one
+    exact digest, only when that transition was classified
+    ``LEGITIMATE_VERSION_CHANGE`` on executed equivalence evidence, and a
+    successor that waives a role which did not drift is itself rejected.
     """
     freeze_path = Path(sample_freeze)
     if not freeze_path.is_file():
@@ -97,6 +111,7 @@ def verify_phase_iv_sample_freeze(
 
     root = Path(repo_root).resolve()
     observed: dict[str, str] = {}
+    drifted: dict[str, tuple[str, str]] = {}
     for role, rec in bound.items():
         if not isinstance(rec, dict):
             raise ValueError(f"Phase-IV bound input {role} is malformed")
@@ -111,11 +126,19 @@ def verify_phase_iv_sample_freeze(
             raise ValueError(f"Phase-IV bound input {role} escapes repo_root") from exc
         actual = sha256_file(candidate)
         if actual != expected:
-            raise ValueError(
-                f"Phase-IV bound input drift for {role}: "
-                f"expected {expected}, observed {actual}"
+            # Fail-closed without a successor; with one, only the exact recorded
+            # transition for this exact role can continue the binding.
+            resolve_drift(
+                role,
+                recorded=str(expected),
+                observed=actual,
+                successor=successor,
             )
+            drifted[role] = (str(expected), actual)
         observed[role] = actual
+    # A successor may only ever respond to an observed change, never pre-authorize
+    # one, so a waiver for an unchanged role invalidates the whole record.
+    assert_no_uncovered_supersessions(successor=successor, drifted_roles=drifted)
     return observed
 
 
@@ -168,11 +191,13 @@ def verify_runtime_bindings(
     full104_manifest: str | Path,
     canonical_registry: str | Path,
     repo_root: str | Path,
+    successor: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
     """Verify exact physical bytes against the already validated contract."""
     frozen_inputs = verify_phase_iv_sample_freeze(
         sample_freeze,
         repo_root=repo_root,
+        successor=successor,
     )
     observed = {
         "phase_iv_sample_artifact_sha256": sha256_file(sample_freeze),

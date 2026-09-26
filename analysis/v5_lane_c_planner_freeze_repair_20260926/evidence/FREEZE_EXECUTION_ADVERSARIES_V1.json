@@ -1,0 +1,110 @@
+{
+  "all_refused_at_the_expected_point": true,
+  "cases": [
+    {
+      "adversary": "silent_hash_bump_of_the_frozen_record",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "Phase-IV sample freeze internal digest mismatch",
+      "refusal_point": "Phase-IV sample freeze internal digest mismatch",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "hash_bump_with_recomputed_internal_digest",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "runtime uses a different Phase-IV sample freeze",
+      "refusal_point": "runtime uses a different Phase-IV sample freeze",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "planner_moves_again_after_the_successor",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "but the checkout contains",
+      "refusal_point": "successor binding planner_source authorizes de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8 but the checkout contains 6cf332f4914dc5e1ece5b5f2b9ce32ba01300d0f7c49e38f93d7791e88ed0a3f",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "successor_waives_an_untouched_role",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "may not pre-authorize a future change",
+      "refusal_point": "successor record supersedes bindings that did not drift: ['planner_source']; a successor may not pre-authorize a future change",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "builder_refuses_drift_without_a_successor",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "bound input drift for planner_source",
+      "refusal_point": "Phase-IV sample freeze runtime binding failed: Phase-IV bound input drift for planner_source: expected 143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d, observed de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "downstream_heavy_v1_refusal_is_reachable",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "qualification V2 is required",
+      "refusal_point": "exhaustive heavy-statistics qualification V2 is required",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "downstream_rng_v2_refusal_is_reachable",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "RNG authority V3 is required",
+      "refusal_point": "pre-panel masking RNG authority V3 is required",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    },
+    {
+      "adversary": "tampered_sample_membership",
+      "contract_artifact_created": false,
+      "expected_refusal_fragment": "digest",
+      "refusal_point": "Phase-IV sample freeze has an invalid internal digest",
+      "refusal_point_matches": true,
+      "refused": true,
+      "state_delta": {},
+      "training_state_artifacts_created": [],
+      "watched_artifacts_unchanged": true
+    }
+  ],
+  "evidence_class": "SYNTHETIC_PLANTED_FAILURES__REAL_REPO_ARTIFACTS_READ_ONLY",
+  "no_state_changed_on_any_refusal": true,
+  "positive_control": {
+    "artifact_written": true,
+    "execution_authorized": false,
+    "phase_iv_sample_freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+    "precision_scope_id": "UNRESOLVED__EXECUTION_FORBIDDEN",
+    "returncode": 0,
+    "stderr_tail": ""
+  },
+  "pr153_training_step_adversaries": "ALREADY_COVERED__NOT_REIMPLEMENTED",
+  "schema": "V5_LANE_C_FREEZE_EXECUTION_ADVERSARIES_V1",
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false,
+  "training_state_check": "no optimizer, EMA, schedule-cursor or checkpoint artifact may be created by any refused run; measured, not assumed",
+  "training_state_present_in_this_path": false,
+  "v27_inline_gradient_negative_controls": "PRESERVED__NOT_REIMPLEMENTED"
+}

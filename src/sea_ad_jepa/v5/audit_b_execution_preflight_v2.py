@@ -160,6 +160,7 @@ def verify_runtime_bindings(
     full104_manifest: str | Path,
     canonical_registry: str | Path,
     repo_root: str | Path,
+    successor: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
     contract.require_execution_ready()
 
@@ -167,7 +168,11 @@ def verify_runtime_bindings(
     precision = _load_precision_rule(precision_rule_authority, contract)
     rng = _load_rng(rng_authority, contract)
 
-    frozen_inputs = verify_phase_iv_sample_freeze(sample_freeze, repo_root=repo_root)
+    # ``successor`` defaults to None, so V2 stays fail-closed on any bound-input
+    # drift unless a validated successor record is supplied explicitly.
+    frozen_inputs = verify_phase_iv_sample_freeze(
+        sample_freeze, repo_root=repo_root, successor=successor
+    )
 
     observed = {
         "phase_iv_sample_artifact_sha256": sha256_file(sample_freeze),

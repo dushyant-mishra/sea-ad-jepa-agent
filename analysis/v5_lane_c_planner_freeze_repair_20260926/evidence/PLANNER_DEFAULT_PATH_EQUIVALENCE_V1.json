@@ -1,0 +1,74 @@
+{
+  "call_convention": "AUDIT_B_DEFAULT__NO_G3_FIT_OBJECTIVE_SUPPLIED",
+  "cases": [
+    {
+      "equivalent": true,
+      "folds_compared": {
+        "0": 8,
+        "1": 8,
+        "2": 8
+      },
+      "geometry": {
+        "cells_per_donor": 4,
+        "n_addresses": 8,
+        "n_donors": 12,
+        "n_folds": 3,
+        "n_sources": 2,
+        "seed": 0
+      },
+      "problems": [],
+      "ridge_partner_calls_compared": 6,
+      "rows_compared": 24
+    },
+    {
+      "equivalent": true,
+      "folds_compared": {
+        "0": 8,
+        "1": 8,
+        "2": 8,
+        "3": 8
+      },
+      "geometry": {
+        "cells_per_donor": 6,
+        "n_addresses": 11,
+        "n_donors": 16,
+        "n_folds": 4,
+        "n_sources": 3,
+        "seed": 7
+      },
+      "problems": [],
+      "ridge_partner_calls_compared": 8,
+      "rows_compared": 32
+    },
+    {
+      "equivalent": true,
+      "folds_compared": {
+        "0": 8,
+        "1": 8,
+        "2": 8,
+        "3": 8
+      },
+      "geometry": {
+        "cells_per_donor": 3,
+        "n_addresses": 9,
+        "n_donors": 20,
+        "n_folds": 4,
+        "n_sources": 2,
+        "seed": 19
+      },
+      "problems": [],
+      "ridge_partner_calls_compared": 8,
+      "rows_compared": 32
+    }
+  ],
+  "comparison": "BITWISE_EQUALITY_OF_EVERY_EMITTED_ROW__NO_TOLERANCE",
+  "equivalent": true,
+  "evidence_class": "SYNTHETIC_FIXTURE__IMPLEMENTATION_EQUIVALENCE_ONLY",
+  "frozen_planner_recovered_from": "analysis/v5_lane_c_planner_freeze_repair_20260926/evidence/frozen_planner_source__143645be.pysrc",
+  "frozen_planner_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+  "full104_expression_read": false,
+  "schema": "V5_PLANNER_DEFAULT_PATH_EQUIVALENCE_V1",
+  "successor_planner_sha256": "de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8",
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}

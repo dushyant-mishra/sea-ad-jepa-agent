@@ -26,6 +26,11 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     AuditBExecutionContractV1,
 )
 from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
+from sea_ad_jepa.v5.audit_b_bound_input_successor_v2 import (
+    REPO_ROOT as SUCCESSOR_REPO_ROOT,
+    SUCCESSOR_RECORD_PATH,
+    load_successor,
+)
 from sea_ad_jepa.v5.audit_b_execution_preflight_v1 import verify_phase_iv_sample_freeze
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -115,10 +120,30 @@ def main() -> int:
         != MASK_PLAN_GENERATOR_SHA256
     ):
         raise SystemExit("sample freeze binds a different mask-plan generator")
+    # A bound input may legitimately move to a reviewed successor version. The
+    # record is loaded only if it exists, is validated before it is trusted, and
+    # can still only continue one exact digest transition for one exact role. If
+    # it is absent or invalid, the binding check stays exactly as fail-closed as
+    # it has always been.
+    # Resolve the record against the checkout being verified, never against the
+    # module's own repository: a mirror or alternate checkout must not silently
+    # inherit a waiver that does not live in it.
+    successor_record = Path(args.repo_root) / SUCCESSOR_RECORD_PATH.relative_to(
+        SUCCESSOR_REPO_ROOT
+    )
+    successor = None
+    if successor_record.is_file():
+        try:
+            successor = load_successor(successor_record, repo_root=args.repo_root)
+        except ValueError as exc:
+            raise SystemExit(
+                f"Phase-IV bound-input successor record is invalid: {exc}"
+            ) from exc
     try:
         verify_phase_iv_sample_freeze(
             args.sample_freeze,
             repo_root=args.repo_root,
+            successor=successor,
         )
     except ValueError as exc:
         raise SystemExit(f"Phase-IV sample freeze runtime binding failed: {exc}") from exc

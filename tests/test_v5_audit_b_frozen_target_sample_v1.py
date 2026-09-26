@@ -144,15 +144,38 @@ def test_every_bound_input_is_recorded_with_a_digest(frozen):
 
 
 def test_bound_digests_still_match_the_repository(frozen):
-    """If a bound input has changed, the frozen sample no longer means what it said."""
-    drifted = []
+    """A bound input may only move through a reviewed, versioned successor.
+
+    The frozen record itself is never edited. If a bound input has drifted, the
+    ONLY acceptable state is that a successor record covers that exact role with
+    the exact recorded old digest, the exact observed new digest, an
+    authorizing classification and executed equivalence evidence. Anything else
+    - including a drift with no successor, or a successor for a different
+    transition - is still a failure, exactly as before.
+    """
+    from sea_ad_jepa.v5.audit_b_bound_input_successor_v2 import (
+        SUCCESSOR_RECORD_PATH,
+        load_successor,
+        resolve_drift,
+    )
+
+    drifted = {}
     for role, rec in frozen["bound_inputs"].items():
         actual = F.sha256_file(ROOT / rec["path"])
         if actual != rec["sha256"]:
-            drifted.append(f"{role}: recorded {rec['sha256'][:12]}… now {actual[:12]}…")
-    assert not drifted, (
-        "bound inputs changed since the freeze; the sample must be re-frozen and the "
-        f"change explained rather than silently reused: {drifted}")
+            drifted[role] = (rec["sha256"], actual)
+
+    if not drifted:
+        return
+
+    assert SUCCESSOR_RECORD_PATH.is_file(), (
+        "bound inputs changed since the freeze and no successor record exists; "
+        "the sample must be re-frozen as a NEW version and the change explained "
+        f"rather than silently reused: {sorted(drifted)}")
+    successor = load_successor(SUCCESSOR_RECORD_PATH, repo_root=ROOT)
+    for role, (recorded, actual) in sorted(drifted.items()):
+        # Raises with the reason if this exact transition is not authorized.
+        resolve_drift(role, recorded=recorded, observed=actual, successor=successor)
 
 
 def test_freeze_digest_covers_the_samples_and_the_bindings(frozen):
