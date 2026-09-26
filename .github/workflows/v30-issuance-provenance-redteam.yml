@@ -1,8 +1,9 @@
-name: V30 synthetic issuance-provenance red-team (non-authorizing)
+name: V34 final-issuer live-graph provenance regression (non-authorizing)
 on:
   pull_request:
     paths:
       - 'tests/test_v30_issuance_source_provenance.py'
+      - 'src/sea_ad_jepa/v5/current_training_authority_v1.py'
       - 'docs/agent/JEPA_V30_SYNTHETIC_ISSUANCE_PROVENANCE_FINDING_20260926.md'
       - '.github/workflows/v30-issuance-provenance-redteam.yml'
   workflow_dispatch:
@@ -18,9 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pytest==8.3.4
-      - name: Three exact synthetic adversaries (no model, no expression)
-        run: PYTHONPATH=src:. python -m pytest -q -s tests/test_v30_issuance_source_provenance.py --junitxml=/tmp/v30.xml | tee /tmp/v30.log
-      - name: Require explicit positive demonstration and zero skipped tests
+      - name: Seven exact fail-closed synthetic adversaries (no model, no expression)
+        run: |
+          set -o pipefail
+          PYTHONPATH=src:. python -m pytest -q -s tests/test_v30_issuance_source_provenance.py --junitxml=/tmp/v30.xml | tee /tmp/v30.log
+      - name: Require explicit closure rejection and zero skipped tests
         run: |
           python - <<'PY'
           from xml.etree import ElementTree as ET
@@ -28,9 +31,9 @@ jobs:
           if d.tag!='testsuite': d=d.find('testsuite')
           counts={x:int(d.get(x,0)) for x in ('tests','errors','failures','skipped')}
           names={x.get('name') for x in d.iter('testcase')}
-          if counts!={'tests':3,'errors':0,'failures':0,'skipped':0}:
+          if counts!={'tests':7,'errors':0,'failures':0,'skipped':0}:
               raise SystemExit(f'STOP_V30_MISSING_TESTS {counts}')
-          if len(names)!=3: raise SystemExit('STOP_V30_TEST_IDENTITY_GAP')
-          print('V30_SYNTHETIC_PROVENANCE_GAP_DIAGNOSTIC_ONLY__CURRENT_TRAINING_REMAINS_OFF')
+          if len(names)!=7: raise SystemExit('STOP_V30_TEST_IDENTITY_GAP')
+          print('V34_ISSUER_LIVE_GRAPH_FAIL_CLOSED_DIAGNOSTIC_ONLY__TRAINING_OFF')
           PY
-          grep -q 'V30_FINDING_SELF_CONSISTENT_INVENTED_CLOSURE_ACCEPTED__B1_STILL_OFF' /tmp/v30.log
+          grep -q 'V34_INVENTED_CLOSURE_REJECTED__TRAINING_REMAINS_OFF' /tmp/v30.log
