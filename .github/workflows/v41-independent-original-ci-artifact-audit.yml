@@ -1,0 +1,27 @@
+name: V41 independent authenticated original V40 GitHub artifact audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/agent/audit_v40_original_github_ci_artifact_v41.py'
+      - '.github/workflows/v41-independent-original-ci-artifact-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-original-provider-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independently re-fetch fixed original V40 GitHub job and artifact
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python scripts/agent/audit_v40_original_github_ci_artifact_v41.py | tee /tmp/v41.log
+          grep -q 'V41_ORIGINAL_PROVIDER_RUN_AND_17_EXACT_JUNIT_ARTIFACTS_VERIFIED__NOT_B2' /tmp/v41.log
+          grep -q '"full104_training_authorized": false' /tmp/v41.log
