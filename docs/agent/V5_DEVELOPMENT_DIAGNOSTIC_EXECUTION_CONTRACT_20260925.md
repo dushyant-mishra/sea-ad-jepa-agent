@@ -104,6 +104,45 @@ SHA-256, wall clock, and the full per-update trajectory.
 **Interpretation guard, recorded in the receipt itself:** a falling loss on
 synthetic tensors demonstrates gradient flow and nothing about biology.
 
+### Measured result — `PASS_V5_MECHANICAL_INTEGRATION_SYNTHETIC`
+
+```
+receipt  D:/jepa_v5_outputs_20260925/mech_integration_v3/
+         V5_MECHANICAL_INTEGRATION_DIAGNOSTIC_V1.json      54,990 bytes
+producer sha256 b967c8954872fb7af9e13794da02ac672958356a79c2ee39f71096ae9a38ef0f
+env      python 3.11.15, torch 2.7.0+cu128, CUDA available (RTX 3080 Laptop)
+         device_used cpu, gpu_memory_bytes_used 0
+wall     1,488.754 s   40 updates   10 microbatches x 2 views per update
+```
+
+| invariant | result |
+|---|---|
+| optimizer steps exactly once per update | **True** — sequence 1..40, every delta exactly +1 |
+| EMA advanced on every successful step | **True** |
+| max EMA residual | **0.0** exactly |
+| online parameters moved every update | **True** — min max-delta 2.935e-04 |
+| Adam first and second moments populated | **True** — 59/59 parameters, every update |
+| all losses finite | **True** |
+| **checkpoint restart reproduces uninterrupted run** | **True** — fingerprints identical, `c1f522a6…0c5db3` |
+| protected-gradient gate affirmative | **40/40** |
+
+Gradient gate, every update: `missing 0, nonfinite 0, exact_zero 0,
+teacher_gradients 0`, with `max_abs_gradient` ranging 0.065887–0.189149 — so
+gradients are present, finite, nonzero, and absent from the teacher.
+
+Loss fell 1.988835 → 0.741762 (62.7 %) on synthetic tensors. Per the guard
+above, that is gradient flow, not biology.
+
+**The gate assertion was tightened after this run and before publication.** An
+earlier version asserted only that the gate object `is not None`, which is close
+to a tautology — it would pass on any returned object, including one reporting
+dead gradients. It now requires the four counters to be zero and
+`max_abs_gradient > 0`. The strict predicate was then evaluated against the 40
+stored per-update gate records from this run: **40/40 affirmative, zero
+failures.** The stored values are what the run actually produced; the strict
+check is a re-evaluation of them, recorded here as such rather than presented as
+having gated the run inline.
+
 ### Device honesty
 
 `inactive_update_reference` documents itself as a *bounded CPU mechanics

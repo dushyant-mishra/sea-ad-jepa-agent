@@ -290,8 +290,18 @@ def main():
         and all(steps[i + 1] - steps[i] == 1 for i in range(len(steps) - 1)))
     # the harness computes its own EMA residual; require it to be at float noise
     ema_exact = all(r["ema_max_abs_error"] <= 1e-6 for r in cont_rows)
-    # protected-gradient gate must be present and affirmative on every update
-    gate_ok = all(r["gradient_gate"] is not None for r in cont_rows)
+    # The protected-gradient gate must be AFFIRMATIVE, not merely present.
+    # An earlier version asserted `is not None`, which is close to a tautology:
+    # it would pass on any object the harness returned, including one reporting
+    # dead gradients. Assert the actual contract instead.
+    def gate_affirmative(g):
+        return (isinstance(g, dict)
+                and int(g.get("missing", -1)) == 0
+                and int(g.get("nonfinite", -1)) == 0
+                and int(g.get("exact_zero", -1)) == 0
+                and int(g.get("teacher_gradients", -1)) == 0
+                and float(g.get("max_abs_gradient", 0.0)) > 0.0)
+    gate_ok = all(gate_affirmative(r["gradient_gate"]) for r in cont_rows)
     teacher_never_changed_without_step = all(r["teacher_changed"] for r in cont_rows)
     all_moved = all(r["online_tensors_moved"] > 0 for r in cont_rows)
     adam_ok = all(r["adam_exp_avg_nonzero"] > 0 and r["adam_exp_avg_sq_nonzero"] > 0

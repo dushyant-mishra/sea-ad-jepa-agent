@@ -1,9 +1,10 @@
-# Phase 1A — physical authentication of the frozen pass1 and calibration bundle
+# Phase 1A — physical authentication and execution of the pass1 donor-count bridge
 
-**Verdict: mixed. The frozen pass1 authenticates exactly. The calibration bundle
-on this machine does not, so PR #132's donor-count bridge cannot lawfully run
-here yet.** The bridge is correct to refuse; the defect is in the input, not the
-code, and I did not change the expectation to make it pass.
+**Verdict: good news. Both inputs authenticate and the bridge ran, confirming
+exact per-donor count equality across all 104 reader_fit donors.** Getting there
+required finding the real calibration bundle, because the file sitting under that
+name was a different artifact — and the right move was to find the authentic
+bytes rather than relax the digest.
 
 ## What was measured
 
@@ -41,31 +42,78 @@ digest would convert a genuine provenance failure into a green check, which is
 precisely the failure mode the digest exists to prevent. The name of a file does
 not establish its identity.
 
-A filesystem search for a copy at the recorded size and digest was launched; its
-result is recorded separately. Until such a copy is found, Phase 1A's bridge
-execution is **BLOCKED_BY_PHYSICAL_INPUT_MISMATCH**, distinct from an
-authorization blocker.
+## The authentic bundle was recovered, not worked around
 
-## What this does and does not affect
+A filesystem search found a **seven-part split archive** in `C:/Users/dushy/Downloads/`:
+`FOUNDATION_CALIBRATION_BUNDLE_20260824.zip.part001` … `part007`, six parts of
+67,108,864 bytes and a final part of 7,624,871, totalling **exactly
+410,278,055 bytes**. Concatenated in order to a new path — the 1.09 GB file was
+left untouched — the result hashes to
 
-**Does not affect:** the frozen pass1 itself is authentic, so anything keyed only
-to `37f79e49…` is unaffected. PR #132's 51 synthetic tests remain synthetic-only
-and are **not** relabelled as physical execution.
+```
+07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444
+```
 
-**Does affect:** the 104-donor ID and per-donor count equality check cannot be
-performed, because the reader-fit membership and per-donor counts are read from
-`splits/reader_donor_split.csv` *inside* that archive. A global total of
-4,553,407 cells would not substitute for per-donor equality even if it matched —
-reciprocal count swaps between two donors preserve the total exactly, which is
-why the bridge checks identities and per-donor counts rather than the sum.
+which is the declared `calibration_bundle_transport_sha256` exactly. The bundle
+is **AUTHENTICATED**.
+
+Independently, `splits/reader_donor_split.csv` was found already extracted in two
+places, and both copies hash to `efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511`,
+matching the registry's declared digest and the preflight's `READER_SPLIT_SHA256`.
+
+## Bridge execution
+
+Run as a module from PR #132 head `1e9080caeeea`, clean worktree:
+
+```
+--pass1           full104_pass1_v2_selection_row_keyed.npz   37f79e49…90ba1
+--calibration-zip reassembled bundle                          07748d5b…17444
+exit 0    status BYTE_BOUND_PASS1_AND_METADATA_COUNTS_ONLY
+```
+
+| field | value |
+|---|---|
+| **per_donor_exact_count_match** | **True** |
+| donor_count | **104** |
+| cell_count | **4,553,407** |
+| reader_fit_membership_sha256 | `9332e77c…d8e977` (matches `FIT_MEMBERSHIP_SHA256`) |
+| reader_fit_donor_counts_sha256 | `b2da4aa9…4de875` (matches `FIT_COUNTS_SHA256`) |
+| raw_level4_blocks_opened | **0** |
+| protected_outcomes_opened | False |
+| training_authorized | False |
+
+Per-donor equality was checked donor-by-donor against the authenticated
+membership, not by comparing the 4,553,407 total — a reciprocal count swap
+between two donors preserves the total exactly, which is why the sum is not a
+substitute.
+
+## What the gate itself declares it does NOT do
+
+The receipt is explicit about its own limits, and these are carried forward
+rather than glossed:
+
+* `balanced_reciprocal_cell_swaps = NOT_DETECTABLE_BY_HISTOGRAM` — a swap
+  between two donors holding *identical* counts is invisible to a per-donor count
+  comparison. Count equality is necessary, not sufficient, for identity.
+* `pass1_to_raw_level4_binding = NOT_REVALIDATED_BY_THIS_GATE`
+* `per_cell_donor_lineage_validation = NOT_PERFORMED_BY_THIS_GATE`
+* `source_library_validation = NOT_PERFORMED`, `proposal_q_validation = NOT_PERFORMED`
+
+This is a metadata-level count bridge, not a raw-count integrity proof. It opened
+**zero** Level-4 blocks. PR #120's all-104 raw-count verification remains a
+separate task under its own authority.
+
+PR #132's 51 synthetic tests remain **SYNTHETIC_TESTED_ONLY** and are not
+relabelled as physical execution; this receipt is the physical execution.
 
 ## Status
 
 ```
-COMPLETED_AND_PHYSICALLY_EXECUTED : whole-file SHA-256 authentication of 4 candidate inputs
+COMPLETED_AND_PHYSICALLY_EXECUTED : SHA-256 authentication of 4 candidates + bundle reassembly
+                                    PR #132 donor-count bridge, 104/104 per-donor exact match
 SYNTHETIC_TESTED_ONLY             : PR #132's 51 tests (unchanged, not promoted)
-BLOCKED_BY_PHYSICAL_INPUT_MISMATCH: PR #132 donor-count bridge execution
-NOT_EXECUTED                      : 104-donor ID and per-donor count equality
+NOT_EXECUTED                      : per-cell donor lineage, pass1-to-raw-Level4 binding,
+                                    source-library and proposal-q validation
 ```
 
 ```
