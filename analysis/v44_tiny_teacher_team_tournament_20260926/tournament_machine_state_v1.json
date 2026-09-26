@@ -6,7 +6,14 @@
     "expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
     "sample_freeze_csv_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
     "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
-    "uploaded_large_original_to_github": false
+    "uploaded_large_original_to_github": false,
+    "prepared_derived_CSR_npy_sha256": {
+      "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
+      "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+      "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+      "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb"
+    },
+    "prepared_arrays_original_parent_linkage": "ORIGINAL_NPZ_SHA_PLUS_PINNED_PREPARED_ARRAY_SHA__MUST_VERIFY_TRUE_DERIVATION_SEPARATELY_IF_PROVENANCE_DOUBTFUL"
   },
   "population": {
     "cells": 2600,
@@ -110,7 +117,8 @@
     "portable_filename": "JEPA_V44_TINY_TOURNAMENT_PORTABLE_20260926.zip",
     "portable_bytes": 19390,
     "portable_sha256": "7912918cad795f930b5c0a86a690a902e2126c6fca45fec33d83eced4ffb1daa",
-    "portable_on_github": false
+    "portable_on_github": false,
+    "github_reproducer_status": "AUDITABLE_EQUIVALENT_IMPLEMENTATION_STATIC_HOSTED_COMPILE_PASS__NOT_PHYSICAL_ORIGINAL_SOURCE_EXECUTION"
   },
   "authority": {
     "training_authorized": false,
