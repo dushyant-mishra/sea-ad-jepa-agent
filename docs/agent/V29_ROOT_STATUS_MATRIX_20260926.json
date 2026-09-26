@@ -31,7 +31,7 @@
   ],
   "raw_digest_slots": {
     "full104_substrate_sha256": {
-      "closure_consumption": "str argument, then equality-enforced against support_estimability, outer_split, target_panel and masking_qualification_design",
+      "closure_consumption": "str argument, then equality-enforced against SIX consumers in current_authority_closure_v2.py",
       "is_missing_dataclass": false,
       "note": "not a missing artifact; a cross-binding constant every consuming authority must agree on",
       "committed_bindings_observed": 4,
@@ -57,7 +57,46 @@
         "consequence": "binding the substrate root from a history copy would silently bind the WRONG substrate; the filename is not the identity"
       },
       "status": "VALUE_AND_BYTES_AUTHENTICATED__ROOT_STILL_NOT_CLOSED",
-      "why_not_closed": "closure additionally requires every consuming authority to exist and carry this same value; four of those consumers have no committed artifact"
+      "why_not_closed": "closure requires all SIX consumers to exist and carry this value; three (outer_split, target_panel, masking_qualification_design) have no committed artifact",
+      "consumers": [
+        {
+          "authority": "representation",
+          "field": "substrate_authority_sha256",
+          "line": 195,
+          "has_committed_candidate": true
+        },
+        {
+          "authority": "support_estimability",
+          "field": "full104_substrate_sha256",
+          "line": 196,
+          "has_committed_candidate": true
+        },
+        {
+          "authority": "canonical_address_registry",
+          "field": "full104_block_manifest_sha256",
+          "line": 202,
+          "has_committed_candidate": true
+        },
+        {
+          "authority": "outer_split",
+          "field": "full104_substrate_sha256",
+          "line": 209,
+          "has_committed_candidate": false
+        },
+        {
+          "authority": "target_panel",
+          "field": "full104_substrate_sha256",
+          "line": 210,
+          "has_committed_candidate": false
+        },
+        {
+          "authority": "masking_qualification_design",
+          "field": "full104_substrate_sha256",
+          "line": 245,
+          "has_committed_candidate": false
+        }
+      ],
+      "consumer_count": 6
     },
     "observation_gradient_firewall_authority_sha256": {
       "closure_consumption": "str argument, then equality-enforced against anti_cheat.observation_gradient_firewall_authority_sha256",
@@ -181,6 +220,18 @@
     "reverified_and_correct": [
       "full104_substrate_sha256 bytes 2372002 and digest 66f589e5... re-hashed independently, exact match",
       "decoy bytes 2380918 and digest e482d9da21232bdeb6b3f198f42b9fbcf1530ba1b3e86e104ffbb651ca9df808, exact match"
-    ]
+    ],
+    "S19": {
+      "finding": "my matrix stated FOUR substrate consumers; there are SIX",
+      "missed": [
+        "representation.substrate_authority_sha256 (line 195)",
+        "canonical_address_registry.full104_block_manifest_sha256 (line 202)"
+      ],
+      "root_cause": "I grepped for the field spelling 'full104_substrate' and assumed it enumerated every consumer. Two consumers bind the SAME substrate under DIFFERENT field names, so my pattern could never have matched them. I also truncated the grep with head -12 and read the truncation as complete.",
+      "pattern_with_S17": "both S17 and S19 are the same error: I reported my own truncated or single-spelling evidence as if it were exhaustive. Search by the VALUE being bound, not by one spelling of the key.",
+      "caught_by": "Lane B, independently, not by me",
+      "consequence_direction": "the correction IMPROVES the picture: two of the two newly-found consumers are themselves own-schema-validated candidates, so three rather than four consumers lack artifacts",
+      "status": "corrected in this commit"
+    }
   }
 }
