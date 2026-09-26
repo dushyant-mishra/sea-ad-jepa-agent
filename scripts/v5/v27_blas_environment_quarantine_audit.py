@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Read-only per-environment NumPy/torch BLAS quarantine audit.
+"""Read-only per-environment NumPy/torch BLAS invocation-condition diagnostic.
 
+The original Sept20 qualified environment REQUIRES <env>/Library/bin on PATH.
+An absent DLL search path is an invocation failure, NOT a defective env.
 Runs independent child processes so a native Windows 0xc06d007f crash cannot
 terminate the parent or masquerade as a Python exception. Does not mutate or
 reinstall either environment. DOES NOT classify any historical receipt without
@@ -36,23 +38,30 @@ except BaseException as e:
     out["torch_exception"]=type(e).__name__+": "+str(e)
 print("V27_ENV_PROBE_JSON="+json.dumps(out,sort_keys=True),flush=True)
 '''
-def run_one(name,cmd,seconds=60):
+PRECHECK=r'''\nimport os,sys,json\np=os.path.normcase(os.path.normpath(os.path.join(sys.prefix,'Library','bin')))\npaths={os.path.normcase(os.path.normpath(x)) for x in os.environ.get('PATH','').split(os.pathsep) if x}\nprint('V27_ENV_PATH='+json.dumps({'platform':sys.platform,'library_bin_on_path':p in paths,'expected_library_bin':p}),flush=True)\n'''\ndef run_one(name,cmd,seconds=60):
     t=time.monotonic()
     try:
+        env_check=subprocess.run(cmd+["-c",PRECHECK],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=seconds,check=False)
+        hits=[x.split('V27_ENV_PATH=',1)[1] for x in env_check.stdout.splitlines() if x.startswith('V27_ENV_PATH=')]
+        invocation=json.loads(hits[-1]) if hits else None
         p=subprocess.run(cmd+[ "-c", CHILD ],text=True,stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,timeout=seconds,check=False)
         marker=[s.partition("V27_ENV_PROBE_JSON=")[2] for s in p.stdout.splitlines() if s.startswith("V27_ENV_PROBE_JSON=")]
         payload=json.loads(marker[-1]) if marker else None
-        status="PASS" if p.returncode==0 and payload and payload.get("numpy_3x3_ok") is True and payload.get("torch_3x3_ok") is True else "QUARANTINE_OR_INCOMPLETE"
+        success=p.returncode==0 and payload and payload.get("numpy_3x3_ok") is True and payload.get("torch_3x3_ok") is True
+        if success:status="PASS_VALID_INVOCATION"
+        elif invocation and invocation.get("platform")=="win32" and invocation.get("library_bin_on_path") is False:
+            status="STOP_REQUIRED_LIBRARY_BIN_MISSING__NOT_AN_ENV_DEFECT"
+        else:status="INCOMPLETE_OR_FAILED_PROBE__DO_NOT_INFER_ENV_DEFECT"
         return {"name":name,"status":status,"returncode":p.returncode,
                 "returncode_hex":hex(p.returncode & 0xFFFFFFFF),
-                "payload":payload, "stdout_tail":p.stdout[-2500:],"stderr_tail":p.stderr[-2500:],
+                "invocation_path_precheck":invocation,"payload":payload, "stdout_tail":p.stdout[-2500:],"stderr_tail":p.stderr[-2500:],
                 "wall_seconds":round(time.monotonic()-t,2)}
     except subprocess.TimeoutExpired as e:
-        return {"name":name,"status":"QUARANTINE_TIMEOUT","seconds":seconds,
+        return {"name":name,"status":"INCOMPLETE_TIMEOUT_NOT_ENV_DEFECT","seconds":seconds,
                 "stdout_tail":str(e.stdout)[-400:],"stderr_tail":str(e.stderr)[-400:]}
     except (OSError,ValueError) as e:
-        return {"name":name,"status":"QUARANTINE_LAUNCH_FAILURE","error":str(e)}
+        return {"name":name,"status":"INCOMPLETE_LAUNCH_FAILURE_NOT_ENV_DEFECT","error":str(e)}
 def main():
     a=argparse.ArgumentParser()
     a.add_argument("--conda",default="conda")
@@ -70,7 +79,8 @@ def main():
             "observed_at_utc":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
             "training_authorized":False,"rows":rows,
             "limitations":["Local Linux control is not the Windows GPU laptop environment",
-                "No prior scientific output is invalidated without its recorded environment and actual NumPy BLAS dependency",
+                "Sept20 prior authority already qualifies sea-ad-jepa CONDITIONAL on Library/bin on PATH; S9 broken-environment claim was retracted Sept26",
+                "Do not rerun prior science on the basis of a missing invocation DLL path",
                 "Subprocess crash returncodes are preserved, not hidden by a Python try/except"]}
     path=pathlib.Path(x.out)
     if path.exists():raise SystemExit("STOP_EXISTING_ENV_RECEIPT")
