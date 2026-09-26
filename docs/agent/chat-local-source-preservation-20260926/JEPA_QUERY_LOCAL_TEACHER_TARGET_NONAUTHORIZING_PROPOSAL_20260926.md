@@ -1,0 +1,41 @@
+# V5 query-local teacher-target: non-authorizing scientist decision proposal
+
+**Status:** PROPOSAL ONLY. No production changes, no real FULL104 training, no source authority closure, no protected outcomes opened. All results here are synthetic toy preflights; no full-size molecular inference occurred.
+
+## Proposed scientific estimand
+
+Predict the **query-address-conditioned, non-scalar, same-cell molecular state inferred from lawful remaining RNA**; never predict the queried scalar as the JEPA training target. A query identity *q* is allowed to index shared query/predictor machinery but does not carry the observed expression value of q. No disease/pathology or protected outcome is allowed to supervise/choose the target.
+
+### Executable candidate (requires scientist approval)
+
+1. First construct a support mask from frozen canonical registry and operator observation state. Distinguish observed zero from structurally unmeasured; exclude unresolved collisions. The queried scalar q must be absent *before every operation that pools genes* in both teacher and student views. Do not substitute a sentinel after an all-gene pooling operation.
+2. Within lawful non-query measured RNA, construct two disjoint, independently determined gene views C and T **per cell**. Sample according to an explicitly frozen masking and RNG law; optionally form multiple pairs to reduce view variance. Neither branch may see the scalar for q. The teacher's query-local state is `sg[ EMA_encoder(T, q) at q ]`; the student's predictor uses `online_encoder(C, q)` and shared address-query mechanism. T should include adequate non-query signal for the chosen target's biological program. Teacher stop-gradient; update EMA only after an authenticated real optimizer update.
+3. A different, fully query-sanitized global biological context is optional **after** its provenance/derivation is demonstrated q-counterfactually invariant; for the first strict diagnostic prefer `global_context=OFF` to avoid untested latent q-scalar leakage in derived V0/V1 value features. Observation/QC channels and arbitrary donor/operator identifiers must not silently become the biological target. If no global context, perform identity-only and technical-only controls; global-only comparator can be added only under separately certified q-safe context.
+4. Match predicted and teacher *latent embeddings*, not q's count. Evaluate cosine or normalized latent error only after anti-collapse controls; use no scalar reconstruction loss in the primary objective. A diagnostic gene reconstruction readout can be separately trained/evaluated as a baseline, never silently weighted into the target.
+5. Preserve the project's prospective base training weight law `1/(D*n_d)` for the *actually selected* approved TRAIN donors; do not confuse donor-operator-equal and relational-anchor weights with base training.
+
+**Critical unresolved issue:** Existing audited FULL104 log1p10K uses the *full source library* denominator, which mathematically contains q. Existing V0/V1 256-channel global features may also depend on q. Withholding the q token AFTER these transformations is not an exact counterfactual firewall. No in-place replacement of the audited representation/normalization is permitted. A versioned q-excluded normalization or a defensible fixed-exogenous-size-factor strategy needs prospective scientific approval and its own new authority, with historical original outputs retained. At fixed library size the original normalized non-query values remain unchanged when q is perturbed, but fixing a size factor derived from full q is not proof of no q leakage. Record both counterfactuals.
+
+## Alternative and decision tradeoff
+
+- **Candidate A: unmasked full-cell EMA teacher at q.** Faithful to common image/cell JEPA implementation; potentially uses q's own expression (including through attention and pooled library normalization) to define target; incompatible with the strict anti-scalar interpretation unless a quantitatively justified q-value intervention shows no leakage. **Not the proposed strict initial diagnostic.**
+- **Candidate B: query-excluded teacher using the same remaining-RNA view as student.** Guaranteed explicit scalar omission after separately approved q-safe preprocessing, but trivial view-copying/identity may satisfy a latent loss; inadequate evidence of predicting missing cell-state information unless view/route controls are strong.
+- **Candidate C (proposed): query-excluded, disjoint complementary biological views.** Tests predictability of *held-out non-query latent program state* from the remaining lawful context. Requires a legitimate shared program and suitable per-operator gene support; views are not independent biological replicates, and disentanglement/biological meaning needs separate measurement and external tests.
+
+## Minimal qualification ladder before full-run authorization
+
+1. Source/static leakage trace across normalization denominator, all-gene pooled features, V0/V1 global context, query provider, teacher/student mixing, and any batch/technical metadata. Plant two otherwise identical synthetic cells differing only in q; assert both target and student input remain identical under proposed **strict** policy. An expected-fail control must demonstrate leakage in the inherited full-library preprocessing.
+2. On a strictly **development-only**, authenticated original full104 **read-only** sample with prospective donor splits, evaluate teacher embedding noncollapse (per-dimension spread/effective rank), query-dependent biological specificity, count-splitting/measurement stability where count model supports it, and masked-view concordance. Disjoint gene sets are not statistically independent readouts when they share latent cell biology; this is intended. Do not treat Poisson thinning as independent replicates if raw counts are overdispersed; an NB count-splitting method needs fit and checks.
+3. Require heldout-donor, donor-weighted primary score with positive advantage over identity-only, technical-only, global-only (if allowed), mismatched-view-within-donor, shuffled-query, and fixed cell-type/program-only controls. Any thresholds, mask amounts, donor partition and seeds are preregistered by the scientist without protected outcomes.
+4. Independently examine SCENIC+/GSE174367 ATAC agreement and qualified perturbation assays as later *external* evidence. Historical Stage75F RNA-derived TF edges are hypotheses, not independent ground truth.
+5. Keep B1 prospective scientist-approved development training contract and all B2 root/critical/runtime/receipt/preexecution closure as separate strict gates. Under no circumstance does this proposal issue either.
+
+## Local non-authorizing synthetic preflight
+
+Reproduce `python teacher_target_preflight_v1.py` in the accompanying file. The script tests exact q-scalar counterfactual invariance for query-excluded preprocessing and synthetic q-safe global features; exposes inherited full-library and full-expression-derived global leakage; tests conditional state predictability on four held-out synthetic donors for two query IDs against technical-only, identity-only and within-donor mismatched targets; and tests true stop-gradient versus an illicit teacher-gradient positive control.
+
+Results are in `teacher_target_preflight_v1_results.json`. They demonstrate a feasible *mechanical design and detectable failure modes*, not that the same biological target is qualified, that real data has the same signal-to-noise properties, or that the source V5 implementation implements these gates.
+
+## Owner approval required
+
+The scientist must approve the actual biological meaning of query-local state; whether a strictly q-excluded target plus complementary views is the primary candidate; how to reconcile canonical full-library normalization with a strict q-value firewall; whether global context is OFF in the first strict diagnostic; and an exact donor split and permitted developmental sample. A separate authorization sequence then freezes the mask policy, model capacity/schedule/EMA and numerical pass/fail gates from support and available compute.
