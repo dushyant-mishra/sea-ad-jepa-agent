@@ -1,0 +1,25 @@
+name: V37 read-only Phase-IV frozen-source succession proof
+on:
+  pull_request:
+    paths:
+      - 'scripts/agent/audit_phase_iv_source_succession_v37.py'
+      - '.github/workflows/v37-phaseiv-source-succession.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-predecessor-and-g3-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify all seven original freeze roles without opening N1
+        run: |
+          set -euo pipefail
+          python scripts/agent/audit_phase_iv_source_succession_v37.py | tee /tmp/v37.log
+          grep -q 'V37_EXACT_PREDECESSOR_SOURCE_AND_G3_DRIFT_PROVED__ORIGINAL_FREEZE_IMMUTABLE' /tmp/v37.log
