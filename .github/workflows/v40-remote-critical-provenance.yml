@@ -51,7 +51,7 @@ jobs:
         with:
           name: v40-critical-junit
           path: /tmp/v40-download
-      - name: Exact fourteen TEST-ONLY transport and redirect adversaries
+      - name: Exact fifteen TEST-ONLY transport and redirect adversaries
         env:
           PYTHONPATH: src:.
         run: |
@@ -62,9 +62,9 @@ jobs:
           root=ET.parse('/tmp/v40-offline.xml').getroot()
           if root.tag!='testsuite': root=root.find('testsuite')
           values={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
-          if values!={'tests':14,'errors':0,'failures':0,'skipped':0}:
+          if values!={'tests':15,'errors':0,'failures':0,'skipped':0}:
               raise SystemExit(f'STOP_V40_TEST_COUNT: {values}')
-          print('V40_OFFLINE_FOURTEEN_EXACT_NO_SKIPS')
+          print('V40_OFFLINE_FIFTEEN_EXACT_NO_SKIPS')
           PY
       - name: Refetch run/job/artifact metadata and source via API; verify original JUnit delivered by official GitHub action
         env:
