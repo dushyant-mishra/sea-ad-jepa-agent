@@ -3,6 +3,13 @@
 **Status:** repaired via a versioned successor binding. The original frozen record
 is unmodified. Nothing here authorizes Audit-B execution or training.
 
+**Lane:** `lane-c/v29-masking-regression-repair-20260926` - PR #169, based on the
+PR #144 branch `review/v26-g3-explicit-streaming-attacker-integration-20260926`
+rather than on `main`. That is the true parent of this repair, and it is also the
+only base that merges cleanly: the PR #143/#144 stack currently conflicts with
+`main` in `START_HERE.md` and `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`, two
+files this lane did not touch and must not resolve on another lane's behalf.
+
 `TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED ·
 D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF`
 
