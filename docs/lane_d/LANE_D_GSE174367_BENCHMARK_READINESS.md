@@ -3,6 +3,8 @@
 `TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED ·
 D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF`
 
+> **Provenance.** What was verified by direct execution in this session, what was read from the historical record, and what is explicitly unverified are separated in [`LANE_D_VERIFICATION_RECEIPT.md`](LANE_D_VERIFICATION_RECEIPT.md). Read it before citing any number here.
+
 **Execution class: RECONNAISSANCE. Every biological evaluation in this package
 is `NOT_EXECUTED`.** Nothing here is a scientific result about Alzheimer's
 disease, about regulation, or about any gene. It is an audit of what data and
@@ -420,6 +422,7 @@ git, in line with the project's large-artifact rule.
 | `laneD_artifact_receipts_v1.csv` | every artifact by path + size + SHA-256 |
 | `docs/lane_d/LANE_D_LEAKAGE_AND_OVERLAP_REGISTER.md` | circularity and independence register |
 | `configs/lane_d/lane_d_atac_independence_evaluation_spec_v1.yaml` | the test, not run |
+| `docs/lane_d/LANE_D_VERIFICATION_RECEIPT.md` | what was verified, how, and what was not |
 
 ---
 
