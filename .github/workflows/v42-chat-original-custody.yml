@@ -1,4 +1,4 @@
-name: V42 exact original chat text custody audit (non-authorizing)
+name: V42 exact original chat file custody audit (non-authorizing)
 on:
   pull_request:
     paths:
