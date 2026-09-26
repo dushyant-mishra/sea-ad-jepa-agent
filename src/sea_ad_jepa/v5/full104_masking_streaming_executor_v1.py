@@ -29,6 +29,10 @@ import numpy as np
 import scipy.sparse as sp
 
 from .full104_masking_qualification_runner_v1 import apply_burden_preserving_swaps
+from .g3_explicit_attacker_fit_objective_v1 import (
+    OBJECTIVES as G3_FIT_OBJECTIVES,
+    fit_from_standardized_donor_components,
+)
 
 
 _EPS = 1e-12
@@ -499,6 +503,7 @@ def _fit_ridge_weights(
     target_col: int,
     feature_cols: np.ndarray,
     alpha: float,
+    fit_objective: str | None = None,
 ) -> np.ndarray:
     features = _as_int_vector(feature_cols, "feature_cols")
     if features.size == 0:
@@ -510,6 +515,21 @@ def _fit_ridge_weights(
         feature_cols=features,
         need_xx=True,
     )
+    # G3 opt-in, never implicit: leave the original historical path below
+    # byte-for-byte logically unchanged for historical comparability.
+    if fit_objective is not None:
+        if fit_objective not in G3_FIT_OBJECTIVES:
+            raise ValueError("unknown explicit G3 fit objective")
+        return fit_from_standardized_donor_components(
+            components={
+                int(d): _standardized_components(stats[int(d)])
+                for d in donors
+            },
+            donor_counts={int(d): stats[int(d)].n for d in donors},
+            source_by_donor={int(d): str(stream.source_by_donor[int(d)]) for d in donors},
+            objective=fit_objective,
+            alpha=alpha,
+        )
     gram = np.zeros((features.size, features.size), dtype=np.float64)
     rhs = np.zeros(features.size, dtype=np.float64)
     rss_y = 0.0
@@ -595,6 +615,7 @@ def _ridge_primary_score(
     mask: set[int],
     feature_count: int,
     alpha: float,
+    fit_objective: str | None = None,
 ) -> float:
     visible = np.asarray(
         [int(col) for col in stream.universe_cols if int(col) not in mask and int(col) != int(target_col)],
@@ -615,6 +636,7 @@ def _ridge_primary_score(
         target_col=target_col,
         feature_cols=features,
         alpha=float(alpha),
+        **({} if fit_objective is None else {"fit_objective": fit_objective}),
     )
     return _source_balanced_prediction_score(
         stream,
@@ -653,6 +675,7 @@ def _ridge_partners(
     candidate_pool_count: int,
     cap: int,
     alpha: float,
+    fit_objective: str | None = None,
 ) -> tuple[int, ...]:
     candidates = np.asarray(
         [int(col) for col in stream.universe_cols if int(col) != int(target_col)],
@@ -671,6 +694,7 @@ def _ridge_partners(
         target_col=target_col,
         feature_cols=pool,
         alpha=float(alpha),
+        **({} if fit_objective is None else {"fit_objective": fit_objective}),
     )
     order = np.lexsort((pool, -np.abs(weights)))
     return tuple(map(int, pool[order[: min(int(cap), pool.size)]]))
@@ -820,12 +844,16 @@ def run_primary_fold_streaming(
     parameters: Any,
     evidence_budget: Any,
     global_seed: int,
+    g3_fit_objective: str | None = None,
 ) -> list[dict[str, Any]]:
     """Run one canonical outer fold from authenticated blocks using sufficient statistics."""
 
     stream.validate_layout()
     parameters.validate()
     evidence_budget.validate()
+    if g3_fit_objective is not None and g3_fit_objective not in G3_FIT_OBJECTIVES:
+        raise ValueError("unknown explicit G3 fit objective")
+    g3_fit_kwargs = {} if g3_fit_objective is None else {"fit_objective": g3_fit_objective}
     if isinstance(fold_index, bool) or not isinstance(fold_index, int):
         raise ValueError("fold_index must be an integer")
     heldout_donors = np.flatnonzero(stream.fold_by_donor == fold_index).astype(np.int64)
@@ -857,6 +885,7 @@ def run_primary_fold_streaming(
             mask=base_mask,
             feature_count=int(parameters.ridge_score_feature_count),
             alpha=float(parameters.ridge_alpha),
+            **g3_fit_kwargs,
         )
         policy_targets = {
             "UNIFORM_RANDOM": (),
@@ -873,6 +902,7 @@ def run_primary_fold_streaming(
                 candidate_pool_count=int(parameters.ridge_candidate_pool_count),
                 cap=int(parameters.targeted_partner_cap),
                 alpha=float(parameters.ridge_alpha),
+                **g3_fit_kwargs,
             ),
             "PREFIX3_SELECTIVE": _prefix3_partners(
                 stream,
@@ -912,6 +942,7 @@ def run_primary_fold_streaming(
                     mask=mask,
                     feature_count=int(parameters.ridge_score_feature_count),
                     alpha=float(parameters.ridge_alpha),
+                    **g3_fit_kwargs,
                 )
             effective = len([col for col in targeted if col not in base_mask and col != target_col])
             rows.append(
@@ -933,6 +964,12 @@ def run_primary_fold_streaming(
                     "uniform_mask_cardinality": len(base_mask),
                 }
             )
+            if g3_fit_objective is not None:
+                # Never relabel a historical score: new G3 rows are
+                # explicitly DEVELOPMENT-only until the existing six-state
+                # evidence/coverage contract is separately integrated.
+                rows[-1]["g3_fit_objective_id"] = g3_fit_objective
+                rows[-1]["g3_scope"] = "DEVELOPMENT_ONLY__UNDEFINED_HELDOUT_TERMS_NOT_QUALIFIED"
     return rows
 
 
@@ -942,6 +979,7 @@ def run_all_primary_folds_streaming(
     parameters: Any,
     evidence_budget: Any,
     global_seed: int,
+    g3_fit_objective: str | None = None,
 ) -> list[dict[str, Any]]:
     """Execute every declared outer fold represented by donor metadata."""
 
@@ -955,6 +993,7 @@ def run_all_primary_folds_streaming(
                 parameters=parameters,
                 evidence_budget=evidence_budget,
                 global_seed=global_seed,
+                **({} if g3_fit_objective is None else {"g3_fit_objective": g3_fit_objective}),
             )
         )
     return output
