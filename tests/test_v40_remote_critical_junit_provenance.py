@@ -105,7 +105,7 @@ def test_nonpassing_job_fails():
 def test_artifact_replay_from_other_run_fails():
     fake = StubGithub()
     fake.artifacts["artifacts"][0]["workflow_run"]["id"] = 1
-    with pytest.raises(RemoteEvidenceError, match="another workflow run"):
+    with pytest.raises(RemoteEvidenceError, match="different workflow run"):
         verify(fake)
 
 
