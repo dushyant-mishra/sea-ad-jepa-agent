@@ -45,7 +45,7 @@ jobs:
           assert pointer['scientific_champion_selected'] is False
           assert pointer['local_result_zip_sha256']==state['local_exact_artifacts']['portable_sha256']
           handoff=pathlib.Path('docs/agent/JEPA_V44_TINY_TOURNAMENT_NEW_CHAT_HANDOFF_20260926.md').read_text()
-          for phrase in ('PR #177','48 unique','0.407823','NOT actual','TRAINING=OFF'):
+          for phrase in ('PR #177','48 unique','0.407823','NOT the canonical IPBEncoder','TRAINING=OFF'):
               assert phrase in handoff,phrase
           print('V44_NEW_CHAT_ORIGINAL_CUSTODY_FAIRNESS_AND_NO_FAKE_IPB_VERIFIED')
           PY
