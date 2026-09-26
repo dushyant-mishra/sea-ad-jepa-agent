@@ -261,6 +261,28 @@ summary, which is why every non-passed column is zero. The workflow's separate
 Wall-clock times are not comparable between these runs: the machine was running
 other lanes' work concurrently. The counts are the measurement.
 
+Confirmed on hosted CI at lane head `1b7a8dd3`, run
+[36249481394](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36249481394):
+**924 passed in 96.87s**, and the separate fail-closed-on-skips step 918 passed
+with zero skipped. Local and hosted agree exactly on 924.
+
+The 918 is not a discrepancy in this work: the workflow's second list omits
+`tests/test_v5_audit_b_scientific_resolution_v2.py`, which predates this lane.
+That file is still executed by the primary step, and correcting another lane's
+workflow list is not this lane's to do silently.
+
+One self-inflicted defect is worth recording, because the way it was missed
+matters more than the defect. The first workflow edit wrote literal
+two-character `backslash-n` sequences instead of line continuations, so the
+hosted job died with `file or directory not found: n` before running anything
+(run 36249153183). The local run was unaffected and its count stood, because
+the file list had been built by regex-scraping `tests/*.py` paths out of the
+YAML - and that regex skipped straight over the defect it should have caught.
+**Extracting what you expect to find is not a check.** The workflow is now
+verified by parsing the actual shell command: both invocations are shlex-split,
+every named file must exist, the primary list must hold 106 unique files, and
+running that exact command with `--collect-only` collects 924 tests.
+
 ---
 
 ## 7. Evidence class
