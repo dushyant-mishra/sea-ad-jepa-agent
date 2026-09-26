@@ -1,0 +1,39 @@
+name: V29 inactive poststep and physical checkpoint red-team
+on:
+  pull_request:
+    paths:
+      - 'analysis/v29_current_v5_execution_safeguards/**'
+      - '.github/workflows/v29-precommit-checkpoint-redteam.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fail-closed-synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Run all seventeen fixture tests against physically written tiny checkpoint parts
+        run: PYTHONPATH=. python -m pytest -q analysis/v29_current_v5_execution_safeguards/test_v29_poststep_checkpoint_gate.py --junitxml=/tmp/v29_precommit.xml
+      - name: Reject vacuous skipped missing or failing red-team suites
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          x=ET.parse('/tmp/v29_precommit.xml').getroot()
+          if x.tag!='testsuite':x=x.find('testsuite')
+          n={k:int(x.attrib.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          names={v.attrib.get('name') for v in x.iter('testcase')}
+          required={'test_positive_physical_synthetic_checkpoint_publishes_exclusively',
+                    'test_missing_gradient_report_cannot_pass',
+                    'test_skipped_optimizer_step_refused',
+                    'test_empty_second_adam_moment_refused',
+                    'test_partial_checkpoint_missing_optimizer_blocks_publication',
+                    'test_checkpoint_republication_without_overwrite_refused'}
+          if n!={'tests':17,'skipped':0,'errors':0,'failures':0} or not required<=names:
+              raise SystemExit(f'STOP_V29_REDTEAM_TEST_CENSUS {n} missing={required-names}')
+          print('PASS_17_17_SYNTHETIC_POSTSTEP_CHECKPOINT_ONLY__NO_REAL_GPU_TRAINING')
+          PY
