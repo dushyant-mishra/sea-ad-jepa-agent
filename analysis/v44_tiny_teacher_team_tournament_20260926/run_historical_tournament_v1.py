@@ -65,6 +65,19 @@ def run(root:Path,calibration:Path,out:Path):
     if sha(root/"discovery_original.npz")!=EXPR_SHA or sha(root/"sample_freeze.csv")!=META_SHA:
         raise ValueError("original discovery expression or original sample-freeze SHA mismatch")
     if sha(calibration)!=CALIB_SHA:raise ValueError("wrong original calibration bundle SHA")
+    # Prepared memmaps are *not* authenticated just by authenticating the
+    # separate original NPZ. Pin their exact byte identity before reading.
+    prepared = {
+        "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
+        "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+        "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+        "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
+    }
+    for filename, expected in prepared.items():
+        if sha(root/filename)!=expected:
+            raise ValueError("unverified prepared historical CSR array: "+filename)
+    if tuple(np.load(root/"shape.npy").tolist())!=(50000,41238):
+        raise ValueError("original prepared array shape changed")
     ptr=np.load(root/"indptr.npy",mmap_mode="r")
     idx=np.load(root/"indices.npy",mmap_mode="r")
     dat=np.load(root/"data.npy",mmap_mode="r")
