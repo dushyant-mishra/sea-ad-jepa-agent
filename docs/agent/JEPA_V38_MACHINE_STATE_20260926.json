@@ -1,0 +1,99 @@
+{
+  "schema": "JEPA_V38_NONAUTHORIZING_NAVIGATION_STATE_V1",
+  "date": "2026-09-26",
+  "main_sha": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "canonical_main_pointer": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V38_VERIFIED_CURRENT_WORK.md",
+  "training_authorized": false,
+  "audit_b_n1_opened": false,
+  "protected_full104_outcomes_opened": false,
+  "d_shared_g5_opened": false,
+  "fully_closed_v5_roots": 0,
+  "total_v5_roots": 33,
+  "prs": {
+    "v32_transfer": {
+      "number": 159,
+      "head": "ccb5fd1120ba49e3cf0759a201053dafb4e1f933",
+      "role": "non_authorizing_research_uploads"
+    },
+    "v35_replay": {
+      "number": 162,
+      "head": "9c5c2c348a2578f18c3bdcab30dec0205ddd2365",
+      "hosted_run": 36230737248,
+      "passed_v4_tests": 15,
+      "role": "physical_git_zip_replay"
+    },
+    "v30_issuer_adversary": {
+      "number": 156,
+      "head": "a5af773adfd66d0e727113610f5e62d7353b13b8",
+      "role": "historical_synthetic_forged_closure_positive_control"
+    },
+    "v34_issuer_fix": {
+      "number": 161,
+      "head": "aa98a3882b41185536e4b1d37cdf3e6b7d19fa83",
+      "role": "live_typed_closure_in_final_issuer"
+    },
+    "v36_guard_fix": {
+      "number": 165,
+      "head": "25447126e3cf269b8416b52b1bbb98deebaa5d64",
+      "hosted_run": 36231569310,
+      "exact_tests": 20,
+      "other_hosted_workflows_passed": 4,
+      "role": "reissue_from_real_live_graph_at_guard_install_arm_prehook",
+      "exact_test_identities_pinned": true
+    },
+    "v26_g3_runner": {
+      "number": 144,
+      "head": "21efb1047c73cfe7b88047f0aeee1978b035971f",
+      "original_masking_ci_run": 36208393701,
+      "original_masking_ci_pass": 826,
+      "original_masking_ci_fail": 5,
+      "role": "g3_optin_changed_frozen_planner_source"
+    },
+    "v37_freeze_audit": {
+      "number": 166,
+      "head": "3e9e228d14a3226537dcb290651bbef4c30eb5db",
+      "hosted_run": 36231372836,
+      "role": "physically_verified_exact_original_and_g3_planner_shas_no_freeze_edit"
+    },
+    "v39_critical_test_redteam": {
+      "number": 168,
+      "head": "65675eed01e5fff579937176e01b154a98f1e457",
+      "hosted_run": 36231718272,
+      "exact_tests": 7,
+      "role": "typed_critical_execution_is_caller_declared_and_unverified"
+    }
+  },
+  "original_phaseiv_planner_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+  "new_g3_planner_sha256": "de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8",
+  "original_freeze_updated": false,
+  "new_g3_freeze_authorized": false,
+  "teacher_target_v4_zip_sha256": "349b6ef604084b9c5220f91f9382e6875ce37e34314bf94aa08023725e8f50b4",
+  "stage75_pilot_zip_sha256": "7cde16dcf1300a1a3012bb4f7b547efa553b48290db45e503d9f5794ae1e9439",
+  "v32_combined_zip_sha256": "d49c7a1bba1e48f21fdf8fceb92e8c1176a3c309c2c662249099d6c109b5dc79",
+  "stage75": {
+    "candidate_rows": 96,
+    "target_symbols": 27,
+    "supported_regulators": 7,
+    "historical_unique_targets": 25,
+    "ambiguous_symbols": [
+      "HLA-DPA1",
+      "HLA-DPB1"
+    ],
+    "current_v5_registry_coverage": "NOT_MEASURED",
+    "morabito_atac_coverage": "NOT_MEASURED"
+  },
+  "open_boundaries": [
+    "independent_source_byte_verification_per_upstream_root",
+    "critical_test_actual_CI_and_pinned_artifact_attestation",
+    "prospective_scientist_signed_v2_phaseiv_freeze",
+    "prospective_current_v5_teacher_target_and_masking",
+    "authentic_full104_cpu_gpu_physical_replay",
+    "original_morabito_H5_and_current_gene_identity",
+    "full_33_root_B2_closure",
+    "typed_critical_test_required_id_and_ci_run_evidence_provenance"
+  ],
+  "withdrawn_env_defect_s9": true,
+  "win_numpy_required_invocation": "<env>/Library/bin on PATH for first BLAS/LAPACK call",
+  "scope": "NAVIGATION_ONLY_NO_EXECUTION_AUTHORITY"
+}
