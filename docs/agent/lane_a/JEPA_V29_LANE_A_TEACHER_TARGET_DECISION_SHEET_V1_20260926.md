@@ -44,6 +44,14 @@ regression. This is a legitimate design choice that some projects make deliberat
 the owner's stated goal, and it is currently being made silently, by a default and by a checker constant rather
 than by a decision.
 
+**The second finding, from actually running the controls.** Before writing the controls down as settled, each one
+was run against a small synthetic population in which its target failure was deliberately planted. Five of the six
+fired on their own planted failure and stayed quiet on a healthy one. One did not: **global-context-only cannot
+detect a target that has no query-local content**, which is the exact failure it was written to catch. The reason
+is structural, not a fixture artifact, and §5.8 gives the numbers and the replacement control that does work. This
+is what the fixtures are for — a control with no failing outcome is not a control, and the only way to know which
+ones have teeth is to make each one fail on purpose.
+
 **Good news or bad news, plainly.** This is good news, and it was found before any training run. Nothing has been
 trained, no result is invalidated, no published claim is affected, and no protected data was touched. What it costs
 is one decision and a small amount of tokenizer work: the teacher needs to be able to accept a gene whose value
@@ -64,6 +72,7 @@ governance chain.
 | **D6** | Measurement-state channels | `SEPARATE_DETACHED_AUXILIARY_OUTPUTS` / `ABSENT` — never `INPUT_TO_PRIMARY_PATH` | Visibility alone predicts Q_DETECT at about 0.977 in V0; as an input it is a shortcut, as a detached output it is a control |
 | **D7** | Pre-training teacher-only target screen | run / skip, and its (UNSET) bar | A cheap check that can disqualify a candidate before a single training step |
 | **D8** | Numeric margin for every control | all `UNSET_REQUIRES_APPROVAL` | The *direction and pairing* of each control are proposed frozen here; only the sizes are open |
+| **D8b** | The revised control set, after one control was measured silent on its own planted failure | adopt `C2B QUERY_EXCHANGEABILITY` as the falsifying query-locality control and demote `C2` to a token-level-necessity diagnostic / keep `C2` as written | `C2` as originally specified cannot fail on the failure it was written to catch — see §5.8 for the measured numbers |
 | **D9** | Whether PR #152's checker keeps `query_scalar_teacher` as an enforced constant | keep / demote to a decision field | As written it hard-codes candidate `T_A` and makes `T_B1`, `T_B2` and `T_C` unrepresentable |
 
 Everything the assignment requires to be left unset — mask fraction, training population and split, model
@@ -126,10 +135,11 @@ A gene's token is its learned identity vector plus an encoding of its value. The
 The fourth argument is the hidden-target mask. It is `torch.zeros_like(true_t)` — **nothing is hidden from the
 teacher**. The teacher receives the full measured support, the query's real value included.
 
-**The view rule.** `src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py`, line 67:
+**The view rule.** `src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py`, lines 57-58 and 67:
 
-    safe_expression = expression.masked_fill(~gene_valid, 0.0)
-    gene_valid      = measurement_mask & ~hidden_target_mask
+    if view=='student': gene_valid = measurement_mask & ~hidden_target_mask    # line 57
+    elif view=='target': gene_valid = measurement_mask                          # line 58
+    safe_expression = expression.masked_fill(~gene_valid, 0.0)                  # line 67
 
 For the student, hidden addresses are zeroed *and* marked invalid in the attention mask. For the teacher
 `hidden_target_mask` is all zeros, so `gene_valid = measurement_mask` and every measured value, query included, is
@@ -366,15 +376,29 @@ no measurement channel. Run under **both** `Q1_SHARED_TRAINABLE` and `Q2_FIXED_C
 - Stratify the reported identity-only fraction by address frequency, block size, source, operator, and rare versus
   common address, so a failure concentrated in rare addresses is visible rather than averaged away.
 
-### C2 — GLOBAL_CONTEXT_ONLY
+### C2 — GLOBAL_CONTEXT_ONLY — *demoted to a diagnostic; see §5.8*
 
-The predictor receives the student's pooled cell-level state and the query address code, but no token-level access
-to the visible genes — no attention over individual addresses.
+The predictor receives a **capacity-matched**, query-independent pooled cell-level summary and the query address
+code, but no token-level access to the visible genes — no attention over individual addresses.
 
-- **DISQUALIFYING:** if `S(full) - S(global_only)` has a confidence interval including zero, the target has no
-  query-local content — every query in a cell maps to essentially the same vector. The construction does not
-  measure a *query-local* state and is disqualified for the stated goal.
-- Companion, run first and far cheaper: the §3.7 teacher-only within-cell across-query variance screen.
+- **What it actually tests:** whether per-address access to the remaining RNA is necessary *beyond* a fixed-size
+  cell-level summary. It does **not** test query-locality, and §5.8 shows measured evidence that it cannot.
+- **NOT DISQUALIFYING BY DESIGN.** Its falsifying role passes to C2B below.
+- **Capacity matching is a requirement, not a detail.** An under-capacity pooled summary always scores worse than
+  full for a purely numerical reason, so its paired delta is always positive and it can *never* fire — which would
+  wrongly credit the construction. The same requirement applies to C3's support projection.
+
+### C2B — QUERY_EXCHANGEABILITY — *the falsifying query-locality control*
+
+Each query's model is fitted on its own targets, then scored twice on held-out donors: once against its own
+targets, and once against a **different** query's targets under a fixed, replay-stable derangement. Each query's
+targets are first centred by their own training mean, so the address main effect cannot carry the comparison.
+
+- **DISQUALIFYING:** if the paired delta `S(own_query) - S(wrong_query)` has a confidence interval including zero,
+  then asking the wrong query costs nothing: every query shares one map and the target carries no cell-by-query
+  structure. The construction does not measure a query-local state and is disqualified for the stated goal.
+- Companion, run first and far cheaper: the §3.7 teacher-only target-variance screen, whose executable form is the
+  cell-by-query interaction share of target variance.
 
 ### C3 — TECHNICAL_ONLY
 
@@ -435,6 +459,52 @@ The predictor receives the donor ID or a stable cell key, and nothing molecular.
   evidence that the row identity is correct; the mapping is verified against the physical block metadata by
   indexing known rows, not by comparing totals.
 
+### 5.8 — measured control sensitivity: which controls actually have teeth
+
+Every control above was run against small synthetic populations with a specific failure *planted*, and against a
+healthy population where it is absent. The generator reproduces the kind of geometry the real problem has — donors
+as the clustering unit with cells nested inside, per-cell library depth, depth-driven detection and structural
+missingness, integer counts over a shared latent cell state — at a scale a unit test can run. **It is not FULL104,
+it touches no real or protected data, and it trains nothing**: the probe is a closed-form ridge solve, fitted per
+query on training donors and scored on held-out donors, with donor-clustered bootstrap intervals on paired deltas.
+Every number below is a property of planted synthetic structure and is not biology.
+
+A negative control **fires** when its paired delta interval includes or lies below zero.
+
+| control | planted failure | full | control | paired delta [95% donor-clustered] | fires? | quiet on healthy? |
+|---|---|---|---|---|---|---|
+| **C1** identity-only | address-only target | 0.9811 | 0.9828 | −0.0017 [−0.0019, −0.0016] | **yes** | yes |
+| **C2** global-context-only | cell-level target | 0.7980 | 0.5887 | +0.2093 [+0.1801, +0.2378] | **NO** | n/a |
+| **C2B** query exchangeability | cell-level target | 0.7980 (own) | 0.7981 (wrong) | −0.0000 [−0.0001, +0.0000] | **yes** | yes |
+| **C3** technical-only | measurement-state target | 0.8744 | 0.9883 | −0.1139 [−0.1343, −0.0952] | **yes** | yes |
+| **C4a** within-cell RNA shuffle | RNA-independent target | — | — | +0.0001 [−0.0002, +0.0003] | **yes** | yes (+0.8462 healthy) |
+| **C5** leak injection *(positive)* | hidden-scalar target | 0.3568 | 0.9340 | −0.5772 [−0.6106, −0.5437] | **sensitive** | quiet when nothing to leak |
+| **C6** donor-key cheat | address-only target | — | — | −0.0018 [−0.0019, −0.0017] | **yes** | yes |
+
+**The one that failed.** C2 stayed silent on the exact failure it was written to catch. The reason is structural:
+with a query-conditioned predictor, a pooled cell summary that carries the cell's state is *sufficient* to emit a
+query-local answer, because the query conditioning supplies the per-address read-out. So C2 cannot separate "the
+target has no query-local content" from "the target's query-local content is computable from the cell's global
+state". Making the summary larger does not help — it makes C2 match full under **both** a healthy and a failed
+target. That is why C2B replaces it as the falsifying test: on the same planted failure, C2B's own-query and
+wrong-query scores are 0.7980 and 0.7981, indistinguishable, while on a healthy target they are +0.7895 and
+−0.7887, a paired delta of +1.5782 [+1.4614, +1.7054].
+
+**The under-capacity trap.** A rank-2 pooled summary scored 0.1509 on the same cell-level target, a delta of
++0.6471 — it never fires in any regime. An under-powered control always looks worse than full and therefore always
+appears to vindicate the construction. Capacity matching is therefore a stated requirement of C2 and C3.
+
+**The pre-training screen (D7), and its tested limit.** The teacher-only screen of §3.7 has an executable form: split
+target variance into address, cell, and cell-by-query interaction shares. It separates the regimes cleanly —
+query-local 0.091 / 0.087 / **0.822**; address-only **0.983** / 0.001 / 0.016; cell-level 0.000 / **0.995** / 0.005;
+technical 0.000 / **0.990** / 0.010. But on a pure-noise target it reports an interaction share of **0.914**: without
+replicate targets for the same cell and query it cannot separate genuine interaction from noise. The screen is
+interpretable **only** next to the probe score, which is −0.1025 on pure noise and +0.8060 on genuine query-local
+structure. That limitation is asserted in the test suite so it cannot be forgotten.
+
+**The harness does not manufacture signal.** On a target that depends on nothing, the probe explains nothing:
+−0.1025. This null check is a standing requirement before any of the numbers above may be read.
+
 ### C7 — target-identity structure report (diagnostic, not disqualifying)
 
 Identity-only fraction broken out by address frequency, target-block size, source, operator, donor where lawful,
@@ -463,11 +533,16 @@ away.
 
     PYTHONPATH=src:. python scripts/v5/lane_a/v29_lane_a_candidate_space_firewall_v1.py \
         docs/agent/lane_a/JEPA_V29_LANE_A_TEACHER_TARGET_PROPOSAL_V1_20260926.json
-    PYTHONPATH=src:. python -m pytest -q tests/lane_a/test_v29_lane_a_candidate_space_firewall_v1.py
+    PYTHONPATH=src:. python scripts/v5/lane_a/v29_lane_a_control_sensitivity_fixture_v1.py
+    PYTHONPATH=src:. python -m pytest -q tests/lane_a/
+
+Observed on 2026-09-26: **170 passed, 0 failed, 0 skipped, 0 xfailed** — 127 candidate-space firewall tests and 43
+control-sensitivity tests. The firewall checker independently returns `PASS_LANEA_NONAUTHORIZING_CANDIDATE_SPACE`.
 
 A green result proves only that this proposal keeps every open choice open, attaches a falsifying outcome to every
-control, and issues no authority. It is not evidence about biology, not a target selection, and not permission to
-train.
+control that claims one, and issues no authority — and that each control has been shown to fire on a planted
+failure and stay quiet on a healthy target. It is not evidence about biology, not a target selection, and not
+permission to train.
 
 ---
 

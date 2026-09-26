@@ -6,10 +6,10 @@ stops it. A firewall with no failing input is not a firewall.
 """
 from __future__ import annotations
 
-import copy
 import importlib.util
 import json
 import pathlib
+import re
 
 import pytest
 
@@ -470,3 +470,222 @@ def test_a_wrong_schema_fails_closed():
 
 def test_a_document_claiming_to_be_an_authority_fails_closed():
     rejects(mutate(lambda d: d.__setitem__("document_role", "FROZEN_AUTHORITY")), "ROLE")
+
+
+# --------------------------------------------------------------------------- #
+# A control measured silent on its own planted failure may not stay falsifying
+# --------------------------------------------------------------------------- #
+
+def test_a_non_discriminating_control_cannot_be_presented_as_falsifying():
+    rejects(mutate(lambda d: control(d, "GLOBAL_CONTEXT_ONLY").__setitem__(
+        "polarity", "NEGATIVE_MUST_FAIL")),
+        "NON_DISCRIMINATING_CONTROL_STILL_PRESENTED_AS_FALSIFYING")
+
+
+def test_dropping_the_capacity_matching_requirement_is_rejected():
+    rejects(mutate(lambda d: control(d, "GLOBAL_CONTEXT_ONLY").pop(
+        "capacity_matching_requirement")),
+        "ABLATED_CONDITION_NOT_CAPACITY_MATCHED")
+
+
+def test_removing_the_replacement_control_is_rejected():
+    def drop(d):
+        d["controls"] = [c for c in d["controls"] if c["name"] != "QUERY_EXCHANGEABILITY"]
+    rejects(mutate(drop), "MISSING_CONTROL_QUERY_EXCHANGEABILITY")
+
+
+def test_unassigned_falsifying_role_is_rejected():
+    rejects(mutate(lambda d: control(d, "QUERY_EXCHANGEABILITY").__setitem__(
+        "replaces_falsifying_role_of", "SOMETHING_ELSE")),
+        "FALSIFYING_ROLE_NOT_REASSIGNED")
+
+
+def test_replacement_control_demoted_to_a_diagnostic_is_rejected():
+    def demote(d):
+        c = control(d, "QUERY_EXCHANGEABILITY")
+        c["polarity"] = "DIAGNOSTIC_NOT_DISQUALIFYING"
+    rejects(mutate(demote), "REPLACEMENT_CONTROL_NOT_FALSIFYING")
+
+
+# --------------------------------------------------------------------------- #
+# Measured control sensitivity must stay attached and honest
+# --------------------------------------------------------------------------- #
+
+def test_missing_control_sensitivity_section_fails_closed():
+    rejects(mutate(lambda d: d.pop("control_sensitivity_evidence")),
+            "MISSING_SECTION_control_sensitivity_evidence")
+
+
+@pytest.mark.parametrize(
+    "key",
+    [
+        "c1_identity_only",
+        "c2_global_context_only",
+        "c2b_query_exchangeability",
+        "c3_technical_only",
+        "c4_remaining_rna_necessity",
+        "c5_leak_injection_positive_control",
+        "c6_donor_key_cheat",
+    ],
+)
+def test_every_control_must_carry_measured_sensitivity_evidence(key):
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"].pop(key)),
+            "MISSING_CONTROL_SENSITIVITY_EVIDENCE_" + key)
+
+
+def test_synthetic_evidence_relabelled_as_real_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"].__setitem__(
+        "role", "MEASURED_ON_FULL104_HELD_OUT_DONORS")),
+        "CONTROL_EVIDENCE_NOT_LABELLED_SYNTHETIC")
+
+
+def test_evidence_not_separated_from_full104_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"].__setitem__(
+        "role", "SYNTHETIC_PLANTED_STRUCTURE_ONLY__DERIVED_FROM_FULL104")),
+        "CONTROL_EVIDENCE_NOT_SEPARATED_FROM_FULL104")
+
+
+def test_overwriting_the_c2_non_discrimination_finding_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"][
+        "c2_global_context_only"].__setitem__("fires", True)),
+        "C2_NON_DISCRIMINATION_FINDING_OVERWRITTEN")
+
+
+def test_a_replacement_control_that_never_fires_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"][
+        "c2b_query_exchangeability"].__setitem__("fires", False)),
+        "REPLACEMENT_CONTROL_NOT_SHOWN_TO_FIRE")
+
+
+def test_a_replacement_control_that_fires_on_a_healthy_target_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"][
+        "c2b_query_exchangeability"]["healthy_regime"].__setitem__("fires", True)),
+        "REPLACEMENT_CONTROL_FIRES_ON_A_HEALTHY_TARGET")
+
+
+def test_an_insensitive_leak_detector_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"][
+        "c5_leak_injection_positive_control"].__setitem__("detector_sensitive", False)),
+        "LEAK_DETECTOR_NOT_SHOWN_SENSITIVE")
+
+
+def test_a_leak_detector_that_always_fires_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"][
+        "c5_leak_injection_positive_control"].__setitem__(
+            "not_trivially_always_positive", False)),
+        "LEAK_DETECTOR_NOT_SHOWN_TO_HAVE_A_QUIET_CASE")
+
+
+def test_a_null_fixture_that_manufactured_signal_is_rejected():
+    rejects(mutate(lambda d: d["control_sensitivity_evidence"].__setitem__(
+        "null_fixture_probe_score", 0.42)),
+        "NULL_FIXTURE_MANUFACTURED_SIGNAL")
+
+
+# --------------------------------------------------------------------------- #
+# The margin check must have teeth independently of the numeric sweep
+# --------------------------------------------------------------------------- #
+
+def test_a_non_numeric_preset_margin_is_also_rejected():
+    rejects(mutate(lambda d: control(d, "IDENTITY_ONLY").__setitem__(
+        "margin", "FIVE_PERCENT")),
+        "CONTROL_MARGIN_PRESET")
+
+
+# --------------------------------------------------------------------------- #
+# Structural proof that no unapproved parameter carries a value anywhere
+# --------------------------------------------------------------------------- #
+
+PARAMETER_KEY_PATTERN = re.compile(
+    r"(ema|momentum|half_life|mask_fraction|mask_burden|width|depth|head|batch|"
+    r"microbatch|learning_rate|weight_decay|lr_|seed|update_budget|threshold|"
+    r"margin|allowance|block_count|block_size|views)",
+    re.IGNORECASE,
+)
+
+
+def _walk_items(node, path=""):
+    if isinstance(node, dict):
+        for key, value in node.items():
+            child = f"{path}.{key}" if path else str(key)
+            yield child, key, value
+            yield from _walk_items(value, child)
+    elif isinstance(node, list):
+        for index, value in enumerate(node):
+            yield from _walk_items(value, f"{path}[{index}]")
+
+
+def test_no_parameter_shaped_key_carries_a_number_outside_the_forbidden_list():
+    """Every geometry, schedule, seed, budget and threshold field must be open.
+
+    The forbidden-inherited list and the measured control-sensitivity evidence are
+    the only places numbers are allowed to sit next to these words, and both are
+    explicitly scoped. substrate_reference is exempt because every one of its
+    values is pinned to the recorded FULL104 figures by _check_substrate, so it
+    cannot carry a smuggled parameter; its 81 is the smallest donor cell count,
+    which is sampler capacity and not a chosen batch.
+    """
+    doc = good()
+    offenders = []
+    for path, key, value in _walk_items(doc):
+        if path.startswith(("forbidden_inherited_values", "control_sensitivity_evidence", "substrate_reference")):
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            continue
+        if PARAMETER_KEY_PATTERN.search(str(key)):
+            offenders.append((path, value))
+    assert not offenders, offenders
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "mask_fraction",
+        "training_population",
+        "held_out_donor_ids",
+        "training_donor_ids",
+        "split_seed",
+        "model_width",
+        "model_depth",
+        "attention_heads",
+        "ffn_width",
+        "ema_half_life",
+        "optimizer",
+        "learning_rate",
+        "weight_decay",
+        "lr_schedule",
+        "seed",
+        "update_budget",
+        "batch_geometry",
+        "microbatch_token_budget",
+        "evaluation_metric",
+        "minimum_effect_threshold",
+        "uncertainty_precision_threshold",
+    ],
+)
+def test_every_named_unapproved_parameter_is_explicitly_open(field):
+    assert good()["unset_parameters"][field] == UNSET
+
+
+def test_synthetic_and_historical_constants_appear_only_as_forbidden():
+    """0.40 and 0.99 are synthetic fixture values; 0.996 and 128x8 are historical V4."""
+    doc = good()
+    listed = set()
+    for value in doc["forbidden_inherited_values"].values():
+        if isinstance(value, list):
+            listed.update(value)
+    for banned in ("mask_fraction_0.40", "ema_0.99", "ema_0.996", "batch_geometry_128x8"):
+        assert banned in listed
+    for path, key, value in _walk_items(doc):
+        if path.startswith(("forbidden_inherited_values", "control_sensitivity_evidence")):
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            continue
+        assert value not in (0.40, 0.99, 0.996), (path, value)
+
+
+def test_no_candidate_or_decision_proposes_a_numeric_default():
+    doc = good()
+    for section in ("candidates", "decisions_open", "controls", "unset_parameters"):
+        for path, key, value in _walk_items(doc[section], section):
+            assert isinstance(value, bool) or not isinstance(value, (int, float)), (path, value)

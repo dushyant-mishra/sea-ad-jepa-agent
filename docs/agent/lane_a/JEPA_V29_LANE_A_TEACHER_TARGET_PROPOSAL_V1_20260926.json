@@ -7,7 +7,6 @@
   "base_main_commit": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
   "companion_markdown": "docs/agent/lane_a/JEPA_V29_LANE_A_TEACHER_TARGET_DECISION_SHEET_V1_20260926.md",
   "selected_candidate": "UNSET_REQUIRES_APPROVAL",
-
   "companion_of": {
     "pull_request": 152,
     "branch": "planning/v29-prospective-teacher-science-20260926",
@@ -31,25 +30,71 @@
       "measurement_state_channels_as_separate_detached_outputs"
     ]
   },
-
   "classification_against_pr152": [
-    {"element": "non_authorizing_posture", "classification": "ALREADY_DONE"},
-    {"element": "unset_parameters_held_null", "classification": "ALREADY_DONE"},
-    {"element": "historical_and_synthetic_numeric_spillover_rejection", "classification": "ALREADY_DONE"},
-    {"element": "september16_no_qualifier_guard", "classification": "ALREADY_DONE"},
-    {"element": "governance_seals", "classification": "ALREADY_DONE"},
-    {"element": "biological_question_statement", "classification": "ALREADY_DONE"},
-    {"element": "full104_substrate_digests", "classification": "ALREADY_DONE"},
-    {"element": "document_level_checker_positive_control", "classification": "ALREADY_DONE_FOR_THAT_SCOPE"},
-    {"element": "competing_target_constructions", "classification": "GENUINELY_OPEN"},
-    {"element": "per_candidate_mechanism_specification", "classification": "GENUINELY_OPEN"},
-    {"element": "teacher_side_query_scalar_position", "classification": "SUPERSEDED_AS_SOLE_OPTION", "detail": "pr152 checker requires the substring NO_DIRECT_SCALAR_REGRESSION and pre-selects candidate T_A; T_B1, T_B2 and T_C are unrepresentable under it"},
-    {"element": "controls_with_a_disqualifying_outcome", "classification": "GENUINELY_OPEN", "detail": "six control names present; minimum_effect_threshold null; no failing outcome attached to any of them"},
-    {"element": "remaining_rna_necessity_procedure", "classification": "PARTIALLY_DONE", "detail": "flag present, root null, no procedure"},
-    {"element": "seam_by_seam_leakage_enumeration", "classification": "GENUINELY_OPEN"},
-    {"element": "measurement_state_channels_as_separate_outputs", "classification": "GENUINELY_OPEN"}
+    {
+      "element": "non_authorizing_posture",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "unset_parameters_held_null",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "historical_and_synthetic_numeric_spillover_rejection",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "september16_no_qualifier_guard",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "governance_seals",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "biological_question_statement",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "full104_substrate_digests",
+      "classification": "ALREADY_DONE"
+    },
+    {
+      "element": "document_level_checker_positive_control",
+      "classification": "ALREADY_DONE_FOR_THAT_SCOPE"
+    },
+    {
+      "element": "competing_target_constructions",
+      "classification": "GENUINELY_OPEN"
+    },
+    {
+      "element": "per_candidate_mechanism_specification",
+      "classification": "GENUINELY_OPEN"
+    },
+    {
+      "element": "teacher_side_query_scalar_position",
+      "classification": "SUPERSEDED_AS_SOLE_OPTION",
+      "detail": "pr152 checker requires the substring NO_DIRECT_SCALAR_REGRESSION and pre-selects candidate T_A; T_B1, T_B2 and T_C are unrepresentable under it"
+    },
+    {
+      "element": "controls_with_a_disqualifying_outcome",
+      "classification": "GENUINELY_OPEN",
+      "detail": "six control names present; minimum_effect_threshold null; no failing outcome attached to any of them"
+    },
+    {
+      "element": "remaining_rna_necessity_procedure",
+      "classification": "PARTIALLY_DONE",
+      "detail": "flag present, root null, no procedure"
+    },
+    {
+      "element": "seam_by_seam_leakage_enumeration",
+      "classification": "GENUINELY_OPEN"
+    },
+    {
+      "element": "measurement_state_channels_as_separate_outputs",
+      "classification": "GENUINELY_OPEN"
+    }
   ],
-
   "scientific_goal": {
     "statement": "Predict the query-local latent cellular state associated with a hidden gene, using the remaining observed RNA.",
     "explicitly_not": [
@@ -62,7 +107,6 @@
     "critical_seam": "If the query scalar reaches the teacher's contextual layers, the target is a deterministic function of the hidden count and the objective becomes indirect scalar regression. Withholding must occur before the first attention layer, not after.",
     "why_the_named_controls_cannot_see_this": "A model that recovers the hidden count also beats identity-only, also beats global-context-only, also beats technical-only, and also collapses when the remaining RNA is removed. The four negative controls are individually correct and jointly blind to this specific failure."
   },
-
   "current_code_facts": {
     "tokenizer": {
       "path": "src/sea_ad_jepa/v4/gene_tokenizer.py",
@@ -88,11 +132,15 @@
       "formula": "zT_ib = LayerNorm(mean over g in B_ib of H^T_ig)"
     }
   },
-
   "shared_invariants": {
     "cell_identity_key": "selection_row",
     "donor_identity_key": "DONOR_ID_STRING",
-    "never_identity_keys": ["BLOCK_POSITION", "SHARD_KEY", "FILE_ORDER", "ENUMERATION_COUNTER"],
+    "never_identity_keys": [
+      "BLOCK_POSITION",
+      "SHARD_KEY",
+      "FILE_ORDER",
+      "ENUMERATION_COUNTER"
+    ],
     "rng_keying": "(selection_row, donor_id, canonical_address, presentation_index)",
     "mask_eligibility": "DECLARED_SUPPORT_ONLY__NEVER_REALIZED_VALUE",
     "measured_zero_is_as_maskable_as_measured_nonzero": true,
@@ -104,87 +152,140 @@
     "batch_normalization_permitted": false,
     "per_cell_normalization_only": true
   },
-
   "decisions_open": [
     {
       "id": "D0",
       "question": "Per-cell value-normalization rule handed to the tokenizer",
-      "options": ["N_RAW_MASK_INDEPENDENT", "N_FROZEN_REFERENCE_SET", "N_VISIBLE_SET_RECOMPUTED", "N_TOTAL_COUNT_INCLUDING_QUERY"],
+      "options": [
+        "N_RAW_MASK_INDEPENDENT",
+        "N_FROZEN_REFERENCE_SET",
+        "N_VISIBLE_SET_RECOMPUTED",
+        "N_TOTAL_COUNT_INCLUDING_QUERY"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "why_first": "N_TOTAL_COUNT_INCLUDING_QUERY is the field-standard default and leaks the query scalar into every other token, defeating all four candidates regardless of which is chosen",
-      "leakage_paths": ["L2"]
+      "leakage_paths": [
+        "L2"
+      ]
     },
     {
       "id": "D1",
       "question": "Where the query scalar is withheld from the teacher (this is the target construction)",
-      "options": ["T_A", "T_B1", "T_B2", "T_C"],
-      "optional_modifier": ["T_D"],
+      "options": [
+        "T_A",
+        "T_B1",
+        "T_B2",
+        "T_C"
+      ],
+      "optional_modifier": [
+        "T_D"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
-      "leakage_paths": ["L1"]
+      "leakage_paths": [
+        "L1"
+      ]
     },
     {
       "id": "D2",
       "question": "Teacher context breadth",
-      "options": ["TEACHER_HIDES_QUERY_ONLY", "TEACHER_HIDES_FULL_MASK"],
+      "options": [
+        "TEACHER_HIDES_QUERY_ONLY",
+        "TEACHER_HIDES_FULL_MASK"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
-      "leakage_paths": ["L13"]
+      "leakage_paths": [
+        "L13"
+      ]
     },
     {
       "id": "D3",
       "question": "How query identity is supplied to student/predictor, and to the teacher's query slot",
-      "options": ["Q1_SHARED_TRAINABLE", "Q2_FIXED_CODE", "Q3_DETACHED_ONLINE"],
-      "teacher_side_options": ["QT_EMA_IDENTITY", "QT_FIXED_CODE"],
+      "options": [
+        "Q1_SHARED_TRAINABLE",
+        "Q2_FIXED_CODE",
+        "Q3_DETACHED_ONLINE"
+      ],
+      "teacher_side_options": [
+        "QT_EMA_IDENTITY",
+        "QT_FIXED_CODE"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "teacher_side_selected": "UNSET_REQUIRES_APPROVAL",
       "standing_blocker": "TARGET_IDENTITY_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
-      "leakage_paths": ["L7", "L8"]
+      "leakage_paths": [
+        "L7",
+        "L8"
+      ]
     },
     {
       "id": "D4",
       "question": "Target read-out and normalization, which determines whether the evaluation metric is bounded",
-      "options": ["R1_RAW", "R2_LAYERNORM", "R3_BLOCKMEAN_LAYERNORM", "R4_L2_UNIT"],
+      "options": [
+        "R1_RAW",
+        "R2_LAYERNORM",
+        "R3_BLOCKMEAN_LAYERNORM",
+        "R4_L2_UNIT"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "note": "A relative-improvement threshold is meaningful only on a metric bounded in the rewarded direction. R1_RAW forces absolute thresholds. R2 and R3 discard a scale whose nature (biology versus sequencing depth) is itself unresolved."
     },
     {
       "id": "D5",
       "question": "Target granularity",
-      "options": ["ADDRESS_LEVEL", "BLOCK_LEVEL"],
+      "options": [
+        "ADDRESS_LEVEL",
+        "BLOCK_LEVEL"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "note": "BLOCK_LEVEL imports the unresolved blocking authority; the 2026-09-16 grid produced no qualified rule"
     },
     {
       "id": "D6",
       "question": "Measurement-state channels",
-      "options": ["SEPARATE_DETACHED_AUXILIARY_OUTPUTS", "ABSENT"],
+      "options": [
+        "SEPARATE_DETACHED_AUXILIARY_OUTPUTS",
+        "ABSENT"
+      ],
       "forbidden_option": "INPUT_TO_PRIMARY_PATH",
       "selected": "UNSET_REQUIRES_APPROVAL",
-      "leakage_paths": ["L5"]
+      "leakage_paths": [
+        "L5"
+      ],
+      "capacity_matching_requirement": "ANY_ABLATED_CONDITION_MUST_BE_CAPACITY_MATCHED_TO_FULL__AN_UNDER_CAPACITY_CONTROL_CAN_NEVER_FIRE_AND_WOULD_WRONGLY_CREDIT_THE_CONSTRUCTION"
     },
     {
       "id": "D7",
       "question": "Run the pre-training teacher-only within-cell across-query target-variance screen, and at what bar",
-      "options": ["RUN", "SKIP"],
+      "options": [
+        "RUN",
+        "SKIP"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "bar": "UNSET_REQUIRES_APPROVAL",
-      "frozen_direction": "WITHIN_CELL_ACROSS_QUERY_VARIANCE_MUST_BE_NON_NEGLIGIBLE_RELATIVE_TO_ACROSS_CELL_VARIANCE"
+      "frozen_direction": "CELL_BY_QUERY_INTERACTION_SHARE_OF_TARGET_VARIANCE_MUST_BE_NON_NEGLIGIBLE",
+      "tested_limitation": "Without replicate targets for the same cell and query the screen cannot separate genuine interaction from noise: a pure-noise target also shows a high interaction share. The screen is interpretable only next to the probe score and must never be read alone."
     },
     {
       "id": "D8",
       "question": "Numeric margin for every control",
-      "options": ["OWNER_SUPPLIED_MARGIN_PER_CONTROL", "DECLINE_AND_HALT_UNTIL_MARGINS_EXIST"],
+      "options": [
+        "OWNER_SUPPLIED_MARGIN_PER_CONTROL",
+        "DECLINE_AND_HALT_UNTIL_MARGINS_EXIST"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "note": "Direction and pairing of every control are proposed frozen in this document; only the sizes remain open, and they must be frozen before the first score is inspected"
     },
     {
       "id": "D9",
       "question": "Does PR 152 keep query_scalar_teacher as an enforced checker constant",
-      "options": ["KEEP_AS_CONSTANT", "DEMOTE_TO_DECISION_FIELD"],
+      "options": [
+        "KEEP_AS_CONSTANT",
+        "DEMOTE_TO_DECISION_FIELD"
+      ],
       "selected": "UNSET_REQUIRES_APPROVAL",
       "note": "As written the constant hard-codes candidate T_A and makes T_B1, T_B2 and T_C unrepresentable"
     }
   ],
-
   "candidates": {
     "T_A": {
       "name": "QUERY_VALUE_IN_TEACHER",
@@ -196,9 +297,23 @@
       "teacher_stop_gradient_boundary": "zT detached; teacher parameters requires_grad_(False); optimizer holds online encoder and predictor only; EMA applied after an accepted optimizer step.",
       "exact_target_construction": "zT_ib = LayerNorm((1/|B_ib|) * sum over g in B_ib of H^T_ig)",
       "leakage_verdict": "ANSWER_PRESENT_IN_TARGET_BY_CONSTRUCTION",
-      "primary_leakage_paths": ["L1", "L2", "L8", "L9"],
-      "in_favour": ["only candidate with an executable reference path today", "most informative target", "least collapse-prone", "matches image-JEPA practice where the teacher sees masked patches"],
-      "against": ["measures scalar recoverability rather than query-local state", "none of the four required controls can detect this failure", "the claim would have to be worded as predicting a contextualized encoding of the hidden count"]
+      "primary_leakage_paths": [
+        "L1",
+        "L2",
+        "L8",
+        "L9"
+      ],
+      "in_favour": [
+        "only candidate with an executable reference path today",
+        "most informative target",
+        "least collapse-prone",
+        "matches image-JEPA practice where the teacher sees masked patches"
+      ],
+      "against": [
+        "measures scalar recoverability rather than query-local state",
+        "none of the four required controls can detect this failure",
+        "the claim would have to be worded as predicting a contextualized encoding of the hidden count"
+      ]
     },
     "T_B1": {
       "name": "VALUE_BLIND_QUERY_SLOT__TEACHER_HIDES_QUERY_ONLY",
@@ -210,9 +325,21 @@
       "teacher_stop_gradient_boundary": "As shared invariants; additionally the teacher-side m_val is updated only by EMA and never by the optimizer directly.",
       "exact_target_construction": "zT_iq = readout(H^T_iq), readout per D4",
       "leakage_verdict": "L1_CLOSED_AT_TOKENIZER__L2_L8_L9_REMAIN",
-      "primary_leakage_paths": ["L2", "L8", "L9"],
-      "in_favour": ["most literal realization of the stated goal", "teacher advantage over the student is other genes' real values, never the query's", "target is asymmetric and non-trivial without being contaminated"],
-      "against": ["requires a value-withheld token path in the teacher that does not exist today", "target seeded by E_id[q] plus a constant so a larger share of its variance may be address-constant, making control C1 decisive rather than a formality", "the teacher hides one gene while the student hides all of H_i, so the target may be systematically too easy to be worth predicting"]
+      "primary_leakage_paths": [
+        "L2",
+        "L8",
+        "L9"
+      ],
+      "in_favour": [
+        "most literal realization of the stated goal",
+        "teacher advantage over the student is other genes' real values, never the query's",
+        "target is asymmetric and non-trivial without being contaminated"
+      ],
+      "against": [
+        "requires a value-withheld token path in the teacher that does not exist today",
+        "target seeded by E_id[q] plus a constant so a larger share of its variance may be address-constant, making control C1 decisive rather than a formality",
+        "the teacher hides one gene while the student hides all of H_i, so the target may be systematically too easy to be worth predicting"
+      ]
     },
     "T_B2": {
       "name": "VALUE_BLIND_QUERY_SLOT__TEACHER_HIDES_FULL_MASK",
@@ -224,9 +351,23 @@
       "teacher_stop_gradient_boundary": "Identical to T_B1.",
       "exact_target_construction": "zT_iq = readout(H^T_iq), readout per D4",
       "leakage_verdict": "L1_CLOSED_AT_TOKENIZER__COLLAPSE_RISK_AND_MASK_DEPENDENT_TARGET",
-      "primary_leakage_paths": ["L2", "L8", "L9", "L13"],
-      "in_favour": ["removes teacher/student view asymmetry entirely as a confounder", "any student-teacher gap is attributable to capacity and EMA smoothing rather than privileged data", "cheapest to reason about"],
-      "against": ["target becomes a smoothed function of exactly the student's own inputs, the classic collapse geometry", "the student can approach the target by reproducing its own EMA without the target carrying query-local content", "control C2 and the pre-training screen are load-bearing and either failing kills this candidate", "target moves as H_i is redrawn"]
+      "primary_leakage_paths": [
+        "L2",
+        "L8",
+        "L9",
+        "L13"
+      ],
+      "in_favour": [
+        "removes teacher/student view asymmetry entirely as a confounder",
+        "any student-teacher gap is attributable to capacity and EMA smoothing rather than privileged data",
+        "cheapest to reason about"
+      ],
+      "against": [
+        "target becomes a smoothed function of exactly the student's own inputs, the classic collapse geometry",
+        "the student can approach the target by reproducing its own EMA without the target carrying query-local content",
+        "control C2 and the pre-training screen are load-bearing and either failing kills this candidate",
+        "target moves as H_i is redrawn"
+      ]
     },
     "T_C": {
       "name": "BLOCK_NEIGHBOURHOOD_TARGET__WHOLE_BLOCK_VALUES_WITHHELD",
@@ -238,9 +379,20 @@
       "teacher_stop_gradient_boundary": "As shared invariants.",
       "exact_target_construction": "zT_ib = LayerNorm((1/|B_ib|) * sum over g in B_ib of H^T_ig), with the block's scalars absent from the teacher's context",
       "leakage_verdict": "L1_CLOSED_AT_TOKENIZER__L9_PARTIALLY_MITIGATED__IMPORTS_UNRESOLVED_BLOCKING_AUTHORITY",
-      "primary_leakage_paths": ["L2", "L8", "L9"],
-      "in_favour": ["keeps the existing block-summary target shape so the existing BlockPredictor query geometry survives", "averaging over block members makes the target less noisy than a single address", "a correlated partner inside the block is blinded too"],
-      "against": ["query-local becomes block-local and a per-address question is no longer answerable", "imports the unresolved blocking authority from the exhausted 2026-09-16 nine-cell grid"]
+      "primary_leakage_paths": [
+        "L2",
+        "L8",
+        "L9"
+      ],
+      "in_favour": [
+        "keeps the existing block-summary target shape so the existing BlockPredictor query geometry survives",
+        "averaging over block members makes the target less noisy than a single address",
+        "a correlated partner inside the block is blinded too"
+      ],
+      "against": [
+        "query-local becomes block-local and a per-address question is no longer answerable",
+        "imports the unresolved blocking authority from the exhausted 2026-09-16 nine-cell grid"
+      ]
     },
     "T_D": {
       "name": "RESIDUALIZED_TARGET",
@@ -252,29 +404,185 @@
       "teacher_stop_gradient_boundary": "As T_A; the fitted map ghat must itself be outside the optimizer's parameter set.",
       "exact_target_construction": "zT_iq_perp = zT_iq - ghat(x_iq, support_state(q))",
       "leakage_verdict": "LEAK_REMOVED_ONLY_IN_A_FITTED_SENSE__RESIDUAL_LEAK_NOT_OBSERVABLE_FROM_THE_RESIDUAL",
-      "primary_leakage_paths": ["L1", "L2", "L8", "L9"],
-      "in_favour": ["keeps T_A's informative target while attempting to strip the leak", "no tokenizer change"],
-      "against": ["a nuisance-removal estimator must first report approximately zero on a controlled fixture containing the nuisance structure and zero query-local signal", "removing a scalar from a d-vector is complete only in a fitted sense and the teacher's nonlinearity leaves residual leak", "must not be selected without both a null fixture and a planted-signal fixture passing"]
+      "primary_leakage_paths": [
+        "L1",
+        "L2",
+        "L8",
+        "L9"
+      ],
+      "in_favour": [
+        "keeps T_A's informative target while attempting to strip the leak",
+        "no tokenizer change"
+      ],
+      "against": [
+        "a nuisance-removal estimator must first report approximately zero on a controlled fixture containing the nuisance structure and zero query-local signal",
+        "removing a scalar from a d-vector is complete only in a fitted sense and the teacher's nonlinearity leaves residual leak",
+        "must not be selected without both a null fixture and a planted-signal fixture passing"
+      ]
     }
   },
-
   "leakage_paths": [
-    {"id": "L1", "name": "QUERY_SCALAR_INTO_TEACHER_CONTEXTUAL_LAYERS", "affects": ["T_A", "T_C_IF_BLOCK_NOT_BLINDED", "T_D"], "detection": "static: inspect the teacher's hidden-mask argument, today torch.zeros_like(true_t). dynamic: perturb x_iq alone and require zT to be exactly unchanged under T_B1, T_B2 and T_C", "repair": "value-blind query slot withheld before the first attention layer", "status": "OPEN_DECISION_D1"},
-    {"id": "L2", "name": "QUERY_SCALAR_VIA_PER_CELL_VALUE_NORMALIZATION", "affects": ["ALL_CANDIDATES"], "mechanism": "if the per-cell scale s_i sums over all of M_i then every visible token's normalized value depends on x_iq; dropping the query token does not remove this, and it leaks into the student as well as the teacher", "detection": "perturb x_iq and require every other address's normalized value to be bit-identical", "repair": "N_RAW_MASK_INDEPENDENT or N_FROZEN_REFERENCE_SET", "status": "OPEN_DECISION_D0"},
-    {"id": "L3", "name": "MASK_ELIGIBILITY_ENCODING_THE_VALUE", "affects": ["ALL_CANDIDATES"], "mechanism": "if only detected addresses are eligible to be hidden then the fact that q was hidden implies x_iq greater than zero", "detection": "enumerate the eligibility predicate and confirm it reads only declared support", "repair": "eligibility depends on declared support alone", "status": "CONSTRAINT_ASSERTED"},
-    {"id": "L4", "name": "SUPPORT_AND_VISIBILITY_STATE_ENCODING", "affects": ["ALL_CANDIDATES"], "mechanism": "gene_valid = measurement_mask & ~hidden_target_mask makes hidden and structurally-unmeasured indistinguishable; encoding hidden as measured-zero would instead teach the model that hidden means zero", "detection": "enumerate the state encoding and check the hidden state carries no value-derived component", "repair": "explicit three-state encoding with a constant hidden state", "status": "OPEN"},
-    {"id": "L5", "name": "MEASUREMENT_STATE_SHORTCUT", "affects": ["ALL_CANDIDATES"], "measured_evidence": "in V0 visibility-only predicts Q_DEPTH at about 0.834 and Q_DETECT at about 0.977, while VALUE_ONLY is materially lower", "detection": "control C3 including the support-only sub-arm", "repair": "depth, detection, operator and source exist only as separate auxiliary outputs from a detached copy of the primary state; never inputs; no auxiliary gradient may reach the primary state", "status": "ARCHITECTURAL_CONSTRAINT_DECISION_D6"},
-    {"id": "L6", "name": "OPERATOR_AND_SOURCE_STRUCTURE", "affects": ["ALL_CANDIDATES"], "scale": "42 operators; 46 SEA_AD, 41 HVS and 17 NPH52 donors", "measured_evidence": "the molecular increment over context moved from +0.0311 unweighted to +0.1207 under empirical FULL104 weighting", "detection": "control C3; every score reported per source", "repair": "no operator or source input to the molecular path; source-stratified donor split; per-source reporting, never a pooled number", "status": "CONSTRAINT_ASSERTED"},
-    {"id": "L7", "name": "IDENTITY_SHORTCUT_DIRECT_PARAMETER_SHARING", "affects": ["Q1", "PARTIALLY_Q3"], "mechanism": "target identity to predictor query to gradient to online identity table to EMA teacher to future target", "detection": "static enumeration of every parameter shared between query construction, online encoder and teacher target generation", "repair": "Q2_FIXED_CODE", "status": "OPEN_DECISION_D3__STANDING_BLOCKER_TARGET_IDENTITY_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED"},
-    {"id": "L8", "name": "IDENTITY_SHORTCUT_TARGET_CARRIES_STABLE_IDENTITY", "affects": ["ALL_CANDIDATES", "WORST_IN_T_B1_AND_T_B2"], "mechanism": "even with fixed codes H^T_iq is seeded by E_id[q] plus a constant so a large share of target variance may be address-constant", "detection": "control C1 re-measured at several training points, plus the pre-training screen", "repair": "if identity-only is not clearly beaten the target is redesigned, never the threshold", "status": "OPEN"},
-    {"id": "L9", "name": "CORRELATED_PARTNER_AND_COLLISION_LEAKAGE", "affects": ["ALL_CANDIDATES", "PARTIALLY_MITIGATED_IN_T_C"], "measured_evidence": "pooled-Pearson partner masking exposure 0.2129 versus uniform 0.1946, i.e. 9.4 percent worse, structural expansion 12.5; donor-recurrent 0.1853, minus 4.8 percent against a required minimum 20 percent reduction; source-balanced recurrent 0.1947; at a 2000-address universe at most 5 of roughly 4 million ordered pairs reach recurrence fraction 0.5", "detection": "exposure metric D from the 2026-09-16 contract; collision-unresolved addresses excluded from M_i", "repair": "NONE_AVAILABLE_TODAY", "status": "OPEN__MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED__NOT_RESOLVED_BY_THIS_DOCUMENT"},
-    {"id": "L10", "name": "POSITIONAL_AND_ORDERING_ARTIFACTS", "affects": ["ALL_CANDIDATES"], "mechanism": "token order correlated with expression rank, block index, padding position or storage order", "detection": "permutation test requiring the target to be invariant to token reordering", "repair": "identity is selection_row for cells and canonical address for genes, never block position, shard key or enumeration counter", "status": "CONSTRAINT_ASSERTED__THIS_FAILURE_HAS_OCCURRED_ONCE_IN_THIS_PROJECT"},
-    {"id": "L11", "name": "EMA_TEACHER_MEMORIZATION", "affects": ["ALL_CANDIDATES"], "mechanism": "the same cell is presented repeatedly under different masks and the target for that cell is stable, so cell-to-target can be memorized without using RNA", "detection": "evaluate only on held-out donors; report the train versus held-out gap as a diagnostic", "repair": "training-time scores are never quoted as evidence", "status": "CONSTRAINT_ASSERTED"},
-    {"id": "L12", "name": "CROSS_CELL_MIXING_INSIDE_THE_BATCH", "affects": ["ALL_CANDIDATES"], "mechanism": "batch-level normalization or a cell state pooling across cells lets same-donor neighbours leak", "detection": "shuffle batch composition and require bit-identical per-cell outputs", "repair": "per-cell normalization only; no BatchNorm; loss reduction algebraically transparent under microbatching and packing", "status": "CONSTRAINT_ASSERTED"},
-    {"id": "L13", "name": "MASK_DEPENDENT_TARGET", "affects": ["T_B2", "N_VISIBLE_SET_RECOMPUTED"], "mechanism": "the teacher's input depends on H_i so the target moves with the mask draw", "detection": "replay the same cell under the same identity key and require the same mask and the same target", "repair": "key the mask RNG from scientific identity so repacking cannot change the target", "status": "OPEN_DECISION_D2_AND_D0"},
-    {"id": "L14", "name": "SPLIT_CONTAMINATION_THROUGH_METHOD_DEVELOPMENT", "affects": ["ALL_CANDIDATES"], "mechanism": "held-out donors that influence any design choice, even a pathology-blind diagnostic one, stop being held out", "detection": "freeze the split and the decision rule before scoring any candidate", "repair": "direction and pairing of every control frozen now; numeric margins frozen before the first score is inspected, never after", "status": "CONSTRAINT_ASSERTED"}
+    {
+      "id": "L1",
+      "name": "QUERY_SCALAR_INTO_TEACHER_CONTEXTUAL_LAYERS",
+      "affects": [
+        "T_A",
+        "T_C_IF_BLOCK_NOT_BLINDED",
+        "T_D"
+      ],
+      "detection": "static: inspect the teacher's hidden-mask argument, today torch.zeros_like(true_t). dynamic: perturb x_iq alone and require zT to be exactly unchanged under T_B1, T_B2 and T_C",
+      "repair": "value-blind query slot withheld before the first attention layer",
+      "status": "OPEN_DECISION_D1"
+    },
+    {
+      "id": "L2",
+      "name": "QUERY_SCALAR_VIA_PER_CELL_VALUE_NORMALIZATION",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "if the per-cell scale s_i sums over all of M_i then every visible token's normalized value depends on x_iq; dropping the query token does not remove this, and it leaks into the student as well as the teacher",
+      "detection": "perturb x_iq and require every other address's normalized value to be bit-identical",
+      "repair": "N_RAW_MASK_INDEPENDENT or N_FROZEN_REFERENCE_SET",
+      "status": "OPEN_DECISION_D0"
+    },
+    {
+      "id": "L3",
+      "name": "MASK_ELIGIBILITY_ENCODING_THE_VALUE",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "if only detected addresses are eligible to be hidden then the fact that q was hidden implies x_iq greater than zero",
+      "detection": "enumerate the eligibility predicate and confirm it reads only declared support",
+      "repair": "eligibility depends on declared support alone",
+      "status": "CONSTRAINT_ASSERTED"
+    },
+    {
+      "id": "L4",
+      "name": "SUPPORT_AND_VISIBILITY_STATE_ENCODING",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "gene_valid = measurement_mask & ~hidden_target_mask makes hidden and structurally-unmeasured indistinguishable; encoding hidden as measured-zero would instead teach the model that hidden means zero",
+      "detection": "enumerate the state encoding and check the hidden state carries no value-derived component",
+      "repair": "explicit three-state encoding with a constant hidden state",
+      "status": "OPEN"
+    },
+    {
+      "id": "L5",
+      "name": "MEASUREMENT_STATE_SHORTCUT",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "measured_evidence": "in V0 visibility-only predicts Q_DEPTH at about 0.834 and Q_DETECT at about 0.977, while VALUE_ONLY is materially lower",
+      "detection": "control C3 including the support-only sub-arm",
+      "repair": "depth, detection, operator and source exist only as separate auxiliary outputs from a detached copy of the primary state; never inputs; no auxiliary gradient may reach the primary state",
+      "status": "ARCHITECTURAL_CONSTRAINT_DECISION_D6"
+    },
+    {
+      "id": "L6",
+      "name": "OPERATOR_AND_SOURCE_STRUCTURE",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "scale": "42 operators; 46 SEA_AD, 41 HVS and 17 NPH52 donors",
+      "measured_evidence": "the molecular increment over context moved from +0.0311 unweighted to +0.1207 under empirical FULL104 weighting",
+      "detection": "control C3; every score reported per source",
+      "repair": "no operator or source input to the molecular path; source-stratified donor split; per-source reporting, never a pooled number",
+      "status": "CONSTRAINT_ASSERTED"
+    },
+    {
+      "id": "L7",
+      "name": "IDENTITY_SHORTCUT_DIRECT_PARAMETER_SHARING",
+      "affects": [
+        "Q1",
+        "PARTIALLY_Q3"
+      ],
+      "mechanism": "target identity to predictor query to gradient to online identity table to EMA teacher to future target",
+      "detection": "static enumeration of every parameter shared between query construction, online encoder and teacher target generation",
+      "repair": "Q2_FIXED_CODE",
+      "status": "OPEN_DECISION_D3__STANDING_BLOCKER_TARGET_IDENTITY_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED"
+    },
+    {
+      "id": "L8",
+      "name": "IDENTITY_SHORTCUT_TARGET_CARRIES_STABLE_IDENTITY",
+      "affects": [
+        "ALL_CANDIDATES",
+        "WORST_IN_T_B1_AND_T_B2"
+      ],
+      "mechanism": "even with fixed codes H^T_iq is seeded by E_id[q] plus a constant so a large share of target variance may be address-constant",
+      "detection": "control C1 re-measured at several training points, plus the pre-training screen",
+      "repair": "if identity-only is not clearly beaten the target is redesigned, never the threshold",
+      "status": "OPEN"
+    },
+    {
+      "id": "L9",
+      "name": "CORRELATED_PARTNER_AND_COLLISION_LEAKAGE",
+      "affects": [
+        "ALL_CANDIDATES",
+        "PARTIALLY_MITIGATED_IN_T_C"
+      ],
+      "measured_evidence": "pooled-Pearson partner masking exposure 0.2129 versus uniform 0.1946, i.e. 9.4 percent worse, structural expansion 12.5; donor-recurrent 0.1853, minus 4.8 percent against a required minimum 20 percent reduction; source-balanced recurrent 0.1947; at a 2000-address universe at most 5 of roughly 4 million ordered pairs reach recurrence fraction 0.5",
+      "detection": "exposure metric D from the 2026-09-16 contract; collision-unresolved addresses excluded from M_i",
+      "repair": "NONE_AVAILABLE_TODAY",
+      "status": "OPEN__MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED__NOT_RESOLVED_BY_THIS_DOCUMENT"
+    },
+    {
+      "id": "L10",
+      "name": "POSITIONAL_AND_ORDERING_ARTIFACTS",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "token order correlated with expression rank, block index, padding position or storage order",
+      "detection": "permutation test requiring the target to be invariant to token reordering",
+      "repair": "identity is selection_row for cells and canonical address for genes, never block position, shard key or enumeration counter",
+      "status": "CONSTRAINT_ASSERTED__THIS_FAILURE_HAS_OCCURRED_ONCE_IN_THIS_PROJECT"
+    },
+    {
+      "id": "L11",
+      "name": "EMA_TEACHER_MEMORIZATION",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "the same cell is presented repeatedly under different masks and the target for that cell is stable, so cell-to-target can be memorized without using RNA",
+      "detection": "evaluate only on held-out donors; report the train versus held-out gap as a diagnostic",
+      "repair": "training-time scores are never quoted as evidence",
+      "status": "CONSTRAINT_ASSERTED"
+    },
+    {
+      "id": "L12",
+      "name": "CROSS_CELL_MIXING_INSIDE_THE_BATCH",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "batch-level normalization or a cell state pooling across cells lets same-donor neighbours leak",
+      "detection": "shuffle batch composition and require bit-identical per-cell outputs",
+      "repair": "per-cell normalization only; no BatchNorm; loss reduction algebraically transparent under microbatching and packing",
+      "status": "CONSTRAINT_ASSERTED"
+    },
+    {
+      "id": "L13",
+      "name": "MASK_DEPENDENT_TARGET",
+      "affects": [
+        "T_B2",
+        "N_VISIBLE_SET_RECOMPUTED"
+      ],
+      "mechanism": "the teacher's input depends on H_i so the target moves with the mask draw",
+      "detection": "replay the same cell under the same identity key and require the same mask and the same target",
+      "repair": "key the mask RNG from scientific identity so repacking cannot change the target",
+      "status": "OPEN_DECISION_D2_AND_D0"
+    },
+    {
+      "id": "L14",
+      "name": "SPLIT_CONTAMINATION_THROUGH_METHOD_DEVELOPMENT",
+      "affects": [
+        "ALL_CANDIDATES"
+      ],
+      "mechanism": "held-out donors that influence any design choice, even a pathology-blind diagnostic one, stop being held out",
+      "detection": "freeze the split and the decision rule before scoring any candidate",
+      "repair": "direction and pairing of every control frozen now; numeric margins frozen before the first score is inspected, never after",
+      "status": "CONSTRAINT_ASSERTED"
+    }
   ],
-
   "control_protocol": {
     "pairing": "COMMON_RANDOM_NUMBERS__SAME_CELLS_SPLIT_MASKS_TEACHER_WEIGHTS_SCIENTIFIC_WEIGHTS_AND_FOLDS__ONLY_THE_ABLATED_CHANNEL_DIFFERS",
     "metric_boundedness_requirement": "BOUNDED_IN_THE_REWARDED_DIRECTION__OTHERWISE_RELATIVE_STATEMENTS_ARE_MEANINGLESS",
@@ -286,7 +594,6 @@
     "reporting": "UNCONDITIONAL_OVER_THE_DECLARED_EVALUATION_POPULATION__EVERY_ATTEMPTED_UNIT_IN_THE_DENOMINATOR__SEPARATELY_PER_SOURCE__NEVER_POOLED_INTO_ONE_NUMBER",
     "threshold_freezing": "DIRECTION_AND_PAIRING_FROZEN_NOW__NUMERIC_MARGINS_FROZEN_BEFORE_THE_FIRST_SCORE_IS_INSPECTED"
   },
-
   "controls": [
     {
       "id": "C1",
@@ -296,22 +603,41 @@
       "disqualifying_outcome": "The candidate is disqualified if the paired delta S(full) minus S(identity_only) has a confidence interval that includes or lies below zero. It is also disqualified if S(identity_only) alone exceeds the frozen minimum-effect bar the full model must clear, in which case the target is redesigned and the bar is not moved. Q1 is separately disqualified if S(identity_only, Q1) minus S(identity_only, Q2) is materially positive.",
       "margin": "UNSET_REQUIRES_APPROVAL",
       "repeat_schedule": "SEVERAL_TRAINING_POINTS_NOT_ONCE",
-      "stratify_by": ["ADDRESS_FREQUENCY", "BLOCK_SIZE", "SOURCE", "OPERATOR", "RARE_VERSUS_COMMON_ADDRESS"]
+      "stratify_by": [
+        "ADDRESS_FREQUENCY",
+        "BLOCK_SIZE",
+        "SOURCE",
+        "OPERATOR",
+        "RARE_VERSUS_COMMON_ADDRESS"
+      ]
     },
     {
       "id": "C2",
       "name": "GLOBAL_CONTEXT_ONLY",
-      "polarity": "NEGATIVE_MUST_FAIL",
-      "condition": "Predictor receives the student's pooled cell-level state and the query address code, but no token-level access to the visible genes and no attention over individual addresses.",
-      "disqualifying_outcome": "The candidate is disqualified if S(full) minus S(global_only) has a confidence interval including zero: the target then has no query-local content, every query in a cell maps to essentially the same vector, and the construction does not measure a query-local state.",
+      "polarity": "DIAGNOSTIC_NOT_DISQUALIFYING",
+      "condition": "Predictor receives a capacity-matched, query-independent pooled cell summary and the query address code, but no token-level access to the visible genes. The pooled summary must be expressive enough to carry the cell-level state; an under-capacity summary always looks worse than full for numerical reasons and can therefore never fire, which would wrongly credit the construction.",
+      "disqualifying_outcome": "NOT_DISQUALIFYING_BY_DESIGN. Measured on a planted cell-level target this control stays silent, so it cannot falsify query-locality. Its falsifying role is taken by C2B QUERY_EXCHANGEABILITY. It is retained as a diagnostic of token-level necessity only.",
       "margin": "UNSET_REQUIRES_APPROVAL",
-      "cheaper_companion": "PRE_TRAINING_TEACHER_ONLY_WITHIN_CELL_ACROSS_QUERY_VARIANCE_SCREEN"
+      "cheaper_companion": "PRE_TRAINING_TEACHER_ONLY_WITHIN_CELL_ACROSS_QUERY_VARIANCE_SCREEN",
+      "status": "DEMOTED_BY_MEASURED_NON_DISCRIMINATION__SEE_control_sensitivity_evidence",
+      "what_it_actually_tests": "Whether per-address access to the remaining RNA is necessary beyond a fixed-size cell-level summary. It does NOT test query-locality.",
+      "capacity_matching_requirement": "POOLED_SUMMARY_MUST_CARRY_THE_CELL_LEVEL_STATE"
+    },
+    {
+      "id": "C2B",
+      "name": "QUERY_EXCHANGEABILITY",
+      "polarity": "NEGATIVE_MUST_FAIL",
+      "condition": "Each query's model is fitted on its own targets, then scored twice on held-out donors: once against its own targets and once against a different query's targets under a fixed, replay-stable derangement. Each query's targets are centred by their own training mean first, so the address main effect cannot carry the comparison.",
+      "disqualifying_outcome": "The candidate is disqualified if the paired delta S(own_query) minus S(wrong_query) has a confidence interval including zero: asking the wrong query then costs nothing, every query shares one map, and the target carries no cell-by-query structure. This is the falsifying test for query-locality that C2 cannot provide.",
+      "margin": "UNSET_REQUIRES_APPROVAL",
+      "replaces_falsifying_role_of": "GLOBAL_CONTEXT_ONLY",
+      "pre_training_companion": "D7_TARGET_VARIANCE_DECOMPOSITION_SCREEN"
     },
     {
       "id": "C3",
       "name": "TECHNICAL_ONLY",
       "polarity": "NEGATIVE_MUST_FAIL",
-      "condition": "Predictor receives only library depth, detection rate, the binary visibility vector, operator ID and source ID, plus the query address code. No RNA values. A required sub-arm gives the binary visibility vector alone.",
+      "condition": "Predictor receives only library depth, detection rate, the binary visibility vector, operator ID and source ID, plus the query address code. No RNA values. A required sub-arm gives the binary visibility vector alone. The support projection must likewise be capacity-matched, for the same reason as C2.",
       "disqualifying_outcome": "The candidate is disqualified if S(full) minus S(technical_only) has a confidence interval including zero, and separately if the support-only sub-arm approaches the full model. Because visibility-only predicts Q_DETECT at about 0.977 and Q_DEPTH at about 0.834 in V0, bundling visibility with the other channels would hide its individual contribution, so the sub-arm is mandatory.",
       "margin": "UNSET_REQUIRES_APPROVAL",
       "architectural_requirement": "SEPARATE_DETACHED_AUXILIARY_OUTPUTS_ONLY__NEVER_INPUT_TO_PRIMARY_PATH__NO_AUXILIARY_GRADIENT_INTO_PRIMARY_STATE__REJECTED_ON_INSPECTION_WITH_NO_EXPERIMENT_REQUIRED"
@@ -352,7 +678,6 @@
       "margin": "UNSET_REQUIRES_APPROVAL"
     }
   ],
-
   "unset_parameters": {
     "mask_fraction": "UNSET_REQUIRES_APPROVAL",
     "mask_policy_family": "UNSET_REQUIRES_APPROVAL",
@@ -395,15 +720,28 @@
     "rare_address_guardrail": "UNSET_REQUIRES_APPROVAL",
     "comparator_baseline": "UNSET_REQUIRES_APPROVAL"
   },
-
   "forbidden_inherited_values": {
     "note": "These are historical mechanics evidence or synthetic fixture values. None is a default and none may be inherited into any current-V5 setting.",
-    "synthetic_fixture_from_a_mechanics_test": ["mask_fraction_0.40", "ema_0.99"],
-    "historical_v4_mechanics_only": ["ema_0.996", "depth_6_blocks", "width_160", "heads_4", "identity_dim_48", "target_blocks_16", "views_4", "batch_geometry_128x8", "protected_48_tensors"],
-    "forbidden_population": ["old_94_donor_population"],
+    "synthetic_fixture_from_a_mechanics_test": [
+      "mask_fraction_0.40",
+      "ema_0.99"
+    ],
+    "historical_v4_mechanics_only": [
+      "ema_0.996",
+      "depth_6_blocks",
+      "width_160",
+      "heads_4",
+      "identity_dim_48",
+      "target_blocks_16",
+      "views_4",
+      "batch_geometry_128x8",
+      "protected_48_tensors"
+    ],
+    "forbidden_population": [
+      "old_94_donor_population"
+    ],
     "forbidden_relabelling": "NO_ARM_OF_THE_2026_09_16_NINE_CELL_MASKING_GRID_MAY_BE_RELABELLED_AS_QUALIFIED"
   },
-
   "masking_status": {
     "previous_september16_result": "NINE_CELL_GRID_NO_QUALIFIER",
     "grid_exhausted": true,
@@ -421,7 +759,6 @@
     "masking_authority_resolved_by_this_document": false,
     "standing_terminal": "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED"
   },
-
   "substrate_reference": {
     "role": "CITED_FROM_THE_EXISTING_RECORD__NOT_RECOMPUTED_BY_THIS_DOCUMENT",
     "cells": 4553407,
@@ -432,11 +769,14 @@
     "common_core_v0_addresses": 8568,
     "common_core_v1_addresses": 8618,
     "level4_blocks": 8915,
-    "source_donors": {"SEA_AD": 46, "HVS": 41, "NPH52": 17},
+    "source_donors": {
+      "SEA_AD": 46,
+      "HVS": 41,
+      "NPH52": 17
+    },
     "historical_manifest_root_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
     "smallest_donor_cells_is_sampler_capacity_not_a_chosen_batch": 81
   },
-
   "governance": {
     "training": "OFF",
     "audit_b_n1": "UNOPENED",
@@ -456,7 +796,6 @@
     "this_document_sets_any_numeric_threshold": false,
     "this_document_issues_execution_permission": false
   },
-
   "owner_decisions_required": [
     "D0 choose the per-cell value-normalization rule, because the field-standard default leaks the query scalar into every other token",
     "D1 choose the target construction T_A, T_B1, T_B2 or T_C, optionally with modifier T_D as a diagnostic",
@@ -465,12 +804,147 @@
     "D4 choose the target read-out, which determines whether the evaluation metric can be bounded",
     "D5 choose address-level or block-level target granularity, noting that block-level imports an unresolved blocking authority",
     "D6 confirm measurement-state channels exist only as separate detached auxiliary outputs, or not at all",
+    "D8b confirm the revised control set: C2 demoted to a token-level-necessity diagnostic and C2B QUERY_EXCHANGEABILITY adopted as the falsifying query-locality control, after C2 was measured silent on its own planted failure",
     "D7 decide whether to run the pre-training teacher-only target-variance screen and set its bar",
     "D8 set the numeric margin for every control, before the first score is inspected",
     "D9 decide whether PR 152 keeps query_scalar_teacher as an enforced checker constant or demotes it to a decision field",
     "Separately: freeze the source-stratified donor split, the scientific cell weights, the mask policy, the model geometry, the EMA half-life, the optimizer schedule, the seed and the update budget, none of which this document proposes"
   ],
-
   "approval": "NOT_REQUESTED_BY_THIS_FILE__SCIENCE_REVIEW_ONLY",
-  "footer": "TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED · D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF"
+  "footer": "TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED · D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF",
+  "control_sensitivity_evidence": {
+    "role": "SYNTHETIC_PLANTED_STRUCTURE_ONLY__NOT_FULL104__NOT_BIOLOGY__NOT_A_PROJECT_RESULT",
+    "producer": "scripts/v5/lane_a/v29_lane_a_control_sensitivity_fixture_v1.py",
+    "tests": "tests/lane_a/test_v29_lane_a_control_sensitivity_v1.py",
+    "method": "Small synthetic populations with donors as the clustering unit, per-cell depth, depth-driven detection and missingness, and Poisson counts over a shared latent cell state. A closed-form ridge probe, fitted per query on training donors and scored on held-out donors, with donor-clustered bootstrap intervals on paired deltas. No network is trained.",
+    "fires_rule": "A negative control FIRES when the paired delta interval includes or lies below zero.",
+    "c1_identity_only": {
+      "planted_failure_regime": "IDENTITY_ONLY",
+      "full": 0.9811,
+      "control": 0.9828,
+      "delta": -0.0017,
+      "delta_ci": [
+        -0.0019,
+        -0.0016
+      ],
+      "fires": true,
+      "healthy_regime_fires": false
+    },
+    "c2_global_context_only": {
+      "planted_failure_regime": "GLOBAL_ONLY",
+      "full": 0.798,
+      "control": 0.5887,
+      "delta": 0.2093,
+      "delta_ci": [
+        0.1801,
+        0.2378
+      ],
+      "fires": false,
+      "verdict": "DOES_NOT_DISCRIMINATE__SILENT_ON_ITS_OWN_PLANTED_FAILURE",
+      "undercapacity_control": 0.1509,
+      "undercapacity_delta": 0.6471,
+      "undercapacity_fires_in_any_regime": false
+    },
+    "c2b_query_exchangeability": {
+      "planted_failure_regime": "GLOBAL_ONLY",
+      "own_query": 0.798,
+      "wrong_query": 0.7981,
+      "delta": -0.0,
+      "delta_ci": [
+        -0.0001,
+        0.0
+      ],
+      "fires": true,
+      "healthy_regime": {
+        "own_query": 0.7895,
+        "wrong_query": -0.7887,
+        "delta": 1.5782,
+        "delta_ci": [
+          1.4614,
+          1.7054
+        ],
+        "fires": false
+      }
+    },
+    "c3_technical_only": {
+      "planted_failure_regime": "TECHNICAL_ONLY",
+      "full": 0.8744,
+      "control": 0.9883,
+      "delta": -0.1139,
+      "delta_ci": [
+        -0.1343,
+        -0.0952
+      ],
+      "fires": true,
+      "healthy_regime_fires": false
+    },
+    "c4_remaining_rna_necessity": {
+      "planted_failure_regime": "IDENTITY_ONLY",
+      "delta": 0.0001,
+      "delta_ci": [
+        -0.0002,
+        0.0003
+      ],
+      "fires": true,
+      "healthy_regime_delta": 0.8462,
+      "healthy_regime_fires": false,
+      "within_cell_shuffle_leaves_depth_and_detection_exactly_unchanged": true
+    },
+    "c5_leak_injection_positive_control": {
+      "sensitive_regime": "QUERY_SCALAR",
+      "full": 0.3568,
+      "leaked": 0.934,
+      "delta": -0.5772,
+      "delta_ci": [
+        -0.6106,
+        -0.5437
+      ],
+      "detector_sensitive": true,
+      "not_trivially_always_positive": true,
+      "insensitive_regimes_where_there_is_nothing_to_leak": [
+        "IDENTITY_ONLY",
+        "PURE_NOISE"
+      ]
+    },
+    "c6_donor_key_cheat": {
+      "planted_failure_regime": "IDENTITY_ONLY",
+      "delta": -0.0018,
+      "delta_ci": [
+        -0.0019,
+        -0.0017
+      ],
+      "fires": true,
+      "healthy_regime_fires": false
+    },
+    "d7_target_variance_screen": {
+      "QUERY_LOCAL": {
+        "address": 0.091,
+        "cell": 0.087,
+        "interaction": 0.822
+      },
+      "IDENTITY_ONLY": {
+        "address": 0.983,
+        "cell": 0.001,
+        "interaction": 0.016
+      },
+      "GLOBAL_ONLY": {
+        "address": 0.0,
+        "cell": 0.995,
+        "interaction": 0.005
+      },
+      "TECHNICAL_ONLY": {
+        "address": 0.0,
+        "cell": 0.99,
+        "interaction": 0.01
+      },
+      "PURE_NOISE": {
+        "address": 0.001,
+        "cell": 0.085,
+        "interaction": 0.914
+      },
+      "tested_limitation": "PURE_NOISE_ALSO_SHOWS_HIGH_INTERACTION__READ_ONLY_NEXT_TO_THE_PROBE_SCORE"
+    },
+    "null_fixture_probe_score": -0.1025,
+    "healthy_fixture_probe_score": 0.806
+  }
 }

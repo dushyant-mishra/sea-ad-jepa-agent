@@ -37,6 +37,23 @@ BANNED_AUTHORIZATION = re.compile(
 # rather than by blacklisting individual constants.
 NUMBER_FREE_SUBTREES = ("unset_parameters", "decisions_open", "candidates", "controls")
 
+# Every section this checker depends on. Absence fails closed rather than raising KeyError.
+REQUIRED_SECTIONS = (
+    "companion_of",
+    "classification_against_pr152",
+    "decisions_open",
+    "candidates",
+    "controls",
+    "control_protocol",
+    "leakage_paths",
+    "unset_parameters",
+    "forbidden_inherited_values",
+    "masking_status",
+    "substrate_reference",
+    "governance",
+    "control_sensitivity_evidence",
+)
+
 REQUIRED_DECISIONS = ("D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9")
 
 REQUIRED_CANDIDATES = ("T_A", "T_B1", "T_B2", "T_C")
@@ -54,11 +71,16 @@ REQUIRED_CANDIDATE_FIELDS = (
 REQUIRED_CONTROL_NAMES = {
     "IDENTITY_ONLY",
     "GLOBAL_CONTEXT_ONLY",
+    "QUERY_EXCHANGEABILITY",
     "TECHNICAL_ONLY",
     "REMAINING_RNA_NECESSITY",
     "LEAK_INJECTION",
     "DONOR_OR_CELL_KEY_CHEAT",
 }
+
+# Controls measured to be silent on their own planted failure may stay in the set as
+# diagnostics, but their falsifying role must be reassigned to a named replacement.
+NON_DISCRIMINATING_CONTROLS = {"GLOBAL_CONTEXT_ONLY": "QUERY_EXCHANGEABILITY"}
 
 REQUIRED_LEAKAGE_IDS = tuple(f"L{n}" for n in range(1, 15))
 
@@ -160,10 +182,15 @@ def _check_no_authority_assertions(doc: dict) -> None:
             _stop("AUTHORIZATION_LANGUAGE_" + label)
 
 
-def _check_number_free_subtrees(doc: dict) -> None:
-    for name in NUMBER_FREE_SUBTREES:
+def _check_required_sections(doc: dict) -> None:
+    for name in REQUIRED_SECTIONS:
         if name not in doc:
             _stop("MISSING_SECTION_" + name)
+
+
+def _check_number_free_subtrees(doc: dict) -> None:
+    """Backstop sweep. The specific checks run first so they report the specific tag."""
+    for name in NUMBER_FREE_SUBTREES:
         for path, key, value in _walk(doc[name], name):
             if isinstance(value, bool):
                 continue
@@ -266,6 +293,18 @@ def _check_controls(doc: dict) -> None:
     if "NEVER_INPUT_TO_PRIMARY_PATH" not in requirement:
         _stop("MEASUREMENT_STATE_NOT_CONFINED_TO_SEPARATE_OUTPUTS")
 
+    byname = {c.get("name"): c for c in controls}
+    for demoted, replacement in NON_DISCRIMINATING_CONTROLS.items():
+        entry = byname[demoted]
+        if entry.get("polarity") != "DIAGNOSTIC_NOT_DISQUALIFYING":
+            _stop("NON_DISCRIMINATING_CONTROL_STILL_PRESENTED_AS_FALSIFYING_" + demoted)
+        if not _nonempty_str(entry.get("capacity_matching_requirement")):
+            _stop("ABLATED_CONDITION_NOT_CAPACITY_MATCHED_" + demoted)
+        if byname[replacement].get("replaces_falsifying_role_of") != demoted:
+            _stop("FALSIFYING_ROLE_NOT_REASSIGNED_" + demoted)
+        if byname[replacement].get("polarity") != "NEGATIVE_MUST_FAIL":
+            _stop("REPLACEMENT_CONTROL_NOT_FALSIFYING_" + replacement)
+
 
 def _check_control_protocol(doc: dict) -> None:
     protocol = doc["control_protocol"]
@@ -366,6 +405,39 @@ def _check_governance(doc: dict) -> None:
         _require(governance.get(key), False, "GOVERNANCE_" + key)
 
 
+def _check_control_sensitivity_evidence(doc: dict) -> None:
+    """Every control must carry measured proof that it can fire, and can stay quiet."""
+    evidence = doc["control_sensitivity_evidence"]
+    if "SYNTHETIC_PLANTED_STRUCTURE_ONLY" not in str(evidence.get("role", "")):
+        _stop("CONTROL_EVIDENCE_NOT_LABELLED_SYNTHETIC")
+    if "NOT_FULL104" not in str(evidence.get("role", "")):
+        _stop("CONTROL_EVIDENCE_NOT_SEPARATED_FROM_FULL104")
+    for key in (
+        "c1_identity_only",
+        "c2_global_context_only",
+        "c2b_query_exchangeability",
+        "c3_technical_only",
+        "c4_remaining_rna_necessity",
+        "c5_leak_injection_positive_control",
+        "c6_donor_key_cheat",
+    ):
+        if key not in evidence:
+            _stop("MISSING_CONTROL_SENSITIVITY_EVIDENCE_" + key)
+    if evidence["c2_global_context_only"].get("fires") is not False:
+        _stop("C2_NON_DISCRIMINATION_FINDING_OVERWRITTEN")
+    if evidence["c2b_query_exchangeability"].get("fires") is not True:
+        _stop("REPLACEMENT_CONTROL_NOT_SHOWN_TO_FIRE")
+    if evidence["c2b_query_exchangeability"]["healthy_regime"].get("fires") is not False:
+        _stop("REPLACEMENT_CONTROL_FIRES_ON_A_HEALTHY_TARGET")
+    leak = evidence["c5_leak_injection_positive_control"]
+    if leak.get("detector_sensitive") is not True:
+        _stop("LEAK_DETECTOR_NOT_SHOWN_SENSITIVE")
+    if leak.get("not_trivially_always_positive") is not True:
+        _stop("LEAK_DETECTOR_NOT_SHOWN_TO_HAVE_A_QUIET_CASE")
+    if float(evidence.get("null_fixture_probe_score", 1.0)) > 0.05:
+        _stop("NULL_FIXTURE_MANUFACTURED_SIGNAL")
+
+
 def _check_classification(doc: dict) -> None:
     rows = doc["classification_against_pr152"]
     if not isinstance(rows, list) or not rows:
@@ -390,8 +462,8 @@ def check(doc: dict) -> str:
     _require(doc.get("schema"), SCHEMA, "SCHEMA")
     _require(doc.get("document_role"), ROLE, "ROLE")
     _require(doc.get("authority_issued"), "NONE", "AUTHORITY_ISSUED")
+    _check_required_sections(doc)
     _check_no_authority_assertions(doc)
-    _check_number_free_subtrees(doc)
     _check_unset_parameters(doc)
     _check_decisions(doc)
     _check_candidates(doc)
@@ -403,6 +475,8 @@ def check(doc: dict) -> str:
     _check_substrate(doc)
     _check_governance(doc)
     _check_classification(doc)
+    _check_control_sensitivity_evidence(doc)
+    _check_number_free_subtrees(doc)
     return "PASS_LANEA_NONAUTHORIZING_CANDIDATE_SPACE"
 
 
