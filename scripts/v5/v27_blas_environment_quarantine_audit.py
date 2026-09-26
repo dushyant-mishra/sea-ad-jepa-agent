@@ -38,7 +38,13 @@ except BaseException as e:
     out["torch_exception"]=type(e).__name__+": "+str(e)
 print("V27_ENV_PROBE_JSON="+json.dumps(out,sort_keys=True),flush=True)
 '''
-PRECHECK=r'''\nimport os,sys,json\np=os.path.normcase(os.path.normpath(os.path.join(sys.prefix,'Library','bin')))\npaths={os.path.normcase(os.path.normpath(x)) for x in os.environ.get('PATH','').split(os.pathsep) if x}\nprint('V27_ENV_PATH='+json.dumps({'platform':sys.platform,'library_bin_on_path':p in paths,'expected_library_bin':p}),flush=True)\n'''\ndef run_one(name,cmd,seconds=60):
+PRECHECK=r'''
+import os,sys,json
+p=os.path.normcase(os.path.normpath(os.path.join(sys.prefix,'Library','bin')))
+paths={os.path.normcase(os.path.normpath(x)) for x in os.environ.get('PATH','').split(os.pathsep) if x}
+print('V27_ENV_PATH='+json.dumps({'platform':sys.platform,'library_bin_on_path':p in paths,'expected_library_bin':p}),flush=True)
+'''
+def run_one(name,cmd,seconds=60):
     t=time.monotonic()
     try:
         env_check=subprocess.run(cmd+["-c",PRECHECK],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=seconds,check=False)
