@@ -14,7 +14,8 @@
     "FULL104 410MB bundle and 2.7GB SQLite independently rehashed locally; actual current Level4 block manifest not rehashed here",
     "24MB canonical namespace and 227KB observation-state NPZ independently SHA-verified locally against original calibration ZIP",
     "No protected data or real JEPA training executed",
-    "Other unmerged branches and remote Windows disk may contain additional artifacts; absence is only at the reviewed head"
+    "Other unmerged branches and remote Windows disk may contain additional artifacts; absence is only at the reviewed head",
+    "The two no-single-defining-class slots are direct raw SHA arguments in current_authority_closure_v2; do not invent dataclasses or call the raw format validation a complete source-byte authority."
   ],
   "rows": [
     {
@@ -22,7 +23,10 @@
       "root": "full104_substrate_sha256",
       "classification": "NO_SINGLE_DEFINING_MODULE_IDENTIFIED_IN_PRIOR_REVIEW",
       "current_closure_validated": false,
-      "training_authorized": false
+      "training_authorized": false,
+      "closure_input_form": "RAW_64_CHAR_SHA256_ARG",
+      "defining_module_evidence": "current_authority_closure_v2.validate_current_v5_authority_closure_v2(full104_substrate_sha256: str) verifies format and equality to representation/support/outer-split/masking-substrate roots",
+      "source_artifact_status": "Original FULL104 expression block manifest digest 66f589... recorded; not independently physically rehashed here; metadata calibration archive is a different SHA/role"
     },
     {
       "ordinal": 2,
@@ -262,7 +266,10 @@
       "root": "observation_gradient_firewall_authority_sha256",
       "classification": "NO_SINGLE_DEFINING_MODULE_IDENTIFIED_IN_PRIOR_REVIEW",
       "current_closure_validated": false,
-      "training_authorized": false
+      "training_authorized": false,
+      "closure_input_form": "RAW_64_CHAR_SHA256_ARG",
+      "defining_module_evidence": "current_authority_closure_v2 validates format and equality to anti_cheat.observation_gradient_firewall_authority_sha256; no separate dedicated class identified in reviewed source",
+      "source_artifact_status": "No current independently authenticated gradient-firewall root bound to an executed current anti-cheat package in this cycle"
     },
     {
       "ordinal": 32,
