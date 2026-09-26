@@ -2,6 +2,7 @@
 """V43 design-only firewall. Does not read biological data or authorize training."""
 from __future__ import annotations
 import json
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -133,6 +134,16 @@ def main() -> None:
     replay=json.loads((ROOT/"docs/agent/JEPA_V43_ORIGINAL_84_EXACT_REPLAY_AUDIT_20260926.json").read_text())
     if machine["research"].get("original_historical_84_cell_exact_github_script_and_receipt_locally_replayed") is not True:
         raise ValueError("V43 latest machine state omits physical original replay")
+    # Detect repository edits made after the exact locally executed original
+    # bytes. This CI does NOT re-run the absent 410MB original data.
+    for path, expected in (
+        ("scripts/agent/v43_original_84_cell_support_preflight_research.py", replay["source_script"]["git_blob_sha1"]),
+        ("docs/agent/JEPA_V43_ORIGINAL_HISTORICAL_84_CELL_SUPPORT_RECEIPT_20260926.json", replay["receipt"]["git_blob_sha1"]),
+    ):
+        data=(ROOT/path).read_bytes()
+        observed=hashlib.sha1(f"blob {len(data)}".encode()+b"\x00"+data).hexdigest()
+        if observed!=expected:
+            raise ValueError("original physical replay does not bind live GitHub source: "+path)
     if replay["source_script"]["git_blob_sha1"]!="4a17ec41778dc214cc52726e003734c99d18e314" or replay["receipt"]["git_blob_sha1"]!="4e336208b98ff27c6e4aade3ebb422a362241391":
         raise ValueError("V43 exact original replay source/receipt blob mismatch")
     if replay["exact_positive"]["exit_code"]!=0 or replay["exact_positive"]["common_core"]!=17186:
