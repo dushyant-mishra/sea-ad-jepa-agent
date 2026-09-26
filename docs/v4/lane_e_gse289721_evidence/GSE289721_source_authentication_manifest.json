@@ -1,0 +1,243 @@
+{
+  "lane": "E",
+  "produced": "2026-09-26",
+  "status": "RECONNAISSANCE_COMPLETE_NOT_PROMOTED",
+  "branch": "lane-e/gse289721-recon-20260926",
+  "worktree_base_commit": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "accession": "GSE289721",
+  "primary_record_endpoint": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE289721&targ=self&form=text&view=brief",
+  "geo_facts": {
+    "status": "Public on Dec 31 2025",
+    "submission_date": "Feb 15 2025",
+    "last_update": "Jan 01 2026",
+    "pubmed_id": 41340152,
+    "doi": "10.1186/s12974-025-03562-9",
+    "pmcid": "PMC12729107",
+    "platform": "GPL24676",
+    "bioproject_geo": "PRJNA1224254",
+    "bioproject_paper_screen_NOT_in_this_series": "PRJNA1152984",
+    "contact": "Andrew Sproul, Columbia University",
+    "n_samples": 8
+  },
+  "replication": {
+    "independent_unit": "differentiation",
+    "n_independent_units": 2,
+    "units": [
+      "XP1",
+      "XP2"
+    ],
+    "n_genetic_backgrounds": 1,
+    "cell_line_CONTRADICTION": {
+      "geo_all_8_gsms": "IMR90",
+      "paper": "FA10",
+      "resolved": false
+    },
+    "lanes": 4,
+    "lanes_are_independent_replicates": false,
+    "note": "vehicle and polyIC lanes within one XP are a split of one transduced pool"
+  },
+  "libraries": {
+    "SS001": {
+      "gsm_gex": "GSM8797509",
+      "gsm_gdo": "GSM8797510",
+      "cond": "vehicle",
+      "xp": "XP1",
+      "barcodes": 12752,
+      "matrix_bytes": 171080282
+    },
+    "SS002": {
+      "gsm_gex": "GSM8797511",
+      "gsm_gdo": "GSM8797512",
+      "cond": "polyIC",
+      "xp": "XP1",
+      "barcodes": 13450,
+      "matrix_bytes": 160413551
+    },
+    "AS001": {
+      "gsm_gex": "GSM8797513",
+      "gsm_gdo": "GSM8797514",
+      "cond": "vehicle",
+      "xp": "XP2",
+      "barcodes": 10540,
+      "matrix_bytes": 137071587
+    },
+    "AS002": {
+      "gsm_gex": "GSM8797515",
+      "gsm_gdo": "GSM8797516",
+      "cond": "polyIC",
+      "xp": "XP2",
+      "barcodes": 11826,
+      "matrix_bytes": 149165887
+    }
+  },
+  "barcodes_total": 48568,
+  "features": {
+    "total_rows": 36673,
+    "gene_expression_rows": 36601,
+    "crispr_guide_capture_rows": 72,
+    "identical_across_libraries": true,
+    "decompressed_md5": "711d10ba076a7251693146325ac2aa47"
+  },
+  "guide_library": {
+    "deposited_rows": 72,
+    "unique_protospacers": 24,
+    "triplication_reason": "3 staggered capture patterns per guide; sum rows sharing `name` before assignment",
+    "targets": {
+      "AGFG2": 3,
+      "EED": 3,
+      "MS4A6A": 3,
+      "INPP5D": 3,
+      "PVR": 3,
+      "RABEP1": 3
+    },
+    "controls": {
+      "NEG_CTRL": 6
+    },
+    "completeness": "PASS - all 6 named targets have all 3 guides with sequences",
+    "control_mislabel": {
+      "deposit_says": "Non-Targeting",
+      "paper_says": "CABP5 and SAGE1 (genes not expressed in iMGLs)",
+      "per_guide_gene_assignment_recoverable_from_deposit": false
+    }
+  },
+  "guide_assignment": {
+    "mode": "direct capture (CellRanger feature barcoding)",
+    "per_cell_calls_deposited": false,
+    "recoverable": true,
+    "published_rule": "<5 total gRNA counts = non-targeted; else argmax guide",
+    "rule_weakness": "no purity ratio, no multiplet exclusion; attenuates effects toward zero"
+  },
+  "engagement": {
+    "reported_by_authors": false,
+    "measurable_by_us": true,
+    "reason": "CRISPRi dCas9-KRAB-MeCP2 lowers target's own transcript; all 6 targets present as matrix rows",
+    "target_rows": {
+      "INPP5D": 5793,
+      "AGFG2": 13978,
+      "MS4A6A": 19787,
+      "EED": 20399,
+      "RABEP1": 28256,
+      "PVR": 32230
+    }
+  },
+  "address_alignment": {
+    "registry": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+    "frozen_at_commit": "95d2cafe",
+    "all_six_identity_class": "current_exact",
+    "all_six_measured": true,
+    "all_six_set": "HVS_COMMON",
+    "address_index": {
+      "RABEP1": 478,
+      "PVR": 1211,
+      "EED": 1251,
+      "AGFG2": 3285,
+      "MS4A6A": 3726,
+      "INPP5D": 12372
+    }
+  },
+  "power": {
+    "paper_sequenced_cells": 44913,
+    "paper_perturbed_cells_vehicle": 2899,
+    "paper_perturbed_cells_polyIC": 2973,
+    "paper_perturbed_total": 5872,
+    "guide_assignment_yield_pct_of_deposited_barcodes": 12.1,
+    "per_target_counts": "NOT_STATED_IN_DEPOSIT - must be measured (Gate 1)",
+    "projected_control_to_target_ratio_uniform_assumption": 2.0,
+    "gse301119_precedent_ratio": 19.8
+  },
+  "overlap": {
+    "FULL104": "none",
+    "GSE178317": "INPP5D targeted in both; GSE178317 registered as primary_microglial_perturbation_training -> TRAINING_OVERLAP_SUSPECT",
+    "GSE301119": "no target overlap; different cell type (macrophage)",
+    "CRISPRbrain": "independent (different lab from this deposit)",
+    "clean_targets": [
+      "AGFG2",
+      "EED",
+      "MS4A6A",
+      "PVR",
+      "RABEP1"
+    ]
+  },
+  "disqualifying_outcomes": [
+    "Gate 3 fails: control-vs-control effects comparable to real target effects (the GSE301119 disqualifier)",
+    "Gate 2 fails for >=4 of 6 targets (engagement)",
+    "Gate 1 fails: deposited matrices do not reproduce published perturbed-cell counts",
+    "per-target assigned cells <100 in both differentiations",
+    "control:target cell ratio >5x after assignment",
+    "cell-line contradiction unresolved AND claim depends on genetic background"
+  ],
+  "verdict": "QUALIFIED-FEASIBLE, PENDING GATES 1-3. NOT PROMOTED TO BENCHMARK TRUTH.",
+  "not_determinable_from_deposit": [
+    "per-target and per-guide cell counts",
+    "whether 2899/2973 are pooled or per-experiment",
+    "cell line identity (IMR90 vs FA10)",
+    "sex, age, ancestry, APOE genotype",
+    "which NEG_CTRL guide targets CABP5 vs SAGE1",
+    "knockdown efficiency for any target",
+    "which 3 of >=6 guides per gene were selected and why",
+    "MOI / transduction efficiency",
+    "whether XP1 and XP2 used separate iPSC thaws",
+    "poly(I:C) delivery method",
+    "per-library pre/post-QC cell counts"
+  ],
+  "acquisition_not_performed_in_this_lane": {
+    "matrices_total_bytes": 617731307,
+    "RAW_tar_bytes_redundant": 619325440,
+    "PRJNA1152984": "different experiment (119-gene ROS screen); NOT required"
+  },
+  "retrieved_files": {
+    "GSE289721_geo_brief.txt": {
+      "bytes": 2807,
+      "sha256": "598c1dc5a611d7f5a42322422a3bb6e73f05a012f5ac4459fb47556a2a291dfe"
+    },
+    "GSE289721_gsm_full.txt": {
+      "bytes": 24140,
+      "sha256": "b034e4eb12702ab19dd3ad5af4ef711340070f85e456e770b1331762bca094f4"
+    },
+    "GSE289721_feature_ref4.csv.gz": {
+      "bytes": 884,
+      "sha256": "4b0188608f15b7466b89436c3c7a0a79b7ace2cce4c92e90f043f29af8f24608"
+    },
+    "feature_ref4.csv": {
+      "bytes": 7882,
+      "sha256": "61151ab5886d40eaabfa222440fa7136f70bd2b60a3a4ac1f6b023dfe7033d19"
+    },
+    "filelist.txt": {
+      "bytes": 922,
+      "sha256": "3ac7920d4f061867e3365d31eb32d68313cd33b6af68994b75cf5d3013251a57"
+    },
+    "GSM8797509_SS001_features.tsv.gz": {
+      "bytes": 333951,
+      "sha256": "663a34a599a17300ea69b3956c934197e5139a72dc3070a593ad5cd947629369"
+    },
+    "GSM8797511_SS002_features.tsv.gz": {
+      "bytes": 333951,
+      "sha256": "e9c7e0fa48cf2dd152db04f351c53df07a0413c31c86496925f530e566daad9b"
+    },
+    "GSM8797513_AS001_features.tsv.gz": {
+      "bytes": 333951,
+      "sha256": "8fac81a079100dea751793085d3e41f22ac2024b0a7d85bb4830a064f2723a4d"
+    },
+    "GSM8797515_AS002_features.tsv.gz": {
+      "bytes": 333951,
+      "sha256": "3a7805ead3a3cffea6b2287da22df447a461fa5eadcb5212e4f46ae68cb0e486"
+    },
+    "GSM8797509_SS001_barcodes.tsv.gz": {
+      "bytes": 63758,
+      "sha256": "ac27bc131372912f70bb78e5f684f85beec1cd988b2c2eae2c49af977a6d81fe"
+    },
+    "GSM8797511_SS002_barcodes.tsv.gz": {
+      "bytes": 66953,
+      "sha256": "71664f2096f3cd93d70f24f8f9596889c9d91542f26af01b449cc5405b50d78e"
+    },
+    "GSM8797513_AS001_barcodes.tsv.gz": {
+      "bytes": 53506,
+      "sha256": "beb0ba7879cd0b01f5b5cebb41fea8df32a435c186e453e590c7b634126a8ae5"
+    },
+    "GSM8797515_AS002_barcodes.tsv.gz": {
+      "bytes": 59474,
+      "sha256": "d66a6babf87a287e624eea19c4e79a7f13be50cf9e8b4b13f07981cb56241322"
+    }
+  },
+  "footer": "TRAINING=OFF AUDIT_B_N1=UNOPENED PROTECTED_FULL104_OUTCOMES=UNOPENED D_SHARED_G5=UNOPENED RARE_TAIL_MOLECULAR=UNOPENED THERAPEUTIC_RANKING=OFF"
+}

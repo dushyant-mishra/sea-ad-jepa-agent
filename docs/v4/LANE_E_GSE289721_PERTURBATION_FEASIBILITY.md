@@ -94,7 +94,7 @@ fetchers; the machine-readable `form=text` endpoint is not).
 
 Primary record retrieved:
 `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE289721&targ=self&form=text&view=brief`
-→ archived at `results/v4/lane_e_gse289721/GSE289721_geo_series_record.txt`
+→ archived at `docs/v4/lane_e_gse289721_evidence/GSE289721_geo_series_record.txt`
 (SHA-256 `598c1dc5a611d7f5a42322422a3bb6e73f05a012f5ac4459fb47556a2a291dfe`)
 
 | Field | Value (verbatim from GEO) | Source |
@@ -246,7 +246,7 @@ and recorded as a measured finding, not an assumption.
 
 Deposited file: `GSE289721_feature_ref4.csv.gz` (884 B, SHA-256
 `4b0188608f15b7466b89436c3c7a0a79b7ace2cce4c92e90f043f29af8f24608`), archived
-decompressed at `results/v4/lane_e_gse289721/GSE289721_feature_ref4_asdeposited.csv`.
+decompressed at `docs/v4/lane_e_gse289721_evidence/GSE289721_feature_ref4_asdeposited.csv`.
 
 **72 rows = 24 unique guides x 3 pattern variants.** The triplication is a
 CellRanger convention, not three separate guides: each protospacer is declared
@@ -571,7 +571,7 @@ exist at the stated size.
 | `GSM8797515_AS002_barcodes.tsv.gz` | 59,474 | `d66a6babf87a287e624eea19c4e79a7f13be50cf9e8b4b13f07981cb56241322` |
 
 Retained outside git at `D:\jepa_laneE_outputs_20260926\`. The three smallest
-primary-source files are committed under `results/v4/lane_e_gse289721/`.
+primary-source files are committed under `docs/v4/lane_e_gse289721_evidence/`.
 
 ### Step 1 — acquire the 4 GEX matrices (NOT the RAW.tar)
 
