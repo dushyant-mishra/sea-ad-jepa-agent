@@ -1,0 +1,51 @@
+name: V41 Phase-IV G3 candidate physical anti-spillover (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'scripts/agent/build_phaseiv_g3_source_successor_candidate_v41.py'
+      - 'tests/test_v41_phaseiv_g3_prospective_candidate.py'
+      - '.github/workflows/v41-phaseiv-g3-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prospective-candidate-not-authorized:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pin test runner
+        run: python -m pip install pytest==8.3.4
+      - name: Ten exact independent negative and deterministic physical candidate controls
+        env:
+          PYTHONPATH: src:tests:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s --strict-markers tests/test_v41_phaseiv_g3_prospective_candidate.py --junitxml=/tmp/v41.xml | tee /tmp/v41.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse('/tmp/v41.xml').getroot()
+          if root.tag!='testsuite': root=root.find('testsuite')
+          counts={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
+          required={
+            'test_draft_rebinds_exactly_one_changed_parent_without_authorizing',
+            'test_proposal_is_byte_deterministic_and_recomputable',
+            'test_changed_original_freeze_bytes_rejected_before_build',
+            'test_planner_byte_mutation_after_g3_pin_rejected',
+            'test_unchanged_other_parent_mutation_rejected',
+            'test_replaced_parity_test_with_same_filename_rejected',
+            'test_caller_fake_approval_or_rehashed_unverified_receipt_rejected',
+            'test_caller_replaced_parent_digest_rejected_even_with_recomputed_self_hash',
+            'test_producer_cli_export_and_independent_cli_verify_without_freeze_write',
+            'test_producer_cli_refuses_frozen_directory_overwrite',
+          }
+          actual=[node.get('name') for node in root.iter('testcase')]
+          if (counts!={'tests':10,'errors':0,'failures':0,'skipped':0}
+              or len(actual)!=10 or len(set(actual))!=10 or set(actual)!=required):
+              raise SystemExit(f'STOP_V41_MISSING_OR_SWAPPED_CONTROLS {counts} missing={sorted(required-set(actual))} extra={sorted(set(actual)-required)}')
+          print('V41_TEN_EXACT_PHYSICAL_DRAFT_CANDIDATE_CONTROLS_PASS')
+          PY
+          grep -q 'V41_DRAFT_ONLY_SOURCE_REBINDING_VALIDATED__ORIGINAL_FREEZE_UNCHANGED' /tmp/v41.log
