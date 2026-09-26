@@ -1,0 +1,59 @@
+name: V28 independent full104 relational V2 metadata replay
+on:
+  pull_request:
+    paths:
+      - 'analysis/v28_full104_relational_independent_replay/**'
+      - '.github/workflows/v28-independent-relational-v2-replay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay-exact-independent-output:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Fetch only two exact original PR146 metadata CSVs
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/v28-pr146"
+          ROOT=https://raw.githubusercontent.com/dushyant-mishra/sea-ad-jepa-agent/8369efe5839f9aca5912cc8280a05330b2b104a3/analysis/v5_full104_dataset_etl_20260921/diagnostic_parameters_v1
+          curl -fLsS --retry 3 "$ROOT/fit104_donor_scientific_masses.csv" -o "$RUNNER_TEMP/v28-pr146/fit104_donor_scientific_masses.csv"
+          curl -fLsS --retry 3 "$ROOT/fit104_donor_operator_relational_capacity.csv" -o "$RUNNER_TEMP/v28-pr146/fit104_donor_operator_relational_capacity.csv"
+          printf '%s  %s\n' \
+            386e52ecb56031fba7bde855c7af314b08f1773427d367e0679e6de47f79c7b7 "$RUNNER_TEMP/v28-pr146/fit104_donor_scientific_masses.csv" \
+            e40acc06844f4a13cb956453fe54e74abed357c3777a80ec6c4a2778dcae8f65 "$RUNNER_TEMP/v28-pr146/fit104_donor_operator_relational_capacity.csv" | sha256sum --check --status
+          echo "V28_PR146_SOURCE_DIR=$RUNNER_TEMP/v28-pr146" >> "$GITHUB_ENV"
+      - name: Independently rederive all 1400 groups and check byte-exact published PR149 CSV
+        shell: bash
+        run: |
+          python analysis/v28_full104_relational_independent_replay/independent_v2_relational_mass_replay.py \
+            --input-dir "$V28_PR146_SOURCE_DIR" --out-dir "$RUNNER_TEMP/v28-output" \
+            --receipt-out "$RUNNER_TEMP/v28-independent-receipt.json"
+          cmp analysis/v28_full104_relational_independent_replay/V28_INDEPENDENT_RELATIONAL_V2_REPLAY_RECEIPT.json "$RUNNER_TEMP/v28-independent-receipt.json"
+          printf '%s  %s\n' af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94 "$RUNNER_TEMP/v28-output/FULL104_FIT104_RELATIONAL_V2_RATIONAL_MASSES.csv" | sha256sum --check --status
+      - name: Six independent positive and adversarial metadata tests
+        run: python -m pytest -q analysis/v28_full104_relational_independent_replay/test_independent_v2_relational_mass_replay.py --junitxml=v28-relational-tests.xml
+      - name: Fail closed on missing tests or any skip
+        run: |
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          t=ET.parse('v28-relational-tests.xml').getroot()
+          if t.tag!='testsuite': t=t.find('testsuite')
+          if t is None: raise SystemExit('STOP_V28_RELATIONAL_NO_TEST_CENSUS')
+          counts={k:int(t.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          required={'test_positive_independent_104_donor_byte_identical_replay',
+          'test_any_source_byte_mutation_refuses_even_if_same_row_count',
+          'test_bad_declared_pr149_result_root_refused_not_tolerance_widened',
+          'test_preexisting_output_directory_refused',
+          'test_three_weight_laws_are_not_interchangeable',
+          'test_pair_probability_is_conditional_not_a_triplet_sampling_weight'}
+          names={c.get('name') for c in t.iter('testcase')}
+          if counts!={'tests':6,'skipped':0,'errors':0,'failures':0} or names!=required:
+              raise SystemExit(f'STOP_V28_RELATIONAL_FALSE_GREEN {counts},missing={sorted(required-names)}')
+          print('PASS_V28_INDEPENDENT_PR149_RELATIONAL_REPLAY: 6/6, zero skips; metadata only')
+          PY
