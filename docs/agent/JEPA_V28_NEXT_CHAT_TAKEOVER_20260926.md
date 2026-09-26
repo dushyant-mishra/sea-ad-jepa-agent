@@ -1,0 +1,28 @@
+# V28 new-chat takeover — exact safe execution order
+
+**Do not start from PR149 branch's inherited `START_HERE.md`: it predates V25.** Fetch live `main:START_HERE.md`, `main:docs/agent/JEPA_LATEST_HANDOFF_POINTER.json` and historical audit index *first*. Then read this V28 docs-only PR's [full handoff](JEPA_NEW_CHAT_HANDOFF_20260926_V28_VERIFIED_GITHUB_PUBLICATION.md), [machine state](JEPA_V28_VERIFIED_HANDOFF_STATE_20260926.json) and [evidence index](JEPA_V28_RESULTS_SCRIPTS_DATA_INDEX_20260926.md). Finally inspect current live PR149 audit and its exact-head CI; PR146 original complete physical metadata; parent `e00ba4ad` S9 retraction.
+
+## The first hour is source recovery, not a new experiment
+
+1. Refetch all live branch and PR heads and check the compare graph, including PR149 and its parent review branch and exact changed-file lists. Preserve the original PR147 execution artifact. Write a source-diff table of what changed **after** V28's dated snapshot; newly committed work outranks this snapshot for its exact qualified role but cannot override main's governance unless reviewed.
+2. Check the Sept20 environment qualification BEFORE testing CUDA BLAS. The canonical `sea-ad-jepa` is healthy **when** `<env>/Library/bin` is on `PATH` at process launch; S9 "broken environment / rerun historical science" was retracted Sept26 and is **not** an open blocker. `sea-ad-jepa-v3` was used for torch-only synthetic CPU mechanics and is not the qualified canonical dense solver by substitution.
+3. Reconcile PR146 → PR149 authentic metadata and three separate weight laws, including newly published PR149 V2 rational anchor CSV SHA `af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94`. Check current PR149 exact-head CI: older 18-test/11+3xfail runs do not automatically certify later commits. **Do not repeat** the same complete 410MB/2.7GB metadata ETL without changed-input reason.
+4. Take ownership of one clean worktree per lane. Scan PR141's ownership/collision map before any merge. No shared subagent worktree and no rebase of byte-bound result receipts.
+
+## What to work on next, in parallel when possible
+
+**Engineering/test lane (no real expression):** complete missing/malformed report, optimizer-step skip, empty Adam moment, incomplete checkpoint/cursor nonadvance negative controls. Original 40 synthetic CPU run already proved nonthrowing updates and measured varying gradients; its "40/40 four literal zeros" claim is permanently withdrawn. The existing gate already enforces inline *before* optimizer/EMA, so do not redundantly move it. Keep superseded V1–V3 integration tests visible as exactly expected failures, active V4 source mutation must be caught. Review POSIX-only `resource` import on Windows for a narrowly scoped fix; tests with active/xfail/skip accounting and positive controls.
+
+**Source-authority lane (no forged roots):** PR149 reviewed ledger has 32 upstream+1 preexecution slots, six own-schema validated candidates, zero fully closed. Check those six actual upstream bytes and exact role bindings, search other draft PRs and GPU disk before labeling 25 absent globally, resolve the two raw-string SHA slots through the existing closure's cross-consistency validations, never invent classes/artifacts. Deliver exact validator receipts and a head-scoped status matrix.
+
+**Scientific approval lane (owner decision required):** prepare a *single* prospective, bounded `reader_fit` development-only teacher-target package and separately reviewed frozen contract, reusing the current V5 target semantics and FULL104 physical token/sampling geometry. Explicitly require real chosen mask qualification status (September16 no winner), donor-heldout design and actual chosen training D, EMA in accepted presentations, seeds, resource-bounded model width/depth, update budget, objective-matched G3/six-state evaluation and negative controls. All unresolved fields stay `null` until chosen. This is a **proposal, not an issued package**; actual issuance B1+B2 additionally needs every applicable closure validator to pass.
+
+**Raw-data integrity lane (separate):** if read-only authority permits, build restartable deterministic full 8,915-Level4-block reaggregation chunks, exact source/donor/split/manifest binding, durable all-block exactly-once reducer, no terminal N1 masking outcome. PR120 timed out: no verdict; metadata counts are not raw counts.
+
+## Exit conditions
+
+* **No real model execution:** if no new project-approved B1 frozen contract or no actual valid 33-slot B2 closure. Only output scientific decision packet and remaining source-validation failures.
+* **Authorized limited GPU development run:** only if both governance and exact package/receipt/preexecution/critical-test/runtime-source closure truly pass; then build the single FULL104 streaming adapter, verify actual source-library denominator and per-cell donor/source identity, lawful query/visibility/measurement semantics, objective-correct donor weights and q correction, inline gradient→optimizer-once→EMA→atomic checkpoint. Report a limited engineering run separately from real biological signal.
+* **Protected holdouts:** remain closed absent individually named release rules. Current D_shared and N1 terminal outcomes unopened; no old94 or synthetic mask/EMA/width as real104 numeric authority.
+
+Publish exact source/data/CI/receipt paths, current SHA-256 roots and your own adverse findings in a new scoped branch. **Never** count missing verifier output as zero defects, synthetic CI as current GPU execution, schema-match as closure, a crashed computation as a scientifically valid result, or a physical metadata bridge as 8,915-block raw-count verification.
