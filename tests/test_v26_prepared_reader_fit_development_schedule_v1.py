@@ -64,7 +64,7 @@ def test_prepared_one_time_index_requires_no_per_update_argsort(monkeypatch):
 def test_population_snapshot_is_not_physical_authority():
     p = prep()
     receipt = p.nontraining_report()
-    assert receipt["input_authentication"] == "SYNTHETIC_STRUCTURAL_ONLY"
+    assert receipt["input_authentication"] == "STRUCTURAL_SNAPSHOT_NO_BYTE_AUTHORITY_RECEIPT"
     assert receipt["training_authorized"] is False
     assert receipt["raw_level4_per_cell_binding_here"] is False
     assert receipt["source_mutations_after_snapshot_detected_here"] is False
@@ -171,3 +171,16 @@ def test_explicit_schedule_materialization_cap_enforced_before_rng(monkeypatch):
     with pytest.raises(ValueError, match="authorized materialization limit"):
         p.plan(run_seed=1, first_update_index=0, update_count=10,
                presentations_per_update=4, maximum_authorized_presentations=39)
+
+
+def test_public_constructor_cannot_forge_physical_byte_binding():
+    p=prep()
+    with pytest.raises(TypeError):
+        PreparedReaderFitProposal(
+            p.donor_codes, p.donor_names, p.donor_counts,
+            p.ordered_rows, p.offsets, p.source_digest,
+            frozen_inputs_authenticated=True,
+        )
+    # Even this object carrying the exact-looking frozen SHA still cannot
+    # issue an authenticated receipt without independent PR132 evidence.
+    assert p.nontraining_report()["input_authentication"] == "STRUCTURAL_SNAPSHOT_NO_BYTE_AUTHORITY_RECEIPT"
