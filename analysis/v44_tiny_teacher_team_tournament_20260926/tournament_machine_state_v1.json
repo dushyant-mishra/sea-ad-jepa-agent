@@ -1,0 +1,124 @@
+{
+  "schema": "JEPA_V44_HISTORICAL_DISCOVERY_TINY_TEACHER_TOURNAMENT_REPLAY_V1",
+  "date": "2026-09-26",
+  "scope": "HISTORICAL_2600_CELL_PCA_RIDGE_CPU_SURROGATES_NOT_ACTUAL_V5_IPB_OR_EMA",
+  "originals": {
+    "expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "sample_freeze_csv_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "uploaded_large_original_to_github": false
+  },
+  "population": {
+    "cells": 2600,
+    "common_core": 17186,
+    "train_only_selected_genes": 1600,
+    "visible_C": 640,
+    "teacher_T": 768,
+    "holdout_Y": 192,
+    "all_three_views_disjoint": true,
+    "query_ids_excluded": [
+      6186,
+      12469
+    ],
+    "query_specificity_tested": false,
+    "seeds": [
+      7,
+      11,
+      17
+    ],
+    "train_donors_each_split": 81,
+    "test_donors_each_split": 20,
+    "distinct_test_donors_across_splits": 48,
+    "descriptive_rare_class_source": "TRAIN_ONLY_RNA_DERIVED_NATIVE_CLASS_NOT_INDEPENDENT_BIOLOGY"
+  },
+  "means": [
+    [
+      "R_SINGLE_RICH_V5_LINEAR_PROXY",
+      0.4158819,
+      0.443839,
+      0.7125625,
+      "C_PLUS_T__EXTRA_TEACHER_INPUT__UNFAIR"
+    ],
+    [
+      "A_SINGLE_COMPLEMENTARY",
+      0.4026731,
+      0.4315778,
+      0.2415312,
+      "T_ONLY"
+    ],
+    [
+      "B_SHARED_TRUNK_THREE_HEADS",
+      0.4078233,
+      0.4326608,
+      0.7676336,
+      "T_ONLY"
+    ],
+    [
+      "C_INDEPENDENT_CORE_FINE_RARE",
+      0.4018643,
+      0.4220601,
+      0.648729,
+      "T_ONLY"
+    ],
+    [
+      "D_INDEPENDENT_WITH_TAIL_SPECIALIST",
+      0.4004149,
+      0.4160421,
+      0.5958158,
+      "T_ONLY"
+    ]
+  ],
+  "mean_columns": [
+    "arm",
+    "donor_equal_heldout_Y_r2",
+    "descriptive_rare_heldout_Y_r2",
+    "student_teacher_latent_r2",
+    "teacher_information_scope"
+  ],
+  "donor_cluster_descriptive_vs_A": [
+    [
+      "R_SINGLE_RICH_V5_LINEAR_PROXY",
+      0.01322445,
+      0.01058905,
+      0.01575873
+    ],
+    [
+      "B_SHARED_TRUNK_THREE_HEADS",
+      0.00475496,
+      0.0012411,
+      0.00730121
+    ],
+    [
+      "C_INDEPENDENT_CORE_FINE_RARE",
+      -0.00138125,
+      -0.00624343,
+      0.00203167
+    ],
+    [
+      "D_INDEPENDENT_WITH_TAIL_SPECIALIST",
+      -0.00291513,
+      -0.00828096,
+      0.00125205
+    ]
+  ],
+  "bootstrap_warning": "48 distinct test donor IDs across 3 overlapping-seed splits, donor-identity-cluster resampling 10000 draws; descriptive not preregistered confirmatory. All arms equal 48-dimensional outputs but unequal teacher compute/parameters; Y is same-cell heldout RNA not an independent modality. No q-specific biological test.",
+  "local_exact_artifacts": {
+    "producer_sha256": "1a3ee7ad900f9da71e287f47bed66850782a5cca0351e8c38390a519546dc342",
+    "results_json_sha256": "c618d17bb5ff8de9e2e7c57c0f16680ad599dffa2294e9fe892a5d8266848ae4",
+    "score_csv_sha256": "43edc51516ad63bebbba48eb5f98d8c5271f993e7ed4fa6a2a6c716fb518ae26",
+    "per_donor_json_sha256": "80d2639bbba0007e322a43207b438e47717f072d63f94b4df91466cabc8fee05",
+    "portable_filename": "JEPA_V44_TINY_TOURNAMENT_PORTABLE_20260926.zip",
+    "portable_bytes": 19390,
+    "portable_sha256": "7912918cad795f930b5c0a86a690a902e2126c6fca45fec33d83eced4ffb1daa",
+    "portable_on_github": false
+  },
+  "authority": {
+    "training_authorized": false,
+    "actual_current_v5_ipb_executed": false,
+    "ema_teacher_trained": false,
+    "protected_outcomes_opened": false,
+    "audit_b_n1_opened": false,
+    "architecture_selected": false
+  },
+  "next": "Real current-architecture tiny developmental trial requires source-authenticated current V5 IPB and teacher-target science decision; head-to-head equal teacher evidence and compute, q-specific biological test and independent validation before selection."
+}
