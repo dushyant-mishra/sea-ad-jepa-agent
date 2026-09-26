@@ -1,0 +1,63 @@
+name: V40 local physical critical-test preflight (RESEARCH ONLY)
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/critical_test_physical_preflight_research_v40.py'
+      - 'tests/test_v40_critical_test_physical_preflight_research.py'
+      - '.github/workflows/v40-physical-critical-test-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  strict-original-source-and-junit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned isolated test runner
+        run: python -m pip install pytest==8.3.4
+      - name: Run V40 preflight and adversaries with exact JUnit outcomes
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s --strict-markers \
+            tests/test_v40_critical_test_physical_preflight_research.py \
+            --junitxml=/tmp/v40.xml | tee /tmp/v40.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse('/tmp/v40.xml').getroot()
+          if root.tag!='testsuite':root=root.find('testsuite')
+          actual={key:int(root.get(key,0)) for key in ('tests','errors','failures','skipped')}
+          required={'tests':17,'errors':0,'failures':0,'skipped':0}
+          if actual!=required:raise SystemExit(f'STOP_V40_FAIL_OR_SKIP_OR_TEST_DRIFT: {actual}')
+          names=[node.get('name') for node in root.iter('testcase')]
+          if len(names)!=17 or len(set(names))!=17:
+              raise SystemExit('STOP_V40_DUPLICATE_TEST_IDENTITIES')
+          expected={
+              'test_exact_frozen_manifest_real_checkout_and_machine_junit_local_only',
+              'test_original_suite_byte_tamper_fails',
+              'test_original_runner_byte_tamper_fails',
+              'test_forged_self_consistent_manifest_rejected_by_external_anchor',
+              'test_replaced_checkout_head_fails_even_same_file_bytes',
+              'test_junit_missing_required_test_fails',
+              'test_junit_surplus_test_fails',
+              'test_junit_duplicate_test_fails_even_when_count_matches',
+              'test_junit_hidden_nonpass_fails_even_with_zero_summary[skipped]',
+              'test_junit_hidden_nonpass_fails_even_with_zero_summary[failure]',
+              'test_junit_hidden_nonpass_fails_even_with_zero_summary[error]',
+              'test_junit_fake_summary_count_fails',
+              'test_symlinked_suite_source_fails_even_same_bytes',
+              'test_path_escape_manifest_rejected_before_source_read',
+              'test_duplicate_frozen_required_ids_fail',
+              'test_manifest_cannot_claim_training_true',
+              'test_junit_doctype_rejected',
+          }
+          if set(names)!=expected:
+              raise SystemExit(f'STOP_V40_CHANGED_TEST_IDENTITIES: {set(names)^expected}')
+          print('V40_EXACT_17_OUTCOME_AND_PROVENANCE_CONTROLS_PASS_NOT_B2')
+          PY
+          grep -q 'V40_PHYSICAL_LOCAL_PARITY_PASS_EXTERNAL_CI_AUTHORITY_FALSE' /tmp/v40.log
