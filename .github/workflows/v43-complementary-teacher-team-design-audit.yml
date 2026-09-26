@@ -5,6 +5,7 @@ on:
       - 'docs/agent/JEPA_V43_*'
       - 'scripts/agent/verify_v43_teacher_team_research_contract.py'
       - 'scripts/agent/v43_support_aware_teacher_fusion_research.py'
+      - 'scripts/agent/v43_original_84_cell_support_preflight_research.py'
       - 'tests/test_v43_*.py'
       - '.github/workflows/v43-complementary-teacher-team-design-audit.yml'
   workflow_dispatch:
@@ -26,6 +27,7 @@ jobs:
           grep -q 'V43_EXACT_THREE_ARMS_AND_15_MANDATORY_CONTROLS' /tmp/v43_design.log
           grep -q 'V43_ALL_UNAPPROVED_PARAMETERS_UNSET_AND_ALL_AUTHORITIES_FALSE' /tmp/v43_design.log
           grep -q 'V43_HISTORICAL_NEGATIVE_RESULTS_AND_PROVENANCE_PRESERVED' /tmp/v43_design.log
+          grep -q 'V43_EXACT_GITHUB_SCRIPT_AND_RECEIPT_84_ORIGINAL_LOCAL_REPLAY_TWO_NEGATIVE_CONTROLS' /tmp/v43_design.log
       - name: Hostile mutations and planted scientific failure-mode fixtures
         run: |
           set -euo pipefail
