@@ -1,0 +1,77 @@
+{
+  "audit_b_n1_burden_outcomes_opened": false,
+  "authorizes": [
+    "continuation of the planner_source binding at the new digest only"
+  ],
+  "does_not_authorize": [
+    "Audit-B N1 execution",
+    "resolution of the precision scope",
+    "any terminal masking outcome",
+    "any pathology, DEV or SEALED access",
+    "training"
+  ],
+  "execution_authorized": false,
+  "frozen_before_any_burden_was_computed": true,
+  "parent_freeze_artifact_sha256": "d0ce8abbff0076071009997113f1b73ebb8bab9b0ada5d6ce9367eb786733c06",
+  "parent_freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+  "parent_freeze_is_unmodified": true,
+  "parent_freeze_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_FROZEN_TARGET_SAMPLE.json",
+  "purpose": "Continue ONE Phase-IV bound-input binding across ONE verified, purely additive planner version. Supersedes nothing else.",
+  "required_execution_mode": {
+    "g3_fit_objective": "MUST_BE_ABSENT__HISTORICAL_DEFAULT_PATH_ONLY",
+    "planner_entrypoints": [
+      "run_primary_fold_streaming",
+      "run_all_primary_folds_streaming",
+      "_fit_ridge_weights",
+      "_ridge_primary_score",
+      "_ridge_partners"
+    ],
+    "reason": "The successor planner can compute a second, explicitly opt-in fit objective. A byte digest alone no longer pins behaviour to the historical computation, so the mode is pinned here as well. Audit-B must call the planner without a G3 fit objective."
+  },
+  "sample_identity": {
+    "ladder": [
+      256,
+      1024,
+      4096
+    ],
+    "note": "The draw depends only on the salt and the target universe, neither of which changed. The planner is an execution binding, not an input to the draw, so the sample is provably the same sample.",
+    "parent_samples_digest": "2c39b45ae150ea6201a1215ded2e86b0f6d5c1cc7076d65e5846a29e72338773",
+    "prefix_ordering_reverified": true,
+    "rederived_from_parent_salt_and_universe": true,
+    "rederived_samples_digest": "2c39b45ae150ea6201a1215ded2e86b0f6d5c1cc7076d65e5846a29e72338773",
+    "salt": "V5_AUDIT_B_PRODUCTION_BURDEN_TARGET_SAMPLE_20260921",
+    "sample_is_unchanged": true,
+    "selection_rule": "targets ordered by SHA-256(salt | target_address); first N taken",
+    "target_universe_sha256": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+    "universe_targets": 17053
+  },
+  "schema": "V5_AUDIT_B_BOUND_INPUT_SUCCESSOR_V2",
+  "successor_digest": "e62f261d746dbe4b6623c38f18f9f061df2892227932d7d5924c001de2e0e2e6",
+  "superseded_bindings": {
+    "planner_source": {
+      "classification": "LEGITIMATE_VERSION_CHANGE",
+      "diff_deletions": 0,
+      "diff_insertions": 39,
+      "equivalence_comparison": "BITWISE_EQUALITY_OF_EVERY_EMITTED_ROW__NO_TOLERANCE",
+      "equivalence_evidence_class": "SYNTHETIC_FIXTURE__IMPLEMENTATION_EQUIVALENCE_ONLY",
+      "equivalence_receipt_path": "analysis/v5_lane_c_planner_freeze_repair_20260926/evidence/PLANNER_DEFAULT_PATH_EQUIVALENCE_V1.json",
+      "equivalence_receipt_sha256": "26e740d697091169091f2d42d986289a0f061a19d73d81fa036e60924d6390d6",
+      "from_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+      "path": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
+      "rationale": "PR #144 commit 65ff187c9668cf0af28056222fde897380929141 added an opt-in G3 attacker-fit objective to the streaming planner. The change is purely additive (39 insertions, 0 deletions) and every new behaviour is guarded by an explicit non-None fit_objective argument that no Audit-B call site supplies, so the Audit-B default path is unchanged. That claim is not asserted from the diff: the frozen bytes and the successor bytes were both executed over three authenticated stream geometries and every emitted row, every per-fold row and every _ridge_partners result compared bitwise equal. The binding therefore continues at the new digest, with the planner execution mode pinned to the historical default.",
+      "source_commit": "65ff187c9668cf0af28056222fde897380929141",
+      "source_pull_request": 144,
+      "to_sha256": "de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8"
+    }
+  },
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false,
+  "unchanged_bindings": {
+    "evidence_budget_authority": "b10c3ee0354d37d59ba43051b5b2e21a2afe19d1d4bfbc1038fcff87e8eb44e4",
+    "mask_plan_generator": "fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e",
+    "masking_parameters_authority": "e53b454673010a9ec20c044662bef61a48a64be58c26cc31c3287bce7901cb39",
+    "qualification_runner": "a98e81cd1c6ba2a9faf0652c422dc1debe007719e6d7b3db1a5be987df571541",
+    "split_receipt": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "target_universe": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e"
+  }
+}
