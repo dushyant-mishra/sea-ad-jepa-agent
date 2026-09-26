@@ -1,0 +1,38 @@
+name: V44 historical tiny teacher tournament evidence (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'analysis/v44_tiny_teacher_team_tournament_20260926/**'
+      - 'tests/test_v44_historical_teacher_tournament_v1.py'
+      - '.github/workflows/v44-tiny-teacher-tournament-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-descriptive-results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile complete research-only producer and validator
+        run: |
+          set -euo pipefail
+          python -m py_compile analysis/v44_tiny_teacher_team_tournament_20260926/run_historical_tournament_v1.py analysis/v44_tiny_teacher_team_tournament_20260926/verify_tournament_v1.py tests/test_v44_historical_teacher_tournament_v1.py
+      - name: Verify exact original 15-result CSV against frozen research state
+        run: |
+          set -euo pipefail
+          python analysis/v44_tiny_teacher_team_tournament_20260926/verify_tournament_v1.py | tee /tmp/v44_evidence.txt
+          grep -q 'V44_15_EXACT_ORIGINAL_ROWS_FIVE_ARMS_THREE_HELDOUT_SPLITS' /tmp/v44_evidence.txt
+          grep -q 'V44_48_UNIQUE_REPEATED_DONOR_CAVEAT_AND_RICH_EVIDENCE_BIAS' /tmp/v44_evidence.txt
+          grep -q 'V44_NO_REAL_IPB_NO_Q_SPECIFICITY_NO_TRAINING_AUTHORITY' /tmp/v44_evidence.txt
+      - name: Adversarial false-green mutation suite
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_v44_historical_teacher_tournament_v1.py' -v 2>&1 | tee /tmp/v44_tests.txt
+          grep -q '^Ran 15 tests' /tmp/v44_tests.txt
+          grep -q '^OK$' /tmp/v44_tests.txt
+          if grep -q 'skipped=' /tmp/v44_tests.txt; then echo V44_SKIPPED_TEST_FAIL_CLOSED; exit 1; fi
+          echo V44_FIFTEEN_NEGATIVE_POSITIVE_CONTROLS_NO_SKIPS
