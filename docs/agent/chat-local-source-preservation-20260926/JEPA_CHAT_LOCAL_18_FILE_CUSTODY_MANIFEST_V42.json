@@ -4,7 +4,7 @@
   "scope": "CURRENT_CHAT_CONTAINER_PHYSICAL_18_UNIQUE_BASENAMES",
   "git_branch": "handoff/jepa-v42-exclusive-chat-asset-custody-20260926",
   "files_count": 18,
-  "original_text_files_uploaded_exact": 11,
+  "original_text_files_uploaded_exact": 10,
   "binary_files_manifest_only": 7,
   "training_authorized": false,
   "protected_outcomes_opened": false,
@@ -194,5 +194,7 @@
       "scientific_authority": "NONE_FROM_PRESENCE_ALONE",
       "transfer_note": "Verified exact original Git blob SHA"
     }
-  ]
+  ],
+  "original_binary_files_uploaded_exact": 1,
+  "original_files_uploaded_exact": 11
 }
