@@ -1,0 +1,153 @@
+{
+  "schema": "JEPA_V26_VERIFIED_PARALLEL_LANE_COLLISION_STATE_V1",
+  "snapshot_utc": "2026-09-26T00:47:59Z",
+  "status": "DOCS_ONLY_COORDINATION_SNAPSHOT__DO_NOT_TREAT_AS_EXECUTION_AUTHORITY",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "main_sha_at_snapshot": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "parent_handoff_pr123_sha": "5a008de7568d90f3ecd0207a744fec28e7d9e5ed",
+  "read_first": "docs/agent/JEPA_V26_PARALLEL_LANE_COLLISION_MAP_20260925.md",
+  "frozen_access": {
+    "training": "OFF",
+    "audit_b_n1": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "therapeutic_ranking": "OFF",
+    "fit_donors": 104,
+    "reader_validation_donors": 22,
+    "reader_oracle_donors": 23,
+    "foundation_development_donors": 24,
+    "foundation_sealed_donors": 24,
+    "external_study": "SILETTI_SEALED"
+  },
+  "stacked_lineages": [
+    {
+      "name": "V5_source_to_deterministic_prepared_proposal",
+      "prs": [
+        129,
+        130,
+        132,
+        135,
+        139
+      ],
+      "head_at_snapshot": "9a36c7c71d5d0b10baef9db2fce232c99c200c5f",
+      "parent_of_head": "4b4c6fa93f1e93d5feba1db0ff456d23e46de983",
+      "ci": {
+        "run": 36206031153,
+        "tests_passed": 102,
+        "skipped": 0
+      },
+      "physical_result": "NOT_EXECUTED",
+      "next": "named development diagnostic authority then current-V5 integrated real run; do not call synthetic sampling training"
+    },
+    {
+      "name": "new104_linear_baseline_independent_redteam",
+      "prs": [
+        136,
+        138
+      ],
+      "head_at_snapshot": "85af8b1683cb6dc70867194a0b04ebc6a16f541b",
+      "base": "ac3088df739c4e1f0d964d5d22f8d56727435eb4",
+      "ci": {
+        "run": 36201475378,
+        "tests_passed": 24,
+        "skipped": 0
+      },
+      "physical_result": "NOT_EXECUTED",
+      "next": "requires independent V0/V1 row-order attestation plus exact input hashes and reviewed pass1-to-raw receipt"
+    },
+    {
+      "name": "all104_outcome_blind_raw_counts",
+      "prs": [
+        120,
+        124
+      ],
+      "head_at_snapshot": "8ad966faa9763e46cf097ede034691e7d151ce4a",
+      "physical_result": "ALL104_RAW_REAGGREGATION_NOT_PROVEN",
+      "next": "one authorized physical read-only verification, no protected N1 outcomes"
+    },
+    {
+      "name": "historical_selected94_linear_replay",
+      "prs": [
+        133
+      ],
+      "head_at_snapshot": "b71291a927b56f67e645f9c468350c76a29b9a63",
+      "status": "PENDING_PHYSICAL_INPUT_AUTHENTICATION__MISSING_ORIGINAL_SCRATCHPAD"
+    }
+  ],
+  "independent_scopes": [
+    {
+      "pr": 131,
+      "sha": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03",
+      "physical": "P1_6_BULK_INDEPENDENT_RECOMPUTED",
+      "crisprbrain_provenance": "ORIGINAL_DIRTY_RECEIPT_NOT_REPLAYED"
+    },
+    {
+      "pr": 137,
+      "sha": "e130f55c7471b74b387f0bd0aca586c4a1614921",
+      "physical": "CLAUDE_REPORTS_SEPARATE_CLEAN_PHYSICAL_REPLAY",
+      "crisprbrain_scope": "WITHIN_STUDY_PROTOCOL_COMPARISON_NOT_INDEPENDENT_BIOLOGY"
+    },
+    {
+      "pr": 134,
+      "sha": "3fffc35010bd4d4b1bb6d9574277ac99cf2cecb5",
+      "ci_run": 36197352491,
+      "ci_physical": "FAIL_COMMITTED_PRODUCER_SHA_DIFFERS_FROM_ORIGINAL_DIRTY_EXECUTED_SHA",
+      "policy": "DO_NOT_BYPASS_FAILURE"
+    },
+    {
+      "pr": 140,
+      "sha": "ddc6779d6762593bb8aba01af2ff111e4a80bbea",
+      "ci_run": 36206147809,
+      "ci": "PASS_10_SYNTHETIC_AND_7_COMMITTED_OUTPUT_CSV_BYTE_PARITY_AND_COMMON_SCIENCE_MATCH",
+      "raw_screen_reexecution": false,
+      "historical_dirty_producer_recovered": false
+    }
+  ],
+  "verified_collisions": [
+    {
+      "pair": [
+        131,
+        137
+      ],
+      "git_compare": {
+        "status": "diverged",
+        "ahead": 9,
+        "behind": 2,
+        "merge_base": "bfcd100a48a44a11571173580fc6333ec8715c7d"
+      },
+      "issue": "identical output and producer/receipt paths but DIFFERENT producer Git blob and receipt bytes; underlying 7 CSV data byte-identical",
+      "safe_action": "preserve dirty original as VERSIONED HISTORY; use clean PR137 as current; NO blind cherry-pick/overwrite; PR140 independent existing evidence verification"
+    }
+  ],
+  "already_done_do_not_repeat": [
+    "GSE178317 costly 221 million SRA stream",
+    "P1-6 same-study bulk independent numeric recomputation",
+    "CRISPRbrain two-screen statistical assessment and clean replay in PR137",
+    "old T1 gradient archaeology",
+    "full104 metadata 104 reader_fit census synthetic and ZIP checks",
+    "PR136 and PR138 numeric fixtures",
+    "PR131-to-PR137 output parity in PR140"
+  ],
+  "next_physical_queue": [
+    "PR132 exact frozen pass1 histogram once",
+    "one separate existing pass1-to-Level4 physical binding and PR120/124 count verification under own authority",
+    "PR139 read-only frozen-source proposal preparation",
+    "bounded authentic current V5 reader_fit diagnostic only under named authorization",
+    "optional new104 linear baseline once V0/V1 selection_row lineage physically certified"
+  ],
+  "do_not_substitute": [
+    "historical selected94 LODO numeric values for new104 comparison",
+    "old V4 production_update or T1 checkpoint for current healthy V5",
+    "historical reduced TRAIN for full104",
+    "PHASE2_FEATURE_ROWS A/B manifest as self-evident V0/V1 derived view row map",
+    "same-study CRISPRbrain comparison as independent replication",
+    "PR134 failed source replay with PR137 clean producer"
+  ],
+  "source_links": {
+    "handoff": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/123",
+    "sampler": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/139",
+    "baseline_redteam": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/138",
+    "crisprbrain_clean": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/137",
+    "crisprbrain_existing_parity": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/140"
+  }
+}
