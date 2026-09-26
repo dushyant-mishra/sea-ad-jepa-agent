@@ -26,7 +26,7 @@ For each explicit `run_seed`, `update_index`, `presentations`:
 - Rejects `presentations > min_d(n_d)` **before using the RNG**, rather than retrying rejected donor-capacity combinations and silently biasing q. The real frozen roster therefore permits at most 81 presentations per update for this particular proposal, but no concrete update size is chosen here.
 - Uses unique `selection_row` identities within every update to match current V5's existing stable-cell-key uniqueness requirement. Existing V4 geometry, reduced 94-donor historical arrays and defaults are not accepted.
 
-`plan(run_seed,first_update_index,update_count,presentations_per_update,maximum_authorized_presentations)` requires every argument explicitly, stops before allocation if the planned total presentations exceeds the caller's **separately authorized** cap, and rejects overflowing 64-bit cursors. It materializes a finite tuple; a future full production trainer may use a bounded streaming iterator and atomic cursor receipts instead, but no implicit trajectory policy is invented here. `plan()` is a **nontraining planning API**, not an optimizer-bound scheduler; no check is claimed for accepted optimizer step, gradient/moment/EMA or atomic model checkpoint.
+`plan(run_seed,first_update_index,update_count,presentations_per_update,maximum_declared_presentations)` requires every argument explicitly, stops before allocation if the planned total presentations exceeds the caller's **separately authorized** cap, and rejects overflowing 64-bit cursors. It materializes a finite tuple; a future full production trainer may use a bounded streaming iterator and atomic cursor receipts instead, but no implicit trajectory policy is invented here. `plan()` is a **nontraining planning API**, not an optimizer-bound scheduler; no check is claimed for accepted optimizer step, gradient/moment/EMA or atomic model checkpoint.
 
 ## Independent red team and no historical spillover
 
@@ -52,7 +52,7 @@ schedule = prepared.plan(
     first_update_index=<FROZEN_NONNEGATIVE_CURSOR>,
     update_count=<FROZEN_UPDATE_COUNT>,
     presentations_per_update=<FROZEN_SIZE_AT_MOST_81>,
-    maximum_authorized_presentations=<FROZEN_TOTAL_PRESENTATION_BUDGET>,
+    maximum_declared_presentations=<FROZEN_TOTAL_PRESENTATION_BUDGET>,
 )
 ```
 
