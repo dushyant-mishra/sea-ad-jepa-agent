@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_V32_HISTORICAL_STAGE75_PILOT_LOCAL_REPLAY",
+  "date": "2026-09-26",
+  "authorizing": false,
+  "main_sha": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "historical_registry_rows": 41238,
+  "stage75_candidate_rows": 96,
+  "unique_target_symbols": 27,
+  "supported_regulator_symbols": 7,
+  "union_symbols": 33,
+  "unique_historical_target_mappings": 25,
+  "ambiguous_historical_target_symbols": [
+    "HLA-DPA1",
+    "HLA-DPB1"
+  ],
+  "unmapped_historical_target_symbols": [],
+  "current_v5_registry_match": "NOT_VERIFIED",
+  "full_morabito_rna_overlap": "NOT_MEASURED",
+  "atac_mapped_gene_coverage": "NOT_MEASURED",
+  "morabito_donor_overlap": "NOT_MEASURED",
+  "teacher_target_local_unittest": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "scope": "LOCAL_RESEARCH_ONLY"
+  },
+  "fully_closed_training_authority_roots": 0,
+  "training_authorized": false,
+  "teacher_package_sha256": "349b6ef604084b9c5220f91f9382e6875ce37e34314bf94aa08023725e8f50b4",
+  "stage75_package_sha256": "7cde16dcf1300a1a3012bb4f7b547efa553b48290db45e503d9f5794ae1e9439"
+}
