@@ -143,10 +143,16 @@ def audit(root, out_dir):
     merged = peaks.merge(red, on="peak_id", how="left", validate="one_to_one")
 
     dist_match = (merged.abs_distance_to_tss == merged.rederived_abs_distance_to_tss)
-    gene_match = (merged.nearest_gene.astype(str) ==
-                  merged.rederived_nearest_gene.astype(str))
+    # Stage75C stored gene symbols upper-cased (C1ORF159 vs C1orf159), so the
+    # symbol comparison is case-normalised; a case difference is not a
+    # different mapping.
+    gene_match_exact = (merged.nearest_gene.astype(str) ==
+                        merged.rederived_nearest_gene.astype(str))
+    gene_match = (merged.nearest_gene.astype(str).str.lower() ==
+                  merged.rederived_nearest_gene.astype(str).str.lower())
     gene_in_tie = merged.apply(
-        lambda r: str(r.nearest_gene) in str(r.tied_nearest_genes).split("|"), axis=1)
+        lambda r: str(r.nearest_gene).lower() in
+        [x.lower() for x in str(r.tied_nearest_genes).split("|")], axis=1)
 
     ambiguity = dict(
         method_recorded_in_stage75c="single nearest gene-level TSS, no tie record",
@@ -156,9 +162,15 @@ def audit(root, out_dir):
         reproduction=dict(
             peaks_compared=int(len(merged)),
             nearest_tss_distance_reproduced=int(dist_match.sum()),
-            nearest_gene_symbol_reproduced=int(gene_match.sum()),
+            nearest_gene_symbol_reproduced_case_insensitive=int(gene_match.sum()),
+            nearest_gene_symbol_reproduced_case_sensitive=int(gene_match_exact.sum()),
+            differences_that_are_symbol_case_only=int(
+                (gene_match & ~gene_match_exact).sum()),
             frozen_gene_is_one_of_the_tied_nearest=int(gene_in_tie.sum()),
-            distance_reproduction_fraction=round(float(dist_match.mean()), 6)),
+            distance_reproduction_fraction=round(float(dist_match.mean()), 6),
+            gene_reproduction_fraction=round(float(gene_in_tie.mean()), 6),
+            verdict=("REPRODUCED" if bool(dist_match.all() and gene_in_tie.all())
+                     else "NOT_FULLY_REPRODUCED")),
         unmapped=dict(
             peaks_with_no_gene_tss_within_100kb=int(merged.no_gene_tss_within_100kb.sum()),
             peaks_on_contig_with_no_gencode_genes=int(

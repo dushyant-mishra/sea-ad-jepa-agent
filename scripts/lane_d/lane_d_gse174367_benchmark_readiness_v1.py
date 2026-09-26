@@ -39,28 +39,94 @@ def size_or_none(path):
 
 
 # ---------------------------------------------------- 1. file authentication
-# SHA-256 values recorded by the historical acquisition manifest
-# results/tables/stage38a_download_manifest_v1.csv (data rows 12-14).
+# Frozen SHA-256 values recovered from two independent historical inventories:
+#   results/tables/stage72a_resource_inventory_v1.csv  (all four GSE174367 files)
+#   results/tables/stage38a_download_manifest_v1.csv   (RNA pair + series matrix)
+# Where both record a file they agree, and that agreement is itself a check.
+GEO_SUPPL = "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/"
 RECORDED = {
     "data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5": dict(
         size=273975534,
         sha256="6ba98a1af8772af08c8cdd5e5e63eebb0890daed48cac2e1b8961dcc67069b77",
-        source="results/tables/stage38a_download_manifest_v1.csv"),
+        source="stage72a_resource_inventory_v1.csv + stage38a_download_manifest_v1.csv",
+        corroborating_records=2,
+        url=GEO_SUPPL + "GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5"),
     "data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz": dict(
         size=435170,
         sha256="ab1a029deb43196e2bb1fea5907d838885750cfff3850c600c07588c7c7cdb2b",
-        source="results/tables/stage38a_download_manifest_v1.csv"),
+        source="stage72a_resource_inventory_v1.csv + stage38a_download_manifest_v1.csv",
+        corroborating_records=2,
+        url=GEO_SUPPL + "GSE174367_snRNA-seq_cell_meta.csv.gz"),
     "data/external/public_schema_audit/GSE174367/GSE174367_series_matrix.txt.gz": dict(
         size=13280,
         sha256="e36488f44e30d0bdf48f5864b8cd091629203defecbb41d9e7fec721b5115928",
-        source="results/tables/stage38a_download_manifest_v1.csv"),
+        source="stage38a_download_manifest_v1.csv",
+        corroborating_records=1,
+        url="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/matrix/"),
     "data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5": dict(
-        size=None, sha256=None,
-        source="NO_RECORDED_SHA256_ANYWHERE_IN_REPOSITORY"),
+        size=360317403,
+        sha256="ff7c46e755ec0e3fecb319c5b3dd9ac0ada318525746ebe7dddb8e2c0dcab87f",
+        source="stage72a_resource_inventory_v1.csv",
+        corroborating_records=1,
+        url=GEO_SUPPL + "GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5"),
     "data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz": dict(
-        size=None, sha256=None,
-        source="NO_RECORDED_SHA256_ANYWHERE_IN_REPOSITORY"),
+        size=1066930,
+        sha256="0657e92aa49eed953aae3b3c5f70aacebe86621c0a930356ec53ba0107c81767",
+        source="stage72a_resource_inventory_v1.csv",
+        corroborating_records=1,
+        url=GEO_SUPPL + "GSE174367_snATAC-seq_cell_meta.csv.gz"),
 }
+
+# Historical inventory figures to be CHECKED against the physical files, never
+# assumed. Sources: stage72a_resource_inventory_v1.csv (matrix_shape),
+# stage72b_microglia_subset_qc_v1.csv and
+# stage75f_stream_microglia_10x_manifest_v1.json (microglial subsets).
+RECORDED_SHAPES = dict(
+    snrna_features=58721, snrna_barcodes=61770,
+    snatac_peaks=219070, snatac_barcodes=143401,
+    rna_microglia_cells=4126, rna_microglia_samples=18,
+    atac_microglia_cells=12232, atac_microglia_samples=20,
+    rna_metadata_rows=61472, atac_metadata_rows=130418,
+)
+
+
+def check_recorded_shapes(root):
+    """Check every historical inventory figure against the physical files."""
+    obs = {}
+    with h5py.File(os.path.join(
+            root, "data/external/gse174367/"
+                  "GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5"), "r") as f:
+        s = f["matrix"]["shape"][:]
+        obs["snrna_features"], obs["snrna_barcodes"] = int(s[0]), int(s[1])
+    with h5py.File(os.path.join(
+            root, "data/external/gse174367/"
+                  "GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5"), "r") as f:
+        s = f["matrix"]["shape"][:]
+        obs["snatac_peaks"], obs["snatac_barcodes"] = int(s[0]), int(s[1])
+    rna = pd.read_csv(os.path.join(
+        root, "data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz"))
+    atac = pd.read_csv(os.path.join(
+        root, "data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz")
+    ).rename(columns={"Sample.ID": "SampleID"})
+    obs["rna_metadata_rows"] = int(len(rna))
+    obs["atac_metadata_rows"] = int(len(atac))
+    rmg, amg = rna[rna["Cell.Type"] == "MG"], atac[atac["Cell.Type"] == "MG"]
+    obs["rna_microglia_cells"] = int(len(rmg))
+    obs["rna_microglia_samples"] = int(rmg.SampleID.nunique())
+    obs["atac_microglia_cells"] = int(len(amg))
+    obs["atac_microglia_samples"] = int(amg.SampleID.nunique())
+    rows = [dict(quantity=k, recorded=v, observed=obs[k], match=bool(obs[k] == v))
+            for k, v in RECORDED_SHAPES.items()]
+    # Metadata rows are fewer than matrix columns in both assays; record the gap.
+    rows.append(dict(quantity="snrna_barcodes_without_metadata",
+                     recorded=None,
+                     observed=obs["snrna_barcodes"] - obs["rna_metadata_rows"],
+                     match=None))
+    rows.append(dict(quantity="snatac_barcodes_without_metadata",
+                     recorded=None,
+                     observed=obs["snatac_barcodes"] - obs["atac_metadata_rows"],
+                     match=None))
+    return pd.DataFrame(rows)
 
 
 def authenticate_files(root, precomputed):
@@ -89,6 +155,8 @@ def authenticate_files(root, precomputed):
             observed_sha256=digest,
             recorded_sha256=rec["sha256"],
             recorded_digest_source=rec["source"],
+            corroborating_records=rec.get("corroborating_records"),
+            canonical_url=rec.get("url"),
             authentication_status=status,
             required_action=action,
         ))
@@ -459,6 +527,9 @@ def main():
     auth = authenticate_files(root, pre)
     auth.to_csv(os.path.join(out, "laneD_file_authentication_v1.csv"), index=False)
 
+    shapes = check_recorded_shapes(root)
+    shapes.to_csv(os.path.join(out, "laneD_recorded_shape_checks_v1.csv"), index=False)
+
     man, s75 = authenticate_stage75f(root)
     s75.to_csv(os.path.join(out, "laneD_stage75f_authentication_v1.csv"), index=False)
 
@@ -485,6 +556,10 @@ def main():
         execution_class="RECONNAISSANCE_ONLY",
         biological_evaluation_status="NOT_EXECUTED",
         file_authentication=json.loads(auth.to_json(orient="records")),
+        recorded_shape_checks=dict(
+            all_recorded_figures_reproduce=bool(
+                shapes.loc[shapes.match.notna(), "match"].all()),
+            checks=json.loads(shapes.to_json(orient="records"))),
         stage75f=dict(
             manifest_path="results/reports/stage75_integrated_evidence_manifest_v1.json",
             manifest_git_commit=(man or {}).get("git_commit"),
