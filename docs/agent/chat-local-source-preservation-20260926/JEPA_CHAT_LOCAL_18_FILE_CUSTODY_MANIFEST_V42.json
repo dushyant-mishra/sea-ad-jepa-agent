@@ -22,7 +22,7 @@
       "git_path": null,
       "custody_status": "MANIFEST_ONLY_BYTES_STILL_IN_CHAT",
       "scientific_authority": "NONE_FROM_PRESENCE_ALONE",
-      "transfer_note": "Small binary not ingestible by available connector; preserve chat original and plan external artifact custody"
+      "transfer_note": "Original bytes remain in Project: public-repo data-release review and appropriate artifact transfer required; ordinary connector cannot ingest raw mount directly"
     },
     {
       "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
@@ -152,7 +152,7 @@
       "git_path": null,
       "custody_status": "MANIFEST_ONLY_BYTES_STILL_IN_CHAT",
       "scientific_authority": "NONE_FROM_PRESENCE_ALONE",
-      "transfer_note": "Small binary not ingestible by available connector; preserve chat original and plan external artifact custody"
+      "transfer_note": "Original bytes remain in Project: public-repo data-release review and appropriate artifact transfer required; ordinary connector cannot ingest raw mount directly"
     },
     {
       "name": "expression.zip",
@@ -162,7 +162,7 @@
       "git_path": null,
       "custody_status": "MANIFEST_ONLY_BYTES_STILL_IN_CHAT",
       "scientific_authority": "NONE_FROM_PRESENCE_ALONE",
-      "transfer_note": "Small binary not ingestible by available connector; preserve chat original and plan external artifact custody"
+      "transfer_note": "Original bytes remain in Project: public-repo data-release review and appropriate artifact transfer required; ordinary connector cannot ingest raw mount directly"
     },
     {
       "name": "t1_checkpoint_u0200.zip",
