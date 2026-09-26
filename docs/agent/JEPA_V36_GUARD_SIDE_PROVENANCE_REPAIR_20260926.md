@@ -16,7 +16,7 @@ No cryptographic key or externally signed proof is fabricated. Reissuing from th
 
 Six V36 red-team tests check: (1) hand-forged public token rejected with no live graph/no registered hooks; (2) full set of *fake* role names and self-consistent hashes rejected by the unmocked production graph validator; (3) public guard class constructor cannot bypass live-issuer requirement; (4) a test-only issuer spy yielding a different but internally coherent token is rejected; (5) live-issuer failure after initial installation is rechecked before arming, without cursor advance; and (6) an otherwise matching second installer cannot splice in different evidence objects. The seven original V34 provenance tests remain unchanged. The seven preexisting V5 preexecution/optimizer tests now **explicitly mock only the guard's issuer import**, strictly to exercise cursor mechanics; the real issuer remains unmocked in the V34 negative tests. They cannot count as live B1/B2 authority positives.
 
-The V36 workflow uses `pipefail`, requires exactly 20 tests across V34/V36/V5 files, and zero failed/errored/skipped cases; independent existing runtime and V26 synthetic mechanics workflows must also pass.
+The V36 workflow uses `pipefail`, requires exactly 20 pinned **test identities** across V34/V36/V5 files with no duplicates, and zero failed/errored/skipped cases; independent existing runtime and V26 synthetic mechanics workflows must also pass.
 
 ## What is still *not* closed
 
