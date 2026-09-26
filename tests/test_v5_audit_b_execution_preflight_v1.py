@@ -8,6 +8,10 @@ from pathlib import Path
 import pytest
 
 import sea_ad_jepa.v5.audit_b_execution_preflight_v1 as P
+from sea_ad_jepa.v5.audit_b_bound_input_successor_v2 import (
+    SUCCESSOR_RECORD_PATH as SUCCESSOR_RECORD,
+    load_successor,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / (
@@ -179,9 +183,30 @@ def test_runtime_binding_mismatch_fails_closed(tmp_path: Path, monkeypatch) -> N
 
 
 def test_real_frozen_sample_bound_inputs_match_current_checkout() -> None:
-    observed = P.verify_phase_iv_sample_freeze(SAMPLE, repo_root=ROOT)
+    """Every bound input resolves - unchanged, or via the reviewed successor.
+
+    The planner source legitimately moved to a successor version (PR #144), so
+    the checkout no longer matches the original freeze byte-for-byte. The
+    original freeze is NOT edited; the drift is resolved by the versioned
+    successor record, which pins the exact from/to digests and cites executed
+    bitwise-equivalence evidence.
+    """
+    successor = load_successor(SUCCESSOR_RECORD, repo_root=ROOT)
+    observed = P.verify_phase_iv_sample_freeze(
+        SAMPLE, repo_root=ROOT, successor=successor
+    )
     assert set(observed) == P.EXPECTED_SAMPLE_BOUND_ROLES
     assert all(len(x) == 64 for x in observed.values())
+
+
+def test_real_frozen_sample_without_a_successor_still_fails_closed() -> None:
+    """The original gate is preserved, not relaxed.
+
+    Without the successor record the drifted planner is still a hard refusal.
+    This is the test that would catch a silent hash bump.
+    """
+    with pytest.raises(ValueError, match="bound input drift for planner_source"):
+        P.verify_phase_iv_sample_freeze(SAMPLE, repo_root=ROOT)
 
 
 def test_sample_bound_input_drift_fails_closed(monkeypatch) -> None:

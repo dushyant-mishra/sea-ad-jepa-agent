@@ -27,6 +27,7 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
 )
 from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 from sea_ad_jepa.v5.audit_b_bound_input_successor_v2 import (
+    REPO_ROOT as SUCCESSOR_REPO_ROOT,
     SUCCESSOR_RECORD_PATH,
     load_successor,
 )
@@ -124,12 +125,16 @@ def main() -> int:
     # can still only continue one exact digest transition for one exact role. If
     # it is absent or invalid, the binding check stays exactly as fail-closed as
     # it has always been.
+    # Resolve the record against the checkout being verified, never against the
+    # module's own repository: a mirror or alternate checkout must not silently
+    # inherit a waiver that does not live in it.
+    successor_record = Path(args.repo_root) / SUCCESSOR_RECORD_PATH.relative_to(
+        SUCCESSOR_REPO_ROOT
+    )
     successor = None
-    if SUCCESSOR_RECORD_PATH.is_file():
+    if successor_record.is_file():
         try:
-            successor = load_successor(
-                SUCCESSOR_RECORD_PATH, repo_root=args.repo_root
-            )
+            successor = load_successor(successor_record, repo_root=args.repo_root)
         except ValueError as exc:
             raise SystemExit(
                 f"Phase-IV bound-input successor record is invalid: {exc}"

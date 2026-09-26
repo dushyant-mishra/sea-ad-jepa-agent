@@ -46,7 +46,7 @@
     "universe_targets": 17053
   },
   "schema": "V5_AUDIT_B_BOUND_INPUT_SUCCESSOR_V2",
-  "successor_digest": "e62f261d746dbe4b6623c38f18f9f061df2892227932d7d5924c001de2e0e2e6",
+  "successor_digest": "a0993ebaf070b7a0dbbf0c00f2dbad29f2657a55eb3750ba405e5aa5898c2ad1",
   "superseded_bindings": {
     "planner_source": {
       "classification": "LEGITIMATE_VERSION_CHANGE",
@@ -55,7 +55,7 @@
       "equivalence_comparison": "BITWISE_EQUALITY_OF_EVERY_EMITTED_ROW__NO_TOLERANCE",
       "equivalence_evidence_class": "SYNTHETIC_FIXTURE__IMPLEMENTATION_EQUIVALENCE_ONLY",
       "equivalence_receipt_path": "analysis/v5_lane_c_planner_freeze_repair_20260926/evidence/PLANNER_DEFAULT_PATH_EQUIVALENCE_V1.json",
-      "equivalence_receipt_sha256": "26e740d697091169091f2d42d986289a0f061a19d73d81fa036e60924d6390d6",
+      "equivalence_receipt_sha256": "1264817029827a424a01267aa3b2ecfabbdf39350b8bfd27fb8cb51e5de32b11",
       "from_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
       "path": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
       "rationale": "PR #144 commit 65ff187c9668cf0af28056222fde897380929141 added an opt-in G3 attacker-fit objective to the streaming planner. The change is purely additive (39 insertions, 0 deletions) and every new behaviour is guarded by an explicit non-None fit_objective argument that no Audit-B call site supplies, so the Audit-B default path is unchanged. That claim is not asserted from the diff: the frozen bytes and the successor bytes were both executed over three authenticated stream geometries and every emitted row, every per-fold row and every _ridge_partners result compared bitwise equal. The binding therefore continues at the new digest, with the planner execution mode pinned to the historical default.",

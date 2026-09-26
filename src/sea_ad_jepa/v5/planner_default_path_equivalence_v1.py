@@ -520,7 +520,10 @@ def main(argv: list[str] | None = None) -> int:
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # Explicit LF: this receipt is content-addressed by the successor record,
+    # so the platform must never decide its bytes.
+    with out.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(report, indent=2, sort_keys=True) + "\n")
     if not report["equivalent"]:
         print("PLANNER DEFAULT PATH IS NOT EQUIVALENT", file=sys.stderr)
         for case in report["cases"]:

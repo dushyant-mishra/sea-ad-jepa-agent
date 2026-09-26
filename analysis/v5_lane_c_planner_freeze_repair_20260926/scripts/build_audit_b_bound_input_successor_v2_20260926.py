@@ -280,7 +280,10 @@ def main(argv: list[str] | None = None) -> int:
     payload["successor_digest"] = canonical_digest(payload)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # Explicit LF: the record is digest-pinned, so its bytes must not depend
+    # on which platform wrote it.
+    with args.out.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     print(json.dumps({
         "successor_digest": payload["successor_digest"],
         "superseded": sorted(payload["superseded_bindings"]),
