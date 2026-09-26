@@ -57,7 +57,7 @@ The companion [draft guard](../../scripts/v5/v27_teacher_proposal_firewall.py) a
 2. Sept21 FULL104 SQL atlas and PR146 physical dataset evidence are reused (not rescanned to choose a scientific effect).
 3. The original calibration and SQLite physically rechecked here; only metadata queries run. Validation22/oracle23 source partition metadata are not their expression, and pathology remains a separate protected channel.
 4. Candidate artifacts are accepted only under **their own defining classes**. Matching a similar schema, computing a syntactically valid digest or copying a receipt cannot stand in for a missing authority root.
-5. No old94/50k synthetic fixture, old T1 checkpoint, synthetic EMA .99, historical .996, synthetic width32 or synthetic mask .40 enters the real104 training configuration; the signed current proposal has all unresolved numeric training choices null.
+5. No old94/50k synthetic fixture, old T1 checkpoint, synthetic EMA .99, historical .996, synthetic width32 or synthetic mask .40 enters the real104 training configuration; the machine-checked, unsigned proposal has all unresolved numeric training choices null.
 6. Hosted CI actually executed the verifier and all declared tests with no skips; exact-head status should always be re-fetched if additional commits are pushed.
 7. B1/B2 and all remaining closure checks stay **closed**. Any genuine later scientific approval is recorded prospectively in a new independently reviewed authority, never manufactured by altering a previously rejected gate.
 
