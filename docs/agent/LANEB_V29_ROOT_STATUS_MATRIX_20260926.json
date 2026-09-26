@@ -1,0 +1,1116 @@
+{
+  "schema": "JEPA_LANEB_V29_ROOT_STATUS_MATRIX_V2",
+  "date": "2026-09-26",
+  "lane": "LANE_B_AUTHORITY_AND_PROVENANCE",
+  "revision": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+  "status": "NO_ROOT_FULLY_CLOSED__NO_TRAINING_AUTHORITY",
+  "substrate_byte_authentication": {
+    "path": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+    "readable": true,
+    "bytes": 2372002,
+    "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "matches_expected": true
+  },
+  "known_decoy_sha256": "e482d9da21232bdeb6b3f198f42b9fbcf1530ba1b3e86e104ffbb651ca9df808",
+  "ledger": {
+    "upstream_roots": 32,
+    "receipt_roots": 33,
+    "receipt_adds": [
+      "preexecution_authority_sha256"
+    ],
+    "fully_closed": 0,
+    "own_schema_validated_candidates": 4,
+    "no_committed_artifact": 26,
+    "schema_label_only": 0,
+    "raw_str_cross_binding_slots": 3,
+    "raw_slot_value_and_bytes_authenticated": 1,
+    "blocking_roots": 33,
+    "closure_enforcement_census": {
+      "isinstance_enforced": 24,
+      "duck_typed_no_class_check": 5,
+      "raw_str_cross_binding_constant": 3
+    },
+    "closure_equality_assertions": 59
+  },
+  "roots": [
+    {
+      "root": "full104_substrate_sha256",
+      "defining_module": null,
+      "defining_class": null,
+      "class_binding_strength": "NONE",
+      "closure_parameter": "full104_substrate_sha256",
+      "closure_enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "expected_artifact_schema": null,
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=full104_substrate_sha256",
+      "validation_outcome": "VALUE_AND_BYTES_AUTHENTICATED",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "representation",
+          "dependent_attribute": "substrate_authority_sha256",
+          "closure_line": 195,
+          "closure_failure_message": "representation substrate root mismatch"
+        },
+        {
+          "dependent_parameter": "support_estimability",
+          "dependent_attribute": "full104_substrate_sha256",
+          "closure_line": 196,
+          "closure_failure_message": "support substrate root mismatch"
+        },
+        {
+          "dependent_parameter": "canonical_address_registry",
+          "dependent_attribute": "full104_block_manifest_sha256",
+          "closure_line": 202,
+          "closure_failure_message": "registry FULL104 substrate root mismatch"
+        },
+        {
+          "dependent_parameter": "outer_split",
+          "dependent_attribute": "full104_substrate_sha256",
+          "closure_line": 209,
+          "closure_failure_message": "outer split FULL104 root mismatch"
+        },
+        {
+          "dependent_parameter": "target_panel",
+          "dependent_attribute": "full104_substrate_sha256",
+          "closure_line": 210,
+          "closure_failure_message": "target panel FULL104 root mismatch"
+        },
+        {
+          "dependent_parameter": "masking_qualification_design",
+          "dependent_attribute": "full104_substrate_sha256",
+          "closure_line": 245,
+          "closure_failure_message": "masking design FULL104 root mismatch"
+        }
+      ],
+      "dependency_count": 6,
+      "blocking": true,
+      "blocking_reason": "every consuming authority must exist and carry this same value; consumers are unqualified",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "representation_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.primary_representation_authority_v1",
+      "defining_class": "PrimaryRepresentationAuthorityV1",
+      "class_binding_strength": "INFERRED_BY_ROLE__NOT_ENFORCED",
+      "closure_parameter": "representation",
+      "closure_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "expected_artifact_schema": "V5_PRIMARY_REPRESENTATION_AUTHORITY_V1",
+      "committed_candidate_count": 1,
+      "candidates": [
+        {
+          "source_path": "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json",
+          "source_commit": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+          "committed_blob_sha256": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+          "own_schema_validation": "PASS",
+          "reconstruction_route": "DIRECT_INSTANCE_SERIALIZATION",
+          "authentic_digest": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+          "self_authenticating_bytes": true,
+          "document_declared_digest": null,
+          "adapter_digest_agrees": null,
+          "detail": "reconstructed from artifact via DIRECT_INSTANCE_SERIALIZATION; own validate() passed"
+        }
+      ],
+      "authentic_digest": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=representation_authority_sha256",
+      "validation_outcome": "OWN_SCHEMA_VALIDATED_CANDIDATE",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "remaining_rna_necessity",
+          "dependent_attribute": "representation_authority_sha256",
+          "closure_line": 226,
+          "closure_failure_message": "remaining-RNA representation root mismatch"
+        },
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "representation_authority_sha256",
+          "closure_line": 237,
+          "closure_failure_message": "teacher representation root mismatch"
+        },
+        {
+          "dependent_parameter": "masking_qualification_design",
+          "dependent_attribute": "representation_authority_sha256",
+          "closure_line": 246,
+          "closure_failure_message": "masking design representation root mismatch"
+        },
+        {
+          "dependent_parameter": "measurement_robustness",
+          "dependent_attribute": "representation_authority_sha256",
+          "closure_line": 303,
+          "closure_failure_message": "measurement representation root mismatch"
+        },
+        {
+          "dependent_parameter": "target_identity_gate",
+          "dependent_attribute": "representation_authority_sha256",
+          "closure_line": 309,
+          "closure_failure_message": "identity gate representation root mismatch"
+        }
+      ],
+      "dependency_count": 5,
+      "blocking": true,
+      "blocking_reason": "own-schema validation only; parent-source bytes and the closure cross-bindings that name this root are not qualified",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "support_estimability_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.support_estimability_authority_v1",
+      "defining_class": "SupportEstimabilityAuthorityV1",
+      "class_binding_strength": "INFERRED_BY_ROLE__NOT_ENFORCED",
+      "closure_parameter": "support_estimability",
+      "closure_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "expected_artifact_schema": "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1",
+      "committed_candidate_count": 1,
+      "candidates": [
+        {
+          "source_path": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+          "source_commit": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+          "committed_blob_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+          "own_schema_validation": "PASS",
+          "reconstruction_route": "DIRECT_INSTANCE_SERIALIZATION",
+          "authentic_digest": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+          "self_authenticating_bytes": true,
+          "document_declared_digest": null,
+          "adapter_digest_agrees": null,
+          "detail": "reconstructed from artifact via DIRECT_INSTANCE_SERIALIZATION; own validate() passed"
+        }
+      ],
+      "authentic_digest": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=support_estimability_authority_sha256",
+      "validation_outcome": "OWN_SCHEMA_VALIDATED_CANDIDATE",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "base_training_estimand",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 203,
+          "closure_failure_message": "estimand support root mismatch"
+        },
+        {
+          "dependent_parameter": "target_evidence_budget",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 207,
+          "closure_failure_message": "budget support root mismatch"
+        },
+        {
+          "dependent_parameter": "precision",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 208,
+          "closure_failure_message": "precision support root mismatch"
+        },
+        {
+          "dependent_parameter": "target_panel",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 212,
+          "closure_failure_message": "target panel support root mismatch"
+        },
+        {
+          "dependent_parameter": "address_universe_ladder",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 214,
+          "closure_failure_message": "address ladder support root mismatch"
+        },
+        {
+          "dependent_parameter": "remaining_rna_necessity",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 227,
+          "closure_failure_message": "remaining-RNA support root mismatch"
+        },
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 238,
+          "closure_failure_message": "teacher support root mismatch"
+        },
+        {
+          "dependent_parameter": "masking_qualification_design",
+          "dependent_attribute": "support_estimability_authority_sha256",
+          "closure_line": 247,
+          "closure_failure_message": "masking design support root mismatch"
+        }
+      ],
+      "dependency_count": 8,
+      "blocking": true,
+      "blocking_reason": "own-schema validation only; parent-source bytes and the closure cross-bindings that name this root are not qualified",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "canonical_address_registry_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.canonical_address_registry_authority_v1",
+      "defining_class": "CanonicalAddressRegistryAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "canonical_address_registry",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1",
+      "committed_candidate_count": 1,
+      "candidates": [
+        {
+          "source_path": "docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json",
+          "source_commit": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+          "committed_blob_sha256": "a621d33535fd7993459625a323a96560b9b911669c0bd4656b63a8af126a39e0",
+          "own_schema_validation": "PASS_VIA_ADAPTER",
+          "reconstruction_route": "EXTERNAL_DOCUMENT_ADAPTER",
+          "authentic_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+          "self_authenticating_bytes": false,
+          "document_declared_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+          "adapter_digest_agrees": true,
+          "detail": "reconstructed from artifact via EXTERNAL_DOCUMENT_ADAPTER; own validate() passed"
+        }
+      ],
+      "authentic_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=canonical_address_registry_authority_sha256",
+      "validation_outcome": "OWN_SCHEMA_VALIDATED_CANDIDATE",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "target_panel",
+          "dependent_attribute": "canonical_registry_authority_sha256",
+          "closure_line": 211,
+          "closure_failure_message": "target panel registry root mismatch"
+        },
+        {
+          "dependent_parameter": "address_universe_ladder",
+          "dependent_attribute": "canonical_registry_authority_sha256",
+          "closure_line": 213,
+          "closure_failure_message": "address ladder registry root mismatch"
+        },
+        {
+          "dependent_parameter": "masking_rng_replay",
+          "dependent_attribute": "canonical_registry_authority_sha256",
+          "closure_line": 215,
+          "closure_failure_message": "masking RNG registry root mismatch"
+        },
+        {
+          "dependent_parameter": "masking",
+          "dependent_attribute": "canonical_registry_authority_sha256",
+          "closure_line": 223,
+          "closure_failure_message": "masking registry root mismatch"
+        },
+        {
+          "dependent_parameter": "masking_qualification_design",
+          "dependent_attribute": "canonical_registry_authority_sha256",
+          "closure_line": 248,
+          "closure_failure_message": "masking design registry root mismatch"
+        }
+      ],
+      "dependency_count": 5,
+      "blocking": true,
+      "blocking_reason": "own-schema validation only; parent-source bytes and the closure cross-bindings that name this root are not qualified",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "base_training_estimand_sha256",
+      "defining_module": "sea_ad_jepa.v5.base_training_estimand_authority_v1",
+      "defining_class": "BaseTrainingEstimandAuthorityV1",
+      "class_binding_strength": "INFERRED_BY_ROLE__NOT_ENFORCED",
+      "closure_parameter": "base_training_estimand",
+      "closure_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "expected_artifact_schema": "V5_BASE_TRAINING_ESTIMAND_AUTHORITY_V1",
+      "committed_candidate_count": 1,
+      "candidates": [
+        {
+          "source_path": "docs/agent/V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json",
+          "source_commit": "258f84fa4b4df2ea2a421df5b2f66bcd6538689f",
+          "committed_blob_sha256": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+          "own_schema_validation": "PASS",
+          "reconstruction_route": "DIRECT_INSTANCE_SERIALIZATION",
+          "authentic_digest": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+          "self_authenticating_bytes": true,
+          "document_declared_digest": null,
+          "adapter_digest_agrees": null,
+          "detail": "reconstructed from artifact via DIRECT_INSTANCE_SERIALIZATION; own validate() passed"
+        }
+      ],
+      "authentic_digest": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=base_training_estimand_sha256",
+      "validation_outcome": "OWN_SCHEMA_VALIDATED_CANDIDATE",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "scientific_weight_authority_sha256",
+          "closure_line": 240,
+          "closure_failure_message": "teacher estimand root mismatch"
+        },
+        {
+          "dependent_parameter": "ema",
+          "dependent_attribute": "base_training_estimand_sha256",
+          "closure_line": 300,
+          "closure_failure_message": "EMA estimand root mismatch"
+        },
+        {
+          "dependent_parameter": "target_identity_gate",
+          "dependent_attribute": "base_training_estimand_sha256",
+          "closure_line": 310,
+          "closure_failure_message": "identity gate estimand root mismatch"
+        }
+      ],
+      "dependency_count": 3,
+      "blocking": true,
+      "blocking_reason": "own-schema validation only; parent-source bytes and the closure cross-bindings that name this root are not qualified",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "target_address_provider_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.current_target_address_provider_authority_v1",
+      "defining_class": "CurrentTargetAddressProviderAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "target_address",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_CURRENT_TARGET_ADDRESS_PROVIDER_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_address_provider_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "remaining_rna_necessity",
+          "dependent_attribute": "target_address_provider_authority_sha256",
+          "closure_line": 228,
+          "closure_failure_message": "remaining-RNA target-address root mismatch"
+        },
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "target_address_query_authority_sha256",
+          "closure_line": 239,
+          "closure_failure_message": "teacher target-address root mismatch"
+        }
+      ],
+      "dependency_count": 2,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_CURRENT_TARGET_ADDRESS_PROVIDER_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "target_evidence_budget_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.target_evidence_budget_authority_v1",
+      "defining_class": "TargetEvidenceBudgetAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "target_evidence_budget",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_evidence_budget_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "precision_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.precision_authority_v1",
+      "defining_class": "QualificationPrecisionAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "precision",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_QUALIFICATION_PRECISION_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=precision_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "remaining_rna_necessity",
+          "dependent_attribute": "precision_authority_sha256",
+          "closure_line": 230,
+          "closure_failure_message": "remaining-RNA precision root mismatch"
+        },
+        {
+          "dependent_parameter": "measurement_robustness",
+          "dependent_attribute": "precision_authority_sha256",
+          "closure_line": 305,
+          "closure_failure_message": "measurement precision root mismatch"
+        }
+      ],
+      "dependency_count": 2,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_QUALIFICATION_PRECISION_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "outer_split_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.outer_split_authority_v1",
+      "defining_class": "OuterDonorSplitAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "outer_split",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=outer_split_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "masking_rng_replay",
+          "dependent_attribute": "outer_split_authority_sha256",
+          "closure_line": 216,
+          "closure_failure_message": "masking RNG split root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_OUTER_DONOR_SPLIT_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "target_panel_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.target_panel_authority_v1",
+      "defining_class": "TargetPanelAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "target_panel",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_TARGET_PANEL_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_panel_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "masking_rng_replay",
+          "dependent_attribute": "target_panel_authority_sha256",
+          "closure_line": 217,
+          "closure_failure_message": "masking RNG target-panel root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_TARGET_PANEL_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "address_universe_ladder_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.address_universe_ladder_authority_v1",
+      "defining_class": "AddressUniverseLadderAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "address_universe_ladder",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_ADDRESS_UNIVERSE_LADDER_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=address_universe_ladder_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_ADDRESS_UNIVERSE_LADDER_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "masking_rng_replay_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.masking_rng_replay_authority_v1",
+      "defining_class": "MaskingRngReplayAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking_rng_replay",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_rng_replay_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MASKING_RNG_REPLAY_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": {
+        "closure_required_class": "MaskingRngReplayAuthorityV1",
+        "committed_artifact_class": "MaskingRngReplayAuthorityV3",
+        "committed_artifact_schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V3",
+        "committed_artifact_paths": [
+          "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json"
+        ],
+        "promoted_to_root": false,
+        "note": "a later-version artifact exists and validates against its OWN class, but the closure requires the V1 class; a VN artifact is not an instance of V1 and is NOT promoted to this root"
+      },
+      "fully_closed": false
+    },
+    {
+      "root": "masking_qualification_design_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_design_authority_v1",
+      "defining_class": "MaskingQualificationDesignAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking_qualification_design",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_design_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "masking_qualification_parameters_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_parameters_authority_v1",
+      "defining_class": "MaskingQualificationParametersAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking_qualification_parameters",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_parameters_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": {
+        "closure_required_class": "MaskingQualificationParametersAuthorityV1",
+        "committed_artifact_class": "MaskingQualificationParametersAuthorityV3",
+        "committed_artifact_schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3",
+        "committed_artifact_paths": [
+          "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json"
+        ],
+        "promoted_to_root": false,
+        "note": "a later-version artifact exists and validates against its OWN class, but the closure requires the V1 class; a VN artifact is not an instance of V1 and is NOT promoted to this root"
+      },
+      "fully_closed": false
+    },
+    {
+      "root": "masking_qualification_run_contract_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_run_contract_v1",
+      "defining_class": "MaskingQualificationRunContractV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking_qualification_run_contract",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_run_contract_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MASKING_QUALIFICATION_RUN_CONTRACT_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "masking_qualification_execution_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.masking_qualification_execution_authority_v2",
+      "defining_class": "MaskingQualificationExecutionAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking_qualification_execution",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_qualification_execution_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "masking_qualification_execution_authority_sha256",
+          "closure_line": 314,
+          "closure_failure_message": "anti-cheat masking execution root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "masking_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.current_masking_policy_authority_v2",
+      "defining_class": "CurrentMaskingPolicyAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "masking",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_CURRENT_MASKING_POLICY_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=masking_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "remaining_rna_necessity",
+          "dependent_attribute": "masking_authority_sha256",
+          "closure_line": 229,
+          "closure_failure_message": "remaining-RNA masking root mismatch"
+        },
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "masking_authority_sha256",
+          "closure_line": 241,
+          "closure_failure_message": "teacher masking root mismatch"
+        },
+        {
+          "dependent_parameter": "target_identity_gate",
+          "dependent_attribute": "masking_authority_sha256",
+          "closure_line": 311,
+          "closure_failure_message": "identity gate masking root mismatch"
+        },
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "masking_authority_sha256",
+          "closure_line": 313,
+          "closure_failure_message": "anti-cheat masking root mismatch"
+        }
+      ],
+      "dependency_count": 4,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_CURRENT_MASKING_POLICY_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "target_construction_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.target_construction_authority_v1",
+      "defining_class": "TargetConstructionAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "target_construction",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_TARGET_CONSTRUCTION_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_construction_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_TARGET_CONSTRUCTION_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "remaining_rna_necessity_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_necessity_v1",
+      "defining_class": "RemainingRnaNecessityAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "remaining_rna_necessity",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_REMAINING_RNA_NECESSITY_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=remaining_rna_necessity_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "remaining_rna_necessity_authority_sha256",
+          "closure_line": 242,
+          "closure_failure_message": "teacher remaining-RNA root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_REMAINING_RNA_NECESSITY_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "remaining_rna_execution_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.remaining_rna_execution_authority_v1",
+      "defining_class": "RemainingRnaExecutionAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "remaining_rna_execution",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_REMAINING_RNA_EXECUTION_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=remaining_rna_execution_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "remaining_rna_execution_authority_sha256",
+          "closure_line": 315,
+          "closure_failure_message": "anti-cheat remaining-RNA execution root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_REMAINING_RNA_EXECUTION_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "teacher_target_semantics_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.teacher_target_semantics_authority_v2",
+      "defining_class": "TeacherTargetSemanticsAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "teacher_target",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=teacher_target_semantics_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "masking_qualification_design",
+          "dependent_attribute": "teacher_target_semantics_authority_sha256",
+          "closure_line": 249,
+          "closure_failure_message": "masking design teacher root mismatch"
+        },
+        {
+          "dependent_parameter": "measurement_robustness",
+          "dependent_attribute": "teacher_target_semantics_sha256",
+          "closure_line": 304,
+          "closure_failure_message": "measurement teacher root mismatch"
+        },
+        {
+          "dependent_parameter": "target_identity_gate",
+          "dependent_attribute": "teacher_target_semantics_sha256",
+          "closure_line": 308,
+          "closure_failure_message": "identity gate teacher root mismatch"
+        }
+      ],
+      "dependency_count": 3,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "schedule_authority_sha256",
+      "defining_module": null,
+      "defining_class": null,
+      "class_binding_strength": "NONE",
+      "closure_parameter": "schedule_authority_sha256",
+      "closure_enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "expected_artifact_schema": null,
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=schedule_authority_sha256",
+      "validation_outcome": "UNBOUND__NO_COMMITTED_ARTIFACT_CARRIES_THE_KEY",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "ema",
+          "dependent_attribute": "schedule_authority_sha256",
+          "closure_line": 301,
+          "closure_failure_message": "EMA schedule root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "third raw-string slot, omitted from the V29 matrix. Equality-checked against ema.schedule_authority_sha256 only.",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "ema_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.ema_timescale_authority_v2",
+      "defining_class": "EmaTimescaleAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "ema",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_EMA_TIMESCALE_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=ema_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "teacher_target",
+          "dependent_attribute": "ema_boundary_authority_sha256",
+          "closure_line": 302,
+          "closure_failure_message": "teacher EMA root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_EMA_TIMESCALE_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "measurement_robustness_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.measurement_robustness_authority_v2",
+      "defining_class": "MeasurementRobustnessAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "measurement_robustness",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MEASUREMENT_ROBUSTNESS_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=measurement_robustness_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "measurement_robustness_authority_sha256",
+          "closure_line": 316,
+          "closure_failure_message": "anti-cheat measurement root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MEASUREMENT_ROBUSTNESS_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "target_identity_gate_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.target_identity_shortcut_gate_authority_v1",
+      "defining_class": "TargetIdentityShortcutGateAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "target_identity_gate",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_TARGET_IDENTITY_SHORTCUT_GATE_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=target_identity_gate_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "target_identity_gate_authority_sha256",
+          "closure_line": 312,
+          "closure_failure_message": "anti-cheat identity root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_TARGET_IDENTITY_SHORTCUT_GATE_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "anti_cheat_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.anti_cheat_authority_bundle_v2",
+      "defining_class": "AntiCheatAuthorityBundleV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "anti_cheat",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_ANTI_CHEAT_AUTHORITY_BUNDLE_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=anti_cheat_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_ANTI_CHEAT_AUTHORITY_BUNDLE_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "model_geometry_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.model_geometry_authority_v2",
+      "defining_class": "ModelGeometryAuthorityV2",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "model_geometry",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_MODEL_GEOMETRY_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=model_geometry_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_MODEL_GEOMETRY_AUTHORITY_V2; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "geometry_memorization_qualification_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.geometry_memorization_qualification_authority_v1",
+      "defining_class": "GeometryMemorizationQualificationAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "geometry_memorization_qualification",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_GEOMETRY_MEMORIZATION_QUALIFICATION_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=geometry_memorization_qualification_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "model_geometry",
+          "dependent_attribute": "memorization_qualification_authority_sha256",
+          "closure_line": 326,
+          "closure_failure_message": "geometry memorization root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_GEOMETRY_MEMORIZATION_QUALIFICATION_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "protected_registry_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.production_protected_registry_authority_v1",
+      "defining_class": "ProductionProtectedRegistryAuthorityV1",
+      "class_binding_strength": "INFERRED_BY_ROLE__NOT_ENFORCED",
+      "closure_parameter": "protected_registry",
+      "closure_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "expected_artifact_schema": "V5_PRODUCTION_PROTECTED_REGISTRY_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=protected_registry_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "model_geometry",
+          "dependent_attribute": "protected_registry_authority_sha256",
+          "closure_line": 325,
+          "closure_failure_message": "geometry protected-registry root mismatch"
+        },
+        {
+          "dependent_parameter": "geometry_memorization_qualification",
+          "dependent_attribute": "protected_registry_authority_sha256",
+          "closure_line": 332,
+          "closure_failure_message": "geometry memorization protected-registry root mismatch"
+        }
+      ],
+      "dependency_count": 2,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_PRODUCTION_PROTECTED_REGISTRY_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "critical_test_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.critical_test_execution_authority_v1",
+      "defining_class": "CriticalTestExecutionAuthorityV1",
+      "class_binding_strength": "INFERRED_BY_ROLE__NOT_ENFORCED",
+      "closure_parameter": "critical_test",
+      "closure_enforcement": "DUCK_TYPED_NO_CLASS_CHECK",
+      "expected_artifact_schema": "V5_CRITICAL_TEST_EXECUTION_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=critical_test_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "critical_test_authority_sha256",
+          "closure_line": 318,
+          "closure_failure_message": "anti-cheat critical-test root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_CRITICAL_TEST_EXECUTION_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "observation_gradient_firewall_authority_sha256",
+      "defining_module": null,
+      "defining_class": null,
+      "class_binding_strength": "NONE",
+      "closure_parameter": "observation_gradient_firewall_authority_sha256",
+      "closure_enforcement": "RAW_STR_CROSS_BINDING_CONSTANT",
+      "expected_artifact_schema": null,
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=observation_gradient_firewall_authority_sha256",
+      "validation_outcome": "UNBOUND__NO_COMMITTED_ARTIFACT_CARRIES_THE_KEY",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "anti_cheat",
+          "dependent_attribute": "observation_gradient_firewall_authority_sha256",
+          "closure_line": 317,
+          "closure_failure_message": "anti-cheat observation firewall root mismatch"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "unbound on both sides: no committed artifact carries the key and its only consumer (anti_cheat) has no committed artifact.",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "runtime_source_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.current_runtime_source_authority_v1",
+      "defining_class": "CurrentRuntimeSourceAuthorityV1",
+      "class_binding_strength": "ISINSTANCE_ENFORCED_BY_CLOSURE",
+      "closure_parameter": "runtime_source",
+      "closure_enforcement": "ISINSTANCE_ENFORCED",
+      "expected_artifact_schema": "V5_CURRENT_RUNTIME_SOURCE_AUTHORITY_V1",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>   # root=runtime_source_authority_sha256",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [],
+      "dependency_count": 0,
+      "blocking": true,
+      "blocking_reason": "no committed JSON at this revision carries schema V5_CURRENT_RUNTIME_SOURCE_AUTHORITY_V1; absence within the searched scope is not proof of global absence",
+      "cross_version_evidence": null,
+      "fully_closed": false
+    },
+    {
+      "root": "preexecution_authority_sha256",
+      "defining_module": "sea_ad_jepa.v5.current_trainer_preexecution_contract_v2",
+      "defining_class": "CurrentTrainerPreexecutionAuthorityV2",
+      "class_binding_strength": "TYPED_PARAMETER_OF_ISSUER",
+      "closure_parameter": null,
+      "closure_enforcement": "RECEIPT_ONLY__NOT_A_CLOSURE_PARAMETER",
+      "expected_artifact_schema": "V5_CURRENT_TRAINER_PREEXECUTION_AUTHORITY_V2",
+      "committed_candidate_count": 0,
+      "candidates": [],
+      "authentic_digest": null,
+      "validator_command": "python scripts/agent/laneb_v29_root_status_matrix_v2.py HEAD <index.json> <out_dir>",
+      "validation_outcome": "NO_COMMITTED_ARTIFACT",
+      "dependencies_enforced_by_closure": [
+        {
+          "dependent_parameter": "issue_training_authority_v1",
+          "dependent_attribute": "preexecution.canonical_digest()",
+          "closure_line": null,
+          "closure_failure_message": "receipt roots must equal closure roots plus preexecution digest"
+        }
+      ],
+      "dependency_count": 1,
+      "blocking": true,
+      "blocking_reason": "derived at issuance from the caller-supplied roots mapping; it is self-referential and adds no independent evidence",
+      "fully_closed": false
+    }
+  ],
+  "training_authorized": false,
+  "flags": {
+    "TRAINING": "OFF",
+    "AUDIT_B_N1": "UNOPENED",
+    "PROTECTED_FULL104_OUTCOMES": "UNOPENED",
+    "D_SHARED_G5": "UNOPENED",
+    "RARE_TAIL_MOLECULAR": "UNOPENED",
+    "THERAPEUTIC_RANKING": "OFF"
+  }
+}
