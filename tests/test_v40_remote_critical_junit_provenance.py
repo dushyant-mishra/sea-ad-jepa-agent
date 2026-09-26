@@ -4,6 +4,7 @@ from __future__ import annotations
 import base64
 import io
 import zipfile
+import urllib.request
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -11,6 +12,7 @@ import pytest
 from scripts.agent.verify_remote_critical_junit_v40 import (
     API, EXPECTED_ARTIFACT, EXPECTED_JOB, EXPECTED_SOURCE, EXPECTED_WORKFLOW,
     REQUIRED_NAMES, RemoteEvidenceError, checked_payload, git_blob_sha,
+    _SignedArchiveRedirect,
 )
 
 RUN = 123456
@@ -148,3 +150,26 @@ def test_xml_extra_member_archive_fails():
     fake.archive = buff.getvalue()
     with pytest.raises(RemoteEvidenceError, match="exactly one"):
         verify(fake)
+
+def test_signed_archive_redirect_strips_github_bearer():
+    url = "https://productionresults01.blob.core.windows.net/short-lived?sig=fake"
+    initial = urllib.request.Request(
+        f"{API}/actions/artifacts/444/zip",
+        headers={"Authorization": "Bearer SECRET", "User-Agent": "audit"},
+    )
+    redirected = _SignedArchiveRedirect().redirect_request(
+        initial, None, 302, "redirect", {}, url
+    )
+    assert redirected.full_url == url
+    assert all(key.lower() != "authorization" for key, _ in redirected.header_items())
+
+
+def test_arbitrary_archive_redirect_host_is_rejected():
+    initial = urllib.request.Request(
+        f"{API}/actions/artifacts/444/zip", headers={"Authorization": "Bearer SECRET"}
+    )
+    with pytest.raises(RemoteEvidenceError, match="untrusted archive host"):
+        _SignedArchiveRedirect().redirect_request(
+            initial, None, 302, "redirect", {},
+            "https://attacker.example/download?token=stolen",
+        )
