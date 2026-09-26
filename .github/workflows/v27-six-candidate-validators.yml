@@ -7,6 +7,7 @@ on:
       - 'tests/test_v27_v4_freeze_mutation_control.py'
       - 'tests/test_v27_teacher_proposal_firewall.py'
       - 'scripts/v5/v27_teacher_proposal_firewall.py'
+      - 'scripts/v5/v27_blas_environment_quarantine_audit.py'
       - 'docs/agent/JEPA_V27_PROSPECTIVE_TEACHER_TARGET_DECISION_DRAFT_20260926.json'
       - '.github/workflows/v27-six-candidate-validators.yml'
       - 'docs/agent/JEPA_V27_INDEPENDENT_REPLAY_AND_ROOT_AUDIT_20260926.md'
@@ -23,6 +24,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Static-check supplemental historical invocation diagnostic
+        run: python -m py_compile scripts/v5/v27_blas_environment_quarantine_audit.py
       - name: Exercise all six defining class validators without granting closure
         run: |
           PYTHONPATH=src:. python scripts/v5/v27_six_candidate_authority_audit_v1.py . /tmp/v27_candidate_authority_audit.json
