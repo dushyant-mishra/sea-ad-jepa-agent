@@ -55,6 +55,13 @@
       "head": "3e9e228d14a3226537dcb290651bbef4c30eb5db",
       "hosted_run": 36231372836,
       "role": "physically_verified_exact_original_and_g3_planner_shas_no_freeze_edit"
+    },
+    "v39_critical_test_redteam": {
+      "number": 168,
+      "head": "65675eed01e5fff579937176e01b154a98f1e457",
+      "hosted_run": 36231718272,
+      "exact_tests": 7,
+      "role": "typed_critical_execution_is_caller_declared_and_unverified"
     }
   },
   "original_phaseiv_planner_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
@@ -83,7 +90,8 @@
     "prospective_current_v5_teacher_target_and_masking",
     "authentic_full104_cpu_gpu_physical_replay",
     "original_morabito_H5_and_current_gene_identity",
-    "full_33_root_B2_closure"
+    "full_33_root_B2_closure",
+    "typed_critical_test_required_id_and_ci_run_evidence_provenance"
   ],
   "withdrawn_env_defect_s9": true,
   "win_numpy_required_invocation": "<env>/Library/bin on PATH for first BLAS/LAPACK call",
