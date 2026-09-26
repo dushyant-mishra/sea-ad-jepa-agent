@@ -61,7 +61,12 @@
       18736,
       35076
     ],
-    "original_historical_same_cell_rare_teacher_validated": false
+    "original_historical_same_cell_rare_teacher_validated": false,
+    "original_historical_84_cell_exact_github_script_and_receipt_locally_replayed": true,
+    "original_historical_84_cell_exact_replay_audit": "docs/agent/JEPA_V43_ORIGINAL_84_EXACT_REPLAY_AUDIT_20260926.json",
+    "original_historical_84_cell_exact_source_git_blob": "4a17ec41778dc214cc52726e003734c99d18e314",
+    "original_historical_84_cell_exact_receipt_git_blob": "4e336208b98ff27c6e4aade3ebb422a362241391",
+    "original_historical_84_cell_negative_original_hash_controls_passed": 2
   },
   "exclusive_original_files": {
     "all_local_independently_sha256_size_rechecked": 18,
@@ -186,7 +191,7 @@
   "next_steps": [
     "review_scientist_teacher_target_and_q_value_policy_per_head_before_training",
     "validate_real_provenance_for_teacher_source_sha_slots_not_syntactic_hash_only",
-    "build_true_original_historical_84_replay_on_CPU_using_local_calibration_bundle_script",
+    "DONE_EXACT_GITHUB_SOURCE_AND_RECEIPT_84_HISTORICAL_REPLAY_WITH_TWO_SHA_MUTATION_CONTROLS",
     "preapprove_independent_development_teacher_only_biological_fidelity_test",
     "never_use_unpaired_atac_as_same_nucleus_or_both_train_and_independent_validation",
     "prospective_rare_donor_recurrence_and_student_support_abstention",
