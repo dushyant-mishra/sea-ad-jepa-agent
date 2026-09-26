@@ -20,7 +20,9 @@
     "notes": "See exact manifest for actual binary SHA; never infer file from path or marker",
     "uploaded_exact_historical_binary_zip": 1,
     "originals_in_github_verified": 11,
-    "original_v33_zip_git_blob_sha1": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5"
+    "original_v33_zip_git_blob_sha1": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5",
+    "all_18_originals_locally_mounted_and_sha256_verified": true,
+    "local_hash_verification_scope": "All 18 original basenames individually mounted and exact original size/SHA256 match in current chat's /mnt/data; still only 11 uploaded to GitHub"
   },
   "authorization": {
     "training": false,
@@ -99,13 +101,26 @@
       "successful_run": 36252411024,
       "authenticated_synthetic_junit_tests": 17,
       "original_artifact_sha256": "a0b77345ef65e8b9196fb616488550f0b2cf57aea773dd9d25922a65879266ef"
+    },
+    "masking_pr169_successor": {
+      "number": 169,
+      "head": "e14c4003daf1248502ee83161fda8eb52376bb84",
+      "base": "21efb1047c73cfe7b88047f0aeee1978b035971f",
+      "status": "open_ready_for_review",
+      "run": 36249786388,
+      "hosted_primary_test_passed": 924,
+      "hosted_secondary_test_passed": 918,
+      "hosted_skipped": 0,
+      "source_binding": "VERSIONED_SUCCESSOR_V2_ORIGINAL_FROZEN_SAMPLE_UNMODIFIED_DEFAULT_OFF_BITWISE_EQUIVALENT_IN_SYNTHETIC_GEOMETRIES",
+      "scientific_execution_authorized": false,
+      "n1_opened": false
     }
   },
   "open_blockers": [
-    "missing_eight_original_binaries_remote_custody",
+    "missing_seven_original_binaries_remote_custody",
     "real_V5_prospective_critical_test_manifest_and_original_executed_CI_evidence",
     "physical_source_bytes_all_33_current_authorities",
-    "new_versioned_approved_phaseIV_G3_freeze_not_digest_patch",
+    "PR169_VERSIONED_SUCCESSOR_IMPLEMENTED_AND_HOSTED_924_PASS__REVIEW_SCIENTIFIC_SIGNOFF_PENDING",
     "authentic_current_FULL104_raw_query_sanitized_teacher_target",
     "Stage75_current_registry_and_original_Morabito_H5_coverage",
     "full_current_104_donor_GPU_training_authorization"
@@ -117,5 +132,11 @@
     "x4_within_estimator_withdrawn",
     "Stage81A3_TRAIN_not_FULL104"
   ],
-  "scope": "NAVIGATION_ONLY_REQUIRES_LIVE_HEAD_REFRESH"
+  "scope": "NAVIGATION_ONLY_REQUIRES_LIVE_HEAD_REFRESH__PR169_SOURCE_SUCCESSOR_NOT_N1_APPROVAL",
+  "audit_correction": {
+    "date": "2026-09-26",
+    "reason": "Previous blocker listed eight missing binaries after V33 ZIP transfer; live PR169 absent; checked 18 local originals against original checksums",
+    "superseded_blocker": "missing_eight_original_binaries_remote_custody",
+    "corrected_blocker": "missing_seven_original_binaries_remote_custody"
+  }
 }
