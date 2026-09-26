@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import re
 import urllib.request
+from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 import zipfile
 
@@ -55,6 +56,31 @@ def git_blob_sha(raw: bytes) -> str:
     return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
 
 
+class _SignedArchiveRedirect(urllib.request.HTTPRedirectHandler):
+    """Follow a GitHub artifact 302 without leaking its API bearer token.
+
+    GitHub's archive API returns a short-lived signed Azure archive URL.
+    Forwarding the GitHub Authorization header to Azure produces HTTP 401
+    and is a credential-leak hazard. Never redirect to arbitrary domains.
+    """
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urlsplit(newurl)
+        hostname = (target.hostname or "").lower()
+        trusted_host = (
+            hostname.endswith(".blob.core.windows.net")
+            or hostname.endswith(".actions.githubusercontent.com")
+            or hostname.endswith(".githubusercontent.com")
+        )
+        if target.scheme != "https" or not trusted_host:
+            fail("GitHub artifact redirected to an untrusted archive host")
+        safe_headers = {
+            key: value for key, value in req.header_items()
+            if key.lower() not in ("authorization", "cookie", "proxy-authorization")
+        }
+        return urllib.request.Request(newurl, headers=safe_headers, method=req.get_method())
+
+
 class GithubTransport:
     def __init__(self, token: str | None):
         self.token = token
@@ -69,11 +95,16 @@ class GithubTransport:
         }
         if self.token:
             headers["Authorization"] = "Bearer " + self.token
-        with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:
+        opener = (urllib.request.build_opener(_SignedArchiveRedirect()) if binary
+                  else urllib.request.build_opener())
+        with opener.open(urllib.request.Request(url, headers=headers), timeout=30) as response:
             # Only GitHub's documented artifact-archive endpoint may redirect
             # to the signed archive host. It must never supply API JSON.
             final = response.url
             if binary:
+                if not (final.startswith("https://") and urlsplit(final).hostname and
+                        urlsplit(final).hostname.endswith((".blob.core.windows.net", ".actions.githubusercontent.com", ".githubusercontent.com"))):
+                    fail("artifact did not resolve to trusted signed archive host")
                 if "/actions/artifacts/" not in url or not url.endswith("/zip"):
                     fail("binary request must use GitHub artifact archive endpoint")
                 value = response.read(MAX_ARTIFACT_BYTES + 1)
