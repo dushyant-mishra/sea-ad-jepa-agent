@@ -61,3 +61,12 @@ jobs:
           print('V40_EXACT_17_OUTCOME_AND_PROVENANCE_CONTROLS_PASS_NOT_B2')
           PY
           grep -q 'V40_PHYSICAL_LOCAL_PARITY_PASS_EXTERNAL_CI_AUTHORITY_FALSE' /tmp/v40.log
+      - name: Preserve original test evidence for separate CI-provider audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: v40-original-junit-run-evidence
+          path: |
+            /tmp/v40.xml
+            /tmp/v40.log
+          if-no-files-found: error
+          retention-days: 14
