@@ -1,5 +1,8 @@
 # START HERE — JEPA PROJECT
 
+> **V28 DOCS-ONLY NEW-CHAT HANDOFF (candidate; not merged):** Read [the September 26 V28 verified handoff](docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V28_VERIFIED_GITHUB_PUBLICATION.md), [results/scripts/data index](docs/agent/JEPA_V28_RESULTS_SCRIPTS_DATA_INDEX_20260926.md) and [machine state](docs/agent/JEPA_V28_VERIFIED_HANDOFF_STATE_20260926.json). This is a post-V27 evidence consolidation; the historical V25 text below remains the governing `main` authority **until a reviewed merge**. Re-fetch `main:START_HERE.md`, current PR149 head/CI and the [full S9 retraction](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/e00ba4ad3f6cb536a65fb25b5f80621c631893c5/docs/agent/V27_ENVIRONMENT_AUDIT_AND_S9_RETRACTION_20260926.md). Current training remains OFF, no authorized reader_fit real-data diagnostic or protected outcome opening. This pointer does **not** merge the source/data PRs or issue any authority.
+
+
 Date: 2026-09-24
 Status: `CURRENT_V25__RESULTS_DATA_SCRIPTS_ON_GITHUB__NO_TRAINING_OR_N1_AUTHORITY`
 
