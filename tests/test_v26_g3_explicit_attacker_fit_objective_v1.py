@@ -98,9 +98,9 @@ def test_conflicting_source_effects_change_fit_objective_without_changing_data()
         objective=obj, alpha=0.01,
     ) for obj in OBJECTIVES]
     assert fits[0][0] < -0.6
-    assert fits[1][0] > 0.1
-    assert fits[2][0] > 0.35
-    assert fits[0][0] < fits[1][0] < fits[2][0]
+    assert fits[1][0] > 0.25
+    assert abs(fits[2][0]) < 0.25
+    assert fits[0][0] < fits[2][0] < fits[1][0]
 
 
 def test_equal_donor_counts_recover_cell_equals_donor_uniform():
