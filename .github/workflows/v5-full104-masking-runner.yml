@@ -343,7 +343,10 @@ jobs:
             tests/test_v5_audit_b_n1_crossfold_planner_v1.py \
             tests/test_v5_audit_b_n1_cpu_burden_assembly_v1.py \
             tests/test_v5_audit_b_n1_physical_binding_v1.py \
-            tests/test_v5_audit_b_n1_source_lineage_v1.py \n            tests/test_v5_audit_b_bound_input_successor_v2.py \n            tests/test_v5_planner_default_path_equivalence_v1.py \n            tests/test_v5_lane_c_freeze_execution_adversaries_v1.py
+            tests/test_v5_audit_b_n1_source_lineage_v1.py \
+            tests/test_v5_audit_b_bound_input_successor_v2.py \
+            tests/test_v5_planner_default_path_equivalence_v1.py \
+            tests/test_v5_lane_c_freeze_execution_adversaries_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -450,6 +453,9 @@ jobs:
             tests/test_v5_audit_b_n1_crossfold_planner_v1.py \
             tests/test_v5_audit_b_n1_cpu_burden_assembly_v1.py \
             tests/test_v5_audit_b_n1_physical_binding_v1.py \
-            tests/test_v5_audit_b_n1_source_lineage_v1.py \n            tests/test_v5_audit_b_bound_input_successor_v2.py \n            tests/test_v5_planner_default_path_equivalence_v1.py \n            tests/test_v5_lane_c_freeze_execution_adversaries_v1.py \
+            tests/test_v5_audit_b_n1_source_lineage_v1.py \
+            tests/test_v5_audit_b_bound_input_successor_v2.py \
+            tests/test_v5_planner_default_path_equivalence_v1.py \
+            tests/test_v5_lane_c_freeze_execution_adversaries_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
