@@ -56,15 +56,23 @@ class PreparedReaderFitProposal:
         if (not isinstance(source_digest, str) or len(source_digest) != 64
                 or any(c not in "0123456789abcdef" for c in source_digest)):
             raise ValueError("source digest must be canonical lowercase SHA-256")
-        codes = np.array(cell_donor, dtype=np.int64, copy=True)
-        codes.setflags(write=False)
+        # Arrays with read-only flags but OWNING memory can be made writable
+        # again by a caller. Back with immutable bytes so cached source/index
+        # snapshots cannot be silently changed between trajectory updates.
+        codes = np.frombuffer(np.asarray(cell_donor, dtype="<i8").tobytes(), dtype="<i8")
         names = tuple(str(x) for x in np.asarray(donor_ids).astype(str))
-        counts = np.array([expected_counts[d] for d in names], dtype=np.int64)
-        counts.setflags(write=False)
-        ordered = np.argsort(codes, kind="stable").astype(np.int64, copy=False)
-        ordered.setflags(write=False)
-        offsets = np.concatenate(([0], np.cumsum(counts, dtype=np.int64)))
-        offsets.setflags(write=False)
+        counts = np.frombuffer(
+            np.asarray([expected_counts[d] for d in names], dtype="<i8").tobytes(),
+            dtype="<i8",
+        )
+        ordered = np.frombuffer(
+            np.argsort(codes, kind="stable").astype("<i8", copy=False).tobytes(),
+            dtype="<i8",
+        )
+        offsets = np.frombuffer(
+            np.concatenate(([0], np.cumsum(counts, dtype=np.int64))).astype("<i8").tobytes(),
+            dtype="<i8",
+        )
         if len(ordered) != int(offsets[-1]):
             raise ValueError("prepared donor offsets fail to cover source")
         return cls(codes, names, counts, ordered, offsets, source_digest)
