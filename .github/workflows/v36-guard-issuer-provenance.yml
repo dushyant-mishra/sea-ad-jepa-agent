@@ -1,0 +1,44 @@
+name: V36 optimizer live issuer proof and red-team (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/qualified_optimizer_guard_v3.py'
+      - 'src/sea_ad_jepa/v5/current_training_authority_v1.py'
+      - 'tests/test_v36_guard_issuer_provenance.py'
+      - 'tests/test_v30_issuance_source_provenance.py'
+      - 'tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py'
+      - '.github/workflows/v36-guard-issuer-provenance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-provenance-redteam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deterministic test runner
+        run: python -m pip install pytest==8.3.4
+      - name: Exactly 20 non-authorizing tests; zero skips
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s --strict-markers \
+            tests/test_v30_issuance_source_provenance.py \
+            tests/test_v36_guard_issuer_provenance.py \
+            tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py \
+            --junitxml=/tmp/v36.xml | tee /tmp/v36.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse("/tmp/v36.xml").getroot()
+          if root.tag!="testsuite": root=root.find("testsuite")
+          actual={k:int(root.get(k,0)) for k in ("tests","errors","failures","skipped")}
+          expected={"tests":20,"errors":0,"failures":0,"skipped":0}
+          if actual != expected: raise SystemExit(f"STOP_V36_MISSING_OR_SKIPPED_TESTS: {actual}")
+          print("V36_EXACT_20_OF_20_NEGATIVE_AND_MECHANICS_CONTROLS")
+          PY
+          grep -q 'V34_INVENTED_CLOSURE_REJECTED__TRAINING_REMAINS_OFF' /tmp/v36.log
