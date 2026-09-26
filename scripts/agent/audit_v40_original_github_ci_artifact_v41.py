@@ -157,9 +157,22 @@ def main():
     actual = [case.attrib.get("name") for case in cases]
     require(len(set(actual)) == 17 and set(actual) == REQUIRED,
             "JUNIT_TEST_IDENTITY")
-    require(all(not list(case) and case.attrib.get("classname") ==
-                "test_v40_critical_test_physical_preflight_research"
-                for case in cases), "JUNIT_HIDDEN_NONPASS_OR_CLASS")
+    # Pytest's original JUnit names modules with the package prefix
+    # "tests.". Reject any OTHER class path; the first V41 run physically
+    # confirmed the too-narrow unqualified equality was a false reject.
+    allowed_classes = {
+        "tests.test_v40_critical_test_physical_preflight_research",
+        "test_v40_critical_test_physical_preflight_research",
+    }
+    require(
+        all(
+            not list(case) and
+            case.attrib.get("classname") in allowed_classes
+            for case in cases
+        ),
+        "JUNIT_HIDDEN_NONPASS_OR_CLASS:" +
+        ",".join(sorted({str(case.attrib.get("classname")) for case in cases})),
+    )
     require("V40_PHYSICAL_LOCAL_PARITY_PASS_EXTERNAL_CI_AUTHORITY_FALSE" in raw_log,
             "POSITIVE_LOCAL_NEGATIVE_EXTERNAL_MARKER")
     require(re.search(r"\b17 passed in [0-9.]+s\b", raw_log) is not None,
