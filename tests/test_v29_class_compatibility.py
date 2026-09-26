@@ -42,7 +42,7 @@ def test_invented_v3_annotated_only_without_real_import_fails(role):
     old = ("MaskingRngReplayAuthorityV1" if role == "masking_rng_replay"
            else "MaskingQualificationParametersAuthorityV1")
     mutated = source.replace(role + ": " + old, role + ": " + old[:-2] + "V3")
-    with pytest.raises(ValueError, match="CLASS_IMPORT_MISSING"):
+    with pytest.raises(ValueError, match="TYPED_ANNOTATION_DRIFT"):
         audit(REPO, closure_source=mutated)
 
 def test_pretending_a_schema_rename_repairs_closure_is_rejected():
