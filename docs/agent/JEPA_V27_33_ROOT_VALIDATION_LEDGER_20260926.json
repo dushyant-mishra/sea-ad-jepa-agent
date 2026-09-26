@@ -1,0 +1,282 @@
+{
+  "schema": "V27_CURRENT_33_ROOT_CANDIDATE_VALIDATION_LEDGER_V1",
+  "date": "2026-09-26",
+  "review_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+  "status": "SIX_OWN_SCHEMA_CANDIDATES_VALIDATED__ZERO_CLOSED__NO_TRAINING_AUTHORITY",
+  "upstream_root_count": 32,
+  "receipt_root_count": 33,
+  "validated_schema_candidates": 6,
+  "fully_closed_roots": 0,
+  "not_matched_on_reviewed_head": 25,
+  "unresolved_module": 2,
+  "scope_notes": [
+    "GitHub hosted class validation is not reauthentication of all upstream source bytes",
+    "FULL104 410MB bundle and 2.7GB SQLite independently rehashed locally; actual current Level4 block manifest not rehashed here",
+    "24MB canonical namespace and 227KB observation-state NPZ independently SHA-verified locally against original calibration ZIP",
+    "No protected data or real JEPA training executed",
+    "Other unmerged branches and remote Windows disk may contain additional artifacts; absence is only at the reviewed head"
+  ],
+  "rows": [
+    {
+      "ordinal": 1,
+      "root": "full104_substrate_sha256",
+      "classification": "NO_SINGLE_DEFINING_MODULE_IDENTIFIED_IN_PRIOR_REVIEW",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 2,
+      "root": "representation_authority_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json",
+      "candidate_canonical_digest": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 3,
+      "root": "support_estimability_authority_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+      "candidate_canonical_digest": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 4,
+      "root": "canonical_address_registry_authority_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json",
+      "candidate_canonical_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 5,
+      "root": "base_training_estimand_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "docs/agent/V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json",
+      "candidate_canonical_digest": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 6,
+      "root": "target_address_provider_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 7,
+      "root": "target_evidence_budget_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 8,
+      "root": "precision_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 9,
+      "root": "outer_split_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 10,
+      "root": "target_panel_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 11,
+      "root": "address_universe_ladder_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 12,
+      "root": "masking_rng_replay_authority_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json",
+      "candidate_canonical_digest": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 13,
+      "root": "masking_qualification_design_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 14,
+      "root": "masking_qualification_parameters_authority_sha256",
+      "classification": "CANDIDATE_VALIDATED_BY_CURRENT_OWN_CLASS__NOT_CLOSED",
+      "candidate_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json",
+      "candidate_canonical_digest": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+      "candidate_source_head": "ed9df043075cd55e16be7a61af62594640421c18",
+      "validator_ci": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36220418754",
+      "all_upstream_bytes_authenticated": false,
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 15,
+      "root": "masking_qualification_run_contract_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 16,
+      "root": "masking_qualification_execution_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 17,
+      "root": "masking_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 18,
+      "root": "target_construction_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 19,
+      "root": "remaining_rna_necessity_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 20,
+      "root": "remaining_rna_execution_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 21,
+      "root": "teacher_target_semantics_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 22,
+      "root": "schedule_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 23,
+      "root": "ema_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 24,
+      "root": "measurement_robustness_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 25,
+      "root": "target_identity_gate_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 26,
+      "root": "anti_cheat_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 27,
+      "root": "model_geometry_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 28,
+      "root": "geometry_memorization_qualification_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 29,
+      "root": "protected_registry_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 30,
+      "root": "critical_test_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 31,
+      "root": "observation_gradient_firewall_authority_sha256",
+      "classification": "NO_SINGLE_DEFINING_MODULE_IDENTIFIED_IN_PRIOR_REVIEW",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 32,
+      "root": "runtime_source_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    },
+    {
+      "ordinal": 33,
+      "root": "preexecution_authority_sha256",
+      "classification": "NO_MATCHING_SCHEMA_COMMITTED_ON_REVIEWED_HEAD__OTHER_BRANCHES_AND_GPU_DISK_NOT_EXHAUSTED",
+      "current_closure_validated": false,
+      "training_authorized": false
+    }
+  ]
+}
