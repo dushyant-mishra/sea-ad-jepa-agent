@@ -1,0 +1,35 @@
+name: V43 complementary teacher/student design contract (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_V43_*'
+      - 'scripts/agent/verify_v43_teacher_team_research_contract.py'
+      - 'tests/test_v43_teacher_team_research_contract.py'
+      - '.github/workflows/v43-complementary-teacher-team-design-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nonauthorizing-design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exact frozen-negative-space research contract
+        run: |
+          set -euo pipefail
+          python scripts/agent/verify_v43_teacher_team_research_contract.py | tee /tmp/v43_design.log
+          grep -q 'V43_EXACT_THREE_ARMS_AND_15_MANDATORY_CONTROLS' /tmp/v43_design.log
+          grep -q 'V43_ALL_UNAPPROVED_PARAMETERS_UNSET_AND_ALL_AUTHORITIES_FALSE' /tmp/v43_design.log
+          grep -q 'V43_HISTORICAL_NEGATIVE_RESULTS_AND_PROVENANCE_PRESERVED' /tmp/v43_design.log
+      - name: Hostile mutation suite including executable positive control
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_v43_teacher_team_research_contract.py' -v 2>&1 | tee /tmp/v43_tests.log
+          grep -q '^Ran 25 tests' /tmp/v43_tests.log
+          grep -q '^OK$' /tmp/v43_tests.log
+          if grep -q 'skipped=' /tmp/v43_tests.log; then echo 'V43_TEST_SKIPPED_FAIL_CLOSED'; exit 1; fi
+          echo V43_25_EXACT_MUTATION_TESTS_NO_SKIPS_RESEARCH_ONLY
