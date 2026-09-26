@@ -1,0 +1,192 @@
+{
+  "checks_total": 37,
+  "checks_passed": 37,
+  "scenarios": 18,
+  "results": [
+    {
+      "name": "01 positive_control_clean_build_succeeds",
+      "passed": true,
+      "detail": "rows=3"
+    },
+    {
+      "name": "01b positive_control_reports_no_false_ambiguity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "02 wrong_registry_digest_is_rejected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "03 unmapped_identifier_is_UNMEASURED",
+      "passed": true,
+      "detail": "state=UNMEASURED"
+    },
+    {
+      "name": "03b unmapped_identifier_has_no_fabricated_zero",
+      "passed": true,
+      "detail": "nnz=''"
+    },
+    {
+      "name": "04 version_suffixed_id_joins_on_stable_id",
+      "passed": true,
+      "detail": "route=ensembl_stable_id ver=7"
+    },
+    {
+      "name": "04b split_ensembl_version_is_not_identity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "05 version_disagreement_is_flagged_false",
+      "passed": true,
+      "detail": "AAA=False"
+    },
+    {
+      "name": "05b version_agreement_is_flagged_true",
+      "passed": true,
+      "detail": "BBB=True"
+    },
+    {
+      "name": "06 symbol_collision_is_reported_not_deduplicated",
+      "passed": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "06b collision_report_lists_every_colliding_feature",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "06c collision_count_is_nonzero_in_provenance",
+      "passed": true,
+      "detail": "n=1"
+    },
+    {
+      "name": "07 deprecated_symbol_resolves_via_hgnc_alias_route",
+      "passed": true,
+      "detail": "route=deprecated_alias_symbol"
+    },
+    {
+      "name": "07b deprecated_symbol_is_not_left_UNMEASURED",
+      "passed": true,
+      "detail": "state=MEASURED_DETECTED"
+    },
+    {
+      "name": "08 measured_zero_is_MEASURED_BUT_UNDETECTED",
+      "passed": true,
+      "detail": "BBB=MEASURED_BUT_UNDETECTED nnz='0'"
+    },
+    {
+      "name": "08b absent_feature_is_UNMEASURED_with_empty_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "08c missing_and_zero_are_never_the_same_state",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "09 microglia_zero_is_MEASURED_BUT_UNDETECTED",
+      "passed": true,
+      "detail": "all=MEASURED_DETECTED mg=MEASURED_BUT_UNDETECTED"
+    },
+    {
+      "name": "09b microglia_absent_feature_stays_UNMEASURED",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "10 duplicated_address_is_rejected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "11 duplicated_address_index_is_rejected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "12 par_y_duplicate_is_AMBIGUOUSLY_MAPPED",
+      "passed": true,
+      "detail": "state=AMBIGUOUSLY_MAPPED n=2"
+    },
+    {
+      "name": "12b par_y_ambiguity_carries_no_fabricated_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "12c par_y_reason_is_recorded",
+      "passed": true,
+      "detail": "n_amb=1"
+    },
+    {
+      "name": "12d par_y_counted_in_provenance",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "13 decoy_block_manifest_is_rejected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "14 every_state_column_partitions_all_addresses",
+      "passed": true,
+      "detail": "bad=[]"
+    },
+    {
+      "name": "15 unassayed_contig_is_UNKNOWN_not_zero",
+      "passed": true,
+      "detail": "state=UNKNOWN"
+    },
+    {
+      "name": "16 true_promoter_overlap_is_detected",
+      "passed": true,
+      "detail": "AAA=PROMOTER_SUPPORTED"
+    },
+    {
+      "name": "16b distant_gene_is_not_called_promoter_supported",
+      "passed": true,
+      "detail": "CCC=DISTAL_CANDIDATE_ONLY"
+    },
+    {
+      "name": "17 unparseable_peak_id_is_reported_not_dropped_silently",
+      "passed": true,
+      "detail": "unparsed=['bad_peak']"
+    },
+    {
+      "name": "17b overlap_returns_all_overlapping_peaks",
+      "passed": true,
+      "detail": "got=[0, 1]"
+    },
+    {
+      "name": "17c non_overlapping_window_returns_empty",
+      "passed": true,
+      "detail": "got=[]"
+    },
+    {
+      "name": "17d half_open_boundary_excludes_touching_peak",
+      "passed": true,
+      "detail": "got=[1]"
+    },
+    {
+      "name": "17e unknown_contig_returns_empty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "18 par_y_parser_strips_suffix_to_stable_id",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "18b plain_id_is_not_flagged_par_y",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}
