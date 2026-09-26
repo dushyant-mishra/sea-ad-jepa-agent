@@ -180,7 +180,14 @@
     "portable_v42_archive_filename": "JEPA_V42_PORTABLE_SOURCE_AND_SMALL_ARCHIVES_20260926.zip",
     "portable_v42_archive_sha256": "8644bfb5a3adcb9c4ebcf553d4383025f97aae579cc9ebf705d9e791ea5e7bd5",
     "portable_v42_archive_scope": "13 original small files plus 3 generated manifests; not a replacement for 7 missing remote binary originals",
-    "public_release_authorized_for_missing_seven": false
+    "public_release_authorized_for_missing_seven": false,
+    "v43_local_portable_handoff_filename": "JEPA_V43_PORTABLE_NEW_CHAT_HANDOFF_20260926.zip",
+    "v43_local_portable_handoff_bytes": 5176173,
+    "v43_local_portable_handoff_sha256": "b720ede3e166c36337af3a6655075ca866e36a3a454e2270a8b2311a85ded4c0",
+    "v43_local_portable_handoff_inner_entries": 6,
+    "v43_local_portable_handoff_sha_crc_verified": true,
+    "v43_local_portable_handoff_github_uploaded": false,
+    "v43_local_start_markdown_filename": "JEPA_V43_NEW_CHAT_START_20260926.md"
   },
   "governing_handoff": "docs/agent/JEPA_V43_NEW_CHAT_TAKEOVER_AND_EXCLUSIVE_FILES_20260926.md",
   "research_docs": [
