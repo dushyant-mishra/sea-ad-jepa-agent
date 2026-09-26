@@ -1,0 +1,52 @@
+name: FULL104 physical metadata evidence and 24 adversarial replay checks
+on:
+  pull_request:
+    paths:
+      - 'analysis/v5_full104_dataset_etl_20260921/diagnostic_parameters_v1/**'
+      - '.github/workflows/v26-full104-metadata-parameters.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-committed-physical-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: analysis/v5_full104_dataset_etl_20260921/diagnostic_parameters_v1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Independently verify all committed real-data outputs and semantics
+        run: python verify_full104_metadata_receipt_v1.py .
+      - name: Execute all 24 adversarial tests with actual JUnit census
+        run: python -m pytest -q test_full104_diagnostic_metadata_v1.py --junitxml=full104_parameter_tests.xml
+      - name: Fail closed on missing, skipped or vacuous tests
+        run: |
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          suite=ET.parse('full104_parameter_tests.xml').getroot()
+          if suite.tag!='testsuite': suite=suite.find('testsuite')
+          if suite is None: raise SystemExit('STOP_NO_TEST_CENSUS')
+          counts={key:int(suite.get(key,0)) for key in ('tests','skipped','errors','failures')}
+          seen={x.get('name') for x in suite.iter('testcase')}
+          required={
+            'test_authentic_source_derived_receipt_passes_independent_validator',
+            'test_historical_small_sample_replacement_fails_even_after_rehash',
+            'test_source_relabeling_fails_even_after_rehash',
+            'test_heldout_or_extra_donor_injection_fails_even_after_rehash',
+            'test_triplet_capacity_corruption_fails_even_after_rehash',
+            'test_support_zero_collapsed_into_missing_fails_even_after_rehash',
+            'test_operator_cross_source_spillover_fails_even_after_rehash',
+            'test_synthetic_rank_cannot_enter_receipt',
+            'test_alternate_fit_roster_root_fails_even_after_rehash',
+            'test_d1_group_weights_cannot_be_replaced_with_base_jepa_weights',
+            'test_d1_scope_cannot_be_promoted_to_qualified_rank',
+          }
+          if counts['tests']!=24 or any(counts[k] for k in ('skipped','errors','failures')) or not required<=seen:
+            raise SystemExit(f'STOP_INCOMPLETE_FULL104_REPLAY {counts}; missing={sorted(required-seen)}')
+          print('PASS_FULL104_COMMITTED_METADATA_REPLAY 24 passed, zero skipped')
+          PY
