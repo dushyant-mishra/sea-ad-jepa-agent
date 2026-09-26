@@ -1,0 +1,142 @@
+{
+  "schema": "JEPA_V42_NEW_CHAT_STATE_NONAUTHORIZING",
+  "date": "2026-09-26",
+  "status": "ELEVEN_OF_18_EXACT_ORIGINALS_GITHUB_SEVEN_BINARY_MANIFEST_ONLY_NO_TRAINING",
+  "main_sha_at_snapshot": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "canonical_main_read_order": [
+    "START_HERE.md",
+    "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+    "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md"
+  ],
+  "prior_v38_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V38_VERIFIED_CURRENT_WORK.md",
+  "current_v42_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V42_EXCLUSIVE_CHAT_ASSETS_AND_EXECUTION.md",
+  "exact_asset_manifest": "docs/agent/chat-local-source-preservation-20260926/JEPA_CHAT_LOCAL_18_FILE_CUSTODY_MANIFEST_V42.json",
+  "asset_custody": {
+    "physical_local": 18,
+    "uploaded_exact_text": 10,
+    "binary_not_transferred": 7,
+    "combined_discovery_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "v33_zip_crc_pass": true,
+    "notes": "See exact manifest for actual binary SHA; never infer file from path or marker",
+    "uploaded_exact_historical_binary_zip": 1,
+    "originals_in_github_verified": 11,
+    "original_v33_zip_git_blob_sha1": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5",
+    "all_18_originals_locally_mounted_and_sha256_verified": true,
+    "local_hash_verification_scope": "All 18 original basenames individually mounted and exact original size/SHA256 match in current chat's /mnt/data; still only 11 uploaded to GitHub"
+  },
+  "authorization": {
+    "training": false,
+    "completed_real_current_scientific_roots": 0,
+    "total_current_roots": 33,
+    "protected_full104_outcomes_opened": false,
+    "audit_b_n1_opened": false,
+    "b1_independent_approval": false,
+    "scientific_target_qualified": false,
+    "masking_policy_qualified": false,
+    "physical_full104_training_started": false
+  },
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core": 17186,
+    "level4_blocks": 8915
+  },
+  "prs": {
+    "v32_zip": {
+      "number": 159,
+      "head": "ccb5fd1120ba49e3cf0759a201053dafb4e1f933"
+    },
+    "v35_replay": {
+      "number": 162,
+      "head": "9c5c2c348a2578f18c3bdcab30dec0205ddd2365",
+      "run": 36230737248,
+      "original_v4_tests_passed": 15
+    },
+    "v30_adversary": {
+      "number": 156,
+      "head": "a5af773adfd66d0e727113610f5e62d7353b13b8"
+    },
+    "v34_issuer": {
+      "number": 161,
+      "head": "aa98a3882b41185536e4b1d37cdf3e6b7d19fa83"
+    },
+    "v36_guard": {
+      "number": 165,
+      "head": "25447126e3cf269b8416b52b1bbb98deebaa5d64",
+      "run": 36231569310,
+      "exact_tests": 20
+    },
+    "g3_runner": {
+      "number": 144,
+      "head": "21efb1047c73cfe7b88047f0aeee1978b035971f",
+      "old_original_frozen_regressions_failed": 5
+    },
+    "v37_audit": {
+      "number": 166,
+      "head": "3e9e228d14a3226537dcb290651bbef4c30eb5db",
+      "run": 36231372836
+    },
+    "v38_docs": {
+      "number": 167,
+      "head": "8785f0025360bb14d695ce1578f7694a17b1d1cc"
+    },
+    "v39_typed_critical": {
+      "number": 168,
+      "head": "65675eed01e5fff579937176e01b154a98f1e457",
+      "run": 36231718272,
+      "diagnostic_tests_passed": 7
+    },
+    "v40_local_preflight": {
+      "number": 172,
+      "head": "1510b52417704c710ee23b4e60238e65c3acba74",
+      "run": 36252237835,
+      "exact_tests_passed": 17
+    },
+    "v41_independent_provider": {
+      "number": 173,
+      "head": "46b47599ec6bad91430ecbe0340961fdd7757fed",
+      "first_run_failed": 36252363550,
+      "successful_run": 36252411024,
+      "authenticated_synthetic_junit_tests": 17,
+      "original_artifact_sha256": "a0b77345ef65e8b9196fb616488550f0b2cf57aea773dd9d25922a65879266ef"
+    },
+    "masking_pr169_successor": {
+      "number": 169,
+      "head": "e14c4003daf1248502ee83161fda8eb52376bb84",
+      "base": "21efb1047c73cfe7b88047f0aeee1978b035971f",
+      "status": "open_ready_for_review",
+      "run": 36249786388,
+      "hosted_primary_test_passed": 924,
+      "hosted_secondary_test_passed": 918,
+      "hosted_skipped": 0,
+      "source_binding": "VERSIONED_SUCCESSOR_V2_ORIGINAL_FROZEN_SAMPLE_UNMODIFIED_DEFAULT_OFF_BITWISE_EQUIVALENT_IN_SYNTHETIC_GEOMETRIES",
+      "scientific_execution_authorized": false,
+      "n1_opened": false
+    }
+  },
+  "open_blockers": [
+    "missing_seven_original_binaries_remote_custody",
+    "real_V5_prospective_critical_test_manifest_and_original_executed_CI_evidence",
+    "physical_source_bytes_all_33_current_authorities",
+    "PR169_VERSIONED_SUCCESSOR_IMPLEMENTED_AND_HOSTED_924_PASS__REVIEW_SCIENTIFIC_SIGNOFF_PENDING",
+    "authentic_current_FULL104_raw_query_sanitized_teacher_target",
+    "Stage75_current_registry_and_original_Morabito_H5_coverage",
+    "full_current_104_donor_GPU_training_authorization"
+  ],
+  "historical_withdrawals": [
+    "S9_environment_defect_WAS_RETRACTED_invocation_only_Library_bin_PATH",
+    "T0_measurement_procedure_not_qualified_at_N28_not_biology_absent",
+    "matched_null_is_not_pair_wrong_query",
+    "x4_within_estimator_withdrawn",
+    "Stage81A3_TRAIN_not_FULL104"
+  ],
+  "scope": "NAVIGATION_ONLY_REQUIRES_LIVE_HEAD_REFRESH__PR169_SOURCE_SUCCESSOR_NOT_N1_APPROVAL",
+  "audit_correction": {
+    "date": "2026-09-26",
+    "reason": "Previous blocker listed eight missing binaries after V33 ZIP transfer; live PR169 absent; checked 18 local originals against original checksums",
+    "superseded_blocker": "missing_eight_original_binaries_remote_custody",
+    "corrected_blocker": "missing_seven_original_binaries_remote_custody"
+  }
+}

@@ -1,0 +1,29 @@
+name: V42 exact original chat file custody audit (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/chat-local-source-preservation-20260926/**'
+      - 'docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V42_EXCLUSIVE_CHAT_ASSETS_AND_EXECUTION.md'
+      - 'docs/agent/JEPA_V42_MACHINE_STATE_20260926.json'
+      - 'scripts/agent/verify_v42_chat_original_files.py'
+      - '.github/workflows/v42-chat-original-custody.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-exact-sha:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare physical GitHub bytes against original local inventory
+        run: |
+          set -euo pipefail
+          python scripts/agent/verify_v42_chat_original_files.py | tee /tmp/v42_custody.log
+          grep -q 'V42_EXACT_11_OF_11_ORIGINAL_SHA256_AND_GIT_BLOB_MATCH' /tmp/v42_custody.log
+          grep -q 'V42_7_BINARY_FILES_MANIFEST_ONLY_NOT_FALSELY_REPORTED_AS_GITHUB_UPLOADS' /tmp/v42_custody.log
+          grep -q 'V42_TRAINING_AUTHORIZED_FALSE' /tmp/v42_custody.log
+          grep -q 'V42_HANDOFF_PR169_924_PASS_AND_SEVEN_MISSING_STATE_CONSISTENT' /tmp/v42_custody.log
