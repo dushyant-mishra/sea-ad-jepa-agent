@@ -1,0 +1,25 @@
+# Independent PR131 ↔ PR137 CRISPRbrain evidence reconciliation
+
+Date: 2026-09-25. **READ-ONLY EXISTING-RESULTS COMPARISON**, not another raw-screen computation, perturbation effect promotion, model benchmark or real JEPA training. The source and tests here are isolated under this directory. This PR stacks on PR137's clean producer and does not alter the original producer, receipts or any of the seven source result CSVs.
+
+## The integration conflict this resolves
+
+- PR131 @ `8647d21174c5e7eab2ad01fc6b9251b069ba0e03` contains the first authentic physical screen assessment but its receipt says `git_dirty=true`, names a producer at earlier commit `b2ae68e...` whose exact executed SHA `633e1a...` does NOT equal PR131's committed producer. The first assessment is **not** a clean exact-source replay claim.
+- PR134 @ `3fffc35010bd4d4b1bb6d9574277ac99cf2cecb5` was a good independent attempt to replay that OLD dirty receipt. Its synthetic adversarial job succeeded, but its physical clean-head replay job failed at [Actions 36197352491](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36197352491), printing `STOP_CRISPRBRAIN_CLEAN_REPLAY: committed producer source SHA differs from executed dirty receipt`. Do NOT defeat its gate by rewriting the historical receipt or substituting a new hash.
+- PR137 @ `e130f55c7471b74b387f0bd0aca586c4a1614921` is a distinct, successful **clean producer** run according to its own reported on-machine 7-output/540-field exact replay, with `git_dirty=false`, fresh `producer_sha256` and a named producing commit. Its receipt and two producer scripts occupy the SAME repository paths as PR131, with DIFFERENT Git blob hashes. Its seven CSV evidence outputs appear identical; this PR makes that parity an independently executed machine check rather than assuming identical names imply identical bytes.
+
+The branches are NOT unrelated: PR137 historically includes two PR131 commits from the shared worktree. Do not cherry-pick PR131's full diff onto PR137 or overwrite PR137's clean scientific receipt with the dirty PR131 version. PR134 is a **different question** about exact recovery of the OLD executed source; a failure there does not invalidate a genuinely clean revised-source reproduction, provided the existing science and output byte comparison passes.
+
+## What the new verifier does
+
+It checks the exact Git heads for the two historical evidence snapshots; raw SHA-256 and CSV row count of ALL SEVEN committed result CSVs against BOTH versioned receipts; byte identity of those CSVs across the two snapshots; every common scientific receipt section and every original continuous-concordance field; and allows only five explicitly listed interpretive annotations added by the clean version. It checks the new 54 jointly significant (target, readout-gene) pairs directly in the actual committed CSV, including the distinct target and gene count. It confirms the old producer mismatch remains a historical provenance limitation and independently binds the clean producer to the exact source bytes at the commit named in the clean receipt.
+
+The check uses stdlib Python and the already-committed small CSVs. It does NOT download the five larger CRISPRbrain source tables, run Mixscale, run any negative-control draws, or inspect more biological outcomes; it cannot prove PR137's 540-field re-execution independently. It reconciles **existing evidence**, while PR137's separately reported clean rerun establishes its own scientific-result replay.
+
+A dedicated workflow checks ten synthetic/adversarial fixtures plus the real Git-checkout comparison of both exact commit snapshots. The real comparison writes an immutable machine-readable JSON receipt outside all three checkouts. A PASS explicitly retains `historical_original_dirty_producer_replay=NOT_REPRODUCED`; even a successful comparison cannot upgrade PR134's failed job.
+
+## What to do with the PRs after verified execution
+
+Keep the PR131 historical dirty-origin receipt in a clearly versioned archival path, together with its original recorded SHA, but never as the CURRENT reproducible producer authority. Preserve its completed independent bulk P1-6 results and scripts. Use PR137's clean assessment as the versioned CURRENT CRISPRbrain scientific evidence only after its actual clean physical rerun and this existing-evidence parity are both reviewed. The earliest paper/results narrative should state the CRISPRbrain pair are a within-study protocol contrast, **not** two independent biological studies. PR134 can be left as an honest failed historical recovery or amended to point to PR137's independent clean execution as a DISTINCT result; do not silently convert its original dirty-producer replay test to green.
+
+This lane does not touch PR135 sampler, PR132 frozen pass1 bridge, PR120 physical N1 audit, PR133 historical LODO recovery, PR136/138 current new104 baseline, or PR129 training safeguards. Those remain independently owned. `TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | THERAPEUTIC_RANKING=OFF`.
