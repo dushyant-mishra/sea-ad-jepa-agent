@@ -1,0 +1,47 @@
+name: V39 critical-test physical provenance diagnostic (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'tests/test_v39_critical_evidence_physical_provenance.py'
+      - '.github/workflows/v39-critical-evidence-provenance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-source-unproven-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest==8.3.4
+      - name: Seven exact non-authorizing adversaries, no skips
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s tests/test_v39_critical_evidence_physical_provenance.py --junitxml=/tmp/v39.xml | tee /tmp/v39.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse('/tmp/v39.xml').getroot()
+          if root.tag!='testsuite': root=root.find('testsuite')
+          counts={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
+          expected={'tests':7,'errors':0,'failures':0,'skipped':0}
+          if counts!=expected: raise SystemExit(f'STOP_V39_FAILED_OR_SKIPPED: {counts}')
+          required={
+              "test_phantom_typed_critical_test_claim_is_locally_accepted",
+              "test_caller_selects_required_test_vocabulary_without_independent_manifest",
+              "test_source_sha_is_accepted_without_reading_any_original_source",
+              "test_closure_digest_helper_accepts_duck_typed_unverified_critical_object",
+              "test_nonpassing_status_still_fails_as_intended",
+              "test_missing_test_status_still_fails_as_intended",
+              "test_malformed_source_hash_still_fails_as_intended",
+          }
+          actual=[x.get('name') for x in root.iter('testcase')]
+          if len(actual)!=7 or set(actual)!=required or len(set(actual))!=7:
+              raise SystemExit(f'STOP_V39_TEST_IDENTITY_DRIFT: {actual}')
+          print('V39_SEVEN_EXACT_DIAGNOSTIC_TESTS_NO_AUTHORIZATION')
+          PY
+          grep -q 'V39_PHANTOM_EXECUTED_PASS_ACCEPTED_BY_CURRENT_TYPED_CLASS__NOT_B2' /tmp/v39.log
