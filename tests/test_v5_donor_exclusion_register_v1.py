@@ -214,3 +214,102 @@ def test_lane6_enforced_through_the_entry_point_too():
     with pytest.raises(ExclusionViolation, match="GEM lane 6"):
         run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["sex"],
                                input_manifest=ONLY_979, cross_study_claim=False)
+
+
+# ==========================================================================
+# V4 CONTRACT PLANTED CONTROLS (i)-(v). Each MUST fail on its defect.
+# ==========================================================================
+from sea_ad_jepa.v5.donor_exclusion_register_v1 import (
+    MIN_DETECTABLE_D, SUPERSEDED_FIGURES, EFFECT_SIZE_PRIOR_STATUS,
+    POWER_METHOD_SEPARATION)
+
+# Data S1 is authoritative: UT_04 / UT_09 are Control (A0/B0/C0).
+DATA_S1_TRUTH = {"UT_04": "Control", "UT_09": "Control", "UT_2105": "EOAD",
+                 "BEB18077": "Control", "BEB18110": "Control", "HCTZD": "Control",
+                 "BEB19074": "EOAD", "BEB19080": "EOAD", "BEB20005": "EOAD"}
+GEO_TITLE_LABEL = {"UT_04": "sEOAD", "UT_09": "sEOAD"}     # the contradictory titles
+S8_SFG_COHORT = ["UT2206", "HA23-14", "N2301", "UT22-03"]  # separate validation cohort
+
+
+def _diagnosis_from_titles(d):
+    return GEO_TITLE_LABEL.get(d, DATA_S1_TRUTH[d])
+
+
+def test_planted_i_geo_title_misclassification_MUST_fail():
+    """(i) Parsing GEO titles moves 2 of 9 donors from control into case."""
+    wrong = [d for d in DATA_S1_TRUTH if _diagnosis_from_titles(d) != DATA_S1_TRUTH[d]]
+    assert wrong == ["UT_04", "UT_09"], wrong
+    n_ctrl_titles = sum(1 for d in DATA_S1_TRUTH if _diagnosis_from_titles(d) == "Control")
+    n_ctrl_truth = sum(1 for v in DATA_S1_TRUTH.values() if v == "Control")
+    assert n_ctrl_titles == 3 and n_ctrl_truth == 5, "the planted defect must change the design"
+
+
+def test_planted_ii_S8_and_region_libraries_MUST_not_inflate_the_cohort():
+    """(ii) S8's four SFG donors and the 21 region-libraries are not extra people."""
+    nine = set(DATA_S1_TRUTH)
+    assert len(nine) == 9
+    assert not (nine & set(S8_SFG_COHORT)), "S8 is a DISTINCT validation cohort"
+    assert len(nine | set(S8_SFG_COHORT)) == 13, "merging them would claim 13 people"
+    region_libraries = 3 * 1 + 6 * 3          # 3 UT single-region + 6 donors x 3 regions
+    assert region_libraries == 21 and region_libraries != len(nine)
+
+
+def test_planted_iii_lane6_in_a_donor_covariate_primary_set_MUST_fail():
+    """(iii) already covered by the entry point; asserted here as a named control."""
+    with pytest.raises(ExclusionViolation):
+        run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["sex", "age"],
+                               input_manifest=ONLY_979, cross_study_claim=False)
+
+
+def test_planted_iv_omitting_the_UCI_controls_from_the_sensitivity_MUST_fail():
+    """(iv) a sensitivity arm that does not drop 1224/1230/1238 is not a sensitivity arm."""
+    with pytest.raises(ExclusionViolation, match="did not exclude"):
+        run_guarded_evaluation(donors=CLEAN + OVERLAP, covariates=[],
+                               input_manifest=BOTH, cross_study_claim=True,
+                               sensitivity_arm=_arm(excluded=("1224",), before=12, after=11))
+
+
+def test_planted_v_unchanged_positive_dataset_MUST_pass():
+    """(v) the positive control. Without it the four refusals prove nothing."""
+    out, r = run_guarded_evaluation(donors=CLEAN, covariates=["sex", "age"],
+                                    input_manifest=ONLY_979, cross_study_claim=False,
+                                    analysis=lambda: "ok")
+    assert out == "ok" and r["joint_enforced"] is False
+
+
+# ---- cohort arithmetic: 12, not 10 and not 13 ----------------------------
+def test_frozen_cohort_is_12_not_10_or_13():
+    """PR #182 ALREADY drops the lane-6 pair; subtracting them again gives 10."""
+    r = REGISTER["GSE214979_GEM_LANE_6_IDENTITY_CONFLICT"]
+    assert r["frozen_cohort_n"] == 12
+    assert r["frozen_cohort_composition"] == {"AD": 6, "control": 6, "microglia": 2872}
+    assert "DO NOT subtract these donors a second time" in r["already_applied_upstream"]
+    census_total = 15
+    already_excluded = 3            # two lane-6 + one <50 microglia
+    assert census_total - already_excluded == 12
+    assert census_total - already_excluded - len(r["donors"]) == 10, "the double-subtraction error"
+
+
+# ---- corrected effect sizes and estimand separation ----------------------
+def test_morabito_is_11_7_not_the_illustrative_9_9():
+    assert MIN_DETECTABLE_D["Morabito_18"]["groups"] == (11, 7)
+    assert abs(MIN_DETECTABLE_D["Morabito_18"]["d"] - 1.443) < 1e-3
+    assert SUPERSEDED_FIGURES["Morabito_9_9_illustrative"]["groups"] == (9, 9)
+
+
+def test_uci_sensitivity_arm_power_is_recorded():
+    r = REGISTER["GSE214979_MORABITO_POSSIBLE_OVERLAP"]
+    assert r["sensitivity_cohort_composition"] == {"AD": 6, "control": 3}
+    assert abs(r["sensitivity_min_detectable_d"] - 2.312) < 1e-3
+    assert "NOT disagreement" in r["interpretation_guard"]
+
+
+def test_hurdle_DE_power_is_not_presented_as_cross_validation():
+    """I described the authors' power as 'corroborating' ours. Different estimands."""
+    assert POWER_METHOD_SEPARATION["relationship"] == "SUPPORTIVE_CONTEXT_NOT_CROSS_VALIDATION"
+    assert POWER_METHOD_SEPARATION["authors_hurdle_DE"]["estimand"] != \
+           POWER_METHOD_SEPARATION["our_two_sample_d"]["estimand"]
+
+
+def test_effect_prior_is_labelled_a_planning_assumption():
+    assert EFFECT_SIZE_PRIOR_STATUS == "PLANNING_ASSUMPTION_NOT_ESTABLISHED_DISTRIBUTION"

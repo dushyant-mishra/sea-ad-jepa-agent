@@ -44,6 +44,43 @@ from dataclasses import dataclass
 from typing import Iterable, Mapping, Sequence
 
 # --------------------------------------------------------------------------
+# Corrected minimum detectable effects, two-sample, 80% power, alpha .05
+# two-sided. Independently recomputed; all match the owner's V4 figures.
+MIN_DETECTABLE_D = {
+    "GSE214979_frozen_12":        {"n": 12, "groups": (6, 6),  "d": 1.796},
+    "GSE214979_uci_excluded_9":   {"n": 9,  "groups": (6, 3),  "d": 2.312},
+    "GSE272082_PFC_9":            {"n": 9,  "groups": (5, 4),  "d": 2.193},
+    "GSE272082_EC_6":             {"n": 6,  "groups": (3, 3),  "d": 3.071},
+    "GSE272082_HIP_6":            {"n": 6,  "groups": (3, 3),  "d": 3.071},
+    "Morabito_18":                {"n": 18, "groups": (11, 7), "d": 1.443},
+}
+
+# CORRECTION. I previously published Morabito as 9 AD / 9 control, d 1.407.
+# That was an ILLUSTRATIVE BALANCED COUNTERFACTUAL, not the population. The
+# archived results/lane_d/laneD_sample_donor_overlap_v1.csv on PR #164
+# enumerates 11 AD and 7 control among the 18 shared donors.
+SUPERSEDED_FIGURES = {"Morabito_9_9_illustrative": {"groups": (9, 9), "d": 1.407,
+                      "why_wrong": "illustrative balanced counterfactual, not the actual population"}}
+
+# The d = 0.3-0.8 range repeatedly cited for donor-level effects is a PLANNING
+# ASSUMPTION, not an established universal biological-effect distribution.
+EFFECT_SIZE_PRIOR_STATUS = "PLANNING_ASSUMPTION_NOT_ESTABLISHED_DISTRIBUTION"
+
+# The depositors' hurdle-DE power (GSE272082 Data S4) is a DIFFERENT TEST AND
+# ESTIMAND from two-sample standardized-d power. It is supportive context, NOT
+# an interchangeable mathematical cross-validation. I previously described it as
+# "corroborating" my independent estimate; that conflated two estimands.
+POWER_METHOD_SEPARATION = {
+    "authors_hurdle_DE": {"estimand": "gene-level differential expression",
+                          "method": "simulation-based hurdle model",
+                          "microglia_power": {"PFC": {"log2FC_1.5": 0.298, "log2FC_2.0": 0.591},
+                                              "EC":  {"log2FC_1.5": 0.331, "log2FC_2.0": 0.616},
+                                              "HIP": {"log2FC_1.5": 0.256, "log2FC_2.0": 0.528}}},
+    "our_two_sample_d": {"estimand": "donor-level standardized mean difference",
+                         "method": "noncentral t"},
+    "relationship": "SUPPORTIVE_CONTEXT_NOT_CROSS_VALIDATION",
+}
+
 REGISTER: Mapping[str, Mapping] = {
     "GSE214979_GEM_LANE_6_IDENTITY_CONFLICT": {
         "dataset": "GSE214979",
@@ -65,6 +102,16 @@ REGISTER: Mapping[str, Mapping] = {
         "trigger_covariates": ("sex", "age", "region", "brain_region", "age_at_death"),
         "action": "EXCLUDE",
         "resolution_requires": "a corrected donor-identity mapping from the depositor",
+        "already_applied_upstream": ("PR #182 frozen_exclusions() ALREADY drops both donors, "
+                                     "plus one further donor with <50 microglia. The frozen "
+                                     "retained cohort is 12 people (6 AD / 6 control, 2,872 "
+                                     "microglia). DO NOT subtract these donors a second time."),
+        "frozen_cohort_n": 12,
+        "frozen_cohort_composition": {"AD": 6, "control": 6, "microglia": 2872},
+        "quarantine_scope": ("ALL primary donor-anchored inference - donor-level covariate, "
+                             "held-out-donor, endpoint and donor-clustered single-nucleus "
+                             "analyses. Omitting age/sex while still permitting an uncertain "
+                             "donor join to certify out-of-donor testing is NOT sufficient."),
     },
     "GSE214979_MORABITO_POSSIBLE_OVERLAP": {
         "dataset": "GSE214979+GSE174367",
@@ -76,7 +123,17 @@ REGISTER: Mapping[str, Mapping] = {
         "scope": "JOINT_OR_CROSS_STUDY_CLAIMS",
         "action": "SENSITIVITY_ANALYSIS_REQUIRED",
         "single_dataset_use": "PERMITTED without exclusion",
-        "resolution_requires": "donor metadata neither deposit contains",
+        "resolution_requires": ("donor metadata neither deposit contains; a lab-provided "
+                                "privacy-preserving yes/no overlap crosswalk would replace "
+                                "this precaution prospectively"),
+        "sensitivity_cohort_n": 9,
+        "sensitivity_cohort_composition": {"AD": 6, "control": 3},
+        "sensitivity_min_detectable_d": 2.312,
+        "interpretation_guard": ("the sensitivity arm leaves 6 AD / 3 control, minimum "
+                                 "detectable d 2.312. An insignificant sensitivity result is "
+                                 "NOT disagreement. If the apparent result depends entirely "
+                                 "on the three controls, abstain from independent-replication "
+                                 "claims rather than reporting either arm."),
     },
 }
 
