@@ -1,0 +1,151 @@
+{
+  "schema": "JEPA_V42_LOCAL_PORTABLE_18_FILE_MANIFEST",
+  "date": "2026-09-26",
+  "source": "actual /mnt/data original physical bytes",
+  "main_at_snapshot": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "github_draft_handoff": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/174",
+  "github_detailed_handoff": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/handoff/jepa-v42-exclusive-chat-asset-custody-20260926/docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V42_EXCLUSIVE_CHAT_ASSETS_AND_EXECUTION.md",
+  "all_local_count": 18,
+  "git_byte_exact": 11,
+  "untransferred_binary_count": 7,
+  "training_authorized": false,
+  "files": [
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "git_blob_sha1": "3d60bc920084ba61a65245896df2ec3b60c875da"
+    },
+    {
+      "filename": "JEPA_QUERY_LOCAL_TEACHER_TARGET_NONAUTHORIZING_PROPOSAL_20260926.md",
+      "bytes": 8147,
+      "sha256": "2fe3447e96b5514c08393d5533cb03ab560ea2bf0d5ebfd0fe1e27c1e9a89e89",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_QUERY_LOCAL_TEACHER_TARGET_NONAUTHORIZING_PROPOSAL_20260926.md",
+      "git_blob_sha1": "f0e28a291bef044702316e3465fd080c802589eb"
+    },
+    {
+      "filename": "JEPA_TEACHER_TARGET_V2_LOCAL_EVIDENCE_AND_EXECUTION_CONTRACT_20260926.md",
+      "bytes": 12279,
+      "sha256": "81fac097139bc6f5b693e9bc3aa682b37cef7fa42baa88f3707c54c29104ed95",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_TEACHER_TARGET_V2_LOCAL_EVIDENCE_AND_EXECUTION_CONTRACT_20260926.md",
+      "git_blob_sha1": "f1a7d22f134346fd44a0d13b3e7ab4a116f5e425"
+    },
+    {
+      "filename": "JEPA_TEACHER_TARGET_V4_SOURCE_AUDIT_PHYSICAL_PILOT_20260926.md",
+      "bytes": 14906,
+      "sha256": "28b282759c62160c53f661efd98db4ae5ae122cbbb19ac9377838051bb7118f4",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_TEACHER_TARGET_V4_SOURCE_AUDIT_PHYSICAL_PILOT_20260926.md",
+      "git_blob_sha1": "406c8f51deb2e24613fb92bc9605eadddbbe8910"
+    },
+    {
+      "filename": "JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip",
+      "bytes": 11938,
+      "sha256": "99dd996038ab55478b2e9fe17601c8e696c431cc8451073dabd50078b58712d0",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_V33_INDEPENDENT_AUDIT_PACKAGE_20260926.zip",
+      "git_blob_sha1": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5"
+    },
+    {
+      "filename": "JEPA_V33_INDEPENDENT_ENVIRONMENT_AUDIT_20260926.md",
+      "bytes": 14297,
+      "sha256": "5cf2d3d3eba9adc9e94359388af8866b13366f0925dc5938ce0dd1d0863e1f30",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/JEPA_V33_INDEPENDENT_ENVIRONMENT_AUDIT_20260926.md",
+      "git_blob_sha1": "ef09e3ecd29b851b1aeaebb05f5f276a807a0822"
+    },
+    {
+      "filename": "README(1).md",
+      "bytes": 4802,
+      "sha256": "3b43f40409fdc4cb2812e6877189cc44b0a23abaa4504434ddd983c054c317de",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/README(1).md",
+      "git_blob_sha1": "7f713b3bfd383a01be3676db54a8896fe80e7bcd"
+    },
+    {
+      "filename": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/Status and Repair Plan.txt",
+      "git_blob_sha1": "987863a46ce2f01e4f1af855be58c16100847622"
+    },
+    {
+      "filename": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/WSL execution issue.txt",
+      "git_blob_sha1": "df61e2cc4a2511e60401320108d26b2a50512d07"
+    },
+    {
+      "filename": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "github_status": "NOT_UPLOADED_ORIGINAL_BINARY_REMAINS_IN_CHAT",
+      "git_path": null
+    },
+    {
+      "filename": "teacher_target_preflight_v1.py",
+      "bytes": 6098,
+      "sha256": "255e21c45d0a7ada88e6b75e51aa8bf3c1a1b9a52060bc460815af931d5f7235",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/teacher_target_preflight_v1.py",
+      "git_blob_sha1": "188c73a3a6e0c2951ab633ea67ae4af221e9a576"
+    },
+    {
+      "filename": "teacher_target_preflight_v1_results.json",
+      "bytes": 1554,
+      "sha256": "5268a685686106dd308b828b71e10855b7b052347b4ddf04797d53780242d81e",
+      "github_status": "ORIGINAL_EXACT_SHA_AND_GIT_BLOB_VERIFIED",
+      "git_path": "docs/agent/chat-local-source-preservation-20260926/teacher_target_preflight_v1_results.json",
+      "git_blob_sha1": "1119babe1d78cba817ca772c30955e0c6373ea62"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+# JEPA R10 — measurement ceiling, inherited anti-cheat replay, and independent-biology decision
+
+**26 September 2026 | Historical developmental measurement stress only.** No independently measured ATAC outcome was opened, no new neural teacher trained, and no FULL104 authority was granted. This is a follow-on to R7–R9, not a fresh target search that forgets their failures.
+
+## Main result
+
+The R8 activity/composition target is an **observed developmental anchor**, not a validated cellular world-model latent state. The R7 same-assay held-out program readouts did not demonstrate teacher-only biological coherence. R8 showed that P2RY12 and HLA-DRA activities were weakly predicted by the lawful student compared with its technical comparator; APOE was the only consistent exploratory candidate. R9 inherited anti-cheat showed that the developmental preprocessing can be made query/teacher-panel safe, but not that this target is biological.
+
+R10 repeats the physical molecular count-split reliability experiment **100 times** rather than reporting one random split, while preserving the same historical developmental 361 microglia, 50 donors and two operators. Counts were recovered from the historical discovery-derived local cache using original normalization scale; calibration ZIP SHA-256 `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444` was physically recomputed and exact original calibration support/namespace reused. The discovery **cache-to-full-original archive byte lineage was not independently reauthenticated** in this run. No external biological results were accessed.
+
+| Prespecified exploratory program | Positive cells / 361 | 100-split mean activity correlation, broad disjoint reference | 5th–95th percentile across splits | 100-split eight-reference mean correlation* |
+| --- | ---: | ---: | ---: | ---: |
+| APOE-associated lipid | 214 | 0.582 | 0.537–0.627 | 0.590 |
+| P2RY12-associated homeostatic | 206 | 0.254 | 0.191–0.308 | 0.402 |
+| HLA-DRA-associated antigen | 217 | 0.257 | 0.203–0.316 | 0.498 |
+
+*The eight-reference column is **not a fair improvement comparison**. Conditioning on both reference halves being nonzero excluded ~197–198 of the 361 cells per split on average. Only ~163–164 selected cells were evaluable. The different reference definitions and changing evaluable population are confounded. Percentiles across random molecule partitions are not biological confidence intervals; each split repeatedly reuses exactly the same original cells. Both q and all measured programs were excluded from the reference, but the broad reference is **not guaranteed disjoint from every conceivable student panel**. This run assesses measurement repeatability, not anti-leak qualification of a prospective training input.
+
+The repeated analysis reinforces the *measurement* limitation: the APOE-associated anchor has greater same-molecule repeatability on this particular cohort; P2RY12 and HLA-DRA activities are noisy at single-cell resolution. The previous R7 held-out RNA and R8 normalization-sensitivity failures remain in force. None of these targets is biologically validated by these numbers.
+
+## Existing anti-cheat reused, not replaced
+
+Replayed the exact local R9 runner: 25 inherited R6 architecture checks, 16 inherited R8 target-contract checks, and 15 × 3 R9 query/teacher-panel/full-library-denominator original-RNA preprocessing checks. **86/86 passed** in this runtime, including planted shortcuts with non-vacuous positive input counts. These are research-runtime checks and **not** the full current-V5 `AntiCheatAuthorityBundleV2`, not original hosted current-suite evidence, and not 33-root closure. Separately, R10's 16/16 small fail-closed readiness tests reject pseudoreplicated molecule splits, fake same-nucleus RNA/ATAC pairing, RNA-derived Stage75F edges used as an independent outcome, premature teacher selection and synthetic root promotion.
+
+## Independent biology: reuse Lane D rather than duplicate it
+
+Live GitHub Lane D PR #164 at `0e36cede000c6c0eee66ab2b11ed43d41f7b9580`, original outcome-blind spec Git blob `6978b7725e5c063c6e941ca2b6be79506d65c750`. The original GSE174367 RNA/ATAC assays are **unpaired individual nuclei** with 18 shared donors, so only donor-level cross-modality association can be evaluated. Its ATAC fragments were not used to build historical Stage75F RNA coexpression hypotheses; Stage75F TF-target edges cannot serve as an independent answer key. The cohort's prior Stage72/75 involvement prevents labeling it fully clean external validation for targets already selected using those RNA analyses. Maintain the exact Lane D overlap register, blob `bac975edd1579f09cc287cf2ca2c3e1bd97f046f`.
+
+Lane D P1–P5 remained **not satisfied** in the audited PR: frozen exact encoder; supported GSE→FULL104 address mapping with 2,400 missing addresses/294 collision cases; frozen ATAC producer; proven structurally distinct shuffled controls; signed acceptance/power rules. Its P6 overlap review is satisfied. **Do not inspect ATAC outcomes to choose the target, panel, model or thresholds.** The proposed teacher-only stage must specify its state object and independent ATAC falsifier *before* any cross-modality outcomes. Do not use the same ATAC modality to construct the teacher and then score it as independent evidence. With 18 donors, report honestly limited power. A fixed RNA linear baseline and technical model must be compared against the learned state on matching held-out donors.
+
+## Concrete go/no-go
+
+1. **Science freeze, before outcome read:** specify query-address → measured anchor(s), a rich teacher's permitted q observation, latent contextual representation and optional fine/rare residuals; name the independent biological question each component could fail. Treat measured anchor activity, composition and support/uncertainty as distinct. A student predicts a qualified teacher representation from legal complementary RNA, not the queried scalar.
+2. **Teacher-only study:** after P1–P5 and accepted target/source scope, fit or freeze teacher representations on a development population *without accessing held-out ATAC*, then perform the donor-level independent-modality comparison on the allowed dataset. Compare single rich, capacity-matched shared multi-head and complementary teachers against same-RNA linear and technical baselines. Avoid declaring a rare specialist useful from teacher-to-teacher agreement or within-donor duplication; random/shuffled specialist must actually differ from real.
+3. **Student study, conditional:** only for teacher components demonstrating nonredundant biological fidelity, test whether lawful masked RNA predicts that state and adds information beyond query identity, generic cell state, direct RNA/technical comparators and dependency-aware masking challenges. Do not require the student to reconstruct aspects of rich teacher evidence that are inherently unknowable from its input; report per-head predictability and abstention.
+4. **Exact pipeline integration:** retain FULL104 physical lineage and donor weights, source-bound masked RNG, T1/C2 gradient→verified optimizer→EMA order, dynamic protected registry, current receipts/critical-suite provider evidence, and atomic checkpoints. Version `TargetConstructionAuthorityV1` because it currently categorically excludes q from teacher; do not patch V1 or claim V2 has production authority. Multihead topology must bind each online/EMA pair. FULL104 training OFF pending all 33 real roots and independent approval.
+
+## Explicit exclusions
+
+No target has been scientifically qualified. No neural architecture winner is established. Historical 84-cell support and 50k-derived tiny expression cache are not FULL104 biological qualification. Random molecule partitions do not provide independent donors or technical reproducibility; GSE174367 ATAC is not paired same-cell multiome. This package contains scripts/results/contract and an exact hash manifest, not cell-level RNA data or any ATAC outcome.

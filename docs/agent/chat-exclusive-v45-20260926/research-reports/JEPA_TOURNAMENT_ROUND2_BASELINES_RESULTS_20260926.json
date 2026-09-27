@@ -1,0 +1,446 @@
+{
+  "schema": "JEPA_HISTORICAL_TINY_TOURNAMENT_ROUND2_DISCRIMINATING_BASELINES_V1",
+  "scope": "RESEARCH_ONLY_HISTORICAL_FIT_DONOR_SUBSET_NONAUTHORIZING",
+  "inputs": {
+    "previous_report_sha256": "995720cd15637fdf1cc01d9f14436f4a530572040e656960ca2a3b1057ddcc1a",
+    "previous_script_sha256": "4c2cd543cc9e7ed955e673a0e6b6a537b4a3a4ce972a42d295c802d69810bbf3",
+    "previous_results_sha256": "2be1bc714d72a25143c73ee373f7f0e9826fc7320b4a87b8bfbe97860d81bec8",
+    "uses_prepared_historical_subset": true,
+    "source_hashes_verified_by_original_frozen_preparation": true
+  },
+  "source_audit": [
+    {
+      "core": 400,
+      "fine": 200,
+      "rare": 100,
+      "independent_eval": 96,
+      "rare_donors_min": 3,
+      "selected_addresses_sha256": "1f08d20956640dced63d904e907286b0a26505762f82017e74d83f57c6dd2472",
+      "evaluation_addresses_sha256": "7786ef155cb11b27f13f854643f99d0d10c1944e147c913657497ff199ba32ad"
+    },
+    {
+      "core": 400,
+      "fine": 200,
+      "rare": 100,
+      "independent_eval": 96,
+      "rare_donors_min": 3,
+      "selected_addresses_sha256": "8dd5fad9e54cc351efddc003efd5279219cfce05c9cecfe1e12dfdb45701fa25",
+      "evaluation_addresses_sha256": "7a37a719f6373d5a333c4b6ea961a0573f749741fad984df1a4f9ce506337513"
+    }
+  ],
+  "masks": [
+    {
+      "fold": 0,
+      "evaluation_mask_seed": 430100,
+      "first_train_mask_seed": 100000,
+      "test_count": 261,
+      "train_count": 1061,
+      "val_count": 239,
+      "query_id_not_passed_to_any_neural_arm": true
+    },
+    {
+      "fold": 1,
+      "evaluation_mask_seed": 430101,
+      "first_train_mask_seed": 101000,
+      "test_count": 251,
+      "train_count": 1086,
+      "val_count": 224,
+      "query_id_not_passed_to_any_neural_arm": true
+    }
+  ],
+  "previous_neural_scores": {
+    "EMA": {
+      "mean_student_r2": 0.45377257466316223,
+      "mean_micro_student_r2": 0.3833102285861969
+    },
+    "RICH": {
+      "mean_student_r2": 0.4629942774772644,
+      "mean_micro_student_r2": 0.38587453961372375
+    },
+    "SHARED": {
+      "mean_student_r2": 0.4622094929218292,
+      "mean_micro_student_r2": 0.3912941813468933
+    },
+    "TEAM": {
+      "mean_student_r2": 0.460601270198822,
+      "mean_micro_student_r2": 0.389611154794693
+    }
+  },
+  "control_scores": {
+    "ILLEGAL_FULL_PANEL_DEPTH_DIAGNOSTIC": {
+      "mean_test_r2": 0.3330687247019595,
+      "mean_micro_test_r2": 0.28135334567904813,
+      "folds": 2
+    },
+    "OPERATOR_PLUS_VISIBLE_TECH": {
+      "mean_test_r2": 0.3270176304135131,
+      "mean_micro_test_r2": 0.2862060345921893,
+      "folds": 2
+    },
+    "PCA32_VISIBLE_ONLY": {
+      "mean_test_r2": 0.46377480030059814,
+      "mean_micro_test_r2": 0.3953566551208496,
+      "folds": 2
+    },
+    "SHUFFLED_TRAIN_LABEL_NEGATIVE": {
+      "mean_test_r2": -1.4169946908950806,
+      "mean_micro_test_r2": -1.4633129835128784,
+      "folds": 2
+    },
+    "VISIBLE_700_RIDGE_20": {
+      "mean_test_r2": -0.24062681198120117,
+      "mean_micro_test_r2": -0.37529993057250977,
+      "folds": 2
+    },
+    "VISIBLE_700_RIDGE_200": {
+      "mean_test_r2": 0.246646910905838,
+      "mean_micro_test_r2": 0.15392997860908508,
+      "folds": 2
+    },
+    "VISIBLE_CORE_400_RIDGE_20": {
+      "mean_test_r2": 0.14645522832870483,
+      "mean_micro_test_r2": 0.03623312711715698,
+      "folds": 2
+    },
+    "VISIBLE_CORE_400_RIDGE_200": {
+      "mean_test_r2": 0.30812475085258484,
+      "mean_micro_test_r2": 0.2185671031475067,
+      "folds": 2
+    },
+    "VISIBLE_FINE_RARE_300_RIDGE_20": {
+      "mean_test_r2": 0.25503286719322205,
+      "mean_micro_test_r2": 0.18399542570114136,
+      "folds": 2
+    },
+    "VISIBLE_FINE_RARE_300_RIDGE_200": {
+      "mean_test_r2": 0.34922078251838684,
+      "mean_micro_test_r2": 0.27456915378570557,
+      "folds": 2
+    }
+  },
+  "all_records": [
+    {
+      "fold": 0,
+      "arm": "VISIBLE_700_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": -0.2521955966949463,
+      "test_r2": -0.32432758808135986,
+      "micro_test_r2": -0.3757563829421997,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": -0.33540141582489014
+    },
+    {
+      "fold": 0,
+      "arm": "VISIBLE_700_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.24618035554885864,
+      "test_r2": 0.19840699434280396,
+      "micro_test_r2": 0.13920295238494873,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.19682371616363525
+    },
+    {
+      "fold": 0,
+      "arm": "VISIBLE_CORE_400_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.1344037652015686,
+      "test_r2": 0.0778357982635498,
+      "micro_test_r2": 0.016242146492004395,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.0777098536491394
+    },
+    {
+      "fold": 0,
+      "arm": "VISIBLE_CORE_400_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.30165600776672363,
+      "test_r2": 0.25858521461486816,
+      "micro_test_r2": 0.19604969024658203,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.26027965545654297
+    },
+    {
+      "fold": 0,
+      "arm": "VISIBLE_FINE_RARE_300_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.2695998549461365,
+      "test_r2": 0.21532875299453735,
+      "micro_test_r2": 0.1656508445739746,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.22358596324920654
+    },
+    {
+      "fold": 0,
+      "arm": "VISIBLE_FINE_RARE_300_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.35716474056243896,
+      "test_r2": 0.3076114058494568,
+      "micro_test_r2": 0.25326091051101685,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.31270331144332886
+    },
+    {
+      "fold": 0,
+      "arm": "PCA32_VISIBLE_ONLY",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.45873117446899414,
+      "test_r2": 0.42665809392929077,
+      "micro_test_r2": 0.36975741386413574,
+      "hyperparam": {
+        "pca_fit_train_only": true,
+        "alpha": 20
+      },
+      "alternative_mask_test_r2": 0.4276697039604187
+    },
+    {
+      "fold": 0,
+      "arm": "OPERATOR_PLUS_VISIBLE_TECH",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.3167177699719398,
+      "test_r2": 0.29176714512790636,
+      "micro_test_r2": 0.24290075571656022,
+      "hyperparam": {
+        "alpha": 20
+      },
+      "alternative_mask_test_r2": 0.289959345313594
+    },
+    {
+      "fold": 0,
+      "arm": "ILLEGAL_FULL_PANEL_DEPTH_DIAGNOSTIC",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": 0.3340202645436988,
+      "test_r2": 0.2979812089187496,
+      "micro_test_r2": 0.23306821821138202,
+      "hyperparam": {
+        "prohibited_as_student": true
+      }
+    },
+    {
+      "fold": 0,
+      "arm": "SHUFFLED_TRAIN_LABEL_NEGATIVE",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 64,
+      "validation_r2": -1.504089117050171,
+      "test_r2": -1.43572998046875,
+      "micro_test_r2": -1.4831528663635254,
+      "hyperparam": {
+        "train_label_permutation": true
+      }
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_700_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": -0.17642605304718018,
+      "test_r2": -0.15692603588104248,
+      "micro_test_r2": -0.3748434782028198,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": -0.14389538764953613
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_700_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.2783098816871643,
+      "test_r2": 0.29488682746887207,
+      "micro_test_r2": 0.16865700483322144,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.3011934757232666
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_CORE_400_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.203599214553833,
+      "test_r2": 0.21507465839385986,
+      "micro_test_r2": 0.05622410774230957,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.21474218368530273
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_CORE_400_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.3431841731071472,
+      "test_r2": 0.3576642870903015,
+      "micro_test_r2": 0.2410845160484314,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.36096489429473877
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_FINE_RARE_300_RIDGE_20",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.2902994155883789,
+      "test_r2": 0.29473698139190674,
+      "micro_test_r2": 0.2023400068283081,
+      "hyperparam": {
+        "alpha": 20,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.295895516872406
+    },
+    {
+      "fold": 1,
+      "arm": "VISIBLE_FINE_RARE_300_RIDGE_200",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.3794713616371155,
+      "test_r2": 0.3908301591873169,
+      "micro_test_r2": 0.2958773970603943,
+      "hyperparam": {
+        "alpha": 200,
+        "tuned_on_test": false
+      },
+      "alternative_mask_test_r2": 0.38999390602111816
+    },
+    {
+      "fold": 1,
+      "arm": "PCA32_VISIBLE_ONLY",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.48732441663742065,
+      "test_r2": 0.5008915066719055,
+      "micro_test_r2": 0.4209558963775635,
+      "hyperparam": {
+        "pca_fit_train_only": true,
+        "alpha": 20
+      },
+      "alternative_mask_test_r2": 0.5052459239959717
+    },
+    {
+      "fold": 1,
+      "arm": "OPERATOR_PLUS_VISIBLE_TECH",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.33802946002136225,
+      "test_r2": 0.3622681156991199,
+      "micro_test_r2": 0.32951131346781837,
+      "hyperparam": {
+        "alpha": 20
+      },
+      "alternative_mask_test_r2": 0.3661620765301471
+    },
+    {
+      "fold": 1,
+      "arm": "ILLEGAL_FULL_PANEL_DEPTH_DIAGNOSTIC",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": 0.3423363410526099,
+      "test_r2": 0.3681562404851694,
+      "micro_test_r2": 0.32963847314671424,
+      "hyperparam": {
+        "prohibited_as_student": true
+      }
+    },
+    {
+      "fold": 1,
+      "arm": "SHUFFLED_TRAIN_LABEL_NEGATIVE",
+      "n_train_donors": 34,
+      "n_val_donors": 8,
+      "n_test_donors": 8,
+      "n_test_micro": 52,
+      "validation_r2": -1.3671140670776367,
+      "test_r2": -1.3982594013214111,
+      "micro_test_r2": -1.4434731006622314,
+      "hyperparam": {
+        "train_label_permutation": true
+      }
+    }
+  ],
+  "limitations": [
+    "same-study heldout RNA, not independent biological fidelity",
+    "repeat splits of same 50 donors",
+    "query identity absent from all original neural models",
+    "rare panel low prevalence not rare cell state",
+    "historical common-supported 700 features; native operator missingness untested",
+    "direct ridge trains on one fixed mask unlike neural stochastic masks",
+    "no current V5 exact incumbent/no matched neural teacher capacity/no protected outcomes",
+    "technical model controls do not eliminate all donor, QC, depth, source shortcuts"
+  ],
+  "training_authorized": false,
+  "N1_opened": false,
+  "protected_outcomes_opened": false
+}

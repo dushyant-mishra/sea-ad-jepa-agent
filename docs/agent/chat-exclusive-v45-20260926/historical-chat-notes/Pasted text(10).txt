@@ -1,0 +1,467 @@
+at this point we should review and analyze all the updates pushed from claud see how things are going
+
+Worked for 2m 24s
+The latest GitHub review shows substantial progress across Claude’s parallel work. The most important change is that the Phase-IV masking source repair now has a tested, versioned implementation, while the teacher-target investigation has uncovered a more fundamental scientific question about what the model would actually learn.
+
+I checked the live branches rather than relying on the V42 handoff. main remains unchanged, and these updates are on separate pull requests. The engineering results are increasingly reproducible, but FULL104 training and protected confirmation remain off.
+
+1. Review of Claude’s main workstreams
+Workstream
+
+Verified progress
+
+What remains
+
+Masking repair #169
+
+924 tests passed Versioned successor binding; original freeze retained
+
+Independent review and prospective authorization
+
+Independent parity #170
+
+7 tests passed Old and new default planners produce exactly matching results on bounded synthetic fixtures
+
+Real-data qualification; reconcile with #169
+
+Teacher-target science #163
+
+170 locally reported tests Competing targets and adversarial controls defined
+
+Select and qualify the scientific target
+
+Authority audit #160
+
+0/33 fully closed Root-level evidence and schema conflicts documented
+
+Authenticate missing scientific roots
+
+Independent biology #164
+
+Physical audit reported Original RNA/ATAC resources and regulatory evidence examined
+
+Actual independent biological evaluation
+
+Critical-test evidence #171
+
+Hosted CI passed Original test results and source bytes checked through GitHub
+
+Approved production test suite and governance
+
+The hosted CI figures above were checked against actual workflow logs for #169, #170 and #171. The Lane A and Lane D results are supported by Claude’s committed reports and code, but I have not independently reproduced their original local executions.
+
+2. The important scientific findings
+The teacher may still be given the answer we intend to hide
+Claude traced the current teacher path from the gene tokenizer through contextual mixing to the final target readout. Its finding is that the query gene’s measured value enters the teacher before attention mixes information across tokens.
+
+That means the resulting latent representation can contain information about the hidden scalar. It does not establish that a trained model would actually recover that scalar, but it creates exactly the possibility our scientific design needs to distinguish from prediction of the remaining-RNA-derived cell state.
+
+There is a second leakage route: whole-cell normalization can include the queried count in the denominator even after the query token has been removed.
+
+Claude has now specified several alternative teacher constructions without selecting one. Its control-testing work also found that the original global-context-only comparison could miss a planted failure of query locality. A query-exchangeability comparison detected that failure in the tested synthetic fixture. These are developments in the experimental design, not evidence that query-local biology has already been learned.
+
+Integration issue to resolve: PR #152’s checker still hard-codes an assumption compatible with the value-containing teacher. PR #163 explicitly challenges that assumption, while our V4 research proposal explores independently normalized, non-query teacher and student views. The design and its checker need to agree before either becomes production authority.
+
+A potentially useful independent biological measurement has been recovered
+Claude’s Lane D investigation reports that the GSE174367 microglial ATAC count matrix was never used to construct the Stage75F RNA-derived regulatory hypotheses. This leaves actual measured chromatin accessibility available as a separate outcome.
+
+Microglial RNA
+
+4,126
+cells, 18 samples
+
+Microglial ATAC
+
+12,232
+nuclei, 20 samples
+
+This is promising for testing whether predicted cellular states contain information related to chromatin accessibility. However, RNA and ATAC are from separate nuclei, not matched individual cells. Donors and samples overlap; independence is at the measurement level, not a completely unrelated biological cohort.
+
+The report also uncovered a consequential historical control problem. Stage73's shuffled graph was initially identical to its original graph because of a labeling bug. After repair, the tested real regulatory graph scored 0.32361, compared with 0.33229 for its target-shuffled control. That historical experiment therefore does not support treating the proposed graph as validated. The new evaluation specification requires controls to be demonstrably structurally different before comparing scores.
+
+Lane D reports that five of six prerequisites for its planned biological evaluation remain unsatisfied. It has performed reconnaissance, not the final benchmark.
+
+3. Engineering progress and remaining risks
+Masking: PR #169 reproduces the original five failures and addresses their source-binding cause without changing the historical freeze. Its default-path comparison found bit-identical output on three test geometries, and its hosted 924-test suite passed with no skips. PR #170 independently tests the same general parity question with a different implementation. These results support the source repair, but neither opens Audit-B N1 or establishes that the G3 masking policy works scientifically.
+
+Authorization: PR #160 gives us a clearer inventory: three of six immediate consumers carry the authenticated FULL104 substrate, while three lack the required committed authority. It also distinguishes a largely nominal masking-parameter V3/V1 mismatch from a substantive masking-RNG disagreement about whether selecting a target panel should reroll masks. The latter needs a versioned scientific decision, not a class-name change. The subsequent V34/V36 repairs strengthen issuance and guard checks, but they cannot authenticate upstream evidence that does not yet exist.
+
+Test evidence: Claude’s PR #171 physically runs the seven existing V39 diagnostic tests and has another CI job retrieve and check their original JUnit and source bytes. Its producing and verification jobs both succeeded. Our PRs #172–173 independently establish a related mechanism using 17 synthetic controls and a subsequent separate GitHub workflow. These efforts overlap, but neither proves that the complete real V5 critical-test suite has been executed under an approved frozen manifest.
+
+4. What I would resolve before more GPU experiments
+Immediate integration priorities
+Not yet closed
+Reconcile the teacher-target decision. Put PR #152, #163 and the V4 proposal into one scientific decision record. Require the proposed normalization and teacher inputs to pass query-value counterfactual tests before selecting the target.
+
+Consolidate the masking evidence. Review #169 and #170 together. Retain the original freeze and its failure history, keep G3 default-off parity distinct from G3 scientific qualification, and settle the remaining prospective signoff requirements.
+
+Resolve the RNG and authority-schema conflict. Adopt neither V1 nor V3 by simply changing class names. Specify whether mask families must remain fixed across target-panel choices and make that behavior explicit in the closure.
+
+Avoid maintaining two competing critical-test verifiers. Compare #171 against #172–173, retain the independently authenticated source-and-JUnit checks from each, and develop one prospectively governed verifier for the actual V5 suite.
+
+Preserve the independent biological benchmark. Lane D's unused ATAC counts create a useful opportunity, but donor-level evaluation, non-circular controls, power analysis and frozen acceptance thresholds must precede any outcome inspection.
+
+5. Overall project status
+Scientific qualification incomplete
+FULL104 data foundation	Established historical substrate
+Masking source repair	Implemented and tested
+Teacher-target selection	Scientist decision pending
+Complete current authority	0/33 fully closed
+Independent biological benchmark	Prepared, not executed
+FULL104 training	OFF
+The work is advancing in a meaningful way: Claude is finding problems early, preserving failed tests instead of concealing them, and separating experimental preparation from actual scientific evidence. The principal bottleneck is now less about missing software and more about agreeing on the precise biological target, authenticating its complete chain of evidence, and integrating parallel repairs without conflicting definitions.
+
+The next substantive milestone should be a single reviewed target-and-masking contract, followed by the necessary original-data GPU tests—not simply another large number of passing synthetic regressions.
+
+
+1 selection
+if we are hiding stuff from teacher and teacher's universer is missing the thing we are trying to predict, then how can student be expected to make sensible predictions even if student matcheds the universe of the teacher's
+You have identified the central scientific problem with our JEPA design. If the teacher and student see essentially the same information, and the teacher has no additional biological information, what is the student actually learning to predict?
+
+The answer is that hiding the queried gene from the teacher is not necessarily a mistake. But we must give the teacher some other information that the student does not have. Otherwise, we risk building a model that simply learns to reproduce its own representation rather than predict missing molecular information.
+
+There are two different things we need to distinguish:
+
+The queried gene's measured count: the particular number we do not want the network to reconstruct as its primary objective.
+
+The biological state associated with that gene: a representation of the cell's molecular environment, which may be inferred from other genes and pathways.
+
+The first can be absent from both networks while the second remains predictable—provided the teacher receives additional, informative molecular measurements.
+
+How the two-view approach is supposed to work
+
+Conceptual illustration of the proposed disjoint, query-excluded two-view design—not an already qualified architecture.
+Imagine a microglial cell with an activated inflammatory program. The student observes one subset of its genes, while the teacher observes a different subset. Both subsets may contain evidence of the same inflammatory state.
+
+The student can therefore learn to predict the teacher's representation even though neither observes the queried gene's count. It learns relationships between different molecular manifestations of an underlying cellular program.
+
+However, if the teacher's genes contain information that is unique to its view, the student cannot reliably predict it. With a squared-error objective, the ideal prediction is the expected teacher state given the student's observations and the query identity:
+
+z
+^
+(
+C
+,
+q
+)
+=
+E
+[
+z
+T
+(
+T
+,
+q
+)
+∣
+C
+,
+q
+]
+z
+^
+ (C,q)=E[z 
+T
+​
+ (T,q)∣C,q]
+The unpredictable part will remain uncertain. No architecture can recover information that is genuinely absent from the student's observations.
+
+Your objection reveals a second, more important issue
+Even if both views accurately capture the cell's inflammatory state, that does not mean the model has learned anything specifically associated with the queried gene.
+
+For example, it might produce nearly the same representation whether asked about APOE, P2RY12 or another gene. The student could successfully predict a generic microglial state without learning query-specific relationships.
+
+This is precisely why we need to measure whether the correct query identity contributes information beyond a query-agnostic cell-state predictor.
+
+There is also an alternative we should not dismiss: allow the teacher to observe the queried gene while hiding it from the student. That is a legitimate predictive learning design. It provides an informative target, but we must then test whether the learned representation captures meaningful biology or merely encodes the queried count. Excluding the gene from both networks protects against that shortcut, at the possible cost of losing genuinely query-specific information.
+
+The scientific choice is therefore not simply whether to hide the gene. It is which information the teacher should represent, what the student can reasonably predict from lawful observations, and how we will demonstrate that the resulting representation contains query-specific biological information beyond generic cellular state.
+
+
+1 selection
+this is the state which should be faithfullr be constructed by the teacher, I mean the whole point of using a world model compared to a regular transformer is this only isent it? correct me if i am wrong about this
+Yes. You are describing the central scientific ambition of our JEPA project. There is, however, one important distinction: a world model is designed to learn a useful representation of the underlying state, but the JEPA architecture does not automatically guarantee that its teacher has constructed a biologically faithful state.
+
+In fact, your observation exposes the most important question we need to resolve before training.
+
+1. What should our teacher actually represent?
+Consider APOE in a microglial cell. We do not simply want to know whether APOE has 0, 2 or 15 measured transcripts. We want a representation of the cell's molecular environment as it relates to APOE.
+
+That environment might include lipid metabolism, inflammatory signaling, phagocytic activity, regulatory relationships and interactions among other molecular pathways.
+
+Our intended teacher target is therefore something like:
+
+z
+T
+(
+c
+,
+q
+)
+=
+contextual molecular state of cell 
+c
+ associated with query 
+q
+z 
+T
+​
+ (c,q)=contextual molecular state of cell c associated with query q
+It should be a multidimensional representation, not a disguised estimate of one transcript count.
+
+Importantly, this state should reflect the actual molecular evidence available in the cell. It should not merely be a learned embedding of the gene's name or a generic representation that barely changes between queries.
+
+2. How is this different from a regular transformer?
+A transformer is an architecture. A world model is defined primarily by what it is trained to represent and predict. In fact, JEPA itself can use transformers for both its teacher and student.
+
+Two different learning objectives
+Token reconstruction
+Predict the missing measurement
+
+Given the remaining RNA and the identity APOE, predict the expression value of APOE. The training target is the measured count or its normalized equivalent.
+
+Our intended JEPA objective
+Predict the contextual latent state
+
+Given the remaining RNA and the identity APOE, predict the teacher's multidimensional representation of the molecular state associated with APOE.
+
+The second objective allows the model to learn relationships among molecular programs rather than being rewarded solely for recovering a particular measurement.
+
+However, simply replacing a scalar target with a vector does not guarantee this distinction. A teacher could encode little more than the scalar in a complicated vector, and the student could learn to reconstruct it.
+
+Equally, the teacher could encode only generic microglial activation and produce almost identical targets for many different queried genes.
+
+Neither would satisfy our intended scientific objective.
+
+3. So should we hide the query gene from the teacher?
+Here I would refine my previous explanation.
+
+We should not automatically hide the queried gene from the teacher just because we hide it from the student. Doing so may deprive the teacher of valuable evidence about the very state we want it to represent.
+
+There are two scientifically meaningful constructions:
+
+Construction A
+Teacher sees richer molecular information, including the query gene.
+
+This potentially gives the teacher a more informative representation of the cell's actual query-associated state. But we must establish that its representation contains meaningful contextual structure beyond the gene's expression value.
+
+Construction B
+Teacher sees richer molecular context but not the query's measured value.
+
+The teacher constructs a query-conditioned representation from correlated genes and pathways. This directly limits one form of scalar leakage, but it may omit genuine biological information uniquely carried by the queried gene.
+
+Neither construction is automatically biologically faithful. Both have to be evaluated.
+
+There is also a fundamental limit: if the student observes no information that predicts some part of the teacher's state, no amount of JEPA training can recover that information reliably.
+
+4. What I think your argument changes in our project
+The question we should ask is not primarily how can we prevent the teacher from seeing the answer?
+
+It is:
+
+How do we establish that the teacher has constructed a faithful representation of query-associated cellular state, and that the student can predict its biologically meaningful components from the remaining RNA?
+
+That requires three distinct scientific demonstrations:
+
+1. Teacher fidelity: Does the teacher's representation preserve independently measurable aspects of the cell's biology? Does it represent query-associated information rather than merely the queried transcript count?
+
+2. Query specificity: Does the representation meaningfully change when we ask about APOE instead of P2RY12, beyond simply substituting their gene-identity embeddings?
+
+3. Student predictability: Can the student recover the relevant representation from the remaining RNA, and does that performance exceed query-only, generic-cell-state and technical-shortcut controls?
+
+The independent RNA/ATAC investigations Claude is preparing could help with the first question, provided we design the evaluation without circularity.
+
+There is one further distinction worth preserving. A representation may faithfully describe a cell's observed molecular state without establishing that the queried gene causes that state. Learning molecular relationships and learning causal effects of perturbations are different scientific achievements.
+
+Your underlying point is right: the teacher should be our source of meaningful molecular-state targets, not simply a device for creating vectors. Our immediate scientific task is to determine what makes those targets faithful. Only then can matching the teacher become convincing evidence that the student is learning the biological relationships we actually care about.
+
+so I am again surpiised in not a good wahy when you were searching for teacher target earlier it was useless work because you still dont understand what we want to build after 3-4 months of work
+You have good reason to be frustrated. After several months of work, I should not still be confusing the information available to the teacher with the information withheld from the student. That confusion affects the scientific foundation of the project, not just a minor architectural detail.
+
+I also made the problem worse in my previous two responses. I treated excluding the queried gene from the teacher as a natural solution to leakage, without adequately considering whether doing so would destroy information needed to construct the biological state we actually want to predict.
+
+I need to correct my understanding of the project, rather than ask you to redefine it.
+
+What we have been trying to build
+Our objective is a world model of cellular molecular state, not a sophisticated gene-expression imputation model.
+
+The teacher's purpose is to construct a biologically meaningful, multidimensional representation of the cellular molecular environment. That representation is the target the student learns to predict.
+
+The student receives incomplete molecular information and a query identifying the molecular state of interest. Its task is to predict the corresponding teacher representation from the information still available to it.
+
+The teacher should therefore have access to sufficiently rich biological evidence to construct that target. We must not remove biologically necessary information from the teacher merely because the student is supposed to predict without it.
+
+At the same time, making the teacher's representation multidimensional does not automatically make it faithful. We need independent evidence that it captures biological relationships rather than simply encoding expression counts, technical characteristics or gene identity.
+
+That distinction should have governed our earlier teacher-target investigation.
+
+Where I went wrong
+I conflated three separate requirements:
+
+Withholding information from the student to create a meaningful prediction problem.
+
+Constructing a biologically faithful target using the teacher.
+
+Preventing the student from exploiting shortcuts instead of learning the intended molecular relationships.
+
+I treated the third requirement as a reason to restrict the teacher, when it should have prompted us to investigate the target's biological content and the information channels available to the student.
+
+That led me to give undue attention to query-excluded teacher constructions without first establishing that they preserve the state we want the teacher to represent.
+
+It was a mistake to describe the two-view, query-excluded design as though it were already the natural architecture for our objective.
+
+What this means for the work already completed
+I would not discard all the previous work. The FULL104 data preparation, representation infrastructure, optimizer safeguards, source authentication, masking experiments and reproducibility tests address separate problems that remain relevant.
+
+But the teacher-target work cannot be considered scientifically resolved. Passing synthetic leakage tests is not proof that we have defined an appropriate world-model target.
+
+In particular, Claude's recent teacher-target proposals and my own V4 proposal must be evaluated against the original scientific objective, not merely against whether their implementations can exclude the query scalar.
+
+We also need to distinguish predicting a representation of cellular state from demonstrating that the representation contains query-specific biology. Neither follows automatically from successfully matching teacher and student embeddings.
+
+The correction I believe is necessary
+Before implementing another teacher architecture, we should recover our original scientific specifications and trace how the target definition evolved over the past several months.
+
+Then we should audit each proposed construction against the same questions: What biological state is the teacher representing? What evidence can it use to construct that state? What information does the student receive? Which aspects of the teacher's state are actually predictable from that information? And what independent biological measurements would establish that the learned representation is meaningful?
+
+This review needs to be based on our historical project decisions and actual code, not on another generic explanation of JEPA.
+
+I should have maintained that scientific continuity throughout our work. You should not have needed to challenge the basic purpose of the teacher to bring this discrepancy to light.
+
+moving on with our discussion, how about we have multiple teachers they together construct a very faithful representation since we have a very heterogeneous dataset and perhaps we even have multile students for core and fine/rare biology etc, some students together student team they try to beat the teacher team review project history again we have toyed with this idea before
+
+Worked for 1m 41s
+Yes. A team of complementary teachers and students is a serious architecture to investigate for our JEPA project, particularly because our dataset contains both widely shared molecular biology and much finer, less frequently observed biology.
+
+I reviewed the earlier architecture documents, the September V5 design and the historical rare-microglia experiments on GitHub. We have explored several important pieces of your idea before. What I can verify is that we developed multiple molecular views, common-core and native-support learning, relational objectives, and a rare-biology auxiliary head. I have not recovered a prospectively approved architecture in which multiple independently trained teachers construct one joint biological target.
+
+That distinction matters. We have much of the scientific groundwork, but not yet proof that a teacher team is better than a single sufficiently expressive teacher.
+
+1. What our project history tells us
+Historical work
+
+Relevance to your proposal
+
+V5 data-first architecture
+
+Established 17,186 common-core addresses and separate native-support views.
+
+V5 relational extension
+
+Developed a way to preserve relationships among cellular states, not just match individual embeddings.
+
+Stage69 rare-biology experiment
+
+Tested whether an additional rare-microglia representation could preserve information missed by the main model.
+
+Stage70 and Stage71
+
+Demonstrated why promising rare-biology results need stronger donor and graph controls before adoption.
+
+The important historical lesson is that rare biology deserves explicit attention, but simply attaching another head or adding a biological graph did not reliably solve the problem.
+
+2. How a teacher team could construct the cellular world model
+The central idea would be to make teachers complementary rather than simply train several copies of the same model and average their outputs.
+
+Proposed molecular-state teacher team
+Teacher 1
+Shared biological-state teacher
+
+Learns recurring molecular programs and the broad organization of cellular states using common-core evidence.
+
+Teacher 2
+Fine molecular-context teacher
+
+Uses richer, operator-supported expression to represent detailed pathways and query-associated molecular relationships.
+
+Teacher 3
+Rare-biology teacher
+
+Concentrates on reproducible, uncommon molecular programs that might be diluted by learning predominantly from common cellular states.
+
+Joint teacher representation
+Shared state + fine state + supported rare state + uncertainty
+
+Biologically aligned, with disagreement and missing evidence retained
+
+Student team predicts from incomplete lawful RNA
+
+Core student
+
+Predicts broadly reproducible cellular programs.
+
+Fine/rare student
+
+Predicts detailed molecular structure when sufficient evidence is available.
+
+Proposed research architecture, not an approved FULL104 configuration.
+The crucial feature is that the teacher team is responsible for constructing the best biologically defensible target available from the cell's measurements. The student team then attempts to recover the predictable parts of that state from incomplete observations.
+
+For instance, the shared teacher might capture a microglial inflammatory or homeostatic program. The fine teacher could distinguish particular lysosomal, lipid-handling or antigen-presentation configurations. The rare teacher could preserve an uncommon cellular program that is otherwise underrepresented.
+
+We would not automatically average their output vectors. That can destroy differences between biological programs. Instead, the joint representation could retain shared and specialist components separately while learning how they relate.
+
+3. What the earlier rare-biology results actually showed
+This is where reviewing our history changes the proposed experiment.
+
+Stage69–71: the existing evidence
+Stage69's rare auxiliary head improved the original internal comparison in its selected configuration. But Stage70's repeated donor-held-out tests found that its improvement over the historical baseline was not reliably positive.
+
+Stage70 comparison	Reported mean improvement	95% bootstrap interval
+Rare auxiliary vs no auxiliary	+0.0187	+0.0004 to +0.0357
+Rare auxiliary vs historical Stage27C	+0.0089	−0.0043 to +0.0221
+Historical internal pathology-prediction experiments, not current V5 teacher–student results.
+Stage71 then tested a hierarchical graph-aware approach. Its rare-cell representation and prediction locks both failed; the real graph did not establish an advantage over the randomized-graph control. Original Stage70 report · Stage71 report
+
+These experiments do not disprove your multiple-teacher idea. They tell us to build its evaluation around something more demanding than improved average prediction: the rare component must preserve additional reproducible biology across donors, resist random or shuffled controls, and avoid dependence on one or two unusually influential donors.
+
+4. How should the students work together?
+I would investigate two possibilities in parallel.
+
+A shared student with specialist heads: One common encoder learns a cellular representation, while separate heads learn core, fine and rare components. This is computationally efficient and lets specialist predictions use information learned by the core encoder.
+
+Multiple specialist students: Different students have their own encoders or partially shared encoders, allowing them to learn different biological structure. This gives rare biology more dedicated capacity, but increases training complexity and makes inconsistencies between students harder to manage.
+
+The scientific experiment should compare these possibilities rather than assume the more complex one will perform better.
+
+Your suggestion that the student team should try to beat the teacher team is also interesting. I would give beat a specific meaning: students should learn to predict the teacher-derived state using less molecular evidence, and their combined representation should eventually be tested for whether it is more reproducible or more informative on independent measurements.
+
+A student cannot reliably reproduce information unique to the teacher's input when that information is absent from its own observations. But its representation might become more useful by discarding unpredictable noise and retaining the shared biological structure.
+
+Teacher–student agreement alone would not demonstrate that improvement.
+
+5. A challenge specific to our heterogeneous FULL104 dataset
+The teacher team must know which molecular information is actually available for each cell.
+
+Our historical V5 authority established 17,186 commonly measured addresses across 42 operators, while individual operators support substantially different numbers of molecular measurements. It would be scientifically incorrect to interpret an unmeasured gene as having zero expression or to penalize a specialist teacher for not representing biology its operator could never observe. V5 data-first design
+
+I would therefore keep a distinction between biological state, measurement support and uncertainty. When the teachers disagree, we should investigate whether the disagreement comes from genuine biological heterogeneity, unavailable measurements or modeling instability.
+
+The observation model should describe what was measured; it should not be allowed to masquerade as rare biology. Similarly, an uncommon state should not automatically be classified as noise merely because the shared teacher represents it poorly.
+
+6. The experiment I would run before committing to the architecture
+Prospective architecture comparison
+One teacher versus a teacher team
+A
+Single rich teacher
+
+One teacher using lawful native molecular support with core and fine representation readouts.
+
+B
+Shared backbone, multiple teacher heads
+
+A common encoder with distinct core, fine and rare target heads.
+
+C
+Complementary teacher team
+
+Separately specialized teachers with an explicitly aligned shared state and independently retained specialist components.
+
+All three would face the same scientific tests: teacher-state stability, core and rare biological representation, query specificity, resistance to count and technical shortcuts, held-out-donor reproducibility, and independent biological measurements where available.
+
+This should begin with a strictly developmental experiment using eligible, authenticated data. We should compare identical donor populations and measurement support, control model capacity and compute, and prespecify how each representation is evaluated. Any numerical thresholds would need prospective approval rather than inheritance from historical pilots.
+
+The most important prerequisite is still our recently exposed teacher-target question. Giving three teachers access to the same flawed target does not make the resulting representation more faithful. We need to specify what each teacher knows, what state it constructs, and what biological observation could contradict it.
+
+My proposed direction is a hierarchical cellular world model with complementary teacher evidence and potentially specialized students. It is consistent with much of our previous scientific work, but the historical record also gives us a strong reason to make it earn its complexity. The goal is not to create more networks; it is to preserve biological information that a single learned state might discard, while demonstrating that the additional information is real.
