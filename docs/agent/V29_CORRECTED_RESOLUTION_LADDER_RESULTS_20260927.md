@@ -209,3 +209,39 @@ re-derivation of every address in every block.
 The successful targeted repair must not be allowed to read as an assertion that
 the training substrate is repaired. It is not, and nothing here authorises
 training.
+
+---
+
+## Masked re-run, and a fourth correction to my own reporting, 2026-09-27
+
+The masked artifact (v3 extractor, mask-enforcing ladder v2) reproduces the
+ladder **exactly**: 315 of 315 correlations identical, none differing. That is
+the required outcome, not a coincidence — every query and panel address was
+available in every matrix, so the mask cannot change a panel result. A
+difference here would have meant the mask and the values disagreed.
+
+### 6. "its quoted zero fraction is understated" — wrong
+
+I wrote that the eight-gene housekeeping diagnostic, having counted an
+unmeasured PGK1 as zero, was **understated**. It is not. A sum over eight genes
+in which one is always zero equals the sum over the other seven, so the reported
+zero fraction is exactly the seven-gene value: 0.1354 before the mask, 0.1354
+after.
+
+The value was right and the **label** was wrong. The diagnostic overstates how
+many genes back the reference, not the fraction. What an eight-gene reference
+would have given is unknowable, because PGK1 was never measured in SEA-AD.
+
+The ladder now records `reference_house_genes_available_median` alongside the
+fraction — 8.0 for HVS and NPH52, **7.0** for all three SEA-AD cohorts — so the
+basis is stated rather than assumed.
+
+### Full-scale audit
+
+`AUDIT_MASKED_MYELOID_ARTIFACT_V1.json` re-derives every claim from the artifact
+independently of the producer's receipt. Ten checks, all passing on all 187,909
+nuclei: coverage of 13 matrices at census counts, identity closure, 92
+source-specific donor identities, mask shape, mask-versus-receipt agreement with
+zero disagreements, no counts at unavailable positions, the known absences
+exactly where expected, all 15 query and panel addresses reachable, and the
+denominator arithmetic exact for every cell.
