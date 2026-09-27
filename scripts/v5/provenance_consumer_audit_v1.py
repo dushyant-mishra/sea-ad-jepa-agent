@@ -86,15 +86,21 @@ KNOWN = {
         "assay(object,'counts') of the READER-FIT derivative: 32,176 of 32,176, "
         "with the 1-based alternative at 0.00%."),
     "foundation_materialize_nph_discovery_sample.R": (
-        "UNVERIFIED_DIFFERENT_DERIVATIVE",
-        "NPH52 discovery shards. Same per-object provenance family as the sound "
-        "Level-4 path, but it reads a DIFFERENT derivative. The reader-fit "
-        "verification does not transfer; the TRAIN derivative it actually reads "
-        "must be checked on its own."),
+        "SOUND_VERIFIED",
+        "NPH52 discovery shards. Reads the TRAIN derivative, which is a "
+        "different file from the reader-fit one, so the earlier verification "
+        "did not transfer and it was checked separately: 33,441 features by "
+        "19,375 cells, 32,176 of 32,176 provenance rows agreeing zero-based, "
+        "1-based alternative 0.00%."),
     "full104_expression_interface_nph.R": (
-        "UNVERIFIED_COUNT_PRODUCING", "NPH52 interface matrices, earlier version."),
+        "SOUND_VERIFIED",
+        "NPH52 interface matrices. Reads the TRAIN derivative via the physical "
+        "split exactness manifest; that axis is verified at 100.00%."),
     "full104_expression_interface_nph_v8.R": (
-        "UNVERIFIED_COUNT_PRODUCING", "NPH52 interface matrices, v8."),
+        "SOUND_VERIFIED",
+        "NPH52 interface matrices v8. Reads the reader-fit derivative via "
+        "NPH_READER_FIT_DERIVATIVE_MANIFEST.csv; that axis is verified at "
+        "100.00%."),
     "foundation_expression_lineage_reaudit.py": (
         "AUDITOR_WITH_THE_SAME_BLIND_SPOT",
         "Hashes the existing discovery shards and checks identity and payload "
@@ -229,6 +235,13 @@ def main():
         "count_producing_that_never_name_the_file": [c["path"] for c in arg_only],
         "disposition_counts": counts,
         "consumers": consumers,
+        "derivative_axes_verified": {
+            "nph52_reader_fit_MG": "33,441 x 15,264; 32,176/32,176 zero-based",
+            "nph52_TRAIN_MG": "33,441 x 19,375; 32,176/32,176 zero-based",
+            "note": "the two NPH52 derivatives share a feature axis but not a "
+                    "cell set, and each was verified on its own rather than by "
+                    "transferring the other's result",
+        },
         "UNVERIFIED_MEANS_UNVERIFIED": (
             "a path marked UNVERIFIED has not been shown sound and has not been "
             "shown defective. It must not be relied on until checked against its "
