@@ -68,8 +68,19 @@ def loo_center_within_stratum(x: np.ndarray, strata: np.ndarray) -> np.ndarray:
     return out
 
 
-def _fit_nb(y, X, log_offset):
-    """NB GLM on raw counts with a fixed offset. Falls back to Poisson."""
+class ModelFallback(RuntimeError):
+    """The negative-binomial fit failed.
+
+    A failed fit must NOT become an apparently successful result through an
+    unreported change of statistical model. The previous version silently
+    dropped to Poisson on any exception, so a run whose NB fits all failed would
+    have produced numbers indistinguishable from a healthy one. Fail closed; the
+    caller decides whether a Poisson fallback is acceptable and records it.
+    """
+
+
+def _fit_nb(y, X, log_offset, allow_poisson_fallback=False):
+    """NB GLM on raw counts with a fixed offset. Fails CLOSED by default."""
     import statsmodels.api as sm
     Xc = sm.add_constant(X, has_constant="add")
     try:
@@ -82,11 +93,15 @@ def _fit_nb(y, X, log_offset):
         alpha = float(np.clip(num / den if den > 0 else 0.0, 1e-6, 50.0))
         model = sm.GLM(y, Xc, family=sm.families.NegativeBinomial(alpha=alpha),
                        offset=log_offset).fit()
-        return model, alpha
-    except Exception:
+        return model, alpha, "negative_binomial"
+    except Exception as exc:
+        if not allow_poisson_fallback:
+            raise ModelFallback(
+                f"negative-binomial fit failed ({type(exc).__name__}: {exc}); "
+                "refusing to substitute Poisson silently") from exc
         model = sm.GLM(y, Xc, family=sm.families.Poisson(),
                        offset=log_offset).fit()
-        return model, None
+        return model, None, "poisson_FALLBACK"
 
 
 def _predict(model, X, log_offset):
@@ -122,6 +137,8 @@ class TestResult:
     permutation_p: float = float("nan")
     n_permutations: int = 0
     dispersion_alpha: float = float("nan")
+    model_families_used: tuple = ()
+    poisson_fallbacks: int = 0
 
 
 def run_directed_test(*, y_count, log_D, controls, state, strata, donors,
@@ -154,9 +171,12 @@ def run_directed_test(*, y_count, log_D, controls, state, strata, donors,
     if f.sum() < 50 or e.sum() < MIN_STRATUM:
         return res
 
+    families = []
+
     def increment(Xs_use):
-        m0, _ = _fit_nb(y[f], Xc[f], log_D[f])
-        m1, alpha = _fit_nb(y[f], np.hstack([Xc[f], Xs_use[f]]), log_D[f])
+        m0, _, fam0 = _fit_nb(y[f], Xc[f], log_D[f])
+        m1, alpha, fam1 = _fit_nb(y[f], np.hstack([Xc[f], Xs_use[f]]), log_D[f])
+        families.extend((fam0, fam1))
         p0 = _predict(m0, Xc[e], log_D[e])
         p1 = _predict(m1, np.hstack([Xc[e], Xs_use[e]]), log_D[e])
         r0 = within_stratum_spearman(y[e], p0, strata[e])
@@ -179,6 +199,8 @@ def run_directed_test(*, y_count, log_D, controls, state, strata, donors,
     res.median_increment = float(np.median(vals))
     res.fraction_donors_positive = float(np.mean(vals > 0))
     res.dispersion_alpha = float(alpha) if alpha is not None else float("nan")
+    res.model_families_used = tuple(sorted(set(families)))
+    res.poisson_fallbacks = sum(1 for x in families if x.endswith("FALLBACK"))
 
     # within-stratum permutation of the state, preserving everything else
     ge = 1
