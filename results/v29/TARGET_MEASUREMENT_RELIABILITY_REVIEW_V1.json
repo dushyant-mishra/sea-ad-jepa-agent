@@ -1,0 +1,93 @@
+{
+  "schema": "JEPA_TARGET_MEASUREMENT_RELIABILITY_REVIEW_V1",
+  "date": "2026-09-27",
+  "status": "RELIABILITY_GATE__NO_TEACHER_FITTED__NO_PROTECTED_DATA_OPENED",
+  "provenance": {
+    "source_file": "JEPA_R7_TARGET_ESTIMABILITY_RESULTS_20260926.json",
+    "source_sha256": "3de4b6788e0b662a0148bada23367e5d8c4621a438f7b3e1ac1454ec259bcbdd",
+    "note": "values RE-READ from the historical R7 estimability package in the V45 transfer; not recomputed from raw counts here"
+  },
+  "population": {
+    "n_microglia": 361,
+    "n_donors": 50,
+    "microglia_operators": 2,
+    "caution": "the 1,561-cell subset spans 15 operators, but the MICROGLIA come from 2. This is not 15-operator validation."
+  },
+  "per_target": {
+    "APOE_LIPID": {
+      "n_microglia": 361,
+      "fraction_nonzero": 0.592797783933518,
+      "median_raw_umis_in_positive_cells": 3.0,
+      "donors_with_nonzero": 46,
+      "donors_total": 50,
+      "donors_with_ge3_cells": 33,
+      "cells_with_both_half_partitions_positive": 132,
+      "thinning_repeatability_proxy": 0.6587000589751899,
+      "R7_composition_r2": 0.558,
+      "R7_technical_r2": 0.362,
+      "R7_increment_over_technical": 0.196,
+      "reliability_classification": "MARGINAL_BEST_OF_THREE_STILL_BELOW_BAR"
+    },
+    "P2RY12_HOMEOSTATIC": {
+      "n_microglia": 361,
+      "fraction_nonzero": 0.5706371191135734,
+      "median_raw_umis_in_positive_cells": 2.0,
+      "donors_with_nonzero": 46,
+      "donors_total": 50,
+      "donors_with_ge3_cells": 27,
+      "cells_with_both_half_partitions_positive": 98,
+      "thinning_repeatability_proxy": 0.3636468792755209,
+      "R7_composition_r2": 0.097,
+      "R7_technical_r2": 0.088,
+      "R7_increment_over_technical": 0.009,
+      "reliability_classification": "INSUFFICIENTLY_MEASURED"
+    },
+    "HLA_DRA_ANTIGEN": {
+      "n_microglia": 361,
+      "fraction_nonzero": 0.6011080332409973,
+      "median_raw_umis_in_positive_cells": 2.0,
+      "donors_with_nonzero": 44,
+      "donors_total": 50,
+      "donors_with_ge3_cells": 33,
+      "cells_with_both_half_partitions_positive": 112,
+      "thinning_repeatability_proxy": 0.3943117370682106,
+      "R7_composition_r2": 0.119,
+      "R7_technical_r2": 0.111,
+      "R7_increment_over_technical": 0.008,
+      "reliability_classification": "INSUFFICIENTLY_MEASURED"
+    }
+  },
+  "PRIMARY_FINDING": {
+    "statement": "measurement repeatability tracks R7 outcome; gene identity does not",
+    "ordering": "APOE repeat .659 -> increment +.196 | HLA-DRA .394 -> +.008 | P2RY12 .364 -> +.009",
+    "rank_agreement": "exact",
+    "pearson_n3": 0.995,
+    "caveat": "n=3 targets. A Pearson of .995 on three points is not evidence of a law; the EXACT RANK AGREEMENT is the informative part, and even that is three observations."
+  },
+  "MY_HYPOTHESIS_NOT_SUPPORTED": {
+    "hypothesis": "Thrupp 2020 nuclear depletion of APOE/APOC1/CST3/SPP1/CD74 explains the R7 failures",
+    "prediction": "the depleted targets should measure WORST in single nuclei",
+    "observed": "APOE, which contains BOTH depleted genes (APOE and partner APOC1), measures BEST of the three; P2RY12, which is NOT depleted, measures WORST",
+    "verdict": "the within-dataset ordering is OPPOSITE to the prediction",
+    "what_this_does_NOT_show": "Thrupp is a claim about depletion RELATIVE TO WHOLE CELLS. APOE can be depleted versus a whole-cell assay AND still be the best-measured of these three within nuclei. These data refute my USE of Thrupp to explain the within-dataset ordering; they do not refute Thrupp.",
+    "status": "HYPOTHESIS_NOT_SUPPORTED_BY_THIS_DATASET"
+  },
+  "RELIABILITY_GATE_VERDICT": {
+    "all_three_targets": "INSUFFICIENTLY_MEASURED",
+    "evidence": [
+      "median 2-3 UMIs per positive cell",
+      "40-43% of microglia have a zero program count",
+      "only 98-132 of 361 cells have BOTH half-partitions positive",
+      "R8's fixed 8-gene reference abstains on 90/361 cells"
+    ],
+    "consequence": "no teacher should be fitted to these targets as per-nucleus states on this subset"
+  },
+  "THIRD_CLASSIFICATION_RESERVED": {
+    "label": "MEASURED_BUT_BIOLOGICALLY_UNINFORMATIVE",
+    "status": "NOT_ASSIGNED_TO_ANY_TARGET",
+    "why": "that verdict requires the independent-readout test, which has not run. Sparse counts establish neither success nor biological failure."
+  },
+  "repeatability_metric_caveat": "the thinning proxy is a single simulated partition of the SAME molecules. It measures molecule-sampling stability, retains cell-level technical effects, and is NOT independent biological reproducibility. R8 states this explicitly and it is not upgraded here.",
+  "training_authorized": false,
+  "protected_outcomes_opened": false
+}
