@@ -1,0 +1,513 @@
+{
+  "schema": "V5_MEASURED_TARGET_TA_TB_COMPARISON_V1",
+  "status": "SYNTHETIC_DEVELOPMENTAL__NOT_A_BIOLOGICAL_RESULT__NOT_TRAINING",
+  "owner_decisions_implemented": {
+    "candidate_teacher": "T_B q-blind, with T_A retained as controlled comparison",
+    "primary_normalization": "common_23_excluded",
+    "sensitivity_arms": [
+      "full_source",
+      "fixed_reference"
+    ],
+    "target": "measured partner-gene state (activity, composition, support, uncertainty)"
+  },
+  "queries": {
+    "APOE": {
+      "partners": [
+        "APOC1",
+        "TREM2",
+        "TYROBP",
+        "CTSD"
+      ],
+      "references": [
+        "ACTB",
+        "GAPDH",
+        "RPL13A",
+        "B2M",
+        "PPIA",
+        "TBP",
+        "HPRT1",
+        "UBC"
+      ]
+    },
+    "P2RY12": {
+      "partners": [
+        "CX3CR1",
+        "SELPLG",
+        "TMEM119",
+        "SIGLEC11"
+      ],
+      "references": [
+        "ACTB",
+        "GAPDH",
+        "RPL13A",
+        "B2M",
+        "PPIA",
+        "TBP",
+        "HPRT1",
+        "UBC"
+      ]
+    },
+    "HLA-DRA": {
+      "partners": [
+        "CD74",
+        "HLA-DRB1",
+        "HLA-DPA1",
+        "CIITA"
+      ],
+      "references": [
+        "ACTB",
+        "GAPDH",
+        "RPL13A",
+        "B2M",
+        "PPIA",
+        "TBP",
+        "HPRT1",
+        "UBC"
+      ]
+    }
+  },
+  "fixture_program_genes_per_query": {
+    "APOE": 60,
+    "P2RY12": 60,
+    "HLA-DRA": 60
+  },
+  "fixture_correction": "a first version gave complementary genes NO dependence on the latent state, making T_B impossible by construction; each query now loads on 60 disjoint complementary program genes",
+  "common_exclusion_set": {
+    "n_genes": 23,
+    "genes": [
+      "ACTB",
+      "APOC1",
+      "APOE",
+      "B2M",
+      "CD74",
+      "CIITA",
+      "CTSD",
+      "CX3CR1",
+      "GAPDH",
+      "HLA-DPA1",
+      "HLA-DRA",
+      "HLA-DRB1",
+      "HPRT1",
+      "P2RY12",
+      "PPIA",
+      "RPL13A",
+      "SELPLG",
+      "SIGLEC11",
+      "TBP",
+      "TMEM119",
+      "TREM2",
+      "TYROBP",
+      "UBC"
+    ]
+  },
+  "per_query_exclusion_sizes": {
+    "APOE": 13,
+    "P2RY12": 13,
+    "HLA-DRA": 13
+  },
+  "split": {
+    "kind": "operator_held_out",
+    "test_operators": [
+      0,
+      1
+    ],
+    "n_train": 5315,
+    "n_test": 2685
+  },
+  "results": {
+    "per_query": {},
+    "normalization_arms": {
+      "common_23_excluded": {
+        "APOE": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.06610412002377974,
+            "effect_2_complementary_rna_dependence": -0.1180655009702214,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.00011560977786873039,
+            "T_B_q_blind": -0.005186796651177605,
+            "q_only": 0.06610412002377974,
+            "generic_cell_state": -0.011681679354589969,
+            "technical_only": 0.11287870431904379
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.6100933718001789
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 6.113638798707352
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "APOC1",
+            "APOE",
+            "B2M",
+            "CTSD",
+            "GAPDH",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "TREM2",
+            "TYROBP",
+            "UBC"
+          ]
+        },
+        "P2RY12": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.14737910622236372,
+            "effect_2_complementary_rna_dependence": 0.13534275915914773,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.15514268358501349,
+            "T_B_q_blind": 0.15246141445620398,
+            "q_only": 0.14737910622236372,
+            "generic_cell_state": 0.01711865529705625,
+            "technical_only": 0.015231769287184505
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.32334774179514936
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 6.113638798707352
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CX3CR1",
+            "GAPDH",
+            "HPRT1",
+            "P2RY12",
+            "PPIA",
+            "RPL13A",
+            "SELPLG",
+            "SIGLEC11",
+            "TBP",
+            "TMEM119",
+            "UBC"
+          ]
+        },
+        "HLA-DRA": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.3033433274779569,
+            "effect_2_complementary_rna_dependence": -0.23265949545111209,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": -0.17091772800958172,
+            "T_B_q_blind": -0.1925237368505266,
+            "q_only": 0.3033433274779569,
+            "generic_cell_state": -0.08711581740328711,
+            "technical_only": 0.04013575860058549
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.5155289844620132
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 3.349122503346753
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CD74",
+            "CIITA",
+            "GAPDH",
+            "HLA-DPA1",
+            "HLA-DRA",
+            "HLA-DRB1",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "UBC"
+          ]
+        }
+      },
+      "full_source": {
+        "APOE": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.071336197102711,
+            "effect_2_complementary_rna_dependence": -0.06367423945917372,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.05596965412224453,
+            "T_B_q_blind": 0.05124021853833027,
+            "q_only": 0.071336197102711,
+            "generic_cell_state": 0.07726479227399163,
+            "technical_only": 0.114914457997504
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.44992472147212137
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.06022517916537673,
+            "T_A_q_visible": 5.898112559378009
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "APOC1",
+            "APOE",
+            "B2M",
+            "CTSD",
+            "GAPDH",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "TREM2",
+            "TYROBP",
+            "UBC"
+          ]
+        },
+        "P2RY12": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.15016422973093702,
+            "effect_2_complementary_rna_dependence": 0.12248934766156927,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.156817401514322,
+            "T_B_q_blind": 0.15411353356562563,
+            "q_only": 0.15016422973093702,
+            "generic_cell_state": 0.03162418590405636,
+            "technical_only": 0.01688397894359106
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.2588845469464831
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.05964369211888254,
+            "T_A_q_visible": 5.898112559378009
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CX3CR1",
+            "GAPDH",
+            "HPRT1",
+            "P2RY12",
+            "PPIA",
+            "RPL13A",
+            "SELPLG",
+            "SIGLEC11",
+            "TBP",
+            "TMEM119",
+            "UBC"
+          ]
+        },
+        "HLA-DRA": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.29510826147515434,
+            "effect_2_complementary_rna_dependence": -0.29930500088329415,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": -0.13279159308461397,
+            "T_B_q_blind": -0.1556227018040215,
+            "q_only": 0.29510826147515434,
+            "generic_cell_state": 0.14368229907927266,
+            "technical_only": 0.041561425864811596
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": -0.478988928983648
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.5045630757122863,
+            "T_A_q_visible": 3.2975465229815204
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CD74",
+            "CIITA",
+            "GAPDH",
+            "HLA-DPA1",
+            "HLA-DRA",
+            "HLA-DRB1",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "UBC"
+          ]
+        }
+      },
+      "fixed_reference": {
+        "APOE": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.2757748304204688,
+            "effect_2_complementary_rna_dependence": 0.17982048657824168,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.42382957021530043,
+            "T_B_q_blind": 0.4176205763302694,
+            "q_only": 0.2757748304204688,
+            "generic_cell_state": 0.2378000897520277,
+            "technical_only": 0.2229158067414756
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": 0.07847376989789567
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 3.672072335797555
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "APOC1",
+            "APOE",
+            "B2M",
+            "CTSD",
+            "GAPDH",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "TREM2",
+            "TYROBP",
+            "UBC"
+          ]
+        },
+        "P2RY12": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.40704632051477607,
+            "effect_2_complementary_rna_dependence": 0.36091389751420533,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.7145747026025314,
+            "T_B_q_blind": 0.7117307942374644,
+            "q_only": 0.40704632051477607,
+            "generic_cell_state": 0.3508168967232591,
+            "technical_only": 0.3452613524012662
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": 0.3084634989333027
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 3.672072335797555
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CX3CR1",
+            "GAPDH",
+            "HPRT1",
+            "P2RY12",
+            "PPIA",
+            "RPL13A",
+            "SELPLG",
+            "SIGLEC11",
+            "TBP",
+            "TMEM119",
+            "UBC"
+          ]
+        },
+        "HLA-DRA": {
+          "three_effect_decomposition": {
+            "effect_1_direct_q_dependence": 0.5739592904085176,
+            "effect_2_complementary_rna_dependence": 0.1250169053420649,
+            "effect_3_query_identity_dependence": "see query_swap_common_coordinates",
+            "note": "all arms share the SAME normalization within a given rule, so any T_B advantage here cannot come from a normalization difference between arms"
+          },
+          "stage1_teacher_vs_controls_r2": {
+            "T_A_q_visible": 0.5089156443902859,
+            "T_B_q_blind": 0.4950863355981757,
+            "q_only": 0.5739592904085176,
+            "generic_cell_state": 0.34211997285922224,
+            "technical_only": 0.37006943025611083
+          },
+          "stage2_student_r2": {
+            "student_predicts_measured_target": 0.4423962790157192
+          },
+          "q_mutation_max_shift": {
+            "T_B_q_blind": 0.0,
+            "T_A_q_visible": 2.9509963797125995
+          },
+          "lawful_student_genes": 143,
+          "forbidden_genes": [
+            "ACTB",
+            "B2M",
+            "CD74",
+            "CIITA",
+            "GAPDH",
+            "HLA-DPA1",
+            "HLA-DRA",
+            "HLA-DRB1",
+            "HPRT1",
+            "PPIA",
+            "RPL13A",
+            "TBP",
+            "UBC"
+          ]
+        }
+      }
+    },
+    "query_swap_common_coordinates": {
+      "APOE->P2RY12": {
+        "r2_correct_query": -0.005186796651177605,
+        "r2_swapped_query": 0.8957712113279006,
+        "degrades_under_swap": false
+      },
+      "APOE->HLA-DRA": {
+        "r2_correct_query": -0.005186796651177605,
+        "r2_swapped_query": 0.8268728652386409,
+        "degrades_under_swap": false
+      },
+      "P2RY12->APOE": {
+        "r2_correct_query": 0.15246141445620398,
+        "r2_swapped_query": 0.7041250707207494,
+        "degrades_under_swap": false
+      },
+      "P2RY12->HLA-DRA": {
+        "r2_correct_query": 0.15246141445620398,
+        "r2_swapped_query": 0.8401397177455079,
+        "degrades_under_swap": false
+      },
+      "HLA-DRA->APOE": {
+        "r2_correct_query": -0.1925237368505266,
+        "r2_swapped_query": 0.6618468906887842,
+        "degrades_under_swap": false
+      },
+      "HLA-DRA->P2RY12": {
+        "r2_correct_query": -0.1925237368505266,
+        "r2_swapped_query": 0.8937173738530004,
+        "degrades_under_swap": false
+      }
+    }
+  },
+  "verdicts": {
+    "T_B_invariant_to_q_mutation": true,
+    "T_A_moves_under_q_mutation": true,
+    "T_B_beats_q_only_everywhere": false,
+    "T_B_beats_generic_cell_state_everywhere": false,
+    "T_B_beats_technical_only_everywhere": false
+  },
+  "interpretation_guard": "Predictability is NOT acceptance. T_B's invariance to a q-count intervention is necessary, not sufficient. These are synthetic counts with a planted partner-state signal; the experiment tests whether the constructions and controls behave correctly, not whether the biology is real.",
+  "training_authorized": false,
+  "protected_data_opened": false,
+  "producer_sha256": "165355b0c22c8ce0bac2d18218e535a5cdb2b0d0e22b286533c0a5db3d73ac38"
+}
