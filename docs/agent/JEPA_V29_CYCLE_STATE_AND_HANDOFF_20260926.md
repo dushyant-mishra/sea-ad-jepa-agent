@@ -159,3 +159,71 @@ readers → `run_inactive_reference_update`.
 TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED
 D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF
 ```
+
+---
+
+## 7. Cycle close-out (appended after Tasks 1-3)
+
+**PR #178** carries this entire branch, 24 commits. PRs #179/#180/#181 carry the
+three lanes stopped to conserve budget, each labelled `INCOMPLETE_STOPPED` with
+an explicit instruction that no number on them is citable.
+
+### Delivered after the handoff was first written
+
+* **Control sensitivity ledger V1 then V2** — every control needs three legs:
+  quiet on healthy, **must fire** on planted, **must refuse to score** on
+  degenerate. V2 repaired four V1 defects, each *demonstrated* rather than
+  asserted. The worst: V1 hashed `repr()`, and NumPy **truncates** repr, so two
+  10,000-element arrays differing at index 5000 hashed identically — a
+  distinctness detector blind precisely on real-sized data. **36/36, 0 skipped.**
+* **Complete machine-state snapshot** — planted failures must leave every
+  mutable tensor byte-identical (online, teacher, predictor, every optimizer
+  state tensor, every param_group scalar, cursor). Proven able to detect a
+  single 1e-6 weight perturbation and a cursor advance alone.
+* **Task 2, q-leakage through the real path.** Production rule
+  `log1p(raw x 10000 / source_library)`; `pack_valid_tokens` does not normalize,
+  so the model path is normalization-agnostic and q-safety belongs to the
+  **reader boundary**. Token-dropping does not move the denominator (it is a
+  frozen metadata constant); but that constant **includes q**, so student inputs
+  are not invariant to q's raw value. **Bounding the claim:** the reader and the
+  neural harness are **disjoint subsystems** — the reader feeds masking
+  calibration, never the update harness. This describes the masking lane, not an
+  established neural production rule.
+* **Task 3, reported `NOT_INFORMATIVE`.** Four corrections, each producing a
+  clean-looking table that would have supported "the q-blind teacher fails":
+  n≈p; a fixture with no complementary signal; fixed `alpha` across arms of
+  different width; inner CV tuned within-operator then evaluated across
+  operators. Fixing the last moved T_B from -0.8360 to +0.1525 on P2RY12. The
+  final design is sound and **still does not discriminate**, because the
+  fixture's signal split between q and the program genes is an arbitrary choice.
+  Tuning it until T_B wins would fit the fixture to the desired answer. **The
+  comparison needs real RNA.** The harness, exclusion sets, missingness channel,
+  degeneracy guard and structurally-matched tuning are correct and reusable.
+
+### Corrections to my own published claims, all withdrawn or restated
+
+| | |
+|---|---|
+| **S9** | environment "defective" — **RETRACTED IN FULL**; I invoked it without `Library/bin` on PATH. No re-execution required. |
+| gradient "40/40 affirmative" | **WITHDRAWN** — counters are hard-coded literals on the healthy path |
+| Stage73 "the graph lost" | **RESTATED** — CI includes zero, so *failure to establish an advantage*, not a demonstrated loss |
+| leakage worst case | **9.49e-02 → 6.91e-01**, 7x larger; a q-count loop never entered the computation |
+| substrate consumers | **four → six** (caught by Lane B, not by me) |
+| S17 / S18 | a directory never swept; an ambiguous count |
+
+### The through-line
+
+Five instances of one failure mode across independent lanes: my vacuous gradient
+counters, Lane A's `GLOBAL_CONTEXT_ONLY`, three of Agent 5's eight controls,
+Stage73's bit-identical shuffles, and my own `repr`-based detector. **Controls
+that cannot fail are systemic here.** Four of my own last five findings were
+corrections to my measurement rather than discoveries about the system — which
+is the reason to prove every control can fail before trusting a real-data run.
+
+### Restored after being dropped
+
+The **paired-multiome authentication lane** (GSE214637/GSE214979, GSE272082) was
+stopped with Agent 6 and not carried forward as a debt. It is running again as a
+dedicated lane. Two traps are non-negotiable there: **GSE214979 is a subseries of
+GSE214637**, not an independent cohort; and **GSE272082 is n=9 people, not n=27**
+— three brain regions per donor are not three donors.
