@@ -177,5 +177,12 @@
   "WHAT_THIS_DOES_NOT_SHOW": "that the surviving program variation is BIOLOGICAL. Ambient RNA contamination, nuclear size and dissociation stress all vary per nucleus and do not cancel in the ratio. Separating those from real cell state needs the disjoint-nucleus comparison on the FULL104 cohort, which is not run here. It also rests on R8's summary statistics rather than R8's per-cell counts, which were not released in the package.",
   "training_authorized": false,
   "expression_opened": false,
-  "producer_sha256": "10bd8ab80d50b75a706b2f3178079ed476b3ce6f55c489d5359dc716929d5323"
+  "producer_sha256": "10bd8ab80d50b75a706b2f3178079ed476b3ce6f55c489d5359dc716929d5323",
+  "SUPERSEDED_2026_09_27": {
+    "status": "UNVERIFIABLE_INPUT",
+    "why": "this analysis reasons entirely from R8's recorded summary statistics - zero fraction, both-positive count, median sampling sd - every one of which is a function of which genes R8's columns actually held. R8 read an unhashed development cache at /tmp/jepa_tour_logexpr.npz which the R8 package explicitly did not include (original_cell_level_data_included false, original_bundle_copied false) and which no longer exists. The materializer lineage that most plausibly produced it - foundation_materialize_discovery_expression.py, sha256 ede646be8030ef16 - carries the same HVS_COMMON/SEA_AD_COMMON positional mapping defect that scrambled the Level-4 gene identities.",
+    "not_withdrawn_as_wrong": "withdrawn as UNCHECKABLE, which is the same operational status",
+    "superseded_by": "results/v29/FULL104_RESOLUTION_LADDER_MASKED_V1.json and LADDER_VARIANCE_COMPONENTS_MASKED_V1.json, which answer the same question on 187,909 nuclei through decoders verified cell by cell against authenticated sources",
+    "documented_in": "docs/agent/V29_R7_R8_INPUT_LINEAGE_UNVERIFIABLE_20260927.md"
+  }
 }
