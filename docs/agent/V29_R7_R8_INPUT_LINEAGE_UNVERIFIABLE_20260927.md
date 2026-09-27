@@ -92,3 +92,69 @@ everything except the one thing that determined its numbers. Any future
 development artifact must record a digest of every input it reads, including
 scratch caches, or its results expire the moment the scratch directory is
 cleared.
+
+---
+
+## UPGRADED: not unverifiable — DEFECTIVE. 2026-09-27
+
+The verdict above was too soft, and two independent lines of evidence closed it.
+
+### The exact shard R8 used, read from GitHub
+
+The discovery corpus is in the repository history. Shard
+`exports/foundation_corpus_discovery_v1/discovery_expression_shards/op19.counts.npz`
+is operator 19 — the HVS myeloid matrix — 128 cells × 41,238 addresses of raw
+int32 counts. Read straight out of git and probed with the verified HVS decoder:
+
+| gene | naive address | naive detection | decoded column | decoded detection |
+|---|---|---|---|---|
+| APOE | 6186 | **0.0%** | 22730 | **55.5%** |
+| CSF1R | 14980 | **0.0%** | 6276 | **76.6%** |
+| CD74 | 392 | 10.9% | 6283 | **85.2%** |
+| P2RY12 | 12469 | 19.5% | 4436 | **76.6%** |
+| C1QA | 13365 | 0.0% | 286 | 28.9% |
+| CX3CR1 | 12239 | 1.6% | 3688 | 32.0% |
+| TREM2 | 2044 | **81.2%** | 6949 | 13.3% |
+
+The discovery corpus carries the same scramble as Level-4, by the same
+mechanism.
+
+### The 361 microglia, reconstructed from frozen metadata
+
+An independent audit (PR #185, commit `a597784d`) reconstructed R7/R8's subset
+without touching expression outcomes:
+
+- **128 HVS microglia, all operator 19**
+- **233 SEA-AD microglia, all operator 25**
+- **0 NPH52**
+- 50 donors: 23 HVS + 27 SEA-AD
+
+So the 128 HVS cells probed above **are** R8's HVS microglia, and the remaining
+233 come from operator 25, also an affected family. My earlier guess that the
+mixture was "HVS plus NPH52" was wrong: there is **no NPH52 in R7/R8 at all**,
+and therefore no sound arm. Every named-gene measurement in R7 and R8 was
+computed on scrambled coordinates.
+
+### Revised status
+
+`R8_DEPTH_VS_PROGRAM_DISPERSION_V3` and the underlying R7/R8 results move from
+UNVERIFIABLE_INPUT to **DEFECTIVE_INPUT_DEMONSTRATED**. Their APOE, P2RY12 and
+HLA-DRA program measurements, partner counts, split-half correlations and
+held-out named-RNA readouts all require decoded replay before any of them mean
+anything about those genes.
+
+What survives: the donor-split mechanics, the anti-leak engineering, and the
+contract design. Those are gene-label independent. The biological conclusions
+are not.
+
+**The INSUFFICIENTLY_MEASURED verdict cannot be used as evidence against the
+candidate programs.** It was not a measurement of those programs.
+
+### V44 is affected too
+
+The tiny-teacher tournament binds the same 50k NPZ, output sha256
+`4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92`, whose own
+audit records that exact digest and whose producer applies the same faulty
+assumption. Its PCA and ridge arithmetic remain reproducible; it cannot be used
+as biological evidence for choosing a teacher architecture until replayed on
+corrected expression.
