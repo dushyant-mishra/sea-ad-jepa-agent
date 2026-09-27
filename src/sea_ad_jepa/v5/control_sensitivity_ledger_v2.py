@@ -150,14 +150,85 @@ def require_comparator_capacity(capacity: int, needed: int, *, label: str) -> No
 # ---------------------------------------------------------------------------
 def classify_evidence(mean_delta: float, ci_lower: float, ci_upper: float,
                       *, experiment_valid: bool) -> str:
-    """An inconclusive interval is EVIDENCE, not a broken control."""
+    """An inconclusive interval is EVIDENCE, not a broken control.
+
+    Revision: rejects nonfinite bounds and estimates that contradict their own
+    interval. A mean lying outside its CI is an arithmetic impossibility, and
+    silently classifying it would let a corrupted upstream computation through.
+    """
+    import math
     if not experiment_valid:
         return EVIDENCE_INVALID
+    for name, v in (("mean_delta", mean_delta), ("ci_lower", ci_lower),
+                    ("ci_upper", ci_upper)):
+        if not isinstance(v, (int, float)) or isinstance(v, bool) or not math.isfinite(float(v)):
+            raise ValueError(f"{name} must be a finite real number, got {v!r}")
     if ci_lower > ci_upper:
         raise ValueError("ci_lower exceeds ci_upper")
+    if not (ci_lower <= mean_delta <= ci_upper):
+        raise ValueError(
+            f"contradictory estimate: mean_delta {mean_delta!r} lies outside its own "
+            f"interval [{ci_lower!r}, {ci_upper!r}]")
     if ci_lower <= 0.0 <= ci_upper:
         return EVIDENCE_INCONCLUSIVE
     return EVIDENCE_POSITIVE if mean_delta > 0 else EVIDENCE_NEGATIVE
+
+
+def require_structurally_distinct_graphs(a: Sequence[tuple], b: Sequence[tuple],
+                                         *, label: str) -> None:
+    """Graph-aware distinctness: canonical edge multiset, order-independent.
+
+    `require_structurally_distinct` digests the object as given, so two edge
+    LISTS holding the same graph in different order would read as distinct.
+    Graphs must always be compared by canonical edge representation, otherwise
+    edge-list ordering alone could manufacture a false structural difference.
+    """
+    if a is b:
+        raise DegenerateConfiguration(f"{label}: both arms are the same object")
+    da, db = canonical_edge_digest(a), canonical_edge_digest(b)
+    if da == db:
+        raise DegenerateConfiguration(
+            f"{label}: graphs are structurally identical ({da[:12]}…); "
+            "edge-list ordering is not a structural difference")
+
+
+# ---------------------------------------------------------------------------
+# complete machine-state snapshot
+# ---------------------------------------------------------------------------
+def full_machine_snapshot(modules, *, cursor: int) -> dict[str, str]:
+    """Digest EVERY piece of mutable training state, not a sampled subset.
+
+    A partial snapshot is how an incorrect update slips through: checking the
+    first optimizer step counter and the COUNT of populated Adam states leaves
+    the online parameters, the individual moment TENSORS and the cursor free to
+    move undetected. Everything mutable is digested here.
+    """
+    snap: dict[str, str] = {}
+    for tag, module in (("online", modules.online), ("teacher", modules.teacher),
+                        ("predictor", modules.predictor)):
+        for name, tensor in sorted(module.state_dict().items()):
+            snap[f"{tag}.{name}"] = canonical_digest(tensor.detach().cpu().numpy())
+    opt = modules.optimizer.state_dict()
+    for pid, st in sorted(opt.get("state", {}).items(), key=lambda kv: str(kv[0])):
+        for k in sorted(st):
+            v = st[k]
+            snap[f"optimizer.state[{pid}].{k}"] = (
+                canonical_digest(v.detach().cpu().numpy())
+                if hasattr(v, "detach") else canonical_digest(v))
+    for gi, group in enumerate(opt.get("param_groups", [])):
+        for k in sorted(group):
+            if k == "params":
+                continue
+            snap[f"optimizer.param_groups[{gi}].{k}"] = canonical_digest(group[k])
+    snap["cursor"] = canonical_digest(int(cursor))
+    return snap
+
+
+def snapshot_changed_keys(before: Mapping[str, str],
+                          after: Mapping[str, str]) -> list[str]:
+    """Every key whose digest moved, plus any key added or removed."""
+    keys = set(before) | set(after)
+    return sorted(k for k in keys if before.get(k) != after.get(k))
 
 
 # ---------------------------------------------------------------------------

@@ -23,7 +23,8 @@ from sea_ad_jepa.v5.control_sensitivity_ledger_v2 import (
     ControlSensitivityLedgerV2, DegenerateConfiguration, LegResult, run_leg,
     classify, classify_evidence, canonical_digest, canonical_edge_digest,
     require_structurally_distinct, require_intervention_effective,
-    require_comparator_capacity,
+    require_comparator_capacity, require_structurally_distinct_graphs,
+    full_machine_snapshot, snapshot_changed_keys,
     FIRED, QUIET, REFUSED_DEGENERATE,
     SENSITIVE, VACUOUS_DID_NOT_FIRE, FALSE_POSITIVE_ON_HEALTHY,
     HEALTHY_LEG_UNEVALUABLE, SCORED_A_DEGENERATE_CONFIG, DEGENERATE_LEG_FIRED,
@@ -196,21 +197,16 @@ def _modules():
                                    init_seed=8113002)
 
 
-def _opt_step(m):
-    st = m.optimizer.state_dict()["state"]
-    return 0 if not st else int(next(iter(st.values()))["step"])
-
-
-def _adam_populated(m):
-    return sum(1 for s in m.optimizer.state.values() if "exp_avg" in s)
-
-
 def _probe_gate(damage):
-    """Return (refused, reason_matches, state_unchanged). No bare RuntimeError pass."""
+    """COMPLETE before/after snapshot — every mutable tensor, not a sampled subset.
+
+    The prior revision compared only the first optimizer step counter, the COUNT
+    of populated Adam states and the teacher parameters. That left the online
+    and predictor parameters, the individual moment TENSORS and the cursor free
+    to move undetected, so the check verified less than its name claimed.
+    """
     m, kw = _modules(), _case()
-    before_step = _opt_step(m)
-    before_adam = _adam_populated(m)
-    before_teacher = {k: v.detach().clone() for k, v in m.teacher.state_dict().items()}
+    before = full_machine_snapshot(m, cursor=0)
     handle = None
     if damage in ("zero", "nonfinite"):
         p = next(x for x in m.online.parameters() if x.requires_grad)
@@ -227,25 +223,59 @@ def _probe_gate(damage):
     finally:
         if handle is not None:
             handle.remove()
-    cur = m.teacher.state_dict()
-    state_unchanged = (_opt_step(m) == before_step
-                       and _adam_populated(m) == before_adam
-                       and all(torch.equal(cur[k], v) for k, v in before_teacher.items()))
-    return refused, reason_ok, state_unchanged
+    after = full_machine_snapshot(m, cursor=0 if refused else 1)
+    return refused, reason_ok, snapshot_changed_keys(before, after)
 
 
 @pytest.mark.parametrize("damage", ["zero", "nonfinite", "teacher"])
-def test_1B_planted_defect_refuses_for_the_right_reason_with_no_state_advance(damage):
-    refused, reason_ok, state_unchanged = _probe_gate(damage)
+def test_1B_planted_defect_refuses_and_leaves_ALL_state_byte_identical(damage):
+    refused, reason_ok, changed = _probe_gate(damage)
     assert refused, f"{damage}: gate did not refuse"
     assert reason_ok, f"{damage}: refused for an UNEXPECTED reason - not proof the gate fired"
-    assert state_unchanged, f"{damage}: optimizer/Adam/teacher state advanced despite refusal"
+    assert changed == [], f"{damage}: state advanced despite refusal: {changed}"
 
 
-def test_1B_healthy_execution_is_accepted_and_advances_state():
-    refused, _, state_unchanged = _probe_gate(None)
+def test_1B_healthy_execution_advances_the_expected_state():
+    """The converse: a healthy update must move online, predictor, Adam and cursor."""
+    refused, _, changed = _probe_gate(None)
     assert not refused
-    assert not state_unchanged, "a healthy update must actually advance state"
+    assert changed, "a healthy update must actually advance state"
+    fams = {k.split(".")[0].split("[")[0] for k in changed}
+    for expected in ("online", "predictor", "teacher", "optimizer", "cursor"):
+        assert any(f.startswith(expected) or expected in k
+                   for f in fams for k in changed if k.startswith(expected)) or \
+               any(k.startswith(expected) for k in changed), \
+               f"healthy update did not advance {expected}: {sorted(fams)}"
+    assert any(k.startswith("optimizer.state[") and k.endswith(".exp_avg") for k in changed), \
+        "healthy update did not populate an Adam first moment"
+    assert any(k.startswith("optimizer.state[") and k.endswith(".exp_avg_sq") for k in changed), \
+        "healthy update did not populate an Adam second moment"
+
+
+def test_1B_snapshot_covers_every_mutable_family():
+    """Guard against the snapshot silently narrowing later."""
+    m = _modules()
+    snap = full_machine_snapshot(m, cursor=0)
+    fams = {k.split(".")[0] for k in snap}
+    assert {"online", "teacher", "predictor", "cursor"} <= fams, sorted(fams)
+    n_params = sum(len(mod.state_dict()) for mod in (m.online, m.teacher, m.predictor))
+    assert len([k for k in snap if not k.startswith(("optimizer", "cursor"))]) == n_params
+
+
+def test_1B_snapshot_detects_a_single_perturbed_parameter():
+    """A snapshot that cannot detect one changed weight is not a snapshot."""
+    m = _modules()
+    before = full_machine_snapshot(m, cursor=0)
+    with torch.no_grad():
+        next(iter(m.online.parameters())).add_(1e-6)
+    changed = snapshot_changed_keys(before, full_machine_snapshot(m, cursor=0))
+    assert len(changed) == 1 and changed[0].startswith("online."), changed
+
+
+def test_1B_snapshot_detects_a_cursor_advance_alone():
+    m = _modules()
+    before = full_machine_snapshot(m, cursor=0)
+    assert snapshot_changed_keys(before, full_machine_snapshot(m, cursor=1)) == ["cursor"]
 
 
 def test_1B_an_unrelated_runtimeerror_is_not_counted_as_detection():
@@ -291,3 +321,57 @@ def test_ledger_v2_refuses_empty_and_duplicate():
     led.record("x", **kw)
     with pytest.raises(ValueError):
         led.record("x", **kw)
+
+
+# =========================================================================
+# guards added after review: nonfinite / contradictory intervals, graph canon
+# =========================================================================
+@pytest.mark.parametrize("bad", [float("nan"), float("inf"), float("-inf")])
+def test_evidence_rejects_nonfinite_bounds(bad):
+    with pytest.raises(ValueError, match="finite real number"):
+        classify_evidence(bad, -1.0, 1.0, experiment_valid=True)
+    with pytest.raises(ValueError, match="finite real number"):
+        classify_evidence(0.0, bad, 1.0, experiment_valid=True)
+    with pytest.raises(ValueError, match="finite real number"):
+        classify_evidence(0.0, -1.0, bad, experiment_valid=True)
+
+
+def test_evidence_rejects_estimate_outside_its_own_interval():
+    """A mean outside its CI is arithmetically impossible upstream."""
+    with pytest.raises(ValueError, match="contradictory estimate"):
+        classify_evidence(5.0, -1.0, 1.0, experiment_valid=True)
+    with pytest.raises(ValueError, match="contradictory estimate"):
+        classify_evidence(-5.0, -1.0, 1.0, experiment_valid=True)
+
+
+def test_evidence_rejects_inverted_interval():
+    with pytest.raises(ValueError, match="ci_lower exceeds ci_upper"):
+        classify_evidence(0.0, 1.0, -1.0, experiment_valid=True)
+
+
+def test_evidence_still_accepts_the_real_stage73r_numbers():
+    """The guards must not reject genuine data."""
+    assert classify_evidence(-0.008366299078667596,
+                             -0.01959704363673176, 0.00016928217069961393,
+                             experiment_valid=True) == EVIDENCE_INCONCLUSIVE
+
+
+def test_graph_comparison_uses_canonical_edges_not_list_order():
+    """Edge-list ordering alone must not make identical graphs look distinct."""
+    g1 = [("A", "B"), ("B", "C"), ("C", "D")]
+    g2 = [("C", "D"), ("A", "B"), ("B", "C")]
+    # the generic detector, given raw lists, WOULD call these distinct
+    require_structurally_distinct(g1, g2, label="generic-on-raw-lists")
+    # the graph-aware detector correctly refuses
+    with pytest.raises(DegenerateConfiguration, match="structurally identical"):
+        require_structurally_distinct_graphs(g1, g2, label="graph-aware")
+
+
+def test_graph_comparison_accepts_genuinely_different_graphs():
+    require_structurally_distinct_graphs([("A", "B")], [("A", "C")], label="real")
+
+
+def test_graph_comparison_rejects_same_object():
+    g = [("A", "B")]
+    with pytest.raises(DegenerateConfiguration, match="same object"):
+        require_structurally_distinct_graphs(g, g, label="x")

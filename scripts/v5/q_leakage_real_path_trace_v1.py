@@ -93,27 +93,39 @@ def main():
 
     # Library sizes spanning realistic snRNA depth. No expression opened.
     libs = np.array([1_000, 2_500, 5_000, 10_000, 20_000, 50_000], dtype=np.float64)
-    # q counts spanning absent -> highly expressed
+    # initial q abundance, spanning absent -> highly expressed
     q_counts = np.array([0, 1, 5, 20, 100, 500], dtype=np.float64)
     # a representative other gene whose value we watch
     other_raw = np.array([1.0, 5.0, 25.0])
 
+    # CORRECTION (raised in review of the first revision): the previous version
+    # looped over q_counts but `q` never entered the shift computation, so the
+    # six values produced DUPLICATE rows and gave the false impression of
+    # measuring how leakage varies with initial q abundance. It does not vary
+    # with q for an additive delta; it varies with q only for the counterfactual
+    # that actually depends on it — REMOVING q from the denominator entirely,
+    # i.e. q_delta = -q. Both are now computed and labelled.
     rows = []
     for lib in libs:
         for q in q_counts:
-            # counterfactual: q's raw count changes by +q_delta, so the
-            # full-source library changes by the same amount
-            for q_delta in (1.0, 10.0, 100.0):
+            deltas = [("additive_+1", 1.0), ("additive_+10", 10.0),
+                      ("additive_+100", 100.0),
+                      ("q_excluded_from_denominator", -float(q))]
+            for kind, q_delta in deltas:
                 lib2 = lib + q_delta
+                if lib2 <= 0:
+                    continue
                 for o in other_raw:
                     v1 = float(norm(o, lib))
                     v2 = float(norm(o, lib2))
                     rows.append({
+                        "counterfactual": kind,
                         "source_library": float(lib), "q_raw": float(q),
                         "q_delta": float(q_delta), "other_gene_raw": float(o),
                         "norm_before": v1, "norm_after": v2,
                         "abs_shift": abs(v2 - v1),
                         "rel_shift": abs(v2 - v1) / max(v1, 1e-12),
+                        "q_fraction_of_library": float(q) / float(lib),
                     })
 
     shifts = np.array([r["abs_shift"] for r in rows])
@@ -154,10 +166,32 @@ def main():
             "max_rel_shift_any_configuration": float(rels.max()),
             "worst_case": worst,
             "typical_library_5000_q_delta_1_max_abs_shift": float(typ_max),
+            "q_excluded_counterfactual_max_abs_shift": float(max(
+                (r["abs_shift"] for r in rows
+                 if r["counterfactual"] == "q_excluded_from_denominator"), default=0.0)),
             "interpretation": (
-                "the channel is real but its capacity is bounded by q_delta/library. "
-                "It is largest for shallow libraries and large count changes, and "
-                "negligible for a single-count change at typical depth."),
+                "per-feature shift is bounded by q_delta/library. Largest for shallow "
+                "libraries and large count changes; negligible for a single count at "
+                "typical depth."),
+        },
+        "WHAT_THIS_IS_NOT": {
+            "an_empirical_bound_on_information_leakage": False,
+            "an_empirical_bound_on_model_predictability": False,
+            "why": (
+                "these are PER-FEATURE magnitudes of a deterministic shift, not an "
+                "information-theoretic quantity. The same small shift applied "
+                "coherently across thousands of RNA features can be far more "
+                "detectable than any single feature's magnitude suggests, because a "
+                "learned model can aggregate a systematic direction across features. "
+                "Establishing a leakage bound requires an adversarial recovery "
+                "experiment - train a probe to predict q from the student-visible "
+                "inputs - which is NOT_EXECUTED here."),
+            "correction_history": (
+                "a prior revision looped over six initial q counts that never entered "
+                "the shift computation, producing duplicate rows and implying a "
+                "dependence on q abundance that was not measured. The loop now also "
+                "computes the q_excluded_from_denominator counterfactual, which is the "
+                "one that genuinely depends on initial q abundance."),
         },
         "consequence_for_q_safety": (
             "A q-safe student requires the denominator to exclude q, or a fixed "
