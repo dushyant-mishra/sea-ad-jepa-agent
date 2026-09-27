@@ -313,3 +313,36 @@ def test_hurdle_DE_power_is_not_presented_as_cross_validation():
 
 def test_effect_prior_is_labelled_a_planning_assumption():
     assert EFFECT_SIZE_PRIOR_STATUS == "PLANNING_ASSUMPTION_NOT_ESTABLISHED_DISTRIBUTION"
+
+
+# ==========================================================================
+# SCOPE REGRESSION: prose said "all primary donor-anchored inference", the
+# guard only checked five demographic covariates. A donor-held-out evaluation
+# with no such covariate passed with the disputed donors included.
+# ==========================================================================
+from sea_ad_jepa.v5.donor_exclusion_register_v1 import DONOR_ANCHORED_ROLES
+
+
+@pytest.mark.parametrize("role", list(DONOR_ANCHORED_ROLES))
+def test_lane6_blocked_in_any_donor_anchored_role_without_demographics(role):
+    """THE GAP: no demographic covariate at all, yet the donor join is load-bearing."""
+    with pytest.raises(ExclusionViolation, match="ALL primary donor-anchored"):
+        run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["total_counts"],
+                               input_manifest=ONLY_979, cross_study_claim=False,
+                               donor_anchored_roles=[role])
+
+
+def test_lane6_still_permitted_in_a_genuinely_non_donor_anchored_analysis():
+    """The quarantine stays SCOPED. A cell-level analysis with no donor join is fine."""
+    _, r = run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["total_counts"],
+                                  input_manifest=ONLY_979, cross_study_claim=False,
+                                  donor_anchored_roles=[])
+    assert r["donor_anchored_roles"] == ()
+
+
+def test_unrecognised_role_name_does_not_silently_disable_the_check():
+    """A typo must not become a bypass; the demographic path still fires."""
+    with pytest.raises(ExclusionViolation):
+        run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["sex"],
+                               input_manifest=ONLY_979, cross_study_claim=False,
+                               donor_anchored_roles=["dnor_held_out"])

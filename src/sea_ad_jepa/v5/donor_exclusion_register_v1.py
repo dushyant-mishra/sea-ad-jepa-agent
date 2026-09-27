@@ -155,10 +155,15 @@ def _norm(d) -> str:
     return str(d).strip().upper().replace("-", "").replace("_", "")
 
 
+DONOR_ANCHORED_ROLES = ("donor_held_out", "donor_clustered", "donor_level_endpoint",
+                        "donor_covariate", "donor_transport", "donor_split")
+
+
 def enforce_exclusions(donors: Iterable[str], *, covariates: Sequence[str] = (),
                        datasets: Sequence[str] = (),
                        joint_claim: bool = False,
-                       sensitivity_arm_present: bool = False
+                       sensitivity_arm_present: bool = False,
+                       donor_anchored_roles: Sequence[str] = ()
                        ) -> list[ExclusionDecision]:
     """Apply both directives. Raises when a rule is violated rather than warning.
 
@@ -171,13 +176,23 @@ def enforce_exclusions(donors: Iterable[str], *, covariates: Sequence[str] = (),
 
     r1 = REGISTER["GSE214979_GEM_LANE_6_IDENTITY_CONFLICT"]
     hit1 = tuple(d for d in r1["donors"] if _norm(d) in present)
-    trig1 = bool(hit1) and bool(cov & set(r1["trigger_covariates"]))
+    # SCOPE CORRECTION. An earlier revision raised ONLY when one of five
+    # demographic covariates appeared. The register's own text says the
+    # quarantine covers ALL primary donor-anchored inference, so a
+    # donor-held-out evaluation with no demographic covariate passed with the
+    # disputed donors included - prose and guard had diverged. The donor JOIN
+    # itself is what is unresolved; using it to certify out-of-donor testing is
+    # exactly the case the directive names as insufficient.
+    roles = {str(r).strip().lower() for r in donor_anchored_roles}
+    bad_roles = sorted(roles & set(DONOR_ANCHORED_ROLES))
+    cov_hit = sorted(cov & set(r1["trigger_covariates"]))
+    trig1 = bool(hit1) and (bool(cov_hit) or bool(bad_roles))
     if trig1:
+        why = (f"demographic covariates {cov_hit}" if cov_hit else "") +               (" and " if cov_hit and bad_roles else "") +               (f"donor-anchored role(s) {bad_roles}" if bad_roles else "")
         raise ExclusionViolation(
-            f"GEM lane 6 donors {hit1} are present while demographic covariates "
-            f"{sorted(cov & set(r1['trigger_covariates']))} are in the model. Their sex "
-            "and age are transposed between GEO and the series metadata. Exclude them "
-            "or remove those covariates.")
+            f"GEM lane 6 donors {hit1} are present in an analysis using {why}. Their "
+            "donor join is unresolved, so they are quarantined from ALL primary "
+            "donor-anchored inference - not merely from demographic covariates.")
     decisions.append(ExclusionDecision(
         "GSE214979_GEM_LANE_6_IDENTITY_CONFLICT", bool(hit1), hit1,
         "present but no demographic covariate in use" if hit1 and not trig1
@@ -296,6 +311,7 @@ class SensitivityArmResult:
 def run_guarded_evaluation(*, donors: Sequence[str], covariates: Sequence[str],
                            input_manifest: Mapping[str, str],
                            cross_study_claim: bool,
+                           donor_anchored_roles: Sequence[str] = (),
                            sensitivity_arm: "SensitivityArmResult | None" = None,
                            analysis=None):
     """THE entry point. Every evaluation touching these datasets goes through it.
@@ -321,7 +337,8 @@ def run_guarded_evaluation(*, donors: Sequence[str], covariates: Sequence[str],
 
     enforce_exclusions(donors, covariates=covariates, datasets=datasets,
                        joint_claim=joint,
-                       sensitivity_arm_present=sensitivity_arm is not None)
+                       sensitivity_arm_present=sensitivity_arm is not None,
+                       donor_anchored_roles=donor_anchored_roles)
 
     receipt = {
         "datasets_derived_from_inputs": datasets,
@@ -330,6 +347,7 @@ def run_guarded_evaluation(*, donors: Sequence[str], covariates: Sequence[str],
         "joint_enforced": joint,
         "overlap_donors_present": present_overlap,
         "sensitivity_arm_verified": sensitivity_arm is not None and bool(present_overlap),
+        "donor_anchored_roles": tuple(donor_anchored_roles),
         "input_manifest_digest": _hashlib.sha256(
             "".join(f"{k}:{v}" for k, v in sorted(input_manifest.items())).encode()
         ).hexdigest(),
