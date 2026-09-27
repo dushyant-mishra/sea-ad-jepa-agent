@@ -92,3 +92,55 @@ dissociation stress — lives there too. Separating them requires the six reserv
 readout genes, which are extracted and deliberately unspent.
 
 No teacher has been fitted and no biological claim is made from either view.
+
+---
+
+## Correction and supersession, 2026-09-27
+
+Two defects in the artifact these results were computed from, both found in
+review after the results above were reported.
+
+### 1. Unmeasured written as zero
+
+Two addresses are structurally absent from their sources: LPL (13734) from the
+filtered HVS object, PGK1 (2628) from all eleven SEA-AD matrices. The extractor
+recorded both, per matrix, in the receipt — and wrote their values into the
+counts array as `0`, indistinguishable from a measured zero. PGK1 is affected
+in **170,528 of 187,909 nuclei, 90.8%**; LPL in 2,117, 1.1%.
+
+The ladder above was not misled — every query and panel address is available in
+every matrix, and the panel sums never touch either gene. But the artifact is
+unsafe for any later consumer, and one diagnostic reported above IS wrong: the
+"8-gene housekeeping reference" is a **7-gene** reference for SEA-AD, so its
+quoted zero fraction is understated.
+
+`full104_myeloid_panel_extraction_v3_masked.py` emits `address_available` per
+nucleus per address, and refuses to write if a nonzero count ever sits at an
+unavailable address. `full104_resolution_ladder_v2_masked.py` requires that
+mask, refuses any artifact lacking it, and marks a program VOID rather than
+computing when a partner address is unavailable for the rows it was given.
+
+**Consequence for the independent-readout test, which has not run:** LPL is a
+reserved readout of APOE_LIPID. HVS must be excluded from any evaluation
+requiring observed LPL, and the mask is what makes that enforceable rather than
+remembered.
+
+### 2. My description of the denominator was wrong, not merely loose
+
+I wrote that "HVS's reference denominator therefore includes LPL where other
+sources exclude it." That is false. HVS never measured LPL, so LPL contributes
+nothing to HVS's total observed count and there is nothing to include.
+
+What the implementation actually computes:
+
+> `total_excluding_29` = the nucleus's total observed count **minus the ban-set
+> addresses that this matrix actually measures**.
+
+An unmeasured address contributes nothing to the total and is not subtracted
+from it, so the arithmetic is self-consistent. But the subtracted gene set
+differs between sources — 29 for NPH52, 28 for HVS and for each SEA-AD matrix —
+which makes this a **source-specific reference**. That is defensible within a
+source. It is not automatically comparable across sources, and any cross-source
+transport claim needs an explicit comparability check first. No such check has
+been run, and none of the results above depends on one, because every cohort is
+reported on its own.
