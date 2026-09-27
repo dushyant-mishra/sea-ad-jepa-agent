@@ -100,3 +100,14 @@ The handoff itself qualifies only **custody, scope tracking, exact text Git publ
 
 **Canonical next-chat instruction:** Read this handoff, the exact custody CSV and v7 protocol in that order; verify the current PR #178 head; audit gate v4 using actual code and receipt; consult the September 15 historical audit index before any new experiment; preserve the real-data gate and TRAINING=OFF until the outstanding scientific and governance boundaries are physically closed.
 
+
+## 9. Independent V46 source-audit addendum issued after the initial handoff
+
+Read **docs/agent/chat-exclusive-v46-20260927/manifest/GATE_V4_INDEPENDENT_STATIC_REDTEAM_ADDENDUM.md** before treating gate-v4 as fail-closed. A further independent inspection of the *same* pinned v4 code found two executor-level gaps not called out in the original handoff:
+
+1. **P0: empty/partial regime success.** The CLI permits `--regimes ""`; downstream `all([])` predicates return true, so `gate_pass=True` may be issued after **zero** simulations. A one-regime run can also call itself PASS without the two untuned frozen regimes. The committed actual v4 receipt does include all four regimes; its observed numbers are not withdrawn, but the executor requires an exact four-regime completeness invariant and adversarial empty/subset fixtures.
+2. **P1: channel ablation not part of the verdict.** `arm_pass` and `gate_pass` check only the full model; `POS_AMP` amplitude-only and `POS_COMP` composition-only ablations are diagnostic outputs, not enforced assertions. The committed receipt actually shows the expected channel pattern for all four regimes and very small POS_COMP nonlinear amplitude-leakage diagnostics. Add explicit channel assertions and failing swapped-channel fixtures before granting code-level gate authority.
+
+**Updated status:** `V4_REPORTED_SYNTHETIC_PASS__RECEIPT_ARITHMETIC_VERIFIED__EXECUTOR_FAIL_CLOSED_GAPS_OPEN__NO_FULL_INDEPENDENT_RERUN`. Keep real-data and training gates closed pending these bounded fixes, full independent assessment of the real-gene-sham design and source-axis-qualified control extraction. Do not repeat previously completed expensive tests absent a material change.
+
+The 25-file immutable original custody, 14 exact-byte remote text files and local full ZIP hashes are unchanged by this documentation addendum; refer to `manifest/LOCAL_CUSTODY_BUNDLE_OUTPUTS_V46.json` for exact physical bundle digests. The original full ZIP is a custody snapshot captured *before* this later static-audit addendum; the updated canonical GitHub handoff and addendum are the latest interpretation.
