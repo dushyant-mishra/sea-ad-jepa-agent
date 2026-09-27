@@ -1,0 +1,199 @@
+{
+  "scope": "HISTORICAL_DEVELOPMENT_ONLY_NO_BIOLOGICAL_WINNER",
+  "dataset": {
+    "source": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K historical 50k FIT DONOR sample",
+    "subset_cells": 1561,
+    "microglia_cells": 361,
+    "donors": 50,
+    "operators": 15,
+    "raw_reconstruction_max_abs_error": 5.4569682106375694e-12,
+    "preprocessing": "invert original log1p via per-row single-count quantum; renormalize teacher and masked student independently; no preexisting whole-library denominator in model inputs",
+    "heldout_eval_genes": 96,
+    "donor_folds": 2
+  },
+  "experiment": {
+    "source_only_science_qualification": false,
+    "current_v5_model_exact": false,
+    "incumbent": "scaled single EMA student/teacher proxy, NOT current V5 exact implementation",
+    "rare_component": "low-prevalence common-core RNA proxy, NOT independently validated rare microglial biology",
+    "query_specificity": "NOT QUALIFIED: 1 query gene masked per sample, latent targets are not query-conditioned",
+    "independent_biology": "NOT TESTED: evaluation is heldout RNA genes from same historical study",
+    "capacity_matched": false,
+    "protected_outcomes_opened": false,
+    "training_authorized": false
+  },
+  "features_by_fold": [
+    {
+      "core": 400,
+      "fine": 200,
+      "rare": 100,
+      "independent_eval": 96,
+      "rare_donors_min": 3,
+      "selected_addresses_sha256": "1f08d20956640dced63d904e907286b0a26505762f82017e74d83f57c6dd2472",
+      "evaluation_addresses_sha256": "7786ef155cb11b27f13f854643f99d0d10c1944e147c913657497ff199ba32ad"
+    },
+    {
+      "core": 400,
+      "fine": 200,
+      "rare": 100,
+      "independent_eval": 96,
+      "rare_donors_min": 3,
+      "selected_addresses_sha256": "8dd5fad9e54cc351efddc003efd5279219cfce05c9cecfe1e12dfdb45701fa25",
+      "evaluation_addresses_sha256": "7a37a719f6373d5a333c4b6ea961a0573f749741fad984df1a4f9ce506337513"
+    }
+  ],
+  "results": [
+    {
+      "fold": 0,
+      "arm": "TECHNICAL_ONLY",
+      "teacher_r2": 0.024115718087258875,
+      "teacher_micro_r2": 0.004722380089526745,
+      "student_r2": null,
+      "student_micro_r2": null,
+      "teacher_params": 0,
+      "student_params": 0,
+      "teacher_epochs": 0,
+      "student_epochs": 0
+    },
+    {
+      "fold": 0,
+      "arm": "RANDOM_STATE",
+      "teacher_r2": -0.042743682861328125,
+      "teacher_micro_r2": -0.036011695861816406,
+      "student_r2": null,
+      "student_micro_r2": null,
+      "teacher_params": 0,
+      "student_params": 0,
+      "teacher_epochs": 0,
+      "student_epochs": 0
+    },
+    {
+      "fold": 0,
+      "arm": "EMA",
+      "teacher_r2": 0.4234052300453186,
+      "teacher_micro_r2": 0.36366569995880127,
+      "student_r2": 0.41051262617111206,
+      "student_micro_r2": 0.3518070578575134,
+      "teacher_params": 93856,
+      "student_params": 93856,
+      "teacher_epochs": 24,
+      "student_epochs": 24,
+      "student_valid_loss": 0.035387396812438965
+    },
+    {
+      "fold": 0,
+      "arm": "RICH",
+      "teacher_r2": 0.44777828454971313,
+      "teacher_micro_r2": 0.3815183639526367,
+      "student_r2": 0.424047589302063,
+      "student_micro_r2": 0.3528503179550171,
+      "teacher_params": 188380,
+      "student_params": 93856,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.05405346304178238
+    },
+    {
+      "fold": 0,
+      "arm": "SHARED",
+      "teacher_r2": 0.4418562650680542,
+      "teacher_micro_r2": 0.3814476728439331,
+      "student_r2": 0.42259401082992554,
+      "student_micro_r2": 0.363644003868103,
+      "teacher_params": 147804,
+      "student_params": 100064,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.041592035442590714
+    },
+    {
+      "fold": 0,
+      "arm": "TEAM",
+      "teacher_r2": 0.44415783882141113,
+      "teacher_micro_r2": 0.3776082992553711,
+      "student_r2": 0.4245713949203491,
+      "student_micro_r2": 0.3631666898727417,
+      "teacher_params": 94812,
+      "student_params": 47008,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.10965583473443985
+    },
+    {
+      "fold": 1,
+      "arm": "TECHNICAL_ONLY",
+      "teacher_r2": 0.04016749325402824,
+      "teacher_micro_r2": 0.028022603187470296,
+      "student_r2": null,
+      "student_micro_r2": null,
+      "teacher_params": 0,
+      "student_params": 0,
+      "teacher_epochs": 0,
+      "student_epochs": 0
+    },
+    {
+      "fold": 1,
+      "arm": "RANDOM_STATE",
+      "teacher_r2": -0.014293313026428223,
+      "teacher_micro_r2": -0.004364132881164551,
+      "student_r2": null,
+      "student_micro_r2": null,
+      "teacher_params": 0,
+      "student_params": 0,
+      "teacher_epochs": 0,
+      "student_epochs": 0
+    },
+    {
+      "fold": 1,
+      "arm": "EMA",
+      "teacher_r2": 0.5102701187133789,
+      "teacher_micro_r2": 0.43333470821380615,
+      "student_r2": 0.4970325231552124,
+      "student_micro_r2": 0.41481339931488037,
+      "teacher_params": 93856,
+      "student_params": 93856,
+      "teacher_epochs": 25,
+      "student_epochs": 25,
+      "student_valid_loss": 0.03390074148774147
+    },
+    {
+      "fold": 1,
+      "arm": "RICH",
+      "teacher_r2": 0.5271813869476318,
+      "teacher_micro_r2": 0.4538418650627136,
+      "student_r2": 0.5019409656524658,
+      "student_micro_r2": 0.4188987612724304,
+      "teacher_params": 188380,
+      "student_params": 93856,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.057321686297655106
+    },
+    {
+      "fold": 1,
+      "arm": "SHARED",
+      "teacher_r2": 0.5225009322166443,
+      "teacher_micro_r2": 0.44760292768478394,
+      "student_r2": 0.5018249750137329,
+      "student_micro_r2": 0.4189443588256836,
+      "teacher_params": 147804,
+      "student_params": 100064,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.038964059203863144
+    },
+    {
+      "fold": 1,
+      "arm": "TEAM",
+      "teacher_r2": 0.5202791690826416,
+      "teacher_micro_r2": 0.44926130771636963,
+      "student_r2": 0.4966311454772949,
+      "student_micro_r2": 0.4160556197166443,
+      "teacher_params": 94812,
+      "student_params": 47008,
+      "teacher_epochs": 26,
+      "student_epochs": 38,
+      "student_valid_loss": 0.10289759933948517
+    }
+  ]
+}
