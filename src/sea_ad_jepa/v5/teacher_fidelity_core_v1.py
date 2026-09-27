@@ -83,6 +83,17 @@ def _fit_nb(y, X, log_offset, allow_poisson_fallback=False):
     """NB GLM on raw counts with a fixed offset. Fails CLOSED by default."""
     import statsmodels.api as sm
     Xc = sm.add_constant(X, has_constant="add")
+    # A rank-deficient design makes IRLS oscillate rather than converge, which
+    # previously surfaced only as converged=False with finite parameters. Two
+    # exact collinearities were found this way: a duplicated control, and the
+    # CLR block itself, which over K components has rank K-1 because its rows
+    # sum to zero. Refuse rather than fit something singular.
+    rank = int(np.linalg.matrix_rank(Xc))
+    if rank < Xc.shape[1]:
+        raise ModelFallback(
+            f"design matrix is rank deficient: rank {rank} of {Xc.shape[1]} "
+            f"columns (condition {np.linalg.cond(Xc):.3e}). Fitting this would "
+            "oscillate rather than converge.")
     try:
         aux = sm.GLM(y, Xc, family=sm.families.Poisson(),
                      offset=log_offset).fit()

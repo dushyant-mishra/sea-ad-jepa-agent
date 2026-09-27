@@ -156,7 +156,11 @@ def simulate(rng, *, cap_sd, base, link, capture):
     gamma_P = rng.uniform(0.7, 1.3, 4)
     gamma_Q = rng.uniform(0.7, 1.3, 4)
     lib = rng.negative_binomial(6, 6 / (6 + 4000.0 * cap)).astype(float) + 50.0
-    D = np.maximum(lib, 1.0)
+    # D is the denominator AFTER removing the excluded gene set, so it is not
+    # the library. Previously D = max(lib, 1) made the two controls numerically
+    # identical - correlation 1.00000000 - and contributed an exact collinearity.
+    D = np.maximum(lib - rng.binomial(lib.astype(int),
+                                      0.08).astype(float), 1.0)
     zP = rng.normal(0, 1, n)
     zQ = rng.normal(0, 1, n) if link == "none" \
         else 0.8 * zP + rng.normal(0, 0.6, n)
@@ -173,7 +177,11 @@ def simulate(rng, *, cap_sd, base, link, capture):
 
 
 def state_from(c4, channel="full"):
-    comp = clr(c4)
+    # CLR over K components sums to zero by construction, so the K-th column is
+    # exactly determined by the others: the full block has rank K-1 and a
+    # condition number around 7.7e14, while K-1 columns give about 2.0. Dropping
+    # one coordinate loses no information and is what makes the design solvable.
+    comp = clr(c4)[:, :-1]
     amp = np.log1p(c4.sum(1))[:, None]
     if channel == "composition_only":
         return comp
