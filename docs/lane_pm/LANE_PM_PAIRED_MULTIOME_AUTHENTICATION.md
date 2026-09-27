@@ -326,14 +326,23 @@ scarcity of microglia. Whether their unusually low microglial *fraction* (1.21%,
 ## Prior exposure register
 
 **Neither new dataset has ever been seen by this project.** Searched by accession
-value across the full repository, not one spelling of a key:
+value across three independent surfaces, not one spelling of a key:
 
-| Accession | Tracked files on `origin/main` | Commits in **all** history (`git log --all -S`) | Verdict |
-|---|---:|---:|---|
-| GSE214637 | 0 | 0 | **UNEXPOSED** |
-| GSE214979 | 0 | 0 | **UNEXPOSED** |
-| GSE272082 | 0 | 0 | **UNEXPOSED** |
-| GSE174367 | 235 | many | **HEAVILY EXPOSED** (Morabito, by design) |
+| Accession | Tracked on `origin/main` | Commits in **all** history (`git log --all -S`) | Full working tree incl. untracked/ignored | Verdict |
+|---|---:|---:|---:|---|
+| GSE214637 | 0 | 0 | 0 | **UNEXPOSED** |
+| GSE214979 | 0 | 0 | 0 | **UNEXPOSED** |
+| GSE272082 | 0 | 0 | 0 | **UNEXPOSED** |
+| GSE174367 | 235 | many | not separately counted | **HEAVILY EXPOSED** (Morabito, by design) |
+
+The third surface is not redundant, and it is the one that matters most.
+`git grep` and `git log -S` see only tracked and committed content. A dataset
+quietly downloaded in an earlier session would sit in `data/`, `outputs/`,
+`exports/`, `.tmp/`, `runs/` or `checkpoints/` -- all gitignored, and therefore
+invisible to both. A recursive case-insensitive grep over the entire working
+tree excluding `.git`, binary files included, returned **zero matches for all
+three accessions**. That is the surface on which a silent prior exposure would
+actually have appeared, and it is clean.
 
 Both new candidates are genuinely untouched and can serve as confirmation sets.
 Morabito cannot serve that role in the same way — it has been inspected

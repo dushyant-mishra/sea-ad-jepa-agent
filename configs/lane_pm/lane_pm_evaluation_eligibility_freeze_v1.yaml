@@ -177,6 +177,7 @@ cross_dataset_rules:
       caveat explicitly.
 
 prior_exposure:
+  search_surfaces: [git_grep_origin_main, git_log_all_S_full_history, recursive_grep_full_working_tree_incl_untracked_and_gitignored]
   GSE214637: UNEXPOSED
   GSE214979: UNEXPOSED
   GSE272082: UNEXPOSED
