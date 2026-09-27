@@ -1,0 +1,10 @@
+donor_index,donor_key,n_region_samples,libraries,regions,sex,age_at_death,pmi_hours,disease_state
+1,M|61|22.4|Control,3,"NIH01,NIH02,NIH03","Entorhinal cortex,Hippocampus,Prefrontal cortex",M,61,22.4,Control
+2,M|62|12.5|Control,3,"NIH04,NIH05,NIH06","Entorhinal cortex,Hippocampus,Prefrontal cortex",M,62,12.5,Control
+3,F|62|18.9|Control,3,"NIH28,NIH29,NIH30","Entorhinal cortex,Hippocampus,Prefrontal cortex",F,62,18.9,Control
+4,M|62|48|Control,1,UT04,Prefrontal cortex,M,62,48,Control
+5,M|65|24|Control,1,UT09,Prefrontal cortex,M,65,24,Control
+6,F|61|24.2|sEOAD,3,"NIH10,NIH11,NIH12","Entorhinal cortex,Hippocampus,Prefrontal cortex",F,61,24.2,sEOAD
+7,F|64|24.3|sEOAD,3,"NIH13,NIH14,NIH15","Entorhinal cortex,Hippocampus,Prefrontal cortex",F,64,24.3,sEOAD
+8,M|62|20.5|sEOAD,3,"NIH16,NIH17,NIH18","Entorhinal cortex,Hippocampus,Prefrontal cortex",M,62,20.5,sEOAD
+9,M|59|68|sEOAD,1,UT2105,Prefrontal cortex,M,59,68,sEOAD
