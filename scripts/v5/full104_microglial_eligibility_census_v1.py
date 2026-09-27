@@ -176,17 +176,27 @@ def census_per_source(db_path: str) -> dict:
 # --------------------------------------------- step 2: consortium supertypes
 
 def _read_cat(obs, name):
+    """Return (categories, codes) with categories as PYTHON STR, always.
+
+    h5py hands back variable-length strings as dtype=object arrays holding
+    BYTES, not str. dtype.kind is then 'O', not 'S'. An earlier version of this
+    function only decoded on kind == 'S', so the barcodes stayed as bytes and
+    every comparison against the str keys from SQLite failed - the join
+    returned 0 of 138,242 and the declared coverage floor refused the whole
+    resolution. The refusal was correct; the cause was this decode.
+    """
     g = obs[name]
     import h5py
+
+    def _dec(arr):
+        return np.asarray(
+            [x.decode() if isinstance(x, (bytes, np.bytes_)) else str(x)
+             for x in arr], dtype=object)
+
     if isinstance(g, h5py.Group) and "categories" in g:
-        cats = [x.decode() if isinstance(x, bytes) else str(x)
-                for x in g["categories"][:]]
-        return np.asarray(cats, dtype=object), g["codes"][:]
-    vals = g[:]
-    if vals.dtype.kind == "S":
-        vals = np.asarray([v.decode() for v in vals], dtype=object)
-    cats, codes = np.unique(vals, return_inverse=True)
-    return cats, codes
+        return _dec(g["categories"][:]), g["codes"][:]
+    cats, codes = np.unique(_dec(g[:]), return_inverse=True)
+    return cats, np.asarray(codes).reshape(-1)
 
 
 def resolve_seaad_immune(h5_path: str, db_path: str) -> dict:
@@ -319,9 +329,33 @@ def resolve_seaad_immune(h5_path: str, db_path: str) -> dict:
 def ladder_feasibility(per_donor: dict, k_values=LADDER_K) -> dict:
     """How many within-donor aggregates of size k each source-label supports.
 
-    The split-half requirement is the binding one: to split independent nuclei
-    WITHIN a neighbourhood at resolution k you need at least 2 full aggregates
-    from the same donor, i.e. n_donor >= 2*k.
+    TWO DIFFERENT SPLIT DESIGNS EXIST AND THEY ESTIMATE DIFFERENT THINGS.
+
+      A. split the MOLECULES of one fixed set of nuclei into two halves.
+         This is what R8 did. It holds the nuclei constant, so it measures
+         molecule-sampling (Poisson) stability ONLY.
+
+      B. draw TWO DISJOINT sets of k nuclei from the same donor and compare
+         their aggregates. This additionally includes nucleus-to-nucleus
+         biological heterogeneity within the donor.
+
+    Design B is the one the ladder needs, because the question the ladder asks
+    is "how reproducible is a size-k neighbourhood summary of this donor", and
+    the answer must include the variability of which nuclei you happened to
+    draw. It requires n_donor >= 2k, which is what donors_with_ge_2_aggregates
+    counts. donors_with_ge_4_aggregates supports a two-fold repeat of design B
+    within one donor, which separates the estimate from a single lucky split.
+
+    NEITHER DESIGN IS INDEPENDENT BIOLOGICAL REPLICATION. Two disjoint nucleus
+    sets from one donor still share the donor, the dissection, the library prep
+    and the sequencing run. Design B is strictly more informative than design A
+    and still bounded above by what one donor-level experiment can tell you.
+
+    And the sign of the interpretation FLIPS with the estimand: for a
+    neighbourhood-level target, disagreement between two disjoint nucleus sets
+    is measurement noise; for a per-nucleus target it is exactly the biological
+    signal the target is supposed to carry. The same number therefore may not
+    be quoted for both.
     """
     counts = np.asarray(sorted(per_donor.values()), dtype=np.int64)
     out = {}
@@ -363,6 +397,19 @@ def main() -> int:
     else:
         digests[os.path.basename(a.metadata_sqlite)] = sha_file(a.metadata_sqlite)
         digests[os.path.basename(a.immune_h5ad)] = sha_file(a.immune_h5ad)
+
+    # A provenance record must not silently omit a digest. An empty or partial
+    # --input-digests file (for example one still being written) would
+    # otherwise produce a receipt that looks authenticated and is not.
+    required = [os.path.basename(a.metadata_sqlite), os.path.basename(a.immune_h5ad)]
+    absent = [r for r in required if not digests.get(r)]
+    if absent:
+        raise SystemExit(
+            f"REFUSED_MISSING_INPUT_DIGEST for {absent}; a census receipt may not "
+            "claim inputs it has not fingerprinted")
+    for name, sha in digests.items():
+        if len(sha) != 64 or any(ch not in "0123456789abcdef" for ch in sha.lower()):
+            raise SystemExit(f"REFUSED_MALFORMED_DIGEST for {name}: {sha!r}")
 
     cen = census_per_source(a.metadata_sqlite)
     res = resolve_seaad_immune(a.immune_h5ad, a.metadata_sqlite)
