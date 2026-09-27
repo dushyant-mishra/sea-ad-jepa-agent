@@ -286,6 +286,14 @@ def main():
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--b-sham", type=int, default=99)
     ap.add_argument("--calibration-datasets", type=int, default=30)
+    ap.add_argument("--neg-calibration-datasets", type=int, default=0,
+                    help="datasets for the NEGATIVE arms. The false-positive "
+                         "bound is on the binomial UPPER 95% limit, which at "
+                         "n=30 is 0.116 even for ZERO hits and 0.172 for one - "
+                         "so the fixed 0.15 bound is unreachable at that n "
+                         "unless every regime returns exactly zero. Raising n "
+                         "buys the precision to test against the UNCHANGED "
+                         "bound; it is not a relaxation of it.")
     ap.add_argument("--calibration-b-sham", type=int, default=49)
     ap.add_argument("--regimes", default=",".join(REGIMES))
     a = ap.parse_args()
@@ -324,7 +332,10 @@ def main():
 
         for arm in ARMS:
             hits = used = 0
-            for i in range(a.calibration_datasets):
+            n_cal = (a.neg_calibration_datasets
+                     if (not ARMS[arm]["want"] and a.neg_calibration_datasets)
+                     else a.calibration_datasets)
+            for i in range(n_cal):
                 rng = np.random.default_rng(stable_seed(SEED, reg, arm, "cal", i))
                 # calibration needs only the qualifying channel; running all
                 # three would triple the cost without changing any verdict
@@ -335,9 +346,9 @@ def main():
                                        "calibration_index": i, **r})
                     continue
                 used += 1; hits += int(r["qualifies"])
-            complete = (used == a.calibration_datasets)
+            complete = (used == n_cal)
             calib[f"{reg}|{arm}"] = {
-                "datasets_requested": a.calibration_datasets,
+                "datasets_requested": n_cal,
                 "datasets_used": used, "complete": complete,
                 "qualified": hits,
                 "rate": hits / used if used else float("nan"),
@@ -382,6 +393,16 @@ def main():
         "gate_pass": gate,
         "bounds": {"fp_binomial_upper95_max": FP_UPPER_LIMIT,
                    "power_rate_min": POWER_LOWER_LIMIT},
+        "bounds_unchanged_from_the_failing_run": True,
+        "why_n_was_raised": (
+            "the 30-dataset run gave a POOLED false-positive rate of 7/240 = "
+            "0.0292 with exact 95% CI [0.0118, 0.0592], against a nominal alpha "
+            "of 0.05 - well calibrated. It failed only because the per-regime "
+            "bound is on the binomial UPPER 95% limit, which at n=30 is 0.116 "
+            "for zero hits and 0.172 for one, so 0.15 is unreachable unless "
+            "every regime returns exactly zero. n was raised to buy precision "
+            "against the UNCHANGED bound. Relaxing the bound instead would be "
+            "the threshold tuning the v7 stopping rule forbids."),
         "channel_ablation_note": (
             "a full-model qualification does not show the CLR component learned "
             "a compositional signal. For POS_COMP the composition-only channel "
