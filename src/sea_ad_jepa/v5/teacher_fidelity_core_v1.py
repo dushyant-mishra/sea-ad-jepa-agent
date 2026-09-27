@@ -93,6 +93,17 @@ def _fit_nb(y, X, log_offset, allow_poisson_fallback=False):
         alpha = float(np.clip(num / den if den > 0 else 0.0, 1e-6, 50.0))
         model = sm.GLM(y, Xc, family=sm.families.NegativeBinomial(alpha=alpha),
                        offset=log_offset).fit()
+        # Raising on an exception does not catch a fit that RETURNS without
+        # converging, or one that converges to non-finite coefficients. Either
+        # would produce numbers indistinguishable from a healthy fit.
+        converged = bool(getattr(model, "converged", True))
+        params_ok = bool(np.all(np.isfinite(np.asarray(model.params, float))))
+        fitted_ok = bool(np.all(np.isfinite(np.asarray(model.fittedvalues, float))))
+        if not (converged and params_ok and fitted_ok):
+            raise ModelFallback(
+                f"negative-binomial fit did not produce a usable model "
+                f"(converged={converged}, finite_params={params_ok}, "
+                f"finite_fitted={fitted_ok})")
         return model, alpha, "negative_binomial"
     except Exception as exc:
         if not allow_poisson_fallback:
