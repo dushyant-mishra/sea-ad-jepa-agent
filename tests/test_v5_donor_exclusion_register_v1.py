@@ -340,9 +340,28 @@ def test_lane6_still_permitted_in_a_genuinely_non_donor_anchored_analysis():
     assert r["donor_anchored_roles"] == ()
 
 
-def test_unrecognised_role_name_does_not_silently_disable_the_check():
-    """A typo must not become a bypass; the demographic path still fires."""
-    with pytest.raises(ExclusionViolation):
-        run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["sex"],
+def test_unrecognised_role_is_REJECTED_not_ignored_no_demographics():
+    """The earlier version of this test supplied "sex", so it raised through the
+    DEMOGRAPHIC path and never exercised role handling at all - the unknown role
+    was silently ignored and the test still passed. No demographic covariate here,
+    so only role rejection can raise."""
+    with pytest.raises(ExclusionViolation, match="unrecognised donor_anchored_roles"):
+        run_guarded_evaluation(donors=CLEAN + LANE6, covariates=["total_counts"],
                                input_manifest=ONLY_979, cross_study_claim=False,
                                donor_anchored_roles=["dnor_held_out"])
+
+
+def test_unrecognised_role_rejected_even_with_clean_donors():
+    """Rejection is about the role vocabulary, not about who is in the cohort."""
+    with pytest.raises(ExclusionViolation, match="unrecognised"):
+        run_guarded_evaluation(donors=CLEAN, covariates=[],
+                               input_manifest=ONLY_979, cross_study_claim=False,
+                               donor_anchored_roles=["donor_heldout"])   # missing underscore
+
+
+def test_all_recognised_roles_are_accepted_with_clean_donors():
+    """Positive control: the vocabulary check must not block valid roles."""
+    for role in DONOR_ANCHORED_ROLES:
+        run_guarded_evaluation(donors=CLEAN, covariates=[],
+                               input_manifest=ONLY_979, cross_study_claim=False,
+                               donor_anchored_roles=[role])

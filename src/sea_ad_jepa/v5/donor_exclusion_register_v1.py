@@ -184,6 +184,15 @@ def enforce_exclusions(donors: Iterable[str], *, covariates: Sequence[str] = (),
     # itself is what is unresolved; using it to certify out-of-donor testing is
     # exactly the case the directive names as insufficient.
     roles = {str(r).strip().lower() for r in donor_anchored_roles}
+    # An UNKNOWN role must be rejected, never silently ignored. Silently
+    # dropping "dnor_held_out" would turn a typo into a bypass of the whole
+    # donor-anchored quarantine.
+    unknown = sorted(roles - set(DONOR_ANCHORED_ROLES))
+    if unknown:
+        raise ExclusionViolation(
+            f"unrecognised donor_anchored_roles {unknown}; recognised roles are "
+            f"{sorted(DONOR_ANCHORED_ROLES)}. An unknown role is refused rather than "
+            "ignored, because ignoring it would make a typo a bypass.")
     bad_roles = sorted(roles & set(DONOR_ANCHORED_ROLES))
     cov_hit = sorted(cov & set(r1["trigger_covariates"]))
     trig1 = bool(hit1) and (bool(cov_hit) or bool(bad_roles))
