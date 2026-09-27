@@ -480,6 +480,14 @@ def main():
 
     counts = np.stack([r[12] for r in all_recs]).astype(np.int32) if all_recs \
         else np.zeros((0, 29), dtype=np.int32)
+    available = np.stack([r[13] for r in all_recs]).astype(bool) if all_recs \
+        else np.zeros((0, 29), dtype=bool)
+    # A value at an unavailable address is a placeholder, never an observation.
+    # If a nonzero count ever sits at one, the mask and the values disagree and
+    # neither can be trusted, so nothing is written.
+    if available.size and counts[~available].any():
+        raise SystemExit("REFUSED_MASK_AND_VALUES_DISAGREE: a nonzero count "
+                         "sits at an address this matrix does not measure")
     np.savez_compressed(
         os.path.join(a.out_dir, "FULL104_MYELOID_R8_PANEL_COUNTS_V1.npz"),
         cell_id=np.asarray(cids, dtype=object),
