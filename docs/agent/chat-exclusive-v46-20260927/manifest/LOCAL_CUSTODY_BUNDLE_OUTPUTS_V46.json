@@ -1,0 +1,34 @@
+{
+  "schema": "JEPA_V46_LOCAL_DOWNLOAD_BUNDLE_RECEIPT",
+  "date_local": "2026-09-27",
+  "full_custody": {
+    "filename": "JEPA_V46_CHAT_EXCLUSIVE_FULL_CUSTODY_20260927.zip",
+    "size_bytes": 1331482688,
+    "sha256": "6a186f8c36a9b1195571f2f35a6e9db5287cb3208a9a80767eea479526c86b33",
+    "originals": 25,
+    "manifest_and_handoff_files": 5,
+    "members": 30,
+    "zip_crc": "PASS",
+    "embedded_originals_all_sha256_verified": true,
+    "sha256_mismatches": 0,
+    "github_file_published": false
+  },
+  "small_portable": {
+    "filename": "JEPA_V46_CHAT_EXCLUSIVE_SMALL_PORTABLE_20260927.zip",
+    "size_bytes": 8157967,
+    "sha256": "2941e0fa4227fe48d38cb30313801f58f76a415ac8d840bbb0b5dc70987868cc",
+    "originals": 20,
+    "manifest_and_handoff_files": 5,
+    "members": 25,
+    "zip_crc": "PASS",
+    "embedded_originals_all_sha256_verified": true,
+    "sha256_mismatches": 0,
+    "heavy_originals_omitted": 5,
+    "github_file_published": false
+  },
+  "original_25_sha256_manifest": "ASSET_CUSTODY_V46.csv",
+  "local_manifest_git_blob_verified": "ff067e3dfe56f231dfcae55aade6c12fe96577ee",
+  "github_exact_original_text_files": 14,
+  "github_original_binary_blobs": 0,
+  "note": "Full and small ZIPs are generated chat download artifacts, NOT uploaded as GitHub release assets or Git LFS objects. The GitHub repository contains exact original text/CSV and checksum manifest only; the user must retain or transfer the ZIPs if a later conversation needs original binary bytes."
+}
