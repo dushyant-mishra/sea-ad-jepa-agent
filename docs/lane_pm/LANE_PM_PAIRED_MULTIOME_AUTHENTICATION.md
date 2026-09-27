@@ -184,6 +184,40 @@ Three independent lines, none of which is the word "multiome" in the title:
 project.** It is the property that distinguishes it from Morabito and it is
 verified, not assumed.
 
+### What that verification does NOT rest on — stated against my own claim
+
+The evidence above is strong but it has one structural weakness that must be on
+the record, because this is the lane's headline claim.
+
+`GSE214979_cell_metadata.csv.gz` is a **derived artifact** — an export of the
+authors' processed Seurat object, not a primary measurement. If they built it by
+joining RNA and ATAC *on barcode*, then "every row carries both modalities" is
+partly **circular**: rows that failed to join would simply not be rows. The
+observation is consistent with same-nucleus pairing but cannot by itself
+exclude that construction.
+
+What would close it is cheap and is **not yet done**: open
+`GSE214979_filtered_feature_bc_matrix.h5` (1,369,492,123 bytes) and confirm that
+the Gene Expression and Peaks feature blocks share **one** barcode index, which
+the 10x ARC format enforces at the point of measurement rather than at the point
+of analysis. Until that is run, the honest status of the pairing claim is
+**VERIFIED against the deposited metadata and the depositor's statement, not yet
+verified against the primary matrix.**
+
+The determination is recorded as VERIFIED_PAIRED because two of the three lines
+(the depositor's explicit statement, and the format itself) are independent of
+the possible circularity. But a single 1.28 GiB download upgrades it from
+well-supported to physically confirmed, and that download is listed as REQUIRED
+in the inventory for exactly this reason.
+
+A second, related gap: the pairing test in
+`lane_pm_paired_multiome_census_v1.py` has **never been run on a known-negative
+dataset.** It returns UNDETERMINED unless every cell carries both modalities, so
+it is structurally capable of failing — but "capable of failing" is not the same
+as "observed to fail." Running it against Morabito's separate-nuclei metadata,
+where it must *not* return VERIFIED_PAIRED, is the control that would prove the
+check is real. That control is **NOT_EXECUTED**.
+
 ---
 
 ## Donor and microglia census

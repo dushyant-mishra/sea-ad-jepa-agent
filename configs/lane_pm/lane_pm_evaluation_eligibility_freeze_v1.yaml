@@ -48,6 +48,13 @@ datasets:
     min_microglia_per_donor_observed: 17
     min_microglia_donor: "4313"
     pairing: VERIFIED_PAIRED
+    pairing_verified_against: [series_cell_metadata, depositor_statement, file_format]
+    pairing_verified_against_primary_matrix: false
+    pairing_caveat: >-
+      The cell metadata is a derived Seurat export; if built by joining the two
+      modalities on barcode, per-row co-presence is partly circular. Confirm
+      against the shared barcode index in the filtered h5 to close this.
+    pairing_negative_control: NOT_EXECUTED
     pairing_fraction: 1.0
     gem_lanes: 17
     pooled_lanes_with_two_donors: ["5", "6", "7"]
