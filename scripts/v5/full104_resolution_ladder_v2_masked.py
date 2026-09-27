@@ -53,17 +53,20 @@ TWO DESIGNS, RUN AT EVERY RUNG, AND THE GAP BETWEEN THEM IS THE ANSWER
   Matched depth is what makes the comparison mean anything, and it is why both
   designs start from 2k nuclei rather than k.
 
-      disjoint(k) / molecule(k)  ~ 1   the nuclei within a donor are
+      disjoint(k) / molecule(k)  ~ 1   the nuclei within a STRATUM are
                                        interchangeable at this resolution;
                                        there is no per-nucleus state to learn,
-                                       only a donor-level one.
-      disjoint(k) / molecule(k)  << 1  nuclei within a donor genuinely differ.
+                                       only a stratum-level one.
+      disjoint(k) / molecule(k)  << 1  nuclei within a stratum genuinely differ.
                                        That difference is what a per-nucleus
                                        teacher target would have to predict.
 
   Neither design is independent biological replication. Two disjoint sets of
-  nuclei from one donor still share the donor, the dissection, the library prep
-  and the sequencing run. The ladder bounds what one donor-level experiment can
+  nuclei from one stratum still share the donor, the brain region, the
+  dissection, the library prep and the sequencing run. The stratum is
+  donor x operator, and a SEA-AD operator is a brain-region matrix, so the
+  shared component carries REGIONAL variation as well as donor variation and
+  must not be called between-donor variance. The ladder bounds what one donor-level experiment can
   say; it cannot exceed it.
 
 CONTROLS THAT CAN FAIL

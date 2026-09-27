@@ -8,13 +8,19 @@ WHAT THE LADDER LEAVES ON THE TABLE
   and the unknowns are exactly the quantities that decide whether a per-nucleus
   teacher target is worth fitting:
 
-      A   between-donor variance of the true program activity
-      W   within-donor, nucleus-to-nucleus variance of the true activity
+      A   between-STRATUM variance of the true program activity. The stratum
+          is whatever the ladder stratified on, which is donor x operator - and
+          a SEA-AD operator is a brain-region matrix, so for SEA-AD one donor
+          spans ten strata and A carries REGIONAL variation as well as donor
+          variation. Calling it "between-donor" would silently attribute
+          anatomy to donor identity.
+      W   within-stratum, nucleus-to-nucleus variance of the true activity
       N(k) measurement noise variance at the depth of k nuclei
 
 THE TWO EQUATIONS
 
-  At rung k the DISJOINT arm compares two sets of k nuclei from one donor. The
+  At rung k the DISJOINT arm compares two sets of k nuclei from one STRATUM.
+  The
   true activity of a k-nucleus set has variance A + W/k, the two sets share
   only A, and each is measured with noise N(k):
 
@@ -30,23 +36,28 @@ THE TWO EQUATIONS
 
       A/W = (1 + M(k)) / (2k * (M(k)/D(k) - 1))
 
-  Every rung yields its OWN estimate of A/W. The model says they must all be
-  the same number. They are not constrained to be - nothing in the computation
-  forces agreement - so their spread across rungs is a genuine falsification
-  test of the two-component model, not a fit statistic.
+  Every rung yields its own estimate of A/W and the model says they must all be
+  the same number.
+
+  THEY ARE NOT INDEPENDENT ESTIMATES. Every rung is computed from the SAME
+  nuclei, so they share their sampling noise and their agreement cannot rule out
+  an error common to the data. What agreement does establish is narrower and
+  still worth having: the model's functional form holds across aggregation
+  scales, since the algebra involves k explicitly. Read it as an INTERNAL
+  MODEL-CONSISTENCY CHECK, never as replication or as a falsification test.
 
 WHY A/W IS THE QUANTITY THAT MATTERS
 
   A/W small  most of the variation in this program lives BETWEEN nuclei of the
-             same donor. A per-nucleus target has something real to predict
-             that a donor-level target cannot reach.
-  A/W large  nuclei within a donor are largely interchangeable and the program
-             is essentially a donor-level property. Aggregation loses nothing
+             same stratum. A per-nucleus target has something real to predict
+             that a stratum-level target cannot reach.
+  A/W large  nuclei within a stratum are largely interchangeable and the program
+             is essentially a stratum-level property. Aggregation loses nothing
              and a per-nucleus target is predicting mostly noise.
 
 WHAT THIS DOES NOT SETTLE
 
-  W is within-donor variance of the MEASURED activity ratio. Real biological
+  W is within-STRATUM variance of the MEASURED activity ratio. Real biological
   heterogeneity lives there, but so does any per-nucleus technical variation
   that fails to cancel in the ratio - ambient RNA, capture efficiency, nuclear
   size, dissociation stress. This computation cannot separate those, and
@@ -143,14 +154,16 @@ def main():
                     "a_over_w_min": float(arr.min()),
                     "a_over_w_max": float(arr.max()),
                     "max_over_min_ratio": spread,
-                    # the falsification test: independent rungs must agree
+                    # internal consistency only: the rungs share nuclei
                     "cross_rung_consistency": (
                         "CONSISTENT" if spread is not None and spread <= 2.0
                         else "INCONSISTENT__TWO_COMPONENT_MODEL_NOT_SUPPORTED"),
-                    "within_donor_over_between_donor": (1.0 / med) if med > 0 else None,
+                    "within_stratum_over_between_stratum": (1.0 / med) if med > 0 else None,
                     "reading": (
-                        f"within-donor nucleus variance is about {1.0/med:.1f}x "
-                        f"the between-donor variance" if med > 0 else None),
+                        f"within-stratum nucleus variance is about {1.0/med:.1f}x "
+                        f"the between-stratum variance (stratum = donor x "
+                        f"operator; a SEA-AD operator is a brain region)"
+                        if med > 0 else None),
                 })
             cres["programs"][prog] = entry
         out[cname] = cres
@@ -160,13 +173,19 @@ def main():
         "status": "CLOSED_FORM_FROM_LADDER__NO_FITTING__NO_TRAINING",
         "ladder_json_sha256": sha_file(a.ladder_json),
         "identity": "A/W = (1 + M(k)) / (2k * (M(k)/D(k) - 1))",
-        "falsification_test": (
-            "each rung gives an INDEPENDENT estimate of A/W and nothing forces "
-            "them to agree. Agreement across rungs supports the two-component "
-            "model; disagreement refutes it. max_over_min_ratio <= 2 is the "
-            "declared consistency bound."),
+        "cross_rung_agreement_is_an_internal_consistency_check": (
+            "the rungs are computed from the SAME nuclei and are NOT "
+            "statistically independent, so their agreement cannot rule out an "
+            "error common to the data. It tests only that the model's "
+            "functional form holds across aggregation scales, since the algebra "
+            "involves k explicitly. max_over_min_ratio <= 2 is the declared "
+            "bound. Disagreement is informative; agreement is not replication."),
+        "A_is_between_stratum_not_between_donor": (
+            "the ladder stratifies on donor x operator, and a SEA-AD operator "
+            "is a brain-region matrix. For SEA-AD one donor spans ten strata, "
+            "so A carries regional variation as well as donor variation."),
         "W_IS_NOT_NECESSARILY_BIOLOGY": (
-            "W is within-donor variance of the measured activity ratio. It "
+            "W is within-stratum variance of the measured activity ratio. It "
             "contains real nucleus-to-nucleus biology AND any per-nucleus "
             "technical variation that does not cancel in the ratio. Nothing "
             "here separates them."),

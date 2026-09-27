@@ -144,3 +144,68 @@ source. It is not automatically comparable across sources, and any cross-source
 transport claim needs an explicit comparability check first. No such check has
 been run, and none of the results above depends on one, because every cohort is
 reported on its own.
+
+---
+
+## Corrections from external review, 2026-09-27
+
+Three things above are stated wrongly. None changes a measured number; all
+three change what the numbers mean or how far they reach.
+
+### 3. "seven independent rungs" — they are not independent
+
+Every rung is computed from the **same nuclei** at a different aggregation
+scale, so the seven A/W estimates share their sampling noise. Their agreement
+cannot rule out an error common to the data, and calling it a falsification
+test overstates it.
+
+What the agreement does establish is real but narrower: the model's functional
+form holds across aggregation scales, since the algebra involves `k` explicitly.
+Read it as an **internal model-consistency check**, never as replication.
+Disagreement remains informative — it is why the four inconsistent cases are
+reported as inconsistent rather than quoted.
+
+### 4. "between-donor variance" — it is between-stratum, and the stratum is donor × region
+
+The ladder forms pairs within `donor × operator` strata, and a SEA-AD operator
+is a **brain-region matrix**. One SEA-AD donor therefore spans ten strata, and
+the component two disjoint sets share is between-`(donor × region)` variance,
+carrying regional effects as well as donor identity. The residual is
+within-`(donor × region)` nucleus variance.
+
+So the headline should read: **within-stratum nucleus-to-nucleus variance is 3
+to 12 times the between-stratum variance, where a stratum is a donor within one
+brain region.** Attributing that shared component purely to donor identity would
+silently credit anatomy to the donor.
+
+This does not weaken the per-nucleus conclusion. If anything it sharpens it: the
+comparison is already within a single region of a single donor, and nucleus-level
+variation still dominates.
+
+### 5. Donor count: 92, not 104
+
+The reader-fit substrate has 104 donors, but the candidate myeloid extraction
+covers **92 source-specific donor identities** — 30 HVS, 16 NPH52, 46 SEA-AD.
+Twelve FULL104 donors contribute no candidate myeloid nucleus. "104 donors"
+above is wrong and should read 92.
+
+They are source-specific identities, not harmonized ones: donor labels are not
+reconciled across sources any more than cell-class labels are.
+
+## Scope boundary — what has and has not been repaired
+
+The corrected artifact covers **29 addresses in candidate myeloid nuclei**. That
+is a targeted repair, verified for exactly those addresses in exactly those
+matrices.
+
+It is **not** a repair of the FULL104 training pipeline. Any general expression
+reader consuming the Level-4 blocks needs verified gene decoding for **every one
+of the 41,238 addresses it consumes**, per matrix, before a neural EMA teacher
+or student may use it. The decoders built here cover the whole address space
+per matrix and are the right instrument for that, but the verification that has
+actually been run is cell-by-cell agreement on sampled blocks, not a full
+re-derivation of every address in every block.
+
+The successful targeted repair must not be allowed to read as an assertion that
+the training substrate is repaired. It is not, and nothing here authorises
+training.
