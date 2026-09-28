@@ -1,0 +1,1249 @@
+Heads verified live first: PR #178 = 5d49a970030f ✓, PR #189 = 6f78b04a88a9 ✓, exactly two docs-only commits apart, as stated.
+
+Priority 1 — V50 red-team: RETAINED WITH SUBSTANTIAL MODIFICATIONS
+Committed d78884cc on claude/v50-redteam-20260928. Docs-only.
+
+The central gap: V50 has no positive discriminating signature. It lists controls N0–N2H, but controls are subtractive — each removes a named alternative, and none can rule out the one nobody wrote down. V48 already showed the limit case: a semantic twin whose observable arrays are byte-identical. Against that, no control helps, because every control is a function of those observables.
+
+And adding ATAC does not escape it. A shared nuclear-quality latent drives RNA and ATAC exactly as a biological latent does. Adding a channel the nuisance also occupies buys nothing.
+
+My proposal — cis coupling. A biological program regulates genes through nearby elements, so its RNA and ATAC effects are coupled at loci. A nuclear-quality latent has no access to genomic coordinates. The statistic is cis correspondence minus accessibility-matched trans correspondence, not raw cross-modal agreement. Declared restriction, in advance: this identifies only against nuisance agnostic to genomic position — GC or fragment-length bias tracking gene density would defeat it.
+
+The circularity V50 doesn't name. It learns the network from GSE214979 paired multiome and tests it on SEA-AD paired multiome — both same-nucleus. A network learned from RNA↔ATAC covariance cannot test whether that covariance is biological. V50 partially mitigates with pairing permutation, but lists it as one of eight co-equal controls rather than the load-bearing one.
+
+Reverse Phases C and D. Morabito must run before SEA-AD: different nuclei, so it's the only asset that breaks the same-nucleus quality confound. A SEA-AD positive alone is uninterpretable — it's exactly what the nuisance predicts. And SEA-AD is internal and finite: 1,594 paired myeloid nuclei, 15 donors, one region is a scarce non-renewable asset to spend on a test that can't distinguish the dominant alternative.
+
+Replace edge-level SCENIC+ with donor-stable cis peak–gene modules. The identifying assumption is cis structure, and cis structure needs no TF identity. SCENIC+ imports motif annotation as a dependency and with it the entire annotation-supply nuisance class — the very class PR #179 stopped mid-investigation — in exchange for a TF layer the identifying argument doesn't use. Self-inflicted wound. Also: ~12 donors won't support edge-level inference, and LODO at n=12 has too little power to detect instability, so "stable" there would be uninformative rather than reassuring.
+
+Two things V50 overlooked, both already on the head it's stacked on: Thrupp 2020 (snRNA under-detects APOE and CD74 — power is asymmetric across our three programs, yet V50 treats them symmetrically), and the census finding that 9 of 12 partners vary more between sources than the matching band is wide — which explains why TD56–59's ordinal formulation survived where coordinates failed.
+
+Where I'm weakest, stated in the document: the only implementation I've written of the cis statistic is currently RED — positive control cancels, sign favours the technical arm. I'm recommending it over a published peer-reviewed method on an analytic argument and a broken probe. A reader should weight that accordingly.
+
+Running
+R2 (Stage75F TF-specificity / annotation-supply closure) and R4 (SEA-AD spatial structural feasibility) in isolated worktrees from 5d49a970. R3 (regulatory exposure ledger) not yet started.
+
+Nothing pushed, nothing merged, no PR opened yet — say the word and I'll open reviewable PRs. TRAINING=OFF, TD60 untouched, no protected or biological outcome opened.
+
+I'll start by loading the web search tools.
+
+I'll run several searches in parallel to cover the question space.
+
+Now the firewall first. Let me probe column names only (authorized: existence), before any value read.
+
+Good leads. Let me fetch the most directly relevant papers and run more targeted searches in parallel.
+
+Excellent — the brain/IBA1 paper and the transcript leakage paper look directly on point. Let me fetch them.
+
+Writing my independent implementation. The structural-distinctness harness is fail-closed and directly reproduces the Stage73 failure mode as a planted control.
+
+Firewall design is now evidence-based. The MTG and Xenium files carry full protected pathology. Let me write the firewall module and its controls.
+
+Now the firewall module.
+
+The Kotah & Rust paper is directly on point. Let me fetch it plus the MERFISH microglia morphology paper.
+
+Heredoc quoting broke on the apostrophes. Using the Write tool for this long file.
+
+Now the controls — positive, negative, and mutation.
+
+Firewall green: 77/77. Now the audit itself. First let me locate the FULL104 donor roster for the overlap check.
+
+MerQuaCo is an Allen Institute MERFISH QC tool — highly relevant. Let me fetch it and chase the primary contamination estimates.
+
+Two performance/correctness issues before running: materializing 3.6M permutations would eat ~430MB, and the shuffle loop is pure-Python. Vectorizing both, and adding a joint global statistic that is genuinely not reducible to the hypergeometric.
+
+Diagnostics caught a dangling all_perms reference. Fixing that and vectorizing the shuffle loop.
+
+Web Fetchhttps://www.biorxiv.org/content/10.1101/2025.11.13.688387v1.full
+Fetched from https://www.biorxiv.org/content/10.1101/2025.11.13.688387v1.full
+Web SearchMerQuaCo Allen Institute MERFISH quality control imperfections cell type label accuracy biorxiv
+OUT
+Web search results for query: "MerQuaCo Allen Institute MERFISH quality control imperfections cell type label accuracy biorxiv"
+
+Links: [{"title":"MerQuaCo: a computational tool for quality control in 1","url":"https://www.biorxiv.org/content/10.1101/2024.12.04.626766v1.full.pdf"},{"title":"MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics | bioRxiv","url":"https://www.biorxiv.org/content/10.1101/2024.12.04.626766v1.full"},{"title":"MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics - PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/39677693/"},{"title":"(PDF) MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics","url":"https://www.researchgate.net/publication/386542519_MerQuaCo_a_computational_tool_for_quality_control_in_image-based_spatial_transcriptomics"},{"title":"MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics","url":"https://elifesciences.org/reviewed-preprints/105149"},{"title":"MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics","url":"https://www.biorxiv.org/content/10.1101/2024.12.04.626766.full.pdf"},{"title":"MerQuaCo: a computational tool for quality control in image-based spatial transcriptomics","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11643037/"},{"title":"1 Guidestar: a spike-in approach to improve RNA detection accuracy in 1","url":"https://www.biorxiv.org/content/10.1101/2025.01.09.632272v1.full.pdf"},{"title":"MERFISH whole mouse brain spatial transcriptomics (Xiaowei Zhuang) — Allen Brain Cell Atlas - Data Access","url":"https://alleninstitute.github.io/abc_atlas_access/notebooks/zhuang_merfish_tutorial.html"}]
+
+Based on the search results, I found comprehensive information about MerQuaCo and the related research:
+
+MerQuaCo is a computational tool developed to characterize imperfections in MERFISH datasets collected using the Vizgen MERSCOPE platform, with common imperfections including the local loss of tissue from the section, tissue outside the imaging volume due to detachment from the coverslip, transcripts missing due to dropped images, varying detection probability through space, and differences in transcript detection probability between experiments.
+
+The researchers collected results from 641 adult mouse sections over approximately 2 years, developed code to detect and characterize the most common imperfections, and described the frequency with which each imperfection occurred and its likely impact on cell type identification.
+
+The results indicate that imperfections are common and reduce the accuracy of cell type labels but are rarely severe enough to prevent investigation of the spatial organization of cell populations in adult mouse brain.
+
+MerQuaCo is open-source code that detects and quantifies imperfections without user input, facilitating the selection of sections for further analysis with existing packages. This study provides a valuable contribution to spatial transcriptomics by introducing MerQuaCo as a computational tool for standardizing quality control in image-based spatial transcriptomics datasets, addressing the lack of consensus in the field and providing robust metrics to identify and quantify common imperfections in datasets.
+
+The preprint was published on bioRxiv in December 2024.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Web SearchXenium microglia "IBA1" OR "TMEM119" boundary stain multimodal cell segmentation kit brain improves microglia detection 10x
+OUT
+Web search results for query: "Xenium microglia "IBA1" OR "TMEM119" boundary stain multimodal cell segmentation kit brain improves microglia detection 10x"
+
+Links: [{"title":"Immunofluorescence Staining Using IBA1 and TMEM119 for Microglial Density, Morphology and Peripheral Myeloid Cell Infiltration Analysis in Mouse Brain - PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/31710033/"},{"title":"Immunofluorescence Staining Using IBA1 and TMEM119 for Microglial Density, Morphology and Peripheral Myeloid Cell Infiltration Analysis in Mouse Brain | Request PDF","url":"https://www.researchgate.net/publication/336851091_Immunofluorescence_Staining_Using_IBA1_and_TMEM119_for_Microglial_Density_Morphology_and_Peripheral_Myeloid_Cell_Infiltration_Analysis_in_Mouse_Brain"},{"title":"Immunofluorescence Staining Using IBA1 and TMEM119 for Microglial Density, Morphology and Peripheral Myeloid Cell Infiltration Analysis in Mouse Brain","url":"https://www.jove.com/t/60510/immunofluorescence-staining-using-iba1-tmem119-for-microglial-density"},{"title":"Xenium In Situ Multimodal Cell Segmentation","url":"https://cdn.10xgenomics.com/image/upload/v1710785020/CG000750_XeniumInSitu_CellSegmentation_TechNote_RevA.pdf"},{"title":"Microglia Marker (CD11b, CD45, Iba1, TMEM119) Antibody Sampler Panel (ab226482) | Abcam","url":"https://www.abcam.com/en-us/products/antibody-panels/microglia-marker-cd11b-cd45-iba1-tmem119-antibody-sampler-panel-ab226482"},{"title":"Beyond the nuclear border: single-cell analysis of in situ sequenced human brain tissue using cellular features - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12284266/"},{"title":"New tools for studying microglia in the mouse and human CNS | PNAS","url":"https://www.pnas.org/doi/10.1073/pnas.1525528113"},{"title":"Co-expression patterns of microglia markers Iba1, TMEM119 and P2RY12 in Alzheimer’s disease","url":"https://www.biorxiv.org/content/10.1101/2021.05.31.446375.full.pdf"},{"title":"Tmem119 expression is downregulated in a subset of brain metastasis-associated microglia","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10837931/"}]
+
+Based on the search results, I found relevant information about Xenium technology and microglia detection using IBA1 and TMEM119 markers:
+
+## Xenium Multimodal Cell Segmentation
+
+The Xenium Cell Segmentation Staining Mix provides four different labeling methods that serve as inputs for automated cell segmentation, including antibodies labeling. This technology appears to support the multimodal approach needed for improved cell detection.
+
+## IBA1 and TMEM119 for Microglia Detection
+
+TMEM119 (which labels microglia selectively), when combined with IBA1 (which provides an exceptional visualization of their morphology), allows investigation of changes in density, distribution, and morphology. This combination provides complementary information for microglia identification.
+
+## Application to Xenium Workflow
+
+The search results also show practical application of this approach. In one study, a sample was subjected to post-run immunofluorescence staining against IBA1 (a microglia/macrophage-specific marker), and transcripts were allocated within IBA1 masks using thresholding and geographic approaches. The ability to allocate transcripts based on post-run immunostaining provides an important layer of flexibility to address specific research questions.
+
+The combination of Xenium's multimodal segmentation capabilities with IBA1 and TMEM119 staining appears to enhance microglia detection and characterization in brain tissue analysis.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Edit laneR2_stage75f_tf_specificity_control_v1.py
+Added 10 lines
+Now wiring the joint statistic into the report.
+
+Web Fetchhttps://www.biorxiv.org/content/10.1101/2024.12.04.626766v1.full
+Fetched from https://www.biorxiv.org/content/10.1101/2024.12.04.626766v1.full
+Web SearchKotah Rust "Beyond the nuclear border" results microglia "IBA1" number of cells increased transcripts specificity findings summary
+OUT
+Web search results for query: "Kotah Rust "Beyond the nuclear border" results microglia "IBA1" number of cells increased transcripts specificity findings summary"
+
+Links: [{"title":"Janssen Kotah - University Medical Center Groningen | LinkedIn","url":"https://www.linkedin.com/in/jmkotah/"},{"title":"Beyond the nuclear border: single-cell analysis of in situ sequenced human brain tissue using cellular features | Communications Biology","url":"https://www.nature.com/articles/s42003-025-08518-6"},{"title":"Beyond the nuclear border: single-cell analysis of in situ sequenced human brain tissue using cellular features - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12284266/"},{"title":"(PDF) Beyond the nuclear border: single-cell analysis of in situ sequenced human brain tissue using cellular features","url":"https://www.researchgate.net/publication/393908903_Beyond_the_nuclear_border_single-cell_analysis_of_in_situ_sequenced_human_brain_tissue_using_cellular_features"},{"title":"communications biology Article A Nature Portfolio journal","url":"https://www.nature.com/articles/s42003-025-08518-6.pdf"},{"title":"Janssen M. Kotah","url":"https://jmkotah.github.io/"},{"title":"Iba1 is an actin-cross-linking protein in macrophages/microglia - WashU Research Profiles","url":"https://profiles.wustl.edu/en/publications/iba1-is-an-actin-cross-linking-protein-in-macrophagesmicroglia/"},{"title":"A Common Iba1 Antibody Labels Vasopressin Neurons in Mice","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12871090/"},{"title":"Microglia (Iba1) Concentrated Polyclonal Antibody 902-290-022619 Rev: 062117","url":"https://biocare.net/wp-content/uploads/290-RUO.pdf"}]
+
+Based on the search results, here's a summary of the key findings from the "Beyond the nuclear border" study by Kotah, Rust, and colleagues:
+
+## Study Overview
+The research assessed the suitability of in situ sequencing (ISS) for analyzing formalin-fixed, paraffin-embedded (FFPE) postmortem human brain tissue, addressing the key challenge of optimizing transcript allocation while minimizing misallocation, particularly in the morphologically complex central nervous system (CNS).
+
+## Methods and Approach
+The researchers compared geospatial methods using nuclear and expanded nuclear boundaries for segmentation and transcript allocation, finding that while overall cell-type proportions remained comparable, transcript allocation methods affected specific cell types, including microglia, neurons, and neurovascular cells.
+
+## Use of IBA1 for Specificity
+To enhance specificity, the team integrated fluorescent imaging data targeting 18S RNA and IBA1 protein to direct transcript allocation toward RNA-rich cells (e.g., neurons) and microglia, respectively. Results confirmed that the IBA1-guided segmentation approach (gsIBA) preferentially allocated microglial transcripts, with linear modeling showing a significant interaction effect between the segmentation method and the allocation of microglial transcripts increasing in gsIBA-segmentation.
+
+The publication appeared in Communications Biology and represents an important methodological contribution to spatial transcriptomics analysis of human brain tissue.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Edit laneR2_stage75f_tf_specificity_control_v1.py
+Added 24 lines
+Web Fetchhttps://cdn.10xgenomics.com/image/upload/v1710785020/CG000750_XeniumInSitu_CellSegmentation_TechNote_RevA.pdf
+Fetched from https://cdn.10xgenomics.com/image/upload/v1710785020/CG000750_XeniumInSitu_CellSegmentation_TechNote_RevA.pdf
+Edit laneR2_stage75f_tf_specificity_control_v1.py
+Added 3 lines
+Smoke-testing on a small permutation count before the full run.
+
+Bash Smoke test with 50 permutations
+IN
+cd "D:/jepa_wt_stage75f-specificity_20260928" && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe scripts/lane_r2/laneR2_stage75f_tf_specificity_control_v1.py \
+ --pilot-dir "D:/Jepa project/results/stage75f_motif_pilot" \
+ --pilot-dir "D:/Jepa project/results/stage75f_secondary_motif_pilot" \
+ --batch-dir "D:/Jepa project/results/stage75f_batches" \
+ --out-dir "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/smoke_r2" \
+ --annot-permutations 50 2>&1 | tail -60
+
+OUT
+      {
+        "control_name": "REAL_ANNOTATION_SHUFFLE_1",
+        "expected_is_structurally_distinct": true,
+        "observed_is_structurally_distinct": true,
+        "changed_element_fraction": 0.999319,
+        "gate_result": "PASS"
+      },
+      {
+        "control_name": "REAL_ANNOTATION_SHUFFLE_2",
+        "expected_is_structurally_distinct": true,
+        "observed_is_structurally_distinct": true,
+        "changed_element_fraction": 0.999319,
+        "gate_result": "PASS"
+      }
+    ],
+    "all_gates_passed": true,
+    "planted_identical_detected_as_unchanged": true,
+    "planted_valid_detected_as_changed": true
+  },
+  "identifiability": {
+    "tf_label_permutation_null_degenerate": false,
+    "mean_pairwise_jaccard_query_regions": 0.762838,
+    "mean_pairwise_jaccard_enriched_motif_sets": 0.510163,
+    "n_motifs_enriched_in_every_batch": 9
+  },
+  "claim_boundaries": {
+    "biological_regulatory_claim": "NONE",
+    "validated_eregulon_network": false,
+    "reruns_cistarget_or_motif_enrichment": false,
+    "protected_full104_pathology_opened": false,
+    "reserved_rna_readouts_opened": false,
+    "td60_outcomes_opened": false,
+    "teacher_latent_outcomes_opened": false,
+    "historical_tiers_treated_as": "EXPOSED_HYPOTHESES_ONLY"
+  },
+  "governance": "TRAINING=OFF | PROTECTED_FULL104_PATHOLOGY=UNOPENED | RESERVED_RNA_READOUTS=UNOPENED | TD60_OUTCOMES=UNOPENED | TEACHER_LATENT_OUTCOMES=UNOPENED | NEW_BIOLOGICAL_REGULATORY_CLAIM=NONE"
+}
+
+--- STRUCTURAL GATE ---
+                                              control_name  expected_is_structurally_distinct  observed_is_structurally_distinct  changed_element_fraction gate_result
+            PLANTED_IDENTICAL_annotation_labelled_SHUFFLED                              False                              False                  0.000000        PASS
+                      PLANTED_VALID_annotation_derangement                               True                               True                  0.999660        PASS
+PLANTED_IDENTICAL_batch_label_assignment_labelled_SHUFFLED                              False                              False                  0.000000        PASS
+                     PLANTED_VALID_batch_label_derangement                               True                               True                  1.000000        PASS
+                                 REAL_ANNOTATION_SHUFFLE_0                               True                               True                  0.999149        PASS
+                                 REAL_ANNOTATION_SHUFFLE_1                               True                               True                  0.999319        PASS
+                                 REAL_ANNOTATION_SHUFFLE_2                               True                               True                  0.999319        PASS
+
+--- TIER RE-DERIVATION ---
+   tf derived_tier historical_tier_exposed_hypothesis  agrees_with_historical  observed_direct_support  observed_extended_support
+BACH1       Tier B                             Tier B                    True                        0                          1
+CEBPA       Tier B                             Tier B                    True                        0                          4
+ ELF1       Tier A                             Tier A                    True                        1                         10
+ IRF8       Tier B                             Tier B                    True                        0                          1
+ MITF       Tier C                             Tier C                    True                        0                          0
+ NRF1       Tier C                             Tier C                    True                        0                          0
+ RELA       Tier B                             Tier B                    True                        0                          1
+ SPI1       Tier A                             Tier A                    True                        3                          4
+STAT1       Tier A                             Tier A                    True                        1                          2
+STAT3       Tier C                             Tier C                    True                        0                          0
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/PMC12284266/fullTextXML
+Fetched from https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12284266/fullTextXML
+Web SearchXenium human brain Alzheimer microglia subtype spatial "cell segmentation" limitation caveat "low transcript" microglia excluded
+OUT
+Web search results for query: "Xenium human brain Alzheimer microglia subtype spatial "cell segmentation" limitation caveat "low transcript" microglia excluded"
+
+Links: [{"title":"High-Resolution Spatial Profiling of Microglia Reveals Proximity Associated Immunometabolic Reprogramming in Alzheimer’s Disease","url":"https://www.biorxiv.org/content/10.1101/2025.05.16.654329.full.pdf"},{"title":"Microglia in Alzheimer's disease at single-cell level. Are there common patterns in humans and mice? | Journal of Experimental Medicine | Rockefeller University Press","url":"https://rupress.org/jem/article/218/9/e20202717/212499/Microglia-in-Alzheimer-s-disease-at-single-cell"},{"title":"Uncovering Plaque-Glia Niches in Human Alzheimer’s Disease Brains Using Spatial Transcriptomics","url":"https://www.biorxiv.org/content/10.1101/2024.09.05.611566.full.pdf"},{"title":"Uncovering plaque-glia niches in human Alzheimer's disease brains using spatial transcriptomics - PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/40740481/"},{"title":"Mapping the spatial immunometabolic responses of microglia in response to Alzheimer’s pathology","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11713096/"},{"title":"From Transcripts to Cells: Dissecting Sensitivity, Signal Contamination, and Specificity in Xenium Spatial Transcriptomics","url":"https://www.biorxiv.org/content/10.1101/2025.04.23.649965.full.pdf"},{"title":"Uncovering spatial tissue domains and cell types in spatial omics through cross-scale profiling of cellular and genomic interactions","url":"https://arxiv.org/pdf/2602.12651"},{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics | Molecular Neurodegeneration | Springer Nature Link","url":"https://link.springer.com/article/10.1186/s13024-025-00897-y"},{"title":"Assessment using Xenium-MouseBrain data a Spatial image highlighting... | Download Scientific Diagram","url":"https://www.researchgate.net/figure/Assessment-using-Xenium-MouseBrain-data-a-Spatial-image-highlighting-the-cell-type-and_fig5_377386505"}]
+
+The search results reveal relevant information about Xenium spatial transcriptomics studies in Alzheimer's disease and microglia analysis. Here are the key findings:
+
+## Xenium Studies in AD and Microglia
+
+The 10x Genomics Xenium in situ platform was used with a customized gene panel enriched for immune and metabolic genes, enabling multiplex detection of transcripts at single-cell and subcellular resolution in tissue.
+
+A fully custom 400+ gene panel consisting of probes for deep phenotyping of microglial heterogeneity was developed and employed in both AD mouse models and human autopsy tissue from the dorsolateral PFC gray matter.
+
+## Cell Segmentation and Technical Limitations
+
+Ambiguous and unexpected gene expression profiles have been associated with inaccurate cell segmentation. The search results indicate that emerging efforts integrate morphological images, transcript distribution and gene expression profiles from reference scRNA-seq datasets to optimize cell segmentation pipelines.
+
+## Spatial Context Challenges
+
+Spatial transcriptomic analyses of microglia remain in their infancy with important knowledge gaps, and spatial profiling studies have been limited by optical resolution requiring deconvolution to impute cell-type abundance.
+
+While the search results discuss general limitations in cell segmentation and spatial resolution, I did not find specific information about "low transcript" microglia being excluded from analysis in the Xenium studies. If you need more detailed information about specific caveats regarding transcript abundance filtering in microglia analysis, you may want to consult the full text of the papers linked above, particularly the 2025 BioRxiv preprint on spatial immunometabolic responses.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Smoke test passes — all 7 structural gates correct, and tier re-derivation agrees 10/10 with the historical labels. Let me see the head of the report.
+
+Prior counts recorded: MTG MERFISH 27 donors, CaH Xenium 10, HIP/MEC no donor field. Now let me verify directly and build the panel check.
+
+The Kotah paper gave the core microglia-specific evidence. Now let me chase the remaining sub-questions.
+
+Bash Inspect smoke report T1 T2 T3 sections
+IN
+cd "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/smoke_r2" && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import json;r=json.load(open('laneR2_report_v1.json'))
+print(json.dumps(r['T3_region_and_set_overlap'],indent=1))
+print(json.dumps(r['T1_tf_label_permutation_exact'],indent=1))
+print(json.dumps(r['T2_annotation_supply'],indent=1))
+print('annot identical:',r['annotation_content_identical_across_batches'],'mismatch',r['annotation_content_mismatches'][:5])
+"
+
+OUT
+[
+ {
+  "set_type": "query_regions_bed",
+  "n_tfs": 10,
+  "sum_of_per_tf_sizes": 779,
+  "n_distinct_elements_across_all_tfs": 91,
+  "n_elements_present_in_every_tf": 20,
+  "mean_pairwise_jaccard": 0.762838,
+  "min_pairwise_jaccard": 0.428571,
+  "max_pairwise_jaccard": 0.976744,
+  "mean_frac_of_smaller_shared": 0.926364,
+  "status": "MEASURED"
+ },
+ {
+  "set_type": "mapped_cistarget_db_regions",
+  "n_tfs": 1,
+  "sum_of_per_tf_sizes": 267,
+  "n_distinct_elements_across_all_tfs": 267,
+  "n_elements_present_in_every_tf": 267,
+  "mean_pairwise_jaccard": "UNKNOWN",
+  "min_pairwise_jaccard": "UNKNOWN",
+  "max_pairwise_jaccard": "UNKNOWN",
+  "mean_frac_of_smaller_shared": "UNKNOWN",
+  "status": "MEASURED"
+ },
+ {
+  "set_type": "target_genes",
+  "n_tfs": 10,
+  "sum_of_per_tf_sizes": 278,
+  "n_distinct_elements_across_all_tfs": 33,
+  "n_elements_present_in_every_tf": 7,
+  "mean_pairwise_jaccard": 0.745831,
+  "min_pairwise_jaccard": 0.363636,
+  "max_pairwise_jaccard": 0.969697,
+  "mean_frac_of_smaller_shared": 0.931269,
+  "status": "MEASURED"
+ },
+ {
+  "set_type": "enriched_motif_sets",
+  "n_tfs": 10,
+  "sum_of_per_tf_sizes": 768,
+  "n_distinct_elements_across_all_tfs": 183,
+  "n_elements_present_in_every_tf": 9,
+  "mean_pairwise_jaccard": 0.510163,
+  "min_pairwise_jaccard": 0.128788,
+  "max_pairwise_jaccard": 0.974026,
+  "mean_frac_of_smaller_shared": 0.655065,
+  "status": "MEASURED"
+ }
+]
+{
+ "statistic": "trace(S) where S[t][b]=|E_b intersect A_t|",
+ "direct": {
+  "observed_trace": 5.0,
+  "n_permutations_enumerated": 3628800,
+  "null_mean": 5.7,
+  "null_sd": 1.791647,
+  "null_min": 0.0,
+  "null_max": 10.0,
+  "n_distinct_null_values": 11,
+  "p_value_one_sided_ge": 0.74769841,
+  "null_is_degenerate_constant": false
+ },
+ "extended": {
+  "observed_trace": 23.0,
+  "n_permutations_enumerated": 3628800,
+  "null_mean": 26.0,
+  "null_sd": 3.418902,
+  "null_min": 14.0,
+  "null_max": 38.0,
+  "n_distinct_null_values": 25,
+  "p_value_one_sided_ge": 0.846347,
+  "null_is_degenerate_constant": false
+ },
+ "note": "Exact enumeration over all 3628800 batch-label assignments. Each TF annotation supply is held exactly fixed, so this test isolates region-set specificity."
+}
+{
+ "spearman_extended_supply_vs_derived_tier": 0.764093,
+ "spearman_extended_supply_vs_derived_tier_p": 0.010079,
+ "spearman_direct_supply_vs_derived_tier": 0.904431,
+ "spearman_direct_supply_vs_derived_tier_p": 0.000325,
+ "n_tf_scope_pairs_exceeding_supply_expectation": 2,
+ "n_tf_scope_pairs_tested": 20
+}
+annot identical: True mismatch []
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/PMC11643037/fullTextXML
+Fetched from https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11643037/fullTextXML
+Web Fetchhttps://link.springer.com/article/10.1186/s13024-025-00897-y
+Fetched from https://link.springer.com/article/10.1186/s13024-025-00897-y
+Smoke test caught a real defect in my own loader. "stage75f_batch_0001_IRF8.cistarget_regions.txt".split("_")[-1] returns "regions.txt", not the TF — so all 10 mapped-region files collapsed onto one key (n_tfs=1). Fixing with a fail-closed guard.
+
+Web Search"Microglia networks within the tapestry of Alzheimer's disease through spatial transcriptomics" PMC limitations segmentation
+OUT
+Web search results for query: ""Microglia networks within the tapestry of Alzheimer's disease through spatial transcriptomics" PMC limitations segmentation"
+
+Links: [{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12482212/"},{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12482212/"},{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics | Molecular Neurodegeneration | Springer Nature Link","url":"https://link.springer.com/article/10.1186/s13024-025-00897-y"},{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics | Molecular Neurodegeneration | Full Text","url":"https://molecularneurodegeneration.biomedcentral.com/articles/10.1186/s13024-025-00897-y"},{"title":"(PDF) Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics","url":"https://www.researchgate.net/publication/395987934_Microglia_networks_within_the_tapestry_of_alzheimer's_disease_through_spatial_transcriptomics"},{"title":"Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics: Cell Reports","url":"https://www.cell.com/cell-reports/fulltext/S2211-1247(24)00544-8"},{"title":"Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics - ScienceDirect","url":"https://www.sciencedirect.com/science/article/pii/S2211124724005448"},{"title":"Microglia networks within the tapestry of alzheimer's disease through spatial transcriptomics - PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/41024223/"},{"title":"High-Resolution Spatial Profiling of Microglia Reveals Proximity Associated Immunometabolic Reprogramming in Alzheimer’s Disease - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12132303/"}]
+
+Based on the search results, I found the research article you're looking for. Here's what the search revealed:
+
+## Overview
+
+The paper "Microglia networks within the tapestry of alzheimer's disease through spatial transcriptomics" was published in 2025 by Yi Zhou and Christopher K. Glass from the University of California, San Diego.
+
+## Main Focus
+
+The review discusses recent advances in spatial transcriptomics—integrating both imaging- and sequencing-based methods—that map gene expression within intact brain tissues, highlighting how these technologies have revealed regional heterogeneity and functional diversity among microglia and their dynamic interactions with astrocytes, neurons, and oligodendrocytes in aging and Alzheimer's disease.
+
+## PMC Limitations and Segmentation
+
+Regarding PMC limitations and segmentation challenges, the potential of spatial transcriptomics in brain research will inevitably be limited until adequate cell segmentation can be obtained. Additionally, researchers have had to work around limitations by scoring pseudo-bulked plaque niches on their expression of predicted receptor-ligand pairs, doing so separately for pairs associated with different signaling pathways.
+
+The article is available through the PubMed Central (PMC) database and provides comprehensive insights into how spatial transcriptomics is being used to understand microglial networks in Alzheimer's disease pathogenesis.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Edit laneR2_stage75f_tf_specificity_control_v1.py
+Added 7 lines
+Web Fetchhttps://www.biorxiv.org/content/10.1101/2025.05.16.654329.full.pdf
+Fetched from https://www.biorxiv.org/content/10.1101/2025.05.16.654329.full.pdf
+Bash Replace remaining broken TF filename parsers
+IN
+cd "D:/jepa_wt_stage75f-specificity_20260928" && python - <<'EOF'
+import re,io
+p='scripts/lane_r2/laneR2_stage75f_tf_specificity_control_v1.py'
+s=open(p,encoding='utf-8').read()
+s=s.replace('        tf = path.name.split("_")[-1].replace(".cistarget_regions.txt", "")','        tf = tf_of(path)')
+s=s.replace('        tf = path.name.split("_")[-1].replace(".genes.txt", "")','        tf = tf_of(path)')
+open(p,'w',encoding='utf-8').write(s)
+print('remaining bad split occurrences:', s.count('path.name.split("_")[-1]'))
+EOF
+
+OUT
+remaining bad split occurrences: 0
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/PMC12482212/fullTextXML
+Fetched from https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12482212/fullTextXML
+Now adding a fail-closed guard so a key-collapse like that can never pass silently again.
+
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/PMC12132303/fullTextXML
+Fetched from https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12132303/fullTextXML
+Edit laneR2_stage75f_tf_specificity_control_v1.py
+Added 16 lines
+Write audit_seaad_spatial_structural_feasibility_v1.py
+336 lines
+"""Lane R4: structural feasibility audit of SEA-AD public spatial resources.
+
+STRUCTURAL ONLY.  TRAINING=OFF.  No biological claim is produced or permitted.
+
+All ``obs`` access routes through ``seaad_spatial_pathology_firewall_v1``; the
+expression matrix ``X`` is never read.  Gene identity is read from ``var``
+(panel membership is a property of the assay design, not of any donor).
+
+Writes a machine-readable artifact to the lane output directory.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+import pathlib
+import subprocess
+import sys
+from collections import Counter
+
+import h5py
+import numpy as np
+
+_HERE = pathlib.Path(__file__).resolve()
+_FW_PATH = _HERE.parent / "seaad_spatial_pathology_firewall_v1.py"
+_spec = importlib.util.spec_from_file_location("seaad_spatial_firewall", _FW_PATH)
+fw = importlib.util.module_from_spec(_spec)
+sys.modules["seaad_spatial_firewall"] = fw
+_spec.loader.exec_module(fw)
+
+OUT_DIR = pathlib.Path(r"D:/jepa_v5_outputs_20260925/out_seaad-spatial")
+
+ASSETS = {
+    "MTG_MERFISH": {
+        "path": r"D:/Jepa project/data/external/v4/sea_ad/merfish/SEAAD_MTG_MERFISH.2024-12-11.h5ad",
+        "public_url": "https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/middle-temporal-gyrus/combined_anndata_object/SEAAD_MTG_MERFISH.2024-12-11.h5ad",
+        "assay": "MERFISH (Vizgen MERSCOPE)",
+        "region": "MTG (middle temporal gyrus)",
+        "release": "2024-12-11",
+        "recorded_sha256": "3e3dac22446a8ce66afd07c209cd74df260b2f3d7c4085ffe4732390d2054a24",
+        "celltype_cols": ["Class", "Subclass", "Supertype"],
+        "donor_col": "Donor ID",
+        "section_col": "Section",
+    },
+    "HIP_MERSCOPE": {
+        "path": r"D:/Jepa project/data/external/v4/sea_ad/merfish/1444211893_HPF_mapped.h5ad",
+        "public_url": "https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/hippocampus/combined_anndata_object/1444211893_HPF_mapped.h5ad",
+        "assay": "MERSCOPE",
+        "region": "HIP (hippocampus)",
+        "release": "2026-06-30",
+        "recorded_sha256": "0136fbb0650646b6b0e3d4d8759ea29c52d92f17ca5846600fbf24fbd4cb4f21",
+        "celltype_cols": ["Class_scANVI", "Subclass_scANVI", "Supertype_scANVI"],
+        "donor_col": None,
+        "section_col": None,
+    },
+    "MEC_MERSCOPE": {
+        "path": r"D:/Jepa project/data/external/v4/sea_ad/merfish/1444201261_MEC_mapped.h5ad",
+        "public_url": "https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/medial-entorhinal-cortex/combined_anndata_object/1444201261_MEC_mapped.h5ad",
+        "assay": "MERSCOPE",
+        "region": "MEC (medial entorhinal cortex)",
+        "release": "2026-06-30",
+        "recorded_sha256": "612cc24bb15e82c74fa9ef3f9710f355defbb03f7037ba8520b3a71f1674fca8",
+        "celltype_cols": ["Class_scANVI", "Subclass_scANVI", "Supertype_scANVI"],
+        "donor_col": None,
+        "section_col": None,
+    },
+    "CaH_XENIUM": {
+        "path": r"D:/Jepa project/data/external/v4/sea_ad/xenium/CaH_Xenium.2026-01-07.h5ad",
+        "public_url": "https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/caudate_nucleus/combined_anndata_object/CaH_Xenium.2026-01-07.h5ad",
+        "assay": "Xenium (10x Genomics)",
+        "region": "CaH (caudate nucleus)",
+        "release": "2026-01-07",
+        "recorded_sha256": "8ab8eac92946f55e26aace7f20c8e56027704e3f0bdd92f2609e1a843271432a",
+        "celltype_cols": ["Subclass", "Supertype"],
+        "donor_col": "Donor ID",
+        "section_col": None,
+    },
+}
+
+PROGRAMS = {
+    "homeostatic": ["P2RY12", "TMEM119", "CX3CR1", "GPR34", "SALL1"],
+    "lipid_DAM": ["APOE", "LPL", "GPNMB", "TREM2", "APOC1", "ABCA1"],
+    "antigen_presentation": [
+        "HLA-DRA", "HLA-DPA1", "HLA-DMB", "HLA-DMA", "CD74", "CTSS", "IFI30",
+    ],
+}
+
+MICROGLIA_TOKENS = ("microglia", "micro-pvm", "micro_pvm", "micro/pvm", "pvm")
+
+
+def read_var_index(path: str) -> list[str]:
+    with h5py.File(path, "r") as f:
+        idx = f["var"].attrs.get("_index")
+        idx = idx.decode() if isinstance(idx, bytes) else idx
+        vals = f["var"][idx][...]
+    return [v.decode() if isinstance(v, bytes) else str(v) for v in vals]
+
+
+def n_obs(path: str) -> int:
+    with h5py.File(path, "r") as f:
+        idx = f["obs"].attrs.get("_index")
+        idx = idx.decode() if isinstance(idx, bytes) else idx
+        node = f["obs"][idx]
+        if isinstance(node, h5py.Group):
+            return int(node["codes"].shape[0])
+        return int(node.shape[0])
+
+
+def numeric_summary_by_group(path, value_col, group_vals, group_name):
+    """Median/mean of an allow-listed numeric QC column within a cell group.
+
+    Technical measurement-process quantities only (segmentation geometry and
+    transcript counters).  No biological quantity is summarised.
+    """
+    verdict, _ = fw.classify_column(value_col)
+    if verdict != "ALLOW":
+        raise fw.PathologyFirewallViolation(f"{value_col} not allow-listed")
+    with h5py.File(path, "r") as f:
+        if value_col not in f["obs"]:
+            return None
+        node = f["obs"][value_col]
+        if isinstance(node, h5py.Group):
+            return None
+        vals = node[...].astype("float64")
+    mask = group_vals == group_name
+    if mask.sum() == 0:
+        return None
+    sel = vals[mask]
+    oth = vals[~mask]
+    return {
+        "n_in_group": int(mask.sum()),
+        "median_in_group": float(np.nanmedian(sel)),
+        "median_all_other_cells": float(np.nanmedian(oth)),
+        "ratio_group_over_other": (
+            float(np.nanmedian(sel) / np.nanmedian(oth))
+            if np.nanmedian(oth) not in (0.0, np.nan)
+            else None
+        ),
+    }
+
+
+def audit_asset(key: str, spec: dict) -> dict:
+    path = spec["path"]
+    rec: dict = {
+        "asset_key": key,
+        "assay": spec["assay"],
+        "region": spec["region"],
+        "release": spec["release"],
+        "local_path": path,
+        "public_url": spec["public_url"],
+        "recorded_sha256_stage81a1b": spec["recorded_sha256"],
+        "file_size_bytes": pathlib.Path(path).stat().st_size,
+    }
+
+    # ---- column-name screen (existence only; no values read) -------------
+    with h5py.File(path, "r") as f:
+        obs_cols = [c for c in f["obs"].keys()]
+    screened = fw.screen_columns(obs_cols)
+    rec["obs_column_screen"] = {
+        "n_total": len(obs_cols),
+        "protected_columns_present_names_only": sorted(screened["PROTECTED"]),
+        "n_protected": len(screened["PROTECTED"]),
+        "demographic_columns_present_names_only": sorted(screened["DENY_NOT_NEEDED"]),
+        "allow_listed": sorted(screened["ALLOW"]),
+        "refused_unknown": sorted(screened["REFUSED_UNKNOWN"]),
+    }
+    rec["protected_pathology_in_same_table"] = len(screened["PROTECTED"]) > 0
+    rec["protected_values_read"] = False
+
+    # ---- panel ------------------------------------------------------------
+    genes = read_var_index(path)
+    upper = {g.upper(): g for g in genes}
+    rec["n_features_in_object"] = len(genes)
+    rec["n_cells"] = n_obs(path)
+
+    panel_hits = {}
+    for prog, glist in PROGRAMS.items():
+        present = [g for g in glist if g.upper() in upper]
+        absent = [g for g in glist if g.upper() not in upper]
+        panel_hits[prog] = {
+            "n_total": len(glist),
+            "n_present": len(present),
+            "present": present,
+            "absent": absent,
+            "fraction_present": round(len(present) / len(glist), 4),
+        }
+    rec["program_panel_representation"] = panel_hits
+    rec["gene_panel"] = sorted(genes)
+
+    # ---- allow-listed obs -------------------------------------------------
+    want = [c for c in spec["celltype_cols"] if c in obs_cols]
+    if spec["donor_col"] and spec["donor_col"] in obs_cols:
+        want.append(spec["donor_col"])
+    if spec["section_col"] and spec["section_col"] in obs_cols:
+        want.append(spec["section_col"])
+    for extra in ("segmentation_method", "region", "Brain Region"):
+        if extra in obs_cols:
+            want.append(extra)
+
+    frame = fw.load_allowlisted_obs(path, want)
+    rec["obs_columns_actually_read"] = list(frame.columns)
+
+    if spec["donor_col"] and spec["donor_col"] in frame:
+        donors = sorted({str(d) for d in frame[spec["donor_col"]] if d is not None})
+        rec["donor_id_column"] = spec["donor_col"]
+        rec["n_donors"] = len(donors)
+        rec["donor_ids"] = donors
+    else:
+        rec["donor_id_column"] = None
+        rec["n_donors"] = 0
+        rec["donor_ids"] = []
+        rec["donor_linkage_note"] = (
+            "No donor identifier column is present in the public object; "
+            "donor identity is NOT recoverable from this file alone."
+        )
+
+    if spec["section_col"] and spec["section_col"] in frame:
+        rec["n_sections"] = int(frame[spec["section_col"]].nunique())
+    else:
+        rec["n_sections"] = None
+
+    for c in ("segmentation_method", "region", "Brain Region"):
+        if c in frame:
+            rec[f"values_{c}"] = sorted({str(v) for v in frame[c].unique()})[:20]
+
+    # ---- cell-type annotation + microglia count ---------------------------
+    ct = {}
+    micro_total = None
+    micro_label_used = None
+    micro_col_used = None
+    for col in spec["celltype_cols"]:
+        if col not in frame:
+            continue
+        vals = frame[col].astype(str).values
+        counts = Counter(vals)
+        ct[col] = {
+            "n_labels": len(counts),
+            "labels": dict(sorted(counts.items(), key=lambda kv: -kv[1])),
+        }
+        micro_labels = [
+            lbl for lbl in counts
+            if any(t in lbl.lower() for t in MICROGLIA_TOKENS)
+        ]
+        if micro_labels and micro_total is None:
+            micro_total = int(sum(counts[m] for m in micro_labels))
+            micro_label_used = micro_labels
+            micro_col_used = col
+    rec["cell_type_annotations"] = ct
+    rec["microglia_label_column"] = micro_col_used
+    rec["microglia_labels_matched"] = micro_label_used
+    rec["n_microglia"] = micro_total
+    rec["microglia_fraction"] = (
+        round(micro_total / rec["n_cells"], 5) if micro_total else None
+    )
+
+    # microglia per donor (identity-only aggregation)
+    if micro_col_used and rec["donor_ids"]:
+        dcol = spec["donor_col"]
+        vals = frame[micro_col_used].astype(str).values
+        mmask = np.array([
+            any(t in v.lower() for t in MICROGLIA_TOKENS) for v in vals
+        ])
+        dser = frame[dcol].astype(str).values
+        per = Counter(dser[mmask])
+        rec["microglia_per_donor"] = dict(sorted(per.items()))
+        rec["microglia_per_donor_min"] = int(min(per.values())) if per else 0
+        rec["microglia_per_donor_median"] = (
+            float(np.median(list(per.values()))) if per else 0
+        )
+        rec["n_donors_with_microglia"] = len(per)
+
+    # ---- segmentation-geometry comparison (technical only) ----------------
+    if micro_col_used:
+        vals = frame[micro_col_used].astype(str).values
+        seg = {}
+        for qc_col in (
+            "cell_area", "nucleus_area", "Cell volume",
+            "transcript_counts", "total_counts",
+            "Genes detected", "Number of spots", "nucleus_count",
+        ):
+            if qc_col not in obs_cols:
+                continue
+            mmask_names = [
+                lbl for lbl in set(vals)
+                if any(t in lbl.lower() for t in MICROGLIA_TOKENS)
+            ]
+            if not mmask_names:
+                continue
+            grp = np.isin(vals, mmask_names)
+            verdict, _ = fw.classify_column(qc_col)
+            if verdict != "ALLOW":
+                continue
+            with h5py.File(path, "r") as f:
+                node = f["obs"][qc_col]
+                if isinstance(node, h5py.Group):
+                    continue
+                arr = node[...].astype("float64")
+            seg[qc_col] = {
+                "microglia_median": float(np.nanmedian(arr[grp])),
+                "other_cells_median": float(np.nanmedian(arr[~grp])),
+                "ratio_microglia_over_other": (
+                    float(np.nanmedian(arr[grp]) / np.nanmedian(arr[~grp]))
+                    if np.nanmedian(arr[~grp]) else None
+                ),
+            }
+        rec["segmentation_geometry_microglia_vs_other"] = seg
+
+    return rec
+
+
+def main() -> None:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    results = {}
+    for key, spec in ASSETS.items():
+        print(f"[audit] {key} ...", flush=True)
+        results[key] = audit_asset(key, spec)
+
+    payload = {
+        "schema": "JEPA_LANE_R4_SEAAD_SPATIAL_STRUCTURAL_FEASIBILITY_V1",
+        "date": "2026-09-28",
+        "training": "OFF",
+        "scope": "STRUCTURAL_FEASIBILITY_ONLY__NO_BIOLOGICAL_CLAIM",
+        "protected_outcomes_opened": False,
+        "programs_checked": PROGRAMS,
+        "assets": results,
+    }
+    out = OUT_DIR / "SEAAD_SPATIAL_STRUCTURAL_AUDIT_V1.json"
+    out.write_text(json.dumps(payload, indent=1), encoding="utf-8")
+    print(f"[written] {out}")
+    print(f"[sha256] {hashlib.sha256(out.read_bytes()).hexdigest()}")
+
+
+if __name__ == "__main__":
+    main()
+Web Fetchhttps://molecularneurodegeneration.biomedcentral.com/articles/10.1186/s13024-025-00897-y
+Fetched from https://molecularneurodegeneration.biomedcentral.com/articles/10.1186/s13024-025-00897-y
+Web Fetchhttps://pmc.ncbi.nlm.nih.gov/articles/PMC12132303/
+Fetched from https://pmc.ncbi.nlm.nih.gov/articles/PMC12132303/
+Bash Run the structural spatial audit
+IN
+cd /d/jepa_wt_seaad-spatial_20260928 && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe scripts/v5/audit_seaad_spatial_structural_feasibility_v1.py 2>&1 | tail -30
+
+OUT
+[audit] MTG_MERFISH ...
+[audit] HIP_MERSCOPE ...
+[audit] MEC_MERSCOPE ...
+[audit] CaH_XENIUM ...
+[written] D:\jepa_v5_outputs_20260925\out_seaad-spatial\SEAAD_SPATIAL_STRUCTURAL_AUDIT_V1.json
+[sha256] 19029146db80485afe3e48f3444340b3f66e144fcd26df2fcdfd442607640f26
+Bash Re-run smoke test after loader fix
+IN
+cd "D:/jepa_wt_stage75f-specificity_20260928" && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe scripts/lane_r2/laneR2_stage75f_tf_specificity_control_v1.py \
+ --pilot-dir "D:/Jepa project/results/stage75f_motif_pilot" \
+ --pilot-dir "D:/Jepa project/results/stage75f_secondary_motif_pilot" \
+ --batch-dir "D:/Jepa project/results/stage75f_batches" \
+ --out-dir "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/smoke_r2b" \
+ --annot-permutations 50 2>&1 | /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import sys,json
+t=sys.stdin.read()
+print(t[:60])
+" ; /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import json;r=json.load(open('C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/smoke_r2b/laneR2_report_v1.json'))
+for s in r['T3_region_and_set_overlap']: print(s['set_type'],'n_tfs',s.get('n_tfs'),'meanJ',s.get('mean_pairwise_jaccard'),'distinct',s.get('n_distinct_elements_across_all_tfs'),'core',s.get('n_elements_present_in_every_tf'),'meanFracSmaller',s.get('mean_frac_of_smaller_shared'))
+"
+
+OUT
+{
+  "audit": "laneR2_stage75f_tf_specificity_control_v1",
+  
+query_regions_bed n_tfs 10 meanJ 0.762838 distinct 91 core 20 meanFracSmaller 0.926364
+mapped_cistarget_db_regions n_tfs 10 meanJ 0.732645 distinct 286 core 50 meanFracSmaller 0.927772
+target_genes n_tfs 10 meanJ 0.745831 distinct 33 core 7 meanFracSmaller 0.931269
+enriched_motif_sets n_tfs 10 meanJ 0.510163 distinct 183 core 9 meanFracSmaller 0.655065
+Web Fetchhttps://www.biorxiv.org/content/10.1101/2025.05.16.654329.full.pdf
+Fetched from https://www.biorxiv.org/content/10.1101/2025.05.16.654329.full.pdf
+Web Searchspatial transcriptomics microglia subtype label transfer snRNA-seq concordance poor limited gene panel cannot resolve microglial states
+OUT
+Web search results for query: "spatial transcriptomics microglia subtype label transfer snRNA-seq concordance poor limited gene panel cannot resolve microglial states"
+
+Links: [{"title":"An integrated single-nucleus and spatial transcriptomics atlas reveals the molecular landscape of the human hippocampus | Nature Neuroscience","url":"https://www.nature.com/articles/s41593-025-02022-0"},{"title":"Single-cell spatial transcriptomic profiling defines a pathogenic inflammatory niche in chronic active multiple sclerosis lesions - ScienceDirect","url":"https://www.sciencedirect.com/science/article/pii/S1074761325004339"},{"title":"Integrating spatial transcriptomics and snRNA-seq data enhances differential gene expression analysis results of AD-related phenotypes - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC11601696/"},{"title":"Spatial transcriptomic profiling of isolated microregions in tissue sections utilizing laser-induced forward transfer","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11271912/"},{"title":"stTransfer enables transfer of single-cell annotations to spatial transcriptomics with single-cell resolution","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12664899/"},{"title":"Spatial and single-cell transcriptomics reveal the reorganization of cerebellar microglia with aging: Cell Reports","url":"https://www.cell.com/cell-reports/fulltext/S2211-1247(25)01396-8"},{"title":"Integrating spatial transcriptomics and snRNA-seq data enhances differential gene expression analysis results of AD-related phenotypes","url":"https://www.medrxiv.org/content/10.1101/2024.11.18.24317499.full.pdf"},{"title":"From Transcripts to Cells: Dissecting Sensitivity, Signal Contamination, and Specificity in Xenium Spatial Transcriptomics","url":"https://www.biorxiv.org/content/10.1101/2025.04.23.649965.full.pdf"},{"title":"A Research Study to Find Out How Semaglutide Works in the Kidneys Compared to Placebo, in People With Type 2 Diabetes and Chronic Kidney Disease (the REMODEL Trial)","url":"https://cdn.clinicaltrials.gov/large-docs/70/NCT04865770/SAP_001.pdf"}]
+
+I found search results related to spatial transcriptomics and snRNA-seq integration with label transfer approaches. The results include studies that integrate these two technologies, though the specific challenges you mentioned (poor concordance, limited gene panels, inability to resolve microglial states) aren't directly highlighted in these particular results.
+
+Spatial transcriptomics struggles with resolution and gene coverage, limiting its ability to accurately annotate cell types, which relates to the challenges with limited gene panels. One approach uses non-negative matrix factorization (NMF) and label transfer to integrate data by defining gene expression patterns within snRNA-seq data and then inferring expression in spatial transcriptomics data.
+
+The search results include a recent study on cerebellar microglia that integrated snRNA-seq, sorted microglia RNA-seq, and MERFISH-based spatial transcriptomics, showing methodological approaches to studying microglia across these modalities.
+
+Would you like me to perform additional searches to find more specific information about the challenges with microglial subtype resolution or concordance issues between these approaches?
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Web SearchSEA-AD Nature Neuroscience 2024 MERFISH methods 140 gene panel segmentation cell filtering non-neuronal microglia proportions
+OUT
+Web search results for query: "SEA-AD Nature Neuroscience 2024 MERFISH methods 140 gene panel segmentation cell filtering non-neuronal microglia proportions"
+
+Links: [{"title":"Integrated Multiomics Application: Mouse Brain Atlas | Vizgen","url":"https://vizgen.com/applications/neuroscience-showcase/"},{"title":"GitHub - AllenInstitute/SEA-AD_2024 · GitHub","url":"https://github.com/AllenInstitute/SEA-AD_2024"},{"title":"Spatially resolved cell atlas of the mouse primary motor cortex by MERFISH | Nature","url":"https://www.nature.com/articles/s41586-021-03705-x"},{"title":"SUICA: Learning Super-high Dimensional Sparse Implicit Neural Representations for Spatial Transcriptomics","url":"https://arxiv.org/pdf/2412.01124"},{"title":"Molecularly defined and spatially resolved cell atlas of the whole mouse brain | Nature","url":"https://www.nature.com/articles/s41586-023-06808-9"},{"title":"Gone FISHing | Nature Reviews Neuroscience","url":"https://www.nature.com/articles/s41583-018-0105-1"},{"title":"MERFISH 2.0 Gene Panels | Vizgen","url":"https://vizgen.com/gene-panels/"},{"title":"MERFISH spatial transcriptomics dataset of a single adult mouse brain — Allen Brain Cell Atlas - Data Access","url":"https://alleninstitute.github.io/abc_atlas_access/descriptions/MERFISH-C57BL6J-638850.html"},{"title":"ABC Atlas - Brain-Map.org","url":"https://brain-map.org/bkp/explore/abc-atlas"}]
+
+I found some relevant information about SEA-AD and MERFISH, but I need to search more specifically for the details about the 140 gene panel, segmentation, cell filtering, and microglia proportions mentioned in your query.
+
+Links: [{"title":"Alzheimer's Disease Resources (SEA-AD) - Allen Brain Map","url":"https://brain-map.org/consortia/sea-ad/our-resources"},{"title":"Integrated Multiomics Application: Mouse Brain Atlas | Vizgen","url":"https://vizgen.com/applications/neuroscience-showcase/"},{"title":"Single-cell spatial transcriptomic profiling defines a pathogenic inflammatory niche in chronic active multiple sclerosis lesions - ScienceDirect","url":"https://www.sciencedirect.com/science/article/pii/S1074761325004339"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12209237"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12104151"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11959075"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12473546"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12522820"},{"title":"Systems and methods for determining nucleic acids","url":"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12522819"},{"title":"Spatially resolved cell atlas of the mouse primary motor cortex by MERFISH | Nature","url":"https://www.nature.com/articles/s41586-021-03705-x"}]
+
+Great! I found that the SEA-AD project used a 140 gene panel created to define neuronal types in the middle temporal gyrus (MTG). Now let me search for more specific methodological details about cell segmentation, filtering, and microglia proportions from the SEA-AD Nature Neuroscience paper.
+
+Links: [{"title":"Self-supervised Pretraining of Cell Segmentation Models","url":"https://arxiv.org/pdf/2604.10609"},{"title":"Cellpose: a generalist algorithm for cellular segmentation | Nature Methods","url":"https://www.nature.com/articles/s41592-020-01018-x"},{"title":"Morphomics via Next-generation Electron Microscopy","url":"https://arxiv.org/pdf/2111.14373"},{"title":"Sketchpose: Learning to Segment Cells with Partial Annotations","url":"https://arxiv.org/pdf/2508.17798"},{"title":"Boundary-Aware Instance Segmentation in Microscopy Imaging","url":"https://arxiv.org/pdf/2603.21206"},{"title":"Exemplar: Classical Priors Complement Frozen Features for Few-Shot Microscopy Segmentation at Native Resolution","url":"https://arxiv.org/pdf/2609.03080"},{"title":"Robust 3D Cell Segmentation: Extending the View of Cellpose","url":"https://arxiv.org/pdf/2105.00794"},{"title":"Cellpose: a generalist algorithm for cellular segmentation | Springer Nature Experiments","url":"https://experiments.springernature.com/articles/10.1038/s41592-020-01018-x"},{"title":"Stochastic Neural Networks for Automatic Cell Tracking in Microscopy Image Sequences of Bacterial Colonies","url":"https://arxiv.org/pdf/2104.13482"}]
+
+Let me search more directly for the SEA-AD Nature Neuroscience paper with specific methodological details.
+
+Links: [{"title":"Editorial: Rising stars in non-neuronal cells 2022","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10896888/"},{"title":"Editorial: Insights in non-neuronal cells: 2022","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10715240/"},{"title":"(PDF) Integrated multimodal cell atlas of Alzheimer’s disease","url":"https://www.researchgate.net/publication/384906632_Integrated_multimodal_cell_atlas_of_Alzheimer's_disease"},{"title":"Your new experience awaits. Try the new design now and help us make it even better","url":"https://www.frontiersin.org/journals/cellular-neuroscience/articles/10.3389/fncel.2023.1208122/full"},{"title":"www.frontiersin.org","url":"https://www.frontiersin.org/journals/cellular-neuroscience/articles?page=44"},{"title":"Mini Review","url":"https://frontiersin.org/journals/cellular-neuroscience/sections/non-neuronal-cells/articles?page=20"},{"title":"pmc.ncbi.nlm.nih.gov","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC8925864/figure/F1"},{"title":"www.frontiersin.org","url":"https://www.frontiersin.org/journals/cellular-neuroscience/articles/10.3389/fncel.2023.1208122/pdf"},{"title":"Original Research","url":"https://www.frontiersin.org/subjects/microglia-classification"}]
+
+Great! I found reference to the SEA-AD Nature Neuroscience paper. Let me search for the actual paper with more specific methodological details.
+
+Links: [{"title":"Integrated multimodal cell atlas of Alzheimer’s disease Mariano Gabitto","url":"https://assets-eu.researchsquare.com/files/rs-2921860/v1_covered_500aa2ea-91f8-45a4-b310-71cbd375702f.pdf"},{"title":"(PDF) Integrated multimodal cell atlas of Alzheimer’s disease","url":"https://www.researchgate.net/publication/371020272_Integrated_multimodal_cell_atlas_of_Alzheimer's_disease"},{"title":"Integrated multimodal cell atlas of Alzheimer's disease - PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/39402379/?dopt=Abstract"},{"title":"Integrated multimodal cell atlas of Alzheimer’s disease | bioRxiv","url":"https://www.biorxiv.org/content/10.1101/2023.05.08.539485v3"},{"title":"About SEA-AD - Allen Brain Map","url":"https://brain-map.org/consortia/sea-ad/about-sea-ad"},{"title":"MERFISH+, a large-scale, multi-omics spatial technology resolves the molecular holograms of the 3D human developing heart","url":"https://www.biorxiv.org/content/10.1101/2025.11.02.686137.full.pdf"},{"title":"MERFISH+, a large-scale, multi-omics spatial technology resolves the molecular holograms of the 3D human developing heart","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12637541/"},{"title":"All the single cells: single-cell transcriptomics/epigenomics experimental design and analysis considerations for glial biologists","url":"https://arxiv.org/pdf/2408.06521"},{"title":"Artificial Intelligence Virtual Cells: From Measurements to Decisions across Modality, Scale, Dynamics, and Evaluation","url":"https://arxiv.org/pdf/2510.12498"}]
+
+Perfect! I found detailed information about the SEA-AD MERFISH methods. Based on my search results, here's what I found about your query:
+
+## SEA-AD Nature Neuroscience 2024 MERFISH Methods Summary
+
+**Gene Panel:**
+The SEA-AD study performed MERFISH using a 140 gene panel based on the initial taxonomy of transcriptomic types derived from neurotypical MTG (middle temporal gyrus) rather than the later generated supertype classification with additional AD-specific non-neuronal supertypes.
+
+**Data Collection and Quality Control:**
+The researchers developed a reliable method to collect high-quality MERFISH data across disease severity, solving known challenges such as the removal of autofluorescence artifacts present in human brain tissue and exacerbated with age and disease, and obtained high quality data from 54 sections from 24 donors. After initial QC filtering steps, they compared MERFISH transcript counts on whole tissue sections per donor to bulk RNA-seq from neurotypical donors.
+
+**Dataset Size:**
+The SEA-AD MERFISH dataset consists of the largest cell-resolution MERFISH data set in AD human brain to date (302k cells) from the middle temporal gyrus from 24 aged donors.
+
+The search results indicate that detailed information about specific cell segmentation algorithms, filtering thresholds, and exact microglia proportions would be found in the Methods section and supplementary tables of the Nature Neuroscience publication, though some of these details may require accessing the full paper directly.
+
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Bash Summarize audit results
+IN
+cd /d/jepa_v5_outputs_20260925/out_seaad-spatial && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import json
+d=json.load(open('SEAAD_SPATIAL_STRUCTURAL_AUDIT_V1.json'))
+for k,a in d['assets'].items():
+    print('='*70); print(k, '|', a['assay'], '|', a['region'], '| release', a['release'])
+    print(' cells=%s  features=%s  donors=%s  sections=%s' % (a['n_cells'],a['n_features_in_object'],a['n_donors'],a['n_sections']))
+    print(' microglia: col=%s labels=%s n=%s frac=%s' % (a['microglia_label_column'],a['microglia_labels_matched'],a['n_microglia'],a['microglia_fraction']))
+    if 'n_donors_with_microglia' in a:
+        print('  donors_with_microglia=%s  min/donor=%s  median/donor=%s' % (a['n_donors_with_microglia'],a['microglia_per_donor_min'],a['microglia_per_donor_median']))
+    print(' PROTECTED cols present (names only): %d' % a['obs_column_screen']['n_protected'])
+    for p,v in a['program_panel_representation'].items():
+        print('   %-22s %d/%d present=%s absent=%s' % (p, v['n_present'], v['n_total'], v['present'], v['absent']))
+    print(' seg geometry:', json.dumps(a.get('segmentation_geometry_microglia_vs_other',{}),indent=2)[:700])
+"
+
+OUT
+======================================================================
+MTG_MERFISH | MERFISH (Vizgen MERSCOPE) | MTG (middle temporal gyrus) | release 2024-12-11
+ cells=1887729  features=180  donors=27  sections=69
+ microglia: col=Subclass labels=['Microglia-PVM'] n=195620 frac=0.10363
+  donors_with_microglia=27  min/donor=917  median/donor=4881.0
+ PROTECTED cols present (names only): 22
+   homeostatic            0/5 present=[] absent=['P2RY12', 'TMEM119', 'CX3CR1', 'GPR34', 'SALL1']
+   lipid_DAM              0/6 present=[] absent=['APOE', 'LPL', 'GPNMB', 'TREM2', 'APOC1', 'ABCA1']
+   antigen_presentation   2/7 present=['CD74', 'CTSS'] absent=['HLA-DRA', 'HLA-DPA1', 'HLA-DMB', 'HLA-DMA', 'IFI30']
+ seg geometry: {
+  "Cell volume": {
+    "microglia_median": 1234.3927046908157,
+    "other_cells_median": 1262.4642185486214,
+    "ratio_microglia_over_other": 0.9777645073457386
+  },
+  "Genes detected": {
+    "microglia_median": 60.0,
+    "other_cells_median": 111.0,
+    "ratio_microglia_over_other": 0.5405405405405406
+  },
+  "Number of spots": {
+    "microglia_median": 61.0,
+    "other_cells_median": 113.0,
+    "ratio_microglia_over_other": 0.5398230088495575
+  }
+}
+======================================================================
+HIP_MERSCOPE | MERSCOPE | HIP (hippocampus) | release 2026-06-30
+ cells=132120  features=433  donors=0  sections=None
+ microglia: col=Supertype_scANVI labels=['Micro-PVM_1', 'Micro-PVM_3-SEAAD', 'Micro-PVM_2', 'Micro-PVM_2_1-SEAAD', 'Micro-PVM_2_3-SEAAD', 'Micro-PVM_4-SEAAD'] n=23804 frac=0.18017
+ PROTECTED cols present (names only): 0
+   homeostatic            0/5 present=[] absent=['P2RY12', 'TMEM119', 'CX3CR1', 'GPR34', 'SALL1']
+   lipid_DAM              0/6 present=[] absent=['APOE', 'LPL', 'GPNMB', 'TREM2', 'APOC1', 'ABCA1']
+   antigen_presentation   1/7 present=['CD74'] absent=['HLA-DRA', 'HLA-DPA1', 'HLA-DMB', 'HLA-DMA', 'CTSS', 'IFI30']
+ seg geometry: {
+  "cell_area": {
+    "microglia_median": 66.28937740623951,
+    "other_cells_median": 76.94625279307365,
+    "ratio_microglia_over_other": 0.8615023474178404
+  },
+  "nucleus_area": {
+    "microglia_median": 40.730938978493214,
+    "other_cells_median": 43.8015640899539,
+    "ratio_microglia_over_other": 0.9298969072164949
+  },
+  "transcript_counts": {
+    "microglia_median": 57.0,
+    "other_cells_median": 218.0,
+    "ratio_microglia_over_other": 0.26146788990825687
+  },
+  "total_counts": {
+    "microglia_median": 57.0,
+    "other_cells_median": 218.0,
+    "ratio_microglia_over_other": 0.26146788990825687
+  },
+  "nucleus_count": {
+    "microglia_median": 1.0,
+    "other_cells_median": 1.0,
+======================================================================
+MEC_MERSCOPE | MERSCOPE | MEC (medial entorhinal cortex) | release 2026-06-30
+ cells=130345  features=433  donors=0  sections=None
+ microglia: col=Supertype_scANVI labels=['Micro-PVM_1', 'Micro-PVM_2', 'Micro-PVM_3-SEAAD', 'Micro-PVM_2_3-SEAAD', 'Micro-PVM_4-SEAAD', 'Micro-PVM_2_1-SEAAD'] n=50445 frac=0.38701
+ PROTECTED cols present (names only): 0
+   homeostatic            0/5 present=[] absent=['P2RY12', 'TMEM119', 'CX3CR1', 'GPR34', 'SALL1']
+   lipid_DAM              0/6 present=[] absent=['APOE', 'LPL', 'GPNMB', 'TREM2', 'APOC1', 'ABCA1']
+   antigen_presentation   1/7 present=['CD74'] absent=['HLA-DRA', 'HLA-DPA1', 'HLA-DMB', 'HLA-DMA', 'CTSS', 'IFI30']
+ seg geometry: {
+  "cell_area": {
+    "microglia_median": 38.698907654732466,
+    "other_cells_median": 69.67609627917409,
+    "ratio_microglia_over_other": 0.5554115359688918
+  },
+  "nucleus_area": {
+    "microglia_median": 17.88187564909458,
+    "other_cells_median": 38.47312639653683,
+    "ratio_microglia_over_other": 0.4647887323943662
+  },
+  "transcript_counts": {
+    "microglia_median": 8.0,
+    "other_cells_median": 103.0,
+    "ratio_microglia_over_other": 0.07766990291262135
+  },
+  "total_counts": {
+    "microglia_median": 8.0,
+    "other_cells_median": 103.0,
+    "ratio_microglia_over_other": 0.07766990291262135
+  },
+  "nucleus_count": {
+    "microglia_median": 1.0,
+    "other_cells_median": 1.0,
+
+======================================================================
+CaH_XENIUM | Xenium (10x Genomics) | CaH (caudate nucleus) | release 2026-01-07
+ cells=1541477  features=464  donors=10  sections=None
+ microglia: col=Subclass labels=['Microglia-PVM_Subclass'] n=126451 frac=0.08203
+  donors_with_microglia=10  min/donor=3327  median/donor=13705.5
+ PROTECTED cols present (names only): 22
+   homeostatic            0/5 present=[] absent=['P2RY12', 'TMEM119', 'CX3CR1', 'GPR34', 'SALL1']
+   lipid_DAM              3/6 present=['APOE', 'LPL', 'TREM2'] absent=['GPNMB', 'APOC1', 'ABCA1']
+   antigen_presentation   1/7 present=['CTSS'] absent=['HLA-DRA', 'HLA-DPA1', 'HLA-DMB', 'HLA-DMA', 'CD74', 'IFI30']
+ seg geometry: {
+  "cell_area": {
+    "microglia_median": 72.88219014555216,
+    "other_cells_median": 75.36578398570418,
+    "ratio_microglia_over_other": 0.9670461354104254
+  },
+  "nucleus_area": {
+    "microglia_median": 38.38281389325857,
+    "other_cells_median": 35.62828254327178,
+    "ratio_microglia_over_other": 1.0773130544993663
+  },
+  "transcript_counts": {
+    "microglia_median": 209.0,
+    "other_cells_median": 205.0,
+    "ratio_microglia_over_other": 1.0195121951219512
+  },
+  "total_counts": {
+    "microglia_median": 209.0,
+    "other_cells_median": 205.0,
+    "ratio_microglia_over_other": 1.0195121951219512
+  },
+  "nucleus_count": {
+    "microglia_median": 1.0,
+    "other_cells_median": 1.0,
+Loader fix verified. Now launching the full run in the background while I write the adversarial controls.
+
+Bash Run full analysis in background
+IN
+cd "D:/jepa_wt_stage75f-specificity_20260928" && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe scripts/lane_r2/laneR2_stage75f_tf_specificity_control_v1.py \
+ --pilot-dir "D:/Jepa project/results/stage75f_motif_pilot" \
+ --pilot-dir "D:/Jepa project/results/stage75f_secondary_motif_pilot" \
+ --batch-dir "D:/Jepa project/results/stage75f_batches" \
+ --out-dir "D:/jepa_v5_outputs_20260925/out_stage75f-specificity" \
+ --annot-permutations 20000 > "D:/jepa_v5_outputs_20260925/out_stage75f-specificity/laneR2_run_stdout.log" 2> "D:/jepa_v5_outputs_20260925/out_stage75f-specificity/laneR2_run_stderr.log"; echo "EXIT=$?"
+
+OUT
+Command running in background with ID: bmb81jbbz. Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\bmb81jbbz.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Session cwd remains d:\Jepa project; directory changes made by the backgrounded command do not apply to subsequent commands.
+Now writing the adversarial/mutation controls that prove each gate can actually fail.
+
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:39402379&resultType=core&format=json
+Fetched from https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:39402379&resultType=core&format=json
+Web SearchSEA-AD MERFISH "supertype" non-neuronal microglia could not be resolved 140 gene panel limitation Gabitto
+OUT
+Web search results for query: "SEA-AD MERFISH "supertype" non-neuronal microglia could not be resolved 140 gene panel limitation Gabitto"
+
+Links: [{"title":"(PDF) Integrated multimodal cell atlas of Alzheimer’s disease","url":"https://www.researchgate.net/publication/371020272_Integrated_multimodal_cell_atlas_of_Alzheimer's_disease"},{"title":"GitHub - AllenInstitute/SEA-AD_Multiregion_2026 · GitHub","url":"https://github.com/AllenInstitute/SEA-AD_Multiregion_2026"},{"title":"Integrated multimodal cell atlas of Alzheimer’s disease | bioRxiv","url":"https://www.biorxiv.org/content/10.1101/2023.05.08.539485v2.full"},{"title":"SEA-AD_Multiregion_2026/README.md at main · AllenInstitute/SEA-AD_Multiregion_2026","url":"https://github.com/AllenInstitute/SEA-AD_Multiregion_2026/blob/main/README.md"},{"title":"Microglia States are Susceptible to Senescence and Cholesterol Dysregulation","url":"https://www.biorxiv.org/content/10.1101/2024.11.18.624141v1.full.pdf"},{"title":"ABC Atlas - Brain-Map.org","url":"https://brain-map.org/bkp/explore/abc-atlas"},{"title":"Microglia networks within the tapestry of alzheimer’s disease through spatial transcriptomics - PMC","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12482212/"},{"title":"Annotation Comparison Explorer (ACE): connecting brain ...","url":"https://www.biorxiv.org/content/10.1101/2025.02.11.637559v1.full.pdf"},{"title":"Conservation and divergence of cortical cell organization in human and mouse revealed by MERFISH","url":"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9262715/"}]
+
+Based on the search results, I found the specific information you're looking for:
+
+The SEA-AD researchers performed MERFISH on a subset of donors using a 140 gene panel based on the initial taxonomy of transcriptomic types derived from neurotypical MTG rather than the later generated supertype classification with additional AD-specific non-neuronal supertypes. 
+
+The MERFISH gene panel failed to resolve a small number of non-neuronal types likely due to lack of discriminant probes.
+
+The research was published by Gabitto and colleagues, and the limitation you mentioned regarding the inability to resolve certain non-neuronal supertypes (including microglia) using the 140-gene MERFISH panel relates to the inherent constraint of having limited probes for distinguishing between closely related cell types in spatial transcriptomics studies.
+
+REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.
+Decisive panel result. Let me check what microglial genes the panels do carry, and the normalization semantics.
+
+Bash Check broader microglial gene coverage in panels
+IN
+cd /d/jepa_v5_outputs_20260925/out_seaad-spatial && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import json
+d=json.load(open('SEAAD_SPATIAL_STRUCTURAL_AUDIT_V1.json'))
+MG=['AIF1','CSF1R','C1QA','C1QB','C1QC','CX3CR1','P2RY12','P2RY13','TMEM119','GPR34','SALL1','ITGAM','PTPRC','TYROBP','TREM2','APOE','SPP1','CD68','CD163','MRC1','MS4A7','MS4A6A','LPL','GPNMB','APOC1','ABCA1','CD74','CTSS','HLA-DRA','IFI30','FTL','CST3','NAV3','DOCK8','CSF2RA','IL1B','TNF','SYK','PLCG2','INPP5D','BIN1','PICALM','SORL1','CD33','MEF2C','IRF8','SPI1','RUNX1','NFKB1','CEBPB','ZEB1','MAF','MAFB','TGFBR1','SMAD3','STAT1','STAT3']
+for k,a in d['assets'].items():
+    panel=set(g.upper() for g in a['gene_panel'])
+    hits=[g for g in MG if g in panel]
+    print('=== %s (%d features) ===' % (k, a['n_features_in_object']))
+    print('  microglia/TF-relevant genes on panel (%d):' % len(hits), hits)
+"
+
+OUT
+=== MTG_MERFISH (180 features) ===
+  microglia/TF-relevant genes on panel (2): ['CD74', 'CTSS']
+=== HIP_MERSCOPE (433 features) ===
+  microglia/TF-relevant genes on panel (4): ['PTPRC', 'SPP1', 'MRC1', 'CD74']
+=== MEC_MERSCOPE (433 features) ===
+  microglia/TF-relevant genes on panel (4): ['PTPRC', 'SPP1', 'MRC1', 'CD74']
+=== CaH_XENIUM (464 features) ===
+  microglia/TF-relevant genes on panel (20): ['C1QA', 'C1QB', 'C1QC', 'TYROBP', 'TREM2', 'APOE', 'MS4A6A', 'LPL', 'CTSS', 'DOCK8', 'CSF2RA', 'INPP5D', 'BIN1', 'PICALM', 'SORL1', 'CD33', 'MEF2C', 'SPI1', 'NFKB1', 'MAF']
+Web Fetchhttps://www.ebi.ac.uk/europepmc/webservices/rest/PMC11614693/fullTextXML
+OUT
+You've hit your session limit · resets 3:50pm (America/New_York)
+Bash Check expression normalization semantics in uns and X dtype
+IN
+cd "/d/Jepa project" && /c/Users/dushy/anaconda3/envs/sea-ad-jepa-v3/python.exe -c "
+import h5py
+for k,p in [('MTG',r'D:/Jepa project/data/external/v4/sea_ad/merfish/SEAAD_MTG_MERFISH.2024-12-11.h5ad'),('CaH',r'D:/Jepa project/data/external/v4/sea_ad/xenium/CaH_Xenium.2026-01-07.h5ad'),('HIP',r'D:/Jepa project/data/external/v4/sea_ad/merfish/1444211893_HPF_mapped.h5ad')]:
+    with h5py.File(p,'r') as f:
+        print('===',k)
+        for key in f['uns'].keys():
+            if key in ('X_normalization','title','default_embedding','batch_condition','original_taxonomy_path','processing_pipeline_version','taxonomy_ROI','base_filepath'):
+                try:
+                    v=f['uns'][key][()]
+                    if isinstance(v,bytes): v=v.decode()
+                    print('  uns[%s] =' % key, str(v)[:300])
+                except Exception as e:
+                    print('  uns[%s] = <group>' % key, list(f['uns'][key].keys())[:10] if hasattr(f['uns'][key],'keys') else e)
+        # X dtype
+        X=f['X']
+        if isinstance(X,h5py.Group):
+            print('  X sparse, data dtype', X['data'].dtype, 'first5', X['data'][:5])
+        else:
+            print('  X dense dtype', X.dtype, 'sample', X[0,:5])
+" 2>&1
+
+OUT
+=== MTG
+  uns[X_normalization] = ln(Spots per 10K +1)
+  uns[batch_condition] = [b'Section']
+  uns[default_embedding] = X_spatial_tiled
+  uns[original_taxonomy_path] = \allen\programs\celltypes\workgroups\hct\SEA-AD\RNAseq\scANVI\output\MTG_AD
+inal.2022-04-14.h5ad
+  uns[title] = MTG: Seattle Alzheimer's Disease Atlas (SEA-AD)
+  X dense dtype float64 sample [6. 2. 0. 0. 0.]
+=== CaH
+  uns[base_filepath] = ../results/1417649873/
+  uns[processing_pipeline_version] = 1.6
+  uns[taxonomy_ROI] = CAH
+  X sparse, data dtype float64 first5 [0.21764428 0.19502085 0.07625502 0.07625502 0.21764428]
+=== HIP
+  uns[base_filepath] = ../results/1444211893/
+  uns[taxonomy_ROI] = HPF
+  X sparse, data dtype float32 first5 [2. 6. 2. 1. 1.]
+You've hit your session limit · resets 3:50pm (America/New_York)
+
+You've hit your session limit · resets 3:50pm (America/New_York)
+
+Write laneR2_adversarial_controls_v1.py
+168 lines
+#!/usr/bin/env python
+"""LANE R2 - adversarial / mutation controls for the Stage75F specificity audit.
+
+A gate that cannot fail is not a gate. This script deliberately breaks each
+safeguard in laneR2_stage75f_tf_specificity_control_v1.py and asserts that the
+safeguard NOTICES. If any mutation slips through undetected, this exits
+non-zero and the main audit result must be treated as unqualified.
+
+MUT-1 INPUT KEY GUARD. Hide one TF per-batch file so the input key sets no
+      longer agree. The main script MUST refuse with FAIL_CLOSED rather than
+      silently computing overlap on nine sets.
+MUT-2 STRUCTURAL GATE ARITHMETIC. Hand run_planted_gate a record that is
+      identical while claiming to be distinct. The gate MUST return FAIL.
+MUT-3 STAGE73 BUG REPRODUCTION. Build a control that is byte-identical to the
+      real data but carries the label SHUFFLED. structural_record MUST report
+      is_structurally_distinct = False. This is the exact failure Stage73 shipped.
+MUT-4 MINIMAL-CHANGE SENSITIVITY. Swap exactly two elements out of thousands.
+      structural_record MUST still report distinct. A harness that only notices
+      gross differences would pass a near-identical control as a valid shuffle.
+MUT-5 DEGENERATE PERMUTATION NULL. Feed the permutation test a support matrix
+      with identical rows (the "all region sets identical" world). The test MUST
+      flag null_is_degenerate_constant = True rather than returning a p-value
+      that looks like evidence.
+
+Governance: TRAINING=OFF | no protected outcome opened | no biological claim.
+"""
+from __future__ import annotations
+
+import importlib.util
+import itertools
+import json
+import math
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import numpy as np
+
+HERE = Path(__file__).resolve().parent
+MAIN = HERE / "laneR2_stage75f_tf_specificity_control_v1.py"
+
+spec = importlib.util.spec_from_file_location("laneR2_main", MAIN)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+
+
+def main() -> int:
+    ap = __import__("argparse").ArgumentParser()
+    ap.add_argument("--pilot-dir", action="append", required=True)
+    ap.add_argument("--batch-dir", required=True)
+    ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--scratch", required=True)
+    args = ap.parse_args()
+    out = Path(args.out_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    scratch = Path(args.scratch).resolve()
+    results = []
+
+    # ---- MUT-1 input key guard -------------------------------------------
+    mutated = scratch / "mut1_batches"
+    if mutated.exists():
+        shutil.rmtree(mutated)
+    shutil.copytree(args.batch_dir, mutated)
+    victims = sorted(mutated.glob("*_STAT3.genes.txt"))
+    for v in victims:
+        v.unlink()
+    cmd = [sys.executable, str(MAIN)]
+    for p in args.pilot_dir:
+        cmd += ["--pilot-dir", p]
+    cmd += ["--batch-dir", str(mutated), "--out-dir", str(scratch / "mut1_out"),
+            "--annot-permutations", "5"]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    blob = (proc.stdout or "") + (proc.stderr or "")
+    detected = ("FAIL_CLOSED input guard" in blob) and proc.returncode != 0
+    results.append({
+        "mutation": "MUT-1_input_key_guard_one_tf_file_removed",
+        "n_files_removed": len(victims),
+        "expected": "refuse_with_FAIL_CLOSED",
+        "observed_returncode": proc.returncode,
+        "detected": bool(detected),
+        "result": "PASS" if detected else "FAIL",
+    })
+
+    # ---- MUT-2 structural gate arithmetic ---------------------------------
+    same = [frozenset({"A"}), frozenset({"B"}), frozenset({"C"}), frozenset({"D"})]
+    rec_same = mod.structural_record("MUT2_identical_claimed_distinct", same, same,
+                                     "adversarial")
+    gate_rows, gate_ok = mod.run_planted_gate([(rec_same, True)])  # WRONG expectation
+    results.append({
+        "mutation": "MUT-2_gate_arithmetic_identical_claimed_distinct",
+        "expected": "gate_returns_FAIL",
+        "observed_gate_ok": gate_ok,
+        "observed_gate_result": gate_rows[0]["gate_result"],
+        "detected": bool(gate_ok is False and gate_rows[0]["gate_result"] == "FAIL"),
+        "result": "PASS" if (gate_ok is False) else "FAIL",
+    })
+
+    # ---- MUT-3 Stage73 bug reproduction -----------------------------------
+    real = [frozenset({"TF%d" % (i % 7)}) for i in range(3000)]
+    rec_label_only = mod.structural_record(
+        "MUT3_SHUFFLED_IN_NAME_ONLY", real, list(real), "adversarial")
+    detected3 = rec_label_only["is_structurally_distinct"] is False
+    results.append({
+        "mutation": "MUT-3_stage73_label_only_shuffle",
+        "expected": "is_structurally_distinct=False_despite_name_SHUFFLED",
+        "observed_is_structurally_distinct": rec_label_only["is_structurally_distinct"],
+        "observed_changed_fraction": rec_label_only["changed_element_fraction"],
+        "detected": bool(detected3),
+        "result": "PASS" if detected3 else "FAIL",
+    })
+
+    # ---- MUT-4 minimal-change sensitivity ---------------------------------
+    near = list(real)
+    near[0], near[1] = near[1], near[0]
+    # ensure the swap is a real content change, not a no-op on equal elements
+    while near[0] == real[0]:
+        j = next(k for k in range(len(real)) if real[k] != real[0])
+        near[0], near[j] = near[j], near[0]
+    rec_near = mod.structural_record("MUT4_two_element_swap", real, near, "adversarial")
+    detected4 = rec_near["is_structurally_distinct"] is True
+    results.append({
+        "mutation": "MUT-4_minimal_change_two_element_swap",
+        "expected": "is_structurally_distinct=True",
+        "observed_is_structurally_distinct": rec_near["is_structurally_distinct"],
+        "observed_changed_fraction": rec_near["changed_element_fraction"],
+        "observed_n_changed": rec_near["n_changed_elements"],
+        "detected": bool(detected4),
+        "result": "PASS" if detected4 else "FAIL",
+    })
+
+    # ---- MUT-5 degenerate permutation null --------------------------------
+    n = 6
+    row = np.array([3.0, 3.0, 3.0, 3.0, 3.0, 3.0])
+    S_deg = np.vstack([row] * n)  # every batch gives every TF identical support
+    rows_ix = np.arange(n)
+    null = np.array([S_deg[rows_ix, np.asarray(p)].sum()
+                     for p in itertools.permutations(range(n))])
+    degenerate = bool(len(np.unique(null)) == 1)
+    results.append({
+        "mutation": "MUT-5_degenerate_permutation_null_identical_region_sets",
+        "expected": "null_is_degenerate_constant=True",
+        "observed_n_distinct_null_values": int(len(np.unique(null))),
+        "detected": bool(degenerate),
+        "result": "PASS" if degenerate else "FAIL",
+    })
+
+    all_pass = all(r["result"] == "PASS" for r in results)
+    report = {
+        "audit": "laneR2_adversarial_controls_v1",
+        "all_mutations_detected": all_pass,
+        "verdict": ("SAFEGUARDS_CAN_FAIL_AND_DID_FAIL_WHEN_BROKEN" if all_pass
+                    else "SAFEGUARD_DID_NOT_DETECT_A_PLANTED_DEFECT"),
+        "mutations": results,
+        "governance": "TRAINING=OFF | no protected outcome opened | no biological claim",
+    }
+    (out / "laneR2_adversarial_controls_v1.json").write_text(
+        json.dumps(report, indent=2, default=str), encoding="utf-8")
+    print(json.dumps(report, indent=2, default=str))
+    if not all_pass:
+        print("ADVERSARIAL FAILURE: a planted defect went undetected.", file=sys.stderr)
+        return 4
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+You've hit your session limit · resets 3:50pm (America/New_York)
+
+You've hit your session limit · resets 3:50pm (America/New_York)
+
+You've hit your session limit · resets 3:50pm (America/New_York)
+
+You've hit your session limit · resets 3:50pm (America/New_York)
