@@ -345,8 +345,13 @@ def main():
         c["binomial_upper95"] <= v4.FP_UPPER_LIMIT for c in neg_cells)
     power_ok = bool(pos_cells) and all(
         c["rate"] >= v4.POWER_LOWER_LIMIT for c in pos_cells)
+    # A MISSING counter is not zero fallbacks. `.get(name, 0)` reads absence of
+    # evidence as evidence of absence, which is the exact defect the receipt
+    # validator had to close in v1.
     no_fb = bool(arm_records) and all(
-        v.get("poisson_fallbacks", 0) == 0 for v in arm_records)
+        isinstance(v.get("poisson_fallbacks"), int)
+        and not isinstance(v.get("poisson_fallbacks"), bool)
+        and v["poisson_fallbacks"] == 0 for v in arm_records)
 
     # frozen calibration budgets must be met cell by cell, not just "complete"
     for key, c in calib.items():

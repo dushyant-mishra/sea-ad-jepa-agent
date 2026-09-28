@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import sys
@@ -35,6 +36,13 @@ from full104_candidate_pool_census_v1 import (          # noqa: E402
     MEAN_RATIO_LO, MEAN_RATIO_HI, DETECT_ABS, FANO_FACTOR, DEPTH_ABS, HK_ABS)
 
 TARGET_PANELS = 199
+
+_EX = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                   "independent", "exact_sham_panel_feasibility.py")
+_spec = importlib.util.spec_from_file_location("exact_sham_panel_feasibility", _EX)
+_exact = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_exact)
+exact_disjoint_capacity = _exact.exact_disjoint_capacity
 
 
 def sha_file(p):
@@ -118,21 +126,16 @@ def main():
     fields = ("mean", "detect", "fano", "depth", "hk", "n_available", "nnz")
     stats = {s: {f: z[f"{s}__{f}"] for f in fields} for s in sources}
 
-    # Combined population: available in EVERY source, so a panel drawn from it
-    # is measurable everywhere and no source silently drops a partner.
-    comb = np.ones(N_ADDR, dtype=bool)
-    for s in sources:
-        comb &= stats[s]["n_available"] >= a.min_cells
-    tot = sum(stats[s]["n_available"] for s in sources).astype(np.float64)
-    combined = {}
-    for f in ("mean", "detect", "fano", "depth", "hk"):
-        num = sum(np.nan_to_num(stats[s][f]) * stats[s]["n_available"]
-                  for s in sources)
-        combined[f] = np.where(tot > 0, num / np.maximum(tot, 1), np.nan)
-    combined["n_available"] = tot.astype(np.int64)
-    combined["nnz"] = sum(stats[s]["nnz"] for s in sources)
-    combined["__mask"] = comb
-    stats["COMBINED_ALL_SOURCES"] = combined
+    # COMBINED is a per-source INTERSECTION, never a pooled average.
+    #
+    # The independent review is right that averaging source-specific means and
+    # applying one pooled rule hides source-specific failure: a 100-cell HVS
+    # group at ratio 0.2 disappears behind a 10,000-cell SEA-AD group at ratio
+    # 1.0, and a weighted average of Fano ignores between-source variation
+    # entirely (equal groups with mu 1 and 10, Fano 1 and 1, pool to 4.68).
+    # A gene qualifies for the combined population only if it qualifies
+    # SEPARATELY IN EVERY SOURCE.
+    per_source = {s: stats[s] for s in sources}
 
     report = {"schema": "V5_CANDIDATE_POOL_ANALYSIS_V1",
               "min_cells_support": a.min_cells,
@@ -142,37 +145,61 @@ def main():
                         "depth_abs": DEPTH_ABS, "hk_abs": HK_ABS},
               "populations": {}}
 
-    for pop, st in stats.items():
-        elig = eligible_mask(st, a.min_cells)
-        if "__mask" in st:
-            elig &= st["__mask"]
-        rec = {"eligible_universe": int(elig.sum()), "programs": {}}
+    populations = list(sources) + ["COMBINED_ALL_SOURCES"]
+    for pop in populations:
+        combined = pop == "COMBINED_ALL_SOURCES"
+        if combined:
+            eligs = {s: eligible_mask(per_source[s], a.min_cells) for s in sources}
+            universe = int(np.logical_and.reduce(
+                [eligs[s] for s in sources]).sum())
+        else:
+            st = per_source[pop]
+            elig = eligible_mask(st, a.min_cells)
+            universe = int(elig.sum())
+        rec = {"eligible_universe": universe,
+               "construction": ("per-source intersection" if combined
+                                else "single source"),
+               "programs": {}}
         for prog, spec in R8_ADDR.items():
             prec = {"slots": {}, "panels": {}}
             for tier_name, crit in TIERS:
                 pools = []
                 for base in spec["panel"]:
-                    if not np.isfinite(st["mean"][base]) or \
-                            st["n_available"][base] < a.min_cells:
-                        pools.append(np.array([], dtype=np.int64))
-                        continue
-                    pools.append(slot_pool(st, base, crit, elig))
+                    if combined:
+                        sets = []
+                        for s in sources:
+                            sst = per_source[s]
+                            if not np.isfinite(sst["mean"][base]) or                                     sst["n_available"][base] < a.min_cells:
+                                sets = [set()]
+                                break
+                            sets.append(set(slot_pool(sst, base, crit,
+                                                      eligs[s]).tolist()))
+                        pools.append(np.asarray(sorted(set.intersection(*sets))
+                                                if sets else [], dtype=np.int64))
+                    else:
+                        if not np.isfinite(st["mean"][base]) or                                 st["n_available"][base] < a.min_cells:
+                            pools.append(np.array([], dtype=np.int64))
+                        else:
+                            pools.append(slot_pool(st, base, crit, elig))
                 for base, pool in zip(spec["panel"], pools):
-                    prec["slots"].setdefault(PARTNER_NAMES[base], {})[tier_name] = \
-                        int(len(pool))
+                    prec["slots"].setdefault(PARTNER_NAMES[base], {})[tier_name] =                         int(len(pool))
                 ceiling = min(len(p) for p in pools) if pools else 0
-                achieved = max_disjoint_panels(pools) if ceiling else 0
-                union = len(set().union(*[set(p.tolist()) for p in pools])) \
-                    if pools else 0
+                greedy = max_disjoint_panels(pools) if ceiling else 0
+                try:
+                    ex = exact_disjoint_capacity([p.tolist() for p in pools],
+                                                 capped_at=TARGET_PANELS)
+                    exact_k = int(ex["max_exact_disjoint_panels"])
+                    limiting = ex["limiting_subset"]
+                except Exception as exc:                      # noqa: BLE001
+                    exact_k, limiting = None, {"error": str(exc)}
                 prec["panels"][tier_name] = {
                     "per_slot_pool_sizes": [int(len(p)) for p in pools],
                     "ceiling_min_slot": int(ceiling),
-                    "max_gene_disjoint_panels": int(achieved),
-                    "distinct_genes_across_slots": int(union),
-                    "reaches_199_without_reuse": bool(achieved >= TARGET_PANELS),
-                    "forced_reuse_if_199_demanded":
-                        None if achieved >= TARGET_PANELS else
-                        round(TARGET_PANELS / max(achieved, 1), 2),
+                    "greedy_constructive_lower_bound": int(greedy),
+                    "exact_hall_max_disjoint_panels": exact_k,
+                    "limiting_subset": limiting,
+                    "reaches_199_without_reuse":
+                        bool(exact_k is not None and exact_k >= TARGET_PANELS),
                     "empty_slots": [PARTNER_NAMES[b] for b, p
                                     in zip(spec["panel"], pools) if len(p) == 0],
                 }
@@ -197,7 +224,8 @@ def main():
                 pa = prec["panels"][tier_name]
                 empt = (" EMPTY:" + ",".join(pa["empty_slots"])) if pa["empty_slots"] else ""
                 print(f"    {tier_name:22s} slots {str(pa['per_slot_pool_sizes']):28s} "
-                      f"max disjoint panels {pa['max_gene_disjoint_panels']:4d}"
+                      f"exact {str(pa['exact_hall_max_disjoint_panels']):>5s} "
+                      f"(greedy {pa['greedy_constructive_lower_bound']:4d})"
                       f"{empt}")
     print(f"\nwrote {p}")
     return 0

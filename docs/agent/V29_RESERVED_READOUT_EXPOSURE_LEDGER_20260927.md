@@ -121,8 +121,11 @@ reported. That is an availability fact, not a value, and it is unavoidable:
 the extractor cannot decide whether to refuse a matrix without knowing whether
 the gene exists in it.
 
-**SALL1, CTSD, CTSS, HLA-DMB** — extracted into the artifact as raw counts, but
-no statistic over them has been computed or published by me.
+**SALL1, CTSD, CTSS, HLA-DMB** — extracted into the artifact as raw counts.
+As of 2026-09-27 no statistic over them had been computed by me. **That ceased
+to be true on 2026-09-28; see CORRECTION 4.** The sentence is left standing
+here, unedited, because the record should show what was believed at the time
+rather than quietly becoming right in hindsight.
 
 **The artifact physically contains all six.** That was deliberate — they were
 extracted so an independent-readout test would be possible later — but
@@ -210,6 +213,75 @@ inconvenient members stops being a register. What removal would have bought,
 the firewall must now buy instead: the exposure stays visible, and CSF1R is
 **excluded from every future adaptive choice** — panel composition, thresholds,
 exclusions and endpoint weights must all be fixed without reference to it.
+
+## CORRECTION 4, 2026-09-28 — I computed statistics on all six myself
+
+Found by independent source review of PR #178 at `bf5dc220`, not by me.
+
+`full104_candidate_pool_census_v1.py` mapped every decoded CSR entry, computed
+the normalised value `y`, and folded it into per-address accumulators **before**
+anything excluded the forbidden set. The exclusion happened later, in
+`eligible_mask`, at candidate-selection time. Excluding a gene from selection
+does not un-compute a statistic that has already been taken.
+
+**What was computed.** For each of the six reserved readouts, per source, over
+114,041 fitting nuclei: mean raw count, detection fraction, Fano factor,
+correlation with log depth, and correlation with the housekeeping score. Across
+three sources and five statistics that is 90 slots, of which **80 were finite,
+i.e. actually computed**. This happened in both the void first run and the
+reported second run. The values were verified to exist without being printed.
+
+**These are on authenticated, decoded coordinates.** Unlike R7's 150 scored R²
+values, which were computed on scrambled columns and therefore describe unknown
+genes, these really are about SALL1, CTSD, CTSS, LPL, CSF1R and HLA-DMB.
+
+**What limits it, stated without using it as an excuse:**
+
+- **Nothing was published.** The three committed receipts contain counts and
+  availability only; the analysis excluded all 48 forbidden addresses and the
+  audit deliberately declines to compare the reserved six. The arrays exist
+  only in a local `.npz`.
+- **No value was ever displayed** in this session or any report, and none was
+  read back by me.
+- **Nothing consumed them.** No candidate was selected using them, no threshold
+  was set from them, no tier was chosen against them.
+
+**Why that distinction is worth drawing, and where it stops.** The harm a
+hold-out guards against is that knowledge of an outcome steers a later choice.
+A number written to a local file and never read cannot steer anything. So this
+is a **computation-level** exposure, not a **disclosure-level** one, and it is
+materially less severe than the CSF1R entry, where detection fractions were
+published in a committed receipt and did influence my confidence in the decoder.
+
+But this ledger's own rule is that a hold-out is spent the moment any statistic
+is computed on it. By that rule these are spent, and pretending otherwise would
+be exactly the "we only looked to check the pipeline" claim the rule exists to
+refuse. **The four previously strict readouts — SALL1, CTSD, CTSS, HLA-DMB —
+are no longer strict.** They are recorded here as computation-exposed.
+
+**Whether that changes their confirmatory usability is a scientific judgment
+for the owner, not one I should make silently.** My reading is that it should
+not, because the causal pathway by which exposure does damage demonstrably did
+not operate and is now blocked by construction. That reading should be
+challenged rather than adopted.
+
+**The repair, and how it is enforced.** Protected addresses are dropped from
+the CSR entries *before* normalisation and *before* any accumulator sees them.
+Their output slots carry an explicit `NOT_COMPUTED` sentinel of `-1` rather
+than a zero, because a zero reads as "measured and absent" — the precise error
+this project keeps making. A **poison-invariance** adversary plants absurd
+counts at every protected address and requires every accumulator to be
+bit-identical; if a protected value could influence any statistic, it fails.
+The other 42 forbidden addresses remain accumulated deliberately: they are
+already published in the 29-address artifact, and the cross-path audit needs
+them to verify the decoder end to end.
+
+**The general lesson, which is not the one I would have guessed.** I built a
+firewall and placed it at the point of *use* rather than the point of
+*measurement*. A firewall downstream of the computation protects the decision
+and not the hold-out. Exclusion has to happen at the earliest point where the
+protected value physically enters the pipeline — here, immediately after
+address decoding and before normalisation.
 
 ## The rule this should have followed
 

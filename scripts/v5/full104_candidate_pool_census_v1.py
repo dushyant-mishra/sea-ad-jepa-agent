@@ -45,13 +45,19 @@ STRUCTURAL AVAILABILITY IS NOT ZERO
   decoder maps it. This is the authoritative structural axis.
 
   NPH52: identity-verified (block column == true address, agreement 1.0000),
-  so it has no decoder file. Availability is taken as the union of columns
-  physically present across its blocks. This is a LOWER BOUND on its 32,176
-  provenance-mapped features: an address measured but zero in every myeloid
-  nucleus would be missed. That is harmless for this census, because a gene
-  that is zero in every nucleus cannot match any partner's abundance and would
-  be excluded anyway. The receipt records the realised union so the gap is
-  visible.
+  so it has no decoder file. Its availability is read from the AUTHENTICATED
+  FEATURE AXIS in the stage81a2r provenance table, filtered to the MG object -
+  the same table the verifier checked against the object's own rownames at
+  agreement 1.0000.
+
+  An earlier version used the union of columns physically observed with a
+  nonzero count. That is a lower bound and a materially wrong one: the
+  authenticated axis holds 31,621 distinct addresses while only 28,099 are ever
+  observed nonzero in myeloid nuclei, so 3,522 genuinely measured genes were
+  being treated as unmeasured. A measured gene may legitimately be zero in
+  every sampled nucleus, and calling that "absent" is the same confusion
+  between structural absence and observed zero that this mask exists to
+  prevent - just pointing the other way.
 
 DEPTH REFERENCE
 
@@ -105,6 +111,16 @@ FORBIDDEN = sorted(set(BAN_29) | set(NUISANCE))
 assert len(BAN_29) == 29 and len(NUISANCE) == 19 and len(FORBIDDEN) == 48
 
 RESERVED_READOUTS = sorted({a for p in R8_ADDR.values() for a in p["readout"]})
+
+# PROTECTED: dropped from the CSR entries BEFORE normalisation and before any
+# accumulator sees them. Excluding them only at selection time, as the first
+# version did, still computes and persists their mean, detection, Fano and both
+# correlations - which spends the hold-out no matter what happens downstream.
+# The other 42 forbidden addresses stay accumulated: they are already published
+# in the 29-address artifact and the cross-path audit needs them.
+PROTECTED = np.zeros(N_ADDR, dtype=bool)
+PROTECTED[np.asarray(RESERVED_READOUTS)] = True
+NOT_COMPUTED = -1                      # sentinel for n_available, never 0
 
 IDENTITY_VERIFIED = {
     "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs":
@@ -233,6 +249,26 @@ def finish(acc, avail_by_matrix):
     return out
 
 
+def nph52_authenticated_axis(provenance_csv, dataset_id):
+    """The measurable address set for one NPH52 object, from provenance.
+
+    Refuses rather than falling back: a census that silently substitutes
+    observed nonzeros for a structural axis produces availability that is
+    wrong in a direction nobody checks.
+    """
+    import pandas as pd
+    df = pd.read_csv(provenance_csv, low_memory=False,
+                     usecols=["molecular_address_index", "source_dataset_id"])
+    sub = df[df.source_dataset_id == dataset_id]
+    if sub.empty:
+        raise SystemExit(f"REFUSE_NO_NPH52_PROVENANCE for {dataset_id!r}")
+    a = sub.molecular_address_index.astype(np.int64).to_numpy()
+    a = a[(a >= 0) & (a < N_ADDR)]
+    m = np.zeros(N_ADDR, dtype=bool)
+    m[a] = True
+    return m, int(len(sub)), int(m.sum())
+
+
 def build_col2addr(decoder_dir, matrix_id):
     """-> (lookup array over block columns, status, n_mapped) or (None, why, 0)."""
     if matrix_id in IDENTITY_VERIFIED:
@@ -256,6 +292,11 @@ def main():
     ap.add_argument("--decoder-dir", required=True)
     ap.add_argument("--artifact", required=True,
                     help="FULL104_MYELOID_R8_PANEL_COUNTS_V1.npz")
+    ap.add_argument("--nph52-provenance", required=True,
+                    help="stage81a2r_foundation_molecular_address_source_"
+                         "provenance_candidate.csv.gz - the authenticated "
+                         "feature axis. Required: observed nonzeros are not a "
+                         "structural axis.")
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--max-blocks", type=int, default=0,
                     help="smoke only; a truncated run is marked PARTIAL and "
@@ -302,6 +343,7 @@ def main():
     avail_by_matrix = {}
     nph_cols_seen = {}
     read_blocks = skipped = 0
+    n_protected_dropped = 0
     donor_mismatch = []
     n_entries = 0
 
@@ -345,8 +387,14 @@ def main():
         for i, m in sel:
             g = idx_of[m["canonical_cell_id"]]
             if str(m["donor_id"]) != str(donors[g]):
-                donor_mismatch.append({"cell": m["canonical_cell_id"],
-                                       "block": b["block_key"]})
+                # FAIL CLOSED. A block whose metadata disagrees with the
+                # authenticated donor identity means the join is wrong, and a
+                # census that records the disagreement and carries on still
+                # writes OUTCOME_BLIND_CANDIDATE_POOL_CENSUS over bad data.
+                raise SystemExit(
+                    f"REFUSE_DONOR_IDENTITY_MISMATCH {m['canonical_cell_id']} "
+                    f"in {b['block_key']}: block meta says {m['donor_id']!r}, "
+                    f"authenticated metadata says {donors[g]!r}")
             lo, hi = int(indptr[i]), int(indptr[i + 1])
             cols.append(indices[lo:hi]); dats.append(data[lo:hi])
             rows.append(hi - lo); gi.append(g)
@@ -379,7 +427,10 @@ def main():
                 am[mapped[(mapped >= 0) & (mapped < N_ADDR)]] = True
                 avail_by_matrix[mid] = am
 
+        n_unmapped_this_block = int((~ok).sum())
+        ok &= ~PROTECTED[np.clip(addr, 0, N_ADDR - 1)]
         addr = addr[ok]; cnt = alld[ok]; r = rep[ok]
+        n_protected_dropped += int((~ok).sum()) - int(n_unmapped_this_block)
         y = np.log1p(cnt * 1e4 / np.maximum(Dg[r], 1.0))
         acc.add_entries(addr, cnt, y, logD[r], hk[r])
         n_entries += int(ok.sum())
@@ -390,14 +441,35 @@ def main():
                   f"entries={n_entries/1e6:.1f}M  {time.time()-started:.0f}s",
                   flush=True)
 
-    # NPH52 availability: the realised column union, a documented lower bound
-    for mid, seen in nph_cols_seen.items():
-        m = np.zeros(N_ADDR, dtype=bool)
-        if seen:
-            m[np.fromiter(seen, dtype=np.int64)] = True
+    # NPH52 availability: the AUTHENTICATED feature axis, not observed nonzeros
+    nph_axis_info = {}
+    for mid in nph_cols_seen:
+        dsid = mid.replace("NPH52::matrix::", "NPH52::")
+        m, rows, n_addr = nph52_authenticated_axis(a.nph52_provenance, dsid)
         avail_by_matrix[mid] = m
+        nph_axis_info[mid] = {
+            "provenance_rows": rows, "authenticated_addresses": n_addr,
+            "observed_nonzero_union": len(nph_cols_seen[mid]),
+            "measured_but_never_nonzero": n_addr - len(
+                set(nph_cols_seen[mid]) & set(np.flatnonzero(m).tolist()))}
+
+    seen_total = sum(a.n_cells for a in accs.values())
+    if seen_total != int(is_fit.sum()):
+        raise SystemExit(
+            f"REFUSE_INCOMPLETE_CENSUS: folded {seen_total} fitting nuclei but "
+            f"{int(is_fit.sum())} were expected. Exactly-once over the declared "
+            "population is a completion requirement, not a diagnostic.")
 
     stats = {src: finish(acc, avail_by_matrix) for src, acc in accs.items()}
+    # Belt and braces: even though no protected entry ever reached an
+    # accumulator, stamp an explicit NOT_COMPUTED sentinel rather than leaving a
+    # value that could be mistaken for a measurement. Never zero - a zero reads
+    # as "measured and absent", which is the error this project keeps making.
+    for src, d in stats.items():
+        for f in ("mean", "detect", "fano", "depth", "hk"):
+            d[f][PROTECTED] = np.nan
+        d["n_available"][PROTECTED] = NOT_COMPUTED
+        d["nnz"][PROTECTED] = NOT_COMPUTED
     np.savez_compressed(
         os.path.join(a.out_dir, "FULL104_CANDIDATE_POOL_CENSUS_V1.npz"),
         **{f"{s}__{k}": v for s, d in stats.items() for k, v in d.items()},
@@ -420,12 +492,15 @@ def main():
         "depth_reference": "total_excluding_29 from the published artifact",
         "forbidden_addresses": FORBIDDEN,
         "reserved_readouts_never_read_as_outcomes": RESERVED_READOUTS,
+        "protected_entries_dropped_before_accumulation": n_protected_dropped,
+        "protected_statistics": "NOT_COMPUTED",
+        "protected_sentinel": NOT_COMPUTED,
         "matrix_decoder_status": {k: v[1] for k, v in matrix_status.items()},
         "matrix_decoder_mapped": {k: v[2] for k, v in matrix_status.items()},
-        "nph52_observed_column_union": {k: len(v) for k, v in nph_cols_seen.items()},
-        "nph52_availability_is_a_lower_bound": True,
-        "donor_id_mismatches": donor_mismatch[:20],
-        "n_donor_id_mismatches": len(donor_mismatch),
+        "nph52_availability_source": "AUTHENTICATED_PROVENANCE_FEATURE_AXIS",
+        "nph52_axis": nph_axis_info,
+        "donor_id_mismatches": "FAIL_CLOSED_NONE_TOLERATED",
+        "fitting_nuclei_folded_exactly_once": seen_total,
         "per_source_available_addresses": {
             s: int((d["n_available"] > 0).sum()) for s, d in stats.items()},
         "training_authorized": False,

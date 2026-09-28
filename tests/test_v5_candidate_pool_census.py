@@ -298,3 +298,72 @@ def test_availability_mask_is_indexed_by_address_not_by_column(C, tmp_path):
         assert address_mask[a], "every mapped true address must be available"
     wrong = int((column_mask & ~address_mask).sum())
     assert wrong > 0, "the wrong construction must mislabel something"
+
+
+# --------------------------------------------------------------------------
+# P0 from the independent review: protected readouts must never reach an
+# accumulator, not merely be excluded from selection afterwards.
+# --------------------------------------------------------------------------
+
+def test_protected_mask_covers_exactly_the_six_reserved_readouts(C):
+    assert C.PROTECTED.sum() == 6
+    assert sorted(np.flatnonzero(C.PROTECTED).tolist()) == \
+        [2810, 4748, 10846, 13734, 14980, 26659]
+    # the other 42 forbidden addresses are NOT protected: they are already
+    # published in the 29-address artifact and the cross-path audit needs them
+    for a in C.FORBIDDEN:
+        if a not in C.RESERVED_READOUTS:
+            assert not C.PROTECTED[a]
+
+
+def test_protected_statistics_are_not_computed_not_zero(C):
+    acc = C.Acc()
+    acc.add_cells("m", 100, np.full(100, 8.5), np.zeros(100))
+    avail = {"m": np.ones(C.N_ADDR, dtype=bool)}
+    out = C.finish(acc, avail)
+    for f in ("mean", "detect", "fano"):
+        out[f][C.PROTECTED] = np.nan
+    out["n_available"][C.PROTECTED] = C.NOT_COMPUTED
+    for a in C.RESERVED_READOUTS:
+        assert np.isnan(out["mean"][a])
+        assert out["n_available"][a] == C.NOT_COMPUTED
+        assert out["n_available"][a] != 0, \
+            "zero would read as 'measured and absent'; it must be a sentinel"
+
+
+def test_poison_invariance_protected_counts_cannot_change_any_output(C):
+    """Adversary: plant absurd counts at every protected address and require
+    bit-identical accumulators. If a protected value could influence any
+    statistic, this test fails."""
+    rng = np.random.default_rng(20260928)
+    n = 300
+    D = rng.integers(3000, 9000, n).astype(np.float64)
+    logD = np.log(D); hk = rng.normal(size=n)
+
+    # clean stream over ordinary addresses only
+    addr = rng.integers(100, 5000, 4000).astype(np.int64)
+    addr = addr[~C.PROTECTED[addr]]
+    rows = rng.integers(0, n, addr.size)
+    cnt = rng.poisson(2.0, addr.size).astype(np.float64)
+
+    def run(extra_addr, extra_cnt):
+        a = np.concatenate([addr, extra_addr]).astype(np.int64)
+        c = np.concatenate([cnt, extra_cnt]).astype(np.float64)
+        r = np.concatenate([rows, rng.integers(0, n, extra_addr.size)])
+        keep = ~C.PROTECTED[np.clip(a, 0, C.N_ADDR - 1)]     # the guard
+        a, c, r = a[keep], c[keep], r[keep]
+        y = np.log1p(c * 1e4 / D[r])
+        acc = C.Acc()
+        acc.add_cells("m", n, logD, hk)
+        acc.add_entries(a, c, y, logD[r], hk[r])
+        return acc
+
+    clean = run(np.array([], dtype=np.int64), np.array([]))
+    poisoned = run(np.repeat(np.asarray(C.RESERVED_READOUTS), 50),
+                   np.full(6 * 50, 99999.0))
+
+    assert poisoned.sum_c.sum() > 0, "fixture must carry real signal"
+    for field in ("nnz", "sum_c", "sum_c2", "sum_y", "sum_y2",
+                  "sum_ylogD", "sum_yhk"):
+        assert np.array_equal(getattr(clean, field), getattr(poisoned, field)), \
+            f"{field} changed when protected addresses were poisoned"
