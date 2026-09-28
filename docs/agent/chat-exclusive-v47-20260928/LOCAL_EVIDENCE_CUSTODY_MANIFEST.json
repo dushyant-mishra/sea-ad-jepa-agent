@@ -1,0 +1,50 @@
+{
+  "schema": "JEPA_CHAT_ENV_LOCAL_EVIDENCE_CUSTODY_V47",
+  "created": "2026-09-28",
+  "base_pr": 178,
+  "base_sha": "3b2908be1f78e59ecebf61ca3bbbbf84e1cd669c",
+  "portable_archive": {
+    "filename": "JEPA_CHAT_LOCAL_ONLY_EVIDENCE_20260928.zip",
+    "sha256": "83ab489570ffd863a6a9c9e54ebc85cd84e0c769948f15e27427a7d3137da873",
+    "bytes": 415682,
+    "entries_scope": "103 unique portable local files plus full custody manifest and V47 handoff"
+  },
+  "relational_audit": {
+    "zip_sha256": "9190f9fe3bf4733e80bed96d8dec97745fb97731af0ea4e526247abeee781d8c",
+    "report_sha256": "0e823f951170408c90ab9af086497cc4531ba49f2f1849b0a7306e895680b84f",
+    "redteam_results_sha256": "9a8f84558543f5327c64fb65fbb91b1468455908b36125307d37e611d7330524",
+    "replay_sha256": "02a3800d9224eefb637aa6ce6437eb6b03093f84f37f91f0a0a51ef00e139737"
+  },
+  "other_local_packages": {
+    "cpu_final": "9fd25fc1a32d54663f3f1a9e8cc4e03d349fcf3c3474c83aefb6581eebd2118e",
+    "conditional_composition_and_census": "b6e1aabfcc585ff8ae43ead98631a48b3efdcad8949a2db3a4a3edab5f409d77",
+    "housekeeping_sham_audit": "9a921b8e0104272818ac0555c67d1b06413c7449f63f9511083a0fdeeb0fab22",
+    "sham_exchangeability": "2ea6c56e932eebfeab3db11a7cfb9d26c1247e31bf4376837f7f5737b610c857",
+    "independent_cpu": "eeca892439f9ce38a5ce47109986f00ca534b3d80ecc21634c1d241ad87ec8bb",
+    "v7_six_pair": "4a4857402e83f39e3a2a96fbb20c39bf0e0264e366afb4988782284a17ac6f75",
+    "nph52_real_gene_pilot": "fea1cc122344bd733b6b90f11dea7e73c9b55a974f378963c5858b35dc7f6075"
+  },
+  "large_historical_assets_not_duplicated": {
+    "foundation_calibration_bundle": {
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "bytes": 410278055
+    },
+    "discovery_expression_part001": {
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "bytes": 303979881
+    },
+    "discovery_expression_part002": {
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "bytes": 303979880
+    },
+    "t1_checkpoint_u0200": {
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "bytes": 233729581
+    },
+    "checkpoints_zip": {
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "bytes": 71356460
+    }
+  },
+  "note": "Large historical inputs are custody-recorded, not duplicated into Git history. Portable local-only evidence is preserved by archive SHA and key reports are committed directly."
+}
