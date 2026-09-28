@@ -1,0 +1,82 @@
+{
+  "schema": "JEPA_V46_CHAT_EXCLUSIVE_HANDOFF_AUDIT_V1",
+  "date_local": "2026-09-27",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "pinned_claude_pr178_sha": "1eeed1ff6e7616a0594e2264aa614fb388879b43",
+  "independent_pr185_sha": "a9acc3cae1cbab444f58b971e5ac403074cec6ff",
+  "handoff_branch": "handoff/v29-chat-exclusive-audited-20260927",
+  "custody": {
+    "unique_original_files": 25,
+    "total_bytes": 1331451856,
+    "exact_original_text_csv_git_blobs": 14,
+    "sha256_indexed_binary_originals_not_uploaded_to_github": 11,
+    "eight_zip_crc_pass": true,
+    "discovery_part_concatenation_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "v45_nested_sha256": "d82ad6ffb786b085caac0c9ef0147369c74e3d407493435fa195e6895a81b27c",
+    "quarantined_npz_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "binary_git_upload_status": "NOT_UPLOADED__LOCAL_CUSTODY_ZIP_ONLY",
+    "conversation_attachment_entries": 30,
+    "duplicate_attachment_entries_verified": 5,
+    "duplicate_attachment_sha256_matches": true,
+    "duplicate_attachment_names": [
+      "CLAUDE_JEPA_MISSION_V3_POST_PR182_WITH_V45_TRANSFER_20260927.zip",
+      "CLAUDE_JEPA_MISSION_V4_WITH_VERIFIED_V45_TRANSFER_20260927.zip",
+      "CLAUDE_JEPA_TEACHER_TARGET_MISSION_20260927.md",
+      "CLAUDE_JEPA_TEACHER_TARGET_MISSION_V3_POST_PR182_20260927.md",
+      "CLAUDE_JEPA_TEACHER_TARGET_MISSION_V4_POST_SUPPLEMENT_AND_INTERIM_SAFEGUARDS_20260927.md"
+    ]
+  },
+  "gate_v4": {
+    "code_path": "scripts/v5/teacher_fidelity_synthetic_gate_v4.py",
+    "receipt_path": "results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json",
+    "receipt_git_blob": "4dfd8176cdea5b88ac06bee54628ca4f05908a45",
+    "published_gate_pass": true,
+    "independent_review_scope": "SOURCE_STATIC_AND_INDEPENDENT_RECEIPT_ARITHMETIC__NOT_FULL_REEXECUTION",
+    "negative_arms": 2,
+    "positive_arms": 2,
+    "regimes": 4,
+    "negative_simulations_per_arm_regime": 120,
+    "observed_negative_false_qualifications": 26,
+    "observed_negative_total": 960,
+    "pooled_fraction": 0.027083333333333334,
+    "pooled_exact_95ci": [
+      0.017766331764529738,
+      0.0394327912088597
+    ],
+    "negative_per_regime_hits": [
+      6,
+      3,
+      5,
+      3,
+      3,
+      2,
+      4,
+      0
+    ],
+    "negative_per_regime_denom": 120,
+    "worst_upper95": 0.10565385451871234,
+    "frozen_max_upper95": 0.15,
+    "observed_positive_qualification": 240,
+    "observed_positive_total": 240,
+    "full_synthetic_execution_independently_reproduced": false,
+    "full_scale_myeloid_extraction_independently_reproduced_in_this_chat": false,
+    "real_data_gate": "CLOSED_PENDING_INDEPENDENT_REVIEW",
+    "training_authorized": false,
+    "new_independent_static_findings_after_initial_handoff": [
+      "P0_EMPTY_OR_PARTIAL_REGIME_CAN_VACUOUSLY_PASS",
+      "P1_CHANNEL_ABLATIONS_REPORTED_NOT_ENFORCED_BY_GATE_PASS"
+    ],
+    "current_gate_software_status": "NEEDS_EXACT_REGIME_AND_CHANNEL_FAIL_CLOSED_FIXTURES__REAL_DATA_CLOSED"
+  },
+  "historical_input": {
+    "r7r8_named_gene_status": "DEFECTIVE_INPUT_DEMONSTRATED__REQUIRES_DECODED_REPLAY",
+    "v44_biology": "REQUIRES_DECODED_REPLAY",
+    "source_consumer_audit": "2_AFFECTED__4_NPH_SOUND_VERIFIED"
+  },
+  "no_repeat_rules": [
+    "do_not_repeat_independent_187909_mask_audit_without_new_defect",
+    "reuse_prior_null_power_gradient_shortcut_fixtures",
+    "do_not_treat_reported_synthetic_gate_pass_as_biology",
+    "reserved_six_readouts_untouched"
+  ]
+}
