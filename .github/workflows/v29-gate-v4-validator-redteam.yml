@@ -18,6 +18,8 @@ on:
       - scripts/v5/gate_v4_receipt_validator_v2.py
       - scripts/v5/teacher_fidelity_synthetic_gate_v4.py
       - tests/test_v5_gate_v4_validator_v2_mutations.py
+      - tests/test_v5_gate_executor_v5_failclosed.py
+      - scripts/v5/teacher_fidelity_gate_executor_v5.py
       - tests/test_v5_pairwise_denominator_contract.py
       - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
       - results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json
@@ -26,6 +28,8 @@ on:
     paths:
       - scripts/v5/gate_v4_receipt_validator_v2.py
       - tests/test_v5_gate_v4_validator_v2_mutations.py
+      - tests/test_v5_gate_executor_v5_failclosed.py
+      - scripts/v5/teacher_fidelity_gate_executor_v5.py
       - tests/test_v5_pairwise_denominator_contract.py
       - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
 
@@ -91,7 +95,30 @@ jobs:
         run: |
           python -m pytest -q \
             tests/test_v5_gate_v4_validator_v2_mutations.py \
+            tests/test_v5_gate_executor_v5_failclosed.py \
             tests/test_v5_pairwise_denominator_contract.py
+
+      - name: The executor must refuse every degenerate roster
+        run: |
+          set -e
+          refuse () {
+            if python scripts/v5/teacher_fidelity_gate_executor_v5.py \
+                 --regimes "$1" --out-dir "$RUNNER_TEMP/roster_$2" \
+                 --dry-run-roster-only >/dev/null 2>&1; then
+              echo "FAIL: executor accepted roster [$1]"; exit 1
+            fi
+            echo "refused as required: [$1]"
+          }
+          refuse ""                                        empty
+          refuse "   "                                     blank
+          refuse "A_tuning_sparse,"                        trailing
+          refuse "A_tuning_sparse,,B_tuning_dense"         doublecomma
+          refuse "A_tuning_sparse,A_tuning_sparse"         duplicate
+          refuse "A_tuning_sparse,NOT_A_REGIME"            unknown
+          refuse "A_tuning_sparse"                         subset
+          python scripts/v5/teacher_fidelity_gate_executor_v5.py \
+            --out-dir "$RUNNER_TEMP/roster_full" --dry-run-roster-only
+          echo "full frozen roster accepted"
 
       - name: Seeds must not depend on PYTHONHASHSEED
         run: |
