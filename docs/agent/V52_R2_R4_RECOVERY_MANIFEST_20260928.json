@@ -15,19 +15,23 @@
       "git_encoding": "base64_text",
       "git_path": "docs/agent/recovered-v52-20260928/CLAUDE_R2_LOCAL_SCRIPTS.zip.b64",
       "decoded_sha256": "337bd8823e006febc1f5103b00b48c7953e3a91e3fb257a4d02d90c04b4af571",
-      "decoded_size_bytes": 13536
+      "decoded_size_bytes": 13536,
+      "remote_blob_sha1": "22aef305dda5af3c85e8e0108e829695b40101e6"
     },
     {
       "name": "out_stage75f-specificity.zip",
       "custody_disposition": "chat_recovery_archive_sha_pinned__not_redundantly_mirrored_in_git",
       "decoded_sha256": "be6614c58304a2b19c41b542f8379fb31e6adca39082d4982496344f9004c3b5",
-      "decoded_size_bytes": 15970
+      "decoded_size_bytes": 15970,
+      "note": "A first monolithic base64 mirror was detected as truncated during V52 remote-byte verification and was deleted; the authoritative recovered archive remains SHA-pinned chat custody."
     },
     {
       "name": "out_seaad-spatial.zip",
-      "custody_disposition": "chat_recovery_archive_sha_pinned__not_redundantly_mirrored_in_git",
+      "git_encoding": "base64_text",
+      "git_path": "docs/agent/recovered-v52-20260928/out_seaad-spatial.zip.b64",
       "decoded_sha256": "8dbe6faef5690207639b10b7818bedb743fbdf14b9dd5029d965b7d93c937420",
-      "decoded_size_bytes": 13001
+      "decoded_size_bytes": 13001,
+      "remote_blob_sha1": "65ad33c25d8e09f390284b79891efd5af5d2bc3a"
     }
   ],
   "recovered_r2_source": {
@@ -60,6 +64,13 @@
       "direct_null_is_degenerate_constant": true,
       "extended_null_is_degenerate_constant": true,
       "verdict": "PASS_PRODUCER_DEGENERACY_PATH_EXERCISED"
+    },
+    "remote_blob_verification": {
+      "script_git_blob_sha1": "d0c297559b31c5adfa2a097faa93bf3208e59e1f",
+      "test_git_blob_sha1": "ecd123b99dea156d4f4a5a6c96ab290b48b381c5",
+      "script_sha256_matches_local_executed_bytes": true,
+      "test_sha256_matches_local_executed_bytes": true,
+      "fresh_pytest": "1 passed in 2.03s"
     }
   },
   "r4": {

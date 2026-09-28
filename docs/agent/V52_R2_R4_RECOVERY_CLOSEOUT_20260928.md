@@ -9,7 +9,7 @@ This successor SHA-pins the exact chat-recovered R2/R4 result archives, mirrors 
 
 ## Custody recovered
 
-Three user-uploaded recovery archives were received and SHA-256 verified. The R2 source archive is mirrored into Git as base64 text because the successor regression executes it byte-for-byte; the result ZIP identities are SHA-pinned here without redundant binary mirroring:
+Three user-uploaded recovery archives were received and SHA-256 verified. The exact R2 source archive is mirrored into Git as base64 text because the successor regression executes it byte-for-byte. The R4 spatial archive is also mirrored exactly. The Stage75F result ZIP remains SHA-pinned chat custody: an initial monolithic base64 mirror was detected as truncated during remote-byte verification and was deleted rather than retained as false custody.
 
 - `out_stage75f-specificity.zip` — `be6614c58304a2b19c41b542f8379fb31e6adca39082d4982496344f9004c3b5`
 - `out_seaad-spatial.zip` — `8dbe6faef5690207639b10b7818bedb743fbdf14b9dd5029d965b7d93c937420`
@@ -56,7 +56,7 @@ Observed V2 result:
 - producer identifiability degeneracy flag: true
 - verdict: `PASS_PRODUCER_DEGENERACY_PATH_EXERCISED`
 
-This closes the narrow MUT-5 producer-path coverage gap without altering the scientific R2 result.
+This closes the narrow MUT-5 producer-path coverage gap without altering the scientific R2 result. A fresh local checkout-equivalent run of the committed successor bytes returned `1 passed in 2.03s`. Git blob identity of the committed script and test matches the locally executed files exactly (`d0c297559b31c5adfa2a097faa93bf3208e59e1f` and `ecd123b99dea156d4f4a5a6c96ab290b48b381c5`).
 
 ## R4 spatial structural status
 

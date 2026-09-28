@@ -1,0 +1,44 @@
+{
+  "schema": "jepa_v58_regulatory_independence_handoff_v1",
+  "date": "2026-09-28",
+  "branch": "audit/v58-regulatory-independence-external-cis-map-20260928",
+  "base_v57_sha": "31a3d9742d2683061583a3dbe3f1c337b8eb2afa",
+  "v52_final_sha": "0369fb7329bd2080260d2ca505fa6bd2e2e89fdd",
+  "v52_reconciliation": {
+    "mode": "exact_file_content_copy_forward__not_merge_commit",
+    "reason": "available GitHub connector exposes file writes but no branch merge action",
+    "files": [
+      "docs/agent/V52_R2_R4_RECOVERY_CLOSEOUT_20260928.md",
+      "docs/agent/V52_R2_R4_RECOVERY_MANIFEST_20260928.json",
+      "docs/agent/recovered-v52-20260928/out_seaad-spatial.zip.b64"
+    ]
+  },
+  "r3": {
+    "source_path": "src/sea_ad_jepa/regulatory/regulatory_exposure_ledger_v1.py",
+    "local_source_sha256": "c2c8afa217df62fedd6d8fe4b6341d402c09300ac8674abf052a1dd7312a2d9a",
+    "test_path": "tests/test_regulatory_exposure_ledger_v1.py",
+    "local_test_sha256": "dab1c6ecef0808f4db5eb2ecaa3f2834a43946c83f4b296fa23361e826b6eda3",
+    "snapshot_path": "results/v58/R3_REGULATORY_EXPOSURE_SNAPSHOT_V1.json",
+    "ledger_sha256": "03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f",
+    "local_tests": "7 passed in 0.04s",
+    "confirmation_authorized_by_ledger": false
+  },
+  "external_anchor_probe": {
+    "source_path": "scripts/regulatory/v53_external_anchor_benchmark.py",
+    "local_source_sha256": "90b8154327b0467c73f57695279eaf26ae0831acdebc3145933fbace4f369523",
+    "result_path": "results/v58/V53_EXTERNAL_ANCHOR_SYNTHETIC_IDENTIFIABILITY_V1.json",
+    "local_result_sha256": "79c07b9f7f699e5e1bfffea3eda32ae8446b12359ce58348e5149f8274203205",
+    "fresh_local_replay_result_sha256": "79c07b9f7f699e5e1bfffea3eda32ae8446b12359ce58348e5149f8274203205",
+    "semantic_twin_byte_identical": true,
+    "semantic_twin_gate_pass_rate": 1.0,
+    "real_data_authorized": false,
+    "evidence_class": "EXPLORATORY_SYNTHETIC_DESIGN_SUPPORT"
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened_by_v58": false,
+    "real_regulatory_molecular_outcomes_opened_by_v58": false
+  },
+  "next_required_work": "AUDIT_EXTERNAL_CIS_MAP_CANDIDATES_BY_PROVENANCE_ONLY_CRITERIA_THEN_FREEZE_NEXT_SYNTHETIC_GATE"
+}
