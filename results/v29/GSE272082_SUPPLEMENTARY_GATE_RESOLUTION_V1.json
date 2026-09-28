@@ -1,0 +1,116 @@
+{
+  "schema": "GSE272082_SUPPLEMENTARY_GATE_RESOLUTION_V1",
+  "date": "2026-09-27",
+  "status": "GATE_CLOSED__DATASET_REMAINS_UNDERPOWERED",
+  "why_this_exists": "the paired-multiome lane recorded microglia-per-donor as NOT_STATED_IN_DEPOSIT because supplementary S1-S10B returned HTTP 403. The owner supplied the file set directly.",
+  "source": {
+    "path": "C:/Users/dushy/Downloads/sciadv.adw4917_data_s1_to_s10",
+    "files": 10,
+    "sha256": {
+      "sciadv.adw4917_data_s1.xlsx": "2c3f33e40de04b5dff01aff9b2fde2642da47b60a1549accc4d6502b56d53bdd",
+      "sciadv.adw4917_data_s10.xlsx": "17bbdd2dfcb9a8473a9913cdc1d6241bf3846f25cb38cd292d0b63fc937f3693",
+      "sciadv.adw4917_data_s2.xlsx": "cfa40478d7f94ba0c467ce6f9d866fb1dd37681f94f72e7cb6196b1dca4b88ee",
+      "sciadv.adw4917_data_s3.xlsx": "ea38e9fdd2d76c336d4bf71b0d9289570e338270e688d6fd9791a1f2d2c56f8c",
+      "sciadv.adw4917_data_s4.xlsx": "d51cd012cfadf914b391b8bde2d3f57d5489c6f62b12ec73d21f0ba9c0029ef4",
+      "sciadv.adw4917_data_s5.xlsx": "1ebdc1b87c97c6907f93b3f845abf5f3137242f579fdbb5cea2da44e79881fc6",
+      "sciadv.adw4917_data_s6.xlsx": "6131fd482f798225a54d28482c2db038e3734d79b04d05cb9ad2a55eb1119ba0",
+      "sciadv.adw4917_data_s7.xlsx": "eab38894d425f1a925aba9faf02a858adbd9294ab887326b047a4f288bf4b6a2",
+      "sciadv.adw4917_data_s8.xlsx": "b635465e17f90c69f15fdd43db2df9192f8fab4b73bb93f12d6893d7d34cc013",
+      "sciadv.adw4917_data_s9.xlsx": "a61eabcb021fe15e92c50789e56b4767b0988d2648a12e525691e592c305ba9f"
+    }
+  },
+  "donor_composition_from_Data_S1": {
+    "authoritative": "Data S1 'Sample information', the publication's own donor table",
+    "controls": [
+      "UT_04",
+      "UT_09",
+      "BEB18077",
+      "BEB18110",
+      "HCTZD"
+    ],
+    "eoad": [
+      "UT_2105",
+      "BEB19074",
+      "BEB19080",
+      "BEB20005"
+    ],
+    "n_donors": 9,
+    "n_control": 5,
+    "n_eoad": 4,
+    "libraries": "UT donors carry ONE sample each; the six BEB/HCTZD donors carry THREE -> 3 + 18 = 21",
+    "confirms": "n=9 PEOPLE, not 21 and not 27"
+  },
+  "RESOLVED_DEFECT_UT04_UT09": {
+    "lane_flag": "GEO titles call UT04/UT09 sEOAD; lane asserted they are Control",
+    "Data_S1_verdict": "Clinical Diagnosis = Control for BOTH, with A0 / B0 / C0 - no plaque, no NFT, no neuritic score",
+    "outcome": "LANE WAS CORRECT. Parsing GEO titles misclassifies 2 of 9 donors, and it would have moved them from control to case."
+  },
+  "MICROGLIA_COUNTS_now_measured": {
+    "source": "Data S4 power analysis, mean cells per individual",
+    "PFC": {
+      "per_case": 307,
+      "per_control": 108
+    },
+    "EC": {
+      "per_case": 479,
+      "per_control": 218
+    },
+    "HIP": {
+      "per_case": 326,
+      "per_control": 241
+    },
+    "verdict": "microglial yield is ADEQUATE per donor (108-479). Cells were never the constraint."
+  },
+  "EFFECTIVE_N_IS_REGION_DEPENDENT": {
+    "finding": "n=9 holds ONLY for PFC. The three UT donors contribute a single region each.",
+    "PFC": {
+      "control": 5,
+      "eoad": 4,
+      "min_detectable_d": 2.19
+    },
+    "EC": {
+      "control": 3,
+      "eoad": 3,
+      "min_detectable_d": 3.07
+    },
+    "HIP": {
+      "control": 3,
+      "eoad": 3,
+      "min_detectable_d": 3.07
+    },
+    "note": "corrects the single headline n=9; EC and HIP are n=6"
+  },
+  "AUTHORS_OWN_POWER_Data_S4": {
+    "metric": "hurdle power, gene-level differential expression, 3000 genes, alpha 0.05",
+    "microglia": {
+      "PFC": {
+        "log2FC_1.5": 0.298,
+        "log2FC_2.0": 0.591
+      },
+      "EC": {
+        "log2FC_1.5": 0.331,
+        "log2FC_2.0": 0.616
+      },
+      "HIP": {
+        "log2FC_1.5": 0.256,
+        "log2FC_2.0": 0.528
+      }
+    },
+    "reading": "log2FC 1.5 is a ~2.8-fold change, already large, and the authors reach only 26-33% power. At 4-fold they reach 53-62%. This is the depositors' own assessment and it CORROBORATES the lane's independent finding."
+  },
+  "CONSEQUENCE": "the blocking gate is CLOSED and the answer is negative. GSE272082 cannot serve as a powered biological validation. It may support mechanism and leak-safety checks, where a null is not interpreted as evidence against the model.",
+  "SEPARATE_COHORT_DO_NOT_MERGE": {
+    "table": "Data S8, titled 'Sample information for validation'",
+    "donors": [
+      "UT2206",
+      "HA23-14",
+      "N2301",
+      "UT22-03"
+    ],
+    "n": 4,
+    "region": "SFG",
+    "warning": "a DIFFERENT 4-donor validation cohort in a DIFFERENT region. Must not be added to the 9."
+  },
+  "training_authorized": false,
+  "protected_outcomes_opened": false
+}

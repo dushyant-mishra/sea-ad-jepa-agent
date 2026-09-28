@@ -1,0 +1,68 @@
+{
+  "schema": "V5_NPH52_FEATURE_AXIS_VERIFIER_V1",
+  "status": "POSITIONAL_CHECK_AGAINST_THE_OBJECT__NO_COUNTS_READ",
+  "source_dataset_id": "NPH52::MG_data_arranged_updatedId_final_batches.qs",
+  "object_features": 33441,
+  "provenance_rows": 32176,
+  "source_feature_index_range": [
+    0,
+    33440
+  ],
+  "agreement_zero_based": 1.0,
+  "agreement_one_based": 0.0,
+  "agreement_floor": 1.0,
+  "verdict": "FEATURE_AXIS_VERIFIED__ZERO_BASED__MATERIALIZER_INDEXING_CORRECT",
+  "first_feature_names": [
+    "A1BG",
+    "A1BG-AS1",
+    "A2M",
+    "A2M-AS1",
+    "A2ML1",
+    "A2ML1-AS1",
+    "A3GALT2",
+    "A4GALT",
+    "AAAS",
+    "AACS"
+  ],
+  "examples": [
+    {
+      "source_feature_index": 22216,
+      "provenance_symbol": "TSPAN6",
+      "object_rowname_at_that_index": "TSPAN6"
+    },
+    {
+      "source_feature_index": 30869,
+      "provenance_symbol": "TNMD",
+      "object_rowname_at_that_index": "TNMD"
+    },
+    {
+      "source_feature_index": 6135,
+      "provenance_symbol": "DPM1",
+      "object_rowname_at_that_index": "DPM1"
+    },
+    {
+      "source_feature_index": 19527,
+      "provenance_symbol": "SCYL3",
+      "object_rowname_at_that_index": "SCYL3"
+    },
+    {
+      "source_feature_index": 2963,
+      "provenance_symbol": "C1orf112",
+      "object_rowname_at_that_index": "C1orf112"
+    },
+    {
+      "source_feature_index": 7283,
+      "provenance_symbol": "FGR",
+      "object_rowname_at_that_index": "FGR"
+    }
+  ],
+  "why_this_and_not_plausibility": "a textbook marker profile is corroboration, not verification. This check compares the provenance index against the object's own feature axis directly, so it can fail even when the counts look biologically reasonable.",
+  "digests": {
+    "feature_names_file": "1c9cf7a5e0e58013c87688eb18ff0862beb2e6f1681b01e7ac1975a6480aa16d",
+    "provenance": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+    "qs_source": "5f2cd65c8bb1746388969682823bacd244d88871c5229b325ca19b31513c639c"
+  },
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "producer_sha256": "5b9ffee723f561d4c6f0d847cd1cc8cb122ea09c42dddb6eabafbc459a3c00d1"
+}

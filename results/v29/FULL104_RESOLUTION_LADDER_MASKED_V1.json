@@ -1,0 +1,1322 @@
+{
+  "schema": "V5_FULL104_RESOLUTION_LADDER_V1",
+  "status": "MEASUREMENT_ONLY__NO_TEACHER_FITTED__NO_TRAINING",
+  "counts_npz_sha256": "9c7c5ce0bc68f67520814c306ca376675ceb234aa6db813361c5799fbb7855c4",
+  "rungs": [
+    1,
+    2,
+    5,
+    10,
+    25,
+    50,
+    100
+  ],
+  "min_pairs_to_report": 12,
+  "estimand_separation": {
+    "k=1": "the per-nucleus objective, preserved as the reference rung",
+    "k>1": "a SEPARATELY LABELLED neighbourhood-level target",
+    "molecule_split": "ceiling at matched depth; nuclei held fixed",
+    "disjoint_nuclei": "adds within-donor nucleus heterogeneity",
+    "ratio": "fraction of the achievable reliability that survives swapping which nuclei you drew"
+  },
+  "stratification": "donor x operator, because one SEA-AD donor spans ten brain regions and pooling across them is anatomy, not a neighbourhood",
+  "sources_not_harmonized": true,
+  "availability_mask_required_and_enforced": true,
+  "reference_caveat": "total_excluding_29 subtracts only the ban-set addresses each matrix actually measures, so the subtracted set differs between sources. It is a SOURCE-SPECIFIC reference: usable within a source, and requiring an explicit comparability check before any cross-source transport claim.",
+  "reserved_readouts_untouched": true,
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "cohorts": {
+    "HVS::Microglia-PVM": {
+      "n_nuclei": 2117,
+      "n_donors": 30,
+      "n_donor_by_operator_strata": 30,
+      "reference_house_zero_fraction": 0.17052432687765706,
+      "reference_house_genes_available_median": 8.0,
+      "reference_house_genes_declared": 8,
+      "reference_full_median": 3131.0,
+      "reference_is_source_specific": true,
+      "programs": {
+        "APOE_LIPID": {
+          "partner_umi_median": 1.0,
+          "partner_umi_zero_fraction": 0.42890883325460555,
+          "rungs": {
+            "1": {
+              "n_pairs": 1052,
+              "n_strata_contributing": 29,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5474997333971019,
+              "disjoint_nuclei_corr": 0.2778210531580154,
+              "donor_scrambled_corr": 0.0077668742344707475,
+              "disjoint_over_molecule": 0.5074359606244988,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 519,
+              "n_strata_contributing": 28,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6274722665165294,
+              "disjoint_nuclei_corr": 0.4121443292363365,
+              "donor_scrambled_corr": -0.027950686555513297,
+              "disjoint_over_molecule": 0.6568327418268125,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 197,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8378810973326789,
+              "disjoint_nuclei_corr": 0.6908422464022749,
+              "donor_scrambled_corr": -0.0039421590793288904,
+              "disjoint_over_molecule": 0.8245110775281966,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 89,
+              "n_strata_contributing": 21,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9151607983922504,
+              "disjoint_nuclei_corr": 0.778296472607536,
+              "donor_scrambled_corr": 0.020960584559704988,
+              "disjoint_over_molecule": 0.8504477835751303,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 27,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9516687469176783,
+              "disjoint_nuclei_corr": 0.9248760993845175,
+              "donor_scrambled_corr": -0.3964526562990719,
+              "disjoint_over_molecule": 0.9718466665844198,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 9,
+              "n_strata_contributing": 7,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            },
+            "100": {
+              "n_pairs": 2,
+              "n_strata_contributing": 2,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.3964526562990719,
+            "max_disjoint_corr": 0.9248760993845175,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "partner_umi_median": 2.0,
+          "partner_umi_zero_fraction": 0.2838923004251299,
+          "rungs": {
+            "1": {
+              "n_pairs": 1052,
+              "n_strata_contributing": 29,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.4822001301957702,
+              "disjoint_nuclei_corr": 0.2276872878775938,
+              "donor_scrambled_corr": 0.0023321485792594586,
+              "disjoint_over_molecule": 0.4721842107034567,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 519,
+              "n_strata_contributing": 28,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.605948620879788,
+              "disjoint_nuclei_corr": 0.3392169704091184,
+              "donor_scrambled_corr": -0.04729669878691891,
+              "disjoint_over_molecule": 0.5598114406409623,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 197,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7977180020639101,
+              "disjoint_nuclei_corr": 0.5684386859725433,
+              "donor_scrambled_corr": 0.061490115915994875,
+              "disjoint_over_molecule": 0.7125809929095749,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 89,
+              "n_strata_contributing": 21,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8489287897010726,
+              "disjoint_nuclei_corr": 0.7053681197968975,
+              "donor_scrambled_corr": -0.021767626865822638,
+              "disjoint_over_molecule": 0.8308919762813957,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 27,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9392531597394839,
+              "disjoint_nuclei_corr": 0.7907517912746213,
+              "donor_scrambled_corr": -0.2816183365557872,
+              "disjoint_over_molecule": 0.8418942040013454,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 9,
+              "n_strata_contributing": 7,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            },
+            "100": {
+              "n_pairs": 2,
+              "n_strata_contributing": 2,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.2816183365557872,
+            "max_disjoint_corr": 0.7907517912746213,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "HLA_DRA_ANTIGEN": {
+          "partner_umi_median": 4.0,
+          "partner_umi_zero_fraction": 0.10392064241851677,
+          "rungs": {
+            "1": {
+              "n_pairs": 1052,
+              "n_strata_contributing": 29,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6762934552693993,
+              "disjoint_nuclei_corr": 0.29599398236216,
+              "donor_scrambled_corr": -0.043756232575778126,
+              "disjoint_over_molecule": 0.4376709253296733,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 519,
+              "n_strata_contributing": 28,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7575219974112108,
+              "disjoint_nuclei_corr": 0.4188226663192632,
+              "donor_scrambled_corr": 0.07903113556453935,
+              "disjoint_over_molecule": 0.5528851541612868,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 197,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9183145516567139,
+              "disjoint_nuclei_corr": 0.6182696456908486,
+              "donor_scrambled_corr": 0.10425389128341556,
+              "disjoint_over_molecule": 0.6732656523578332,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 89,
+              "n_strata_contributing": 21,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9225609732713964,
+              "disjoint_nuclei_corr": 0.7292033862483142,
+              "donor_scrambled_corr": -0.06841916415520924,
+              "disjoint_over_molecule": 0.7904121325038959,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 27,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9555152959454863,
+              "disjoint_nuclei_corr": 0.915914924958481,
+              "donor_scrambled_corr": -0.09080142872011715,
+              "disjoint_over_molecule": 0.958556005168059,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 9,
+              "n_strata_contributing": 7,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            },
+            "100": {
+              "n_pairs": 2,
+              "n_strata_contributing": 2,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": null,
+              "disjoint_nuclei_corr": null,
+              "donor_scrambled_corr": null,
+              "disjoint_over_molecule": null,
+              "reportable": false
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.10425389128341556,
+            "max_disjoint_corr": 0.915914924958481,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        }
+      }
+    },
+    "NPH52::MG": {
+      "n_nuclei": 15264,
+      "n_donors": 16,
+      "n_donor_by_operator_strata": 16,
+      "reference_house_zero_fraction": 0.15218815513626835,
+      "reference_house_genes_available_median": 8.0,
+      "reference_house_genes_declared": 8,
+      "reference_full_median": 4175.0,
+      "reference_is_source_specific": true,
+      "programs": {
+        "APOE_LIPID": {
+          "partner_umi_median": 1.0,
+          "partner_umi_zero_fraction": 0.40349842767295596,
+          "rungs": {
+            "1": {
+              "n_pairs": 7627,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.29643362327798845,
+              "disjoint_nuclei_corr": 0.06014683956533481,
+              "donor_scrambled_corr": -0.0034028430136444636,
+              "disjoint_over_molecule": 0.20290154301737398,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 3812,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.3539709845749925,
+              "disjoint_nuclei_corr": 0.09810836303350375,
+              "donor_scrambled_corr": -0.006421767957236235,
+              "disjoint_over_molecule": 0.277164986139474,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 1521,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5134590172672804,
+              "disjoint_nuclei_corr": 0.26163656402256613,
+              "donor_scrambled_corr": -0.007349636483132813,
+              "disjoint_over_molecule": 0.509556858919417,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 757,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6762771605524323,
+              "disjoint_nuclei_corr": 0.4271067043086951,
+              "donor_scrambled_corr": 0.027606348565442678,
+              "disjoint_over_molecule": 0.6315557129857873,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 297,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8335425922644886,
+              "disjoint_nuclei_corr": 0.6088994386983665,
+              "donor_scrambled_corr": -0.03279426279855827,
+              "disjoint_over_molecule": 0.7304958910907803,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 144,
+              "n_strata_contributing": 15,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8563972759376418,
+              "disjoint_nuclei_corr": 0.7398218270275397,
+              "donor_scrambled_corr": 0.02499164003835494,
+              "disjoint_over_molecule": 0.8638769036456038,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 68,
+              "n_strata_contributing": 14,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9231453255197609,
+              "disjoint_nuclei_corr": 0.8401146126601458,
+              "donor_scrambled_corr": -0.0001866013238164224,
+              "disjoint_over_molecule": 0.9100567261033725,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.03279426279855827,
+            "max_disjoint_corr": 0.8401146126601458,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "partner_umi_median": 7.0,
+          "partner_umi_zero_fraction": 0.04310796645702306,
+          "rungs": {
+            "1": {
+              "n_pairs": 7627,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.42273270676412444,
+              "disjoint_nuclei_corr": 0.022286776264670075,
+              "donor_scrambled_corr": 0.02225352830758798,
+              "disjoint_over_molecule": 0.052720728507779285,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 3812,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5076880355406536,
+              "disjoint_nuclei_corr": 0.09544537005617439,
+              "donor_scrambled_corr": 0.023220390600317477,
+              "disjoint_over_molecule": 0.18800003816227714,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 1521,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6426157456332682,
+              "disjoint_nuclei_corr": 0.2631945592888145,
+              "donor_scrambled_corr": 0.013921829729005457,
+              "disjoint_over_molecule": 0.4095675542924153,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 757,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7364764859224333,
+              "disjoint_nuclei_corr": 0.42637391063044566,
+              "donor_scrambled_corr": -0.025906478340492107,
+              "disjoint_over_molecule": 0.578937574763727,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 297,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8438568211180747,
+              "disjoint_nuclei_corr": 0.6053566328930471,
+              "donor_scrambled_corr": 0.033325803847304186,
+              "disjoint_over_molecule": 0.7173688921433082,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 144,
+              "n_strata_contributing": 15,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9189780234454967,
+              "disjoint_nuclei_corr": 0.7313239140342409,
+              "donor_scrambled_corr": -0.017224530927280036,
+              "disjoint_over_molecule": 0.7958013090370868,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 68,
+              "n_strata_contributing": 14,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.94064848811463,
+              "disjoint_nuclei_corr": 0.8388446049772598,
+              "donor_scrambled_corr": -0.06036852084347515,
+              "disjoint_over_molecule": 0.891772660644553,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.06036852084347515,
+            "max_disjoint_corr": 0.8388446049772598,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "HLA_DRA_ANTIGEN": {
+          "partner_umi_median": 6.0,
+          "partner_umi_zero_fraction": 0.05660377358490566,
+          "rungs": {
+            "1": {
+              "n_pairs": 7627,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.4945615263114089,
+              "disjoint_nuclei_corr": 0.07832815409166262,
+              "donor_scrambled_corr": 0.0043299824049587345,
+              "disjoint_over_molecule": 0.15837898810256823,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 3812,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6140878365650799,
+              "disjoint_nuclei_corr": 0.16226969522286636,
+              "donor_scrambled_corr": -0.005800673607554613,
+              "disjoint_over_molecule": 0.26424508931902496,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 1521,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7067196923586809,
+              "disjoint_nuclei_corr": 0.33232651761739124,
+              "donor_scrambled_corr": 0.017878627614557722,
+              "disjoint_over_molecule": 0.4702380890339275,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 757,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.805013825606119,
+              "disjoint_nuclei_corr": 0.49772171445893576,
+              "donor_scrambled_corr": -0.04504725639143263,
+              "disjoint_over_molecule": 0.6182772253435351,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 297,
+              "n_strata_contributing": 16,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.893612246881157,
+              "disjoint_nuclei_corr": 0.6963314975272553,
+              "donor_scrambled_corr": 0.006736006166366323,
+              "disjoint_over_molecule": 0.7792322676390777,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 144,
+              "n_strata_contributing": 15,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9223624540949533,
+              "disjoint_nuclei_corr": 0.8209595407950813,
+              "donor_scrambled_corr": 0.11741806946490373,
+              "disjoint_over_molecule": 0.8900617508337638,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 68,
+              "n_strata_contributing": 14,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9691966895634339,
+              "disjoint_nuclei_corr": 0.8785285115703982,
+              "donor_scrambled_corr": -0.0337361741640872,
+              "disjoint_over_molecule": 0.9064501777922124,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.11741806946490373,
+            "max_disjoint_corr": 0.8785285115703982,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        }
+      }
+    },
+    "SEA_AD::Immune": {
+      "n_nuclei": 138242,
+      "n_donors": 46,
+      "n_donor_by_operator_strata": 316,
+      "reference_house_zero_fraction": 0.13537853908363595,
+      "reference_house_genes_available_median": 7.0,
+      "reference_house_genes_declared": 8,
+      "reference_full_median": 5171.0,
+      "reference_is_source_specific": true,
+      "programs": {
+        "APOE_LIPID": {
+          "partner_umi_median": 1.0,
+          "partner_umi_zero_fraction": 0.30958030121092,
+          "rungs": {
+            "1": {
+              "n_pairs": 69044,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.43960198819402174,
+              "disjoint_nuclei_corr": 0.06172955934568183,
+              "donor_scrambled_corr": 0.0077090804111578795,
+              "disjoint_over_molecule": 0.14042147443254285,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 34440,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5207800434638116,
+              "disjoint_nuclei_corr": 0.12784260637411024,
+              "donor_scrambled_corr": -0.001282211456545495,
+              "disjoint_over_molecule": 0.24548292120374593,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13678,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6762875093712194,
+              "disjoint_nuclei_corr": 0.2676876189256546,
+              "donor_scrambled_corr": -0.010573576495010863,
+              "disjoint_over_molecule": 0.39581925618371705,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6766,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7732292726582962,
+              "disjoint_nuclei_corr": 0.4319731205268947,
+              "donor_scrambled_corr": 0.010833253790089148,
+              "disjoint_over_molecule": 0.5586611058345062,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2605,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8793820808103693,
+              "disjoint_nuclei_corr": 0.6294992508008445,
+              "donor_scrambled_corr": -0.014938607048463986,
+              "disjoint_over_molecule": 0.7158427088038314,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1230,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9309297116566616,
+              "disjoint_nuclei_corr": 0.7864305590101754,
+              "donor_scrambled_corr": -0.028967143200824462,
+              "disjoint_over_molecule": 0.8447797391820928,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 534,
+              "n_strata_contributing": 260,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9633520844904101,
+              "disjoint_nuclei_corr": 0.8742218605950924,
+              "donor_scrambled_corr": 0.022377256162566576,
+              "disjoint_over_molecule": 0.9074790771408717,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.028967143200824462,
+            "max_disjoint_corr": 0.8742218605950924,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "partner_umi_median": 2.0,
+          "partner_umi_zero_fraction": 0.2158171901448185,
+          "rungs": {
+            "1": {
+              "n_pairs": 69044,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.4734149515625182,
+              "disjoint_nuclei_corr": 0.14163418204033515,
+              "donor_scrambled_corr": -0.0007208323704506341,
+              "disjoint_over_molecule": 0.29917555745307134,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 34440,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5738765890374437,
+              "disjoint_nuclei_corr": 0.2581413003385017,
+              "donor_scrambled_corr": -0.005926761280819028,
+              "disjoint_over_molecule": 0.4498202318576525,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13678,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7398268738118323,
+              "disjoint_nuclei_corr": 0.4847307350233081,
+              "donor_scrambled_corr": 0.00015491086501403208,
+              "disjoint_over_molecule": 0.6551948194660939,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6766,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8471931265927299,
+              "disjoint_nuclei_corr": 0.6651908268938362,
+              "donor_scrambled_corr": -0.014738043175967356,
+              "disjoint_over_molecule": 0.7851702357042524,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2605,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9252066287787237,
+              "disjoint_nuclei_corr": 0.8300258820426627,
+              "donor_scrambled_corr": -0.015420654311271568,
+              "disjoint_over_molecule": 0.897124875919123,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1230,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9640571949983429,
+              "disjoint_nuclei_corr": 0.9081308293138345,
+              "donor_scrambled_corr": 0.022281711665658233,
+              "disjoint_over_molecule": 0.9419885397104427,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 534,
+              "n_strata_contributing": 260,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9825199107288816,
+              "disjoint_nuclei_corr": 0.9541921705986987,
+              "donor_scrambled_corr": 0.08940525006199886,
+              "disjoint_over_molecule": 0.9711682788095684,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.08940525006199886,
+            "max_disjoint_corr": 0.9541921705986987,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "HLA_DRA_ANTIGEN": {
+          "partner_umi_median": 3.0,
+          "partner_umi_zero_fraction": 0.16185385049406115,
+          "rungs": {
+            "1": {
+              "n_pairs": 69044,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5454584201510794,
+              "disjoint_nuclei_corr": 0.11439910037951048,
+              "donor_scrambled_corr": 0.0005880730696939799,
+              "disjoint_over_molecule": 0.20973019418753233,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 34440,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.656128043683141,
+              "disjoint_nuclei_corr": 0.22763520220238131,
+              "donor_scrambled_corr": 0.010428262165130374,
+              "disjoint_over_molecule": 0.34693716324722657,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13678,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7930965727347526,
+              "disjoint_nuclei_corr": 0.44678779003984587,
+              "donor_scrambled_corr": -0.01562723491567941,
+              "disjoint_over_molecule": 0.5633460103089765,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6766,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8784505583283223,
+              "disjoint_nuclei_corr": 0.6408122397036999,
+              "donor_scrambled_corr": -0.011288706261442323,
+              "disjoint_over_molecule": 0.7294801439060562,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2605,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9408127029881982,
+              "disjoint_nuclei_corr": 0.8137788048261801,
+              "donor_scrambled_corr": 0.001816099481052327,
+              "disjoint_over_molecule": 0.8649742953528003,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1230,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9710675806579692,
+              "disjoint_nuclei_corr": 0.8866116542223497,
+              "donor_scrambled_corr": 0.035983241780348646,
+              "disjoint_over_molecule": 0.913027756133724,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 534,
+              "n_strata_contributing": 260,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9836987972029987,
+              "disjoint_nuclei_corr": 0.9490044171483055,
+              "donor_scrambled_corr": 0.06211435669585941,
+              "disjoint_over_molecule": 0.9647306877335405,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.06211435669585941,
+            "max_disjoint_corr": 0.9490044171483055,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        }
+      }
+    },
+    "SEA_AD::Immune::MYELOID_RESTRICTED": {
+      "n_nuclei": 135666,
+      "n_donors": 46,
+      "n_donor_by_operator_strata": 316,
+      "reference_house_zero_fraction": 0.13578936505830497,
+      "reference_house_genes_available_median": 7.0,
+      "reference_house_genes_declared": 8,
+      "reference_full_median": 5211.0,
+      "reference_is_source_specific": true,
+      "programs": {
+        "APOE_LIPID": {
+          "partner_umi_median": 1.0,
+          "partner_umi_zero_fraction": 0.29751006147450354,
+          "rungs": {
+            "1": {
+              "n_pairs": 67753,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.4329621254155959,
+              "disjoint_nuclei_corr": 0.06582334616972113,
+              "donor_scrambled_corr": -0.005626716950243473,
+              "disjoint_over_molecule": 0.1520302638632374,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 33797,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5212385812670955,
+              "disjoint_nuclei_corr": 0.1328143663959225,
+              "donor_scrambled_corr": 0.005984378996511498,
+              "disjoint_over_molecule": 0.25480532556331464,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13422,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6822075505649642,
+              "disjoint_nuclei_corr": 0.2887210027689402,
+              "donor_scrambled_corr": 0.01000983667869359,
+              "disjoint_over_molecule": 0.42321578312910557,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6633,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7781818166003386,
+              "disjoint_nuclei_corr": 0.4367639247006983,
+              "donor_scrambled_corr": 0.00835292828094222,
+              "disjoint_over_molecule": 0.5612620539102279,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2550,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8824369640927978,
+              "disjoint_nuclei_corr": 0.6488798429159478,
+              "donor_scrambled_corr": 0.028258285418222034,
+              "disjoint_over_molecule": 0.7353271330638763,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1204,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9333483767922075,
+              "disjoint_nuclei_corr": 0.7927638193960218,
+              "donor_scrambled_corr": 0.004621739986543632,
+              "disjoint_over_molecule": 0.8493761162585873,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 517,
+              "n_strata_contributing": 256,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9636836936335401,
+              "disjoint_nuclei_corr": 0.8903058870612083,
+              "donor_scrambled_corr": -0.024650352590835298,
+              "disjoint_over_molecule": 0.9238569594389804,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.028258285418222034,
+            "max_disjoint_corr": 0.8903058870612083,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "partner_umi_median": 2.0,
+          "partner_umi_zero_fraction": 0.2026963277460823,
+          "rungs": {
+            "1": {
+              "n_pairs": 67753,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.46428343877855327,
+              "disjoint_nuclei_corr": 0.14923391227141503,
+              "donor_scrambled_corr": 0.0048192396800346505,
+              "disjoint_over_molecule": 0.3214284633197832,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 33797,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5679437235381382,
+              "disjoint_nuclei_corr": 0.26272833027486814,
+              "donor_scrambled_corr": 0.0016878892675383712,
+              "disjoint_over_molecule": 0.4625957104308515,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13422,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7436069302633014,
+              "disjoint_nuclei_corr": 0.4993869102971291,
+              "donor_scrambled_corr": 0.02690052100318833,
+              "disjoint_over_molecule": 0.6715737709979421,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6633,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8439217267819746,
+              "disjoint_nuclei_corr": 0.6701486345321351,
+              "donor_scrambled_corr": 0.007000720800071289,
+              "disjoint_over_molecule": 0.7940886142219995,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2550,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9278028921597126,
+              "disjoint_nuclei_corr": 0.8384147242889265,
+              "donor_scrambled_corr": 0.0157935153314715,
+              "disjoint_over_molecule": 0.9036560797275476,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1204,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9634516456408041,
+              "disjoint_nuclei_corr": 0.9069841033745509,
+              "donor_scrambled_corr": 0.004088615827736381,
+              "disjoint_over_molecule": 0.9413903722913921,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 517,
+              "n_strata_contributing": 256,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9830426719104968,
+              "disjoint_nuclei_corr": 0.9555384145835919,
+              "donor_scrambled_corr": 0.001036867953330927,
+              "disjoint_over_molecule": 0.9720212986548675,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.02690052100318833,
+            "max_disjoint_corr": 0.9555384145835919,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "HLA_DRA_ANTIGEN": {
+          "partner_umi_median": 4.0,
+          "partner_umi_zero_fraction": 0.1502366104993145,
+          "rungs": {
+            "1": {
+              "n_pairs": 67753,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5436716897688538,
+              "disjoint_nuclei_corr": 0.12663135547801638,
+              "donor_scrambled_corr": -0.004576568379092143,
+              "disjoint_over_molecule": 0.23291879614304484,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 33797,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6552935927544166,
+              "disjoint_nuclei_corr": 0.23526158836888986,
+              "donor_scrambled_corr": -0.0033324356137573365,
+              "disjoint_over_molecule": 0.3590170741331489,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 13422,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7982749074304617,
+              "disjoint_nuclei_corr": 0.4650359515569044,
+              "donor_scrambled_corr": 0.0067285892635691085,
+              "disjoint_over_molecule": 0.5825511327342003,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 6633,
+              "n_strata_contributing": 316,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8773099401846377,
+              "disjoint_nuclei_corr": 0.6432682614432265,
+              "donor_scrambled_corr": 0.0025543758986848494,
+              "disjoint_over_molecule": 0.733228055421149,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 2550,
+              "n_strata_contributing": 310,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9415321594322836,
+              "disjoint_nuclei_corr": 0.810712815794331,
+              "donor_scrambled_corr": 0.01939640206334801,
+              "disjoint_over_molecule": 0.8610569566558057,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 1204,
+              "n_strata_contributing": 304,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.971928549280818,
+              "disjoint_nuclei_corr": 0.902544546651378,
+              "donor_scrambled_corr": 0.002202898760877731,
+              "disjoint_over_molecule": 0.9286120335895257,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 517,
+              "n_strata_contributing": 256,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9846465587881348,
+              "disjoint_nuclei_corr": 0.9476203526260153,
+              "donor_scrambled_corr": -0.02479854610020154,
+              "disjoint_over_molecule": 0.9623964499427186,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.02479854610020154,
+            "max_disjoint_corr": 0.9476203526260153,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        }
+      }
+    },
+    "SEA_AD::Microglia-PVMSubclass": {
+      "n_nuclei": 32286,
+      "n_donors": 27,
+      "n_donor_by_operator_strata": 27,
+      "reference_house_zero_fraction": 0.10942823514836152,
+      "reference_house_genes_available_median": 7.0,
+      "reference_house_genes_declared": 8,
+      "reference_full_median": 6115.0,
+      "reference_is_source_specific": true,
+      "programs": {
+        "APOE_LIPID": {
+          "partner_umi_median": 2.0,
+          "partner_umi_zero_fraction": 0.2402279625844019,
+          "rungs": {
+            "1": {
+              "n_pairs": 16135,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5053690962876969,
+              "disjoint_nuclei_corr": 0.057067884062861285,
+              "donor_scrambled_corr": 0.01508981312065631,
+              "disjoint_over_molecule": 0.1129231773016323,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 8061,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6294474263342341,
+              "disjoint_nuclei_corr": 0.11636286598532734,
+              "donor_scrambled_corr": 0.012846851396896891,
+              "disjoint_over_molecule": 0.18486510726241195,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 3218,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7509334500169149,
+              "disjoint_nuclei_corr": 0.24174815648666323,
+              "donor_scrambled_corr": -0.000934716513673671,
+              "disjoint_over_molecule": 0.3219302009801505,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 1603,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8325534559882081,
+              "disjoint_nuclei_corr": 0.3573913226912731,
+              "donor_scrambled_corr": 0.04771289162171123,
+              "disjoint_over_molecule": 0.42927132200425944,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 634,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8958105939737435,
+              "disjoint_nuclei_corr": 0.5727868614180323,
+              "donor_scrambled_corr": 0.0012821808100351075,
+              "disjoint_over_molecule": 0.6394062151879628,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 312,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9421371548896428,
+              "disjoint_nuclei_corr": 0.7539729699661661,
+              "donor_scrambled_corr": -0.03442184093923106,
+              "disjoint_over_molecule": 0.8002794137276995,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 149,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9686072060282819,
+              "disjoint_nuclei_corr": 0.8728501891120946,
+              "donor_scrambled_corr": 0.06736409581941692,
+              "disjoint_over_molecule": 0.9011394749902456,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.06736409581941692,
+            "max_disjoint_corr": 0.8728501891120946,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "partner_umi_median": 2.0,
+          "partner_umi_zero_fraction": 0.21780338227095336,
+          "rungs": {
+            "1": {
+              "n_pairs": 16135,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5235586276449145,
+              "disjoint_nuclei_corr": 0.07274650587084495,
+              "donor_scrambled_corr": -0.006401593294033951,
+              "disjoint_over_molecule": 0.13894624599746402,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 8061,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6179529636254523,
+              "disjoint_nuclei_corr": 0.13620520502737923,
+              "donor_scrambled_corr": 0.003301523696368517,
+              "disjoint_over_molecule": 0.22041354770479687,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 3218,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7402590710076354,
+              "disjoint_nuclei_corr": 0.29991033069357004,
+              "donor_scrambled_corr": -0.002282368085369617,
+              "disjoint_over_molecule": 0.4051423919538523,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 1603,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8217999624998156,
+              "disjoint_nuclei_corr": 0.4406984502529426,
+              "donor_scrambled_corr": 0.024752139127996495,
+              "disjoint_over_molecule": 0.5362600028751419,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 634,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9170719958807142,
+              "disjoint_nuclei_corr": 0.6646754858176214,
+              "donor_scrambled_corr": -0.03942076371117768,
+              "disjoint_over_molecule": 0.7247800486801446,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 312,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9468450283740099,
+              "disjoint_nuclei_corr": 0.7788390388661445,
+              "donor_scrambled_corr": -0.05291893491537202,
+              "disjoint_over_molecule": 0.8225623154019436,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 149,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9755917164929314,
+              "disjoint_nuclei_corr": 0.8735776992034104,
+              "donor_scrambled_corr": 0.13868866336767952,
+              "disjoint_over_molecule": 0.8954336987851412,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.13868866336767952,
+            "max_disjoint_corr": 0.8735776992034104,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        },
+        "HLA_DRA_ANTIGEN": {
+          "partner_umi_median": 3.0,
+          "partner_umi_zero_fraction": 0.18286563835718267,
+          "rungs": {
+            "1": {
+              "n_pairs": 16135,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.5842946451417115,
+              "disjoint_nuclei_corr": 0.06829896990958047,
+              "donor_scrambled_corr": 0.008710960981068251,
+              "disjoint_over_molecule": 0.11689131584119794,
+              "reportable": true
+            },
+            "2": {
+              "n_pairs": 8061,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.6875919669636053,
+              "disjoint_nuclei_corr": 0.13508071123073773,
+              "donor_scrambled_corr": -0.002950829552129026,
+              "disjoint_over_molecule": 0.19645475473957602,
+              "reportable": true
+            },
+            "5": {
+              "n_pairs": 3218,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.7966826671484176,
+              "disjoint_nuclei_corr": 0.25106327602240874,
+              "donor_scrambled_corr": 0.03189259254711922,
+              "disjoint_over_molecule": 0.31513585819689616,
+              "reportable": true
+            },
+            "10": {
+              "n_pairs": 1603,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.8591196818216015,
+              "disjoint_nuclei_corr": 0.3905610179121429,
+              "donor_scrambled_corr": 0.005505352364450475,
+              "disjoint_over_molecule": 0.45460606499438105,
+              "reportable": true
+            },
+            "25": {
+              "n_pairs": 634,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9211675282160465,
+              "disjoint_nuclei_corr": 0.5519910211373493,
+              "donor_scrambled_corr": 0.0027291889871379244,
+              "disjoint_over_molecule": 0.5992297863629077,
+              "reportable": true
+            },
+            "50": {
+              "n_pairs": 312,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9553269818927169,
+              "disjoint_nuclei_corr": 0.7371404228839255,
+              "donor_scrambled_corr": 0.05377573905731385,
+              "disjoint_over_molecule": 0.7716105970580722,
+              "reportable": true
+            },
+            "100": {
+              "n_pairs": 149,
+              "n_strata_contributing": 27,
+              "n_pairs_is_not_an_independent_sample_size": true,
+              "molecule_split_corr": 0.9770938863598211,
+              "disjoint_nuclei_corr": 0.8865955950718667,
+              "donor_scrambled_corr": -0.07729407525034908,
+              "disjoint_over_molecule": 0.9073801478534399,
+              "reportable": true
+            }
+          },
+          "donor_scramble_control": {
+            "max_abs_scrambled_corr": 0.07729407525034908,
+            "max_disjoint_corr": 0.8865955950718667,
+            "control_collapsed": true,
+            "if_not_collapsed": "the design reproduces itself without a shared donor, so it is not measuring a donor-anchored quantity and the rungs for this program are VOID"
+          }
+        }
+      }
+    }
+  },
+  "producer_sha256": "e34488a665a5b586756388382c4b17d126f1853a69e73695ba45837eca38a96b"
+}

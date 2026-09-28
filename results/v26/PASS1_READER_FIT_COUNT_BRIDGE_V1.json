@@ -1,0 +1,19 @@
+{
+  "balanced_reciprocal_cell_swaps": "NOT_DETECTABLE_BY_HISTOGRAM",
+  "cell_count": 4553407,
+  "donor_count": 104,
+  "frozen_calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "frozen_pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+  "pass1_to_raw_level4_binding": "NOT_REVALIDATED_BY_THIS_GATE",
+  "per_cell_donor_lineage_validation": "NOT_PERFORMED_BY_THIS_GATE",
+  "per_donor_exact_count_match": true,
+  "proposal_q_validation": "NOT_PERFORMED",
+  "protected_outcomes_opened": false,
+  "raw_level4_blocks_opened": 0,
+  "reader_fit_donor_counts_sha256": "b2da4aa99c66df435497cf52059c35c11f548b0c7771cb101eee9a6ff14de875",
+  "reader_fit_membership_sha256": "9332e77c71769f5084e6c94afc9c1aa825f369fe08c8b25bb70682d981d8e977",
+  "schema": "V26_FROZEN_PASS1_READER_FIT_DONOR_COUNT_BRIDGE_V1",
+  "source_library_validation": "NOT_PERFORMED",
+  "status": "BYTE_BOUND_PASS1_AND_METADATA_COUNTS_ONLY",
+  "training_authorized": false
+}

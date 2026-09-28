@@ -1,0 +1,115 @@
+{
+  "schema": "V5_FULL104_LEVEL4_PERMUTATION_RECOVERY_V1",
+  "status": "COLUMN_FINGERPRINT_MATCHING__NO_TRAINING",
+  "matrix_id": "sea_ad_mtg_rna_final_2026",
+  "block": "op31/block-00000",
+  "source_asset": "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+  "source_ensembl_column": "gene_ids",
+  "nuclei_used": 512,
+  "min_nnz_to_attempt_match": 4,
+  "l4_nonzero_columns": 26626,
+  "source_nonzero_columns": 27769,
+  "matched_uniquely": 21265,
+  "ambiguous_fingerprint_or_too_sparse": 5361,
+  "no_source_column_with_that_fingerprint": 0,
+  "match_rate_over_attempted": 1.0,
+  "l4_column_equals_source_column": 162,
+  "recovered_map_is_monotone_in_source_order": 0,
+  "candidate_orderings_tested": {
+    "namespace_molecular_address_index": {
+      "agree": 0,
+      "of": 20900,
+      "fraction": 0.0
+    },
+    "namespace_sorted_by_symbol": {
+      "agree": 1,
+      "of": 20900,
+      "fraction": 4.784688995215311e-05
+    },
+    "namespace_sorted_by_address_id_string": {
+      "agree": 0,
+      "of": 20900,
+      "fraction": 0.0
+    }
+  },
+  "example_recovered_pairs": [
+    {
+      "l4_column": 3,
+      "source_ensg": "ENSG00000238009",
+      "namespace_address_for_that_ensg": null,
+      "symbol": null
+    },
+    {
+      "l4_column": 6,
+      "source_ensg": "ENSG00000241860",
+      "namespace_address_for_that_ensg": 26517,
+      "symbol": "AL627309.1"
+    },
+    {
+      "l4_column": 14,
+      "source_ensg": "ENSG00000237491",
+      "namespace_address_for_that_ensg": 25642,
+      "symbol": "LINC01409"
+    },
+    {
+      "l4_column": 16,
+      "source_ensg": "ENSG00000228794",
+      "namespace_address_for_that_ensg": 22852,
+      "symbol": "LINC01128"
+    },
+    {
+      "l4_column": 17,
+      "source_ensg": "ENSG00000225880",
+      "namespace_address_for_that_ensg": 21899,
+      "symbol": "LINC00115"
+    },
+    {
+      "l4_column": 18,
+      "source_ensg": "ENSG00000230368",
+      "namespace_address_for_that_ensg": 23345,
+      "symbol": "FAM41C"
+    },
+    {
+      "l4_column": 23,
+      "source_ensg": "ENSG00000187634",
+      "namespace_address_for_that_ensg": 16102,
+      "symbol": "SAMD11"
+    },
+    {
+      "l4_column": 24,
+      "source_ensg": "ENSG00000188976",
+      "namespace_address_for_that_ensg": 16409,
+      "symbol": "NOC2L"
+    },
+    {
+      "l4_column": 25,
+      "source_ensg": "ENSG00000187961",
+      "namespace_address_for_that_ensg": 16179,
+      "symbol": "KLHL17"
+    },
+    {
+      "l4_column": 29,
+      "source_ensg": "ENSG00000188290",
+      "namespace_address_for_that_ensg": 16253,
+      "symbol": "HES4"
+    },
+    {
+      "l4_column": 30,
+      "source_ensg": "ENSG00000187608",
+      "namespace_address_for_that_ensg": 16093,
+      "symbol": "ISG15"
+    },
+    {
+      "l4_column": 31,
+      "source_ensg": "ENSG00000224969",
+      "namespace_address_for_that_ensg": 21611,
+      "symbol": "AL645608.1"
+    }
+  ],
+  "verdict": "PERMUTATION_RECOVERED_BUT_NO_TESTED_ORDERING_EXPLAINS_IT",
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "producer_sha256": "2e46fb5b0ce330e5c9271967f5eb145cff0c51becac865c54d26ff80a272e65b",
+  "recovered_map_entries": 21265,
+  "recovered_map_location": "D:/jepa_v5_outputs_20260925/l4_perm_seaad/FULL104_LEVEL4_PERMUTATION_RECOVERY_V1.json"
+}

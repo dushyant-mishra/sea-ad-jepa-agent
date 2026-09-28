@@ -1,0 +1,164 @@
+{
+  "scope": "original pinned v4 only; receipt mutations; no Monte Carlo",
+  "producer_sha256": "648dee5850670c3587e3f8bbe346003ec1d4c08d20fdd54f724a4b959d71eab6",
+  "receipt_sha256": "09f66e2049fad95235d10343daaaaec38380c1266519b691d964e03c10d12ea2",
+  "baseline_pass": true,
+  "results": [
+    {
+      "case": "empty_regimes",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "regimes [] != required ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap', 'D_untuned_verysparse']",
+        "expected 4 regime records, got 0",
+        "ZERO regime records: a verdict over empty containers is vacuous",
+        "expected 16 calibration cells, got 0"
+      ]
+    },
+    {
+      "case": "partial_regimes",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "regimes ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap'] != required ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap', 'D_untuned_verysparse']",
+        "expected 4 regime records, got 3",
+        "expected 16 calibration cells, got 12"
+      ]
+    },
+    {
+      "case": "substituted_calibration_key",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_arm",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse: arms ['NEG_NOCAP', 'POS_AMP', 'POS_COMP'] != ['NEG_CAP', 'NEG_NOCAP', 'POS_AMP', 'POS_COMP']",
+        "expected 16 calibration cells, got 15"
+      ]
+    },
+    {
+      "case": "wrong_pos_comp_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_COMP: channel pattern (True, False, False) != required (True, True, False)"
+      ]
+    },
+    {
+      "case": "wrong_pos_amp_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_AMP: channel pattern (True, False, False) != required (True, False, True)"
+      ]
+    },
+    {
+      "case": "inconsistent_calibration_counts",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "tampered_stored_rate",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_cp_endpoint",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_calibration_arm_type",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_model_family",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "poisson_disguised_as_nb",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_fallback_counter",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "zero_requested_shams",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "string_boolean",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "infinite_p",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "p_qualification_contradiction",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_nonlinear_amplitude_diagnostic",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "contradictory_overall_gate",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "missing_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: channels ['composition_only', 'full'] != ['amplitude_only', 'composition_only', 'full']"
+      ]
+    },
+    {
+      "case": "positive_fallback_counter",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: 1 Poisson fallbacks"
+      ]
+    },
+    {
+      "case": "forged_producer_sha_argument",
+      "status": "FALSE_GREEN",
+      "failure_reasons": []
+    },
+    {
+      "case": "duplicate_raw_json_key",
+      "status": "FALSE_GREEN",
+      "exit_code": 0,
+      "note": "mutated-file SHA supplied to isolate duplicate parser check; not proof of source authenticity",
+      "stdout_tail": "1d4c08d20fdd54f724a4b959d71eab6\n  receipt sha256 723ddafb4cc9308e17f96fb190c20c2c0505999d232c9dfe188a64dfb4540002\n  script matches receipt producer_sha256: True\n  regimes 4  calibration cells 16  channel observations 48\n  negative 26/960 = 0.0271  pooled Clopper-Pearson upper 0.0394\n  positive 240/240 = 1.0000\n\n  VALIDATED_PASS: True\n\nwrote C:\\Users\\dushy\\AppData\\Local\\Temp\\jepa_duplicate_key_probe_7b11rvrq\\out\\GATE_V4_RECEIPT_VALIDATION_V1.json\n",
+      "stderr_tail": ""
+    },
+    {
+      "case": "cross_process_seed_stability",
+      "status": "PASS",
+      "note": "PASS means no cross-process seed divergence was detected",
+      "values": [
+        "[34397089, 718330363]",
+        "[34397089, 718330363]"
+      ]
+    }
+  ],
+  "tally": {
+    "REJECTED_INTENDED_REASON": 7,
+    "REJECTED": 0,
+    "REJECTED_WRONG_REASON": 0,
+    "FALSE_GREEN": 16,
+    "PASS": 1,
+    "FAIL_SEED_DRIFT": 0,
+    "ERROR": 0
+  }
+}
