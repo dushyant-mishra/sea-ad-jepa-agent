@@ -99,12 +99,29 @@ jobs:
           print(f"v1 still admits {len(fg)} corrupted receipts, as recorded.")
           PY
 
-      - name: Mutations the probe does not contain, and the denominator contract
+      - name: Decision-bearing suites, executed with ZERO skips tolerated
+        # The census/exact-Hall files were listed as PATH TRIGGERS here while no
+        # step ever executed them. A trigger is not a test run. Independent
+        # review caught it; my own check grepped for the filename and matched
+        # the trigger lines, which is why it read green.
+        #
+        # A skipped guard is also not a passing guard, so any skip, xfail or
+        # deselection fails the job rather than being reported and ignored.
         run: |
-          python -m pytest -q \
+          set -o pipefail
+          python -m pytest -q -rsx \
             tests/test_v5_gate_v4_validator_v2_mutations.py \
             tests/test_v5_gate_executor_v5_failclosed.py \
-            tests/test_v5_pairwise_denominator_contract.py
+            tests/test_v5_pairwise_denominator_contract.py \
+            tests/test_v5_candidate_pool_census.py \
+            tests/test_v5_exact_sham_panel_feasibility.py \
+            | tee decision_suites.log
+          if grep -qiE "[0-9]+ (skipped|xfailed|deselected)" decision_suites.log; then
+            echo "FAIL: a decision-bearing test did not actually run."
+            grep -iE "skipped|xfailed|deselected" decision_suites.log
+            exit 1
+          fi
+          echo "zero skips confirmed"
 
       - name: The executor must refuse every degenerate roster
         run: |
