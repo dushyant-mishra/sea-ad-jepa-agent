@@ -21,6 +21,10 @@ on:
       - tests/test_v5_gate_executor_v5_failclosed.py
       - scripts/v5/teacher_fidelity_gate_executor_v5.py
       - tests/test_v5_pairwise_denominator_contract.py
+      - tests/test_v5_candidate_pool_census.py
+      - tests/test_v5_exact_sham_panel_feasibility.py
+      - scripts/v5/full104_candidate_pool_census_v1.py
+      - scripts/v5/candidate_pool_analysis_v1.py
       - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
       - results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json
       - .github/workflows/v29-gate-v4-validator-redteam.yml
@@ -31,6 +35,10 @@ on:
       - tests/test_v5_gate_executor_v5_failclosed.py
       - scripts/v5/teacher_fidelity_gate_executor_v5.py
       - tests/test_v5_pairwise_denominator_contract.py
+      - tests/test_v5_candidate_pool_census.py
+      - tests/test_v5_exact_sham_panel_feasibility.py
+      - scripts/v5/full104_candidate_pool_census_v1.py
+      - scripts/v5/candidate_pool_analysis_v1.py
       - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
 
 permissions:
