@@ -1,0 +1,47 @@
+{
+  "schema": "jepa_v57_relational_power_closeout_manifest_v1",
+  "date": "2026-09-28",
+  "branch": "audit/v57-relational-geometry-power-closeout-20260928",
+  "base_sha": "9d4194114cd52835457c2808e4032128941be26d",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "real_regulatory_biology_opened": false
+  },
+  "chat_bundle": {
+    "name": "JEPA_V55_V57_SYNTHETIC_CLOSEOUT_ARTIFACTS.zip",
+    "sha256": "0b5c860ecb3f641341f92c1c49facf513b4c7245b727d6fd4524be0825f55f70",
+    "custody_disposition": "exact_chat_export_snapshot__sha_pinned__not_mirrored_into_git"
+  },
+  "v55": {
+    "robust_margin": -0.17632013201320135,
+    "verdict": "RED_NOT_QUALIFIED"
+  },
+  "v56": {
+    "robust_margin": -0.23294829482948304,
+    "verdict": "RED_NOT_QUALIFIED"
+  },
+  "v57_power": {
+    "confirmation_n_to_margin": {
+      "9": -0.18492849284928486,
+      "12": -0.1442244224422442,
+      "15": -0.09015401540154011,
+      "18": -0.0567106710671067,
+      "24": 0.010176017601760123,
+      "30": -0.030198019801980336,
+      "36": -0.009295929592959329,
+      "48": 0.014081408140813934
+    },
+    "interpretation": "diagnostic_only__no_precise_donor_threshold_due_nonmonotonic_seed_variation"
+  },
+  "v57_n18_precision": {
+    "seeds": 192,
+    "robust_margin": -0.02871287128712885,
+    "pos_mixed_q10": 0.5794829482948294,
+    "neg_donor_global_q90": 0.6081958195819582,
+    "verdict": "MORABITO_SIZED_SYNTHETIC_GATE_FAILS"
+  },
+  "current_best_candidate": "V54_supervised_transported_empirical_rank",
+  "next_required_work": "R3_REGULATORY_INDEPENDENCE_EXPOSURE_LEDGER_THEN_AUDIT_EXTERNAL_INDEPENDENT_CIS_MAPS"
+}
