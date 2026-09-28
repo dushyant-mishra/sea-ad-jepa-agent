@@ -1,0 +1,28 @@
+test_every_mutation_is_caught (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallMutationControl.test_every_mutation_is_caught) ... ok
+test_shard_reader_refuses_a_corrupted_header (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallMutationControl.test_shard_reader_refuses_a_corrupted_header)
+A lineage shard carrying Braak must make read_shard raise. ... ok
+test_whitelist_blocks_unknown_non_forbidden_column (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallMutationControl.test_whitelist_blocks_unknown_non_forbidden_column)
+An unlisted column that no rule matches must still be refused. ... ok
+test_allowed_identity_frame_passes (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallNegativeControl.test_allowed_identity_frame_passes) ... ok
+test_no_allowed_name_is_flagged (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallNegativeControl.test_no_allowed_name_is_flagged) ... ok
+test_real_paired_export_header_passes (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallNegativeControl.test_real_paired_export_header_passes) ... ok
+test_each_real_forbidden_name_fires (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallPositiveControl.test_each_real_forbidden_name_fires) ... ok
+test_join_frame_containing_braak_is_refused (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallPositiveControl.test_join_frame_containing_braak_is_refused) ... ok
+test_select_identity_columns_refuses_rather_than_silently_dropping (test_laneAF_seaad_assay_origin_audit_v1.TestFirewallPositiveControl.test_select_identity_columns_refuses_rather_than_silently_dropping) ... ok
+test_degenerate_inputs_do_not_fabricate_a_token (test_laneAF_seaad_assay_origin_audit_v1.TestLibraryTokenParsing.test_degenerate_inputs_do_not_fabricate_a_token) ... ok
+test_suffix_with_extra_hyphens (test_laneAF_seaad_assay_origin_audit_v1.TestLibraryTokenParsing.test_suffix_with_extra_hyphens) ... ok
+test_three_field_identifier (test_laneAF_seaad_assay_origin_audit_v1.TestLibraryTokenParsing.test_three_field_identifier) ... ok
+test_atac_multiome_population_is_as_published (test_laneAF_seaad_assay_origin_audit_v1.TestRealDataNegativeControl.test_atac_multiome_population_is_as_published) ... ok
+test_barcode_only_matching_would_have_matched_many (test_laneAF_seaad_assay_origin_audit_v1.TestRealDataNegativeControl.test_barcode_only_matching_would_have_matched_many)
+Shows the negative control above is not vacuous. ... ok
+test_non_mtg_multiome_cells_do_not_match (test_laneAF_seaad_assay_origin_audit_v1.TestRealDataNegativeControl.test_non_mtg_multiome_cells_do_not_match) ... ok
+test_selection_rows_reproduce_cell_identity (test_laneAF_seaad_assay_origin_audit_v1.TestRealDataPositiveControl.test_selection_rows_reproduce_cell_identity) ... ok
+test_shard_order_is_NOT_the_selection_order (test_laneAF_seaad_assay_origin_audit_v1.TestRealDataPositiveControl.test_shard_order_is_NOT_the_selection_order)
+FAILS IF: the discarded assumption would have worked anyway. ... ok
+test_offsets_are_exclusive_prefix_sums (test_laneAF_seaad_assay_origin_audit_v1.TestSelectionRowArithmetic.test_offsets_are_exclusive_prefix_sums) ... ok
+test_real_lineage_total_matches_published_full104_size (test_laneAF_seaad_assay_origin_audit_v1.TestSelectionRowArithmetic.test_real_lineage_total_matches_published_full104_size) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 60.544s
+
+OK

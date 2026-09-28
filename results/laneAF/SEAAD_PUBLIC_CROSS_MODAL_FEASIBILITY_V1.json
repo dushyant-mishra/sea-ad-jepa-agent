@@ -1,0 +1,200 @@
+{
+  "access_classes": {
+    "anonymous_bucket_listing_succeeded": true,
+    "controlled_access_requested": false,
+    "credentials_required": false,
+    "license": "Allen Institute Terms of Use",
+    "local_copies_of_public_objects": "PROJECT_ALREADY_LOCAL",
+    "registry": "https://registry.opendata.aws/allen-sea-ad-atlas/",
+    "sea-ad-single-cell-profiling S3 bucket": "OPEN_PUBLIC"
+  },
+  "atac_exposure_detail": {
+    "atac_object": "D:\\Jepa project\\data\\external\\v4\\sea_ad\\snatac\\SEAAD_MTG_ATACseq_final-nuclei.2024-12-06.h5ad",
+    "exposes_ar_id": true,
+    "exposes_assay_origin_field": true,
+    "exposes_barcode_identity": true,
+    "exposes_bare_barcode_column": true,
+    "exposes_cell_nucleus_metadata": true,
+    "exposes_cell_type_labels": [
+      "Class",
+      "Subclass",
+      "Supertype",
+      "Supertype (non-expanded)"
+    ],
+    "exposes_library_id": true,
+    "exposes_qc_fields": [
+      "ATAC_Confidently_mapped_read_pairs",
+      "ATAC_Fraction_of_genome_in_peaks",
+      "ATAC_Fraction_of_high_quality_fragments_in_cells",
+      "ATAC_Fraction_of_high_quality_fragments_overlapping_TSS",
+      "ATAC_Fraction_of_high_quality_fragments_overlapping_peaks",
+      "ATAC_Fraction_of_transposition_events_in_peaks_in_cells",
+      "ATAC_Mean_raw_read_pairs_per_cell",
+      "ATAC_Median_high_quality_fragments_per_cell"
+    ],
+    "exposes_region": true,
+    "exposes_sample_id": true,
+    "layers": [],
+    "matrix_present": true,
+    "microglia_label_present": true,
+    "obs_field_count": 130,
+    "obs_index_field": "index",
+    "obsm": [
+      "X_MultiVI",
+      "X_umap"
+    ],
+    "peak_coordinate_examples": [
+      "chr4:164130572-164131513",
+      "chr4:16412872-16415576",
+      "chr4:164116366-164116739"
+    ],
+    "peak_coordinates_are_genomic_intervals": true,
+    "peak_feature_count": 218882,
+    "public_key": "MTG/ATACseq/SEAAD_MTG_ATACseq_final-nuclei.2024-12-06.h5ad",
+    "qc_field_count": 43,
+    "subclass_vocabulary": [
+      "Lamp5 Lhx6",
+      "Lamp5",
+      "Pax6",
+      "Sncg",
+      "Vip",
+      "Sst Chodl",
+      "Sst",
+      "Pvalb",
+      "Chandelier",
+      "L2/3 IT",
+      "L6 IT",
+      "L4 IT",
+      "L5 IT",
+      "L5 ET",
+      "L6 CT",
+      "L6b",
+      "L6 IT Car3",
+      "L5/6 NP",
+      "Astrocyte",
+      "OPC",
+      "Oligodendrocyte",
+      "Endothelial",
+      "VLMC",
+      "Microglia-PVM"
+    ]
+  },
+  "caudate_derived_assay_origin": {
+    "caveat": "This classification is NOT declared by the Caudate 2025 processed object, which carries no obs/method and no obs/library_prep field. It is derived from a rule that is a perfect deterministic function of the library prefix across the 3,484,130 FULL104 nuclei in the ten matrices that DO declare obs/method. It must not be used as an assay-origin authority without independent confirmation.",
+    "declared_obs_method_present": false,
+    "derived_assay_counts": {
+      "MULTIOME_GEX": 101904,
+      "SINGLEOME_RNA": 532179
+    },
+    "derived_donor_counts": {
+      "MULTIOME_GEX": 11,
+      "SINGLEOME_RNA": 27
+    },
+    "full104_rows": 634083,
+    "library_prefix_counts": {
+      "L8HX": 532179,
+      "L8XR": 101904
+    },
+    "matrix_id": "sea_ad_caudate_rna_all_2025",
+    "resolution_evidence": "DERIVED_LIBRARY_PREFIX_RULE",
+    "rule_applied": {
+      "L8HX": "10xV3.1_HT",
+      "L8TX": "10Xv3.1",
+      "L8XR": "10xMulti"
+    }
+  },
+  "controlled_metadata_note": "Controlled-access metadata is NOT the blocker for the unresolved nuclei. The blocker is that SEA-AD has published a per-nucleus ATAC object for MTG only; for PFC only pseudobulk bigwig coverage tracks exist, and for the other eight regions plus Caudate no ATAC product of any kind is published. No controlled-access request was made and none is proposed.",
+  "controlled_metadata_would_help": false,
+  "counts_from_lane_a": {
+    "exact_paired_atac_cells": 66288,
+    "full104_seaad_cells_checked": 4118213,
+    "multiome_gex_cells": 818214,
+    "paired_subset_donor_count": 16,
+    "singleome_rna_cells": 2665916,
+    "unknown_assay_cells": 634083,
+    "unmatched_multiome_gex_cells": 751926
+  },
+  "did_not_infer": "No pairing was inferred. A FULL104 Multiome-GEX nucleus is called paired only when its full identifier string is present verbatim in the ATAC obs index with method == 10xMulti. Donor membership was never used to imply nucleus pairing, and the negative control (115,426 LEC Multiome-GEX nuclei, zero matches) shows the join does not fall back to donor or to bare barcode.",
+  "generated_utc": "2026-09-28T15:26:28Z",
+  "public_atac_inventory": {
+    "atac_matrix": "PRESENT (MTG only)",
+    "barcode_identity": "PRESENT",
+    "cell_nucleus_metadata": "PRESENT",
+    "library_ids": "PRESENT",
+    "microglia_labels": "PRESENT",
+    "multiome_vs_singleome_origin": "PRESENT",
+    "peak_coordinates": "PRESENT (218882 features)",
+    "public_pairing_key": "PRESENT",
+    "qc_fields": "PRESENT (43 ATAC_/GEX_ fields)",
+    "regions_with_no_public_atac_product": [
+      "AnG",
+      "Caudate_Nucleus",
+      "DFC/PFC",
+      "FI",
+      "HIP",
+      "ITG",
+      "LEC",
+      "MEC",
+      "STG",
+      "V1C"
+    ],
+    "regions_with_per_nucleus_atac": [
+      "MTG"
+    ],
+    "regions_with_pseudobulk_atac_only": [
+      "PFC"
+    ]
+  },
+  "public_pairing_key": {
+    "atac_side": "obs/_index in the public ATAC h5ad (or column 'index' in the public ATAC metadata CSV)",
+    "available_from_metadata_alone": true,
+    "identifier_grammar": "<16bp 10x barcode>-<library token>-<ar_id>, e.g. AAACAGCCAAACATAG-L8XR_210916_02_B11-1131607954",
+    "key": "exact string equality of the full nucleus identifier",
+    "metadata_only_route": "MTG/ATACseq/SEAAD_MTG_ATACseq_all-nuclei_metadata.2024-12-06.csv (1,119,453,295 bytes) carries columns index, method, library_prep, sample_id, ar_id, bc, Donor ID and Brain Region, so the pairing can be established without downloading either matrix.",
+    "restriction": "both sides restricted to method == 10xMulti",
+    "rna_side": "obs/exp_component_name in the public RNA h5ad (or column 'exp_component_name' in the public RNA metadata CSV)",
+    "transformations_applied": "none - no barcode translation, no suffix stripping, no partial matching"
+  },
+  "public_resources": [
+    {
+      "access_class": "OPEN_PUBLIC",
+      "also_local": true,
+      "bytes": 18260707597,
+      "key": "MTG/ATACseq/SEAAD_MTG_ATACseq_final-nuclei.2024-12-06.h5ad",
+      "kind": "processed_atac_matrix_with_obs_and_var"
+    },
+    {
+      "access_class": "OPEN_PUBLIC",
+      "also_local": false,
+      "bytes": 1119453295,
+      "key": "MTG/ATACseq/SEAAD_MTG_ATACseq_all-nuclei_metadata.2024-12-06.csv",
+      "kind": "standalone_per_nucleus_metadata_table"
+    },
+    {
+      "access_class": "OPEN_PUBLIC",
+      "also_local": false,
+      "bytes": null,
+      "key": "MTG/ATACseq/bw/*.bw",
+      "kind": "pseudobulk_coverage_tracks_by_subclass_and_adnc_group"
+    },
+    {
+      "access_class": "OPEN_PUBLIC",
+      "also_local": false,
+      "bytes": null,
+      "key": "PFC/ATACseq/bw/*.bw",
+      "kind": "pseudobulk_coverage_tracks_only_no_per_nucleus_object"
+    },
+    {
+      "access_class": "OPEN_PUBLIC",
+      "also_local": false,
+      "bytes": 8337530813,
+      "key": "Multiregion_2026/SEAAD_HIP_MEC_LEC_ITG_MTG_FI_STG_DFC_AnG_V1C_RNAseq_all-nuclei_metadata.2026-06-22.csv",
+      "kind": "standalone_per_nucleus_RNA_metadata_table_10_regions"
+    }
+  ],
+  "schema": "SEAAD_PUBLIC_CROSS_MODAL_FEASIBILITY_V1",
+  "unresolved_region_status": "NO_PUBLIC_PER_NUCLEUS_ATAC_OBJECT_EXISTS",
+  "unresolved_requires_controlled_metadata": false,
+  "verdict": "EXACT_SAME_NUCLEUS_PAIRING_PUBLICLY_AVAILABLE",
+  "verdict_scope": "The verdict is TRUE FOR THE MTG MULTIOME SUBSET ONLY. Exactly 66288 of the 818214 FULL104 SEA-AD Multiome-GEX nuclei have a publicly provable same-nucleus ATAC counterpart. The remaining 751926 are unresolved because no per-nucleus ATAC object has been published for their brain regions at all - not because their pairing key is withheld."
+}
