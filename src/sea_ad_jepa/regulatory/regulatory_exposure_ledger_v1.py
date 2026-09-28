@@ -125,7 +125,7 @@ class FrozenRegulatoryLedger:
         return {
             "key": list(key.tuple()),
             "exposure_status": status,
-            "biological_values_known_exposed": status in (INSPECTED, DEVELOPMENT),
+            "outcome_values_known_exposed": status in (INSPECTED, DEVELOPMENT),
             "used_for_development": status == DEVELOPMENT,
             "structural_only": status == STRUCTURAL_ONLY,
             "prospective_confirmation_authorized": False,
