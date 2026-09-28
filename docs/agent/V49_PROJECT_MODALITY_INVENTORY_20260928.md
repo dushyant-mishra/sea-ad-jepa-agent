@@ -16,6 +16,27 @@ Same-nucleus pairing is especially valuable, but is **not automatically biologic
 
 ---
 
+## Access audit correction — public vs controlled
+
+For the current project, “available in a publication” is **not** the same as “freely downloadable”. The following access classes are controlling:
+
+| Resource | Access class for the data needed here | Can proceed now without a DUA? |
+|---|---|---|
+| SEA-AD processed snRNA/snATAC + spatial resources on Allen/AWS | **OPEN PUBLIC** | **YES** |
+| SEA-AD raw 10x snRNA/snATAC/Multiome + harmonized IAC individual-level resources | **CONTROLLED** | NO |
+| GSE174367 Morabito processed snRNA/snATAC | **OPEN GEO** | **YES** |
+| GSE214979 same-nucleus Multiome processed matrix, metadata, fragments | **OPEN GEO** | **YES** |
+| GSE272082 Multiome processed files / GEO archive | **OPEN GEO** | **YES** |
+| ROSMAP 2025 multiregion snATAC/snMultiome (syn66271521/syn66271522) | **CONTROLLED; DUA REQUIRED** | **NO** unless access is already approved |
+| ROSMAP predecessor multiome / PFC study | **CONTROLLED; DUA REQUIRED** | NO |
+| ROSMAP GAGE-seq syn66400203 | **CONTROLLED; DUA REQUIRED** | NO |
+| HVS raw WGS | **RESTRICTED NeMO/NDA** | NO |
+| Kosoy human microglia regulome | **MIXED**: some derived processed products are open-distribution; individual-level/raw data are governed by AD Knowledge Portal access requirements | Only for the explicitly open derived products |
+
+**Planning consequence:** do not put ROSMAP on the immediate execution critical path unless the user already has approved ROSMAP/AD Knowledge Portal access. The immediate public-data path is SEA-AD processed data + GSE214979 + GSE272082 + the already-local Morabito resource.
+
+The exact SEA-AD same-nucleus linkage also needs an access check: the Allen portal makes processed RNA/ATAC public, while raw 10x Multiome is controlled. Do not assume that the open processed files expose every identifier needed for exact RNA↔ATAC nucleus pairing; prove that from public metadata first. If they do not, record PAIRING_REQUIRES_CONTROLLED_METADATA rather than requesting or using protected data implicitly.
+
 ## A. FULL104 sources
 
 ### 1. SEA-AD — highest-priority internal cross-modal opportunity
