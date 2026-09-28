@@ -1,0 +1,28 @@
+{
+  "schema": "JEPA_RELATIONAL_SPECIFICITY_SEMANTIC_TWIN_V1",
+  "scope": "SYNTHETIC_LOGICAL_FALSIFICATION_ONLY__NO_REAL_EXPRESSION__NO_TRAINING",
+  "seed": 20260928,
+  "rows": 1310,
+  "features": 512,
+  "worlds": {
+    "positive_semantics": "PLANTED_SHARED_BIOLOGICAL_STATE",
+    "negative_semantics": "UNMEASURED_SHARED_TECHNICAL_CAPTURE_STATE",
+    "observable_arrays_byte_identical": true
+  },
+  "observed_hashes": {
+    "donor_sha256": "890460fd747eceada5f4432a6597971a825d917312f0eae338c1276be6d2d383",
+    "operator_sha256": "e022f614325f0479066a6807d1af7e4116d689f6bfd6ac8865f9ecd56c24e21a",
+    "log_library_sha256": "ab1ea8b9ea176cff20aba9194ec6b4336b3d15f789edf309c537a8764c34e1d7",
+    "detected_sha256": "4a399a124eaf1a4031e95d72f65b6d6e220058a36cd9561d23fc13ace9117846",
+    "x_sha256": "b6710081c4301de35022e20bfc1b8daf51b54f76eaa4c4c6e37926bca801af50",
+    "y_sha256": "97da9a823d00282a5a79c5c9eea7aa2355d48b466a940e6a23c06512bde9e8a9"
+  },
+  "logical_result": {
+    "same_observable_distribution": true,
+    "same_realized_observables_in_witness": true,
+    "implication": "No test whose inputs are restricted to these observables can be required to PASS the biological semantic world and FAIL the technical semantic world. Extra information or a prospectively restricted nuisance class is required.",
+    "verdict": "INSUFFICIENTLY_SPECIFIC_AGAINST_UNOBSERVED_TECHNICAL_STATE__SAME_ASSAY_OBSERVABLES_NONIDENTIFIABLE"
+  },
+  "training_authorized": false,
+  "protected_outcomes_opened": false
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "V5_NPH52_AVAILABILITY_AND_VERIFICATION_STATUS_V2",
+  "status": "STRUCTURAL_AVAILABILITY_REPAIRED__VALUE_LEVEL_QS_VERIFICATION_STILL_OPEN__NO_EXPRESSION_OPENED",
+  "source_update": "Lane B report reconciled with PR #178 commit 1ceaf3e9a3de15cd2386da7398e8620510ed8be1",
+  "named_absent_addresses": {
+    "23673": {
+      "gene": "HLA-DPA1",
+      "role": "panel address",
+      "nph52_status": "STRUCTURALLY_UNMEASURED"
+    },
+    "26659": {
+      "gene": "HLA-DMB",
+      "role": "reserved readout",
+      "nph52_status": "STRUCTURALLY_UNMEASURED",
+      "values_read": false
+    }
+  },
+  "hla_dpa1_non_substitution": {
+    "23673": "ENSG00000231389 current_exact, absent in NPH52",
+    "40452": "ENSG00000168384 legacy_exact, measured in NPH52",
+    "rule": "Do not substitute addresses merely because canonical_symbol matches."
+  },
+  "artifact_repair": {
+    "nph52_nuclei": 15264,
+    "addresses_flipped_unavailable": [
+      23673,
+      26659
+    ],
+    "mask_elements_changed": 30528,
+    "counts_recomputed": false,
+    "original_edited_in_place": false
+  },
+  "audit_successor": {
+    "v1_original": "67/68 FAIL",
+    "v1_repaired": "67/67 PASS because mutually absent pairs are skipped by v1",
+    "v2_original": "68/69 FAIL",
+    "v2_repaired": "69/69 PASS",
+    "fixed_denominator": 69,
+    "fixed_denominator_definition": "3 sources x 23 non-reserved addresses"
+  },
+  "axis_reconstruction": {
+    "raw_provenance_distinct_addresses": 31621,
+    "collision_filtered_reconstructed_addresses": 31131,
+    "raw_axis_overclaim_addresses": 490,
+    "cryptographic_status": "COLLISION_TABLES_MATCHED_BY_SCHEMA_NOT_PINNED_DIGEST",
+    "interpretation": "Strongly corroborated, not fully digest-closed."
+  },
+  "candidate_pool_impact": {
+    "nph52_zero_count_available_addresses_observed": 3522,
+    "their_mean": 0,
+    "minimum_partner_mean": 0.14,
+    "matching_band": [
+      0.8,
+      1.25
+    ],
+    "can_enter_tested_candidate_pools": false,
+    "count_route_infeasibility_verdict_changed": false
+  },
+  "verification_status": {
+    "feature_axis_position": "VERIFIED",
+    "raw_qs_counts_compared": false,
+    "level4_value_equals_qs_value": "NOT_VERIFIED",
+    "column_to_address_identity_by_executed_value_check": "NOT_VERIFIED",
+    "r_materializer_digest_pinned_by_contract": false,
+    "sealed_original_qs_read": false
+  },
+  "firewall_rule": "Protected values remain sealed, but structural availability metadata must still be audited directly.",
+  "training_authorized": false,
+  "protected_values_opened": false
+}

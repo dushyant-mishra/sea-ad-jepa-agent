@@ -1,0 +1,37 @@
+{
+  "schema": "V5_NPH52_ADDRESS_AVAILABILITY_FOUNDATION_AUDIT_V1",
+  "status": "PASS__CANONICAL_ADDRESS_AVAILABILITY_PROVENANCE_CONFIRMED__NO_EXPRESSION_OPENED",
+  "authority_sha256": {
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "address_support_sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+    "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "loader_source_sha256": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a"
+  },
+  "addresses": {
+    "23673": {
+      "molecular_address_id": "ENSG00000231389",
+      "identity_class": "current_exact",
+      "canonical_symbol": "HLA-DPA1",
+      "source_dataset_ids": "HVS_COMMON|SEA_AD_COMMON"
+    },
+    "40452": {
+      "molecular_address_id": "ENSG00000168384",
+      "identity_class": "legacy_exact",
+      "canonical_symbol": "HLA-DPA1",
+      "source_dataset_ids": "NPH52::Astro_data_arranged_updatedId_final_batches.qs|NPH52::Endo_data_arranged_updatedId_final_batches.qs|NPH52::ExN_data_arranged_updatedId_final_batches.qs|NPH52::InN_data_arranged_updatedId_final_batches.qs|NPH52::MG_data_arranged_updatedId_final_batches.qs|NPH52::OPC_data_arranged_updatedId_final_batches.qs|NPH52::Oligo_data_arranged_updatedId_final_batches.qs"
+    }
+  },
+  "nph52_matrix_count": 7,
+  "nph52_address_23673": {
+    "measured_in_all_7": false,
+    "status": "STRUCTURALLY_UNMEASURED"
+  },
+  "nph52_address_40452": {
+    "measured_in_all_7": true,
+    "status": "MEASURED_SCALAR"
+  },
+  "coordinate_guard": "source-feature/successor_gene_index coordinates are not canonical molecular-address indices. Production availability must come from address_measurement_support keyed by molecular_address_index/id. Address 40452 must not be silently substituted for address 23673 merely because both carry symbol HLA-DPA1.",
+  "implication_for_known_census_defect": "Any artifact marking NPH52 canonical address 23673 available is wrong under the frozen production-loader authority.",
+  "training_authorized": false,
+  "protected_outcomes_opened": false
+}
