@@ -83,7 +83,20 @@ def main():
         for addr in compare:
             j = cols29.index(addr)
             cells = sel & avail[:, j]
-            if cells.sum() == 0 or n_c[addr] == 0:
+            # DO NOT SKIP when one side is zero. "available in one path and
+            # absent in the other" is exactly the disagreement that matters,
+            # and skipping it is how the column-vs-address mask bug survived
+            # an audit that reported 66 of 66 comparisons agreeing.
+            if cells.sum() == 0 and n_c[addr] == 0:
+                continue
+            if (cells.sum() == 0) != (n_c[addr] == 0):
+                failures.append(
+                    f"{s}|{addr} AVAILABILITY DISAGREEMENT: artifact "
+                    f"n={int(cells.sum())} vs census n={int(n_c[addr])}")
+                rows.append({"source": s, "address": addr,
+                             "gene": PARTNER_NAMES.get(addr, "housekeeping/query"),
+                             "n_artifact": int(cells.sum()),
+                             "n_census": int(n_c[addr]), "agree": False})
                 continue
             v = counts[cells, j]
             want = (v.mean(), (v > 0).mean(), v.var() / v.mean() if v.mean() > 0 else np.nan)

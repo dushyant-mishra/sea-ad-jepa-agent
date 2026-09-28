@@ -368,7 +368,16 @@ def main():
             addr = lut[np.clip(allc, 0, N_ADDR - 1)]
             ok = addr >= 0
             if mid not in avail_by_matrix:
-                avail_by_matrix[mid] = (lut >= 0)
+                # Availability is a property of the ADDRESS, not of the block
+                # column. `lut` is indexed by column and HOLDS the address, so
+                # `lut >= 0` is a column mask and marks the wrong entries. The
+                # SEA-AD decoders are complete permutations - identity fraction
+                # 0.0000 - so using the column mask mislabelled 1,469 addresses
+                # in each direction and reported CD74 as unmeasured.
+                am = np.zeros(N_ADDR, dtype=bool)
+                mapped = lut[lut >= 0]
+                am[mapped[(mapped >= 0) & (mapped < N_ADDR)]] = True
+                avail_by_matrix[mid] = am
 
         addr = addr[ok]; cnt = alld[ok]; r = rep[ok]
         y = np.log1p(cnt * 1e4 / np.maximum(Dg[r], 1.0))

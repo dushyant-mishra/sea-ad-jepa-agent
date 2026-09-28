@@ -258,3 +258,43 @@ def test_disjoint_panels_never_reuse_a_gene(A):
     pools = [np.arange(0, 10), np.arange(10, 20),
              np.arange(20, 30), np.arange(30, 40)]
     assert A.max_disjoint_panels(pools) == 10
+
+
+# --------------------------------------------------------------------------
+# Regression: availability is a property of the ADDRESS, not the block column
+# --------------------------------------------------------------------------
+
+def test_availability_mask_is_indexed_by_address_not_by_column(C, tmp_path):
+    """The bug this catches, found after a full 12-minute census run.
+
+    `lut` is indexed by block column and HOLDS the true address. The census
+    built its availability mask as `lut >= 0`, which is a mask over COLUMNS.
+    Because the SEA-AD decoders are complete permutations - identity fraction
+    0.0000 - that mislabelled 1,469 addresses available and 1,469 absent in
+    every SEA-AD matrix, and reported CD74 as structurally unmeasured when it
+    is measured, while reporting PGK1 as measured when it is genuinely absent.
+
+    The counts coincide (a permutation maps n columns onto n addresses), so a
+    check on pool SIZES cannot catch this. Only identity can.
+    """
+    d = tmp_path / "dec"
+    d.mkdir()
+    cols = np.arange(0, 200, dtype=np.int64)
+    addrs = (cols * 7 + 3) % C.N_ADDR
+    np.savez(d / "decoder_P.npz", block_column=cols, true_address=addrs)
+    lut, status, _ = C.build_col2addr(str(d), "P")
+
+    column_mask = lut >= 0                       # the WRONG construction
+    address_mask = np.zeros(C.N_ADDR, dtype=bool)
+    mapped = lut[lut >= 0]
+    address_mask[mapped] = True                  # the correct one
+
+    assert column_mask.sum() == address_mask.sum(), \
+        "a permutation preserves the COUNT, which is why size checks miss this"
+    assert not np.array_equal(column_mask, address_mask), \
+        "fixture must use a non-identity decoder or the bug is unreachable"
+
+    for a in addrs.tolist():
+        assert address_mask[a], "every mapped true address must be available"
+    wrong = int((column_mask & ~address_mask).sum())
+    assert wrong > 0, "the wrong construction must mislabel something"
