@@ -17,6 +17,7 @@ not running.
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -30,19 +31,23 @@ REQUIRED_COLLECTION = {
 }
 
 
+def _bare_env() -> dict:
+    """The environment a plain CI invocation has: no inherited PYTHONPATH."""
+    return {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+
+
 def _collected(path: str) -> int:
     """Count tests pytest actually collects, in a FRESH process with no
     inherited PYTHONPATH — i.e. exactly what a bare CI invocation does."""
-    import os
-    env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
     r = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", path],
-                       cwd=ROOT, capture_output=True, text=True, env=env, timeout=300)
+                       cwd=ROOT, capture_output=True, text=True,
+                       env=_bare_env(), timeout=300)
     # pytest exit 5 == "no tests collected". That is a legitimate zero, NOT a
     # collection error, and conflating the two is how a guard stops guarding:
     # it would report -1 for an empty file and never verify it can see zero.
     if r.returncode == 5:
         return 0
-    if "error" in r.stdout.lower() or r.returncode not in (0,):
+    if "error" in r.stdout.lower() or r.returncode != 0:
         return -1
     n = 0
     for line in r.stdout.splitlines():
@@ -51,19 +56,40 @@ def _collected(path: str) -> int:
     return n
 
 
-def test_the_import_that_used_to_fail_now_resolves_bare():
-    """Positive control for the conftest fix: this import is the one that
-    raised ModuleNotFoundError under a bare invocation."""
-    import os
-    env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
-    r = subprocess.run(
-        [sys.executable, "-c",
-         "import sys; sys.path.insert(0,'src');"
-         " import sea_ad_jepa.regulatory.regulatory_exposure_ledger_v1 as m;"
-         " print('OK', bool(m.seed_historical_regulatory_exposure()))"],
-        cwd=ROOT, capture_output=True, text=True, env=env, timeout=300)
-    assert r.returncode == 0, r.stderr[-400:]
-    assert "OK True" in r.stdout
+def test_conftest_is_what_makes_the_import_resolve():
+    """REPAIRED. The previous version of this test ran a subprocess that did
+    `sys.path.insert(0, 'src')` ITSELF, which bypasses conftest.py entirely —
+    so it could not have detected conftest.py being deleted, despite its name
+    and docstring claiming exactly that. It proved only that the module exists
+    on disk.
+
+    This version writes a probe that performs the bare import with NO manual
+    path manipulation and NO inherited PYTHONPATH, then runs pytest on it from
+    the repository root. conftest.py is then the only thing that can place src/
+    on sys.path, so a pass here is attributable to the fix.
+    """
+    probe = ROOT / "tests" / "_conftest_attribution_probe.py"
+    body = (
+        "from sea_ad_jepa.regulatory.regulatory_exposure_ledger_v1 import (\n"
+        "    seed_historical_regulatory_exposure)\n"
+        "\n"
+        "\n"
+        "def test_import_resolved_without_manual_path():\n"
+        "    assert seed_historical_regulatory_exposure() is not None\n"
+    )
+    probe.write_text(body)
+    try:
+        r = subprocess.run(
+            [sys.executable, "-m", "pytest", "-q",
+             "tests/_conftest_attribution_probe.py"],
+            cwd=ROOT, capture_output=True, text=True,
+            env=_bare_env(), timeout=300)
+        assert r.returncode == 0, (
+            "the bare import did not resolve, so conftest.py is not doing its "
+            "job:\n" + r.stdout[-600:])
+        assert "1 passed" in r.stdout
+    finally:
+        probe.unlink(missing_ok=True)
 
 
 def test_decision_bearing_suites_collect_their_required_count_bare():
@@ -85,6 +111,6 @@ def test_the_guard_can_actually_fail():
     empty = ROOT / "tests" / "_collection_guard_probe_empty.py"
     empty.write_text("# deliberately contains no tests\n")
     try:
-        assert _collected(str(empty.relative_to(ROOT)).replace("\\", "/")) == 0
+        assert _collected("tests/_collection_guard_probe_empty.py") == 0
     finally:
         empty.unlink(missing_ok=True)

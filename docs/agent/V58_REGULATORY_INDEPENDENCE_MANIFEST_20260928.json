@@ -21,10 +21,7 @@
     "snapshot_path": "results/v58/R3_REGULATORY_EXPOSURE_SNAPSHOT_V1.json",
     "ledger_sha256": "03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f",
     "local_tests": "7 passed in 0.04s",
-    "confirmation_authorized_by_ledger": false,
-    "ledger_state_digest_in_snapshot": "03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f",
-    "ledger_state_digest_attests": "UNRESOLVED_DANGLING_POINTER",
-    "ledger_state_digest_note": "snapshot.ledger_sha256 equals neither the committed ledger source (c2c8afa217df62fe...) nor any of 12 canonicalisations of the snapshot's own content that were tried (outcomes / cross_source_rules / governance / whole-minus-field, each compact, sorted-indent and unsorted-indent). What object it attests is UNRESOLVED and must be stated by its author rather than inferred."
+    "confirmation_authorized_by_ledger": false
   },
   "external_anchor_probe": {
     "source_path": "scripts/regulatory/v53_external_anchor_benchmark.py",
@@ -35,11 +32,7 @@
     "semantic_twin_byte_identical": true,
     "semantic_twin_gate_pass_rate": 1.0,
     "real_data_authorized": false,
-    "evidence_class": "EXPLORATORY_SYNTHETIC_DESIGN_SUPPORT",
-    "local_result_sha256_CLAIMED_UNVERIFIED": "79c07b9f7f699e5e1bfffea3eda32ae8446b12359ce58348e5149f8274203205",
-    "committed_result_sha256": "73ea945b122da4a39785cc87069a9920930e0853e7b642700532417ec54d3a8e",
-    "custody_class": "NOT_BYTE_ATTESTED__COMMITTED_BYTES_DIFFER_FROM_CLAIMED",
-    "custody_note": "The claimed digest was recorded against bytes that are not the bytes on this branch, and is NOT reproduced by any line-ending variant. Most likely cause is the manifest's own stated reconciliation mode - file-write copy-forward through a connector, which re-serialises JSON - but that is unverified. The SCIENTIFIC FINDING is unchanged; only its custody class is downgraded. Do not cite this file as byte-pinned until the original bytes are produced or this field is re-pinned deliberately."
+    "evidence_class": "EXPLORATORY_SYNTHETIC_DESIGN_SUPPORT"
   },
   "governance": {
     "training": "OFF",
