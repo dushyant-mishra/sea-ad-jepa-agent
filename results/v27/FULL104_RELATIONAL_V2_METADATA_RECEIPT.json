@@ -1,0 +1,19 @@
+{
+  "all_fit_cells": 4553407,
+  "csv_output": "FULL104_FIT104_RELATIONAL_V2_RATIONAL_MASSES.csv",
+  "eligible_cells": 4553348,
+  "eligible_donors": 104,
+  "eligible_groups": 1361,
+  "fit_donors": 104,
+  "max_V2_vs_D1_group_mass_ratio": "27922/2845",
+  "maximum_eligible_fraction_donor": 1.0,
+  "minimum_eligible_fraction_donor": 0.9984362783424551,
+  "noneligible_cells": 59,
+  "output_sha256": "af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94",
+  "schema": "FULL104_FIT104_RELATIONAL_V2_METADATA_DERIVATION_V1",
+  "scope_note": "V2 relational eligible-anchor weights are NOT D1 equal-operator weights, and not base JEPA all-cell weights. Triplet capacities are combinatorial opportunities, not triplet sampling weights.",
+  "source_data": "PR146 physically authenticated CSVs, exact content SHAs in script",
+  "status": "PHYSICAL_METADATA_DERIVED__NOT_TRAINING_AUTHORITY",
+  "total_groups": 1400,
+  "training_authorized": false
+}

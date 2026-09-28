@@ -219,13 +219,16 @@ None of these is mine to settle. Listed so approval can be sought explicitly.
 
 ## 4. Code and test plan (isolated, no real data)
 
-1. **Inline gradient gate.** Move the strict predicate *before* the optimizer
-   step, EMA, presentation cursor and checkpoint advance, and fail closed.
-   Adversarial fixtures: a planted **dead-gradient** gate, absent and malformed
-   report fields, a skipped optimizer step, empty Adam moments and a partial
-   checkpoint. Each must stop at the exact planted update. Produce a **new
-   versioned receipt**; the historical 40-update artifact stays immutable and is
-   **not** relabelled "inline gated".
+1. **Existing inline gradient gate — already proven; DO NOT rewrite it.**
+   Section 2b supersedes the original request to move the gate inline: the
+   harness already refuses invalid gradients before optimizer.step and EMA.
+   Six published negative controls exercise actual refusal, its unchanged
+   optimizer step and unchanged teacher, and a healthy positive control.
+   Remaining separate red-team: absent/malformed report fields, skipped
+   optimizer step, empty Adam moments, interrupted checkpoint and presentation
+   cursor atomicity. Each newly introduced failure must stop at the planted
+   update with independently checked state; preserve the original 40-update
+   historical receipt and never resurrect the withdrawn vacuous 40/40 count.
 2. **Test hygiene.** Mark the superseded V1–V3 freeze audits explicitly (xfail or
    retirement marker) while keeping them visible, and add a **V4 mutation
    negative control** proving a V4 source mutation actually fails. Re-run the
@@ -248,7 +251,7 @@ PHYSICAL_EXECUTED        : 33-root enumeration; 627-file committed-artifact scan
 SYNTHETIC_TESTED         : the historical 40-update mechanical receipt (unchanged)
 INDEPENDENT_REPRODUCED   : none claimed here
 BLOCKED_BY_AUTHORIZATION : real-data reader_fit diagnostic (B1, B2, and 25 open roots)
-NOT_EXECUTED             : inline-gradient runner, V4 mutation control, environment
+NOT_EXECUTED             : extended report/checkpoint adversaries, V4 mutation control, environment
                            contamination inventory, teacher-target decision package
 NOT_ESTIMABLE            : which artifact satisfies full104_substrate and
                            observation_gradient_firewall roots

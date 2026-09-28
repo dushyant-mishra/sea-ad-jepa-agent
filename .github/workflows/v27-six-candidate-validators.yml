@@ -1,0 +1,58 @@
+name: V27 independent candidate authority audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/v27_six_candidate_authority_audit_v1.py'
+      - 'tests/test_v27_six_candidate_authority_audit_v1.py'
+      - 'tests/test_v27_v4_freeze_mutation_control.py'
+      - 'tests/test_v27_teacher_proposal_firewall.py'
+      - 'scripts/v5/v27_teacher_proposal_firewall.py'
+      - 'scripts/v5/v27_blas_environment_quarantine_audit.py'
+      - 'docs/agent/JEPA_V27_PROSPECTIVE_TEACHER_TARGET_DECISION_DRAFT_20260926.json'
+      - '.github/workflows/v27-six-candidate-validators.yml'
+      - 'docs/agent/JEPA_V27_INDEPENDENT_REPLAY_AND_ROOT_AUDIT_20260926.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-role-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Static-check supplemental historical invocation diagnostic
+        run: python -m py_compile scripts/v5/v27_blas_environment_quarantine_audit.py
+      - name: Exercise all six defining class validators without granting closure
+        run: |
+          PYTHONPATH=src:. python scripts/v5/v27_six_candidate_authority_audit_v1.py . /tmp/v27_candidate_authority_audit.json
+      - name: Fail closed on fabricated geometry or a falsified training proposal
+        run: PYTHONPATH=src:. python scripts/v5/v27_teacher_proposal_firewall.py docs/agent/JEPA_V27_PROSPECTIVE_TEACHER_TARGET_DECISION_DRAFT_20260926.json
+      - name: Run exact adversarial corpus, zero-skip census
+        run: PYTHONPATH=src:. python -m pytest -q tests/test_v27_six_candidate_authority_audit_v1.py tests/test_v27_v4_freeze_mutation_control.py tests/test_v27_teacher_proposal_firewall.py --junitxml=/tmp/v27_authority_tests.xml
+      - name: Fail on vacuous, skipped, failed or missing negative controls
+        run: |
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          suite=ET.parse('/tmp/v27_authority_tests.xml').getroot()
+          if suite.tag!='testsuite': suite=suite.find('testsuite')
+          if suite is None: raise SystemExit('STOP_NO_V27_CENSUS')
+          counts={k:int(suite.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          names={x.get('name') for x in suite.iter('testcase')}
+          required={'test_all_six_original_candidate_validators_pass_and_none_close',
+                    'test_registry_observation_role_splicing_rejected',
+                    'test_registry_model_field_leakage_rejected',
+                    'test_rng_false_self_digest_rejected',
+                    'test_mask_parameter_wrong_role_digest_rejected',
+                    'test_missing_candidate_cannot_be_reported_valid',
+                    'test_current_v4_baseline_still_passes',
+                    'test_mutating_one_actual_frozen_source_byte_fails_before_acceptance',
+                    'test_replacing_null_with_old_synthetic_mask_must_fail',
+                    'test_unresolved_teacher_proposal_is_an_explicit_non_authorizing_draft'}
+          if counts['tests']!=18 or any(counts[k] for k in ('skipped','errors','failures')) or not required<=names:
+            raise SystemExit(f'STOP_V27_TEST_GAP {counts} missing={sorted(required-names)}')
+          print('PASS_V27_SIX_CANDIDATE_VALIDATION 18 tests 0 skipped, not training authority')
+          PY

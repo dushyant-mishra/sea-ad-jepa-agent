@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from scripts.agent.audit_teacher_student_integration_freeze_v2 import (
     audit,
     expected_source_paths,
@@ -11,6 +13,7 @@ from scripts.agent.audit_teacher_student_integration_freeze_v2 import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.mark.xfail(strict=True, reason="HISTORICAL_V2_SOURCE_FREEZE_SUPERSEDED_BY_CURRENT_V4__EXPECTED_NONMATCH")
 def test_unified_integration_v2_freeze_audit_passes_current_bytes() -> None:
     result = audit(ROOT)
     assert result["terminal"] == "PASS_TEACHER_STUDENT_INTEGRATION_FREEZE_AUDIT_V2", result

@@ -1,0 +1,42 @@
+name: V27 historical V1-V3 and active V4 freeze census
+on:
+  pull_request:
+    paths:
+      - 'tests/test_teacher_student_integration_freeze_v1.py'
+      - 'tests/test_teacher_student_integration_freeze_v2.py'
+      - 'tests/test_teacher_student_integration_freeze_v3.py'
+      - 'tests/test_teacher_student_integration_freeze_v4.py'
+      - '.github/workflows/v27-freeze-history-census.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  freeze-status-without-false-green:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest==8.3.4
+      - name: Execute all V1-V4 freeze tests with exactly three strict expected historical failures
+        run: PYTHONPATH=src:. python -m pytest -q tests/test_teacher_student_integration_freeze_v1.py tests/test_teacher_student_integration_freeze_v2.py tests/test_teacher_student_integration_freeze_v3.py tests/test_teacher_student_integration_freeze_v4.py --junitxml=/tmp/v27_freeze_history.xml
+      - name: Verify real V4 pass, exactly three historical xfails, zero ordinary skips
+        run: |
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          t=ET.parse('/tmp/v27_freeze_history.xml').getroot()
+          if t.tag!='testsuite':t=t.find('testsuite')
+          if t is None:raise SystemExit('STOP_NO_FREEZE_HISTORY_CENSUS')
+          counts={k:int(t.get(k,0)) for k in ('tests','skipped','failures','errors')}
+          cases=list(t.iter('testcase'))
+          xfails={c.get('name') for c in cases if any(y.tag=='skipped' and y.get('type')=='pytest.xfail' for y in c)}
+          skips=[c.get('name') for c in cases if any(y.tag=='skipped' and y.get('type')!='pytest.xfail' for y in c)]
+          expect={'test_unified_integration_freeze_audit_passes_current_bytes',
+                  'test_unified_integration_v2_freeze_audit_passes_current_bytes',
+                  'test_unified_integration_v3_freeze_audit_passes_current_bytes'}
+          if counts!={'tests':14,'skipped':3,'failures':0,'errors':0} or xfails!=expect or skips:
+            raise SystemExit(f'STOP_FREEZE_HISTORY_MISCLASSIFIED {counts} xfails={xfails} ordinary_skips={skips}')
+          print('PASS_V27_FREEZE_HISTORY_CENSUS 11 passed, exactly 3 superseded xfails, 0 ordinary skipped')
+          PY
