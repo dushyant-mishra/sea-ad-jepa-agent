@@ -4,7 +4,7 @@
   "blocks_total": 8915,
   "blocks_read": 5211,
   "blocks_skipped_no_fitting_nuclei": 3704,
-  "nonzero_entries_folded": 304110693,
+  "nonzero_entries_folded": 303849232,
   "fitting_nuclei": 114041,
   "evaluation_nuclei_excluded": 73868,
   "fitting_donors": [
@@ -163,6 +163,9 @@
     14980,
     26659
   ],
+  "protected_entries_dropped_before_accumulation": 261461,
+  "protected_statistics": "NOT_COMPUTED",
+  "protected_sentinel": -1,
   "matrix_decoder_status": {
     "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1": "DECODER_VERIFIED",
     "sea_ad_ang_rna_final_2026": "DECODER_VERIFIED",
@@ -193,20 +196,25 @@
     "sea_ad_v1c_rna_final_2026": 34242,
     "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs": -1
   },
-  "nph52_observed_column_union": {
-    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs": 28099
+  "nph52_availability_source": "AUTHENTICATED_PROVENANCE_FEATURE_AXIS",
+  "nph52_axis": {
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs": {
+      "provenance_rows": 32176,
+      "authenticated_addresses": 31621,
+      "observed_nonzero_union": 28099,
+      "measured_but_never_nonzero": 3522
+    }
   },
-  "nph52_availability_is_a_lower_bound": true,
-  "donor_id_mismatches": [],
-  "n_donor_id_mismatches": 0,
+  "donor_id_mismatches": "FAIL_CLOSED_NONE_TOLERATED",
+  "fitting_nuclei_folded_exactly_once": 114041,
   "per_source_available_addresses": {
-    "HVS": 18736,
-    "SEA_AD": 34242,
-    "NPH52": 28099
+    "HVS": 18731,
+    "SEA_AD": 34236,
+    "NPH52": 31616
   },
   "training_authorized": false,
   "protected_outcomes_opened": false,
-  "elapsed_sec": 850.0,
-  "producer_sha256": "2ce0fcbedbbeeb9f33b544a7e5c7beb0d936094231b61ccc339b19b2389366cc",
+  "elapsed_sec": 791.8,
+  "producer_sha256": "fa61c9d6bb0062060d8b05d1d58bf84c31ad1a67e6d4a34bbe9a8ea70f5344b3",
   "artifact_sha256": "9c7c5ce0bc68f67520814c306ca376675ceb234aa6db813361c5799fbb7855c4"
 }

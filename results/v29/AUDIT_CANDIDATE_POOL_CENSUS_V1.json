@@ -1,7 +1,7 @@
 {
   "schema": "V5_AUDIT_CANDIDATE_POOL_CENSUS_V1",
-  "census_sha256": "7c2713f7acd95f3c774269ec2defaa7d9beeb5afc72a099092724ce42bc59df4",
-  "receipt_sha256": "917b6dff40c42fefb2701617d39b4c9e08f27f0669776bf4b417fec68fdf5427",
+  "census_sha256": "64f40f1aaa20728d9c6c300746d8bb69778eac712321984a208fca5f34522f98",
+  "receipt_sha256": "825bce777f1110db416214be48c2cd8bc2c0cef0d2faabb37807019354536f95",
   "artifact_sha256": "9c7c5ce0bc68f67520814c306ca376675ceb234aa6db813361c5799fbb7855c4",
   "checks": {
     "cross_path_agreement": {
@@ -37,9 +37,9 @@
     "availability_is_source_specific": {
       "pass": true,
       "available_addresses_per_source": {
-        "HVS": 18736,
-        "NPH52": 28099,
-        "SEA_AD": 34242
+        "HVS": 18731,
+        "NPH52": 31616,
+        "SEA_AD": 34236
       },
       "why": "if every source reported the same count, the per-matrix availability masks would not be doing anything"
     },

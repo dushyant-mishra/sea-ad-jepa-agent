@@ -41,6 +41,7 @@
   "populations": {
     "HVS": {
       "eligible_universe": 18692,
+      "construction": "single source",
       "programs": {
         "APOE_LIPID": {
           "slots": {
@@ -82,10 +83,17 @@
                 1547
               ],
               "ceiling_min_slot": 293,
-              "max_gene_disjoint_panels": 293,
-              "distinct_genes_across_slots": 3622,
+              "greedy_constructive_lower_bound": 293,
+              "exact_hall_max_disjoint_panels": 293,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 293,
+                "capacity": 293
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -96,10 +104,17 @@
                 1547
               ],
               "ceiling_min_slot": 219,
-              "max_gene_disjoint_panels": 219,
-              "distinct_genes_across_slots": 3361,
+              "greedy_constructive_lower_bound": 219,
+              "exact_hall_max_disjoint_panels": 219,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 219,
+                "capacity": 219
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -110,10 +125,17 @@
                 1121
               ],
               "ceiling_min_slot": 115,
-              "max_gene_disjoint_panels": 115,
-              "distinct_genes_across_slots": 1534,
+              "greedy_constructive_lower_bound": 115,
+              "exact_hall_max_disjoint_panels": 115,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 115,
+                "capacity": 115
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.73,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -124,10 +146,17 @@
                 1117
               ],
               "ceiling_min_slot": 111,
-              "max_gene_disjoint_panels": 111,
-              "distinct_genes_across_slots": 1488,
+              "greedy_constructive_lower_bound": 111,
+              "exact_hall_max_disjoint_panels": 111,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 111,
+                "capacity": 111
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.79,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -138,10 +167,17 @@
                 1105
               ],
               "ceiling_min_slot": 102,
-              "max_gene_disjoint_panels": 102,
-              "distinct_genes_across_slots": 1466,
+              "greedy_constructive_lower_bound": 102,
+              "exact_hall_max_disjoint_panels": 102,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 102,
+                "capacity": 102
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.95,
               "empty_slots": []
             }
           }
@@ -186,10 +222,17 @@
                 824
               ],
               "ceiling_min_slot": 423,
-              "max_gene_disjoint_panels": 399,
-              "distinct_genes_across_slots": 3132,
+              "greedy_constructive_lower_bound": 399,
+              "exact_hall_max_disjoint_panels": 423,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 423,
+                "capacity": 423
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -200,10 +243,17 @@
                 758
               ],
               "ceiling_min_slot": 320,
-              "max_gene_disjoint_panels": 320,
-              "distinct_genes_across_slots": 2871,
+              "greedy_constructive_lower_bound": 320,
+              "exact_hall_max_disjoint_panels": 320,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 320,
+                "capacity": 320
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -214,10 +264,17 @@
                 572
               ],
               "ceiling_min_slot": 226,
-              "max_gene_disjoint_panels": 226,
-              "distinct_genes_across_slots": 2232,
+              "greedy_constructive_lower_bound": 226,
+              "exact_hall_max_disjoint_panels": 226,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 226,
+                "capacity": 226
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -228,10 +285,17 @@
                 559
               ],
               "ceiling_min_slot": 149,
-              "max_gene_disjoint_panels": 149,
-              "distinct_genes_across_slots": 2134,
+              "greedy_constructive_lower_bound": 149,
+              "exact_hall_max_disjoint_panels": 149,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 149,
+                "capacity": 149
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.34,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -242,10 +306,17 @@
                 373
               ],
               "ceiling_min_slot": 148,
-              "max_gene_disjoint_panels": 148,
-              "distinct_genes_across_slots": 2018,
+              "greedy_constructive_lower_bound": 148,
+              "exact_hall_max_disjoint_panels": 148,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 148,
+                "capacity": 148
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.34,
               "empty_slots": []
             }
           }
@@ -290,10 +361,17 @@
                 1446
               ],
               "ceiling_min_slot": 64,
-              "max_gene_disjoint_panels": 64,
-              "distinct_genes_across_slots": 3434,
+              "greedy_constructive_lower_bound": 64,
+              "exact_hall_max_disjoint_panels": 64,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 64,
+                "capacity": 64
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.11,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -304,10 +382,17 @@
                 1446
               ],
               "ceiling_min_slot": 48,
-              "max_gene_disjoint_panels": 48,
-              "distinct_genes_across_slots": 3319,
+              "greedy_constructive_lower_bound": 48,
+              "exact_hall_max_disjoint_panels": 48,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 48,
+                "capacity": 48
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 4.15,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -318,10 +403,17 @@
                 910
               ],
               "ceiling_min_slot": 37,
-              "max_gene_disjoint_panels": 37,
-              "distinct_genes_across_slots": 2351,
+              "greedy_constructive_lower_bound": 37,
+              "exact_hall_max_disjoint_panels": 37,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 37,
+                "capacity": 37
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 5.38,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -332,10 +424,17 @@
                 908
               ],
               "ceiling_min_slot": 13,
-              "max_gene_disjoint_panels": 13,
-              "distinct_genes_across_slots": 2202,
+              "greedy_constructive_lower_bound": 13,
+              "exact_hall_max_disjoint_panels": 13,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 13,
+                "capacity": 13
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 15.31,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -346,10 +445,17 @@
                 873
               ],
               "ceiling_min_slot": 4,
-              "max_gene_disjoint_panels": 4,
-              "distinct_genes_across_slots": 1905,
+              "greedy_constructive_lower_bound": 4,
+              "exact_hall_max_disjoint_panels": 4,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 4,
+                "capacity": 4
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 49.75,
               "empty_slots": []
             }
           }
@@ -357,7 +463,8 @@
       }
     },
     "NPH52": {
-      "eligible_universe": 28053,
+      "eligible_universe": 31575,
+      "construction": "single source",
       "programs": {
         "APOE_LIPID": {
           "slots": {
@@ -399,10 +506,17 @@
                 877
               ],
               "ceiling_min_slot": 877,
-              "max_gene_disjoint_panels": 399,
-              "distinct_genes_across_slots": 4774,
+              "greedy_constructive_lower_bound": 399,
+              "exact_hall_max_disjoint_panels": 877,
+              "limiting_subset": {
+                "slots": [
+                  3
+                ],
+                "slots_n": 1,
+                "union_n": 877,
+                "capacity": 877
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -413,10 +527,17 @@
                 855
               ],
               "ceiling_min_slot": 855,
-              "max_gene_disjoint_panels": 399,
-              "distinct_genes_across_slots": 4712,
+              "greedy_constructive_lower_bound": 399,
+              "exact_hall_max_disjoint_panels": 855,
+              "limiting_subset": {
+                "slots": [
+                  3
+                ],
+                "slots_n": 1,
+                "union_n": 855,
+                "capacity": 855
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -427,10 +548,17 @@
                 836
               ],
               "ceiling_min_slot": 13,
-              "max_gene_disjoint_panels": 13,
-              "distinct_genes_across_slots": 952,
+              "greedy_constructive_lower_bound": 13,
+              "exact_hall_max_disjoint_panels": 13,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 13,
+                "capacity": 13
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 15.31,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -441,10 +569,17 @@
                 836
               ],
               "ceiling_min_slot": 13,
-              "max_gene_disjoint_panels": 13,
-              "distinct_genes_across_slots": 948,
+              "greedy_constructive_lower_bound": 13,
+              "exact_hall_max_disjoint_panels": 13,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 13,
+                "capacity": 13
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 15.31,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -455,10 +590,17 @@
                 764
               ],
               "ceiling_min_slot": 13,
-              "max_gene_disjoint_panels": 13,
-              "distinct_genes_across_slots": 874,
+              "greedy_constructive_lower_bound": 13,
+              "exact_hall_max_disjoint_panels": 13,
+              "limiting_subset": {
+                "slots": [
+                  2
+                ],
+                "slots_n": 1,
+                "union_n": 13,
+                "capacity": 13
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 15.31,
               "empty_slots": []
             }
           }
@@ -503,10 +645,17 @@
                 528
               ],
               "ceiling_min_slot": 64,
-              "max_gene_disjoint_panels": 64,
-              "distinct_genes_across_slots": 2063,
+              "greedy_constructive_lower_bound": 64,
+              "exact_hall_max_disjoint_panels": 64,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 64,
+                "capacity": 64
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.11,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -517,10 +666,17 @@
                 488
               ],
               "ceiling_min_slot": 62,
-              "max_gene_disjoint_panels": 62,
-              "distinct_genes_across_slots": 1977,
+              "greedy_constructive_lower_bound": 62,
+              "exact_hall_max_disjoint_panels": 62,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 62,
+                "capacity": 62
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.21,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -531,10 +687,17 @@
                 459
               ],
               "ceiling_min_slot": 59,
-              "max_gene_disjoint_panels": 59,
-              "distinct_genes_across_slots": 1827,
+              "greedy_constructive_lower_bound": 59,
+              "exact_hall_max_disjoint_panels": 59,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 59,
+                "capacity": 59
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.37,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -545,10 +708,17 @@
                 116
               ],
               "ceiling_min_slot": 59,
-              "max_gene_disjoint_panels": 59,
-              "distinct_genes_across_slots": 1483,
+              "greedy_constructive_lower_bound": 59,
+              "exact_hall_max_disjoint_panels": 59,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 59,
+                "capacity": 59
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.37,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -559,10 +729,17 @@
                 63
               ],
               "ceiling_min_slot": 59,
-              "max_gene_disjoint_panels": 59,
-              "distinct_genes_across_slots": 1429,
+              "greedy_constructive_lower_bound": 59,
+              "exact_hall_max_disjoint_panels": 59,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 59,
+                "capacity": 59
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.37,
               "empty_slots": []
             }
           }
@@ -607,10 +784,17 @@
                 1541
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 2724,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "HLA-DPA1"
               ]
@@ -623,10 +807,17 @@
                 1541
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 2707,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "HLA-DPA1"
               ]
@@ -639,10 +830,17 @@
                 46
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 1145,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "HLA-DPA1"
               ]
@@ -655,10 +853,17 @@
                 46
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 1133,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "HLA-DPA1"
               ]
@@ -671,10 +876,17 @@
                 46
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 1110,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "HLA-DPA1"
               ]
@@ -685,6 +897,7 @@
     },
     "SEA_AD": {
       "eligible_universe": 34195,
+      "construction": "single source",
       "programs": {
         "APOE_LIPID": {
           "slots": {
@@ -726,10 +939,17 @@
                 1529
               ],
               "ceiling_min_slot": 630,
-              "max_gene_disjoint_panels": 399,
-              "distinct_genes_across_slots": 3801,
+              "greedy_constructive_lower_bound": 399,
+              "exact_hall_max_disjoint_panels": 630,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 630,
+                "capacity": 630
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -740,10 +960,17 @@
                 1501
               ],
               "ceiling_min_slot": 318,
-              "max_gene_disjoint_panels": 318,
-              "distinct_genes_across_slots": 2868,
+              "greedy_constructive_lower_bound": 318,
+              "exact_hall_max_disjoint_panels": 318,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 318,
+                "capacity": 318
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -754,10 +981,17 @@
                 1160
               ],
               "ceiling_min_slot": 57,
-              "max_gene_disjoint_panels": 57,
-              "distinct_genes_across_slots": 1568,
+              "greedy_constructive_lower_bound": 57,
+              "exact_hall_max_disjoint_panels": 57,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 57,
+                "capacity": 57
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.49,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -768,10 +1002,17 @@
                 1160
               ],
               "ceiling_min_slot": 57,
-              "max_gene_disjoint_panels": 57,
-              "distinct_genes_across_slots": 1567,
+              "greedy_constructive_lower_bound": 57,
+              "exact_hall_max_disjoint_panels": 57,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 57,
+                "capacity": 57
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.49,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -782,10 +1023,17 @@
                 334
               ],
               "ceiling_min_slot": 36,
-              "max_gene_disjoint_panels": 36,
-              "distinct_genes_across_slots": 487,
+              "greedy_constructive_lower_bound": 36,
+              "exact_hall_max_disjoint_panels": 36,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 36,
+                "capacity": 36
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 5.53,
               "empty_slots": []
             }
           }
@@ -830,10 +1078,19 @@
                 801
               ],
               "ceiling_min_slot": 664,
-              "max_gene_disjoint_panels": 340,
-              "distinct_genes_across_slots": 2634,
+              "greedy_constructive_lower_bound": 340,
+              "exact_hall_max_disjoint_panels": 340,
+              "limiting_subset": {
+                "slots": [
+                  1,
+                  2,
+                  3
+                ],
+                "slots_n": 3,
+                "union_n": 1020,
+                "capacity": 340
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -844,10 +1101,19 @@
                 730
               ],
               "ceiling_min_slot": 504,
-              "max_gene_disjoint_panels": 278,
-              "distinct_genes_across_slots": 2440,
+              "greedy_constructive_lower_bound": 278,
+              "exact_hall_max_disjoint_panels": 278,
+              "limiting_subset": {
+                "slots": [
+                  1,
+                  2,
+                  3
+                ],
+                "slots_n": 3,
+                "union_n": 836,
+                "capacity": 278
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -858,10 +1124,19 @@
                 631
               ],
               "ceiling_min_slot": 290,
-              "max_gene_disjoint_panels": 258,
-              "distinct_genes_across_slots": 2020,
+              "greedy_constructive_lower_bound": 258,
+              "exact_hall_max_disjoint_panels": 258,
+              "limiting_subset": {
+                "slots": [
+                  1,
+                  2,
+                  3
+                ],
+                "slots_n": 3,
+                "union_n": 775,
+                "capacity": 258
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -872,10 +1147,19 @@
                 613
               ],
               "ceiling_min_slot": 290,
-              "max_gene_disjoint_panels": 258,
-              "distinct_genes_across_slots": 2020,
+              "greedy_constructive_lower_bound": 258,
+              "exact_hall_max_disjoint_panels": 258,
+              "limiting_subset": {
+                "slots": [
+                  1,
+                  2,
+                  3
+                ],
+                "slots_n": 3,
+                "union_n": 775,
+                "capacity": 258
+              },
               "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -886,10 +1170,17 @@
                 14
               ],
               "ceiling_min_slot": 14,
-              "max_gene_disjoint_panels": 14,
-              "distinct_genes_across_slots": 1646,
+              "greedy_constructive_lower_bound": 14,
+              "exact_hall_max_disjoint_panels": 14,
+              "limiting_subset": {
+                "slots": [
+                  3
+                ],
+                "slots_n": 1,
+                "union_n": 14,
+                "capacity": 14
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 14.21,
               "empty_slots": []
             }
           }
@@ -934,10 +1225,17 @@
                 1601
               ],
               "ceiling_min_slot": 174,
-              "max_gene_disjoint_panels": 174,
-              "distinct_genes_across_slots": 3834,
+              "greedy_constructive_lower_bound": 174,
+              "exact_hall_max_disjoint_panels": 174,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 174,
+                "capacity": 174
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.14,
               "empty_slots": []
             },
             "T2_mean_detect": {
@@ -948,10 +1246,17 @@
                 1599
               ],
               "ceiling_min_slot": 157,
-              "max_gene_disjoint_panels": 157,
-              "distinct_genes_across_slots": 3678,
+              "greedy_constructive_lower_bound": 157,
+              "exact_hall_max_disjoint_panels": 157,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 157,
+                "capacity": 157
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.27,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
@@ -962,10 +1267,17 @@
                 1370
               ],
               "ceiling_min_slot": 128,
-              "max_gene_disjoint_panels": 128,
-              "distinct_genes_across_slots": 3045,
+              "greedy_constructive_lower_bound": 128,
+              "exact_hall_max_disjoint_panels": 128,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 128,
+                "capacity": 128
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.55,
               "empty_slots": []
             },
             "T4_plus_depth": {
@@ -976,10 +1288,17 @@
                 1370
               ],
               "ceiling_min_slot": 117,
-              "max_gene_disjoint_panels": 117,
-              "distinct_genes_across_slots": 3034,
+              "greedy_constructive_lower_bound": 117,
+              "exact_hall_max_disjoint_panels": 117,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 117,
+                "capacity": 117
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.7,
               "empty_slots": []
             },
             "T5_all_five": {
@@ -990,10 +1309,17 @@
                 1076
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 1886,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
                 "CD74"
               ]
@@ -1003,318 +1329,463 @@
       }
     },
     "COMBINED_ALL_SOURCES": {
-      "eligible_universe": 16276,
+      "eligible_universe": 16718,
+      "construction": "per-source intersection",
       "programs": {
         "APOE_LIPID": {
           "slots": {
             "APOC1": {
-              "T1_mean": 920,
-              "T2_mean_detect": 824,
-              "T3_mean_detect_fano": 220,
-              "T4_plus_depth": 220,
-              "T5_all_five": 28
+              "T1_mean": 14,
+              "T2_mean_detect": 12,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "ABCA1": {
-              "T1_mean": 603,
-              "T2_mean_detect": 291,
-              "T3_mean_detect_fano": 57,
-              "T4_plus_depth": 57,
-              "T5_all_five": 52
+              "T1_mean": 1,
+              "T2_mean_detect": 1,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "GPNMB": {
-              "T1_mean": 1245,
-              "T2_mean_detect": 617,
-              "T3_mean_detect_fano": 62,
-              "T4_plus_depth": 62,
-              "T5_all_five": 62
+              "T1_mean": 19,
+              "T2_mean_detect": 9,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "TREM2": {
-              "T1_mean": 1317,
-              "T2_mean_detect": 1291,
-              "T3_mean_detect_fano": 1027,
-              "T4_plus_depth": 1027,
-              "T5_all_five": 340
+              "T1_mean": 6,
+              "T2_mean_detect": 6,
+              "T3_mean_detect_fano": 5,
+              "T4_plus_depth": 5,
+              "T5_all_five": 1
             }
           },
           "panels": {
             "T1_mean": {
               "per_slot_pool_sizes": [
-                920,
-                603,
-                1245,
-                1317
+                14,
+                1,
+                19,
+                6
               ],
-              "ceiling_min_slot": 603,
-              "max_gene_disjoint_panels": 399,
-              "distinct_genes_across_slots": 3055,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
+              "ceiling_min_slot": 1,
+              "greedy_constructive_lower_bound": 1,
+              "exact_hall_max_disjoint_panels": 1,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 1,
+                "capacity": 1
+              },
+              "reaches_199_without_reuse": false,
               "empty_slots": []
             },
             "T2_mean_detect": {
               "per_slot_pool_sizes": [
-                824,
-                291,
-                617,
-                1291
+                12,
+                1,
+                9,
+                6
               ],
-              "ceiling_min_slot": 291,
-              "max_gene_disjoint_panels": 291,
-              "distinct_genes_across_slots": 2445,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
+              "ceiling_min_slot": 1,
+              "greedy_constructive_lower_bound": 1,
+              "exact_hall_max_disjoint_panels": 1,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 1,
+                "capacity": 1
+              },
+              "reaches_199_without_reuse": false,
               "empty_slots": []
             },
             "T3_mean_detect_fano": {
               "per_slot_pool_sizes": [
-                220,
-                57,
-                62,
-                1027
+                0,
+                0,
+                0,
+                5
               ],
-              "ceiling_min_slot": 57,
-              "max_gene_disjoint_panels": 57,
-              "distinct_genes_across_slots": 1366,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.49,
-              "empty_slots": []
+              "empty_slots": [
+                "APOC1",
+                "ABCA1",
+                "GPNMB"
+              ]
             },
             "T4_plus_depth": {
               "per_slot_pool_sizes": [
-                220,
-                57,
-                62,
-                1027
+                0,
+                0,
+                0,
+                5
               ],
-              "ceiling_min_slot": 57,
-              "max_gene_disjoint_panels": 57,
-              "distinct_genes_across_slots": 1366,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 3.49,
-              "empty_slots": []
+              "empty_slots": [
+                "APOC1",
+                "ABCA1",
+                "GPNMB"
+              ]
             },
             "T5_all_five": {
               "per_slot_pool_sizes": [
-                28,
-                52,
-                62,
-                340
+                0,
+                0,
+                0,
+                1
               ],
-              "ceiling_min_slot": 28,
-              "max_gene_disjoint_panels": 28,
-              "distinct_genes_across_slots": 482,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 7.11,
-              "empty_slots": []
+              "empty_slots": [
+                "APOC1",
+                "ABCA1",
+                "GPNMB"
+              ]
             }
           }
         },
         "P2RY12_HOMEOSTATIC": {
           "slots": {
             "TMEM119": {
-              "T1_mean": 1380,
-              "T2_mean_detect": 1373,
-              "T3_mean_detect_fano": 1073,
-              "T4_plus_depth": 1073,
-              "T5_all_five": 1071
+              "T1_mean": 32,
+              "T2_mean_detect": 32,
+              "T3_mean_detect_fano": 30,
+              "T4_plus_depth": 30,
+              "T5_all_five": 29
             },
             "CX3CR1": {
-              "T1_mean": 490,
-              "T2_mean_detect": 311,
-              "T3_mean_detect_fano": 203,
-              "T4_plus_depth": 203,
-              "T5_all_five": 200
+              "T1_mean": 0,
+              "T2_mean_detect": 0,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "GPR34": {
-              "T1_mean": 643,
-              "T2_mean_detect": 595,
-              "T3_mean_detect_fano": 518,
-              "T4_plus_depth": 518,
-              "T5_all_five": 169
+              "T1_mean": 3,
+              "T2_mean_detect": 1,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "C1QA": {
-              "T1_mean": 711,
-              "T2_mean_detect": 660,
-              "T3_mean_detect_fano": 579,
-              "T4_plus_depth": 557,
-              "T5_all_five": 10
+              "T1_mean": 67,
+              "T2_mean_detect": 64,
+              "T3_mean_detect_fano": 48,
+              "T4_plus_depth": 16,
+              "T5_all_five": 1
             }
           },
           "panels": {
             "T1_mean": {
               "per_slot_pool_sizes": [
-                1380,
-                490,
-                643,
-                711
+                32,
+                0,
+                3,
+                67
               ],
-              "ceiling_min_slot": 490,
-              "max_gene_disjoint_panels": 370,
-              "distinct_genes_across_slots": 2491,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
-              "empty_slots": []
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
+              "reaches_199_without_reuse": false,
+              "empty_slots": [
+                "CX3CR1"
+              ]
             },
             "T2_mean_detect": {
               "per_slot_pool_sizes": [
-                1373,
-                311,
-                595,
-                660
+                32,
+                0,
+                1,
+                64
               ],
-              "ceiling_min_slot": 311,
-              "max_gene_disjoint_panels": 295,
-              "distinct_genes_across_slots": 2261,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
-              "empty_slots": []
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
+              "reaches_199_without_reuse": false,
+              "empty_slots": [
+                "CX3CR1"
+              ]
             },
             "T3_mean_detect_fano": {
               "per_slot_pool_sizes": [
-                1073,
-                203,
-                518,
-                579
+                30,
+                0,
+                0,
+                48
               ],
-              "ceiling_min_slot": 203,
-              "max_gene_disjoint_panels": 203,
-              "distinct_genes_across_slots": 1853,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
-              "empty_slots": []
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
+              "reaches_199_without_reuse": false,
+              "empty_slots": [
+                "CX3CR1",
+                "GPR34"
+              ]
             },
             "T4_plus_depth": {
               "per_slot_pool_sizes": [
-                1073,
-                203,
-                518,
-                557
+                30,
+                0,
+                0,
+                16
               ],
-              "ceiling_min_slot": 203,
-              "max_gene_disjoint_panels": 203,
-              "distinct_genes_across_slots": 1853,
-              "reaches_199_without_reuse": true,
-              "forced_reuse_if_199_demanded": null,
-              "empty_slots": []
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
+              "reaches_199_without_reuse": false,
+              "empty_slots": [
+                "CX3CR1",
+                "GPR34"
+              ]
             },
             "T5_all_five": {
               "per_slot_pool_sizes": [
-                1071,
-                200,
-                169,
-                10
+                29,
+                0,
+                0,
+                1
               ],
-              "ceiling_min_slot": 10,
-              "max_gene_disjoint_panels": 10,
-              "distinct_genes_across_slots": 1425,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  1
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 19.9,
-              "empty_slots": []
+              "empty_slots": [
+                "CX3CR1",
+                "GPR34"
+              ]
             }
           }
         },
         "HLA_DRA_ANTIGEN": {
           "slots": {
             "CD74": {
-              "T1_mean": 139,
-              "T2_mean_detect": 123,
-              "T3_mean_detect_fano": 102,
-              "T4_plus_depth": 89,
+              "T1_mean": 0,
+              "T2_mean_detect": 0,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
               "T5_all_five": 0
             },
             "HLA-DPA1": {
-              "T1_mean": 863,
-              "T2_mean_detect": 825,
-              "T3_mean_detect_fano": 731,
-              "T4_plus_depth": 731,
-              "T5_all_five": 38
+              "T1_mean": 0,
+              "T2_mean_detect": 0,
+              "T3_mean_detect_fano": 0,
+              "T4_plus_depth": 0,
+              "T5_all_five": 0
             },
             "HLA-DMA": {
-              "T1_mean": 1101,
-              "T2_mean_detect": 1038,
-              "T3_mean_detect_fano": 792,
-              "T4_plus_depth": 792,
-              "T5_all_five": 736
+              "T1_mean": 140,
+              "T2_mean_detect": 139,
+              "T3_mean_detect_fano": 113,
+              "T4_plus_depth": 113,
+              "T5_all_five": 98
             },
             "IFI30": {
-              "T1_mean": 1393,
-              "T2_mean_detect": 1392,
-              "T3_mean_detect_fano": 1113,
-              "T4_plus_depth": 1113,
-              "T5_all_five": 985
+              "T1_mean": 107,
+              "T2_mean_detect": 107,
+              "T3_mean_detect_fano": 1,
+              "T4_plus_depth": 1,
+              "T5_all_five": 0
             }
           },
           "panels": {
             "T1_mean": {
               "per_slot_pool_sizes": [
-                139,
-                863,
-                1101,
-                1393
+                0,
+                0,
+                140,
+                107
               ],
-              "ceiling_min_slot": 139,
-              "max_gene_disjoint_panels": 139,
-              "distinct_genes_across_slots": 3392,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.43,
-              "empty_slots": []
+              "empty_slots": [
+                "CD74",
+                "HLA-DPA1"
+              ]
             },
             "T2_mean_detect": {
               "per_slot_pool_sizes": [
-                123,
-                825,
-                1038,
-                1392
+                0,
+                0,
+                139,
+                107
               ],
-              "ceiling_min_slot": 123,
-              "max_gene_disjoint_panels": 123,
-              "distinct_genes_across_slots": 3282,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.62,
-              "empty_slots": []
+              "empty_slots": [
+                "CD74",
+                "HLA-DPA1"
+              ]
             },
             "T3_mean_detect_fano": {
               "per_slot_pool_sizes": [
-                102,
-                731,
-                792,
-                1113
+                0,
+                0,
+                113,
+                1
               ],
-              "ceiling_min_slot": 102,
-              "max_gene_disjoint_panels": 102,
-              "distinct_genes_across_slots": 2672,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 1.95,
-              "empty_slots": []
+              "empty_slots": [
+                "CD74",
+                "HLA-DPA1"
+              ]
             },
             "T4_plus_depth": {
               "per_slot_pool_sizes": [
-                89,
-                731,
-                792,
-                1113
+                0,
+                0,
+                113,
+                1
               ],
-              "ceiling_min_slot": 89,
-              "max_gene_disjoint_panels": 89,
-              "distinct_genes_across_slots": 2659,
+              "ceiling_min_slot": 0,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 2.24,
-              "empty_slots": []
+              "empty_slots": [
+                "CD74",
+                "HLA-DPA1"
+              ]
             },
             "T5_all_five": {
               "per_slot_pool_sizes": [
                 0,
-                38,
-                736,
-                985
+                0,
+                98,
+                0
               ],
               "ceiling_min_slot": 0,
-              "max_gene_disjoint_panels": 0,
-              "distinct_genes_across_slots": 1755,
+              "greedy_constructive_lower_bound": 0,
+              "exact_hall_max_disjoint_panels": 0,
+              "limiting_subset": {
+                "slots": [
+                  0
+                ],
+                "slots_n": 1,
+                "union_n": 0,
+                "capacity": 0
+              },
               "reaches_199_without_reuse": false,
-              "forced_reuse_if_199_demanded": 199.0,
               "empty_slots": [
-                "CD74"
+                "CD74",
+                "HLA-DPA1",
+                "IFI30"
               ]
             }
           }
@@ -1322,7 +1793,7 @@
       }
     }
   },
-  "census_sha256": "7c2713f7acd95f3c774269ec2defaa7d9beeb5afc72a099092724ce42bc59df4",
-  "producer_sha256": "794591e2efd924c4802c1364a15fdc248a7365d13b238ea425ae11ccdcbc4626",
+  "census_sha256": "64f40f1aaa20728d9c6c300746d8bb69778eac712321984a208fca5f34522f98",
+  "producer_sha256": "cd233adc48467e77f73d740e27e0866d1b4537b7f09317b3ebadc4608301b559",
   "what_this_is_not": "pool size is FEASIBILITY, never null validity. No candidate list is emitted and no tier is preferred. The 2026-09-28 counterexample shows these observables cannot establish technical exchangeability."
 }
