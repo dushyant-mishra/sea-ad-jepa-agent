@@ -5,11 +5,11 @@ Governance: `TRAINING=OFF` · `TD60=BLOCKED` · no protected biological outcome 
 
 ## Purpose
 
-This successor preserves the exact chat-recovered Claude R2/R4 artifacts and closes one narrow test-coverage defect without rewriting any recovered historical file.
+This successor SHA-pins the exact chat-recovered R2/R4 result archives, mirrors the exact recovered Claude R2 source archive required for reproducible testing, and closes one narrow test-coverage defect without rewriting any recovered historical file.
 
 ## Custody recovered
 
-Three user-uploaded recovery archives were received and SHA-256 verified:
+Three user-uploaded recovery archives were received and SHA-256 verified. The R2 source archive is mirrored into Git as base64 text because the successor regression executes it byte-for-byte; the result ZIP identities are SHA-pinned here without redundant binary mirroring:
 
 - `out_stage75f-specificity.zip` — `be6614c58304a2b19c41b542f8379fb31e6adca39082d4982496344f9004c3b5`
 - `out_seaad-spatial.zip` — `8dbe6faef5690207639b10b7818bedb743fbdf14b9dd5029d965b7d93c937420`
