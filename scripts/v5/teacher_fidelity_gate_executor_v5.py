@@ -85,8 +85,69 @@ def _load_v4():
     return mod
 
 
+# The one-shot channel signature each arm must show. Binding the verdict to
+# this closes the independent review's P1: v4 set
+#     r["arm_pass"] = (r["qualifies"] == cfg["want"])
+# where r["qualifies"] is the FULL model only, so a future POS_COMP run that
+# qualified purely through the amplitude channel would still have been green.
+# The composition and amplitude ablations were printed and stored but never
+# asserted. (full, composition_only, amplitude_only):
+REQUIRED_CHANNEL_PATTERN = {
+    "NEG_CAP":   (False, False, False),
+    "NEG_NOCAP": (False, False, False),
+    "POS_AMP":   (True,  False, True),
+    "POS_COMP":  (True,  True,  False),
+}
+
+# Budgets frozen by protocol v7 and by the v4 run that produced the standing
+# receipt. A run at smaller budgets is a smoke test, not the gate.
+FROZEN_B_SHAM = 99
+FROZEN_NEG_CALIBRATION = 120
+FROZEN_POS_CALIBRATION = 30
+
+
 class RosterRefusal(SystemExit):
     """Raised before any simulation. Exits nonzero with a named reason."""
+
+
+def check_budgets(b_sham, neg_cal, pos_cal, allow_diagnostic):
+    """Frozen budgets, or an explicit diagnostic run. Never a quiet shortfall."""
+    short = []
+    if b_sham != FROZEN_B_SHAM:
+        short.append(f"--b-sham {b_sham} != frozen {FROZEN_B_SHAM}")
+    if neg_cal != FROZEN_NEG_CALIBRATION:
+        short.append(f"--neg-calibration-datasets {neg_cal} != frozen "
+                     f"{FROZEN_NEG_CALIBRATION}")
+    if pos_cal != FROZEN_POS_CALIBRATION:
+        short.append(f"--calibration-datasets {pos_cal} != frozen "
+                     f"{FROZEN_POS_CALIBRATION}")
+    if short and not allow_diagnostic:
+        raise RosterRefusal(
+            "REFUSE_REDUCED_BUDGET: " + "; ".join(short) +
+            ". A reduced-budget run is a smoke test and cannot issue gate "
+            "authority. Re-run at the frozen budgets, or pass "
+            "--partial-diagnostic and accept DIAGNOSTIC_NOT_A_VERDICT.")
+    return short
+
+
+def arm_verdict(rec, arm, channels):
+    """An arm passes only if the FULL model lands where the design wants it AND
+    the three-channel signature is exactly the required one."""
+    want_full = REQUIRED_CHANNEL_PATTERN[arm][0]
+    ch = rec.get("channels", {})
+    if set(ch) != set(channels):
+        return False, (f"channels {sorted(ch)} != {sorted(channels)}")
+    got = tuple(bool(ch[c]["qualifies"]) for c in
+                ("full", "composition_only", "amplitude_only"))
+    if not isinstance(ch["full"]["qualifies"], bool):
+        return False, "full.qualifies is not a boolean"
+    if got[0] != want_full:
+        return False, (f"full qualification {got[0]} != required {want_full}")
+    want = REQUIRED_CHANNEL_PATTERN[arm]
+    if got != want:
+        return False, (f"channel signature {got} != required {want}; the arm "
+                       "reached its verdict through the wrong channel")
+    return True, ""
 
 
 def parse_roster(raw, frozen, allow_partial):
@@ -188,6 +249,10 @@ def main():
 
     # ---- REFUSALS HAPPEN HERE, before out-dir, before any simulation.
     roster, is_partial = parse_roster(a.regimes, frozen, a.partial_diagnostic)
+    budget_shortfalls = check_budgets(
+        a.b_sham, a.neg_calibration_datasets, a.calibration_datasets,
+        a.partial_diagnostic)
+    is_diagnostic = bool(is_partial or budget_shortfalls)
 
     if a.dry_run_roster_only:
         print(json.dumps({"roster_accepted": roster, "partial": is_partial,
@@ -217,12 +282,19 @@ def main():
                 print(f"  {arm:10s} {r['status']}", flush=True)
                 continue
             r["required"] = cfg["want"]
-            r["arm_pass"] = (r["qualifies"] == cfg["want"])
+            # BOUND TO THE CHANNEL SIGNATURE, not to the full model alone.
+            ok, why = arm_verdict(r, arm, channels)
+            r["arm_pass"] = ok
+            r["required_channel_pattern"] = list(REQUIRED_CHANNEL_PATTERN[arm])
+            if not ok:
+                r["arm_fail_reason"] = why
+            if r["qualifies"] != cfg["want"]:
+                r.setdefault("arm_fail_reason", "")
             results[reg][arm] = r
             f = r["channels"]["full"]
             print(f"  {arm:10s} want={str(cfg['want']):5s} full p="
                   f"{f['sham_null_p']:.3f} -> "
-                  f"{'PASS' if r['arm_pass'] else 'FAIL'}", flush=True)
+                  f"{'PASS' if ok else 'FAIL ' + why}", flush=True)
 
         for arm in v4.ARMS:
             hits = used = 0
@@ -276,10 +348,18 @@ def main():
     no_fb = bool(arm_records) and all(
         v.get("poisson_fallbacks", 0) == 0 for v in arm_records)
 
+    # frozen calibration budgets must be met cell by cell, not just "complete"
+    for key, c in calib.items():
+        want_n = (FROZEN_POS_CALIBRATION if c["required_qualification"]
+                  else FROZEN_NEG_CALIBRATION)
+        if c["datasets_requested"] != want_n:
+            problems.append(f"calibration {key}: requested "
+                            f"{c['datasets_requested']} != frozen {want_n}")
+
     gate = bool(arms_ok and cal_complete and fp_ok and power_ok and no_fb
                 and not incomplete and not problems)
 
-    verdict = "DIAGNOSTIC_NOT_A_VERDICT" if is_partial else gate
+    verdict = "DIAGNOSTIC_NOT_A_VERDICT" if is_diagnostic else gate
 
     receipt = {
         "schema": "V5_TEACHER_FIDELITY_GATE_EXECUTOR_V5",
@@ -294,6 +374,13 @@ def main():
         "regimes_argument_raw": a.regimes,
         "roster_parsed": roster,
         "roster_is_partial": is_partial,
+        "budget_shortfalls": budget_shortfalls,
+        "is_diagnostic_run": is_diagnostic,
+        "required_channel_pattern": {k: list(v) for k, v
+                                     in REQUIRED_CHANNEL_PATTERN.items()},
+        "frozen_budgets": {"b_sham": FROZEN_B_SHAM,
+                           "negative_calibration": FROZEN_NEG_CALIBRATION,
+                           "positive_calibration": FROZEN_POS_CALIBRATION},
         "arms_attempted": attempted_arms,
         "arms_completed": sum(1 for v in arm_records
                               if v.get("status") == "OK"),
