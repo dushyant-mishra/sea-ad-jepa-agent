@@ -1,0 +1,15 @@
+{
+  "schema": "JEPA_TD57B_NPH52_PANEL0_EXACT_LOCAL_REPLAY_V1",
+  "scope": "historical NPH52 A_NATURAL_MIXTURE only; NPH52 gene axis independently verified sound",
+  "source_rows": 1310,
+  "donors": 17,
+  "operators": 7,
+  "cases": [
+    {"split":0,"half":0,"observed":0.6697719456409229,"null_p95":0.5756048387096775,"null_max":0.5854464285714286,"margin":0.09416710693124541,"pass":true},
+    {"split":0,"half":1,"observed":0.676177811550152,"null_p95":0.5618201997780243,"null_max":0.567797124309895,"margin":0.11435761177212767,"pass":true},
+    {"split":1,"half":0,"observed":0.6973684210526315,"null_p95":0.5759493670886076,"null_max":0.6109324758842444,"margin":0.12141905396402397,"pass":true},
+    {"split":1,"half":1,"observed":0.65625,"null_p95":0.5625,"null_max":0.5766129032258065,"margin":0.09375,"pass":true}
+  ],
+  "comparison_to_committed_TD57B_CASE_TABLE": "exact numeric agreement to displayed precision for NPH52 panel 0",
+  "interpretation": "implementation replay only; does not establish biological specificity of the matched wrong-cell null"
+}
