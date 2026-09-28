@@ -1,0 +1,182 @@
+{
+  "schema": "JEPA_V49_PROJECT_MODALITY_INVENTORY_V1",
+  "date": "2026-09-28",
+  "base_sha": "1ceaf3e9a3de15cd2386da7398e8620510ed8be1",
+  "status": "RECONNAISSANCE_ONLY__NO_PROTECTED_BIOLOGICAL_OUTCOME_OPENED__TRAINING_OFF",
+  "datasets": [
+    {
+      "dataset": "SEA_AD_FULL104",
+      "current_project_role": "FULL104 RNA source",
+      "current_reader_fit_donors": 46,
+      "current_reader_fit_cells": 4118213,
+      "modalities_available": [
+        "snRNA-seq",
+        "snATAC-seq",
+        "same-nucleus Multiome RNA+ATAC",
+        "MERFISH",
+        "Xenium",
+        "neuropathology imaging/quantification",
+        "postmortem MRI",
+        "WGS",
+        "SNP array"
+      ],
+      "pairing": "MULTIOME_SUBSET_SAME_NUCLEUS",
+      "local_status": "RNA matrices used; exact FULL104-row -> Multiome-origin linkage NOT_YET_VERIFIED",
+      "identification_value": "HIGHEST_INTERNAL",
+      "next_action": "Build metadata-only exact cell/library assay-origin map and paired-ATAC availability map.",
+      "source_ids": [
+        "syn26223298",
+        "NG00174"
+      ],
+      "caution": "Firewall pathology/cognitive metadata; same donors as FULL104 so not independent donor validation."
+    },
+    {
+      "dataset": "HVS_FULL104",
+      "current_project_role": "FULL104 RNA source",
+      "current_reader_fit_donors": 41,
+      "modalities_available": [
+        "snRNA-seq",
+        "WGS"
+      ],
+      "pairing": "DONOR_LEVEL_RNA_GENOTYPE",
+      "local_status": "snRNA used; WGS not integrated",
+      "identification_value": "SUPPORTING_GENETIC",
+      "next_action": "Defer until after RNA/ATAC identification gate."
+    },
+    {
+      "dataset": "NPH52_FULL104",
+      "current_project_role": "FULL104 RNA source",
+      "current_reader_fit_donors": 17,
+      "modalities_available": [
+        "snRNA-seq",
+        "histopathology",
+        "CSF biomarkers/clinical context",
+        "acute-slice physiology in study"
+      ],
+      "pairing": "DONOR/TISSUE_LEVEL_NOT_MULTIOME",
+      "local_status": "snRNA used; no paired ATAC/Multiome verified",
+      "identification_value": "SUPPORTING_BIOLOGY",
+      "next_action": "Do not treat as cross-modal capture-identification cohort."
+    },
+    {
+      "dataset": "GSE174367",
+      "current_project_role": "external RNA/ATAC resource",
+      "modalities_available": [
+        "snRNA-seq",
+        "snATAC-seq",
+        "bulk RNA-seq"
+      ],
+      "pairing": "SAME_DONOR_SEPARATE_NUCLEI",
+      "independent_units": 20,
+      "local_status": "PHYSICALLY_AUTHENTICATED_PROJECT_ASSETS",
+      "identification_value": "HIGH_DONOR_LEVEL_COMPLEMENT",
+      "next_action": "Reuse; do not re-download/re-authenticate."
+    },
+    {
+      "dataset": "GSE214979",
+      "current_project_role": "external paired-Multiome candidate",
+      "modalities_available": [
+        "same-nucleus snRNA+snATAC"
+      ],
+      "pairing": "SAME_NUCLEUS",
+      "nuclei": 105332,
+      "donors": 15,
+      "local_status": "PROJECT_PAIRING_AUTHENTICATION_COMPLETE__BIOLOGICAL_EVALUATION_NOT_EXECUTED",
+      "identification_value": "HIGH_CELL_LEVEL_SMALL_DONOR_N",
+      "next_action": "Use for cross-modal technical-control development; preserve PR182 donor exclusions."
+    },
+    {
+      "dataset": "GSE272082",
+      "current_project_role": "external paired-Multiome candidate",
+      "modalities_available": [
+        "same-nucleus snRNA+snATAC"
+      ],
+      "pairing": "SAME_NUCLEUS",
+      "nuclei": ">70000",
+      "donors": 9,
+      "local_status": "NEEDS_CELLTYPE_AUTHENTICATION_AFTER_MINIMAL_ACQUISITION",
+      "identification_value": "SECONDARY_TECHNICAL_REPLICATION",
+      "next_action": "Acquire filtered matrices/metadata first, not full raw archive."
+    },
+    {
+      "dataset": "ROSMAP_MULTI_REGION_2025",
+      "current_project_role": "new top independent identification candidate",
+      "modalities_available": [
+        "snRNA-seq",
+        "snATAC-seq",
+        "same-nucleus snMultiome"
+      ],
+      "pairing": "SAME_NUCLEUS_MULTIOME_SUBSET",
+      "donors": 111,
+      "paired_multiome_nuclei": 288480,
+      "atac_qc_nuclei": 1217165,
+      "rna_qc_nuclei": 2263395,
+      "regions": 6,
+      "source_ids": [
+        "syn66271521",
+        "syn66271522"
+      ],
+      "access": "CONTROLLED_DUA",
+      "local_status": "NOT_INTEGRATED",
+      "identification_value": "TOP_EXTERNAL",
+      "next_action": "Obtain/access paired Multiome; do not count predecessor syn52293417 as independent."
+    },
+    {
+      "dataset": "KOSOY_2022_MICROGLIA_REGULOME",
+      "current_project_role": "new donor-level microglia-specific orthogonal candidate",
+      "modalities_available": [
+        "primary microglia RNA-seq",
+        "primary microglia ATAC-seq",
+        "Hi-C",
+        "genotype"
+      ],
+      "pairing": "DONOR_LEVEL",
+      "donors": 150,
+      "source_ids": [
+        "syn26207321"
+      ],
+      "access": "CONTROLLED",
+      "local_status": "NOT_INTEGRATED",
+      "identification_value": "HIGH_MICROGLIA_DONOR_LEVEL",
+      "next_action": "Use after paired-Multiome gate for microglia-specific regulatory support."
+    },
+    {
+      "dataset": "ROSMAP_GAGE_SEQ_2026",
+      "current_project_role": "new highly orthogonal mechanistic candidate",
+      "modalities_available": [
+        "same-nucleus RNA",
+        "same-nucleus 3D genome contacts",
+        "matched-donor snATAC",
+        "Xenium comparison"
+      ],
+      "pairing": "SAME_NUCLEUS_RNA_3D_GENOME",
+      "donors": 20,
+      "nuclei": 23825,
+      "local_status": "NOT_INTEGRATED",
+      "identification_value": "HIGH_ORTHOGONAL_MECHANISTIC",
+      "next_action": "Use after RNA/ATAC identification; do not count donors as independent of ROSMAP multi-region."
+    }
+  ],
+  "cross_modal_gate": {
+    "required": true,
+    "negative_controls": [
+      "independent/null",
+      "measured-QC-driven",
+      "shared nuclear-quality latent"
+    ],
+    "positive_control": "planted shared cross-modal biological latent",
+    "biological_outcome_open_before_freeze": false
+  },
+  "priority": [
+    "SEA_AD_FULL104_EXACT_MULTIOME_LINKAGE",
+    "FREEZE_CROSS_MODAL_TECHNICAL_SPECIFICITY_GATE",
+    "ROSMAP_MULTI_REGION_2025",
+    "GSE214979",
+    "GSE174367",
+    "GSE272082",
+    "KOSOY_2022_MICROGLIA_REGULOME",
+    "ROSMAP_GAGE_SEQ_2026",
+    "SEA_AD_SPATIAL_AND_GENETICS"
+  ],
+  "training_authorized": false
+}
