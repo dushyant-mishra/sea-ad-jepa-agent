@@ -28,7 +28,8 @@
         "syn26223298",
         "NG00174"
       ],
-      "caution": "Firewall pathology/cognitive metadata; same donors as FULL104 so not independent donor validation."
+      "caution": "Firewall pathology/cognitive metadata; same donors as FULL104 so not independent donor validation.",
+      "access": "PROCESSED_OPEN_PUBLIC__RAW_MULTIOME_CONTROLLED"
     },
     {
       "dataset": "HVS_FULL104",
@@ -41,7 +42,8 @@
       "pairing": "DONOR_LEVEL_RNA_GENOTYPE",
       "local_status": "snRNA used; WGS not integrated",
       "identification_value": "SUPPORTING_GENETIC",
-      "next_action": "Defer until after RNA/ATAC identification gate."
+      "next_action": "Defer until after RNA/ATAC identification gate.",
+      "access": "RNA_PROJECT_LOCAL__RAW_WGS_RESTRICTED_NEMO"
     },
     {
       "dataset": "NPH52_FULL104",
@@ -70,7 +72,8 @@
       "independent_units": 20,
       "local_status": "PHYSICALLY_AUTHENTICATED_PROJECT_ASSETS",
       "identification_value": "HIGH_DONOR_LEVEL_COMPLEMENT",
-      "next_action": "Reuse; do not re-download/re-authenticate."
+      "next_action": "Reuse; do not re-download/re-authenticate.",
+      "access": "OPEN_GEO__ALREADY_LOCAL"
     },
     {
       "dataset": "GSE214979",
@@ -83,7 +86,8 @@
       "donors": 15,
       "local_status": "PROJECT_PAIRING_AUTHENTICATION_COMPLETE__BIOLOGICAL_EVALUATION_NOT_EXECUTED",
       "identification_value": "HIGH_CELL_LEVEL_SMALL_DONOR_N",
-      "next_action": "Use for cross-modal technical-control development; preserve PR182 donor exclusions."
+      "next_action": "Use for cross-modal technical-control development; preserve PR182 donor exclusions.",
+      "access": "OPEN_GEO"
     },
     {
       "dataset": "GSE272082",
@@ -96,7 +100,8 @@
       "donors": 9,
       "local_status": "NEEDS_CELLTYPE_AUTHENTICATION_AFTER_MINIMAL_ACQUISITION",
       "identification_value": "SECONDARY_TECHNICAL_REPLICATION",
-      "next_action": "Acquire filtered matrices/metadata first, not full raw archive."
+      "next_action": "Acquire filtered matrices/metadata first, not full raw archive.",
+      "access": "OPEN_GEO"
     },
     {
       "dataset": "ROSMAP_MULTI_REGION_2025",
@@ -135,7 +140,7 @@
       "source_ids": [
         "syn26207321"
       ],
-      "access": "CONTROLLED",
+      "access": "MIXED__OPEN_DERIVED_PRODUCTS__CONTROLLED_INDIVIDUAL_LEVEL",
       "local_status": "NOT_INTEGRATED",
       "identification_value": "HIGH_MICROGLIA_DONOR_LEVEL",
       "next_action": "Use after paired-Multiome gate for microglia-specific regulatory support."
@@ -154,7 +159,8 @@
       "nuclei": 23825,
       "local_status": "NOT_INTEGRATED",
       "identification_value": "HIGH_ORTHOGONAL_MECHANISTIC",
-      "next_action": "Use after RNA/ATAC identification; do not count donors as independent of ROSMAP multi-region."
+      "next_action": "Use after RNA/ATAC identification; do not count donors as independent of ROSMAP multi-region.",
+      "access": "CONTROLLED_DUA_REQUIRED"
     }
   ],
   "cross_modal_gate": {
@@ -168,15 +174,35 @@
     "biological_outcome_open_before_freeze": false
   },
   "priority": [
-    "SEA_AD_FULL104_EXACT_MULTIOME_LINKAGE",
+    "SEA_AD_PUBLIC_MULTIOME_PAIRING_FEASIBILITY_CHECK",
     "FREEZE_CROSS_MODAL_TECHNICAL_SPECIFICITY_GATE",
-    "ROSMAP_MULTI_REGION_2025",
     "GSE214979",
     "GSE174367",
     "GSE272082",
-    "KOSOY_2022_MICROGLIA_REGULOME",
-    "ROSMAP_GAGE_SEQ_2026",
-    "SEA_AD_SPATIAL_AND_GENETICS"
+    "CONTROLLED_ROSMAP_ONLY_IF_ACCESS_ALREADY_APPROVED",
+    "KOSOY_OPEN_DERIVED_PRODUCTS",
+    "SEA_AD_SPATIAL"
   ],
-  "training_authorized": false
+  "training_authorized": false,
+  "access_audit": {
+    "planning_rule": "CONTROLLED datasets are not on the immediate execution critical path unless approved access already exists.",
+    "datasets": {
+      "SEA_AD_PROCESSED_ALLEN_AWS": "OPEN_PUBLIC",
+      "SEA_AD_RAW_10X_MULTIOME": "CONTROLLED",
+      "SEA_AD_IAC": "CONTROLLED",
+      "GSE174367": "OPEN_GEO",
+      "GSE214979": "OPEN_GEO",
+      "GSE272082": "OPEN_GEO",
+      "ROSMAP_MULTI_REGION_2025": "CONTROLLED_DUA_REQUIRED",
+      "ROSMAP_GAGE_SEQ_2026": "CONTROLLED_DUA_REQUIRED",
+      "HVS_RAW_WGS": "RESTRICTED_NEMO_NDA",
+      "KOSOY_2022_MICROGLIA_REGULOME": "MIXED_OPEN_DERIVED_AND_CONTROLLED_INDIVIDUAL_LEVEL"
+    },
+    "immediate_public_execution_priority": [
+      "SEA_AD_PUBLIC_PROCESSED_METADATA_AND_ATAC",
+      "GSE214979",
+      "GSE174367_ALREADY_LOCAL",
+      "GSE272082"
+    ]
+  }
 }
