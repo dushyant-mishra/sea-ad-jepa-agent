@@ -1,0 +1,230 @@
+{
+  "READ_THIS_FIRST__QUARANTINE": {
+    "BANNER": "!!! 66e64913-959f-4a7c-bbfe-6ff906fb281d.npz IS QUARANTINED. NEVER USE IT SCIENTIFICALLY. !!!",
+    "artifact": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+    "STATUS_VERBATIM": "PROVENANCE_MISMATCH_DO_NOT_USE",
+    "ROLE_VERBATIM": "QUARANTINED_PROVENANCE_MISMATCH",
+    "AUTHORITY_VERBATIM": "NEVER_CURRENT_AUTHORITY",
+    "PERMITTED_USES": [
+      "Custody accounting: recording its size and SHA-256.",
+      "Byte-level integrity verification (hash the raw bytes)."
+    ],
+    "FORBIDDEN_USES": [
+      "Loading it with numpy.load or any pickle/object-array deserialization.",
+      "Treating it as the historical operator-address authority.",
+      "Relabelling it as an authenticated FULL104 operator-address artifact.",
+      "Deriving, supporting, checking or refuting ANY scientific result from its contents.",
+      "Admitting it into any training, evaluation, calibration, census or qualification input set."
+    ],
+    "WHY": "Its observed bytes do not match the historical expected identity. Two different objects have carried this filename. Until provenance is separately reconciled, nothing computed from it can be attributed to a known artifact.",
+    "observed_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "observed_size_bytes": 1531109,
+    "historical_expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
+    "historical_expected_size_bytes": 4985,
+    "hash_verified": false,
+    "size_discrepancy_factor": "observed is ~307x the historical expected size (1531109 vs 4985 bytes)",
+    "quarantine_lifted": false,
+    "conditions_to_lift": "Only a separate, documented provenance reconciliation that explains what the 1531109-byte object is and who produced it. Nobody may lift this quarantine by inspecting the file's contents and inferring its role.",
+    "DO_NOT_INFER_ROLE_FROM_FILENAME": "Per JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md: 'semantic role must be recovered from project provenance before use; do not infer it from the filename.'"
+  },
+
+  "schema": "JEPA_CUSTODY_MANIFEST_SUCCESSOR_V1",
+  "record_type": "SUCCESSOR_CUSTODY_MANIFEST",
+  "date": "2026-09-28",
+  "authored_by_lane": "laneG-custody-20260928",
+  "worktree": "D:/jepa_wt_laneG-custody_20260928",
+  "branch": "lane/laneG-custody-20260928",
+  "base_commit": "c7e31ab5aacb59091ca3d26f0fcf8d71f3a2eddd",
+  "purpose": "Carry forward, in one place, (a) the discovery-parts checksum CSV and (b) the standing quarantine on 66e64913-959f-4a7c-bbfe-6ff906fb281d.npz, so neither can be lost in a handoff. This record ADDS to the historical custody records; it edits none of them.",
+  "supersedes_nothing": "No prior custody record is retracted or replaced. All cited historical files remain byte-identical.",
+
+  "A__DISCOVERY_PARTS_CHECKSUM_CSV": {
+    "preservation_reason": "It is the only artifact that binds the two 304 MB split parts of the discovery expression archive to the assembled 608 MB stream. Lose it and the split transport can no longer be proven to reconstruct the original.",
+    "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+    "size_bytes": 437,
+    "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+    "digest_verification": {
+      "recomputed_by_this_lane": true,
+      "recomputed_on": "2026-09-28",
+      "method": "sha256sum on the local file; hashlib.sha256 on the bytes read from the archive member",
+      "agrees_with_historical_record": true,
+      "historical_record_sources": [
+        "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json (parts_sha256_csv, hash_verified: true)",
+        "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_INVENTORY_20260921.csv",
+        "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_ROLES_20260921.csv",
+        "docs/agent/PROJECT_SESSION_ARTIFACT_INVENTORY_20260907.csv"
+      ]
+    },
+    "historical_role_verbatim": "HISTORICAL_SUPPORTING_ONLY / COMPACT_REFERENCE (roles CSV); 'split-archive transport manifest', AUXILIARY_ONLY (session inventory)",
+    "chat_environment_path_of_record": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+    "local_copies_located_2026_09_28": [
+      {
+        "path": "C:/Users/dushy/Desktop/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+        "kind": "loose file",
+        "mtime": "2026-08-24 19:11",
+        "sha256_recomputed": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+        "matches": true
+      },
+      {
+        "path": "C:/Users/dushy/Downloads/JEPA_V46_CHAT_EXCLUSIVE_SMALL_PORTABLE_20260927.zip",
+        "member": "originals/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+        "kind": "archive member",
+        "sha256_recomputed": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+        "matches": true
+      }
+    ],
+    "additional_archive_copies_located_not_individually_hashed": [
+      "C:/Users/dushy/Downloads/CLAUDE_PRE_F1_COMPLETE_HANDOFF_V2_20260905.zip",
+      "C:/Users/dushy/Downloads/JEPA_COMPREHENSIVE_HANDOFF_20260905.zip",
+      "C:/Users/dushy/Downloads/JEPA_CURRENT_ENVIRONMENT_MISSED_FILES_20260905.zip",
+      "C:/Users/dushy/Downloads/JEPA_HANDOFF_VOLUME_00_SMALL_MEDIUM.zip",
+      "C:/Users/dushy/Downloads/JEPA_NEW_CHAT_CONTROL_HANDOFF_20260908.zip",
+      "C:/Users/dushy/Downloads/JEPA_NEW_CHAT_HANDOFF_20260904.zip",
+      "C:/Users/dushy/Downloads/JEPA_TOURNAMENT_HANDOFF_20260826.zip",
+      "C:/Users/dushy/Downloads/JEPA_V5_NEW_CHAT_HANDOFF_CORE_20260908.zip"
+    ],
+    "contents_verbatim": [
+      "\"file\",\"bytes\",\"sha256\"",
+      "\"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip\",\"607959761\",\"63239898B9C93F29C20B62B84DC9B94C2C87E3E3F2B7958B7435847E3B9541F7\"",
+      "\"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001\",\"303979881\",\"B8163F53A27F7CB1B526F8311D1B46B599502596C5D0BE74FA588747A4E72B2E\"",
+      "\"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002\",\"303979880\",\"5BC2EC30FB374B15F1C5A4764E1856B0664C13513462EF2F7E224C4B6F856875\""
+    ],
+    "contents_note": "The file begins with a UTF-8 BOM and stores digests uppercase. The three digests are, lowercased, identical to the discovery_expression_assembled_stream / part001 / part002 digests recorded in docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json and in the V47 custody manifest. part001 + part002 = 607959761 bytes = the assembled stream size.",
+    "bound_parts": {
+      "assembled_stream": {
+        "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+        "bytes": 607959761,
+        "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+        "construction": "part001 || part002"
+      },
+      "part001": {
+        "bytes": 303979881,
+        "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+      },
+      "part002": {
+        "bytes": 303979880,
+        "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+      }
+    }
+  },
+
+  "B__QUARANTINED_NPZ_FULL_RECORD": {
+    "artifact": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+    "STATUS": "PROVENANCE_MISMATCH_DO_NOT_USE",
+    "NEVER_USE_SCIENTIFICALLY": true,
+    "observed_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "observed_size_bytes": 1531109,
+    "historical_expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
+    "historical_expected_size_bytes": 4985,
+    "hash_verified": false,
+
+    "prior_references_verbatim": [
+      {
+        "source": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
+        "key": "operator_address_state_npz",
+        "status_field_verbatim": "PROVENANCE_MISMATCH_DO_NOT_USE",
+        "note_verbatim": "Do not use this runtime NPZ as the historical operator-address authority unless its provenance is separately reconciled.",
+        "policy_verbatim": "use only assets whose expected identity is hash-verified; exclude operator_address_state_npz while mismatch remains"
+      },
+      {
+        "source": "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_ROLES_20260921.csv",
+        "row_verbatim": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz,1531109,001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70,QUARANTINED_PROVENANCE_MISMATCH,NEVER_CURRENT_AUTHORITY"
+      },
+      {
+        "source": "analysis/v5_full104_dataset_etl_20260921/supporting/JEPA_LOCAL_PARALLEL_AUDIT_20260920.md",
+        "section_verbatim": "Quarantined / never current authority",
+        "text_verbatim": "The 2026-09-19 handoff explicitly labels this a historical supporting result with a prior provenance-mismatch warning and says never current authority. It is not used below to establish a current result."
+      },
+      {
+        "source": "docs/agent/JEPA_V26_CURRENT_V5_EXECUTION_SEAM_AUDIT_20260925.md",
+        "text_verbatim": "Quarantine remains: the local 66e64913-959f-4a7c-bbfe-6ff906fb281d.npz is SHA256 001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70; V26 reports conflict with an older expected 14734303.... Do not relabel this NPZ as an authenticated FULL104 operator-address artifact."
+      },
+      {
+        "source": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
+        "text_verbatim": "semantic role must be recovered from project provenance before use; do not infer it from the filename."
+      },
+      {
+        "source": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
+        "text_verbatim": "Do NOT use this object as the historical operator-address authority without reconciliation:"
+      },
+      {
+        "source": "docs/agent/PROJECT_SESSION_ARTIFACT_INVENTORY_20260907.csv",
+        "row_verbatim": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz,1531109,001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70,uploaded NPZ artifact,ROLE_REQUIRES_AUTHORITY_TRACE_BEFORE_USE"
+      }
+    ],
+
+    "EXPOSURE_FINDING_2026_09_28": {
+      "severity": "material",
+      "finding": "The quarantined object is REACHABLE ON THIS MACHINE. It is bundled inside four local archives. Anyone extracting one of those archives obtains the quarantined file, under its bare filename, with no quarantine label attached to the file itself.",
+      "reachable_copies": [
+        {
+          "archive": "C:/Users/dushy/Downloads/JEPA_V46_CHAT_EXCLUSIVE_SMALL_PORTABLE_20260927.zip",
+          "member": "originals/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+        },
+        {
+          "archive": "C:/Users/dushy/Downloads/JEPA_HANDOFF_VOLUME_00_SMALL_MEDIUM.zip",
+          "member": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+        },
+        {
+          "archive": "C:/Users/dushy/Downloads/JEPA_COMPREHENSIVE_HANDOFF_20260905.zip",
+          "member": "JEPA_COMPREHENSIVE_HANDOFF_20260905/runtime_archive_small_medium/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+        },
+        {
+          "archive": "C:/Users/dushy/Downloads/JEPA_FINAL_HANDOFF_20260905.zip",
+          "member": "04_LOCAL_WORK/all_small_runtime_artifacts/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+        }
+      ],
+      "verification": "All four members were read as raw bytes and hashed on 2026-09-28. Every copy is 1531109 bytes with sha256 001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70 — i.e. all four are the quarantined object, not the 4985-byte historical one. The files were NOT deserialized: no numpy.load, no pickle, no array access.",
+      "no_loose_copy_found": "No extracted .npz with this name was found on the Desktop, in Downloads, or under D:/jepa_v45_transfer_20260927 (searched 2026-09-28).",
+      "required_action_for_future_agents": "Before using ANY .npz recovered from a project handoff archive, hash it. If the sha256 is 001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70, it is the quarantined object: stop and do not use it, regardless of what directory it was extracted into or what it is renamed to.",
+      "recognition_key": "sha256 001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70 identifies the quarantined object under ANY filename."
+    },
+
+    "companion_notice": "docs/agent/laneG-custody-20260928/QUARANTINE_DO_NOT_USE_66e64913.md"
+  },
+
+  "C__CARRIED_FORWARD_HEAVY_ASSET_DIGESTS": {
+    "note": "Reproduced from docs/agent/chat-exclusive-v47-20260928/LOCAL_EVIDENCE_CUSTODY_MANIFEST.json (content sha256 90ac0ed3f61d11e062128ccc2bdac2112cd9e266550e1426823ebd5fffadce40) so the digests survive independently of that branch. These were NOT re-verified by this lane except where stated.",
+    "foundation_calibration_bundle": {
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "bytes": 410278055,
+      "reverified_by_this_lane": false
+    },
+    "discovery_expression_part001": {
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "bytes": 303979881,
+      "reverified_by_this_lane": false
+    },
+    "discovery_expression_part002": {
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "bytes": 303979880,
+      "reverified_by_this_lane": false
+    },
+    "t1_checkpoint_u0200": {
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "bytes": 233729581,
+      "reverified_by_this_lane": false
+    },
+    "checkpoints_zip": {
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "bytes": 71356460,
+      "reverified_by_this_lane": false
+    },
+    "portable_local_evidence_archive": {
+      "filename": "JEPA_CHAT_LOCAL_ONLY_EVIDENCE_20260928.zip",
+      "sha256": "83ab489570ffd863a6a9c9e54ebc85cd84e0c769948f15e27427a7d3137da873",
+      "bytes": 415682,
+      "reverified_by_this_lane": true,
+      "reverified_path": "C:/Users/dushy/Downloads/JEPA_CHAT_LOCAL_ONLY_EVIDENCE_20260928.zip",
+      "reverified_on": "2026-09-28"
+    }
+  },
+
+  "D__GOVERNANCE_AT_TIME_OF_WRITING": {
+    "training": "OFF for scientific neural training",
+    "reserved_readout_addresses": [2810, 4748, 10846, 13734, 14980, 26659],
+    "protected_outcomes_opened_by_this_lane": "none",
+    "historical_files_edited_in_place_by_this_lane": "none",
+    "pushed": false
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V47",
+  "date": "2026-09-28",
+  "record_type": "SUCCESSOR_POINTER",
+  "authored_by_lane": "laneG-custody-20260928",
+  "supersedes": {
+    "path": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+    "schema": "JEPA_LATEST_HANDOFF_POINTER_V19",
+    "date": "2026-09-23",
+    "sha256": "eb71dc7171e06b77b574898d60282740d484e3c35cb2ddaab061546bbe2b1bc1",
+    "bytes": 2051,
+    "git_blob": "1c2a3c3334502ac67f4d8cdd59e8581f6133b96f",
+    "left_byte_identical": true,
+    "note": "The V19 pointer is HISTORICAL EVIDENCE and was NOT edited. Its digest above is recorded so any reader can prove it is unchanged. It is stale: it points at the 2026-09-23 V19 source-repair/rare-tail state."
+  },
+  "status": "V47_CONTROL_SPECIFICITY__TRAINING_OFF__RELATIONAL_TARGET_NOT_AUTHORIZED__CONDITIONAL_COMPOSITION_DEVELOPMENTAL_ONLY",
+  "immediate_blocker": "CONTROL_SPECIFICITY: the target statistic must be shown to survive biological correspondence but NOT residual technical-state correspondence, prospectively, before any scientific teacher training.",
+
+  "current_handoff": {
+    "handoff_branch": "handoff/jepa-v47-control-specificity-20260928",
+    "handoff_branch_head": "5c8764ed0f8828fee36945ba62763ca309883c46",
+    "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260928_V47_CONTROL_SPECIFICITY.md",
+    "handoff_verified_present_at_ref": true,
+    "handoff_verification_command": "git show origin/handoff/jepa-v47-control-specificity-20260928:docs/agent/JEPA_NEW_CHAT_HANDOFF_20260928_V47_CONTROL_SPECIFICITY.md",
+    "handoff_git_blob": "db52719d6e415d63e24d9b9aa59875b0fba91877",
+    "handoff_bytes": 8454,
+    "handoff_content_sha256": "45ac20fb709a0eb83bdcefb7b82f791e9f94b195324cad1471b77dc0f5e8e482",
+    "verified_on": "2026-09-28",
+    "verified_by": "laneG-custody-20260928"
+  },
+
+  "supporting_v47_documents_on_handoff_branch": [
+    {
+      "path": "docs/agent/chat-exclusive-v47-20260928/RELATIONAL_CONTROL_AUDIT_20260928.md",
+      "bytes": 6439,
+      "git_blob": "a341003c7c3fd1f647e7ff7d7faf9f45534f7a21",
+      "content_sha256": "9432e1304239228d927027f5fa1dab3f96956ea6bdcb8676d6e3ec0f14fa3f94"
+    },
+    {
+      "path": "docs/agent/chat-exclusive-v47-20260928/LOCAL_EVIDENCE_CUSTODY_MANIFEST.json",
+      "bytes": 2527,
+      "git_blob": "d196d5659543b8520eaad71d6b3b1c74e231ae11",
+      "content_sha256": "90ac0ed3f61d11e062128ccc2bdac2112cd9e266550e1426823ebd5fffadce40"
+    },
+    {
+      "path": "docs/agent/chat-exclusive-v47-20260928/EXACT_NPH52_TD57B_PANEL0_REPLAY.json",
+      "bytes": 1066,
+      "git_blob": "c3aa6a6602588a338e0b68c1dd54cb1b447e322e",
+      "content_sha256": "b708999007570b2972a36bf5b4a175ddf58c4e0f957f33a98d5b485b09affca1"
+    }
+  ],
+
+  "current_implementation_pr": {
+    "pr": 178,
+    "branch": "review/v27-authority-root-inventory-20260925",
+    "head_commit": "c7e31ab5aacb59091ca3d26f0fcf8d71f3a2eddd",
+    "head_commit_date": "2026-09-28T00:45:50-04:00",
+    "head_commit_subject": "RED->GREEN: census tests were path triggers only; no step executed them"
+  },
+
+  "BRANCH_DIVERGENCE_READ_THIS_BEFORE_CITING_EITHER_HEAD": {
+    "common_base": "3b2908be1f78e59ecebf61ca3bbbbf84e1cd669c",
+    "common_base_subject": "Put the census guards in CI; they were the only uncovered new code",
+    "common_base_is_the_pr178_head_the_v47_handoff_was_cut_from": true,
+    "pr_branch_ahead_of_base_by": 1,
+    "handoff_branch_ahead_of_base_by": 4,
+    "handoff_branch_commits_not_in_pr_head": [
+      "fbe6e561 docs: add V47 control-specificity new-chat handoff",
+      "9c360b9b audit: preserve relational target control failure",
+      "01f39005 docs: add V47 local evidence custody manifest",
+      "5c8764ed audit: preserve exact NPH52 TD57B replay receipt"
+    ],
+    "consequence": "The V47 handoff documents are NOT reachable from PR #178 head c7e31ab5. A checkout of c7e31ab5 alone will not contain them. Fetch the handoff branch explicitly. Neither head is an ancestor of the other; both descend from 3b2908be.",
+    "verification_commands": [
+      "git merge-base --is-ancestor 3b2908be c7e31ab5   # exit 0",
+      "git merge-base --is-ancestor c7e31ab5 origin/handoff/jepa-v47-control-specificity-20260928   # nonzero"
+    ]
+  },
+
+  "governance": {
+    "training": "OFF for scientific neural training. Mechanical GPU smoke tests allowed only if explicitly labelled non-scientific and they do not inspect protected outcomes.",
+    "reserved_readout_addresses": [2810, 4748, 10846, 13734, 14980, 26659],
+    "reserved_readout_genes": ["SALL1", "CTSD", "CTSS", "LPL", "CSF1R", "HLA-DMB"],
+    "reserved_readout_status": "NO LONGER PRISTINE. The earlier census producer computed per-source summary statistics over these six addresses on fitting nuclei before downstream exclusion. Values were never printed, published or consumed, but this is computation-level exposure. Treat them as prespecified secondary/sensitivity evidence, NOT as unseen confirmatory endpoints, and do not silently swap in fresh genes.",
+    "do_not_open": "Do not open the six reserved readout addresses in any new analysis.",
+    "relational_target": "TD56-TD59 do NOT currently authorize scientific teacher training; their wrong-cell null is not specific against residual technical state.",
+    "conditional_composition": "Developmental only. Requires a differential-capture negative arm before any biological interpretation.",
+    "quarantined_artifact": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz is PROVENANCE_MISMATCH_DO_NOT_USE; see docs/agent/laneG-custody-20260928/JEPA_CUSTODY_MANIFEST_SUCCESSOR_20260928_LANEG.json"
+  },
+
+  "read_me_first": [
+    "1. Read docs/agent/JEPA_NEW_CHAT_HANDOFF_20260928_V47_CONTROL_SPECIFICITY.md on branch handoff/jepa-v47-control-specificity-20260928 (verified present; digest above).",
+    "2. Read docs/agent/chat-exclusive-v47-20260928/RELATIONAL_CONTROL_AUDIT_20260928.md for why the relational null is insufficient.",
+    "3. Read docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md and classify any proposed work before computing.",
+    "4. Read docs/agent/laneG-custody-20260928/JEPA_CUSTODY_MANIFEST_SUCCESSOR_20260928_LANEG.json for preserved heavy-asset digests and the standing quarantine.",
+    "5. Refresh live PR heads before work; PR #178 head may have advanced past c7e31ab5.",
+    "6. The historical V19 pointer docs/agent/JEPA_LATEST_HANDOFF_POINTER.json is retained unchanged as evidence; do not read it as current state."
+  ],
+
+  "previous_pointer_historical_snapshot": {
+    "schema": "JEPA_LATEST_HANDOFF_POINTER_V19",
+    "date": "2026-09-23",
+    "handoff_branch": "handoff/jepa-v5-source-repair-raretail-20260923-v19",
+    "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V19_SOURCE_REPAIR_RARETAIL.md",
+    "docs_parent_commit": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa",
+    "latest_diagnostic_pr": 67
+  }
+}
