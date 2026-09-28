@@ -1,0 +1,106 @@
+name: V29 gate-v4 validator red team
+
+# Runs the INDEPENDENT reviewer's adversarial probe against the fail-closed
+# successor validator, plus the mutations the probe does not contain and the
+# pair-specific denominator contract.
+#
+# The probe, the frozen receipt and the frozen producer are pinned by SHA-256.
+# A red team whose attack file can be quietly edited proves nothing, so a
+# changed byte in any of the three fails the job before any test runs.
+#
+# This job does NOT run the Monte Carlo and does NOT touch real expression.
+
+on:
+  push:
+    branches:
+      - review/v27-authority-root-inventory-20260925
+    paths:
+      - scripts/v5/gate_v4_receipt_validator_v2.py
+      - scripts/v5/teacher_fidelity_synthetic_gate_v4.py
+      - tests/test_v5_gate_v4_validator_v2_mutations.py
+      - tests/test_v5_pairwise_denominator_contract.py
+      - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
+      - results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json
+      - .github/workflows/v29-gate-v4-validator-redteam.yml
+  pull_request:
+    paths:
+      - scripts/v5/gate_v4_receipt_validator_v2.py
+      - tests/test_v5_gate_v4_validator_v2_mutations.py
+      - tests/test_v5_pairwise_denominator_contract.py
+      - tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py
+
+permissions:
+  contents: read
+
+jobs:
+  validator-redteam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check numpy scipy pytest
+
+      - name: Verify frozen red-team and evidence bytes
+        run: |
+          echo "6887c441b23b2db7264bb89af5c5b371aa070f1be2797d0c2aa70131591c7268  tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py" | sha256sum -c -
+          echo "09f66e2049fad95235d10343daaaaec38380c1266519b691d964e03c10d12ea2  results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json" | sha256sum -c -
+          echo "648dee5850670c3587e3f8bbe346003ec1d4c08d20fdd54f724a4b959d71eab6  scripts/v5/teacher_fidelity_synthetic_gate_v4.py" | sha256sum -c -
+
+      - name: Compile the validators
+        run: |
+          python -m py_compile scripts/v5/gate_v4_receipt_validator_v1.py
+          python -m py_compile scripts/v5/gate_v4_receipt_validator_v2.py
+
+      - name: Probe self-check
+        run: python tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py --self-check
+
+      - name: Independent probe must be GREEN against v2
+        run: |
+          python tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py \
+            --validator scripts/v5/gate_v4_receipt_validator_v2.py \
+            --receipt results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json \
+            --producer scripts/v5/teacher_fidelity_synthetic_gate_v4.py \
+            --out-json probe_against_v2.json
+
+      - name: Independent probe must stay RED against v1
+        # v1 is preserved as historical evidence and is known to admit 16 of the
+        # 21 mutations. If this ever goes green, either v1 was edited - which is
+        # forbidden, it is execution evidence - or the probe has been defanged.
+        run: |
+          if python tests/independent/JEPA_GATE_V4_VALIDATOR_ADVERSARIAL_PROBE_20260928.py \
+               --validator scripts/v5/gate_v4_receipt_validator_v1.py \
+               --receipt results/v29/TEACHER_FIDELITY_SYNTHETIC_GATE_V4.json \
+               --producer scripts/v5/teacher_fidelity_synthetic_gate_v4.py \
+               --out-json probe_against_v1.json; then
+            echo "FAIL: the probe passed against v1, which must not happen."
+            echo "Either v1 was modified or the probe no longer detects anything."
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          rows = json.load(open("probe_against_v1.json"))["results"]
+          fg = [r["case"] for r in rows if r["status"] == "FALSE_GREEN"]
+          assert len(fg) == 16, f"expected 16 v1 false greens, got {len(fg)}: {fg}"
+          print(f"v1 still admits {len(fg)} corrupted receipts, as recorded.")
+          PY
+
+      - name: Mutations the probe does not contain, and the denominator contract
+        run: |
+          python -m pytest -q \
+            tests/test_v5_gate_v4_validator_v2_mutations.py \
+            tests/test_v5_pairwise_denominator_contract.py
+
+      - name: Seeds must not depend on PYTHONHASHSEED
+        run: |
+          for s in 0 1 12345; do
+            PYTHONHASHSEED=$s python - <<'PY'
+          import sys
+          sys.path.insert(0, "tests")
+          from test_v5_pairwise_denominator_contract import seed_of
+          print(seed_of("naive", "APOE_LIPID", "P2RY12_HOMEOSTATIC"))
+          PY
+          done | sort -u | wc -l | grep -qx 1 \
+            || { echo "FAIL: fixture seed varies with PYTHONHASHSEED"; exit 1; }
