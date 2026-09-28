@@ -1,0 +1,37 @@
+{
+  "schema": "JEPA_R3_REGULATORY_EXPOSURE_SNAPSHOT_V1",
+  "ledger_sha256": "03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "confirmation_authorized_by_ledger": false
+  },
+  "outcomes": [
+    {"key":["FULL104","RNA","RELATIONAL_STATE_TD56_TD59"],"exposure_status":"DEVELOPMENT","outcome_values_known_exposed":true,"used_for_development":true,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE174367_MORABITO","RNA","MICROGLIA_PSEUDOBULK_TF_TARGET_COACTIVITY"],"exposure_status":"DEVELOPMENT","outcome_values_known_exposed":true,"used_for_development":true,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE174367_MORABITO","ATAC","MARGINAL_ACCESSIBILITY_AND_COVERAGE"],"exposure_status":"INSPECTED","outcome_values_known_exposed":true,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE174367_MORABITO","ATAC","TARGET_STATE_CIS_CORRESPONDENCE"],"exposure_status":"UNKNOWN","outcome_values_known_exposed":false,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE214979","METADATA","PAIRING_CELLTYPE_DONOR_CENSUS"],"exposure_status":"INSPECTED","outcome_values_known_exposed":true,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE214979","MOLECULAR","REGULATORY_RNA_ATAC_COVARIANCE"],"exposure_status":"UNKNOWN","outcome_values_known_exposed":false,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE272082","METADATA","DONOR_REGION_AND_LABEL_AUTHENTICATION"],"exposure_status":"INSPECTED","outcome_values_known_exposed":true,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["GSE272082","MOLECULAR","REGULATORY_RNA_ATAC_COVARIANCE"],"exposure_status":"UNKNOWN","outcome_values_known_exposed":false,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["SEAAD_PUBLIC_MULTIOME","RNA","FULL104_RELATIONAL_STATE_CONTRIBUTION"],"exposure_status":"DEVELOPMENT","outcome_values_known_exposed":true,"used_for_development":true,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["SEAAD_PUBLIC_MULTIOME","ATAC","TARGET_STATE_CIS_CORRESPONDENCE"],"exposure_status":"UNKNOWN","outcome_values_known_exposed":false,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["SEAAD_SPATIAL","TECHNICAL","DETECTION_AND_SEGMENTATION_METRICS"],"exposure_status":"INSPECTED","outcome_values_known_exposed":true,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["SEAAD_SPATIAL","RNA","TARGET_PROGRAM_SPATIAL_EXPRESSION"],"exposure_status":"UNKNOWN","outcome_values_known_exposed":false,"used_for_development":false,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"},
+    {"key":["STAGE75F","DERIVED_OBJECT","TF_TIER_AND_TARGET_HYPOTHESES"],"exposure_status":"DEVELOPMENT","outcome_values_known_exposed":true,"used_for_development":true,"structural_only":false,"prospective_confirmation_authorized":false,"requires_separate_physical_outcome_seal":true,"ledger_sha256":"03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f"}
+  ],
+  "cross_source_rules": {
+    "GSE214979__GSE174367_MORABITO": {"determination":"UNDETERMINED_POSSIBLE_UCI_DONOR_OVERLAP","binding_rule":"agreement claim must exclude GSE214979 donors 1224,1230,1238 or carry explicit caveat","evidence_ref":"PR182","independent_confirmation_authorized":false},
+    "GSE214979__GSE272082": {"determination":"INDEPENDENT_BY_CURRENT_AUDIT","evidence_ref":"PR182","independent_confirmation_authorized":false},
+    "FULL104__GSE174367_MORABITO": {"determination":"INDEPENDENT_DONORS_BY_CURRENT_AUDIT","evidence_ref":"PR164","independent_confirmation_authorized":false},
+    "FULL104__SEAAD_PUBLIC_MULTIOME": {"determination":"NOT_INDEPENDENT__SEAAD_IS_FULL104_SOURCE","evidence_ref":"V50_PR189","independent_confirmation_authorized":false}
+  },
+  "interpretation": {
+    "morabito_atac_target_correspondence": "UNKNOWN_NOT_OPENED_BY_R3",
+    "gse214979_regulatory_covariance": "UNKNOWN_NOT_OPENED_BY_R3",
+    "gse272082_regulatory_covariance": "UNKNOWN_NOT_OPENED_BY_R3",
+    "seaad_atac_target_correspondence": "UNKNOWN_NOT_OPENED_BY_R3",
+    "seaad_spatial_target_program_expression": "UNKNOWN_NOT_OPENED_BY_R3"
+  }
+}
