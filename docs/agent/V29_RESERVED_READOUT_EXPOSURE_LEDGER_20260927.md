@@ -319,6 +319,54 @@ confirmation layer. Any report that downgrades the six must say this in the same
 breath, rather than leaving a reader to discover that nothing independent
 remains.
 
+## CORRECTION 5, 2026-09-28 — a reserved readout is recorded as measured where it was never measured
+
+Found by the Lane B reader-provenance repair and verified independently here.
+
+**Address 26659 (HLA-DMB) is absent from NPH52's authenticated feature axis.**
+It is the only one of the six reserved readouts that is. Yet the corrected
+29-address artifact marks it `address_available = True` for all **15,264 NPH52
+nuclei**, so any consumer reading it there would be reading 15,264 structural
+absences as measured zeros.
+
+| reserved readout | in NPH52 authenticated axis |
+|---|---|
+| SALL1 (2810), CTSD (4748), CTSS (10846), LPL (13734), CSF1R (14980) | yes |
+| **HLA-DMB (26659)** | **NO** |
+
+This is the same root cause as the HLA-DPA1 defect in Correction 4's companion
+report: `load_addr_to_col` returns early for identity-verified matrices with an
+empty unreachable list, so NPH52 availability was asserted rather than derived.
+Verifying *where* an address sits in the object was treated as also answering
+*whether* the object carries it.
+
+### Why no existing audit could have caught it, and the tension that creates
+
+My census auditor deliberately excludes the six reserved readouts from every
+comparison — that exclusion is the exposure firewall and it is correct. But it
+also made the auditor **structurally incapable** of noticing that a reserved
+readout's availability flag was false. The firewall that protects the hold-out
+also blinded the audit of it.
+
+The resolution is not to weaken the firewall. It is that **availability can be
+audited without reading values**: compare the artifact's `address_available`
+mask against the authenticated feature axis directly. That check touches no
+count, so it is firewall-safe, and it is what found this.
+
+**This is now a standing requirement.** Any protected variable still needs its
+*structural* metadata audited even while its values stay sealed. "We cannot
+look at it" must never become "we cannot check whether the file is lying about
+it."
+
+### Consequence for HLA-DMB as secondary evidence
+
+Under the owner ruling, HLA-DMB is already downgraded to prespecified secondary
+evidence. It now carries an additional, separate limitation: **it is not
+measurable in NPH52 at all.** Any secondary analysis using HLA-DMB must exclude
+NPH52 rather than treat its zeros as observations — the same handling LPL
+already requires for HVS. This is an availability fact, not a value, and
+recording it opens nothing.
+
 ## The rule this should have followed
 
 A hold-out is spent the moment any statistic is computed on it, including a
