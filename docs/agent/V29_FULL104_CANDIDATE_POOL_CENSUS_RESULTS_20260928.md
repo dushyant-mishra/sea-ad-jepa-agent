@@ -220,9 +220,12 @@ directed test:**
 1. Repair the NPH52 availability flag by deriving it from the provenance table
    rather than assuming it, and re-audit. One flag is wrong today; the method
    that produced it would produce more.
-2. Qualify same-nucleus binomial thinning as a latent-capture instrument on a
-   properly matched fixture, per the standing caveat that thinning is a
-   measurement-robustness diagnostic and not an intervention on original capture
-   efficiency. If it qualifies, the exchangeability question becomes answerable
-   rather than merely hard; if it does not, that is worth knowing before the
-   composition route is built on the same ground.
+2. Develop same-nucleus binomial thinning as a **post-capture
+   measurement-robustness diagnostic**, on a properly matched fixture. It can
+   expose differential sensitivity to *additional* sampling loss, which is worth
+   having. **It cannot establish exchangeability with respect to the original
+   hidden biochemical capture process**: that process ran before the counts
+   existed, and no operation applied to the counts afterwards reaches back to
+   it. Earlier wording of mine — that qualifying thinning would make "the
+   exchangeability question answerable" — overstated what the diagnostic can do
+   and is withdrawn.

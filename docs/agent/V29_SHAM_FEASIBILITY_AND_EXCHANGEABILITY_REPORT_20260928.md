@@ -213,11 +213,23 @@ ledger rule that a governance fix must never move the estimand).
 
 ---
 
-## 6. The one instrument worth developing — and it is NOT yet qualified
+## 6. One diagnostic worth developing — a robustness check, NOT an identification strategy
+
+> **Terminology correction, 2026-09-28 (owner).** An earlier version of this
+> section called thinning an "instrument" for latent capture and said qualifying
+> it would make the exchangeability question answerable. That overstates it.
+> Same-nucleus thinning tests **post-capture measurement robustness** and can
+> expose differential sensitivity to *additional* sampling loss. **It cannot
+> establish exchangeability with respect to the original hidden biochemical
+> capture process** — that process ran before the counts existed, and nothing
+> done to the counts afterwards reaches back to it. The section is kept, with
+> its claim reduced to what the operation can actually support.
 
 Every observable in §3 is a *static* property. The quantity that matters is a
-*causal* one: how does this gene's measured value respond when capture changes
-and biology does not? Static observables cannot answer that; a perturbation can.
+*causal* one: how does this gene's measured value respond when the measurement
+is degraded further and biology does not change? Static observables cannot
+answer that; a perturbation can — but only about the sampling stage it actually
+perturbs.
 
 **Same-nucleus binomial thinning** is that perturbation, and this project already
 has it qualified as machinery (H9: p={1,.9,.75,.5,.25}, 201,149 cells). Thin a
@@ -244,8 +256,11 @@ means 3.3 vs 6.6 — and was discarded.
 
 Known limits even if it does qualify: thinning emulates multinomial **sampling**
 loss, not biochemical capture heterogeneity (nuclear retention, RT efficiency,
-intron content). It is therefore a lower bound on gene-specific capture
-sensitivity, not a complete instrument.
+intron content). Those act at the bench, before any count exists. So a clean
+thinning result would say a panel is robust to further sampling loss; it would
+say nothing about whether two panels experienced the same original capture. The
+quantity v7 named — partial correlation with latent capture given `log D` — is
+not recovered by this and remains unobserved.
 
 ---
 

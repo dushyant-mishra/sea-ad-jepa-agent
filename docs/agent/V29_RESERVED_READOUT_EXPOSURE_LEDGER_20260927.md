@@ -283,6 +283,42 @@ and not the hold-out. Exclusion has to happen at the earliest point where the
 protected value physically enters the pipeline — here, immediately after
 address decoding and before normalisation.
 
+## OWNER RULING, 2026-09-28 — all six retired as strict endpoints
+
+Issued after reviewing `d183fbed`. This supersedes the tiering in section 3 of
+the Consequence block above, and it is the governing status.
+
+> "All six reserved RNA readouts should now be retired as strict independent
+> confirmatory endpoints. That does not mean they are useless."
+
+| gene | exposure | what it may now support |
+|---|---|---|
+| **CSF1R** | **Value-exposed.** Decoded gene-specific values were inspected and did influence plausibility reasoning. | **Secondary / sensitivity evidence only.** |
+| **SALL1, CTSD, CTSS, HLA-DMB** | **Computation-exposed.** Statistics computed on authenticated coordinates; never printed, never selected on. | **Prespecified secondary evidence.** May **not** be described as previously unseen confirmation. |
+| **LPL** | **Availability-exposed**, and now also computation-exposed in the void census runs. | Same secondary status. |
+
+**No replacement set is to be drawn.** The ruling is explicit:
+
+> "I would not replace them with six fresh genes now. Doing that after
+> discovering the failure mode would create a new post hoc confirmation set and
+> invite another round of selection. Preserve the original six, document
+> exactly what happened, and downgrade the claim they can support."
+
+This is the right call and worth stating plainly, because the tempting repair is
+the wrong one. A hold-out's value comes from being fixed *before* anyone saw how
+the analysis would behave. Six genes chosen *now* would be selected by people
+who have just learned which genes were awkward, and that contamination leaves no
+written trace — whereas this spent set has a full exposure history. Keeping a
+documented spent hold-out beats manufacturing a clean-looking one.
+
+**The consequence that must not be buried.** With every internal reserved
+readout downgraded, **this study has no strictly independent internal
+confirmation left.** That raises the weight on a genuinely external modality —
+specifically the already-designed donor-level ATAC evaluation — as the real
+confirmation layer. Any report that downgrades the six must say this in the same
+breath, rather than leaving a reader to discover that nothing independent
+remains.
+
 ## The rule this should have followed
 
 A hold-out is spent the moment any statistic is computed on it, including a
