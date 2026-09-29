@@ -68,13 +68,16 @@ Against our confirmation sources:
 | FULL104 / SEA-AD | Allen Institute + University of Washington ADRC | no |
 | Morabito GSE174367 | UC Irvine | no |
 | GSE214979 | UCSF, **plus UCI-derived donors 1224/1230/1238** | no |
-| GSE272082 | **not established — see open item** | unknown |
+| GSE272082 | NIH NeuroBioBank + UTHealth Houston (PR #182) | no |
 
-**Classification: not "proven disjoint". Not "possible overlap" in any specific
-identified instance. It is "impossible to establish from public information" at
-the donor level**, for a concrete reason: donor identifiers live behind the AD
-Knowledge Portal, whose raw data is managed/controlled access per institution.
-Institution-level non-overlap is all the public record supports.
+**Classification: not "proven disjoint".** No named institution is shared with
+any of the four. But institution-level non-overlap is all the public record
+supports, and the reason is specific rather than vague: **Kosoy has no NCBI
+deposit at all** — searched and confirmed 0 hits across GEO, BioProject and SRA
+— so there is no public accession layer to join through, and donor identifiers
+live behind the AD Knowledge Portal under managed access. The full
+layer-by-layer search is in
+`results/v59/V59_DONOR_IDENTITY_EVIDENCE_TABLE_V1.json`.
 
 **Why institution-level is not sufficient here, and this project already knows
 it.** GSE214979 is deposited as a UCSF study and nonetheless contains UCI-derived
