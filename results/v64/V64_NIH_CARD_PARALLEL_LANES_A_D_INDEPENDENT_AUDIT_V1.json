@@ -1,0 +1,84 @@
+{
+  "schema": "V64_NIH_CARD_PARALLEL_LANES_A_D_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-29",
+  "audited_head": "6d08386f9f996c8db6224a959ca93745669b27ee",
+  "lineage": {
+    "base": "06964457a1656a602548b28427c479abd37e808b",
+    "commits": [
+      "0d79f0f6fe276ae92d3bdb1cbd5538c382b9307c",
+      "9363af608a3e78e3baf865e01c91aefac77c1ab9",
+      "1b08bd12b77c9f9920db7a4eab52d2510636d537",
+      "6d08386f9f996c8db6224a959ca93745669b27ee"
+    ],
+    "one_commit_per_lane": true,
+    "no_cross_lane_file_overlap": true,
+    "canonical_fast_forwarded": true
+  },
+  "verdict": "PASS_PREEXECUTION_LANES_A_D__STAGE4_REMAINS_BLOCKED",
+  "lane_A": {
+    "verdict": "PASS_WITH_NAMED_PROVENANCE_LIMITATION",
+    "classification": "STRONG_PROVENANCE_CORROBORATION__NOT_AUTHORITATIVE",
+    "key_findings": [
+      "ATAC cell_type is inherited from RNA via atlas_identifier and is not independent evidence.",
+      "The doubled ATAC suffix is mechanistically explained by the tagged pipeline logic.",
+      "filter_rna_atac.py at 0ddde6e6 is relevant provenance for the deposited pre-merge modality objects.",
+      "multiome_merge.py at later main must not be used as evidence for the deposit.",
+      "Exact producing commit for Zenodo v3 remains unpinned."
+    ],
+    "residual_assumption": "Deposited files were produced by a scMAVERICS state whose nucleus-identity logic matches the tagged filter_rna_atac.py lineage."
+  },
+  "lane_B": {
+    "verdict": "PASS_AS_FROZEN_REFERENCE_RECONSTRUCTION",
+    "reference_pairs": 138240,
+    "features": 14,
+    "p99_mahalanobis_radius": 7.257084817469213,
+    "important_limitation": "This reference faithfully reconstructs the existing synthetic qualification geometry; it does not by itself solve realism mismatch between the historical simulator and NIH-CARD.",
+    "early_warning": "Promoter-degree tails extend beyond historical synthetic support."
+  },
+  "lane_C": {
+    "verdict": "PASS_ANALYTIC_AND_MONTE_CARLO_PRECISION_QUALIFICATION",
+    "conclusion": "Four metacells is estimable but not measured with useful precision.",
+    "frozen_handling": "Fisher-z information weighting by m-3, with prospectively frozen fallback if empirical low-m instability exceeds expectation.",
+    "empirical_real_data_calibration": "PENDING_AUTHENTICATED_NIH_CARD_BYTES"
+  },
+  "lane_D": {
+    "verdict": "PASS_PHASE1__PHASE2_CORRECTLY_BLOCKED",
+    "phase1_edges": 20709,
+    "phase2": "NOT_RUN",
+    "blocker": "Local ATAC file is truncated; full byte-length and published MD5 authentication required for both NIH-CARD files before any matrix-dependent pass.",
+    "interpretation": "No NIH-CARD-side attrition conclusion may be made yet."
+  },
+  "additional_pre_stage4_requirement": {
+    "name": "NIH_CARD_REALISM_CALIBRATED_SYNTHETIC_QUALIFICATION",
+    "reason": "Outcome-blind ETL should be used to calibrate synthetic nuisance/support geometry to the real NIH-CARD assay rather than relying only on the older generic synthetic support. This is especially motivated by observed promoter-degree support mismatch.",
+    "allowed_inputs": [
+      "real marginal and joint distributions of support/QC/nuisance covariates",
+      "donor microglia counts and metacell-count distribution",
+      "RNA and ATAC depth distributions",
+      "peak density/accessibility sparsity",
+      "promoter degree, genomic distance, anchor frequency, local regulatory density",
+      "missingness and measurement-support geometry"
+    ],
+    "forbidden_inputs": [
+      "E2 linked-vs-control RNA-ATAC correspondence",
+      "Delta",
+      "per-edge biological correspondence",
+      "disease outcomes",
+      "Morabito or SEA-AD validation outcomes"
+    ],
+    "action": "Build and freeze a realism-calibrated synthetic qualification before Stage 4 if feasible after authenticated ETL; do not modify the estimator after opening correspondence."
+  },
+  "decision": {
+    "lanes_A_D": "ACCEPTED",
+    "stage4": "NOT_AUTHORISED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "next_blockers": [
+      "complete authenticated NIH-CARD downloads with full MD5 verification",
+      "run outcome-blind Phase 2 support map and real Stage 3 span diagnostic",
+      "run empirical metacell precision calibration",
+      "construct realism-calibrated synthetic qualification from outcome-blind ETL"
+    ]
+  }
+}
