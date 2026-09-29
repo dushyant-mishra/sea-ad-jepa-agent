@@ -32,8 +32,8 @@
     "donors": 18,
     "seeds": 24,
     "base_seed": 20260929,
-    "M_MIN": 0.010,
-    "ridge_alpha": 1.0,
+    "M_MIN": 0.01,
+    "ridge_alpha": 1,
     "promoter_crossfit_folds": 5,
     "rule": "Only 18-donor/24-seed outputs may be called the decision-bearing V64 frozen red-team result. Smaller runs must be labelled SMOKE in filename, metadata and prose and cannot overwrite/carry authority."
   },
@@ -67,7 +67,12 @@
     "FILER-prelifted coordinates treated as equivalent to independent UCSC relift without the provenance audit",
     "Nott neuronal/oligodendrocyte same-study comparators relabelled as independent P1 replication",
     "coarse matching resurrected as the primary estimator",
-    "out-of-span observed nuisance function added to the estimator basis and called generalisation"
+    "out-of-span observed nuisance function added to the estimator basis and called generalisation",
+    "raw cross-cell-type ATAC support-rate comparison used as the P1S primary gate after V2 supersession; primary must use within-track observed-minus-null excess support and microglia-vs-comparator difference-in-differences"
   ],
-  "fail_closed_rule": "If an expected blob SHA, scientific binary SHA-256, parent commit, decision configuration, or declared dataset role does not match this allowlist or an explicit later successor, STOP and adjudicate provenance before computing/interpreting outcomes."
+  "fail_closed_rule": "If an expected blob SHA, scientific binary SHA-256, parent commit, decision configuration, or declared dataset role does not match this allowlist or an explicit later successor, STOP and adjudicate provenance before computing/interpreting outcomes.",
+  "explicitly_non_authoritative_files": [
+    "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V1.json"
+  ],
+  "current_parallel_P1S_operational_authority_candidate": "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json"
 }
