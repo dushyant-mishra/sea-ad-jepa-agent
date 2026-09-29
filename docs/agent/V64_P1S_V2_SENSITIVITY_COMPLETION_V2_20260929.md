@@ -24,7 +24,7 @@ sequence:
 |---|---|---|
 | v0 (`303ca8b6`) | "the microglial advantage vanishes and goes negative in the lowest-density quartile" | microglia **observed**-distal density only |
 | v1 (`8b13939b`) | "flat and uniformly positive — the 20× gradient **does not exist**" | sum over all six measurements only |
-| **v2 (here)** | **density dependence is real, its direction depends on which arm you stratify on, and no operator is authoritative** | all six operators, none selected |
+| **v2 (here)** | **the stratified contrast depends materially on which pooling operator is used; no single gradient direction is established, and no operator is authoritative** | all six operators, none selected |
 
 The audit's point was that V2's phrase *"pooled quartiles of local peak
 density"* never defines the map from the six per-pair density measurements
@@ -47,11 +47,22 @@ Running all six shows why that was not safe.
 | D5 max over all six | +0.0937 | +0.1166 | +0.1524 | +0.2100 | +0.116 |
 | D6 microglia **observed** only *(superseded v0)* | **−0.0111** | +0.0859 | +0.1680 | +0.2981 | +0.309 |
 
-**D1 is the only flat one, and its flatness is arithmetic cancellation.**
-D1 = D2 + D3. D2 rises by +0.135 and D3 falls by −0.078; pooling them offsets the
-two gradients into +0.036. Reporting D1 alone and concluding "there is no density
-dependence" reads a cancellation as an absence. Those are different claims and I
-conflated them.
+**D1 is the only flat one.** D2 rises by +0.135 across quartiles, D3 falls by
+−0.078, and D1 moves only +0.036. Reporting D1 alone and concluding "there is no
+density dependence" treats one operator's flat trend as a property of the data
+rather than of that operator.
+
+> **Corrected after canonical audit `d1dc8007`.** An earlier version of this
+> document said D1's flatness *is* arithmetic cancellation, on the grounds that
+> `D1 = D2 + D3`. That identity holds **per pair, on the density score**, and it
+> does **not** transfer to the stratified statistics: D1, D2 and D3 induce
+> different quartile memberships and different boundaries, so their Q1–Q4 `D_MN`
+> trends are three separate analyses over different subsets of pairs, not terms
+> in an equation. The supported statement is that D1's flatter trend is
+> **consistent with** offsetting observed-arm and null-arm density dependencies;
+> the panel does not quantitatively decompose the flattening. Demonstrating the
+> decomposition would require holding one stratification fixed and examining the
+> other within it, over a common set of pairs — which this panel does not do.
 
 ### Why the direction flips
 
@@ -63,10 +74,11 @@ the observed arm is unconstrained, so `E` is small (D3). Each is selection on on
 arm of a difference, in opposite directions.
 
 That is also the pre-stated argument for pooling both arms — I wrote it into the
-v1 script before seeing any output, and it is still a real argument. What it
-does **not** license is treating the resulting flatness as evidence that density
-dependence is absent. It is evidence that the two selection effects are of
-similar size.
+v1 script before seeing any output, and it is still a real argument. What it does
+**not** license is treating the resulting flatness as evidence that density
+dependence is absent. The pattern is consistent with two selection effects of
+broadly similar size; establishing that quantitatively is a separate analysis
+that has not been run.
 
 ### What survives regardless of operator
 
@@ -145,6 +157,18 @@ size.** Under a promoter-level bootstrap they are not. Degree Q4 is a 22.7:1
 clustering ratio. Fixed by emitting distinct-promoter counts on every table; the
 underlying CIs were always computed correctly, so no published interval changes.
 
+**S25 — I let an algebraic identity carry a mechanistic claim across a change of
+partition.** `D1 = D2 + D3` is exact per pair; I wrote that D1's stratified
+flatness therefore *is* cancellation of the D2 and D3 stratified trends. Because
+each operator sorts pairs into different quartiles, no such transfer is licensed.
+Caught by canonical audit `d1dc8007`, not by me. It changes no number and no
+gate — the robust "positive in every stratum excluding D6, roughly +0.08 to
++0.22" statement is untouched — but it was a mechanism asserted ahead of its
+evidence, which is exactly the standard this project holds its experiments to.
+The general form, now recorded: if "therefore" is carrying an identity across a
+change of partition, weighting, conditioning set or population, the claim must be
+softened to consistency or backed by an analysis over common units.
+
 **Examined and clean:** the primary reproduction assertion still fires before any
 table is emitted (verified by the `checks` dict printing all-`True` first); no
 stratum was trimmed, reweighted or excluded; `M_MIN`, the estimator, OUTSPAN and
@@ -162,6 +186,31 @@ replication, not multi-source replication, not causal enhancer–gene assignment
 The contract forbids trimming, reweighting, rescuing or revising the P1S PASS on
 the basis of any density stratum, and nothing here does so.
 
-`E2_NOTT_CANDIDATE` not instantiated. P3 untouched, still blocked on exact
-GSE73721 byte authentication plus a prospectively frozen expression rule.
-`TRAINING=OFF`. `TD60=BLOCKED`.
+## P3 state — corrected; the original text here was stale
+
+This branch split from canonical at `f836fcf4`, and canonical was 25 commits
+ahead by the time this ran. The first version of this document repeated the
+governance line "P3 untouched, still blocked on exact GSE73721 byte
+authentication plus a prospectively frozen expression rule." **That was already
+false when written.** Canonical had closed both, per the reconciliation record at
+`cc8b08bb`:
+
+- exact GSE73721 bytes authenticated, sha256
+  `140f376a5162b4d739a0e4224ce5757e7399b24fb2fce1c5f9bf0eb438d2fcef`
+  (independently re-verified here against the supplied file: 658,883 bytes, digest
+  matches, and matches the expected value pinned in the committed
+  `fetch_and_verify_GSE73721.sh`)
+- expression rule frozen prospectively: mean myeloid FPKM > 0.5
+- Nott→GSE symbol join frozen
+- neuron/oligodendrocyte negative-eligibility contract frozen
+- source/expression attrition measured: neuron 31,690 expression-eligible,
+  oligodendrocyte 22,377
+
+So the remaining P3 work is **mechanical execution only** — neuron/oligo exact-
+identity C3, PU.1 accessibility, absence of the same gene–distal relationship in
+the qualified microglia map, then final valid-negative attrition. Canonical
+records that its runtime cannot retrieve liftOver v479, the authenticated chains
+or the PU.1 ATAC binary; all three verify on this runtime against the committed
+C3 receipt (`80c77de5…` / `5c0598e5…`, `14a712e8…` / `7cadc990…`).
+
+`E2_NOTT_CANDIDATE` not instantiated. `TRAINING=OFF`. `TD60=BLOCKED`.
