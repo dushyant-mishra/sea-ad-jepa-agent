@@ -37,7 +37,8 @@
         "http_requests": 21
       }
     },
-    "local_copy_status": "A background download of final_atac_data.h5ad FAILED TRUNCATED at 6,059,254,368 bytes and was NOT used. No measurement in this receipt derives from local bytes."
+    "local_copy_status": "final_atac_data.h5ad FAILED TRUNCATED at 6,059,254,368 of 14,508,702,462 bytes (58% missing) and curl exited 0. h5py REFUSES to open it. final_rna_data.h5ad completed at 18,439,154,935 bytes. No measurement in this receipt derives from local bytes; all reads were HTTP byte-range against the authoritative URLs.",
+    "rationale_superseded_by": "CORRECTION_2026_09_29.corrected_rationale"
   },
   "TASK3_ANSWERS": {
     "1_count_like_rna_slot": {
@@ -178,5 +179,16 @@
     "td60": "BLOCKED",
     "exposure": "schema, metadata and bounded value sampling only; NO RNA-ATAC relationship computed; no biological outcome opened",
     "nih_card_role": "VALIDATION CANDIDATE ONLY - its peaks and any derived links must never enter E2 construction"
+  },
+  "CORRECTION_2026_09_29": {
+    "what_was_wrong": "This receipt's OBJECT_IDENTITY.rationale asserted that 'a truncated HDF5 still opens and still serves its first blocks as valid data'. That is FALSE for the truncation actually observed, and I verified it rather than leaving it standing.",
+    "evidence": "h5py refused the 6,059,254,368-byte file outright: OSError 'Unable to synchronously open file (truncated file: eof = 6059254368, sblock->base_addr = 0, stored_eof = 14508702462)'. HDF5 records the expected end-of-file in its superblock and checks it.",
+    "what_is_still_true": [
+      "The acquisition step reported SUCCESS (curl exit 0) on a file missing 8,449,448,094 bytes, 58% of the object. The -C - resume flag did not recover it.",
+      "No measurement in this receipt derives from those local bytes; the probe ran over HTTP byte range against the authoritative URL, and both observed content-lengths match Zenodo exactly.",
+      "final_rna_data.h5ad DID complete at 18,439,154,935 bytes, so the failure was file-specific and silent rather than an obvious total failure."
+    ],
+    "corrected_rationale": "Integrity binding is required because the ACQUISITION step can report success on an incomplete object. It is NOT required because readers fail to notice truncation - HDF5 does notice, via its superblock length. But that is a format-specific safeguard: gzip streams, BED/CSV text and partially-read tar members have no declared total length and will yield a prefix that parses cleanly. Making correctness depend on which format happened to be involved is not a property to rely on, so completeness is verified at acquisition rather than left to the parser.",
+    "class": "self-correction of a claim I made confidently in a committed artifact"
   }
 }
