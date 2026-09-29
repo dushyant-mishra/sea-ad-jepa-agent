@@ -1,0 +1,15 @@
+{
+  "schema": "V62_DONOR_EQUAL_SOURCE_EQUAL_TRACE_NORMALIZED_TARGET_BACKBONE_V1",
+  "status": "DISCOVERY_STRESS_TEST_ONLY",
+  "feature_width": 400,
+  "universe_n": 15758,
+  "split": {"HVS":{"half1":21,"half2":20},"NPH52":{"half1":9,"half2":8},"SEA_AD":{"half1":23,"half2":23}},
+  "source_covariance_trace_half1":{"HVS":170.96535980484035,"NPH52":272.6356696771543,"SEA_AD":124.2310698204813},
+  "source_covariance_trace_half2":{"HVS":160.43754988432252,"NPH52":265.08469895623705,"SEA_AD":129.23204456888547},
+  "rank4":{"mean_cos":0.8194883368844198,"min_cos":0.3295303454200867,"fit_half1":{"biology":0.43599859762059673,"source":0.004660928926738629,"donor_residual":0.14156953639415376,"seaad_operator_residual":0.11020824685375115},"heldout_half2":{"biology":0.3966158691439073,"source":0.0007218900729665824,"donor_residual":0.12423608152600472,"seaad_operator_residual":0.12757306365233723}},
+  "rank8":{"mean_cos":0.9186755454028495,"min_cos":0.49690038471858305,"fit_half1":{"biology":0.39713607486355357,"source":0.0037732002910971923,"donor_residual":0.1135726650799351,"seaad_operator_residual":0.10208018197628686},"heldout_half2":{"biology":0.3644372426849154,"source":0.0044292698130246975,"donor_residual":0.10881211742726292,"seaad_operator_residual":0.1147396399649161}},
+  "feature_width_200_sensitivity":{"rank4_mean_cos":0.8161093370343812,"rank4_heldout_biology":0.3839540877354139,"rank4_heldout_source":0.0009311994206770547,"rank8_mean_cos":0.89401372390235,"rank8_heldout_biology":0.3550500618714932,"rank8_heldout_source":0.005912120444297829},
+  "failed_predecessor_diagnostic":{"construction":"donor-equal per-feature z-scoring","failure":"near-zero training-half SEA-AD SD generated heldout score outliers up to ~39k and invalidated variance-fraction audit","scientific_inference":"NONE"},
+  "interpretation":"donor-equal weighting preserves transported biological structure but reduces independently fitted basis orientation stability relative to the earlier cell-weighted source-balanced backbone",
+  "governance":{"training":"OFF","td60":"BLOCKED","semantic_twin_boundary":"STILL_BINDING","q_safety_qualified":false}
+}
