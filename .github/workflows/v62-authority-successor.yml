@@ -15,11 +15,54 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install test dependency
-        run: python -m pip install pytest
+        run: python -m pip install pytest numpy
       - name: Run V62 authority red-team
         env:
           PYTHONPATH: src
-        run: pytest -q tests/test_v62_authority_successor_chain.py
+        run: pytest -q tests/test_v62_authority_successor_chain.py tests/test_q_safe_preprocessing_v1.py
       - name: Compile successor modules
         run: |
-          python -m py_compile             src/sea_ad_jepa/v5/current_authority_roots_v3.py             src/sea_ad_jepa/v5/biological_specificity_authority_v1.py             src/sea_ad_jepa/v5/q_safety_authority_v1.py             src/sea_ad_jepa/v5/critical_test_execution_authority_v2.py             src/sea_ad_jepa/v5/current_authority_closure_v3.py             src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v3.py             src/sea_ad_jepa/v5/current_teacher_target_receipt_v3.py             src/sea_ad_jepa/v5/current_training_authority_v2.py             src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py
+          python -m py_compile \
+            src/sea_ad_jepa/v5/current_authority_roots_v3.py \
+            src/sea_ad_jepa/v5/biological_specificity_authority_v1.py \
+            src/sea_ad_jepa/v5/q_safety_authority_v1.py \
+            src/sea_ad_jepa/v5/q_safe_preprocessing_v1.py \
+            src/sea_ad_jepa/v5/critical_test_execution_authority_v2.py \
+            src/sea_ad_jepa/v5/current_authority_closure_v3.py \
+            src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v3.py \
+            src/sea_ad_jepa/v5/current_teacher_target_receipt_v3.py \
+            src/sea_ad_jepa/v5/current_training_authority_v2.py \
+            src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py
+      - name: Build provider evidence
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          paths = [
+              "tests/test_v62_authority_successor_chain.py",
+              "tests/test_q_safe_preprocessing_v1.py",
+              "src/sea_ad_jepa/v5/q_safety_authority_v1.py",
+              "src/sea_ad_jepa/v5/q_safe_preprocessing_v1.py",
+              "src/sea_ad_jepa/v5/critical_test_execution_authority_v2.py",
+              "src/sea_ad_jepa/v5/current_training_authority_v2.py",
+          ]
+          payload = {
+              "schema": "V62_GITHUB_ACTIONS_PROVIDER_EVIDENCE_V1",
+              "provider": "GITHUB_ACTIONS",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "workflow": os.environ["GITHUB_WORKFLOW"],
+              "workflow_path": ".github/workflows/v62-authority-successor.yml",
+              "head_sha": os.environ["GITHUB_SHA"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "outcome": "PASS",
+              "source_sha256": {p: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in paths},
+          }
+          Path("v62_provider_evidence.json").write_text(json.dumps(payload, sort_keys=True, indent=2) + "\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-authority-provider-evidence
+          path: v62_provider_evidence.json
+          if-no-files-found: error
