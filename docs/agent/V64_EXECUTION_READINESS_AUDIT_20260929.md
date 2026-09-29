@@ -161,3 +161,82 @@ Status:
 `REPRODUCIBILITY_CONCERN_RESOLVED__18x24_BIT_FAITHFUL`
 
 Future run reports should state the exact artifact and donor/seed configuration in the same sentence as any reproduction claim.
+
+
+## G. Frozen statistical red-team results independently verified
+
+Claude execution branch:
+`claude/v64-frozen-execution-20260929 @ 31cc724197a7829df9a417c658203efef97fe05e`
+
+The result JSONs and runner were read directly from the commit.
+
+### G1. Depth-sensitivity ablation
+
+18 donors / 24 seeds.
+
+Baseline authority:
+- POS_BIO_1 = 0.2282527590455996
+- POS_BIO_2 = 0.0313988510709398
+- TECH margin = 0.01995560304936889
+- TECH LCB95 = 0.01948446698612133
+- Kish ESS = 935.4469599793607
+
+After removing only `rna_depth_sensitivity` and `atac_depth_sensitivity`:
+- POS_BIO_1 = 0.22822142515024144
+- POS_BIO_2 = 0.03139201350123275
+- TECH margin = 0.019936008969997237
+- TECH LCB95 = 0.019464252854320418
+- Kish ESS = 935.4561612719423
+- all six represented families pass
+- held-out ambient generalises
+- twin remains exactly identical
+- broad support unchanged
+
+Classification:
+`A_PASS_SURVIVES`
+
+Interpretation:
+the outcome-derived depth-sensitivity covariates were a legitimate design risk but are empirically negligible in this synthetic estimator result. The continuous-adjustment pass does not depend materially on them.
+
+### G2. Out-of-span TECH stress
+
+Frozen `NEG_TECH_OUTSPAN_1`:
+- median score = 0.0613472621655512
+- OUTSPAN_TECH margin = -0.03210908910630048
+- LCB95 = -0.03557910811528421
+- FAIL
+
+All pre-existing represented families retain their baseline passing values.
+Support remains:
+- 960/960 linked scored
+- ESS = 935.4469599793607
+- top-10% contribution share = 0.12814298507709554
+
+Twin identity remains exact.
+Held-out ambient still generalises.
+Ordering check correctly becomes false because the out-of-span negative outranks POS_BIO_2.
+
+Classification:
+`B_OUTSPAN_FAILS_ONLY`
+
+Licensed estimator claim after both red-teams:
+continuous adjustment resolves the represented geometry-coupled hidden-quality nuisance when its functional dependence lies within or near the frozen adjustment basis, with broad support and without material dependence on the two outcome-derived depth-sensitivity covariates. It does NOT establish robustness to arbitrary hidden-quality geometry.
+
+Forbidden inference:
+do not add the observed sin/tanh stress terms to the basis and claim that as generalisation.
+
+### G3. Implementation-convention cross-check
+
+Claude's runner standardises `z_log_distance`, repeated promoter degree, anchor frequency, accessibility and regulatory-element density over the full `N_PROM x N_DISTAL` pair universe within each synthetic world, then z-scores the frozen nonlinear `g` over that same universe.
+
+This matches the prospective implementation clarification independently committed on this parallel lane before the result was inspected.
+
+## H. NIH-CARD consequence
+
+The real-data continuous-adjustment correspondence stage must not assume the synthetic estimator is universally adequate.
+
+Before using the estimator as load-bearing real-data authority, one of two claim-safe paths is required:
+1. outcome-blind QC-geometry qualification showing that the relevant measured NIH-CARD technical dependence is reasonably represented by the frozen low-order basis; or
+2. retain an explicit claim limitation that unmeasured technical structure outside that basis is not excluded.
+
+No linked RNA-ATAC biological correspondence needs to be opened to perform path 1.
