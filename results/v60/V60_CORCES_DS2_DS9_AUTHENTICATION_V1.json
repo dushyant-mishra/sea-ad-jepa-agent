@@ -1,0 +1,130 @@
+{
+  "schema": "V60_CORCES_SUPPLEMENTARY_AUTHENTICATION_V1",
+  "date": "2026-09-28",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_readouts_opened": false,
+    "regulatory_molecular_outcome_opened": false,
+    "note": "Structure, provenance and row-level FLAG counts only. No gene symbol, Ensembl ID, target gene, program gene or Stage75F edge was read, joined or enumerated from either workbook."
+  },
+
+  "data_set_2": {
+    "file": "C:/Users/dushy/Downloads/41588_2020_721_MOESM5_ESM.xlsx",
+    "identity": "Corces et al. 2020 Nat Genet, Supplementary Data Set 2",
+    "bytes": 8543929,
+    "sha256": "2d1aa847e0f075728e73b91e9d793450e278166edbb2f2a082e264f873c94707",
+    "sheets": ["scATAC-seq QC Metadata", "scATAC Cluster Residence", "scATAC Cell Type Residence"],
+    "sheet_read": "scATAC Cluster Residence",
+    "layout": "matrix; rows = Cluster1..Cluster24, columns = 10 samples + a Total column; values = cell counts",
+    "header_row_index": 12,
+    "columns": ["Cluster", "Cell_Type_Group", "Cluster_Description",
+                "CAUD_06_0615", "CAUD_09_1589", "CAUD_14_1018", "SUNI_04_38", "SUNI_03_39",
+                "PARL_09_1589", "SMTG_09_1589", "MDFG_09_35", "HIPP_11_0393", "HIPP_14_0586", "Total"],
+
+    "CLUSTER24": {
+      "Cell_Type_Group": "Microglia",
+      "Cluster_Description": "Microglia",
+      "cells": 4655,
+      "sheet_stated_total": 4655,
+      "internal_consistency": "MATCH - sum over the 10 sample columns equals the sheet's own Total column",
+      "fraction_of_atlas": 0.0659,
+      "per_sample": {
+        "HIPP_14_0586": 879, "CAUD_06_0615": 779, "SUNI_03_39": 651,
+        "CAUD_09_1589": 629, "HIPP_11_0393": 415, "SUNI_04_38": 380,
+        "CAUD_14_1018": 276, "SMTG_09_1589": 246, "MDFG_09_35": 225,
+        "PARL_09_1589": 175
+      },
+      "per_donor_token": {"03": 651, "04": 380, "06": 779, "09": 1275, "11": 415, "14": 1155},
+      "donors_with_microglia": 6,
+      "donors_total": 6,
+      "per_donor_min": 380,
+      "per_donor_max": 1275,
+      "per_donor_ratio": 3.36,
+      "per_region": {"CAUD": 1684, "HIPP": 1294, "SUNI": 1031, "SMTG": 246, "MDFG": 225, "PARL": 175}
+    },
+
+    "cross_validation": {
+      "atlas_total_over_sample_columns_all_24_clusters": 70631,
+      "GSE147672_barcodes_file_cell_count": 70631,
+      "verdict": "EXACT_MATCH - Data Set 2 and the GEO barcodes file describe the same 70,631 cells, so the cluster matrix is the authentic companion to the distributed peak sets"
+    },
+
+    "resolves": "V60 audit open item 1 (microglial depth). The paper's 'less than 20%, grouped with astrocytes and OPCs' is now a number: 4,655 cells, 6.59% of the atlas, present in all 6 donor tokens.",
+
+    "MEASUREMENT_ERROR_CAUGHT_AND_CORRECTED": {
+      "wrong_value": 9310,
+      "cause": "first pass summed every column after Cluster_Description, which included the sheet's own Total column, exactly doubling the count",
+      "detected_by": "the atlas-wide sum came to 141,262 = 2 x 70,631, and 70,631 is the independently known barcode count",
+      "corrected_value": 4655,
+      "class": "same family as the barcodes header off-by-one earlier in V60 - a spreadsheet whose column semantics were assumed rather than read"
+    }
+  },
+
+  "data_set_9": {
+    "file": "C:/Users/dushy/Downloads/41588_2020_721_MOESM12_ESM.xlsx",
+    "identity": "Corces et al. 2020 Nat Genet, Supplementary Data Set 9",
+    "bytes": 1533198,
+    "sha256": "a3a6fa5c0e5d3080c7d45287f19cb37edf862ed05f6a904c92b64c6333ef3327",
+    "sheets": ["HiChIP FitHiChIP Loop Calls", "Cicero Coaccessibility"],
+    "separation_of_link_types": "BY SHEET, not by a row filter. The V60 work order anticipated a method/type row-selector; none is needed.",
+
+    "sheet_hichip": {
+      "name": "HiChIP FitHiChIP Loop Calls",
+      "banner_verbatim": "This page of the table shows the FitHiChIP loop calls that overlap SNPs derived from analysis of H3K27ac HiChIP data.",
+      "header_row_index": 19,
+      "columns": ["hg38_Chromosome_Anchor1", "hg38_Start_Anchor1", "hg38_Stop_Anchor1", "Width_Anchor1",
+                  "hg38_Chromosome_Anchor2", "hg38_Start_Anchor2", "hg38_Stop_Anchor2", "Width_Anchor2",
+                  "Score", "Anchor1_hasSNP", "Anchor2_hasSNP"],
+      "column_semantics_verbatim": {
+        "Score": "The -log10(q-value) of the loop call from FitHiChIP.",
+        "Anchor1_hasSNP": "A boolean variable determining whether the first anchor overlaps a SNP from our AD/PD GWAS analysis.",
+        "Anchor2_hasSNP": "A boolean variable determining whether the second anchor overlaps a SNP from our AD/PD GWAS analysis."
+      },
+      "rows": 11542,
+      "distinct_anchors": 4803,
+      "chromosomes": 22,
+      "anchor_width_bp": 5001,
+      "anchor_width_is_uniform": true,
+      "cis_span_bp": {"min": 15000, "median": 105000, "max": 1950000},
+      "score_minus_log10_q": {"min": 1.0, "max": 163.536},
+      "genome_build": "hg38, stated per column",
+      "gwas_conditioning": {
+        "rows_with_at_least_one_anchor_on_an_AD_PD_GWAS_SNP": 11542,
+        "fraction": 1.0,
+        "rows_with_both_anchors_on_a_GWAS_SNP": 2839,
+        "rows_with_NEITHER_anchor_on_a_GWAS_SNP": 0
+      },
+      "paper_described_genome_wide_count": 833975,
+      "fraction_of_described_set_distributed_here": 0.01384
+    },
+
+    "sheet_cicero": {
+      "name": "Cicero Coaccessibility",
+      "banner_verbatim": "This page of the table shows the Cicero coaccessibility analysis for peaks that overlap SNPs derived from analysis of scATAC-seq data.",
+      "header_row_index": 21,
+      "columns": ["Peak_ID_Peak1", "hg38_Chromosome_Peak1", "hg38_Start_Peak1", "hg38_Stop_Peak1", "Width_Peak1",
+                  "Peak_ID_Peak2", "hg38_Chromosome_Peak2", "hg38_Start_Peak2", "hg38_Stop_Peak2", "Width_Peak2",
+                  "Coaccessibility", "Distance", "Peak1_hasSNP", "Peak2_hasSNP"],
+      "rows": 9795,
+      "rows_with_at_least_one_peak_on_a_GWAS_SNP": 9795,
+      "fraction": 1.0,
+      "rows_with_NEITHER": 0,
+      "paper_described_genome_wide_count": 2822924,
+      "fraction_of_described_set_distributed_here": 0.00347,
+      "admissibility": "INADMISSIBLE_INDEPENDENTLY_OF_THE_SNP_ISSUE - co-accessibility is a covariance estimator over ATAC and was excluded by the frozen V60 rule before this file was opened. Counted here only to document what Data Set 9 contains."
+    },
+
+    "VERDICT": "DATA_SET_9_CANNOT_INSTANTIATE_THE_FROZEN_OBJECT",
+    "reason": "The frozen object E = HiChIP contact edge INTERSECT Cluster-24 accessible regulatory element INTERSECT hg38-stable coordinate identity was frozen with the explicit exclusion 'no disease-locus filtering as a construction criterion'. Every one of the 11,542 distributed HiChIP rows is present BECAUSE an anchor overlaps an AD/PD GWAS SNP; zero rows are unconditioned. Disease-locus selection is therefore not a property that can be filtered out of this table - it is the table's inclusion criterion.",
+    "what_this_is_not": "This is not a finding that the Corces HiChIP experiment is disease-selected. The experiment is genome-wide and the donors are cognitively healthy. It is a finding about the DISTRIBUTED ARTIFACT: Supplementary Data Set 9 publishes the GWAS-overlapping excerpt, not the map.",
+    "peak_id_bridge_noted": "Cicero rows carry Peak_ID values such as sc_18453, described as 'A unique number that identifies the peak across supplementary tables'. A stable cross-table peak key exists in this supplement series. The HiChIP sheet does NOT carry it - its anchors are uniform 5,001 bp bins, not peaks."
+  },
+
+  "consequence_for_the_corces_route": {
+    "blocked_now": "instantiating E from Supplementary Data Set 9",
+    "not_yet_blocked": "instantiating E at all - the 833,975 genome-wide loops may exist in another fully public distribution (GSE147672_RAW.tar, a GEO supplementary file, or another Data Set in this series). That has NOT been checked and must not be assumed either way.",
+    "unchanged": "Cluster-24 accessibility is confirmed adequate (4,655 cells, all 6 donors, 54,330 unique hg38 intervals). The accessibility half of E is not the blocker.",
+    "still_open": "the University of Washington / SEA-AD source-institution overlap, which no public donor-token-to-institution mapping resolves"
+  }
+}
