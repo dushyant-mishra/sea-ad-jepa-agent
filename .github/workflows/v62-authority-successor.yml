@@ -1,0 +1,25 @@
+name: V62 authority successor
+
+on:
+  push:
+    branches:
+      - audit/v62-parallel-target-governance-20260928
+  workflow_dispatch:
+
+jobs:
+  authority-successor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Run V62 authority red-team
+        env:
+          PYTHONPATH: src
+        run: pytest -q tests/test_v62_authority_successor_chain.py
+      - name: Compile successor modules
+        run: |
+          python -m py_compile             src/sea_ad_jepa/v5/current_authority_roots_v3.py             src/sea_ad_jepa/v5/biological_specificity_authority_v1.py             src/sea_ad_jepa/v5/q_safety_authority_v1.py             src/sea_ad_jepa/v5/critical_test_execution_authority_v2.py             src/sea_ad_jepa/v5/current_authority_closure_v3.py             src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v3.py             src/sea_ad_jepa/v5/current_teacher_target_receipt_v3.py             src/sea_ad_jepa/v5/current_training_authority_v2.py             src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py
