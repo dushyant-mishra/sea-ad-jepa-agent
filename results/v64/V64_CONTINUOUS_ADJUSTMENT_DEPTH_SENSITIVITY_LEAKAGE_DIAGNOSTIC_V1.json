@@ -1,0 +1,48 @@
+{
+  "schema": "V64_CONTINUOUS_ADJUSTMENT_DEPTH_SENSITIVITY_LEAKAGE_DIAGNOSTIC_V1",
+  "date": "2026-09-29",
+  "status": "FROZEN_BEFORE_ACCEPTING_ANY_CONTINUOUS_ADJUSTMENT_PASS",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "purpose": "Determine whether the continuous-adjustment estimator's apparent TECH rejection depends on outcome-derived RNA/ATAC depth-sensitivity covariates."
+  },
+  "risk": "rna_depth_sensitivity and atac_depth_sensitivity are computed from each arm's observed RNA/ATAC signals. Because planted biology changes those signals, these covariates are arm-dependent and could remove biological signal while being labelled nuisance.",
+  "primary_ablation": {
+    "remove_only": ["rna_depth_sensitivity", "atac_depth_sensitivity"],
+    "keep_fixed": [
+      "all tournament worlds and seeds",
+      "all arm constructions",
+      "M_MIN=0.010",
+      "one-sided LCB95 procedure",
+      "ridge alpha",
+      "cross-fitting by promoter",
+      "all other nuisance features and nonlinear terms",
+      "held-out ambient family",
+      "twin construction",
+      "positive effect sizes"
+    ],
+    "forbidden": [
+      "retuning ridge alpha",
+      "adding replacement covariates after seeing the result",
+      "changing positive amplitudes",
+      "changing M_MIN",
+      "altering nuisance arms"
+    ]
+  },
+  "mandatory_comparison": [
+    "per-family margin and LCB95 with versus without the two depth-sensitivity covariates",
+    "POS_BIO_1 and POS_BIO_2 scores and detectability",
+    "NEG_TECH_2 score",
+    "Kish effective sample size",
+    "top 1/5/10 percent contribution concentration",
+    "residual correlation with log-distance, degree, accessibility and anchor frequency"
+  ],
+  "interpretation": {
+    "A_pass_survives": "Continuous-adjustment success does not depend materially on the two outcome-derived depth-sensitivity covariates. Reading A is strengthened.",
+    "B_pass_depends_on_depth_features": "Do not promote the estimator. Replace depth sensitivity with an arm-independent construction prospectively, e.g. split-sample or base-noise-only sensitivity, and rerun under a new contract.",
+    "C_positive_biology_is_materially_restored_without_depth_features": "Treat the original estimator as at risk of over-adjustment even if TECH remains green.",
+    "D_another_family_breaks": "STOP; do not repair post hoc."
+  },
+  "authority_rule": "A green continuous-adjustment result is provisional until this diagnostic is executed and reported."
+}
