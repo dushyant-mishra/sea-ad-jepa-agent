@@ -173,25 +173,38 @@ def main() -> int:
             c1i, s1i, e1i = ix["chr1"], ix["s1"], ix["e1"]
             c2i, s2i, e2i = ix["chr2"], ix["s2"], ix["e2"]
             qi = ix["Q-Value_Bias"]
+            # Two-stage parse. Stage 1 touches only the three fields needed
+            # to discard a row (chr1, chr2, q); stage 2 does the full integer
+            # parse only for rows that survive. ~50M rows are read across the
+            # 12 files and well under 1% survive, so parsing all of them costs
+            # many times more for no information.
+            #
+            # SCOPE OF THE F6 CHECK, stated rather than assumed: bin width,
+            # grid alignment and chromosome tokens are verified on every row
+            # that ENTERS E's candidate pool, not on every row in the files. A
+            # grid violation in a row discarded on significance cannot affect
+            # E. The trans and self-loop counters still run over ALL rows,
+            # because F4 requires those to be COUNTED.
             for line in fh:
-                f = line.rstrip("\n").split("\t")
+                f = line.split("	")
                 n += 1
                 c1, c2 = f[c1i], f[c2i]
-                s1, e1, s2, e2 = int(f[s1i]), int(f[e1i]), int(f[s2i]), int(f[e2i])
-                chrom_tokens.add(c1); chrom_tokens.add(c2)
-                bin_widths[e1 - s1] += 1
-                if s1 % BIN or s2 % BIN:
-                    grid_violations += 1
                 if c1 != c2:
                     trans += 1
                     continue
                 cis += 1
+                s1 = int(f[s1i]); s2 = int(f[s2i])
                 if s1 == s2:
                     self_loop += 1
                     continue
                 q = float(f[qi])
                 if q >= Q_TIERS[-1][1]:
                     continue
+                e1 = int(f[e1i])
+                chrom_tokens.add(c1); chrom_tokens.add(c2)
+                bin_widths[e1 - s1] += 1
+                if s1 % BIN or s2 % BIN:
+                    grid_violations += 1
                 tier = 0 if q < 0.001 else (1 if q < 0.01 else 2)
                 for name, thr in Q_TIERS:
                     if q < thr:
@@ -218,6 +231,10 @@ def main() -> int:
     report["F4_self_loops"] = totals["self"]
     report["F6_bin_widths_observed"] = dict(bin_widths.most_common(5))
     report["F6_grid_violations"] = grid_violations
+    report["F6_check_scope"] = (
+        "bin width, grid alignment and chromosome tokens verified on every row "
+        "entering E's candidate pool (cis, non-self-loop, q<0.05), not on every "
+        "row in the files; trans and self-loop counts are over ALL rows")
     report["F6_chromosome_tokens"] = sorted(chrom_tokens)
     report["F6_chrom_naming_matches_peaks"] = bool(
         chrom_tokens & {c for c, _ in acc})
