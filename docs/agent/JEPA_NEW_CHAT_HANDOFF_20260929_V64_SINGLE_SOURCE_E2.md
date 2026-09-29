@@ -12,8 +12,10 @@ Repository:
 Current ChatGPT successor branch:
 `chatgpt/v64-e2-single-source-successor-20260929`
 
-Current tip:
-`003ad549a158ebf44093d9771cb7c2aabd240d05`
+Canonical authority:
+the LIVE HEAD of `chatgpt/v64-e2-single-source-successor-20260929`.
+
+Do not treat any embedded SHA in this handoff as self-authoritative: this document itself changes the branch tip. Verify the live branch HEAD at takeover time.
 
 Claude's active scientific branch / PR:
 PR #198
@@ -22,7 +24,7 @@ PR #198
 Claude authenticated Nott/Table-S5 head:
 `e96d22854250cfb8938a876606011614a65f1856`
 
-The ChatGPT V64 branch is exactly six commits ahead of `e96d2285` and adds governance/results/custody documentation only. It does NOT modify Claude's scientific source/tests/results.
+At the time of this successor cleanup, the branch remains a governance/scientific-contract successor of `e96d2285`; it does NOT modify Claude's scientific source/tests/results. Verify the live ahead-count rather than relying on a number embedded in this evolving handoff.
 
 Do NOT assume main is current.
 
@@ -268,15 +270,16 @@ Therefore the result is a major project-specific statistical success, but not ye
 
 ## 10. V64 statistical red-team successors
 
-A separate ChatGPT branch was created:
+The three prospectively frozen contracts originally designated authoritative on
 `chatgpt/v64-parallel-successors-20260929`
+have now been promoted unchanged onto the canonical single-source branch:
+1. `V64_CONTINUOUS_ADJUSTMENT_DEPTH_SENSITIVITY_LEAKAGE_DIAGNOSTIC_V1.json`
+2. `V64_CONTINUOUS_ADJUSTMENT_OUT_OF_SPAN_STRESS_CONTRACT_V1.json`
+3. `V64_NOTT_SAME_STUDY_SUBSTRATE_FIT_CONTRACT_V1.json`
 
-It contains three prospectively frozen contracts:
-1. depth-sensitivity leakage diagnostic;
-2. out-of-span TECH stress;
-3. Nott same-study substrate-fit contract.
-
-These were not yet reconciled into the current single-source branch.
+The older branch
+`chatgpt/v64-nott-substrate-fit-contract-20260929`
+contains longer, non-byte-identical drafts with the same filenames. Those copies are historical/superseded and are NOT authority unless a later explicit successor says otherwise.
 
 ### Depth-sensitivity leakage diagnostic
 Concern:
@@ -498,30 +501,25 @@ Prior large project archives/checkpoints are not duplicated because V46 already 
 Archived chat-only text artifacts are under:
 `docs/agent/archive/chat_runtime_20260929/`
 
-## 17. Branch reconciliation warning
+## 17. V64 branch authority — reconciled
 
-There are now TWO V64 ChatGPT successor branches with complementary content:
-
-A. Current Nott/custody branch:
+Canonical execution/governance branch:
 `chatgpt/v64-e2-single-source-successor-20260929`
-tip `003ad549...`
 
-Contains:
+It now contains:
 - E2 single-source successor ruling;
 - Nott ATAC/chain authentication receipt;
 - custody manifest;
+- depth-sensitivity leakage diagnostic;
+- out-of-span TECH stress contract;
+- Nott same-study substrate-fit contract;
 - archived chat handoff/source artifacts.
 
-B. Parallel statistical-contract branch:
-`chatgpt/v64-parallel-successors-20260929`
+Historical secondary branches:
+- `chatgpt/v64-parallel-successors-20260929` — source of the three prospectively frozen contracts now copied unchanged to canonical.
+- `chatgpt/v64-nott-substrate-fit-contract-20260929` — older non-byte-identical drafts with overlapping filenames; SUPERSEDED/NON-AUTHORITATIVE.
 
-Contains:
-- depth-sensitivity leakage diagnostic;
-- out-of-span TECH stress;
-- Nott same-study substrate-fit contract.
-
-Before execution, reconcile/cherry-pick the relevant frozen contracts onto ONE successor branch.
-Do not rewrite their substance after seeing outcomes.
+Do not combine clauses across historical copies. Execute the copies on the canonical branch.
 
 ## 18. What is solved, provisional, and blocked
 
@@ -555,8 +553,8 @@ Do not rewrite their substance after seeing outcomes.
 
 Execute in this order:
 
-### A. Reconcile V64 branches
-Bring the three frozen parallel contracts onto the current V64 successor branch without changing their content.
+### A. Branch reconciliation — COMPLETE
+The three frozen parallel contracts are now on the canonical V64 successor branch unchanged.
 
 ### B. Run depth-sensitivity leakage diagnostic
 Remove only:
