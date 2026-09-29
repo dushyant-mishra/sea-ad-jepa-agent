@@ -1,5 +1,22 @@
 # V59 — Kosoy/Fullard provenance checks 1 and 2
 
+> ## SUPERSEDED AS A QUALIFICATION PATH — 2026-09-28
+>
+> **No institutional DUA will be pursued.** Both remaining checks are therefore
+> reclassified `BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT`:
+>
+> - donor identity crosswalk — needed portal access
+> - distributed enhancer–gene artifact inspection — needed portal access
+>
+> **FreshMicro/Kosoy is demoted to published/supporting evidence only and must
+> not become a load-bearing qualification dependency.** Outcome 2 was conditional
+> on those two checks; they are now closed-unresolvable rather than open, so Kosoy
+> cannot reach Outcome 1 and is not eligible as *the* frozen external cis object.
+>
+> Everything below remains accurate as public provenance and is preserved
+> unedited. None of it depended on controlled access. The ROS/MAP-to-ROSMAP
+> mutual-exclusivity constraint in particular still stands.
+
 **Date 2026-09-28. Branch `claude/v59-r3-audit-and-external-cis-20260928`, from
 `3c0f915cf1a1e827b24345f812d3e5a3524613cd`. `TRAINING=OFF`. `TD60=BLOCKED`.**
 
