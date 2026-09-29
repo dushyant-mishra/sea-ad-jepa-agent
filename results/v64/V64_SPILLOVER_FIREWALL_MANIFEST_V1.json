@@ -72,7 +72,10 @@
     "raw cross-cell-type ATAC support-rate comparison used as the P1S primary gate after V2 supersession; primary must use within-track observed-minus-null excess support and microglia-vs-comparator difference-in-differences",
     "pre-C3 promoter-orientation count 64210 reused as the final P1S denominator without intersection with the 102701 C3-retained set",
     "pre-C3 gene-resolved count 61624 reused as the final P3 denominator without C3 intersection and expression eligibility",
-    "descriptive mapping retention 104728/104802 quoted as C3 exact-identity retention"
+    "descriptive mapping retention 104728/104802 quoted as C3 exact-identity retention",
+    "the superseded microglia-observed-only density Q1 table reused as the authoritative P1S density sensitivity",
+    "the withdrawn claim that microglial advantage disappears in the lowest-density quartile",
+    "P1S primary PASS described as independent external corroboration, donor-independent replication, multi-source contact replication, or causal enhancer-gene evidence"
   ],
   "fail_closed_rule": "If an expected blob SHA, scientific binary SHA-256, parent commit, decision configuration, or declared dataset role does not match this allowlist or an explicit later successor, STOP and adjudicate provenance before computing/interpreting outcomes.",
   "explicitly_non_authoritative_files": [
@@ -91,7 +94,19 @@
   "current_promoter_orientation_authority": "results/v64/V64_NOTT_PROMOTER_ORIENTATION_AND_GENE_MAPPING_CONTRACT_V1.json",
   "P3_expression_authority": {
     "identified_source": "GSE73721_Human_and_mouse_table.csv.gz",
-    "status": "BLOCKED_UNTIL_EXACT_BYTES_AUTHENTICATED",
+    "GEO": "GSE73721",
+    "metadata_verified": true,
+    "exact_bytes_authenticated": false,
+    "blocking_reason": "Exact supplementary binary is not retrievable in the current runtime; direct NCBI binary fetch fails at DNS/transfer layer.",
+    "authenticator": "scripts/v64/authenticate_gse73721_p3_expression_v1.py",
     "forbidden_substitution": true
+  },
+  "current_P1S": {
+    "status": "PASS__CLOSED",
+    "primary_result_commit": "303ca8b657b38863b5652c8cc8df132731152662",
+    "authoritative_sensitivity_result": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
+    "corrected_rerun_commit": "8b13939bbeb62a6bc7e587f3e9bd1d0cd93c60d7",
+    "withdrawn_non_authoritative_caveat": "Negative Q1 result from microglia-observed-only density stratification",
+    "claim_scope": "Internal microglial substrate compatibility only"
   }
 }
