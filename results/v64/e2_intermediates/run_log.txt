@@ -1,0 +1,14 @@
+canonical parent commit: 4af69aeb78c42f721874d2b21fe94857333deb2f
+tracked files modified vs canonical HEAD: 0 (untracked new files present: 1)
+input authentication: Table S5 and Nott PU1 ATAC match frozen digests
+authority chain: 18 files pinned by git blob + sha256
+source interactions: 104,802  (11,793 PU1_active_promoter rows)
+orientation: PROMOTER_PROMOTER 7,614 | NO_ACTIVE_PROMOTER_MATCH 32,978 | promoter-distal unique-Ensembl 61,624
+C3 exact-identity retained pairs: 102,701
+Nott PU1 microglia ATAC peaks: 50,199
+
+UPSTREAM CROSS-CHECKS
+  original_microglia_interactions              expected 104,802  observed 104,802  OK
+  C3_retained                                  expected 102,701  observed 102,701  OK
+  P1S_source_oriented_promoter_distal          expected  62,890  observed  62,890  OK
+  pre_C3_unique_Ensembl_source_side            expected  61,624  observed  61,624  OK
