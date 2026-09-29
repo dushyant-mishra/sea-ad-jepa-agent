@@ -1,0 +1,43 @@
+{
+  "schema": "V64_P3_EXECUTION_READY_STATE_V1",
+  "date": "2026-09-29",
+  "status": "SCIENTIFIC_RULES_FROZEN__FINAL_MECHANICAL_EXECUTION_PENDING",
+  "expression_artifact": {
+    "file": "GSE73721_Human_and_mouse_table.csv.gz",
+    "bytes": 658883,
+    "sha256": "140f376a5162b4d739a0e4224ce5757e7399b24fb2fce1c5f9bf0eb438d2fcef",
+    "rows_genes": 15041,
+    "columns_total": 46,
+    "gene_key": "Gene",
+    "myeloid_columns": ["45yo ctx myeloid","51yo ctx myeloid","63 yo ctx myeloid"]
+  },
+  "expression_rule": "mean FPKM across the three human myeloid samples > 0.5",
+  "authorities": [
+    "results/v64/V64_P3_GSE73721_EXACT_FILE_AUTHENTICATION_V1.json",
+    "results/v64/V64_P3_EXPRESSION_AND_GENE_JOIN_CONTRACT_V1.json",
+    "results/v64/V64_P3_CELLTYPE_NEGATIVE_ELIGIBILITY_CONTRACT_V1.json",
+    "results/v64/V64_P3_SOURCE_EXPRESSION_ATTRITION_V1.json"
+  ],
+  "source_stage_counts": {
+    "neuron": {
+      "attempted": 93290,
+      "unique_gene_resolved": 65772,
+      "GSE73721_matched": 53803,
+      "expression_eligible": 31690
+    },
+    "oligodendrocyte": {
+      "attempted": 61895,
+      "unique_gene_resolved": 40793,
+      "GSE73721_matched": 32755,
+      "expression_eligible": 22377
+    }
+  },
+  "remaining_mechanical_steps": [
+    "exact-identity C3 qualification of neuron and oligo contacts",
+    "PU1 microglia ATAC >=1 bp distal accessibility",
+    "same-gene plus overlapping-distal absence from qualified microglia map",
+    "final valid-negative and trivial-negative attrition reporting"
+  ],
+  "current_environment_block": "UCSC liftOver v479, authenticated chains, and authenticated PU1 ATAC binary are not locally retrievable in this runtime; no substitute implementation used.",
+  "governance": {"training":"OFF","td60":"BLOCKED","E2_NOTT_CANDIDATE":"NOT_INSTANTIATED"}
+}
