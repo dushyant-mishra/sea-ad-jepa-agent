@@ -1,0 +1,33 @@
+name: V61 Current Authority Successor
+
+on:
+  push:
+    branches:
+      - "chatgpt/v61-target-backbone-governance-20260928"
+    paths:
+      - "src/sea_ad_jepa/v5/*authority*v*.py"
+      - "src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py"
+      - "tests/v5/test_v61_missing_authority_roots.py"
+      - "tests/v5/test_current_authority_v3_successor.py"
+      - ".github/workflows/v61-current-authority-successor.yml"
+  pull_request:
+    paths:
+      - "src/sea_ad_jepa/v5/*authority*v*.py"
+      - "src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py"
+      - "tests/v5/test_v61_missing_authority_roots.py"
+      - "tests/v5/test_current_authority_v3_successor.py"
+
+jobs:
+  authority-successor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install --upgrade pip pytest
+      - name: Bare-pytest collection and successor authority tests
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m pytest -q             tests/v5/test_v61_missing_authority_roots.py             tests/v5/test_current_authority_v3_successor.py
