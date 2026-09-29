@@ -1,0 +1,96 @@
+{
+  "schema": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_P1S_OUTCOME_INSPECTION",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "opens_protected_outcomes": false,
+    "uses_AD_loci_or_target_genes": false,
+    "changes_existing_P1S_claim_scope": false
+  },
+  "inherits": [
+    "results/v64/V64_NOTT_SAME_STUDY_SUBSTRATE_FIT_CONTRACT_V1.json",
+    "results/v64/V64_NOTT_C3_TERMS_AND_P1S_CLAIM_SCOPE_AMENDMENT_V1.json",
+    "results/v64/V64_NOTT_C3_EXACT_IDENTITY_SUCCESSOR_RULE_V1.json"
+  ],
+  "analysis_population": {
+    "contacts": "Only C3-admissible Nott microglia promoter-distal contact pairs.",
+    "paired_structure": "The exact same retained contact pairs are evaluated against PU1/microglia, NeuN/neuron and Olig2/oligodendrocyte accessibility.",
+    "no_posthoc_subset": true
+  },
+  "binary_accessibility_support": {
+    "rule": "A distal anchor is supported in a cell-type ATAC track if its hg38 interval has >=1 bp overlap with at least one authenticated ATAC peak interval in that track.",
+    "why": "This is literal set intersection and introduces no fractional-overlap or center-distance threshold to tune.",
+    "multiple_peaks": "Still one supported contact pair; peak multiplicity is not counted as extra support.",
+    "promoter_anchor_accessibility": "Not part of the primary binary support statistic; the contact assay is promoter-anchored by construction and the P1S question is distal substrate compatibility.",
+    "forbidden": [
+      "widening peaks",
+      "nearest-peak rescue",
+      "cell-type-specific overlap tolerances",
+      "target-gene-dependent overlap rules"
+    ]
+  },
+  "primary_paired_cell_type_contrasts": {
+    "unit": "C3-admissible microglia contact pair",
+    "microglia_vs_neuron": "paired binary difference support_microglia - support_neuron",
+    "microglia_vs_oligodendrocyte": "paired binary difference support_microglia - support_oligodendrocyte",
+    "effect_reporting": [
+      "absolute support rate in each cell type",
+      "paired mean difference microglia-neuron",
+      "paired mean difference microglia-oligodendrocyte",
+      "number of microglia-only, comparator-only, both-supported and neither-supported pairs"
+    ],
+    "uncertainty": {
+      "method": "nonparametric cluster bootstrap over promoter identity",
+      "reason": "Multiple distal contacts from the same promoter are not independent.",
+      "confidence_interval": "two-sided 95% percentile interval",
+      "bootstrap_seed": 20260929,
+      "bootstrap_replicates": 4000
+    },
+    "pass_requirement": "The lower bound of the 95% promoter-cluster-bootstrap interval must be > 0 for BOTH microglia-neuron and microglia-oligodendrocyte paired differences.",
+    "hard_stop": "If either lower bound is <= 0, classify NOT_MICROGLIA_FIT_FOR_TARGET_CONSTRUCTION under P1S."
+  },
+  "promoter_fixed_exact_distance_null": {
+    "purpose": "Test whether observed microglia distal accessibility exceeds genomic opportunity under promoter-fixed contact geometry.",
+    "construction": [
+      "Hold the promoter anchor fixed.",
+      "For each observed contact pair, preserve its exact absolute promoter-distal midpoint distance and distal interval length.",
+      "Generate the null distal interval on the opposite genomic side of the promoter midpoint when that interval remains fully within the same chromosome.",
+      "If the opposite-side interval is invalid/out of chromosome bounds, mark that pair NULL_NOT_CONSTRUCTIBLE for this exact-distance null; do not substitute a different distance.",
+      "Promoter degree is preserved exactly because every constructible observed edge contributes at most one null edge."
+    ],
+    "why_no_random_tournament": "The opposite-side construction gives an outcome-blind deterministic exact-distance counterfactual and avoids choosing a Monte Carlo replicate count after seeing null variability.",
+    "primary_null_statistic": "Among pairs with a constructible exact-distance opposite-side null, compare observed microglia distal-support binary value with its paired null-support binary value.",
+    "uncertainty": {
+      "method": "nonparametric cluster bootstrap over promoter identity on observed-minus-null paired differences",
+      "confidence_interval": "two-sided 95% percentile interval",
+      "bootstrap_seed": 20260929,
+      "bootstrap_replicates": 4000
+    },
+    "pass_requirement": "Lower 95% promoter-cluster-bootstrap bound for observed-minus-null support must be > 0.",
+    "reporting": [
+      "pairs entering null construction",
+      "NULL_NOT_CONSTRUCTIBLE count and fraction from the C3-admissible denominator",
+      "observed support rate",
+      "null support rate",
+      "observed-minus-null paired difference",
+      "observed/null ratio when null rate > 0"
+    ],
+    "limitations": "This null preserves promoter identity, exact distance, chromosome, distal width and promoter degree, but does not guarantee matched local regulatory density. Local-density sensitivity must therefore be reported separately rather than claimed as exactly preserved."
+  },
+  "nuisance_and_geometry_reporting": {
+    "primary_P1S_is_not_the_NIH_CARD_continuous_adjustment_estimator": true,
+    "required_descriptive_strata": [
+      "chromosome",
+      "log genomic distance",
+      "promoter contact degree",
+      "local ATAC peak density around distal anchor",
+      "distal interval length"
+    ],
+    "rule": "Report support contrasts across predeclared quartiles of distance, degree and local peak density as sensitivity/descriptive checks. Do not use those strata to redefine the primary population after seeing results.",
+    "no_silent_import": "Do not import the frozen NIH-CARD RNA/ATAC continuous-adjustment estimator into P1S."
+  },
+  "P1S_PASS": "Both same-pair microglia-vs-neuron and microglia-vs-oligodendrocyte lower 95% promoter-cluster-bootstrap bounds are >0, AND the observed-vs-exact-distance-null lower bound is >0.",
+  "claim_scope": "A P1S pass establishes internal microglial substrate compatibility of the Nott-centered contact object within this same-study comparator system. It does not establish independent external replication, donor-independent corroboration, multi-source contact replication or causal enhancer-gene assignment."
+}
