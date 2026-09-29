@@ -1,0 +1,194 @@
+{
+  "schema": "V63_NIHCARD_SCHEMA_RECEIPT_INTEGRITY_BOUND_V1",
+  "date": "2026-09-29",
+  "binds": {
+    "raw_receipt": "results/v63/NIHCARD_SCHEMA_RECEIPT_V2.json",
+    "raw_receipt_sha256": "213e7dc92cd28a8e5eff0c5b5dc60522f74d0c0b6f4b72a729fecfd8ab75d7d7"
+  },
+  "OBJECT_IDENTITY": {
+    "rationale": "File-open success is not integrity evidence. A truncated HDF5 still opens and still serves its first blocks as valid data - this project had a local NIH-CARD download fail truncated at 6,059,254,368 of 14,508,702,462 bytes without erroring loudly. A receipt must therefore bind the identity of the bytes it read, not merely report what it measured.",
+    "source": "Zenodo record 20834804, DOI 10.5281/zenodo.20834804, licence cc-by-4.0",
+    "read_mode": "HTTP byte-range against the authoritative URL; NOT a local copy",
+    "files": {
+      "final_rna_data.h5ad": {
+        "authoritative_size_bytes": 18439154935,
+        "observed_content_length": 18439154935,
+        "length_matches_authoritative": true,
+        "zenodo_published_md5": "f628b17aab355f80b912e3c715543cbd",
+        "md5_verified": false,
+        "md5_verification_note": "NOT verified: verifying the md5 requires reading all bytes, which is exactly the 33 GB transfer the range-read design avoids. The binding here is authoritative LENGTH plus the publisher's declared digest, and the gap is stated rather than papered over.",
+        "last_modified": "Tue, 09 Jun 2026 09:35:24 GMT",
+        "etag": "NOT_SERVED_BY_ZENODO",
+        "bytes_actually_read": 588197111,
+        "fraction_read": 0.031899,
+        "http_requests": 36
+      },
+      "final_atac_data.h5ad": {
+        "authoritative_size_bytes": 14508702462,
+        "observed_content_length": 14508702462,
+        "length_matches_authoritative": true,
+        "zenodo_published_md5": "b71589e0033e391e2fe97c1ae3928a7f",
+        "md5_verified": false,
+        "md5_verification_note": "NOT verified: verifying the md5 requires reading all bytes, which is exactly the 33 GB transfer the range-read design avoids. The binding here is authoritative LENGTH plus the publisher's declared digest, and the gap is stated rather than papered over.",
+        "last_modified": "Tue, 09 Jun 2026 06:36:32 GMT",
+        "etag": "NOT_SERVED_BY_ZENODO",
+        "bytes_actually_read": 348732158,
+        "fraction_read": 0.024036,
+        "http_requests": 21
+      }
+    },
+    "local_copy_status": "final_atac_data.h5ad FAILED TRUNCATED at 6,059,254,368 of 14,508,702,462 bytes (58% missing) and curl exited 0. h5py REFUSES to open it. final_rna_data.h5ad completed at 18,439,154,935 bytes. No measurement in this receipt derives from local bytes; all reads were HTTP byte-range against the authoritative URLs.",
+    "rationale_superseded_by": "CORRECTION_2026_09_29.corrected_rationale"
+  },
+  "TASK3_ANSWERS": {
+    "1_count_like_rna_slot": {
+      "answer": ".X",
+      "dtype": "uint16",
+      "verdict": "COUNT_LIKE_INTEGER_MATRIX",
+      "important": "raw/X is NONINTEGER_LOG_LIKE float32. The convention is REVERSED relative to the common AnnData layout where .X is normalised and raw/X holds counts. Any pipeline assuming the usual layout would silently analyse log values as counts.",
+      "caveat": "COUNT_LIKE means integer-valued and nonnegative in the sampled values only; it does not establish raw or CellBender-corrected provenance."
+    },
+    "2_exact_shared_barcodes": {
+      "answer": 0,
+      "n_rna": 1501089,
+      "n_atac": 1501089,
+      "cause": "the ATAC index repeats the sample suffix: RNA 'AAACAGCCACGTGCTG-1_HBCC-1193' vs ATAC 'CCTATAGCAATATAGG-1_HBCC-1193_HBCC-1193'",
+      "composite_diagnostic_shared": 1501089,
+      "composite_is_authoritative": false,
+      "note": "both files hold exactly 1,501,089 nuclei and the (sample, raw_barcode) composite matches 1:1 with no residual, which is consistent with the same nuclei under two spellings - but the probe refuses to assert pairing without an explicit operator assertion, which is the point of the repair."
+    },
+    "3_donor_label_mismatches": {
+      "answer": "NOT_CHECKABLE__PAIRING_UNRESOLVED",
+      "not_zero": true,
+      "note": "reported as not-checkable rather than as zero mismatches; 'not checkable' is not a pass"
+    },
+    "4_microglia_total": 87384,
+    "5_microglia_with_paired_atac": {
+      "answer": null,
+      "status": "PAIRING_NAMESPACE_UNRESOLVED",
+      "THE_REPAIR_IN_ACTION": "v1.0 of this probe would have reported 0 here. On this real deposit that would have read as 'NIH-CARD has no paired microglia', which is almost certainly false."
+    },
+    "6_microglia_per_donor_quantiles": {
+      "0": 1.0,
+      "0.1": 39.6,
+      "0.25": 115.0,
+      "0.5": 217.0,
+      "0.75": 343.0,
+      "0.9": 492.6000000000003,
+      "1": 1150.0
+    },
+    "7_donors_below_thresholds": {
+      "20": 20,
+      "50": 45,
+      "100": 75,
+      "200": 167
+    },
+    "8_counts_by_cohort": {
+      "HBCC": {
+        "n_donors": 155,
+        "median_per_donor": 157.0,
+        "total": 31144
+      },
+      "NABEC": {
+        "n_donors": 202,
+        "median_per_donor": 256.5,
+        "total": 56240
+      }
+    },
+    "9_available_covariates": {
+      "rna": {
+        "age": [
+          "Age"
+        ],
+        "sex": [
+          "Sex"
+        ],
+        "pmi": [
+          "PMI"
+        ],
+        "cohort": [
+          "cohort"
+        ],
+        "batch": [
+          "batch"
+        ],
+        "brain_bank": [
+          "Brain_bank"
+        ],
+        "ancestry": [
+          "Race",
+          "Ancestry"
+        ]
+      },
+      "atac": {
+        "cohort": [
+          "cohort"
+        ]
+      },
+      "note": "ATAC obs carries only cohort/sample_id/cell_type/barcode/fragment counts; donor covariates live on the RNA side"
+    },
+    "10_feature_representation": {
+      "rna_genes": {
+        "n": 38606,
+        "examples": [
+          "DDX11L2",
+          "MIR1302-2HG",
+          "FAM138A",
+          "ENSG00000290826",
+          "OR4F5"
+        ],
+        "note": "MIXED symbols and Ensembl IDs in one index (e.g. 'OR4F5' next to 'ENSG00000290826'). Feature identity must be resolved on stable IDs, not on symbols."
+      },
+      "atac_peaks": {
+        "n": 521217,
+        "examples": [
+          "chr10:100000220-100000720",
+          "chr10:100009708-100010208",
+          "chr10:100019681-100020181",
+          "chr10:100020766-100021266",
+          "chr10:100025542-100026042"
+        ],
+        "format": "chrN:start-end, fixed 500 bp width",
+        "note": "cohort-defined CONSENSUS peak universe; usable only as a measurement-support restriction applied identically to linked and matched-unlinked pairs, never as construction evidence"
+      }
+    },
+    "column_resolution": {
+      "celltype": "cell_type",
+      "donor": "SampleID",
+      "cohort": "cohort",
+      "donor_atac": "sample_id",
+      "donor_column_names_differ_between_files": true
+    }
+  },
+  "QUALIFICATION": {
+    "pairing_resolved": false,
+    "pairing_basis": "NONE__UNRESOLVED",
+    "donor_labels_consistent": null,
+    "microglia_counts_available": true,
+    "paired_microglia_available": false,
+    "QUALIFIED_FOR_PAIRED_USE": false,
+    "rule": "QUALIFIED_FOR_PAIRED_USE requires an exactly resolved namespace, ZERO donor-label mismatches across shared nuclei, and available microglia and paired-microglia counts. An operator-asserted composite basis does NOT satisfy pairing_resolved."
+  },
+  "FEASIBILITY_READING": {
+    "microglia_depth": "87,384 microglia over 357 donors, median 217 per donor. But 45 donors have fewer than 50 and 167 of 357 have fewer than 200. Per-donor microglial depth is the binding constraint on any within-donor aggregation, not the headline total.",
+    "cohort_asymmetry": "NABEC 202 donors / 56,240 microglia / median 256.5 vs HBCC 155 donors / 31,144 / median 157. HBCC donors are systematically shallower, so cohort and depth are confounded and must not be compared naively - which is also why the PMI diagnostic must be run WITHIN cohort.",
+    "zero_microglia_donors": 0
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "exposure": "schema, metadata and bounded value sampling only; NO RNA-ATAC relationship computed; no biological outcome opened",
+    "nih_card_role": "VALIDATION CANDIDATE ONLY - its peaks and any derived links must never enter E2 construction"
+  },
+  "CORRECTION_2026_09_29": {
+    "what_was_wrong": "This receipt's OBJECT_IDENTITY.rationale asserted that 'a truncated HDF5 still opens and still serves its first blocks as valid data'. That is FALSE for the truncation actually observed, and I verified it rather than leaving it standing.",
+    "evidence": "h5py refused the 6,059,254,368-byte file outright: OSError 'Unable to synchronously open file (truncated file: eof = 6059254368, sblock->base_addr = 0, stored_eof = 14508702462)'. HDF5 records the expected end-of-file in its superblock and checks it.",
+    "what_is_still_true": [
+      "The acquisition step reported SUCCESS (curl exit 0) on a file missing 8,449,448,094 bytes, 58% of the object. The -C - resume flag did not recover it.",
+      "No measurement in this receipt derives from those local bytes; the probe ran over HTTP byte range against the authoritative URL, and both observed content-lengths match Zenodo exactly.",
+      "final_rna_data.h5ad DID complete at 18,439,154,935 bytes, so the failure was file-specific and silent rather than an obvious total failure."
+    ],
+    "corrected_rationale": "Integrity binding is required because the ACQUISITION step can report success on an incomplete object. It is NOT required because readers fail to notice truncation - HDF5 does notice, via its superblock length. But that is a format-specific safeguard: gzip streams, BED/CSV text and partially-read tar members have no declared total length and will yield a prefix that parses cleanly. Making correctness depend on which format happened to be involved is not a property to rely on, so completeness is verified at acquisition rather than left to the parser.",
+    "class": "self-correction of a claim I made confidently in a committed artifact"
+  }
+}

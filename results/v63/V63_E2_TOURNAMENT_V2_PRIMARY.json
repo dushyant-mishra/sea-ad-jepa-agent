@@ -1,0 +1,230 @@
+{
+  "schema": "V63_E2_IDENTIFIABILITY_TOURNAMENT_V2",
+  "date": "2026-09-29",
+  "supersedes": "V63_E2_SYNTHETIC_IDENTIFIABILITY_BENCHMARK_V1",
+  "why_superseded": "v1 compared the positive floor against a SINGLE POOLED negative ceiling, so an easy nuisance family could sit beneath a hard one and the pooled number would look healthy while a specific family went unrejected. v2 requires the margin to clear the threshold for EVERY identifiable family separately.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "real_data_read": false
+  },
+  "sealing": {
+    "declaration": {
+      "N_PROM/N_DISTAL/N_LINKED_PER_PROM/N_METACELL": "synthetic architecture; chosen for tractability, not from any dataset",
+      "M_MIN": "PREDECLARED threshold on the margin scale, fixed before running, with sensitivity arms at 0.005 and 0.020 reported alongside. It has no external calibration and is therefore carried WITH its sensitivity arms rather than asserted as authoritative.",
+      "LCB_LEVEL/N_BOOT": "standard one-sided 95% bootstrap over seeds",
+      "effect sizes in simulate()": "synthetic; set so that POS-BIO-1 is comfortably detectable and POS-BIO-2 is degraded. None was tuned against a real dataset.",
+      "REAL_DATA_DERIVED_PARAMETERS": "NONE"
+    },
+    "sealed_before_real_bytes": true,
+    "excluded_sources": [
+      "GSE173316",
+      "Morabito",
+      "NIH-CARD 33GB object",
+      "real target overlap"
+    ]
+  },
+  "config": {
+    "donors": 18,
+    "seeds": 24,
+    "mutation": null,
+    "M_MIN": 0.01,
+    "M_MIN_sensitivity": [
+      0.005,
+      0.02
+    ],
+    "lcb_level": 0.95,
+    "bootstrap_unit": "SEED",
+    "fold_structure": "leave-one-donor-out, averaged within seed"
+  },
+  "common_support": {
+    "linked_before_trim": 960,
+    "linked_after_trim": 146,
+    "controls_after_trim": 146,
+    "strata_total": 4704,
+    "strata_with_common_support": 145,
+    "trim_fraction": 0.8479,
+    "SELECTION_STRESS": {
+      "n_retained_linked": 146,
+      "n_discarded_linked": 814,
+      "standardised_mean_differences": {
+        "log10_distance": {
+          "retained_mean": 4.447940305596584,
+          "discarded_mean": 4.340877137622592,
+          "standardised_mean_difference": 0.3461450671405031
+        },
+        "distal_accessibility": {
+          "retained_mean": 0.24314659643794467,
+          "discarded_mean": 0.4587792579837592,
+          "standardised_mean_difference": -0.22891675105067594
+        },
+        "re_density": {
+          "retained_mean": 2.1055130276074645,
+          "discarded_mean": 1.931834049713198,
+          "standardised_mean_difference": 0.1193921199446709
+        },
+        "anchor_frequency": {
+          "retained_mean": 1.9055307528341288,
+          "discarded_mean": 2.095119452671486,
+          "standardised_mean_difference": -0.11889365496093915
+        },
+        "promoter_activity": {
+          "retained_mean": 0.1281254567407928,
+          "discarded_mean": 0.14552019228957133,
+          "standardised_mean_difference": -0.017309163405430268
+        },
+        "promoter_degree": {
+          "retained_mean": 7.013698630136986,
+          "discarded_mean": 6.628992628992629,
+          "standardised_mean_difference": 0.1417706891447644
+        }
+      },
+      "worst_abs_smd": 0.3461,
+      "worst_variable": "log10_distance",
+      "interpretation_rule": "|SMD| < 0.10 is conventionally negligible imbalance, 0.10-0.25 modest, > 0.25 material. A material imbalance means trimming changed the estimand: the qualification then speaks for the RETAINED population, not for all externally linked pairs, and the claim scope must say so.",
+      "donor_composition_note": "Matching here is on world-level pair geometry, which is shared across donors by construction, so trimming removes the SAME pairs for every donor and cannot change donor composition. In real data that is NOT guaranteed and donor composition must be re-checked against the measurement-support restriction."
+    }
+  },
+  "arm_medians": {
+    "POS_BIO_1": 0.22976188883514198,
+    "POS_BIO_2": 0.0322327569262949,
+    "NEG_NULL_0": 9.956885263932741e-05,
+    "NEG_TECH_1": 0.00048104997657563323,
+    "NEG_TECH_2": 0.023135759268977388,
+    "NEG_GEO_1": 0.01828971954225864,
+    "NEG_ACC_1": 0.00501116505727372,
+    "NEG_ANCHOR_1": 0.011427459458897728,
+    "NEG_DONOR_1": 0.000761912139481298,
+    "NEG_HELDOUT_1": 0.00037478387931983554,
+    "NEG_SEMANTIC_TWIN": 0.22976188883514198
+  },
+  "A_REPRESENTED_NUISANCE_SPECIFICITY": {
+    "rule": "LCB95(min positive - max arm in family) > M_MIN, required for EVERY identifiable family",
+    "families": {
+      "NULL": {
+        "arms": [
+          "NEG_NULL_0"
+        ],
+        "margin_mean": 0.032302337658206955,
+        "margin_median": 0.032448384615601185,
+        "lcb95": 0.03183913617908204,
+        "passes_M_MIN": true,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": true
+        }
+      },
+      "TECH": {
+        "arms": [
+          "NEG_TECH_1",
+          "NEG_TECH_2"
+        ],
+        "margin_mean": 0.00931544649217145,
+        "margin_median": 0.010148449947225599,
+        "lcb95": 0.007677323275270583,
+        "passes_M_MIN": false,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": false
+        }
+      },
+      "GEO": {
+        "arms": [
+          "NEG_GEO_1"
+        ],
+        "margin_mean": 0.014821901239923269,
+        "margin_median": 0.015143617482050304,
+        "lcb95": 0.013490643103139723,
+        "passes_M_MIN": true,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": false
+        }
+      },
+      "ACC": {
+        "arms": [
+          "NEG_ACC_1"
+        ],
+        "margin_mean": 0.026375788271300434,
+        "margin_median": 0.025875430049010228,
+        "lcb95": 0.024183989185225758,
+        "passes_M_MIN": true,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": true
+        }
+      },
+      "ANCHOR": {
+        "arms": [
+          "NEG_ANCHOR_1"
+        ],
+        "margin_mean": 0.019597140718209425,
+        "margin_median": 0.019908288310053868,
+        "lcb95": 0.018523928112018237,
+        "passes_M_MIN": true,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": false
+        }
+      },
+      "DONOR": {
+        "arms": [
+          "NEG_DONOR_1"
+        ],
+        "margin_mean": 0.03176322106031356,
+        "margin_median": 0.0314496506274081,
+        "lcb95": 0.0309774373915846,
+        "passes_M_MIN": true,
+        "passes_sensitivity": {
+          "0.005": true,
+          "0.02": true
+        }
+      }
+    },
+    "all_families_pass": false
+  },
+  "B_IDENTIFIABILITY_BOUNDARY": {
+    "twin_arm": "NEG_SEMANTIC_TWIN",
+    "twin_median": 0.22976188883514198,
+    "pos_bio_1_median": 0.22976188883514198,
+    "twin_identical_to_POS_BIO_1": true,
+    "classification": "NON_IDENTIFIABLE_BY_DESIGN",
+    "is_a_gate_failure": false,
+    "meaning": "The twin's permitted observables are byte-identical to POS_BIO_1's; only the hidden interpretation differs. No statistic over these observables can separate them, so equality is the CORRECT result and a difference would be a leak. This arm is the empirical identifiability ceiling: worlds inside it require an EXTERNAL MEASUREMENT, not a cleverer statistic. V48 established this for the RNA-only case and V58/V59 repeated the lesson when an anchor-keyed twin passed an external-anchor benchmark perfectly."
+  },
+  "ANTI_FALSE_GREEN": {
+    "control_1_common_random_numbers": {
+      "verified": true,
+      "how": "the arm-independent donor QC draw is identical across arms for the same seed and donor, so family comparisons are paired"
+    },
+    "control_2_mutation": {
+      "this_run_mutation": null,
+      "note": "run with --mutate to demonstrate the suite goes red"
+    },
+    "control_3_positive_detectability": {
+      "min_positive_minus_clean_null_lcb95": 0.03183913617908204,
+      "detectable": true,
+      "ordering_POS1_gt_POS2_gt_negatives": true,
+      "why": "a scorer that rejects everything must not be able to pass"
+    },
+    "control_4_heldout_nuisance_family": {
+      "families": {
+        "HELDOUT_NOT_USED_IN_DESIGN": {
+          "arms": [
+            "NEG_HELDOUT_1"
+          ],
+          "margin_mean": 0.03144883247931563,
+          "lcb95": 0.02987453965308463,
+          "generalises_at_M_MIN": true
+        }
+      },
+      "rule": "REPORTED, never used to retune. Retuning against a held-out family converts a generalisation test into a memorisation test."
+    }
+  },
+  "VERDICT": {
+    "A_represented_nuisance_specificity": "FAIL__TECH",
+    "detectability": "PASS",
+    "B_identifiability_boundary": "NON_IDENTIFIABLE_BY_DESIGN (not a failure)",
+    "gate_may_proceed": false
+  }
+}

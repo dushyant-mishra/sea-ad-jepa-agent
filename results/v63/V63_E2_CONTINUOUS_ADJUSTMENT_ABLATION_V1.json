@@ -1,0 +1,140 @@
+{
+  "schema": "V63_E2_CONTINUOUS_ADJUSTMENT_ESTIMATOR_V1",
+  "date": "2026-09-29",
+  "contract": "results/v63/V63_CONTINUOUS_ADJUSTMENT_ESTIMATOR_CONTRACT_V1.json @ 4f774e0b",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "real_data_read": false
+  },
+  "ablation": "intercept_only",
+  "config": {
+    "donors": 18,
+    "seeds": 24,
+    "M_MIN": 0.01,
+    "ridge_alpha": 1.0,
+    "k_folds_by_promoter": 5,
+    "features": [
+      "log_distance",
+      "promoter_degree",
+      "promoter_activity",
+      "distal_accessibility",
+      "re_density",
+      "anchor_frequency",
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity",
+      "log_distance^2",
+      "degree^2",
+      "accessibility^2",
+      "log_distance_x_degree",
+      "log_distance_x_accessibility",
+      "degree_x_anchor_frequency"
+    ]
+  },
+  "arm_medians": {
+    "POS_BIO_1": 0.2291529593022244,
+    "POS_BIO_2": 0.0319097024509186,
+    "NEG_NULL_0": -0.00042336379300585446,
+    "NEG_TECH_1": -0.00041493302547486303,
+    "NEG_TECH_2": 0.1699000169147883,
+    "NEG_GEO_1": 0.13282967012531693,
+    "NEG_ACC_1": 0.0030081019407670476,
+    "NEG_ANCHOR_1": 0.06842818026481323,
+    "NEG_DONOR_1": -0.0004401634650503613,
+    "NEG_HELDOUT_1": -0.0005546861744534471,
+    "NEG_SEMANTIC_TWIN": 0.2291529593022244
+  },
+  "A_REPRESENTED_NUISANCE_SPECIFICITY": {
+    "families": {
+      "NULL": {
+        "margin": 0.03225291709267553,
+        "lcb95": 0.03205727784854841,
+        "passes_M_MIN": true
+      },
+      "TECH": {
+        "margin": -0.13855803422250082,
+        "lcb95": -0.14073563775905598,
+        "passes_M_MIN": false
+      },
+      "GEO": {
+        "margin": -0.10085866824680771,
+        "lcb95": -0.10299561546758981,
+        "passes_M_MIN": false
+      },
+      "ACC": {
+        "margin": 0.028725227180400187,
+        "lcb95": 0.027715496729224038,
+        "passes_M_MIN": true
+      },
+      "ANCHOR": {
+        "margin": -0.03578888252744485,
+        "lcb95": -0.037470898760787234,
+        "passes_M_MIN": false
+      },
+      "DONOR": {
+        "margin": 0.032290675694723284,
+        "lcb95": 0.032005071485413907,
+        "passes_M_MIN": true
+      }
+    },
+    "all_families_pass": false
+  },
+  "B_IDENTIFIABILITY_BOUNDARY": {
+    "twin_median": 0.2291529593022244,
+    "pos_bio_1_median": 0.2291529593022244,
+    "twin_identical_to_POS_BIO_1": true,
+    "classification": "NON_IDENTIFIABLE_BY_DESIGN",
+    "is_a_gate_failure": false
+  },
+  "SUPPORT_PROOF": {
+    "linked_pairs_scored": 960,
+    "linked_pairs_total": 960,
+    "fraction_of_linked_scored": 1.0,
+    "no_trimming": true,
+    "kish_effective_sample_size": 935.641687230935,
+    "ess_fraction_of_linked": 0.9746267575322239,
+    "contribution_concentration_top_pct": {
+      "1": 0.013340974854133594,
+      "5": 0.06637530332836415,
+      "10": 0.12802800538107642
+    },
+    "residual_correlation_with_adjustment_vars_on_LINKED": {
+      "log_distance": 0.0011598557964029414,
+      "promoter_degree": 0.006635827974264791,
+      "distal_accessibility": 0.0046119488410049665,
+      "anchor_frequency": -0.0068017828884118885
+    },
+    "worst_abs_residual_correlation": 0.0068017828884118885,
+    "linked_vs_control_SMD_before_adjustment": {
+      "log_distance": -1.963714703609473,
+      "promoter_degree": 0.0,
+      "promoter_activity": 1.8889941860477488e-19,
+      "distal_accessibility": 0.5301395682184421,
+      "re_density": -0.004619717427505609,
+      "anchor_frequency": 0.5118318949722749
+    },
+    "worst_abs_linked_vs_control_SMD": 1.963714703609473,
+    "nuisance_model_out_of_fold_r2": -0.0012691202151155058
+  },
+  "ANTI_FALSE_GREEN": {
+    "positive_detectability_lcb95": 0.03205727784854841,
+    "detectable": true,
+    "ordering_POS1_gt_POS2_gt_negatives": false,
+    "twin_identical": true,
+    "heldout_family": {
+      "HELDOUT_NOT_USED_IN_DESIGN": {
+        "margin": 0.03241746844809729,
+        "lcb95": 0.03202635346361099,
+        "generalises_at_M_MIN": true
+      }
+    }
+  },
+  "PREDECLARED_CLASSIFICATION": "D_ANOTHER_FAMILY_BROKE__STOP",
+  "classification_note": "A represented family other than TECH failed. Per the predeclared interpretation this is a STOP: do not trade one nuisance failure for another, exactly as no_anchor_matching exposed.",
+  "broad_coverage_test": {
+    "rule": "top-10% contribution share < 0.50 AND Kish ESS > 30% of linked pairs",
+    "top10_share": 0.12802800538107642,
+    "ess_fraction": 0.9746267575322239,
+    "broad": true
+  }
+}
