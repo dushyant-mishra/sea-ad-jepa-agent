@@ -142,3 +142,85 @@ is precisely the move the project's own rule forbids. The honest status is:
 with two riders: the donor axis is untested (S-V63-5), and any future
 qualification will speak for the retained 15.2% of linked pairs, which differ
 materially in distance from those trimmed.
+
+---
+
+# v2.1 — strengthened arm and control (step 1 of the repair plan)
+
+Two changes, both strictly hardening, made before any estimator was touched.
+M_MIN, the scoring rule, the confidence construction and every other arm are
+unchanged. v2 is preserved so its committed results stay reproducible.
+
+## The primary result did not move: still `FAIL__TECH`
+
+| family | v2 LCB95 | **v2.1 LCB95** | |
+|---|---|---|---|
+| NULL | +0.03184 | +0.03184 | identical |
+| **TECH** | +0.00768 | **+0.00768** | **identical — still FAIL** |
+| GEO | +0.01349 | +0.01349 | identical |
+| ACC | +0.02418 | +0.02418 | identical |
+| ANCHOR | +0.01852 | +0.01852 | identical |
+| DONOR | +0.03098 | +0.03159 | changed, as intended |
+
+Every family except DONOR is **bit-identical** across the two versions. That is
+the common-random-numbers design proving itself: revising one arm perturbed only
+that arm. It also means the TECH failure is not a sampling artifact.
+
+## S-V63-4 — CLOSED. The new mutation is strong.
+
+`no_anchor_matching` drops anchor frequency from the matching key:
+
+| | v2.1 primary | `no_anchor_matching` |
+|---|---|---|
+| ANCHOR | +0.01960 (PASS) | **−0.08186 (FAIL)**, LCB −0.08620 |
+| detectability | PASS | **FAIL** |
+| ordering POS1>POS2>negatives | holds | **broken** |
+| common support | 15.2% | 46.8% |
+
+A passing family flipped hard to failing, and the positive ordering broke. This
+is the demonstration v2's mutations could not give.
+
+## …and it exposed a trap worth naming
+
+Under `no_anchor_matching`, **TECH PASSES** at +0.01147 / LCB +0.01056 — above
+M_MIN. Dropping a matching variable retains 46.8% of linked pairs instead of
+15.2%, which shifts the positive floor enough to clear the threshold.
+
+So there exists a change that "fixes" the TECH failure, and it fixes it by
+**destroying the ANCHOR family** — which a single pooled negative ceiling might
+well have absorbed without complaint. This is the clearest possible argument for
+per-family margins: the pooled criterion is fixable in a way that is
+scientifically worthless, and the per-family criterion refuses it.
+
+**Recorded as a prohibited move.** Relaxing the matching to recover TECH is not
+available.
+
+## S-V63-5 — refined, not closed, and I am stopping here
+
+The rebuilt `NEG_DONOR_1` (consistent sign, donor-varying magnitude) still does
+not expose pooled scoring: under `--mutate pooled_scoring` the DONOR family
+passes at +0.02939. Two constructions have now failed to make the donor axis
+bite, and the reason is structural rather than a defect in either:
+
+> A donor-level latent that acts **uniformly across pairs** is removed by the
+> MATCHED-CONTROL SUBTRACTION, because it shifts linked and control pairs
+> equally and cancels in the difference — whether or not donors are pooled.
+
+To make donor-held-out scoring load-bearing, the latent would need pair-specific
+structure correlated with linked status — at which point it is a geometry or
+anchor confound wearing a donor label, and those families are already
+represented and already rejected.
+
+**Honest status: donor-held-out scoring is NOT demonstrated to be load-bearing
+for this nuisance class.** It may still matter for donor-specific *pair-level*
+effects, which this tournament does not represent. I am stopping after two
+attempts rather than continuing to reshape a negative until it behaves the way
+I predicted — that is the path by which a benchmark gets tuned into agreement,
+and I said so before running.
+
+## Where this leaves the plan
+
+Step 1 is done. TECH remains unrejected at the predeclared margin, by a margin
+whose *point estimate* (+0.00932) is itself below M_MIN, so no amount of extra
+seeding closes it. Step 2 — the estimator repair — remains the only legitimate
+route, and remains unauthorised.
