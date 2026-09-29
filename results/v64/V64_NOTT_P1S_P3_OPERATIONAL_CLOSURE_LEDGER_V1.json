@@ -1,0 +1,64 @@
+{
+  "schema": "V64_NOTT_P1S_P3_OPERATIONAL_CLOSURE_LEDGER_V1",
+  "date": "2026-09-29",
+  "status": "PRE_OUTCOME_EXECUTION_GAP_LEDGER__NOT_A_RESULT",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "thresholds_retuned": false
+  },
+  "P1S": {
+    "already_frozen": [
+      "same microglia contact pairs evaluated against microglia, neuron and oligodendrocyte accessibility",
+      "promoter-fixed geometry-preserving distal shuffle",
+      "microglia must exceed both same-study cell-type comparators",
+      "microglia observed support must exceed shuffled null",
+      "no AD-locus/target-gene rescue",
+      "same-study concordance is internal substrate compatibility, not independent corroboration"
+    ],
+    "source_support": {
+      "paper": "Nott et al. 2019 reports that cell-type-enriched PLAC-seq interactions colocalize with increased cell-type-specific ATAC-seq, H3K27ac and H3K4me3 signal, so testing contact/accessibility compatibility is source-consistent rather than invented for this project.",
+      "reference": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7028213/"
+    },
+    "still_requires_prospective_operational_freeze": {
+      "binary_accessibility_support_rule": "UNSPECIFIED: e.g. any-base interval overlap versus center inclusion versus fractional overlap. Must be frozen before support counts are inspected.",
+      "shuffle_algorithm": "UNSPECIFIED beyond promoter fixed, chromosome/distance distribution preserved and degree preserved where feasible.",
+      "shuffle_precision_authority": "UNSPECIFIED: number of randomisations/seeds must not be chosen after seeing null variability. Prior project history explicitly rejects inheriting arbitrary 999/1000-style replicate counts without a precision rule.",
+      "paired_contrast_and_uncertainty_estimator": "UNSPECIFIED in the short authoritative P1S contract.",
+      "nuisance_adjustment_implementation": "UNSPECIFIED: the listed nuisance variables do not themselves define an estimator. Do not silently import the later RNA/ATAC continuous-adjustment estimator."
+    },
+    "status": "HYPOTHESIS_AND_CLAIM_SCOPE_FROZEN__EXECUTION_ALGORITHM_NOT_FULLY_FROZEN"
+  },
+  "P3": {
+    "already_frozen_logic": [
+      "target gene is expressed in microglia",
+      "distal element is accessible in microglia",
+      "relationship itself is absent from the microglia contact map",
+      "trivial negatives are excluded and attrition reported"
+    ],
+    "source_audit": {
+      "finding": "Nott Table S5/interactome is not itself an expression authority. Public third-party workflows combining the Nott interactome with expression import a separate expression dataset.",
+      "examples": [
+        "https://rajlabmssm.github.io/echoannot/articles/echoannot",
+        "https://github.com/daifengwanglab/scGRNom"
+      ]
+    },
+    "still_requires_prospective_operational_freeze": {
+      "microglia_expression_source": "UNSPECIFIED",
+      "expression_detection_rule": "UNSPECIFIED",
+      "gene_annotation_version": "UNSPECIFIED",
+      "promoter_to_gene_mapping_authority": "UNSPECIFIED",
+      "relationship_absence_equivalence_after_liftover": "UNSPECIFIED"
+    },
+    "hard_rule": "Do not substitute active-promoter chromatin marks for measured gene expression merely to satisfy the expression condition unless a successor contract explicitly redefines the condition prospectively.",
+    "status": "BIOLOGICAL_ELIGIBILITY_LOGIC_FROZEN__REQUIRED_EXPRESSION_AUTHORITY_MISSING"
+  },
+  "execution_implication": {
+    "C3_descriptive_liftover_can_run": true,
+    "C3_pass_fail_requires_missing_numeric_gates": true,
+    "P1S_should_wait_for_operational_freeze": true,
+    "P3_should_wait_for_expression_and_annotation_authority": true,
+    "E2_NOTT_CANDIDATE_may_not_be_instantiated_yet": true
+  }
+}
