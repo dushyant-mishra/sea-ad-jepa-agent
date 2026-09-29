@@ -1,0 +1,37 @@
+{
+  "schema": "V64_P3_EXPRESSION_SOURCE_DISCOVERY_V1",
+  "date": "2026-09-29",
+  "status": "SOURCE_IDENTIFIED__BYTES_NOT_YET_AUTHENTICATED",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "expression_threshold_frozen": false
+  },
+  "why_this_source": "Nott et al. 2019 cite Zhang et al. 2016 as the external human brain cell-type RNA-seq expression reference used alongside their epigenomic analyses. Using the same public reference avoids circular use of JEPA discovery RNA, NIH-CARD, or Morabito.",
+  "source": {
+    "study": "Zhang et al. 2016",
+    "geo": "GSE73721",
+    "bioproject": "PRJNA297760",
+    "processed_file": "GSE73721_Human_and_mouse_table.csv.gz",
+    "geo_series_page": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE73721",
+    "reported_processed_file_size": "643.4 Kb",
+    "genome_build": "hg19 for human samples",
+    "quantification": "Cufflinks FPKM",
+    "human_myeloid_samples": [
+      {"gsm":"GSM1901339","title":"45yo ctx myeloid"},
+      {"gsm":"GSM1901340","title":"51yo ctx myeloid"},
+      {"gsm":"GSM1901341","title":"63 yo ctx myeloid"}
+    ]
+  },
+  "current_authentication": {
+    "GEO_metadata_verified": true,
+    "exact_processed_filename_verified": true,
+    "three_myeloid_sample_identities_verified": true,
+    "processed_bytes_acquired_in_this_lane": false,
+    "sha256": "UNKNOWN",
+    "header_and_gene_id_fields_physically_verified": false
+  },
+  "spillover_rule": "Do not substitute another brain RNA dataset, a reprocessed copy, brainrnaseq-derived export, SEA-AD/HVS/NPH52 RNA, NIH-CARD, Morabito, or a file with a similar title. P3 expression authority remains blocked until the exact GEO processed file is acquired and hashed.",
+  "next_required_step": "Acquire exact GSE73721_Human_and_mouse_table.csv.gz bytes from GEO, record size/SHA-256/header, verify which columns correspond to GSM1901339/40/41 and the gene identifier field, then prospectively freeze the microglial expression eligibility rule before reading P3 candidate-gene attrition."
+}
