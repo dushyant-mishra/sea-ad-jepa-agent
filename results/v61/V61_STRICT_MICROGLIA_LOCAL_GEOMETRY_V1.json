@@ -1,0 +1,28 @@
+{
+  "schema": "V61_STRICT_MICROGLIA_LOCAL_GEOMETRY_V1",
+  "status": "SUPPORTING_DISCOVERY_EVIDENCE_ONLY",
+  "mapping": {
+    "HVS": {"native_class": "Microglia-PVM", "cells": 128, "donors": 23},
+    "NPH52": {"native_class": "MG", "cells": 304, "donors": 16},
+    "SEA_AD": {"native_class": "Microglia-PVMSubclass", "cells": 233, "donors": 27}
+  },
+  "donor_split": {
+    "HVS": {"half1": 12, "half2": 11},
+    "NPH52": {"half1": 8, "half2": 8},
+    "SEA_AD": {"half1": 14, "half2": 13},
+    "cells": {"half1": 379, "half2": 286},
+    "overlap": 0
+  },
+  "local_subspace_recurrence": {
+    "1": {"mean_cos": 0.7681939003472902, "min_cos": 0.7681939003472902},
+    "2": {"mean_cos": 0.8789587236646255, "min_cos": 0.7748842536600049},
+    "3": {"mean_cos": 0.8563024042128807, "min_cos": 0.6302376642244578},
+    "4": {"mean_cos": 0.8039412820000209, "min_cos": 0.2708512936001343},
+    "5": {"mean_cos": 0.7967496031596712, "min_cos": 0.17919902434711074},
+    "6": {"mean_cos": 0.8771268685086212, "min_cos": 0.3947734532074647}
+  },
+  "interpretation": "Low-dimensional within-microglia recurrence exists, but deeper local geometry is unstable. Supporting evidence for the common backbone, not a standalone microglial target.",
+  "protected_molecular_outcomes_opened": false,
+  "training": "OFF",
+  "td60": "BLOCKED"
+}

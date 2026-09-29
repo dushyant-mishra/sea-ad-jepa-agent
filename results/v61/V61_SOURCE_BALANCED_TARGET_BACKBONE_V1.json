@@ -1,0 +1,42 @@
+{
+  "schema": "V61_SOURCE_BALANCED_TARGET_BACKBONE_V1",
+  "date": "2026-09-28",
+  "status": "DISCOVERY_CANDIDATE_ONLY__NOT_BIOLOGICALLY_QUALIFIED__NOT_TRAINING_AUTHORITY",
+  "input_sha256": {
+    "discovery_archive_zip": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "discovery_inner_npz": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "sample_freeze_csv": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "address_namespace_csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "address_measurement_support_csv_gz": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+  },
+  "matrix": {"cells": 50000, "addresses": 41238, "all_operator_measured_protein_coding_universe": 15758, "audit_feature_width": 400},
+  "construction": "A-only equal-weight within-source variance selection; within-source centering + detected-address-count residualization + residual scaling; equal-weight HVS/NPH52/SEA_AD covariance",
+  "operator_aliasing": {
+    "HVS": "24/24 operators single-class; operator effect non-identifiable from biology",
+    "NPH52": "7/7 operators single-class; operator effect non-identifiable from biology",
+    "SEA_AD": "operator contamination evaluated here only"
+  },
+  "ab_subspace": {
+    "rank_3": {"mean_cos": 0.9895399429723533, "min_cos": 0.975654849121989},
+    "rank_4": {"mean_cos": 0.9951151874358527, "min_cos": 0.9906832298866699},
+    "rank_6": {"mean_cos": 0.9898718062818216, "min_cos": 0.9692647145142359},
+    "rank_8": {"mean_cos": 0.9895200727267917, "min_cos": 0.9777204166597189}
+  },
+  "rotation_invariant_trace_eta2": {
+    "rank_4": {
+      "A": {"biology_within_source": 0.3815, "source": 0.0149, "donor_after_source_class": 0.0830, "seaad_operator_after_class": 0.1317},
+      "B": {"biology_within_source": 0.3515, "source": 0.0260, "donor_after_source_class": 0.1530, "seaad_operator_after_class": 0.1176}
+    },
+    "rank_8": {
+      "A": {"biology_within_source": 0.3580, "source": 0.0106, "donor_after_source_class": 0.0640, "seaad_operator_after_class": 0.0971},
+      "B": {"biology_within_source": 0.3528, "source": 0.0201, "donor_after_source_class": 0.1273, "seaad_operator_after_class": 0.0870}
+    }
+  },
+  "q_safety": {
+    "qualified": false,
+    "reason": "freeze is already normalized with a source library denominator that historically includes q; token deletion alone is not q-safe",
+    "required_successor_paths": ["q_excluded_total__q_token_dropped", "fixed_reference__q_token_dropped"]
+  },
+  "interpretation": "Promising common-state backbone only. Must be combined with independently frozen external regulatory information and must pass synthetic biological-specificity qualification. Does not defeat semantic-twin nonidentifiability.",
+  "governance": {"training": "OFF", "td60": "BLOCKED", "protected_molecular_outcomes_opened": false}
+}
