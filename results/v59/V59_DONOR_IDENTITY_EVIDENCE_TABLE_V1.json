@@ -28,11 +28,12 @@
       "biosample": "ABSENT_FOR_A",
       "sra_gsm": "ABSENT_FOR_A",
       "biospecimen_id": "NOT_PUBLIC",
-      "genotype_evidence": "EXISTS_BOTH_SIDES_ACCESS_GATED",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
       "brain_bank_subject_id": "NOT_PUBLIC",
       "cross_publication_subject_id": "NONE_FOUND",
       "classification": "UNRESOLVED",
-      "note": "Kosoy: Rush ADRC (ROS/MAP) + Mount Sinai NBTR + Living Brain Project. SEA-AD: Allen Institute + UW ADRC/ACT. No shared institution, no shared namespace, no NCBI deposit on the Kosoy side to join through."
+      "note": "Kosoy: Rush ADRC (ROS/MAP) + Mount Sinai NBTR + Living Brain Project. SEA-AD: Allen Institute + UW ADRC/ACT. No shared institution, no shared namespace, no NCBI deposit on the Kosoy side to join through.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence."
     },
     {
       "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
@@ -42,11 +43,12 @@
       "biosample": "ABSENT_FOR_A",
       "sra_gsm": "ABSENT_FOR_A",
       "biospecimen_id": "NOT_PUBLIC",
-      "genotype_evidence": "EXISTS_BOTH_SIDES_ACCESS_GATED",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
       "brain_bank_subject_id": "NOT_PUBLIC",
       "cross_publication_subject_id": "NONE_FOUND",
       "classification": "UNRESOLVED",
-      "note": "Morabito donors are Sample-* pseudonyms (UCI). Kosoy exposes no public donor identifier at all. PR #164 already recorded Morabito-vs-FULL104 non-overlap as INFERRED from study provenance, not proven from IDs; the same standard applies here."
+      "note": "Morabito donors are Sample-* pseudonyms (UCI). Kosoy exposes no public donor identifier at all. PR #164 already recorded Morabito-vs-FULL104 non-overlap as INFERRED from study provenance, not proven from IDs; the same standard applies here.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence."
     },
     {
       "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
@@ -70,11 +72,13 @@
       "biosample": "ABSENT_FOR_A",
       "sra_gsm": "ABSENT_FOR_A",
       "biospecimen_id": "NOT_PUBLIC",
-      "genotype_evidence": "EXISTS_BOTH_SIDES_ACCESS_GATED",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
       "brain_bank_subject_id": "NOT_PUBLIC",
       "cross_publication_subject_id": "NONE_FOUND",
-      "classification": "UNRESOLVED__COMPARATOR_ITSELF_UNESTABLISHED",
-      "note": "GSE272082 institution, donor count and tissue are not established in this project. Cannot classify a pair when one side is undefined."
+      "classification": "UNRESOLVED",
+      "note": "CORRECTED. PR #182 DOES establish GSE272082: 9 reconstructed donors (4 sEOAD + 5 control) from NIH NeuroBioBank (NIH* libraries) and UTHealth Houston (UT* libraries), with PFC n=9, EC n=6, HIP n=5. Contact institute University of Texas Health Science Center at Houston; consent obtained by UTHealth. What remains unestablished is molecular/cell-level authentication and - for THIS question - any public identity bridge to Kosoy. Person-level overlap is UNRESOLVED for want of a shared key, not for want of cohort facts.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence.",
+      "comparator_facts_source": "PR #182 results/lane_pm/lane_pm_gse272082_donor_reconstruction_v1.csv"
     },
     {
       "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
@@ -97,5 +101,10 @@
     "td60": "BLOCKED",
     "controlled_data_requested": false,
     "molecular_outcomes_opened": false
+  },
+  "corrections_20260928": {
+    "gse272082_statement": "My earlier note said GSE272082's institution, donor count and tissue were 'not established in this project'. That CONTRADICTED project history: PR #182 had already reconstructed 9 donors with institutions and regional structure. Verified against the PR #182 CSV before correcting.",
+    "genotype_field_overreach": "The table builder used 'EXISTS_BOTH_SIDES_ACCESS_GATED' as a DEFAULT value, so it propagated to four pairs where no such evidence was documented. A default that asserts evidence is the same defect the R3 ledger avoids by making UNKNOWN block. Defaults must be conservative; only the GSE214979 pair retains the strong claim.",
+    "cerebellum_speculation_withdrawn": "I had floated that GSE272082 might be a cerebellum study with 17 donors. PR #182 settles it: cortical PFC/EC/HIP, 9 donors. The speculation is WITHDRAWN."
   }
 }

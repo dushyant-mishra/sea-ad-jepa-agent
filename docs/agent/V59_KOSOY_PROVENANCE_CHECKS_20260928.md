@@ -124,15 +124,28 @@ one. Until it exists, **Outcome 2 stands** — and Outcome 2 is workable: the
 dependency is nameable and can be built into the nuisance class rather than
 silently assumed away.
 
-## Open item, flagged rather than guessed
+## WITHDRAWN — my GSE272082 speculation was wrong
 
-**GSE272082's donor institution and donor count are not established.** A search
-surfaced a cerebellum multiome study describing "9 AD/ADRD cases and 8 controls"
-— which, if that is the same accession, would be **17 donors and cerebellum
-tissue**, not the 9 donors recorded in the project brief, and cerebellum is a
-poor substrate for a cortical-microglia question. **I did not confirm the
-accession matches**, so this is recorded as a discrepancy to resolve by direct
-GEO lookup, not as a finding. It does not affect the Kosoy decision.
+An earlier version of this section speculated that GSE272082 might be a
+cerebellum study with 17 donors, and separately my evidence table stated its
+institution, donor count and tissue were "not established in this project".
+
+**Both were wrong, and the second contradicted project history.** PR #182 had
+already reconstructed the cohort, and I verified it against
+`results/lane_pm/lane_pm_gse272082_donor_reconstruction_v1.csv` before
+correcting:
+
+- **9 donors** — 4 sEOAD, 5 control
+- **NIH NeuroBioBank** (`NIH*` libraries) and **UTHealth Houston** (`UT*`)
+- **Cortical**: PFC n=9, EC n=6, HIP n=5 — *not* cerebellum
+- Contact institute: University of Texas Health Science Center at Houston;
+  consent obtained by UTHealth
+
+The project brief's "n=9 donors" was correct and my doubt was unfounded. What
+*does* remain open is molecular/cell-level authentication and — for the overlap
+question specifically — any public identity bridge to Kosoy. So the pair stays
+**UNRESOLVED for want of a shared key, not for want of cohort facts**, which is
+a different and much narrower statement.
 
 ---
 
