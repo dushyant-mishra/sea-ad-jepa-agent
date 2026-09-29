@@ -1,0 +1,51 @@
+{
+  "schema": "V64_CONTINUOUS_ADJUSTMENT_OUT_OF_SPAN_STRESS_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "purpose": "Prospectively test whether the continuous-adjustment estimator generalises beyond a nuisance geometry exactly representable by its frozen ridge basis."
+  },
+  "why_needed": "The successful NEG_TECH_2 nuisance is scaled by degree and inverse distance, and the frozen adjustment basis includes distance, degree and their interaction. A green result therefore demonstrates correction under a nearly well-specified nuisance surface, not robustness to arbitrary geometry-coupled hidden quality.",
+  "single_new_negative": {
+    "name": "NEG_TECH_OUTSPAN_1",
+    "construction": "Use the same hidden-quality latent hq as NEG_TECH_2, but multiply the ATAC-side loading by a smooth non-monotonic geometry function outside the frozen 14-feature ridge span.",
+    "geometry_function": "g = zscore( sin(2.5 * z_log_distance) + 0.5 * tanh(z_degree * z_anchor_frequency) + 0.35 * z_accessibility * z_re_density )",
+    "constraints": [
+      "no target labels or linked status enter g",
+      "the function is fixed here before execution",
+      "effect amplitude on RNA and ATAC remains 0.60 as in NEG_TECH_2",
+      "measured-depth and orthogonal hidden-quality mixing remains unchanged from NEG_TECH_2",
+      "all other tournament worlds, seeds, positives and nuisance families remain unchanged"
+    ]
+  },
+  "estimator": {
+    "must_remain_byte_equivalent_in_logic": "V63 continuous-adjustment primary estimator",
+    "forbidden": [
+      "adding sin/tanh/basis terms to fit this negative",
+      "changing ridge alpha",
+      "changing feature set",
+      "changing M_MIN",
+      "changing positive amplitudes",
+      "choosing a new nuisance function after seeing the result"
+    ]
+  },
+  "qualification": {
+    "same_rule": "Every represented nuisance family, now including OUTSPAN_TECH, must have one-sided LCB95 > M_MIN=0.010.",
+    "support_requirements": [
+      "all linked pairs scored",
+      "Kish ESS and contribution concentration reported",
+      "positive detectability preserved",
+      "semantic twin identity preserved",
+      "held-out ambient family remains held out and reported"
+    ]
+  },
+  "interpretation": {
+    "A_outspan_passes": "Evidence that the continuous estimator generalises beyond exact nuisance-model specification within this prospectively frozen misspecification class.",
+    "B_outspan_fails_only": "The estimator is qualified only for nuisance surfaces within/near its frozen model span. Do not generalise to arbitrary hidden-quality geometry in real data.",
+    "C_existing_family_breaks": "STOP; the successor invalidates broader qualification.",
+    "D_support_concentrates": "Treat as disguised support failure, not a pass."
+  },
+  "scope": "This is an empirical misspecification stress, not a theorem-level identifiability test."
+}
