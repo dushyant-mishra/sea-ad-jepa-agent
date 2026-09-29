@@ -7,7 +7,7 @@
     "git_blob": "467246dba239e681e9369af210ee55604c210073",
     "prospectivity": "VERIFIED_BEFORE_OUTCOME"
   },
-  "verdict": "PRIMARY_GATE_PASS_VERIFIED__FULL_CONTRACT_CLOSURE_PENDING_SENSITIVITY_RERUN",
+  "verdict": "PRIMARY_GATE_PASS_VERIFIED__DESCRIPTIVE_SENSITIVITIES_NOW_COMPLETED",
   "primary_gate": {
     "population": {
       "original": 104802,
@@ -86,26 +86,43 @@
         "finding": "The V2 contract requires 'pooled quartiles of local peak density' but does not define the exact pooling operator that maps the six per-pair density measurements (observed/null x three ATAC tracks) to one common stratum assignment.",
         "consequence": "Because P1S outcomes are now visible, selecting a single pooling operator now would be exposure-informed. The density sensitivity is descriptive-only, so this does not affect R1/R2/R3 or P1S primary PASS, but no retroactively chosen pooling rule may be labelled prospectively frozen.",
         "safe_next_step": "Complete the missing log-distance and promoter-degree descriptive reports exactly as unambiguous. For local density, either report a transparent multi-definition sensitivity panel or freeze a successor descriptive rule with outcome exposure explicitly declared; do not use it to alter the primary PASS."
+      },
+      "resolution": {
+        "result": "Corrected rerun at 8b13939bbeb62a6bc7e587f3e9bd1d0cd93c60d7 reproduces the primary quantities exactly before emitting sensitivities.",
+        "authoritative_result": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
+        "pooled_density_summary": {
+          "Q1": {
+            "E_microglia": 0.1623618883627493,
+            "D_MN": 0.1307935141340221,
+            "D_MO": 0.13043478260869565
+          },
+          "Q4": {
+            "E_microglia": 0.1891050126344244,
+            "D_MN": 0.1671269906564024,
+            "D_MO": 0.1697714050655227
+          }
+        },
+        "interpretation": "The earlier negative low-density Q1 finding was an artifact of non-compliant microglia-observed-only binning and is withdrawn. Under the corrected pooled-density analysis, all quartiles remain clearly positive."
       }
     },
     "mandatory_reporting": {
       "frozen_requirement": "Report descriptive sensitivities by predeclared quartiles of post-C3 log distance and promoter degree.",
       "executed": "Not present in result JSON or runner output.",
-      "effect_on_primary_R1_R2_R3": "NONE: these are mandatory descriptive reports, not primary pass criteria."
+      "effect_on_primary_R1_R2_R3": "NONE: these are mandatory descriptive reports, not primary pass criteria.",
+      "resolution": {
+        "post_C3_log_distance": "COMPLETED_IN_CORRECTED_RERUN",
+        "promoter_degree": "COMPLETED_IN_CORRECTED_RERUN",
+        "finding": "No quartile in either report is negative or near zero; the microglial advantage narrows with distance and rises mildly with promoter degree."
+      }
     }
   },
   "current_density_result_status": {
-    "microglia_density_only_Q1_D_MN": -0.011112913692407527,
-    "microglia_density_only_Q1_D_MO": -0.0038124594419208305,
-    "status": "INTERESTING_BUT_NONCOMPLIANT_SENSITIVITY__MUST_NOT_BE_TREATED_AS_THE_FROZEN_DENSITY_STRATUM_RESULT"
+    "authoritative": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
+    "superseded": "microglia-observed-only Q1-Q4 table from 303ca8b6",
+    "superseded_reason": "Outcome-dependent stratification artifact",
+    "low_density_negative_caveat": "WITHDRAWN"
   },
-  "required_correction": [
-    "Do not change the P1S primary population, null, overlap rule, primary estimands, bootstrap, thresholds, or PASS result.",
-    "Add the missing post-C3 log-distance quartile and promoter-degree quartile descriptive reports; these definitions are unambiguous from V2.",
-    "Do not present the existing microglia-only-density Q1-Q4 table as the frozen pooled-density result.",
-    "For local density, explicitly acknowledge that the exact pooling operator was under-specified in V2. Any successor completion must be exposure-aware and descriptive-only; report all predeclared variants rather than choosing a favorable one.",
-    "Do not trim, reweight, rescue, or revise P1S PASS based on any density stratum."
-  ],
+  "required_correction": [],
   "firewall_state": {
     "canonical_firewall_current_P1S_authority": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json",
     "old_candidate_field_present_on_current_canonical": false,
@@ -114,7 +131,7 @@
   },
   "governance": {
     "P1S_primary": "PASS",
-    "P1S_full_contract": "PENDING_SENSITIVITY_REPORTING_COMPLETION",
+    "P1S_full_contract": "CLOSED",
     "P3": "BLOCKED_ON_EXACT_GSE73721_BYTE_AUTHENTICATION_AND_PROSPECTIVE_EXPRESSION_RULE",
     "E2_NOTT_CANDIDATE": "NOT_INSTANTIATED",
     "TRAINING": "OFF",
