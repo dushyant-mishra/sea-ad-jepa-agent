@@ -75,8 +75,10 @@ import time
 import h5py
 import numpy as np
 
-TOOL_VERSION = "2.0.0"
-SUPERSEDES = "1.0.0"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+TOOL_VERSION = "2.1.0"
+SUPERSEDES = "2.0.0 (which superseded 1.0.0)"
 
 # Predeclared, before any real file is read. Exact overlap must reach this
 # fraction of the SMALLER index for pairing to count as resolved.
@@ -96,11 +98,29 @@ MICROGLIA_RE = re.compile(r"(^mg$|^mg[_\- ]|microgli|^micro$)", re.I)
 TENX_BC_RE = re.compile(r"([ACGTN]{14,18})(-\d+)?", re.I)
 
 
+#: populated when a remote file is opened, so the receipt can report exactly how
+#: many HTTP requests were made and what fraction of each file was transferred.
+REMOTE_READERS = {}
+
+
 def open_h5(path):
+    """Local path, or an HTTP(S) URL read by byte range.
+
+    fsspec's HTTP backend is tried first, but it requires aiohttp, which cannot
+    be imported in some environments (a broken interpreter certificate store
+    raises ssl.SSLError at import). The fallback is a small requests+certifi
+    range reader, which is what actually runs here.
+    """
     if re.match(r"^https?://", path):
-        import fsspec
-        fobj = fsspec.open(path, "rb", block_size=4 * 1024 * 1024).open()
-        return h5py.File(fobj, "r")
+        try:
+            import fsspec
+            fobj = fsspec.open(path, "rb", block_size=4 * 1024 * 1024).open()
+            return h5py.File(fobj, "r")
+        except Exception:
+            from http_range_file_v1 import HTTPRangeFile
+            rdr = HTTPRangeFile(path)
+            REMOTE_READERS[path] = rdr
+            return h5py.File(rdr, "r")
     return h5py.File(path, "r")
 
 
@@ -486,6 +506,8 @@ def main(argv=None) -> int:
                  "NOT satisfy pairing_resolved.")
     receipt["qualification"] = q
     receipt["probe_status"] = "PROBE_OK" if q["QUALIFIED_FOR_PAIRED_USE"] else "PROBE_INCOMPLETE"
+    if REMOTE_READERS:
+        receipt["remote_read"] = {k: v.stats() for k, v in REMOTE_READERS.items()}
     receipt["elapsed_seconds"] = round(time.time() - t0, 1)
 
     with open(a.out, "w") as fh:

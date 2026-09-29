@@ -322,5 +322,9 @@ def test_guard_can_actually_fail(fixtures):
 def test_threshold_is_predeclared_not_data_dependent():
     probe = _load(V2, "h5ad_schema_probe_v2")
     assert probe.HIGH_OVERLAP_MIN == 0.50
-    assert probe.TOOL_VERSION == "2.0.0"
-    assert probe.SUPERSEDES == "1.0.0"
+    # The threshold is the thing that must not move. The version may advance
+    # (2.1.0 added the HTTP byte-range reader so the probe can run against the
+    # 33 GB NIH-CARD deposit without downloading it), but it must stay a 2.x
+    # successor and must still declare what it supersedes.
+    assert probe.TOOL_VERSION.startswith("2.")
+    assert "1.0.0" in probe.SUPERSEDES
