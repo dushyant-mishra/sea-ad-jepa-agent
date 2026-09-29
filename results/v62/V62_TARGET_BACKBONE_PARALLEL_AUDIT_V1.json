@@ -1,0 +1,55 @@
+{
+  "schema": "V62_TARGET_BACKBONE_PARALLEL_AUDIT_V1",
+  "date": "2026-09-28",
+  "status": "DISCOVERY_CANDIDATE_ONLY",
+  "input_sha256": {
+    "discovery_archive_zip": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "discovery_inner_npz": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "sample_freeze_csv": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "address_namespace_csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "address_measurement_support_csv_gz": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+  },
+  "construction": {
+    "all_operator_measured_protein_coding_universe": 15758,
+    "feature_width": 400,
+    "source_equal_weight": true,
+    "qc_proxy": "detected_address_count",
+    "feature_selection": "half A only"
+  },
+  "ab_rank4": {
+    "mean_cos": 0.9951151874358527,
+    "min_cos": 0.9906832298866699,
+    "A": {"biology": 0.3815, "source": 0.0149, "donor_residual": 0.083, "seaad_operator_residual": 0.1317},
+    "B": {"biology": 0.3515, "source": 0.026, "donor_residual": 0.153, "seaad_operator_residual": 0.1176}
+  },
+  "donor_disjoint": {
+    "split": {"HVS": [21, 20], "NPH52": [9, 8], "SEA_AD": [23, 23]},
+    "cells": [25940, 24060],
+    "rank4": {
+      "mean_cos": 0.9869118266454782,
+      "min_cos": 0.961344312088611,
+      "heldout": {"biology": 0.3894872080721469, "source": 0.036300115379863905, "donor_residual": 0.11679783189313922, "seaad_operator_residual": 0.13605558550739683}
+    },
+    "rank8": {
+      "mean_cos": 0.9868883000610568,
+      "min_cos": 0.9671985851545711,
+      "heldout": {"biology": 0.36103465498251824, "source": 0.026832122943949707, "donor_residual": 0.09555083450982622, "seaad_operator_residual": 0.10299079641384992}
+    }
+  },
+  "producer_sha256": {
+    "source_balanced": "13cf08ba1ec165bbb1233f2461e28698e6ee7da46285a5152478190cdaa0d45e",
+    "donor_disjoint": "b9740ade98243ef15e799d4ab0876195fac00e27fc7091c793627a0ad3ab2342"
+  },
+  "reproducibility": {
+    "donor_disjoint_numeric_payload": "EXACT_REPRODUCTION",
+    "source_balanced_second_rerun": "KILLED_BY_ENVIRONMENT_MEMORY_CEILING__NO_INFERENCE"
+  },
+  "q_safety": {
+    "qualified": false,
+    "required_successor_paths": ["q_excluded_total__q_token_dropped", "fixed_reference__q_token_dropped"],
+    "teacher_target_must_be": "Q_BLIND"
+  },
+  "semantic_twin_boundary": "STILL_BINDING",
+  "interpretation": "DISCOVERY_CANDIDATE__SOURCE_BALANCED_COMMON_STATE_BACKBONE",
+  "governance": {"training": "OFF", "td60": "BLOCKED", "protected_molecular_outcomes_opened": false}
+}
