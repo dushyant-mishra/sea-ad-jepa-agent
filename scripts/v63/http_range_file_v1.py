@@ -32,8 +32,11 @@ from collections import OrderedDict
 import certifi
 import requests
 
-DEFAULT_BLOCK = 4 * 1024 * 1024
-DEFAULT_MAX_BLOCKS = 96          # ~384 MB ceiling at the default block size
+DEFAULT_BLOCK = 16 * 1024 * 1024
+DEFAULT_MAX_BLOCKS = 64          # ~1 GB ceiling at the default block size.
+# Raised from 4 MB/96 after measuring the NIH-CARD RNA file: a 1,501,089-element
+# variable-length string index lives in a global heap that is read in many
+# scattered pieces, and larger blocks cut the request count sharply.
 
 
 class HTTPRangeFile(io.RawIOBase):

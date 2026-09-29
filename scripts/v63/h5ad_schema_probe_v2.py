@@ -87,8 +87,9 @@ HIGH_OVERLAP_MIN = 0.50
 CELLTYPE_CANDIDATES = ["cell_type", "celltype", "cell_types", "cellType", "annotation",
                        "annot", "major_celltype", "broad_celltype", "cell_type_broad",
                        "label", "leiden_celltype"]
-DONOR_CANDIDATES = ["sample_id", "sample", "Sample", "Sample_ID", "donor", "donor_id",
-                    "individual", "individualID", "subject", "subject_id", "batch_sample"]
+DONOR_CANDIDATES = ["sample_id", "sampleid", "sample", "Sample", "Sample_ID", "SampleID",
+                    "donor", "donorid", "donor_id", "individual", "individualID",
+                    "subject", "subject_id", "batch_sample"]
 COHORT_CANDIDATES = ["cohort", "Cohort", "study", "dataset"]
 COVARIATE_PATTERNS = {"age": r"age", "sex": r"sex|gender", "pmi": r"pmi|post.?mortem",
                       "cohort": r"cohort", "batch": r"batch|seq", "brain_bank": r"bank",
@@ -361,6 +362,8 @@ def main(argv=None) -> int:
     ap.add_argument("--celltype-col")
     ap.add_argument("--donor-col")
     ap.add_argument("--cohort-col")
+    ap.add_argument("--donor-col-atac",
+                    help="donor column in the ATAC file when it differs from RNA's")
     ap.add_argument("--sample-values", type=int, default=20000)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--trust-composite-pairing", action="store_true",
@@ -392,9 +395,16 @@ def main(argv=None) -> int:
     receipt["rna_covariate_columns_found"] = covariate_presence(cols)
     receipt["atac_covariate_columns_found"] = covariate_presence(ainfo["obs_columns"])
 
+    # The two files need NOT use the same column name for donor. NIH-CARD is a
+    # live example: RNA carries "SampleID" and ATAC carries "sample_id". Resolving
+    # one name for both would silently skip the donor-agreement check -- which is
+    # a QUALIFICATION REQUIREMENT, so skipping it must never happen quietly.
+    dn_col_atac = pick(ainfo["obs_columns"], a.donor_col_atac, DONOR_CANDIDATES)
+    receipt["columns_used"]["donor_atac"] = dn_col_atac
+    receipt["columns_used"]["donor_column_names_differ_between_files"] = bool(
+        dn_col and dn_col_atac and dn_col != dn_col_atac)
     rna_donor = read_column(frna["obs"], dn_col) if dn_col else None
-    atac_donor = (read_column(fatac["obs"], dn_col)
-                  if dn_col and dn_col in ainfo["obs_columns"] else None)
+    atac_donor = read_column(fatac["obs"], dn_col_atac) if dn_col_atac else None
 
     pairing, shared = assess_pairing(rna_idx, atac_idx, rna_donor, atac_donor)
     if shared is None and a.trust_composite_pairing and \
@@ -420,7 +430,7 @@ def main(argv=None) -> int:
             "consistent": bool(mism == 0)}
     else:
         why = ("pairing unresolved" if shared is None
-               else "donor column absent from one or both files")
+               else "donor column unresolved in one or both files")
         receipt["donor_label_agreement_on_shared"] = {
             "checked": False, "consistent": None,
             "status": f"NOT_CHECKABLE__{why.upper().replace(' ', '_')}"}
