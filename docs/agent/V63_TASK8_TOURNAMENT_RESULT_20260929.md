@@ -224,3 +224,89 @@ Step 1 is done. TECH remains unrejected at the predeclared margin, by a margin
 whose *point estimate* (+0.00932) is itself below M_MIN, so no amount of extra
 seeding closes it. Step 2 — the estimator repair — remains the only legitimate
 route, and remains unauthorised.
+
+
+---
+
+# The bias-support frontier (step 3) -- `NO_FEASIBLE_REGION`
+
+Question fixed before the sweep: *is there any prospective operating region where
+TECH is rejected without selecting a materially different subset of regulatory
+links?* Feasible region declared before any curve existed: **TECH LCB95 > 0.010
+AND worst |SMD| <= 0.25**, retention reported not optimised. Worlds held fixed
+across granularities (separate world and matching rngs), so movement along the
+curve is caused by matching resolution, not Monte Carlo variability.
+
+donors=18, seeds=24.
+
+| bins | TECH margin / LCB95 | TECH | ANCHOR LCB95 | retention | worst SMD *declared* | *diagnostic* vs-ALL |
+|---|---|---|---|---|---|---|
+| 2 | -0.07031 / -0.07205 | fail | -0.00480 fail | 93.4% | 0.623 | **0.034** |
+| 3 | -0.02335 / -0.02490 | fail | +0.00744 fail | 65.3% | 0.430 | **0.143** |
+| 4 | -0.00083 / -0.00185 | fail | +0.01431 CLEAR | 36.9% | 0.371 | **0.221** |
+| 5 | +0.00943 / +0.00785 | fail | +0.01839 CLEAR | 15.2% | 0.346 | **0.288** |
+| 6 | +0.01686 / **+0.01384** | **CLEAR** | +0.02116 CLEAR | 4.7% | 0.391 | 0.370 |
+| 8 | +0.02109 / **+0.01541** | **CLEAR** | +0.02749 CLEAR | 0.9% | 0.769 | 0.761 |
+
+**Declared criterion: `NO_FEASIBLE_REGION_ON_THIS_FRONTIER`.**
+
+## The mechanism, and a prediction that held
+
+TECH rises **monotonically** with matching resolution -- harder matching does
+shrink the residual geometry leak, exactly as first framed. I had pre-registered
+that `no_anchor_matching` might mean the opposite, and it does not: **removing a
+matching variable and changing granularity are different axes**, and both results
+stand. The prediction is recorded as held rather than quietly dropped.
+
+## The measurement defect I flagged was real -- and immaterial
+
+The declared statistic is retained-vs-discarded, which is degenerate at extreme
+retention: at 93.4% retention the discarded 6.6% is a small extreme tail, so
+SMD 0.623 says nothing about whether the estimand moved. The estimand-relevant
+contrast is retained-vs-**all linked**, added as a labelled diagnostic and never
+used in the feasibility flag.
+
+**It does not rescue the conclusion.** Under the diagnostic contrast the two
+conditions still never overlap:
+
+- representative under vs-ALL (bins 2, 3, 4 -> 0.034, 0.143, 0.221) -> **TECH
+  fails, and at bins 4 its margin is NEGATIVE (-0.00185), not merely short**
+- TECH clears (bins 6, 8 -> +0.01384, +0.01541) -> vs-ALL 0.370 and 0.761,
+  materially selected
+- bins 5 sits between and fails both
+
+The conditions cross in opposite directions across bins 4->6 with **no point of
+overlap under either contrast**. So the flagged defect changed how one column
+should be read; it changed nothing about the answer. Reported that way rather
+than as a crisis averted.
+
+## What this licenses, stated no more strongly than earned
+
+> **`NEG_TECH_2 = EMPIRICALLY_UNRESOLVED_WITHIN_CURRENT_OBSERVABLE_AND_ESTIMATOR_CLASS`**
+
+Deliberately **weaker** than the semantic twin's status. The twin is
+*mathematically* non-identifiable: its observables are identical to the
+positive's, which is a theorem about the observables. This is an *empirical*
+statement about one observable set and one class of support adjustment
+(coarsened exact matching at six granularities). It does **not** license
+demanding another assay, because the same-observable degeneracy has not been
+demonstrated -- only that this estimator class fails to resolve it.
+
+## The fork, and which branch this selects
+
+1. feasible region exists -> narrow estimator work -- **ruled out by this sweep**
+2. no feasible region, identifiability not proven impossible -> **ONE
+   prospectively specified orthogonalised/continuous-adjustment estimator, not a
+   tournament** -- **this is the indicated branch**
+3. no feasible region AND same-observable degeneracy demonstrated -> elevate
+   hidden capture into the identifiability boundary and require an independent
+   measurement -- **not yet earned**
+
+Branch 2 is indicated because the failure has an obvious candidate mechanism:
+coarsened *binning* balances geometry only to within a bin, and the latent is
+keyed to geometry continuously. A continuous adjustment does not have to trade
+balance against retention the way binning does, so it is the one change that
+could move both conditions in the same direction rather than along the frontier.
+
+That is a single, prospectively specified estimator -- not a search -- and it
+remains unauthorised.

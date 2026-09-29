@@ -220,9 +220,19 @@ def match_controls(w, rng, n_bins=5, mutate=None):
         if len(a) < 2 or len(b) < 2:
             continue
         pooled_sd = np.sqrt((a.var(ddof=1) + b.var(ddof=1)) / 2) or 1e-9
+        # Retained-vs-discarded is the declared contrast. It is DEGENERATE at extreme
+        # retention: with 92% retained, the discarded 8% is a small extreme tail, so the
+        # SMD is large even though the retained set IS essentially the whole linked
+        # population and the estimand has barely moved. Retained-vs-ALL-LINKED is the
+        # estimand-relevant contrast, reported ALONGSIDE as a diagnostic. It is NOT
+        # substituted for the declared criterion.
+        allv = arr[linked_mask]
+        all_sd = np.sqrt((a.var(ddof=1) + allv.var(ddof=1)) / 2) or 1e-9
         sel[name] = {"retained_mean": float(a.mean()), "discarded_mean": float(b.mean()),
-                     "standardised_mean_difference": float((a.mean() - b.mean()) / pooled_sd)}
+                     "standardised_mean_difference": float((a.mean() - b.mean()) / pooled_sd),
+                     "smd_retained_vs_all_linked": float((a.mean() - allv.mean()) / all_sd)}
     worst = max((abs(v["standardised_mean_difference"]), k) for k, v in sel.items()) if sel else (0.0, None)
+    worst_all = max((abs(v["smd_retained_vs_all_linked"]), k) for k, v in sel.items()) if sel else (0.0, None)
     return (kl_arr, np.array(kc),
             {"linked_before_trim": n_tot, "linked_after_trim": len(kl),
              "controls_after_trim": len(kc), "strata_total": len(strata),
@@ -232,6 +242,8 @@ def match_controls(w, rng, n_bins=5, mutate=None):
                  "n_retained_linked": int(kept.sum()), "n_discarded_linked": int(disc.sum()),
                  "standardised_mean_differences": sel,
                  "worst_abs_smd": round(worst[0], 4), "worst_variable": worst[1],
+                 "worst_abs_smd_retained_vs_all_linked": round(worst_all[0], 4),
+                 "worst_variable_retained_vs_all_linked": worst_all[1],
                  "interpretation_rule": (
                      "|SMD| < 0.10 is conventionally negligible imbalance, 0.10-0.25 "
                      "modest, > 0.25 material. A material imbalance means trimming "
