@@ -40,9 +40,9 @@ Authority:
 The scientific mechanism, frozen geometry function, amplitude, unchanged estimator, forbidden modifications, `M_MIN`, and interpretation are specified.
 
 Status:
-`CONTRACT_EXECUTABLE_IN_PRINCIPLE__EXECUTOR_NOT_YET_LOCATED_IN_REPO`
+`EXECUTOR_ADDED__NOT_YET_EXECUTED_HERE`
 
-Do not invent a second out-of-span nuisance.
+Action on this parallel branch:\nadded\n`scripts/v64/e2_continuous_adjustment_out_of_span_stress_v1.py`\n\nThe wrapper imports the frozen V63 estimator and adds exactly the prospectively frozen `NEG_TECH_OUTSPAN_1` arm as its own `OUTSPAN_TECH` family. No estimator basis terms, alpha, M_MIN, existing arms, positive amplitudes or scoring rules are changed.\n\nDo not invent a second out-of-span nuisance.
 
 ## B. C3 coordinate harmonization
 
@@ -143,3 +143,21 @@ The immediate execution order should be split into two classes.
 This is not a request to redesign the framework. It is a fail-closed implementation audit: several biological contracts contain explicit references to predeclared values that have not yet been instantiated numerically or algorithmically.
 
 No protected outcome was opened in this audit.
+
+
+## F. Reproducibility clarification received during execution
+
+A transient concern was raised because an 8-donor / 3-seed smoke-run summary was described as reproducing "the earlier run" while the committed authority is the 18-donor / 24-seed primary.
+
+This has been resolved. At the matching 18/24 configuration, the new runner reproduces the committed `c4e78de2` primary exactly:
+- POS_BIO_1 = 0.2282527590455996
+- TECH margin = 0.01995560304936889
+- TECH LCB95 = 0.01948446698612133
+- Kish ESS = 935.4469599793607
+
+The previously quoted approximately 0.22923 / 0.019928 / 0.019385 / ESS 908.55 values were from an explicitly smaller 8/3 smoke configuration and are not the authority baseline.
+
+Status:
+`REPRODUCIBILITY_CONCERN_RESOLVED__18x24_BIT_FAITHFUL`
+
+Future run reports should state the exact artifact and donor/seed configuration in the same sentence as any reproduction claim.
