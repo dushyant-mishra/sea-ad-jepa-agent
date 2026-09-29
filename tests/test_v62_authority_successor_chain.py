@@ -23,6 +23,20 @@ class Dummy:
     def validate(self): pass
     def canonical_digest(self): return self.d
 
+def provider_receipt(test_id="t1", outcome="PASS"):
+    return ProviderTestReceiptV1(
+        test_id=test_id,
+        provider_id="GITHUB_ACTIONS",
+        provider_repository="dushyant-mishra/sea-ad-jepa-agent",
+        provider_workflow_path=".github/workflows/v62-authority-successor.yml",
+        provider_head_sha256=H("head"),
+        provider_run_id="run1",
+        provider_job_id="job1",
+        test_source_sha256=H("testsrc"),
+        provider_artifact_sha256=H("artifact"),
+        outcome=outcome,
+    )
+
 def fixture_chain():
     roots={k:H(k) for k in CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS_V2}
     runtime=Dummy(H("runtime_live"))
@@ -31,23 +45,30 @@ def fixture_chain():
     closure2={**core,"closure_digest":D(core)}
     target=roots["target_construction_authority_sha256"]
     bio=BiologicalSpecificityAuthorityV1("bio",target,H("ext"),H("nuis"),H("synth"),H("proto"),H("bioval"),"V48_SEMANTIC_TWIN")
-    q=QSafetyAuthorityV1("q",target,H("prep"),H("qint"),"q_excluded_total__q_token_dropped","Q_BLIND",True)
-    pr=ProviderTestReceiptV1("t1","GITHUB_ACTIONS","run1","job1",H("testsrc"),H("artifact"),"PASS")
-    crit=CriticalTestExecutionAuthorityV2("crit",roots["critical_test_authority_sha256"],["t1"],[pr])
+    q=QSafetyAuthorityV1("q",target,H("prep"),H("qint"),"q_excluded_total__q_token_dropped","q_excluded_detected_count","Q_BLIND",True,True)
+    crit=CriticalTestExecutionAuthorityV2("crit",roots["critical_test_authority_sha256"],["t1"],[provider_receipt()])
     closure3=validate_current_v5_authority_closure_v3(closure_v2=closure2,biological_specificity=bio,q_safety=q,critical_test_v2=crit)
     pre=CurrentTrainerPreexecutionAuthorityV3(closure3["authority_roots"],closure3["closure_digest"],closure3["authority_roots"]["protected_registry_authority_sha256"],closure3["authority_roots"]["critical_test_v2_authority_sha256"],False,False)
     receipt_roots=dict(closure3["authority_roots"]); receipt_roots["preexecution_authority_sha256"]=pre.canonical_digest()
     receipt=seal_current_teacher_target_receipt_v3(target_package_root=H("targetpkg"),authority_roots=receipt_roots,closure_v3_sha256=closure3["closure_digest"])
     return roots,bio,q,crit,closure3,pre,receipt,runtime
 
-def test_q_safety_rejects_naive_mode():
+def test_q_safety_rejects_naive_mode_and_q_dependent_qc():
     roots,bio,q,crit,c,p,r,rt=fixture_chain()
-    bad=QSafetyAuthorityV1("q",roots["target_construction_authority_sha256"],H("prep"),H("qint"),"full_total__q_token_dropped","Q_BLIND",True)
+    bad=QSafetyAuthorityV1("q",roots["target_construction_authority_sha256"],H("prep"),H("qint"),"full_total__q_token_dropped","q_excluded_detected_count","Q_BLIND",True,True)
     with pytest.raises(ValueError): bad.validate()
+    bad_qc=QSafetyAuthorityV1("q",roots["target_construction_authority_sha256"],H("prep"),H("qint"),"q_excluded_total__q_token_dropped","full_detected_count","Q_BLIND",True,True)
+    with pytest.raises(ValueError): bad_qc.validate()
+    bad_meta=QSafetyAuthorityV1("q",roots["target_construction_authority_sha256"],H("prep"),H("qint"),"q_excluded_total__q_token_dropped","q_excluded_detected_count","Q_BLIND",True,False)
+    with pytest.raises(ValueError): bad_meta.validate()
 
-def test_critical_test_rejects_caller_declared_provider_and_nonpass():
-    with pytest.raises(ValueError): ProviderTestReceiptV1("t","CALLER_DECLARED","r","j",H("s"),H("a"),"PASS").payload()
-    with pytest.raises(ValueError): ProviderTestReceiptV1("t","GITHUB_ACTIONS","r","j",H("s"),H("a"),"FAIL").payload()
+def test_critical_test_rejects_unapproved_provider_bad_workflow_and_nonpass():
+    with pytest.raises(ValueError):
+        ProviderTestReceiptV1("t","CALLER_DECLARED","owner/repo",".github/workflows/x.yml",H("head"),"r","j",H("s"),H("a"),"PASS").payload()
+    with pytest.raises(ValueError):
+        ProviderTestReceiptV1("t","GITHUB_ACTIONS","owner/repo","not-a-workflow",H("head"),"r","j",H("s"),H("a"),"PASS").payload()
+    with pytest.raises(ValueError):
+        provider_receipt(outcome="FAIL").payload()
 
 def test_final_issuance_accepts_bound_live_chain():
     roots,bio,q,crit,c,p,r,rt=fixture_chain()
