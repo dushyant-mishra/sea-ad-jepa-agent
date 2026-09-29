@@ -1,0 +1,43 @@
+{
+  "schema": "V62_CORCES_DS2_DONOR_ID_SUCCESSOR_V1",
+  "date": "2026-09-28",
+  "status": "STRUCTURAL_PROVENANCE_CORRECTION_ONLY",
+  "input": {
+    "file": "41588_2020_721_MOESM5_ESM.xlsx",
+    "sha256": "2d1aa847e0f075728e73b91e9d793450e278166edbb2f2a082e264f873c94707"
+  },
+  "dictionary_statement": "Donor_ID - A numeric identifier unique to each individual donor.",
+  "documented_individual_donors": [
+    "03_39",
+    "04_38",
+    "06_0615",
+    "09_1589",
+    "09_35",
+    "11_0393",
+    "14_0586",
+    "14_1018"
+  ],
+  "donor_count": 8,
+  "cluster24_microglia": {
+    "total_cells": 4655,
+    "donors_with_microglia": 8,
+    "per_donor": {
+      "03_39": 651,
+      "04_38": 380,
+      "06_0615": 779,
+      "09_1589": 1050,
+      "09_35": 225,
+      "11_0393": 415,
+      "14_0586": 879,
+      "14_1018": 276
+    }
+  },
+  "supersedes": "V60 six-donor-token interpretation only; V60 historical artifact remains preserved",
+  "error_mechanism": "truncating full Donor_ID at underscore merged documented distinct individuals",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "controlled_data_used": false,
+    "molecular_outcome_opened": false
+  }
+}
