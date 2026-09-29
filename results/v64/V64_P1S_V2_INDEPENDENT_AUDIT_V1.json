@@ -88,21 +88,12 @@
         "safe_next_step": "Complete the missing log-distance and promoter-degree descriptive reports exactly as unambiguous. For local density, either report a transparent multi-definition sensitivity panel or freeze a successor descriptive rule with outcome exposure explicitly declared; do not use it to alter the primary PASS."
       },
       "resolution": {
-        "result": "Corrected rerun at 8b13939bbeb62a6bc7e587f3e9bd1d0cd93c60d7 reproduces the primary quantities exactly before emitting sensitivities.",
-        "authoritative_result": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
-        "pooled_density_summary": {
-          "Q1": {
-            "E_microglia": 0.1623618883627493,
-            "D_MN": 0.1307935141340221,
-            "D_MO": 0.13043478260869565
-          },
-          "Q4": {
-            "E_microglia": 0.1891050126344244,
-            "D_MN": 0.1671269906564024,
-            "D_MO": 0.1697714050655227
-          }
-        },
-        "interpretation": "The earlier negative low-density Q1 finding was an artifact of non-compliant microglia-observed-only binning and is withdrawn. Under the corrected pooled-density analysis, all quartiles remain clearly positive."
+        "result": "The single-operator v1 rerun at 8b13939b is superseded as the density-sensitivity authority by the transparent six-operator panel at 5e5af414.",
+        "authoritative_panel": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_COMPLETION_V2.json",
+        "operator_status": "OUTCOME_EXPOSED__DESCRIPTIVE_ONLY__NO_OPERATOR_SELECTED",
+        "robust_statement": "Excluding superseded D6, every reported D_MN/D_MO density quartile is positive, approximately +0.0802 to +0.2155.",
+        "under_specification": "V2 does not prospectively define a unique pooling operator. No post-outcome operator is selected or promoted to contract authority.",
+        "mechanistic_caution": "D1's flatter trend is consistent with offsetting observed-arm and null-arm density dependencies, but the quartile-specific D1 trend is not an arithmetic sum of D2/D3 quartile trends because the operators induce different stratum memberships."
       }
     },
     "mandatory_reporting": {
@@ -117,10 +108,12 @@
     }
   },
   "current_density_result_status": {
-    "authoritative": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
-    "superseded": "microglia-observed-only Q1-Q4 table from 303ca8b6",
-    "superseded_reason": "Outcome-dependent stratification artifact",
-    "low_density_negative_caveat": "WITHDRAWN"
+    "authoritative_panel": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_COMPLETION_V2.json",
+    "single_operator_v1": "SUPERSEDED_AS_DENSITY_AUTHORITY",
+    "superseded_v0": "microglia-observed-only Q1-Q4 table from 303ca8b6",
+    "low_density_negative_caveat": "WITHDRAWN",
+    "operator_selected": false,
+    "successor_freeze_needed_for_single_authoritative_operator": true
   },
   "required_correction": [],
   "firewall_state": {
@@ -131,8 +124,8 @@
   },
   "governance": {
     "P1S_primary": "PASS",
-    "P1S_full_contract": "CLOSED",
-    "P3": "BLOCKED_ON_EXACT_GSE73721_BYTE_AUTHENTICATION_AND_PROSPECTIVE_EXPRESSION_RULE",
+    "P1S_full_contract": "PRIMARY_CLOSED__DENSITY_OPERATOR_REMAINS_DESCRIPTIVELY_UNDER_SPECIFIED",
+    "P3": "SCIENTIFIC_RULES_FROZEN__FINAL_MECHANICAL_EXECUTION_PENDING",
     "E2_NOTT_CANDIDATE": "NOT_INSTANTIATED",
     "TRAINING": "OFF",
     "TD60": "BLOCKED"
