@@ -1,0 +1,45 @@
+{
+  "schema": "V64_NOTT_P1S_STRUCTURE_ONLY_V1",
+  "date": "2026-09-29",
+  "status": "SOURCE_STRUCTURE_AND_POPULATION_FUNNEL_ONLY__NO_P1S_OUTCOME_OPENED",
+  "why_stopped_here": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2 is labelled 'current_parallel_P1S_operational_authority_candidate' by V64_SPILLOVER_FIREWALL_MANIFEST_V1 and is absent from the canonical authority branch at 2d6fa8a1. Computing ATAC support would open the P1S outcome against a CANDIDATE contract and would irreversibly consume its prospectivity: once the support rates are seen, that contract can no longer be revised prospectively. Orientation and the population funnel are source-structure facts and open nothing.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "p1s_outcome_opened": false,
+    "atac_support_computed": false,
+    "external_gene_annotation_used": false,
+    "target_or_AD_identity_used": false
+  },
+  "authority_binding": {
+    "canonical_branch": "chatgpt/v64-e2-single-source-successor-20260929",
+    "canonical_commit": "2d6fa8a1c4201e836e089b798d36617c07d92a7e",
+    "this_branch_descends_from_canonical": true,
+    "p1s_v2_contract_status": "CANDIDATE, on chatgpt/v64-parallel-execution-readiness-20260929, NOT on canonical",
+    "table_s5_sha256": "81c99689533d9da372cecdd469e7ff02cc985720105b83b3bd66c3ac8c93972e"
+  },
+  "orientation_recomputed_independently": {
+    "original_interactions": 104802,
+    "PU1_active_promoter_annotation_rows": 11793,
+    "counts": {
+      "GENE_UNANNOTATED_PROMOTER_DISTAL": 1673,
+      "PROMOTER_DISTAL_EXACTLY_ONE_PROMOTER_ANCHOR_total": 64210,
+      "PROMOTER_PROMOTER": 7614,
+      "NO_ACTIVE_PROMOTER_MATCH": 32978,
+      "PROMOTER_DISTAL_UNIQUE_ENSEMBL": 61624,
+      "GENE_AMBIGUOUS_PROMOTER_DISTAL": 913
+    },
+    "matches_parallel_lane_audit": {
+      "PROMOTER_DISTAL_exactly_one": true,
+      "PROMOTER_PROMOTER": true,
+      "NO_ACTIVE_PROMOTER_MATCH": true,
+      "PROMOTER_DISTAL_UNIQUE_ENSEMBL": true
+    }
+  },
+  "population_funnel": {
+    "original_interactions": 104802,
+    "C3_retained": 102701,
+    "C3_retained_and_source_oriented_promoter_distal": 62890,
+    "fraction_of_original": 0.600084
+  }
+}
