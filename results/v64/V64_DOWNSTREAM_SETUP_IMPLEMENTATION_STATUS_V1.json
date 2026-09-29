@@ -1,0 +1,107 @@
+{
+  "schema": "V64_DOWNSTREAM_SETUP_IMPLEMENTATION_STATUS_V1",
+  "date": "2026-09-29",
+  "canonical_branch": "chatgpt/v64-e2-single-source-successor-20260929",
+  "canonical_head": "638388925cef33a71ee6a9b959fb1e9c5569dd67",
+  "overall": "SUBSTANTIAL_DOWNSTREAM_SCAFFOLDING_NOW_IMPLEMENTED__NO_NEW_BIOLOGICAL_OUTCOME_OPENED__EXECUTION_VALIDATION_STILL_REQUIRED",
+  "newly_implemented": [
+    {
+      "component": "realism calibrated synthetic design",
+      "path": "results/v64/V64_NIH_CARD_REALISM_CALIBRATED_SYNTHETIC_DESIGN_CONTRACT_V1.json",
+      "status": "FROZEN_PROSPECTIVE"
+    },
+    {
+      "component": "realism executor V2",
+      "path": "scripts/v64/nihcard_realism_calibrated_qualification_v2.py",
+      "status": "IMPLEMENTED_NOT_YET_EXECUTED",
+      "repairs": [
+        "tie-aware average ranks",
+        "exact finite-sample marginal multiset preservation",
+        "whole-row resampling sensitivity",
+        "Stage-3 artifact provenance binding"
+      ]
+    },
+    {
+      "component": "validated E2 authority",
+      "path": "src/sea_ad_jepa/v5/validated_e2_authority_v1.py",
+      "status": "IMPLEMENTED_SCHEMA__NO_INSTANCE_MAY_EXIST_BEFORE_STAGE4_PASS_AND_AUDIT"
+    },
+    {
+      "component": "RNA+E2 target integration authority",
+      "path": "src/sea_ad_jepa/v5/rna_e2_target_integration_authority_v1.py",
+      "status": "IMPLEMENTED_SCHEMA__NO_INSTANCE_YET"
+    },
+    {
+      "component": "final authority roots V4",
+      "path": "src/sea_ad_jepa/v5/current_authority_roots_v4.py",
+      "status": "IMPLEMENTED",
+      "mandatory_new_roots": [
+        "validated_e2_authority_sha256",
+        "rna_e2_target_integration_authority_sha256"
+      ]
+    },
+    {
+      "component": "closure/preexecution/receipt/training/optimizer V4 chain",
+      "paths": [
+        "src/sea_ad_jepa/v5/current_authority_closure_v4.py",
+        "src/sea_ad_jepa/v5/current_trainer_preexecution_contract_v4.py",
+        "src/sea_ad_jepa/v5/current_teacher_target_receipt_v4.py",
+        "src/sea_ad_jepa/v5/current_training_authority_v2.py",
+        "src/sea_ad_jepa/v5/qualified_optimizer_guard_v4.py"
+      ],
+      "status": "IMPLEMENTED_NOT_YET_EXECUTED_IN_CI",
+      "property": "new training authority requires live biological-specificity, q-safety, validated-E2, RNA+E2 integration, critical-test-execution and runtime roots"
+    },
+    {
+      "component": "Stage4 executor contract",
+      "path": "results/v64/V64_NIH_CARD_STAGE4_EXECUTOR_CONTRACT_V1.json",
+      "status": "FROZEN__EXECUTION_NOT_AUTHORISED"
+    },
+    {
+      "component": "q-safety physical intervention contract",
+      "path": "results/v64/V64_Q_SAFETY_PHYSICAL_INTERVENTION_CONTRACT_V1.json",
+      "status": "FROZEN__WAITING_FOR_INTEGRATED_TARGET_IMPLEMENTATION"
+    },
+    {
+      "component": "post-E2 protected validation boundary",
+      "path": "results/v64/V64_POST_E2_PROTECTED_VALIDATION_BOUNDARY_CONTRACT_V1.json",
+      "status": "FROZEN_BOUNDARIES__PROTECTED_OUTCOME_UNOPENED"
+    }
+  ],
+  "tests_added": [
+    "tests/test_v64_nihcard_realism_calibration_v2.py",
+    "tests/test_v5_v4_downstream_authority_chain.py"
+  ],
+  "execution_validation": {
+    "github_actions_run_found": false,
+    "local_attempt": "FAILED_ENVIRONMENTALLY_BEFORE_TEST_EXECUTION__runtime DNS could not resolve github.com",
+    "consequence": "Do not call new tests PASS until Claude or CI runs them against canonical HEAD."
+  },
+  "current_data_state": {
+    "NIH_CARD_RNA": "Claude reports full-byte size+MD5 authenticated; independent receipt not yet canonicalized by this chat",
+    "NIH_CARD_ATAC": "download incomplete/not authenticated at last report",
+    "matrix_dependent_stages": "BLOCKED",
+    "Stage4": "NOT_AUTHORISED",
+    "E2_correspondence_outcome_opened": false
+  },
+  "remaining_required_work": [
+    "Claude/CI execute focused realism V2 and V4 authority tests; repair any failures before promotion",
+    "authenticate full NIH-CARD ATAC bytes and canonicalize authentication receipt",
+    "execute outcome-blind pairing, empirical metacell calibration, full support funnel, real 14D span diagnostic",
+    "run realism-calibrated nuisance-family qualification; current V2 realism script is calibration-only, not full qualification",
+    "independently audit all preexecution results",
+    "implement and test the actual Stage-4 correspondence executor under the frozen Stage4 contract",
+    "only after Stage4 PASS+audit instantiate ValidatedE2AuthorityV1",
+    "build exact integrated target implementation and instantiate RnaE2TargetIntegrationAuthorityV1",
+    "execute physical q-safety intervention and instantiate QSafetyAuthorityV1",
+    "freeze exact post-E2 Morabito estimand only after integrated-target digest exists",
+    "wire production trainer entrypoint so only CurrentTrainingAuthorityV2 + optimizer guard V4 can step; old guard paths must be unreachable",
+    "run old-path bypass/red-team test at production trainer level"
+  ],
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "Stage4": "NOT_AUTHORISED"
+  }
+}
