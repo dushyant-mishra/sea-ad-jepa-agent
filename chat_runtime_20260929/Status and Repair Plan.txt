@@ -48,7 +48,7 @@ The >30 GB, 8,915-block store must be found on the GPU laptop/attached drive and
 **2. Actual full-stream metric computation.**  
 The selectors and provenance system now exist, but we still need the executors that read FULL104 and compute the rank-by-rank quantities:
 
-```text
+```text id="2d3qct"
 D_shared:
   full-refit matched-null signal
   donor-resampled subspace stability
@@ -73,7 +73,7 @@ This is another historical gap I found. The firewall correctly says null and boo
 
 That is now documented as:
 
-```text
+```text id="by4w2u"
 FULL104 physical closure
         ↓
 real full-stream metric executors
