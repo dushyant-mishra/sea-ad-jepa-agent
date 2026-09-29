@@ -93,9 +93,27 @@ CONTACT_PER_GENE = 5              # externally contact-supported among them
 N_PROGRAM = 48                    # genes a planted program regulates
 
 # measured medians from GSE147672 barcodes (public, ungated)
-CORCES_FRIP_MED = 0.406
-CORCES_TSS_MED = 7.732
-CORCES_FRAG_MED = 13033.0
+# QC nuisance, measured from Supplementary Data Set 2's per-cell
+# 'scATAC-seq QC Metadata' sheet, restricted to Cluster24 == Microglia.
+#
+# CORRECTED 2026-09-28. These were previously the ATLAS-WIDE medians over all
+# 70,631 cells (FRIP 0.406, TSS 7.732, fragments 13033). Those values are
+# correct for the atlas and reproduce exactly from Data Set 2 -- but the object
+# under test is a MICROGLIAL regulatory object, and microglia are a lower-depth
+# population: 23% fewer fragments and 14% lower FRiP. Simulating the atlas
+# stratum made the measurement process cleaner than the one the real object
+# would be read through, i.e. the error ran OPTIMISTIC.
+CORCES_FRIP_MED = 0.3500      # was 0.406  (atlas-wide)   -13.8%
+CORCES_TSS_MED = 7.9526       # was 7.732  (atlas-wide)    +2.8%
+CORCES_FRAG_MED = 10021.0     # was 13033.0 (atlas-wide)  -23.1%
+
+# Measured per-donor microglial depth in the Corces substrate, for reference
+# when choosing --cells. Recorded because the stability sweep showed the
+# verdict MOVES with cells-per-donor, so the value is a real lever and must be
+# justified rather than defaulted to a round number.
+CORCES_MICROGLIA_PER_DONOR = {"03_39": 651, "04_38": 380, "06_0615": 779,
+                              "09_1589": 1050, "09_35": 225, "11_0393": 415,
+                              "14_0586": 879, "14_1018": 276}
 
 
 def make_world(rng):
@@ -328,6 +346,13 @@ def main():
            "qc_parameterised_from": {"FRIP_median": CORCES_FRIP_MED,
                                      "tssEnrichment_median": CORCES_TSS_MED,
                                      "fragmentsPerCell_median": CORCES_FRAG_MED,
+                                     "stratum": "Cluster24 microglia only",
+                                     "superseded_atlas_wide_values": {
+                                         "FRIP_median": 0.406,
+                                         "tssEnrichment_median": 7.732,
+                                         "fragmentsPerCell_median": 13033.0},
+                                     "corces_microglia_per_donor":
+                                         CORCES_MICROGLIA_PER_DONOR,
                                      "source": "GSE147672 public barcodes file"},
            "by_n": {}}
 
