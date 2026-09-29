@@ -1,14 +1,14 @@
-"""Critical-test V2: bind pass claims to explicit external provider receipts.
+"""Critical-test V2: bind required passes to GitHub Actions evidence receipts.
 
-This schema removes V1's caller-declared EXECUTED_PASS map. It does not itself
-query an external provider; production use must be paired with a physically
-observed provider run and its artifact digest.
+V1 accepted caller-declared EXECUTED_PASS strings. V2 requires an explicit
+GitHub Actions run/job identity, repository, workflow path, head SHA, test-source
+SHA and downloaded provider-artifact SHA for every required test.
 """
 from __future__ import annotations
 from dataclasses import dataclass
 import hashlib,json
 from typing import Any,Mapping,Sequence
-ALLOWED_PROVIDERS=frozenset({"GITHUB_ACTIONS","PHYSICAL_EXECUTION_PROVIDER"})
+ALLOWED_PROVIDERS=frozenset({"GITHUB_ACTIONS"})
 def _sha(v:object,n:str)->str:
     if not isinstance(v,str) or len(v)!=64 or v!=v.lower():raise ValueError(f"{n} must be lowercase SHA-256")
     try:int(v,16)
@@ -20,12 +20,28 @@ def _id(v:object,n:str)->str:
 def _digest(p:Mapping[str,Any])->str:return hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",",":"),ensure_ascii=True,allow_nan=False).encode()).hexdigest()
 @dataclass(frozen=True)
 class ProviderTestReceiptV1:
-    test_id:str; provider_id:str; provider_run_id:str; provider_job_id:str; test_source_sha256:str; provider_artifact_sha256:str; outcome:str
+    test_id:str
+    provider_id:str
+    provider_repository:str
+    provider_workflow_path:str
+    provider_head_sha256:str
+    provider_run_id:str
+    provider_job_id:str
+    test_source_sha256:str
+    provider_artifact_sha256:str
+    outcome:str
     def payload(self)->dict[str,str]:
         p=_id(self.provider_id,"provider_id")
         if p not in ALLOWED_PROVIDERS: raise ValueError("provider_id is not approved")
+        repo=_id(self.provider_repository,"provider_repository")
+        if "/" not in repo or repo.startswith("/") or repo.endswith("/"): raise ValueError("provider_repository must be owner/repo")
+        workflow=_id(self.provider_workflow_path,"provider_workflow_path")
+        if not workflow.startswith(".github/workflows/"): raise ValueError("provider_workflow_path must name a GitHub Actions workflow")
         if _id(self.outcome,"outcome")!="PASS": raise ValueError("provider receipt outcome must be PASS")
-        return {"test_id":_id(self.test_id,"test_id"),"provider_id":p,"provider_run_id":_id(self.provider_run_id,"provider_run_id"),"provider_job_id":_id(self.provider_job_id,"provider_job_id"),"test_source_sha256":_sha(self.test_source_sha256,"test_source_sha256"),"provider_artifact_sha256":_sha(self.provider_artifact_sha256,"provider_artifact_sha256"),"outcome":"PASS"}
+        return {"test_id":_id(self.test_id,"test_id"),"provider_id":p,"provider_repository":repo,"provider_workflow_path":workflow,
+                "provider_head_sha256":_sha(self.provider_head_sha256,"provider_head_sha256"),"provider_run_id":_id(self.provider_run_id,"provider_run_id"),
+                "provider_job_id":_id(self.provider_job_id,"provider_job_id"),"test_source_sha256":_sha(self.test_source_sha256,"test_source_sha256"),
+                "provider_artifact_sha256":_sha(self.provider_artifact_sha256,"provider_artifact_sha256"),"outcome":"PASS"}
     def canonical_digest(self)->str:return _digest({"schema":"V5_PROVIDER_TEST_RECEIPT_V1",**self.payload()})
 @dataclass(frozen=True)
 class CriticalTestExecutionAuthorityV2:
