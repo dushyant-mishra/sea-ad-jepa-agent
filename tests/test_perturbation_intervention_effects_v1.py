@@ -191,3 +191,30 @@ def test_no_therapeutic_or_training_claim_is_encoded():
     assert "JEPA_TRAINING=OFF" in text
     assert "THERAPEUTIC_RANKING=OFF" in text
     assert "PROTECTED_FULL104_OUTCOMES=UNOPENED" in text
+
+
+@pytest.mark.parametrize("tag", ["CRISPRa", "CRISPRi"])
+def test_feature_ids_are_unique_not_just_set_compatible(tag):
+    p = G / f"{tag}_features.txt"
+    values = p.read_text(encoding="utf-8").split()
+    assert len(values) == len(set(values)), "duplicate feature ID would make symbol matching ambiguous"
+
+
+@pytest.mark.parametrize("tag", ["CRISPRa", "CRISPRi"])
+def test_each_guide_has_one_target_and_one_crispr_role(tag):
+    """A first-row lookup must never hide guide annotation drift across donors."""
+    rows = _guides(tag)
+    by = {}
+    for row in rows:
+        by.setdefault(row["guide_identity"], set()).add(
+            (row["Gene_Targeted"], row["crispr"])
+        )
+    bad = {guide: values for guide, values in by.items() if len(values) != 1}
+    assert not bad, f"guide identity maps to multiple target/role annotations: {list(bad)[:5]}"
+
+
+@pytest.mark.parametrize("tag", ["CRISPRa", "CRISPRi"])
+def test_only_expected_donors_and_roles_are_present(tag):
+    rows = _guides(tag)
+    assert {row["donor"] for row in rows} == {"D1", "D2"}
+    assert {row["crispr"] for row in rows} == {"NT", "Perturbed"}

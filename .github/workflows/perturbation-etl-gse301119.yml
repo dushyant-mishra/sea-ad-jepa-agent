@@ -1,0 +1,33 @@
+name: Perturbation ETL GSE301119
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/**'
+      - 'tests/test_perturbation_intervention_effects_v1.py'
+      - '.github/workflows/perturbation-etl-gse301119.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  committed-receipt-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run GSE301119 committed-receipt regressions
+        run: |
+          python -m pytest -q -p no:randomly tests/test_perturbation_intervention_effects_v1.py | tee /tmp/gse301119.txt
+      - name: Fail closed on skipped tests
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse301119.txt; then
+            echo 'GSE301119 TESTS SKIPPED - FAIL CLOSED'
+            exit 1
+          fi
