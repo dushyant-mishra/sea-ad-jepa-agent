@@ -1,0 +1,252 @@
+{
+  "tool": "h5ad_schema_probe",
+  "tool_version": "2.0.0",
+  "supersedes": "1.0.0",
+  "exposure": "obs/var metadata plus a bounded sample of stored matrix values per slot; NO RNA-ATAC relationship computed; no biological outcome opened",
+  "rna": {
+    "path": "D:/jepa_v5_outputs_20260925/v63_fixtures/C_rna.h5ad",
+    "top_level_keys": [
+      "X",
+      "layers",
+      "obs",
+      "obsm",
+      "obsp",
+      "uns",
+      "var",
+      "varm",
+      "varp"
+    ],
+    "bytes": 141868,
+    "n_obs": 600,
+    "n_var": 200,
+    "obs_index_unique": true,
+    "obs_index_examples": [
+      "NABEC_1234_TCTAGATTGCTTACTT-1",
+      "NABEC_1234_GTACTTCTCTTGATTT-1",
+      "NABEC_1234_GATTTGCTCGTCCACG-1"
+    ],
+    "var_index_examples": [
+      "GENE0",
+      "GENE1",
+      "GENE2",
+      "GENE3",
+      "GENE4"
+    ],
+    "obs_columns": [
+      "cell_type",
+      "sample_id",
+      "cohort",
+      "age",
+      "sex",
+      "PMI"
+    ],
+    "var_columns": [],
+    "matrix_slots": {
+      "X": {
+        "storage": "csr_matrix",
+        "shape": [
+          600,
+          200
+        ],
+        "dtype": "float32",
+        "nnz": 6000,
+        "sampled_values": 20000,
+        "sample_min": 1.0,
+        "sample_max": 19.0,
+        "sample_fraction_nonzero_noninteger": 0.0,
+        "sample_has_negative": false,
+        "verdict": "COUNT_LIKE_INTEGER_MATRIX",
+        "verdict_note": "COUNT_LIKE_INTEGER_MATRIX means integer-valued and nonnegative in the sampled values ONLY. It does not establish raw or CellBender-corrected provenance; that requires independent metadata."
+      }
+    },
+    "count_like_slots": [
+      "X"
+    ]
+  },
+  "atac": {
+    "path": "D:/jepa_v5_outputs_20260925/v63_fixtures/C_atac.h5ad",
+    "top_level_keys": [
+      "X",
+      "layers",
+      "obs",
+      "obsm",
+      "obsp",
+      "uns",
+      "var",
+      "varm",
+      "varp"
+    ],
+    "bytes": 132120,
+    "n_obs": 501,
+    "n_var": 300,
+    "obs_index_unique": true,
+    "obs_index_examples": [
+      "GTACTTCTCTTGATTT-1_NABEC_1234",
+      "GATTTGCTCGTCCACG-1_NABEC_1234",
+      "CAACCTATCATCGATC-1_NABEC_1234"
+    ],
+    "var_index_examples": [
+      "chr2:0-500",
+      "chr2:1000-1500",
+      "chr2:2000-2500",
+      "chr2:3000-3500",
+      "chr2:4000-4500"
+    ],
+    "obs_columns": [
+      "cell_type",
+      "sample_id",
+      "cohort",
+      "age",
+      "sex",
+      "PMI"
+    ],
+    "var_columns": [],
+    "matrix_slots": {
+      "X": {
+        "storage": "csr_matrix",
+        "shape": [
+          501,
+          300
+        ],
+        "dtype": "float32",
+        "nnz": 4509,
+        "sampled_values": 20000,
+        "sample_min": 1.0,
+        "sample_max": 3.0,
+        "sample_fraction_nonzero_noninteger": 0.0,
+        "sample_has_negative": false,
+        "verdict": "COUNT_LIKE_INTEGER_MATRIX",
+        "verdict_note": "COUNT_LIKE_INTEGER_MATRIX means integer-valued and nonnegative in the sampled values ONLY. It does not establish raw or CellBender-corrected provenance; that requires independent metadata."
+      }
+    },
+    "count_like_slots": [
+      "X"
+    ]
+  },
+  "columns_used": {
+    "celltype": "cell_type",
+    "donor": "sample_id",
+    "cohort": "cohort"
+  },
+  "rna_covariate_columns_found": {
+    "age": [
+      "age"
+    ],
+    "sex": [
+      "sex"
+    ],
+    "pmi": [
+      "PMI"
+    ],
+    "cohort": [
+      "cohort"
+    ],
+    "batch": [],
+    "brain_bank": [],
+    "ancestry": []
+  },
+  "atac_covariate_columns_found": {
+    "age": [
+      "age"
+    ],
+    "sex": [
+      "sex"
+    ],
+    "pmi": [
+      "PMI"
+    ],
+    "cohort": [
+      "cohort"
+    ],
+    "batch": [],
+    "brain_bank": [],
+    "ancestry": []
+  },
+  "pairing": {
+    "n_rna": 600,
+    "n_atac": 501,
+    "n_shared_exact": 0,
+    "frac_of_smaller_shared": 0.0,
+    "threshold_frac_of_smaller": 0.5,
+    "frac_rna_in_atac": 0.0,
+    "frac_atac_in_rna": 0.0,
+    "state": "PAIRING_NAMESPACE_UNRESOLVED",
+    "composite_diagnostic": {
+      "computable": true,
+      "n_rna_composite_keys": 600,
+      "n_atac_composite_keys": 501,
+      "n_shared_composite": 501,
+      "frac_of_smaller_shared": 1.0,
+      "would_resolve": true,
+      "AUTHORITATIVE": false,
+      "why_not_authoritative": "raw 10x barcodes repeat across samples and the sample qualifier is taken from a column whose correspondence between the two files has not been independently established. A composite match is consistent with shared nuclei; it is not evidence of them. Pass --trust-composite-pairing to assert it deliberately."
+    },
+    "basis_used_for_counts": "NONE__UNRESOLVED",
+    "note": "Exact overlap is below the predeclared threshold, so nucleus pairing is UNRESOLVED. Pairing-dependent quantities are reported as null, NOT as zero: this probe cannot distinguish an unmatched namespace from genuinely unpaired nuclei, and reporting zero would assert the second."
+  },
+  "donor_label_agreement_on_shared": {
+    "checked": false,
+    "consistent": null,
+    "status": "NOT_CHECKABLE__PAIRING_UNRESOLVED"
+  },
+  "celltype_labels": [
+    "Astro",
+    "ExN",
+    "InN",
+    "Microglia",
+    "Oligo"
+  ],
+  "microglia_labels_matched": [
+    "Microglia"
+  ],
+  "microglia": {
+    "n_total_rna": 85,
+    "n_donors": 2,
+    "per_donor_counts": {
+      "HBCC_5678": 25,
+      "NABEC_1234": 60
+    },
+    "per_donor_quantiles": {
+      "0": 25.0,
+      "0.1": 28.5,
+      "0.25": 33.75,
+      "0.5": 42.5,
+      "0.75": 51.25,
+      "0.9": 56.5,
+      "1": 60.0
+    },
+    "donors_below": {
+      "20": 0,
+      "50": 1,
+      "100": 2,
+      "200": 2
+    },
+    "donors_with_zero_microglia": [],
+    "n_total_paired_with_atac": null,
+    "per_donor_paired_counts": null,
+    "paired_status": "PAIRING_NAMESPACE_UNRESOLVED",
+    "by_cohort": {
+      "HBCC": {
+        "n_donors": 1,
+        "median_per_donor": 25.0,
+        "total": 25
+      },
+      "NABEC": {
+        "n_donors": 1,
+        "median_per_donor": 60.0,
+        "total": 60
+      }
+    }
+  },
+  "qualification": {
+    "pairing_resolved": false,
+    "pairing_basis": "NONE__UNRESOLVED",
+    "donor_labels_consistent": null,
+    "microglia_counts_available": true,
+    "paired_microglia_available": false,
+    "QUALIFIED_FOR_PAIRED_USE": false,
+    "rule": "QUALIFIED_FOR_PAIRED_USE requires an exactly resolved namespace, ZERO donor-label mismatches across shared nuclei, and available microglia and paired-microglia counts. An operator-asserted composite basis does NOT satisfy pairing_resolved."
+  },
+  "probe_status": "PROBE_INCOMPLETE",
+  "elapsed_seconds": 0.0
+}

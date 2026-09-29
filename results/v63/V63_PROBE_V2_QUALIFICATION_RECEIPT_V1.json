@@ -1,0 +1,163 @@
+{
+  "schema": "V63_H5AD_SCHEMA_PROBE_V2_QUALIFICATION_V1",
+  "date": "2026-09-29",
+  "tool": {
+    "name": "h5ad_schema_probe_v2.py",
+    "version": "2.0.0",
+    "supersedes": "1.0.0",
+    "sha256": "95843c50b67ad0f9ebb8c4defd30c4d8baee2c1ae04df573ff3f65d85f7f14a8"
+  },
+  "v1_0_preserved": {
+    "path": "scripts/v63/h5ad_schema_probe_v1_0_as_received.py",
+    "sha256": "8e6dc7b634b1bcad0486c2e933c37ad61b94080f1ad19e8e2dfe8c556c2250c8",
+    "note": "byte-identical to the uploaded original; v1.0 history is not rewritten"
+  },
+  "fixture_builder": {
+    "path": "scripts/v63/make_h5ad_fixtures_v2.py",
+    "sha256": "64845284e54c67d9006f81c8345429bee5bff11181689e453ce1d927d1239bd6"
+  },
+  "tests": {
+    "path": "tests/test_h5ad_schema_probe_v2.py",
+    "sha256": "bb179cf5c4a3714f1541e907f99576be7fa9e15d9a7a88de6bc8c317a34229b3",
+    "collected": 21,
+    "passed": 21,
+    "command": "bare pytest, PYTHONPATH unset"
+  },
+  "planted_truth": {
+    "A": {
+      "n_rna": 1450,
+      "n_atac": 1313,
+      "shared": 1313,
+      "mg_total": 127,
+      "mg_paired": 114,
+      "mg_per_donor": {
+        "D00": 40,
+        "D01": 0,
+        "D02": 75,
+        "D03": 12
+      }
+    },
+    "B": {
+      "n_rna": 400,
+      "n_atac": 350,
+      "shared": 0,
+      "mg_total": 40,
+      "mg_paired": 35,
+      "mg_per_donor": {
+        "D00": 10,
+        "D01": 30
+      }
+    },
+    "C": {
+      "n_rna": 600,
+      "n_atac": 501,
+      "shared_exact": 0,
+      "shared_composite": 501,
+      "mg_total": 85,
+      "mg_paired": 66,
+      "mg_per_donor": {
+        "NABEC_1234": 60,
+        "HBCC_5678": 25
+      },
+      "note": "raw barcodes deliberately collide across the two samples"
+    }
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "exposure": "schema/metadata + bounded value sample only; NO RNA-ATAC relationship computed; no biological outcome opened"
+  },
+  "arms": {
+    "A": {
+      "receipt_sha256": "c0716e5400ce86569c56f5ab4c921bfe0f15b37b743375797817855074bf8cd6",
+      "pairing_state": "PAIRING_RESOLVED_EXACT",
+      "pairing_basis": "EXACT_INDEX",
+      "n_shared_exact": 1313,
+      "composite_shared": 1312,
+      "mg_total": 127,
+      "mg_paired": 114,
+      "donor_labels_consistent": false,
+      "QUALIFIED_FOR_PAIRED_USE": false,
+      "probe_status": "PROBE_INCOMPLETE"
+    },
+    "B": {
+      "receipt_sha256": "d2c6a197c3bdbbdea21a6894f8f061a916ea920514324a7d172790e302fb2ddc",
+      "pairing_state": "PAIRING_NAMESPACE_UNRESOLVED",
+      "pairing_basis": "NONE__UNRESOLVED",
+      "n_shared_exact": 0,
+      "composite_shared": 350,
+      "mg_total": 40,
+      "mg_paired": null,
+      "donor_labels_consistent": null,
+      "QUALIFIED_FOR_PAIRED_USE": false,
+      "probe_status": "PROBE_INCOMPLETE"
+    },
+    "C": {
+      "receipt_sha256": "9f98b9b431408fbed0aaea9250a0547281536b909897b1836fa134c330418132",
+      "pairing_state": "PAIRING_NAMESPACE_UNRESOLVED",
+      "pairing_basis": "NONE__UNRESOLVED",
+      "n_shared_exact": 0,
+      "composite_shared": 501,
+      "mg_total": 85,
+      "mg_paired": null,
+      "donor_labels_consistent": null,
+      "QUALIFIED_FOR_PAIRED_USE": false,
+      "probe_status": "PROBE_INCOMPLETE"
+    },
+    "B_composite_asserted": {
+      "receipt_sha256": "f53a785049b8c68ad5a4170de6ef625d165b1d757f0fa7a91f6fd3e2cb8ca1d8",
+      "pairing_state": "PAIRING_NAMESPACE_UNRESOLVED",
+      "pairing_basis": "COMPOSITE_SAMPLE_BARCODE__OPERATOR_ASSERTED",
+      "n_shared_exact": 0,
+      "composite_shared": 350,
+      "mg_total": 40,
+      "mg_paired": 35,
+      "donor_labels_consistent": true,
+      "QUALIFIED_FOR_PAIRED_USE": false,
+      "probe_status": "PROBE_INCOMPLETE"
+    },
+    "C_composite_asserted": {
+      "receipt_sha256": "9f086923e6f3efc2ef268a730bd02b67886fb45dc3b84eb31752b041310e5de7",
+      "pairing_state": "PAIRING_NAMESPACE_UNRESOLVED",
+      "pairing_basis": "COMPOSITE_SAMPLE_BARCODE__OPERATOR_ASSERTED",
+      "n_shared_exact": 0,
+      "composite_shared": 501,
+      "mg_total": 85,
+      "mg_paired": 66,
+      "donor_labels_consistent": true,
+      "QUALIFIED_FOR_PAIRED_USE": false,
+      "probe_status": "PROBE_INCOMPLETE"
+    }
+  },
+  "THE_REPAIRED_DEFECT": {
+    "v1_0_behaviour_on_fixture_B": "reported n_total_paired_with_atac = 0",
+    "planted_truth_on_fixture_B": 35,
+    "v2_behaviour": "reports null with paired_status PAIRING_NAMESPACE_UNRESOLVED",
+    "why_it_matters": "0 is a measurement; the true state was that the measurement could not be made. The two have opposite consequences for a qualification decision.",
+    "regression_test": "test_v1_reproduces_the_original_defect runs the PRESERVED v1.0 file and asserts it still returns 0, so the successor is justified by evidence rather than assertion."
+  },
+  "MUTATION_QUALIFICATION": {
+    "purpose": "a suite that cannot fail is the defect it guards against",
+    "mutations_applied_and_caught": [
+      {
+        "mutation": "report 0 instead of null when pairing is unresolved",
+        "tests_failed": 3
+      },
+      {
+        "mutation": "make the composite diagnostic authoritative without the operator flag",
+        "tests_failed": 5
+      },
+      {
+        "mutation": "drop the zero-donor-mismatch requirement from qualification",
+        "tests_failed": 1
+      },
+      {
+        "mutation": "restore v1.0 LOOKS_LIKE_RAW_INTEGER_COUNTS slot language",
+        "tests_failed": 2
+      }
+    ],
+    "restored_digest_matches": true,
+    "note": "mutation 2 initially failed to APPLY due to a shell escaping error and was re-run; a mutation that does not apply is not a caught mutation."
+  },
+  "FIXTURE_A_IS_CORRECTLY_NOT_QUALIFIED": "Fixture A recovers every planted quantity exactly (1313 shared, 127 microglia, 114 paired, per-donor exact including the zero-microglia donor D01) yet QUALIFIED_FOR_PAIRED_USE is False, because A carries one planted donor-label mismatch and the rule requires zero. Recovering all counts is not the same as qualifying."
+}
