@@ -303,6 +303,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--seeds", type=int, default=12)
+    ap.add_argument("--n-list", default="9,12,15,18",
+                    help="donor counts to evaluate; 18 is the decisive one")
     ap.add_argument("--cells", type=int, default=120)
     ap.add_argument("--ds9-row-filter", default="PENDING_AUTHENTICATION",
                     help="exact HiChIP-row selector for Supplementary Data Set 9")
@@ -329,7 +331,7 @@ def main():
                                      "source": "GSE147672 public barcodes file"},
            "by_n": {}}
 
-    for n in (9, 12, 15, 18):
+    for n in tuple(int(x) for x in a.n_list.split(",")):
         r = run(n, a.cells, a.seeds)
         pos_q10 = min(float(np.quantile(r[p], 0.10)) for p in MANDATORY_POS)
         neg_q90 = max(float(np.quantile(r[x], 0.90)) for x in NEGATIVES)
@@ -337,6 +339,8 @@ def main():
         twin = float(np.median(r["TWIN_contact_aware_nuisance"]))
         out["by_n"][str(n)] = {
             "arm_medians": {k: round(float(np.median(v)), 5) for k, v in r.items()},
+            "arm_replicates": {k: [round(float(x), 6) for x in v]
+                               for k, v in r.items()},
             "pos_q10": round(pos_q10, 5), "neg_q90": round(neg_q90, 5),
             "margin": round(margin, 5),
             "margin_positive_A": bool(margin > 0),
@@ -350,9 +354,22 @@ def main():
               f"   twin {twin:+.5f} {'B+' if twin < pos_q10 else 'B-'}"
               f"   {'PASS' if (margin > 0 and twin < pos_q10) else 'RED'}")
 
-    d18 = out["by_n"]["18"]
-    out["verdict"] = ("PASS_AT_N18" if d18["pass"] else
-                      "OUTCOME_3_FOR_THIS_INFORMATION_STRUCTURE")
+    if "18" not in out["by_n"]:
+        out["verdict"] = "NO_VERDICT__DECISIVE_N18_NOT_RUN"
+    else:
+        d18 = out["by_n"]["18"]
+        out["verdict"] = ("PASS_AT_N18" if d18["pass"] else
+                          "OUTCOME_3_FOR_THIS_INFORMATION_STRUCTURE")
+    out["monte_carlo_config"] = {
+        "seeds": a.seeds, "cells_per_donor": a.cells,
+        "WARNING": (
+            "q10 and q90 are estimated from only `seeds` replicates. These are "
+            "nuisance knobs of the SIMULATION, not of the science, and the "
+            "verdict has been observed to flip across them (seeds=8/cells=100 "
+            "-> RED on the twin condition; seeds=12/cells=120 -> PASS). Any "
+            "verdict from this script must be reported together with this "
+            "configuration and with the stability sweep."),
+    }
     out["twin_note"] = (
         "TWIN_contact_aware_nuisance is a purely technical latent GIVEN the "
         "external contact graph. It is the declared impossibility boundary: if "

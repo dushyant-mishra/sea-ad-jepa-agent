@@ -187,16 +187,28 @@ workbook. The only content read from Data Set 9 was coordinates, widths, scores
 and the two boolean SNP flags — the flags were **counted**, and no SNP identity,
 locus name or gene was resolved.
 
-**Provenance of the two runs — corrected before commit.** I first wrote here
-that the defective-rule run's JSON was preserved at
-`results/v60/V60_EXTERNAL_CONTACT_BENCHMARK_V1.json`. **That file does not exist
-anywhere on disk**, and I confirmed this by searching the worktree and the
-session scratchpad before committing. The first run's only surviving record is
-its console output, transcribed verbatim in the margin table above; the run
-either wrote to a scratch location since cleaned, or never reached its write
-step. The claim was wrong and is retracted rather than quietly deleted, because
-this is the exact class of defect the project's provenance rule exists for: an
-artifact asserting a preservation that did not happen.
+**Provenance of the two runs — corrected TWICE, and the second correction
+matters more than the first.**
+
+I first wrote that the defective-rule run's JSON was preserved at
+`results/v60/V60_EXTERNAL_CONTACT_BENCHMARK_V1.json`. Wrong path. I then wrote
+that the file **did not exist anywhere on disk**. Also wrong — and worse, because
+a retraction carries more authority than the claim it retracts. I had searched
+the worktree and the session scratchpad, and concluded absence from two negative
+searches. The file was in neither place because it was never meant to be: it is
+at
+
+    D:/jepa_v5_outputs_20260925/v60_bench/V60_EXTERNAL_CONTACT_BENCHMARK_V1.json
+
+which is the project's **large-outputs directory** — exactly where the standing
+production-run protocol says run outputs belong, and the one location I did not
+search. It was recovered by grepping the session transcript for the actual
+invocation, which also recovered the arguments (below).
+
+The lesson is narrow and worth keeping: **"I searched and did not find it" is not
+"it does not exist"** unless the search covered the places the convention says to
+look. Two negative searches in the wrong directories produced a confident false
+retraction.
 
 The **repaired** run writes to `results/v60_rulefix/` and that output is real and
 committed. It executed **from the working tree, not from a committed head** —
