@@ -1,0 +1,346 @@
+{
+  "schema": "V61_OBJECT_E_CROSS_CLUSTER_SPECIFICITY_V1",
+  "question": "Is E's accessibility enrichment microglial, or generic regulatory?",
+  "design": {
+    "candidate_edges": 165891,
+    "candidates_are_mask_independent": true,
+    "common_random_numbers": true,
+    "null_pairs": 1658910,
+    "draws_per_edge": 10,
+    "masks_ranked_by_peak_count": [
+      [
+        17870,
+        "Cluster10"
+      ],
+      [
+        18467,
+        "Cluster6"
+      ],
+      [
+        23420,
+        "Cluster13"
+      ],
+      [
+        25909,
+        "Cluster18"
+      ],
+      [
+        26245,
+        "Cluster12"
+      ],
+      [
+        27693,
+        "Cluster23"
+      ],
+      [
+        31353,
+        "Cluster7"
+      ],
+      [
+        31926,
+        "Cluster3"
+      ],
+      [
+        32377,
+        "Cluster5"
+      ],
+      [
+        36717,
+        "Cluster4"
+      ],
+      [
+        44988,
+        "Cluster11"
+      ],
+      [
+        45765,
+        "Cluster19"
+      ],
+      [
+        47211,
+        "Cluster9"
+      ],
+      [
+        47714,
+        "Cluster8"
+      ],
+      [
+        47909,
+        "Cluster16"
+      ],
+      [
+        53474,
+        "Cluster14"
+      ],
+      [
+        54330,
+        "Cluster24"
+      ],
+      [
+        58888,
+        "Cluster17"
+      ],
+      [
+        60363,
+        "Cluster22"
+      ],
+      [
+        61787,
+        "Cluster20"
+      ],
+      [
+        64239,
+        "Cluster21"
+      ],
+      [
+        64594,
+        "Cluster15"
+      ],
+      [
+        70389,
+        "Cluster1"
+      ],
+      [
+        84902,
+        "Cluster2"
+      ]
+    ],
+    "cluster24_is_not_extreme_in_peak_count": true
+  },
+  "cell_types": {
+    "Cluster1": "ExcitatoryNeurons (Isocortical)",
+    "Cluster9": "OPCs",
+    "Cluster15": "Astrocytes (Isocortical)",
+    "Cluster23": "Oligodendrocytes",
+    "Cluster24": "Microglia"
+  },
+  "results": {
+    "Cluster1": {
+      "unique_intervals": 70389,
+      "accessible_bins": 64877,
+      "both_anchors_accessible": 71647,
+      "observed_rate": 0.431892,
+      "null_rate": 0.074847,
+      "enrichment": 5.7703
+    },
+    "Cluster2": {
+      "unique_intervals": 84902,
+      "accessible_bins": 74884,
+      "both_anchors_accessible": 75878,
+      "observed_rate": 0.457397,
+      "null_rate": 0.092849,
+      "enrichment": 4.9262
+    },
+    "Cluster3": {
+      "unique_intervals": 31926,
+      "accessible_bins": 32634,
+      "both_anchors_accessible": 33231,
+      "observed_rate": 0.200318,
+      "null_rate": 0.021738,
+      "enrichment": 9.2152
+    },
+    "Cluster4": {
+      "unique_intervals": 36717,
+      "accessible_bins": 36968,
+      "both_anchors_accessible": 38775,
+      "observed_rate": 0.233738,
+      "null_rate": 0.027132,
+      "enrichment": 8.6148
+    },
+    "Cluster5": {
+      "unique_intervals": 32377,
+      "accessible_bins": 29572,
+      "both_anchors_accessible": 32031,
+      "observed_rate": 0.193085,
+      "null_rate": 0.018559,
+      "enrichment": 10.4037
+    },
+    "Cluster6": {
+      "unique_intervals": 18467,
+      "accessible_bins": 18505,
+      "both_anchors_accessible": 20539,
+      "observed_rate": 0.12381,
+      "null_rate": 0.009086,
+      "enrichment": 13.6264
+    },
+    "Cluster7": {
+      "unique_intervals": 31353,
+      "accessible_bins": 31126,
+      "both_anchors_accessible": 44517,
+      "observed_rate": 0.268351,
+      "null_rate": 0.021539,
+      "enrichment": 12.4589
+    },
+    "Cluster8": {
+      "unique_intervals": 47714,
+      "accessible_bins": 40696,
+      "both_anchors_accessible": 57968,
+      "observed_rate": 0.349434,
+      "null_rate": 0.033195,
+      "enrichment": 10.5266
+    },
+    "Cluster9": {
+      "unique_intervals": 47211,
+      "accessible_bins": 44358,
+      "both_anchors_accessible": 66395,
+      "observed_rate": 0.400233,
+      "null_rate": 0.04117,
+      "enrichment": 9.7214
+    },
+    "Cluster10": {
+      "unique_intervals": 17870,
+      "accessible_bins": 18418,
+      "both_anchors_accessible": 21866,
+      "observed_rate": 0.131809,
+      "null_rate": 0.008025,
+      "enrichment": 16.4258
+    },
+    "Cluster11": {
+      "unique_intervals": 44988,
+      "accessible_bins": 43383,
+      "both_anchors_accessible": 54319,
+      "observed_rate": 0.327438,
+      "null_rate": 0.03781,
+      "enrichment": 8.66
+    },
+    "Cluster12": {
+      "unique_intervals": 26245,
+      "accessible_bins": 26399,
+      "both_anchors_accessible": 30227,
+      "observed_rate": 0.18221,
+      "null_rate": 0.016522,
+      "enrichment": 11.0285
+    },
+    "Cluster13": {
+      "unique_intervals": 23420,
+      "accessible_bins": 23431,
+      "both_anchors_accessible": 33421,
+      "observed_rate": 0.201464,
+      "null_rate": 0.013711,
+      "enrichment": 14.6938
+    },
+    "Cluster14": {
+      "unique_intervals": 53474,
+      "accessible_bins": 49120,
+      "both_anchors_accessible": 65407,
+      "observed_rate": 0.394277,
+      "null_rate": 0.047855,
+      "enrichment": 8.239
+    },
+    "Cluster15": {
+      "unique_intervals": 64594,
+      "accessible_bins": 58059,
+      "both_anchors_accessible": 75330,
+      "observed_rate": 0.454093,
+      "null_rate": 0.064535,
+      "enrichment": 7.0364
+    },
+    "Cluster16": {
+      "unique_intervals": 47909,
+      "accessible_bins": 43579,
+      "both_anchors_accessible": 56069,
+      "observed_rate": 0.337987,
+      "null_rate": 0.040598,
+      "enrichment": 8.3251
+    },
+    "Cluster17": {
+      "unique_intervals": 58888,
+      "accessible_bins": 47735,
+      "both_anchors_accessible": 53670,
+      "observed_rate": 0.323526,
+      "null_rate": 0.045877,
+      "enrichment": 7.0521
+    },
+    "Cluster18": {
+      "unique_intervals": 25909,
+      "accessible_bins": 24430,
+      "both_anchors_accessible": 37558,
+      "observed_rate": 0.226402,
+      "null_rate": 0.014293,
+      "enrichment": 15.8406
+    },
+    "Cluster19": {
+      "unique_intervals": 45765,
+      "accessible_bins": 41514,
+      "both_anchors_accessible": 79802,
+      "observed_rate": 0.481051,
+      "null_rate": 0.032547,
+      "enrichment": 14.7803
+    },
+    "Cluster20": {
+      "unique_intervals": 61787,
+      "accessible_bins": 52781,
+      "both_anchors_accessible": 104843,
+      "observed_rate": 0.631999,
+      "null_rate": 0.055098,
+      "enrichment": 11.4704
+    },
+    "Cluster21": {
+      "unique_intervals": 64239,
+      "accessible_bins": 55806,
+      "both_anchors_accessible": 106639,
+      "observed_rate": 0.642826,
+      "null_rate": 0.05954,
+      "enrichment": 10.7966
+    },
+    "Cluster22": {
+      "unique_intervals": 60363,
+      "accessible_bins": 51582,
+      "both_anchors_accessible": 104716,
+      "observed_rate": 0.631234,
+      "null_rate": 0.053276,
+      "enrichment": 11.8484
+    },
+    "Cluster23": {
+      "unique_intervals": 27693,
+      "accessible_bins": 26835,
+      "both_anchors_accessible": 49521,
+      "observed_rate": 0.298515,
+      "null_rate": 0.015754,
+      "enrichment": 18.9482
+    },
+    "Cluster24": {
+      "unique_intervals": 54330,
+      "accessible_bins": 45147,
+      "both_anchors_accessible": 49401,
+      "observed_rate": 0.297792,
+      "null_rate": 0.046909,
+      "enrichment": 6.3483
+    }
+  },
+  "microglial_enrichment": 6.3483,
+  "non_microglial_enrichments": {
+    "Cluster1": 5.7703,
+    "Cluster2": 4.9262,
+    "Cluster3": 9.2152,
+    "Cluster4": 8.6148,
+    "Cluster5": 10.4037,
+    "Cluster6": 13.6264,
+    "Cluster7": 12.4589,
+    "Cluster8": 10.5266,
+    "Cluster9": 9.7214,
+    "Cluster10": 16.4258,
+    "Cluster11": 8.66,
+    "Cluster12": 11.0285,
+    "Cluster13": 14.6938,
+    "Cluster14": 8.239,
+    "Cluster15": 7.0364,
+    "Cluster16": 8.3251,
+    "Cluster17": 7.0521,
+    "Cluster18": 15.8406,
+    "Cluster19": 14.7803,
+    "Cluster20": 11.4704,
+    "Cluster21": 10.7966,
+    "Cluster22": 11.8484,
+    "Cluster23": 18.9482
+  },
+  "max_non_microglial": 18.9482,
+  "ratio_microglia_to_best_other": 0.335,
+  "interpretation_rule_declared_before_the_numbers": "If Cluster24's enrichment falls within the spread of the non-microglial masks, the enrichment is GENERIC and E's claim must be weakened to 'contact edges at accessible regulatory elements' with no microglial qualifier. If Cluster24 is clearly highest, the microglial reading survives. Neither outcome invalidates the object; only a claim about it.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "gene_annotation_joined": false
+  },
+  "VERDICT": "ENRICHMENT_IS_GENERIC__WEAKEN_THE_SPECIFICITY_CLAIM"
+}
