@@ -89,12 +89,10 @@
     "104728/104802 descriptive mapping retention as a C3-qualified denominator"
   ],
   "next_actions": [
-    "Complete unambiguous P1S descriptive sensitivity reports for post-C3 log-distance and promoter-degree quartiles without changing primary P1S PASS.",
-    "Treat local-density pooling as outcome-exposed/under-specified; do not retroactively choose one authoritative pooling rule or alter P1S PASS.",
     "Acquire exact GSE73721_Human_and_mouse_table.csv.gz bytes from GEO and run scripts/v64/authenticate_gse73721_p3_expression_v1.py.",
-    "Review the exact file header/gene-key/sample identity receipt, then prospectively freeze P3 expression/detection and gene-key join rules before any P3 attrition is computed.",
-    "Execute P3 only after that freeze.",
-    "Instantiate E2_NOTT_CANDIDATE only after required P3 gate closure."
+    "Review exact header, gene-key field, and the three myeloid columns; then prospectively freeze P3 gene-key join and expression/detection rule before any P3 attrition.",
+    "Execute P3 non-trivial negatives only after that freeze.",
+    "Instantiate E2_NOTT_CANDIDATE only if P3 closes successfully."
   ],
   "governance": {
     "TRAINING": "OFF",
@@ -137,13 +135,16 @@
         ]
       }
     },
-    "contract_reporting_status": "PRIMARY_GATE_CLOSED__DESCRIPTIVE_SENSITIVITY_REPORTING_INCOMPLETE",
-    "descriptive_gap": [
-      "post-C3 log-distance quartiles missing",
-      "promoter-degree quartiles missing",
-      "local-density pooling operator under-specified in V2; existing microglia-only-density table is noncompliant and cannot be treated as authoritative pooled-density sensitivity"
-    ],
+    "contract_reporting_status": "CLOSED",
+    "descriptive_gap": [],
     "exposure_aware_completion": "results/v64/V64_P1S_V2_SENSITIVITY_COMPLETION_AFTER_EXPOSURE_V1.json",
-    "claim_scope": "Internal microglial substrate compatibility only; not independent external corroboration or causal enhancer-gene mapping."
+    "claim_scope": "Internal microglial substrate compatibility only; not independent external corroboration or causal enhancer-gene mapping.",
+    "authoritative_sensitivity_result": "results/v64/V64_NOTT_P1S_V2_SENSITIVITY_RERUN_V1.json",
+    "authoritative_sensitivity_summary": {
+      "pooled_density": "All quartiles positive; D_MN ~0.131 to 0.167, D_MO ~0.130 to 0.170.",
+      "post_C3_log_distance": "Microglial excess remains positive across quartiles; comparator advantage narrows at long distance but remains clearly positive.",
+      "promoter_degree": "Positive across quartiles with mild monotone increase.",
+      "withdrawn_caveat": "The earlier negative Q1 low-density result was caused by microglia-observed-only outcome-dependent stratification and is superseded."
+    }
   }
 }
