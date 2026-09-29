@@ -81,7 +81,12 @@
         "quartiles were not pooled across the frozen density representation",
         "the reported Q1-Q4 gradient is therefore not the contract-specified density sensitivity"
       ],
-      "effect_on_primary_R1_R2_R3": "NONE: density strata are descriptive-only and do not enter the primary estimands, bootstrap, or pass rules."
+      "effect_on_primary_R1_R2_R3": "NONE: density strata are descriptive-only and do not enter the primary estimands, bootstrap, or pass rules.",
+      "pooling_semantics_gap": {
+        "finding": "The V2 contract requires 'pooled quartiles of local peak density' but does not define the exact pooling operator that maps the six per-pair density measurements (observed/null x three ATAC tracks) to one common stratum assignment.",
+        "consequence": "Because P1S outcomes are now visible, selecting a single pooling operator now would be exposure-informed. The density sensitivity is descriptive-only, so this does not affect R1/R2/R3 or P1S primary PASS, but no retroactively chosen pooling rule may be labelled prospectively frozen.",
+        "safe_next_step": "Complete the missing log-distance and promoter-degree descriptive reports exactly as unambiguous. For local density, either report a transparent multi-definition sensitivity panel or freeze a successor descriptive rule with outcome exposure explicitly declared; do not use it to alter the primary PASS."
+      }
     },
     "mandatory_reporting": {
       "frozen_requirement": "Report descriptive sensitivities by predeclared quartiles of post-C3 log distance and promoter degree.",
@@ -95,10 +100,11 @@
     "status": "INTERESTING_BUT_NONCOMPLIANT_SENSITIVITY__MUST_NOT_BE_TREATED_AS_THE_FROZEN_DENSITY_STRATUM_RESULT"
   },
   "required_correction": [
-    "Do not change the P1S primary population, null, overlap rule, primary estimands, bootstrap, thresholds, or pass result.",
-    "Re-run descriptive sensitivity only using the exact V2 density definition, including observed and null interval densities for all three ATAC tracks and the prospectively frozen pooled-quartile representation.",
-    "Add the missing post-C3 log-distance quartile and promoter-degree quartile descriptive reports.",
-    "Report whether the qualitative low-density limitation persists under the contract-compliant sensitivity. Do not trim, reweight, rescue, or revise P1S PASS based on a favorable stratum."
+    "Do not change the P1S primary population, null, overlap rule, primary estimands, bootstrap, thresholds, or PASS result.",
+    "Add the missing post-C3 log-distance quartile and promoter-degree quartile descriptive reports; these definitions are unambiguous from V2.",
+    "Do not present the existing microglia-only-density Q1-Q4 table as the frozen pooled-density result.",
+    "For local density, explicitly acknowledge that the exact pooling operator was under-specified in V2. Any successor completion must be exposure-aware and descriptive-only; report all predeclared variants rather than choosing a favorable one.",
+    "Do not trim, reweight, rescue, or revise P1S PASS based on any density stratum."
   ],
   "firewall_state": {
     "canonical_firewall_current_P1S_authority": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json",
