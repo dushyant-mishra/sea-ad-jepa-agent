@@ -1,0 +1,31 @@
+{
+  "schema": "V62_PROVIDER_EXECUTION_EVIDENCE_V1",
+  "date": "2026-09-29",
+  "provider": "GITHUB_ACTIONS",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "workflow_path": ".github/workflows/v62-authority-successor.yml",
+  "head_sha": "5ba454d1d1db09adfb5ed83679bfe81972404019",
+  "run_id": "36514363946",
+  "job_id": "109233257254",
+  "run_conclusion": "success",
+  "job_conclusion": "success",
+  "artifact": {
+    "artifact_id": 11010358768,
+    "name": "v62-authority-provider-evidence",
+    "github_digest_sha256": "32115e88d691d5c04efac029f5fc4a189115bbcac35ea55141e9088bd07fab5b",
+    "downloaded_zip_sha256": "32115e88d691d5c04efac029f5fc4a189115bbcac35ea55141e9088bd07fab5b",
+    "inner_file": "v62_provider_evidence.json",
+    "inner_sha256": "7157d27fc9262a84b11ec8fbd60443ac76c914e3f733e7322758367f0005bb0e"
+  },
+  "verdict": "PROVIDER_BACKED_V62_TEST_EXECUTION_PHYSICALLY_VERIFIED",
+  "limits": [
+    "not biological specificity qualification",
+    "not a real-data q-intervention qualification",
+    "does not authorize training"
+  ],
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "morabito_outcome_opened": false
+  }
+}
