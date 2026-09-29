@@ -1,0 +1,98 @@
+{
+  "schema": "V64_CANONICAL_AUTHORITY_CONSOLIDATION_20260929_V1",
+  "date": "2026-09-29",
+  "status": "CANONICALIZED_BEFORE_P1S_EXECUTION",
+  "authority": {
+    "branch": "chatgpt/v64-e2-single-source-successor-20260929",
+    "rule": "Authority is the live HEAD of this branch. Verify live HEAD at takeover; do not rely on an embedded head SHA.",
+    "integrated_execution_lineage": {
+      "canonical_parent_before_execution": "2d6fa8a1c4201e836e089b798d36617c07d92a7e",
+      "claude_c3_and_statistical_lineage_tip_integrated": "f3243d183b893ea8d64dbc2cf6a31cf83bf7cde3"
+    }
+  },
+  "closed_gates": {
+    "depth_sensitivity_ablation": {
+      "classification": "A_PASS_SURVIVES",
+      "decision_configuration": "18 donors / 24 seeds",
+      "interpretation": "No material dependence of decision-bearing metrics on rna_depth_sensitivity or atac_depth_sensitivity."
+    },
+    "out_of_span_TECH": {
+      "classification": "B_OUTSPAN_FAILS_ONLY",
+      "interpretation": "Continuous adjustment is qualified only for nuisance geometry within or near the frozen basis; not arbitrary hidden-quality geometry."
+    },
+    "C3_coordinate_identity": {
+      "adjudication": "PASS",
+      "original_pairs": 104802,
+      "retained_pairs": 102701,
+      "retained_fraction": 0.979953,
+      "retained_object": "results/v64/V64_NOTT_C3_RETAINED_CONTACTS_HG38.tsv.gz",
+      "retained_object_sha256": "94f99590cf57de6e31b83765ccee6066104c005da1cc7173a5fbf567b6f6db05",
+      "rule": "results/v64/V64_NOTT_C3_EXACT_IDENTITY_SUCCESSOR_RULE_V1.json",
+      "note": "The permissive descriptive mapping number 104728/104802 = 0.999294 is NOT the C3-qualified retention."
+    },
+    "ATAC_coordinate_provenance": {
+      "conclusion": "Tested FILER-vs-UCSC coordinate-provenance discrepancy is empirically absent for all three authenticated Nott ATAC tracks.",
+      "PU1": [
+        50199,
+        50199
+      ],
+      "NeuN": [
+        55932,
+        55932
+      ],
+      "Olig2": [
+        38476,
+        38476
+      ],
+      "exact_match": true
+    }
+  },
+  "current_pre_P1S_authorities": {
+    "P1S_operational": "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json",
+    "promoter_orientation_and_gene_mapping": "results/v64/V64_NOTT_PROMOTER_ORIENTATION_AND_GENE_MAPPING_CONTRACT_V1.json",
+    "source_only_orientation_audit": "results/v64/V64_NOTT_SOURCE_ONLY_PROMOTER_ORIENTATION_AUDIT_V1.json",
+    "data_use_terms": "results/v64/V64_NOTT_DATA_USE_TERMS_RECORD_V1.json",
+    "spillover_firewall": "results/v64/V64_SPILLOVER_FIREWALL_MANIFEST_V1.json"
+  },
+  "promoter_orientation_pre_C3": {
+    "original_contacts": 104802,
+    "exactly_one_PU1_active_promoter_anchor": 64210,
+    "promoter_promoter": 7614,
+    "no_active_promoter_match": 32978,
+    "unique_Ensembl_gene_resolved_for_P3": 61624,
+    "warning": "These counts are source-only PRE-C3. They must not be reused as the final P1S/P3 denominators. Intersect with the 102701 C3-retained object first."
+  },
+  "P3": {
+    "source_identified": "Zhang et al. 2016 GSE73721",
+    "exact_processed_file": "GSE73721_Human_and_mouse_table.csv.gz",
+    "status": "BLOCKED_UNTIL_EXACT_BYTES_HASHED_AND_HEADER/SAMPLE/GENE-ID_FIELDS_AUTHENTICATED",
+    "prohibited_substitutions": [
+      "SEA-AD/HVS/NPH52 RNA",
+      "NIH-CARD",
+      "Morabito",
+      "brainrnaseq/reprocessed mirror",
+      "a similarly named processed file"
+    ]
+  },
+  "superseded_or_non_authoritative": [
+    "chatgpt/v64-parallel-successors-20260929 as an execution branch (historical frozen-source provenance only)",
+    "chatgpt/v64-nott-substrate-fit-contract-20260929",
+    "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V1.json",
+    "104728/104802 descriptive mapping retention as a C3-qualified denominator"
+  ],
+  "next_actions": [
+    "Compute exact intersection of C3-retained 102701 contacts with source-native promoter-orientation classes.",
+    "Use only the post-C3 exactly-one-promoter population as P1S input.",
+    "Execute P1S V2 unchanged; no NIH-CARD continuous-adjustment estimator import.",
+    "Acquire and authenticate exact GSE73721 processed bytes before freezing P3 expression rule.",
+    "Execute P3 only after expression authority is byte-authenticated and rule frozen.",
+    "Instantiate E2_NOTT_CANDIDATE only if required gates pass."
+  ],
+  "governance": {
+    "TRAINING": "OFF",
+    "TD60": "BLOCKED",
+    "Morabito": "PROTECTED_UNOPENED",
+    "NIH_CARD_biological_correspondence": "NOT_OPENED_FOR_THIS_CONSTRUCTION_STAGE",
+    "E2_NOTT_CANDIDATE": "NOT_INSTANTIATED"
+  }
+}
