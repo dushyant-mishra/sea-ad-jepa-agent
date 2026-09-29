@@ -5,8 +5,9 @@
   "purpose": "Prevent accidental use of wrong/nearby branches, same-name superseded contracts, smoke-run outputs, historical datasets, or substitute scientific binaries in V64 execution.",
   "canonical_authority": {
     "branch": "chatgpt/v64-e2-single-source-successor-20260929",
-    "required_base_commit_for_current_execution_lineage": "2d6fa8a1c4201e836e089b798d36617c07d92a7e",
-    "rule": "A result claiming to execute the current frozen V64 statistical/Nott authority must descend from this commit or an explicitly adjudicated successor. Similar branch names are not authority."
+    "rule": "Use live HEAD of this branch. Verify live HEAD at takeover; do not rely on an embedded current SHA.",
+    "execution_lineage_integrated_through": "f3243d183b893ea8d64dbc2cf6a31cf83bf7cde3",
+    "consolidation_manifest": "results/v64/V64_CANONICAL_AUTHORITY_CONSOLIDATION_20260929_V1.json"
   },
   "authoritative_git_blobs_at_2d6fa8a1": {
     "results/v64/V64_CONTINUOUS_ADJUSTMENT_DEPTH_SENSITIVITY_LEAKAGE_DIAGNOSTIC_V1.json": "5b357e720a38bbe670668f2ad13784e6b9aac315",
@@ -68,11 +69,29 @@
     "Nott neuronal/oligodendrocyte same-study comparators relabelled as independent P1 replication",
     "coarse matching resurrected as the primary estimator",
     "out-of-span observed nuisance function added to the estimator basis and called generalisation",
-    "raw cross-cell-type ATAC support-rate comparison used as the P1S primary gate after V2 supersession; primary must use within-track observed-minus-null excess support and microglia-vs-comparator difference-in-differences"
+    "raw cross-cell-type ATAC support-rate comparison used as the P1S primary gate after V2 supersession; primary must use within-track observed-minus-null excess support and microglia-vs-comparator difference-in-differences",
+    "pre-C3 promoter-orientation count 64210 reused as the final P1S denominator without intersection with the 102701 C3-retained set",
+    "pre-C3 gene-resolved count 61624 reused as the final P3 denominator without C3 intersection and expression eligibility",
+    "descriptive mapping retention 104728/104802 quoted as C3 exact-identity retention"
   ],
   "fail_closed_rule": "If an expected blob SHA, scientific binary SHA-256, parent commit, decision configuration, or declared dataset role does not match this allowlist or an explicit later successor, STOP and adjudicate provenance before computing/interpreting outcomes.",
   "explicitly_non_authoritative_files": [
     "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V1.json"
   ],
-  "current_parallel_P1S_operational_authority_candidate": "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json"
+  "current_C3_authority": {
+    "adjudication": "PASS",
+    "original_pairs": 104802,
+    "exact_identity_retained_pairs": 102701,
+    "fraction": 0.979953,
+    "retained_object": "results/v64/V64_NOTT_C3_RETAINED_CONTACTS_HG38.tsv.gz",
+    "retained_object_sha256": "94f99590cf57de6e31b83765ccee6066104c005da1cc7173a5fbf567b6f6db05",
+    "forbidden_denominator_substitution": "104728/104802 descriptive mapping retention must not be used as the C3-qualified denominator"
+  },
+  "current_P1S_operational_authority": "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json",
+  "current_promoter_orientation_authority": "results/v64/V64_NOTT_PROMOTER_ORIENTATION_AND_GENE_MAPPING_CONTRACT_V1.json",
+  "P3_expression_authority": {
+    "identified_source": "GSE73721_Human_and_mouse_table.csv.gz",
+    "status": "BLOCKED_UNTIL_EXACT_BYTES_AUTHENTICATED",
+    "forbidden_substitution": true
+  }
 }
