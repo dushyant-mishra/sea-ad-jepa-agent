@@ -1,0 +1,152 @@
+{
+  "schema": "V63_E2_DESIGN_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "SPECIFIED_NOT_INSTANTIATED",
+  "status_reason": "Every threshold and rule below is frozen. E2 has NOT been built, because no admissible contact artifact is in hand: Nott's processed loops are published but gated behind a PMC proof-of-work interstitial, DS010 is embargoed to 2027-02-01, Yang's pcHi-C artifact could not be located in its public deposit, and Kosoy Hi-C is access-required. Freezing the contract before the bytes arrive is the point: construction becomes mechanical and cannot be tuned to what the data turns out to look like.",
+  "governance": {"training": "OFF", "td60": "BLOCKED",
+                 "protected_outcomes_opened": false,
+                 "frozen_before_any_outcome_inspection": true},
+
+  "OBJECT": {
+    "name": "E2",
+    "definition": "independently supported primary-microglia regulatory contacts, restricted to externally defined microglial accessibility, in a single harmonized coordinate space",
+    "unit": "a (promoter, distal element) PAIR. E2 is a set of pairs, not a set of genes. No gene list, target list or program list may enter construction.",
+    "what_E2_is_not": "E2 is not evidence of microglia-specific 3D architecture. Following the V61 finding that a bulk contact map fit microglia worst of 24 clusters, any contact layer must be characterised for cell-type preference BEFORE it is called microglial."
+  },
+
+  "C1_ADMISSIBLE_CONTACT_SOURCES": {
+    "primary": {
+      "source": "Nott et al. 2019 H3K4me3 PLAC-seq, processed interaction calls",
+      "why": "promoter-anchored by construction, contact-defined, RNA plays no part in link definition, primary sorted PU.1+ microglia from multiple donors, and the processed table is published open-access",
+      "admissible_artifact": "the published supplementary interaction table ONLY",
+      "inadmissible_artifact": "dbGaP phs001373.v2.p1 raw data — controlled access, excluded by the no-DUA rule"
+    },
+    "secondary_if_and_when_public": {
+      "source": "DS010 / Wang et al. 2025 snm3C-seq",
+      "blocked_until": "2027-02-01",
+      "admissible_form": "RAW contacts or raw-contact pseudobulks only",
+      "inadmissible_form": "scHiCluster-IMPUTED contact matrices must NOT be used for construction. Imputation borrows strength across cells and would smear the very locality the object is meant to assert."
+    },
+    "robustness_only": {
+      "source": "Yang et al. / GSE173316 iPSC-microglia promoter capture Hi-C",
+      "constraint": "ONE genetic background (WTC11). It can corroborate structure. It can never be genetic replication and must never be counted as an independent donor axis."
+    },
+    "supporting_only_not_load_bearing": {
+      "source": "Kosoy et al. 2022 in situ Hi-C",
+      "status": "CONTROLLED_OR_ACCESS_REQUIRED__SUPPORTING_ONLY",
+      "rule": "must not be load-bearing while access-required. Rediscovered copies on GitHub, Zenodo or elsewhere do NOT make it open unless the data owners released it under open terms.",
+      "standing_constraint": "Kosoy-derived cis objects and ROSMAP-derived confirmation are MUTUALLY EXCLUSIVE absent a resolved donor-level crosswalk (V59)."
+    },
+    "fallback_rule": "If no second admissible contact source is available, build a NOTT-CENTERED object. Do NOT force a weak intersection to manufacture the appearance of independent support."
+  },
+
+  "C2_PRIMARY_CONTACT_RULE": {
+    "rule": "a pair enters the candidate set if it is called as a significant promoter-anchored interaction in the primary source at the source's own published significance threshold",
+    "threshold_policy": "USE THE SOURCE'S OWN PUBLISHED THRESHOLD. Do not re-threshold to a value chosen by us.",
+    "forbidden": "Contact thresholds must NOT be tuned to maximise overlap with any other source, with accessibility, or with any downstream result. Overlap is a MEASUREMENT, never an objective.",
+    "multi_source_rule_if_two_admissible_sources_exist": "support in >= 2 independent sources is the primary; single-source is a pre-declared sensitivity arm. Never the reverse."
+  },
+
+  "C3_COORDINATE_HARMONIZATION": {
+    "problem": "Nott processed loops are hg19. Candidate accessibility layers and NIH-CARD are hg38.",
+    "rule": "harmonize ONCE, in a named direction, hg19 -> hg38, using a single declared chain file whose identity and digest are recorded.",
+    "unmapped_policy": "pairs where EITHER anchor fails to lift, lifts to a different chromosome, or lifts with a length change beyond a pre-declared tolerance are DROPPED and COUNTED. They are never rescued by nearest-neighbour assignment.",
+    "reporting_requirement": "the lift attrition must be reported as a funnel with the attempted count in the denominator",
+    "qualification_requirement": "harmonization is part of the gate and needs its own check: a round-trip hg19->hg38->hg19 on the same anchors must return the original interval for a pre-declared fraction, and that fraction is reported.",
+    "note": "This is the step most likely to introduce a silent bias, because liftover failure is not random with respect to repeat content or regulatory density."
+  },
+
+  "C4_PROMOTER_FIXED_DISTAL_SHUFFLE": {
+    "purpose": "P1 — establish that cross-source contact concordance beats chance before E2 is built",
+    "rule": "hold the PROMOTER FIXED and shuffle only the distal end",
+    "preserved_under_the_null": ["chromosome", "promoter identity",
+                                 "the promoter's OWN empirical distance distribution",
+                                 "contact degree structure where feasible"],
+    "forbidden": "Promoters must NOT move in the null. Moving them would destroy promoter-level activity and degree structure and would make concordance look significant for reasons unrelated to contact.",
+    "overlap_window_bp": 10000,
+    "overlap_window_status": "PREDECLARED. Two distal anchors count as concordant if they overlap within this window. Declared here, before any concordance number exists.",
+    "sensitivity_windows_bp": [5000, 25000],
+    "pass_requirement": "observed cross-source concordance must exceed the promoter-fixed shuffled null at the predeclared window, reported as observed rate, null rate and ratio with the number of shuffles."
+  },
+
+  "C5_ACCESSIBILITY_SOURCE": {
+    "primary_candidate": "Kosoy aged primary-microglia ATAC",
+    "primary_candidate_status": "UNVERIFIED — V59 established Kosoy has NO NCBI deposit at all, so the exact public artifact and its release terms MUST be located and read before use. Until then it cannot be the accessibility source.",
+    "sensitivity_layers": ["Nott ATAC", "Yang ATAC"],
+    "hard_exclusions": "SEA-AD, GSE214979, Morabito, NIH-CARD and any other validation-cohort accessibility must NOT be used to construct the edge set.",
+    "measurement_support_exception": "Validation-cohort peaks MAY be used as a MEASUREMENT-SUPPORT RESTRICTION — deciding which edges are testable — provided the restriction is applied IDENTICALLY to matched linked and unlinked pairs. This is not construction evidence and must never be described as such."
+  },
+
+  "C6_COMMON_SUPPORT_VARIABLES": {
+    "variables": ["genomic distance", "promoter expression/activity", "distal accessibility",
+                  "promoter contact degree", "local regulatory-element density",
+                  "RNA depth sensitivity", "ATAC depth sensitivity"],
+    "why": "E2 is enriched for short-range, high-activity, high-degree contacts by construction. Without matching, any of these alone can produce the contrast.",
+    "matching_algorithm": "coarsened exact matching on the joint stratum of the binned variables; within each stratum, linked and unlinked pairs are matched 1:1 up to the smaller count",
+    "trimming_rule": "a linked pair whose stratum contains NO unlinked partner is TRIMMED. It is never matched to a distant control. Controls are never extrapolated into regions where no matched control exists.",
+    "reporting_requirement": "report the effective population after trimming — linked before, linked after, controls after, strata total, strata with common support, and the trim fraction. A large trim fraction is a finding about the object, not a nuisance to hide.",
+    "measured_in_the_synthetic_benchmark": "at 5 bins per variable the trim removed 61.4% of linked pairs (371 of 960 retained; 325 of 2,483 strata usable). Real data should be expected to trim at least this hard."
+  },
+
+  "C7_CELL_TYPE_NEGATIVE_CONTROL_ELIGIBILITY": {
+    "rule": "a neuron- or oligodendrocyte-specific contact edge is a VALID negative ONLY if all three hold",
+    "conditions": [
+      "the target gene IS expressed in microglia",
+      "the distal element IS accessible in microglia",
+      "the relationship itself is absent / not supported in the microglial contact map"
+    ],
+    "excluded": "edges with no microglial substrate are TRIVIAL negatives. They test whether the assay detects absent material, not whether the gate detects specificity, and they inflate apparent performance.",
+    "reporting_requirement": "report how many candidate cell-type negatives were discarded as trivial, with the attempted count in the denominator."
+  },
+
+  "C8_AGGREGATION": {
+    "primary": "within-donor RNA-ONLY metacells; ATAC is then evaluated in the MATCHED nuclei/cells",
+    "forbidden": "metacells must NOT be built in a joint RNA+ATAC embedding. A joint embedding manufactures the correspondence under test.",
+    "sensitivity_arm": "donor pseudobulk with donor-level QC residualization",
+    "status_of_the_aggregation_choice": "the aggregation strategy is PART OF THE GATE and carries its own synthetic/null qualification requirement. It is not a preprocessing detail.",
+    "independent_unit": "the DONOR, throughout. Nuclei improve the measurement of a donor's value; they never increase the independent sample size."
+  },
+
+  "C9_HIDDEN_QUALITY_NUISANCE_CLASS": {
+    "definition": "hidden_quality = measured_depth_correlated_component + orthogonal_latent_component",
+    "requirement": "the fixture must NOT make hidden quality fully observable. The gate must reject technical worlds in which linked RNA-ATAC correspondence arises through the latent structure EVEN AFTER matching on measured depth slopes.",
+    "hard_rule": "Do NOT claim specificity if the gate rejects only the measurable portion. The orthogonal share must be swept, and the value of that share at which rejection fails must be reported as the boundary of the claim.",
+    "additional_difficulty_required": "the latent's effect must be scaled by contact degree and inverse distance, so that it preferentially hits exactly the pairs linked status selects. A latent applied uniformly is a weak test, because matching removes it for free."
+  },
+
+  "C10_SUCCESS_FAILURE_INTERPRETATION": {
+    "a_pass_supports": "conserved external regulatory correspondence between an independently constructed contact geometry and same-nucleus RNA/ATAC in the validation cohort, for the nuisance classes actually tested.",
+    "a_pass_does_not_support": [
+      "universal specificity against untested nuisance mechanisms",
+      "microglia-specific 3D architecture",
+      "any disease-context claim — NIH-CARD is an aging, neurologically normal cohort, not an AD cohort",
+      "causal enhancer-gene assignment"
+    ],
+    "A_FAIL_DOES_NOT_PROVE_THE_SIGNAL_IS_TECHNICAL": "This asymmetry is frozen BEFORE testing and is the single most important interpretive rule in this contract.",
+    "a_fail_can_also_reflect": [
+      "age or cell-state rewiring between the contact source and the validation cohort — Nott is surgical/young tissue, NIH-CARD is aged postmortem",
+      "insufficient contact resolution",
+      "insufficient microglial depth per donor",
+      "measurement-support attrition shrinking the testable set",
+      "limited statistical power at the available donor count"
+    ],
+    "required_on_a_fail": "a fail must be reported together with the attrition funnel and the power available, so that 'no signal' and 'no measurement' are distinguishable."
+  },
+
+  "C11_CLAIM_SCOPE": {
+    "population": "microglia in the validation cohort actually measured",
+    "assay_scope": "same-nucleus RNA + ATAC only",
+    "nuisance_scope": "only the classes enumerated in the synthetic identifiability benchmark. A mechanism not simulated is not tested, and absence from that list is NOT evidence of absence in real data.",
+    "evidence_class_separation": "mechanical/synthetic, structural, biological and supporting evidence are reported in SEPARATE sections and never summed into a single score."
+  },
+
+  "C12_WHAT_MUST_HAPPEN_BEFORE_E2_IS_BUILT": [
+    "obtain an admissible contact artifact (Nott Table S5 supplied directly, or another verified-open source)",
+    "verify the exact public Kosoy ATAC artifact and read its release terms, or select a different externally defined accessibility source",
+    "execute P1: promoter-fixed distal shuffle concordance, at the predeclared 10 kb window",
+    "execute the liftover round-trip qualification",
+    "execute P2 common-support matching and report the effective population",
+    "execute P3 cell-type negative eligibility filtering and report trivial-negative attrition",
+    "only then construct E2"
+  ]
+}
