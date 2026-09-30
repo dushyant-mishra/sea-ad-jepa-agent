@@ -22,8 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nihcard_exact_supplement_builder_v1 as B      # noqa: E402
 
 DIR = "results/v64/phase_b_design"
-CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1.json")
-STATE = os.path.join(DIR, "V64_PHASE_B_DECISION_STATE_V1.json")
+CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json")
+STATE = os.path.join(DIR, "V64_PHASE_B_DECISION_STATE_V2.json")
 ROWS = "D:/jepa_v5_outputs_20260925/v64_phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
 
 RESULTS = []
@@ -245,8 +245,89 @@ def main() -> int:
           "exactly one primary view is declared and classes reconcile to the population",
           t7, C, bad)
 
+    # ---- T8 exactly one primary weighting, and it is the inherited gene-balanced one
+    DESIGN = "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
+
+    def t8(c):
+        h = c["SECTION_6_DONOR_AND_STATISTICAL_MASS"]["EDGE_MASS_CONCENTRATION"].get(
+            "WEIGHTING_HIERARCHY_IS_FIXED_AND_HAS_EXACTLY_ONE_PRIMARY")
+        if not h:
+            return False, "no weighting hierarchy declared"
+        prim = [k for k in h if isinstance(h[k], dict) and h[k].get("name")
+                and k == "PRIMARY"]
+        named_primary = [k for k in h if isinstance(h[k], dict)
+                         and "primary" in str(h[k].get("status", "")).lower()
+                         and "never primary" not in str(h[k].get("status", "")).lower()]
+        if len(prim) != 1:
+            return False, f"{len(prim)} PRIMARY blocks"
+        if h["PRIMARY"]["name"] != "GENE_BALANCED":
+            return False, f"primary is {h['PRIMARY']['name']}, not GENE_BALANCED"
+        if h["MANDATORY_COMPANION"]["name"] == "GENE_BALANCED":
+            return False, "companion duplicates the primary"
+        if "never primary" not in h["MANDATORY_COMPANION"]["status"].lower():
+            return False, "companion is not explicitly barred from being primary"
+        if h["PREDECLARED_SENSITIVITY"]["name"] != "EDGE_EQUAL":
+            return False, "inherited edge-equal sensitivity missing"
+        # the declared primary must match the INHERITED contract, read from source
+        d = json.load(open(DESIGN))
+        if "GENE-BALANCED" not in d["PRIMARY_ESTIMAND"]["definition"].upper():
+            return False, "inherited contract no longer declares gene-balanced primary"
+        if h["PRIMARY"]["estimand"] != d["PRIMARY_ESTIMAND"]["definition"]:
+            return False, "declared primary estimand differs from the inherited text"
+        if "NON_SELECTION_RULE" not in h:
+            return False, "no rule forbidding outcome-favourable weighting selection"
+        return True, ("one primary (GENE_BALANCED, matching the inherited contract "
+                      "verbatim), promoter-equal companion barred from primary, "
+                      "edge-equal sensitivity retained")
+    bad = copy.deepcopy(C)
+    bad["SECTION_6_DONOR_AND_STATISTICAL_MASS"]["EDGE_MASS_CONCENTRATION"][
+        "WEIGHTING_HIERARCHY_IS_FIXED_AND_HAS_EXACTLY_ONE_PRIMARY"]["PRIMARY"][
+        "name"] = "PROMOTER_EQUAL"
+    check("T8_one_primary_weighting_gene_balanced",
+          "exactly one primary weighting, equal to the inherited gene-balanced estimand",
+          t8, C, bad)
+
+    # ---- T9 donors are the sole resampling unit
+    def t9(c):
+        r = c["SECTION_3_UNCERTAINTY_REPORTING"].get("RESAMPLING_UNIT_CLARIFICATION")
+        if not r:
+            return False, "no resampling clarification"
+        if r["sole_resampling_unit"] != "DONOR":
+            return False, f"sole unit is {r['sole_resampling_unit']}"
+        if "NOT become" not in r["role_of_promoter"]:
+            return False, "promoter is not explicitly barred from being a resampling unit"
+        d = json.load(open(DESIGN))["PRIMARY_ESTIMAND"]["uncertainty"]
+        if (r["method"], r["replicates"], r["seed"]) != (d["method"], d["replicates"],
+                                                         d["seed"]):
+            return False, "bootstrap method/replicates/seed differ from the inherited ones"
+        return True, (f"donor-only, {d['method']}, {d['replicates']} replicates, "
+                      f"seed {d['seed']}, matching the inherited contract")
+    bad = copy.deepcopy(C)
+    bad["SECTION_3_UNCERTAINTY_REPORTING"]["RESAMPLING_UNIT_CLARIFICATION"][
+        "sole_resampling_unit"] = "DONOR_BY_PROMOTER"
+    check("T9_donors_are_sole_resampling_unit",
+          "donors are the only resampling unit; promoter is block structure only",
+          t9, C, bad)
+
+    # ---- T10 metacell partition must be persisted for Stage 4
+    def t10(c):
+        m = c["SECTION_8_PHASE_B_FIELD_SEMANTICS"].get(
+            "METACELL_PARTITION_MUST_BE_PERSISTED")
+        if not m:
+            return False, "no persistence requirement"
+        if "WRITE" not in m["requirement"]:
+            return False, "partition is not required to be written"
+        if "sha256" not in m["binding"]:
+            return False, "partition is not hash-bound"
+        return True, "partition written and hash-bound so Stage 4 reuses it by construction"
+    bad = copy.deepcopy(C)
+    bad["SECTION_8_PHASE_B_FIELD_SEMANTICS"].pop("METACELL_PARTITION_MUST_BE_PERSISTED")
+    check("T10_metacell_partition_persisted",
+          "the metacell partition is written and hash-bound for Stage 4",
+          t10, C, bad)
+
     real = [r for r in RESULTS if r["is_a_real_test"]]
-    out = dict(schema="V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V1", date="2026-09-30",
+    out = dict(schema="V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2", date="2026-09-30",
                contract=dict(path=CONTRACT, sha256=B.sha_file(CONTRACT)),
                state=dict(path=STATE, sha256=B.sha_file(STATE)),
                producer_sha256=B.sha_file(os.path.abspath(__file__)),
@@ -256,7 +337,7 @@ def main() -> int:
                status="PASS" if len(real) == len(RESULTS) else "FAIL",
                note="a test is counted as real only if it passes on the actual contract "
                     "AND rejects a deliberately planted violation")
-    p = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V1.json")
+    p = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2.json")
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print(f"\n{len(real)}/{len(RESULTS)} tests are real tests -> {out['status']}")

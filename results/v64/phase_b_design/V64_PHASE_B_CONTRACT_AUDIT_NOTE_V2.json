@@ -1,0 +1,83 @@
+{
+  "schema": "V64_PHASE_B_CONTRACT_AUDIT_NOTE_V2",
+  "date": "2026-09-30",
+  "one_line": "The statistical treatment of the accepted Phase-A population is frozen. Nothing is authorised to execute.",
+  "WHAT_BECOMES_AUTHORISED_IF_THIS_CONTRACT_PASSES_AUDIT": [
+    "Computing promoter_activity and distal_accessibility for LINKED, CONTROL_A and CONTROL_B rows, under the definitions inherited from the correspondence design contract, with the missingness and support rules frozen here.",
+    "Reporting the attrition and support strata that computation produces.",
+    "Reporting CONTROL_A versus CONTROL_B null calibration over the frozen eligible denominator of 10,654."
+  ],
+  "WHAT_DOES_NOT_BECOME_AUTHORISED": [
+    "Any linked-versus-control biological correspondence statistic.",
+    "Any per-edge RNA-ATAC correlation, delta or residual correspondence.",
+    "Stage 4, in whole or in part.",
+    "Any use of disease, demographic or protected validation outcomes.",
+    "Morabito, TD60, promoter-atlas biological analysis, multimodal teacher training, JEPA training.",
+    "Any use of the paired NIH-CARD TEST donors."
+  ],
+  "WHY_THE_SEPARATION_MATTERS": "Computing the two Phase-B fields is a measurement step. Comparing them across arms is an inference step. Keeping them apart is what makes it possible to freeze the field definitions and the missingness treatment while the comparison is still unopened. The contract requires the fields to be computed and FROZEN for every arm before any comparison begins.",
+  "THE_DECISION_THAT_MATTERS_MOST": {
+    "what": "the eligible denominator for randomized-null calibration is frozen at 10,654, excluding 158 structurally forced coincidences and 200 partially forced pairs",
+    "why": "among the 11,012 retained edges with both controls, 166 have CONTROL_A equal to CONTROL_B, and 158 of those were arithmetically guaranteed because the drawn side had exactly one admissible start. Pooling gives 1.507% apparent agreement against a genuinely randomized 0.075% -- a 20.08x inflation, in the direction that flatters the control generator.",
+    "when_it_was_frozen": "before any RNA or ATAC matrix value was read"
+  },
+  "JUDGEMENT_CALLS_MADE_HERE_AND_THEIR_REASONS": {
+    "singletons_kept_in_the_primary": "Admissible-set size is a function of PU.1 and NIH-CARD track density inside the distance band. Dropping small-support edges would select the population on genomic coverage, which is associated with expression and openness -- the confound already measured on this project at 4.92x. A cleaner-looking population would be a biased one. They are kept and labelled STRUCTURALLY_MATCHED_NOT_RANDOMIZED_WITHIN_SIDE.",
+    "exact_enumeration_for_support_2_to_10": "With at most ten admissible starts the entire reference set can be enumerated, so the exact randomisation distribution is computed instead of approximated. It is cheaper and strictly better, and it makes the discreteness visible.",
+    "promoter_equal_companion_is_mandatory_not_optional": "The top quartile of promoters holds 53.1% of retained edges, and degree is itself expression-confounded at about 5.57x. Reporting only the edge-level number would let high-degree promoters dominate silently; reporting only the promoter-equal number would hide the concentration. Both are reported in the same table and disagreement between them is treated as a finding."
+  },
+  "SELF_AUDIT_S52": {
+    "finding": "My first implementation of the no-outcome-fields test scanned the contract's PROSE for forbidden words. It failed on the real contract because the firewall section must NAME what it did not inspect, so the phrase 'rna-atac correlation' appeared inside the very declaration that it was excluded.",
+    "second_attempt_also_wrong": "Rewriting it structurally over keys and values still flagged my own section heading SECTION_1_PRIMARY_LINKED_VS_CONTROL_A, because the term list contained the bare contrast name rather than terms denoting a result.",
+    "resolution": "The test now flags keys that denote a STATISTIC and numeric values beneath them. The contract was not changed in either repair; the test was. Detection was then re-verified against five planted outcome kinds -- a linked-versus-control result, a p-value, an RNA-ATAC correlation, an effect size and a Braak stage -- all caught.",
+    "why_recorded": "Both attempts failed in the direction of false alarm rather than false pass, but a test that cries wolf on legitimate structure gets relaxed by the next person, and the third version could then have been a genuine weakening rather than a correction."
+  },
+  "TEST_RESULTS": {
+    "n_tests": 10,
+    "n_real_tests": 10,
+    "added_in_V2": [
+      "T8 exactly one primary weighting, equal to the inherited gene-balanced estimand read from source",
+      "T9 donors are the sole resampling unit with the inherited method, replicate count and seed",
+      "T10 the metacell partition is written and hash-bound for Stage 4"
+    ],
+    "definition_of_real": "passes on the actual contract AND rejects a deliberately planted violation"
+  },
+  "STOP": "STOP FOR INDEPENDENT AUDIT. Phase B is not executed.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "supersedes": "results/v64/phase_b_design/V64_PHASE_B_CONTRACT_AUDIT_NOTE_V1.json",
+  "contract": {
+    "path": "results/v64/phase_b_design/V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json",
+    "sha256": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe"
+  },
+  "BLOCKER_FOUND_BY_AUDIT_AND_REPAIRED": {
+    "defect": "V1 of this contract named an edge-weighted estimate as the primary one under edge-mass concentration. The correspondence design contract had already frozen the primary estimand as the donor-averaged GENE-BALANCED mean difference, with EDGE_EQUAL_WEIGHTING as a predeclared sensitivity.",
+    "why_it_was_worse_than_an_ambiguity": "the inherited contract's FORBIDDEN_TUNING_ACTIONS list contains, verbatim, 'choosing between gene-balanced and edge-equal weighting after the outcome'. V1 did not merely leave three weightings live; it recreated the precise choice that list forbids, inside a document declaring it does not override that contract where both speak.",
+    "my_error": "I introduced the promoter-equal diagnostic to address the 53.1% edge-mass concentration and, in doing so, described an edge-weighted quantity as primary without first checking whether the inherited authority already named a primary. It did.",
+    "repair": "design-only successor V2. Primary restored to GENE_BALANCED, read from the inherited contract at build time rather than restated from memory; promoter-equal demoted to MANDATORY COMPANION and explicitly barred from ever being primary; edge-equal retained as the inherited sensitivity; a non-selection rule added that cites the inherited prohibition verbatim.",
+    "note_on_the_companion": "the inherited rationale for gene-balancing is that edge-equal weighting 'would let a single high-degree promoter region determine the set-level result' -- the same concern that motivated the companion. But gene-balanced and promoter-equal are different operations, since a gene may carry several promoters, so the companion remains a genuine additional diagnostic rather than a restatement.",
+    "structural_counts_changed": 0
+  },
+  "RESAMPLING_CLARIFICATION": {
+    "issue": "V1 wrote 'donor resampling, promoter blocks', which could be read as a nested donor-by-promoter resampling algorithm. No such algorithm was ever frozen.",
+    "resolution": "donors are the SOLE resampling unit, under the inherited nonparametric cluster bootstrap over donors, 4,000 replicates, seed 20260929. Promoter identity provides within-donor dependence and cross-fitting structure only and never becomes an additional independent biological resampling unit.",
+    "no_new_inferential_procedure_introduced": true
+  },
+  "METACELL_PARTITION_PERSISTENCE_ADDED": {
+    "requirement": "Phase B must write the per-donor per-nucleus metacell assignment into a committed artifact bound by sha256, and Stage 4 must verify that digest before use.",
+    "why": "the Stage-4 correspondence statistic is computed from metacell-level vectors within donor. Rebuilding the partition at Stage 4 would rebuild it after outcomes were visible, and a partition is exactly the kind of choice that can move a correspondence result."
+  },
+  "SELF_AUDIT_S53": {
+    "finding": "the patcher's own guard -- which refuses to emit a successor still naming an edge-weighted quantity as primary -- fired on the patch's explanation of what it was repairing, because that explanation quoted the offending phrase.",
+    "same_shape_as_S52": "a string-level guard flagging the documentation of the fix rather than a live rule. Recorded as a recurring pattern, not a one-off.",
+    "resolution": "the explanation was reworded to carry the meaning without the literal phrase, so the guard stays maximally strict. The contract's substance was not changed to satisfy a check."
+  }
+}

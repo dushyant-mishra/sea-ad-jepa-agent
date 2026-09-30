@@ -1,0 +1,100 @@
+{
+  "schema": "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2",
+  "date": "2026-09-30",
+  "contract": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json",
+    "sha256": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe"
+  },
+  "state": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DECISION_STATE_V2.json",
+    "sha256": "749ccd472d25fc9e4cf6f7e10c1a2ae8301cd7ca21152818cb9cfce476a08362"
+  },
+  "producer_sha256": "bb8d18fcc2337ab8ff84eedd532479e2458372c44bd17126939e8112b26d731d",
+  "tests": [
+    {
+      "name": "T1_singleton_coincidences_excluded",
+      "requirement": "the 158 structurally forced coincidences contribute zero calibration evidence",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "denominator 10,654 excludes 158 forced and 200 partially forced"
+    },
+    {
+      "name": "T2_control_B_cannot_alter_retention",
+      "requirement": "CONTROL_B is a null arm only and never changes the primary population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "2,200 edges had a valid CONTROL_B and were still not retained"
+    },
+    {
+      "name": "T3_missingness_not_zero_filled",
+      "requirement": "NOT_MEASURED is never encoded as zero, in four explicit states",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "four states, zero-fill forbidden, both Phase-B fields covered"
+    },
+    {
+      "name": "T4_all_three_strata_represented",
+      "requirement": "every randomness stratum is present, sums to the population, and has a rule",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "{'RANDOMIZED_SUPPORT_GT10': 12816, 'FORCED_SINGLETON_SUPPORT_1': 327, 'SMALL_RANDOMIZED_SUPPORT_2_TO_10': 32} verified against the artifact, all with uncertainty rules"
+    },
+    {
+      "name": "T5_phase_B_remains_stopped",
+      "requirement": "governance locks are in force and no matrix value was read",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "all governance locks in force, no matrix values read"
+    },
+    {
+      "name": "T6_no_biological_outcome_fields",
+      "requirement": "the contract contains no correspondence result, effect size or outcome value",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "no outcome-named keys and no numeric values under one; 23 field terms scanned structurally"
+    },
+    {
+      "name": "T7_single_frozen_primary_view",
+      "requirement": "exactly one primary view is declared and classes reconcile to the population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "single primary view V1_PRIMARY_all_retained, calibration classes reconcile"
+    },
+    {
+      "name": "T8_one_primary_weighting_gene_balanced",
+      "requirement": "exactly one primary weighting, equal to the inherited gene-balanced estimand",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "one primary (GENE_BALANCED, matching the inherited contract verbatim), promoter-equal companion barred from primary, edge-equal sensitivity retained"
+    },
+    {
+      "name": "T9_donors_are_sole_resampling_unit",
+      "requirement": "donors are the only resampling unit; promoter is block structure only",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "donor-only, nonparametric cluster bootstrap over DONORS, 4000 replicates, seed 20260929, matching the inherited contract"
+    },
+    {
+      "name": "T10_metacell_partition_persisted",
+      "requirement": "the metacell partition is written and hash-bound for Stage 4",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "partition written and hash-bound so Stage 4 reuses it by construction"
+    }
+  ],
+  "n_tests": 10,
+  "n_real_tests": 10,
+  "every_test_has_a_working_negative_control": true,
+  "status": "PASS",
+  "note": "a test is counted as real only if it passes on the actual contract AND rejects a deliberately planted violation"
+}
