@@ -32,7 +32,7 @@ each feature column independently, so the promoter hierarchy is ALREADY DESTROYE
 grouping rows afterwards by old promoter IDs would assemble blocks whose values no
 longer belong together and would manufacture a hierarchy rather than restore one.
 v3 therefore REFUSES calibrated mode until a HIERARCHICALLY calibrated artifact exists,
-per V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V1. It does not accept a
+per V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V2. It does not accept a
 retrofit.
 
 S45 (depth-sensitivity realism) and S46 (donor/metacell support, sparsity, missingness)
@@ -58,7 +58,7 @@ STRESS = "scripts/v64/v64_frozen_stress_runner_v1.py"
 FROZEN_OUTSPAN = "results/v64/V64_FROZEN_STRESS_OUTSPAN_V1.json"
 TOLERANCE_AUTHORITY = "results/v64/V64_NIH_CARD_HISTORICAL_REPRODUCTION_TOLERANCE_V1.json"
 HIER_CONTRACT = ("results/v64/"
-                 "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V1.json")
+                 "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V2.json")
 
 SEED = 20260929
 M_MIN = 0.010
