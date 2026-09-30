@@ -86,12 +86,13 @@
       "release": "FANTOM5 reprocessed hg38_latest; CAGE_peaks directory restructured 2017-10-27",
       "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/",
       "readme_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/00_readme.txt",
-      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair%2Bnew_CAGE_peaks_phase1and2.bed.gz",
+      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
       "source_page_reported_size": "5.2M",
       "source_documented_semantics": "recommended for analysis; BED9 thickStart/thickEnd encode representative TSS",
       "access": "PUBLIC_DOWNLOAD",
       "bytes_in_chat_custody": false,
-      "sha256": null
+      "sha256": null,
+      "note": "Use literal '+' in path; percent-encoded %2B returned 404 in GitHub Actions fetch on 2026-09-30."
     }
   ],
   "rule": "No resource is considered ingested until exact bytes, size, SHA-256, version/build, and source locator are recorded.",
