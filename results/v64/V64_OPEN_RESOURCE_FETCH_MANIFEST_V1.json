@@ -1,0 +1,67 @@
+{
+  "schema": "V64_OPEN_RESOURCE_FETCH_MANIFEST_V1",
+  "date": "2026-09-30",
+  "status": "SOURCE_URLS_VERIFIED__BYTES_NOT_YET_IN_CHAT_CUSTODY",
+  "environment_download_note": "Direct container downloads were attempted for GENCODE release 50 and SCREEN PLS but failed in this chat environment due the external binary/network download path. Do not claim bytes are present.",
+  "resources": [
+    {
+      "id": "GENCODE_V50_COMPREHENSIVE_CHR_GTF",
+      "purpose": "annotation-first gene/transcript/TSS candidate universe",
+      "genome_build": "GRCh38.p14",
+      "release": "50",
+      "verified_source_page": "https://www.gencodegenes.org/human/",
+      "download_url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.annotation.gtf.gz",
+      "source_page_statement": "GENCODE release 50, GRCh38.p14; comprehensive gene annotation on reference chromosomes",
+      "access": "OPEN_ACCESS",
+      "bytes_in_chat_custody": false,
+      "sha256": null
+    },
+    {
+      "id": "FANTOM5_HG38_CAGE_PEAK_ANNOTATION",
+      "purpose": "CAGE promoter/TSS evidence without importing the full TPM matrix",
+      "genome_build": "hg38",
+      "release": "hg38_latest reprocessed directory; file last-modified 2021-05-28 on source index",
+      "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/",
+      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/hg38_fair%2Bnew_CAGE_peaks_phase1and2_ann.txt.gz",
+      "source_page_reported_size": "5.8M",
+      "access": "PUBLIC_DOWNLOAD",
+      "bytes_in_chat_custody": false,
+      "sha256": null
+    },
+    {
+      "id": "SCREEN_REGISTRY_V4_GRCH38_PLS",
+      "purpose": "promoter-like cCRE coordinate/classification evidence",
+      "genome_build": "GRCh38/hg38",
+      "release": "Registry-V4",
+      "verified_source_page": "https://screen.wenglab.org/downloads",
+      "download_url": "https://downloads.wenglab.org/Registry-V4/GRCh38-cCREs.PLS.bed",
+      "source_page_reported_rows": 47532,
+      "source_page_reported_size": "2.6 MB",
+      "access": "PUBLIC_DOWNLOAD",
+      "data_license_status": "NOT_VERIFIED",
+      "bytes_in_chat_custody": false,
+      "sha256": null
+    },
+    {
+      "id": "DONG_ROUSSOS_2024_SUPPLEMENTARY_DATA_7_10",
+      "purpose": "brain promoter-isoform definitions/activity and promoter-resolved enhancer-promoter links",
+      "genome_build": "as defined by source publication; verify per supplementary file at ingestion",
+      "verified_source_page": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584674/",
+      "source_page_reported_files": {
+        "SupplementaryData7": "5.3 MB xlsx",
+        "SupplementaryData8": "12 MB xlsx",
+        "SupplementaryData9": "255 KB xlsx",
+        "SupplementaryData10": "9.7 MB xlsx"
+      },
+      "access": "OPEN_ARTICLE_SUPPLEMENT",
+      "bytes_in_chat_custody": false,
+      "sha256": null
+    }
+  ],
+  "rule": "No resource is considered ingested until exact bytes, size, SHA-256, version/build, and source locator are recorded.",
+  "governance": {
+    "training": "OFF",
+    "data_ingestion_completed": false,
+    "phaseB": "STOPPED"
+  }
+}
