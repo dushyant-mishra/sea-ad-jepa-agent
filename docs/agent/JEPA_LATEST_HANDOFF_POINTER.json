@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_STRUCTURAL_ACCEPTED__PHASE_B_STOPPED_ON_CONTROL_RANDOMNESS_STRATA__TRAINING_OFF",
+  "status": "V65_EXACT_CONTROL_SELECTION_ACCEPTED__FULL_PHASE_A_PENDING_LINKED_FUNNEL_AND_V2_BINDING__PHASE_B_STOPPED",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -12,7 +12,7 @@
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
-  "current_blocker": "Repaired exact sampler is qualified and Phase A is structurally accepted at 13,510 retained edges. Phase B remains stopped until singleton/small-support control-randomness strata and null handling are prospectively frozen and bound before matrix values are opened.",
+  "current_blocker": "The exact sampler is qualified and full-E2 CONTROL_A availability is 13,510, but the live executor omits the frozen linked-side eligibility stages and does not emit/bind the complete V2 Phase-A artifact. Full Phase A is therefore not yet contract-compliant.",
   "parallel_architecture_next": "Finish annotation-first promoter ledger and privileged-factor recoverability protocol while keeping paired NIH-CARD TEST unopened.",
   "ci_rule": "PR #199 being mergeable is not sufficient; all current-head workflows must be inspected. Open-resource fetch and architecture smoke were repaired during handoff preparation and must be confirmed green on the final head.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read the V65 handoff/state plus V64_PHASE_A_EXACT_INDEPENDENT_AUDIT_V1.json and V64_DOWNSTREAM_CONTROL_RANDOMNESS_STRATA_CONTRACT_20260930.md. Refresh live heads and CI before execution."
+  "read_me_first": "Read the V65 handoff/state plus the revised V64_PHASE_A_EXACT_INDEPENDENT_AUDIT_V1.json. The earlier wording 'Phase A accepted at 13,510' is retracted. Preserve singleton randomness strata and keep Phase B stopped."
 }
