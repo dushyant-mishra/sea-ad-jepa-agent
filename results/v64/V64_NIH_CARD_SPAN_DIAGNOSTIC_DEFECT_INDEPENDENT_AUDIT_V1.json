@@ -1,0 +1,106 @@
+{
+  "schema": "V64_NIH_CARD_SPAN_DIAGNOSTIC_DEFECT_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_commit": "dad562877d13a6026d745dbb27dfa5657da40740",
+  "verdict": "CORE_DEFECT_CONFIRMED__FEATURE_COUNT_AND_DEPTH_SENSITIVITY_MAPPING_REQUIRE_CORRECTION",
+  "core_finding": {
+    "accepted": true,
+    "statement": "The historical synthetic span diagnostic cannot support a 14D real-vs-synthetic support verdict because multiple NIH-CARD observables are not the same quantities/scales as their historical synthetic counterparts. A Mahalanobis OUT_OF_SPAN result would conflate unit/semantic mismatch with genuine support mismatch.",
+    "consequence": "Part 5 frozen 14D verdict remains HALTED. Do not emit IN_SPAN/OUT_OF_SPAN under the original 14D rule."
+  },
+  "commensurability": {
+    "directly_commensurable_base": [
+      "log_distance: log(bp) vs log(bp)",
+      "promoter_degree: edge-count vs edge-count"
+    ],
+    "commensurable_derived": [
+      "log_distance^2",
+      "degree^2",
+      "log_distance_x_degree"
+    ],
+    "noncommensurable_base": [
+      "promoter_activity: synthetic dimensionless N(0,1) surrogate vs real log1p CP10K expression mean",
+      "distal_accessibility: synthetic dimensionless N(0,1) surrogate vs real log1p normalized ATAC mean",
+      "re_density: synthetic Gamma surrogate vs real consensus-peak count",
+      "anchor_frequency: synthetic Gamma surrogate vs real distinct-promoter overlap count",
+      "rna_depth_sensitivity: synthetic standardized mean-product/correlation-like quantity vs contract-mapped real regression slope",
+      "atac_depth_sensitivity: synthetic standardized mean-product/correlation-like quantity vs contract-mapped real regression slope"
+    ],
+    "noncommensurable_derived": [
+      "accessibility^2",
+      "log_distance_x_accessibility",
+      "degree_x_anchor_frequency"
+    ],
+    "corrected_count": {
+      "total_features": 14,
+      "commensurable_columns": 5,
+      "noncommensurable_columns": 9
+    },
+    "correction_to_dad56287": "The finding's '12 of 14 affected directly or through products' is unsupported by the frozen basis. The exact column accounting is 9 noncommensurable / 5 commensurable. The 14D Mahalanobis statistic is nevertheless globally invalid because it includes the noncommensurable columns."
+  },
+  "depth_sensitivity_evidence": {
+    "synthetic_definition": "e2_continuous_adjustment_estimator_v1.py standardizes R/A and depth vectors and forms mean products, yielding correlation-like dimensionless sensitivities.",
+    "real_contract_definition": "V64 design maps RNA/ATAC depth sensitivities to within-donor slopes of real metacell quantities on total depth.",
+    "implication": "These two columns need either a prospectively redefined real mapping that matches the synthetic statistic exactly, or exclusion from any historical synthetic support comparison. Do not compare current real slopes to historical synthetic sensitivities."
+  },
+  "measured_re_density_example": {
+    "accepted_as_evidence_of_noncommensurability": true,
+    "real_median": 29,
+    "real_range": [
+      2,
+      69
+    ],
+    "synthetic_range": [
+      0.003,
+      14.047
+    ],
+    "fraction_real_outside_synthetic_range": 0.9333,
+    "note": "These numbers demonstrate the scale mismatch; they must not be interpreted as a genuine 19.1-SD support excursion."
+  },
+  "promoter_degree": {
+    "status": "VALID_GENUINE_SUPPORT_MISMATCH",
+    "real_range": [
+      1,
+      29
+    ],
+    "synthetic_range": [
+      2,
+      11
+    ],
+    "fraction_real_outside": 0.2429
+  },
+  "log_distance": {
+    "status": "VALID_COMPARISON",
+    "fraction_real_outside": 0
+  },
+  "successor_guidance": {
+    "historical_support_diagnostic": {
+      "primary": "Restrict inferential support-overlap reporting to the two independent commensurable base quantities: log_distance and promoter_degree. Derived deterministic transforms may be shown descriptively but should not be counted as independent evidence.",
+      "verdict_name": "HISTORICAL_SYNTHETIC_SUPPORT_OVERLAP__COMMENSURABLE_SUBSPACE_ONLY",
+      "no_14d_mahalanobis": true
+    },
+    "noncommensurable_features": {
+      "treatment": "Report scale-free distribution-shape/rank-dependence comparisons only as DESCRIPTIVE simulator diagnostics, not as estimator-support qualification.",
+      "warning": "Standardizing each side by its own moments does not create semantic/unit commensurability and therefore cannot recover the original support claim."
+    },
+    "realism_lane": {
+      "role": "The realism-calibrated simulator is the prospective instrument for qualification under NIH-CARD measurement geometry, provided its actual generated-world features and support/precision geometry are audited.",
+      "open_findings": [
+        "S45 depth-sensitivity realism",
+        "S46 donor/metacell/support/missingness realism"
+      ]
+    }
+  },
+  "stage_v2_visibility": {
+    "status": "NOT_YET_AUDITABLE_AT_TIME_OF_THIS_AUDIT",
+    "observation": "GitHub branch claude/v64-nihcard-realism-design-20260929 currently resolves to dad56287 and does not contain scripts/v64/nihcard_realism_qualification_stage_v2.py.",
+    "rule": "Do not credit the rebuilt stage until its commit is visible and reviewed."
+  },
+  "governance": {
+    "part5": "HALTED_OR_SUCCESSOR_ONLY",
+    "stage4": "NOT_AUTHORISED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}
