@@ -861,7 +861,13 @@ def main() -> int:
     rec["governance"] = dict(training="OFF", phase_B="STOPPED",
                              stage_4="NOT_AUTHORISED", td60="BLOCKED",
                              Morabito="PROTECTED", correspondence_opened=False)
-    jdump(rec, os.path.join(a.out_dir, f"{a.part}.receipt.json"))
+    # S51. This filename previously lacked the shard suffix that the log already had, so
+    # four concurrent shards raced on ONE receipt path and the last writer destroyed the
+    # other three. The comparisons were unaffected -- the per-shard logs were complete --
+    # but 48 of 64 structured records were lost, which is precisely the silent
+    # shard-overwrite the parallelisation rule forbids. Output identity must be as
+    # sharded as the work.
+    jdump(rec, os.path.join(a.out_dir, f"{a.part}{sfx}.receipt.json"))
     log(f"=== {a.part}: {rec['status']} ===")
     lf.close()
     return 0 if rec["status"] in ("PASS", "REPORTED") else 1

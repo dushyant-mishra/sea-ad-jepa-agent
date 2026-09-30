@@ -1,0 +1,112 @@
+{
+  "schema": "V64_EXTERNAL_RESOURCE_REGISTRATION_V1",
+  "date": "2026-09-30",
+  "status": "REGISTERED_ONLY. No promoter atlas work started, no join performed, no evidence admitted. Governance forbids starting the promoter atlas in this execution pass; these files are catalogued so the later lane starts from authenticated bytes rather than a re-download.",
+  "source_publication": {
+    "doi": "10.1038/s41467-024-54448-y",
+    "title": "A multi-regional human brain atlas of chromatin accessibility and gene expression facilitates promoter-isoform resolution genetic fine-mapping",
+    "journal": "Nature Communications",
+    "published": "2024-11-22",
+    "first_author": "Pengfei Dong",
+    "last_author": "Panos Roussos"
+  },
+  "licence": {
+    "article_licence": "CC-BY-4.0",
+    "how_verified": "Crossref publisher metadata for the DOI, content-version 'vor' and 'tdm', start 2024-11-22. This is publisher-asserted licence metadata, NOT an inference from the file being downloadable.",
+    "supplementary_file_terms": "PRESUMED_SAME_AS_ARTICLE_BUT_NOT_SEPARATELY_VERIFIED",
+    "why_that_distinction_is_kept": "Crossref records an article-level licence. It does not enumerate supplementary files. Nature Communications normally extends the CC BY licence to Supplementary Information unless a credit line says otherwise, but I have not read a per-file statement, so the file-level term is recorded as presumed rather than verified."
+  },
+  "files": {
+    "41467_2024_54448_MOESM10_ESM.xlsx": {
+      "bytes": 12564632,
+      "sha256": "eb3c2e0eaf055bac3954802497cbdd07ccc65638ae361e1cf9af10668f224a74",
+      "local_path": "C:/Users/dushy/Dropbox\\41467_2024_54448_MOESM10_ESM.xlsx",
+      "content": "promoter-isoform differential usage",
+      "sheets": {
+        "N PVC vs NEC": {
+          "dimension": "A1:H12511"
+        },
+        "N MDT vs Dien": {
+          "dimension": "A1:H12511"
+        },
+        "N ARC vs Dien": {
+          "dimension": "A1:H12511"
+        },
+        "N ForeBr vs MidDien": {
+          "dimension": "A1:H12511"
+        },
+        "N ForeBr vs BasGan": {
+          "dimension": "A1:H12511"
+        },
+        "N MidDien vs ForeBr": {
+          "dimension": "A1:H12511"
+        },
+        "N MidDien vs BasGan": {
+          "dimension": "A1:H12511"
+        },
+        "N BasGan vs ForeBr": {
+          "dimension": "A1:H12511"
+        },
+        "N BasGan vs MidDien": {
+          "dimension": "A1:H12511"
+        },
+        "N Limbic vs NEC": {
+          "dimension": "A1:H12511"
+        }
+      }
+    },
+    "41467_2024_54448_MOESM12_ESM.xlsx": {
+      "bytes": 10139581,
+      "sha256": "c2005fb8947b4352450a9a86f297673cce5350aab1b2ac69fe3949317c4f1f59",
+      "local_path": "C:/Users/dushy/Dropbox\\41467_2024_54448_MOESM12_ESM.xlsx",
+      "content": "ABC enhancer to promoter-isoform links",
+      "sheets": {
+        "abc_link_supple": {
+          "dimension": "A1:H252514"
+        }
+      }
+    }
+  },
+  "MOESM12_structure": {
+    "link_rows": 252512,
+    "distinct_target_transcripts_ENST": 24992,
+    "distinct_target_genes_ENSG": 13049,
+    "brain_regions": {
+      "NEC": 30721,
+      "BasGan": 30392,
+      "DRN": 30016,
+      "VTA": 29494,
+      "MDT": 28423,
+      "Limbic": 27660,
+      "HAB": 26016,
+      "ARC": 25406,
+      "RMTG": 24384
+    },
+    "ENST_ids_appearing_on_more_than_one_chromosome": 0,
+    "examples": {},
+    "join_key_rule": "ENST appears on a single chromosome throughout THIS table. The chromosome-aware rule still stands as project policy because it was established on Dong Data 7; this table simply does not exhibit the violation.",
+    "columns": [
+      "OCR (enhancer interval, chrom:start-end)",
+      "TargetGene (ENSG)",
+      "TargetTranscript (ENST)",
+      "order (promoter-isoform number)",
+      "ABC.Score",
+      "BR_Region"
+    ]
+  },
+  "EVIDENCE_FAMILY_CAUTION": {
+    "claim_NOT_made": "that ABC links are an independent evidence family relative to Nott PLAC-seq or to NIH-CARD paired RNA-ATAC",
+    "why": "The Activity-By-Contact score is by construction activity x contact. Its activity term shares the accessibility axis with NIH-CARD ATAC and with Nott PU.1 ATAC; its contact term shares the chromatin-contact axis with Nott PLAC-seq. Counting it as a third independent vote would be exactly the resource-counting error the project has already measured against: E2-anchored genes have ~4.92x the microglial detection rate of unanchored measurable genes, so shared expression/openness bias is real in this data and not hypothetical.",
+    "what_would_have_to_be_measured_first": "incremental support P(B|A,X) - P(B|X) with X holding expression, detection, promoter and enhancer accessibility, gene degree, enhancer-TSS distance, cell state, local peak density and locus size",
+    "also_note": "Dong is bulk multi-region brain, not microglia-sorted. Cell-type composition differences are a further shared-bias pathway that must be adjusted for, not assumed away."
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "promoter_atlas": "NOT_STARTED",
+    "correspondence_opened": false
+  }
+}
