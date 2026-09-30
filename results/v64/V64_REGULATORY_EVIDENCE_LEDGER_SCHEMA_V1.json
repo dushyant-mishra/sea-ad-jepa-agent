@@ -1,0 +1,94 @@
+{
+  "schema": "V64_REGULATORY_EVIDENCE_LEDGER_SCHEMA_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVE_SCHEMA_ONLY",
+  "primary_key": [
+    "gene_id",
+    "candidate_promoter_id",
+    "regulatory_element_id",
+    "biological_context_id"
+  ],
+  "required_identity_fields": [
+    "gene_id",
+    "gene_symbol",
+    "candidate_promoter_id",
+    "regulatory_element_id",
+    "biological_context_id",
+    "genome_build"
+  ],
+  "promoter_fields": [
+    "tss_coordinate",
+    "promoter_interval",
+    "promoter_ambiguity_group",
+    "promoter_evidence_source"
+  ],
+  "evidence_record_fields": [
+    "measurement_source",
+    "evidence_family",
+    "estimator",
+    "support_state",
+    "support_value",
+    "support_uncertainty",
+    "measurability_state",
+    "shared_selection_flags"
+  ],
+  "support_state_enum": [
+    "MEASURED_AND_SUPPORTS",
+    "MEASURED_AND_DOES_NOT_SUPPORT",
+    "NOT_MEASURED",
+    "UNRESOLVED"
+  ],
+  "independence_fields": [
+    "incremental_support_under_observed_adjustment",
+    "common_support_status",
+    "trim_status",
+    "measurement_error_sensitivity_status",
+    "unmeasured_shared_driver_sensitivity_status"
+  ],
+  "recoverability_fields": [
+    "rna_recoverability_class",
+    "recoverable_subspace_id",
+    "private_subspace_id",
+    "recoverability_holdout_level"
+  ],
+  "recoverability_class_enum": [
+    "RNA_RECOVERABLE",
+    "PARTIALLY_RNA_RECOVERABLE",
+    "PRIVILEGED_PRIVATE",
+    "UNQUALIFIED",
+    "NOT_APPLICABLE"
+  ],
+  "provenance_fields": [
+    "source_version",
+    "source_url_or_recovery_locator",
+    "artifact_sha256",
+    "access_status",
+    "license_terms_status",
+    "coordinate_mapping_receipt"
+  ],
+  "access_status_enum": [
+    "OPEN_DIRECT",
+    "PUBLIC_DOWNLOAD",
+    "AUTHENTICATED_PUBLIC",
+    "CONTROLLED",
+    "UNKNOWN"
+  ],
+  "license_terms_status_enum": [
+    "EXPLICIT_OPEN_LICENSE",
+    "STATED_TERMS_OTHER",
+    "TERMS_UNKNOWN"
+  ],
+  "forbidden_collapses": [
+    "NOT_MEASURED_TO_ZERO",
+    "ESTIMATOR_COUNT_TO_EVIDENCE_FAMILY_COUNT",
+    "RESOURCE_COUNT_TO_INDEPENDENCE_COUNT",
+    "PUBLIC_DOWNLOAD_TO_OPEN_LICENSE",
+    "PRIVILEGED_PRIVATE_TO_FAILED_BIOLOGY"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED"
+  }
+}
