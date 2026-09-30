@@ -1,275 +1,254 @@
-# Claude instructions — V64 exact sampler closeout and recoverability boundary
+# Claude instructions — V64 corrected Phase-A successor
 
 **Date:** 2026-09-30
 
-Continue on:
+Continue from:
 
 `claude/v64-exact-sampler-successor-20260930`
 
-Verified head when these instructions were prepared:
+Last independently audited head:
 
-`f2b45699d1be88cc599971da243ba6e36a50c4a7`
+`0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab`
 
-## 1. Immediate execution priority remains unchanged
+## 1. Important correction
 
-Complete:
+The exact sampler is qualified.
 
-`64-side real-edge oracle qualification -> frozen sampler suite -> if PASS, repaired Phase A -> STOP`
+S50 is closed for the current production chain.
 
-Do not start Phase B.
+The value:
 
-Do not start Stage 4.
+`13,510`
 
-Do not open Morabito.
+is accepted as:
 
-Do not turn training on.
+`FULL_E2_EXACT_CONTROL_A_AVAILABILITY`
 
-## 2. S50 is accepted as repaired, with narrow scope
+It is **not yet accepted as the complete frozen Phase-A retained population**.
 
-Your `f2b45699` proof is stronger than totals-only equivalence:
+The prior wording "Phase A accepted at 13,510" is retracted.
 
-- repaired shard-0 payload is byte-identical;
-- 3,452 edge-sides identical at interval/start-set level;
-- production target-span cross-chain overlap measured at 0 bp;
-- F3 positive control returns planted 4,000 bp.
+## 2. Why full Phase A is still incomplete
 
-Retain the correct limitation:
+The frozen contract:
 
-This proves the repair is a no-op for the tested production chain/data.
+`results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json`
 
-It does not establish that the original defect is harmless on arbitrary chain files.
+requires the primary funnel to include:
 
-Do not remove the repaired ambiguity gate.
+1. `DROP_GENE_NOT_IN_NIHCARD`
+2. `DROP_GENE_AMBIGUOUS_IN_NIHCARD`
+3. `DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL`
+4. then `DROP_CONTROL_A_DRAWN_SIDE_NO_ADMISSIBLE_START`
 
-## 3. Exact supplement state
+The live executor at `0d3874cb` loads all 20,709 E2 edges and determines primary retention only from CONTROL_A success.
 
-Independent ChatGPT audit of all 12 shard receipts confirms:
+Therefore your next task is **not** another sampler repair.
 
-- 20,709 edges;
-- 41,418 edge-sides;
-- 1,576,398,690 band positions;
-- 1,560,436,760 safe affine;
-- 15,961,930 supplement candidates;
-- 0 uncovered;
-- 235,726,268 A_interior;
-- 177,442 A_supplement;
-- 235,903,710 A_exact;
-- all 12 canonical payload hashes match receipts.
+It is to lawfully compose:
 
-Do not rebuild or change supplement semantics unless the remaining qualification reveals an actual defect.
+`frozen linked-side structural eligibility + already-qualified exact CONTROL_A/B machinery`
 
-## 4. Finish all 64 edge-side comparisons
+without restoring any superseded control logic.
 
-The previous report was 15/64 with zero inequalities.
+## 3. Preserve exact-control machinery unchanged unless a real defect is found
 
-Complete all 64.
+Do not change:
 
-Final receipt must report:
+- exact admissible-set construction;
+- side-before-admissibility semantics;
+- no opposite-side retry;
+- CONTROL_B never rescues A;
+- independent deterministic A/B sub-seeds;
+- coincidence retained without redraw;
+- exact uniform sampling over A_exact;
+- S50 cross-chain ambiguity guard.
 
-- 64 expected;
-- 64 completed;
-- number non-empty;
-- number empty;
-- total brute-force candidate starts evaluated;
-- exact set inequalities;
-- supplement-involving comparisons;
-- per-shard completion.
+The exact sampler already passed:
+- 64/64 real-edge exact-set equality;
+- 42 non-empty comparisons;
+- zero algebra-only/oracle-only differences;
+- deterministic rerun equality;
+- positive-control sensitivity;
+- uniformity;
+- frozen fixtures;
+- failure paths;
+- orientation checks.
 
-A 0-vs-0 equality is not affirmative evidence.
+Do not retune it to recover a desired Phase-A retention count.
 
-## 5. Frozen qualification suite
+## 4. Build a true Phase-A structural successor
 
-Before Phase A, require all frozen tests:
+Starting from the same frozen 20,709 E2 rows, execute the linked-side stages prospectively:
 
-- normal affine positive fixture;
-- valid supplement-only boundary/cross-block case;
-- exact-length/round-trip rejection;
-- multiple mapping ambiguity rejection;
-- reverse-roundtrip mismatch;
-- promoter-specific exclusion splitting;
-- empty chosen side while opposite side is non-empty -> FAIL, no retry;
-- A/B independent seeds may coincide;
-- distinct-promoter anchor-frequency semantics;
-- minus/inverted orientation handling;
-- uniformity fixture: 100,000 draws, alpha 1e-6;
-- missing reverse chain -> STOP;
-- missing track digest -> STOP;
-- non-disjoint normalized intervals -> STOP;
-- cardinality disagreement -> STOP;
-- opposite-side retry -> STOP;
-- CONTROL_B rescue -> STOP.
+### Linked-side eligibility
 
-Do not weaken the suite after failure.
+For every E2 edge, determine:
 
-## 6. If sampler qualifies
+- whether its gene is present in NIH-CARD;
+- whether gene mapping is unambiguous;
+- whether the linked distal interval overlaps at least one NIH-CARD consensus peak.
 
-Rerun repaired Phase A from exactly 20,709 E2 candidate edges.
+Record the exact frozen drop reason when a stage fails.
 
-Report full funnel:
+Only linked-side-eligible edges proceed to primary exact-control retention.
 
-- gene absent from NIH-CARD;
-- ambiguous gene mapping;
-- linked distal lacking consensus peak;
-- CONTROL_A chosen side empty;
-- CONTROL_B availability;
-- A/B coincidence;
-- retained edges;
-- retained genes;
-- retained promoters;
-- degree distribution;
-- edge-mass concentration;
-- supplement-selected controls;
-- orientation/chain classes;
-- exact producer/input/output hashes.
+### Exact-control stage
 
-Then:
+For linked-side-eligible edges:
 
-**STOP FOR INDEPENDENT AUDIT.**
+- use the already-qualified CONTROL_A/B machinery;
+- CONTROL_A determines primary retention;
+- CONTROL_B never rescues;
+- if A passes/B fails, primary retained, null unavailable;
+- coincidence retained;
+- no redraw.
 
-No Phase B values.
+Final funnel must reconcile exactly to 20,709.
 
-## 7. Recoverability architecture — future authority
+Do not assume the final count will remain 13,510.
 
-Do not build one giant rich multimodal teacher.
+## 5. Produce the complete V2 feature artifact
 
-Future privileged/regulatory factors must be classified as exactly one:
+The output must satisfy:
 
-- `RNA-RECOVERABLE`
-- `PARTIALLY-RNA-RECOVERABLE`
-- `REGULATORY-PRIVATE`
-- `UNQUALIFIED`
+`results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json`
 
-### RNA-RECOVERABLE
+Required structural fields include at minimum:
 
-Requires prospective donor-held-out evidence that lawful RNA predicts the stable privileged factor/subspace, materially exceeding shortcut/activity/technical baselines.
+- `promoter_key`
+- `promoter_index`
+- `pair_key`
+- `population`
+- `control_role`
+- `source_hg19_distance_bp`
+- `log_distance`
+- `promoter_degree`
+- `re_density`
+- `anchor_frequency`
+- `distal_chrom`
+- `distal_start_hg38`
+- `distal_end_hg38`
 
-Only qualified recoverable structure may become compulsory universal RNA supervision.
+Valid population/control-role combinations:
 
-### PARTIALLY-RNA-RECOVERABLE
+- LINKED + NONE
+- CONTROL + A
+- CONTROL + B
 
-Only a locked stable subspace is recoverable.
+CONTROL_A and CONTROL_B must use separate pair keys.
 
-Shared rank/projection selected on TRAIN/VALIDATION only.
+Linked/control rows for the same edge must retain the same promoter identity.
 
-Private residual is preserved.
+## 6. Anchor-frequency definition
 
-### REGULATORY-PRIVATE
+Do not reuse the superseded exact-start multiplicity.
 
-Privileged biology is credible but is not reproducibly RNA-recoverable.
+Frozen definition:
 
-It remains valuable for validation, multimodal inference, uncertainty, relational constraints or biological adjudication.
+> number of DISTINCT E2 promoter_keys with at least one E2 distal partner overlapping the interval by >=1 bp.
 
-It must not produce compulsory loss on RNA-only cells.
+Compute identically for:
 
-### UNQUALIFIED
+- LINKED
+- CONTROL_A
+- CONTROL_B
 
-Default when biological reliability, stability, shortcut exclusion, support or recoverability is unresolved.
+## 7. Complete provenance binding
 
-High RNA R² alone does not qualify a factor.
+The receipt must bind:
 
-Poor RNA prediction alone does not make it regulatory-private.
+- producer git blob;
+- producer SHA-256;
+- SHA-256 of every emitted artifact;
+- authenticated NIH-CARD RNA/ATAC receipt;
+- pairing closeout receipt;
+- E2 edge-table digest;
+- Phase-A V2 contract digest;
+- liftOver binary digest;
+- hg19→hg38 chain digest;
+- hg38→hg19 chain digest;
+- Nott PU.1 hg38 track digest;
+- NIH-CARD peak-source identity;
+- row counts by population/control_role;
+- promoter count;
+- primary funnel;
+- null-arm availability counts.
 
-## 8. Current preferred future topology
+Write the producer receipt after the artifacts exist.
 
-Universal path:
+## 8. Singleton/small-support strata remain frozen
 
-`FULL104 RNA -> RNA online encoder -> predictor -> RNA EMA teacher`
+Preserve:
 
-Privileged path:
+- `RANDOMIZED_SUPPORT_GT10`
+- `SMALL_RANDOMIZED_SUPPORT_2_TO_10`
+- `FORCED_SINGLETON_SUPPORT_1`
 
-`regulatory evidence -> privileged encoder/critic -> Z_priv`
+The current exact-control run found:
 
-Only after recoverability qualification may a locked shared subspace become auxiliary supervision.
+- 344 CONTROL_A-success edges with admissible-set size 1;
+- 377 with size <=10;
+- 167 structurally degenerate A/B nulls.
 
-Do not silently append ATAC/promoter/contact inputs to the current V5 teacher target.
+These are support properties, not sampler defects.
 
-## 9. Paired NIH-CARD split is frozen
+Carry the needed structural cardinality/side fields into the successor artifact.
 
-Paired subset:
+Do not drop/reweight them based on matrix outcomes.
 
-- 2,160 MG nuclei;
-- 24 donors;
-- 90 nuclei/donor;
-- 4,000 genes;
-- 12,000 peaks.
+## 9. Phase B remains stopped
 
-Donor split uses donor IDs only and seed 20260930:
+Do not open:
 
-- TRAIN 16 donors / 1,440 nuclei;
-- VALIDATION 4 / 360;
-- TEST 4 / 360.
+- promoter activity matrix values;
+- distal accessibility values;
+- RNA↔ATAC correspondence;
+- Stage 4;
+- Morabito;
+- TD60;
+- training.
 
-Do not change this split after seeing recoverability.
+The corrected Phase-A successor remains structural/outcome-blind.
 
-Do not use TEST to choose factor rank, basis rotation or decision threshold.
+## 10. Parallelization
 
-## 10. Promoter architecture
+Parallelize only independent deterministic work where safe:
 
-GENCODE v50 defines transcript/TSS candidate existence.
+- linked eligibility checks;
+- structural feature derivations;
+- provenance/hash calculations;
+- artifact validation.
 
-SCREEN, FANTOM, Dong, Nott and NIH-CARD add evidence.
+Use deterministic shard membership and exact reconciliation.
 
-They do not censor the candidate denominator.
+Do not parallelize scientific gate decisions.
 
-Important implementation details:
-
-- Dong Data 7 has 88 repeated ENST IDs across chromosome-specific records;
-- attach Dong evidence using `(transcript_id, chromosome)`, not ENST alone;
-- FANTOM annotation IDs can contain legacy hg19 coordinate strings;
-- use the actual hg38 FANTOM BED as coordinate authority.
-
-## 11. Evidence-independence language
-
-Do not call adjusted residual association proof of independence.
-
-Use:
-
-`incremental support under observed adjustment`
-
-and require sensitivity analysis for measurement error and omitted/shared drivers.
-
-SCARlink vs SCENT on the same NIH-CARD cells is estimator robustness, not two evidence families.
-
-## 12. Parallelization
-
-Continue to parallelize deterministic independent computation where safe:
-
-- oracle edge-side comparisons;
-- fixtures;
-- hash/provenance calculations;
-- shard validation.
-
-Requirements:
-
-- deterministic shard membership;
-- isolated temp directories for liftOver workers;
-- exact reconciliation;
-- no shared temporary filenames;
-- no parallelization across scientific gate decisions.
-
-Use GPU only where appropriate for matrix/neural workloads later.
-
-Exact liftOver/control qualification is primarily CPU/I/O work.
-
-## 13. Report back
+## 11. Required report back
 
 Return:
 
-- current branch/head;
-- final 64-side equality receipt;
-- non-empty count;
-- any inequalities;
-- uniformity result;
-- fixture/failure-path results;
-- whether sampler is qualified;
-- if Phase A ran, complete funnel and hashes;
-- explicit confirmation Phase B untouched;
-- Stage 4 untouched;
-- Morabito untouched;
-- TRAINING OFF.
+- branch/head;
+- changed files;
+- confirmation exact sampler bytes/semantics were not changed, or exact reason if they were;
+- full 20,709-edge linked-side funnel;
+- final CONTROL_A-retained count after linked eligibility;
+- CONTROL_B availability/non-rescue counts;
+- singleton/small-support counts after final funnel;
+- row counts by population/control_role;
+- promoter count;
+- feature-schema validation;
+- all provenance digests;
+- artifact hashes;
+- exact funnel reconciliation;
+- explicit confirmation:
+  - Phase B STOPPED
+  - Stage 4 NOT AUTHORIZED
+  - TD60 BLOCKED
+  - Morabito PROTECTED
+  - TRAINING OFF
+  - no correspondence outcome opened.
 
-If anything fails:
+Then STOP for independent audit.
 
-STOP AND REPORT.
-
-Do not repair the scientific rule after seeing the failure.
+Do not proceed further.
