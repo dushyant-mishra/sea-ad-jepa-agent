@@ -5,77 +5,103 @@
   "status": "BYTE_VALIDATED__SCHEMA_AUDITED__CONTEXTUAL_EVIDENCE_ONLY",
   "files": {
     "SupplementaryData7": {
-      "filename":"41467_2024_54448_MOESM9_ESM.xlsx",
-      "bytes":5581197,
-      "sha256":"6a46fd3bfdff213ca11111975ef01958be8238c349559e90dca43e5857a1d1dd",
-      "role":"promoter-isoform annotation",
-      "sheet_rows_including_title_headers":118123,
-      "unique_transcript_ids":118033,
-      "unique_gene_ids":58825,
-      "fields":["transcript/promoter-isoform id","chr","TSS","strand","internalPromoter","gene_id","fivemost"]
+      "filename": "41467_2024_54448_MOESM9_ESM.xlsx",
+      "bytes": 5581197,
+      "sha256": "6a46fd3bfdff213ca11111975ef01958be8238c349559e90dca43e5857a1d1dd",
+      "role": "promoter-isoform annotation",
+      "sheet_rows_including_title_headers": 118123,
+      "unique_transcript_ids": 118033,
+      "unique_gene_ids": 58825,
+      "fields": [
+        "transcript/promoter-isoform id",
+        "chr",
+        "TSS",
+        "strand",
+        "internalPromoter",
+        "gene_id",
+        "fivemost"
+      ],
+      "data_rows": 118121,
+      "duplicate_transcript_ids": 88,
+      "duplicate_extra_rows": 88,
+      "duplicate_pattern_note": "The repeated transcript IDs are chromosome-specific records, predominantly chrX/chrY pseudoautosomal-style mappings; ENST alone is not a safe bridge key."
     },
     "SupplementaryData8": {
-      "filename":"41467_2024_54448_MOESM10_ESM.xlsx",
-      "bytes":12564632,
-      "sha256":"eb3c2e0eaf055bac3954802497cbdd07ccc65638ae361e1cf9af10668f224a74",
-      "role":"regional differential promoter-isoform usage",
-      "sheets":10,
-      "rows_per_sheet":12510,
-      "unique_transcripts":12510,
-      "unique_genes":10767
+      "filename": "41467_2024_54448_MOESM10_ESM.xlsx",
+      "bytes": 12564632,
+      "sha256": "eb3c2e0eaf055bac3954802497cbdd07ccc65638ae361e1cf9af10668f224a74",
+      "role": "regional differential promoter-isoform usage",
+      "sheets": 10,
+      "rows_per_sheet": 12510,
+      "unique_transcripts": 12510,
+      "unique_genes": 10767
     },
     "SupplementaryData9": {
-      "filename":"41467_2024_54448_MOESM11_ESM.xlsx",
-      "bytes":261104,
-      "sha256":"0d8b9e38c8a6502bd5a4851ffe408ad43771b5591ea5282c9547acd1c1bb5076",
-      "role":"alternative promoter-isoform events contrasting promoter and gene effects",
-      "data_rows":1715,
-      "unique_transcripts":1368
+      "filename": "41467_2024_54448_MOESM11_ESM.xlsx",
+      "bytes": 261104,
+      "sha256": "0d8b9e38c8a6502bd5a4851ffe408ad43771b5591ea5282c9547acd1c1bb5076",
+      "role": "alternative promoter-isoform events contrasting promoter and gene effects",
+      "data_rows": 1715,
+      "unique_transcripts": 1368
     },
     "SupplementaryData10": {
-      "filename":"41467_2024_54448_MOESM12_ESM.xlsx",
-      "bytes":10139581,
-      "sha256":"c2005fb8947b4352450a9a86f297673cce5350aab1b2ac69fe3949317c4f1f59",
-      "role":"promoter-isoform-resolution enhancer-promoter ABC links",
-      "data_rows":252512,
-      "unique_ocr_intervals":131663,
-      "unique_genes":13049,
-      "unique_transcripts":24992,
-      "abc_score_min":0.02,
-      "abc_score_median":0.031,
-      "abc_score_max":0.732,
-      "brain_regions":9
+      "filename": "41467_2024_54448_MOESM12_ESM.xlsx",
+      "bytes": 10139581,
+      "sha256": "c2005fb8947b4352450a9a86f297673cce5350aab1b2ac69fe3949317c4f1f59",
+      "role": "promoter-isoform-resolution enhancer-promoter ABC links",
+      "data_rows": 252512,
+      "unique_ocr_intervals": 131663,
+      "unique_genes": 13049,
+      "unique_transcripts": 24992,
+      "abc_score_min": 0.02,
+      "abc_score_median": 0.031,
+      "abc_score_max": 0.732,
+      "brain_regions": 9
     }
   },
   "gencode_v50_bridge": {
-    "gencode_release":50,
-    "gencode_transcripts":644292,
-    "gencode_genes":78733,
-    "data7_unique_transcripts":118033,
-    "data7_transcripts_present_in_gencode_v50":115765,
-    "data7_present_pct":98.07850346936874,
-    "data7_gene_identity_matches_among_present":112451,
-    "data7_tss_coordinate_matches_among_present":95046,
-    "data7_strand_matches_among_present":115763,
-    "data7_chr_matches_among_present":115678,
-    "data7_full_gene_chr_tss_strand_matches":92669,
-    "interpretation":"Current GENCODE v50 and the 2024 atlas are not identity-equivalent annotation systems. Missing/mismatched transcripts/TSSs are treated as annotation-version/context drift, not biological negatives. GENCODE v50 remains the candidate denominator; Dong resources annotate exact transcript matches and retain unresolved/version-drift states."
+    "gencode_release": 50,
+    "gencode_transcripts": 644292,
+    "gencode_genes": 78733,
+    "data7_unique_transcripts": 118033,
+    "data7_transcripts_present_in_gencode_v50": 115678,
+    "data7_present_pct": 98.00479526911965,
+    "data7_gene_identity_matches_among_present": 112367,
+    "data7_tss_coordinate_matches_among_present": 94986,
+    "data7_strand_matches_among_present": 115676,
+    "data7_chr_matches_among_present": 115678,
+    "data7_full_gene_chr_tss_strand_matches": 92669,
+    "interpretation": "Current GENCODE v50 and the 2024 atlas are not identity-equivalent annotation systems. Missing/mismatched transcripts/TSSs are treated as annotation-version/context drift, not biological negatives. GENCODE v50 remains the candidate denominator; Dong resources annotate exact transcript matches and retain unresolved/version-drift states.",
+    "bridge_key_policy": "Use (transcript_id, chromosome) for Dong evidence attachment; retain transcript-ID-only presence only as a separate descriptive field.",
+    "correction_note": "Prior V1 row-level counts treated repeated Data7 ENST rows as distinct transcript presence. This revision reports unique transcript IDs and preserves chromosome-specific duplicate records."
   },
   "cross_resource_transcript_bridge": {
-    "Data8":{"unique_transcripts":12510,"in_data7":12510,"in_gencode_v50":12220},
-    "Data9":{"unique_transcripts":1368,"in_data7":1368,"in_gencode_v50":1339},
-    "Data10":{"unique_transcripts":24992,"in_data7":24992,"in_gencode_v50":24410}
+    "Data8": {
+      "unique_transcripts": 12510,
+      "in_data7": 12510,
+      "in_gencode_v50": 12220
+    },
+    "Data9": {
+      "unique_transcripts": 1368,
+      "in_data7": 1368,
+      "in_gencode_v50": 1339
+    },
+    "Data10": {
+      "unique_transcripts": 24992,
+      "in_data7": 24992,
+      "in_gencode_v50": 24410
+    }
   },
   "scientific_scope": {
-    "Data7":"contextual promoter annotation evidence; not candidate denominator",
-    "Data8":"promoter-usage context evidence",
-    "Data9":"alternative-promoter evidence",
-    "Data10":"contextual structural/activity link evidence from ABC; not an independent causal family and not universal truth"
+    "Data7": "contextual promoter annotation evidence; not candidate denominator",
+    "Data8": "promoter-usage context evidence",
+    "Data9": "alternative-promoter evidence",
+    "Data10": "contextual structural/activity link evidence from ABC; not an independent causal family and not universal truth"
   },
   "governance": {
-    "training":"OFF",
-    "phaseB":"STOPPED",
-    "stage4":"NOT_AUTHORIZED",
-    "Morabito":"PROTECTED"
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED"
   }
 }
