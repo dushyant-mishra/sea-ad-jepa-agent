@@ -25,14 +25,22 @@ jobs:
             --manifest results/v64/V64_OPEN_RESOURCE_FETCH_MANIFEST_V1.json \
             --outdir open_resource_cache_v1 \
             --receipt V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
-      - name: Show custody receipt
-        run: cat V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
-      - name: Upload exact resource bytes and receipt
+      - name: Validate downloaded bytes fail-closed
+        run: |
+          python scripts/v64/validate_open_promoter_resource_bytes_v1.py \
+            --fetch-receipt V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json \
+            --output V64_OPEN_RESOURCE_BYTE_VALIDATION_RECEIPT_V1.json
+      - name: Show custody receipts
+        run: |
+          cat V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
+          cat V64_OPEN_RESOURCE_BYTE_VALIDATION_RECEIPT_V1.json
+      - name: Upload exact resource bytes and receipts
         uses: actions/upload-artifact@v4
         with:
           name: v64-open-promoter-regulatory-resources
           path: |
             open_resource_cache_v1/
             V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
+            V64_OPEN_RESOURCE_BYTE_VALIDATION_RECEIPT_V1.json
           if-no-files-found: error
           retention-days: 30
