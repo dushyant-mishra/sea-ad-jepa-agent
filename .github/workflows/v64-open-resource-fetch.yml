@@ -1,0 +1,38 @@
+name: V64 fetch open promoter-regulatory resources
+
+on:
+  pull_request:
+    paths:
+      - 'results/v64/V64_OPEN_RESOURCE_FETCH_MANIFEST_V1.json'
+      - 'scripts/v64/fetch_open_promoter_resources_v1.py'
+      - '.github/workflows/v64-open-resource-fetch.yml'
+  workflow_dispatch:
+
+jobs:
+  fetch-open-resources:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch public resources and bind exact hashes
+        run: |
+          python scripts/v64/fetch_open_promoter_resources_v1.py \
+            --download \
+            --manifest results/v64/V64_OPEN_RESOURCE_FETCH_MANIFEST_V1.json \
+            --outdir open_resource_cache_v1 \
+            --receipt V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
+      - name: Show custody receipt
+        run: cat V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
+      - name: Upload exact resource bytes and receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: v64-open-promoter-regulatory-resources
+          path: |
+            open_resource_cache_v1/
+            V64_OPEN_RESOURCE_FETCH_RECEIPT_V1.json
+          if-no-files-found: error
+          retention-days: 30
