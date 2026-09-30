@@ -373,3 +373,23 @@ Phase B = STOPPED
 Stage 4 = NOT AUTHORIZED  
 TD60 = BLOCKED  
 Morabito = PROTECTED
+
+
+## Chat-exclusive asset custody update
+
+A dedicated custody package now records artifacts that were physically available only in this chat runtime:
+
+`docs/agent/archive/chat_runtime_20260930_v2/`
+
+Canonical custody manifest:
+
+`docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json`
+
+Important rules:
+
+- small chat-only text artifacts are physically committed;
+- binary artifacts are marked explicitly with `bytes_in_git`;
+- no hash-only entry may be interpreted as binary Git custody;
+- Dong Supplementary Data 8/10, FULL104 discovery subset, foundation bundles/checkpoints, and the split 41K expression archive are hash-bound there;
+- the two 41K expression parts were independently verified to concatenate exactly to SHA-256 `63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`;
+- superseded promoter summaries are retained for history only and must not override current corrected V64 bridge/ledger authority.
