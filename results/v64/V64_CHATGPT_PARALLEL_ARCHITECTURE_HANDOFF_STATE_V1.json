@@ -1,0 +1,54 @@
+{
+  "schema": "V64_CHATGPT_PARALLEL_ARCHITECTURE_HANDOFF_STATE_V1",
+  "date": "2026-09-30",
+  "branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "draft_pr": 199,
+  "base_branch": "handoff/jepa-v64-target-architecture-20260930",
+  "base_sha": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
+  "head_before_handoff_files": "ce666336e96cebee4af7a233767988d991aa1525",
+  "status": "ARCHITECTURE_DESIGN_PASS_COMPLETE__REAL_PAIRED_DATA_AND_CLAUDE_PHASEA_AUDIT_AWAITED",
+  "decisions": {
+    "universal_teacher": "RNA_EMA_TEACHER",
+    "privileged_prequalification_role": "AUXILIARY_CRITIC_VALIDATOR",
+    "universal_privileged_supervision": "LOCKED_RNA_RECOVERABLE_SUBSPACE_ONLY",
+    "private_state": "PRESERVE_NO_COMPULSORY_RNA_LOSS",
+    "promoter_denominator": "GENCODE_ANNOTATION_FIRST",
+    "matching": "COMMON_SUPPORT_BEFORE_OPERATOR_FREEZE",
+    "independence_language": "INCREMENTAL_SUPPORT_UNDER_OBSERVED_ADJUSTMENT_PLUS_SENSITIVITY",
+    "heldout_validation": "MECHANISTICALLY_DISTINCT_EVIDENCE_FAMILY",
+    "missingness": "NOT_MEASURED_DISTINCT_FROM_NEGATIVE"
+  },
+  "synthetic_smoke": {
+    "executed_in_chat_environment": true,
+    "status": "PASS_SOFTWARE_ONLY",
+    "shared_mean_r2": 0.9998952276297703,
+    "private_mean_r2": -0.005015473036918544,
+    "forced_full_state_mean_r2": 0.4974398772964259,
+    "rotation_min_cosine": 0.9999528365177357
+  },
+  "github_ci": {
+    "focused_workflow_added": ".github/workflows/v64-privileged-architecture-smoke.yml",
+    "workflow_run_observed_at_state_creation": false,
+    "claim": "TESTS_WRITTEN__SYNTHETIC_LOGIC_EXECUTED_LOCALLY__GITHUB_CI_NOT_YET_OBSERVED"
+  },
+  "next_inputs": [
+    "donor-preserving paired NIH-CARD RNA+ATAC subset",
+    "optional FULL104 stratified RNA subset",
+    "promoter/TSS bridge artifacts if available",
+    "Claude repaired Phase-A receipts"
+  ],
+  "blocked": [
+    "Phase B",
+    "Stage 4",
+    "Morabito",
+    "training",
+    "final factorized-target tournament"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}
