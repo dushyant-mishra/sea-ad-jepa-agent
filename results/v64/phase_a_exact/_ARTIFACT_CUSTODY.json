@@ -1,0 +1,16 @@
+{
+  "schema": "V64_PHASE_A_ARTIFACT_CUSTODY_V1",
+  "date": "2026-09-30",
+  "large_artifacts_referenced_by_hash_not_committed": {
+    "PHASE_A_ROWS.jsonl.gz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_a\\PHASE_A_ROWS.jsonl.gz",
+      "bytes": 1104628,
+      "sha256": "431f571142a1b2ae8c03aaa412668c2268703529949b59ddcb3d9b4aa7ee0390"
+    },
+    "PHASE_A_PER_EDGE.jsonl.gz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_a\\PHASE_A_PER_EDGE.jsonl.gz",
+      "bytes": 1318462,
+      "sha256": "714e6a013a4e2c7f0dda90d2183e6d3862dcc3b72a9a99bc9c17eeae86954327"
+    }
+  }
+}

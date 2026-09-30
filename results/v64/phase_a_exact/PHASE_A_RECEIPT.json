@@ -1,0 +1,39 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_EXACT_EXECUTION_V2",
+  "date": "2026-09-30",
+  "governs": "V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2",
+  "supersedes": "nihcard_stage3_structural_etl_v1.py and its 15,646 figure",
+  "producer_sha256": "55a3d1d31d41ccaf0d49e9ce965b35374046f1b444c8a2648ace8c6f78f0dcb5",
+  "builder_sha256": "d677201d96c548d4eeae961fa7634ef959b16629f7b8b6fc542724773c2869ad",
+  "e2_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+  "master_seed": 20260930,
+  "edges_total": 20709,
+  "retained_primary": 13510,
+  "retention_fraction": 0.652373,
+  "dropped_because_CONTROL_A_failed": 7199,
+  "B_succeeded_while_A_failed_and_was_NOT_used_to_rescue": 2271,
+  "null_unavailable_A_ok_B_failed": 2232,
+  "coincident_pairs": 176,
+  "control_A_ok": 13510,
+  "control_A_empty_side": 7199,
+  "control_B_ok": 13549,
+  "control_B_empty_side": 7160,
+  "output_rows": 38298,
+  "controls_drawn_from_supplement": 37,
+  "no_retention_target": true,
+  "rules_enforced": {
+    "side_drawn_before_admissibility": true,
+    "opposite_side_retry": "STRUCTURALLY IMPOSSIBLE: one key looked up per draw",
+    "B_never_rescues_A": true,
+    "coincidence_retained_not_redrawn": true,
+    "uniform_over_A_exact": true
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}

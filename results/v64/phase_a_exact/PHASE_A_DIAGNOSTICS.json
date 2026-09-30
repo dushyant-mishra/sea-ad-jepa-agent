@@ -1,0 +1,67 @@
+{
+  "schema": "V64_PHASE_A_EXACT_EXECUTION_DIAGNOSTICS_V1",
+  "date": "2026-09-30",
+  "describes": "D:/jepa_v5_outputs_20260925/v64_phase_a/PHASE_A_RECEIPT.json",
+  "status": "DIAGNOSTIC. Written after the run, as post-hoc packaging of properties the executor receipt does not itself report. Not a prospective artifact.",
+  "CONTROL_A_admissible_set_size_over_retained_edges": {
+    "n_edges": 13510,
+    "min": 1,
+    "p25": 4148,
+    "median": 5630,
+    "p75": 10949,
+    "p95": 25385,
+    "max": 88892
+  },
+  "DEGENERATE_CONTROLS_A_MATERIAL_CAVEAT": {
+    "edges_where_CONTROL_A_had_exactly_one_admissible_start": 344,
+    "as_fraction_of_retained": 0.025463,
+    "edges_where_CONTROL_A_had_at_most_ten": 377,
+    "what_this_means": "An edge-side with exactly one admissible start yields a control with no randomness at all. The draw is forced, CONTROL_A and CONTROL_B are identical whenever they land on that side, and the control-vs-control null is degenerate for that edge. This is not a sampler defect -- the exact set really does contain one element -- but it is a property the downstream analysis must account for rather than treat these edges as ordinary randomised controls.",
+    "edges_whose_control_vs_control_null_is_structurally_degenerate": 167
+  },
+  "COINCIDENCE_STRUCTURE_IS_AS_UNIFORM_SAMPLING_PREDICTS": {
+    "total_coincident_pairs": 176,
+    "by_admissible_set_size": {
+      "n == 1": {
+        "same_side_pairs": 167,
+        "coincident": 167,
+        "rate": 1.0,
+        "note": "forced, not chance"
+      },
+      "n 2-10": {
+        "same_side_pairs": 15,
+        "coincident": 7,
+        "rate": 0.4667
+      },
+      "n 11-100": {
+        "same_side_pairs": 41,
+        "coincident": 0,
+        "rate": 0.0
+      },
+      "n 101-1000": {
+        "same_side_pairs": 324,
+        "coincident": 1,
+        "rate": 0.0031
+      },
+      "n > 1000": {
+        "same_side_pairs": 6199,
+        "coincident": 1,
+        "rate": 0.0002
+      }
+    },
+    "reading": "Coincidence is dominated by degenerate single-start edges and falls off as 1/n exactly as independent uniform draws from a set of size n should. The 176 figure is therefore evidence the sampler is behaving correctly, not evidence of a collision bug."
+  },
+  "OPEN_QUESTION_FOR_THE_AUDITOR": {
+    "observation": "The superseded executor reported 15,646 retained; this one reports 13,510. Retained plus the non-rescued population is 13,510 + 2,271 = 15,781, which is close to 15,646 but not equal (difference 135).",
+    "what_I_did_NOT_do": "I did not open the superseded executor's control logic to determine whether it permitted CONTROL_B to stand in for a failed CONTROL_A. Its docstring disclaims nearest-rescue, and the arithmetic is suggestive rather than conclusive, so asserting a mechanism would be speculation.",
+    "why_it_is_flagged_anyway": "If the superseded figure was in fact an A-or-B count, that would explain the direction of the change and is worth an auditor confirming independently."
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
