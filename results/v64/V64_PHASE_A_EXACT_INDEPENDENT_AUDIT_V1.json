@@ -1,0 +1,104 @@
+{
+  "schema": "V64_PHASE_A_EXACT_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_branch": "claude/v64-exact-sampler-successor-20260930",
+  "audited_head": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
+  "verdict": "PHASE_A_STRUCTURAL_EXECUTION_ACCEPTED__STOP_BEFORE_PHASE_B__DEGENERATE_CONTROL_STRATUM_REQUIRES_PROSPECTIVE_HANDLING",
+  "sampler_qualification": {
+    "status": "PASS",
+    "real_edge_comparisons": 64,
+    "non_empty_comparisons": 42,
+    "zero_vs_zero_comparisons": 22,
+    "total_candidate_starts_challenged": 1746598,
+    "algebra_only_total": 0,
+    "oracle_only_total": 0,
+    "deterministic_rerun_mismatches": 0,
+    "positive_control_sensitive_to_single_missing_or_spurious_start": true,
+    "uniformity": {
+      "draws": 100000,
+      "alpha": 1e-6,
+      "p_value": 0.3603938827565411,
+      "accepted": true,
+      "biased_negative_control_rejected": true
+    },
+    "fixtures": "PASS",
+    "failure_paths": "PASS",
+    "orientation": "PASS"
+  },
+  "S50": {
+    "all_12_shards_rebuilt_with_repaired_builder": true,
+    "byte_identical_shards": 12,
+    "edge_sides_compared": 41418,
+    "field_differences": 0,
+    "aggregate_identity": "1560436760 + 15961930 + 0 = 1576398690",
+    "admissible_identity": "235726268 + 177442 = 235903710",
+    "interpretation": "The repaired cross-chain ambiguity guard is a measured no-op on the complete current production supplement build; this does not imply the pre-repair shortcut is safe for arbitrary chain files."
+  },
+  "phase_A": {
+    "edges_total": 20709,
+    "retained_primary_CONTROL_A": 13510,
+    "retention_fraction": 0.652373,
+    "dropped_CONTROL_A_failed": 7199,
+    "CONTROL_B_succeeded_while_A_failed_NOT_RESCUED": 2271,
+    "null_unavailable_A_ok_B_failed": 2232,
+    "coincident_A_B_pairs": 176,
+    "output_rows": 38298,
+    "controls_drawn_from_supplement": 37,
+    "rules_verified_in_executor": {
+      "side_drawn_before_admissibility": true,
+      "opposite_side_retry": false,
+      "B_never_rescues_A": true,
+      "coincidence_retained_not_redrawn": true,
+      "primary_retention_depends_on_A_only": true
+    }
+  },
+  "superseded_15646": {
+    "status": "NOT_SAME_ESTIMAND__DO_NOT_EXPLAIN_BY_A_OR_B_ARITHMETIC_ALONE",
+    "old_result": 15646,
+    "new_result": 13510,
+    "difference": 2136,
+    "old_executor_known_contract_violations": [
+      "global instead of promoter-specific distal exclusion",
+      "missing exact hg38-to-hg19 round-trip gate",
+      "side not drawn prospectively; both sides pooled and weighted by available windows",
+      "only one control draw",
+      "anchor_frequency used exact-start multiplicity rather than distinct overlapping promoter keys",
+      "candidate universe was a sparse deterministic proposal grid rather than the exact admissible integer-start set"
+    ],
+    "interpretation": "The old 15,646 and new 13,510 are outputs of different control universes and selection semantics. The fact that 13,510 + 2,271 = 15,781 is not evidence that the old executor used CONTROL_B rescue."
+  },
+  "singleton_admissible_set_caveat": {
+    "CONTROL_A_exactly_one_admissible_start": 344,
+    "fraction_of_retained": 0.025463,
+    "CONTROL_A_at_most_ten_admissible_starts": 377,
+    "structurally_degenerate_A_B_null_edges": 167,
+    "interpretation": "A singleton exact admissible set yields a valid structurally matched control but not a randomized control. If A and B draw the same singleton side, the control-vs-control null is structurally forced.",
+    "required_before_phase_B": [
+      "freeze an explicit control-randomness stratum per retained edge using admissible-set cardinality and side",
+      "do not count structurally forced A/B equality as evidence of null calibration",
+      "report randomized-null results separately from forced/small-support strata",
+      "do not drop or reweight these edges after opening matrix values unless the rule is frozen prospectively now"
+    ]
+  },
+  "artifact_custody": {
+    "PHASE_A_ROWS.jsonl.gz": {
+      "bytes": 1104628,
+      "sha256": "431f571142a1b2ae8c03aaa412668c2268703529949b59ddcb3d9b4aa7ee0390",
+      "bytes_in_git": false
+    },
+    "PHASE_A_PER_EDGE.jsonl.gz": {
+      "bytes": 1318462,
+      "sha256": "714e6a013a4e2c7f0dda90d2183e6d3862dcc3b72a9a99bc9c17eeae86954327",
+      "bytes_in_git": false
+    }
+  },
+  "decision": {
+    "phase_A_structural_result": "ACCEPTED_FOR_CURRENT_EXACT_CONTROL_CONTRACT",
+    "phase_B": "STOPPED_PENDING_PROSPECTIVE_SINGLETON_NULL_HANDLING_AND_INDEPENDENT_AUDIT_CLOSEOUT",
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
