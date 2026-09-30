@@ -58,12 +58,12 @@
       "sha256": null,
       "download_urls": [
         "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM9_ESM.xlsx",
-        "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM10_ESM.xlsx",
+        "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM10_ESM.xlsx",
         "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM11_ESM.xlsx",
-        "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM12_ESM.xlsx"
+        "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM12_ESM.xlsx"
       ],
       "article_license": "CC_BY_4_0_UNLESS_SEPARATELY_CREDITED",
-      "note": "SupplementaryData7-10 exact media URLs verified from the Nature article page. Binary fetch still failed in this chat runtime; no bytes are claimed."
+      "note": "SupplementaryData7/9 use verified media.springernature URLs. SupplementaryData8/10 use static-content Springer fallback because the media endpoint returned a 3,038-byte client-challenge HTML payload in GitHub Actions. Byte validator must pass before custody."
     }
   ],
   "rule": "No resource is considered ingested until exact bytes, size, SHA-256, version/build, and source locator are recorded.",
