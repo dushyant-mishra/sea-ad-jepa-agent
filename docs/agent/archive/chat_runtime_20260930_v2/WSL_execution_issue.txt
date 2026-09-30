@@ -1,0 +1,288 @@
+Yes. But at this point I would **not keep adding features**. I see about **four remaining improvements with genuinely high scientific value**. After those, additional complexity is more likely to hurt than help.
+
+The most important one is a conceptual upgrade to how we represent heterogeneous experiments.
+
+## 1. Treat technology as an **observation operator**, not a biological covariate
+
+Right now we have been thinking approximately:
+
+\[
+X + \text{assay context} \rightarrow z_{\text{biology}}.
+\]
+
+I think the cleaner formulation is:
+
+\[
+\boxed{
+z_{\text{biology}}
+\;\xrightarrow{\text{measurement process } O_t}\;
+X_{\text{observed}}
+}
+\]
+
+and inference runs in the opposite direction:
+
+\[
+\boxed{
+q(z_{\text{biology}}\mid X_{\text{observed}},O_t)
+}
+\]
+
+Here \(O_t\) describes how technology \(t\) observes biology.
+
+For example, even though FHRA showed every current matrix contains all 4,096 vocabulary genes, two technologies can still differ in:
+
+- capture efficiency;
+- dropout/count sampling;
+- relative sensitivity;
+- nucleus versus whole-cell composition;
+- sequencing depth;
+- technical variance.
+
+So their masks can both be:
+
+\[
+M=(1,1,\ldots,1)
+\]
+
+while their **observation processes are still very different**.
+
+That distinction is probably more important for our current real foundation corpus than structural missingness.
+
+Conceptually:
+
+```
+             UNDERLYING BIOLOGY
+                    z
+                    │
+       ┌────────────┼────────────┐
+       │            │            │
+       ▼            ▼            ▼
+    assay A      assay B      assay C
+      O_A          O_B          O_C
+       │            │            │
+       ▼            ▼            ▼
+     counts       counts       counts
+```
+
+The model's job is to recover a compatible belief about \(z\), while knowing which observation operator produced the evidence.
+
+This is much cleaner than putting a free `dataset_id` embedding into the biology encoder.
+
+### What I would actually allow into \(O_t\)
+
+Things with physical/experimental meaning:
+
+- scRNA versus snRNA;
+- platform/chemistry;
+- measured vocabulary;
+- sequencing depth;
+- detected-gene characteristics;
+- count-split estimated noise properties;
+- other documented acquisition characteristics.
+
+Not:
+
+- donor ID;
+- arbitrary matrix ID;
+- unrestricted dataset embedding.
+
+That makes the system more likely to transfer to a **new dataset it has never seen**, provided we can describe how that experiment measures RNA.
+
+---
+
+# 2. Make a precise distinction between **invariance and legitimate biological change**
+
+We should not ask the state to be invariant to everything.
+
+We want:
+
+### Invariant—or approximately invariant—to
+
+```
+measurement realization
+sequencing noise
+technical replicate
+irrelevant assay differences
+```
+
+### But sensitive/equivariant to
+
+```
+cell state
+cell type
+tissue environment
+brain region
+real donor biology
+age-related biology
+other genuine molecular context
+```
+
+This gives us a much better qualification rule.
+
+For the same biological cell:
+
+\[
+z_{\text{count split A}}
+\approx
+z_{\text{count split B}}.
+\]
+
+For compatible biology measured by different technologies:
+
+\[
+z_{\text{tech A}}
+\approx
+z_{\text{tech B}}
+\]
+
+to the extent the biological states really are comparable.
+
+But for a biologically different cell:
+
+\[
+z_1 \neq z_2
+\]
+
+even if making them different reduces “batch mixing.”
+
+This is why I would **strongly avoid an objective like “make technology impossible to predict.”**
+
+The right question is:
+
+> After controlling for comparable biology, how much unnecessary technology information remains?
+
+That is far safer.
+
+---
+
+# 3. There is an important issue with the 160-D basis we haven't discussed enough: **axis stability**
+
+This may actually matter a lot for our uncertainty model.
+
+Imagine we fit the 160-D basis using one set of TRAIN donors and fit it again after leaving out different donors. The overall 160-dimensional **subspace** could be almost identical while individual axes rotate.
+
+That is not necessarily a problem for representation. But it becomes a problem if coordinate-specific uncertainties are interpreted biologically when the axes themselves are unstable.
+
+### So before freezing the real state basis, I would test
+
+Across donor-balanced resamples / leave-donor-group-out fits:
+
+- principal angles between 160-D subspaces;
+- canonical correlations;
+- Procrustes-aligned similarity;
+- individual coordinate stability;
+- eigenvalue gaps.
+
+If the subspace is stable but axes rotate within groups, treat those groups as **stable subspaces rather than individually meaningful coordinates**.
+
+---
+
+# 4. Biological uncertainty should be defined by an **evidence-response curve**, not one arbitrary mask
+
+Instead of only comparing 100% evidence vs one mask fraction, consider a ladder such as 20%, 40%, 60%, 80%, 100%.
+
+Let the state inferred with evidence fraction \(p\) be:
+
+\[
+z_i(p).
+\]
+
+Then look at how the state converges as evidence increases.
+
+We can define biological information stability conceptually as:
+
+\[
+C_i(p)=\|z_i(p)-z_i(100)\|.
+\]
+
+And:
+
+\[
+\Delta_i(p\rightarrow p')=\|z_i(p')-z_i(p)\|.
+\]
+
+Then biological uncertainty means:
+
+> **How much is my inferred biological state expected to change if substantially more relevant molecular evidence becomes available?**
+
+---
+
+# 5. Do the same thing separately for measurement quality
+
+For the exact same real cell, use count-depth ladders such as 25%, 50%, 75%, 100%.
+
+This yields two separate response curves:
+
+- evidence curve: more biological information;
+- measurement curve: better measurement of the same information.
+
+This gives an experimental route to separate biological from measurement uncertainty.
+
+---
+
+# 6. The really interesting quantity may be **information efficiency**
+
+Different cells may require different amounts of evidence before their state stabilizes.
+
+A useful future quantity is the minimum evidence required for the state to enter a stable neighborhood of its high-evidence reference.
+
+---
+
+# 7. Add one more transfer test: **leave an entire dataset family out**
+
+Use increasingly difficult tests:
+
+- held-out donor;
+- held-out matrix;
+- held-out dataset/study;
+- held-out technology where scientifically possible.
+
+---
+
+# 8. Distinguish **interpolation uncertainty from extrapolation uncertainty**
+
+Domain support should eventually have at least two axes:
+
+\[
+D_{\text{measurement}}
+\]
+
+and
+
+\[
+D_{\text{biological support}}.
+\]
+
+Otherwise rare and potentially important biology can be dismissed as technical OOD.
+
+---
+
+# 9. Don't make donor variability disappear
+
+Some donor variation is nuisance; some may be biology. Donor effects should be audited, not blindly removed.
+
+---
+
+# Where I think we are now
+
+High-priority remaining improvements:
+
+| Improvement | Priority |
+|---|---|
+| Observation-process/operator abstraction | **Very high** |
+| Donor + matrix balanced reproducible basis | **Very high** |
+| Basis/subspace stability audit | **Very high** |
+| Evidence-vs-depth convergence curves | **Very high** |
+| Conditional technology-imprint analysis | **Very high** |
+| Held-out dataset/technology transfer | **Very high** |
+| QC must earn measurement-channel access | **High** |
+| Separate biological novelty vs measurement OOD | **High** |
+| Hierarchical production sampling | **Before real training** |
+| Shared/context latent decomposition | **Only if evidence demands it** |
+| New nonlinear architecture | **No** |
+| Pathology | **Absolutely not yet** |
+
+Conceptual promise:
+
+> **The molecular ledger preserves what was measured. The global state captures reproducible biology. The observation model knows how the experiment measured it. Biological uncertainty says how much the state could change with better biological evidence. Measurement uncertainty says how much it could change if the same biology were remeasured. Domain support says whether the observation regime itself is familiar.**
