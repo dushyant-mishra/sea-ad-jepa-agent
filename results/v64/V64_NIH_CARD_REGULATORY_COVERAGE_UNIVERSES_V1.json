@@ -1,0 +1,82 @@
+{
+  "schema": "V64_NIH_CARD_REGULATORY_COVERAGE_UNIVERSES_V1",
+  "date": "2026-09-30",
+  "purpose": "Three nested coverage universes A > B > C, measurement and structure only, computed before any target architecture is chosen.",
+  "e2_correspondence_outcome_opened": false,
+  "regulatory_targets_constructed": false,
+
+  "MATRIX_ACCESS_DECLARATION": {
+    "expanded_beyond_bounded_integrity_reads": true,
+    "rna_read": "RNA .X restricted to microglia rows, accumulated to per-gene column marginals: nonzero nuclei count and donor breadth",
+    "atac_read": "ATAC .X restricted to microglia rows, accumulated to per-peak column marginals: nonzero nuclei count and donor breadth",
+    "never_done": "no gene vector was correlated, multiplied or joined against any peak vector. The two marginal arrays are accumulated independently into separate 1-D arrays and are never combined.",
+    "why_outcome_blind": "a column marginal is a property of ONE feature's measurement, not of a relationship between two features. Correspondence requires the cross product, which is never formed.",
+    "no_correlation_based_selection": true,
+    "nearest_peak_not_treated_as_truth": true,
+    "gene_annotation_source": "Nott Table S5 H3K4me3 promoter annotation, already authenticated and already the project promoter authority. No external TSS annotation was introduced."
+  },
+
+  "FROZEN_MEASURABILITY_RULES": {
+    "gene": "detected in >=100 microglia nuclei AND >=30 donors",
+    "peak": "observed in >=100 microglia nuclei",
+    "rationale": "minimal non-degeneracy conditions, fixed before the counts were seen, not tuned to any result"
+  },
+
+  "POPULATION": {
+    "microglia_nuclei": 87384,
+    "donors_with_microglia": 357,
+    "donors_meeting_frozen_minimum": 282
+  },
+
+  "UNIVERSES": {
+    "reference_universe": {"nih_card_rna_genes": 38606},
+    "A_rna_covered": {
+      "measurable_genes": 17063,
+      "pct_of_reference": 44.2,
+      "meaning": "queries for which a broad RNA-state target is measurable in paired microglia"
+    },
+    "promoter_authority": {
+      "nott_annotated_genes": 13878,
+      "nott_pu1_active_promoter_genes": 10884,
+      "A_and_nott_annotated": 10863,
+      "A_and_pu1_active": 9848,
+      "meaning": "the gene set for which this project has a defined promoter without importing external annotation"
+    },
+    "C_nott_e2_anchored": {
+      "edges": 20709,
+      "genes": 5253,
+      "promoter_anchors": 7390,
+      "distinct_regulatory_intervals": 11581,
+      "genes_also_rna_measurable": 4874,
+      "pct_of_C_testable_in_this_cohort": 92.8,
+      "genes_anchored_but_NOT_rna_measurable": 379
+    },
+    "B_regulatory_measurable": {
+      "status": "PARTIALLY_COMPUTED",
+      "what_is_established": "ATAC measurability is NOT the binding constraint: 520,299 of 521,217 consensus peaks (99.82%) are observed in >=100 microglia nuclei. The limiting factors are RNA measurability and promoter definition, not accessibility measurement.",
+      "upper_bound_on_B_from_promoter_authority": 9848,
+      "note": "B in the strict sense also requires measurable ATAC local to each gene's promoter. That requires lifting the Nott promoter coordinates hg19->hg38 under the frozen C3 rule, which is not yet done. Given 99.82% peak measurability, B is expected to be close to its promoter-authority upper bound, but that is an expectation and is NOT reported as a computed value."
+    }
+  },
+
+  "POTENTIAL_EXTENSION_BEYOND_E2": {
+    "rna_measurable_with_no_E2_anchor": 12189,
+    "pct_of_A": 71.4,
+    "promoter_defined_and_rna_measurable_with_no_E2_anchor": 4974,
+    "comparison": "4,974 is almost exactly the size of the entire current E2 anchor gene set (5,253). On the promoter-defined subset alone, the potential regulatory-measurable extension is of the same order as the existing anchor, before considering genes without a Nott promoter.",
+    "what_this_does_NOT_license": "constructing regulatory targets from NIH-CARD correlation strength, selecting peaks because they correlate with their gene, ranking candidates by the correspondence outcome under test, or treating nearest peak as regulatory truth. None of that is done here."
+  },
+
+  "READING": {
+    "atac_is_not_the_bottleneck": "at 99.82% peak measurability, accessibility measurement is essentially universal in this cohort. Any coverage limit is set by RNA detection and by promoter definition.",
+    "rna_measurability_is_a_real_filter": "17,063 of 38,606 genes (44.2%) meet the frozen detection rule in microglia. Slightly more than half the annotated transcriptome is not usably measured in this cell type at this depth.",
+    "the_anchor_is_mostly_testable": "4,874 of 5,253 anchored genes (92.8%) are RNA-measurable here, so the anchor can largely be evaluated in this cohort. The 379 that are not measurable cannot be tested regardless of how good their contact evidence is.",
+    "architectural_implication": "The gap between C (5,253 anchored) and the promoter-defined, RNA-measurable set (9,848) is the space in which broad paired-regulatory supervision could operate without any external contact map. That is consistent with the proposed architecture of universal RNA target + broad paired-regulatory layer + sparse high-confidence anchors, but it is a MEASUREMENT statement and not yet evidence that the broader layer carries biological signal."
+  },
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "stage_4": "NOT_AUTHORISED", "phase_B_matrix_reads": "STOPPED",
+    "uses_disease_or_protected_outcomes": false
+  }
+}
