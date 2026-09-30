@@ -44,18 +44,22 @@ Do not assume mergeable == CI-clean.
 
 Inspect all workflows on the current PR head.
 
-At handoff creation, a resource-fetch CI defect was being repaired by separating:
-- unattended automated fetch resources;
-- manually supplied/chat-custody Dong Supplementary Data 8/10.
+The resource-fetch CI defect was repaired before handoff finalization.
 
-The next chat must confirm the current head has:
-- privileged-information architecture smoke: PASS;
-- open promoter-regulatory fetch workflow: PASS;
-- FANTOM hg38 coordinate fetch: PASS;
-- Claude paired subset import/export: PASS where applicable;
-- Claude exact supplement import: PASS.
+Current design:
+- deterministic architecture/custody tests remain PR CI;
+- FANTOM/Claude import-export workflows remain verifiable custody workflows;
+- the broad live open-resource downloader is `workflow_dispatch` only and is NOT a PR-gating check;
+- Dong Supplementary Data 8/10 are manual/chat custody with exact hashes.
 
-If any workflow fails, inspect and fix root cause before calling PR #199 clean.
+Verified repaired-code-head passes:
+- architecture smoke run 36752876598: PASS
+- FANTOM hg38 fetch run 36752876636: PASS
+- Claude paired import run 36752876843: PASS
+- Claude exact supplement import run 36752876592: PASS
+- Claude paired export run 36752876849: PASS
+
+Still refresh the current PR head and checks before merging, but do not require the manual external-download workflow as CI.
 
 ## 5. Exact-control hard gate
 
