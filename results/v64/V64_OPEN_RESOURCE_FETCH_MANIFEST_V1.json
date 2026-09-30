@@ -30,17 +30,22 @@
       "sha256": null
     },
     {
-      "id": "FANTOM5_HG38_CAGE_PEAK_ANNOTATION",
-      "purpose": "CAGE peak association/annotation evidence; legacy peak IDs may encode hg19 coordinates and are NOT the hg38 coordinate authority",
+      "id": "FANTOM5_HG38_CAGE_PEAK_COORDINATES_AND_ANNOTATION",
+      "purpose": "hg38 CAGE promoter/TSS coordinate evidence plus transcript/gene annotation",
       "genome_build": "hg38",
       "release": "hg38_latest reprocessed directory; file last-modified 2021-05-28 on source index",
       "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/",
-      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/hg38_fair%2Bnew_CAGE_peaks_phase1and2_ann.txt.gz",
       "source_page_reported_size": "5.8M",
       "access": "PUBLIC_DOWNLOAD",
       "bytes_in_chat_custody": false,
       "sha256": null,
-      "coordinate_authority": false
+      "coordinate_authority": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+      "download_urls": [
+        "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair%2Bnew_CAGE_peaks_phase1and2.bed.gz",
+        "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/hg38_fair%2Bnew_CAGE_peaks_phase1and2_ann.txt.gz"
+      ],
+      "annotation_authority": "hg38_fair+new_CAGE_peaks_phase1and2_ann.txt.gz",
+      "note": "Do not parse the legacy hg19:: coordinate embedded in the annotation-table peak ID as hg38. Use the hg38 BED coordinates and join to annotation by peak identity/name."
     },
     {
       "id": "SCREEN_REGISTRY_V4_GRCH38_PLS",
