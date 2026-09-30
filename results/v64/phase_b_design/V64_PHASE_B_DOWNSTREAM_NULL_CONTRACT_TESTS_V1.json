@@ -1,0 +1,76 @@
+{
+  "schema": "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V1",
+  "date": "2026-09-30",
+  "contract": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1.json",
+    "sha256": "e7beaeff628034e7dbe41f157f8b3720fccd36b3bb9367979c905b8a3678e8fe"
+  },
+  "state": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DECISION_STATE_V1.json",
+    "sha256": "0f753aab85a9b617beb5b0b6f248527141dfec01eb17864e2beaf6178e3db26c"
+  },
+  "producer_sha256": "51517d4298dbb2b2d4aa6b392324d4c02b4fe5ef249d43472ef673fcbbeb7ab5",
+  "tests": [
+    {
+      "name": "T1_singleton_coincidences_excluded",
+      "requirement": "the 158 structurally forced coincidences contribute zero calibration evidence",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "denominator 10,654 excludes 158 forced and 200 partially forced"
+    },
+    {
+      "name": "T2_control_B_cannot_alter_retention",
+      "requirement": "CONTROL_B is a null arm only and never changes the primary population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "2,200 edges had a valid CONTROL_B and were still not retained"
+    },
+    {
+      "name": "T3_missingness_not_zero_filled",
+      "requirement": "NOT_MEASURED is never encoded as zero, in four explicit states",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "four states, zero-fill forbidden, both Phase-B fields covered"
+    },
+    {
+      "name": "T4_all_three_strata_represented",
+      "requirement": "every randomness stratum is present, sums to the population, and has a rule",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "{'RANDOMIZED_SUPPORT_GT10': 12816, 'FORCED_SINGLETON_SUPPORT_1': 327, 'SMALL_RANDOMIZED_SUPPORT_2_TO_10': 32} verified against the artifact, all with uncertainty rules"
+    },
+    {
+      "name": "T5_phase_B_remains_stopped",
+      "requirement": "governance locks are in force and no matrix value was read",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "all governance locks in force, no matrix values read"
+    },
+    {
+      "name": "T6_no_biological_outcome_fields",
+      "requirement": "the contract contains no correspondence result, effect size or outcome value",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "no outcome-named keys and no numeric values under one; 23 field terms scanned structurally"
+    },
+    {
+      "name": "T7_single_frozen_primary_view",
+      "requirement": "exactly one primary view is declared and classes reconcile to the population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "single primary view V1_PRIMARY_all_retained, calibration classes reconcile"
+    }
+  ],
+  "n_tests": 7,
+  "n_real_tests": 7,
+  "every_test_has_a_working_negative_control": true,
+  "status": "PASS",
+  "note": "a test is counted as real only if it passes on the actual contract AND rejects a deliberately planted violation"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "V64_PHASE_B_DECISION_STATE_V1",
+  "date": "2026-09-30",
+  "contract": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1.json",
+    "sha256": "e7beaeff628034e7dbe41f157f8b3720fccd36b3bb9367979c905b8a3678e8fe"
+  },
+  "phase_a_population_locked": {
+    "retained_edges": 13175,
+    "retained_promoters": 5964,
+    "retained_genes": 4372
+  },
+  "DECISIONS": {
+    "primary_population": "ALL_RETAINED",
+    "primary_n": 13175,
+    "singletons_in_primary": true,
+    "singleton_label": "STRUCTURALLY_MATCHED_NOT_RANDOMIZED_WITHIN_SIDE",
+    "small_support_in_primary": true,
+    "weighting_by_control_support": "NONE",
+    "stratified_reporting": "REQUIRED",
+    "randomized_null_denominator": 10654,
+    "excluded_structurally_forced": 158,
+    "excluded_partially_forced": 200,
+    "not_evaluable_B_unavailable": 2163,
+    "resampling_unit": "DONOR",
+    "blocking_unit": "PROMOTER",
+    "exact_enumeration_when_support_le_10": true,
+    "promoter_equal_companion": "MANDATORY",
+    "missingness_states": 4,
+    "zero_fill": "FORBIDDEN",
+    "primary_view": "V1_PRIMARY_all_retained"
+  },
+  "RECONCILIATION": {
+    "calibration_classes_sum": 13175,
+    "equals_retained_edges": true
+  },
+  "WHAT_THIS_AUTHORISES": "nothing to execute yet",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  }
+}
