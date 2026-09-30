@@ -1,0 +1,102 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_STRUCTURAL_RECEIPT_V1",
+  "date": "2026-09-30",
+  "phase": "A_STRUCTURAL_NO_MATRIX_VALUES",
+  "contract": "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V1.json",
+  "producer": {
+    "path": "nihcard_stage3_structural_etl_v1.py",
+    "git_blob": null,
+    "sha256": "22401483aadaaa293d4e4afe3cefff6bd2d0916c0eb611a8a47687cd364b4b18"
+  },
+  "inputs": {
+    "e2_edge_table_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+    "rna": {
+      "bytes": 18439154935,
+      "md5": "f628b17aab355f80b912e3c715543cbd"
+    },
+    "atac": {
+      "bytes": 14508702462,
+      "md5": "b71589e0033e391e2fe97c1ae3928a7f"
+    },
+    "authentication_receipt": "results/v64/V64_NIH_CARD_LOCAL_BYTE_AUTHENTICATION_V1.json",
+    "pairing_closeout": "results/v64/V64_NIH_CARD_PAIRING_EXECUTION_RECEIPT_V1.json"
+  },
+  "MATRIX_ACCESS_DECLARATION": {
+    "matrix_values_read": "NONE",
+    "metadata_read": [
+      "atac.var_names",
+      "rna.var['gene_ids']",
+      "rna.obs['cell_type']",
+      "rna.obs['SampleID']"
+    ],
+    "why_outcome_blind": "coordinates, identifiers and a cell-type/donor census only; no expression or accessibility value is read in this phase"
+  },
+  "ATTRITION_FUNNEL": {
+    "denominator": 20709,
+    "stages": {
+      "LINKED_STRUCTURALLY_SUPPORTED": 15646,
+      "DROP_NO_CONSENSUS_PEAK_OVER_DISTAL": 199,
+      "DROP_GENE_NOT_IN_NIHCARD": 350,
+      "DROP_NO_ADMISSIBLE_CONTROL_AFTER_LIFT": 4514
+    },
+    "control_stages": {
+      "CAND_NO_NOTT_PU1_PEAK_HG38": 992635,
+      "CAND_ADMISSIBLE": 133067,
+      "CAND_NO_CONSENSUS_PEAK_HG38": 4047,
+      "CAND_LENGTH_CHANGED": 6619,
+      "CAND_UNMAPPED": 3931,
+      "CAND_AMBIGUOUS": 27
+    },
+    "admissible_control_windows_per_edge": {
+      "median": 7.0,
+      "max": 53
+    },
+    "reconciles": true
+  },
+  "donor_support": {
+    "microglia_total": 87384,
+    "donors_with_microglia": 357,
+    "donors_meeting_min_microglia": 282,
+    "min_microglia_per_donor": 100,
+    "target_metacell_size": 25,
+    "metacells_per_qualifying_donor": {
+      "min": 4,
+      "median": 10.0,
+      "max": 46
+    }
+  },
+  "hierarchy": {
+    "promoters": 6507,
+    "linked_rows": 15646,
+    "control_rows": 15646,
+    "edge_rows": 31292,
+    "block_size": {
+      "min": 2,
+      "median": 4.0,
+      "max": 52
+    },
+    "real_promoter_degree": {
+      "min": 1,
+      "max": 29
+    },
+    "TOPOLOGY_NOTE": "real promoter_degree is a NUISANCE COVARIATE. It is NOT the synthetic candidate-slot count, which the frozen tournament fixes at 24 with 4 linked."
+  },
+  "pending_phase_B": [
+    "promoter_activity",
+    "distal_accessibility"
+  ],
+  "feature_definitions": {
+    "source_hg19_distance_bp": "midpoint-to-midpoint separation in hg19 source coordinates",
+    "log_distance": "natural log of source_hg19_distance_bp",
+    "promoter_degree": "count of E2 linked edges sharing the hg38 promoter anchor",
+    "re_density": "NIH-CARD consensus peaks whose interval overlaps a +/-50000 bp window around the distal midpoint",
+    "anchor_frequency": "count of E2 edges sharing the distal hg38 start coordinate"
+  },
+  "no_correspondence_computed": true,
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "stage_4": "NOT_AUTHORISED"
+  }
+}

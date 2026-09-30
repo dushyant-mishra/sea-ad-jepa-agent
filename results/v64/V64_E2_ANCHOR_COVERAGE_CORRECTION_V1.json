@@ -1,0 +1,83 @@
+{
+  "schema": "V64_E2_ANCHOR_COVERAGE_CORRECTION_V1",
+  "date": "2026-09-30",
+  "corrects": "results/v64/V64_E2_ANCHOR_COVERAGE_ANALYSIS_V1.json",
+  "e2_correspondence_outcome_opened": false,
+
+  "CORRECTION_1_WEIGHTING_WAS_BACKWARDS": {
+    "what_I_wrote": "an auxiliary objective weighting anchored genes equally would be dominated by a few high-degree genes",
+    "why_that_is_wrong": "Equal weighting OF GENES is precisely what NEUTRALISES high-degree dominance: every gene contributes once regardless of its edge count. The domination risk belongs to the opposite scheme -- an auxiliary loss that SUMS OVER EDGES, where a 68-edge gene contributes 68 times what a 1-edge gene does.",
+    "measured_asymmetry_over_the_real_anchor": {
+      "genes": 5253,
+      "edges": 20709,
+      "top_1pct_genes_hold_pct_of_edge_mass": 8.4,
+      "top_5pct_genes_hold_pct_of_edge_mass": 25.4,
+      "top_10pct_genes_hold_pct_of_edge_mass": 38.3,
+      "top_25pct_genes_hold_pct_of_edge_mass": 62.2,
+      "genes_with_exactly_one_edge": 1725,
+      "single_edge_genes_pct_of_genes": 32.8,
+      "single_edge_genes_pct_of_edges": 8.3
+    },
+    "consequence_for_loss_design": "Under edge-summing, a third of the anchored gene set (the 1,725 single-edge genes) contributes under a tenth of the signal, while the top quarter of genes carries 62.2 percent. Any auxiliary loss summing over edges must explicitly normalise within gene or within promoter, or it silently re-weights the anchor toward a minority of well-connected loci.",
+    "status": "the reading in the original analysis file is superseded by this correction; both are retained"
+  },
+
+  "CORRECTION_2_MISSINGNESS_HAS_THREE_STATES_NOT_TWO": {
+    "my_framing": "not-measured versus measured-and-absent",
+    "corrected_framing": [
+      "STATE 1 regulatory evidence MEASURED and SUPPORTS a relationship",
+      "STATE 2 regulatory evidence MEASURED and DOES NOT support a relationship",
+      "STATE 3 regulatory evidence NOT AVAILABLE / NOT MEASURED"
+    ],
+    "the_hazard": "encoding STATE 2 and STATE 3 both as numeric zero creates the availability shortcut: the model learns annotation-present rather than biology",
+    "why_this_project_can_actually_separate_them": "P3 constructs STATE 2 explicitly -- neuron/oligodendrocyte relationships where the gene IS expressed in microglia and the distal region IS accessible in microglia, yet the relationship is absent from the qualified microglia map. STATE 2 is a measured, defensible category here, not merely a theoretical distinction.",
+    "requirement": "all three states must remain separately representable in any target encoding; none may be collapsed to zero"
+  },
+
+  "CORRECTION_3_SUPPLEMENT_NAMING": {
+    "old": "A_boundary",
+    "new": "A_supplement",
+    "why": "the set is no longer only block boundaries. It contains block boundaries, chain gaps, unsupported and inverted-strand regions, and anything else not proven safe for the affine interior calculation.",
+    "final_construction": "A_exact = A_interior UNION A_supplement",
+    "scientific_gain": "no assumption is needed about whether a tricky chain region is safe. The real liftOver implementation decides, exhaustively, over the starts the interior algebra cannot prove.",
+    "interior_share_pct": 99.105,
+    "supplement_starts": 17051530,
+    "total_band_positions": 1905484412,
+    "supplement_share_pct": 0.895
+  },
+
+  "FULL104_DENOMINATOR_STILL_NOT_USABLE": {
+    "remembered_figure": 15758,
+    "description": "universal protein-coding genes across the 42 operators",
+    "status": "NOT LOCATED in a committed artifact by either side",
+    "ruling": "do not use it to compute any E2/FULL104 coverage fraction",
+    "to_close": "recover the source artifact, or regenerate the intersection from authenticated manifests"
+  },
+
+  "NEXT_DELIVERABLE_RECORDED": {
+    "name": "all-resource target coverage atlas",
+    "why_before_target_architecture": "it may materially change what the teacher target contains, and is more informative than asking whether any single resource has enough coverage",
+    "denominators_that_must_stay_separate": ["cells", "query genes", "gene-regulatory relationships", "donors", "datasets/modalities"],
+    "tiers": {
+      "0": "RNA target coverage -- the large-scale substrate",
+      "1": "regulatory measurable -- paired RNA+ATAC sufficient to investigate local regulatory state; does not require a known contact",
+      "2": "regulatory anchored -- independently defined structure such as Nott/E2 or SCENIC+",
+      "3": "multimodal convergence -- several independent lines on the same query",
+      "4": "functional evidence -- perturbational resources",
+      "5": "independent validation -- kept genuinely separate; Morabito remains protected"
+    },
+    "per_gene_quantities_required": ["usable cells", "donors", "qualifying metacells", "RNA detection rate", "ATAC regulatory coverage", "number of datasets containing the query"],
+    "architectural_question_it_settles": "whether the structure is broad-RNA-target-plus-sparse-E2-anchors, or the potentially better broad-RNA-target plus broad NIH-CARD paired-regulatory supervision plus sparse high-confidence anchors",
+    "execution_order": "AFTER the exact supplement, the full frozen sampler test suite, and the Phase-A rerun. Phase B stays closed until then.",
+    "convergence_caveat_to_test": "Tier-3 queries must be checked for whether they span different biological programs or merely cluster on highly studied, highly expressed genes"
+  },
+
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "stage_4": "NOT_AUTHORISED",
+    "phase_B_matrix_reads": "STOPPED",
+    "regulatory_targets_constructed": false
+  }
+}

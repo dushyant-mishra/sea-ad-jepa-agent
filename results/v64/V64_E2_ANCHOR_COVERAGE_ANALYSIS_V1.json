@@ -1,0 +1,84 @@
+{
+  "schema": "V64_E2_ANCHOR_COVERAGE_ANALYSIS_V1",
+  "date": "2026-09-30",
+  "purpose": "Characterise what coverage E2 actually provides, BEFORE any target architecture is tightened, and keep the four coverage dimensions strictly separate.",
+  "architectural_position_being_tested": "E2 is a candidate SPARSE REGULATORY ANCHOR layer, not the universal JEPA target substrate. Its coverage must be reported in the dimension it actually has.",
+  "outcome_blind": true,
+  "e2_correspondence_outcome_opened": false,
+
+  "THE_FOUR_DIMENSIONS_ARE_NOT_INTERCHANGEABLE": {
+    "rule": "20,709 is an EDGE count. It is not a cell count, not a gene count, and not a donor count. Reporting it as coverage of anything else is a category error.",
+    "regulatory_edge_coverage": {"e2_edges": 20709},
+    "query_gene_coverage": {"distinct_e2_genes": 5253},
+    "promoter_coverage": {"distinct_e2_promoter_anchors": 7390},
+    "cell_coverage": "NOT A PROPERTY OF E2. E2 contains no cells. Cell coverage is a property of the RNA corpus and of which cells have the queried gene measurable, and is reported separately below.",
+    "donor_coverage": "NOT A PROPERTY OF E2 EITHER. The Nott contact source is a small sorted-nuclei study; the donor axis lives in the RNA corpus and in NIH-CARD, not in the edge set."
+  },
+
+  "E2_INTERNAL_STRUCTURE": {
+    "edges": 20709, "distinct_genes": 5253, "distinct_promoter_anchors": 7390,
+    "edges_per_gene": {"min": 1, "p25": 1, "median": 2, "p75": 5, "p95": 13,
+                       "max": 68, "mean": 3.942},
+    "edges_per_promoter": {"min": 1, "p25": 1, "median": 2, "p75": 3, "p95": 8,
+                           "max": 29, "mean": 2.802},
+    "promoters_per_gene": {"min": 1, "p25": 1, "median": 1, "p75": 2, "p95": 2,
+                           "max": 6, "mean": 1.407},
+    "genes_with_more_than_one_promoter": 1904,
+    "reading": "The anchor is heavily concentrated. Half of anchored genes carry 2 or fewer edges while one carries 68, so 'a gene is anchored' spans a very wide range of evidence strength. Any auxiliary objective weighting anchored genes equally would be dominated by a small number of high-degree genes."
+  },
+
+  "QUERY_GENE_COVERAGE_AGAINST_A_MEASURED_UNIVERSE": {
+    "reference_universe": "NIH-CARD RNA var['gene_ids']",
+    "universe_size": 38606,
+    "e2_genes_resolvable_in_that_universe": 5143,
+    "fraction_of_e2_genes_resolvable": 0.9791,
+    "fraction_of_universe_anchored_by_E2": 0.133218,
+    "reading": "About 13.3% of the NIH-CARD gene universe has any E2 regulatory anchor. Nearly all E2 genes (97.9%) resolve into that universe, so the sparsity is a property of E2, not of a join failure."
+  },
+
+  "FULL104_RELATION__NOT_YET_COMPUTABLE_HERE": {
+    "stated_corpus_scale": {"cells": 4550000, "donors": 104, "operators": 42},
+    "what_I_could_NOT_establish": "the exact FULL104 common/backbone gene universe size",
+    "why": "I searched the committed artifacts and did not find a named authoritative gene-universe count. The V61 backbone audits reference an 'all-42-operator-measured protein-coding universe' but state no size, and the numbers near 0.9869/0.9878 in those documents are correlations, not gene counts.",
+    "what_I_refused_to_do": "estimate it. A coverage fraction computed against a guessed denominator would be worse than no number, because it would look authoritative.",
+    "required_to_close": "a named artifact giving the FULL104 backbone/common gene universe, after which the anchored fraction can be computed the same way as for NIH-CARD.",
+    "what_can_already_be_said": "E2 anchors 5,253 genes. Whatever the backbone universe turns out to be, the anchored fraction is bounded above by 5253/|backbone| and will be small relative to a transcriptome-scale universe."
+  },
+
+  "CELL_COVERAGE_IS_A_DIFFERENT_QUESTION": {
+    "correct_framing": "not 'what fraction of 4.55M cells have an E2 edge' -- no cell has an edge. The meaningful quantities are: for a query gene q, in how many cells is q measurable under the RNA target rules, and across how many biological contexts can an anchored relationship be tested.",
+    "what_this_analysis_does_not_claim": "any statement about per-cell coverage. That requires the RNA target's measurability rules and has not been computed here.",
+    "NIH_CARD_context_scale_for_the_anchor_test": {
+      "microglia_nuclei": 87384, "donors_with_microglia": 357,
+      "donors_meeting_frozen_minimum": 282,
+      "note": "this is the context breadth available to TEST anchored relationships, not coverage of the training corpus"
+    }
+  },
+
+  "MISSINGNESS_CONTAMINATION_RISK": {
+    "failure_mode": "If a teacher target is [RNA state, regulatory state] and regulatory state exists for ~13% of genes, a model can learn 'regulatory annotation available' versus 'not available' rather than biology. With 86.7% of the gene universe unanchored, that indicator is highly predictive and trivially learnable.",
+    "hard_requirement": "any architecture using E2 during training MUST distinguish regulatory evidence NOT MEASURED / NOT ANNOTATED from regulatory evidence MEASURED AND ABSENT. The former may never be encoded as numeric zero.",
+    "why_this_matters_here_specifically": "P3 already established that MEASURED-AND-ABSENT is a real, constructible category: neuron/oligodendrocyte relationships where the gene is expressed in microglia and the distal region is accessible in microglia, yet the relationship is absent from the qualified microglia map. So the two categories are genuinely distinguishable in this project's data and collapsing them would discard real information as well as leaking an availability indicator.",
+    "not_implemented_here": "no auxiliary-loss or anchor-only objective is chosen. Per instruction, coverage is characterised first."
+  },
+
+  "PERMITTED_ROLES_NOT_YET_CHOSEN": [
+    "biological qualification of query-conditioned RNA state against regulatory evidence",
+    "sparse teacher enrichment where evidence exists, never mandatory per example",
+    "representation anchoring on annotated examples with the RNA backbone covering the rest"
+  ],
+
+  "CLAIM_DISCIPLINE": {
+    "E2_is": "a candidate sparse regulatory anchor layer whose biological correspondence and useful coverage are still being qualified",
+    "E2_is_not": ["the universal target", "whole-dataset target coverage",
+                  "independent biological validation yet", "causal regulation",
+                  "disease validation"],
+    "NIH_CARD_role": "evidence about the VALIDITY OF THE ANCHOR, not coverage of the JEPA target"
+  },
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "stage_4": "NOT_AUTHORISED", "phase_B_matrix_reads": "STOPPED",
+    "uses_disease_or_protected_outcomes": false
+  }
+}

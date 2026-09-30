@@ -1,0 +1,102 @@
+{
+  "schema": "V64_TARGET_ARCHITECTURE_POSITIONS_AND_EVIDENCE_INDEPENDENCE_V1",
+  "date": "2026-09-30",
+  "status": "POSITIONS_RECORDED_AND_ONE_OF_THEM_EMPIRICALLY_TESTED. No architecture is implemented and no target is constructed.",
+  "e2_correspondence_outcome_opened": false,
+
+  "MEASURED_FINDING__EVIDENCE_INDEPENDENCE_IS_NOT_SAFE_TO_ASSUME": {
+    "why_measured_now": "The proposal that an atlas must score evidence DIVERSITY rather than evidence COUNT is testable today with the column marginals already computed, without opening any correspondence. If anchoring and expression are confounded, then counting resources overstates independence.",
+    "test_1_is_being_anchored_confounded_with_expression": {
+      "quantity": "detection rate = fraction of 87,384 microglia nuclei with a nonzero count",
+      "e2_anchored_and_rna_measurable": {"n": 4874, "median": 0.043, "p25": 0.013, "p75": 0.128},
+      "rna_measurable_but_unanchored": {"n": 12189, "median": 0.009, "p25": 0.003, "p75": 0.037},
+      "ratio_of_medians": 4.92,
+      "mann_whitney_anchored_greater": "p = 0.0 (below double precision)",
+      "reading": "E2-anchored genes are detected about five times more often than unanchored measurable genes. Anchoring is strongly confounded with expression."
+    },
+    "test_2_does_edge_DEGREE_also_track_expression": {
+      "within_anchored_set": true,
+      "degree_1_genes": {"n": 1567, "median": 0.030, "p25": 0.010, "p75": 0.081},
+      "degree_10_or_more_genes": {"n": 417, "median": 0.168, "p25": 0.043, "p75": 0.437},
+      "ratio_of_medians": 5.57,
+      "mann_whitney_high_degree_greater": "p = 3.376e-60",
+      "reading": "Edge degree is not a clean measure of regulatory complexity. It partly measures detectability and expression."
+    },
+    "CONSEQUENCES": [
+      "A query supported by both Nott/E2 and NIH-CARD is NOT thereby two independent lines of evidence. Both are enriched for the same highly expressed, open-chromatin genes, which is precisely the shared-bias mechanism that makes a resource count misleading.",
+      "The degree concentration reported earlier -- top 25% of genes holding 62.2% of edge mass -- is therefore PARTLY an expression-bias artifact and not purely regulatory biology.",
+      "This strengthens the case for hierarchical gene-first weighting: equalising genes removes part of the expression bias that edge-summing would amplify."
+    ],
+    "honest_caveat": "Detection rate is a property of the NIH-CARD assay, and Nott H3K4me3/PLAC-seq anchoring is itself promoter-activity linked. The association could arise because both assays preferentially resolve active genes. That is not an artifact of this measurement -- it IS the shared-bias mechanism, and it is the reason a count of resources cannot stand in for independence."
+  },
+
+  "POSITION_1_FACTORISED_LATENT_NOT_A_FUSED_VECTOR": {
+    "claim": "global cell state, query-local regulatory state and perturbational response are related but not identical biological objects",
+    "evidence_cited": "a cell can preserve global microglial identity while the regulatory state of one gene changes; a perturbation can move a local regulatory program without moving the transcriptomic manifold far",
+    "proposed_factorisation": ["Z_global(cell)", "Z_query(cell, q)", "Z_reg(cell, q)", "Z_response(cell, q_or_intervention)"],
+    "rule": "constrain the components to agree where biology says they should agree, rather than concatenating and assuming they are one object",
+    "prerequisite_before_fusing_anything": "demonstrate that the components share the same invariances. Absent that demonstration, a single fused vector is an assumption, not a design.",
+    "status": "RECORDED, NOT IMPLEMENTED"
+  },
+
+  "POSITION_2_THREE_EVIDENCE_STATES_AT_THE_DATA_MODEL_LEVEL": {
+    "states": ["measured and SUPPORTS", "measured and DOES NOT support", "NOT measured"],
+    "requirement": "this distinction must exist in the DATA MODEL, not only in documentation. NOT-MEASURED needs a mask or state of its own; MEASURED-AND-ABSENT is genuine negative evidence.",
+    "why_this_project_is_unusually_well_placed": "P3 constructs measured negatives explicitly -- gene expressed in microglia, distal accessible in microglia, relationship absent from the qualified map. That is far more valuable than generic missingness and must not be discarded by collapsing it into a zero.",
+    "status": "RECORDED, NOT IMPLEMENTED"
+  },
+
+  "POSITION_3_HIERARCHICAL_WEIGHTING": {
+    "natural_unit_order": "gene first, then promoter, then edges within promoter",
+    "conceptual_form": "equalise genes -> within each gene equalise promoters -> within promoter aggregate edge evidence",
+    "what_it_separates": "how much regulatory evidence EXISTS for a query, from how many edges happened to be ANNOTATED for it",
+    "supporting_measurements_already_in_hand": {
+      "genes": 5253, "promoters": 7390, "edges": 20709,
+      "promoters_per_gene_median": 1, "promoters_per_gene_max": 6,
+      "genes_with_more_than_one_promoter": 1904,
+      "edges_per_promoter_median": 2, "edges_per_promoter_max": 29,
+      "top_25pct_genes_hold_pct_of_edge_mass": 62.2,
+      "single_edge_genes": 1725
+    },
+    "status": "RECORDED, NOT IMPLEMENTED"
+  },
+
+  "POSITION_4_ATLAS_NEEDS_TWO_AXES": {
+    "axis_1": "coverage -- how much of query space is supported",
+    "axis_2": "evidence independence -- how many genuinely different biological mechanisms support each query",
+    "independence_map_must_record": ["shared assays", "shared donors", "shared priors",
+                                     "shared inferential machinery", "whether a resource adds new causal or structural information"],
+    "worked_example_of_the_principle": "one perturbation result plus one independent chromatin-contact result may be scientifically stronger than five observational regulatory annotations derived from overlapping accessibility data",
+    "now_supported_by_measurement": "the anchoring/expression confound above shows the concern is real in this project's own data, not hypothetical",
+    "status": "RECORDED, NOT IMPLEMENTED"
+  },
+
+  "DEEPER_TARGET_HYPOTHESIS_RECORDED": {
+    "statement": "A query-conditioned latent state whose global component is broadly learned from recurrent RNA, whose local regulatory component is constrained by paired multiomic measurements, and whose biological meaning is anchored by structurally and causally distinct evidence where available.",
+    "what_each_layer_contributes": {
+      "scale": "millions of RNA cells",
+      "breadth": "NIH-CARD paired measurement",
+      "structural_grounding": "Nott/E2 contacts",
+      "mechanistic_direction": "SCENIC+",
+      "causal_pressure": "perturbation",
+      "replication": "independent multiomes"
+    },
+    "what_it_refuses": "pretending every modality measures the same thing",
+    "status": "HYPOTHESIS, NOT A DECISION"
+  },
+
+  "EXECUTION_ORDER_UNCHANGED": [
+    "exact supplement (A_exact = A_interior UNION A_supplement)",
+    "full frozen sampler test suite",
+    "Phase-A rerun, then STOP for audit",
+    "then: all-resource evidence atlas WITH the independence axis",
+    "then: factorised-target architecture tournament"
+  ],
+  "explicitly_not_the_next_step": "adding more modalities to the teacher",
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "stage_4": "NOT_AUTHORISED", "phase_B_matrix_reads": "STOPPED",
+    "targets_constructed": false, "architecture_decided": false
+  }
+}
