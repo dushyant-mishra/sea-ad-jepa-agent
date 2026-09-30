@@ -91,9 +91,35 @@
     "custody_manifest": "docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json"
   },
   "ci": {
-    "focused_architecture_run": 36751392171,
-    "conclusion": "success",
-    "scope": "FOCUSED_ARCHITECTURE_AND_CUSTODY_SMOKE__NOT_FULL_PRODUCTION_REGRESSION"
+    "repaired_code_head": "4bd6f43b9cdb429a1cfcf8e1a35bca615ca3467f",
+    "pr": 199,
+    "mergeable": true,
+    "architecture_smoke": {
+      "run_id": 36752876598,
+      "conclusion": "success"
+    },
+    "fantom_hg38_fetch": {
+      "run_id": 36752876636,
+      "conclusion": "success"
+    },
+    "claude_paired_import": {
+      "run_id": 36752876843,
+      "conclusion": "success"
+    },
+    "claude_exact_supplement_import": {
+      "run_id": 36752876592,
+      "conclusion": "success"
+    },
+    "claude_paired_export": {
+      "run_id": 36752876849,
+      "conclusion": "success"
+    },
+    "broad_open_resource_fetch_policy": "MANUAL_WORKFLOW_DISPATCH_ONLY__NOT_PR_GATING",
+    "manual_custody_resources": [
+      "DONG_ROUSSOS_2024_SUPPLEMENTARY_DATA_8",
+      "DONG_ROUSSOS_2024_SUPPLEMENTARY_DATA_10"
+    ],
+    "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
     "Refresh Claude successor head and audit any new 64-side equality results.",
