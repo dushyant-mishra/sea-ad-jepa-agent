@@ -53,6 +53,28 @@ def validate_gzip_text(path: Path, *, expect_gtf: bool = False) -> dict:
     return out
 
 
+def validate_gzip_bed(path: Path) -> dict:
+    if _looks_html(path):
+        raise ValueError(f"{path.name}: HTML payload, not gzip BED")
+    rows = 0
+    columns_seen = set()
+    with gzip.open(path, "rt", encoding="utf-8", errors="strict") as fh:
+        for raw in fh:
+            if not raw.strip() or raw.startswith("#"):
+                continue
+            parts = raw.rstrip("\n").split("\t")
+            if len(parts) < 6:
+                raise ValueError(f"{path.name}: BED row has <6 columns")
+            start, end = int(parts[1]), int(parts[2])
+            if start < 0 or end <= start:
+                raise ValueError(f"{path.name}: invalid BED coordinates")
+            columns_seen.add(len(parts))
+            rows += 1
+    if rows == 0:
+        raise ValueError(f"{path.name}: no BED rows")
+    return {"kind": "gzip_bed", "rows": rows, "column_counts_seen": sorted(columns_seen)}
+
+
 def validate_bed(path: Path) -> dict:
     if _looks_html(path):
         raise ValueError(f"{path.name}: HTML payload, not BED")
@@ -93,6 +115,8 @@ def validate_item(path: Path, resource_id: str) -> dict:
     name = path.name
     if resource_id.startswith("GENCODE_"):
         return validate_gzip_text(path, expect_gtf=True)
+    if resource_id == "FANTOM5_HG38_CAGE_PEAK_COORDINATES":
+        return validate_gzip_bed(path)
     if resource_id.startswith("FANTOM5_"):
         return validate_gzip_text(path, expect_gtf=False)
     if resource_id.startswith("SCREEN_"):
