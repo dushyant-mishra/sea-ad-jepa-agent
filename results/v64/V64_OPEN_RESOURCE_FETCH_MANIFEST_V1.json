@@ -17,8 +17,21 @@
       "sha256": null
     },
     {
+      "id": "FANTOM5_HG38_CAGE_PEAK_COORDINATES",
+      "purpose": "hg38 coordinate authority for FANTOM5 robust CAGE peaks; BED9 representative TSS in thickStart/thickEnd",
+      "genome_build": "hg38",
+      "release": "hg38_latest fair+new robust CAGE peaks",
+      "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/",
+      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair%2Bnew_CAGE_peaks_phase1and2.bed.gz",
+      "source_page_reported_size": "5.2M",
+      "access": "PUBLIC_DOWNLOAD",
+      "coordinate_authority": true,
+      "bytes_in_chat_custody": false,
+      "sha256": null
+    },
+    {
       "id": "FANTOM5_HG38_CAGE_PEAK_ANNOTATION",
-      "purpose": "CAGE promoter/TSS evidence without importing the full TPM matrix",
+      "purpose": "CAGE peak association/annotation evidence; legacy peak IDs may encode hg19 coordinates and are NOT the hg38 coordinate authority",
       "genome_build": "hg38",
       "release": "hg38_latest reprocessed directory; file last-modified 2021-05-28 on source index",
       "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks_expression/",
@@ -26,7 +39,8 @@
       "source_page_reported_size": "5.8M",
       "access": "PUBLIC_DOWNLOAD",
       "bytes_in_chat_custody": false,
-      "sha256": null
+      "sha256": null,
+      "coordinate_authority": false
     },
     {
       "id": "SCREEN_REGISTRY_V4_GRCH38_PLS",
@@ -58,12 +72,12 @@
       "sha256": null,
       "download_urls": [
         "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM9_ESM.xlsx",
-        "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM10_ESM.xlsx",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584674/bin/41467_2024_54448_MOESM10_ESM.xlsx",
         "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM11_ESM.xlsx",
-        "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM12_ESM.xlsx"
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584674/bin/41467_2024_54448_MOESM12_ESM.xlsx"
       ],
       "article_license": "CC_BY_4_0_UNLESS_SEPARATELY_CREDITED",
-      "note": "SupplementaryData7/9 use verified media.springernature URLs. SupplementaryData8/10 use static-content Springer fallback because the media endpoint returned a 3,038-byte client-challenge HTML payload in GitHub Actions. Byte validator must pass before custody."
+      "note": "SupplementaryData7/9 use working media.springernature URLs. SupplementaryData8/10 use the PMC open mirror because the Nature media endpoint returned a 3,038-byte client-challenge HTML payload in GitHub Actions. Byte validator must pass before custody."
     }
   ],
   "rule": "No resource is considered ingested until exact bytes, size, SHA-256, version/build, and source locator are recorded.",
