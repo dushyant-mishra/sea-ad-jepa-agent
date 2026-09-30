@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_EXACT_CONTROL_SELECTION_ACCEPTED__FULL_PHASE_A_PENDING_LINKED_FUNNEL_AND_V2_BINDING__PHASE_B_STOPPED",
+  "status": "V65_PHASE_A_CONTRACT_COMPLIANT_AT_13175__PHASE_B_STOPPED_ON_PROSPECTIVE_NULL_STATISTICS__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -11,10 +11,10 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
-  "current_blocker": "The exact sampler is qualified and full-E2 CONTROL_A availability is 13,510, but the live executor omits the frozen linked-side eligibility stages and does not emit/bind the complete V2 Phase-A artifact. Full Phase A is therefore not yet contract-compliant.",
-  "parallel_architecture_next": "Finish annotation-first promoter ledger and privileged-factor recoverability protocol while keeping paired NIH-CARD TEST unopened.",
-  "ci_rule": "PR #199 being mergeable is not sufficient; all current-head workflows must be inspected. Open-resource fetch and architecture smoke were repaired during handoff preparation and must be confirmed green on the final head.",
+  "claude_last_verified_head": "cfd3623055cd43164cebe6c36981d109e8762100",
+  "current_blocker": "Phase A is contract-compliant at 13,175 retained edges. Phase B remains stopped until the prospective control-randomness/null, donor-aware hierarchy and missingness/statistical treatment are frozen and independently audited before matrix correspondence is opened.",
+  "parallel_architecture_next": "Materialize the dual GENCODE transcript/exact-TSS promoter ledger from exact hash-bound source bytes; freeze recoverability precision/decision thresholds on the canonical donor split while keeping TEST and paired biological correspondence unopened.",
+  "ci_rule": "Architecture CI was repaired to bind the historical Claude Phase-A audit to immutable SHA 0d3874cb rather than expecting Claude source in the ChatGPT checkout. Current-head CI must be inspected before declaring green.",
   "governance": {
     "training": "OFF",
     "td60": "BLOCKED",
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read the V65 handoff/state plus the revised V64_PHASE_A_EXACT_INDEPENDENT_AUDIT_V1.json. The earlier wording 'Phase A accepted at 13,510' is retracted. Preserve singleton randomness strata and keep Phase B stopped."
+  "read_me_first": "Read the V65 handoff/state, the patched Phase-A V3 provenance receipt on Claude head cfd36230, V65 promoter dual-denominator contract, V65 donor-split authority resolution, and V65 first privileged-factor recoverability contract. Phase A is closed; Phase B and Stage 4 remain stopped."
 }
