@@ -7,6 +7,7 @@ on:
       - 'results/v64/V64_*'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
+      - 'scripts/v64/fetch_open_promoter_resources_v1.py'
       - 'tests/test_v64_privileged_information_architecture_v1.py'
       - 'tests/test_v64_privileged_information_smoke_producer_v1.py'
       - 'tests/test_v64_regulatory_architecture_contracts_v1.py'
@@ -14,6 +15,7 @@ on:
       - 'tests/test_v64_open_regulatory_resource_registry_v1.py'
       - 'tests/test_v64_address_and_resource_fetch_contracts_v1.py'
       - 'tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py'
+      - 'tests/test_v64_open_resource_fetch_utility_v1.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
 
@@ -38,4 +40,5 @@ jobs:
             tests/test_v64_universal_rna_privileged_critic_architecture_v1.py \
             tests/test_v64_open_regulatory_resource_registry_v1.py \
             tests/test_v64_address_and_resource_fetch_contracts_v1.py \
-            tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py
+            tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py \
+            tests/test_v64_open_resource_fetch_utility_v1.py
