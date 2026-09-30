@@ -17,6 +17,7 @@ on:
       - 'tests/test_v64_address_and_resource_fetch_contracts_v1.py'
       - 'tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py'
       - 'tests/test_v64_open_resource_fetch_utility_v1.py'
+      - 'tests/test_v64_paired_split_and_dong_bridge_v1.py'
       - 'tests/test_v64_open_resource_byte_validator_v1.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
