@@ -78,6 +78,20 @@
       ],
       "article_license": "CC_BY_4_0_UNLESS_SEPARATELY_CREDITED",
       "note": "SupplementaryData7/9 use working media.springernature URLs. SupplementaryData8/10 use the PMC open mirror because the Nature media endpoint returned a 3,038-byte client-challenge HTML payload in GitHub Actions. Byte validator must pass before custody."
+    },
+    {
+      "id": "FANTOM5_HG38_FAIR_NEW_CAGE_PEAK_BED",
+      "purpose": "recommended hg38 CAGE-peak coordinates with representative TSS in thickStart/thickEnd",
+      "genome_build": "hg38",
+      "release": "FANTOM5 reprocessed hg38_latest; CAGE_peaks directory restructured 2017-10-27",
+      "verified_source_page": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/",
+      "readme_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/00_readme.txt",
+      "download_url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair%2Bnew_CAGE_peaks_phase1and2.bed.gz",
+      "source_page_reported_size": "5.2M",
+      "source_documented_semantics": "recommended for analysis; BED9 thickStart/thickEnd encode representative TSS",
+      "access": "PUBLIC_DOWNLOAD",
+      "bytes_in_chat_custody": false,
+      "sha256": null
     }
   ],
   "rule": "No resource is considered ingested until exact bytes, size, SHA-256, version/build, and source locator are recorded.",
