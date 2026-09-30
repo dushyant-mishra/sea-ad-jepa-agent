@@ -1,0 +1,87 @@
+{
+  "schema": "V64_NIH_CARD_REALISM_STAGE_V2_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_commit": "c92c7ef1bc80cf7460fbd22de9634410fdcfb035",
+  "base_claimed": "d673f40970902b925ed0c1bdd0acb1a48856d8f0",
+  "verdict": "SPAN_CORRECTION_PASS__DETERMINISM_PASS__STAGE_V2_NOT_YET_ACCEPTED_FOR_CALIBRATED_EXECUTION",
+  "accepted": {
+    "span_v2": "PASS_WITH_CORRECTED_9_OF_14_NONCOMMENSURABLE__5_OF_14_COMMENSURABLE",
+    "historical_subspace_label": "HISTORICAL_SYNTHETIC_SUPPORT_OVERLAP__COMMENSURABLE_SUBSPACE_ONLY",
+    "determinism": {
+      "within_environment": "BIT_IDENTICAL",
+      "max_cross_environment_abs_delta": 1.0408340855860843e-16,
+      "proposed_tolerance_1e_12": "ACCEPTABLE_FOR_HISTORICAL_REFERENCE_REPRODUCTION_ONLY",
+      "justification": "Measured before proposed; ~1e4 above observed environment residual and ~1e10 below smallest decision-gap scale. It must never be used as a biological gate tolerance."
+    },
+    "repaired_items": [
+      "S41",
+      "S42_confidence",
+      "S43_heldout",
+      "S47_classification_wording"
+    ],
+    "still_open": [
+      "S45_depth_sensitivity_realism",
+      "S46_support_missingness_metacell_realism"
+    ]
+  },
+  "new_findings": {
+    "C_AUDIT_S49_wrong_module_monkeypatch": {
+      "severity": "CRITICAL",
+      "finding": "stage_v2 loads tournament T and stress runner R as separate Python module instances, then assigns T.make_world = calibrated_fn. R.run() uses its own module-global R.T.make_world, not the outer T.make_world.",
+      "consequence": "In calibrated mode, post_construction_realism() evaluates the calibrated world, but the actual nuisance-family tournament inside R.run() still uses the historical generic world. This can produce a false 'realism qualification' on the wrong geometry.",
+      "required": "Patch the exact module instance consumed by the frozen runner (R.T.make_world), and use R.T/R.E consistently for both execution and post-construction diagnostics. Verify by a fixture that a sentinel calibrated generator changes the worlds actually seen inside R.run(). Restore with try/finally."
+    },
+    "C_AUDIT_S50_acceptance_gate_not_enforced": {
+      "severity": "CRITICAL",
+      "finding": "Historical mode records repro['exact'] but does not STOP when false. Calibrated mode does not require or validate a prior historical-reproduction receipt.",
+      "consequence": "The docstring claim that calibrated geometry is refused unless frozen reproduction passes is false.",
+      "required": "Create a separate historical-reproduction receipt; calibrated mode must require its digest and verify every frozen family margin/LCB within the audited 1e-12 absolute environment tolerance before any calibrated run. Failure must terminate."
+    },
+    "C_AUDIT_S51_canonical_calibration_interface_incompatible": {
+      "severity": "HIGH",
+      "finding": "Canonical nihcard_realism_calibrated_qualification_v2.py writes geometry NPZs with X and names only; no promoter_id. Its receipt is written before the NPZ outputs and contains no SHA-256 digests of those output geometry files. stage_v2 requires promoter_id and requires the geometry digest to occur in that receipt.",
+      "consequence": "A clean canonical calibration output cannot satisfy stage_v2 calibrated-mode preconditions.",
+      "required": "A prospectively frozen calibration successor must emit promoter hierarchy identifiers and bind output geometry SHA-256 digests in a successor receipt. Do not weaken stage_v2 checks to accommodate the old output."
+    },
+    "C_AUDIT_S52_pairwise_copula_not_hierarchical": {
+      "severity": "CRITICAL",
+      "finding": "Even merely attaching original promoter_id labels to the pairwise copula output would not repair S44. The copula rank-reorders feature columns across pair rows, so promoter-level degree/activity and pair-level covariates no longer retain the original promoter-block relationship. Grouping those shuffled rows by old promoter IDs would create synthetic blocks with arbitrary internal semantics.",
+      "consequence": "The current pairwise copula calibration and whole-promoter-block world construction are structurally incompatible.",
+      "required": "Freeze a hierarchical calibration successor before real qualification. It must define promoter-level and pair-level units explicitly, preserve promoter-level constancy, and quantify post-construction joint realism on the exact worlds consumed by the stress runner. Direct whole-promoter-block resampling is a valid sensitivity/reference arm; any copula primary must operate hierarchically rather than by relabeling pairwise shuffled rows."
+    },
+    "C_AUDIT_S53_patch_restoration": {
+      "severity": "MEDIUM",
+      "finding": "stage_v2 restores T.make_world only after R.run returns normally; no try/finally protects restoration.",
+      "required": "Use try/finally around any monkeypatch of the runner's generator."
+    }
+  },
+  "historical_span": {
+    "original_14D_verdict": "WITHDRAWN",
+    "inferential_base_features": [
+      "log_distance",
+      "promoter_degree"
+    ],
+    "valid_results": {
+      "log_distance_fraction_outside": 0,
+      "promoter_degree_fraction_outside": 0.2429
+    },
+    "derived_transforms": "DESCRIPTIVE_ONLY_NOT_INDEPENDENT_EVIDENCE"
+  },
+  "canonicalization_decision": {
+    "safe_to_canonicalize": [
+      "results/v64/V64_NIH_CARD_SPAN_DIAGNOSTIC_DEFECT_FINDING_V2.json",
+      "results/v64/V64_NIH_CARD_QUALIFICATION_DETERMINISM_AND_TOLERANCE_V1.json"
+    ],
+    "do_not_accept_yet": [
+      "scripts/v64/nihcard_realism_qualification_stage_v2.py"
+    ],
+    "reason": "Critical S49/S50/S52 and interface S51 remain."
+  },
+  "governance": {
+    "stage4": "NOT_AUTHORISED",
+    "correspondence_opened": false,
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}
