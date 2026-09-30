@@ -1,0 +1,97 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_THE_REPAIRED_PHASE_A_RERUN",
+  "responds_to_audit": "e632501c83f62a57aba7da9a12c104a4c83c8aef",
+  "scope": "NARROW. Repairs A1-A7 in the Phase-A producer. Changes NO frozen biological constraint, NO threshold, NO tolerance, and targets NO retention fraction.",
+  "supersedes_execution_only": "the Phase-A run at 9ed92fff, retained as a superseded diagnostic checkpoint",
+  "e2_correspondence_outcome_opened": false,
+
+  "NO_RETENTION_TARGET": {
+    "rule": "This contract is written BEFORE the repaired producer is run. No clause is chosen to reach any particular surviving count. Whatever retention results is the finding.",
+    "why_stated_explicitly": "the previous grid was chosen without a frozen universe, and the audit is right that a second post-hoc lattice picked after seeing retention would be worse than the first"
+  },
+
+  "A1_EXCLUSION_UNIVERSE": {
+    "defect": "the producer excluded candidate windows overlapping ANY E2 distal interval genome-wide; the frozen rule excludes only E2 distal partners OF THAT SAME PROMOTER",
+    "repair": "build the exclusion set per promoter_key from that promoter's own E2 distal partners only",
+    "effect_on_eligibility": "strictly widens the admissible set; the previous global exclusion also distorted the drop accounting"
+  },
+
+  "A2_C3_EXACT_ROUND_TRIP": {
+    "defect": "controls were forward-lifted with ambiguity detection but the hg38->hg19 reverse lift was never performed, so the exact-identity gate was incomplete",
+    "repair": "apply the SAME C3 semantics as the microglia anchors: liftOver v479, minMatch 0.95, single forward mapping (a -multiple pass used only to DETECT and REJECT ambiguity), same chromosome, exact 5000 bp length preserved, and an EXACT hg38->hg19 round trip returning the original hg19 interval",
+    "tolerance_bp": 0,
+    "no_rescue": true
+  },
+
+  "A3_SIDE_DRAWN_FIRST": {
+    "defect": "admissible windows from both sides were pooled and sampled uniformly, so the realised side was weighted by how many admissible windows each side happened to have, coupling the control to local accessibility and support density",
+    "repair": "draw the SIDE first with the frozen seed, independently of admissibility, then sample uniformly within that side's admissible set only",
+    "if_the_drawn_side_is_empty": "the edge is DROPPED with reason DRAWN_SIDE_HAS_NO_ADMISSIBLE_WINDOW. It is NOT retried on the other side, because retrying would restore exactly the density coupling this repair removes.",
+    "recorded": "the drawn side is written into the artifact for every control row"
+  },
+
+  "A4_SECOND_INDEPENDENT_CONTROL": {
+    "defect": "only one control per linked edge existed, so the frozen control-vs-control anti-false-green test had no second draw",
+    "repair": "draw TWO independent controls per linked edge, each with its own side draw from a distinct frozen sub-seed, required to be non-identical windows",
+    "population_labels": ["CONTROL_A", "CONTROL_B"],
+    "use": "CONTROL_A is the matched control for the primary contrast. CONTROL_B exists SOLELY for the control-vs-control null and may never enter the primary.",
+    "partial_survival": "if only one of the two passes the hg38 gate, the edge retains that one and is flagged as unavailable for the control-vs-control test; both counts are reported separately"
+  },
+
+  "A5_ANCHOR_FREQUENCY_DEFINITION": {
+    "defect": "computed as the count of E2 edges sharing an EXACT distal start coordinate",
+    "frozen_definition": "the number of DISTINCT E2 PROMOTERS whose distal partners OVERLAP the interval",
+    "repair": "for interval I, count the distinct promoter_keys p such that some E2 edge (p, d) has d overlapping I by >= 1 bp",
+    "why_it_matters": "anchor_frequency is a frozen estimator basis feature and the quantity the NEG_ANCHOR nuisance family keys on; an exact-coordinate edge count is a different variable"
+  },
+
+  "A6_EXACT_CANDIDATE_UNIVERSE": {
+    "defect": "candidate starts were evaluated on a lattice with step max(1000, band/60), so 'no admissible control' partly meant 'none on this lattice'",
+    "repair": "define the candidate universe EXACTLY, as an integer interval set, with no lattice",
+    "FROZEN_UNIVERSE": {
+      "coordinate_space_for_proposal": "hg19",
+      "window_width_bp": 5000,
+      "definition": "For a linked edge with promoter midpoint P and source distance d0, tol = max(0.10*d0, 10000), and drawn side S in {+1,-1}, the admissible start set is the integer intersection A = B_S AND K MINUS X, where:",
+      "B_S": "the distance band: starts s whose window midpoint m = s + 2500 satisfies sign(m - P) = S and |m - P| in [d0 - tol, d0 + tol]. One contiguous integer interval.",
+      "K": "starts whose 5 kb window overlaps at least one hg19 Nott PU.1 peak, i.e. the union over peaks of [peak_start - 5000 + 1, peak_end - 1]",
+      "X": "starts whose window overlaps an E2 distal partner OF THIS PROMOTER, i.e. the union over that promoter's distals of [d_start - 5000 + 1, d_end - 1]",
+      "sampling": "uniform over the integers of A",
+      "hg19_PU1_track_role": "PROPOSAL FILTER ONLY. It makes the universe finite and exact in the proposal space. The AUTHORITATIVE accessibility test remains the hg38 Nott PU.1 overlap applied after the lift, exactly as for linked edges.",
+      "hg19_PU1_provenance": "the reverse-lifted PU.1 track already committed in the ATAC provenance audit, 50,199 intervals, matching the hg38 peak count exactly"
+    },
+    "why_not_centre_windows_on_peaks": "restricting candidates to windows centred on PU.1 peaks would be a different and narrower universe than the frozen 'window overlapping >=1 peak', and choosing it now would be a silent redefinition"
+  },
+
+  "A7_RECEIPT_PROVENANCE": {
+    "defect": "producer.git_blob was null and the receipt did not bind the emitted NPZ SHA-256, both required by the Stage-3 feature artifact contract",
+    "repair": "record the producer's git blob and sha256, and the SHA-256 of every emitted artifact, computed after writing",
+    "also_bind": ["authenticated RNA/ATAC byte receipt", "pairing closeout receipt",
+                  "E2 edge-table digest", "this successor contract's sha256"]
+  },
+
+  "UNCHANGED_FROZEN_CONSTRAINTS": [
+    "5 kb control window width",
+    "source hg19 distance matched within +/-10% or 10 kb",
+    "control must overlap >= 1 Nott PU.1 peak in hg38",
+    "control must overlap >= 1 NIH-CARD consensus peak in hg38",
+    "identical measurement-support rules for linked and control rows",
+    "no nearest-peak rescue, no alternative gene mapping, no selective relaxation",
+    "frozen simulator topology 24 candidate slots / 4 linked slots, untouched",
+    "promoter_degree remains a nuisance covariate, never a slot count"
+  ],
+
+  "STOP_CONDITIONS": [
+    "promoter-level constancy fails",
+    "pair_key uniqueness fails",
+    "linked/control attrition fails to reconcile to 20,709",
+    "the exact interval sampler produces an empty universe for a majority of edges, which would indicate the universe definition itself is wrong rather than the data being sparse"
+  ],
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "E2": "CLOSED", "stage_4": "NOT_AUTHORISED",
+    "phase_B_matrix_reads": "REMAIN STOPPED until this repaired Phase A is re-audited"
+  }
+}
