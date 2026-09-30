@@ -74,11 +74,18 @@ def sha_file(p):
 
 # ------------------------------------------------------------------ chain parsing
 def parse_chain(path, keep_minus=False):
-    """Returns {t_chrom: [(t_start, t_end, offset, q_chrom, q_strand)]} sorted."""
+    """Returns {t_chrom: [(t_start, t_end, offset, q_chrom, q_strand, chain_id)]} sorted.
+
+    chain_id is carried because ambiguity is a CROSS-chain property (S50). Two blocks of
+    the SAME chain that both touch a window are one liftOver mapping, not two; blocks of
+    DIFFERENT chains that both touch it are the case liftOver reports under -multiple and
+    the C3 gate rejects. Without the id the two are indistinguishable.
+    """
     blocks = defaultdict(list)
     tName = qName = None
     tPos = qPos = 0
     qStrand = "+"
+    chain_id = 0
     op = gzip.open if str(path).endswith(".gz") else open
     with op(path, "rt") as fh:
         for line in fh:
@@ -89,13 +96,15 @@ def parse_chain(path, keep_minus=False):
                 f = line.split()
                 tName, qName, qStrand = f[2], f[7], f[9]
                 tPos, qPos = int(f[5]), int(f[10])
+                chain_id += 1
                 continue
             if tName is None:
                 continue
             f = line.split()
             size = int(f[0])
             if qStrand == "+" or keep_minus:
-                blocks[tName].append((tPos, tPos + size, qPos - tPos, qName, qStrand))
+                blocks[tName].append((tPos, tPos + size, qPos - tPos, qName, qStrand,
+                                      chain_id))
             tPos += size
             qPos += size
             if len(f) >= 3:
@@ -210,16 +219,28 @@ def band_of(P, d0, tol, side):
 
 
 def safe_and_interior(c, lo, hi, fwd, rev, pu1, nih):
-    """Proven-affine starts, and the interior admissible subset."""
+    """Proven-affine starts, and the interior admissible subset.
+
+    S50. The affine shortcut may only certify a start that liftOver would map
+    UNAMBIGUOUSLY. A window touched by a block of a different chain is reported twice
+    under -multiple and the C3 gate rejects it, so such starts are removed from the safe
+    set here and fall through to the supplement, where the real binary adjudicates them.
+    Removing them cannot lose an admissible control -- it only moves the decision from
+    the shortcut to the oracle -- and without this the shortcut could admit a control
+    the production gate forbids. Measured blast radius on hg19ToHg38 v479 is 0 bp, but a
+    gate the contract requires must be enforced by the executor, not assumed absent.
+    """
     safe, interior = [], []
-    for b_lo, b_hi, delta, qc, qs in fwd.over(c, lo, hi + W):
+    allb = fwd.over(c, lo, hi + W)
+    for blk in allb:
+        b_lo, b_hi, delta, qc, qs, cid = blk
         if qc != c or qs != "+":
             continue
         s_lo, s_hi = max(lo, b_lo), min(hi, b_hi - W)
         if s_hi < s_lo:
             continue
         ok = []
-        for r_lo, r_hi, r_delta, r_chrom, r_strand in rev.over(
+        for r_lo, r_hi, r_delta, r_chrom, r_strand, _rid in rev.over(
                 c, s_lo + delta, s_hi + delta + W):
             if r_chrom != c or r_strand != "+" or r_delta != -delta:
                 continue
@@ -227,6 +248,11 @@ def safe_and_interior(c, lo, hi, fwd, rev, pu1, nih):
             if a <= z:
                 ok.append((a, z))
         ok = norm(ok)
+        if not ok:
+            continue
+        shadow = norm([(o[0] - W + 1, o[1] - 1) for o in allb if o[5] != cid])
+        if shadow:
+            ok = sub(ok, shadow)
         if not ok:
             continue
         safe.extend(ok)
