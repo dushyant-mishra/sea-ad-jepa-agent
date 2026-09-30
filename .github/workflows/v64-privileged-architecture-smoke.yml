@@ -3,10 +3,12 @@ name: V64 privileged-information architecture smoke
 on:
   pull_request:
     paths:
-      - 'docs/agent/V64_*'\n      - 'docs/agent/V65_*'
+      - 'docs/agent/V64_*'
+      - 'docs/agent/V65_*'
       - 'results/v64/V64_*'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
-      - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'\n      - 'scripts/v64/build_promoter_dual_ledger_v2.py'
+      - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
+      - 'scripts/v64/build_promoter_dual_ledger_v2.py'
       - 'scripts/v64/fetch_open_promoter_resources_v1.py'
       - 'scripts/v64/validate_open_promoter_resource_bytes_v1.py'
       - 'tests/test_v64_privileged_information_architecture_v1.py'
@@ -21,7 +23,9 @@ on:
       - 'tests/test_v64_paired_split_and_dong_bridge_v1.py'
       - 'tests/test_v64_open_resource_byte_validator_v1.py'
       - 'tests/test_v64_screen_pls_gencode_preflight_v1.py'
-      - 'tests/test_v64_phase_a_exact_independent_audit_v1.py'\n      - 'tests/test_v65_promoter_and_recoverability_contracts.py'\n      - 'tests/test_v65_promoter_dual_ledger_v2.py'
+      - 'tests/test_v64_phase_a_exact_independent_audit_v1.py'
+      - 'tests/test_v65_promoter_and_recoverability_contracts.py'
+      - 'tests/test_v65_promoter_dual_ledger_v2.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
 
@@ -32,12 +36,14 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - name: Fetch immutable Claude audit source
+        run: git fetch --no-tags --depth=1 origin 0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install smoke-test dependencies
         run: python -m pip install --upgrade pip pytest numpy
-      - name: Run V64 privileged-information architecture smoke suite
+      - name: Run V64/V65 privileged-information architecture smoke suite
         run: |
           pytest -q \
             tests/test_v64_privileged_information_architecture_v1.py \
