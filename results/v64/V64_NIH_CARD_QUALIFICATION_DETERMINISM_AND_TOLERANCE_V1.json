@@ -1,0 +1,109 @@
+{
+  "schema": "V64_NIH_CARD_QUALIFICATION_DETERMINISM_AND_TOLERANCE_V1",
+  "date": "2026-09-30",
+  "purpose": "Measure reproducibility BEFORE freezing any tolerance, per the audit's sequencing.",
+  "FINDING": {
+    "within_environment": "BIT-IDENTICAL. Two independent runs of the rebuilt stage on this machine agree exactly on every family margin and LCB.",
+    "all_families_bit_identical_across_my_two_runs": true,
+    "cross_environment": "The committed frozen artifact differs by at most 1.041e-16 absolute.",
+    "max_abs_delta_vs_frozen": 1.0408340855860843e-16,
+    "CORRECTION_TO_MY_EARLIER_HYPOTHESIS": "I suggested the frozen artifact might simply not be bit-reproducible, i.e. that the computation was nondeterministic. The repeat run refutes that: it IS bit-reproducible within an environment. The residual is ENVIRONMENT-DEPENDENT (numpy/BLAS build, threading, or machine), which is a different and more precise statement.",
+    "why_this_matters": "A tolerance is justified not because the computation is random - it is not - but because the frozen reference was produced in a different numerical environment. That distinction changes what the tolerance is FOR."
+  },
+  "DECISION_IMPACT": {
+    "pass_fail_identical_on_every_family": true,
+    "smallest_distance_of_any_family_LCB_to_M_MIN": 0.009484466986121433,
+    "max_deviation": 1.0408340855860843e-16,
+    "ratio_decision_gap_to_deviation": 91123716233609.08,
+    "statement": "The largest observed deviation is roughly fourteen orders of magnitude below the smallest distance between any family's LCB and the M_MIN=0.010 decision threshold. It cannot flip a PASS/FAIL."
+  },
+  "PROPOSED_FROZEN_TOLERANCE": {
+    "value": 1e-12,
+    "applies_to": "absolute agreement of family margins and LCB95 against the committed frozen reference",
+    "justification_order": [
+      "within-environment bit-stability demonstrated first",
+      "cross-environment deviation then measured at 1.041e-16",
+      "tolerance set ~4 orders of magnitude above the measured deviation and ~10 orders below the smallest decision gap"
+    ],
+    "explicitly_not": "a tolerance chosen to make a near-miss pass; the measurement preceded the number",
+    "status": "PROPOSED, not self-adopted. Awaiting audit."
+  },
+  "per_family": {
+    "NULL": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 0.0,
+      "abs_lcb95_delta_vs_frozen": 0.0,
+      "frozen_lcb95": 0.032057626587968874,
+      "reproduced_lcb95": 0.032057626587968874,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "TECH": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 2.7755575615628914e-17,
+      "abs_lcb95_delta_vs_frozen": 1.0408340855860843e-16,
+      "frozen_lcb95": 0.01948446698612133,
+      "reproduced_lcb95": 0.019484466986121433,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "GEO": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 3.122502256758253e-17,
+      "abs_lcb95_delta_vs_frozen": 5.898059818321144e-17,
+      "frozen_lcb95": 0.025168452270884586,
+      "reproduced_lcb95": 0.025168452270884645,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "ACC": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 1.3877787807814457e-17,
+      "abs_lcb95_delta_vs_frozen": 0.0,
+      "frozen_lcb95": 0.030310809530394053,
+      "reproduced_lcb95": 0.030310809530394053,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "ANCHOR": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 0.0,
+      "abs_lcb95_delta_vs_frozen": 1.3877787807814457e-17,
+      "frozen_lcb95": 0.03577889865122327,
+      "reproduced_lcb95": 0.03577889865122326,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "DONOR": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 0.0,
+      "abs_lcb95_delta_vs_frozen": 6.938893903907228e-18,
+      "frozen_lcb95": 0.03161151973050115,
+      "reproduced_lcb95": 0.03161151973050116,
+      "passes_M_MIN_frozen": true,
+      "passes_M_MIN_reproduced": true,
+      "pass_fail_identical": true
+    },
+    "OUTSPAN_TECH": {
+      "run1_equals_run2": true,
+      "abs_margin_delta_vs_frozen": 0.0,
+      "abs_lcb95_delta_vs_frozen": 1.3877787807814457e-17,
+      "frozen_lcb95": -0.03557910811528421,
+      "reproduced_lcb95": -0.0355791081152842,
+      "passes_M_MIN_frozen": false,
+      "passes_M_MIN_reproduced": false,
+      "pass_fail_identical": true
+    }
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "stage_4": "NOT_AUTHORISED",
+    "e2_correspondence_outcome_opened": false
+  }
+}
