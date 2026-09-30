@@ -1,0 +1,162 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_FULL_FUNNEL_V3",
+  "date": "2026-09-30",
+  "governs": [
+    "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json",
+    "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json"
+  ],
+  "supersedes_interpretation": {
+    "withdrawn": "Phase A accepted at 13,510",
+    "correct_name_for_that_number": "FULL_E2_EXACT_CONTROL_A_AVAILABILITY",
+    "historical_producer": "scripts/v64/nihcard_stage3_phase_a_exact_executor_v2.py",
+    "left_untouched": true
+  },
+  "PRIMARY_FUNNEL": {
+    "primary_denominator": 20709,
+    "DROP_GENE_NOT_IN_NIHCARD": 350,
+    "DROP_GENE_AMBIGUOUS_IN_NIHCARD": 0,
+    "DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL": 199,
+    "LINKED_SIDE_ELIGIBLE_BEFORE_CONTROLS": 20160,
+    "DROP_CONTROL_A_DRAWN_SIDE_NO_ADMISSIBLE_START": 6985,
+    "RETAINED_PRIMARY": 13175,
+    "reconciles_to_denominator": true,
+    "upper_bound_check": {
+      "full_e2_control_A_availability": 13510,
+      "retained_le_bound": true,
+      "why_the_bound_holds_structurally": "master seed and subseed derivation are unchanged, so the control drawn for a given edge is identical to the full-E2 run; adding upstream filters can only remove edges"
+    }
+  },
+  "NULL_ARM": {
+    "CONTROL_B_AVAILABLE": 11012,
+    "CONTROL_B_DRAWN_SIDE_NO_ADMISSIBLE_START": 2163,
+    "A_FAILED_B_SUCCEEDED_NOT_RESCUED": 2200,
+    "A_PASSED_B_FAILED": 2163,
+    "CONTROL_A_B_COINCIDENT": 166,
+    "COINCIDENCE_STRUCTURALLY_FORCED": 158,
+    "COINCIDENCE_CHANCE_CAPABLE": 8,
+    "rule": "CONTROL_B never alters primary retention"
+  },
+  "RANDOMNESS_STRATA": {
+    "RANDOMIZED_SUPPORT_GT10": 12816,
+    "FORCED_SINGLETON_SUPPORT_1": 327,
+    "SMALL_RANDOMIZED_SUPPORT_2_TO_10": 32
+  },
+  "RETAINED_STRUCTURE": {
+    "retained_edges": 13175,
+    "retained_genes": 4372,
+    "retained_promoters": 5964,
+    "promoter_degree": {
+      "min": 1,
+      "median": 4,
+      "p75": 7,
+      "max": 29
+    },
+    "top_quartile_promoters_hold_fraction_of_retained_edges": 0.531082,
+    "controls_drawn_from_supplement": 33,
+    "CONTROL_A_admissible_set": {
+      "min": 1,
+      "p25": 4162,
+      "median": 5629,
+      "p75": 10944,
+      "p95": 25236,
+      "max": 88892,
+      "n_eq_1": 327,
+      "n_le_10": 359
+    }
+  },
+  "ARTIFACT_STRUCTURE": {
+    "LINKED_rows": 13175,
+    "CONTROL_A_rows": 13175,
+    "CONTROL_B_rows": 11012,
+    "total_rows": 37362,
+    "promoter_count": 5964,
+    "pair_key_unique": true,
+    "hierarchy_invariants_hold": true
+  },
+  "PROVENANCE": {
+    "producer_path": "scripts\\v64\\nihcard_stage3_phase_a_full_funnel_successor_v3.py",
+    "producer_sha256": "9c33865e3da5250584e19988686928bc1fe9f2300c74bad4bf00c2a46fc28fba",
+    "historical_executor_sha256": "55a3d1d31d41ccaf0d49e9ce965b35374046f1b444c8a2648ace8c6f78f0dcb5",
+    "builder_sha256": "d677201d96c548d4eeae961fa7634ef959b16629f7b8b6fc542724773c2869ad",
+    "phase_a_v2_contract_sha256": "e05fbfe2f785e2253b9465e3e381c515c92d9c5c69c645e3c8be72c2a99639db",
+    "feature_artifact_v2_contract_sha256": "fb41f55ae2ca67ca933dd954b1bfadba833c340dd28737b4309766683cd5f728",
+    "e2_table_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+    "nihcard_rna_h5ad": {
+      "path": "D:/jepa_v5_outputs_20260925/nihcard/final_rna_data.h5ad",
+      "bytes": 18439154935,
+      "md5_from_authentication": "f628b17aab355f80b912e3c715543cbd"
+    },
+    "nihcard_atac_h5ad": {
+      "path": "D:/jepa_v5_outputs_20260925/nihcard/final_atac_data.h5ad",
+      "bytes": 14508702462,
+      "md5_from_authentication": "b71589e0033e391e2fe97c1ae3928a7f"
+    },
+    "nihcard_peaks_bed": {
+      "path": "C:/Users/dushy/jepa_c3/nihcard_peaks.bed",
+      "sha256": "28369a0c8859ee39a2e0037dee7712bba4f2f0b4c1fdefca9f024d1f922d2be0",
+      "bound_to": "ATAC var _index, exact line-for-line match"
+    },
+    "nott_pu1_hg38_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+    "liftover_binary": {
+      "path": "C:/Users/dushy/jepa_c3/liftOver_v479",
+      "sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+      "committed_in_git": false,
+      "note": "binary is referenced by digest; it is NOT committed"
+    },
+    "chain_hg19ToHg38_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+    "chain_hg38ToHg19_sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+    "supplement_shard_receipt_sha256": {
+      "shard_00.receipt.json": "3cd0e0d64ee9579ea5151ad7867110c93e7b7c60723f898863d7bf104eca12ab",
+      "shard_01.receipt.json": "da123d677d0e0e8cd5042286cd6ac9a1a767d1f7bc9c2396ed0310075f3baff1",
+      "shard_02.receipt.json": "f10a71df01da3640a830025ba4c59c17776a0ec5a6c8a399b404861ed538f9a3",
+      "shard_03.receipt.json": "37cbb8139a4c57e89a6d7b04683ee383dc093a586c94fe4dcd4c7aa4b3abe78d",
+      "shard_04.receipt.json": "c148147f928d2a32ae09bb20dc35c3346342e48e2d56a8d76605c8f2442dc67f",
+      "shard_05.receipt.json": "006eb378f5125b4e5f91a358b68e12d6821e44b3727b78f7628f9e8b5cbdf5d5",
+      "shard_06.receipt.json": "6f015a340d808e7a1a072a458b80839f4f4ebd4e90d9f8aa5661ca9755e38a6b",
+      "shard_07.receipt.json": "3edc8c77f9c5456ff31a81428aaf4d4136e424dc2be9a1dfd08520e25f346ddd",
+      "shard_08.receipt.json": "008e18ba4af9a3b386f1c03afd7724350c093fbfba33618ca6762b1b2cd4a1f9",
+      "shard_09.receipt.json": "d015121108c4f49e46a723fea5df8b50bda90ab8809cfc7404ddf0aed3b0b750",
+      "shard_10.receipt.json": "3723e59e432b856510df1e33c60743662fa3617daa869e0834c21149b3722d2a",
+      "shard_11.receipt.json": "05169978562e24b37d5f12c679cbfb1c42462623b259c866157509304a1f24c9"
+    },
+    "supplement_aggregate_binding": "33ab37991fca8d9954997241067c85ca6e5c1c536bb74967593840918288f336",
+    "master_seed": 20260930,
+    "frozen_constants": {
+      "window_bp": 5000,
+      "minmatch": "0.95",
+      "dist_tol_frac": 0.1,
+      "dist_tol_abs": 10000,
+      "re_density_flank_bp": 50000
+    },
+    "emitted_artifacts": {
+      "PHASE_A_V3_ROWS.jsonl.gz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_a_v3\\PHASE_A_V3_ROWS.jsonl.gz",
+        "bytes": 1866271,
+        "sha256": "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4"
+      },
+      "PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_a_v3\\PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz",
+        "bytes": 63355,
+        "sha256": "b4c6eb6fc9568b036d0b9217c102ab68a07d4b492db8625674a9e2a4db18a056"
+      }
+    },
+    "receipts_not_bound_here": [
+      "RNA/ATAC pairing closeout receipt: not located in this worktree; recorded as NOT_BOUND rather than asserted"
+    ]
+  },
+  "anchor_frequency_definition": "number of DISTINCT E2 promoter_keys with at least one E2 distal partner overlapping the interval by >=1 bp; computed identically for LINKED, CONTROL_A and CONTROL_B. Exact-start multiplicity FORBIDDEN.",
+  "matrix_access": {
+    "rna_X_read": false,
+    "atac_X_read": false,
+    "what_was_read": "RNA var/gene_ids and ATAC var/_index only, both annotation metadata"
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  },
+  "status": "COMPLETE"
+}
