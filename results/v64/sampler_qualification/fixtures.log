@@ -1,0 +1,33 @@
+=== part fixtures ===
+  fixture F1_single_block_one_pu1_one_nih
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=5000 oracle=5000 assertion=n/a
+  fixture F2_band_crosses_block_boundary
+    lift_brute cand: 5399 candidates -> 0 map exactly
+    lift_brute oracle: 10001 candidates -> 4602 map exactly
+    equality=True A=4602 oracle=4602 assertion=True
+  fixture F3_ambiguous_multiple_mapping
+    lift_brute cand: 8000 candidates -> 0 map exactly
+    lift_brute oracle: 10001 candidates -> 2001 map exactly
+    equality=True A=2001 oracle=2001 assertion=True
+  fixture F4_reverse_offset_mismatch
+    lift_brute cand: 10000 candidates -> 0 map exactly
+    lift_brute oracle: 10001 candidates -> 1 map exactly
+    equality=True A=1 oracle=1 assertion=True
+  fixture F5_exclusion_splits_interval
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=4502 oracle=4502 assertion=True
+  fixture F6_empty_drawn_side_opposite_nonempty
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=0 oracle=0 assertion=True
+  fixture F7_control_a_b_coincidence_retained
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=5011 oracle=5011 assertion=True
+  fixture F8_anchor_frequency_counts_promoter_keys
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=10001 oracle=10001 assertion=True
+  fixture F9_minus_strand_supplement_recovery
+    lift_brute cand: 10001 candidates -> 10001 map exactly
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+    equality=True A=10001 oracle=10001 assertion=True
+=== fixtures: PASS ===

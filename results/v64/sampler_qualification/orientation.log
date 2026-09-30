@@ -1,0 +1,4 @@
+=== part orientation ===
+    hg19ToHg38: minus-strand target span 14,532,375 bp (0.5016% of all blocks)
+    hg38ToHg19: minus-strand target span 30,677,808 bp (1.0313% of all blocks)
+=== orientation: REPORTED ===

@@ -1,0 +1,44 @@
+{
+  "schema": "V64_NIH_CARD_EXACT_SAMPLER_QUALIFICATION_V1",
+  "governs": "V64_NIH_CARD_STAGE3_PHASE_A_EXACT_SAMPLER_TEST_CONTRACT_V1",
+  "part": "orientation",
+  "date": "2026-09-30",
+  "producer_sha256": "afb181909c79007dd5efb8f43b51ca5e795411df1ed58195428ab62bf4f04b86",
+  "sampler_sha256": "4d92558d12ea7ed8ee3ccb672f788ac409284f76e2588981e80d3c415f398808",
+  "builder_sha256": "e8aa8d6bf3d53683a1dfa3e77970ead35822de070c2861402e9790ad406c634a",
+  "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+  "minmatch": "0.95",
+  "window_bp": 5000,
+  "orientation_coverage": {
+    "hg19ToHg38": {
+      "chain_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+      "target_span_all_blocks": 2896953941,
+      "target_span_plus_strand_only": 2882421566,
+      "target_span_minus_strand_only": 14532375,
+      "minus_strand_fraction": 0.00501643,
+      "primary_chrom_span_all": 2860965345,
+      "primary_chrom_span_plus_only": 2848394937,
+      "primary_chrom_span_minus_only": 12570408
+    },
+    "hg38ToHg19": {
+      "chain_sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+      "target_span_all_blocks": 2974600798,
+      "target_span_plus_strand_only": 2943922990,
+      "target_span_minus_strand_only": 30677808,
+      "minus_strand_fraction": 0.01031325,
+      "primary_chrom_span_all": 2869759099,
+      "primary_chrom_span_plus_only": 2852883720,
+      "primary_chrom_span_minus_only": 16875379
+    },
+    "interpretation": "The affine-interior shortcut retains plus-strand query blocks only, so every base of minus-strand target span is material the shortcut cannot certify and the supplement must recover. This is why A_supplement is non-empty and why an A_interior-only sampler would have been unable to draw those controls."
+  },
+  "status": "REPORTED",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}

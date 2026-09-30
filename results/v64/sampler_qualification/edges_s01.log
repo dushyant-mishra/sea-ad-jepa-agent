@@ -1,0 +1,36 @@
+=== part edges ===
+  shard 1/4: 8 of 32 sampled edges
+    lift_brute s1_e1861_p_o: 10002 candidates -> 10002 map exactly
+    e1861|+1 band= 10,002 A=  4,115 oracle=  4,115 eq=True
+    lift_brute s1_e1861_m_o: 20001 candidates -> 20001 map exactly
+    e1861|-1 band= 20,001 A=  2,491 oracle=  2,491 eq=True
+    lift_brute s1_e4582_p_o: 8002 candidates -> 8002 map exactly
+    e4582|+1 band=  8,002 A=  5,968 oracle=  5,968 eq=True
+    lift_brute s1_e4582_m_o: 23001 candidates -> 23001 map exactly
+    e4582|-1 band= 23,001 A=  5,353 oracle=  5,353 eq=True
+    lift_brute s1_e6125_p_o: 12002 candidates -> 12002 map exactly
+    e6125|+1 band= 12,002 A=  1,865 oracle=  1,865 eq=True
+    lift_brute s1_e6125_m_o: 27001 candidates -> 27001 map exactly
+    e6125|-1 band= 27,001 A=  5,499 oracle=  5,499 eq=True
+    lift_brute s1_e10638_p_o: 23001 candidates -> 23001 map exactly
+    e10638|+1 band= 23,001 A=  5,357 oracle=  5,357 eq=True
+    lift_brute s1_e10638_m_c: 1 candidates -> 0 map exactly
+    lift_brute s1_e10638_m_o: 5002 candidates -> 5001 map exactly
+    e10638|-1 band=  5,002 A=      0 oracle=      0 eq=True
+    lift_brute s1_e11159_p_o: 10002 candidates -> 10002 map exactly
+    e11159|+1 band= 10,002 A=     35 oracle=     35 eq=True
+    lift_brute s1_e11159_m_o: 20001 candidates -> 20001 map exactly
+    e11159|-1 band= 20,001 A=      0 oracle=      0 eq=True
+    lift_brute s1_e13577_p_o: 24001 candidates -> 24001 map exactly
+    e13577|+1 band= 24,001 A=  5,842 oracle=  5,842 eq=True
+    lift_brute s1_e13577_m_o: 7002 candidates -> 7002 map exactly
+    e13577|-1 band=  7,002 A=  5,501 oracle=  5,501 eq=True
+    lift_brute s1_e15718_p_o: 20001 candidates -> 20001 map exactly
+    e15718|+1 band= 20,001 A=      0 oracle=      0 eq=True
+    lift_brute s1_e15718_m_o: 5002 candidates -> 5002 map exactly
+    e15718|-1 band=  5,002 A=      0 oracle=      0 eq=True
+    lift_brute s1_e16601_p_o: 10002 candidates -> 10002 map exactly
+    e16601|+1 band= 10,002 A=  3,264 oracle=  3,264 eq=True
+    lift_brute s1_e16601_m_o: 20001 candidates -> 20001 map exactly
+    e16601|-1 band= 20,001 A=  5,656 oracle=  5,656 eq=True
+=== edges: PASS ===

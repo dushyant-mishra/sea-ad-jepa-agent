@@ -1,0 +1,151 @@
+{
+  "schema": "V64_NIH_CARD_EXACT_SAMPLER_REAL_EDGE_AGGREGATE_V1",
+  "governs": "V64_NIH_CARD_STAGE3_PHASE_A_EXACT_SAMPLER_TEST_CONTRACT_V1",
+  "date": "2026-09-30",
+  "R1_predeclared_ids": 64,
+  "R1_how_predeclared": "regenerated from seed 20260929 over the frozen E2 table (20709 rows, sha256 bec25e0a653c9eeb...), independently of any shard output",
+  "R2_duplicate_ids": {},
+  "R2_missing_ids": [],
+  "R2_unexpected_ids": [],
+  "R2_identity_clean": true,
+  "R3_completed": 64,
+  "R3_all_64_completed": true,
+  "R4_comparison_kind": "EXACT SET EQUALITY on sorted integer start lists, not cardinality equality",
+  "R4_all_equal": true,
+  "R5_algebra_only_total": 0,
+  "R6_oracle_only_total": 0,
+  "R7_non_empty_comparisons": 42,
+  "R8_zero_vs_zero_comparisons": 22,
+  "R9_total_candidate_starts_challenged": 1746598,
+  "R9_of_which_pushed_through_liftover_as_supplement_candidates": 20997,
+  "R10_comparisons_where_supplement_path_ran": 3,
+  "R10_comparisons_where_supplement_contributed_starts": 0,
+  "R10_total_supplement_starts_in_A_exact": 0,
+  "R11_determinism": {
+    "run1_comparisons": 64,
+    "run2_comparisons": 64,
+    "compared_in_both": 64,
+    "mismatched": 0,
+    "mismatch_examples": {},
+    "run1_only": [],
+    "run2_only": [],
+    "identical": true,
+    "what_is_compared": "band positions, |A_exact|, |oracle| and the equality verdict for every comparison ID, not merely the 64/64 total"
+  },
+  "R12_positive_control": {
+    "schema": "V64_EXACT_SAMPLER_REAL_EDGE_POSITIVE_CONTROL_V1",
+    "date": "2026-09-30",
+    "producer_sha256": "89fd9b2fc8eac03abdba6581857790e0ecb30fb7b1d50f72ac3183674eb14b46",
+    "target": {
+      "comparison_id": "e5956|-1",
+      "chrom": "chr13",
+      "d0": 655000,
+      "tol": 65500,
+      "band_positions": 131001,
+      "A_exact_card": 25100,
+      "oracle_card": 25100,
+      "why_this_one": "largest non-empty oracle among the 32 sampled edges, so the control runs at the largest real scale available"
+    },
+    "baseline_unmutated_equal": true,
+    "band_positions_the_oracle_REJECTED": 105901,
+    "mutations": {
+      "dropped_admissible_start": 50018393,
+      "injected_start_the_oracle_rejected": 50022090,
+      "injected_is_a_genuine_near_miss": true,
+      "note": "the injected start lies inside the same band and failed the real liftOver gates, so detecting it requires the comparator to be exact rather than merely plausible"
+    },
+    "results": {
+      "DROP": {
+        "equal": false,
+        "algebra_only": 0,
+        "oracle_only": 1
+      },
+      "INJECT": {
+        "equal": false,
+        "algebra_only": 1,
+        "oracle_only": 0
+      },
+      "BOTH": {
+        "equal": false,
+        "algebra_only": 1,
+        "oracle_only": 1
+      }
+    },
+    "expected": {
+      "DROP": {
+        "equal": false,
+        "algebra_only": 0,
+        "oracle_only": 1
+      },
+      "INJECT": {
+        "equal": false,
+        "algebra_only": 1,
+        "oracle_only": 0
+      },
+      "BOTH": {
+        "equal": false,
+        "algebra_only": 1,
+        "oracle_only": 1
+      }
+    },
+    "sensitivity_retained": true,
+    "interpretation": "The comparator detects a single missing start and a single spurious start, in both directions, on a real edge-side at full band scale. The 64/64 equality result is therefore a measurement and not a tautology.",
+    "governance": {
+      "training": "OFF",
+      "phase_B": "STOPPED",
+      "stage_4": "NOT_AUTHORISED",
+      "td60": "BLOCKED",
+      "Morabito": "PROTECTED",
+      "correspondence_opened": false
+    }
+  },
+  "R12_historical_evidence_the_comparator_fires": {
+    "event": "fixture F3 on the pre-S50 code returned exact_set_equality=False",
+    "algebra_returned": 10001,
+    "oracle_returned": 2001,
+    "why_it_matters": "the same comparator, on the same code path, has already produced a FAIL. It is not a check that cannot fail."
+  },
+  "R13_shard_receipt_sha256": {
+    "edges_s00.receipt.json": "60507391f37f402070becc08a003b1a7dcf6d23f8b949839018b98d7c2877bae",
+    "edges_s01.receipt.json": "f81eaeddcafdde1f355f1eafa5b810462202e3f0114a3fcf3e703ca03baffc38",
+    "edges_s02.receipt.json": "178778da2d433921dcde7ed52fe5202a28f0e1d51168c9e52562fc8e33475cef",
+    "edges_s03.receipt.json": "e5b67b9f32d3ee67b73d0aadc03eca239726e0b8006a66119a280c2f24a90a2d"
+  },
+  "R13_aggregate_binding": "27fd5eb64d41d1d382bed01a02ddee2a93dc1414bd07fce912327d890638a8e8",
+  "inputs_agreed_across_shards": true,
+  "inputs": {
+    "producer_sha256": "3a2056bb8e1cc15565577ed1382dfd96a868a519a26e18588e2b5878c766bbd5",
+    "sampler_sha256": "4d92558d12ea7ed8ee3ccb672f788ac409284f76e2588981e80d3c415f398808",
+    "builder_sha256": "d677201d96c548d4eeae961fa7634ef959b16629f7b8b6fc542724773c2869ad",
+    "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+    "nih_peaks_sha256": "28369a0c8859ee39a2e0037dee7712bba4f2f0b4c1fdefca9f024d1f922d2be0",
+    "pu1_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+    "minmatch": "0.95",
+    "window_bp": 5000,
+    "seed": 20260929,
+    "n_shards": 4
+  },
+  "non_empty_support_note": "A 0-vs-0 equality is structurally weak evidence. The force of this test comes from the non-empty comparisons and from the total starts actually challenged, both reported above and neither inferred.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  },
+  "gates": {
+    "R2_identity_clean": true,
+    "R3_all_64_completed": true,
+    "R4_all_equal": true,
+    "R5_zero_algebra_only": true,
+    "R6_zero_oracle_only": true,
+    "R7_non_empty_present": true,
+    "R11_run1_run2_identical": true,
+    "R12_positive_control_retained": true,
+    "inputs_agreed_across_shards": true
+  },
+  "failed_gates": [],
+  "status": "PASS",
+  "phase_a_authorised_by_this_artifact": true
+}

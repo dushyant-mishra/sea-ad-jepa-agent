@@ -1,0 +1,35 @@
+=== part edges ===
+  shard 3/4: 8 of 32 sampled edges
+    lift_brute s3_e3921_p_o: 20001 candidates -> 20001 map exactly
+    e3921|+1 band= 20,001 A= 11,004 oracle= 11,004 eq=True
+    lift_brute s3_e3921_m_o: 5001 candidates -> 5001 map exactly
+    e3921|-1 band=  5,001 A=    655 oracle=    655 eq=True
+    lift_brute s3_e5833_p_o: 10002 candidates -> 10002 map exactly
+    e5833|+1 band= 10,002 A=      0 oracle=      0 eq=True
+    lift_brute s3_e5833_m_o: 20001 candidates -> 20001 map exactly
+    e5833|-1 band= 20,001 A=  7,577 oracle=  7,577 eq=True
+    lift_brute s3_e7242_p_o: 1 candidates -> 1 map exactly
+    e7242|+1 band=      1 A=      0 oracle=      0 eq=True
+    lift_brute s3_e7242_m_o: 20001 candidates -> 20001 map exactly
+    e7242|-1 band= 20,001 A=      0 oracle=      0 eq=True
+    lift_brute s3_e10708_p_o: 10002 candidates -> 10002 map exactly
+    e10708|+1 band= 10,002 A=  7,675 oracle=  7,675 eq=True
+    lift_brute s3_e10708_m_o: 20001 candidates -> 20001 map exactly
+    e10708|-1 band= 20,001 A=      0 oracle=      0 eq=True
+    lift_brute s3_e12467_p_o: 27002 candidates -> 27002 map exactly
+    e12467|+1 band= 27,002 A=      0 oracle=      0 eq=True
+    lift_brute s3_e12467_m_o: 37001 candidates -> 37001 map exactly
+    e12467|-1 band= 37,001 A=  6,260 oracle=  6,260 eq=True
+    lift_brute s3_e14191_p_o: 15002 candidates -> 15002 map exactly
+    e14191|+1 band= 15,002 A=      0 oracle=      0 eq=True
+    lift_brute s3_e14191_m_o: 38001 candidates -> 38001 map exactly
+    e14191|-1 band= 38,001 A= 17,761 oracle= 17,761 eq=True
+    lift_brute s3_e16186_p_o: 65003 candidates -> 65003 map exactly
+    e16186|+1 band= 65,003 A=  8,883 oracle=  8,883 eq=True
+    lift_brute s3_e16186_m_o: 60003 candidates -> 60003 map exactly
+    e16186|-1 band= 60,003 A=  4,057 oracle=  4,057 eq=True
+    lift_brute s3_e20455_p_o: 91001 candidates -> 91001 map exactly
+    e20455|+1 band= 91,001 A= 22,259 oracle= 22,259 eq=True
+    lift_brute s3_e20455_m_o: 81002 candidates -> 81002 map exactly
+    e20455|-1 band= 81,002 A= 24,327 oracle= 24,327 eq=True
+=== edges: PASS ===

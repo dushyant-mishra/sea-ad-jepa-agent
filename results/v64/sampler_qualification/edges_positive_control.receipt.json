@@ -1,0 +1,67 @@
+{
+  "schema": "V64_EXACT_SAMPLER_REAL_EDGE_POSITIVE_CONTROL_V1",
+  "date": "2026-09-30",
+  "producer_sha256": "89fd9b2fc8eac03abdba6581857790e0ecb30fb7b1d50f72ac3183674eb14b46",
+  "target": {
+    "comparison_id": "e5956|-1",
+    "chrom": "chr13",
+    "d0": 655000,
+    "tol": 65500,
+    "band_positions": 131001,
+    "A_exact_card": 25100,
+    "oracle_card": 25100,
+    "why_this_one": "largest non-empty oracle among the 32 sampled edges, so the control runs at the largest real scale available"
+  },
+  "baseline_unmutated_equal": true,
+  "band_positions_the_oracle_REJECTED": 105901,
+  "mutations": {
+    "dropped_admissible_start": 50018393,
+    "injected_start_the_oracle_rejected": 50022090,
+    "injected_is_a_genuine_near_miss": true,
+    "note": "the injected start lies inside the same band and failed the real liftOver gates, so detecting it requires the comparator to be exact rather than merely plausible"
+  },
+  "results": {
+    "DROP": {
+      "equal": false,
+      "algebra_only": 0,
+      "oracle_only": 1
+    },
+    "INJECT": {
+      "equal": false,
+      "algebra_only": 1,
+      "oracle_only": 0
+    },
+    "BOTH": {
+      "equal": false,
+      "algebra_only": 1,
+      "oracle_only": 1
+    }
+  },
+  "expected": {
+    "DROP": {
+      "equal": false,
+      "algebra_only": 0,
+      "oracle_only": 1
+    },
+    "INJECT": {
+      "equal": false,
+      "algebra_only": 1,
+      "oracle_only": 0
+    },
+    "BOTH": {
+      "equal": false,
+      "algebra_only": 1,
+      "oracle_only": 1
+    }
+  },
+  "sensitivity_retained": true,
+  "interpretation": "The comparator detects a single missing start and a single spurious start, in both directions, on a real edge-side at full band scale. The 64/64 equality result is therefore a measurement and not a tautology.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}

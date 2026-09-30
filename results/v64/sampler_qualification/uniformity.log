@@ -1,0 +1,3 @@
+=== part uniformity ===
+    lift_brute oracle: 10001 candidates -> 10001 map exactly
+=== uniformity: PASS ===

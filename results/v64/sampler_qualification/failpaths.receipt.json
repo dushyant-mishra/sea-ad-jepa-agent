@@ -1,0 +1,79 @@
+{
+  "schema": "V64_NIH_CARD_EXACT_SAMPLER_QUALIFICATION_V1",
+  "governs": "V64_NIH_CARD_STAGE3_PHASE_A_EXACT_SAMPLER_TEST_CONTRACT_V1",
+  "part": "failpaths",
+  "date": "2026-09-30",
+  "producer_sha256": "afb181909c79007dd5efb8f43b51ca5e795411df1ed58195428ab62bf4f04b86",
+  "sampler_sha256": "4d92558d12ea7ed8ee3ccb672f788ac409284f76e2588981e80d3c415f398808",
+  "builder_sha256": "e8aa8d6bf3d53683a1dfa3e77970ead35822de070c2861402e9790ad406c634a",
+  "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+  "minmatch": "0.95",
+  "window_bp": 5000,
+  "failure_paths": [
+    {
+      "name": "missing_reverse_chain",
+      "contract": "missing reverse chain -> STOP",
+      "stopped": true,
+      "detail": "missing reverse chain: C:/Users/dushy/jepa_c3\\qualwork_failpaths\\fail\\absent.chain",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "missing_track_digest",
+      "contract": "missing track digest -> STOP",
+      "stopped": true,
+      "detail": "track digest mismatch for C:/Users/dushy/jepa_c3\\qualwork_failpaths\\fail\\ok.bed: 0251436d741440b9eb91156d11a9a075fe9606b5e37ecd38ee635d2a9fa58654 != 0000000000000000000000000000000000000000000000000000000000000000",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "non_disjoint_normalised_intervals",
+      "contract": "non-disjoint normalized intervals -> STOP",
+      "stopped": true,
+      "detail": "fail: non-disjoint or unmerged at (10, 20) / (15, 30)",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "cardinality_disagreement",
+      "contract": "computed cardinality disagrees with enumerated cardinality -> STOP",
+      "stopped": true,
+      "detail": "fail: cardinality 12 != enumerated 11",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "opposite_side_retry",
+      "contract": "opposite-side retry detected -> STOP",
+      "stopped": true,
+      "detail": "fail: opposite-side retry detected, drew -1 but also attempted [1]",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "control_b_rescues_control_a",
+      "contract": "CONTROL_B used to rescue CONTROL_A -> STOP",
+      "stopped": true,
+      "detail": "fail: CONTROL_A failed and CONTROL_B was used to rescue it",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    },
+    {
+      "name": "interior_supplement_overlap",
+      "contract": "EXTRA (not in the contract's six): interior and supplement must be disjoint or the uniform index space is wrong",
+      "stopped": true,
+      "detail": "fail: interior and supplement overlap on 1 starts, e.g. [15]",
+      "negative_control_passes_when_valid": true,
+      "is_a_real_test": true
+    }
+  ],
+  "status": "PASS",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}

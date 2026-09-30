@@ -1,0 +1,40 @@
+{
+  "schema": "V64_NIH_CARD_EXACT_SAMPLER_QUALIFICATION_V1",
+  "governs": "V64_NIH_CARD_STAGE3_PHASE_A_EXACT_SAMPLER_TEST_CONTRACT_V1",
+  "part": "uniformity",
+  "date": "2026-09-30",
+  "producer_sha256": "8b22379935e5693d5c96522009f1160304dcc0efec2e24a66d79c86254524f79",
+  "sampler_sha256": "4d92558d12ea7ed8ee3ccb672f788ac409284f76e2588981e80d3c415f398808",
+  "builder_sha256": "d677201d96c548d4eeae961fa7634ef959b16629f7b8b6fc542724773c2869ad",
+  "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+  "minmatch": "0.95",
+  "window_bp": 5000,
+  "uniformity": {
+    "fixture": "F7_control_a_b_coincidence_retained",
+    "A_exact_card": 5011,
+    "draws": 100000,
+    "alpha": 1e-06,
+    "chi2": 5045.19212,
+    "p_value": 0.3603938827565411,
+    "uniform_accepted": true,
+    "observed_min": 4,
+    "observed_max": 37,
+    "expected_per_cell": 19.956096587507485,
+    "negative_control": {
+      "what": "a sampler biased to over-draw one element by 25%",
+      "chi2": 31323843.097280003,
+      "p_value": 0.0,
+      "rejected_as_required": true
+    },
+    "note": "software-test diagnostic only; no biological meaning"
+  },
+  "status": "PASS",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
