@@ -1,0 +1,113 @@
+{
+  "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
+  "date": "2026-09-30",
+  "status": "V64_SUCCESSOR_ARCHITECTURE_AND_EXACT_CONTROL_HANDOFF__PHASE_A_BLOCKED_PENDING_FULL_SAMPLER_QUALIFICATION__TRAINING_OFF",
+  "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
+  "live_heads_at_creation": {
+    "chatgpt_architecture": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
+    "claude_exact_sampler": "f2b45699d1be88cc599971da243ba6e36a50c4a7",
+    "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
+    "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
+  },
+  "claude_lane": {
+    "branch": "claude/v64-exact-sampler-successor-20260930",
+    "supplement": {
+      "edges": 20709,
+      "edge_sides": 41418,
+      "band_positions": 1576398690,
+      "safe_affine_positions": 1560436760,
+      "supplement_candidates": 15961930,
+      "uncovered": 0,
+      "A_interior": 235726268,
+      "A_supplement": 177442,
+      "A_exact": 235903710
+    },
+    "S50": {
+      "repaired": true,
+      "commit": "f2b45699d1be88cc599971da243ba6e36a50c4a7",
+      "shard0_payload_identical": true,
+      "payload_sha256": "577f86c530f2a87e108db7e81bb2160def4344bd32999032f91f2e34b35101e9",
+      "production_shadow_overlap_bp": 0,
+      "positive_control_bp": 4000
+    },
+    "real_edge_qualification_last_reported": "15/64 complete, 0 inequalities",
+    "sampler_qualified": false,
+    "phaseA_rerun_authorized": false
+  },
+  "architecture": {
+    "universal_teacher": "RNA_EMA_TEACHER",
+    "privileged_prequalification_role": "AUXILIARY_CRITIC_OR_VALIDATOR",
+    "recoverability_classes": [
+      "RNA-RECOVERABLE",
+      "PARTIALLY-RNA-RECOVERABLE",
+      "REGULATORY-PRIVATE",
+      "UNQUALIFIED"
+    ],
+    "private_state_policy": "PRESERVE_NO_COMPULSORY_RNA_STUDENT_LOSS",
+    "missing_privileged_policy": "MASK_NOT_ZERO",
+    "test_selects_rotation": false,
+    "test_selects_rank": false
+  },
+  "paired_nihcard": {
+    "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "nuclei": 2160,
+    "donors": 24,
+    "nuclei_per_donor": 90,
+    "genes": 4000,
+    "peaks": 12000,
+    "cell_type": "MG",
+    "split_seed": 20260930,
+    "split": {
+      "train_donors": 16,
+      "validation_donors": 4,
+      "test_donors": 4,
+      "train_nuclei": 1440,
+      "validation_nuclei": 360,
+      "test_nuclei": 360
+    },
+    "biological_recoverability_test_opened": false
+  },
+  "promoter": {
+    "candidate_authority": "GENCODE_V50_TRANSCRIPT_TSS",
+    "gencode_candidates": 644292,
+    "gencode_genes": 78733,
+    "screen_pls_overlap_preliminary": 377974,
+    "dong_data7_unique_transcripts": 118033,
+    "dong_gencode_unique_transcript_overlap_corrected": 115678,
+    "dong_duplicate_enst_ids": 88,
+    "dong_join_rule": "transcript_id + chromosome",
+    "fantom_coordinate_authority": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+    "fantom_bed_workflow_run": 36749777293,
+    "full_ledger_status": "BUILDER_COMMITTED__FULL_GENCODE_SCREEN_DONG_FANTOM_RUN_PENDING"
+  },
+  "full104_discovery_subset": {
+    "bytes": 50646637,
+    "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+    "cells": 6000,
+    "backbone_addresses": 17186,
+    "address_is_gene": false,
+    "bytes_in_git": false,
+    "custody_manifest": "docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json"
+  },
+  "ci": {
+    "focused_architecture_run": 36751392171,
+    "conclusion": "success",
+    "scope": "FOCUSED_ARCHITECTURE_AND_CUSTODY_SMOKE__NOT_FULL_PRODUCTION_REGRESSION"
+  },
+  "next_chat_priority": [
+    "Refresh Claude successor head and audit any new 64-side equality results.",
+    "If sampler qualifies, audit repaired Phase A and preserve hard stop before Phase B.",
+    "Materialize FANTOM hg38 BED artifact and run full promoter candidate ledger.",
+    "Freeze first real privileged-factor construction and recoverability decision rule on TRAIN/VALIDATION only.",
+    "Keep TEST unopened until recoverability protocol is fully frozen.",
+    "Use chat-exclusive custody manifest before assuming binary bytes exist in Git."
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}
