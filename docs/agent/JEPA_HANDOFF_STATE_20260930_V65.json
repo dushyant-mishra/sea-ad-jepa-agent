@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_STRUCTURAL_EXECUTION_ACCEPTED__PHASE_B_BLOCKED_ON_PROSPECTIVE_CONTROL_RANDOMNESS_STRATA__TRAINING_OFF",
+  "status": "V65_EXACT_CONTROL_SELECTION_ACCEPTED_AT_13510__FULL_PHASE_A_NOT_CONTRACT_COMPLIANT__PHASE_B_STOPPED__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
@@ -33,16 +33,18 @@
     },
     "real_edge_qualification_last_reported": "15/64 complete, 0 inequalities",
     "sampler_qualified": true,
-    "phaseA_rerun_authorized": true,
+    "phaseA_rerun_authorized": false,
     "phaseA": {
       "audited_head": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
-      "structural_result": "ACCEPTED",
-      "retained_primary": 13510,
-      "dropped_control_A_failed": 7199,
-      "control_B_success_A_failed_not_rescued": 2271,
-      "null_unavailable_A_ok_B_failed": 2232,
-      "coincident_pairs": 176,
-      "supplement_selected_controls": 37,
+      "status": "NOT_CONTRACT_COMPLIANT",
+      "exact_control_A_availability": 13510,
+      "missing_linked_funnel": [
+        "DROP_GENE_NOT_IN_NIHCARD",
+        "DROP_GENE_AMBIGUOUS_IN_NIHCARD",
+        "DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL"
+      ],
+      "feature_artifact_schema_complete": false,
+      "provenance_complete": false,
       "singleton_control_A_edges": 344,
       "structurally_degenerate_AB_null_edges": 167
     }
@@ -134,11 +136,13 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Refresh Claude successor head beyond 0d3874cb and audit any post-Phase-A changes before accepting them.",
-    "Keep Phase B stopped until per-edge admissible-set cardinality/side fields are bound and the singleton/small-support null treatment is prospectively frozen.",
-    "Finish the full GENCODE+SCREEN+Dong+FANTOM promoter candidate ledger.",
-    "Freeze the first real privileged-factor construction and recoverability decision rule on TRAIN/VALIDATION only.",
-    "Keep paired NIH-CARD TEST unopened until recoverability protocol is fully frozen."
+    "Refresh Claude successor head beyond 0d3874cb and audit any corrective Phase-A successor work.",
+    "Require lawful composition of frozen linked-side eligibility + already-qualified exact CONTROL_A/B machinery.",
+    "Require complete V2 feature artifact and provenance binding before Phase-A acceptance.",
+    "Keep Phase B stopped.",
+    "Preserve singleton/small-support randomness strata prospectively.",
+    "Finish full GENCODE+SCREEN+Dong+FANTOM promoter ledger in parallel.",
+    "Freeze first privileged-factor recoverability protocol on TRAIN/VALIDATION only."
   ],
   "governance": {
     "training": "OFF",
