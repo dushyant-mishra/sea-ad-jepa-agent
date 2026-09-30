@@ -936,42 +936,32 @@ Do not assume a hash record means bytes exist in Git.
 
 ---
 
-# 28. Focused CI state
+# 28. CI state and repaired external-fetch design
 
-Focused workflow:
+PR #199 was found mergeable but not CI-clean because the broad open-resource fetch workflow mixed deterministic PR validation with live external downloads. That was corrected during handoff preparation.
 
-`.github/workflows/v64-privileged-architecture-smoke.yml`
+The repair has two parts:
 
-At the last verified head before this handoff:
+1. Dong/Roussos Supplementary Data 8 and 10 are now explicit **manual/chat custody** resources with exact user-supplied hashes; they are no longer unattended CI fetch responsibilities.
+2. `.github/workflows/v64-open-resource-fetch.yml` is now **workflow_dispatch only**. Live public downloads are custody operations, not deterministic PR-gating tests.
 
-GitHub Actions run:
+On repaired code head:
 
-`36751392171`
+`4bd6f43b9cdb429a1cfcf8e1a35bca615ca3467f`
 
-Conclusion:
+the following current-head workflows completed successfully:
 
-`success`
+- `V64 privileged-information architecture smoke` — run `36752876598` — **success**
+- `V64 fetch FANTOM hg38 CAGE peak coordinates` — run `36752876636` — **success**
+- `V64 import Claude paired handoff subset` — run `36752876843` — **success**
+- `V64 import Claude exact supplement receipts` — run `36752876592` — **success**
+- `V64 export Claude NIH-CARD paired subset` — run `36752876849` — **success**
 
-Job:
+The architecture smoke suite had previously exposed two stale tests after the custody manifest was redesigned. Those tests were corrected to assert the new automated-vs-manual custody semantics; the rerun is green.
 
-`architecture-smoke`
+The architecture suite is a focused architecture/custody guard, not a full production-regression or training qualification.
 
-Conclusion:
-
-`success`
-
-The focused suite covers architecture/custody/test invariants, not the full production regression suite.
-
-Do not narrate it as full-repo training qualification.
-
-Other custody/import workflows observed green include:
-
-- Claude exact supplement import;
-- Claude paired NIH-CARD handoff import;
-- Claude paired subset export;
-- isolated FANTOM hg38 BED fetch.
-
-The broad public-resource fetch workflow can still fail because Spring Nature may return client-challenge HTML for Data 8/10. This is expected and fail-closed; the real user-supplied workbooks are hash-bound separately.
+Do not call the manual open-resource fetch workflow a CI requirement. If run manually, its bytes must still pass the fail-closed validators before custody is accepted.
 
 ---
 
