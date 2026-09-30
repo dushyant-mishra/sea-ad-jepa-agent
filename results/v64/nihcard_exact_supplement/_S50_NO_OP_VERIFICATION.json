@@ -1,0 +1,55 @@
+{
+  "schema": "V64_S50_AMBIGUITY_GATE_NO_OP_VERIFICATION_V1",
+  "date": "2026-09-30",
+  "what_S50_was": "safe_and_interior certified a start whenever its 5 kb window sat wholly inside one plus-strand chain block with an exact reverse round-trip, without ever asking whether a SECOND chain also maps that window. liftOver reports such a window twice under -multiple and the frozen C3 gate rejects ambiguity, so the affine shortcut could admit a start the production rule forbids. Fixture F3 caught it: the interval algebra returned all 10,001 band starts where the real binary returned 2,001.",
+  "the_repair": "parse_chain now carries a chain_id, because ambiguity is a CROSS-chain property: two blocks of the same chain touching one window are one liftOver mapping, not two. safe_and_interior subtracts the start-intervals shadowed by any block of a different chain, so those starts fall through to the supplement where the real binary adjudicates them. This can only move a decision from the shortcut to the oracle.",
+  "blast_radius_measured_not_assumed": {
+    "chain": "hg19ToHg38.over.chain.gz v479",
+    "target_span_accepted_by_shortcut_bp": 2847258323,
+    "of_which_shadowed_by_any_other_block_bp": 0,
+    "forms_tested": [
+      "same chromosome plus strand",
+      "alt/random contig query",
+      "minus strand query"
+    ],
+    "detector_positive_control": {
+      "fixture": "F3_ambiguous_multiple_mapping chain",
+      "planted_overlap_bp": 4000,
+      "detector_reported_bp": 4000,
+      "fires": true,
+      "why_this_matters": "two zero results in a row are only credible if the detector is shown capable of returning non-zero"
+    }
+  },
+  "no_op_proof_on_production_data": {
+    "method": "shard 0 of 12 rebuilt end to end with the repaired builder into a separate output directory, then compared field by field and payload to the committed pre-repair artifact",
+    "edges_in_shard": 1726,
+    "edge_sides": 3452,
+    "fields_compared": [
+      "band_positions",
+      "safe_affine_positions",
+      "supplement_candidates",
+      "uncovered",
+      "A_interior_card",
+      "A_supplement_card",
+      "A_exact_card",
+      "status",
+      "e2_sha256",
+      "pu1_sha256",
+      "liftover_sha256"
+    ],
+    "fields_that_changed": [],
+    "payload_canonical_sha256_before": "577f86c530f2a87e108db7e81bb2160def4344bd32999032f91f2e34b35101e9",
+    "payload_canonical_sha256_after": "577f86c530f2a87e108db7e81bb2160def4344bd32999032f91f2e34b35101e9",
+    "payloads_identical": true,
+    "strength_of_this_claim": "Identity is at the PAYLOAD level, not merely the summary totals. All 3,452 edge-sides produced exactly the same interior intervals and the same supplement starts. The repair is therefore demonstrated to be a no-op on this data, not predicted to be one from the blast-radius measurement alone."
+  },
+  "what_is_NOT_claimed": "That the defect was harmless in general. On a chain whose target spans overlap -- a different assembly pair, or a chain file that is not the UCSC over.chain -- the shortcut would have admitted inadmissible controls. The gate is now enforced by the executor rather than assumed absent from the data.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
