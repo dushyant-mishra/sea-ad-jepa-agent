@@ -1,0 +1,106 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_THE_REPAIRED_PHASE_A_RERUN",
+  "supersedes": "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V1.json",
+  "responds_to_audit": "924fbb56d3fc84fe53cc4895ec40d348b263f5d4",
+  "scope": "NARROW. Closes four contract-level defects in V1 and one schema inconsistency. Changes no frozen biological constraint and targets no retention fraction.",
+  "nothing_has_been_run_against_V1": true,
+  "e2_correspondence_outcome_opened": false,
+
+  "CENTRAL_RULE_FROZEN_HERE": "The admissible control set is ALL integer hg19 starts on the pre-drawn side satisfying distance matching and promoter-specific exclusion, that then pass exact C3 round trip, hg38 Nott PU.1 overlap, and NIH-CARD consensus support. Any proposal-space shortcut must be demonstrably lossless relative to that set.",
+
+  "B1_CONTROL_B_MUST_NOT_RESCUE_CONTROL_A": {
+    "defect_in_V1": "V1 said 'if only one of the two passes the hg38 gate, the edge retains that one'. That lets CONTROL_B stand in for a failed CONTROL_A, which changes what the primary population is.",
+    "frozen_rule": {
+      "CONTROL_A_is_the_primary_control": true,
+      "A_fails": "the linked edge DROPS from the primary population, regardless of whether B succeeded. B may never substitute for A.",
+      "A_succeeds_and_B_fails": "the edge REMAINS in the primary and is flagged control_b_available = false, making it unavailable for the control-vs-control null only.",
+      "A_succeeds_and_B_succeeds": "the edge is in the primary and is available for the null."
+    },
+    "reporting": "primary population size and control-vs-control null population size are reported separately; the null population is smaller by construction and that must be visible, not implied."
+  },
+
+  "B2_A_AND_B_ARE_INDEPENDENT_DRAWS": {
+    "defect_in_V1_and_in_my_own_attempted_repair": {
+      "V1_said": "'required to be non-identical windows'",
+      "what_I_then_drafted": "I was about to strengthen that to 'CONTROL_B must be DISJOINT from CONTROL_A', reasoning that near-duplicates would make the control-vs-control null artificially tight.",
+      "why_BOTH_are_wrong": "Any rule that constrains B given A conditions the second draw on the first and changes its distribution. The control-vs-control null is only a valid null if A and B are INDEPENDENT draws from the same admissible distribution. Forcing them apart makes them anti-correlated, which mis-specifies the null just as surely as allowing duplicates would -- and my 'fix' conditioned B on A more strongly than the rule it replaced.",
+      "status": "my disjointness draft is WITHDRAWN and was never committed"
+    },
+    "frozen_rule": {
+      "independence": "CONTROL_A and CONTROL_B are drawn INDEPENDENTLY, each with its own side draw from a distinct frozen sub-seed, from the identical admissible distribution.",
+      "if_they_coincide": "RECORD IT. Do not redraw. A coincidence is a legitimate outcome of two independent draws and its frequency is itself informative about how small some admissible sets are.",
+      "recorded_field": "control_a_equals_control_b (boolean), plus the count across the population"
+    }
+  },
+
+  "B3_PROPOSAL_PREFILTER_REMOVED": {
+    "defect_in_V1": "V1's candidate universe included K, a prefilter requiring the hg19 window to overlap a reverse-lifted hg19 PU.1 peak. The authoritative requirement is hg38 PU.1 overlap AFTER exact C3 lifting. A matching peak count (50,199 in both) does not prove the reverse-lifted track is lossless for INTERVAL OVERLAP, because chain offsets can change overlap relationships near block boundaries.",
+    "what_I_measured": {
+      "test": "16,899 windows that FAIL the hg19 prefilter, lifted and tested against the authoritative hg38 gate",
+      "result": "0 passed (0.000%)",
+      "status": "SUPPORTIVE EVIDENCE ONLY, NOT A PROOF. It is a one-directional sample on one chain and does not establish losslessness. It is recorded because it was measured, not because it justifies keeping K."
+    },
+    "frozen_resolution": "K IS REMOVED. There is no proposal-space biological filter at all.",
+    "replacement": {
+      "admissible_hg19_set": "A_S = the integer starts on the pre-drawn side S whose 5 kb window midpoint lies at signed distance within [d0 - tol, d0 + tol], MINUS starts whose window overlaps an E2 distal partner of THIS promoter. Exact, contiguous-interval arithmetic, no lattice.",
+      "sampling": "draw uniformly at random, WITH replacement, from the integers of A_S",
+      "draw_budget": {"round_size": 64, "max_rounds": 8, "max_draws_per_control": 512,
+                      "stop_early_on_first_survivor": true},
+      "why_512_suffices": "A uniform 5 kb window overlaps at least one of the 50,199 PU.1 peaks (26.3 Mb total span) with probability about 0.0895 genome-wide, so the chance of missing an existing survivor in 512 independent uniform draws is about 1.4e-21. The budget is set from that arithmetic, computed before execution, not from any observed retention.",
+      "every_constraint_applied_in_hg38": ["single forward mapping, ambiguity detected and rejected",
+                                            "same chromosome", "exact 5000 bp length preserved",
+                                            "exact hg38->hg19 round trip, tolerance 0 bp",
+                                            "overlaps >= 1 Nott PU.1 peak",
+                                            "overlaps >= 1 NIH-CARD consensus peak"],
+      "drop_reason_semantics": "an edge with no surviving control after the full budget is recorded as CONTROL_NOT_FOUND_WITHIN_FROZEN_DRAW_BUDGET. That is an honest sampling-limited statement and must never be reported as 'no admissible control exists'."
+    }
+  },
+
+  "B4_STOP_CONDITION_REMOVED": {
+    "defect_in_V1": "V1 listed 'the exact interval sampler produces an empty universe for a majority of edges, which would indicate the universe definition itself is wrong' as a STOP condition.",
+    "why_that_is_wrong": "A surprisingly low control-support rate may simply be the real answer. Treating a low number as evidence that the design is broken licenses redesigning until retention looks acceptable, which is the precise failure the no-retention-target rule exists to prevent.",
+    "frozen_resolution": "REMOVED. A low control-support rate is a RESULT and is reported as one.",
+    "retained_stop_conditions": [
+      "promoter-level constancy fails",
+      "pair_key uniqueness fails",
+      "linked/control attrition fails to reconcile to 20,709",
+      "a forbidden biological correspondence is materialised"
+    ]
+  },
+
+  "B5_SCHEMA_CONSISTENCY": {
+    "defect_in_V1": "V1 introduced CONTROL_A and CONTROL_B as population labels, silently widening the enum frozen by V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V1, which fixes population as LINKED | CONTROL.",
+    "frozen_resolution": {
+      "population": "LINKED | CONTROL, unchanged from the Stage-3 feature artifact contract",
+      "control_role": "A | B, a separate column, empty for LINKED rows",
+      "rationale": "adds the distinction without redefining a frozen enum"
+    }
+  },
+
+  "UNCHANGED_FROM_V1": {
+    "A1_exclusion_universe": "per-promoter only, never global",
+    "A2_C3_exact_round_trip": "full forward + ambiguity detection + exact reverse lift, tolerance 0 bp",
+    "A3_side_drawn_first": "side drawn with the frozen seed before admissibility is consulted; an empty drawn side drops the edge and is NOT retried on the other side",
+    "A5_anchor_frequency": "number of DISTINCT E2 promoters whose distal partners OVERLAP the interval",
+    "A7_receipt_provenance": "producer git blob and sha256, emitted artifact SHA-256s, authenticated byte receipt, pairing closeout, E2 digest, and this contract's sha256",
+    "no_retention_target": true,
+    "frozen_biological_constraints": ["5 kb width", "distance matched within +/-10% or 10 kb",
+                                      "hg38 PU.1 overlap", "hg38 consensus-peak overlap",
+                                      "identical support rules for linked and control",
+                                      "no rescue", "simulator topology 24/4 untouched",
+                                      "promoter_degree remains a covariate"]
+  },
+
+  "VERIFIED_BY_BRUTE_FORCE_BEFORE_FREEZING": {
+    "distance_band_formula": "the contiguous-interval form of the signed distance band matched exhaustive enumeration on 200 random cases",
+    "window_overlap_formula": "the [start-4999, end-1] start-interval form of '5 kb window overlaps interval' matched exhaustive enumeration"
+  },
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "E2": "CLOSED", "stage_4": "NOT_AUTHORISED",
+    "phase_B_matrix_reads": "REMAIN STOPPED until the repaired Phase A is re-audited"
+  }
+}
