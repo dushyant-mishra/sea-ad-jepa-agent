@@ -21,7 +21,9 @@ def test_resource_fetch_manifest_never_claims_missing_bytes():
     for r in p["resources"]:
         assert r["bytes_in_chat_custody"] is False
         assert r["sha256"] is None
-        assert r["download_url"].startswith("https://")
+        urls = ([r["download_url"]] if "download_url" in r else r.get("download_urls", []))
+        assert urls
+        assert all(u.startswith("https://") for u in urls)
 
 
 def test_gencode_is_annotation_base_and_screen_terms_remain_conservative():
