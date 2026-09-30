@@ -1,0 +1,44 @@
+{
+  "schema": "V64_GPT_HANDOFF_BUNDLE_CUSTODY_V1",
+  "date": "2026-09-30",
+  "bundle_zip": {
+    "path": "D:/jepa_v5_outputs_20260925/JEPA_V64_GPT_HANDOFF_BUNDLE_20260930.zip",
+    "bytes": 51724221,
+    "sha256": "25ff8168719265e9c1956cd3e779f9c4bfd94080e4e75ca850bbe1840b7f734a"
+  },
+  "member_hashes": {
+    "MANIFEST.json": {
+      "bytes": 3735,
+      "sha256": "c158f3c3f4a03bcf410fcdb935acf7fa1ac9b6d3dd90a1d8dfc7c315ef1fd678"
+    },
+    "e2_edges_hg38_and_hg19.tsv.gz": {
+      "bytes": 475739,
+      "sha256": "e4c44b9435e7c6e08caca693a718f618c9f9c5f0bc6df227e11c98d9823bb0bb"
+    },
+    "full104_discovery_subset.npz": {
+      "bytes": 50646637,
+      "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f"
+    },
+    "nihcard_paired_subset.npz": {
+      "bytes": 844578,
+      "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6"
+    },
+    "nott_promoter_annotation_hg19.csv.gz": {
+      "bytes": 334295,
+      "sha256": "d2d36dfb6b27c43d2c2ed092017f37ac7c339336ab59e2a3e1fc290711de81af"
+    }
+  },
+  "custody_classification": {
+    "bytes_in_github_git": [
+      "nihcard_paired_subset.npz",
+      "nott_promoter_annotation_hg19.csv.gz",
+      "e2_edges_hg38_and_hg19.tsv.gz",
+      "MANIFEST.json"
+    ],
+    "bytes_in_github_release_asset_only": [
+      "full104_discovery_subset.npz"
+    ],
+    "why_large_member_is_not_in_git": "full104_discovery_subset.npz is 50.65 MB. Git history is permanent and this project's convention is to reference large artifacts by path/size/SHA-256 rather than commit them. A CSR+uint16 repack was measured and recovered only 15% (50.44 -> 42.71 MB compressed), which does not justify altering an already-validated artifact. It is attached to a GitHub Release instead, and is deterministically regenerable from scripts/v64/build_gpt_handoff_bundle_v1.py.",
+    "regeneration_command": "python scripts/v64/build_gpt_handoff_bundle_v1.py"
+  }
+}

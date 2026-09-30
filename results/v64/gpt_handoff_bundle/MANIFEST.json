@@ -1,0 +1,78 @@
+{
+  "schema": "V64_GPT_HANDOFF_BUNDLE_V1",
+  "date": "2026-09-30",
+  "seed": 20260930,
+  "files": {
+    "nihcard_paired_subset.npz": {
+      "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+      "bytes": 844578,
+      "nuclei": 2160,
+      "donors": 24,
+      "genes": 4000,
+      "peaks": 12000,
+      "rna_values": "raw integer counts from .X (count-like uint16 slot)",
+      "atac_values": "raw integer counts from .X",
+      "pairing_key": "ATAC obs_name with one trailing _<sample_id> removed equals RNA obs_name; both spellings included per nucleus",
+      "layout": "COO triplets; row indexes the nucleus, col indexes gene/peak within this subset"
+    },
+    "full104_discovery_subset.npz": {
+      "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+      "bytes": 50646637,
+      "cells": 6000,
+      "donors": 104,
+      "sources": [
+        "HVS",
+        "NPH52",
+        "SEA_AD"
+      ],
+      "operators": 42,
+      "addresses": 17186,
+      "values": "log1p10k normalised, q-safe; NOT raw counts",
+      "stratification": "round-robin over (source, donor, operator) strata, deterministic, seed 20260930",
+      "address_universe": "the 17,186 addresses recorded as measured by ALL 42 operators"
+    },
+    "nott_promoter_annotation_hg19.csv.gz": {
+      "sha256": "d2d36dfb6b27c43d2c2ed092017f37ac7c339336ab59e2a3e1fc290711de81af",
+      "bytes": 334295,
+      "rows": 15898,
+      "build": "hg19",
+      "source": "Nott Table S5 H3K4me3_around_TSS_annotated_pe",
+      "source_sha256": "81c99689533d9da372cecdd469e7ff02cc985720105b83b3bd66c3ac8c93972e"
+    },
+    "e2_edges_hg38_and_hg19.tsv.gz": {
+      "sha256": "e4c44b9435e7c6e08caca693a718f618c9f9c5f0bc6df227e11c98d9823bb0bb",
+      "bytes": 475739,
+      "note": "frozen E2 edge table, 20,709 rows, both builds"
+    }
+  },
+  "provenance": {
+    "nih_card": {
+      "rna_md5": "f628b17aab355f80b912e3c715543cbd",
+      "atac_md5": "b71589e0033e391e2fe97c1ae3928a7f",
+      "zenodo": "10.5281/zenodo.20834804",
+      "licence": "CC-BY-4.0"
+    },
+    "liftover_v479_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+    "chain_hg19ToHg38_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+    "chain_hg38ToHg19_sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+    "nott_pu1_atac_hg38_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+    "table_s5_terms": "UNKNOWN -- public PMC availability is not a licence grant"
+  },
+  "notes": {
+    "EXPOSURE": "nihcard_paired_subset.npz contains RNA and ATAC counts for the SAME nuclei plus both feature coordinate spaces. Nothing here computes a correspondence, but the bundle is SUFFICIENT to compute one. Doing that outside the frozen NIH-CARD correspondence design would open Stage 4, which is NOT AUTHORISED.",
+    "EXCLUDED_BY_DESIGN": [
+      "Age",
+      "Sex",
+      "PMI",
+      "Ancestry",
+      "Race",
+      "Ethnicity",
+      "Brain_bank",
+      "batch",
+      "disease or protected outcomes"
+    ],
+    "GENCODE": "NOT PRESENT on this machine and deliberately not downloaded in this pass; the promoter bridge uses the already-authenticated Nott annotation instead",
+    "BACKBONE_DENOMINATOR": "17,186 addresses measured by all 42 operators, located in FOUNDATION_GEOMETRY_SELECTED_ADDRESSES.csv. This supersedes the remembered but unlocated figure of 15,758. Address is not asserted to be 1:1 with gene.",
+    "CLAUDE_PHASE_A": "NOT INCLUDED -- the exact-sampler shards were still running when this bundle was built. Receipts and branch SHA follow separately."
+  }
+}
