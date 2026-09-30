@@ -28,8 +28,12 @@
   },
   "github_ci": {
     "focused_workflow_added": ".github/workflows/v64-privileged-architecture-smoke.yml",
-    "workflow_run_observed_at_state_creation": false,
-    "claim": "TESTS_WRITTEN__SYNTHETIC_LOGIC_EXECUTED_LOCALLY__GITHUB_CI_NOT_YET_OBSERVED"
+    "workflow_run_observed_at_state_creation": true,
+    "run_id": 36741548385,
+    "job_id": 109976919470,
+    "conclusion": "success",
+    "focused_pytest_result": "22 passed in 0.28s",
+    "scope": "FOCUSED_ARCHITECTURE_SMOKE_ONLY__NOT_FULL_PRODUCTION_REGRESSION"
   },
   "next_inputs": [
     "donor-preserving paired NIH-CARD RNA+ATAC subset",
