@@ -1,0 +1,18 @@
+{
+  "shard": 4,
+  "n_shards": 12,
+  "edges_in_shard": 1726,
+  "edge_sides": 3452,
+  "band_positions": 131288001,
+  "safe_affine_positions": 130135525,
+  "supplement_candidates": 1152476,
+  "uncovered": 0,
+  "A_interior_card": 19554677,
+  "A_supplement_card": 7082,
+  "e2_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+  "pu1_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+  "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+  "status": "OK",
+  "A_exact_card": 19561759,
+  "payload_sha256": "0745051c19b8f68b79f813d728b63145340250f5254d0aaa67ad4dbd6ff16e16"
+}

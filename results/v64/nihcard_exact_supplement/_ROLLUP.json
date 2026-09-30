@@ -1,0 +1,75 @@
+{
+  "schema": "V64_NIHCARD_EXACT_SUPPLEMENT_ROLLUP_V1",
+  "date": "2026-09-30",
+  "what_this_is": "Reconciliation across the 12 deterministic shards of the exact admissible-control construction. A_exact = A_interior UNION A_supplement, where A_supplement recovers every admissible start that the affine-interior argument could not prove safe (chain-block boundaries, gaps, inverted/minus-strand blocks).",
+  "n_shards": 12,
+  "shard_statuses": [
+    "OK"
+  ],
+  "all_shards_ok": true,
+  "edges_covered": 20709,
+  "edge_sides_covered": 41418,
+  "band_reconciliation": {
+    "band_positions": 1576398690,
+    "safe_affine_positions": 1560436760,
+    "supplement_candidate_positions": 15961930,
+    "uncovered_positions": 0,
+    "identity_holds": true,
+    "note": "uncovered must be exactly 0: every band position is either proven affine-safe or explicitly enumerated as a supplement candidate. A nonzero value would mean the construction silently dropped part of the search space."
+  },
+  "A_exact": {
+    "A_interior_card": 235726268,
+    "A_supplement_card": 177442,
+    "A_exact_card": 235903710,
+    "identity_holds": true,
+    "supplement_share_pct": 0.075218
+  },
+  "payload_contents": {
+    "distinct_edge_side_keys": 41418,
+    "total_supplement_starts_enumerated": 82836,
+    "key_format": "<edge_index>|<side>  where side is -1 (upstream) or +1 (downstream)"
+  },
+  "payload_integrity_reverified_at_commit_time": {
+    "DEFECT_FOUND_AND_RECORDED": "S49",
+    "what_the_receipt_field_payload_sha256_actually_covers": "the SHA-256 of json.dumps(payload, sort_keys=True).encode() -- the canonical uncompressed JSON serialization -- NOT the bytes of the .json.gz file on disk (builder lines 408-411).",
+    "why_this_matters": "A verifier running sha256sum on the committed shard_NN.json.gz gets a value that does not equal the receipt's payload_sha256 and would reasonably conclude the artifact was corrupted or substituted. It was not. The content hash is the stronger of the two (immune to gzip mtime and compression-level variation) but the field name did not say so.",
+    "canonical_content_sha256_verified": 12,
+    "canonical_content_sha256_mismatches": [],
+    "all_content_hashes_match_receipts": true,
+    "file_sha256_of_committed_bytes": {
+      "shard_00.json.gz": "a6d9cdd5c4dd46f28aadef6b620c0326935417c796e7e597c59f2ff976ba1115",
+      "shard_01.json.gz": "c7da56354e81e4fd6489294f8ca2babed6c1da8d5e5921b42a72a3cd7348ee15",
+      "shard_02.json.gz": "42a266e1c09acf1c5cfd17dcc0ab6f17936c726def226618930b7cd8780e4e51",
+      "shard_03.json.gz": "02344048f9a1a7995d6cc4ad6bd078008447e75ccf19ed73e158e6299ba47ad2",
+      "shard_04.json.gz": "d4920b71dfd61c17c63f6fe459179edd85e5299aed47dcbf72b4b9f6b43ebf70",
+      "shard_05.json.gz": "14ba3fc499cefd07dcd3f4cc89f6502e7e8852adbd3cc6503338c2d1481f8cc7",
+      "shard_06.json.gz": "a7d51609b930b154bf140e6fb46cddbbd7dbb79a096897437f2d9bd58ecdbdc7",
+      "shard_07.json.gz": "400ca74d62c38704ee8020337820fb164519e89a9b8b150e9ca2034660d30a3d",
+      "shard_08.json.gz": "82411ba1198fd92d74f1bbe606b019a60843f082f64932686ccce764e87408ca",
+      "shard_09.json.gz": "a2a16a506eecb143ca6f02b648f3bb490ac63f15f4d5c762f08d52490334de8b",
+      "shard_10.json.gz": "4f2ba65c5e261a703b148a63ebbb7a0d33edd6a12fff352be3da08a9452957d8",
+      "shard_11.json.gz": "b3652f5bad0c07d1c1fcd8fecde73a1a448d50d67db8c2ace4a9a2aff994868e"
+    },
+    "verify_content": "python -c \"import json,gzip,hashlib;print(hashlib.sha256(json.dumps(json.load(gzip.open('shard_00.json.gz','rt')),sort_keys=True).encode()).hexdigest())\"",
+    "verify_file": "sha256sum shard_00.json.gz"
+  },
+  "input_identity_agreed_across_all_shards": {
+    "e2_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+    "pu1_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+    "liftover_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c"
+  },
+  "inputs_consistent": true,
+  "interpretation": {
+    "canonical_finding_E1_was_a_real_gap": true,
+    "evidence": "177,442 admissible starts exist that the affine-interior argument alone could not certify. A sampler restricted to A_interior would have been unable to ever draw them.",
+    "what_this_does_NOT_yet_establish": "That the sampler drawing from A_exact is uniform and correctly fails closed. That is the frozen qualification suite, which has not run."
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "e2_correspondence_outcome_opened": false
+  }
+}
