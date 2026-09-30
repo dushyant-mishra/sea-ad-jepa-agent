@@ -1066,3 +1066,59 @@ Only after that should auxiliary multimodal supervision be tested.
 - no protected biological correspondence opened by this handoff
 - no final factorized target selected
 - no multimodal teacher training authorized
+
+
+# 33. Critical post-handoff correction — exact-control availability is not full Phase A
+
+A later code-level audit of Claude head `0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab` found that the prior wording **"Phase A structurally accepted at 13,510" was too permissive and is retracted**.
+
+The frozen V2 Phase-A contract requires the primary funnel:
+
+```
+20,709 E2 edges
+  -> gene present in NIH-CARD
+  -> gene unambiguous in NIH-CARD
+  -> linked distal overlaps NIH-CARD consensus peak
+  -> CONTROL_A chosen side has an exact admissible start
+  -> final Phase-A retained population
+```
+
+The live executor `scripts/v64/nihcard_stage3_phase_a_exact_executor_v2.py` does not implement the first three linked-side stages. It loads all 20,709 E2 rows and sets:
+
+```
+retained = CONTROL_A succeeds
+```
+
+Therefore the authoritative interpretation of **13,510** is:
+
+`FULL_E2_EXACT_CONTROL_A_AVAILABILITY = 13,510`
+
+not the final Phase-A retained population.
+
+The exact sampler remains **QUALIFIED**.
+
+S50 remains **CLOSED for the current production chain**.
+
+The exact CONTROL_A/B machinery remains accepted for its narrow purpose.
+
+Full Phase A is **NOT YET CONTRACT-COMPLIANT**.
+
+The lawful successor must compose:
+
+`frozen linked-side structural eligibility + qualified exact CONTROL_A/B machinery`
+
+without reviving any superseded control logic.
+
+A second blocking issue is also confirmed: the current exact-control rows/receipt do not implement the full V2 hierarchical structural artifact or bind all provenance required by `V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json`.
+
+The corrected independent audit is:
+
+`results/v64/V64_PHASE_A_EXACT_INDEPENDENT_AUDIT_V1.json`
+
+Its current verdict is:
+
+`EXACT_CONTROL_SELECTION_ACCEPTED_AT_13510__FULL_PHASE_A_NOT_CONTRACT_COMPLIANT`
+
+The prospective singleton/small-support control-randomness contract remains valid and frozen.
+
+Phase B stays STOPPED.
