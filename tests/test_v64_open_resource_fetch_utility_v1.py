@@ -20,9 +20,17 @@ def test_fetch_plan_is_exact_url_only_and_nonempty():
     m=_load()
     manifest=json.loads((ROOT/"results/v64/V64_OPEN_RESOURCE_FETCH_MANIFEST_V1.json").read_text())
     items=m.plan(manifest)
-    assert len(items)>=7
+    expected=sum(
+        1 if "download_url" in r else len(r.get("download_urls", []))
+        for r in manifest["resources"]
+        if r.get("automated_fetch", False)
+    )
+    assert expected > 0
+    assert len(items)==expected
     assert all(x["url"].startswith("https://") for x in items)
     assert all(x["resource_id"] for x in items)
+    manual_ids={r["id"] for r in manifest["manual_custody_resources"]}
+    assert not (manual_ids & {x["resource_id"] for x in items})
 
 
 def test_dry_run_does_not_download_or_authorize_training(capsys,tmp_path):
