@@ -1,0 +1,107 @@
+{
+  "schema": "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_ANY_NIH_CARD_STAGE3_FEATURE_MATRIX_EXISTS",
+  "responds_to_audit": "90a1288c9f6722e920abfb4854deeefcba9857ef",
+  "supersedes_for_the_calibration_step": "the pair-level copula arm of V64_NIH_CARD_REALISM_CALIBRATED_SYNTHETIC_DESIGN_CONTRACT_V1 and its executor successor rule",
+  "does_not_supersede": "the parent design contract's allowed/forbidden inputs, firewall, nuisance families, frozen estimator, out-of-span rule, outcome classes, no-improvisation rule, seeds or M_MIN",
+  "e2_correspondence_outcome_opened": false,
+  "nih_card_stage3_feature_matrix_measured_at_freeze_time": false,
+
+  "WHY_A_SUCCESSOR_IS_NEEDED": {
+    "finding": "The calibration arms frozen so far operate on a FLAT, PAIR-LEVEL feature matrix. Both the Gaussian copula and the Iman-Conover reordering permute each feature column independently across rows. Whatever promoter hierarchy existed in the real matrix is destroyed by that permutation.",
+    "why_retrofitting_promoter_ids_does_not_fix_it": "Attaching promoter labels to the shuffled rows and grouping by them would assemble blocks whose feature values no longer belong together. That MANUFACTURES a hierarchy rather than restoring one, and the resulting promoter blocks would be internally incoherent -- a promoter's degree paired with another promoter's activity and a third promoter's edges.",
+    "why_it_matters_scientifically": "Promoter degree and promoter activity are properties OF A PROMOTER, shared by all of that promoter's edges. Distance, accessibility, RE density and anchor frequency vary EDGE BY EDGE within a promoter. Collapsing that two-level structure into one flat table and then shuffling it destroys exactly the dependence that the nuisance families NEG_ANCHOR_1 and NEG_GEO_1 are designed to exploit, and that the estimator's cross-fitting BY PROMOTER is designed to handle.",
+    "consequence_if_ignored": "A realism-calibrated world built from flat-shuffled geometry would have correct marginals and correct pairwise rank dependence while having NO promoter-level structure at all. The qualification would then test the estimator against a world that is realistic in its histograms and unrealistic in its hierarchy."
+  },
+
+  "VARIABLE_LEVEL_ASSIGNMENT_FROZEN_HERE": {
+    "promoter_level": {
+      "variables": ["promoter_degree", "promoter_activity"],
+      "definition": "one value per promoter, shared by every edge of that promoter",
+      "note": "promoter_degree is the count of E2 edges sharing the promoter anchor, so it is definitionally a promoter property and is also the block size"
+    },
+    "edge_level": {
+      "variables": ["log_distance", "distal_accessibility", "re_density",
+                    "anchor_frequency"],
+      "definition": "one value per (promoter, distal) edge"
+    },
+    "derived": {
+      "variables": ["log_distance^2", "promoter_degree^2", "distal_accessibility^2",
+                    "log_distance*promoter_degree", "log_distance*distal_accessibility",
+                    "promoter_degree*anchor_frequency"],
+      "rule": "NEVER calibrated or sampled directly. Always RECOMPUTED from the sampled base variables, so the algebraic relationships hold exactly by construction."
+    },
+    "not_calibrated_here": {
+      "variables": ["rna_depth_sensitivity", "atac_depth_sensitivity"],
+      "reason": "S45. These are produced inside frozen T.simulate from simulated donor matrices; they are not world inputs and no calibration step can reach them.",
+      "status": "OPEN, requires a simulator successor"
+    }
+  },
+
+  "REQUIRED_INPUT_SCHEMA": {
+    "source": "the audited Stage-3 real feature artifact",
+    "must_carry": {
+      "promoter_key": "a stable identifier for the promoter anchor of each edge, sufficient to group edges into true promoter blocks BEFORE any shuffling",
+      "edge_rows": "one row per E2 edge with the 6 base features",
+      "linked_flag": "whether the row is a linked E2 edge or a matched control"
+    },
+    "fail_closed": "If the promoter key is absent, calibration STOPS. It does not infer blocks from feature values, and it does not proceed flat."
+  },
+
+  "FROZEN_TWO_LEVEL_PROCEDURE": {
+    "step_1_build_the_real_hierarchy": "group real edge rows by promoter key; record the real block-size distribution, which is the real promoter-degree distribution",
+    "step_2_calibrate_the_promoter_level": "estimate the joint distribution of (promoter_degree, promoter_activity) over PROMOTERS, one observation per promoter, not per edge. Weighting promoters by their edge count here would over-represent high-degree promoters and is forbidden.",
+    "step_3_calibrate_the_edge_level_CONDITIONALLY": "estimate the distribution of the 4 edge-level variables CONDITIONAL on the promoter-level draw. The conditioning variable is promoter_degree, binned by its own empirical quantiles, so that edges are drawn from promoters of comparable degree.",
+    "step_4_generate": [
+      "draw a synthetic promoter: one (degree, activity) pair from the promoter-level calibration",
+      "draw that promoter's `degree` edges from the edge-level calibration conditioned on its degree bin",
+      "recompute all 6 derived features from the sampled bases"
+    ],
+    "exactness_requirement": "The promoter-level marginals and the edge-level marginals must each be reproduced exactly by rank reordering within their own level, as in the Iman-Conover arm already frozen. Exactness is asserted per level and the run refuses to emit on failure.",
+    "declared_sensitivity_arm": "WHOLE-PROMOTER-BLOCK BOOTSTRAP: resample entire real promoter blocks with replacement, preserving the real hierarchy exactly but unable to extrapolate. Reported alongside the primary; material disagreement between arms is a reportable finding about the conditional model, not something to resolve by preference."
+  },
+
+  "REQUIRED_OUTPUT_SCHEMA": {
+    "npz_keys": ["X_promoter_level", "X_edge_level", "promoter_index", "names"],
+    "promoter_index": "for each edge row, the index of its synthetic promoter, so the hierarchy is explicit in the artifact rather than implied",
+    "receipt_must_record": [
+      "the sha256 of every emitted geometry NPZ, so downstream stages can bind to the receipt and not merely to caller-supplied digests",
+      "real vs synthetic block-size distributions",
+      "real vs synthetic promoter-level marginals and joint structure",
+      "real vs synthetic edge-level marginals conditional on degree bin",
+      "per-level exactness assertions"
+    ]
+  },
+
+  "MANDATORY_HIERARCHY_REALISM_CHECKS": {
+    "note": "Marginal agreement is not evidence of hierarchical agreement. These are additional to the existing realism receipt, not a replacement.",
+    "checks": [
+      "block-size distribution: real vs synthetic promoter degree, including the degree-1 mass and the observed maximum",
+      "within-promoter variance of each edge-level variable, real vs synthetic",
+      "intraclass correlation of each edge-level variable by promoter, real vs synthetic -- this is the direct measure of whether hierarchy survived",
+      "promoter-level joint structure of (degree, activity)",
+      "number of distinct promoters generated versus the real count"
+    ],
+    "claim_rule": "No world may be described as preserving NIH-CARD promoter structure without the intraclass-correlation comparison."
+  },
+
+  "POST_CONSTRUCTION_REQUIREMENT": {
+    "rule": "Realism must be verified on the features the ESTIMATOR ACTUALLY SEES, recomputed from the constructed world, not only on the calibration input.",
+    "reason": "the derived features are rebuilt from the world and the depth sensitivities are regenerated inside the simulator, so input-side realism does not imply world-side realism"
+  },
+
+  "WHAT_THIS_CONTRACT_DOES_NOT_CLAIM": [
+    "it does not calibrate depth-sensitivity geometry (S45, open)",
+    "it does not calibrate donor count, per-donor metacell count, sparsity, missingness or edge-specific donor support (S46, open)",
+    "it does not change the estimator, the nuisance families, M_MIN or any threshold",
+    "it does not make the historical 14-D span diagnostic interpretable; that verdict remains withdrawn"
+  ],
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "E2": "CLOSED", "stage_4": "NOT_AUTHORISED",
+    "uses_AD_loci": false, "uses_JEPA_targets": false, "uses_Morabito": false,
+    "uses_SEA_AD": false, "uses_disease_labels": false
+  }
+}
