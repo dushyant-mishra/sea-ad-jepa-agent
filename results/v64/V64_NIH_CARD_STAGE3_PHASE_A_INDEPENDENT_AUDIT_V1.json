@@ -1,0 +1,79 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_branch": "claude/v64-nihcard-realism-design-20260929",
+  "audited_commit": "9ed92fff26c633d9c956f254cd2c9a129d0b2a1b",
+  "merge_tip": "f9ee3f9b62d97350e0db809e4b7aaa213728205b",
+  "verdict": "C_S44_C_S45_SELF_REPAIRS_DIRECTIONALLY_CORRECT__15646_FUNNEL_NOT_YET_QUALIFIED",
+  "accepted": {
+    "C_S44": "Accepted: bounded 40-draw rejection sampling is not a valid way to infer absence of admissible controls and can select on accessibility/support geometry.",
+    "C_S45": "Accepted: hg19 candidate coordinates must not be biologically filtered against hg38 tracks before liftover.",
+    "firewall": "Phase A code reads no RNA/ATAC matrix values; no correspondence is constructed.",
+    "arithmetic": "The reported funnel numerically reconciles 350 + 199 + 4514 + 15646 = 20709."
+  },
+  "blocking_findings": {
+    "A1_control_exclusion_universe": {
+      "severity": "HIGH",
+      "contract": "Control must not overlap ANY E2 distal partner OF THAT PROMOTER.",
+      "code": "Builds one global `forb` interval index from all E2 distal intervals and rejects any candidate overlapping any E2 distal from any promoter.",
+      "consequence": "Control eligibility is stricter than frozen and depends on unrelated promoters' distal occupancy; the 4,514 drop count and 15,646 retained count are not contract-compliant.",
+      "required": "Index forbidden E2 distal intervals by promoter_key and apply only the fixed promoter's distal partners (which includes the linked distal)."
+    },
+    "A2_C3_roundtrip_missing": {
+      "severity": "CRITICAL",
+      "contract": "Same frozen C3 lift rule: v479, minMatch 0.95, single mapping, same chromosome, exact length, exact round trip.",
+      "code": "Checks forward mapping, multiplicity, chromosome and length only. No hg38→hg19 reverse lift and exact-coordinate round-trip assertion is performed.",
+      "consequence": "Controls that would fail the frozen C3 identity gate can enter the admissible pool. This directly affects the funnel and control coordinates.",
+      "required": "Run the same reverse-chain exact round-trip test used by C3 and reject any candidate not returning exactly to its original hg19 interval."
+    },
+    "A3_direction_rule_not_followed": {
+      "severity": "HIGH",
+      "contract": "Control may lie on either side; side is drawn with the frozen seed and recorded.",
+      "code": "Enumerates both sides and draws uniformly over all admissible candidate windows. Therefore side probability is proportional to the number of admissible windows on each side.",
+      "consequence": "The side is not a frozen random draw and can become associated with accessibility/liftability/support density.",
+      "required": "Implement the frozen side draw explicitly per linked edge before control selection, record it, and apply a prospectively defined fail-closed rule if that side has no admissible control. Do not switch sides after observing failure unless the governing contract is prospectively superseded."
+    },
+    "A4_second_control_draw_missing": {
+      "severity": "HIGH",
+      "contract": "One primary control draw plus a SECOND independent control draw reserved solely for the control-vs-control null.",
+      "code": "Emits one CONTROL row per retained linked edge and no second independent control.",
+      "consequence": "The anti-false-green control-control null cannot be executed from this Stage-3 artifact as frozen.",
+      "required": "Generate and persist the second independent control draw under the frozen seed semantics, separately labelled and never substituted for the primary."
+    },
+    "A5_anchor_frequency_wrong_definition": {
+      "severity": "CRITICAL",
+      "contract": "anchor_frequency = number of distinct E2 promoters whose distal partners overlap this interval.",
+      "code": "`anc[f'{chrom}:{distal_start_hg38}'] += 1` and later exact-start lookup; controls use exact start or zero.",
+      "consequence": "This is an exact-start multiplicity, not interval-overlap distinct-promoter frequency. It changes a frozen nuisance covariate central to NEG_ANCHOR and the estimator basis.",
+      "required": "Compute interval-overlap counts of DISTINCT promoter keys against each linked/control interval, using the frozen E2 distal set."
+    },
+    "A6_candidate_search_not_exhaustive": {
+      "severity": "HIGH",
+      "finding": "The producer describes an 'exhaustive scan', but candidate starts are sampled on a deterministic grid with `step=max(1000,(hi-lo)//60)`. This is not enumeration of all admissible 5-kb placements in the matched distance band.",
+      "consequence": "`DROP_NO_ADMISSIBLE_CONTROL_AFTER_LIFT` still partly reflects the proposal lattice. The 15,646 count cannot be interpreted as the full contract-testable population without a prospectively defined candidate universe.",
+      "required": "Freeze the candidate universe before rerun. Prefer an exact interval-based sampler over admissible hg19 start ranges, or a clearly predeclared base-pair/grid lattice justified before results. Do not call the current grid exhaustive."
+    },
+    "A7_artifact_receipt_not_fully_bound": {
+      "severity": "MEDIUM",
+      "finding": "Receipt producer.git_blob is null and receipt does not contain SHA-256 of the emitted Stage-3 structural NPZ, despite the Stage-3 artifact contract requiring producer Git/blob provenance and artifact digest binding.",
+      "required": "Successor receipt must bind the exact producer Git blob and every emitted artifact SHA-256."
+    }
+  },
+  "nonblocking_observations": {
+    "gene_resolution": "350 genes absent; no ambiguous-gene drop appears because NIH-CARD gene_ids are unique in this file.",
+    "donor_census": "87,384 MG / 357 donors / 282 donors >=100 is consistent with prior NIH-CARD schema work, but Part 3 precision remains unexecuted.",
+    "phaseB": "Must not start from this structural artifact as authoritative until A1-A7 are repaired and the Phase-A funnel is re-audited."
+  },
+  "required_next_step": {
+    "action": "STOP Phase B and Part 3 artifact binding; repair Phase-A producer prospectively and rerun the structural funnel.",
+    "preserve": "Keep 9ed92fff and its 15,646 result as a superseded diagnostic checkpoint, not current authority.",
+    "no_reuse": "Do not tune proposal density or choose a candidate lattice to recover a desired retention fraction."
+  },
+  "governance": {
+    "stage4": "NOT_AUTHORISED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
