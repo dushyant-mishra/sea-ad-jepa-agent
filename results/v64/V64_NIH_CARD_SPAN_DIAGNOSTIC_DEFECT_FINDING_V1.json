@@ -1,0 +1,125 @@
+{
+  "schema": "V64_NIH_CARD_SPAN_DIAGNOSTIC_DEFECT_FINDING_V1",
+  "date": "2026-09-30",
+  "raised_by": "self-audit before executing Part 5",
+  "severity": "HIGH",
+  "action_taken": "PART 5 HALTED AND REPORTED. Not patched from this lane, per the standing rule that a lane which finds a defect in a frozen design produces finding + evidence + proposed successor and STOPS for audit.",
+  "parts_3_and_4_unaffected": "They do not consume the synthetic reference and proceed.",
+  "e2_correspondence_outcome_opened": false,
+  "FINDING": {
+    "statement": "The frozen out-of-span diagnostic compares real NIH-CARD feature values against the historical synthetic reference by standardising the real values with the SYNTHETIC mean and SD and by testing whether real IQRs lie inside the SYNTHETIC observed range. That is only meaningful if the two sides are on the same measurement scale. For 4 of the 6 base features they are not, because the historical simulator draws dimensionless surrogates that were never given a unit correspondence to the real observables.",
+    "consequence": "The verdict conflates two different things -- (a) real geometry lying outside the simulator's support, which is what it is meant to measure, and (b) the two quantities never having been on the same scale. (b) dominates, by a wide margin.",
+    "it_is_not": "a claim that the simulator is wrong, or that the real data is wrong. It is a claim that this particular comparison cannot separate those two explanations."
+  },
+  "UNIT_COMMENSURABILITY_AUDIT": {
+    "method": "read the frozen generator in scripts/v63/e2_synthetic_identifiability_tournament_v2_1.py make_world() against the frozen NIH_CARD_observable_mapping in V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1",
+    "commensurable": {
+      "log_distance": {
+        "synthetic": "log of exp(uniform(log 1e4, log 2e6)) -- log base pairs",
+        "real": "log of source hg19 promoter-distal separation in base pairs",
+        "verdict": "SAME UNITS. Comparison valid.",
+        "measured": "synthetic [9.210, 14.509]; real [9.210, 13.816]; 0.0000 of real outside"
+      },
+      "promoter_degree": {
+        "synthetic": "rng.integers(2, 12) -- a count",
+        "real": "count of E2 edges sharing that promoter anchor",
+        "verdict": "SAME UNITS. Comparison valid.",
+        "measured": "synthetic [2, 11]; real [1, 29]; 0.2429 of real outside, 14.76% at degree 1 below the synthetic minimum and 9.53% above the synthetic maximum",
+        "note": "this previously reported mismatch STANDS and is a genuine geometry finding"
+      }
+    },
+    "NOT_commensurable": {
+      "promoter_activity": {
+        "synthetic": "rng.normal(0, 1) -- a dimensionless standard normal, symmetric about zero",
+        "real": "donor-level mean log1p CP10K RNA, which is non-negative by construction",
+        "verdict": "NO UNIT CORRESPONDENCE. A standard normal and a non-negative log1p expression mean are not the same quantity."
+      },
+      "distal_accessibility": {
+        "synthetic": "rng.normal(0, 1)",
+        "real": "donor-level mean log1p normalised ATAC over the assigned peak set, non-negative",
+        "verdict": "NO UNIT CORRESPONDENCE."
+      },
+      "re_density": {
+        "synthetic": "rng.gamma(2.0, 1.0) -- dimensionless, mean 2.0",
+        "real": "count of NIH-CARD consensus peaks within +/-50 kb of the distal midpoint",
+        "verdict": "NO UNIT CORRESPONDENCE. MEASURED BELOW."
+      },
+      "anchor_frequency": {
+        "synthetic": "rng.gamma(1.5, 1.0) -- dimensionless, mean 1.5",
+        "real": "count of distinct E2 promoters whose distal partners overlap this interval",
+        "verdict": "NO UNIT CORRESPONDENCE."
+      }
+    },
+    "derived_products_inherit_the_mismatch": [
+      "distal_accessibility^2",
+      "log_distance*distal_accessibility",
+      "promoter_degree*anchor_frequency"
+    ],
+    "summary": "2 of 6 base features are unit-commensurable; 4 are not; 12 of the 14 total features are affected directly or through products."
+  },
+  "MEASURED_EVIDENCE__re_density": {
+    "why_this_one": "it is computable today from authenticated bytes and pure coordinate arithmetic, so the claim is a measurement rather than an argument",
+    "computation": "NIH-CARD consensus peaks overlapping a +/-50 kb window around each E2 distal midpoint, over all 20,709 edges",
+    "real": {
+      "n": 20709,
+      "min": 2,
+      "p25": 22,
+      "median": 29,
+      "p75": 36,
+      "p95": 47,
+      "max": 69,
+      "mean": 29.3
+    },
+    "synthetic": {
+      "range": [
+        0.003,
+        14.047
+      ],
+      "mean": 1.999,
+      "sd": 1.413
+    },
+    "fraction_of_real_outside_synthetic_range": 0.9333,
+    "real_median_in_synthetic_sd_units": 19.1,
+    "synthetic_p99_mahalanobis_radius_for_all_14_features": 7.2571,
+    "the_decisive_number": "The real MEDIAN edge sits 19.1 synthetic standard deviations from the synthetic mean on this ONE feature, against a p99 radius of 7.26 that is supposed to bound the whole 14-dimensional vector. A single feature therefore forces essentially every real pair beyond the radius, before any genuine geometry difference is considered.",
+    "predicted_verdict_if_executed_as_frozen": "OUT_OF_SPAN at ~100%, driven by a unit artifact rather than by geometry"
+  },
+  "WHY_THIS_MATTERS_BEYOND_PART_5": {
+    "point": "This does not weaken the case for the realism-calibrated simulator. It strengthens it.",
+    "reasoning": "The historical simulator is not merely TOO NARROW, which is outcome class B in the frozen realism contract. For 4 of 6 base features it is not on the real measurement scale at all. An OUT_OF_SPAN verdict was therefore never going to be informative about geometry, and the realism-calibrated simulator -- which is built from the real marginals by construction and so is in real units by definition -- is the correct instrument for the question the span diagnostic was trying to answer.",
+    "affects_realism_receipt": "The REAL_VS_HISTORICAL_SYNTHETIC_MISMATCH block in the realism calibration receipt compares the same incommensurable quantities and needs the same caveat. It is descriptive and harms nothing, but it must not be read as a geometry measurement for the 12 affected features."
+  },
+  "PROPOSED_SUCCESSOR__NOT_IMPLEMENTED_HERE": {
+    "rule": "a lane that finds a defect in a frozen design proposes and stops; it does not patch",
+    "proposal": {
+      "1_restrict_the_support_verdict": "Compute the frozen IN_SPAN / OUT_OF_SPAN support test ONLY over the unit-commensurable features (log_distance, promoter_degree). Report it as a support verdict restricted to that subset, naming the restriction.",
+      "2_report_the_rest_as_shape_only": "For the 12 incommensurable features, report a SHAPE comparison with each side standardised by its OWN mean and SD. That measures distributional shape and dependence mismatch, which is meaningful, and explicitly does NOT claim to measure support overlap.",
+      "3_do_not_recalibrate_the_reference_to_real_units": "Rescaling the synthetic reference onto real units would make the test vacuous, since it would then always be IN_SPAN by construction. That is the wrong repair and is explicitly rejected here.",
+      "4_do_not_move_the_10_percent_or_p99_thresholds": "The thresholds are not the defect. Changing them would be post-hoc retuning against a known direction.",
+      "5_record_the_supersession_of_purpose": "State that the realism-calibrated qualification supersedes the span diagnostic as the instrument for asking whether the estimator is qualified under real geometry, because it is in real units by construction."
+    },
+    "what_stays_valid_unchanged": [
+      "the previously reported promoter_degree mismatch (24.29% of real edges outside the synthetic range, degree 1 and degree up to 29)",
+      "log_distance fully inside the synthetic range at 0.0000 outside",
+      "the frozen span reference artifact itself, which is a faithful record of the historical synthetic geometry"
+    ]
+  },
+  "SELF_AUDIT_ITEM": {
+    "id": "S43",
+    "what_I_missed_and_for_how_long": "I wrote the V1 design contract's NIH_CARD_observable_mapping and the span diagnostic in the same document, and did not check that the mapped real observables were on the same scale as the synthetic variables they would be compared against. I then froze the span reference, smoke-tested it, reported its p99 radius, and reported a partial span indication -- all without noticing that 4 of 6 base features had no unit correspondence.",
+    "what_caught_it": "a self-audit before executing Part 5, prompted by the mapping feeling wrong when re-read rather than by any failing check",
+    "why_no_check_caught_it": "every check I built verified that the pipeline RAN and that numbers were reproducible. None asked whether the two sides of the comparison were the same kind of quantity. A diagnostic can be perfectly reproducible and still be measuring the wrong thing.",
+    "caught_before_damage": "YES. No span verdict has been emitted, and the only span-derived figures reported so far are for the two commensurable features, both of which remain valid."
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "E2": "CLOSED",
+    "stage_4": "NOT_AUTHORISED",
+    "part_5_status": "HALTED_PENDING_AUDIT",
+    "parts_3_and_4_status": "PROCEEDING"
+  },
+  "SUPERSEDED_BY": "results/v64/V64_NIH_CARD_SPAN_DIAGNOSTIC_DEFECT_FINDING_V2.json",
+  "SUPERSEDED_REASON": "accounting wrong in both directions (claimed 12 of 14 affected; correct is 9 of 14, with 5 commensurable), depth sensitivities misclassified as partially comparable when they are noncommensurable, and the 19.1 SD figure mislabelled as a distance when it has no transport meaning. Substance of the defect stands; the accounting and framing are corrected in V2."
+}
