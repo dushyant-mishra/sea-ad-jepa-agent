@@ -56,6 +56,7 @@ TOURNAMENT = "scripts/v63/e2_synthetic_identifiability_tournament_v2_1.py"
 ESTIMATOR = "scripts/v63/e2_continuous_adjustment_estimator_v1.py"
 STRESS = "scripts/v64/v64_frozen_stress_runner_v1.py"
 FROZEN_OUTSPAN = "results/v64/V64_FROZEN_STRESS_OUTSPAN_V1.json"
+TOLERANCE_AUTHORITY = "results/v64/V64_NIH_CARD_HISTORICAL_REPRODUCTION_TOLERANCE_V1.json"
 HIER_CONTRACT = ("results/v64/"
                  "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V1.json")
 
@@ -175,6 +176,7 @@ def main() -> int:
 
     patch_state = {"calls": 0}
     calibrated_info = None
+    historical_receipt_binding = None
 
     if a.mode == "calibrated":
         # DEFECT 2: calibrated mode requires a PASSED historical receipt
@@ -186,7 +188,27 @@ def main() -> int:
             raise SystemExit("STOP_HISTORICAL_RECEIPT_DID_NOT_PASS")
         if rep.get("tolerance") != NUMERIC_TOL:
             raise SystemExit("STOP_HISTORICAL_RECEIPT_TOLERANCE_MISMATCH")
-        log(f"historical receipt accepted: worst delta {rep['worst_abs_delta']:.3e}")
+
+        # Strong provenance binding: PASS+tolerance alone is not sufficient.
+        pb = hr.get("provenance_binding") or {}
+        expected_blobs = {
+            "tournament_git_blob": git_blob(TOURNAMENT),
+            "estimator_git_blob": git_blob(ESTIMATOR),
+            "stress_runner_git_blob": git_blob(STRESS),
+            "tolerance_authority_git_blob": git_blob(TOLERANCE_AUTHORITY),
+        }
+        for key, expected in expected_blobs.items():
+            observed = pb.get(key)
+            if observed != expected:
+                raise SystemExit(
+                    f"STOP_HISTORICAL_RECEIPT_PROVENANCE_MISMATCH {key}: "
+                    f"observed={observed!r} expected={expected!r}"
+                )
+        if pb.get("tolerance_authority_path") != TOLERANCE_AUTHORITY:
+            raise SystemExit("STOP_HISTORICAL_RECEIPT_TOLERANCE_AUTHORITY_PATH_MISMATCH")
+        historical_receipt_binding = {"path": a.historical_receipt, "git_blob_bindings": expected_blobs}
+        log(f"historical receipt accepted: worst delta {rep['worst_abs_delta']:.3e}; "
+            "module and tolerance-authority provenance bindings verified")
 
         # DEFECT 3: refuse retrofitted pair-level geometry outright
         if not (a.hierarchical_geometry and a.hierarchical_geometry_sha256):
@@ -274,6 +296,7 @@ def main() -> int:
         "ADJUDICATION": adj,
         "ACCEPTANCE_GATE_historical_reproduction": repro,
         "calibrated_geometry": calibrated_info,
+        "historical_receipt_binding": historical_receipt_binding,
         "OPEN_NOT_FIXABLE_HERE": {
             "S45_depth_sensitivity_realism": "OPEN; requires a simulator successor",
             "S46_support_geometry_realism": "OPEN; requires a simulator successor",
