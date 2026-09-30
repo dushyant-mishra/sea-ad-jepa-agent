@@ -1,0 +1,66 @@
+Started, and the working branch is being updated continuously:
+
+`planning/v5-dataset-first-production-closure-20260912`
+
+I kept the source branch `repair/v5-qualified-target-guard-20260911` untouched.
+
+So far the dataset-first production path moved forward substantially:
+
+- killed the TRAIN-cache → FULL104 authority loophole;
+- added canonical artifact hashing/binding;
+- built explicit FULL104 → dimension-authority interface;
+- wrote exact remote FULL104 execution contract;
+- fixed a pre-existing CUDA-evidence rejection test bug;
+- implemented `scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py`;
+- fixed D_shared firewall equality error against the one-SE rule;
+- added held-donor predictability gate;
+- froze outcome-blind prospective D_private and D_obs candidates;
+- removed row-identity-only closure as substitute for physical FULL104 expression closure;
+- added hash-bound dimension metric/selection artifacts.
+
+A RED→GREEN cycle initially gave:
+
+`2 failed, 91 passed`
+
+for the missing held-donor gate and incorrect firewall equality assumption. Both were repaired. The earlier provenance stage had reached:
+
+`85 passed`
+
+with authority-source compilation succeeding.
+
+Permanent blocker ledger:
+
+`docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md`
+
+Remaining major pieces before lawful numeric D_shared / D_private / D_total / D_obs:
+
+1. Physical FULL104 closure on the >30 GB 8,915-block store.
+2. Actual full-stream metric executors for D_shared, D_private and D_obs.
+3. Prospective Monte-Carlo precision authority rather than inheriting historical replicate counts.
+
+Current sequence:
+
+```
+FULL104 physical closure
+        ↓
+real full-stream metric executors
+        ↓
+prospective Monte-Carlo precision authority
+        ↓
+hash-bound rank metrics
+        ↓
+D_shared
+        ↓
+D_private
+        ├── D_total = D_shared + D_private
+        ↓
+D_obs
+        ↓
+DimensionExecutionFirewall
+        ↓
+DimensionAuthorityV4
+        ↓
+still NO training authority
+```
+
+No merge into main, protected data untouched, training disabled.
