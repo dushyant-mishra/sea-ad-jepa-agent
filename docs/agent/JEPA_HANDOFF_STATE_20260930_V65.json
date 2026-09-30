@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V64_SUCCESSOR_ARCHITECTURE_AND_EXACT_CONTROL_HANDOFF__PHASE_A_BLOCKED_PENDING_FULL_SAMPLER_QUALIFICATION__TRAINING_OFF",
+  "status": "V65_PHASE_A_STRUCTURAL_EXECUTION_ACCEPTED__PHASE_B_BLOCKED_ON_PROSPECTIVE_CONTROL_RANDOMNESS_STRATA__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
-    "claude_exact_sampler": "f2b45699d1be88cc599971da243ba6e36a50c4a7",
+    "claude_exact_sampler": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -32,8 +32,20 @@
       "positive_control_bp": 4000
     },
     "real_edge_qualification_last_reported": "15/64 complete, 0 inequalities",
-    "sampler_qualified": false,
-    "phaseA_rerun_authorized": false
+    "sampler_qualified": true,
+    "phaseA_rerun_authorized": true,
+    "phaseA": {
+      "audited_head": "0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab",
+      "structural_result": "ACCEPTED",
+      "retained_primary": 13510,
+      "dropped_control_A_failed": 7199,
+      "control_B_success_A_failed_not_rescued": 2271,
+      "null_unavailable_A_ok_B_failed": 2232,
+      "coincident_pairs": 176,
+      "supplement_selected_controls": 37,
+      "singleton_control_A_edges": 344,
+      "structurally_degenerate_AB_null_edges": 167
+    }
   },
   "architecture": {
     "universal_teacher": "RNA_EMA_TEACHER",
@@ -122,12 +134,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Refresh Claude successor head and audit any new 64-side equality results.",
-    "If sampler qualifies, audit repaired Phase A and preserve hard stop before Phase B.",
-    "Materialize FANTOM hg38 BED artifact and run full promoter candidate ledger.",
-    "Freeze first real privileged-factor construction and recoverability decision rule on TRAIN/VALIDATION only.",
-    "Keep TEST unopened until recoverability protocol is fully frozen.",
-    "Use chat-exclusive custody manifest before assuming binary bytes exist in Git."
+    "Refresh Claude successor head beyond 0d3874cb and audit any post-Phase-A changes before accepting them.",
+    "Keep Phase B stopped until per-edge admissible-set cardinality/side fields are bound and the singleton/small-support null treatment is prospectively frozen.",
+    "Finish the full GENCODE+SCREEN+Dong+FANTOM promoter candidate ledger.",
+    "Freeze the first real privileged-factor construction and recoverability decision rule on TRAIN/VALIDATION only.",
+    "Keep paired NIH-CARD TEST unopened until recoverability protocol is fully frozen."
   ],
   "governance": {
     "training": "OFF",
@@ -135,5 +146,12 @@
     "stage4": "NOT_AUTHORIZED",
     "td60": "BLOCKED",
     "Morabito": "PROTECTED"
-  }
+  },
+  "blocked": [
+    "Phase B until control-randomness strata/null contract is closed",
+    "Stage 4",
+    "Morabito",
+    "training",
+    "final factorized-target tournament"
+  ]
 }
