@@ -313,13 +313,14 @@ Test files:
 Focused CI:
 `.github/workflows/v64-privileged-architecture-smoke.yml`
 
-Execution status at handoff:
+Execution status:
 - synthetic logic executed in this chat environment: PASS;
-- branch tests written;
 - PR #199 open and mergeable;
-- no GitHub Actions workflow run had appeared yet after adding the focused workflow.
+- focused GitHub Actions run 36741548385 completed successfully on PR #199 merge ref;
+- architecture-smoke job 109976919470 completed successfully;
+- focused pytest suite result: **22 passed in 0.28s**.
 
-Do not upgrade this to "CI passed" unless an actual run is observed.
+This is a real repository CI execution of the focused architecture suite. It is not a full production-regression run and does not authorize training, Phase B, Stage 4, or protected-data access.
 
 ## 14. Data requested for next empirical work
 
