@@ -1,0 +1,23 @@
+input byte lengths match the authenticated receipt
+E2 edges loaded and digest-verified: 20,709
+NIH-CARD consensus peaks indexed: 521,217
+RNA gene_ids indexed: 38,606 (38,606 unique)
+microglia 87,384 over 357 donors; 282 donors with >= 100
+linked structurally supported: 20,160
+    LINKED_STRUCTURALLY_SUPPORTED               20,160
+    DROP_NO_CONSENSUS_PEAK_OVER_DISTAL             199
+    DROP_GENE_NOT_IN_NIHCARD                       350
+candidate windows enumerated in hg19: 1,140,326 over 20,160 edges (median 45 per edge)
+    CAND_NO_NOTT_PU1_PEAK_HG38                 992,635
+    CAND_ADMISSIBLE                            133,067
+    CAND_NO_CONSENSUS_PEAK_HG38                  4,047
+    CAND_LENGTH_CHANGED                          6,619
+    CAND_UNMAPPED                                3,931
+    CAND_AMBIGUOUS                                  27
+    edges with >=1 admissible control: 15,646 (median options 7)
+
+final admissible linked rows: 15,646; funnel reconciles to 20,709: True
+
+hierarchy: 6,507 promoters | 15,646 LINKED | 15,646 CONTROL
+block sizes: min 2 median 4 max 52
+real promoter_degree: min 1 max 29
