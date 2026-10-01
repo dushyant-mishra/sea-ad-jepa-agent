@@ -69,8 +69,11 @@
     "all_4_permutation_gate": true,
     "all_4_geometry_gate": true,
     "technical_baseline_within_candidate_r2_forbidden_margin": 0.01,
-    "rank_choice": "SMALLEST_ELIGIBLE_NONZERO_RANK",
-    "if_none": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE"
+    "rank_choice": "LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD",
+    "if_none": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "no_skipping_failed_lower_rank": true,
+    "if_rank2_fails": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION"
   },
   "test_rule": {
     "all_4_donors_delta_positive": true,
@@ -94,5 +97,10 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED",
     "multimodal_teacher": "NOT_AUTHORIZED"
+  },
+  "synthetic_qualification": {
+    "script": "scripts/v64/qualify_recoverability_decision_synthetic_v1.py",
+    "finding": "SMALLEST_ELIGIBLE misclassifies a monotone fully-recoverable nested factor as rank 2; repaired rule selects the largest contiguous eligible rank.",
+    "real_biological_values_used": false
   }
 }
