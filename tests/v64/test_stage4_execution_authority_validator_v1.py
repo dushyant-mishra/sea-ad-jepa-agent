@@ -11,7 +11,7 @@ import validate_stage4_execution_authority_v1 as v  # noqa: E402
 
 
 CONTRACT = json.loads(
-    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json")
+    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json")
     .read_text(encoding="utf-8")
 )
 
@@ -132,6 +132,77 @@ class Stage4AuthorityMutationTests(unittest.TestCase):
         m = valid_manifest()
         m["requested_actions"] = ["compute_correspondence"]
         self.assertFailsWith(m, "REQUESTED_ACTIONS_MUST_BE_EMPTY_BEFORE_AUTHORIZATION")
+
+
+    def test_repo_git_custody_passes_with_exact_source_and_worktree_blobs(self):
+        m = valid_manifest()
+        for label, bound in CONTRACT["repo_resident_git_custody"].items():
+            m["files"][label] = {"path": bound["path"]}
+        blobs = {
+            (bound["source_commit"], bound["path"]): bound["git_blob"]
+            for bound in CONTRACT["repo_resident_git_custody"].values()
+        }
+        work = {
+            bound["path"]: bound["git_blob"]
+            for bound in CONTRACT["repo_resident_git_custody"].values()
+        }
+        errors = v.validate_repo_git_custody(
+            m, CONTRACT,
+            source_resolver=lambda commit, path: blobs.get((commit, path)),
+            worktree_resolver=lambda path: work.get(path),
+        )
+        self.assertEqual(errors, [])
+
+    def test_repo_git_custody_rejects_wrong_committed_blob(self):
+        m = valid_manifest()
+        for label, bound in CONTRACT["repo_resident_git_custody"].items():
+            m["files"][label] = {"path": bound["path"]}
+        victim = next(iter(CONTRACT["repo_resident_git_custody"]))
+        bound = CONTRACT["repo_resident_git_custody"][victim]
+        errors = v.validate_repo_git_custody(
+            m, CONTRACT,
+            source_resolver=lambda commit, path: "0" * 40 if path == bound["path"] else
+                next(x["git_blob"] for x in CONTRACT["repo_resident_git_custody"].values()
+                     if x["path"] == path),
+            worktree_resolver=lambda path:
+                next(x["git_blob"] for x in CONTRACT["repo_resident_git_custody"].values()
+                     if x["path"] == path),
+        )
+        self.assertTrue(any("GIT_CUSTODY_SOURCE_BLOB_MISMATCH:" + victim in e
+                            for e in errors), errors)
+
+    def test_repo_git_custody_rejects_uncommitted_worktree_bytes(self):
+        m = valid_manifest()
+        for label, bound in CONTRACT["repo_resident_git_custody"].items():
+            m["files"][label] = {"path": bound["path"]}
+        victim = next(iter(CONTRACT["repo_resident_git_custody"]))
+        bound = CONTRACT["repo_resident_git_custody"][victim]
+        errors = v.validate_repo_git_custody(
+            m, CONTRACT,
+            source_resolver=lambda commit, path:
+                next(x["git_blob"] for x in CONTRACT["repo_resident_git_custody"].values()
+                     if x["path"] == path),
+            worktree_resolver=lambda path: "f" * 40 if path == bound["path"] else
+                next(x["git_blob"] for x in CONTRACT["repo_resident_git_custody"].values()
+                     if x["path"] == path),
+        )
+        self.assertTrue(any("GIT_CUSTODY_WORKTREE_BLOB_MISMATCH:" + victim in e
+                            for e in errors), errors)
+
+    def test_repo_git_custody_rejects_path_substitution(self):
+        m = valid_manifest()
+        for label, bound in CONTRACT["repo_resident_git_custody"].items():
+            m["files"][label] = {"path": bound["path"]}
+        victim = next(iter(CONTRACT["repo_resident_git_custody"]))
+        m["files"][victim]["path"] = "results/v64/not_the_bound_authority.json"
+        errors = v.validate_repo_git_custody(
+            m, CONTRACT,
+            source_resolver=lambda commit, path: None,
+            worktree_resolver=lambda path: None,
+        )
+        self.assertTrue(any("GIT_CUSTODY_PATH_DRIFT:" + victim in e
+                            for e in errors), errors)
+
 
 
 if __name__ == "__main__":
