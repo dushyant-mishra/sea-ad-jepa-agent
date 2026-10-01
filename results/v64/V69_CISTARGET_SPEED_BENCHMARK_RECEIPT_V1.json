@@ -1,0 +1,155 @@
+{
+  "schema": "V69_CISTARGET_SPEED_BENCHMARK_RECEIPT_V1",
+  "recorded_utc": "2026-10-02T00:05:00Z",
+  "status": "PARTIAL__WORKER_SCALING_TABLE_NOT_YET_MEASURED__FULL_BUILDS_NOT_AUTHORISED_BY_THIS_RECEIPT",
+  "purpose": "Mandate item 9: the benchmark receipt that must precede the full cisTarget builds. It is deliberately incomplete and says so; the worker-scaling table requires an idle machine and has not been run.",
+
+  "scientific_invariance_statement": {
+    "claim": "Nothing scientific has been changed by the speed work.",
+    "specifics": [
+      "The 10,249-motif universe is NOT reduced.",
+      "Route-A and Route-B scientific definitions are unchanged.",
+      "No generic cisTarget database is substituted for either route.",
+      "No frozen threshold, control, region definition, motif annotation or acceptance criterion is altered.",
+      "The routes still differ only in their prospectively defined region universes."
+    ],
+    "one_parameter_added_and_why": "The ranking RNG seed is now PINNED. That is a determinism fix, not a method change: unpinned, the tool drew a fresh seed every run and the rankings database was not reproducible at all. See finding F2."
+  },
+
+  "hardware_measured_not_assumed": {
+    "physical_cores": 8,
+    "logical_processors": 16,
+    "ram_gb": 31.8,
+    "C_drive": {"role": "internal SSD scratch", "total_gb": 1906.5, "free_gb": 194.8},
+    "D_drive": {"role": "external, authenticated source of truth", "total_gb": 14901.9, "free_gb": 5754.2},
+    "note": "16 logical on 8 physical means -t 16 is hyperthread oversubscription, which is why the saturation point must be measured rather than set to the logical core count."
+  },
+
+  "scratch_root": {
+    "path": "C:/jepa_scratch/scenicplus",
+    "subdirectories": ["shared", "routeA", "routeB", "motif_shards", "score_shards", "tmp", "merge", "receipts"],
+    "headroom_gb_after_60gb_os_reserve": 134.8,
+    "budget_gb": "120-130",
+    "authenticated_assets_moved": "NONE. D: remains source of truth. The 63.6 GB fragment file was NOT copied to C:, because no measurement yet shows repeated fragment I/O limits Route B.",
+    "derived_asset_copied": {
+      "file": "ROUTE_A_SUBMITTED_PEAKS_regions_padded_bg.fa",
+      "bytes": 431163902,
+      "sha256": "b20e82c4daa7ec482a9b4c0464f27a49fbe80a5386f83074ed99cd5ad23330a6",
+      "custody": "SHA-256 recomputed on C: after the copy and found equal to the D: value. The copy command's exit code was not treated as proof."
+    }
+  },
+
+  "F1_union_region_score_reuse": {
+    "status": "PROVEN_AND_LICENSED",
+    "receipt": "V69_UNION_REGION_SCORE_EQUIVALENCE_V1.json",
+    "question": "Is a region's CRM score for a motif independent of which other regions are in the FASTA?",
+    "answer": "Yes, bitwise.",
+    "evidence": {
+      "design": "A and B disjoint 2,000-region slices (disjointness proven); U their union in REVERSED order so it matches neither; identical 8-motif batch, FASTA, cbust and parameters; U subset back to A and B aligned by NAME on both axes.",
+      "result_A": "0 of 16,000 cells differ; max abs difference 0.0; matrix digests equal",
+      "result_B": "0 of 16,000 cells differ; max abs difference 0.0; matrix digests equal"
+    },
+    "counter_control": {
+      "what": "The SAME comparison machinery applied to the RANKINGS.",
+      "result": "15,981 of 16,000 cells differ; max abs difference 3,560.",
+      "why_it_matters": "It proves the comparison is capable of detecting a difference. A score-equality result from a check that could never fail would be worthless. The producer now refuses to license the optimisation unless BOTH the scores match AND this control fires."
+    },
+    "consequence": "Route A and Route B may be scored ONCE over the union of their regions, paying cbust on |A union B| rather than |A| + |B|.",
+    "scope_limit_empirically_demonstrated": "Rankings are a cross-region operation and ARE route-dependent. This does NOT license sharing a rankings database. Rankings are built per route from the subset scores."
+  },
+
+  "F2_ranking_rng_seed_was_unpinned": {
+    "status": "FIXED",
+    "severity": "HIGH -- the production rankings database was not reproducible",
+    "finding": "create_cistarget_motif_databases.py draws a RANDOM seed to break ties when building rankings. Unset, it draws a fresh one every run.",
+    "measured": {
+      "workload": "same 16 motifs, same 150,561 regions, same FASTA, cbust and parameters",
+      "motifs_vs_regions_scores_bytes": {"run_D": 6455010, "run_C": 6455010, "identical": true},
+      "regions_vs_motifs_scores_bytes": {"run_D": 40121018, "run_C": 40121018, "identical": true},
+      "regions_vs_motifs_rankings_bytes": {"run_D": 41330034, "run_C": 41329818, "identical": false},
+      "observed_seed_in_one_run": 7286697094343046595
+    },
+    "two_damages_avoided": [
+      "The production rankings database -- what every downstream eRegulon claim is scored against -- would not have been reproducible; rebuilding would silently yield a different object.",
+      "The mandated digest gate would have failed on rankings in EVERY comparison, and the natural reading would have been 'C: and D: disagree, stop' -- a false storage finding."
+    ],
+    "fix": "-s/--seed pinned in the benchmark runner and shard driver; value recorded in every receipt.",
+    "seed_value": 20261001,
+    "seed_label": "CONVENTION -- the lane date. Arbitrary but fixed, and labelled as such rather than presented as principled.",
+    "how_found": "Only because the digest-equality gate forced inspection of output BYTES rather than whether both runs finished."
+  },
+
+  "F3_blas_oversubscription": {
+    "status": "FIXED",
+    "finding": "The image sets no thread environment variable and OpenBLAS reports num_threads=16. At -t 16 each of 16 workers could spawn up to 16 BLAS threads -- 256 threads on 8 physical cores.",
+    "why_it_mattered": "The scaling curve would have measured oversubscription rather than worker count, and the distortion grows with worker count, so the 16-worker point -- the one the decision rests on -- would have been the most wrong.",
+    "fix": "OMP/OPENBLAS/MKL/NUMEXPR/VECLIB pinned to 1 in both runners; values recorded per run.",
+    "comparability_consequence": "The 24-motif, 120-motif and both storage runs predate the pinning and are a DIFFERENT configuration. They must not be mixed into the pinned scaling table."
+  },
+
+  "F4_feather_io_is_a_large_share_of_wall_clock": {
+    "status": "MEASURED_AT_SMALL_SCALE__NOT_YET_AT_FULL_SCALE",
+    "measured": {
+      "run": "16 motifs x 150,561 regions, 16 workers, on D:",
+      "wall_clock_seconds": 440,
+      "cbust_scoring_seconds": 158.42437,
+      "non_scoring_seconds": 281.6,
+      "non_scoring_share_of_wall_clock": 0.64
+    },
+    "implication": "At this batch size nearly two thirds of wall clock is NOT motif scanning. Sharding multiplies the number of feather writes, so shard size must be chosen against this cost and not only against scoring time.",
+    "caveat": "The share will fall as motifs per run rises, because scoring grows with motif count while a fixed per-run write overhead does not. The full-scale figure is NOT yet measured."
+  },
+
+  "NOT_MEASURED_AND_THEREFORE_NOT_RECOMMENDED": {
+    "worker_scaling_table": {
+      "status": "NOT_RUN",
+      "why": "A coordinator-owned 320-draw Stage-4 calibration sweep held roughly one core on this machine throughout this work, from about 18:00. A scaling curve measured against a contended machine is an artifact of the contention -- which is precisely the measurement being asked for.",
+      "driver_ready": "scripts/v69/run_worker_scaling_table_v1.sh",
+      "planned_points": [1, 2, 4, 8, 16],
+      "planned_workload": "16 motifs x 150,561 regions, pinned seed, pinned BLAS threads",
+      "estimated_duration_hours": 1.75,
+      "granularity_caveat": "16 motifs on 16 workers is a single wave and cannot exhibit queueing; the 4- and 8-worker points (4 and 2 waves) carry the saturation signal."
+    },
+    "storage_comparison": {
+      "status": "MUST_BE_RE_RUN_UNDER_THE_PINNED_SEED",
+      "why": "The completed D/C pair predates the seed fix, so its rankings differ for a reason unrelated to storage. Its SCORES are byte-identical across the two drives, which is a real result, but the full digest gate cannot be evaluated on that pair.",
+      "scores_result_that_does_stand": "motifs_vs_regions and regions_vs_motifs scores feathers are byte-identical in size across D: and C:."
+    },
+    "recommended_worker_count": "NOT_DETERMINED",
+    "recommended_shard_size": "NOT_DETERMINED",
+    "estimated_wall_time_per_route": "NOT_DETERMINED_UNDER_THE_PINNED_CONFIGURATION",
+    "can_routes_run_concurrently": "NOT_DETERMINED",
+    "expected_peak_scratch_usage": "NOT_DETERMINED"
+  },
+
+  "infrastructure_built_and_tested": {
+    "shard_driver": {
+      "path": "scripts/v69/run_cistarget_motif_shard_v1.sh",
+      "axis": "MOTIF-WISE: a subset of motifs against ALL regions, because cisTarget ranks regions within each motif, so both scores and rankings stay shard-decomposable.",
+      "restartable": "A shard whose receipt validates (status PASS and every recorded output present with matching SHA-256) is skipped, so a crash at motif 10,000 does not rebuild the first 9,999.",
+      "completion_sentinel": "The receipt is written only after outputs are closed and RE-READ FROM DISK, and its presence is the only thing marking a shard done.",
+      "axis_verification": "The re-read confirms the output's motif axis is exactly the shard's frozen slice in order, recording both ordered digests."
+    },
+    "merge_validator": {
+      "path": "scripts/v69/merge_cistarget_motif_shards_v1.py",
+      "invariant": "concat(shard motif axes, in shard order) == the frozen ordered motif universe: equal length, zero duplicates, zero omissions, element-by-element in order, matching ordered digest; and every shard's region axis identical.",
+      "tests": "11, all driven to their failure state, including reordered shards with identical membership and a permuted region axis with identical membership.",
+      "note": "No prior sharding or merge code existed anywhere in this repository; this is the first."
+    },
+    "comparator": {
+      "path": "scripts/v69/compare_bench_runs_v1.py",
+      "primary_output": "a digest-equality pass/fail; timing is reported only once equality holds",
+      "failure_state": "STOP__OUTPUT_DIGESTS_DIFFER_DO_NOT_PROCEED_TO_FULL_BUILD"
+    }
+  },
+
+  "boundaries_unchanged": {
+    "stage4": "NOT AUTHORIZED; untouched by any of this",
+    "eregulon_biological_claims": "none made; no network exists",
+    "the_53_regions": "remain STRUCTURALLY_UNSCOREABLE and must never become zeros",
+    "direct_vs_extended_motif_support": "remain separate evidence classes",
+    "donor_stability": "remains donor-level"
+  },
+
+  "what_this_receipt_does_NOT_authorise": "The full cisTarget builds. The worker count, shard size, concurrency and scratch footprint are all undetermined, and this receipt was required to precede the builds precisely so those are decided from measurement."
+}
