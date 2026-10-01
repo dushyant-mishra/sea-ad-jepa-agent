@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_AVAILABLE__PHASE_B_SUBSTRATE_NOT_YET_AUTHORIZED__TRAINING_OFF",
+  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S58_S59_CLOSED__PHASE_B_STOPPED_ON_S60",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -11,8 +11,8 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
-  "current_blocker": "Phase-A V3 supplies a 13,175-edge full funnel, but the Phase-B substrate contract is not yet execution-authorized: R3 exact-conditional semantics must be promoted into an explicit statistical-contract successor, hardcoded denominator 24187 must be recomputed, and Phase-A V3 row custody should be made durable.",
+  "claude_last_verified_head": "a0500111254315504de3618ea832931ea54cdc26",
+  "current_blocker": "R1/R2/R3 statistical authority, literal repair and Phase-A V3 custody are closed. Phase B remains blocked because the substrate does not yet persist each R3 pair's realised large-arm conditioning identity and mandatory CONDITIONAL_ON_REALISED_LARGE_ARM label/reference binding.",
   "parallel_architecture_next": "Promoter dual ledger is materialized and structurally accepted. Continue recoverability software qualification on synthetic fixtures only under the frozen V65 precision/decision contract; real paired execution and TEST remain unopened.",
   "ci_rule": "Promoter source custody and materialization are split: source artifact run 36796557671 is hash-bound; authoritative dual-ledger build is run 36797622994. Architecture CI must still be checked at current head.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. Phase B remains stopped; the 57-row R3 arithmetic is correct under the rule, but the rule itself is not yet upstream statistical authority."
+  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. S57-S59 are closed; S60 is the only current Phase-B substrate blocker."
 }
