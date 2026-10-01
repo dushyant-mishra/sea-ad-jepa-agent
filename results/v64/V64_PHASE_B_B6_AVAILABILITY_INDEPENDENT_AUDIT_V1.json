@@ -1,0 +1,83 @@
+{
+  "schema": "V64_PHASE_B_B6_AVAILABILITY_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_claude_head": "6c265d9c5eb53ac705be60e08b0fac771d2159f4",
+  "verdict": "ACCEPTED__B6_SCHEMA_COMPLETE__PHASE_B_MEASUREMENT_SUBSTRATE_ACCEPTED",
+  "superseded_local_evidence": "The chat-uploaded/local B6 v1 PASS is not authority. V64_PHASE_B_T3_T4_AVAILABILITY_V2 and its bound producer supersede it.",
+  "accepted_proofs": {
+    "G1_T5_reconciliation": {
+      "rows_reconstructed": 10552158,
+      "rows_stored": 10552158,
+      "donor_block_order_matches": true,
+      "mismatch_count": 0,
+      "note": "Expected donor×pair availability_state_code is rebuilt independently from frozen T2/T3/T4 arrays and pair mappings, then compared elementwise."
+    },
+    "G2_sparse_absence_both_modalities": {
+      "rna_elements": 14125932,
+      "rna_sparse_present": 6624289,
+      "rna_available_sparse_absences_measured_zero": 7501643,
+      "rna_unavailable_sparse_absences": 0,
+      "atac_elements": 103886343,
+      "atac_sparse_present": 55467544,
+      "atac_available_sparse_absences_measured_zero": 48418799,
+      "atac_unavailable_sparse_absences": 0
+    },
+    "G3_index_invariants": {
+      "metacells": 3231,
+      "ids_unique": true,
+      "ids_exact_0_to_3230": true,
+      "t3_t4_metacell_indices_in_range": true,
+      "t3_gene_indices_in_range": true,
+      "t4_interval_indices_in_range": true
+    },
+    "G4_axis_identity": {
+      "shards": 8,
+      "arrays": [
+        "genes",
+        "interval_chrom",
+        "interval_start",
+        "interval_end",
+        "n_assigned_peaks",
+        "pair_keys",
+        "pair_gene",
+        "pair_interval"
+      ],
+      "all_identical": true
+    },
+    "factorization_and_packing": {
+      "rna_rule": "rna_available[m,g] = total_rna[m] > 0",
+      "atac_rule": "atac_available[m,i] = (total_atac[m] > 0) AND (n_assigned_peaks[i] > 0)",
+      "t3_all_available": true,
+      "t4_all_available": true,
+      "bitorder": "big (numpy default)",
+      "t3_padding_bits": 4,
+      "t4_padding_bits": 1,
+      "expansion_roundtrip": true
+    }
+  },
+  "custody": {
+    "availability_artifact_sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81",
+    "t5_sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8",
+    "closeout_receipt_sha256": "12d460bfc0ea863e31d91b2eaad15d4fead0f6f5a18beb8086104d282d823020",
+    "aggregate_receipt_sha256": "f98125f3710a252fbafd90ff7110db2c393a7cd647d98f1e312f5602335ccaf5",
+    "producer_sha256": "53b010a14ae49658eaf0656ae2a812498e025c1973fa8b94569404eccd90121c",
+    "producer_git_blob": "bfde1c163be857a0ed44ee2c53d187f67df34a7d",
+    "b6_v2_receipt_sha256": "0f7f1e554d6425797184308293781805d16853bbb9899fbd0ac927992d05e763",
+    "substrate_shards": "All eight current shard SHA-256 values are bound in the receipt and previously rehashed from disk in B3.",
+    "producer_blob_fix": "Accepted. Build-time self-blob is impossible before commit; current receipt records the real post-commit blob and preserves the failed build-time value as history."
+  },
+  "nonblocking_notes": [
+    "The B6 receipt does not separately hash each canonical axis array, but exact whole-shard SHA-256 custody plus G4 elementwise equality transitively binds the dictionaries; this is sufficient for B6 acceptance.",
+    "B6 compares numeric T5 state codes using the frozen five-state ordering. The exact T5 artifact SHA and accepted B1/B4 closeout bind the stored vocabulary/order; a future Stage-4 consumer should still fail closed if its loaded state labels do not equal the frozen vocabulary."
+  ],
+  "scope_of_acceptance": {
+    "phase_a": "ACCEPTED_AT_13175",
+    "phase_b_measurement_substrate": "ACCEPTED_AS_CONTRACT_COMPLETE",
+    "correspondence_opened": false,
+    "stage4": "NOT_AUTHORIZED",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  },
+  "next_boundary": "The next scientific gate is no longer Phase-B substrate repair. It is prospective Stage-4 correspondence authorization/design and/or the separately gated real privileged-factor recoverability experiment. Neither is automatically authorized by this acceptance."
+}
