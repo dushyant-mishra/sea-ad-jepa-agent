@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__PHASE_B_MEASUREMENT_ONLY_SUBSTRATE_BUILD_AUTHORIZED__STAGE4_SEALED__TRAINING_OFF",
+  "status": "V65_PHASE_B_EXECUTED__B1_B5_CLOSED__B6_T3_T4_AVAILABILITY_SCHEMA_BLOCKER__STAGE4_SEALED",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "dbc74ed8530ed24941e9b40d5f3b0009823c1472",
-    "claude_exact_sampler": "dc30caede6369a31df3098205db11c83381784e5",
+    "claude_exact_sampler": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -298,11 +298,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Claude Phase-B closeout now has two hard blockers: materialize T5 from frozen T2-T4 and rehash every current shard byte before aggregate binding. Also close availability and T6/T7 referential checks. S66 is CLOSED; do not rerun substrate for interval-count reasons.",
-    "Nested RNA+multimodal synthetic integration and optimizer/EMA mechanics both pass clean-CI software qualification. Do not treat these as biological or production-training authority.",
-    "Historical authenticated u0 RNA JEPA forward compatibility passes on preserved real masks; no post-u0 weights are authorized.",
-    "Recoverability TRAIN+VALIDATION remains explicit-authorization gated and TEST numeric access remains sealed.",
-    "Keep Stage 4, Morabito, TD60, multimodal training and real JEPA training closed."
+    "Audit Claude repair after 154935c5.",
+    "Require contract-faithful T3/T4 availability materialization or exact factorization from frozen substrate only.",
+    "Require adversarial measured-zero versus unavailable tests.",
+    "Keep Stage 4 sealed until B6 re-audit passes.",
+    "Continue promoter/recoverability architecture work separately."
   ],
   "governance": {
     "training": "OFF",
@@ -320,9 +320,9 @@
     "final factorized-target tournament"
   ],
   "phaseB_substrate": {
-    "claude_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
+    "claude_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
     "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
-    "status": "AUTHORIZED_FOR_MEASUREMENT_ONLY_EXECUTION",
+    "status": "EXECUTED_NOT_YET_CONTRACT_COMPLETE",
     "accepted_elements": [
       "single-modality-only Phase-B boundary",
       "persisted metacell substrate",
@@ -331,14 +331,23 @@
       "protected demographic values not read",
       "57 enumeration rows arithmetically recomputed"
     ],
-    "blockers": [],
+    "blockers": [
+      "B6 frozen per-element T3/T4 availability columns are not materialized; T5 flags do not satisfy the contracted T3/T4 schema"
+    ],
     "closed_findings": [
       "S57",
       "S58",
       "S59",
       "S60",
       "S61",
-      "S62"
+      "S62",
+      "S63",
+      "S64",
+      "B1",
+      "B2",
+      "B3",
+      "B4_T5_LOGIC",
+      "B5"
     ]
   }
 }
