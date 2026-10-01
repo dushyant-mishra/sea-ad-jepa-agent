@@ -1,0 +1,62 @@
+{
+  "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1",
+  "date": "2026-09-30",
+  "contract": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
+    "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
+  },
+  "producer_sha256": "239e7db0940fc1d37e6d4e62fa8006e351fb33254cd718575a9951c51aefa0ad",
+  "tests": [
+    {
+      "name": "T11_metacell_level_vectors_persisted",
+      "requirement": "the substrate carries metacell-level vectors, not only donor means",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "metacell-level RNA and ATAC vectors plus per-metacell depth are all persisted, so Stage 4 need not reopen the matrices"
+    },
+    {
+      "name": "T12_phase_B_computes_no_two_modality_statistic",
+      "requirement": "Phase B may look at one modality at a time but never couples them",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "single-modality and depth terms permitted; correlation reserved"
+    },
+    {
+      "name": "T13_enumeration_rows_change_no_population",
+      "requirement": "ENUMERATION_ONLY rows do not alter retention, N or the primary population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "57 extra rows recomputed independently; retention and N unchanged"
+    },
+    {
+      "name": "T14_recoverability_firewall_precisely_scoped",
+      "requirement": "the recoverability split does not silently shrink the Phase-B population",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "split scoped to recoverability selection only; Phase B keeps its own donor-population authority"
+    },
+    {
+      "name": "T15_no_protected_obs_column_read",
+      "requirement": "only donor identity and cell type were read; demographics were not",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "only ['SampleID', 'cell_type'] read; all 7 protected demographic columns declared excluded"
+    },
+    {
+      "name": "T16_no_statistical_decision_changed",
+      "requirement": "the substrate contract changes no statistical decision",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "statistically neutral and bound to the accepted V2 digest"
+    }
+  ],
+  "n_tests": 6,
+  "n_real_tests": 6,
+  "status": "PASS"
+}

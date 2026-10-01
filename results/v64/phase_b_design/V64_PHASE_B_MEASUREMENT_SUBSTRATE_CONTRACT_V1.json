@@ -1,0 +1,287 @@
+{
+  "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_ANY_MATRIX_VALUE_IS_READ",
+  "purpose": "Specify exactly what Phase B freezes to disk, so that Stage 4 reads only the frozen substrate and never returns to the matrices after outcomes are visible.",
+  "changes_no_statistical_decision": true,
+  "authority": {
+    "statistical_contract": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json",
+      "sha256": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe"
+    },
+    "correspondence_design": {
+      "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+      "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b"
+    },
+    "feature_artifact": {
+      "path": "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json",
+      "sha256": "fb41f55ae2ca67ca933dd954b1bfadba833c340dd28737b4309766683cd5f728"
+    },
+    "phase_a_population": {
+      "path": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+      "sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f"
+    }
+  },
+  "THE_LINE_PHASE_B_MAY_NOT_CROSS": {
+    "phase_B_MAY_compute": [
+      "per-metacell normalised RNA for a gene (one modality)",
+      "per-metacell normalised ATAC for an interval's peak set (one modality)",
+      "donor-level means of either (the two V2 fields)",
+      "rna_depth_sensitivity and atac_depth_sensitivity, each a within-donor slope of one modality on that modality's own sequencing depth",
+      "availability masks and attrition counts"
+    ],
+    "phase_B_MAY_NOT_compute": [
+      "the Pearson correlation between the RNA and ATAC vectors -- that IS the correspondence statistic and belongs to Stage 4",
+      "any linked-minus-control difference",
+      "any residualised correspondence",
+      "the one-sided test",
+      "any disease or protected outcome association"
+    ],
+    "the_principle": "Phase B may look at one modality at a time, or at a modality against its own depth. The moment two modalities are multiplied together, the experiment has been opened."
+  },
+  "SUBSTRATE_TABLES": {
+    "T1_METACELL_ASSIGNMENT": {
+      "key": "donor_id x nucleus_id",
+      "fields": [
+        "donor_id",
+        "nucleus_obs_name",
+        "metacell_id"
+      ],
+      "rule": "k-means on the first 20 principal components of the within-donor RNA matrix, k = floor(n_microglia_donor / 25)",
+      "seed": 20260929,
+      "why_persisted": "Stage 4 must use the identical partition. A partition rebuilt later would be rebuilt after outcomes were visible, and a partition is exactly the kind of choice that can move a correspondence result."
+    },
+    "T2_METACELL_DEPTH": {
+      "key": "donor_id x metacell_id",
+      "fields": [
+        "n_nuclei",
+        "total_rna_counts_all_genes",
+        "total_atac_counts_all_peaks"
+      ],
+      "why": "the two frozen depth-sensitivity nuisance terms are within-donor slopes on these totals, so Stage 4 cannot recompute them without these columns",
+      "rna_denominator_universe": 38606,
+      "atac_denominator_universe": 521217
+    },
+    "T3_RNA_VECTORS": {
+      "key": "donor_id x metacell_id x gene_id",
+      "KEYED_BY_GENE_NOT_BY_PAIR": true,
+      "why": "the frozen promoter_activity is the LINKED GENE's RNA. CONTROL_A and CONTROL_B differ from their linked edge only in the distal interval, so all three rows of an edge share one RNA vector. Keying by pair would duplicate it 8.5-fold with no added information.",
+      "fields": [
+        "rna_log1p_cp10k",
+        "rna_available"
+      ],
+      "normalisation": "sum of counts over the metacell's nuclei, divided by that metacell's total counts over all 38,606 genes, times 1e4, then log1p (CP10K log1p)"
+    },
+    "T4_ATAC_VECTORS": {
+      "key": "donor_id x metacell_id x distal_interval_id",
+      "fields": [
+        "atac_log1p_norm",
+        "atac_available",
+        "n_assigned_peaks"
+      ],
+      "normalisation": "sum of counts over the metacell's nuclei across the peak set assigned to the edge (below), divided by that metacell's total ATAC counts over all 521,217 peaks, times 1e4, then log1p",
+      "peak_assignment": "All consensus peaks overlapping the E2 distal 5 kb hg38 interval by >= 1 bp are summed. No peak widening. No nearest-peak rescue. The number of overlapping peaks is recorded per edge."
+    },
+    "T5_PAIR_DONOR_AGGREGATES": {
+      "key": "donor_id x pair_key",
+      "fields": [
+        "promoter_activity",
+        "distal_accessibility",
+        "n_assigned_peaks",
+        "rna_depth_sensitivity",
+        "atac_depth_sensitivity",
+        "n_metacells_contributing",
+        "availability_state"
+      ],
+      "note": "these are the V2 artifact's required donor-level fields; they are derived from T2-T4 and are stored as well as derivable so the V2 artifact is self-contained"
+    },
+    "T6_ENUMERATION_ONLY": {
+      "key": "edge_index x drawn_side x hg19_start",
+      "label": "ENUMERATION_ONLY",
+      "semantics": [
+        "NOT new Phase-A controls",
+        "do NOT change retention",
+        "do NOT increase N",
+        "do NOT enter the primary population",
+        "exist solely to realise the already-frozen exact randomisation distribution"
+      ],
+      "inherits": "edge, promoter, donor and metacell structure from its edge",
+      "measured_identically_to": "CONTROL_A and CONTROL_B, same code path"
+    }
+  },
+  "EXACT_ENUMERATION_REQUIREMENT": {
+    "computed_from": "the committed exact admissible sets, not assumed",
+    "R1_primary_exact_A_side": {
+      "rule": "for every retained edge whose CONTROL_A support is 2-10, materialise ALL A-side admissible alternatives",
+      "edges": 32
+    },
+    "R2_exact_joint_AB": {
+      "rule": "for a fully-randomised small-support A/B pair where BOTH arms have support <= 10, the reference is the EXACT JOINT distribution over the two side-specific admissible sets, so all alternatives of both arms are materialised",
+      "pairs": 14,
+      "ordered_pairs_in_the_joint_reference": 133
+    },
+    "R3_exact_conditional_small_arm": {
+      "rule": "where exactly one arm has support <= 10 and the other is large, the reference is the EXACT CONDITIONAL distribution: the small arm is enumerated completely and the large arm is held at its realised draw",
+      "pairs": 21,
+      "why_not_the_full_joint": "the large arms run to tens of thousands of admissible starts, so a full joint would require materialising measurements for tens of thousands of intervals per pair. The conditional reference is exact in a well-defined sense and is declared NOW rather than discovered when the cost became apparent.",
+      "what_is_conditioned_on": "the realised large-arm draw, recorded per pair"
+    },
+    "MATERIALISATION": {
+      "distinct_intervals_required": 107,
+      "already_measured_as_CONTROL_A_or_B": 50,
+      "additional_ENUMERATION_ONLY_rows": 57,
+      "edges_touched": 42,
+      "as_fraction_of_controls_already_measured": 0.002357
+    },
+    "frozen_before_biological_values_exist": true
+  },
+  "RECOVERABILITY_TEST_DONOR_FIREWALL_SCOPE": {
+    "CORRECTION": "An earlier audit note of mine said Phase B would not authorise 'any use of the paired NIH-CARD TEST donors'. That wording conflated two different experiments and is withdrawn.",
+    "what_the_split_actually_governs": {
+      "experiment": "privileged-factor recoverability",
+      "population": "the paired 24-donor subset",
+      "split": "16 TRAIN / 4 VALIDATION / 4 TEST, donor ID only, seed 20260930",
+      "restriction": "the 4 TEST donors are forbidden for recoverability model, rank, basis, rotation or threshold selection"
+    },
+    "what_governs_Phase_B": {
+      "authority": "the correspondence design contract's own donor-population rules",
+      "population": "the full NIH-CARD correspondence cohort",
+      "rules": {
+        "minimum_microglia_per_donor": 100,
+        "minimum_metacells_per_donor": 4,
+        "minimum_donors_per_edge": 30
+      },
+      "statement": "Phase B follows this authority. The recoverability split does not remove donors from it."
+    },
+    "if_global_sequestration_is_wanted": "that must be an EXPLICIT prospective amendment, with its impact on the Phase-B donor population measured and reported before adoption. It may not arrive as a side effect of architecture work on a different experiment.",
+    "why_this_matters": "silently dropping four donors would change the Phase-B population for a reason unrelated to Phase B, and the change would be invisible in the Phase-B receipt."
+  },
+  "DONOR_POPULATION_MEASURED_FROM_LAWFUL_METADATA": {
+    "obs_columns_read": [
+      "SampleID",
+      "cell_type"
+    ],
+    "obs_columns_deliberately_not_read": [
+      "Age",
+      "Ancestry",
+      "Brain_bank",
+      "Ethnicity",
+      "PMI",
+      "Race",
+      "Sex",
+      "cohort",
+      "doublet_score",
+      "leiden_2",
+      "n_genes_by_counts",
+      "pct_counts_mt",
+      "pct_counts_rb",
+      "total_counts"
+    ],
+    "why": "Age, Sex, Ancestry, Ethnicity, Race, PMI and Brain_bank are protected demographic attributes. Donor identity and cell type are the only columns needed to define the aggregation population.",
+    "nuclei_total": 1501089,
+    "microglia": 87384,
+    "donors_with_microglia": 357,
+    "per_donor_microglia": {
+      "min": 1,
+      "p25": 115,
+      "median": 217,
+      "p75": 343,
+      "max": 1150
+    },
+    "donors_meeting_minimum_microglia": 282,
+    "donors_meeting_minimum_metacells": 282,
+    "total_qualifying_donor_metacells": 3231,
+    "agreement_with_design_contract": "75 of 357 donors have fewer than 100 microglia, so approximately 282 donors are expected to qualify. The executor must recompute this from the authenticated bytes and report the actual number."
+  },
+  "SUBSTRATE_SCALE_MEASURED": {
+    "qualifying_donor_metacells": 3231,
+    "distinct_linked_genes": 4372,
+    "distinct_distal_intervals": 32174,
+    "pair_rows": 37362,
+    "T3_rna_cells": 14125932,
+    "T4_atac_cells": 103954194,
+    "note": "T3 is gene-keyed, which is 8.5x smaller than a pair-keyed layout with no information loss"
+  },
+  "MISSINGNESS_IN_THE_SUBSTRATE": {
+    "inherited_rules": {
+      "zero_coverage": "If the gene has zero RNA counts in ALL of a donor's metacells, or the assigned peak set has zero ATAC counts in ALL of them, the correlation is UNDEFINED. That (donor, pair) cell is recorded as MISSING. It is NEVER recorded as zero: zero would assert an observed absence of correspondence where there was no measurement.",
+      "degenerate_variance": "If either vector has zero variance across a donor's metacells, the cell is MISSING for the same reason."
+    },
+    "representation": "per-element availability columns in T3 and T4, and an availability_state in T5 drawn from the four frozen states",
+    "forbidden": "writing 0 for an unmeasured value in any table"
+  },
+  "NUISANCE_TERMS_THE_SUBSTRATE_MUST_SUPPORT": {
+    "frozen_basis": [
+      "log_distance",
+      "promoter_degree",
+      "promoter_activity",
+      "distal_accessibility",
+      "re_density",
+      "anchor_frequency",
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity",
+      "log_distance^2",
+      "promoter_degree^2",
+      "distal_accessibility^2",
+      "log_distance*promoter_degree",
+      "log_distance*distal_accessibility",
+      "promoter_degree*anchor_frequency"
+    ],
+    "computable_in_phase_B": [
+      "promoter_activity",
+      "distal_accessibility",
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity"
+    ],
+    "already_frozen_in_phase_A": [
+      "log_distance",
+      "promoter_degree",
+      "re_density",
+      "anchor_frequency"
+    ],
+    "depth_sensitivity_definitions": {
+      "rna": "within-donor slope of the gene's metacell RNA value on metacell total RNA counts",
+      "atac": "within-donor slope of the peak set's metacell ATAC value on metacell total ATAC counts"
+    },
+    "note": "both depth terms are single-modality slopes on that modality's own sequencing depth, so computing them does not open the correspondence"
+  },
+  "PROVENANCE_THE_PHASE_B_RECEIPT_MUST_BIND": [
+    "producer path, sha256 and git blob",
+    "this contract's sha256",
+    "the statistical contract V2 sha256",
+    "the correspondence design contract sha256",
+    "the feature-artifact V2 contract sha256",
+    "the Phase-A patched receipt sha256",
+    "every emitted substrate table: path, bytes, sha256",
+    "the metacell assignment artifact sha256, separately",
+    "NIH-CARD RNA and ATAC byte-authentication receipt and pairing closeout",
+    "the E2 digest",
+    "the consensus peak set digest",
+    "every frozen constant and seed actually used",
+    "the obs columns read, and the protected columns not read"
+  ],
+  "STOP_CONDITIONS": [
+    "any substrate table cannot be emitted",
+    "any availability value would have to be written as 0",
+    "the metacell partition cannot be persisted and hash-bound",
+    "the enumeration set cannot be materialised in full",
+    "RNA .X fails the integrality assertion",
+    "the consensus peak build fails the hg38 precondition",
+    "any protected obs column is read",
+    "any two-modality statistic is computed"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "producer": {
+    "path": "scripts\\v64\\build_phase_b_measurement_substrate_contract_v1.py",
+    "sha256": "b532ffd64c757e155c5f7506da3f172e21a1ce469e92e88c7f8441f6b251a455"
+  }
+}
