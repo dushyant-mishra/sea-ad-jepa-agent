@@ -54,6 +54,11 @@
       "4": "S_4=P_4-P_2",
       "8": "S_8=P_8-P_4",
       "16": "S_16=P_16-P_8"
+    },
+    "boundary_tie_tolerance": {
+      "relative": 1e-8,
+      "scale": "max(1, abs(s[k-1]), abs(s[k]))",
+      "consequence": "UNQUALIFIED_FOR_SELECTION"
     }
   },
   "primary_metric": "DONOR_LEVEL_MULTIVARIATE_EXPLAINED_VARIANCE",
