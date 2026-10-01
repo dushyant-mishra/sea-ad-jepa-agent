@@ -61,7 +61,12 @@ def nested_projectors(Ytrue_train,Ypred_train):
             projs[k]=None
             shells[k]=None
             continue
-        if k < len(S) and np.isclose(S[k-1],S[k],rtol=1e-8,atol=1e-10):
+        if k < len(S):
+            scale=max(1.0,abs(float(S[k-1])),abs(float(S[k])))
+            tied=abs(float(S[k-1]-S[k])) <= 1e-8*scale
+        else:
+            tied=False
+        if tied:
             projs[k]=None
             shells[k]=None
             blocked=True
