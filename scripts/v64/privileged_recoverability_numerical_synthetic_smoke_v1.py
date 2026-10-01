@@ -46,16 +46,32 @@ def r2_multi(Y,P,train_mean):
     return 1.0-num/den
 
 
-def projector(Ytrue_train,Ypred_train,k):
+def nested_projectors(Ytrue_train,Ypred_train):
+    """Build all nested target-space projectors from ONE TRAIN-only SVD."""
     A=Ytrue_train-Ytrue_train.mean(0)
     B=Ypred_train-Ypred_train.mean(0)
     C=A.T@B
     U,S,_=np.linalg.svd(C,full_matrices=False)
-    if k < len(S) and np.isclose(S[k-1],S[k],rtol=1e-8,atol=1e-10):
-        return None
-    Uk=U[:,:k]
-    return Uk@Uk.T
-
+    projs={}
+    shells={}
+    prev=np.zeros((Ytrue_train.shape[1],Ytrue_train.shape[1]))
+    blocked=False
+    for k in RANKS:
+        if blocked:
+            projs[k]=None
+            shells[k]=None
+            continue
+        if k < len(S) and np.isclose(S[k-1],S[k],rtol=1e-8,atol=1e-10):
+            projs[k]=None
+            shells[k]=None
+            blocked=True
+            continue
+        Uk=U[:,:k]
+        P=Uk@Uk.T
+        projs[k]=P
+        shells[k]=P-prev
+        prev=P
+    return projs,shells,S
 
 def make(seed=1,shared_rank=4,technical_target=False,n_donors=24,n_per=50):
     rng=np.random.default_rng(seed)
@@ -122,17 +138,19 @@ def fit_all(X,Y,Tech,donor):
     pred=ridge_predict(candidate,X)
     tpred=ridge_predict(technical,Tech)
     gpred=ridge_predict(global_rna,Xp)
-    projs={k:projector(Y[tr],pred[tr],k) for k in RANKS}
+    projs,shells,singular_values=nested_projectors(Y[tr],pred[tr])
     return dict(alpha=alpha,cv=cv,candidate=candidate,technical=technical,pca=pca,
                 global_rna=global_rna,pred=pred,tpred=tpred,gpred=gpred,projs=projs,
+                shells=shells,singular_values=singular_values,
                 train_mean=Y[tr].mean(0))
 
 
-def donor_metrics(Y,donor,fit,which=(16,17,18,19)):
+def projected_donor_metrics(Y,donor,fit,projectors,which=(16,17,18,19)):
     out={}
-    for k,P in fit["projs"].items():
+    for k,P in projectors.items():
         if P is None:
-            out[k]=None; continue
+            out[k]=None
+            continue
         tm=fit["train_mean"]@P
         ds=[]
         for d in which:
@@ -150,33 +168,47 @@ def donor_metrics(Y,donor,fit,which=(16,17,18,19)):
     return out
 
 
-def summarize(metrics):
+def metric_set_summary(ds):
+    if ds is None:
+        return dict(eligible=False,reason="projection_tie_or_prior_boundary_failure")
+    delta=np.array([x["delta"] for x in ds])
+    cand=np.array([x["candidate"] for x in ds])
+    tech=np.array([x["technical"] for x in ds])
+    eligible=bool(np.all(delta>0) and np.median(delta)>=.05 and np.all(cand>0)
+                  and np.all(cand-tech>.01))
+    return dict(eligible=eligible,median_delta=float(np.median(delta)),
+                min_delta=float(delta.min()),min_candidate=float(cand.min()))
+
+
+def summarize(aggregate_metrics,shell_metrics):
     s={}
-    for k,ds in metrics.items():
-        if ds is None:
-            s[k]=dict(eligible=False,reason="projection_tie")
-            continue
-        delta=np.array([x["delta"] for x in ds])
-        cand=np.array([x["candidate"] for x in ds])
-        tech=np.array([x["technical"] for x in ds])
-        eligible=bool(np.all(delta>0) and np.median(delta)>=.05 and np.all(cand>0)
-                      and np.all(cand-tech>.01))
-        s[k]=dict(eligible=eligible,median_delta=float(np.median(delta)),
-                  min_delta=float(delta.min()),min_candidate=float(cand.min()))
     chosen=0
     for k in RANKS:
-        if not s[k]["eligible"]:
+        agg=metric_set_summary(aggregate_metrics[k])
+        shell=metric_set_summary(shell_metrics[k])
+        eligible=bool(agg["eligible"] and shell["eligible"])
+        s[k]=dict(eligible=eligible,aggregate=agg,shell=shell)
+        if not eligible:
             break
         chosen=k
+    # Keep later ranks visible diagnostically even after contiguous selection stops.
+    for k in RANKS:
+        if k in s:
+            continue
+        agg=metric_set_summary(aggregate_metrics[k])
+        shell=metric_set_summary(shell_metrics[k])
+        s[k]=dict(eligible=bool(agg["eligible"] and shell["eligible"]),
+                  aggregate=agg,shell=shell)
     return s,chosen
-
 
 def run_case(seed,shared_rank,technical_target=False):
     X,Y,T,d=make(seed=seed,shared_rank=shared_rank,technical_target=technical_target)
     fit=fit_all(X,Y,T,d)
-    val=donor_metrics(Y,d,fit,(16,17,18,19))
-    sm,chosen=summarize(val)
-    return dict(alpha=fit["alpha"],validation=sm,chosen_rank=chosen)
+    agg=projected_donor_metrics(Y,d,fit,fit["projs"],(16,17,18,19))
+    shell=projected_donor_metrics(Y,d,fit,fit["shells"],(16,17,18,19))
+    sm,chosen=summarize(agg,shell)
+    return dict(alpha=fit["alpha"],validation=sm,chosen_rank=chosen,
+                singular_values=[float(x) for x in fit["singular_values"]])
 
 
 def main():
