@@ -41,12 +41,12 @@ def anti_collapse(z):
     return {"min_axis_std":float(sd.min()),"effective_rank":erank,
             "passes":bool(sd.min()>0.10 and erank>2.5)}
 
-def uncertainty_gate(measured,missing,min_ratio=1.5):
+def uncertainty_gate(measured,missing,min_ratio=3.0):
     measured=float(measured); missing=float(missing)
     return bool(np.isfinite(measured) and np.isfinite(missing)
                 and measured>0 and missing/measured>min_ratio)
 
-def build_fixture(private_rna_strength=.20):
+def build_fixture(private_rna_strength=.50):
     rng=np.random.default_rng(SEED)
     n=N_DONORS*CELLS_PER_DONOR
     donor=np.repeat(np.arange(N_DONORS),CELLS_PER_DONOR)
@@ -65,7 +65,7 @@ def build_fixture(private_rna_strength=.20):
                 train=donor<48,val=donor>=48,
                 private_rna_strength=float(private_rna_strength))
 
-def run_smoke(private_rna_strength=.20):
+def run_smoke(private_rna_strength=.50):
     x=build_fixture(private_rna_strength)
     tr=x["train"]; va=x["val"]; m=x["measured"]
     br=fit(x["xr"][tr],x["zs"][tr]); pr=pred(x["xr"][va],br)
