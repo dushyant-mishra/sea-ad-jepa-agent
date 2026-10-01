@@ -387,6 +387,37 @@ a published result unnoticed.
 
 ---
 
+## S16 — I edited a shell script while bash was executing it (CAUGHT; SCIENTIFIC OUTPUT INTACT)
+
+**Status:** CLOSED as a rule; the affected run's scientific output is unharmed.
+
+**Defect.** I launched the 120-motif cisTarget benchmark, which runs
+`scripts/v69/build_custom_cistarget_db_v1.sh` from the live worktree mounted at
+`/workspace`. While it was still running I edited that same file to apply the S12 fix.
+Bash reads a script incrementally by byte offset, so after my edit it resumed at an
+offset that now pointed into the middle of different text and died with
+`line 89: 3: command not found`.
+
+**What was and was not damaged.** The cisTarget database build itself had already
+completed: all three feathers were written and the tool reported its own timings. Only
+the wrapper's trailing `MEASURED_ELAPSED_SECONDS` echo and the per-file sha256 loop were
+lost. No scientific artifact is wrong; one provenance field is missing and is recorded
+as `NOT_MEASURED` rather than reconstructed.
+
+**Why it is worth recording anyway.** The failure mode is silent in the dangerous
+direction. Bash does not re-read the whole file and does not warn; it simply executes
+whatever bytes now sit at its offset. Had the shifted offset landed on a *valid*
+command rather than a syntax error — for instance inside the `rm`-adjacent or
+`sha256sum ... | tee` region — it could have executed something I never intended,
+in a container with the output directory mounted writable.
+
+**Rule adopted.** A script that is currently executing is immutable. Long container runs
+copy the script to a run-specific path first and execute the copy, so that editing the
+worktree cannot reach into a running job. Never edit a file under `/workspace` while a
+container is executing it.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
