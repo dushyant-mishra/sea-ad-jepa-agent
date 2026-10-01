@@ -32,7 +32,7 @@ def test_strong_shared_geometry_passes_permutation_gate():
     rng=np.random.default_rng(99)
     z=rng.normal(size=(36,3))
     pred=z + .06*rng.normal(size=z.shape)
-    out=m.donor_geometry_gate(z,pred,"SYNTH_D1",n_perm=250)
+    out=m.donor_geometry_gate(z,pred,"SYNTH_D1",expected_rank=3,n_perm=250)
     assert out["canonical"]["observed"]>out["canonical"]["null_q99_higher"]
     assert out["relational_geometry"]["observed"]>out["relational_geometry"]["null_q99_higher"]
     assert out["pass"] is True
@@ -44,7 +44,7 @@ def test_pairing_disruption_removes_geometry_support():
     z=rng.normal(size=(36,3))
     pred=z + .05*rng.normal(size=z.shape)
     pred=pred[rng.permutation(len(pred))]
-    out=m.donor_geometry_gate(z,pred,"SYNTH_D2",n_perm=250)
+    out=m.donor_geometry_gate(z,pred,"SYNTH_D2",expected_rank=3,n_perm=250)
     assert out["pass"] is False
 
 
@@ -61,7 +61,7 @@ def test_rank_deficiency_fails_closed():
     x=np.arange(30,dtype=float)[:,None]
     z=np.column_stack([x,x])  # rank 1 for requested k=2
     try:
-        m.donor_geometry_gate(z,z,"SYNTH_D3",n_perm=20)
+        m.donor_geometry_gate(z,z,"SYNTH_D3",expected_rank=2,n_perm=20)
     except ValueError as e:
         assert "rank-deficient" in str(e)
     else:
@@ -76,3 +76,19 @@ def test_canonical_and_principal_angle_alias_redundancy_is_independently_audited
     )
     assert state["geometry_gate"]["G1"]["principal_angle_cosines"]=="REPORTABLE_ALIAS_NOT_INDEPENDENT_GATE"
     assert state["geometry_gate"]["G2"]["metric"].startswith("PEARSON_CORRELATION")
+
+
+def test_low_rank_state_in_ambient_16d_is_evaluated_at_intrinsic_rank():
+    m=_load()
+    rng=np.random.default_rng(202)
+    latent=rng.normal(size=(40,2))
+    basis,_=np.linalg.qr(rng.normal(size=(16,2)))
+    z=latent@basis.T
+    pred=(latent+.04*rng.normal(size=latent.shape))@basis.T
+    assert z.shape==(40,16)
+    out=m.donor_geometry_gate(
+        z,pred,"SYNTH_AMBIENT16_R2",expected_rank=2,n_perm=200
+    )
+    assert out["ambient_width"]==16
+    assert out["expected_intrinsic_rank"]==2
+    assert out["pass"] is True
