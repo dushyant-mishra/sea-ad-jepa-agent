@@ -1,0 +1,247 @@
+{
+  "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
+  "date": "2026-10-01",
+  "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
+  "head_commit": "bf2c277929b3bded631b36d9b195577293bd055e",
+  "worktree_clean_at_assembly": true,
+  "uncommitted_at_assembly": [],
+  "artifacts": {
+    "1_s81_repair_verifier": {
+      "role": "recomputes 17 consumer-semantics gates from the artifacts, not from JSON restatements",
+      "path": "scripts/v64/verify_phase_b_consumer_semantics_v1.py",
+      "sha256": "a3070651ce29331a81ec42c8ed2bd2a93d8509a2340e365edcbf3bde2bef3bdb",
+      "worktree_blob": "961348fb092c9b45a4f645810280b6e7dcbcd0dc",
+      "git_blob_at_head": "961348fb092c9b45a4f645810280b6e7dcbcd0dc",
+      "bytes": 14633,
+      "note": null
+    },
+    "2_s81_mutation_suite": {
+      "role": "15 mutations applied to the real loaded arrays",
+      "path": "scripts/v64/test_phase_b_consumer_semantics_mutations_v1.py",
+      "sha256": "4e9be1089a83359bae1f02edbdab272aa13418c1941aaf1430041b4606c1fb32",
+      "worktree_blob": "516815c64b86c8e055a113876dbff95bba1e7896",
+      "git_blob_at_head": "516815c64b86c8e055a113876dbff95bba1e7896",
+      "bytes": 8654,
+      "note": null
+    },
+    "3_executor_source": {
+      "role": "the executor, hard-bound, one CLI flag plus the guarded synthetic mode",
+      "path": "scripts/v64/stage4_executor_v1.py",
+      "sha256": "cd1371422d9f68a8816e70d660f5ad08a1895085d83107f142199b2ac7e93afa",
+      "worktree_blob": "8f1de6b19ab72a3d86f0d541a76f189c441799bb",
+      "git_blob_at_head": "8f1de6b19ab72a3d86f0d541a76f189c441799bb",
+      "bytes": 46933,
+      "note": null
+    },
+    "4_synthetic_world_builder": {
+      "role": "four Phase-B substrates in the real on-disk format",
+      "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
+      "sha256": "3cb5a2a9a1c862dda3eb5ec1bc7976c5d69a7cf2251369d9ffd6efea4c1dda5c",
+      "worktree_blob": "ab715eb60c2eced9a7bc26569530322f46856f5d",
+      "git_blob_at_head": "ab715eb60c2eced9a7bc26569530322f46856f5d",
+      "bytes": 19463,
+      "note": null
+    },
+    "5_end_to_end_suite": {
+      "role": "runs the worlds through the real entrypoint",
+      "path": "scripts/v64/test_stage4_end_to_end_worlds_v1.py",
+      "sha256": "e3b431a56db58f19cececbaeaf8e069bef0c3d4bd49014b9904c6aaea6eda424",
+      "worktree_blob": "fc0193c6993751d40f7c089cc3829e28ab3e0e97",
+      "git_blob_at_head": "fc0193c6993751d40f7c089cc3829e28ab3e0e97",
+      "bytes": 19409,
+      "note": null
+    },
+    "6_helper_qualification_suite": {
+      "role": "19 fixtures over the frozen mathematics",
+      "path": "scripts/v64/test_stage4_executor_synthetic_qualification_v1.py",
+      "sha256": "d978bc97c8f39d4830ec88b1d9753d2dd7af5f18cb6505f1c44caa07c2cbae74",
+      "worktree_blob": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
+      "git_blob_at_head": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
+      "bytes": 16633,
+      "note": null
+    },
+    "7_g17_and_antibypass": {
+      "role": "G17 static and executable, plus 21 attacks",
+      "path": "scripts/v64/test_stage4_g17_and_antibypass_v1.py",
+      "sha256": "6a17da7b8baec1a3940c7bf960d1d29a5fa9ab252e489e22d8e7d5a7c4414819",
+      "worktree_blob": "c14211605658cb42bb30e43710a1382ad32e1008",
+      "git_blob_at_head": "c14211605658cb42bb30e43710a1382ad32e1008",
+      "bytes": 23507,
+      "note": null
+    },
+    "8_independent_audit": {
+      "role": "independent audit of the ChatGPT lane",
+      "path": "scripts/v64/audit_chatgpt_v67_lane_independent_v1.py",
+      "sha256": "f999167ecae9b8870048c13b187066ca2179bc21f69d71850b6978332986f3c8",
+      "worktree_blob": "78304ae1bfeba78273c4b98ac1bcc7c8c1fe74e5",
+      "git_blob_at_head": "78304ae1bfeba78273c4b98ac1bcc7c8c1fe74e5",
+      "bytes": 15810,
+      "note": null
+    }
+  },
+  "receipts": {
+    "s81_consumer_semantics": {
+      "n_checks": 17,
+      "failed": [],
+      "status": "PASS",
+      "recomputed_from_artifacts": true,
+      "path": "results/v64/phase_b_design/V64_PHASE_B_CONSUMER_SEMANTICS_V1.json",
+      "sha256": "80e2835c09987176cdd04c3ece44006703dea6995fa094a71959b8843f62a63a",
+      "git_blob_at_head": "5662c67e8a3238e25adc661cb0c6ee8871853cd0"
+    },
+    "s81_mutations": {
+      "n_mutations": 15,
+      "n_real_tests": 15,
+      "every_mutation_caught_by_its_named_gate": true,
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_PHASE_B_CONSUMER_SEMANTICS_MUTATIONS_V1.json",
+      "sha256": "cf535ebcd252a5546315644faf8cfd0d1e4b6a4379876e2fae707582f0e22c1c",
+      "git_blob_at_head": "a3eadd2f273714c829166c82793f06672cb042a8"
+    },
+    "preflight_only": {
+      "mode": "preflight-only",
+      "computed_correspondence_values": 0,
+      "a_successful_dry_run_is_not_execution_authorization": true,
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json",
+      "sha256": "520737adb51c69dd11b4305f2c63dd1870fc4a41d26874ac51119d2dfd402722",
+      "git_blob_at_head": "0eaed71d96eb094b0156672a3d8686590ac920e0"
+    },
+    "g17_and_antibypass": {
+      "g17_static_checks": 4,
+      "g17_executable_checks": 2,
+      "anti_bypass_attempts": 21,
+      "n_checks": 29,
+      "n_holding": 29,
+      "live_artifacts_untouched": true,
+      "authorisation_path_clean": true,
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_STAGE4_G17_AND_ANTIBYPASS_V1.json",
+      "sha256": "bb219f1f098fa56feca39b459c2a24d4ebb549b6200cbeb930f0c8438b901ae9",
+      "git_blob_at_head": "699230254c165625a9294aec7434a5cb5a114163"
+    },
+    "helper_qualification": {
+      "n_fixtures": 19,
+      "n_holding": 19,
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_STAGE4_EXECUTOR_SYNTHETIC_QUALIFICATION_V1.json",
+      "sha256": "cb36d512f6b26e86cb923d8c63a2532fe4fc286e01accd934a0a13df03b9562e",
+      "git_blob_at_head": "773123e3be897580fc2dba5f6b45ae658a14e235"
+    },
+    "end_to_end_worlds": {
+      "n_checks": 21,
+      "n_pass": 19,
+      "n_limit": 2,
+      "n_fail": 0,
+      "worlds": {
+        "BIOLOGY_POSITIVE": {
+          "adjusted_delta": 0.5130840457496877,
+          "lcb95": 0.5068449852316218,
+          "raw_delta": 0.5593693564328965,
+          "control_vs_control": 0.0029105269051601353,
+          "result_sha256": "10654375de15fdb35d4ba9e7277bd98b325b11ad6ab18a8c4896ceb0a8f76e40",
+          "prediction_recorded_before_the_run": "Delta > 0 and LCB95 > 0"
+        },
+        "TRUE_NULL": {
+          "adjusted_delta": 0.002501825206993408,
+          "lcb95": -0.003291962616759237,
+          "raw_delta": 0.001111002139813528,
+          "control_vs_control": 0.003918582857922086,
+          "result_sha256": "8f2b2384198a493c6db5c09ae0ae3a50a1cbc2c9e31c7ca006db167d722dc7ed",
+          "prediction_recorded_before_the_run": "adjusted Delta near 0 and LCB95 <= 0"
+        },
+        "MEASURED_TECHNICAL": {
+          "adjusted_delta": 0.012902929240732284,
+          "lcb95": 0.0030312765559554907,
+          "raw_delta": 0.2114309723198949,
+          "control_vs_control": -0.001303344227657812,
+          "result_sha256": "0e273abd1ef08ec1bd8f580ce345920b5ddf79b8b270d67c7c9b2027edf49bac",
+          "prediction_recorded_before_the_run": "raw Delta > 0, adjusted Delta near 0"
+        },
+        "HIDDEN_CONFOUND": {
+          "adjusted_delta": 0.38060752061181363,
+          "lcb95": 0.36283740672869075,
+          "raw_delta": 0.4779453391880856,
+          "control_vs_control": -0.025336785101826007,
+          "result_sha256": "b8e6bff57a30740e351385853714b1cdd9fd0ca29021dd950bbf5eb72902709c",
+          "prediction_recorded_before_the_run": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug."
+        }
+      },
+      "KNOWN_INTERPRETATION_LIMITS": [
+        {
+          "limit": "an unmeasured factor that varies BETWEEN metacells of the same donor and loads on both modalities is indistinguishable from biology under the frozen design",
+          "evidence": "HIDDEN_CONFOUND reaches delta +0.3806 with LCB95 +0.3628, which is 74% of the genuine-biology world",
+          "what_bounds_it": "only rna_depth_sensitivity and atac_depth_sensitivity in the frozen 14-term basis. A cross-modal technical factor orthogonal to depth survives untouched.",
+          "consequence": "a positive Stage-4 result is evidence of cross-modal co-variation within donors, NOT by itself evidence of regulatory causation."
+        },
+        {
+          "limit": "the nuisance adjustment removes most, but not all, of a purely technical depth effect",
+          "evidence": "MEASURED_TECHNICAL raw +0.2114 -> adjusted +0.0129, and the adjusted LCB95 is +0.0030",
+          "consequence": "LCB95 > 0 alone does not establish that a real result is non-technical. The size of the effect must be read against this residue, not against zero."
+        }
+      ],
+      "scale": "reduced: 60 eligible donors, 11 metacells each, 200 edges. The real substrate is 282 donors, 3,231 metacells and 13,175 edges. Ratios are matched; absolute size is not, and nothing here qualifies real-scale runtime or memory.",
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_STAGE4_END_TO_END_WORLDS_V1.json",
+      "sha256": "a0e4756d24e655bd5029aaa4b2f198f14b047f65301343631b4ea0b1d4044d9c",
+      "git_blob_at_head": "cacee876bf5351b0571b6d89aa4c23cbbb03a5ca"
+    },
+    "synthetic_worlds_build": {
+      "worlds": [
+        "BIOLOGY_POSITIVE",
+        "TRUE_NULL",
+        "MEASURED_TECHNICAL",
+        "HIDDEN_CONFOUND"
+      ],
+      "reads_no_real_measurement": true,
+      "path": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
+      "sha256": "02700125e4f518be2199cbff52e92ef45bea256b9706f135326a2595eccb0900",
+      "git_blob_at_head": "62cffc805a6e1e14e22c43e46acdfdc9085a50ee"
+    },
+    "independent_audit_of_chatgpt_lane": {
+      "contract_parent_quantities_checked": 11,
+      "contract_parent_quantities_reproducing": 11,
+      "n_findings": 6,
+      "severities": {
+        "STOP": 0,
+        "CONCERN": 6
+      },
+      "status": "FINDINGS_RAISED",
+      "path": "results/v64/phase_b_design/V67_CLAUDE_INDEPENDENT_AUDIT_OF_CHATGPT_LANE_V1.json",
+      "sha256": "cd3ab4f7dafb30dc43d79d408e4c036fbf4dff088efea786266a3b8d30fd7e55",
+      "git_blob_at_head": "7f03c75ee3ed42a12cc3b94dc921c630b46af0e8"
+    }
+  },
+  "state": {
+    "WHAT_IS_NOW_TRUE": [
+      "The executor exists, is bound to one canonical authority path and one canonical output path, and has no flag that can name a method, a seed, a weighting, a contract, an input root or a skip.",
+      "It verifies the BYTES of every input the authority binds, in both directions, and recomputes the Git blob of each committed one.",
+      "It refuses real execution, and the refusal is not a promise: with a correctly bound authorisation present it still stops, because this build contains no authorised-execution path.",
+      "The whole frozen computation is implemented and has been run end to end through the real entrypoint on four synthetic worlds.",
+      "No correspondence value has been computed on real data, at any scale, at any point."
+    ],
+    "WHAT_IS_NOT_GRANTABLE_HERE": [
+      "Stage-4 execution authorisation. This closeout does not grant it and the executor does not create the artifact that would.",
+      "Any claim that a positive Stage-4 result would demonstrate regulatory causation. The HIDDEN_CONFOUND world forbids that reading.",
+      "Any claim that LCB95 > 0 alone establishes a non-technical origin. The MEASURED_TECHNICAL residue forbids that reading."
+    ],
+    "UNRESOLVED_LIMITATIONS": [
+      "The end-to-end worlds are reduced scale: 60 eligible donors, 11 metacells each, 200 edges, against a real substrate of 282 donors, 3,231 metacells and 13,175 edges. Ratios are matched; runtime and memory at real scale are UNMEASURED and nothing here qualifies them.",
+      "The pipeline materialises dense metacell-by-feature matrices. At real scale the ATAC matrix is 3,231 x 32,153. Its footprint has not been measured.",
+      "The frozen 14-term basis carries only two depth sensitivities as technical controls. A cross-modal technical factor orthogonal to depth is not controlled for and, per the HIDDEN_CONFOUND world, is indistinguishable from biology.",
+      "Six concerns against the ChatGPT lane remain open: S89 through S94.",
+      "The synthetic worlds qualify the orchestration, not the biology. Nothing here says the frozen estimand is the right scientific question."
+    ],
+    "GOVERNANCE": {
+      "training": "OFF",
+      "stage_4": "NOT_AUTHORIZED",
+      "correspondence": "UNOPENED",
+      "Morabito": "PROTECTED",
+      "TD60": "BLOCKED",
+      "recoverability_TEST": "SEALED"
+    }
+  },
+  "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
+  "computed_correspondence_values": 0,
+  "producer_sha256": "475e84a062df8f56622dd0d64503a167c6a4ef1c4385bde4e75a75e8d071e839"
+}
