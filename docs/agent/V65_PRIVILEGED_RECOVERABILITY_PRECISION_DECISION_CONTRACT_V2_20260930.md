@@ -74,7 +74,11 @@ Ridge alpha grid is frozen as:
 
 Alpha is selected using leave-one-donor-out cross-validation inside TRAIN only.
 
-No VALIDATION or TEST donor may choose alpha.
+Exactly **one** candidate ridge model is then fit on TRAIN to the full frozen 16-D privileged target.
+
+No candidate model is refit for a candidate rank or incremental shell. Rank/shell evaluation projects the fixed full-state prediction through the frozen `P_k` or `S_k`.
+
+No VALIDATION or TEST donor may choose alpha. No rank or shell may choose a different alpha.
 
 ## 5. Baselines
 
@@ -91,6 +95,8 @@ Linear prediction of the privileged state from:
 Linear prediction of the privileged state from the first 16 RNA PCA coordinates.
 
 RNA PCA is fit on TRAIN only.
+
+Each baseline is fit exactly once on TRAIN to predict the full frozen 16-D privileged target. Baseline predictions are then projected through the same `P_k` or `S_k` used for the candidate. Baselines are never refit separately for a rank or shell.
 
 The comparison baseline for a donor is the better of B1 and B2 on that donor.
 
@@ -209,7 +215,7 @@ For every candidate rank `k`, compute the full recoverability gate twice:
 1. on the aggregate projected state `P_k`;
 2. on the newly added shell `S_k`.
 
-The same lawful RNA predictor, technical baseline, global-RNA baseline, donor-level `R2_multi`, `DELTA_R2`, pairing-permutation gate and geometry gate are applied to both objects.
+The same **already-fit full-state** lawful RNA predictor, technical baseline and global-RNA baseline are projected into both objects. No model is refit after the TRAIN-only full-state fits. The same donor-level `R2_multi`, `DELTA_R2`, pairing-permutation gate and geometry gate are then applied to both objects.
 
 If a singular-value tie makes `P_k` non-unique at a selection boundary, selection stops below that boundary. No higher rank may be selected by skipping the ambiguous boundary.
 
