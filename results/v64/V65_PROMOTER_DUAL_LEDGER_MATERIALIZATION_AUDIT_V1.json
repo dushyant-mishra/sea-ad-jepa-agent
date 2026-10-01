@@ -1,0 +1,89 @@
+{
+  "schema": "V65_PROMOTER_DUAL_LEDGER_MATERIALIZATION_AUDIT_V1",
+  "date": "2026-09-30",
+  "status": "MATERIALIZED_AND_STRUCTURALLY_ACCEPTED",
+  "workflow": {
+    "name": "V65 build promoter dual ledger from frozen source artifact",
+    "run_id": 36797622994,
+    "run_number": 1,
+    "head_sha": "2120aadcc216ada04148ba7e83d093fcdce8d1bb",
+    "conclusion": "success"
+  },
+  "frozen_source_custody": {
+    "receipt": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+    "source_workflow_run_id": 36796557671,
+    "source_artifact_id": 11134036899,
+    "source_artifact_sha256": "ad36c5569cb9fed59a5c798a33e33fac0913838860860e6af20b0565a4c3524e"
+  },
+  "builder": {
+    "path": "scripts/v64/build_promoter_dual_ledger_v2.py",
+    "required_successor_semantics": [
+      "FANTOM overlap is strand-aware",
+      "point-overlap uses prefix-max interval ends so nested intervals cannot be hidden",
+      "Dong Data 7 joins by transcript_id + chromosome",
+      "GENCODE candidate existence is never pruned by evidence"
+    ],
+    "interval_overlap_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json"
+  },
+  "artifact": {
+    "artifact_id": 11134735950,
+    "name": "v65-promoter-dual-ledger",
+    "zip_bytes": 23567519,
+    "zip_sha256": "f4c1912e4cec23e1e159708fd5a7f46198ed72a0c1b2f3bec7a6e50ade02f090",
+    "expires_at": "2026-10-31T00:44:46Z",
+    "committed_in_git": false,
+    "recovery": "Regenerate with .github/workflows/v65-build-promoter-dual-ledger.yml from the hash-bound public source manifest/custody artifact."
+  },
+  "outputs": {
+    "promoter_transcript_ledger": {
+      "bytes": 10701086,
+      "sha256": "aa02297a816c37420956b1a943572ba951f5659cc56c98760b2ef66323afd054",
+      "rows": 644292
+    },
+    "exact_tss_ledger": {
+      "bytes": 4351767,
+      "sha256": "2931960f321ccaae3fb1124dd07df9b3bd78e53032134648207c221b079eca32",
+      "rows": 389280
+    },
+    "transcript_to_tss_membership": {
+      "bytes": 9722543,
+      "sha256": "a409d7a19b2c2045be621826a2f262fe0ac50249e024329004672dd398811f35",
+      "rows": 644292
+    },
+    "receipt": {
+      "bytes": 2798,
+      "sha256": "8999b158d01b5e25dcba2863adc2cf0e92d268a89bc58a07b9c026ab120a256d"
+    }
+  },
+  "denominator_and_evidence_checks": {
+    "genes": 78733,
+    "screen_pls_overlap": 178778,
+    "fantom_same_strand_overlap": 126712,
+    "fantom_exact_representative_tss": 25321,
+    "joint_states": {
+      "screen_and_fantom": 102060,
+      "screen_only": 76718,
+      "fantom_only": 24652,
+      "neither": 185850
+    },
+    "dong_duplicate_transcript_ids": 88,
+    "all_match_frozen_preflight": true
+  },
+  "independent_chat_runtime_verification": [
+    "Downloaded the GitHub Actions ledger artifact and recomputed its ZIP SHA-256.",
+    "Recomputed SHA-256 for every emitted ledger file and the receipt.",
+    "Read the materialization receipt and verified denominator/evidence counts against the frozen preflight.",
+    "Separately recomputed GENCODE denominators, SCREEN/FANTOM coverage and Dong bridge statistics from the exact source bytes before artifact acceptance."
+  ],
+  "scientific_scope": {
+    "promoter_selection_executed": false,
+    "biological_correspondence_opened": false,
+    "interpretation": "This closes annotation/evidence materialization only. It does not choose an active promoter or establish regulatory causality."
+  },
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED"
+  }
+}
