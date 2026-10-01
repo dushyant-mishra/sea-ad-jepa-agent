@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "1329a4c4a4e6530ff8f568e832ff10a8ed44fc44",
+    "chatgpt_architecture": "d15a88fe1f1761fd411889009d701d3ef9926793",
     "claude_exact_sampler": "a0500111254315504de3618ea832931ea54cdc26",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -88,7 +88,10 @@
     "recoverability_synthetic_software_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY",
     "recoverability_real_paired_values_opened": false,
     "recoverability_test_opened": false,
-    "recoverability_authority_version": "V2_SOLE_LIVE_AUTHORITY"
+    "recoverability_authority_version": "V2_SOLE_LIVE_AUTHORITY",
+    "recoverability_execution_mechanics_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md",
+    "recoverability_execution_mechanics_qualification": "results/v64/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_QUALIFICATION_V1.json",
+    "recoverability_execution_mechanics_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY"
   },
   "paired_nihcard": {
     "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
@@ -162,12 +165,12 @@
     "pr": 199,
     "mergeable": true,
     "architecture_smoke": {
-      "run_id": 36799926865,
-      "job_id": 110171732286,
+      "run_id": 36800492975,
+      "job_id": 110173494009,
       "conclusion": "success",
-      "tests_passed": 110,
-      "qualified_head": "a0b8384ea77f9d961f66c86e0980538dcea64e62",
-      "scope": "synthetic architecture/software qualification; not real biological execution"
+      "tests_passed": 116,
+      "qualified_head": "ccc45a7f27abcc39469a4a01c71923b638fd6c77",
+      "scope": "synthetic recoverability decision + preprocessing/fit mechanics; not real biological execution"
     },
     "fantom_hg38_fetch": {
       "run_id": 36752876636,
@@ -193,10 +196,10 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude's S60 repair when a successor to a0500111 is available; keep Phase B stopped until R3 conditioning identity is persisted and re-audited.",
-    "Treat recoverability precision/decision V2 as the sole live authority; V1 is historical only.",
-    "Recoverability decision/software mechanics are synthetically qualified at 110/110 tests, but real paired execution and TEST remain unopened and not authorized.",
-    "Do not reopen the promoter dual ledger unless contradictory evidence appears.",
+    "Audit Claude's S60 repair when available; Phase B remains stopped until S60 passes.",
+    "Recoverability V2 is sole decision authority; synthetic decision mechanics and preprocessing/fit mechanics are qualified, but real paired execution and TEST remain unopened.",
+    "Audit a fail-closed TRAIN+VALIDATION recoverability executor before any explicit authorization to run it.",
+    "Do not reopen promoter dual ledger unless contradictory evidence appears.",
     "Keep training, Stage 4, Morabito and protected outcomes closed."
   ],
   "governance": {
