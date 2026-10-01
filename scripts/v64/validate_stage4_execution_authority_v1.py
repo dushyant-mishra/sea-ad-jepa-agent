@@ -152,7 +152,9 @@ def validate_manifest_structural(manifest: dict, contract: dict) -> list[str]:
 
 def validate_file_bindings(manifest: dict, contract: dict) -> list[str]:
     errors = []
-    files = manifest.get("files", {})\n    if len(files) != len(contract["frozen_authority_digests"]) + len(contract["substrate_shards_sha256"]):\n        errors.append("FILE_LABEL_COUNT_DRIFT")
+    files = manifest.get("files", {})
+    if len(files) != len(contract["frozen_authority_digests"]) + len(contract["substrate_shards_sha256"]):
+        errors.append("FILE_LABEL_COUNT_DRIFT")
 
     def bind(label, expected):
         item = files.get(label)
