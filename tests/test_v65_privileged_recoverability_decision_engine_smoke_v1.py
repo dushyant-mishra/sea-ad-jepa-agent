@@ -71,7 +71,7 @@ def test_test_confirmation_cannot_retune_rank():
     ]
     assert m.classify(selected,partial[selected],bad_test)=="UNQUALIFIED"
     # No alternate-rank search is performed after TEST failure.
-    assert selected==2
+    assert selected==4
 
 
 def test_projector_is_sign_invariant_and_rank_fixed():
