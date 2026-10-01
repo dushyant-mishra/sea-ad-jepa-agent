@@ -3,7 +3,6 @@
   "recorded_utc": "2026-10-01T19:45:00Z",
   "purpose": "Record which prior SCENIC+ artifacts this lane READ and what it TOOK from each, so a reviewer can tell reuse from rediscovery, and so nothing is silently re-derived or silently inherited.",
   "governing_constraint": "Stage75F is mechanism/compatibility evidence and hypothesis-generating only. Its motif resources are NOT the authority for this lane, and its TF list is NOT a selection. Every row in every Stage75F table carries validated_regulation=False, validated_grn_claim=False, causal_validation_pass=False and therapeutic_target_claim=False.",
-
   "artifacts_read": [
     {
       "path": "docs/history/preservation_20260902/results/reports/stage75c_peak_gene_preflight_annotation_report_v1.md",
@@ -22,13 +21,24 @@
     {
       "path": "docs/history/preservation_20260902/results/tables/stage75f_primary_tf_motif_support_summary_v1.csv",
       "what_it_says": {
-        "tfs_reaching_primary_summary": ["IRF8", "STAT1"],
+        "tfs_reaching_primary_summary": [
+          "IRF8",
+          "STAT1"
+        ],
         "n_motifs_tested": 5876,
-        "query_coverage_fraction_range": [0.9298, 0.9512],
-        "IRF8": {"n_direct_supported_motifs": 0, "n_extended_only_supported_motifs": 1,
-                 "motif_support_interpretation": "extended_only"},
-        "STAT1": {"n_direct_batch_tf_enriched_motifs": 1,
-                  "n_extended_batch_tf_enriched_motifs": 2},
+        "query_coverage_fraction_range": [
+          0.9298,
+          0.9512
+        ],
+        "IRF8": {
+          "n_direct_supported_motifs": 0,
+          "n_extended_only_supported_motifs": 1,
+          "motif_support_interpretation": "extended_only"
+        },
+        "STAT1": {
+          "n_direct_batch_tf_enriched_motifs": 1,
+          "n_extended_batch_tf_enriched_motifs": 2
+        },
         "n_query_regions_per_tf": "57 to 91"
       },
       "what_this_lane_took": "Evidence that the annotation-supply artifact is REAL on this tissue and this motif collection, not hypothetical. Also a scale warning: the prior analysis queried 57-91 regions per TF."
@@ -36,12 +46,38 @@
     {
       "path": "docs/history/preservation_20260902/results/tables/stage75f_secondary_tf_motif_support_summary_v1.csv",
       "what_it_says": {
-        "tfs": ["BACH1", "CEBPA", "ELF1", "MITF", "NRF1", "RELA", "SPI1", "STAT3"],
+        "tfs": [
+          "BACH1",
+          "CEBPA",
+          "ELF1",
+          "MITF",
+          "NRF1",
+          "RELA",
+          "SPI1",
+          "STAT3"
+        ],
         "regulator_role": "descriptive_secondary_hypothesis",
-        "zero_direct_motif_support": ["BACH1", "CEBPA", "MITF", "NRF1", "RELA", "STAT3"],
-        "no_motif_support_at_all": ["MITF", "NRF1", "STAT3"],
-        "ELF1": {"direct": 1, "extended": 10},
-        "SPI1": {"direct": 3, "extended": 4}
+        "zero_direct_motif_support": [
+          "BACH1",
+          "CEBPA",
+          "MITF",
+          "NRF1",
+          "RELA",
+          "STAT3"
+        ],
+        "no_motif_support_at_all": [
+          "MITF",
+          "NRF1",
+          "STAT3"
+        ],
+        "ELF1": {
+          "direct": 1,
+          "extended": 10
+        },
+        "SPI1": {
+          "direct": 3,
+          "extended": 4
+        }
       },
       "what_this_lane_took": "A concrete requirement for control C1. Seven of ten TFs reached support with ZERO direct motifs. A control counting TOTAL motif supply would have been blind to this. C1 therefore separates direct / orthology / similarity AND reports an explicit `extended` category matching this vocabulary, plus a count of extended-only TFs.",
       "action_taken": "scripts/v69/build_tf_annotation_supply_table_v1.py now emits n_distinct_motifs_extended and n_tfs_with_extended_support_but_zero_direct. Measured on the current official v10nr collection: 110 of 1,605 TFs have extended support with zero direct motifs."
@@ -55,7 +91,16 @@
         "statistical_substrate": "microglia_snrna_sample_coactivity",
         "n_samples": 18
       },
-      "what_this_lane_took": "Two things. (a) The ATAC side genuinely did not map, confirming the Route-B rationale. (b) A prior on donor-level power: the prior edge statistics ran at n=18 donors with Spearman rho and bootstrap sign stability. This lane has 12 donors in its default population, which is LESS, and reinforces the already-frozen expectation that edge-level claims will be unstable while module-level structure may survive."
+      "what_this_lane_took": "Two things. (a) PEAK-TO-GENE from a processed matrix did not work, which is what edge_atac_peak_support_status='not_gene_mappable_from_processed_peak_matrix' records; that remains the Route-B rationale. (b) A prior on donor-level power: the prior edge statistics ran at n=18 donors with Spearman rho and bootstrap sign stability. This lane has 12 donors in its default population, which is LESS, reinforcing the already-frozen expectation that edge-level claims will be unstable while module-level structure may survive.",
+      "CORRECTION": {
+        "superseded_wording": "the ATAC side genuinely did not map",
+        "why_wrong": "It reads as though cisTarget region mapping failed. It did not. After the 0.4-overlap correction in commit 98c5b763, region-mapping coverage was 93-95% for every TF.",
+        "two_steps_kept_apart": {
+          "cistarget_region_mapping__query_peaks_to_database_regions": "WORKED, 93-95% coverage",
+          "peak_to_gene_from_a_processed_matrix": "DID NOT WORK; this is the Route-B reason"
+        },
+        "recorded_in": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1_AMENDMENT_2.json"
+      }
     },
     {
       "path": "docker/scenicplus/Dockerfile",
@@ -64,28 +109,33 @@
       "action_taken": "Recorded in V69_SCENICPLUS_EXECUTION_ENVIRONMENT_RECEIPT_V1.json. The running image contains all of those tools, which is CONSISTENT with this recipe and is not proof the image was built from it."
     }
   ],
-
   "engineering_noted_for_reuse_if_needed": {
     "status": "NOT_YET_USED",
     "what": "Prior commits reportedly carry a cisTarget region-mapping audit, an HDF5 out-of-core extraction backend, a bounded cisTarget column reader built to avoid OOM, and a Feather-based cisTarget reader.",
-    "commits": ["488e6359", "64976266", "d081947e", "3b450765", "05358c57", "831c9315", "e2030892", "98c5b763"],
+    "commits": [
+      "488e6359",
+      "64976266",
+      "d081947e",
+      "3b450765",
+      "05358c57",
+      "831c9315",
+      "e2030892",
+      "98c5b763"
+    ],
     "when_this_lane_would_use_them": "If the custom cisTarget database build over 150,561 Route-A regions x 10,249 motifs runs into memory trouble.",
     "honesty_note": "These commits have been recorded, not yet read. This lane has not reused that code and must not imply it has."
   },
-
   "explicitly_NOT_inherited": {
     "stage75f_tf_list": "The ten TFs (BACH1, CEBPA, ELF1, IRF8, MITF, NRF1, RELA, SPI1, STAT1, STAT3) receive NO privileged status. They are not used to filter, order, seed or select anything. This lane's TF scope is broad by mandate.",
     "stage75f_motif_resources": "Not read as authority. This lane acquired and SHA-pinned the current official collection itself: v10nr_clust_public sha256 70dab42794f42471a3c22f5efe78ec2c8af96127656607cb0a929b4adffc2b97 (10,249 motifs) and the HGNC motif2TF table sha256 81eb754118e27e854974301b1400fcf519489f8be5249239671fb288cb501c31.",
     "stage75f_edges": "The 24 TF-target rows are not adopted, extended or used as a prior.",
     "note": "Stage75F tested 5,876 motifs; this lane's pinned collection carries 10,249. The two are different objects and must not be conflated."
   },
-
   "route_b_rationale_restated_with_prior_evidence": {
     "old_framing_rejected": "Route B as a precautionary sensitivity analysis.",
     "correct_framing": "Route B exists because a prior attempt on this project EMPIRICALLY failed to recover region-to-gene evidence from a processed peak matrix, recording not_gene_mappable_from_processed_peak_matrix on every edge and ready_for_true_scenicplus_egrn=False. Reconstructing the region universe from raw fragments is the documented response to a known, observed failure.",
     "note_on_the_parallel_lane": "This also supersedes the framing in scripts/v64/acquire_gse214979_scenicplus_v1.py on branch chatgpt/v64-privileged-information-recoverability-20260930 at commit 84e10964b0a47d55a33170b1853905b77115d56c, whose receipt calls the fragment route 'an optional sensitivity route'."
   },
-
   "route_a_tested_against_the_prior_failure": {
     "receipt": "V69_ROUTEA_REGION_TO_GENE_PREFLIGHT_V1.json",
     "verdict": "ROUTE_A_IS_NOT_SUBJECT_TO_THE_STAGE75F_REGION_TO_GENE_WALL",
@@ -98,5 +148,38 @@
     },
     "why_it_differs_from_stage75f": "Stage75F's blocker was the absence of same-cell RNA/ATAC pairing, which left proximity as the only possible link. GSE214979 is a 10x Multiome: both modalities are measured on the same barcode, so region-to-gene can be learned from within-cell covariance rather than proximity.",
     "what_this_does_not_claim": "It does not claim the resulting network will be good, stable or biologically correct. Only that this specific prior failure mode does not apply."
+  },
+  "corrected_diagnosis_of_why_stage75f_produced_little": {
+    "not_a_mapping_or_indexing_bug": true,
+    "the_one_real_mapping_defect": {
+      "defect": "mapper used min_overlap_bp=1 instead of pycisTarget's overlap/query_length > 0.4 OR overlap/database_length > 0.4",
+      "corrected_in_commit": "98c5b763",
+      "corrected_at": "2026-07-12T16:19",
+      "first_result_commit": "d7a2435d",
+      "first_result_at": "2026-07-12T20:48",
+      "consequence": "Every published Stage75F number used the CORRECTED 0.4 rule."
+    },
+    "actual_limits": {
+      "scale": "57-91 query regions per TF batch, mapping to 173-286 database regions, against a 219,070-peak universe. ~80 regions cannot resolve TF-specific signal. Single biggest reason only 2 of 11 TFs reached the primary summary.",
+      "direct_annotation_supply": "69-81 motifs enriched per TF out of 5,876 tested, but enriched motifs DIRECTLY annotated to the batch TF: BACH1 0, CEBPA 0, MITF 0, NRF1 0, RELA 0, STAT3 0, ELF1 1, SPI1 3."
+    },
+    "habits_adopted_from_the_correction": [
+      "Schema-parity check between the cisTarget scores and rankings databases (the correction added a 32-column parity check after moving the coordinate sidecar between them). Positional indexing means a drifted axis silently mis-assigns every motif without crashing.",
+      "Emit an explicit unmapped-regions list so failed queries are visible rather than silently dropped."
+    ],
+    "open_items": [
+      {
+        "item": "The corrected mapper was not re-run by anyone in this chain.",
+        "established": "chronology, and the coverage it SELF-REPORTED (93-95%)",
+        "not_established": "that the corrected mapper is itself correct",
+        "status": "OPEN"
+      },
+      {
+        "item": "results/tables/stage75f_cistarget_region_coverage_v1.csv is not present in the preserved tree of branch claude/stage75f-specificity-20260928, established by a full tree listing of that branch.",
+        "not_established": "whether it exists elsewhere",
+        "status": "OPEN",
+        "rule": "This lane does not cite that file; coverage numbers used here come from the summary tables."
+      }
+    ]
   }
 }
