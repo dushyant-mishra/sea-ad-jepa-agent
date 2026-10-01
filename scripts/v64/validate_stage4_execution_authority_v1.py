@@ -65,7 +65,9 @@ def validate_manifest_structural(manifest: dict, contract: dict) -> list[str]:
         if not cond:
             errors.append(msg)
 
-    check(manifest.get("schema") == "V66_STAGE4_AUTHORITY_INPUT_MANIFEST_V1",\n          "BAD_SCHEMA")\n    check(set(manifest) == {"schema","correspondence_opened","stage4_authorized","training","multimodal_training","Morabito","TD60","phase_b_aggregate_binding","qualifying_donors","metacells","microglia_covered","genes","intervals","pairs","t5_rows","t3_nnz","t4_nnz","pairs_meeting_minimum_donors","availability_state_vocabulary","statistical_rules","missingness_rules","requested_actions","files"}, "TOP_LEVEL_SCHEMA_DRIFT")
+    check(manifest.get("schema") == "V66_STAGE4_AUTHORITY_INPUT_MANIFEST_V1",
+          "BAD_SCHEMA")
+    check(set(manifest) == {"schema","correspondence_opened","stage4_authorized","training","multimodal_training","Morabito","TD60","phase_b_aggregate_binding","qualifying_donors","metacells","microglia_covered","genes","intervals","pairs","t5_rows","t3_nnz","t4_nnz","pairs_meeting_minimum_donors","availability_state_vocabulary","statistical_rules","missingness_rules","requested_actions","files"}, "TOP_LEVEL_SCHEMA_DRIFT")
     check(manifest.get("correspondence_opened") is False,
           "CORRESPONDENCE_MUST_BE_UNOPENED")
     check(manifest.get("stage4_authorized") is False,
