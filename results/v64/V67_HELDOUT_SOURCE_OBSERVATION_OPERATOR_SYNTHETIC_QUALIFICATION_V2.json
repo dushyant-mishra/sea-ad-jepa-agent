@@ -1,0 +1,18 @@
+{
+  "schema":"V67_HELDOUT_SOURCE_OBSERVATION_OPERATOR_SYNTHETIC_QUALIFICATION_V2",
+  "date":"2026-10-01",
+  "status":"PASS_SOFTWARE_SEMANTICS_ONLY",
+  "supersedes_interpretation_of":"scripts/v64/heldout_source_observation_operator_synthetic_v1.py@pre-F1",
+  "producer":"scripts/v64/heldout_source_observation_operator_synthetic_v1.py",
+  "change_from_v1":"held-out descriptor is estimated from an independent technical calibration channel; planted TRUE_CAPTURE is generation-only",
+  "mean_raw_shared_r2":0.6221530106364587,
+  "mean_operator_aware_shared_r2":0.9982647095720369,
+  "max_descriptor_relative_error":0.001567285695984138,
+  "counterfactual_35pct_heldout_descriptor_error_mean_r2":0.9303120420695921,
+  "counterfactual_transfer_gate_passes":false,
+  "ci":{"run":36859483646,"tests_passed":173},
+  "qualified":"synthetic mechanics for estimating a measurement-scale descriptor from technical controls and applying it under leave-one-source-out transfer",
+  "not_qualified":"real technology transfer, identification of real observation operators, real calibration channels, or biological authority",
+  "audit_note":"F1 accepted. V1 was weaker because it supplied the planted held-out CAPTURE. Donor disjointness is now treated as a structural split diagnostic, not a scientific gate.",
+  "governance":{"real_data_used":false,"training":"OFF","stage4":"NOT_AUTHORIZED"}
+}
