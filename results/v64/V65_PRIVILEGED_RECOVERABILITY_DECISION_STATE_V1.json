@@ -48,7 +48,13 @@
       "Z_pred"
     ],
     "validation_or_test_rotation": false,
-    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION"
+    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION",
+    "incremental_shells": {
+      "2": "S_2=P_2",
+      "4": "S_4=P_4-P_2",
+      "8": "S_8=P_8-P_4",
+      "16": "S_16=P_16-P_8"
+    }
   },
   "primary_metric": "DONOR_LEVEL_MULTIVARIATE_EXPLAINED_VARIANCE",
   "delta_metric": "candidate_R2_multi - max(technical_baseline_R2_multi, global_RNA_baseline_R2_multi)",
@@ -73,7 +79,8 @@
     "if_none": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
     "no_skipping_failed_lower_rank": true,
     "if_rank2_fails": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
-    "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION"
+    "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION",
+    "aggregate_and_incremental_shell_must_both_pass": true
   },
   "test_rule": {
     "all_4_donors_delta_positive": true,
@@ -82,7 +89,8 @@
     "all_4_permutation_gate": true,
     "all_4_geometry_gate": true,
     "median_test_delta_at_least_fraction_of_validation": 0.5,
-    "retuning_after_open": false
+    "retuning_after_open": false,
+    "aggregate_and_all_shells_through_selected_rank_must_pass": true
   },
   "classifications": {
     "RNA_RECOVERABLE": "rank 16 selected on VALIDATION and confirmed on TEST",
@@ -101,6 +109,7 @@
   "synthetic_qualification": {
     "script": "scripts/v64/qualify_recoverability_decision_synthetic_v1.py",
     "finding": "SMALLEST_ELIGIBLE misclassifies a monotone fully-recoverable nested factor as rank 2; repaired rule selects the largest contiguous eligible rank.",
-    "real_biological_values_used": false
+    "real_biological_values_used": false,
+    "incremental_shell_finding": "A 4-shared/12-private numerical fixture passed aggregate rank16 because shared variance dominated; incremental-shell gating added before any real paired outcome."
   }
 }
