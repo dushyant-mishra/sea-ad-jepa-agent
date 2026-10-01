@@ -54,3 +54,23 @@ def test_evidence_absence_does_not_prune_candidate(tmp_path):
     with gzip.open(a.transcript_output,"rt") as f:
         body=f.read()
     assert "\t0\t0\t" in body
+
+
+def test_fantom_evidence_is_strand_aware(tmp_path):
+    m=_load()
+    g=tmp_path/"g.gtf.gz"
+    with gzip.open(g,"wt") as f:
+        f.write('chr1\tx\ttranscript\t101\t200\t.\t+\t.\tgene_id "ENSG1"; transcript_id "ENST1"; gene_name "G1"; transcript_type "pc";\n')
+    screen=tmp_path/"pls.bed"; screen.write_text("chr9\t1\t2\tX\n")
+    fantom=tmp_path/"fantom.bed"
+    # Same coordinate, opposite strand only: must NOT annotate the + GENCODE TSS.
+    fantom.write_text("chr1\t100\t110\tCAGE\t0\t-\t100\t101\t0\n")
+    class A: pass
+    a=A(); a.gencode_gtf=g; a.screen_pls=screen; a.dong_data7=None; a.fantom_bed=fantom
+    a.transcript_output=tmp_path/"t.tsv.gz"; a.tss_output=tmp_path/"x.tsv.gz"
+    a.membership_output=tmp_path/"m.tsv.gz"; a.receipt=tmp_path/"r.json"
+    m.build(a)
+    with gzip.open(a.transcript_output,"rt") as f:
+        rows=list(__import__("csv").DictReader(f,delimiter="\t"))
+    assert rows[0]["fantom_cage_overlap"]=="0"
+    assert rows[0]["fantom_cage_count"]=="0"
