@@ -2,9 +2,12 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "250bf346df43e1e246426299a24a2f87b8b414ff",
-  "worktree_clean_at_assembly": true,
-  "uncommitted_at_assembly": [],
+  "head_commit": "7f4b47f0de8a6a33e9ff9a0e76dc6cd4fe22bce6",
+  "worktree_clean_at_assembly": false,
+  "uncommitted_at_assembly": [
+    "M results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
+    " M scripts/v64/build_stage4_executor_closeout_v1.py"
+  ],
   "artifacts": {
     "1_s81_repair_verifier": {
       "role": "recomputes 17 consumer-semantics gates from the artifacts, not from JSON restatements",
@@ -27,19 +30,19 @@
     "3_executor_source": {
       "role": "the executor, hard-bound, one CLI flag plus the guarded synthetic mode",
       "path": "scripts/v64/stage4_executor_v1.py",
-      "sha256": "cd1371422d9f68a8816e70d660f5ad08a1895085d83107f142199b2ac7e93afa",
-      "worktree_blob": "8f1de6b19ab72a3d86f0d541a76f189c441799bb",
-      "git_blob_at_head": "8f1de6b19ab72a3d86f0d541a76f189c441799bb",
-      "bytes": 46933,
+      "sha256": "cdaa6f4dc1841b7505602e60d4be701d56f069bb5ea5e7eb8bb595826616960d",
+      "worktree_blob": "38b2372ba5d16352c53abb09430a4b4966c67bb3",
+      "git_blob_at_head": "38b2372ba5d16352c53abb09430a4b4966c67bb3",
+      "bytes": 54350,
       "note": null
     },
     "4_synthetic_world_builder": {
       "role": "four Phase-B substrates in the real on-disk format",
       "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
-      "sha256": "5842057065f9ca071b1834a77769a394bf8d5f1163cf6adade749ab939a0c651",
-      "worktree_blob": "30da5c41265833cd7349dadc4e3fb49ae4de89f4",
-      "git_blob_at_head": "30da5c41265833cd7349dadc4e3fb49ae4de89f4",
-      "bytes": 20111,
+      "sha256": "d7df084e81ef6b8e89f3415e7046c91391a6cb0f6157b0b929c50225163aa06d",
+      "worktree_blob": "80ec3e2c9c3bfede55994074e59164efa09f8c9b",
+      "git_blob_at_head": "80ec3e2c9c3bfede55994074e59164efa09f8c9b",
+      "bytes": 27602,
       "note": null
     },
     "5_end_to_end_suite": {
@@ -206,15 +209,12 @@
     },
     "synthetic_worlds_build": {
       "worlds": [
-        "BIOLOGY_POSITIVE",
-        "TRUE_NULL",
-        "MEASURED_TECHNICAL",
-        "HIDDEN_CONFOUND"
+        "TRUE_NULL"
       ],
       "reads_no_real_measurement": true,
       "path": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
-      "sha256": "09c17ad34273132ec33c30f51327aae2c95a49dbb13eb24112a7b52590d6653f",
-      "git_blob_at_head": "d9fa99529aa547c7ab675bb1319563e88a575ce8"
+      "sha256": "5fbf38ced155549dd189189022ae052cfd44d9d6aab7f0a2d2ce7aac05816322",
+      "git_blob_at_head": "fdf05e8dff7be5ba0d737cd07021f5b0f4eb5014"
     },
     "world_seed_robustness": {
       "seed_bases": [
@@ -248,7 +248,7 @@
       "this_is_a_calculation_not_a_measured_peak": true,
       "path": "results/v64/phase_b_design/V64_STAGE4_REAL_SCALE_CAPACITY_V1.json",
       "sha256": "7da6e9fee90cb1211554c320ff5d01fa01b9873a213cf7a96f14b608380f7299",
-      "git_blob_at_head": null
+      "git_blob_at_head": "8c4d008981fb6a472f68695b96e81541ad651086"
     },
     "independent_audit_of_chatgpt_lane": {
       "contract_parent_quantities_checked": 11,
@@ -277,6 +277,11 @@
       "Any claim that a positive Stage-4 result would demonstrate regulatory causation. The HIDDEN_CONFOUND world forbids that reading.",
       "Any claim that LCB95 > 0 alone establishes a non-technical origin. The MEASURED_TECHNICAL residue forbids that reading."
     ],
+    "SUPERSEDED_BY_S99_DO_NOT_CITE_WITHOUT_THIS_NOTE": {
+      "what": "every limit and rate below was measured against a synthetic control arm drawn uniformly at random, not against the frozen PROMOTER_FIXED_DISTAL_MATCHED_CONTROL construction. They are retained because deleting a measurement because it became inconvenient is worse than carrying it with its qualification, but none of them characterises the frozen Stage-4 design.",
+      "what_replaced_it": "with the matched control in place, the measured-technical world produces no effect at all (adjusted Delta -0.0041, bound below zero) and is independently flagged by the balance gate at 1.781. The design handles measured depth confounding. The hidden confound, however, passes ALL FIVE frozen gates at Delta +0.5937 against genuine biology's +0.5543 -- larger than the real signal, so the contract's no-negligible-Delta defence does not reach it.",
+      "status": "single runs per world. The V2 calibration, pre-committed at 46f7c3342c0e88dd296a430365b52cf791324e133ce066ab54f0ea31fb9e3175, is measuring the rates and is not yet complete. Until it lands, the hidden-confound result is one draw per world and must be stated as such."
+    },
     "LIMITS_FOUND_BY_RESAMPLING_THE_WORLDS": [
       "The TRUE_NULL world produced a nominally significant result in 1 of 4 seed draws: delta +0.0063 with LCB95 +0.0010, where nothing was planted. A one-sided 95% bound is permitted to do this; what matters is that it demonstrably does at this donor count. Four draws cannot estimate the rate and none is claimed.",
       "The depth residue excludes zero in 3 of 4 draws, not always. The earlier statement that a purely technical world still ends with LCB95 > 0 is weaker than it was first reported. The surviving warning is milder: a small positive LCB95 is not by itself evidence of a non-technical origin.",
@@ -289,6 +294,8 @@
       "The pipeline materialises dense metacell-by-feature matrices. At real scale the ATAC matrix is 3,231 x 32,153. Its footprint has not been measured.",
       "The frozen 14-term basis carries only two depth sensitivities as technical controls. A cross-modal technical factor orthogonal to depth is not controlled for and, per the HIDDEN_CONFOUND world, is indistinguishable from biology.",
       "Six concerns against the ChatGPT lane remain open: S89 through S94.",
+      "S99: the synthetic control arm did not implement the frozen matched-control construction until 51b4de5a. Every control-arm number produced before that commit measured a design the project does not use. The fixture is repaired and audited, but the receipts produced before it are superseded.",
+      "The post-repair world results are ONE DRAW PER WORLD. The V2 calibration sweep measuring the rates is running and not yet complete, so the hidden-confound finding is currently a single observation, not a rate.",
       "The synthetic worlds qualify the orchestration, not the biology. Nothing here says the frozen estimand is the right scientific question."
     ],
     "GOVERNANCE": {
@@ -302,5 +309,5 @@
   },
   "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
   "computed_correspondence_values": 0,
-  "producer_sha256": "bf6b7a7e7d2dcc67bd9b1615166b3c6cef9aa411b97c304986f7ed541ed88936"
+  "producer_sha256": "a6ba00072dacaae0a040fe016a6248d96f15ad3ccac5a675e44634952784f469"
 }
