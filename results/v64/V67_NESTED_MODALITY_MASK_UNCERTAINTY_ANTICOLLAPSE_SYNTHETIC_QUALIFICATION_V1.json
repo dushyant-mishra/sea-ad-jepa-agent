@@ -1,0 +1,37 @@
+{
+  "schema":"V67_NESTED_MODALITY_MASK_UNCERTAINTY_ANTICOLLAPSE_SYNTHETIC_QUALIFICATION_V1",
+  "date":"2026-10-01",
+  "status":"PASS_SOFTWARE_SEMANTICS_ONLY",
+  "producer":"scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py",
+  "fixture":{"seed":6701,"donors":64,"cells_per_donor":40,"train_donors":48,"validation_donors":16},
+  "metrics":{
+    "rna_shared_r2":0.9882825292313989,
+    "multimodal_shared_r2":0.9883012260216104,
+    "multimodal_private_r2_measured":0.9948971751019793,
+    "mask_only_shared_r2":-0.015162427348264673,
+    "measured_private_uncertainty_mse":0.004889699340289825,
+    "missing_private_uncertainty_mse":0.9882517022820525,
+    "uncertainty_ratio_missing_over_measured":202.10888921924519
+  },
+  "anti_collapse":{
+    "rna":{"min_axis_std":1.0319533061061246,"effective_rank":3.977126562000075,"passes":true},
+    "multimodal":{"min_axis_std":1.0320018259041595,"effective_rank":3.977666915040302,"passes":true},
+    "constant_negative":{"min_axis_std":0.0,"effective_rank":0.0,"passes":false}
+  },
+  "ci":{"workflow_run":36813936301,"tests_passed":168,"elapsed_seconds":11.74},
+  "qualified":[
+    "synthetic modality-mask observation semantics",
+    "missing-private uncertainty widens when privileged evidence is absent",
+    "shared representation anti-collapse diagnostic rejects constant/rank-one controls",
+    "mask alone does not predict planted shared biology"
+  ],
+  "not_qualified":[
+    "real biological uncertainty calibration",
+    "production thresholds",
+    "real shared/private rank",
+    "model width or loss weights",
+    "real multimodal training",
+    "Stage-4 correspondence"
+  ],
+  "governance":{"real_data_used":false,"training":"OFF","multimodal_training":"OFF","stage4":"NOT_AUTHORIZED","Morabito":"PROTECTED","TD60":"BLOCKED"}
+}
