@@ -90,7 +90,7 @@ def permutation_metrics(Ytrue,Ypred,train_mean,donor_id,n_perm=10_000):
     )
 
 
-def synthetic(seed=41,n=70,k=4):
+def synthetic(seed=41,n=40,k=4):
     rng=np.random.default_rng(seed)
     Z=rng.normal(size=(n,k))
     # Recoverable prediction: small noise plus a mild invertible mixing.
