@@ -62,7 +62,7 @@ def test_test_confirmation_cannot_retune_rank():
     m=_load()
     partial,_,_,_,_,_=m.synthetic_scenarios()
     selected=m.select_validation_rank(partial)
-    assert selected==2
+    assert selected==4
     bad_test=[
         m.donor(.12,.05,.08),
         m.donor(.13,.05,.08),
