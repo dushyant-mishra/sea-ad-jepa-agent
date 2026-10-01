@@ -22,6 +22,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
+# Feather I/O needs pyarrow, which the Windows interpreter running the rest of the
+# suite does not have. SKIP rather than FAIL there: a test that fails for an
+# environmental reason looks like broken code and hides real failures.
+pytest.importorskip(
+    "pyarrow",
+    reason="needs pyarrow; run this file inside the SCENIC+ container "
+           "(command in the module docstring)")
+
 _MOD = Path(__file__).resolve().parents[1] / "scripts" / "v69" / \
     "merge_cistarget_motif_shards_v1.py"
 _spec = importlib.util.spec_from_file_location("v69_merge", _MOD)

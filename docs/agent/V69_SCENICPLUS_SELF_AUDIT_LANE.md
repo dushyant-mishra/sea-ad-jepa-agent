@@ -556,7 +556,7 @@ the benchmark receipt and here.
 
 ## S22 — The test suite now spans two interpreters (DISCLOSED)
 
-**Status:** OPEN, low severity, recorded so nobody concludes tests are missing.
+**Status:** CLOSED. Recorded so nobody concludes tests are missing.
 
 `tests/test_v69_shard_merge_validation_v1.py` needs `pyarrow` for feather I/O, which the
 Windows Anaconda interpreter running the rest of the suite does not have. It therefore
@@ -564,11 +564,13 @@ runs **inside the SCENIC+ container**. Running `pytest tests/` on Windows shows 
 as 10 failed / 1 passed purely from a missing import, which looks like broken code and is
 not.
 
-The exact container command is in the module docstring. Verified there: 11 passed. The
-remaining 58 tests run under the Windows interpreter. A future cycle should either move
-the whole suite into the container or add a marker that skips rather than fails — I
-have not done either, so the split stands as a real wrinkle in the auditability of this
-lane.
+The exact container command is in the module docstring. Verified there: 11 passed.
+
+**Fixed rather than left open.** The file now calls `pytest.importorskip("pyarrow")`, so
+on Windows it SKIPS with a reason naming the container command instead of reporting ten
+spurious failures. Windows now reports 58 passed, 1 skipped; the container reports 11
+passed. A test that fails for an environmental reason looks like broken code and, worse,
+hides real failures in the noise.
 
 ---
 
