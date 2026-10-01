@@ -35,12 +35,14 @@ on:
       - 'scripts/v64/privileged_recoverability_permutation_geometry_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_numerical_synthetic_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_geometry_gate_v2.py'
+      - 'scripts/v64/privileged_recoverability_pairing_r2_gate_v2.py'
       - 'scripts/v64/audit_recoverability_geometry_gate_redundancy_v1.py'
       - 'scripts/v64/qualify_recoverability_decision_synthetic_v1.py'
       - 'tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py'
       - 'tests/test_v65_recoverability_authority_consistency.py'
       - 'tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py'
       - 'tests/test_v65_privileged_recoverability_geometry_gate_v2.py'
+      - 'tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py'
       - 'tests/test_v65_recoverability_geometry_gate_redundancy.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
@@ -87,4 +89,5 @@ jobs:
             tests/test_v65_recoverability_authority_consistency.py \
             tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py \
             tests/test_v65_recoverability_geometry_gate_redundancy.py \
-            tests/test_v65_privileged_recoverability_geometry_gate_v2.py
+            tests/test_v65_privileged_recoverability_geometry_gate_v2.py \
+            tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py
