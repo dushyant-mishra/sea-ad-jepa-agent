@@ -240,12 +240,12 @@ Principal-angle cosines may be emitted as an audit alias of this same subspace-a
 
 ### G2 — relational geometry
 
-Compute all upper-triangle pairwise Euclidean distances among nuclei within the donor separately for:
+Compute all upper-triangle pairwise squared Euclidean distances among nuclei within the donor separately for:
 
 - `Z_true_shared`
 - `Z_pred_shared`
 
-Then compute the **Pearson correlation** between those two pairwise-distance vectors.
+Then compute the **Pearson correlation** between those two pairwise-squared-distance vectors.
 
 This statistic is translation-invariant and evaluates whether the predicted state preserves the donor's within-state relational geometry rather than only spanning a linearly aligned subspace.
 
