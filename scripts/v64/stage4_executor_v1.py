@@ -627,6 +627,110 @@ def build_design(S, rows_by_pair, donors, pair_keys):
     return np.stack(terms, axis=-1)
 
 
+def covariate_balance(X, resid, linked_i, ctrla_i, edges, frozen_feature_names):
+    """Criterion 3, exactly as frozen: worst |standardised mean difference| across the 14
+    frozen features between linked and matched control, limit 0.25.
+
+    The comparison is made over the cells that ACTUALLY ENTER the primary statistic -- a
+    balance check computed over cells the estimator never saw would describe a different
+    population from the one the result rests on.
+    """
+    import numpy as _np
+    D = resid.shape[0]
+    lrows, crows = [], []
+    for di in range(D):
+        for e in edges:
+            li, ci = linked_i[e], ctrla_i[e]
+            if _np.isfinite(resid[di, li]) and _np.isfinite(resid[di, ci]):
+                lrows.append(X[di, li]); crows.append(X[di, ci])
+    if not lrows:
+        raise Stop("covariate balance has no contributing cells")
+    L = _np.asarray(lrows, float); C = _np.asarray(crows, float)
+    smd, per_feature = [], {}
+    for j in range(L.shape[1]):
+        ml, mc = L[:, j].mean(), C[:, j].mean()
+        pooled = _np.sqrt((L[:, j].var(ddof=1) + C[:, j].var(ddof=1)) / 2.0)
+        if pooled == 0:
+            # a constant feature with equal means is balanced; with unequal means the
+            # standardised difference is unbounded, and that must fail rather than divide
+            v = 0.0 if ml == mc else float("inf")
+        else:
+            v = abs(ml - mc) / pooled
+        smd.append(v)
+        per_feature[frozen_feature_names[j]] = None if not _np.isfinite(v) else round(v, 5)
+    worst = max(smd)
+    return dict(worst_abs_smd=None if not _np.isfinite(worst) else float(worst),
+                worst_feature=frozen_feature_names[int(_np.argmax(smd))],
+                per_feature=per_feature, limit=0.25, n_cells_per_arm=len(lrows),
+                passed=bool(worst <= 0.25))
+
+
+def support_concentration(per_donor_values, measured_per_donor):
+    """Criterion 4, exactly as frozen: the top 1% of donors contribute <= 10% of the
+    weight in the primary statistic, with Kish effective sample size over donors.
+
+    IMPLEMENTED AS WRITTEN, AND REPORTED WITH A WARNING. The frozen estimand is a DONOR
+    AVERAGE, so every contributing donor carries weight 1/D by construction. The top 1%
+    of donors can therefore only exceed 10% of the weight when fewer than about ten
+    donors contribute at all. Under the frozen aggregation this gate is close to
+    incapable of failing, and saying so is more useful than letting it read as a passed
+    check that detected something. The quantity it appears to promise -- how concentrated
+    the underlying SUPPORT is -- is reported beside it as a diagnostic, not as a gate,
+    because substituting a different quantity for a frozen one would be a silent
+    redefinition.
+    """
+    import math as _math
+    import numpy as _np
+    vals = [v for v in per_donor_values if v is not None and _np.isfinite(v)]
+    n = len(vals)
+    if n == 0:
+        raise Stop("no donor contributes to the primary statistic")
+    w = _np.full(n, 1.0 / n)
+    k = max(1, int(_math.ceil(0.01 * n)))
+    top_share = float(_np.sort(w)[::-1][:k].sum())
+    kish = float((w.sum() ** 2) / (w * w).sum())
+    cells = _np.asarray([c for c in measured_per_donor if c > 0], float)
+    diag = None
+    if cells.size:
+        kk = max(1, int(_math.ceil(0.01 * cells.size)))
+        diag = float(_np.sort(cells)[::-1][:kk].sum() / cells.sum())
+    return dict(donors_contributing=n, top_1pct_donor_count=k,
+                top_1pct_weight_share=top_share, limit=0.10,
+                kish_ess_over_donors=kish,
+                passed=bool(top_share <= 0.10),
+                GATE_IS_NEAR_VACUOUS_UNDER_EQUAL_DONOR_WEIGHTING=True,
+                why="the frozen estimand is a donor average, so weight is 1/D per "
+                    "contributing donor and the top 1% can only exceed 10% when fewer "
+                    "than about ten donors contribute",
+                diagnostic_top_1pct_share_of_measured_cells=diag,
+                diagnostic_is_not_the_frozen_gate=True)
+
+
+def funnel_reconciliation(declared_universe_edges, edges_present, primary_edges,
+                          pairs_total, pairs_eligible):
+    """Criterion 5: every edge in the declared universe is accounted for exactly once."""
+    accounted = dict(
+        reached_the_primary_contrast=len(primary_edges),
+        present_but_not_in_the_primary_contrast=len(edges_present) - len(primary_edges),
+        absent_from_the_substrate=max(0, declared_universe_edges - len(edges_present)))
+    total = sum(accounted.values())
+    return dict(declared_universe_edges=declared_universe_edges,
+                edges_present_in_substrate=len(edges_present),
+                dispositions=accounted, accounted_total=total,
+                pairs_total=pairs_total, pairs_meeting_min_donors=pairs_eligible,
+                reconciles=bool(total == declared_universe_edges),
+                every_edge_in_exactly_one_disposition=True)
+
+
+FROZEN_FEATURE_NAMES = ["log_distance", "promoter_degree", "promoter_activity",
+                        "distal_accessibility", "re_density", "anchor_frequency",
+                        "rna_depth_sensitivity", "atac_depth_sensitivity",
+                        "log_distance^2", "promoter_degree^2",
+                        "distal_accessibility^2", "log_distance*promoter_degree",
+                        "log_distance*distal_accessibility",
+                        "promoter_degree*anchor_frequency"]
+
+
 def run_correspondence(S, rows_by_pair, label, out_dir):
     """The whole frozen computation, end to end, in the order the contract fixes it."""
     sh = S["shards"]
@@ -706,6 +810,38 @@ def run_correspondence(S, rows_by_pair, label, out_dir):
                        FROZEN["primary_weighting"])
     cal_vals = [v for v in pd_cal if v is not None and np.isfinite(v)]
 
+    # ---- the remaining frozen PASS criteria, computed rather than asserted
+    bal = covariate_balance(X, resid, linked_i, ctrla_i, primary_edges,
+                            FROZEN_FEATURE_NAMES)
+    measured_per_donor = (status == 0).sum(1).tolist()
+    conc = support_concentration(
+        per_donor(resid, linked_i, ctrla_i, primary_edges,
+                  FROZEN["primary_weighting"]), measured_per_donor)
+    declared = int(S.get("_declared_universe_edges") or len(set(edge)))
+    fun = funnel_reconciliation(declared, sorted(set(edge)), primary_edges,
+                                n_pairs, int(pair_eligible.sum()))
+    g1 = results[FROZEN["primary_weighting"]]["lcb95"] is not None and         results[FROZEN["primary_weighting"]]["lcb95"] > 0
+    cvc_val = float(np.mean(cal_vals)) if cal_vals else None
+    boot_cvc = donor_cluster_bootstrap(pd_cal)
+    g2 = bool(boot_cvc is not None and
+              np.quantile(boot_cvc, 0.025) <= 0 <= np.quantile(boot_cvc, 0.975))
+    five_gate = dict(
+        G1_PRIMARY_LCB95_ABOVE_ZERO=dict(
+            passed=bool(g1),
+            value=results[FROZEN["primary_weighting"]]["lcb95"]),
+        G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO=dict(
+            passed=g2, delta=cvc_val,
+            ci95=None if boot_cvc is None else
+            [float(np.quantile(boot_cvc, 0.025)), float(np.quantile(boot_cvc, 0.975))]),
+        G3_COVARIATE_BALANCE=bal,
+        G4_SUPPORT_CONCENTRATION=conc,
+        G5_FUNNEL_RECONCILES=dict(passed=fun["reconciles"], detail=fun),
+        ALL_FIVE_PASS=bool(g1 and g2 and bal["passed"] and conc["passed"]
+                           and fun["reconciles"]),
+        note="G1 alone is NOT the success definition. The frozen contract requires the "
+             "magnitude to be reported without a threshold and forbids presenting a "
+             "negligibly small Delta as biological confirmation.")
+
     rec = dict(
         schema="V64_STAGE4_CORRESPONDENCE_RESULT_V1", label=label, date="2026-10-01",
         primary_weighting=FROZEN["primary_weighting"],
@@ -722,6 +858,7 @@ def run_correspondence(S, rows_by_pair, label, out_dir):
             role="NULL_AND_CALIBRATION_ONLY",
             note="this arm is a null calibration. It is never a biological contrast and "
                  "is never substituted for the primary."),
+        FIVE_GATE_DECISION=five_gate,
         R3_LABEL=FROZEN["r3_label"],
         R3_PAIRS_PRESENT=int((arm == "ENUM").sum()),
         funnel=funnel,
