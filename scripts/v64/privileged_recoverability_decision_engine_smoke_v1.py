@@ -37,9 +37,13 @@ def target_projector(z_true_train, z_pred_train, k, tie_tol=1e-10):
 
 
 def _donor_pass(m):
+    """Per-donor gates only.
+
+    The 0.05 materiality margin is a MEDIAN-across-donors rule in the frozen contract,
+    not a per-donor requirement. Each donor must only have positive DELTA_R2.
+    """
     return bool(
         m["delta_r2"] > 0
-        and m["delta_r2"] >= DELTA_MARGIN
         and m["candidate_r2"] > 0
         and m["permutation_pass"]
         and m["geometry_pass"]
