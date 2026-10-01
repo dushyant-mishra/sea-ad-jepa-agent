@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S58_S59_CLOSED__PHASE_B_STOPPED_ON_S60",
+  "status": "V65_PHASE_A_V3_ACCEPTED__S60_DESIGN_CLOSED__PHASE_B_STOPPED_ON_S61",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -11,8 +11,8 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "a0500111254315504de3618ea832931ea54cdc26",
-  "current_blocker": "R1/R2/R3 statistical authority, literal repair and Phase-A V3 custody are closed. Phase B remains blocked because the substrate does not yet persist each R3 pair's realised large-arm conditioning identity and mandatory CONDITIONAL_ON_REALISED_LARGE_ARM label/reference binding.",
+  "claude_last_verified_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
+  "current_blocker": "S60 design is closed, but the committed substrate-test receipt at 7ad38eaf records 7/9 FAIL (T16/T17 stale authority digest) despite the reported final 9/9 PASS. Phase B remains blocked until the restored final artifacts are rerun and a clean committed 9/9 PASS receipt is self-consistent.",
   "parallel_architecture_next": "Promoter ledger closed. Recoverability V2 decision mechanics and exact preprocessing/fit mechanics are synthetically qualified (latest combined run 116/116), but real paired execution and TEST remain unopened. Next lawful architecture task is audit-only construction of a fail-closed TRAIN+VALIDATION executor.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read the current Phase-B substrate audit for Claude's S60 blocker, then V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md and V65_PRIVILEGED_RECOVERABILITY_SYNTHETIC_SOFTWARE_QUALIFICATION_V1.json. V1 recoverability precision contract is historical only."
+  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. Do not authorize Phase B from narrative test claims when the committed authoritative receipt says FAIL."
 }
