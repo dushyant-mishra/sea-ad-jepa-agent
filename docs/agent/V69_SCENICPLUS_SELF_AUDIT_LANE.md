@@ -10,10 +10,50 @@ Outputs: `D:/jepa_v5_outputs_20260925/v69_scenicplus`
 
 ---
 
+## S0 — Nine self-audit entries were claimed in commit messages but never written to this file (CAUGHT, CORRECTED)
+
+**Status:** CLOSED by this rewrite. Listed first because it is the most serious item
+in the lane: it is a discrepancy between what my commits *said* and what the
+repository *contained*.
+
+**Defect.** Entries S7 through S15 were appended to this file by Python snippets using
+`pathlib.Path.read_text()` / `write_text()` with no `encoding` argument. On Windows
+those default to the locale codec (cp1252), so the file's UTF-8 em-dashes (`—`,
+bytes `E2 80 94`) decoded as mojibake. Every anchor string I searched for contained a
+real em-dash and therefore **matched nothing**. `str.replace` returned the text
+unchanged, `write_text` wrote it back byte-identical, my snippet printed `ok`, and
+`git commit` succeeded with a message describing entries that were never added.
+
+Six commits — `9eeebb1b`, `b914837f`, `b8be132a`, `ced02e5b`, `881ecc80` and the S15
+attempt — carry commit messages asserting self-audit entries that did not exist in the
+file at those commits. The file went from 5 headings to 6 and then stopped changing.
+
+**Why this is worse than an ordinary bug.** The commit messages are themselves a
+provenance record. Asserting "self-audit S12 recorded" when nothing was recorded is a
+false statement about history, not merely a missing file update. It is the same class
+of error as writing an execution anchor that does not exist. The findings themselves
+were real and are preserved verbatim in those commit messages, so no *finding* was
+lost — but anyone reading the file would have seen a lane that stopped auditing itself
+after S6.
+
+**How it was caught.** Not by the snippets, which all reported success. By grepping
+`^## S` while preparing an unrelated edit and seeing the list end at S6, then checking
+heading counts at each commit that touched the file.
+
+**The fix.** This file is rewritten in full with every entry present. Any future edit
+to a UTF-8 document uses an explicit encoding, and the heading count is verified after
+the write rather than inferred from a snippet's exit status.
+
+**Rule adopted.** A commit message may not assert that a file contains something
+unless the change is visible in that commit's diff for that file. "The script printed
+ok" is not evidence that a file changed.
+
+---
+
 ## S1 — Motif annotation header parsed as data (CAUGHT BEFORE DAMAGE)
 
 **Status:** CLOSED.
-**Commit of fix:** see `scripts/v69/build_tf_annotation_supply_table_v1.py`.
+**Artifact:** `scripts/v69/build_tf_annotation_supply_table_v1.py`.
 
 **Defect.** The cisTarget motif-to-TF annotation table
 (`motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl`) writes its header as a `#`-prefixed
@@ -22,162 +62,328 @@ first version of the supply producer required `motif_id` and so refused to run.
 
 **Was it caught before it could do damage?** Yes — before any supply number was
 produced, and therefore before control C1 could have been computed on a wrong
-denominator. The producer's own required-column gate is what caught it; it
-returned `FAIL__ANNOTATION_TABLE_COLUMNS_ABSENT` and named the columns.
+denominator. The producer's own required-column gate caught it and named the columns.
 
-**The fix, and what it deliberately is not.** I stripped the `#` marker from
-column names. I did **not** relax the required-column check, and I did not fall
-back to positional column access or to `skiprows=1` (which would have discarded
-every column name). Four tests pin this distinction:
+**The fix, and what it deliberately is not.** I strip the `#` marker from column names.
+I did **not** relax the required-column check, and did not fall back to positional
+access or `skiprows=1` (which would have discarded every column name). Four tests pin
+the distinction, including one proving `gene_name_typo` still cannot satisfy
+`gene_name`.
 
-- `test_header_marker_is_parsed_not_ignored` — the `#`-prefixed and plain headers
-  must yield identical digests.
-- `test_genuinely_missing_column_still_fails_closed` — dropping a real column still
-  raises, and names it.
-- `test_hash_prefix_does_not_smuggle_in_a_wrong_column` — stripping `#` must not let
-  `gene_name_typo` satisfy `gene_name`.
-- `test_unstratifiable_supply_fails_closed` — if every TF has identical supply, the
-  control has no stratification to offer and the run stops.
-
-**Why this mattered more than a parsing nit.** Control C1 exists to stop a TF being
-called "strong" merely because more motifs are annotated to it. Its denominator is
-this table. A silently mis-parsed denominator would not have crashed anything
-downstream — it would have produced a *plausible-looking* supply table and a
-control that passed for the wrong reason.
+**Why this mattered more than a parsing nit.** C1 exists to stop a TF being called
+strong merely because more motifs are annotated to it. A silently mis-parsed
+denominator would not have crashed anything — it would have produced a
+plausible-looking supply table and a control that passed for the wrong reason.
 
 ---
 
 ## S2 — I froze a route comparison that could not isolate what it claimed (CAUGHT BEFORE DAMAGE)
 
-**Status:** CLOSED by amendment.
-**Artifacts:** `results/v64/V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1.json`
-(commit `500a8cfdba63a3f26193f3fb165aeb05f97aec34`) and
-`..._AMENDMENT_1.json` (commit `0358639e644f04cb2b2b801d84089f5c02642770`).
+**Status:** CLOSED by amendment 1.
+**Artifacts:** freeze at commit `500a8cfd`, amendment at `0358639e`.
 
 **Defect.** My own prospective freeze had Route A scored against the generic
-SCREEN-region cisTarget database and Route B against a custom database built over
-its own consensus regions. Under that design, any Route-A/Route-B disagreement
-would confound **two** causes — a different region universe *and* a different
-motif-scoring database — so the comparison could not isolate region-definition
-sensitivity, which is the only question Route B exists to answer. I had even
-written the asymmetry into the freeze as a "known limitation", which is the wrong
-response to a defect that was still fixable.
+SCREEN-region cisTarget database and Route B against a custom database. Any
+Route-A/Route-B disagreement would then confound **two** causes — a different region
+universe *and* a different motif-scoring database — so the comparison could not isolate
+region-definition sensitivity, which is the only question Route B exists to answer. I
+had even written the asymmetry into the freeze as a "known limitation", which is the
+wrong response to a defect that is still fixable.
 
-**Was it caught before it could do damage?** Yes. Found by re-reading my own freeze
-against mandate item 7 before executing it, with zero eRegulons, zero route
-statistics, zero control statistics and zero Stage-4 artifacts in existence. The
-amendment records that exposure state explicitly, so a later reader can verify the
-change could not have been outcome-driven.
+**Caught before damage?** Yes — found by re-reading my own freeze against mandate item
+7 before executing it, with zero eRegulons, zero route statistics and zero Stage-4
+artifacts in existence. The amendment records that exposure state so a later reader can
+verify the change could not have been outcome-driven.
 
-**The fix.** Build a custom cisTarget database for **both** routes over each route's
-own regions, with identical motif collection, identical cbust binary, identical
-hg38 FASTA and identical parameters, leaving the region universe as the single
-varying factor. Recorded as a numbered amendment quoting the original text verbatim,
-not as a silent rewrite of the frozen file. Cost accepted: Route A is no longer
-"fast" in wall-clock terms.
+**The fix.** A custom cisTarget database for **both** routes over each route's own
+regions, with identical motif collection, cbust binary, FASTA and parameters, leaving
+the region universe as the single varying factor. Recorded as a numbered amendment
+quoting the original text verbatim, not a silent rewrite.
 
 ---
 
 ## S3 — The parallel lane's acquisition producer records Route B as optional (NOT MY DEFECT; RAISED)
 
-**Status:** OPEN — not closable by my lane; it belongs to the other branch's owner.
+**Status:** OPEN — not closable by my lane.
 
 `scripts/v64/acquire_gse214979_scenicplus_v1.py` on
-`chatgpt/v64-privileged-information-recoverability-20260930` (commit
-`84e10964b0a47d55a33170b1853905b77115d56c`) writes into its receipt:
+`chatgpt/v64-privileged-information-recoverability-20260930` (commit `84e10964`)
+writes into its receipt that the fragment file was not downloaded because
+"fragment-level consensus-peak recaller remains an optional sensitivity route".
 
-> `"downloaded": false`, reason: "first-pass SCENIC+ route uses submitted filtered
-> gene+peak matrix; fragment-level consensus-peak recaller remains an optional
-> sensitivity route"
-
-The owner mandate supersedes this: Route B is **required**, not optional. My
-freeze adopts the mandate and says so by name. I am not editing the other branch.
-Flagged here so the contradiction is visible rather than silently diverging.
+The owner mandate supersedes this: Route B is **required**. My freeze adopts the
+mandate and says so by name. I am not editing the other branch. Flagged so the
+contradiction is visible rather than silently divergent.
 
 ---
 
 ## S4 — Route A and Route B share the same nuclei, so the comparison is narrower than "robustness" (DISCLOSED, NOT FIXABLE)
 
-**Status:** OPEN by construction — my lane cannot close this, and should not pretend to.
+**Status:** OPEN by construction.
 
-Microglial identity is taken from the published multiome annotation for **both**
-routes, because it cannot be re-derived from ATAC alone without circularity. So the
-Route-A/Route-B comparison varies the region universe and holds the cell set fixed.
-It therefore tests **region-definition sensitivity only** and must never be reported
-as general robustness of the network.
+Microglial identity is taken from the published multiome annotation for **both** routes,
+because it cannot be re-derived from ATAC alone without circularity. The comparison
+therefore varies the region universe and holds the cell set fixed: it tests
+**region-definition sensitivity only** and must never be reported as general robustness.
 
-This is written into `SECTION_0_SCOPE_AND_HONEST_LIMITATION` of the freeze rather
-than left for a reader to infer. I am recording it here too because the natural
-failure mode is for a later summary to compress "Route A and Route B agree" into
-"the network is robust", which would be a materially stronger claim than the
-evidence supports.
+Written into `SECTION_0_SCOPE_AND_HONEST_LIMITATION` of the freeze. Recorded here too
+because the natural failure mode is for a later summary to compress "Route A and Route
+B agree" into "the network is robust", which is a materially stronger claim.
+
+---
+
+## S5 — The substrate is small, and the headline cohort size hides it (DISCLOSED)
+
+**Status:** OPEN — a property of the data.
+
+GSE214979 is a 15-donor, 105,332-nucleus multiome cohort. The **microglial** substrate
+is far smaller: 3,179 nuclei across 15 donors, and 2,534 across 12 donors in the
+default development population. Donors are the replication unit; 2,534 nuclei improve
+per-donor precision and do not raise biological n above 12.
+
+A prospective insufficiency rule is frozen in advance: fewer than 8 QC-passing donors
+means no program may be called donor-stable at all. That number is labelled a
+CONVENTION, not a calibrated operating point.
 
 ---
 
 ## S6 — My crosswalk understated Stage-4 interval coverage by 30 points (CAUGHT BEFORE DAMAGE)
 
 **Status:** CLOSED.
-**Producer:** `scripts/v69/build_structural_crosswalk_layer_v1.py`.
+**Artifact:** `scripts/v69/build_structural_crosswalk_layer_v1.py`.
 
-**Defect.** My region crosswalk recorded, for each GSE214979 peak, the number of
-overlapping Stage-4 intervals *and* the index of the **first** one. I then derived
-Stage-4-side coverage from those first-hit indices. Stage-4 intervals are not
-disjoint: they are 5 kb windows enumerated at 1 bp offsets, so they overlap heavily
-and a single peak can touch many of them. On the real data, 7,432 peaks overlap more
-than one interval and one peak overlaps 16.
-
-**The size of the error.**
+**Defect.** My region crosswalk recorded, per peak, the number of overlapping Stage-4
+intervals *and* the index of the **first** one, then derived Stage-4-side coverage from
+those first-hit indices. Stage-4 intervals are not disjoint: they are 5 kb windows
+enumerated at 1 bp offsets. On the real data 7,432 peaks overlap more than one interval
+and one overlaps 16.
 
 | quantity | first-hit-only (wrong) | every touched interval (correct) |
 |---|---|---|
-| Stage-4 intervals reached by a GSE214979 peak | 13,325 | 22,991 |
+| Stage-4 intervals reached by a peak | 13,325 | 22,991 |
 | fraction of the 32,153-interval universe | 41.4% | 71.5% |
 
-A 30-percentage-point understatement of how much of the Stage-4 interval universe
-this external cohort can speak to. It would have made the external network look far
-less able to address Stage-4 than it is, and it is exactly the kind of error that
-reads as a conservative, responsible number rather than as a bug.
+A 30-percentage-point understatement, and exactly the kind of error that reads as a
+conservative, responsible number rather than as a bug.
 
-**Was it caught before it could do damage?** Yes — within the same cycle that
-produced the first number, before any program-level crosswalk, any freeze receipt
-and any report. No claim was published on the wrong figure.
+**Caught before damage?** Yes, in the same cycle, before any program-level crosswalk or
+report. **How:** not from a test — from reading my own receipt and noticing that
+`n_stage4_intervals_reached_by_a_peak` was derived from a field called
+`first_stage4_interval_index`, then asking whether "first" could differ from "all".
 
-**How I found it.** Not from a test — from reading my own receipt and noticing that
-`n_stage4_intervals_reached_by_a_peak` was derived from a field named
-`first_stage4_interval_index`, and asking whether "first" could differ from "all".
-A direct query confirmed it could.
+**The fix.** `overlap_counts` returns an explicit `interval_covered` boolean over the
+whole universe. The receipt reports the authoritative figure *and* the first-hit-only
+figure beside it, so the correction is visible rather than quietly swapped in.
+The regression test reproduces the real overlapping-window geometry and asserts
+`covered.sum() > first_only.sum()`, so it fails against the old code.
 
-**The fix.** `overlap_counts` now returns an explicit `interval_covered` boolean over
-the whole interval universe, marking every touched interval. The receipt reports the
-authoritative figure, and *also* reports the first-hit-only figure beside it with a
-note, so the correction is visible rather than quietly swapped in.
-`test_interval_coverage_counts_every_touched_interval` is the regression test; its
-fixture deliberately reproduces the real geometry (overlapping windows at 1 bp
-offsets) and asserts `covered.sum() > first_only.sum()`, so it would fail against
-the old code.
-
-**Generalisation worth carrying.** The defect existed because I let an
-implementation convenience (storing one representative index) silently become the
-definition of a reported quantity. Any receipt field derived from a "first",
-"representative" or "primary" record should be checked against the question it
-claims to answer.
+**Generalisation.** An implementation convenience (storing one representative index)
+had silently become the definition of a reported quantity. Any receipt field derived
+from a "first", "representative" or "primary" record must be checked against the
+question it claims to answer.
 
 ---
 
-## S5 — The substrate is small, and the headline cohort size hides it (DISCLOSED)
+## S7 — A naive PATH probe reported five present tools as ABSENT (CAUGHT BEFORE DAMAGE)
 
-**Status:** OPEN — a property of the data, not a defect I can fix; recorded so it is
-not lost.
+**Status:** CLOSED.
+**Artifact:** `results/v64/V69_SCENICPLUS_EXECUTION_ENVIRONMENT_RECEIPT_V1.json`.
 
-GSE214979 is a 15-donor, 105,332-nucleus multiome cohort. The **microglial** substrate
-is far smaller: 3,179 nuclei across 15 donors, and 2,534 across 12 donors in the
-default development population after the conservative donor exclusion. Donors are the
-replication unit; the 2,534 nuclei improve per-donor measurement precision and do not
-raise biological n above 12.
+**Defect.** My first tool inventory of the validated SCENIC+ container ran
+`command -v bedtools macs2 samtools meme mallet` under `docker run … bash -lc` and got
+ABSENT for all five. The micromamba base environment is not on a login shell's PATH.
+All five are present and working through `micromamba run -n base` (bedtools v2.31.1,
+macs2 2.2.9.1, samtools 1.24, meme 5.5.9) or by absolute path (`/opt/mallet/bin/mallet`).
 
-A prospective insufficiency rule is frozen in advance: fewer than 8 QC-passing donors
-after Route-B ATAC QC means no program may be called donor-stable at all. That number
-is labelled a CONVENTION in the freeze, not a calibrated operating point.
+**Caught before damage?** Yes, in the same cycle. Had I not re-probed, I would have
+written "the container lacks MACS2, so Route B peak calling is blocked" into a receipt
+— a false blocker that looks like an honest environment limitation and could have
+justified abandoning Route B.
+
+**Generalisation.** An absence claim is only as good as its probe. Same shape as the
+standing rule never to declare an artifact NOT_BOUND from a keyword-filtered search;
+here the filter was an unexpected PATH.
+
+---
+
+## S8 — I spent a cycle building an environment that already existed (PROCESS FINDING)
+
+**Status:** CLOSED; the wasted work is retained as evidence rather than deleted.
+
+I built a SCENIC+ conda environment from scratch in WSL across five iterations before
+being told a validated container already existed on this machine. The build was failing
+anyway: SCENIC+ 1.0a2 hard-pins `datrie==0.8.2`, whose C source does not compile
+against this image's GCC.
+
+**What I should have done first.** Run `docker images`. The project already had the
+answer; I rebuilt it.
+
+`scripts/v69/build_scenicplus_env_wsl_v1.sh` is retained because it records what was
+attempted and why it failed. The environment receipt states explicitly that it is NOT
+the execution environment.
+
+---
+
+## S9 — I wrote a wrong diagnosis of the prior attempt into a committed ledger (CAUGHT BY AN INDEPENDENT TRACE)
+
+**Status:** CLOSED by correction; the wrong wording is preserved beside the right one.
+
+**Defect.** In `V69_STAGE75_PRIOR_ART_REUSE_LEDGER_V1.json` I wrote that "the ATAC side
+genuinely did not map", which reads as though Stage75F's cisTarget **region mapping**
+failed. It did not — after the 0.4-overlap correction in commit `98c5b763`, coverage was
+93–95% for every TF. What failed was a **different step**: peak-to-gene from a processed
+matrix.
+
+**Caught before damage?** It was committed and pushed first, so it was live briefly. No
+downstream artifact was built on it and the Route-B rationale it supports is unaffected.
+But this one was caught by the coordinator's independent trace, **not by me**, and that
+distinction belongs in the record.
+
+**Why I got it wrong.** I inferred the cause of a prior failure from a single status
+string in a results table instead of tracing the commit history that produced it. A
+status flag names a symptom at one step; it is not a diagnosis of the run.
+
+---
+
+## S10 — My region-count reporting had no floor, so a thin program would have looked like a finding (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED by amendment 2, before any network exists.
+
+**Defect.** My frozen design recorded `n_regions` per eRegulon but set no floor below
+which a program is untrustworthy. Stage75F's TF batches tested 57–91 query regions
+against a 219,070-peak universe, and only 2 of 11 TFs reached the primary summary.
+Nothing in my design would have stopped a program resting on ~80 regions being reported
+beside one resting on thousands. Worse, the natural way to report such a TF — "no
+eRegulon recovered" — would have encoded a **measurement limit as a biological zero**.
+
+**The fix.** `MIN_REGIONS_FOR_A_RESOLVED_PROGRAM = 100`, below which a program is
+`UNRESOLVED` — explicitly not absent, not a negative finding. UNRESOLVED is the
+program-level analogue of STRUCTURALLY_UNMEASURED. Labelled a convention anchored to an
+observed failure band (57–91), not a calibrated operating point. Amendment 2 also
+requires both routes to infer from the FULL region universe.
+
+---
+
+## S11 — Windows line endings broke a container script, then silently broke its own fix (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+*Layer one.* I wrote `scripts/v69/build_custom_cistarget_db_v1.sh` with
+`Path.write_text`, which on Windows translates `\n` to `\r\n`. In the Linux container
+the shebang became `env bash\r` and it died on `set: pipefail: invalid option name` —
+an error pointing nowhere near the cause.
+
+*Layer two, the one worth recording.* My Python patch to fix it searched for `\n` while
+the file held `\r\n`. The replace matched nothing, `write_text` reported success, and
+the rerun failed with the **original** symptom. I could easily have read that as "the
+fix did not work" rather than "the fix was never applied". Caught only because I read
+the file back instead of trusting the edit.
+
+*A real defect was hiding underneath.* I was `source`-ing the container's
+`create_fasta_with_padded_bg_from_bed.sh`, which ends with
+`create_fasta_with_padded_bg_from_bed "${@}"`. Sourcing re-invokes it with **my**
+script's positional arguments, so it tried to open the literal string
+`ROUTE_A_SUBMITTED_PEAKS` as a genome FASTA. Had the argument shapes happened to line
+up, it would have built a wrong region FASTA **without erroring** and fed it to a
+10,249-motif database build. Now invoked as a subprocess.
+
+*Note:* this is the same root cause as S0 — unencoded/unnormalised text round-trips on
+Windows silently defeating `str.replace`. S0 was not diagnosed until later.
+
+---
+
+## S12 — My benchmark script overwrote its own provenance record (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** `build_custom_cistarget_db_v1.sh` wrote the motif list and its digest to
+fixed paths — `motifs.lst` and `motifs.lst.sha256` — while naming only the *database*
+after the run. A 24-motif benchmark followed by a 120-motif benchmark in the same
+directory silently overwrote the first run's list and digest: `66c659c5…` became
+`82c161ea…`.
+
+The 24-motif receipt still pointed at that path. Anyone verifying it would have computed
+a digest describing a **different, longer** motif list and concluded either that the file
+was corrupt or that the 24-motif database had been built from 120 motifs.
+
+**Caught before damage?** Yes — while listing benchmark outputs, before any benchmark
+receipt entered the repository.
+
+**The fix.** Motif list and digest are now `<DB_PREFIX>.motifs.lst(.sha256)`. The full
+inventory goes to `motifs.all.lst`, which is genuinely run-independent.
+
+**Generalisation.** A provenance file at a fixed path in a shared output directory is
+not a provenance record — it is a mutable variable. A digest file must be named after
+the thing whose identity it certifies, not after the step that produced it. Same shape
+as S6.
+
+---
+
+## S13 — Receipts record host paths that no container can open (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** Every V69 receipt records absolute Windows host paths. That is the correct
+provenance record — it says where the bytes actually were — but producers run inside the
+container, where the same bytes are mounted at `/data`, so every receipt-driven lookup
+failed with `FileNotFoundError`.
+
+**The tempting wrong fix.** Rewrite the paths inside the receipts. That would make a
+provenance artifact assert a location at which the producer never wrote.
+
+**The fix taken.** Explicit `--host-prefix` / `--container-prefix` translation applied at
+**read** time, recorded in the **output** receipt (`path_remapping`). Input receipts keep
+saying where the bytes really were. Nothing is rewritten.
+
+Recorded because the attractive fix was the one that corrupts provenance silently, and
+every remaining containerised step faces the same temptation.
+
+---
+
+## S14 — Two donors contribute too few nuclei for leave-one-donor-out to mean the same thing (DISCLOSED)
+
+**Status:** OPEN — surfaced before any stability number exists.
+
+Microglial nuclei per donor in the default population are badly unbalanced: 4482 has
+415 and 4305 has 347, while **4313 has 17** and **HCTZZT has 26**.
+
+Leave-one-donor-out treats each held-out donor as one unit, but holding out 17 nuclei is
+not the same perturbation as holding out 415. A program could appear "stable to leaving
+out 4313" simply because that donor contributed almost nothing to the fit, and the frozen
+≥0.80 recurrence threshold does not distinguish those cases.
+
+Recorded now so a later high stability score is not read as stronger evidence than it is.
+Whether to weight, to report per-donor contribution alongside each recurrence figure, or
+to treat the two small donors as a separate sensitivity arm must be a **decision** at the
+stability step, not an oversight.
+
+---
+
+## S15 — 53 regions are in the accessibility matrix but can never receive a motif score (DISCLOSED, RULE ADDED)
+
+**Status:** OPEN as a binding rule for the network step; the discrepancy is reconciled.
+
+The Route-A cisTopic accessibility matrix carries **150,614** regions; the Route-A
+cisTarget region universe carries **150,561**. The difference is exactly **53**, and it is
+exactly the regions dropped for lying on unplaced scaffolds the reference FASTA does not
+contain under the source's spelling (`GL000194.1` vs `chrUn_GL000194v1`).
+Reconciled: 150,614 − 150,561 = 53 = `n_regions_dropped`.
+
+**Why it still matters.** Those 53 regions have accessibility values and **no motif
+scores**. The natural downstream join turns missing motif rows into zeros or empty
+enrichments, at which point a region that was never *scoreable* becomes indistinguishable
+from one scored and found unenriched — the canonical error of encoding NOT_MEASURED as
+zero.
+
+**Binding rule.** Those regions are `STRUCTURALLY_UNSCOREABLE`: not in any enrichment
+denominator, no zero contributed to any motif statistic, an explicit per-element mask in
+the artifact the network step reads, and every eRegulon region count must state whether
+it is out of 150,614 or 150,561.
+
+**Caught before damage?** Yes, before any motif enrichment ran, by deliberately
+reconciling two receipts' region counts instead of assuming two numbers that should agree
+do agree. Fifty-three out of 150,614 is exactly the size of discrepancy that survives into
+a published result unnoticed.
 
 ---
 
@@ -185,18 +391,17 @@ is labelled a CONVENTION in the freeze, not a calibrated operating point.
 
 So that "nothing found" and "did not look" stay distinguishable:
 
-- The acquisition receipts for all five acquired objects were checked against the
-  server-declared `Content-Length`; all five match exactly and carry a computed
-  SHA-256. The fragments file is still in flight and is deliberately **not**
-  claimed as authenticated.
-- The cohort freeze was checked for pathology leakage by a positive control that
-  flips every pathology value in the frame and confirms both population digests are
-  unchanged. No leak found.
-- The Route-A substrate extraction was checked for the specific failure of
-  returning the right *number* of cells but the wrong *cells*; a test compares the
-  extracted columns against the full matrix by barcode. No defect found.
-- The donor/barcode relationship was checked rather than assumed, and barcode
-  suffixes turned out **not** to be one-to-one with donors (suffixes 5, 6 and 7 each
-  carry two donors). This is recorded in the freeze as a fail-closed rule for Route B.
-  It is listed here as an examination that changed a design, not as a defect in
-  shipped output.
+- All acquisition receipts were checked against the server-declared `Content-Length`;
+  each matches exactly and carries a computed SHA-256.
+- The cohort freeze was checked for pathology leakage by a positive control that flips
+  every pathology value and confirms both population digests are unchanged. No leak.
+- Route-A substrate extraction was checked for the specific failure of returning the
+  right *number* of cells but the wrong *cells*; a test compares extracted columns
+  against the full matrix by barcode. No defect.
+- The donor/barcode relationship was checked rather than assumed; barcode suffixes
+  turned out **not** to be one-to-one with donors (suffixes 5, 6, 7 each carry two).
+  This changed a design rather than revealing a defect in shipped output.
+- The Stage-4 interval genome build was checked against the design artifact rather than
+  inferred from the "hg19-primary" wording in the contract; 57/57 matched hg38.
+- The Route-A ATAC matrix digest in the cisTopic receipt was reconciled against the
+  Route-A substrate receipt. They agree.
