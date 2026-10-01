@@ -45,8 +45,8 @@ def relational_geometry_corr(X,Y):
     if Y.shape[0]!=n or n<3:
         raise ValueError("aligned matrices with >=3 rows required")
     ix=np.triu_indices(n,1)
-    dx=np.sqrt(np.square(X[:,None,:]-X[None,:,:]).sum(2))[ix]
-    dy=np.sqrt(np.square(Y[:,None,:]-Y[None,:,:]).sum(2))[ix]
+    dx=np.square(X[:,None,:]-X[None,:,:]).sum(2)[ix]
+    dy=np.square(Y[:,None,:]-Y[None,:,:]).sum(2)[ix]
     if dx.std()==0 or dy.std()==0:
         return np.nan
     return float(np.corrcoef(dx,dy)[0,1])
