@@ -49,6 +49,13 @@ def choose(metrics, policy):
         return min(eligible)
     if policy=="LARGEST_ELIGIBLE_NONZERO_RANK":
         return max(eligible)
+    if policy=="LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD":
+        chosen=0
+        for k in RANKS:
+            if not rank_eligible(metrics[k]):
+                break
+            chosen=k
+        return chosen
     raise ValueError(policy)
 
 
@@ -70,6 +77,8 @@ def main():
     shortcut={k:[donor(candidate_r2=.50, tech_r2=.495, global_r2=.20)
                  for _ in range(4)] for k in RANKS}
     null={k:[donor(pass_perm=False) for _ in range(4)] for k in RANKS}
+    noncontiguous={k:[donor() for _ in range(4)] for k in RANKS}
+    noncontiguous[4][0]=donor(pass_delta=False)
 
     out={
       "schema":"V65_RECOVERABILITY_DECISION_SYNTHETIC_QUALIFICATION_V1",
@@ -77,22 +86,27 @@ def main():
       "fixtures":{
         "FULLY_RECOVERABLE":{
           "smallest":choose(full,"SMALLEST_ELIGIBLE_NONZERO_RANK"),
-          "largest":choose(full,"LARGEST_ELIGIBLE_NONZERO_RANK")},
+          "largest":choose(full,"LARGEST_ELIGIBLE_NONZERO_RANK"),
+          "contiguous":choose(full,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")},
         "PARTIAL_RANK4":{
-          "largest":choose(partial,"LARGEST_ELIGIBLE_NONZERO_RANK")},
+          "contiguous":choose(partial,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")},
         "TECHNICAL_SHORTCUT":{
-          "largest":choose(shortcut,"LARGEST_ELIGIBLE_NONZERO_RANK")},
+          "contiguous":choose(shortcut,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")},
         "PAIRING_NULL_FAIL":{
-          "largest":choose(null,"LARGEST_ELIGIBLE_NONZERO_RANK")}
+          "contiguous":choose(null,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")},
+        "NONCONTIGUOUS_2_PASS_4_FAIL_8_16_PASS":{
+          "contiguous":choose(noncontiguous,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")}
       }
     }
     assert out["fixtures"]["FULLY_RECOVERABLE"]["smallest"]==2
     assert classify(out["fixtures"]["FULLY_RECOVERABLE"]["smallest"])=="PARTIALLY_RNA_RECOVERABLE"
     assert out["fixtures"]["FULLY_RECOVERABLE"]["largest"]==16
-    assert classify(out["fixtures"]["FULLY_RECOVERABLE"]["largest"])=="RNA_RECOVERABLE"
-    assert out["fixtures"]["PARTIAL_RANK4"]["largest"]==4
-    assert out["fixtures"]["TECHNICAL_SHORTCUT"]["largest"]==0
-    assert out["fixtures"]["PAIRING_NULL_FAIL"]["largest"]==0
+    assert out["fixtures"]["FULLY_RECOVERABLE"]["contiguous"]==16
+    assert classify(out["fixtures"]["FULLY_RECOVERABLE"]["contiguous"])=="RNA_RECOVERABLE"
+    assert out["fixtures"]["PARTIAL_RANK4"]["contiguous"]==4
+    assert out["fixtures"]["TECHNICAL_SHORTCUT"]["contiguous"]==0
+    assert out["fixtures"]["PAIRING_NULL_FAIL"]["contiguous"]==0
+    assert out["fixtures"]["NONCONTIGUOUS_2_PASS_4_FAIL_8_16_PASS"]["contiguous"]==2
     print(json.dumps(out,indent=2,sort_keys=True))
     return 0
 
