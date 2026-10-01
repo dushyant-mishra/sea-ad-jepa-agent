@@ -21,6 +21,8 @@ on:
       - 'tests/test_v67_evidence_vs_measurement_response.py'
       - 'scripts/v64/evidence_vs_measurement_response_synthetic_v1.py'
       - 'results/v64/V67_PRIVILEGED_TEACHER_STATE_CONSTRUCTION_CONTRACT_V1.json'
+      - 'results/v64/V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_MAP_V1.json'
+      - 'tests/test_v68_full104_privileged_evidence_coverage_map.py'
       - 'results/v64/V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
@@ -173,7 +175,8 @@ jobs:
             tests/test_v67_heldout_source_observation_operator.py \
             tests/test_v67_evidence_vs_measurement_response.py \
             tests/test_v67_two_lane_integration_recoverability_contract.py \
-            tests/test_v67_privileged_teacher_state_construction_contract.py
+            tests/test_v67_privileged_teacher_state_construction_contract.py \
+            tests/test_v68_full104_privileged_evidence_coverage_map.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
