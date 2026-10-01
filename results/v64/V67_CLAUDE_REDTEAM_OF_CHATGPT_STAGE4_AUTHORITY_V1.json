@@ -1,0 +1,92 @@
+{
+  "schema": "V67_CLAUDE_REDTEAM_OF_CHATGPT_STAGE4_AUTHORITY_V1",
+  "date": "2026-10-01",
+  "completes": "section 2 of the red-team mandate, which my first pass did not cover",
+  "why_a_second_pass": "my first red-team covered the diff, B6 custody, their findings against me, the CI claims and the synthetic work, but NOT their own Stage-4 authority V1-V4, validator and tests. Finding material in the first four sections does not license skipping the fifth.",
+  "audit_only": true,
+  "nothing_repaired_in_their_lane": true,
+  "CROSS_LANE_CORROBORATION_STRONGEST_FINDING": {
+    "what": "every Phase-B consumer-schema constant in their V4 contract was compared against my actual artifacts, independently produced",
+    "result": "ALL ELEVEN MATCH EXACTLY, plus the availability vocabulary in order",
+    "values": {
+      "phase_b_aggregate_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+      "qualifying_donors": 282,
+      "metacells": 3231,
+      "microglia_covered": 84129,
+      "genes": 4372,
+      "intervals": 32153,
+      "t3_nnz": 6624289,
+      "t4_nnz": 55467544,
+      "t5_rows": 10552158,
+      "pairs": 37419,
+      "pairs_meeting_minimum_donors": 36794
+    },
+    "frozen_state_vocabulary_identical": true,
+    "why_it_matters": "two lanes that never shared a producer agree on every count, nnz, binding and vocabulary element. That is the strongest corroboration available short of a third implementation, and it materially raises confidence in the Phase-B substrate itself."
+  },
+  "WHERE_THEIR_VALIDATOR_IS_STRONGER_THAN_MINE": {
+    "exact_top_level_schema_equality": "they assert set(manifest) == {the exact key set}, which rejects BOTH a missing key and an unexpected extra key. My G1a checks required keys are present but does not reject unexpected additions. Theirs is the stricter form and I should adopt it.",
+    "fail_closed_file_binding": "MISSING_FILE_BINDING, FILE_NOT_FOUND, DIGEST_MISMATCH and FILE_LABEL_COUNT_DRIFT together cover the S68 and S73 classes they raised against me, so their own lane does not have the defect it found in mine.",
+    "honest_maximum_verdict": "the best a successful validation can say is READY_FOR_INDEPENDENT_AUDIT__STAGE4_STILL_NOT_AUTHORIZED. It never claims authorisation, and a separate explicit artifact is required before execution. That is the naming discipline I had to be pushed into with S72."
+  },
+  "FINDINGS_AGAINST": {
+    "F5_their_validator_does_no_git_blob_binding_at_all": {
+      "severity": "MEDIUM",
+      "evidence": "the string 'git' does not occur once in scripts/v64/validate_stage4_execution_authority_v1.py",
+      "consequence": "every bound input is verified by raw file sha256 only. A repo-resident authority file could be modified in the working tree and, provided the contract's digest were updated in the same edit, nothing would detect that the bytes never entered Git. This is precisely the S79 class they raised against me, present in their own lane as an absence rather than as a wrong value.",
+      "note": "they did flag digest SEMANTICS carefully in V3 with all_bound_digests_are_raw_file_sha256, so the omission looks deliberate rather than careless. It is still a weaker custody surface than blob identity plus a working-tree comparison."
+    },
+    "F6_no_working_tree_check": {
+      "severity": "LOW given F5",
+      "detail": "with no blob binding there is also no stored-vs-HEAD-vs-worktree agreement check. That is the hole I introduced and then closed in my own G19; their design avoids it by not making the claim at all, which is honest but less informative."
+    }
+  },
+  "V1_TO_V4_SUPERSESSION_IS_SUBSTANTIVE_NOT_CHURN": {
+    "verdict": "each step has a reason and I could identify it from the bytes",
+    "V1_to_V2": "+32 fields, mainly the consumer-schema counts (microglia_covered, pairs, pairs_meeting_minimum_donors, t3_nnz, t4_nnz) and the authorization_protocol's maximum_validator_success. This is the step that made the contract bind semantics rather than only files.",
+    "V2_to_V3": "+2, adding the E2 edge-table gzip digest and an explicit validator rule that all bound digests are RAW FILE sha256. The second is a digest-semantics declaration of exactly the kind whose absence caused my S49 and S64.",
+    "V3_to_V4": "+4, the B6 custody correction block, and the one changed value is b6_v2_receipt_sha256 moving from the stale 0f7f1e55 to the correct 2fd8356b.",
+    "no_step_was_a_rename_only_or_a_digest_refresh_without_cause": true
+  },
+  "THEIR_B6_CORRECTION_IS_STILL_CURRENT": {
+    "checked_against": "my branch HEAD after four further commits",
+    "blob_at_my_head": "29c248ded42aecd35650699c360512e965ce9345",
+    "sha256_at_my_head": "2fd8356b07fd3d4e50007c941fcc8bcdda4a118509775955ded82d90b98ed671",
+    "their_V4_claim": "identical on both",
+    "verdict": "their correction has not gone stale; the B6 receipt has not been touched since 6c265d9c"
+  },
+  "THEIR_S72_S75_AUDIT_OF_MY_WORK_WAS_ALREADY_CLOSED": {
+    "note": "a re-paste of that audit arrived during this pass. It is already repaired.",
+    "S72_execution_mode_exit": {
+      "execution": 1,
+      "design": 0,
+      "verified_by_invoking_the_binary": true
+    },
+    "S73_required_bindings": "17/17 present, 8/8 shard slots filled",
+    "S74_blob_identity": "all 12 repo-resident blobs equal git rev-parse HEAD:<path>",
+    "S75_registry": "declared 21 / implemented 21, sets agree in both directions",
+    "design_gates": "21/21",
+    "mutations": "34/34",
+    "commits": [
+      "92ba470d S72-S75",
+      "67175c84 S77-S80",
+      "e5d01f30 producer blob"
+    ]
+  },
+  "WHAT_I_WOULD_ADOPT_FROM_THEIR_LANE": [
+    "exact top-level schema equality, which rejects unexpected extra keys as well as missing ones -- strictly stronger than my required-key presence check",
+    "the explicit all_bound_digests_are_raw_file_sha256 declaration, which names digest semantics up front instead of leaving a reader to infer them"
+  ],
+  "WHAT_I_WOULD_ASK_THEM_TO_ADOPT": [
+    "git blob binding for repo-resident inputs, with stored == HEAD == working-tree, because raw sha256 alone cannot tell a committed file from an uncommitted one",
+    "a CI path glob reaching V66_* and V67_* receipts, so a verdict cannot be edited without re-running the suite behind it (F3 from my first pass)"
+  ],
+  "governance": {
+    "training": "OFF",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "executor_not_implemented": true
+  }
+}
