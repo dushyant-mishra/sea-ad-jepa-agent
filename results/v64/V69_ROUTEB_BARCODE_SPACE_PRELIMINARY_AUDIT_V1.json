@@ -1,0 +1,86 @@
+{
+  "schema": "V69_ROUTEB_BARCODE_SPACE_PRELIMINARY_AUDIT_V1",
+  "recorded_utc": "2026-10-01T18:14:23Z",
+  "status": "PARTIAL_SCAN__PRELIMINARY_FINDING_NOT_A_QC_PASS",
+  "scan_scope": {
+    "fragments_scanned": 1500000,
+    "note": "First 1,500,000 fragment records of a file still being acquired. These counts are NOT the full-file counts and must not be cited as such. The full scan runs in scripts/v69/routeb_fragment_qc_and_donor_split_v1.py once acquisition is byte-complete."
+  },
+  "why_this_matters": "If Route-B consensus peaks were called on 'all fragments', they would be called on a barcode space substantially larger than, and partly disjoint from, the published filtered cell set. That would silently build a region universe describing cells that are not in the frozen cohort - and the resulting Route-A/Route-B disagreement would be a cohort difference masquerading as a region-definition difference, which is precisely the confound the route comparison exists to avoid.",
+  "findings": {
+    "fragment_barcode_spelling": {
+      "observed": "AAACAGCCAAACCCTA-9 style, identical to the matrix and metadata spelling",
+      "consequence": "Fragment barcodes join DIRECTLY to the metadata barcode column. No translation rule is needed, and none is invented.",
+      "verified_by": "direct inspection of the first fragment records"
+    },
+    "aggregation_suffixes": {
+      "present_in_metadata": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19"
+      ],
+      "n_suffixes_in_metadata": 17,
+      "present_in_fragments_partial_scan": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23"
+      ],
+      "n_suffixes_in_fragments_partial_scan": 23,
+      "suffixes_in_fragments_but_NOT_in_metadata": [
+        "8",
+        "9",
+        "20",
+        "21",
+        "22",
+        "23"
+      ],
+      "interpretation": "The fragment file carries at least six whole aggregation slots that contribute NO barcode to the published filtered cell metadata. Whether these are additional libraries, excluded samples or failed captures is NOT determined by this lane and must not be guessed."
+    },
+    "barcode_overlap_partial_scan": {
+      "distinct_fragment_barcodes_seen": 291699,
+      "also_present_in_metadata": 87460,
+      "fraction_in_metadata": 0.2998,
+      "interpretation": "Most fragment barcodes are not called cells, which is expected for a fragment file. The number is reported to make the size of the discard explicit."
+    }
+  },
+  "binding_rules_for_route_b": [
+    "Consensus peak calling is restricted to the FROZEN cohort barcodes. Fragments outside the cohort are counted and discarded, never silently absorbed.",
+    "Donor identity comes only from the metadata keyed on the full barcode string. Barcode suffixes are NOT donors in this cohort: suffixes 5, 6 and 7 each carry two donors.",
+    "Fragments on aggregation suffixes absent from the metadata have NO donor assignment and are therefore unusable for donor-aware pseudobulk. They are excluded by the cohort restriction, and that exclusion is recorded rather than assumed."
+  ],
+  "open_question_not_resolved_here": "What aggregation slots 8, 9 and 20-23 correspond to. The GEO series metadata would have to be consulted. This lane does not need the answer, because the cohort restriction excludes them either way, but it is recorded as an unexplained structural fact rather than ignored."
+}
