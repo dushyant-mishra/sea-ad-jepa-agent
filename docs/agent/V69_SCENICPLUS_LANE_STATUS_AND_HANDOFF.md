@@ -30,9 +30,13 @@ artifact.
 | `hg38.analysisSet.fa.gz` | 949,157,663 | `cb69cd39fa5309b156f5cba45bd70553776d4e2c5c7000d1eed6c7bca8b8f459` |
 | `cbust` binary | — | `4c10c768a17dacc8cc01bc71b2f3e0bf540d460054c4edccaf71c9a6d9655c72` |
 
-`GSE214979_atac_fragments.tsv.gz` — server-declared **63,641,120,882 bytes** — was in
-flight at the time of writing. Its receipt is written only on exact byte completeness;
-see section 3.
+| `GSE214979_atac_fragments.tsv.gz` | **63,641,120,882** | `b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f` |
+
+The 63.6 GB fragment file is **fully acquired and authenticated**: local bytes equal the
+server-declared `Content-Length` exactly, status
+`PASS__BYTE_COMPLETE_AND_DIGESTED`. The download was resumed across a session
+interruption and the completeness gate, not the download tool's exit status, is what
+certifies it.
 
 ### Matrix authentication
 
