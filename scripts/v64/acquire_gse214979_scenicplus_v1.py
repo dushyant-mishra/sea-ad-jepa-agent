@@ -68,7 +68,7 @@ def best_barcode_column(df, barcodes):
     barcode_re=re.compile(r"^[ACGT]+-[0-9]+$")
     for c in df.columns:
         s=df[c].astype(str)
-        head=s.head(100).tolist()
+        head=[str(v) for v in s.head(100).tolist()]
         regex_hits=sum(bool(barcode_re.match(v)) for v in head)
         exact=int(s.isin(bset).sum())
         candidates.append((exact,regex_hits,c))
