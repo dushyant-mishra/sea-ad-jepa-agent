@@ -32,6 +32,7 @@ on:
       - 'tests/test_v70_teacher_regulatory_candidate_gate.py'
       - 'scripts/v64/teacher_regulatory_candidate_gate_v1.py'
       - 'results/v64/V70_TEACHER_REGULATORY_CANDIDATE_SELECTION_CONTRACT_V1.json'
+      - 'results/v64/V70_MULTISOURCE_REGULATORY_DISAGREEMENT_POLICY_V1.json'
       - 'tests/test_v69_regulatory_program_crosswalk.py'
       - 'scripts/v64/validate_regulatory_program_crosswalk_v1.py'
       - 'results/v64/V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1.json'
