@@ -14,6 +14,7 @@ evidence and joins chromosome-aware. No evidence source may delete a GENCODE row
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import gzip
 import hashlib
@@ -43,17 +44,63 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def load_bed_index_robust(path: Path):
+    """Return intervals, sorted starts, and prefix-max ends for correct point queries.
+
+    A backward scan may stop only when the maximum end among all earlier intervals is
+    <= the query point. Stopping at the first non-overlapping prior interval is wrong
+    for nested BED intervals and undercounts FANTOM CAGE support.
+    """
+    from collections import defaultdict
+    arr = defaultdict(list)
+    opener = gzip.open if str(path).endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as fh:
+        for line in fh:
+            if not line.strip() or line.startswith("#"):
+                continue
+            p = line.rstrip("\n").split("\t")
+            if len(p) < 3:
+                continue
+            arr[p[0]].append((int(p[1]), int(p[2]), p[3:]))
+    starts = {}
+    prefix_max_end = {}
+    for chrom, xs in arr.items():
+        xs.sort(key=lambda x: (x[0], x[1]))
+        starts[chrom] = [x[0] for x in xs]
+        cur = -1
+        pm = []
+        for _start, end, _extras in xs:
+            cur = max(cur, end)
+            pm.append(cur)
+        prefix_max_end[chrom] = pm
+    return arr, starts, prefix_max_end
+
+
+def point_hits_robust(index, starts, prefix_max_end, chrom: str, pos1: int):
+    x = pos1 - 1
+    xs = index.get(chrom, [])
+    ss = starts.get(chrom, [])
+    pm = prefix_max_end.get(chrom, [])
+    j = bisect.bisect_right(ss, x) - 1
+    out = []
+    while j >= 0 and pm[j] > x:
+        if xs[j][0] <= x < xs[j][1]:
+            out.append(xs[j])
+        j -= 1
+    return out
+
+
 def tss_id(g: dict) -> str:
     return f'GENCODE50:TSS:{g["gene_id"]}:{g["chrom"]}:{g["tss_1based"]}:{g["strand"]}'
 
 
-def fantom_same_strand_hits(v1, index, starts, chrom: str, pos1: int, strand: str):
-    """FANTOM CAGE evidence is strand-aware.
+def fantom_same_strand_hits(index, starts, prefix_max_end, chrom: str, pos1: int, strand: str):
+    """FANTOM CAGE evidence is strand-aware and uses robust nested-interval queries.
 
-    load_bed_index stores BED columns 4+ in tuple element 2. For BED9,
+    load_bed_index_robust stores BED columns 4+ in tuple element 2. For BED9,
     extras[2] is the BED strand (original column 6).
     """
-    hits = v1.point_hits(index, starts, chrom, pos1)
+    hits = point_hits_robust(index, starts, prefix_max_end, chrom, pos1)
     out = []
     for h in hits:
         extras = h[2]
@@ -66,11 +113,11 @@ def fantom_same_strand_hits(v1, index, starts, chrom: str, pos1: int, strand: st
 
 def build(args) -> dict:
     v1 = _load_v1()
-    screen_idx, screen_starts = v1.load_bed_index(args.screen_pls)
+    screen_idx, screen_starts, screen_pmax = load_bed_index_robust(args.screen_pls)
     if args.fantom_bed:
-        fantom_idx, fantom_starts = v1.load_bed_index(args.fantom_bed)
+        fantom_idx, fantom_starts, fantom_pmax = load_bed_index_robust(args.fantom_bed)
     else:
-        fantom_idx = fantom_starts = None
+        fantom_idx = fantom_starts = fantom_pmax = None
 
     if args.dong_data7:
         dong_by_key, dong_any_tid, dong_multiplicity = v1.load_dong_data7(args.dong_data7)
@@ -107,10 +154,12 @@ def build(args) -> dict:
             transcript_n += 1
             genes.add(g["gene_id"])
             xid = tss_id(g)
-            sh = v1.point_hits(screen_idx, screen_starts, g["chrom"], g["tss_1based"])
+            sh = point_hits_robust(
+                screen_idx, screen_starts, screen_pmax, g["chrom"], g["tss_1based"]
+            )
             fhits = (
                 fantom_same_strand_hits(
-                    v1, fantom_idx, fantom_starts,
+                    fantom_idx, fantom_starts, fantom_pmax,
                     g["chrom"], g["tss_1based"], g["strand"]
                 )
                 if fantom_idx is not None else []
@@ -182,6 +231,7 @@ def build(args) -> dict:
         "genes": len(genes),
         "denominator_rule": "Evidence annotates GENCODE candidates and never removes them.",
         "fantom_coordinate_rule": "GENCODE TSS point must overlap a FANTOM hg38 peak on the SAME strand.",
+        "interval_query_rule": "Point overlap uses sorted starts plus prefix-max interval ends; nested intervals cannot be hidden by a shorter later-starting interval.",
         "keys": {
             "transcript": "gene_id + transcript_id + chromosome + strand + exact TSS + release",
             "exact_tss": "gene_id + chromosome + strand + exact TSS",
