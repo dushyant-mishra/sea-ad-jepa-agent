@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_AVAILABLE__PHASE_B_SUBSTRATE_BLOCKED_ON_R3_STATISTICAL_AUTHORITY_AND_LITERAL_REPAIR__TRAINING_OFF",
+  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S58_S59_CLOSED__PHASE_B_BLOCKED_ON_S60_R3_CONDITIONING_PERSISTENCE__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "9c701476252e1f139e0f065767798fec25b27767",
-    "claude_exact_sampler": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
+    "claude_exact_sampler": "a0500111254315504de3618ea832931ea54cdc26",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -184,11 +184,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude repairs after 7b51aac9; Phase B remains stopped on R3 statistical authority, denominator staleness, and durable Phase-A V3 row custody.",
-    "Promoter dual-ledger materialization is structurally closed; do not reopen SCREEN/FANTOM/Dong overlap semantics unless a contradictory defect appears.",
-    "Continue recoverability architecture qualification on synthetic fixtures only; real paired NIH-CARD recoverability execution remains unauthorized and TEST unopened.",
-    "Improve durable custody of Phase-A V3 row artifacts.",
-    "Do not execute Phase B until substrate re-audit passes."
+    "Audit Claude repairs after a0500111.",
+    "Require persisted per-pair R3 conditioning identity and label before Phase B.",
+    "Strengthen T17 from identifier-only authority to semantic-equivalence enforcement.",
+    "Keep Phase B stopped until S60 re-audit passes.",
+    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
   ],
   "governance": {
     "training": "OFF",
@@ -206,7 +206,7 @@
     "final factorized-target tournament"
   ],
   "phaseB_substrate": {
-    "claude_head": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
+    "claude_head": "a0500111254315504de3618ea832931ea54cdc26",
     "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
     "status": "NOT_AUTHORIZED_FOR_EXECUTION",
     "accepted_elements": [
@@ -218,9 +218,12 @@
       "57 enumeration rows arithmetically recomputed"
     ],
     "blockers": [
-      "S57 hardcoded denominator 24187 remains in emitted fraction",
-      "S58 R3 exact-conditional rule is a new statistical decision absent from bound V2 null contract",
-      "S59 Phase-A V3 row artifacts are hash-bound but not durable repository bytes"
+      "S60 R3 conditional-reference identity/realised large-arm draw is not yet persisted as explicit substrate data with mandatory label/reference binding"
+    ],
+    "closed_findings": [
+      "S57",
+      "S58",
+      "S59"
     ]
   }
 }
