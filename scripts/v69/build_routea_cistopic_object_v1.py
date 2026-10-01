@@ -25,11 +25,16 @@ import datetime as _dt
 import hashlib
 import json
 import pickle
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy import sparse
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from v69_barcode_identity import (  # noqa: E402
+    BarcodeIdentityError, assert_donor_map_is_not_suffix_derived)
 
 FORBIDDEN_COVARIATES = ("Status", "Braak", "Diagnosis", "APOE_Status")
 
@@ -104,6 +109,13 @@ def build(routea_receipt: Path, cohort_receipt: Path, population: str,
         raise FailClosed("FAIL__PATHOLOGY_COLUMN_PRESENT_IN_CELL_ANNOTATION",
                          columns=leaked)
 
+    # ENFORCED barcode-identity guard: donor comes from the full barcode string only.
+    try:
+        guard_evidence = assert_donor_map_is_not_suffix_derived(
+            dict(zip(bc["barcode"].astype(str), bc["donor"].astype(str))))
+    except BarcodeIdentityError as e:
+        raise FailClosed("FAIL__DONOR_IDENTITY_GUARD", reason=str(e))
+
     cell_data = pd.DataFrame({
         "barcode": bc["barcode"].astype(str),
         "donor": bc["donor"].astype(str),
@@ -156,6 +168,7 @@ def build(routea_receipt: Path, cohort_receipt: Path, population: str,
             "a region-universe comparison into a cell-selection comparison."),
         "pathology_covariates_attached": [],
         "pathology_blindness_check": "PASS__NO_FORBIDDEN_COLUMN_IN_CELL_ANNOTATION",
+        "donor_identity_guard": guard_evidence,
         "output_path": str(p),
         "output_sha256": sha256_file(p),
         "path_remapping": {

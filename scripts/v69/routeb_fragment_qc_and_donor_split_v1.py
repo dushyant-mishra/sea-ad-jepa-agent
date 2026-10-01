@@ -34,10 +34,15 @@ from __future__ import annotations
 import argparse
 import datetime as _dt
 import gzip
+import sys
 import hashlib
 import json
 from collections import defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from v69_barcode_identity import (  # noqa: E402
+    BarcodeIdentityError, assert_donor_map_is_not_suffix_derived)
 
 import numpy as np
 import pandas as pd
@@ -45,6 +50,10 @@ import pandas as pd
 # Frozen in V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1, SECTION_2.
 MIN_UNIQUE_FRAGMENTS_PER_BARCODE = 1000
 MIN_DONORS_FOR_DONOR_STABILITY = 8
+# Bound on the retained out-of-cohort barcode set, so memory stays finite on a file
+# with billions of records. Reaching it censors the reported count, which the receipt
+# must then flag rather than present as a measurement.
+OUTSIDE_BARCODE_CAP = 2_000_000
 
 
 def utcnow() -> str:
@@ -88,13 +97,15 @@ def run(fragments: Path, fragments_receipt: Path, cohort_receipt: Path,
     bc = pd.read_csv(Path(pop["barcode_file"]))
     barcode_to_donor = dict(zip(bc["barcode"].astype(str), bc["donor"].astype(str)))
 
-    # Guard fact 1: prove suffix is not a donor key in this cohort, and refuse to run
-    # if someone has "fixed" the cohort file to make it look like one.
-    suffix_to_donors = defaultdict(set)
-    for b, d in barcode_to_donor.items():
-        suffix_to_donors[b.rsplit("-", 1)[-1]].add(d)
-    multi_donor_suffixes = {s: sorted(v) for s, v in suffix_to_donors.items()
-                            if len(v) > 1}
+    # ENFORCED guard (scripts/v69/v69_barcode_identity.py). A guard recorded in a
+    # receipt is documentation; this one lives in the code that reads barcodes and
+    # fails closed if the donor mapping is, or is indistinguishable from,
+    # suffix-derived.
+    try:
+        guard_evidence = assert_donor_map_is_not_suffix_derived(barcode_to_donor)
+    except BarcodeIdentityError as e:
+        raise FailClosed("FAIL__DONOR_IDENTITY_GUARD", reason=str(e))
+    multi_donor_suffixes = guard_evidence["suffixes_carrying_more_than_one_donor"]
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -120,7 +131,7 @@ def run(fragments: Path, fragments_receipt: Path, cohort_receipt: Path,
                 chroms[f[0]] += 1
             else:
                 n_outside_cohort += 1
-                if len(outside_barcodes) < 2_000_000:
+                if len(outside_barcodes) < OUTSIDE_BARCODE_CAP:
                     outside_barcodes.add(b)
             if max_records and n_records >= max_records:
                 break
@@ -160,20 +171,20 @@ def run(fragments: Path, fragments_receipt: Path, cohort_receipt: Path,
         "barcode_space": {
             "fragment_records_with_a_cohort_barcode": n_in_cohort,
             "fragment_records_outside_the_cohort": n_outside_cohort,
-            "distinct_non_cohort_barcodes_seen": len(outside_barcodes),
+            "distinct_non_cohort_barcodes_retained": len(outside_barcodes),
+            "distinct_non_cohort_barcode_cap": OUTSIDE_BARCODE_CAP,
+            "distinct_non_cohort_barcode_count_is_censored": bool(
+                len(outside_barcodes) >= OUTSIDE_BARCODE_CAP),
+            "censoring_note": ("The set of out-of-cohort barcodes is bounded to keep "
+                               "memory finite. If the cap was reached this is a LOWER "
+                               "BOUND, not a count, and must never be cited as the "
+                               "number of distinct non-cohort barcodes."),
             "semantics": ("Fragments outside the frozen cohort are COUNTED and "
                           "DISCARDED. They are neither silently absorbed nor treated "
                           "as cohort cells. The fragment file's barcode space is "
                           "larger than the filtered cell metadata."),
         },
-        "donor_identity_guard": {
-            "rule": "Donor identity comes ONLY from the metadata keyed on the full "
-                    "barcode string. Suffix-based donor inference is a defect.",
-            "suffixes_carrying_more_than_one_donor": multi_donor_suffixes,
-            "suffix_is_a_valid_donor_key": len(multi_donor_suffixes) == 0,
-            "note": "In this cohort the suffix is NOT a valid donor key, which is why "
-                    "the guard exists and is reported rather than assumed.",
-        },
+        "donor_identity_guard": guard_evidence,
         "qc_thresholds": {
             "min_unique_fragments_per_barcode": MIN_UNIQUE_FRAGMENTS_PER_BARCODE,
             "source": "SCENIC+/pycisTopic protocol default, frozen in "

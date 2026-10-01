@@ -169,12 +169,23 @@ says "built from recipe X".
 
 ## 1b. In flight at hand-off
 
-**Route-B fragment QC** (`scripts/v69/routeb_fragment_qc_and_donor_split_v1.py`) was
-launched against the now byte-complete 63.6 GB fragment file and was **still running**
-when this hand-off was written. It is a single streaming pass over the whole file; its
-receipt is written only on completion. If no
-`V69_ROUTEB_FRAGMENT_QC_V1.json` exists, it did not finish — re-run it rather than
-assuming partial output.
+**Route-B fragment QC — COMPLETED.** Receipt at
+`receipts/V69_ROUTEB_FRAGMENT_QC_V1.json` (NOT under `routeB/`, which holds only the
+per-barcode table). Status `PASS__ROUTEB_FRAGMENT_QC_COMPLETE`, `PARTIAL_SCAN` false.
+
+| measured | value |
+|---|---|
+| fragment records scanned (full file) | 5,831,261,753 |
+| records carrying a frozen-cohort barcode | 23,522,438 |
+| records counted and discarded as out-of-cohort | 5,807,739,315 |
+| cohort cells | 2,534 |
+| cells passing ≥1000 fragments | 2,342 |
+| fragments per cell | min 96, median 7,774.5, max 183,767 |
+| donors with ≥1 passing cell | **12 of 12** (minimum for donor stability is 8) |
+
+The substrate **is** sufficient for donor-stability analysis. The donor-identity guard
+fired on real data: suffixes 5, 6 and 7 each span two donors, so suffix-based donor
+inference really would have been a defect rather than a theoretical one.
 
 **Custom cisTarget database cost is now MEASURED, and the full build is not started.**
 Two benchmark runs over the 150,561-region Route-A universe on 16 threads:

@@ -418,6 +418,86 @@ container is executing it.
 
 ---
 
+## S17 — I pointed a reader at the wrong directory for a receipt (CAUGHT BY COORDINATOR)
+
+**Status:** CLOSED by correction.
+
+**Defect.** My hand-off said the Route-B QC receipt would be
+`V69_ROUTEB_FRAGMENT_QC_V1.json` and instructed the reader to re-run the three-hour
+scan if it were absent. The receipt was written to `receipts/`, but my note implied it
+would appear beside the per-barcode table under `routeB/`. A reader following the note
+would have looked in `routeB/`, found only the barcode table, concluded the scan failed,
+and **re-run a completed three-hour job**.
+
+**Why this belongs in the lane.** A receipt-location claim that sends a reader to the
+wrong directory is a provenance defect of the same family as S0: the artifact is fine,
+the statement *about* the artifact is wrong, and the error is invisible to anyone who
+does not already know the answer. The fail-closed rule I wrote ("absent receipt means
+re-run") was correct and is retained — it was the path that was wrong, which made a
+correct rule produce a wrong action.
+
+**Caught by** the coordinator's independent check, not by me. Recorded as such.
+
+**The fix.** Both the hand-off and `V69_MANDATE_ITEM_STATUS.md` now name
+`receipts/V69_ROUTEB_FRAGMENT_QC_V1.json` explicitly and state that `routeB/` holds
+only the per-barcode table.
+
+---
+
+## S18 — A capped accumulator was reported as if it were a count (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** The Route-B QC producer bounds the set of out-of-cohort barcodes it retains,
+so memory stays finite over a file with billions of records. It then reported
+`distinct_non_cohort_barcodes_seen: 2000000`. That number is exactly the cap. The true
+value is ≥ 2,000,000 and unknown — but the field name asserted it was a count, and
+2,000,000 is round enough to look like a real measurement rather than a ceiling.
+
+This is the "plausible-looking number in a provenance artifact" failure: nothing about
+the receipt reveals that the figure is censored.
+
+**The fix.** The field is renamed `distinct_non_cohort_barcodes_retained`, beside an
+explicit `distinct_non_cohort_barcode_cap` and a
+`distinct_non_cohort_barcode_count_is_censored` boolean, with a note that a censored
+value is a lower bound and must never be cited as a count. The cap is a named constant
+rather than a literal buried in a conditional.
+
+**Caught before damage?** Yes — while reading the completed receipt, before any
+downstream artifact used the figure. Nothing depended on it; the cohort restriction that
+matters scientifically is unaffected.
+
+**Note on scope.** The *existing* receipt still carries the old field name, because a
+provenance record describes the run that happened and is not edited in place. The
+producer is fixed for every future run, and this entry is the erratum.
+
+---
+
+## S19 — The donor guard lived in a receipt, not in the code (CLOSED)
+
+**Status:** CLOSED.
+
+**Defect.** The finding that GSE214979 barcode suffixes are not donors — suffixes 5, 6
+and 7 each span two donors — was *recorded* in the Route-B QC receipt and in the
+prospective freeze, but it was only *enforced* inside that one producer. Every other
+producer that maps barcodes to donors could have inferred donor from the suffix without
+anything stopping it. A guard that lives in a receipt is documentation; a guard that
+lives in the code that reads barcodes is a safeguard.
+
+**The fix.** `scripts/v69/v69_barcode_identity.py` is a shared, tested, enforced guard.
+It fails closed on an empty map, on a barcode mapping to two donors, and — the
+important case — on a mapping where **no** suffix spans more than one donor, because in
+this cohort a correct full-cohort mapping *must* show multi-donor suffixes. A mapping
+without them is either suffix-derived or restricted to a subset where the distinction
+cannot be checked, and donor-aware work must not proceed on an unverifiable mapping.
+
+Wired into the Route-B QC producer and the Route-A cisTopic builder, and verified firing
+on real data: 2,534 barcodes, 12 donors, suffixes 5/6/7 each spanning two donors.
+Eight tests, including one that drives the literal suffix-derived defect and one proving
+the PASS path is reachable.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
