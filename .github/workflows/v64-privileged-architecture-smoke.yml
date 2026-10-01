@@ -5,8 +5,13 @@ on:
     paths:
       - 'docs/agent/V64_*'
       - 'docs/agent/V65_*'
+      - 'docs/agent/V6[6-7]_*'
+      - 'docs/agent/JEPA_V67_STATE_ADDENDUM_20261001.md'
+      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER.json'
+      - 'docs/agent/JEPA_HANDOFF_STATE_20260930_V66.json'
       - 'results/v64/V64_*'
       - 'results/v64/V65_*'
+      - 'results/v64/V6[6-7]_*'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
