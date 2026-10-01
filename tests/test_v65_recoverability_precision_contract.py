@@ -7,7 +7,9 @@ def test_recoverability_precision_contract_freezes_materiality_and_test_firewall
     assert "DELTA_R2 >= 0.05" in t
     assert "10,000 deterministic permutations per donor" in t
     assert "0, 2, 4, 8, 16" in t
-    assert "Select the **smallest** eligible nonzero rank" in t
+    assert "Select the **largest contiguous eligible rank**" in t
+    assert "no skipping over a failed lower rank" in t.lower()
+    assert "smallest-eligible rule is superseded" in t.lower()
     assert "median TEST `DELTA_R2` is at least 50% of median VALIDATION" in t
     assert "cannot assign PRIVILEGED_PRIVATE" in t
     assert "four independent donors" in t
