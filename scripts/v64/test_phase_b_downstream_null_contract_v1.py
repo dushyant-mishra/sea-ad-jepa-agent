@@ -22,8 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nihcard_exact_supplement_builder_v1 as B      # noqa: E402
 
 DIR = "results/v64/phase_b_design"
-CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json")
-STATE = os.path.join(DIR, "V64_PHASE_B_DECISION_STATE_V2.json")
+CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
+STATE = os.path.join(DIR, "V64_PHASE_B_DECISION_STATE_V3.json")
 ROWS = "D:/jepa_v5_outputs_20260925/v64_phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
 
 RESULTS = []
@@ -326,8 +326,41 @@ def main() -> int:
           "the metacell partition is written and hash-bound for Stage 4",
           t10, C, bad)
 
+    # ---- T19 the enumeration reference rules are frozen HERE, and declared as a decision
+    def t19(c):
+        d = c.get("THIS_CONTRACT_MAKES_A_STATISTICAL_DECISION")
+        if not d or d.get("declared") is not True:
+            return False, "contract does not declare that it makes a statistical decision"
+        sec = c.get("SECTION_10_ENUMERATION_REFERENCE_RULES")
+        if not sec:
+            return False, "no enumeration reference rules"
+        for r in ("R1_PRIMARY_EXACT_A_SIDE", "R2_EXACT_JOINT_AB",
+                  "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"):
+            if r not in sec:
+                return False, f"{r} missing"
+        r3 = sec["R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"]
+        for k in ("eligibility", "which_arm_is_small", "rule",
+                  "WHY_THE_CONDITIONAL_IS_THE_ESTIMAND_AND_NOT_AN_APPROXIMATION",
+                  "MANDATORY_CAVEAT_ON_UNCERTAINTY", "governs"):
+            if k not in r3:
+                return False, f"R3 lacks {k}"
+        cav = r3["MANDATORY_CAVEAT_ON_UNCERTAINTY"]
+        if cav.get("required_label") != "CONDITIONAL_ON_REALISED_LARGE_ARM":
+            return False, "R3 intervals are not required to carry a conditional label"
+        if "NARROWER" not in cav["statement"]:
+            return False, "the caveat does not state that conditional intervals are narrower"
+        if "NOTHING in the primary" not in r3["governs"]:
+            return False, "R3 is not excluded from the primary contrast"
+        return True, ("R1/R2/R3 frozen here, R3 fully specified with its conditional "
+                      "caveat and excluded from the primary contrast")
+    bad = copy.deepcopy(C)
+    bad.pop("SECTION_10_ENUMERATION_REFERENCE_RULES")
+    check("T19_enumeration_rules_frozen_as_statistical_authority",
+          "R1/R2/R3 live in statistical authority and R3 is declared as a decision (S58)",
+          t19, C, bad)
+
     real = [r for r in RESULTS if r["is_a_real_test"]]
-    out = dict(schema="V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2", date="2026-09-30",
+    out = dict(schema="V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V3", date="2026-09-30",
                contract=dict(path=CONTRACT, sha256=B.sha_file(CONTRACT)),
                state=dict(path=STATE, sha256=B.sha_file(STATE)),
                producer_sha256=B.sha_file(os.path.abspath(__file__)),
@@ -337,7 +370,7 @@ def main() -> int:
                status="PASS" if len(real) == len(RESULTS) else "FAIL",
                note="a test is counted as real only if it passes on the actual contract "
                     "AND rejects a deliberately planted violation")
-    p = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2.json")
+    p = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V3.json")
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print(f"\n{len(real)}/{len(RESULTS)} tests are real tests -> {out['status']}")

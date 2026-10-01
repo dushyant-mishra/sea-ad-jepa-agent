@@ -1,0 +1,465 @@
+{
+  "schema": "V64_PHASE_B_DOWNSTREAM_NULL_AND_STATISTICAL_CONTRACT_V3",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_ANY_RNA_OR_ATAC_MATRIX_VALUE_IS_READ",
+  "purpose": "Fix how each Phase-A randomness stratum contributes to every downstream analysis, so Phase B cannot tune its inferential rules after seeing biology.",
+  "authority_it_composes_with": {
+    "phase_a_population": {
+      "path": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+      "sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f",
+      "git_blob": "1eaf757b355aacce64b505bec823a56c248b55fe"
+    },
+    "phase_a_contract": {
+      "path": "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json",
+      "sha256": "e05fbfe2f785e2253b9465e3e381c515c92d9c5c69c645e3c8be72c2a99639db"
+    },
+    "feature_artifact_contract": {
+      "path": "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json",
+      "sha256": "fb41f55ae2ca67ca933dd954b1bfadba833c340dd28737b4309766683cd5f728"
+    },
+    "correspondence_design_contract": {
+      "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+      "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b"
+    },
+    "relationship": "This contract ADDS the randomness-stratum treatment. It does not restate or override the aggregation, metacell, support or independent-unit rules already frozen in the correspondence design contract; where both speak, that contract governs."
+  },
+  "FROZEN_PHASE_A_STRUCTURAL_DIAGNOSTICS": {
+    "rule": "These are final structural properties of the accepted population. They must never be recomputed from, or revised in light of, biological outcomes.",
+    "retained_edges": 13175,
+    "retained_promoters": 5964,
+    "control_A_support_strata": {
+      "RANDOMIZED_SUPPORT_GT10": 12816,
+      "FORCED_SINGLETON_SUPPORT_1": 327,
+      "SMALL_RANDOMIZED_SUPPORT_2_TO_10": 32
+    },
+    "control_A_support_eq_1": 327,
+    "control_A_support_le_10": 359,
+    "coincidence_total": 166,
+    "coincidence_structurally_forced": 158,
+    "coincidence_chance_capable": 8,
+    "null_arm_availability": {
+      "CONTROL_B_available_among_retained": 11012,
+      "CONTROL_B_unavailable": 2163,
+      "A_failed_B_succeeded_not_rescued": 2200,
+      "A_passed_B_failed": 2163
+    }
+  },
+  "SECTION_1_PRIMARY_LINKED_VS_CONTROL_A": {
+    "primary_population": "ALL retained edges",
+    "n": 13175,
+    "forced_singleton_edges_included": true,
+    "small_support_edges_included": true,
+    "weighting_or_exclusion_by_control_support": "NONE",
+    "why_no_exclusion": "Admissible-set size is a function of PU.1 and NIH-CARD track density inside the distance band. Excluding small-support edges would select the population on genomic coverage, which is itself associated with expression and openness -- the same confound already measured on this project at 4.92x detection between anchored and unanchored genes. A cleaner-looking population would be a biased one.",
+    "MANDATORY_LABEL_FOR_SINGLETON_CONTROLS": "STRUCTURALLY_MATCHED_NOT_RANDOMIZED_WITHIN_SIDE",
+    "what_that_label_means": "The control satisfies every admissibility gate -- exact C3 round-trip, hg38 PU.1 support, hg38 NIH-CARD consensus-peak support, distance band, promoter-specific exclusion -- so it is a valid matched comparator. But the admissible set on its drawn side had exactly one element, so no alternative could have been drawn and the control carries NO within-edge randomisation variance.",
+    "forbidden_description": "Describing singleton controls as ordinary randomised controls, or including them in any statement whose validity rests on the control having been randomly selected.",
+    "stratified_reporting": "REQUIRED. Every inferential summary is reported both pooled over the primary population and stratified by control-support class. A pooled number presented without its stratified breakdown is a contract violation."
+  },
+  "SECTION_2_CONTROL_A_VS_CONTROL_B_NULL_CALIBRATION": {
+    "purpose": "Calibrate the random-control generator: two independent draws from the same edge-specific admissible distribution should show no systematic difference.",
+    "eligible_denominator_frozen_now": 10654,
+    "eligible_classes": [
+      "FULLY_RANDOMIZED_SUPPORT_GT10",
+      "FULLY_RANDOMIZED_SMALL_SUPPORT"
+    ],
+    "eligibility_rule": "BOTH draws must come from an admissible set of size >= 2 on their own drawn side, so each draw had genuine freedom.",
+    "class_counts": {
+      "FULLY_RANDOMIZED_SUPPORT_GT10": 10619,
+      "B_UNAVAILABLE_NOT_EVALUABLE": 2163,
+      "STRUCTURALLY_FORCED_IDENTICAL": 158,
+      "PARTIALLY_FORCED_ONE_DRAW_HAD_NO_FREEDOM": 200,
+      "FULLY_RANDOMIZED_SMALL_SUPPORT": 35
+    },
+    "coincidence_by_class": {
+      "STRUCTURALLY_FORCED_IDENTICAL": 158,
+      "FULLY_RANDOMIZED_SMALL_SUPPORT": 6,
+      "FULLY_RANDOMIZED_SUPPORT_GT10": 2
+    },
+    "EXCLUDED_FROM_CALIBRATION_EVIDENCE": {
+      "STRUCTURALLY_FORCED_IDENTICAL": {
+        "n": 158,
+        "contributes": "ZERO evidence",
+        "why": "both draws landed on a side with exactly one admissible start, so A == B was arithmetically guaranteed before any randomness was used"
+      },
+      "PARTIALLY_FORCED_ONE_DRAW_HAD_NO_FREEDOM": {
+        "n": 200,
+        "contributes": "reported as its own class, NOT in the randomised denominator",
+        "why": "a comparison between a forced control and a free control is not a two-independent-draws null"
+      },
+      "B_UNAVAILABLE_NOT_EVALUABLE": {
+        "n": 2163,
+        "contributes": "NOT_EVALUABLE, reported explicitly",
+        "why": "no control-vs-control comparison exists for these edges; they must remain visible so that 'no null was computable' is never silently read as 'the null passed'"
+      }
+    },
+    "THE_INFLATION_THIS_PREVENTS": {
+      "pooled_all_both_available": {
+        "coincident": 166,
+        "of": 11012,
+        "rate": 0.015074
+      },
+      "eligible_only": {
+        "coincident": 8,
+        "of": 10654,
+        "rate": 0.000751
+      },
+      "inflation_factor": 20.08,
+      "reading": "Pooling would make the control generator appear to agree with itself about twenty times more often than it randomly does, entirely because of degenerate single-element admissible sets."
+    },
+    "control_B_role": "NULL AND CALIBRATION ONLY. CONTROL_B may never enter the primary linked-versus-control contrast and may never alter Phase-A retention."
+  },
+  "SECTION_3_UNCERTAINTY_REPORTING": {
+    "independent_unit": "DONOR, per the already-frozen correspondence design contract. Nuclei and metacells improve the measurement of a donor-level quantity and never increase independent N.",
+    "clustering_unit_for_edge_level_inference": "PROMOTER",
+    "why_promoter": "edges sharing a promoter share the promoter's activity and local chromatin context, so they are not independent; the promoter is the block.",
+    "primary_interval_method": "nonparametric cluster bootstrap over DONORS, 4000 replicates, seed 20260929; donors are the sole resampling unit and promoter identity provides within-donor block structure only",
+    "per_stratum_rules": {
+      "control_A_support_1": {
+        "within_edge_randomisation_variance": "ZERO BY CONSTRUCTION",
+        "rule": "no randomisation-based interval may be reported for these edges; uncertainty comes from donor resampling alone, and the absence of control randomisation is stated wherever they are summarised"
+      },
+      "control_A_support_2_to_10": {
+        "rule": "the admissible set is small enough to ENUMERATE COMPLETELY, so the exact randomisation distribution over all n possible controls is computed rather than approximated by resampling",
+        "why": "with n <= 10 an exact enumeration is both cheap and strictly better than a sampled approximation, and it makes the discreteness of the reference distribution explicit instead of hidden"
+      },
+      "control_B_unavailable": {
+        "rule": "edge contributes to the primary contrast and contributes NOTHING to null calibration; counted as NOT_EVALUABLE"
+      },
+      "A_B_coincide_by_chance": {
+        "rule": "RETAINED as a legitimate draw from the null; it is evidence, not an artifact"
+      },
+      "A_B_coincide_structurally": {
+        "rule": "EXCLUDED from calibration evidence; the edge still contributes to the primary contrast"
+      }
+    },
+    "no_silent_pooling": "Any statistic pooled across strata must be accompanied, in the same table, by its per-stratum values. Pooling without the breakdown is a contract violation.",
+    "RESAMPLING_UNIT_CLARIFICATION": {
+      "sole_resampling_unit": "DONOR",
+      "method": "nonparametric cluster bootstrap over DONORS",
+      "replicates": 4000,
+      "seed": 20260929,
+      "source": {
+        "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+        "key": "PRIMARY_ESTIMAND.uncertainty"
+      },
+      "role_of_promoter": "Promoter identity defines WITHIN-DONOR dependence and block structure, and is the cross-fitting unit. It does NOT become an additional independent biological resampling unit.",
+      "no_new_algorithm_is_introduced": "V1's phrase 'donor resampling, promoter blocks' could be read as a nested donor-by-promoter resampling scheme. No such scheme was ever frozen, and none is introduced. The inferential procedure is exactly the inherited donor cluster bootstrap.",
+      "forbidden": [
+        "any resampling scheme whose unit is the nucleus or the metacell",
+        "treating the promoter as an independent replication unit",
+        "any replicate count or seed other than the inherited ones"
+      ]
+    }
+  },
+  "SECTION_4_PREDECLARED_SENSITIVITY_VIEWS": {
+    "rule": "The PRIMARY view is fixed here, before any outcome is seen. The others are sensitivity views, not outcome-selected alternate primaries. Which view is primary may not change after results are seen.",
+    "V1_PRIMARY_all_retained": {
+      "n": 13175,
+      "is_primary": true
+    },
+    "V2_exclude_forced_singletons": {
+      "n": 12848,
+      "is_primary": false
+    },
+    "V3_randomized_support_gt10_only": {
+      "n": 12816,
+      "is_primary": false
+    },
+    "V4_small_support_reported_separately": {
+      "n": 32,
+      "is_primary": false
+    },
+    "divergence_handling": "If the sensitivity views disagree materially with the primary, that disagreement IS the finding and is reported as such. It is not resolved by promoting whichever view looks better."
+  },
+  "SECTION_5_MISSINGNESS": {
+    "required_rule": "NOT_MEASURED != 0",
+    "states": [
+      "MEASURED_AND_SUPPORTS",
+      "MEASURED_AND_DOES_NOT_SUPPORT",
+      "NOT_MEASURED",
+      "UNRESOLVED"
+    ],
+    "representation": "a per-element availability mask carried INSIDE the artifact consumers read, never recorded only in matrix-level metadata",
+    "zero_fill": "FORBIDDEN for RNA, ATAC and regulatory evidence alike",
+    "availability_must_not_become_a_hidden_outcome_label": {
+      "risk": "availability is confounded with expression on this project's own data: E2-anchored genes show about 4.92x the microglial detection rate of unanchored measurable genes, and within anchored genes degree tracks detection at about 5.57x",
+      "rule": "availability is carried as its own recorded field and, where any comparison conditions on it, the availability pattern of each arm is reported alongside the result"
+    },
+    "MEASUREMENT_UNSUPPORTED_edges": "an edge or control whose interval overlaps zero consensus peaks is MEASUREMENT_UNSUPPORTED, recorded as NOT_MEASURED and counted; the identical rule applies to linked and to every control"
+  },
+  "SECTION_6_DONOR_AND_STATISTICAL_MASS": {
+    "cells_are_not_independent_N": true,
+    "donor_level_rules_inherited_from_design_contract": {
+      "minimum_microglia_per_donor": 100,
+      "minimum_metacells_per_donor": 4,
+      "minimum_donors_per_edge": 30,
+      "low_support_handling": "labelled LOW_DONOR_SUPPORT and reported as its own stratum, never silently dropped"
+    },
+    "reporting_requirement": "every uncertainty statement names the donor count behind it, with the Kish effective donor sample size alongside the raw donor count",
+    "multiple_edges_from_one_donor": "a donor contributes to many edges; donors are the resampling unit, so a donor is resampled as a whole and all of its edge contributions move together",
+    "promoter_clustering": "edges within a promoter are blocked; the promoter is the cross-fitting unit already frozen in the design contract",
+    "promoter_degree_as_nuisance": "degree enters as a declared nuisance covariate. It is NOT a clean measure of regulatory complexity -- it partly measures detectability, measured on this project at about 5.57x between degree-1 and degree>=10 genes -- so it is adjusted for rather than interpreted.",
+    "EDGE_MASS_CONCENTRATION": {
+      "top_quartile_promoters_hold": 0.5311,
+      "WEIGHTING_HIERARCHY_IS_FIXED_AND_HAS_EXACTLY_ONE_PRIMARY": {
+        "PRIMARY": {
+          "name": "GENE_BALANCED",
+          "status": "INHERITED, not introduced here",
+          "definition": "Within a donor, the statistic is the mean over genes of the within-gene mean over that gene's edges. This prevents genes carrying many edges from dominating: 3,528 of 5,253 genes carry more than one edge, one carries 68, and 91.7% of edges belong to multi-edge genes.",
+          "estimand": "Delta = the donor-averaged, GENE-BALANCED mean difference between the residualised correspondence score of linked E2 edges and that of their matched controls.",
+          "why_it_is_primary": "Chosen before any outcome, because edge-equal weighting would let a single high-degree promoter region determine the set-level result.",
+          "source": {
+            "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+            "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b",
+            "key": "PRIMARY_ESTIMAND"
+          }
+        },
+        "MANDATORY_COMPANION": {
+          "name": "PROMOTER_EQUAL",
+          "status": "ADDED HERE, prospectively, and never primary",
+          "definition": "within a donor, the mean over promoters of the within-promoter mean over that promoter's edges",
+          "why_added": "the repaired Phase-A population concentrates 53.1% of retained edges in the top quartile of promoters. Gene-balancing does not equalise promoters, because a gene may carry several, so this is a genuinely different diagnostic rather than a restatement of the primary.",
+          "reporting": "MANDATORY. Reported in the same table as the primary, always."
+        },
+        "PREDECLARED_SENSITIVITY": {
+          "name": "EDGE_EQUAL",
+          "status": "INHERITED, unchanged",
+          "source": {
+            "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+            "key": "PRIMARY_ESTIMAND.predeclared_sensitivity"
+          },
+          "reporting": "EDGE_EQUAL_WEIGHTING, reported alongside the primary whatever either shows."
+        },
+        "NON_SELECTION_RULE": {
+          "rule": "Disagreement among the three weighting views is REPORTED. It is never resolved by promoting whichever weighting is outcome-favourable.",
+          "inherited_prohibition_this_enforces": "choosing between gene-balanced and edge-equal weighting after the outcome",
+          "corollary": "No result may be described using a weighting other than GENE_BALANCED without the gene-balanced value stated beside it."
+        },
+        "why_this_section_was_repaired": "V1 of this contract described the edge-weighted estimate as the primary one, which named a third weighting as primary and thereby recreated exactly the post-hoc choice the inherited contract forbids. The repair restores the inherited primary and demotes the new diagnostic to a mandatory companion.",
+        "guard": "the successor is checked to contain no live rule naming an edge-weighted quantity as primary; the check is run over the emitted contract, not over this description of it"
+      }
+    }
+  },
+  "SECTION_7_HIERARCHY": {
+    "levels": "donor -> promoter -> edge -> {LINKED, CONTROL_A, CONTROL_B}",
+    "retained_edges": 13175,
+    "retained_promoters": 5964,
+    "retained_genes": 4372,
+    "FORBIDDEN": "treating the retained edges as that many independent biological replicates",
+    "blocking_and_clustering": {
+      "resampling_unit": "donor",
+      "blocking_unit": "promoter",
+      "edge": "an observation within a promoter block, not an independent replicate",
+      "control_rows": "CONTROL_A and CONTROL_B inherit their linked edge's promoter and move with that block"
+    },
+    "effective_unit_ceiling": "edge-level inference is bounded above by the promoter count and, for donor-level quantities, by the qualifying donor count -- never by the edge count"
+  },
+  "SECTION_8_PHASE_B_FIELD_SEMANTICS": {
+    "note": "The definitions below are INHERITED verbatim from the frozen correspondence design contract. This section binds them and fixes the remaining executability details; it does not redefine them.",
+    "promoter_activity": {
+      "frozen_definition": "donor-level mean log1p CP10K RNA of the linked gene across that donor's microglia metacells",
+      "source_matrix": "NIH-CARD RNA .X (uint16 count-like)",
+      "critical_layout_warning": "the convention is REVERSED relative to common AnnData layout -- raw/X is noninteger log-like float32 -- so the executor must assert .X integrality on a sample and STOP if violated",
+      "normalisation": "per metacell: sum counts over the metacell's nuclei, divide by that metacell's total counts over all 38,606 genes, times 1e4, then log1p",
+      "aggregation": "mean over that donor's metacells",
+      "unit": "DONOR",
+      "gene_identity": "E2 nearest_ensembl joined to NIH-CARD var['gene_ids']; never the var index, which mixes symbols and Ensembl IDs",
+      "cell_inclusion": "NIH-CARD nuclei with cell_type == 'MG'",
+      "minimum_support": "100 microglia and 4 metacells per donor; 30 donors per edge",
+      "missingness": "absent gene or insufficient support -> NOT_MEASURED, never 0"
+    },
+    "distal_accessibility": {
+      "frozen_definition": "donor-level mean log1p normalised ATAC over the assigned peak set",
+      "source_matrix": "NIH-CARD ATAC .X (uint16 count-like)",
+      "peak_assignment": "all consensus peaks overlapping the interval by >= 1 bp are summed; no peak widening, no nearest-peak rescue; the number of overlapping peaks is recorded",
+      "normalisation": "per metacell: sum counts over the metacell's nuclei across the assigned peaks, divide by that metacell's total ATAC counts over all 521,217 peaks, times 1e4, then log1p",
+      "aggregation": "mean over that donor's metacells",
+      "unit": "DONOR",
+      "genome_build_precondition": "the executor must verify the consensus peak build is hg38 by an outcome-blind check before any join",
+      "missingness": "zero overlapping peaks -> MEASUREMENT_UNSUPPORTED / NOT_MEASURED, never 0"
+    },
+    "metacell_partition": {
+      "rule": "formed inside each donor separately by clustering that donor's microglia on RNA ONLY; ATAC is then summed over exactly the nuclei assigned to each metacell",
+      "forbidden": "a joint RNA+ATAC embedding, because it manufactures the correspondence under test",
+      "algorithm": "k-means on the first 20 PCs of the within-donor RNA matrix, k = floor(n_microglia_donor / 25), seed 20260929, n_init 10",
+      "determinism": "the assignment is written to the artifact so the partition is auditable"
+    },
+    "identical_computation_for_A_and_B": {
+      "required": true,
+      "meaning": "CONTROL_A and CONTROL_B are scored by the SAME code path, on the SAME metacells of the SAME donors, with the SAME peak-assignment and support rules as the linked edge",
+      "why": "any asymmetry between the arms would be indistinguishable from the biological effect the design is meant to detect"
+    },
+    "ordering_requirement": "linked-versus-control comparison may begin only after promoter_activity and distal_accessibility are computed and FROZEN for every arm. No correspondence statistic may be computed while these values are still revisable.",
+    "METACELL_PARTITION_MUST_BE_PERSISTED": {
+      "requirement": "Phase B must WRITE the metacell assignment it uses, per donor and per nucleus, into a committed artifact bound by sha256.",
+      "why": "the Stage-4 correspondence statistic is computed from metacell-level vectors within donor. If the partition were rebuilt at Stage 4, it would be rebuilt after outcomes had become visible, and a partition is exactly the kind of choice that can move a correspondence result. Persisting it makes Stage 4 use the identical partition by construction rather than by intention.",
+      "binding": "the artifact's sha256 is recorded in the Phase-B receipt and Stage 4 must verify it before use",
+      "seed_and_algorithm": "unchanged from the inherited aggregation rules"
+    }
+  },
+  "SECTION_9_FIREWALL_OBSERVED_IN_BUILDING_THIS_CONTRACT": {
+    "inspected": [
+      "Phase-A structural artifacts",
+      "existing frozen contracts",
+      "code and schemas",
+      "draw sides, admissible-set sizes, coincidence",
+      "promoter degree and edge-mass concentration"
+    ],
+    "NOT_inspected": [
+      "linked-versus-control biological correspondence",
+      "RNA-ATAC correlation",
+      "effect sizes",
+      "residual association",
+      "disease outcomes",
+      "Morabito",
+      "protected validation",
+      "paired NIH-CARD TEST donors"
+    ],
+    "rna_matrix_values_read": false,
+    "atac_matrix_values_read": false,
+    "statement": "No quantity that could tune a statistical rule toward a desired answer was available while these rules were written."
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "producer": {
+    "path": "scripts\\v64\\build_phase_b_downstream_null_contract_v1.py",
+    "sha256": "5a72647b0e2b211e2e0cdb586900a7ed944dd8892cba8d6da61205c90aa3fa59"
+  },
+  "supersedes": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json",
+    "sha256": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe",
+    "reason": "V2 froze exact enumeration for CONTROL_A support 2-10 but did not state what the reference is when an A/B pair has one small and one large arm. That rule was introduced downstream in a contract claiming to change no statistical decision, which was not true of it."
+  },
+  "PATCH": {
+    "schema": "V64_PHASE_B_NULL_CONTRACT_WEIGHTING_PATCH_V2",
+    "date": "2026-09-30",
+    "scope": "DESIGN ONLY. No structural count, stratum, denominator, population or Phase-A quantity is changed. No matrix value is read. Phase A is not rerun.",
+    "what_changed": [
+      "restored GENE_BALANCED as the sole primary weighting, read from the inherited correspondence design contract rather than restated from memory",
+      "demoted the promoter-equal estimate from 'primary companion' to MANDATORY COMPANION, never primary",
+      "kept EDGE_EQUAL as the inherited predeclared sensitivity",
+      "added a non-selection rule citing the inherited prohibition verbatim",
+      "clarified that donors are the sole resampling unit and promoter identity is block/cross-fitting structure only, with the inherited bootstrap method, replicate count and seed restated from source",
+      "required the metacell partition to be persisted and hash-bound for Stage 4"
+    ],
+    "what_did_not_change": [
+      "every structural count",
+      "the randomness strata",
+      "the randomized-null denominator",
+      "the primary population",
+      "missingness rules",
+      "the firewall"
+    ]
+  },
+  "THIS_CONTRACT_MAKES_A_STATISTICAL_DECISION": {
+    "declared": true,
+    "which": "the enumeration reference rules R1, R2 and R3 below, and in particular the conditional reference R3",
+    "when": "before any RNA or ATAC matrix value was read; the outcome remains sealed",
+    "why_declared_explicitly": "an inferential rule introduced inside a document that declares itself statistically neutral is a rule nobody audited as a statistical choice. Placing it here makes it reviewable as one."
+  },
+  "SECTION_10_ENUMERATION_REFERENCE_RULES": {
+    "scope": "These rules define the REFERENCE DISTRIBUTION used wherever the frozen exact-enumeration requirement applies. They do not alter the primary population, the retained counts, the randomized-null denominator, or the weighting hierarchy.",
+    "R1_PRIMARY_EXACT_A_SIDE": {
+      "governs": "the exact randomisation reference for the primary linked-versus-CONTROL_A contrast on edges whose CONTROL_A support is small",
+      "eligibility": "retained edge with CONTROL_A admissible support in [2, 10]",
+      "rule": "enumerate ALL admissible alternatives on CONTROL_A's drawn side and compute the exact randomisation distribution over them",
+      "edges": 32,
+      "exactness": "UNCONDITIONAL and exact. The whole reference set is materialised."
+    },
+    "R2_EXACT_JOINT_AB": {
+      "governs": "the CONTROL_A versus CONTROL_B null calibration reference",
+      "eligibility": "fully-randomised A/B pair with BOTH arms' support in [2, 10]",
+      "rule": "the reference is the exact JOINT distribution over independent re-draws of both arms from their own side-specific admissible sets",
+      "pairs": 14,
+      "ordered_pairs_in_reference": 133,
+      "exactness": "UNCONDITIONAL and exact."
+    },
+    "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM": {
+      "governs": "the CONTROL_A versus CONTROL_B null calibration reference for pairs where a full joint cannot be materialised. It governs NOTHING in the primary linked-versus-control contrast.",
+      "eligibility": "fully-randomised A/B pair where exactly one arm has admissible support in [2, 10] and the other has support greater than 10",
+      "pairs": 21,
+      "which_arm_is_small": {
+        "recorded_per_pair": true,
+        "CONTROL_A_is_the_small_arm": 11,
+        "CONTROL_B_is_the_small_arm": 10
+      },
+      "arm_geometry_measured": {
+        "pairs_drawing_on_the_SAME_side": 0,
+        "pairs_drawing_on_DIFFERENT_sides": 21,
+        "small_arm_support_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "large_arm_support_min": 931,
+        "large_arm_support_max": 15474
+      },
+      "rule": "enumerate the SMALL arm completely over its own side-specific admissible set, and hold the LARGE arm fixed at its already-realised draw. The realised large-arm start is recorded per pair alongside the reference.",
+      "WHY_THE_CONDITIONAL_IS_THE_ESTIMAND_AND_NOT_AN_APPROXIMATION": {
+        "claim": "R3 targets a conditional estimand exactly. It does not approximate the joint estimand of R2.",
+        "argument": "CONTROL_A and CONTROL_B are drawn independently from their own side-specific admissible sets. Conditioning on the realised value of one draw therefore leaves the other draw exactly uniform over its own set. The enumerated reference is thus the exact conditional distribution of the small arm given the realised large arm -- an exact statement about a narrower question, not an approximate statement about a wider one.",
+        "what_the_narrower_question_is": "given this particular large-arm control, how unusual is the small-arm control's realised position among its lawful alternatives?",
+        "measured_support_for_the_independence_premise": "all 21 of the 21 R3 pairs draw on DIFFERENT sides, so the two arms range over disjoint admissible sets and the independence of the draws is structural rather than assumed."
+      },
+      "MANDATORY_CAVEAT_ON_UNCERTAINTY": {
+        "statement": "A conditional reference captures ONLY small-arm randomisation variability. Large-arm variability is excluded by construction, so any interval or tail probability derived under R3 is NARROWER than its unconditional counterpart would be.",
+        "required_label": "CONDITIONAL_ON_REALISED_LARGE_ARM",
+        "forbidden": "pooling an R3 quantity with R1 or R2 quantities, or comparing them side by side, without that label present",
+        "why_frozen_now": "an unlabelled conditional interval read as an unconditional one understates uncertainty, and the direction of that error is toward over-confidence"
+      },
+      "why_not_the_full_joint": "the large arms range from 931 to 15,474 admissible starts. A joint reference would require materialising donor-by-metacell measurements for that many intervals per pair, which is not feasible and would dwarf the entire Phase-B substrate.",
+      "alternative_considered_and_rejected": {
+        "option": "Monte Carlo sampling over the large arm with a frozen replicate count and seed",
+        "rejected_because": "it would substitute a sampling approximation where an exact conditional statement is available, and it would require choosing WHICH large-arm alternatives to materialise -- a new selection rule needing its own justification and its own audit."
+      },
+      "overlap_with_R1": {
+        "R3_pairs_whose_small_arm_is_CONTROL_A": 11,
+        "of_those_already_required_by_R1": 11,
+        "reading": "where the small arm is CONTROL_A, R1 already requires that arm's full enumeration, so R3 adds no new materialisation for those pairs. R3's genuinely additional requirement is the small CONTROL_B arm in the remaining 10 pairs."
+      }
+    },
+    "CROSS_CONTRACT_REQUIREMENT": {
+      "rule": "Any enumeration rule implemented by the measurement substrate contract must exist here, by the same identifier and with the same eligibility and reference definition. A substrate rule with no counterpart here is a statistical decision placed outside statistical authority.",
+      "rule_identifiers": [
+        "R1_PRIMARY_EXACT_A_SIDE",
+        "R2_EXACT_JOINT_AB",
+        "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"
+      ]
+    },
+    "what_these_rules_do_NOT_change": [
+      "the retained population",
+      "the randomized-null denominator",
+      "the randomness strata",
+      "the weighting hierarchy",
+      "the resampling unit, replicate count or seed",
+      "which comparisons are eligible for null calibration"
+    ]
+  }
+}

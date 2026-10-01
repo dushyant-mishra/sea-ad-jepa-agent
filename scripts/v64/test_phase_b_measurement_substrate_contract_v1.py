@@ -21,7 +21,7 @@ import nihcard_stage3_phase_a_exact_executor_v2 as EX            # noqa: E402
 
 DIR = "results/v64/phase_b_design"
 SUB = os.path.join(DIR, "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json")
-NULL_V2 = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json")
+NULL_V3 = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
 ROWS = "D:/jepa_v5_outputs_20260925/v64_phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
 RESULTS = []
 
@@ -194,18 +194,69 @@ def main() -> int:
     def t16(c):
         if c.get("changes_no_statistical_decision") is not True:
             return False, "contract does not declare itself statistically neutral"
-        n = json.load(open(NULL_V2))
+        n = json.load(open(NULL_V3))
         if c["governance"] != n["governance"]:
             return False, "governance diverges from the statistical contract"
         a = c["authority"]["statistical_contract"]
-        if a["sha256"] != B.sha_file(NULL_V2):
+        if a["sha256"] != B.sha_file(NULL_V3):
             return False, "bound statistical contract digest is stale"
-        return True, "statistically neutral and bound to the accepted V2 digest"
+        return True, "statistically neutral and bound to the accepted V3 digest"
     bad = copy.deepcopy(C)
     bad["governance"] = dict(bad["governance"], phase_B="RUNNING")
     check("T16_no_statistical_decision_changed",
           "the substrate contract changes no statistical decision",
           t16, C, bad)
+
+    # ---- T17 every substrate enumeration rule exists in the STATISTICAL contract
+    def t17(c):
+        ids = c["EXACT_ENUMERATION_REQUIREMENT"].get("rule_identifiers_implemented_here")
+        if not ids:
+            return False, "substrate declares no rule identifiers"
+        auth = c["EXACT_ENUMERATION_REQUIREMENT"].get("AUTHORITY")
+        if not auth or not auth.get("this_contract_only_implements_them"):
+            return False, "substrate does not defer to an upstream authority"
+        st = json.load(open(NULL_V3))
+        sec = st.get("SECTION_10_ENUMERATION_REFERENCE_RULES")
+        if not sec:
+            return False, "statistical contract has no enumeration-rule section"
+        missing = [i for i in ids if i not in sec]
+        if missing:
+            return False, f"rules implemented with no statistical authority: {missing}"
+        if auth["sha256"] != B.sha_file(NULL_V3):
+            return False, "bound authority digest is stale"
+        if st.get("THIS_CONTRACT_MAKES_A_STATISTICAL_DECISION", {}).get(
+                "declared") is not True:
+            return False, "the statistical contract does not declare R3 as its decision"
+        return True, (f"all {len(ids)} rules have upstream authority and the statistical "
+                      f"contract declares the decision as its own")
+    bad = copy.deepcopy(C)
+    bad["EXACT_ENUMERATION_REQUIREMENT"]["rule_identifiers_implemented_here"].append(
+        "R4_SOME_RULE_INVENTED_DOWNSTREAM")
+    check("T17_every_enumeration_rule_has_upstream_authority",
+          "no inferential rule is introduced by the substrate contract (S58)",
+          t17, C, bad)
+
+    # ---- T18 the enumeration fraction denominator is recomputed, not hardcoded
+    def t18(c):
+        m = c["EXACT_ENUMERATION_REQUIREMENT"]["MATERIALISATION"]
+        if not m.get("S57_denominator_is_recomputed_not_hardcoded"):
+            return False, "denominator is not declared recomputed"
+        n_ctl = m.get("control_rows_already_measured")
+        live = sum(1 for r in rows if r["population"] == "CONTROL")
+        if n_ctl != live:
+            return False, f"claimed {n_ctl} control rows, artifact has {live}"
+        want = round(m["additional_ENUMERATION_ONLY_rows"] / live, 6)
+        if abs(m["as_fraction_of_controls_already_measured"] - want) > 1e-9:
+            return False, "fraction does not equal extra/control_rows"
+        return True, (f"denominator {live:,} recomputed from the artifact and the "
+                      f"fraction follows from it")
+    # planted violation: CONTROL_B availability changes, so a hardcoded denominator breaks
+    bad = copy.deepcopy(C)
+    bad["EXACT_ENUMERATION_REQUIREMENT"]["MATERIALISATION"][
+        "control_rows_already_measured"] = 24187 - 1000
+    check("T18_enumeration_denominator_recomputed",
+          "the fraction denominator tracks the artifact and is not a literal (S57)",
+          t18, C, bad)
 
     real = [r for r in RESULTS if r["is_a_real_test"]]
     out = dict(schema="V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1", date="2026-09-30",

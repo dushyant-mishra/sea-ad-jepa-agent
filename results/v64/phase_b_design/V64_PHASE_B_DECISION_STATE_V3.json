@@ -1,0 +1,70 @@
+{
+  "schema": "V64_PHASE_B_DECISION_STATE_V3",
+  "date": "2026-09-30",
+  "contract": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json",
+    "sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9"
+  },
+  "phase_a_population_locked": {
+    "retained_edges": 13175,
+    "retained_promoters": 5964,
+    "retained_genes": 4372
+  },
+  "DECISIONS": {
+    "primary_population": "ALL_RETAINED",
+    "primary_n": 13175,
+    "singletons_in_primary": true,
+    "singleton_label": "STRUCTURALLY_MATCHED_NOT_RANDOMIZED_WITHIN_SIDE",
+    "small_support_in_primary": true,
+    "weighting_by_control_support": "NONE",
+    "stratified_reporting": "REQUIRED",
+    "randomized_null_denominator": 10654,
+    "excluded_structurally_forced": 158,
+    "excluded_partially_forced": 200,
+    "not_evaluable_B_unavailable": 2163,
+    "resampling_unit": "DONOR",
+    "blocking_unit": "PROMOTER",
+    "exact_enumeration_when_support_le_10": true,
+    "missingness_states": 4,
+    "zero_fill": "FORBIDDEN",
+    "primary_view": "V1_PRIMARY_all_retained",
+    "primary_weighting": "GENE_BALANCED",
+    "mandatory_companion_weighting": "PROMOTER_EQUAL",
+    "predeclared_sensitivity_weighting": "EDGE_EQUAL",
+    "n_primary_weightings": 1,
+    "sole_resampling_unit": "DONOR",
+    "bootstrap_replicates": 4000,
+    "bootstrap_seed": 20260929,
+    "promoter_role": "BLOCK_AND_CROSS_FITTING_ONLY",
+    "metacell_partition_persisted_for_stage4": true,
+    "enumeration_rules": [
+      "R1_PRIMARY_EXACT_A_SIDE",
+      "R2_EXACT_JOINT_AB",
+      "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"
+    ],
+    "R1_edges": 32,
+    "R2_pairs": 14,
+    "R3_pairs": 21,
+    "R3_reference": "EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM",
+    "R3_required_label": "CONDITIONAL_ON_REALISED_LARGE_ARM"
+  },
+  "RECONCILIATION": {
+    "calibration_classes_sum": 13175,
+    "equals_retained_edges": true
+  },
+  "WHAT_THIS_AUTHORISES": "nothing to execute yet",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "supersedes": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_DECISION_STATE_V2.json",
+    "sha256": "749ccd472d25fc9e4cf6f7e10c1a2ae8301cd7ca21152818cb9cfce476a08362"
+  }
+}

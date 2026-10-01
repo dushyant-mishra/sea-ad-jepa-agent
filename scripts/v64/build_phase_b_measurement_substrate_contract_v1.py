@@ -51,7 +51,7 @@ import nihcard_stage3_phase_a_exact_executor_v2 as EX            # noqa: E402
 
 OUT = "results/v64/phase_b_design"
 ROWS = "D:/jepa_v5_outputs_20260925/v64_phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
-NULL_V2 = os.path.join(OUT, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json")
+NULL_V3 = os.path.join(OUT, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
 DESIGN_V1 = "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
 FEATURE_V2 = "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json"
 PATCHED_A = "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json"
@@ -142,6 +142,9 @@ def main() -> int:
                 need.setdefault((e, ss, x), set()).add("R3_exact_conditional_small_arm")
     already = {(e, v[k]["drawn_side"], v[k]["hg19_start"])
                for e, v in by.items() for k in ("A", "B") if k in v}
+    # S57: this denominator was previously the literal 24187. A literal cannot notice
+    # when its population changes, which is the same staleness defect S54 recorded.
+    n_control_rows = sum(1 for r in rows if r["population"] == "CONTROL")
     extra = sorted(set(need) - already)
     joint_pairs = 0
     for e, v in by.items():
@@ -159,8 +162,20 @@ def main() -> int:
                  "only the frozen substrate and never returns to the matrices after "
                  "outcomes are visible.",
       "changes_no_statistical_decision": True,
+      "WHY_THAT_IS_NOW_TRUE": {
+        "S58": "An earlier version of this contract introduced the R3 conditional "
+               "reference while declaring itself statistically neutral. Those two things "
+               "could not both be true: R3 fixes the reference distribution for 21 pairs, "
+               "which is inferential semantics. The rule has been moved upstream into the "
+               "statistical contract V3, where a reference distribution belongs and where "
+               "it is auditable as a statistical choice.",
+        "consequence": "this contract now only IMPLEMENTS rules frozen elsewhere, so the "
+                       "neutrality claim is true by construction rather than by assertion",
+        "enforced_by": "every enumeration rule here must exist in the statistical "
+                       "contract by the same identifier; a cross-contract test checks it"},
       "authority": {
-        "statistical_contract": {"path": NULL_V2, "sha256": B.sha_file(NULL_V2)},
+        "statistical_contract": {"path": NULL_V3, "sha256": B.sha_file(NULL_V3),
+                                 "note": "V3 is the authority for R1, R2 and R3"},
         "correspondence_design": {"path": DESIGN_V1, "sha256": B.sha_file(DESIGN_V1)},
         "feature_artifact": {"path": FEATURE_V2, "sha256": B.sha_file(FEATURE_V2)},
         "phase_a_population": {"path": PATCHED_A, "sha256": B.sha_file(PATCHED_A)}},
@@ -232,6 +247,14 @@ def main() -> int:
 
       "EXACT_ENUMERATION_REQUIREMENT": {
         "computed_from": "the committed exact admissible sets, not assumed",
+        "AUTHORITY": {
+          "rules_are_frozen_in": NULL_V3,
+          "section": "SECTION_10_ENUMERATION_REFERENCE_RULES",
+          "sha256": B.sha_file(NULL_V3),
+          "this_contract_only_implements_them": True},
+        "rule_identifiers_implemented_here": ["R1_PRIMARY_EXACT_A_SIDE",
+                                              "R2_EXACT_JOINT_AB",
+                                              "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"],
         "R1_primary_exact_A_side": {
           "rule": "for every retained edge whose CONTROL_A support is 2-10, materialise "
                   "ALL A-side admissible alternatives",
@@ -259,7 +282,9 @@ def main() -> int:
           "already_measured_as_CONTROL_A_or_B": len(set(need) & already),
           "additional_ENUMERATION_ONLY_rows": len(extra),
           "edges_touched": len({e for e, _, _ in need}),
-          "as_fraction_of_controls_already_measured": round(len(extra) / 24187, 6)},
+          "control_rows_already_measured": n_control_rows,
+          "as_fraction_of_controls_already_measured": round(len(extra) / n_control_rows, 6),
+          "S57_denominator_is_recomputed_not_hardcoded": True},
         "frozen_before_biological_values_exist": True},
 
       "RECOVERABILITY_TEST_DONOR_FIREWALL_SCOPE": {
@@ -339,7 +364,7 @@ def main() -> int:
 
       "PROVENANCE_THE_PHASE_B_RECEIPT_MUST_BIND": [
         "producer path, sha256 and git blob",
-        "this contract's sha256", "the statistical contract V2 sha256",
+        "this contract's sha256", "the statistical contract V3 sha256",
         "the correspondence design contract sha256",
         "the feature-artifact V2 contract sha256",
         "the Phase-A patched receipt sha256",
@@ -360,7 +385,7 @@ def main() -> int:
         "any protected obs column is read",
         "any two-modality statistic is computed"],
 
-      "governance": json.load(open(NULL_V2))["governance"],
+      "governance": json.load(open(NULL_V3))["governance"],
       "producer": {"path": os.path.relpath(os.path.abspath(__file__), os.getcwd()),
                    "sha256": B.sha_file(os.path.abspath(__file__))}}
 

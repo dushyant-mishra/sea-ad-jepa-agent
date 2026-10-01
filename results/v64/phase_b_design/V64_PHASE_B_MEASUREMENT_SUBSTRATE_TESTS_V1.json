@@ -3,9 +3,9 @@
   "date": "2026-09-30",
   "contract": {
     "path": "results/v64/phase_b_design\\V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
-    "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
+    "sha256": "ca00c0ac248adf9840ef1e639c5fd16a6df7e799289aa61008a338008a3e29ad"
   },
-  "producer_sha256": "239e7db0940fc1d37e6d4e62fa8006e351fb33254cd718575a9951c51aefa0ad",
+  "producer_sha256": "a02909f0b3d93d3d2c6c4046f302ac13a559ee49858440e9ab63f854942ce6e5",
   "tests": [
     {
       "name": "T11_metacell_level_vectors_persisted",
@@ -53,10 +53,26 @@
       "passes_on_real_contract": true,
       "rejects_planted_violation": true,
       "is_a_real_test": true,
-      "detail": "statistically neutral and bound to the accepted V2 digest"
+      "detail": "statistically neutral and bound to the accepted V3 digest"
+    },
+    {
+      "name": "T17_every_enumeration_rule_has_upstream_authority",
+      "requirement": "no inferential rule is introduced by the substrate contract (S58)",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "all 3 rules have upstream authority and the statistical contract declares the decision as its own"
+    },
+    {
+      "name": "T18_enumeration_denominator_recomputed",
+      "requirement": "the fraction denominator tracks the artifact and is not a literal (S57)",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "denominator 24,187 recomputed from the artifact and the fraction follows from it"
     }
   ],
-  "n_tests": 6,
-  "n_real_tests": 6,
+  "n_tests": 8,
+  "n_real_tests": 8,
   "status": "PASS"
 }
