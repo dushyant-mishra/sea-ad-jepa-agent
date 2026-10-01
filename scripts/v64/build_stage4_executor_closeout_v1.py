@@ -144,6 +144,26 @@ def main() -> int:
             "Any claim that LCB95 > 0 alone establishes a non-technical origin. The "
             "MEASURED_TECHNICAL residue forbids that reading.",
         ],
+        SUPERSEDED_BY_S99_DO_NOT_CITE_WITHOUT_THIS_NOTE=dict(
+            what="every limit and rate below was measured against a synthetic control arm "
+                 "drawn uniformly at random, not against the frozen "
+                 "PROMOTER_FIXED_DISTAL_MATCHED_CONTROL construction. They are retained "
+                 "because deleting a measurement because it became inconvenient is worse "
+                 "than carrying it with its qualification, but none of them characterises "
+                 "the frozen Stage-4 design.",
+            what_replaced_it="with the matched control in place, the measured-technical "
+                             "world produces no effect at all (adjusted Delta -0.0041, "
+                             "bound below zero) and is independently flagged by the "
+                             "balance gate at 1.781. The design handles measured depth "
+                             "confounding. The hidden confound, however, passes ALL FIVE "
+                             "frozen gates at Delta +0.5937 against genuine biology's "
+                             "+0.5543 -- larger than the real signal, so the contract's "
+                             "no-negligible-Delta defence does not reach it.",
+            status="single runs per world. The V2 calibration, pre-committed at "
+                   "46f7c3342c0e88dd296a430365b52cf791324e133ce066ab54f0ea31fb9e3175, is "
+                   "measuring the rates and is not yet complete. Until it lands, the "
+                   "hidden-confound result is one draw per world and must be stated as "
+                   "such."),
         LIMITS_FOUND_BY_RESAMPLING_THE_WORLDS=[
             "The TRUE_NULL world produced a nominally significant result in 1 of 4 seed "
             "draws: delta +0.0063 with LCB95 +0.0010, where nothing was planted. A "
@@ -178,6 +198,13 @@ def main() -> int:
             "controlled for and, per the HIDDEN_CONFOUND world, is indistinguishable "
             "from biology.",
             "Six concerns against the ChatGPT lane remain open: S89 through S94.",
+            "S99: the synthetic control arm did not implement the frozen matched-control "
+            "construction until 51b4de5a. Every control-arm number produced before that "
+            "commit measured a design the project does not use. The fixture is repaired "
+            "and audited, but the receipts produced before it are superseded.",
+            "The post-repair world results are ONE DRAW PER WORLD. The V2 calibration "
+            "sweep measuring the rates is running and not yet complete, so the "
+            "hidden-confound finding is currently a single observation, not a rate.",
             "The synthetic worlds qualify the orchestration, not the biology. Nothing "
             "here says the frozen estimand is the right scientific question.",
         ],
