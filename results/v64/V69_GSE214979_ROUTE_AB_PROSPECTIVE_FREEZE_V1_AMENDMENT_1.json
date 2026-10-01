@@ -1,0 +1,43 @@
+{
+  "schema": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_AMENDMENT_V1",
+  "amends": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1",
+  "amendment_number": 1,
+  "amended_utc": "2026-10-01T16:40:00Z",
+  "parent_freeze_commit": "500a8cfdba63a3f26193f3fb165aeb05f97aec34",
+  "status": "PROSPECTIVE__STILL_BEFORE_ANY_NETWORK_EXISTS",
+
+  "exposure_state_at_amendment": {
+    "eregulons_computed": 0,
+    "route_comparison_statistics_computed": 0,
+    "control_statistics_computed": 0,
+    "stage4_artifacts_inspected": 0,
+    "statement": "Nothing downstream of the amended clause has been computed or seen. This amendment cannot be outcome-driven because no outcome exists."
+  },
+
+  "amended_clause": {
+    "location": "SECTION_3_MOTIF_RESOURCES_AND_CISTARGET_DATABASE.route_a_database_rule",
+    "original_text": "Route A uses the official generic hg38 region database, because its region universe is the depositor's and a custom database over it would still be a different object than Route B's. This asymmetry is recorded as a known limitation of the route comparison, not hidden.",
+    "replacement_text": "A CUSTOM cisTarget database is built for EACH route over that route's own region universe: Route A over the 150,614 submitted peaks, Route B over the Route-B consensus regions. Both use the identical pinned motif collection (v10nr_clust_public, 10,249 motifs), the identical pinned cbust binary, the identical pinned hg38 analysis-set FASTA and identical create_cisTarget_databases parameters. The ONLY thing that differs between the two databases is the region universe.",
+    "reason": "The original clause was a scientific defect, found by re-reading the freeze against mandate item 7 before executing it. Under the original rule, Route A would have used the generic SCREEN-region database and Route B a custom database. Any Route-A/Route-B disagreement would then confound two different causes -- a different region universe AND a different motif-scoring database -- and the comparison could not isolate region-definition sensitivity, which is the entire question Route B exists to answer. Making the database construction identical leaves the region universe as the single varying factor.",
+    "cost_accepted": "Doubles the cisTarget database build cost. Route A is no longer the 'fast' route in wall-clock terms. The scientific isolation is judged worth it.",
+    "what_is_NOT_changed": [
+      "No acceptance threshold is changed.",
+      "No QC threshold is changed.",
+      "No control definition is changed.",
+      "No Route-B parameter is changed.",
+      "The ROUTE_STABLE definition and its 0.30 Jaccard convention are unchanged."
+    ]
+  },
+
+  "consequential_resource_addition": {
+    "hg38_fasta": {
+      "id": "UCSC hg38.analysisSet.fa.gz",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/hg38.analysisSet.fa.gz",
+      "why_analysis_set": "The analysis set excludes ALT/patch contigs, which would otherwise receive motif scores and distort region rankings. Its chromosome naming is UCSC-style (chr1...), matching the chr:start-end spelling of the submitted peak features.",
+      "digest_status": "RECORDED_IN_ITS_OWN_ACQUISITION_RECEIPT",
+      "licence": "UCSC genome assembly data are freely available for academic, non-profit and personal use (https://genome.ucsc.edu/license/); the underlying GRCh38 assembly from the Genome Reference Consortium is unrestricted."
+    }
+  },
+
+  "fallback_unchanged": "If a custom database cannot be built for a route, the EXACT technical failure is receipted BEFORE any fallback, and every downstream result built on a generic database is labelled GENERIC_REGION_DATABASE. If the fallback applies to only one route, the route comparison is additionally labelled DATABASE_CONFOUNDED and may not be reported as isolating region-definition sensitivity."
+}
