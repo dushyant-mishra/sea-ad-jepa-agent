@@ -65,7 +65,7 @@
     },
     "C17_DICTIONARY_CONTENT_DIGESTS": {
       "passed": true,
-      "detail": "no frozen digests supplied; observed gene=bad9c909aa4be37c... interval=2a173c45443a345c... pair=ff5fe6de4e104b69..."
+      "detail": "gene ok, interval ok, pair ok"
     },
     "C15_AVAILABILITY_ENCODING_AND_BITS": {
       "passed": true,
@@ -84,6 +84,6 @@
     "interval": "2a173c45443a345c3ede8e5d170e0f6d9995480e105ef6025a3261c140ecad7d",
     "pair": "ff5fe6de4e104b69b32878bc0d2d1e005a8a6b2d6771b10c7de5a7a502f76105"
   },
-  "producer_sha256": "6785846244cd54308b5991b05c5675a9235aba1c2321be719dfab6ed1ed93c7e",
+  "producer_sha256": "a3070651ce29331a81ec42c8ed2bd2a93d8509a2340e365edcbf3bde2bef3bdb",
   "status": "PASS"
 }

@@ -1,0 +1,63 @@
+{
+  "schema": "V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1",
+  "date": "2026-10-01",
+  "root": "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic",
+  "worlds": [
+    "BIOLOGY_POSITIVE",
+    "TRUE_NULL",
+    "MEASURED_TECHNICAL",
+    "HIDDEN_CONFOUND"
+  ],
+  "producer_sha256": "3cb5a2a9a1c862dda3eb5ec1bc7976c5d69a7cf2251369d9ffd6efea4c1dda5c",
+  "manifests": {
+    "BIOLOGY_POSITIVE": {
+      "PHASE_B_SUBSTRATE_s00.npz": "e7e1691a2a611491582bb81bf928fdce06c1a9bbad04ee84223b37c3658c00ec",
+      "PHASE_B_SUBSTRATE_s01.npz": "a84a4bc6e6398be134616f2b402cea8f955627eea987238f57d460e753eec185",
+      "PHASE_B_T5_DONOR_AGGREGATES.npz": "807164d52e6e2ff6ac4cb9b7bd674505cc111f7b64193ace1a79f37c433c687a",
+      "PHASE_B_T3_T4_AVAILABILITY.npz": "cb6c533e2b49a75ccaa8f37b091c6fa2163b7e355b9df96dae5ad67f72dfc827",
+      "PHASE_A_ROWS.json": "0939e15443746246d543d9f7890581fd1eb2d46adf18dd4f13a0a7d60ab11daf"
+    },
+    "TRUE_NULL": {
+      "PHASE_B_SUBSTRATE_s00.npz": "8c25b4da5d2a3dda88548e10292f01ea013b976f8d43deabf4c5dcd79eed3cde",
+      "PHASE_B_SUBSTRATE_s01.npz": "233512dc1cf2cc89264101f866c0346b5a76cea0d49c1365f8f43b33a1349660",
+      "PHASE_B_T5_DONOR_AGGREGATES.npz": "0b14f5dd3c02863c2e703682df09fa3844e7458abb8fe9caeec9f1b9146f736d",
+      "PHASE_B_T3_T4_AVAILABILITY.npz": "0e9fe7729e20f9e0b5621440965e8eb4d2c606f89f1050b14f1979fb61d62926",
+      "PHASE_A_ROWS.json": "c75b9d5990e66302dd93d4d832dce87e9f0a6a4d9399fef9220a1f27a086a4be"
+    },
+    "MEASURED_TECHNICAL": {
+      "PHASE_B_SUBSTRATE_s00.npz": "e520e831a99009a4641f4e945399e0006abc14d620ce6e126afa741ce670180c",
+      "PHASE_B_SUBSTRATE_s01.npz": "0f663c553a52bf5d7e447e8047d19b72d9aebb90fc47f66618f5d3ea18a031ff",
+      "PHASE_B_T5_DONOR_AGGREGATES.npz": "ad2b4b3799c640c9725d9130b061fd22e3220453aeda4343b287fbead1047976",
+      "PHASE_B_T3_T4_AVAILABILITY.npz": "b6507999b49db3554108f4e8a698b0c07140a85d559b868a04b16751b90b2170",
+      "PHASE_A_ROWS.json": "47dd07f36f95801f25368035074c63eb8e78657ea557b7440eb97603d0cb5ae0"
+    },
+    "HIDDEN_CONFOUND": {
+      "PHASE_B_SUBSTRATE_s00.npz": "72be4c984258e03ed50dfb76ac1c4d7081948d324cb0a5b6e0bff8c17ba86acb",
+      "PHASE_B_SUBSTRATE_s01.npz": "dcff6fd4a10f323557fe0b1a0b0560b5cc6744726b65a1626be3ab95f41f9a01",
+      "PHASE_B_T5_DONOR_AGGREGATES.npz": "6b4c8b1dac9bc1decb2b00a93b4b68dfc9b52ac67b46b8c4930efe3be2cd682c",
+      "PHASE_B_T3_T4_AVAILABILITY.npz": "cb6c533e2b49a75ccaa8f37b091c6fa2163b7e355b9df96dae5ad67f72dfc827",
+      "PHASE_A_ROWS.json": "b999ad64ef153f70af9e1250bce09c6171ee15bf1f9add7bfbf28b37ec64ebc9"
+    }
+  },
+  "planted": {
+    "BIOLOGY_POSITIVE": {
+      "mechanism": "shared within-donor latent on linked pairs only",
+      "beta": 1.4,
+      "expect": "Delta > 0 and LCB95 > 0"
+    },
+    "TRUE_NULL": {
+      "mechanism": "nothing planted beyond shared sequencing depth",
+      "expect": "adjusted Delta near 0 and LCB95 <= 0"
+    },
+    "MEASURED_TECHNICAL": {
+      "mechanism": "edge-specific loading on sequencing depth, linked arm only; depth IS in the frozen basis",
+      "expect": "raw Delta > 0, adjusted Delta near 0"
+    },
+    "HIDDEN_CONFOUND": {
+      "mechanism": "edge-specific loading on a metacell-varying factor that is orthogonal to depth and absent from the frozen basis",
+      "expect": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug."
+    }
+  },
+  "reads_no_real_measurement": true,
+  "computed_correspondence_values": 0
+}

@@ -1,0 +1,212 @@
+{
+  "schema": "V64_STAGE4_END_TO_END_WORLDS_V1",
+  "date": "2026-10-01",
+  "what_this_qualifies": "the whole orchestration, through the real entrypoint, not the mathematical helpers in isolation",
+  "scale": "reduced: 60 eligible donors, 11 metacells each, 200 edges. The real substrate is 282 donors, 3,231 metacells and 13,175 edges. Ratios are matched; absolute size is not, and nothing here qualifies real-scale runtime or memory.",
+  "thresholds_note": "directional predictions come from each world manifest, written when the world was built. Any numeric cut used to score them is POST_HOC and is marked as such.",
+  "worlds": {
+    "BIOLOGY_POSITIVE": {
+      "adjusted_delta": 0.5130840457496877,
+      "lcb95": 0.5068449852316218,
+      "raw_delta": 0.5593693564328965,
+      "control_vs_control": 0.0029105269051601353,
+      "result_sha256": "10654375de15fdb35d4ba9e7277bd98b325b11ad6ab18a8c4896ceb0a8f76e40",
+      "prediction_recorded_before_the_run": "Delta > 0 and LCB95 > 0"
+    },
+    "TRUE_NULL": {
+      "adjusted_delta": 0.002501825206993408,
+      "lcb95": -0.003291962616759237,
+      "raw_delta": 0.001111002139813528,
+      "control_vs_control": 0.003918582857922086,
+      "result_sha256": "8f2b2384198a493c6db5c09ae0ae3a50a1cbc2c9e31c7ca006db167d722dc7ed",
+      "prediction_recorded_before_the_run": "adjusted Delta near 0 and LCB95 <= 0"
+    },
+    "MEASURED_TECHNICAL": {
+      "adjusted_delta": 0.012902929240732284,
+      "lcb95": 0.0030312765559554907,
+      "raw_delta": 0.2114309723198949,
+      "control_vs_control": -0.001303344227657812,
+      "result_sha256": "0e273abd1ef08ec1bd8f580ce345920b5ddf79b8b270d67c7c9b2027edf49bac",
+      "prediction_recorded_before_the_run": "raw Delta > 0, adjusted Delta near 0"
+    },
+    "HIDDEN_CONFOUND": {
+      "adjusted_delta": 0.38060752061181363,
+      "lcb95": 0.36283740672869075,
+      "raw_delta": 0.4779453391880856,
+      "control_vs_control": -0.025336785101826007,
+      "result_sha256": "b8e6bff57a30740e351385853714b1cdd9fd0ca29021dd950bbf5eb72902709c",
+      "prediction_recorded_before_the_run": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug."
+    }
+  },
+  "n_checks": 21,
+  "n_pass": 19,
+  "n_fail": 0,
+  "n_limit": 2,
+  "KNOWN_INTERPRETATION_LIMITS": [
+    {
+      "limit": "an unmeasured factor that varies BETWEEN metacells of the same donor and loads on both modalities is indistinguishable from biology under the frozen design",
+      "evidence": "HIDDEN_CONFOUND reaches delta +0.3806 with LCB95 +0.3628, which is 74% of the genuine-biology world",
+      "what_bounds_it": "only rna_depth_sensitivity and atac_depth_sensitivity in the frozen 14-term basis. A cross-modal technical factor orthogonal to depth survives untouched.",
+      "consequence": "a positive Stage-4 result is evidence of cross-modal co-variation within donors, NOT by itself evidence of regulatory causation."
+    },
+    {
+      "limit": "the nuisance adjustment removes most, but not all, of a purely technical depth effect",
+      "evidence": "MEASURED_TECHNICAL raw +0.2114 -> adjusted +0.0129, and the adjusted LCB95 is +0.0030",
+      "consequence": "LCB95 > 0 alone does not establish that a real result is non-technical. The size of the effect must be read against this residue, not against zero."
+    }
+  ],
+  "checks": [
+    {
+      "section": "worlds",
+      "check": "BIOLOGY_POSITIVE: planted biology is recovered",
+      "expectation": "Delta > 0 and LCB95 > 0",
+      "observed": "delta=+0.5131 lcb95=+0.5068 raw=+0.5594",
+      "verdict": "PASS"
+    },
+    {
+      "section": "worlds",
+      "check": "TRUE_NULL: nothing planted, nothing claimed",
+      "expectation": "adjusted Delta near 0 and LCB95 <= 0",
+      "observed": "delta=+0.0025 lcb95=-0.0033 raw=+0.0011",
+      "verdict": "PASS"
+    },
+    {
+      "section": "worlds",
+      "check": "MEASURED_TECHNICAL: the adjustment acts on depth",
+      "expectation": "raw Delta > 0, adjusted Delta near 0",
+      "observed": "delta=+0.0129 lcb95=+0.0030 raw=+0.2114 removed=93.9%",
+      "verdict": "PASS"
+    },
+    {
+      "section": "worlds",
+      "check": "MEASURED_TECHNICAL: residue after adjustment still excludes zero",
+      "expectation": "a purely technical world should ideally end with LCB95 <= 0",
+      "observed": "lcb95=+0.0030 -> YES, residue is significant",
+      "verdict": "LIMIT"
+    },
+    {
+      "section": "worlds",
+      "check": "HIDDEN_CONFOUND: the method cannot see it",
+      "expectation": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug.",
+      "observed": "delta=+0.3806 lcb95=+0.3628 raw=+0.4779 = 74% of the genuine-biology delta",
+      "verdict": "LIMIT"
+    },
+    {
+      "section": "pipeline",
+      "check": "BIOLOGY_POSITIVE: fast statistic agrees with the qualified scalar one",
+      "expectation": "all sampled cells agree in value and in status",
+      "observed": "200/200 values, 200/200 statuses, worst diff 6.87e-16",
+      "verdict": "PASS"
+    },
+    {
+      "section": "pipeline",
+      "check": "TRUE_NULL: fast statistic agrees with the qualified scalar one",
+      "expectation": "all sampled cells agree in value and in status",
+      "observed": "200/200 values, 200/200 statuses, worst diff 2.50e-15",
+      "verdict": "PASS"
+    },
+    {
+      "section": "pipeline",
+      "check": "MEASURED_TECHNICAL: fast statistic agrees with the qualified scalar one",
+      "expectation": "all sampled cells agree in value and in status",
+      "observed": "200/200 values, 200/200 statuses, worst diff 1.55e-15",
+      "verdict": "PASS"
+    },
+    {
+      "section": "pipeline",
+      "check": "HIDDEN_CONFOUND: fast statistic agrees with the qualified scalar one",
+      "expectation": "all sampled cells agree in value and in status",
+      "observed": "200/200 values, 200/200 statuses, worst diff 1.35e-15",
+      "verdict": "PASS"
+    },
+    {
+      "section": "missingness",
+      "check": "every planted missingness class appears in the funnel",
+      "expectation": "structurally unmeasured, measured-zero coverage and zero variance are separate counts and none is a zero value",
+      "observed": "unmeasured->5 insufficient, 6 rna-zero-coverage, 0 atac-zero-coverage, 0 rna-zero-variance, 1 atac-zero-variance",
+      "verdict": "PASS"
+    },
+    {
+      "section": "missingness",
+      "check": "a missing cell is never carried as a numeric zero",
+      "expectation": "the funnel sums to donors x pairs and MEASURED excludes every missing class",
+      "observed": "funnel total=34680, measured=34668",
+      "verdict": "PASS"
+    },
+    {
+      "section": "funnel",
+      "check": "donor eligibility drops exactly the donors it should",
+      "expectation": "donors below 100 microglia or 4 metacells are dropped and named",
+      "observed": "60 of 65 donors eligible; 5 dropped with reasons",
+      "verdict": "PASS"
+    },
+    {
+      "section": "weighting",
+      "check": "all three weightings are computed and the primary is fixed",
+      "expectation": "GENE_BALANCED primary, PROMOTER_EQUAL companion, EDGE_EQUAL sensitivity; never chosen by which is largest",
+      "observed": "primary=GENE_BALANCED +0.5131 | companion +0.4770 | sensitivity +0.4717",
+      "verdict": "PASS"
+    },
+    {
+      "section": "controlB",
+      "check": "Control B is labelled null-and-calibration-only",
+      "expectation": "it appears only as a calibration arm and never as the primary contrast",
+      "observed": "role=NULL_AND_CALIBRATION_ONLY delta=+0.0029 over 178 edges",
+      "verdict": "PASS"
+    },
+    {
+      "section": "controlB",
+      "check": "control-versus-control is near zero in the biology world",
+      "expectation": "an anti-false-green arm: two controls should not differ",
+      "observed": "+0.0029 against a linked-vs-control delta of +0.5131",
+      "verdict": "PASS"
+    },
+    {
+      "section": "bootstrap",
+      "check": "the same seed reproduces the interval exactly",
+      "expectation": "4000 replicates, seed 20260929, donors as the only resampling unit",
+      "observed": "identical=True (4000 replicates)",
+      "verdict": "PASS"
+    },
+    {
+      "section": "corruption",
+      "check": "a corrupted gene mapping stops the run",
+      "expectation": "fail closed, not a silently wrong number",
+      "observed": "exit=2 | STOP: the pair mapping does not resolve: 1 gene names absent from the dictionary ['NO_SUCH_GENE'], 0 interval indices out of range",
+      "verdict": "PASS"
+    },
+    {
+      "section": "corruption",
+      "check": "a transposed availability axis stops the run",
+      "expectation": "fail closed",
+      "observed": "exit=2 | STOP: availability shape disagrees with the dictionaries: (200, 675) (675, 400) vs (675, 200) (675, 400)",
+      "verdict": "PASS"
+    },
+    {
+      "section": "corruption",
+      "check": "edited bytes whose manifest was NOT updated stop on the digest",
+      "expectation": "fail closed",
+      "observed": "exit=2 | STOP: synthetic input PHASE_B_SUBSTRATE_s01.npz does not match its manifest digest",
+      "verdict": "PASS"
+    },
+    {
+      "section": "firewall",
+      "check": "synthetic mode refuses a path-shaped world name",
+      "expectation": "the world list is fixed, so a traversal is not even expressible",
+      "observed": "exit=2",
+      "verdict": "PASS"
+    },
+    {
+      "section": "firewall",
+      "check": "synthetic mode refuses real measurement bytes placed inside it",
+      "expectation": "even with a matching manifest digest, a real input is refused",
+      "observed": "exit=2 refused_by_name=True",
+      "verdict": "PASS"
+    }
+  ],
+  "producer_sha256": "e3b431a56db58f19cececbaeaf8e069bef0c3d4bd49014b9904c6aaea6eda424",
+  "executor_sha256": "cd1371422d9f68a8816e70d660f5ad08a1895085d83107f142199b2ac7e93afa",
+  "real_substrate_read": false,
+  "raw_matrix_opened": false,
+  "status": "PASS"
+}

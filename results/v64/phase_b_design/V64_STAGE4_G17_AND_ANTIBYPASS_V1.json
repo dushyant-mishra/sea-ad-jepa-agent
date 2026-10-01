@@ -1,0 +1,222 @@
+{
+  "schema": "V64_STAGE4_G17_AND_ANTIBYPASS_V1",
+  "date": "2026-10-01",
+  "closes": "mandate sections 7 and 8",
+  "g17_static_checks": 4,
+  "g17_executable_checks": 2,
+  "anti_bypass_attempts": 21,
+  "n_checks": 29,
+  "n_holding": 29,
+  "live_artifacts_untouched": true,
+  "authorisation_path_clean": true,
+  "computed_correspondence_values": 0,
+  "executor_sha256": "cd1371422d9f68a8816e70d660f5ad08a1895085d83107f142199b2ac7e93afa",
+  "authority_sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f",
+  "producer_sha256": "6a17da7b8baec1a3940c7bf960d1d29a5fa9ab252e489e22d8e7d5a7c4414819",
+  "checks": [
+    {
+      "section": "G17-static",
+      "attempt": "no raw-matrix module is imported anywhere in the executor",
+      "required_behaviour": "zero banned imports",
+      "observed": "banned=[] of 13 modules imported",
+      "holds": true
+    },
+    {
+      "section": "G17-static",
+      "attempt": "no raw-matrix reader is called anywhere in the executor",
+      "required_behaviour": "zero banned calls",
+      "observed": "banned=[]",
+      "holds": true
+    },
+    {
+      "section": "G17-static",
+      "attempt": "no matrix path literal among the executor's string constants",
+      "required_behaviour": "zero",
+      "observed": "0 suspicious literal(s) []; deny-list=7 tokens, docstrings excluded=18",
+      "holds": true
+    },
+    {
+      "section": "G17-static",
+      "attempt": "negative control: both static gates fire on an injected violation",
+      "required_behaviour": "import gate and literal gate both go red",
+      "observed": "import caught=True literal caught=True",
+      "holds": true
+    },
+    {
+      "section": "G17-exec",
+      "attempt": "full preflight with every raw reader poisoned to raise",
+      "required_behaviour": "completes without touching a matrix",
+      "observed": "exit=0 violation=False",
+      "holds": true
+    },
+    {
+      "section": "G17-exec",
+      "attempt": "positive control: the poison does fire when a matrix IS opened",
+      "required_behaviour": "raises G17 VIOLATION",
+      "observed": "fired=True",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A15 invoke real execution with no authorisation artifact",
+      "required_behaviour": "refuse, nonzero exit",
+      "observed": "exit=3",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A16 invent 12 bypass / method-override CLI flags",
+      "required_behaviour": "argparse rejects every one",
+      "observed": "12/12 rejected",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A17 forged authorisation with the wrong schema",
+      "required_behaviour": "refuse",
+      "observed": "exit=3 | reason: wrong schema",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A18 artifact that does not authorise execution",
+      "required_behaviour": "refuse",
+      "observed": "exit=3 | reason: does not authorise execution",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A19 authorisation naming a different executor build",
+      "required_behaviour": "refuse",
+      "observed": "exit=3 | reason: authorises a different executor build",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A20 authorisation naming a different authority",
+      "required_behaviour": "refuse",
+      "observed": "exit=3 | reason: authorises a different authority",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A21 a fully valid authorisation, correctly bound",
+      "required_behaviour": "still produces no result: this build cannot compute one",
+      "observed": "exit=2 | STOP: authorised real execution is not implemented in this build",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A1 swap the authority file for a different contract",
+      "required_behaviour": "refuse",
+      "observed": "exit=2 | STOP: the file at the canonical authority path is not the Stage-4 authority (schema='V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1')",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A2 edit one bound input digest in the authority",
+      "required_behaviour": "refuse with a digest mismatch",
+      "observed": "exit=2 | STOP: bound inputs do not match the authority: missing=[] unexpected=[] digest_mismatch=['t5_donor_aggregates']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A3 remove one input (bind a shard that is absent)",
+      "required_behaviour": "refuse, naming the missing input",
+      "observed": "exit=2 | STOP: bound inputs do not match the authority: missing=['PHASE_B_SUBSTRATE_s08.npz'] unexpected=[] digest_mismatch=[]",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A4 add an unexpected input (unbind a shard that is present)",
+      "required_behaviour": "refuse, naming the unexpected input",
+      "observed": "exit=2 | STOP: bound inputs do not match the authority: missing=[] unexpected=['PHASE_B_SUBSTRATE_s07.npz'] digest_mismatch=[]",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A6 correct SHA-256 but a wrong Git blob for a repo-resident input",
+      "required_behaviour": "refuse: the two cannot describe the same bytes",
+      "observed": "exit=2 | STOP: bound inputs do not match the authority: missing=[] unexpected=[] digest_mismatch=['downstream_null_statistical_V3:git_blob']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A10 change the bootstrap seed in the contract and re-bind it",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['bootstrap_seed']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A8 change the ridge alpha in the contract and re-bind it",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['ridge_alpha']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A9 add a 15th nuisance term and re-bind it",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['nuisance_basis_term_count']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A11 promote the companion weighting to primary and re-bind it",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['primary_weighting']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A12 drop the mandatory R3 conditional label and re-bind it",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['r3_required_label']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A13 rewrite the missingness rule so zero coverage becomes a zero",
+      "required_behaviour": "refuse: the mirrored constant disagrees with the contract",
+      "observed": "exit=2 | STOP: frozen constants disagree with the contracts: ['zero_coverage_missingness_semantics']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A5 substitute a same-name file with different contents",
+      "required_behaviour": "the aggregate-binding gate goes red",
+      "observed": "gates red: ['C10_METACELL_IDS_EXACTLY_0_TO_N', 'C1_T3_NNZ_EXACT', 'C2_T4_NNZ_EXACT']",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A7 modify the executor after the commit an authorisation names",
+      "required_behaviour": "its SHA-256 no longer matches, so the authorisation no longer applies",
+      "observed": "sha changed=True",
+      "holds": true
+    },
+    {
+      "section": "bypass",
+      "attempt": "A14 attempt to write into the Stage-4 output directory",
+      "required_behaviour": "nothing is created or overwritten while unauthorised",
+      "observed": "dir existed=False unchanged=True",
+      "holds": true
+    },
+    {
+      "section": "custody",
+      "attempt": "live executor, authority and both contracts unchanged by this suite",
+      "required_behaviour": "identical digests",
+      "observed": "untouched=True",
+      "holds": true
+    },
+    {
+      "section": "custody",
+      "attempt": "no authorisation artifact left behind at the canonical path",
+      "required_behaviour": "absent",
+      "observed": "absent=True",
+      "holds": true
+    }
+  ],
+  "status": "PASS"
+}
