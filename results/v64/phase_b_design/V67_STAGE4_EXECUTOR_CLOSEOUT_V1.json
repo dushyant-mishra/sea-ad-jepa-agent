@@ -2,7 +2,7 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "bf2c277929b3bded631b36d9b195577293bd055e",
+  "head_commit": "250bf346df43e1e246426299a24a2f87b8b414ff",
   "worktree_clean_at_assembly": true,
   "uncommitted_at_assembly": [],
   "artifacts": {
@@ -36,10 +36,10 @@
     "4_synthetic_world_builder": {
       "role": "four Phase-B substrates in the real on-disk format",
       "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
-      "sha256": "3cb5a2a9a1c862dda3eb5ec1bc7976c5d69a7cf2251369d9ffd6efea4c1dda5c",
-      "worktree_blob": "ab715eb60c2eced9a7bc26569530322f46856f5d",
-      "git_blob_at_head": "ab715eb60c2eced9a7bc26569530322f46856f5d",
-      "bytes": 19463,
+      "sha256": "5842057065f9ca071b1834a77769a394bf8d5f1163cf6adade749ab939a0c651",
+      "worktree_blob": "30da5c41265833cd7349dadc4e3fb49ae4de89f4",
+      "git_blob_at_head": "30da5c41265833cd7349dadc4e3fb49ae4de89f4",
+      "bytes": 20111,
       "note": null
     },
     "5_end_to_end_suite": {
@@ -58,6 +58,24 @@
       "worktree_blob": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
       "git_blob_at_head": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
       "bytes": 16633,
+      "note": null
+    },
+    "9_seed_robustness": {
+      "role": "rebuilds the worlds at four seed bases and asks which conclusions are a property of the method",
+      "path": "scripts/v64/test_stage4_world_seed_robustness_v1.py",
+      "sha256": "344656a31dfa112cba318b60a9e9af5b6830244566975949c4cb3a1e7144d779",
+      "worktree_blob": "c3fb1df6e4c41247c5e1a730278229d996d3ef53",
+      "git_blob_at_head": "c3fb1df6e4c41247c5e1a730278229d996d3ef53",
+      "bytes": 9107,
+      "note": null
+    },
+    "10_real_scale_capacity": {
+      "role": "footprint from declared shapes; reads no payload",
+      "path": "scripts/v64/audit_stage4_real_scale_capacity_v1.py",
+      "sha256": "439c9ad6181cc2bc60ac4459dcca351e078dfa1dd82d8d55ad130268365ef179",
+      "worktree_blob": "12742f7e6c32156505ee4e568578fc2c4063e193",
+      "git_blob_at_head": "12742f7e6c32156505ee4e568578fc2c4063e193",
+      "bytes": 7114,
       "note": null
     },
     "7_g17_and_antibypass": {
@@ -195,8 +213,42 @@
       ],
       "reads_no_real_measurement": true,
       "path": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
-      "sha256": "02700125e4f518be2199cbff52e92ef45bea256b9706f135326a2595eccb0900",
-      "git_blob_at_head": "62cffc805a6e1e14e22c43e46acdfdc9085a50ee"
+      "sha256": "09c17ad34273132ec33c30f51327aae2c95a49dbb13eb24112a7b52590d6653f",
+      "git_blob_at_head": "d9fa99529aa547c7ab675bb1319563e88a575ce8"
+    },
+    "world_seed_robustness": {
+      "seed_bases": [
+        20260929,
+        770101,
+        880303,
+        990505
+      ],
+      "n_checks": 6,
+      "n_seed_stable": 3,
+      "seed_dependent": [
+        "the true null never claims an effect",
+        "LIMIT: the depth residue still excludes zero",
+        "control-versus-control stays near zero everywhere"
+      ],
+      "thresholds_unchanged_after_seeing_the_failures": true,
+      "canonical_state_verified": true,
+      "status": "FAIL",
+      "path": "results/v64/phase_b_design/V64_STAGE4_WORLD_SEED_ROBUSTNESS_V1.json",
+      "sha256": "49c78f44ae22fb97934c6761b2a39b3af859344d3a913816ae4e35121f886a92",
+      "git_blob_at_head": "7eae93bc813b2cec7a676e1e8b48305e6330caff"
+    },
+    "real_scale_capacity": {
+      "plausible_peak_gb": 6.0,
+      "machine": {
+        "physical_total_gb": 31.773,
+        "available_at_probe_gb": 10.853,
+        "measured": true
+      },
+      "calculated_peak_fits_in_80pct_of_available": true,
+      "this_is_a_calculation_not_a_measured_peak": true,
+      "path": "results/v64/phase_b_design/V64_STAGE4_REAL_SCALE_CAPACITY_V1.json",
+      "sha256": "7da6e9fee90cb1211554c320ff5d01fa01b9873a213cf7a96f14b608380f7299",
+      "git_blob_at_head": null
     },
     "independent_audit_of_chatgpt_lane": {
       "contract_parent_quantities_checked": 11,
@@ -225,7 +277,14 @@
       "Any claim that a positive Stage-4 result would demonstrate regulatory causation. The HIDDEN_CONFOUND world forbids that reading.",
       "Any claim that LCB95 > 0 alone establishes a non-technical origin. The MEASURED_TECHNICAL residue forbids that reading."
     ],
+    "LIMITS_FOUND_BY_RESAMPLING_THE_WORLDS": [
+      "The TRUE_NULL world produced a nominally significant result in 1 of 4 seed draws: delta +0.0063 with LCB95 +0.0010, where nothing was planted. A one-sided 95% bound is permitted to do this; what matters is that it demonstrably does at this donor count. Four draws cannot estimate the rate and none is claimed.",
+      "The depth residue excludes zero in 3 of 4 draws, not always. The earlier statement that a purely technical world still ends with LCB95 > 0 is weaker than it was first reported. The surviving warning is milder: a small positive LCB95 is not by itself evidence of a non-technical origin.",
+      "Control-versus-control exceeded a tenth of the biology delta in 1 of 16 world-draws, in the hidden-confound world, where the confound perturbs the control arms unequally.",
+      "Stable across every draw: planted biology is recovered, most of a pure depth effect is removed, and the hidden confound fools the method at 63 to 74 percent of genuine biology with LCB95 always above zero."
+    ],
     "UNRESOLVED_LIMITATIONS": [
+      "Real-scale memory is now CALCULATED, not measured: about 6.0 GB plausible peak against 31.8 GB physical, dominated by three live copies of the 1.10 GB design tensor. It is arithmetic on declared shapes and ignores fragmentation, so it indicates feasibility and does not guarantee it. Real-scale RUNTIME remains UNMEASURED.",
       "The end-to-end worlds are reduced scale: 60 eligible donors, 11 metacells each, 200 edges, against a real substrate of 282 donors, 3,231 metacells and 13,175 edges. Ratios are matched; runtime and memory at real scale are UNMEASURED and nothing here qualifies them.",
       "The pipeline materialises dense metacell-by-feature matrices. At real scale the ATAC matrix is 3,231 x 32,153. Its footprint has not been measured.",
       "The frozen 14-term basis carries only two depth sensitivities as technical controls. A cross-modal technical factor orthogonal to depth is not controlled for and, per the HIDDEN_CONFOUND world, is indistinguishable from biology.",
@@ -243,5 +302,5 @@
   },
   "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
   "computed_correspondence_values": 0,
-  "producer_sha256": "475e84a062df8f56622dd0d64503a167c6a4ef1c4385bde4e75a75e8d071e839"
+  "producer_sha256": "bf6b7a7e7d2dcc67bd9b1615166b3c6cef9aa411b97c304986f7ed541ed88936"
 }

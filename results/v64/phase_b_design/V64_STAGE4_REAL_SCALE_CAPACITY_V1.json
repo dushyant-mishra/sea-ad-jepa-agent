@@ -1,0 +1,43 @@
+{
+  "schema": "V64_STAGE4_REAL_SCALE_CAPACITY_V1",
+  "date": "2026-10-01",
+  "raises": "S97, from my own self-audit lane",
+  "method": "arithmetic on the declared shapes of the real substrate. Shapes were read from the dictionaries and the availability header; no payload was materialised and no statistic was computed.",
+  "this_is_a_calculation_not_a_measured_peak": true,
+  "shapes": {
+    "metacells": 3231,
+    "genes": 4372,
+    "intervals": 32153,
+    "pairs": 37419,
+    "donors": 282,
+    "donor_pair_cells": 10552158
+  },
+  "allocations_gb": {
+    "dense RNA  [metacell x gene]": 0.0526,
+    "dense ATAC [metacell x interval]": 0.387,
+    "RNA availability (unpacked bool)": 0.0132,
+    "ATAC availability (unpacked bool)": 0.0968,
+    "correlation grid [donor x pair] f8": 0.0786,
+    "status grid [donor x pair] i1": 0.0098,
+    "design tensor [donor x pair x 14] f8": 1.1007,
+    "flat design view (reshape, may copy)": 1.1007,
+    "masked design copy X[measured]": 1.1007,
+    "residual vector": 0.0786,
+    "ridge fold slices (approx 4/5 of X)": 0.8805
+  },
+  "sum_of_live_allocations_gb": 4.899,
+  "plausible_peak_gb": 6.0,
+  "machine": {
+    "physical_total_gb": 31.773,
+    "available_at_probe_gb": 10.853,
+    "measured": true
+  },
+  "calculated_peak_fits_in_80pct_of_available": true,
+  "findings": [
+    "The design tensor dominates: 10,552,158 (donor, pair) cells x 14 terms x 8 bytes is 1.10 GB, and the implementation holds up to three of them live at once -- the tensor, its flattened view and the boolean-masked copy the ridge is fitted on. That is 3.30 GB of the 4.90 GB total before any fold slice is taken.",
+    "The calculated peak fits within 80 percent of currently available memory, but this is arithmetic on declared shapes, not a measured peak, and it ignores allocator fragmentation and whatever else is running. It is a feasibility indication, not a guarantee."
+  ],
+  "real_substrate_payload_read": false,
+  "computed_correspondence_values": 0,
+  "producer_sha256": "439c9ad6181cc2bc60ac4459dcca351e078dfa1dd82d8d55ad130268365ef179"
+}
