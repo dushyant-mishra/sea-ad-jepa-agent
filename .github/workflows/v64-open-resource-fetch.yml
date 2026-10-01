@@ -55,7 +55,18 @@ jobs:
           assert p["exact_tss_loci"] == 389280, p
           assert p["genes"] == 78733, p
           assert p["denominator_rule"] == "Evidence annotates GENCODE candidates and never removes them."
-          print("DUAL_LEDGER_DENOMINATORS_PASS", p["transcript_promoter_records"], p["exact_tss_loci"], p["genes"])
+          e=p["exact_tss_evidence_coverage"]
+          assert e["screen_pls_overlap"] == 178778, e
+          assert e["fantom_same_strand_overlap"] == 126712, e
+          assert e["fantom_exact_representative_tss"] == 25321, e
+          assert e["screen_fantom_joint_states"] == {
+              "screen_and_fantom":102060,
+              "screen_only":76718,
+              "fantom_only":24652,
+              "neither":185850,
+          }, e
+          print("DUAL_LEDGER_DENOMINATORS_AND_EVIDENCE_PASS",
+                p["transcript_promoter_records"], p["exact_tss_loci"], p["genes"], e)
           PY
       - name: Show custody receipts
         run: |
