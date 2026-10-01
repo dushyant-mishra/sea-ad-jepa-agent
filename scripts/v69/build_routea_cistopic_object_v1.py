@@ -56,8 +56,28 @@ class FailClosed(Exception):
         self.detail = detail
 
 
+def remap(p: str, host_prefix: str, container_prefix: str) -> Path:
+    """Translate a host path recorded in a receipt to its bind-mounted location.
+
+    Receipts record the absolute HOST path at which an artifact actually lived, which
+    is the honest provenance record and is deliberately not rewritten. A producer
+    running inside a container sees that artifact at a different mount point, so the
+    translation is applied here, explicitly, and recorded in the output receipt -- it
+    is never done by silently editing the source receipt.
+    """
+    if not host_prefix:
+        return Path(p)
+    n = p.replace("\\", "/")
+    h = host_prefix.replace("\\", "/").rstrip("/")
+    if n.lower().startswith(h.lower()):
+        return Path(container_prefix.rstrip("/") + n[len(h):])
+    return Path(p)
+
+
 def build(routea_receipt: Path, cohort_receipt: Path, population: str,
-          out_dir: Path) -> dict:
+          out_dir: Path, host_prefix: str = "", container_prefix: str = "") -> dict:
+    def R(p):
+        return remap(str(p), host_prefix, container_prefix)
     ra = json.loads(routea_receipt.read_text())
     coh = json.loads(cohort_receipt.read_text())
     if not str(ra.get("status", "")).startswith("PASS"):
@@ -66,13 +86,13 @@ def build(routea_receipt: Path, cohort_receipt: Path, population: str,
     pop = ra["populations"][population]
     atac = pop["modalities"]["ATAC_SUBMITTED_PEAKS"]
 
-    mpath = Path(atac["matrix_path"])
+    mpath = R(atac["matrix_path"])
     if sha256_file(mpath) != atac["matrix_sha256"]:
         raise FailClosed("FAIL__ATAC_MATRIX_DIGEST_MISMATCH", path=str(mpath))
 
     mat = sparse.load_npz(mpath).tocsr()          # regions x cells
-    feats = pd.read_csv(Path(atac["feature_table_path"]))
-    bc = pd.read_csv(Path(coh["populations"][population]["barcode_file"]))
+    feats = pd.read_csv(R(atac["feature_table_path"]))
+    bc = pd.read_csv(R(coh["populations"][population]["barcode_file"]))
 
     if mat.shape[0] != len(feats) or mat.shape[1] != len(bc):
         raise FailClosed("FAIL__MATRIX_SHAPE_DOES_NOT_RECONCILE",
@@ -138,6 +158,16 @@ def build(routea_receipt: Path, cohort_receipt: Path, population: str,
         "pathology_blindness_check": "PASS__NO_FORBIDDEN_COLUMN_IN_CELL_ANNOTATION",
         "output_path": str(p),
         "output_sha256": sha256_file(p),
+        "path_remapping": {
+            "applied": bool(host_prefix),
+            "host_prefix": host_prefix or None,
+            "container_prefix": container_prefix or None,
+            "note": ("Receipts record the absolute HOST path where each artifact "
+                     "actually lived; that is the honest provenance record and is "
+                     "never rewritten. A producer running inside a container sees the "
+                     "same bytes at a different mount point, so the translation is "
+                     "applied at read time and recorded here."),
+        },
         "status": "PASS__CISTOPIC_INPUT_BUILT",
     }
 
@@ -149,10 +179,15 @@ def main(argv=None) -> int:
     ap.add_argument("--population", default="DEV_NO_MORABITO_OVERLAP")
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--receipt", required=True)
+    ap.add_argument("--host-prefix", default="",
+                    help="Host path prefix recorded in the input receipts, e.g. "
+                         "D:/jepa_v5_outputs_20260925/v69_scenicplus")
+    ap.add_argument("--container-prefix", default="",
+                    help="Where that prefix is mounted here, e.g. /data")
     a = ap.parse_args(argv)
     try:
         r = build(Path(a.routea_receipt), Path(a.cohort_receipt), a.population,
-                  Path(a.out_dir))
+                  Path(a.out_dir), a.host_prefix, a.container_prefix)
     except FailClosed as e:
         r = {"schema": "V69_ROUTEA_CISTOPIC_INPUT_RECEIPT_V1",
              "status": e.status, **e.detail}
