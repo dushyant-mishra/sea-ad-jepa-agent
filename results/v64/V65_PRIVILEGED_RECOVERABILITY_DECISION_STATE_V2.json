@@ -74,7 +74,14 @@
     "no_skipping_failed_lower_rank": true,
     "if_rank2_fails": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
     "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION",
-    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_VALIDATION_DONORS"
+    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_VALIDATION_DONORS",
+    "aggregate_and_incremental_shell_must_both_pass": true,
+    "shells": {
+      "rank2": "S2=P2",
+      "rank4": "S4=P4-P2",
+      "rank8": "S8=P8-P4",
+      "rank16": "S16=P16-P8"
+    }
   },
   "test_rule": {
     "all_4_donors_delta_positive": true,
@@ -84,7 +91,9 @@
     "all_4_geometry_gate": true,
     "median_test_delta_at_least_fraction_of_validation": 0.5,
     "retuning_after_open": false,
-    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_TEST_DONORS"
+    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_TEST_DONORS",
+    "aggregate_and_all_shells_through_selected_rank_must_pass": true,
+    "test_does_not_inherit_validation_only_technical_margin": true
   },
   "classifications": {
     "RNA_RECOVERABLE": "rank 16 selected on VALIDATION and confirmed on TEST",
@@ -140,6 +149,51 @@
       "non-reproducible deterministic permutation sequence"
     ],
     "redundancy_audit": "scripts/v64/audit_recoverability_geometry_gate_redundancy_v1.py",
-    "real_biological_values_used_to_make_repair": false
+    "real_biological_values_used_to_make_repair": false,
+    "intrinsic_rank_rule": {
+      "aggregate": {
+        "P2": 2,
+        "P4": 4,
+        "P8": 8,
+        "P16": 16
+      },
+      "shell": {
+        "S2": 2,
+        "S4": 2,
+        "S8": 4,
+        "S16": 8
+      },
+      "ambient_storage_width": 16,
+      "requirement": "centered projected state rank must be at least declared intrinsic rank"
+    }
+  },
+  "nested_shells": {
+    "projector_source": "ONE_SHARED_TRAIN_ONLY_SVD",
+    "aggregate_projectors": {
+      "P2": "P_2",
+      "P4": "P_4",
+      "P8": "P_8",
+      "P16": "P_16"
+    },
+    "incremental_shells": {
+      "S2": "P_2",
+      "S4": "P_4 - P_2",
+      "S8": "P_8 - P_4",
+      "S16": "P_16 - P_8"
+    },
+    "aggregate_intrinsic_ranks": {
+      "P2": 2,
+      "P4": 4,
+      "P8": 8,
+      "P16": 16
+    },
+    "shell_intrinsic_ranks": {
+      "S2": 2,
+      "S4": 2,
+      "S8": 4,
+      "S16": 8
+    },
+    "rank_qualification": "AGGREGATE_AND_INCREMENTAL_SHELL_MUST_BOTH_PASS",
+    "tie_at_boundary": "SELECTION_STOPS_BELOW_TIED_BOUNDARY__NO_HIGHER_RANK_SKIP"
   }
 }
