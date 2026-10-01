@@ -8,11 +8,13 @@ No matrix values are read.
 """
 from __future__ import annotations
 import gzip
+import hashlib
 import json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
 ROWS=ROOT/"results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
+ROWS_SHA256="ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4"
 ENUM=ROOT/"results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json"
 CONTRACT=ROOT/"results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json"
 
@@ -21,7 +23,21 @@ def key(c,s,e):
     return (str(c),int(s),int(e))
 
 
+def _sha256(path):
+    h=hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1<<20),b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def audit():
+    if not ROWS.exists():
+        raise FileNotFoundError(
+            "immutable Claude Phase-A V3 rows are not materialized in this checkout")
+    rows_sha=_sha256(ROWS)
+    if rows_sha != ROWS_SHA256:
+        raise RuntimeError(f"Phase-A V3 rows sha256 mismatch: {rows_sha}")
     phase=[]
     with gzip.open(ROWS,"rt",encoding="utf-8") as fh:
         for line in fh:
@@ -36,6 +52,7 @@ def audit():
     c=json.loads(CONTRACT.read_text())
     declared=c["SUBSTRATE_SCALE_MEASURED"]["distinct_distal_intervals"]
     formula_components={
+        "phase_a_rows_sha256":rows_sha,
         "phase_a_unique_intervals":len(pset),
         "enumeration_rows":len(enum),
         "enumeration_unique_intervals":len(eset),
