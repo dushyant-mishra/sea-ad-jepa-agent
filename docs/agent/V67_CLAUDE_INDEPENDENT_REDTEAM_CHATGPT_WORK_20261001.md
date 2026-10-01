@@ -9,6 +9,12 @@ Audit the ChatGPT branch independently from:
 
 Treat **all 43 commits / all changed files in that range as untrusted**. Do not assume ChatGPT's audits, test claims, custody corrections, scientific interpretations, or synthetic results are correct because they are documented.
 
+Before auditing data-dependent claims, read:
+
+`docs/agent/V67_CLAUDE_DATA_SOURCE_MAP_CHATGPT_ENV_20261001.md`
+
+That file distinguishes repository authorities, local scientific artifacts, chat-local historical assets, conceptual sources, and files that were never used by the new synthetic work. If exact bytes are unavailable in Claude's environment, mark them `NOT BYTE-AUDITED IN CLAUDE ENVIRONMENT` rather than substituting another copy.
+
 Do not implement Stage 4, do not open correspondence, do not train, and do not touch protected outcomes.
 
 ## 1. Audit the complete diff, not a curated subset
