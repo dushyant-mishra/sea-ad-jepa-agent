@@ -13,8 +13,8 @@
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "a0500111254315504de3618ea832931ea54cdc26",
   "current_blocker": "R1/R2/R3 statistical authority, literal repair and Phase-A V3 custody are closed. Phase B remains blocked because the substrate does not yet persist each R3 pair's realised large-arm conditioning identity and mandatory CONDITIONAL_ON_REALISED_LARGE_ARM label/reference binding.",
-  "parallel_architecture_next": "Promoter dual ledger is materialized and accepted. Recoverability decision/software mechanics are synthetically qualified under V2 (110/110 current-head architecture tests); real paired execution and TEST remain unopened. Next architecture step requires an explicit authorization decision, not more threshold tuning.",
-  "ci_rule": "Architecture synthetic qualification is bound to workflow run 36799926865 at head a0b8384e with 110/110 tests passed. Subsequent heads must re-run CI before being called green. Recoverability V2 is the sole live decision authority.",
+  "parallel_architecture_next": "Promoter ledger closed. Recoverability V2 decision mechanics and exact preprocessing/fit mechanics are synthetically qualified (latest combined run 116/116), but real paired execution and TEST remain unopened. Next lawful architecture task is audit-only construction of a fail-closed TRAIN+VALIDATION executor.",
+  "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
     "training": "OFF",
     "td60": "BLOCKED",
