@@ -5,7 +5,8 @@ ROOT=Path(__file__).resolve().parents[1]
 def test_recoverability_precision_contract_freezes_materiality_and_test_firewall():
     t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "DELTA_R2 >= 0.05" in t
-    assert "10,000 deterministic permutations per donor" in t
+    assert "one canonical permutation schedule" in t
+    assert "generate exactly 10,000 sequential `rng.permutation(n_donor_nuclei)` permutations" in t
     assert "0, 2, 4, 8, 16" in t
     assert "Select the **largest contiguous eligible rank**" in t
     assert "no skipping over a failed lower rank" in t.lower()
