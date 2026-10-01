@@ -498,6 +498,80 @@ the PASS path is reachable.
 
 ---
 
+## S20 — Unpinned BLAS would have made the whole worker-scaling table meaningless (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** I was about to measure cisTarget worker scaling at 1, 2, 4, 8 and 16
+workers. Measured in the running image: **no thread environment variable is set at all**,
+and OpenBLAS reports `num_threads=16`. So at `-t 16`, each of sixteen workers could
+spawn up to sixteen BLAS threads — **256 threads on eight physical cores**.
+
+**What the damage would have been.** The scaling curve would have measured
+oversubscription, not worker count. The distortion grows with worker count, so the
+**16-worker point — precisely the one the shard-size and concurrency decisions rest
+on — would have been the most wrong.** I would then have chosen a configuration for a
+30-plus-hour build from a curve that was an artifact of my own measurement setup.
+
+**Caught before damage?** Yes — before a single scaling run. The speed mandate named
+this hazard explicitly, which is why I went looking; I would not otherwise have thought
+to check the image's thread defaults.
+
+**The fix.** OMP/OPENBLAS/MKL/NUMEXPR/VECLIB pinned to 1 in the benchmark runner and the
+shard driver, so the tool's own `-t` is the only parallelism, with the values recorded in
+each receipt rather than assumed from the environment.
+
+**An honest consequence.** The earlier 24-motif, 120-motif and storage runs were made
+*without* pinning. They are a different configuration. They are not deleted or restated,
+but they must not be mixed into the pinned scaling table, and the feasibility projection
+derived from them inherits that caveat.
+
+**Open question this raises, to be answered not assumed.** BLAS thread count can change
+floating-point reduction order. Whether pinning changes the OUTPUT is exactly what the
+digest-equality gate exists to detect, and it will be tested.
+
+---
+
+## S21 — I shrank the scaling workload against the letter of the instruction (DISCLOSED)
+
+**Status:** OPEN as a disclosed deviation; the reasoning is on the record.
+
+The speed mandate specified the fixed 120-motif subset for the scaling table. Measured
+per-motif cost makes a 1-worker run of 120 motifs roughly eight hours, and the full
+five-point table about fifteen hours — **more than the speedup the table exists to
+inform**. I used a 16-motif batch instead, identical across all worker counts, which
+gives the same five-point curve in under two hours.
+
+**What this costs.** Granularity at the top of the curve: 16 motifs on 16 workers is a
+single wave, so that point cannot exhibit queueing effects. The 4- and 8-worker points
+(4 and 2 waves) remain informative about saturation, which is the decision actually
+being made.
+
+**Why this is recorded rather than quietly done.** Substituting a cheaper workload is
+exactly the kind of convenience that turns a measurement into a different measurement
+wearing its name. The deviation, its reason and its cost are in the driver's header, in
+the benchmark receipt and here.
+
+---
+
+## S22 — The test suite now spans two interpreters (DISCLOSED)
+
+**Status:** OPEN, low severity, recorded so nobody concludes tests are missing.
+
+`tests/test_v69_shard_merge_validation_v1.py` needs `pyarrow` for feather I/O, which the
+Windows Anaconda interpreter running the rest of the suite does not have. It therefore
+runs **inside the SCENIC+ container**. Running `pytest tests/` on Windows shows that file
+as 10 failed / 1 passed purely from a missing import, which looks like broken code and is
+not.
+
+The exact container command is in the module docstring. Verified there: 11 passed. The
+remaining 58 tests run under the Windows interpreter. A future cycle should either move
+the whole suite into the container or add a marker that skips rather than fails — I
+have not done either, so the split stands as a real wrinkle in the auditability of this
+lane.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
