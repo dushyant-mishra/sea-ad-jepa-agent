@@ -27,6 +27,10 @@ on:
       - 'results/v64/V69_STAGE4_MULTISOURCE_ADAPTER_PLAN_V1.json'
       - 'results/v64/V69_REGULATORY_PROGRAM_EVIDENCE_RECORD_SCHEMA_V1.json'
       - 'results/v64/V69_STAGE4_MULTISOURCE_EVIDENCE_INTEGRATION_CONTRACT_V1.json'
+      - 'tests/test_v69_regulatory_program_crosswalk.py'
+      - 'scripts/v64/validate_regulatory_program_crosswalk_v1.py'
+      - 'results/v64/V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1.json'
+      - 'results/v64/V69_REGULATORY_PROGRAM_NAMESPACE_CONTRACT_V1.json'
       - 'tests/test_v68_full104_privileged_evidence_coverage_map.py'
       - 'results/v64/V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json'
@@ -182,7 +186,8 @@ jobs:
             tests/test_v67_two_lane_integration_recoverability_contract.py \
             tests/test_v67_privileged_teacher_state_construction_contract.py \
             tests/test_v68_full104_privileged_evidence_coverage_map.py \
-            tests/test_v69_multisource_regulatory_evidence_stack.py
+            tests/test_v69_multisource_regulatory_evidence_stack.py \
+            tests/test_v69_regulatory_program_crosswalk.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
