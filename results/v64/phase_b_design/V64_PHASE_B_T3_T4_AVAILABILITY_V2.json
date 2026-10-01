@@ -178,7 +178,8 @@
     "producer": {
       "path": "scripts/v64/close_phase_b_b6_availability_v2.py",
       "sha256": "53b010a14ae49658eaf0656ae2a812498e025c1973fa8b94569404eccd90121c",
-      "git_blob": "HEAD:scripts/v64/close_phase_b_b6_availability_v2.py"
+      "git_blob": "bfde1c163be857a0ed44ee2c53d187f67df34a7d",
+      "git_blob_binding_note": "bound after commit. The build-time value was 'HEAD:scripts/v64/close_phase_b_b6_availability_v2.py', which is not a blob: a producer cannot know its own blob before being committed, and the first fallback took rev-parse's output unconditionally. The producer now reports UNCOMMITTED_AT_BUILD_TIME when the lookup fails, and this field is bound post-commit."
     }
   },
   "governance": {

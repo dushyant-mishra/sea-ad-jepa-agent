@@ -45,8 +45,20 @@ class Stop(Exception):
 
 
 def blob(p):
-    return subprocess.run(["git", "rev-parse", f"HEAD:{p}"], capture_output=True,
-                          text=True).stdout.strip() or "UNCOMMITTED_AT_BUILD_TIME"
+    """Resolve a path to its git blob, or say plainly that it was not committed yet.
+
+    A producer cannot know its own blob before it is committed. The first version took
+    rev-parse's stdout unconditionally, so a failed lookup wrote the literal string
+    "HEAD:<path>" into the receipt where a 40-hex blob belongs -- a provenance field
+    carrying something that is not what it claims to be. Now a non-zero exit or a
+    non-hex result is reported as uncommitted, and the real blob is bound after the
+    commit by bind_b6_producer_blob.
+    """
+    r = subprocess.run(["git", "rev-parse", f"HEAD:{p}"], capture_output=True, text=True)
+    out = r.stdout.strip()
+    if r.returncode != 0 or len(out) != 40 or any(c not in "0123456789abcdef" for c in out):
+        return "UNCOMMITTED_AT_BUILD_TIME"
+    return out
 
 
 def main() -> int:
