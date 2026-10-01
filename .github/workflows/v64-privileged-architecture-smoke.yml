@@ -10,6 +10,7 @@ on:
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py'
