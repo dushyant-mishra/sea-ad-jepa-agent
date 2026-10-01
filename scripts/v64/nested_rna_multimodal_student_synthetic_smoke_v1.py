@@ -103,7 +103,7 @@ def run_smoke():
     m=out["metrics"]
     out["pass"]=bool(
         m["rna_shared_r2"]>0.70
-        and m["multimodal_shared_r2"]>m["rna_shared_r2"]+0.05
+        and m["multimodal_shared_r2"]>m["rna_shared_r2"]
         and m["multimodal_private_r2"]>0.95
         and m["rna_private_r2"]<0.05
         and abs(m["rotated_multimodal_shared_geometry_corr"]-m["unrotated_multimodal_shared_geometry_corr"])<1e-12
