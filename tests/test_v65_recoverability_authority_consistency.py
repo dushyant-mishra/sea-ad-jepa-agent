@@ -83,3 +83,14 @@ def test_tie_and_geometry_authority_match_state():
     assert "requested projected rank deficiency" in state["geometry_gate"]["fail_closed_on"]
     assert state["permutation"]["permutations_per_donor"]==10000
     assert "ALL_INCREMENTAL_SHELLS" in state["permutation"]["reused_across"]
+
+
+def test_fit_once_project_many_is_authoritative():
+    contract=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
+    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json").read_text())
+    assert "Exactly **one** candidate ridge model is then fit on TRAIN to the full frozen 16-D privileged target" in contract
+    assert "Baselines are never refit separately for a rank or shell" in contract
+    assert state["predictor"]["rank_or_shell_refit"] is False
+    assert state["predictor"]["rank_or_shell_alpha_choice"] is False
+    assert state["baselines"]["technical"]["rank_or_shell_refit"] is False
+    assert state["baselines"]["global_rna"]["rank_or_shell_refit"] is False
