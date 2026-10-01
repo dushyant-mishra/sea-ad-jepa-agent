@@ -48,7 +48,12 @@
       "Z_pred"
     ],
     "validation_or_test_rotation": false,
-    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION"
+    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION",
+    "boundary_tie_tolerance": {
+      "relative": 1e-8,
+      "formula": "abs(s[k-1]-s[k]) <= 1e-8 * max(1, abs(s[k-1]), abs(s[k]))",
+      "consequence": "UNQUALIFIED_FOR_SELECTION_AND_NO_SKIPPING_BOUNDARY"
+    }
   },
   "primary_metric": "DONOR_LEVEL_MULTIVARIATE_EXPLAINED_VARIANCE",
   "delta_metric": "candidate_R2_multi - max(technical_baseline_R2_multi, global_RNA_baseline_R2_multi)",
