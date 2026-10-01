@@ -51,13 +51,13 @@ def test_geometry_gate_v2_is_distinct_and_reproducible():
 
 
 def test_incremental_shell_gate_is_frozen_for_validation_and_test():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     for shell in ("S_2 = P_2","S_4 = P_4 - P_2","S_8 = P_8 - P_4","S_16 = P_16 - P_8"):
         assert shell in t
-    assert "aggregate gates on `P_k`" in t
-    assert "incremental shell `S_k`" in t
-    assert "every frozen incremental shell up to the selected rank" in t
-    assert "cannot rescue a failed incremental shell" in t
+    assert "aggregate `P_k` and its incremental shell `S_k`" in t
+    assert "A higher aggregate rank may not qualify" in t
+    assert "Every incremental shell from `S_2` through `S_k`" in t
+    assert "TEST may not fall back to a smaller rank" in t
 
 
 def test_nested_shells_and_intrinsic_ranks_are_frozen():
@@ -71,13 +71,13 @@ def test_nested_shells_and_intrinsic_ranks_are_frozen():
 
 
 def test_tie_tolerance_and_geometry_numerics_are_frozen():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "1e-8 * max(1, abs(s[k-1]), abs(s[k]))" in t
-    assert "thin QR bases" in t
-    assert "squared Euclidean distance" in t
-    assert "lexicographic upper-triangle" in t
-    assert "fails closed" in t
-    assert "Reuse that exact permutation-index list" in t
+    assert "1e-8 * max(1, abs(s[k-1]), abs(s[k]))" in t
+    assert "pairwise Euclidean distances" in t
+    assert "nonzero left-singular subspace" in t
+    assert "Fail closed if:" in t
+    assert "No rank, shell or metric gets an independently resampled null" in t
 
 
 def test_pairing_and_geometry_share_one_canonical_permutation_schedule():
