@@ -5,13 +5,13 @@ on:
     paths:
       - 'docs/agent/V64_*'
       - 'docs/agent/V65_*'
-      - 'docs/agent/V6[6-8]_*'
+      - 'docs/agent/V6[6-9]_*'
       - 'docs/agent/JEPA_V67_STATE_ADDENDUM_20261001.md'
       - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER.json'
       - 'docs/agent/JEPA_HANDOFF_STATE_20260930_V66.json'
       - 'results/v64/V64_*'
       - 'results/v64/V65_*'
-      - 'results/v64/V6[6-8]_*'
+      - 'results/v64/V6[6-9]_*'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
@@ -181,7 +181,8 @@ jobs:
             tests/test_v67_evidence_vs_measurement_response.py \
             tests/test_v67_two_lane_integration_recoverability_contract.py \
             tests/test_v67_privileged_teacher_state_construction_contract.py \
-            tests/test_v68_full104_privileged_evidence_coverage_map.py
+            tests/test_v68_full104_privileged_evidence_coverage_map.py \
+            tests/test_v69_multisource_regulatory_evidence_stack.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
