@@ -66,12 +66,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch immutable Claude audit source
         run: git fetch --no-tags --depth=1 origin 0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab
-      - name: Materialize immutable Claude Phase-A V3 rows for cross-branch audits
+      - name: Materialize immutable Claude Phase-A/Phase-B authorities for cross-branch audits
         run: |
           git fetch --no-tags --depth=1 origin dc30caede6369a31df3098205db11c83381784e5
-          mkdir -p results/v64/phase_a_v3
+          mkdir -p results/v64/phase_a_v3 results/v64/phase_b_design
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz > results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json > results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json
           echo "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4  results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz" | sha256sum -c -
+          echo "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619  results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json" | sha256sum -c -
+          echo "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b  results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json" | sha256sum -c -
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
