@@ -25,3 +25,12 @@ def test_recoverability_test_cannot_retune_after_opening():
     ]:
         assert forbidden in t
     assert "TEST may not influence" in t
+
+
+def test_recoverable_projection_is_target_space_and_rotation_unambiguous():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    assert "C = Z_true_train^T Z_pred_train" in t
+    assert "P_k = U[:, :k] U[:, :k]^T" in t
+    assert "Z_true_shared = Z_true P_k" in t
+    assert "Z_pred_shared = Z_pred P_k" in t
+    assert "UNQUALIFIED_FOR_SELECTION" in t
