@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_CLOSED_13175__PHASE_B_STATS_ACCEPTED_BUT_EXECUTION_BLOCKED_ON_MEASUREMENT_SUBSTRATE__RECOVERABILITY_PRECISION_FROZEN",
+  "status": "V65_PHASE_A_V3_AVAILABLE__PHASE_B_SUBSTRATE_BLOCKED_ON_R3_STATISTICAL_AUTHORITY_AND_LITERAL_REPAIR__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "d49375243f9402c62e448663acca8c697b06a565",
-    "claude_exact_sampler": "af5038f0ef00faa057bb5ebe2e0cde21ba3e7a64",
+    "claude_exact_sampler": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -35,33 +35,21 @@
     "sampler_qualified": true,
     "phaseA_rerun_authorized": true,
     "phaseA": {
-      "audited_head": "cfd3623055cd43164cebe6c36981d109e8762100",
-      "status": "CONTRACT_COMPLIANT_ACCEPTED",
+      "status": "V3_FULL_FUNNEL_PRESENT_AND_USED_AS_SUBSTRATE_AUTHORITY",
       "retained_primary": 13175,
-      "denominator": 20709,
-      "linked_funnel": {
-        "gene_not_in_nihcard": 350,
-        "gene_ambiguous_in_nihcard": 0,
-        "linked_distal_without_consensus_peak": 199,
-        "linked_side_eligible": 20160,
-        "control_A_unavailable": 6985
-      },
       "retained_genes": 4372,
       "retained_promoters": 5964,
-      "artifact_rows": 37362,
-      "control_B_available": 11012,
-      "control_B_success_A_failed_not_rescued": 2200,
-      "coincident_pairs": 166,
-      "randomness_strata": {
-        "randomized_support_gt10": 12816,
-        "small_randomized_support_2_to_10": 32,
-        "forced_singleton_support_1": 327,
-        "structurally_forced_AB_coincidence": 158
+      "funnel": {
+        "denominator": 20709,
+        "gene_not_in_nihcard": 350,
+        "gene_ambiguous": 0,
+        "linked_no_consensus_peak": 199,
+        "linked_eligible": 20160,
+        "control_A_failed": 6985,
+        "retained": 13175
       },
-      "provenance_receipt": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
-      "provenance_receipt_sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f",
-      "provenance_complete": true,
-      "external_byte_limitation": "row/per-edge artifacts, NIH-CARD matrices and liftOver binary are hash-bound but not committed"
+      "provenance_patch": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+      "row_bytes_in_git": false
     },
     "phaseB_statistical_contract": {
       "head": "af5038f0ef00faa057bb5ebe2e0cde21ba3e7a64",
@@ -183,11 +171,12 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Keep Phase B stopped until a measurement-substrate contract freezes metacell-level values/masks, small-support enumeration measurements and exact TEST-donor scope before matrix opening.",
-    "Treat Phase A as closed and contract-compliant at 13,175.",
-    "Accept Claude Phase-B null/statistical design V2 at af5038f0: gene-balanced sole primary, promoter-equal mandatory companion, edge-equal sensitivity, donor-only bootstrap.",
-    "Accept promoter source-byte custody and nested-interval audit; only a dual-ledger Actions run using repaired builder 1d9a6a1d or later and reproducing frozen SCREEN/FANTOM counts may become authoritative.",
-    "Recoverability precision/decision logic is frozen but execution remains unauthorized; TEST remains unopened."
+    "Audit Claude repairs after 7b51aac9.",
+    "Require explicit statistical-contract successor/amendment freezing R1/R2/R3 before Phase B.",
+    "Require removal of hardcoded 24187 denominator and test staleness behavior.",
+    "Improve durable custody of Phase-A V3 row artifacts.",
+    "Do not execute Phase B until re-audit passes.",
+    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
   ],
   "governance": {
     "training": "OFF",
@@ -203,5 +192,23 @@
     "Morabito",
     "training",
     "final factorized-target tournament"
-  ]
+  ],
+  "phaseB_substrate": {
+    "claude_head": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
+    "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
+    "status": "NOT_AUTHORIZED_FOR_EXECUTION",
+    "accepted_elements": [
+      "single-modality-only Phase-B boundary",
+      "persisted metacell substrate",
+      "gene-keyed RNA table",
+      "recoverability split scoped separately",
+      "protected demographic values not read",
+      "57 enumeration rows arithmetically recomputed"
+    ],
+    "blockers": [
+      "S57 hardcoded denominator 24187 remains in emitted fraction",
+      "S58 R3 exact-conditional rule is a new statistical decision absent from bound V2 null contract",
+      "S59 Phase-A V3 row artifacts are hash-bound but not durable repository bytes"
+    ]
+  }
 }
