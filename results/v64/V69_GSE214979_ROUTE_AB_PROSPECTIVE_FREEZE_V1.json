@@ -1,0 +1,224 @@
+{
+  "schema": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1",
+  "frozen_utc": "2026-10-01T16:05:00Z",
+  "frozen_at_commit": "20c9291c4ae4761c1485f782bbee398b896999b1",
+  "status": "PROSPECTIVE__FROZEN_BEFORE_ANY_NETWORK_EXISTS",
+  "purpose": "Freeze every threshold, acceptance rule, control definition and fallback for the GSE214979 external microglial regulatory architecture BEFORE any eRegulon, any Route-A/Route-B comparison statistic, and any Stage-4 artifact is produced or inspected.",
+
+  "what_already_exists_at_freeze_time": {
+    "substrate_acquired": [
+      "GSE214979_cell_metadata.csv.gz sha256 8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+      "GSE214979_filtered_feature_bc_matrix.h5 sha256 8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2",
+      "GSE214979_atac_fragments.tsv.gz ACQUISITION_IN_PROGRESS at freeze time"
+    ],
+    "cohort_frozen": "V69_GSE214979_COHORT_FREEZE_V1 (ALL_MICROGLIA 3179/15 donors; DEV_NO_MORABITO_OVERLAP 2534/12 donors)",
+    "networks_existing": "NONE",
+    "route_comparison_statistics_existing": "NONE",
+    "stage4_artifacts_inspected": "NONE"
+  },
+
+  "SECTION_0_SCOPE_AND_HONEST_LIMITATION": {
+    "what_the_route_comparison_tests": "Sensitivity of regulatory structure to the REGION UNIVERSE construction only.",
+    "what_it_does_not_test": "Cell-selection sensitivity. Both routes use the SAME frozen nuclei, because microglial identity is taken from the published multiome annotation and cannot be re-derived from ATAC alone without circularity.",
+    "consequence": "A Route-A/Route-B agreement is evidence about peak-definition robustness and nothing more. It must never be reported as general robustness of the network.",
+    "substrate_power_warning": {
+      "n_nuclei_default_population": 2534,
+      "n_donors_default_population": 12,
+      "statement": "This is a small substrate for eRegulon inference. Donors are the replication unit; 2,534 nuclei improve per-donor measurement precision and do not increase biological n to more than 12.",
+      "prospective_insufficiency_rule": "If fewer than 8 donors survive Route-B ATAC QC, the lane reports SUBSTRATE_INSUFFICIENT_FOR_DONOR_STABILITY and no program may be frozen as donor-stable. This number is a CONVENTION chosen before any QC was run, on the ground that leave-one-donor-out over fewer than 8 units cannot distinguish a recurrent program from one carried by two donors."
+    }
+  },
+
+  "SECTION_1_ROUTE_A_SUBMITTED_PEAKS": {
+    "version_id": "GSE214979_SCENICPLUS_SUBMITTED_PEAKS_V1",
+    "region_universe": "Exactly the 150,614 'Peaks' features in the depositor's filtered feature-barcode matrix. No re-calling, no filtering by accessibility, no trimming.",
+    "freeze_rule": "Route A is frozen and written to its own immutable directory BEFORE any Route-B network is computed, and is never overwritten, re-run with different parameters, or reconciled toward Route B.",
+    "rationale": "Accepting the published region universe without modification is what makes Route A an independent construction rather than a variant of Route B."
+  },
+
+  "SECTION_2_ROUTE_B_FRAGMENT_RECONSTRUCTION": {
+    "mandatory": true,
+    "note": "The parallel ChatGPT lane's acquisition producer records the fragment route as an 'optional sensitivity route'. The owner mandate supersedes that: Route B is REQUIRED. This freeze adopts the mandate.",
+    "barcode_identity_rule": {
+      "finding": "GSE214979 barcode suffixes are NOT one-to-one with donors. Suffixes 5, 6 and 7 each carry two donors (5: 4313+4482; 6: HCT17HEX+HCTZZT; 7: 4305+4443). Donor identity therefore comes ONLY from the metadata `id` column keyed on the full barcode string.",
+      "rule": "Any fragment-to-donor assignment that infers donor from the barcode suffix is a defect and must fail closed.",
+      "verification_required_before_use": "Confirm the fragment file's barcode column uses the same aggregated barcode spelling as the matrix. If it does not, record the exact observed spelling and the mapping rule; do not guess."
+    },
+    "qc_thresholds": {
+      "basis": "Defaults of the published SCENIC+/pycisTopic protocol (Bravo Gonzalez-Blas et al., Nat Methods 2023) are adopted UNCHANGED as an external rationale independent of this dataset. They are not tuned here and must not be tuned later.",
+      "computed_from": "THE FRAGMENTS THEMSELVES, not the depositor's submitted QC columns. Reusing the submitted TSS.enrichment/nCount_ATAC would make Route B a relabelling of Route A rather than an independent reconstruction.",
+      "min_unique_fragments_per_barcode": 1000,
+      "min_tss_enrichment": 4.0,
+      "max_duplication_rate": "NOT_APPLIED__fragment file is already deduplicated by Cell Ranger ARC",
+      "min_frip_against_route_b_peaks": 0.4,
+      "tss_annotation_source": "To be acquired and SHA-pinned before QC runs; build must be GRCh38 to match the fragment coordinates. Recorded as UNACQUIRED at freeze time.",
+      "falsifiability": "These thresholds CAN remove donors and CAN trigger SUBSTRATE_INSUFFICIENT_FOR_DONOR_STABILITY. They are not decorative."
+    },
+    "pseudobulk_and_peak_calling": {
+      "pseudobulk_unit": "donor x published microglial subcluster (Mic_0..Mic_4), so that a peak carried by one donor cannot masquerade as a population peak",
+      "peak_caller": "MACS (MACS3 preferred; MACS2 acceptable if MACS3 cannot be installed, recorded explicitly)",
+      "macs_parameters": "--format BEDPE --keep-dup all --nomodel --shift 73 --ext_size 146 --call-summits -q 0.05",
+      "macs_parameter_basis": "Verbatim pycisTopic protocol defaults for single-cell ATAC pseudobulk. Not tuned.",
+      "consensus_construction": "pycisTopic iterative-overlap consensus peaks, peak_half_width = 250 bp, which is the protocol default and is NOT chosen to match Route A's peak widths.",
+      "forbidden": [
+        "Choosing q, extension, half-width, or any QC threshold because it increases agreement with Route A",
+        "Choosing any parameter because it increases agreement with Stage 4, FULL104, Morabito or SEA-AD",
+        "Re-running Route B with a second parameter set and reporting the better-agreeing one"
+      ],
+      "if_a_parameter_must_change": "Any deviation from the above is a NEW route version (ROUTE_B_V2) reported alongside, never a replacement of ROUTE_B_V1."
+    },
+    "peak_recurrence_requirement": "For every consensus region, record the number and fraction of QC-passing donors whose pseudobulk contributed an overlapping called peak. This is reported for ALL regions; no recurrence filter is applied to build the universe, because filtering regions by recurrence and then measuring recurrence would be circular."
+  },
+
+  "SECTION_3_MOTIF_RESOURCES_AND_CISTARGET_DATABASE": {
+    "acquired_and_pinned": {
+      "motif_collection": {
+        "id": "v10nr_clust_public",
+        "url": "https://resources.aertslab.org/cistarget/motif_collections/v10nr_clust_public/v10nr_clust_public.zip",
+        "bytes": 89706219,
+        "sha256": "70dab42794f42471a3c22f5efe78ec2c8af96127656607cb0a929b4adffc2b97",
+        "etag": "\"558ceeb-5f7917d57c8b4\"",
+        "n_motifs_cb": 10249
+      },
+      "motif_to_tf_annotation": {
+        "id": "motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl",
+        "url": "https://resources.aertslab.org/cistarget/motif2tf/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl",
+        "bytes": 98718421,
+        "sha256": "81eb754118e27e854974301b1400fcf519489f8be5249239671fb288cb501c31",
+        "etag": "\"5e252d5-5e66bf0f48880\""
+      },
+      "cluster_buster_binary": {
+        "url": "https://resources.aertslab.org/cistarget/programs/cbust",
+        "sha256": "4c10c768a17dacc8cc01bc71b2f3e0bf540d460054c4edccaf71c9a6d9655c72"
+      }
+    },
+    "stage75f_status": "Historical Stage75F motif resources are NOT the authority for this lane and are not read by any producer here. Stage75F remains hypothesis-generating only.",
+    "custom_database_preference": "PREFERRED. A custom cisTarget database is built over the Route-B consensus regions so that motif enrichment is evaluated on the exact regions the network uses.",
+    "custom_database_prerequisites": [
+      "GRCh38 genome FASTA, acquired and SHA-pinned",
+      "Route-B consensus region BED",
+      "create_cisTarget_databases at a pinned commit",
+      "cbust at the pinned digest above"
+    ],
+    "fallback_rule": "If the custom database cannot be built, the EXACT technical failure (command, exit status, resource limit, missing dependency) is written into a receipt BEFORE the official generic hg38 database is used, and every downstream result built on the generic database is labelled GENERIC_REGION_DATABASE so it is never confused with a custom-region result.",
+    "route_a_database_rule": "Route A uses the official generic hg38 region database, because its region universe is the depositor's and a custom database over it would still be a different object than Route B's. This asymmetry is recorded as a known limitation of the route comparison, not hidden."
+  },
+
+  "SECTION_4_NETWORK_SCOPE": {
+    "tf_scope": "BROAD. Every TF with motif support in the v10nr collection and sufficient expression support in the cohort is eligible. The historical 10 Stage75F TFs receive NO privileged status and are not used to filter, order or seed anything.",
+    "retained_per_eregulon": [
+      "tf_id", "tf_ensembl_id", "target_gene_ids", "region_ids_hg38",
+      "tf_to_region_evidence", "region_to_gene_evidence", "direction",
+      "n_genes", "n_regions", "donor_recurrence", "route_membership"
+    ],
+    "direction_rule": "Activating/repressive direction is recorded only where the method itself supplies it; it is never inferred post hoc from a correlation sign computed for this purpose."
+  },
+
+  "SECTION_5_DONOR_STABILITY": {
+    "replication_unit": "DONOR. Nuclei are measurements.",
+    "procedure": "Leave-one-donor-out: refit the network with each QC-passing donor held out in turn.",
+    "statistics": [
+      "eRegulon recurrence: fraction of LODO refits in which the TF yields an eRegulon at all",
+      "edge stability: fraction of LODO refits retaining each TF->gene edge",
+      "program stability: Jaccard of the target-gene set between each LODO refit and the full-cohort refit"
+    ],
+    "prospective_thresholds": {
+      "edge_level_claim_requires": "edge retained in >= 0.80 of LODO refits",
+      "program_level_claim_requires": "TF recurrent in >= 0.80 of LODO refits AND median target-set Jaccard >= 0.50 against the full-cohort program",
+      "threshold_label": "CONVENTION. 0.80 is the conventional 'present in all but a small minority of refits' level at n=12 donors (it permits at most 2 failures); 0.50 Jaccard is the conventional half-overlap level. Neither has an external calibration study behind it, and both are declared before any refit exists. They are labelled as conventions precisely so that a later reader does not mistake them for calibrated operating points.",
+      "downgrade_rule": "If edge stability fails but program stability passes, the qualified object is the PROGRAM/MODULE and the edge list is reported as unstable. This is the expected outcome at n=12 donors and is NOT a failure of the lane."
+    }
+  },
+
+  "SECTION_6_ROUTE_A_VS_ROUTE_B_ACCEPTANCE": {
+    "measured_quantities": [
+      "TF overlap (Jaccard and directional containment)",
+      "target-gene overlap per shared TF (Jaccard)",
+      "region overlap per shared TF (reciprocal 50% bp overlap, NOT exact interval identity)",
+      "TF->target edge overlap (Jaccard)",
+      "program/module overlap",
+      "donor stability in each route separately"
+    ],
+    "region_matching_rule": "Regions match if they reciprocally overlap by >= 50% of the shorter region's length. Exact boundary identity is NOT required, because different peak universes legitimately shift boundaries. 50% reciprocal overlap is the conventional bedtools default and is adopted as a CONVENTION, declared here before any region comparison.",
+    "ROUTE_STABLE_PROGRAM_DEFINITION": {
+      "a_program_is_ROUTE_STABLE_if_and_only_if": [
+        "the same TF yields an eRegulon in BOTH Route A and Route B",
+        "AND the target-gene Jaccard between the two routes is >= 0.30",
+        "AND the program passes the SECTION_5 program-level donor-stability rule in BOTH routes"
+      ],
+      "jaccard_threshold_label": "CONVENTION, 0.30. Declared before any route comparison. Rationale for the level being well below 0.5: the two routes use different region universes AND different cisTarget databases, so region-mediated target sets are expected to differ substantially even for a genuinely shared program. Setting it at 0.5 would make the test fail for a reason unrelated to the biology; setting it at 0.1 would make it nearly unfailable. It is NOT externally calibrated and is labelled as such.",
+      "no_averaging_rule": "Route A and Route B outputs are never averaged, merged or unioned into a single network. A program is either ROUTE_STABLE or it is not."
+    },
+    "stop_rule": "If the measured route agreement falls below these thresholds, the lane STOPS and reports it. The thresholds are not revisited after seeing the discrepancy. The scientific fallback in SECTION_8 is then applied."
+  },
+
+  "SECTION_7_MANDATORY_NEGATIVE_CONTROLS": {
+    "C1_TF_ANNOTATION_SUPPLY": {
+      "question": "Is a TF strong merely because more motifs are annotated to it?",
+      "procedure": "Regress / stratify every per-TF network statistic (n_regions, n_genes, enrichment score) on the TF's motif-annotation count in the pinned v10nr HGNC table. Report the association and report per-TF statistics within annotation-supply strata.",
+      "pass_criterion": "A TF may be called strong only if it remains in the top tier WITHIN its annotation-supply stratum.",
+      "failure_is_reachable": "Yes: if annotation supply explains the ranking, every top TF collapses to the high-supply stratum and no TF passes."
+    },
+    "C2_TF_LABEL_PERMUTATION": {
+      "question": "Do TF labels carry information beyond motif/annotation supply?",
+      "procedure": "Permute TF labels among motifs WITHIN annotation-supply strata (so supply is held fixed), rebuild, compare.",
+      "note": "Permuting labels across all TFs without stratifying would conflate label information with supply and is explicitly forbidden here."
+    },
+    "C3_REGION_GENE_PERMUTATION_WITH_MATCHED_STRUCTURE": {
+      "matched_on": ["chromosome", "TSS distance class", "mean accessibility decile", "detection-rate decile", "local region density"],
+      "note": "An unmatched region-gene shuffle is not an acceptable substitute, because distance to TSS alone would generate the effect."
+    },
+    "C4_STRUCTURAL_DISTINCTNESS": {
+      "requirement": "For EVERY shuffled or permuted control, record the graph content digest, the changed-edge fraction, the overlap/Jaccard against the real graph, and an explicit boolean confirming the control physically differs from the real graph.",
+      "fail_closed": "A control whose digest equals the real graph's digest is a no-op and invalidates any conclusion drawn from it. The run must STOP rather than report it."
+    },
+    "C5_DONOR_FINGERPRINT": {
+      "question": "Is the network simply donor identity?",
+      "procedure": "Test whether eRegulon activity separates donors more than it separates published microglial subclusters; and whether a donor-label classifier on eRegulon activity outperforms one on matched random gene sets of the same size and expression level."
+    },
+    "C6_BROAD_CELL_CLASS_SHORTCUT": {
+      "question": "Is any broad comparison or external transfer merely neuron/glia discrimination?",
+      "procedure": "Score the frozen programs in the non-microglial GSE214979 classes. A program whose activity is explained by coarse lineage identity is flagged LINEAGE_CONFOUNDED.",
+      "note": "This control uses the SAME cohort's other cell classes, which is allowed because no pathology label is involved."
+    },
+    "C7_ROUTE_SENSITIVITY_POSITIVE_CONTROL": {
+      "question": "Can changing the peak definition change the answer at all?",
+      "why_mandatory": "Without this, a Route-A/Route-B 'agreement' result is incapable of failing and therefore means nothing.",
+      "procedure": "Construct a deliberately perturbed region universe (e.g. Route-B consensus regions shifted and re-widened well beyond the reciprocal-overlap criterion) and rebuild. The measured route agreement against this perturbed universe MUST fall below the SECTION_6 ROUTE_STABLE thresholds.",
+      "pass_criterion": "The perturbed-universe comparison FAILS the ROUTE_STABLE test. If it passes, the route comparison is uninformative and must be reported as such.",
+      "component_rule": "The perturbation must move the region universe specifically, not merely add noise to everything, so that it validates the component actually under test."
+    }
+  },
+
+  "SECTION_8_SCIENTIFIC_FALLBACK": {
+    "if_routes_disagree_strongly": "Do NOT average. Do NOT select the route that agrees with Stage 4, FULL104 or any protected outcome.",
+    "diagnostic_sequence": [
+      "Are edge-level relationships unstable while modules are stable?",
+      "Which TFs are motif-annotation-supply sensitive (C1)?",
+      "Which region-gene links are peak-definition sensitive?",
+      "Do only broader programs replicate?"
+    ],
+    "acceptable_terminal_object": "A regulatory PROGRAM/MODULE rather than an exact eRegulon edge list. This is preferable to forcing false precision and is an acceptable successful outcome of this lane.",
+    "unacceptable": "Reporting an edge-level GRN whose edges did not meet the SECTION_5 edge threshold."
+  },
+
+  "SECTION_9_PROTECTED_BOUNDARIES": {
+    "never_opened_in_this_lane": [
+      "Stage-4 biological correspondence result",
+      "Morabito GSE174367 biological replication outcome",
+      "recoverability TEST",
+      "JEPA training outcomes",
+      "DEV/SEALED RNA"
+    ],
+    "stage4_rule": "NEVER inspect a Stage-4 result and then alter the network. The network freeze receipt is written and committed before any Stage-4 correspondence is executed.",
+    "stage4_crosswalk_rule": "The Stage-4 crosswalk performed by this lane is STRUCTURAL ONLY: which genes/intervals/pair keys are represented. It reads the Stage-4 feature vocabulary, never a Stage-4 effect estimate.",
+    "stage4_hidden_confound_preservation": "The Stage-4 synthetic qualification result (planted biology Delta ~ +0.785, hidden within-donor metacell-varying technical confound Delta ~ +0.654, control-vs-control ~ 0) is NOT modified, tuned or explained away by this lane. Part of the value of an external network is that its failure mode is DIFFERENT from Stage-4's."
+  },
+
+  "SECTION_10_MISSINGNESS_SEMANTICS": {
+    "rule": "A feature absent from a vocabulary is STRUCTURALLY_UNMEASURED, never a biological zero and never numeric 0.",
+    "distinct_states": ["MEASURED_SCALAR", "STRUCTURALLY_UNMEASURED", "MEASURED_COLLISION_UNRESOLVED"],
+    "crosswalk_rule": "Every crosswalk emits a per-element availability mask inside the artifact consumers read, not only in matrix-level metadata.",
+    "spatial_rule": "Partial gene-panel coverage is PARTIAL EVIDENCE, never biological absence."
+  }
+}

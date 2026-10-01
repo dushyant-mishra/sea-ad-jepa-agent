@@ -19,10 +19,13 @@ echo "=== [1/5] create env ==="
 # cluster_buster is NOT a conda package; the Aerts lab publishes a precompiled
 # Linux binary alongside the cisTarget resources, which is what we pin below.
 # macs3 is installed from a wheel because this WSL image has no system compiler.
+# SCENIC+ 1.x declares python >=3.8,<=3.11.8, so the patch version is pinned.
+# c-compiler/cxx-compiler are required because this WSL image has no system gcc
+# and macs3 builds cykhash from source.
 if ! conda env list | grep -qE "^${ENV_NAME}\s"; then
   mamba create -y -n "$ENV_NAME" -c conda-forge -c bioconda \
-    python=3.11 bedtools htslib pybigwig \
-    numpy pandas scipy pyarrow cython
+    python=3.11.8 bedtools htslib pybigwig \
+    numpy pandas scipy pyarrow cython c-compiler cxx-compiler
 fi
 
 conda activate "$ENV_NAME"
