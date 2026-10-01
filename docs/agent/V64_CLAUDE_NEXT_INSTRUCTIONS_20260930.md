@@ -1,4 +1,4 @@
-# Claude instructions — V64 final substrate executability repair
+# Claude instructions — V64 final repository-consistency closeout before Phase B
 
 **Date:** 2026-09-30
 
@@ -8,106 +8,100 @@ Continue from:
 
 Audited head:
 
-`a0500111254315504de3618ea832931ea54cdc26`
+`7ad38eaf457d2fbb81f40f57a7b1747eac7776f1`
 
 Do NOT execute Phase B yet.
 
-## Accepted closures
+## What is now accepted
 
-S57 CLOSED:
-- denominator 24,187 is no longer hardcoded;
-- it is recomputed from loaded Phase-A V3 control rows;
-- T18 rejects a stale denominator.
+- S57 CLOSED.
+- S58 CLOSED.
+- S59 CLOSED.
+- S60 design CLOSED:
+  - T7_R3_CONDITIONING_REFERENCE is materialized;
+  - 21 R3 conditioning records;
+  - 11 A-small / 10 B-small;
+  - 0 same-side / 21 different-side;
+  - realized large-arm draw persisted from frozen Phase-A rows;
+  - mandatory CONDITIONAL_ON_REALISED_LARGE_ARM label persisted;
+  - T19 guards conditioning records;
+  - T17 now guards semantic drift under an unchanged rule identifier;
+  - 7/7 mutation sweep detected.
 
-S58 CLOSED:
-- R1/R2/R3 now live in statistical contract V3;
-- V3 explicitly declares that it makes this statistical decision;
-- substrate is rebound to the V3 digest.
+Do not change these semantics.
 
-S59 CLOSED:
-- both Phase-A V3 gzip artifacts are now committed as Git bytes at the expected sizes;
-- retain their receipt-bound SHA-256s unchanged.
+## Remaining blocker S61 — committed test receipt is stale/inconsistent
 
-## Remaining blocker S60 — persist the R3 conditioning identity
+At commit `7ad38eaf`, the actual committed file:
 
-Statistical V3 requires R3 to mean:
+`results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1.json`
 
-`EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM`
+contains:
 
-and explicitly states that the realised large-arm draw is recorded per pair alongside the reference.
+- `n_tests = 9`
+- `n_real_tests = 7`
+- `status = FAIL`
 
-The current substrate contract says this in prose but T6 does not freeze the conditioning identity as persisted data.
+and specifically:
 
-That is an executability gap.
+- T16 fails: `bound statistical contract digest is stale`
+- T17 fails: `bound authority digest is stale`
 
-Stage 4 must never have to reconstruct after outcomes are visible:
-- which arm was small;
-- which arm was large;
-- which realised large-arm draw was conditioned on;
-- whether the quantity must carry the conditional label.
+This contradicts the reported final state of substrate 9/9 PASS.
 
-### Required repair
+The mutation sweep receipt says the mutated artifacts were restored byte-exact, so the likely explanation is:
 
-Add a persisted R3 reference/conditioning structure to the substrate contract and eventual substrate artifact.
+> the test receipt was generated while V3 was temporarily mutated during the sweep and was not rerun/recommitted after restoration.
 
-For every one of the 21 R3 pairs, persist at minimum:
+That is repairable, but repository authority must be self-consistent.
 
-- `edge_index`
-- `reference_rule_id = R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM`
-- `small_arm_role` (A or B)
-- `small_arm_drawn_side`
-- `large_arm_role`
-- `realised_large_arm_drawn_side`
-- `realised_large_arm_hg19_start`
-- `realised_large_arm_hg19_end`
-- `required_label = CONDITIONAL_ON_REALISED_LARGE_ARM`
+## Required closeout
 
-Also bind each ENUMERATION_ONLY small-arm row to its R3 conditioning record, e.g. by `reference_id`.
+1. Restore/verify the intended final artifacts:
+   - statistical contract V3;
+   - substrate contract;
+   - R3 conditioning reference;
+   - decision state;
+   - test producer.
 
-If R1/R3 overlap on an A-small pair, preserve both rule memberships rather than duplicating biological measurement.
+2. Rerun the substrate test suite ONCE against that restored final state.
 
-### Required test
+3. Require:
+   - 9/9 real tests;
+   - T16 PASS;
+   - T17 PASS;
+   - T18 PASS;
+   - T19 PASS;
+   - overall `status = PASS`.
 
-Add a real adversarial test that independently recomputes R3 membership from the committed Phase-A V3 rows and exact admissible sets and verifies:
+4. Commit the new final-state test receipt.
 
-- 21 R3 pairs;
-- A small = 11;
-- B small = 10;
-- same drawn side = 0;
-- different drawn side = 21;
-- every conditioning record's realised large-arm start/side equals the actual frozen Phase-A draw;
-- every R3 reference carries `CONDITIONAL_ON_REALISED_LARGE_ARM`;
-- every R3 ENUMERATION_ONLY row points to the correct conditioning record.
+5. Record exact SHA-256s for:
+   - statistical V3;
+   - substrate contract;
+   - R3 conditioning reference;
+   - substrate test producer;
+   - final substrate test receipt.
 
-Plant failures for:
-- wrong large-arm start;
-- wrong large-arm role;
-- missing conditional label;
-- invented/unbound reference_id.
+6. Add a final-state consistency guard that fails if:
+   - any committed authoritative test receipt has `status != PASS`;
+   - any bound authority digest differs from the live artifact;
+   - a mutation-sweep restoration leaves a stale test receipt behind.
 
-Each must be rejected.
+A simple closeout receipt is sufficient if it is generated from the final committed artifacts and checks those conditions.
 
-## Strengthen T17
+## Do NOT change
 
-Keep the identifier/authority check, but add semantic enforcement:
-- substrate R1/R2/R3 eligibility/reference definition must be derived from or compared against V3;
-- an existing rule identifier with altered semantics must fail.
-
-The current T17 blocks a new downstream rule identifier, but does not by itself catch semantic drift under an existing identifier.
-
-## Preserve everything else
-
-Do not change:
 - Phase-A V3 population 13,175;
-- randomness strata;
 - R1/R2/R3 definitions;
+- conditioning records;
+- weighting;
 - donor/metacell thresholds;
 - bootstrap seed/replicates;
-- gene-balanced primary weighting;
 - recoverability split scope;
 - protected-column firewall;
 - missingness rules;
-- Phase-B single-modality boundary.
+- single-modality Phase-B boundary.
 
 ## Governance
 
@@ -118,4 +112,4 @@ Morabito = PROTECTED.
 TRAINING = OFF.  
 Correspondence remains unopened.
 
-After S60 is closed, STOP again for audit. Do not execute Phase B.
+After S61 is closed, STOP again for audit. Do not execute Phase B.
