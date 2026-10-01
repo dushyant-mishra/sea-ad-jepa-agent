@@ -197,14 +197,43 @@ already-qualified lower-rank directions.
 
 For every nonzero candidate shared rank, compute on each held-out donor:
 
-- canonical correlations between predicted and true projected privileged states;
-- principal-angle cosines between the predicted and true projected subspaces.
+1. canonical correlations between predicted and true projected privileged states;
+2. **relational-geometry correlation**: Pearson correlation between the upper-triangle
+   vectors of pairwise squared Euclidean distances among nuclei in the true and predicted
+   projected privileged states.
+
+The same definitions apply to every incremental shell.
+
+### Why principal-angle cosine is not a second gate
+
+For centered matrices with full column rank, canonical correlations are the singular
+values of `Q_true^T Q_pred`, where `Q_true` and `Q_pred` are orthonormal bases for
+their sample-space column spans. Those singular values are exactly the cosines of the
+principal angles between the same two column spaces.
+
+Therefore treating canonical correlations and those principal-angle cosines as two
+separate pass criteria would double-count one mathematical quantity. Principal-angle
+values may still be reported as a diagnostic, but they are not counted as independent
+evidence and do not constitute a second gate.
+
+### Prospective gate
 
 A donor passes the geometry gate only if BOTH:
-1. its median canonical correlation exceeds the 99th percentile of its within-donor pairing-permutation null;
-2. its median principal-angle cosine exceeds the 99th percentile of the corresponding within-donor pairing-permutation null.
 
-No fixed absolute geometry cutoff is added because basis geometry depends on the frozen factor spectrum. The thresholding procedure itself is prospective and null-calibrated.
+1. its median canonical correlation exceeds the 99th percentile of its within-donor
+   pairing-permutation null;
+2. its relational-geometry correlation exceeds the 99th percentile of its corresponding
+   within-donor pairing-permutation null.
+
+For the relational metric, a within-donor pairing permutation reassigns true privileged
+rows relative to the fixed predicted rows; pairwise distances are then vectorized using
+the original nucleus-index pair labels before correlation, so the null destroys
+cell-specific relational alignment rather than merely reordering an invariant distance set.
+
+No fixed absolute geometry cutoff is added because geometry depends on the frozen factor
+spectrum. The thresholding procedure itself is prospective and null-calibrated.
+
+This correction was made before any real paired recoverability outcome was opened.
 
 ## 11. VALIDATION rank-selection rule
 
