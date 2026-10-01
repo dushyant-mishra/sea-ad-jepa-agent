@@ -26,6 +26,7 @@ on:
       - 'tests/test_v64_phase_a_exact_independent_audit_v1.py'
       - 'tests/test_v65_promoter_and_recoverability_contracts.py'
       - 'tests/test_v65_promoter_dual_ledger_v2.py'
+      - 'tests/test_v65_recoverability_precision_contract.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
 
@@ -62,4 +63,5 @@ jobs:
             tests/test_v64_screen_pls_gencode_preflight_v1.py \
             tests/test_v64_phase_a_exact_independent_audit_v1.py \
             tests/test_v65_promoter_and_recoverability_contracts.py \
-            tests/test_v65_promoter_dual_ledger_v2.py
+            tests/test_v65_promoter_dual_ledger_v2.py \
+            tests/test_v65_recoverability_precision_contract.py
