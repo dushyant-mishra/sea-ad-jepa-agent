@@ -71,7 +71,8 @@
     "within_donor": true,
     "permutations_per_donor": 10000,
     "seed_rule": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>')",
-    "observed_must_exceed_percentile": 0.99
+    "observed_must_exceed_percentile": 0.99,
+    "shared_sequence_scope": "ONE_DONOR_SPECIFIC_10000_PERMUTATION_INDEX_SEQUENCE_REUSED_FOR_R2_CCA_RELATIONAL_ALL_RANKS_AND_SHELLS"
   },
   "validation_rule": {
     "all_4_donors_delta_positive": true,
@@ -125,6 +126,9 @@
     "applies_to": [
       "aggregate_projection",
       "incremental_shell"
-    ]
+    ],
+    "canonical_implementation": "center; thin QR after dropping null columns; singular values of Q_true^T Q_pred; median",
+    "relational_implementation": "Pearson correlation of lexicographic upper-triangle squared-Euclidean pair-distance vectors",
+    "degenerate_geometry": "FAIL_CLOSED"
   }
 }
