@@ -66,6 +66,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch immutable Claude audit source
         run: git fetch --no-tags --depth=1 origin 0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab
+      - name: Materialize immutable Claude Phase-A V3 rows for cross-branch audits
+        run: |
+          git fetch --no-tags --depth=1 origin dc30caede6369a31df3098205db11c83381784e5
+          mkdir -p results/v64/phase_a_v3
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz > results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz
+          echo "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4  results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz" | sha256sum -c -
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
