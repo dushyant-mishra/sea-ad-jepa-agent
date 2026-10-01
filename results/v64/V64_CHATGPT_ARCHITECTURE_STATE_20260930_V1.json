@@ -1,0 +1,52 @@
+{
+  "schema": "V64_CHATGPT_ARCHITECTURE_STATE_20260930_V1",
+  "date": "2026-09-30",
+  "branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "status": "ARCHITECTURE_CONTRACTS_FROZEN__EMPIRICAL_RECOVERABILITY_AWAITS_REAL_PAIRED_DATA__TRAINING_OFF",
+  "parent_handoff_head": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
+  "closed_design_questions": [
+    "Current V5 runtime is RNA-to-RNA and cannot be silently reinterpreted as a rich multimodal teacher.",
+    "Privileged teacher factors require explicit RNA-recoverability classification before universal student supervision.",
+    "Recoverability should be qualified at stable-subspace level when axes rotate.",
+    "GENCODE annotation defines the base promoter/TSS candidate denominator; activity resources annotate rather than censor it.",
+    "Common support and trim fraction must be characterized before E2 matching operator freeze.",
+    "SCARlink versus SCENT on the same NIH-CARD cells is estimator robustness, not evidence-family independence.",
+    "Adjusted cross-resource association is incremental support under observed adjustment, not proof of independence.",
+    "Held-out evidence-family validation is preferred over reconstruction of evidence used in construction.",
+    "Access and license/terms status are separate provenance fields.",
+    "NOT_MEASURED remains distinct from measured negative evidence."
+  ],
+  "synthetic_smoke": {
+    "status": "PASS_SOFTWARE_ONLY",
+    "shared_mean_r2": 0.9998952276297703,
+    "private_mean_r2": -0.005015473036918544,
+    "forced_full_state_mean_r2": 0.4974398772964259,
+    "rotated_shared_subspace_min_cosine": 0.9999528365177357
+  },
+  "next_empirical_inputs_requested": [
+    "Small donor-preserving NIH-CARD paired RNA+ATAC subset with pairing key and donor/cell-type metadata.",
+    "Optional small FULL104 donor/source/operator-stratified RNA subset on lawful q-safe or raw representation.",
+    "Promoter/TSS bridge artifacts if already available: GENCODE IDs, Nott promoter coordinates, mapping receipts.",
+    "Claude exact-sampler/Phase-A successor receipts when execution completes."
+  ],
+  "next_empirical_work_after_data_arrives": [
+    "Implement donor-disjoint recoverability smoke/qualification harness without training authority.",
+    "Quantify recoverable versus private privileged subspace under nested TRAIN/VALIDATION logic.",
+    "Run availability-shortcut diagnostics including the anchored-but-RNA-unmeasurable stratum where identifiable.",
+    "Audit promoter candidate coverage without activity-gating the denominator.",
+    "Characterize common support before freezing E2 matching."
+  ],
+  "blocked_until_claude_phaseA_audit": [
+    "Phase B matrix-value correspondence work",
+    "Promoter/regulatory atlas execution if it depends on repaired Phase-A population",
+    "Stage 4 correspondence",
+    "Any final factorized-target tournament"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}

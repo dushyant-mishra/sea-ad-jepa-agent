@@ -1,0 +1,82 @@
+{
+  "schema": "V67_PRIVILEGED_TEACHER_STATE_CONSTRUCTION_CONTRACT_V1",
+  "date": "2026-10-01",
+  "status": "DESIGN_ONLY__NO_TEACHER_STATE_MATERIALIZED",
+  "central_rule": "Stage-4 correspondence is a qualification gate for a regulatory evidence family; its aggregate Delta/LCB/p-value/null statistics are never themselves teacher-state coordinates.",
+  "stage4_role": {
+    "qualifies": "whether the frozen RNA↔regulatory correspondence design is interpretable above matched controls under the prospective Phase-B/Stage-4 design",
+    "does_not_supply": [
+      "student input",
+      "teacher coordinate",
+      "per-cell target value",
+      "latent dimension choice",
+      "loss weight"
+    ],
+    "if_stage4_passes": "authorizes consideration of the frozen regulatory mapping/evidence family for a separately audited teacher-state feature producer; it does not authorize training",
+    "if_stage4_interpretable_but_null": "record as a null qualification outcome; do not invent a positive regulatory axis",
+    "if_stage4_uninterpretable": "regulatory evidence family is blocked from teacher-state signal until the methodological failure is prospectively repaired"
+  },
+  "prospective_teacher_feature_producer": {
+    "required_before_real_training": true,
+    "inputs_must_be_enumerated_before_materialization": true,
+    "candidate_inputs": [
+      "lawful RNA evidence used by the richer teacher",
+      "paired ATAC/regulatory measurements from the authorized training population",
+      "frozen regulatory mapping whose evidence family has passed its own qualification",
+      "SCENIC+ outputs only after current provenance/leakage qualification",
+      "perturbational evidence only in the role prospectively assigned by its own contract"
+    ],
+    "forbidden_inputs": [
+      "Stage-4 primary Delta as a cell feature",
+      "Stage-4 p-value/LCB as a cell feature",
+      "recoverability TEST outcomes",
+      "Morabito protected validation outcome",
+      "TD60",
+      "disease/demographic/protected outcome used to choose state",
+      "dataset ID or donor ID encoded as biology"
+    ],
+    "training_unit_rule": "The teacher-state producer must emit a state aligned to the eventual student training unit. Phase-B donor/metacell audit artifacts are not automatically a training tensor.",
+    "observation_operator_rule": "physical acquisition descriptors may correct how evidence was observed; arbitrary source identity may not define biology",
+    "missingness_rule": "unavailable privileged evidence stays explicitly unavailable/masked and may widen uncertainty; it is not a measured zero"
+  },
+  "representation": {
+    "output_blocks": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_candidate"
+    ],
+    "recoverability_split_happens_after_teacher_construction": true,
+    "post_recoverability_blocks": [
+      "Z_reg_shared",
+      "Z_reg_private"
+    ],
+    "private_never_forced_into_student": true,
+    "rotation_and_basis": "When coordinate identity is not stable, authority attaches to the subspace/geometry. Coordinate-specific biological names require independent basis stability."
+  },
+  "evidence_fusion": {
+    "no_outcome_favorable_source_selection": true,
+    "source_registry_frozen_before_materialization": true,
+    "source_specific_uncertainty_preserved": true,
+    "source_disagreement": "reported/preserved rather than resolved by selecting the favorable modality",
+    "perturbation_role": "may anchor biological interpretation or validate state only if its split/lineage contract prevents target leakage; no automatic feature authority"
+  },
+  "required_receipts_before_materialization": [
+    "source registry with custody/provenance for every privileged evidence family",
+    "population/split receipt",
+    "feature lineage and observation-operator receipt",
+    "missingness/mask contract",
+    "basis/subspace stability plan",
+    "anti-collapse diagnostics",
+    "recoverability protocol already frozen"
+  ],
+  "current_state": {
+    "teacher_state_materialized": false,
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}

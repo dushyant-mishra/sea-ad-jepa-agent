@@ -1,0 +1,134 @@
+{
+  "schema": "V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVE_LOCK__EXECUTION_NOT_AUTHORIZED",
+  "factor": {
+    "id": "Z_priv_ATAC_V1",
+    "modality": "ATAC_ONLY",
+    "full_rank": 16,
+    "construction_scope": "TRAIN_ONLY",
+    "rna_enters_factor_construction": false
+  },
+  "source": {
+    "paired_subset_sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "canonical_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
+    "split_authority_resolution": "docs/agent/V65_NIHCARD_RECOVERABILITY_SPLIT_AUTHORITY_20260930.md",
+    "precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md"
+  },
+  "split": {
+    "train_donors": 16,
+    "validation_donors": 4,
+    "test_donors": 4,
+    "test_opened": false
+  },
+  "predictor": {
+    "type": "RIDGE",
+    "alpha_grid": [
+      0.01,
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "alpha_selection": "LEAVE_ONE_DONOR_OUT_CV_WITHIN_TRAIN_ONLY"
+  },
+  "candidate_shared_ranks": [
+    0,
+    2,
+    4,
+    8,
+    16
+  ],
+  "target_projection": {
+    "cross_covariance": "C = Z_true_train^T Z_pred_train",
+    "svd": "C = U S V^T",
+    "projector": "P_k = U[:, :k] U[:, :k]^T",
+    "applies_to": [
+      "Z_true",
+      "Z_pred"
+    ],
+    "validation_or_test_rotation": false,
+    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION",
+    "incremental_shells": {
+      "2": "S_2=P_2",
+      "4": "S_4=P_4-P_2",
+      "8": "S_8=P_8-P_4",
+      "16": "S_16=P_16-P_8"
+    },
+    "boundary_tie_tolerance": {
+      "relative": 1e-8,
+      "scale": "max(1, abs(s[k-1]), abs(s[k]))",
+      "consequence": "UNQUALIFIED_FOR_SELECTION"
+    }
+  },
+  "primary_metric": "DONOR_LEVEL_MULTIVARIATE_EXPLAINED_VARIANCE",
+  "delta_metric": "candidate_R2_multi - max(technical_baseline_R2_multi, global_RNA_baseline_R2_multi)",
+  "materiality": {
+    "median_delta_r2_min": 0.05,
+    "interpretation": "project decision margin, not universal biological threshold"
+  },
+  "permutation": {
+    "within_donor": true,
+    "permutations_per_donor": 10000,
+    "seed_rule": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>')",
+    "observed_must_exceed_percentile": 0.99,
+    "shared_sequence_scope": "ONE_DONOR_SPECIFIC_10000_PERMUTATION_INDEX_SEQUENCE_REUSED_FOR_R2_CCA_RELATIONAL_ALL_RANKS_AND_SHELLS"
+  },
+  "validation_rule": {
+    "all_4_donors_delta_positive": true,
+    "median_delta_r2_min": 0.05,
+    "all_4_candidate_r2_positive": true,
+    "all_4_permutation_gate": true,
+    "all_4_geometry_gate": true,
+    "technical_baseline_within_candidate_r2_forbidden_margin": 0.01,
+    "rank_choice": "LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD",
+    "if_none": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "no_skipping_failed_lower_rank": true,
+    "if_rank2_fails": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION",
+    "aggregate_and_incremental_shell_must_both_pass": true
+  },
+  "test_rule": {
+    "all_4_donors_delta_positive": true,
+    "median_delta_r2_min": 0.05,
+    "all_4_candidate_r2_positive": true,
+    "all_4_permutation_gate": true,
+    "all_4_geometry_gate": true,
+    "median_test_delta_at_least_fraction_of_validation": 0.5,
+    "retuning_after_open": false,
+    "aggregate_and_all_shells_through_selected_rank_must_pass": true
+  },
+  "classifications": {
+    "RNA_RECOVERABLE": "rank 16 selected on VALIDATION and confirmed on TEST",
+    "PARTIALLY_RNA_RECOVERABLE": "rank 2,4,8 selected on VALIDATION and confirmed on TEST",
+    "UNQUALIFIED": "no nonzero VALIDATION rank or locked rank fails TEST/shortcut gates",
+    "PRIVILEGED_PRIVATE": "NOT_ASSIGNABLE_BY_THIS_EXPERIMENT"
+  },
+  "governance": {
+    "execution_authorized": false,
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "multimodal_teacher": "NOT_AUTHORIZED"
+  },
+  "synthetic_qualification": {
+    "script": "scripts/v64/qualify_recoverability_decision_synthetic_v1.py",
+    "finding": "SMALLEST_ELIGIBLE misclassifies a monotone fully-recoverable nested factor as rank 2; repaired rule selects the largest contiguous eligible rank.",
+    "real_biological_values_used": false,
+    "incremental_shell_finding": "A 4-shared/12-private numerical fixture passed aggregate rank16 because shared variance dominated; incremental-shell gating added before any real paired outcome.",
+    "geometry_correction": "Principal-angle cosines of the same centered sample-space column spans duplicate canonical correlations; relational-geometry correlation is the second independent gate."
+  },
+  "geometry_gate": {
+    "canonical_correlation": "median canonical correlation > within-donor permutation 99th percentile",
+    "relational_geometry": "Pearson correlation of upper-triangle pairwise squared-distance vectors > within-donor permutation 99th percentile",
+    "principal_angles": "REPORTABLE_DIAGNOSTIC__NOT_INDEPENDENT_GATE_BECAUSE_EQUIVALENT_TO_CANONICAL_CORRELATIONS_FOR_THE_SAME_COLUMN_SPACES",
+    "applies_to": [
+      "aggregate_projection",
+      "incremental_shell"
+    ],
+    "canonical_implementation": "center; thin QR after dropping null columns; singular values of Q_true^T Q_pred; median",
+    "relational_implementation": "Pearson correlation of lexicographic upper-triangle squared-Euclidean pair-distance vectors",
+    "degenerate_geometry": "FAIL_CLOSED"
+  }
+}

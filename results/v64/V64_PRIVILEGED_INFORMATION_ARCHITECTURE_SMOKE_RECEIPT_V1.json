@@ -1,0 +1,43 @@
+{
+  "schema": "V64_PRIVILEGED_INFORMATION_ARCHITECTURE_SMOKE_RECEIPT_V1",
+  "date": "2026-09-30",
+  "status": "SYNTHETIC_SOFTWARE_SMOKE_PASS__NOT_BIOLOGICAL_EVIDENCE",
+  "seed": 20260930,
+  "design": {
+    "n_train": 2400,
+    "n_test": 1200,
+    "rna_features": 10,
+    "shared_dimensions": 4,
+    "private_dimensions": 4,
+    "shared_generation": "linear function of RNA plus small independent noise",
+    "private_generation": "independent Gaussian privileged factor",
+    "predictor": "ordinary least squares fit on TRAIN only"
+  },
+  "results": {
+    "shared_mean_r2": 0.9998952276297703,
+    "private_mean_r2": -0.005015473036918544,
+    "forced_full_state_mean_r2": 0.4974398772964259
+  },
+  "rotation_aware_smoke": {
+    "seed": 930,
+    "mean_principal_angle_cosine": 0.9999752957547778,
+    "minimum_principal_angle_cosine": 0.9999528365177357,
+    "interpretation": "A rotated recoverable shared subspace remains recoverable at subspace level; coordinate identity is not required."
+  },
+  "interpretation": [
+    "The architecture test distinguishes RNA-recoverable shared state from RNA-unrecoverable privileged-private state.",
+    "Forcing equal-variance shared and private factors into one compulsory target substantially lowers attainable full-state recovery.",
+    "The smoke test supports using rotation-aware recoverable subspaces rather than requiring coordinate identity."
+  ],
+  "limitations": [
+    "synthetic only",
+    "cell-random synthetic split only",
+    "no biological threshold qualified",
+    "no real NIH-CARD or FULL104 values used"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "V70_GSE214979_FULL104_STRUCTURAL_CROSSWALK_V1",
+  "date": "2026-10-01",
+  "status": "EXACT_IDENTITY_AND_MEASUREMENT_SUPPORT_CROSSWALK__NO_BIOLOGICAL_EFFECT",
+  "sources": {
+    "gse214979": {
+      "acquisition_receipt": "results/v64/V70_GSE214979_ROUTE_A_ACQUISITION_RECEIPT_V1.json",
+      "genes": 36601,
+      "genome_build": "hg38"
+    },
+    "full104": {
+      "canonical_addresses": 41238,
+      "address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "recurrence_artifact": "support/FOUNDATION_SUPPORT_ADDRESS_RECURRENCE.csv",
+      "official_support_reference": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_ATLAS_SUMMARY_V3.json"
+    }
+  },
+  "exact_identity": {
+    "matched_addresses": 35704,
+    "matched_fraction_of_gse_genes": 0.9754924728832546,
+    "matched_fraction_of_full104_addresses": 0.8658033852272177,
+    "unmatched_gse_gene_ids": 897,
+    "full104_addresses_not_exactly_covered": 5534,
+    "matched_identity_class_counts": {
+      "current_exact": 35445,
+      "legacy_exact": 259
+    },
+    "mapping_rule": "Exact molecular_address_id match only. Symbols are not used to rescue unmatched IDs."
+  },
+  "measurement_support": {
+    "semantics": "Counts below use FOUNDATION_SUPPORT_ADDRESS_RECURRENCE measurement-support fields, not contributing-source provenance.",
+    "HVS": {
+      "full104_any_measured_addresses": 18736,
+      "gse_exact_matched_any_measured": 17948,
+      "fraction_of_hvs_any_measured_covered": 0.9579419299743809,
+      "full104_all_operators_measured_addresses": 18736,
+      "gse_exact_matched_all_operators_measured": 17948,
+      "fraction_of_hvs_all_measured_covered": 0.9579419299743809,
+      "operators": 24
+    },
+    "NPH52": {
+      "full104_any_measured_addresses": 35098,
+      "gse_exact_matched_any_measured": 30203,
+      "fraction_of_nph52_any_measured_covered": 0.8605333637244288,
+      "full104_all_operators_measured_addresses": 29136,
+      "gse_exact_matched_all_operators_measured": 27015,
+      "fraction_of_nph52_all_measured_covered": 0.9272034596375618,
+      "operators": 7
+    },
+    "SEA_AD": {
+      "full104_any_measured_addresses": 35076,
+      "gse_exact_matched_any_measured": 35008,
+      "fraction_of_seaad_any_measured_covered": 0.9980613524917322,
+      "full104_all_operators_measured_addresses": 35076,
+      "gse_exact_matched_all_operators_measured": 35008,
+      "fraction_of_seaad_all_measured_covered": 0.9980613524917322,
+      "operators": 11
+    },
+    "all_three_source_families": {
+      "full104_measured_by_all_three": 17346,
+      "gse_exact_matched": 17345,
+      "coverage_fraction": 0.9999423498212845
+    },
+    "all_42_operators": {
+      "full104_measured_by_all_42": 17186,
+      "gse_exact_matched": 17185,
+      "coverage_fraction": 0.999941813103689
+    }
+  },
+  "provenance_vs_measurement_warning": {
+    "rule": "contributing_source_families in the canonical address registry is provenance, not measurement support. Do not substitute provenance contribution counts for measured-address support.",
+    "reason": "NPH52 and SEA-AD provenance counts differ from collision-resolved/operator measurement-support counts."
+  },
+  "interpretation": [
+    "GSE214979 Route-A has extremely broad gene-identity coverage of the common FULL104 vocabulary.",
+    "Coverage is highest for SEA-AD and common-across-source addresses; HVS is also broad, while NPH52 any-measured support is less complete.",
+    "This is structural vocabulary coverage only. It does not imply that any eRegulon has been inferred, qualified, biologically replicated, or RNA-recoverable.",
+    "Program-level coverage must be recomputed after Route-A/Route-B regulatory programs are frozen."
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "training": "OFF",
+    "recoverability_TEST": "SEALED"
+  }
+}

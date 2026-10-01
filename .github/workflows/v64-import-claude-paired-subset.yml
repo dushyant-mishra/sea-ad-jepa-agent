@@ -1,0 +1,34 @@
+name: V64 import Claude paired handoff subset
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/v64-import-claude-paired-subset.yml'
+  workflow_dispatch:
+
+jobs:
+  import-paired-subset:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch Claude successor ref
+        run: git fetch origin claude/v64-exact-sampler-successor-20260930
+      - name: Materialize exact handoff files from Claude successor
+        run: |
+          mkdir -p claude_v64_handoff
+          git show origin/claude/v64-exact-sampler-successor-20260930:results/v64/gpt_handoff_bundle/nihcard_paired_subset.npz > claude_v64_handoff/nihcard_paired_subset.npz
+          git show origin/claude/v64-exact-sampler-successor-20260930:results/v64/gpt_handoff_bundle/MANIFEST.json > claude_v64_handoff/MANIFEST.json
+          git show origin/claude/v64-exact-sampler-successor-20260930:results/v64/gpt_handoff_bundle/e2_edges_hg38_and_hg19.tsv.gz > claude_v64_handoff/e2_edges_hg38_and_hg19.tsv.gz
+          git show origin/claude/v64-exact-sampler-successor-20260930:results/v64/gpt_handoff_bundle/nott_promoter_annotation_hg19.csv.gz > claude_v64_handoff/nott_promoter_annotation_hg19.csv.gz
+          sha256sum claude_v64_handoff/*
+      - name: Upload exact Claude handoff subset
+        uses: actions/upload-artifact@v4
+        with:
+          name: v64-claude-paired-handoff-subset
+          path: claude_v64_handoff/
+          if-no-files-found: error
+          retention-days: 30

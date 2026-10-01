@@ -1,0 +1,79 @@
+{
+  "schema": "V66_STAGE4_AUTHORITY_LAYER_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "audited_head": "73193af41107f887382b65d714b477dc3a744ef2",
+  "stage4_authorized": false,
+  "correspondence_opened": false,
+  "verdict": "STRUCTURAL_AUDIT_PASS__CI_PENDING__STAGE4_STILL_SEALED",
+  "supersession_chain": {
+    "V1": {
+      "path": "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json",
+      "status": "SUPERSEDED",
+      "defects_found": [
+        "under-bound Phase-B semantic custody",
+        "validator permitted arbitrary replacement --contract",
+        "validator exposed --skip-file-hashes-for-tests capable of bypassing custody"
+      ]
+    },
+    "V2": {
+      "path": "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json",
+      "status": "SUPERSEDED",
+      "defects_found": [
+        "E2 table was bound by uncompressed-content SHA while generic validator computes raw-file SHA, making that binding semantically non-executable without special handling"
+      ]
+    },
+    "V3": {
+      "path": "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json",
+      "status": "CURRENT_PROSPECTIVE_AUTHORITY",
+      "corrections": [
+        "binds correspondence, statistical, substrate, Phase-A, B6, T5, availability, R3, aggregate, closeout, enumeration, E2 gzip, consensus-peak and eight shard digests",
+        "binds Phase-B aggregate and exact structural counts",
+        "binds metacell/support constants and seeds",
+        "uses raw-file SHA semantics for every file binding"
+      ]
+    }
+  },
+  "validator_current": {
+    "path": "scripts/v64/validate_stage4_execution_authority_v1.py",
+    "contract_path_fixed_to_v3": true,
+    "arbitrary_contract_override_removed": true,
+    "hash_skip_mode_removed": true,
+    "v3_parent_counts_enforced": true,
+    "v3_metacell_and_support_constants_enforced": true,
+    "successful_verdict_is_non_authorizing": "READY_FOR_INDEPENDENT_AUDIT__STAGE4_STILL_NOT_AUTHORIZED"
+  },
+  "mutation_tests": {
+    "path": "tests/v64/test_stage4_execution_authority_validator_v1.py",
+    "current_contract": "V3",
+    "covers": [
+      "self-authorization rejection",
+      "correspondence-open rejection",
+      "outcome-field rejection",
+      "primary-weighting drift",
+      "bootstrap-unit drift",
+      "bootstrap-count drift",
+      "R3 semantic drift",
+      "state-vocabulary drift",
+      "NOT_MEASURED zero-fill drift",
+      "metacell-count drift",
+      "metacell-seed drift",
+      "interval-count drift",
+      "preauthorization execution-action rejection"
+    ]
+  },
+  "ci": {
+    "workflow": "V64 privileged-information architecture smoke",
+    "run_id": 36812642811,
+    "status_at_audit_write": "queued",
+    "qualification_rule": "Do not upgrade this audit to TESTED_PASS until the exact-head workflow executes and the Stage-4 mutation test is observed passing."
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence_opened": false,
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}

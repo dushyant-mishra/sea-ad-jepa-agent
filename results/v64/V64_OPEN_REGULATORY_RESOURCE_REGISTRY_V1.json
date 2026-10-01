@@ -1,0 +1,107 @@
+{
+  "schema": "V64_OPEN_REGULATORY_RESOURCE_REGISTRY_V1",
+  "date": "2026-09-30",
+  "status": "ACCESS_AND_TERMS_REGISTRY__NO_DATA_INGESTED",
+  "resources": [
+    {
+      "id": "FANTOM5_CAGE",
+      "role": "PROMOTER_TSS_ACTIVITY_EVIDENCE",
+      "access": "OPEN_DIRECT_DOWNLOAD",
+      "license_terms": "CC_BY_4_0",
+      "license_scope": "FANTOM5/FANTOM6 data by RIKEN as stated on FANTOM5 data page",
+      "locator": "https://fantom.gsc.riken.jp/5/data/",
+      "core_dependency_allowed": true
+    },
+    {
+      "id": "GENCODE",
+      "role": "BASE_TRANSCRIPT_TSS_CANDIDATE_UNIVERSE",
+      "access": "OPEN_DIRECT_DOWNLOAD",
+      "license_terms": "OPEN_ACCESS_STATED__DATA_LICENSE_NOT_SEPARATELY_VERIFIED",
+      "license_scope": "GENCODE data-access page states project data are open access; do not infer article CC-BY automatically licenses every data file",
+      "locator": "https://www.gencodegenes.org/pages/data_access.html",
+      "core_dependency_allowed": true
+    },
+    {
+      "id": "ENCODE_SCREEN_CCRE",
+      "role": "REGULATORY_ELEMENT_COORDINATE_AND_CLASSIFICATION_EVIDENCE",
+      "access": "PUBLIC_DOWNLOAD",
+      "license_terms": "DATA_TERMS_NOT_VERIFIED",
+      "license_scope": "SCREEN states all data are publicly available for download; MIT notices found for cCRE pipeline code do not establish the data license",
+      "locator": "https://screen.wenglab.org/about",
+      "core_dependency_allowed": true,
+      "independence_note": "Annotation/activity evidence; not automatically independent of ATAC/activity-derived evidence."
+    },
+    {
+      "id": "DONG_ROUSSOS_MULTIREGION_BRAIN_ATLAS_SUPPLEMENT",
+      "role": "BRAIN_PROMOTER_ISOFORM_AND_PROMOTER_RESOLVED_LINK_EVIDENCE",
+      "access": "OPEN_ARTICLE_SUPPLEMENT",
+      "license_terms": "CC_BY_4_0_FOR_ARTICLE_AND_INCLUDED_SUPPLEMENT_UNLESS_SEPARATELY_CREDITED",
+      "locator": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584674/",
+      "core_dependency_allowed": true
+    },
+    {
+      "id": "GSE211826",
+      "role": "PUBLIC_RAW_PROCESSED_INPUTS_FOR_MULTIREGION_BRAIN_ATLAS",
+      "access": "PUBLIC_GEO_DOWNLOAD",
+      "license_terms": "REPOSITORY_PUBLIC_ACCESS__REUSE_TERMS_NOT_ASSUMED",
+      "locator": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE211826",
+      "core_dependency_allowed": true
+    },
+    {
+      "id": "EQTL_CATALOGUE",
+      "role": "GENETIC_ASSOCIATION_EVIDENCE",
+      "access": "OPEN_FTP_DOWNLOAD",
+      "license_terms": "CC_BY_4_0_DATA",
+      "locator": "https://www.ebi.ac.uk/eqtl/Data_access/",
+      "license_locator": "https://www.ebi.ac.uk/eqtl/License/",
+      "core_dependency_allowed": true
+    },
+    {
+      "id": "SCARLINK_CODE",
+      "role": "PAIRED_RNA_ATAC_ESTIMATOR",
+      "access": "PUBLIC_GITHUB",
+      "license_terms": "MIT",
+      "locator": "https://github.com/snehamitra/SCARlink",
+      "core_dependency_allowed": true,
+      "evidence_family_note": "Same NIH-CARD paired-observational family as other estimators run on the same cells."
+    },
+    {
+      "id": "SCENT_CODE",
+      "role": "PAIRED_RNA_ATAC_ESTIMATOR",
+      "access": "PUBLIC_GITHUB",
+      "license_terms": "MIT",
+      "locator": "https://github.com/immunogenomics/SCENT",
+      "core_dependency_allowed": true,
+      "evidence_family_note": "Estimator robustness versus SCARlink, not an independent measurement family when run on the same NIH-CARD cells."
+    },
+    {
+      "id": "NOTT_PROCESSED_REGULATORY_FILES",
+      "role": "STRUCTURAL_CONTACT_AND_CELL_TYPE_REGULATORY_EVIDENCE",
+      "access": "PUBLIC_DOWNLOAD",
+      "license_terms": "TERMS_UNKNOWN",
+      "locator": "https://nottgroup.com/resources.html",
+      "core_dependency_allowed": true,
+      "note": "Public availability is not recorded as a license grant. Existing project custody/provenance remains authoritative for exact artifacts."
+    },
+    {
+      "id": "GSE120861_GASPERINI_CRISPRI",
+      "role": "INTERVENTIONAL_ENHANCER_GENE_BENCHMARK",
+      "access": "PUBLIC_GEO_DOWNLOAD",
+      "license_terms": "REPOSITORY_PUBLIC_ACCESS__REUSE_TERMS_NOT_ASSUMED",
+      "locator": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE120861",
+      "core_dependency_allowed": true,
+      "note": "Not brain-specific; use as perturbational calibration/validation, not brain regulatory truth."
+    }
+  ],
+  "forbidden_assumptions": [
+    "PUBLIC_DOWNLOAD_IMPLIES_OPEN_LICENSE",
+    "OPEN_ACCESS_ARTICLE_LICENSE_AUTOMATICALLY_LICENSES_ALL_EXTERNAL_DEPOSITED_RAW_DATA",
+    "OPEN_SOURCE_ESTIMATOR_CREATES_INDEPENDENT_EVIDENCE_FAMILY"
+  ],
+  "governance": {
+    "training": "OFF",
+    "data_ingested": false,
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED"
+  }
+}

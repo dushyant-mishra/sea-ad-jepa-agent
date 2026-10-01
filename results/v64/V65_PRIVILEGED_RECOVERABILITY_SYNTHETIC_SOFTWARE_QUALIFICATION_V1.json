@@ -1,0 +1,144 @@
+{
+  "schema": "V65_PRIVILEGED_RECOVERABILITY_SYNTHETIC_SOFTWARE_QUALIFICATION_V1",
+  "date": "2026-09-30",
+  "status": "QUALIFIED_SYNTHETIC_SOFTWARE_AND_DECISION_MECHANICS_ONLY__REAL_PAIRED_EXECUTION_NOT_AUTHORIZED",
+  "qualified_head": "a0b8384ea77f9d961f66c86e0980538dcea64e62",
+  "ci": {
+    "workflow": "V64 privileged-information architecture smoke",
+    "run_id": 36799926865,
+    "job_id": 110171732286,
+    "conclusion": "success",
+    "tests_passed": 110,
+    "tests_failed": 0,
+    "runtime_seconds": 7.94
+  },
+  "canonical_authority": {
+    "precision_contract": {
+      "path": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md",
+      "git_blob": "3d8504a3879db6fd41ff9d05b8e8a5379c3c3e0e",
+      "role": "SOLE_LIVE_DECISION_AUTHORITY"
+    },
+    "decision_state": {
+      "path": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json",
+      "git_blob": "4861dd0f9151382d36abf95d1cd177af4ca05c20"
+    }
+  },
+  "synthetic_software_artifacts": [
+    {
+      "path": "scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py",
+      "git_blob": "beeb3ce84b19753ec77e7674a6d6ec4f62e7ae39",
+      "qualifies": [
+        "largest-contiguous nested rank selection",
+        "aggregate plus incremental-shell gating",
+        "VALIDATION median materiality semantics",
+        "TEST confirmation without VALIDATION-only technical-margin leakage",
+        "TEST cannot rescue VALIDATION failure or retune rank",
+        "rank-boundary tie fails closed"
+      ]
+    },
+    {
+      "path": "scripts/v64/privileged_recoverability_numerical_synthetic_smoke_v1.py",
+      "git_blob": "eb66ff10a4bb7e4b6a6a82188bb498cab8b0081e",
+      "qualifies": [
+        "TRAIN-only ridge/PCA/projector numerical path on synthetic data",
+        "full shared synthetic factor can reach rank 16",
+        "partial shared/private synthetic factor is prevented from reaching full rank by shell gating",
+        "technical-only synthetic target fails against shortcut baseline"
+      ]
+    },
+    {
+      "path": "scripts/v64/privileged_recoverability_permutation_geometry_smoke_v1.py",
+      "git_blob": "aa80c2d6535d51e9279bd6e0818a4b65966863db",
+      "qualifies": [
+        "deterministic donor-specific SHA256-to-PCG64 permutation machinery",
+        "pairing R2 null mechanics",
+        "canonical-correlation geometry mechanics",
+        "relational pairwise-squared-distance geometry mechanics",
+        "broken-pairing synthetic negative control"
+      ]
+    },
+    {
+      "path": "scripts/v64/audit_recoverability_geometry_gate_redundancy_v1.py",
+      "git_blob": "52f9ca88716bd13241d626d1688e3b6d3e6b40dd",
+      "qualifies": [
+        "mathematical redundancy of canonical correlations and principal-angle cosines on same centered column spaces",
+        "need for a distinct second geometry object"
+      ]
+    }
+  ],
+  "prospectively_discovered_and_repaired_before_real_outcome": [
+    {
+      "finding": "SMALLEST_ELIGIBLE_RANK_DEFECT",
+      "consequence": "Nested factors would generally select rank 2 even when all dimensions through rank 16 were recoverable.",
+      "repair": "Largest contiguous eligible rank from 2 upward; no skipping failed lower rank."
+    },
+    {
+      "finding": "AGGREGATE_R2_CAN_HIDE_PRIVATE_HIGHER_DIMENSIONS",
+      "consequence": "A 4-shared/12-private synthetic target could pass aggregate rank-16 recovery because lower-rank shared variance dominated.",
+      "repair": "Every candidate rank must pass both aggregate P_k and incremental shell S_k; TEST confirms all shells through selected rank."
+    },
+    {
+      "finding": "REDUNDANT_GEOMETRY_GATE",
+      "consequence": "Canonical correlations and principal-angle cosines of the same centered column spaces counted the same singular values twice.",
+      "repair": "G1 canonical alignment retained; G2 replaced by permutation-calibrated relational pairwise-squared-distance correlation."
+    },
+    {
+      "finding": "DECISION_ENGINE_MATERIALITY_DRIFT",
+      "consequence": "Synthetic engine initially applied median 0.05 materiality as a per-donor threshold.",
+      "repair": "All donor deltas must be positive; 0.05 applies to donor median only."
+    },
+    {
+      "finding": "TEST_GATE_DRIFT",
+      "consequence": "Synthetic engine initially leaked VALIDATION-only 0.01 technical-margin gate into TEST.",
+      "repair": "TEST follows the frozen TEST requirements exactly and cannot retune."
+    }
+  ],
+  "current_frozen_decision_summary": {
+    "factor": "Z_priv_ATAC_V1",
+    "privileged_modality": "ATAC_ONLY",
+    "full_rank": 16,
+    "candidate_ranks": [
+      0,
+      2,
+      4,
+      8,
+      16
+    ],
+    "selection": "LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD",
+    "shells": {
+      "2": "S2=P2",
+      "4": "S4=P4-P2",
+      "8": "S8=P8-P4",
+      "16": "S16=P16-P8"
+    },
+    "median_delta_r2_min": 0.05,
+    "validation_donors": 4,
+    "test_donors": 4,
+    "permutations_per_donor": 10000,
+    "permutation_rng": "numpy.random.Generator(numpy.random.PCG64(seed_uint64))",
+    "quantile": "numpy.quantile(null, 0.99, method='higher')",
+    "geometry_G1": "median canonical correlation",
+    "geometry_G2": "Pearson correlation of upper-triangle pairwise squared Euclidean distance vectors",
+    "boundary_tie_relative_tolerance": 1e-8
+  },
+  "explicitly_not_qualified": [
+    "any real NIH-CARD RNA-to-ATAC recoverability result",
+    "any biological interpretation of Z_priv_ATAC_V1",
+    "RNA_RECOVERABLE or PARTIALLY_RNA_RECOVERABLE classification on real data",
+    "PRIVILEGED_PRIVATE classification",
+    "opening TEST donors",
+    "multimodal teacher construction",
+    "JEPA training",
+    "Phase B or Stage 4 correspondence"
+  ],
+  "real_paired_values_opened": false,
+  "test_donors_opened": false,
+  "execution_authorized": false,
+  "training": "OFF",
+  "governance": {
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}

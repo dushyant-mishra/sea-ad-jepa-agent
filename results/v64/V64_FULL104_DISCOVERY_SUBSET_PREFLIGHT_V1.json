@@ -1,0 +1,106 @@
+{
+  "schema": "V64_FULL104_DISCOVERY_SUBSET_PREFLIGHT_V1",
+  "date": "2026-09-30",
+  "status": "STRUCTURAL_PREFLIGHT_PASS__NO_BIOLOGICAL_TARGET_OUTCOME_COMPUTED",
+  "source": {
+    "library_path": "/Jepa project/full104_discovery_subset.npz",
+    "library_file_id": "libfile_a39d2b26c0688191af5a0c08c949a202",
+    "bytes": 50646637,
+    "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+    "claude_manifest_expected_sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+    "hash_matches_claude_manifest": true
+  },
+  "sampling_design": {
+    "seed": 20260930,
+    "stratification": "round-robin over (source, donor, operator) strata",
+    "interpretation": "coverage/discovery subset, not a natural-prevalence sample",
+    "population_prevalence_estimation_allowed": false
+  },
+  "shape": {
+    "cells": 6000,
+    "donors": 104,
+    "sources": 3,
+    "operators": 42,
+    "addresses": 17186,
+    "nnz": 21750141,
+    "density": 0.21092886651925985
+  },
+  "address_space": {
+    "local_col_min": 0,
+    "local_col_max": 17185,
+    "backbone_address_index_length": 17186,
+    "backbone_address_index_unique": 17186,
+    "zero_observed_local_addresses_in_subset": 0,
+    "meaning": "local sparse-matrix columns index the 17,186 common-address subset; backbone_address_index maps local columns to the larger global address namespace"
+  },
+  "values": {
+    "declared_representation": "log1p10k normalised, q-safe; NOT raw counts",
+    "observed_nonzero_min": 0.03932158648967743,
+    "observed_nonzero_max": 8.08130168914795,
+    "fraction_nonzeros_integer_valued": 0.0000023448123853541914,
+    "consistent_with_declared_log_transformed_representation": true
+  },
+  "cell_identity": {
+    "cell_ids_unique": 6000,
+    "cell_ids_total": 6000
+  },
+  "source_breakdown": {
+    "HVS": {"cells": 3525, "donors": 41, "operators": 24},
+    "NPH52": {"cells": 621, "donors": 17, "operators": 7},
+    "SEA_AD": {"cells": 1854, "donors": 46, "operators": 11}
+  },
+  "source_sample_breakdown": {
+    "HVS__A_NATURAL_MIXTURE": 1035,
+    "HVS__B_COVERAGE_DISCOVERY": 2490,
+    "NPH52__A_NATURAL_MIXTURE": 433,
+    "NPH52__B_COVERAGE_DISCOVERY": 188,
+    "SEA_AD__A_NATURAL_MIXTURE": 1853,
+    "SEA_AD__B_COVERAGE_DISCOVERY": 1
+  },
+  "operator_source_structure": {
+    "sum_source_unique_operator_counts": 42,
+    "global_unique_operators": 42,
+    "note": "operator is nested within source in this discovery subset; source/operator effects cannot be treated as independent axes without the existing observation-operator design"
+  },
+  "sparsity": {
+    "nnz_per_cell_quantiles": {
+      "min": 162,
+      "p25": 2255,
+      "median": 3502.5,
+      "p75": 4790.75,
+      "p90": 5978.2,
+      "p99": 7930,
+      "max": 10534
+    },
+    "nnz_per_address_quantiles": {
+      "min": 5,
+      "p25": 473,
+      "median": 1041,
+      "p75": 1857,
+      "p90": 2705,
+      "p99": 3933.15,
+      "max": 5258
+    }
+  },
+  "canonical_outer_split": {
+    "existing_split_id": "SOURCE_STRATIFIED_DONOR_HELD_OUT_V1",
+    "n_folds": 4,
+    "fold_sizes_donors": [28,26,25,25],
+    "source_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "rule": "Do not invent a new FULL104 donor split for this discovery subset; reuse the pre-existing canonical 104-donor fold authority for future transport tests."
+  },
+  "explicitly_not_computed": [
+    "teacher/student target performance",
+    "regulatory recoverability",
+    "RNA-ATAC correspondence",
+    "E2 coverage fraction using address denominator",
+    "protected pathology outcome",
+    "terminal masking outcome"
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED"
+  }
+}

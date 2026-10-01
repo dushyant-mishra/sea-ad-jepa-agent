@@ -1,0 +1,120 @@
+{
+  "schema": "V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1",
+  "date": "2026-10-01",
+  "status": "PROSPECTIVE_DESIGN_ONLY__NO_REAL_MULTIMODAL_TRAINING_AUTHORITY",
+  "purpose": "Freeze how qualified privileged evidence may define teacher state, how RNA-recoverable state may supervise the student, and how privileged-only state is kept private.",
+  "topology": {
+    "teacher_state": "Z_global ⊕ Z_query ⊕ Z_reg_shared ⊕ Z_reg_private",
+    "rna_student_target": "Z_global ⊕ Z_query ⊕ Z_reg_shared",
+    "forbidden_student_target": "Z_reg_private",
+    "student_inference_inputs": [
+      "lawful RNA evidence",
+      "query/address information already authorized by the RNA architecture",
+      "lawful observation-operator descriptors if prospectively qualified"
+    ],
+    "forbidden_student_inference_inputs": [
+      "ATAC",
+      "SCENIC+ privileged outputs",
+      "Stage-4 correspondence outputs",
+      "privileged perturbation outcomes",
+      "dataset identity as biology",
+      "Z_reg_private"
+    ]
+  },
+  "lane_roles": {
+    "stage4_lane": "Establish whether real frozen RNA×ATAC correspondence evidence is interpretable under prospective statistics and custody. It produces evidence objects, not model inputs.",
+    "architecture_lane": "Establish software semantics for shared/private state, missing privileged evidence, observation operators, anti-collapse, and evidence/measurement uncertainty. Synthetic passes do not create biological authority.",
+    "integration_boundary": "Only independently qualified privileged evidence may enter teacher-state construction, and only the RNA-recoverable projection of that teacher state may supervise the RNA student."
+  },
+  "privileged_source_registry": {
+    "stage4_rna_atac": {
+      "current_status": "SEALED__NOT_YET_EXECUTED",
+      "eligibility_rule": "May enter teacher-state construction only if Stage-4 execution is separately authorized, executed once under the frozen contract, and its anti-false-green/interpretability gates permit biological interpretation.",
+      "if_interpretable_null": "May contribute null/uncertainty information but may not be promoted as positive regulatory signal.",
+      "if_uninterpretable": "Excluded from teacher regulatory signal; preserve failure receipt."
+    },
+    "scenic_plus": {
+      "current_status": "HISTORICAL_OR_SUPPORTING_ONLY_UNTIL_CURRENT_LINEAGE_IS_AUDITED",
+      "eligibility_rule": "Requires an explicit current-source/provenance contract and leakage audit before teacher-state use."
+    },
+    "perturbation_etl": {
+      "current_status": "AVAILABLE_SUPPORTING_EVIDENCE__NOT_AUTOMATIC_TEACHER_AUTHORITY",
+      "eligibility_rule": "May constrain or validate biological interpretation only under an explicit lineage/split contract; no protected outcome may select representation."
+    },
+    "other_privileged_modalities": {
+      "current_status": "NOT_AUTHORIZED_BY_THIS_CONTRACT",
+      "eligibility_rule": "Each source requires its own custody, leakage, population and observation-operator qualification."
+    }
+  },
+  "teacher_state_construction": {
+    "must_be_frozen_before": [
+      "recoverability TEST is opened",
+      "real multimodal training begins"
+    ],
+    "source_inclusion_rule": "prospective source registry only; no choosing modalities because their observed downstream result is favorable",
+    "source_normalization_rule": "source-specific observation operators may correct measurement realization but may not encode arbitrary dataset/donor identity as biological state",
+    "missing_privileged_evidence": "represented explicitly as unavailable/masked with uncertainty; never silently zero-filled as measured biology",
+    "rotation_rule": "state authority attaches to subspaces/geometry where coordinates are non-identifiable; arbitrary latent rotations are not scientific changes",
+    "anti_collapse_required": true
+  },
+  "recoverability_protocol": {
+    "objective": "Determine which components/subspaces of the richer teacher regulatory state are predictably recoverable from lawful RNA evidence.",
+    "selection_data": [
+      "TRAIN",
+      "VALIDATION"
+    ],
+    "sealed_data": [
+      "recoverability TEST"
+    ],
+    "unit_of_split": "donor first; source/study/technology held out where feasible and prospectively declared",
+    "student_inputs": "RNA-side lawful evidence only; no privileged values, masks that reveal protected outcomes, or future teacher values",
+    "target_candidates": "teacher regulatory subspaces constructed without recoverability TEST",
+    "primary_recoverability_evidence": [
+      "donor-held-out prediction of teacher-state geometry/subspace",
+      "increment over technical/QC-only baseline",
+      "increment over generic-cell/RNA baseline that lacks the candidate privileged target",
+      "source/study/technology transfer where available",
+      "evidence-response and measurement-response diagnostics kept distinct"
+    ],
+    "rotation_robust_metrics": [
+      "canonical correlation/subspace similarity",
+      "Procrustes-aligned error",
+      "principal-angle diagnostics"
+    ],
+    "coordinate_metrics_role": "supporting only when basis stability has independently justified coordinate interpretation",
+    "selection_rule": "A component/subspace enters Z_reg_shared only when its donor-held-out recoverability has positive validation evidence above lawful baselines and the result is not explained by technical/source shortcuts. No minimum real biological effect size is invented prospectively without scale authority.",
+    "private_rule": "Anything not qualified as recoverable remains Z_reg_private; failure to recover is not converted to a zero target.",
+    "uncertainty_rule": "When privileged evidence is absent or a state component is not identifiable from RNA, student uncertainty must reflect that limitation rather than confident imputation.",
+    "test_rule": "TEST is opened once only after target construction, recoverability algorithm, baselines, metrics, selection rule and reporting format are frozen; TEST does not tune the projection."
+  },
+  "training_authorization_gates": [
+    "Stage-4 outcome, if used, has separately passed execution and interpretation authority",
+    "all privileged source lineages used by teacher are enumerated and frozen",
+    "teacher-state construction artifact is immutable",
+    "recoverability TRAIN/VALIDATION qualification is complete",
+    "Z_reg_shared and Z_reg_private are explicitly versioned",
+    "student input schema contains no privileged modalities",
+    "missing/private state semantics are explicit",
+    "observation-operator descriptors are prospectively lawful",
+    "anti-collapse and shortcut diagnostics are active",
+    "recoverability TEST remains sealed until the prospective test authorization step"
+  ],
+  "forbidden_shortcuts": [
+    "predicting privileged modality values and calling that biological state without a state contract",
+    "forcing Z_reg_private into the RNA student loss",
+    "choosing the privileged source or latent dimension after seeing recoverability TEST",
+    "using dataset ID, donor ID or protected outcome as a biological feature",
+    "zero-filling unavailable privileged state and treating zero as measured",
+    "promoting synthetic fixture thresholds to production thresholds",
+    "using Stage-4 significance alone as model-training authority"
+  ],
+  "current_governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "real_multimodal_training": "OFF",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED",
+    "recoverability_TEST": "SEALED"
+  }
+}

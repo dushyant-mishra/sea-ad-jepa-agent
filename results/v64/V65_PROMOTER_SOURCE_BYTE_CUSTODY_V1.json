@@ -1,0 +1,66 @@
+{
+  "schema": "V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1",
+  "date": "2026-09-30",
+  "status": "EXACT_BYTES_FETCHED_AND_VALIDATED_IN_GITHUB_ACTIONS__DOWNLOADED_AND_INDEPENDENTLY_HASHED_IN_CHAT_RUNTIME",
+  "workflow": {
+    "run_id": 36796557671,
+    "head_sha": "0cf8ec6aeb3a7acb40ea67c6cacf79d349a1517c",
+    "artifact_id": 11134036899,
+    "artifact_name": "v64-open-promoter-regulatory-resources",
+    "artifact_zip_sha256": "ad36c5569cb9fed59a5c798a33e33fac0913838860860e6af20b0565a4c3524e"
+  },
+  "sources": {
+    "gencode_v50": {
+      "bytes": 124527720,
+      "sha256": "83fba3e9b03f0b8c958f3595c6c350adc55f468abf8b0e47b6d5284cfe13a453",
+      "transcript_rows": 644292,
+      "genes": 78733,
+      "exact_tss_loci_independently_recomputed": 389280
+    },
+    "fantom5_hg38_cage": {
+      "bytes": 5500816,
+      "sha256": "7e007c3e1fd7a2e24404ad9d5a57d27f76cd7920a6fdc1acaa06b5c4fcfcb018",
+      "rows": 209911
+    },
+    "screen_registry_v4_pls": {
+      "bytes": 2560167,
+      "sha256": "65443e5ace6db2f1cb067616afc426510cdb8b9ed7e890f2a29b52cd0b15533b",
+      "rows": 47532,
+      "data_license_status": "NOT_VERIFIED"
+    },
+    "dong_data7": {
+      "bytes": 5581197,
+      "sha256": "6a46fd3bfdff213ca11111975ef01958be8238c349559e90dca43e5857a1d1dd",
+      "data_rows": 118121,
+      "unique_transcript_ids": 118033,
+      "duplicate_transcript_ids": 88,
+      "duplicate_extra_rows": 88
+    },
+    "dong_data9": {
+      "bytes": 261104,
+      "sha256": "0d8b9e38c8a6502bd5a4851ffe408ad43771b5591ea5282c9547acd1c1bb5076"
+    }
+  },
+  "validation": {
+    "github_actions_items_valid": 5,
+    "github_actions_items_failed": 0,
+    "github_actions_pass": true,
+    "independent_chat_runtime_checks": [
+      "artifact ZIP sha256 matched GitHub artifact digest",
+      "all five source sha256 values matched fetch receipt",
+      "GENCODE transcript/gene/exact-TSS denominators recomputed from exact GTF bytes",
+      "Dong Data 7 row/unique/duplicate transcript structure recomputed from exact XLSX bytes"
+    ]
+  },
+  "interpretation": {
+    "gencode_transcript_records": 644292,
+    "gencode_exact_tss_loci": 389280,
+    "rule": "Transcript/promoter-isoform records and exact TSS loci are linked denominators, not competing counts.",
+    "evidence_rule": "SCREEN, FANTOM and Dong annotate GENCODE candidates and do not define candidate existence."
+  },
+  "governance": {
+    "training": "OFF",
+    "promoter_selection_executed": false,
+    "biological_correspondence_opened": false
+  }
+}

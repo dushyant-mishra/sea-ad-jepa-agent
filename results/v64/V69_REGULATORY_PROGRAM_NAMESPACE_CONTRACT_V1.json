@@ -1,0 +1,58 @@
+{
+  "schema": "V69_REGULATORY_PROGRAM_NAMESPACE_CONTRACT_V1",
+  "date": "2026-10-01",
+  "status": "PROSPECTIVE_STRUCTURAL_NAMESPACE__NO_BIOLOGICAL_OUTCOME",
+  "purpose": "Define the immutable identity object used to carry external regulatory programs across SCENIC+, NIH-CARD Stage 4, Morabito, SEA-AD multiome, perturbation, spatial and FULL104 transport.",
+  "required_fields": [
+    "program_id",
+    "program_version",
+    "definition_source",
+    "tf_ids",
+    "target_gene_ids",
+    "region_ids",
+    "region_build",
+    "construction_population",
+    "construction_method",
+    "membership_sha256",
+    "status"
+  ],
+  "identity_rules": [
+    "program_id identifies a biological/regulatory program family; program_version changes whenever membership or region identity changes",
+    "membership_sha256 is calculated from canonical sorted TF, gene and region memberships and therefore changes on any membership mutation",
+    "region_build is mandatory whenever region_ids is non-empty",
+    "liftover never mutates the original program version; converted coordinates are a derived mapping artifact with its own receipt",
+    "ambiguous gene or TF identifiers remain unresolved rather than guessed",
+    "Route-A submitted-peak and Route-B fragment-reconstructed networks are distinct definition_source values even if later judged biologically concordant",
+    "Stage-4 outcomes, Morabito outcomes, perturbation outcomes and recoverability TEST may not alter program membership after freeze"
+  ],
+  "canonical_membership_serialization": {
+    "format": "UTF-8 lines",
+    "lines": [
+      "PROGRAM_ID=<program_id>",
+      "PROGRAM_VERSION=<program_version>",
+      "TF=<sorted stable TF identifiers, comma separated>",
+      "GENE=<sorted stable target gene identifiers, comma separated>",
+      "REGION=<sorted canonical region strings, comma separated>",
+      "REGION_BUILD=<region_build>"
+    ],
+    "sha256_role": "membership identity only; not a claim of biological validity"
+  },
+  "allowed_definition_sources": [
+    "GSE214979_SCENICPLUS_SUBMITTED_PEAKS",
+    "GSE214979_SCENICPLUS_FRAGMENT_CONSENSUS",
+    "AUDITED_EXTERNAL_REGULATORY_METHOD_OTHER"
+  ],
+  "status_values": [
+    "DRAFT",
+    "FROZEN_STRUCTURAL",
+    "QUALIFIED_PROGRAM",
+    "RETIRED_SUPERSEDED"
+  ],
+  "forbidden": [
+    "changing membership after protected validation outcomes are inspected without creating a new version",
+    "using Stage-4 Delta/LCB/p-value to define or prune membership",
+    "using Morabito agreement to define or prune membership",
+    "using perturbation outcome agreement to define or prune membership",
+    "pooling distinct source-specific program definitions and calling them one frozen network without an explicit reconciliation artifact"
+  ]
+}

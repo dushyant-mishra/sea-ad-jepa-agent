@@ -1,0 +1,226 @@
+name: V64 privileged-information architecture smoke
+
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/V64_*'
+      - 'docs/agent/V65_*'
+      - 'docs/agent/V6[6-9]_*'
+      - 'docs/agent/V70_*'
+      - 'docs/agent/JEPA_V67_STATE_ADDENDUM_20261001.md'
+      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER.json'
+      - 'docs/agent/JEPA_HANDOFF_STATE_20260930_V66.json'
+      - 'results/v64/V64_*'
+      - 'results/v64/V65_*'
+      - 'results/v64/V6[6-9]_*'
+      - 'results/v64/V70_*'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json'
+      - 'tests/test_v67_privileged_teacher_state_construction_contract.py'
+      - 'tests/test_v67_two_lane_integration_recoverability_contract.py'
+      - 'tests/test_v67_evidence_vs_measurement_response.py'
+      - 'scripts/v64/evidence_vs_measurement_response_synthetic_v1.py'
+      - 'results/v64/V67_PRIVILEGED_TEACHER_STATE_CONSTRUCTION_CONTRACT_V1.json'
+      - 'results/v64/V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_MAP_V1.json'
+      - 'tests/test_v69_multisource_regulatory_evidence_stack.py'
+      - 'scripts/v64/validate_multisource_regulatory_evidence_stack_v1.py'
+      - 'results/v64/V69_STAGE4_MULTISOURCE_ADAPTER_PLAN_V1.json'
+      - 'results/v64/V69_REGULATORY_PROGRAM_EVIDENCE_RECORD_SCHEMA_V1.json'
+      - 'results/v64/V69_STAGE4_MULTISOURCE_EVIDENCE_INTEGRATION_CONTRACT_V1.json'
+      - 'docs/agent/V70_MACHA_SCENICPLUS_RETURN_AUDIT_CHECKLIST_20261001.md'
+      - 'tests/test_v70_teacher_candidate_end_to_end_synthetic.py'
+      - 'tests/test_v70_teacher_regulatory_candidate_gate.py'
+      - 'scripts/v64/teacher_regulatory_candidate_gate_v1.py'
+      - 'results/v64/V70_TEACHER_REGULATORY_CANDIDATE_SELECTION_CONTRACT_V1.json'
+      - 'tests/test_v70_gse214979_acquisition_receipts.py'
+      - 'results/v64/V70_SCENICPLUS_MOTIF_RESOURCE_RECEIPT_V1.json'
+      - 'results/v64/V70_GSE214979_ROUTE_A_ACQUISITION_RECEIPT_V1.json'
+      - 'tests/test_v70_gse214979_route_a_development_preflight.py'
+      - 'results/v64/V70_GSE214979_ROUTE_A_DEVELOPMENT_PREFLIGHT_V1.json'
+      - 'tests/test_v70_gse214979_full104_structural_crosswalk.py'
+      - 'results/v64/V70_GSE214979_FULL104_STRUCTURAL_CROSSWALK_V1.json'
+      - 'tests/test_v70_macha_scenicplus_return_manifest.py'
+      - 'scripts/v64/validate_macha_scenicplus_return_manifest_v1.py'
+      - 'results/v64/V70_MACHA_SCENICPLUS_RETURN_MANIFEST_CONTRACT_V1.json'
+      - 'tests/test_v70_teacher_feature_producer_interface.py'
+      - 'scripts/v64/validate_teacher_feature_producer_interface_v1.py'
+      - 'results/v64/V70_PRIVILEGED_TEACHER_FEATURE_PRODUCER_INTERFACE_V1.json'
+      - 'tests/test_v70_regulatory_program_coverage_tensor.py'
+      - 'scripts/v64/build_regulatory_program_coverage_tensor_v1.py'
+      - 'results/v64/V70_MULTISOURCE_REGULATORY_DISAGREEMENT_POLICY_V1.json'
+      - 'tests/test_v69_regulatory_program_crosswalk.py'
+      - 'scripts/v64/validate_regulatory_program_crosswalk_v1.py'
+      - 'results/v64/V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1.json'
+      - 'results/v64/V69_REGULATORY_PROGRAM_NAMESPACE_CONTRACT_V1.json'
+      - 'tests/test_v68_full104_privileged_evidence_coverage_map.py'
+      - 'results/v64/V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json'
+      - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
+      - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
+      - 'scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py'
+      - 'scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py'
+      - 'scripts/v64/heldout_source_observation_operator_synthetic_v1.py'
+      - 'scripts/v64/validate_stage4_execution_authority_v1.py'
+      - 'scripts/v64/build_promoter_dual_ledger_v2.py'
+      - 'scripts/v64/fetch_open_promoter_resources_v1.py'
+      - 'scripts/v64/validate_open_promoter_resource_bytes_v1.py'
+      - 'tests/test_v64_privileged_information_architecture_v1.py'
+      - 'tests/test_v64_privileged_information_smoke_producer_v1.py'
+      - 'tests/test_v64_regulatory_architecture_contracts_v1.py'
+      - 'tests/test_v64_universal_rna_privileged_critic_architecture_v1.py'
+      - 'tests/test_v64_open_regulatory_resource_registry_v1.py'
+      - 'tests/test_v64_address_and_resource_fetch_contracts_v1.py'
+      - 'tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py'
+      - 'tests/test_v64_open_resource_fetch_utility_v1.py'
+      - 'tests/test_v64_full104_and_sampler_status_v1.py'
+      - 'tests/test_v64_paired_split_and_dong_bridge_v1.py'
+      - 'tests/test_v64_open_resource_byte_validator_v1.py'
+      - 'tests/test_v64_screen_pls_gencode_preflight_v1.py'
+      - 'tests/test_v64_phase_a_exact_independent_audit_v1.py'
+      - 'tests/test_v65_promoter_and_recoverability_contracts.py'
+      - 'tests/test_v65_promoter_dual_ledger_v2.py'
+      - 'tests/test_v65_recoverability_precision_contract.py'
+      - 'tests/test_v65_recoverability_train_validation_preflight.py'
+      - 'tests/test_v65_nested_rna_multimodal_student_architecture.py'
+      - 'tests/test_v65_recoverability_train_validation_authorization_gate.py'
+      - 'tests/test_v65_nested_rna_multimodal_student_synthetic.py'
+      - 'tests/test_v65_full104_like_nested_student_teacher_synthetic.py'
+      - 'tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py'
+      - 'tests/test_v64_phase_b_interval_universe_audit_v1.py'
+      - 'tests/test_v64_phase_b_t6_t7_reference_audit_v1.py'
+      - 'tests/test_v65_recoverability_decision_synthetic.py'
+      - 'tests/test_v65_recoverability_numerical_synthetic_smoke.py'
+      - 'tests/test_v65_recoverability_permutation_geometry_smoke.py'
+      - 'tests/test_v65_recoverability_execution_mechanics.py'
+      - 'scripts/v64/privileged_recoverability_execution_mechanics_smoke_v1.py'
+      - 'docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md'
+      - 'scripts/v64/privileged_recoverability_permutation_geometry_smoke_v1.py'
+      - 'scripts/v64/privileged_recoverability_numerical_synthetic_smoke_v1.py'
+      - 'scripts/v64/privileged_recoverability_geometry_gate_v2.py'
+      - 'scripts/v64/privileged_recoverability_pairing_r2_gate_v2.py'
+      - 'scripts/v64/audit_recoverability_geometry_gate_redundancy_v1.py'
+      - 'scripts/v64/qualify_recoverability_decision_synthetic_v1.py'
+      - 'tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py'
+      - 'tests/test_v65_recoverability_authority_consistency.py'
+      - 'tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py'
+      - 'tests/test_v67_heldout_source_observation_operator.py'
+      - 'tests/v64/test_stage4_execution_authority_validator_v1.py'
+      - 'tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py'
+      - 'tests/test_v65_privileged_recoverability_geometry_gate_v2.py'
+      - 'tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py'
+      - 'tests/test_v65_recoverability_geometry_gate_redundancy.py'
+      - '.github/workflows/v64-privileged-architecture-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  architecture-smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch immutable Claude audit source
+        run: git fetch --no-tags --depth=1 origin 0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab
+      - name: Materialize immutable Claude Phase-A/Phase-B authorities for cross-branch audits
+        run: |
+          git fetch --no-tags --depth=1 origin dc30caede6369a31df3098205db11c83381784e5
+          git fetch --no-tags --depth=1 origin f1dc9bd08057d88d33f27382ceb531b15e323ef9
+          git fetch --no-tags --depth=1 origin d3a7276516daf90d970251e975f2b9f30e934048
+          mkdir -p results/v64/phase_a_v3 results/v64/phase_b_design
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz > results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json > results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json > results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json
+          echo "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4  results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz" | sha256sum -c -
+          echo "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619  results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json" | sha256sum -c -
+          echo "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b  results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json" | sha256sum -c -
+          echo "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2  results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json" | sha256sum -c -
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json > results/v64/phase_b_design/V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json > results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json > results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json > results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json > results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json > results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json > results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json
+      - name: Validate V5 cross-branch Git custody wiring
+        run: |
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, "scripts/v64")
+          import validate_stage4_execution_authority_v1 as v
+          C=json.load(open("results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json"))
+          M={"files":{k:{"path":b["path"]} for k,b in C["repo_resident_git_custody"].items()}}
+          errors=v.validate_repo_git_custody(M,C)
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print(f"V5 git custody PASS: {len(C['repo_resident_git_custody'])} repo authorities")
+          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install smoke-test dependencies
+        run: python -m pip install --upgrade pip pytest numpy
+      - name: Run V64/V65 privileged-information architecture smoke suite
+        run: |
+          pytest -q \
+            tests/test_v64_privileged_information_architecture_v1.py \
+            tests/test_v64_privileged_information_smoke_producer_v1.py \
+            tests/test_v64_regulatory_architecture_contracts_v1.py \
+            tests/test_v64_universal_rna_privileged_critic_architecture_v1.py \
+            tests/test_v64_open_regulatory_resource_registry_v1.py \
+            tests/test_v64_address_and_resource_fetch_contracts_v1.py \
+            tests/test_v64_privileged_recoverability_shortcut_smoke_v1.py \
+            tests/test_v64_open_resource_fetch_utility_v1.py \
+            tests/test_v64_open_resource_byte_validator_v1.py \
+            tests/test_v64_paired_split_and_dong_bridge_v1.py \
+            tests/test_v64_promoter_candidate_ledger_builder_v1.py \
+            tests/test_v64_exact_supplement_independent_audit_v1.py \
+            tests/test_v64_full104_and_sampler_status_v1.py \
+            tests/test_v64_screen_pls_gencode_preflight_v1.py \
+            tests/test_v64_phase_a_exact_independent_audit_v1.py \
+            tests/test_v65_promoter_and_recoverability_contracts.py \
+            tests/test_v65_promoter_dual_ledger_v2.py \
+            tests/test_v65_recoverability_precision_contract.py \
+            tests/test_v65_recoverability_train_validation_preflight.py \
+            tests/test_v65_nested_rna_multimodal_student_architecture.py \
+            tests/test_v65_recoverability_train_validation_authorization_gate.py \
+            tests/test_v65_nested_rna_multimodal_student_synthetic.py \
+            tests/test_v65_full104_like_nested_student_teacher_synthetic.py \
+            tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py \
+            tests/test_v64_phase_b_interval_universe_audit_v1.py \
+            tests/test_v64_phase_b_t6_t7_reference_audit_v1.py \
+            tests/test_v65_recoverability_decision_synthetic.py \
+            tests/test_v65_recoverability_numerical_synthetic_smoke.py \
+            tests/test_v65_recoverability_permutation_geometry_smoke.py \
+            tests/test_v65_recoverability_execution_mechanics.py \
+            tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py \
+            tests/test_v65_recoverability_authority_consistency.py \
+            tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py \
+            tests/test_v65_recoverability_geometry_gate_redundancy.py \
+            tests/test_v65_privileged_recoverability_geometry_gate_v2.py \
+            tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py \
+            tests/v64/test_stage4_execution_authority_validator_v1.py \
+            tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py \
+            tests/test_v67_heldout_source_observation_operator.py \
+            tests/test_v67_evidence_vs_measurement_response.py \
+            tests/test_v67_two_lane_integration_recoverability_contract.py \
+            tests/test_v67_privileged_teacher_state_construction_contract.py \
+            tests/test_v68_full104_privileged_evidence_coverage_map.py \
+            tests/test_v69_multisource_regulatory_evidence_stack.py \
+            tests/test_v69_regulatory_program_crosswalk.py \
+            tests/test_v70_teacher_regulatory_candidate_gate.py \
+            tests/test_v70_teacher_candidate_end_to_end_synthetic.py \
+            tests/test_v70_regulatory_program_coverage_tensor.py \
+            tests/test_v70_teacher_feature_producer_interface.py \
+            tests/test_v70_macha_scenicplus_return_manifest.py \
+            tests/test_v70_gse214979_acquisition_receipts.py \
+            tests/test_v70_gse214979_full104_structural_crosswalk.py \
+            tests/test_v70_gse214979_route_a_development_preflight.py
+      - name: Emit V67 synthetic qualification outputs
+        run: |
+          python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
+          python scripts/v64/heldout_source_observation_operator_synthetic_v1.py
+          python scripts/v64/evidence_vs_measurement_response_synthetic_v1.py

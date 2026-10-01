@@ -1,0 +1,134 @@
+{
+  "schema": "JEPA_V70_EXTERNAL_REGULATORY_PREPARATION_STATE_V1",
+  "date": "2026-10-01",
+  "status": "ROUTE_A_SUBSTRATE_AUTHENTICATED__MULTISOURCE_INTERFACES_FROZEN__ROUTE_B_AND_REAL_NETWORK_PENDING",
+  "exact_head_before_state_commit": "cb29bf9f4487d35bb7f4558ab113830bc9b1c15d",
+  "ci": {
+    "run_id": 36888829976,
+    "job_id": 110458945862,
+    "tests_passed": 258,
+    "elapsed_seconds": 13,
+    "git_custody_repo_authorities": 10
+  },
+  "route_a_gse214979": {
+    "acquisition_run": 36887158540,
+    "source_matrix": {
+      "features": 187215,
+      "cells": 105332,
+      "genes": 36601,
+      "peaks": 150614,
+      "nnz": 927291782,
+      "sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2"
+    },
+    "metadata": {
+      "rows": 105332,
+      "sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+      "celltype_field": "predicted.id",
+      "donor_field": "id"
+    },
+    "all_microglia": 3179,
+    "default_development_microglia": 2534,
+    "prospective_excluded_possible_morabito_overlap_donors": [
+      "1224",
+      "1230",
+      "1238"
+    ],
+    "diagnosis_pathology_fields_present_but_not_used": [
+      "Braak",
+      "Diagnosis"
+    ],
+    "all_microglia_subset_sha256": "2ef3bf52186d005610a3aba26ce9a5b432c980d398032910c2521f95c3bf13bb",
+    "development_subset_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34"
+  },
+  "motif_resource": {
+    "version": "v10nr_clust_public",
+    "zip_sha256": "70dab42794f42471a3c22f5efe78ec2c8af96127656607cb0a929b4adffc2b97",
+    "human_hgnc_annotation_sha256": "81eb754118e27e854974301b1400fcf519489f8be5249239671fb288cb501c31"
+  },
+  "full104_exact_crosswalk": {
+    "gse_genes": 36601,
+    "exact_full104_addresses": 35704,
+    "fraction_gse_genes_exactly_mapped": 0.9754924728832546,
+    "fraction_full104_registry_covered": 0.8658033852272177,
+    "current_exact": 35445,
+    "legacy_exact": 259,
+    "unmatched_gse_gene_ids": 897,
+    "source_measurement_support": {
+      "HVS": {
+        "gse_matched_any": 17948,
+        "full104_any": 18736,
+        "coverage": 0.9579419299743809
+      },
+      "NPH52": {
+        "gse_matched_any": 30203,
+        "full104_any": 35098,
+        "coverage_any": 0.8605333637244288,
+        "gse_matched_all": 27015,
+        "full104_all": 29136,
+        "coverage_all": 0.9272034596375618
+      },
+      "SEA_AD": {
+        "gse_matched_any": 35008,
+        "full104_any": 35076,
+        "coverage": 0.9980613524917322
+      }
+    },
+    "all_three_source_families": {
+      "gse_matched": 17345,
+      "full104_total": 17346,
+      "coverage": 0.9999423498212845
+    },
+    "all_42_operators": {
+      "gse_matched": 17185,
+      "full104_total": 17186,
+      "coverage": 0.999941813103689
+    },
+    "semantics": "measurement-support values come from FOUNDATION_SUPPORT_ADDRESS_RECURRENCE; contributing-source provenance is not substituted for measurement support"
+  },
+  "frozen_interfaces": [
+    "V69 multisource evidence integration contract",
+    "V69 regulatory program evidence schema",
+    "V69 versioned regulatory program namespace",
+    "V69 source-specific structural crosswalk schema",
+    "V70 teacher regulatory candidate selection contract",
+    "V70 multisource disagreement policy",
+    "V70 privileged teacher feature producer interface",
+    "V70 Macha SCENIC+ return manifest contract and audit checklist",
+    "V70 per-program structural coverage tensor builder"
+  ],
+  "route_b": {
+    "fragments": "GSE214979_atac_fragments.tsv.gz",
+    "geo_reported_size": "59.3 GB",
+    "owner": "Macha",
+    "required": "donor-aware fragment QC, consensus region reconstruction, custom cisTarget/pycisTarget route, independent Route-B network, prospective Route-A/Route-B stability comparison",
+    "status": "PENDING"
+  },
+  "intentionally_pending": [
+    "actual Route-A SCENIC+/eRegulon network inference",
+    "59.3GB fragment Route-B acquisition/reconstruction",
+    "Route-A/Route-B donor-stability and control qualification",
+    "exact GSE214979 overlap with the Stage-4 4,372-gene dictionary because the actual gene dictionary is not in current Sol custody",
+    "exact GSE214979 peak overlap with the Stage-4 32,153-interval dictionary because the actual interval dictionary is not in current Sol custody",
+    "real Stage-4 correspondence",
+    "Morabito biological replication",
+    "real teacher-state materialization",
+    "recoverability TEST"
+  ],
+  "do_not_claim": [
+    "Route-A acquisition is a qualified SCENIC+ network",
+    "high structural gene coverage is biological validation",
+    "FULL104 structural coverage implies RNA recoverability",
+    "Stage-4 gene/peak coverage before exact dictionaries are crosswalked",
+    "Macha Route-B is complete",
+    "training is authorized"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "TD60": "BLOCKED"
+  }
+}
