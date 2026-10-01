@@ -373,7 +373,7 @@ def build_world(world, seed):
 CANONICAL_SEED_BASE = 20260929
 
 
-def main(seed_base=None) -> int:
+def main(seed_base=None, only=None, donors=None) -> int:
     # The seed base is a parameter so the worlds can be rebuilt at other draws and the
     # conclusions checked for seed dependence. The CANONICAL worlds are the ones at
     # CANONICAL_SEED_BASE, and every committed manifest is built from that base.
@@ -381,18 +381,32 @@ def main(seed_base=None) -> int:
         import argparse
         ap = argparse.ArgumentParser()
         ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
-        seed_base = ap.parse_args().seed_base
+        ap.add_argument("--only", default=None,
+                        help="build just these worlds, comma separated")
+        ap.add_argument("--donors", type=int, default=None,
+                        help="override the eligible donor count, for calibration sweeps")
+        a = ap.parse_args()
+        seed_base, only, donors = a.seed_base, a.only, a.donors
+        if donors:
+            globals()["N_DONORS_OK"] = donors
+        if only:
+            globals()["_ONLY"] = [w.strip() for w in only.split(",")]
     os.makedirs(ROOT, exist_ok=True)
     print("building synthetic Phase-B worlds under " + ROOT
           + " at seed base " + str(seed_base))
     mans = {}
+    only = globals().get("_ONLY")
     for i, w in enumerate(WORLDS):
+        if only and w not in only:
+            continue
         mans[w] = build_world(w, seed=seed_base + i)
     rec = dict(schema="V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1", date="2026-10-01",
-               root=ROOT, worlds=list(WORLDS), seed_base=seed_base,
+               root=ROOT, worlds=sorted(mans), seed_base=seed_base,
+               eligible_donors_configured=N_DONORS_OK,
                is_canonical_build=seed_base == CANONICAL_SEED_BASE,
                producer_sha256=B.sha_file(os.path.abspath(__file__)),
                manifests={w: m["digests"] for w, m in mans.items()},
+               is_partial_build=bool(only) or len(mans) != len(WORLDS),
                planted={w: m["planted_truth"] for w, m in mans.items()},
                reads_no_real_measurement=True,
                computed_correspondence_values=0)

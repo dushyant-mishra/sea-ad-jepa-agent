@@ -1,0 +1,50 @@
+{
+  "schema": "V64_STAGE4_CALIBRATION_PRECOMMIT_V1",
+  "date": "2026-10-01",
+  "written_before_any_calibration_draw_was_made": true,
+  "why": "The four-draw seed-robustness run showed the TRUE_NULL world crossing LCB95 > 0 once and the MEASURED_TECHNICAL residue reaching significance in three of four draws. Four draws cannot distinguish a 5 percent rate from a 25 percent rate, so the two findings cannot be told apart without measuring the rates. This file fixes the design before the measurement so that the answer cannot be shaped by the result.",
+  "question": "At what rate does the frozen Stage-4 decision rule report LCB95 > 0 in a world where the honest answer is that there is no biological effect, and does that rate change with donor count?",
+  "design": {
+    "worlds": ["TRUE_NULL", "MEASURED_TECHNICAL"],
+    "why_these_two": "TRUE_NULL carries no planted structure at all, so its crossing rate is the nominal false-positive rate of the decision rule and should be near 0.05. MEASURED_TECHNICAL carries a purely technical depth effect that the frozen 14-term basis is designed to remove, so its crossing rate is the rate at which a technical artifact is reported as a finding. The two are different quantities and must not be pooled.",
+    "donor_counts": [60, 282],
+    "why_these_counts": "60 is the count the end-to-end qualification used. 282 is the real substrate's qualifying donor count. The prediction under test is that a residual bias that does not shrink with n will be called significant MORE often at 282 than at 60, because the bound tightens while the bias does not.",
+    "draws_per_cell": 40,
+    "total_runs": 160,
+    "seed_bases": "600000 + 1000 * draw_index, distinct from the canonical base 20260929 and from the 770101/880303/990505 bases already spent",
+    "execution": "every draw is built to disk in the real Phase-B format and run through the real executor entrypoint, exactly as the end-to-end qualification does. No shortcut code path."
+  },
+  "primary_statistic": "the fraction of draws in which the ADJUSTED GENE_BALANCED LCB95 exceeds 0, computed per (world, donor count) cell",
+  "secondary_statistics": [
+    "the distribution of the adjusted GENE_BALANCED delta",
+    "the fraction of the raw depth effect removed by the adjustment",
+    "the control-versus-control delta"
+  ],
+  "stopping_rule": {
+    "rule": "exactly 40 draws per cell. No extension, no early stop, no adding draws after seeing the rate.",
+    "if_imprecise": "if the Wilson 95 percent interval on a cell's rate has a half-width greater than 0.20, that cell is reported as UNRESOLVED. It is NOT extended, because choosing to collect more data after seeing the estimate is how a stopping rule stops being prospective.",
+    "if_a_run_fails": "a failed run is recorded as a failure and counted in the denominator. Runs are never silently dropped."
+  },
+  "interpretation_fixed_in_advance": {
+    "TRUE_NULL_rate_consistent_with_0.05": "the decision rule is calibrated under a true null and the single crossing seen in four draws was ordinary sampling behaviour, not a defect",
+    "TRUE_NULL_rate_materially_above_0.05": "the decision rule is anti-conservative and that is a defect in the frozen design, to be reported and NOT repaired by changing the rule after the fact",
+    "MEASURED_TECHNICAL_rate_near_the_TRUE_NULL_rate": "the nuisance adjustment removes the depth effect well enough that a technical world behaves like an empty one",
+    "MEASURED_TECHNICAL_rate_materially_above_the_TRUE_NULL_rate": "a residual technical bias survives adjustment and is reported as a finding at a rate far above nominal. This is an interpretation limit on every real Stage-4 result and is to be recorded, not tuned away.",
+    "rate_rises_from_60_to_282_donors": "the residue is a bias rather than noise, and the real run is MORE exposed than the reduced-scale qualification suggested",
+    "rate_falls_from_60_to_282_donors": "the effect behaves like noise and the reduced-scale qualification was conservative"
+  },
+  "forbidden": [
+    "changing the frozen statistical rules, the basis, the weighting, the bootstrap or the threshold in response to any rate measured here",
+    "adding draws to a cell after seeing its rate",
+    "reporting a pooled rate across the two worlds",
+    "treating a rate measured on reduced-scale synthetic worlds as a calibration of the real Stage-4 result"
+  ],
+  "what_this_cannot_establish": "These are synthetic worlds with a planted generative structure I chose. The measured rates characterise the DECISION RULE under those structures. They are not an estimate of the false-positive rate of the real Stage-4 analysis, whose true data-generating process is unknown.",
+  "governance": {
+    "training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "real_substrate_read": false,
+    "computed_correspondence_values_on_real_data": 0
+  }
+}
