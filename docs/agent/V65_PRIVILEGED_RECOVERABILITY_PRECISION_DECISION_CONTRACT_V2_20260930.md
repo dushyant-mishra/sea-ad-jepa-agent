@@ -3,7 +3,12 @@
 **Date:** 2026-09-30  
 **Status:** PROSPECTIVE DECISION CONTRACT V2 — no paired RNA↔ATAC recoverability outcome opened
 
-**Supersedes:** `docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md` for geometry-gate semantics only. All other frozen decisions are carried forward unchanged.
+**Supersedes in full as the canonical execution authority:** `docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md`.
+
+V2 carries forward every still-valid V1 decision and incorporates the prospective repairs
+to nested-rank selection, incremental shells, geometry, deterministic permutation
+semantics, and rank-boundary tie handling. Future execution and tests must read V2 only;
+V1 is historical evidence of the design evolution and is not a live authority.
 
 ## 1. Scope
 
