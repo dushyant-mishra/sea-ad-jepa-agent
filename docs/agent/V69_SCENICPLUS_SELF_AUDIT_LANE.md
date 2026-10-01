@@ -574,6 +574,53 @@ hides real failures in the noise.
 
 ---
 
+## S23 — The rankings database was not reproducible at all, and only the digest gate found it (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect, and it is the most consequential one in the speed work.**
+`create_cistarget_motif_databases.py` uses a **random seed** to break ties when building
+the rankings database. Left unset it draws a **fresh seed on every run**. So two runs of
+an identical workload — same motifs, same regions, same FASTA, same cbust, same
+parameters — produce **different rankings files**.
+
+Measured directly, two runs of the same 16 motifs over the same 150,561 regions:
+
+| output | run on D | run on C |
+|---|---|---|
+| `motifs_vs_regions.scores.feather` | 6,455,010 B | 6,455,010 B |
+| `regions_vs_motifs.scores.feather` | 40,121,018 B | 40,121,018 B |
+| `regions_vs_motifs.rankings.feather` | **41,330,034 B** | **41,329,818 B** |
+
+Scores are byte-identical because scoring is deterministic. Only the ranking tie-break
+is seeded. The D run's log records `random seed set to 7286697094343046595` — a value
+nothing in my configuration chose.
+
+**What the damage would have been.** The production rankings database — the object
+every downstream eRegulon claim is scored against — would not have been reproducible.
+Re-running the build would have produced a different database, and nothing in the
+pipeline would have said so. Worse for the immediate work: the mandated digest-equality
+gate would have **failed on rankings in every comparison**, and the obvious reading
+would have been "C: and D: produce different results, stop" — a false storage finding
+that would have sent me hunting a filesystem bug that does not exist.
+
+**Caught before damage?** Yes — before any full build, and before the storage
+comparison was interpreted. Found because the digest-equality gate the coordinator
+insisted on forced me to look at output bytes rather than at whether both runs finished.
+This is precisely the case that gate was specified for, and it would not have been found
+by any amount of reasoning about storage.
+
+**The fix.** `-s/--seed` is now pinned in both the benchmark runner and the shard driver,
+and the value is recorded in every receipt. CONVENTION: `20261001`, the lane date — an
+arbitrary but fixed constant, labelled as such rather than presented as principled.
+
+**Consequence for the measurements already taken.** The 24-motif, 120-motif and both
+storage runs were made with unpinned seeds. Their SCORES remain comparable; their
+RANKINGS are not reproducible and must not be used for any digest comparison. The
+storage comparison is re-run under the pinned seed rather than reinterpreted.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:

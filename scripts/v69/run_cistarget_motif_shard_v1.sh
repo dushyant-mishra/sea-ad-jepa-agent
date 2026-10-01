@@ -85,13 +85,28 @@ if [ "$N_IN_SHARD" -ne "$COUNT" ]; then
 fi
 sha256sum "$SHARD_LIST" > "$SHARD_LIST.sha256"
 
+# ---- frozen RNG seed for ranking tie-breaks ----
+# create_cistarget_motif_databases.py uses a RANDOM seed to break ties when building
+# the rankings database. Left unset it draws a fresh seed every run, so two runs of the
+# identical workload produce DIFFERENT rankings files. Measured: two runs of the same 16
+# motifs over the same 150,561 regions produced rankings feathers of 41,330,034 and
+# 41,329,818 bytes. Scores were unaffected (byte-identical), because scoring is
+# deterministic; only the ranking tie-break is seeded.
+#
+# Unpinned, the production rankings database would not be reproducible, and the
+# mandated digest-equality gate would fail for a reason that has nothing to do with
+# storage or worker count. CONVENTION: 20261001, the lane date -- an arbitrary but
+# fixed constant, declared here and recorded in every receipt.
+V69_RANKING_SEED="${V69_RANKING_SEED:-20261001}"
+export V69_RANKING_SEED
+
 START_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 START_EPOCH=$(date -u +%s)
 
 micromamba run -n base python \
   /opt/create_cisTarget_databases/create_cistarget_motif_databases.py \
   -f "$FASTA" -M "$MOTIF_DIR" -m "$SHARD_LIST" -o "$PREFIX" \
-  -c "$CBUST" -t "$THREADS" > "$PREFIX.score.log" 2>&1
+  -c "$CBUST" -t "$THREADS" -s "$V69_RANKING_SEED" > "$PREFIX.score.log" 2>&1
 
 END_EPOCH=$(date -u +%s)
 END_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -158,6 +173,7 @@ rec = {
     "region_fasta": fasta,
     "region_fasta_sha256": sha(fasta),
     "workers": int(threads),
+    "ranking_seed": os.environ.get("V69_RANKING_SEED"),
     "started_utc": start_iso,
     "finished_utc": end_iso,
     "wall_clock_seconds": int(elapsed),

@@ -43,7 +43,22 @@ N_SEQS=$(grep -c '^>' "$FASTA")
 MOTIF_SHA=$(sha256sum "$MOTIF_LIST" | awk '{print $1}')
 FASTA_SHA=$(sha256sum "$FASTA" | awk '{print $1}')
 
-CMD="python /opt/create_cisTarget_databases/create_cistarget_motif_databases.py -f $FASTA -M $MOTIF_DIR -m $MOTIF_LIST -o $DB_PREFIX -c $CBUST -t $THREADS"
+# ---- frozen RNG seed for ranking tie-breaks ----
+# create_cistarget_motif_databases.py uses a RANDOM seed to break ties when building
+# the rankings database. Left unset it draws a fresh seed every run, so two runs of the
+# identical workload produce DIFFERENT rankings files. Measured: two runs of the same 16
+# motifs over the same 150,561 regions produced rankings feathers of 41,330,034 and
+# 41,329,818 bytes. Scores were unaffected (byte-identical), because scoring is
+# deterministic; only the ranking tie-break is seeded.
+#
+# Unpinned, the production rankings database would not be reproducible, and the
+# mandated digest-equality gate would fail for a reason that has nothing to do with
+# storage or worker count. CONVENTION: 20261001, the lane date -- an arbitrary but
+# fixed constant, declared here and recorded in every receipt.
+V69_RANKING_SEED="${V69_RANKING_SEED:-20261001}"
+export V69_RANKING_SEED
+
+CMD="python /opt/create_cisTarget_databases/create_cistarget_motif_databases.py -f $FASTA -M $MOTIF_DIR -m $MOTIF_LIST -o $DB_PREFIX -c $CBUST -t $THREADS -s $V69_RANKING_SEED"
 
 START_EPOCH=$(date -u +%s)
 START_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -89,6 +104,7 @@ rec = {
     "started_utc": start_iso,
     "finished_utc": end_iso,
     "command": cmd,
+    "ranking_seed": os.environ.get("V69_RANKING_SEED"),
     "thread_pinning": {
         "OMP_NUM_THREADS": os.environ.get("OMP_NUM_THREADS"),
         "OPENBLAS_NUM_THREADS": os.environ.get("OPENBLAS_NUM_THREADS"),
