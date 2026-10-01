@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "9c701476252e1f139e0f065767798fec25b27767",
+    "chatgpt_architecture": "1329a4c4a4e6530ff8f568e832ff10a8ed44fc44",
     "claude_exact_sampler": "a0500111254315504de3618ea832931ea54cdc26",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -81,9 +81,14 @@
     "canonical_paired_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
     "split_authority_resolution": "docs/agent/V65_NIHCARD_RECOVERABILITY_SPLIT_AUTHORITY_20260930.md",
     "first_privileged_factor_contract": "docs/agent/V65_FIRST_PRIVILEGED_FACTOR_RECOVERABILITY_EXECUTION_CONTRACT_20260930.md",
-    "recoverability_precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md",
-    "recoverability_decision_state": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json",
-    "recoverability_execution_authorized": false
+    "recoverability_precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md",
+    "recoverability_decision_state": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json",
+    "recoverability_execution_authorized": false,
+    "recoverability_synthetic_software_qualification": "results/v64/V65_PRIVILEGED_RECOVERABILITY_SYNTHETIC_SOFTWARE_QUALIFICATION_V1.json",
+    "recoverability_synthetic_software_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY",
+    "recoverability_real_paired_values_opened": false,
+    "recoverability_test_opened": false,
+    "recoverability_authority_version": "V2_SOLE_LIVE_AUTHORITY"
   },
   "paired_nihcard": {
     "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
@@ -157,8 +162,12 @@
     "pr": 199,
     "mergeable": true,
     "architecture_smoke": {
-      "run_id": 36752876598,
-      "conclusion": "success"
+      "run_id": 36799926865,
+      "job_id": 110171732286,
+      "conclusion": "success",
+      "tests_passed": 110,
+      "qualified_head": "a0b8384ea77f9d961f66c86e0980538dcea64e62",
+      "scope": "synthetic architecture/software qualification; not real biological execution"
     },
     "fantom_hg38_fetch": {
       "run_id": 36752876636,
@@ -184,11 +193,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude repairs after a0500111.",
-    "Require persisted per-pair R3 conditioning identity and label before Phase B.",
-    "Strengthen T17 from identifier-only authority to semantic-equivalence enforcement.",
-    "Keep Phase B stopped until S60 re-audit passes.",
-    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
+    "Audit Claude's S60 repair when a successor to a0500111 is available; keep Phase B stopped until R3 conditioning identity is persisted and re-audited.",
+    "Treat recoverability precision/decision V2 as the sole live authority; V1 is historical only.",
+    "Recoverability decision/software mechanics are synthetically qualified at 110/110 tests, but real paired execution and TEST remain unopened and not authorized.",
+    "Do not reopen the promoter dual ledger unless contradictory evidence appears.",
+    "Keep training, Stage 4, Morabito and protected outcomes closed."
   ],
   "governance": {
     "training": "OFF",
