@@ -621,6 +621,49 @@ storage comparison is re-run under the pinned seed rather than reinterpreted.
 
 ---
 
+## S24 — I reproduced S16 after writing the rule against it, and corrupted a benchmark run (CAUGHT, RUN VOIDED)
+
+**Status:** CLOSED by voiding the affected run and re-running from an immutable snapshot.
+**Severity for the lane's credibility:** this is the worst process failure in the cycle.
+
+**What happened.** I recorded S16 — "an executing script is immutable; long container
+runs execute a run-specific copy" — and wrote that rule into the shard driver's header.
+Then, in the same session, I twice edited `scripts/v69/bench_cistarget_run_v1.sh` (adding
+BLAS thread pinning, then the RNG seed) **while a container was executing that exact file
+from the mounted worktree**.
+
+**How I caught it.** The C storage run appeared to hang: its three feather files had final
+sizes but no receipt appeared for over twenty minutes. Inspecting processes inside the
+container showed `create_cistarget_motif_databases.py` running again, started 426 s
+earlier while the run's own bash had been alive 1,019 s. Bash reads a script incrementally
+by byte offset; my edits shifted the offsets and it had **re-entered the scoring command**.
+
+**Why it is worse than S16 was.** S16 died loudly with a syntax error. This time the
+shifted offset landed on a *valid command*, so the run silently did something I never
+asked for — exactly the outcome I had described in the S16 entry as the dangerous case
+and then walked into anyway.
+
+**What was contaminated.** The C storage outputs mix two configurations: a first scoring
+pass under the unpinned script and a second under the edited one. They are not
+interpretable and have been **quarantined** to
+`tmp/VOID_storage_bench_c_corrupted/` rather than deleted, so the contamination is visible
+rather than erased. The D run completed before the first edit and is clean, but it used
+the unpinned configuration and is superseded anyway.
+
+**The fix, which is the rule I had already written.** The storage pair is re-run from an
+**immutable snapshot** at `C:/jepa_scratch/scenicplus/shared/immutable_scripts/`, outside
+the worktree and mode `a-w`, with the executed file's SHA-256 printed by the run itself
+(`aada38425608071b2eff575476999de5413afb1a8c9b3bc51d3457852000973f`). Editing the worktree
+can no longer reach a running job.
+
+**The honest lesson.** Writing a rule into a file is not the same as following it. The
+shard driver's header had the rule; my ad-hoc benchmark invocation did not, because I was
+invoking the script directly from `/workspace` out of convenience. A rule that lives only
+in the component you remembered to apply it to is not in force. Every container
+invocation in this lane now runs from the snapshot directory.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
