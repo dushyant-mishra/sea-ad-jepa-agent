@@ -207,14 +207,16 @@ The pairwise distances are not treated as independent observations. No p-value o
 For each donor:
 
 1. keep `Z_pred_shared` fixed;
-2. generate exactly **10,000** within-donor row permutations using the already-frozen seed:
-   `sha256("V65_RECOVERABILITY_PERMUTATION|<donor_id>")`;
-3. reuse the same 10,000 permutations for every candidate rank in that donor;
-4. apply each permutation to the rows of `Z_true_shared`;
-5. recompute G1 and G2 for every permutation;
-6. define each 99th-percentile threshold using:
-   `quantile(null, 0.99, method="higher")`;
-7. the observed metric must be **strictly greater** than its own threshold.
+2. compute `digest = sha256("V65_RECOVERABILITY_PERMUTATION|<donor_id>".encode("utf-8")).digest()`;
+3. convert `digest[:8]` to an unsigned 64-bit integer using **big-endian** byte order;
+4. initialize exactly `numpy.random.Generator(numpy.random.PCG64(seed_uint64))`;
+5. generate exactly **10,000** sequential `rng.permutation(n_donor_nuclei)` row permutations;
+6. reuse that identical 10,000-permutation sequence for every candidate rank in that donor;
+7. apply each permutation to the rows of `Z_true_shared`;
+8. recompute G1 and G2 for every permutation;
+9. define each 99th-percentile threshold using:
+   `numpy.quantile(null, 0.99, method="higher")`;
+10. the observed metric must be **strictly greater** than its own threshold.
 
 A donor passes the geometry gate only if BOTH:
 
