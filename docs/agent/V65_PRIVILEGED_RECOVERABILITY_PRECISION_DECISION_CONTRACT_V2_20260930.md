@@ -159,6 +159,34 @@ No projection is fit or rotated on VALIDATION or TEST.
 
 Rank 0 means no privileged subspace is currently qualified for compulsory RNA supervision.
 
+### Incremental nested shells
+
+All candidate projectors come from the **same TRAIN-only SVD** and are nested.
+
+Define:
+
+- `P_0 = 0`
+- `S_2 = P_2`
+- `S_4 = P_4 - P_2`
+- `S_8 = P_8 - P_4`
+- `S_16 = P_16 - P_8`
+
+The expected intrinsic ranks are:
+
+- aggregate `P_k`: `2, 4, 8, 16`
+- incremental shells `S_k`: `2, 2, 4, 8`
+
+A higher aggregate rank may not qualify merely because it inherits signal from an already-qualified lower rank.
+
+For every candidate rank `k`, compute the full recoverability gate twice:
+
+1. on the aggregate projected state `P_k`;
+2. on the newly added shell `S_k`.
+
+The same lawful RNA predictor, technical baseline, global-RNA baseline, donor-level `R2_multi`, `DELTA_R2`, pairing-permutation gate and geometry gate are applied to both objects.
+
+If a singular-value tie makes `P_k` non-unique at a selection boundary, selection stops below that boundary. No higher rank may be selected by skipping the ambiguous boundary.
+
 ## 10. Geometry gate
 
 A synthetic mathematical audit found that the V1 geometry gate was redundant:
@@ -223,9 +251,21 @@ A donor passes the geometry gate only if BOTH:
 1. observed median canonical correlation > its G1 99th-percentile permutation threshold;
 2. observed relational-geometry correlation > its G2 99th-percentile permutation threshold.
 
+The geometry implementation must evaluate the **intrinsic projected rank**, not the 16-D ambient storage width.
+
+For aggregate `P_k`, the expected intrinsic rank is `k`.
+
+For shell `S_k`, the expected intrinsic rank is the shell width:
+- `S_2: 2`
+- `S_4: 2`
+- `S_8: 4`
+- `S_16: 8`
+
+Canonical-correlation bases are therefore obtained from the nonzero left-singular subspace of each centered projected state at the declared intrinsic rank. The ambient 16-D projected matrix is not required or expected to have rank 16.
+
 Fail closed if:
 
-- either projected state is rank-deficient for the requested `k`;
+- either projected state has rank below its declared intrinsic rank;
 - the pairwise-distance vector has zero variance;
 - any metric is non-finite;
 - the deterministic permutation sequence cannot be reproduced.
@@ -238,7 +278,7 @@ Evaluate candidate ranks in ascending order:
 
 `2 -> 4 -> 8 -> 16`.
 
-A rank is VALIDATION-eligible only if all of the following hold:
+A rank is VALIDATION-eligible only if **both** its aggregate `P_k` and its incremental shell `S_k` independently satisfy all of the following:
 
 1. `DELTA_R2 > 0` in all 4 VALIDATION donors;
 2. median VALIDATION `DELTA_R2 >= 0.05`;
@@ -246,6 +286,8 @@ A rank is VALIDATION-eligible only if all of the following hold:
 4. pairing-permutation gate passes in all 4 VALIDATION donors;
 5. geometry gate passes in all 4 VALIDATION donors;
 6. technical baseline is not within 0.01 `R2_multi` of the candidate in any VALIDATION donor.
+
+This **aggregate-and-shell requirement** prevents lower-rank signal from carrying a weak or unrecoverable newly added shell across the threshold.
 
 Apply a **contiguous nested-rank rule** over `2 -> 4 -> 8 -> 16`.
 
@@ -272,7 +314,11 @@ TEST is opened only after:
 - every threshold above is locked;
 - all VALIDATION decisions are written to a receipt.
 
-The locked nonzero rank is confirmed on TEST only if all of the following hold:
+The locked nonzero rank `k` is confirmed on TEST only if:
+
+### Aggregate confirmation
+
+Its aggregate `P_k` satisfies all of the following:
 
 1. `DELTA_R2 > 0` in all 4 TEST donors;
 2. median TEST `DELTA_R2 >= 0.05`;
@@ -280,6 +326,14 @@ The locked nonzero rank is confirmed on TEST only if all of the following hold:
 4. pairing-permutation gate passes in all 4 TEST donors;
 5. geometry gate passes in all 4 TEST donors;
 6. median TEST `DELTA_R2` is at least 50% of median VALIDATION `DELTA_R2`.
+
+### Shell confirmation
+
+Every incremental shell from `S_2` through `S_k` must independently satisfy the same TEST requirements 1–6 against that shell's own VALIDATION values.
+
+TEST does **not** add the VALIDATION-only per-donor 0.01 technical-baseline margin; it confirms the already-locked rank using the frozen TEST requirements above.
+
+If any required shell fails, the locked rank is not confirmed. TEST may not fall back to a smaller rank.
 
 The 50% replication rule prevents a barely positive TEST result from being described as transport of a much stronger VALIDATION effect.
 
@@ -389,4 +443,4 @@ TRAINING OFF.
 
 ## V2 repair note
 
-This V2 changes only the geometry qualification semantics described above. It does not change the donor split, privileged factor construction, ridge alpha grid, R2 materiality margin, nested contiguous-rank rule, TEST replication rule, classification labels, or governance. The repair was made before any paired recoverability outcome was opened.
+This V2 carries forward the repaired contiguous-rank policy and makes its incremental-shell requirement explicit alongside the geometry repair. It does not change the donor split, privileged factor construction, ridge alpha grid, R2 materiality margin, classification labels, or governance. The repair was made before any paired recoverability outcome was opened.
