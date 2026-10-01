@@ -1,6 +1,13 @@
 name: V64 fetch open promoter-regulatory resources
 
 on:
+  pull_request:
+    paths:
+      - 'results/v64/V64_OPEN_RESOURCE_FETCH_MANIFEST_V1.json'
+      - 'scripts/v64/fetch_open_promoter_resources_v1.py'
+      - 'scripts/v64/validate_open_promoter_resource_bytes_v1.py'
+      - 'scripts/v64/build_promoter_dual_ledger_v2.py'
+      - '.github/workflows/v64-open-resource-fetch.yml'
   workflow_dispatch:
 
 jobs:
