@@ -3,7 +3,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 def test_recoverability_precision_contract_freezes_materiality_and_test_firewall():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "DELTA_R2 >= 0.05" in t
     assert "10,000 deterministic permutations per donor" in t
     assert "0, 2, 4, 8, 16" in t
@@ -16,7 +16,7 @@ def test_recoverability_precision_contract_freezes_materiality_and_test_firewall
     assert "will NOT report a donor-bootstrap interval over four TEST donors" in t
 
 def test_recoverability_test_cannot_retune_after_opening():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     for forbidden in [
         "changing rank",
         "changing alpha",
@@ -30,9 +30,20 @@ def test_recoverability_test_cannot_retune_after_opening():
 
 
 def test_recoverable_projection_is_target_space_and_rotation_unambiguous():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "C = Z_true_train^T Z_pred_train" in t
     assert "P_k = U[:, :k] U[:, :k]^T" in t
     assert "Z_true_shared = Z_true P_k" in t
     assert "Z_pred_shared = Z_pred P_k" in t
     assert "UNQUALIFIED_FOR_SELECTION" in t
+
+
+def test_geometry_gate_v2_is_distinct_and_reproducible():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
+    assert "canonical correlations" in t
+    assert "relational-geometry correlation" in t
+    assert "principal-angle threshold is **SUPERSEDED BEFORE REAL EXECUTION**" in t
+    assert "numpy.random.PCG64" in t
+    assert "digest[:8]" in t
+    assert 'byte order' in t
+    assert 'numpy.quantile(null, 0.99, method="higher")' in t
