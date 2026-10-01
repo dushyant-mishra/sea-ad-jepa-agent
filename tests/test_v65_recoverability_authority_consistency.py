@@ -16,8 +16,8 @@ def _engine():
 
 
 def test_rank_and_shell_policy_are_identical_across_contract_state_and_engine():
-    contract=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
-    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
+    contract=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
+    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json").read_text())
     assert state["validation_rule"]["rank_choice"]=="LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD"
     assert state["validation_rule"]["no_skipping_failed_lower_rank"] is True
     assert state["validation_rule"]["aggregate_and_incremental_shell_must_both_pass"] is True
@@ -48,9 +48,9 @@ def test_aggregate_only_metrics_cannot_qualify_rank():
 
 
 def test_superseded_smallest_rank_policy_cannot_be_live_authority():
-    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
+    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json").read_text())
     assert state["validation_rule"]["previous_rule"].endswith("SUPERSEDED_BEFORE_REAL_EXECUTION")
-    contract=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    contract=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "previous smallest-eligible rule is superseded" in contract.lower()
 
 
