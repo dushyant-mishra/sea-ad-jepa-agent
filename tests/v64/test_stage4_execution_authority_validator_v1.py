@@ -117,6 +117,17 @@ class Stage4AuthorityMutationTests(unittest.TestCase):
         m["intervals"] = 32154
         self.assertFailsWith(m, "INTERVAL_COUNT_DRIFT")
 
+    def test_unexpected_top_level_field_fails(self):
+        m = valid_manifest()
+        m["debug_only"] = True
+        self.assertFailsWith(m, "TOP_LEVEL_SCHEMA_DRIFT")
+
+    def test_extra_file_binding_fails(self):
+        m = valid_manifest()
+        m["files"]["EXTRA"] = {"path": "nowhere"}
+        errors = v.validate_file_bindings(m, CONTRACT)
+        self.assertIn("FILE_LABEL_COUNT_DRIFT", errors)
+
     def test_no_execution_action_before_successor_authorization(self):
         m = valid_manifest()
         m["requested_actions"] = ["compute_correspondence"]
