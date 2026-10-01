@@ -9,6 +9,7 @@ on:
       - 'results/v64/V65_*'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
+      - 'scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py'
       - 'scripts/v64/build_promoter_dual_ledger_v2.py'
       - 'scripts/v64/fetch_open_promoter_resources_v1.py'
       - 'scripts/v64/validate_open_promoter_resource_bytes_v1.py'
@@ -28,6 +29,7 @@ on:
       - 'tests/test_v65_promoter_and_recoverability_contracts.py'
       - 'tests/test_v65_promoter_dual_ledger_v2.py'
       - 'tests/test_v65_recoverability_precision_contract.py'
+      - 'tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
 
@@ -65,4 +67,5 @@ jobs:
             tests/test_v64_phase_a_exact_independent_audit_v1.py \
             tests/test_v65_promoter_and_recoverability_contracts.py \
             tests/test_v65_promoter_dual_ledger_v2.py \
-            tests/test_v65_recoverability_precision_contract.py
+            tests/test_v65_recoverability_precision_contract.py \
+            tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py
