@@ -22,7 +22,6 @@ FORBIDDEN_MANIFEST_KEYS = {
     "p_value",
     "lcb95",
     "LCB95",
-    "stage4_authorized",
 }
 
 
