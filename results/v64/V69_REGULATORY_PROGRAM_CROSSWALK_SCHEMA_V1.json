@@ -1,0 +1,97 @@
+{
+  "schema": "V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1",
+  "date": "2026-10-01",
+  "status": "PROSPECTIVE_STRUCTURAL_CROSSWALK__NO_BIOLOGICAL_EFFECTS",
+  "required_record_fields": [
+    "program_id",
+    "program_version",
+    "program_membership_sha256",
+    "source_id",
+    "source_feature_namespace",
+    "gene_support",
+    "region_support",
+    "tf_support",
+    "structural_eligibility",
+    "missingness",
+    "mapping_receipts",
+    "limitations"
+  ],
+  "source_ids": [
+    "FULL104_HVS",
+    "FULL104_NPH52",
+    "FULL104_SEA_AD",
+    "NIH_CARD_STAGE4",
+    "MORABITO_GSE174367",
+    "SEAAD_PUBLIC_MULTIOME",
+    "GSE272082",
+    "PERTURBATION_ATLAS",
+    "SEAAD_SPATIAL"
+  ],
+  "support_semantics": {
+    "gene_support": [
+      "MEASURED",
+      "PARTIAL",
+      "NOT_MEASURED",
+      "NOT_APPLICABLE"
+    ],
+    "region_support": [
+      "MEASURED",
+      "PARTIAL",
+      "NOT_MEASURED",
+      "NOT_APPLICABLE"
+    ],
+    "tf_support": [
+      "MEASURED",
+      "PARTIAL",
+      "NOT_MEASURED",
+      "NOT_APPLICABLE"
+    ],
+    "structural_eligibility": [
+      "ELIGIBLE",
+      "PARTIALLY_ELIGIBLE",
+      "NOT_ELIGIBLE",
+      "UNKNOWN"
+    ]
+  },
+  "quantitative_fields": {
+    "gene_support": [
+      "n_program_genes",
+      "n_measured_genes",
+      "fraction_measured"
+    ],
+    "region_support": [
+      "n_program_regions",
+      "n_measured_regions",
+      "fraction_measured"
+    ],
+    "tf_support": [
+      "n_program_tfs",
+      "n_measured_tfs",
+      "fraction_measured"
+    ]
+  },
+  "rules": [
+    "Fractions are structural measurement support only and never biological effect sizes.",
+    "A zero measured value is distinct from NOT_MEASURED.",
+    "NOT_MEASURED never contributes as numeric zero to downstream program activity.",
+    "Genome-build conversion requires a mapping receipt and may not be implicit.",
+    "A source-specific crosswalk does not authorize opening that source's protected biological outcome.",
+    "FULL104_HVS, FULL104_NPH52 and FULL104_SEA_AD are reported separately; a global FULL104 number cannot replace them.",
+    "NIH_CARD_STAGE4 structural eligibility does not modify the frozen primary Stage-4 estimand.",
+    "Perturbation support refers to target/regulator coverage, not whole-program causal validation.",
+    "Spatial support may be partial because of panel design and cannot be read as program absence."
+  ],
+  "missingness_fields": [
+    "unresolved_gene_ids",
+    "unresolved_region_ids",
+    "unresolved_tf_ids",
+    "build_mismatch_unresolved",
+    "structurally_unmeasured_features"
+  ],
+  "mapping_receipt_requirements": [
+    "gene identifier mapping receipt if namespace differs",
+    "region overlap/liftover receipt if coordinates/build differ",
+    "feature-universe identity/custody receipt",
+    "program namespace contract identity"
+  ]
+}
