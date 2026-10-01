@@ -16,6 +16,13 @@ on:
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json'
+      - 'tests/test_v67_privileged_teacher_state_construction_contract.py'
+      - 'tests/test_v67_two_lane_integration_recoverability_contract.py'
+      - 'tests/test_v67_evidence_vs_measurement_response.py'
+      - 'scripts/v64/evidence_vs_measurement_response_synthetic_v1.py'
+      - 'results/v64/V67_PRIVILEGED_TEACHER_STATE_CONSTRUCTION_CONTRACT_V1.json'
+      - 'results/v64/V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1.json'
+      - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py'
@@ -140,4 +147,7 @@ jobs:
             tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py \
             tests/v64/test_stage4_execution_authority_validator_v1.py \
             tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py \
-            tests/test_v67_heldout_source_observation_operator.py
+            tests/test_v67_heldout_source_observation_operator.py \
+            tests/test_v67_evidence_vs_measurement_response.py \
+            tests/test_v67_two_lane_integration_recoverability_contract.py \
+            tests/test_v67_privileged_teacher_state_construction_contract.py
