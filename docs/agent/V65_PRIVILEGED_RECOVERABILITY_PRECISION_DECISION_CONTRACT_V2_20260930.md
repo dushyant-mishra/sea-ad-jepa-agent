@@ -123,11 +123,24 @@ The margin is frozen now and may not be lowered after results are visible.
 
 For each held-out donor, keep the candidate predictions fixed and permute the nucleus-to-privileged-state pairing within that donor.
 
-Use 10,000 deterministic permutations per donor with seed derived as:
+Each donor has **one canonical permutation schedule**, shared by the R2 pairing gate and the geometry gates for every aggregate rank and incremental shell.
 
-`sha256("V65_RECOVERABILITY_PERMUTATION|<donor_id>")`.
+Construct it exactly as follows:
 
-The observed donor-level `R2_multi` must exceed the 99th percentile of that donor's within-donor permutation distribution.
+1. `digest = sha256("V65_RECOVERABILITY_PERMUTATION|<donor_id>".encode("utf-8")).digest()`;
+2. `seed_uint64 = int.from_bytes(digest[:8], byteorder="big", signed=False)`;
+3. initialize `numpy.random.Generator(numpy.random.PCG64(seed_uint64))`;
+4. generate exactly 10,000 sequential `rng.permutation(n_donor_nuclei)` permutations.
+
+For the R2 gate:
+
+- apply each permutation to the rows of the true projected privileged state;
+- keep the candidate prediction and TRAIN-frozen reference mean fixed;
+- recompute `R2_multi` for every permutation;
+- define the null threshold as `numpy.quantile(null, 0.99, method="higher")`;
+- require the observed donor-level `R2_multi` to be **strictly greater** than that threshold.
+
+The same permutation indices are reused for G1 and G2 in Section 10, for every aggregate projector and incremental shell. No rank, shell or metric gets an independently resampled null.
 
 This is a pairing-specific anti-shortcut diagnostic, not a substitute for donor replication.
 
