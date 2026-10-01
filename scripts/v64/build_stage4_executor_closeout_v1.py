@@ -68,6 +68,12 @@ def main() -> int:
         "6_helper_qualification_suite": ident(
             "scripts/v64/test_stage4_executor_synthetic_qualification_v1.py",
             "19 fixtures over the frozen mathematics"),
+        "9_seed_robustness": ident("scripts/v64/test_stage4_world_seed_robustness_v1.py",
+                                   "rebuilds the worlds at four seed bases and asks "
+                                   "which conclusions are a property of the method"),
+        "10_real_scale_capacity": ident("scripts/v64/audit_stage4_real_scale_capacity_v1.py",
+                                        "footprint from declared shapes; reads no "
+                                        "payload"),
         "7_g17_and_antibypass": ident("scripts/v64/test_stage4_g17_and_antibypass_v1.py",
                                       "G17 static and executable, plus 21 attacks"),
         "8_independent_audit": ident("scripts/v64/audit_chatgpt_v67_lane_independent_v1.py",
@@ -99,6 +105,15 @@ def main() -> int:
                                       "status"]),
         "synthetic_worlds_build": receipt("V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
                                           ["worlds", "reads_no_real_measurement"]),
+        "world_seed_robustness": receipt("V64_STAGE4_WORLD_SEED_ROBUSTNESS_V1.json",
+                                         ["seed_bases", "n_checks", "n_seed_stable",
+                                          "seed_dependent",
+                                          "thresholds_unchanged_after_seeing_the_failures",
+                                          "canonical_state_verified", "status"]),
+        "real_scale_capacity": receipt("V64_STAGE4_REAL_SCALE_CAPACITY_V1.json",
+                                       ["plausible_peak_gb", "machine",
+                                        "calculated_peak_fits_in_80pct_of_available",
+                                        "this_is_a_calculation_not_a_measured_peak"]),
         "independent_audit_of_chatgpt_lane": receipt(
             "V67_CLAUDE_INDEPENDENT_AUDIT_OF_CHATGPT_LANE_V1.json",
             ["contract_parent_quantities_checked",
@@ -129,7 +144,29 @@ def main() -> int:
             "Any claim that LCB95 > 0 alone establishes a non-technical origin. The "
             "MEASURED_TECHNICAL residue forbids that reading.",
         ],
+        LIMITS_FOUND_BY_RESAMPLING_THE_WORLDS=[
+            "The TRUE_NULL world produced a nominally significant result in 1 of 4 seed "
+            "draws: delta +0.0063 with LCB95 +0.0010, where nothing was planted. A "
+            "one-sided 95% bound is permitted to do this; what matters is that it "
+            "demonstrably does at this donor count. Four draws cannot estimate the rate "
+            "and none is claimed.",
+            "The depth residue excludes zero in 3 of 4 draws, not always. The earlier "
+            "statement that a purely technical world still ends with LCB95 > 0 is "
+            "weaker than it was first reported. The surviving warning is milder: a small "
+            "positive LCB95 is not by itself evidence of a non-technical origin.",
+            "Control-versus-control exceeded a tenth of the biology delta in 1 of 16 "
+            "world-draws, in the hidden-confound world, where the confound perturbs the "
+            "control arms unequally.",
+            "Stable across every draw: planted biology is recovered, most of a pure "
+            "depth effect is removed, and the hidden confound fools the method at 63 to "
+            "74 percent of genuine biology with LCB95 always above zero.",
+        ],
         UNRESOLVED_LIMITATIONS=[
+            "Real-scale memory is now CALCULATED, not measured: about 6.0 GB plausible "
+            "peak against 31.8 GB physical, dominated by three live copies of the 1.10 "
+            "GB design tensor. It is arithmetic on declared shapes and ignores "
+            "fragmentation, so it indicates feasibility and does not guarantee it. "
+            "Real-scale RUNTIME remains UNMEASURED.",
             "The end-to-end worlds are reduced scale: 60 eligible donors, 11 metacells "
             "each, 200 edges, against a real substrate of 282 donors, 3,231 metacells "
             "and 13,175 edges. Ratios are matched; runtime and memory at real scale are "
