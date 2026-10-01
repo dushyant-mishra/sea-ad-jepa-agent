@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "27176daba411762182a3c3be06bc901b7b04832f",
+    "chatgpt_architecture": "dfcbe5cfbe768a42b81c1f2bb1bd899e7b4843d3",
     "claude_exact_sampler": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -65,31 +65,26 @@
       "remaining_execution_blocker": "Freeze complete Phase-B measurement substrate before matrix opening: persisted metacell assignment; metacell-level RNA/ATAC values and masks; depth quantities needed by frozen nuisance basis; exact small-support enumeration alternatives/measurements; scope recoverability TEST-donor firewall separately from Phase-B population."
     },
     "phaseB_substrate": {
-      "status": "MATERIALIZED_CLOSEOUT_PENDING",
-      "audited_head": "dc30caede6369a31df3098205db11c83381784e5",
-      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V3.json",
+      "status": "B1_B5_ACCEPTED__B6_PRECOMMIT_REPAIR_REQUIRED",
+      "claude_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+      "authoritative_closeout_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
       "accepted": [
-        "S63 permutation byte binding and re-derivation",
-        "S64 explicit array-content versus .npy-file digest semantics",
-        "282/282 donor completion",
-        "3231 metacell reconciliation and global disjointness",
-        "modality firewall remains closed"
+        "B1 T5 donor×pair aggregates materialized from frozen T1-T4",
+        "B2 32153 interval reconciliation",
+        "B3 current shard-byte rehash and receipt equality",
+        "B4 donor-pair zero-coverage/variance semantics",
+        "B5 T6→T7 reference integrity",
+        "pairing permutation content/file digest, bijection, inverse and obs-namespace re-derivation"
       ],
-      "blockers": {
-        "S65": "Materialize T5 donor-level aggregates from frozen T2-T4 without reopening matrices or computing correspondence.",
-        "S67": "Recompute every current shard .npz SHA-256 inside closeout validation and bind aggregate to recomputed bytes.",
-        "availability": "Carry explicit availability/missingness state in the accepted artifact; sparse absence alone is not enough under SECTION_5_MISSINGNESS."
-      },
-      "additional_checks": [
-        "prove explicit/derivable T3/T4 availability semantics",
-        "validate T6 enumeration -> T7 conditioning-reference referential integrity and bind T7 digest"
+      "b6_precommit_audit": "results/v64/V64_PHASE_B_B6_AVAILABILITY_PRECOMMIT_AUDIT_V1.json",
+      "blockers": [
+        "B6 proof 3 must independently rederive T5 availability_state_code for all donor×pair rows and compare elementwise; holds=True is not evidence.",
+        "B6 sparse-zero proof must cover T4 ATAC as well as T3 RNA.",
+        "B6 must prove global metacell IDs are unique contiguous 0..3230 before using them as dense row indices.",
+        "B6 must prove all 8 shards share identical gene/interval axis dictionaries and n_assigned_peaks ordering.",
+        "B6 output must bind exact shard/T5/closeout/producer bytes plus packbits shape/bitorder/padding semantics."
       ],
-      "stage4_authorized": false,
-      "closed_findings": {
-        "S63_S64": "Permutation provenance accepted.",
-        "S66": "Closed: 32153 is the correct unique interval universe; 32174 was a structural counting defect.",
-        "T6_T7": "Closed: all 17 R3 enumeration-only rows resolve to frozen T7 conditioning records with zero semantic mismatches."
-      }
+      "stage4_authorized": false
     }
   },
   "architecture": {
@@ -300,10 +295,10 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Claude Phase-B closeout: T5 + explicit availability + current-shard rehash only. S66 and T6/T7 are CLOSED; do not rerun those audits unless contradictory evidence appears.",
-    "Nested RNA+multimodal synthetic semantics and optimizer/EMA mechanics pass clean software qualification; real multimodal/JEPA training remains OFF.",
-    "Recoverability TRAIN+VALIDATION remains explicit-authorization gated with TEST sealed.",
-    "Historical authenticated u0 real-data forward compatibility is a plumbing smoke only; no post-u0 historical weights are authorized.",
+    "Claude B6 only: keep B1-B5 untouched. Fix the B6 pre-commit audit blockers, commit the availability artifact/receipt/producer, and stop again for audit.",
+    "Do not rerun Phase A, sampler, substrate build, T5, interval reconciliation or T6/T7.",
+    "Nested RNA+multimodal synthetic semantics and optimizer/EMA mechanics remain clean software qualifications only; real training stays OFF.",
+    "Recoverability TRAIN+VALIDATION remains authorization-gated and TEST remains sealed.",
     "Stage 4, Morabito and TD60 remain closed."
   ],
   "governance": {
