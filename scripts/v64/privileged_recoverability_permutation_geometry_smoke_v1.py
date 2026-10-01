@@ -45,8 +45,8 @@ def relational_geometry_corr(X,Y):
     if Y.shape[0]!=n or n<3:
         raise ValueError("aligned matrices with >=3 rows required")
     ix=np.triu_indices(n,1)
-    dx=np.square(X[:,None,:]-X[None,:,:]).sum(2)[ix]
-    dy=np.square(Y[:,None,:]-Y[None,:,:]).sum(2)[ix]
+    dx=np.sqrt(np.square(X[:,None,:]-X[None,:,:]).sum(2))[ix]
+    dy=np.sqrt(np.square(Y[:,None,:]-Y[None,:,:]).sum(2))[ix]
     if dx.std()==0 or dy.std()==0:
         return np.nan
     return float(np.corrcoef(dx,dy)[0,1])
@@ -79,13 +79,13 @@ def permutation_metrics(Ytrue,Ypred,train_mean,donor_id,n_perm=10_000):
         observed_r2=obs_r2,
         observed_median_canonical=obs_cc,
         observed_relational=obs_rel,
-        r2_q99=float(np.nanquantile(null_r2,.99)),
-        canonical_q99=float(np.nanquantile(null_cc,.99)),
-        relational_q99=float(np.nanquantile(null_rel,.99)),
-        pairing_pass=bool(obs_r2>np.nanquantile(null_r2,.99)),
+        r2_q99=float(np.quantile(null_r2,.99,method="higher")),
+        canonical_q99=float(np.quantile(null_cc,.99,method="higher")),
+        relational_q99=float(np.quantile(null_rel,.99,method="higher")),
+        pairing_pass=bool(obs_r2>np.quantile(null_r2,.99,method="higher")),
         geometry_pass=bool(
-            obs_cc>np.nanquantile(null_cc,.99)
-            and obs_rel>np.nanquantile(null_rel,.99)
+            obs_cc>np.quantile(null_cc,.99,method="higher")
+            and obs_rel>np.quantile(null_rel,.99,method="higher")
         ),
     )
 
