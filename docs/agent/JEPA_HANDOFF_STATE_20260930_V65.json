@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "dbc74ed8530ed24941e9b40d5f3b0009823c1472",
+    "chatgpt_architecture": "27176daba411762182a3c3be06bc901b7b04832f",
     "claude_exact_sampler": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -67,7 +67,7 @@
     "phaseB_substrate": {
       "status": "MATERIALIZED_CLOSEOUT_PENDING",
       "audited_head": "dc30caede6369a31df3098205db11c83381784e5",
-      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V2.json",
+      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V3.json",
       "accepted": [
         "S63 permutation byte binding and re-derivation",
         "S64 explicit array-content versus .npy-file digest semantics",
@@ -76,8 +76,9 @@
         "modality firewall remains closed"
       ],
       "blockers": {
-        "S65": "T5 donor-level aggregates required by the frozen substrate contract are not materialized in shard outputs.",
-        "S67": "Aggregator must recompute every current shard .npz SHA-256 and require equality to both receipt and custody before constructing the aggregate binding."
+        "S65": "Materialize T5 donor-level aggregates from frozen T2-T4 without reopening matrices or computing correspondence.",
+        "S67": "Recompute every current shard .npz SHA-256 inside closeout validation and bind aggregate to recomputed bytes.",
+        "availability": "Carry explicit availability/missingness state in the accepted artifact; sparse absence alone is not enough under SECTION_5_MISSINGNESS."
       },
       "additional_checks": [
         "prove explicit/derivable T3/T4 availability semantics",
@@ -86,7 +87,8 @@
       "stage4_authorized": false,
       "closed_findings": {
         "S63_S64": "Permutation provenance accepted.",
-        "S66": "Closed: 32174 was a contract counting defect. Correct combined unique interval universe is 32153 = 32117 Phase-A unique plus 54 enumeration unique minus 18 overlaps; 3 additional enumeration-row duplicates explain the full 21 overcount."
+        "S66": "Closed: 32153 is the correct unique interval universe; 32174 was a structural counting defect.",
+        "T6_T7": "Closed: all 17 R3 enumeration-only rows resolve to frozen T7 conditioning records with zero semantic mismatches."
       }
     }
   },
@@ -298,11 +300,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude repair after 154935c5.",
-    "Require contract-faithful T3/T4 availability materialization or exact factorization from frozen substrate only.",
-    "Require adversarial measured-zero versus unavailable tests.",
-    "Keep Stage 4 sealed until B6 re-audit passes.",
-    "Continue promoter/recoverability architecture work separately."
+    "Claude Phase-B closeout: T5 + explicit availability + current-shard rehash only. S66 and T6/T7 are CLOSED; do not rerun those audits unless contradictory evidence appears.",
+    "Nested RNA+multimodal synthetic semantics and optimizer/EMA mechanics pass clean software qualification; real multimodal/JEPA training remains OFF.",
+    "Recoverability TRAIN+VALIDATION remains explicit-authorization gated with TEST sealed.",
+    "Historical authenticated u0 real-data forward compatibility is a plumbing smoke only; no post-u0 historical weights are authorized.",
+    "Stage 4, Morabito and TD60 remain closed."
   ],
   "governance": {
     "training": "OFF",
