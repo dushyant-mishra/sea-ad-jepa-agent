@@ -74,7 +74,7 @@ def test_tie_tolerance_and_geometry_numerics_are_frozen():
     t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "1e-8 * max(1, abs(s[k-1]), abs(s[k]))" in t
     assert "1e-8 * max(1, abs(s[k-1]), abs(s[k]))" in t
-    assert "pairwise Euclidean distances" in t
+    assert "pairwise squared Euclidean distances" in t
     assert "nonzero left-singular subspace" in t
     assert "Fail closed if:" in t
     assert "No rank, shell or metric gets an independently resampled null" in t
