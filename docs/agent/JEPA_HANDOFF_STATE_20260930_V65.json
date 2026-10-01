@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "d15a88fe1f1761fd411889009d701d3ef9926793",
+    "chatgpt_architecture": "65a0171d72dd8e9f174b14d4426e231e12c6cb08",
     "claude_exact_sampler": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -91,7 +91,19 @@
     "recoverability_authority_version": "V2_SOLE_LIVE_AUTHORITY",
     "recoverability_execution_mechanics_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md",
     "recoverability_execution_mechanics_qualification": "results/v64/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_QUALIFICATION_V1.json",
-    "recoverability_execution_mechanics_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY"
+    "recoverability_execution_mechanics_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY",
+    "recoverability_train_validation_preflight": {
+      "status": "PASS_OUTCOME_BLIND_STRUCTURAL_PREFLIGHT",
+      "script": "scripts/v64/privileged_recoverability_train_validation_preflight_v1.py",
+      "tests": "tests/test_v65_recoverability_train_validation_preflight.py",
+      "receipt": "results/v64/V65_PRIVILEGED_RECOVERABILITY_TRAIN_VALIDATION_PREFLIGHT_RECEIPT_V1.json",
+      "source_sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+      "train_nuclei": 1440,
+      "validation_nuclei": 360,
+      "test_nuclei_sealed": 360,
+      "test_numeric_access": "SEALED_BY_PREFLIGHT_API",
+      "real_outcome_computed": false
+    }
   },
   "paired_nihcard": {
     "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
@@ -196,11 +208,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude repair after 7ad38eaf.",
-    "Require a committed final-state 9/9 PASS substrate-test receipt after all mutation artifacts are restored.",
-    "Require a final-state consistency guard against stale FAIL receipts/digests.",
-    "Keep Phase B stopped until S61 re-audit passes.",
-    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
+    "Close Claude S61 only: rerun and commit a clean final-state 9/9 substrate-test receipt after mutation artifacts are restored; keep Phase B stopped until re-audit passes.",
+    "Promoter dual ledger is materialized and accepted; do not repeat source-byte/overlap work unless a contradictory audit finding appears.",
+    "Recoverability structural preflight passes on the exact paired subset with TEST numeric access sealed by API; real TRAIN+VALIDATION recoverability execution remains NOT AUTHORIZED.",
+    "If recoverability work continues, build/audit the authorized TRAIN+VALIDATION execution path from the frozen V2 decision/mechanics contracts without opening TEST.",
+    "Keep Stage 4, Morabito, training and protected correspondence closed."
   ],
   "governance": {
     "training": "OFF",
