@@ -13,7 +13,7 @@
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
   "current_blocker": "No remaining substrate-contract blocker. Phase B may now materialize the frozen single-modality measurement substrate only. Stage 4 / RNA-ATAC correspondence remains not authorized until the emitted substrate passes independent audit.",
-  "parallel_architecture_next": "Promoter ledger closed. Nested RNA+multimodal student topology is now prospectively frozen: RNA remains universal backbone; multimodal adds modality-private capacity; shared state requires recoverability authority. Multimodal training remains off. Recoverability structural preflight passes with TEST sealed; next lawful step is executor audit/authorization for TRAIN+VALIDATION only.",
+  "parallel_architecture_next": "Nested RNA+multimodal architecture now has two no-claim integration checks: FULL104-shaped synthetic two-student smoke PASS and authenticated historical u0 real-data RNA forward compatibility PASS. These qualify plumbing/semantics only. Real recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed; multimodal training remains off.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
     "training": "OFF",
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Measurement-only Phase B has separate authorization; Stage 4 remains sealed. Read the nested multimodal-student contract before proposing any rich teacher/student runtime. Real shared rank is unresolved and multimodal training is not authorized."
+  "read_me_first": "Measurement-only Phase B remains separate; Stage 4 sealed. Synthetic nested-student smoke and historical u0 forward smoke both pass but carry no biological/training authority. Use recoverability to establish the real shared multimodal subspace before training either model family."
 }
