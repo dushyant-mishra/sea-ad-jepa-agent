@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_CONTRACT_COMPLIANT_AT_13175__PHASE_B_STOPPED_ON_PROSPECTIVE_NULL_STATISTICS__TRAINING_OFF",
+  "status": "V65_PHASE_A_CLOSED_13175__PHASE_B_STATS_ACCEPTED_BUT_EXECUTION_BLOCKED_ON_MEASUREMENT_SUBSTRATE__RECOVERABILITY_PRECISION_FROZEN",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "78a47ad2934331293c2c8af9407010f7dccdffd3",
-    "claude_exact_sampler": "cfd3623055cd43164cebe6c36981d109e8762100",
+    "chatgpt_architecture": "d49375243f9402c62e448663acca8c697b06a565",
+    "claude_exact_sampler": "af5038f0ef00faa057bb5ebe2e0cde21ba3e7a64",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -62,6 +62,19 @@
       "provenance_receipt_sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f",
       "provenance_complete": true,
       "external_byte_limitation": "row/per-edge artifacts, NIH-CARD matrices and liftOver binary are hash-bound but not committed"
+    },
+    "phaseB_statistical_contract": {
+      "head": "af5038f0ef00faa057bb5ebe2e0cde21ba3e7a64",
+      "status": "ACCEPTED_DESIGN_V2",
+      "randomized_null_denominator": 10654,
+      "primary_weighting": "GENE_BALANCED",
+      "mandatory_companion": "PROMOTER_EQUAL",
+      "predeclared_sensitivity": "EDGE_EQUAL",
+      "sole_resampling_unit": "DONOR",
+      "bootstrap_replicates": 4000,
+      "bootstrap_seed": 20260929,
+      "phaseB_executed": false,
+      "remaining_execution_blocker": "Freeze complete Phase-B measurement substrate before matrix opening: persisted metacell assignment; metacell-level RNA/ATAC values and masks; depth quantities needed by frozen nuisance basis; exact small-support enumeration alternatives/measurements; scope recoverability TEST-donor firewall separately from Phase-B population."
     }
   },
   "architecture": {
@@ -79,7 +92,10 @@
     "test_selects_rank": false,
     "canonical_paired_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
     "split_authority_resolution": "docs/agent/V65_NIHCARD_RECOVERABILITY_SPLIT_AUTHORITY_20260930.md",
-    "first_privileged_factor_contract": "docs/agent/V65_FIRST_PRIVILEGED_FACTOR_RECOVERABILITY_EXECUTION_CONTRACT_20260930.md"
+    "first_privileged_factor_contract": "docs/agent/V65_FIRST_PRIVILEGED_FACTOR_RECOVERABILITY_EXECUTION_CONTRACT_20260930.md",
+    "recoverability_precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md",
+    "recoverability_decision_state": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json",
+    "recoverability_execution_authorized": false
   },
   "paired_nihcard": {
     "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
@@ -111,14 +127,20 @@
     "dong_join_rule": "transcript_id + chromosome",
     "fantom_coordinate_authority": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
     "fantom_bed_workflow_run": 36749777293,
-    "full_ledger_status": "DUAL_DENOMINATOR_CONTRACT_AND_BUILDER_COMMITTED__PUBLIC_SOURCE_BYTES_NOT_MATERIALIZED_IN_CHAT_RUNTIME",
+    "full_ledger_status": "SOURCE_BYTES_AUTHENTICATED__DUAL_LEDGER_BUILDER_REPAIRED_FOR_STRAND_AND_NESTED_INTERVALS__STRICT_ACTIONS_MATERIALIZATION_IN_PROGRESS",
     "denominators": {
       "transcript_promoter_isoform_records": 644292,
       "exact_tss_loci": 389280,
       "genes": 78733,
       "contract": "docs/agent/V65_PROMOTER_LEDGER_DENOMINATOR_CONTRACT_20260930.md",
-      "builder": "scripts/v64/build_promoter_dual_ledger_v2.py"
-    }
+      "builder": "scripts/v64/build_promoter_dual_ledger_v2.py",
+      "source_custody": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+      "frozen_screen_overlap": 178778,
+      "frozen_fantom_same_strand_overlap": 126712,
+      "frozen_fantom_exact_representative_tss": 25321
+    },
+    "source_byte_custody": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+    "interval_overlap_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json"
   },
   "full104_discovery_subset": {
     "bytes": 50646637,
@@ -161,11 +183,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Keep Phase B stopped until Claude freezes the prospective null/randomness-strata and donor-aware statistical contract.",
-    "Treat Phase A as contract-compliant at 13,175 unless a contradictory audit finding appears.",
-    "Materialize the dual GENCODE transcript/exact-TSS promoter ledger only from exact hash-bound source bytes; do not substitute preflight counts for bytes.",
-    "Freeze the recoverability precision/decision thresholds before any paired RNA-ATAC correspondence is opened.",
-    "Use only V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json as future recoverability donor-membership authority; TEST remains unopened."
+    "Keep Phase B stopped until a measurement-substrate contract freezes metacell-level values/masks, small-support enumeration measurements and exact TEST-donor scope before matrix opening.",
+    "Treat Phase A as closed and contract-compliant at 13,175.",
+    "Accept Claude Phase-B null/statistical design V2 at af5038f0: gene-balanced sole primary, promoter-equal mandatory companion, edge-equal sensitivity, donor-only bootstrap.",
+    "Accept promoter source-byte custody and nested-interval audit; only a dual-ledger Actions run using repaired builder 1d9a6a1d or later and reproducing frozen SCREEN/FANTOM counts may become authoritative.",
+    "Recoverability precision/decision logic is frozen but execution remains unauthorized; TEST remains unopened."
   ],
   "governance": {
     "training": "OFF",
@@ -175,9 +197,9 @@
     "Morabito": "PROTECTED"
   },
   "blocked": [
-    "Phase B until prospective control-randomness/null and donor-aware statistical contract is frozen and audited",
-    "Stage 4",
-    "paired NIH-CARD biological recoverability execution until a precision/decision threshold contract is frozen and separately authorized",
+    "Phase B execution until measurement-substrate/enumeration contract is frozen and audited",
+    "Stage 4 correspondence",
+    "paired NIH-CARD recoverability execution until separately authorized under frozen V65 precision contract",
     "Morabito",
     "training",
     "final factorized-target tournament"
