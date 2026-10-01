@@ -305,7 +305,49 @@
     ],
     "the_rule_that_is_easiest_to_break": "p < 0.05 is explicitly NOT the success definition. A statistically positive but negligibly small Delta must be reported as exactly that and must not be presented as biological confirmation."
   },
+  "REQUIRED_BINDINGS": {
+    "why": "S73. G1 caught a binding whose FILE was missing, but not a binding that had been DELETED from the contract: removing an entry simply gave the walker less to walk and every remaining digest still matched. An input can therefore vanish without any gate noticing. This manifest names every binding that must exist, and presence is checked BEFORE any digest work.",
+    "keys": [
+      "INHERITED_NOT_RESTATED.correspondence_design",
+      "INHERITED_NOT_RESTATED.downstream_null_statistical_V3",
+      "INHERITED_NOT_RESTATED.measurement_substrate",
+      "INHERITED_NOT_RESTATED.feature_artifact_V2",
+      "INHERITED_NOT_RESTATED.phase_a_population",
+      "BOUND_PHASE_B_INPUTS.t5_donor_aggregates",
+      "BOUND_PHASE_B_INPUTS.t3_t4_availability",
+      "BOUND_PHASE_B_INPUTS.r3_conditioning_reference",
+      "BOUND_PHASE_B_INPUTS.enumeration_intervals",
+      "BOUND_PHASE_B_INPUTS.substrate_aggregate_receipt",
+      "BOUND_PHASE_B_INPUTS.substrate_closeout_receipt",
+      "BOUND_PHASE_B_INPUTS.availability_proof_receipt",
+      "BOUND_PHASE_B_INPUTS.phase_a_rows",
+      "ESTIMATOR_IMPORTED_UNMODIFIED",
+      "CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT.pairing_permutation"
+    ],
+    "substrate_shards_required": 8,
+    "rule": "every key above must be present in this contract and every shard slot filled; absence is a STOP, not a smaller walk"
+  },
   "FAIL_CLOSED_GATES": [
+    {
+      "id": "G0_GATE_REGISTRY_AGREES",
+      "rule": "the gate set this contract declares must equal the gate set the verifier implements, in both directions (S75)",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G1a_REQUIRED_BINDINGS_PRESENT",
+      "rule": "every key in REQUIRED_BINDINGS must exist in this contract before any digest is checked (S73)",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY",
+      "rule": "every repo-resident input's stored blob must EQUAL git rev-parse HEAD:<path>, not merely look like a hash (S74)",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G15_PERMUTATION_COROBORATION",
+      "rule": "both pairing-permutation digests verify; corroborative only, not a Stage-4 execution input (S69)",
+      "on_failure": "STOP"
+    },
     {
       "id": "G1_INPUT_DIGESTS",
       "rule": "every bound input digest must match before a single correspondence value is computed",
@@ -425,6 +467,6 @@
   },
   "producer": {
     "path": "scripts/v64/build_stage4_execution_authority_v1.py",
-    "sha256": "6047d2729bcfabe212a74bde718d9646e65c56bd5f3682e104129e1e1bba8dca"
+    "sha256": "cf6849df0fb1176041acf4983f45d960ce49f43a74f0fa4f59201089ba71c4ee"
   }
 }

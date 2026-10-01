@@ -1,19 +1,28 @@
 {
   "schema": "V64_STAGE4_PREFLIGHT_V1",
-  "date": "2026-09-30",
+  "date": "2026-10-01",
+  "mode": "execution",
   "authority": {
-    "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "6819bb9a6e087c8415d169360ec92938fbf60a55279d8ff560fa53ec2d6a09db"
+    "path": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
+    "sha256": "cd49cd86f9b6ff8b78a0af5eada7bfa9e8315aa2f7b9f72fe6190fc05e223d19"
   },
-  "producer_sha256": "9cece5b4646ae2216e6221635d7c4a5b42a33e1eebf0ce0aa388ec17f6d1de68",
+  "producer_sha256": "e752f714c14e3153e02364708b218e203f47bf7e366c89ee00e3bc476a2dd4d3",
   "gates": {
+    "G0_GATE_REGISTRY_AGREES": {
+      "passed": true,
+      "detail": "declared 18 / implemented 18; sets agree in both directions"
+    },
+    "G1a_REQUIRED_BINDINGS_PRESENT": {
+      "passed": true,
+      "detail": "15/15 required bindings present, 8/8 shard slots filled"
+    },
     "G1_INPUT_DIGESTS": {
       "passed": true,
       "detail": "all 22 bound inputs exist and their digests match"
     },
-    "G1b_REPO_INPUTS_HAVE_GIT_BLOBS": {
+    "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY": {
       "passed": true,
-      "detail": "all 12 repo-resident inputs carry a real git blob"
+      "detail": "all 12 repo-resident blobs equal git rev-parse HEAD:<path>"
     },
     "G2_ESTIMATOR_UNMODIFIED": {
       "passed": true,
@@ -57,26 +66,23 @@
     },
     "G12_NO_THRESHOLD_ON_EFFECT": {
       "passed": true,
-      "detail": "effect reported without a threshold; p<0.05 alone is explicitly not success"
+      "detail": "3/3 required statements present in the no-minimum-effect block; effect reported without a threshold, p<0.05 alone explicitly not success"
     },
     "G13_FUNNEL": {
       "passed": true,
       "detail": "funnel reconciliation to 20,709 is a PASS requirement"
     },
-    "G15_PERMUTATION_COROBORATION": {
-      "passed": true,
-      "detail": "array-content matches, npy-file matches; corroborative only, not a Stage-4 execution input"
-    },
     "G14_STRATA": {
       "passed": true,
       "detail": "pooling without the per-stratum breakdown is a violation"
+    },
+    "G15_PERMUTATION_COROBORATION": {
+      "passed": true,
+      "detail": "array-content matches, npy-file matches; corroborative only"
     }
   },
-  "n_gates": 16,
+  "n_gates": 18,
   "failed_gates": [],
-  "computed_no_correspondence_value": true,
-  "rna_matrix_opened": false,
-  "atac_matrix_opened": false,
   "design_gates_status": "PASS",
   "EXECUTION_AUTHORITY": "NOT_GRANTABLE",
   "unsatisfied_execution_prerequisites": [
@@ -85,8 +91,15 @@
   ],
   "why_not_grantable": "the Stage-4 executor does not exist yet, so it cannot be bound. Until it is implemented, sha256/blob-bound and audited, execution authority is NOT GRANTABLE however many design gates pass.",
   "g3_limit": "G3 proves only that this CONTRACT forbids reopening the RNA and ATAC matrices. It cannot prove the future executor obeys that rule, because the executor does not exist. That proof belongs with the executor binding and is listed here as unsatisfied rather than implied by a passing gate.",
-  "status": "PASS",
-  "what_a_pass_means": "the inputs are bound and the rules are locked. It does NOT authorise execution: the executor does not exist yet, so two prerequisites remain unsatisfied however many design gates pass.",
+  "exit_code_semantics": {
+    "mode": "execution",
+    "execution": "nonzero while any design gate fails OR any execution prerequisite is unsatisfied, so `preflight && execute` cannot proceed",
+    "design": "nonzero while any design gate fails; explicitly NOT an execution authorisation"
+  },
+  "computed_no_correspondence_value": true,
+  "rna_matrix_opened": false,
+  "atac_matrix_opened": false,
+  "status": "FAIL",
   "governance": {
     "training": "OFF",
     "phase_B": "STOPPED",

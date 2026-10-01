@@ -3,13 +3,13 @@
   "date": "2026-09-30",
   "authority": {
     "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "6819bb9a6e087c8415d169360ec92938fbf60a55279d8ff560fa53ec2d6a09db"
+    "sha256": "cd49cd86f9b6ff8b78a0af5eada7bfa9e8315aa2f7b9f72fe6190fc05e223d19"
   },
-  "producer_sha256": "ed113aa6446a28016b482450f8398dbc88510f67d4e5c3bd205a8f02817a70cf",
+  "producer_sha256": "7f4f90b6462c6a9f18e2b60135cf8c27e3beafa62239c2221ccbe4f0bd90fe0b",
   "live_contract_untouched": true,
   "mutations_applied_in_memory_only": true,
-  "n_gates": 19,
-  "n_real_gates": 19,
+  "n_gates": 25,
+  "n_real_gates": 25,
   "every_gate_rejects_its_own_violation": true,
   "results": [
     {
@@ -44,6 +44,7 @@
       "gate": "G4_PARTITION_NOT_REBUILT",
       "planted": "drop a substrate shard from the binding",
       "gates_that_fired": [
+        "G1a_REQUIRED_BINDINGS_PRESENT",
         "G4_PARTITION_NOT_REBUILT"
       ],
       "caught_by_its_own_gate": true,
@@ -149,10 +150,10 @@
       "is_a_real_gate": true
     },
     {
-      "gate": "G1b_REPO_INPUTS_HAVE_GIT_BLOBS",
+      "gate": "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY",
       "planted": "blank a repo-resident input's git blob",
       "gates_that_fired": [
-        "G1b_REPO_INPUTS_HAVE_GIT_BLOBS"
+        "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY"
       ],
       "caught_by_its_own_gate": true,
       "is_a_real_gate": true
@@ -179,7 +180,62 @@
       "gate": "G15_PERMUTATION_COROBORATION",
       "planted": "remove the permutation binding entirely",
       "gates_that_fired": [
-        "G15_PERMUTATION_COROBORATION"
+        "G15_PERMUTATION_COROBORATION",
+        "G1a_REQUIRED_BINDINGS_PRESENT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1a_REQUIRED_BINDINGS_PRESENT",
+      "planted": "delete a required binding from the contract",
+      "gates_that_fired": [
+        "G1a_REQUIRED_BINDINGS_PRESENT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1a_REQUIRED_BINDINGS_PRESENT",
+      "planted": "delete the availability binding",
+      "gates_that_fired": [
+        "G1a_REQUIRED_BINDINGS_PRESENT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY",
+      "planted": "set a repo blob to forty zeros",
+      "gates_that_fired": [
+        "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY",
+      "planted": "swap two repo inputs' blobs",
+      "gates_that_fired": [
+        "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G0_GATE_REGISTRY_AGREES",
+      "planted": "add a gate the verifier does not implement",
+      "gates_that_fired": [
+        "G0_GATE_REGISTRY_AGREES"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G0_GATE_REGISTRY_AGREES",
+      "planted": "remove a gate the verifier does implement",
+      "gates_that_fired": [
+        "G0_GATE_REGISTRY_AGREES"
       ],
       "caught_by_its_own_gate": true,
       "is_a_real_gate": true
@@ -193,6 +249,15 @@
     "G17_EXECUTOR_OPENS_NO_MATRIX: static proof the executor never opens the RNA or ATAC h5ad files"
   ],
   "note": "every gate below rejects its own violation. That makes the DESIGN gates real; it does not make execution grantable, which waits on the executor being implemented and bound.",
+  "S72_exit_code_test": {
+    "unsatisfied_prerequisites": 2,
+    "execution_mode_exit": 1,
+    "design_mode_exit": 0,
+    "execution_mode_refuses_while_not_grantable": true,
+    "design_mode_passes_design_gates": true,
+    "why_this_matters": "`python verify_stage4_preflight_v1.py && python execute_stage4.py` must not proceed. A printed warning the shell cannot see is not a gate.",
+    "holds": true
+  },
   "status": "PASS",
   "governance": {
     "training": "OFF",

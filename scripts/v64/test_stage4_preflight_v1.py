@@ -71,7 +71,7 @@ def mutations():
        lambda c: c["BOUND_PHASE_B_INPUTS"]["t5_donor_aggregates"].__setitem__(
            "path", "D:/jepa_v5_outputs_20260925/v64_phase_b/THIS_FILE_DOES_NOT_EXIST.npz")),
       # S70: a repo-resident input must carry a real blob
-      ("G1b_REPO_INPUTS_HAVE_GIT_BLOBS", "blank a repo-resident input's git blob",
+      ("G1b_REPO_INPUTS_GIT_BLOB_IDENTITY", "blank a repo-resident input's git blob",
        lambda c: c["INHERITED_NOT_RESTATED"]["downstream_null_statistical_V3"].__setitem__(
            "git_blob", "UNCOMMITTED")),
       # S69: both permutation digests must be checked, and the binding must be present
@@ -83,6 +83,27 @@ def mutations():
        .__setitem__("npy_file_sha256", "f" * 64)),
       ("G15_PERMUTATION_COROBORATION", "remove the permutation binding entirely",
        lambda c: c.__setitem__("CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT", {})),
+      # S73: a required binding DELETED from the contract must be caught, not merely
+      # give the walker less to walk
+      ("G1a_REQUIRED_BINDINGS_PRESENT", "delete a required binding from the contract",
+       lambda c: c["BOUND_PHASE_B_INPUTS"].pop("t5_donor_aggregates")),
+      ("G1a_REQUIRED_BINDINGS_PRESENT", "delete the availability binding",
+       lambda c: c["BOUND_PHASE_B_INPUTS"].pop("t3_t4_availability")),
+      # S74: a syntactically valid but WRONG blob must be caught by identity, not shape
+      ("G1b_REPO_INPUTS_GIT_BLOB_IDENTITY", "set a repo blob to forty zeros",
+       lambda c: c["INHERITED_NOT_RESTATED"]["downstream_null_statistical_V3"]
+       .__setitem__("git_blob", "0" * 40)),
+      ("G1b_REPO_INPUTS_GIT_BLOB_IDENTITY", "swap two repo inputs' blobs",
+       lambda c: (c["INHERITED_NOT_RESTATED"]["measurement_substrate"].__setitem__(
+           "git_blob", c["INHERITED_NOT_RESTATED"]["feature_artifact_V2"]["git_blob"]))),
+      # S75: registry drift in either direction
+      ("G0_GATE_REGISTRY_AGREES", "add a gate the verifier does not implement",
+       lambda c: c["FAIL_CLOSED_GATES"].append(
+           {"id": "G99_INVENTED", "rule": "x", "on_failure": "STOP"})),
+      ("G0_GATE_REGISTRY_AGREES", "remove a gate the verifier does implement",
+       lambda c: c.__setitem__("FAIL_CLOSED_GATES",
+                               [x for x in c["FAIL_CLOSED_GATES"]
+                                if x["id"] != "G7_NULL_DENOMINATOR"])),
     ]
 
 
@@ -109,6 +130,32 @@ def main() -> int:
               f"{'OK' if caught else 'NOT A REAL GATE'}")
 
     after = B.sha_file(AUTH)
+    # S72: the exit CODE is the thing a shell sees. run_gates cannot express it, so the
+    # real binary is invoked in both modes and its return value checked.
+    import subprocess
+    exits = {}
+    for mode in ("execution", "design"):
+        r = subprocess.run([sys.executable, "scripts/v64/verify_stage4_preflight_v1.py",
+                            "--mode", mode], capture_output=True, text=True)
+        exits[mode] = r.returncode
+    auth = json.load(open(AUTH))
+    unsat = auth.get("EXECUTION_PREREQUISITES_NOT_YET_SATISFIED", {}).get(
+        "unsatisfied_prerequisites", [])
+    exit_test = dict(
+        unsatisfied_prerequisites=len(unsat),
+        execution_mode_exit=exits["execution"],
+        design_mode_exit=exits["design"],
+        execution_mode_refuses_while_not_grantable=(exits["execution"] != 0),
+        design_mode_passes_design_gates=(exits["design"] == 0),
+        why_this_matters="`python verify_stage4_preflight_v1.py && python "
+                         "execute_stage4.py` must not proceed. A printed warning the "
+                         "shell cannot see is not a gate.",
+        holds=(exits["execution"] != 0 and exits["design"] == 0 and len(unsat) > 0))
+    print("")
+    print(f"  EXIT CODES  execution={exits['execution']} (must be nonzero while "
+          f"{len(unsat)} prerequisites unsatisfied), design={exits['design']}  "
+          f"{'OK' if exit_test['holds'] else 'FAIL'}")
+
     real = [r for r in results if r["is_a_real_gate"]]
     out = dict(schema="V64_STAGE4_PREFLIGHT_TESTS_V1", date="2026-09-30",
                authority=dict(path=AUTH, sha256=after),
@@ -129,7 +176,9 @@ def main() -> int:
                note="every gate below rejects its own violation. That makes the DESIGN "
                     "gates real; it does not make execution grantable, which waits on the "
                     "executor being implemented and bound.",
-               status="PASS" if len(real) == len(results) else "FAIL",
+               S72_exit_code_test=exit_test,
+               status="PASS" if (len(real) == len(results) and exit_test["holds"])
+                      else "FAIL",
                governance=live["governance"])
     p = os.path.join(DIR, "V64_STAGE4_PREFLIGHT_TESTS_V1.json")
     with open(p, "w", newline="\n") as fh:
