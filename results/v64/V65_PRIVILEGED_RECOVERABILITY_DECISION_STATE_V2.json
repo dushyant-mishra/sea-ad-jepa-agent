@@ -126,8 +126,12 @@
       "seed_rule": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>')",
       "same_permutations_reused_across_ranks": true,
       "true_rows_permuted_predicted_rows_fixed": true,
-      "quantile": "0.99 with method='higher'",
-      "pass_rule": "OBSERVED_STRICTLY_GREATER_THAN_OWN_NULL_THRESHOLD"
+      "quantile": "numpy.quantile(null, 0.99, method='higher')",
+      "pass_rule": "OBSERVED_STRICTLY_GREATER_THAN_OWN_NULL_THRESHOLD",
+      "seed_digest": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>'.encode('utf-8')).digest()",
+      "seed_uint64": "int.from_bytes(digest[:8], byteorder='big', signed=False)",
+      "rng": "numpy.random.Generator(numpy.random.PCG64(seed_uint64))",
+      "generation": "10,000 sequential rng.permutation(n_donor_nuclei) calls"
     },
     "fail_closed_on": [
       "requested projected rank deficiency",
