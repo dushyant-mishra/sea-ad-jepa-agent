@@ -35,6 +35,7 @@ on:
       - 'tests/test_v65_nested_rna_multimodal_student_synthetic.py'
       - 'tests/test_v65_full104_like_nested_student_teacher_synthetic.py'
       - 'tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py'
+      - 'tests/test_v64_phase_b_interval_universe_audit_v1.py'
       - 'tests/test_v65_recoverability_decision_synthetic.py'
       - 'tests/test_v65_recoverability_numerical_synthetic_smoke.py'
       - 'tests/test_v65_recoverability_permutation_geometry_smoke.py'
@@ -97,6 +98,7 @@ jobs:
             tests/test_v65_nested_rna_multimodal_student_synthetic.py \
             tests/test_v65_full104_like_nested_student_teacher_synthetic.py \
             tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py \
+            tests/test_v64_phase_b_interval_universe_audit_v1.py \
             tests/test_v65_recoverability_decision_synthetic.py \
             tests/test_v65_recoverability_numerical_synthetic_smoke.py \
             tests/test_v65_recoverability_permutation_geometry_smoke.py \
