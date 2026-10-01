@@ -36,17 +36,20 @@ def target_projector(z_true_train, z_pred_train, k, tie_tol=1e-10):
     return {"qualified":True,"projector":p,"singular_values":s}
 
 
-def _donor_pass(m):
-    """Per-donor gates only.
-
-    The 0.05 materiality margin is a MEDIAN-across-donors rule in the frozen contract,
-    not a per-donor requirement. Each donor must only have positive DELTA_R2.
-    """
+def _common_donor_pass(m):
+    """Per-donor gates shared by VALIDATION and TEST."""
     return bool(
         m["delta_r2"] > 0
         and m["candidate_r2"] > 0
         and m["permutation_pass"]
         and m["geometry_pass"]
+    )
+
+
+def _validation_donor_pass(m):
+    """VALIDATION-only donor gate adds the frozen technical-baseline margin."""
+    return bool(
+        _common_donor_pass(m)
         and (m["candidate_r2"]-m["technical_r2"]) > TECH_CLOSE_MARGIN
     )
 
@@ -61,7 +64,7 @@ def validation_rank_eligible(donors):
         return False
     if float(np.median([d["delta_r2"] for d in donors])) < DELTA_MARGIN:
         return False
-    return all(_donor_pass(d) for d in donors)
+    return all(_validation_donor_pass(d) for d in donors)
 
 
 def select_validation_rank(metrics_by_rank):
@@ -84,7 +87,7 @@ def test_confirmed(validation_donors, test_donors):
     test_donors=list(test_donors)
     if len(validation_donors)!=4 or len(test_donors)!=4:
         raise ValueError("VALIDATION and TEST must each contain exactly 4 donors")
-    if not all(_donor_pass(d) for d in test_donors):
+    if not all(_common_donor_pass(d) for d in test_donors):
         return False
     med_v=float(np.median([d["delta_r2"] for d in validation_donors]))
     med_t=float(np.median([d["delta_r2"] for d in test_donors]))
