@@ -1,0 +1,18 @@
+{
+  "schema": "V64_PHASE_B_FINAL_STATE_CONSISTENCY_V1",
+  "date": "2026-09-30",
+  "closes": "S61",
+  "producer_sha256": "e4b265326e9efae5b2a36057e9c035f729cb568f101cc38f967c8a5e1ab33e1f",
+  "checks": [
+    "C1_no_receipt_says_FAIL",
+    "C2_bound_digests_match_live_files",
+    "C3_test_receipts_are_current",
+    "C4_sweep_left_live_artifacts_untouched"
+  ],
+  "which_check_would_have_caught_S61": "C3",
+  "self_receipt_excluded_from_C1_and_C2": "V64_PHASE_B_FINAL_STATE_CONSISTENCY_V1.json",
+  "why_self_excluded": "S62: auditing its own verdict would latch the guard into a permanent FAIL after its first real detection",
+  "why": "S61 was a receipt that no longer described the artifacts shipped beside it. C1 and C2 would not have seen it -- the artifacts were correct and no bound digest was wrong. Only re-running the suite and comparing verdicts exposes a receipt left behind by an earlier, different run.",
+  "findings": [],
+  "status": "PASS"
+}

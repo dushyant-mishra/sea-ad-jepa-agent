@@ -1,62 +1,122 @@
 {
-  "schema": "V64_PHASE_B_S60_MUTATION_SWEEP_V1",
+  "schema": "V64_PHASE_B_MUTATION_SWEEP_V1",
   "date": "2026-09-30",
-  "closes": "S60",
-  "what_this_is": "Every planted mutation the audit named was applied to the live artifacts, the test suite was re-run, and the artifacts were restored byte-exact. A test that passes on correct data proves nothing unless it fails on corrupted data.",
+  "closes": "S60, S61",
+  "producer_sha256": "a166098bd50266d65c142d8a53634e0ba38df6bbdc9d730c6803c6f382c22569",
+  "isolation": "every mutation was applied to a scratch copy; the live contract directory was never written to, so no committed receipt can be clobbered by this sweep",
+  "live_artifacts_untouched": true,
+  "live_digests_before": {
+    "V64_PHASE_B_CONTRACT_AUDIT_NOTE_V1.json": "7fcf829297315877f562d2bae40aa6fb7e655c9557221673d7f46efdb94e532a",
+    "V64_PHASE_B_CONTRACT_AUDIT_NOTE_V2.json": "c3e1a329a427e0c865eb0fb4d84aecec65aefd5e4f273da46ffbe5ca927ab7c1",
+    "V64_PHASE_B_DECISION_STATE_V1.json": "0f753aab85a9b617beb5b0b6f248527141dfec01eb17864e2beaf6178e3db26c",
+    "V64_PHASE_B_DECISION_STATE_V2.json": "749ccd472d25fc9e4cf6f7e10c1a2ae8301cd7ca21152818cb9cfce476a08362",
+    "V64_PHASE_B_DECISION_STATE_V3.json": "8f83b8165b98b8c754d7fed431defc2646c2977d37c8d3b91627a8068c39f74e",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V1.json": "7efc3fc7a287d0d128ffcd4df9c3d7be9a301dccc665b0eb3a549288af1e8fd2",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2.json": "0821b8fd5688a20bddf1700ebe6487b172b024a19020ada9241dd66b6a25246c",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V3.json": "f5131d55ea5d95c97ba2a330bc6297b1bf6a24fdb508039662275e22b2e36bb9",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1.json": "e7beaeff628034e7dbe41f157f8b3720fccd36b3bb9367979c905b8a3678e8fe",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+    "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b",
+    "V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1.json": "8d61120d604b4fbaf92543840e2ece479709c9baa9cce085cc6f257c51c6327d",
+    "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
+    "V64_PHASE_B_S60_MUTATION_SWEEP_V1.json": "8106202a611099a1d410b94110a69e5db0de0d2bb27f595b641aa4962c392c75"
+  },
+  "live_digests_after": {
+    "V64_PHASE_B_CONTRACT_AUDIT_NOTE_V1.json": "7fcf829297315877f562d2bae40aa6fb7e655c9557221673d7f46efdb94e532a",
+    "V64_PHASE_B_CONTRACT_AUDIT_NOTE_V2.json": "c3e1a329a427e0c865eb0fb4d84aecec65aefd5e4f273da46ffbe5ca927ab7c1",
+    "V64_PHASE_B_DECISION_STATE_V1.json": "0f753aab85a9b617beb5b0b6f248527141dfec01eb17864e2beaf6178e3db26c",
+    "V64_PHASE_B_DECISION_STATE_V2.json": "749ccd472d25fc9e4cf6f7e10c1a2ae8301cd7ca21152818cb9cfce476a08362",
+    "V64_PHASE_B_DECISION_STATE_V3.json": "8f83b8165b98b8c754d7fed431defc2646c2977d37c8d3b91627a8068c39f74e",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V1.json": "7efc3fc7a287d0d128ffcd4df9c3d7be9a301dccc665b0eb3a549288af1e8fd2",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V2.json": "0821b8fd5688a20bddf1700ebe6487b172b024a19020ada9241dd66b6a25246c",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_TESTS_V3.json": "f5131d55ea5d95c97ba2a330bc6297b1bf6a24fdb508039662275e22b2e36bb9",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1.json": "e7beaeff628034e7dbe41f157f8b3720fccd36b3bb9367979c905b8a3678e8fe",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json": "83b127ee885db3de77d14a2e6e2b1e18ecc71321a99ed79fd658033675e95ffe",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+    "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b",
+    "V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1.json": "8d61120d604b4fbaf92543840e2ece479709c9baa9cce085cc6f257c51c6327d",
+    "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
+    "V64_PHASE_B_S60_MUTATION_SWEEP_V1.json": "8106202a611099a1d410b94110a69e5db0de0d2bb27f595b641aa4962c392c75"
+  },
+  "baseline_unmutated_copy_passes": true,
+  "n_mutations": 7,
+  "all_detected": true,
+  "all_detected_by_the_named_test": true,
   "mutations": [
     {
-      "planted": "realised large-arm hg19_start incremented by 1",
-      "caught_by": "T19",
-      "detected": true
+      "planted": "realised large-arm hg19_start incremented",
+      "mutated_artifact": "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "must_be_caught_by": "T19",
+      "tests_that_fired": [
+        "T19"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
     },
     {
       "planted": "small/large arm roles swapped",
-      "caught_by": "T19",
-      "detected": true
+      "mutated_artifact": "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "must_be_caught_by": "T19",
+      "tests_that_fired": [
+        "T19"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
     },
     {
       "planted": "mandatory conditional label removed",
-      "caught_by": "T19",
-      "detected": true
+      "mutated_artifact": "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "must_be_caught_by": "T19",
+      "tests_that_fired": [
+        "T19"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
     },
     {
       "planted": "reference_id renamed so the row binding cannot resolve",
-      "caught_by": "T19",
-      "detected": true
+      "mutated_artifact": "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "must_be_caught_by": "T19",
+      "tests_that_fired": [
+        "T19"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
     },
     {
       "planted": "realised large-arm drawn side flipped",
-      "caught_by": "T19",
-      "detected": true
-    },
-    {
-      "planted": "R3 eligibility text changed in the statistical contract",
-      "caught_by": "T17",
+      "mutated_artifact": "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "must_be_caught_by": "T19",
+      "tests_that_fired": [
+        "T19"
+      ],
       "detected": true,
-      "note": "semantic drift under an UNCHANGED identifier -- the hole the audit identified in the old T17"
+      "detected_by_the_right_test": true
     },
     {
-      "planted": "R3 declared pair count changed in the statistical contract",
-      "caught_by": "T17",
-      "detected": true
+      "planted": "R3 eligibility changed under an UNCHANGED identifier",
+      "mutated_artifact": "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json",
+      "must_be_caught_by": "T17",
+      "tests_that_fired": [
+        "T16",
+        "T17"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
+    },
+    {
+      "planted": "R3 declared pair count changed",
+      "mutated_artifact": "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json",
+      "must_be_caught_by": "T17",
+      "tests_that_fired": [
+        "T16",
+        "T17"
+      ],
+      "detected": true,
+      "detected_by_the_right_test": true
     }
   ],
-  "all_detected": true,
-  "n_mutations": 7,
-  "artifacts_restored_byte_exact": true,
-  "restored_digests": {
-    "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
-    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9"
-  },
-  "division_of_labour": "T19 guards the conditioning RECORD; T17 guards the rule SEMANTICS upstream. Neither alone covers both, which is why the audit's observation that the old T17 could not see semantic drift was correct and needed its own repair.",
-  "governance": {
-    "training": "OFF",
-    "phase_B": "STOPPED",
-    "stage_4": "NOT_AUTHORISED",
-    "td60": "BLOCKED",
-    "Morabito": "PROTECTED",
-    "correspondence_opened": false,
-    "promoter_atlas_biology": "NOT_STARTED",
-    "multimodal_teacher_training": "NOT_STARTED"
-  }
+  "division_of_labour": "T19 guards the conditioning RECORD; T17 guards the rule SEMANTICS upstream. Neither alone covers both.",
+  "status": "PASS"
 }

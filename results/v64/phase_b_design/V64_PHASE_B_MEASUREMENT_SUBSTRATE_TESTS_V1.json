@@ -50,18 +50,18 @@
     {
       "name": "T16_no_statistical_decision_changed",
       "requirement": "the substrate contract changes no statistical decision",
-      "passes_on_real_contract": false,
+      "passes_on_real_contract": true,
       "rejects_planted_violation": true,
-      "is_a_real_test": false,
-      "detail": "bound statistical contract digest is stale"
+      "is_a_real_test": true,
+      "detail": "statistically neutral and bound to the accepted V3 digest"
     },
     {
       "name": "T17_every_enumeration_rule_has_upstream_authority",
       "requirement": "no inferential rule is introduced by the substrate contract (S58)",
-      "passes_on_real_contract": false,
+      "passes_on_real_contract": true,
       "rejects_planted_violation": true,
-      "is_a_real_test": false,
-      "detail": "bound authority digest is stale"
+      "is_a_real_test": true,
+      "detail": "all 3 rules bound by NAME, by full-definition semantic digest and by declared count"
     },
     {
       "name": "T18_enumeration_denominator_recomputed",
@@ -81,6 +81,6 @@
     }
   ],
   "n_tests": 9,
-  "n_real_tests": 7,
-  "status": "FAIL"
+  "n_real_tests": 9,
+  "status": "PASS"
 }
