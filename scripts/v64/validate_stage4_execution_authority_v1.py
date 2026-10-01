@@ -99,6 +99,14 @@ def validate_manifest_structural(manifest: dict, contract: dict) -> list[str]:
         "nuisance_basis_terms",
         "ridge_alpha",
         "cross_fitting_unit",
+        "minimum_microglia_per_donor",
+        "minimum_metacells_per_donor",
+        "minimum_donors_per_edge",
+        "metacell_target_size",
+        "metacell_hvg",
+        "metacell_pc",
+        "metacell_n_init",
+        "metacell_seed",
     ):
         check(got.get(key) == frozen[key], "RULE_DRIFT:" + key)
 
@@ -123,6 +131,16 @@ def validate_manifest_structural(manifest: dict, contract: dict) -> list[str]:
     check(manifest.get("t5_rows")
           == contract["accepted_execution_parent"]["t5_rows"],
           "T5_ROW_COUNT_DRIFT")
+    for key, token in (
+        ("microglia_covered", "MICROGLIA_COUNT_DRIFT"),
+        ("genes", "GENE_COUNT_DRIFT"),
+        ("intervals", "INTERVAL_COUNT_DRIFT"),
+        ("pairs", "PAIR_COUNT_DRIFT"),
+        ("t3_nnz", "T3_NNZ_DRIFT"),
+        ("t4_nnz", "T4_NNZ_DRIFT"),
+        ("pairs_meeting_minimum_donors", "MIN_DONOR_PAIR_COUNT_DRIFT"),
+    ):
+        check(manifest.get(key) == contract["accepted_execution_parent"][key], token)
 
     prohibited_actions = set(manifest.get("requested_actions", []))
     if prohibited_actions:
