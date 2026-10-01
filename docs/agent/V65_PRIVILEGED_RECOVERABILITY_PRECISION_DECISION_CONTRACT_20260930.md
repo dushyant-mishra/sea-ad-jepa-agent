@@ -151,7 +151,15 @@ For a candidate nonzero shared rank `k`:
    `Z_pred_shared = Z_pred P_k`;
 7. freeze `P_k` and its digest before VALIDATION scoring.
 
-Sign flips of individual singular vectors do not change `P_k`. If a singular-value tie makes the rank-`k` projector non-unique at the selection boundary, that rank is `UNQUALIFIED_FOR_SELECTION` rather than resolved by an arbitrary rotation.
+Sign flips of individual singular vectors do not change `P_k`.
+
+A selection-boundary singular-value tie is defined numerically by:
+
+`abs(s[k-1] - s[k]) <= 1e-8 * max(1, abs(s[k-1]), abs(s[k]))`.
+
+If that rule is met, the rank-`k` projector is treated as non-unique and the rank is
+`UNQUALIFIED_FOR_SELECTION` rather than resolved by an arbitrary rotation. The
+tolerance is frozen prospectively and may not be changed after outcomes are visible.
 
 No projection is fit or rotated on VALIDATION or TEST.
 
