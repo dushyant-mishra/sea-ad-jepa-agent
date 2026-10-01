@@ -1,0 +1,27 @@
+{
+  "schema": "V70_SCENICPLUS_MOTIF_RESOURCE_RECEIPT_V1",
+  "date": "2026-10-01",
+  "status": "PASS_PUBLIC_RESOURCE_AUTHENTICATED",
+  "workflow": {
+    "run_id": 36887158540,
+    "job_id": 110453304037,
+    "head_sha": "df7859f4d076b145aea0cd14c92b2702950af6ef"
+  },
+  "resource": {
+    "name": "v10nr_clust_public",
+    "url": "https://resources.aertslab.org/cistarget/motif_collections/v10nr_clust_public/v10nr_clust_public.zip",
+    "zip_bytes": 89706219,
+    "zip_sha256": "70dab42794f42471a3c22f5efe78ec2c8af96127656607cb0a929b4adffc2b97",
+    "human_annotation": {
+      "path": "v10nr_clust_public/snapshots/motifs-v10-nr.hgnc-m0.00001-o0.0.tbl",
+      "bytes": 98718421,
+      "sha256": "81eb754118e27e854974301b1400fcf519489f8be5249239671fb288cb501c31"
+    }
+  },
+  "role": "Motif annotation authority for prospective SCENIC+/pycisTarget development; does not itself define or validate an eRegulon network.",
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "training": "OFF"
+  }
+}
