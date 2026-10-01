@@ -24,7 +24,7 @@ def test_rank_and_shell_policy_are_identical_across_contract_state_and_engine():
     assert state["test_rule"]["aggregate_and_all_shells_through_selected_rank_must_pass"] is True
     assert "largest contiguous eligible rank" in contract
     assert "if rank 2 fails, lock rank 0" in contract.lower()
-    assert "Incremental nested-shell requirement" in contract
+    assert "### Incremental nested shells" in contract
     for shell in ("S_2 = P_2","S_4 = P_4 - P_2","S_8 = P_8 - P_4","S_16 = P_16 - P_8"):
         assert shell in contract
 
