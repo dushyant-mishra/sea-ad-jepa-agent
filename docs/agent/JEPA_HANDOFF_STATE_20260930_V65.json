@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S58_S59_CLOSED__PHASE_B_BLOCKED_ON_S60_R3_CONDITIONING_PERSISTENCE__TRAINING_OFF",
+  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S60_DESIGN_CLOSED__PHASE_B_BLOCKED_ON_S61_STALE_TEST_RECEIPT__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "d15a88fe1f1761fd411889009d701d3ef9926793",
-    "claude_exact_sampler": "a0500111254315504de3618ea832931ea54cdc26",
+    "claude_exact_sampler": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -196,11 +196,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude's S60 repair when available; Phase B remains stopped until S60 passes.",
-    "Recoverability V2 is sole decision authority; synthetic decision mechanics and preprocessing/fit mechanics are qualified, but real paired execution and TEST remain unopened.",
-    "Audit a fail-closed TRAIN+VALIDATION recoverability executor before any explicit authorization to run it.",
-    "Do not reopen promoter dual ledger unless contradictory evidence appears.",
-    "Keep training, Stage 4, Morabito and protected outcomes closed."
+    "Audit Claude repair after 7ad38eaf.",
+    "Require a committed final-state 9/9 PASS substrate-test receipt after all mutation artifacts are restored.",
+    "Require a final-state consistency guard against stale FAIL receipts/digests.",
+    "Keep Phase B stopped until S61 re-audit passes.",
+    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
   ],
   "governance": {
     "training": "OFF",
@@ -218,7 +218,7 @@
     "final factorized-target tournament"
   ],
   "phaseB_substrate": {
-    "claude_head": "a0500111254315504de3618ea832931ea54cdc26",
+    "claude_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
     "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
     "status": "NOT_AUTHORIZED_FOR_EXECUTION",
     "accepted_elements": [
@@ -230,12 +230,13 @@
       "57 enumeration rows arithmetically recomputed"
     ],
     "blockers": [
-      "S60 R3 conditional-reference identity/realised large-arm draw is not yet persisted as explicit substrate data with mandatory label/reference binding"
+      "S61 committed substrate-test receipt is 7/9 FAIL despite reported final 9/9 PASS"
     ],
     "closed_findings": [
       "S57",
       "S58",
-      "S59"
+      "S59",
+      "S60_DESIGN"
     ]
   }
 }
