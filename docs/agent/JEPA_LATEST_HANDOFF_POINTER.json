@@ -13,8 +13,8 @@
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
   "current_blocker": "Phase-A V3 supplies a 13,175-edge full funnel, but the Phase-B substrate contract is not yet execution-authorized: R3 exact-conditional semantics must be promoted into an explicit statistical-contract successor, hardcoded denominator 24187 must be recomputed, and Phase-A V3 row custody should be made durable.",
-  "parallel_architecture_next": "Complete and audit the repaired byte-backed dual promoter ledger; recoverability precision/decision thresholds are frozen, but paired cross-modal execution remains unauthorized and TEST unopened.",
-  "ci_rule": "Architecture CI was repaired to bind the historical Claude Phase-A audit to immutable SHA 0d3874cb rather than expecting Claude source in the ChatGPT checkout. Current-head CI must be inspected before declaring green.",
+  "parallel_architecture_next": "Promoter dual ledger is materialized and structurally accepted. Continue recoverability software qualification on synthetic fixtures only under the frozen V65 precision/decision contract; real paired execution and TEST remain unopened.",
+  "ci_rule": "Promoter source custody and materialization are split: source artifact run 36796557671 is hash-bound; authoritative dual-ledger build is run 36797622994. Architecture CI must still be checked at current head.",
   "governance": {
     "training": "OFF",
     "td60": "BLOCKED",
