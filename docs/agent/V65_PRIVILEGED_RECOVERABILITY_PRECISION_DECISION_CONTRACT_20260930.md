@@ -241,6 +241,28 @@ cell-specific relational alignment rather than merely reordering an invariant di
 No fixed absolute geometry cutoff is added because geometry depends on the frozen factor
 spectrum. The thresholding procedure itself is prospective and null-calibrated.
 
+### Frozen numerical implementation
+
+For each donor/rank/shell:
+
+- center true and predicted projected states within that donor;
+- compute thin QR bases after dropping numerically null columns;
+- canonical correlations are the singular values of `Q_true^T Q_pred`;
+- the reported canonical statistic is their median;
+- relational geometry uses **squared Euclidean distance** between every unordered pair
+  of nuclei, vectorized in lexicographic upper-triangle nucleus-index order;
+- the relational statistic is ordinary Pearson correlation between the true and
+  predicted distance vectors;
+- if either centered state has no supported canonical direction, or either distance
+  vector has zero variance, the corresponding geometry gate **fails closed** for that
+  donor rather than returning zero.
+
+Generate one deterministic list of 10,000 within-donor permutations using the frozen
+donor seed. Reuse that exact permutation-index list for the R² pairing null, canonical
+null, relational-geometry null, every candidate rank, and every incremental shell for
+that donor. A later implementation may vectorize or cache the calculations, but it may
+not draw a different null sequence for different metrics or ranks.
+
 This correction was made before any real paired recoverability outcome was opened.
 
 ## 11. VALIDATION rank-selection rule
