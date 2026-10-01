@@ -13,6 +13,7 @@ def mod():
 def test_smoke_passes_and_is_non_authority():
     o=mod().run_smoke()
     assert o["pass"]
+    assert o["fixture"]["private_rna_strength"]==0.50
     assert o["governance"]["real_data_used"] is False
     assert o["governance"]["training"]=="OFF"
     assert o["governance"]["stage4"]=="NOT_AUTHORIZED"
@@ -26,11 +27,16 @@ def test_collapse_negative_controls():
     z=np.repeat(x,m.K_SHARED,axis=1)
     assert not m.anti_collapse(z)["passes"]
 
-def test_mask_shortcut_and_uncertainty_rules():
+def test_mask_shortcut_and_nontrivial_uncertainty_rules():
     m=mod(); o=m.run_smoke()
     assert o["metrics"]["mask_only_shared_r2"]<0.03
+    assert o["metrics"]["rna_private_r2"]>0.80
     assert o["gates"]["missing_private_is_not_zero_filled"]
     assert o["gates"]["missing_private_uncertainty_is_higher"]
     assert o["metrics"]["uncertainty_ratio_missing_over_measured"]>3.0
-    assert m.uncertainty_gate(.1,.5)
-    assert not m.uncertainty_gate(.1,.1)
+
+def test_uncertainty_gate_can_fail_when_rna_already_identifies_private_state():
+    o=mod().run_smoke(private_rna_strength=2.0)
+    assert o["metrics"]["rna_private_r2"]>0.99
+    assert o["gates"]["missing_private_uncertainty_is_higher"] is False
+    assert o["pass"] is False
