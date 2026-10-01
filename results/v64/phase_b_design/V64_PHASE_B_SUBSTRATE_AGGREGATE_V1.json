@@ -1,0 +1,100 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_AGGREGATE_V1",
+  "date": "2026-09-30",
+  "closes": "S63",
+  "PAIRING_PERMUTATION": {
+    "path": "D:/jepa_v5_outputs_20260925/atac_to_rna_row.npy",
+    "array_content_sha256": "c28335d72627d195c0b997a659e3d320139a0a038f746e354ca6de4567b9e120",
+    "expected_array_content_sha256": "c28335d72627d195c0b997a659e3d320139a0a038f746e354ca6de4567b9e120",
+    "npy_file_sha256": "2396c3e9ccef2a4354824a80815d6acb8819f662f6c641d4df72d85bad498828",
+    "expected_npy_file_sha256": "2396c3e9ccef2a4354824a80815d6acb8819f662f6c641d4df72d85bad498828",
+    "digest_semantics": {
+      "array_content_sha256": "sha256 of perm.tobytes() -- the 12,008,712 bytes of int64 values; this is the digest reported when the permutation was built and quoted by the audit",
+      "npy_file_sha256": "sha256 of the 12,008,840-byte .npy file, which prepends a 128-byte header; this is what sha256sum reports"
+    },
+    "length": 1501089,
+    "rows_displaced": 1500790,
+    "fraction_displaced": 0.99980081,
+    "checks": {
+      "P1a_array_content_sha256_matches_prequalified": true,
+      "P1b_npy_file_sha256_matches": true,
+      "P2_length_equals_nucleus_count": true,
+      "P3_all_entries_in_range": true,
+      "P4_entries_unique_bijection": true,
+      "P5_inverse_round_trips_both_ways": true,
+      "P6_rederived_from_obs_names_matches_file": true
+    },
+    "all_passed": true,
+    "why_P6_matters": "a hash proves the file did not change; it cannot prove it was ever correct. Re-deriving from the obs namespaces proves correctness, and the two together prove the build used a correct and unaltered input."
+  },
+  "shards": 8,
+  "all_shards_OK": true,
+  "donors_assigned": 282,
+  "donors_completed": 282,
+  "no_silent_skipped_work": true,
+  "qualifying_donors_declared": 282,
+  "donors_reconcile": true,
+  "metacells_total": 3231,
+  "metacells_declared_from_full_donor_list": 3231,
+  "metacells_reconcile": true,
+  "metacell_ids_globally_disjoint": true,
+  "distinct_metacell_ids": 3231,
+  "microglia_covered": 84129,
+  "genes": 4372,
+  "intervals": 32153,
+  "t3_nnz": 6624289,
+  "t4_nnz": 55467544,
+  "inputs_agreed_across_shards": {
+    "producer_sha256": "11adb3ef2a9df552b6e1e24083c51b8ce1b389f0e732a536fb975a1cab4f3205",
+    "substrate_contract_sha256": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b",
+    "statistical_contract_sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+    "enum_intervals_sha256": "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619",
+    "e2_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+    "peaks_sha256": "28369a0c8859ee39a2e0037dee7712bba4f2f0b4c1fdefca9f024d1f922d2be0",
+    "genes": 4372,
+    "intervals": 32153,
+    "qualifying_donors_all": 282
+  },
+  "shard_output_sha256": {
+    "s00": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e",
+    "s01": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee",
+    "s02": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a",
+    "s03": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb",
+    "s04": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427",
+    "s05": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30",
+    "s06": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+    "s07": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4"
+  },
+  "aggregate_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+  "frozen_constants": {
+    "metacell_size": 25,
+    "seed": 20260929,
+    "n_hvg": 2000,
+    "n_pc": 20,
+    "n_init": 10,
+    "min_microglia": 100,
+    "min_metacells": 4
+  },
+  "modality_firewall": "no RNA x ATAC quantity exists in any shard output",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "gates": {
+    "permutation_valid": true,
+    "all_shards_OK": true,
+    "no_silent_skipped_work": true,
+    "donors_reconcile": true,
+    "metacells_reconcile": true,
+    "metacell_ids_globally_disjoint": true,
+    "inputs_agreed_across_shards": true
+  },
+  "failed_gates": [],
+  "status": "PASS"
+}

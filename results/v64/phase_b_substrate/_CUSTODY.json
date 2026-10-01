@@ -1,0 +1,48 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_CUSTODY_V1",
+  "date": "2026-09-30",
+  "note": "the .npz shard outputs are large and referenced by digest; their per-shard receipts and the aggregate are committed as bytes",
+  "shards": {
+    "PHASE_B_SUBSTRATE_s00.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s00.npz",
+      "bytes": 19097361,
+      "sha256": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e"
+    },
+    "PHASE_B_SUBSTRATE_s01.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s01.npz",
+      "bytes": 16970627,
+      "sha256": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee"
+    },
+    "PHASE_B_SUBSTRATE_s02.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s02.npz",
+      "bytes": 17676786,
+      "sha256": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a"
+    },
+    "PHASE_B_SUBSTRATE_s03.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s03.npz",
+      "bytes": 17441759,
+      "sha256": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb"
+    },
+    "PHASE_B_SUBSTRATE_s04.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s04.npz",
+      "bytes": 19342192,
+      "sha256": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427"
+    },
+    "PHASE_B_SUBSTRATE_s05.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s05.npz",
+      "bytes": 18435616,
+      "sha256": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30"
+    },
+    "PHASE_B_SUBSTRATE_s06.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s06.npz",
+      "bytes": 20853329,
+      "sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202"
+    },
+    "PHASE_B_SUBSTRATE_s07.npz": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s07.npz",
+      "bytes": 18118811,
+      "sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4"
+    }
+  },
+  "total_bytes": 147936481
+}

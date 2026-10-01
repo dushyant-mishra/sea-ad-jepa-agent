@@ -1,0 +1,297 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_BUILD_RECEIPT_V1",
+  "date": "2026-09-30",
+  "shard": 6,
+  "n_shards": 8,
+  "smoke_test": false,
+  "status": "OK",
+  "qualifying_donors_all": 282,
+  "genes": 4372,
+  "intervals": 32153,
+  "t3_nnz": 944549,
+  "t4_nnz": 7820389,
+  "reconciliation": {
+    "donors_assigned": 35,
+    "donors_completed": 35,
+    "no_silent_skips": true,
+    "shard_metacells": 457,
+    "metacells_from_offsets": 457,
+    "metacell_ids_disjoint_across_shards": true,
+    "total_metacells_all_donors": 3231,
+    "reconciles": true
+  },
+  "donor_meta": [
+    {
+      "donor": "HBCC-1069",
+      "n_microglia": 123,
+      "n_metacells": 4,
+      "metacell_id_lo": 67,
+      "metacell_id_hi": 70
+    },
+    {
+      "donor": "HBCC-1156",
+      "n_microglia": 444,
+      "n_metacells": 17,
+      "metacell_id_lo": 148,
+      "metacell_id_hi": 164
+    },
+    {
+      "donor": "HBCC-1263",
+      "n_microglia": 195,
+      "n_metacells": 7,
+      "metacell_id_lo": 210,
+      "metacell_id_hi": 216
+    },
+    {
+      "donor": "HBCC-1331",
+      "n_microglia": 422,
+      "n_metacells": 16,
+      "metacell_id_lo": 306,
+      "metacell_id_hi": 321
+    },
+    {
+      "donor": "HBCC-1522",
+      "n_microglia": 177,
+      "n_metacells": 7,
+      "metacell_id_lo": 394,
+      "metacell_id_hi": 400
+    },
+    {
+      "donor": "HBCC-1883",
+      "n_microglia": 174,
+      "n_metacells": 6,
+      "metacell_id_lo": 514,
+      "metacell_id_hi": 519
+    },
+    {
+      "donor": "HBCC-2074",
+      "n_microglia": 672,
+      "n_metacells": 26,
+      "metacell_id_lo": 605,
+      "metacell_id_hi": 630
+    },
+    {
+      "donor": "HBCC-2453",
+      "n_microglia": 116,
+      "n_metacells": 4,
+      "metacell_id_lo": 739,
+      "metacell_id_hi": 742
+    },
+    {
+      "donor": "HBCC-2605",
+      "n_microglia": 460,
+      "n_metacells": 18,
+      "metacell_id_lo": 797,
+      "metacell_id_hi": 814
+    },
+    {
+      "donor": "HBCC-2860",
+      "n_microglia": 126,
+      "n_metacells": 5,
+      "metacell_id_lo": 887,
+      "metacell_id_hi": 891
+    },
+    {
+      "donor": "HBCC-845",
+      "n_microglia": 304,
+      "n_metacells": 12,
+      "metacell_id_lo": 974,
+      "metacell_id_hi": 985
+    },
+    {
+      "donor": "HBCC-926",
+      "n_microglia": 297,
+      "n_metacells": 11,
+      "metacell_id_lo": 1044,
+      "metacell_id_hi": 1054
+    },
+    {
+      "donor": "KEN-1069",
+      "n_microglia": 372,
+      "n_metacells": 14,
+      "metacell_id_lo": 1127,
+      "metacell_id_hi": 1140
+    },
+    {
+      "donor": "KEN-1142",
+      "n_microglia": 508,
+      "n_metacells": 20,
+      "metacell_id_lo": 1251,
+      "metacell_id_hi": 1270
+    },
+    {
+      "donor": "KEN-1224",
+      "n_microglia": 320,
+      "n_metacells": 12,
+      "metacell_id_lo": 1366,
+      "metacell_id_hi": 1377
+    },
+    {
+      "donor": "KEN-845",
+      "n_microglia": 361,
+      "n_metacells": 14,
+      "metacell_id_lo": 1475,
+      "metacell_id_hi": 1488
+    },
+    {
+      "donor": "SH-06-25",
+      "n_microglia": 421,
+      "n_metacells": 16,
+      "metacell_id_lo": 1557,
+      "metacell_id_hi": 1572
+    },
+    {
+      "donor": "SH-92-14",
+      "n_microglia": 167,
+      "n_metacells": 6,
+      "metacell_id_lo": 1619,
+      "metacell_id_hi": 1624
+    },
+    {
+      "donor": "SH-96-39",
+      "n_microglia": 311,
+      "n_metacells": 12,
+      "metacell_id_lo": 1690,
+      "metacell_id_hi": 1701
+    },
+    {
+      "donor": "UMARY-1076",
+      "n_microglia": 587,
+      "n_metacells": 23,
+      "metacell_id_lo": 1786,
+      "metacell_id_hi": 1808
+    },
+    {
+      "donor": "UMARY-1136",
+      "n_microglia": 230,
+      "n_metacells": 9,
+      "metacell_id_lo": 1872,
+      "metacell_id_hi": 1880
+    },
+    {
+      "donor": "UMARY-1362",
+      "n_microglia": 530,
+      "n_metacells": 21,
+      "metacell_id_lo": 1970,
+      "metacell_id_hi": 1990
+    },
+    {
+      "donor": "UMARY-1461",
+      "n_microglia": 460,
+      "n_metacells": 18,
+      "metacell_id_lo": 2045,
+      "metacell_id_hi": 2062
+    },
+    {
+      "donor": "UMARY-1540",
+      "n_microglia": 508,
+      "n_metacells": 20,
+      "metacell_id_lo": 2124,
+      "metacell_id_hi": 2143
+    },
+    {
+      "donor": "UMARY-1584",
+      "n_microglia": 265,
+      "n_metacells": 10,
+      "metacell_id_lo": 2248,
+      "metacell_id_hi": 2257
+    },
+    {
+      "donor": "UMARY-1675",
+      "n_microglia": 194,
+      "n_metacells": 7,
+      "metacell_id_lo": 2362,
+      "metacell_id_hi": 2368
+    },
+    {
+      "donor": "UMARY-1797",
+      "n_microglia": 469,
+      "n_metacells": 18,
+      "metacell_id_lo": 2463,
+      "metacell_id_hi": 2480
+    },
+    {
+      "donor": "UMARY-1847",
+      "n_microglia": 202,
+      "n_metacells": 8,
+      "metacell_id_lo": 2546,
+      "metacell_id_hi": 2553
+    },
+    {
+      "donor": "UMARY-1909",
+      "n_microglia": 153,
+      "n_metacells": 6,
+      "metacell_id_lo": 2630,
+      "metacell_id_hi": 2635
+    },
+    {
+      "donor": "UMARY-455",
+      "n_microglia": 498,
+      "n_metacells": 19,
+      "metacell_id_lo": 2704,
+      "metacell_id_hi": 2722
+    },
+    {
+      "donor": "UMARY-4727",
+      "n_microglia": 119,
+      "n_metacells": 4,
+      "metacell_id_lo": 2799,
+      "metacell_id_hi": 2802
+    },
+    {
+      "donor": "UMARY-4906",
+      "n_microglia": 571,
+      "n_metacells": 22,
+      "metacell_id_lo": 2865,
+      "metacell_id_hi": 2886
+    },
+    {
+      "donor": "UMARY-5116",
+      "n_microglia": 155,
+      "n_metacells": 6,
+      "metacell_id_lo": 2974,
+      "metacell_id_hi": 2979
+    },
+    {
+      "donor": "UMARY-604",
+      "n_microglia": 237,
+      "n_metacells": 9,
+      "metacell_id_lo": 3056,
+      "metacell_id_hi": 3064
+    },
+    {
+      "donor": "UMARY-871",
+      "n_microglia": 754,
+      "n_metacells": 30,
+      "metacell_id_lo": 3146,
+      "metacell_id_hi": 3175
+    }
+  ],
+  "producer_sha256": "11adb3ef2a9df552b6e1e24083c51b8ce1b389f0e732a536fb975a1cab4f3205",
+  "substrate_contract_sha256": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b",
+  "statistical_contract_sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+  "enum_intervals_sha256": "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619",
+  "e2_sha256": "bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+  "peaks_sha256": "28369a0c8859ee39a2e0037dee7712bba4f2f0b4c1fdefca9f024d1f922d2be0",
+  "output_sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+  "pairing_permutation": "name-derived, not positional",
+  "frozen_constants": {
+    "metacell_size": 25,
+    "seed": 20260929,
+    "n_hvg": 2000,
+    "n_pc": 20,
+    "n_init": 10,
+    "min_microglia": 100,
+    "min_metacells": 4
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  }
+}
