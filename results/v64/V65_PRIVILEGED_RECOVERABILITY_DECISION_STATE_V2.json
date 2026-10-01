@@ -142,8 +142,8 @@
       "principal_angle_cosines": "REPORTABLE_ALIAS_NOT_INDEPENDENT_GATE"
     },
     "G2": {
-      "metric": "PEARSON_CORRELATION_OF_UPPER_TRIANGLE_PAIRWISE_EUCLIDEAN_DISTANCE_VECTORS",
-      "object": "within-donor relational geometry of Z_true_shared vs Z_pred_shared"
+      "metric": "PEARSON_CORRELATION_OF_UPPER_TRIANGLE_PAIRWISE_SQUARED_EUCLIDEAN_DISTANCE_VECTORS",
+      "object": "within-donor relational geometry of Z_true_shared vs Z_pred_shared using squared Euclidean distances"
     },
     "permutation": {
       "within_donor": true,
