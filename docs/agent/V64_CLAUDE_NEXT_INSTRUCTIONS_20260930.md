@@ -1,4 +1,4 @@
-# Claude instructions — V64 corrected Phase-A successor
+# Claude instructions — V64 Phase-B substrate audit repairs
 
 **Date:** 2026-09-30
 
@@ -6,249 +6,153 @@ Continue from:
 
 `claude/v64-exact-sampler-successor-20260930`
 
-Last independently audited head:
+Audited head:
 
-`0d3874cb198f0fdeddff5a41777e3e0e9d0db5ab`
+`7b51aac902b5dd4bb6ec697bb7e144a9a595224c`
 
-## 1. Important correction
+Do NOT execute Phase B yet.
 
-The exact sampler is qualified.
+## What is accepted
 
-S50 is closed for the current production chain.
+- Exact sampler: QUALIFIED.
+- S50: CLOSED for current production chain.
+- Phase-A V3 code/receipt now carries the complete linked-side funnel and V2 structural schema.
+- Phase-A V3 retained population used by the substrate: 13,175.
+- The measurement-substrate architecture is directionally sound:
+  - persist metacell assignment;
+  - persist one-modality RNA/ATAC metacell vectors;
+  - persist depth;
+  - never compute a two-modality statistic in Phase B;
+  - gene-key T3 under the frozen linked-gene RNA definition;
+  - recoverability split remains scoped only to recoverability selection;
+  - protected demographic values remain unread.
 
-The value:
+## Blocking finding S57 — residual hardcoded denominator
 
-`13,510`
+In:
 
-is accepted as:
+`scripts/v64/build_phase_b_measurement_substrate_contract_v1.py`
 
-`FULL_E2_EXACT_CONTROL_A_AVAILABILITY`
+this line still uses:
 
-It is **not yet accepted as the complete frozen Phase-A retained population**.
+`round(len(extra) / 24187, 6)`
 
-The prior wording "Phase A accepted at 13,510" is retracted.
+where 24,187 is today's CONTROL_A + available CONTROL_B row count:
 
-## 2. Why full Phase A is still incomplete
+`13,175 + 11,012`
 
-The frozen contract:
+It is correct now but stale by construction.
 
-`results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json`
+Fix it by recomputing the denominator from the loaded Phase-A V3 artifact.
 
-requires the primary funnel to include:
+Add a negative-control test that changes control availability and proves the emitted fraction changes accordingly.
 
-1. `DROP_GENE_NOT_IN_NIHCARD`
-2. `DROP_GENE_AMBIGUOUS_IN_NIHCARD`
-3. `DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL`
-4. then `DROP_CONTROL_A_DRAWN_SIDE_NO_ADMISSIBLE_START`
+Search again for other live population/count literals before closeout.
 
-The live executor at `0d3874cb` loads all 20,709 E2 edges and determines primary retention only from CONTROL_A success.
+## Blocking finding S58 — R3 is a statistical decision
 
-Therefore your next task is **not** another sampler repair.
+The substrate contract states:
 
-It is to lawfully compose:
+`changes_no_statistical_decision = true`
 
-`frozen linked-side structural eligibility + already-qualified exact CONTROL_A/B machinery`
+but it introduces:
 
-without restoring any superseded control logic.
+- R1 exact A-side enumeration;
+- R2 exact joint A/B when both arms are <=10;
+- R3 exact conditional when one arm is <=10 and the other is large.
 
-## 3. Preserve exact-control machinery unchanged unless a real defect is found
+R3 in particular is a new inferential rule:
+
+> enumerate the small arm completely while holding the large arm at its realised draw.
+
+The bound V2 null/statistical contract does not freeze that rule.
+
+T13 proves the 57-row arithmetic under R3. It does NOT prove that R3 is upstream statistical authority.
+
+### Required repair
+
+Create an explicit prospectively frozen successor/amendment to:
+
+`V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json`
+
+that defines R1/R2/R3.
+
+For R3 state explicitly:
+
+- eligibility;
+- which arm is conditioned on;
+- the conditioning value is the already-realised large-arm draw;
+- what reference distribution/statistic it governs;
+- why this is a conditional estimand rather than an approximation to the full joint;
+- how it is reported separately from full-joint cases;
+- no outcome value informed the choice.
+
+Update:
+
+- decision-state artifact;
+- null/statistical tests;
+- substrate authority digest.
+
+Add a cross-contract test:
+
+> every enumeration/reference rule emitted by the substrate must exist identically in the bound statistical contract.
+
+Only after that may the substrate truthfully state that it changes no statistical decision.
+
+Do not tune R3 after matrix values are opened.
+
+## Finding S59 — Phase-A V3 byte custody
+
+The substrate depends on:
+
+- `PHASE_A_V3_ROWS.jsonl.gz`
+  - 1,866,271 bytes
+  - sha256 `ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4`
+- `PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz`
+  - 63,355 bytes
+  - sha256 `b4c6eb6fc9568b036d0b9217c102ab68a07d4b492db8625674a9e2a4db18a056`
+
+They are currently hash-bound but not in Git.
+
+They are small enough that future independent audit should not depend on a local D: drive.
+
+Put the exact bytes in durable Git/release/Actions custody, or add a deterministic rematerialization/export workflow that verifies these hashes.
+
+Do not change the bytes while doing this.
+
+## Additional implementation assertion
+
+The frozen measurement universes are:
+
+- RNA: 38,606 genes
+- ATAC: 521,217 peaks
+
+These are inherited from the correspondence-design contract. In the eventual Phase-B executor, assert the authenticated matrix dimensions equal these frozen values before normalisation.
+
+## Preserve these decisions
 
 Do not change:
 
-- exact admissible-set construction;
-- side-before-admissibility semantics;
-- no opposite-side retry;
-- CONTROL_B never rescues A;
-- independent deterministic A/B sub-seeds;
-- coincidence retained without redraw;
-- exact uniform sampling over A_exact;
-- S50 cross-chain ambiguity guard.
+- Phase-A population 13,175 without a real Phase-A defect;
+- primary CONTROL_A semantics;
+- non-rescue;
+- singleton/small-support strata;
+- donor as sole independent/resampling unit;
+- gene-balanced primary weighting;
+- metacell algorithm/seed;
+- bootstrap seed 20260929 / 4,000 replicates;
+- 100 microglia / 4 metacells / 30 donors thresholds;
+- recoverability 16/4/4 scope;
+- missing != zero;
+- protected obs-column firewall.
 
-The exact sampler already passed:
-- 64/64 real-edge exact-set equality;
-- 42 non-empty comparisons;
-- zero algebra-only/oracle-only differences;
-- deterministic rerun equality;
-- positive-control sensitivity;
-- uniformity;
-- frozen fixtures;
-- failure paths;
-- orientation checks.
+## Governance
 
-Do not retune it to recover a desired Phase-A retention count.
+Phase B = STOPPED.  
+Stage 4 = NOT AUTHORIZED.  
+TD60 = BLOCKED.  
+Morabito = PROTECTED.  
+TRAINING = OFF.  
+No correspondence outcome opened.
 
-## 4. Build a true Phase-A structural successor
-
-Starting from the same frozen 20,709 E2 rows, execute the linked-side stages prospectively:
-
-### Linked-side eligibility
-
-For every E2 edge, determine:
-
-- whether its gene is present in NIH-CARD;
-- whether gene mapping is unambiguous;
-- whether the linked distal interval overlaps at least one NIH-CARD consensus peak.
-
-Record the exact frozen drop reason when a stage fails.
-
-Only linked-side-eligible edges proceed to primary exact-control retention.
-
-### Exact-control stage
-
-For linked-side-eligible edges:
-
-- use the already-qualified CONTROL_A/B machinery;
-- CONTROL_A determines primary retention;
-- CONTROL_B never rescues;
-- if A passes/B fails, primary retained, null unavailable;
-- coincidence retained;
-- no redraw.
-
-Final funnel must reconcile exactly to 20,709.
-
-Do not assume the final count will remain 13,510.
-
-## 5. Produce the complete V2 feature artifact
-
-The output must satisfy:
-
-`results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json`
-
-Required structural fields include at minimum:
-
-- `promoter_key`
-- `promoter_index`
-- `pair_key`
-- `population`
-- `control_role`
-- `source_hg19_distance_bp`
-- `log_distance`
-- `promoter_degree`
-- `re_density`
-- `anchor_frequency`
-- `distal_chrom`
-- `distal_start_hg38`
-- `distal_end_hg38`
-
-Valid population/control-role combinations:
-
-- LINKED + NONE
-- CONTROL + A
-- CONTROL + B
-
-CONTROL_A and CONTROL_B must use separate pair keys.
-
-Linked/control rows for the same edge must retain the same promoter identity.
-
-## 6. Anchor-frequency definition
-
-Do not reuse the superseded exact-start multiplicity.
-
-Frozen definition:
-
-> number of DISTINCT E2 promoter_keys with at least one E2 distal partner overlapping the interval by >=1 bp.
-
-Compute identically for:
-
-- LINKED
-- CONTROL_A
-- CONTROL_B
-
-## 7. Complete provenance binding
-
-The receipt must bind:
-
-- producer git blob;
-- producer SHA-256;
-- SHA-256 of every emitted artifact;
-- authenticated NIH-CARD RNA/ATAC receipt;
-- pairing closeout receipt;
-- E2 edge-table digest;
-- Phase-A V2 contract digest;
-- liftOver binary digest;
-- hg19→hg38 chain digest;
-- hg38→hg19 chain digest;
-- Nott PU.1 hg38 track digest;
-- NIH-CARD peak-source identity;
-- row counts by population/control_role;
-- promoter count;
-- primary funnel;
-- null-arm availability counts.
-
-Write the producer receipt after the artifacts exist.
-
-## 8. Singleton/small-support strata remain frozen
-
-Preserve:
-
-- `RANDOMIZED_SUPPORT_GT10`
-- `SMALL_RANDOMIZED_SUPPORT_2_TO_10`
-- `FORCED_SINGLETON_SUPPORT_1`
-
-The current exact-control run found:
-
-- 344 CONTROL_A-success edges with admissible-set size 1;
-- 377 with size <=10;
-- 167 structurally degenerate A/B nulls.
-
-These are support properties, not sampler defects.
-
-Carry the needed structural cardinality/side fields into the successor artifact.
-
-Do not drop/reweight them based on matrix outcomes.
-
-## 9. Phase B remains stopped
-
-Do not open:
-
-- promoter activity matrix values;
-- distal accessibility values;
-- RNA↔ATAC correspondence;
-- Stage 4;
-- Morabito;
-- TD60;
-- training.
-
-The corrected Phase-A successor remains structural/outcome-blind.
-
-## 10. Parallelization
-
-Parallelize only independent deterministic work where safe:
-
-- linked eligibility checks;
-- structural feature derivations;
-- provenance/hash calculations;
-- artifact validation.
-
-Use deterministic shard membership and exact reconciliation.
-
-Do not parallelize scientific gate decisions.
-
-## 11. Required report back
-
-Return:
-
-- branch/head;
-- changed files;
-- confirmation exact sampler bytes/semantics were not changed, or exact reason if they were;
-- full 20,709-edge linked-side funnel;
-- final CONTROL_A-retained count after linked eligibility;
-- CONTROL_B availability/non-rescue counts;
-- singleton/small-support counts after final funnel;
-- row counts by population/control_role;
-- promoter count;
-- feature-schema validation;
-- all provenance digests;
-- artifact hashes;
-- exact funnel reconciliation;
-- explicit confirmation:
-  - Phase B STOPPED
-  - Stage 4 NOT AUTHORIZED
-  - TD60 BLOCKED
-  - Morabito PROTECTED
-  - TRAINING OFF
-  - no correspondence outcome opened.
-
-Then STOP for independent audit.
-
-Do not proceed further.
+After repairs, STOP again for audit. Do not execute Phase B.
