@@ -75,7 +75,7 @@ def median_canonical_correlation(
     return float(np.median(canonical_correlations(z_true,z_pred,expected_rank)))
 
 
-def pairwise_distance_matrix(z: np.ndarray) -> np.ndarray:
+def pairwise_squared_distance_matrix(z: np.ndarray) -> np.ndarray:
     z=np.asarray(z,dtype=np.float64)
     if z.ndim!=2:
         raise ValueError("expected 2-D state matrix")
@@ -84,25 +84,24 @@ def pairwise_distance_matrix(z: np.ndarray) -> np.ndarray:
     sq=np.square(z).sum(axis=1)
     d2=sq[:,None]+sq[None,:]-2.0*(z@z.T)
     np.maximum(d2,0.0,out=d2)
-    d=np.sqrt(d2)
-    if not np.isfinite(d).all():
-        raise ValueError("non-finite pairwise distance")
-    return d
+    if not np.isfinite(d2).all():
+        raise ValueError("non-finite pairwise squared distance")
+    return d2
 
 
-def pairwise_distance_vector(z: np.ndarray) -> np.ndarray:
-    d=pairwise_distance_matrix(z)
+def pairwise_squared_distance_vector(z: np.ndarray) -> np.ndarray:
+    d=pairwise_squared_distance_matrix(z)
     out=d[np.triu_indices(len(d),1)]
     if float(out.std())==0.0:
-        raise ValueError("degenerate pairwise-distance vector")
+        raise ValueError("degenerate pairwise-squared-distance vector")
     return out
 
 
 def relational_geometry_correlation(z_true: np.ndarray, z_pred: np.ndarray) -> float:
     if np.asarray(z_true).shape!=np.asarray(z_pred).shape:
         raise ValueError("true/predicted shared states must have identical shape")
-    a=pairwise_distance_vector(z_true)
-    b=pairwise_distance_vector(z_pred)
+    a=pairwise_squared_distance_vector(z_true)
+    b=pairwise_squared_distance_vector(z_pred)
     r=float(np.corrcoef(a,b)[0,1])
     if not np.isfinite(r):
         raise ValueError("non-finite relational-geometry correlation")
@@ -132,13 +131,13 @@ def donor_geometry_gate(
     q_pred=_orthonormal_basis(b,expected_rank)
     obs_cc=float(np.median(_canonical_from_bases(q_true,q_pred)))
 
-    d_true=pairwise_distance_matrix(a)
-    d_pred=pairwise_distance_matrix(b)
+    d_true=pairwise_squared_distance_matrix(a)
+    d_pred=pairwise_squared_distance_matrix(b)
     iu=np.triu_indices(len(a),1)
     true_vec=d_true[iu]
     pred_vec=d_pred[iu]
     if float(true_vec.std())==0.0 or float(pred_vec.std())==0.0:
-        raise ValueError("degenerate pairwise-distance vector")
+        raise ValueError("degenerate pairwise-squared-distance vector")
     tc=true_vec-true_vec.mean()
     pc=pred_vec-pred_vec.mean()
     rg_denom=float(np.linalg.norm(tc)*np.linalg.norm(pc))
