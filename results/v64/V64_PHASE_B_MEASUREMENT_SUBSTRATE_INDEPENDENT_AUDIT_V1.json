@@ -2,12 +2,12 @@
   "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1",
   "date": "2026-09-30",
   "audited_branch": "claude/v64-exact-sampler-successor-20260930",
-  "audited_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
+  "audited_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
   "substrate_contract": {
     "path": "results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
     "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
   },
-  "verdict": "S60_DESIGN_AND_MUTATION_COVERAGE_ACCEPTED__COMMITTED_TEST_RECEIPT_INCONSISTENT__PHASE_B_STILL_BLOCKED",
+  "verdict": "S57_S61_CLOSED__PHASE_B_MEASUREMENT_ONLY_SUBSTRATE_BUILD_AUTHORIZED__STAGE4_STILL_SEALED",
   "upstream_phase_a_v3": {
     "status": "CODE_AND_RECEIPT_REVIEW_SUPPORTS_CONTRACT_COMPLIANCE__ROW_BYTES_NOT_IN_GIT",
     "retained_edges": 13175,
@@ -70,26 +70,6 @@
       "evidence": "Patched receipt binds PHASE_A_V3_ROWS.jsonl.gz (1,866,271 bytes, sha256 ab103675...) and PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz (63,355 bytes, sha256 b4c6eb6f...), but both are marked external/hash-only.",
       "impact": "The substrate producer and tests rely on these bytes. Independent future agents cannot reproduce row-level checks from repository contents alone.",
       "required_fix": "Because both artifacts are small, place their exact bytes in durable repository/release/Actions custody or add a deterministic rematerialization workflow that verifies the recorded hashes."
-    },
-    {
-      "id": "S61",
-      "severity": "HIGH_BLOCKING_PROVENANCE",
-      "title": "Committed substrate-test receipt contradicts claimed final 9/9 state",
-      "evidence": [
-        "At commit 7ad38eaf, results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1.json records n_tests=9, n_real_tests=7, status=FAIL.",
-        "In that committed receipt, T16_no_statistical_decision_changed and T17_every_enumeration_rule_has_upstream_authority both have passes_on_real_contract=false with detail 'bound statistical contract digest is stale'.",
-        "At the same commit, V64_PHASE_B_S60_MUTATION_SWEEP_V1.json reports all 7 mutations detected and artifacts restored byte-exact, including V3 digest f537564e....",
-        "The user/Claude report states substrate 9/9 real, but no committed 9/9 substrate-test receipt is present at 7ad38eaf."
-      ],
-      "interpretation": "Most likely the substrate test receipt was generated while V3 was temporarily mutated during the sweep and was not rerun/recommitted after restoring V3. If so, this is a stale receipt rather than a live contract defect. But repository authority must be self-consistent before Phase B.",
-      "required_fix": [
-        "With all live artifacts restored, rerun the substrate suite once in the final state.",
-        "Require T16 and T17 to pass against the restored V3 and current substrate binding.",
-        "Commit the resulting 9/9 PASS receipt.",
-        "Record the exact current SHA-256s of statistical V3, substrate contract, conditioning reference, test producer and final test receipt.",
-        "Add a final-state closeout check that fails if any committed test receipt reports FAIL or binds a digest that differs from the live artifact.",
-        "Do not execute Phase B until the committed final-state receipt is self-consistent."
-      ]
     }
   ],
   "t13_assessment": {
@@ -103,11 +83,18 @@
     "assessment": "These values are already frozen in the correspondence-design measurement definitions, so they are not classified as a new blocker here. The eventual Phase-B executor should still assert authenticated matrix dimensions equal these frozen universes before using them."
   },
   "decision": {
-    "substrate_contract": "DESIGN_ACCEPTED_BUT_NOT_YET_EXECUTION_AUTHORIZED",
-    "phase_B": "STOPPED",
-    "next_gate": "Close S61 by rerunning and committing a clean 9/9 final-state substrate receipt after all mutation artifacts are restored; then re-audit repository consistency.",
-    "training": "OFF",
+    "substrate_contract": "AUTHORIZED_FOR_MEASUREMENT_ONLY_PHASE_B_EXECUTION",
+    "phase_B": "AUTHORIZED_WITHIN_FROZEN_SINGLE_MODALITY_BOUNDARY",
     "stage4": "NOT_AUTHORIZED",
+    "prohibited_during_phase_B": [
+      "RNA-ATAC correlation/correspondence",
+      "linked-minus-control biological outcome",
+      "residualised correspondence",
+      "one-sided biological test",
+      "protected outcome analysis"
+    ],
+    "required_closeout": "After Phase-B substrate materialization, stop for audit of emitted tables, hashes, attrition/missingness, metacell partition, R3 references, and provenance before Stage 4.",
+    "training": "OFF",
     "Morabito": "PROTECTED",
     "correspondence_opened": false
   },
@@ -120,6 +107,16 @@
         "T19 validates the record-level conditioning identity and rejects planted changes.",
         "T17 now binds rule identifiers, semantic digests and declared counts; the mutation sweep shows semantic drift under the unchanged R3 identifier is detected.",
         "The 7-mutation sweep reports 7/7 detected and says V3 and the conditioning reference were restored byte-exact."
+      ]
+    },
+    {
+      "id": "S61",
+      "status": "CLOSED",
+      "evidence": [
+        "Committed substrate-test receipt is now PASS 9/9 real with T16/T17/T18/T19 all passing.",
+        "Committed statistical-test receipt is PASS 11/11 real.",
+        "Scratch-only mutation sweep is PASS, detects 7/7 named mutations, and records live_artifacts_untouched=true with identical before/after digests.",
+        "Final-state consistency guard is PASS with C1-C4 and excludes its own output receipt from C1/C2 to avoid the S62 latch."
       ]
     }
   ]
