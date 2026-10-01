@@ -1,0 +1,97 @@
+from __future__ import annotations
+import importlib.util
+from pathlib import Path
+import numpy as np
+
+ROOT=Path(__file__).resolve().parents[1]
+
+
+def _load():
+    p=ROOT/"scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py"
+    spec=importlib.util.spec_from_file_location("v65_recoverability_engine",p)
+    assert spec and spec.loader
+    m=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def test_v65_decision_engine_smoke_passes():
+    out=_load().run_smoke()
+    assert out["pass"] is True
+    assert out["results"]["partial_smallest_selected_rank"]==2
+    assert out["results"]["partial_classification"]=="PARTIALLY_RNA_RECOVERABLE"
+    assert out["results"]["full_rank_selected"]==16
+    assert out["results"]["technical_shortcut_selected_rank"]==0
+    assert out["results"]["validation_failure_locked_rank"]==0
+    assert out["results"]["tie_fails_closed"] is True
+    assert out["test_values_used_for_rank_selection"] is False
+    assert out["privileged_private_assignable"] is False
+    assert out["training_authorized"] is False
+    assert out["real_paired_outcome_opened"] is False
+
+
+def test_smallest_eligible_rank_wins_even_if_higher_rank_scores_better():
+    m=_load()
+    partial,_,_,_,_=m.synthetic_scenarios()
+    assert m.validation_rank_eligible(partial[2])
+    assert m.validation_rank_eligible(partial[16])
+    assert m.select_validation_rank(partial)==2
+
+
+def test_technical_shortcut_is_unqualified_despite_high_r2():
+    m=_load()
+    _,_,shortcuts,_,_=m.synthetic_scenarios()
+    assert all(d["candidate_r2"]>0.9 for d in shortcuts[2])
+    assert m.select_validation_rank(shortcuts)==0
+
+
+def test_validation_failure_cannot_be_rescued_by_test():
+    m=_load()
+    _,_,_,weak,spectacular=m.synthetic_scenarios()
+    selected=m.select_validation_rank(weak)
+    assert selected==0
+    assert m.classify(selected,None,spectacular)=="UNQUALIFIED"
+
+
+def test_test_confirmation_cannot_retune_rank():
+    m=_load()
+    partial,_,_,_,_=m.synthetic_scenarios()
+    selected=m.select_validation_rank(partial)
+    assert selected==2
+    bad_test=[
+        m.donor(.12,.05,.08),
+        m.donor(.13,.05,.08),
+        m.donor(.11,.05,.08),
+        m.donor(.12,.05,.08),
+    ]
+    assert m.classify(selected,partial[selected],bad_test)=="UNQUALIFIED"
+    # No alternate-rank search is performed after TEST failure.
+    assert selected==2
+
+
+def test_projector_is_sign_invariant_and_rank_fixed():
+    m=_load()
+    rng=np.random.default_rng(44)
+    z=rng.normal(size=(500,4))
+    p=z.copy()
+    a=m.target_projector(z,p,2)
+    assert a["qualified"]
+    # Flip signs of predicted coordinates; target-space projector should span same subspace.
+    b=m.target_projector(z,-p,2)
+    assert b["qualified"]
+    assert np.allclose(a["projector"],b["projector"],atol=1e-10)
+
+
+def test_singular_value_boundary_tie_fails_closed():
+    m=_load()
+    eye=np.eye(4)
+    r=m.target_projector(eye,eye,2,tie_tol=1e-12)
+    assert r["qualified"] is False
+    assert r["reason"]=="SINGULAR_VALUE_TIE_AT_SELECTION_BOUNDARY"
+
+
+def test_decision_state_forbids_private_label_from_nonrecoverability():
+    import json
+    p=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
+    assert p["classifications"]["PRIVILEGED_PRIVATE"]=="NOT_ASSIGNABLE_BY_THIS_EXPERIMENT"
+    assert p["governance"]["execution_authorized"] is False
