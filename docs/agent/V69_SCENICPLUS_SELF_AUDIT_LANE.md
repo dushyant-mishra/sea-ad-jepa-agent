@@ -664,6 +664,27 @@ invocation in this lane now runs from the snapshot directory.
 
 ---
 
+## S25 — A quarantined void run must not leave a live watcher that could mislead (CAUGHT, NO DAMAGE)
+
+**Status:** CLOSED, recorded for completeness rather than severity.
+
+When I stopped and quarantined the corrupted storage pair (S24), a monitor was still
+armed waiting for `V69_STORAGE_COMPARISON_V1.json` — the comparison receipt of the run
+I had just voided. That file will never appear, so the watch expired silently after
+fifteen minutes with no events.
+
+**Why it is worth a line.** A silent expiry is indistinguishable from "still running".
+Had I not known the run was voided, I could have read that silence as the comparison
+still being in flight, and waited on, or worse reported on, a result that was never
+coming. Voiding a run has to include standing down anything that was waiting for it.
+
+**No damage:** I knew the run was void because I voided it, and the handback stated the
+comparison was being re-run rather than pending. The replacement pair writes to
+`storage_bench_seeded/` under different run ids, so the void and the replacement cannot
+be confused.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
