@@ -1,0 +1,94 @@
+{
+  "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_branch": "claude/v64-exact-sampler-successor-20260930",
+  "audited_head": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
+  "substrate_contract": {
+    "path": "results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
+    "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
+  },
+  "verdict": "SUBSTRATE_ARCHITECTURE_MOSTLY_SOUND__PHASE_B_STILL_BLOCKED_ON_STATISTICAL_AMENDMENT_AND_LITERAL_REPAIR",
+  "upstream_phase_a_v3": {
+    "status": "CODE_AND_RECEIPT_REVIEW_SUPPORTS_CONTRACT_COMPLIANCE__ROW_BYTES_NOT_IN_GIT",
+    "retained_edges": 13175,
+    "funnel": {
+      "denominator": 20709,
+      "DROP_GENE_NOT_IN_NIHCARD": 350,
+      "DROP_GENE_AMBIGUOUS_IN_NIHCARD": 0,
+      "DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL": 199,
+      "linked_eligible": 20160,
+      "DROP_CONTROL_A_NO_ADMISSIBLE_START": 6985,
+      "retained": 13175
+    },
+    "schema_fields_emitted": true,
+    "provenance_patch_claims_all_v2_required_items_bound": true,
+    "practical_custody_limitation": "PHASE_A_V3_ROWS.jsonl.gz and funnel-per-edge bytes are hash-bound but not committed. Independent byte-level reinspection still requires custody transfer or reproducible rematerialization.",
+    "note": "This closes the earlier code-level omission that made the 13,510 run only a CONTROL_A-availability result. The 13,175 V3 population is the substrate authority being used here."
+  },
+  "accepted_design_elements": [
+    "Phase B is explicitly single-modality only; any two-modality statistic is a stop condition.",
+    "Metacell assignments and metacell-level vectors are persisted so Stage 4 need not reopen matrices.",
+    "T3 RNA is keyed by gene rather than pair, which is information-preserving under the frozen definition that promoter_activity is the linked gene's RNA.",
+    "Recoverability 16/4/4 split is correctly scoped to recoverability model/rank/basis/threshold selection and does not silently shrink the independent Phase-B donor population.",
+    "Only SampleID and cell_type values are read from obs for donor-population construction; demographic columns are not read.",
+    "The 57 additional ENUMERATION_ONLY rows are arithmetically recomputed from admissible sets and do not change Phase-A N.",
+    "Missingness remains explicit; zero-fill is forbidden.",
+    "Phase B, Stage 4, TD60, Morabito and training remain stopped/protected."
+  ],
+  "findings": [
+    {
+      "id": "S57",
+      "severity": "MEDIUM",
+      "title": "S54-style hardcoded denominator remains in substrate producer",
+      "evidence": "build_phase_b_measurement_substrate_contract_v1.py computes as_fraction_of_controls_already_measured as round(len(extra) / 24187, 6). 24187 equals current CONTROL_A_rows + CONTROL_B_rows (13175 + 11012), but is not recomputed.",
+      "impact": "Correct today, but stale if Phase-A/null availability population changes. This directly contradicts the claim that every emitted count/derived count is recomputed.",
+      "required_fix": "Replace 24187 with a denominator recomputed from the loaded Phase-A V3 rows (or explicitly derive len(already) with the intended semantics) and add a negative-control test that changes row availability and requires the fraction to update."
+    },
+    {
+      "id": "S58",
+      "severity": "HIGH_BLOCKING",
+      "title": "R3 exact-conditional rule is a new statistical decision not present in the bound V2 statistical contract",
+      "evidence": [
+        "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2 freezes exact enumeration for CONTROL_A support 2-10, but does not specify the R3 rule: enumerate the small arm while conditioning on the realised large-arm draw.",
+        "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1 introduces R2 exact-joint and especially R3 exact-conditional semantics.",
+        "The substrate contract simultaneously declares changes_no_statistical_decision=true.",
+        "T16 only checks that this boolean is true, governance equals V2, and the V2 digest is current; it cannot detect that R3 itself is new."
+      ],
+      "impact": "R3 determines the reference distribution for 21 A/B pairs and therefore is inferential/statistical semantics, not merely storage layout. It is prospectively chosen before biological values, so it can be made lawful now, but it must be an explicit statistical-contract amendment rather than hidden inside a measurement-substrate contract.",
+      "required_fix": [
+        "Create a successor/null-contract amendment (e.g. V3) that explicitly freezes R1/R2/R3 semantics before Phase B.",
+        "State that R3 is conditional on the realised large-arm draw and define exactly which downstream statistic/reference it governs.",
+        "Update the decision-state artifact and tests to bind the new statistical-contract digest.",
+        "Change substrate changes_no_statistical_decision to true only after the R1/R2/R3 rule is upstream authority; otherwise mark the substrate as introducing a prospective statistical amendment.",
+        "Add a test that fails if substrate enumeration semantics are absent from or differ from the bound statistical contract."
+      ]
+    },
+    {
+      "id": "S59",
+      "severity": "MEDIUM_CUSTODY",
+      "title": "Phase-A V3 row artifacts are hash-bound but not independently available in Git",
+      "evidence": "Patched receipt binds PHASE_A_V3_ROWS.jsonl.gz (1,866,271 bytes, sha256 ab103675...) and PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz (63,355 bytes, sha256 b4c6eb6f...), but both are marked external/hash-only.",
+      "impact": "The substrate producer and tests rely on these bytes. Independent future agents cannot reproduce row-level checks from repository contents alone.",
+      "required_fix": "Because both artifacts are small, place their exact bytes in durable repository/release/Actions custody or add a deterministic rematerialization workflow that verifies the recorded hashes."
+    }
+  ],
+  "t13_assessment": {
+    "arithmetic_recomputation": "VALID",
+    "scientific_authority": "INSUFFICIENT_FOR_R3",
+    "explanation": "T13 independently recomputes the 57-row count from A_exact and Phase-A rows, but it implements the same R3 selection rule. It proves the count under R3, not that R3 was already authorized by the upstream statistical contract."
+  },
+  "hardcoded_dimension_note": {
+    "rna_features_literal": 38606,
+    "atac_features_literal": 521217,
+    "assessment": "These values are already frozen in the correspondence-design measurement definitions, so they are not classified as a new blocker here. The eventual Phase-B executor should still assert authenticated matrix dimensions equal these frozen universes before using them."
+  },
+  "decision": {
+    "substrate_contract": "NOT_YET_ACCEPTED_FOR_EXECUTION",
+    "phase_B": "STOPPED",
+    "next_gate": "Repair S57; promote R1/R2/R3 into an explicit prospectively frozen statistical-contract successor; bind substrate to that successor; close S59 custody if possible; then stop for re-audit.",
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  }
+}
