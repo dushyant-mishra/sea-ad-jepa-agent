@@ -133,7 +133,7 @@ def build(args) -> dict:
         "screen_pls_overlap","screen_pls_count",
         "dong_transcript_id_present_any","dong_same_chrom_present","dong_gene_match",
         "dong_coordinate_match","dong_internal_promoter","dong_fivemost",
-        "fantom_cage_overlap","fantom_cage_count",
+        "fantom_cage_overlap","fantom_cage_count","fantom_representative_tss_exact",
     ]
     membership_fields = [
         "candidate_promoter_id","transcript_id","gene_id","exact_tss_id",
@@ -183,6 +183,12 @@ def build(args) -> dict:
                 "dong_fivemost": "" if d is None else int(d["dong_fivemost"]),
                 "fantom_cage_overlap": "" if fantom_idx is None else int(bool(fhits)),
                 "fantom_cage_count": "" if fantom_idx is None else len(fhits),
+                "fantom_representative_tss_exact": (
+                    "" if fantom_idx is None else int(any(
+                        len(h[2]) >= 4 and int(h[2][3]) == g["tss_1based"] - 1
+                        for h in fhits
+                    ))
+                ),
             }
             tw.writerow({k: row[k] for k in transcript_fields})
             mw.writerow({k: row[k] for k in membership_fields})
@@ -200,6 +206,7 @@ def build(args) -> dict:
                     "screen_pls_count": len(sh),
                     "fantom_cage_overlap": "" if fantom_idx is None else int(bool(fhits)),
                     "fantom_cage_count": "" if fantom_idx is None else len(fhits),
+                    "fantom_representative_tss_exact": row["fantom_representative_tss_exact"],
                     "dong_transcripts_present_any": 0,
                     "dong_same_chrom_transcripts": 0,
                     "dong_coordinate_match_transcripts": 0,
@@ -213,7 +220,7 @@ def build(args) -> dict:
     tss_fields = [
         "exact_tss_id","gene_id","gene_name","chrom","tss_1based","strand",
         "transcript_count","screen_pls_overlap","screen_pls_count",
-        "fantom_cage_overlap","fantom_cage_count",
+        "fantom_cage_overlap","fantom_cage_count","fantom_representative_tss_exact",
         "dong_transcripts_present_any","dong_same_chrom_transcripts",
         "dong_coordinate_match_transcripts",
     ]
@@ -223,12 +230,36 @@ def build(args) -> dict:
         for xid in sorted(tss):
             w.writerow({k: tss[xid][k] for k in tss_fields})
 
+    screen_tss = sum(int(x["screen_pls_overlap"]) for x in tss.values())
+    fantom_tss = sum(int(x["fantom_cage_overlap"]) for x in tss.values()) if fantom_idx is not None else None
+    fantom_exact_tss = (
+        sum(int(x["fantom_representative_tss_exact"]) for x in tss.values())
+        if fantom_idx is not None else None
+    )
+    joint = {"screen_and_fantom": 0, "screen_only": 0, "fantom_only": 0, "neither": 0}
+    if fantom_idx is not None:
+        for x in tss.values():
+            sc = bool(int(x["screen_pls_overlap"]))
+            fc = bool(int(x["fantom_cage_overlap"]))
+            joint[
+                "screen_and_fantom" if sc and fc else
+                "screen_only" if sc else
+                "fantom_only" if fc else
+                "neither"
+            ] += 1
+
     receipt = {
         "schema": "V65_PROMOTER_DUAL_LEDGER_RECEIPT_V1",
         "candidate_authority": "GENCODE_V50_GRCH38_P14",
         "transcript_promoter_records": transcript_n,
         "exact_tss_loci": len(tss),
         "genes": len(genes),
+        "exact_tss_evidence_coverage": {
+            "screen_pls_overlap": screen_tss,
+            "fantom_same_strand_overlap": fantom_tss,
+            "fantom_exact_representative_tss": fantom_exact_tss,
+            "screen_fantom_joint_states": joint if fantom_idx is not None else None,
+        },
         "denominator_rule": "Evidence annotates GENCODE candidates and never removes them.",
         "fantom_coordinate_rule": "GENCODE TSS point must overlap a FANTOM hg38 peak on the SAME strand.",
         "interval_query_rule": "Point overlap uses sorted starts plus prefix-max interval ends; nested intervals cannot be hidden by a shorter later-starting interval.",
