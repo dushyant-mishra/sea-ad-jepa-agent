@@ -47,8 +47,8 @@ def relational_geometry_correlation(a,b):
     if a.shape[0]!=b.shape[0]:
         raise ValueError("row counts differ")
     iu=np.triu_indices(a.shape[0],1)
-    da=np.sqrt(np.square(a[:,None,:]-a[None,:,:]).sum(axis=2))[iu]
-    db=np.sqrt(np.square(b[:,None,:]-b[None,:,:]).sum(axis=2))[iu]
+    da=np.square(a[:,None,:]-a[None,:,:]).sum(axis=2)[iu]
+    db=np.square(b[:,None,:]-b[None,:,:]).sum(axis=2)[iu]
     if da.std()==0 or db.std()==0:
         raise ValueError("degenerate pairwise-distance vector")
     return float(np.corrcoef(da,db)[0,1])
@@ -84,7 +84,7 @@ def run_audit(seed=65010):
       "permuted_relational_geometry_correlation":rg_perm,
       "redundancy_confirmed":bool(max_abs<1e-10),
       "conclusion":"Centered canonical correlations and principal-angle cosines of the same two column spaces are the same singular values; they cannot serve as two independent geometry gates.",
-      "replacement_candidate":"Keep canonical correlation as subspace-alignment gate and use within-donor pairwise-distance relational-geometry correlation as the distinct second permutation-calibrated gate.",
+      "replacement_candidate":"Keep canonical correlation as subspace-alignment gate and use within-donor pairwise-squared-distance relational-geometry correlation as the distinct second permutation-calibrated gate.",
       "real_biology_used":False,
       "execution_authorized":False
     }
