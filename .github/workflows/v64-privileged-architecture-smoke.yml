@@ -36,6 +36,7 @@ on:
       - 'tests/test_v65_full104_like_nested_student_teacher_synthetic.py'
       - 'tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py'
       - 'tests/test_v64_phase_b_interval_universe_audit_v1.py'
+      - 'tests/test_v64_phase_b_t6_t7_reference_audit_v1.py'
       - 'tests/test_v65_recoverability_decision_synthetic.py'
       - 'tests/test_v65_recoverability_numerical_synthetic_smoke.py'
       - 'tests/test_v65_recoverability_permutation_geometry_smoke.py'
@@ -73,9 +74,11 @@ jobs:
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz > results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json > results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json
+          git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json > results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json
           echo "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4  results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz" | sha256sum -c -
           echo "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619  results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json" | sha256sum -c -
           echo "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b  results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json" | sha256sum -c -
+          echo "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2  results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json" | sha256sum -c -
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -109,6 +112,7 @@ jobs:
             tests/test_v65_full104_like_nested_student_teacher_synthetic.py \
             tests/test_v65_nested_student_teacher_synthetic_training_mechanics.py \
             tests/test_v64_phase_b_interval_universe_audit_v1.py \
+            tests/test_v64_phase_b_t6_t7_reference_audit_v1.py \
             tests/test_v65_recoverability_decision_synthetic.py \
             tests/test_v65_recoverability_numerical_synthetic_smoke.py \
             tests/test_v65_recoverability_permutation_geometry_smoke.py \
