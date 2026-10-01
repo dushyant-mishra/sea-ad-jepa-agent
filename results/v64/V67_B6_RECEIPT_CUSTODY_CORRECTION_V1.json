@@ -1,0 +1,14 @@
+{
+  "schema":"V67_B6_RECEIPT_CUSTODY_CORRECTION_V1",
+  "date":"2026-10-01",
+  "artifact":"results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json",
+  "git_blob":"29c248ded42aecd35650699c360512e965ce9345",
+  "stale_v66_sha256":"0f7f1e554d6425797184308293781805d16853bbb9899fbd0ac927992d05e763",
+  "correct_raw_sha256":"2fd8356b07fd3d4e50007c941fcc8bcdda4a118509775955ded82d90b98ed671",
+  "reason":"post-commit producer-blob binding rewrote the receipt; the V66 pointer retained the earlier receipt SHA",
+  "scientific_state_changed":false,
+  "phase_b_acceptance":"UNCHANGED",
+  "stage4":"NOT_AUTHORIZED",
+  "correspondence_opened":false,
+  "successor_authority":"results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json"
+}
