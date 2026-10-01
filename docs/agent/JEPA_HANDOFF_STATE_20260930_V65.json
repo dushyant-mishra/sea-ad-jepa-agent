@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "2fbf8f3d89154a9fb6263981b5a17644809a6b4f",
+    "chatgpt_architecture": "f7565a08c85601dca782ffef759e3211d59c81c2",
     "claude_exact_sampler": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -126,6 +126,34 @@
       "missing_private_zero_fill": false,
       "real_shared_rank": "UNRESOLVED_PENDING_RECOVERABILITY",
       "multimodal_training_authorized": false
+    },
+    "nested_student_teacher_smokes": {
+      "full104_like_synthetic": {
+        "status": "PASS_SYNTHETIC_INTEGRATION_ONLY",
+        "receipt": "results/v64/V65_FULL104_LIKE_NESTED_STUDENT_TEACHER_SYNTHETIC_QUALIFICATION_V1.json",
+        "ci_run": 36804320183,
+        "donors": 104,
+        "operators": 42,
+        "sources": 3,
+        "metrics": {
+          "rna_shared_r2": 0.5640371488918989,
+          "multimodal_shared_r2": 0.6746087233362175,
+          "multimodal_private_r2": 0.8779468284584567,
+          "rna_private_r2": -0.026887372837845813,
+          "technical_shared_r2": -0.02450509888278951
+        },
+        "biological_authority": false
+      },
+      "historical_u0_real_data": {
+        "status": "PASS_REAL_DATA_SMOKE_NON_AUTHORITY",
+        "integrity_receipt": "results/v64/V65_HISTORICAL_T1_U0_INTEGRITY_SMOKE_V1.json",
+        "forward_receipt": "results/v64/V65_HISTORICAL_T1_U0_REAL_DATA_FORWARD_COMPATIBILITY_SMOKE_V1.json",
+        "checkpoint_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+        "post_u0_weights_used": false,
+        "optimizer_step_executed": false,
+        "exact_historical_replay": false,
+        "limitation": "Calibration bundle omitted historical contracts.py; forward used an explicitly documented compatibility shim while core ipb_jepa.py bytes match frozen 732ea46f source."
+      }
     }
   },
   "paired_nihcard": {
@@ -231,12 +259,12 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Allow Claude measurement-only Phase B substrate build under separate audited authority; Stage 4 remains sealed.",
-    "Promoter dual ledger is materialized and accepted; do not repeat promoter-byte/overlap work absent contradictory evidence.",
-    "Nested RNA+multimodal student topology is frozen prospectively; do not train it yet.",
-    "Recoverability structural preflight passes and TEST numeric access is sealed; next lawful architecture step is audit/authorization of real TRAIN+VALIDATION recoverability execution, still without TEST.",
-    "Use real recoverability results to determine the shared multimodal projection before any multimodal shared/private training.",
-    "Keep multimodal training, JEPA training, Stage 4, Morabito and TD60 closed."
+    "Claude may execute only measurement-only Phase B under its separate authority; Stage 4 remains sealed.",
+    "Nested RNA+multimodal architecture is prospectively frozen and now passes FULL104-shaped synthetic integration; do not infer biological validity from that smoke.",
+    "Historical authenticated u0 RNA JEPA forward plumbing passes on preserved real 84-cell masks; do not use post-u0 defective-lineage weights.",
+    "Recoverability structural preflight passes with TEST sealed. Real TRAIN+VALIDATION recoverability remains authorization-gated.",
+    "If recoverability is authorized later, use the frozen TRAIN+VALIDATION executor state machine; TEST requires a separate successor after immutable VALIDATION lock.",
+    "Multimodal/JEPA training remains OFF until real shared/private authority is established."
   ],
   "governance": {
     "training": "OFF",
