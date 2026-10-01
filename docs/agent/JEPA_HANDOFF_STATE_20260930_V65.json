@@ -5,8 +5,8 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "f7565a08c85601dca782ffef759e3211d59c81c2",
-    "claude_exact_sampler": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
+    "chatgpt_architecture": "01c4e2c752ad14514a1e71b185728b82a8e30fa0",
+    "claude_exact_sampler": "dc30caede6369a31df3098205db11c83381784e5",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -63,6 +63,28 @@
       "bootstrap_seed": 20260929,
       "phaseB_executed": false,
       "remaining_execution_blocker": "Freeze complete Phase-B measurement substrate before matrix opening: persisted metacell assignment; metacell-level RNA/ATAC values and masks; depth quantities needed by frozen nuisance basis; exact small-support enumeration alternatives/measurements; scope recoverability TEST-donor firewall separately from Phase-B population."
+    },
+    "phaseB_substrate": {
+      "status": "MATERIALIZED_BUT_NOT_YET_ACCEPTED_AS_CONTRACT_COMPLETE",
+      "audited_head": "dc30caede6369a31df3098205db11c83381784e5",
+      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V1.json",
+      "accepted": [
+        "S63 permutation byte binding and re-derivation",
+        "S64 explicit array-content versus .npy-file digest semantics",
+        "282/282 donor completion",
+        "3231 metacell reconciliation and global disjointness",
+        "modality firewall remains closed"
+      ],
+      "blockers": {
+        "S65": "T5 donor-level aggregates required by frozen substrate contract are not materialized in shard outputs.",
+        "S66": "Frozen contract says 32174 distinct distal intervals; emitted substrate has 32153. Difference 21 is unresolved and must not be guessed.",
+        "S67": "Aggregator does not recompute current shard .npz SHA-256 before accepting receipt hashes and aggregate binding."
+      },
+      "additional_checks": [
+        "prove explicit/derivable T3/T4 availability semantics",
+        "validate T6 enumeration -> T7 conditioning-reference referential integrity and bind T7 digest"
+      ],
+      "stage4_authorized": false
     }
   },
   "architecture": {
@@ -259,16 +281,16 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Claude may execute only measurement-only Phase B under its separate authority; Stage 4 remains sealed.",
-    "Nested RNA+multimodal architecture is prospectively frozen and now passes FULL104-shaped synthetic integration; do not infer biological validity from that smoke.",
-    "Historical authenticated u0 RNA JEPA forward plumbing passes on preserved real 84-cell masks; do not use post-u0 defective-lineage weights.",
-    "Recoverability structural preflight passes with TEST sealed. Real TRAIN+VALIDATION recoverability remains authorization-gated.",
-    "If recoverability is authorized later, use the frozen TRAIN+VALIDATION executor state machine; TEST requires a separate successor after immutable VALIDATION lock.",
-    "Multimodal/JEPA training remains OFF until real shared/private authority is established."
+    "Claude Phase-B closeout: preserve executed v1 shard bytes; materialize contract-required T5 from frozen T1-T4, reconcile 32174 vs 32153, rehash every current shard byte inside validator, and validate availability plus T6/T7 referential integrity. STOP again before Stage 4.",
+    "Nested RNA+multimodal topology remains prospectively frozen; real training stays OFF.",
+    "FULL104-shaped two-student synthetic integration PASS and historical authenticated u0 real-data forward compatibility PASS carry software/plumbing authority only.",
+    "Synthetic optimizer/EMA mechanics smoke is now in architecture CI; do not promote until clean-CI result is observed.",
+    "Recoverability TRAIN+VALIDATION remains explicit-authorization gated and TEST numeric access remains sealed.",
+    "Keep Stage 4, Morabito, TD60 and real JEPA/multimodal training closed."
   ],
   "governance": {
     "training": "OFF",
-    "phaseB": "STOPPED",
+    "phaseB": "SUBSTRATE_EXECUTED_CLOSEOUT_PENDING",
     "stage4": "NOT_AUTHORIZED",
     "td60": "BLOCKED",
     "Morabito": "PROTECTED"
