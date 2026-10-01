@@ -1,0 +1,143 @@
+{
+  "schema": "V66_CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V3",
+  "date": "2026-09-30",
+  "branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "purpose": "Delta custody pass for the current chat. Preserve new chat-exclusive text/code, avoid duplicating Project-backed inputs, and retain exact size/SHA records for large binaries that are not appropriate for ordinary Git history. This V3 manifest supplements rather than replaces chat_runtime_20260930_v2.",
+  "prior_custody": "docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json",
+  "new_small_artifacts": [
+    {
+      "source_filename": "Pasted markdown.md",
+      "source_file_id": "file_00000000cd5881f6b325d0508de0b29b",
+      "source_ref_id": "turn473file0",
+      "source_bytes": 20559,
+      "source_sha256": "ad357ea3dab052c49870ec94d67c81dd1342154e496bcb95cd16ec461d528e0b",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v3/Claude_B1_B6_runtime_transcript_20260930.md",
+      "transfer": "Files connector -> GitHub text connector in one transaction",
+      "scientific_status": "CURRENT_CHAT_EVIDENCE_BUT_NOT_AUTHORITY",
+      "note": "Contains Claude 154935c5 B1-B5 closeout, subsequent B6 local/uncommitted availability script and run, and the audit context that led to the B6 precommit blocker. GitHub authority remains the committed audit/state, not claims inside this transcript."
+    },
+    {
+      "source_filename": "Pasted text.txt",
+      "source_bytes": 18742,
+      "source_sha256": "625d277398462f1726ae72a5fdbe0636dae4202839be68cae07c25816c9f9e2c",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v3/Prior_runtime_handoff_snapshot_SUPERSEDED.txt",
+      "transfer": "Readable superseded snapshot; source had no Files-surface handle for byte-preserving transfer",
+      "scientific_status": "HISTORICAL_SUPERSEDED",
+      "note": "Old V64/V65 runtime handoff whose sampler/Phase-B status is obsolete. Original runtime SHA retained here; use V66 handoff for current state."
+    },
+    {
+      "source_filename": "independent_dual_ledger_audit.py",
+      "source_bytes": 6673,
+      "source_sha256": "e30d0585f629ab266714fa442abe2cca86d23065e5d6c02a09eb3caf2c989402",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v3/independent_dual_ledger_audit.py",
+      "scientific_status": "REPRODUCIBILITY_HELPER_ARCHIVED",
+      "note": "Standalone chat-local independent promoter dual-ledger audit used before the corresponding repository audits/builders were finalized."
+    }
+  ],
+  "project_backed_not_duplicated": [
+    {
+      "filename": "WSL execution issue.txt",
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "reason": "Files search reports source_kind=project; already preserved in earlier v2 Git custody as well."
+    },
+    {
+      "filename": "Status and Repair Plan.txt",
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "reason": "Files search reports source_kind=project; already preserved in earlier v2 Git custody as well."
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "reason": "Files search reports source_kind=project; already preserved in earlier v2 Git custody."
+    }
+  ],
+  "large_runtime_binaries_inherited_from_v2": [
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    {
+      "filename": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"
+    },
+    {
+      "filename": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"
+    },
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "derived_in_chat": true
+    }
+  ],
+  "derived_or_actions_artifacts_not_exclusive": [
+    {
+      "filename": "t1_checkpoint_u0000.pt",
+      "bytes": 26831531,
+      "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+      "origin": "extracted/authenticated from checkpoints.zip; historical u0 compatibility smoke input"
+    },
+    {
+      "filename": "v64-fantom-hg38-cage-bed.zip",
+      "bytes": 5488990,
+      "sha256": "ce528e656a99c5e49fc17cc1cbbbca0c1236ca336f359d635eea365c8115dc5d",
+      "origin": "GitHub Actions artifact"
+    },
+    {
+      "filename": "v64-nihcard-paired-subset.zip",
+      "bytes": 834287,
+      "sha256": "0e47d0c2886551637beb7aa786dbad5b09e50354a7c596fb39bd9fc35424450b",
+      "origin": "GitHub Actions artifact"
+    },
+    {
+      "filename": "v64-open-promoter-regulatory-resources.zip",
+      "bytes": 132515054,
+      "sha256": "ad36c5569cb9fed59a5c798a33e33fac0913838860860e6af20b0565a4c3524e",
+      "origin": "GitHub Actions artifact"
+    },
+    {
+      "filename": "v65-open-promoter-resources-and-dual-ledger.zip",
+      "bytes": 156027533,
+      "sha256": "6ac2301abc38e25844b36b4b8466ea2b9f98e2e4604b7e87982c269934475168",
+      "origin": "GitHub Actions artifact"
+    },
+    {
+      "filename": "v65-promoter-dual-ledger.zip",
+      "bytes": 23567519,
+      "sha256": "f4c1912e4cec23e1e159708fd5a7f46198ed72a0c1b2f3bec7a6e50ade02f090",
+      "origin": "GitHub Actions/artifact download"
+    }
+  ],
+  "rules": [
+    "A runtime filename or SHA record does not imply bytes are physically stored in Git.",
+    "Do not duplicate Project-backed files merely because the runtime also mounted them.",
+    "Do not commit hundreds-of-MB binary datasets/checkpoints to ordinary Git history solely for chat handoff.",
+    "Use current repository receipts/Actions artifacts where a binary is reproducible from GitHub; use the v2/v3 custody manifests for runtime-only sources.",
+    "Hash custody does not grant scientific authority.",
+    "Stage 4 remains sealed and training remains OFF."
+  ]
+}
