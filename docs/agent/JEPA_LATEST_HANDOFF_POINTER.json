@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__PHASE_B_MEASUREMENT_ONLY_AUTHORIZED__STAGE4_SEALED",
+  "status": "V65_PHASE_B_EXECUTED__B1_B5_CLOSED__STAGE4_STOPPED_ON_B6",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -11,8 +11,8 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
-  "current_blocker": "Phase-B substrate is materialized. S63/S64 accepted and S66 CLOSED: 32,174 was a contract counting bug; the correct unique interval universe is 32,153 with no missing intervals. Remaining hard blockers are S65 missing T5 donor-level aggregates and S67 lack of current shard-byte rehash; availability and T6/T7 referential checks must also close. Stage 4 remains sealed.",
+  "claude_last_verified_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+  "current_blocker": "The Phase-B substrate build and B1-B5 closeout are accepted, including pairing revalidation and live shard rehashing. Stage 4 remains blocked because the frozen contract requires per-element availability columns in T3/T4, while the executed shards leave those implicit and the closeout moved availability flags into T5.",
   "parallel_architecture_next": "Nested RNA+multimodal two-student semantics plus optimizer/gradient/EMA mechanics now pass clean synthetic software qualification; historical u0 real-data forward compatibility also passes. None authorizes real training. Recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V2. Do not resurrect the 32,174 interval count as missing data: exact immutable-byte audit proves 32,153 is the correct unique coordinate universe. Focus Phase-B closeout on T5, shard rehash, availability and T6/T7 integrity."
+  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. Do not open Stage 4 until B6 is closed without rereading matrices or changing biological values."
 }
