@@ -100,3 +100,17 @@ def test_decision_state_forbids_private_label_from_nonrecoverability():
     p=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
     assert p["classifications"]["PRIVILEGED_PRIVATE"]=="NOT_ASSIGNABLE_BY_THIS_EXPERIMENT"
     assert p["governance"]["execution_authorized"] is False
+
+
+def test_materiality_margin_is_median_not_per_donor():
+    m=_load()
+    # One donor has positive but sub-margin DELTA_R2; median remains well above 0.05.
+    donors=[
+        m.donor(.22,.10,.20),  # delta 0.02
+        m.donor(.40,.10,.20),  # delta 0.20
+        m.donor(.42,.10,.20),  # delta 0.22
+        m.donor(.41,.10,.20),  # delta 0.21
+    ]
+    assert all(d["delta_r2"]>0 for d in donors)
+    assert np.median([d["delta_r2"] for d in donors])>=m.DELTA_MARGIN
+    assert m.validation_rank_eligible(donors)
