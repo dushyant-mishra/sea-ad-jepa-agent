@@ -37,13 +37,18 @@ def _center_rank(x: np.ndarray):
     return xc,rank
 
 
-def _orthonormal_basis(z: np.ndarray) -> np.ndarray:
+def _orthonormal_basis(z: np.ndarray, expected_rank: int) -> np.ndarray:
     zc,rank=_center_rank(z)
-    k=zc.shape[1]
-    if rank<k:
+    if expected_rank < 1 or expected_rank > min(zc.shape):
+        raise ValueError("invalid expected intrinsic rank")
+    if rank < expected_rank:
         raise ValueError("rank-deficient projected state")
-    q,_=np.linalg.qr(zc,mode="reduced")
-    return q
+    # Projected states are stored in the 16-D ambient target space but have a
+    # smaller declared intrinsic rank. Use the nonzero left-singular subspace.
+    u,sv,_=np.linalg.svd(zc,full_matrices=False)
+    if len(sv) < expected_rank or not np.isfinite(sv[:expected_rank]).all():
+        raise ValueError("invalid projected-state singular spectrum")
+    return u[:,:expected_rank]
 
 
 def _canonical_from_bases(q_true: np.ndarray, q_pred: np.ndarray) -> np.ndarray:
@@ -53,14 +58,21 @@ def _canonical_from_bases(q_true: np.ndarray, q_pred: np.ndarray) -> np.ndarray:
     return vals
 
 
-def canonical_correlations(z_true: np.ndarray, z_pred: np.ndarray) -> np.ndarray:
+def canonical_correlations(
+    z_true: np.ndarray, z_pred: np.ndarray, expected_rank: int
+) -> np.ndarray:
     if np.asarray(z_true).shape!=np.asarray(z_pred).shape:
         raise ValueError("true/predicted shared states must have identical shape")
-    return _canonical_from_bases(_orthonormal_basis(z_true),_orthonormal_basis(z_pred))
+    return _canonical_from_bases(
+        _orthonormal_basis(z_true,expected_rank),
+        _orthonormal_basis(z_pred,expected_rank),
+    )
 
 
-def median_canonical_correlation(z_true: np.ndarray, z_pred: np.ndarray) -> float:
-    return float(np.median(canonical_correlations(z_true,z_pred)))
+def median_canonical_correlation(
+    z_true: np.ndarray, z_pred: np.ndarray, expected_rank: int
+) -> float:
+    return float(np.median(canonical_correlations(z_true,z_pred,expected_rank)))
 
 
 def pairwise_distance_matrix(z: np.ndarray) -> np.ndarray:
@@ -106,6 +118,7 @@ def donor_geometry_gate(
     z_pred: np.ndarray,
     donor_id: str,
     *,
+    expected_rank: int,
     permutations: np.ndarray | None=None,
     n_perm: int=DEFAULT_PERMUTATIONS,
 ) -> dict[str,object]:
@@ -115,8 +128,8 @@ def donor_geometry_gate(
         raise ValueError("true/predicted shared states must be aligned 2-D arrays")
     # Fail closed before generating the null, then precompute all invariant
     # quantities so the 10,000 permutations only relabel rows.
-    q_true=_orthonormal_basis(a)
-    q_pred=_orthonormal_basis(b)
+    q_true=_orthonormal_basis(a,expected_rank)
+    q_pred=_orthonormal_basis(b,expected_rank)
     obs_cc=float(np.median(_canonical_from_bases(q_true,q_pred)))
 
     d_true=pairwise_distance_matrix(a)
@@ -158,7 +171,8 @@ def donor_geometry_gate(
     return {
         "donor_id":str(donor_id),
         "n_rows":int(len(a)),
-        "rank":int(a.shape[1]),
+        "ambient_width":int(a.shape[1]),
+        "expected_intrinsic_rank":int(expected_rank),
         "n_permutations":int(n_perm),
         "seed_uint64":permutation_seed_uint64(str(donor_id)),
         "canonical":{
