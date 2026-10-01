@@ -32,6 +32,7 @@ on:
       - 'tests/test_v65_recoverability_decision_synthetic.py'
       - 'scripts/v64/qualify_recoverability_decision_synthetic_v1.py'
       - 'tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py'
+      - 'tests/test_v65_recoverability_authority_consistency.py'
       - '.github/workflows/v64-privileged-architecture-smoke.yml'
   workflow_dispatch:
 
@@ -71,4 +72,5 @@ jobs:
             tests/test_v65_promoter_dual_ledger_v2.py \
             tests/test_v65_recoverability_precision_contract.py \
             tests/test_v65_recoverability_decision_synthetic.py \
-            tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py
+            tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py \
+            tests/test_v65_recoverability_authority_consistency.py
