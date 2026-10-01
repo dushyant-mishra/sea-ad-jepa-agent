@@ -102,11 +102,14 @@ def celltype_candidates(df):
 
 def donor_candidates(df):
     out=[]
+    preferred=["id","donor","subject","individual"]
     for c in df.columns:
         s=df[c].astype(str)
         hits=sum(int((s==d).sum()) for d in OVERLAP_DONORS)
-        score=(1000 if re.search(r"donor|subject|individual",c,re.I) else 0)+hits
-        if hits or re.search(r"donor|subject|individual",c,re.I):
+        score=hits
+        if c=="id": score += 10**9
+        elif re.search(r"donor|subject|individual",c,re.I): score += 10**6
+        if hits or c in preferred or re.search(r"donor|subject|individual",c,re.I):
             out.append((score,hits,c,sorted(s.unique().tolist())[:50]))
     out.sort(reverse=True)
     if not out: raise RuntimeError("No donor/subject metadata column found")
