@@ -2,12 +2,12 @@
   "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1",
   "date": "2026-09-30",
   "audited_branch": "claude/v64-exact-sampler-successor-20260930",
-  "audited_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
+  "audited_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
   "substrate_contract": {
     "path": "results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
     "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
   },
-  "verdict": "S57_S61_CLOSED__PHASE_B_MEASUREMENT_ONLY_SUBSTRATE_BUILD_AUTHORIZED__STAGE4_STILL_SEALED",
+  "verdict": "B1_B5_AND_PAIRING_CUSTODY_ACCEPTED__B6_T3_T4_AVAILABILITY_SCHEMA_GAP_BLOCKS_SUBSTRATE_ACCEPTANCE",
   "upstream_phase_a_v3": {
     "status": "CODE_AND_RECEIPT_REVIEW_SUPPORTS_CONTRACT_COMPLIANCE__ROW_BYTES_NOT_IN_GIT",
     "retained_edges": 13175,
@@ -70,6 +70,33 @@
       "evidence": "Patched receipt binds PHASE_A_V3_ROWS.jsonl.gz (1,866,271 bytes, sha256 ab103675...) and PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz (63,355 bytes, sha256 b4c6eb6f...), but both are marked external/hash-only.",
       "impact": "The substrate producer and tests rely on these bytes. Independent future agents cannot reproduce row-level checks from repository contents alone.",
       "required_fix": "Because both artifacts are small, place their exact bytes in durable repository/release/Actions custody or add a deterministic rematerialization workflow that verifies the recorded hashes."
+    },
+    {
+      "id": "B6",
+      "severity": "HIGH_BLOCKING_CONTRACT_COMPLIANCE",
+      "title": "Frozen contract requires per-element availability in T3/T4, but executed substrate leaves it implicit and closeout moves flags into T5",
+      "evidence": [
+        "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json defines T3_RNA_VECTORS fields [rna_log1p_cp10k, rna_available].",
+        "The same contract defines T4_ATAC_VECTORS fields [atac_log1p_norm, atac_available, n_assigned_peaks].",
+        "The missingness section explicitly requires 'per-element availability columns in T3 and T4, and an availability_state in T5'.",
+        "build_phase_b_substrate_v1.py writes sparse T3/T4 values but no t3_available/t4_available arrays.",
+        "close_phase_b_substrate_v1.py instead adds rna_available and atac_available fields to T5, which does not satisfy the frozen T3/T4 artifact schema."
+      ],
+      "semantic_note": [
+        "An absent sparse T3/T4 value can lawfully represent a measured zero, so sparse absence itself must not be reused as an availability flag.",
+        "The T5 availability_state logic is useful and may remain, but it cannot substitute for the contracted T3/T4 availability representation.",
+        "Current T5 rna_available is donor-wide true and atac_available is based on donor metacell total-depth completeness; these are not the contracted per-element T3/T4 columns."
+      ],
+      "required_fix": [
+        "Do not reread RNA/ATAC matrices and do not rebuild Phase A or the executed T1-T4 values.",
+        "Materialize the contracted T3 and T4 availability representation from the frozen substrate/depth metadata only.",
+        "For T3, explicitly encode availability for every conceptual donor/metacell/gene element represented by the frozen T3 universe; measured zero must remain available=true.",
+        "For T4, explicitly encode availability for every donor/metacell/interval element, with measured zero distinct from unavailable measurement.",
+        "If factorization is used to avoid dense boolean duplication, amend only the physical representation while proving it is exactly equivalent to the frozen per-element availability columns; do not change missingness semantics.",
+        "Validate T5 availability_state against the materialized/factorized T3/T4 availability representation.",
+        "Add adversarial tests showing a zero-valued measured element remains available and a truly unavailable element is not silently encoded as zero.",
+        "Stop for re-audit before Stage 4."
+      ]
     }
   ],
   "t13_assessment": {
@@ -83,17 +110,10 @@
     "assessment": "These values are already frozen in the correspondence-design measurement definitions, so they are not classified as a new blocker here. The eventual Phase-B executor should still assert authenticated matrix dimensions equal these frozen universes before using them."
   },
   "decision": {
-    "substrate_contract": "AUTHORIZED_FOR_MEASUREMENT_ONLY_PHASE_B_EXECUTION",
-    "phase_B": "AUTHORIZED_WITHIN_FROZEN_SINGLE_MODALITY_BOUNDARY",
+    "phase_B_execution": "COMPLETED_BUT_SUBSTRATE_NOT_YET_ACCEPTED_AS_CONTRACT_COMPLETE",
+    "substrate_contract": "BLOCKED_ON_B6_T3_T4_AVAILABILITY_REPRESENTATION",
     "stage4": "NOT_AUTHORIZED",
-    "prohibited_during_phase_B": [
-      "RNA-ATAC correlation/correspondence",
-      "linked-minus-control biological outcome",
-      "residualised correspondence",
-      "one-sided biological test",
-      "protected outcome analysis"
-    ],
-    "required_closeout": "After Phase-B substrate materialization, stop for audit of emitted tables, hashes, attrition/missingness, metacell partition, R3 references, and provenance before Stage 4.",
+    "next_gate": "Close B6 without changing executed biological values, then re-audit the frozen substrate before any RNA-ATAC correspondence is computed.",
     "training": "OFF",
     "Morabito": "PROTECTED",
     "correspondence_opened": false
@@ -118,6 +138,50 @@
         "Scratch-only mutation sweep is PASS, detects 7/7 named mutations, and records live_artifacts_untouched=true with identical before/after digests.",
         "Final-state consistency guard is PASS with C1-C4 and excludes its own output receipt from C1/C2 to avoid the S62 latch."
       ]
+    }
+  ],
+  "phase_b_execution_audit": {
+    "phase_a_v3_retained": 13175,
+    "qualifying_donors": 282,
+    "metacells": 3231,
+    "pairs": 37419,
+    "intervals": 32153,
+    "T5_rows": 10552158,
+    "T5_sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8",
+    "aggregate_binding_recomputed_shards": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+    "modality_firewall": "HELD",
+    "stage4_opened": false
+  },
+  "accepted_closeout_findings": [
+    {
+      "id": "B1",
+      "status": "CLOSED",
+      "evidence": "T5 materialized as 10,552,158 = 282 x 37,419 donor-pair rows from frozen T1-T4 only; no matrix reread."
+    },
+    {
+      "id": "B2",
+      "status": "CLOSED",
+      "evidence": "32,117 Phase-A interval coordinates + 57 enumeration keys - 18 enum/Phase-A coordinate overlaps - 3 within-enum coordinate duplicates = 32,153 unique intervals."
+    },
+    {
+      "id": "B3",
+      "status": "CLOSED",
+      "evidence": "All 8 shard NPZ files are re-hashed from disk and required to equal shard receipts before closeout; aggregate binding is recomputed from those live hashes."
+    },
+    {
+      "id": "B4_PARTIAL",
+      "status": "T5_AVAILABILITY_STATE_LOGIC_ACCEPTED__T3_T4_SCHEMA_NOT_CLOSED",
+      "evidence": "Donor-pair missingness states distinguish measured sparse zero from donor-pair zero coverage/zero variance and do not split SUPPORTS vs DOES_NOT_SUPPORT before Stage 4."
+    },
+    {
+      "id": "B5",
+      "status": "CLOSED",
+      "evidence": "All 17 R3 T6 rows resolve to exactly the intended T7 edge/reference relationship; non-R3 rows carry no conditioning reference; 11 unreferenced T7 records are lawful."
+    },
+    {
+      "id": "S63_S64",
+      "status": "CLOSED",
+      "evidence": "Aggregate validator binds both permutation array-content and .npy-file hashes, validates range/uniqueness/inverse round trips, and independently re-derives the mapping from RNA/ATAC obs names."
     }
   ]
 }
