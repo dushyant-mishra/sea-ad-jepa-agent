@@ -56,6 +56,7 @@ PREFLIGHT_RECEIPT = os.path.join(DIR, "V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json
 DESIGN_CONTRACT = "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
 NULL_CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
 AUTHORIZATION_SCHEMA = "V64_STAGE4_EXECUTION_AUTHORIZATION_V1"
+AUTHORITY_SCHEMA = "V64_STAGE4_EXECUTION_AUTHORITY_V1"
 
 # frozen constants, mirrored here only so a reader sees them; every one is checked
 # against the contracts at run time and a disagreement is a STOP.
@@ -282,7 +283,17 @@ def verify_bound_inputs():
     shard would silently shrink the population and an unexpected shard would silently grow
     it, and neither is detectable from digests alone.
     """
-    A = json.load(open(CANONICAL_AUTHORITY))
+    try:
+        A = json.load(open(CANONICAL_AUTHORITY))
+    except Exception as e:                                           # noqa: BLE001
+        raise Stop(f"the bound authority is not readable JSON: {e}")
+    if A.get("schema") != AUTHORITY_SCHEMA:
+        raise Stop(f"the file at the canonical authority path is not the Stage-4 "
+                   f"authority (schema={A.get('schema')!r})")
+    for required in ("BOUND_PHASE_B_INPUTS", "INHERITED_NOT_RESTATED",
+                     "ESTIMATOR_IMPORTED_UNMODIFIED"):
+        if required not in A:
+            raise Stop(f"the bound authority is missing {required}")
     bound = A["BOUND_PHASE_B_INPUTS"]
     mismatched, missing, extra = [], [], []
     checked = 0
@@ -413,6 +424,419 @@ def authorization_state():
     return dict(present=True, authorized=True)
 
 
+# ====================================================== full Stage-4 orchestration
+# Everything below is the real pipeline. It is reached by a synthetic world today and by
+# a real run only once a separate authorisation artifact exists. There is deliberately
+# ONE implementation: a synthetic world that passed through a parallel code path would
+# qualify nothing.
+
+SYNTHETIC_ROOT = "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
+SYNTHETIC_OUT = os.path.join(SYNTHETIC_ROOT, "_results")
+SYNTHETIC_WORLDS = ("BIOLOGY_POSITIVE", "TRUE_NULL", "MEASURED_TECHNICAL",
+                    "HIDDEN_CONFOUND")
+
+
+def _unpack_avail(packed, shape):
+    n_m, n_f = int(shape[0]), int(shape[1])
+    bits = np.unpackbits(np.asarray(packed, np.uint8), bitorder="big")[:n_m * n_f]
+    return bits.reshape(n_m, n_f).astype(bool)
+
+
+def _dense(rows, cols, vals, n_r, n_c):
+    M = np.zeros((n_r, n_c), np.float32)
+    M[np.asarray(rows, np.int64), np.asarray(cols, np.int64)] = vals
+    return M
+
+
+def donor_eligibility(S):
+    """The frozen donor rules: at least 100 microglia and at least 4 metacells. Both are
+    measurement-precision rules fixed before any outcome; neither may be relaxed."""
+    sh = S["shards"]
+    mc = np.concatenate([s["t2_metacell"] for s in sh])
+    dn = np.concatenate([s["t2_donor"] for s in sh]).astype(str)
+    if any("t2_n_nuclei" not in s for s in sh):
+        # never default this. A fabricated nuclei count would make the
+        # 100-microglia rule vacuous while every receipt still claimed it applied.
+        raise Stop("the substrate does not carry t2_n_nuclei; donor eligibility "
+                   "cannot be evaluated and the run must not proceed")
+    nu = np.concatenate([s["t2_n_nuclei"] for s in sh])
+    o = np.argsort(mc)
+    mc, dn, nu = mc[o], dn[o], nu[o]
+    if not np.array_equal(mc, np.arange(len(mc))):
+        raise Stop("metacell ids are not a dense 0..N-1 range")
+    donors = sorted(set(dn.tolist()))
+    keep, dropped = [], {}
+    for d in donors:
+        m = dn == d
+        n_mc, n_nuc = int(m.sum()), int(nu[m].sum())
+        if n_nuc < FROZEN["min_microglia"]:
+            dropped[d] = "fewer than %d microglia (%d)" % (FROZEN["min_microglia"], n_nuc)
+        elif n_mc < FROZEN["min_metacells"]:
+            dropped[d] = "fewer than %d metacells (%d)" % (FROZEN["min_metacells"], n_mc)
+        else:
+            keep.append(d)
+    return dict(donor_of_metacell=dn, eligible=keep, dropped=dropped,
+                n_metacells=len(mc))
+
+
+def per_donor_pair_statistic(S, elig):
+    """The frozen per-(donor, pair) statistic for every cell at once.
+
+    This is the vectorised form of pair_correlation. It is the same arithmetic, and the
+    qualification suite checks a random sample of cells against the scalar function,
+    because a fast path that silently disagrees with the qualified one would be the worst
+    possible defect here.
+
+    MISSINGNESS. An UNAVAILABLE element is dropped from the vectors; it never becomes a
+    numeric zero. A MEASURED zero stays in and contributes. Zero coverage and zero
+    variance are separate statuses, because they mean different things about the
+    measurement.
+    """
+    sh = S["shards"]
+    ref = sh[0]
+    genes = [str(x) for x in ref["genes"]]
+    gpos = {g: i for i, g in enumerate(genes)}
+    pair_gene = [str(x) for x in ref["pair_gene"]]
+    pair_iv = np.asarray(ref["pair_interval"], np.int64)
+    n_pairs = len(pair_iv)
+    n_mc = elig["n_metacells"]
+    n_g, n_iv = len(genes), len(ref["interval_start"])
+    # Resolve the mapping BEFORE touching any value. An unresolvable pair is a corrupted
+    # substrate, and it must be a controlled refusal rather than a KeyError deep inside
+    # the loop, because a traceback is not a reviewable decision.
+    bad_g = sorted({g for g in pair_gene if g not in gpos})
+    bad_v = int(((pair_iv < 0) | (pair_iv >= n_iv)).sum())
+    if bad_g or bad_v:
+        raise Stop("the pair mapping does not resolve: %d gene names absent from the "
+                   "dictionary %s, %d interval indices out of range"
+                   % (len(bad_g), bad_g[:3], bad_v))
+
+    rna = _dense(np.concatenate([s["t3_metacell"] for s in sh]),
+                 np.concatenate([s["t3_gene"] for s in sh]),
+                 np.concatenate([s["t3_value"] for s in sh]), n_mc, n_g)
+    atac = _dense(np.concatenate([s["t4_metacell"] for s in sh]),
+                  np.concatenate([s["t4_interval"] for s in sh]),
+                  np.concatenate([s["t4_value"] for s in sh]), n_mc, n_iv)
+    av = S["avail"]
+    rna_av = _unpack_avail(av["t3_available_packed"], av["t3_shape"])
+    atac_av = _unpack_avail(av["t4_available_packed"], av["t4_shape"])
+    if rna_av.shape != (n_mc, n_g) or atac_av.shape != (n_mc, n_iv):
+        raise Stop("availability shape disagrees with the dictionaries: "
+                   "%s %s vs %s %s" % (rna_av.shape, atac_av.shape,
+                                       (n_mc, n_g), (n_mc, n_iv)))
+
+    donors = elig["eligible"]
+    dpos = {d: i for i, d in enumerate(donors)}
+    didx = np.array([dpos.get(d, -1) for d in elig["donor_of_metacell"]], np.int64)
+    D = len(donors)
+
+    corr = np.full((D, n_pairs), np.nan, np.float64)
+    status = np.zeros((D, n_pairs), np.int8)       # index into STATUS_ORDER
+    sel = didx >= 0
+    base_d = didx[sel]
+    for pi in range(n_pairs):
+        gi = gpos[pair_gene[pi]]
+        vi = int(pair_iv[pi])
+        keep = sel & rna_av[:, gi] & atac_av[:, vi]
+        di = didx[keep]
+        if len(di) == 0:
+            status[:, pi] = 1
+            continue
+        r = rna[keep, gi].astype(np.float64)
+        a = atac[keep, vi].astype(np.float64)
+        n = np.bincount(di, minlength=D).astype(np.float64)
+        sr = np.bincount(di, weights=r, minlength=D)
+        sa = np.bincount(di, weights=a, minlength=D)
+        srr = np.bincount(di, weights=r * r, minlength=D)
+        saa = np.bincount(di, weights=a * a, minlength=D)
+        sra = np.bincount(di, weights=r * a, minlength=D)
+        absr = np.bincount(di, weights=np.abs(r), minlength=D)
+        absa = np.bincount(di, weights=np.abs(a), minlength=D)
+        vr = n * srr - sr * sr
+        va = n * saa - sa * sa
+        st = np.full(D, 0, np.int8)
+        st[n < 2] = 1
+        st[(st == 0) & (absr == 0)] = 2
+        st[(st == 0) & (absa == 0)] = 3
+        st[(st == 0) & (vr <= 0)] = 4
+        st[(st == 0) & (va <= 0)] = 5
+        ok = st == 0
+        with np.errstate(invalid="ignore", divide="ignore"):
+            c = (n * sra - sr * sa) / np.sqrt(vr * va)
+        st[ok & ~np.isfinite(c)] = 6
+        ok = st == 0
+        corr[ok, pi] = c[ok]
+        status[:, pi] = st
+    return dict(corr=corr, status=status, donors=donors, pair_gene=pair_gene,
+                rna=rna, atac=atac, rna_av=rna_av, atac_av=atac_av, didx=didx)
+
+
+STATUS_ORDER = ("MEASURED", "MISSING_INSUFFICIENT_METACELLS",
+                "MISSING_RNA_ZERO_COVERAGE", "MISSING_ATAC_ZERO_COVERAGE",
+                "MISSING_RNA_ZERO_VARIANCE", "MISSING_ATAC_ZERO_VARIANCE",
+                "MISSING_DEGENERATE")
+
+
+def build_design(S, rows_by_pair, donors, pair_keys):
+    """The frozen 14-term basis, per (donor, pair).
+
+    Four terms come from the donor-level aggregates and four from the pair geometry; the
+    remaining six are the frozen squares and interactions. Nothing is selected, nothing is
+    standardised adaptively, and no term is added after an outcome is seen.
+    """
+    t5 = S["t5"]
+    t5_donor = np.asarray(t5["donor"]).astype(str)
+    t5_pair = np.asarray(t5["pair_key"]).astype(str)
+    n_pairs = len(pair_keys)
+    if len(t5_donor) % n_pairs != 0:
+        raise Stop("T5 is not a dense donor x pair grid")
+    n_t5_donors = len(t5_donor) // n_pairs
+    grid_d = t5_donor.reshape(n_t5_donors, n_pairs)
+    grid_p = t5_pair.reshape(n_t5_donors, n_pairs)
+    if not (grid_d == grid_d[:, :1]).all():
+        raise Stop("T5 rows are not donor-major")
+    if not (grid_p == np.asarray(pair_keys, dtype=grid_p.dtype)[None, :]).all():
+        raise Stop("T5 pair order does not match the substrate pair dictionary")
+    t5_dpos = {d: i for i, d in enumerate(grid_d[:, 0].tolist())}
+    rowsel = np.array([t5_dpos[d] for d in donors])
+
+    def col(k):
+        return np.asarray(t5[k], np.float64).reshape(n_t5_donors, n_pairs)[rowsel]
+
+    promoter_activity = col("promoter_activity")
+    distal_accessibility = col("distal_accessibility")
+    rna_depth = col("rna_depth_sensitivity")
+    atac_depth = col("atac_depth_sensitivity")
+
+    geo = {k: np.array([float(rows_by_pair[p][k]) for p in pair_keys])
+           for k in ("log_distance", "promoter_degree", "re_density",
+                     "anchor_frequency")}
+    D = len(donors)
+    log_distance = np.tile(geo["log_distance"], (D, 1))
+    promoter_degree = np.tile(geo["promoter_degree"], (D, 1))
+    re_density = np.tile(geo["re_density"], (D, 1))
+    anchor_frequency = np.tile(geo["anchor_frequency"], (D, 1))
+
+    terms = [log_distance, promoter_degree, promoter_activity, distal_accessibility,
+             re_density, anchor_frequency, rna_depth, atac_depth,
+             log_distance ** 2, promoter_degree ** 2, distal_accessibility ** 2,
+             log_distance * promoter_degree, log_distance * distal_accessibility,
+             promoter_degree * anchor_frequency]
+    if len(terms) != 14:
+        raise Stop("the nuisance basis is not 14 terms")
+    return np.stack(terms, axis=-1)
+
+
+def run_correspondence(S, rows_by_pair, label, out_dir):
+    """The whole frozen computation, end to end, in the order the contract fixes it."""
+    sh = S["shards"]
+    ref = sh[0]
+    pair_keys = [str(x) for x in ref["pair_keys"]]
+    pair_gene = [str(x) for x in ref["pair_gene"]]
+    n_pairs = len(pair_keys)
+
+    elig = donor_eligibility(S)
+    stat = per_donor_pair_statistic(S, elig)
+    donors, corr, status = stat["donors"], stat["corr"], stat["status"]
+    D = len(donors)
+
+    funnel = {STATUS_ORDER[i]: int((status == i).sum()) for i in range(len(STATUS_ORDER))}
+    if sum(funnel.values()) != D * n_pairs:
+        raise Stop("the missingness funnel does not reconcile")
+
+    # edge eligibility: at least 30 donors with a MEASURED cell
+    donors_per_pair = (status == 0).sum(0)
+    pair_eligible = donors_per_pair >= FROZEN["min_donors_per_edge"]
+
+    # arms
+    arm = np.array(["ENUM" if k.startswith("ENUM:") else k.split("|")[-1]
+                    for k in pair_keys])
+    edge = np.array([k.split("|")[0].replace("ENUM:", "") for k in pair_keys])
+    promoter = np.array([str(rows_by_pair[k]["promoter_index"]) if k in rows_by_pair
+                         else "NA" for k in pair_keys])
+
+    X = build_design(S, rows_by_pair, donors, pair_keys)
+    flat_y = corr.reshape(-1)
+    flat_X = X.reshape(-1, X.shape[-1])
+    flat_grp = np.tile(promoter, (D, 1)).reshape(-1)
+    measured = np.isfinite(flat_y)
+    resid = np.full(flat_y.shape, np.nan)
+    resid[measured] = ridge_residualise(flat_y[measured], flat_X[measured],
+                                        flat_grp[measured])
+    resid = resid.reshape(D, n_pairs)
+
+    def arm_index(which):
+        d = {}
+        for pi in range(n_pairs):
+            if arm[pi] == which and pair_eligible[pi]:
+                d[edge[pi]] = pi
+        return d
+
+    linked_i, ctrla_i, ctrlb_i = (arm_index("LINKED"), arm_index("CONTROL_A"),
+                                  arm_index("CONTROL_B"))
+    primary_edges = sorted(set(linked_i) & set(ctrla_i))
+    calib_edges = sorted(set(ctrla_i) & set(ctrlb_i))
+
+    def per_donor(values, a_idx, b_idx, edges, weighting):
+        out = []
+        for di in range(D):
+            la = np.array([values[di, a_idx[e]] for e in edges])
+            lb = np.array([values[di, b_idx[e]] for e in edges])
+            g = np.array([pair_gene[a_idx[e]] for e in edges])
+            p = np.array([promoter[a_idx[e]] for e in edges])
+            out.append(aggregate_delta(la, lb, g, p, weighting))
+        return out
+
+    results = {}
+    for weighting in (FROZEN["primary_weighting"], FROZEN["companion_weighting"],
+                      FROZEN["sensitivity_weighting"]):
+        pd_adj = per_donor(resid, linked_i, ctrla_i, primary_edges, weighting)
+        vals = [v for v in pd_adj if v is not None and np.isfinite(v)]
+        boot = donor_cluster_bootstrap(pd_adj)
+        results[weighting] = dict(
+            delta=float(np.mean(vals)) if vals else None,
+            lcb95=one_sided_lcb95(boot),
+            donors_contributing=len(vals))
+
+    pd_raw = per_donor(corr, linked_i, ctrla_i, primary_edges,
+                       FROZEN["primary_weighting"])
+    raw_vals = [v for v in pd_raw if v is not None and np.isfinite(v)]
+
+    pd_cal = per_donor(resid, ctrla_i, ctrlb_i, calib_edges,
+                       FROZEN["primary_weighting"])
+    cal_vals = [v for v in pd_cal if v is not None and np.isfinite(v)]
+
+    rec = dict(
+        schema="V64_STAGE4_CORRESPONDENCE_RESULT_V1", label=label, date="2026-10-01",
+        primary_weighting=FROZEN["primary_weighting"],
+        primary_distance=FROZEN["primary_distance"],
+        ADJUSTED=results,
+        RAW_UNADJUSTED_GENE_BALANCED=dict(
+            delta=float(np.mean(raw_vals)) if raw_vals else None,
+            lcb95=one_sided_lcb95(donor_cluster_bootstrap(pd_raw)),
+            note="reported only so the nuisance adjustment can be seen to act. It is not "
+                 "an estimand and may never be quoted as the result."),
+        CONTROL_A_VS_CONTROL_B=dict(
+            delta=float(np.mean(cal_vals)) if cal_vals else None,
+            edges=len(calib_edges),
+            role="NULL_AND_CALIBRATION_ONLY",
+            note="this arm is a null calibration. It is never a biological contrast and "
+                 "is never substituted for the primary."),
+        R3_LABEL=FROZEN["r3_label"],
+        R3_PAIRS_PRESENT=int((arm == "ENUM").sum()),
+        funnel=funnel,
+        eligibility=dict(donors_total=len(elig["eligible"]) + len(elig["dropped"]),
+                         donors_eligible=len(elig["eligible"]),
+                         donors_dropped=len(elig["dropped"]),
+                         drop_reasons=elig["dropped"],
+                         pairs_total=n_pairs,
+                         pairs_meeting_min_donors=int(pair_eligible.sum()),
+                         min_donors_per_edge=FROZEN["min_donors_per_edge"],
+                         primary_edges=len(primary_edges),
+                         calibration_edges=len(calib_edges)),
+        bootstrap=dict(replicates=FROZEN["bootstrap_replicates"],
+                       seed=FROZEN["bootstrap_seed"], unit="DONOR"),
+        nuisance=dict(terms=14, alpha=FROZEN["ridge_alpha"], k_folds=FROZEN["k_folds"],
+                      cross_fitting_unit=FROZEN["cross_fitting_unit"]),
+        identity=identity_report())
+    os.makedirs(out_dir, exist_ok=True)
+    p = os.path.join(out_dir, "V64_STAGE4_RESULT_%s.json" % label)
+    with open(p, "w", newline="\n") as fh:
+        json.dump(rec, fh, indent=2)
+    rec["_written_to"] = p
+    rec["_sha256"] = B.sha_file(p)
+    rec["_scalar_crosscheck"] = _crosscheck_scalar(stat, S, n_sample=200)
+    return rec
+
+
+def _crosscheck_scalar(stat, S, n_sample=200):
+    """The vectorised statistic must agree with the already-qualified scalar function on
+    randomly drawn cells. A fast path that disagrees with the one the synthetic suite
+    qualified would invalidate every number above."""
+    rng = np.random.default_rng(20260929)
+    corr, status = stat["corr"], stat["status"]
+    D, P = corr.shape
+    rna, atac = stat["rna"], stat["atac"]
+    rna_av, atac_av, didx = stat["rna_av"], stat["atac_av"], stat["didx"]
+    ref = S["shards"][0]
+    genes = [str(x) for x in ref["genes"]]
+    gpos = {g: i for i, g in enumerate(genes)}
+    pair_gene = [str(x) for x in ref["pair_gene"]]
+    pair_iv = np.asarray(ref["pair_interval"], np.int64)
+    worst, n_ok, n_status_ok = 0.0, 0, 0
+    for _ in range(n_sample):
+        di, pi = int(rng.integers(0, D)), int(rng.integers(0, P))
+        m = didx == di
+        gi, vi = gpos[pair_gene[pi]], int(pair_iv[pi])
+        v, st = pair_correlation(rna[m, gi], atac[m, vi], rna_av[m, gi], atac_av[m, vi])
+        n_status_ok += int(st == STATUS_ORDER[int(status[di, pi])])
+        if v is None:
+            n_ok += int(not np.isfinite(corr[di, pi]))
+        else:
+            d = abs(v - corr[di, pi])
+            worst = max(worst, d)
+            n_ok += int(d < 1e-9)
+    return dict(sampled=n_sample, values_agreeing=n_ok, statuses_agreeing=n_status_ok,
+                worst_absolute_difference=worst,
+                agrees=n_ok == n_sample and n_status_ok == n_sample)
+
+
+def load_synthetic_world(world):
+    """Resolve a synthetic world, refusing anything that is not demonstrably synthetic.
+
+    THE POINT OF THE GUARDS. This mode exists so the orchestration can be qualified
+    end-to-end, not so the executor can be aimed somewhere new. The world name comes from
+    a fixed list, the root is a module constant, every resolved path must lie under that
+    root, every file must match the digest its manifest recorded, and no file may carry a
+    digest that the real authority binds. Real measurement bytes therefore cannot enter
+    here even by an operator who controls the synthetic directory.
+    """
+    if world not in SYNTHETIC_WORLDS:
+        raise Stop("unknown synthetic world: %r" % world)
+    root = os.path.abspath(os.path.join(SYNTHETIC_ROOT, world))
+    mani_p = os.path.join(root, "WORLD_MANIFEST.json")
+    if not os.path.exists(mani_p):
+        raise Stop("no world manifest at %s" % mani_p)
+    man = json.load(open(mani_p))
+    if man.get("schema") != "V64_STAGE4_SYNTHETIC_WORLD_V1" or \
+            man.get("IS_SYNTHETIC") is not True or \
+            man.get("contains_no_real_measurement") is not True:
+        raise Stop("that manifest does not declare a synthetic world")
+    if man.get("world") != world:
+        raise Stop("the manifest names a different world")
+
+    shards = sorted(glob.glob(os.path.join(root, "PHASE_B_SUBSTRATE_s*.npz")))
+    t5 = os.path.join(root, "PHASE_B_T5_DONOR_AGGREGATES.npz")
+    avail = os.path.join(root, "PHASE_B_T3_T4_AVAILABILITY.npz")
+    rows_p = os.path.join(root, "PHASE_A_ROWS.json")
+    allp = shards + [t5, avail, rows_p]
+    for p in allp:
+        if not os.path.abspath(p).startswith(root + os.sep):
+            raise Stop("synthetic mode may only read under its own world directory")
+        if not os.path.exists(p):
+            raise Stop("missing synthetic input %s" % os.path.basename(p))
+
+    real = set()
+    A = json.load(open(CANONICAL_AUTHORITY))
+    for v in A["BOUND_PHASE_B_INPUTS"]["substrate_shards"].values():
+        real.add(v["sha256"])
+    for k in ("t5_donor_aggregates", "t3_t4_availability"):
+        real.add(A["BOUND_PHASE_B_INPUTS"][k]["sha256"])
+    for p in allp:
+        got = B.sha_file(p)
+        want = man["digests"].get(os.path.basename(p))
+        if want and got != want:
+            raise Stop("synthetic input %s does not match its manifest digest"
+                       % os.path.basename(p))
+        if got in real:
+            raise Stop("synthetic mode was pointed at REAL measurement bytes (%s). "
+                       "Refusing." % os.path.basename(p))
+
+    S = CS.load_substrate(shard_paths=shards, t5_path=t5, avail_path=avail)
+    rows = {r["pair_key"]: r for r in json.load(open(rows_p))}
+    return S, rows, man
+
+
 # ============================================================ preflight traversal
 def preflight():
     assert_no_matrix_access()
@@ -488,7 +912,33 @@ def main() -> int:
     ap.add_argument("--preflight-only", action="store_true",
                     help="resolve everything the real run needs and compute zero "
                          "correspondence values")
+    ap.add_argument("--synthetic-world", choices=SYNTHETIC_WORLDS, default=None,
+                    help="run the FULL pipeline end to end against one named synthetic "
+                         "world. The world list is fixed, the root is a module constant, "
+                         "and real measurement bytes are refused by digest.")
     a = ap.parse_args()
+
+    if a.synthetic_world:
+        if a.preflight_only:
+            raise Stop("--preflight-only and --synthetic-world are different modes")
+        assert_no_matrix_access()
+        check_frozen_rules_against_contracts()
+        S, rows, man = load_synthetic_world(a.synthetic_world)
+        rec = run_correspondence(S, rows, a.synthetic_world, SYNTHETIC_OUT)
+        rec["world_manifest"] = man
+        with open(rec["_written_to"], "w", newline=chr(10)) as fh:
+            json.dump(rec, fh, indent=2)
+        print("synthetic world " + a.synthetic_world + ": "
+              + "Delta(adjusted, " + FROZEN["primary_weighting"] + ") = "
+              + str(round(rec["ADJUSTED"][FROZEN["primary_weighting"]]["delta"], 4))
+              + "  LCB95 = "
+              + str(round(rec["ADJUSTED"][FROZEN["primary_weighting"]]["lcb95"], 4)))
+        print("  raw unadjusted    = "
+              + str(round(rec["RAW_UNADJUSTED_GENE_BALANCED"]["delta"], 4)))
+        print("  control-vs-control= "
+              + str(round(rec["CONTROL_A_VS_CONTROL_B"]["delta"], 4)))
+        print("  written to " + rec["_written_to"])
+        return 0
 
     auth = authorization_state()
     ident = identity_report()

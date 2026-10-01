@@ -73,10 +73,13 @@ def load_substrate(shard_paths=None, t5_path=None, avail_path=None):
             pair_keys=d["pair_keys"], pair_gene=d["pair_gene"],
             pair_interval=d["pair_interval"],
             t2_metacell=d["t2_metacell"], t2_donor=d["t2_donor"],
+            t2_n_nuclei=d["t2_n_nuclei"],
             t2_total_rna=d["t2_total_rna"], t2_total_atac=d["t2_total_atac"],
             t3_n=int(len(d["t3_value"])), t4_n=int(len(d["t4_value"])),
             t3_metacell=d["t3_metacell"], t3_gene=d["t3_gene"],
+            t3_value=d["t3_value"],
             t4_metacell=d["t4_metacell"], t4_interval=d["t4_interval"],
+            t4_value=d["t4_value"],
             sha256=B.sha_file(p)))
     t5 = dict(np.load(t5_path or T5_PATH, allow_pickle=True))
     av = dict(np.load(avail_path or AVAIL_PATH, allow_pickle=True))
