@@ -1,0 +1,79 @@
+name: V69 GSE214979 SCENIC+ acquisition
+
+on:
+  push:
+    branches:
+      - chatgpt/v64-privileged-information-recoverability-20260930
+    paths:
+      - 'scripts/v64/acquire_gse214979_scenicplus_v1.py'
+      - '.github/workflows/v69-gse214979-scenicplus-acquisition.yml'
+  workflow_dispatch:
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install acquisition dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pandas scipy h5py
+
+      - name: Acquire and subset public GSE214979 multiome
+        run: |
+          python scripts/v64/acquire_gse214979_scenicplus_v1.py
+          ls -lh gse214979_acquisition
+
+      - name: Acquire official SCENIC+ v10 public motif collection
+        run: |
+          mkdir -p scenicplus_resources
+          curl -L --fail --retry 5 --retry-delay 3             -o scenicplus_resources/v10nr_clust_public.zip             https://resources.aertslab.org/cistarget/motif_collections/v10nr_clust_public/v10nr_clust_public.zip
+          sha256sum scenicplus_resources/v10nr_clust_public.zip | tee scenicplus_resources/v10nr_clust_public.zip.sha256
+          unzip -q scenicplus_resources/v10nr_clust_public.zip -d scenicplus_resources/
+          find scenicplus_resources -type f -name '*hgnc*.tbl' -print -exec sha256sum {} \; | tee scenicplus_resources/human_motif_annotations.sha256.txt
+          python - <<'PY'
+          import json, pathlib, hashlib
+          root=pathlib.Path("scenicplus_resources")
+          z=root/"v10nr_clust_public.zip"
+          def sha(p):
+              h=hashlib.sha256()
+              with open(p,"rb") as f:
+                  for b in iter(lambda:f.read(8<<20),b""): h.update(b)
+              return h.hexdigest()
+          humans=[]
+          for p in root.rglob("*hgnc*.tbl"):
+              humans.append({"path":str(p),"bytes":p.stat().st_size,"sha256":sha(p)})
+          out={
+            "schema":"V69_SCENICPLUS_MOTIF_RESOURCE_RECEIPT_V1",
+            "source_url":"https://resources.aertslab.org/cistarget/motif_collections/v10nr_clust_public/v10nr_clust_public.zip",
+            "zip_bytes":z.stat().st_size,
+            "zip_sha256":sha(z),
+            "human_annotation_files":humans,
+            "status":"PASS"
+          }
+          (root/"V69_SCENICPLUS_MOTIF_RESOURCE_RECEIPT_V1.json").write_text(json.dumps(out,indent=2)+"\n")
+          print(json.dumps(out,indent=2))
+          PY
+
+      - name: Build compact acquisition package
+        run: |
+          rm -f gse214979_acquisition/GSE214979_filtered_feature_bc_matrix.h5
+          # Keep the public metadata, the two authenticated sparse microglia subsets,
+          # feature/barcode tables, receipts, and official motif collection.
+          du -sh gse214979_acquisition scenicplus_resources
+
+      - name: Upload SCENIC+ development substrate
+        uses: actions/upload-artifact@v4
+        with:
+          name: v69-gse214979-scenicplus-development-substrate
+          path: |
+            gse214979_acquisition/**
+            scenicplus_resources/**
+          compression-level: 6
+          retention-days: 30
