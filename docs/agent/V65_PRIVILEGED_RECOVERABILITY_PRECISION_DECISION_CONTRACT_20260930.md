@@ -185,11 +185,21 @@ A rank is VALIDATION-eligible only if all of the following hold:
 5. geometry gate passes in all 4 VALIDATION donors;
 6. technical baseline is not within 0.01 `R2_multi` of the candidate in any VALIDATION donor.
 
-Select the **smallest** eligible nonzero rank.
+Apply a **contiguous nested-rank rule** over `2 -> 4 -> 8 -> 16`.
 
-If no nonzero rank is eligible, lock rank 0 and classify the factor `UNQUALIFIED` under this experiment without opening TEST for model rescue.
+Starting at rank 2, advance only while every rank encountered remains VALIDATION-eligible. Select the **largest contiguous eligible rank**.
 
-This smallest-rank rule is chosen prospectively to prevent selecting a larger shared space merely because it gives a more flattering result.
+Examples:
+- if 2 passes and 4 fails, select 2 even if 8 or 16 happen to pass;
+- if 2 and 4 pass and 8 fails, select 4;
+- if 2, 4, 8 and 16 all pass, select 16;
+- if rank 2 fails, lock rank 0 even if a higher rank happens to pass.
+
+This rule is required because the candidate subspaces are nested. Skipping over a failed lower-rank projection to claim a higher recoverable rank would indicate unstable geometry rather than a coherent recoverable hierarchy.
+
+If no nonzero contiguous rank is eligible, lock rank 0 and classify the factor `UNQUALIFIED` under this experiment without opening TEST for model rescue.
+
+The previous smallest-eligible rule is superseded prospectively before any paired recoverability outcome was opened. A synthetic monotone fixture showed that it would systematically select rank 2 even when all ranks through 16 were recoverable, making `RNA_RECOVERABLE` practically unreachable under a nested factor.
 
 ## 12. TEST confirmation rule
 
@@ -277,7 +287,8 @@ No factor-family multiplicity correction is needed.
 
 Rank selection is controlled by:
 - fixed nested ranks;
-- smallest-eligible-rank rule;
+- largest-contiguous-eligible-rank rule;
+- no skipping over a failed lower rank;
 - all-donor VALIDATION gates;
 - one locked TEST confirmation.
 
