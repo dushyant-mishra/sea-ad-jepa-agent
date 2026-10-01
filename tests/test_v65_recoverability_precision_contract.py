@@ -57,3 +57,13 @@ def test_incremental_shell_gate_is_frozen_for_validation_and_test():
     assert "incremental shell `S_k`" in t
     assert "every frozen incremental shell up to the selected rank" in t
     assert "cannot rescue a failed incremental shell" in t
+
+
+def test_nested_shells_and_intrinsic_ranks_are_frozen():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
+    for expr in ["S_2 = P_2","S_4 = P_4 - P_2","S_8 = P_8 - P_4","S_16 = P_16 - P_8"]:
+        assert expr in t
+    assert "aggregate `P_k` and its incremental shell `S_k`" in t
+    assert "aggregate `P_k`, the expected intrinsic rank is `k`" in t
+    assert "`S_4: 2`" in t and "`S_8: 4`" in t and "`S_16: 8`" in t
+    assert "Every incremental shell from `S_2` through `S_k`" in t
