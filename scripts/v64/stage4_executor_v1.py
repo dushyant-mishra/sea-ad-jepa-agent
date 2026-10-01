@@ -51,6 +51,7 @@ DIR = "results/v64/phase_b_design"
 CANONICAL_AUTHORITY = os.path.join(DIR, "V64_STAGE4_EXECUTION_AUTHORITY_V1.json")
 CANONICAL_AUTHORIZATION = os.path.join(DIR, "V64_STAGE4_EXECUTION_AUTHORIZATION_V1.json")
 CANONICAL_OUT_DIR = "D:/jepa_v5_outputs_20260925/v64_stage4"
+SUBSTRATE_DIR = "D:/jepa_v5_outputs_20260925/v64_phase_b"
 PREFLIGHT_RECEIPT = os.path.join(DIR, "V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json")
 DESIGN_CONTRACT = "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
 NULL_CONTRACT = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
@@ -271,6 +272,67 @@ def assert_no_matrix_access():
                 banned_calls=sorted(banned_calls), violations=0)
 
 
+def verify_bound_inputs():
+    """Every byte Stage 4 reads must equal the digest the authority bound, and the input
+    set must be EXACTLY the bound set.
+
+    Binding a PATH is worthless: a file of the same name with different contents satisfies
+    it. Binding the BYTES does not, which is why each digest is recomputed here rather than
+    read back out of a receipt. The set is checked in both directions as well -- a missing
+    shard would silently shrink the population and an unexpected shard would silently grow
+    it, and neither is detectable from digests alone.
+    """
+    A = json.load(open(CANONICAL_AUTHORITY))
+    bound = A["BOUND_PHASE_B_INPUTS"]
+    mismatched, missing, extra = [], [], []
+    checked = 0
+
+    expected = dict(bound["substrate_shards"])
+    on_disk = {os.path.basename(q): q for q in
+               glob.glob(os.path.join(SUBSTRATE_DIR, "PHASE_B_SUBSTRATE_s*.npz"))}
+    missing += sorted(set(expected) - set(on_disk))
+    extra += sorted(set(on_disk) - set(expected))
+    for name, e in sorted(expected.items()):
+        if name not in on_disk:
+            continue
+        if B.sha_file(e["path"]) != e["sha256"]:
+            mismatched.append(name)
+        checked += 1
+
+    for key in ("t5_donor_aggregates", "t3_t4_availability"):
+        e = bound[key]
+        if not os.path.exists(e["path"]):
+            missing.append(key)
+        elif B.sha_file(e["path"]) != e["sha256"]:
+            mismatched.append(key)
+        else:
+            checked += 1
+
+    repo_bound = dict(A["INHERITED_NOT_RESTATED"])
+    repo_bound.pop("principle", None)
+    repo_bound["imported_estimator"] = A["ESTIMATOR_IMPORTED_UNMODIFIED"]
+    for label, e in sorted(repo_bound.items()):
+        if not isinstance(e, dict) or "sha256" not in e or "path" not in e:
+            continue
+        if not os.path.exists(e["path"]):
+            missing.append(label)
+        elif B.sha_file(e["path"]) != e["sha256"]:
+            mismatched.append(label)
+        elif (e.get("git_blob") not in (None, "UNCOMMITTED")
+              and _blob_of_worktree(e["path"]) != e["git_blob"]):
+            # a correct SHA-256 with a wrong Git blob cannot describe the same bytes, so
+            # this catches a binding that was written rather than computed
+            mismatched.append(label + ":git_blob")
+        else:
+            checked += 1
+
+    if missing or extra or mismatched:
+        raise Stop(f"bound inputs do not match the authority: "
+                   f"missing={missing} unexpected={extra} digest_mismatch={mismatched}")
+    return dict(bound_inputs_verified=checked, missing=0, unexpected=0,
+                digest_mismatches=0)
+
+
 def check_frozen_rules_against_contracts():
     """A constant mirrored in this file must equal the contract, or we stop."""
     D = json.load(open(DESIGN_CONTRACT))
@@ -304,9 +366,25 @@ def check_frozen_rules_against_contracts():
         bad.append("sensitivity_weighting")
     if len(nui["frozen_basis_14_features"]) != 14:
         bad.append("nuisance_basis_term_count")
+    # the R3 label is part of the estimand's meaning, not decoration: it is what stops an
+    # R3 number being read as if it were the unconditional quantity
+    enum = N["SECTION_10_ENUMERATION_REFERENCE_RULES"]
+    if not any(FROZEN["r3_label"] in k for k in enum):
+        bad.append("r3_required_label")
+    # missingness semantics. MEASURED_ZERO != NOT_MEASURED is the invariant the whole
+    # project rests on, so the executor refuses to run against a contract that has stopped
+    # saying it.
+    st = D["PRIMARY_CORRESPONDENCE_STATISTIC"]
+    zc, dv = st["zero_coverage_rule"], st["degenerate_variance_rule"]
+    if "MISSING" not in zc or "NEVER recorded as zero" not in zc:
+        bad.append("zero_coverage_missingness_semantics")
+    if "MISSING" not in dv:
+        bad.append("degenerate_variance_missingness_semantics")
+    if "Pearson" not in st["per_donor_per_pair_score"] or             "metacells" not in st["per_donor_per_pair_score"]:
+        bad.append("per_donor_per_pair_statistic")
     if bad:
         raise Stop(f"frozen constants disagree with the contracts: {bad}")
-    return dict(checked=12, nuisance_terms=len(nui["frozen_basis_14_features"]))
+    return dict(checked=17, nuisance_terms=len(nui["frozen_basis_14_features"]))
 
 
 def authorization_state():
@@ -328,12 +406,17 @@ def authorization_state():
     if a.get("authority_sha256") != B.sha_file(CANONICAL_AUTHORITY):
         return dict(present=True, authorized=False,
                     reason="authorises a different authority")
+    me = os.path.relpath(HERE, os.getcwd()).replace(os.sep, "/")
+    if _blob_of_worktree(me) != _blob_at_head(me):
+        return dict(present=True, authorized=False,
+                    reason="executor worktree differs from its committed head")
     return dict(present=True, authorized=True)
 
 
 # ============================================================ preflight traversal
 def preflight():
     assert_no_matrix_access()
+    binding = verify_bound_inputs()
     rules = check_frozen_rules_against_contracts()
     S = CS.load_substrate()
     sem = CS.check_consumer_semantics(S)
@@ -392,6 +475,7 @@ def preflight():
         distance_fields_available=dist_have,
         primary_distance=FROZEN["primary_distance"],
         frozen_rules_checked=rules,
+        bound_input_binding=binding,
         rna_matrix_opened=False, atac_matrix_opened=False,
         computed_correspondence_values=0)
 

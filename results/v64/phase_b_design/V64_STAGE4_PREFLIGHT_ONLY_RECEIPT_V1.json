@@ -12,9 +12,9 @@
   "identity": {
     "executor": {
       "path": "scripts/v64/stage4_executor_v1.py",
-      "sha256": "1feb58489ec73e727ed20a426265a4dabb00cec98e79d288498f83c2693057ac",
-      "worktree_blob": "01ce652cef8da70870489d74bb7763c3062521dc",
-      "git_blob_at_head": null
+      "sha256": "9c65cf33ac511029c56cdb94154e0f6d8112d08b4e880992ed2d11cafe6f4afd",
+      "worktree_blob": "8e49f9199688c6ea208c851fcb855c367d6a1f33",
+      "git_blob_at_head": "01ce652cef8da70870489d74bb7763c3062521dc"
     },
     "bound_authority": {
       "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
@@ -76,25 +76,25 @@
         "sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f",
         "git_blob_at_head": "ccf7a02ae8a018a9afe83c6a7230dd9a1bfc087e",
         "worktree_blob": "ccf7a02ae8a018a9afe83c6a7230dd9a1bfc087e",
-        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+        "source_commit": "9f20a6f65b3cfa5a8d7d1f8f5455add855016414"
       },
       "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json": {
         "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b",
         "git_blob_at_head": "f10b5c6dac02ba95054fb480d9a156d96e38179d",
         "worktree_blob": "f10b5c6dac02ba95054fb480d9a156d96e38179d",
-        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+        "source_commit": "9f20a6f65b3cfa5a8d7d1f8f5455add855016414"
       },
       "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": {
         "sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
         "git_blob_at_head": "0c76ab42dc70faab71daf94b6bf0c289f32675f6",
         "worktree_blob": "0c76ab42dc70faab71daf94b6bf0c289f32675f6",
-        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+        "source_commit": "9f20a6f65b3cfa5a8d7d1f8f5455add855016414"
       },
       "scripts/v63/e2_continuous_adjustment_estimator_v1.py": {
         "sha256": "50c54cd8ca6e60b512deece7b4676195c4a704c8d6e90d2f63bec009f52271e9",
         "git_blob_at_head": "38a32d5066f2eb79f2c5d5457f3d269bd3730667",
         "worktree_blob": "38a32d5066f2eb79f2c5d5457f3d269bd3730667",
-        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+        "source_commit": "9f20a6f65b3cfa5a8d7d1f8f5455add855016414"
       }
     },
     "frozen_constants": {
@@ -117,7 +117,7 @@
       "platform": "Windows-10-10.0.26200-SP0",
       "numpy": "1.24.2"
     },
-    "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+    "source_commit": "9f20a6f65b3cfa5a8d7d1f8f5455add855016414"
   },
   "preflight": {
     "consumer_semantics": {
@@ -225,8 +225,14 @@
     },
     "primary_distance": "SOURCE_HG19_DISTANCE",
     "frozen_rules_checked": {
-      "checked": 12,
+      "checked": 17,
       "nuisance_terms": 14
+    },
+    "bound_input_binding": {
+      "bound_inputs_verified": 16,
+      "missing": 0,
+      "unexpected": 0,
+      "digest_mismatches": 0
     },
     "rna_matrix_opened": false,
     "atac_matrix_opened": false,
