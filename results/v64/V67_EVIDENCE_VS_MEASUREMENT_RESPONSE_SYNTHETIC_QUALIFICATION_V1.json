@@ -1,0 +1,89 @@
+{
+  "schema": "V67_EVIDENCE_VS_MEASUREMENT_RESPONSE_SYNTHETIC_QUALIFICATION_V1",
+  "date": "2026-10-01",
+  "status": "PASS_SOFTWARE_SEMANTICS_ONLY",
+  "producer": "scripts/v64/evidence_vs_measurement_response_synthetic_v1.py",
+  "fixture": {
+    "seed": 6703,
+    "donors": 80,
+    "cells_per_donor": 30,
+    "latent_rank": 4,
+    "features": 40
+  },
+  "evidence_response": {
+    "meaning": "add distinct biological evidence at fixed measurement noise",
+    "fractions": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1
+    ],
+    "n_features": [
+      8,
+      16,
+      24,
+      32,
+      40
+    ],
+    "mse_to_true_state": [
+      0.016191899037135502,
+      0.006881479056171927,
+      0.004928952469840609,
+      0.0032806318467289127,
+      0.002449902656057287
+    ],
+    "relative_error_reduction": 0.8486957798811289,
+    "monotonic_nonincreasing": true
+  },
+  "measurement_response": {
+    "meaning": "same biological evidence at improving measurement precision",
+    "depth_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "n_features": [
+      40,
+      40,
+      40,
+      40
+    ],
+    "mse_to_true_state": [
+      0.026492795536889904,
+      0.01343627556903207,
+      0.009002373998609647,
+      0.006769261803901762
+    ],
+    "relative_error_reduction": 0.7444866928265119,
+    "monotonic_nonincreasing": true
+  },
+  "falsification_tests": [
+    {
+      "mutation": "same 20% evidence subset relabelled as 20/40/60/80/100% evidence",
+      "expected": "evidence convergence gate fails",
+      "verified": true
+    },
+    {
+      "mutation": "measurement noise held fixed while depth labels change",
+      "expected": "measurement convergence gate fails",
+      "verified": true
+    }
+  ],
+  "ci": {
+    "run": 36865838327,
+    "tests_passed": 192,
+    "elapsed_seconds": 12.23,
+    "producer_output_step": "PASS"
+  },
+  "qualified": "software distinction between biological-evidence response and measurement-quality response",
+  "not_qualified": "real biological uncertainty calibration, real depth calibration, production evidence fractions, or training authority",
+  "governance": {
+    "real_data_used": false,
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}
