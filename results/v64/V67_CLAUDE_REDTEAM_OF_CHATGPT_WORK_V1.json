@@ -1,0 +1,208 @@
+{
+  "schema": "V67_CLAUDE_REDTEAM_OF_CHATGPT_WORK_V1",
+  "date": "2026-10-01",
+  "mandate": "treat the ChatGPT delta as untrusted and try to falsify it",
+  "range": {
+    "base": "b0cab71fe5e511742a3e38c475b1247415f113e4",
+    "head": "c965d77061424cdc6fad6192e091cb0809fbb737",
+    "commits": 43,
+    "files_changed": 25
+  },
+  "audit_only": true,
+  "nothing_repaired_in_this_pass": true,
+  "stage4_executor_not_implemented": true,
+  "correspondence_unopened": true,
+  "CONFIRMED_CORRECT": {
+    "B6_custody_correction": {
+      "their_claim": {
+        "blob": "29c248ded42aecd35650699c360512e965ce9345",
+        "raw_sha256": "2fd8356b07fd3d4e50007c941fcc8bcdda4a118509775955ded82d90b98ed671"
+      },
+      "verdict": "CORRECT, and I can state the mechanism because I caused it",
+      "mechanism": "commit 2377a2e2 created the B6 v2 receipt with sha256 0f7f1e55...; commit 6c265d9c then bound the producer git blob post-commit, which changed the receipt bytes to 2fd8356b... / blob 29c248de.... The V66 handoff captured the pre-binding digest.",
+      "their_stronger_claim_no_scientific_value_changed": "VERIFIED. Flattening both versions, EXACTLY TWO fields differ: /CUSTODY/producer/git_blob and /CUSTODY/producer/git_blob_binding_note. G1 through G4, status and all_proofs_hold are byte-identical."
+    },
+    "their_S77_finding_against_my_work": {
+      "verdict": "CORRECT and critical. I reproduced it directly: deleting EXECUTION_PREREQUISITES_NOT_YET_SATISFIED made unsatisfied_prerequisites default to [], grantable become True, and execution mode exit 0 while the executor did not exist. Repaired on my branch at 67175c84 with gate G1c."
+    },
+    "their_S78_S79_S80_findings": "CORRECT. Repaired on my branch; consumer-schema semantics now verified against the artifacts, producer custody bound post-commit, and the permutation's data-input versus provenance-prerequisite contradiction resolved.",
+    "CI_runs_and_test_counts": {
+      "36813419140": {
+        "status": "completed/success",
+        "claimed": 165,
+        "observed": 165
+      },
+      "36813936301": {
+        "status": "completed/success",
+        "claimed": 168,
+        "observed": 168
+      },
+      "36814198419": {
+        "status": "completed/success",
+        "claimed": 171,
+        "observed": 171
+      },
+      "verdict": "all three verified from the run logs; all three head SHAs are after the base and ancestors of the audited head",
+      "relevant_tests_actually_present": "YES. The pytest step explicitly lists tests/v64/test_stage4_execution_authority_validator_v1.py, tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py and tests/test_v67_heldout_source_observation_operator.py."
+    },
+    "anti_collapse_gate_is_stronger_than_its_negative_control": {
+      "question_asked": "does anti-collapse catch more than constant collapse?",
+      "verdict": "YES, and this is a point in their favour. I tested five cases:",
+      "measured": {
+        "constant (their negative control)": {
+          "min_sd": 0.0,
+          "erank": 0.0,
+          "passes": false
+        },
+        "rank-1 with large variance": {
+          "min_sd": 0.9447,
+          "erank": 1.0,
+          "passes": false
+        },
+        "3 of 4 axes collapsed": {
+          "min_sd": 0.0,
+          "erank": 1.0,
+          "passes": false
+        },
+        "all axes tiny but full rank": {
+          "min_sd": 0.0487,
+          "erank": 3.988,
+          "passes": false
+        },
+        "healthy full rank": {
+          "min_sd": 0.9699,
+          "erank": 3.97,
+          "passes": true
+        }
+      },
+      "reading": "the min-axis-std and effective-rank pair rejects rank-1 collapse, partial axis collapse and uniform shrinkage, not merely a constant. The negative control is the weakest case it handles, which understates the gate."
+    },
+    "modality_mask_is_genuinely_exercised": {
+      "question_asked": "is the mask exercised or merely documented?",
+      "verdict": "GENUINELY EXERCISED",
+      "measured": {
+        "measured_fraction": 0.5535,
+        "measured_rows": 1417,
+        "total_rows": 2560,
+        "unmeasured_validation_rows": 279,
+        "validation_rows": 640,
+        "nan_private_store_rows_exercised": true
+      },
+      "reading": "at 55% measured the gating path and the NaN private store are both genuinely driven, not a formality"
+    }
+  },
+  "FINDINGS_AGAINST": {
+    "F1_heldout_source_is_weaker_than_framed": {
+      "severity": "HIGH for interpretation, not a software defect",
+      "what_the_code_does": "fixture builds x = CAPTURE[source] * latent + 0.15*noise; the operator-aware arm then computes x_norm = x / CAPTURE[source], using the SAME planted constant, indexed for the HELD-OUT source too.",
+      "consequence": "no descriptor is ever ESTIMATED for an unseen source. The experiment demonstrates that dividing by a known per-source scale recovers the signal; it does not demonstrate that an observation operator can be identified for a source the model has never seen, which is the claim the name suggests.",
+      "i_corrected_my_own_first_reading": "my first falsification scaled all three capture values equally and found no effect. That test was wrong: a global scale on x_norm is absorbed by the ridge fit. Perturbing ONLY the held-out source's descriptor is the correct probe.",
+      "measured_sensitivity_to_a_wrong_unseen_descriptor": {
+        "gate": "operator_aware_shared_r2 > 0.95 for every source",
+        "0pct_error": {
+          "mean_r2": 0.9983,
+          "gate_holds": true
+        },
+        "10pct_error": {
+          "mean_r2": 0.9899,
+          "gate_holds": true
+        },
+        "20pct_error": {
+          "mean_r2": 0.9702,
+          "gate_holds": true
+        },
+        "35pct_error": {
+          "mean_r2": 0.9303,
+          "gate_holds": false
+        },
+        "50pct_error": {
+          "mean_r2": 0.8859,
+          "gate_holds": false
+        }
+      },
+      "verdict": "NOT strictly tautological -- the gate does break at roughly 35% error -- but it tolerates a 20% error on a quantity it never has to estimate. The honest qualification is 'a per-source multiplicative observation operator exists and correcting for it helps', not 'held-out-source transfer is solved'.",
+      "two_of_its_five_gates_cannot_fail": {
+        "capture_descriptor_alone_is_not_biology": "the predictor is CONSTANT within each held-out source (one distinct value among all test rows), so the ridge fit has zero design variance and must return the train mean. R2 < 0.03 is arithmetic.",
+        "donors_are_disjoint": "source = donor % 3, so the donor partition IS the source partition. Donor disjointness cannot fail while a source is held out."
+      }
+    },
+    "F2_uncertainty_ratio_restates_the_fixture": {
+      "severity": "HIGH for interpretation",
+      "question_asked": "is the uncertainty ratio reflecting fixture construction?",
+      "verdict": "YES. The gate cannot fail.",
+      "why": "zp is drawn as independent noise and contributes NOTHING to xr. RNA therefore contains zero information about the private factor by construction, so the RNA-only error must equal var(zp).",
+      "measured": {
+        "var_zp": 0.9944,
+        "missing_private_uncertainty_mse": 0.9883,
+        "measured_private_uncertainty_mse": 0.0049,
+        "ratio": 202.11,
+        "gate_requires": "> 3.0"
+      },
+      "reading": "a ratio of 202 against a threshold of 3 is not a calibration result; it is the fixture's own construction read back. What is qualified is that the plumbing widens uncertainty when a modality is absent, which is worth having, but it is a software-semantics check and must not be cited as uncertainty calibration.",
+      "also": "mask_alone_does_not_explain_shared_biology is guaranteed for the same reason: acquisition is drawn independently of zs, so the mask cannot carry shared signal."
+    },
+    "F3_CI_path_filter_does_not_cover_the_receipts": {
+      "severity": "MEDIUM",
+      "what_is_covered": "the two synthetic producers, the validator and all three new test files ARE matched by the path filter and ARE in the pytest step, so a code change does trigger the suite.",
+      "what_is_not": "12 changed files match no path glob, including every V66 and V67 AUDIT RECEIPT and the synthetic qualification receipt itself: V66_CLAUDE_STAGE4_AUTHORITY_INDEPENDENT_AUDIT_V1, V66_STAGE4_AUTHORITY_LAYER_INDEPENDENT_AUDIT_V1/V2, V67_B6_RECEIPT_CUSTODY_CORRECTION_V1, V67_CLAUDE_STAGE4_92BA470D_INDEPENDENT_AUDIT_V1, V67_NESTED_MODALITY_MASK_UNCERTAINTY_ANTICOLLAPSE_SYNTHETIC_QUALIFICATION_V1, plus the handoff state and pointer.",
+      "consequence": "a pull request that edits only a qualification receipt or an audit verdict does not re-run the suite that is supposed to stand behind it. The glob results/v64/V64_* and V65_* does not reach V66_* beyond the four named contracts, and reaches no V67_* at all.",
+      "suggested_direction_not_applied_here": "a results/v64/V6[4-7]_* glob, or triggering on the receipts the suite produces"
+    },
+    "F4_synthetic_pass_must_not_read_as_biology": {
+      "severity": "LOW as written, HIGH if it propagates",
+      "observation": "both producers label themselves SYNTHETIC_SOFTWARE_SEMANTICS_ONLY and both carry an explicit not_qualified list. That is the right posture and I found no place in the audited delta where a synthetic pass is claimed as biological evidence.",
+      "the_risk_that_remains": "the names -- 'held-out-source observation operator', 'uncertainty', 'anti-collapse' -- describe scientific capabilities, while what is qualified is plumbing. A later reader scanning titles could promote them. The qualification receipts should carry the measured tautology facts above beside the pass, not only the disclaimer."
+    }
+  },
+  "NOT_BYTE_AUDITED_IN_CLAUDE_ENVIRONMENT": {
+    "rule_followed": "the data-source map's fail-safe",
+    "files": [
+      "WSL execution issue.txt",
+      "Status and Repair Plan.txt",
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "checkpoints.zip",
+      "t1_checkpoint_u0200.zip",
+      "expression.zip",
+      "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+    ],
+    "note": "none of these are present in my environment. Per the map they were not used by the V67 synthetic work, which I audited from source, tests and CI as instructed. I make no claim about their contents.",
+    "section_B_artifacts": "the eight Phase-B shards, T5, T3/T4 availability and the pairing permutation ARE present in my environment because I produced them, and remain bound by my Stage-4 authority at 21/21 design gates."
+  },
+  "THINGS_I_CHECKED_AND_FOUND_NOTHING_WRONG_WITH": [
+    "no real NIH-CARD matrix is opened by either synthetic producer",
+    "no Morabito, TD60, protected outcome or recoverability TEST donor appears in the delta",
+    "both producers declare governance blocks with training OFF and stage4 NOT_AUTHORIZED",
+    "the three CI head SHAs are inside the audited range",
+    "the B6 scientific content is untouched by the custody correction"
+  ],
+  "ITEMS_THE_OWNER_FLAGGED_AS_NOT_IMPLEMENTED": {
+    "evidence_vs_measurement_depth_convergence_producer": "confirmed ABSENT from the delta; correctly not claimed as completed work",
+    "separate_heldout_source_result_receipt": "confirmed ABSENT; the evidence is the producer, its test and CI, exactly as stated"
+  },
+  "VERDICT": {
+    "stage4_authority_layer": "their S77-S80 findings against my work were correct and are repaired on my branch",
+    "B6_custody_correction": "CORRECT",
+    "CI_claims": "VERIFIED exactly, 165/168/171",
+    "synthetic_work": "software-correct and honestly labelled, but two of its headline gates cannot fail and a third is far less sensitive than its name implies. The anti-collapse gate and the modality mask are genuinely strong.",
+    "nothing_found_that_promotes_synthetic_results_to_biology": true,
+    "blocking_for_the_other_lane": [
+      "F3 CI path filter does not cover audit or qualification receipts"
+    ],
+    "interpretive_corrections_recommended": [
+      "F1",
+      "F2",
+      "F4"
+    ]
+  },
+  "governance": {
+    "training": "OFF",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "audit_only_no_repairs_made_to_the_other_lane": true
+  }
+}
