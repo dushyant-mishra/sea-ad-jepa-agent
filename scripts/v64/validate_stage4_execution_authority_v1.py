@@ -12,7 +12,7 @@ import json
 import os
 from pathlib import Path
 
-CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json"
+CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json"
 
 FORBIDDEN_MANIFEST_KEYS = {
     "correspondence_result",
