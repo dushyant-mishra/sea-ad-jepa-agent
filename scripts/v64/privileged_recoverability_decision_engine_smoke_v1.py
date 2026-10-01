@@ -61,14 +61,18 @@ def validation_rank_eligible(donors):
 
 
 def select_validation_rank(metrics_by_rank):
-    """Return the smallest eligible non-zero rank, else 0.
+    """Return the largest contiguous eligible rank from 2 upward, else 0.
 
-    TEST is intentionally not an input.
+    Candidate ranks are nested. A failed lower rank breaks the chain; higher ranks
+    may not be used to skip over unstable lower-rank geometry. TEST is intentionally
+    not an input.
     """
+    selected=0
     for k in RANKS:
-        if validation_rank_eligible(metrics_by_rank[k]):
-            return k
-    return 0
+        if not validation_rank_eligible(metrics_by_rank[k]):
+            break
+        selected=k
+    return selected
 
 
 def test_confirmed(validation_donors, test_donors):
@@ -111,22 +115,25 @@ def _four(*xs):
 
 
 def synthetic_scenarios():
-    # Rank 2 is genuinely recoverable; higher ranks also look recoverable.
-    # Smallest-eligible rule must select 2.
     good2=_four(
         donor(.42,.08,.18), donor(.40,.07,.17), donor(.38,.08,.16), donor(.41,.09,.18)
     )
-    higher=_four(
+    good4=_four(
         donor(.45,.08,.19), donor(.43,.07,.18), donor(.41,.08,.17), donor(.44,.09,.19)
     )
-    partial={2:good2,4:higher,8:higher,16:higher}
-
-    # Lower ranks fail the geometry gate, full rank passes -> rank 16.
     failgeom=_four(
         donor(.42,.08,.18,geometry=False), donor(.40,.07,.17,geometry=False),
         donor(.38,.08,.16,geometry=False), donor(.41,.09,.18,geometry=False)
     )
-    full={2:failgeom,4:failgeom,8:failgeom,16:higher}
+
+    # Partial fixture: 2 and 4 pass, 8 fails. Even if 16 passes, it cannot skip 8.
+    partial={2:good2,4:good4,8:failgeom,16:good4}
+
+    # Fully recoverable monotone fixture: every nested rank passes -> select 16.
+    full={2:good2,4:good4,8:good4,16:good4}
+
+    # Rank-2 fails while higher ranks pass -> fail closed at rank 0.
+    lower_fail={2:failgeom,4:good4,8:good4,16:good4}
 
     # Candidate is highly predictable but technical baseline is essentially identical.
     shortcut=_four(
@@ -143,13 +150,14 @@ def synthetic_scenarios():
         donor(.95,.05,.10), donor(.94,.05,.10), donor(.96,.05,.10), donor(.95,.05,.10)
     )
 
-    return partial,full,shortcuts,weak_all,spectacular
+    return partial,full,lower_fail,shortcuts,weak_all,spectacular
 
 
 def run_smoke():
-    partial,full,shortcuts,weak_all,spectacular=synthetic_scenarios()
+    partial,full,lower_fail,shortcuts,weak_all,spectacular=synthetic_scenarios()
     r_partial=select_validation_rank(partial)
     r_full=select_validation_rank(full)
+    r_lower_fail=select_validation_rank(lower_fail)
     r_short=select_validation_rank(shortcuts)
     r_weak=select_validation_rank(weak_all)
 
@@ -176,9 +184,10 @@ def run_smoke():
         "schema":"V65_PRIVILEGED_RECOVERABILITY_DECISION_ENGINE_SMOKE_V1",
         "status":"SYNTHETIC_SOFTWARE_QUALIFICATION_ONLY",
         "results":{
-            "partial_smallest_selected_rank":r_partial,
+            "partial_contiguous_selected_rank":r_partial,
             "partial_classification":partial_class,
             "full_rank_selected":r_full,
+            "lower_rank_failure_blocks_higher_ranks":r_lower_fail,
             "technical_shortcut_selected_rank":r_short,
             "validation_failure_locked_rank":r_weak,
             "spectacular_test_cannot_rescue_validation_failure":r_weak==0,
@@ -186,9 +195,10 @@ def run_smoke():
             "tie_fails_closed":not tie["qualified"],
         },
         "pass":bool(
-            r_partial==2
+            r_partial==4
             and partial_class=="PARTIALLY_RNA_RECOVERABLE"
             and r_full==16
+            and r_lower_fail==0
             and r_short==0
             and r_weak==0
             and proj["qualified"]
