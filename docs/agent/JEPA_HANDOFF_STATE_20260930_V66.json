@@ -4,8 +4,8 @@
   "status": "PHASE_A_ACCEPTED__PHASE_B_MEASUREMENT_SUBSTRATE_ACCEPTED__STAGE4_SEALED__TRAINING_OFF",
   "repository": "dushyant-mishra/sea-ad-jepa-agent",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "7717a727c238979adbc6dfecf541eef44a9a71fb",
-    "claude_execution": "76a9eaf1b36b2ad6b511ba6ee9e0e875a66f21bd"
+    "chatgpt_architecture": "865e99d2ca743275ff4d5be7d57cba18aeb1390c",
+    "claude_execution": "15158e8db4615bad143cd0acf094b4709c4b8665"
   },
   "governance": {
     "training": "OFF",
@@ -155,22 +155,29 @@
     "historical u0 compatibility smoke"
   ],
   "next_actions": [
-    "Refresh both live branches before work. If Claude advanced beyond 76a9eaf1, audit the delta.",
-    "Claude should repair S68-S70 in the Stage-4 authority/preflight and stop again for audit.",
-    "Only after S68-S70 close should an exact Stage-4 executor be implemented and hash/blob-bound; then stop again for audit before any correspondence computation.",
-    "Do not execute Stage 4, open correspondence, Morabito, TD60 or protected outcomes.",
-    "Parallel architecture work may remain synthetic/no-claim only; real recoverability and multimodal/JEPA training remain gated/off."
+    "Refresh both live branches before work.",
+    "Claude should repair S72-S74 and reconcile S75 in the Stage-4 design/preflight layer only. Do not implement the executor in the same commit.",
+    "Add negative tests for deleted required bindings, wrong-but-valid Git blobs, and execution-mode nonzero exit while NOT_GRANTABLE.",
+    "Stop again for independent audit.",
+    "Only after the design/preflight layer is accepted should S71 executor implementation begin; then bind and audit the executor before any correspondence computation.",
+    "Keep Stage 4, Morabito, TD60, protected outcomes and real training sealed."
   ],
   "stage4": {
-    "status": "METHOD_LOCKS_ACCEPTED__EXECUTION_AUTHORITY_NOT_YET_GRANTABLE",
-    "claude_head": "76a9eaf1b36b2ad6b511ba6ee9e0e875a66f21bd",
+    "status": "METHOD_LOCKS_ACCEPTED__PREFLIGHT_NOT_YET_AUDIT_CLEAN__EXECUTION_NOT_GRANTABLE",
+    "claude_head": "15158e8db4615bad143cd0acf094b4709c4b8665",
     "authority": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "independent_audit": "results/v64/V64_STAGE4_EXECUTION_AUTHORITY_INDEPENDENT_AUDIT_V1.json",
+    "independent_audit": "results/v64/V64_STAGE4_EXECUTION_AUTHORITY_INDEPENDENT_AUDIT_V2.json",
+    "closed": {
+      "S68": "present-but-missing required paths now fail G1",
+      "S69": "pairing permutation moved to corroborative provenance and both digests explicitly checked",
+      "S70": "Windows path normalization repaired and repo blobs recovered"
+    },
     "blockers": {
-      "S68": "G1 skips missing required files instead of failing.",
-      "S69": "pairing permutation digests are present but not verified by G1; remove as required input or validate explicitly.",
-      "S70": "repo-resident inputs incorrectly record git_blob=UNCOMMITTED due Windows path normalization.",
-      "S71": "actual Stage-4 executor/consumer source is not yet bound; must be implemented and audited separately before execution grant."
+      "S71": "executor does not exist and remains intentionally unbound",
+      "S72": "preflight returns exit 0 while EXECUTION_AUTHORITY is NOT_GRANTABLE",
+      "S73": "exact required binding set/key schema is not enforced; deleting a binding can evade G1",
+      "S74": "git-blob gate checks only 40-hex syntax, not equality to live git rev-parse HEAD:path",
+      "S75": "authority declares only 14 fail-closed gates while verifier reports 16 design gates"
     },
     "correspondence_opened": false,
     "authorized": false
