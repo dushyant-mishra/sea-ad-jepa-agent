@@ -1,0 +1,89 @@
+{
+  "schema": "V64_PHASE_B_CONSUMER_SEMANTICS_V1",
+  "date": "2026-10-01",
+  "closes": "S81",
+  "checks": {
+    "C1_T3_NNZ_EXACT": {
+      "passed": true,
+      "detail": "counted 6,624,289 expected 6,624,289"
+    },
+    "C2_T4_NNZ_EXACT": {
+      "passed": true,
+      "detail": "counted 55,467,544 expected 55,467,544"
+    },
+    "C3_AGGREGATE_BINDING_RECOMPUTED": {
+      "passed": true,
+      "detail": "recomputed 2a5404842ec64028789e... expected 2a5404842ec64028789e..."
+    },
+    "C4_GENE_DICT_AGREES_ACROSS_SHARDS": {
+      "passed": true,
+      "detail": "8 shards compared"
+    },
+    "C5_INTERVAL_DICT_AGREES_ACROSS_SHARDS": {
+      "passed": true,
+      "detail": "8 shards compared"
+    },
+    "C6_PAIR_DICT_AGREES_ACROSS_SHARDS": {
+      "passed": true,
+      "detail": "8 shards compared"
+    },
+    "C7_NO_SHARD_REORDERS_A_DICTIONARY": {
+      "passed": true,
+      "detail": "no shard reorders a dictionary it otherwise shares"
+    },
+    "C8_EVERY_PAIR_GENE_RESOLVES_UNIQUELY": {
+      "passed": true,
+      "detail": "37,419 pair genes over a 4,372-entry dictionary; 0 unresolved, 0 duplicate dictionary entries"
+    },
+    "C9_EVERY_PAIR_INTERVAL_RESOLVES": {
+      "passed": true,
+      "detail": "37,419 pair intervals into a 32,153-element axis; 0 out of range"
+    },
+    "C10_METACELL_IDS_EXACTLY_0_TO_N": {
+      "passed": true,
+      "detail": "3,231 ids, unique 3,231, expected a dense 0..3230"
+    },
+    "C11_ALL_T3_T4_INDICES_IN_RANGE": {
+      "passed": true,
+      "detail": "0 out-of-range indices"
+    },
+    "C12_PAIR_KEY_SEMANTICS_AGREE": {
+      "passed": true,
+      "detail": "37,419 pair keys, unique=True, T5 pair-key set matches dictionary=True"
+    },
+    "C13_T5_ROWS_AND_LAYOUT": {
+      "passed": true,
+      "detail": "10,552,158 rows, 282 donors x 37,419 pairs"
+    },
+    "C14_AVAILABILITY_VOCABULARY_IN_ORDER": {
+      "passed": true,
+      "detail": "['MEASURED', 'NOT_MEASURED_RNA_ZERO_COVERAGE', 'NOT_MEASURED_ATAC_ZERO_COVERAGE', 'NOT_MEASURED_RNA_ZERO_VARIANCE', 'NOT_MEASURED_ATAC_ZERO_VARIANCE']"
+    },
+    "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER": {
+      "passed": true,
+      "detail": "gene sorted=True, interval sorted=True, pair_key sorted=True"
+    },
+    "C17_DICTIONARY_CONTENT_DIGESTS": {
+      "passed": true,
+      "detail": "no frozen digests supplied; observed gene=bad9c909aa4be37c... interval=2a173c45443a345c... pair=ff5fe6de4e104b69..."
+    },
+    "C15_AVAILABILITY_ENCODING_AND_BITS": {
+      "passed": true,
+      "detail": "T3 [3231, 4372] pad 4, T4 [3231, 32153] pad 1, factorisation reproduces the packed bits: True"
+    }
+  },
+  "n_checks": 17,
+  "failed": [],
+  "recomputed_from_artifacts": true,
+  "contract_supplies_expected_value_only": true,
+  "rna_matrix_opened": false,
+  "atac_matrix_opened": false,
+  "computed_correspondence_values": 0,
+  "observed_dictionary_digests": {
+    "gene": "bad9c909aa4be37ccb9dc4bd9d62524b83eaae21651709ef9f7c53136be55e69",
+    "interval": "2a173c45443a345c3ede8e5d170e0f6d9995480e105ef6025a3261c140ecad7d",
+    "pair": "ff5fe6de4e104b69b32878bc0d2d1e005a8a6b2d6771b10c7de5a7a502f76105"
+  },
+  "producer_sha256": "6785846244cd54308b5991b05c5675a9235aba1c2321be719dfab6ed1ed93c7e",
+  "status": "PASS"
+}

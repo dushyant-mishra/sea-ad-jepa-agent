@@ -1,0 +1,171 @@
+{
+  "schema": "V64_PHASE_B_CONSUMER_SEMANTICS_MUTATIONS_V1",
+  "date": "2026-10-01",
+  "closes": "S81",
+  "mutations_applied_to": "the real loaded artifact arrays, in memory",
+  "artifacts_on_disk_unmodified": true,
+  "n_mutations": 15,
+  "n_real_tests": 15,
+  "every_mutation_caught_by_its_named_gate": true,
+  "results": [
+    {
+      "mutation": "flip one T3 availability bit",
+      "must_fire": "C15_AVAILABILITY_ENCODING_AND_BITS",
+      "gates_that_fired": [
+        "C15_AVAILABILITY_ENCODING_AND_BITS"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "flip one T4 availability bit",
+      "must_fire": "C15_AVAILABILITY_ENCODING_AND_BITS",
+      "gates_that_fired": [
+        "C15_AVAILABILITY_ENCODING_AND_BITS"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "change one shard digest",
+      "must_fire": "C3_AGGREGATE_BINDING_RECOMPUTED",
+      "gates_that_fired": [
+        "C3_AGGREGATE_BINDING_RECOMPUTED"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "swap two shard digests (reorder)",
+      "must_fire": "C3_AGGREGATE_BINDING_RECOMPUTED",
+      "gates_that_fired": [
+        "C3_AGGREGATE_BINDING_RECOMPUTED"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "pair_gene naming a gene not in the dictionary",
+      "must_fire": "C8_EVERY_PAIR_GENE_RESOLVES_UNIQUELY",
+      "gates_that_fired": [
+        "C17_DICTIONARY_CONTENT_DIGESTS",
+        "C8_EVERY_PAIR_GENE_RESOLVES_UNIQUELY"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "pair interval index beyond the interval axis",
+      "must_fire": "C9_EVERY_PAIR_INTERVAL_RESOLVES",
+      "gates_that_fired": [
+        "C17_DICTIONARY_CONTENT_DIGESTS",
+        "C9_EVERY_PAIR_INTERVAL_RESOLVES"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "swap two gene dictionary entries in every shard",
+      "must_fire": "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER",
+      "gates_that_fired": [
+        "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER",
+        "C17_DICTIONARY_CONTENT_DIGESTS"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "swap two interval dictionary entries in every shard",
+      "must_fire": "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER",
+      "gates_that_fired": [
+        "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER",
+        "C17_DICTIONARY_CONTENT_DIGESTS"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "drop one metacell id",
+      "must_fire": "C10_METACELL_IDS_EXACTLY_0_TO_N",
+      "gates_that_fired": [
+        "C10_METACELL_IDS_EXACTLY_0_TO_N"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "duplicate one metacell id",
+      "must_fire": "C10_METACELL_IDS_EXACTLY_0_TO_N",
+      "gates_that_fired": [
+        "C10_METACELL_IDS_EXACTLY_0_TO_N"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "one shard reorders the pair dictionary",
+      "must_fire": "C6_PAIR_DICT_AGREES_ACROSS_SHARDS",
+      "gates_that_fired": [
+        "C6_PAIR_DICT_AGREES_ACROSS_SHARDS",
+        "C7_NO_SHARD_REORDERS_A_DICTIONARY"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "one shard reorders the gene dictionary",
+      "must_fire": "C4_GENE_DICT_AGREES_ACROSS_SHARDS",
+      "gates_that_fired": [
+        "C4_GENE_DICT_AGREES_ACROSS_SHARDS",
+        "C7_NO_SHARD_REORDERS_A_DICTIONARY"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "one shard reorders the interval dictionary",
+      "must_fire": "C5_INTERVAL_DICT_AGREES_ACROSS_SHARDS",
+      "gates_that_fired": [
+        "C5_INTERVAL_DICT_AGREES_ACROSS_SHARDS"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "T3 gene index beyond the dictionary",
+      "must_fire": "C11_ALL_T3_T4_INDICES_IN_RANGE",
+      "gates_that_fired": [
+        "C11_ALL_T3_T4_INDICES_IN_RANGE"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    },
+    {
+      "mutation": "truncate one shard's T4 payload",
+      "must_fire": "C2_T4_NNZ_EXACT",
+      "gates_that_fired": [
+        "C2_T4_NNZ_EXACT"
+      ],
+      "caught_by_named_gate": true,
+      "baseline_restored_after": true,
+      "is_a_real_test": true
+    }
+  ],
+  "producer_sha256": "4e9be1089a83359bae1f02edbdab272aa13418c1941aaf1430041b4606c1fb32",
+  "computed_correspondence_values": 0,
+  "status": "PASS"
+}
