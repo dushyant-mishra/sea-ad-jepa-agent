@@ -36,20 +36,26 @@ fi
 wc -l < "$RES/hg38.analysisSet.chrom.sizes"
 
 echo "=== [2/4] motif list ==="
-MOTIF_LIST="$OUT_DIR/motifs.lst"
-ls "$MOTIF_DIR" | sed 's/\.cb$//' | sort > "$MOTIF_LIST.full"
-N_FULL=$(wc -l < "$MOTIF_LIST.full")
+# The motif list and its digest are named after the RUN, not written to a shared
+# fixed path. A fixed path is a provenance hazard: a later run in the same output
+# directory silently overwrites the earlier run's list and its .sha256, leaving the
+# earlier receipt pointing at a digest that describes different content.
+ALL_MOTIFS="$OUT_DIR/motifs.all.lst"
+ls "$MOTIF_DIR" | sed 's/\.cb$//' | sort > "$ALL_MOTIFS"
+N_FULL=$(wc -l < "$ALL_MOTIFS")
 if [ "$NMOTIF_LIMIT" -gt 0 ]; then
-  head -n "$NMOTIF_LIMIT" "$MOTIF_LIST.full" > "$MOTIF_LIST"
   DB_PREFIX="$OUT_DIR/BENCHMARK_${ROUTE_ID}_${NMOTIF_LIMIT}motifs"
+  MOTIF_LIST="${DB_PREFIX}.motifs.lst"
+  head -n "$NMOTIF_LIMIT" "$ALL_MOTIFS" > "$MOTIF_LIST"
   echo "BENCHMARK MODE: $NMOTIF_LIMIT of $N_FULL motifs"
 else
-  cp "$MOTIF_LIST.full" "$MOTIF_LIST"
   DB_PREFIX="$OUT_DIR/V69_${ROUTE_ID}_CUSTOM_CISTARGET"
+  MOTIF_LIST="${DB_PREFIX}.motifs.lst"
+  cp "$ALL_MOTIFS" "$MOTIF_LIST"
   echo "FULL MODE: $N_FULL motifs"
 fi
 N_MOTIFS=$(wc -l < "$MOTIF_LIST")
-sha256sum "$MOTIF_LIST" | tee "$OUT_DIR/motifs.lst.sha256"
+sha256sum "$MOTIF_LIST" | tee "${MOTIF_LIST}.sha256"
 
 echo "=== [3/4] region FASTA with padded background (padding=${BG_PADDING}) ==="
 REGION_FA="$OUT_DIR/${ROUTE_ID}_regions_padded_bg.fa"
