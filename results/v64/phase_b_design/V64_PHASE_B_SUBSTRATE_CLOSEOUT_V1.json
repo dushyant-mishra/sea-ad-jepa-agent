@@ -1,0 +1,152 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1",
+  "date": "2026-09-30",
+  "closes": [
+    "B1_T5_materialised",
+    "B2_interval_reconciliation",
+    "B3_custody_recomputed",
+    "B4_availability_explicit",
+    "B5_T6_T7_referential_integrity"
+  ],
+  "phase_a_not_rerun": true,
+  "sampler_not_rerun": true,
+  "substrate_not_rebuilt": true,
+  "B3_CUSTODY": {
+    "shards": 8,
+    "all_recomputed_match_receipts": true,
+    "detail": {
+      "PHASE_B_SUBSTRATE_s00.npz": {
+        "bytes": 19097361,
+        "recomputed_sha256": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e",
+        "receipt_sha256": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s01.npz": {
+        "bytes": 16970627,
+        "recomputed_sha256": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee",
+        "receipt_sha256": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s02.npz": {
+        "bytes": 17676786,
+        "recomputed_sha256": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a",
+        "receipt_sha256": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s03.npz": {
+        "bytes": 17441759,
+        "recomputed_sha256": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb",
+        "receipt_sha256": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s04.npz": {
+        "bytes": 19342192,
+        "recomputed_sha256": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427",
+        "receipt_sha256": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s05.npz": {
+        "bytes": 18435616,
+        "recomputed_sha256": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30",
+        "receipt_sha256": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s06.npz": {
+        "bytes": 20853329,
+        "recomputed_sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+        "receipt_sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+        "matches": true
+      },
+      "PHASE_B_SUBSTRATE_s07.npz": {
+        "bytes": 18118811,
+        "recomputed_sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4",
+        "receipt_sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4",
+        "matches": true
+      }
+    },
+    "aggregate_binding_over_RECOMPUTED_hashes": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52"
+  },
+  "B2_INTERVAL_RECONCILIATION": {
+    "phase_a_row_intervals": 32117,
+    "enumeration_keys": 57,
+    "naive_sum": 32174,
+    "enum_intervals_coinciding_with_a_pair_interval": 18,
+    "duplicate_hg38_coords_within_the_enum_set": 3,
+    "union": 32153,
+    "identity": "32117 + 57 - 18 - 3 = 32153",
+    "holds": true,
+    "the_21_is_not_the_R3_count": "the gap decomposes as 18 coincidences with existing pair intervals plus 3 duplicate hg38 coordinates inside the enum set. Only 11 of the 20 edges involved are R3 edges, so the numeric match to the 21 R3 pairs is coincidence."
+  },
+  "B5_T6_T7_REFERENTIAL_INTEGRITY": {
+    "t6_rows_total": 57,
+    "t6_rows_under_R3": 17,
+    "all_R3_rows_resolve_to_a_T7_record": true,
+    "all_resolved_records_match_the_row_edge": true,
+    "no_non_R3_row_carries_a_conditioning_reference": true,
+    "t7_records": 21,
+    "t7_records_referenced": 10,
+    "t7_records_unreferenced": 11,
+    "note": "a T7 record with no T6 row is lawful: an R3 pair whose small arm alternatives were all already selected as CONTROL_A or CONTROL_B needs no ENUMERATION_ONLY row"
+  },
+  "B1_T5": {
+    "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T5_DONOR_AGGREGATES.npz",
+    "bytes": 101711148,
+    "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8",
+    "rows": 10552158,
+    "donors": 282,
+    "pairs": 37419,
+    "fields": [
+      "atac_available",
+      "atac_depth_sensitivity",
+      "availability_state_code",
+      "distal_accessibility",
+      "donor",
+      "n_assigned_peaks",
+      "n_metacells_contributing",
+      "pair_key",
+      "promoter_activity",
+      "rna_available",
+      "rna_depth_sensitivity"
+    ],
+    "derived_from": "the frozen substrate T1-T4 only; no matrix value was re-read",
+    "factorisation": "promoter_activity depends only on (donor, gene) and distal_accessibility only on (donor, interval); both are computed once per donor and gathered to pairs, but stored keyed donor x pair_key as the contract requires"
+  },
+  "B4_AVAILABILITY": {
+    "states": [
+      "MEASURED",
+      "NOT_MEASURED_RNA_ZERO_COVERAGE",
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE",
+      "NOT_MEASURED_RNA_ZERO_VARIANCE",
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE"
+    ],
+    "counts": {
+      "MEASURED": 8598011,
+      "NOT_MEASURED_RNA_ZERO_COVERAGE": 1471461,
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE": 482686,
+      "NOT_MEASURED_RNA_ZERO_VARIANCE": 0,
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE": 0
+    },
+    "sparse_absence_is_a_measured_zero": "an absent T3 or T4 entry means the gene or peak set had zero counts in that metacell. That is a MEASURED value of zero, not a missing one, and log1p(0) is exactly 0.",
+    "not_measured_means": "the frozen zero-coverage or degenerate-variance rule fired for that donor and pair",
+    "what_phase_B_deliberately_does_not_decide": "the contract's four evidence states include MEASURED_AND_SUPPORTS and MEASURED_AND_DOES_NOT_SUPPORT. Separating those requires the correspondence, which is a Stage-4 determination. T5 therefore records MEASURED or NOT_MEASURED with a reason and leaves the split unmade.",
+    "pairs_meeting_the_frozen_minimum_donors": 36794,
+    "minimum_donors_per_edge": 30,
+    "donors_measured_per_pair": {
+      "min": 0,
+      "median": 259,
+      "max": 282
+    }
+  },
+  "modality_firewall": "no RNA x ATAC quantity was computed; both depth sensitivities are single-modality slopes on that modality's own depth",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "status": "PASS"
+}

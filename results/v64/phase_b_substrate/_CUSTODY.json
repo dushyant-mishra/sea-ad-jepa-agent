@@ -44,5 +44,11 @@
       "sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4"
     }
   },
-  "total_bytes": 147936481
+  "total_bytes": 147936481,
+  "T5_donor_aggregates": {
+    "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T5_DONOR_AGGREGATES.npz",
+    "bytes": 101711148,
+    "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8"
+  },
+  "aggregate_binding_over_recomputed_hashes": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52"
 }
