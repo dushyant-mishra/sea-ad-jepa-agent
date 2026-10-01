@@ -39,6 +39,18 @@ CBUST=/usr/local/bin/cbust
 PREFIX="$OUT_DIR/$SHARD_ID"
 RECEIPT="$PREFIX.shard.json"
 
+# ---- thread pinning: the ONLY parallelism is the tool's own -t ----
+# The image sets no thread environment variables and OpenBLAS defaults to 16 threads,
+# so without this each of N workers could spawn up to 16 BLAS threads -- N x 16 in
+# total. That silently oversubscribes the machine and makes any worker-scaling
+# measurement an artifact of the oversubscription rather than of the worker count.
+# Pinned to 1 so that -t means what it says. Recorded in the receipt.
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+
 mkdir -p "$OUT_DIR"
 
 # ---- restartability: a valid receipt means done ----

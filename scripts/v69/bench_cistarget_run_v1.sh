@@ -24,6 +24,18 @@ MOTIF_DIR=/data/resources/v10nr_clust_public/singletons
 CBUST=/usr/local/bin/cbust
 DB_PREFIX="$OUT_DIR/${RUN_ID}"
 
+# ---- thread pinning: the ONLY parallelism is the tool's own -t ----
+# The image sets no thread environment variables and OpenBLAS defaults to 16 threads,
+# so without this each of N workers could spawn up to 16 BLAS threads -- N x 16 in
+# total. That silently oversubscribes the machine and makes any worker-scaling
+# measurement an artifact of the oversubscription rather than of the worker count.
+# Pinned to 1 so that -t means what it says. Recorded in the receipt.
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+
 mkdir -p "$OUT_DIR"
 
 N_MOTIFS=$(wc -l < "$MOTIF_LIST")
@@ -77,6 +89,15 @@ rec = {
     "started_utc": start_iso,
     "finished_utc": end_iso,
     "command": cmd,
+    "thread_pinning": {
+        "OMP_NUM_THREADS": os.environ.get("OMP_NUM_THREADS"),
+        "OPENBLAS_NUM_THREADS": os.environ.get("OPENBLAS_NUM_THREADS"),
+        "MKL_NUM_THREADS": os.environ.get("MKL_NUM_THREADS"),
+        "NUMEXPR_NUM_THREADS": os.environ.get("NUMEXPR_NUM_THREADS"),
+        "why": ("The image sets no thread env vars and OpenBLAS defaults to 16, so "
+                "without pinning N workers could spawn N x 16 threads and the measured "
+                "scaling would be an artifact of oversubscription."),
+    },
     "outputs": outputs,
     "n_outputs": len(outputs),
     "status": "PASS__RUN_COMPLETE" if outputs else "FAIL__NO_OUTPUT_PRODUCED",
