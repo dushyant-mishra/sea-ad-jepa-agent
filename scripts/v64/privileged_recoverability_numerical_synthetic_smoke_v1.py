@@ -70,8 +70,11 @@ def make(seed=1,shared_rank=4,technical_target=False,n_donors=24,n_per=50):
         private=rng.normal(size=(n,16-shared_rank)) if shared_rank<16 else np.zeros((n,0))
         # 48 RNA features. First 16 have huge technical variance, so PCA16 chases nuisance.
         X=np.zeros((n,48))
-        X[:,:16]=4.0*np.c_[tech,tech] + .30*rng.normal(size=(n,16))
-        X[:,16:40]=0.55*(shared@A) + .18*rng.normal(size=(n,24))
+        # Make the top 16 variance directions overwhelmingly technical, so PCA16
+        # is a genuine shortcut baseline rather than an accidental carrier of the
+        # lower-variance shared signal.
+        X[:,:16]=20.0*np.c_[tech,tech] + .30*rng.normal(size=(n,16))
+        X[:,16:40]=0.40*(shared@A) + .12*rng.normal(size=(n,24))
         X[:,40:]=.25*rng.normal(size=(n,8))
         if technical_target:
             # Technical-only target is generated from the same two degrees of freedom
