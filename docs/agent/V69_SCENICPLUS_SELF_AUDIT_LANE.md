@@ -526,9 +526,25 @@ each receipt rather than assumed from the environment.
 but they must not be mixed into the pinned scaling table, and the feasibility projection
 derived from them inherits that caveat.
 
-**Open question this raises, to be answered not assumed.** BLAS thread count can change
-floating-point reduction order. Whether pinning changes the OUTPUT is exactly what the
-digest-equality gate exists to detect, and it will be tested.
+**Open question raised here, now ANSWERED by measurement.** BLAS thread count can change
+floating-point reduction order, so whether pinning alters the OUTPUT had to be tested
+rather than assumed. Two runs on the same drive, same 16 motifs over the same 150,561
+regions — one with BLAS unpinned at 16 threads, one pinned to 1:
+
+| output | identical? |
+|---|---|
+| `motifs_vs_regions.scores.feather` | **yes, bitwise** |
+| `regions_vs_motifs.scores.feather` | **yes, bitwise** |
+| `regions_vs_motifs.rankings.feather` | no — but the seed also differed between these two runs, so this is attributable to S23, not to BLAS |
+
+**Conclusion: pinning BLAS does not change cisTarget scores.** The pinning is a pure
+scheduling fix and is safe to carry into the full build.
+
+**What is NOT concluded.** The pinned run took 532 s wall / 203 s cbust against the
+unpinned run's 440 s / 158 s. That is *not* a measurement of pinning's cost: the two runs
+faced different machine load, and cbust itself is invoked at `-t 1` per motif so BLAS
+should not touch the scoring phase at all. The difference is confounded and is recorded
+as such rather than reported as a slowdown caused by pinning.
 
 ---
 
