@@ -1,0 +1,60 @@
+{
+  "schema": "JEPA_V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_ADDENDUM_V1",
+  "date": "2026-10-01",
+  "status": "STRUCTURAL_COVERAGE_AUDITED__NO_NEW_BIOLOGICAL_OUTCOME_OPENED",
+  "chatgpt_head_at_addendum": "228b1a45b91e620697ba3a818dac9cfb522a01bf",
+  "ci": {
+    "run": 36877820268,
+    "tests_passed": 199,
+    "elapsed_seconds": 7.47,
+    "git_custody_repo_authorities": 10
+  },
+  "coverage_map": "results/v64/V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_MAP_V1.json",
+  "key_findings": {
+    "full104": {
+      "cells": 4553407,
+      "donors": 104,
+      "canonical_addresses": 41238
+    },
+    "stage4": {
+      "direct_microglia": 84129,
+      "genes": 4372,
+      "gene_fraction_of_full104_addresses": 0.10601872059750715,
+      "interpretation": "development/qualification substrate, not direct FULL104 cell fraction"
+    },
+    "morabito": {
+      "eligible_addresses": 37966,
+      "eligible_fraction": 0.9206557059023232,
+      "interpretation": "broad structural feature coverage, not direct cell coverage"
+    },
+    "common_support": {
+      "addresses_all_3_source_families": 17346,
+      "fraction": 0.4206314564236869,
+      "addresses_all_42_operators": 17186,
+      "fraction_all_42": 0.4167515398418934
+    },
+    "source_any_address_support": {
+      "HVS": 0.45433823172801785,
+      "NPH52": 0.8511082011736748,
+      "SEA_AD": 0.8505747126436781
+    },
+    "scenic_plus": "NO_CURRENT_QUALIFIED_BROAD_NETWORK__FULL104_COVERAGE_NOT_YET_QUANTIFIABLE",
+    "perturbation": "PROGRAM_SPECIFIC__NO_GLOBAL_FULL104_PERCENTAGE",
+    "spatial": "SUPPORTING_ONLY__NO_FULL_STATE_COVERAGE_PERCENTAGE"
+  },
+  "interpretation": "Direct multimodal measurement, feature-vocabulary overlap, and RNA-predicted transport reach are separate coverage axes. A future RNA-only student may provide broad FULL104 state predictions only after real regulatory-state construction and recoverability qualification.",
+  "next_required_work": [
+    "Audit Claude's new Stage-4/executor work because Claude branch advanced beyond f1dc9bd.",
+    "Build or qualify a current broad external regulatory/eRegulon network and compute exact FULL104 gene/program overlap.",
+    "After privileged state exists, compute per-program source-specific transport support rather than a single dataset-wide coverage percentage."
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}
