@@ -18,9 +18,10 @@ def _load():
 def test_v65_decision_engine_smoke_passes():
     out=_load().run_smoke()
     assert out["pass"] is True
-    assert out["results"]["partial_smallest_selected_rank"]==2
+    assert out["results"]["partial_contiguous_selected_rank"]==4
     assert out["results"]["partial_classification"]=="PARTIALLY_RNA_RECOVERABLE"
     assert out["results"]["full_rank_selected"]==16
+    assert out["results"]["lower_rank_failure_blocks_higher_ranks"]==0
     assert out["results"]["technical_shortcut_selected_rank"]==0
     assert out["results"]["validation_failure_locked_rank"]==0
     assert out["results"]["tie_fails_closed"] is True
@@ -30,24 +31,28 @@ def test_v65_decision_engine_smoke_passes():
     assert out["real_paired_outcome_opened"] is False
 
 
-def test_smallest_eligible_rank_wins_even_if_higher_rank_scores_better():
+def test_largest_contiguous_rank_wins_without_skipping_failed_rank():
     m=_load()
-    partial,_,_,_,_=m.synthetic_scenarios()
+    partial,full,lower_fail,_,_,_=m.synthetic_scenarios()
     assert m.validation_rank_eligible(partial[2])
+    assert m.validation_rank_eligible(partial[4])
+    assert not m.validation_rank_eligible(partial[8])
     assert m.validation_rank_eligible(partial[16])
-    assert m.select_validation_rank(partial)==2
+    assert m.select_validation_rank(partial)==4
+    assert m.select_validation_rank(full)==16
+    assert m.select_validation_rank(lower_fail)==0
 
 
 def test_technical_shortcut_is_unqualified_despite_high_r2():
     m=_load()
-    _,_,shortcuts,_,_=m.synthetic_scenarios()
+    _,_,_,shortcuts,_,_=m.synthetic_scenarios()
     assert all(d["candidate_r2"]>0.9 for d in shortcuts[2])
     assert m.select_validation_rank(shortcuts)==0
 
 
 def test_validation_failure_cannot_be_rescued_by_test():
     m=_load()
-    _,_,_,weak,spectacular=m.synthetic_scenarios()
+    _,_,_,_,weak,spectacular=m.synthetic_scenarios()
     selected=m.select_validation_rank(weak)
     assert selected==0
     assert m.classify(selected,None,spectacular)=="UNQUALIFIED"
@@ -55,7 +60,7 @@ def test_validation_failure_cannot_be_rescued_by_test():
 
 def test_test_confirmation_cannot_retune_rank():
     m=_load()
-    partial,_,_,_,_=m.synthetic_scenarios()
+    partial,_,_,_,_,_=m.synthetic_scenarios()
     selected=m.select_validation_rank(partial)
     assert selected==2
     bad_test=[
