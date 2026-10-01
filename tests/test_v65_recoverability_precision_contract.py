@@ -67,3 +67,13 @@ def test_nested_shells_and_intrinsic_ranks_are_frozen():
     assert "aggregate `P_k`, the expected intrinsic rank is `k`" in t
     assert "`S_4: 2`" in t and "`S_8: 4`" in t and "`S_16: 8`" in t
     assert "Every incremental shell from `S_2` through `S_k`" in t
+
+
+def test_tie_tolerance_and_geometry_numerics_are_frozen():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    assert "1e-8 * max(1, abs(s[k-1]), abs(s[k]))" in t
+    assert "thin QR bases" in t
+    assert "squared Euclidean distance" in t
+    assert "lexicographic upper-triangle" in t
+    assert "fails closed" in t
+    assert "Reuse that exact permutation-index list" in t
