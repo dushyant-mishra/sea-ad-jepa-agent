@@ -14,6 +14,7 @@ on:
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_decision_engine_smoke_v1.py'
+      - 'scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py'
       - 'scripts/v64/validate_stage4_execution_authority_v1.py'
       - 'scripts/v64/build_promoter_dual_ledger_v2.py'
       - 'scripts/v64/fetch_open_promoter_resources_v1.py'
@@ -56,6 +57,7 @@ on:
       - 'scripts/v64/qualify_recoverability_decision_synthetic_v1.py'
       - 'tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py'
       - 'tests/test_v65_recoverability_authority_consistency.py'
+      - 'tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py'
       - 'tests/v64/test_stage4_execution_authority_validator_v1.py'
       - 'tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py'
       - 'tests/test_v65_privileged_recoverability_geometry_gate_v2.py'
@@ -129,4 +131,5 @@ jobs:
             tests/test_v65_recoverability_geometry_gate_redundancy.py \
             tests/test_v65_privileged_recoverability_geometry_gate_v2.py \
             tests/test_v65_privileged_recoverability_pairing_r2_gate_v2.py \
-            tests/v64/test_stage4_execution_authority_validator_v1.py
+            tests/v64/test_stage4_execution_authority_validator_v1.py \
+            tests/test_v67_nested_modality_mask_uncertainty_anticollapse.py
