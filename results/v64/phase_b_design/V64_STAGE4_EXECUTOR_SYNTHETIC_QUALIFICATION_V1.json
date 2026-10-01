@@ -1,0 +1,152 @@
+{
+  "schema": "V64_STAGE4_EXECUTOR_SYNTHETIC_QUALIFICATION_V1",
+  "date": "2026-10-01",
+  "seed": 20260929,
+  "real_data_used": false,
+  "computed_real_correspondence_values": 0,
+  "executor_sha256": "1feb58489ec73e727ed20a426265a4dabb00cec98e79d288498f83c2693057ac",
+  "producer_sha256": "d978bc97c8f39d4830ec88b1d9753d2dd7af5f18cb6505f1c44caa07c2cbae74",
+  "n_fixtures": 19,
+  "n_holding": 19,
+  "fixtures": [
+    {
+      "fixture": "positive: planted linked>control",
+      "expectation": "Delta > 0",
+      "observed": "GENE_BALANCED Delta=+0.7854",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "null: no planted difference",
+      "expectation": "Delta near 0 and LCB95 <= 0",
+      "observed": "Delta=+0.0026 LCB95=-0.0109",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "technical confound (measured)",
+      "expectation": "residualised moves toward null",
+      "observed": "raw=+0.0042 adjusted=+0.0000",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "latent confound (unmeasured)",
+      "expectation": "REPORTED, not tuned: does the frozen design separate it?",
+      "observed": "Delta=+0.0003 control-vs-control=+0.0000",
+      "holds": true,
+      "note": "the planted latent capture variable enters linked and control arms SYMMETRICALLY, so the matched-control design differences it out and Delta stays near null. That is the design working, but it is NOT evidence that an ASYMMETRIC latent confound would be caught -- this fixture cannot speak to that case and the suite does not claim it does."
+    },
+    {
+      "fixture": "latent confound, ASYMMETRIC on the linked arm",
+      "expectation": "REPORTED: does anything in the frozen design notice?",
+      "observed": "Delta=+0.0180 control-vs-control=+0.0000",
+      "holds": true,
+      "note": "the design returned near null even under an asymmetric unmeasured confound; reported as observed"
+    },
+    {
+      "fixture": "latent confound VARYING WITHIN DONOR (the real threat)",
+      "expectation": "REPORTED: this is the case the within-donor statistic cannot difference out",
+      "observed": "Delta=+0.6540 control-vs-control=+0.0000",
+      "holds": true,
+      "note": "A per-metacell technical driver loading on the linked arm's RNA and ATAC together produces a large positive Delta that is indistinguishable from biology, while the control-vs-control arm stays at null because both control draws are clean. The anti-false-green machinery therefore does NOT see it. This is the design's real exposure and it is recorded rather than tuned away: a positive Stage-4 result cannot by itself exclude an unmeasured technical variable that varies between metacells of the same donor and affects both modalities. What bounds that risk is the frozen nuisance basis -- which carries rna_depth_sensitivity and atac_depth_sensitivity precisely to absorb per-metacell depth effects -- and nothing else in the design. A confound orthogonal to depth would survive."
+    },
+    {
+      "fixture": "missingness: measured zero participates",
+      "expectation": "MISSING_RNA_ZERO_COVERAGE",
+      "observed": "MISSING_RNA_ZERO_COVERAGE",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: zero RNA coverage",
+      "expectation": "MISSING_RNA_ZERO_COVERAGE",
+      "observed": "MISSING_RNA_ZERO_COVERAGE",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: zero ATAC coverage",
+      "expectation": "MISSING_ATAC_ZERO_COVERAGE",
+      "observed": "MISSING_ATAC_ZERO_COVERAGE",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: zero RNA variance",
+      "expectation": "MISSING_RNA_ZERO_VARIANCE",
+      "observed": "MISSING_RNA_ZERO_VARIANCE",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: zero ATAC variance",
+      "expectation": "MISSING_ATAC_ZERO_VARIANCE",
+      "observed": "MISSING_ATAC_ZERO_VARIANCE",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: unavailable never becomes zero",
+      "expectation": "MISSING_INSUFFICIENT_METACELLS",
+      "observed": "MISSING_INSUFFICIENT_METACELLS",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "missingness: a zero among nonzeros participates",
+      "expectation": "MEASURED with a finite r",
+      "observed": "MEASURED r=+0.3239",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "wrong axis / transposed input",
+      "expectation": "hard failure before any correspondence",
+      "observed": "raised",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "weighting: all three computed, primary fixed",
+      "expectation": "three distinct values; primary is GENE_BALANCED whichever is largest",
+      "observed": "{'GENE_BALANCED': 0.5335, 'PROMOTER_EQUAL': 0.6336, 'EDGE_EQUAL': 0.6267} largest=PROMOTER_EQUAL",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "R3 conditional label",
+      "expectation": "CONDITIONAL_ON_REALISED_LARGE_ARM is frozen",
+      "observed": "CONDITIONAL_ON_REALISED_LARGE_ARM",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "Control B routed into a primary estimand",
+      "expectation": "hard failure",
+      "observed": "raised Stop",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "bootstrap reproducibility",
+      "expectation": "identical under seed 20260929",
+      "observed": "identical=True n=4000",
+      "holds": true,
+      "note": ""
+    },
+    {
+      "fixture": "funnel reconciliation",
+      "expectation": "every row lands in exactly one category",
+      "observed": "{'MEASURED': 500} total=500",
+      "holds": true,
+      "note": ""
+    }
+  ],
+  "status": "PASS",
+  "governance": {
+    "training": "OFF",
+    "stage_4": "NOT_AUTHORISED",
+    "correspondence_opened": false
+  }
+}
