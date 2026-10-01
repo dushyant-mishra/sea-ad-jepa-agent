@@ -13,7 +13,7 @@
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
   "current_blocker": "S60 design is closed, but the committed substrate-test receipt at 7ad38eaf records 7/9 FAIL (T16/T17 stale authority digest) despite the reported final 9/9 PASS. Phase B remains blocked until the restored final artifacts are rerun and a clean committed 9/9 PASS receipt is self-consistent.",
-  "parallel_architecture_next": "Promoter ledger closed. Recoverability V2 decision mechanics and exact preprocessing/fit mechanics are synthetically qualified (latest combined run 116/116), but real paired execution and TEST remain unopened. Next lawful architecture task is audit-only construction of a fail-closed TRAIN+VALIDATION executor.",
+  "parallel_architecture_next": "Promoter ledger closed. Recoverability V2 decision/mechanics are synthetically qualified and the exact paired subset passes an outcome-blind TRAIN+VALIDATION structural preflight with TEST numeric access sealed by API. Real recoverability execution remains unauthorized; next lawful step is executor audit/authorization without opening TEST.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
     "training": "OFF",
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. Do not authorize Phase B from narrative test claims when the committed authoritative receipt says FAIL."
+  "read_me_first": "Phase B remains blocked on S61 stale committed substrate-test receipt. Promoter ledger is closed. Recoverability structural preflight passed without computing any real outcome; TEST remains sealed and real TRAIN+VALIDATION execution is still unauthorized."
 }
