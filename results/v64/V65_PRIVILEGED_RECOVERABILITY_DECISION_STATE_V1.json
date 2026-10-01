@@ -110,6 +110,16 @@
     "script": "scripts/v64/qualify_recoverability_decision_synthetic_v1.py",
     "finding": "SMALLEST_ELIGIBLE misclassifies a monotone fully-recoverable nested factor as rank 2; repaired rule selects the largest contiguous eligible rank.",
     "real_biological_values_used": false,
-    "incremental_shell_finding": "A 4-shared/12-private numerical fixture passed aggregate rank16 because shared variance dominated; incremental-shell gating added before any real paired outcome."
+    "incremental_shell_finding": "A 4-shared/12-private numerical fixture passed aggregate rank16 because shared variance dominated; incremental-shell gating added before any real paired outcome.",
+    "geometry_correction": "Principal-angle cosines of the same centered sample-space column spans duplicate canonical correlations; relational-geometry correlation is the second independent gate."
+  },
+  "geometry_gate": {
+    "canonical_correlation": "median canonical correlation > within-donor permutation 99th percentile",
+    "relational_geometry": "Pearson correlation of upper-triangle pairwise squared-distance vectors > within-donor permutation 99th percentile",
+    "principal_angles": "REPORTABLE_DIAGNOSTIC__NOT_INDEPENDENT_GATE_BECAUSE_EQUIVALENT_TO_CANONICAL_CORRELATIONS_FOR_THE_SAME_COLUMN_SPACES",
+    "applies_to": [
+      "aggregate_projection",
+      "incremental_shell"
+    ]
   }
 }
