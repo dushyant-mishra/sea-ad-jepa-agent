@@ -140,9 +140,18 @@ The full 16-D privileged factor remains immutable.
 For a candidate nonzero shared rank `k`:
 
 1. fit the full ridge predictor on TRAIN;
-2. using TRAIN predictions and TRAIN privileged states only, compute the cross-covariance between predicted and true privileged coordinates;
-3. take the first `k` left singular directions of that TRAIN-only cross-covariance as the candidate recoverable privileged projection;
-4. freeze that projection before VALIDATION scoring.
+2. center TRAIN true privileged states and TRAIN predictions using TRAIN means only;
+3. define the oriented cross-covariance exactly as
+   `C = Z_true_train^T Z_pred_train`;
+4. compute the deterministic SVD `C = U S V^T`, with singular values sorted descending;
+5. define the **privileged target-space projector**
+   `P_k = U[:, :k] U[:, :k]^T`;
+6. apply the SAME frozen target-space projector to true and predicted privileged states:
+   `Z_true_shared = Z_true P_k`,
+   `Z_pred_shared = Z_pred P_k`;
+7. freeze `P_k` and its digest before VALIDATION scoring.
+
+Sign flips of individual singular vectors do not change `P_k`. If a singular-value tie makes the rank-`k` projector non-unique at the selection boundary, that rank is `UNQUALIFIED_FOR_SELECTION` rather than resolved by an arbitrary rotation.
 
 No projection is fit or rotated on VALIDATION or TEST.
 
