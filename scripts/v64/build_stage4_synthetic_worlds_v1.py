@@ -370,14 +370,27 @@ def build_world(world, seed):
     return manifest
 
 
-def main() -> int:
+CANONICAL_SEED_BASE = 20260929
+
+
+def main(seed_base=None) -> int:
+    # The seed base is a parameter so the worlds can be rebuilt at other draws and the
+    # conclusions checked for seed dependence. The CANONICAL worlds are the ones at
+    # CANONICAL_SEED_BASE, and every committed manifest is built from that base.
+    if seed_base is None:
+        import argparse
+        ap = argparse.ArgumentParser()
+        ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
+        seed_base = ap.parse_args().seed_base
     os.makedirs(ROOT, exist_ok=True)
-    print("building synthetic Phase-B worlds under " + ROOT)
+    print("building synthetic Phase-B worlds under " + ROOT
+          + " at seed base " + str(seed_base))
     mans = {}
     for i, w in enumerate(WORLDS):
-        mans[w] = build_world(w, seed=20260929 + i)
+        mans[w] = build_world(w, seed=seed_base + i)
     rec = dict(schema="V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1", date="2026-10-01",
-               root=ROOT, worlds=list(WORLDS),
+               root=ROOT, worlds=list(WORLDS), seed_base=seed_base,
+               is_canonical_build=seed_base == CANONICAL_SEED_BASE,
                producer_sha256=B.sha_file(os.path.abspath(__file__)),
                manifests={w: m["digests"] for w, m in mans.items()},
                planted={w: m["planted_truth"] for w, m in mans.items()},

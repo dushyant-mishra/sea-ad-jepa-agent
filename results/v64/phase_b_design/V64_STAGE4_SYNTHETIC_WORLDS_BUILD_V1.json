@@ -8,7 +8,9 @@
     "MEASURED_TECHNICAL",
     "HIDDEN_CONFOUND"
   ],
-  "producer_sha256": "3cb5a2a9a1c862dda3eb5ec1bc7976c5d69a7cf2251369d9ffd6efea4c1dda5c",
+  "seed_base": 20260929,
+  "is_canonical_build": true,
+  "producer_sha256": "5842057065f9ca071b1834a77769a394bf8d5f1163cf6adade749ab939a0c651",
   "manifests": {
     "BIOLOGY_POSITIVE": {
       "PHASE_B_SUBSTRATE_s00.npz": "e7e1691a2a611491582bb81bf928fdce06c1a9bbad04ee84223b37c3658c00ec",

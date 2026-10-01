@@ -1,0 +1,262 @@
+{
+  "schema": "V64_STAGE4_WORLD_SEED_ROBUSTNESS_V1",
+  "date": "2026-10-01",
+  "raises": "S95, from my own self-audit lane",
+  "why": "the four end-to-end verdicts, two of which are interpretation limits that will be quoted, each rested on a single fixture. I raised the same single-seed weakness against the other lane, so my own conclusions had to meet it.",
+  "seed_bases": [
+    20260929,
+    770101,
+    880303,
+    990505
+  ],
+  "draws_per_world": 4,
+  "per_draw": {
+    "20260929": {
+      "BIOLOGY_POSITIVE": {
+        "delta": 0.5130840457496877,
+        "lcb95": 0.5068449852316218,
+        "raw": 0.5593693564328965,
+        "cvc": 0.0029105269051601353
+      },
+      "TRUE_NULL": {
+        "delta": 0.002501825206993408,
+        "lcb95": -0.003291962616759237,
+        "raw": 0.001111002139813528,
+        "cvc": 0.003918582857922086
+      },
+      "MEASURED_TECHNICAL": {
+        "delta": 0.012902929240732284,
+        "lcb95": 0.0030312765559554907,
+        "raw": 0.2114309723198949,
+        "cvc": -0.001303344227657812
+      },
+      "HIDDEN_CONFOUND": {
+        "delta": 0.38060752061181363,
+        "lcb95": 0.36283740672869075,
+        "raw": 0.4779453391880856,
+        "cvc": -0.025336785101826007
+      }
+    },
+    "770101": {
+      "BIOLOGY_POSITIVE": {
+        "delta": 0.5375756792776781,
+        "lcb95": 0.5296052080305154,
+        "raw": 0.5768800160964459,
+        "cvc": -0.012329478122346487
+      },
+      "TRUE_NULL": {
+        "delta": -0.004394501423783251,
+        "lcb95": -0.010082256198510116,
+        "raw": -0.005443398986169665,
+        "cvc": -0.002230341390388286
+      },
+      "MEASURED_TECHNICAL": {
+        "delta": 0.003281309271334048,
+        "lcb95": -0.005830693239977006,
+        "raw": 0.22976339259968168,
+        "cvc": 0.005252305427035035
+      },
+      "HIDDEN_CONFOUND": {
+        "delta": 0.32768488916507593,
+        "lcb95": 0.30929801196881723,
+        "raw": 0.4060551518212017,
+        "cvc": 0.06426165683308499
+      }
+    },
+    "880303": {
+      "BIOLOGY_POSITIVE": {
+        "delta": 0.522261674308524,
+        "lcb95": 0.5148917140562598,
+        "raw": 0.5491426788204122,
+        "cvc": 0.01250430325012131
+      },
+      "TRUE_NULL": {
+        "delta": 0.006255345109120917,
+        "lcb95": 0.000964515592416938,
+        "raw": 0.005681844016596827,
+        "cvc": -0.006470514764624823
+      },
+      "MEASURED_TECHNICAL": {
+        "delta": 0.011951974309196993,
+        "lcb95": 0.003514781536461826,
+        "raw": 0.22332532523181386,
+        "cvc": 0.012666309976409891
+      },
+      "HIDDEN_CONFOUND": {
+        "delta": 0.35572606175113664,
+        "lcb95": 0.3367971422612728,
+        "raw": 0.4255977662529714,
+        "cvc": -0.009601736807815366
+      }
+    },
+    "990505": {
+      "BIOLOGY_POSITIVE": {
+        "delta": 0.5180189221502176,
+        "lcb95": 0.5103866710434516,
+        "raw": 0.5453518840017655,
+        "cvc": -0.005880990259727145
+      },
+      "TRUE_NULL": {
+        "delta": 0.005352289748409321,
+        "lcb95": -0.0009096664246926283,
+        "raw": 0.00365717671260485,
+        "cvc": -0.0010788633843805664
+      },
+      "MEASURED_TECHNICAL": {
+        "delta": 0.02040193854167507,
+        "lcb95": 0.012746659520322846,
+        "raw": 0.21032840036104125,
+        "cvc": -0.006404912249181603
+      },
+      "HIDDEN_CONFOUND": {
+        "delta": 0.3756950145315593,
+        "lcb95": 0.3521744357974154,
+        "raw": 0.4608420957016836,
+        "cvc": 0.013007706421519022
+      }
+    }
+  },
+  "checks": [
+    {
+      "check": "planted biology is recovered in every draw",
+      "statement": "delta > 0 and LCB95 > 0",
+      "unit": "draws",
+      "values_tested": 4,
+      "values_holding": 4,
+      "seed_stable": true,
+      "detail": {
+        "delta_range": [
+          0.5130840457496877,
+          0.5375756792776781
+        ],
+        "lcb_range": [
+          0.5068449852316218,
+          0.5296052080305154
+        ]
+      }
+    },
+    {
+      "check": "the true null never claims an effect",
+      "statement": "LCB95 <= 0",
+      "unit": "draws",
+      "values_tested": 4,
+      "values_holding": 3,
+      "seed_stable": false,
+      "detail": {
+        "lcb_range": [
+          -0.010082256198510116,
+          0.000964515592416938
+        ],
+        "delta_range": [
+          -0.004394501423783251,
+          0.006255345109120917
+        ]
+      }
+    },
+    {
+      "check": "the adjustment removes most of a pure depth effect",
+      "statement": "more than half the raw depth effect is removed",
+      "unit": "draws",
+      "values_tested": 4,
+      "values_holding": 4,
+      "seed_stable": true,
+      "detail": {
+        "fraction_removed": [
+          0.9389733249620109,
+          0.9857187464277606,
+          0.9464817781109656,
+          0.9029996020192521
+        ]
+      }
+    },
+    {
+      "check": "LIMIT: the depth residue still excludes zero",
+      "statement": "a purely technical world ends with LCB95 > 0 -- the limit I reported",
+      "unit": "draws",
+      "values_tested": 4,
+      "values_holding": 3,
+      "seed_stable": false,
+      "detail": {
+        "lcb_per_draw": [
+          0.0030312765559554907,
+          -0.005830693239977006,
+          0.003514781536461826,
+          0.012746659520322846
+        ],
+        "draws_where_residue_is_significant": 3,
+        "reading": "where this does NOT hold in a draw, the limit is weaker than stated and the receipt must say so"
+      }
+    },
+    {
+      "check": "LIMIT: the hidden confound fools the method",
+      "statement": "LCB95 > 0 and the confound reaches more than 40% of genuine biology",
+      "unit": "draws",
+      "values_tested": 4,
+      "values_holding": 4,
+      "seed_stable": true,
+      "detail": {
+        "fraction_of_biology": [
+          0.741803460397395,
+          0.6095604801269559,
+          0.6811261083289694,
+          0.7252534578700456
+        ],
+        "lcb_per_draw": [
+          0.36283740672869075,
+          0.30929801196881723,
+          0.3367971422612728,
+          0.3521744357974154
+        ]
+      }
+    },
+    {
+      "check": "control-versus-control stays near zero everywhere",
+      "statement": "the anti-false-green arm does not drift across draws",
+      "unit": "world-draws",
+      "values_tested": 16,
+      "values_holding": 15,
+      "seed_stable": false,
+      "detail": {
+        "max_absolute": 0.06426165683308499,
+        "compared_against": 0.05130840457496877,
+        "note": "four worlds per draw, so this tests 16 values"
+      }
+    }
+  ],
+  "n_checks": 6,
+  "n_seed_stable": 3,
+  "thresholds_were_frozen_before_the_draws": true,
+  "thresholds_unchanged_after_seeing_the_failures": true,
+  "seed_dependent": [
+    "the true null never claims an effect",
+    "LIMIT: the depth residue still excludes zero",
+    "control-versus-control stays near zero everywhere"
+  ],
+  "canonical_worlds_restored": {
+    "BIOLOGY_POSITIVE": {
+      "seed": 20260929,
+      "digests_match_manifest": true,
+      "is_canonical": true
+    },
+    "TRUE_NULL": {
+      "seed": 20260930,
+      "digests_match_manifest": true,
+      "is_canonical": true
+    },
+    "MEASURED_TECHNICAL": {
+      "seed": 20260931,
+      "digests_match_manifest": true,
+      "is_canonical": true
+    },
+    "HIDDEN_CONFOUND": {
+      "seed": 20260932,
+      "digests_match_manifest": true,
+      "is_canonical": true
+    }
+  },
+  "canonical_state_verified": true,
+  "real_substrate_read": false,
+  "computed_correspondence_values": 0,
+  "producer_sha256": "344656a31dfa112cba318b60a9e9af5b6830244566975949c4cb3a1e7144d779",
+  "status": "FAIL"
+}
