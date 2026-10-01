@@ -157,6 +157,42 @@ No projection is fit or rotated on VALIDATION or TEST.
 
 Rank 0 means no privileged subspace is currently qualified for compulsory RNA supervision.
 
+
+### Incremental nested-shell requirement
+
+Aggregate recoverability of a rank-`k` projection is not sufficient to show that every
+new direction added at rank `k` is recoverable. Strong lower-rank directions can dominate
+multivariate explained variance and make a higher-rank projection look recoverable even
+when its added directions are private.
+
+Define nested shell projectors from the same TRAIN-only `U`:
+
+- `S_2 = P_2`;
+- `S_4 = P_4 - P_2`;
+- `S_8 = P_8 - P_4`;
+- `S_16 = P_16 - P_8`.
+
+Because all `P_k` come from the same ordered TRAIN-only singular basis, each `S_k` is
+the orthogonal projector onto the newly added privileged directions.
+
+For rank `k` to qualify, BOTH must pass:
+
+1. the existing aggregate gates on `P_k`;
+2. the same recoverability gates applied to the incremental shell `S_k`.
+
+For the shell, compute candidate and baseline R² after projecting true and predicted
+states through `S_k`; compute `DELTA_R2_shell` against the better projected baseline;
+and apply the same donor-positive, median materiality, permutation, geometry and
+VALIDATION technical-margin rules.
+
+This rule was added prospectively after a synthetic fixture with 4 recoverable and
+12 private privileged dimensions showed that aggregate rank-16 R² could pass solely
+because the four shared directions dominated variance. No real paired recoverability
+outcome had been opened.
+
+A higher rank may never be qualified merely because its aggregate metric is carried by
+already-qualified lower-rank directions.
+
 ## 10. Geometry gate
 
 For every nonzero candidate shared rank, compute on each held-out donor:
@@ -176,7 +212,8 @@ Evaluate candidate ranks in ascending order:
 
 `2 -> 4 -> 8 -> 16`.
 
-A rank is VALIDATION-eligible only if all of the following hold:
+A rank is VALIDATION-eligible only if all of the following hold on the aggregate
+projection `P_k` **and on its incremental shell `S_k`**:
 
 1. `DELTA_R2 > 0` in all 4 VALIDATION donors;
 2. median VALIDATION `DELTA_R2 >= 0.05`;
@@ -184,6 +221,8 @@ A rank is VALIDATION-eligible only if all of the following hold:
 4. pairing-permutation gate passes in all 4 VALIDATION donors;
 5. geometry gate passes in all 4 VALIDATION donors;
 6. technical baseline is not within 0.01 `R2_multi` of the candidate in any VALIDATION donor.
+
+For rank 2, the aggregate and shell are identical because `S_2=P_2`.
 
 Apply a **contiguous nested-rank rule** over `2 -> 4 -> 8 -> 16`.
 
@@ -210,14 +249,17 @@ TEST is opened only after:
 - every threshold above is locked;
 - all VALIDATION decisions are written to a receipt.
 
-The locked nonzero rank is confirmed on TEST only if all of the following hold:
+The locked nonzero rank is confirmed on TEST only if the aggregate projection **and
+every frozen incremental shell up to the selected rank** satisfy all of the following:
 
 1. `DELTA_R2 > 0` in all 4 TEST donors;
 2. median TEST `DELTA_R2 >= 0.05`;
 3. candidate `R2_multi > 0` in all 4 TEST donors;
 4. pairing-permutation gate passes in all 4 TEST donors;
 5. geometry gate passes in all 4 TEST donors;
-6. median TEST `DELTA_R2` is at least 50% of median VALIDATION `DELTA_R2`.
+6. median TEST `DELTA_R2` is at least 50% of the corresponding median VALIDATION `DELTA_R2`.
+
+A TEST pass for the aggregate selected rank cannot rescue a failed incremental shell.
 
 The 50% replication rule prevents a barely positive TEST result from being described as transport of a much stronger VALIDATION effect.
 
