@@ -1,0 +1,146 @@
+{
+  "schema": "V69_CISTARGET_ENGINEERING_REUSE_AUDIT_V1",
+  "recorded_utc": "2026-10-01T23:40:00Z",
+  "status": "AUDIT_COMPLETE__REUSE_PLAN_RECORDED",
+  "purpose": "Mandate item 7: audit the prior Stage75 cisTarget engineering BEFORE writing replacements, and document exactly what is reused versus rewritten.",
+
+  "headline_findings": {
+    "no_prior_sharding_or_merge_exists_in_this_repository": {
+      "claim": "No prior work in this repository sharded cbust/motif scoring or merged partial cisTarget databases, and no merge-validation logic for a motif axis exists anywhere in its history.",
+      "how_established": [
+        "git log --all -i --grep over shard/merge/partial-database/cbust terms",
+        "git grep over ~400 commits for concat/merge feather, partial db, shard motif, combine rankings",
+        "git grep -l for the DB-builder symbols across EVERY branch tip"
+      ],
+      "consequence": "The shard and merge-validation layer must be written here. It will be the first tested code in this area.",
+      "prior_extent_of_thinking": "An observation on record that 'the scoring phase is embarrassingly parallel across motifs'. An observation, not an implementation."
+    },
+    "the_upstream_tool_ALREADY_shards": {
+      "claim": "create_cistarget_motif_databases.py natively supports deterministic partial runs.",
+      "evidence": "--help exposes `-p CURRENT_PART NBR_TOTAL_PARTS`: 'Divide the motif list in a number of total parts (of similar size) and score only the part defined by current_part ... while still being able to give the same list of motifs to each instance.'",
+      "matching_combiners_present": [
+        "combine_partial_motifs_or_tracks_vs_regions_or_genes_scores_cistarget_dbs.py",
+        "combine_partial_regions_or_genes_vs_motifs_or_tracks_scores_cistarget_dbs.py"
+      ],
+      "why_this_matters": "Sharding does NOT need to be invented. This was invisible to a repository-only audit because the tool is container-only and is not vendored into the repo.",
+      "what_is_still_mine_to_write": "Independent merge VALIDATION. The upstream combiner is not trusted blindly: this lane must separately prove the merged motif axis equals the frozen ordered universe with no duplicates and no omissions."
+    },
+    "cbust_invocation_is_per_sequence": {
+      "command": "cbust -f 4 -c 0.0 -r 10000 -b <bg_padding> -t 1 <motif_file> <fasta_file>",
+      "source": "/opt/create_cisTarget_databases/clusterbuster.py",
+      "relevance": "Per-sequence padded background and no global normalisation flag. This is what made union scoring plausible; it was then PROVEN empirically in V69_UNION_REGION_SCORE_EQUIVALENCE_V1.json rather than assumed."
+    }
+  },
+
+  "upstream_tool_pinned_by_content_not_by_commit": {
+    "problem": "docker/scenicplus/Dockerfile clones create_cisTarget_databases at CREATE_CISTARGET_DATABASES_REF=master, an UNPINNED ref, and the resulting clone in the image carries NO git metadata, so the exact upstream commit cannot be recovered from the image.",
+    "severity": "Reproducibility hazard. Rebuilding the image at a later date would silently pick up a different tool version.",
+    "mitigation_applied": "The tool is pinned by CONTENT digest instead, which is stronger than a ref.",
+    "aggregate_digest_of_all_py_and_sh": "25845094fbc2202e5c96add0ea6f984be9950b6c8e7855cd92f0d72c1ae007b4",
+    "key_file_digests": {
+      "create_cistarget_motif_databases.py": "e06e80ba6a128ba5c2f07afbc324660b621cfb7ba9f488fcb3a8b2a24516cb81",
+      "clusterbuster.py": "e16a899829d7959b219173762ca069a0873ff1244b80cb089c7307404909672a",
+      "cistarget_db.py": "5873fbaadcec2006bebf9f6473b1de1068cbdd83ef3fb0e1630ab6b7ca534b13",
+      "convert_motifs_or_tracks_vs_regions_or_genes_scores_to_rankings_cistarget_dbs.py": "0bd6c561d3fb49330885349198cf451322b9635e01429c2d8cdee9b387619c84",
+      "combine_partial_motifs_or_tracks_vs_regions_or_genes_scores_cistarget_dbs.py": "3e9848ac1bed915e6d52b116792bd7f6045a75b76640e6b224c3e2228e14a680",
+      "combine_partial_regions_or_genes_vs_motifs_or_tracks_scores_cistarget_dbs.py": "2980649f9470798f9c6a0d648cb79144aaa60e310a368a6ad53ccc4797fd8b0e",
+      "create_fasta_with_padded_bg_from_bed.sh": "1739638242593e5e8305465633c013c89c0ae4daa87ad3ebc1d31654de008921"
+    },
+    "recommendation_for_the_owner": "Pin CREATE_CISTARGET_DATABASES_REF to an explicit commit in docker/scenicplus/Dockerfile. Not changed by this lane, because altering the recipe would invalidate the relationship to the already-validated running image."
+  },
+
+  "reused_code_from_prior_work": [
+    {
+      "artifact": "scripts/stage75f_audit_cistarget_region_mapping.py (corrected version, commit 98c5b763)",
+      "reusing": [
+        "read_columns(database, indices) -- feather.read_table(memory_map=False, use_threads=False); the OOM-safe bounded read",
+        "find_num_columns(database) -- exponential-then-binary search on column index, avoids reading the schema of a multi-GB feather",
+        "build_region_index(...) -- atomic tmp-then-replace sidecar with an ordered column_name_sha256",
+        "verify_column_parity(source, other, ...) -- positional name comparison between the scores and rankings axes"
+      ],
+      "why": "verify_column_parity is precisely the scores-vs-rankings axis guard required by amendment 2, and column_name_sha256 is the nearest existing thing to a frozen-axis certificate.",
+      "NOT_reused": "Its pass/fail gate keys off cfg['regulators']['primary_passed_all_stage74_gates'], which is the Stage75 TF list (IRF8, STAT1). That is legacy biology and is stripped."
+    },
+    {
+      "artifact": "scripts/stage75f_run_primary_motif_pilot.py",
+      "reusing": [
+        "read_motif_ids(...) -- raises if the motif list is empty or contains duplicates; the only existing motif-axis integrity check in the repo",
+        "read_rankings_subset(...) -- requires requested indices sorted and unique, re-verifies schema names positionally element by element, checks row count and integer dtype",
+        "completed(paths) plus a summary JSON carrying \"complete\": true -- the shard-idempotency idiom",
+        "atomic_text / atomic_csv -- tmp-then-Path.replace()"
+      ],
+      "why": "The completion-sentinel idiom generalises from per-TF batches to per-motif shards and directly satisfies the requirement that an incomplete shard be impossible to mistake for a complete one.",
+      "NOT_reused": "Everything organised around `tf` as a first-class key, load_motif_annotations(specie=...), and the four hard-coded annotation columns."
+    },
+    {
+      "artifact": "scripts/stage75e_validate_cistarget_resources.py (OOM fix, commit 3b450765)",
+      "reusing": ["the low-memory gate idea: do not open a multi-GB Arrow file unless explicitly asked"],
+      "NOT_reused": "Its SHA-1 manifest handling. Upstream aertslab manifests use SHA-1; this lane pins SHA-256 throughout and the two must not be mixed."
+    },
+    {
+      "artifact": "scripts/stage75e_pycistarget_smoke.py (commits 05358c57, 831c9315)",
+      "reusing": ["the flag combination memory_map=False, use_threads=False, which is what fixed the OOM"],
+      "status": "Superseded by the audit script above. Value is historical: it documents that memory_map=True plus full-schema enumeration is what ran out of memory."
+    },
+    {
+      "artifact": "scripts/stage75f_stream_microglia_10x_h5.py (commits 488e6359, 64976266, d081947e)",
+      "reusing": "NOTHING for this task.",
+      "why_not": "It streams a 10x HDF5 CSC expression matrix, not cisTarget data, and relies on resizable 1-D HDF5 datasets. Arrow IPC is not append-resizable, so the idiom does not transfer to feather shards. Recorded so a later reader does not assume it was applicable.",
+      "also": "GSE174367-specific hard-coding throughout (microglia_label 'MG', Cell.Type / SampleID column names)."
+    },
+    {
+      "artifact": "scripts/v69/build_region_universe_bed_v1.py",
+      "reusing": ["ordered_digest(items) -- order-sensitive digest helper, applied to certifying the frozen motif axis"]
+    }
+  ],
+
+  "rewritten_rather_than_reused": {
+    "shard_driver": "No prior equivalent exists. Forked from scripts/v69/build_custom_cistarget_db_v1.sh, preserving its two baked-in defect fixes: the helper must be invoked as a SUBPROCESS not sourced (S11), and the motif list and digest must be named after the run not a fixed shared path (S12).",
+    "merge_validator": "No prior equivalent exists anywhere in the repository. The invariant to enforce, which has never been enforced here: concat(shard motif axes) in shard order EQUALS the frozen ordered motif universe, with equal length, zero duplicates and a matching ordered digest; and every shard's region axis identical to the shared region FASTA's."
+  },
+
+  "results_explicitly_NOT_inherited": {
+    "configs/stage75f_out_of_core_v1.yaml": {
+      "why": "Saturated with superseded authorities and Stage75 biology.",
+      "specific_values_rejected": {
+        "parameters.motif_count_per_batch": "5876 -- the OLD motif authority; this lane uses an independently pinned 10,249-motif collection",
+        "cistarget_global_region_count": "1837304 -- the OLD generic hg38 screen universe; this lane builds a CUSTOM database over ~150k of its own regions",
+        "regulators.primary_passed_all_stage74_gates": "[IRF8, STAT1]",
+        "descriptive_secondary_hypotheses": "[ELF1, RELA, BACH1, NRF1, SPI1, CEBPA, STAT3, MITF]",
+        "integrated_stage75_evidence_freeze.tiers": "Tier A/B/C TF assignments"
+      },
+      "permitted_use": "Schema template only. No value inherited from regulators, tiers or parameters."
+    },
+    "stage75f_result_tables": "results/tables/stage75f_* and the preserved copies are RESULTS. Every row carries validated_regulation=False. Not inherited.",
+    "generic_databases": "hg38_screen_v10_clust.regions_vs_motifs.{rankings,scores}.feather are a different object from the custom database being built here."
+  },
+
+  "test_coverage_of_prior_work": {
+    "finding": "None of the six prior cisTarget/out-of-core scripts has a test.",
+    "consequence": "Every primitive lifted from them is re-tested here rather than trusted."
+  },
+
+  "prior_defects_that_multiply_under_sharding": [
+    {
+      "ref": "S16",
+      "defect": "Editing a shell script in /workspace while a container executed it made bash resume at a stale byte offset.",
+      "amplification": "With N concurrent shards executing the same worktree script, the exposure multiplies.",
+      "rule": "Copy the script to a run-specific immutable path and execute the copy."
+    },
+    {
+      "ref": "S12",
+      "defect": "A fixed-path provenance file in a shared output directory is a mutable variable, not a record.",
+      "amplification": "With N shards writing into one directory this is the DEFAULT failure mode.",
+      "rule": "Every digest file is named after the artifact it certifies, including the shard id."
+    },
+    {
+      "ref": "S15",
+      "carried": "The 53 regions absent from the reference remain STRUCTURALLY_UNSCOREABLE: never in an enrichment denominator, never encoded as zero. Region counts are 150,614 in the cisTopic matrix and 150,561 in the cisTarget universe."
+    }
+  ],
+
+  "unresolved": [
+    "results/tables/stage75f_cistarget_region_coverage_v1.csv remains unlocated; this lane does not cite it.",
+    "The upstream combiner's own merge semantics were not read line by line. It is therefore treated as untrusted and independently validated, which is the correct posture regardless."
+  ]
+}
