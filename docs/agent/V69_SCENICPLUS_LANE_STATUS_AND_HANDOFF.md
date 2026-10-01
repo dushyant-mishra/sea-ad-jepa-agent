@@ -167,6 +167,29 @@ says "built from recipe X".
 
 ---
 
+## 1b. In flight at hand-off
+
+**Route-B fragment QC** (`scripts/v69/routeb_fragment_qc_and_donor_split_v1.py`) was
+launched against the now byte-complete 63.6 GB fragment file and was **still running**
+when this hand-off was written. It is a single streaming pass over the whole file; its
+receipt is written only on completion. If no
+`V69_ROUTEB_FRAGMENT_QC_V1.json` exists, it did not finish — re-run it rather than
+assuming partial output.
+
+**Custom cisTarget database cost is now MEASURED, and the full build is not started.**
+Two benchmark runs over the 150,561-region Route-A universe on 16 threads:
+24 motifs took 284.29 s of Cluster-Buster scoring (11.845 s/motif, uncontended) and
+120 motifs took 1738.85 s (14.490 s/motif, contended by the fragment scan). Projected
+for the full 10,249-motif collection: **33.7–41.2 hours per route**, so 67–83
+hours for both. A two-point linear fit gives a negative intercept and is therefore not
+reported as a model. Feather write time over the Windows bind mount is a separate and
+possibly dominant cost that is **not** included — see
+`V69_CUSTOM_CISTARGET_FEASIBILITY_MEASUREMENT_V1.json`, which also records the
+recommendation to build to container-local storage and the decision this surfaces for
+the owner.
+
+---
+
 ## 2. What is NOT done
 
 - **No eRegulons exist.** Neither Route A nor Route B has a network.
