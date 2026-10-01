@@ -6,6 +6,7 @@ on:
       - 'docs/agent/V64_*'
       - 'docs/agent/V65_*'
       - 'results/v64/V64_*'
+      - 'results/v64/V65_*'
       - 'scripts/v64/privileged_information_architecture_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_shortcut_smoke_v1.py'
       - 'scripts/v64/build_promoter_dual_ledger_v2.py'
