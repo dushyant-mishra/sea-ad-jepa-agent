@@ -114,3 +114,24 @@ def test_materiality_margin_is_median_not_per_donor():
     assert all(d["delta_r2"]>0 for d in donors)
     assert np.median([d["delta_r2"] for d in donors])>=m.DELTA_MARGIN
     assert m.validation_rank_eligible(donors)
+
+
+def test_test_confirmation_does_not_inherit_validation_only_technical_margin():
+    m=_load()
+    validation=[
+        m.donor(.40,.10,.20),
+        m.donor(.41,.10,.20),
+        m.donor(.42,.10,.20),
+        m.donor(.43,.10,.20),
+    ]
+    # One TEST donor has only 0.005 advantage over technical baseline, but all TEST
+    # requirements are met: DELTA_R2 > 0, median delta >= .05, candidate > 0,
+    # permutation/geometry pass, and replication fraction passes.
+    test=[
+        m.donor(.305,.300,.20),
+        m.donor(.40,.10,.20),
+        m.donor(.41,.10,.20),
+        m.donor(.42,.10,.20),
+    ]
+    assert test[0]["candidate_r2"]-test[0]["technical_r2"] < m.TECH_CLOSE_MARGIN
+    assert m.test_confirmed(validation,test)
