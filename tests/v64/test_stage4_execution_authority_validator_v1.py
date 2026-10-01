@@ -11,7 +11,7 @@ import validate_stage4_execution_authority_v1 as v  # noqa: E402
 
 
 CONTRACT = json.loads(
-    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json")
+    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json")
     .read_text(encoding="utf-8")
 )
 
@@ -31,6 +31,14 @@ def valid_manifest():
             CONTRACT["accepted_execution_parent"]["qualifying_donors"],
         "metacells": CONTRACT["accepted_execution_parent"]["metacells"],
         "t5_rows": CONTRACT["accepted_execution_parent"]["t5_rows"],
+        "microglia_covered": CONTRACT["accepted_execution_parent"]["microglia_covered"],
+        "genes": CONTRACT["accepted_execution_parent"]["genes"],
+        "intervals": CONTRACT["accepted_execution_parent"]["intervals"],
+        "pairs": CONTRACT["accepted_execution_parent"]["pairs"],
+        "t3_nnz": CONTRACT["accepted_execution_parent"]["t3_nnz"],
+        "t4_nnz": CONTRACT["accepted_execution_parent"]["t4_nnz"],
+        "pairs_meeting_minimum_donors":
+            CONTRACT["accepted_execution_parent"]["pairs_meeting_minimum_donors"],
         "availability_state_vocabulary": copy.deepcopy(
             CONTRACT["frozen_state_vocabulary"]),
         "statistical_rules": copy.deepcopy(CONTRACT["frozen_statistical_rules"]),
@@ -98,6 +106,16 @@ class Stage4AuthorityMutationTests(unittest.TestCase):
         m = valid_manifest()
         m["metacells"] = 3230
         self.assertFailsWith(m, "METACELL_COUNT_DRIFT")
+
+    def test_metacell_seed_cannot_drift(self):
+        m = valid_manifest()
+        m["statistical_rules"]["metacell_seed"] = 1
+        self.assertFailsWith(m, "RULE_DRIFT:metacell_seed")
+
+    def test_interval_count_cannot_drift(self):
+        m = valid_manifest()
+        m["intervals"] = 32154
+        self.assertFailsWith(m, "INTERVAL_COUNT_DRIFT")
 
     def test_no_execution_action_before_successor_authorization(self):
         m = valid_manifest()
