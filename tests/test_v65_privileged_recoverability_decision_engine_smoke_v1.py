@@ -163,7 +163,7 @@ def test_singular_value_boundary_tie_fails_closed():
 
 def test_decision_state_forbids_private_label_from_nonrecoverability():
     import json
-    p=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
+    p=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json").read_text())
     assert p["classifications"]["PRIVILEGED_PRIVATE"]=="NOT_ASSIGNABLE_BY_THIS_EXPERIMENT"
     assert p["governance"]["execution_authorized"] is False
     assert p["validation_rule"]["aggregate_and_incremental_shell_must_both_pass"] is True
