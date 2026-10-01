@@ -1,12 +1,12 @@
 {
   "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__S57_S60_DESIGN_CLOSED__PHASE_B_BLOCKED_ON_S61_STALE_TEST_RECEIPT__TRAINING_OFF",
+  "status": "V65_PHASE_A_V3_ACCEPTED__PHASE_B_MEASUREMENT_ONLY_SUBSTRATE_BUILD_AUTHORIZED__STAGE4_SEALED__TRAINING_OFF",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
     "chatgpt_architecture": "65a0171d72dd8e9f174b14d4426e231e12c6cb08",
-    "claude_exact_sampler": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
+    "claude_exact_sampler": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
   },
@@ -208,11 +208,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Close Claude S61 only: rerun and commit a clean final-state 9/9 substrate-test receipt after mutation artifacts are restored; keep Phase B stopped until re-audit passes.",
-    "Promoter dual ledger is materialized and accepted; do not repeat source-byte/overlap work unless a contradictory audit finding appears.",
-    "Recoverability structural preflight passes on the exact paired subset with TEST numeric access sealed by API; real TRAIN+VALIDATION recoverability execution remains NOT AUTHORIZED.",
-    "If recoverability work continues, build/audit the authorized TRAIN+VALIDATION execution path from the frozen V2 decision/mechanics contracts without opening TEST.",
-    "Keep Stage 4, Morabito, training and protected correspondence closed."
+    "Execute only the frozen measurement-only Phase B substrate build.",
+    "Persist T1-T7 tables exactly as contracted, including metacell partition and R3 conditioning references.",
+    "Do not compute any RNA-ATAC correspondence or linked-minus-control biological statistic.",
+    "After substrate materialization, stop for independent audit before Stage 4.",
+    "Continue promoter/recoverability architecture work separately without contaminating Phase B."
   ],
   "governance": {
     "training": "OFF",
@@ -230,9 +230,9 @@
     "final factorized-target tournament"
   ],
   "phaseB_substrate": {
-    "claude_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
+    "claude_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
     "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
-    "status": "NOT_AUTHORIZED_FOR_EXECUTION",
+    "status": "AUTHORIZED_FOR_MEASUREMENT_ONLY_EXECUTION",
     "accepted_elements": [
       "single-modality-only Phase-B boundary",
       "persisted metacell substrate",
@@ -241,14 +241,14 @@
       "protected demographic values not read",
       "57 enumeration rows arithmetically recomputed"
     ],
-    "blockers": [
-      "S61 committed substrate-test receipt is 7/9 FAIL despite reported final 9/9 PASS"
-    ],
+    "blockers": [],
     "closed_findings": [
       "S57",
       "S58",
       "S59",
-      "S60_DESIGN"
+      "S60",
+      "S61",
+      "S62"
     ]
   }
 }
