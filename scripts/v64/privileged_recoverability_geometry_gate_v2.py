@@ -37,40 +37,51 @@ def _center_rank(x: np.ndarray):
     return xc,rank
 
 
-def canonical_correlations(z_true: np.ndarray, z_pred: np.ndarray) -> np.ndarray:
-    a,ra=_center_rank(z_true)
-    b,rb=_center_rank(z_pred)
-    k=a.shape[1]
-    if b.shape!=a.shape:
-        raise ValueError("true/predicted shared states must have identical shape")
-    if ra<k or rb<k:
+def _orthonormal_basis(z: np.ndarray) -> np.ndarray:
+    zc,rank=_center_rank(z)
+    k=zc.shape[1]
+    if rank<k:
         raise ValueError("rank-deficient projected state")
-    qa,_=np.linalg.qr(a,mode="reduced")
-    qb,_=np.linalg.qr(b,mode="reduced")
-    vals=np.linalg.svd(qa.T@qb,compute_uv=False)
+    q,_=np.linalg.qr(zc,mode="reduced")
+    return q
+
+
+def _canonical_from_bases(q_true: np.ndarray, q_pred: np.ndarray) -> np.ndarray:
+    vals=np.linalg.svd(q_true.T@q_pred,compute_uv=False)
     if not np.isfinite(vals).all():
         raise ValueError("non-finite canonical correlation")
     return vals
+
+
+def canonical_correlations(z_true: np.ndarray, z_pred: np.ndarray) -> np.ndarray:
+    if np.asarray(z_true).shape!=np.asarray(z_pred).shape:
+        raise ValueError("true/predicted shared states must have identical shape")
+    return _canonical_from_bases(_orthonormal_basis(z_true),_orthonormal_basis(z_pred))
 
 
 def median_canonical_correlation(z_true: np.ndarray, z_pred: np.ndarray) -> float:
     return float(np.median(canonical_correlations(z_true,z_pred)))
 
 
-def pairwise_distance_vector(z: np.ndarray) -> np.ndarray:
+def pairwise_distance_matrix(z: np.ndarray) -> np.ndarray:
     z=np.asarray(z,dtype=np.float64)
     if z.ndim!=2:
         raise ValueError("expected 2-D state matrix")
-    n=len(z)
-    if n<3:
+    if len(z)<3:
         raise ValueError("need at least three rows for relational geometry")
-    iu=np.triu_indices(n,1)
-    # Avoid allocating n x n x k.
-    d=[]
-    for i,j in zip(iu[0],iu[1]):
-        d.append(float(np.linalg.norm(z[i]-z[j])))
-    out=np.asarray(d,dtype=np.float64)
-    if not np.isfinite(out).all() or float(out.std())==0.0:
+    sq=np.square(z).sum(axis=1)
+    d2=sq[:,None]+sq[None,:]-2.0*(z@z.T)
+    np.maximum(d2,0.0,out=d2)
+    d=np.sqrt(d2)
+    if not np.isfinite(d).all():
+        raise ValueError("non-finite pairwise distance")
+    return d
+
+
+def pairwise_distance_vector(z: np.ndarray) -> np.ndarray:
+    d=pairwise_distance_matrix(z)
+    out=d[np.triu_indices(len(d),1)]
+    if float(out.std())==0.0:
         raise ValueError("degenerate pairwise-distance vector")
     return out
 
@@ -102,9 +113,25 @@ def donor_geometry_gate(
     b=np.asarray(z_pred,dtype=np.float64)
     if a.shape!=b.shape or a.ndim!=2:
         raise ValueError("true/predicted shared states must be aligned 2-D arrays")
-    # Fail closed before generating the null.
-    obs_cc=median_canonical_correlation(a,b)
-    obs_rg=relational_geometry_correlation(a,b)
+    # Fail closed before generating the null, then precompute all invariant
+    # quantities so the 10,000 permutations only relabel rows.
+    q_true=_orthonormal_basis(a)
+    q_pred=_orthonormal_basis(b)
+    obs_cc=float(np.median(_canonical_from_bases(q_true,q_pred)))
+
+    d_true=pairwise_distance_matrix(a)
+    d_pred=pairwise_distance_matrix(b)
+    iu=np.triu_indices(len(a),1)
+    true_vec=d_true[iu]
+    pred_vec=d_pred[iu]
+    if float(true_vec.std())==0.0 or float(pred_vec.std())==0.0:
+        raise ValueError("degenerate pairwise-distance vector")
+    tc=true_vec-true_vec.mean()
+    pc=pred_vec-pred_vec.mean()
+    rg_denom=float(np.linalg.norm(tc)*np.linalg.norm(pc))
+    if rg_denom==0.0:
+        raise ValueError("degenerate relational-geometry denominator")
+    obs_rg=float(np.dot(tc,pc)/rg_denom)
 
     perms=permutation_indices(donor_id,len(a),n_perm) if permutations is None else np.asarray(permutations)
     if perms.ndim!=2 or perms.shape[1]!=len(a):
@@ -114,11 +141,15 @@ def donor_geometry_gate(
 
     cc_null=np.empty(n_perm,dtype=np.float64)
     rg_null=np.empty(n_perm,dtype=np.float64)
+    i0,i1=iu
+    # Pairwise-distance mean/norm are invariant under row relabelling.
+    true_mean=float(true_vec.mean())
+    true_norm=float(np.linalg.norm(tc))
+    pred_norm=float(np.linalg.norm(pc))
     for i,p in enumerate(perms):
-        # Predicted rows remain fixed; true rows are permuted.
-        ap=a[p]
-        cc_null[i]=median_canonical_correlation(ap,b)
-        rg_null[i]=relational_geometry_correlation(ap,b)
+        cc_null[i]=float(np.median(_canonical_from_bases(q_true[p],q_pred)))
+        perm_true=d_true[p[i0],p[i1]]
+        rg_null[i]=float(np.dot(perm_true-true_mean,pc)/(true_norm*pred_norm))
 
     cc_thr=_higher_quantile(cc_null)
     rg_thr=_higher_quantile(rg_null)
