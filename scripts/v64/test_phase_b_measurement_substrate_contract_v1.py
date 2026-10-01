@@ -23,6 +23,7 @@ DIR = "results/v64/phase_b_design"
 SUB = os.path.join(DIR, "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json")
 NULL_V3 = os.path.join(DIR, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
 ROWS = "D:/jepa_v5_outputs_20260925/v64_phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"
+R3REF = os.path.join(DIR, "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json")
 RESULTS = []
 
 
@@ -227,8 +228,21 @@ def main() -> int:
         if st.get("THIS_CONTRACT_MAKES_A_STATISTICAL_DECISION", {}).get(
                 "declared") is not True:
             return False, "the statistical contract does not declare R3 as its decision"
-        return True, (f"all {len(ids)} rules have upstream authority and the statistical "
-                      f"contract declares the decision as its own")
+        # SEMANTIC drift: a name bind cannot see eligibility or conditioning changing
+        # under an unchanged identifier, so each rule's full definition is digested.
+        sd = c["EXACT_ENUMERATION_REQUIREMENT"].get("RULE_SEMANTIC_DIGESTS")
+        if not sd:
+            return False, "no per-rule semantic digests recorded"
+        for i in ids:
+            live = B.sha_bytes(json.dumps(sec[i], sort_keys=True,
+                                          separators=(",", ":")).encode())
+            if sd["digests"].get(i) != live:
+                return False, f"semantic drift under identifier {i}"
+            declared = sec[i].get("edges") or sec[i].get("pairs")
+            if sd["declared_counts_cross_checked"].get(i) != declared:
+                return False, f"declared count drift under {i}"
+        return True, (f"all {len(ids)} rules bound by NAME, by full-definition semantic "
+                      f"digest and by declared count")
     bad = copy.deepcopy(C)
     bad["EXACT_ENUMERATION_REQUIREMENT"]["rule_identifiers_implemented_here"].append(
         "R4_SOME_RULE_INVENTED_DOWNSTREAM")
@@ -257,6 +271,94 @@ def main() -> int:
     check("T18_enumeration_denominator_recomputed",
           "the fraction denominator tracks the artifact and is not a literal (S57)",
           t18, C, bad)
+
+    # ---- T19 R3 conditioning identity is persisted as DATA and independently recovers
+    def t19(c):
+        t7 = c["SUBSTRATE_TABLES"].get("T7_R3_CONDITIONING_REFERENCE")
+        if not t7:
+            return False, "no R3 conditioning table in the substrate schema"
+        need = {"reference_id", "edge_index", "reference_rule_id", "small_arm_role",
+                "small_arm_drawn_side", "large_arm_role",
+                "realised_large_arm_drawn_side", "realised_large_arm_hg19_start",
+                "realised_large_arm_hg19_end", "required_label"}
+        missing = need - set(t7["required_fields"])
+        if missing:
+            return False, f"T7 lacks required fields: {sorted(missing)}"
+        if t7.get("required_label_value") != "CONDITIONAL_ON_REALISED_LARGE_ARM":
+            return False, "the mandatory conditional label is not fixed"
+        if t7["materialised_artifact"]["sha256"] != B.sha_file(R3REF):
+            return False, "the bound conditioning artifact digest is stale"
+        # T6 rows under R3 must point at it
+        t6 = c["SUBSTRATE_TABLES"]["T6_ENUMERATION_ONLY"]
+        if "reference_id" not in t6.get("required_fields", []):
+            return False, "ENUMERATION_ONLY rows carry no reference_id"
+        if "resolve to exactly one" not in t6.get("reference_id_rule", ""):
+            return False, "no row->reference binding rule"
+
+        # independently recover every property from the Phase-A artifact
+        R = json.load(open(R3REF))
+        recs = {r["reference_id"]: r for r in R["records"]}
+        A = EX.load_A_exact()
+
+        def members(e, sd_):
+            iv, sup = A[e][sd_]
+            o = []
+            for a, b in iv:
+                o.extend(range(a, b + 1))
+            o.extend(sup)
+            return sorted(o)
+        live = []
+        for e, v in by.items():
+            if "B" not in v:
+                continue
+            na, nb = v["A"]["admissible_start_count"], v["B"]["admissible_start_count"]
+            if na == 1 or nb == 1:
+                continue
+            if not (na <= 10 or nb <= 10) or (na <= 10 and nb <= 10):
+                continue
+            live.append((e, "A" if na <= 10 else "B"))
+        if len(live) != 21:
+            return False, f"recovered {len(live)} R3 pairs, expected 21"
+        n_a = sum(1 for _, sm in live if sm == "A")
+        if (n_a, len(live) - n_a) != (11, 10):
+            return False, f"small-arm split {(n_a, len(live)-n_a)}, expected (11, 10)"
+        same = 0
+        for e, sm in live:
+            rid = f"R3:e{e}"
+            if rid not in recs:
+                return False, f"no conditioning record for {rid}"
+            r = recs[rid]
+            lg = "B" if sm == "A" else "A"
+            if r["small_arm_role"] != sm or r["large_arm_role"] != lg:
+                return False, f"{rid}: arm roles disagree with the artifact"
+            # the realised large-arm draw must EQUAL the frozen Phase-A row
+            pa = by[e][lg]
+            if (r["realised_large_arm_hg19_start"] != pa["hg19_start"]
+                    or r["realised_large_arm_hg19_end"] != pa["hg19_end"]
+                    or r["realised_large_arm_drawn_side"] != pa["drawn_side"]):
+                return False, f"{rid}: realised large arm differs from frozen Phase A"
+            if r["required_label"] != "CONDITIONAL_ON_REALISED_LARGE_ARM":
+                return False, f"{rid}: missing conditional label"
+            alt = members(e, by[e][sm]["drawn_side"])
+            if r["small_arm_enumerated_alternatives_hg19_start"] != alt:
+                return False, f"{rid}: enumerated alternatives disagree"
+            if by[e][sm]["hg19_start"] not in alt:
+                return False, f"{rid}: realised small arm not in its own set"
+            if r["arms_on_same_side"]:
+                same += 1
+        if same != 0:
+            return False, f"{same} pairs recorded as same-side, expected 0"
+        if len(recs) != 21:
+            return False, f"{len(recs)} records, expected 21"
+        return True, ("21 pairs, 11 A-small / 10 B-small, 0 same-side / 21 different-side, "
+                      "every realised large-arm draw equal to frozen Phase A, every "
+                      "label present, every row->reference binding resolvable")
+    bad = copy.deepcopy(C)
+    bad["SUBSTRATE_TABLES"]["T7_R3_CONDITIONING_REFERENCE"][
+        "required_label_value"] = "UNCONDITIONAL"
+    check("T19_R3_conditioning_identity_persisted",
+          "the R3 conditioning identity is frozen data that independently recovers (S60)",
+          t19, C, bad)
 
     real = [r for r in RESULTS if r["is_a_real_test"]]
     out = dict(schema="V64_PHASE_B_MEASUREMENT_SUBSTRATE_TESTS_V1", date="2026-09-30",

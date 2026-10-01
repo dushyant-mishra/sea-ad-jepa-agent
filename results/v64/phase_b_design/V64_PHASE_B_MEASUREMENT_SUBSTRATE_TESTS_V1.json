@@ -3,9 +3,9 @@
   "date": "2026-09-30",
   "contract": {
     "path": "results/v64/phase_b_design\\V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
-    "sha256": "ca00c0ac248adf9840ef1e639c5fd16a6df7e799289aa61008a338008a3e29ad"
+    "sha256": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b"
   },
-  "producer_sha256": "a02909f0b3d93d3d2c6c4046f302ac13a559ee49858440e9ab63f854942ce6e5",
+  "producer_sha256": "ef8482dc0f7f3c3faf811d5f3588d48f05a3be28d4b656e42ef5b488a0d2162f",
   "tests": [
     {
       "name": "T11_metacell_level_vectors_persisted",
@@ -50,18 +50,18 @@
     {
       "name": "T16_no_statistical_decision_changed",
       "requirement": "the substrate contract changes no statistical decision",
-      "passes_on_real_contract": true,
+      "passes_on_real_contract": false,
       "rejects_planted_violation": true,
-      "is_a_real_test": true,
-      "detail": "statistically neutral and bound to the accepted V3 digest"
+      "is_a_real_test": false,
+      "detail": "bound statistical contract digest is stale"
     },
     {
       "name": "T17_every_enumeration_rule_has_upstream_authority",
       "requirement": "no inferential rule is introduced by the substrate contract (S58)",
-      "passes_on_real_contract": true,
+      "passes_on_real_contract": false,
       "rejects_planted_violation": true,
-      "is_a_real_test": true,
-      "detail": "all 3 rules have upstream authority and the statistical contract declares the decision as its own"
+      "is_a_real_test": false,
+      "detail": "bound authority digest is stale"
     },
     {
       "name": "T18_enumeration_denominator_recomputed",
@@ -70,9 +70,17 @@
       "rejects_planted_violation": true,
       "is_a_real_test": true,
       "detail": "denominator 24,187 recomputed from the artifact and the fraction follows from it"
+    },
+    {
+      "name": "T19_R3_conditioning_identity_persisted",
+      "requirement": "the R3 conditioning identity is frozen data that independently recovers (S60)",
+      "passes_on_real_contract": true,
+      "rejects_planted_violation": true,
+      "is_a_real_test": true,
+      "detail": "21 pairs, 11 A-small / 10 B-small, 0 same-side / 21 different-side, every realised large-arm draw equal to frozen Phase A, every label present, every row->reference binding resolvable"
     }
   ],
-  "n_tests": 8,
-  "n_real_tests": 8,
-  "status": "PASS"
+  "n_tests": 9,
+  "n_real_tests": 7,
+  "status": "FAIL"
 }

@@ -55,6 +55,7 @@ NULL_V3 = os.path.join(OUT, "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json")
 DESIGN_V1 = "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
 FEATURE_V2 = "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json"
 PATCHED_A = "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json"
+R3REF = os.path.join(OUT, "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json")
 RNA = "D:/jepa_v5_outputs_20260925/nihcard/final_rna_data.h5ad"
 ATAC = "D:/jepa_v5_outputs_20260925/nihcard/final_atac_data.h5ad"
 
@@ -237,13 +238,50 @@ def main() -> int:
                   "artifact is self-contained"},
         "T6_ENUMERATION_ONLY": {
           "key": "edge_index x drawn_side x hg19_start",
+          "required_fields": ["edge_index", "drawn_side", "hg19_start", "hg19_end",
+                              "hg38_start", "hg38_end", "reference_rule_id",
+                              "reference_id"],
+          "reference_id_rule": "a row materialised under R3 MUST carry the reference_id "
+                               "of its conditioning record in T7 and must resolve to "
+                               "exactly one such record. A row under R1 or R2 carries "
+                               "reference_rule_id but needs no conditioning record, "
+                               "because those references are unconditional.",
           "label": "ENUMERATION_ONLY",
           "semantics": ["NOT new Phase-A controls", "do NOT change retention",
                         "do NOT increase N", "do NOT enter the primary population",
                         "exist solely to realise the already-frozen exact randomisation "
                         "distribution"],
           "inherits": "edge, promoter, donor and metacell structure from its edge",
-          "measured_identically_to": "CONTROL_A and CONTROL_B, same code path"}},
+          "measured_identically_to": "CONTROL_A and CONTROL_B, same code path"},
+        "T7_R3_CONDITIONING_REFERENCE": {
+          "closes": "S60",
+          "why": "statistical contract V3 requires the realised large-arm draw to be "
+                 "recorded per pair. Without it as DATA, Stage 4 would have to "
+                 "reconstruct which arm was large and what it drew -- after outcomes "
+                 "exist. Reconstructing a reference distribution once the answer is "
+                 "visible is exactly what this substrate freeze prevents.",
+          "key": "reference_id",
+          "required_fields": ["reference_id", "edge_index", "reference_rule_id",
+                              "small_arm_role", "small_arm_drawn_side",
+                              "small_arm_admissible_support",
+                              "small_arm_realised_hg19_start",
+                              "small_arm_enumerated_alternatives_hg19_start",
+                              "large_arm_role", "realised_large_arm_drawn_side",
+                              "realised_large_arm_hg19_start",
+                              "realised_large_arm_hg19_end",
+                              "realised_large_arm_hg38_start",
+                              "realised_large_arm_hg38_end",
+                              "large_arm_admissible_support", "arms_on_same_side",
+                              "required_label"],
+          "required_label_value": "CONDITIONAL_ON_REALISED_LARGE_ARM",
+          "materialised_artifact": {"path": R3REF, "sha256": B.sha_file(R3REF)},
+          "records": json.load(open(R3REF))["counts"],
+          "large_arm_is_not_redrawn": "the realised large-arm draw is READ from the "
+              "frozen Phase-A row, never re-sampled, so the conditioning record cannot "
+              "drift from the population it conditions on",
+          "forbidden": ["deriving any R3 quantity without emitting its required_label",
+                        "an R3 ENUMERATION_ONLY row with no resolvable reference_id",
+                        "re-drawing or substituting the realised large-arm control"]}},
 
       "EXACT_ENUMERATION_REQUIREMENT": {
         "computed_from": "the committed exact admissible sets, not assumed",
@@ -255,6 +293,23 @@ def main() -> int:
         "rule_identifiers_implemented_here": ["R1_PRIMARY_EXACT_A_SIDE",
                                               "R2_EXACT_JOINT_AB",
                                               "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"],
+        "RULE_SEMANTIC_DIGESTS": {
+          "why": "binding a rule by NAME alone cannot detect semantic drift: the "
+                 "eligibility or conditioning could change under an unchanged "
+                 "identifier and a name check would still pass. Each digest covers the "
+                 "canonical serialisation of that rule's full definition in the "
+                 "statistical contract, so any change on either side breaks the bind.",
+          "digests": {k: B.sha_bytes(json.dumps(
+              json.load(open(NULL_V3))["SECTION_10_ENUMERATION_REFERENCE_RULES"][k],
+              sort_keys=True, separators=(",", ":")).encode())
+              for k in ("R1_PRIMARY_EXACT_A_SIDE", "R2_EXACT_JOINT_AB",
+                        "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM")},
+          "declared_counts_cross_checked": {
+              k: json.load(open(NULL_V3))["SECTION_10_ENUMERATION_REFERENCE_RULES"][k].get(
+                  "edges") or json.load(open(NULL_V3))[
+                  "SECTION_10_ENUMERATION_REFERENCE_RULES"][k].get("pairs")
+              for k in ("R1_PRIMARY_EXACT_A_SIDE", "R2_EXACT_JOINT_AB",
+                        "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM")}},
         "R1_primary_exact_A_side": {
           "rule": "for every retained edge whose CONTROL_A support is 2-10, materialise "
                   "ALL A-side admissible alternatives",
@@ -370,6 +425,8 @@ def main() -> int:
         "the Phase-A patched receipt sha256",
         "every emitted substrate table: path, bytes, sha256",
         "the metacell assignment artifact sha256, separately",
+        "the R3 conditioning reference artifact sha256",
+        "the semantic digest of every enumeration rule implemented",
         "NIH-CARD RNA and ATAC byte-authentication receipt and pairing closeout",
         "the E2 digest", "the consensus peak set digest",
         "every frozen constant and seed actually used",
@@ -383,7 +440,10 @@ def main() -> int:
         "RNA .X fails the integrality assertion",
         "the consensus peak build fails the hg38 precondition",
         "any protected obs column is read",
-        "any two-modality statistic is computed"],
+        "any two-modality statistic is computed",
+        "an R3 ENUMERATION_ONLY row cannot resolve its reference_id",
+        "a rule semantic digest disagrees with the statistical contract",
+        "an R3-derived quantity is emitted without its conditional label"],
 
       "governance": json.load(open(NULL_V3))["governance"],
       "producer": {"path": os.path.relpath(os.path.abspath(__file__), os.getcwd()),

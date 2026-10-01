@@ -103,6 +103,17 @@
     },
     "T6_ENUMERATION_ONLY": {
       "key": "edge_index x drawn_side x hg19_start",
+      "required_fields": [
+        "edge_index",
+        "drawn_side",
+        "hg19_start",
+        "hg19_end",
+        "hg38_start",
+        "hg38_end",
+        "reference_rule_id",
+        "reference_id"
+      ],
+      "reference_id_rule": "a row materialised under R3 MUST carry the reference_id of its conditioning record in T7 and must resolve to exactly one such record. A row under R1 or R2 carries reference_rule_id but needs no conditioning record, because those references are unconditional.",
       "label": "ENUMERATION_ONLY",
       "semantics": [
         "NOT new Phase-A controls",
@@ -113,6 +124,49 @@
       ],
       "inherits": "edge, promoter, donor and metacell structure from its edge",
       "measured_identically_to": "CONTROL_A and CONTROL_B, same code path"
+    },
+    "T7_R3_CONDITIONING_REFERENCE": {
+      "closes": "S60",
+      "why": "statistical contract V3 requires the realised large-arm draw to be recorded per pair. Without it as DATA, Stage 4 would have to reconstruct which arm was large and what it drew -- after outcomes exist. Reconstructing a reference distribution once the answer is visible is exactly what this substrate freeze prevents.",
+      "key": "reference_id",
+      "required_fields": [
+        "reference_id",
+        "edge_index",
+        "reference_rule_id",
+        "small_arm_role",
+        "small_arm_drawn_side",
+        "small_arm_admissible_support",
+        "small_arm_realised_hg19_start",
+        "small_arm_enumerated_alternatives_hg19_start",
+        "large_arm_role",
+        "realised_large_arm_drawn_side",
+        "realised_large_arm_hg19_start",
+        "realised_large_arm_hg19_end",
+        "realised_large_arm_hg38_start",
+        "realised_large_arm_hg38_end",
+        "large_arm_admissible_support",
+        "arms_on_same_side",
+        "required_label"
+      ],
+      "required_label_value": "CONDITIONAL_ON_REALISED_LARGE_ARM",
+      "materialised_artifact": {
+        "path": "results/v64/phase_b_design\\V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+        "sha256": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2"
+      },
+      "records": {
+        "r3_pairs": 21,
+        "small_arm_is_CONTROL_A": 11,
+        "small_arm_is_CONTROL_B": 10,
+        "arms_on_same_side": 0,
+        "arms_on_different_sides": 21,
+        "total_enumerated_small_arm_alternatives": 52
+      },
+      "large_arm_is_not_redrawn": "the realised large-arm draw is READ from the frozen Phase-A row, never re-sampled, so the conditioning record cannot drift from the population it conditions on",
+      "forbidden": [
+        "deriving any R3 quantity without emitting its required_label",
+        "an R3 ENUMERATION_ONLY row with no resolvable reference_id",
+        "re-drawing or substituting the realised large-arm control"
+      ]
     }
   },
   "EXACT_ENUMERATION_REQUIREMENT": {
@@ -128,6 +182,19 @@
       "R2_EXACT_JOINT_AB",
       "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM"
     ],
+    "RULE_SEMANTIC_DIGESTS": {
+      "why": "binding a rule by NAME alone cannot detect semantic drift: the eligibility or conditioning could change under an unchanged identifier and a name check would still pass. Each digest covers the canonical serialisation of that rule's full definition in the statistical contract, so any change on either side breaks the bind.",
+      "digests": {
+        "R1_PRIMARY_EXACT_A_SIDE": "3231e296a5eb5f16a7aab2518057313d35281a0f58ad07bc9da8676faf5a7f68",
+        "R2_EXACT_JOINT_AB": "0b9a430bdfa0a53741bafe0f7bebb42d1e0217df7751e3af3b19df184e20405c",
+        "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM": "cfb076c0d0dc8308c3b6980f34bcc08030588b76f70be8b3e769f2995a340469"
+      },
+      "declared_counts_cross_checked": {
+        "R1_PRIMARY_EXACT_A_SIDE": 32,
+        "R2_EXACT_JOINT_AB": 14,
+        "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM": 21
+      }
+    },
     "R1_primary_exact_A_side": {
       "rule": "for every retained edge whose CONTROL_A support is 2-10, materialise ALL A-side admissible alternatives",
       "edges": 32
@@ -273,6 +340,8 @@
     "the Phase-A patched receipt sha256",
     "every emitted substrate table: path, bytes, sha256",
     "the metacell assignment artifact sha256, separately",
+    "the R3 conditioning reference artifact sha256",
+    "the semantic digest of every enumeration rule implemented",
     "NIH-CARD RNA and ATAC byte-authentication receipt and pairing closeout",
     "the E2 digest",
     "the consensus peak set digest",
@@ -287,7 +356,10 @@
     "RNA .X fails the integrality assertion",
     "the consensus peak build fails the hg38 precondition",
     "any protected obs column is read",
-    "any two-modality statistic is computed"
+    "any two-modality statistic is computed",
+    "an R3 ENUMERATION_ONLY row cannot resolve its reference_id",
+    "a rule semantic digest disagrees with the statistical contract",
+    "an R3-derived quantity is emitted without its conditional label"
   ],
   "governance": {
     "training": "OFF",
@@ -301,6 +373,6 @@
   },
   "producer": {
     "path": "scripts\\v64\\build_phase_b_measurement_substrate_contract_v1.py",
-    "sha256": "309776dfe5f4bd8a2a3ee14c3cf14001baddaa5cfa5905c47042fe1400182fa2"
+    "sha256": "5a70b751d4dd267661d502fb4aec4beaae3cec4ae08e0e0d2b45c50067a9d02b"
   }
 }

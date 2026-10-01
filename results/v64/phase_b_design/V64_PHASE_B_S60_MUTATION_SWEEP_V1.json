@@ -1,0 +1,62 @@
+{
+  "schema": "V64_PHASE_B_S60_MUTATION_SWEEP_V1",
+  "date": "2026-09-30",
+  "closes": "S60",
+  "what_this_is": "Every planted mutation the audit named was applied to the live artifacts, the test suite was re-run, and the artifacts were restored byte-exact. A test that passes on correct data proves nothing unless it fails on corrupted data.",
+  "mutations": [
+    {
+      "planted": "realised large-arm hg19_start incremented by 1",
+      "caught_by": "T19",
+      "detected": true
+    },
+    {
+      "planted": "small/large arm roles swapped",
+      "caught_by": "T19",
+      "detected": true
+    },
+    {
+      "planted": "mandatory conditional label removed",
+      "caught_by": "T19",
+      "detected": true
+    },
+    {
+      "planted": "reference_id renamed so the row binding cannot resolve",
+      "caught_by": "T19",
+      "detected": true
+    },
+    {
+      "planted": "realised large-arm drawn side flipped",
+      "caught_by": "T19",
+      "detected": true
+    },
+    {
+      "planted": "R3 eligibility text changed in the statistical contract",
+      "caught_by": "T17",
+      "detected": true,
+      "note": "semantic drift under an UNCHANGED identifier -- the hole the audit identified in the old T17"
+    },
+    {
+      "planted": "R3 declared pair count changed in the statistical contract",
+      "caught_by": "T17",
+      "detected": true
+    }
+  ],
+  "all_detected": true,
+  "n_mutations": 7,
+  "artifacts_restored_byte_exact": true,
+  "restored_digests": {
+    "V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
+    "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9"
+  },
+  "division_of_labour": "T19 guards the conditioning RECORD; T17 guards the rule SEMANTICS upstream. Neither alone covers both, which is why the audit's observation that the old T17 could not see semantic drift was correct and needed its own repair.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  }
+}
