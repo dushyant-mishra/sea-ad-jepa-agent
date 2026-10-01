@@ -31,6 +31,35 @@ Branch `claude/v69-scenicplus-external-network-20261001`.
 
 ---
 
+## Speed mandate (items 1-11 of the later optimisation brief)
+
+| # | Item | Status | Evidence |
+|---|---|---|---|
+| 1 | Do not change the biology | **HELD** | 10,249-motif universe intact; no generic DB substituted; no frozen threshold, region definition or acceptance criterion altered; routes still differ only in region universes. One parameter ADDED -- the ranking RNG seed -- which is a determinism fix, not a method change. |
+| 2 | Local SSD scratch root | **DONE** | `C:/jepa_scratch/scenicplus/{shared,routeA,routeB,motif_shards,score_shards,tmp,merge,receipts}`; 134.8 GB headroom after a 60 GB OS reserve. No authenticated asset moved; the 63.6 GB fragment file deliberately NOT copied. The one derived file copied had its SHA-256 recomputed on arrival. |
+| 3 | Benchmark on SSD before the full build | **IN PROGRESS** | Storage pair re-running under the pinned seed from an immutable script snapshot. The earlier pair is VOID -- see S24. |
+| 4 | Find the saturation point | **NOT MEASURED** | Driver ready (`run_worker_scaling_table_v1.sh`), 1.75 h, blocked on an idle machine. Nothing is recommended without it. |
+| 5 | Deterministic restartable shards | **BUILT, NOT YET RUN AT SCALE** | `run_cistarget_motif_shard_v1.sh`: motif-wise, per-shard immutable motif list and digest, receipt written only after re-reading outputs from disk, restart skips a shard whose receipt digest-validates. |
+| 6 | Safe cross-route reuse | **PROVEN** | `V69_UNION_REGION_SCORE_EQUIVALENCE_V1.json`: scores bitwise identical (0 of 16,000 cells differ); counter-control shows rankings differ in 15,981 of 16,000, so the test can fail. Scoring may be shared; rankings may NOT. |
+| 7 | Reuse the historical engineering first | **DONE** | `V69_CISTARGET_ENGINEERING_REUSE_AUDIT_V1.json`. No prior sharding or merge existed anywhere in the repo; the upstream tool already supports `-p`; tool pinned by content digest because the recipe clones an unpinned `master`. |
+| 8 | Authenticated inputs stay external | **HELD** | D: remains source of truth. Custody rule: SHA-256 on C, copy to D, re-hash on D, require equality, only then delete the C copy. No C copy has been deleted. |
+| 9 | Benchmark receipt before the full builds | **PARTIAL, AND SAYS SO** | `V69_CISTARGET_SPEED_BENCHMARK_RECEIPT_V1.json`, status `PARTIAL__WORKER_SCALING_TABLE_NOT_YET_MEASURED__FULL_BUILDS_NOT_AUTHORISED_BY_THIS_RECEIPT`. Worker count, shard size, concurrency and scratch footprint all **NOT_DETERMINED**. |
+| 10 | Boundaries unchanged | **HELD** | Stage 4 untouched and NOT AUTHORIZED; no eRegulon claim; the 53 regions remain STRUCTURALLY_UNSCOREABLE; direct vs extended motif support remain separate; donor stability remains donor-level. |
+| 11 | Self-audit the speed work | **DONE** | S20 (BLAS oversubscription), S21 (workload deviation), S22 (test env split, closed), S23 (unpinned ranking RNG -- the database was not reproducible), S24 (I reproduced S16 and corrupted a run). |
+
+### The two findings that would have damaged the full build
+
+**S23 — the rankings database was not reproducible.** The tool draws a fresh random
+seed per run to break ranking ties. Two runs of an identical workload produced rankings
+feathers of 41,330,034 and 41,329,818 bytes while the scores were byte-identical. Found
+only because the digest-equality gate forced inspection of output bytes.
+
+**S20 — BLAS was unpinned at 16 threads.** At `-t 16` that is up to 256 threads on 8
+physical cores, and the distortion grows with worker count, so the very point the shard
+decision rests on would have been the most wrong.
+
+---
+
 ## Tests
 
 50 tests across six files, all passing. Every fail-closed contract is exercised on
