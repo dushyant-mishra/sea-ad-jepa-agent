@@ -12,7 +12,7 @@
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
-  "current_blocker": "Phase-B closeout now has three live requirements only: materialize T5 donor-level aggregates from frozen T2-T4, carry explicit availability/missingness state, and recompute/bind current shard .npz SHA-256 values. S66 interval reconciliation and T6→T7 referential integrity are CLOSED. Stage 4 remains sealed.",
+  "current_blocker": "B1-B5 Phase-B closeout is accepted at Claude 154935c5. B6 availability schema repair is directionally correct but not yet accepted: T5 reconciliation is asserted rather than independently proven, T4 sparse-zero proof is missing, dense metacell indexing/axis identity are unproven, and B6 output custody is incomplete. Stage 4 remains sealed.",
   "parallel_architecture_next": "Nested RNA+multimodal two-student semantics plus optimizer/gradient/EMA mechanics now pass clean synthetic software qualification; historical u0 real-data forward compatibility also passes. None authorizes real training. Recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V3. Do not repeat S66 or T6/T7 work. Focus closeout on T5, availability, and current shard-byte custody."
+  "read_me_first": "Read V64_PHASE_B_B6_AVAILABILITY_PRECOMMIT_AUDIT_V1 before accepting the local B6 PASS transcript. Do not repeat B1-B5. Require executable T3+T4 availability proofs, elementwise T5 reconciliation, indexing/axis guards and full custody."
 }
