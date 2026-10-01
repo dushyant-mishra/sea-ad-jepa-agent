@@ -1,0 +1,246 @@
+{
+  "schema": "V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1",
+  "date": "2026-10-01",
+  "mode": "preflight-only",
+  "computed_correspondence_values": 0,
+  "a_successful_dry_run_is_not_execution_authorization": true,
+  "authorization": {
+    "present": false,
+    "authorized": false,
+    "reason": "no authorisation artifact at the canonical path"
+  },
+  "identity": {
+    "executor": {
+      "path": "scripts/v64/stage4_executor_v1.py",
+      "sha256": "1feb58489ec73e727ed20a426265a4dabb00cec98e79d288498f83c2693057ac",
+      "worktree_blob": "01ce652cef8da70870489d74bb7763c3062521dc",
+      "git_blob_at_head": null
+    },
+    "bound_authority": {
+      "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
+      "sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f",
+      "git_blob_at_head": "ccf7a02ae8a018a9afe83c6a7230dd9a1bfc087e"
+    },
+    "frozen_statistical_contract": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json",
+      "sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+      "design": {
+        "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+        "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b"
+      }
+    },
+    "scientific_input_digests": {
+      "PHASE_B_SUBSTRATE_s00.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s00.npz",
+        "sha256": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e"
+      },
+      "PHASE_B_SUBSTRATE_s01.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s01.npz",
+        "sha256": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee"
+      },
+      "PHASE_B_SUBSTRATE_s02.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s02.npz",
+        "sha256": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a"
+      },
+      "PHASE_B_SUBSTRATE_s03.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s03.npz",
+        "sha256": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb"
+      },
+      "PHASE_B_SUBSTRATE_s04.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s04.npz",
+        "sha256": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427"
+      },
+      "PHASE_B_SUBSTRATE_s05.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s05.npz",
+        "sha256": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30"
+      },
+      "PHASE_B_SUBSTRATE_s06.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s06.npz",
+        "sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202"
+      },
+      "PHASE_B_SUBSTRATE_s07.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s07.npz",
+        "sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4"
+      },
+      "t5": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b/PHASE_B_T5_DONOR_AGGREGATES.npz",
+        "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8"
+      },
+      "availability": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b/PHASE_B_T3_T4_AVAILABILITY.npz",
+        "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81"
+      }
+    },
+    "repo_resident_inputs": {
+      "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json": {
+        "sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f",
+        "git_blob_at_head": "ccf7a02ae8a018a9afe83c6a7230dd9a1bfc087e",
+        "worktree_blob": "ccf7a02ae8a018a9afe83c6a7230dd9a1bfc087e",
+        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+      },
+      "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json": {
+        "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b",
+        "git_blob_at_head": "f10b5c6dac02ba95054fb480d9a156d96e38179d",
+        "worktree_blob": "f10b5c6dac02ba95054fb480d9a156d96e38179d",
+        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+      },
+      "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json": {
+        "sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+        "git_blob_at_head": "0c76ab42dc70faab71daf94b6bf0c289f32675f6",
+        "worktree_blob": "0c76ab42dc70faab71daf94b6bf0c289f32675f6",
+        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+      },
+      "scripts/v63/e2_continuous_adjustment_estimator_v1.py": {
+        "sha256": "50c54cd8ca6e60b512deece7b4676195c4a704c8d6e90d2f63bec009f52271e9",
+        "git_blob_at_head": "38a32d5066f2eb79f2c5d5457f3d269bd3730667",
+        "worktree_blob": "38a32d5066f2eb79f2c5d5457f3d269bd3730667",
+        "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+      }
+    },
+    "frozen_constants": {
+      "bootstrap_replicates": 4000,
+      "bootstrap_seed": 20260929,
+      "ridge_alpha": 1.0,
+      "k_folds": 5,
+      "cross_fitting_unit": "promoter",
+      "min_microglia": 100,
+      "min_metacells": 4,
+      "min_donors_per_edge": 30,
+      "primary_weighting": "GENE_BALANCED",
+      "companion_weighting": "PROMOTER_EQUAL",
+      "sensitivity_weighting": "EDGE_EQUAL",
+      "primary_distance": "SOURCE_HG19_DISTANCE",
+      "r3_label": "CONDITIONAL_ON_REALISED_LARGE_ARM"
+    },
+    "runtime": {
+      "python": "3.9.7",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "numpy": "1.24.2"
+    },
+    "source_commit": "381e2441819641067b249cd98a6664cf431cf075"
+  },
+  "preflight": {
+    "consumer_semantics": {
+      "C1_T3_NNZ_EXACT": {
+        "passed": true,
+        "detail": "counted 6,624,289 expected 6,624,289"
+      },
+      "C2_T4_NNZ_EXACT": {
+        "passed": true,
+        "detail": "counted 55,467,544 expected 55,467,544"
+      },
+      "C3_AGGREGATE_BINDING_RECOMPUTED": {
+        "passed": true,
+        "detail": "recomputed 2a5404842ec64028789e... expected 2a5404842ec64028789e..."
+      },
+      "C4_GENE_DICT_AGREES_ACROSS_SHARDS": {
+        "passed": true,
+        "detail": "8 shards compared"
+      },
+      "C5_INTERVAL_DICT_AGREES_ACROSS_SHARDS": {
+        "passed": true,
+        "detail": "8 shards compared"
+      },
+      "C6_PAIR_DICT_AGREES_ACROSS_SHARDS": {
+        "passed": true,
+        "detail": "8 shards compared"
+      },
+      "C7_NO_SHARD_REORDERS_A_DICTIONARY": {
+        "passed": true,
+        "detail": "no shard reorders a dictionary it otherwise shares"
+      },
+      "C8_EVERY_PAIR_GENE_RESOLVES_UNIQUELY": {
+        "passed": true,
+        "detail": "37,419 pair genes over a 4,372-entry dictionary; 0 unresolved, 0 duplicate dictionary entries"
+      },
+      "C9_EVERY_PAIR_INTERVAL_RESOLVES": {
+        "passed": true,
+        "detail": "37,419 pair intervals into a 32,153-element axis; 0 out of range"
+      },
+      "C10_METACELL_IDS_EXACTLY_0_TO_N": {
+        "passed": true,
+        "detail": "3,231 ids, unique 3,231, expected a dense 0..3230"
+      },
+      "C11_ALL_T3_T4_INDICES_IN_RANGE": {
+        "passed": true,
+        "detail": "0 out-of-range indices"
+      },
+      "C12_PAIR_KEY_SEMANTICS_AGREE": {
+        "passed": true,
+        "detail": "37,419 pair keys, unique=True, T5 pair-key set matches dictionary=True"
+      },
+      "C13_T5_ROWS_AND_LAYOUT": {
+        "passed": true,
+        "detail": "10,552,158 rows, 282 donors x 37,419 pairs"
+      },
+      "C14_AVAILABILITY_VOCABULARY_IN_ORDER": {
+        "passed": true,
+        "detail": "['MEASURED', 'NOT_MEASURED_RNA_ZERO_COVERAGE', 'NOT_MEASURED_ATAC_ZERO_COVERAGE', 'NOT_MEASURED_RNA_ZERO_VARIANCE', 'NOT_MEASURED_ATAC_ZERO_VARIANCE']"
+      },
+      "C16_DICTIONARIES_IN_CONSTRUCTION_ORDER": {
+        "passed": true,
+        "detail": "gene sorted=True, interval sorted=True, pair_key sorted=True"
+      },
+      "C17_DICTIONARY_CONTENT_DIGESTS": {
+        "passed": true,
+        "detail": "gene ok, interval ok, pair ok"
+      },
+      "C15_AVAILABILITY_ENCODING_AND_BITS": {
+        "passed": true,
+        "detail": "T3 [3231, 4372] pad 4, T4 [3231, 32153] pad 1, factorisation reproduces the packed bits: True"
+      }
+    },
+    "shards_loaded": 8,
+    "dictionaries_agree": true,
+    "pair_to_gene_unresolved": 0,
+    "pair_to_interval_unresolved": 0,
+    "metacell_ids_dense": true,
+    "metacells": 3231,
+    "donors": 282,
+    "pairs": 37419,
+    "availability_states_decode_legally": true,
+    "availability_state_counts": {
+      "MEASURED": 8598011,
+      "NOT_MEASURED_RNA_ZERO_COVERAGE": 1471461,
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE": 482686,
+      "NOT_MEASURED_RNA_ZERO_VARIANCE": 0,
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE": 0
+    },
+    "funnel_rows": 10552158,
+    "funnel_reconciles": true,
+    "nuisance_design_fields_available": {
+      "promoter_activity": true,
+      "distal_accessibility": true,
+      "rna_depth_sensitivity": true,
+      "atac_depth_sensitivity": true,
+      "n_assigned_peaks": true,
+      "n_metacells_contributing": true
+    },
+    "distance_fields_available": {
+      "source_hg19_distance_bp": true,
+      "log_distance": true,
+      "promoter_degree": true,
+      "re_density": true,
+      "anchor_frequency": true
+    },
+    "primary_distance": "SOURCE_HG19_DISTANCE",
+    "frozen_rules_checked": {
+      "checked": 12,
+      "nuisance_terms": 14
+    },
+    "rna_matrix_opened": false,
+    "atac_matrix_opened": false,
+    "computed_correspondence_values": 0
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "status": "PASS"
+}
