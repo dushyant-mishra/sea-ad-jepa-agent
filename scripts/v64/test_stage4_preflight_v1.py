@@ -100,6 +100,33 @@ def mutations():
       ("G0_GATE_REGISTRY_AGREES", "add a gate the verifier does not implement",
        lambda c: c["FAIL_CLOSED_GATES"].append(
            {"id": "G99_INVENTED", "rule": "x", "on_failure": "STOP"})),
+      # S77: the blocker itself must not be deletable
+      ("G1c_PREREQUISITE_REGISTRY_INTACT", "delete the execution-prerequisite block",
+       lambda c: c.pop("EXECUTION_PREREQUISITES_NOT_YET_SATISFIED")),
+      ("G1c_PREREQUISITE_REGISTRY_INTACT", "empty the unsatisfied-prerequisite list",
+       lambda c: c["EXECUTION_PREREQUISITES_NOT_YET_SATISFIED"].__setitem__(
+           "unsatisfied_prerequisites", [])),
+      ("G1c_PREREQUISITE_REGISTRY_INTACT", "drop G17 from the prerequisite list",
+       lambda c: c["EXECUTION_PREREQUISITES_NOT_YET_SATISFIED"].__setitem__(
+           "unsatisfied_prerequisites",
+           [x for x in c["EXECUTION_PREREQUISITES_NOT_YET_SATISFIED"]
+            ["unsatisfied_prerequisites"] if "G17" not in x])),
+      # S78: consumer-schema semantics must match the artifacts
+      ("G18_CONSUMER_SCHEMA_SEMANTICS", "claim the wrong metacell count",
+       lambda c: c["CONSUMER_SCHEMA_SEMANTICS"].__setitem__("metacells", 9999)),
+      ("G18_CONSUMER_SCHEMA_SEMANTICS", "reorder the availability vocabulary",
+       lambda c: c["CONSUMER_SCHEMA_SEMANTICS"].__setitem__(
+           "availability_states_in_order",
+           list(reversed(c["CONSUMER_SCHEMA_SEMANTICS"]["availability_states_in_order"])))),
+      ("G18_CONSUMER_SCHEMA_SEMANTICS", "drop the axis interpretation",
+       lambda c: c["CONSUMER_SCHEMA_SEMANTICS"].__setitem__("AXIS_INTERPRETATION", {})),
+      ("G18_CONSUMER_SCHEMA_SEMANTICS", "claim the wrong T5 row count",
+       lambda c: c["CONSUMER_SCHEMA_SEMANTICS"].__setitem__("t5_rows", 1)),
+      # S79: producer custody
+      ("G19_PRODUCER_CUSTODY", "blank the producer git blob",
+       lambda c: c["producer"].__setitem__("git_blob", "UNCOMMITTED")),
+      ("G19_PRODUCER_CUSTODY", "point the producer at a wrong blob",
+       lambda c: c["producer"].__setitem__("git_blob", "0" * 40)),
       ("G0_GATE_REGISTRY_AGREES", "remove a gate the verifier does implement",
        lambda c: c.__setitem__("FAIL_CLOSED_GATES",
                                [x for x in c["FAIL_CLOSED_GATES"]

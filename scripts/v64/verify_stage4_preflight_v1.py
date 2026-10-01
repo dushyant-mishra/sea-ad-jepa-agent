@@ -56,7 +56,10 @@ IMPLEMENTED_GATES = [
     "G7_NULL_DENOMINATOR", "G8_R3_LABEL", "G9_CONTROL_B_NULL_ONLY",
     "G10_ANTI_FALSE_GREEN", "G11_PROTECTED", "G12_NO_THRESHOLD_ON_EFFECT",
     "G13_FUNNEL", "G14_STRATA", "G15_PERMUTATION_COROBORATION",
+    "G1c_PREREQUISITE_REGISTRY_INTACT", "G18_CONSUMER_SCHEMA_SEMANTICS",
+    "G19_PRODUCER_CUSTODY",
 ]
+EXPECTED_PREREQ_IDS = ("G16_EXECUTOR_BOUND", "G17_EXECUTOR_OPENS_NO_MATRIX")
 
 
 def head_blob(path):
@@ -240,6 +243,88 @@ def run_gates(C):
 
     g["G14_STRATA"] = ("violation" in n["no_silent_pooling"].lower(),
                        "pooling without the per-stratum breakdown is a violation")
+
+    # G1c the prerequisite registry must EXIST and still name G16/G17 (S77).
+    # Without this, deleting the block made unsatisfied_prerequisites default to [] and
+    # execution mode went green while the executor still did not exist: the shell could
+    # see the blocker, but the blocker itself was deletable.
+    pr = C.get("EXECUTION_PREREQUISITES_NOT_YET_SATISFIED")
+    if not isinstance(pr, dict) or "unsatisfied_prerequisites" not in pr:
+        g["G1c_PREREQUISITE_REGISTRY_INTACT"] = (
+            False, "the execution-prerequisite block is ABSENT; a missing block must "
+                   "never read as zero unsatisfied prerequisites")
+    else:
+        named = " ".join(pr["unsatisfied_prerequisites"])
+        miss = [i for i in EXPECTED_PREREQ_IDS if i not in named]
+        g["G1c_PREREQUISITE_REGISTRY_INTACT"] = (
+            not miss,
+            f"registry present and names {len(EXPECTED_PREREQ_IDS)-len(miss)}/"
+            f"{len(EXPECTED_PREREQ_IDS)} expected prerequisites"
+            + (f"; MISSING {miss}" if miss else ""))
+
+    # G18 the artifacts themselves must match the accepted consumer schema (S78)
+    cs = C.get("CONSUMER_SCHEMA_SEMANTICS")
+    if not cs:
+        g["G18_CONSUMER_SCHEMA_SEMANTICS"] = (False, "consumer-schema block absent")
+    else:
+        import numpy as _np
+        probs, ok_n = [], 0
+        try:
+            bp = C["BOUND_PHASE_B_INPUTS"]
+            t5 = _np.load(bp["t5_donor_aggregates"]["path"], allow_pickle=True)
+            av = _np.load(bp["t3_t4_availability"]["path"], allow_pickle=True)
+            s0 = _np.load(bp["substrate_shards"]["PHASE_B_SUBSTRATE_s00.npz"]["path"],
+                          allow_pickle=True)
+            checks = [
+              ("t5_rows", len(t5["availability_state_code"]), cs["t5_rows"]),
+              ("t5_pairs", len(_np.unique(t5["pair_key"])), cs["t5_pairs"]),
+              ("availability_states", list(t5["states"]),
+               cs["availability_states_in_order"]),
+              ("t3_shape", list(av["t3_shape"]), cs["t3_shape"]),
+              ("t4_shape", list(av["t4_shape"]), cs["t4_shape"]),
+              ("metacells", int(av["t3_shape"][0]), cs["metacells"]),
+              ("genes", len(s0["genes"]), cs["genes"]),
+              ("intervals", len(s0["interval_start"]), cs["intervals"]),
+              ("pair_keys", len(s0["pair_keys"]), cs["t5_pairs"]),
+              ("pair_gene_is_strings",
+               bool(s0["pair_gene"].dtype.kind in "USO"), True),
+            ]
+            for name, got, want in checks:
+                if got == want:
+                    ok_n += 1
+                else:
+                    probs.append(f"{name}: artifact={got} contract={want}")
+        except Exception as e:                                   # noqa: BLE001
+            probs.append(f"{type(e).__name__}: {e}")
+        has_axes = bool(cs.get("AXIS_INTERPRETATION", {}).get("t3"))
+        g["G18_CONSUMER_SCHEMA_SEMANTICS"] = (
+            not probs and has_axes,
+            f"{ok_n} shape/count/vocabulary checks verified against the artifacts"
+            + ("" if has_axes else "; AXIS_INTERPRETATION missing")
+            + (f"; {probs[:2]}" if probs else ""))
+
+    # G19 the authority's own producer must carry a real post-commit blob (S79).
+    # Comparing the stored blob to HEAD's blob alone would be fail-open: neither reflects
+    # the WORKING TREE, so an uncommitted edit passes trivially. git hash-object gives the
+    # blob id of the file as it sits on disk; requiring all three to agree proves the file
+    # that produced this contract is exactly the committed one.
+    prod = C.get("producer", {})
+    pb, ppath = prod.get("git_blob", ""), prod.get("path", "")
+    live = head_blob(ppath) if ppath else None
+    worktree = None
+    if ppath and os.path.exists(ppath):
+        r = subprocess.run(["git", "hash-object", ppath], capture_output=True, text=True)
+        o = r.stdout.strip()
+        worktree = o if (r.returncode == 0 and len(o) == 40) else None
+    sha_ok = bool(ppath) and os.path.exists(ppath) and B.sha_file(ppath) == prod.get(
+        "sha256")
+    all_agree = bool(live and worktree and pb == live == worktree) and sha_ok
+    g["G19_PRODUCER_CUSTODY"] = (
+        all_agree,
+        "producer sha256 matches and stored blob == HEAD blob == working-tree blob"
+        if all_agree else
+        f"stored={pb[:12] or 'ABSENT'} HEAD={(live or 'none')[:12]} "
+        f"worktree={(worktree or 'none')[:12]} sha256_ok={sha_ok}")
 
     cor = C.get("CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT", {})
     perm = cor.get("pairing_permutation")

@@ -73,6 +73,10 @@ def bind(p, note=None):
 
 
 def main() -> int:
+    global AGG, CLO, AV
+    AGG = json.load(open(os.path.join(DIR, "V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json")))
+    CLO = json.load(open(os.path.join(DIR, "V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json")))
+    AV = json.load(open(os.path.join(DIR, "V64_PHASE_B_T3_T4_AVAILABILITY_V2.json")))
     D = json.load(open(DESIGN))
     N3 = json.load(open(NULLC))
     pe, nui = D["PRIMARY_ESTIMAND"], D["NUISANCE_ADJUSTMENT"]
@@ -142,7 +146,17 @@ def main() -> int:
             digest_semantics="array_content covers perm.tobytes(); npy_file covers the "
                              "file including its 128-byte header",
             verified_by_gate="G15_PERMUTATION_COROBORATION",
-            required_for_stage4_execution=False)},
+            required_as_a_stage4_DATA_input=False,
+            required_as_a_PROVENANCE_verification=True,
+            S80_contradiction_resolved="the earlier wording said "
+                "required_for_stage4_execution=false while REQUIRED_BINDINGS and G15 made "
+                "its absence a STOP, which is saying both things at once. The resolution "
+                "is that it is not a DATA input -- Stage 4 reads an already-paired "
+                "substrate and never consults it -- but it IS a provenance prerequisite, "
+                "because the substrate's correctness depends on the permutation having "
+                "been right, and 1,500,790 of 1,501,089 rows are displaced. Its absence "
+                "therefore remains a STOP, now for a stated reason rather than by "
+                "accident.")},
 
       "ESTIMATOR_IMPORTED_UNMODIFIED": dict(
         **bind(ESTIM),
@@ -203,6 +217,40 @@ def main() -> int:
             "reported as exactly that and must not be presented as biological "
             "confirmation."},
 
+      "CONSUMER_SCHEMA_SEMANTICS": {
+        "why": "S78. Correct bytes are not enough. A future executor could hash every "
+               "input successfully and still read the arrays along the wrong axis, "
+               "mis-order the availability vocabulary, or silently accept a truncated "
+               "table. These are the shapes and counts the accepted Phase-B closeout "
+               "established; a gate verifies them against the ARTIFACTS, not against this "
+               "contract's own restatement of them.",
+        "source_receipts": [
+          "V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json",
+          "V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json",
+          "V64_PHASE_B_T3_T4_AVAILABILITY_V2.json"],
+        "aggregate_binding_over_recomputed_shard_hashes": AGG["aggregate_binding"],
+        "metacells": AGG["metacells_total"],
+        "intervals": AGG["intervals"],
+        "genes": AGG["genes"],
+        "t3_nnz": AGG["t3_nnz"], "t4_nnz": AGG["t4_nnz"],
+        "t5_rows": CLO["B1_T5"]["rows"],
+        "t5_donors": CLO["B1_T5"]["donors"], "t5_pairs": CLO["B1_T5"]["pairs"],
+        "availability_states_in_order": CLO["B4_AVAILABILITY"]["states"],
+        "t3_shape": AV["T3"]["shape"], "t3_elements": AV["T3"]["elements"],
+        "t4_shape": AV["T4"]["shape"], "t4_elements": AV["T4"]["elements"],
+        "AXIS_INTERPRETATION": {
+          "t3": "rows are metacell_id 0..3230, columns are the gene dictionary index; "
+                "the RNA value is the LINKED GENE's, shared by an edge's LINKED, "
+                "CONTROL_A and CONTROL_B rows",
+          "t4": "rows are metacell_id 0..3230, columns are the interval dictionary index",
+          "t5": "keyed donor x pair_key, donor-major, pair order equal to pair_keys",
+          "availability": "bit-packed with numpy.packbits, big bitorder, C-order ravel; "
+                          "slice to the element count before reshaping or the trailing "
+                          "pad bits are read as elements",
+          "pair_gene": "holds gene ID STRINGS, not indices; resolve against the gene "
+                       "dictionary. Using them as positions is a real defect that already "
+                       "occurred once."}},
+
       "REQUIRED_BINDINGS": {
         "why": "S73. G1 caught a binding whose FILE was missing, but not a binding that "
                "had been DELETED from the contract: removing an entry simply gave the "
@@ -224,7 +272,9 @@ def main() -> int:
           "BOUND_PHASE_B_INPUTS.availability_proof_receipt",
           "BOUND_PHASE_B_INPUTS.phase_a_rows",
           "ESTIMATOR_IMPORTED_UNMODIFIED",
-          "CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT.pairing_permutation"],
+          "CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT.pairing_permutation",
+          "EXECUTION_PREREQUISITES_NOT_YET_SATISFIED.unsatisfied_prerequisites",
+          "CONSUMER_SCHEMA_SEMANTICS.AXIS_INTERPRETATION"],
         "substrate_shards_required": 8,
         "rule": "every key above must be present in this contract and every shard slot "
                 "filled; absence is a STOP, not a smaller walk"},
@@ -239,6 +289,16 @@ def main() -> int:
         {"id": "G1b_REPO_INPUTS_GIT_BLOB_IDENTITY", "rule": "every repo-resident input's "
          "stored blob must EQUAL git rev-parse HEAD:<path>, not merely look like a hash "
          "(S74)", "on_failure": "STOP"},
+        {"id": "G1c_PREREQUISITE_REGISTRY_INTACT", "rule": "the execution-prerequisite "
+         "block must exist and must still name G16 and G17; a missing block must never "
+         "read as zero unsatisfied prerequisites (S77)", "on_failure": "STOP"},
+        {"id": "G18_CONSUMER_SCHEMA_SEMANTICS", "rule": "the substrate artifacts must "
+         "match the accepted shapes, counts, availability vocabulary and axis "
+         "interpretation, verified against the artifacts themselves (S78)",
+         "on_failure": "STOP"},
+        {"id": "G19_PRODUCER_CUSTODY", "rule": "this authority's producer must carry a "
+         "real post-commit git blob, not path and sha256 alone (S79)",
+         "on_failure": "STOP"},
         {"id": "G15_PERMUTATION_COROBORATION", "rule": "both pairing-permutation digests "
          "verify; corroborative only, not a Stage-4 execution input (S69)",
          "on_failure": "STOP"},
@@ -313,9 +373,13 @@ def main() -> int:
         "granting_requires": "an explicit decision after this contract and its tests are "
                              "independently audited"},
       "governance": N3["governance"],
-      "producer": dict(path=os.path.relpath(os.path.abspath(__file__),
-                                            os.getcwd()).replace("\\", "/"),
-                       sha256=B.sha_file(os.path.abspath(__file__)))}
+      "producer": dict(
+        path=norm(os.path.relpath(os.path.abspath(__file__), os.getcwd())),
+        sha256=B.sha_file(os.path.abspath(__file__)),
+        git_blob=blob(norm(os.path.relpath(os.path.abspath(__file__), os.getcwd()))),
+        blob_binding_note="S79. A producer cannot know its own blob before it is "
+            "committed, so this is UNCOMMITTED at build time and bound post-commit by "
+            "bind_stage4_producer_blob. The same provenance class as the B6 producer.")}
 
     p = os.path.join(DIR, "V64_STAGE4_EXECUTION_AUTHORITY_V1.json")
     with open(p, "w", newline="\n") as fh:

@@ -4,17 +4,17 @@
   "mode": "execution",
   "authority": {
     "path": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "cd49cd86f9b6ff8b78a0af5eada7bfa9e8315aa2f7b9f72fe6190fc05e223d19"
+    "sha256": "8b7ae470eafd1f5c55fb11ed239950d1da9237866acf4eeae9ce7801114c89c7"
   },
-  "producer_sha256": "e752f714c14e3153e02364708b218e203f47bf7e366c89ee00e3bc476a2dd4d3",
+  "producer_sha256": "dfc2a3d694eb144f1c7a5e48d4a4654184619c255b6ff906ea98a94a82b1bdb5",
   "gates": {
     "G0_GATE_REGISTRY_AGREES": {
       "passed": true,
-      "detail": "declared 18 / implemented 18; sets agree in both directions"
+      "detail": "declared 21 / implemented 21; sets agree in both directions"
     },
     "G1a_REQUIRED_BINDINGS_PRESENT": {
       "passed": true,
-      "detail": "15/15 required bindings present, 8/8 shard slots filled"
+      "detail": "17/17 required bindings present, 8/8 shard slots filled"
     },
     "G1_INPUT_DIGESTS": {
       "passed": true,
@@ -76,14 +76,28 @@
       "passed": true,
       "detail": "pooling without the per-stratum breakdown is a violation"
     },
+    "G1c_PREREQUISITE_REGISTRY_INTACT": {
+      "passed": true,
+      "detail": "registry present and names 2/2 expected prerequisites"
+    },
+    "G18_CONSUMER_SCHEMA_SEMANTICS": {
+      "passed": true,
+      "detail": "10 shape/count/vocabulary checks verified against the artifacts"
+    },
+    "G19_PRODUCER_CUSTODY": {
+      "passed": false,
+      "detail": "stored=d989e7b9b0c2 HEAD=d989e7b9b0c2 worktree=6063b4a3c528 sha256_ok=True"
+    },
     "G15_PERMUTATION_COROBORATION": {
       "passed": true,
       "detail": "array-content matches, npy-file matches; corroborative only"
     }
   },
-  "n_gates": 18,
-  "failed_gates": [],
-  "design_gates_status": "PASS",
+  "n_gates": 21,
+  "failed_gates": [
+    "G19_PRODUCER_CUSTODY"
+  ],
+  "design_gates_status": "FAIL",
   "EXECUTION_AUTHORITY": "NOT_GRANTABLE",
   "unsatisfied_execution_prerequisites": [
     "G16_EXECUTOR_BOUND: the executor source sha256 and git blob",
