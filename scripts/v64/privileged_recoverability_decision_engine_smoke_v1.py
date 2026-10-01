@@ -54,12 +54,10 @@ def _validation_donor_pass(m):
     )
 
 
-def validation_rank_eligible(donors):
+def _validation_metric_set_eligible(donors):
     donors=list(donors)
     if len(donors)!=4:
         raise ValueError("VALIDATION must contain exactly 4 donors")
-    # The contract requires all positive, median >= margin, all gates, and
-    # no technical baseline within 0.01 of candidate.
     if not all(d["delta_r2"]>0 for d in donors):
         return False
     if float(np.median([d["delta_r2"] for d in donors])) < DELTA_MARGIN:
@@ -67,22 +65,26 @@ def validation_rank_eligible(donors):
     return all(_validation_donor_pass(d) for d in donors)
 
 
-def select_validation_rank(metrics_by_rank):
-    """Return the largest contiguous eligible rank from 2 upward, else 0.
+def validation_rank_eligible(aggregate_donors, shell_donors):
+    """A nested rank qualifies only if aggregate AND newly added shell qualify."""
+    return bool(
+        _validation_metric_set_eligible(aggregate_donors)
+        and _validation_metric_set_eligible(shell_donors)
+    )
 
-    Candidate ranks are nested. A failed lower rank breaks the chain; higher ranks
-    may not be used to skip over unstable lower-rank geometry. TEST is intentionally
-    not an input.
-    """
+
+def select_validation_rank(aggregate_by_rank, shell_by_rank):
+    """Return largest contiguous rank whose aggregate and incremental shell both pass."""
+    if set(aggregate_by_rank) != set(RANKS) or set(shell_by_rank) != set(RANKS):
+        raise ValueError("aggregate and shell metrics must cover every frozen rank")
     selected=0
     for k in RANKS:
-        if not validation_rank_eligible(metrics_by_rank[k]):
+        if not validation_rank_eligible(aggregate_by_rank[k],shell_by_rank[k]):
             break
         selected=k
     return selected
 
-
-def test_confirmed(validation_donors, test_donors):
+def _test_metric_set_confirmed(validation_donors, test_donors):
     validation_donors=list(validation_donors)
     test_donors=list(test_donors)
     if len(validation_donors)!=4 or len(test_donors)!=4:
@@ -94,15 +96,37 @@ def test_confirmed(validation_donors, test_donors):
     return bool(med_t >= DELTA_MARGIN and med_t >= TEST_REPLICATION_FRACTION*med_v)
 
 
-def classify(selected_rank, validation_donors=None, test_donors=None):
+def test_confirmed(selected_rank, validation_aggregate_by_rank, test_aggregate_by_rank,
+                   validation_shell_by_rank, test_shell_by_rank):
+    """Confirm locked rank: selected aggregate plus every shell through that rank."""
+    if selected_rank not in RANKS:
+        return False
+    if not _test_metric_set_confirmed(
+            validation_aggregate_by_rank[selected_rank],
+            test_aggregate_by_rank[selected_rank]):
+        return False
+    for k in RANKS:
+        if k>selected_rank:
+            break
+        if not _test_metric_set_confirmed(
+                validation_shell_by_rank[k],test_shell_by_rank[k]):
+            return False
+    return True
+
+
+def classify(selected_rank, validation_aggregate_by_rank=None, test_aggregate_by_rank=None,
+             validation_shell_by_rank=None, test_shell_by_rank=None):
     if selected_rank==0:
         return "UNQUALIFIED"
-    if validation_donors is None or test_donors is None:
+    if any(x is None for x in (
+            validation_aggregate_by_rank,test_aggregate_by_rank,
+            validation_shell_by_rank,test_shell_by_rank)):
         return "LOCKED_PENDING_TEST"
-    if not test_confirmed(validation_donors,test_donors):
+    if not test_confirmed(
+            selected_rank,validation_aggregate_by_rank,test_aggregate_by_rank,
+            validation_shell_by_rank,test_shell_by_rank):
         return "UNQUALIFIED"
     return "RNA_RECOVERABLE" if selected_rank==16 else "PARTIALLY_RNA_RECOVERABLE"
-
 
 def donor(candidate_r2, technical_r2, global_rna_r2, permutation=True, geometry=True):
     base=max(technical_r2,global_rna_r2)
@@ -133,45 +157,67 @@ def synthetic_scenarios():
         donor(.38,.08,.16,geometry=False), donor(.41,.09,.18,geometry=False)
     )
 
-    # Partial fixture: 2 and 4 pass, 8 fails. Even if 16 passes, it cannot skip 8.
-    partial={2:good2,4:good4,8:failgeom,16:good4}
+    # Aggregate metrics deliberately look good at all ranks in the partial fixture.
+    # The shell at rank 8 fails, proving lower-rank signal cannot carry higher rank.
+    partial_agg={2:good2,4:good4,8:good4,16:good4}
+    partial_shell={2:good2,4:good4,8:failgeom,16:failgeom}
 
-    # Fully recoverable monotone fixture: every nested rank passes -> select 16.
-    full={2:good2,4:good4,8:good4,16:good4}
+    full_agg={2:good2,4:good4,8:good4,16:good4}
+    full_shell={2:good2,4:good4,8:good4,16:good4}
 
-    # Rank-2 fails while higher ranks pass -> fail closed at rank 0.
-    lower_fail={2:failgeom,4:good4,8:good4,16:good4}
+    lower_fail_agg={2:good2,4:good4,8:good4,16:good4}
+    lower_fail_shell={2:failgeom,4:good4,8:good4,16:good4}
 
-    # Candidate is highly predictable but technical baseline is essentially identical.
     shortcut=_four(
         donor(.91,.905,.20), donor(.93,.925,.21), donor(.92,.915,.20), donor(.94,.935,.22)
     )
-    shortcuts={k:shortcut for k in RANKS}
+    shortcut_agg={k:shortcut for k in RANKS}
+    shortcut_shell={k:shortcut for k in RANKS}
 
-    # Validation fails; even spectacular TEST must never rescue a rank.
     weak=_four(
         donor(.20,.10,.17), donor(.21,.10,.18), donor(.19,.10,.17), donor(.20,.10,.18)
     )
-    weak_all={k:weak for k in RANKS}
+    weak_agg={k:weak for k in RANKS}
+    weak_shell={k:weak for k in RANKS}
+
     spectacular=_four(
         donor(.95,.05,.10), donor(.94,.05,.10), donor(.96,.05,.10), donor(.95,.05,.10)
     )
+    spectacular_agg={k:spectacular for k in RANKS}
+    spectacular_shell={k:spectacular for k in RANKS}
 
-    return partial,full,lower_fail,shortcuts,weak_all,spectacular
+    return dict(
+        partial=(partial_agg,partial_shell),
+        full=(full_agg,full_shell),
+        lower_fail=(lower_fail_agg,lower_fail_shell),
+        shortcuts=(shortcut_agg,shortcut_shell),
+        weak=(weak_agg,weak_shell),
+        spectacular=(spectacular_agg,spectacular_shell),
+    )
 
 
 def run_smoke():
-    partial,full,lower_fail,shortcuts,weak_all,spectacular=synthetic_scenarios()
-    r_partial=select_validation_rank(partial)
-    r_full=select_validation_rank(full)
-    r_lower_fail=select_validation_rank(lower_fail)
-    r_short=select_validation_rank(shortcuts)
-    r_weak=select_validation_rank(weak_all)
+    sc=synthetic_scenarios()
+    pA,pS=sc["partial"]
+    fA,fS=sc["full"]
+    lA,lS=sc["lower_fail"]
+    sA,sS=sc["shortcuts"]
+    wA,wS=sc["weak"]
+    xA,xS=sc["spectacular"]
 
-    partial_test=_four(
+    r_partial=select_validation_rank(pA,pS)
+    r_full=select_validation_rank(fA,fS)
+    r_lower_fail=select_validation_rank(lA,lS)
+    r_short=select_validation_rank(sA,sS)
+    r_weak=select_validation_rank(wA,wS)
+
+    # TEST confirmation fixture for selected partial rank.
+    test_good=_four(
         donor(.36,.07,.16), donor(.35,.07,.15), donor(.34,.08,.15), donor(.37,.08,.16)
     )
-    partial_class=classify(r_partial,partial[r_partial],partial_test)
+    tA={k:test_good for k in RANKS}
+    tS={k:test_good for k in RANKS}
+    partial_class=classify(r_partial,pA,tA,pS,tS)
 
     # Explicit projector fixture: rank-2 shared target embedded in 4-D privileged state.
     rng=np.random.default_rng(6501)
@@ -183,18 +229,17 @@ def run_smoke():
     zhat=np.column_stack([shared+0.02*rng.normal(size=shared.shape), np.zeros_like(private)])
     proj=target_projector(z,zhat,2)
 
-    # Exact tie fixture: C = identity gives equal singular values; selecting rank 2 of 4 is non-unique.
     eye=np.eye(4)
     tie=target_projector(eye,eye,2,tie_tol=1e-12)
 
     out={
-        "schema":"V65_PRIVILEGED_RECOVERABILITY_DECISION_ENGINE_SMOKE_V1",
+        "schema":"V65_PRIVILEGED_RECOVERABILITY_DECISION_ENGINE_SMOKE_V2",
         "status":"SYNTHETIC_SOFTWARE_QUALIFICATION_ONLY",
         "results":{
             "partial_contiguous_selected_rank":r_partial,
             "partial_classification":partial_class,
             "full_rank_selected":r_full,
-            "lower_rank_failure_blocks_higher_ranks":r_lower_fail,
+            "lower_shell_failure_blocks_higher_ranks":r_lower_fail,
             "technical_shortcut_selected_rank":r_short,
             "validation_failure_locked_rank":r_weak,
             "spectacular_test_cannot_rescue_validation_failure":r_weak==0,
@@ -218,7 +263,6 @@ def run_smoke():
         "real_paired_outcome_opened":False,
     }
     return out
-
 
 def main():
     out=run_smoke()
