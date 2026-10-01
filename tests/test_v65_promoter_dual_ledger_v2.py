@@ -74,3 +74,18 @@ def test_fantom_evidence_is_strand_aware(tmp_path):
         rows=list(__import__("csv").DictReader(f,delimiter="\t"))
     assert rows[0]["fantom_cage_overlap"]=="0"
     assert rows[0]["fantom_cage_count"]=="0"
+
+
+def test_nested_interval_query_does_not_hide_earlier_long_overlap(tmp_path):
+    m=_load()
+    bed=tmp_path/"nested.bed"
+    # Query point is 150 (1-based -> 149). The long interval overlaps it.
+    # A shorter, later-starting interval ends before the point and must not stop the scan.
+    bed.write_text(
+        "chr1\t100\t200\tLONG\t0\t+\n"
+        "chr1\t120\t130\tSHORT\t0\t+\n"
+    )
+    idx,starts,pmax=m.load_bed_index_robust(bed)
+    hits=m.point_hits_robust(idx,starts,pmax,"chr1",150)
+    names={h[2][0] for h in hits}
+    assert names=={"LONG"}
