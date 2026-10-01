@@ -51,7 +51,13 @@ cd "$SRC"
 git log -1 --format='SCENICPLUS_COMMIT=%H%nSCENICPLUS_DATE=%cI' | tee "$OUT/env/scenicplus_commit.txt"
 
 echo "=== [3/5] install SCENIC+ ==="
-pip install --no-input . 2>&1 | tail -20
+# pybedtools 0.9.1 ships a legacy setup.py that needs setuptools present inside
+# pip's build-isolation sandbox, which it does not declare. Build it ahead of
+# SCENIC+ with isolation off so the environment's own setuptools is visible.
+pip install --no-input --upgrade "setuptools<81" wheel 2>&1 | tail -3
+pip install --no-input --no-build-isolation "pybedtools==0.9.1" 2>&1 | tail -5 \
+  || echo "PYBEDTOOLS_PREINSTALL_FAILED"
+pip install --no-input . 2>&1 | tail -25
 
 echo "=== [4/5] install create_cisTarget_databases ==="
 CTDB="$OUT/env/create_cisTarget_databases"
