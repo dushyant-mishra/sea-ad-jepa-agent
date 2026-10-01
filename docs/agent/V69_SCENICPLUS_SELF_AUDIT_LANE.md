@@ -114,6 +114,56 @@ evidence supports.
 
 ---
 
+## S6 — My crosswalk understated Stage-4 interval coverage by 30 points (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+**Producer:** `scripts/v69/build_structural_crosswalk_layer_v1.py`.
+
+**Defect.** My region crosswalk recorded, for each GSE214979 peak, the number of
+overlapping Stage-4 intervals *and* the index of the **first** one. I then derived
+Stage-4-side coverage from those first-hit indices. Stage-4 intervals are not
+disjoint: they are 5 kb windows enumerated at 1 bp offsets, so they overlap heavily
+and a single peak can touch many of them. On the real data, 7,432 peaks overlap more
+than one interval and one peak overlaps 16.
+
+**The size of the error.**
+
+| quantity | first-hit-only (wrong) | every touched interval (correct) |
+|---|---|---|
+| Stage-4 intervals reached by a GSE214979 peak | 13,325 | 22,991 |
+| fraction of the 32,153-interval universe | 41.4% | 71.5% |
+
+A 30-percentage-point understatement of how much of the Stage-4 interval universe
+this external cohort can speak to. It would have made the external network look far
+less able to address Stage-4 than it is, and it is exactly the kind of error that
+reads as a conservative, responsible number rather than as a bug.
+
+**Was it caught before it could do damage?** Yes — within the same cycle that
+produced the first number, before any program-level crosswalk, any freeze receipt
+and any report. No claim was published on the wrong figure.
+
+**How I found it.** Not from a test — from reading my own receipt and noticing that
+`n_stage4_intervals_reached_by_a_peak` was derived from a field named
+`first_stage4_interval_index`, and asking whether "first" could differ from "all".
+A direct query confirmed it could.
+
+**The fix.** `overlap_counts` now returns an explicit `interval_covered` boolean over
+the whole interval universe, marking every touched interval. The receipt reports the
+authoritative figure, and *also* reports the first-hit-only figure beside it with a
+note, so the correction is visible rather than quietly swapped in.
+`test_interval_coverage_counts_every_touched_interval` is the regression test; its
+fixture deliberately reproduces the real geometry (overlapping windows at 1 bp
+offsets) and asserts `covered.sum() > first_only.sum()`, so it would fail against
+the old code.
+
+**Generalisation worth carrying.** The defect existed because I let an
+implementation convenience (storing one representative index) silently become the
+definition of a reported quantity. Any receipt field derived from a "first",
+"representative" or "primary" record should be checked against the question it
+claims to answer.
+
+---
+
 ## S5 — The substrate is small, and the headline cohort size hides it (DISCLOSED)
 
 **Status:** OPEN — a property of the data, not a defect I can fix; recorded so it is

@@ -57,6 +57,9 @@ echo "=== [3/5] install SCENIC+ ==="
 pip install --no-input --upgrade "setuptools<81" wheel 2>&1 | tail -3
 pip install --no-input --no-build-isolation "pybedtools==0.9.1" 2>&1 | tail -5 \
   || echo "PYBEDTOOLS_PREINSTALL_FAILED"
+# datrie (a snakemake dependency) has no wheel for cp311 and its source build fails
+# against modern Cython; take the conda-forge build instead.
+mamba install -y -c conda-forge datrie 2>&1 | tail -3 || echo "DATRIE_CONDA_FAILED"
 pip install --no-input . 2>&1 | tail -25
 
 echo "=== [4/5] install create_cisTarget_databases ==="
