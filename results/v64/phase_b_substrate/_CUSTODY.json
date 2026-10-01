@@ -55,5 +55,9 @@
     "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T3_T4_AVAILABILITY.npz",
     "bytes": 20706,
     "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81"
+  },
+  "b6_v2_receipt": {
+    "path": "results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json",
+    "sha256": "0f7f1e554d6425797184308293781805d16853bbb9899fbd0ac927992d05e763"
   }
 }

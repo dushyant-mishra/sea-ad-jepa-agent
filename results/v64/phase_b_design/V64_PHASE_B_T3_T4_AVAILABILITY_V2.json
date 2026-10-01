@@ -1,0 +1,196 @@
+{
+  "schema": "V64_PHASE_B_T3_T4_AVAILABILITY_V2",
+  "date": "2026-09-30",
+  "closes": "B6",
+  "supersedes": {
+    "path": "results/v64/phase_b_design\\V64_PHASE_B_T3_T4_AVAILABILITY_V1.json",
+    "sha256": "1ecc6b60d39c2b5b25b08c5193ac68c49ccce79e1558f80ac8a05ffc48f7cee3",
+    "reason": "v1's PROOF_3 set holds=True as a literal and would have passed whatever the stored codes contained; its sparse-zero proof ran for RNA only; it indexed by metacell id without asserting the id space; and it took one shard's dictionaries as canonical unchecked",
+    "left_in_place_so_the_gap_stays_inspectable": true
+  },
+  "nothing_rerun": [
+    "Phase A",
+    "sampler",
+    "substrate build",
+    "T5",
+    "interval reconciliation",
+    "T6/T7"
+  ],
+  "no_matrix_value_reread": true,
+  "G4_SHARD_DICTIONARY_AGREEMENT": {
+    "shards_compared": 8,
+    "arrays_compared": [
+      "genes",
+      "interval_chrom",
+      "interval_start",
+      "interval_end",
+      "n_assigned_peaks",
+      "pair_keys",
+      "pair_gene",
+      "pair_interval"
+    ],
+    "all_identical": true,
+    "why": "shard s00 is used as the canonical dictionary, so the other seven must be proved identical or the availability bits could be internally correct while attached to the wrong axis"
+  },
+  "G3_INDEX_INVARIANTS": {
+    "n_metacells": 3231,
+    "ids_unique": true,
+    "ids_are_exactly_0_to_n_minus_1": true,
+    "t3_metacell_min": 0,
+    "t3_metacell_max": 3230,
+    "t4_metacell_min": 0,
+    "t4_metacell_max": 3230,
+    "t3_indices_in_range": true,
+    "t4_indices_in_range": true,
+    "t3_gene_in_range": true,
+    "t4_interval_in_range": true,
+    "why": "the dense availability matrices are indexed by these integers directly, which is only sound if the ids are a dense 0-based range"
+  },
+  "G2_SPARSE_ABSENCE_BOTH_MODALITIES": {
+    "rna": {
+      "modality": "RNA / T3",
+      "elements": 14125932,
+      "sparse_entries_present": 6624289,
+      "sparse_absences_on_AVAILABLE_elements": 7501643,
+      "these_are_measured_zeros": true,
+      "value_they_carry": "log1p(0) = 0 exactly",
+      "sparse_absences_on_UNAVAILABLE_elements": 0,
+      "holds": true
+    },
+    "atac": {
+      "modality": "ATAC / T4",
+      "elements": 103886343,
+      "sparse_entries_present": 55467544,
+      "sparse_absences_on_AVAILABLE_elements": 48418799,
+      "these_are_measured_zeros": true,
+      "value_they_carry": "log1p(0) = 0 exactly",
+      "sparse_absences_on_UNAVAILABLE_elements": 0,
+      "holds": true
+    },
+    "both_hold": true
+  },
+  "G1_PROOF_3_T5_RECONCILIATION_EXECUTED": {
+    "executed": true,
+    "rows_reconstructed": 10552158,
+    "rows_stored": 10552158,
+    "donor_block_order_matches": true,
+    "mismatch_count": 0,
+    "holds": true,
+    "per_state_reconstructed": {
+      "MEASURED": 8598011,
+      "NOT_MEASURED_RNA_ZERO_COVERAGE": 1471461,
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE": 482686,
+      "NOT_MEASURED_RNA_ZERO_VARIANCE": 0,
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE": 0
+    },
+    "per_state_stored": {
+      "MEASURED": 8598011,
+      "NOT_MEASURED_RNA_ZERO_COVERAGE": 1471461,
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE": 482686,
+      "NOT_MEASURED_RNA_ZERO_VARIANCE": 0,
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE": 0
+    },
+    "counts_agree": true,
+    "method": "every donor x pair code was recomputed from the frozen T2/T3/T4 arrays and compared element by element with the stored T5 codes",
+    "what_v1_did_instead": "reported the counts, explained the derivation and set holds=True as a literal, which would have passed whatever the stored codes contained",
+    "what_this_catches": "a wrong donor or pair ordering, a bad gather, a truncated write, or any corruption of the stored codes. It does not re-derive the frozen rule itself, which is stated in the contract and is not in question here.",
+    "the_distinction_being_verified": "1,471,461 donor-pair cells are NOT_MEASURED while every underlying element is AVAILABLE. The gene was measured in each of that donor's metacells and measured as zero in all of them, so each element is an available measured zero and the frozen zero-coverage rule leaves the Stage-4 correlation undefined."
+  },
+  "PROOF_2_unavailable_is_false_not_zero": {
+    "real_substrate_has_no_unavailable_element": true,
+    "demonstrated_on_fixture": true,
+    "zero_total_rna_metacell_unavailable": true,
+    "zero_total_atac_metacell_unavailable": true,
+    "zero_peak_interval_unavailable": true,
+    "holds": true
+  },
+  "PROOF_4_factorisation_expands_exactly": {
+    "holds": true
+  },
+  "T3": {
+    "field": "rna_available",
+    "elements": 14125932,
+    "shape": [
+      3231,
+      4372
+    ],
+    "all_available": true,
+    "packed_bytes": 1765742,
+    "packed_length": 1765742
+  },
+  "T4": {
+    "field": "atac_available",
+    "elements": 103886343,
+    "shape": [
+      3231,
+      32153
+    ],
+    "all_available": true,
+    "packed_bytes": 12985793,
+    "packed_length": 12985793
+  },
+  "PACKBITS_SEMANTICS": {
+    "function": "numpy.packbits",
+    "bitorder": "big (numpy default)",
+    "layout": "the boolean matrix is raveled in C order, then packed",
+    "padding": {
+      "t3_pad_bits": 4,
+      "t4_pad_bits": 1,
+      "value": "0",
+      "note": "trailing pad bits are not elements and must be dropped by slicing to the element count before reshaping"
+    },
+    "unpack_recipe": "np.unpackbits(packed)[:rows*cols].reshape(rows, cols).astype(bool)"
+  },
+  "FACTORISATION": {
+    "rule_rna": "rna_available[m, g] = total_rna[m] > 0, independent of g",
+    "rule_atac": "atac_available[m, i] = total_atac[m] > 0 AND n_assigned_peaks[i] > 0",
+    "why_lossless": "availability depends on whether the metacell's normalisation is defined and whether the interval has an assigned peak, never on the measured value"
+  },
+  "CUSTODY": {
+    "shard_sha256": {
+      "PHASE_B_SUBSTRATE_s00.npz": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e",
+      "PHASE_B_SUBSTRATE_s01.npz": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee",
+      "PHASE_B_SUBSTRATE_s02.npz": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a",
+      "PHASE_B_SUBSTRATE_s03.npz": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb",
+      "PHASE_B_SUBSTRATE_s04.npz": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427",
+      "PHASE_B_SUBSTRATE_s05.npz": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30",
+      "PHASE_B_SUBSTRATE_s06.npz": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+      "PHASE_B_SUBSTRATE_s07.npz": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4"
+    },
+    "t5_donor_aggregates": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T5_DONOR_AGGREGATES.npz",
+      "bytes": 101711148,
+      "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8"
+    },
+    "availability_artifact": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T3_T4_AVAILABILITY.npz",
+      "bytes": 20706,
+      "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81"
+    },
+    "closeout_receipt": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json",
+      "sha256": "12d460bfc0ea863e31d91b2eaad15d4fead0f6f5a18beb8086104d282d823020"
+    },
+    "aggregate_receipt": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json",
+      "sha256": "f98125f3710a252fbafd90ff7110db2c393a7cd647d98f1e312f5602335ccaf5"
+    },
+    "producer": {
+      "path": "scripts/v64/close_phase_b_b6_availability_v2.py",
+      "sha256": "53b010a14ae49658eaf0656ae2a812498e025c1973fa8b94569404eccd90121c",
+      "git_blob": "HEAD:scripts/v64/close_phase_b_b6_availability_v2.py"
+    }
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "all_proofs_hold": true,
+  "status": "PASS"
+}
