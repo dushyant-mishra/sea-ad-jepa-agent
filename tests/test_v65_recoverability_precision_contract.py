@@ -77,3 +77,13 @@ def test_tie_tolerance_and_geometry_numerics_are_frozen():
     assert "lexicographic upper-triangle" in t
     assert "fails closed" in t
     assert "Reuse that exact permutation-index list" in t
+
+
+def test_pairing_and_geometry_share_one_canonical_permutation_schedule():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
+    assert "one canonical permutation schedule" in t
+    assert "No rank, shell or metric gets an independently resampled null" in t
+    assert "numpy.random.PCG64" in t
+    assert "10,000 sequential `rng.permutation(n_donor_nuclei)`" in t
+    assert 'numpy.quantile(null, 0.99, method="higher")' in t
+    assert "strictly greater" in t
