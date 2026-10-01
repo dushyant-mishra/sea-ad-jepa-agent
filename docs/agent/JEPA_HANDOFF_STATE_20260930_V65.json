@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "65a0171d72dd8e9f174b14d4426e231e12c6cb08",
+    "chatgpt_architecture": "2fbf8f3d89154a9fb6263981b5a17644809a6b4f",
     "claude_exact_sampler": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -103,6 +103,29 @@
       "test_nuclei_sealed": 360,
       "test_numeric_access": "SEALED_BY_PREFLIGHT_API",
       "real_outcome_computed": false
+    },
+    "multimodal_student": {
+      "status": "PLANNED_PROSPECTIVE_ARCHITECTURE__TRAINING_NOT_AUTHORIZED",
+      "contract": "docs/agent/V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_CONTRACT_20260930.md",
+      "state": "results/v64/V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_V1.json",
+      "topology": "NESTED_INFORMATION_EXTENSION_OF_UNIVERSAL_RNA",
+      "universal_rna_state": [
+        "Z_global",
+        "Z_query",
+        "Z_reg_shared"
+      ],
+      "multimodal_state": [
+        "Z_global",
+        "Z_query",
+        "Z_reg_shared",
+        "Z_reg_private"
+      ],
+      "universal_rna_replaced": false,
+      "raw_coordinate_identity_required": false,
+      "private_compulsory_rna_loss": false,
+      "missing_private_zero_fill": false,
+      "real_shared_rank": "UNRESOLVED_PENDING_RECOVERABILITY",
+      "multimodal_training_authorized": false
     }
   },
   "paired_nihcard": {
@@ -208,11 +231,12 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Execute only the frozen measurement-only Phase B substrate build.",
-    "Persist T1-T7 tables exactly as contracted, including metacell partition and R3 conditioning references.",
-    "Do not compute any RNA-ATAC correspondence or linked-minus-control biological statistic.",
-    "After substrate materialization, stop for independent audit before Stage 4.",
-    "Continue promoter/recoverability architecture work separately without contaminating Phase B."
+    "Allow Claude measurement-only Phase B substrate build under separate audited authority; Stage 4 remains sealed.",
+    "Promoter dual ledger is materialized and accepted; do not repeat promoter-byte/overlap work absent contradictory evidence.",
+    "Nested RNA+multimodal student topology is frozen prospectively; do not train it yet.",
+    "Recoverability structural preflight passes and TEST numeric access is sealed; next lawful architecture step is audit/authorization of real TRAIN+VALIDATION recoverability execution, still without TEST.",
+    "Use real recoverability results to determine the shared multimodal projection before any multimodal shared/private training.",
+    "Keep multimodal training, JEPA training, Stage 4, Morabito and TD60 closed."
   ],
   "governance": {
     "training": "OFF",
