@@ -41,7 +41,10 @@ def test_shortcut_and_pairing_null_fail_closed():
     assert m.choose(permfail,"LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD")==0
 
 def test_current_contract_names_contiguous_rule_not_smallest_rule():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "largest contiguous eligible rank" in t
     assert "Skipping over a failed lower-rank projection" in t
     assert "smallest-eligible rule is superseded prospectively" in t
+    assert "aggregate-and-shell requirement" in t
+    # This file is a narrow rank-policy regression. Incremental-shell software
+    # qualification lives in the V2 decision-engine/numerical smoke tests.
