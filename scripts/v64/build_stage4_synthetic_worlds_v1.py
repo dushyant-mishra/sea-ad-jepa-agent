@@ -101,29 +101,108 @@ def build_world(world, seed):
     hidden = hidden - np.polyval(np.polyfit(log_depth, hidden, 1), log_depth)
     hidden /= hidden.std()
 
-    # ---- edges, genes, intervals
+    # ---- edges, genes, intervals, built under the FROZEN CONTROL CONSTRUCTION
+    # S99. These worlds previously drew control intervals uniformly at random, so the
+    # linked and control arms differed on accessibility and distance BY CONSTRUCTION --
+    # exactly the failure the design contract anticipates when it says a control without
+    # the accessibility requirement "would differ from linked edges on accessibility by
+    # construction, and the contrast would measure accessibility rather than linkage".
+    # Every control here is now built the way the contract builds one:
+    #   same promoter, held fixed          same chromosome
+    #   5,000 bp interval width            distance matched within +/-10% or 10 kb
+    #   must not overlap the linked distal interval
+    #   must carry >= 1 consensus peak and >= 1 accessibility (PU.1-equivalent) peak
+    # The second control draw is independent, as the contract requires for the
+    # control-versus-control null.
     genes = np.array(sorted("SYNG%05d" % i for i in range(N_GENES)), dtype="<U15")
     gpos = {g: i for i, g in enumerate(genes)}
-    iv_start = np.sort(rng.choice(np.arange(1_000_000, 9_000_000, 5_000),
-                                  N_INTERVALS, replace=False)).astype(np.int64)
-    iv_end = iv_start + 5000
-    iv_chrom = np.array(["chr1"] * N_INTERVALS, dtype="<U5")
-    n_peaks = rng.integers(1, 6, N_INTERVALS).astype(np.int32)
-
+    n_prom = max(2, N_EDGES // 4)
+    promoter_pos = rng.integers(2_000_000, 8_000_000, n_prom).astype(np.int64)
+    edge_promoter = rng.integers(0, n_prom, N_EDGES)
     edge_gene = rng.integers(0, N_GENES, N_EDGES)
-    edge_linked_iv = rng.integers(0, N_INTERVALS, N_EDGES)
-    edge_ctrla_iv = rng.integers(0, N_INTERVALS, N_EDGES)
-    edge_ctrlb_iv = rng.integers(0, N_INTERVALS, N_EDGES)
     has_b = rng.random(N_EDGES) < CONTROL_B_SHARE
-    # promoters: several edges share one, so the promoter fold unit is non-trivial
-    edge_promoter = rng.integers(0, max(2, N_EDGES // 4), N_EDGES)
+
+    IV_W = 5000
+    iv_registry, iv_list = {}, []
+
+    def interval_at(start):
+        """Intervals live on a fixed 5 kb grid, so a start resolves to one identity."""
+        s = int(round(start / IV_W) * IV_W)
+        if s not in iv_registry:
+            iv_registry[s] = len(iv_list)
+            iv_list.append(s)
+        return iv_registry[s]
+
+    def draw_matched(p, d_linked, linked_start, used, tries=200):
+        """A control at a distance matched to the linked edge, on either side of the SAME
+        promoter, not overlapping the linked interval. Returns None if no admissible
+        control exists, which the contract handles by TRIMMING the edge rather than
+        extrapolating one."""
+        tol = max(0.10 * d_linked, 10_000)
+        for _ in range(tries):
+            d = d_linked + rng.uniform(-tol, tol)
+            if d < IV_W:
+                continue
+            start = p + (1 if rng.random() < 0.5 else -1) * d
+            if start < 0:
+                continue
+            s = int(round(start / IV_W) * IV_W)
+            if abs(s - linked_start) < IV_W:          # would overlap the linked interval
+                continue
+            if s in used:
+                continue
+            # verify AFTER snapping to the 5 kb grid. Checking the tolerance on the
+            # pre-snap draw and then moving the interval is how 16 controls ended up
+            # outside their own matching window.
+            err = abs(abs(s - p) - d_linked)
+            if err > tol:
+                continue
+            return s, err
+        return None, None
+
+    edge_linked_iv = np.full(N_EDGES, -1, np.int64)
+    edge_ctrla_iv = np.full(N_EDGES, -1, np.int64)
+    edge_ctrlb_iv = np.full(N_EDGES, -1, np.int64)
+    edge_distance = np.zeros(N_EDGES, float)
+    trimmed, match_err_a, match_err_b = [], [], []
+    for e in range(N_EDGES):
+        p = int(promoter_pos[edge_promoter[e]])
+        d = float(rng.uniform(20_000, 400_000))
+        linked_start = int(round((p + (1 if rng.random() < 0.5 else -1) * d) / IV_W) * IV_W)
+        edge_distance[e] = abs(linked_start - p)
+        edge_linked_iv[e] = interval_at(linked_start)
+        used = {linked_start}
+        sa, ea = draw_matched(p, edge_distance[e], linked_start, used)
+        if sa is None:
+            trimmed.append(e)                      # no admissible control: TRIM the edge
+            continue
+        used.add(sa)
+        edge_ctrla_iv[e] = interval_at(sa)
+        match_err_a.append(ea)
+        if has_b[e]:
+            sb, eb = draw_matched(p, edge_distance[e], linked_start, used)
+            if sb is not None:
+                edge_ctrlb_iv[e] = interval_at(sb)
+                match_err_b.append(eb)
+
+    iv_start = np.array(iv_list, np.int64)
+    n_iv_real = len(iv_start)
+    iv_end = iv_start + IV_W
+    iv_chrom = np.array(["chr1"] * n_iv_real, dtype="<U5")
+    n_peaks = rng.integers(1, 6, n_iv_real).astype(np.int32)
+    # Accessibility qualification is SYMMETRIC by construction: every interval that can
+    # enter either arm carries at least one accessibility peak, which is what the frozen
+    # control rule enforces. Nothing here is accessible on one arm and not the other.
+    iv_accessible = np.ones(n_iv_real, bool)
 
     pair_keys, pair_gene, pair_interval, pair_arm, pair_edge = [], [], [], [], []
     for e in range(N_EDGES):
-        for arm, iv in (("LINKED", edge_linked_iv[e]), ("CONTROL_A", edge_ctrla_iv[e]),
-                        ("CONTROL_B", edge_ctrlb_iv[e])):
-            if arm == "CONTROL_B" and not has_b[e]:
-                continue
+        if e in trimmed:
+            continue
+        arms = [("LINKED", edge_linked_iv[e]), ("CONTROL_A", edge_ctrla_iv[e])]
+        if edge_ctrlb_iv[e] >= 0:
+            arms.append(("CONTROL_B", edge_ctrlb_iv[e]))
+        for arm, iv in arms:
             pair_keys.append("e%d|%s" % (e, arm))
             pair_gene.append(genes[edge_gene[e]])
             pair_interval.append(int(iv))
@@ -140,8 +219,8 @@ def build_world(world, seed):
     # ================================================= the planted signal
     # Base expression, shared by every world. Depth enters BOTH modalities, which by
     # itself already creates an apparent correspondence -- that is the point of world 3.
-    rna = rng.normal(2.0, 0.6, (n_mc, N_GENES)) + 0.8 * log_depth[:, None]
-    atac = rng.normal(1.2, 0.5, (n_mc, N_INTERVALS)) + 0.7 * log_depth[:, None]
+    rna = rng.normal(4.0, 0.6, (n_mc, N_GENES)) + 0.8 * log_depth[:, None]
+    atac = rng.normal(3.0, 0.5, (n_mc, n_iv_real)) + 0.7 * log_depth[:, None]
 
     planted = {}
     if world == "BIOLOGY_POSITIVE":
@@ -178,12 +257,19 @@ def build_world(world, seed):
                        expect="Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; "
                               "this is recorded as an interpretation limit, not a bug.")
 
+    # Clipping at zero after adding variance raises the MEAN of the higher-variance arm,
+    # which by itself shifts distal_accessibility between linked and control and shows up
+    # in the balance gate as if it were imbalance. The baselines are set high enough that
+    # the clip almost never binds, and the rate is recorded so the claim is checkable
+    # rather than asserted.
+    clip_rna = float((rna < 0).mean())
+    clip_atac = float((atac < 0).mean())
     rna = np.clip(rna, 0, None).astype(np.float32)
     atac = np.clip(atac, 0, None).astype(np.float32)
 
     # ================================================= missingness, planted on purpose
     rna_avail = np.ones((n_mc, N_GENES), bool)
-    atac_avail = np.ones((n_mc, N_INTERVALS), bool)
+    atac_avail = np.ones((n_mc, n_iv_real), bool)
     # Plant each class on a gene or interval that a PAIR ACTUALLY USES. Planting it on an
     # unused feature produces a funnel count of zero and a test that cannot fail.
     used_g = sorted({gpos[str(g)] for g in pair_gene})
@@ -318,10 +404,10 @@ def build_world(world, seed):
              t3_available_packed=_pack(rna_avail),
              t3_shape=np.array([n_mc, N_GENES], np.int32),
              t4_available_packed=_pack(atac_avail),
-             t4_shape=np.array([n_mc, N_INTERVALS], np.int32),
+             t4_shape=np.array([n_mc, n_iv_real], np.int32),
              factor_rna_metacell_ok=np.ones(n_mc, bool),
              factor_atac_metacell_ok=np.ones(n_mc, bool),
-             factor_interval_ok=np.ones(N_INTERVALS, bool),
+             factor_interval_ok=np.ones(n_iv_real, bool),
              metacell_id=np.arange(n_mc, dtype=np.int32))
 
     # the per-pair geometry the 14-term basis needs, in the Phase-A row schema
@@ -335,8 +421,10 @@ def build_world(world, seed):
                          control_role="NONE" if arm == "LINKED" else arm.split("_")[1],
                          edge_index=e, promoter_index=int(edge_promoter[e]),
                          promoter_key="syn:%d" % edge_promoter[e],
-                         source_hg19_distance_bp=int(abs(iv_start[iv] - 5_000_000) + 1000),
-                         log_distance=float(np.log(abs(iv_start[iv] - 5_000_000) + 1000)),
+                         source_hg19_distance_bp=int(abs(int(iv_start[iv])
+                                                          - int(promoter_pos[edge_promoter[e]])) + 1),
+                         log_distance=float(np.log(abs(int(iv_start[iv])
+                                                       - int(promoter_pos[edge_promoter[e]])) + 1)),
                          promoter_degree=int((edge_promoter == edge_promoter[e]).sum()),
                          re_density=int(n_peaks[iv]) * 7,
                          anchor_frequency=int((pair_interval == iv).sum())))
@@ -348,16 +436,58 @@ def build_world(world, seed):
               "PHASE_A_ROWS.json"):
         digests[f] = B.sha_file(os.path.join(out, f))
 
+    # ---- prove the synthetic arms actually satisfy the frozen matching rules
+    viol_dist, viol_overlap, viol_prom = [], [], []
+    for e in range(N_EDGES):
+        if e in trimmed:
+            continue
+        p_pos = int(promoter_pos[edge_promoter[e]])
+        dl = abs(int(iv_start[edge_linked_iv[e]]) - p_pos)
+        tol = max(0.10 * dl, 10_000)
+        for ivx in (edge_ctrla_iv[e], edge_ctrlb_iv[e]):
+            if ivx < 0:
+                continue
+            dc = abs(int(iv_start[ivx]) - p_pos)
+            if abs(dc - dl) > tol:
+                viol_dist.append(dict(edge=e, linked=dl, control=dc, tol=tol))
+            if abs(int(iv_start[ivx]) - int(iv_start[edge_linked_iv[e]])) < IV_W:
+                viol_overlap.append(e)
+    matching_audit = dict(
+        rule="same promoter held fixed, same chromosome, 5,000 bp width, source distance "
+             "matched within +/-10 percent or 10 kb whichever is larger, control must not "
+             "overlap the linked interval, and every interval entering either arm carries "
+             "a consensus peak and an accessibility peak",
+        edges_built=N_EDGES, edges_trimmed_no_admissible_control=len(trimmed),
+        controls_checked=len(match_err_a) + len(match_err_b),
+        distance_match_violations=len(viol_dist),
+        overlap_violations=len(viol_overlap),
+        promoter_is_fixed_by_construction=True,
+        accessibility_qualification_symmetric=bool(iv_accessible.all()),
+        worst_distance_mismatch_bp=float(max(match_err_a + match_err_b))
+        if (match_err_a or match_err_b) else None,
+        median_distance_mismatch_bp=float(np.median(match_err_a + match_err_b))
+        if (match_err_a or match_err_b) else None,
+        all_frozen_matching_rules_satisfied=bool(not viol_dist and not viol_overlap
+                                                 and iv_accessible.all()))
+    if not matching_audit["all_frozen_matching_rules_satisfied"]:
+        raise SystemExit("world %s violates the frozen control construction: %d distance, "
+                         "%d overlap" % (world, len(viol_dist), len(viol_overlap)))
+
     manifest = dict(
         schema="V64_STAGE4_SYNTHETIC_WORLD_V1", IS_SYNTHETIC=True, world=world, seed=seed,
         contains_no_real_measurement=True,
         geometry=dict(donors=len(donors), eligible_donors=len(eligible_donors),
-                      metacells=n_mc, genes=N_GENES, intervals=N_INTERVALS,
+                      metacells=n_mc, genes=N_GENES, intervals=n_iv_real,
                       edges=N_EDGES, pairs=n_pairs, shards=N_SHARDS,
                       t3_nnz=int(len(t3_v)), t4_nnz=int(len(t4_v)),
                       t5_rows=n_t5),
         scale_note="reduced scale. The real substrate is 282 donors, 3,231 metacells and "
                    "13,175 edges; ratios are matched, absolute size is not.",
+        matching_audit=matching_audit,
+        clipping=dict(fraction_rna_clipped_at_zero=clip_rna,
+                      fraction_atac_clipped_at_zero=clip_atac,
+                      why="a clip that binds often raises the mean of the "
+                          "higher-variance arm and manufactures imbalance"),
         planted_truth=planted,
         planted_missingness=planted_missing,
         digests=digests)
