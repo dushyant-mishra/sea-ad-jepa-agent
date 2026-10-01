@@ -12,7 +12,7 @@
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
-  "current_blocker": "The Phase-B substrate build and B1-B5 closeout are accepted, including pairing revalidation and live shard rehashing. Stage 4 remains blocked because the frozen contract requires per-element availability columns in T3/T4, while the executed shards leave those implicit and the closeout moved availability flags into T5.",
+  "current_blocker": "Phase-B closeout now has three live requirements only: materialize T5 donor-level aggregates from frozen T2-T4, carry explicit availability/missingness state, and recompute/bind current shard .npz SHA-256 values. S66 interval reconciliation and T6→T7 referential integrity are CLOSED. Stage 4 remains sealed.",
   "parallel_architecture_next": "Nested RNA+multimodal two-student semantics plus optimizer/gradient/EMA mechanics now pass clean synthetic software qualification; historical u0 real-data forward compatibility also passes. None authorizes real training. Recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. Do not open Stage 4 until B6 is closed without rereading matrices or changing biological values."
+  "read_me_first": "Read V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V3. Do not repeat S66 or T6/T7 work. Focus closeout on T5, availability, and current shard-byte custody."
 }
