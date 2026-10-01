@@ -65,32 +65,36 @@ def normalize_barcode(x):
 def best_barcode_column(df, barcodes):
     bset=set(map(str,barcodes))
     candidates=[]
-    # include index as a candidate
-    series=[("__INDEX__",pd.Series(df.index.astype(str),index=df.index))]
-    series += [(c,df[c].astype(str)) for c in df.columns if df[c].dtype==object or "barcode" in c.lower() or "cell" in c.lower()]
-    for c,s in series:
+    barcode_re=re.compile(r"^[ACGT]+-[0-9]+$")
+    for c in df.columns:
+        s=df[c].astype(str)
+        head=s.head(100).tolist()
+        regex_hits=sum(bool(barcode_re.match(v)) for v in head)
         exact=int(s.isin(bset).sum())
-        # common metadata may prefix donor/sample before a '#', '_' or ':'; also barcodes may carry -1
-        suffix=0
-        if exact < max(100,len(df)//2):
-            vals=s.tolist()
-            suffix=sum(1 for v in vals if any(v.endswith(b) for b in bset))
-        candidates.append((max(exact,suffix),exact,suffix,c))
+        candidates.append((exact,regex_hits,c))
     candidates.sort(reverse=True)
-    n,ex,suf,c=candidates[0]
-    if n < min(1000, int(0.5*len(df))):
-        raise RuntimeError(f"No credible barcode column. Top candidates: {candidates[:10]}")
+    exact,regex_hits,c=candidates[0]
+    if exact < min(1000, int(0.5*len(df))):
+        raise RuntimeError(
+            f"No credible barcode column by exact 10x match. "
+            f"Top candidates: {candidates[:10]}; columns={list(df.columns)}"
+        )
     return c,candidates[:10]
 
 def celltype_candidates(df):
     out=[]
+    if "predicted.id" in df.columns:
+        s=df["predicted.id"].astype(str)
+        n=int((s=="Microglia").sum())
+        if n:
+            out.append((10**9,n,"predicted.id",["Microglia"]))
     pat=re.compile(r"microgl",re.I)
     for c in df.columns:
         s=df[c].astype(str)
         n=int(s.str.contains(pat,na=False).sum())
         if n:
             uniq=sorted(s[s.str.contains(pat,na=False)].unique().tolist())[:30]
-            score=(100 if re.search(r"cell.*type|celltype|annotation|cluster",c,re.I) else 0)+n
+            score=(100 if re.search(r"cell.*type|celltype|annotation|cluster|predicted",c,re.I) else 0)+n
             out.append((score,n,c,uniq))
     out.sort(reverse=True)
     if not out: raise RuntimeError("No metadata column contains a microglia-like label")
@@ -110,13 +114,8 @@ def donor_candidates(df):
 
 def metadata_barcode_values(df,col,barcodes):
     bset=set(map(str,barcodes))
-    vals=df.index.astype(str).tolist() if col=="__INDEX__" else df[col].astype(str).tolist()
-    out=[]
-    for v in vals:
-        if v in bset: out.append(v); continue
-        hits=[b for b in bset if v.endswith(b)]
-        out.append(hits[0] if len(hits)==1 else None)
-    return np.array(out,dtype=object)
+    vals=df[col].astype(str).tolist()
+    return np.array([v if v in bset else None for v in vals],dtype=object)
 
 def save_subset(prefix, mat, sel_cols, barcodes, names, ids, ftypes, genome):
     sm=mat[:,sel_cols].tocsc()
@@ -135,7 +134,7 @@ def main():
     ct_diag=celltype_candidates(df); ct_col=ct_diag[0][2]
     donor_diag=donor_candidates(df); donor_col=donor_diag[0][2]
     mapped=metadata_barcode_values(df,bc_col,barcodes)
-    micro_mask=df[ct_col].astype(str).str.contains("microgl",case=False,na=False).to_numpy()
+    micro_mask=(df[ct_col].astype(str)=="Microglia").to_numpy() if ct_col=="predicted.id" else df[ct_col].astype(str).str.contains("microgl",case=False,na=False).to_numpy()
     donor_vals=df[donor_col].astype(str).to_numpy()
     development_mask=micro_mask & ~np.isin(donor_vals,list(OVERLAP_DONORS))
     pos={b:i for i,b in enumerate(barcodes)}
