@@ -47,3 +47,13 @@ def test_geometry_gate_v2_is_distinct_and_reproducible():
     assert "digest[:8]" in t
     assert 'byte order' in t
     assert 'numpy.quantile(null, 0.99, method="higher")' in t
+
+
+def test_incremental_shell_gate_is_frozen_for_validation_and_test():
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    for shell in ("S_2 = P_2","S_4 = P_4 - P_2","S_8 = P_8 - P_4","S_16 = P_16 - P_8"):
+        assert shell in t
+    assert "aggregate gates on `P_k`" in t
+    assert "incremental shell `S_k`" in t
+    assert "every frozen incremental shell up to the selected rank" in t
+    assert "cannot rescue a failed incremental shell" in t
