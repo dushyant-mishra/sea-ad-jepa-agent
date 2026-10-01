@@ -73,3 +73,12 @@ def test_validation_and_test_materiality_semantics_match_contract():
         m.donor(.42,.10,.20),
     ]
     assert m._test_metric_set_confirmed(validation,test)
+
+
+def test_tie_and_geometry_authority_match_state():
+    state=json.loads((ROOT/"results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json").read_text())
+    tol=state["target_projection"]["boundary_tie_tolerance"]
+    assert tol["relative"]==1e-8
+    assert tol["consequence"]=="UNQUALIFIED_FOR_SELECTION"
+    assert state["geometry_gate"]["degenerate_geometry"]=="FAIL_CLOSED"
+    assert "ONE_DONOR_SPECIFIC_10000" in state["permutation"]["shared_sequence_scope"]
