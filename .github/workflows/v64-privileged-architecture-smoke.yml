@@ -92,6 +92,8 @@ jobs:
       - name: Materialize immutable Claude Phase-A/Phase-B authorities for cross-branch audits
         run: |
           git fetch --no-tags --depth=1 origin dc30caede6369a31df3098205db11c83381784e5
+          git fetch --no-tags --depth=1 origin f1dc9bd08057d88d33f27382ceb531b15e323ef9
+          git fetch --no-tags --depth=1 origin d3a7276516daf90d970251e975f2b9f30e934048
           mkdir -p results/v64/phase_a_v3 results/v64/phase_b_design
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz > results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz
           git show dc30caede6369a31df3098205db11c83381784e5:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
@@ -101,6 +103,27 @@ jobs:
           echo "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619  results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json" | sha256sum -c -
           echo "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b  results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json" | sha256sum -c -
           echo "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2  results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json" | sha256sum -c -
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json > results/v64/phase_b_design/V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json > results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json > results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json > results/v64/phase_b_design/V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json > results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json > results/v64/phase_b_design/V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json
+          git show f1dc9bd08057d88d33f27382ceb531b15e323ef9:results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json > results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json
+      - name: Validate V5 cross-branch Git custody wiring
+        run: |
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, "scripts/v64")
+          import validate_stage4_execution_authority_v1 as v
+          C=json.load(open("results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json"))
+          M={"files":{k:{"path":b["path"]} for k,b in C["repo_resident_git_custody"].items()}}
+          errors=v.validate_repo_git_custody(M,C)
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print(f"V5 git custody PASS: {len(C['repo_resident_git_custody'])} repo authorities")
+          PY
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
