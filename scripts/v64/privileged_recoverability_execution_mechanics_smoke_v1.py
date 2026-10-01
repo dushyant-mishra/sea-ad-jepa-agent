@@ -76,6 +76,11 @@ def r2(Y,P,ref):
     den=np.square(Y-ref).sum()
     return float(1-np.square(Y-P).sum()/den)
 
+def pick_alpha_from_scores(scores):
+    best=max(scores.values())
+    tied=[a for a,v in scores.items() if abs(v-best)<=1e-12]
+    return max(tied)
+
 def choose_alpha(X,Y,donor,alphas=ALPHAS):
     donors=sorted(set(donor.tolist()))
     scores={}
@@ -86,9 +91,7 @@ def choose_alpha(X,Y,donor,alphas=ALPHAS):
             m=ridge_fit(X[tr],Y[tr],a)
             vals.append(r2(Y[va],ridge_predict(m,X[va]),Y[tr].mean(0)))
         scores[a]=float(np.mean(vals))
-    best=max(scores.values())
-    tied=[a for a,v in scores.items() if abs(v-best)<=1e-12]
-    return max(tied),scores
+    return pick_alpha_from_scores(scores),scores
 
 def run_smoke():
     # TRAIN-only IDF: changing held-out bytes cannot change fitted IDF.
@@ -116,9 +119,7 @@ def run_smoke():
     donors=np.arange(4)
     # r2 is undefined for zero target variance, so make a direct equal-score tie fixture.
     scores={a:0.25 for a in ALPHAS}
-    best=max(scores.values())
-    tied=[a for a,v in scores.items() if abs(v-best)<=1e-12]
-    assert max(tied)==100.0
+    assert pick_alpha_from_scores(scores)==100.0
 
     # Sign convention: maximum-absolute loading is positive.
     M=np.array([[3.,0.,1.],[0.,2.,1.],[1.,1.,4.],[2.,0.,2.]])
