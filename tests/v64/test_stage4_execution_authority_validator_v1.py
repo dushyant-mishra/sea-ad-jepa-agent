@@ -11,7 +11,7 @@ import validate_stage4_execution_authority_v1 as v  # noqa: E402
 
 
 CONTRACT = json.loads(
-    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json")
+    (ROOT / "results" / "v64" / "V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json")
     .read_text(encoding="utf-8")
 )
 
