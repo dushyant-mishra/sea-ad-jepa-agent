@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "d49375243f9402c62e448663acca8c697b06a565",
+    "chatgpt_architecture": "9c701476252e1f139e0f065767798fec25b27767",
     "claude_exact_sampler": "7b51aac902b5dd4bb6ec697bb7e144a9a595224c",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -115,7 +115,7 @@
     "dong_join_rule": "transcript_id + chromosome",
     "fantom_coordinate_authority": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
     "fantom_bed_workflow_run": 36749777293,
-    "full_ledger_status": "SOURCE_BYTES_AUTHENTICATED__DUAL_LEDGER_BUILDER_REPAIRED_FOR_STRAND_AND_NESTED_INTERVALS__STRICT_ACTIONS_MATERIALIZATION_IN_PROGRESS",
+    "full_ledger_status": "MATERIALIZED_AND_STRUCTURALLY_ACCEPTED",
     "denominators": {
       "transcript_promoter_isoform_records": 644292,
       "exact_tss_loci": 389280,
@@ -128,7 +128,20 @@
       "frozen_fantom_exact_representative_tss": 25321
     },
     "source_byte_custody": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
-    "interval_overlap_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json"
+    "interval_overlap_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json",
+    "materialization_audit": "results/v64/V65_PROMOTER_DUAL_LEDGER_MATERIALIZATION_AUDIT_V1.json",
+    "materialization_workflow": {
+      "run_id": 36797622994,
+      "head_sha": "2120aadcc216ada04148ba7e83d093fcdce8d1bb",
+      "artifact_id": 11134735950,
+      "artifact_sha256": "f4c1912e4cec23e1e159708fd5a7f46198ed72a0c1b2f3bec7a6e50ade02f090",
+      "committed_in_git": false
+    },
+    "output_hashes": {
+      "transcript_ledger": "aa02297a816c37420956b1a943572ba951f5659cc56c98760b2ef66323afd054",
+      "exact_tss_ledger": "2931960f321ccaae3fb1124dd07df9b3bd78e53032134648207c221b079eca32",
+      "transcript_to_tss_membership": "a409d7a19b2c2045be621826a2f262fe0ac50249e024329004672dd398811f35"
+    }
   },
   "full104_discovery_subset": {
     "bytes": 50646637,
@@ -171,12 +184,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Audit Claude repairs after 7b51aac9.",
-    "Require explicit statistical-contract successor/amendment freezing R1/R2/R3 before Phase B.",
-    "Require removal of hardcoded 24187 denominator and test staleness behavior.",
+    "Audit Claude repairs after 7b51aac9; Phase B remains stopped on R3 statistical authority, denominator staleness, and durable Phase-A V3 row custody.",
+    "Promoter dual-ledger materialization is structurally closed; do not reopen SCREEN/FANTOM/Dong overlap semantics unless a contradictory defect appears.",
+    "Continue recoverability architecture qualification on synthetic fixtures only; real paired NIH-CARD recoverability execution remains unauthorized and TEST unopened.",
     "Improve durable custody of Phase-A V3 row artifacts.",
-    "Do not execute Phase B until re-audit passes.",
-    "Continue promoter/recoverability architecture work in parallel without opening protected outcomes."
+    "Do not execute Phase B until substrate re-audit passes."
   ],
   "governance": {
     "training": "OFF",
