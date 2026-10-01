@@ -32,6 +32,9 @@ on:
       - 'tests/test_v65_recoverability_decision_synthetic.py'
       - 'tests/test_v65_recoverability_numerical_synthetic_smoke.py'
       - 'tests/test_v65_recoverability_permutation_geometry_smoke.py'
+      - 'tests/test_v65_recoverability_execution_mechanics.py'
+      - 'scripts/v64/privileged_recoverability_execution_mechanics_smoke_v1.py'
+      - 'docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md'
       - 'scripts/v64/privileged_recoverability_permutation_geometry_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_numerical_synthetic_smoke_v1.py'
       - 'scripts/v64/privileged_recoverability_geometry_gate_v2.py'
@@ -85,6 +88,7 @@ jobs:
             tests/test_v65_recoverability_decision_synthetic.py \
             tests/test_v65_recoverability_numerical_synthetic_smoke.py \
             tests/test_v65_recoverability_permutation_geometry_smoke.py \
+            tests/test_v65_recoverability_execution_mechanics.py \
             tests/test_v65_privileged_recoverability_decision_engine_smoke_v1.py \
             tests/test_v65_recoverability_authority_consistency.py \
             tests/test_v65_privileged_recoverability_numerical_synthetic_smoke_v1.py \
