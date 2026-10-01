@@ -1,4 +1,4 @@
-# Claude instructions — V64 Phase-B substrate audit repairs
+# Claude instructions — V64 final substrate executability repair
 
 **Date:** 2026-09-30
 
@@ -8,143 +8,106 @@ Continue from:
 
 Audited head:
 
-`7b51aac902b5dd4bb6ec697bb7e144a9a595224c`
+`a0500111254315504de3618ea832931ea54cdc26`
 
 Do NOT execute Phase B yet.
 
-## What is accepted
+## Accepted closures
 
-- Exact sampler: QUALIFIED.
-- S50: CLOSED for current production chain.
-- Phase-A V3 code/receipt now carries the complete linked-side funnel and V2 structural schema.
-- Phase-A V3 retained population used by the substrate: 13,175.
-- The measurement-substrate architecture is directionally sound:
-  - persist metacell assignment;
-  - persist one-modality RNA/ATAC metacell vectors;
-  - persist depth;
-  - never compute a two-modality statistic in Phase B;
-  - gene-key T3 under the frozen linked-gene RNA definition;
-  - recoverability split remains scoped only to recoverability selection;
-  - protected demographic values remain unread.
+S57 CLOSED:
+- denominator 24,187 is no longer hardcoded;
+- it is recomputed from loaded Phase-A V3 control rows;
+- T18 rejects a stale denominator.
 
-## Blocking finding S57 — residual hardcoded denominator
+S58 CLOSED:
+- R1/R2/R3 now live in statistical contract V3;
+- V3 explicitly declares that it makes this statistical decision;
+- substrate is rebound to the V3 digest.
 
-In:
+S59 CLOSED:
+- both Phase-A V3 gzip artifacts are now committed as Git bytes at the expected sizes;
+- retain their receipt-bound SHA-256s unchanged.
 
-`scripts/v64/build_phase_b_measurement_substrate_contract_v1.py`
+## Remaining blocker S60 — persist the R3 conditioning identity
 
-this line still uses:
+Statistical V3 requires R3 to mean:
 
-`round(len(extra) / 24187, 6)`
+`EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM`
 
-where 24,187 is today's CONTROL_A + available CONTROL_B row count:
+and explicitly states that the realised large-arm draw is recorded per pair alongside the reference.
 
-`13,175 + 11,012`
+The current substrate contract says this in prose but T6 does not freeze the conditioning identity as persisted data.
 
-It is correct now but stale by construction.
+That is an executability gap.
 
-Fix it by recomputing the denominator from the loaded Phase-A V3 artifact.
-
-Add a negative-control test that changes control availability and proves the emitted fraction changes accordingly.
-
-Search again for other live population/count literals before closeout.
-
-## Blocking finding S58 — R3 is a statistical decision
-
-The substrate contract states:
-
-`changes_no_statistical_decision = true`
-
-but it introduces:
-
-- R1 exact A-side enumeration;
-- R2 exact joint A/B when both arms are <=10;
-- R3 exact conditional when one arm is <=10 and the other is large.
-
-R3 in particular is a new inferential rule:
-
-> enumerate the small arm completely while holding the large arm at its realised draw.
-
-The bound V2 null/statistical contract does not freeze that rule.
-
-T13 proves the 57-row arithmetic under R3. It does NOT prove that R3 is upstream statistical authority.
+Stage 4 must never have to reconstruct after outcomes are visible:
+- which arm was small;
+- which arm was large;
+- which realised large-arm draw was conditioned on;
+- whether the quantity must carry the conditional label.
 
 ### Required repair
 
-Create an explicit prospectively frozen successor/amendment to:
+Add a persisted R3 reference/conditioning structure to the substrate contract and eventual substrate artifact.
 
-`V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2.json`
+For every one of the 21 R3 pairs, persist at minimum:
 
-that defines R1/R2/R3.
+- `edge_index`
+- `reference_rule_id = R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM`
+- `small_arm_role` (A or B)
+- `small_arm_drawn_side`
+- `large_arm_role`
+- `realised_large_arm_drawn_side`
+- `realised_large_arm_hg19_start`
+- `realised_large_arm_hg19_end`
+- `required_label = CONDITIONAL_ON_REALISED_LARGE_ARM`
 
-For R3 state explicitly:
+Also bind each ENUMERATION_ONLY small-arm row to its R3 conditioning record, e.g. by `reference_id`.
 
-- eligibility;
-- which arm is conditioned on;
-- the conditioning value is the already-realised large-arm draw;
-- what reference distribution/statistic it governs;
-- why this is a conditional estimand rather than an approximation to the full joint;
-- how it is reported separately from full-joint cases;
-- no outcome value informed the choice.
+If R1/R3 overlap on an A-small pair, preserve both rule memberships rather than duplicating biological measurement.
 
-Update:
+### Required test
 
-- decision-state artifact;
-- null/statistical tests;
-- substrate authority digest.
+Add a real adversarial test that independently recomputes R3 membership from the committed Phase-A V3 rows and exact admissible sets and verifies:
 
-Add a cross-contract test:
+- 21 R3 pairs;
+- A small = 11;
+- B small = 10;
+- same drawn side = 0;
+- different drawn side = 21;
+- every conditioning record's realised large-arm start/side equals the actual frozen Phase-A draw;
+- every R3 reference carries `CONDITIONAL_ON_REALISED_LARGE_ARM`;
+- every R3 ENUMERATION_ONLY row points to the correct conditioning record.
 
-> every enumeration/reference rule emitted by the substrate must exist identically in the bound statistical contract.
+Plant failures for:
+- wrong large-arm start;
+- wrong large-arm role;
+- missing conditional label;
+- invented/unbound reference_id.
 
-Only after that may the substrate truthfully state that it changes no statistical decision.
+Each must be rejected.
 
-Do not tune R3 after matrix values are opened.
+## Strengthen T17
 
-## Finding S59 — Phase-A V3 byte custody
+Keep the identifier/authority check, but add semantic enforcement:
+- substrate R1/R2/R3 eligibility/reference definition must be derived from or compared against V3;
+- an existing rule identifier with altered semantics must fail.
 
-The substrate depends on:
+The current T17 blocks a new downstream rule identifier, but does not by itself catch semantic drift under an existing identifier.
 
-- `PHASE_A_V3_ROWS.jsonl.gz`
-  - 1,866,271 bytes
-  - sha256 `ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4`
-- `PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz`
-  - 63,355 bytes
-  - sha256 `b4c6eb6fc9568b036d0b9217c102ab68a07d4b492db8625674a9e2a4db18a056`
-
-They are currently hash-bound but not in Git.
-
-They are small enough that future independent audit should not depend on a local D: drive.
-
-Put the exact bytes in durable Git/release/Actions custody, or add a deterministic rematerialization/export workflow that verifies these hashes.
-
-Do not change the bytes while doing this.
-
-## Additional implementation assertion
-
-The frozen measurement universes are:
-
-- RNA: 38,606 genes
-- ATAC: 521,217 peaks
-
-These are inherited from the correspondence-design contract. In the eventual Phase-B executor, assert the authenticated matrix dimensions equal these frozen values before normalisation.
-
-## Preserve these decisions
+## Preserve everything else
 
 Do not change:
-
-- Phase-A population 13,175 without a real Phase-A defect;
-- primary CONTROL_A semantics;
-- non-rescue;
-- singleton/small-support strata;
-- donor as sole independent/resampling unit;
+- Phase-A V3 population 13,175;
+- randomness strata;
+- R1/R2/R3 definitions;
+- donor/metacell thresholds;
+- bootstrap seed/replicates;
 - gene-balanced primary weighting;
-- metacell algorithm/seed;
-- bootstrap seed 20260929 / 4,000 replicates;
-- 100 microglia / 4 metacells / 30 donors thresholds;
-- recoverability 16/4/4 scope;
-- missing != zero;
-- protected obs-column firewall.
+- recoverability split scope;
+- protected-column firewall;
+- missingness rules;
+- Phase-B single-modality boundary.
 
 ## Governance
 
@@ -153,6 +116,6 @@ Stage 4 = NOT AUTHORIZED.
 TD60 = BLOCKED.  
 Morabito = PROTECTED.  
 TRAINING = OFF.  
-No correspondence outcome opened.
+Correspondence remains unopened.
 
-After repairs, STOP again for audit. Do not execute Phase B.
+After S60 is closed, STOP again for audit. Do not execute Phase B.
