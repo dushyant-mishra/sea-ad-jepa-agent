@@ -1,0 +1,183 @@
+{
+  "schema": "V64_STAGE4_CALIBRATION_SWEEP_V1",
+  "date": "2026-10-01",
+  "executes_precommitment": {
+    "path": "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_PRECOMMIT_V1.json",
+    "sha256": "b23dcc2d2902f8d80c0aac6e7527e7c684677d0f4c30c3a365fd58dac915e2c2"
+  },
+  "design_was_frozen_before_any_draw": true,
+  "thresholds_or_draw_counts_changed_after_seeing_results": false,
+  "cells": {
+    "TRUE_NULL@60": {
+      "world": "TRUE_NULL",
+      "donors_configured": 60,
+      "donors_eligible": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "crossings": 2,
+      "rate": 0.05,
+      "wilson95": [
+        0.0138,
+        0.165
+      ],
+      "half_width": 0.0756,
+      "resolution": "RESOLVED",
+      "delta_median": -8.154258720575962e-05,
+      "delta_range": [
+        -0.006657427899886684,
+        0.005914610944041506
+      ],
+      "lcb95_median": -0.006096569983009291,
+      "removed_median": null,
+      "max_abs_control_vs_control": 0.009510373092916257,
+      "failures": []
+    },
+    "TRUE_NULL@282": {
+      "world": "TRUE_NULL",
+      "donors_configured": 282,
+      "donors_eligible": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "crossings": 3,
+      "rate": 0.075,
+      "wilson95": [
+        0.0258,
+        0.1986
+      ],
+      "half_width": 0.0864,
+      "resolution": "RESOLVED",
+      "delta_median": 0.00031758118794660245,
+      "delta_range": [
+        -0.004387269247052604,
+        0.0037784115746017756
+      ],
+      "lcb95_median": -0.002272145911442431,
+      "removed_median": null,
+      "max_abs_control_vs_control": 0.0032803790464459096,
+      "failures": []
+    },
+    "MEASURED_TECHNICAL@60": {
+      "world": "MEASURED_TECHNICAL",
+      "donors_configured": 60,
+      "donors_eligible": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "crossings": 35,
+      "rate": 0.875,
+      "wilson95": [
+        0.7389,
+        0.9454
+      ],
+      "half_width": 0.1033,
+      "resolution": "RESOLVED",
+      "delta_median": 0.017227184897887583,
+      "delta_range": [
+        0.005125098921982962,
+        0.03039275938008169
+      ],
+      "lcb95_median": 0.00888983732270419,
+      "removed_median": 0.9228348050693091,
+      "max_abs_control_vs_control": 0.020357247057936283,
+      "failures": []
+    },
+    "MEASURED_TECHNICAL@282": {
+      "world": "MEASURED_TECHNICAL",
+      "donors_configured": 282,
+      "donors_eligible": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "crossings": 40,
+      "rate": 1.0,
+      "wilson95": [
+        0.9124,
+        1.0
+      ],
+      "half_width": 0.0438,
+      "resolution": "RESOLVED",
+      "delta_median": 0.021327051383195503,
+      "delta_range": [
+        0.005019198533771049,
+        0.03160505499015224
+      ],
+      "lcb95_median": 0.017584623886216493,
+      "removed_median": 0.8996205448696306,
+      "max_abs_control_vs_control": 0.015875040989786097,
+      "failures": []
+    }
+  },
+  "readings": [
+    {
+      "donors": 60,
+      "true_null_rate": 0.05,
+      "true_null_wilson": [
+        0.0138,
+        0.165
+      ],
+      "true_null_consistent_with_nominal_0_05": true,
+      "measured_technical_rate": 0.875,
+      "measured_technical_wilson": [
+        0.7389,
+        0.9454
+      ],
+      "technical_exceeds_null": true,
+      "reading": "the decision rule is calibrated under a true null"
+    },
+    {
+      "donors": 282,
+      "true_null_rate": 0.075,
+      "true_null_wilson": [
+        0.0258,
+        0.1986
+      ],
+      "true_null_consistent_with_nominal_0_05": true,
+      "measured_technical_rate": 1.0,
+      "measured_technical_wilson": [
+        0.9124,
+        1.0
+      ],
+      "technical_exceeds_null": true,
+      "reading": "the decision rule is calibrated under a true null"
+    }
+  ],
+  "scale_reading": {
+    "from_donors": 60,
+    "to_donors": 282,
+    "technical_rate_from": 0.875,
+    "technical_rate_to": 1.0,
+    "direction": "RISES",
+    "reading": "the residue is a BIAS rather than noise: the bound tightens with n while the bias does not, so the real run at 282 donors is MORE exposed than the 60-donor qualification suggested"
+  },
+  "canonical_worlds_restored": {
+    "BIOLOGY_POSITIVE": {
+      "seed": 20260929,
+      "eligible_donors": 60,
+      "digests_match": true
+    },
+    "TRUE_NULL": {
+      "seed": 20260930,
+      "eligible_donors": 60,
+      "digests_match": true
+    },
+    "MEASURED_TECHNICAL": {
+      "seed": 20260931,
+      "eligible_donors": 60,
+      "digests_match": true
+    },
+    "HIDDEN_CONFOUND": {
+      "seed": 20260932,
+      "eligible_donors": 60,
+      "digests_match": true
+    }
+  },
+  "canonical_state_verified": true,
+  "what_this_cannot_establish": "These are synthetic worlds with a planted generative structure I chose. The measured rates characterise the DECISION RULE under those structures. They are not an estimate of the false-positive rate of the real Stage-4 analysis, whose true data-generating process is unknown.",
+  "wall_clock_seconds": 3541.3,
+  "real_substrate_read": false,
+  "computed_correspondence_values": 0,
+  "producer_sha256": "d8915eade901e58a9a4bdfa2a0cd06f4e44cbea1a43e985f1231ecb0cc67360d",
+  "status": "COMPLETE"
+}
