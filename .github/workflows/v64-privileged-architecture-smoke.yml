@@ -151,3 +151,8 @@ jobs:
             tests/test_v67_evidence_vs_measurement_response.py \
             tests/test_v67_two_lane_integration_recoverability_contract.py \
             tests/test_v67_privileged_teacher_state_construction_contract.py
+      - name: Emit V67 synthetic qualification outputs
+        run: |
+          python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
+          python scripts/v64/heldout_source_observation_operator_synthetic_v1.py
+          python scripts/v64/evidence_vs_measurement_response_synthetic_v1.py
