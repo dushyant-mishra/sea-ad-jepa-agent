@@ -28,7 +28,7 @@ def test_seed_rule_is_stable_and_donor_specific():
     assert m.donor_seed("D1")!=m.donor_seed("D2")
 
 def test_contract_uses_relational_geometry_not_duplicate_principal_angle_gate():
-    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_20260930.md").read_text()
+    t=(ROOT/"docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md").read_text()
     assert "relational-geometry correlation" in t
-    assert "double-count one mathematical quantity" in t
-    assert "Principal-angle values may still be reported as a diagnostic" in t
+    assert "may not be counted as two independent qualification gates" in t
+    assert "principal-angle threshold is **SUPERSEDED BEFORE REAL EXECUTION**" in t
