@@ -16,7 +16,9 @@ import numpy as np
 
 
 def donor_seed(donor_id: str) -> int:
-    h=hashlib.sha256(f"V65_RECOVERABILITY_PERMUTATION|{donor_id}".encode()).digest()
+    h=hashlib.sha256(
+        f"V65_RECOVERABILITY_PERMUTATION|{donor_id}".encode("utf-8")
+    ).digest()
     return int.from_bytes(h[:8],"big",signed=False)
 
 
@@ -60,7 +62,7 @@ def r2_multi(Y,P,train_mean):
 
 def permutation_metrics(Ytrue,Ypred,train_mean,donor_id,n_perm=10_000):
     Ytrue=np.asarray(Ytrue,float); Ypred=np.asarray(Ypred,float)
-    rng=np.random.default_rng(donor_seed(donor_id))
+    rng=np.random.Generator(np.random.PCG64(donor_seed(donor_id)))
     obs_r2=r2_multi(Ytrue,Ypred,train_mean)
     cc=canonical_correlations(Ytrue,Ypred)
     obs_cc=float(np.median(cc)) if cc.size else float("nan")
