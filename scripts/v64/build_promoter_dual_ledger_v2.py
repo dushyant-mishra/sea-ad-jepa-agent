@@ -47,6 +47,23 @@ def tss_id(g: dict) -> str:
     return f'GENCODE50:TSS:{g["gene_id"]}:{g["chrom"]}:{g["tss_1based"]}:{g["strand"]}'
 
 
+def fantom_same_strand_hits(v1, index, starts, chrom: str, pos1: int, strand: str):
+    """FANTOM CAGE evidence is strand-aware.
+
+    load_bed_index stores BED columns 4+ in tuple element 2. For BED9,
+    extras[2] is the BED strand (original column 6).
+    """
+    hits = v1.point_hits(index, starts, chrom, pos1)
+    out = []
+    for h in hits:
+        extras = h[2]
+        if len(extras) < 3:
+            raise ValueError("FANTOM BED row lacks strand column")
+        if extras[2] == strand:
+            out.append(h)
+    return out
+
+
 def build(args) -> dict:
     v1 = _load_v1()
     screen_idx, screen_starts = v1.load_bed_index(args.screen_pls)
@@ -92,7 +109,10 @@ def build(args) -> dict:
             xid = tss_id(g)
             sh = v1.point_hits(screen_idx, screen_starts, g["chrom"], g["tss_1based"])
             fhits = (
-                v1.point_hits(fantom_idx, fantom_starts, g["chrom"], g["tss_1based"])
+                fantom_same_strand_hits(
+                    v1, fantom_idx, fantom_starts,
+                    g["chrom"], g["tss_1based"], g["strand"]
+                )
                 if fantom_idx is not None else []
             )
             dong_any = int(g["transcript_id"] in dong_any_tid)
@@ -161,6 +181,7 @@ def build(args) -> dict:
         "exact_tss_loci": len(tss),
         "genes": len(genes),
         "denominator_rule": "Evidence annotates GENCODE candidates and never removes them.",
+        "fantom_coordinate_rule": "GENCODE TSS point must overlap a FANTOM hg38 peak on the SAME strand.",
         "keys": {
             "transcript": "gene_id + transcript_id + chromosome + strand + exact TSS + release",
             "exact_tss": "gene_id + chromosome + strand + exact TSS",
