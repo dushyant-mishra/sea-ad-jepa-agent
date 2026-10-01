@@ -74,7 +74,9 @@ def make(seed=1,shared_rank=4,technical_target=False,n_donors=24,n_per=50):
         X[:,16:40]=0.55*(shared@A) + .18*rng.normal(size=(n,24))
         X[:,40:]=.25*rng.normal(size=(n,8))
         if technical_target:
-            T=np.c_[tech,tech][:,:16] + .10*rng.normal(size=(n,16))
+            # Technical-only target is generated from the same two degrees of freedom
+            # available to the frozen technical baseline.
+            T=np.tile(tech[:,:2],(1,8)) + .10*rng.normal(size=(n,16))
         else:
             shared_part=shared@B
             if shared_rank<16:
@@ -85,8 +87,8 @@ def make(seed=1,shared_rank=4,technical_target=False,n_donors=24,n_per=50):
                 T=shared_part + 0.75*priv + .08*rng.normal(size=(n,16))
             else:
                 T=shared_part + .08*rng.normal(size=(n,16))
-        depth1=tech[:,0] + .15*rng.normal(size=n)
-        depth2=tech[:,1] + .15*rng.normal(size=n)
+        depth1=tech[:,0] + .02*rng.normal(size=n)
+        depth2=tech[:,1] + .02*rng.normal(size=n)
         Xs.append(X); Ys.append(T); Tech.append(np.c_[depth1,depth2])
         donor.extend([d]*n)
     return np.vstack(Xs),np.vstack(Ys),np.vstack(Tech),np.array(donor)
