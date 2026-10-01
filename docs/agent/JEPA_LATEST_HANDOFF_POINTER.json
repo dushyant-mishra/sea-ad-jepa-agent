@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
   "date": "2026-09-30",
-  "status": "V65_PHASE_A_V3_ACCEPTED__S60_DESIGN_CLOSED__PHASE_B_STOPPED_ON_S61",
+  "status": "V65_PHASE_A_V3_ACCEPTED__PHASE_B_MEASUREMENT_ONLY_AUTHORIZED__STAGE4_SEALED",
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json",
@@ -11,8 +11,8 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "7ad38eaf457d2fbb81f40f57a7b1747eac7776f1",
-  "current_blocker": "S60 design is closed, but the committed substrate-test receipt at 7ad38eaf records 7/9 FAIL (T16/T17 stale authority digest) despite the reported final 9/9 PASS. Phase B remains blocked until the restored final artifacts are rerun and a clean committed 9/9 PASS receipt is self-consistent.",
+  "claude_last_verified_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
+  "current_blocker": "No remaining substrate-contract blocker. Phase B may now materialize the frozen single-modality measurement substrate only. Stage 4 / RNA-ATAC correspondence remains not authorized until the emitted substrate passes independent audit.",
   "parallel_architecture_next": "Promoter ledger closed. Recoverability V2 decision/mechanics are synthetically qualified and the exact paired subset passes an outcome-blind TRAIN+VALIDATION structural preflight with TEST numeric access sealed by API. Real recoverability execution remains unauthorized; next lawful step is executor audit/authorization without opening TEST.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Phase B remains blocked on S61 stale committed substrate-test receipt. Promoter ledger is closed. Recoverability structural preflight passed without computing any real outcome; TEST remains sealed and real TRAIN+VALIDATION execution is still unauthorized."
+  "read_me_first": "Read V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json. S57-S62 are closed. Phase B is authorized only to persist the frozen measurement substrate; any two-modality correspondence statistic remains forbidden."
 }
