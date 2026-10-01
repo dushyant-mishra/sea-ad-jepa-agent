@@ -1,0 +1,167 @@
+{
+  "schema": "V67_CLAUDE_INDEPENDENT_AUDIT_OF_CHATGPT_LANE_V1",
+  "date": "2026-10-01",
+  "audited_range": {
+    "base": "c965d770",
+    "head": "57e657d08af25d19ca0c9d8cb4e2c6eb3b0a3db7"
+  },
+  "instruction": "try to falsify, do not assume the green test total means the design is correct",
+  "CORROBORATED_BY_INDEPENDENT_RECOMPUTATION": [
+    {
+      "quantity": "qualifying_donors",
+      "value": 282,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "metacells",
+      "value": 3231,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "microglia_covered",
+      "value": 84129,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "genes",
+      "value": 4372,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "intervals",
+      "value": 32153,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "pairs",
+      "value": 37419,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "t5_rows",
+      "value": 10552158,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "t3_nnz",
+      "value": 6624289,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "t4_nnz",
+      "value": 55467544,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "pairs_meeting_minimum_donors",
+      "value": 36794,
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "phase_b_aggregate_binding",
+      "value": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+      "method": "recomputed from the artifacts, not read back from any receipt"
+    },
+    {
+      "quantity": "evidence_vs_measurement counterfactual controls",
+      "value": "both gates are driven false by an override",
+      "method": "read from source: run_smoke(evidence_override_same_subset=True) and run_smoke(depth_override_fixed_noise=True) are asserted to fail"
+    }
+  ],
+  "contract_parent_quantities_checked": 11,
+  "contract_parent_quantities_reproducing": 11,
+  "disagreements": {},
+  "findings": [
+    {
+      "id": "S89",
+      "severity": "CONCERN",
+      "title": "the validator's positive control is built from the contract it checks",
+      "detail": "valid_manifest() copies phase_b_aggregate_binding, qualifying_donors, metacells, t5_rows, microglia_covered, genes, intervals, pairs, t3_nnz, t4_nnz, pairs_meeting_minimum_donors, the state vocabulary, the statistical rules and the missingness rules straight out of the contract. test_clean_structural_manifest_passes therefore cannot fail for any value-equality rule, and would stay green if a contract number were wrong. The mutation tests around it are real and do fail when perturbed; it is specifically the positive control that carries no information. Section 1 of this audit is the control it lacks.",
+      "evidence": {
+        "fixture": "valid_manifest() in tests/v64/test_stage4_execution_authority_validator_v1.py"
+      }
+    },
+    {
+      "id": "S90",
+      "severity": "CONCERN",
+      "title": "git custody is hand-listed and nothing requires it to be complete",
+      "detail": "10 of 13 frozen authority digests carry a git_blob and source_commit; ['availability_artifact_sha256', 'consensus_peak_set_sha256', 't5_sha256'] carry only a raw SHA-256. Two of those are the large npz artifacts and are legitimately not repo-resident. But validator_rules contains no rule obliging a repo-resident authority to appear in repo_resident_git_custody, so adding one and forgetting its custody entry leaves the validator green. The CI step compounds this: it builds its manifest as {k: {path} for k in C['repo_resident_git_custody']}, so the manifest it validates is generated FROM the custody block and can never contain a label the custody block omits.",
+      "evidence": {
+        "uncovered_labels": [
+          "availability_artifact_sha256",
+          "consensus_peak_set_sha256",
+          "t5_sha256"
+        ],
+        "ci_manifest_is_generated_from_custody": true
+      }
+    },
+    {
+      "id": "S91",
+      "severity": "CONCERN",
+      "title": "validate_file_bindings has never been executed against a real manifest",
+      "detail": "An exhaustive listing of every path at 57e657d0 contains no V66_STAGE4_AUTHORITY_INPUT_MANIFEST artifact, the unit-test fixture sets files to the empty dict, and the CI step calls only validate_repo_git_custody. So the function that would require every bound digest to resolve to real bytes on disk has run against a real input exactly zero times. It is reviewed code, not exercised code.",
+      "evidence": {
+        "manifests_found": [],
+        "fixture_files_empty": true,
+        "ci_invokes_file_bindings": false,
+        "paths_listed": 6002
+      }
+    },
+    {
+      "id": "S92",
+      "severity": "CONCERN",
+      "title": "a bound authority digest has no locatable bytes in the trees scanned",
+      "detail": "consensus_peak_set_sha256 = 28369a0c8859ee39... was not found by exhaustive walk of ['results/v64', 'results/v63', 'data', 'D:/jepa_v5_outputs_20260925'] (887 files hashed). This is a SCOPE-LIMITED absence, not a claim that the file does not exist: it may live in a tree I did not scan or on another machine. It matters because validate_file_bindings requires this label to resolve to real bytes, and taken together with S91 it means the first real manifest may fail closed on a digest nobody can satisfy.",
+      "evidence": {
+        "roots_walked": [
+          "results/v64",
+          "results/v63",
+          "data",
+          "D:/jepa_v5_outputs_20260925"
+        ],
+        "files_hashed": 887,
+        "method": "exhaustive os.walk and SHA-256, not a filename search"
+      }
+    },
+    {
+      "id": "S93",
+      "severity": "CONCERN",
+      "title": "the new contract tests assert sentences, not behaviour",
+      "detail": "These files check that particular strings appear in a JSON document the same lane authored -- for example that r['test_rule'] contains the phrase 'TEST does not tune'. That detects someone deleting a sentence. It cannot detect an executor that violates the rule, because no executor is involved. A contract is not in force until something enforces it, so these should not be counted toward the green test total as evidence that the design is implemented.",
+      "evidence": {
+        "tests/test_v67_two_lane_integration_recoverability_contract.py": {
+          "tests": 6,
+          "substring_assertions": 9
+        },
+        "tests/test_v67_privileged_teacher_state_construction_contract.py": {
+          "tests": 5,
+          "substring_assertions": 4
+        }
+      }
+    },
+    {
+      "id": "S94",
+      "severity": "CONCERN",
+      "title": "the evidence/measurement separation rests on one seed and a near-guaranteed monotonicity",
+      "detail": "The fixture is drawn once at SEED=6703 and the convergence claim is never repeated across seeds, so the reported monotonicity is a property of one draw. strictly_improves() is also misnamed: it tests non-increasing to a tolerance of 1e-12, so a flat curve satisfies it and the relative-gain threshold does all the work. The evidence arm additionally uses NESTED feature subsets with roughly 1,800 training rows against at most 40 predictors, where adding features can hardly fail to reduce validation error -- so that gate carries little information on its own. The two counterfactual overrides are what make it falsifiable, and they are good; the headline gates are not the evidence.",
+      "evidence": {
+        "single_seed": true,
+        "monotone_is_nonstrict": true,
+        "counterfactual_controls_present": true
+      }
+    }
+  ],
+  "n_findings": 6,
+  "severities": {
+    "STOP": 0,
+    "CONCERN": 6
+  },
+  "what_i_could_not_falsify": [
+    "every quantity in accepted_execution_parent, recomputed from the artifacts",
+    "the git-custody repair itself: it resolves blobs through git rather than checking syntax, returns REPO_GIT_CUSTODY_ABSENT when the block is missing, and its four negative tests do fail on a wrong committed blob, uncommitted worktree bytes and a substituted path",
+    "the mutation tests around the structural validator, which perturb one field at a time and go red"
+  ],
+  "computed_correspondence_values": 0,
+  "producer_sha256": "f999167ecae9b8870048c13b187066ca2179bc21f69d71850b6978332986f3c8",
+  "status": "FINDINGS_RAISED"
+}
