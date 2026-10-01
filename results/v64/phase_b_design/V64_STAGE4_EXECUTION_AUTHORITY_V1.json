@@ -528,7 +528,7 @@
   "producer": {
     "path": "scripts/v64/build_stage4_execution_authority_v1.py",
     "sha256": "967778dc49859abd6837a1516fbdea1360a7ffe50b097d14be62705028ed1714",
-    "git_blob": "d989e7b9b0c25adc94ee717bad9d03cb437a9d06",
+    "git_blob": "6063b4a3c5283ad6f70bd425857be306ef65d73f",
     "blob_binding_note": "S79. A producer cannot know its own blob before it is committed, so this is UNCOMMITTED at build time and bound post-commit by bind_stage4_producer_blob. The same provenance class as the B6 producer."
   }
 }

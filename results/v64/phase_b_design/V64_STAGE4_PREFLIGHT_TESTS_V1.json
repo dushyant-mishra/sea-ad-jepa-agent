@@ -3,13 +3,13 @@
   "date": "2026-09-30",
   "authority": {
     "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "cd49cd86f9b6ff8b78a0af5eada7bfa9e8315aa2f7b9f72fe6190fc05e223d19"
+    "sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f"
   },
-  "producer_sha256": "7f4f90b6462c6a9f18e2b60135cf8c27e3beafa62239c2221ccbe4f0bd90fe0b",
+  "producer_sha256": "a4b3e740bb14a6b5f79c9fe4940b9441658ebd4d55f820b395b71a960b7590c6",
   "live_contract_untouched": true,
   "mutations_applied_in_memory_only": true,
-  "n_gates": 25,
-  "n_real_gates": 25,
+  "n_gates": 34,
+  "n_real_gates": 34,
   "every_gate_rejects_its_own_violation": true,
   "results": [
     {
@@ -144,6 +144,7 @@
       "gate": "G1_INPUT_DIGESTS",
       "planted": "point a required input at a path that does not exist",
       "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS",
         "G1_INPUT_DIGESTS"
       ],
       "caught_by_its_own_gate": true,
@@ -190,6 +191,7 @@
       "gate": "G1a_REQUIRED_BINDINGS_PRESENT",
       "planted": "delete a required binding from the contract",
       "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS",
         "G1a_REQUIRED_BINDINGS_PRESENT"
       ],
       "caught_by_its_own_gate": true,
@@ -199,6 +201,7 @@
       "gate": "G1a_REQUIRED_BINDINGS_PRESENT",
       "planted": "delete the availability binding",
       "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS",
         "G1a_REQUIRED_BINDINGS_PRESENT"
       ],
       "caught_by_its_own_gate": true,
@@ -227,6 +230,88 @@
       "planted": "add a gate the verifier does not implement",
       "gates_that_fired": [
         "G0_GATE_REGISTRY_AGREES"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1c_PREREQUISITE_REGISTRY_INTACT",
+      "planted": "delete the execution-prerequisite block",
+      "gates_that_fired": [
+        "G1a_REQUIRED_BINDINGS_PRESENT",
+        "G1c_PREREQUISITE_REGISTRY_INTACT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1c_PREREQUISITE_REGISTRY_INTACT",
+      "planted": "empty the unsatisfied-prerequisite list",
+      "gates_that_fired": [
+        "G1c_PREREQUISITE_REGISTRY_INTACT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1c_PREREQUISITE_REGISTRY_INTACT",
+      "planted": "drop G17 from the prerequisite list",
+      "gates_that_fired": [
+        "G1c_PREREQUISITE_REGISTRY_INTACT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G18_CONSUMER_SCHEMA_SEMANTICS",
+      "planted": "claim the wrong metacell count",
+      "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G18_CONSUMER_SCHEMA_SEMANTICS",
+      "planted": "reorder the availability vocabulary",
+      "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G18_CONSUMER_SCHEMA_SEMANTICS",
+      "planted": "drop the axis interpretation",
+      "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G18_CONSUMER_SCHEMA_SEMANTICS",
+      "planted": "claim the wrong T5 row count",
+      "gates_that_fired": [
+        "G18_CONSUMER_SCHEMA_SEMANTICS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G19_PRODUCER_CUSTODY",
+      "planted": "blank the producer git blob",
+      "gates_that_fired": [
+        "G19_PRODUCER_CUSTODY"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G19_PRODUCER_CUSTODY",
+      "planted": "point the producer at a wrong blob",
+      "gates_that_fired": [
+        "G19_PRODUCER_CUSTODY"
       ],
       "caught_by_its_own_gate": true,
       "is_a_real_gate": true

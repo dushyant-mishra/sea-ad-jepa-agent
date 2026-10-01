@@ -1,10 +1,10 @@
 {
   "schema": "V64_STAGE4_PREFLIGHT_V1",
   "date": "2026-10-01",
-  "mode": "execution",
+  "mode": "design",
   "authority": {
     "path": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "8b7ae470eafd1f5c55fb11ed239950d1da9237866acf4eeae9ce7801114c89c7"
+    "sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f"
   },
   "producer_sha256": "dfc2a3d694eb144f1c7a5e48d4a4654184619c255b6ff906ea98a94a82b1bdb5",
   "gates": {
@@ -85,8 +85,8 @@
       "detail": "10 shape/count/vocabulary checks verified against the artifacts"
     },
     "G19_PRODUCER_CUSTODY": {
-      "passed": false,
-      "detail": "stored=d989e7b9b0c2 HEAD=d989e7b9b0c2 worktree=6063b4a3c528 sha256_ok=True"
+      "passed": true,
+      "detail": "producer sha256 matches and stored blob == HEAD blob == working-tree blob"
     },
     "G15_PERMUTATION_COROBORATION": {
       "passed": true,
@@ -94,10 +94,8 @@
     }
   },
   "n_gates": 21,
-  "failed_gates": [
-    "G19_PRODUCER_CUSTODY"
-  ],
-  "design_gates_status": "FAIL",
+  "failed_gates": [],
+  "design_gates_status": "PASS",
   "EXECUTION_AUTHORITY": "NOT_GRANTABLE",
   "unsatisfied_execution_prerequisites": [
     "G16_EXECUTOR_BOUND: the executor source sha256 and git blob",
@@ -106,14 +104,14 @@
   "why_not_grantable": "the Stage-4 executor does not exist yet, so it cannot be bound. Until it is implemented, sha256/blob-bound and audited, execution authority is NOT GRANTABLE however many design gates pass.",
   "g3_limit": "G3 proves only that this CONTRACT forbids reopening the RNA and ATAC matrices. It cannot prove the future executor obeys that rule, because the executor does not exist. That proof belongs with the executor binding and is listed here as unsatisfied rather than implied by a passing gate.",
   "exit_code_semantics": {
-    "mode": "execution",
+    "mode": "design",
     "execution": "nonzero while any design gate fails OR any execution prerequisite is unsatisfied, so `preflight && execute` cannot proceed",
     "design": "nonzero while any design gate fails; explicitly NOT an execution authorisation"
   },
   "computed_no_correspondence_value": true,
   "rna_matrix_opened": false,
   "atac_matrix_opened": false,
-  "status": "FAIL",
+  "status": "PASS",
   "governance": {
     "training": "OFF",
     "phase_B": "STOPPED",
