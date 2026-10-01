@@ -10,9 +10,10 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 
-CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V4.json"
+CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json"
 
 FORBIDDEN_MANIFEST_KEYS = {
     "correspondence_result",
@@ -177,6 +178,80 @@ def validate_file_bindings(manifest: dict, contract: dict) -> list[str]:
     return errors
 
 
+
+def git_source_blob(source_commit: str, path: str) -> str | None:
+    r = subprocess.run(
+        ["git", "rev-parse", f"{source_commit}:{path}"],
+        capture_output=True, text=True,
+    )
+    out = r.stdout.strip()
+    if r.returncode != 0 or len(out) != 40:
+        return None
+    return out
+
+
+def git_worktree_blob(path: str) -> str | None:
+    if not os.path.isfile(path):
+        return None
+    r = subprocess.run(["git", "hash-object", path], capture_output=True, text=True)
+    out = r.stdout.strip()
+    if r.returncode != 0 or len(out) != 40:
+        return None
+    return out
+
+
+def validate_repo_git_custody(
+    manifest: dict,
+    contract: dict,
+    source_resolver=git_source_blob,
+    worktree_resolver=git_worktree_blob,
+) -> list[str]:
+    """Bind materialized repo inputs to the exact committed source bytes."""
+    errors = []
+    files = manifest.get("files", {})
+    custody = contract.get("repo_resident_git_custody", {})
+    expected_repo_labels = set(custody)
+    if not expected_repo_labels:
+        return ["REPO_GIT_CUSTODY_ABSENT"]
+
+    for label, bound in custody.items():
+        item = files.get(label)
+        if not item:
+            errors.append("GIT_CUSTODY_MISSING_FILE_BINDING:" + label)
+            continue
+        path = item.get("path")
+        if path != bound.get("path"):
+            errors.append("GIT_CUSTODY_PATH_DRIFT:" + label)
+            continue
+
+        stored = bound.get("git_blob")
+        source_commit = bound.get("source_commit")
+        if not (isinstance(stored, str) and len(stored) == 40):
+            errors.append("GIT_CUSTODY_BAD_STORED_BLOB:" + label)
+            continue
+        if not (isinstance(source_commit, str) and len(source_commit) == 40):
+            errors.append("GIT_CUSTODY_BAD_SOURCE_COMMIT:" + label)
+            continue
+
+        source_blob = source_resolver(source_commit, path)
+        if source_blob is None:
+            errors.append("GIT_CUSTODY_SOURCE_COMMIT_UNAVAILABLE:" + label)
+        elif source_blob != stored:
+            errors.append(
+                f"GIT_CUSTODY_SOURCE_BLOB_MISMATCH:{label}:{source_blob}:{stored}"
+            )
+
+        worktree_blob = worktree_resolver(path)
+        if worktree_blob is None:
+            errors.append("GIT_CUSTODY_WORKTREE_FILE_UNAVAILABLE:" + label)
+        elif worktree_blob != stored:
+            errors.append(
+                f"GIT_CUSTODY_WORKTREE_BLOB_MISMATCH:{label}:{worktree_blob}:{stored}"
+            )
+
+    return errors
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", required=True)
@@ -188,6 +263,7 @@ def main() -> int:
 
     errors = validate_manifest_structural(manifest, contract)
     errors.extend(validate_file_bindings(manifest, contract))
+    errors.extend(validate_repo_git_custody(manifest, contract))
 
     verdict = ("READY_FOR_INDEPENDENT_AUDIT__STAGE4_STILL_NOT_AUTHORIZED"
                if not errors else "FAIL_CLOSED")
