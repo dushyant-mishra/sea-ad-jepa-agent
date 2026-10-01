@@ -15,7 +15,7 @@ TECH_CLOSE_MARGIN=0.01
 TEST_REPLICATION_FRACTION=0.5
 
 
-def target_projector(z_true_train, z_pred_train, k, tie_tol=1e-10):
+def target_projector(z_true_train, z_pred_train, k, tie_tol=1e-8):
     zt=np.asarray(z_true_train,float)
     zp=np.asarray(z_pred_train,float)
     if zt.shape != zp.shape or zt.ndim != 2:
