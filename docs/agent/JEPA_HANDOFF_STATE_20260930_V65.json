@@ -5,7 +5,7 @@
   "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
   "live_heads_at_creation": {
-    "chatgpt_architecture": "01c4e2c752ad14514a1e71b185728b82a8e30fa0",
+    "chatgpt_architecture": "dbc74ed8530ed24941e9b40d5f3b0009823c1472",
     "claude_exact_sampler": "dc30caede6369a31df3098205db11c83381784e5",
     "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
     "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
@@ -65,9 +65,9 @@
       "remaining_execution_blocker": "Freeze complete Phase-B measurement substrate before matrix opening: persisted metacell assignment; metacell-level RNA/ATAC values and masks; depth quantities needed by frozen nuisance basis; exact small-support enumeration alternatives/measurements; scope recoverability TEST-donor firewall separately from Phase-B population."
     },
     "phaseB_substrate": {
-      "status": "MATERIALIZED_BUT_NOT_YET_ACCEPTED_AS_CONTRACT_COMPLETE",
+      "status": "MATERIALIZED_CLOSEOUT_PENDING",
       "audited_head": "dc30caede6369a31df3098205db11c83381784e5",
-      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V1.json",
+      "independent_audit": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V2.json",
       "accepted": [
         "S63 permutation byte binding and re-derivation",
         "S64 explicit array-content versus .npy-file digest semantics",
@@ -76,15 +76,18 @@
         "modality firewall remains closed"
       ],
       "blockers": {
-        "S65": "T5 donor-level aggregates required by frozen substrate contract are not materialized in shard outputs.",
-        "S66": "Frozen contract says 32174 distinct distal intervals; emitted substrate has 32153. Difference 21 is unresolved and must not be guessed.",
-        "S67": "Aggregator does not recompute current shard .npz SHA-256 before accepting receipt hashes and aggregate binding."
+        "S65": "T5 donor-level aggregates required by the frozen substrate contract are not materialized in shard outputs.",
+        "S67": "Aggregator must recompute every current shard .npz SHA-256 and require equality to both receipt and custody before constructing the aggregate binding."
       },
       "additional_checks": [
         "prove explicit/derivable T3/T4 availability semantics",
         "validate T6 enumeration -> T7 conditioning-reference referential integrity and bind T7 digest"
       ],
-      "stage4_authorized": false
+      "stage4_authorized": false,
+      "closed_findings": {
+        "S63_S64": "Permutation provenance accepted.",
+        "S66": "Closed: 32174 was a contract counting defect. Correct combined unique interval universe is 32153 = 32117 Phase-A unique plus 54 enumeration unique minus 18 overlaps; 3 additional enumeration-row duplicates explain the full 21 overcount."
+      }
     }
   },
   "architecture": {
@@ -176,6 +179,20 @@
         "exact_historical_replay": false,
         "limitation": "Calibration bundle omitted historical contracts.py; forward used an explicitly documented compatibility shim while core ipb_jepa.py bytes match frozen 732ea46f source."
       }
+    },
+    "synthetic_training_mechanics": {
+      "status": "PASS_SYNTHETIC_SOFTWARE_MECHANICS_ONLY",
+      "receipt": "results/v64/V65_NESTED_STUDENT_TEACHER_SYNTHETIC_TRAINING_MECHANICS_QUALIFICATION_V1.json",
+      "ci_run": 36805792282,
+      "steps": 120,
+      "optimizer": "full_batch_gradient_descent",
+      "ema_decay": 0.99,
+      "donor_heldout_validation": {
+        "rna_shared_r2": 0.5952843409333543,
+        "multimodal_shared_r2": 0.6990926229702407,
+        "multimodal_private_r2": 0.8753170620298067
+      },
+      "real_training_authorized": false
     }
   },
   "paired_nihcard": {
@@ -281,12 +298,11 @@
     "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
   },
   "next_chat_priority": [
-    "Claude Phase-B closeout: preserve executed v1 shard bytes; materialize contract-required T5 from frozen T1-T4, reconcile 32174 vs 32153, rehash every current shard byte inside validator, and validate availability plus T6/T7 referential integrity. STOP again before Stage 4.",
-    "Nested RNA+multimodal topology remains prospectively frozen; real training stays OFF.",
-    "FULL104-shaped two-student synthetic integration PASS and historical authenticated u0 real-data forward compatibility PASS carry software/plumbing authority only.",
-    "Synthetic optimizer/EMA mechanics smoke is now in architecture CI; do not promote until clean-CI result is observed.",
+    "Claude Phase-B closeout now has two hard blockers: materialize T5 from frozen T2-T4 and rehash every current shard byte before aggregate binding. Also close availability and T6/T7 referential checks. S66 is CLOSED; do not rerun substrate for interval-count reasons.",
+    "Nested RNA+multimodal synthetic integration and optimizer/EMA mechanics both pass clean-CI software qualification. Do not treat these as biological or production-training authority.",
+    "Historical authenticated u0 RNA JEPA forward compatibility passes on preserved real masks; no post-u0 weights are authorized.",
     "Recoverability TRAIN+VALIDATION remains explicit-authorization gated and TEST numeric access remains sealed.",
-    "Keep Stage 4, Morabito, TD60 and real JEPA/multimodal training closed."
+    "Keep Stage 4, Morabito, TD60, multimodal training and real JEPA training closed."
   ],
   "governance": {
     "training": "OFF",
