@@ -105,6 +105,13 @@ def build(annotation_path: Path, out_dir: Path) -> dict:
     for cls in ("direct", "orthology", "similarity", "orthology_and_similarity"):
         sub = df[df["evidence_class"] == cls]
         supply["n_distinct_motifs_" + cls] = sub.groupby("gene_name")["motif_id"].nunique()
+    # "extended" in cisTarget/Stage75F vocabulary = any INDIRECT annotation, i.e.
+    # inferred from orthology or from motif similarity rather than annotated directly.
+    # Stage75F showed these come apart badly on this tissue: 7 of its 10 TFs reached
+    # motif support with ZERO direct motifs, and three (MITF, NRF1, STAT3) had no
+    # support at all. A control that counted only TOTAL motifs would miss that.
+    ext = df[df["evidence_class"] != "direct"]
+    supply["n_distinct_motifs_extended"] = ext.groupby("gene_name")["motif_id"].nunique()
     supply = supply.fillna(0).astype(int).reset_index().rename(
         columns={"gene_name": "tf_gene_symbol"})
     supply = supply.sort_values("tf_gene_symbol").reset_index(drop=True)
@@ -139,6 +146,18 @@ def build(annotation_path: Path, out_dir: Path) -> dict:
         "n_tfs": int(len(supply)),
         "evidence_class_counts": {k: int(v) for k, v in
                                   df["evidence_class"].value_counts().items()},
+        "extended_only_tfs": {
+            "n_tfs_with_extended_support_but_zero_direct": int(
+                ((supply["n_distinct_motifs_direct"] == 0)
+                 & (supply["n_distinct_motifs_extended"] > 0)).sum()),
+            "why_tracked": ("Stage75F reached motif support for 7 of 10 TFs with zero "
+                            "direct motifs (BACH1 and CEBPA entirely extended_only; "
+                            "ELF1 one direct against ten extended). An extended_only "
+                            "TF is a materially weaker claim and must be visible as "
+                            "such, not folded into a total motif count."),
+            "prior_art": "docs/history/preservation_20260902/results/tables/"
+                         "stage75f_secondary_tf_motif_support_summary_v1.csv",
+        },
         "direct_supply_distribution": {
             "min": int(direct.min()), "median": float(np.median(direct)),
             "mean": float(direct.mean()), "max": int(direct.max()),
