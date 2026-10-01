@@ -1,0 +1,30 @@
+{
+  "schema":"V67_NESTED_MODALITY_MASK_UNCERTAINTY_ANTICOLLAPSE_SYNTHETIC_QUALIFICATION_V2",
+  "date":"2026-10-01",
+  "status":"PASS_SOFTWARE_SEMANTICS_ONLY",
+  "supersedes":"results/v64/V67_NESTED_MODALITY_MASK_UNCERTAINTY_ANTICOLLAPSE_SYNTHETIC_QUALIFICATION_V1.json",
+  "producer":"scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py",
+  "change_from_v1":"RNA now carries partial private-state information, so missing-private uncertainty is not forced to equal var(zp) by construction",
+  "fixture_private_rna_strength":0.5,
+  "metrics":{
+    "rna_shared_r2":0.9726431252339797,
+    "multimodal_shared_r2":0.9759930803930642,
+    "multimodal_private_r2_measured":0.9964982499989624,
+    "rna_private_r2":0.9353676751480912,
+    "mask_only_shared_r2":-0.004650912054017242,
+    "measured_private_uncertainty_mse":0.0033792459505522245,
+    "missing_private_uncertainty_mse":0.06496551403572218,
+    "uncertainty_ratio_missing_over_measured":19.224855185549824
+  },
+  "counterfactual":{
+    "private_rna_strength":2.0,
+    "rna_private_r2":0.9955946021069176,
+    "uncertainty_ratio_missing_over_measured":2.782758389449679,
+    "missing_private_uncertainty_gate_passes":false
+  },
+  "ci":{"run":36859483646,"tests_passed":173},
+  "qualified":"synthetic plumbing for modality masking, falsifiable measured-vs-missing private-state uncertainty, and anti-collapse diagnostics",
+  "not_qualified":"real uncertainty calibration, biological uncertainty magnitude, production thresholds, shared rank, or training authority",
+  "audit_note":"F2 accepted. The V1 ratio largely restated the fixture. V2 includes RNA-private signal and an explicit counterfactual in which the uncertainty gate fails.",
+  "governance":{"real_data_used":false,"training":"OFF","multimodal_training":"OFF","stage4":"NOT_AUTHORIZED"}
+}
