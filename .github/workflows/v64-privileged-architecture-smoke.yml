@@ -193,7 +193,9 @@ jobs:
             tests/test_v67_privileged_teacher_state_construction_contract.py \
             tests/test_v68_full104_privileged_evidence_coverage_map.py \
             tests/test_v69_multisource_regulatory_evidence_stack.py \
-            tests/test_v69_regulatory_program_crosswalk.py
+            tests/test_v69_regulatory_program_crosswalk.py \
+            tests/test_v70_teacher_regulatory_candidate_gate.py \
+            tests/test_v70_teacher_candidate_end_to_end_synthetic.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
