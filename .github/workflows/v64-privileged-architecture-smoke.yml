@@ -35,6 +35,8 @@ on:
       - 'tests/test_v70_gse214979_acquisition_receipts.py'
       - 'results/v64/V70_SCENICPLUS_MOTIF_RESOURCE_RECEIPT_V1.json'
       - 'results/v64/V70_GSE214979_ROUTE_A_ACQUISITION_RECEIPT_V1.json'
+      - 'tests/test_v70_gse214979_full104_structural_crosswalk.py'
+      - 'results/v64/V70_GSE214979_FULL104_STRUCTURAL_CROSSWALK_V1.json'
       - 'tests/test_v70_macha_scenicplus_return_manifest.py'
       - 'scripts/v64/validate_macha_scenicplus_return_manifest_v1.py'
       - 'results/v64/V70_MACHA_SCENICPLUS_RETURN_MANIFEST_CONTRACT_V1.json'
@@ -210,7 +212,8 @@ jobs:
             tests/test_v70_regulatory_program_coverage_tensor.py \
             tests/test_v70_teacher_feature_producer_interface.py \
             tests/test_v70_macha_scenicplus_return_manifest.py \
-            tests/test_v70_gse214979_acquisition_receipts.py
+            tests/test_v70_gse214979_acquisition_receipts.py \
+            tests/test_v70_gse214979_full104_structural_crosswalk.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
