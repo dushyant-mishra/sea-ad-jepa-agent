@@ -32,6 +32,11 @@ on:
       - 'tests/test_v70_teacher_regulatory_candidate_gate.py'
       - 'scripts/v64/teacher_regulatory_candidate_gate_v1.py'
       - 'results/v64/V70_TEACHER_REGULATORY_CANDIDATE_SELECTION_CONTRACT_V1.json'
+      - 'tests/test_v70_teacher_feature_producer_interface.py'
+      - 'scripts/v64/validate_teacher_feature_producer_interface_v1.py'
+      - 'results/v64/V70_PRIVILEGED_TEACHER_FEATURE_PRODUCER_INTERFACE_V1.json'
+      - 'tests/test_v70_regulatory_program_coverage_tensor.py'
+      - 'scripts/v64/build_regulatory_program_coverage_tensor_v1.py'
       - 'results/v64/V70_MULTISOURCE_REGULATORY_DISAGREEMENT_POLICY_V1.json'
       - 'tests/test_v69_regulatory_program_crosswalk.py'
       - 'scripts/v64/validate_regulatory_program_crosswalk_v1.py'
@@ -195,7 +200,9 @@ jobs:
             tests/test_v69_multisource_regulatory_evidence_stack.py \
             tests/test_v69_regulatory_program_crosswalk.py \
             tests/test_v70_teacher_regulatory_candidate_gate.py \
-            tests/test_v70_teacher_candidate_end_to_end_synthetic.py
+            tests/test_v70_teacher_candidate_end_to_end_synthetic.py \
+            tests/test_v70_regulatory_program_coverage_tensor.py \
+            tests/test_v70_teacher_feature_producer_interface.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
