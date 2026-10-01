@@ -12,8 +12,8 @@
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "85a8f6f2312c0b1738e0cd356291260d78e2da3b",
-  "current_blocker": "Phase-B substrate bytes are materialized and S63/S64 permutation provenance is accepted, but contract completion is blocked by S65 missing T5 donor-level aggregates, S66 unresolved 32,174-vs-32,153 interval count, and S67 lack of current shard-byte rehash in the aggregator. Stage 4 remains sealed.",
-  "parallel_architecture_next": "Synthetic two-student semantics and historical u0 plumbing pass no-claim smokes. Synthetic optimizer/gradient/EMA mechanics are now under clean-CI qualification. Recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed; multimodal/JEPA training remains off.",
+  "current_blocker": "Phase-B substrate is materialized. S63/S64 accepted and S66 CLOSED: 32,174 was a contract counting bug; the correct unique interval universe is 32,153 with no missing intervals. Remaining hard blockers are S65 missing T5 donor-level aggregates and S67 lack of current shard-byte rehash; availability and T6/T7 referential checks must also close. Stage 4 remains sealed.",
+  "parallel_architecture_next": "Nested RNA+multimodal two-student semantics plus optimizer/gradient/EMA mechanics now pass clean synthetic software qualification; historical u0 real-data forward compatibility also passes. None authorizes real training. Recoverability TRAIN+VALIDATION remains authorization-gated with TEST sealed.",
   "ci_rule": "Recoverability decision qualification: run 36799926865, 110/110. Combined decision + execution-mechanics qualification: run 36800492975, 116/116 at head ccc45a7f. Later heads must re-run CI before being called green.",
   "governance": {
     "training": "OFF",
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V1 before treating dc30caed as a complete Phase-B substrate. Permutation repair is accepted; substrate closeout is not. Stage 4 remains NOT AUTHORIZED."
+  "read_me_first": "Read V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V2. Do not resurrect the 32,174 interval count as missing data: exact immutable-byte audit proves 32,153 is the correct unique coordinate universe. Focus Phase-B closeout on T5, shard rehash, availability and T6/T7 integrity."
 }
