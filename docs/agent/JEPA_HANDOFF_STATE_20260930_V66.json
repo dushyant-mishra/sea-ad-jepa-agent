@@ -1,0 +1,164 @@
+{
+  "schema": "JEPA_HANDOFF_STATE_20260930_V66",
+  "date": "2026-09-30",
+  "status": "PHASE_A_ACCEPTED__PHASE_B_MEASUREMENT_SUBSTRATE_ACCEPTED__STAGE4_SEALED__TRAINING_OFF",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "live_heads_at_creation": {
+    "chatgpt_architecture": "d081fe0a997cc097a1fa44d4418a84ea775d28b8",
+    "claude_execution": "6c265d9c5eb53ac705be60e08b0fac771d2159f4"
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "phaseB_measurement_substrate": "ACCEPTED",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence_opened": false,
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "protected_outcomes": "SEALED"
+  },
+  "phaseA": {
+    "status": "ACCEPTED_CONTRACT_COMPLIANT",
+    "retained_primary": 13175,
+    "denominator": 20709,
+    "funnel": {
+      "gene_not_in_nihcard": 350,
+      "ambiguous_gene": 0,
+      "linked_distal_no_consensus_peak": 199,
+      "linked_side_eligible": 20160,
+      "control_A_unavailable": 6985,
+      "retained": 13175
+    },
+    "genes": 4372,
+    "promoters": 5964,
+    "artifact_rows": 37362,
+    "control_B_available": 11012,
+    "authoritative_provenance_receipt": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+    "provenance_receipt_sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f"
+  },
+  "phaseB": {
+    "status": "MEASUREMENT_SUBSTRATE_ACCEPTED_AS_CONTRACT_COMPLETE",
+    "claude_head": "6c265d9c5eb53ac705be60e08b0fac771d2159f4",
+    "aggregate_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+    "qualifying_donors": 282,
+    "metacells": 3231,
+    "microglia_covered": 84129,
+    "genes": 4372,
+    "distinct_intervals": 32153,
+    "T3_nnz": 6624289,
+    "T4_nnz": 55467544,
+    "T5_rows": 10552158,
+    "pairs": 37419,
+    "B1_T5": "ACCEPTED",
+    "B2_interval_reconciliation": "ACCEPTED__32153_CORRECT__32174_WAS_COUNTING_DEFECT",
+    "B3_shard_custody": "ACCEPTED__8_OF_8_REHASH_MATCH",
+    "B4_donor_pair_availability": "ACCEPTED",
+    "B5_T6_T7_integrity": "ACCEPTED",
+    "B6_element_availability": "ACCEPTED_V2",
+    "b6_receipt": "results/v64/phase_b_design/V64_PHASE_B_T3_T4_AVAILABILITY_V2.json",
+    "b6_receipt_sha256": "0f7f1e554d6425797184308293781805d16853bbb9899fbd0ac927992d05e763",
+    "availability_artifact_sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81",
+    "independent_b6_audit": "results/v64/V64_PHASE_B_B6_AVAILABILITY_INDEPENDENT_AUDIT_V1.json",
+    "correspondence_opened": false,
+    "stage4_authorized": false
+  },
+  "statistical_contract": {
+    "primary_weighting": "GENE_BALANCED",
+    "mandatory_companion": "PROMOTER_EQUAL",
+    "sensitivity": "EDGE_EQUAL",
+    "bootstrap_unit": "DONOR",
+    "bootstrap_replicates": 4000,
+    "bootstrap_seed": 20260929,
+    "randomized_null_denominator": 10654,
+    "forced_identical_pairs_excluded_from_null_evidence": 158,
+    "R3_conditioning": "FROZEN",
+    "outcome_based_weighting_choice_forbidden": true
+  },
+  "promoter_lane": {
+    "status": "MATERIALIZED_AND_INDEPENDENTLY_ACCEPTED",
+    "transcript_rows": 644292,
+    "exact_tss_loci": 389280,
+    "genes": 78733,
+    "screen_supported_tss": 178778,
+    "fantom_same_strand_supported_tss": 126712,
+    "joint_screen_fantom": {
+      "both": 102060,
+      "screen_only": 76718,
+      "fantom_only": 24652,
+      "neither": 185850
+    },
+    "audit": "results/v64/V65_PROMOTER_DUAL_LEDGER_INDEPENDENT_AUDIT_V1.json",
+    "interval_bug_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json"
+  },
+  "recoverability_lane": {
+    "status": "DESIGN_AND_SOFTWARE_QUALIFIED__REAL_EXECUTION_NOT_AUTHORIZED",
+    "paired_subset_sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "split": "16 TRAIN / 4 VALIDATION / 4 TEST donors",
+    "canonical_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
+    "test_numeric_access": "SEALED",
+    "structural_preflight": "PASS",
+    "real_train_validation_authorized": false,
+    "real_test_opened": false,
+    "decision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md",
+    "mechanics_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md",
+    "executor_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_TRAIN_VALIDATION_EXECUTOR_CONTRACT_20260930.md",
+    "authorization_gate": "scripts/v64/privileged_recoverability_train_validation_authorization_gate_v1.py"
+  },
+  "multimodal_architecture": {
+    "status": "PROSPECTIVE_NESTED_ARCHITECTURE_FROZEN__REAL_TRAINING_OFF",
+    "topology": "RNA universal backbone + multimodal information extension",
+    "rna_state": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_shared"
+    ],
+    "multimodal_state": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_shared",
+      "Z_reg_private"
+    ],
+    "shared_rank": "UNRESOLVED_PENDING_REAL_RECOVERABILITY",
+    "contract": "docs/agent/V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_CONTRACT_20260930.md",
+    "synthetic_integration": {
+      "status": "PASS_SOFTWARE_ONLY",
+      "rna_shared_r2": 0.5640371488918989,
+      "multimodal_shared_r2": 0.6746087233362175,
+      "multimodal_private_r2": 0.8779468284584567,
+      "rna_private_r2": -0.026887372837845813,
+      "technical_shared_r2": -0.02450509888278951
+    },
+    "synthetic_training_mechanics": {
+      "status": "PASS_SOFTWARE_ONLY",
+      "rna_shared_validation_r2": 0.5952843409333543,
+      "multimodal_shared_validation_r2": 0.6990926229702407,
+      "multimodal_private_validation_r2": 0.8753170620298067,
+      "private_loss_unpaired_target_perturbation_effect": 0,
+      "ema_updates": 120
+    },
+    "historical_u0_real_data_smoke": "PASS_NON_AUTHORITY"
+  },
+  "chat_runtime_custody": {
+    "v2": "docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json",
+    "v3": "docs/agent/archive/chat_runtime_20260930_v3/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V3.json",
+    "new_current_transcript": "docs/agent/archive/chat_runtime_20260930_v3/Claude_B1_B6_runtime_transcript_20260930.md"
+  },
+  "do_not_redo": [
+    "exact supplement S50/Sampler qualification",
+    "Phase-A funnel/provenance closeout",
+    "Phase-B B1-B6 measurement substrate closeout",
+    "32174-vs-32153 interval investigation",
+    "T6/T7 referential audit",
+    "promoter source-byte and interval-overlap audit",
+    "paired donor split",
+    "recoverability synthetic/mechanics qualifications",
+    "historical u0 compatibility smoke"
+  ],
+  "next_actions": [
+    "Refresh both live branches before work. If Claude advanced beyond 6c265d9c, audit the delta before changing authority.",
+    "Do NOT execute Stage 4 merely because Phase B is accepted. First inspect/restate the exact Stage-4 correspondence execution authority and verify it consumes only frozen Phase-B artifacts and frozen statistical rules.",
+    "Keep RNA×ATAC correspondence, disease/protected outcomes, Morabito and TD60 sealed until a prospective Stage-4 authorization is explicitly frozen and audited.",
+    "Parallel architecture work may continue with synthetic/no-claim JEPA-style neural mechanics. Real multimodal/JEPA training remains OFF.",
+    "Real privileged-factor TRAIN+VALIDATION recoverability remains explicit-authorization gated; TEST remains sealed."
+  ]
+}
