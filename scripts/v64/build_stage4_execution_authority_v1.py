@@ -51,8 +51,20 @@ def blob(p):
                  and all(c in "0123456789abcdef" for c in o)) else "UNCOMMITTED"
 
 
+def norm(p):
+    """S70. os.path.join produces backslashes on Windows, and `git rev-parse HEAD:a\b`
+    never resolves, so repo-resident inputs were being stamped UNCOMMITTED while their
+    blobs existed. Paths are normalised once, here, before any lookup or storage."""
+    return str(p).replace("\\", "/")
+
+
 def bind(p, note=None):
+    p = norm(p)
     d = dict(path=p, sha256=B.sha_file(p), git_blob=blob(p))
+    d["repo_resident"] = not p.startswith("D:/")
+    if d["repo_resident"] and d["git_blob"] == "UNCOMMITTED":
+        d["git_blob_note"] = ("repo-resident input with no blob: it must be committed "
+                              "before execution authority can be granted")
     if os.path.exists(p):
         d["bytes"] = os.path.getsize(p)
     if note:
@@ -112,14 +124,25 @@ def main() -> int:
         "availability_proof_receipt": bind(os.path.join(
             DIR, "V64_PHASE_B_T3_T4_AVAILABILITY_V2.json")),
         "phase_a_rows": bind("results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz"),
+        },
+      "CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT": {
+        "why_separated": "S69. The pairing permutation was listed among the bound inputs "
+            "with two specially-named digest fields, which the generic digest gate did "
+            "not recognise, so neither was ever verified. Since the authority itself "
+            "states Stage 4 does not need it -- the substrate it reads is already paired "
+            "-- it is moved out of required execution inputs and labelled corroborative. "
+            "It is nonetheless verified explicitly by its own gate, because a binding "
+            "that is never checked is worse than no binding: it reads as assurance.",
         "pairing_permutation": dict(
             path="D:/jepa_v5_outputs_20260925/atac_to_rna_row.npy",
             array_content_sha256="c28335d72627d195c0b997a659e3d320139a0a038f746e354ca"
                                  "6de4567b9e120",
             npy_file_sha256="2396c3e9ccef2a4354824a80815d6acb8819f662f6c641d4df72d85ba"
                             "d498828",
-            note="bound for completeness; Stage 4 does not need it, because the "
-                 "substrate it reads is already paired")},
+            digest_semantics="array_content covers perm.tobytes(); npy_file covers the "
+                             "file including its 128-byte header",
+            verified_by_gate="G15_PERMUTATION_COROBORATION",
+            required_for_stage4_execution=False)},
 
       "ESTIMATOR_IMPORTED_UNMODIFIED": dict(
         **bind(ESTIM),
@@ -224,6 +247,27 @@ def main() -> int:
         "any disease, demographic or protected attribute",
         "Morabito or any protected validation outcome",
         "the paired recoverability TEST donors for any recoverability selection"],
+
+      "EXECUTION_PREREQUISITES_NOT_YET_SATISFIED": {
+        "S71": "the Stage-4 executor does not exist yet, so it cannot be bound. Until it "
+               "is implemented, sha256/blob-bound and audited, execution authority is NOT "
+               "GRANTABLE however many design gates pass.",
+        "what_the_executor_will_do": [
+          "load T3/T4/T5 and the availability columns",
+          "compute per-donor-per-pair Pearson across metacells",
+          "residualise on the frozen 14-feature basis via the unmodified estimator",
+          "aggregate under GENE_BALANCED with the PROMOTER_EQUAL companion",
+          "bootstrap over donors, 4000 replicates, seed 20260929",
+          "emit the primary and null tables with per-stratum breakdowns"],
+        "G3_LIMIT_STATED_HONESTLY": "G3 proves only that this CONTRACT forbids reopening "
+            "the RNA and ATAC matrices. It cannot prove the future executor obeys that "
+            "rule, because the executor does not exist. That proof belongs with the "
+            "executor binding and is listed here as unsatisfied rather than implied by a "
+            "passing gate.",
+        "unsatisfied_prerequisites": [
+          "G16_EXECUTOR_BOUND: the executor source sha256 and git blob",
+          "G17_EXECUTOR_OPENS_NO_MATRIX: static proof the executor never opens the RNA or "
+          "ATAC h5ad files"]},
 
       "AUTHORISATION_IS_NOT_GRANTED_HERE": {
         "statement": "this artifact defines what Stage-4 execution authority would "

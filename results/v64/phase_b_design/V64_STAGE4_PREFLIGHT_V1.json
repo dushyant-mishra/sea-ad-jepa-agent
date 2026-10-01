@@ -3,13 +3,17 @@
   "date": "2026-09-30",
   "authority": {
     "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "fcc63421de830a50909f067819f3527e6e0d93b5865bc69293671aecf34447b4"
+    "sha256": "6819bb9a6e087c8415d169360ec92938fbf60a55279d8ff560fa53ec2d6a09db"
   },
-  "producer_sha256": "8e398e8925eec1a944a5b3a12d80b929c92a125d3e0d40a87cd69d5d525c36e1",
+  "producer_sha256": "9cece5b4646ae2216e6221635d7c4a5b42a33e1eebf0ce0aa388ec17f6d1de68",
   "gates": {
     "G1_INPUT_DIGESTS": {
       "passed": true,
-      "detail": "every bound input digest matches the live file"
+      "detail": "all 22 bound inputs exist and their digests match"
+    },
+    "G1b_REPO_INPUTS_HAVE_GIT_BLOBS": {
+      "passed": true,
+      "detail": "all 12 repo-resident inputs carry a real git blob"
     },
     "G2_ESTIMATOR_UNMODIFIED": {
       "passed": true,
@@ -59,18 +63,30 @@
       "passed": true,
       "detail": "funnel reconciliation to 20,709 is a PASS requirement"
     },
+    "G15_PERMUTATION_COROBORATION": {
+      "passed": true,
+      "detail": "array-content matches, npy-file matches; corroborative only, not a Stage-4 execution input"
+    },
     "G14_STRATA": {
       "passed": true,
       "detail": "pooling without the per-stratum breakdown is a violation"
     }
   },
-  "n_gates": 14,
+  "n_gates": 16,
   "failed_gates": [],
   "computed_no_correspondence_value": true,
   "rna_matrix_opened": false,
   "atac_matrix_opened": false,
+  "design_gates_status": "PASS",
+  "EXECUTION_AUTHORITY": "NOT_GRANTABLE",
+  "unsatisfied_execution_prerequisites": [
+    "G16_EXECUTOR_BOUND: the executor source sha256 and git blob",
+    "G17_EXECUTOR_OPENS_NO_MATRIX: static proof the executor never opens the RNA or ATAC h5ad files"
+  ],
+  "why_not_grantable": "the Stage-4 executor does not exist yet, so it cannot be bound. Until it is implemented, sha256/blob-bound and audited, execution authority is NOT GRANTABLE however many design gates pass.",
+  "g3_limit": "G3 proves only that this CONTRACT forbids reopening the RNA and ATAC matrices. It cannot prove the future executor obeys that rule, because the executor does not exist. That proof belongs with the executor binding and is listed here as unsatisfied rather than implied by a passing gate.",
   "status": "PASS",
-  "what_a_pass_means": "the inputs are bound and the rules are locked. It does NOT authorise execution; that is a separate decision.",
+  "what_a_pass_means": "the inputs are bound and the rules are locked. It does NOT authorise execution: the executor does not exist yet, so two prerequisites remain unsatisfied however many design gates pass.",
   "governance": {
     "training": "OFF",
     "phase_B": "STOPPED",

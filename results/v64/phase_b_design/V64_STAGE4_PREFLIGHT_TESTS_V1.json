@@ -3,13 +3,13 @@
   "date": "2026-09-30",
   "authority": {
     "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
-    "sha256": "fcc63421de830a50909f067819f3527e6e0d93b5865bc69293671aecf34447b4"
+    "sha256": "6819bb9a6e087c8415d169360ec92938fbf60a55279d8ff560fa53ec2d6a09db"
   },
-  "producer_sha256": "d25e5965b347c57bd7ae71fc045d4c380f39d5b29537a3c46c0611b056901c7b",
+  "producer_sha256": "ed113aa6446a28016b482450f8398dbc88510f67d4e5c3bd205a8f02817a70cf",
   "live_contract_untouched": true,
   "mutations_applied_in_memory_only": true,
-  "n_gates": 14,
-  "n_real_gates": 14,
+  "n_gates": 19,
+  "n_real_gates": 19,
   "every_gate_rejects_its_own_violation": true,
   "results": [
     {
@@ -138,10 +138,61 @@
       ],
       "caught_by_its_own_gate": true,
       "is_a_real_gate": true
+    },
+    {
+      "gate": "G1_INPUT_DIGESTS",
+      "planted": "point a required input at a path that does not exist",
+      "gates_that_fired": [
+        "G1_INPUT_DIGESTS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G1b_REPO_INPUTS_HAVE_GIT_BLOBS",
+      "planted": "blank a repo-resident input's git blob",
+      "gates_that_fired": [
+        "G1b_REPO_INPUTS_HAVE_GIT_BLOBS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G15_PERMUTATION_COROBORATION",
+      "planted": "corrupt the permutation array-content digest",
+      "gates_that_fired": [
+        "G15_PERMUTATION_COROBORATION"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G15_PERMUTATION_COROBORATION",
+      "planted": "corrupt the permutation npy-file digest",
+      "gates_that_fired": [
+        "G15_PERMUTATION_COROBORATION"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G15_PERMUTATION_COROBORATION",
+      "planted": "remove the permutation binding entirely",
+      "gates_that_fired": [
+        "G15_PERMUTATION_COROBORATION"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
     }
   ],
   "definition_of_real": "a gate counts as real only if the preflight passes on the live contract AND that same gate fails on a contract carrying its specific violation",
   "computed_no_correspondence_value": true,
+  "EXECUTION_AUTHORITY": "NOT_GRANTABLE",
+  "unsatisfied_execution_prerequisites": [
+    "G16_EXECUTOR_BOUND: the executor source sha256 and git blob",
+    "G17_EXECUTOR_OPENS_NO_MATRIX: static proof the executor never opens the RNA or ATAC h5ad files"
+  ],
+  "note": "every gate below rejects its own violation. That makes the DESIGN gates real; it does not make execution grantable, which waits on the executor being implemented and bound.",
   "status": "PASS",
   "governance": {
     "training": "OFF",

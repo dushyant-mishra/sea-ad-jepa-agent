@@ -66,6 +66,23 @@ def mutations():
       ("G14_STRATA", "allow silent pooling across strata",
        lambda c: c["NULL_AND_STRATA_LOCKS"].__setitem__(
            "no_silent_pooling", "pooling is fine")),
+      # S68: a required input that is ABSENT must STOP, not be skipped
+      ("G1_INPUT_DIGESTS", "point a required input at a path that does not exist",
+       lambda c: c["BOUND_PHASE_B_INPUTS"]["t5_donor_aggregates"].__setitem__(
+           "path", "D:/jepa_v5_outputs_20260925/v64_phase_b/THIS_FILE_DOES_NOT_EXIST.npz")),
+      # S70: a repo-resident input must carry a real blob
+      ("G1b_REPO_INPUTS_HAVE_GIT_BLOBS", "blank a repo-resident input's git blob",
+       lambda c: c["INHERITED_NOT_RESTATED"]["downstream_null_statistical_V3"].__setitem__(
+           "git_blob", "UNCOMMITTED")),
+      # S69: both permutation digests must be checked, and the binding must be present
+      ("G15_PERMUTATION_COROBORATION", "corrupt the permutation array-content digest",
+       lambda c: c["CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT"]["pairing_permutation"]
+       .__setitem__("array_content_sha256", "0" * 64)),
+      ("G15_PERMUTATION_COROBORATION", "corrupt the permutation npy-file digest",
+       lambda c: c["CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT"]["pairing_permutation"]
+       .__setitem__("npy_file_sha256", "f" * 64)),
+      ("G15_PERMUTATION_COROBORATION", "remove the permutation binding entirely",
+       lambda c: c.__setitem__("CORROBORATIVE_PROVENANCE_NOT_A_STAGE4_INPUT", {})),
     ]
 
 
@@ -105,6 +122,13 @@ def main() -> int:
                                   "the live contract AND that same gate fails on a "
                                   "contract carrying its specific violation",
                computed_no_correspondence_value=True,
+               EXECUTION_AUTHORITY="NOT_GRANTABLE",
+               unsatisfied_execution_prerequisites=live.get(
+                   "EXECUTION_PREREQUISITES_NOT_YET_SATISFIED", {}).get(
+                   "unsatisfied_prerequisites", []),
+               note="every gate below rejects its own violation. That makes the DESIGN "
+                    "gates real; it does not make execution grantable, which waits on the "
+                    "executor being implemented and bound.",
                status="PASS" if len(real) == len(results) else "FAIL",
                governance=live["governance"])
     p = os.path.join(DIR, "V64_STAGE4_PREFLIGHT_TESTS_V1.json")
