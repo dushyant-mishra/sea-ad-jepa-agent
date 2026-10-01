@@ -1,0 +1,156 @@
+{
+  "schema": "V64_STAGE4_PREFLIGHT_TESTS_V1",
+  "date": "2026-09-30",
+  "authority": {
+    "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
+    "sha256": "fcc63421de830a50909f067819f3527e6e0d93b5865bc69293671aecf34447b4"
+  },
+  "producer_sha256": "d25e5965b347c57bd7ae71fc045d4c380f39d5b29537a3c46c0611b056901c7b",
+  "live_contract_untouched": true,
+  "mutations_applied_in_memory_only": true,
+  "n_gates": 14,
+  "n_real_gates": 14,
+  "every_gate_rejects_its_own_violation": true,
+  "results": [
+    {
+      "gate": "G1_INPUT_DIGESTS",
+      "planted": "corrupt a bound substrate-shard digest",
+      "gates_that_fired": [
+        "G1_INPUT_DIGESTS"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G2_ESTIMATOR_UNMODIFIED",
+      "planted": "claim a different estimator digest",
+      "gates_that_fired": [
+        "G1_INPUT_DIGESTS",
+        "G2_ESTIMATOR_UNMODIFIED"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G3_NO_MATRIX_REOPEN",
+      "planted": "drop the matrix-reopening prohibition",
+      "gates_that_fired": [
+        "G3_NO_MATRIX_REOPEN"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G4_PARTITION_NOT_REBUILT",
+      "planted": "drop a substrate shard from the binding",
+      "gates_that_fired": [
+        "G4_PARTITION_NOT_REBUILT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G5_WEIGHTING",
+      "planted": "promote the companion weighting to primary",
+      "gates_that_fired": [
+        "G5_WEIGHTING"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G6_BOOTSTRAP",
+      "planted": "change the replicate count",
+      "gates_that_fired": [
+        "G6_BOOTSTRAP"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G7_NULL_DENOMINATOR",
+      "planted": "fold the forced coincidences back into the denominator",
+      "gates_that_fired": [
+        "G7_NULL_DENOMINATOR"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G8_R3_LABEL",
+      "planted": "remove the mandatory conditional label",
+      "gates_that_fired": [
+        "G8_R3_LABEL"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G9_CONTROL_B_NULL_ONLY",
+      "planted": "let CONTROL_B into the primary contrast",
+      "gates_that_fired": [
+        "G9_CONTROL_B_NULL_ONLY"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G10_ANTI_FALSE_GREEN",
+      "planted": "soften the control-vs-control STOP to a warning",
+      "gates_that_fired": [
+        "G10_ANTI_FALSE_GREEN"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G11_PROTECTED",
+      "planted": "turn training on",
+      "gates_that_fired": [
+        "G11_PROTECTED"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G12_NO_THRESHOLD_ON_EFFECT",
+      "planted": "impose a minimum effect size",
+      "gates_that_fired": [
+        "G12_NO_THRESHOLD_ON_EFFECT"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G13_FUNNEL",
+      "planted": "drop the funnel reconciliation requirement",
+      "gates_that_fired": [
+        "G13_FUNNEL"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    },
+    {
+      "gate": "G14_STRATA",
+      "planted": "allow silent pooling across strata",
+      "gates_that_fired": [
+        "G14_STRATA"
+      ],
+      "caught_by_its_own_gate": true,
+      "is_a_real_gate": true
+    }
+  ],
+  "definition_of_real": "a gate counts as real only if the preflight passes on the live contract AND that same gate fails on a contract carrying its specific violation",
+  "computed_no_correspondence_value": true,
+  "status": "PASS",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  }
+}

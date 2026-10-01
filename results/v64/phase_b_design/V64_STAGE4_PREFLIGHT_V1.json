@@ -1,0 +1,84 @@
+{
+  "schema": "V64_STAGE4_PREFLIGHT_V1",
+  "date": "2026-09-30",
+  "authority": {
+    "path": "results/v64/phase_b_design\\V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
+    "sha256": "fcc63421de830a50909f067819f3527e6e0d93b5865bc69293671aecf34447b4"
+  },
+  "producer_sha256": "8e398e8925eec1a944a5b3a12d80b929c92a125d3e0d40a87cd69d5d525c36e1",
+  "gates": {
+    "G1_INPUT_DIGESTS": {
+      "passed": true,
+      "detail": "every bound input digest matches the live file"
+    },
+    "G2_ESTIMATOR_UNMODIFIED": {
+      "passed": true,
+      "detail": "estimator sha256 matches"
+    },
+    "G3_NO_MATRIX_REOPEN": {
+      "passed": true,
+      "detail": "matrix reopening is declared forbidden"
+    },
+    "G4_PARTITION_NOT_REBUILT": {
+      "passed": true,
+      "detail": "8 shards bound by digest; the metacell assignment lives inside them"
+    },
+    "G5_WEIGHTING": {
+      "passed": true,
+      "detail": "primary GENE_BALANCED, companion PROMOTER_EQUAL, sensitivity EDGE_EQUAL"
+    },
+    "G6_BOOTSTRAP": {
+      "passed": true,
+      "detail": "nonparametric cluster bootstrap over DONORS, 4000 reps, seed 20260929"
+    },
+    "G7_NULL_DENOMINATOR": {
+      "passed": true,
+      "detail": "denominator 10654, excluded 158 forced + 200 partially forced"
+    },
+    "G8_R3_LABEL": {
+      "passed": true,
+      "detail": "R3 quantities must carry the conditional label and may not be pooled with R1/R2"
+    },
+    "G9_CONTROL_B_NULL_ONLY": {
+      "passed": true,
+      "detail": "CONTROL_B restricted to null and calibration"
+    },
+    "G10_ANTI_FALSE_GREEN": {
+      "passed": true,
+      "detail": "4 controls; control-vs-control failure is a STOP"
+    },
+    "G11_PROTECTED": {
+      "passed": true,
+      "detail": "training off, Morabito protected, TD60 blocked, correspondence unopened"
+    },
+    "G12_NO_THRESHOLD_ON_EFFECT": {
+      "passed": true,
+      "detail": "effect reported without a threshold; p<0.05 alone is explicitly not success"
+    },
+    "G13_FUNNEL": {
+      "passed": true,
+      "detail": "funnel reconciliation to 20,709 is a PASS requirement"
+    },
+    "G14_STRATA": {
+      "passed": true,
+      "detail": "pooling without the per-stratum breakdown is a violation"
+    }
+  },
+  "n_gates": 14,
+  "failed_gates": [],
+  "computed_no_correspondence_value": true,
+  "rna_matrix_opened": false,
+  "atac_matrix_opened": false,
+  "status": "PASS",
+  "what_a_pass_means": "the inputs are bound and the rules are locked. It does NOT authorise execution; that is a separate decision.",
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  }
+}

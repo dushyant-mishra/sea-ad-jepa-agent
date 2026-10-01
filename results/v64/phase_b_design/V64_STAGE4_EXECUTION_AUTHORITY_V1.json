@@ -1,0 +1,387 @@
+{
+  "schema": "V64_STAGE4_EXECUTION_AUTHORITY_V1",
+  "date": "2026-09-30",
+  "status": "DESIGN_ONLY__STAGE_4_NOT_AUTHORISED_BY_THIS_ARTIFACT",
+  "computes_no_correspondence_value": true,
+  "purpose": "Bind every Stage-4 input and lock every Stage-4 rule while the outcome is still sealed, so no method, weighting, denominator or success definition can be chosen in the light of a result.",
+  "why_this_stage_is_different": "every earlier stage could be rerun if a rule proved wrong. Stage 4 cannot: once the correspondence is computed the outcome is open and no later choice is outcome-blind. Everything choosable is chosen now.",
+  "INHERITED_NOT_RESTATED": {
+    "principle": "the statistic, estimand, weighting, nuisance basis, bootstrap, success criterion and anti-false-green controls already live in frozen contracts. They are bound here by digest, never restated, because a second definition can diverge from the first.",
+    "correspondence_design": {
+      "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+      "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b",
+      "git_blob": "f10b5c6dac02ba95054fb480d9a156d96e38179d",
+      "bytes": 33177
+    },
+    "downstream_null_statistical_V3": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3.json",
+      "sha256": "f537564edf9217bfa60f98e8aabc30267fa56d1f1eeab98e4aef3a7d7792bdf9",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 30690
+    },
+    "measurement_substrate": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
+      "sha256": "17987ce727382cd6fcd998de2cca285eb12063889236bdbc553dfe500a9ca32b",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 18921
+    },
+    "feature_artifact_V2": {
+      "path": "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json",
+      "sha256": "fb41f55ae2ca67ca933dd954b1bfadba833c340dd28737b4309766683cd5f728",
+      "git_blob": "39d649f5b78444cfca682588acabab57de998aa6",
+      "bytes": 2479
+    },
+    "phase_a_population": {
+      "path": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+      "sha256": "35ca20780dc72fdc45c51490cb1201749095175e4765a787488dca73771b814f",
+      "git_blob": "1eaf757b355aacce64b505bec823a56c248b55fe",
+      "bytes": 11596
+    }
+  },
+  "BOUND_PHASE_B_INPUTS": {
+    "note": "Stage 4 reads ONLY these. It may not reopen the RNA or ATAC matrices.",
+    "substrate_shards": {
+      "PHASE_B_SUBSTRATE_s00.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s00.npz",
+        "sha256": "689e38081c85382535f85bfa39c8700732a19997e7fc8c61d5b078a361e3715e",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 19097361
+      },
+      "PHASE_B_SUBSTRATE_s01.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s01.npz",
+        "sha256": "60a69926ef51c46e8f5d4f2cd90a4b87a2cf71d18a7b862164326de956a367ee",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 16970627
+      },
+      "PHASE_B_SUBSTRATE_s02.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s02.npz",
+        "sha256": "d2f9d64361f99fe9109c20edb576df2deaf79c84fd58a0e6190f6c8c9c3ae65a",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 17676786
+      },
+      "PHASE_B_SUBSTRATE_s03.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s03.npz",
+        "sha256": "c7f92a6a2fd454597f5a00429358c37b7819a5d8d803c912f5f875bac07f00fb",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 17441759
+      },
+      "PHASE_B_SUBSTRATE_s04.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s04.npz",
+        "sha256": "547e919557e35219e3400be9d3759c0812d7233f10e897e5b9784fd388163427",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 19342192
+      },
+      "PHASE_B_SUBSTRATE_s05.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s05.npz",
+        "sha256": "5d04aa3a30993e3d767ce457a14723d465a634101e83366779e01ff5e58a7b30",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 18435616
+      },
+      "PHASE_B_SUBSTRATE_s06.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s06.npz",
+        "sha256": "3db00a59a6647d26598624e20ff9983821aba998c94b924a496603a8345e8202",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 20853329
+      },
+      "PHASE_B_SUBSTRATE_s07.npz": {
+        "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_SUBSTRATE_s07.npz",
+        "sha256": "b702296f3df9d7dfb0753eaae42ca4ecdb90092cb20ac57e108b314268eaeeb4",
+        "git_blob": "UNCOMMITTED",
+        "bytes": 18118811
+      }
+    },
+    "t5_donor_aggregates": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T5_DONOR_AGGREGATES.npz",
+      "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 101711148
+    },
+    "t3_t4_availability": {
+      "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T3_T4_AVAILABILITY.npz",
+      "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 20706
+    },
+    "r3_conditioning_reference": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_R3_CONDITIONING_REFERENCE_V1.json",
+      "sha256": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 20493
+    },
+    "enumeration_intervals": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_ENUM_INTERVALS_V1.json",
+      "sha256": "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 22360
+    },
+    "substrate_aggregate_receipt": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_SUBSTRATE_AGGREGATE_V1.json",
+      "sha256": "f98125f3710a252fbafd90ff7110db2c393a7cd647d98f1e312f5602335ccaf5",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 4398
+    },
+    "substrate_closeout_receipt": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_SUBSTRATE_CLOSEOUT_V1.json",
+      "sha256": "12d460bfc0ea863e31d91b2eaad15d4fead0f6f5a18beb8086104d282d823020",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 6624
+    },
+    "availability_proof_receipt": {
+      "path": "results/v64/phase_b_design\\V64_PHASE_B_T3_T4_AVAILABILITY_V2.json",
+      "sha256": "2fd8356b07fd3d4e50007c941fcc8bcdda4a118509775955ded82d90b98ed671",
+      "git_blob": "UNCOMMITTED",
+      "bytes": 8667
+    },
+    "phase_a_rows": {
+      "path": "results/v64/phase_a_v3/PHASE_A_V3_ROWS.jsonl.gz",
+      "sha256": "ab103675e715fec32cee27b2d402ef1b45d63332b190bb4a6878e946059a24d4",
+      "git_blob": "63672e492e25df3167dc6faf6cd37532be38be1c",
+      "bytes": 1866271
+    },
+    "pairing_permutation": {
+      "path": "D:/jepa_v5_outputs_20260925/atac_to_rna_row.npy",
+      "array_content_sha256": "c28335d72627d195c0b997a659e3d320139a0a038f746e354ca6de4567b9e120",
+      "npy_file_sha256": "2396c3e9ccef2a4354824a80815d6acb8819f662f6c641d4df72d85bad498828",
+      "note": "bound for completeness; Stage 4 does not need it, because the substrate it reads is already paired"
+    }
+  },
+  "ESTIMATOR_IMPORTED_UNMODIFIED": {
+    "path": "scripts/v63/e2_continuous_adjustment_estimator_v1.py",
+    "sha256": "50c54cd8ca6e60b512deece7b4676195c4a704c8d6e90d2f63bec009f52271e9",
+    "git_blob": "38a32d5066f2eb79f2c5d5457f3d269bd3730667",
+    "bytes": 16648,
+    "requirement": "scripts/v63/e2_continuous_adjustment_estimator_v1.py, IMPORTED UNMODIFIED",
+    "rule": "Stage 4 must import this file unmodified and verify its sha256 before use. A changed estimator is a changed method, whatever the diff looks like.",
+    "frozen_hyperparameters": {
+      "ridge_alpha": 1.0,
+      "k_folds": 5,
+      "cross_fitting_unit": "promoter"
+    },
+    "frozen_basis": [
+      "log_distance",
+      "promoter_degree",
+      "promoter_activity",
+      "distal_accessibility",
+      "re_density",
+      "anchor_frequency",
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity",
+      "log_distance^2",
+      "promoter_degree^2",
+      "distal_accessibility^2",
+      "log_distance*promoter_degree",
+      "log_distance*distal_accessibility",
+      "promoter_degree*anchor_frequency"
+    ],
+    "forbidden": [
+      "adding basis terms",
+      "changing ridge alpha",
+      "changing the feature set",
+      "changing M_MIN",
+      "re-tuning the adjustment model after seeing correspondence",
+      "inventing a nuisance function after the outcome"
+    ]
+  },
+  "METHOD_LOCKS": {
+    "per_donor_per_pair_statistic": "Pearson correlation between the metacell-level RNA value of the linked gene and the metacell-level ATAC value of the assigned peak set, computed ACROSS that donor's metacells.",
+    "pearson_is_primary_spearman_is_sensitivity": "The estimator lineage operates on continuous residualised scores and a correlation on log1p-normalised values is the quantity its synthetic qualification was built around. Spearman is predeclared as a sensitivity arm, not as an alternative primary.",
+    "sign_convention": "POSITIVE means higher distal accessibility accompanies higher linked-gene RNA. The one-sided hypothesis is that linked pairs show MORE positive correspondence than matched controls. Sign convention is fixed here and may not be flipped after the outcome.",
+    "missing_rules": {
+      "zero_coverage": "If the gene has zero RNA counts in ALL of a donor's metacells, or the assigned peak set has zero ATAC counts in ALL of them, the correlation is UNDEFINED. That (donor, pair) cell is recorded as MISSING. It is NEVER recorded as zero: zero would assert an observed absence of correspondence where there was no measurement.",
+      "degenerate_variance": "If either vector has zero variance across a donor's metacells, the cell is MISSING for the same reason."
+    },
+    "primary_estimand": "Delta = the donor-averaged, GENE-BALANCED mean difference between the residualised correspondence score of linked E2 edges and that of their matched controls.",
+    "gene_balancing": "Within a donor, the statistic is the mean over genes of the within-gene mean over that gene's edges. This prevents genes carrying many edges from dominating: 3,528 of 5,253 genes carry more than one edge, one carries 68, and 91.7% of edges belong to multi-edge genes.",
+    "weighting_hierarchy": {
+      "PRIMARY": "GENE_BALANCED",
+      "MANDATORY_COMPANION": "PROMOTER_EQUAL",
+      "PREDECLARED_SENSITIVITY": "EDGE_EQUAL",
+      "non_selection_rule": "Disagreement among the three weighting views is REPORTED. It is never resolved by promoting whichever weighting is outcome-favourable."
+    },
+    "uncertainty": {
+      "method": "nonparametric cluster bootstrap over DONORS",
+      "replicates": 4000,
+      "seed": 20260929,
+      "rationale": "matches the frozen P1S bootstrap configuration so the project's uncertainty machinery is unchanged",
+      "also_reported": "Kish effective sample size over donors, and the donor count behind every interval"
+    },
+    "inference": "ONE-SIDED. The prospective hypothesis is that linked pairs show GREATER correspondence than matched controls. The one-sided lower confidence bound at 95% is the reported quantity.",
+    "multiplicity": "NONE REQUIRED for the primary, because the primary is a single set-level estimand. Any edge-level or gene-level statistic is DESCRIPTIVE ONLY, must be labelled as such, and may not be converted into a success claim by selecting significant edges.",
+    "sensitivity_arms": [
+      "Spearman correlation",
+      "donor-pseudobulk arm",
+      "hg38 distance convention (see DISTANCE_CONVENTION)",
+      "edge-equal weighting (see PRIMARY_ESTIMAND)"
+    ]
+  },
+  "NULL_AND_STRATA_LOCKS": {
+    "randomized_null_denominator": 10654,
+    "excluded_structurally_forced": 158,
+    "excluded_partially_forced": 200,
+    "not_evaluable_B_unavailable": 2163,
+    "enumeration_reference_rules": {
+      "R1_PRIMARY_EXACT_A_SIDE": {
+        "governs": "the exact randomisation reference for the primary linked-versus-CONTROL_A contrast on edges whose CONTROL_A support is small",
+        "count": 32
+      },
+      "R2_EXACT_JOINT_AB": {
+        "governs": "the CONTROL_A versus CONTROL_B null calibration reference",
+        "count": 14
+      },
+      "R3_EXACT_CONDITIONAL_ON_REALISED_LARGE_ARM": {
+        "governs": "the CONTROL_A versus CONTROL_B null calibration reference for pairs where a full joint cannot be materialised. It governs NOTHING in the primary linked-versus-control contrast.",
+        "count": 21
+      }
+    },
+    "R3_required_label": "CONDITIONAL_ON_REALISED_LARGE_ARM",
+    "R3_pooling_forbidden": "pooling an R3 quantity with R1 or R2 quantities, or comparing them side by side, without that label present",
+    "control_B_role": "NULL AND CALIBRATION ONLY. CONTROL_B may never enter the primary linked-versus-control contrast and may never alter Phase-A retention.",
+    "no_silent_pooling": "Any statistic pooled across strata must be accompanied, in the same table, by its per-stratum values. Pooling without the breakdown is a contract violation."
+  },
+  "SUCCESS_CRITERION_FROZEN_BEFORE_ANY_RESULT": {
+    "PASS_requires_all_of": [
+      "one-sided LCB95 of Delta > 0",
+      "the control-vs-control null contrast is not distinguishable from zero (see ANTI_FALSE_GREEN)",
+      "no material linked-vs-control covariate imbalance: worst standardised mean difference across the 14 frozen features <= 0.25 after matching",
+      "support is not concentrated: the top 1% of donors contribute <= 10% of the weight in the primary statistic",
+      "the attrition funnel reconciles to 20,709"
+    ],
+    "no_minimum_effect_size": {
+      "why": "M_MIN = 0.010 is the frozen margin for the SYNTHETIC benchmark's score scale. Transferring it to a real correlation-difference scale would be an unjustified change of units dressed as a frozen threshold. No defensible minimum effect can be derived prospectively on this scale from anything currently frozen.",
+      "consequence": "The effect magnitude is REPORTED WITHOUT A THRESHOLD. A statistically positive but negligibly small Delta must be reported as exactly that, and must NOT be presented as biological confirmation. p < 0.05 alone is explicitly NOT the success definition."
+    },
+    "FAIL_is_reported_with": [
+      "the full attrition funnel",
+      "the donor count and Kish ESS",
+      "the depth-stratified result",
+      "the out-of-span diagnostic verdict"
+    ],
+    "anti_false_green": [
+      {
+        "name": "CONTROL_VS_CONTROL_NULL",
+        "construction": "the two independent control draws are contrasted against each other through the identical pipeline",
+        "requirement": "must not show excess. A nonzero control-vs-control contrast indicates the pipeline itself manufactures a difference, and any linked-vs-control result is then uninterpretable.",
+        "if_it_fails": "STOP. Do not report the primary as a biological result."
+      },
+      {
+        "name": "COVARIATE_BALANCE",
+        "requirement": "worst |standardised mean difference| across the 14 frozen features <= 0.25 between linked and matched control"
+      },
+      {
+        "name": "SUPPORT_CONCENTRATION",
+        "requirement": "top 1% of donors contribute <= 10% of the primary statistic's weight; Kish ESS over donors reported"
+      },
+      {
+        "name": "PAIRING_CORROBORATION",
+        "requirement": "the blocking pairing precondition passed, with its exact mismatch counts reported"
+      }
+    ],
+    "the_rule_that_is_easiest_to_break": "p < 0.05 is explicitly NOT the success definition. A statistically positive but negligibly small Delta must be reported as exactly that and must not be presented as biological confirmation."
+  },
+  "FAIL_CLOSED_GATES": [
+    {
+      "id": "G1_INPUT_DIGESTS",
+      "rule": "every bound input digest must match before a single correspondence value is computed",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G2_ESTIMATOR_UNMODIFIED",
+      "rule": "the estimator sha256 must equal the bound value",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G3_NO_MATRIX_REOPEN",
+      "rule": "Stage 4 may not open the RNA or ATAC h5ad files; it reads the frozen substrate only",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G4_PARTITION_NOT_REBUILT",
+      "rule": "the metacell partition must be the persisted one, verified by digest, never recomputed",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G5_WEIGHTING",
+      "rule": "the primary must be GENE_BALANCED with the PROMOTER_EQUAL companion emitted in the same table",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G6_BOOTSTRAP",
+      "rule": "donor cluster bootstrap, 4000 replicates, seed 20260929; donors are the sole resampling unit",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G7_NULL_DENOMINATOR",
+      "rule": "the randomized-null denominator must be 10654, with forced and partially forced pairs excluded and B-unavailable reported as NOT_EVALUABLE",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G8_R3_LABEL",
+      "rule": "every R3-derived quantity must carry CONDITIONAL_ON_REALISED_LARGE_ARM and may not be pooled with R1/R2",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G9_CONTROL_B_NULL_ONLY",
+      "rule": "CONTROL_B may not enter the primary contrast",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G10_ANTI_FALSE_GREEN",
+      "rule": "a nonzero control-vs-control contrast makes the primary uninterpretable",
+      "on_failure": "STOP, do not report the primary as a biological result"
+    },
+    {
+      "id": "G11_PROTECTED",
+      "rule": "no disease, demographic or protected attribute; Morabito untouched; TD60 blocked; training off",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G12_NO_THRESHOLD_ON_EFFECT",
+      "rule": "effect magnitude is reported without a minimum-effect threshold and p<0.05 alone is not success",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G13_FUNNEL",
+      "rule": "the attrition funnel must reconcile to 20,709",
+      "on_failure": "STOP"
+    },
+    {
+      "id": "G14_STRATA",
+      "rule": "no statistic may be pooled across randomness strata without its per-stratum breakdown in the same table",
+      "on_failure": "STOP"
+    }
+  ],
+  "WHAT_STAGE_4_MAY_READ": [
+    "the eight frozen substrate shards",
+    "T5 donor aggregates",
+    "T3/T4 availability",
+    "the R3 conditioning reference",
+    "the enumeration intervals",
+    "the Phase-A rows",
+    "the frozen contracts",
+    "the unmodified estimator"
+  ],
+  "WHAT_STAGE_4_MAY_NOT_READ": [
+    "the NIH-CARD RNA or ATAC h5ad matrices",
+    "any disease, demographic or protected attribute",
+    "Morabito or any protected validation outcome",
+    "the paired recoverability TEST donors for any recoverability selection"
+  ],
+  "AUTHORISATION_IS_NOT_GRANTED_HERE": {
+    "statement": "this artifact defines what Stage-4 execution authority would require. It does not grant it.",
+    "granting_requires": "an explicit decision after this contract and its tests are independently audited"
+  },
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "producer": {
+    "path": "scripts/v64/build_stage4_execution_authority_v1.py",
+    "sha256": "c1fead857d9c7479269f11109c9500595b1e55ab235ad31f23288c624df89682"
+  }
+}
