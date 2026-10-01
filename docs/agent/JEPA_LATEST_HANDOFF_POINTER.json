@@ -12,9 +12,9 @@
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "chatgpt_architecture_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
-  "claude_last_verified_head": "6c265d9c5eb53ac705be60e08b0fac771d2159f4",
-  "current_state": "Phase A V3 is accepted at 13,175. Phase-B measurement substrate B1-B6 is independently accepted as contract-complete. Stage 4 correspondence remains unopened and not authorized.",
-  "current_blocker": "No Phase-B repair blocker remains. The next blocker is governance/scientific: a prospective fail-closed Stage-4 execution authority must be frozen and audited before any RNA×ATAC correspondence is opened.",
+  "claude_last_verified_head": "76a9eaf1b36b2ad6b511ba6ee9e0e875a66f21bd",
+  "current_state": "Phase A and Phase-B measurement substrate remain accepted. Stage-4 method/statistical locks are prospectively accepted, but execution authority is NOT grantable yet.",
+  "current_blocker": "S68 G1 missing-file fail-open; S69 decorative/unverified pairing-permutation binding; S70 false UNCOMMITTED git-blob bindings for repo-resident inputs; S71 exact Stage-4 executor not yet implemented/bound. Correspondence remains unopened.",
   "parallel_architecture_next": "Nested RNA+multimodal synthetic semantics and optimizer/EMA mechanics pass software-only qualification. Real recoverability TRAIN+VALIDATION remains explicit-authorization gated; TEST remains sealed; real multimodal/JEPA training remains off.",
   "governance": {
     "training": "OFF",
@@ -25,5 +25,5 @@
     "td60": "BLOCKED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read the V66 handoff/state and V64_PHASE_B_B6_AVAILABILITY_INDEPENDENT_AUDIT_V1. If Claude advanced beyond 6c265d9c, audit the delta. Do not execute Stage 4 until a separate prospective execution authority is frozen and independently accepted."
+  "read_me_first": "Read results/v64/V64_STAGE4_EXECUTION_AUTHORITY_INDEPENDENT_AUDIT_V1.json. Do not execute Stage 4. Repair S68-S70 first and stop; then implement/bind the executor separately and stop again for audit."
 }
