@@ -13,8 +13,8 @@
   "claude_execution_branch": "claude/v64-exact-sampler-successor-20260930",
   "claude_last_verified_head": "a0500111254315504de3618ea832931ea54cdc26",
   "current_blocker": "R1/R2/R3 statistical authority, literal repair and Phase-A V3 custody are closed. Phase B remains blocked because the substrate does not yet persist each R3 pair's realised large-arm conditioning identity and mandatory CONDITIONAL_ON_REALISED_LARGE_ARM label/reference binding.",
-  "parallel_architecture_next": "Promoter dual ledger is materialized and structurally accepted. Continue recoverability software qualification on synthetic fixtures only under the frozen V65 precision/decision contract; real paired execution and TEST remain unopened.",
-  "ci_rule": "Promoter source custody and materialization are split: source artifact run 36796557671 is hash-bound; authoritative dual-ledger build is run 36797622994. Architecture CI must still be checked at current head.",
+  "parallel_architecture_next": "Promoter dual ledger is materialized and accepted. Recoverability decision/software mechanics are synthetically qualified under V2 (110/110 current-head architecture tests); real paired execution and TEST remain unopened. Next architecture step requires an explicit authorization decision, not more threshold tuning.",
+  "ci_rule": "Architecture synthetic qualification is bound to workflow run 36799926865 at head a0b8384e with 110/110 tests passed. Subsequent heads must re-run CI before being called green. Recoverability V2 is the sole live decision authority.",
   "governance": {
     "training": "OFF",
     "td60": "BLOCKED",
@@ -22,5 +22,5 @@
     "stage4": "NOT_AUTHORIZED",
     "Morabito": "PROTECTED"
   },
-  "read_me_first": "Read results/v64/V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1.json and current Claude instructions. S57-S59 are closed; S60 is the only current Phase-B substrate blocker."
+  "read_me_first": "Read the current Phase-B substrate audit for Claude's S60 blocker, then V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md and V65_PRIVILEGED_RECOVERABILITY_SYNTHETIC_SOFTWARE_QUALIFICATION_V1.json. V1 recoverability precision contract is historical only."
 }
