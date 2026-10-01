@@ -12,7 +12,7 @@ import json
 import os
 from pathlib import Path
 
-CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json"
+CONTRACT_PATH = "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json"
 
 FORBIDDEN_MANIFEST_KEYS = {
     "correspondence_result",
@@ -159,26 +159,22 @@ def validate_file_bindings(manifest: dict, contract: dict) -> list[str]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", required=True)
-    ap.add_argument("--contract", default=CONTRACT_PATH)
     ap.add_argument("--out", required=True)
-    ap.add_argument("--skip-file-hashes-for-tests", action="store_true",
-                    help="Tests only; never use for an authority receipt.")
     args = ap.parse_args()
 
-    contract = load_json(args.contract)
+    contract = load_json(CONTRACT_PATH)
     manifest = load_json(args.manifest)
 
     errors = validate_manifest_structural(manifest, contract)
-    if not args.skip_file_hashes_for_tests:
-        errors.extend(validate_file_bindings(manifest, contract))
+    errors.extend(validate_file_bindings(manifest, contract))
 
     verdict = ("READY_FOR_INDEPENDENT_AUDIT__STAGE4_STILL_NOT_AUTHORIZED"
                if not errors else "FAIL_CLOSED")
 
     receipt = {
         "schema": "V66_STAGE4_EXECUTION_AUTHORITY_VALIDATION_RECEIPT_V1",
-        "contract_path": args.contract,
-        "contract_sha256": sha256_file(args.contract),
+        "contract_path": CONTRACT_PATH,
+        "contract_sha256": sha256_file(CONTRACT_PATH),
         "manifest_path": args.manifest,
         "manifest_sha256": sha256_file(args.manifest),
         "verdict": verdict,
