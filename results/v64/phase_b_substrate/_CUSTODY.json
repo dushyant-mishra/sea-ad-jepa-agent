@@ -50,5 +50,10 @@
     "bytes": 101711148,
     "sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8"
   },
-  "aggregate_binding_over_recomputed_hashes": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52"
+  "aggregate_binding_over_recomputed_hashes": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+  "T3_T4_availability": {
+    "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T3_T4_AVAILABILITY.npz",
+    "bytes": 20706,
+    "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81"
+  }
 }

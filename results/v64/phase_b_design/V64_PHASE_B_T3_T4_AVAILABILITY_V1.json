@@ -1,0 +1,152 @@
+{
+  "schema": "V64_PHASE_B_T3_T4_AVAILABILITY_V1",
+  "date": "2026-09-30",
+  "closes": "B6",
+  "no_matrix_value_reread": true,
+  "phase_a_not_rerun": true,
+  "metacells_not_rebuilt": true,
+  "no_value_changed": true,
+  "artifact": {
+    "path": "D:/jepa_v5_outputs_20260925/v64_phase_b\\PHASE_B_T3_T4_AVAILABILITY.npz",
+    "bytes": 20706,
+    "sha256": "4aeebb8b82f3fe395a5da4ae48b8d3a2b5b7405620721b940f6563eb93606a81"
+  },
+  "T3": {
+    "field": "rna_available",
+    "elements": 14125932,
+    "shape": [
+      3231,
+      4372
+    ],
+    "all_available": true,
+    "packed_bytes": 1765742
+  },
+  "T4": {
+    "field": "atac_available",
+    "elements": 103886343,
+    "shape": [
+      3231,
+      32153
+    ],
+    "all_available": true,
+    "packed_bytes": 12985793
+  },
+  "FACTORISATION": {
+    "rule_rna": "rna_available[m, g] = total_rna[m] > 0, independent of g",
+    "rule_atac": "atac_available[m, i] = total_atac[m] > 0 AND n_assigned_peaks[i] > 0",
+    "why_it_is_lossless": "availability depends on whether the metacell's normalisation is defined and whether the interval has an assigned peak. It never depends on the measured value, so it is constant along the gene axis and separable along the interval axis.",
+    "stored_factors": [
+      "factor_rna_metacell_ok",
+      "factor_atac_metacell_ok",
+      "factor_interval_ok"
+    ]
+  },
+  "PROOF_1_sparse_absence_is_a_measured_zero": {
+    "elements": 14125932,
+    "sparse_entries_present": 6624289,
+    "sparse_absences_on_AVAILABLE_elements": 7501643,
+    "these_are_measured_zeros": true,
+    "value_they_carry": "log1p(0) = 0 exactly",
+    "sparse_absences_on_UNAVAILABLE_elements": 0,
+    "holds": true
+  },
+  "PROOF_2_unavailable_is_false_not_zero": {
+    "real_substrate_has_no_unavailable_element": true,
+    "why": "every metacell has nonzero RNA and ATAC totals and every interval has at least one assigned peak, so nothing is unavailable here",
+    "reported_zero_would_otherwise_be_unverifiable": "a count of zero from a predicate never shown to fire is a check that cannot fail, so it is demonstrated on a constructed fixture instead",
+    "fixture": {
+      "metacell_totals_rna": [
+        1000.0,
+        0.0,
+        500.0
+      ],
+      "metacell_totals_atac": [
+        800.0,
+        700.0,
+        0.0
+      ],
+      "interval_assigned_peaks": [
+        3,
+        0,
+        5
+      ],
+      "rna_available": [
+        [
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          false
+        ],
+        [
+          true,
+          true,
+          true
+        ]
+      ],
+      "atac_available": [
+        [
+          true,
+          false,
+          true
+        ],
+        [
+          true,
+          false,
+          true
+        ],
+        [
+          false,
+          false,
+          false
+        ]
+      ]
+    },
+    "zero_total_rna_metacell_marked_unavailable": true,
+    "zero_total_atac_metacell_marked_unavailable": true,
+    "zero_peak_interval_marked_unavailable": true,
+    "and_no_zero_value_is_written_for_them": true,
+    "holds": true
+  },
+  "PROOF_3_T5_reconciles_by_derivation": {
+    "relationship": "DERIVATION, not equality. The two live at different levels.",
+    "element_level": "every T3 and T4 element in this substrate is AVAILABLE",
+    "donor_pair_level": {
+      "MEASURED": 8598011,
+      "NOT_MEASURED_RNA_ZERO_COVERAGE": 1471461,
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE": 482686,
+      "NOT_MEASURED_RNA_ZERO_VARIANCE": 0,
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE": 0
+    },
+    "the_apparent_tension_resolved": "1,471,461 donor-pair cells are NOT_MEASURED_RNA_ZERO_COVERAGE while every underlying element is AVAILABLE. That is consistent, not contradictory: the gene WAS measured in every one of that donor's metacells and measured as zero in all of them, so each element is an available measured zero, and the frozen zero-coverage rule then makes the Stage-4 correlation UNDEFINED for that donor-pair cell.",
+    "frozen_rules_applied": [
+      "zero_coverage_rule",
+      "degenerate_variance_rule"
+    ],
+    "t5_state_is_about": "whether the Stage-4 cell is DEFINED",
+    "t3_t4_availability_is_about": "whether the element was MEASURED",
+    "holds": true
+  },
+  "PROOF_4_factorisation_expands_exactly": {
+    "holds": true,
+    "checked": [
+      "expansion equals the full column",
+      "bit-unpacking round-trips element for element"
+    ]
+  },
+  "all_proofs_hold": true,
+  "governance": {
+    "training": "OFF",
+    "phase_B": "STOPPED",
+    "stage_4": "NOT_AUTHORISED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false,
+    "promoter_atlas_biology": "NOT_STARTED",
+    "multimodal_teacher_training": "NOT_STARTED"
+  },
+  "status": "PASS"
+}
