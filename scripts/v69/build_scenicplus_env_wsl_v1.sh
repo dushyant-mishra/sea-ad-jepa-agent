@@ -57,10 +57,31 @@ echo "=== [3/5] install SCENIC+ ==="
 pip install --no-input --upgrade "setuptools<81" wheel 2>&1 | tail -3
 pip install --no-input --no-build-isolation "pybedtools==0.9.1" 2>&1 | tail -5 \
   || echo "PYBEDTOOLS_PREINSTALL_FAILED"
-# datrie (a snakemake dependency) has no wheel for cp311 and its source build fails
-# against modern Cython; take the conda-forge build instead.
+# SCENIC+ 1.0a2 hard-pins datrie==0.8.2, whose C source does not compile against a
+# modern GCC (incompatible-pointer-type errors in libdatrie's AlphaMap). datrie is
+# pulled in only by snakemake, which drives the SCENIC+ *CLI pipeline*; the Python
+# API this lane uses does not import it. So install the conda-forge datrie build for
+# anything that merely imports the module, then install SCENIC+'s dependency set
+# with the datrie pin removed, then SCENIC+ itself with --no-deps.
+#
+# This is an INFRASTRUCTURE repair. No scientific method, parameter or version of
+# any analysis package is changed: pycisTopic, pycistarget, pyscenic and SCENIC+ are
+# all installed at the versions SCENIC+ itself requires.
 mamba install -y -c conda-forge datrie 2>&1 | tail -3 || echo "DATRIE_CONDA_FAILED"
-pip install --no-input . 2>&1 | tail -25
+
+python - <<'PY' > "$OUT/env/scenicplus_requirements_minus_datrie.txt"
+import tomllib, pathlib
+cfg = tomllib.loads(pathlib.Path("pyproject.toml").read_text())
+deps = cfg.get("project", {}).get("dependencies", [])
+kept = [d for d in deps if not d.lower().replace(" ", "").startswith("datrie")]
+dropped = [d for d in deps if d not in kept]
+print("\n".join(kept))
+import sys
+print("DROPPED_FROM_REQUIREMENTS=%r" % dropped, file=sys.stderr)
+PY
+echo "--- requirement count: $(wc -l < "$OUT/env/scenicplus_requirements_minus_datrie.txt") ---"
+pip install --no-input -r "$OUT/env/scenicplus_requirements_minus_datrie.txt" 2>&1 | tail -6
+pip install --no-input --no-deps . 2>&1 | tail -6
 
 echo "=== [4/5] install create_cisTarget_databases ==="
 CTDB="$OUT/env/create_cisTarget_databases"
