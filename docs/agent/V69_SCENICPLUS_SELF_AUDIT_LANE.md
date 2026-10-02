@@ -785,3 +785,14 @@ So that "nothing found" and "did not look" stay distinguishable:
   inferred from the "hg19-primary" wording in the contract; 57/57 matched hg38.
 - The Route-A ATAC matrix digest in the cisTopic receipt was reconciled against the
   Route-A substrate receipt. They agree.
+- Storage was tested rather than assumed. The plan's premise that the internal SSD would
+  be faster does **not** hold for this workload: 535 s on C: against 532 s on D:, inside
+  noise, with near-identical non-scoring time. Recorded as a decision (do not spend the
+  scratch budget on it), with the caveat that both paths are Docker bind mounts so this
+  compares mount-to-C: against mount-to-D:, not SSD against external disk natively.
+- Whether BLAS pinning alters output was tested rather than assumed: scores bitwise
+  identical pinned vs unpinned. The pinning is a pure scheduling fix.
+- The worker-scaling table was deliberately NOT run while a competing workload held a
+  core, and was started only once that workload had exited and the machine was confirmed
+  idle (zero Stage-4 processes, zero containers). A curve taken under contention would
+  have been an artifact of the contention.
