@@ -1,0 +1,506 @@
+{
+  "schema": "V64_STAGE4_CALIBRATION_SWEEP_V2",
+  "date": "2026-10-01",
+  "executes_precommitment": {
+    "path": "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_PRECOMMIT_V2.json",
+    "sha256": "46f7c3342c0e88dd296a430365b52cf791324e133ce066ab54f0ea31fb9e3175"
+  },
+  "supersedes_sweep": "V64_STAGE4_CALIBRATION_SWEEP_V1, whose fixture used an unmatched control arm and whose rates do not characterise the frozen design",
+  "design_was_frozen_before_any_draw": true,
+  "thresholds_or_draw_counts_changed_after_seeing_results": false,
+  "cells": {
+    "BIOLOGY_POSITIVE@60": {
+      "world": "BIOLOGY_POSITIVE",
+      "donors_configured": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 30,
+      "all_five_pass_rate": 0.75,
+      "wilson95": [
+        0.5981,
+        0.8581
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 31,
+          "rate": 0.775
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 39,
+          "rate": 0.975
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.5667855162203412,
+      "delta_range": [
+        0.5411934611747746,
+        0.5947718095372047
+      ],
+      "lcb95_median": 0.5576109891311727,
+      "worst_smd_median": 0.13426815130854425,
+      "worst_smd_feature_counts": {
+        "re_density": 8,
+        "distal_accessibility^2": 27,
+        "anchor_frequency": 5
+      },
+      "max_abs_control_vs_control": 0.020824763771381347,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "BIOLOGY_POSITIVE@282": {
+      "world": "BIOLOGY_POSITIVE",
+      "donors_configured": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 25,
+      "all_five_pass_rate": 0.625,
+      "wilson95": [
+        0.4703,
+        0.7578
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 25,
+          "rate": 0.625
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.5692230192385461,
+      "delta_range": [
+        0.5481299107914053,
+        0.5890430156809857
+      ],
+      "lcb95_median": 0.5651061213098622,
+      "worst_smd_median": 0.132581656750955,
+      "worst_smd_feature_counts": {
+        "distal_accessibility^2": 23,
+        "anchor_frequency": 7,
+        "re_density": 6,
+        "promoter_degree*anchor_frequency": 4
+      },
+      "max_abs_control_vs_control": 0.015992141571341212,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "TRUE_NULL@60": {
+      "world": "TRUE_NULL",
+      "donors_configured": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 0,
+      "all_five_pass_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.0876
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 2,
+          "rate": 0.05
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 39,
+          "rate": 0.975
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 38,
+          "rate": 0.95
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": -0.0006355198547416969,
+      "delta_range": [
+        -0.005886895230282794,
+        0.009843426179129379
+      ],
+      "lcb95_median": -0.006455552301944167,
+      "worst_smd_median": 0.09659519273375052,
+      "worst_smd_feature_counts": {
+        "anchor_frequency": 22,
+        "re_density": 14,
+        "promoter_degree*anchor_frequency": 4
+      },
+      "max_abs_control_vs_control": 0.009333607175969337,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "TRUE_NULL@282": {
+      "world": "TRUE_NULL",
+      "donors_configured": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 2,
+      "all_five_pass_rate": 0.05,
+      "wilson95": [
+        0.0138,
+        0.165
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 2,
+          "rate": 0.05
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 39,
+          "rate": 0.975
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 37,
+          "rate": 0.925
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": -0.00015473454757443188,
+      "delta_range": [
+        -0.0031508953672812344,
+        0.003940762706704931
+      ],
+      "lcb95_median": -0.0027541384264824506,
+      "worst_smd_median": 0.10890728651433532,
+      "worst_smd_feature_counts": {
+        "promoter_degree*anchor_frequency": 7,
+        "anchor_frequency": 15,
+        "re_density": 18
+      },
+      "max_abs_control_vs_control": 0.004093727053077511,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "MEASURED_TECHNICAL@60": {
+      "world": "MEASURED_TECHNICAL",
+      "donors_configured": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 0,
+      "all_five_pass_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.0876
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 6,
+          "rate": 0.15
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 28,
+          "rate": 0.7
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 0,
+          "rate": 0.0
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.002998000703721716,
+      "delta_range": [
+        -0.015307255514315745,
+        0.017138215150959077
+      ],
+      "lcb95_median": -0.005369072705771788,
+      "worst_smd_median": 1.8820405784576986,
+      "worst_smd_feature_counts": {
+        "atac_depth_sensitivity": 40
+      },
+      "max_abs_control_vs_control": 0.01675424611251058,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "MEASURED_TECHNICAL@282": {
+      "world": "MEASURED_TECHNICAL",
+      "donors_configured": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 0,
+      "all_five_pass_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.0876
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 15,
+          "rate": 0.375
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 15,
+          "rate": 0.375
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 0,
+          "rate": 0.0
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.0016960286266728057,
+      "delta_range": [
+        -0.011246466959735264,
+        0.021422408597562843
+      ],
+      "lcb95_median": -0.0022754823586134953,
+      "worst_smd_median": 1.9003831876650743,
+      "worst_smd_feature_counts": {
+        "atac_depth_sensitivity": 40
+      },
+      "max_abs_control_vs_control": 0.012074433120931939,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "HIDDEN_CONFOUND@60": {
+      "world": "HIDDEN_CONFOUND",
+      "donors_configured": 60,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 8,
+      "all_five_pass_rate": 0.2,
+      "wilson95": [
+        0.105,
+        0.3476
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 9,
+          "rate": 0.225
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 34,
+          "rate": 0.85
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.5749265166541415,
+      "delta_range": [
+        0.5156254859618132,
+        0.6302378247286438
+      ],
+      "lcb95_median": 0.5481178389181334,
+      "worst_smd_median": 0.20479631380230262,
+      "worst_smd_feature_counts": {
+        "distal_accessibility^2": 35,
+        "anchor_frequency": 5
+      },
+      "max_abs_control_vs_control": 0.054355847491073056,
+      "edges_trimmed_max": 0,
+      "failures": []
+    },
+    "HIDDEN_CONFOUND@282": {
+      "world": "HIDDEN_CONFOUND",
+      "donors_configured": 282,
+      "draws_attempted": 40,
+      "draws_succeeded": 40,
+      "draws_failed": 0,
+      "all_five_pass_count": 4,
+      "all_five_pass_rate": 0.1,
+      "wilson95": [
+        0.0396,
+        0.2305
+      ],
+      "resolution": "RESOLVED",
+      "per_gate_pass_rate": {
+        "G1_PRIMARY_LCB95_ABOVE_ZERO": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO": {
+          "passes": 4,
+          "rate": 0.1
+        },
+        "G3_COVARIATE_BALANCE": {
+          "passes": 39,
+          "rate": 0.975
+        },
+        "G4_SUPPORT_CONCENTRATION": {
+          "passes": 40,
+          "rate": 1.0
+        },
+        "G5_FUNNEL_RECONCILES": {
+          "passes": 40,
+          "rate": 1.0
+        }
+      },
+      "delta_median": 0.5825692962841839,
+      "delta_range": [
+        0.5097447579538227,
+        0.625040918561113
+      ],
+      "lcb95_median": 0.5684654267683664,
+      "worst_smd_median": 0.19543117390643305,
+      "worst_smd_feature_counts": {
+        "distal_accessibility^2": 36,
+        "re_density": 1,
+        "anchor_frequency": 3
+      },
+      "max_abs_control_vs_control": 0.05375646475221979,
+      "edges_trimmed_max": 0,
+      "failures": []
+    }
+  },
+  "readings": [
+    {
+      "donors": 60,
+      "rates": {
+        "BIOLOGY_POSITIVE": 0.75,
+        "TRUE_NULL": 0.0,
+        "MEASURED_TECHNICAL": 0.0,
+        "HIDDEN_CONFOUND": 0.2
+      },
+      "positive_control_works": true,
+      "true_null_at_or_below_nominal": true,
+      "technical_above_null": false,
+      "hidden_above_null": true,
+      "hidden_delta_vs_biology": 1.0144
+    },
+    {
+      "donors": 282,
+      "rates": {
+        "BIOLOGY_POSITIVE": 0.625,
+        "TRUE_NULL": 0.05,
+        "MEASURED_TECHNICAL": 0.0,
+        "HIDDEN_CONFOUND": 0.1
+      },
+      "positive_control_works": true,
+      "true_null_at_or_below_nominal": true,
+      "technical_above_null": false,
+      "hidden_above_null": false,
+      "hidden_delta_vs_biology": 1.0234
+    }
+  ],
+  "scale_reading": {
+    "BIOLOGY_POSITIVE": {
+      "rate_at_60": 0.75,
+      "rate_at_282": 0.625,
+      "direction": "FALLS",
+      "reading": "behaves like noise; the reduced-scale qualification was conservative"
+    },
+    "TRUE_NULL": {
+      "rate_at_60": 0.0,
+      "rate_at_282": 0.05,
+      "direction": "RISES",
+      "reading": "behaves like a bias: the bound tightens with n while the quantity does not"
+    },
+    "MEASURED_TECHNICAL": {
+      "rate_at_60": 0.0,
+      "rate_at_282": 0.0,
+      "direction": "UNCHANGED",
+      "reading": "no change"
+    },
+    "HIDDEN_CONFOUND": {
+      "rate_at_60": 0.2,
+      "rate_at_282": 0.1,
+      "direction": "FALLS",
+      "reading": "behaves like noise; the reduced-scale qualification was conservative"
+    }
+  },
+  "canonical_worlds_restored": {
+    "BIOLOGY_POSITIVE": {
+      "seed": 20260929,
+      "eligible_donors": 60,
+      "matching_ok": true,
+      "digests_match": true
+    },
+    "TRUE_NULL": {
+      "seed": 20260930,
+      "eligible_donors": 60,
+      "matching_ok": true,
+      "digests_match": true
+    },
+    "MEASURED_TECHNICAL": {
+      "seed": 20260931,
+      "eligible_donors": 60,
+      "matching_ok": true,
+      "digests_match": true
+    },
+    "HIDDEN_CONFOUND": {
+      "seed": 20260932,
+      "eligible_donors": 60,
+      "matching_ok": true,
+      "digests_match": true
+    }
+  },
+  "canonical_state_verified": true,
+  "what_this_cannot_establish": "These are synthetic worlds whose generative structure and confound magnitudes I chose. The measured rates characterise the DECISION RULE under those structures. They are not an estimate of any rate the real Stage-4 analysis would exhibit, whose data-generating process is unknown. In particular the hidden confound's magnitude was set by me, and whether a cross-modal factor of that size exists in the real substrate is a separate question that this design does not address.",
+  "wall_clock_seconds": 6062.0,
+  "real_substrate_read": false,
+  "computed_correspondence_values": 0,
+  "producer_sha256": "25bbb3167e28d26ac632281aa35ed09bc35dc10cae418ec23ee0b097f18f927a",
+  "status": "COMPLETE"
+}
