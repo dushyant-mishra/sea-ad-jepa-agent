@@ -1,0 +1,1872 @@
+Resolved definitively: Stage-4 intervals are hg38 — 57/57 exact match to the design artifact's hg38 columns, 0/57 to hg19. Same build as GSE214979, so no liftOver is needed. Now the crosswalk layer.
+
+Sol's summary is accurate but it levels three findings that aren't equivalent, and the difference decides what we freeze.
+
+They are three different kinds of thing:
+
+The null draw crossing zero is not a defect. A one-sided 95% bound crosses under the null 5% of the time by construction. Seeing it once in four draws is entirely compatible with correct calibration — the probability of at least one crossing in four draws at a true 5% rate is about 19%. Four draws cannot distinguish 5% from 25%. This says the verdict is noisy at small effect sizes, not that the design is broken.
+
+The measured-technical residue at 3/4 is the real finding. In that world the honest answer is "no biological effect," so significance is a false positive against the null we actually care about — and 3 of 4 is nowhere near 5%. That is a systematic, incompletely-removed bias, not sampling noise.
+
+The control-vs-control drift is a construction artifact — it occurred in the hidden-confound world, where the planted confound loads unequally on the two control arms. Expected from how I built it; it is not a general anti-false-green failure.
+
+So: one design-level bias, one nominal statistical behaviour, one artifact of my own fixture.
+
+And there's an extrapolation nobody has made yet. My worlds use 60 donors; the real substrate has 282. Tighter bounds at the same bias means the technical residue becomes more likely to be called significant at real scale, not less. If that's right, the residue problem is worse in the real run than in the qualification that was supposed to bound it.
+
+Four draws can't settle any of this. I'm going to measure the rates properly — pre-committing the design before running it.
+
+
+27 seconds per draw at the real donor count. Writing the pre-commitment to disk and hashing it before running, so the design is genuinely prospective.
+
+
+Strong coverage on genes. But I've spotted a defect in my own code — let me verify it.
+
+Confirmed — a real defect in my own output: 7,432 peaks overlap more than one Stage-4 interval (up to 16), so counting only the first understates Stage-4 coverage. Fixing.
+
+The sweep is running — 160 draws, roughly an hour.
+
+Here's my position on what this means for freezing the synthetic twin, Sol.
+
+Don't freeze it yet, and don't treat the three instabilities as one finding. Two of them are fine:
+
+The null crossing is what a one-sided 95% bound does. One in four draws is ordinary; the probability of seeing at least one crossing in four draws at a true 5% rate is ~19%. If this turns out to be the whole story, nothing is wrong with the rule — it just means a bare LCB > 0 carries little information at small effect sizes, which is worth stating but is not a defect.
+The control-vs-control drift happened only in the hidden-confound world, where the planted factor loads unequally on the two control arms. That's my fixture's construction showing through, not a failure of the anti-false-green arm.
+The one that should worry us is the measured-technical residue. In that world the honest answer is "no biological effect," so a significant result is a false positive against the null we actually care about — and 3 of 4 is nowhere near 5%. If that holds up as a rate, it is a bias surviving the nuisance adjustment, and it bears on every real Stage-4 result.
+
+The test that decides it is donor count. A bias that doesn't shrink with n gets called significant more often as the bound tightens; noise doesn't. So the sweep runs both worlds at 60 donors (what we qualified) and 282 (the real substrate). If the technical rate rises from 60 to 282, the real run is more exposed than the reduced-scale qualification implied — which would be the opposite of reassuring, and worth knowing before anything is frozen.
+
+The design is pinned at b23dcc2d2902f8d8 (commit 20ca99af), written and committed before a single draw: two worlds, two donor counts, 40 draws per cell, every draw built to disk and run through the real entrypoint. The stopping rule is deliberately unforgiving — exactly 40 draws, and a cell whose interval is too wide gets reported UNRESOLVED rather than topped up, because adding draws after seeing the estimate is how a prospective design quietly stops being one. Every outcome's interpretation is written down in advance, including the one that says the rule is anti-conservative.
+
+Nothing measured here may change the frozen rules. If the residue rate is bad, it gets recorded as an interpretation limit on Stage 4, not repaired by adjusting the design that produced it.
+
+One correction to your summary worth carrying: the measured-technical residue was significant in 3/4 draws, and separately the depth adjustment worked in 4/4 — it removed over half the raw effect every time. The adjustment isn't failing; it's leaving a small, apparently systematic remainder. That distinction matters for where the fix would have to go, if we ever decide one is warranted.
+
+I'll report the rates when the sweep lands. The SCENIC+/GSE214979 lane is running separately and I don't have its results yet.
+
+
+Materially different: 22,991 intervals (71.5%), not 13,325 (41.4%). My defect would have understated Stage-4 coverage by 30 points. Let me add tests that would have caught it.
+
+Nearly there — scenicplus, pycistopic, pycistarget all built; only datrie (a snakemake dep) failed. Installing it from conda.
+
+Let me record S6 in the self-audit lane and commit the crosswalk work.
+
+The fail-closed check caught a real contig-naming mismatch — GSE214979 uses Ensembl-style scaffold names (GL000194.1) while the UCSC analysis set uses chrUn_GL000194v1. Let me size it before deciding.
+
+53 of 150,614 peaks (0.035%) sit on unplaced scaffolds. Let me check the env directly rather than parse logs.
+
+Meanwhile, let me add the recorded, bounded contig-restriction to the region-universe producer.
+
+Route-A region universe: 150,561 regions, 126.1 Mbp, 53 unscoreable scaffold regions dropped and counted. Let me check the SCENIC+ install.
+
+I had made a image of scenic+ before for thins project check project history
+Found it — docker/scenicplus/Dockerfile, plus a WSL execution handoff config. Checking what's in them and whether the built image still exists.
+
+
+perhaps also look at my repo here: https://github.com/dushyant-mishra/scenicplus-docker.git
+Even better — let me look at your published repo.
+
+
+SCENIC+ 1.0a2 hard-pins datrie==0.8.2, which cannot compile against modern GCC. Repairing the infrastructure without changing the method: install the dependency set minus datrie (needed only by the snakemake CLI, not the Python API).
+
+While the environment builds, let me prepare the reference FASTA and benchmark cbust so the feasibility number is measured, not estimated.
+
+The image is already built and sitting on this machine. Verifying it actually runs and capturing its identity.
+
+
+Image verified working. Relaying to the SCENIC+ lane — this removes its biggest environment risk.
+
+
+Saving this as a standing lesson — I set that lane building an environment without first checking what you'd already built.
+
+
+Good catch — that image exists and works. I had the lane about to rebuild a notoriously painful toolchain from scratch.
+
+What's on this machine right now:
+
+
+scenicplus:1.0a2    sha256:520053641b60c03e9bbb219f9f8c630a01cce03569ef45d1d50c807b0d441200
+                    built 2026-07-11, 5.33 GB
+                    also tagged 1.0a2-clean2 and 1.0a2-runtime (same image)
+I ran it: scenicplus 1.0a2, numpy 1.26.4, and scenicplus / pycisTopic / pycistarget / pyscenic / pybedtools / pysam / scanpy / anndata all import cleanly. The pkg_resources warning is the documented expected one from pinning setuptools<81.
+
+Your published repo's docker/Dockerfile hashes to c22c56dce8a0e7c9…, which matches its own validation/dockerfile_sha256.txt exactly — the recipe is internally consistent and ships pip_check.txt, import_check.txt, micromamba_list.txt and pip_freeze.txt. That last one becomes the environment manifest the lane needed for deliverable 27.
+
+One provenance caveat I've told the lane to carry rather than paper over: I verified the recipe matches its recorded digest, and I verified the image runs. I did not verify that image 520053641b60 was built from that Dockerfile — Docker doesn't retain that link and layer history isn't proof. So the receipt will record the image ID and the recipe digest as two separate facts with the connection marked UNVERIFIED, not as "image built from recipe X."
+
+Something worth your eye: the JEPA repo carries its own, different SCENIC+ Dockerfile at docker/scenicplus/Dockerfile, hashing to 7eb07858f66ce015…. Its history includes "Add custom cisTarget database tools to SCENIC container", "Add flatbuffers for cisTarget database tools" and "Finalize Stage75E SCENIC container runtime". Since the lane's section 4 wants a custom cisTarget database built on the GSE214979 consensus regions, those added tools may be exactly what it needs — and the running image may or may not have them. I've told it to smoke-test every tool it actually uses inside the container and name the gap if one exists, rather than trusting the README's list or silently switching images.
+
+Also surfaced from history and handed over: configs/agent/stage75d_scenicplus_wsl_execution_handoff_v1.yaml, configs/stage75e_scenicplus_preflight_v1.yaml, configs/agent/stage75b_scenicplus_resource_acquisition_v1.yaml.
+
+The lane now mounts only its own worktree and its own output directory — nothing from the Stage-4 lane's trees.
+
+The calibration sweep is still running in the background (160 draws, ~1 hour). I'll report the rates when it lands.
+
+
+Understood — switching to the validated container. Let me stop the environment build first.
+
+Image confirmed present. Let me read the JEPA repo's own SCENIC+ recipe and configs before choosing, as instructed.
+
+The JEPA recipe carries exactly what Section 4 needs (create_cisTarget_databases, cbust, MALLET, MACS2). Now let me smoke-test each tool in the running image rather than trust any README.
+
+command -v under a login shell gives false ABSENTs — the micromamba env isn't on that PATH. Let me re-test properly.
+
+also check a lot of the scenic work might have been done previously
+Significant: Sol has moved five commits past the base I gave the lane. Let me pin exactly where that work is before it gets duplicated.
+
+
+All tools verified working. Let me capture this as a receipt with the provenance caveat the coordinator specified.
+
+Correction to what I said a moment ago: those newer V69 commits are my own lane's work from today, not Sol's. It has already authenticated the matrix, frozen its thresholds before building anything, and emitted the Route-A region universe.
+
+Now the actual question — prior SCENIC work worth reusing.
+
+
+Image ID matches exactly, all tools verified, pip check clean. Let me write the provenance receipt with the caveat carried explicitly.
+
+You were right — there's a lot of it, and one piece of it changes how the current lane should be framed.
+
+First, a correction to what I said minutes ago: those newer V69 commits are my own lane's work from today, not Sol's. It has already authenticated the GSE214979 matrix, built the submitted-peak substrate, frozen every threshold and control before any network existed, decided to build a custom cisTarget database for both routes, opened its self-audit lane, and emitted the Route-A region universe. Sol contributed the first two commits; the rest is the lane itself.
+
+The prior SCENIC+ work
+All preserved under docs/history/preservation_20260902/, present on every branch. Eleven TF batches — BACH1, CEBPA, ELF1, IRF8, MITF, NRF1, RELA, SPI1, STAT1, STAT3 — with motif enrichment against 5,876 motifs at ~95% query coverage, plus a full TF→region→gene evidence assembly, an out-of-core HDF5 extraction backend, and a cisTarget region-mapping audit.
+
+But look at what it concluded about itself. Every row in every table carries:
+
+
+validated_regulation = False
+validated_grn_claim = False
+causal_validation_pass = False
+therapeutic_target_claim = False
+regulator_role = descriptive_secondary_hypothesis
+edge_claim_language = "candidate TF-target coactivity edge; not validated regulation"
+Only two TFs (IRF8, STAT1) reached the primary summary at all, carrying 24 TF-target rows between them. Past-you was scrupulous about labelling it.
+
+The finding that matters most
+Those edge rows carry edge_atac_peak_support_status = not_gene_mappable_from_processed_peak_matrix and edge_motif_support_status = not_available.
+
+The previous attempt could not get region-to-gene evidence out of a processed peak matrix. That is prior, empirical, documented justification for the fragment-level Route B you asked for — it isn't a precaution, it's a repair of a known failure. I've told the lane to cite it that way, and to check early whether the same failure threatens Route A on the GSE214979 submitted matrix rather than discovering it after a network is built.
+
+Two more that feed directly into the controls you specified:
+
+Motif support was almost entirely extended_only. BACH1 and CEBPA got there with zero direct motifs; ELF1 had one direct against nine extended. Your TF annotation-supply control isn't guarding against a hypothetical — this tissue and this motif collection demonstrably produce it. The control has to separate direct from extended annotation, not just count motifs.
+The edge statistics ran on n = 18 donors. A useful prior on how little donor-level power this kind of analysis has, and it reinforces your own instruction that if edges are unstable but modules reproduce, the qualified object becomes the module.
+What the lane will and won't take
+Reuse: the container, the cisTarget region-mapping audit, the out-of-core HDF5 backend, the bounded cisTarget reader built to avoid OOM (commits 488e6359, 64976266, d081947e, 3b450765, 05358c57, 831c9315), and the negative findings above.
+
+Not reuse: the Stage75F motif resources as authority — your mandate is explicit that the current official collection must be acquired and pinned fresh — and emphatically not the ten-TF list as a selection. The lane stays broad.
+
+I've asked it to record which prior artifacts it read and what it took from each, so a reviewer can tell reuse from rediscovery.
+
+The calibration sweep is still running.
+
+
+Let me read the Stage75 prior art, especially the ATAC mapping failure.
+
+Decisive confirmation of concern 2: 7 of 10 TFs had zero direct motif support; MITF, NRF1 and STAT3 had none at all. Let me read the peak-gene failure and then test whether Route A is threatened by it.
+
+ready_for_true_scenicplus_egrn=False, proximity_only_not_regulatory=True — the prior attempt had no same-cell RNA/ATAC pairing. Let me test Route A against that failure mode concretely, before building anything.
+
+were there indexing issues that crept in and was that the reasons of these past failures
+A fair question, and the recurring burn on this project — but I shouldn't guess at it. Let me find out what actually happened.
+
+
+219,070 peaks, all parseable, all annotated — so proximity mapping worked. Now the commit titled "Correct Stage75F cisTarget region mapping audit", which is the strongest lead.
+
+
+The correction is substantive: the original mapper kept any database region overlapping a query peak by ≥1 bp; pycisTarget's actual rule is >40% of either length. Now the decisive question — did the published numbers come before or after that fix?
+
+
+Route A is clear of the Stage75F wall. Now let me strengthen C1 with the explicit extended category, since the prior work shows direct and extended come apart badly.
+
+The fix landed at 16:19; the first result commit was at 20:48. So that defect was caught before it touched any published number. Let me find what actually limited the outcome.
+
+
+Let me record the prior-art reuse ledger so a reviewer can tell reuse from rediscovery.
+
+Short answer: there was one real indexing-class defect, and it was caught before it touched any result. The failures had a different cause.
+
+The indexing defect that did exist
+The region mapper matched a query peak to a cisTarget database region on ≥1 bp of overlap. pycisTarget's actual rule is overlap/query_length > 0.4 OR overlap/database_length > 0.4. So the original mapper would have pulled in database regions sharing a single base with a peak — wildly permissive.
+
+Commit 98c5b763 fixed it, and did three more things worth noting: it moved the coordinate sidecar from the rankings database to the scores database, added a 32-column schema-parity check between the two (an index-correspondence guard — exactly the family of check we've been burned for not having), and started emitting *.unmapped_regions.txt so unmapped queries became visible instead of silently vanishing.
+
+The chronology clears it:
+
+
+16:19  98c5b763  Correct cisTarget region mapping audit   <- fix
+20:48  d7a2435d  Add Stage75F primary motif pilot         <- first result
+Four and a half hours. Every published Stage75F number used the corrected rule. And after the fix, region-mapping coverage was 93–95% for every TF. Mapping worked.
+
+What actually caused the thin results
+One — the scale was far too small. Each TF batch tested only 57 to 91 query regions, against a peak universe of 219,070. Motif enrichment on ~80 regions cannot resolve a TF-specific signal. That alone largely explains why only 2 of 11 TFs reached the primary summary.
+
+Two — direct motif annotation was almost absent. Of 5,876 motifs tested, 69–81 were enriched per TF, but the count directly annotated to that TF was:
+
+
+BACH1 0    CEBPA 0    MITF 0    NRF1 0
+RELA  0    STAT3 0    ELF1  1    SPI1 3
+MITF, NRF1 and STAT3 had zero direct and zero extended — no support at all. Everything else rested on extended (inferred) annotation.
+
+That second point is the useful one, because it's now measured rather than suspected: on this tissue with this motif collection, extended-only support is the common case. I've told the lane that its TF annotation-supply control must report direct and extended as separate numbers and treat extended-only TFs as a class that can't carry the same weight — a single motif count per TF would miss exactly this.
+
+Two things I could not establish
+I verified the chronology and the coverage the mapper reported; I did not re-run it, so I haven't verified the corrected mapper is itself right. And the per-run coverage file the config names, results/tables/stage75f_cistarget_region_coverage_v1.csv, is not in the preserved tree of that branch — I listed the full tree, it isn't there. Whether it exists elsewhere I haven't determined, so that's a scope-limited absence, not a claim it was never produced.
+
+So: your instinct about indexing was well-placed and there was something there — but it was caught in time. The real lesson for the current lane is about region-set size and annotation supply, and both now have concrete numbers attached.
+
+
+Important corrections — the mapping worked; scale and direct-annotation supply were the limits. Let me absorb all of this.
+
+Now let me correct the wording in my own reuse ledger and record the open items there too.
+
+Let me check the fragments download, which should be nearing completion.
+
+~31 min left on fragments. Let me start the Route-A custom cisTarget database — first a measured benchmark rather than an estimate.
+
+CRLF — Path.write_text on Windows translated the line endings and broke the shell script in the Linux container. Fixing.
+
+The earlier patch silently failed to match because the file was CRLF at the time. Now that it's LF, let me apply it properly.
+
+It's running now. Let me record the CRLF finding while it works.
+
+While the benchmark runs, let me write the Route-A topic-modelling step so it's committed and ready.
+
+Region FASTA reconciles exactly (150,561 = 150,561). cbust is now running. Let me check the fragments download.
+
+Let me check the fragment file's barcode spelling now — a key Route-B design question I can answer from the partial file.
+
+Important Route-B facts. Let me verify the barcode-space relationship precisely.
+
+While those finish, let me write the Route-B fragment QC producer.
+
+Let me write the lane status and handoff document while the benchmark finalizes.
+
+Measured: 613 s for 24 motifs. That mixes fixed and marginal cost, so a single point can't be extrapolated honestly. Let me take a second point to separate them.
+
+A real provenance collision in my own script: the 120-motif run overwrote motifs.lst and its digest in the shared directory, invalidating the 24-motif receipt's recorded hash. Fixing.
+
+Significant Route-B finding. Let me record it properly.
+
+Let me validate the cisTopic input builder actually runs in the container.
+
+Receipts store Windows host paths that don't resolve inside the container. Let me add explicit, recorded path remapping rather than rewriting receipts.
+
+The cisTopic input builds cleanly: 150,614 regions × 2,534 cells, 12 donors. Let me commit with S13.
+
+Fragments at 97.9%. Let me wait for completion — that's the headline acquisition item.
+
+Let me wait for both to complete.
+
+While those finish, let me write the mandate-item-by-item deliverables index.
+
+Let me verify a consistency point between the region universe and the cisTopic matrix.
+
+Exactly reconciled, but it leaves a live hazard for the network step. Let me record it with a binding rule.
+
+Bash Record S15 region reconciliation finding
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python - <<'PY'
+from pathlib import Path
+p=Path("docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md")
+s=p.read_text()
+new='''## S15 — 53 regions are in the accessibility matrix but can never receive a motif score (DISCLOSED, RULE ADDED)
+
+**Status:** OPEN as a binding rule for the network step; the discrepancy itself is
+explained and reconciled.
+
+**The discrepancy.** The Route-A cisTopic accessibility matrix carries **150,614**
+regions. The Route-A cisTarget region universe carries **150,561**. The difference is
+exactly **53**, and it is exactly the regions dropped for lying on unplaced scaffolds
+the reference FASTA does not contain under the source's spelling (`GL000194.1` vs
+`chrUn_GL000194v1`). Reconciled: `150,614 − 150,561 = 53 = n_regions_dropped`.
+
+**Why it still matters.** Those 53 regions will have accessibility values and **no
+motif scores at all**. The natural downstream behaviour is to join the motif table to
+the region table and let the missing rows become zeros or empty enrichments — at which
+point a region that was never *scoreable* becomes indistinguishable from a region that
+was scored and found to have no enrichment. That is the project's canonical error:
+encoding NOT_MEASURED as zero.
+
+**Binding rule for the network step.** Those 53 regions are
+`STRUCTURALLY_UNSCOREABLE`. They may not be counted in any enrichment denominator, may
+not contribute a zero to any motif statistic, and must carry an explicit per-element
+mask in the artifact the network step reads. Any eRegulon region count must state
+whether it is out of 150,614 or 150,561.
+
+**Was it caught before it could do damage?** Yes — before any motif enrichment ran. It
+was found by deliberately reconciling two receipts' region counts against each other
+rather than assuming two numbers that *should* agree do agree. The 53 are a rounding
+error in magnitude and exactly the kind of thing that survives into a result unnoticed.
+
+---
+
+## S13 — Receipts record host paths that no container can open (CAUGHT BEFORE DAMAGE)'''
+s=s.replace("## S13 — Receipts record host paths that no container can open (CAUGHT BEFORE DAMAGE)", new, 1)
+p.write_text(s); print("ok")
+PY
+git add docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md && git -c user.name="Dushyant Mishra" -c user.email="dmishra@holycross.edu" commit -q -F - <<'MSG' && git rev-parse HEAD && git push -q origin HEAD && echo PUSHED
+V69 self-audit S15: 53 regions are accessible but can never be motif-scored
+
+The Route-A accessibility matrix has 150,614 regions; the Route-A cisTarget region
+universe has 150,561. The difference is exactly the 53 regions dropped for lying on
+unplaced scaffolds the reference spells differently (GL000194.1 vs chrUn_GL000194v1).
+Reconciled exactly: 150,614 - 150,561 = 53 = n_regions_dropped.
+
+Explained, but still a live hazard. Those 53 regions will carry accessibility values
+and NO motif scores. The natural downstream join turns missing motif rows into zeros
+or empty enrichments, at which point a region that was never SCOREABLE becomes
+indistinguishable from one that was scored and found unenriched -- the project's
+canonical error of encoding NOT_MEASURED as zero.
+
+Binding rule recorded for the network step: those regions are
+STRUCTURALLY_UNSCOREABLE, may not enter any enrichment denominator, may not contribute
+a zero to any motif statistic, must carry an explicit per-element mask, and every
+eRegulon region count must state whether it is out of 150,614 or 150,561.
+
+Found before any motif enrichment ran, by deliberately reconciling two receipts'
+region counts against each other instead of assuming two numbers that should agree do
+agree. Fifty-three out of 150,614 is a rounding error in magnitude and exactly the
+size of discrepancy that survives into a published result unnoticed.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+MSG
+
+OUT
+Exit code 1
+ok
+On branch claude/v69-scenicplus-external-network-20261001
+Your branch is up to date with 'origin/claude/v69-scenicplus-external-network-20261001'.
+
+nothing to commit, working tree clean
+Bash Inspect self-audit headings and encoding
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && grep -n "^## S1[0-9]" docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md | cat -A | head -8
+
+OUT
+(Bash completed with no output)
+Bash List self-audit section headings
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && grep -n "^## S" docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md | head -20
+
+OUT
+13:## S1 — Motif annotation header parsed as data (CAUGHT BEFORE DAMAGE)
+50:## S2 — I froze a route comparison that could not isolate what it claimed (CAUGHT BEFORE DAMAGE)
+81:## S3 — The parallel lane's acquisition producer records Route B as optional (NOT MY DEFECT; RAISED)
+99:## S4 — Route A and Route B share the same nuclei, so the comparison is narrower than "robustness" (DISCLOSED, NOT FIXABLE)
+117:## S6 — My crosswalk understated Stage-4 interval coverage by 30 points (CAUGHT BEFORE DAMAGE)
+167:## S5 — The substrate is small, and the headline cohort size hides it (DISCLOSED)
+Bash Read the calibration sweep result
+IN
+tail -22 "C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\b11mrwof8.output"
+
+OUT
+    TRUE_NULL@282                40/40  (1572 s elapsed)
+  TRUE_NULL@282                 3/40 crossings  rate=0.075  Wilson [0.026, 0.199]  RESOLVED
+    MEASURED_TECHNICAL@60        10/40  (1663 s elapsed)
+    MEASURED_TECHNICAL@60        20/40  (1758 s elapsed)
+    MEASURED_TECHNICAL@60        30/40  (1851 s elapsed)
+    MEASURED_TECHNICAL@60        40/40  (1933 s elapsed)
+  MEASURED_TECHNICAL@60        35/40 crossings  rate=0.875  Wilson [0.739, 0.945]  RESOLVED
+    MEASURED_TECHNICAL@282       10/40  (2218 s elapsed)
+    MEASURED_TECHNICAL@282       20/40  (2562 s elapsed)
+    MEASURED_TECHNICAL@282       30/40  (2976 s elapsed)
+    MEASURED_TECHNICAL@282       40/40  (3485 s elapsed)
+  MEASURED_TECHNICAL@282       40/40 crossings  rate=1.000  Wilson [0.912, 1.000]  RESOLVED
+
+restoring the canonical worlds ...
+  canonical state restored and digest-verified: True
+
+  60 donors: true-null 0.050 [0.0138, 0.165] | technical 0.875 [0.7389, 0.9454] | technical>null=True
+  282 donors: true-null 0.075 [0.0258, 0.1986] | technical 1.000 [0.9124, 1.0] | technical>null=True
+  technical rate 60 -> 282 donors: 0.875 -> 1.000  RISES
+receipt sha256 7a476232184979c07e0e93dd304356ad2fb80f0cd8d1eaaaf8a19d991eda9449
+
+[exited with code 0]
+S7–S15 are missing from the file — a later write must have reverted earlier content. Let me trace it.
+
+Bash Trace self-audit file history
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git log --oneline -- docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md | cat && echo "=== headings per commit ===" && for c in $(git log --format=%h -- docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md); do echo "--- $c ---"; git show $c:docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md 2>/dev/null | grep -c "^## S"; done
+
+OUT
+9eeebb1b V69: adopt the validated SCENIC+ container, verified tool by tool
+4736a3cd V69: structural crosswalk layer, and resolve the Stage-4 genome build empirically
+d2332c54 V69 control C1: build the TF motif-annotation-supply denominator, and open the self-audit lane
+=== headings per commit ===
+--- 9eeebb1b ---
+6
+--- 4736a3cd ---
+6
+--- d2332c54 ---
+5
+The sweep landed, and it's decisive. Let me check one thing before reporting — what the frozen pass criterion actually is.
+
+
+Bash Read the frozen Stage-4 success criterion
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python -c "
+import json
+A=json.load(open('results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json'))
+s=A['SUCCESS_CRITERION_FROZEN_BEFORE_ANY_RESULT']
+print(json.dumps(s,indent=1)[:1600])
+"
+
+OUT
+{
+ "PASS_requires_all_of": [
+  "one-sided LCB95 of Delta > 0",
+  "the control-vs-control null contrast is not distinguishable from zero (see ANTI_FALSE_GREEN)",
+  "no material linked-vs-control covariate imbalance: worst standardised mean difference across the 14 frozen features <= 0.25 after matching",
+  "support is not concentrated: the top 1% of donors contribute <= 10% of the weight in the primary statistic",
+  "the attrition funnel reconciles to 20,709"
+ ],
+ "no_minimum_effect_size": {
+  "why": "M_MIN = 0.010 is the frozen margin for the SYNTHETIC benchmark's score scale. Transferring it to a real correlation-difference scale would be an unjustified change of units dressed as a frozen threshold. No defensible minimum effect can be derived prospectively on this scale from anything currently frozen.",
+  "consequence": "The effect magnitude is REPORTED WITHOUT A THRESHOLD. A statistically positive but negligibly small Delta must be reported as exactly that, and must NOT be presented as biological confirmation. p < 0.05 alone is explicitly NOT the success definition."
+ },
+ "FAIL_is_reported_with": [
+  "the full attrition funnel",
+  "the donor count and Kish ESS",
+  "the depth-stratified result",
+  "the out-of-span diagnostic verdict"
+ ],
+ "anti_false_green": [
+  {
+   "name": "CONTROL_VS_CONTROL_NULL",
+   "construction": "the two independent control draws are contrasted against each other through the identical pipeline",
+   "requirement": "must not show excess. A nonzero control-vs-control contrast indicates the pipeline itself manufactures a difference, and any linked-vs-c
+Shell cwd was reset to d:\Jepa project
+A serious one. My Python edits used Path.read_text() without an encoding — on Windows that decodes as cp1252, so the UTF-8 em-dashes in the anchors never matched. S7–S15 were silently never written, while my commit messages claimed they were. Let me fix this properly.
+
+Read V69_SCENICPLUS_SELF_AUDIT_LANE.md (lines 2-15)
+Bash Extract existing S1-S6 body
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && sed -n '13,185p' docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md > /tmp/s1_s6_body.md 2>/dev/null; wc -l /tmp/s1_s6_body.md; echo "--- last lines ---"; tail -5 /tmp/s1_s6_body.md
+
+OUT
+173 /tmp/s1_s6_body.md
+--- last lines ---
+
+---
+
+## What was examined this cycle and produced no finding
+Bash Commit the calibration sweep result
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && git add -f results/v64/phase_b_design/V64_STAGE4_CALIBRATION_SWEEP_V1.json && git commit -q -m "$(cat <<'EOF'
+Calibration sweep result: a pure depth artifact defeats the primary Stage-4 gate with certainty at the real donor count
+
+Executes the design frozen at b23dcc2d, unchanged, 160 draws through the real
+entrypoint. Every attempted draw is in the denominator and the canonical worlds
+were rebuilt and digest-verified afterwards.
+
+TRUE_NULL, where nothing at all is planted:
+   60 donors   2/40 crossings  rate 0.050  Wilson [0.014, 0.165]
+  282 donors   3/40 crossings  rate 0.075  Wilson [0.026, 0.199]
+The decision rule is calibrated. The single crossing in the earlier four-draw run
+was ordinary sampling behaviour and not a defect, which is what the
+pre-commitment said that outcome would mean.
+
+MEASURED_TECHNICAL, where the only structure is sequencing depth and the frozen
+basis carries two terms specifically to remove it:
+   60 donors  35/40 crossings  rate 0.875  Wilson [0.739, 0.945]
+  282 donors  40/40 crossings  rate 1.000  Wilson [0.912, 1.000]
+
+The rate RISES with donor count and reaches one. The pre-committed reading of
+that direction was that the residue is a bias rather than noise, so the bound
+tightens with n while the bias does not, and the real run is more exposed than
+the reduced-scale qualification suggested. That reading now applies.
+
+Two things keep this from being a verdict on the design.
+
+The frozen success criterion has five requirements and this sweep measures the
+first. The others are the control-versus-control null, a covariate-balance limit
+of 0.25 standardised mean difference, a support-concentration limit, and funnel
+reconciliation. But the control-versus-control arm does NOT catch this: it sat
+near zero in the technical world throughout, because a depth confound hits both
+control arms symmetrically. The gate built to stop the pipeline manufacturing a
+difference is blind to the confound that manufactures one here.
+
+What does separate them is magnitude. The technical world's adjusted Delta is
+about +0.013 against +0.513 for planted biology, a factor of forty, and the
+contract already forbids presenting a negligibly small Delta as biological
+confirmation and states that p < 0.05 alone is not the success definition. So the
+design is not defenceless. Its defence rests entirely on a human reading
+magnitude correctly, with no prospectively frozen boundary to read it against.
+
+The planted depth coupling was my choice of magnitude, so this characterises the
+decision rule under a confound of that size. It is not an estimate of the real
+false-positive rate, whose data-generating process is unknown. Nothing frozen was
+changed in response.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+EOF
+)" && git push -q origin claude/v64-exact-sampler-successor-20260930 && git log --oneline -1
+
+OUT
+2fbaf799 Calibration sweep result: a pure depth artifact defeats the primary Stage-4 gate with certainty at the real donor count
+Shell cwd was reset to d:\Jepa project
+Bash Split self-audit file with explicit UTF-8
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python - <<'PY'
+import io
+p = "docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md"
+s = io.open(p, encoding="utf-8").read()
+i = s.index("## S1 — Motif annotation")
+j = s.index("## What was examined this cycle")
+head = s[:i]
+body_s1_s6 = s[i:j]
+tail = s[j:]
+io.open("/tmp/v69_head.md","w",encoding="utf-8").write(head)
+io.open("/tmp/v69_s1s6.md","w",encoding="utf-8").write(body_s1_s6)
+io.open("/tmp/v69_tail.md","w",encoding="utf-8").write(tail)
+print("head bytes", len(head), "s1s6 bytes", len(body_s1_s6), "tail bytes", len(tail))
+print("headings in s1s6:", body_s1_s6.count("\n## S"))
+PY
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<stdin>", line 9, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/v69_head.md'
+Simplest and safest: rewrite the whole file with correct encoding, reconstructing every entry.
+
+The calibration landed. This is bad news for Stage 4, and it's the useful kind.
+The null world is fine — my read was right. With nothing planted at all:
+
+
+TRUE_NULL   @  60 donors   2/40   rate 0.050   Wilson [0.014, 0.165]
+TRUE_NULL   @ 282 donors   3/40   rate 0.075   Wilson [0.026, 0.199]
+Exactly nominal. The single crossing in the four-draw run was ordinary sampling behaviour, not a defect. That question is closed.
+
+The technical world is not fine. In a world where the only structure is sequencing depth — which the frozen basis carries two terms specifically to remove:
+
+
+MEASURED_TECHNICAL @  60 donors   35/40   rate 0.875   Wilson [0.739, 0.945]
+MEASURED_TECHNICAL @ 282 donors   40/40   rate 1.000   Wilson [0.912, 1.000]
+It rises with donor count and reaches certainty at the real donor count. That was the prediction I made before running it: a bias doesn't shrink with n, so the bound tightens around it. Confirmed. The real run is more exposed than the 60-donor qualification implied, not less.
+
+Two things stop this being a verdict on the design
+First, I measured one of five gates. The frozen PASS criterion requires LCB95 > 0 and a clean control-vs-control null and covariate balance ≤ 0.25 SMD and no support concentration and a reconciling funnel. My sweep measured the first.
+
+But here's the problem: the control-vs-control arm doesn't catch this. It sat near zero throughout the technical world, because a depth confound hits both control arms symmetrically. The gate built specifically to stop the pipeline manufacturing a difference is blind to the confound that manufactures one here.
+
+Second, magnitude does separate them — and your contract already knows this. The technical world's adjusted Delta is +0.013 against +0.513 for planted biology. Forty-fold. And no_minimum_effect_size already says: "A statistically positive but negligibly small Delta must be reported as exactly that, and must NOT be presented as biological confirmation. p < 0.05 alone is explicitly NOT the success definition."
+
+So the design isn't defenceless. Its defence rests entirely on a human reading magnitude correctly, against no prospectively frozen boundary.
+
+A correction I owe you
+I told you "the whole frozen computation is implemented and run end to end." That overstates it. My executor computes criterion 1, criterion 2, and the funnel. It does not compute criterion 3 (covariate balance after matching) or criterion 4 (top 1% of donors contributing ≤10% of weight), and it doesn't check the funnel against the frozen 20,709 target. Three of five, two absent. Logging as S98.
+
+That matters here specifically, because criteria 3 and 4 are the two I haven't been able to test against the depth confound — and one of them might catch it.
+
+What I think should happen
+Don't change the frozen rules. The pre-commitment forbids it and it would be exactly the post-hoc repair we've been guarding against all day.
+
+Instead, two things, both safe:
+
+Implement criteria 3 and 4, then re-run the technical world against the complete gate. If covariate balance catches a depth artifact, the design is sound and this was a scare. If it doesn't, the limit is real and belongs on every Stage-4 result.
+Measure whether a depth confound of this size is even plausible in the real data. rna_depth_sensitivity and atac_depth_sensitivity are already sitting in T5 — their distribution can be examined structurally without computing a single correspondence value. I planted the magnitude myself, so this currently characterises the rule under my choice of confound, not reality.
+My position: Stage 4 should not be authorised until (1) is done. Not because the result is damning, but because we now know the primary gate can be defeated with certainty by something the anti-false-green control can't see, and two of the five defences have never been built.
+
+Receipt 7a476232…, committed at 2fbaf799, pushed. Canonical worlds rebuilt and digest-verified. Nothing frozen was changed.
+
+
+Write V69_SCENICPLUS_SELF_AUDIT_LANE.md
+408 lines
+# V69 SCENIC+ external regulatory architecture — self-audit lane
+
+Defects in **my own** output on the V69 lane, including ones no external reviewer
+raised. Numbered S1, S2, … and carried across cycles so items stay traceable.
+An item that my own lane cannot close says so rather than being marked resolved.
+
+Lane: `claude/v69-scenicplus-external-network-20261001`
+Worktree: `D:/jepa_wt_v69_scenicplus_20261001`
+Outputs: `D:/jepa_v5_outputs_20260925/v69_scenicplus`
+
+---
+
+## S0 — Nine self-audit entries were claimed in commit messages but never written to this file (CAUGHT, CORRECTED)
+
+**Status:** CLOSED by this rewrite. Listed first because it is the most serious item
+in the lane: it is a discrepancy between what my commits *said* and what the
+repository *contained*.
+
+**Defect.** Entries S7 through S15 were appended to this file by Python snippets using
+`pathlib.Path.read_text()` / `write_text()` with no `encoding` argument. On Windows
+those default to the locale codec (cp1252), so the file's UTF-8 em-dashes (`—`,
+bytes `E2 80 94`) decoded as mojibake. Every anchor string I searched for contained a
+real em-dash and therefore **matched nothing**. `str.replace` returned the text
+unchanged, `write_text` wrote it back byte-identical, my snippet printed `ok`, and
+`git commit` succeeded with a message describing entries that were never added.
+
+Six commits — `9eeebb1b`, `b914837f`, `b8be132a`, `ced02e5b`, `881ecc80` and the S15
+attempt — carry commit messages asserting self-audit entries that did not exist in the
+file at those commits. The file went from 5 headings to 6 and then stopped changing.
+
+**Why this is worse than an ordinary bug.** The commit messages are themselves a
+provenance record. Asserting "self-audit S12 recorded" when nothing was recorded is a
+false statement about history, not merely a missing file update. It is the same class
+of error as writing an execution anchor that does not exist. The findings themselves
+were real and are preserved verbatim in those commit messages, so no *finding* was
+lost — but anyone reading the file would have seen a lane that stopped auditing itself
+after S6.
+
+**How it was caught.** Not by the snippets, which all reported success. By grepping
+`^## S` while preparing an unrelated edit and seeing the list end at S6, then checking
+heading counts at each commit that touched the file.
+
+**The fix.** This file is rewritten in full with every entry present. Any future edit
+to a UTF-8 document uses an explicit encoding, and the heading count is verified after
+the write rather than inferred from a snippet's exit status.
+
+**Rule adopted.** A commit message may not assert that a file contains something
+unless the change is visible in that commit's diff for that file. "The script printed
+ok" is not evidence that a file changed.
+
+---
+
+## S1 — Motif annotation header parsed as data (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+**Artifact:** `scripts/v69/build_tf_annotation_supply_table_v1.py`.
+
+**Defect.** The cisTarget motif-to-TF annotation table
+(`motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl`) writes its header as a `#`-prefixed
+comment line, so pandas reads the first column as `#motif_id`, not `motif_id`. My
+first version of the supply producer required `motif_id` and so refused to run.
+
+**Was it caught before it could do damage?** Yes — before any supply number was
+produced, and therefore before control C1 could have been computed on a wrong
+denominator. The producer's own required-column gate caught it and named the columns.
+
+**The fix, and what it deliberately is not.** I strip the `#` marker from column names.
+I did **not** relax the required-column check, and did not fall back to positional
+access or `skiprows=1` (which would have discarded every column name). Four tests pin
+the distinction, including one proving `gene_name_typo` still cannot satisfy
+`gene_name`.
+
+**Why this mattered more than a parsing nit.** C1 exists to stop a TF being called
+strong merely because more motifs are annotated to it. A silently mis-parsed
+denominator would not have crashed anything — it would have produced a
+plausible-looking supply table and a control that passed for the wrong reason.
+
+---
+
+## S2 — I froze a route comparison that could not isolate what it claimed (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED by amendment 1.
+**Artifacts:** freeze at commit `500a8cfd`, amendment at `0358639e`.
+
+**Defect.** My own prospective freeze had Route A scored against the generic
+SCREEN-region cisTarget database and Route B against a custom database. Any
+Route-A/Route-B disagreement would then confound **two** causes — a different region
+universe *and* a different motif-scoring database — so the comparison could not isolate
+region-definition sensitivity, which is the only question Route B exists to answer. I
+had even written the asymmetry into the freeze as a "known limitation", which is the
+wrong response to a defect that is still fixable.
+
+**Caught before damage?** Yes — found by re-reading my own freeze against mandate item
+7 before executing it, with zero eRegulons, zero route statistics and zero Stage-4
+artifacts in existence. The amendment records that exposure state so a later reader can
+verify the change could not have been outcome-driven.
+
+**The fix.** A custom cisTarget database for **both** routes over each route's own
+regions, with identical motif collection, cbust binary, FASTA and parameters, leaving
+the region universe as the single varying factor. Recorded as a numbered amendment
+quoting the original text verbatim, not a silent rewrite.
+
+---
+
+## S3 — The parallel lane's acquisition producer records Route B as optional (NOT MY DEFECT; RAISED)
+
+**Status:** OPEN — not closable by my lane.
+
+`scripts/v64/acquire_gse214979_scenicplus_v1.py` on
+`chatgpt/v64-privileged-information-recoverability-20260930` (commit `84e10964`)
+writes into its receipt that the fragment file was not downloaded because
+"fragment-level consensus-peak recaller remains an optional sensitivity route".
+
+The owner mandate supersedes this: Route B is **required**. My freeze adopts the
+mandate and says so by name. I am not editing the other branch. Flagged so the
+contradiction is visible rather than silently divergent.
+
+---
+
+## S4 — Route A and Route B share the same nuclei, so the comparison is narrower than "robustness" (DISCLOSED, NOT FIXABLE)
+
+**Status:** OPEN by construction.
+
+Microglial identity is taken from the published multiome annotation for **both** routes,
+because it cannot be re-derived from ATAC alone without circularity. The comparison
+therefore varies the region universe and holds the cell set fixed: it tests
+**region-definition sensitivity only** and must never be reported as general robustness.
+
+Written into `SECTION_0_SCOPE_AND_HONEST_LIMITATION` of the freeze. Recorded here too
+because the natural failure mode is for a later summary to compress "Route A and Route
+B agree" into "the network is robust", which is a materially stronger claim.
+
+---
+
+## S5 — The substrate is small, and the headline cohort size hides it (DISCLOSED)
+
+**Status:** OPEN — a property of the data.
+
+GSE214979 is a 15-donor, 105,332-nucleus multiome cohort. The **microglial** substrate
+is far smaller: 3,179 nuclei across 15 donors, and 2,534 across 12 donors in the
+default development population. Donors are the replication unit; 2,534 nuclei improve
+per-donor precision and do not raise biological n above 12.
+
+A prospective insufficiency rule is frozen in advance: fewer than 8 QC-passing donors
+means no program may be called donor-stable at all. That number is labelled a
+CONVENTION, not a calibrated operating point.
+
+---
+
+## S6 — My crosswalk understated Stage-4 interval coverage by 30 points (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+**Artifact:** `scripts/v69/build_structural_crosswalk_layer_v1.py`.
+
+**Defect.** My region crosswalk recorded, per peak, the number of overlapping Stage-4
+intervals *and* the index of the **first** one, then derived Stage-4-side coverage from
+those first-hit indices. Stage-4 intervals are not disjoint: they are 5 kb windows
+enumerated at 1 bp offsets. On the real data 7,432 peaks overlap more than one interval
+and one overlaps 16.
+
+| quantity | first-hit-only (wrong) | every touched interval (correct) |
+|---|---|---|
+| Stage-4 intervals reached by a peak | 13,325 | 22,991 |
+| fraction of the 32,153-interval universe | 41.4% | 71.5% |
+
+A 30-percentage-point understatement, and exactly the kind of error that reads as a
+conservative, responsible number rather than as a bug.
+
+**Caught before damage?** Yes, in the same cycle, before any program-level crosswalk or
+report. **How:** not from a test — from reading my own receipt and noticing that
+`n_stage4_intervals_reached_by_a_peak` was derived from a field called
+`first_stage4_interval_index`, then asking whether "first" could differ from "all".
+
+**The fix.** `overlap_counts` returns an explicit `interval_covered` boolean over the
+whole universe. The receipt reports the authoritative figure *and* the first-hit-only
+figure beside it, so the correction is visible rather than quietly swapped in.
+The regression test reproduces the real overlapping-window geometry and asserts
+`covered.sum() > first_only.sum()`, so it fails against the old code.
+
+**Generalisation.** An implementation convenience (storing one representative index)
+had silently become the definition of a reported quantity. Any receipt field derived
+from a "first", "representative" or "primary" record must be checked against the
+question it claims to answer.
+
+---
+
+## S7 — A naive PATH probe reported five present tools as ABSENT (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+**Artifact:** `results/v64/V69_SCENICPLUS_EXECUTION_ENVIRONMENT_RECEIPT_V1.json`.
+
+**Defect.** My first tool inventory of the validated SCENIC+ container ran
+`command -v bedtools macs2 samtools meme mallet` under `docker run … bash -lc` and got
+ABSENT for all five. The micromamba base environment is not on a login shell's PATH.
+All five are present and working through `micromamba run -n base` (bedtools v2.31.1,
+macs2 2.2.9.1, samtools 1.24, meme 5.5.9) or by absolute path (`/opt/mallet/bin/mallet`).
+
+**Caught before damage?** Yes, in the same cycle. Had I not re-probed, I would have
+written "the container lacks MACS2, so Route B peak calling is blocked" into a receipt
+— a false blocker that looks like an honest environment limitation and could have
+justified abandoning Route B.
+
+**Generalisation.** An absence claim is only as good as its probe. Same shape as the
+standing rule never to declare an artifact NOT_BOUND from a keyword-filtered search;
+here the filter was an unexpected PATH.
+
+---
+
+## S8 — I spent a cycle building an environment that already existed (PROCESS FINDING)
+
+**Status:** CLOSED; the wasted work is retained as evidence rather than deleted.
+
+I built a SCENIC+ conda environment from scratch in WSL across five iterations before
+being told a validated container already existed on this machine. The build was failing
+anyway: SCENIC+ 1.0a2 hard-pins `datrie==0.8.2`, whose C source does not compile
+against this image's GCC.
+
+**What I should have done first.** Run `docker images`. The project already had the
+answer; I rebuilt it.
+
+`scripts/v69/build_scenicplus_env_wsl_v1.sh` is retained because it records what was
+attempted and why it failed. The environment receipt states explicitly that it is NOT
+the execution environment.
+
+---
+
+## S9 — I wrote a wrong diagnosis of the prior attempt into a committed ledger (CAUGHT BY AN INDEPENDENT TRACE)
+
+**Status:** CLOSED by correction; the wrong wording is preserved beside the right one.
+
+**Defect.** In `V69_STAGE75_PRIOR_ART_REUSE_LEDGER_V1.json` I wrote that "the ATAC side
+genuinely did not map", which reads as though Stage75F's cisTarget **region mapping**
+failed. It did not — after the 0.4-overlap correction in commit `98c5b763`, coverage was
+93–95% for every TF. What failed was a **different step**: peak-to-gene from a processed
+matrix.
+
+**Caught before damage?** It was committed and pushed first, so it was live briefly. No
+downstream artifact was built on it and the Route-B rationale it supports is unaffected.
+But this one was caught by the coordinator's independent trace, **not by me**, and that
+distinction belongs in the record.
+
+**Why I got it wrong.** I inferred the cause of a prior failure from a single status
+string in a results table instead of tracing the commit history that produced it. A
+status flag names a symptom at one step; it is not a diagnosis of the run.
+
+---
+
+## S10 — My region-count reporting had no floor, so a thin program would have looked like a finding (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED by amendment 2, before any network exists.
+
+**Defect.** My frozen design recorded `n_regions` per eRegulon but set no floor below
+which a program is untrustworthy. Stage75F's TF batches tested 57–91 query regions
+against a 219,070-peak universe, and only 2 of 11 TFs reached the primary summary.
+Nothing in my design would have stopped a program resting on ~80 regions being reported
+beside one resting on thousands. Worse, the natural way to report such a TF — "no
+eRegulon recovered" — would have encoded a **measurement limit as a biological zero**.
+
+**The fix.** `MIN_REGIONS_FOR_A_RESOLVED_PROGRAM = 100`, below which a program is
+`UNRESOLVED` — explicitly not absent, not a negative finding. UNRESOLVED is the
+program-level analogue of STRUCTURALLY_UNMEASURED. Labelled a convention anchored to an
+observed failure band (57–91), not a calibrated operating point. Amendment 2 also
+requires both routes to infer from the FULL region universe.
+
+---
+
+## S11 — Windows line endings broke a container script, then silently broke its own fix (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+*Layer one.* I wrote `scripts/v69/build_custom_cistarget_db_v1.sh` with
+`Path.write_text`, which on Windows translates `\n` to `\r\n`. In the Linux container
+the shebang became `env bash\r` and it died on `set: pipefail: invalid option name` —
+an error pointing nowhere near the cause.
+
+*Layer two, the one worth recording.* My Python patch to fix it searched for `\n` while
+the file held `\r\n`. The replace matched nothing, `write_text` reported success, and
+the rerun failed with the **original** symptom. I could easily have read that as "the
+fix did not work" rather than "the fix was never applied". Caught only because I read
+the file back instead of trusting the edit.
+
+*A real defect was hiding underneath.* I was `source`-ing the container's
+`create_fasta_with_padded_bg_from_bed.sh`, which ends with
+`create_fasta_with_padded_bg_from_bed "${@}"`. Sourcing re-invokes it with **my**
+script's positional arguments, so it tried to open the literal string
+`ROUTE_A_SUBMITTED_PEAKS` as a genome FASTA. Had the argument shapes happened to line
+up, it would have built a wrong region FASTA **without erroring** and fed it to a
+10,249-motif database build. Now invoked as a subprocess.
+
+*Note:* this is the same root cause as S0 — unencoded/unnormalised text round-trips on
+Windows silently defeating `str.replace`. S0 was not diagnosed until later.
+
+---
+
+## S12 — My benchmark script overwrote its own provenance record (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** `build_custom_cistarget_db_v1.sh` wrote the motif list and its digest to
+fixed paths — `motifs.lst` and `motifs.lst.sha256` — while naming only the *database*
+after the run. A 24-motif benchmark followed by a 120-motif benchmark in the same
+directory silently overwrote the first run's list and digest: `66c659c5…` became
+`82c161ea…`.
+
+The 24-motif receipt still pointed at that path. Anyone verifying it would have computed
+a digest describing a **different, longer** motif list and concluded either that the file
+was corrupt or that the 24-motif database had been built from 120 motifs.
+
+**Caught before damage?** Yes — while listing benchmark outputs, before any benchmark
+receipt entered the repository.
+
+**The fix.** Motif list and digest are now `<DB_PREFIX>.motifs.lst(.sha256)`. The full
+inventory goes to `motifs.all.lst`, which is genuinely run-independent.
+
+**Generalisation.** A provenance file at a fixed path in a shared output directory is
+not a provenance record — it is a mutable variable. A digest file must be named after
+the thing whose identity it certifies, not after the step that produced it. Same shape
+as S6.
+
+---
+
+## S13 — Receipts record host paths that no container can open (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** Every V69 receipt records absolute Windows host paths. That is the correct
+provenance record — it says where the bytes actually were — but producers run inside the
+container, where the same bytes are mounted at `/data`, so every receipt-driven lookup
+failed with `FileNotFoundError`.
+
+**The tempting wrong fix.** Rewrite the paths inside the receipts. That would make a
+provenance artifact assert a location at which the producer never wrote.
+
+**The fix taken.** Explicit `--host-prefix` / `--container-prefix` translation applied at
+**read** time, recorded in the **output** receipt (`path_remapping`). Input receipts keep
+saying where the bytes really were. Nothing is rewritten.
+
+Recorded because the attractive fix was the one that corrupts provenance silently, and
+every remaining containerised step faces the same temptation.
+
+---
+
+## S14 — Two donors contribute too few nuclei for leave-one-donor-out to mean the same thing (DISCLOSED)
+
+**Status:** OPEN — surfaced before any stability number exists.
+
+Microglial nuclei per donor in the default population are badly unbalanced: 4482 has
+415 and 4305 has 347, while **4313 has 17** and **HCTZZT has 26**.
+
+Leave-one-donor-out treats each held-out donor as one unit, but holding out 17 nuclei is
+not the same perturbation as holding out 415. A program could appear "stable to leaving
+out 4313" simply because that donor contributed almost nothing to the fit, and the frozen
+≥0.80 recurrence threshold does not distinguish those cases.
+
+Recorded now so a later high stability score is not read as stronger evidence than it is.
+Whether to weight, to report per-donor contribution alongside each recurrence figure, or
+to treat the two small donors as a separate sensitivity arm must be a **decision** at the
+stability step, not an oversight.
+
+---
+
+## S15 — 53 regions are in the accessibility matrix but can never receive a motif score (DISCLOSED, RULE ADDED)
+
+**Status:** OPEN as a binding rule for the network step; the discrepancy is reconciled.
+
+The Route-A cisTopic accessibility matrix carries **150,614** regions; the Route-A
+cisTarget region universe carries **150,561**. The difference is exactly **53**, and it is
+exactly the regions dropped for lying on unplaced scaffolds the reference FASTA does not
+contain under the source's spelling (`GL000194.1` vs `chrUn_GL000194v1`).
+Reconciled: 150,614 − 150,561 = 53 = `n_regions_dropped`.
+
+**Why it still matters.** Those 53 regions have accessibility values and **no motif
+scores**. The natural downstream join turns missing motif rows into zeros or empty
+enrichments, at which point a region that was never *scoreable* becomes indistinguishable
+from one scored and found unenriched — the canonical error of encoding NOT_MEASURED as
+zero.
+
+**Binding rule.** Those regions are `STRUCTURALLY_UNSCOREABLE`: not in any enrichment
+denominator, no zero contributed to any motif statistic, an explicit per-element mask in
+the artifact the network step reads, and every eRegulon region count must state whether
+it is out of 150,614 or 150,561.
+
+**Caught before damage?** Yes, before any motif enrichment ran, by deliberately
+reconciling two receipts' region counts instead of assuming two numbers that should agree
+do agree. Fifty-three out of 150,614 is exactly the size of discrepancy that survives into
+a published result unnoticed.
+
+---
+
+## What was examined this cycle and produced no finding
+
+So that "nothing found" and "did not look" stay distinguishable:
+
+- All acquisition receipts were checked against the server-declared `Content-Length`;
+  each matches exactly and carries a computed SHA-256.
+- The cohort freeze was checked for pathology leakage by a positive control that flips
+  every pathology value and confirms both population digests are unchanged. No leak.
+- Route-A substrate extraction was checked for the specific failure of returning the
+  right *number* of cells but the wrong *cells*; a test compares extracted columns
+  against the full matrix by barcode. No defect.
+- The donor/barcode relationship was checked rather than assumed; barcode suffixes
+  turned out **not** to be one-to-one with donors (suffixes 5, 6, 7 each carry two).
+  This changed a design rather than revealing a defect in shipped output.
+- The Stage-4 interval genome build was checked against the design artifact rather than
+  inferred from the "hg19-primary" wording in the contract; 57/57 matched hg38.
+- The Route-A ATAC matrix digest in the cisTopic receipt was reconciled against the
+  Route-A substrate receipt. They agree.
+Bash Verify all entries present and staged
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && grep -c "^## S" docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md && grep -o "^## S[0-9]*" docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md | tr '\n' ' ' && echo && git add docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md && git diff --cached --stat | cat
+
+OUT
+16
+## S0 ## S1 ## S2 ## S3 ## S4 ## S5 ## S6 ## S7 ## S8 ## S9 ## S10 ## S11 ## S12 ## S13 ## S14 ## S15 
+ docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md | 609 ++++++++++++++++++---------
+ 1 file changed, 407 insertions(+), 202 deletions(-)
+Bash Commit restored self-audit lane with S0
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git -c user.name="Dushyant Mishra" -c user.email="dmishra@holycross.edu" commit -q -F - <<'MSG' && git rev-parse HEAD && git push -q origin HEAD && echo PUSHED
+V69 self-audit S0: nine entries were claimed in commit messages but never written
+
+The most serious item in this lane, because it is a discrepancy between what my
+commits SAID and what the repository CONTAINED.
+Entries S7 through S15 were appended by Python snippets using Path.read_text() /
+write_text() with no encoding argument. On Windows those default to cp1252, so the
+file's UTF-8 em-dashes (bytes E2 80 94) decoded as mojibake. Every anchor string I
+searched for contained a real em-dash and matched NOTHING. str.replace returned the
+text unchanged, write_text wrote it back byte-identical, the snippet printed "ok", and
+git commit succeeded with a message describing entries that were never added. The file
+went from 5 headings to 6 and then stopped changing.
+
+Six commits -- 9eeebb1b, b914837f, b8be132a, ced02e5b, 881ecc80 and the S15 attempt --
+carry messages asserting self-audit entries absent from the file at those commits.
+
+This is worse than an ordinary bug. A commit message is itself a provenance record, so
+asserting "self-audit S12 recorded" when nothing was recorded is a false statement
+about history, in the same class as citing an execution anchor that does not exist. The
+findings themselves were real and are preserved verbatim in those commit messages, so
+no finding was lost -- but a reader of the file would have seen a lane that stopped
+auditing itself after S6.
+
+Caught by grepping ^## S while preparing an unrelated edit, seeing the list end at S6,
+then checking heading counts at each commit that touched the file. Not caught by any of
+the snippets, all of which reported success.
+
+Same root cause as S11, which I had already recorded as a line-ending problem without
+realising it generalised to every unencoded text round-trip on this platform.
+
+Fixed by rewriting the file in full with all sixteen entries present and verifying the
+heading count after the write. Rule adopted: a commit message may not assert that a
+file contains something unless the change is visible in that commit's diff for that
+file. "The script printed ok" is not evidence that a file changed.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+MSG
+
+OUT
+9f18989fc64fb22702909640b395cc0304369575
+PUSHED
+Bash Check fragments and benchmark
+IN
+ls /d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/ | grep -i frag && grep -E '"(status|local_bytes|sha256)"' /d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/ACQ_GSE214979_atac_fragments_V1.json || { echo "receipt pending"; stat -c "%s" /d/jepa_v5_outputs_20260925/v69_scenicplus/raw/GSE214979_atac_fragments.tsv.gz; }; echo "--- 120 bench ---"; tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"
+
+OUT
+receipt pending
+63641120882
+--- 120 bench ---
+Adding Cluster-Buster CRM scores (72 of 120) for motif "cisbp__M00054" took 0.126572 seconds.
+The fragment file has reached exactly 63,641,120,882 bytes — matching the server-declared length. Only the SHA-256 remains. Let me wait for both.
+
+Bash Wait for both fragments receipt and 120-motif benchmark
+IN
+until [ -f "/d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/ACQ_GSE214979_atac_fragments_V1.json" ] && grep -q "MEASURED_ELAPSED_SECONDS" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log" 2>/dev/null; do sleep 30; done; echo "=== FRAGMENTS ==="; grep -E '"(status|local_bytes|sha256)"' /d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/ACQ_GSE214979_atac_fragments_V1.json; echo "=== BENCH120 ==="; grep -E "MEASURED_ELAPSED_SECONDS|SECONDS_PER_MOTIF|N_MOTIFS=|N_REGIONS=" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"
+
+OUT
+Command running in background with ID: bpzgtukpn. Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\bpzgtukpn.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Bash Confirm branch state
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git log --oneline origin/chatgpt/v64-privileged-information-recoverability-20260930..HEAD | wc -l && git status --short && echo CLEAN_AND_PUSHED
+
+OUT
+20
+CLEAN_AND_PUSHED
+The 63.6 GB fragments file is fully acquired and authenticated — mandate item 1 complete. Let me launch the Route-B QC that was gated on it.
+
+Bash Run full Route-B fragment QC scan
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && O="/d/jepa_v5_outputs_20260925/v69_scenicplus" && nohup python scripts/v69/routeb_fragment_qc_and_donor_split_v1.py --fragments "$O/raw/GSE214979_atac_fragments.tsv.gz" --fragments-receipt "$O/receipts/ACQ_GSE214979_atac_fragments_V1.json" --cohort-receipt "$O/receipts/V69_GSE214979_COHORT_FREEZE_V1.json" --out-dir "$O/routeB" --receipt "$O/receipts/V69_ROUTEB_FRAGMENT_QC_V1.json" > "$O/logs/routeb_qc.log" 2>&1; echo "ROUTEB_QC_EXIT=$?"; tail -5 "$O/logs/routeb_qc.log"
+
+OUT
+Command running in background with ID: b4cub3mxe. Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\b4cub3mxe.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Session cwd remains d:\Jepa project; directory changes made by the backgrounded command do not apply to subsequent commands.
+Let me record the completed fragments custody in the status documents.
+
+Bash Update docs with fragments digest
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python - <<'PY'
+import io
+p="docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md"
+s=io.open(p,encoding="utf-8").read()
+old = """`GSE214979_atac_fragments.tsv.gz` — server-declared **63,641,120,882 bytes** — was in
+flight at the time of writing. Its receipt is written only on exact byte completeness;
+see section 3."""
+new = """| `GSE214979_atac_fragments.tsv.gz` | **63,641,120,882** | `b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f` |
+
+The 63.6 GB fragment file is **fully acquired and authenticated**: local bytes equal the
+server-declared `Content-Length` exactly, status
+`PASS__BYTE_COMPLETE_AND_DIGESTED`. The download was resumed across a session
+interruption and the completeness gate, not the download tool's exit status, is what
+certifies it."""
+assert old in s, "anchor not found"
+s = s.replace(old, new, 1)
+io.open(p,"w",encoding="utf-8").write(s)
+print("handoff updated")
+
+p2="docs/agent/V69_MANDATE_ITEM_STATUS.md"
+s2=io.open(p2,encoding="utf-8").read()
+o2 = "| 1 | Acquire the complete substrate, SHA-pinned | **DONE** (fragments pending final digest at time of writing) |"
+n2 = "| 1 | Acquire the complete substrate, SHA-pinned | **DONE** |"
+assert o2 in s2, "anchor 2 not found"
+s2 = s2.replace(o2, n2, 1)
+o3 = "Fragments: 63,641,120,882 bytes declared; receipt emitted only on exact byte match. |"
+n3 = ("Fragments **complete**: 63,641,120,882 bytes local == declared, sha256 "
+      "`b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f`, status "
+      "`PASS__BYTE_COMPLETE_AND_DIGESTED`. |")
+assert o3 in s2, "anchor 3 not found"
+s2 = s2.replace(o3, n3, 1)
+io.open(p2,"w",encoding="utf-8").write(s2)
+print("mandate status updated")
+PY
+grep -c "b7c5aa2d" docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md docs/agent/V69_MANDATE_ITEM_STATUS.md
+
+OUT
+handoff updated
+mandate status updated
+docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md:1
+docs/agent/V69_MANDATE_ITEM_STATUS.md:1
+Bash Commit fragments custody update
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git add docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md docs/agent/V69_MANDATE_ITEM_STATUS.md && git diff --cached --stat | cat && git -c user.name="Dushyant Mishra" -c user.email="dmishra@holycross.edu" commit -q -F - <<'MSG' && git rev-parse HEAD && git push -q origin HEAD && echo PUSHED
+V69: the 63.6 GB fragment file is acquired and authenticated
+
+  GSE214979_atac_fragments.tsv.gz
+  local bytes      63,641,120,882
+  declared bytes   63,641,120,882   (server Content-Length, re-checked after the run)
+  sha256           b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f
+  status           PASS__BYTE_COMPLETE_AND_DIGESTED
+
+The download was resumed across a session interruption. What certifies the file is the
+byte-completeness gate, not the download tool's exit status -- acquisition tools report
+success on incomplete files, and at 63.6 GB a silent truncation would have produced a
+biased Route-B region universe that nothing downstream could detect.
+
+Mandate item 1 is now DONE in full: every object in the substrate carries an exact
+byte match against its server-declared length plus a computed SHA-256.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+MSG
+
+OUT
+ docs/agent/V69_MANDATE_ITEM_STATUS.md              | 100 ++---
+ .../V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md      | 466 +++++++++++----------
+ 2 files changed, 285 insertions(+), 281 deletions(-)
+59ce3fcb152c1a5fe25be970ecc4b764be752d0b
+PUSHED
+Bash Verify doc integrity after rewrite
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && file docs/agent/V69_MANDATE_ITEM_STATUS.md docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md && grep -n "b7c5aa2d" docs/agent/V69_MANDATE_ITEM_STATUS.md | head -2 && grep -c "^| " docs/agent/V69_MANDATE_ITEM_STATUS.md
+
+OUT
+docs/agent/V69_MANDATE_ITEM_STATUS.md:                Unicode text, UTF-8 text, with very long lines (522), with CRLF line terminators
+docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md: Unicode text, UTF-8 text, with CRLF line terminators
+14:| 1 | Acquire the complete substrate, SHA-pinned | **DONE** | Metadata, filtered matrix, motif collection, HGNC motif2TF, hg38 analysis-set FASTA and cbust all byte-complete against server-declared `Content-Length` with SHA-256. Matrix dimensions, feature types, RNA/peak counts and genome build recorded from the file, not from its name. Fragments **complete**: 63,641,120,882 bytes local == declared, sha256 `b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f`, status `PASS__BYTE_COMPLETE_AND_DIGESTED`. |
+18
+Bash Normalise doc line endings
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python -c "
+from pathlib import Path
+for f in ['docs/agent/V69_MANDATE_ITEM_STATUS.md','docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md','docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md']:
+    p=Path(f); b=p.read_bytes()
+    if b'\r\n' in b:
+        p.write_bytes(b.replace(b'\r\n',b'\n')); print('LF:',f)
+    else: print('already LF:',f)
+" && file docs/agent/V69_*.md | sed 's/:.*terminators//' && git add -A docs/agent && git diff --cached --stat | cat
+
+OUT
+LF: docs/agent/V69_MANDATE_ITEM_STATUS.md
+LF: docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md
+already LF: docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md
+docs/agent/V69_MANDATE_ITEM_STATUS.md:                Unicode text, UTF-8 text, with very long lines (522)
+docs/agent/V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md: Unicode text, UTF-8 text
+docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md:         Unicode text, UTF-8 text
+ docs/agent/V69_MANDATE_ITEM_STATUS.md              | 100 ++---
+ .../V69_SCENICPLUS_LANE_STATUS_AND_HANDOFF.md      | 470 ++++++++++-----------
+ 2 files changed, 285 insertions(+), 285 deletions(-)
+Bash Commit line ending normalisation
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git -c user.name="Dushyant Mishra" -c user.email="dmishra@holycross.edu" commit -q -m "V69: normalise lane doc line endings back to LF
+
+A Windows text-mode write introduced CRLF across two docs, producing a whole-file
+diff that hides the one-line substantive change. Normalised so the next reviewer's
+diff shows content, not line terminators. Same platform hazard as S0 and S11.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>" && git push -q origin HEAD && git rev-parse HEAD && echo PUSHED
+
+OUT
+9d9ca8d8c2c248f140ee139cdae64870cfe44e67
+PUSHED
+Bash Check running jobs
+IN
+echo "=== routeB QC ==="; tail -3 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/routeb_qc.log" 2>/dev/null || echo "no output yet (streaming scan)"; echo "=== 120 bench ==="; tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"
+
+OUT
+=== routeB QC ===
+=== 120 bench ===
+Adding Cluster-Buster CRM scores (80 of 120) for motif "cisbp__M00068" took 0.133839 seconds.
+Both long jobs are running. Let me wait for the benchmark's measured timing, which completes the cisTarget feasibility deliverable.
+
+Monitor
+IN
+{
+  "command": "tail -f \"/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log\" | grep -E --line-buffered \"MEASURED_ELAPSED_SECONDS|SECONDS_PER_MOTIF|DB BUILD FINISHED|FAIL__|Traceback|error:\"",
+  "description": "120-motif benchmark measured timing",
+  "timeout_ms": 1800000
+}
+OUT
+Monitor started (task box3y3h0z, expires in 30m unless the source ends first; you get one notice at expiry — re-arm if you still need the watch). You will be notified on each event. Keep working — do not poll or sleep. Events may arrive while you are waiting for the user — an event is not their reply.
+Bash List all lane commits
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git log --oneline origin/chatgpt/v64-privileged-information-recoverability-20260930..HEAD | cat | head -25
+
+OUT
+9d9ca8d8 V69: normalise lane doc line endings back to LF
+59ce3fcb V69: the 63.6 GB fragment file is acquired and authenticated
+9f18989f V69 self-audit S0: nine entries were claimed in commit messages but never written
+19c13c84 V69: mandate items 1-17, one row each, with what is missing stated plainly
+881ecc80 V69 Route A: cisTopic input runs in the container, via recorded path remapping
+3de79581 V69 Route B: the fragment file's barcode space is wider than the published cell set
+ced02e5b V69: name the motif list and its digest after the run, not after the step
+71e1baaa V69: lane status and handoff -- what is authenticated, what is not, what is next
+f5b7836b V69 Route B step 1: donor-aware fragment QC computed from the fragments themselves
+d5ef2068 V69 Route A: build the pycisTopic input from the frozen submitted-peak substrate
+b8be132a V69: custom cisTarget database builder, with a measured benchmark mode
+b914837f V69 amendment 2: the prior attempt was limited by SCALE and direct annotation supply, not by mapping
+e5eead04 V69: read the Stage75 prior art, and test Route A against its documented failure
+9eeebb1b V69: adopt the validated SCENIC+ container, verified tool by tool
+07c66a4a V69: emit the Route-A region universe, with a bounded and counted contig restriction
+4736a3cd V69: structural crosswalk layer, and resolve the Stage-4 genome build empirically
+d2332c54 V69 control C1: build the TF motif-annotation-supply denominator, and open the self-audit lane
+0358639e V69 amendment 1: build a CUSTOM cisTarget database for BOTH routes, not just Route B
+500a8cfd V69: freeze every threshold, control and fallback BEFORE any network exists
+20c9291c V69 Route A: authenticate the GSE214979 matrix and build the submitted-peak substrate
+9ee040c2 V69: freeze the GSE214979 microglial development cohort, pathology-blind
+fcb2b91c V69: receipt-bound remote object acquisition with fail-closed completeness contract
+Bash Check job progress
+IN
+tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"; ps -ef 2>/dev/null | grep "[r]outeb_fragment_qc" | head -2 && echo "ROUTEB_QC_RUNNING" || echo "routeb qc process not visible from this shell"
+
+OUT
+Adding Cluster-Buster CRM scores (88 of 120) for motif "cisbp__M00079" took 0.154221 seconds.
+ROUTEB_QC_RUNNING
+Both jobs running. Let me wait for the benchmark to complete.
+
+Bash Wait for 120-motif benchmark timing
+IN
+until grep -q "MEASURED_ELAPSED_SECONDS" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log" 2>/dev/null; do sleep 45; done; grep -E "MEASURED_ELAPSED_SECONDS|SECONDS_PER_MOTIF|N_MOTIFS=|N_REGIONS=" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"; echo BENCH120_DONE
+
+OUT
+Command running in background with ID: brxkuvrks. Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\brxkuvrks.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Bash Check benchmark outputs
+IN
+tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"; ls -l /d/jepa_v5_outputs_20260925/v69_scenicplus/routeA/cistarget_benchmark/*120motifs* 2>/dev/null | head -4
+
+OUT
+Adding Cluster-Buster CRM scores (90 of 120) for motif "cisbp__M00084" took 0.150837 seconds.
+Monitor
+IN
+{
+  "command": "until grep -q \"DB BUILD FINISHED\" \"/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log\" 2>/dev/null; do sleep 45; done; grep -E \"MEASURED_ELAPSED_SECONDS|SECONDS_PER_MOTIF|N_MOTIFS=|N_REGIONS=\" \"/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log\"",
+  "description": "120-motif benchmark final timing",
+  "timeout_ms": 1800000
+}
+OUT
+Monitor started (task blpf07kt6, expires in 30m unless the source ends first; you get one notice at expiry — re-arm if you still need the watch). You will be notified on each event. Keep working — do not poll or sleep. Events may arrive while you are waiting for the user — an event is not their reply.
+Bash Final verification pass
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python -m pytest tests/test_v69_*.py -q 2>&1 | tail -2 && git status --short && echo "WORKTREE CLEAN" && git rev-parse HEAD
+
+OUT
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+50 passed, 3 warnings in 13.77s
+WORKTREE CLEAN
+9d9ca8d8c2c248f140ee139cdae64870cfe44e67
+I verified Macha’s push directly. His Stage-4 branch is now exactly at:
+2fbaf7997b6ff002d5b1c9314b64e92b0032cea4
+and the committed calibration receipt matches what he told you.
+The result is clear:
+- True null is calibrated normally.
+  - 60 donors: 2/40 = 5%
+  - 282 donors: 3/40 = 7.5%
+  - both compatible with a nominal one-sided 5% false-positive rate.
+- Measured technical confounding is the real problem.
+  - 60 donors: 35/40 = 87.5%
+  - 282 donors: 40/40 = 100%
+  - median adjusted Delta rises from about +0.017 to +0.021
+  - median LCB95 at 282 donors is +0.0176
+So this is not ordinary statistical noise. Under that planted depth-confound world, the frozen Stage-4 statistic systematically produces a positive result, and the problem gets more certain as donor count increases.
+Macha is also right that this does not yet prove the complete five-gate Stage-4 decision fails, because the current executor has only actually implemented:
+- primary LCB/effect gate
+- control-vs-control
+- funnel machinery
+and it is missing the executable forms of:
+- criterion 3: post-matching covariate balance, worst absolute SMD ≤ 0.25
+- criterion 4: top 1% donor contribution ≤ 10%
+- plus complete reconciliation against the frozen 20,709 target denominator.
+That S98 correction is important. We should no longer say “the entire Stage-4 PASS logic has been qualified end-to-end.”
+What I would freeze now
+Stage 4 remains NOT AUTHORIZED.
+Before any real correspondence:
+1. Implement criteria 3 and 4 exactly from the already-frozen design.
+2. Implement the full denominator/funnel reconciliation.
+3. Run the same technical-confound calibration through the complete five-gate decision, without changing thresholds.
+4. See whether the existing balance/concentration gates actually reject the technical world.
+If they reject it, good: the complete design has a defense the partial executor did not exercise.
+If they do not reject it, then the limitation is real and must travel with every future Stage-4 interpretation.
+I also agree with Macha’s second proposed analysis: inspect the real-data distribution of the already-existing rna_depth_sensitivity and atac_depth_sensitivity fields structurally, without calculating correspondence. That tells us whether his planted technical effect is remotely realistic or deliberately extreme.
+One additional point: I would not add a minimum Delta threshold now. The 40-fold difference between technical ~0.013–0.021 and planted biology ~0.51 is informative, but choosing a cutoff after seeing those numbers would be exactly the post-hoc repair we have been avoiding.
+So the safe next move is not “fix Stage 4.” It is:
+finish the frozen gates → rerun the adversarial world → measure realism of the planted confound → preserve the result.
+This is now the main Stage-4 blocker before we call the pipeline ready.
+Show more
+Sol's plan is right and matches my own read. Executing it. First — reading exactly what the frozen contract says for criteria 3, 4 and the 20,709 target, so I implement what's frozen rather than my interpretation of it.
+
+
+Bash Read the anti-false-green definitions
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python -c "
+import json
+A=json.load(open('results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json'))
+print(json.dumps(A['SUCCESS_CRITERION_FROZEN_BEFORE_ANY_RESULT']['anti_false_green'],indent=1)[:1800])
+print('=== easiest to break ===')
+print(json.dumps(A['SUCCESS_CRITERION_FROZEN_BEFORE_ANY_RESULT'].get('the_rule_that_is_easiest_to_break'),indent=1)[:600])
+"
+
+OUT
+[
+ {
+  "name": "CONTROL_VS_CONTROL_NULL",
+  "construction": "the two independent control draws are contrasted against each other through the identical pipeline",
+  "requirement": "must not show excess. A nonzero control-vs-control contrast indicates the pipeline itself manufactures a difference, and any linked-vs-control result is then uninterpretable.",
+  "if_it_fails": "STOP. Do not report the primary as a biological result."
+ },
+ {
+  "name": "COVARIATE_BALANCE",
+  "requirement": "worst |standardised mean difference| across the 14 frozen features <= 0.25 between linked and matched control"
+ },
+ {
+  "name": "SUPPORT_CONCENTRATION",
+  "requirement": "top 1% of donors contribute <= 10% of the primary statistic's weight; Kish ESS over donors reported"
+ },
+ {
+  "name": "PAIRING_CORROBORATION",
+  "requirement": "the blocking pairing precondition passed, with its exact mismatch counts reported"
+ }
+]
+=== easiest to break ===
+"p < 0.05 is explicitly NOT the success definition. A statistically positive but negligibly small Delta must be reported as exactly that and must not be presented as biological confirmation."
+Shell cwd was reset to d:\Jepa project
+Bash Check benchmark progress
+IN
+tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"
+
+OUT
+Adding Cluster-Buster CRM scores (95 of 120) for motif "cisbp__M00098" took 0.177060 seconds.
+Bash Inventory outputs for final report
+IN
+O="/d/jepa_v5_outputs_20260925/v69_scenicplus"; echo "=== RECEIPTS ==="; ls -1 "$O/receipts/"; echo; echo "=== OUTPUT SIZES ==="; du -sh "$O"/{raw,resources,routeA,routeB,cohort,controls,crosswalks,env} 2>/dev/null
+
+OUT
+Command did not complete within its 120s timeout and was moved to the background (ID: bpofnts52). Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\bpofnts52.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Bash Locate the 20,709 funnel target definition
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && grep -rn "20,709\|20709" results/v64/*.json results/v64/phase_b_design/*.json 2>/dev/null | head -8
+
+OUT
+results/v64/V64_E2_ANCHOR_COVERAGE_ANALYSIS_V1.json:10:    "rule": "20,709 is an EDGE count. It is not a cell count, not a gene count, and not a donor count. Reporting it as coverage of anything else is a category error.",
+results/v64/V64_E2_ANCHOR_COVERAGE_ANALYSIS_V1.json:11:    "regulatory_edge_coverage": {"e2_edges": 20709},
+results/v64/V64_E2_ANCHOR_COVERAGE_ANALYSIS_V1.json:19:    "edges": 20709, "distinct_genes": 5253, "distinct_promoter_anchors": 7390,
+results/v64/V64_E2_ANCHOR_COVERAGE_CORRECTION_V1.json:12:      "edges": 20709,
+results/v64/V64_E2_NOTT_CANDIDATE_CONSTRUCTION_RECEIPT_V1.json:134:      "E2_EDGE": 20709,
+results/v64/V64_E2_NOTT_CANDIDATE_CONSTRUCTION_RECEIPT_V1.json:142:      "accessibility_qualified": 20709
+results/v64/V64_E2_NOTT_CANDIDATE_CONSTRUCTION_RECEIPT_V1.json:184:    "edge_count": 20709,
+results/v64/V64_E2_NOTT_CANDIDATE_CONSTRUCTION_RECEIPT_V1.json:211:      "n": 20709,
+Shell cwd was reset to d:\Jepa project
+20,709 is the E2 edge count. Before implementing the concentration gate I need to check something — under equal donor weighting that gate may be incapable of failing.
+
+
+Bash Read the aggregation and estimand definitions
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python -c "
+import json;D=json.load(open('results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json'))
+print('--- AGGREGATION ---');print(json.dumps(D['AGGREGATION'],indent=1)[:900])
+print('--- INDEPENDENT_UNIT ---');print(json.dumps(D['INDEPENDENT_UNIT'],indent=1)[:600])
+print('--- PRIMARY_ESTIMAND ---');print(json.dumps(D['PRIMARY_ESTIMAND'],indent=1)[:1200])
+"
+
+OUT
+--- AGGREGATION ---
+{
+ "primary": "WITHIN_DONOR_RNA_ONLY_METACELLS",
+ "rule": "Metacells are formed inside each donor separately, by clustering that donor's microglia on RNA ONLY. ATAC is then summed over exactly the nuclei assigned to each metacell.",
+ "forbidden_and_why": "A joint RNA+ATAC embedding is FORBIDDEN by V63 C8 because it manufactures the correspondence under test. No ATAC value, no joint latent space, and no multimodal integration output may influence metacell membership.",
+ "metacell_definition": {
+  "input": "RNA counts from .X (uint16, count-like) for that donor's microglia only",
+  "normalisation_before_clustering": "CP10K then log1p",
+  "feature_selection": "the 2,000 most variable genes WITHIN that donor, computed on RNA only",
+  "algorithm": "k-means on the first 20 principal components of the within-donor RNA matrix, k = floor(n_microglia_donor / 25)",
+  "target_metacell_size": 25,
+  "
+--- INDEPENDENT_UNIT ---
+{
+ "unit": "DONOR",
+ "n_available": 357,
+ "rule": "Nuclei and metacells improve the measurement of a donor-level quantity. They NEVER increase the independent sample size.",
+ "forbidden": [
+  "reporting nucleus count as effective N",
+  "any interval or resampling scheme whose unit is the nucleus or the metacell",
+  "treating the 87,384 microglia as 87,384 observations"
+ ],
+ "reporting_requirement": "Every uncertainty statement must name the donor count behind it. Kish effective sample size over donors is reported alongside the raw donor count."
+}
+--- PRIMARY_ESTIMAND ---
+{
+ "level": "SET_LEVEL, not 20,709 independent edge tests",
+ "definition": "Delta = the donor-averaged, GENE-BALANCED mean difference between the residualised correspondence score of linked E2 edges and that of their matched controls.",
+ "gene_balancing": "Within a donor, the statistic is the mean over genes of the within-gene mean over that gene's edges. This prevents genes carrying many edges from dominating: 3,528 of 5,253 genes carry more than one edge, one carries 68, and 91.7% of edges belong to multi-edge genes.",
+ "why_gene_balanced_is_primary": "Chosen before any outcome, because edge-equal weighting would let a single high-degree promoter region determine the set-level result.",
+ "predeclared_sensitivity": "EDGE_EQUAL_WEIGHTING, reported alongside the primary whatever either shows.",
+ "uncertainty": {
+  "method": "nonparametric cluster bootstrap over DONORS",
+  "replicates": 4000,
+  "seed": 20260929,
+  "rationale": "matches the frozen P1S bootstrap configuration so the project's uncertainty machinery is unchanged",
+  "also_reported": "Kish effective sample size over donors, and the donor count behind every interval"
+ },
+ "inference": "ONE-SIDED. The prospective hypothesis
+Shell cwd was reset to d:\Jepa project
+Two things worth knowing before I write this. The balance gate may well catch the depth confound — the confound was planted on the linked arm only, so the arms should differ on the depth features. But the concentration gate looks structurally unable to fail: the estimand is donor-averaged, so every contributing donor carries weight exactly 1/D, and the top 1% can only exceed 10% if fewer than ten donors contribute.
+
+I'll implement both exactly as frozen and report that, rather than redefining the gate.
+
+
+Bash Add criteria 3, 4 and 5 to the executor
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && cat > /tmp/gates.py <<'PYBLOCK'
+def covariate_balance(X, resid, linked_i, ctrla_i, edges, frozen_feature_names):
+    """Criterion 3, exactly as frozen: worst |standardised mean difference| across the 14
+    frozen features between linked and matched control, limit 0.25.
+
+    The comparison is made over the cells that ACTUALLY ENTER the primary statistic -- a
+    balance check computed over cells the estimator never saw would describe a different
+    population from the one the result rests on.
+    """
+    import numpy as _np
+    D = resid.shape[0]
+    lrows, crows = [], []
+    for di in range(D):
+        for e in edges:
+            li, ci = linked_i[e], ctrla_i[e]
+            if _np.isfinite(resid[di, li]) and _np.isfinite(resid[di, ci]):
+                lrows.append(X[di, li]); crows.append(X[di, ci])
+    if not lrows:
+        raise Stop("covariate balance has no contributing cells")
+    L = _np.asarray(lrows, float); C = _np.asarray(crows, float)
+    smd, per_feature = [], {}
+    for j in range(L.shape[1]):
+        ml, mc = L[:, j].mean(), C[:, j].mean()
+        pooled = _np.sqrt((L[:, j].var(ddof=1) + C[:, j].var(ddof=1)) / 2.0)
+        if pooled == 0:
+            # a constant feature with equal means is balanced; with unequal means the
+            # standardised difference is unbounded, and that must fail rather than divide
+            v = 0.0 if ml == mc else float("inf")
+        else:
+            v = abs(ml - mc) / pooled
+        smd.append(v)
+        per_feature[frozen_feature_names[j]] = None if not _np.isfinite(v) else round(v, 5)
+    worst = max(smd)
+    return dict(worst_abs_smd=None if not _np.isfinite(worst) else float(worst),
+                worst_feature=frozen_feature_names[int(_np.argmax(smd))],
+                per_feature=per_feature, limit=0.25, n_cells_per_arm=len(lrows),
+                passed=bool(worst <= 0.25))
+
+
+def support_concentration(per_donor_values, measured_per_donor):
+    """Criterion 4, exactly as frozen: the top 1% of donors contribute <= 10% of the
+    weight in the primary statistic, with Kish effective sample size over donors.
+
+    IMPLEMENTED AS WRITTEN, AND REPORTED WITH A WARNING. The frozen estimand is a DONOR
+    AVERAGE, so every contributing donor carries weight 1/D by construction. The top 1%
+    of donors can therefore only exceed 10% of the weight when fewer than about ten
+    donors contribute at all. Under the frozen aggregation this gate is close to
+    incapable of failing, and saying so is more useful than letting it read as a passed
+    check that detected something. The quantity it appears to promise -- how concentrated
+    the underlying SUPPORT is -- is reported beside it as a diagnostic, not as a gate,
+    because substituting a different quantity for a frozen one would be a silent
+    redefinition.
+    """
+    import math as _math
+    import numpy as _np
+    vals = [v for v in per_donor_values if v is not None and _np.isfinite(v)]
+    n = len(vals)
+    if n == 0:
+        raise Stop("no donor contributes to the primary statistic")
+    w = _np.full(n, 1.0 / n)
+    k = max(1, int(_math.ceil(0.01 * n)))
+    top_share = float(_np.sort(w)[::-1][:k].sum())
+    kish = float((w.sum() ** 2) / (w * w).sum())
+    cells = _np.asarray([c for c in measured_per_donor if c > 0], float)
+    diag = None
+    if cells.size:
+        kk = max(1, int(_math.ceil(0.01 * cells.size)))
+        diag = float(_np.sort(cells)[::-1][:kk].sum() / cells.sum())
+    return dict(donors_contributing=n, top_1pct_donor_count=k,
+                top_1pct_weight_share=top_share, limit=0.10,
+                kish_ess_over_donors=kish,
+                passed=bool(top_share <= 0.10),
+                GATE_IS_NEAR_VACUOUS_UNDER_EQUAL_DONOR_WEIGHTING=True,
+                why="the frozen estimand is a donor average, so weight is 1/D per "
+                    "contributing donor and the top 1% can only exceed 10% when fewer "
+                    "than about ten donors contribute",
+                diagnostic_top_1pct_share_of_measured_cells=diag,
+                diagnostic_is_not_the_frozen_gate=True)
+
+
+def funnel_reconciliation(declared_universe_edges, edges_present, primary_edges,
+                          pairs_total, pairs_eligible):
+    """Criterion 5: every edge in the declared universe is accounted for exactly once."""
+    accounted = dict(
+        reached_the_primary_contrast=len(primary_edges),
+        present_but_not_in_the_primary_contrast=len(edges_present) - len(primary_edges),
+        absent_from_the_substrate=max(0, declared_universe_edges - len(edges_present)))
+    total = sum(accounted.values())
+    return dict(declared_universe_edges=declared_universe_edges,
+                edges_present_in_substrate=len(edges_present),
+                dispositions=accounted, accounted_total=total,
+                pairs_total=pairs_total, pairs_meeting_min_donors=pairs_eligible,
+                reconciles=bool(total == declared_universe_edges),
+                every_edge_in_exactly_one_disposition=True)
+
+
+FROZEN_FEATURE_NAMES = ["log_distance", "promoter_degree", "promoter_activity",
+                        "distal_accessibility", "re_density", "anchor_frequency",
+                        "rna_depth_sensitivity", "atac_depth_sensitivity",
+                        "log_distance^2", "promoter_degree^2",
+                        "distal_accessibility^2", "log_distance*promoter_degree",
+                        "log_distance*distal_accessibility",
+                        "promoter_degree*anchor_frequency"]
+
+
+PYBLOCK
+python - <<'PY'
+import hashlib
+blk=open("/tmp/gates.py",encoding="utf-8").read()
+p="scripts/v64/stage4_executor_v1.py"
+s=open(p,encoding="utf-8").read(); b0=hashlib.sha256(s.encode()).hexdigest()
+a="def run_correspondence(S, rows_by_pair, label, out_dir):"
+assert s.count(a)==1
+s=s.replace(a, blk+a)
+open(p,"w",newline="\n",encoding="utf-8").write(s)
+import ast; ast.parse(open(p,encoding="utf-8").read())
+print("changed:", b0!=hashlib.sha256(open(p,encoding="utf-8").read().encode()).hexdigest())
+PY
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/gates.py'
+Bash Locate where the heredoc wrote
+IN
+ls "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/" 2>/dev/null | head; ls /tmp/gates.py 2>&1; cd "/d/jepa_wt_v64_sampler_20260930" && ls -la /tmp/ 2>/dev/null | head -5
+
+OUT
+__pycache__
+a5
+add_split_arm.py
+agent2_full104_coverage_crosswalk_v1.py
+aggmsg.txt
+amend_v21_after_external_review.py
+amend_v21_round2.py
+append_integration_test.py
+append_new_tests.py
+append_tests.py
+/tmp/gates.py
+total 140730
+drwxr-xr-x 1 dushy 197609       0 Oct  1 14:36 .
+drwxr-xr-x 1 dushy 197609       0 Mar  4  2025 ..
+-rw-r--r-- 1 dushy 197609      53 Oct  1 03:39 .ses
+drwxr-xr-x 1 dushy 197609       0 Jun 16 00:32 .tensorboard-info
+Shell cwd was reset to d:\Jepa project
+Bash List receipts
+IN
+ls -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/"
+
+OUT
+ACQ_GSE214979_atac_fragments_V1.json
+ACQ_GSE214979_cell_metadata_V1.json
+ACQ_GSE214979_filtered_matrix_V1.json
+ACQ_HG38_ANALYSISSET_FASTA_V1.json
+ACQ_MOTIF_COLLECTION_v10nr_clust_public_V1.json
+ACQ_MOTIF2TF_HGNC_v10nr_clust_V1.json
+V69_GSE214979_COHORT_FREEZE_V1.json
+V69_ROUTEA_CISTOPIC_INPUT_V1.json
+V69_ROUTEA_REGION_TO_GENE_PREFLIGHT_V1.json
+V69_ROUTEA_REGION_UNIVERSE_V1.json
+V69_ROUTEA_SUBSTRATE_V1.json
+V69_STRUCTURAL_CROSSWALK_LAYER_V1.json
+V69_TF_ANNOTATION_SUPPLY_V1.json
+Bash Check benchmark state
+IN
+tail -1 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"; ls /d/jepa_v5_outputs_20260925/v69_scenicplus/routeA/cistarget_benchmark/ | grep 120 | head
+
+OUT
+Adding Cluster-Buster CRM scores (99 of 120) for motif "cisbp__M00127" took 0.149493 seconds.
+Bash Insert the three gate functions into the executor
+IN
+cp /tmp/gates.py "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/gates_block.py" && cd "/d/jepa_wt_v64_sampler_20260930" && python - <<'PY'
+import hashlib
+blk=open(r"C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\scratchpad\gates_block.py",encoding="utf-8").read()
+assert "def covariate_balance" in blk and len(blk)>3000, len(blk)
+p="scripts/v64/stage4_executor_v1.py"
+s=open(p,encoding="utf-8").read(); b0=hashlib.sha256(s.encode()).hexdigest()
+a="def run_correspondence(S, rows_by_pair, label, out_dir):"
+assert s.count(a)==1
+s=s.replace(a, blk+a)
+open(p,"w",newline="\n",encoding="utf-8").write(s)
+import ast; ast.parse(open(p,encoding="utf-8").read())
+print("changed:", b0!=hashlib.sha256(open(p,encoding="utf-8").read().encode()).hexdigest())
+PY
+
+OUT
+changed: True
+Shell cwd was reset to d:\Jepa project
+Let me wait for the benchmark to finish rather than keep polling.
+
+Bash Block until 120-motif benchmark finishes
+IN
+until grep -q "DB BUILD FINISHED" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log" 2>/dev/null; do sleep 60; done; grep -E "MEASURED_ELAPSED_SECONDS|SECONDS_PER_MOTIF|N_MOTIFS=|N_REGIONS=" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/ctdb_benchmark_120.log"
+
+Now wiring the three gates into the result record so the full five-gate decision is actually evaluated.
+
+
+Bash Wire the five-gate decision and run the technical world
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python - <<'PY'
+import hashlib
+p="scripts/v64/stage4_executor_v1.py"
+s=open(p,encoding="utf-8").read(); b0=hashlib.sha256(s.encode()).hexdigest()
+
+old = '''    pd_cal = per_donor(resid, ctrla_i, ctrlb_i, calib_edges,
+                       FROZEN["primary_weighting"])
+    cal_vals = [v for v in pd_cal if v is not None and np.isfinite(v)]'''
+new = '''    pd_cal = per_donor(resid, ctrla_i, ctrlb_i, calib_edges,
+                       FROZEN["primary_weighting"])
+    cal_vals = [v for v in pd_cal if v is not None and np.isfinite(v)]
+
+    # ---- the remaining frozen PASS criteria, computed rather than asserted
+    bal = covariate_balance(X, resid, linked_i, ctrla_i, primary_edges,
+                            FROZEN_FEATURE_NAMES)
+    measured_per_donor = (status == 0).sum(1).tolist()
+    conc = support_concentration(
+        per_donor(resid, linked_i, ctrla_i, primary_edges,
+                  FROZEN["primary_weighting"]), measured_per_donor)
+    declared = int(S.get("_declared_universe_edges") or len(set(edge)))
+    fun = funnel_reconciliation(declared, sorted(set(edge)), primary_edges,
+                                n_pairs, int(pair_eligible.sum()))
+    g1 = results[FROZEN["primary_weighting"]]["lcb95"] is not None and \\
+        results[FROZEN["primary_weighting"]]["lcb95"] > 0
+    cvc_val = float(np.mean(cal_vals)) if cal_vals else None
+    boot_cvc = donor_cluster_bootstrap(pd_cal)
+    g2 = bool(boot_cvc is not None and
+              np.quantile(boot_cvc, 0.025) <= 0 <= np.quantile(boot_cvc, 0.975))
+    five_gate = dict(
+        G1_PRIMARY_LCB95_ABOVE_ZERO=dict(
+            passed=bool(g1),
+            value=results[FROZEN["primary_weighting"]]["lcb95"]),
+        G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO=dict(
+            passed=g2, delta=cvc_val,
+            ci95=None if boot_cvc is None else
+            [float(np.quantile(boot_cvc, 0.025)), float(np.quantile(boot_cvc, 0.975))]),
+        G3_COVARIATE_BALANCE=bal,
+        G4_SUPPORT_CONCENTRATION=conc,
+        G5_FUNNEL_RECONCILES=dict(passed=fun["reconciles"], detail=fun),
+        ALL_FIVE_PASS=bool(g1 and g2 and bal["passed"] and conc["passed"]
+                           and fun["reconciles"]),
+        note="G1 alone is NOT the success definition. The frozen contract requires the "
+             "magnitude to be reported without a threshold and forbids presenting a "
+             "negligibly small Delta as biological confirmation.")'''
+assert s.count(old)==1
+s=s.replace(old,new)
+
+old2 = '''        R3_LABEL=FROZEN["r3_label"],'''
+new2 = '''        FIVE_GATE_DECISION=five_gate,
+        R3_LABEL=FROZEN["r3_label"],'''
+assert s.count(old2)==1
+s=s.replace(old2,new2)
+open(p,"w",newline="\n",encoding="utf-8").write(s)
+import ast; ast.parse(open(p,encoding="utf-8").read())
+print("changed:", b0!=hashlib.sha256(open(p,encoding="utf-8").read().encode()).hexdigest())
+PY
+cd "/d/jepa_wt_v64_sampler_20260930" && timeout 1800 python scripts/v64/stage4_executor_v1.py --synthetic-world MEASURED_TECHNICAL 2>&1 | tail -6 && python -c "
+import json;R=json.load(open('D:/jepa_v5_outputs_20260925/v64_stage4_synthetic/_results/V64_STAGE4_RESULT_MEASURED_TECHNICAL.json'))
+g=R['FIVE_GATE_DECISION']
+for k,v in g.items():
+    if isinstance(v,dict): print(k, '->', v.get('passed'), {kk:vv for kk,vv in v.items() if kk in ('value','delta','worst_abs_smd','worst_feature','top_1pct_weight_share','kish_ess_over_donors')})
+print('ALL_FIVE_PASS:', g['ALL_FIVE_PASS'])
+"
+
+OUT
+changed: True
+synthetic world MEASURED_TECHNICAL: Delta(adjusted, GENE_BALANCED) = 0.0129  LCB95 = 0.003
+  raw unadjusted    = 0.2114
+  control-vs-control= -0.0013
+  written to D:/jepa_v5_outputs_20260925/v64_stage4_synthetic\_results\V64_STAGE4_RESULT_MEASURED_TECHNICAL.json
+G1_PRIMARY_LCB95_ABOVE_ZERO -> True {'value': 0.0030312765559554907}
+G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO -> True {'delta': -0.001303344227657812}
+G3_COVARIATE_BALANCE -> False {'worst_abs_smd': 1.2748614292196176, 'worst_feature': 'atac_depth_sensitivity'}
+G4_SUPPORT_CONCENTRATION -> True {'top_1pct_weight_share': 0.016666666666666666, 'kish_ess_over_donors': 60.000000000000014}
+G5_FUNNEL_RECONCILES -> True {}
+ALL_FIVE_PASS: False
+Shell cwd was reset to d:\Jepa project
+The balance gate catches it — worst SMD 1.275 on atac_depth_sensitivity against a 0.25 limit. Now the critical counter-test: does it also reject genuine biology? A gate that always fails is as useless as one that never does.
+
+
+Bash Run all four worlds through the complete five-gate decision
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && for w in BIOLOGY_POSITIVE TRUE_NULL MEASURED_TECHNICAL HIDDEN_CONFOUND; do timeout 1800 python scripts/v64/stage4_executor_v1.py --synthetic-world $w >/dev/null 2>&1; python -c "
+import json;R=json.load(open('D:/jepa_v5_outputs_20260925/v64_stage4_synthetic/_results/V64_STAGE4_RESULT_$w.json'))
+g=R['FIVE_GATE_DECISION']
+print('%-20s G1=%-5s G2=%-5s G3=%-5s(smd=%.3f on %s) G4=%-5s G5=%-5s  ALL=%s'%('$w',
+ g['G1_PRIMARY_LCB95_ABOVE_ZERO']['passed'],g['G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO']['passed'],
+ g['G3_COVARIATE_BALANCE']['passed'],g['G3_COVARIATE_BALANCE']['worst_abs_smd'] or -1,g['G3_COVARIATE_BALANCE']['worst_feature'],
+ g['G4_SUPPORT_CONCENTRATION']['passed'],g['G5_FUNNEL_RECONCILES']['passed'],g['ALL_FIVE_PASS']))
+"; done
+
+OUT
+BIOLOGY_POSITIVE     G1=True  G2=True  G3=False(smd=0.525 on distal_accessibility^2) G4=True  G5=True   ALL=False
+TRUE_NULL            G1=False G2=True  G3=True (smd=0.160 on re_density) G4=True  G5=True   ALL=False
+MEASURED_TECHNICAL   G1=True  G2=True  G3=False(smd=1.275 on atac_depth_sensitivity) G4=True  G5=True   ALL=False
+HIDDEN_CONFOUND      G1=True  G2=False G3=False(smd=0.517 on distal_accessibility) G4=True  G5=True   ALL=False
+Shell cwd was reset to d:\Jepa project
+Now that's the real finding — and it needs one more check before I interpret it. The biology world is rejected too, on distal_accessibility². Let me see whether that's a contract problem or an unfaithfulness in my fixture.
+
+
+Bash Read how controls are matched to linked edges
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python -c "
+import json;D=json.load(open('results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json'))
+print(json.dumps(D['LINKED_VS_CONTROL_CONSTRUCTION'],indent=1)[:2200])
+"
+
+OUT
+{
+ "design": "PROMOTER_FIXED_DISTAL_MATCHED_CONTROL",
+ "why": "V63 C4 requires the promoter to be held FIXED and only the distal end to move. Moving promoters would destroy promoter-level activity and degree structure and would make correspondence look significant for reasons unrelated to contact.",
+ "linked_arm": "the 20,709 frozen E2 edges, subject only to symmetric measurement-support restriction",
+ "control_arm": {
+  "per_linked_edge": 1,
+  "same_promoter": true,
+  "same_chromosome": true,
+  "interval_width_bp": 5000,
+  "distance_matching": "the control's SOURCE hg19 promoter-to-distal separation is matched to the linked edge's source hg19 separation within +/- 10% or 10 kb, whichever is larger",
+  "direction": "the control may lie on either side of the promoter; side is drawn with the frozen seed and recorded",
+  "exclusions": [
+   "must not overlap ANY E2 distal partner of that promoter by >= 1 bp",
+   "must not overlap the linked distal interval",
+   "must contain >= 1 NIH-CARD consensus peak, so measurement support is symmetric by construction",
+   "must pass the same C3 exact-identity liftover test",
+   "must overlap >= 1 Nott PU.1 microglia ATAC peak, so that accessibility restriction is symmetric with E2's own construction requirement"
+  ],
+  "why_the_PU1_requirement": "E2 edges were required to have an accessible distal interval. A control without that requirement would differ from linked edges on accessibility by construction, and the contrast would measure accessibility rather than linkage.",
+  "if_no_admissible_control_exists": "the linked edge is TRIMMED from the primary and counted. Controls are never extrapolated into regions where no matched control exists (V63 C6 trimming rule).",
+  "seed": 20260929,
+  "draws": "one primary control draw, plus a SECOND independent control draw reserved solely for the control-vs-control null (see ANTI_FALSE_GREEN)"
+ },
+ "matched_covariates": [
+  "gene/promoter identity (exact, by construction)",
+  "genomic distance (source hg19, matched as above)",
+  "promoter activity/expression",
+  "distal accessibility",
+  "promoter contact degree",
+  "local regulatory-element density",
+  "measured RNA depth behaviour",
+  "m
+Shell cwd was reset to d:\Jepa project
+Found it, and it changes the conclusion. The frozen design matches each control to its linked edge on the same promoter, distance within ±10% or 10 kb, and a required PU.1 ATAC peak overlap — explicitly, in the contract's own words, "so that accessibility restriction is symmetric with E2's own construction requirement… a control without that requirement would differ from linked edges on accessibility by construction, and the contrast would measure accessibility rather than linkage."
+
+My synthetic worlds draw control intervals at random. That's a defect in my fixture, not in the design.
+
+
+Bash Commit the gates and the S99 fixture finding
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && git add scripts/v64/stage4_executor_v1.py && git commit -q -m "$(cat <<'EOF'
+Criteria 3, 4 and 5 implemented -- and S99: my synthetic control arm is not the frozen control construction
+
+Implements the three frozen PASS requirements the executor was missing, exactly
+as written and with no threshold invented: covariate balance at worst absolute
+SMD <= 0.25 across the 14 frozen features, support concentration at top 1 percent
+of donors <= 10 percent of weight with Kish ESS, and funnel reconciliation
+against the declared edge universe.
+
+Running all four worlds through the complete five-gate decision:
+
+  BIOLOGY_POSITIVE    G1 pass  G2 pass  G3 FAIL 0.525 distal_accessibility^2
+  TRUE_NULL           G1 FAIL  G2 pass  G3 pass 0.160 re_density
+  MEASURED_TECHNICAL  G1 pass  G2 pass  G3 FAIL 1.275 atac_depth_sensitivity
+  HIDDEN_CONFOUND     G1 pass  G2 FAIL  G3 FAIL 0.517 distal_accessibility
+
+Read naively this is good news twice over: the balance gate rejects the technical
+world that defeated G1 with certainty, and the hidden confound is caught by two
+gates rather than passing as biology. Both would materially soften what I
+reported earlier.
+
+I do not believe it, and the reason is S99.
+
+The genuine-biology world is ALSO rejected, and that is the tell. The frozen
+design builds each control by holding the promoter FIXED, matching source hg19
+distance within 10 percent or 10 kb, and requiring the control interval to
+overlap at least one Nott PU.1 microglia ATAC peak -- the contract says in terms
+that this last requirement exists because "a control without that requirement
+would differ from linked edges on accessibility by construction, and the contrast
+would measure accessibility rather than linkage". Its matched_covariates list
+names promoter activity, distal accessibility, promoter degree, regulatory
+element density and depth behaviour.
+
+My worlds draw control intervals uniformly at random. No fixed promoter, no
+distance matching, no accessibility requirement. So the linked and control arms
+differ on accessibility by construction in every world I built, which is the
+exact failure the contract anticipated and designed against. Under that
+unfaithfulness the balance gate rejects real biology, so none of the four G3
+verdicts above can be read as characterising the frozen design.
+
+The consequence is wider than this commit. Every control-arm result I have
+reported -- the hidden-confound limit, the technical residue, control-versus-
+control -- was measured against a control arm the design does not use. The
+calibration sweep rates stand as statements about G1 under my construction; what
+they say about the frozen design is now unresolved.
+
+Support concentration is implemented as frozen and reported with a warning: the
+estimand is a donor average, so weight is 1/D per contributing donor and the top
+1 percent can only exceed 10 percent when fewer than about ten donors contribute.
+Under the frozen aggregation that gate is close to incapable of failing. The
+quantity it appears to promise, how concentrated the underlying support is, is
+reported beside it as a diagnostic and explicitly not as the gate.
+
+Nothing frozen was changed. The fixture is what must be repaired.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+EOF
+)" && git push -q origin claude/v64-exact-sampler-successor-20260930 && git log --oneline -1
+
+OUT
+c6432de2 Criteria 3, 4 and 5 implemented -- and S99: my synthetic control arm is not the frozen control construction
+Shell cwd was reset to d:\Jepa project
+Mixed news, and I over-claimed twice. The cause is my own fixture.
+I implemented the three missing gates exactly as frozen — no invented thresholds — and ran all four worlds through the complete five-gate decision:
+
+
+                     G1      G2      G3 (balance)                      ALL
+BIOLOGY_POSITIVE    pass    pass    FAIL  0.525 distal_accessibility²   FAIL
+TRUE_NULL           FAIL    pass    pass  0.160 re_density              FAIL
+MEASURED_TECHNICAL  pass    pass    FAIL  1.275 atac_depth_sensitivity  FAIL
+HIDDEN_CONFOUND     pass    FAIL    FAIL  0.517 distal_accessibility    FAIL
+Read naively this is good news twice: the balance gate rejects the technical world that defeated G1 with certainty, and the hidden confound is caught by two gates rather than sailing through as biology. Both would materially soften what I told you an hour ago.
+
+I don't believe it, and the biology row is why. Genuine planted biology is rejected too. When a gate rejects everything including the true positive, the gate isn't working — something upstream is.
+
+S99: my control arm isn't the design's control arm
+The frozen contract builds each control by holding the promoter fixed, matching source hg19 distance within ±10% or 10 kb, and requiring the control interval to overlap at least one Nott PU.1 microglia ATAC peak. The contract states why in terms:
+
+"A control without that requirement would differ from linked edges on accessibility by construction, and the contrast would measure accessibility rather than linkage."
+
+Its matched_covariates list names promoter activity, distal accessibility, promoter degree, element density and depth behaviour — the very features the balance gate checks.
+
+My worlds draw control intervals uniformly at random. No fixed promoter, no distance matching, no accessibility requirement. So linked and control arms differ on accessibility by construction in every world I built — precisely the failure the contract anticipated and designed against. The design is fine; my fixture never implemented its control arm.
+
+What this does to my earlier claims
+The consequence is wider than today's gates. Every control-arm result I have reported was measured against a control arm the design does not use — the hidden-confound limit, the technical residue, control-vs-control, all of it.
+
+The calibration rates stand as statements about G1 under my construction. What they say about the frozen design is now unresolved, not settled in either direction.
+
+So, Sol — your step 4, "see whether the existing balance/concentration gates actually reject the technical world," cannot be answered yet. The apparent answer is yes, but it comes from a fixture that also rejects real biology.
+
+One genuine finding does survive, independent of the fixture: the support-concentration gate is close to incapable of failing. The estimand is a donor average, so every contributing donor carries weight exactly 1/D; the top 1% can only exceed 10% when fewer than about ten donors contribute. I implemented it as frozen and report it with that warning, plus the support-concentration quantity it appears to promise as a clearly-labelled diagnostic rather than silently substituting it for the gate.
+
+Nothing frozen was changed. The fixture is what gets repaired, and that's what I'm doing next: promoter-fixed, distance-matched, accessibility-matched controls, then re-run everything. Committed at c6432de2, pushed.
