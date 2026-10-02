@@ -40,6 +40,7 @@ def validate(root: Path) -> list[str]:
         "FULL104_like/rna_counts.npz",
         "NIH_CARD_STAGE4_like/metacells.npz",
         "NIH_CARD_STAGE4_like/pair_ledger.csv",
+        "NIH_CARD_STAGE4_like/control_selection_audit.csv",
         "NIH_CARD_STAGE4_like/overlapping_5kb_windows.bed.csv",
         "GSE214979_SCENICPLUS_like/submitted_multiome.npz",
         "GSE214979_SCENICPLUS_like/fragments.tsv.gz",
@@ -79,6 +80,14 @@ def validate(root: Path) -> list[str]:
             e.append(f"CONTROL_DISTANCE_MISMATCH:{r['edge_id']}")
         if r["linked_accessible"] != "1" or r["control_accessible"] != "1":
             e.append(f"ASYMMETRIC_ACCESSIBILITY:{r['edge_id']}")
+
+    selection = read_csv(obs/"NIH_CARD_STAGE4_like/control_selection_audit.csv")
+    if not any(r["status"] == "TRIM_NO_ADMISSIBLE_CONTROL" for r in selection):
+        e.append("NO_TRIM_NO_ADMISSIBLE_CONTROL_POSITIVE_CONTROL")
+    selected_ids = {r["edge_id"] for r in selection if r["status"] == "SELECTED"}
+    ledger_ids = {r["edge_id"] for r in pairs}
+    if selected_ids != ledger_ids:
+        e.append("CONTROL_SELECTION_LEDGER_MISMATCH")
 
     wins = read_csv(obs/"NIH_CARD_STAGE4_like/overlapping_5kb_windows.bed.csv")
     multi_overlap = False
