@@ -4,7 +4,10 @@ on:
   pull_request:
     paths:
       - 'scripts/v64/run_stage4_g2_sensitivity_curve_v1.py'
+      - 'scripts/v64/qualify_v73_kcurve_serial_parallel_equivalence.py'
+      - 'scripts/v64/freeze_v73_stage4_g2_repaired_preexecution_contract.py'
       - 'tests/test_v73_stage4_kcurve_runner_successor.py'
+      - 'tests/test_v73_stage4_preexecution_gates.py'
       - '.github/workflows/v73-stage4-kcurve-runner-successor.yml'
   workflow_dispatch:
 
@@ -20,7 +23,12 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: python -m pip install --upgrade pip pytest numpy
-      - name: Compile runner
-        run: python -m py_compile scripts/v64/run_stage4_g2_sensitivity_curve_v1.py
-      - name: Test isolated runner identity and historical preservation
-        run: pytest -q tests/test_v73_stage4_kcurve_runner_successor.py
+      - name: Compile repaired runner and gates
+        run: |
+          python -m py_compile scripts/v64/run_stage4_g2_sensitivity_curve_v1.py
+          python -m py_compile scripts/v64/qualify_v73_kcurve_serial_parallel_equivalence.py
+          python -m py_compile scripts/v64/freeze_v73_stage4_g2_repaired_preexecution_contract.py
+      - name: Test isolated runner and pre-execution safeguards
+        run: |
+          pytest -q tests/test_v73_stage4_kcurve_runner_successor.py
+          pytest -q tests/test_v73_stage4_preexecution_gates.py
