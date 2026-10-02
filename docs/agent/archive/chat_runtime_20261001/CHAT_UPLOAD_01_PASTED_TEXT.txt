@@ -1,0 +1,494 @@
+I need to correct something I told you an hour ago
+One of the two limits I reported doesn't hold as firmly as I stated it. I said the nuisance correction leaves a residue that "still excludes zero" in the purely-technical world. I ran each world once. Having just criticised Sol's lane for resting a conclusion on a single random draw, I held my own to the same test — rebuilt all four worlds at four different seeds and re-ran them through the entrypoint.
+
+The residue result holds in 3 of 4 draws, not always. At one seed the adjusted bound came out at −0.0058, i.e. it did not exclude zero. The warning survives in a milder form — a small positive bound is not by itself evidence of a non-technical origin — but I overstated it as a settled property.
+
+And resampling found something I hadn't looked for: the true-null world, where nothing at all is planted, produced a nominally significant result in 1 of 4 draws (+0.0063, lower bound +0.0010). A one-sided 95% bound is allowed to do this — that's what 95% means. The point is that it demonstrably does, at this donor count. Four draws can't estimate the rate and I'm not claiming one.
+
+I did not touch any threshold after seeing which checks failed. The thresholds were written before the extra draws, the harness reports FAIL, and the FAIL is the useful outcome.
+
+What survived resampling cleanly, all 4 of 4 draws:
+
+planted biology recovered every time (+0.513 to +0.538)
+most of a pure depth effect removed every time
+the hidden confound fools the method every time — 63% to 74% of genuine biology, bound always above zero
+So the headline limit I gave you is solid. The secondary one was oversold.
+
+Also measured: will it physically run?
+The closeout had real-scale memory as UNMEASURED, which is honest but is how overnight runs die. Computed from the declared shapes — reading only dictionary lengths, no data, no statistic:
+
+
+design tensor [donor x pair x 14]     1.10 GB   <- and three live copies exist
+dense ATAC    [metacell x interval]   0.39 GB
+everything else                       0.41 GB
+plausible peak                        6.00 GB
+machine                              31.77 GB physical, 11.34 free
+It fits. The useful part is the shape of the cost: 10,552,158 donor-pair cells × 14 terms × 8 bytes, held three times over — the tensor, its flat view, and the masked copy the ridge fits on. That's 3.3 GB of the 4.9 GB total before a single fold slice. If the basis or the pair universe ever grows, that's what breaks first, and the fix is float32 plus fold-by-fold residualisation. Runtime is still genuinely unmeasured and recorded as such.
+
+My own self-audit, continued
+S95 — my four worlds each rested on one draw while I was criticising Sol for exactly that. Now resampled; three conclusions turned out seed-dependent.
+S96 — my own robustness harness printed "15/4 draws" because it pooled four worlds per draw against a denominator of four seeds. Reporting bug, fixed; not a threshold change.
+S97 — real-scale capacity was an open unknown in my own closeout. Now calculated.
+Branch: claude/v64-exact-sampler-successor-20260930 @ 7713ae2b, pushed, worktree clean. Ten artifacts and ten receipts bound by recomputed digest. Stage 4 still not authorised; no correspondence value computed on real data at any point.
+
+The SCENIC+/GSE214979 lane is running again — it had died on the session rate limit mid-way through fixing a real defect its own fail-closed check caught (the motif annotation header's first column is #motif_id, not motif_id). I told it to fix the reader rather than loosen the check, and to redo the sub-lookup that died with it. I'll report when it comes back.
+
+
+Bash Verify substrate interval build against design artifact
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git show ea9a7445:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > /tmp/enum.json && python - <<'PY'
+import json, numpy as np
+d=json.load(open('/tmp/enum.json'))
+by={i['enum_key']:i for i in d['intervals']}
+z=np.load(r'D:/jepa_v5_outputs_20260925/v64_phase_b/PHASE_B_SUBSTRATE_s00.npz',allow_pickle=True)
+pk=z['pair_keys'].tolist(); pi=z['pair_interval']; st=z['interval_start']; en=z['interval_end']; ch=z['interval_chrom']
+hits=0; hg38=0; hg19=0
+for j,k in enumerate(pk):
+    if k in by:
+        i=int(pi[j]); rec=by[k]; hits+=1
+        if int(st[i])==rec['hg38_start'] and int(en[i])==rec['hg38_end'] and ch[i]==rec['chrom']: hg38+=1
+        if int(st[i])==rec['hg19_start'] and int(en[i])==rec['hg19_end']: hg19+=1
+print(f"matched enum keys: {hits}")
+print(f"substrate interval == design hg38 coords: {hg38}/{hits}")
+print(f"substrate interval == design hg19 coords: {hg19}/{hits}")
+PY
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/enum.json'
+Bash Verify substrate interval build against design artifact
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && T="$(cygpath -w "$HOME")/enum_v69.json" && git show ea9a7445:results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json > "$HOME/enum_v69.json" && python - "$HOME/enum_v69.json" <<'PY'
+import json, sys, numpy as np
+d=json.load(open(sys.argv[1]))
+by={i['enum_key']:i for i in d['intervals']}
+z=np.load(r'D:/jepa_v5_outputs_20260925/v64_phase_b/PHASE_B_SUBSTRATE_s00.npz',allow_pickle=True)
+pk=z['pair_keys'].tolist(); pi=z['pair_interval']; st=z['interval_start']; en=z['interval_end']; ch=z['interval_chrom']
+hits=hg38=hg19=0
+for j,k in enumerate(pk):
+    if k in by:
+        i=int(pi[j]); rec=by[k]; hits+=1
+        if int(st[i])==rec['hg38_start'] and int(en[i])==rec['hg38_end'] and ch[i]==rec['chrom']: hg38+=1
+        if int(st[i])==rec['hg19_start'] and int(en[i])==rec['hg19_end']: hg19+=1
+print(f"matched enum keys: {hits}")
+print(f"substrate interval == design hg38 coords: {hg38}/{hits}")
+print(f"substrate interval == design hg19 coords: {hg19}/{hits}")
+PY
+rm -f "$HOME/enum_v69.json"
+
+OUT
+matched enum keys: 57
+substrate interval == design hg38 coords: 57/57
+substrate interval == design hg19 coords: 0/57
+form sol "Macha’s newest seed-robustness run exposed something useful before we freeze the synthetic twin: the current Stage-4 synthetic claims are not fully seed-stable. One null draw crossed LCB>0, the measured-technical residue was significant in 3/4 draws, and control-vs-control drifted once."
+Show more
+Resolved definitively: Stage-4 intervals are hg38 — 57/57 exact match to the design artifact's hg38 columns, 0/57 to hg19. Same build as GSE214979, so no liftOver is needed. Now the crosswalk layer.
+
+Sol's summary is accurate but it levels three findings that aren't equivalent, and the difference decides what we freeze.
+
+They are three different kinds of thing:
+
+The null draw crossing zero is not a defect. A one-sided 95% bound crosses under the null 5% of the time by construction. Seeing it once in four draws is entirely compatible with correct calibration — the probability of at least one crossing in four draws at a true 5% rate is about 19%. Four draws cannot distinguish 5% from 25%. This says the verdict is noisy at small effect sizes, not that the design is broken.
+
+The measured-technical residue at 3/4 is the real finding. In that world the honest answer is "no biological effect," so significance is a false positive against the null we actually care about — and 3 of 4 is nowhere near 5%. That is a systematic, incompletely-removed bias, not sampling noise.
+
+The control-vs-control drift is a construction artifact — it occurred in the hidden-confound world, where the planted confound loads unequally on the two control arms. Expected from how I built it; it is not a general anti-false-green failure.
+
+So: one design-level bias, one nominal statistical behaviour, one artifact of my own fixture.
+
+And there's an extrapolation nobody has made yet. My worlds use 60 donors; the real substrate has 282. Tighter bounds at the same bias means the technical residue becomes more likely to be called significant at real scale, not less. If that's right, the residue problem is worse in the real run than in the qualification that was supposed to bound it.
+
+Four draws can't settle any of this. I'm going to measure the rates properly — pre-committing the design before running it.
+
+
+Bash Time one real-donor-count world build and run
+IN
+cd "/d/jepa_wt_v64_sampler_20260930" && python - <<'PY'
+import hashlib
+p="scripts/v64/build_stage4_synthetic_worlds_v1.py"
+s=open(p,encoding="utf-8").read(); b0=hashlib.sha256(s.encode()).hexdigest()
+s=s.replace('''        ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
+        seed_base = ap.parse_args().seed_base''',
+'''        ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
+        ap.add_argument("--only", default=None,
+                        help="build just these worlds, comma separated")
+        ap.add_argument("--donors", type=int, default=None,
+                        help="override the eligible donor count, for calibration sweeps")
+        a = ap.parse_args()
+        seed_base, only, donors = a.seed_base, a.only, a.donors
+        if donors:
+            globals()["N_DONORS_OK"] = donors
+        if only:
+            globals()["_ONLY"] = [w.strip() for w in only.split(",")]''')
+s=s.replace('''    mans = {}
+    for i, w in enumerate(WORLDS):
+        mans[w] = build_world(w, seed=seed_base + i)''',
+'''    mans = {}
+    only = globals().get("_ONLY")
+    for i, w in enumerate(WORLDS):
+        if only and w not in only:
+            continue
+        mans[w] = build_world(w, seed=seed_base + i)''')
+s=s.replace('def main(seed_base=None) -> int:','def main(seed_base=None, only=None, donors=None) -> int:')
+s=s.replace('''    rec = dict(schema="V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1", date="2026-10-01",
+               root=ROOT, worlds=list(WORLDS), seed_base=seed_base,''',
+'''    rec = dict(schema="V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1", date="2026-10-01",
+               root=ROOT, worlds=sorted(mans), seed_base=seed_base,
+               eligible_donors_configured=N_DONORS_OK,''')
+s=s.replace('               manifests={w: m["digests"] for w, m in mans.items()},',
+            '               manifests={w: m["digests"] for w, m in mans.items()},\n'
+            '               is_partial_build=bool(only) or len(mans) != len(WORLDS),')
+open(p,"w",newline="\n",encoding="utf-8").write(s)
+import ast; ast.parse(open(p,encoding="utf-8").read())
+print("changed:", b0!=hashlib.sha256(open(p,encoding="utf-8").read().encode()).hexdigest())
+PY
+cd "/d/jepa_wt_v64_sampler_20260930" && time (python scripts/v64/build_stage4_synthetic_worlds_v1.py --only TRUE_NULL --donors 282 --seed-base 111 >/dev/null 2>&1 && python scripts/v64/stage4_executor_v1.py --synthetic-world TRUE_NULL 2>&1 | head -2)
+
+OUT
+changed: True
+synthetic world TRUE_NULL: Delta(adjusted, GENE_BALANCED) = -0.0017  LCB95 = -0.0042
+  raw unadjusted    = -0.0019
+
+real	0m27.368s
+user	0m0.046s
+sys	0m0.482s
+Shell cwd was reset to d:\Jepa project
+Write build_structural_crosswalk_layer_v1.py
+331 lines
+#!/usr/bin/env python3
+"""V69: structural crosswalk layer - GSE214979 features -> FULL104 addresses and Stage-4 vocabulary.
+
+STRUCTURAL ONLY. This producer reads feature VOCABULARIES: which genes, which
+intervals, which pair keys exist. It never reads a Stage-4 effect estimate,
+correlation, Delta or p-value, and it never reads a measured value from the
+Phase-B substrate arrays (t3_value / t4_value are not touched).
+
+It exists so that, once frozen regulatory programs exist, per-program coverage is a
+cheap lookup against an already-authenticated mapping rather than a fresh join.
+
+MISSINGNESS. A feature absent from a vocabulary is STRUCTURALLY_UNMEASURED. It is
+never encoded as a biological zero and never as numeric 0. The per-element
+availability masks are written INTO the artifact consumers read, not only into
+matrix-level metadata.
+
+GENOME BUILD. Both sides must declare a build and the builds must be equal, or the
+producer fails closed. No implicit liftOver is ever performed.
+"""
+from __future__ import annotations
+
+import argparse
+import datetime as _dt
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+FULL104_EXPECTED_ADDRESSES = 41238
+STAGE4_EXPECTED = {"genes": 4372, "intervals": 32153, "pair_keys": 37419}
+SOURCE_FAMILIES = ("HVS", "NPH52", "SEA-AD")
+
+
+def utcnow() -> str:
+    return _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        while True:
+            b = fh.read(chunk)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+
+def ordered_digest(items) -> str:
+    h = hashlib.sha256()
+    for i, s in enumerate(items):
+        h.update(str(i).encode()); h.update(b"\x1f")
+        h.update(str(s).encode()); h.update(b"\x1e")
+    return h.hexdigest()
+
+
+class FailClosed(Exception):
+    def __init__(self, status, **detail):
+        super().__init__(status)
+        self.status = status
+        self.detail = detail
+
+
+def load_stage4_vocabulary(shard_paths):
+    """Read ONLY vocabulary arrays, and reconcile them across every shard."""
+    vocab = None
+    per_shard = []
+    for p in shard_paths:
+        z = np.load(p, allow_pickle=True)
+        forbidden = [k for k in ("t3_value", "t4_value") if k in z]
+        cur = {
+            "genes": np.asarray(z["genes"]).astype(str),
+            "interval_chrom": np.asarray(z["interval_chrom"]).astype(str),
+            "interval_start": np.asarray(z["interval_start"]).astype(np.int64),
+            "interval_end": np.asarray(z["interval_end"]).astype(np.int64),
+            "pair_keys": np.asarray(z["pair_keys"]).astype(str),
+            "pair_gene": np.asarray(z["pair_gene"]).astype(str),
+            "pair_interval": np.asarray(z["pair_interval"]).astype(np.int64),
+        }
+        per_shard.append({
+            "shard_path": str(p),
+            "shard_sha256": sha256_file(Path(p)),
+            "n_genes": int(cur["genes"].size),
+            "n_intervals": int(cur["interval_start"].size),
+            "n_pair_keys": int(cur["pair_keys"].size),
+            "value_arrays_present_but_not_read": forbidden,
+        })
+        if vocab is None:
+            vocab = cur
+        else:
+            for k in cur:
+                if not np.array_equal(cur[k], vocab[k]):
+                    raise FailClosed("FAIL__STAGE4_VOCABULARY_DISAGREES_ACROSS_SHARDS",
+                                     differing_array=k, shard=str(p))
+    got = {"genes": int(vocab["genes"].size),
+           "intervals": int(vocab["interval_start"].size),
+           "pair_keys": int(vocab["pair_keys"].size)}
+    if got != STAGE4_EXPECTED:
+        raise FailClosed("FAIL__STAGE4_VOCABULARY_SIZE_UNEXPECTED",
+                         expected=STAGE4_EXPECTED, observed=got)
+    return vocab, per_shard
+
+
+def overlap_counts(peaks: pd.DataFrame, chrom, start, end):
+    """Per-peak count of overlapping Stage-4 intervals, by sorted scan per chromosome."""
+    n_ov = np.zeros(len(peaks), dtype=np.int64)
+    first_idx = np.full(len(peaks), -1, dtype=np.int64)
+    for c in pd.unique(peaks["chrom"]):
+        pm = np.flatnonzero((peaks["chrom"] == c).to_numpy())
+        im = np.flatnonzero(chrom == c)
+        if pm.size == 0 or im.size == 0:
+            continue
+        istart = start[im]; iend = end[im]
+        order = np.argsort(istart, kind="stable")
+        im, istart, iend = im[order], istart[order], iend[order]
+        # intervals are uniform width; use a max-end prefix to bound the scan
+        max_end = np.maximum.accumulate(iend)
+        ps = peaks["start"].to_numpy()[pm]
+        pe = peaks["end"].to_numpy()[pm]
+        # candidate window: intervals whose start < peak_end
+        hi = np.searchsorted(istart, pe, side="left")
+        for j in range(pm.size):
+            h = hi[j]
+            if h == 0:
+                continue
+            lo = int(np.searchsorted(max_end[:h], ps[j], side="right"))
+            if lo >= h:
+                continue
+            sel = np.flatnonzero((istart[lo:h] < pe[j]) & (iend[lo:h] > ps[j])) + lo
+            if sel.size:
+                n_ov[pm[j]] = sel.size
+                first_idx[pm[j]] = int(im[sel[0]])
+    return n_ov, first_idx
+
+
+def build(registry_csv: Path, registry_expected_sha: str, shard_paths,
+          routea_receipt: Path, out_dir: Path) -> dict:
+    obs = sha256_file(registry_csv)
+    if obs != registry_expected_sha:
+        raise FailClosed("FAIL__FULL104_REGISTRY_DIGEST_MISMATCH",
+                         expected=registry_expected_sha, observed=obs)
+    reg = pd.read_csv(registry_csv, low_memory=False)
+    if len(reg) != FULL104_EXPECTED_ADDRESSES:
+        raise FailClosed("FAIL__FULL104_REGISTRY_ROW_COUNT_UNEXPECTED",
+                         expected=FULL104_EXPECTED_ADDRESSES, observed=int(len(reg)))
+    if reg["molecular_address_id"].duplicated().any():
+        raise FailClosed("FAIL__FULL104_ADDRESS_IDS_NOT_UNIQUE")
+    if not np.array_equal(reg["molecular_address_index"].to_numpy(),
+                          np.arange(len(reg))):
+        raise FailClosed("FAIL__FULL104_ADDRESS_INDEX_NOT_CONTIGUOUS_IN_FILE_ORDER")
+
+    vocab, per_shard = load_stage4_vocabulary(shard_paths)
+
+    ra = json.loads(Path(routea_receipt).read_text())
+    if not str(ra.get("status", "")).startswith("PASS"):
+        raise FailClosed("FAIL__ROUTEA_RECEIPT_IS_NOT_PASS", status=ra.get("status"))
+    gse_build = ra["genome_build_declared_by_source"]
+    stage4_build = "GRCh38"  # verified empirically; see receipt field below
+    if gse_build not in ("GRCh38", "hg38") or stage4_build not in ("GRCh38", "hg38"):
+        raise FailClosed("FAIL__GENOME_BUILDS_NOT_BOTH_DECLARED_GRCH38",
+                         gse214979=gse_build, stage4=stage4_build)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # ---------- gene layer ----------
+    rna = pd.read_csv(Path(ra["populations"]["DEV_NO_MORABITO_OVERLAP"]
+                           ["modalities"]["RNA"]["feature_table_path"]))
+    reg_by_ens = {}
+    for idx, ens in zip(reg["molecular_address_index"].to_numpy(),
+                        reg["current_ensembl_gene_id"].astype(str).to_numpy()):
+        if ens and ens != "nan":
+            reg_by_ens.setdefault(ens, int(idx))
+    fam = reg["contributing_source_families"].astype(str)
+    fam_flags = {f: fam.str.contains(f, regex=False).to_numpy() for f in SOURCE_FAMILIES}
+
+    stage4_genes = set(vocab["genes"].tolist())
+    gene_rows = []
+    for ens, name in zip(rna["id"].astype(str), rna["name"].astype(str)):
+        aidx = reg_by_ens.get(ens)
+        in_full104 = aidx is not None
+        row = {
+            "gse214979_ensembl_gene_id": ens,
+            "gse214979_gene_symbol": name,
+            "full104_address_index": aidx if in_full104 else -1,
+            "full104_support": "MEASURED_ADDRESS" if in_full104 else "STRUCTURALLY_UNMEASURED",
+            "stage4_support": ("IN_STAGE4_GENE_UNIVERSE" if ens in stage4_genes
+                               else "STRUCTURALLY_UNMEASURED"),
+        }
+        for f in SOURCE_FAMILIES:
+            key = "full104_source_" + f.replace("-", "_")
+            row[key] = (("SUPPORTED" if fam_flags[f][aidx] else "STRUCTURALLY_UNMEASURED")
+                        if in_full104 else "STRUCTURALLY_UNMEASURED")
+        gene_rows.append(row)
+    genes_df = pd.DataFrame(gene_rows)
+    gp = out_dir / "V69_GENE_CROSSWALK_GSE214979_TO_FULL104_AND_STAGE4_V1.csv.gz"
+    genes_df.to_csv(gp, index=False, compression="gzip")
+
+    # ---------- region layer ----------
+    peaks_tbl = pd.read_csv(Path(ra["populations"]["DEV_NO_MORABITO_OVERLAP"]
+                                 ["modalities"]["ATAC_SUBMITTED_PEAKS"]
+                                 ["feature_table_path"]))
+    pid = peaks_tbl["id"].astype(str)
+    parsed = pid.str.extract(r"^(?P<chrom>[^:]+):(?P<start>\d+)-(?P<end>\d+)$")
+    if parsed["chrom"].isna().any():
+        raise FailClosed("FAIL__PEAK_IDS_NOT_PARSEABLE_AS_INTERVALS",
+                         n_unparseable=int(parsed["chrom"].isna().sum()),
+                         first_examples=pid[parsed["chrom"].isna()].head(3).tolist())
+    peaks = pd.DataFrame({"peak_id": pid, "chrom": parsed["chrom"],
+                          "start": parsed["start"].astype(np.int64),
+                          "end": parsed["end"].astype(np.int64)})
+    n_ov, first_idx = overlap_counts(peaks, vocab["interval_chrom"],
+                                     vocab["interval_start"], vocab["interval_end"])
+    peaks["n_stage4_intervals_overlapped"] = n_ov
+    peaks["first_stage4_interval_index"] = first_idx
+    peaks["stage4_support"] = np.where(n_ov > 0, "OVERLAPS_STAGE4_INTERVAL",
+                                       "STRUCTURALLY_UNMEASURED")
+    rp = out_dir / "V69_REGION_CROSSWALK_GSE214979_TO_STAGE4_V1.csv.gz"
+    peaks.to_csv(rp, index=False, compression="gzip")
+
+    # ---------- Stage-4 side coverage ----------
+    s4_covered = np.zeros(vocab["interval_start"].size, dtype=bool)
+    s4_covered[first_idx[first_idx >= 0]] = True
+
+    receipt = {
+        "schema": "V69_STRUCTURAL_CROSSWALK_LAYER_V1",
+        "built_utc": utcnow(),
+        "evidence_class": "STRUCTURAL_ONLY",
+        "protected_outcomes_opened": "NONE",
+        "what_was_read": ("Feature vocabularies only: FULL104 address registry; "
+                          "Stage-4 genes/intervals/pair_keys; GSE214979 Route-A feature "
+                          "tables. No Stage-4 effect estimate, correlation, Delta or "
+                          "p-value was read. Phase-B t3_value/t4_value arrays were not "
+                          "read."),
+        "genome_build": {
+            "gse214979_declared": gse_build,
+            "stage4_substrate_resolved": stage4_build,
+            "stage4_build_resolution_method": (
+                "Empirical: all 57 enumerated-control pair keys in the Phase-B substrate "
+                "match the hg38_start/hg38_end columns of "
+                "results/v64/phase_b_design/V64_PHASE_B_ENUM_INTERVALS_V1.json "
+                "(sha256 4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619, "
+                "equal to enum_intervals_sha256 in PHASE_B_SUBSTRATE_RECEIPT_s00.json) "
+                "exactly, and 0 of 57 match the hg19 columns. The pair_key STRING embeds "
+                "the hg19 source coordinate as an identifier only."),
+            "liftover_performed": False,
+            "liftover_required": False,
+        },
+        "full104_registry": {
+            "path": str(registry_csv),
+            "sha256": obs,
+            "n_addresses": int(len(reg)),
+            "note": ("Read by content digest from the canonical project worktree. This "
+                     "lane did not modify that worktree."),
+        },
+        "stage4_vocabulary": {
+            "n_genes": int(vocab["genes"].size),
+            "n_intervals": int(vocab["interval_start"].size),
+            "n_pair_keys": int(vocab["pair_keys"].size),
+            "interval_widths_unique": sorted(set(
+                (vocab["interval_end"] - vocab["interval_start"]).tolist()))[:5],
+            "chromosomes": sorted(set(vocab["interval_chrom"].tolist())),
+            "gene_id_namespace": "ENSEMBL_GENE_ID",
+            "shards_reconciled": per_shard,
+        },
+        "gene_layer": {
+            "n_gse214979_rna_features": int(len(genes_df)),
+            "n_mapped_to_full104_address": int(
+                (genes_df["full104_support"] == "MEASURED_ADDRESS").sum()),
+            "n_structurally_unmeasured_in_full104": int(
+                (genes_df["full104_support"] == "STRUCTURALLY_UNMEASURED").sum()),
+            "n_in_stage4_gene_universe": int(
+                (genes_df["stage4_support"] == "IN_STAGE4_GENE_UNIVERSE").sum()),
+            "full104_source_family_support": {
+                f: int((genes_df["full104_source_" + f.replace("-", "_")]
+                        == "SUPPORTED").sum()) for f in SOURCE_FAMILIES},
+            "n_full104_addresses_reached_by_gse214979": int(
+                genes_df.loc[genes_df["full104_address_index"] >= 0,
+                             "full104_address_index"].nunique()),
+            "output_path": str(gp),
+            "output_sha256": sha256_file(gp),
+        },
+        "region_layer": {
+            "n_gse214979_peaks": int(len(peaks)),
+            "n_peaks_overlapping_a_stage4_interval": int((n_ov > 0).sum()),
+            "n_peaks_structurally_unmeasured_in_stage4": int((n_ov == 0).sum()),
+            "n_stage4_intervals_reached_by_a_peak": int(s4_covered.sum()),
+            "n_stage4_intervals_not_reached": int((~s4_covered).sum()),
+            "output_path": str(rp),
+            "output_sha256": sha256_file(rp),
+        },
+        "missingness_semantics": {
+            "absent_feature_encoding": "STRUCTURALLY_UNMEASURED",
+            "never_encoded_as": "numeric zero or biological absence",
+            "mask_location": "per-element column inside the emitted CSV, not only metadata",
+        },
+        "program_level_note": ("Mandate items 10 and 11 require PROGRAM-level reporting. "
+                               "This layer is the reusable address-resolution substrate; "
+                               "per-program coverage is a lookup against it once frozen "
+                               "programs exist. Global overlap numbers here are NOT a "
+                               "substitute for per-program reporting."),
+        "status": "PASS__STRUCTURAL_CROSSWALK_LAYER_BUILT",
+    }
+    return receipt
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--registry", required=True)
+    ap.add_argument("--registry-sha256", required=True)
+    ap.add_argument("--stage4-shard", action="append", required=True)
+    ap.add_argument("--routea-receipt", required=True)
+    ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--receipt", required=True)
+    a = ap.parse_args(argv)
+    try:
+        r = build(Path(a.registry), a.registry_sha256, a.stage4_shard,
+                  Path(a.routea_receipt), Path(a.out_dir))
+    except FailClosed as e:
+        r = {"schema": "V69_STRUCTURAL_CROSSWALK_LAYER_V1",
+             "status": e.status, **e.detail}
+    Path(a.receipt).parent.mkdir(parents=True, exist_ok=True)
+    Path(a.receipt).write_text(json.dumps(r, indent=2) + "\n")
+    print(json.dumps(r, indent=2)[:5000])
+    return 0 if str(r["status"]).startswith("PASS") else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+Bash Build structural crosswalk layer
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && O="/d/jepa_v5_outputs_20260925/v69_scenicplus" && SHARDS=""; for i in 0 1 2 3 4 5 6 7; do SHARDS="$SHARDS --stage4-shard D:/jepa_v5_outputs_20260925/v64_phase_b/PHASE_B_SUBSTRATE_s0$i.npz"; done; time python scripts/v69/build_structural_crosswalk_layer_v1.py --registry "D:/Jepa project/results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv" --registry-sha256 "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd" $SHARDS --routea-receipt "$O/receipts/V69_ROUTEA_SUBSTRATE_V1.json" --out-dir "$O/crosswalks" --receipt "$O/receipts/V69_STRUCTURAL_CROSSWALK_LAYER_V1.json" > "$O/logs/crosswalk.log" 2>&1; echo "EXIT=$?"; tail -20 "$O/logs/crosswalk.log"
+
+27 seconds per draw at the real donor count. Writing the pre-commitment to disk and hashing it before running, so the design is genuinely prospective.
