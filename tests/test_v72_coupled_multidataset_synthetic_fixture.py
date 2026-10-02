@@ -57,7 +57,10 @@ def test_first_overlap_only_corruption_is_detected(tmp_path):
     with open(p, newline="", encoding="utf-8") as fh:
         rows = list(csv.reader(fh))
     header, body = rows[0], rows[1:]
-    peak = body[0][0]
+    counts = {}
+    for row in body:
+        counts[row[0]] = counts.get(row[0], 0) + 1
+    peak = next(p for p, n in counts.items() if n > 1)
     kept_one = False
     corrupted = []
     for row in body:
