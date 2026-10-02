@@ -1,0 +1,30 @@
+name: V73 Stage4 K-partition repair
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v64/build_stage4_synthetic_worlds_v1.py'
+      - 'scripts/v64/run_stage4_g2_sensitivity_curve_v1.py'
+      - 'tests/test_v73_stage4_k_partition_repair.py'
+      - 'results/v64/V73_STAGE4_KCURVE_POSTRUN_INDEPENDENT_AUDIT_V1.json'
+      - '.github/workflows/v73-stage4-k-partition-repair.yml'
+  workflow_dispatch:
+
+jobs:
+  k-partition-repair:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip pytest numpy
+      - name: Run exact K-partition behavioral tests
+        run: pytest -q tests/test_v73_stage4_k_partition_repair.py
+      - name: Static compile repaired producers
+        run: |
+          python -m py_compile scripts/v64/build_stage4_synthetic_worlds_v1.py
+          python -m py_compile scripts/v64/run_stage4_g2_sensitivity_curve_v1.py
