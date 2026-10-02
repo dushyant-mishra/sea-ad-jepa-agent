@@ -4,82 +4,22 @@
   "scope": "All files physically available in this chat runtime at custody time.",
   "binary_policy": "Large binary scientific assets are not duplicated into Git history. Their exact byte size and SHA-256 are preserved here. Small text/csv artifacts are preserved verbatim in CHAT_EXCLUSIVE_SMALL_FILES_20261001.zip.",
   "files": [
-    {
-      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
-      "bytes": 1531109,
-      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
-      "bytes": 410278055,
-      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
-      "bytes": 303979881,
-      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
-      "bytes": 303979880,
-      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
-      "bytes": 437,
-      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
-      "git_custody": "verbatim_in_small_files_bundle"
-    },
-    {
-      "filename": "Pasted markdown.md",
-      "bytes": 94357,
-      "sha256": "834a80f0e3bf6db0b67cc3fd297d477f6f8dedbe1d720d096c34ed35af51abb6",
-      "git_custody": "verbatim_in_small_files_bundle"
-    },
-    {
-      "filename": "Pasted text.txt",
-      "bytes": 117661,
-      "sha256": "da55a252c705f89e77e5da02d0bce892371b0fbea6479117a8c3afb1fcaf2ff2",
-      "git_custody": "verbatim_in_small_files_bundle"
-    },
-    {
-      "filename": "Status and Repair Plan.txt",
-      "bytes": 5233,
-      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
-      "git_custody": "verbatim_in_small_files_bundle"
-    },
-    {
-      "filename": "WSL execution issue.txt",
-      "bytes": 14576,
-      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
-      "git_custody": "verbatim_in_small_files_bundle"
-    },
-    {
-      "filename": "checkpoints.zip",
-      "bytes": 71356460,
-      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "expression.zip",
-      "bytes": 3599456,
-      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
-      "git_custody": "identity_only_no_binary_duplication"
-    },
-    {
-      "filename": "t1_checkpoint_u0200.zip",
-      "bytes": 233729581,
-      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
-      "git_custody": "identity_only_no_binary_duplication"
-    }
+    {"filename":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356","git_custody":"verbatim_in_small_files_bundle"},
+    {"filename":"Pasted markdown.md","bytes":94357,"sha256":"834a80f0e3bf6db0b67cc3fd297d477f6f8dedbe1d720d096c34ed35af51abb6","git_custody":"verbatim_in_small_files_bundle"},
+    {"filename":"Pasted text.txt","bytes":117661,"sha256":"da55a252c705f89e77e5da02d0bce892371b0fbea6479117a8c3afb1fcaf2ff2","git_custody":"verbatim_in_small_files_bundle"},
+    {"filename":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56","git_custody":"verbatim_in_small_files_bundle"},
+    {"filename":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e","git_custody":"verbatim_in_small_files_bundle"},
+    {"filename":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4","git_custody":"identity_only_no_binary_duplication"},
+    {"filename":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c","git_custody":"identity_only_no_binary_duplication"}
   ],
   "small_files_bundle": {
     "path": "docs/agent/archive/chat_runtime_20261001/CHAT_EXCLUSIVE_SMALL_FILES_20261001.zip",
-    "bytes": 78332,
+    "bytes": 78034,
     "sha256": "bc04cb8e534c3ba94d1e5ffdb6e67773a198bde92b212c62376d152c9f51f2c0"
   }
 }
