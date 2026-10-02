@@ -188,3 +188,19 @@ def test_truth_file_exposure_is_rejected(tmp_path):
         root / "observable_raw/SCENICPLUS_LIKE/TRUTH_LEAK.json",
     )
     assert any(x.startswith("TRUTH_FIREWALL_PATH:") for x in errors(root))
+
+
+def test_checkpoint_evaluation_population_spans_all_source_families(tmp_path):
+    import numpy as np
+
+    root = fixture(tmp_path)
+    cp = np.load(
+        root / "observable_raw/CHECKPOINT_TWIN/checkpoint_outputs.npz",
+        allow_pickle=False,
+    )
+    cell_ids = set(cp["cell_ids"].tolist())
+    rows = list(csv.DictReader(open(
+        root / "observable_raw/FULL104_LIKE/metadata.csv", encoding="utf-8"
+    )))
+    sources = {r["source"] for r in rows if r["cell_id"] in cell_ids}
+    assert sources == {"SEA_AD", "NPH52", "HVS"}
