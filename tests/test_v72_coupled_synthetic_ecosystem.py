@@ -103,3 +103,19 @@ def test_v72_detects_truth_leak(tmp_path):
     shutil.copy(root / "hidden_truth/TRUTH_GRAPH.json", leak)
     errors = load(VALIDATOR, "v72_validator_leak").validate(root)
     assert any(x.startswith("TRUTH_FIREWALL_PATH:") for x in errors)
+
+
+def test_v72_stage4_selection_mechanism_exercises_trimming(tmp_path):
+    import csv
+    root = fixture(tmp_path)
+    audit = root / "observable_raw/NIH_CARD_STAGE4_like/control_selection_audit.csv"
+    with open(audit, newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    assert len(rows) == 48
+    trimmed = [r for r in rows if r["status"] == "TRIM_NO_ADMISSIBLE_CONTROL"]
+    assert len(trimmed) == 1
+    assert trimmed[0]["edge_id"] == "EDGE047"
+    assert int(trimmed[0]["n_admissible"]) == 0
+    selected = [r for r in rows if r["status"] == "SELECTED"]
+    assert selected
+    assert all(int(r["n_admissible"]) >= 1 for r in selected)
