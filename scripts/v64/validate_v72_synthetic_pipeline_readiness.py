@@ -57,6 +57,16 @@ def validate(root: Path = ROOT):
             challenge = Path(td) / "challenge"
             b.build(challenge)
             errors.extend([f"V72_FIXTURE:{e}" for e in v.validate(challenge)])
+            routeb_path = root / "scripts/v64/run_v72_synthetic_routeb_pipeline.py"
+            if not routeb_path.exists():
+                errors.append("V72_ROUTEB_EXECUTABLE_MISSING")
+            else:
+                rb = load_module(routeb_path, "v72_routeb")
+                receipt = rb.run(challenge, Path(td) / "routeb")
+                if receipt.get("status") != "PASS__RAW_TO_CONSENSUS_INTERFACE_QUALIFIED":
+                    errors.append("V72_ROUTEB_INTERFACE_NOT_QUALIFIED")
+                if receipt.get("real_routeb_still_requires_macs_pycistopic") is not True:
+                    errors.append("V72_ROUTEB_SCOPE_GUARD_MISSING")
 
     # Governance checks that should remain machine-readable.
     g2_path = root / "results/v64/V72_STAGE4_G2_SPECIFICATION_GAP_CONTRACT_V1.json"
