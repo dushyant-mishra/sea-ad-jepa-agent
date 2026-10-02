@@ -240,7 +240,8 @@ jobs:
             tests/test_v72_synthetic_scale_planner.py \
             tests/test_v72_blacklist_docker_and_g2_contracts.py \
             tests/test_v72_synthetic_pipeline_readiness.py \
-            tests/test_v72_synthetic_routeb_pipeline.py
+            tests/test_v72_synthetic_routeb_pipeline.py \
+            tests/test_v72_routeb_provenance_binding_contract.py
       - name: Validate V71/V72 synthetic twin readiness and coupled raw interfaces
         run: |
           python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
