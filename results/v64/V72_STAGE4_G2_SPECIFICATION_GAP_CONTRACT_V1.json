@@ -1,0 +1,69 @@
+{
+  "schema": "V72_STAGE4_G2_SPECIFICATION_GAP_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "OPEN__PROSPECTIVE_SEMANTICS_REQUIRED__NO_NEW_THRESHOLD_CHOSEN",
+  "source_gap": {
+    "frozen_wording": "CONTROL_VS_CONTROL_NULL must not show excess; a nonzero control-vs-control contrast indicates the pipeline itself manufactures a difference.",
+    "missing_from_frozen_contract": [
+      "decision statistic",
+      "test family",
+      "significance/equivalence level",
+      "absolute or relative materiality margin"
+    ],
+    "current_executor_history": "two-sided 95 percent donor-bootstrap interval must contain zero",
+    "current_executor_is_not_frozen_authority": true
+  },
+  "scientific_purpose": "Detect a materially pipeline-manufactured linked/control difference without turning harmless residual drift into an automatic failure merely because donor count increases.",
+  "candidate_semantics": [
+    {
+      "id": "NULL_SIGNIFICANCE",
+      "statement": "Require no statistically detectable control-vs-control difference.",
+      "advantage": "direct literal reading of zero-difference",
+      "failure_mode": "becomes increasingly strict with sample size around any persistent tiny drift",
+      "prospectively_acceptable_only_if": "the project explicitly intends statistical zero, not practical negligibility"
+    },
+    {
+      "id": "ABSOLUTE_EQUIVALENCE",
+      "statement": "Require the control-vs-control difference to lie inside a prospectively justified absolute equivalence margin.",
+      "advantage": "targets material rather than detectable pipeline bias",
+      "failure_mode": "margin is scale-dependent and can be arbitrary if selected from V2",
+      "prospectively_acceptable_only_if": "margin comes from an external technical/biological rationale independent of V2 and K-curve outcomes"
+    },
+    {
+      "id": "RELATIVE_MAGNITUDE",
+      "statement": "Require |control-vs-control Delta| / |primary Delta| to lie below a prospectively justified materiality margin.",
+      "advantage": "scale-free and does not automatically tighten with donor count",
+      "failure_mode": "unstable when the primary effect is near zero and can be tuned post-hoc",
+      "prospectively_acceptable_only_if": "zero/near-zero primary behavior is separately defined and the margin is justified independently of V2"
+    },
+    {
+      "id": "DESCRIPTIVE_STOP_RULE",
+      "statement": "Keep CVC as a reported diagnostic and stop only under a separately precommitted manufactured-difference failure pattern rather than a scalar significance gate.",
+      "advantage": "avoids pretending an unspecified sentence already encodes a statistical test",
+      "failure_mode": "requires a new prospective calibration design",
+      "prospectively_acceptable_only_if": "the stop pattern is frozen before fresh synthetic qualification"
+    }
+  ],
+  "forbidden_inputs_to_semantic_choice": [
+    "V2 biology G2 pass rate 0.625 at 282 donors",
+    "V2 hidden-confound G2 pass rate 0.10 at 282 donors",
+    "the pending HIDDEN_CONFOUND_K curve",
+    "any real Stage4 correspondence value",
+    "Morabito or other protected outcome"
+  ],
+  "required_process": [
+    "Contract owner states whether G2 is intended to test exact statistical zero or practical materiality.",
+    "If an equivalence/materiality margin is used, its numerical value and rationale are written before fresh qualification and are independent of V2/K outcomes.",
+    "Fresh synthetic qualification uses a new seed family and includes genuine biology, true null, measured technical, globally shared hidden confound, and edge-specific hidden confound.",
+    "Power/operating curves are reported across donor count so a rule that changes merely because n increases is visible.",
+    "The historical two-sided-95%-CI rule remains reported for comparability but is not silently promoted to frozen authority.",
+    "Only after prospective qualification may the Stage4 authorization contract be amended."
+  ],
+  "current_action": "NO_STAGE4_AUTHORIZATION_CHANGE",
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF",
+    "Morabito": "PROTECTED"
+  }
+}
