@@ -167,3 +167,45 @@ The commit does **not** modify:
 Therefore findings A3 and A4 above remain open unchanged. In particular, the K=200 world is still not guaranteed to contain 200 occupied singleton confound factors, and the K-curve must not launch yet.
 
 Classification of the new commit: **VERIFIED AS REGRESSION-RESULT UPDATE; DOES NOT CLOSE THE K-CURVE BLOCKER.**
+
+
+---
+
+## Addendum — curve launched despite unresolved A3/A4 blockers
+
+User handback after the 76e52107 regression commit reports that the 100-draw G2 sensitivity curve was launched at 282 donors while the SCENIC+ timing lane was held.
+
+Independent GitHub verification of `76e52107` shows that commit changed only the regression-result receipts listed in the prior addendum. It did **not** change the K-world generator or the K-curve runner.
+
+Therefore, unless Macha launched from unpushed local bytes that differ from GitHub, the running curve still uses the flawed with-replacement assignment:
+
+`block_of_edge = rng.integers(0, K, N_EDGES)`
+
+and still lacks realised-occupancy verification.
+
+### Classification of the running curve
+
+- execution status: **RUNNING / USER-REPORTED**
+- scientific qualification status: **INVALID FOR THE PRECOMMITTED K-PARTITION QUESTION**
+- reason: requested K is not guaranteed to equal realised occupied confound blocks
+- K=200 endpoint: **not guaranteed edge-specific**
+- G2 interpretation: additionally limited by S102
+
+If the run completes before the generator is repaired, preserve the output as a historical exploratory result. Do not delete it. Label it:
+
+`SUPERSEDED_FOR_K_PARTITION_INFERENCE__WITH_REPLACEMENT_BLOCK_ASSIGNMENT`
+
+It may still describe the historical generator's occupancy-mixture behavior, but it cannot answer the stated experiment “does G2 fail as hidden confounding becomes edge-specific?”
+
+### Required successor action
+
+Before any replacement curve:
+
+1. repair block assignment into an actual K-partition;
+2. record realised occupancy and block sizes in every world manifest;
+3. require K=200 -> 200 occupied singleton blocks;
+4. amend S102 interpretation scope prospectively;
+5. smoke-test K=1, 5 and 200;
+6. launch a fresh versioned curve with a new receipt identifier.
+
+Do not overwrite the flawed run or reuse its receipt identity.
