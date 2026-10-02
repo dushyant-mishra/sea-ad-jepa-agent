@@ -7,7 +7,13 @@
   "question": "As the number of independent confound factors K increases from 1 (one factor shared by all edges) to the number of edges (one factor per edge), at what point does G2 stop rejecting the confounded world, and does it converge on the rate at which it rejects genuine biology?",
   "design": {
     "world_family": "HIDDEN_CONFOUND_K, built exactly like the existing HIDDEN_CONFOUND world except that edges are partitioned into K blocks and all edges in a block share one metacell-varying factor orthogonal to depth. K=1 reproduces the existing world. K equal to the edge count makes every edge's factor independent, which is structurally identical to BIOLOGY_POSITIVE.",
-    "K_values": [1, 5, 20, 50, 200],
+    "K_values": [
+      1,
+      5,
+      20,
+      50,
+      200
+    ],
     "why_these": "1 is the already-measured world. 200 is the edge count, the structural twin of biology, and serves as the degenerate end of the curve. 5, 20 and 50 span the range between on a roughly logarithmic spacing so a threshold, if one exists, is bracketed rather than stepped over.",
     "donor_count": 282,
     "why_one_donor_count": "282 is the real substrate's qualifying donor count and is where G2 is strictest. Measuring the curve at the harder end avoids claiming a protection that only exists at reduced scale. Cost is the reason there is only one: a second count would double a 100-draw sweep for a question about shape, not about scale.",
@@ -32,7 +38,7 @@
   },
   "interpretation_fixed_in_advance": {
     "G2_pass_rate_rises_monotonically_with_K": "G2 detects SHARED structure across edges, not cross-modal confounding as such",
-    "G2_pass_rate_at_K_equal_to_edge_count_matches_the_biology_rate_of_0.62": "confirms the structural argument: an edge-specific cross-modal factor is indistinguishable from regulation, and G2 contributes nothing against it. The apparent protection measured in V2 is an artifact of how I built that confound and must not be cited as a safeguard.",
+    "G2_pass_rate_at_K_equal_to_edge_count_matches_the_biology_rate_of_0.62": "confirms the structural argument: an edge-specific cross-modal factor is indistinguishable from regulation, and G2 contributes nothing against it. The apparent protection measured in V2 is an artifact of how I built that confound and must not be cited as a safeguard. MATCHES means the two Wilson 95 percent intervals overlap; see AMENDMENT_1.",
     "G2_pass_rate_stays_low_at_every_K": "G2 detects something other than sharing and does offer real protection against cross-modal confounding; the V2 caveat is discharged and the gate is stronger than I credited",
     "G2_pass_rate_is_non_monotonic_in_K": "the gate responds to something neither hypothesis predicts and no protection claim may be made in either direction until it is understood",
     "ALL_FIVE_rate_at_high_K_approaches_the_biology_rate": "the complete five-gate decision cannot distinguish a sufficiently edge-specific cross-modal artifact from regulation, which is an interpretation limit on every Stage-4 result and is to be recorded, not repaired"
@@ -50,5 +56,12 @@
     "correspondence": "UNOPENED",
     "real_substrate_read": false,
     "computed_correspondence_values_on_real_data": 0
+  },
+  "AMENDMENT_1": {
+    "date": "2026-10-02",
+    "made_before_any_draw_of_this_design": "yes. No run of run_stage4_g2_sensitivity_curve_v1.py has been executed. The K=5 smoke test of the world builder is not a draw of this design and is recorded separately.",
+    "defect": "the original interpretation block said the K=200 rate either MATCHES the biology rate of 0.62 or does not, without stating what counts as a match. The runner I then wrote filled that gap with a tolerance of plus or minus 0.20, a number I chose and which appears nowhere in the frozen design. A protocol that leaves the deciding quantity to be defined later by the executor is not frozen, and this is the same defect class I have raised against other work on this project.",
+    "repair": "the comparison is now defined statistically and symmetrically: the K=200 cell CONVERGES on the biology rate when its Wilson 95 percent interval OVERLAPS the Wilson 95 percent interval of the biology reference, which is 25 of 40 at 282 donors, that is [0.470, 0.758]. This uses the precision the design actually has on both sides rather than an arbitrary band, and it accounts for the uncertainty in the REFERENCE as well as in the measurement.",
+    "consequence": "a wider reference interval makes convergence EASIER to declare, which cuts against the hypothesis I expect to confirm. That is the correct direction for a test I have a stake in."
   }
 }

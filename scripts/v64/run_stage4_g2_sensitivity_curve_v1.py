@@ -41,6 +41,7 @@ G2 = "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO"
 G3 = "G3_COVARIATE_BALANCE"
 BIOLOGY_MEDIAN_DELTA_AT_282 = 0.5692     # measured in the V2 sweep, not re-derived here
 BIOLOGY_G2_RATE_AT_282 = 0.62            # the rate G2 passes on GENUINE biology
+BIOLOGY_G2_COUNT_AT_282 = (25, 40)       # the draws behind it, so its own interval is used
 
 
 def wilson(k, n, z=1.96):
@@ -129,7 +130,12 @@ def main() -> int:
     rates = [cells[str(K)]["g2_pass_rate"] for K in Ks]
     monotone = all(rates[i] <= rates[i + 1] + 1e-12 for i in range(len(rates) - 1))
     top = cells[str(Ks[-1])]
-    converges = abs(top["g2_pass_rate"] - BIOLOGY_G2_RATE_AT_282) <= 0.20
+    # AMENDMENT_1: convergence is interval overlap, not a band I chose. The reference has
+    # its own uncertainty -- 25 of 40 draws -- and ignoring it would hold the measurement
+    # to a precision the reference does not have.
+    bio_lo, bio_hi = wilson(*BIOLOGY_G2_COUNT_AT_282)
+    k_lo, k_hi = top["g2_wilson95"]
+    converges = not (k_hi < bio_lo or k_lo > bio_hi)
     if monotone and converges:
         reading = ("G2 responds to SHARED structure across edges, not to cross-modal "
                    "confounding as such. At K equal to the edge count it passes the "
@@ -166,8 +172,15 @@ def main() -> int:
         executes_precommitment=dict(path=PRECOMMIT, sha256=pc_sha),
         design_was_frozen_before_any_draw=True,
         thresholds_or_draw_counts_changed_after_seeing_results=False,
+        convergence_test=dict(
+            definition="the K=max cell's Wilson 95 percent interval overlaps the biology "
+                       "reference's Wilson 95 percent interval",
+            frozen_in="AMENDMENT_1 of the pre-commitment, before any draw",
+            biology_reference_interval=[round(bio_lo, 4), round(bio_hi, 4)],
+            k_max_interval=top["g2_wilson95"]),
         reference_values_from_the_V2_sweep=dict(
             biology_g2_pass_rate_at_282=BIOLOGY_G2_RATE_AT_282,
+            biology_draws_behind_it="25 of 40",
             biology_median_delta_at_282=BIOLOGY_MEDIAN_DELTA_AT_282,
             note="measured in V64_STAGE4_CALIBRATION_SWEEP_V2, not re-derived here"),
         donor_count=donors, draws_per_K=n_draws, cells=cells,
