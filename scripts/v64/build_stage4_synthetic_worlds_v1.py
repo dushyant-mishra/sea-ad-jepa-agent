@@ -552,8 +552,14 @@ def main(seed_base=None, only=None, donors=None) -> int:
     print("building synthetic Phase-B worlds under " + ROOT
           + " at seed base " + str(seed_base))
     mans = {}
+    # A DEFAULT build produces the canonical four and nothing else. An EXTRA world is an
+    # experiment fixture and is built only when named explicitly, so the claim that the
+    # canonical set is unchanged by an experiment existing stays true of the build as well
+    # as of the four directories. S103: it was not true until now, because this loop
+    # iterated WORLDS + EXTRA_WORLDS unconditionally.
     only = globals().get("_ONLY")
-    for i, w in enumerate(WORLDS + EXTRA_WORLDS):
+    buildable = WORLDS + (EXTRA_WORLDS if only else ())
+    for i, w in enumerate(buildable):
         if only and w not in only:
             continue
         mans[w] = build_world(w, seed=seed_base + i)

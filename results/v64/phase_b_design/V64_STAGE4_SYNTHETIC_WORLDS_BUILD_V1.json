@@ -5,14 +5,13 @@
   "worlds": [
     "BIOLOGY_POSITIVE",
     "HIDDEN_CONFOUND",
-    "HIDDEN_CONFOUND_K",
     "MEASURED_TECHNICAL",
     "TRUE_NULL"
   ],
   "seed_base": 20260929,
   "eligible_donors_configured": 60,
   "is_canonical_build": true,
-  "producer_sha256": "a2cdbb6242fd7f8d3b64e526bb6ed78e642c465564b2c08732e378b66b716104",
+  "producer_sha256": "d1e5f4ff8e01433bfe2502e9b167142bf7a1e4ac81c10cc83973b4911c34995c",
   "manifests": {
     "BIOLOGY_POSITIVE": {
       "PHASE_B_SUBSTRATE_s00.npz": "0b9da294cad0df863688af45bbb993bf82af0f6dd52e8671da916c599f98589b",
@@ -41,16 +40,9 @@
       "PHASE_B_T5_DONOR_AGGREGATES.npz": "aca825828b870574d18ab6ad93f1da907a36dfa066dab92ddef5cc0223038fc6",
       "PHASE_B_T3_T4_AVAILABILITY.npz": "87b83a046562e86ac1a0d53b02d890712e40dc8f671b8923343fa30448fb3c8e",
       "PHASE_A_ROWS.json": "4103c41743205faddecfd1fe1f5af1d4efac63fa96e352da251d56ba8cd10532"
-    },
-    "HIDDEN_CONFOUND_K": {
-      "PHASE_B_SUBSTRATE_s00.npz": "e6820344392b2282d03f9ba5d577f24895d1efd79fd073979b52b726cc009a6a",
-      "PHASE_B_SUBSTRATE_s01.npz": "041d49a3220c4ed44d1a72346861a89feebd15b5d68e39cdd3552fe2a8bb1b27",
-      "PHASE_B_T5_DONOR_AGGREGATES.npz": "a7fcd2f8cc43a55df1e6b36ad69eea1cf09751b567075fc675ab4996e2f3a76b",
-      "PHASE_B_T3_T4_AVAILABILITY.npz": "101224f1220666401f7eeb6313ebf6e89b693524568905a899be7d38cfe20c65",
-      "PHASE_A_ROWS.json": "46385d997c794b9fe0d57db39dd431c0dc09165a39f4f693b8c6f2411cdb87e2"
     }
   },
-  "is_partial_build": true,
+  "is_partial_build": false,
   "planted": {
     "BIOLOGY_POSITIVE": {
       "mechanism": "shared within-donor latent on linked pairs only",
@@ -66,12 +58,6 @@
       "expect": "raw Delta > 0, adjusted Delta near 0"
     },
     "HIDDEN_CONFOUND": {
-      "mechanism": "edge-specific loading on a metacell-varying factor that is orthogonal to depth and absent from the frozen basis",
-      "confound_blocks_K": 1,
-      "edges_per_block": 200.0,
-      "expect": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug."
-    },
-    "HIDDEN_CONFOUND_K": {
       "mechanism": "edge-specific loading on a metacell-varying factor that is orthogonal to depth and absent from the frozen basis",
       "confound_blocks_K": 1,
       "edges_per_block": 200.0,
