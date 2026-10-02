@@ -1,0 +1,42 @@
+{
+  "schema": "V72_ROUTEB_PROVENANCE_BINDING_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "PROSPECTIVE_BEFORE_REAL_ROUTEB_PSEUDOBULK_AND_CONSENSUS_FREEZE",
+  "closes_findings": [
+    "SCA7_FRAGMENT_RECEIPT_CROSS_BINDING_GAP",
+    "SCA8_REGION_UNIVERSE_AUXILIARY_INPUT_DIGEST_GAP"
+  ],
+  "fragment_custody": {
+    "required": [
+      "acquisition receipt status PASS",
+      "acquisition receipt fragment byte count equals file byte count",
+      "acquisition receipt fragment SHA-256 equals completed QC receipt fragment SHA-256",
+      "QC receipt is full/non-partial",
+      "pseudobulk receipt carries the same fragment SHA-256"
+    ],
+    "rule": "Receipt-to-receipt cryptographic binding is sufficient; do not re-hash the 63.6 GB file on every downstream producer if the authenticated acquisition and full-QC receipts are bound to the same digest."
+  },
+  "consensus_auxiliary_inputs": {
+    "required": [
+      "chromsizes path, bytes and SHA-256",
+      "blacklist path, bytes and SHA-256",
+      "blacklist release/commit identity",
+      "MACS executable/version",
+      "every pseudobulk BED SHA-256"
+    ],
+    "rule": "Paths are locators, not identities. The region-universe receipt must bind bytes for every input capable of changing interval boundaries or exclusions."
+  },
+  "blacklist_authority": "results/v64/V72_ROUTEB_HG38_BLACKLIST_PROSPECTIVE_AMENDMENT_V1.json",
+  "fail_closed": [
+    "acquisition/QC fragment digest mismatch",
+    "missing digest field in a receipt that is presented as authoritative",
+    "chromsizes digest changes",
+    "blacklist digest changes",
+    "blacklist record count differs from the pinned resource after decompression"
+  ],
+  "governance": {
+    "routeB_pseudobulk": "NOT_AUTHORIZED_UNDER_SUCCESSOR_CONTRACT_UNTIL_BINDINGS_PASS",
+    "routeB_consensus_universe": "NOT_FROZEN_UNTIL_BINDINGS_PASS",
+    "scenicplus_network": "NOT_YET_QUALIFIED"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "V72_ROUTEB_HG38_BLACKLIST_PROSPECTIVE_AMENDMENT_V1",
+  "date": "2026-10-02",
+  "status": "PROSPECTIVE__APPLY_BLACKLIST__PINNED_BEFORE_ROUTEB_REGION_UNIVERSE",
+  "decision": "APPLY_ENCODE_BLACKLIST_V2_TO_ROUTE_B_CONSENSUS_PEAK_CONSTRUCTION",
+  "rationale": [
+    "The purpose is assay-independent artifact exclusion, not improving Route-A/Route-B agreement.",
+    "Boyle Lab describes ENCODE blacklist removal as an essential quality measure for functional-genomics sequencing analyses.",
+    "The choice is frozen before Route-B consensus peaks or Route-A/Route-B network agreement are observed."
+  ],
+  "resource": {
+    "repository": "Boyle-Lab/Blacklist",
+    "release_tag": "v2.0",
+    "release_commit": "f4a45ab5b52d427a8689a1a143e8504e1cba5962",
+    "path": "lists/hg38-blacklist.v2.bed.gz",
+    "git_blob_sha1": "a4ec858104cbe907e9056e873cec278cee11066a",
+    "compressed_bytes": 5867,
+    "expected_decompressed_region_count": 636,
+    "genome_build": "GRCh38/hg38",
+    "sha256_status": "MUST_BE_COMPUTED_AND_RECORDED_ON_THE_EXECUTION_MACHINE_AFTER_DOWNLOAD_BEFORE_USE"
+  },
+  "execution_gate": [
+    "download from the immutable release commit, not master",
+    "compute SHA-256 locally and bind it into the Route-B receipt",
+    "decompress and require exactly 636 BED records before peak construction",
+    "fail closed if chromosome naming is incompatible with the Route-B chromsizes",
+    "pass the pinned local BED path explicitly to path_to_blacklist",
+    "record regions removed by blacklist overlap without using that count to retune any threshold"
+  ],
+  "forbidden": [
+    "choose a different blacklist after seeing Route-A/Route-B agreement",
+    "silently omit the blacklist because it reduces agreement",
+    "substitute a different ENCODE portal blacklist without a new versioned amendment",
+    "treat blacklist-overlapping regions as biological zero"
+  ],
+  "governance": {
+    "routeB_consensus_peaks": "NOT_FROZEN_UNTIL_THIS_RESOURCE_IS_LOCALLY_SHA256_BOUND",
+    "scenicplus_network": "NOT_YET_QUALIFIED"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "V72_SYNTHETIC_R0_R1_QUALIFICATION_RECEIPT_V1",
+  "date": "2026-10-02",
+  "status": "PASS__R0_R1_10K_COUPLED_SYNTHETIC_EXECUTABLE_READINESS__R2_AND_FULL_SCALE_NOT_AUTHORIZED",
+  "qualified_code_head": "54e5b6992bfe3d8bec6d0e38c448cd4817c47567",
+  "base_head": "4fd4305395c4da0c025f336006be7c9dbbe6dd70",
+  "branch": "chatgpt/v72-synthetic-twin-successor-20261002",
+  "pull_request": 200,
+  "github_actions": {
+    "workflow": "V64 privileged-information architecture smoke",
+    "run_id": 36970863182,
+    "run_number": 429,
+    "conclusion": "success",
+    "job_id": 110724347905,
+    "pytest": "315 passed in 26.72s",
+    "direct_checks": [
+      "PASS: V71 synthetic pipeline R0/R1 interfaces present",
+      "PASS: V72 coupled multi-dataset synthetic fixture",
+      "PASS: V72 synthetic pipeline R0/R1 executable readiness",
+      "V72 measured-CI resource estimator executed successfully"
+    ]
+  },
+  "qualified_scope": [
+    "The default V72 coupled CI fixture now uses a true 10,000-cell FULL104-like backbone with source counts allocated from the audited FULL104 HVS/NPH52/SEA_AD proportions.",
+    "V71 readiness is now tested and CI-wired",
+    "Stage4 synthetic interface enforces matched-control semantics, overlapping-window all-overlaps and keeps G2 prospectively unresolved",
+    "SCENIC+ synthetic interface enforces metadata donor authority, suffix-collision positive control, ranking seed, BLAS pin, union-score/route-ranking separation and shard/merge invariants",
+    "synthetic raw Route-B CI path consumes fragments, constructs donor×subcluster pseudobulks, emits deterministic consensus regions and donor recurrence, and re-reads/digests outputs",
+    "checkpoint twins are behaviorally planted for collapse, source shortcut, donor shortcut, private leak, unrecoverable overconfidence and corrupt manifest",
+    "ordinary pipeline validation is observable-only; private-state leak scoring is restricted to explicit final-unblind audit mode",
+    "deterministic stress/full-scale sharding plan reproduces exact FULL104 source counts at 4,553,407 cells",
+    "CI-scale resource bytes are measured; full-scale extrapolations remain planning-only",
+    "Stage4 G2 specification process is prospectively frozen without selecting a post-hoc threshold",
+    "Route-B hg38 blacklist policy is prospectively frozen to Boyle/ENCODE blacklist v2 pending local SHA-256 binding",
+    "successor SCENIC+ Docker recipe pins create_cisTarget_databases upstream commit and fails closed until historical binary digests are supplied",
+    "Macha Stage4 and SCENIC+ heads were independently audited with limitations recorded"
+  ],
+  "defects_found_and_fixed_during_qualification": [
+    {
+      "id": "V71_TRANSPOSE_FAIL_BY_CRASH",
+      "finding": "V71 validator detected matrix shape corruption but then boolean-indexed mismatched availability and raised IndexError.",
+      "fix": "shape qualification now gates masked-value inspection; corruption returns intended diagnostics instead of crashing."
+    },
+    {
+      "id": "V72_FALSE_NEGATIVE_OVERLAP_TEST",
+      "finding": "first-overlap corruption test initially selected a peak with only one legitimate overlap.",
+      "fix": "test now deliberately selects a multi-overlap positive-control peak before removing extra overlaps."
+    },
+    {
+      "id": "V72_CHECKPOINT_SOURCE_COHORT_DEGENERATE",
+      "finding": "checkpoint evaluation used the first contiguous cells, all SEA_AD, making source-shortcut predictability undefined.",
+      "fix": "checkpoint evaluation is source-stratified and label/truth alignment uses explicit cell IDs/global indices; threshold was not weakened."
+    },
+    {
+      "id": "V72_TRUTH_FIREWALL_AUDIT_BOUNDARY",
+      "finding": "ordinary coupled-fixture validation initially scored private-state leak using hidden truth.",
+      "fix": "ordinary pipeline validation is now observable-only; private leakage requires explicit --unblind-final-audit."
+    }
+  ],
+  "independent_audit_limits": [
+    "Macha V2 aggregate receipt is internally consistent with 320 attempted/successful draws, but no repo-resident per-draw ledger was found in the audited directory, so GitHub-only audit did not independently recount every draw.",
+    "SCENIC+ committed speed receipt at audited head remains partial; chat-reported completed worker scaling must be verified when Macha pushes the final receipt.",
+    "Route-B real pseudobulk/consensus producers need fragment acquisition↔QC digest binding plus chromsizes/blacklist SHA binding before real region-universe freeze."
+  ],
+  "explicitly_not_qualified": [
+    "MEDIUM_STRESS 100k/500k execution",
+    "FULL104-scale 4,553,407-cell materialization",
+    "real 63.6 GB Route-B pseudobulk extraction",
+    "real MACS/pycisTopic Route-B consensus peaks",
+    "full 10,249-motif cisTarget database builds",
+    "real Route-A/Route-B eRegulon networks",
+    "Stage4 G2 final statistical/magnitude rule",
+    "Stage4 real correspondence",
+    "Morabito/protected validation",
+    "recoverability TEST",
+    "multimodal training"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "scenicplus_network": "NOT_YET_QUALIFIED"
+  },
+  "history_note": "Earlier run #426 qualified the pre-10k implementation. This receipt supersedes that boundary with run #429 after the default coupled fixture was promoted from 240 to 10,000 FULL104-like cells."
+}

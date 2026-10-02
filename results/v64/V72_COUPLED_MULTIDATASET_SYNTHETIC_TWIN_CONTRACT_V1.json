@@ -1,0 +1,86 @@
+{
+  "schema": "V72_COUPLED_MULTIDATASET_SYNTHETIC_TWIN_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "PROSPECTIVE_SMALL_CI_EXECUTION_CONTRACT",
+  "purpose": "Upgrade V71 from a single raw ETL fixture to one coupled hidden biological truth observed through FULL104-like, Stage4-like, SCENIC+-like, Morabito-like, perturbation-like, spatial-like and checkpoint-twin interfaces.",
+  "inherits": [
+    "results/v64/V71_FULL_SYNTHETIC_TWIN_SYSTEM_CONTRACT_V1.json",
+    "results/v64/V71_SYNTHETIC_RAW_ETL_CONTRACT_V1.json",
+    "results/v64/V71_SYNTHETIC_TRUTH_FIREWALL_CONTRACT_V1.json"
+  ],
+  "shared_hidden_truth": {
+    "blocks": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_shared",
+      "Z_reg_private",
+      "technical_latents",
+      "source_specific_biology"
+    ],
+    "graph": "TF→region→gene/program",
+    "rule": "All dataset emulators are projections of the same generated truth. Independent per-dataset truth generation is forbidden."
+  },
+  "post_S99_requirements": [
+    "Stage4 controls are promoter-fixed rather than globally random",
+    "control distance is matched within max(10 percent of linked distance, 10 kb)",
+    "linked and control intervals are distinct and non-overlapping",
+    "accessibility/measurement qualification is symmetric",
+    "an edge with no admissible control is explicitly trimmed rather than silently replaced"
+  ],
+  "post_S102_requirements": {
+    "G2_contract_state": "OPEN_PROSPECTIVE_SPECIFICATION_REQUIRED",
+    "forbidden": "No numeric G2 threshold or equivalence margin may be inferred from V2 or K-curve outcomes.",
+    "synthetic_output_rule": "Fixtures may emit raw control-vs-control deltas and the scale-free |CVC delta|/|primary delta| diagnostic, but must not label a new G2 rule PASS until prospectively specified."
+  },
+  "overlap_geometry": [
+    "5 kb Stage4 windows may overlap",
+    "one external peak may overlap multiple Stage4 windows",
+    "crosswalk must enumerate all overlaps, never first hit only"
+  ],
+  "barcode_identity": [
+    "barcode suffix is not donor identity",
+    "synthetic paired-multiome cohort deliberately contains suffixes shared by multiple donors",
+    "all producers use explicit barcode→donor authority"
+  ],
+  "scenicplus_reproducibility": {
+    "ranking_seed": 20261001,
+    "blas_threads": 1,
+    "union_scoring_reuse": "ALLOWED_AFTER_EQUIVALENCE",
+    "rankings_shared_across_routes": false,
+    "immutable_execution_snapshot_required": true,
+    "shard_completion_requires_disk_reread": true,
+    "merge_requires_exact_ordered_motif_axis": true
+  },
+  "raw_route_requirements": {
+    "route_A": "submitted peak matrix",
+    "route_B": "fragments.tsv.gz → donor-aware pseudobulk → peak calling/consensus adapter",
+    "note": "SMALL_CI may use a deterministic peak-calling adapter in place of MACS binary execution, but it must consume fragment records and emit the same route boundary objects."
+  },
+  "checkpoint_twins": [
+    "HEALTHY",
+    "COLLAPSED",
+    "SOURCE_SHORTCUT",
+    "DONOR_SHORTCUT",
+    "PRIVATE_STATE_LEAK",
+    "OVERCONFIDENT_UNRECOVERABLE",
+    "CORRUPT_MANIFEST"
+  ],
+  "acceptance": [
+    "validator passes the clean fixture",
+    "all planted dataset families share donor/program/truth namespaces",
+    "truth files are physically disjoint from observable roots",
+    "semantic corruptions have tests that fail for the intended reason",
+    "no real or protected outcome is required"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED"
+  },
+  "truth_firewall_execution": {
+    "ordinary_pipeline_validation": "OBSERVABLE_ONLY__MUST_NOT_SCORE_PRIVATE_TRUTH",
+    "final_unblind_audit": "EXPLICIT_MODE_AFTER_SELECTION_FREEZE",
+    "rule": "A validator that can inspect both observables and hidden truth must default to observable-only and require an explicit unblind flag for truth-dependent metrics."
+  }
+}

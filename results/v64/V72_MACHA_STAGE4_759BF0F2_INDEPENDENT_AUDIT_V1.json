@@ -1,0 +1,91 @@
+{
+  "schema": "V72_MACHA_STAGE4_759BF0F2_INDEPENDENT_AUDIT_V1",
+  "date": "2026-10-02",
+  "audited_branch": "claude/v64-exact-sampler-successor-20260930",
+  "audited_head": "759bf0f276307ad296e9a8669f39adccc1a7f83a",
+  "artifacts_reviewed": [
+    "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_SWEEP_V2.json",
+    "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+    "scripts/v64/build_stage4_synthetic_worlds_v1.py",
+    "scripts/v64/stage4_executor_v1.py"
+  ],
+  "findings": [
+    {
+      "id": "A1_V2_SUMMARY_INTERNAL_ARITHMETIC",
+      "status": "VERIFIED",
+      "evidence": {
+        "cells": 8,
+        "draws_attempted_per_cell": 40,
+        "total_draws_attempted": 320,
+        "every_cell_draws_succeeded": 40,
+        "total_failed_draws": 0
+      },
+      "note": "The committed summary receipt is internally consistent with the reported 4 worlds × 2 donor counts × 40 draws design."
+    },
+    {
+      "id": "A2_MEASURED_TECHNICAL_RETRACTION",
+      "status": "VERIFIED_WITH_LIMIT",
+      "evidence": {
+        "all_five_pass_60": "0/40",
+        "all_five_pass_282": "0/40",
+        "G3_pass_60": "0/40",
+        "G3_pass_282": "0/40",
+        "worst_smd_median_60": 1.8820405784576986,
+        "worst_smd_median_282": 1.9003831876650743,
+        "worst_feature": "atac_depth_sensitivity"
+      },
+      "interpretation": "The repaired synthetic measured-depth world is rejected by the frozen balance gate in all 80 draws. This supports retracting the old V1 depth alarm for the frozen matched-control fixture.",
+      "limit": "This is synthetic qualification of the planted measured-depth world, not proof that every possible technical confound is controlled in real data."
+    },
+    {
+      "id": "A3_TRUE_NULL_G1",
+      "status": "VERIFIED",
+      "evidence": {
+        "G1_60": "2/40 = 0.05",
+        "G1_282": "2/40 = 0.05"
+      }
+    },
+    {
+      "id": "A4_HIDDEN_CONFOUND_MAGNITUDE",
+      "status": "VERIFIED_WITH_LIMIT",
+      "evidence": {
+        "biology_delta_median_60": 0.5667855162203412,
+        "hidden_delta_median_60": 0.5749265166541415,
+        "ratio_60": 1.0144,
+        "biology_delta_median_282": 0.5692230192385461,
+        "hidden_delta_median_282": 0.5825692962841839,
+        "ratio_282": 1.0234
+      },
+      "interpretation": "Effect magnitude alone does not separate this planted hidden-confound world from planted biology."
+    },
+    {
+      "id": "A5_G2_SPECIFICATION",
+      "status": "UNRESOLVED_CONTRACT_GAP_CONFIRMED",
+      "evidence": "stage4_executor_v1.py implements a two-sided 95% donor-bootstrap CI containing zero and explicitly records that the contract did not specify the test or level.",
+      "consequence": "V2 G2 pass/rejection rates must not be promoted to properties of the frozen scientific design until G2 semantics are prospectively specified."
+    },
+    {
+      "id": "A6_K_CURVE_GUARDS",
+      "status": "VERIFIED_IN_CODE_NOT_EXECUTION",
+      "evidence": [
+        "runner reads K from the precommit rather than choosing it internally",
+        "runner re-reads confound_blocks_K from each world manifest and stops on mismatch",
+        "matching-rule build failures stop rather than being excluded",
+        "biology reference values are hard-coded as citations to V2 rather than re-derived"
+      ],
+      "limit": "No committed K-curve result exists at the audited head; this is software/design audit only."
+    },
+    {
+      "id": "A7_PER_DRAW_RECONCILIATION",
+      "status": "NOT_INDEPENDENTLY_VERIFIABLE_FROM_GITHUB_ARTIFACTS_REVIEWED",
+      "evidence": "The committed phase_b_design directory contains the aggregate V2 sweep receipt and precommit, but the audit did not find a repo-resident per-draw ledger containing all 320 individual draw records.",
+      "consequence": "The 320-draw aggregate is internally consistent and bound to a precommit, but an independent GitHub-only audit cannot reconstruct every count from individual committed draw records. Preserve this limitation rather than describing the aggregate as independently re-counted."
+    }
+  ],
+  "overall": "V2 aggregate arithmetic and the major S99/S102 interpretations are supported by the committed receipt/code. The depth-alarm retraction is justified for the planted repaired fixture. General hidden-confound protection and the final G2 rule remain unresolved. Stage4 remains closed.",
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "real_substrate_not_used_by_v2_receipt": true
+  }
+}
