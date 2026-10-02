@@ -46,7 +46,26 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nihcard_exact_supplement_builder_v1 as B                      # noqa: E402
 
-ROOT = "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
+_ROOT_BASE = "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
+
+
+def _resolve_root():
+    """Same bounded sub-namespace rule as the executor, so a parallel draw builds and is
+    read inside one isolated directory that no other worker can address."""
+    import re as _re
+    if "JEPA_SYNTHETIC_RUN_ID" not in os.environ:
+        return _ROOT_BASE
+    rid = os.environ["JEPA_SYNTHETIC_RUN_ID"]
+    # an empty run id refuses rather than silently sharing the root
+    if not _re.fullmatch(r"[A-Za-z0-9_]{1,40}", rid):
+        raise SystemExit("JEPA_SYNTHETIC_RUN_ID must be 1-40 chars of [A-Za-z0-9_]")
+    r = os.path.abspath(os.path.join(_ROOT_BASE, "_runs", rid))
+    if not r.startswith(os.path.abspath(_ROOT_BASE) + os.sep):
+        raise SystemExit("resolved synthetic run root escaped the synthetic root")
+    return r
+
+
+ROOT = _resolve_root()
 
 # geometry, matched to the real substrate in ratio
 N_DONORS_OK = 60            # donors that pass eligibility

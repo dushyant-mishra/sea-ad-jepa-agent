@@ -1,0 +1,140 @@
+{
+  "schema": "V64_SYNTHETIC_RUN_ISOLATION_V1",
+  "date": "2026-10-02",
+  "why": "a parallel draw must not be able to read another draw's fixture while reporting its own identity",
+  "rule": "JEPA_SYNTHETIC_RUN_ID matches [A-Za-z0-9_]{1,40} and selects SYNTHETIC_ROOT/_runs/<id>; no separators, no dots, resolved path required to lie under the synthetic root",
+  "n_checks": 21,
+  "n_holding": 21,
+  "checks": [
+    {
+      "check": "reject run id '..'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id '../evil'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'a/b'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'a\\\\b'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id '.'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id ''",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'a.b'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'a b'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id '~'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id 'C:'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "reject run id '_runs/../..'",
+      "expectation": "refused",
+      "observed": "exit=1",
+      "holds": true
+    },
+    {
+      "check": "no run id resolves to the unchanged synthetic root",
+      "expectation": "the module constant",
+      "observed": "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic",
+      "holds": true
+    },
+    {
+      "check": "two run ids resolve to different roots",
+      "expectation": "disjoint paths",
+      "observed": "w00 vs w01",
+      "holds": true
+    },
+    {
+      "check": "both resolved roots lie under the synthetic root",
+      "expectation": "no escape",
+      "observed": "under_base=True",
+      "holds": true
+    },
+    {
+      "check": "both concurrent builds succeed",
+      "expectation": "exit 0 each",
+      "observed": "{'par_a': 0, 'par_b': 0}",
+      "holds": true
+    },
+    {
+      "check": "each build has its OWN manifest",
+      "expectation": "two separate files",
+      "observed": "a=True b=True",
+      "holds": true
+    },
+    {
+      "check": "neither build overwrote the other's K",
+      "expectation": "5 and 50 survive",
+      "observed": "a.K=5 b.K=50",
+      "holds": true
+    },
+    {
+      "check": "their substrate bytes are disjoint",
+      "expectation": "no shared digest",
+      "observed": "0 shared",
+      "holds": true
+    },
+    {
+      "check": "their world directories are different paths",
+      "expectation": "disjoint",
+      "observed": "a!=b=True",
+      "holds": true
+    },
+    {
+      "check": "the canonical worlds sit outside every run namespace",
+      "expectation": "unaffected",
+      "observed": "canonical manifest present=True",
+      "holds": true
+    }
+  ],
+  "producer_sha256": "723a4a1bf00e8b2cff178925f9a2fb48dfe7240b055c42af6692fd5a509287b8",
+  "real_substrate_read": false,
+  "computed_correspondence_values": 0,
+  "status": "PASS"
+}

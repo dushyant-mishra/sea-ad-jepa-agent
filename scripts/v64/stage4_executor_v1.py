@@ -947,6 +947,35 @@ def _crosscheck_scalar(stat, S, n_sample=200):
                 agrees=n_ok == n_sample and n_status_ok == n_sample)
 
 
+def _synthetic_run_root():
+    """A BOUNDED sub-namespace under the constant synthetic root, for parallel draws.
+
+    Parallel draws cannot share one world directory: worker B's build would overwrite
+    worker A's world between A's build and A's read. The obvious fix, a --synthetic-root
+    flag, is exactly the bypass surface this executor refuses to have. So the namespace is
+    bounded instead: an optional run id selects SYNTHETIC_ROOT/_runs/<id>, the id must
+    match a strict character class with no separators and no dots, and the resolved path
+    is required to lie under SYNTHETIC_ROOT. A traversal is therefore not expressible, and
+    every other guard -- the fixed world list, the manifest digests, the refusal of any
+    file carrying a real bound digest -- applies unchanged inside the sub-namespace.
+    """
+    if "JEPA_SYNTHETIC_RUN_ID" not in os.environ:
+        return SYNTHETIC_ROOT
+    rid = os.environ["JEPA_SYNTHETIC_RUN_ID"]
+    # An EMPTY run id is a refusal, not a fall-back. Treating it as "no isolation" would
+    # silently return every worker to the shared root, which is precisely the collision
+    # the mechanism exists to prevent, arriving without a message.
+    import re as _re
+    if not _re.fullmatch(r"[A-Za-z0-9_]{1,40}", rid):
+        raise Stop("JEPA_SYNTHETIC_RUN_ID must be 1-40 characters of [A-Za-z0-9_]; "
+                   "%r is not" % rid)
+    root = os.path.abspath(os.path.join(SYNTHETIC_ROOT, "_runs", rid))
+    base = os.path.abspath(SYNTHETIC_ROOT)
+    if not root.startswith(base + os.sep):
+        raise Stop("the resolved synthetic run root escaped the synthetic root")
+    return root
+
+
 def load_synthetic_world(world):
     """Resolve a synthetic world, refusing anything that is not demonstrably synthetic.
 
@@ -959,7 +988,7 @@ def load_synthetic_world(world):
     """
     if world not in SYNTHETIC_WORLDS:
         raise Stop("unknown synthetic world: %r" % world)
-    root = os.path.abspath(os.path.join(SYNTHETIC_ROOT, world))
+    root = os.path.abspath(os.path.join(_synthetic_run_root(), world))
     mani_p = os.path.join(root, "WORLD_MANIFEST.json")
     if not os.path.exists(mani_p):
         raise Stop("no world manifest at %s" % mani_p)
@@ -1090,7 +1119,9 @@ def main() -> int:
         assert_no_matrix_access()
         check_frozen_rules_against_contracts()
         S, rows, man = load_synthetic_world(a.synthetic_world)
-        rec = run_correspondence(S, rows, a.synthetic_world, SYNTHETIC_OUT)
+        out_dir = (SYNTHETIC_OUT if _synthetic_run_root() == SYNTHETIC_ROOT
+                   else os.path.join(_synthetic_run_root(), "_results"))
+        rec = run_correspondence(S, rows, a.synthetic_world, out_dir)
         rec["world_manifest"] = man
         with open(rec["_written_to"], "w", newline=chr(10)) as fh:
             json.dump(rec, fh, indent=2)
