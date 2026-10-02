@@ -1,0 +1,78 @@
+{
+  "schema": "V72_MACHA_SCENICPLUS_F8DC4935_INDEPENDENT_AUDIT_V1",
+  "date": "2026-10-02",
+  "audited_branch": "claude/v69-scenicplus-external-network-20261001",
+  "audited_head": "f8dc493516db079fd529e4a69f370d8b9db0dfad",
+  "artifacts_reviewed": [
+    "scripts/v69/routeb_extract_pseudobulk_fragments_v1.py",
+    "scripts/v69/routeb_call_peaks_and_consensus_v1.py",
+    "results/v64/V69_CISTARGET_SPEED_BENCHMARK_RECEIPT_V1.json",
+    "results/v64/V69_CISTARGET_TOOL_PIN_HAZARD_AND_SUCCESSOR_RECIPE_V1.json"
+  ],
+  "verified": [
+    {
+      "id": "SCA1_BEDPE_THREE_COLUMN_IS_VALID_FOR_MACS",
+      "status": "VERIFIED_NOT_A_DEFECT",
+      "evidence": "MACS documents its BEDPE mode as chromosome,leftmost,rightmost: three columns, distinct from bedtools BEDPE.",
+      "sources": [
+        "https://github.com/macs3-project/MACS/blob/main/docs/source/docs/BEDPE.md",
+        "https://github.com/macs3-project/MACS/blob/main/docs/source/docs/callpeak.md"
+      ],
+      "consequence": "routeb_extract_pseudobulk_fragments_v1.py writing chrom/start/end is compatible with MACS BEDPE semantics."
+    },
+    {
+      "id": "SCA2_PARTIAL_SCAN_BLOCK",
+      "status": "VERIFIED",
+      "evidence": "peak caller rejects a pseudobulk receipt if status is not PASS or PARTIAL_SCAN is true."
+    },
+    {
+      "id": "SCA3_PSEUDOBULK_OUTPUT_REREAD",
+      "status": "VERIFIED",
+      "evidence": "each emitted BED is re-opened, line-count reconciled, SHA-256 computed and recorded before PASS."
+    },
+    {
+      "id": "SCA4_DONOR_SUFFIX_GUARD",
+      "status": "VERIFIED_IN_CODE",
+      "evidence": "pseudobulk producer calls shared assert_donor_map_is_not_suffix_derived() and fails closed."
+    },
+    {
+      "id": "SCA5_STORAGE_SPEED_RECEIPT_IS_PARTIAL",
+      "status": "VERIFIED",
+      "evidence": "committed benchmark receipt still says worker scaling, worker count, shard size, concurrency and full-build authorization are NOT_DETERMINED.",
+      "consequence": "chat-reported t4/t8/t16 timings must not be promoted to committed production authority until the completed scaling receipt lands."
+    },
+    {
+      "id": "SCA6_CISTARGET_TOOL_MASTER_HAZARD",
+      "status": "VERIFIED",
+      "evidence": "historical docker/scenicplus/Dockerfile contains ARG CREATE_CISTARGET_DATABASES_REF=master.",
+      "successor_fact": "Upstream master currently resolves to 304d5dc1b15e5c923908a50a1ec291c3faaccf9c, the latest commit before the 2026 validated-image build date."
+    }
+  ],
+  "new_findings": [
+    {
+      "id": "SCA7_FRAGMENT_RECEIPT_CROSS_BINDING_GAP",
+      "severity": "MEDIUM",
+      "status": "OPEN_FOR_MACHA_SUCCESSOR",
+      "finding": "routeb_extract_pseudobulk_fragments_v1.py verifies fragment file size against the acquisition receipt but does not verify that the acquisition receipt SHA-256 and completed QC receipt refer to the same fragment bytes.",
+      "why_it_matters": "A same-size replaced file or mismatched acquisition/QC receipts could pass the producer's initial custody checks even though the independently completed QC described different bytes.",
+      "required_fix": "Before full Route-B pseudobulk execution, require acquisition receipt SHA-256 == QC receipt fragment SHA-256/digest authority; if the QC schema lacks the digest, amend the producer/receipt contract prospectively. Re-hashing 63.6 GB on every producer run is not required if cryptographically bound receipts are used."
+    },
+    {
+      "id": "SCA8_REGION_UNIVERSE_AUXILIARY_INPUT_DIGEST_GAP",
+      "severity": "MEDIUM",
+      "status": "OPEN_FOR_MACHA_SUCCESSOR",
+      "finding": "routeb_call_peaks_and_consensus_v1.py verifies pseudobulk BED digests but records chromsizes and blacklist as paths/flags rather than SHA-bound input identities.",
+      "why_it_matters": "Chromosome sizes and blacklist alter the final region universe. Path identity is not byte identity.",
+      "required_fix": "Bind SHA-256 and byte size for chromsizes and the prospectively pinned blacklist in the consensus receipt before Route-B region-universe freeze."
+    }
+  ],
+  "prospective_resolution_already_added_on_sol": [
+    "results/v64/V72_ROUTEB_HG38_BLACKLIST_PROSPECTIVE_AMENDMENT_V1.json",
+    "docker/scenicplus/Dockerfile.successor_pinned"
+  ],
+  "overall": "The core Route-B producer logic is directionally sound and the three-column BEDPE output is valid. Two provenance bindings should be repaired before the real Route-B consensus universe is frozen. No eRegulon network is yet qualified.",
+  "governance": {
+    "scenicplus_network": "NOT_YET_QUALIFIED",
+    "routeB_consensus_peaks": "NOT_YET_FROZEN"
+  }
+}
