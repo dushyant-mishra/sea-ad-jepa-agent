@@ -947,7 +947,7 @@ def _crosscheck_scalar(stat, S, n_sample=200):
                 agrees=n_ok == n_sample and n_status_ok == n_sample)
 
 
-def load_synthetic_world(world):
+def load_synthetic_world(world, synthetic_root=None):
     """Resolve a synthetic world, refusing anything that is not demonstrably synthetic.
 
     THE POINT OF THE GUARDS. This mode exists so the orchestration can be qualified
@@ -959,7 +959,11 @@ def load_synthetic_world(world):
     """
     if world not in SYNTHETIC_WORLDS:
         raise Stop("unknown synthetic world: %r" % world)
-    root = os.path.abspath(os.path.join(SYNTHETIC_ROOT, world))
+    base = os.path.abspath(SYNTHETIC_ROOT)
+    chosen = os.path.abspath(synthetic_root or SYNTHETIC_ROOT)
+    if chosen != base and not chosen.startswith(base + os.sep):
+        raise Stop("synthetic root must stay under the canonical synthetic root")
+    root = os.path.abspath(os.path.join(chosen, world))
     mani_p = os.path.join(root, "WORLD_MANIFEST.json")
     if not os.path.exists(mani_p):
         raise Stop("no world manifest at %s" % mani_p)
@@ -1089,8 +1093,15 @@ def main() -> int:
             raise Stop("--preflight-only and --synthetic-world are different modes")
         assert_no_matrix_access()
         check_frozen_rules_against_contracts()
-        S, rows, man = load_synthetic_world(a.synthetic_world)
-        rec = run_correspondence(S, rows, a.synthetic_world, SYNTHETIC_OUT)
+        synthetic_root = os.environ.get("V64_STAGE4_SYNTHETIC_ROOT")
+        # This environment variable is consulted ONLY in synthetic mode and is restricted
+        # to a descendant of the fixed synthetic root. Real Stage-4 execution continues
+        # to expose no alternate input-root surface.
+        S, rows, man = load_synthetic_world(a.synthetic_world, synthetic_root)
+        out_root = os.path.abspath(synthetic_root or SYNTHETIC_ROOT)
+        synthetic_out = os.path.join(out_root, "_results")
+        os.makedirs(synthetic_out, exist_ok=True)
+        rec = run_correspondence(S, rows, a.synthetic_world, synthetic_out)
         rec["world_manifest"] = man
         with open(rec["_written_to"], "w", newline=chr(10)) as fh:
             json.dump(rec, fh, indent=2)
