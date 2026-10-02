@@ -1,0 +1,508 @@
+The sweep is running — 160 draws, roughly an hour.
+
+Here's my position on what this means for freezing the synthetic twin, Sol.
+
+Don't freeze it yet, and don't treat the three instabilities as one finding. Two of them are fine:
+
+The null crossing is what a one-sided 95% bound does. One in four draws is ordinary; the probability of seeing at least one crossing in four draws at a true 5% rate is ~19%. If this turns out to be the whole story, nothing is wrong with the rule — it just means a bare LCB > 0 carries little information at small effect sizes, which is worth stating but is not a defect.
+The control-vs-control drift happened only in the hidden-confound world, where the planted factor loads unequally on the two control arms. That's my fixture's construction showing through, not a failure of the anti-false-green arm.
+The one that should worry us is the measured-technical residue. In that world the honest answer is "no biological effect," so a significant result is a false positive against the null we actually care about — and 3 of 4 is nowhere near 5%. If that holds up as a rate, it is a bias surviving the nuisance adjustment, and it bears on every real Stage-4 result.
+
+The test that decides it is donor count. A bias that doesn't shrink with n gets called significant more often as the bound tightens; noise doesn't. So the sweep runs both worlds at 60 donors (what we qualified) and 282 (the real substrate). If the technical rate rises from 60 to 282, the real run is more exposed than the reduced-scale qualification implied — which would be the opposite of reassuring, and worth knowing before anything is frozen.
+
+The design is pinned at b23dcc2d2902f8d8 (commit 20ca99af), written and committed before a single draw: two worlds, two donor counts, 40 draws per cell, every draw built to disk and run through the real entrypoint. The stopping rule is deliberately unforgiving — exactly 40 draws, and a cell whose interval is too wide gets reported UNRESOLVED rather than topped up, because adding draws after seeing the estimate is how a prospective design quietly stops being one. Every outcome's interpretation is written down in advance, including the one that says the rule is anti-conservative.
+
+Nothing measured here may change the frozen rules. If the residue rate is bad, it gets recorded as an interpretation limit on Stage 4, not repaired by adjusting the design that produced it.
+
+One correction to your summary worth carrying: the measured-technical residue was significant in 3/4 draws, and separately the depth adjustment worked in 4/4 — it removed over half the raw effect every time. The adjustment isn't failing; it's leaving a small, apparently systematic remainder. That distinction matters for where the fix would have to go, if we ever decide one is warranted.
+
+I'll report the rates when the sweep lands. The SCENIC+/GSE214979 lane is running separately and I don't have its results yet.
+
+
+Materially different: 22,991 intervals (71.5%), not 13,325 (41.4%). My defect would have understated Stage-4 coverage by 30 points. Let me add tests that would have caught it.
+
+Write test_v69_structural_crosswalk_fail_closed_v1.py
+172 lines
+"""Degenerate-input tests for the V69 structural crosswalk layer.
+
+The geometry of the fixture matches the real data in kind: Stage-4 intervals are
+heavily OVERLAPPING fixed-width windows, so a single peak can touch several of
+them. `test_interval_coverage_counts_every_touched_interval` is the regression test
+for a real defect in this producer, which derived Stage-4 coverage from each peak's
+FIRST overlapping interval and so understated coverage by 30 percentage points on
+the real data (13,325 vs 22,991 of 32,153).
+"""
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import pytest
+
+_MOD = Path(__file__).resolve().parents[1] / "scripts" / "v69" / \
+    "build_structural_crosswalk_layer_v1.py"
+_spec = importlib.util.spec_from_file_location("v69_xwalk", _MOD)
+xw = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(xw)
+
+W = 5000
+
+
+def _overlapping_windows(chrom, first_start, n, step):
+    """n windows of width W starting every `step` bp -- they overlap when step < W."""
+    starts = np.array([first_start + i * step for i in range(n)], dtype=np.int64)
+    return (np.array([chrom] * n), starts, starts + W)
+
+
+def test_interval_coverage_counts_every_touched_interval():
+    """Regression: coverage must not be derived from each peak's FIRST hit only."""
+    chrom, start, end = _overlapping_windows("chr1", 1_000_000, 10, 1)
+    # one peak spanning the whole stack of 10 one-bp-offset windows
+    peaks = pd.DataFrame({"peak_id": ["p0"], "chrom": ["chr1"],
+                          "start": [1_000_000], "end": [1_000_000 + W]})
+    n_ov, first_idx, covered = xw.overlap_counts(peaks, chrom, start, end)
+    assert n_ov[0] == 10, "the peak genuinely overlaps all ten windows"
+    assert covered.sum() == 10, "every touched interval must be marked covered"
+    first_only = np.zeros(start.size, dtype=bool)
+    first_only[first_idx[first_idx >= 0]] = True
+    assert first_only.sum() == 1
+    assert covered.sum() > first_only.sum(), \
+        "the fixture must be able to expose the first-hit-only undercount"
+
+
+def test_non_overlapping_peak_covers_nothing():
+    chrom, start, end = _overlapping_windows("chr1", 1_000_000, 5, 10_000)
+    peaks = pd.DataFrame({"peak_id": ["p0"], "chrom": ["chr1"],
+                          "start": [900_000], "end": [901_000]})
+    n_ov, first_idx, covered = xw.overlap_counts(peaks, chrom, start, end)
+    assert n_ov[0] == 0 and covered.sum() == 0 and first_idx[0] == -1
+
+
+def test_chromosome_is_respected():
+    """A peak must not match an interval with the same coordinates on another chromosome."""
+    chrom = np.array(["chr2"]); start = np.array([1_000_000], dtype=np.int64)
+    end = start + W
+    peaks = pd.DataFrame({"peak_id": ["p0"], "chrom": ["chr1"],
+                          "start": [1_000_000], "end": [1_000_000 + W]})
+    n_ov, _, covered = xw.overlap_counts(peaks, chrom, start, end)
+    assert n_ov[0] == 0 and covered.sum() == 0
+
+
+def test_half_open_boundaries_do_not_count_as_overlap():
+    chrom = np.array(["chr1"]); start = np.array([2000], dtype=np.int64)
+    end = np.array([7000], dtype=np.int64)
+    # peak ends exactly where the interval starts -> no overlap
+    abut = pd.DataFrame({"peak_id": ["p"], "chrom": ["chr1"],
+                         "start": [1000], "end": [2000]})
+    assert xw.overlap_counts(abut, chrom, start, end)[0][0] == 0
+    # one bp of genuine overlap -> counted
+    touch = pd.DataFrame({"peak_id": ["p"], "chrom": ["chr1"],
+                          "start": [1000], "end": [2001]})
+    assert xw.overlap_counts(touch, chrom, start, end)[0][0] == 1
+
+
+# ---------------- fail-closed contract ----------------
+
+def _registry(tmp_path, n=xw.FULL104_EXPECTED_ADDRESSES, contiguous=True, dup=False):
+    ens = [f"ENSG{i:011d}" for i in range(n)]
+    if dup:
+        ens[1] = ens[0]
+    idx = list(range(n))
+    if not contiguous:
+        idx[0], idx[1] = idx[1], idx[0]
+    df = pd.DataFrame({
+        "molecular_address_index": idx,
+        "molecular_address_id": ens,
+        "current_ensembl_gene_id": ens,
+        "symbol": [f"S{i}" for i in range(n)],
+        "contributing_source_families": ["HVS|NPH52|SEA-AD"] * n,
+    })
+    p = tmp_path / "reg.csv"
+    df.to_csv(p, index=False)
+    return p, hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def test_registry_digest_mismatch_fails_closed(tmp_path):
+    p, _ = _registry(tmp_path)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.build(p, "f" * 64, [], tmp_path / "ra.json", tmp_path / "o")
+    assert e.value.status == "FAIL__FULL104_REGISTRY_DIGEST_MISMATCH"
+
+
+def test_registry_row_count_mismatch_fails_closed(tmp_path):
+    p, sha = _registry(tmp_path, n=10)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.build(p, sha, [], tmp_path / "ra.json", tmp_path / "o")
+    assert e.value.status == "FAIL__FULL104_REGISTRY_ROW_COUNT_UNEXPECTED"
+    assert e.value.detail["observed"] == 10
+
+
+def test_non_contiguous_address_index_fails_closed(tmp_path):
+    p, sha = _registry(tmp_path, contiguous=False)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.build(p, sha, [], tmp_path / "ra.json", tmp_path / "o")
+    assert e.value.status == "FAIL__FULL104_ADDRESS_INDEX_NOT_CONTIGUOUS_IN_FILE_ORDER"
+
+
+def test_duplicate_address_ids_fail_closed(tmp_path):
+    p, sha = _registry(tmp_path, dup=True)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.build(p, sha, [], tmp_path / "ra.json", tmp_path / "o")
+    assert e.value.status == "FAIL__FULL104_ADDRESS_IDS_NOT_UNIQUE"
+
+
+def _shard(path, genes, n_int=xw.STAGE4_EXPECTED["intervals"],
+           n_pairs=xw.STAGE4_EXPECTED["pair_keys"]):
+    np.savez(path,
+             genes=np.array(genes),
+             interval_chrom=np.array(["chr1"] * n_int),
+             interval_start=np.arange(n_int, dtype=np.int64) * 10,
+             interval_end=np.arange(n_int, dtype=np.int64) * 10 + W,
+             pair_keys=np.array([f"k{i}" for i in range(n_pairs)]),
+             pair_gene=np.array([genes[0]] * n_pairs),
+             pair_interval=np.zeros(n_pairs, dtype=np.int64),
+             t3_value=np.zeros(3), t4_value=np.zeros(3))
+    return path
+
+
+def test_stage4_vocabulary_disagreement_across_shards_fails_closed(tmp_path):
+    g = [f"ENSG{i:011d}" for i in range(xw.STAGE4_EXPECTED["genes"])]
+    a = _shard(tmp_path / "a.npz", g)
+    g2 = list(g); g2[0] = "ENSG99999999999"
+    b = _shard(tmp_path / "b.npz", g2)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.load_stage4_vocabulary([a, b])
+    assert e.value.status == "FAIL__STAGE4_VOCABULARY_DISAGREES_ACROSS_SHARDS"
+    assert e.value.detail["differing_array"] == "genes"
+
+
+def test_stage4_vocabulary_size_mismatch_fails_closed(tmp_path):
+    g = [f"ENSG{i:011d}" for i in range(10)]
+    a = _shard(tmp_path / "a.npz", g, n_int=5, n_pairs=5)
+    with pytest.raises(xw.FailClosed) as e:
+        xw.load_stage4_vocabulary([a])
+    assert e.value.status == "FAIL__STAGE4_VOCABULARY_SIZE_UNEXPECTED"
+
+
+def test_value_arrays_are_recorded_as_present_but_not_read(tmp_path):
+    """The receipt must prove the producer saw outcome-bearing arrays and left them alone."""
+    g = [f"ENSG{i:011d}" for i in range(xw.STAGE4_EXPECTED["genes"])]
+    a = _shard(tmp_path / "a.npz", g)
+    _, per_shard = xw.load_stage4_vocabulary([a])
+    assert per_shard[0]["value_arrays_present_but_not_read"] == ["t3_value", "t4_value"]
+Bash Run crosswalk tests
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && python -m pytest tests/test_v69_structural_crosswalk_fail_closed_v1.py -q 2>&1 | grep -vE "Warning|warnings summary|^\s*$|pyreadline|numexpr|docs.pytest|return isinstance|_np_version" | tail -15
+
+OUT
+...........                                                              [100%]
+11 passed, 3 warnings in 3.31s
+Bash Check env build 4 result
+IN
+grep -nE "IMPORT_FAILED|ENV BUILD FINISHED|\"scenicplus\"|\"pycisTopic\"|\"pycistarget\"|CTDB_COMMIT|ERROR:" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/env_build4.log" 2>/dev/null | tail -20
+
+OUT
+(Bash completed with no output)
+Bash Check env build 4 tail
+IN
+tail -30 "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/env_build4.log" 2>/dev/null | grep -viE "^\s*$"; echo "=== frag ==="; stat -c "%s" /d/jepa_v5_outputs_20260925/v69_scenicplus/raw/GSE214979_atac_fragments.tsv.gz
+
+OUT
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/c4/f4/19/26c8d60799f04c0cd0167e9e823203eb4c8d16c41afe60f6d6
+Successfully built pybedtools
+Installing collected packages: pysam, pybedtools
+Successfully installed pybedtools-0.9.1 pysam-0.24.1
+  Building wheel for statistics (pyproject.toml): finished with status 'done'
+  Created wheel for statistics: filename=statistics-1.0.3.5-py3-none-any.whl size=7493 sha256=4274dd95a29622cab48721687afc27073bc141806a9738dcf119fbc4f5d4876b
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/a7/30/34/fceae1c718a4e749dd51f479c5720c0671519887e824915e90
+  Building wheel for stopit (pyproject.toml): started
+  Building wheel for stopit (pyproject.toml): finished with status 'done'
+  Created wheel for stopit: filename=stopit-1.1.2-py3-none-any.whl size=11985 sha256=a624d40fa26f9d546f2d6101214c847e033fd0c48f3f30c6103058edc9905450
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/da/77/2d/adbc56bc4db95ad80c6d4e71cd69e2d9d122174904342e3f7f
+  Building wheel for tspex (pyproject.toml): started
+  Building wheel for tspex (pyproject.toml): finished with status 'done'
+  Created wheel for tspex: filename=tspex-0.6.3-py3-none-any.whl size=27289 sha256=a8ba4e508018744b80bc73e9757e69c8d541cdd9464c6513371311cc368750a5
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/a1/b4/f9/b710c768e5eee193e1d1ce1a7ce96e451753bc40284558869b
+  Building wheel for typing (pyproject.toml): started
+  Building wheel for typing (pyproject.toml): finished with status 'done'
+  Created wheel for typing: filename=typing-3.7.4.3-py3-none-any.whl size=26396 sha256=bdacdef2049e031f4234ea8a4550dc66f5251a54bdba0ba0a9e3eede2edd39f9
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/9d/67/2f/53e3ef32ec48d11d7d60245255e2d71e908201d20c880c08ee
+  Building wheel for umap-learn (pyproject.toml): started
+  Building wheel for umap-learn (pyproject.toml): finished with status 'done'
+  Created wheel for umap-learn: filename=umap_learn-0.5.5-py3-none-any.whl size=86927 sha256=ef8c1a86bfd1738c96dc1b289daed5a83c30bd420b7f6717963434083f128679
+  Stored in directory: /home/dushyant_mishra/.cache/pip/wheels/de/07/2e/814a6ee82e37528f2044a609a431028375b149bc31f03c0e27
+Successfully built scenicplus loomxpy pyscenic pycistarget pycistopic loompy pyranges annoy bioservices connection-pool fbpca frozendict globre interlap intervaltree macs2 multiprocessing-on-dill pyfasta pyrle sinfo statistics stopit tspex typing umap-learn
+Failed to build datrie
+error: failed-wheel-build-for-install
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> datrie
+=== frag ===
+43384393728
+Nearly there — scenicplus, pycistopic, pycistarget all built; only datrie (a snakemake dep) failed. Installing it from conda.
+
+Edit build_scenicplus_env_wsl_v1.sh
+Added 3 lines
+Bash Rebuild env with datrie from conda
+IN
+wsl -e bash -lc 'cd "/mnt/d/jepa_wt_v69_scenicplus_20261001" && bash scripts/v69/build_scenicplus_env_wsl_v1.sh > /mnt/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/env_build5.log 2>&1; echo "ENV_BUILD_EXIT=$?"' 2>&1 | tail -2
+
+OUT
+Command running in background with ID: bdu9dzq3m. Output is being written to: C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\tasks\bdu9dzq3m.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Let me record S6 in the self-audit lane and commit the crosswalk work.
+
+Edit V69_SCENICPLUS_SELF_AUDIT_LANE.md
+Added 50 lines
+Bash Commit and push crosswalk layer
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && git add scripts/v69/build_structural_crosswalk_layer_v1.py tests/test_v69_structural_crosswalk_fail_closed_v1.py docs/agent/V69_SCENICPLUS_SELF_AUDIT_LANE.md scripts/v69/build_scenicplus_env_wsl_v1.sh && git -c user.name="Dushyant Mishra" -c user.email="dmishra@holycross.edu" commit -q -F - <<'MSG' && git rev-parse HEAD && git push -q origin HEAD && echo PUSHED
+V69: structural crosswalk layer, and resolve the Stage-4 genome build empirically
+
+STRUCTURAL ONLY. Reads feature vocabularies -- which genes, intervals and pair keys
+exist -- and never a Stage-4 effect estimate. The Phase-B t3_value/t4_value arrays
+are seen and deliberately not read; the receipt records that fact per shard so an
+auditor can check it.
+
+GENOME BUILD RESOLVED, NOT ASSUMED. The NIH-CARD design contract speaks of an
+"hg19-primary distance convention", and the Phase-B pair keys embed an hg19
+coordinate (ENUM:e10124|+1|35934996), which invites the conclusion that the Stage-4
+intervals are hg19. They are not. All 57 enumerated-control pair keys match the
+hg38_start/hg38_end columns of V64_PHASE_B_ENUM_INTERVALS_V1.json exactly, and 0 of
+57 match the hg19 columns. That design file's sha256
+(4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619) equals
+enum_intervals_sha256 in PHASE_B_SUBSTRATE_RECEIPT_s00.json, so the comparison is
+against the artifact the substrate was actually built from. The hg19 number in the
+pair key is an identifier, not a coordinate in use.
+
+Consequence: GSE214979 (GRCh38) and Stage-4 are in the SAME build. No liftOver is
+needed, and none is performed. The producer fails closed if either side fails to
+declare GRCh38.
+
+Measured structural coverage (DEV_NO_MORABITO_OVERLAP population):
+  genes   35,445 / 36,601 GSE214979 RNA features resolve to a FULL104 address
+          1,156 are STRUCTURALLY_UNMEASURED in FULL104
+          4,370 / 4,372 Stage-4 genes are present in GSE214979
+          FULL104 source support: SEA-AD 35,445, NPH52 30,436, HVS 17,947
+  regions 17,686 / 150,614 peaks overlap a Stage-4 interval
+          22,991 / 32,153 Stage-4 intervals (71.5%) are reached by some peak
+
+Self-audit S6, caught before it could do damage: my first version derived Stage-4
+coverage from each peak's FIRST overlapping interval. Stage-4 intervals are 5 kb
+windows enumerated at 1 bp offsets, so they overlap heavily -- 7,432 peaks touch
+more than one and one touches 16. The first-hit-only figure was 13,325 intervals
+(41.4%); the correct figure is 22,991 (71.5%). A 30-point understatement that would
+have read as a conservative number rather than a bug. Found by reading my own
+receipt and asking whether "first" could differ from "all", not by a test. The
+regression test now reproduces the real overlapping-window geometry and asserts the
+corrected count strictly exceeds the first-hit-only count, so it fails against the
+old code. The receipt reports both figures side by side rather than quietly
+swapping in the correction.
+
+The FULL104 registry is read by content digest from the canonical project worktree
+(sha256 7d61ed7b..., 41,238 rows, verified against
+docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json). That worktree was
+not modified.
+
+Mandate items 10 and 11 require PROGRAM-level reporting; this is the reusable
+address-resolution substrate those will look up, and the receipt says so explicitly
+so these global numbers are not mistaken for the program-level deliverable.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+MSG
+
+OUT
+4736a3cdd1aca68d6deb9f7356d8a93c5d74d6cd
+PUSHED
+Bash Check env build 5 progress
+IN
+grep -nE "IMPORT_FAILED|ENV BUILD FINISHED|\"scenicplus\"|\"pycisTopic\"|\"pycistarget\"|CTDB_COMMIT|ERROR:|Successfully installed scenicplus" "/d/jepa_v5_outputs_20260925/v69_scenicplus/logs/env_build5.log" 2>/dev/null | tail -20; echo "=== running? ==="; wsl -e bash -lc 'pgrep -f build_scenicplus_env >/dev/null && echo RUNNING || echo DONE'
+
+OUT
+=== running? ===
+RUNNING
+Write build_region_universe_bed_v1.py
+170 lines
+#!/usr/bin/env python3
+"""V69: emit a route's region universe as a BED file for cisTarget database construction.
+
+The region universe is the ONLY thing that differs between Route A and Route B, so
+its identity is pinned by an ORDER-sensitive digest: the cisTarget database indexes
+regions positionally, and a reordered BED would silently produce a database whose
+rows mean something other than the caller believes.
+
+Region names are written in the SCENIC+ convention `chr:start-end`, which is also
+how the depositor spells the submitted peak IDs, so Route-A region names round-trip
+to the matrix feature IDs exactly.
+
+Fails closed on: unparseable region IDs, non-positive width, coordinates outside the
+declared chromosome lengths, duplicate regions, and contigs absent from the FASTA
+index (a region the motif scanner could never score).
+"""
+from __future__ import annotations
+
+import argparse
+import datetime as _dt
+import gzip
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+
+def utcnow() -> str:
+    return _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        while True:
+            b = fh.read(chunk)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+
+def ordered_digest(items) -> str:
+    h = hashlib.sha256()
+    for i, s in enumerate(items):
+        h.update(str(i).encode()); h.update(b"\x1f")
+        h.update(str(s).encode()); h.update(b"\x1e")
+    return h.hexdigest()
+
+
+class FailClosed(Exception):
+    def __init__(self, status, **detail):
+        super().__init__(status)
+        self.status = status
+        self.detail = detail
+
+
+def read_fasta_contigs(fasta_gz: Path) -> dict:
+    """Contig name -> sequence length, read from a (bgzipped or plain) FASTA."""
+    lengths = {}
+    name = None
+    n = 0
+    opener = gzip.open if str(fasta_gz).endswith(".gz") else open
+    with opener(fasta_gz, "rt") as fh:
+        for line in fh:
+            if line.startswith(">"):
+                if name is not None:
+                    lengths[name] = n
+                name = line[1:].split()[0]
+                n = 0
+            else:
+                n += len(line.strip())
+    if name is not None:
+        lengths[name] = n
+    return lengths
+
+
+def build(feature_table: Path, route_id: str, out_dir: Path,
+          contig_lengths: dict, fasta_path: str, fasta_sha256: str) -> dict:
+    tbl = pd.read_csv(feature_table)
+    ids = tbl["id"].astype(str)
+    parsed = ids.str.extract(r"^(?P<chrom>[^:]+):(?P<start>\d+)-(?P<end>\d+)$")
+    bad = parsed["chrom"].isna()
+    if bad.any():
+        raise FailClosed("FAIL__REGION_IDS_NOT_PARSEABLE",
+                         n_unparseable=int(bad.sum()),
+                         first_examples=ids[bad].head(5).tolist())
+    df = pd.DataFrame({"chrom": parsed["chrom"],
+                       "start": parsed["start"].astype(np.int64),
+                       "end": parsed["end"].astype(np.int64)})
+    df["name"] = df["chrom"] + ":" + df["start"].astype(str) + "-" + df["end"].astype(str)
+
+    width = (df["end"] - df["start"]).to_numpy()
+    if (width <= 0).any():
+        raise FailClosed("FAIL__NON_POSITIVE_REGION_WIDTH",
+                         n_bad=int((width <= 0).sum()))
+    if df["name"].duplicated().any():
+        raise FailClosed("FAIL__DUPLICATE_REGIONS",
+                         n_duplicated=int(df["name"].duplicated().sum()))
+
+    missing_contigs = sorted(set(df["chrom"]) - set(contig_lengths))
+    if missing_contigs:
+        raise FailClosed("FAIL__REGION_CONTIGS_ABSENT_FROM_FASTA",
+                         missing_contigs=missing_contigs[:20],
+                         n_missing_contigs=len(missing_contigs))
+    clen = df["chrom"].map(contig_lengths).to_numpy()
+    over = df["end"].to_numpy() > clen
+    if over.any():
+        raise FailClosed("FAIL__REGION_END_BEYOND_CONTIG_LENGTH",
+                         n_over=int(over.sum()),
+                         first_examples=df.loc[over, "name"].head(5).tolist())
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    bed = out_dir / ("V69_%s_REGION_UNIVERSE.bed" % route_id)
+    df[["chrom", "start", "end", "name"]].to_csv(
+        bed, sep="\t", header=False, index=False)
+
+    return {
+        "schema": "V69_REGION_UNIVERSE_V1",
+        "route_id": route_id,
+        "built_utc": utcnow(),
+        "source_feature_table": str(feature_table),
+        "source_feature_table_sha256": sha256_file(feature_table),
+        "n_regions": int(len(df)),
+        "n_contigs": int(df["chrom"].nunique()),
+        "contigs": sorted(set(df["chrom"].tolist())),
+        "region_width": {"min": int(width.min()), "median": float(np.median(width)),
+                         "mean": float(width.mean()), "max": int(width.max()),
+                         "total_bp": int(width.sum())},
+        "coordinate_convention": "BED half-open 0-based start, end exclusive, as spelled by the source feature IDs",
+        "genome_build": "GRCh38",
+        "reference_fasta": {"path": fasta_path, "sha256": fasta_sha256},
+        "bed_path": str(bed),
+        "bed_sha256": sha256_file(bed),
+        "ordered_region_digest": ordered_digest(df["name"].tolist()),
+        "unordered_region_digest": ordered_digest(sorted(df["name"].tolist())),
+        "why_ordered_digest": ("The cisTarget database indexes regions positionally. A "
+                               "membership-only digest cannot detect a reordered BED, "
+                               "which would yield a database whose rows mean something "
+                               "other than the caller believes."),
+        "status": "PASS__REGION_UNIVERSE_BUILT",
+    }
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--feature-table", required=True)
+    ap.add_argument("--route-id", required=True)
+    ap.add_argument("--fasta", required=True)
+    ap.add_argument("--fasta-sha256", required=True)
+    ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--receipt", required=True)
+    a = ap.parse_args(argv)
+    try:
+        contigs = read_fasta_contigs(Path(a.fasta))
+        r = build(Path(a.feature_table), a.route_id, Path(a.out_dir),
+                  contigs, a.fasta, a.fasta_sha256)
+    except FailClosed as e:
+        r = {"schema": "V69_REGION_UNIVERSE_V1", "status": e.status, **e.detail}
+    Path(a.receipt).parent.mkdir(parents=True, exist_ok=True)
+    Path(a.receipt).write_text(json.dumps(r, indent=2) + "\n")
+    print(json.dumps(r, indent=2)[:3000])
+    return 0 if str(r["status"]).startswith("PASS") else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+Bash Build Route-A region universe BED
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && O="/d/jepa_v5_outputs_20260925/v69_scenicplus" && FSHA=$(python -c "import json;print(json.load(open(r'$O/receipts/ACQ_HG38_ANALYSISSET_FASTA_V1.json'))['sha256'])") && echo "fasta sha=$FSHA" && time python scripts/v69/build_region_universe_bed_v1.py --feature-table "$O/routeA/ROUTEA_ATAC_SUBMITTED_PEAKS_features.csv.gz" --route-id ROUTE_A_SUBMITTED_PEAKS --fasta "$O/resources/hg38.analysisSet.fa.gz" --fasta-sha256 "$FSHA" --out-dir "$O/routeA" --receipt "$O/receipts/V69_ROUTEA_REGION_UNIVERSE_V1.json" 2>&1 | tail -40
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/d/jepa_v5_outputs_20260925/v69_scenicplus/receipts/ACQ_HG38_ANALYSISSET_FASTA_V1.json'
+Bash Build Route-A region universe BED
+IN
+cd "/d/jepa_wt_v69_scenicplus_20261001" && O="/d/jepa_v5_outputs_20260925/v69_scenicplus" && OW="D:/jepa_v5_outputs_20260925/v69_scenicplus" && FSHA=$(python -c "import json;print(json.load(open('$OW/receipts/ACQ_HG38_ANALYSISSET_FASTA_V1.json'))['sha256'])") && echo "fasta sha=$FSHA" && time python scripts/v69/build_region_universe_bed_v1.py --feature-table "$O/routeA/ROUTEA_ATAC_SUBMITTED_PEAKS_features.csv.gz" --route-id ROUTE_A_SUBMITTED_PEAKS --fasta "$O/resources/hg38.analysisSet.fa.gz" --fasta-sha256 "$FSHA" --out-dir "$O/routeA" --receipt "$O/receipts/V69_ROUTEA_REGION_UNIVERSE_V1.json" 2>&1 | tail -40
