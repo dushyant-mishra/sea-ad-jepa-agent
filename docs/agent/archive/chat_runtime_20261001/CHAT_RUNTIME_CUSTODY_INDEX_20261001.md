@@ -4,7 +4,7 @@ This directory preserves the user-uploaded files that were exclusive to this cha
 
 ## Verbatim chat uploads
 
-These five files were uploaded directly in this conversation and are preserved verbatim:
+These six files were uploaded directly in this conversation and are preserved verbatim:
 
 1. `CHAT_UPLOAD_01_PASTED_TEXT.txt`
    - source upload: `Pasted text.txt`
@@ -21,6 +21,10 @@ These five files were uploaded directly in this conversation and are preserved v
 5. `CHAT_UPLOAD_05_PASTED_MARKDOWN.md`
    - source upload: `Pasted markdown.md`
    - source size: 94,357 bytes
+
+6. `CHAT_UPLOAD_06_PASTED_MARKDOWN.md`
+   - source upload: `Pasted markdown.md`
+   - source size: 13,372 bytes
 
 The repeated source filenames are why the archive uses numbered custody names.
 
