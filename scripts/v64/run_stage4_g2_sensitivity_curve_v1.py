@@ -75,7 +75,13 @@ def one_draw(K, donors, seed_base):
                 g1=bool(g[G1]["passed"]), g2=bool(g[G2]["passed"]),
                 g3=bool(g[G3]["passed"]), delta=a["delta"], lcb95=a["lcb95"],
                 cvc=R["CONTROL_A_VS_CONTROL_B"]["delta"],
-                K_in_manifest=man.get("confound_blocks_K"))
+                K_in_manifest=man.get("confound_blocks_K"),
+                partition_semantics=man.get("partition_semantics"),
+                realised_occupied_factors=man.get("realised_occupied_factors"),
+                block_size_min=man.get("block_size_min"),
+                block_size_max=man.get("block_size_max"),
+                block_size_vector_sha256=man.get("block_size_vector_sha256"),
+                endpoint_singletons_verified=man.get("endpoint_singletons_verified"))
 
 
 def main() -> int:
@@ -102,11 +108,28 @@ def main() -> int:
             raise SystemExit("STOP: the manifest reports K=%s where %d was requested. "
                              "A fixture that does not build what it was asked for makes "
                              "every rate meaningless." % (mismatched[:3], K))
+        occupancy_bad = [
+            d for d in ok
+            if d["partition_semantics"] != "EXACT_K_OCCUPIED_BALANCED_BLOCKS"
+            or d["realised_occupied_factors"] != K
+            or d["block_size_min"] is None or d["block_size_max"] is None
+            or d["block_size_max"] - d["block_size_min"] > 1
+            or (K == BW.N_EDGES and not d["endpoint_singletons_verified"])
+        ]
+        if occupancy_bad:
+            raise SystemExit(
+                "STOP: HIDDEN_CONFOUND_K did not realise the prospectively required "
+                "exact occupied K-block partition. Do not compute a K-curve from a "
+                "requested factor-pool size. First bad record: %s" % occupancy_bad[0])
         g2k = sum(1 for d in ok if d["g2"])
         lo, hi = wilson(g2k, n_draws)
         dl = np.array([d["delta"] for d in ok], float)
         cells[str(K)] = dict(
-            K=K, edges_per_block=round(BW.N_EDGES / K, 2),
+            K=K, edges_per_block_nominal=round(BW.N_EDGES / K, 2),
+            realised_occupied_factors=K,
+            block_size_min=min(d["block_size_min"] for d in ok) if ok else None,
+            block_size_max=max(d["block_size_max"] for d in ok) if ok else None,
+            partition_semantics="EXACT_K_OCCUPIED_BALANCED_BLOCKS",
             draws_attempted=n_draws, draws_succeeded=len(ok), draws_failed=len(bad),
             g2_pass_count=g2k, g2_pass_rate=g2k / n_draws,
             g2_wilson95=[round(lo, 4), round(hi, 4)],
@@ -124,7 +147,7 @@ def main() -> int:
         c = cells[str(K)]
         print("  K=%-4d (%.0f edges/block)  G2 pass %2d/%d = %.3f  Wilson [%.3f, %.3f]"
               "  ALL_FIVE %.3f  |cvc| med %.4f"
-              % (K, c["edges_per_block"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
+              % (K, c["edges_per_block_nominal"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
                  c["all_five_pass_rate"], c["control_vs_control_median"]), flush=True)
 
     rates = [cells[str(K)]["g2_pass_rate"] for K in Ks]
@@ -168,7 +191,11 @@ def main() -> int:
     print("  canonical four restored and digest-verified: %s" % canonical_ok)
 
     out = dict(
-        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V1", date="2026-10-02",
+        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED", date="2026-10-02",
+        supersedes_historical_curve_for_K_partition_inference=(
+            "V64_STAGE4_G2_SENSITIVITY_CURVE_V1 used sampling-with-replacement block "
+            "labels; requested K did not equal realised occupied blocks, so its K=200 "
+            "endpoint was not one-factor-per-edge and must not support that interpretation"),
         executes_precommitment=dict(path=PRECOMMIT, sha256=pc_sha),
         design_was_frozen_before_any_draw=True,
         thresholds_or_draw_counts_changed_after_seeing_results=False,
