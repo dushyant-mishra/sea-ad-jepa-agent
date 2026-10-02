@@ -8,9 +8,9 @@ Branch:
 
 `chatgpt/v72-synthetic-twin-successor-20261002`
 
-Current head after qualification receipt:
+Current head after final 10k qualification receipt:
 
-`e3cf34835d36e2199aeeb0cdfb4d46616f560fc8`
+`3bf256fa19f505b3545b9db19112d05722931220`
 
 Base:
 
@@ -22,17 +22,17 @@ Draft PR:
 
 ## Exact execution evidence
 
-Qualified code head:
+Qualified 10k code head:
 
-`2f410f883e877e1e3de412583cc5fd91ce3219ad`
+`54e5b6992bfe3d8bec6d0e38c448cd4817c47567`
 
 GitHub Actions:
 
 - workflow: `V64 privileged-information architecture smoke`
-- run: `36970470574` / run #426
-- job: `110723184448`
+- run: `36970863182` / run #429
+- job: `110724347905`
 - conclusion: **success**
-- pytest: **314 passed in 20.55 s**
+- pytest: **315 passed in 26.72 s**
 - direct validator outputs:
   - `PASS: V71 synthetic pipeline R0/R1 interfaces present`
   - `PASS: V72 coupled multi-dataset synthetic fixture`
@@ -41,9 +41,9 @@ GitHub Actions:
 
 Qualification receipt commit:
 
-`e3cf34835d36e2199aeeb0cdfb4d46616f560fc8`
+`3bf256fa19f505b3545b9db19112d05722931220`
 
-The receipt-only head itself was then tested in GitHub Actions run `36970595190` / run #427 and also concluded **success**.
+The receipt head itself was then tested in GitHub Actions run `36970974718` / run #430, job `110724676837`, with **315 tests passed in 14.24 s** and all direct readiness validators passing again.
 
 Machine-readable receipt:
 
@@ -53,7 +53,7 @@ Machine-readable receipt:
 
 1. V71 readiness validator now has behavioral tests and is wired into the architecture CI workflow.
 2. An old V71 transpose-corruption validator crash was fixed to fail closed with explicit diagnostics.
-3. V72 coupled hidden truth now emits:
+3. V72 coupled hidden truth now uses a true 10,000-cell FULL104-like backbone at the CI boundary, with source counts allocated from the audited FULL104 HVS/NPH52/SEA_AD proportions, and emits:
    - FULL104-like RNA + structural missingness;
    - Stage4-like overlapping windows and matched controls;
    - SCENIC+-like paired multiome and raw fragments;
