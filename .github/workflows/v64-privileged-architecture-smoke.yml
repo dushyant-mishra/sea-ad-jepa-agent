@@ -51,6 +51,7 @@ on:
       - 'scripts/v64/validate_v72_coupled_multidataset_synthetic_fixture.py'
       - 'scripts/v64/plan_v72_synthetic_scale.py'
       - 'scripts/v64/validate_v72_synthetic_pipeline_readiness.py'
+      - 'scripts/v64/run_v72_synthetic_routeb_pipeline.py'
       - 'docker/scenicplus/Dockerfile.successor_pinned'
       - 'results/v64/V70_GSE214979_ROUTE_A_DEVELOPMENT_PREFLIGHT_V1.json'
       - 'tests/test_v70_gse214979_full104_structural_crosswalk.py'
@@ -238,7 +239,8 @@ jobs:
             tests/test_v72_coupled_multidataset_synthetic_fixture.py \
             tests/test_v72_synthetic_scale_planner.py \
             tests/test_v72_blacklist_docker_and_g2_contracts.py \
-            tests/test_v72_synthetic_pipeline_readiness.py
+            tests/test_v72_synthetic_pipeline_readiness.py \
+            tests/test_v72_synthetic_routeb_pipeline.py
       - name: Validate V71/V72 synthetic twin readiness and coupled raw interfaces
         run: |
           python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
