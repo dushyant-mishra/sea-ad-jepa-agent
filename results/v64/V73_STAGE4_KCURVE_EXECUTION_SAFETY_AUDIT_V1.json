@@ -1,0 +1,39 @@
+{
+  "schema": "V73_STAGE4_KCURVE_EXECUTION_SAFETY_AUDIT_V1",
+  "date": "2026-10-02",
+  "base_macha_head": "99f00789f043e4c79cf7064d6d5a7b7e9a57f33e",
+  "status": "PROSPECTIVE_REPAIR__NOT_YET_EXECUTED_FULL_CURVE",
+  "findings_closed": [
+    {
+      "id": "KCURVE_SHARED_WRITABLE_ROOT",
+      "repair": "Each (K, draw_index, seed) now resolves to a deterministic isolated synthetic root and isolated executor result directory; scheduling worker identity does not enter scientific identity."
+    },
+    {
+      "id": "EXPERIMENTAL_BUILD_OVERWROTE_CANONICAL_RECEIPT",
+      "repair": "Partial/experimental synthetic builds now default to receipts under their isolated synthetic root. The historical canonical-four build receipt was restored byte-for-byte from commit e081e02a87253dcff977e05534f731d6f29942e5."
+    },
+    {
+      "id": "VERIFIER_COMPONENT_COUNT_ONLY",
+      "repair": "Verifier now requires exact pairwise partition co-membership agreement on retained unique-interval edges, not only equality of recovered and declared component counts."
+    }
+  ],
+  "preserved_boundaries": {
+    "historical_v1_curve_untouched": true,
+    "canonical_historical_receipt_source_commit": "e081e02a87253dcff977e05534f731d6f29942e5",
+    "real_stage4_input_root_surface_added": false,
+    "alternate_root_scope": "synthetic mode only; descendant of fixed synthetic parent",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF"
+  },
+  "still_required_before_full_repaired_curve": [
+    "Exact-head CI must pass.",
+    "Macha should independently audit these Sol changes.",
+    "Historical sampling-with-replacement positive control should be emitted by the byte-level verifier.",
+    "Serial-versus-parallel smoke subset should demonstrate per-draw scientific digest identity.",
+    "A prospective repaired-curve execution receipt should bind code SHAs, K values, draw identities and worker-independent seeds."
+  ],
+  "full_curve_executed_here": false,
+  "real_substrate_read": false,
+  "computed_real_correspondence_values": 0
+}
