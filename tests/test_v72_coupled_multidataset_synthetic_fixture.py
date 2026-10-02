@@ -26,6 +26,10 @@ def errors(root):
     return load(VALIDATOR, "v72_validator").validate(root)
 
 
+def unblind_errors(root):
+    return load(VALIDATOR, "v72_validator_unblind").validate(root, unblind=True)
+
+
 def test_clean_coupled_fixture_passes(tmp_path):
     assert errors(fixture(tmp_path)) == []
 
@@ -166,7 +170,10 @@ def test_checkpoint_failure_positive_controls_are_behavioral(tmp_path):
     # Replace the planted private-leak representation with the healthy representation.
     d["representations"][i] = d["representations"][ids.index("HEALTHY")]
     np.savez_compressed(p, **d)
-    assert "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" in errors(root)
+    # Ordinary pipeline validation must not consult private truth.
+    assert "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" not in errors(root)
+    # The planted leak is audited only in explicit post-freeze unblind mode.
+    assert "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" in unblind_errors(root)
 
 
 def test_checkpoint_corrupt_manifest_is_a_real_digest_mismatch(tmp_path):
@@ -204,3 +211,13 @@ def test_checkpoint_evaluation_population_spans_all_source_families(tmp_path):
     )))
     sources = {r["source"] for r in rows if r["cell_id"] in cell_ids}
     assert sources == {"SEA_AD", "NPH52", "HVS"}
+
+
+def test_pipeline_validation_does_not_require_hidden_truth(tmp_path):
+    root = fixture(tmp_path)
+    shutil.rmtree(root / "hidden_truth")
+    # Observable-only pipeline checks still run without hidden truth. The separate
+    # unblinding audit is the only authority that may require the truth root.
+    e = errors(root)
+    assert "HIDDEN_TRUTH_ROOT_MISSING" in e
+    assert not any(x == "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" for x in e)
