@@ -111,6 +111,38 @@ def recover_blocks(root, world):
                 edges_excluded_sharing_an_interval=len(shared))
 
 
+def partition_membership_agreement(res, declared):
+    """Compare recovered and declared partitions on retained edges by co-membership.
+
+    This is stronger than comparing the number of components: every retained edge pair
+    must agree on whether the two edges belong to the same block.
+    """
+    if declared is None:
+        return None
+    recovered_label = {}
+    for ci, comp in enumerate(res["components"]):
+        for j in comp:
+            recovered_label[res["edges"][j]] = ci
+    edges = res["edges"]
+    total = agree = 0
+    disagreements = []
+    for i in range(len(edges)):
+        for j in range(i + 1, len(edges)):
+            a, b = edges[i], edges[j]
+            d_same = declared[a] == declared[b]
+            r_same = recovered_label[a] == recovered_label[b]
+            total += 1
+            agree += int(d_same == r_same)
+            if d_same != r_same and len(disagreements) < 10:
+                disagreements.append([int(a), int(b), bool(d_same), bool(r_same)])
+    return dict(
+        pairs_compared=total,
+        pairs_agree=agree,
+        fraction_agree=(agree / total if total else 1.0),
+        exact=agree == total,
+        first_disagreements=disagreements)
+
+
 def separation(res, declared):
     """Within-block versus between-block correlation, using the DECLARED partition. If the
     fixture is right these are far apart; if it is wrong they are not."""
@@ -143,6 +175,7 @@ def build_and_check(K, seed_base, label, builder_dir=None):
     declared = pt.get("block_of_edge")
     res = recover_blocks(BW.ROOT, WORLD)
     sep = separation(res, declared)
+    membership = partition_membership_agreement(res, declared)
     return dict(
         K_requested=K, label=label, ok=True,
         manifest_claims=dict(
@@ -159,6 +192,7 @@ def build_and_check(K, seed_base, label, builder_dir=None):
         recovered_equals_blocks_present=(
             bool(res["n_recovered_blocks"]
                  == len(set(declared[e] for e in res["edges"]))) if declared else None),
+        partition_membership_agreement=membership,
         separation=sep)
 
 
@@ -199,8 +233,10 @@ def main() -> int:
                                     "and between-block maximum, so a reader can see "
                                     "whether the threshold sits in a gap or in a smear"),
         rows=rows,
-        all_K_recovered_exactly=all(r.get("recovered_equals_blocks_present") for r in rows
-                                    if r.get("ok")),
+        all_K_recovered_exactly=all(
+            r.get("recovered_equals_blocks_present")
+            and r.get("partition_membership_agreement", {}).get("exact")
+            for r in rows if r.get("ok")),
         producer_sha256=B.sha_file(os.path.abspath(__file__)),
         real_substrate_read=False, computed_correspondence_values=0)
     p = "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json"
