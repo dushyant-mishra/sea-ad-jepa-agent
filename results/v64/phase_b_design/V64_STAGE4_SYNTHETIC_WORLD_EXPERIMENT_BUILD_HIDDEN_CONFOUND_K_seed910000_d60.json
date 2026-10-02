@@ -8,7 +8,7 @@
   "seed_base": 910000,
   "eligible_donors_configured": 60,
   "is_canonical_build": false,
-  "producer_sha256": "33bfd0e8050fb36b4e65f3136aa8d2f698605279e9673258a4429613d8cfbc09",
+  "producer_sha256": "6a65ffecf9be22b4c7be47cd27f68b387917b0edfd3b24e50d9e67037ffb11cb",
   "manifests": {
     "HIDDEN_CONFOUND_K": {
       "PHASE_B_SUBSTRATE_s00.npz": "01ef0c27a43e45f579227af2d6a88da289f80ea1db88ed1a9a4fc3960dce12b8",
