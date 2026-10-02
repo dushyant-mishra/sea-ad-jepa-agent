@@ -1,0 +1,26 @@
+name: V73 Stage4 K-curve runner successor
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v64/run_stage4_g2_sensitivity_curve_v1.py'
+      - 'tests/test_v73_stage4_kcurve_runner_successor.py'
+      - '.github/workflows/v73-stage4-kcurve-runner-successor.yml'
+  workflow_dispatch:
+
+jobs:
+  runner-successor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest numpy
+      - name: Compile runner
+        run: python -m py_compile scripts/v64/run_stage4_g2_sensitivity_curve_v1.py
+      - name: Test isolated runner identity and historical preservation
+        run: pytest -q tests/test_v73_stage4_kcurve_runner_successor.py
