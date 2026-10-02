@@ -370,19 +370,25 @@ def build(root: Path, seed: int = 7201) -> Path:
     # Checkpoint twins are real representation/uncertainty outputs, not sentence-only labels.
     checkpoints = observable / "CHECKPOINT_TWIN"
     checkpoints.mkdir()
-    n_eval = 120
+    per_source_eval = 24
+    eval_idx = np.concatenate([
+        np.where(source == "SEA_AD")[0][:per_source_eval],
+        np.where(source == "NPH52")[0][:per_source_eval],
+        np.where(source == "HVS")[0][:per_source_eval],
+    ])
+    n_eval = len(eval_idx)
     src_code = np.array([
         0.0 if x == "SEA_AD" else 1.0 if x == "NPH52" else 2.0
-        for x in source[:n_eval]
+        for x in source[eval_idx]
     ])
-    donor_code = np.array([int(x[1:]) for x in cell_donor[:n_eval]], dtype=float)
+    donor_code = np.array([int(x[1:]) for x in cell_donor[eval_idx]], dtype=float)
     noise = rng.normal(scale=0.05, size=(n_eval, 2))
-    healthy = np.c_[z_shared[:n_eval, :2], noise]
+    healthy = np.c_[z_shared[eval_idx, :2], noise]
     collapsed = np.zeros_like(healthy) + 1e-5
     source_shortcut = np.c_[src_code * 4.0, src_code ** 2, noise]
     donor_shortcut = np.c_[donor_code * 1.5, donor_code ** 2 / 10.0, noise]
-    private_leak = np.c_[z_shared[:n_eval, 0], z_shared[:n_eval, 1],
-                         z_private[:n_eval, 0] * 3.0, z_private[:n_eval, 1] * 3.0]
+    private_leak = np.c_[z_shared[eval_idx, 0], z_shared[eval_idx, 1],
+                         z_private[eval_idx, 0] * 3.0, z_private[eval_idx, 1] * 3.0]
     overconfident = healthy.copy()
     corrupt_manifest = healthy.copy()
     checkpoint_ids = np.array([
@@ -400,7 +406,8 @@ def build(root: Path, seed: int = 7201) -> Path:
         checkpoint_ids=checkpoint_ids,
         representations=reps,
         uncertainty=uncertainty,
-        cell_ids=np.array([f"CELL{i:05d}" for i in range(n_eval)], dtype="U16"),
+        cell_ids=np.array([f"CELL{i:05d}" for i in eval_idx], dtype="U16"),
+        eval_global_indices=eval_idx.astype(np.int64),
     )
     checkpoint_manifest = {
         "schema": "V72_CHECKPOINT_TWIN_MANIFEST_V1",
