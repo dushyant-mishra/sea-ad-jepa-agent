@@ -16,7 +16,8 @@
     "scripts/v64/validate_v72_coupled_multidataset_synthetic_fixture.py",
     "scripts/v64/plan_v72_synthetic_scale.py",
     "docker/scenicplus/Dockerfile.successor_pinned",
-    "scripts/v64/run_v72_synthetic_routeb_pipeline.py"
+    "scripts/v64/run_v72_synthetic_routeb_pipeline.py",
+    "scripts/v64/measure_v72_synthetic_resource_estimate.py"
   ],
   "required_tests": [
     "tests/test_v71_small_synthetic_etl_fixture.py",
@@ -24,7 +25,8 @@
     "tests/test_v72_coupled_multidataset_synthetic_fixture.py",
     "tests/test_v72_synthetic_scale_planner.py",
     "tests/test_v72_blacklist_docker_and_g2_contracts.py",
-    "tests/test_v72_synthetic_routeb_pipeline.py"
+    "tests/test_v72_synthetic_routeb_pipeline.py",
+    "tests/test_v72_synthetic_resource_estimate.py"
   ],
   "semantic_gates": [
     "V71 readiness validator returns no errors",
@@ -38,7 +40,8 @@
     "scale plan reproduces exact FULL104 source counts at 4,553,407 cells",
     "historical Dockerfile remains untouched while successor recipe pins cisTarget commit",
     "Route-B blacklist policy is frozen prospectively before consensus peaks",
-    "Synthetic SCENIC+ Route-B SMALL_CI consumes fragments and emits donor-aware pseudobulks plus consensus-region recurrence"
+    "Synthetic SCENIC+ Route-B SMALL_CI consumes fragments and emits donor-aware pseudobulks plus consensus-region recurrence",
+    "SMALL_CI emitted bytes are measured and full-scale projections remain planning-only until medium-stress receipts exist"
   ],
   "promotion": {
     "R0_R1_PASS": "All required tests and direct validators pass in exact-head CI.",
