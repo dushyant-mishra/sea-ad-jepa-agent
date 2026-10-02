@@ -151,14 +151,31 @@ def test_morabito_like_fixture_forbids_fake_cell_pairing(tmp_path):
 
 
 def test_checkpoint_failure_positive_controls_are_behavioral(tmp_path):
+    import numpy as np
+
     root = fixture(tmp_path)
-    p = root / "observable_raw/CHECKPOINT_TWIN/checkpoint_behaviors.json"
-    obj = json.loads(p.read_text())
-    for cp in obj["checkpoints"]:
-        if cp["id"] == "PRIVATE_STATE_LEAK":
-            cp["private_r2"] = 0.01
-    p.write_text(json.dumps(obj))
+    p = root / "observable_raw/CHECKPOINT_TWIN/checkpoint_outputs.npz"
+    z = np.load(p, allow_pickle=False)
+    d = {k: z[k] for k in z.files}
+    ids = d["checkpoint_ids"].tolist()
+    i = ids.index("PRIVATE_STATE_LEAK")
+    d["representations"] = d["representations"].copy()
+    # Replace the planted private-leak representation with the healthy representation.
+    d["representations"][i] = d["representations"][ids.index("HEALTHY")]
+    np.savez_compressed(p, **d)
     assert "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" in errors(root)
+
+
+def test_checkpoint_corrupt_manifest_is_a_real_digest_mismatch(tmp_path):
+    root = fixture(tmp_path)
+    manifest = json.loads(
+        (root / "observable_raw/CHECKPOINT_TWIN/checkpoint_manifest.json").read_text()
+    )
+    declared = manifest["corrupt_manifest_case"]["declared_output_sha256"]
+    actual = load(VALIDATOR, "v72_validator_hash").sha256(
+        root / "observable_raw/CHECKPOINT_TWIN/checkpoint_outputs.npz"
+    )
+    assert declared != actual
 
 
 def test_truth_file_exposure_is_rejected(tmp_path):
