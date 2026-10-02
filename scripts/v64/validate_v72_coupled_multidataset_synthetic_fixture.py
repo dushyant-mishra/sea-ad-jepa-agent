@@ -64,7 +64,7 @@ def multivariate_r2(X, Y):
     return float(np.mean([linear_r2(X, Y[:, j]) for j in range(Y.shape[1])]))
 
 
-def validate(root: Path):
+def validate(root: Path, unblind: bool = False):
     errors = []
     obs = root / "observable_raw"
     truth = root / "hidden_truth"
@@ -252,10 +252,14 @@ def validate(root: Path):
         if donor_y.size and linear_r2(reps[index["DONOR_SHORTCUT"]], donor_y) <= 0.9:
             errors.append("CHECKPOINT_DONOR_SHORTCUT_POSITIVE_CONTROL_WEAK")
 
-        truth_latents = np.load(truth / "LATENTS.npz", allow_pickle=False)
-        private = truth_latents["z_reg_private"][eval_idx]
-        if multivariate_r2(reps[index["PRIVATE_STATE_LEAK"]], private) <= 0.8:
-            errors.append("CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK")
+        # Private-state leakage is intentionally NOT scored in ordinary pipeline
+        # validation. Doing so would expose hidden truth before the freeze. It is checked
+        # only when this validator is invoked explicitly in final-audit/unblind mode.
+        if unblind:
+            truth_latents = np.load(truth / "LATENTS.npz", allow_pickle=False)
+            private = truth_latents["z_reg_private"][eval_idx]
+            if multivariate_r2(reps[index["PRIVATE_STATE_LEAK"]], private) <= 0.8:
+                errors.append("CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK")
         if float(np.median(unc[index["OVERCONFIDENT_UNRECOVERABLE"]])) >= 0.1:
             errors.append("CHECKPOINT_OVERCONFIDENCE_POSITIVE_CONTROL_WEAK")
 
@@ -274,8 +278,13 @@ if __name__ == "__main__":
 
     ap = argparse.ArgumentParser()
     ap.add_argument("root")
+    ap.add_argument(
+        "--unblind-final-audit",
+        action="store_true",
+        help="May read hidden truth. Use only after the synthetic pipeline selections are frozen.",
+    )
     args = ap.parse_args()
-    errs = validate(Path(args.root))
+    errs = validate(Path(args.root), unblind=args.unblind_final_audit)
     if errs:
         print("\n".join(errs))
         raise SystemExit(1)
