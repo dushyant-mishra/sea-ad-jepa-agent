@@ -198,9 +198,11 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
         atac=atac[scenic_idx].T,
         genes=genes, peaks=peaks, barcodes=scenic_barcodes
     )
+    scenic_subclusters = np.array([f"MG_SUB_{i%3}" for i in range(len(scenic_idx))])
     write_csv(scenic / "metadata.csv.gz",
-              ["barcode","donor","cell_type","diagnosis_protected"],
-              [[b,d,"Microglia","PROTECTED"] for b,d in zip(scenic_barcodes,scenic_donors)],
+              ["barcode","donor","cell_type","subcluster","diagnosis_protected"],
+              [[b,d,"Microglia",s,"PROTECTED"]
+               for b,d,s in zip(scenic_barcodes,scenic_donors,scenic_subclusters)],
               gzip_output=True)
     write_csv(scenic / "barcode_to_donor.csv",
               ["barcode","donor"], zip(scenic_barcodes, scenic_donors))
