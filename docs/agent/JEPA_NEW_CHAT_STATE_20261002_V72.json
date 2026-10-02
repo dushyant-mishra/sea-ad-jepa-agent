@@ -83,26 +83,29 @@
   "handoff_doc": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261002_V72_SYNTHETIC_TWIN_STAGE4_SCENICPLUS.md",
   "v72_local_completion": {
     "implementation_branch": "chatgpt/v72-synthetic-twin-successor-20261002",
-    "implementation_head": "e3cf34835d36e2199aeeb0cdfb4d46616f560fc8",
-    "qualified_code_head": "2f410f883e877e1e3de412583cc5fd91ce3219ad",
+    "implementation_head": "3bf256fa19f505b3545b9db19112d05722931220",
+    "qualified_code_head": "54e5b6992bfe3d8bec6d0e38c448cd4817c47567",
+    "default_ci_full104_like_cells": 10000,
     "draft_pr": 200,
     "ci": {
-      "qualified_run_id": 36970470574,
-      "qualified_run_number": 426,
-      "qualified_job_id": 110723184448,
-      "pytest": "314 passed in 20.55s",
+      "qualified_run_id": 36970863182,
+      "qualified_run_number": 429,
+      "qualified_job_id": 110724347905,
+      "pytest": "315 passed in 26.72s",
       "direct_validators": [
         "PASS: V71 synthetic pipeline R0/R1 interfaces present",
         "PASS: V72 coupled multi-dataset synthetic fixture",
         "PASS: V72 synthetic pipeline R0/R1 executable readiness"
       ],
-      "receipt_head_run_id": 36970595190,
-      "receipt_head_run_number": 427,
+      "receipt_head_run_id": 36970974718,
+      "receipt_head_run_number": 430,
+      "receipt_head_job_id": 110724676837,
+      "receipt_head_pytest": "315 passed in 14.24s",
       "receipt_head_conclusion": "success"
     },
     "receipt": "results/v64/V72_SYNTHETIC_R0_R1_QUALIFICATION_RECEIPT_V1.json",
     "addendum": "docs/agent/JEPA_V72_LOCAL_COMPLETION_ADDENDUM_20261002.md",
-    "R0_R1": "PASS",
+    "R0_R1": "PASS__10K_CI",
     "R2": "NOT_RUN",
     "FULL_SCALE": "NOT_AUTHORIZED"
   }
