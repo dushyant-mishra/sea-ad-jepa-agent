@@ -74,6 +74,27 @@ def _pack(mat):
     return np.packbits(np.ascontiguousarray(mat, dtype=bool), bitorder="big")
 
 
+def _balanced_confound_partition(K, n_edges, rng):
+    """Return an exact K-way edge partition with every factor occupied.
+
+    PORTED FROM Sol's chatgpt/v73-stage4-kcurve-partition-repair-20261002 after audit; the
+    partition logic is Sol's and is correct. The historical generator sampled block labels
+    with replacement, so requested K was only the SIZE OF A FACTOR POOL: at K = n_edges it
+    occupied about 127 of 200 blocks and many edges still shared a factor. Here K means
+    exactly K occupied blocks, sizes differ by at most one, and only the assignment of
+    edge identities to blocks is randomised, by a seeded shuffle.
+    """
+    K = max(1, min(int(K), int(n_edges)))
+    labels = np.arange(n_edges, dtype=np.int32) % K
+    rng.shuffle(labels)
+    sizes = np.bincount(labels, minlength=K).astype(np.int32)
+    if len(sizes) != K or np.any(sizes <= 0):
+        raise RuntimeError("confound partition failed to occupy every requested block")
+    if int(sizes.max()) - int(sizes.min()) > 1:
+        raise RuntimeError("confound partition is not balanced")
+    return labels, sizes
+
+
 def build_world(world, seed):
     rng = np.random.default_rng(seed)
     n_don = N_DONORS_OK + N_DONORS_SMALL
@@ -266,7 +287,18 @@ def build_world(world, seed):
             f = rng.normal(0.0, 1.0, n_mc)
             f = f - np.polyval(np.polyfit(log_depth, f, 1), log_depth)
             factors.append(f / f.std())
-        block_of_edge = rng.integers(0, K, N_EDGES)
+        if world == "HIDDEN_CONFOUND":
+            # The canonical world keeps its HISTORICAL construction exactly. At K=1 the
+            # two are semantically identical -- one factor behind every edge -- but
+            # rng.shuffle consumes different random state than rng.integers, so routing
+            # it through the new partition shifts every later draw and changes all three
+            # shard digests. That would silently invalidate every receipt describing the
+            # canonical four, for no scientific gain. Verified: with this branch the
+            # canonical digests are bit-identical to those before the repair.
+            block_of_edge = rng.integers(0, K, N_EDGES)
+            block_sizes = np.bincount(block_of_edge, minlength=K).astype(np.int32)
+        else:
+            block_of_edge, block_sizes = _balanced_confound_partition(K, N_EDGES, rng)
         for e in range(N_EDGES):
             g = 1.4 * rng.uniform(0.6, 1.4)
             f = factors[int(block_of_edge[e])]
@@ -275,7 +307,18 @@ def build_world(world, seed):
         planted = dict(mechanism="edge-specific loading on a metacell-varying factor that "
                                  "is orthogonal to depth and absent from the frozen basis",
                        confound_blocks_K=int(K),
-                       edges_per_block=round(N_EDGES / K, 2),
+                       partition_semantics=("HISTORICAL_SAMPLING_WITH_REPLACEMENT"
+                                            if world == "HIDDEN_CONFOUND"
+                                            else "EXACT_K_OCCUPIED_BALANCED_BLOCKS"),
+                       realised_occupied_factors=int(np.count_nonzero(block_sizes)),
+                       block_size_min=int(block_sizes.min()),
+                       block_size_max=int(block_sizes.max()),
+                       block_size_vector=[int(x) for x in block_sizes.tolist()],
+                       block_of_edge=[int(x) for x in block_of_edge.tolist()],
+                       endpoint_singletons_verified=(
+                           bool(np.all(block_sizes == 1)) if K == N_EDGES
+                           else "NOT_APPLICABLE"),
+                       edges_per_block_nominal=round(N_EDGES / K, 2),
                        expect="Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; "
                               "this is recorded as an interpretation limit, not a bug.")
 
