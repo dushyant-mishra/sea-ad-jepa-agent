@@ -162,8 +162,14 @@ The twin remains staged:
 
 ## Chat-runtime files preserved beside this handoff
 
-Small text/CSV artifacts are preserved verbatim in `CHAT_EXCLUSIVE_SMALL_FILES_20261001.zip`.
+All five user-uploaded chat handbacks are preserved verbatim as separate files under `docs/agent/archive/chat_runtime_20261001/`:
 
-Large binary scientific assets are **not duplicated into Git history**. Exact byte sizes and SHA-256 values for every file physically present in the chat runtime are preserved in `CHAT_RUNTIME_BINARY_CUSTODY_MANIFEST_20261001.json`.
+- `CHAT_UPLOAD_01_PASTED_TEXT.txt`
+- `CHAT_UPLOAD_02_PASTED_TEXT.txt`
+- `CHAT_UPLOAD_03_PASTED_TEXT.txt`
+- `CHAT_UPLOAD_04_PASTED_MARKDOWN.md`
+- `CHAT_UPLOAD_05_PASTED_MARKDOWN.md`
+
+Large scientific files visible in the runtime are Project-backed rather than chat-exclusive. They are **not duplicated into Git history**. Their exact runtime byte sizes and SHA-256 values are preserved in `CHAT_RUNTIME_BINARY_CUSTODY_MANIFEST_20261001.json` where available.
 
 This follows the project custody rule: preserve identity and recovery information for large scientific assets without injecting hundreds of megabytes/gigabytes into ordinary Git history.
