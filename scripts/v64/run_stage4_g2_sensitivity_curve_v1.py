@@ -24,6 +24,7 @@ import os
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 
@@ -53,9 +54,15 @@ def wilson(k, n, z=1.96):
     return (max(0.0, c - h), min(1.0, c + h))
 
 
-def one_draw(K, donors, seed_base):
+def one_draw(K, donors, seed_base, draw_index):
+    # Every draw has a deterministic private writable namespace. Scientific identity is
+    # (K, draw_index, seed_base); worker number and completion order are deliberately absent.
+    draw_root = os.path.join(
+        BW.ROOT, "_g2_repaired", "K%04d" % K,
+        "draw%03d_seed%09d" % (draw_index, seed_base))
     b = subprocess.run([sys.executable, BUILDER, "--only", WORLD, "--confound-blocks",
-                        str(K), "--donors", str(donors), "--seed-base", str(seed_base)],
+                        str(K), "--donors", str(donors), "--seed-base", str(seed_base),
+                        "--root", draw_root],
                        capture_output=True, text=True)
     if b.returncode != 0:
         txt = b.stdout + b.stderr
@@ -64,18 +71,32 @@ def one_draw(K, donors, seed_base):
                              "Repair the generator; do not exclude the draw.\n"
                              + txt[-400:])
         return dict(ok=False, err=txt[-300:])
+    env = os.environ.copy()
+    env["V64_STAGE4_SYNTHETIC_ROOT"] = draw_root
     r = subprocess.run([sys.executable, EXEC, "--synthetic-world", WORLD],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=env)
     if r.returncode != 0:
-        return dict(ok=False, err=(r.stdout + r.stderr)[-300:])
-    R = json.load(open(os.path.join(OUT, "V64_STAGE4_RESULT_%s.json" % WORLD)))
+        return dict(ok=False, err=(r.stdout + r.stderr)[-300:],
+                    K=K, draw_index=draw_index, seed_base=seed_base,
+                    run_root=draw_root)
+    result_path = os.path.join(draw_root, "_results",
+                               "V64_STAGE4_RESULT_%s.json" % WORLD)
+    R = json.load(open(result_path))
     g, a = R["FIVE_GATE_DECISION"], R["ADJUSTED"]["GENE_BALANCED"]
     man = R["world_manifest"]["planted_truth"]
     return dict(ok=True, all_five=bool(g["ALL_FIVE_PASS"]),
                 g1=bool(g[G1]["passed"]), g2=bool(g[G2]["passed"]),
                 g3=bool(g[G3]["passed"]), delta=a["delta"], lcb95=a["lcb95"],
                 cvc=R["CONTROL_A_VS_CONTROL_B"]["delta"],
-                K_in_manifest=man.get("confound_blocks_K"))
+                K_in_manifest=man.get("confound_blocks_K"),
+                partition_semantics=man.get("partition_semantics"),
+                realised_occupied_factors=man.get("realised_occupied_factors"),
+                block_size_min=man.get("block_size_min"),
+                block_size_max=man.get("block_size_max"),
+                endpoint_singletons_verified=man.get("endpoint_singletons_verified"),
+                K=K, draw_index=draw_index, seed_base=seed_base,
+                run_root=draw_root, result_path=result_path,
+                result_sha256=B.sha_file(result_path))
 
 
 def main() -> int:
@@ -89,24 +110,67 @@ def main() -> int:
           % (Ks, donors, n_draws, len(Ks) * n_draws))
 
     cells, t0 = {}, time.time()
+    workers = max(1, int(os.environ.get("V64_G2_WORKERS", "1")))
+    print("  execution workers=%d; scheduling is non-scientific and draw identity is frozen"
+          % workers)
     for K in Ks:
-        ok, bad = [], []
-        for i in range(n_draws):
-            d = one_draw(K, donors, 800000 + 1000 * i)
-            (ok if d["ok"] else bad).append(d)
-            if (i + 1) % 10 == 0:
-                print("    K=%-4d %2d/%d (%.0f s)" % (K, i + 1, n_draws,
-                                                      time.time() - t0), flush=True)
+        draws = [(i, 800000 + 1000 * i) for i in range(n_draws)]
+        completed = {}
+        if workers == 1:
+            for i, seed in draws:
+                completed[i] = one_draw(K, donors, seed, i)
+                if (i + 1) % 10 == 0:
+                    print("    K=%-4d %2d/%d (%.0f s)" % (
+                        K, i + 1, n_draws, time.time() - t0), flush=True)
+        else:
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                fut = {pool.submit(one_draw, K, donors, seed, i): i
+                       for i, seed in draws}
+                done = 0
+                for q in as_completed(fut):
+                    i = fut[q]
+                    try:
+                        completed[i] = q.result()
+                    except Exception as e:
+                        completed[i] = dict(
+                            ok=False, err="worker exception: %r" % e,
+                            K=K, draw_index=i, seed_base=800000 + 1000 * i)
+                    done += 1
+                    if done % 10 == 0:
+                        print("    K=%-4d %2d/%d (%.0f s)" % (
+                            K, done, n_draws, time.time() - t0), flush=True)
+        ordered = [completed[i] for i, _ in draws]
+        ok = [d for d in ordered if d["ok"]]
+        bad = [d for d in ordered if not d["ok"]]
         mismatched = [d["K_in_manifest"] for d in ok if d["K_in_manifest"] != K]
         if mismatched:
             raise SystemExit("STOP: the manifest reports K=%s where %d was requested. "
                              "A fixture that does not build what it was asked for makes "
                              "every rate meaningless." % (mismatched[:3], K))
+        occupancy_bad = [
+            d for d in ok
+            if d["partition_semantics"] != "EXACT_K_OCCUPIED_BALANCED_BLOCKS"
+            or d["realised_occupied_factors"] != K
+            or d["block_size_min"] is None or d["block_size_max"] is None
+            or d["block_size_max"] - d["block_size_min"] > 1
+            or (K == BW.N_EDGES and d["endpoint_singletons_verified"] is not True)
+        ]
+        if occupancy_bad:
+            raise SystemExit("STOP: realised K-block geometry failed manifest guards: %s"
+                             % occupancy_bad[0])
+        duplicate_roots = len({d["run_root"] for d in ordered if d.get("run_root")}) != \
+            len([d for d in ordered if d.get("run_root")])
+        if duplicate_roots:
+            raise SystemExit("STOP: two draws addressed the same writable run root")
         g2k = sum(1 for d in ok if d["g2"])
         lo, hi = wilson(g2k, n_draws)
         dl = np.array([d["delta"] for d in ok], float)
         cells[str(K)] = dict(
-            K=K, edges_per_block=round(BW.N_EDGES / K, 2),
+            K=K, edges_per_block_nominal=round(BW.N_EDGES / K, 2),
+            partition_semantics="EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+            realised_occupied_factors=K if ok else None,
+            block_size_min=min(d["block_size_min"] for d in ok) if ok else None,
+            block_size_max=max(d["block_size_max"] for d in ok) if ok else None,
             draws_attempted=n_draws, draws_succeeded=len(ok), draws_failed=len(bad),
             g2_pass_count=g2k, g2_pass_rate=g2k / n_draws,
             g2_wilson95=[round(lo, 4), round(hi, 4)],
@@ -124,7 +188,7 @@ def main() -> int:
         c = cells[str(K)]
         print("  K=%-4d (%.0f edges/block)  G2 pass %2d/%d = %.3f  Wilson [%.3f, %.3f]"
               "  ALL_FIVE %.3f  |cvc| med %.4f"
-              % (K, c["edges_per_block"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
+              % (K, c["edges_per_block_nominal"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
                  c["all_five_pass_rate"], c["control_vs_control_median"]), flush=True)
 
     rates = [cells[str(K)]["g2_pass_rate"] for K in Ks]
@@ -168,7 +232,12 @@ def main() -> int:
     print("  canonical four restored and digest-verified: %s" % canonical_ok)
 
     out = dict(
-        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V1", date="2026-10-02",
+        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED", date="2026-10-02",
+        historical_v1_preserved=True,
+        historical_v1_limit=("V1 varied requested factor-pool size under sampling with "
+                             "replacement; its K=200 endpoint was not one factor per edge"),
+        execution_workers=workers,
+        per_draw_isolated_writable_roots=True,
         executes_precommitment=dict(path=PRECOMMIT, sha256=pc_sha),
         design_was_frozen_before_any_draw=True,
         thresholds_or_draw_counts_changed_after_seeing_results=False,
@@ -207,7 +276,7 @@ def main() -> int:
         real_substrate_read=False, computed_correspondence_values=0,
         producer_sha256=B.sha_file(os.path.abspath(__file__)),
         status="COMPLETE" if canonical_ok else "CANONICAL_RESTORE_FAILED")
-    p = "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json"
+    p = "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json"
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print("")
