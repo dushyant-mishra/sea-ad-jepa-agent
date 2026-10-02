@@ -17,6 +17,9 @@ def load_validator():
 
 def materialize_minimal_repo(tmp_path: Path) -> Path:
     root = tmp_path / "repo"
+    readiness_dst = root / "results/v64/V71_SYNTHETIC_PIPELINE_READINESS_CONTRACT_V1.json"
+    readiness_dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(CONTRACT, readiness_dst)
     c = json.loads(CONTRACT.read_text())
     for rel in c["required_components"].values():
         src = ROOT / rel
