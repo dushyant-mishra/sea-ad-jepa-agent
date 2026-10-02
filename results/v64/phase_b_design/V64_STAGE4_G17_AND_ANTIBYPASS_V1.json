@@ -10,7 +10,7 @@
   "live_artifacts_untouched": true,
   "authorisation_path_clean": true,
   "computed_correspondence_values": 0,
-  "executor_sha256": "cd1371422d9f68a8816e70d660f5ad08a1895085d83107f142199b2ac7e93afa",
+  "executor_sha256": "01bb6bea75da8c3401845403f6a8dfddb469f5439d15e668c39b640180afea43",
   "authority_sha256": "1f0fbd9597aabb889820f0ad1ef310f521285d73fb22881f31cfdb92b8b0a26f",
   "producer_sha256": "6a17da7b8baec1a3940c7bf960d1d29a5fa9ab252e489e22d8e7d5a7c4414819",
   "checks": [
@@ -18,7 +18,7 @@
       "section": "G17-static",
       "attempt": "no raw-matrix module is imported anywhere in the executor",
       "required_behaviour": "zero banned imports",
-      "observed": "banned=[] of 13 modules imported",
+      "observed": "banned=[] of 14 modules imported",
       "holds": true
     },
     {
@@ -32,7 +32,7 @@
       "section": "G17-static",
       "attempt": "no matrix path literal among the executor's string constants",
       "required_behaviour": "zero",
-      "observed": "0 suspicious literal(s) []; deny-list=7 tokens, docstrings excluded=18",
+      "observed": "0 suspicious literal(s) []; deny-list=7 tokens, docstrings excluded=21",
       "holds": true
     },
     {
