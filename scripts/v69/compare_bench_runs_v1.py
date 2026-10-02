@@ -67,25 +67,43 @@ def compare(runs, contention_note: str, axis: str) -> dict:
                                  field=k, reference=ref.get(k),
                                  other=r.get(k), other_run=r.get("run_id"))
 
-    # same output filenames?
-    ref_names = set(ref["outputs"])
-    for r in runs[1:]:
-        if set(r["outputs"]) != ref_names:
-            raise FailClosed("FAIL__RUNS_PRODUCED_DIFFERENT_OUTPUT_SETS",
-                             reference=sorted(ref_names),
-                             other=sorted(r["outputs"]),
-                             other_run=r.get("run_id"))
+    # Compare by ARTIFACT KIND, not by filename. Output files are named
+    # "<run_id>.<kind>", so comparing raw filenames across runs with different ids is a
+    # gate that can never pass -- the mirror of a check that cannot fail, and just as
+    # useless. Strip the run id and compare the kinds.
+    def kinds(r):
+        pfx = str(r.get("run_id", "")) + "."
+        out = {}
+        for name, meta in r["outputs"].items():
+            kind = name[len(pfx):] if name.startswith(pfx) else name
+            if kind in out:
+                raise FailClosed("FAIL__AMBIGUOUS_OUTPUT_KIND_AFTER_STRIPPING_RUN_ID",
+                                 run=r.get("run_id"), kind=kind)
+            out[kind] = meta
+        return out
 
-    # the gate: identical digests
+    by_run = {r["run_id"]: kinds(r) for r in runs}
+    ref_kinds = set(by_run[ref["run_id"]])
+    for r in runs[1:]:
+        if set(by_run[r["run_id"]]) != ref_kinds:
+            raise FailClosed("FAIL__RUNS_PRODUCED_DIFFERENT_OUTPUT_SETS",
+                             reference=sorted(ref_kinds),
+                             other=sorted(by_run[r["run_id"]]),
+                             other_run=r.get("run_id"),
+                             note=("Compared by artifact kind with the run-id prefix "
+                                   "stripped, so this is a genuine difference in which "
+                                   "artifacts were produced, not a naming artefact."))
+
+    # the gate: identical digests, per artifact kind
     per_output, mismatches = {}, []
-    for name in sorted(ref_names):
-        digests = {r["run_id"]: r["outputs"][name]["sha256"] for r in runs}
-        sizes = {r["run_id"]: r["outputs"][name]["bytes"] for r in runs}
+    for kind in sorted(ref_kinds):
+        digests = {rid: k[kind]["sha256"] for rid, k in by_run.items()}
+        sizes = {rid: k[kind]["bytes"] for rid, k in by_run.items()}
         identical = len(set(digests.values())) == 1
-        per_output[name] = {"identical_across_runs": identical,
+        per_output[kind] = {"identical_across_runs": identical,
                             "sha256_by_run": digests, "bytes_by_run": sizes}
         if not identical:
-            mismatches.append(name)
+            mismatches.append(kind)
 
     table = [{
         "run_id": r["run_id"],
@@ -119,6 +137,7 @@ def compare(runs, contention_note: str, axis: str) -> dict:
         "DIGEST_EQUALITY_GATE": {
             "all_outputs_identical_across_runs": ok,
             "n_outputs_compared": len(per_output),
+            "compared_by": "ARTIFACT_KIND_WITH_RUN_ID_PREFIX_STRIPPED",
             "mismatched_outputs": mismatches,
             "per_output": per_output,
             "rule": ("Runs differing only in storage location or worker count MUST "

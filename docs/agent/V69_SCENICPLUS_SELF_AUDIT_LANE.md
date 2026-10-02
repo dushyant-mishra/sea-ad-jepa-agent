@@ -731,6 +731,42 @@ freeze does not name, so it needs an amendment rather than a quiet default.
 
 ---
 
+## S27 — My digest gate could never PASS, the mirror of a check that cannot fail (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED.
+
+**Defect.** `compare_bench_runs_v1.py` compared the two runs' output **filenames**. Those
+files are named `<run_id>.<kind>`, and the whole point of a storage or worker comparison
+is that the runs have *different* run ids. So the name sets were
+`{SEEDED_D_t16.motifs_vs_regions.scores.feather, …}` versus
+`{SEEDED_C_t16.motifs_vs_regions.scores.feather, …}` and could **never** be equal.
+
+The gate returned `FAIL__RUNS_PRODUCED_DIFFERENT_OUTPUT_SETS` on two runs whose three
+artifacts were in fact byte-identical.
+
+**Why this is the same class of error as a check that cannot fail.** I have been hunting
+all cycle for assertions that always pass. This is the mirror image: an assertion that
+always *fails*. It is arguably worse here, because a spurious FAIL on the digest gate
+reads as a **real storage-dependent numerical difference** — exactly the alarming
+finding the gate exists to surface — and would have sent me hunting a filesystem bug
+that does not exist, or worse, abandoning the C: scratch plan on false evidence.
+
+**Caught before damage?** Yes. The FAIL detail listed the two filename sets side by side,
+and they were plainly the same three artifacts with different prefixes. Had the receipt
+reported only a boolean, I would have had no reason to doubt it.
+
+**The fix.** Comparison is now by **artifact kind** with the run-id prefix stripped, and
+the receipt records `compared_by: ARTIFACT_KIND_WITH_RUN_ID_PREFIX_STRIPPED` so the basis
+is auditable. A genuine difference in which artifacts were produced still fails, and the
+failure now says explicitly that it is not a naming artefact. Stripping is itself checked:
+two outputs collapsing to the same kind raises
+`FAIL__AMBIGUOUS_OUTPUT_KIND_AFTER_STRIPPING_RUN_ID` rather than silently overwriting.
+
+**Generalisation.** When writing a gate, ask both questions: what result would make it
+fail, *and* what result would make it pass. I had been asking only the first.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
