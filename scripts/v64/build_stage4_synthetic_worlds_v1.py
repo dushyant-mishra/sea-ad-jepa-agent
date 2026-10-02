@@ -74,6 +74,26 @@ def _pack(mat):
     return np.packbits(np.ascontiguousarray(mat, dtype=bool), bitorder="big")
 
 
+def _balanced_confound_partition(K, n_edges, rng):
+    """Return an exact K-way edge partition with every factor occupied.
+
+    The historical HIDDEN_CONFOUND_K generator sampled block labels with replacement,
+    so requested K was only the size of the factor pool: at K=n_edges many factors were
+    unused and many edges still shared factors.  For the prospective repair, K means
+    exactly K occupied blocks.  Block sizes differ by at most one and assignment to edge
+    identities is randomized only by a seeded permutation.
+    """
+    K = max(1, min(int(K), int(n_edges)))
+    labels = np.arange(n_edges, dtype=np.int32) % K
+    rng.shuffle(labels)
+    sizes = np.bincount(labels, minlength=K).astype(np.int32)
+    if len(sizes) != K or np.any(sizes <= 0):
+        raise RuntimeError("confound partition failed to occupy every requested block")
+    if int(sizes.max()) - int(sizes.min()) > 1:
+        raise RuntimeError("confound partition is not balanced")
+    return labels, sizes
+
+
 def build_world(world, seed):
     rng = np.random.default_rng(seed)
     n_don = N_DONORS_OK + N_DONORS_SMALL
@@ -266,16 +286,26 @@ def build_world(world, seed):
             f = rng.normal(0.0, 1.0, n_mc)
             f = f - np.polyval(np.polyfit(log_depth, f, 1), log_depth)
             factors.append(f / f.std())
-        block_of_edge = rng.integers(0, K, N_EDGES)
+        block_of_edge, block_sizes = _balanced_confound_partition(K, N_EDGES, rng)
         for e in range(N_EDGES):
             g = 1.4 * rng.uniform(0.6, 1.4)
             f = factors[int(block_of_edge[e])]
             rna[:, edge_gene[e]] += g * f
             atac[:, edge_linked_iv[e]] += g * f
+        block_sizes_sha256 = hashlib.sha256(
+            np.ascontiguousarray(block_sizes, dtype=np.int32).tobytes()).hexdigest()
         planted = dict(mechanism="edge-specific loading on a metacell-varying factor that "
                                  "is orthogonal to depth and absent from the frozen basis",
                        confound_blocks_K=int(K),
-                       edges_per_block=round(N_EDGES / K, 2),
+                       partition_semantics="EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+                       realised_occupied_factors=int(np.count_nonzero(block_sizes)),
+                       block_size_min=int(block_sizes.min()),
+                       block_size_max=int(block_sizes.max()),
+                       block_size_vector=[int(x) for x in block_sizes.tolist()],
+                       block_size_vector_sha256=block_sizes_sha256,
+                       edges_per_block_nominal=round(N_EDGES / K, 2),
+                       endpoint_singletons_verified=bool(
+                           K != N_EDGES or np.all(block_sizes == 1)),
                        expect="Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; "
                               "this is recorded as an interpretation limit, not a bug.")
 
