@@ -832,7 +832,36 @@ def run_correspondence(S, rows_by_pair, label, out_dir):
         G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO=dict(
             passed=g2, delta=cvc_val,
             ci95=None if boot_cvc is None else
-            [float(np.quantile(boot_cvc, 0.025)), float(np.quantile(boot_cvc, 0.975))]),
+            [float(np.quantile(boot_cvc, 0.025)), float(np.quantile(boot_cvc, 0.975))],
+            TEST_IS_NOT_SPECIFIED_BY_THE_CONTRACT=dict(
+                what_the_contract_says="must not show excess. A nonzero control-versus-"
+                                       "control contrast indicates the pipeline itself "
+                                       "manufactures a difference.",
+                what_is_implemented="a two-sided 95 percent donor-bootstrap interval must "
+                                    "contain zero",
+                who_chose_it="the executor, not the contract. No test and no level is "
+                             "frozen anywhere for this gate.",
+                consequence="a null test of no-difference becomes STRICTER as the donor "
+                            "count rises, because the interval tightens around residual "
+                            "drift faster than the drift disappears. The gate therefore "
+                            "rejects more often with more data regardless of whether the "
+                            "pipeline is sound, which is the wrong shape for a gate whose "
+                            "purpose is to detect manufactured differences. This is "
+                            "recorded as an open specification gap, S102, and the choice "
+                            "belongs to the contract owner rather than to this code.",
+                scale_free_alternative_reported_below="the magnitude ratio, which does "
+                                                      "not tighten with n and is reported "
+                                                      "WITHOUT a threshold so that no "
+                                                      "second unfrozen number is invented "
+                                                      "here"),
+            magnitude_ratio_diagnostic=dict(
+                value=None if (cvc_val is None
+                               or not results[FROZEN["primary_weighting"]]["delta"])
+                else abs(cvc_val) / abs(results[FROZEN["primary_weighting"]]["delta"]),
+                definition="|control-versus-control delta| divided by |primary delta|",
+                is_not_a_gate=True,
+                why_no_threshold="choosing one now would repeat the defect this entry "
+                                 "exists to disclose")),
         G3_COVARIATE_BALANCE=bal,
         G4_SUPPORT_CONCENTRATION=conc,
         G5_FUNNEL_RECONCILES=dict(passed=fun["reconciles"], detail=fun),
