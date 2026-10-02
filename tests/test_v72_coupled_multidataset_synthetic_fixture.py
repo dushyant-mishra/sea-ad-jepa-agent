@@ -221,3 +221,17 @@ def test_pipeline_validation_does_not_require_hidden_truth(tmp_path):
     e = errors(root)
     assert "HIDDEN_TRUTH_ROOT_MISSING" in e
     assert not any(x == "CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK" for x in e)
+
+
+def test_default_fixture_has_10k_full104_backbone_with_full104_source_proportions(tmp_path):
+    root = fixture(tmp_path)
+    rows = list(csv.DictReader(open(
+        root / "observable_raw/FULL104_LIKE/metadata.csv", encoding="utf-8"
+    )))
+    assert len(rows) == 10000
+    counts = {}
+    for r in rows:
+        counts[r["source"]] = counts.get(r["source"], 0) + 1
+    builder = load(BUILDER, "v72_builder_counts")
+    assert counts == builder.allocate_source_counts(10000)
+    assert set(counts) == {"SEA_AD", "NPH52", "HVS"}
