@@ -1,0 +1,86 @@
+{
+  "schema": "V73_STAGE4_KCURVE_SERIAL_PARALLEL_EQUIVALENCE_V1",
+  "date": "2026-10-02",
+  "status": "PASS",
+  "purpose": "prove scheduling-only parallelism cannot change a repaired K-curve draw",
+  "smoke_specs": [
+    {
+      "K": 5,
+      "draw_index": 0,
+      "seed_base": 800000
+    },
+    {
+      "K": 5,
+      "draw_index": 1,
+      "seed_base": 801000
+    },
+    {
+      "K": 200,
+      "draw_index": 0,
+      "seed_base": 800000
+    },
+    {
+      "K": 200,
+      "draw_index": 1,
+      "seed_base": 801000
+    }
+  ],
+  "donors": 60,
+  "serial_workers": 1,
+  "parallel_workers": 2,
+  "identity_rule": "seed and run id depend only on (K, draw_index); worker number, completion order, PID and wall clock are excluded",
+  "comparison": "byte-identical per-draw Stage4 result JSON SHA-256",
+  "rows": [
+    {
+      "K": 5,
+      "draw_index": 0,
+      "seed_base": 800000,
+      "run_id": "g2_k005_d00_s800000",
+      "serial_result_sha256": "8f3f94699fa8053a78a1f2c474c4704f9c16b52c8f520721a3e63299cd7e4251",
+      "parallel_result_sha256": "8f3f94699fa8053a78a1f2c474c4704f9c16b52c8f520721a3e63299cd7e4251",
+      "byte_identical": true,
+      "identity_equal": true,
+      "holds": true
+    },
+    {
+      "K": 5,
+      "draw_index": 1,
+      "seed_base": 801000,
+      "run_id": "g2_k005_d01_s801000",
+      "serial_result_sha256": "29e5b90527608b6ab0474aecab0a90ad9a34d243302528b85e94da9eb9659a2a",
+      "parallel_result_sha256": "29e5b90527608b6ab0474aecab0a90ad9a34d243302528b85e94da9eb9659a2a",
+      "byte_identical": true,
+      "identity_equal": true,
+      "holds": true
+    },
+    {
+      "K": 200,
+      "draw_index": 0,
+      "seed_base": 800000,
+      "run_id": "g2_k200_d00_s800000",
+      "serial_result_sha256": "398e579f078cc97bbcd36d205fa6e046737d26f09774dea85afb75306a27a284",
+      "parallel_result_sha256": "398e579f078cc97bbcd36d205fa6e046737d26f09774dea85afb75306a27a284",
+      "byte_identical": true,
+      "identity_equal": true,
+      "holds": true
+    },
+    {
+      "K": 200,
+      "draw_index": 1,
+      "seed_base": 801000,
+      "run_id": "g2_k200_d01_s801000",
+      "serial_result_sha256": "8049a295b8f54081413893626e2606633b5938fca52efd1a3aa72df8dd6b70b2",
+      "parallel_result_sha256": "8049a295b8f54081413893626e2606633b5938fca52efd1a3aa72df8dd6b70b2",
+      "byte_identical": true,
+      "identity_equal": true,
+      "holds": true
+    }
+  ],
+  "all_draws_byte_identical": true,
+  "runner_sha256": "38eb71331e99afd1bc3727158db201b9a4c22a06e9915958cab68fc3cda72aef",
+  "builder_sha256": "6a65ffecf9be22b4c7be47cd27f68b387917b0edfd3b24e50d9e67037ffb11cb",
+  "executor_sha256": "dfc9770229dbdb44e585098afd18559ecb9b85fff6580c6c8c65da631cbdfbba",
+  "wall_clock_seconds": 47.7,
+  "real_substrate_read": false,
+  "computed_real_correspondence_values": 0
+}

@@ -244,7 +244,9 @@
     "verifier_rejects_the_defective_construction": true
   },
   "all_K_recovered_exactly": true,
-  "producer_sha256": "07de0e8ce79d8daf1835cee95d57f80dbc0042fa894974bddc4ef527830df88e",
+  "producer_sha256": "69638cb79fc1d2b1135f222a79730a3c65b96c1c82eaa93945d346bb26929a6f",
   "real_substrate_read": false,
-  "computed_correspondence_values": 0
+  "computed_correspondence_values": 0,
+  "ALL_REPAIRED_K_GEOMETRY_QUALIFIED": true,
+  "status": "PASS"
 }

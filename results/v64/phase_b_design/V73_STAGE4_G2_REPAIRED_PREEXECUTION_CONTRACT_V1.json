@@ -1,0 +1,495 @@
+{
+  "schema": "V73_STAGE4_G2_REPAIRED_PREEXECUTION_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "FROZEN__READY_FOR_REPAIRED_SYNTHETIC_CURVE_ONLY",
+  "scope": "synthetic HIDDEN_CONFOUND_K operating-characteristic experiment only",
+  "design": {
+    "K_values": [
+      1,
+      5,
+      20,
+      50,
+      200
+    ],
+    "donor_count": 282,
+    "draws_per_K": 20,
+    "seeds": {
+      "1": [
+        {
+          "draw_index": 0,
+          "seed_base": 800000
+        },
+        {
+          "draw_index": 1,
+          "seed_base": 801000
+        },
+        {
+          "draw_index": 2,
+          "seed_base": 802000
+        },
+        {
+          "draw_index": 3,
+          "seed_base": 803000
+        },
+        {
+          "draw_index": 4,
+          "seed_base": 804000
+        },
+        {
+          "draw_index": 5,
+          "seed_base": 805000
+        },
+        {
+          "draw_index": 6,
+          "seed_base": 806000
+        },
+        {
+          "draw_index": 7,
+          "seed_base": 807000
+        },
+        {
+          "draw_index": 8,
+          "seed_base": 808000
+        },
+        {
+          "draw_index": 9,
+          "seed_base": 809000
+        },
+        {
+          "draw_index": 10,
+          "seed_base": 810000
+        },
+        {
+          "draw_index": 11,
+          "seed_base": 811000
+        },
+        {
+          "draw_index": 12,
+          "seed_base": 812000
+        },
+        {
+          "draw_index": 13,
+          "seed_base": 813000
+        },
+        {
+          "draw_index": 14,
+          "seed_base": 814000
+        },
+        {
+          "draw_index": 15,
+          "seed_base": 815000
+        },
+        {
+          "draw_index": 16,
+          "seed_base": 816000
+        },
+        {
+          "draw_index": 17,
+          "seed_base": 817000
+        },
+        {
+          "draw_index": 18,
+          "seed_base": 818000
+        },
+        {
+          "draw_index": 19,
+          "seed_base": 819000
+        }
+      ],
+      "5": [
+        {
+          "draw_index": 0,
+          "seed_base": 800000
+        },
+        {
+          "draw_index": 1,
+          "seed_base": 801000
+        },
+        {
+          "draw_index": 2,
+          "seed_base": 802000
+        },
+        {
+          "draw_index": 3,
+          "seed_base": 803000
+        },
+        {
+          "draw_index": 4,
+          "seed_base": 804000
+        },
+        {
+          "draw_index": 5,
+          "seed_base": 805000
+        },
+        {
+          "draw_index": 6,
+          "seed_base": 806000
+        },
+        {
+          "draw_index": 7,
+          "seed_base": 807000
+        },
+        {
+          "draw_index": 8,
+          "seed_base": 808000
+        },
+        {
+          "draw_index": 9,
+          "seed_base": 809000
+        },
+        {
+          "draw_index": 10,
+          "seed_base": 810000
+        },
+        {
+          "draw_index": 11,
+          "seed_base": 811000
+        },
+        {
+          "draw_index": 12,
+          "seed_base": 812000
+        },
+        {
+          "draw_index": 13,
+          "seed_base": 813000
+        },
+        {
+          "draw_index": 14,
+          "seed_base": 814000
+        },
+        {
+          "draw_index": 15,
+          "seed_base": 815000
+        },
+        {
+          "draw_index": 16,
+          "seed_base": 816000
+        },
+        {
+          "draw_index": 17,
+          "seed_base": 817000
+        },
+        {
+          "draw_index": 18,
+          "seed_base": 818000
+        },
+        {
+          "draw_index": 19,
+          "seed_base": 819000
+        }
+      ],
+      "20": [
+        {
+          "draw_index": 0,
+          "seed_base": 800000
+        },
+        {
+          "draw_index": 1,
+          "seed_base": 801000
+        },
+        {
+          "draw_index": 2,
+          "seed_base": 802000
+        },
+        {
+          "draw_index": 3,
+          "seed_base": 803000
+        },
+        {
+          "draw_index": 4,
+          "seed_base": 804000
+        },
+        {
+          "draw_index": 5,
+          "seed_base": 805000
+        },
+        {
+          "draw_index": 6,
+          "seed_base": 806000
+        },
+        {
+          "draw_index": 7,
+          "seed_base": 807000
+        },
+        {
+          "draw_index": 8,
+          "seed_base": 808000
+        },
+        {
+          "draw_index": 9,
+          "seed_base": 809000
+        },
+        {
+          "draw_index": 10,
+          "seed_base": 810000
+        },
+        {
+          "draw_index": 11,
+          "seed_base": 811000
+        },
+        {
+          "draw_index": 12,
+          "seed_base": 812000
+        },
+        {
+          "draw_index": 13,
+          "seed_base": 813000
+        },
+        {
+          "draw_index": 14,
+          "seed_base": 814000
+        },
+        {
+          "draw_index": 15,
+          "seed_base": 815000
+        },
+        {
+          "draw_index": 16,
+          "seed_base": 816000
+        },
+        {
+          "draw_index": 17,
+          "seed_base": 817000
+        },
+        {
+          "draw_index": 18,
+          "seed_base": 818000
+        },
+        {
+          "draw_index": 19,
+          "seed_base": 819000
+        }
+      ],
+      "50": [
+        {
+          "draw_index": 0,
+          "seed_base": 800000
+        },
+        {
+          "draw_index": 1,
+          "seed_base": 801000
+        },
+        {
+          "draw_index": 2,
+          "seed_base": 802000
+        },
+        {
+          "draw_index": 3,
+          "seed_base": 803000
+        },
+        {
+          "draw_index": 4,
+          "seed_base": 804000
+        },
+        {
+          "draw_index": 5,
+          "seed_base": 805000
+        },
+        {
+          "draw_index": 6,
+          "seed_base": 806000
+        },
+        {
+          "draw_index": 7,
+          "seed_base": 807000
+        },
+        {
+          "draw_index": 8,
+          "seed_base": 808000
+        },
+        {
+          "draw_index": 9,
+          "seed_base": 809000
+        },
+        {
+          "draw_index": 10,
+          "seed_base": 810000
+        },
+        {
+          "draw_index": 11,
+          "seed_base": 811000
+        },
+        {
+          "draw_index": 12,
+          "seed_base": 812000
+        },
+        {
+          "draw_index": 13,
+          "seed_base": 813000
+        },
+        {
+          "draw_index": 14,
+          "seed_base": 814000
+        },
+        {
+          "draw_index": 15,
+          "seed_base": 815000
+        },
+        {
+          "draw_index": 16,
+          "seed_base": 816000
+        },
+        {
+          "draw_index": 17,
+          "seed_base": 817000
+        },
+        {
+          "draw_index": 18,
+          "seed_base": 818000
+        },
+        {
+          "draw_index": 19,
+          "seed_base": 819000
+        }
+      ],
+      "200": [
+        {
+          "draw_index": 0,
+          "seed_base": 800000
+        },
+        {
+          "draw_index": 1,
+          "seed_base": 801000
+        },
+        {
+          "draw_index": 2,
+          "seed_base": 802000
+        },
+        {
+          "draw_index": 3,
+          "seed_base": 803000
+        },
+        {
+          "draw_index": 4,
+          "seed_base": 804000
+        },
+        {
+          "draw_index": 5,
+          "seed_base": 805000
+        },
+        {
+          "draw_index": 6,
+          "seed_base": 806000
+        },
+        {
+          "draw_index": 7,
+          "seed_base": 807000
+        },
+        {
+          "draw_index": 8,
+          "seed_base": 808000
+        },
+        {
+          "draw_index": 9,
+          "seed_base": 809000
+        },
+        {
+          "draw_index": 10,
+          "seed_base": 810000
+        },
+        {
+          "draw_index": 11,
+          "seed_base": 811000
+        },
+        {
+          "draw_index": 12,
+          "seed_base": 812000
+        },
+        {
+          "draw_index": 13,
+          "seed_base": 813000
+        },
+        {
+          "draw_index": 14,
+          "seed_base": 814000
+        },
+        {
+          "draw_index": 15,
+          "seed_base": 815000
+        },
+        {
+          "draw_index": 16,
+          "seed_base": 816000
+        },
+        {
+          "draw_index": 17,
+          "seed_base": 817000
+        },
+        {
+          "draw_index": 18,
+          "seed_base": 818000
+        },
+        {
+          "draw_index": 19,
+          "seed_base": 819000
+        }
+      ]
+    },
+    "seed_identity_rule": "seed_base = 800000 + 1000*draw_index; scientific identity is (K, draw_index, seed_base); worker number, completion order, PID and wall clock are forbidden from scientific identity",
+    "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+    "K_max_singleton_requirement": true,
+    "run_namespace": "JEPA_SYNTHETIC_RUN_ID",
+    "scheduling_workers": "operational only; may vary only after equivalence PASS"
+  },
+  "prerequisite_receipts": {
+    "geometry_status": "PASS",
+    "isolation_status": "PASS",
+    "serial_parallel_equivalence_status": "PASS"
+  },
+  "bindings": {
+    "builder": {
+      "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
+      "sha256": "6a65ffecf9be22b4c7be47cd27f68b387917b0edfd3b24e50d9e67037ffb11cb"
+    },
+    "geometry_verifier": {
+      "path": "scripts/v64/verify_confound_block_geometry_v1.py",
+      "sha256": "69638cb79fc1d2b1135f222a79730a3c65b96c1c82eaa93945d346bb26929a6f"
+    },
+    "executor": {
+      "path": "scripts/v64/stage4_executor_v1.py",
+      "sha256": "dfc9770229dbdb44e585098afd18559ecb9b85fff6580c6c8c65da631cbdfbba"
+    },
+    "runner": {
+      "path": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+      "sha256": "38eb71331e99afd1bc3727158db201b9a4c22a06e9915958cab68fc3cda72aef"
+    },
+    "equivalence_gate": {
+      "path": "scripts/v64/qualify_v73_kcurve_serial_parallel_equivalence.py",
+      "sha256": "eb0a509bb0d913b0698b5b2b4985a719f1004bb45b091c22a6ee8b0d2289e341"
+    },
+    "original_precommit": {
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "sha256": "3a3b1edc5322f77dbb8c7006794a8ae3841db9f338eaf24e1e507c5d1c673079"
+    },
+    "geometry_receipt": {
+      "path": "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json",
+      "sha256": "795f8b2d7942228fe1485504624ef2402546c4b737723d2499af612dfccf3e62"
+    },
+    "isolation_receipt": {
+      "path": "results/v64/phase_b_design/V64_SYNTHETIC_RUN_ISOLATION_V1.json",
+      "sha256": "831978762bdc92e8eb618cca554c0b9f5e6817868e199d64a257c2292e3dfe09"
+    },
+    "serial_parallel_equivalence_receipt": {
+      "path": "results/v64/phase_b_design/V73_STAGE4_KCURVE_SERIAL_PARALLEL_EQUIVALENCE_V1.json",
+      "sha256": "382837576c295b23ba50dbfe0f005eacaf01a1d397f3a512ef2c1d6d4d16d182"
+    }
+  },
+  "historical_v1": {
+    "artifact": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+    "preserved": true,
+    "supersession_scope": "V1 remains valid only as a measurement of the historical sampling-with-replacement factor-pool generator. It is superseded for claims about exact-K partition behavior or a one-factor-per-edge K=200 endpoint."
+  },
+  "repaired_result_path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+  "S102": {
+    "status": "OPEN",
+    "rule": "The repaired curve characterises the named historical executor G2 implementation only. It must not define or tune the final Stage-4 G2 statistic, alpha, confidence level, equivalence margin or biological acceptance threshold."
+  },
+  "governance": {
+    "real_stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "training": "OFF",
+    "multimodal_training": "OFF"
+  },
+  "real_substrate_read": false,
+  "computed_real_correspondence_values": 0
+}

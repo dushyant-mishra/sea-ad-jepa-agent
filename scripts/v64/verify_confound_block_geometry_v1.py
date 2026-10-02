@@ -267,13 +267,17 @@ def main() -> int:
                                     if r.get("ok")),
         producer_sha256=B.sha_file(os.path.abspath(__file__)),
         real_substrate_read=False, computed_correspondence_values=0)
+    # S108: these three lines ran AFTER the dump, so the receipt on disk never carried
+    # the status it printed, and a downstream fail-closed gate reading the file
+    # correctly refused to freeze. A verdict that exists only in the producer memory is
+    # not a receipt.
+    qualified = all(r.get("GEOMETRY_QUALIFIED") for r in rows if r.get("ok"))
+    out["ALL_REPAIRED_K_GEOMETRY_QUALIFIED"] = bool(qualified)
+    out["status"] = "PASS" if (qualified and control_rejects) else "FAIL"
     p = "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json"
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print("")
-    qualified = all(r.get("GEOMETRY_QUALIFIED") for r in rows if r.get("ok"))
-    out["ALL_REPAIRED_K_GEOMETRY_QUALIFIED"] = bool(qualified)
-    out["status"] = ("PASS" if qualified and control_rejects else "FAIL")
     print("all repaired K geometry-qualified (exact membership and ARI = 1): %s"
           % qualified)
     print("positive control rejects the defective construction: %s" % control_rejects)
