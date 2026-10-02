@@ -1,0 +1,55 @@
+{
+  "schema": "V73_STAGE4_KCURVE_POSTRUN_INDEPENDENT_AUDIT_V1",
+  "date": "2026-10-02",
+  "audited_branch": "claude/v64-exact-sampler-successor-20260930",
+  "audited_head": "e081e02a87253dcff977e05534f731d6f29942e5",
+  "historical_curve": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+  "status": "HISTORICAL_NUMBERS_PRESERVED__INTENDED_K_PARTITION_INTERPRETATION_INVALID",
+  "finding": {
+    "severity": "HIGH",
+    "generator_code": "block_of_edge = rng.integers(0, K, N_EDGES)",
+    "defect": "Requested K was the size of a factor pool sampled with replacement, not the realised number of occupied confound blocks.",
+    "consequence": "At K=N_EDGES=200, the world is not guaranteed one factor per edge. Therefore the committed curve cannot support the claimed degenerate endpoint 'edge-specific hidden factor' or the conclusion that the observed K=200 point is structurally identical to BIOLOGY_POSITIVE.",
+    "expected_occupied_at_K200": "approximately 126.6 under the historical sampling-with-replacement construction",
+    "runner_gap": "The historical runner checked only confound_blocks_K == requested K and reported nominal edges_per_block=N_EDGES/K; it did not verify realised occupancy or block sizes."
+  },
+  "historical_curve_numbers": {
+    "K": [
+      1,
+      5,
+      20,
+      50,
+      200
+    ],
+    "g2_pass_rates": [
+      0.15,
+      0.15,
+      0.25,
+      0.45,
+      0.55
+    ],
+    "note": "These values remain valid measurements of the historical generator. They must be described as a curve over requested factor-pool size under sampling-with-replacement, not as an exact K-block partition experiment."
+  },
+  "s102_boundary": {
+    "status": "OPEN",
+    "statement": "Even a repaired K-partition curve characterizes the historical executor G2 implementation unless and until G2 semantics are prospectively specified. No post-hoc G2 threshold or equivalence margin is introduced here."
+  },
+  "prospective_repair": {
+    "branch": "chatgpt/v73-stage4-kcurve-partition-repair-20261002",
+    "requirements": [
+      "exactly K occupied factors for every requested K",
+      "balanced block sizes differing by at most one",
+      "K=N_EDGES requires every block size exactly 1",
+      "world manifest records realised occupancy, block-size range, full block-size vector and digest",
+      "runner fails closed if realised occupancy or singleton endpoint checks fail",
+      "re-run uses a new V2_PARTITION_REPAIRED receipt rather than overwriting historical V1 curve"
+    ],
+    "execution_status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+  },
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "real_substrate_read": false,
+    "training": "OFF"
+  }
+}
