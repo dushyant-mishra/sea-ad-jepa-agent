@@ -68,6 +68,12 @@ def main() -> int:
         "6_helper_qualification_suite": ident(
             "scripts/v64/test_stage4_executor_synthetic_qualification_v1.py",
             "19 fixtures over the frozen mathematics"),
+        "11_g2_sensitivity_curve": ident(
+            "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+            "varies how shared a hidden confound is and watches what G2 does"),
+        "12_calibration_sweeps": ident(
+            "scripts/v64/run_stage4_calibration_sweep_v2.py",
+            "four worlds, two donor counts, the complete five-gate decision"),
         "9_seed_robustness": ident("scripts/v64/test_stage4_world_seed_robustness_v1.py",
                                    "rebuilds the worlds at four seed bases and asks "
                                    "which conclusions are a property of the method"),
@@ -105,6 +111,16 @@ def main() -> int:
                                       "status"]),
         "synthetic_worlds_build": receipt("V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
                                           ["worlds", "reads_no_real_measurement"]),
+        "calibration_sweep_v2": receipt("V64_STAGE4_CALIBRATION_SWEEP_V2.json",
+                                        ["executes_precommitment", "readings",
+                                         "scale_reading", "canonical_state_verified",
+                                         "status"]),
+        "g2_sensitivity_curve": receipt("V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+                                        ["executes_precommitment", "cells",
+                                         "g2_rate_monotone_in_K",
+                                         "g2_rate_at_max_K_converges_on_biology_rate",
+                                         "READING", "primary_evidence",
+                                         "canonical_state_verified", "status"]),
         "world_seed_robustness": receipt("V64_STAGE4_WORLD_SEED_ROBUSTNESS_V1.json",
                                          ["seed_bases", "n_checks", "n_seed_stable",
                                           "seed_dependent",
@@ -136,11 +152,58 @@ def main() -> int:
             "No correspondence value has been computed on real data, at any scale, at "
             "any point.",
         ],
+        THE_GOVERNING_INTERPRETATION_LIMIT=dict(
+            statement="the frozen Stage-4 decision cannot distinguish an EDGE-SPECIFIC "
+                      "cross-modal artifact from regulation, and this is a limit in "
+                      "principle rather than a defect to repair.",
+            why_in_principle="a factor that varies across metacells within a donor, loads "
+                             "on both modalities of one edge's linked arm, and is drawn "
+                             "independently per edge is the SAME statistical object as "
+                             "the planted biology. Nothing analysing RNA-ATAC covariation "
+                             "can separate them because there is nothing to separate.",
+            evidence="V64_STAGE4_G2_SENSITIVITY_CURVE_V1. As the confound becomes less "
+                     "shared across edges the G2 pass rate rises monotonically 0.15, "
+                     "0.15, 0.25, 0.45, 0.55 at K = 1, 5, 20, 50, 200, and at K=200 its "
+                     "interval overlaps the rate at which G2 passes genuine biology. G1 "
+                     "and G3 pass in 100 percent of draws at every K, so ALL_FIVE equals "
+                     "the G2 rate throughout and the entire discriminating power of the "
+                     "five-gate decision against this family was one gate responding to "
+                     "SHARING.",
+            magnitude_does_not_help="the confound's delta is 0.972 to 1.020 times genuine "
+                                    "biology at every K, so the contract's rule that a "
+                                    "negligibly small Delta must not be presented as "
+                                    "confirmation does not reach it.",
+            consequence="a positive Stage-4 result is evidence of within-donor cross-modal "
+                        "co-variation. It is not, by itself, evidence of regulation, and "
+                        "it cannot be made so by any gate in the frozen design. External "
+                        "corroboration with a DIFFERENT failure mode is required before a "
+                        "regulatory claim.",
+            supersedes="the single-draw reading in SUPERSEDED_BY_S99, which reported the "
+                       "hidden confound as passing all five gates and did not yet know "
+                       "that G2's apparent rejection came from how I had built the "
+                       "confound"),
+        OPEN_SPECIFICATION_GAP_S102=dict(
+            gate="G2, control versus control",
+            what_the_contract_specifies="that the contrast must not show excess. No test, "
+                                        "no statistic and no level is frozen anywhere.",
+            what_the_executor_implements="a two-sided 95 percent donor-bootstrap interval "
+                                         "containing zero, chosen by me",
+            why_it_matters="a null test of no-difference becomes stricter as the donor "
+                           "count rises, so the gate rejects more with more data "
+                           "regardless of whether the pipeline is sound. The V2 "
+                           "observation that G2 rejects genuine biology in 22 percent of "
+                           "draws at 60 donors and 38 percent at 282 is the signature of "
+                           "that tightening and may be an artifact of my choice rather "
+                           "than a property of the design.",
+            status="OPEN. The choice belongs to the contract owner. The executor discloses "
+                   "the gap in every result and reports a scale-free magnitude ratio "
+                   "beside the gate, without a threshold, so both readings are visible."),
         WHAT_IS_NOT_GRANTABLE_HERE=[
             "Stage-4 execution authorisation. This closeout does not grant it and the "
             "executor does not create the artifact that would.",
             "Any claim that a positive Stage-4 result would demonstrate regulatory "
-            "causation. The HIDDEN_CONFOUND world forbids that reading.",
+            "causation, or regulation at all. The G2 sensitivity curve forbids that "
+            "reading in principle, not merely in the worst case.",
             "Any claim that LCB95 > 0 alone establishes a non-technical origin. The "
             "MEASURED_TECHNICAL residue forbids that reading.",
         ],
