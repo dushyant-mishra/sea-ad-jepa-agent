@@ -1,7 +1,7 @@
 {
   "schema": "V69_CISTARGET_SPEED_BENCHMARK_RECEIPT_V1",
   "recorded_utc": "2026-10-02T00:05:00Z",
-  "status": "PARTIAL__STORAGE_SETTLED__WORKER_SCALING_TABLE_NOT_YET_MEASURED__FULL_BUILDS_NOT_AUTHORISED_BY_THIS_RECEIPT",
+  "status": "COMPLETE__RECOMMENDATIONS_MEASURED__FULL_BUILDS_MAY_PROCEED_UNDER_THESE_SETTINGS",
   "purpose": "Mandate item 9: the benchmark receipt that must precede the full cisTarget builds. It is deliberately incomplete and says so; the worker-scaling table requires an idle machine and has not been run.",
   "scientific_invariance_statement": {
     "claim": "Nothing scientific has been changed by the speed work.",
@@ -128,30 +128,12 @@
     "caveat": "The share will fall as motifs per run rises, because scoring grows with motif count while a fixed per-run write overhead does not. The full-scale figure is NOT yet measured."
   },
   "NOT_MEASURED_AND_THEREFORE_NOT_RECOMMENDED": {
-    "worker_scaling_table": {
-      "status": "NOT_RUN",
-      "why": "A coordinator-owned 320-draw Stage-4 calibration sweep held roughly one core on this machine throughout this work, from about 18:00. A scaling curve measured against a contended machine is an artifact of the contention -- which is precisely the measurement being asked for.",
-      "driver_ready": "scripts/v69/run_worker_scaling_table_v1.sh",
-      "planned_points": [
-        1,
-        2,
-        4,
-        8,
-        16
-      ],
-      "planned_workload": "16 motifs x 150,561 regions, pinned seed, pinned BLAS threads",
-      "estimated_duration_hours": 1.75,
-      "granularity_caveat": "16 motifs on 16 workers is a single wave and cannot exhibit queueing; the 4- and 8-worker points (4 and 2 waves) carry the saturation signal."
-    },
-    "storage_comparison": {
-      "status": "SETTLED -- see F5_storage_comparison",
-      "outcome": "PASS, outputs identical; SSD gives no advantage"
-    },
-    "recommended_worker_count": "NOT_DETERMINED",
-    "recommended_shard_size": "NOT_DETERMINED",
-    "estimated_wall_time_per_route": "NOT_DETERMINED_UNDER_THE_PINNED_CONFIGURATION",
-    "can_routes_run_concurrently": "NOT_DETERMINED",
-    "expected_peak_scratch_usage": "NOT_DETERMINED"
+    "status": "SUPERSEDED -- worker count, shard size, concurrency and scratch footprint are now all determined. See RECOMMENDATIONS.",
+    "still_unmeasured": [
+      "Any shard size beyond 128 motifs (see S28 caveat).",
+      "Route B's region universe, which does not exist yet and sets the union size.",
+      "Container-local (non-bind-mount) storage, which the storage comparison did not cover."
+    ]
   },
   "infrastructure_built_and_tested": {
     "shard_driver": {
@@ -208,5 +190,92 @@
     "DECISION": "The internal SSD buys NOTHING on this workload. Do not spend the scratch budget moving cisTarget data to C:. The premise that C: is faster was explicitly flagged as unmeasured and is now measured and rejected.",
     "caveat": "Both paths are Docker Desktop bind mounts on Windows, so this compares bind-mount-to-C: against bind-mount-to-D:, not SSD against external disk natively. The mount layer may dominate both equally.",
     "consequence_for_the_plan": "The earlier recommendation to 'build to container-local or WSL-native storage' is NOT supported by this measurement for a bind-mounted C:. If the feather-write cost is to be attacked, the thing to test is container-local storage INSIDE the image (not a bind mount), which this comparison did not cover."
+  },
+  "F6_worker_scaling": {
+    "status": "MEASURED_ON_AN_IDLE_MACHINE",
+    "receipt": "V69_CISTARGET_WORKER_SCALING_TABLE_V1.json",
+    "competing_jepa_workload": "NONE (zero Stage-4 processes, zero containers verified before launch)",
+    "table": [
+      {
+        "workers": 1,
+        "wall_s": 1402,
+        "cbust_s": 1131.5,
+        "non_scoring_s": 270.5,
+        "speedup": 1.0,
+        "eff": 1.0
+      },
+      {
+        "workers": 2,
+        "wall_s": 874,
+        "cbust_s": 601.1,
+        "non_scoring_s": 272.9,
+        "speedup": 1.6,
+        "eff": 0.8
+      },
+      {
+        "workers": 4,
+        "wall_s": 604,
+        "cbust_s": 339.6,
+        "non_scoring_s": 264.4,
+        "speedup": 2.32,
+        "eff": 0.58
+      },
+      {
+        "workers": 8,
+        "wall_s": 486,
+        "cbust_s": 222.4,
+        "non_scoring_s": 263.6,
+        "speedup": 2.88,
+        "eff": 0.36
+      },
+      {
+        "workers": 16,
+        "wall_s": 513,
+        "cbust_s": 184.0,
+        "non_scoring_s": 329.0,
+        "speedup": 2.73,
+        "eff": 0.17
+      }
+    ],
+    "digest_gate": "PASS at all five worker counts, rankings included; same digests as the storage runs on both drives",
+    "bottleneck": "A ~265 s SERIAL non-scoring segment, 18.9% of the 1-worker wall, Amdahl ceiling 5.3x against an observed 2.88x. Scoring itself parallelises well (5.09x on 8 cores)."
+  },
+  "RECOMMENDATIONS": {
+    "READ_OFF_A_16_MOTIF_CURVE": "Binding label. The worker count was selected from a 16-motif workload (self-audit S21), not the 120-motif workload the mandate specified. Any receipt citing it must repeat this.",
+    "recommended_workers": 8,
+    "workers_basis": "Measured wall-clock minimum, bracketed on both sides (4: 604 s, 8: 486 s, 16: 513 s). 16 is slower because the non-scoring phase takes a +65 s oversubscription penalty beyond the 8 physical cores that exceeds its 38 s scoring gain.",
+    "recommended_shard_size_motifs": 512,
+    "shard_size_basis": {
+      "overhead": "21 shards x ~265 s = 1.55 h, which is 4.6% of total runtime.",
+      "crash_cost": "A lost shard forfeits at most ~1.6 h of work.",
+      "why_not_larger": "1024 and 2048 save only 0.7 h and 1.1 h more respectively, while raising worst-case crash loss to 3.2 h and 6.4 h. The overhead curve is already flat at 512; the restartability curve is not.",
+      "why_not_smaller": "256 costs 3.02 h of overhead (8.6%) for a crash-loss improvement of only 0.8 h.",
+      "EXTRAPOLATION_CAVEAT": "No point beyond 128 motifs was measured. If a per-motif write cost does emerge at 512 the overhead estimate is too low -- which would argue for SMALLER shards, so the error direction is known and the choice is not fragile in the dangerous direction. See self-audit S28."
+    },
+    "per_motif_scoring_cost_s": 11.222,
+    "per_motif_cost_note": "Marginal between the 16- and 128-motif points at 8 workers. It fell from 13.90 s/motif at 16 motifs to 11.56 s/motif at 128, so the figure may improve further at 512 and this projection is likely conservative.",
+    "estimated_scoring_hours_at_150561_regions": 31.9,
+    "estimated_total_hours_at_150561_regions": 33.5,
+    "SCALING_WITH_REGION_COUNT": "Scoring cost scales with regions x motifs. The figures above are for the 150,561-region Route-A universe. For a union universe of R regions multiply by R/150561.",
+    "union_saving": {
+      "mechanism": "The proven union-score reuse means ONE scoring pass over |A union B| instead of one per route.",
+      "formula": "union_hours = 33.5 x |A union B| / 150561 ; separate_hours = 33.5 x (|A| + |B|) / 150561",
+      "saving_depends_on_overlap": "If the two region universes overlap heavily the union approaches a single route's cost and the saving approaches 50%. If they are nearly disjoint the saving approaches zero. Route B's universe does not exist yet, so the saving is NOT yet quantifiable and no number is asserted."
+    },
+    "can_routes_run_concurrently": {
+      "answer": "NO, and it is largely unnecessary.",
+      "why_not": "Two builds at 8 workers each is 16 workers total, which this table measures as past saturation; concurrency at 8+8 is expected to be slower than the same work run sequentially at 8.",
+      "why_unnecessary": "Union scoring already removes the need for route concurrency in the expensive phase. Only the per-route ranking construction remains route-specific, and that is the cheap part."
+    },
+    "expected_peak_scratch": {
+      "measured_basis": "The 16-motif run produced 87.9 MB across its three feathers, i.e. ~5.49 MB per motif at 150,561 regions.",
+      "full_database_estimate_gb_at_150561_regions": 56.3,
+      "per_512_motif_shard_gb": 2.81,
+      "peak_if_all_shards_retained_plus_merged_gb": 115,
+      "peak_with_archive_and_delete_gb": "~65, keeping about three shards in flight plus the merged database",
+      "budget_gb": "120-130",
+      "verdict": "Archive-and-delete is REQUIRED, not optional: retaining all shards alongside the merged database would reach ~115 GB and leave almost no margin. Scales with region count, so a larger union universe raises this proportionally.",
+      "custody_rule": "SHA-256 on C:, copy to D:, re-hash on D:, require equality, and only then delete the C: copy. A copy command's exit code is not custody."
+    }
   }
 }
