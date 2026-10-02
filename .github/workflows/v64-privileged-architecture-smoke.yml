@@ -228,9 +228,19 @@ jobs:
             tests/test_v70_gse214979_full104_structural_crosswalk.py \
             tests/test_v70_gse214979_route_a_development_preflight.py \
             tests/test_v71_small_synthetic_etl_fixture.py \
-            tests/test_v71_synthetic_pipeline_readiness.py
+            tests/test_v71_synthetic_pipeline_readiness.py \
+            tests/test_v72_coupled_synthetic_ecosystem.py \
+            tests/test_v72_checkpoint_twins.py
       - name: Validate V71 synthetic pipeline readiness
         run: python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
+      - name: Build and validate V72 coupled CI ecosystem
+        run: |
+          python scripts/v64/build_v72_coupled_synthetic_ecosystem.py --root /tmp/v72_ci --cells 720
+          python scripts/v64/validate_v72_coupled_synthetic_ecosystem.py --root /tmp/v72_ci
+      - name: Build and audit V72 checkpoint twins
+        run: |
+          python scripts/v64/build_v72_checkpoint_twins.py --root /tmp/v72_checkpoints
+          python scripts/v64/build_v72_checkpoint_twins.py --root /tmp/v72_checkpoints --audit > /tmp/v72_checkpoint_audit.json
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
