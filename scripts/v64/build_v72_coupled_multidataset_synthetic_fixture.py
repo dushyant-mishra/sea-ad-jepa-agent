@@ -12,6 +12,19 @@ import numpy as np
 
 RANKING_SEED = 20261001
 BLAS_THREADS = 1
+FULL104_SOURCE_COUNTS = {"HVS": 198718, "NPH52": 236476, "SEA_AD": 4118213}
+FULL104_TOTAL = sum(FULL104_SOURCE_COUNTS.values())
+
+
+def allocate_source_counts(total: int):
+    raw = {k: total * v / FULL104_TOTAL for k, v in FULL104_SOURCE_COUNTS.items()}
+    base = {k: int(np.floor(v)) for k, v in raw.items()}
+    rem = total - sum(base.values())
+    order = sorted(raw, key=lambda k: (raw[k] - base[k], k), reverse=True)
+    for k in order[:rem]:
+        base[k] += 1
+    return base
+
 
 
 def sha256(path: Path) -> str:
@@ -34,22 +47,26 @@ def interval_overlap(a0, a1, b0, b1):
     return max(a0, b0) < min(a1, b1)
 
 
-def build(root: Path, seed: int = 7201) -> Path:
+def build(root: Path, seed: int = 7201, n_cells: int = 10000) -> Path:
     rng = np.random.default_rng(seed)
     observable = root / "observable_raw"
     truth = root / "hidden_truth"
     observable.mkdir(parents=True, exist_ok=True)
     truth.mkdir(parents=True, exist_ok=True)
 
-    n_cells = 240
+    if n_cells < 1000:
+        raise ValueError("V72 coupled CI fixture requires at least 1000 cells")
     n_donors = 12
     n_genes = 32
     n_peaks = 48
 
     donors = np.array([f"D{i:02d}" for i in range(n_donors)], dtype="U4")
     cell_donor = np.array([donors[i % n_donors] for i in range(n_cells)], dtype="U4")
+    source_counts = allocate_source_counts(n_cells)
     source = np.array(
-        ["SEA_AD" if i < 168 else "NPH52" if i < 216 else "HVS" for i in range(n_cells)],
+        ["SEA_AD"] * source_counts["SEA_AD"]
+        + ["NPH52"] * source_counts["NPH52"]
+        + ["HVS"] * source_counts["HVS"],
         dtype="U8",
     )
     operators = np.array([f"OP{i % 6:02d}" for i in range(n_cells)], dtype="U4")
@@ -469,6 +486,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--seed", type=int, default=7201)
+    ap.add_argument("--n-cells", type=int, default=10000)
     args = ap.parse_args()
-    build(Path(args.out), args.seed)
+    build(Path(args.out), args.seed, args.n_cells)
     print(Path(args.out).resolve())
