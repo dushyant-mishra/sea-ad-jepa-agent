@@ -767,6 +767,47 @@ fail, *and* what result would make it pass. I had been asking only the first.
 
 ---
 
+## S28 — My shard-cost model produced a negative write cost; I refused to fit it (CAUGHT BEFORE DAMAGE)
+
+**Status:** CLOSED by abandoning the model, not by patching it.
+
+**What I expected.** I predicted the non-scoring phase was `fixed_load + k x n_motifs`,
+with `k` a per-motif feather-write cost, and said so in advance: at 16 motifs the
+feathers are ~40 MB, at 512 they would be ~1.3 GB, so writes should come to dominate and
+*small* shards should be cheap per motif.
+
+**What the measurement said.** At 8 workers, non-scoring was **263.6 s for 16 motifs and
+214.7 s for 128 motifs**. It went DOWN with eight times the output. Fitting the model
+gives `k = -0.436 s/motif` — a negative write cost, which is not a physical quantity.
+
+**What I did NOT do.** The fitted model happily produced shard projections, and two of
+them were *negative overhead* (shard=1024 gave −0.54 h, shard=2048 −1.04 h). Those
+numbers would have looked like a strong argument for very large shards. I discarded the
+model rather than reporting its output, for the same reason I refused the earlier
+two-point runtime fit with a negative intercept: **a model that produces an impossible
+coefficient has been falsified, and its predictions are not evidence.**
+
+**What is actually supported.** Across every run at 8 or fewer workers, non-scoring sits
+in 214.7–272.9 s with **no monotone trend in motif count** — the 16→128 comparison
+moves the wrong way, so the variation is noise rather than signal. The honest statement
+is that non-scoring is a roughly fixed ~265 s per run over this range, that any write
+component is too small to detect up to 128 motifs, and that this has NOT been tested at
+512 or beyond.
+
+**Why it was worth measuring at all, given the model failed.** It replaced a confident
+wrong prediction with a measured range, and it moved the per-motif scoring cost from
+13.90 s (16 motifs) to 11.56 s (128 motifs) — confirming the two-wave workload was
+pessimistic, exactly as I suspected when I withheld the 39.6 h projection.
+
+**Residual risk recorded, not resolved.** Because no point beyond 128 motifs was
+measured, the recommendation of 512 motifs per shard extrapolates the fixed-cost claim
+one doubling-and-a-bit past the data. If the write cost does become significant at 512,
+the overhead estimate is too low — but that would argue for *smaller* shards, so the
+error direction is known and the recommendation is not fragile in the dangerous
+direction.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
