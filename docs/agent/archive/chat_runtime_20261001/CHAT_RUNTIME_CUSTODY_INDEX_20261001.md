@@ -1,31 +1,37 @@
 # Chat runtime custody index — 2026-10-01
 
-This directory contains the exact small-file artifacts that were physically present in the ChatGPT runtime during the October 1 custody pass, plus a manifest for every runtime file.
+This directory preserves the user-uploaded files that were exclusive to this chat plus a custody manifest for Project-backed scientific files visible in the runtime.
 
-## Verbatim small-file bundle
+## Verbatim chat uploads
 
-`CHAT_EXCLUSIVE_SMALL_FILES_20261001.zip` contains these files exactly as supplied to the runtime:
+These five files were uploaded directly in this conversation and are preserved verbatim:
 
-- `Pasted text.txt`
-  - raw Macha/Stage-4/SCENIC+ execution transcript and handback material
-- `Pasted markdown.md`
-  - later SCENIC+ speed-cycle / Stage-4 execution transcript and handback material
-- `Status and Repair Plan.txt`
-  - historical project status/repair artifact supplied to this runtime
-- `WSL execution issue.txt`
-  - historical WSL/architecture discussion artifact supplied to this runtime
-- `FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv`
-  - supplied checksum inventory for the split foundation discovery expression archive
+1. `CHAT_UPLOAD_01_PASTED_TEXT.txt`
+   - source upload: `Pasted text.txt`
+   - source size: 27,997 bytes
+2. `CHAT_UPLOAD_02_PASTED_TEXT.txt`
+   - source upload: `Pasted text.txt`
+   - source size: 27,887 bytes
+3. `CHAT_UPLOAD_03_PASTED_TEXT.txt`
+   - source upload: `Pasted text.txt`
+   - source size: 117,661 bytes
+4. `CHAT_UPLOAD_04_PASTED_MARKDOWN.md`
+   - source upload: `Pasted markdown.md`
+   - source size: 15,164 bytes
+5. `CHAT_UPLOAD_05_PASTED_MARKDOWN.md`
+   - source upload: `Pasted markdown.md`
+   - source size: 94,357 bytes
 
-Bundle identity:
+The repeated source filenames are why the archive uses numbered custody names.
 
-- bytes: 78,034
-- SHA-256: `bc04cb8e534c3ba94d1e5ffdb6e67773a198bde92b212c62376d152c9f51f2c0`
+## Project-backed runtime files
 
-## All-runtime-file manifest
+The runtime also exposed large Project-backed scientific files (foundation bundles, split expression archive parts, checkpoints, expression archive, NPZ, and historical text files). Those are not chat-exclusive uploads and are not duplicated into Git history here.
 
-`CHAT_RUNTIME_BINARY_CUSTODY_MANIFEST_20261001.json` records exact bytes and SHA-256 for every file physically present in `/mnt/data` at custody time, including large binary scientific assets deliberately not committed to Git.
+`CHAT_RUNTIME_BINARY_CUSTODY_MANIFEST_20261001.json` records exact runtime byte sizes and SHA-256 values for the Project-backed files that were physically mounted in `/mnt/data` during this custody pass.
 
 ## Interpretation rule
 
-Raw pasted transcripts contain time-local process observations, intermediate SHA heads, errors, retractions and superseded claims. They are evidence/history, not a canonical current-state document. Use `../../JEPA_CHAT_EXCLUSIVE_CUSTODY_AND_HANDOFF_20261001.md` for the interpreted handoff, and re-query GitHub for current branch heads before execution.
+Raw pasted transcripts contain time-local process observations, intermediate SHA heads, errors, retractions and superseded claims. They are evidence/history, not a canonical current-state document.
+
+Use `../../JEPA_CHAT_EXCLUSIVE_CUSTODY_AND_HANDOFF_20261001.md` for the interpreted handoff and re-query GitHub for current branch heads before execution.
