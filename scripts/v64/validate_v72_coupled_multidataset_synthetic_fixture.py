@@ -227,23 +227,33 @@ def validate(root: Path):
     else:
         reps = cp["representations"]
         unc = cp["uncertainty"]
+        eval_idx = np.asarray(cp["eval_global_indices"], dtype=int)
+        cp_cell_ids = [str(x) for x in cp["cell_ids"].tolist()]
         index = {str(k): i for i, k in enumerate(ids)}
-        meta = read_csv(obs / "FULL104_LIKE/metadata.csv")[: reps.shape[1]]
+        meta_rows = read_csv(obs / "FULL104_LIKE/metadata.csv")
+        meta_by_cell = {r["cell_id"]: r for r in meta_rows}
+        if set(cp_cell_ids) - set(meta_by_cell):
+            errors.append("CHECKPOINT_CELL_ID_NOT_IN_FULL104_AUTHORITY")
+            cp_meta = []
+        else:
+            cp_meta = [meta_by_cell[c] for c in cp_cell_ids]
         source_map = {"SEA_AD": 0.0, "NPH52": 1.0, "HVS": 2.0}
-        source_y = np.array([source_map[r["source"]] for r in meta])
-        donor_y = np.array([float(r["donor"][1:]) for r in meta])
+        source_y = np.array([source_map[r["source"]] for r in cp_meta]) if cp_meta else np.array([])
+        donor_y = np.array([float(r["donor"][1:]) for r in cp_meta]) if cp_meta else np.array([])
 
+        if len(eval_idx) != reps.shape[1] or len(cp_cell_ids) != reps.shape[1]:
+            errors.append("CHECKPOINT_EVAL_AXIS_LENGTH_MISMATCH")
         if float(np.var(reps[index["HEALTHY"]])) <= 0.1:
             errors.append("CHECKPOINT_HEALTHY_COLLAPSED")
         if float(np.var(reps[index["COLLAPSED"]])) >= 0.01:
             errors.append("CHECKPOINT_COLLAPSE_POSITIVE_CONTROL_WEAK")
-        if linear_r2(reps[index["SOURCE_SHORTCUT"]], source_y) <= 0.9:
+        if source_y.size and linear_r2(reps[index["SOURCE_SHORTCUT"]], source_y) <= 0.9:
             errors.append("CHECKPOINT_SOURCE_SHORTCUT_POSITIVE_CONTROL_WEAK")
-        if linear_r2(reps[index["DONOR_SHORTCUT"]], donor_y) <= 0.9:
+        if donor_y.size and linear_r2(reps[index["DONOR_SHORTCUT"]], donor_y) <= 0.9:
             errors.append("CHECKPOINT_DONOR_SHORTCUT_POSITIVE_CONTROL_WEAK")
 
         truth_latents = np.load(truth / "LATENTS.npz", allow_pickle=False)
-        private = truth_latents["z_reg_private"][: reps.shape[1]]
+        private = truth_latents["z_reg_private"][eval_idx]
         if multivariate_r2(reps[index["PRIVATE_STATE_LEAK"]], private) <= 0.8:
             errors.append("CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK")
         if float(np.median(unc[index["OVERCONFIDENT_UNRECOVERABLE"]])) >= 0.1:
