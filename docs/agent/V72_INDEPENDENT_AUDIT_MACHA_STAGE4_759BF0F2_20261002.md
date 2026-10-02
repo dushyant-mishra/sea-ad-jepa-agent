@@ -137,3 +137,33 @@ Before launching `run_stage4_g2_sensitivity_curve_v1.py`:
 - correspondence: UNOPENED
 - real substrate: do not read for this repair
 - training: OFF
+
+
+---
+
+## Addendum — Macha advanced to 76e52107 during this audit
+
+New exact head observed:
+
+`76e52107206d09b787c22e975a3db20d8047f804`
+
+This is one commit above the originally audited head. Its diff changes only:
+
+- `results/v64/phase_b_design/V64_STAGE4_END_TO_END_WORLDS_V1.json`
+- `results/v64/phase_b_design/V64_STAGE4_G17_AND_ANTIBYPASS_V1.json`
+
+Macha reports a clean-head regression rerun:
+
+- S81 consumer semantics: 17/17 PASS
+- S81 mutations: 15/15 caught
+- G17 static/executable plus 21 attacks: 29/29 fail closed
+- end-to-end worlds: 20 PASS, 1 LIMIT, 0 FAIL
+
+The commit does **not** modify:
+
+- `build_stage4_synthetic_worlds_v1.py`
+- `run_stage4_g2_sensitivity_curve_v1.py`
+
+Therefore findings A3 and A4 above remain open unchanged. In particular, the K=200 world is still not guaranteed to contain 200 occupied singleton confound factors, and the K-curve must not launch yet.
+
+Classification of the new commit: **VERIFIED AS REGRESSION-RESULT UPDATE; DOES NOT CLOSE THE K-CURVE BLOCKER.**
