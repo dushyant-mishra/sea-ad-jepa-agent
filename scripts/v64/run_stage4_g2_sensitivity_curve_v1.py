@@ -177,13 +177,24 @@ def main() -> int:
                        "reference's Wilson 95 percent interval",
             frozen_in="AMENDMENT_1 of the pre-commitment, before any draw",
             biology_reference_interval=[round(bio_lo, 4), round(bio_hi, 4)],
-            k_max_interval=top["g2_wilson95"]),
+            k_max_interval=top["g2_wilson95"],
+            THIS_TEST_IS_WEAK_AND_IS_NOT_THE_PRIMARY_EVIDENCE=
+                "with 20 draws per cell against a 25-of-40 reference, the overlap test "
+                "fails only if the K=max rate lands at or below about 3 of 20 or at 20 of "
+                "20. It therefore declares convergence across most of the range and must "
+                "be read as corroboration, never as confirmation. The PRIMARY evidence is "
+                "the SHAPE of the curve across all five K values: a monotone rise from "
+                "near the V2 hidden-confound rate to near the biology rate is "
+                "unmistakable in a way a single endpoint comparison is not, and the "
+                "reading below requires monotonicity AND overlap together."),
         reference_values_from_the_V2_sweep=dict(
             biology_g2_pass_rate_at_282=BIOLOGY_G2_RATE_AT_282,
             biology_draws_behind_it="25 of 40",
             biology_median_delta_at_282=BIOLOGY_MEDIAN_DELTA_AT_282,
             note="measured in V64_STAGE4_CALIBRATION_SWEEP_V2, not re-derived here"),
         donor_count=donors, draws_per_K=n_draws, cells=cells,
+        primary_evidence="the shape of the G2 pass rate across the five K values",
+        corroborating_evidence="the endpoint overlap test, which is weak by construction",
         g2_rate_monotone_in_K=monotone,
         g2_rate_at_max_K_converges_on_biology_rate=converges,
         READING=reading,
