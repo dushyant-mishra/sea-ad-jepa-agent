@@ -30,7 +30,7 @@ def test_routeb_ci_pipeline_runs_from_raw_fragments_to_consensus(tmp_path):
     assert r["n_pseudobulks"] > 1
     assert r["consensus"]["n_regions"] > 0
     assert r["outputs_verified_by_reread"] is True
-    assert r["recurrence_filter_applied"] if "recurrence_filter_applied" in r else True
+    assert r["consensus"]["recurrence_filter_applied"] is False
 
 
 def test_routeb_ci_counts_and_discards_out_of_cohort_fragment(tmp_path):
