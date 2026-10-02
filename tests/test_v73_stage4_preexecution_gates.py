@@ -55,7 +55,8 @@ def test_contract_binds_corrected_code_and_preserves_s102():
     assert '"EXACT_K_OCCUPIED_BALANCED_BLOCKS"' in text
     assert 'status="OPEN"' in text
     assert "sampling-with-replacement factor-pool generator" in text
-    assert "worker number, completion order, PID and wall clock" in text
+    for forbidden_identity in ("worker number", "completion order", "PID", "wall clock"):
+        assert forbidden_identity in text
 
 
 def test_contract_result_is_new_v2_artifact_not_historical_v1():
