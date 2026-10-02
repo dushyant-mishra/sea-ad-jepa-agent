@@ -41,7 +41,8 @@
     "historical Dockerfile remains untouched while successor recipe pins cisTarget commit",
     "Route-B blacklist policy is frozen prospectively before consensus peaks",
     "Synthetic SCENIC+ Route-B SMALL_CI consumes fragments and emits donor-aware pseudobulks plus consensus-region recurrence",
-    "SMALL_CI emitted bytes are measured and full-scale projections remain planning-only until medium-stress receipts exist"
+    "SMALL_CI emitted bytes are measured and full-scale projections remain planning-only until medium-stress receipts exist",
+    "Ordinary V72 pipeline validation does not score private-state leakage from hidden truth; that check exists only in explicit post-freeze unblind audit mode"
   ],
   "promotion": {
     "R0_R1_PASS": "All required tests and direct validators pass in exact-head CI.",
