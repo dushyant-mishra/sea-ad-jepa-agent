@@ -701,6 +701,36 @@ be confused.
 
 ---
 
+## S26 — My frozen MACS parameter string was incomplete (ERRATUM, NO DIVERGENCE)
+
+**Status:** CLOSED as an erratum on the freeze text; no parameter actually diverges.
+
+SECTION_2 of the prospective freeze wrote the MACS flags as
+`--format BEDPE --keep-dup all --nomodel --shift 73 --ext_size 146 --call-summits -q 0.05`
+and described them as "verbatim pycisTopic protocol defaults". That string **omits
+`--nolambda`**, which pycisTopic supplies by default.
+
+So the frozen text was **incomplete, not different**: the stated intent ("protocol
+defaults, untuned") includes `--nolambda`, and that is what is implemented. The
+implementation uses pycisTopic's `peak_calling()` with its own defaults rather than
+re-typing a flag string, which is also why the gap surfaced.
+
+**Why record a non-divergence.** A later auditor comparing the frozen string against the
+executed call would find a flag in the run that is absent from the freeze, and would be
+right to stop. Recording the erratum now means that comparison resolves to "the freeze
+under-specified" rather than "the executor deviated". Re-typing a flag list is a way to
+introduce drift; calling the library's own default path is not.
+
+**A second gap in the same clause, left open deliberately.** SECTION_2 says nothing about
+a **blacklist**, while the pycisTopic protocol normally excludes ENCODE blacklist regions.
+Applying one is standard and omitting one admits known-artifact regions into the Route-B
+universe. I have NOT silently chosen either way: the producer takes the blacklist as an
+explicit argument, records whether one was applied, and records that not applying one
+retains artifact regions. Acquiring and pinning a blacklist would add a resource the
+freeze does not name, so it needs an amendment rather than a quiet default.
+
+---
+
 ## What was examined this cycle and produced no finding
 
 So that "nothing found" and "did not look" stay distinguishable:
