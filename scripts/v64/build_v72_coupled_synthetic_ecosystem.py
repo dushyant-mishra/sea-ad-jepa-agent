@@ -163,7 +163,8 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
             cd = cs - pstart
             distance_ok = abs(abs(cd)-abs(linked_dist)) <= tol
             nonoverlap = ce <= linked_start or linked_end <= cs
-            if row["accessible"] and distance_ok and nonoverlap:
+            promoter_nonoverlap = ce <= pstart or (pstart + 1000) <= cs
+            if row["accessible"] and distance_ok and nonoverlap and promoter_nonoverlap:
                 admissible.append((row, cd))
         if not admissible:
             return None, 0
@@ -174,7 +175,7 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
     for edge in range(48):
         promoter_id = f"PROM{edge%12:02d}"
         pstart = int(promoter_starts[edge%12])
-        linked_dist = 10_000 + (edge%8)*5_000
+        linked_dist = 20_000 + (edge%8)*5_000
         linked_start = pstart + linked_dist
         linked_end = linked_start + 5_000
 
@@ -183,14 +184,18 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
         # candidate so trimming is a live positive control rather than dead code.
         shifts = (-10_000, -5_000, 5_000, 10_000)
         candidate_rows = []
-        for j, shift in enumerate(shifts):
-            cs = pstart + linked_dist + shift
-            candidate_rows.append({
-                "candidate_id": f"EDGE{edge:03d}_C{j:02d}",
-                "start": int(cs),
-                "end": int(cs + 5_000),
-                "accessible": False if edge == 47 else True,
-            })
+        j = 0
+        for side in (-1, 1):
+            for shift in shifts:
+                candidate_dist = max(5_000, linked_dist + shift)
+                cs = pstart + side * candidate_dist
+                candidate_rows.append({
+                    "candidate_id": f"EDGE{edge:03d}_C{j:02d}",
+                    "start": int(cs),
+                    "end": int(cs + 5_000),
+                    "accessible": False if edge == 47 else True,
+                })
+                j += 1
         # Far-away accessible decoy: proves distance matching participates in selection.
         candidate_rows.append({
             "candidate_id": f"EDGE{edge:03d}_FAR",
