@@ -144,23 +144,76 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
                         rna=mc_rna, atac=mc_atac, genes=genes, peaks=peaks)
 
     pair_rows = []
+    selection_rows = []
     promoter_starts = 500_000 + np.arange(12)*100_000
+
+    def select_matched_control(pstart, linked_start, linked_end, linked_dist,
+                               candidate_rows):
+        """Synthetic analogue of the frozen control-selection mechanism.
+
+        Candidates are screened rather than constructing the selected answer directly:
+        same promoter is implicit in this candidate set; distance tolerance,
+        non-overlap and accessibility are enforced symmetrically. If no candidate is
+        admissible the edge is trimmed, exactly as the real design requires.
+        """
+        tol = max(.10*abs(linked_dist), 10_000)
+        admissible = []
+        for row in candidate_rows:
+            cs, ce = row["start"], row["end"]
+            cd = cs - pstart
+            distance_ok = abs(abs(cd)-abs(linked_dist)) <= tol
+            nonoverlap = ce <= linked_start or linked_end <= cs
+            if row["accessible"] and distance_ok and nonoverlap:
+                admissible.append((row, cd))
+        if not admissible:
+            return None, 0
+        # Selection itself is seeded and deterministic for this challenge version.
+        chosen_i = int(rng.integers(0, len(admissible)))
+        return admissible[chosen_i], len(admissible)
+
     for edge in range(48):
         promoter_id = f"PROM{edge%12:02d}"
         pstart = int(promoter_starts[edge%12])
         linked_dist = 10_000 + (edge%8)*5_000
         linked_start = pstart + linked_dist
         linked_end = linked_start + 5_000
-        # same promoter; distance differs by <= 10% or 10kb; explicit non-overlap
-        delta = 8_000 if edge % 2 == 0 else -8_000
-        ctrl_start = pstart + linked_dist + delta
-        if abs(ctrl_start-linked_start) < 5_000:
-            ctrl_start += 10_000
-        ctrl_end = ctrl_start + 5_000
+
+        # Candidate pool contains near-distance windows on both sides of the same
+        # promoter plus deliberately inadmissible windows. EDGE047 has no accessible
+        # candidate so trimming is a live positive control rather than dead code.
+        shifts = (-10_000, -5_000, 5_000, 10_000)
+        candidate_rows = []
+        for j, shift in enumerate(shifts):
+            cs = pstart + linked_dist + shift
+            candidate_rows.append({
+                "candidate_id": f"EDGE{edge:03d}_C{j:02d}",
+                "start": int(cs),
+                "end": int(cs + 5_000),
+                "accessible": False if edge == 47 else True,
+            })
+        # Far-away accessible decoy: proves distance matching participates in selection.
+        candidate_rows.append({
+            "candidate_id": f"EDGE{edge:03d}_FAR",
+            "start": int(pstart + linked_dist + 50_000),
+            "end": int(pstart + linked_dist + 55_000),
+            "accessible": True,
+        })
+
+        selected, n_admissible = select_matched_control(
+            pstart, linked_start, linked_end, linked_dist, candidate_rows)
+        if selected is None:
+            selection_rows.append([
+                f"EDGE{edge:03d}", promoter_id, len(candidate_rows), n_admissible,
+                "", "", "TRIM_NO_ADMISSIBLE_CONTROL"
+            ])
+            continue
+
+        ctrl, ctrl_dist = selected
+        ctrl_start, ctrl_end = ctrl["start"], ctrl["end"]
         tol = max(.10*abs(linked_dist), 10_000)
-        ctrl_dist = ctrl_start - pstart
         assert abs(abs(ctrl_dist)-abs(linked_dist)) <= tol
         assert ctrl_end <= linked_start or linked_end <= ctrl_start
+        assert ctrl["accessible"]
         pair_rows.append([
             f"EDGE{edge:03d}", promoter_id, genes[edge % n_genes],
             "chr1", pstart, pstart+1000,
@@ -168,11 +221,20 @@ def build(root: Path, seed: int = 7202, n_cells: int = 2400) -> dict:
             ctrl_start, ctrl_end, ctrl_dist,
             1, 1, "PROMOTER_FIXED_DISTAL_MATCHED_CONTROL"
         ])
+        selection_rows.append([
+            f"EDGE{edge:03d}", promoter_id, len(candidate_rows), n_admissible,
+            ctrl["candidate_id"], ctrl_start, "SELECTED"
+        ])
+
     write_csv(stage / "pair_ledger.csv",
               ["edge_id","promoter_id","gene_id","chrom","promoter_start","promoter_end",
                "linked_start","linked_end","linked_distance","control_start","control_end",
                "control_distance","linked_accessible","control_accessible","control_policy"],
               pair_rows)
+    write_csv(stage / "control_selection_audit.csv",
+              ["edge_id","promoter_id","n_candidates","n_admissible",
+               "selected_candidate_id","selected_start","status"],
+              selection_rows)
 
     # Overlapping Stage4 windows: intentionally creates multi-overlap cases.
     windows = []
