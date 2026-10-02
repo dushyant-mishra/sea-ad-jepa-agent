@@ -24,6 +24,7 @@ import os
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 
@@ -36,6 +37,14 @@ BUILDER = "scripts/v64/build_stage4_synthetic_worlds_v1.py"
 PRECOMMIT = "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json"
 WORLD = "HIDDEN_CONFOUND_K"
 OUT = os.path.join(BW.ROOT, "_results")
+
+
+def run_id_for(K, draw_index, seed_base):
+    """Deterministic scientific run identity, independent of worker/completion order."""
+    rid = "g2_k%03d_d%02d_s%06d" % (int(K), int(draw_index), int(seed_base))
+    if len(rid) > 40 or not rid.replace("_", "").isalnum():
+        raise ValueError("run id violates the executor's bounded synthetic namespace")
+    return rid
 G1 = "G1_PRIMARY_LCB95_ABOVE_ZERO"
 G2 = "G2_CONTROL_VS_CONTROL_NOT_DISTINGUISHABLE_FROM_ZERO"
 G3 = "G3_COVARIATE_BALANCE"
@@ -53,10 +62,12 @@ def wilson(k, n, z=1.96):
     return (max(0.0, c - h), min(1.0, c + h))
 
 
-def one_draw(K, donors, seed_base):
+def one_draw(K, donors, seed_base, draw_index):
+    run_id = run_id_for(K, draw_index, seed_base)
+    env = dict(os.environ, JEPA_SYNTHETIC_RUN_ID=run_id)
     b = subprocess.run([sys.executable, BUILDER, "--only", WORLD, "--confound-blocks",
                         str(K), "--donors", str(donors), "--seed-base", str(seed_base)],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=env)
     if b.returncode != 0:
         txt = b.stdout + b.stderr
         if "violates the frozen control construction" in txt:
@@ -65,17 +76,27 @@ def one_draw(K, donors, seed_base):
                              + txt[-400:])
         return dict(ok=False, err=txt[-300:])
     r = subprocess.run([sys.executable, EXEC, "--synthetic-world", WORLD],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=env)
     if r.returncode != 0:
         return dict(ok=False, err=(r.stdout + r.stderr)[-300:])
-    R = json.load(open(os.path.join(OUT, "V64_STAGE4_RESULT_%s.json" % WORLD)))
+    run_root = os.path.join(BW.ROOT, "_runs", run_id)
+    result_path = os.path.join(run_root, "_results",
+                               "V64_STAGE4_RESULT_%s.json" % WORLD)
+    R = json.load(open(result_path))
     g, a = R["FIVE_GATE_DECISION"], R["ADJUSTED"]["GENE_BALANCED"]
     man = R["world_manifest"]["planted_truth"]
     return dict(ok=True, all_five=bool(g["ALL_FIVE_PASS"]),
                 g1=bool(g[G1]["passed"]), g2=bool(g[G2]["passed"]),
                 g3=bool(g[G3]["passed"]), delta=a["delta"], lcb95=a["lcb95"],
                 cvc=R["CONTROL_A_VS_CONTROL_B"]["delta"],
-                K_in_manifest=man.get("confound_blocks_K"))
+                K_in_manifest=man.get("confound_blocks_K"),
+                partition_semantics=man.get("partition_semantics"),
+                realised_occupied_factors=man.get("realised_occupied_factors"),
+                block_size_min=man.get("block_size_min"),
+                block_size_max=man.get("block_size_max"),
+                endpoint_singletons_verified=man.get("endpoint_singletons_verified"),
+                run_id=run_id, draw_index=draw_index, seed_base=seed_base,
+                result_path=result_path, result_sha256=B.sha_file(result_path))
 
 
 def main() -> int:
@@ -89,24 +110,66 @@ def main() -> int:
           % (Ks, donors, n_draws, len(Ks) * n_draws))
 
     cells, t0 = {}, time.time()
+    workers = max(1, int(os.environ.get("V64_G2_WORKERS", "1")))
+    print("  workers=%d; worker identity/completion order do not enter run identity" % workers)
     for K in Ks:
-        ok, bad = [], []
-        for i in range(n_draws):
-            d = one_draw(K, donors, 800000 + 1000 * i)
-            (ok if d["ok"] else bad).append(d)
-            if (i + 1) % 10 == 0:
-                print("    K=%-4d %2d/%d (%.0f s)" % (K, i + 1, n_draws,
-                                                      time.time() - t0), flush=True)
+        specs = [(i, 800000 + 1000 * i) for i in range(n_draws)]
+        completed = {}
+        if workers == 1:
+            for i, seed in specs:
+                completed[i] = one_draw(K, donors, seed, i)
+                if (i + 1) % 10 == 0:
+                    print("    K=%-4d %2d/%d (%.0f s)" % (
+                        K, i + 1, n_draws, time.time() - t0), flush=True)
+        else:
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                futures = {pool.submit(one_draw, K, donors, seed, i): i
+                           for i, seed in specs}
+                done = 0
+                for fut in as_completed(futures):
+                    i = futures[fut]
+                    try:
+                        completed[i] = fut.result()
+                    except Exception as e:
+                        completed[i] = dict(ok=False, err="worker exception: %r" % e,
+                                            draw_index=i,
+                                            seed_base=800000 + 1000 * i,
+                                            run_id=run_id_for(
+                                                K, i, 800000 + 1000 * i))
+                    done += 1
+                    if done % 10 == 0:
+                        print("    K=%-4d %2d/%d (%.0f s)" % (
+                            K, done, n_draws, time.time() - t0), flush=True)
+        ordered = [completed[i] for i, _ in specs]
+        ok = [d for d in ordered if d["ok"]]
+        bad = [d for d in ordered if not d["ok"]]
+        if len({d.get("run_id") for d in ordered}) != len(ordered):
+            raise SystemExit("STOP: duplicate synthetic run id across draws")
         mismatched = [d["K_in_manifest"] for d in ok if d["K_in_manifest"] != K]
         if mismatched:
             raise SystemExit("STOP: the manifest reports K=%s where %d was requested. "
                              "A fixture that does not build what it was asked for makes "
                              "every rate meaningless." % (mismatched[:3], K))
+        occupancy_bad = [
+            d for d in ok
+            if d["partition_semantics"] != "EXACT_K_OCCUPIED_BALANCED_BLOCKS"
+            or d["realised_occupied_factors"] != K
+            or d["block_size_min"] is None or d["block_size_max"] is None
+            or d["block_size_max"] - d["block_size_min"] > 1
+            or (K == BW.N_EDGES and d["endpoint_singletons_verified"] is not True)
+        ]
+        if occupancy_bad:
+            raise SystemExit("STOP: repaired exact-K geometry guard failed: %s"
+                             % occupancy_bad[0])
         g2k = sum(1 for d in ok if d["g2"])
         lo, hi = wilson(g2k, n_draws)
         dl = np.array([d["delta"] for d in ok], float)
         cells[str(K)] = dict(
-            K=K, edges_per_block=round(BW.N_EDGES / K, 2),
+            K=K, edges_per_block_nominal=round(BW.N_EDGES / K, 2),
+            partition_semantics="EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+            realised_occupied_factors=(K if ok else None),
+            block_size_min=(min(d["block_size_min"] for d in ok) if ok else None),
+            block_size_max=(max(d["block_size_max"] for d in ok) if ok else None),
             draws_attempted=n_draws, draws_succeeded=len(ok), draws_failed=len(bad),
             g2_pass_count=g2k, g2_pass_rate=g2k / n_draws,
             g2_wilson95=[round(lo, 4), round(hi, 4)],
@@ -124,7 +187,7 @@ def main() -> int:
         c = cells[str(K)]
         print("  K=%-4d (%.0f edges/block)  G2 pass %2d/%d = %.3f  Wilson [%.3f, %.3f]"
               "  ALL_FIVE %.3f  |cvc| med %.4f"
-              % (K, c["edges_per_block"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
+              % (K, c["edges_per_block_nominal"], g2k, n_draws, c["g2_pass_rate"], lo, hi,
                  c["all_five_pass_rate"], c["control_vs_control_median"]), flush=True)
 
     rates = [cells[str(K)]["g2_pass_rate"] for K in Ks]
@@ -137,20 +200,20 @@ def main() -> int:
     k_lo, k_hi = top["g2_wilson95"]
     converges = not (k_hi < bio_lo or k_lo > bio_hi)
     if monotone and converges:
-        reading = ("G2 responds to SHARED structure across edges, not to cross-modal "
-                   "confounding as such. At K equal to the edge count it passes the "
-                   "confounded world at the rate it passes genuine biology, so it "
-                   "contributes nothing against an edge-specific cross-modal artifact. "
-                   "The V2 hidden-confound rejection rate must not be cited as a "
-                   "safeguard.")
+        reading = ("Under the HISTORICAL EXECUTOR'S current G2 implementation, "
+                   "the repaired exact-K curve is monotone and its K=max interval overlaps "
+                   "the biology reference. This characterises that implementation only. "
+                   "S102 remains open: no final Stage-4 G2 rule, equivalence margin or "
+                   "regulatory safeguard is established by this curve.")
     elif not monotone:
         reading = ("the G2 pass rate is NOT monotone in K. The gate responds to something "
                    "neither hypothesis predicts and no protection claim may be made in "
                    "either direction until it is understood.")
     else:
-        reading = ("G2 keeps rejecting the confounded world even as the confound becomes "
-                   "edge-specific, so it detects something other than sharing and offers "
-                   "real protection. The V2 caveat is discharged.")
+        reading = ("Under the HISTORICAL EXECUTOR'S current G2 implementation, "
+                   "G2 continues to reject the repaired confound family. This is an "
+                   "operating characteristic, not proof of final Stage-4 protection; "
+                   "S102 remains open and the scientific G2 rule is still unspecified.")
 
     print("")
     print("restoring the canonical worlds ...")
@@ -168,7 +231,13 @@ def main() -> int:
     print("  canonical four restored and digest-verified: %s" % canonical_ok)
 
     out = dict(
-        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V1", date="2026-10-02",
+        schema="V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED", date="2026-10-02",
+        historical_v1_preserved=True,
+        historical_v1_scope=("V1 remains a measurement of the sampling-with-replacement "
+                             "factor-pool generator and is not an exact-K partition curve"),
+        execution_workers=workers,
+        synthetic_run_namespace="JEPA_SYNTHETIC_RUN_ID",
+        S102_status="OPEN__CURVE_CHARACTERISES_HISTORICAL_EXECUTOR_G2_ONLY",
         executes_precommitment=dict(path=PRECOMMIT, sha256=pc_sha),
         design_was_frozen_before_any_draw=True,
         thresholds_or_draw_counts_changed_after_seeing_results=False,
@@ -207,7 +276,7 @@ def main() -> int:
         real_substrate_read=False, computed_correspondence_values=0,
         producer_sha256=B.sha_file(os.path.abspath(__file__)),
         status="COMPLETE" if canonical_ok else "CANONICAL_RESTORE_FAILED")
-    p = "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json"
+    p = "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json"
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print("")
