@@ -54,6 +54,8 @@ def test_v72_stage4_control_is_promoter_fixed_distance_matched_and_nonoverlappin
         ls, le = int(r["linked_start"]), int(r["linked_end"])
         cs, ce = int(r["control_start"]), int(r["control_end"])
         assert ce <= ls or le <= cs
+        ps, pe = int(r["promoter_start"]), int(r["promoter_end"])
+        assert ce <= ps or pe <= cs
         ld, cd = abs(int(r["linked_distance"])), abs(int(r["control_distance"]))
         assert abs(cd - ld) <= max(.10 * ld, 10_000)
         assert r["linked_accessible"] == r["control_accessible"] == "1"
