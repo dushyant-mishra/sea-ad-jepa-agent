@@ -49,6 +49,21 @@ def overlap(a0, a1, b0, b1):
     return max(int(a0), int(b0)) < min(int(a1), int(b1))
 
 
+def linear_r2(X, y):
+    X = np.asarray(X, float)
+    y = np.asarray(y, float)
+    A = np.c_[np.ones(len(X)), X]
+    beta, *_ = np.linalg.lstsq(A, y, rcond=None)
+    pred = A @ beta
+    denom = float(((y - y.mean()) ** 2).sum())
+    return 0.0 if denom == 0 else 1.0 - float(((y - pred) ** 2).sum()) / denom
+
+
+def multivariate_r2(X, Y):
+    Y = np.asarray(Y, float)
+    return float(np.mean([linear_r2(X, Y[:, j]) for j in range(Y.shape[1])]))
+
+
 def validate(root: Path):
     errors = []
     obs = root / "observable_raw"
@@ -203,25 +218,42 @@ def validate(root: Path):
     if spatial.get("missing_program_is_not_biological_absence") is not True:
         errors.append("SPATIAL_MISSINGNESS_SEMANTICS_LOST")
 
-    # Checkpoint twins: validators need distinct healthy and failure cases.
-    cp = json.loads((obs / "CHECKPOINT_TWIN/checkpoint_behaviors.json").read_text())
-    cps = {x["id"]: x for x in cp.get("checkpoints", [])}
-    if set(cps) != REQUIRED_CHECKPOINTS:
+    # Checkpoint twins are qualified from actual outputs, not JSON labels.
+    cp_file = obs / "CHECKPOINT_TWIN/checkpoint_outputs.npz"
+    cp = np.load(cp_file, allow_pickle=False)
+    ids = cp["checkpoint_ids"].tolist()
+    if set(ids) != REQUIRED_CHECKPOINTS:
         errors.append("CHECKPOINT_TWIN_SET_MISMATCH")
     else:
-        if cps["HEALTHY"]["variance"] <= 0.1:
+        reps = cp["representations"]
+        unc = cp["uncertainty"]
+        index = {str(k): i for i, k in enumerate(ids)}
+        meta = read_csv(obs / "FULL104_LIKE/metadata.csv")[: reps.shape[1]]
+        source_map = {"SEA_AD": 0.0, "NPH52": 1.0, "HVS": 2.0}
+        source_y = np.array([source_map[r["source"]] for r in meta])
+        donor_y = np.array([float(r["donor"][1:]) for r in meta])
+
+        if float(np.var(reps[index["HEALTHY"]])) <= 0.1:
             errors.append("CHECKPOINT_HEALTHY_COLLAPSED")
-        if cps["COLLAPSED"]["variance"] >= 0.01:
+        if float(np.var(reps[index["COLLAPSED"]])) >= 0.01:
             errors.append("CHECKPOINT_COLLAPSE_POSITIVE_CONTROL_WEAK")
-        if cps["SOURCE_SHORTCUT"]["source_auc"] <= 0.9:
+        if linear_r2(reps[index["SOURCE_SHORTCUT"]], source_y) <= 0.9:
             errors.append("CHECKPOINT_SOURCE_SHORTCUT_POSITIVE_CONTROL_WEAK")
-        if cps["DONOR_SHORTCUT"]["donor_auc"] <= 0.9:
+        if linear_r2(reps[index["DONOR_SHORTCUT"]], donor_y) <= 0.9:
             errors.append("CHECKPOINT_DONOR_SHORTCUT_POSITIVE_CONTROL_WEAK")
-        if cps["PRIVATE_STATE_LEAK"]["private_r2"] <= 0.8:
+
+        truth_latents = np.load(truth / "LATENTS.npz", allow_pickle=False)
+        private = truth_latents["z_reg_private"][: reps.shape[1]]
+        if multivariate_r2(reps[index["PRIVATE_STATE_LEAK"]], private) <= 0.8:
             errors.append("CHECKPOINT_PRIVATE_LEAK_POSITIVE_CONTROL_WEAK")
-        if cps["OVERCONFIDENT_UNRECOVERABLE"]["uncertainty_private"] >= 0.1:
+        if float(np.median(unc[index["OVERCONFIDENT_UNRECOVERABLE"]])) >= 0.1:
             errors.append("CHECKPOINT_OVERCONFIDENCE_POSITIVE_CONTROL_WEAK")
-        if cps["CORRUPT_MANIFEST"]["manifest_ok"] is not False:
+
+        cp_manifest = json.loads((obs / "CHECKPOINT_TWIN/checkpoint_manifest.json").read_text())
+        corrupt = cp_manifest.get("corrupt_manifest_case", {})
+        if corrupt.get("checkpoint_id") != "CORRUPT_MANIFEST":
+            errors.append("CHECKPOINT_CORRUPT_MANIFEST_CASE_MISSING")
+        if corrupt.get("declared_output_sha256") == sha256(cp_file):
             errors.append("CHECKPOINT_CORRUPT_MANIFEST_POSITIVE_CONTROL_WEAK")
 
     return errors
