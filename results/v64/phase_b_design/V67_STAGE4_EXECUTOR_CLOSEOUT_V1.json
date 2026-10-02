@@ -2,10 +2,11 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "7f4b47f0de8a6a33e9ff9a0e76dc6cd4fe22bce6",
+  "head_commit": "b2471aa5a24c3ddcac0f28ea695b2f6110f1b581",
   "worktree_clean_at_assembly": false,
   "uncommitted_at_assembly": [
-    "M results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
+    "M results/v64/phase_b_design/V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json",
+    " M results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
     " M scripts/v64/build_stage4_executor_closeout_v1.py"
   ],
   "artifacts": {
@@ -30,19 +31,19 @@
     "3_executor_source": {
       "role": "the executor, hard-bound, one CLI flag plus the guarded synthetic mode",
       "path": "scripts/v64/stage4_executor_v1.py",
-      "sha256": "cdaa6f4dc1841b7505602e60d4be701d56f069bb5ea5e7eb8bb595826616960d",
-      "worktree_blob": "38b2372ba5d16352c53abb09430a4b4966c67bb3",
-      "git_blob_at_head": "38b2372ba5d16352c53abb09430a4b4966c67bb3",
-      "bytes": 54350,
+      "sha256": "01bb6bea75da8c3401845403f6a8dfddb469f5439d15e668c39b640180afea43",
+      "worktree_blob": "2ac9f0c45def767e3e80f023dc0cb621101efd30",
+      "git_blob_at_head": "2ac9f0c45def767e3e80f023dc0cb621101efd30",
+      "bytes": 56643,
       "note": null
     },
     "4_synthetic_world_builder": {
       "role": "four Phase-B substrates in the real on-disk format",
       "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
-      "sha256": "d7df084e81ef6b8e89f3415e7046c91391a6cb0f6157b0b929c50225163aa06d",
-      "worktree_blob": "80ec3e2c9c3bfede55994074e59164efa09f8c9b",
-      "git_blob_at_head": "80ec3e2c9c3bfede55994074e59164efa09f8c9b",
-      "bytes": 27602,
+      "sha256": "a2cdbb6242fd7f8d3b64e526bb6ed78e642c465564b2c08732e378b66b716104",
+      "worktree_blob": "3742b4fab341fd310f9791d94ed71d15d47d3835",
+      "git_blob_at_head": "3742b4fab341fd310f9791d94ed71d15d47d3835",
+      "bytes": 29207,
       "note": null
     },
     "5_end_to_end_suite": {
@@ -61,6 +62,24 @@
       "worktree_blob": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
       "git_blob_at_head": "aac3b3405ac844c1f98302ce51459f2d4cfa3524",
       "bytes": 16633,
+      "note": null
+    },
+    "11_g2_sensitivity_curve": {
+      "role": "varies how shared a hidden confound is and watches what G2 does",
+      "path": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+      "sha256": "361697359bbb2b4c9d165919d7649ef87c8dc793fffe5eac5a8c6070075c7f7e",
+      "worktree_blob": "72d3737a616a5938780d17c8a14db4fe85e0a8a0",
+      "git_blob_at_head": "72d3737a616a5938780d17c8a14db4fe85e0a8a0",
+      "bytes": 11961,
+      "note": null
+    },
+    "12_calibration_sweeps": {
+      "role": "four worlds, two donor counts, the complete five-gate decision",
+      "path": "scripts/v64/run_stage4_calibration_sweep_v2.py",
+      "sha256": "25bbb3167e28d26ac632281aa35ed09bc35dc10cae418ec23ee0b097f18f927a",
+      "worktree_blob": "4444d7b682a386a350a28763d52981bc573a207a",
+      "git_blob_at_head": "4444d7b682a386a350a28763d52981bc573a207a",
+      "bytes": 10529,
       "note": null
     },
     "9_seed_robustness": {
@@ -125,7 +144,7 @@
       "a_successful_dry_run_is_not_execution_authorization": true,
       "status": "PASS",
       "path": "results/v64/phase_b_design/V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json",
-      "sha256": "520737adb51c69dd11b4305f2c63dd1870fc4a41d26874ac51119d2dfd402722",
+      "sha256": "fb92bc30f0e384e438c3d4d2e8ab19e9f84e9873251f53ae253265572582a0ff",
       "git_blob_at_head": "0eaed71d96eb094b0156672a3d8686590ac920e0"
     },
     "g17_and_antibypass": {
@@ -138,8 +157,8 @@
       "authorisation_path_clean": true,
       "status": "PASS",
       "path": "results/v64/phase_b_design/V64_STAGE4_G17_AND_ANTIBYPASS_V1.json",
-      "sha256": "bb219f1f098fa56feca39b459c2a24d4ebb549b6200cbeb930f0c8438b901ae9",
-      "git_blob_at_head": "699230254c165625a9294aec7434a5cb5a114163"
+      "sha256": "78b66ae8fdd60af67bb1880992bd303b69bb584998ca467b7f36e4b094e06bac",
+      "git_blob_at_head": "3a29b0fe60792ea3db36663a83f3b3c8c2d75241"
     },
     "helper_qualification": {
       "n_fixtures": 19,
@@ -151,70 +170,263 @@
     },
     "end_to_end_worlds": {
       "n_checks": 21,
-      "n_pass": 19,
-      "n_limit": 2,
+      "n_pass": 20,
+      "n_limit": 1,
       "n_fail": 0,
       "worlds": {
         "BIOLOGY_POSITIVE": {
-          "adjusted_delta": 0.5130840457496877,
-          "lcb95": 0.5068449852316218,
-          "raw_delta": 0.5593693564328965,
-          "control_vs_control": 0.0029105269051601353,
-          "result_sha256": "10654375de15fdb35d4ba9e7277bd98b325b11ad6ab18a8c4896ceb0a8f76e40",
+          "adjusted_delta": 0.5543275472097985,
+          "lcb95": 0.5448871196801274,
+          "raw_delta": 0.6218740671518209,
+          "control_vs_control": 0.0028010079506941093,
+          "result_sha256": "4259c0cf80b57c386d388d05391290d580e8fa63f7519101b0428e98ab25e485",
           "prediction_recorded_before_the_run": "Delta > 0 and LCB95 > 0"
         },
         "TRUE_NULL": {
-          "adjusted_delta": 0.002501825206993408,
-          "lcb95": -0.003291962616759237,
-          "raw_delta": 0.001111002139813528,
-          "control_vs_control": 0.003918582857922086,
-          "result_sha256": "8f2b2384198a493c6db5c09ae0ae3a50a1cbc2c9e31c7ca006db167d722dc7ed",
+          "adjusted_delta": -0.0032058212807554516,
+          "lcb95": -0.008542661036675425,
+          "raw_delta": -0.0037710204543336934,
+          "control_vs_control": 0.0010490035525893735,
+          "result_sha256": "bcf229449c3e27f3bdf30290037ba3603c7de0807edd4f016cc8fb72eefc08eb",
           "prediction_recorded_before_the_run": "adjusted Delta near 0 and LCB95 <= 0"
         },
         "MEASURED_TECHNICAL": {
-          "adjusted_delta": 0.012902929240732284,
-          "lcb95": 0.0030312765559554907,
-          "raw_delta": 0.2114309723198949,
-          "control_vs_control": -0.001303344227657812,
-          "result_sha256": "0e273abd1ef08ec1bd8f580ce345920b5ddf79b8b270d67c7c9b2027edf49bac",
+          "adjusted_delta": -0.00408061322414027,
+          "lcb95": -0.014880744149909711,
+          "raw_delta": 0.2676693744005328,
+          "control_vs_control": 0.0014573481546666133,
+          "result_sha256": "7f79fdff00c4dd2895abaae628ef5b97adec34aed33606d3e47f2990362d98bc",
           "prediction_recorded_before_the_run": "raw Delta > 0, adjusted Delta near 0"
         },
         "HIDDEN_CONFOUND": {
-          "adjusted_delta": 0.38060752061181363,
-          "lcb95": 0.36283740672869075,
-          "raw_delta": 0.4779453391880856,
-          "control_vs_control": -0.025336785101826007,
-          "result_sha256": "b8e6bff57a30740e351385853714b1cdd9fd0ca29021dd950bbf5eb72902709c",
+          "adjusted_delta": 0.5937195144145159,
+          "lcb95": 0.5719995873112216,
+          "raw_delta": 0.6390730308131887,
+          "control_vs_control": -0.0030265465999488365,
+          "result_sha256": "36caa5caa94c1444e41044dad09994418174d0ec4aae447d8374115b16dfe782",
           "prediction_recorded_before_the_run": "Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; this is recorded as an interpretation limit, not a bug."
         }
       },
       "KNOWN_INTERPRETATION_LIMITS": [
         {
           "limit": "an unmeasured factor that varies BETWEEN metacells of the same donor and loads on both modalities is indistinguishable from biology under the frozen design",
-          "evidence": "HIDDEN_CONFOUND reaches delta +0.3806 with LCB95 +0.3628, which is 74% of the genuine-biology world",
+          "evidence": "HIDDEN_CONFOUND reaches delta +0.5937 with LCB95 +0.5720, which is 107% of the genuine-biology world",
           "what_bounds_it": "only rna_depth_sensitivity and atac_depth_sensitivity in the frozen 14-term basis. A cross-modal technical factor orthogonal to depth survives untouched.",
           "consequence": "a positive Stage-4 result is evidence of cross-modal co-variation within donors, NOT by itself evidence of regulatory causation."
         },
         {
           "limit": "the nuisance adjustment removes most, but not all, of a purely technical depth effect",
-          "evidence": "MEASURED_TECHNICAL raw +0.2114 -> adjusted +0.0129, and the adjusted LCB95 is +0.0030",
+          "evidence": "MEASURED_TECHNICAL raw +0.2677 -> adjusted -0.0041, and the adjusted LCB95 is -0.0149",
           "consequence": "LCB95 > 0 alone does not establish that a real result is non-technical. The size of the effect must be read against this residue, not against zero."
         }
       ],
       "scale": "reduced: 60 eligible donors, 11 metacells each, 200 edges. The real substrate is 282 donors, 3,231 metacells and 13,175 edges. Ratios are matched; absolute size is not, and nothing here qualifies real-scale runtime or memory.",
       "status": "PASS",
       "path": "results/v64/phase_b_design/V64_STAGE4_END_TO_END_WORLDS_V1.json",
-      "sha256": "a0e4756d24e655bd5029aaa4b2f198f14b047f65301343631b4ea0b1d4044d9c",
-      "git_blob_at_head": "cacee876bf5351b0571b6d89aa4c23cbbb03a5ca"
+      "sha256": "356c6a5ee5906d9a6492da460e0babfdcf644018bddc0bec0398632be801f630",
+      "git_blob_at_head": "a783e25d3dee38be12de9de249d40757f92c6ee0"
     },
     "synthetic_worlds_build": {
       "worlds": [
+        "BIOLOGY_POSITIVE",
+        "HIDDEN_CONFOUND",
+        "HIDDEN_CONFOUND_K",
+        "MEASURED_TECHNICAL",
         "TRUE_NULL"
       ],
       "reads_no_real_measurement": true,
       "path": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
-      "sha256": "5fbf38ced155549dd189189022ae052cfd44d9d6aab7f0a2d2ce7aac05816322",
+      "sha256": "2eb1634ca491715f6166bc926f6612bc5ea4214bdcbc27786c82a09a8a68c862",
       "git_blob_at_head": "fdf05e8dff7be5ba0d737cd07021f5b0f4eb5014"
+    },
+    "calibration_sweep_v2": {
+      "executes_precommitment": {
+        "path": "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_PRECOMMIT_V2.json",
+        "sha256": "46f7c3342c0e88dd296a430365b52cf791324e133ce066ab54f0ea31fb9e3175"
+      },
+      "readings": [
+        {
+          "donors": 60,
+          "rates": {
+            "BIOLOGY_POSITIVE": 0.75,
+            "TRUE_NULL": 0.0,
+            "MEASURED_TECHNICAL": 0.0,
+            "HIDDEN_CONFOUND": 0.2
+          },
+          "positive_control_works": true,
+          "true_null_at_or_below_nominal": true,
+          "technical_above_null": false,
+          "hidden_above_null": true,
+          "hidden_delta_vs_biology": 1.0144
+        },
+        {
+          "donors": 282,
+          "rates": {
+            "BIOLOGY_POSITIVE": 0.625,
+            "TRUE_NULL": 0.05,
+            "MEASURED_TECHNICAL": 0.0,
+            "HIDDEN_CONFOUND": 0.1
+          },
+          "positive_control_works": true,
+          "true_null_at_or_below_nominal": true,
+          "technical_above_null": false,
+          "hidden_above_null": false,
+          "hidden_delta_vs_biology": 1.0234
+        }
+      ],
+      "scale_reading": {
+        "BIOLOGY_POSITIVE": {
+          "rate_at_60": 0.75,
+          "rate_at_282": 0.625,
+          "direction": "FALLS",
+          "reading": "behaves like noise; the reduced-scale qualification was conservative"
+        },
+        "TRUE_NULL": {
+          "rate_at_60": 0.0,
+          "rate_at_282": 0.05,
+          "direction": "RISES",
+          "reading": "behaves like a bias: the bound tightens with n while the quantity does not"
+        },
+        "MEASURED_TECHNICAL": {
+          "rate_at_60": 0.0,
+          "rate_at_282": 0.0,
+          "direction": "UNCHANGED",
+          "reading": "no change"
+        },
+        "HIDDEN_CONFOUND": {
+          "rate_at_60": 0.2,
+          "rate_at_282": 0.1,
+          "direction": "FALLS",
+          "reading": "behaves like noise; the reduced-scale qualification was conservative"
+        }
+      },
+      "canonical_state_verified": true,
+      "status": "COMPLETE",
+      "path": "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_SWEEP_V2.json",
+      "sha256": "b05f9eee9f3a426e1f5aee42710103226c240da5a0548cc8e39927c8802f5328",
+      "git_blob_at_head": "97a5d9069bbbe26cec7b9d2400615240925a33e2"
+    },
+    "g2_sensitivity_curve": {
+      "executes_precommitment": {
+        "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+        "sha256": "3a3b1edc5322f77dbb8c7006794a8ae3841db9f338eaf24e1e507c5d1c673079"
+      },
+      "cells": {
+        "1": {
+          "K": 1,
+          "edges_per_block": 200.0,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 3,
+          "g2_pass_rate": 0.15,
+          "g2_wilson95": [
+            0.0524,
+            0.3604
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.15,
+          "delta_median": 0.5803162480723,
+          "delta_ratio_to_biology": 1.0195,
+          "control_vs_control_median": 0.00882333068383633,
+          "failures": []
+        },
+        "5": {
+          "K": 5,
+          "edges_per_block": 40.0,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 3,
+          "g2_pass_rate": 0.15,
+          "g2_wilson95": [
+            0.0524,
+            0.3604
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.15,
+          "delta_median": 0.5608477460362435,
+          "delta_ratio_to_biology": 0.9853,
+          "control_vs_control_median": 0.011543341187348035,
+          "failures": []
+        },
+        "20": {
+          "K": 20,
+          "edges_per_block": 10.0,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 5,
+          "g2_pass_rate": 0.25,
+          "g2_wilson95": [
+            0.1119,
+            0.4687
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.25,
+          "delta_median": 0.5566013431768398,
+          "delta_ratio_to_biology": 0.9779,
+          "control_vs_control_median": 0.006223961878865162,
+          "failures": []
+        },
+        "50": {
+          "K": 50,
+          "edges_per_block": 4.0,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 9,
+          "g2_pass_rate": 0.45,
+          "g2_wilson95": [
+            0.2582,
+            0.6579
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.45,
+          "delta_median": 0.5550073576242195,
+          "delta_ratio_to_biology": 0.9751,
+          "control_vs_control_median": 0.005491997971322214,
+          "failures": []
+        },
+        "200": {
+          "K": 200,
+          "edges_per_block": 1.0,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 11,
+          "g2_pass_rate": 0.55,
+          "g2_wilson95": [
+            0.3421,
+            0.7418
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.55,
+          "delta_median": 0.5532365778594084,
+          "delta_ratio_to_biology": 0.972,
+          "control_vs_control_median": 0.003692762211645173,
+          "failures": []
+        }
+      },
+      "g2_rate_monotone_in_K": true,
+      "g2_rate_at_max_K_converges_on_biology_rate": true,
+      "READING": "G2 responds to SHARED structure across edges, not to cross-modal confounding as such. At K equal to the edge count it passes the confounded world at the rate it passes genuine biology, so it contributes nothing against an edge-specific cross-modal artifact. The V2 hidden-confound rejection rate must not be cited as a safeguard.",
+      "primary_evidence": "the shape of the G2 pass rate across the five K values",
+      "canonical_state_verified": true,
+      "status": "COMPLETE",
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "sha256": "86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3",
+      "git_blob_at_head": "fc5afb7f07c82f58335e5340cda1d8543fa95952"
     },
     "world_seed_robustness": {
       "seed_bases": [
@@ -272,9 +484,24 @@
       "The whole frozen computation is implemented and has been run end to end through the real entrypoint on four synthetic worlds.",
       "No correspondence value has been computed on real data, at any scale, at any point."
     ],
+    "THE_GOVERNING_INTERPRETATION_LIMIT": {
+      "statement": "the frozen Stage-4 decision cannot distinguish an EDGE-SPECIFIC cross-modal artifact from regulation, and this is a limit in principle rather than a defect to repair.",
+      "why_in_principle": "a factor that varies across metacells within a donor, loads on both modalities of one edge's linked arm, and is drawn independently per edge is the SAME statistical object as the planted biology. Nothing analysing RNA-ATAC covariation can separate them because there is nothing to separate.",
+      "evidence": "V64_STAGE4_G2_SENSITIVITY_CURVE_V1. As the confound becomes less shared across edges the G2 pass rate rises monotonically 0.15, 0.15, 0.25, 0.45, 0.55 at K = 1, 5, 20, 50, 200, and at K=200 its interval overlaps the rate at which G2 passes genuine biology. G1 and G3 pass in 100 percent of draws at every K, so ALL_FIVE equals the G2 rate throughout and the entire discriminating power of the five-gate decision against this family was one gate responding to SHARING.",
+      "magnitude_does_not_help": "the confound's delta is 0.972 to 1.020 times genuine biology at every K, so the contract's rule that a negligibly small Delta must not be presented as confirmation does not reach it.",
+      "consequence": "a positive Stage-4 result is evidence of within-donor cross-modal co-variation. It is not, by itself, evidence of regulation, and it cannot be made so by any gate in the frozen design. External corroboration with a DIFFERENT failure mode is required before a regulatory claim.",
+      "supersedes": "the single-draw reading in SUPERSEDED_BY_S99, which reported the hidden confound as passing all five gates and did not yet know that G2's apparent rejection came from how I had built the confound"
+    },
+    "OPEN_SPECIFICATION_GAP_S102": {
+      "gate": "G2, control versus control",
+      "what_the_contract_specifies": "that the contrast must not show excess. No test, no statistic and no level is frozen anywhere.",
+      "what_the_executor_implements": "a two-sided 95 percent donor-bootstrap interval containing zero, chosen by me",
+      "why_it_matters": "a null test of no-difference becomes stricter as the donor count rises, so the gate rejects more with more data regardless of whether the pipeline is sound. The V2 observation that G2 rejects genuine biology in 22 percent of draws at 60 donors and 38 percent at 282 is the signature of that tightening and may be an artifact of my choice rather than a property of the design.",
+      "status": "OPEN. The choice belongs to the contract owner. The executor discloses the gap in every result and reports a scale-free magnitude ratio beside the gate, without a threshold, so both readings are visible."
+    },
     "WHAT_IS_NOT_GRANTABLE_HERE": [
       "Stage-4 execution authorisation. This closeout does not grant it and the executor does not create the artifact that would.",
-      "Any claim that a positive Stage-4 result would demonstrate regulatory causation. The HIDDEN_CONFOUND world forbids that reading.",
+      "Any claim that a positive Stage-4 result would demonstrate regulatory causation, or regulation at all. The G2 sensitivity curve forbids that reading in principle, not merely in the worst case.",
       "Any claim that LCB95 > 0 alone establishes a non-technical origin. The MEASURED_TECHNICAL residue forbids that reading."
     ],
     "SUPERSEDED_BY_S99_DO_NOT_CITE_WITHOUT_THIS_NOTE": {
@@ -309,5 +536,5 @@
   },
   "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
   "computed_correspondence_values": 0,
-  "producer_sha256": "a6ba00072dacaae0a040fe016a6248d96f15ad3ccac5a675e44634952784f469"
+  "producer_sha256": "d56ebdbefdf3400ecb95604177e6878e19acdd87be155fa893def76493dc48ea"
 }
