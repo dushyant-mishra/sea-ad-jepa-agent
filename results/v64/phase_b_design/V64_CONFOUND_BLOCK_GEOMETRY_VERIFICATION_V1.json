@@ -13,6 +13,15 @@
       "K_requested": 1,
       "label": "REPAIRED",
       "ok": true,
+      "historical_partition": false,
+      "partition_membership": {
+        "n_pairs": 15225,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": "NOT_APPLICABLE",
       "manifest_claims": {
         "realised_occupied_factors": 1,
         "block_size_min": 200,
@@ -28,6 +37,7 @@
       },
       "blocks_present_among_retained_edges": 1,
       "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": true,
       "separation": {
         "within_block_mean": 0.8745551909720869,
         "between_block_mean": null,
@@ -41,6 +51,15 @@
       "K_requested": 5,
       "label": "REPAIRED",
       "ok": true,
+      "historical_partition": false,
+      "partition_membership": {
+        "n_pairs": 15225,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": "NOT_APPLICABLE",
       "manifest_claims": {
         "realised_occupied_factors": 5,
         "block_size_min": 40,
@@ -56,6 +75,7 @@
       },
       "blocks_present_among_retained_edges": 5,
       "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": true,
       "separation": {
         "within_block_mean": 0.8665853362816004,
         "between_block_mean": 0.029530305818983343,
@@ -69,6 +89,15 @@
       "K_requested": 20,
       "label": "REPAIRED",
       "ok": true,
+      "historical_partition": false,
+      "partition_membership": {
+        "n_pairs": 15225,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": "NOT_APPLICABLE",
       "manifest_claims": {
         "realised_occupied_factors": 20,
         "block_size_min": 10,
@@ -84,6 +113,7 @@
       },
       "blocks_present_among_retained_edges": 20,
       "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": true,
       "separation": {
         "within_block_mean": 0.8699099537024837,
         "between_block_mean": 0.03209419979282152,
@@ -97,6 +127,15 @@
       "K_requested": 50,
       "label": "REPAIRED",
       "ok": true,
+      "historical_partition": false,
+      "partition_membership": {
+        "n_pairs": 15225,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": "NOT_APPLICABLE",
       "manifest_claims": {
         "realised_occupied_factors": 50,
         "block_size_min": 4,
@@ -112,6 +151,7 @@
       },
       "blocks_present_among_retained_edges": 50,
       "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": true,
       "separation": {
         "within_block_mean": 0.8731166063701362,
         "between_block_mean": 0.031180920398553132,
@@ -125,6 +165,15 @@
       "K_requested": 200,
       "label": "REPAIRED",
       "ok": true,
+      "historical_partition": false,
+      "partition_membership": {
+        "n_pairs": 15225,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": true,
       "manifest_claims": {
         "realised_occupied_factors": 200,
         "block_size_min": 1,
@@ -140,6 +189,7 @@
       },
       "blocks_present_among_retained_edges": 175,
       "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": true,
       "separation": {
         "within_block_mean": null,
         "between_block_mean": 0.030848865310673237,
@@ -150,8 +200,51 @@
       }
     }
   ],
+  "positive_control": {
+    "what": "the historical sampling-with-replacement generator at a requested factor-pool size of 200",
+    "why": "a verifier that cannot reject the defect it was built for is not evidence",
+    "row": {
+      "K_requested": 200,
+      "label": "HISTORICAL_SAMPLING_WITH_REPLACEMENT",
+      "ok": true,
+      "historical_partition": true,
+      "partition_membership": {
+        "n_pairs": 13695,
+        "n_disagreeing_pairs": 0,
+        "exact_pairwise_agreement": true,
+        "adjusted_rand_index": 1.0,
+        "ari_is_exactly_one": true
+      },
+      "every_retained_edge_is_a_singleton_at_K_max": false,
+      "manifest_claims": {
+        "realised_occupied_factors": 131,
+        "block_size_min": 0,
+        "block_size_max": 5,
+        "partition_semantics": "HISTORICAL_SAMPLING_WITH_REPLACEMENT"
+      },
+      "recovered_from_bytes": {
+        "n_blocks": 113,
+        "size_min": 1,
+        "size_max": 5,
+        "n_edges_used": 166,
+        "edges_excluded_sharing_an_interval": 34
+      },
+      "blocks_present_among_retained_edges": 113,
+      "recovered_equals_blocks_present": true,
+      "GEOMETRY_QUALIFIED": false,
+      "separation": {
+        "within_block_mean": 0.8592624427738066,
+        "between_block_mean": 0.0309023891972189,
+        "within_block_min": 0.7495259764618374,
+        "between_block_max": 0.14860600480566974,
+        "n_within_pairs": 71,
+        "n_between_pairs": 13624
+      }
+    },
+    "verifier_rejects_the_defective_construction": true
+  },
   "all_K_recovered_exactly": true,
-  "producer_sha256": "f5bbb836bbf59a9db5318f3b911c3af0cb931e19d1a402398df3a3bac5481da7",
+  "producer_sha256": "07de0e8ce79d8daf1835cee95d57f80dbc0042fa894974bddc4ef527830df88e",
   "real_substrate_read": false,
   "computed_correspondence_values": 0
 }

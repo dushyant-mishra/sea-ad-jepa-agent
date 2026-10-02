@@ -287,7 +287,7 @@ def build_world(world, seed):
             f = rng.normal(0.0, 1.0, n_mc)
             f = f - np.polyval(np.polyfit(log_depth, f, 1), log_depth)
             factors.append(f / f.std())
-        if world == "HIDDEN_CONFOUND":
+        if world == "HIDDEN_CONFOUND" or globals().get("_HISTORICAL_PARTITION"):
             # The canonical world keeps its HISTORICAL construction exactly. At K=1 the
             # two are semantically identical -- one factor behind every edge -- but
             # rng.shuffle consumes different random state than rng.integers, so routing
@@ -307,9 +307,11 @@ def build_world(world, seed):
         planted = dict(mechanism="edge-specific loading on a metacell-varying factor that "
                                  "is orthogonal to depth and absent from the frozen basis",
                        confound_blocks_K=int(K),
-                       partition_semantics=("HISTORICAL_SAMPLING_WITH_REPLACEMENT"
-                                            if world == "HIDDEN_CONFOUND"
-                                            else "EXACT_K_OCCUPIED_BALANCED_BLOCKS"),
+                       partition_semantics=(
+                           "HISTORICAL_SAMPLING_WITH_REPLACEMENT"
+                           if (world == "HIDDEN_CONFOUND"
+                               or globals().get("_HISTORICAL_PARTITION"))
+                           else "EXACT_K_OCCUPIED_BALANCED_BLOCKS"),
                        realised_occupied_factors=int(np.count_nonzero(block_sizes)),
                        block_size_min=int(block_sizes.min()),
                        block_size_max=int(block_sizes.max()),
@@ -578,6 +580,10 @@ def main(seed_base=None, only=None, donors=None) -> int:
         ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
         ap.add_argument("--only", default=None,
                         help="build just these worlds, comma separated")
+        ap.add_argument("--historical-partition", action="store_true",
+                        help="use the defective sampling-with-replacement partition. For "
+                             "the verifier's positive control ONLY; it must be able to "
+                             "reject the construction that motivated the repair.")
         ap.add_argument("--confound-blocks", type=int, default=None,
                         help="K, the number of independent confound factors, for the "
                              "HIDDEN_CONFOUND_K world only")
@@ -587,6 +593,8 @@ def main(seed_base=None, only=None, donors=None) -> int:
         seed_base, only, donors = a.seed_base, a.only, a.donors
         if a.confound_blocks:
             globals()["_CONFOUND_BLOCKS"] = int(a.confound_blocks)
+        if a.historical_partition:
+            globals()["_HISTORICAL_PARTITION"] = True
         if donors:
             globals()["N_DONORS_OK"] = donors
         if only:
@@ -616,7 +624,19 @@ def main(seed_base=None, only=None, donors=None) -> int:
                planted={w: m["planted_truth"] for w, m in mans.items()},
                reads_no_real_measurement=True,
                computed_correspondence_values=0)
-    p = "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json"
+    # A PARTIAL OR NON-CANONICAL BUILD MUST NOT TOUCH THE CANONICAL RECEIPT. S107: the
+    # block-geometry verifier called this builder once per K, and each call overwrote the
+    # canonical-four receipt with a partial HIDDEN_CONFOUND_K build -- a verification
+    # script mutating the authority it exists to protect. Experimental builds now write
+    # their own receipt, named for the run, and the canonical path can only be written by
+    # a genuine canonical-four build.
+    if rec["is_canonical_build"] and not rec["is_partial_build"]:
+        p = "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json"
+    else:
+        tag = "-".join(sorted(mans)) if len(mans) <= 2 else "%dworlds" % len(mans)
+        p = ("results/v64/phase_b_design/"
+             "V64_STAGE4_SYNTHETIC_WORLD_EXPERIMENT_BUILD_%s_seed%d_d%d.json"
+             % (tag, seed_base, N_DONORS_OK))
     with open(p, "w", newline="\n") as fh:
         json.dump(rec, fh, indent=2)
     print("build receipt sha256 " + B.sha_file(p))

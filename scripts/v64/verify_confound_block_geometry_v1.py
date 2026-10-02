@@ -130,11 +130,46 @@ def separation(res, declared):
         n_within_pairs=int(same.sum()), n_between_pairs=int((~same).sum()))
 
 
-def build_and_check(K, seed_base, label, builder_dir=None):
+def membership_agreement(res, declared):
+    """Exact pairwise agreement between the DECLARED partition and the one recovered from
+    the bytes. Matching component COUNTS is not enough: two partitions can have the same
+    number of blocks and put different edges in them, which would be a real geometry
+    defect passing a weak check."""
+    if declared is None:
+        return None
+    lab = np.asarray([declared[e] for e in res["edges"]])
+    n = len(lab)
+    rec = np.empty(n, int)
+    for ci, comp in enumerate(res["components"]):
+        for j in comp:
+            rec[j] = ci
+    iu = np.triu_indices(n, 1)
+    same_declared = lab[iu[0]] == lab[iu[1]]
+    same_recovered = rec[iu[0]] == rec[iu[1]]
+    disagree = int(np.sum(same_declared != same_recovered))
+    # adjusted Rand index, for a single number a reviewer can check independently
+    from collections import Counter
+    cont = Counter(zip(lab.tolist(), rec.tolist()))
+    sij = sum(c * (c - 1) / 2 for c in cont.values())
+    a = sum(c * (c - 1) / 2 for c in Counter(lab.tolist()).values())
+    b = sum(c * (c - 1) / 2 for c in Counter(rec.tolist()).values())
+    tot = n * (n - 1) / 2
+    exp = a * b / tot if tot else 0.0
+    mx = (a + b) / 2
+    ari = 1.0 if mx == exp else float((sij - exp) / (mx - exp))
+    return dict(n_pairs=int(len(same_declared)), n_disagreeing_pairs=disagree,
+                exact_pairwise_agreement=bool(disagree == 0),
+                adjusted_rand_index=round(ari, 10),
+                ari_is_exactly_one=bool(abs(ari - 1.0) < 1e-12))
+
+
+def build_and_check(K, seed_base, label, builder_dir=None, historical=False):
     import subprocess
     exe = [sys.executable, os.path.join(builder_dir or ".", "scripts", "v64",
                                         "build_stage4_synthetic_worlds_v1.py"),
            "--only", WORLD, "--confound-blocks", str(K), "--seed-base", str(seed_base)]
+    if historical:
+        exe.append("--historical-partition")
     r = subprocess.run(exe, capture_output=True, text=True, cwd=builder_dir or os.getcwd())
     if r.returncode != 0:
         return dict(K=K, label=label, ok=False, err=(r.stdout + r.stderr)[-400:])
@@ -143,8 +178,13 @@ def build_and_check(K, seed_base, label, builder_dir=None):
     declared = pt.get("block_of_edge")
     res = recover_blocks(BW.ROOT, WORLD)
     sep = separation(res, declared)
+    agree = membership_agreement(res, declared)
+    singletons_ok = (all(len(c) == 1 for c in res["components"])
+                     if K == BW.N_EDGES else "NOT_APPLICABLE")
     return dict(
-        K_requested=K, label=label, ok=True,
+        K_requested=K, label=label, ok=True, historical_partition=historical,
+        partition_membership=agree,
+        every_retained_edge_is_a_singleton_at_K_max=singletons_ok,
         manifest_claims=dict(
             realised_occupied_factors=pt.get("realised_occupied_factors"),
             block_size_min=pt.get("block_size_min"), block_size_max=pt.get("block_size_max"),
@@ -159,6 +199,9 @@ def build_and_check(K, seed_base, label, builder_dir=None):
         recovered_equals_blocks_present=(
             bool(res["n_recovered_blocks"]
                  == len(set(declared[e] for e in res["edges"]))) if declared else None),
+        GEOMETRY_QUALIFIED=bool(
+            agree and agree["exact_pairwise_agreement"] and agree["ari_is_exactly_one"]
+            and (singletons_ok is True or singletons_ok == "NOT_APPLICABLE")),
         separation=sep)
 
 
@@ -184,6 +227,21 @@ def main() -> int:
         else:
             print("  K=%-4d BUILD FAILED: %s" % (K, row["err"][:120]))
 
+    # ---- POSITIVE CONTROL. The verifier must be able to REJECT the construction that
+    # motivated the repair, otherwise it only confirms what it was built to confirm.
+    print("")
+    print("positive control: the historical sampling-with-replacement generator at K=200")
+    ctrl = build_and_check(200, 910000, "HISTORICAL_SAMPLING_WITH_REPLACEMENT",
+                           historical=True)
+    if ctrl["ok"]:
+        rec = ctrl["recovered_from_bytes"]
+        print("  requested factor-pool size 200 | manifest %s occupied | RECOVERED %d "
+              "blocks sizes %d..%d | geometry qualified=%s"
+              % (ctrl["manifest_claims"]["realised_occupied_factors"], rec["n_blocks"],
+                 rec["size_min"], rec["size_max"], ctrl["GEOMETRY_QUALIFIED"]))
+    control_rejects = ctrl["ok"] and not ctrl["GEOMETRY_QUALIFIED"]
+    print("  verifier REJECTS the defective construction: %s" % control_rejects)
+
     out = dict(
         schema="V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1", date="2026-10-02",
         why="S99. A generator reporting its own block count is reporting bookkeeping. "
@@ -199,6 +257,12 @@ def main() -> int:
                                     "and between-block maximum, so a reader can see "
                                     "whether the threshold sits in a gap or in a smear"),
         rows=rows,
+        positive_control=dict(
+            what="the historical sampling-with-replacement generator at a requested "
+                 "factor-pool size of 200",
+            why="a verifier that cannot reject the defect it was built for is not "
+                "evidence",
+            row=ctrl, verifier_rejects_the_defective_construction=bool(control_rejects)),
         all_K_recovered_exactly=all(r.get("recovered_equals_blocks_present") for r in rows
                                     if r.get("ok")),
         producer_sha256=B.sha_file(os.path.abspath(__file__)),
@@ -207,9 +271,14 @@ def main() -> int:
     with open(p, "w", newline="\n") as fh:
         json.dump(out, fh, indent=2)
     print("")
-    print("all K recovered exactly from the bytes: %s" % out["all_K_recovered_exactly"])
+    qualified = all(r.get("GEOMETRY_QUALIFIED") for r in rows if r.get("ok"))
+    out["ALL_REPAIRED_K_GEOMETRY_QUALIFIED"] = bool(qualified)
+    out["status"] = ("PASS" if qualified and control_rejects else "FAIL")
+    print("all repaired K geometry-qualified (exact membership and ARI = 1): %s"
+          % qualified)
+    print("positive control rejects the defective construction: %s" % control_rejects)
     print("receipt sha256 " + B.sha_file(p))
-    return 0 if out["all_K_recovered_exactly"] else 1
+    return 0 if out["status"] == "PASS" else 1
 
 
 if __name__ == "__main__":
