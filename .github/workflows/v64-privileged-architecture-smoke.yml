@@ -230,7 +230,9 @@ jobs:
             tests/test_v71_small_synthetic_etl_fixture.py \
             tests/test_v71_synthetic_pipeline_readiness.py \
             tests/test_v72_coupled_synthetic_ecosystem.py \
-            tests/test_v72_checkpoint_twins.py
+            tests/test_v72_checkpoint_twins.py \
+            tests/test_v72_synthetic_routeb_pipeline.py \
+            tests/test_v72_synthetic_resource_estimator.py
       - name: Validate V71 synthetic pipeline readiness
         run: python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
       - name: Build and validate V72 coupled CI ecosystem
@@ -241,6 +243,13 @@ jobs:
         run: |
           python scripts/v64/build_v72_checkpoint_twins.py --root /tmp/v72_checkpoints
           python scripts/v64/build_v72_checkpoint_twins.py --root /tmp/v72_checkpoints --audit > /tmp/v72_checkpoint_audit.json
+      - name: Exercise V72 raw-fragment Route-B interface
+        run: |
+          python scripts/v64/run_v72_synthetic_routeb_pipeline.py --scenic-root /tmp/v72_ci/observable_raw/GSE214979_SCENICPLUS_like --out-root /tmp/v72_routeb
+      - name: Emit V72 stress/full resource plan
+        run: |
+          python scripts/v64/estimate_v72_synthetic_twin_resources.py --cells 100000 --out /tmp/v72_stress_resources.json
+          python scripts/v64/estimate_v72_synthetic_twin_resources.py --cells 4553407 --out /tmp/v72_full_resources.json
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
