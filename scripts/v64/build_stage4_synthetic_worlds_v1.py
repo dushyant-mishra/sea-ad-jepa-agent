@@ -47,6 +47,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nihcard_exact_supplement_builder_v1 as B                      # noqa: E402
 
 ROOT = "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
+CANONICAL_BUILD_RECEIPT = "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json"
 
 # geometry, matched to the real substrate in ratio
 N_DONORS_OK = 60            # donors that pass eligibility
@@ -583,8 +584,22 @@ def main(seed_base=None, only=None, donors=None) -> int:
                              "HIDDEN_CONFOUND_K world only")
         ap.add_argument("--donors", type=int, default=None,
                         help="override the eligible donor count, for calibration sweeps")
+        ap.add_argument("--root", default=None,
+                        help="synthetic-only output root; must stay under the canonical "
+                             "synthetic root. Used to isolate experiment draws.")
+        ap.add_argument("--receipt-path", default=None,
+                        help="optional synthetic build receipt path. Experimental partial "
+                             "builds never overwrite the canonical receipt by default.")
         a = ap.parse_args()
         seed_base, only, donors = a.seed_base, a.only, a.donors
+        if a.root:
+            base = os.path.abspath(ROOT)
+            proposed = os.path.abspath(a.root)
+            if proposed != base and not proposed.startswith(base + os.sep):
+                raise SystemExit("--root must stay under canonical synthetic root")
+            globals()["ROOT"] = proposed
+        if a.receipt_path:
+            globals()["_RECEIPT_PATH"] = a.receipt_path
         if a.confound_blocks:
             globals()["_CONFOUND_BLOCKS"] = int(a.confound_blocks)
         if donors:
@@ -616,9 +631,26 @@ def main(seed_base=None, only=None, donors=None) -> int:
                planted={w: m["planted_truth"] for w, m in mans.items()},
                reads_no_real_measurement=True,
                computed_correspondence_values=0)
-    p = "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json"
+    explicit_receipt = globals().get("_RECEIPT_PATH")
+    canonical = (not only and seed_base == CANONICAL_SEED_BASE
+                 and os.path.abspath(ROOT)
+                 == os.path.abspath("D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"))
+    if explicit_receipt:
+        p = explicit_receipt
+    elif canonical:
+        p = CANONICAL_BUILD_RECEIPT
+    else:
+        # Experimental/partial builds are evidence about one run, not the canonical-four
+        # authority. Keep their receipt inside the isolated synthetic root so verification
+        # cannot mutate the canonical repository receipt (the defect caught after K repair).
+        rp = os.path.join(ROOT, "_receipts")
+        os.makedirs(rp, exist_ok=True)
+        tag = ("seed%s_%s" % (seed_base, "_".join(sorted(mans)))).replace(os.sep, "_")
+        p = os.path.join(rp, "V64_STAGE4_SYNTHETIC_EXPERIMENT_BUILD_%s.json" % tag)
+    os.makedirs(os.path.dirname(os.path.abspath(p)), exist_ok=True)
     with open(p, "w", newline="\n") as fh:
         json.dump(rec, fh, indent=2)
+    print("build receipt " + p)
     print("build receipt sha256 " + B.sha_file(p))
     return 0
 
