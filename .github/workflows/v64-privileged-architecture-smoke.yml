@@ -232,7 +232,9 @@ jobs:
             tests/test_v72_coupled_synthetic_ecosystem.py \
             tests/test_v72_checkpoint_twins.py \
             tests/test_v72_synthetic_routeb_pipeline.py \
-            tests/test_v72_synthetic_resource_estimator.py
+            tests/test_v72_synthetic_resource_estimator.py \
+            tests/test_v72_all_overlap_crosswalk.py \
+            tests/test_v72_synthetic_shard_plan.py
       - name: Validate V71 synthetic pipeline readiness
         run: python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
       - name: Build and validate V72 coupled CI ecosystem
@@ -250,6 +252,7 @@ jobs:
         run: |
           python scripts/v64/estimate_v72_synthetic_twin_resources.py --cells 100000 --out /tmp/v72_stress_resources.json
           python scripts/v64/estimate_v72_synthetic_twin_resources.py --cells 4553407 --out /tmp/v72_full_resources.json
+          python scripts/v64/plan_v72_synthetic_shards.py --cells 4553407 --shard-cells 100000 --out /tmp/v72_full_shards.json
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
