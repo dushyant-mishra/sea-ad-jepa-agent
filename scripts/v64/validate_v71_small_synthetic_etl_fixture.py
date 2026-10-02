@@ -30,16 +30,21 @@ def validate(root: Path):
         if sha256(p)!=rec.get("sha256"): e.append(f"DIGEST_MISMATCH:{name}")
     m=np.load(raw/obs["matrix_file"],allow_pickle=False)
     matrix=m["matrix"]; features=m["features"]; ftypes=m["feature_types"]; barcodes=m["barcodes"]; avail=m["availability"]
-    if matrix.shape!=(len(features),len(barcodes)): e.append("MATRIX_AXIS_SHAPE_MISMATCH")
-    if avail.shape!=matrix.shape: e.append("AVAILABILITY_SHAPE_MISMATCH")
+    matrix_axis_ok = matrix.shape==(len(features),len(barcodes))
+    availability_axis_ok = avail.shape==matrix.shape
+    if not matrix_axis_ok: e.append("MATRIX_AXIS_SHAPE_MISMATCH")
+    if not availability_axis_ok: e.append("AVAILABILITY_SHAPE_MISMATCH")
     if len(set(barcodes.tolist()))!=len(barcodes): e.append("DUPLICATE_BARCODE")
     if len(set(features.tolist()))!=len(features): e.append("DUPLICATE_FEATURE")
     if obs.get("n_cells")!=len(barcodes): e.append("OBS_CELL_COUNT_MISMATCH")
     if obs.get("n_features")!=len(features): e.append("OBS_FEATURE_COUNT_MISMATCH")
     if int((ftypes=="Gene Expression").sum())!=obs.get("n_genes"): e.append("GENE_COUNT_MISMATCH")
     if int((ftypes=="Peaks").sum())!=obs.get("n_peaks"): e.append("PEAK_COUNT_MISMATCH")
-    # Structural missingness must be explicitly masked. Zero values are allowed only because the mask distinguishes them.
-    if not np.all(matrix[avail==0]==0): e.append("STRUCTURAL_MISSING_NONZERO")
+    # Structural missingness must be explicitly masked. Do not index with a corrupt
+    # mask after already detecting an axis mismatch: a validator must return a
+    # structured failure, not crash while examining the corruption.
+    if availability_axis_ok and not np.all(matrix[avail==0]==0):
+        e.append("STRUCTURAL_MISSING_NONZERO")
     meta=[]
     with gzip.open(raw/obs["metadata_file"],"rt",newline="") as f:
         reader=csv.DictReader(f); meta=list(reader)

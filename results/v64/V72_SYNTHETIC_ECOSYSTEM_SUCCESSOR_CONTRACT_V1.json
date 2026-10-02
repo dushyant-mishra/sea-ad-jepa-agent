@@ -1,0 +1,151 @@
+{
+  "schema": "V72_SYNTHETIC_ECOSYSTEM_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "PROSPECTIVE_SUCCESSOR_TO_V71__NO_REAL_OUTCOME_OPENED",
+  "supersedes_nothing": "V71 contracts remain frozen historical inputs; V72 adds requirements learned after V71 was written.",
+  "purpose": "Qualify one coupled hidden biological truth projected through FULL104-like, Stage4-like, SCENIC+-like, separate-nucleus, paired-multiome, perturbation and spatial observation operators before real multimodal training.",
+  "inherited_truth_blocks": [
+    "Z_global",
+    "Z_query",
+    "Z_reg_shared",
+    "Z_reg_private",
+    "technical_latents",
+    "source_specific_biology"
+  ],
+  "coupled_generation_rule": "All synthetic datasets in one challenge version must derive from one hidden truth object and versioned regulatory graph. Independent per-dataset truth generation is forbidden.",
+  "stage4_successor_requirements": {
+    "S99_faithful_controls": [
+      "control is fixed to the same promoter as the linked edge",
+      "control interval is non-overlapping with linked interval",
+      "distance matching uses the frozen Stage4 tolerance",
+      "accessibility/measurement qualification is symmetric",
+      "edge is trimmed when no admissible control exists",
+      "world build fails closed when the matching audit fails"
+    ],
+    "interval_geometry": [
+      "5kb windows may overlap",
+      "one peak may overlap multiple Stage4 windows",
+      "crosswalks enumerate all overlaps rather than first-hit only"
+    ],
+    "hidden_confound_family": [
+      "globally shared metacell factor",
+      "block-shared HIDDEN_CONFOUND_K",
+      "edge-specific hidden factor",
+      "measured depth confound",
+      "true null",
+      "positive biology"
+    ],
+    "G2_S102": {
+      "status": "OPEN_SPECIFICATION_VARIABLE",
+      "frozen_contract_gap": "The historical contract says control-vs-control must not show excess but does not define test, statistic, alpha, or equivalence margin.",
+      "forbidden": "V72 must not silently freeze the current two-sided 95% bootstrap-zero implementation as the scientific contract.",
+      "reporting": [
+        "raw control-vs-control delta",
+        "uncertainty interval under named method",
+        "|cvc delta|/|primary delta| diagnostic without threshold"
+      ],
+      "qualification_rule": "Any future G2 pass criterion requires a new prospective contract justified independently of V2/K outcomes."
+    }
+  },
+  "identity_requirements": {
+    "donor_mapping": "Join through explicit barcode-to-donor authority.",
+    "forbidden": "Infer donor from barcode suffix.",
+    "planted_positive_control": "At least one suffix must map to >1 donor so suffix inference provably fails."
+  },
+  "scenicplus_reproducibility": {
+    "ranking_rng_seed": "explicit and recorded",
+    "BLAS_threads": "explicit and recorded; default qualification target 1 thread inside each outer worker",
+    "worker_axis_gate": "same scientific workload at different worker counts must yield digest-identical scientific outputs",
+    "union_score_reuse": "motif-region scores may be computed once on RouteA union RouteB only after equivalence is demonstrated by name-based subsetting",
+    "rankings": "must remain route-specific",
+    "shard_rules": [
+      "deterministic ordered motif membership",
+      "motif-list digest",
+      "region-universe digest",
+      "FASTA digest",
+      "container/tool-content digest",
+      "output digest",
+      "PASS receipt only after files are closed and re-read",
+      "merge proves exact ordered union, no duplicates or omissions"
+    ],
+    "execution_scripts": "Long jobs execute immutable script snapshots; editing a mounted executing script is forbidden."
+  },
+  "raw_route_requirements": {
+    "FULL104": [
+      "RNA counts",
+      "source/operator metadata",
+      "structural support masks",
+      "unresolved collision states"
+    ],
+    "STAGE4": [
+      "donor/metacell RNA",
+      "ATAC interval values",
+      "pair/control ledgers",
+      "matching audit"
+    ],
+    "SCENIC_ROUTE_A": [
+      "same-nucleus RNA+ATAC",
+      "submitted peaks"
+    ],
+    "SCENIC_ROUTE_B": [
+      "fragments.tsv.gz",
+      "barcode donor authority",
+      "pseudobulk inputs",
+      "consensus-peak precursor files"
+    ],
+    "MORABITO_LIKE": [
+      "separate RNA and ATAC nuclei sharing donors only"
+    ],
+    "SEAAD_MULTIOME_LIKE": [
+      "same-nucleus paired RNA+ATAC"
+    ],
+    "PERTURBATION_LIKE": [
+      "guide UMI matrix",
+      "guide target table",
+      "engagement/noise metadata"
+    ],
+    "SPATIAL_LIKE": [
+      "limited gene panels",
+      "coordinates",
+      "segmentation/detection metadata"
+    ]
+  },
+  "checkpoint_twins": [
+    "HEALTHY",
+    "COLLAPSED",
+    "SOURCE_SHORTCUT",
+    "DONOR_SHORTCUT",
+    "PRIVATE_STATE_LEAK",
+    "OVERCONFIDENT_UNRECOVERABLE",
+    "CORRUPT_MANIFEST_AXIS"
+  ],
+  "truth_firewall": {
+    "pipeline_reads_truth": false,
+    "truth_root_physically_separate": true,
+    "checkpoint_selection_before_unblind": true,
+    "regulatory_program_selection_before_unblind": true
+  },
+  "scale_ladder": {
+    "CI": {
+      "cells": "O(10^3-10^4)",
+      "role": "behavioral integration and CI"
+    },
+    "STRESS": {
+      "cells": "1e5-5e5",
+      "role": "streaming/resource/axis stress"
+    },
+    "FULL": {
+      "cells": 4553407,
+      "donors": 104,
+      "addresses": 41238,
+      "role": "final dry run only after CI and stress promotion"
+    }
+  },
+  "governance": {
+    "real_stage4": "NOT_AUTHORIZED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED"
+  }
+}
