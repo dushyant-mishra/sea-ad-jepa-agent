@@ -234,7 +234,8 @@ jobs:
             tests/test_v72_synthetic_routeb_pipeline.py \
             tests/test_v72_synthetic_resource_estimator.py \
             tests/test_v72_all_overlap_crosswalk.py \
-            tests/test_v72_synthetic_shard_plan.py
+            tests/test_v72_synthetic_shard_plan.py \
+            tests/test_v72_successor_contracts.py
       - name: Validate V71 synthetic pipeline readiness
         run: python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
       - name: Build and validate V72 coupled CI ecosystem
