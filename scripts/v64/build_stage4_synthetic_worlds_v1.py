@@ -61,6 +61,11 @@ NUCLEI_OK = 25              # per metacell, so an eligible donor has 275 >= 100
 NUCLEI_SMALL = 8            # 88 < 100 -> ineligible
 
 WORLDS = ("BIOLOGY_POSITIVE", "TRUE_NULL", "MEASURED_TECHNICAL", "HIDDEN_CONFOUND")
+# Built on request for the G2 sensitivity curve and deliberately NOT one of the canonical
+# four, so the canonical fixture set that every qualification receipt describes is
+# unchanged by this experiment existing.
+EXTRA_WORLDS = ("HIDDEN_CONFOUND_K",)
+CONFOUND_BLOCKS_DEFAULT = 1
 
 
 def _pack(mat):
@@ -247,13 +252,30 @@ def build_world(world, seed):
         planted = dict(mechanism="edge-specific loading on sequencing depth, linked arm "
                                  "only; depth IS in the frozen basis",
                        expect="raw Delta > 0, adjusted Delta near 0")
-    elif world == "HIDDEN_CONFOUND":
+    elif world in ("HIDDEN_CONFOUND", "HIDDEN_CONFOUND_K"):
+        # K independent metacell-varying factors, each orthogonal to depth, shared by a
+        # block of edges. K=1 is the original world: one factor behind every edge. K equal
+        # to the edge count gives every edge its own factor, which is structurally the
+        # same object as the planted biology -- that end of the curve is a tautology, not
+        # a failure, and the pre-commitment says so.
+        K = 1 if world == "HIDDEN_CONFOUND" else int(globals().get(
+            "_CONFOUND_BLOCKS", CONFOUND_BLOCKS_DEFAULT))
+        K = max(1, min(K, N_EDGES))
+        factors = []
+        for _ in range(K):
+            f = rng.normal(0.0, 1.0, n_mc)
+            f = f - np.polyval(np.polyfit(log_depth, f, 1), log_depth)
+            factors.append(f / f.std())
+        block_of_edge = rng.integers(0, K, N_EDGES)
         for e in range(N_EDGES):
             g = 1.4 * rng.uniform(0.6, 1.4)
-            rna[:, edge_gene[e]] += g * hidden
-            atac[:, edge_linked_iv[e]] += g * hidden
+            f = factors[int(block_of_edge[e])]
+            rna[:, edge_gene[e]] += g * f
+            atac[:, edge_linked_iv[e]] += g * f
         planted = dict(mechanism="edge-specific loading on a metacell-varying factor that "
                                  "is orthogonal to depth and absent from the frozen basis",
+                       confound_blocks_K=int(K),
+                       edges_per_block=round(N_EDGES / K, 2),
                        expect="Delta stays large. THE EXECUTOR IS EXPECTED TO BE FOOLED; "
                               "this is recorded as an interpretation limit, not a bug.")
 
@@ -513,10 +535,15 @@ def main(seed_base=None, only=None, donors=None) -> int:
         ap.add_argument("--seed-base", type=int, default=CANONICAL_SEED_BASE)
         ap.add_argument("--only", default=None,
                         help="build just these worlds, comma separated")
+        ap.add_argument("--confound-blocks", type=int, default=None,
+                        help="K, the number of independent confound factors, for the "
+                             "HIDDEN_CONFOUND_K world only")
         ap.add_argument("--donors", type=int, default=None,
                         help="override the eligible donor count, for calibration sweeps")
         a = ap.parse_args()
         seed_base, only, donors = a.seed_base, a.only, a.donors
+        if a.confound_blocks:
+            globals()["_CONFOUND_BLOCKS"] = int(a.confound_blocks)
         if donors:
             globals()["N_DONORS_OK"] = donors
         if only:
@@ -526,7 +553,7 @@ def main(seed_base=None, only=None, donors=None) -> int:
           + " at seed base " + str(seed_base))
     mans = {}
     only = globals().get("_ONLY")
-    for i, w in enumerate(WORLDS):
+    for i, w in enumerate(WORLDS + EXTRA_WORLDS):
         if only and w not in only:
             continue
         mans[w] = build_world(w, seed=seed_base + i)

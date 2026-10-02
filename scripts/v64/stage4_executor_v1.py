@@ -433,7 +433,7 @@ def authorization_state():
 SYNTHETIC_ROOT = "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
 SYNTHETIC_OUT = os.path.join(SYNTHETIC_ROOT, "_results")
 SYNTHETIC_WORLDS = ("BIOLOGY_POSITIVE", "TRUE_NULL", "MEASURED_TECHNICAL",
-                    "HIDDEN_CONFOUND")
+                    "HIDDEN_CONFOUND", "HIDDEN_CONFOUND_K")
 
 
 def _unpack_avail(packed, shape):
