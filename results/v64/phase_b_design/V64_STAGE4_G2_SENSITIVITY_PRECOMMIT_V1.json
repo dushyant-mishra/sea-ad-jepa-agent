@@ -1,0 +1,54 @@
+{
+  "schema": "V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1",
+  "date": "2026-10-02",
+  "written_before_any_draw_of_this_design_was_made": true,
+  "why_this_experiment": "The V2 calibration showed the control-versus-control gate G2 rejecting the hidden-confound world at 0.23 and 0.10 while rejecting genuine biology at 0.78 and 0.62. I recorded a caveat at the time: the hidden confound in those worlds is a SINGLE metacell-level factor shared across every edge, and that shared structure is exactly what a contrast between two control draws can see. So G2 may be detecting SHARING rather than confounding, in which case it offers no protection at all against an edge-specific cross-modal artifact. This experiment decides which.",
+  "the_structural_point_that_motivates_it": "A cross-modal factor that varies across metacells within a donor, loads on both modalities of one edge's linked arm, and is drawn INDEPENDENTLY PER EDGE is not merely difficult to distinguish from regulation. It is the same statistical object as the planted biology. No analysis of RNA-ATAC covariation can separate them because there is nothing to separate; what distinguishes them in reality is mechanism and external evidence, not statistics. The scientifically meaningful question is therefore not whether an edge-specific confound can be caught -- it cannot, by anything -- but how much sharing across edges a confound must have before G2 can see it at all.",
+  "question": "As the number of independent confound factors K increases from 1 (one factor shared by all edges) to the number of edges (one factor per edge), at what point does G2 stop rejecting the confounded world, and does it converge on the rate at which it rejects genuine biology?",
+  "design": {
+    "world_family": "HIDDEN_CONFOUND_K, built exactly like the existing HIDDEN_CONFOUND world except that edges are partitioned into K blocks and all edges in a block share one metacell-varying factor orthogonal to depth. K=1 reproduces the existing world. K equal to the edge count makes every edge's factor independent, which is structurally identical to BIOLOGY_POSITIVE.",
+    "K_values": [1, 5, 20, 50, 200],
+    "why_these": "1 is the already-measured world. 200 is the edge count, the structural twin of biology, and serves as the degenerate end of the curve. 5, 20 and 50 span the range between on a roughly logarithmic spacing so a threshold, if one exists, is bracketed rather than stepped over.",
+    "donor_count": 282,
+    "why_one_donor_count": "282 is the real substrate's qualifying donor count and is where G2 is strictest. Measuring the curve at the harder end avoids claiming a protection that only exists at reduced scale. Cost is the reason there is only one: a second count would double a 100-draw sweep for a question about shape, not about scale.",
+    "draws_per_K": 20,
+    "total_runs": 100,
+    "seed_bases": "800000 + 1000 * draw_index, distinct from every series already spent",
+    "execution": "every draw is rebuilt to disk in the real Phase-B format under the frozen matched-control construction and run through the real executor entrypoint. The world build fails closed on any violation of the matching rule."
+  },
+  "primary_statistic": "the G2 pass rate per K, that is the fraction of draws in which the control-versus-control contrast is NOT distinguishable from zero",
+  "secondary_statistics": [
+    "the ALL_FIVE_PASS rate per K",
+    "the G1 and G3 pass rates per K",
+    "the median adjusted GENE_BALANCED Delta per K and its ratio to the BIOLOGY_POSITIVE median already measured at 282 donors, which is 0.5692",
+    "the median control-versus-control delta per K"
+  ],
+  "precision_stated_in_advance": "20 draws per cell gives a Wilson 95 percent interval of roughly plus or minus 0.11 at a rate near 0.5 and narrower at the extremes. That is adequate to establish the SHAPE of a curve and to separate a rate near 0.1 from one near 0.6. It is NOT adequate to pin any single K to within a few percentage points, and no such claim may be made from it.",
+  "stopping_rule": {
+    "rule": "exactly 20 draws per K value. No extension, no early stop, no adding draws after seeing a rate.",
+    "if_imprecise": "a cell whose Wilson 95 percent interval has a half-width greater than 0.25 is reported UNRESOLVED and is NOT topped up.",
+    "if_a_run_fails": "a failed run is counted in the denominator and its error recorded.",
+    "if_a_world_build_fails_the_matching_audit": "a fixture defect, not a result. Stop and repair the generator."
+  },
+  "interpretation_fixed_in_advance": {
+    "G2_pass_rate_rises_monotonically_with_K": "G2 detects SHARED structure across edges, not cross-modal confounding as such",
+    "G2_pass_rate_at_K_equal_to_edge_count_matches_the_biology_rate_of_0.62": "confirms the structural argument: an edge-specific cross-modal factor is indistinguishable from regulation, and G2 contributes nothing against it. The apparent protection measured in V2 is an artifact of how I built that confound and must not be cited as a safeguard.",
+    "G2_pass_rate_stays_low_at_every_K": "G2 detects something other than sharing and does offer real protection against cross-modal confounding; the V2 caveat is discharged and the gate is stronger than I credited",
+    "G2_pass_rate_is_non_monotonic_in_K": "the gate responds to something neither hypothesis predicts and no protection claim may be made in either direction until it is understood",
+    "ALL_FIVE_rate_at_high_K_approaches_the_biology_rate": "the complete five-gate decision cannot distinguish a sufficiently edge-specific cross-modal artifact from regulation, which is an interpretation limit on every Stage-4 result and is to be recorded, not repaired"
+  },
+  "what_this_cannot_establish": "The confound's magnitude, its orthogonality to depth and its metacell-level structure are all choices I made. This measures how the frozen decision rule responds to a family of synthetic confounds parameterised by sharing. It says nothing about whether a confound of this kind exists in the real substrate, nor about its likely K if it does. It also cannot rescue the degenerate end of the curve: at K equal to the edge count the world is structurally identical to planted biology, so a low rejection rate there is not a failure of the design but a statement that the two are the same object.",
+  "forbidden": [
+    "changing any frozen statistical rule, basis term, weighting, bootstrap setting, gate threshold or success criterion in response to any rate measured here",
+    "adding draws to a cell after seeing its rate",
+    "citing the V2 hidden-confound rejection rate as evidence of protection if this curve shows G2 responds to sharing",
+    "treating a rate measured on reduced-scale synthetic worlds as a calibration of the real Stage-4 analysis"
+  ],
+  "governance": {
+    "training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "real_substrate_read": false,
+    "computed_correspondence_values_on_real_data": 0
+  }
+}
