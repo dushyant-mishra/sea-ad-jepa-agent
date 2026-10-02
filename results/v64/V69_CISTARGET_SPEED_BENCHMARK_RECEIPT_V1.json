@@ -1,9 +1,8 @@
 {
   "schema": "V69_CISTARGET_SPEED_BENCHMARK_RECEIPT_V1",
   "recorded_utc": "2026-10-02T00:05:00Z",
-  "status": "PARTIAL__WORKER_SCALING_TABLE_NOT_YET_MEASURED__FULL_BUILDS_NOT_AUTHORISED_BY_THIS_RECEIPT",
+  "status": "PARTIAL__STORAGE_SETTLED__WORKER_SCALING_TABLE_NOT_YET_MEASURED__FULL_BUILDS_NOT_AUTHORISED_BY_THIS_RECEIPT",
   "purpose": "Mandate item 9: the benchmark receipt that must precede the full cisTarget builds. It is deliberately incomplete and says so; the worker-scaling table requires an idle machine and has not been run.",
-
   "scientific_invariance_statement": {
     "claim": "Nothing scientific has been changed by the speed work.",
     "specifics": [
@@ -15,19 +14,34 @@
     ],
     "one_parameter_added_and_why": "The ranking RNG seed is now PINNED. That is a determinism fix, not a method change: unpinned, the tool drew a fresh seed every run and the rankings database was not reproducible at all. See finding F2."
   },
-
   "hardware_measured_not_assumed": {
     "physical_cores": 8,
     "logical_processors": 16,
     "ram_gb": 31.8,
-    "C_drive": {"role": "internal SSD scratch", "total_gb": 1906.5, "free_gb": 194.8},
-    "D_drive": {"role": "external, authenticated source of truth", "total_gb": 14901.9, "free_gb": 5754.2},
+    "C_drive": {
+      "role": "internal SSD scratch",
+      "total_gb": 1906.5,
+      "free_gb": 194.8
+    },
+    "D_drive": {
+      "role": "external, authenticated source of truth",
+      "total_gb": 14901.9,
+      "free_gb": 5754.2
+    },
     "note": "16 logical on 8 physical means -t 16 is hyperthread oversubscription, which is why the saturation point must be measured rather than set to the logical core count."
   },
-
   "scratch_root": {
     "path": "C:/jepa_scratch/scenicplus",
-    "subdirectories": ["shared", "routeA", "routeB", "motif_shards", "score_shards", "tmp", "merge", "receipts"],
+    "subdirectories": [
+      "shared",
+      "routeA",
+      "routeB",
+      "motif_shards",
+      "score_shards",
+      "tmp",
+      "merge",
+      "receipts"
+    ],
     "headroom_gb_after_60gb_os_reserve": 134.8,
     "budget_gb": "120-130",
     "authenticated_assets_moved": "NONE. D: remains source of truth. The 63.6 GB fragment file was NOT copied to C:, because no measurement yet shows repeated fragment I/O limits Route B.",
@@ -38,7 +52,6 @@
       "custody": "SHA-256 recomputed on C: after the copy and found equal to the D: value. The copy command's exit code was not treated as proof."
     }
   },
-
   "F1_union_region_score_reuse": {
     "status": "PROVEN_AND_LICENSED",
     "receipt": "V69_UNION_REGION_SCORE_EQUIVALENCE_V1.json",
@@ -57,16 +70,27 @@
     "consequence": "Route A and Route B may be scored ONCE over the union of their regions, paying cbust on |A union B| rather than |A| + |B|.",
     "scope_limit_empirically_demonstrated": "Rankings are a cross-region operation and ARE route-dependent. This does NOT license sharing a rankings database. Rankings are built per route from the subset scores."
   },
-
   "F2_ranking_rng_seed_was_unpinned": {
     "status": "FIXED",
     "severity": "HIGH -- the production rankings database was not reproducible",
     "finding": "create_cistarget_motif_databases.py draws a RANDOM seed to break ties when building rankings. Unset, it draws a fresh one every run.",
     "measured": {
       "workload": "same 16 motifs, same 150,561 regions, same FASTA, cbust and parameters",
-      "motifs_vs_regions_scores_bytes": {"run_D": 6455010, "run_C": 6455010, "identical": true},
-      "regions_vs_motifs_scores_bytes": {"run_D": 40121018, "run_C": 40121018, "identical": true},
-      "regions_vs_motifs_rankings_bytes": {"run_D": 41330034, "run_C": 41329818, "identical": false},
+      "motifs_vs_regions_scores_bytes": {
+        "run_D": 6455010,
+        "run_C": 6455010,
+        "identical": true
+      },
+      "regions_vs_motifs_scores_bytes": {
+        "run_D": 40121018,
+        "run_C": 40121018,
+        "identical": true
+      },
+      "regions_vs_motifs_rankings_bytes": {
+        "run_D": 41330034,
+        "run_C": 41329818,
+        "identical": false
+      },
       "observed_seed_in_one_run": 7286697094343046595
     },
     "two_damages_avoided": [
@@ -78,15 +102,19 @@
     "seed_label": "CONVENTION -- the lane date. Arbitrary but fixed, and labelled as such rather than presented as principled.",
     "how_found": "Only because the digest-equality gate forced inspection of output BYTES rather than whether both runs finished."
   },
-
   "F3_blas_oversubscription": {
     "status": "FIXED",
     "finding": "The image sets no thread environment variable and OpenBLAS reports num_threads=16. At -t 16 each of 16 workers could spawn up to 16 BLAS threads -- 256 threads on 8 physical cores.",
     "why_it_mattered": "The scaling curve would have measured oversubscription rather than worker count, and the distortion grows with worker count, so the 16-worker point -- the one the decision rests on -- would have been the most wrong.",
     "fix": "OMP/OPENBLAS/MKL/NUMEXPR/VECLIB pinned to 1 in both runners; values recorded per run.",
-    "comparability_consequence": "The 24-motif, 120-motif and both storage runs predate the pinning and are a DIFFERENT configuration. They must not be mixed into the pinned scaling table."
+    "comparability_consequence": "The 24-motif, 120-motif and both storage runs predate the pinning and are a DIFFERENT configuration. They must not be mixed into the pinned scaling table.",
+    "output_effect_now_measured": {
+      "scores_identical_pinned_vs_unpinned": true,
+      "evidence": "Same drive, same 16 motifs/150,561 regions: both scores feathers bitwise identical between BLAS-unpinned-at-16 and BLAS-pinned-to-1.",
+      "conclusion": "Pinning is a pure scheduling fix and does not change cisTarget scores.",
+      "not_concluded": "The 440 s -> 532 s wall difference is NOT a cost of pinning; the runs faced different machine load and cbust runs at -t 1 per motif. Confounded, and recorded as confounded."
+    }
   },
-
   "F4_feather_io_is_a_large_share_of_wall_clock": {
     "status": "MEASURED_AT_SMALL_SCALE__NOT_YET_AT_FULL_SCALE",
     "measured": {
@@ -99,21 +127,25 @@
     "implication": "At this batch size nearly two thirds of wall clock is NOT motif scanning. Sharding multiplies the number of feather writes, so shard size must be chosen against this cost and not only against scoring time.",
     "caveat": "The share will fall as motifs per run rises, because scoring grows with motif count while a fixed per-run write overhead does not. The full-scale figure is NOT yet measured."
   },
-
   "NOT_MEASURED_AND_THEREFORE_NOT_RECOMMENDED": {
     "worker_scaling_table": {
       "status": "NOT_RUN",
       "why": "A coordinator-owned 320-draw Stage-4 calibration sweep held roughly one core on this machine throughout this work, from about 18:00. A scaling curve measured against a contended machine is an artifact of the contention -- which is precisely the measurement being asked for.",
       "driver_ready": "scripts/v69/run_worker_scaling_table_v1.sh",
-      "planned_points": [1, 2, 4, 8, 16],
+      "planned_points": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ],
       "planned_workload": "16 motifs x 150,561 regions, pinned seed, pinned BLAS threads",
       "estimated_duration_hours": 1.75,
       "granularity_caveat": "16 motifs on 16 workers is a single wave and cannot exhibit queueing; the 4- and 8-worker points (4 and 2 waves) carry the saturation signal."
     },
     "storage_comparison": {
-      "status": "MUST_BE_RE_RUN_UNDER_THE_PINNED_SEED",
-      "why": "The completed D/C pair predates the seed fix, so its rankings differ for a reason unrelated to storage. Its SCORES are byte-identical across the two drives, which is a real result, but the full digest gate cannot be evaluated on that pair.",
-      "scores_result_that_does_stand": "motifs_vs_regions and regions_vs_motifs scores feathers are byte-identical in size across D: and C:."
+      "status": "SETTLED -- see F5_storage_comparison",
+      "outcome": "PASS, outputs identical; SSD gives no advantage"
     },
     "recommended_worker_count": "NOT_DETERMINED",
     "recommended_shard_size": "NOT_DETERMINED",
@@ -121,7 +153,6 @@
     "can_routes_run_concurrently": "NOT_DETERMINED",
     "expected_peak_scratch_usage": "NOT_DETERMINED"
   },
-
   "infrastructure_built_and_tested": {
     "shard_driver": {
       "path": "scripts/v69/run_cistarget_motif_shard_v1.sh",
@@ -142,7 +173,6 @@
       "failure_state": "STOP__OUTPUT_DIGESTS_DIFFER_DO_NOT_PROCEED_TO_FULL_BUILD"
     }
   },
-
   "boundaries_unchanged": {
     "stage4": "NOT AUTHORIZED; untouched by any of this",
     "eregulon_biological_claims": "none made; no network exists",
@@ -150,6 +180,33 @@
     "direct_vs_extended_motif_support": "remain separate evidence classes",
     "donor_stability": "remains donor-level"
   },
-
-  "what_this_receipt_does_NOT_authorise": "The full cisTarget builds. The worker count, shard size, concurrency and scratch footprint are all undetermined, and this receipt was required to precede the builds precisely so those are decided from measurement."
+  "what_this_receipt_does_NOT_authorise": "The full cisTarget builds. The worker count, shard size, concurrency and scratch footprint are all undetermined, and this receipt was required to precede the builds precisely so those are decided from measurement.",
+  "F5_storage_comparison": {
+    "status": "SETTLED__PASS__OUTPUTS_IDENTICAL",
+    "receipt": "V69_STORAGE_COMPARISON_SEEDED_V1.json",
+    "configuration": "16 motifs x 150,561 regions, 16 workers, seed 20261001, BLAS pinned to 1, executed from an immutable script snapshot",
+    "digest_gate": {
+      "all_three_outputs_identical_across_D_and_C": true,
+      "motifs_vs_regions.scores.feather": "0946bedb6094568c33edaeb30821119c5ea8eff1aae143928cb0ef5e456eecc1",
+      "regions_vs_motifs.scores.feather": "cbd96aee55a78c3aae74ec641160b31fc7c4e5a26f6ed3b790a83815124b3ca0",
+      "regions_vs_motifs.rankings.feather": "1a5e516e77fbe2521852110b9ea4e6da77f7492cfdbd835fe6509de2d7760624",
+      "double_result": "Storage independence is demonstrated AND the rankings now match across runs, which they did not before the seed was pinned. The same comparison validates the S23 fix."
+    },
+    "timing_contended_indicative_only": {
+      "D_external": {
+        "wall_s": 532,
+        "cbust_s": 203.058682,
+        "non_scoring_s": 329
+      },
+      "C_internal_ssd": {
+        "wall_s": 535,
+        "cbust_s": 206.641335,
+        "non_scoring_s": 328
+      },
+      "difference": "3 s in D's favour, 0.6%, inside noise"
+    },
+    "DECISION": "The internal SSD buys NOTHING on this workload. Do not spend the scratch budget moving cisTarget data to C:. The premise that C: is faster was explicitly flagged as unmeasured and is now measured and rejected.",
+    "caveat": "Both paths are Docker Desktop bind mounts on Windows, so this compares bind-mount-to-C: against bind-mount-to-D:, not SSD against external disk natively. The mount layer may dominate both equally.",
+    "consequence_for_the_plan": "The earlier recommendation to 'build to container-local or WSL-native storage' is NOT supported by this measurement for a bind-mounted C:. If the feather-write cost is to be attacked, the thing to test is container-local storage INSIDE the image (not a bind mount), which this comparison did not cover."
+  }
 }
