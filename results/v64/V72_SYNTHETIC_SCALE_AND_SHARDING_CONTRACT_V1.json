@@ -1,0 +1,59 @@
+{
+  "schema": "V72_SYNTHETIC_SCALE_AND_SHARDING_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "PROSPECTIVE_SCALE_EXECUTION_CONTRACT",
+  "scales": {
+    "SMALL_CI": {
+      "cells": 10000,
+      "donors": 12,
+      "role": "continuous end-to-end raw-interface qualification"
+    },
+    "MEDIUM_STRESS_100K": {
+      "cells": 100000,
+      "donors": 52,
+      "role": "streaming/memory/index-order stress"
+    },
+    "MEDIUM_STRESS_500K": {
+      "cells": 500000,
+      "donors": 104,
+      "role": "near-full donor/source structure stress"
+    },
+    "FULL104_SCALE": {
+      "cells": 4553407,
+      "donors": 104,
+      "addresses": 41238,
+      "role": "final synthetic dress rehearsal"
+    }
+  },
+  "full104_source_proportions": {
+    "HVS": 0.04364160726243009,
+    "NPH52": 0.05193385963521381,
+    "SEA_AD": 0.9044245331023562
+  },
+  "sharding": {
+    "unit": "cells",
+    "default_cells_per_shard": 50000,
+    "rule": "Every cell belongs to exactly one ordered shard; shard boundaries are deterministic from global cell index and never from hidden truth.",
+    "axis_binding": "Each shard records ordered cell-id digest, feature/address digest, source counts and donor counts.",
+    "merge_gate": "Concatenated ordered cell axes must equal the frozen global cell registry exactly; duplicates, omissions or reordering fail."
+  },
+  "resource_model": {
+    "mode": "PLAN_NOT_PROMISE",
+    "required_measurements_before_medium_or_full_execution": [
+      "bytes per raw RNA nonzero",
+      "bytes per ATAC fragment record after compression",
+      "bytes per metadata row",
+      "peak/feature dictionary bytes",
+      "peak-call temporary expansion factor",
+      "checkpoint bytes"
+    ],
+    "rule": "Use measured SMALL_CI/stress receipts to update estimates. Never infer full-scale safety from cell count alone."
+  },
+  "forbidden": [
+    "generate all 4.55M cells in memory",
+    "change scientific generator semantics by scale",
+    "use a different missingness/control/observation model at full scale",
+    "drop difficult source/operator strata to fit hardware",
+    "declare sufficient disk/RAM without a measured resource receipt"
+  ]
+}
