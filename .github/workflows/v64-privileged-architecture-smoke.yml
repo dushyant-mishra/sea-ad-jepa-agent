@@ -7,6 +7,8 @@ on:
       - 'docs/agent/V65_*'
       - 'docs/agent/V6[6-9]_*'
       - 'docs/agent/V70_*'
+      - 'docs/agent/V71_*'
+      - 'docs/agent/V72_*'
       - 'docs/agent/JEPA_V67_STATE_ADDENDUM_20261001.md'
       - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER.json'
       - 'docs/agent/JEPA_HANDOFF_STATE_20260930_V66.json'
@@ -14,6 +16,12 @@ on:
       - 'results/v64/V65_*'
       - 'results/v64/V6[6-9]_*'
       - 'results/v64/V70_*'
+      - 'results/v64/V71_*'
+      - 'results/v64/V72_*'
+      - 'scripts/v64/*v71*'
+      - 'scripts/v64/*v72*'
+      - 'tests/test_v71_*'
+      - 'tests/test_v72_*'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V1.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V2.json'
       - 'results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V3.json'
@@ -218,7 +226,11 @@ jobs:
             tests/test_v70_macha_scenicplus_return_manifest.py \
             tests/test_v70_gse214979_acquisition_receipts.py \
             tests/test_v70_gse214979_full104_structural_crosswalk.py \
-            tests/test_v70_gse214979_route_a_development_preflight.py
+            tests/test_v70_gse214979_route_a_development_preflight.py \
+            tests/test_v71_small_synthetic_etl_fixture.py \
+            tests/test_v71_synthetic_pipeline_readiness.py
+      - name: Validate V71 synthetic pipeline readiness
+        run: python scripts/v64/validate_v71_synthetic_pipeline_readiness.py
       - name: Emit V67 synthetic qualification outputs
         run: |
           python scripts/v64/nested_modality_mask_uncertainty_anticollapse_synthetic_v1.py
