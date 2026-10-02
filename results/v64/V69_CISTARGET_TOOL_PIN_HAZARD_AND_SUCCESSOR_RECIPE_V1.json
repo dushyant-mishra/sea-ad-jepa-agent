@@ -1,0 +1,58 @@
+{
+  "schema": "V69_CISTARGET_TOOL_PIN_HAZARD_AND_SUCCESSOR_RECIPE_V1",
+  "recorded_utc": "2026-10-02T01:00:00Z",
+  "status": "HAZARD_RECORDED__REMEDY_SPECIFIED__CURRENT_RECIPE_DELIBERATELY_UNTOUCHED",
+  "severity": "MEDIUM -- no current result is wrong; the exposure is to a FUTURE rebuild",
+
+  "the_hazard": {
+    "what": "docker/scenicplus/Dockerfile clones the cisTarget database-building tool at an UNPINNED ref.",
+    "exact_line": "ARG CREATE_CISTARGET_DATABASES_REF=master",
+    "clone": "git clone --depth 1 --branch ${CREATE_CISTARGET_DATABASES_REF} https://github.com/aertslab/create_cisTarget_databases.git /opt/create_cisTarget_databases",
+    "why_it_matters": "Rebuilding this image on any later date would silently pick up whatever `master` points to then. The scoring and ranking code that produces the database every downstream eRegulon claim rests on would change without any version string changing, and nothing in the pipeline would say so.",
+    "compounding_factor": "The clone in the running image carries NO git metadata (`--depth 1` plus a stripped .git), so the commit that was actually used cannot be recovered from the image either. The provenance is lost in both directions: the recipe does not pin it, and the artefact does not record it.",
+    "same_hazard_present_for": "SCENICPLUS_REF is pinned to v1.0a2, which is fine. MALLET_VERSION is pinned to 2.1.0, which is fine. cbust and liftOver are fetched from resources.aertslab.org with no version or digest, which is a lesser instance of the same hazard."
+  },
+
+  "what_is_NOT_wrong": {
+    "current_results": "No result produced by this lane is affected. The running image is fixed and every artefact built from it is reproducible against THAT image.",
+    "mitigation_already_applied": "The tool is pinned by CONTENT digest in V69_CISTARGET_ENGINEERING_REUSE_AUDIT_V1.json, which is stronger than a ref: it identifies the exact bytes that ran.",
+    "aggregate_tool_digest": "25845094fbc2202e5c96add0ea6f984be9950b6c8e7855cd92f0d72c1ae007b4",
+    "key_file_digests": {
+      "create_cistarget_motif_databases.py": "e06e80ba6a128ba5c2f07afbc324660b621cfb7ba9f488fcb3a8b2a24516cb81",
+      "clusterbuster.py": "e16a899829d7959b219173762ca069a0873ff1244b80cb089c7307404909672a",
+      "cistarget_db.py": "5873fbaadcec2006bebf9f6473b1de1068cbdd83ef3fb0e1630ab6b7ca534b13",
+      "convert_motifs_or_tracks_vs_regions_or_genes_scores_to_rankings_cistarget_dbs.py": "0bd6c561d3fb49330885349198cf451322b9635e01429c2d8cdee9b387619c84",
+      "create_fasta_with_padded_bg_from_bed.sh": "1739638242593e5e8305465633c013c89c0ae4daa87ad3ebc1d31654de008921"
+    }
+  },
+
+  "why_the_current_recipe_is_left_untouched": {
+    "reason": "The validated image sha256:520053641b60c03e9bbb219f9f8c630a01cce03569ef45d1d50c807b0d441200 is the execution environment for this lane. Editing docker/scenicplus/Dockerfile would break the correspondence between the recipe in the repository and the image that actually ran, replacing a known-good pairing with a recipe that matches nothing on this machine.",
+    "additional_reason": "That correspondence is already only a RESEMBLANCE, not a proof. V69_SCENICPLUS_EXECUTION_ENVIRONMENT_RECEIPT_V1 records that the image was built from the recipe as UNVERIFIED, because Docker retains no such binding. Editing the recipe would make even the resemblance false.",
+    "rule": "Do not repair a recipe in place when a validated artefact depends on its current text. Add a successor."
+  },
+
+  "recommended_remedy": {
+    "approach": "SUCCESSOR_RECIPE. Leave docker/scenicplus/Dockerfile exactly as it is; add a new recipe alongside it that pins the tool to an exact commit.",
+    "successor_path_suggested": "docker/scenicplus/Dockerfile.successor_pinned",
+    "changes_required": [
+      "Replace ARG CREATE_CISTARGET_DATABASES_REF=master with an exact 40-character commit SHA of aertslab/create_cisTarget_databases.",
+      "Drop --depth 1, or keep it and additionally `git -C /opt/create_cisTarget_databases rev-parse HEAD > /opt/create_cisTarget_databases/COMMIT.txt`, so the image records which commit it carries.",
+      "Pin cbust and liftOver by recording a SHA-256 of each downloaded binary in the image and failing the build if it does not match a declared expected value.",
+      "Emit the aggregate tool content digest at build time so a rebuilt image can be compared against 25845094... directly."
+    ],
+    "how_to_choose_the_commit": "The running image's tool files hash to the digests above. Whoever rebuilds should identify the upstream commit whose file contents match those digests and pin THAT, so the successor recipe reproduces the validated image's tool rather than an arbitrary later master.",
+    "verification_after_rebuild": "Recompute the aggregate digest inside the rebuilt image and require equality with 25845094fbc2202e5c96add0ea6f984be9950b6c8e7855cd92f0d72c1ae007b4. If it differs, the rebuilt image is NOT equivalent to the validated one and anything built with it is a different object."
+  },
+
+  "correspondence_statement_for_the_record": {
+    "running_image": "sha256:520053641b60c03e9bbb219f9f8c630a01cce03569ef45d1d50c807b0d441200",
+    "corresponds_to_recipe": "docker/scenicplus/Dockerfile (sha256 7eb07858f66ce0150b478b9d0d9a0498deea634c063f0d29b34ae4cdb077fce8)",
+    "correspondence_strength": "RESEMBLANCE_ONLY__BUILD_BINDING_UNVERIFIED",
+    "basis_of_the_resemblance": "The running image contains /opt/create_cisTarget_databases, /usr/local/bin/cbust, /usr/local/bin/liftOver, /usr/local/bin/bigWigAverageOverBed and /opt/mallet, which are features of that recipe and not of the published one.",
+    "successor_recipe": "FOR FUTURE REBUILDS ONLY. It does not describe the running image and must not be cited as its provenance.",
+    "why_this_matters": "Without this statement, a later reader finding two recipes would have no way to tell which one the validated image relates to, and might rebuild from the successor and assume equivalence."
+  },
+
+  "who_closes_this": "Whoever next rebuilds the SCENIC+ image. The gap is now closed DELIBERATELY at that moment rather than being inherited silently, which was the point of recording it."
+}
