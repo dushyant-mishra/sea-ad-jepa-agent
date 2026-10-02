@@ -367,20 +367,62 @@ def build(root: Path, seed: int = 7201) -> Path:
         + "\n"
     )
 
-    # Checkpoint twins are behavior manifests, not model bytes; each is tied to a planted failure mode.
+    # Checkpoint twins are real representation/uncertainty outputs, not sentence-only labels.
     checkpoints = observable / "CHECKPOINT_TWIN"
     checkpoints.mkdir()
-    checkpoint_rows = [
-        {"id": "HEALTHY", "variance": 1.0, "source_auc": 0.52, "donor_auc": 0.51, "private_r2": 0.02, "uncertainty_private": 0.85, "manifest_ok": True},
-        {"id": "COLLAPSED", "variance": 0.0001, "source_auc": 0.50, "donor_auc": 0.50, "private_r2": 0.00, "uncertainty_private": 0.90, "manifest_ok": True},
-        {"id": "SOURCE_SHORTCUT", "variance": 0.9, "source_auc": 0.98, "donor_auc": 0.55, "private_r2": 0.03, "uncertainty_private": 0.80, "manifest_ok": True},
-        {"id": "DONOR_SHORTCUT", "variance": 0.9, "source_auc": 0.55, "donor_auc": 0.97, "private_r2": 0.03, "uncertainty_private": 0.80, "manifest_ok": True},
-        {"id": "PRIVATE_STATE_LEAK", "variance": 1.0, "source_auc": 0.53, "donor_auc": 0.54, "private_r2": 0.91, "uncertainty_private": 0.10, "manifest_ok": True},
-        {"id": "OVERCONFIDENT_UNRECOVERABLE", "variance": 1.0, "source_auc": 0.52, "donor_auc": 0.52, "private_r2": 0.05, "uncertainty_private": 0.01, "manifest_ok": True},
-        {"id": "CORRUPT_MANIFEST", "variance": 1.0, "source_auc": 0.52, "donor_auc": 0.52, "private_r2": 0.02, "uncertainty_private": 0.85, "manifest_ok": False},
-    ]
-    (checkpoints / "checkpoint_behaviors.json").write_text(
-        json.dumps({"schema": "V72_CHECKPOINT_TWIN_V1", "checkpoints": checkpoint_rows}, indent=2) + "\n"
+    n_eval = 120
+    src_code = np.array([
+        0.0 if x == "SEA_AD" else 1.0 if x == "NPH52" else 2.0
+        for x in source[:n_eval]
+    ])
+    donor_code = np.array([int(x[1:]) for x in cell_donor[:n_eval]], dtype=float)
+    noise = rng.normal(scale=0.05, size=(n_eval, 2))
+    healthy = np.c_[z_shared[:n_eval, :2], noise]
+    collapsed = np.zeros_like(healthy) + 1e-5
+    source_shortcut = np.c_[src_code * 4.0, src_code ** 2, noise]
+    donor_shortcut = np.c_[donor_code * 1.5, donor_code ** 2 / 10.0, noise]
+    private_leak = np.c_[z_shared[:n_eval, 0], z_shared[:n_eval, 1],
+                         z_private[:n_eval, 0] * 3.0, z_private[:n_eval, 1] * 3.0]
+    overconfident = healthy.copy()
+    corrupt_manifest = healthy.copy()
+    checkpoint_ids = np.array([
+        "HEALTHY", "COLLAPSED", "SOURCE_SHORTCUT", "DONOR_SHORTCUT",
+        "PRIVATE_STATE_LEAK", "OVERCONFIDENT_UNRECOVERABLE", "CORRUPT_MANIFEST"
+    ], dtype="U32")
+    reps = np.stack([
+        healthy, collapsed, source_shortcut, donor_shortcut,
+        private_leak, overconfident, corrupt_manifest
+    ])
+    uncertainty = np.full((len(checkpoint_ids), n_eval), 0.80, dtype=float)
+    uncertainty[5, :] = 0.01
+    np.savez_compressed(
+        checkpoints / "checkpoint_outputs.npz",
+        checkpoint_ids=checkpoint_ids,
+        representations=reps,
+        uncertainty=uncertainty,
+        cell_ids=np.array([f"CELL{i:05d}" for i in range(n_eval)], dtype="U16"),
+    )
+    checkpoint_manifest = {
+        "schema": "V72_CHECKPOINT_TWIN_MANIFEST_V1",
+        "checkpoint_ids": checkpoint_ids.tolist(),
+        "output_file": "checkpoint_outputs.npz",
+        "corrupt_manifest_case": {
+            "checkpoint_id": "CORRUPT_MANIFEST",
+            "declared_output_sha256": "0" * 64,
+            "purpose": "positive control for checkpoint/manifest custody mismatch"
+        },
+        "blind_gate_targets": {
+            "COLLAPSED": "representation variance collapse",
+            "SOURCE_SHORTCUT": "source identity recoverable from representation",
+            "DONOR_SHORTCUT": "donor identity recoverable from representation",
+            "OVERCONFIDENT_UNRECOVERABLE": "near-zero uncertainty despite private state being unavailable"
+        },
+        "unblinded_only_targets": {
+            "PRIVATE_STATE_LEAK": "private latent is linearly recoverable from representation"
+        }
+    }
+    (checkpoints / "checkpoint_manifest.json").write_text(
+        json.dumps(checkpoint_manifest, indent=2) + "\n"
     )
 
     # Observable manifest binds every emitted file after generation.
