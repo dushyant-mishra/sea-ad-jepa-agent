@@ -77,5 +77,10 @@
     "training": "OFF",
     "Morabito": "PROTECTED",
     "recoverability_TEST": "SEALED"
+  },
+  "truth_firewall_execution": {
+    "ordinary_pipeline_validation": "OBSERVABLE_ONLY__MUST_NOT_SCORE_PRIVATE_TRUTH",
+    "final_unblind_audit": "EXPLICIT_MODE_AFTER_SELECTION_FREEZE",
+    "rule": "A validator that can inspect both observables and hidden truth must default to observable-only and require an explicit unblind flag for truth-dependent metrics."
   }
 }
