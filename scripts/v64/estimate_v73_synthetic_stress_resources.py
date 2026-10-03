@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Estimate V73 stress/full synthetic storage and peak working memory."""
+"""Estimate V73 stress/full synthetic storage and peak working memory.
+
+This estimator is deliberately explicit about what is NOT yet priced. Synthetic fragment
+streams, consensus peaks, cisTarget ranking databases and motif/network artifacts are the
+likely dominant future terms and remain separate blockers rather than being hidden inside
+a deceptively small total.
+"""
 from __future__ import annotations
 
 import argparse
@@ -8,29 +14,50 @@ import math
 from pathlib import Path
 
 N_GENES = 96
+N_MULTIOME_RNA = 64
+N_MULTIOME_ATAC = 256
 TRUTH_FLOATS = 14
 TRUTH_FIXED_BYTES_PER_CELL = TRUTH_FLOATS * 4 + 8 + 2 + 1 + 2
 RNA_FIXED_BYTES_PER_CELL = N_GENES * (2 + 1) + 8
+MULTIOME_FIXED_BYTES_PER_CELL = (N_MULTIOME_RNA + N_MULTIOME_ATAC) * 2 + 8 + 2 + 1 + 2
 DEFAULT_METADATA_BYTES_PER_CELL = 58
 
 
 def estimate(n_cells: int, shard_size: int, metadata_bytes_per_cell: int = DEFAULT_METADATA_BYTES_PER_CELL):
     n_shards = math.ceil(n_cells / shard_size)
     truth_payload = n_cells * TRUTH_FIXED_BYTES_PER_CELL
-    observable_payload = n_cells * (RNA_FIXED_BYTES_PER_CELL + metadata_bytes_per_cell)
-    # Working matrix for one FULL104 observer shard: eta/lambda/u float64 plus output counts
-    # and availability, intentionally conservative because temporaries coexist.
-    peak_working = shard_size * N_GENES * (8 + 8 + 8 + 2 + 1)
+    full104_payload = n_cells * (RNA_FIXED_BYTES_PER_CELL + metadata_bytes_per_cell)
+    paired_multiome_payload = n_cells * MULTIOME_FIXED_BYTES_PER_CELL
+    known_payload = truth_payload + full104_payload + paired_multiome_payload
+    # Conservative coexistence of eta/lambda/uniform/output arrays for one shard.
+    full104_peak = shard_size * N_GENES * (8 + 8 + 8 + 2 + 1)
+    multiome_peak = shard_size * (N_MULTIOME_RNA + N_MULTIOME_ATAC) * (8 + 8 + 2)
+    peak_working = max(full104_peak, multiome_peak)
     return dict(
         n_cells=n_cells,
         shard_size=shard_size,
         n_shards=n_shards,
         truth_payload_bytes=truth_payload,
-        full104_observable_payload_bytes=observable_payload,
-        combined_payload_bytes=truth_payload + observable_payload,
+        full104_observable_payload_bytes=full104_payload,
+        paired_multiome_payload_bytes=paired_multiome_payload,
+        known_combined_payload_bytes=known_payload,
+        combined_payload_bytes=known_payload,
         conservative_peak_working_bytes=peak_working,
+        excluded_unestimated_terms=[
+            "synthetic ATAC fragments",
+            "pseudobulk fragment files",
+            "peak calls and consensus region universe",
+            "motif databases and ranking matrices",
+            "cisTarget database outputs",
+            "regulatory network outputs",
+            "perturbation observer",
+            "spatial observer"
+        ],
+        full_ecosystem_total_is_not_yet_estimated=True,
         assumptions=dict(
-            genes=N_GENES,
+            full104_genes=N_GENES,
+            paired_multiome_rna_genes=N_MULTIOME_RNA,
+            paired_multiome_atac_regions=N_MULTIOME_ATAC,
             truth_float32_dimensions=TRUTH_FLOATS,
             counts_dtype="int16",
             availability_dtype="uint8",
@@ -43,21 +70,30 @@ def estimate(n_cells: int, shard_size: int, metadata_bytes_per_cell: int = DEFAU
 
 def measured_bytes(root: Path):
     truth = root / "hidden_truth"
-    obs = root / "observable_raw" / "FULL104_like_sharded"
+    full = root / "observable_raw" / "FULL104_like_sharded"
+    multi = root / "observable_raw" / "PAIRED_MULTIOME_like_sharded"
     tm = json.loads((truth / "TRUTH_MANIFEST.json").read_text())
-    om = json.loads((obs / "FULL104_SHARDED_MANIFEST.json").read_text())
+    fm = json.loads((full / "FULL104_SHARDED_MANIFEST.json").read_text())
     n = int(tm["n_cells"])
     tbytes = sum((truth / s["file"]).stat().st_size for s in tm["shards"])
-    obytes = 0
-    for s in om["shards"]:
-        obytes += (obs / s["rna_file"]).stat().st_size
-        obytes += (obs / s["metadata_file"]).stat().st_size
+    fbytes = 0
+    for s in fm["shards"]:
+        fbytes += (full / s["rna_file"]).stat().st_size
+        fbytes += (full / s["metadata_file"]).stat().st_size
+    mbytes = 0
+    if (multi / "PAIRED_MULTIOME_SHARDED_MANIFEST.json").exists():
+        mm = json.loads((multi / "PAIRED_MULTIOME_SHARDED_MANIFEST.json").read_text())
+        mbytes = sum((multi / s["file"]).stat().st_size for s in mm["shards"])
     return dict(
         n_cells=n,
         truth_file_bytes=tbytes,
-        observable_file_bytes=obytes,
+        full104_observable_file_bytes=fbytes,
+        paired_multiome_file_bytes=mbytes,
+        known_total_file_bytes=tbytes + fbytes + mbytes,
         truth_bytes_per_cell=tbytes / n,
-        observable_bytes_per_cell=obytes / n,
+        full104_observable_bytes_per_cell=fbytes / n,
+        paired_multiome_bytes_per_cell=mbytes / n,
+        known_total_bytes_per_cell=(tbytes + fbytes + mbytes) / n,
     )
 
 
@@ -69,14 +105,14 @@ def main():
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     out = dict(
-        schema="V73_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V1",
+        schema="V73_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V2_COUPLED_MULTIOME",
         estimate=estimate(a.cells, a.shard_size),
     )
     if a.measure_root:
         out["measured"] = measured_bytes(Path(a.measure_root))
         out["measurement_scope"] = (
-            "actual serialized truth + FULL104-like observer only; used to calibrate the "
-            "analytical estimate before 1e5-cell promotion"
+            "actual serialized master truth + FULL104-like RNA + paired multiome only; "
+            "fragment/peak/motif/network terms remain explicitly unestimated"
         )
     text = json.dumps(out, indent=2) + "\n"
     if a.out:
