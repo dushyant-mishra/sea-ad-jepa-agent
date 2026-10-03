@@ -136,6 +136,34 @@ question.
 Any downstream artifact carrying these regions must carry the label with them. Collapsing
 `EXCLUDED_BY_POLICY` into zero would turn a policy decision into a biological claim.
 
+### The rule is not my invention — it is the one Route B's own toolchain applies
+
+The `ANY_OVERLAP` rule was checked against what pycisTopic actually does, not assumed.
+In the container image, both
+`pycisTopic/iterative_peak_calling.py:145` and `pycisTopic/cistopic_class.py:579` call
+
+```python
+regions.overlap(blacklist, invert=True)
+```
+
+pyranges `.overlap(..., invert=True)` keeps only intervals with **no** overlap — it
+drops the whole interval on any shared base pair. That is exactly the rule frozen here.
+Had the two differed, Route A and Route B would have been excluded by different rules
+and the comparison would have been reconfounded.
+
+**Two independent implementations agree exactly.** The attrition was recomputed inside
+the container with the identical pyranges call, from the same two SHA-pinned files:
+
+| | my interval code | pyranges 0.0.111 `overlap(invert=True)` |
+|---|---:|---:|
+| regions dropped | 263 | 263 |
+| bp dropped | 211,953 | 211,953 |
+| regions kept | 150,298 | 150,298 |
+| bp kept | 125,930,942 | 125,930,942 |
+
+Receipt: `receipts/V74_LANEE_PYRANGES_CROSSCHECK_V1.json`. A producer agreeing with
+itself is not evidence; two implementations agreeing is.
+
 ## 5. The amendment applies to BOTH routes — this is not optional
 
 Amendment 1 exists so that the **region universe is the single varying factor** between
