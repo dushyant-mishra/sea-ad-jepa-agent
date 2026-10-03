@@ -43,13 +43,14 @@ def build_ci_world(tmp_path):
     return root, rr
 
 
-def test_current_placeholders_fail_closed_for_100k(tmp_path, monkeypatch):
+def test_current_placeholders_and_missing_empirical_authority_fail_closed_for_100k(tmp_path, monkeypatch):
     V = load(GATE, "v73_gate")
     monkeypatch.chdir(ROOT)
     root, rr = build_ci_world(tmp_path)
     out = V.validate(root, rr)
     assert out["status"] == "BLOCKED"
     assert out["authorized_scale"] == "CI_ONLY"
+    assert "FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_MISSING" in out["blockers"]
     assert "DONOR_STRUCTURE_NOT_QUALIFIED" in out["blockers"]
     assert "SOURCE_OPERATOR_STRUCTURE_NOT_QUALIFIED" in out["blockers"]
     assert out["checks"]["source_counts_match_across_observers"] is True
@@ -79,3 +80,21 @@ def test_gate_requires_resource_receipt_even_when_architecture_exists(tmp_path, 
     out = V.validate(root, None)
     assert out["status"] == "BLOCKED"
     assert "RESOURCE_RECEIPT_NOT_SUPPLIED" in out["blockers"]
+
+
+def test_invalid_empirical_authority_does_not_open_gate(tmp_path, monkeypatch):
+    V = load(GATE, "v73_gate_bad_authority")
+    monkeypatch.chdir(ROOT)
+    root, rr = build_ci_world(tmp_path)
+    bad = tmp_path / "bad_authority.json"
+    bad.write_text(json.dumps({
+        "status": "QUALIFIED_AGGREGATE_AUTHORITY",
+        "population": {"n_cells": 1, "n_donors": 104, "n_operators": 42, "n_groups": 1400,
+                       "source_counts": V.EXPECTED_SOURCES},
+        "cell_level_data_exported": False,
+        "real_correspondence_opened": False,
+        "recoverability_TEST_opened": False,
+    }))
+    out = V.validate(root, rr, bad)
+    assert out["status"] == "BLOCKED"
+    assert "FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_INVALID" in out["blockers"]
