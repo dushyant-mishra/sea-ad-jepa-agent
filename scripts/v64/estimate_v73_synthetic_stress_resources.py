@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Estimate V73 stress/full synthetic storage and peak working memory.
 
-This estimator is deliberately explicit about what is NOT yet priced. Synthetic fragment
-streams, consensus peaks, cisTarget ranking databases and motif/network artifacts are the
-likely dominant future terms and remain separate blockers rather than being hidden inside
-a deceptively small total.
+The analytical core covers master truth, FULL104-like RNA and paired multiome matrices.
+When a measured smoke root is supplied, deterministic synthetic fragment storage is also
+measured and projected by observed bytes/cell. Peak/consensus/motif/network products stay
+explicitly outside the total until they have their own measured calibration.
 """
 from __future__ import annotations
 
@@ -29,7 +29,6 @@ def estimate(n_cells: int, shard_size: int, metadata_bytes_per_cell: int = DEFAU
     full104_payload = n_cells * (RNA_FIXED_BYTES_PER_CELL + metadata_bytes_per_cell)
     paired_multiome_payload = n_cells * MULTIOME_FIXED_BYTES_PER_CELL
     known_payload = truth_payload + full104_payload + paired_multiome_payload
-    # Conservative coexistence of eta/lambda/uniform/output arrays for one shard.
     full104_peak = shard_size * N_GENES * (8 + 8 + 8 + 2 + 1)
     multiome_peak = shard_size * (N_MULTIOME_RNA + N_MULTIOME_ATAC) * (8 + 8 + 2)
     peak_working = max(full104_peak, multiome_peak)
@@ -43,8 +42,8 @@ def estimate(n_cells: int, shard_size: int, metadata_bytes_per_cell: int = DEFAU
         known_combined_payload_bytes=known_payload,
         combined_payload_bytes=known_payload,
         conservative_peak_working_bytes=peak_working,
+        fragment_projection_requires_measured_calibration=True,
         excluded_unestimated_terms=[
-            "synthetic ATAC fragments",
             "pseudobulk fragment files",
             "peak calls and consensus region universe",
             "motif databases and ranking matrices",
@@ -72,6 +71,7 @@ def measured_bytes(root: Path):
     truth = root / "hidden_truth"
     full = root / "observable_raw" / "FULL104_like_sharded"
     multi = root / "observable_raw" / "PAIRED_MULTIOME_like_sharded"
+    frag = root / "observable_raw" / "PAIRED_MULTIOME_fragments"
     tm = json.loads((truth / "TRUTH_MANIFEST.json").read_text())
     fm = json.loads((full / "FULL104_SHARDED_MANIFEST.json").read_text())
     n = int(tm["n_cells"])
@@ -84,16 +84,29 @@ def measured_bytes(root: Path):
     if (multi / "PAIRED_MULTIOME_SHARDED_MANIFEST.json").exists():
         mm = json.loads((multi / "PAIRED_MULTIOME_SHARDED_MANIFEST.json").read_text())
         mbytes = sum((multi / s["file"]).stat().st_size for s in mm["shards"])
+    gbytes = grows = gmult = 0
+    if (frag / "SYNTHETIC_FRAGMENT_MANIFEST.json").exists():
+        gm = json.loads((frag / "SYNTHETIC_FRAGMENT_MANIFEST.json").read_text())
+        gbytes = sum((frag / s["file"]).stat().st_size for s in gm["shards"])
+        grows = int(gm["total_rows"])
+        gmult = int(gm["total_multiplicity"])
+    total = tbytes + fbytes + mbytes + gbytes
     return dict(
         n_cells=n,
         truth_file_bytes=tbytes,
         full104_observable_file_bytes=fbytes,
         paired_multiome_file_bytes=mbytes,
-        known_total_file_bytes=tbytes + fbytes + mbytes,
+        fragment_file_bytes=gbytes,
+        fragment_rows=grows,
+        fragment_multiplicity=gmult,
+        known_total_file_bytes=total,
         truth_bytes_per_cell=tbytes / n,
         full104_observable_bytes_per_cell=fbytes / n,
         paired_multiome_bytes_per_cell=mbytes / n,
-        known_total_bytes_per_cell=(tbytes + fbytes + mbytes) / n,
+        fragment_bytes_per_cell=gbytes / n,
+        fragment_rows_per_cell=grows / n,
+        fragment_multiplicity_per_cell=gmult / n,
+        known_total_bytes_per_cell=total / n,
     )
 
 
@@ -104,15 +117,27 @@ def main():
     ap.add_argument("--measure-root", default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
+    est = estimate(a.cells, a.shard_size)
     out = dict(
-        schema="V73_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V2_COUPLED_MULTIOME",
-        estimate=estimate(a.cells, a.shard_size),
+        schema="V73_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V3_COUPLED_FRAGMENTS",
+        estimate=est,
     )
     if a.measure_root:
-        out["measured"] = measured_bytes(Path(a.measure_root))
+        measured = measured_bytes(Path(a.measure_root))
+        out["measured"] = measured
+        projected_frag = int(round(measured["fragment_bytes_per_cell"] * a.cells))
+        out["calibrated_projection"] = dict(
+            fragment_bytes_at_requested_cells=projected_frag,
+            known_matrices_plus_fragments_bytes=(
+                est["known_combined_payload_bytes"] + projected_frag
+            ),
+            calibration_cells=measured["n_cells"],
+            calibration_is_ci_scale_only=True,
+            requires_100k_measurement_before_500k_promotion=True,
+        )
         out["measurement_scope"] = (
-            "actual serialized master truth + FULL104-like RNA + paired multiome only; "
-            "fragment/peak/motif/network terms remain explicitly unestimated"
+            "actual serialized master truth + FULL104-like RNA + paired multiome + "
+            "deterministic synthetic fragments; peak/motif/network terms remain unestimated"
         )
     text = json.dumps(out, indent=2) + "\n"
     if a.out:
