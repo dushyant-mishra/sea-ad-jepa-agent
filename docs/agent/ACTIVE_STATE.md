@@ -370,3 +370,67 @@ REAL ENCODER/EMA OPTIMIZER UPDATES: NOT YET AUTHORIZED.
 # Permanent governance overlay — 2026-09-03
 
 `MANDATORY_IMPLEMENTATION_VERIFIER_V1` applies project-wide. Current F1 repair remains the active scientific gate; no expensive benchmark may run until the independent implementation verifier passes.
+
+# V64 / V67 / V73 / V74 — Stage-4 executor and external regulatory lane — 2026-10-02
+
+This section closes a four-week gap. Everything above predates the Stage-4 executor.
+
+## Governance, current
+`Stage 4: NOT AUTHORIZED` · `real correspondence: UNOPENED` · `training: OFF` ·
+`multimodal training: OFF` · `Morabito: PROTECTED` · `recoverability TEST: SEALED` ·
+`S102: OPEN`. No correspondence value has been computed on real data at any point.
+
+## Stage-4 executor — implemented, qualified, not authorised
+Branch `claude/v64-exact-sampler-successor-20260930`. The executor is bound to one
+canonical authority path, verifies the bytes of every input the authority binds in both
+directions, and refuses real execution: with a correctly formed authorisation present it
+still stops, because this build contains no authorised-execution path. All five frozen
+PASS criteria are implemented. G17 (never reopen the RNA/ATAC matrices) is proved both
+statically and executably, each proof carrying a control showing it can fail. 29 anti-bypass
+attacks fail closed.
+
+## The two results that constrain what Stage 4 can ever claim
+1. **S102 — the G2 gate is unspecified by the contract.** The contract says only that the
+   control-versus-control contrast must not show excess; it names no test, statistic, alpha,
+   confidence level or margin. The executor implements a two-sided 95% bootstrap interval
+   containing zero, which was an executor choice, and which gets STRICTER as donors
+   accumulate. Owner decision 2026-10-02: G2 becomes a magnitude/equivalence question, not a
+   null-significance gate. Successor designed at `results/v74/V74_G2_CONTINUOUS_SUCCESSOR_CONTRACT_V1.json`,
+   frozen `NOT_IN_FORCE` with the deciding margin UNSET. Verdict: **no defensible ABSOLUTE
+   margin exists** — every external scale available is a precision scale that shrinks with
+   donors, so adopting one reintroduces the defect. One relative margin is derivable, f = 1.
+2. **The structural identifiability argument.** A completely edge-private latent factor
+   loading on both RNA and ATAC can be observationally indistinguishable from a regulatory
+   latent under this observation model. This is a CONCEPTUAL argument, never an empirical
+   result. Do not inflate it; do not attribute it to any curve.
+
+## Retracted — do not cite
+`V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json` used a generator that sampled confound blocks
+WITH REPLACEMENT, so requested K was only a factor-pool size: at K=200 over 200 edges the
+realised occupancy averages 126.6. Its structural conclusions are withdrawn. The artifact is
+preserved, annotated in place with its pre-annotation digest `86c6f08c` recorded inside.
+The repaired exact-K experiment `V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json`
+produced a NON-MONOTONE curve (0.20, 0.25, 0.40, 0.65, 0.50); by its pre-committed reading
+**no protection claim may be made in either direction**. That experiment is COMPLETE AND
+CLOSED — no reruns, no added draws, no reinterpretation.
+
+## Known limit of the synthetic corpus
+Every planted signal in all four world families goes to `edge_linked_iv[e]`; there are ZERO
+writes to either control interval. No world plants a control-A versus control-B asymmetry,
+so the corpus can measure only the FALSE-ALARM half of any G2 candidate. No claim about G2's
+detection power currently rests on evidence.
+
+## SCENIC+ external regulatory lane
+Branch `claude/v69-scenicplus-external-network-20261001`. GSE214979 substrate authenticated
+including the 63.6 GB fragment file (`b7c5aa2d…`, 63,641,120,882 bytes, independently
+re-hashed). Route-B fragment QC complete over 5,831,261,753 records, 12/12 donors passing.
+Cohort frozen pathology-blind and blindness demonstrated by digest invariance under label
+flips. cisTarget scaling measured: 8 workers optimal; union motif-region SCORES are provably
+reusable across routes while RANKINGS are not. **No regulatory network exists on either
+route.** That remains the project's missing deliverable.
+
+## Standing engineering rules earned the hard way
+An executing script is immutable — launch long jobs from a snapshot outside the worktree.
+Write a receipt's verdict BEFORE dumping it to disk. Never declare an artifact missing from a
+filtered search; use an exhaustive listing and state the scope. Retracting a claim in one
+block of an artifact does not retract it from the rest of that artifact.
