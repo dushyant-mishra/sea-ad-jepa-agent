@@ -8,6 +8,7 @@ on:
       - 'scripts/v64/build_v73_sharded_master_truth.py'
       - 'scripts/v64/build_v73_full104_sharded_observer.py'
       - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
+      - 'scripts/v64/build_v73_synthetic_fragments.py'
       - 'scripts/v64/estimate_v73_synthetic_stress_resources.py'
       - 'tests/test_v73_synthetic_stress_twin.py'
       - '.github/workflows/v73-synthetic-stress-twin.yml'
@@ -30,8 +31,9 @@ jobs:
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
+          python -m py_compile scripts/v64/build_v73_synthetic_fragments.py
           python -m py_compile scripts/v64/estimate_v73_synthetic_stress_resources.py
-      - name: Run shard-invariance, source-composition, multiome and resource tests
+      - name: Run shard-invariance, source-composition, multiome, fragment and resource tests
         run: pytest -q tests/test_v73_synthetic_stress_twin.py
       - name: Build a 2000-cell coupled sharded smoke twin
         run: |
@@ -39,4 +41,5 @@ jobs:
           python scripts/v64/build_v73_sharded_master_truth.py --root /tmp/v73_stress_smoke --cells 2000 --shard-size 333 --seed 7302
           python scripts/v64/build_v73_full104_sharded_observer.py --root /tmp/v73_stress_smoke --seed 7302
           python scripts/v64/build_v73_paired_multiome_sharded_observer.py --root /tmp/v73_stress_smoke --seed 7302
+          python scripts/v64/build_v73_synthetic_fragments.py --root /tmp/v73_stress_smoke
           python scripts/v64/estimate_v73_synthetic_stress_resources.py --cells 100000 --shard-size 10000 --measure-root /tmp/v73_stress_smoke --out /tmp/v73_resource.json
