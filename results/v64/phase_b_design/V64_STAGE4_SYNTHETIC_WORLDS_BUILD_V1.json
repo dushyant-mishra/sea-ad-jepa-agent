@@ -11,7 +11,7 @@
   "seed_base": 20260929,
   "eligible_donors_configured": 60,
   "is_canonical_build": true,
-  "producer_sha256": "ba2d334f6993c536b11b4556b2323124721d614ef5f2644580f089f699ab1724",
+  "producer_sha256": "6a65ffecf9be22b4c7be47cd27f68b387917b0edfd3b24e50d9e67037ffb11cb",
   "manifests": {
     "BIOLOGY_POSITIVE": {
       "PHASE_B_SUBSTRATE_s00.npz": "0b9da294cad0df863688af45bbb993bf82af0f6dd52e8671da916c599f98589b",
