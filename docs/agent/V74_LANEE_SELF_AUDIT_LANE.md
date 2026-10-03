@@ -138,3 +138,64 @@ first.
 
 **Status: CLOSED**, and it is the reason Task 3 exists: a receipt with two statuses
 makes every downstream reader's answer depend on reading order.
+
+## S36 — I built a contention argument on an assumed 800% CPU ceiling that turned out to be false (CAUGHT BY MY OWN FOLLOW-UP MEASUREMENT)
+
+When the 512-motif pilot came in 26 % above the extrapolated per-motif cost, I reasoned:
+the container averaged ~635 % CPU; at 8 workers the ceiling is 800 %; so the predicted
+slowdown is 800/635 = 1.26, which matches the observed 1.263 almost exactly. I treated
+that agreement as a quantitative diagnosis.
+
+**The 800 % ceiling was an assumption, not a measurement, and it is wrong.** On this
+host, with every other lane held and only my container running, 8 workers achieve a
+median of **666.7 %**, not 800 %. The contended pilot achieved **647.9 %**. The real
+CPU-share deficit was therefore about **3 %**, not 26 %, and contention explains almost
+none of the overage.
+
+The agreement to three significant figures was a coincidence produced by a wrong
+denominator. It was persuasive precisely because it was numerically tight, which is what
+makes this failure mode dangerous.
+
+**What found it:** running the quiet-machine reference as a measurement instead of
+assuming it. The real cause turned out to be motif composition (see the composition
+finding), which I would have missed entirely had the contention story been allowed to
+stand.
+
+**Status: CLOSED.** The erroneous reasoning never reached a receipt. It is recorded here
+because it was my own, and because the lesson — a theoretical ceiling is not a
+measurement, however well the arithmetic lands — generalises.
+
+## S37 — The obvious contention statistic fires on a verifiably quiet machine (CAUGHT BEFORE A THRESHOLD WAS FROZEN)
+
+The natural quiet-machine test is: host CPU load minus the share attributable to this
+container; whatever remains is somebody else. Measured on this host with every lane held
+and one container running, that statistic reads about **40 points of "unexplained" load
+at zero contention**.
+
+The cause is the hardware: 8 physical cores, 16 logical processors. Eight single-threaded
+workers get spread across the logical processors, and Windows `Win32_Processor
+LoadPercentage` counts far more than eight of them as non-idle, so it runs well above the
+container's actual share.
+
+A gate built on it would either fire constantly or have to be loosened until it meant
+nothing. It also means the reading "305 of 307 samples showed more than 15 points
+unexplained" does not, on its own, establish that the pilot was contended — the same
+statistic produces that result on a quiet machine.
+
+**Fix:** the v2 shard driver tests three calibrated things instead — other containers
+from `docker ps`; the container's achieved CPU share against a **measured** quiet-machine
+reference rather than a theoretical ceiling; and non-Docker host CPU-seconds consumed
+over the run. `LoadPercentage` is still recorded, explicitly labelled as context and not
+as the test. **Status: CLOSED**, and caught before any threshold was frozen.
+
+## S38 — My own earlier framing of S30 was too generous to the contention explanation (AMENDED)
+
+S30 said the contended pilot was "a valid upper bound" and that contention could only
+inflate. Both statements remain true. But S30 also implied that contention was the likely
+explanation for the overage, and S36 shows it was not. The upper-bound argument was sound;
+the attribution attached to it was not.
+
+S30 is amended rather than rewritten: its reasoning about one-sided bounds stands, its
+implied diagnosis is withdrawn, and S36 carries the correction. **Status of S30: still
+OPEN** on its original terms — a like-for-like quiet 512-motif point is being measured —
+with the attribution error now recorded separately.
