@@ -21,6 +21,7 @@ on:
       - 'scripts/v64/build_v73_full104_empirical_calibration_authority.py'
       - 'scripts/v64/validate_v73_real_vs_synthetic_calibration.py'
       - 'scripts/v64/validate_v73_stress_promotion_readiness.py'
+      - 'tests/test_v73_population_geometry_authority.py'
       - 'tests/test_v73_synthetic_stress_twin.py'
       - 'tests/test_v73_full104_empirical_calibration.py'
       - 'tests/test_v73_real_vs_synthetic_calibration.py'
@@ -52,6 +53,7 @@ jobs:
           python -m py_compile scripts/v64/validate_v73_stress_promotion_readiness.py
       - name: Run shard-invariance and empirical-calibration tests
         run: |
+          pytest -q tests/test_v73_population_geometry_authority.py
           pytest -q tests/test_v73_synthetic_stress_twin.py
           pytest -q tests/test_v73_full104_empirical_calibration.py
           pytest -q tests/test_v73_real_vs_synthetic_calibration.py
