@@ -30,6 +30,22 @@ def sha256_file(path:Path,chunk:int=1<<20):
     return h.hexdigest()
 
 
+def poisson_from_uniform(lam,u,max_k=80):
+    """Backward-compatible stateless Poisson sampler used by paired-multiome V73.
+
+    The calibrated FULL104 observer no longer uses this helper, but the existing paired
+    multiome observer imports it. Keep semantics unchanged so the V74 RNA calibration
+    repair does not alter paired-multiome science.
+    """
+    lam=np.asarray(lam,dtype=np.float64); u=np.asarray(u,dtype=np.float64)
+    pmf=np.exp(-lam); cdf=pmf.copy(); out=np.zeros(lam.shape,dtype=np.int16); active=u>cdf
+    for k in range(1,max_k+1):
+        if not active.any(): break
+        pmf=pmf*lam/float(k); cdf+=pmf; hit=active&(u<=cdf); out[hit]=k; active&=~hit
+    out[active]=max_k
+    return out
+
+
 def weights(seed):
     gid=np.arange(N_GENES,dtype=np.uint64)
     return np.stack([T.normal(seed+100,gid,200+j) for j in range(9)],axis=0).astype(np.float32)*np.float32(.22)
@@ -77,8 +93,6 @@ def empirical_targets(ids,op,avail,qc_by_op,operator_ids,qprobs,seed):
         projected_detected[ix]=detected_full[ix]*avail_n[ix]/measured
     panel_count=np.maximum(0,np.rint(projected_depth).astype(np.int64))
     panel_detected=np.clip(np.rint(projected_detected).astype(np.int64),0,avail_n.astype(np.int64))
-    # Physical consistency: positive panel depth requires at least one measured feature;
-    # total molecule count cannot be smaller than detected-feature count.
     panel_detected=np.where((panel_count>0)&(panel_detected==0)&(avail_n>0),1,panel_detected)
     panel_count=np.maximum(panel_count,panel_detected)
     return lib,detected_full,zero_full,projected_depth,projected_detected,panel_count,panel_detected
