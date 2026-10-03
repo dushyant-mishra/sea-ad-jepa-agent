@@ -61,6 +61,19 @@ for a wrong input to produce a normal-looking output.
       computed the excluded set as "cohort barcodes not in the passing set", which
       silently merged `measured and failed` with `never measured`. Absence from the QC
       table is now its own named fail-closed state.
+
+  C5. THE PER-CELL QC VERDICTS INHERITED AN UNVERIFIED PROVENANCE. Repairing C1 in this
+      producer alone would still leave the per-cell QC table resting on a scan whose
+      input bytes were never digested -- V69_ROUTEB_FRAGMENT_QC_V1 copied its
+      `fragments_sha256` from the acquisition receipt exactly as this producer did.
+      Requiring those two copied assertions to be equal proves only that two fields
+      agree, not that either scan read the authenticated bytes.
+
+      So this producer now RE-COUNTS fragments per cohort barcode inside the verified
+      pass and requires exact agreement with the QC table, cell by cell. Agreement
+      retroactively binds the QC table to bytes this run digested; any disagreement
+      fails closed. The cost is one dictionary lookup per record and one integer per
+      cohort cell.
 """
 from __future__ import annotations
 
@@ -79,8 +92,8 @@ from v69_barcode_identity import (  # noqa: E402
     BarcodeIdentityError, assert_donor_map_is_not_suffix_derived,
     audit_barcode_authority_frame)
 from v69_custody import (  # noqa: E402
-    UNVERIFIED_PARTIAL, CustodyError, HashingReader, StagedOutputDir, bind_file,
-    sha256_file)
+    UNMEASURED, UNVERIFIED_PARTIAL, CustodyError, HashingReader, StagedOutputDir,
+    bind_file, sha256_file)
 
 MIN_UNIQUE_FRAGMENTS_PER_BARCODE = 1000   # frozen, SECTION_2
 
@@ -245,6 +258,13 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
     if not keep:
         raise FailClosed("FAIL__NO_CELLS_SURVIVE_QC")
 
+    # One lookup per fragment record serves three purposes: pseudobulk routing, the
+    # out-of-cohort / failed-QC split, and the C5 re-count. The third element is the
+    # QC verdict, so a cohort cell that FAILED QC is still counted here -- the re-check
+    # covers every cohort cell, not only the surviving ones.
+    cohort = {b: (barcode_to_donor[b], barcode_to_sub[b], b in passing)
+              for b in barcode_to_donor}
+
     # ---- C1: stream, digesting the bytes actually consumed ------------------------
     staged = StagedOutputDir(out_dir)
     stage_dir = staged.open()
@@ -254,7 +274,8 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
         handles[key] = open(stage_dir / f"PSEUDOBULK_{key}.bed", "w", newline="\n")
 
     partial = bool(max_records)
-    n_records = n_in = n_out = 0
+    n_records = n_in = n_out_of_cohort = n_failed_qc = 0
+    recount = Counter()
     reader = HashingReader(fragments)
     try:
         with gzip.GzipFile(fileobj=reader, mode="rb") as gz:
@@ -266,14 +287,18 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
                 if len(f) < 4:
                     continue
                 n_records += 1
-                meta = keep.get(f[3])
+                meta = cohort.get(f[3])
                 if meta is None:
-                    n_out += 1
+                    n_out_of_cohort += 1
                 else:
-                    key = f"{meta[0]}__{meta[1]}"
-                    handles[key].write(f"{f[0]}\t{f[1]}\t{f[2]}\n")
-                    counts[key] += 1
-                    n_in += 1
+                    recount[f[3]] += 1
+                    if meta[2]:
+                        key = f"{meta[0]}__{meta[1]}"
+                        handles[key].write(f"{f[0]}\t{f[1]}\t{f[2]}\n")
+                        counts[key] += 1
+                        n_in += 1
+                    else:
+                        n_failed_qc += 1
                 if max_records and n_records >= max_records:
                     break
         if not partial:
@@ -331,6 +356,48 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
             "file_bytes": observed_bytes,
         }
 
+    # ---- C5: re-derive the per-cell QC counts from the bytes this run digested ----
+    if partial:
+        qc_recount = {
+            "performed": False,
+            "why_not": ("A partial scan cannot reproduce whole-file per-cell counts, "
+                        "so this run does not bind the QC table to verified bytes."),
+            "n_cells_compared": 0,
+            "n_cells_disagreeing": UNMEASURED,
+        }
+    else:
+        declared = dict(zip(qc_tbl["barcode"],
+                            qc_tbl["n_fragments"].astype("int64").tolist()))
+        disagree = {}
+        for bcode in barcode_to_donor:
+            d, o = int(declared[bcode]), int(recount.get(bcode, 0))
+            if d != o:
+                disagree[bcode] = {"qc_table": d, "verified_pass": o}
+        if disagree:
+            q = staged.quarantine_failed()
+            raise FailClosed(
+                "FAIL__QC_TABLE_FRAGMENT_COUNTS_DISAGREE_WITH_THE_VERIFIED_PASS",
+                n_cells_compared=len(barcode_to_donor),
+                n_cells_disagreeing=len(disagree),
+                examples=dict(sorted(disagree.items())[:10]),
+                quarantined_outputs=q,
+                note=("The QC table was produced by a scan whose input bytes were "
+                      "never digested. This pass digested its input and re-counted; "
+                      "the two disagree, so the per-cell QC verdicts cannot be "
+                      "trusted and no pseudobulk may be built from them."))
+        qc_recount = {
+            "performed": True,
+            "what_it_establishes": (
+                "The per-cell fragment counts in V69_ROUTEB_FRAGMENT_QC_V1 were "
+                "re-derived from the bytes THIS run digested and agree exactly. That "
+                "retroactively binds the QC table -- whose own receipt copied its "
+                "fragments_sha256 from the acquisition receipt rather than measuring "
+                "it -- to the authenticated fragment bytes."),
+            "n_cells_compared": len(barcode_to_donor),
+            "n_cells_disagreeing": 0,
+            "total_cohort_fragments_in_verified_pass": int(sum(recount.values())),
+        }
+
     out_dir = staged.promote()
 
     # Re-read each output from disk; the recorded state describes files, not memory.
@@ -369,7 +436,11 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
         "qc_table_audit": qc_table_audit,
         "records_scanned": n_records,
         "records_written_to_a_pseudobulk": n_in,
-        "records_discarded_out_of_cohort_or_failing_qc": n_out,
+        "records_discarded_out_of_cohort": n_out_of_cohort,
+        "records_discarded_because_the_cell_failed_qc": n_failed_qc,
+        "records_discarded_out_of_cohort_or_failing_qc": n_out_of_cohort + n_failed_qc,
+        "discard_split_note": ("V69 reported a single conflated discard count. Out-of-cohort and failed-QC are different facts about different cells and are now reported separately."),
+        "qc_table_recount": qc_recount,
         "pseudobulk_unit": "donor x published microglial subcluster (frozen SECTION_2)",
         "donor_identity_guard": guard,
         "cell_qc": {
@@ -379,6 +450,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
             "n_cells_used": len(keep),
             "n_cells_excluded_by_qc": len(excluded),
             "n_cells_with_no_qc_verdict": 0,
+            "qc_counts_rederived_from_the_verified_pass": qc_recount["performed"],
             "semantics": ("Excluded cells are recorded, not silently dropped. They are "
                           "QC exclusions, not biological absences. A cohort cell with "
                           "no row in the QC table is a separate fail-closed state and "

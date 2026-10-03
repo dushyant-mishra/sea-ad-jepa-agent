@@ -88,6 +88,14 @@ def m_disable_empty_consensus_guard(root: Path) -> None:
         "    n = 0 if cdf is None else int(len(cdf))\n    if False:")
 
 
+def m_disable_qc_recount_check(root: Path) -> None:
+    nl = chr(10)
+    _replace_once(
+        root, EXTRACT,
+        "        if disagree:" + nl + "            q = staged.quarantine_failed()",
+        "        if False:" + nl + "            q = staged.quarantine_failed()")
+
+
 MUTATIONS = [
     {
         "id": "M1_DISABLE_DIGEST_COMPARISON",
@@ -134,6 +142,16 @@ MUTATIONS = [
         "apply": m_restore_v69_absent_qc_row_as_failure,
         "must_fail": [
             "test_a_cohort_cell_with_no_qc_row_is_not_treated_as_a_qc_failure",
+        ],
+    },
+    {
+        "id": "M6_DISABLE_QC_RECOUNT_CHECK",
+        "repair_removed": "REPAIR_1_EXTENDED_QC_TABLE_BOUND_TO_VERIFIED_BYTES",
+        "what_it_undoes": ("the per-cell QC counts are trusted instead of re-derived "
+                           "from the bytes this run digested"),
+        "apply": m_disable_qc_recount_check,
+        "must_fail": [
+            "test_qc_counts_that_disagree_with_the_verified_pass_fail_closed",
         ],
     },
     {

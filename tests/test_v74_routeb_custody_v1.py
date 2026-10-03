@@ -72,11 +72,16 @@ ROWS = [
 ]
 FAILING_QC_BARCODE = "AAAD-6"
 
+# The per-cell fragment counts the fixture actually writes. The QC table declares these
+# same numbers, so the producer's re-count from the digested bytes agrees -- which is
+# what makes the disagreement test below a real mutation rather than a broken fixture.
+N_FRAGMENTS = {"AAAA-5": 5, "AAAB-5": 5, "AAAC-6": 5, FAILING_QC_BARCODE: 2}
+
 
 def _write_fragments(path: Path) -> None:
     lines = []
     for bc, _d, _s in ROWS:
-        for i in range(5):
+        for i in range(N_FRAGMENTS.get(bc, 5)):
             lines.append("chr1\t%d\t%d\t%s\t1" % (1000 + i * 10, 1050 + i * 10, bc))
     lines.append("chr1\t9000\t9050\tNOT_A_COHORT_BARCODE-99\t1")
     with gzip.GzipFile(filename=str(path), mode="wb", mtime=1) as gz:
@@ -96,8 +101,8 @@ def build_universe(tmp: Path, rows=None, qc_rows=None) -> dict:
         bc_csv, index=False)
 
     if qc_rows is None:
-        qc_rows = [(b, d, 5 if b != FAILING_QC_BARCODE else 0,
-                    b != FAILING_QC_BARCODE) for b, d, _s in rows]
+        qc_rows = [(b, d, N_FRAGMENTS.get(b, 5), b != FAILING_QC_BARCODE)
+                   for b, d, _s in rows]
     qc_csv = tmp / "qc_per_barcode.csv.gz"
     pd.DataFrame(qc_rows,
                  columns=["barcode", "donor", "n_fragments",
@@ -175,7 +180,14 @@ def test_positive_control_a_clean_universe_passes_and_verifies_the_bytes(tmp_pat
     assert r["cell_qc"]["n_cells_excluded_by_qc"] == 1
     assert r["cell_qc"]["n_cells_with_no_qc_verdict"] == 0
     assert r["records_written_to_a_pseudobulk"] == 15
-    assert r["records_discarded_out_of_cohort_or_failing_qc"] == 6
+    assert r["records_discarded_out_of_cohort"] == 1
+    assert r["records_discarded_because_the_cell_failed_qc"] == 2
+    assert r["records_discarded_out_of_cohort_or_failing_qc"] == 3
+    # C5: the QC table re-derived from the bytes this run digested
+    rc = r["qc_table_recount"]
+    assert rc["performed"] is True
+    assert rc["n_cells_compared"] == 4 and rc["n_cells_disagreeing"] == 0
+    assert rc["total_cohort_fragments_in_verified_pass"] == 17
     # every input bound by content, not by path
     for key in ("producer", "barcode_identity_module", "custody_module",
                 "fragments_acquisition_receipt", "routeb_qc_receipt",
@@ -207,8 +219,9 @@ def test_same_size_different_bytes_is_refused(tmp_path):
     b[4] ^= 0xFF                      # gzip header MTIME: not covered by the CRC
     u["fragments"].write_bytes(bytes(b))
     assert u["fragments"].stat().st_size == before_len, "the size must be unchanged"
-    with gzip.open(u["fragments"], "rb") as gz:         # still perfectly readable
-        assert gz.read().count(b"\n") == 21
+    expected_records = sum(N_FRAGMENTS.values()) + 1   # + out-of-cohort record
+    with gzip.open(u["fragments"], "rb") as gz:        # still perfectly readable
+        assert gz.read().count(b"\n") == expected_records
 
     r = go(u)
     assert r["status"] == "FAIL__FRAGMENT_BYTES_DO_NOT_MATCH_AUTHENTICATED_DIGEST", r
@@ -264,6 +277,11 @@ def test_a_partial_scan_records_unverified_and_never_a_copied_digest(tmp_path):
     assert r["fragment_identity"]["verified"] is False
     assert r["fragments_sha256"] != _sha(u["fragments"]), (
         "a partial scan must never present the authenticated digest as its own")
+    # A partial scan cannot bind the QC table, and says so rather than reporting zero
+    # disagreements -- "not measured" must never be encoded as a clean result.
+    assert r["qc_table_recount"]["performed"] is False
+    assert r["qc_table_recount"]["n_cells_disagreeing"] == custody.UNMEASURED
+    assert r["cell_qc"]["qc_counts_rederived_from_the_verified_pass"] is False
 
 
 def test_hashing_reader_digests_the_whole_file_and_knows_when_it_did_not(tmp_path):
@@ -396,6 +414,29 @@ def test_a_cohort_cell_with_no_qc_row_is_not_treated_as_a_qc_failure(tmp_path):
     r = go(u)
     assert r["status"] == "FAIL__COHORT_BARCODE_HAS_NO_QC_VERDICT", r
     assert r["examples"] == ["AAAC-6"]
+
+
+def test_qc_counts_that_disagree_with_the_verified_pass_fail_closed(tmp_path):
+    """C5: the QC table is re-derived from the digested bytes, not merely trusted.
+
+    V69_ROUTEB_FRAGMENT_QC_V1 copied its fragments_sha256 from the acquisition receipt,
+    so its per-cell verdicts rest on a scan of bytes nothing digested. Requiring the two
+    copied fields to be equal proves only that two strings match. This re-counts.
+    """
+    u = build_universe(tmp_path)
+    qc = pd.read_csv(u["qc_table"])
+    qc.loc[qc["barcode"] == "AAAA-5", "n_fragments"] = 999     # not what the file holds
+    qc.to_csv(u["qc_table"], index=False, compression="gzip")
+    rec = json.loads(u["qc_receipt"].read_text())
+    rec["per_barcode_table"]["sha256"] = _sha(u["qc_table"])   # digest check must pass
+    u["qc_receipt"].write_text(json.dumps(rec))
+
+    r = go(u)
+    assert r["status"] == (
+        "FAIL__QC_TABLE_FRAGMENT_COUNTS_DISAGREE_WITH_THE_VERIFIED_PASS"), r
+    assert r["n_cells_disagreeing"] == 1
+    assert r["examples"]["AAAA-5"] == {"qc_table": 999, "verified_pass": 5}
+    assert not u["out"].exists(), "nothing may be promoted when the QC table is wrong"
 
 
 # =============================================================================
