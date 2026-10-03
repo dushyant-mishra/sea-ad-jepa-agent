@@ -37,7 +37,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from v69_custody import CustodyError, bind_file  # noqa: E402
+from v69_custody import CustodyError, bind_file, remap  # noqa: E402
 
 PEAK_HALF_WIDTH = 250          # frozen, SECTION_2
 MACS_PARAMS = dict(input_format="BEDPE", shift=73, ext_size=146,
@@ -132,7 +132,11 @@ def recurrence_denominator(pseudobulk_meta: dict, submitted_keys, keys_with_peak
 
 
 def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
-        macs_path: str, n_cpu: int, blacklist: str | None) -> dict:
+        macs_path: str, n_cpu: int, blacklist: str | None,
+        host_prefix: str = "", container_prefix: str = "") -> dict:
+    def R(p):
+        return remap(p, host_prefix, container_prefix)
+
     pb = json.loads(pseudobulk_receipt.read_text())
     if not str(pb.get("status", "")).startswith("PASS") or pb.get("PARTIAL_SCAN"):
         raise FailClosed("FAIL__PSEUDOBULK_RECEIPT_NOT_A_COMPLETE_PASS",
@@ -166,10 +170,11 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
         if not isinstance(want, str) or len(want) != 64:
             raise FailClosed("FAIL__UPSTREAM_BOUND_INPUT_HAS_NO_DIGEST",
                              bound_input=name, record=rec)
-        rebound[name] = bind_file(rec["path"], label=rec.get("label", name),
+        rebound[name] = bind_file(R(rec["path"]), label=rec.get("label", name),
                                   role="REVERIFIED_UPSTREAM_INPUT",
                                   expected_sha256=want,
                                   expected_bytes=rec.get("bytes"))
+        rebound[name]["host_path_in_upstream_receipt"] = rec["path"]
     rebound["pseudobulk_receipt"] = bind_file(
         pseudobulk_receipt, label="V69_ROUTEB_PSEUDOBULK_FRAGMENTS_V1.json",
         role="UPSTREAM_RECEIPT")
@@ -189,7 +194,7 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
         if meta["n_fragments"] == 0:
             skipped_empty.append(key)
             continue
-        p = Path(meta["path"])
+        p = R(meta["path"])
         if sha256_file(p) != meta["sha256"]:
             raise FailClosed("FAIL__PSEUDOBULK_BED_DIGEST_MISMATCH", pseudobulk=key)
         beds[key] = str(p)
@@ -284,6 +289,15 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
         "schema": "V69_ROUTEB_CONSENSUS_PEAKS_V1",
         "built_utc": utcnow(),
         "custody_contract": "V74_ROUTEB_CUSTODY_V1",
+        "path_remapping": {
+            "applied": bool(host_prefix),
+            "host_prefix": host_prefix or None,
+            "container_prefix": container_prefix or None,
+            "note": ("Upstream receipts record the absolute HOST path where each "
+                     "artifact actually lived; that record is never rewritten. This "
+                     "producer, running inside the container, reads the same bytes at "
+                     "a different mount point and verifies their digests there."),
+        },
         "bound_inputs": rebound,
         "upstream_fragment_identity": fid,
         "peak_caller": {"path": macs_path, "version": macs_version,
@@ -346,10 +360,15 @@ def main(argv=None) -> int:
     ap.add_argument("--n-cpu", type=int, default=8)
     ap.add_argument("--blacklist", default=None)
     ap.add_argument("--receipt", required=True)
+    ap.add_argument("--host-prefix", default="",
+                    help="Host path prefix recorded in upstream receipts.")
+    ap.add_argument("--container-prefix", default="",
+                    help="Where that prefix is bind-mounted in this container.")
     a = ap.parse_args(argv)
     try:
         r = run(Path(a.pseudobulk_receipt), Path(a.chromsizes), Path(a.out_dir),
-                a.macs_path, a.n_cpu, a.blacklist)
+                a.macs_path, a.n_cpu, a.blacklist,
+                a.host_prefix, a.container_prefix)
     except FailClosed as e:
         r = {"schema": "V69_ROUTEB_CONSENSUS_PEAKS_V1", "built_utc": utcnow(),
              "status": e.status, **e.detail}

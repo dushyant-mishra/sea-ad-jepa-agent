@@ -247,3 +247,25 @@ class StagedOutputDir:
             os.replace(self.staging, self.quarantine)
             return str(self.quarantine)
         return "NOTHING_STAGED"
+
+
+def remap(p, host_prefix: str, container_prefix: str) -> Path:
+    """Translate a host path recorded in a receipt to its bind-mounted location.
+
+    Receipts record the absolute HOST path at which an artifact actually lived. That is
+    the honest provenance record and is deliberately never rewritten. A producer running
+    inside a container sees the same bytes at a different mount point, so the
+    translation is applied at read time, explicitly, and recorded in the output receipt.
+
+    Same contract as build_routea_cistopic_object_v1.remap, lifted here so Route-B and
+    Route-A cannot drift apart. Matching is case-insensitive because the host prefix is
+    a Windows path, and a path that does not start with the host prefix is returned
+    unchanged rather than guessed at.
+    """
+    if not host_prefix:
+        return Path(p)
+    n = str(p).replace("\\", "/")
+    h = host_prefix.replace("\\", "/").rstrip("/")
+    if n.lower().startswith(h.lower()):
+        return Path(container_prefix.rstrip("/") + n[len(h):])
+    return Path(p)

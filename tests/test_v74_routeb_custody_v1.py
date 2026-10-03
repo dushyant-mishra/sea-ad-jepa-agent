@@ -517,14 +517,16 @@ def test_consensus_refuses_when_a_bound_input_changed_on_disk(tmp_path):
             "label": "barcode_authority_csv", "path": str(victim),
             "sha256": _sha(victim), "bytes": victim.stat().st_size}},
         "pseudobulks": {}}))
-    # unmutated: gets past the custody chain and dies later, for a different reason
-    with pytest.raises(Exception) as clean:
-        consensus.run(rec, tmp_path / "cs.txt", tmp_path / "o", "macs2", 1, None)
-    assert getattr(clean.value, "status", "") != "FAIL__BOUND_FILE_DIGEST_MISMATCH"
+    # unmutated: passes the whole custody chain and stops for an unrelated reason
+    cs = tmp_path / "cs.txt"
+    cs.write_text("chr1\t1000\n")
+    with pytest.raises(consensus.FailClosed) as clean:
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
+    assert clean.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS"
 
     victim.write_text("barcode,donor\na-1,D2\n")
     with pytest.raises(custody.CustodyError) as e:
-        consensus.run(rec, tmp_path / "cs.txt", tmp_path / "o", "macs2", 1, None)
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
     assert e.value.status == "FAIL__BOUND_FILE_DIGEST_MISMATCH"
 
 
@@ -669,3 +671,63 @@ def test_the_denominator_is_unchanged_when_every_donor_calls_a_peak():
     assert den["denominator"] == 3
     assert den["donors_submitted_without_peaks"] == []
     assert den["pseudobulks_submitted_without_peaks"] == []
+
+
+# =============================================================================
+# Container path remapping: the receipt keeps the HOST path; the container reads
+# the same bytes elsewhere and must still verify them there.
+# =============================================================================
+
+def test_remap_translates_only_the_host_prefix():
+    r = custody.remap(r"D:\out\v69\raw\f.gz", r"D:\out", "/mnt/host")
+    assert str(r).replace("\\", "/") == "/mnt/host/v69/raw/f.gz"
+    # case-insensitive, because the host prefix is a Windows path
+    r2 = custody.remap(r"d:/OUT/v69/raw/f.gz", r"D:\out", "/mnt/host")
+    assert str(r2).replace("\\", "/") == "/mnt/host/v69/raw/f.gz"
+    # a path outside the prefix is returned unchanged, never guessed at
+    assert str(custody.remap("/already/container/f.gz", r"D:\out", "/mnt/host")) \
+        .replace("\\", "/") == "/already/container/f.gz"
+    # no prefix configured means no translation at all
+    assert str(custody.remap(r"D:\out\f.gz", "", "/mnt/host")) == r"D:\out\f.gz"
+
+
+def test_consensus_verifies_digests_at_the_remapped_location(tmp_path):
+    """A remapped run must still catch a changed file -- and must still pass when the
+    file is intact. Without the positive control, a remap that pointed at nothing would
+    look identical to a successful verification."""
+    host_root = tmp_path / "HOSTROOT"
+    host_root.mkdir()
+    victim = host_root / "authority.csv"
+    victim.write_text("barcode,donor\na-1,D1\n")
+    fake_host = r"D:\pretend\root"
+
+    def receipt_for(sha):
+        rec = tmp_path / "pb.json"
+        rec.write_text(json.dumps({
+            "status": "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED", "PARTIAL_SCAN": False,
+            "custody_contract": "V74_ROUTEB_CUSTODY_V1",
+            "fragment_identity": {"verified": True, "observed_sha256": "b" * 64,
+                                  "expected_sha256": "b" * 64},
+            "bound_inputs": {"cohort_barcode_authority": {
+                "label": "barcode_authority_csv",
+                "path": fake_host + r"\authority.csv",
+                "sha256": sha, "bytes": victim.stat().st_size}},
+            "pseudobulks": {}}))
+        return rec
+
+    cs = tmp_path / "cs.txt"
+    cs.write_text("chr1\t1000\n")
+    kw = dict(host_prefix=fake_host, container_prefix=str(host_root))
+    # intact: the whole custody chain is satisfied THROUGH the remap, and the run
+    # then stops for the unrelated reason that the fixture supplies no pseudobulks.
+    with pytest.raises(consensus.FailClosed) as clean:
+        consensus.run(receipt_for(_sha(victim)), cs, tmp_path / "o",
+                      "macs2", 1, None, **kw)
+    assert clean.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS"
+
+    # changed at the remapped location: caught there, not missed because of the remap
+    victim.write_text("barcode,donor\na-1,D2\n")
+    with pytest.raises(custody.CustodyError) as e:
+        consensus.run(receipt_for("0" * 64), cs, tmp_path / "o",
+                      "macs2", 1, None, **kw)
+    assert e.value.status == "FAIL__BOUND_FILE_DIGEST_MISMATCH"
