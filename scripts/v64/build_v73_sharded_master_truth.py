@@ -11,6 +11,8 @@ import v73_full104_population_geometry as G
 MASK=np.uint64(0xFFFFFFFFFFFFFFFF); MASK_INT=(1<<64)-1
 C1=np.uint64(0x9E3779B97F4A7C15); C2=np.uint64(0xBF58476D1CE4E5B9); C3=np.uint64(0x94D049BB133111EB)
 SOURCE_NAMES=G.SOURCE_ORDER
+FULL104_N_CELLS=4_553_407
+FULL104_SOURCE_COUNTS=np.array([4_118_213,236_476,198_718],dtype=np.int64)
 
 
 def sha256_file(path:Path,chunk:int=1<<20):

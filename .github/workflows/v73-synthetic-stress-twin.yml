@@ -9,8 +9,10 @@ on:
       - 'results/v64/V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_AMENDMENT_1_SAMPLED_QC.json'
       - 'results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json'
       - 'results/v64/V73_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V1.json'
+      - 'results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json'
       - 'results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part*.txt'
       - 'results/v64/calibration/V73_FULL104_RNA_QC_50K.part*.txt'
+      - 'results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part*.txt'
       - 'scripts/v64/v73_full104_population_geometry.py'
       - 'scripts/v64/v73_full104_qc_calibration.py'
       - 'scripts/v64/build_v73_sharded_master_truth.py'
@@ -26,6 +28,7 @@ on:
       - 'tests/test_v73_full104_empirical_calibration.py'
       - 'tests/test_v73_real_vs_synthetic_calibration.py'
       - 'tests/test_v73_stress_promotion_readiness.py'
+      - 'tests/test_v74_rna_qc_consumption.py'
       - '.github/workflows/v73-synthetic-stress-twin.yml'
   workflow_dispatch:
 
@@ -58,6 +61,7 @@ jobs:
           pytest -q tests/test_v73_full104_empirical_calibration.py
           pytest -q tests/test_v73_real_vs_synthetic_calibration.py
           pytest -q tests/test_v73_stress_promotion_readiness.py
+          pytest -q tests/test_v74_rna_qc_consumption.py
       - name: Build 2000-cell calibrated smoke and prove only 100K stress can open
         run: |
           rm -rf /tmp/v73_stress_smoke

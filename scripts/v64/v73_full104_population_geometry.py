@@ -44,18 +44,38 @@ def largest_remainder(weights, total):
 
 
 def quotas_for_n(n_cells:int, authority_path:Path=AUTHORITY):
+    """Hierarchically apportion FULL104 geometry: source -> operator -> donor/operator group.
+
+    Apportioning source quotas directly over all triplets can erase a low-support operator
+    when its cells are split over many small groups. Operator support is part of the
+    authenticated observation geometry, so preserve it at the operator level before
+    allocating each operator's quota across its donor/operator groups.
+    """
     a,trip=load_authority(authority_path)
     op_sources=np.asarray(a['operator_sources'])
     full_sources=np.array([a['source_counts'][s] for s in SOURCE_ORDER],dtype=np.int64)
     source_quota=largest_remainder(full_sources,n_cells)
     quotas=np.zeros(len(trip),dtype=np.int64)
+
+    full_operator_counts=np.asarray(a['operator_counts'],dtype=np.int64)
+    realised_operator_quota=np.zeros(a['n_operators'],dtype=np.int64)
     for si,source in enumerate(SOURCE_ORDER):
-        mask=np.array([op_sources[int(op)]==source for op in trip[:,1]],dtype=bool)
-        quotas[mask]=largest_remainder(trip[mask,2],int(source_quota[si]))
+        ops=np.where(op_sources==source)[0]
+        op_quota=largest_remainder(full_operator_counts[ops],int(source_quota[si]))
+        realised_operator_quota[ops]=op_quota
+        for op,oq in zip(ops,op_quota):
+            mask=trip[:,1]==op
+            if int(oq)==0:
+                continue
+            quotas[mask]=largest_remainder(trip[mask,2],int(oq))
+
     if int(quotas.sum())!=n_cells: raise RuntimeError('group quotas do not sum')
     realised={s:int(quotas[[op_sources[int(op)]==s for op in trip[:,1]]].sum()) for s in SOURCE_ORDER}
     expected={s:int(source_quota[i]) for i,s in enumerate(SOURCE_ORDER)}
     if realised!=expected: raise RuntimeError('source hierarchy did not reconcile')
+    by_operator=np.bincount(trip[:,1],weights=quotas,minlength=a['n_operators']).astype(np.int64)
+    if not np.array_equal(by_operator,realised_operator_quota):
+        raise RuntimeError('operator hierarchy did not reconcile')
     return a,trip,quotas
 
 
