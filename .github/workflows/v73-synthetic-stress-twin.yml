@@ -5,13 +5,18 @@ on:
     paths:
       - 'results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_V1.json'
       - 'results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_1_SOURCE_COMPOSITION.json'
+      - 'results/v64/V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_V1.json'
       - 'scripts/v64/build_v73_sharded_master_truth.py'
       - 'scripts/v64/build_v73_full104_sharded_observer.py'
       - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
       - 'scripts/v64/build_v73_synthetic_fragments.py'
       - 'scripts/v64/estimate_v73_synthetic_stress_resources.py'
+      - 'scripts/v64/build_v73_full104_empirical_calibration_authority.py'
+      - 'scripts/v64/validate_v73_real_vs_synthetic_calibration.py'
       - 'scripts/v64/validate_v73_stress_promotion_readiness.py'
       - 'tests/test_v73_synthetic_stress_twin.py'
+      - 'tests/test_v73_full104_empirical_calibration.py'
+      - 'tests/test_v73_real_vs_synthetic_calibration.py'
       - 'tests/test_v73_stress_promotion_readiness.py'
       - '.github/workflows/v73-synthetic-stress-twin.yml'
   workflow_dispatch:
@@ -28,17 +33,21 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: python -m pip install --upgrade pip pytest numpy
-      - name: Compile stress-twin producers and promotion gate
+      - name: Compile stress-twin producers, calibration tools and promotion gate
         run: |
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_synthetic_fragments.py
           python -m py_compile scripts/v64/estimate_v73_synthetic_stress_resources.py
+          python -m py_compile scripts/v64/build_v73_full104_empirical_calibration_authority.py
+          python -m py_compile scripts/v64/validate_v73_real_vs_synthetic_calibration.py
           python -m py_compile scripts/v64/validate_v73_stress_promotion_readiness.py
-      - name: Run shard-invariance and fail-closed promotion tests
+      - name: Run shard-invariance, empirical-calibration and fail-closed promotion tests
         run: |
           pytest -q tests/test_v73_synthetic_stress_twin.py
+          pytest -q tests/test_v73_full104_empirical_calibration.py
+          pytest -q tests/test_v73_real_vs_synthetic_calibration.py
           pytest -q tests/test_v73_stress_promotion_readiness.py
       - name: Build a 2000-cell coupled sharded smoke twin and prove 100K remains blocked
         run: |
@@ -57,6 +66,7 @@ jobs:
           import json
           x=json.load(open('/tmp/v73_readiness.json'))
           assert x['status']=='BLOCKED'
+          assert 'FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_MISSING' in x['blockers']
           assert 'DONOR_STRUCTURE_NOT_QUALIFIED' in x['blockers']
           assert 'SOURCE_OPERATOR_STRUCTURE_NOT_QUALIFIED' in x['blockers']
           print(json.dumps(x, indent=2))
