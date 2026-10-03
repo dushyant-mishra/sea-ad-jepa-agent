@@ -2,9 +2,9 @@
 """Fail-closed promotion gate for V73 synthetic stress execution.
 
 The coupled architecture may be CI-green while still being scientifically unready for a
-100K promotion. This validator makes that distinction executable. It refuses promotion
-while donor-size structure or source/operator nesting remain placeholder assignments, or
-while required source-composition/resource evidence is missing.
+100K promotion. This validator refuses promotion while donor-size structure,
+source/operator nesting, authenticated empirical calibration authority, or required
+resource evidence are missing.
 
 It does not generate data and cannot authorize 500K/full-scale execution.
 """
@@ -16,6 +16,11 @@ import json
 from pathlib import Path
 
 AMENDMENT = Path("results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_1_SOURCE_COMPOSITION.json")
+CALIBRATION_CONTRACT = Path("results/v64/V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_V1.json")
+EXPECTED_CELLS = 4_553_407
+EXPECTED_DONORS = 104
+EXPECTED_OPERATORS = 42
+EXPECTED_SOURCES = {"SEA_AD": 4_118_213, "NPH52": 236_476, "HVS": 198_718}
 
 
 def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
@@ -26,17 +31,18 @@ def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
     return h.hexdigest()
 
 
-def validate(root: Path, resource_receipt: Path | None = None) -> dict:
+def validate(root: Path, resource_receipt: Path | None = None,
+             calibration_authority: Path | None = None) -> dict:
     truth_manifest = root / "hidden_truth" / "TRUTH_MANIFEST.json"
     full_manifest = root / "observable_raw" / "FULL104_like_sharded" / "FULL104_SHARDED_MANIFEST.json"
     multi_manifest = root / "observable_raw" / "PAIRED_MULTIOME_like_sharded" / "PAIRED_MULTIOME_SHARDED_MANIFEST.json"
     frag_manifest = root / "observable_raw" / "PAIRED_MULTIOME_fragments" / "SYNTHETIC_FRAGMENT_MANIFEST.json"
 
-    required = [AMENDMENT, truth_manifest, full_manifest, multi_manifest, frag_manifest]
+    required = [AMENDMENT, CALIBRATION_CONTRACT, truth_manifest, full_manifest, multi_manifest, frag_manifest]
     missing = [str(p) for p in required if not p.exists()]
     if missing:
         return dict(
-            schema="V73_SYNTHETIC_STRESS_PROMOTION_READINESS_V1",
+            schema="V73_SYNTHETIC_STRESS_PROMOTION_READINESS_V2_EMPIRICALLY_CALIBRATED",
             status="BLOCKED",
             missing_required_artifacts=missing,
             blockers=["MISSING_REQUIRED_ARTIFACTS"],
@@ -44,6 +50,7 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
         )
 
     amendment = json.loads(AMENDMENT.read_text())
+    calibration_contract = json.loads(CALIBRATION_CONTRACT.read_text())
     tm = json.loads(truth_manifest.read_text())
     fm = json.loads(full_manifest.read_text())
     mm = json.loads(multi_manifest.read_text())
@@ -58,6 +65,12 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
     if not holds["source_amendment_is_prospective"]:
         blockers.append("SOURCE_COMPOSITION_AMENDMENT_NOT_PROSPECTIVE")
 
+    holds["empirical_calibration_contract_frozen"] = (
+        calibration_contract.get("status") == "FROZEN_REQUIREMENTS__AUTHORITY_EXPORT_PENDING"
+    )
+    if not holds["empirical_calibration_contract_frozen"]:
+        blockers.append("EMPIRICAL_CALIBRATION_CONTRACT_INVALID")
+
     expected_sources = tm.get("source_counts")
     holds["source_counts_match_across_observers"] = (
         expected_sources is not None
@@ -66,6 +79,30 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
     )
     if not holds["source_counts_match_across_observers"]:
         blockers.append("SOURCE_COUNTS_DISAGREE_ACROSS_OBSERVERS")
+
+    authority = None
+    if calibration_authority is None:
+        holds["empirical_calibration_authority_qualified"] = False
+        blockers.append("FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_MISSING")
+    elif not calibration_authority.exists():
+        holds["empirical_calibration_authority_qualified"] = False
+        blockers.append("FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_MISSING")
+    else:
+        authority = json.loads(calibration_authority.read_text())
+        pop = authority.get("population", {})
+        holds["empirical_calibration_authority_qualified"] = (
+            authority.get("status") == "QUALIFIED_AGGREGATE_AUTHORITY"
+            and pop.get("n_cells") == EXPECTED_CELLS
+            and pop.get("n_donors") == EXPECTED_DONORS
+            and pop.get("n_operators") == EXPECTED_OPERATORS
+            and pop.get("n_groups") == 1400
+            and pop.get("source_counts") == EXPECTED_SOURCES
+            and authority.get("cell_level_data_exported") is False
+            and authority.get("real_correspondence_opened") is False
+            and authority.get("recoverability_TEST_opened") is False
+        )
+        if not holds["empirical_calibration_authority_qualified"]:
+            blockers.append("FULL104_EMPIRICAL_CALIBRATION_AUTHORITY_INVALID")
 
     donor_status = tm.get("donor_assignment_status", "MISSING")
     operator_status = tm.get("operator_assignment_status", "MISSING")
@@ -85,9 +122,9 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
         if not holds[k]:
             blockers.append(k.upper() + "_FAILED")
 
-    resource = None
     if resource_receipt is not None:
         if not resource_receipt.exists():
+            holds["fragment_resource_calibrated"] = False
             blockers.append("RESOURCE_RECEIPT_MISSING")
         else:
             resource = json.loads(resource_receipt.read_text())
@@ -106,7 +143,7 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
 
     status = "READY_FOR_100K_STRESS_ONLY" if not blockers else "BLOCKED"
     return dict(
-        schema="V73_SYNTHETIC_STRESS_PROMOTION_READINESS_V1",
+        schema="V73_SYNTHETIC_STRESS_PROMOTION_READINESS_V2_EMPIRICALLY_CALIBRATED",
         status=status,
         authorized_scale=("100K_STRESS_ONLY" if status.startswith("READY") else "CI_ONLY"),
         explicitly_not_authorized=["500K_STRESS", "FULL_4553407", "TRAINING"],
@@ -116,6 +153,9 @@ def validate(root: Path, resource_receipt: Path | None = None) -> dict:
         source_counts=expected_sources,
         bindings=dict(
             source_amendment=dict(path=str(AMENDMENT), sha256=sha256_file(AMENDMENT)),
+            calibration_contract=dict(path=str(CALIBRATION_CONTRACT), sha256=sha256_file(CALIBRATION_CONTRACT)),
+            calibration_authority=(dict(path=str(calibration_authority), sha256=sha256_file(calibration_authority))
+                                   if calibration_authority and calibration_authority.exists() else None),
             truth_manifest=dict(path=str(truth_manifest), sha256=sha256_file(truth_manifest)),
             full104_manifest=dict(path=str(full_manifest), sha256=sha256_file(full_manifest)),
             paired_multiome_manifest=dict(path=str(multi_manifest), sha256=sha256_file(multi_manifest)),
@@ -132,9 +172,14 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", required=True)
     ap.add_argument("--resource-receipt", default=None)
+    ap.add_argument("--calibration-authority", default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
-    out = validate(Path(a.root), Path(a.resource_receipt) if a.resource_receipt else None)
+    out = validate(
+        Path(a.root),
+        Path(a.resource_receipt) if a.resource_receipt else None,
+        Path(a.calibration_authority) if a.calibration_authority else None,
+    )
     text = json.dumps(out, indent=2) + "\n"
     if a.out:
         Path(a.out).write_text(text)
