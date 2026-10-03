@@ -153,6 +153,36 @@ def main() -> int:
             "any point.",
         ],
         THE_GOVERNING_INTERPRETATION_LIMIT=dict(
+            STATUS="UNRESOLVED. The empirical half of this was withdrawn on 2026-10-02 "
+                   "and the block below is retained only to show what was claimed and "
+                   "why it did not survive.",
+            what_was_retracted="that G2 contributes nothing against an edge-specific "
+                               "cross-modal artifact. That rested on the V1 curve, whose "
+                               "generator sampled block labels WITH REPLACEMENT, so its "
+                               "K=200 endpoint carried about 127 factors across 200 edges "
+                               "and was never one-factor-per-edge.",
+            what_replaced_it="the repaired exact-K curve, "
+                             "V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED, 100 "
+                             "draws at 282 donors with realised occupancy equal to "
+                             "requested K at every point. Its G2 pass rate is NON-MONOTONE "
+                             "-- 0.20, 0.25, 0.40, 0.65, 0.50 -- so by the pre-committed "
+                             "reading no protection claim may be made in either "
+                             "direction, and the Wilson intervals at K=50 and K=200 "
+                             "overlap too heavily to distinguish 0.65 from 0.50 at 20 "
+                             "draws per cell.",
+            what_still_stands="the STRUCTURAL argument, which never depended on the "
+                              "curve: a factor varying across metacells within a donor, "
+                              "loading on both modalities of one edge, and drawn "
+                              "independently per edge is the same statistical object as "
+                              "regulation, so nothing analysing RNA-ATAC covariation can "
+                              "separate them. That is an argument, not a measurement, and "
+                              "it is not established by any experiment run so far.",
+            consequence_now="a positive Stage-4 result still may not be presented as "
+                            "evidence of regulation, but the REASON is the structural "
+                            "argument plus an unresolved empirical question, not a "
+                            "demonstrated gate failure. The distinction matters because "
+                            "the earlier wording claimed more than the evidence carries.",
+            RETAINED_ORIGINAL_CLAIM_BELOW_FOR_THE_RECORD=True,
             statement="the frozen Stage-4 decision cannot distinguish an EDGE-SPECIFIC "
                       "cross-modal artifact from regulation, and this is a limit in "
                       "principle rather than a defect to repair.",
@@ -201,9 +231,9 @@ def main() -> int:
         WHAT_IS_NOT_GRANTABLE_HERE=[
             "Stage-4 execution authorisation. This closeout does not grant it and the "
             "executor does not create the artifact that would.",
-            "Any claim that a positive Stage-4 result would demonstrate regulatory "
-            "causation, or regulation at all. The G2 sensitivity curve forbids that "
-            "reading in principle, not merely in the worst case.",
+            "Any claim that a positive Stage-4 result would demonstrate regulation. The "
+            "structural argument forbids it; the repaired curve neither confirms nor "
+            "refutes the gate behaviour and must not be cited either way.",
             "Any claim that LCB95 > 0 alone establishes a non-technical origin. The "
             "MEASURED_TECHNICAL residue forbids that reading.",
         ],

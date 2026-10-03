@@ -2,12 +2,10 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "b2471aa5a24c3ddcac0f28ea695b2f6110f1b581",
+  "head_commit": "80cb508b6986567b86da3502c732c00b7fa3a920",
   "worktree_clean_at_assembly": false,
   "uncommitted_at_assembly": [
-    "M results/v64/phase_b_design/V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json",
-    " M results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
-    " M scripts/v64/build_stage4_executor_closeout_v1.py"
+    "M scripts/v64/build_stage4_executor_closeout_v1.py"
   ],
   "artifacts": {
     "1_s81_repair_verifier": {
@@ -31,19 +29,19 @@
     "3_executor_source": {
       "role": "the executor, hard-bound, one CLI flag plus the guarded synthetic mode",
       "path": "scripts/v64/stage4_executor_v1.py",
-      "sha256": "01bb6bea75da8c3401845403f6a8dfddb469f5439d15e668c39b640180afea43",
-      "worktree_blob": "2ac9f0c45def767e3e80f023dc0cb621101efd30",
-      "git_blob_at_head": "2ac9f0c45def767e3e80f023dc0cb621101efd30",
-      "bytes": 56643,
+      "sha256": "dfc9770229dbdb44e585098afd18559ecb9b85fff6580c6c8c65da631cbdfbba",
+      "worktree_blob": "61d652fc6e608fb0836b53d86412deeb9c5bbd8c",
+      "git_blob_at_head": "61d652fc6e608fb0836b53d86412deeb9c5bbd8c",
+      "bytes": 58445,
       "note": null
     },
     "4_synthetic_world_builder": {
       "role": "four Phase-B substrates in the real on-disk format",
       "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
-      "sha256": "a2cdbb6242fd7f8d3b64e526bb6ed78e642c465564b2c08732e378b66b716104",
-      "worktree_blob": "3742b4fab341fd310f9791d94ed71d15d47d3835",
-      "git_blob_at_head": "3742b4fab341fd310f9791d94ed71d15d47d3835",
-      "bytes": 29207,
+      "sha256": "6a65ffecf9be22b4c7be47cd27f68b387917b0edfd3b24e50d9e67037ffb11cb",
+      "worktree_blob": "b3073ee2f45deec25f0bf10ed198f75fc4456ce0",
+      "git_blob_at_head": "b3073ee2f45deec25f0bf10ed198f75fc4456ce0",
+      "bytes": 34520,
       "note": null
     },
     "5_end_to_end_suite": {
@@ -67,10 +65,10 @@
     "11_g2_sensitivity_curve": {
       "role": "varies how shared a hidden confound is and watches what G2 does",
       "path": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
-      "sha256": "361697359bbb2b4c9d165919d7649ef87c8dc793fffe5eac5a8c6070075c7f7e",
-      "worktree_blob": "72d3737a616a5938780d17c8a14db4fe85e0a8a0",
-      "git_blob_at_head": "72d3737a616a5938780d17c8a14db4fe85e0a8a0",
-      "bytes": 11961,
+      "sha256": "38eb71331e99afd1bc3727158db201b9a4c22a06e9915958cab68fc3cda72aef",
+      "worktree_blob": "fb1d18299ff96e7f9bd22b3d916822bd49bf4c86",
+      "git_blob_at_head": "fb1d18299ff96e7f9bd22b3d916822bd49bf4c86",
+      "bytes": 16004,
       "note": null
     },
     "12_calibration_sweeps": {
@@ -144,7 +142,7 @@
       "a_successful_dry_run_is_not_execution_authorization": true,
       "status": "PASS",
       "path": "results/v64/phase_b_design/V64_STAGE4_PREFLIGHT_ONLY_RECEIPT_V1.json",
-      "sha256": "fb92bc30f0e384e438c3d4d2e8ab19e9f84e9873251f53ae253265572582a0ff",
+      "sha256": "520737adb51c69dd11b4305f2c63dd1870fc4a41d26874ac51119d2dfd402722",
       "git_blob_at_head": "0eaed71d96eb094b0156672a3d8686590ac920e0"
     },
     "g17_and_antibypass": {
@@ -230,14 +228,13 @@
       "worlds": [
         "BIOLOGY_POSITIVE",
         "HIDDEN_CONFOUND",
-        "HIDDEN_CONFOUND_K",
         "MEASURED_TECHNICAL",
         "TRUE_NULL"
       ],
       "reads_no_real_measurement": true,
       "path": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json",
-      "sha256": "2eb1634ca491715f6166bc926f6612bc5ea4214bdcbc27786c82a09a8a68c862",
-      "git_blob_at_head": "fdf05e8dff7be5ba0d737cd07021f5b0f4eb5014"
+      "sha256": "5584b1053b8bd15d836764f06a9088798d494004c4d36c896b02c725d70a8f5a",
+      "git_blob_at_head": "d3f0e146dc3f524c665dbd1ba87726f7f902b051"
     },
     "calibration_sweep_v2": {
       "executes_precommitment": {
@@ -485,6 +482,12 @@
       "No correspondence value has been computed on real data, at any scale, at any point."
     ],
     "THE_GOVERNING_INTERPRETATION_LIMIT": {
+      "STATUS": "UNRESOLVED. The empirical half of this was withdrawn on 2026-10-02 and the block below is retained only to show what was claimed and why it did not survive.",
+      "what_was_retracted": "that G2 contributes nothing against an edge-specific cross-modal artifact. That rested on the V1 curve, whose generator sampled block labels WITH REPLACEMENT, so its K=200 endpoint carried about 127 factors across 200 edges and was never one-factor-per-edge.",
+      "what_replaced_it": "the repaired exact-K curve, V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED, 100 draws at 282 donors with realised occupancy equal to requested K at every point. Its G2 pass rate is NON-MONOTONE -- 0.20, 0.25, 0.40, 0.65, 0.50 -- so by the pre-committed reading no protection claim may be made in either direction, and the Wilson intervals at K=50 and K=200 overlap too heavily to distinguish 0.65 from 0.50 at 20 draws per cell.",
+      "what_still_stands": "the STRUCTURAL argument, which never depended on the curve: a factor varying across metacells within a donor, loading on both modalities of one edge, and drawn independently per edge is the same statistical object as regulation, so nothing analysing RNA-ATAC covariation can separate them. That is an argument, not a measurement, and it is not established by any experiment run so far.",
+      "consequence_now": "a positive Stage-4 result still may not be presented as evidence of regulation, but the REASON is the structural argument plus an unresolved empirical question, not a demonstrated gate failure. The distinction matters because the earlier wording claimed more than the evidence carries.",
+      "RETAINED_ORIGINAL_CLAIM_BELOW_FOR_THE_RECORD": true,
       "statement": "the frozen Stage-4 decision cannot distinguish an EDGE-SPECIFIC cross-modal artifact from regulation, and this is a limit in principle rather than a defect to repair.",
       "why_in_principle": "a factor that varies across metacells within a donor, loads on both modalities of one edge's linked arm, and is drawn independently per edge is the SAME statistical object as the planted biology. Nothing analysing RNA-ATAC covariation can separate them because there is nothing to separate.",
       "evidence": "V64_STAGE4_G2_SENSITIVITY_CURVE_V1. As the confound becomes less shared across edges the G2 pass rate rises monotonically 0.15, 0.15, 0.25, 0.45, 0.55 at K = 1, 5, 20, 50, 200, and at K=200 its interval overlaps the rate at which G2 passes genuine biology. G1 and G3 pass in 100 percent of draws at every K, so ALL_FIVE equals the G2 rate throughout and the entire discriminating power of the five-gate decision against this family was one gate responding to SHARING.",
@@ -501,7 +504,7 @@
     },
     "WHAT_IS_NOT_GRANTABLE_HERE": [
       "Stage-4 execution authorisation. This closeout does not grant it and the executor does not create the artifact that would.",
-      "Any claim that a positive Stage-4 result would demonstrate regulatory causation, or regulation at all. The G2 sensitivity curve forbids that reading in principle, not merely in the worst case.",
+      "Any claim that a positive Stage-4 result would demonstrate regulation. The structural argument forbids it; the repaired curve neither confirms nor refutes the gate behaviour and must not be cited either way.",
       "Any claim that LCB95 > 0 alone establishes a non-technical origin. The MEASURED_TECHNICAL residue forbids that reading."
     ],
     "SUPERSEDED_BY_S99_DO_NOT_CITE_WITHOUT_THIS_NOTE": {
@@ -536,5 +539,5 @@
   },
   "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
   "computed_correspondence_values": 0,
-  "producer_sha256": "d56ebdbefdf3400ecb95604177e6878e19acdd87be155fa893def76493dc48ea"
+  "producer_sha256": "1809d1f4ade546dd9b6c510586b163a20c9502a156029c4d7ac7ae1ebc166539"
 }
