@@ -121,8 +121,20 @@ if grep -q 'ALREADY COMPLETE AND DIGEST-VERIFIED' "$C"; then
 else
   log "PASS: the corrupted shard was NOT skipped; it was rebuilt"
 fi
-log "SHARD_A digest after rebuild: $(sha256sum "$TARGET" | awk '{print $1}')"
-log "(must equal the pre-corruption digest in before.txt, which proves the rebuild is deterministic)"
+# A rebuild that reproduces the ORIGINAL digests of all three outputs -- rankings
+# included -- is also a repeat-reproducibility demonstration, which is only possible
+# because the ranking tie-break seed is pinned at 20261001.
+REBUILT="$SCRATCH/restart/after_rebuild.txt"
+( cd "$RUN" && sha256sum SHARD_A.*.feather ) | tee "$REBUILT" | tee -a "$EV"
+if grep -E '^[0-9a-f]{64} \*?SHARD_A' "$BEFORE" | sort > "$SCRATCH/restart/.a_before" && \
+   sort "$REBUILT" > "$SCRATCH/restart/.a_after" && \
+   diff -q "$SCRATCH/restart/.a_before" "$SCRATCH/restart/.a_after" >/dev/null; then
+  log "PASS: all three SHARD_A outputs rebuilt to their ORIGINAL digests, rankings included"
+  log "      (repeat reproducibility; only possible because the ranking seed is pinned at 20261001)"
+else
+  log "FAIL: the rebuild did not reproduce the original digests"
+  diff "$SCRATCH/restart/.a_before" "$SCRATCH/restart/.a_after" | tee -a "$EV"
+fi
 
 # ---- STEP 5: MERGE COMPATIBILITY on REAL shard outputs -------------------------
 # The plan-level proof (laneE_shard_plan_v1.py) shows the slices tile the 10,249-motif
