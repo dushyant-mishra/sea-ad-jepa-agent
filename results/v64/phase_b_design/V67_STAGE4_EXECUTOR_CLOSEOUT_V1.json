@@ -2,7 +2,7 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "bc5bb034a2b4a428cfc84a92c6d6bd6bc9922efc",
+  "head_commit": "7a343ac1eed8a8646d113ed10adf603838e39745",
   "worktree_clean_at_assembly": true,
   "uncommitted_at_assembly": [],
   "artifacts": {
