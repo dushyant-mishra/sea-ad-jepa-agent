@@ -196,8 +196,9 @@ def test_resource_estimator_covers_stress_and_full_scale_and_declares_exclusions
         assert e["combined_payload_bytes"] > 0
         assert e["paired_multiome_payload_bytes"] > 0
         assert e["conservative_peak_working_bytes"] > 0
+        assert e["fragment_projection_requires_measured_calibration"] is True
         assert e["full_ecosystem_total_is_not_yet_estimated"] is True
-        assert "synthetic ATAC fragments" in e["excluded_unestimated_terms"]
+        assert "peak calls and consensus region universe" in e["excluded_unestimated_terms"]
 
 
 def test_truth_firewall_manifest_does_not_expose_truth_path(tmp_path):
