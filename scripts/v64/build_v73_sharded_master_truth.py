@@ -21,6 +21,7 @@ from pathlib import Path
 import numpy as np
 
 MASK = np.uint64(0xFFFFFFFFFFFFFFFF)
+MASK_INT = (1 << 64) - 1
 C1 = np.uint64(0x9E3779B97F4A7C15)
 C2 = np.uint64(0xBF58476D1CE4E5B9)
 C3 = np.uint64(0x94D049BB133111EB)
@@ -47,7 +48,10 @@ def _mix64(x):
 
 def u01(seed: int, idx, stream: int):
     idx = np.asarray(idx, dtype=np.uint64)
-    x = idx ^ np.uint64(seed) ^ (np.uint64(stream + 1) * C1)
+    # Intentional 64-bit wrap is performed in Python integer arithmetic first so NumPy
+    # does not emit an overflow warning for the scalar stream multiplier.
+    stream_mix = np.uint64(((int(stream) + 1) * int(C1)) & MASK_INT)
+    x = idx ^ np.uint64(seed) ^ stream_mix
     z = _mix64(x)
     return ((z >> np.uint64(11)).astype(np.float64) + 0.5) / float(1 << 53)
 
