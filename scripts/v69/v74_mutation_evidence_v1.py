@@ -96,6 +96,14 @@ def m_disable_qc_recount_check(root: Path) -> None:
         "        if False:" + nl + "            q = staged.quarantine_failed()")
 
 
+def m_restore_peaks_only_denominator(root: Path) -> None:
+    _replace_once(root, CONSENSUS,
+                  '    submitted = sorted({pseudobulk_meta[k]["donor"]'
+                  ' for k in submitted_keys})',
+                  '    submitted = sorted({pseudobulk_meta[k]["donor"]'
+                  ' for k in keys_with_peaks})')
+
+
 MUTATIONS = [
     {
         "id": "M1_DISABLE_DIGEST_COMPARISON",
@@ -152,6 +160,16 @@ MUTATIONS = [
         "apply": m_disable_qc_recount_check,
         "must_fail": [
             "test_qc_counts_that_disagree_with_the_verified_pass_fail_closed",
+        ],
+    },
+    {
+        "id": "M7_RESTORE_PEAKS_ONLY_RECURRENCE_DENOMINATOR",
+        "repair_removed": "RECURRENCE_DENOMINATOR_IS_DONORS_SUBMITTED",
+        "what_it_undoes": ("the denominator reverts to donors that produced a peak, so "
+                           "a donor that called nothing silently leaves it"),
+        "apply": m_restore_peaks_only_denominator,
+        "must_fail": [
+            "test_a_donor_that_called_no_peak_stays_in_the_denominator",
         ],
     },
     {

@@ -106,6 +106,31 @@ def assert_consensus_nonempty(cdf, *, n_pseudobulks_used=None,
                   "universe of size zero -- it is an absent region universe."))
 
 
+def recurrence_denominator(pseudobulk_meta: dict, submitted_keys, keys_with_peaks) -> dict:
+    """Who counts in the denominator of a region's donor recurrence.
+
+    The answer is the donors that COULD have contributed a peak -- those with a
+    non-empty pseudobulk submitted to MACS -- not the donors that happened to produce
+    one. pycisTopic's peak_calling(skip_empty_peaks=True) drops a pseudobulk that called
+    nothing, so a donor whose every pseudobulk came back empty would silently leave the
+    denominator and inflate every region's fraction_donors. A donor that submitted
+    fragments and called no peak contributes a zero; it does not disappear.
+
+    Kept as a separate function so it can be exercised without MACS or pycisTopic.
+    """
+    submitted = sorted({pseudobulk_meta[k]["donor"] for k in submitted_keys})
+    with_peaks = sorted({pseudobulk_meta[k]["donor"] for k in keys_with_peaks})
+    return {
+        "donors_submitted": submitted,
+        "donors_with_peaks": with_peaks,
+        "donors_submitted_without_peaks": [d for d in submitted
+                                           if d not in set(with_peaks)],
+        "pseudobulks_submitted_without_peaks": sorted(set(submitted_keys)
+                                                      - set(keys_with_peaks)),
+        "denominator": len(submitted),
+    }
+
+
 def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
         macs_path: str, n_cpu: int, blacklist: str | None) -> dict:
     pb = json.loads(pseudobulk_receipt.read_text())
@@ -212,7 +237,19 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
 
     # Per-region donor recurrence, computed for EVERY region. No filter applied.
     cons_pr = pr.PyRanges(cdf[["Chromosome", "Start", "End"]])
-    donors = sorted({v["donor"] for v in per_pb.values()})
+
+    # V74 REPAIR. The recurrence denominator must be the donors that COULD have
+    # contributed a peak -- those with a non-empty pseudobulk submitted to MACS -- not
+    # the donors that happened to produce one. peak_calling(skip_empty_peaks=True) drops
+    # a pseudobulk that called nothing, so a donor whose every pseudobulk came back
+    # empty would silently vanish from the denominator and inflate every region's
+    # fraction_donors. Both counts are recorded so the difference is visible.
+    _den = recurrence_denominator(pb["pseudobulks"], list(beds), list(narrow))
+    donors_submitted = _den["donors_submitted"]
+    donors_with_peaks = _den["donors_with_peaks"]
+    donors_submitted_without_peaks = _den["donors_submitted_without_peaks"]
+    pseudobulks_submitted_without_peaks = _den["pseudobulks_submitted_without_peaks"]
+    donors = donors_submitted
     recurrence = pd.Series(0, index=cdf.index, dtype=int)
     for donor in donors:
         hit = pd.Series(False, index=cdf.index)
@@ -229,7 +266,8 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
             hit.loc[idx] = True
         recurrence += hit.astype(int)
     cdf["n_donors_with_overlapping_peak"] = recurrence.to_numpy()
-    cdf["fraction_donors"] = cdf["n_donors_with_overlapping_peak"] / max(len(donors), 1)
+    cdf["fraction_donors"] = (cdf["n_donors_with_overlapping_peak"]
+                              / max(len(donors_submitted), 1))
     cdf["name"] = (cdf["Chromosome"].astype(str) + ":" +
                    cdf["Start"].astype(str) + "-" + cdf["End"].astype(str))
 
@@ -268,7 +306,18 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
                                "decided silently.")},
         "pseudobulks": {"n_used": len(beds), "n_skipped_empty": len(skipped_empty),
                         "skipped_empty": skipped_empty, "per_pseudobulk": per_pb},
-        "donors": {"n_donors": len(donors), "donors": donors},
+        "donors": {
+            "n_donors": len(donors_submitted),
+            "donors": donors_submitted,
+            "recurrence_denominator": "DONORS_WITH_A_NONEMPTY_PSEUDOBULK_SUBMITTED",
+            "n_donors_with_at_least_one_called_peak": len(donors_with_peaks),
+            "donors_submitted_without_any_called_peak": donors_submitted_without_peaks,
+            "pseudobulks_submitted_without_any_called_peak":
+                pseudobulks_submitted_without_peaks,
+            "why": ("A donor that submitted fragments and called no peak contributes a "
+                    "zero to recurrence; it must not be removed from the denominator, "
+                    "which would inflate every region's fraction_donors."),
+        },
         "consensus": {
             "n_regions": int(len(cdf)),
             "total_bp": int(widths.sum()),

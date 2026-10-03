@@ -633,3 +633,39 @@ def test_receipt_status_written_to_disk_matches_the_exit_code(tmp_path):
     on_disk2 = json.loads(receipt.read_text())
     assert rc2 == 1
     assert on_disk2["status"] == "FAIL__FRAGMENT_BYTES_DO_NOT_MATCH_AUTHENTICATED_DIGEST"
+
+
+# =============================================================================
+# Recurrence denominator: a donor that called no peak contributes a zero, it does
+# not leave the denominator.
+# =============================================================================
+
+_PB_META = {
+    "D1__Mic_0": {"donor": "D1", "subcluster": "Mic_0"},
+    "D1__Mic_1": {"donor": "D1", "subcluster": "Mic_1"},
+    "D2__Mic_0": {"donor": "D2", "subcluster": "Mic_0"},
+    "D3__Mic_0": {"donor": "D3", "subcluster": "Mic_0"},
+}
+
+
+def test_a_donor_that_called_no_peak_stays_in_the_denominator():
+    submitted = list(_PB_META)
+    with_peaks = ["D1__Mic_0", "D1__Mic_1", "D2__Mic_0"]    # D3 called nothing
+    den = consensus.recurrence_denominator(_PB_META, submitted, with_peaks)
+    assert den["denominator"] == 3, "D3 submitted fragments and must not vanish"
+    assert den["donors_submitted"] == ["D1", "D2", "D3"]
+    assert den["donors_with_peaks"] == ["D1", "D2"]
+    assert den["donors_submitted_without_peaks"] == ["D3"]
+    assert den["pseudobulks_submitted_without_peaks"] == ["D3__Mic_0"]
+    # The defect this prevents, stated numerically: a region carried by D1 and D2 is
+    # 2/3 of the donors that could have shown it, not 2/2.
+    assert 2 / den["denominator"] != 1.0
+
+
+def test_the_denominator_is_unchanged_when_every_donor_calls_a_peak():
+    """Positive control: the repair must not move the number in the normal case."""
+    submitted = list(_PB_META)
+    den = consensus.recurrence_denominator(_PB_META, submitted, submitted)
+    assert den["denominator"] == 3
+    assert den["donors_submitted_without_peaks"] == []
+    assert den["pseudobulks_submitted_without_peaks"] == []
