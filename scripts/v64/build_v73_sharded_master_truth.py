@@ -1,192 +1,101 @@
 #!/usr/bin/env python3
-"""Build a sharded master hidden truth with cell-identity keyed randomness.
-
-The same global cell index receives the same latent state regardless of shard size,
-execution order or worker count. This is the scaling analogue of the Stage-4 isolation
-rule: scheduling must not become scientific identity.
-
-FULL104 source composition is reproduced by deterministic largest-remainder
-apportionment from the authoritative cell counts. A bijective permutation of global cell
-indices assigns those exact source totals without turning source into a contiguous cell
-range or making it depend on shard boundaries.
-"""
+"""Build shard-invariant master truth using authenticated FULL104 population geometry."""
 from __future__ import annotations
-
-import argparse
-import hashlib
-import json
-import math
+import argparse, hashlib, json, sys
 from pathlib import Path
-
 import numpy as np
 
-MASK = np.uint64(0xFFFFFFFFFFFFFFFF)
-MASK_INT = (1 << 64) - 1
-C1 = np.uint64(0x9E3779B97F4A7C15)
-C2 = np.uint64(0xBF58476D1CE4E5B9)
-C3 = np.uint64(0x94D049BB133111EB)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import v73_full104_population_geometry as G
 
-FULL104_N_CELLS = 4_553_407
-SOURCE_NAMES = ("SEA_AD", "NPH52", "HVS")
-FULL104_SOURCE_COUNTS = np.array([4_118_213, 236_476, 198_718], dtype=np.int64)
+MASK=np.uint64(0xFFFFFFFFFFFFFFFF); MASK_INT=(1<<64)-1
+C1=np.uint64(0x9E3779B97F4A7C15); C2=np.uint64(0xBF58476D1CE4E5B9); C3=np.uint64(0x94D049BB133111EB)
+SOURCE_NAMES=G.SOURCE_ORDER
 
 
-def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as fh:
-        for block in iter(lambda: fh.read(chunk), b""):
-            h.update(block)
+def sha256_file(path:Path,chunk:int=1<<20):
+    h=hashlib.sha256()
+    with open(path,'rb') as fh:
+        for block in iter(lambda:fh.read(chunk),b''): h.update(block)
     return h.hexdigest()
 
 
 def _mix64(x):
-    x = (x + C1) & MASK
-    x = ((x ^ (x >> np.uint64(30))) * C2) & MASK
-    x = ((x ^ (x >> np.uint64(27))) * C3) & MASK
-    return x ^ (x >> np.uint64(31))
+    x=(x+C1)&MASK; x=((x^(x>>np.uint64(30)))*C2)&MASK
+    x=((x^(x>>np.uint64(27)))*C3)&MASK
+    return x^(x>>np.uint64(31))
 
 
-def u01(seed: int, idx, stream: int):
-    idx = np.asarray(idx, dtype=np.uint64)
-    # Intentional 64-bit wrap is performed in Python integer arithmetic first so NumPy
-    # does not emit an overflow warning for the scalar stream multiplier.
-    stream_mix = np.uint64(((int(stream) + 1) * int(C1)) & MASK_INT)
-    x = idx ^ np.uint64(seed) ^ stream_mix
-    z = _mix64(x)
-    return ((z >> np.uint64(11)).astype(np.float64) + 0.5) / float(1 << 53)
+def u01(seed:int,idx,stream:int):
+    idx=np.asarray(idx,dtype=np.uint64)
+    stream_mix=np.uint64(((int(stream)+1)*int(C1))&MASK_INT)
+    z=_mix64(idx^np.uint64(seed)^stream_mix)
+    return ((z>>np.uint64(11)).astype(np.float64)+0.5)/float(1<<53)
 
 
-def normal(seed: int, idx, stream: int):
-    u1 = np.clip(u01(seed, idx, stream * 2), 1e-15, 1 - 1e-15)
-    u2 = u01(seed, idx, stream * 2 + 1)
-    return np.sqrt(-2.0 * np.log(u1)) * np.cos(2.0 * np.pi * u2)
+def normal(seed:int,idx,stream:int):
+    u1=np.clip(u01(seed,idx,stream*2),1e-15,1-1e-15); u2=u01(seed,idx,stream*2+1)
+    return np.sqrt(-2*np.log(u1))*np.cos(2*np.pi*u2)
 
 
-def latent_block(seed, ids, start_stream, width):
-    return np.stack(
-        [normal(seed, ids, start_stream + j) for j in range(width)], axis=1
-    ).astype(np.float32)
+def latent_block(seed,ids,start_stream,width):
+    return np.stack([normal(seed,ids,start_stream+j) for j in range(width)],axis=1).astype(np.float32)
 
 
-def source_counts_for_n(n_cells: int) -> np.ndarray:
-    """Hamilton/largest-remainder apportionment of authoritative FULL104 source counts.
-
-    At n=4,553,407 this returns the exact authoritative counts. At stress scale it gives
-    the closest integer composition with totals summing exactly to n_cells.
-    """
-    if n_cells <= 0:
-        raise ValueError("n_cells must be positive")
-    raw = FULL104_SOURCE_COUNTS.astype(np.float64) * (float(n_cells) / FULL104_N_CELLS)
-    base = np.floor(raw).astype(np.int64)
-    remainder = int(n_cells - int(base.sum()))
-    if remainder:
-        frac = raw - base
-        order = np.argsort(-frac, kind="stable")
-        base[order[:remainder]] += 1
-    if int(base.sum()) != int(n_cells):
-        raise RuntimeError("source apportionment does not sum to n_cells")
-    return base
+def source_counts_for_n(n_cells:int):
+    a,trip,q=G.quotas_for_n(n_cells)
+    ops=np.asarray(a['operator_sources'])
+    return np.array([q[[ops[int(op)]==s for op in trip[:,1]]].sum() for s in SOURCE_NAMES],dtype=np.int64)
 
 
-def _coprime_multiplier(n_cells: int, seed: int) -> int:
-    if n_cells == 1:
-        return 1
-    a = int((2 * (seed % 1_000_003) + 1) % n_cells)
-    if a == 0:
-        a = 1
-    while math.gcd(a, n_cells) != 1:
-        a += 1
-        if a >= n_cells:
-            a = 1
-    return a
-
-
-def source_index_for_ids(ids, n_cells: int, seed: int) -> np.ndarray:
-    """Assign exact global source totals via a deterministic bijection of cell indices."""
-    ids = np.asarray(ids, dtype=np.int64)
-    if ids.size and (ids.min() < 0 or ids.max() >= n_cells):
-        raise ValueError("global cell id outside declared population")
-    counts = source_counts_for_n(n_cells)
-    a = _coprime_multiplier(n_cells, seed + 1777)
-    b = int((seed * 104729 + 17) % n_cells)
-    rank = (a * ids + b) % n_cells
-    t0 = int(counts[0])
-    t1 = int(counts[0] + counts[1])
-    return np.where(rank < t0, 0, np.where(rank < t1, 1, 2)).astype(np.int8)
-
-
-def build(root: Path, n_cells: int, shard_size: int, seed: int) -> dict:
-    truth = root / "hidden_truth"
-    truth.mkdir(parents=True, exist_ok=True)
-    source_counts = source_counts_for_n(n_cells)
-    shards = []
-    realised_sources = np.zeros(3, dtype=np.int64)
-    for start in range(0, n_cells, shard_size):
-        stop = min(start + shard_size, n_cells)
-        ids = np.arange(start, stop, dtype=np.uint64)
-        donor_idx = (ids % np.uint64(104)).astype(np.int16)
-        source_ix = source_index_for_ids(ids.astype(np.int64), n_cells, seed)
-        realised_sources += np.bincount(source_ix, minlength=3)
-        operator = (_mix64(ids ^ np.uint64(seed + 991)) % np.uint64(42)).astype(np.int16)
-        path = truth / f"TRUTH_{start:09d}_{stop:09d}.npz"
-        np.savez(
-            path,
-            global_cell_index=ids.astype(np.int64),
-            cell_id=np.array([f"MASTER_{int(i):09d}" for i in ids]),
-            donor_index=donor_idx,
-            source_index=source_ix,
-            operator_index=operator,
-            z_global=latent_block(seed, ids, 10, 4),
-            z_query=latent_block(seed, ids, 20, 2),
-            z_reg_shared=latent_block(seed, ids, 30, 3),
-            z_reg_private=latent_block(seed, ids, 40, 2),
-            technical_latents=latent_block(seed, ids, 50, 3),
-        )
-        shards.append(dict(
-            start=start, stop=stop, cells=stop-start,
-            file=path.name, sha256=sha256_file(path)
-        ))
-    if not np.array_equal(realised_sources, source_counts):
-        raise RuntimeError(
-            f"realised source counts {realised_sources.tolist()} != target {source_counts.tolist()}"
-        )
-    manifest = dict(
-        schema="V73_SHARDED_MASTER_TRUTH_MANIFEST_V2_FULL104_SOURCE_APPORTIONED",
-        seed=seed,
-        n_cells=n_cells,
-        n_donors=104,
-        n_operators=42,
-        source_names=list(SOURCE_NAMES),
-        authoritative_full104_source_counts=dict(zip(SOURCE_NAMES, FULL104_SOURCE_COUNTS.tolist())),
-        source_counts=dict(zip(SOURCE_NAMES, source_counts.tolist())),
-        source_assignment=(
-            "largest-remainder apportionment from authoritative FULL104 counts followed by "
-            "a deterministic bijective permutation of global_cell_index"
-        ),
-        source_assignment_is_shard_invariant=True,
-        donor_assignment_status="PLACEHOLDER_UNIFORM_MODULO__MUST_BE_AUDITED_BEFORE_100K_PROMOTION",
-        operator_assignment_status="PLACEHOLDER_HASHED_42_LEVEL__MUST_BE_AUDITED_FOR_SOURCE_OPERATOR_NESTING_BEFORE_100K_PROMOTION",
-        randomization="stateless SplitMix64 keyed by (seed, global_cell_index, stream)",
-        shard_size_requested=shard_size,
-        shard_size_is_non_scientific=True,
-        shards=shards,
-        truth_firewall="hidden_truth only; observable manifests must never reference this path",
-    )
-    mp = truth / "TRUTH_MANIFEST.json"
-    mp.write_text(json.dumps(manifest, indent=2) + "\n")
+def build(root:Path,n_cells:int,shard_size:int,seed:int)->dict:
+    if n_cells<=0: raise ValueError('n_cells must be positive')
+    truth=root/'hidden_truth'; truth.mkdir(parents=True,exist_ok=True)
+    authority,trip,quotas=G.quotas_for_n(n_cells)
+    authority_sha=G.sha256_file(G.AUTHORITY)
+    pop_summary=G.summary_from_quotas(authority,trip,quotas)
+    source_counts=source_counts_for_n(n_cells)
+    shards=[]; realised_sources=np.zeros(3,dtype=np.int64)
+    realised_donors=np.zeros(authority['n_donors'],dtype=np.int64)
+    realised_ops=np.zeros(authority['n_operators'],dtype=np.int64)
+    for start in range(0,n_cells,shard_size):
+        stop=min(start+shard_size,n_cells); ids=np.arange(start,stop,dtype=np.uint64)
+        donor,operator,source_ix,_,_,_=G.assignments_for_ids(ids.astype(np.int64),n_cells,seed)
+        realised_sources+=np.bincount(source_ix,minlength=3)
+        realised_donors+=np.bincount(donor,minlength=authority['n_donors'])
+        realised_ops+=np.bincount(operator,minlength=authority['n_operators'])
+        path=truth/f'TRUTH_{start:09d}_{stop:09d}.npz'
+        np.savez(path,global_cell_index=ids.astype(np.int64),cell_id=np.array([f'MASTER_{int(i):09d}' for i in ids]),
+                 donor_index=donor,source_index=source_ix,operator_index=operator,
+                 z_global=latent_block(seed,ids,10,4),z_query=latent_block(seed,ids,20,2),
+                 z_reg_shared=latent_block(seed,ids,30,3),z_reg_private=latent_block(seed,ids,40,2),
+                 technical_latents=latent_block(seed,ids,50,3))
+        shards.append(dict(start=start,stop=stop,cells=stop-start,file=path.name,sha256=sha256_file(path)))
+    if not np.array_equal(realised_sources,source_counts): raise RuntimeError('source counts did not reconcile')
+    if realised_donors.tolist()!=pop_summary['donor_counts']: raise RuntimeError('donor counts did not reconcile')
+    if realised_ops.tolist()!=pop_summary['operator_counts']: raise RuntimeError('operator counts did not reconcile')
+    manifest=dict(
+      schema='V73_SHARDED_MASTER_TRUTH_MANIFEST_V3_EMPIRICAL_FULL104_GEOMETRY',seed=seed,n_cells=n_cells,
+      n_donors=authority['n_donors'],n_operators=authority['n_operators'],source_names=list(SOURCE_NAMES),
+      authoritative_full104_source_counts=authority['source_counts'],source_counts=dict(zip(SOURCE_NAMES,source_counts.tolist())),
+      donor_assignment_status='QUALIFIED_EMPIRICAL_READER_FIT_GROUP_APPORTIONMENT',
+      operator_assignment_status='QUALIFIED_EMPIRICAL_SOURCE_OPERATOR_NESTING',
+      population_assignment='hierarchical largest-remainder source quotas then authenticated donor x operator cells; deterministic bijection of global cell identity',
+      source_assignment_is_shard_invariant=True,randomization='stateless SplitMix64 keyed by (seed, global_cell_index, stream)',
+      shard_size_requested=shard_size,shard_size_is_non_scientific=True,shards=shards,
+      empirical_calibration=dict(authority_path=str(G.AUTHORITY),authority_sha256=authority_sha,
+          authority_triplet_payload_sha256=authority['triplets_payload_sha256'],synthetic_population_summary=pop_summary),
+      donor_ids=authority['donor_ids'],operator_ids=authority['operator_ids'],operator_sources=authority['operator_sources'],
+      truth_firewall='hidden_truth only; observable manifests must never reference this path')
+    (truth/'TRUTH_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n')
     return manifest
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--root", required=True)
-    ap.add_argument("--cells", type=int, required=True)
-    ap.add_argument("--shard-size", type=int, default=10000)
-    ap.add_argument("--seed", type=int, default=7302)
-    a = ap.parse_args()
-    m = build(Path(a.root), a.cells, a.shard_size, a.seed)
-    print(json.dumps(dict(status="PASS", cells=m["n_cells"], shards=len(m["shards"]), source_counts=m["source_counts"]), indent=2))
+    ap=argparse.ArgumentParser(); ap.add_argument('--root',required=True); ap.add_argument('--cells',type=int,required=True)
+    ap.add_argument('--shard-size',type=int,default=10000); ap.add_argument('--seed',type=int,default=7302); a=ap.parse_args()
+    m=build(Path(a.root),a.cells,a.shard_size,a.seed)
+    print(json.dumps(dict(status='PASS',cells=m['n_cells'],shards=len(m['shards']),source_counts=m['source_counts'],
+                          donor_assignment_status=m['donor_assignment_status'],operator_assignment_status=m['operator_assignment_status']),indent=2))
 
-
-if __name__ == "__main__":
-    main()
+if __name__=='__main__': main()
