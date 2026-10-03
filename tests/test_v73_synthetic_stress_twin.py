@@ -1,4 +1,5 @@
 from pathlib import Path
+import gzip
 import importlib.util
 import json
 
@@ -9,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TRUTH = ROOT / "scripts/v64/build_v73_sharded_master_truth.py"
 OBS = ROOT / "scripts/v64/build_v73_full104_sharded_observer.py"
 MULTI = ROOT / "scripts/v64/build_v73_paired_multiome_sharded_observer.py"
+FRAG = ROOT / "scripts/v64/build_v73_synthetic_fragments.py"
 EST = ROOT / "scripts/v64/estimate_v73_synthetic_stress_resources.py"
 
 
@@ -67,6 +69,16 @@ def collect_multiome(root):
         assert "z_reg_shared" not in z.files
         assert "technical_latents" not in z.files
     return np.concatenate(ids), np.concatenate(rna, axis=1), np.concatenate(atac, axis=1)
+
+
+def collect_fragment_rows(root):
+    base = root/"observable_raw/PAIRED_MULTIOME_fragments"
+    m = json.loads((base/"SYNTHETIC_FRAGMENT_MANIFEST.json").read_text())
+    rows = []
+    for s in sorted(m["shards"], key=lambda x: x["start"]):
+        with gzip.open(base/s["file"], "rt") as fh:
+            rows.extend(fh.readlines())
+    return rows, m
 
 
 def test_truth_and_full104_observer_are_shard_size_invariant(tmp_path):
@@ -152,27 +164,58 @@ def test_paired_multiome_is_shard_invariant_and_same_cell_coupled(tmp_path):
     assert aa.shape == (256, 192)
 
 
-def test_resource_estimator_covers_stress_and_full_scale():
+def test_fragment_stream_is_logically_shard_invariant_and_truth_blind(tmp_path):
+    T = load(TRUTH, "v73_truth_frag")
+    M = load(MULTI, "v73_multi_frag")
+    G = load(FRAG, "v73_frag")
+    a = tmp_path/"a"
+    b = tmp_path/"b"
+    T.build(a, n_cells=72, shard_size=24, seed=7302)
+    T.build(b, n_cells=72, shard_size=19, seed=7302)
+    M.observe(a, seed=7302)
+    M.observe(b, seed=7302)
+    G.build(a)
+    G.build(b)
+    ra, ma = collect_fragment_rows(a)
+    rb, mb = collect_fragment_rows(b)
+    assert ra == rb
+    assert ma["hidden_truth_read"] is False
+    assert mb["hidden_truth_read"] is False
+    assert ma["total_rows"] == mb["total_rows"] == len(ra)
+    assert ma["total_multiplicity"] == mb["total_multiplicity"]
+    assert len(ra) > 0
+    assert all(len(line.rstrip("\n").split("\t")) == 5 for line in ra[:100])
+
+
+def test_resource_estimator_covers_stress_and_full_scale_and_declares_exclusions():
     E = load(EST, "v73_est")
     for n in (100_000, 500_000, 4_553_407):
         e = E.estimate(n, shard_size=10_000)
         assert e["n_cells"] == n
         assert e["n_shards"] >= 10
         assert e["combined_payload_bytes"] > 0
+        assert e["paired_multiome_payload_bytes"] > 0
         assert e["conservative_peak_working_bytes"] > 0
+        assert e["full_ecosystem_total_is_not_yet_estimated"] is True
+        assert "synthetic ATAC fragments" in e["excluded_unestimated_terms"]
 
 
 def test_truth_firewall_manifest_does_not_expose_truth_path(tmp_path):
     T = load(TRUTH, "v73_truth_firewall")
     O = load(OBS, "v73_obs_firewall")
     M = load(MULTI, "v73_multi_firewall")
+    G = load(FRAG, "v73_frag_firewall")
     root = tmp_path/"x"
     T.build(root, n_cells=120, shard_size=40, seed=7302)
     O.observe(root, seed=7302)
     M.observe(root, seed=7302)
+    G.build(root)
     fm = json.loads((root/"observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json").read_text())
     mm = json.loads((root/"observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json").read_text())
+    gm = json.loads((root/"observable_raw/PAIRED_MULTIOME_fragments/SYNTHETIC_FRAGMENT_MANIFEST.json").read_text())
     assert fm["hidden_truth_path_exposed"] is False
     assert mm["model_facing_output_contains_hidden_truth"] is False
+    assert gm["hidden_truth_read"] is False
     assert "hidden_truth/" not in json.dumps(fm)
     assert "hidden_truth/" not in json.dumps(mm)
+    assert "hidden_truth/" not in json.dumps(gm)
