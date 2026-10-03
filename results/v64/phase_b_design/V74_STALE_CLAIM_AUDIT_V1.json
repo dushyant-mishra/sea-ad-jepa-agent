@@ -1,0 +1,510 @@
+{
+  "schema": "V74_STALE_CLAIM_AUDIT_V1",
+  "date": "2026-10-02",
+  "lane": "V74 LANE 4 -- repository-wide stale-claim audit",
+  "branch": "claude/v74-stale-claim-audit-20261002",
+  "starting_head": "498f56a365f16ff7e8da5446e09175ceebce874f",
+  "head_at_audit": "bc5bb034a2b4a428cfc84a92c6d6bd6bc9922efc",
+  "packaging_note": "assembled after the searches and repairs it describes; the verdict was written before this file was dumped to disk.",
+  "VERDICT": "CONCERN",
+  "one_line": "The retraction had not propagated. Two artifacts still asserted the withdrawn conclusion as a current result, and one of them is the project's first-read Stage-4 closeout -- the same file S109 repaired, one block further down.",
+  "is_this_good_or_bad_news": "Mixed, and caught before any damage. Bad: S109 was not a one-off; the same artifact carried the same withdrawn claim in a second block, and the artifact every citation lands on carried it unqualified. Good: no code and no gate acts on the retracted claim, so nothing computed, frozen or authorised was built on it, and the repaired experiment, its geometry proof and its frozen contract were all already correct.",
+  "what_it_means_for_the_project": "Documentation and authority wording only. No measurement is invalidated, no threshold moves, Stage 4 remains unauthorised and no protected data was opened. What changes is that a reader can no longer take the withdrawn G2 claim as the project's position.",
+  "what_still_stands": "the repaired exact-K curve and its non-monotone result; the geometry verification including its positive control on the defective generator; the V73 frozen pre-execution contract; every world build receipt; the calibration sweeps; the Stage-4 execution authority; and the structural identifiability argument, which is an argument and never depended on a curve.",
+  "found_before_or_after_damage": "BEFORE. Nothing downstream consumed the withdrawn claim.",
+  "classification_counts": {
+    "FALSE_STALE_CLAIM": 12,
+    "SUPERSEDED": 7,
+    "STRUCTURAL_ARGUMENT_ONLY": 5,
+    "HISTORICAL_RETAIN_FOR_RECORD": 3,
+    "CURRENT": 9
+  },
+  "what_was_retracted_and_why": {
+    "defect": "The V1 K-curve generator sampled confound block labels WITH REPLACEMENT via rng.integers(0, K, N_EDGES).",
+    "consequence": "Requested K was only the SIZE OF A FACTOR POOL, not the number of occupied blocks. At K=200 over 200 edges realised occupancy averages 126.6 (115 to 138 over 200 simulations). The V1 K=200 world carried about 127 factors across 200 edges and was NEVER one factor per edge.",
+    "repaired_experiment": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+    "repaired_result": "exact K-occupied balanced partition, realised occupancy equal to requested K at every point, 100 draws at 282 donors. G2 pass rate 0.20, 0.25, 0.40, 0.65, 0.50 at K = 1, 5, 20, 50, 200: NON-MONOTONE. By its pre-committed reading NO protection claim may be made in either direction."
+  },
+  "THE_DISTINCTION_ENFORCED": {
+    "A_EMPIRICAL_STATEMENT": "whether the repaired K experiment showed G2 protection. Status: UNRESOLVED.",
+    "B_STRUCTURAL_IDENTIFIABILITY_ARGUMENT": "that a completely edge-private latent factor loading on both RNA and ATAC can be observationally indistinguishable from a regulatory latent under this observation model. A CONCEPTUAL ARGUMENT. Not an empirical result from V1 or V2, never dependent on either curve, and not to be inflated into a stronger biological claim than it supports.",
+    "where_they_were_blurred": "F01, F05, F06 (V1) and F08 (the closeout receipts block) each presented B as if established by A."
+  },
+  "scope": {
+    "method": "exhaustive over ALL 6,016 git-tracked files at the starting head, via git grep (tracked-file exhaustive, not a directory-filtered search), across sixteen literal claim markers and nine semantic paraphrase markers, then full-tree JSON walks of every candidate artifact.",
+    "markers_literal": [
+      "G2_SENSITIVITY",
+      "SENSITIVITY_CURVE",
+      "monoton",
+      "0.15, 0.15, 0.25, 0.45, 0.55",
+      "contributes nothing",
+      "edge-specific",
+      "EDGE-SPECIFIC",
+      "edge_specific",
+      "one factor per edge",
+      "one-factor-per-edge",
+      "discriminating power",
+      "GOVERNING_INTERPRETATION",
+      "indistinguishable",
+      "limit in principle",
+      "K=200",
+      "K = 200"
+    ],
+    "markers_semantic": [
+      "same statistical object",
+      "structural twin",
+      "nothing to separate",
+      "tautology",
+      "rises monotonic",
+      "responds to SHARING",
+      "no protection claim",
+      "edge count",
+      "safeguard / protection near G2 or confound"
+    ],
+    "directories_listed_exhaustively_not_filtered": [
+      "results/v64/ (90 root JSON artifacts)",
+      "results/v64/phase_b_design/ (72 files: 46 named artifacts + 26 per-seed HIDDEN_CONFOUND_K build receipts, every one opened or classified)",
+      "docs/exec-plans/active/ (3 files)",
+      "docs/agent/ top level"
+    ],
+    "working_tree_state_at_audit": "clean at the starting head; 0 untracked files; no other lane's worktree was read or written.",
+    "absence_statements_are_from_exhaustive_listings": true,
+    "what_was_NOT_searched": "git history message bodies beyond the eight most recent commits, and the contents of binary/NPZ artifacts. Neither can carry a prose claim a reader would encounter first."
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/READING",
+      "verbatim": "G2 responds to SHARED structure across edges, not to cross-modal confounding as such. At K equal to the edge count it passes the confounded world at the rate it passes genuine biology, so it contributes nothing against an edge-specific cross-modal artifact. The V2 hidden-confound rejection rate must not be cited as a safeguard.",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "The K=200 world carried about 127 factors across 200 edges, so 'at K equal to the edge count' names a world this run never built."
+    },
+    {
+      "id": "F02",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/g2_rate_monotone_in_K",
+      "verbatim": "true",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "Non-decreasing across these five numbers, but the numbers come from a factor-pool world. The monotone-convergence inference does not survive."
+    },
+    {
+      "id": "F03",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/g2_rate_at_max_K_converges_on_biology_rate",
+      "verbatim": "true",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "The K=max cell was not the one-factor-per-edge world the convergence test assumed."
+    },
+    {
+      "id": "F04",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/cells/200/edges_per_block",
+      "verbatim": "1.0",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "NOMINAL N_EDGES/K bookkeeping presented without that word. Realised occupancy averaged 126.6 (115 to 138 over 200 simulations); the retained positive-control build records 131. The successor renames the field edges_per_block_nominal and reports realised occupancy beside it."
+    },
+    {
+      "id": "F05",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/degenerate_end_note",
+      "verbatim": "at K equal to the edge count the confounded world is the same statistical object as the planted biology, so a low rejection rate there is a tautology and not a defect",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "True as a STRUCTURAL statement about an exact-K world; FALSE as applied to this file's K=200 world. The same sentence is CURRENT in the repaired V2 artifact."
+    },
+    {
+      "id": "F06",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/what_this_cannot_establish (closing sentence)",
+      "verbatim": "It also cannot rescue the degenerate end of the curve: at K equal to the edge count the world is structurally identical to planted biology, so a low rejection rate there is not a failure of the design but a statement that the two are the same object.",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "Same misapplication as F05."
+    },
+    {
+      "id": "F07",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/status",
+      "verbatim": "COMPLETE",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "Describes the run, not the standing of its conclusion. With no supersession marker anywhere in the file, a reader following a citation met a withdrawn result presented as a finished one."
+    },
+    {
+      "id": "F08",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/receipts/g2_sensitivity_curve/READING",
+      "verbatim": "G2 responds to SHARED structure across edges, not to cross-modal confounding as such. At K equal to the edge count it passes the confounded world at the rate it passes genuine biology, so it contributes nothing against an edge-specific cross-modal artifact. The V2 hidden-confound rejection rate must not be cited as a safeguard.",
+      "repair_applied": "receipts block re-headed via its producer and the closeout regenerated from a clean committed head; every measured field retained verbatim beneath the header.",
+      "note": "S109 RECURRENCE, SAME FILE. S109 repaired /state/THE_GOVERNING_INTERPRETATION_LIMIT and left this block, which restates the withdrawn conclusion verbatim. HIGHEST READER IMPACT of any row here."
+    },
+    {
+      "id": "F09",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/receipts/g2_sensitivity_curve/g2_rate_monotone_in_K",
+      "verbatim": "true",
+      "repair_applied": "receipts block re-headed via its producer and the closeout regenerated from a clean committed head; every measured field retained verbatim beneath the header.",
+      "note": "Machine-readable verdict field with no supersession marker in its block."
+    },
+    {
+      "id": "F10",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/receipts/g2_sensitivity_curve/g2_rate_at_max_K_converges_on_biology_rate",
+      "verbatim": "true",
+      "repair_applied": "receipts block re-headed via its producer and the closeout regenerated from a clean committed head; every measured field retained verbatim beneath the header.",
+      "note": "Same."
+    },
+    {
+      "id": "F11",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/receipts/g2_sensitivity_curve/cells/*/edges_per_block",
+      "verbatim": "200.0, 40.0, 10.0, 4.0, 1.0",
+      "repair_applied": "receipts block re-headed via its producer and the closeout regenerated from a clean committed head; every measured field retained verbatim beneath the header.",
+      "note": "Same defect as F04, mirrored."
+    },
+    {
+      "id": "F12",
+      "classification": "FALSE_STALE_CLAIM",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/receipts (whole inventory) -- OMISSION",
+      "verbatim": "[the receipts inventory contained no entry for V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json or for V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json]",
+      "repair_applied": "both now bound as receipts: g2_sensitivity_curve_REPAIRED_V2 and confound_block_geometry_verification.",
+      "note": "A false absence. The closeout's only K-curve evidence was the withdrawn run, so the omission reinforced the stale claim rather than merely failing to correct it."
+    },
+    {
+      "id": "S01",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "location": "/convergence_test/THIS_TEST_IS_WEAK_AND_IS_NOT_THE_PRIMARY_EVIDENCE",
+      "verbatim": "The PRIMARY evidence is the SHAPE of the curve across all five K values: a monotone rise from near the V2 hidden-confound rate to near the biology rate is unmistakable in a way a single endpoint comparison is not, and the reading below requires monotonicity AND overlap together.",
+      "repair_applied": "supersession header added at the top of the file in this lane; every original field retained verbatim beneath it; pre-annotation SHA-256 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 and original git blob fc5afb7f07c82f58335e5340cda1d8543fa95952 recorded inside the header.",
+      "note": "This is the frozen READING RULE, correct as a rule. Superseded only as a description of this run."
+    },
+    {
+      "id": "S02",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "location": "/design/world_family",
+      "verbatim": "K equal to the edge count makes every edge's factor independent, which is structurally identical to BIOLOGY_POSITIVE.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "The DESIGN INTENT was correct and was never implemented by the V1 executor. The repaired runner implements it exactly. This file's SHA-256 3a3b1edc... is bound by the V1 curve, the V2 curve, the closeout and the V73 frozen contract."
+    },
+    {
+      "id": "S03",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "location": "/design/why_these",
+      "verbatim": "200 is the edge count, the structural twin of biology, and serves as the degenerate end of the curve.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "Same: intended, not realised, in V1."
+    },
+    {
+      "id": "S04",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "location": "/what_this_cannot_establish (closing sentence)",
+      "verbatim": "It also cannot rescue the degenerate end of the curve: at K equal to the edge count the world is structurally identical to planted biology, so a low rejection rate there is not a failure of the design but a statement that the two are the same object.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "Same."
+    },
+    {
+      "id": "S05",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "location": "/convergence_test/THIS_TEST_IS_WEAK_AND_IS_NOT_THE_PRIMARY_EVIDENCE",
+      "verbatim": "a monotone rise from near the V2 hidden-confound rate to near the biology rate is unmistakable in a way a single endpoint comparison is not",
+      "repair_applied": "NOT EDITED in the artifact -- it is reproducible from the sha-bound runner. Guarded instead in the closeout receipt field INHERITED_CONTRACT_TEXT_IS_NOT_A_DESCRIPTION_OF_THIS_RUN.",
+      "note": "The runner writes this frozen sentence into every receipt regardless of outcome, so it appears in a run that was NOT monotone and reads as a description of it."
+    },
+    {
+      "id": "S06",
+      "classification": "SUPERSEDED",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "location": "/g2_rate_at_max_K_converges_on_biology_rate",
+      "verbatim": "true",
+      "repair_applied": "NOT EDITED. Guarded in the closeout receipt field CONVERGENCE_FLAG_ALONE_LICENSES_NOTHING.",
+      "note": "True beside g2_rate_monotone_in_K=false. The frozen reading requires BOTH, so this flag alone licenses nothing; a machine reader taking it alone would get a false impression."
+    },
+    {
+      "id": "S07",
+      "classification": "SUPERSEDED",
+      "file": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+      "location": "lines 250-258, the emitted convergence_test text. QUOTE RECONSTRUCTED from adjacent string-concatenation continuation lines; it is byte-verbatim in the receipts the runner emits, not in a single source line.",
+      "verbatim": "a monotone rise from near the V2 hidden-confound rate to near the biology rate is unmistakable",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "Source of S05. SHA-256 38eb7133... is bound by the V2 curve, the closeout, the V73 contract and the serial-parallel equivalence receipt. Repair belongs in the next runner successor, which must re-freeze its bindings."
+    },
+    {
+      "id": "A01",
+      "classification": "STRUCTURAL_ARGUMENT_ONLY",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "location": "/the_structural_point_that_motivates_it",
+      "verbatim": "A cross-modal factor that varies across metacells within a donor, loads on both modalities of one edge's linked arm, and is drawn INDEPENDENTLY PER EDGE is not merely difficult to distinguish from regulation. It is the same statistical object as the planted biology. No analysis of RNA-ATAC covariation can separate them because there is nothing to separate; what distinguishes them in reality is mechanism and external evidence, not statistics.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "CORRECTLY an argument here -- the field is named 'the structural point that motivates it' and sits in a prospective design, not among results. No repair needed; listed so the argument/measurement boundary is auditable."
+    },
+    {
+      "id": "A02",
+      "classification": "STRUCTURAL_ARGUMENT_ONLY",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/state/THE_GOVERNING_INTERPRETATION_LIMIT/why_in_principle",
+      "verbatim": "a factor that varies across metacells within a donor, loads on both modalities of one edge's linked arm, and is drawn independently per edge is the SAME statistical object as the planted biology. Nothing analysing RNA-ATAC covariation can separate them because there is nothing to separate.",
+      "repair_applied": "already labelled at S109 by the sibling field what_still_stands, which names it an argument and not a measurement. No further repair.",
+      "note": "Retained beneath the UNRESOLVED header added at S109."
+    },
+    {
+      "id": "A03",
+      "classification": "STRUCTURAL_ARGUMENT_ONLY",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "location": "/degenerate_end_note",
+      "verbatim": "at K equal to the edge count the confounded world is the same statistical object as the planted biology, so a low rejection rate there is a tautology and not a defect",
+      "repair_applied": "NOT EDITED. True of this artifact, whose K=200 world realised 200 occupied blocks and whose geometry was recovered from the written bytes.",
+      "note": "An argument, not a measurement. The same sentence is FALSE in V1 (see F05)."
+    },
+    {
+      "id": "A04",
+      "classification": "STRUCTURAL_ARGUMENT_ONLY",
+      "file": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+      "location": "module docstring, lines 13-15",
+      "verbatim": "The degenerate end is a tautology and is labelled as one: at K equal to the edge count, every edge has its own metacell-varying cross-modal factor, which is the same statistical object as the planted biology.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "True of the repaired default path. SHA-bound; see S07."
+    },
+    {
+      "id": "A05",
+      "classification": "STRUCTURAL_ARGUMENT_ONLY",
+      "file": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
+      "location": "comment, lines 296-300. QUOTE RECONSTRUCTED by removing the leading '# ' of each continuation line; no single source line carries it whole.",
+      "verbatim": "K equal to the edge count gives every edge its own factor, which is structurally the same object as the planted biology -- that end of the curve is a tautology, not a failure, and the pre-commitment says so.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "The comment sits above a branch point where the HISTORICAL path does NOT give every edge its own factor. It wants the branch qualification. SHA-256 6a65ffec... is bound by 28 receipts and the V73 frozen contract; a comment is not worth breaking them."
+    },
+    {
+      "id": "H01",
+      "classification": "HISTORICAL_RETAIN_FOR_RECORD",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/state/THE_GOVERNING_INTERPRETATION_LIMIT/statement",
+      "verbatim": "the frozen Stage-4 decision cannot distinguish an EDGE-SPECIFIC cross-modal artifact from regulation, and this is a limit in principle rather than a defect to repair.",
+      "repair_applied": "none needed; headed at S109 by STATUS='UNRESOLVED...' and RETAINED_ORIGINAL_CLAIM_BELOW_FOR_THE_RECORD=true in the same block, which precede it in insertion order.",
+      "note": null
+    },
+    {
+      "id": "H02",
+      "classification": "HISTORICAL_RETAIN_FOR_RECORD",
+      "file": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "location": "/state/THE_GOVERNING_INTERPRETATION_LIMIT/evidence",
+      "verbatim": "V64_STAGE4_G2_SENSITIVITY_CURVE_V1. As the confound becomes less shared across edges the G2 pass rate rises monotonically 0.15, 0.15, 0.25, 0.45, 0.55 at K = 1, 5, 20, 50, 200, and at K=200 its interval overlaps the rate at which G2 passes genuine biology. G1 and G3 pass in 100 percent of draws at every K, so ALL_FIVE equals the G2 rate throughout and the entire discriminating power of the five-gate decision against this family was one gate responding to SHARING.",
+      "repair_applied": "none needed; headed at S109.",
+      "note": "This is the only place in the repository stating 'the entire discriminating power of the five-gate decision'. It is correctly carried as a withdrawn claim."
+    },
+    {
+      "id": "H03",
+      "classification": "HISTORICAL_RETAIN_FOR_RECORD",
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "location": "/interpretation_fixed_in_advance/G2_pass_rate_at_K_equal_to_edge_count_matches_the_biology_rate_of_0.62",
+      "verbatim": "confirms the structural argument: an edge-specific cross-modal factor is indistinguishable from regulation, and G2 contributes nothing against it. The apparent protection measured in V2 is an artifact of how I built that confound and must not be cited as a safeguard.",
+      "repair_applied": "NOT EDITED. This file's SHA-256 is bound by at least one frozen contract; editing it would break a binding that records what actually executed. Recorded here instead.",
+      "note": "A CONDITIONAL reading rule frozen before any draw, not a result. The branch the repaired curve actually triggered is the sibling G2_pass_rate_is_non_monotonic_in_K, which says no protection claim may be made in either direction. Correct as frozen; must not be quoted as a conclusion."
+    }
+  ],
+  "current_and_correctly_stated": [
+    {
+      "file": "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json",
+      "why": "Recovers the partition from the written ATAC bytes rather than trusting any field the generator wrote, and carries the HISTORICAL sampling-with-replacement generator as its positive control, where it records realised_occupied_factors=131 against a requested 200. This is the evidence that establishes the defect."
+    },
+    {
+      "file": "results/v64/phase_b_design/V73_STAGE4_G2_REPAIRED_PREEXECUTION_CONTRACT_V1.json",
+      "why": "States the supersession scope correctly: 'V1 remains valid only as a measurement of the historical sampling-with-replacement factor-pool generator. It is superseded for claims about exact-K partition behavior or a one-factor-per-edge K=200 endpoint.'"
+    },
+    {
+      "file": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "why": "READING is correct and complete: 'the G2 pass rate is NOT monotone in K. The gate responds to something neither hypothesis predicts and no protection claim may be made in either direction until it is understood.' Two inherited fields are flagged at S05 and S06."
+    },
+    {
+      "file": "results/v64/phase_b_design/V64_STAGE4_SYNTHETIC_WORLDS_BUILD_V1.json plus 26 per-seed HIDDEN_CONFOUND_K build receipts",
+      "why": "All 27 label partition_semantics explicitly: 25 EXACT_K_OCCUPIED_BALANCED_BLOCKS with realised_occupied_factors equal to requested K, and exactly one HISTORICAL_SAMPLING_WITH_REPLACEMENT at requested 200 / realised 131, which is the deliberate positive control."
+    },
+    {
+      "file": ".github/workflows/v73-stage4-kcurve-runner-successor.yml, tests/test_v73_stage4_kcurve_runner_successor.py, tests/test_v73_stage4_preexecution_gates.py",
+      "why": "The tests assert the runner writes the V2 artifact and NOT the V1 path, and that the frozen contract names V1 as preserved. They enforce the supersession rather than depending on the withdrawn claim."
+    },
+    {
+      "file": "results/v64/phase_b_design/V64_STAGE4_CALIBRATION_SWEEP_V2.json",
+      "why": "Reports the 0.23 and 0.10 hidden-confound rejection rates without claiming they are a safeguard; its what_this_cannot_establish is intact."
+    },
+    {
+      "file": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json, V64_PHASE_B_DECISION_STATE_V3.json, V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V1/V2/V3.json",
+      "why": "Their 'edge-specific' and 'indistinguishable' occurrences are unrelated uses: the admissible control distribution and arm asymmetry respectively. No G2 protection claim appears."
+    },
+    {
+      "file": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json, docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V64_TARGET_ARCHITECTURE_EXACT_CONTROLS.md, docs/agent/JEPA_HANDOFF_STATE_20260930_V64.json, docs/agent/JEPA_V64_TAKEOVER_COMMANDS_20260930.md",
+      "why": "The current first-read handoff set predates the V1 curve (2026-09-30 vs 2026-10-02). Its only Stage-4 statements are governance ('stage4': 'NOT_AUTHORISED'). Its one 'edge-specific' use is 'edge-specific donor support' in the realism simulator's open-axis list, unrelated to this claim family."
+    },
+    {
+      "file": "docs/agent/ACTIVE_STATE.md",
+      "why": "Contains no V64, V67, V73 or Stage-4 G2 content at all; its newest entry is the 2026-09-03 governance overlay. It cannot carry this stale claim. It is nonetheless months behind the live state -- see the recommendation."
+    }
+  ],
+  "executable_contradiction": {
+    "executable_contradiction_found": false,
+    "what_was_checked": [
+      "git grep 'integers(0, *K' across the whole tree: one hit, scripts/v64/build_stage4_synthetic_worlds_v1.py:317.",
+      "That hit is reached only when world == 'HIDDEN_CONFOUND' (where K=1 and the two constructions are semantically identical -- one factor behind every edge) or when the explicit _HISTORICAL_PARTITION flag is set, which exists to build the geometry verifier's positive control. The default HIDDEN_CONFOUND_K path calls _balanced_confound_partition.",
+      "The branch comment states its own reason: routing the canonical world through the new partition would shift the RNG stream and change all three shard digests, silently invalidating every receipt describing the canonical four, for no scientific gain.",
+      "The runner computes monotonicity live at line 194 and branches on it at 202-213; no verdict is hard-coded.",
+      "No gate, threshold, alpha, equivalence margin or acceptance criterion anywhere reads the V1 result. V73_STAGE4_G2_REPAIRED_PREEXECUTION_CONTRACT_V1 carries S102 OPEN with the rule that the curve 'must not define or tune the final Stage-4 G2 statistic, alpha, confidence level, equivalence margin or biological acceptance threshold'.",
+      "The CI workflow runs py_compile and two pytest files only."
+    ],
+    "conclusion": "The defect is confined to prose and to two machine-readable verdict fields. Nothing computed, frozen or authorised was built on the withdrawn claim."
+  },
+  "first_encountered_artifacts": {
+    "why_this_section_exists": "A stale claim in a closeout or state document does far more damage than one buried in a superseded receipt, because it is what an auditor reads first and may be all they read.",
+    "tier_1_first_encountered": [
+      {
+        "artifact": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json -> the 2026-09-30 V64 handoff set",
+        "affected": false,
+        "note": "Predates the V1 curve. Clean."
+      },
+      {
+        "artifact": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+        "affected": true,
+        "note": "AFFECTED, AND IT WAS THE S109 FILE. S109 repaired its state block and left its receipts block asserting the same withdrawn conclusion verbatim, with no entry for the repaired experiment anywhere in the inventory. Rows F08-F12. REPAIRED IN THIS LANE."
+      },
+      {
+        "artifact": "docs/agent/ACTIVE_STATE.md",
+        "affected": false,
+        "note": "Carries no V64 content at all. Clean on this claim family, but it is the project's nominal state document and its newest entry is 2026-09-03, so it is silent rather than correct."
+      }
+    ],
+    "tier_2_cited_by_name_so_a_reader_lands_there": [
+      {
+        "artifact": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+        "affected": true,
+        "note": "AFFECTED, HIGH IMPACT. The closeout, the V73 contract and the V2 artifact all name this file, so every trail ends here, and it carried no supersession marker at all. Rows F01-F07. REPAIRED IN THIS LANE."
+      }
+    ],
+    "tier_3_prospective_and_frozen": [
+      {
+        "artifact": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+        "affected": true,
+        "note": "Design intent correct, never implemented by V1. SHA-bound by four artifacts, so recorded rather than edited. Rows S02-S04, A01, H03."
+      }
+    ]
+  },
+  "files_changed_by_this_lane": [
+    {
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "change": "supersession header added; all 24 original fields retained verbatim",
+      "sha256_before": "86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3",
+      "sha256_after": "107f304b1a76fd9700ed9f32ffa6a325c0b1d73696d7c0b23c4ec301f82a3aa5"
+    },
+    {
+      "path": "scripts/v64/build_stage4_executor_closeout_v1.py",
+      "change": "new superseded_v1_curve_receipt() and repaired_v2_curve_receipt() helpers; geometry verification bound as a receipt",
+      "sha256_after": "8d77c0ae9b08ddd4bdce927a846dd40534673ed1fd6819aedb10ed90dc49fb40"
+    },
+    {
+      "path": "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json",
+      "change": "regenerated from the edited producer at a clean committed head; receipts block re-headed, repaired curve and geometry verification now bound",
+      "sha256_before": "d7150c77d6593046e04ec2e35a6cb681a12405595f659a6711810ad224f0f91b",
+      "sha256_after": "90bec73bc9d92ffed3b28852b63f49a9a1c0965f66ca46e276ad7030df7a18e2"
+    },
+    {
+      "path": "results/v64/phase_b_design/V74_STALE_CLAIM_AUDIT_V1.json",
+      "change": "this audit artifact (new)",
+      "sha256_after": "SELF__COMPUTED_AFTER_WRITE__SEE_HANDBACK"
+    }
+  ],
+  "files_deliberately_NOT_changed": [
+    {
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+      "reason": "SHA-256 3a3b1edc... bound by V1, V2, the closeout and the V73 frozen contract"
+    },
+    {
+      "path": "scripts/v64/build_stage4_synthetic_worlds_v1.py",
+      "reason": "SHA-256 6a65ffec... bound by 28 build receipts and the V73 frozen contract"
+    },
+    {
+      "path": "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py",
+      "reason": "SHA-256 38eb7133... bound by V2, the closeout, the V73 contract and the serial-parallel equivalence receipt"
+    },
+    {
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "reason": "reproducible from the sha-bound runner; annotating it would break that reproduction"
+    },
+    {
+      "path": "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json",
+      "reason": "CURRENT and correct; SHA-256 795f8b2d... bound by the V73 contract"
+    }
+  ],
+  "self_audit": [
+    {
+      "id": "S110",
+      "finding": "My first instinct was to annotate every affected artifact in place, including the pre-commitment and the V2 curve. That would have broken four frozen SHA-256 bindings and made the V2 artifact non-reproducible from its own sha-bound runner -- trading a visible untidiness for a falsified record, which is the exact failure the project's provenance rule names.",
+      "caught": "BEFORE any such edit. I resolved bindings first (git grep on each digest) and only then chose what was editable.",
+      "resolution": "Only two files were edited: V1, whose digest is bound in exactly one place that I then regenerated, and the closeout, whose digest is bound nowhere. Everything else is recorded, not touched.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "S111",
+      "finding": "Annotating V1 in place still changes the bytes of a historical measurement record, which the project's repair rule would normally route to a parallel authenticated view instead.",
+      "caught": "At design time.",
+      "resolution": "Accepted deliberately and bounded: V1 is the file every citation lands on, so a sibling notice would not reach the reader this lane exists to protect. The pre-annotation SHA-256 and the original git blob are recorded inside the annotation and in this artifact, the original blob is unchanged in git history, and the annotation script asserts field-by-field that no original value was altered.",
+      "status": "CLOSED_WITH_DISSENT_PRESERVED",
+      "dissent": "A reviewer who holds that measurement records are immutable should revert the V1 edit and publish the header as a sibling notice. The audit rows stand either way."
+    },
+    {
+      "id": "S112",
+      "finding": "My repair of the closeout's V2 receipt adds interpretation (CONVERGENCE_FLAG_ALONE_LICENSES_NOTHING) that is NOT present in the V2 artifact itself. A reader of the artifact alone still meets the bare flag beside a contract sentence asserting a monotone rise.",
+      "caught": "During the repair.",
+      "resolution": "NOT CLOSABLE BY THIS LANE. The fix belongs in the runner, whose SHA-256 is bound by four artifacts including the frozen V73 pre-execution contract. Recorded as rows S05-S07 and carried into the recommendation.",
+      "status": "OPEN"
+    },
+    {
+      "id": "S113",
+      "finding": "This lane's own absence claims could be false in the way the project has been bitten by before -- a keyword-filtered search reported as proof of absence.",
+      "caught": "Before writing any absence statement.",
+      "resolution": "Every absence here rests on git grep over all 6,016 tracked files plus full directory listings of results/v64/, results/v64/phase_b_design/ and docs/exec-plans/active/, and the SCOPE block states the filters used and what was NOT searched.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "S114",
+      "finding": "I classified F02 (g2_rate_monotone_in_K=true in V1) as a FALSE stale claim although the five V1 numbers really are non-decreasing, so the field is arithmetically true of its own data.",
+      "caught": "While writing the row.",
+      "resolution": "Kept as FALSE_STALE_CLAIM, with the arithmetic truth stated in the row's note. The field's entire function in this artifact is to support the convergence reading, and in an unlabelled file it was read as a property of an exact-K curve. A reviewer may prefer SUPERSEDED; the verbatim text and the reasoning are both recorded so the call is auditable rather than hidden.",
+      "status": "CLOSED_WITH_DISSENT_PRESERVED"
+    },
+    {
+      "id": "S115",
+      "finding": "Two rows (S07, A05) labelled their quote 'verbatim' when the text does not appear whole on any single source line: one is split across Python string-concatenation continuations, the other across '# ' comment prefixes. A verification pass over all 26 quoted strings against the starting head flagged exactly these two.",
+      "caught": "BEFORE handback, by a check I wrote specifically to try to falsify my own 'verbatim' label rather than to confirm it.",
+      "resolution": "Both rows now say the quote is RECONSTRUCTED and from which lines. The other 24 quotes verify byte-for-byte against git show at the starting head after whitespace normalisation.",
+      "status": "CLOSED"
+    }
+  ],
+  "recommended_next_action": {
+    "first": "Runner successor that stops emitting the frozen 'a monotone rise ... is unmistakable' sentence into receipts whose result is non-monotone, and that writes an explicit 'this flag alone licenses nothing' guard beside g2_rate_at_max_K_converges_on_biology_rate. That closes S112, which this lane could not close, and requires re-freezing the V73 bindings.",
+    "second": "Decide whether the empirical question is worth resolving at all. At 20 draws per cell the K=50 and K=200 Wilson intervals overlap heavily; separating 0.65 from 0.50 needs materially more draws. If it is not worth the compute, record that the empirical question is CLOSED AS UNRESOLVED-BY-CHOICE rather than leaving it permanently open.",
+    "third": "ACTIVE_STATE.md is the project's nominal state document and its newest entry is 2026-09-03. It is clean on this claim family only because it says nothing about anything after that date. A state document that is silent is not the same as one that is correct, and it is the second thing the agent map tells a reader to open."
+  },
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "training": "OFF",
+    "morabito": "PROTECTED",
+    "recoverability_test": "SEALED",
+    "S102": "OPEN"
+  },
+  "real_substrate_read": false,
+  "computed_correspondence_values": 0,
+  "producer_sha256": "274ccfe1cfecee5c96a20e00b2179ee8ae69a1672643459888491eb4df53f328"
+}

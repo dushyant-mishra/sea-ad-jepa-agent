@@ -2,11 +2,9 @@
   "schema": "V67_STAGE4_EXECUTOR_CLOSEOUT_V1",
   "date": "2026-10-01",
   "packaging_note": "assembled AFTER the runs it describes. This is post-hoc packaging of prospective runs, not itself a prospective artifact.",
-  "head_commit": "80cb508b6986567b86da3502c732c00b7fa3a920",
-  "worktree_clean_at_assembly": false,
-  "uncommitted_at_assembly": [
-    "M scripts/v64/build_stage4_executor_closeout_v1.py"
-  ],
+  "head_commit": "bc5bb034a2b4a428cfc84a92c6d6bd6bc9922efc",
+  "worktree_clean_at_assembly": true,
+  "uncommitted_at_assembly": [],
   "artifacts": {
     "1_s81_repair_verifier": {
       "role": "recomputes 17 consumer-semantics gates from the artifacts, not from JSON restatements",
@@ -303,7 +301,14 @@
       "sha256": "b05f9eee9f3a426e1f5aee42710103226c240da5a0548cc8e39927c8802f5328",
       "git_blob_at_head": "97a5d9069bbbe26cec7b9d2400615240925a33e2"
     },
-    "g2_sensitivity_curve": {
+    "g2_sensitivity_curve_SUPERSEDED_V1": {
+      "SUPERSEDED_DO_NOT_CITE_AS_A_CURRENT_RESULT": "This receipt describes the HISTORICAL sampling-with-replacement generator. Block labels were drawn as rng.integers(0, K, N_EDGES), so requested K was only the SIZE OF A FACTOR POOL. At K=200 over 200 edges realised occupancy averages 126.6, and the retained positive-control build records 131. The K=200 endpoint was never one factor per edge.",
+      "WITHDRAWN_FIELDS": "READING, g2_rate_monotone_in_K, g2_rate_at_max_K_converges_on_biology_rate and every cells.*.edges_per_block value. edges_per_block is NOMINAL N_EDGES/K bookkeeping, not realised occupancy.",
+      "superseded_by": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json, recorded beside this block as g2_sensitivity_curve_REPAIRED_V2. Its G2 pass rate is NON-MONOTONE -- 0.20, 0.25, 0.40, 0.65, 0.50 -- so by the pre-committed reading no protection claim may be made in either direction.",
+      "empirical_status_now": "UNRESOLVED. Whether G2 protects against edge-specific cross-modal confounding is not settled by either curve.",
+      "structural_argument_is_separate": "that a completely edge-private latent loading on both RNA and ATAC can be observationally indistinguishable from a regulatory latent is a CONCEPTUAL ARGUMENT. It never depended on either curve and is not an empirical result.",
+      "annotated_in_place": "the V1 artifact now carries this supersession in its own bytes; its pre-annotation SHA-256 was 86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3 at git blob fc5afb7f07c82f58335e5340cda1d8543fa95952, and nothing was deleted.",
+      "RETAINED_MEASURED_FIELDS_BELOW": true,
       "executes_precommitment": {
         "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
         "sha256": "3a3b1edc5322f77dbb8c7006794a8ae3841db9f338eaf24e1e507c5d1c673079"
@@ -422,8 +427,167 @@
       "canonical_state_verified": true,
       "status": "COMPLETE",
       "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
-      "sha256": "86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3",
-      "git_blob_at_head": "fc5afb7f07c82f58335e5340cda1d8543fa95952"
+      "sha256": "107f304b1a76fd9700ed9f32ffa6a325c0b1d73696d7c0b23c4ec301f82a3aa5",
+      "git_blob_at_head": "c660d1cf2ed3883167afd224dc9c3ab99a1c49fc"
+    },
+    "g2_sensitivity_curve_REPAIRED_V2": {
+      "WHAT_THIS_SETTLES": "nothing in either direction. The pass rate is 0.20, 0.25, 0.40, 0.65, 0.50 at K = 1, 5, 20, 50, 200: NON-MONOTONE. By the pre-committed reading no protection claim may be made either way, and the Wilson intervals at K=50 and K=200 overlap too heavily to distinguish 0.65 from 0.50 at 20 draws per cell.",
+      "CONVERGENCE_FLAG_ALONE_LICENSES_NOTHING": "g2_rate_at_max_K_converges_on_biology_rate is true below, but the frozen reading requires monotonicity AND overlap together, and monotonicity failed. The overlap test is weak by construction: at 20 draws against a 25-of-40 reference it fails only below about 3 of 20 or at 20 of 20.",
+      "INHERITED_CONTRACT_TEXT_IS_NOT_A_DESCRIPTION_OF_THIS_RUN": "the V2 artifact's convergence_test block still carries the frozen sentence 'a monotone rise ... is unmistakable'. That is the pre-committed READING RULE, written by the runner into every receipt it emits, not a statement about this run, which was not monotone.",
+      "empirical_status": "UNRESOLVED",
+      "structural_argument_is_separate_and_is_not_a_measurement": "that a completely edge-private latent loading on both RNA and ATAC can be observationally indistinguishable from a regulatory latent is a CONCEPTUAL ARGUMENT under this observation model. It never depended on either curve.",
+      "MEASURED_FIELDS_BELOW": true,
+      "executes_precommitment": {
+        "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_PRECOMMIT_V1.json",
+        "sha256": "3a3b1edc5322f77dbb8c7006794a8ae3841db9f338eaf24e1e507c5d1c673079"
+      },
+      "historical_v1_preserved": true,
+      "historical_v1_scope": "V1 remains a measurement of the sampling-with-replacement factor-pool generator and is not an exact-K partition curve",
+      "S102_status": "OPEN__CURVE_CHARACTERISES_HISTORICAL_EXECUTOR_G2_ONLY",
+      "cells": {
+        "1": {
+          "K": 1,
+          "edges_per_block_nominal": 200.0,
+          "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+          "realised_occupied_factors": 1,
+          "block_size_min": 200,
+          "block_size_max": 200,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 4,
+          "g2_pass_rate": 0.2,
+          "g2_wilson95": [
+            0.0807,
+            0.416
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.2,
+          "delta_median": 0.5786060574920406,
+          "delta_ratio_to_biology": 1.0165,
+          "control_vs_control_median": 0.012658641984391587,
+          "failures": []
+        },
+        "5": {
+          "K": 5,
+          "edges_per_block_nominal": 40.0,
+          "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+          "realised_occupied_factors": 5,
+          "block_size_min": 40,
+          "block_size_max": 40,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 5,
+          "g2_pass_rate": 0.25,
+          "g2_wilson95": [
+            0.1119,
+            0.4687
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.25,
+          "delta_median": 0.5545562868368281,
+          "delta_ratio_to_biology": 0.9743,
+          "control_vs_control_median": 0.007847630616852563,
+          "failures": []
+        },
+        "20": {
+          "K": 20,
+          "edges_per_block_nominal": 10.0,
+          "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+          "realised_occupied_factors": 20,
+          "block_size_min": 10,
+          "block_size_max": 10,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 8,
+          "g2_pass_rate": 0.4,
+          "g2_wilson95": [
+            0.2188,
+            0.6134
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.4,
+          "delta_median": 0.5543402920449845,
+          "delta_ratio_to_biology": 0.9739,
+          "control_vs_control_median": 0.005731747696496698,
+          "failures": []
+        },
+        "50": {
+          "K": 50,
+          "edges_per_block_nominal": 4.0,
+          "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+          "realised_occupied_factors": 50,
+          "block_size_min": 4,
+          "block_size_max": 4,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 13,
+          "g2_pass_rate": 0.65,
+          "g2_wilson95": [
+            0.4329,
+            0.8188
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.65,
+          "delta_median": 0.5542038795556119,
+          "delta_ratio_to_biology": 0.9737,
+          "control_vs_control_median": 0.0029686340903412162,
+          "failures": []
+        },
+        "200": {
+          "K": 200,
+          "edges_per_block_nominal": 1.0,
+          "partition_semantics": "EXACT_K_OCCUPIED_BALANCED_BLOCKS",
+          "realised_occupied_factors": 200,
+          "block_size_min": 1,
+          "block_size_max": 1,
+          "draws_attempted": 20,
+          "draws_succeeded": 20,
+          "draws_failed": 0,
+          "g2_pass_count": 10,
+          "g2_pass_rate": 0.5,
+          "g2_wilson95": [
+            0.2993,
+            0.7007
+          ],
+          "resolution": "RESOLVED",
+          "g1_pass_rate": 1.0,
+          "g3_pass_rate": 1.0,
+          "all_five_pass_rate": 0.5,
+          "delta_median": 0.5543224753099576,
+          "delta_ratio_to_biology": 0.9739,
+          "control_vs_control_median": 0.004016461855300669,
+          "failures": []
+        }
+      },
+      "g2_rate_monotone_in_K": false,
+      "g2_rate_at_max_K_converges_on_biology_rate": true,
+      "READING": "the G2 pass rate is NOT monotone in K. The gate responds to something neither hypothesis predicts and no protection claim may be made in either direction until it is understood.",
+      "primary_evidence": "the shape of the G2 pass rate across the five K values",
+      "status": "COMPLETE",
+      "path": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "sha256": "14eed61c5a37aa7cdda6192a6875b890c63fe09b8fa1559709852ce69af918da",
+      "git_blob_at_head": "7045fb5b965a607fa9018902e1eaa9890b709131"
+    },
+    "confound_block_geometry_verification": {
+      "why": "S99. A generator reporting its own block count is reporting bookkeeping. This recovers the partition from the ATAC bytes that were written, by projecting out depth and clustering the linked-interval profiles, so no field the generator wrote is trusted.",
+      "all_K_recovered_exactly": true,
+      "ALL_REPAIRED_K_GEOMETRY_QUALIFIED": true,
+      "status": "PASS",
+      "path": "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json",
+      "sha256": "795f8b2d7942228fe1485504624ef2402546c4b737723d2499af612dfccf3e62",
+      "git_blob_at_head": "2d775c9eb108a881ff18f26891ff067cbae80687"
     },
     "world_seed_robustness": {
       "seed_bases": [
@@ -539,5 +703,5 @@
   },
   "end_state": "EXECUTOR_IMPLEMENTED_AND_BOUND__S81_CLOSED__G16_G17_EVIDENCE_PRESENT__PIPELINE_QUALIFIED_END_TO_END__STAGE4_STILL_NOT_AUTHORIZED__CORRESPONDENCE_UNOPENED",
   "computed_correspondence_values": 0,
-  "producer_sha256": "1809d1f4ade546dd9b6c510586b163a20c9502a156029c4d7ac7ae1ebc166539"
+  "producer_sha256": "8d77c0ae9b08ddd4bdce927a846dd40534673ed1fd6819aedb10ed90dc49fb40"
 }
