@@ -1,0 +1,95 @@
+name: V73 synthetic stress twin
+
+on:
+  pull_request:
+    paths:
+      - 'results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_V1.json'
+      - 'results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_1_SOURCE_COMPOSITION.json'
+      - 'results/v64/V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_2_FRAGMENT_INTEGRITY.json'
+      - 'results/v64/V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_V1.json'
+      - 'results/v64/V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_AMENDMENT_1_SAMPLED_QC.json'
+      - 'results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json'
+      - 'results/v64/V73_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V1.json'
+      - 'results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part*.txt'
+      - 'results/v64/calibration/V73_FULL104_RNA_QC_50K.part*.txt'
+      - 'scripts/v64/v73_full104_population_geometry.py'
+      - 'scripts/v64/v73_full104_qc_calibration.py'
+      - 'scripts/v64/build_v73_sharded_master_truth.py'
+      - 'scripts/v64/build_v73_full104_sharded_observer.py'
+      - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
+      - 'scripts/v64/build_v73_synthetic_fragments.py'
+      - 'scripts/v64/validate_v73_fragment_byte_linkage.py'
+      - 'scripts/v64/estimate_v73_synthetic_stress_resources.py'
+      - 'scripts/v64/build_v73_full104_empirical_calibration_authority.py'
+      - 'scripts/v64/validate_v73_real_vs_synthetic_calibration.py'
+      - 'scripts/v64/validate_v73_stress_promotion_readiness.py'
+      - 'tests/test_v73_population_geometry_authority.py'
+      - 'tests/test_v73_synthetic_stress_twin.py'
+      - 'tests/test_v73_fragment_byte_linkage.py'
+      - 'tests/test_v73_full104_empirical_calibration.py'
+      - 'tests/test_v73_real_vs_synthetic_calibration.py'
+      - 'tests/test_v73_stress_promotion_readiness.py'
+      - '.github/workflows/v73-synthetic-stress-twin.yml'
+  workflow_dispatch:
+
+jobs:
+  stress-twin-ci:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest numpy
+      - name: Compile producers and calibration tools
+        run: |
+          python -m py_compile scripts/v64/v73_full104_population_geometry.py
+          python -m py_compile scripts/v64/v73_full104_qc_calibration.py
+          python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
+          python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
+          python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
+          python -m py_compile scripts/v64/build_v73_synthetic_fragments.py
+          python -m py_compile scripts/v64/validate_v73_fragment_byte_linkage.py
+          python -m py_compile scripts/v64/estimate_v73_synthetic_stress_resources.py
+          python -m py_compile scripts/v64/build_v73_full104_empirical_calibration_authority.py
+          python -m py_compile scripts/v64/validate_v73_real_vs_synthetic_calibration.py
+          python -m py_compile scripts/v64/validate_v73_stress_promotion_readiness.py
+      - name: Run shard-invariance, fragment-integrity and empirical-calibration tests
+        run: |
+          pytest -q tests/test_v73_population_geometry_authority.py
+          pytest -q tests/test_v73_synthetic_stress_twin.py
+          pytest -q tests/test_v73_fragment_byte_linkage.py
+          pytest -q tests/test_v73_full104_empirical_calibration.py
+          pytest -q tests/test_v73_real_vs_synthetic_calibration.py
+          pytest -q tests/test_v73_stress_promotion_readiness.py
+      - name: Build 2000-cell calibrated smoke and prove only 100K stress can open
+        run: |
+          rm -rf /tmp/v73_stress_smoke
+          python scripts/v64/build_v73_sharded_master_truth.py --root /tmp/v73_stress_smoke --cells 2000 --shard-size 333 --seed 7302
+          python scripts/v64/build_v73_full104_sharded_observer.py --root /tmp/v73_stress_smoke --seed 7302
+          python scripts/v64/build_v73_paired_multiome_sharded_observer.py --root /tmp/v73_stress_smoke --seed 7302
+          python scripts/v64/build_v73_synthetic_fragments.py --root /tmp/v73_stress_smoke
+          python scripts/v64/validate_v73_fragment_byte_linkage.py --root /tmp/v73_stress_smoke --out /tmp/v73_fragment_integrity.json
+          python scripts/v64/estimate_v73_synthetic_stress_resources.py --cells 100000 --shard-size 10000 --measure-root /tmp/v73_stress_smoke --out /tmp/v73_resource.json
+          python scripts/v64/validate_v73_stress_promotion_readiness.py --root /tmp/v73_stress_smoke --resource-receipt /tmp/v73_resource.json --out /tmp/v73_readiness.json
+          python - <<'PY'
+          import json
+          f=json.load(open('/tmp/v73_fragment_integrity.json'))
+          assert f['status']=='PASS'
+          assert f['compressed_sha256_recomputed_from_bytes']
+          assert f['barcode_multiplicity_reconciled_to_multiome']
+          x=json.load(open('/tmp/v73_readiness.json'))
+          assert x['status']=='READY_FOR_100K_STRESS_ONLY'
+          assert x['authorized_scale']=='100K_STRESS_ONLY'
+          assert not x['blockers']
+          assert x['checks']['population_authority_qualified']
+          assert x['checks']['sampled_qc_authority_qualified']
+          assert x['checks']['truth_binds_population_authority']
+          assert x['checks']['rna_binds_qc_authority']
+          assert x['checks']['fragment_byte_linkage_qualified']
+          assert '500K_STRESS' in x['explicitly_not_authorized']
+          assert 'FULL_4553407' in x['explicitly_not_authorized']
+          assert 'TRAINING' in x['explicitly_not_authorized']
+          print(json.dumps(x, indent=2))
+          PY

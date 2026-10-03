@@ -1,0 +1,117 @@
+{
+  "schema": "V73_FULL104_EMPIRICAL_CALIBRATION_CONTRACT_V1",
+  "date": "2026-10-02",
+  "status": "FROZEN_REQUIREMENTS__AUTHORITY_EXPORT_PENDING",
+  "purpose": "Require the synthetic stress/full twin to reproduce empirical FULL104 population, observation, missingness, and QC structure rather than only headline dimensions.",
+  "scientific_rule": "Synthetic biological truth may be planted, but observation/noise/coverage/population geometry must be calibrated from authenticated real-data summaries before 100K promotion.",
+  "historical_authority_lineage": {
+    "recovery_commit": "79feb8d6e38d9660faae8aebc17bfad8dd24477e",
+    "recovery_document": "docs/agent/V5_FULL104_HISTORICAL_PRODUCTION_RECOVERY_20260912.md",
+    "recorded_level4_commit": "63cbc86",
+    "recorded_level5_commit": "825f5a5",
+    "recorded_cells": 4553407,
+    "recorded_donors": 104,
+    "recorded_groups": 1400,
+    "recorded_operators": 42,
+    "recorded_addresses": 41238,
+    "recorded_source_counts": {
+      "SEA_AD": 4118213,
+      "NPH52": 236476,
+      "HVS": 198718
+    },
+    "recorded_structural_missing_cells": 551147,
+    "recorded_structural_missing_fraction": 0.12104,
+    "recorded_frozen_hashes": {
+      "donor_state.csv": "b6d53024",
+      "donor_split.csv": "52617010",
+      "donor_eligible.csv": "222c478a",
+      "operator_map.csv": "51e389ff",
+      "connectivity.csv": "46f0f134",
+      "04_frozen_splits_v1/split_manifest.json": "0e7d121a",
+      "fake_gene_holdout.json": "d78af88d",
+      "05_joint_embeddings_v1/joint_embeddings_manifest.json": "1b90e0f9",
+      "06_operator_recoverability_v1/operator_recoverability.json": "ec482692"
+    },
+    "hash_note": "Prefixes copied from the historical recovery record. They are lineage evidence, not re-computed hashes in this environment; the original compact CSV bytes were not found in the preserved Git history available to this chat."
+  },
+  "required_population_export": {
+    "format": "CSV, one row per authenticated FULL104 group",
+    "required_columns": [
+      "group_id",
+      "donor_id",
+      "source",
+      "operator_id",
+      "cell_count"
+    ],
+    "requirements": {
+      "unique_group_id": true,
+      "positive_cell_count": true,
+      "allowed_sources": ["SEA_AD", "NPH52", "HVS"],
+      "exact_total_cells": 4553407,
+      "exact_unique_donors": 104,
+      "exact_unique_operators": 42,
+      "exact_groups": 1400,
+      "exact_source_counts": {
+        "SEA_AD": 4118213,
+        "NPH52": 236476,
+        "HVS": 198718
+      }
+    },
+    "privacy": "Aggregate group rows only. No cell IDs, expression values, correspondence outcomes, recoverability TEST outcomes, or hidden biological labels may be exported."
+  },
+  "required_qc_export": {
+    "format": "JSON aggregate summaries only",
+    "required_stratification": ["source", "operator_id"],
+    "required_statistics": [
+      "n_cells",
+      "rna_library_size_quantiles",
+      "rna_detected_feature_quantiles",
+      "rna_zero_fraction_quantiles",
+      "structural_missing_fraction"
+    ],
+    "quantile_probabilities": [0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99],
+    "optional_if_available": [
+      "atac_fragment_count_quantiles",
+      "atac_detected_region_quantiles",
+      "feature_prevalence_histogram",
+      "rna_atac_depth_correlation"
+    ],
+    "requirements": {
+      "all_quantiles_finite": true,
+      "quantiles_non_decreasing": true,
+      "n_cells_positive": true,
+      "source_operator_strata_must_be_declared_even_if_unmeasured": true,
+      "structural_missingness_must_not_be_encoded_as_measured_zero": true
+    }
+  },
+  "calibration_targets": {
+    "population": [
+      "donor cell-count distribution",
+      "source cell-count distribution",
+      "operator cell-count distribution",
+      "donor x source occupancy",
+      "source x operator occupancy",
+      "donor x operator occupancy",
+      "donor x source x operator sparse support"
+    ],
+    "observation": [
+      "RNA depth distribution by source/operator",
+      "RNA detected-feature distribution by source/operator",
+      "RNA sparsity distribution by source/operator",
+      "structural missingness by source/operator",
+      "ATAC depth/region distributions when authenticated summaries are available"
+    ]
+  },
+  "promotion_policy": {
+    "100K": "BLOCKED until population export and required RNA/QC export are authenticated and the synthetic generator/observers consume their calibrated summaries.",
+    "500K": "BLOCKED until a successful measured 100K stress run and calibration report.",
+    "FULL_4553407": "BLOCKED until 500K qualification plus full fragment/peak/motif/network resource qualification.",
+    "training": "OFF"
+  },
+  "protected_boundaries": {
+    "stage4_real_correspondence": "UNOPENED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "real_expression_values_required_for_this_export": false
+  }
+}

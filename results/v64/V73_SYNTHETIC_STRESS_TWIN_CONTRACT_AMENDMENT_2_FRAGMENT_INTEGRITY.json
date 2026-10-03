@@ -1,0 +1,41 @@
+{
+  "schema": "V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_2_FRAGMENT_INTEGRITY",
+  "date": "2026-10-03",
+  "status": "FROZEN_BEFORE_NEXT_STRESS_PROMOTION",
+  "trigger": "Route-B audit found that copied digest assertions, post-dict duplicate checks, and uncaught empty-consensus failures can create checks that cannot fail.",
+  "scope": "Synthetic stress-twin integrity and mutation coverage only; does not alter real Route-A/Route-B scientific outputs.",
+  "requirements": {
+    "fragment_digest": {
+      "rule": "Qualification must recompute SHA-256 from actual compressed fragment bytes in an independent consumer. Equality between two copied receipt fields is not evidence of byte linkage.",
+      "mutation": "A same-length gzip with a changed MTIME byte but byte-identical decompressed records must fail digest qualification."
+    },
+    "fragment_count_linkage": {
+      "rule": "Per-barcode fragment multiplicity must be independently recounted from decompressed fragment rows and reconcile exactly to the paired-multiome ATAC source counts.",
+      "mutation": "A fragment file with a recomputed valid digest but one altered multiplicity must fail count linkage."
+    },
+    "barcode_conflicts": {
+      "rule": "Duplicate/conflicting barcode identities must be detected before construction of any dict/map that could discard earlier rows.",
+      "forbidden_pattern": "dict(zip(...)) followed by a duplicate/conflict check over that dict"
+    },
+    "failure_receipts": {
+      "rule": "Fail-closed validation paths must emit a structured failure receipt. Uncaught exceptions are not acceptable qualification evidence."
+    },
+    "consensus_blacklist": {
+      "rule": "A consensus peak universe is not authorized unless the frozen blacklist is supplied inside the consensus construction procedure. A no-blacklist consensus followed by post hoc filtering is not equivalent and must fail closed.",
+      "current_status": "NOT_AUTHORIZED_IN_V73_STRESS_TWIN_UNTIL_CONSENSUS_OBSERVER_EXISTS"
+    }
+  },
+  "implemented_now": [
+    "independent compressed-byte SHA-256 recomputation",
+    "per-barcode multiplicity reconciliation to paired multiome",
+    "duplicate barcode guard before mapping",
+    "structured validator failure receipts",
+    "same-size/different-bytes mutation",
+    "valid-new-digest/wrong-count mutation"
+  ],
+  "not_a_claim": [
+    "This amendment does not claim the real Route-B consensus has been run.",
+    "This amendment does not replace the real Route-B authenticated 63.6 GB fragment receipt.",
+    "This amendment does not authorize training or 500K/full-scale execution."
+  ]
+}
