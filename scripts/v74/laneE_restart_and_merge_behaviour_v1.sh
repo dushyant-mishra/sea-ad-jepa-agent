@@ -124,6 +124,61 @@ fi
 log "SHARD_A digest after rebuild: $(sha256sum "$TARGET" | awk '{print $1}')"
 log "(must equal the pre-corruption digest in before.txt, which proves the rebuild is deterministic)"
 
+# ---- STEP 5: MERGE COMPATIBILITY on REAL shard outputs -------------------------
+# The plan-level proof (laneE_shard_plan_v1.py) shows the slices tile the 10,249-motif
+# universe. This shows the merge VALIDATOR enforces the same invariant against the motif
+# axes actually present in feathers produced by the driver -- and that it refuses when
+# they do not.
+log ""
+log "### STEP 5: merge compatibility against the real shard outputs"
+head -12 "D:/jepa_v5_outputs_20260925/v69_scenicplus/routeA/cistarget_benchmark/motifs.lst.full" \
+  > "$SCRATCH/restart/universe12.lst"
+log "12-motif reference universe digest: $(sha256sum "$SCRATCH/restart/universe12.lst" | awk '{print $1}')"
+
+merge_run() {  # merge_run(label, receipt_name, shard_args...)
+  local label="$1"; shift
+  local rc_name="$1"; shift
+  MSYS_NO_PATHCONV=1 docker run --rm \
+    -v "$SCRATCH:/scratch" "$IMG" \
+    micromamba run -n base python /scratch/shared/immutable_scripts/merge_cistarget_motif_shards_v1.py \
+      "$@" \
+      --frozen-motif-list /scratch/restart/universe12.lst \
+      --out-prefix "/scratch/restart/merged_$rc_name" \
+      --kind scores \
+      --receipt "/scratch/restart/MERGE_$rc_name.json" > "$SCRATCH/restart/merge_$rc_name.out" 2>&1
+  local rc=$?
+  local st
+  st=$(python -c "import json;print(json.load(open(r'$SCRATCH/restart/MERGE_$rc_name.json'))['status'])" 2>/dev/null || echo NO_RECEIPT)
+  log "$label -> rc=$rc status=$st"
+}
+
+D=/scratch/restart/run1
+merge_run "5a CORRECT order (A,B,C)" correct \
+  --shard "$D:SHARD_A" --shard "$D:SHARD_B" --shard "$D:SHARD_C"
+merge_run "5b NEGATIVE: shards REORDERED (B,A,C), identical membership" reordered \
+  --shard "$D:SHARD_B" --shard "$D:SHARD_A" --shard "$D:SHARD_C"
+merge_run "5c NEGATIVE: one shard OMITTED (A,B)" omitted \
+  --shard "$D:SHARD_A" --shard "$D:SHARD_B"
+merge_run "5d NEGATIVE: a shard DUPLICATED (A,A,B,C)" duplicated \
+  --shard "$D:SHARD_A" --shard "$D:SHARD_A" --shard "$D:SHARD_B" --shard "$D:SHARD_C"
+
+log ""
+log "--- merge verdict ---"
+OK=$(python - <<'PY'
+import json, pathlib
+base = pathlib.Path(r"C:/jepa_scratch/v74_laneE/restart")
+def st(n):
+    p = base / ("MERGE_%s.json" % n)
+    return json.load(open(p))["status"] if p.exists() else "NO_RECEIPT"
+good = st("correct").startswith("PASS")
+bad = all(not st(n).startswith("PASS") for n in ("reordered", "omitted", "duplicated"))
+print("PASS" if (good and bad) else "FAIL")
+for n in ("correct", "reordered", "omitted", "duplicated"):
+    print("   %-11s %s" % (n, st(n)))
+PY
+)
+log "$OK"
+
 log ""
 log "=== finished $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 cp "$EV" "D:/jepa_v5_outputs_20260925/v74_laneE/logs/RESTART_BEHAVIOUR_EVIDENCE.txt"
