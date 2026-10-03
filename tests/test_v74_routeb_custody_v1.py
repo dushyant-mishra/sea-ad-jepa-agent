@@ -731,3 +731,30 @@ def test_consensus_verifies_digests_at_the_remapped_location(tmp_path):
         consensus.run(receipt_for("0" * 64), cs, tmp_path / "o",
                       "macs2", 1, None, **kw)
     assert e.value.status == "FAIL__BOUND_FILE_DIGEST_MISMATCH"
+
+
+def test_hashing_reader_handles_a_multi_member_gzip(tmp_path):
+    """A 63.6 GB deposit may be a concatenation of gzip members.
+
+    HashingReader declares itself unseekable on purpose -- a backwards seek would make
+    the digest double-count or skip bytes and stop being a whole-file digest. gzip's
+    member transition uses prepend rather than seek, but that is a claim about CPython
+    internals, so it is checked against real multi-member bytes rather than assumed.
+    """
+    a, b = tmp_path / "a.gz", tmp_path / "b.gz"
+    with gzip.GzipFile(filename=str(a), mode="wb", mtime=1) as gz:
+        gz.write(b"first member line\n" * 500)
+    with gzip.GzipFile(filename=str(b), mode="wb", mtime=1) as gz:
+        gz.write(b"second member line\n" * 500)
+    both = tmp_path / "both.gz"
+    both.write_bytes(a.read_bytes() + b.read_bytes())
+
+    rd = custody.HashingReader(both)
+    with gzip.GzipFile(fileobj=rd, mode="rb") as gz:
+        payload = gz.read()
+    rd.drain()
+    assert payload.count(b"first member line") == 500
+    assert payload.count(b"second member line") == 500, "the second member was reached"
+    assert rd.complete is True
+    assert rd.hexdigest() == _sha(both), "the digest must cover both members"
+    rd.close()
