@@ -19,6 +19,7 @@ import gzip
 import hashlib
 import importlib.util
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -49,6 +50,15 @@ extractor = _load("v69_extract_t",
                   _SCRIPTS / "routeb_extract_pseudobulk_fragments_v1.py")
 consensus = _load("v69_consensus_t",
                   _SCRIPTS / "routeb_call_peaks_and_consensus_v1.py")
+
+
+def _bl(tmp_path):
+    """A stand-in blacklist, so a custody test exercises custody and not the
+    blacklist policy gate that now sits beside it."""
+    p = tmp_path / "stand_in_blacklist.bed"
+    if not p.exists():
+        custody.write_text_utf8(p, "chr1\t0\t10\n")
+    return p
 
 
 def _sha(p):
@@ -500,7 +510,8 @@ def test_consensus_refuses_when_the_upstream_never_verified_the_fragment_bytes(
                               "expected_sha256": "a" * 64},
         "bound_inputs": {}, "pseudobulks": {}}))
     with pytest.raises(consensus.FailClosed) as e:
-        consensus.run(rec, tmp_path / "cs.txt", tmp_path / "o", "macs2", 1, None)
+        consensus.run(rec, tmp_path / "cs.txt", tmp_path / "o", "macs2", 1,
+                      str(_bl(tmp_path)))
     assert e.value.status == "FAIL__UPSTREAM_FRAGMENT_BYTES_WERE_NEVER_VERIFIED"
 
 
@@ -521,12 +532,12 @@ def test_consensus_refuses_when_a_bound_input_changed_on_disk(tmp_path):
     cs = tmp_path / "cs.txt"
     cs.write_text("chr1\t1000\n")
     with pytest.raises(consensus.FailClosed) as clean:
-        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, str(_bl(tmp_path)))
     assert clean.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS"
 
     victim.write_text("barcode,donor\na-1,D2\n")
     with pytest.raises(custody.CustodyError) as e:
-        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, str(_bl(tmp_path)))
     assert e.value.status == "FAIL__BOUND_FILE_DIGEST_MISMATCH"
 
 
@@ -722,14 +733,14 @@ def test_consensus_verifies_digests_at_the_remapped_location(tmp_path):
     # then stops for the unrelated reason that the fixture supplies no pseudobulks.
     with pytest.raises(consensus.FailClosed) as clean:
         consensus.run(receipt_for(_sha(victim)), cs, tmp_path / "o",
-                      "macs2", 1, None, **kw)
+                      "macs2", 1, str(_bl(tmp_path)), **kw)
     assert clean.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS"
 
     # changed at the remapped location: caught there, not missed because of the remap
     victim.write_text("barcode,donor\na-1,D2\n")
     with pytest.raises(custody.CustodyError) as e:
         consensus.run(receipt_for("0" * 64), cs, tmp_path / "o",
-                      "macs2", 1, None, **kw)
+                      "macs2", 1, str(_bl(tmp_path)), **kw)
     assert e.value.status == "FAIL__BOUND_FILE_DIGEST_MISMATCH"
 
 
@@ -861,3 +872,141 @@ def test_a_four_field_fragment_record_is_parsed_not_skipped(tmp_path):
         for k in r["pseudobulks"]))
     assert written.count(b"\n") == 3
     assert b"chr2\t500\t560\n" in written, "the trailing newline must not leak into End"
+
+
+# =============================================================================
+# Byte-faithful text I/O. The durable form of this lane's S-D7 finding: not
+# "normalise the files once" but "make the next edit unable to reintroduce it".
+# =============================================================================
+
+def test_write_text_utf8_emits_lf_and_read_text_utf8_round_trips(tmp_path):
+    p = tmp_path / "x.txt"
+    payload = "alpha\nbeta\ngamma\u00e9\n"          # non-ASCII, so encoding matters
+    custody.write_text_utf8(p, payload)
+    raw = p.read_bytes()
+    assert b"\r\n" not in raw, "the helper must emit LF on every platform"
+    assert raw == payload.encode("utf-8"), "bytes must be exactly the UTF-8 encoding"
+    assert custody.read_text_utf8(p) == payload
+
+
+@pytest.mark.skipif(os.linesep != "\r\n",
+                    reason="the CRLF hazard only exists where os.linesep is CRLF")
+def test_the_naive_pathlib_call_really_does_corrupt_line_endings_here(tmp_path):
+    """Why the helpers exist, demonstrated rather than asserted.
+
+    If this ever stops holding, the platform changed and the helpers became
+    unnecessary -- which is worth knowing, so the test is kept rather than skipped.
+    """
+    naive, careful = tmp_path / "naive.txt", tmp_path / "careful.txt"
+    payload = "one\ntwo\n"
+    naive.write_text(payload)                       # the call that caused S-D7
+    custody.write_text_utf8(careful, payload)
+    assert b"\r\n" in naive.read_bytes(), "the hazard must be real for the fix to matter"
+    assert b"\r\n" not in careful.read_bytes()
+
+
+def test_the_producer_writes_its_receipt_as_lf_utf8(tmp_path):
+    """End to end: a real receipt from a real run, inspected as bytes."""
+    u = build_universe(tmp_path)
+    receipt = tmp_path / "receipt.json"
+    rc = extractor.main([
+        "--fragments", str(u["fragments"]), "--fragments-receipt", str(u["acq"]),
+        "--qc-receipt", str(u["qc_receipt"]), "--cohort-receipt", str(u["cohort"]),
+        "--population", "TESTPOP", "--out-dir", str(u["out"]),
+        "--receipt", str(receipt)])
+    assert rc == 0
+    raw = receipt.read_bytes()
+    assert b"\r\n" not in raw, "receipts must not be CRLF-translated"
+    assert json.loads(raw.decode("utf-8"))["status"] == \
+        "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED"
+
+
+def test_pseudobulk_beds_are_lf_only(tmp_path):
+    """A BED fed to MACS must not acquire carriage returns in its coordinate column."""
+    u = build_universe(tmp_path)
+    r = go(u)
+    assert r["status"] == "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED", r
+    seen = 0
+    for meta in r["pseudobulks"].values():
+        raw = Path(meta["path"]).read_bytes()
+        assert b"\r" not in raw, meta["path"]
+        seen += 1
+    assert seen == len(r["pseudobulks"]) > 0
+
+
+# =============================================================================
+# Blacklist policy gate. The owner decided blacklist ON for Route B; lane E is
+# authenticating ENCFF356LFX. Until it is supplied, the consensus must refuse.
+# =============================================================================
+
+def _policy_receipt(tmp_path):
+    rec = tmp_path / "pb.json"
+    custody.write_text_utf8(rec, json.dumps({
+        "status": "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED", "PARTIAL_SCAN": False,
+        "custody_contract": "V74_ROUTEB_CUSTODY_V1",
+        "fragment_identity": {"verified": True, "observed_sha256": "b" * 64,
+                              "expected_sha256": "b" * 64},
+        "bound_inputs": {}, "pseudobulks": {}}))
+    cs = tmp_path / "cs.txt"
+    custody.write_text_utf8(cs, "chr1\t1000\n")
+    return rec, cs
+
+
+def test_consensus_refuses_to_build_without_a_declared_blacklist_policy(tmp_path):
+    """The defect this prevents: silently building a universe nobody decided to build."""
+    rec, cs = _policy_receipt(tmp_path)
+    with pytest.raises(consensus.FailClosed) as e:
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
+    assert e.value.status == "FAIL__BLACKLIST_POLICY_NOT_SATISFIED"
+    assert e.value.detail["policy_decided"] == "ON"
+    assert not (tmp_path / "o").exists(), "no work may start before the gate is passed"
+
+
+def test_the_gate_fires_before_any_peak_calling_work(tmp_path):
+    """Refusing after an hour of MACS would waste the compute and leave files behind.
+
+    The receipt here has no pseudobulks at all, so if the gate ran late the run would
+    stop at FAIL__NO_NONEMPTY_PSEUDOBULKS instead. Seeing the policy status proves the
+    gate is first.
+    """
+    rec, cs = _policy_receipt(tmp_path)
+    with pytest.raises(consensus.FailClosed) as e:
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None)
+    assert e.value.status != "FAIL__NO_NONEMPTY_PSEUDOBULKS"
+    assert e.value.status == "FAIL__BLACKLIST_POLICY_NOT_SATISFIED"
+
+
+def test_supplying_a_blacklist_satisfies_the_gate(tmp_path):
+    """Positive control: the gate must not be a check that always fires."""
+    rec, cs = _policy_receipt(tmp_path)
+    bl = tmp_path / "blacklist.bed"
+    custody.write_text_utf8(bl, "chr1\t0\t100\n")
+    with pytest.raises(consensus.FailClosed) as e:
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, str(bl))
+    assert e.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS", (
+        "with a blacklist supplied the run must proceed past the policy gate")
+    ev = consensus.assert_blacklist_policy_satisfied(str(bl), "")
+    assert ev["satisfied_by"] == "AUTHENTICATED_BLACKLIST_SUPPLIED"
+    assert ev["override_used"] is False
+
+
+def test_the_named_override_is_allowed_but_records_the_departure(tmp_path):
+    """A deliberate no-blacklist build must be possible AND visible as a departure."""
+    ev = consensus.assert_blacklist_policy_satisfied(
+        None, consensus.NO_BLACKLIST_OVERRIDE)
+    assert ev["override_used"] is True
+    assert ev["DEPARTS_FROM_THE_DECIDED_POLICY"] is True
+    assert "must be rebuilt before it can be frozen" in ev["consequence"]
+    rec, cs = _policy_receipt(tmp_path)
+    with pytest.raises(consensus.FailClosed) as e:
+        consensus.run(rec, cs, tmp_path / "o", "macs2", 1, None,
+                      blacklist_policy_override=consensus.NO_BLACKLIST_OVERRIDE)
+    assert e.value.status == "FAIL__NO_NONEMPTY_PSEUDOBULKS"
+
+
+def test_a_wrong_override_string_does_not_open_the_gate(tmp_path):
+    """Only the exact named token counts; a near miss must not pass."""
+    for bad in ("none", "NONE", "yes", "true", "NONE_AUTHORIZED", ""):
+        with pytest.raises(consensus.FailClosed) as e:
+            consensus.assert_blacklist_policy_satisfied(None, bad)
+        assert e.value.status == "FAIL__BLACKLIST_POLICY_NOT_SATISFIED", bad

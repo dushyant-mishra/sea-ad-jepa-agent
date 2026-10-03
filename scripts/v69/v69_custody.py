@@ -269,3 +269,30 @@ def remap(p, host_prefix: str, container_prefix: str) -> Path:
     if n.lower().startswith(h.lower()):
         return Path(container_prefix.rstrip("/") + n[len(h):])
     return Path(p)
+
+
+# ---------------------------------------------------------------------------------
+# BYTE-FAITHFUL TEXT I/O. On Windows, Path.read_text() without an encoding decodes
+# cp1252 -- so a UTF-8 anchor matches nothing and a `replace` becomes a silent no-op
+# that still reports success -- and Path.write_text() without newline="\n"
+# translates every newline to CRLF, so an edit meant to change three lines rewrites
+# the whole file. This lane hit the second form: every programmatic edit silently
+# rewrote whole files and made the branch diff unreviewable.
+#
+# Normalising the files once does NOT fix it, because the next edit reintroduces it.
+# These helpers are the fix: every text read and write in the Route-B producers goes
+# through them, with encoding and newline always explicit. Path.write_text gained a
+# `newline` parameter only in 3.10, and these producers must run on the 3.9 host and
+# the 3.11 container alike, so they use open() rather than the Path shortcut.
+# ---------------------------------------------------------------------------------
+
+def read_text_utf8(path) -> str:
+    """Read UTF-8 without translating newlines. Never guesses an encoding."""
+    with open(path, "r", encoding="utf-8", newline="") as fh:
+        return fh.read()
+
+
+def write_text_utf8(path, text: str) -> None:
+    """Write UTF-8 with LF endings on every platform."""
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(text)

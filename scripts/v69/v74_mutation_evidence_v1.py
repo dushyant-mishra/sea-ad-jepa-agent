@@ -26,13 +26,23 @@ CONSENSUS = "scripts/v69/routeb_call_peaks_and_consensus_v1.py"
 CUSTODY = "scripts/v69/v69_custody.py"
 TESTFILE = "tests/test_v74_routeb_custody_v1.py"
 
+#: Only these files take part in a mutation arm. Copying the whole scripts/ tree
+#: per arm moved ~1.3 GB for a suite whose fixtures are kilobytes, which is not a
+#: cost worth paying on a shared machine.
+ARM_FILES = (EXTRACT, CONSENSUS, CUSTODY, TESTFILE,
+             "scripts/v69/v69_barcode_identity.py")
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from v69_custody import read_text_utf8 as _rd  # noqa: E402
+from v69_custody import write_text_utf8 as _wr  # noqa: E402
+
 
 def _replace_once(root: Path, rel: str, old: str, new: str) -> None:
     p = root / rel
-    s = p.read_text(encoding="utf-8")
+    s = _rd(p)
     if s.count(old) != 1:
         raise SystemExit("mutation anchor matched %d times in %s" % (s.count(old), rel))
-    p.write_text(s.replace(old, new), encoding="utf-8")
+    _wr(p, s.replace(old, new))
 
 
 def m_disable_digest_comparison(root: Path) -> None:
@@ -54,7 +64,7 @@ def m_restore_v69_size_only_fragment_check(root: Path) -> None:
 
 def m_restore_v69_dict_zip_collapse(root: Path) -> None:
     p = root / EXTRACT
-    lines = p.read_text(encoding="utf-8").split("\n")
+    lines = _rd(p).split("\n")
     hits = [k for k, L in enumerate(lines) if "audit_barcode_authority_frame(bc)" in L]
     if len(hits) != 1:
         raise SystemExit("dict-collapse anchor matched %d lines" % len(hits))
@@ -69,7 +79,7 @@ def m_restore_v69_dict_zip_collapse(root: Path) -> None:
         '        authority_evidence = {"n_rows_in": len(bc), "n_distinct_barcodes":'
         ' len(barcode_to_donor), "n_exact_duplicate_rows_collapsed": 0}',
     ]
-    p.write_text("\n".join(lines), encoding="utf-8")
+    _wr(p, "\n".join(lines))
 
 
 def m_restore_v69_absent_qc_row_as_failure(root: Path) -> None:
@@ -125,12 +135,37 @@ def m_skip_four_field_records(root: Path) -> None:
     """The exact slip that happened: a stray continue in the four-field branch."""
     nl = chr(10)
     q = root / EXTRACT
-    lines = q.read_text(encoding="utf-8").split(nl)
+    lines = _rd(q).split(nl)
     hits = [k for k, L in enumerate(lines) if L.strip().startswith("f[3] = f[3].rstrip")]
     if len(hits) != 1:
         raise SystemExit("four-field anchor matched %d lines" % len(hits))
     lines.insert(hits[0] + 1, " " * 20 + "continue")
-    q.write_text(nl.join(lines), encoding="utf-8")
+    _wr(q, nl.join(lines))
+
+
+def m_write_receipts_with_naive_pathlib(root: Path) -> None:
+    """Undo the byte-faithful writer: receipts go back to platform line endings."""
+    _replace_once(root, CUSTODY,
+                  '    with open(path, "w", encoding="utf-8", newline="' + chr(92)
+                  + 'n") as fh:',
+                  '    with open(path, "w", encoding="utf-8") as fh:')
+
+
+def m_drop_blacklist_policy_gate(root: Path) -> None:
+    _replace_once(root, CONSENSUS,
+                  "    blacklist_policy = assert_blacklist_policy_satisfied(",
+                  "    blacklist_policy = _ungated_blacklist_policy(")
+    _replace_once(root, CONSENSUS, "BLACKLIST_POLICY_DECIDED = ",
+                  "def _ungated_blacklist_policy(blacklist, override):" + chr(10)
+                  + "    return {'policy_decided': 'ON', 'satisfied_by': 'UNGATED'}"
+                  + chr(10) + chr(10) + chr(10) + "BLACKLIST_POLICY_DECIDED = ")
+
+
+def m_loosen_the_override_token(root: Path) -> None:
+    """Accept any truthy override string instead of the exact named token."""
+    _replace_once(root, CONSENSUS,
+                  "    if policy_override == NO_BLACKLIST_OVERRIDE:",
+                  "    if policy_override:")
 
 
 MUTATIONS = [
@@ -232,6 +267,46 @@ MUTATIONS = [
         ],
     },
     {
+        "id": "M11_NAIVE_RECEIPT_WRITER",
+        "repair_removed": "BYTE_FAITHFUL_TEXT_IO",
+        "what_it_undoes": ("the receipt writer drops newline=LF and reverts to platform "
+                           "line endings"),
+        "apply": m_write_receipts_with_naive_pathlib,
+        "must_fail": [
+            "test_write_text_utf8_emits_lf_and_read_text_utf8_round_trips",
+            "test_the_producer_writes_its_receipt_as_lf_utf8",
+        ],
+    },
+    {
+        "id": "M12_DROP_BLACKLIST_POLICY_GATE",
+        "repair_removed": "BLACKLIST_POLICY_IS_ENFORCED_NOT_NOTED",
+        "what_it_undoes": ("the consensus step goes back to recording the absence of a "
+                           "blacklist in a receipt note instead of refusing to build"),
+        "apply": m_drop_blacklist_policy_gate,
+        "declaration_note": (
+            "This mutation bypasses the CALL SITE, leaving the gate function itself "
+            "intact, so only the tests that go through consensus.run() can see it. "
+            "test_a_wrong_override_string_does_not_open_the_gate calls the function "
+            "directly and is covered by M13 instead. I first declared it here, the "
+            "driver refused to report PASS, and the declaration was wrong -- not the "
+            "test."),
+        "must_fail": [
+            "test_consensus_refuses_to_build_without_a_declared_blacklist_policy",
+            "test_the_gate_fires_before_any_peak_calling_work",
+        ],
+    },
+    {
+        "id": "M13_LOOSEN_THE_OVERRIDE_TOKEN",
+        "repair_removed": "ONLY_THE_EXACT_OVERRIDE_TOKEN_OPENS_THE_GATE",
+        "what_it_undoes": ("any truthy string opens the blacklist gate, so a near miss "
+                           "like 'none' or 'true' silently authorises a build that "
+                           "departs from the decided policy"),
+        "apply": m_loosen_the_override_token,
+        "must_fail": [
+            "test_a_wrong_override_string_does_not_open_the_gate",
+        ],
+    },
+    {
         "id": "M5_DISABLE_EMPTY_CONSENSUS_GUARD",
         "repair_removed": "REPAIR_4_EMPTY_CONSENSUS",
         "what_it_undoes": "the named zero-region fail-closed state stops firing",
@@ -244,6 +319,16 @@ MUTATIONS = [
 ]
 
 _FAILED = re.compile(r"^FAILED [^:]+::([A-Za-z0-9_]+)", re.M)
+
+
+def _materialise(worktree: Path, root: Path) -> None:
+    """Copy only the files an arm can touch, preserving their relative paths."""
+    if root.exists():
+        shutil.rmtree(root)
+    for rel in ARM_FILES:
+        dst = root / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(worktree / rel, dst)
 
 
 def _run_suite(root: Path) -> dict:
@@ -264,21 +349,13 @@ def main(argv=None) -> int:
     wt, scratch = Path(a.worktree), Path(a.scratch)
 
     baseline_root = scratch / "BASELINE"
-    if baseline_root.exists():
-        shutil.rmtree(baseline_root)
-    baseline_root.mkdir(parents=True)
-    shutil.copytree(wt / "scripts", baseline_root / "scripts")
-    shutil.copytree(wt / "tests", baseline_root / "tests")
+    _materialise(wt, baseline_root)
     baseline = _run_suite(baseline_root)
 
     results, all_proven = [], True
     for m in MUTATIONS:
         root = scratch / m["id"]
-        if root.exists():
-            shutil.rmtree(root)
-        root.mkdir(parents=True)
-        shutil.copytree(wt / "scripts", root / "scripts")
-        shutil.copytree(wt / "tests", root / "tests")
+        _materialise(wt, root)
         m["apply"](root)
         out = _run_suite(root)
         missing = [t for t in m["must_fail"] if t not in out["failed_tests"]]
@@ -302,6 +379,7 @@ def main(argv=None) -> int:
                     "not evidence; a suite that still passes with the repair removed "
                     "is evidence of nothing at all."),
         "worktree": str(wt), "scratch_root": str(scratch),
+        "files_materialised_per_arm": list(ARM_FILES),
         "baseline_unmutated": baseline,
         "mutations": results,
         "status": ("PASS__EVERY_CUSTODY_TEST_DEMONSTRATED_REACHABLE_FAILURE"
@@ -310,8 +388,8 @@ def main(argv=None) -> int:
     }
     out_p = Path(a.receipt)
     out_p.parent.mkdir(parents=True, exist_ok=True)
-    out_p.write_text(json.dumps(receipt, indent=2) + "\n")
-    on_disk = json.loads(out_p.read_text())
+    _wr(out_p, json.dumps(receipt, indent=2) + "\n")
+    on_disk = json.loads(_rd(out_p))
     print(json.dumps(on_disk, indent=2)[:4000])
     print("RECEIPT_ON_DISK_STATUS=" + on_disk["status"])
     return 0 if on_disk["status"].startswith("PASS") else 1

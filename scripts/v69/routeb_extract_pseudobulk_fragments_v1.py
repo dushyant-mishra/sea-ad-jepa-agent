@@ -93,7 +93,7 @@ from v69_barcode_identity import (  # noqa: E402
     audit_barcode_authority_frame)
 from v69_custody import (  # noqa: E402
     UNMEASURED, UNVERIFIED_PARTIAL, CustodyError, HashingReader, StagedOutputDir,
-    bind_file, sha256_file)
+    bind_file, read_text_utf8, sha256_file, write_text_utf8)
 
 MIN_UNIQUE_FRAGMENTS_PER_BARCODE = 1000   # frozen, SECTION_2
 
@@ -169,7 +169,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
         cohort_receipt, label="V69_GSE214979_COHORT_FREEZE_V1.json",
         role="COHORT_AUTHORITY")
 
-    acq = json.loads(Path(fragments_receipt).read_text())
+    acq = json.loads(read_text_utf8(fragments_receipt))
     if not str(acq.get("status", "")).startswith("PASS"):
         raise FailClosed("FAIL__FRAGMENTS_ACQUISITION_RECEIPT_IS_NOT_PASS",
                          status=acq.get("status"))
@@ -186,7 +186,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
                          receipt_bytes=expected_frag_bytes,
                          observed_bytes=observed_bytes)
 
-    qc = json.loads(Path(qc_receipt).read_text())
+    qc = json.loads(read_text_utf8(qc_receipt))
     if not str(qc.get("status", "")).startswith("PASS") or qc.get("PARTIAL_SCAN"):
         raise FailClosed("FAIL__ROUTEB_QC_RECEIPT_NOT_A_COMPLETE_PASS",
                          status=qc.get("status"), partial=qc.get("PARTIAL_SCAN"))
@@ -201,7 +201,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
         role="PER_CELL_QC_AUTHORITY",
         expected_sha256=qc["per_barcode_table"].get("sha256"))
 
-    coh = json.loads(Path(cohort_receipt).read_text())
+    coh = json.loads(read_text_utf8(cohort_receipt))
     if population not in coh.get("populations", {}):
         raise FailClosed("FAIL__POPULATION_NOT_IN_COHORT_FREEZE",
                          population=population,
@@ -433,7 +433,8 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
     cells_per_key = Counter(f"{m[0]}__{m[1]}" for m in keep.values())
     for key in sorted(handles):
         p = out_dir / f"PSEUDOBULK_{key}.bed"
-        n_lines = sum(1 for _ in open(p))
+        with open(p, "rb") as _fh:
+            n_lines = sum(1 for _ in _fh)
         if n_lines != counts[key]:
             raise FailClosed("FAIL__PSEUDOBULK_LINE_COUNT_MISMATCH",
                              pseudobulk=key, written=counts[key], on_disk=n_lines)
@@ -504,8 +505,8 @@ def _emit(receipt: dict, path: Path) -> int:
     if "status" not in receipt:
         receipt["status"] = "FAIL__RECEIPT_HAS_NO_STATUS_FIELD"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(receipt, indent=2) + "\n")
-    on_disk = json.loads(path.read_text())
+    write_text_utf8(path, json.dumps(receipt, indent=2) + "\n")
+    on_disk = json.loads(read_text_utf8(path))
     print(json.dumps({k: v for k, v in on_disk.items()
                       if k not in ("pseudobulks", "bound_inputs")}, indent=2)[:3500])
     print("RECEIPT_ON_DISK_STATUS=" + str(on_disk["status"]))

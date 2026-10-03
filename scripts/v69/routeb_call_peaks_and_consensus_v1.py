@@ -37,7 +37,8 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from v69_custody import CustodyError, bind_file, remap  # noqa: E402
+from v69_custody import (  # noqa: E402
+    CustodyError, bind_file, read_text_utf8, remap, write_text_utf8)
 
 PEAK_HALF_WIDTH = 250          # frozen, SECTION_2
 MACS_PARAMS = dict(input_format="BEDPE", shift=73, ext_size=146,
@@ -106,6 +107,69 @@ def assert_consensus_nonempty(cdf, *, n_pseudobulks_used=None,
                   "universe of size zero -- it is an absent region universe."))
 
 
+# V74 BLACKLIST GATE.
+#
+# The owner has decided blacklist ON for Route B, and lane E is authenticating the
+# ENCODE blacklist ENCFF356LFX. Until an authenticated blacklist is supplied, this
+# producer refuses to build a consensus rather than quietly building a different one.
+#
+# Why refusing beats recording. pycisTopic applies the blacklist INSIDE
+# get_consensus_peaks, during the iterative overlap, not as a filter afterwards. A
+# no-blacklist consensus is therefore NOT convertible into the decided one by removing
+# blacklisted regions later: the merge boundaries differ. An artifact built without it
+# would have to be discarded and rebuilt, and in the meantime it would sit on disk
+# looking exactly like a region universe. The V69 form of this producer recorded the
+# absence in a receipt note; a note stops nobody.
+BLACKLIST_POLICY_DECIDED = "ON"
+BLACKLIST_POLICY_SOURCE = (
+    "Owner decision carried into V74 lane 1 by the coordinator: blacklist ON for "
+    "Route B. The file itself (ENCODE ENCFF356LFX) is being authenticated in lane E "
+    "and is NOT bound here.")
+NO_BLACKLIST_OVERRIDE = "NONE_EXPLICITLY_AUTHORIZED"
+
+
+def assert_blacklist_policy_satisfied(blacklist, policy_override) -> dict:
+    """Fail closed unless the blacklist policy is satisfied or explicitly overridden.
+
+    Returns the evidence dict for the receipt. The override exists so that a deliberate,
+    named decision to build without a blacklist is possible and VISIBLE; it is not a
+    default and it is recorded in the receipt as a departure from the decided policy.
+    """
+    if blacklist:
+        return {
+            "policy_decided": BLACKLIST_POLICY_DECIDED,
+            "policy_source": BLACKLIST_POLICY_SOURCE,
+            "satisfied_by": "AUTHENTICATED_BLACKLIST_SUPPLIED",
+            "override_used": False,
+        }
+    if policy_override == NO_BLACKLIST_OVERRIDE:
+        return {
+            "policy_decided": BLACKLIST_POLICY_DECIDED,
+            "policy_source": BLACKLIST_POLICY_SOURCE,
+            "satisfied_by": "EXPLICIT_NAMED_OVERRIDE",
+            "override_used": True,
+            "DEPARTS_FROM_THE_DECIDED_POLICY": True,
+            "consequence": (
+                "This consensus was built WITHOUT the blacklist the project decided to "
+                "apply. It cannot be converted into the decided universe by filtering "
+                "regions afterwards, because the blacklist changes the iterative "
+                "overlap itself. It must be rebuilt before it can be frozen."),
+        }
+    raise FailClosed(
+        "FAIL__BLACKLIST_POLICY_NOT_SATISFIED",
+        policy_decided=BLACKLIST_POLICY_DECIDED,
+        policy_source=BLACKLIST_POLICY_SOURCE,
+        blacklist_supplied=None,
+        how_to_proceed=("Supply the authenticated blacklist, or pass "
+                        "--blacklist-policy-override " + NO_BLACKLIST_OVERRIDE
+                        + " to build a consensus that departs from the decided policy "
+                          "and is recorded as doing so."),
+        note=("Refusing here rather than recording the absence in a note. pycisTopic "
+              "applies the blacklist inside the iterative overlap, so a no-blacklist "
+              "universe is not the decided universe minus some regions -- it is a "
+              "different universe that would have to be rebuilt."))
+
+
 def recurrence_denominator(pseudobulk_meta: dict, submitted_keys, keys_with_peaks) -> dict:
     """Who counts in the denominator of a region's donor recurrence.
 
@@ -133,11 +197,12 @@ def recurrence_denominator(pseudobulk_meta: dict, submitted_keys, keys_with_peak
 
 def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
         macs_path: str, n_cpu: int, blacklist: str | None,
-        host_prefix: str = "", container_prefix: str = "") -> dict:
+        host_prefix: str = "", container_prefix: str = "",
+        blacklist_policy_override: str = "") -> dict:
     def R(p):
         return remap(p, host_prefix, container_prefix)
 
-    pb = json.loads(pseudobulk_receipt.read_text())
+    pb = json.loads(read_text_utf8(pseudobulk_receipt))
     if not str(pb.get("status", "")).startswith("PASS") or pb.get("PARTIAL_SCAN"):
         raise FailClosed("FAIL__PSEUDOBULK_RECEIPT_NOT_A_COMPLETE_PASS",
                          status=pb.get("status"), partial=pb.get("PARTIAL_SCAN"))
@@ -188,6 +253,12 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
     if blacklist is not None:
         rebound["blacklist"] = bind_file(blacklist, label="blacklist",
                                          role="REGION_EXCLUSION_AUTHORITY")
+
+    # The policy gate sits AFTER the custody chain -- if the inputs are not what
+    # they claim, that is the first thing to report -- and BEFORE the BED digest
+    # loop below, which hashes hundreds of megabytes, and long before MACS.
+    blacklist_policy = assert_blacklist_policy_satisfied(
+        blacklist, blacklist_policy_override)
 
     beds, skipped_empty = {}, []
     for key, meta in pb["pseudobulks"].items():
@@ -312,6 +383,7 @@ def run(pseudobulk_receipt: Path, chromsizes: Path, out_dir: Path,
             "by default and which the freeze's stated intent (protocol defaults, "
             "untuned) includes. Implemented as the protocol default; the frozen string "
             "was incomplete rather than different."),
+        "blacklist_policy": blacklist_policy,
         "blacklist": {"path": blacklist,
                       "applied": blacklist is not None,
                       "note": ("No blacklist is applied unless one is supplied and "
@@ -360,6 +432,10 @@ def main(argv=None) -> int:
     ap.add_argument("--n-cpu", type=int, default=8)
     ap.add_argument("--blacklist", default=None)
     ap.add_argument("--receipt", required=True)
+    ap.add_argument("--blacklist-policy-override", default="",
+                    help="Pass " + NO_BLACKLIST_OVERRIDE + " to build without "
+                         "a blacklist, recorded as a departure from the "
+                         "decided policy.")
     ap.add_argument("--host-prefix", default="",
                     help="Host path prefix recorded in upstream receipts.")
     ap.add_argument("--container-prefix", default="",
@@ -368,7 +444,8 @@ def main(argv=None) -> int:
     try:
         r = run(Path(a.pseudobulk_receipt), Path(a.chromsizes), Path(a.out_dir),
                 a.macs_path, a.n_cpu, a.blacklist,
-                a.host_prefix, a.container_prefix)
+                a.host_prefix, a.container_prefix,
+                a.blacklist_policy_override)
     except FailClosed as e:
         r = {"schema": "V69_ROUTEB_CONSENSUS_PEAKS_V1", "built_utc": utcnow(),
              "status": e.status, **e.detail}
@@ -380,8 +457,8 @@ def main(argv=None) -> int:
     if "status" not in r:
         r["status"] = "FAIL__RECEIPT_HAS_NO_STATUS_FIELD"
     Path(a.receipt).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.receipt).write_text(json.dumps(r, indent=2) + "\n")
-    on_disk = json.loads(Path(a.receipt).read_text())
+    write_text_utf8(Path(a.receipt), json.dumps(r, indent=2) + "\n")
+    on_disk = json.loads(read_text_utf8(Path(a.receipt)))
     print(json.dumps({k: v for k, v in on_disk.items()
                       if k not in ("pseudobulks", "bound_inputs")}, indent=2)[:3500])
     print("RECEIPT_ON_DISK_STATUS=" + str(on_disk["status"]))
