@@ -758,3 +758,106 @@ def test_hashing_reader_handles_a_multi_member_gzip(tmp_path):
     assert rd.complete is True
     assert rd.hexdigest() == _sha(both), "the digest must cover both members"
     rd.close()
+
+
+# =============================================================================
+# The byte-level loop must produce exactly what the str-level loop produced.
+# This is an infrastructure change; the method must not move with it.
+# =============================================================================
+
+def test_byte_level_parsing_reproduces_the_str_level_result_exactly(tmp_path):
+    """The V69 loop decoded each line to str. This one works in bytes for speed.
+
+    The expected BED content is derived HERE from the fixture using the original
+    str-based reading, independently of the producer, and compared byte for byte with
+    what the producer wrote. If the two representations ever disagreed -- on a tab, a
+    line ending, a field boundary -- this fails.
+    """
+    u = build_universe(tmp_path)
+    r = go(u)
+    assert r["status"] == "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED", r
+
+    # Independent str-based reconstruction of what each pseudobulk should contain.
+    donor_of = {b: d for b, d, _s in ROWS}
+    sub_of = {b: s for b, _d, s in ROWS}
+    expected = {}
+    with gzip.open(u["fragments"], "rt") as fh:
+        for line in fh:
+            if line.startswith("#"):
+                continue
+            f = line.rstrip("\n").split("\t")
+            if len(f) < 4 or f[3] not in donor_of or f[3] == FAILING_QC_BARCODE:
+                continue
+            key = "%s__%s" % (donor_of[f[3]], sub_of[f[3]])
+            expected.setdefault(key, []).append("%s\t%s\t%s\n" % (f[0], f[1], f[2]))
+
+    assert expected, "the reconstruction must not be vacuously empty"
+    for key, rows in expected.items():
+        on_disk = (u["out"] / ("PSEUDOBULK_%s.bed" % key)).read_bytes()
+        assert on_disk == "".join(rows).encode(), key
+    # and every pseudobulk the producer reported is accounted for
+    nonempty = {k for k, v in r["pseudobulks"].items() if v["n_fragments"] > 0}
+    assert nonempty == set(expected)
+
+
+def test_a_non_ascii_record_in_a_written_cell_fails_closed(tmp_path):
+    """Working in bytes drops the incidental UTF-8 check that decoding performed.
+
+    It is reinstated where it can matter -- the records actually written. This proves
+    the replacement check fires, so the change traded no validation away silently.
+    """
+    u = build_universe(tmp_path)
+    good = gzip.open(u["fragments"], "rb").read()
+    bad = good.replace(b"chr1\t1000", b"chr\xff\t1000", 1)
+    assert bad != good, "the fixture mutation must actually change the bytes"
+    with gzip.GzipFile(filename=str(u["fragments"]), mode="wb", mtime=1) as gz:
+        gz.write(bad)
+    acq = json.loads(u["acq"].read_text())
+    acq["sha256"] = _sha(u["fragments"])
+    acq["local_bytes"] = u["fragments"].stat().st_size
+    u["acq"].write_text(json.dumps(acq))
+    qc = json.loads(u["qc_receipt"].read_text())
+    qc["fragments_sha256"] = acq["sha256"]
+    u["qc_receipt"].write_text(json.dumps(qc))
+
+    r = go(u)
+    assert r["status"] == "FAIL__NON_ASCII_FRAGMENT_RECORD_IN_A_WRITTEN_CELL", r
+
+
+def test_a_four_field_fragment_record_is_parsed_not_skipped(tmp_path):
+    """A record with no count column puts the newline on the BARCODE field.
+
+    The fixture above writes five-column records, so the four-column branch was
+    unreachable and a defect there could not be caught -- a stray `continue` in exactly
+    that branch passed the whole suite. This makes the branch reachable.
+    """
+    u = build_universe(tmp_path)
+    body = "\n".join("chr2\t%d\t%d\t%s" % (500 + i, 560 + i, bc)
+                     for i, (bc, _d, _s) in enumerate(ROWS)
+                     if bc != FAILING_QC_BARCODE) + "\n"
+    with gzip.GzipFile(filename=str(u["fragments"]), mode="wb", mtime=1) as gz:
+        gz.write(body.encode())
+    acq = json.loads(u["acq"].read_text())
+    acq["sha256"] = _sha(u["fragments"])
+    acq["local_bytes"] = u["fragments"].stat().st_size
+    u["acq"].write_text(json.dumps(acq))
+    qc = pd.read_csv(u["qc_table"])
+    qc["n_fragments"] = qc["barcode"].map(
+        lambda b: 0 if b == FAILING_QC_BARCODE else 1)
+    qc.to_csv(u["qc_table"], index=False, compression="gzip")
+    rec = json.loads(u["qc_receipt"].read_text())
+    rec["fragments_sha256"] = acq["sha256"]
+    rec["per_barcode_table"]["sha256"] = _sha(u["qc_table"])
+    u["qc_receipt"].write_text(json.dumps(rec))
+
+    r = go(u)
+    assert r["status"] == "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED", r
+    assert r["records_scanned"] == 3
+    assert r["records_written_to_a_pseudobulk"] == 3, (
+        "a four-field record must be routed, not skipped")
+    assert r["records_discarded_out_of_cohort"] == 0
+    written = b"".join(sorted(
+        (u["out"] / ("PSEUDOBULK_%s.bed" % k)).read_bytes()
+        for k in r["pseudobulks"]))
+    assert written.count(b"\n") == 3
+    assert b"chr2\t500\t560\n" in written, "the trailing newline must not leak into End"

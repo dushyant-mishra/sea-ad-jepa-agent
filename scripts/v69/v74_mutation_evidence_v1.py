@@ -104,6 +104,35 @@ def m_restore_peaks_only_denominator(root: Path) -> None:
                   ' for k in keys_with_peaks})')
 
 
+def m_let_broad_handler_mask_named_states(root: Path) -> None:
+    nl = chr(10)
+    _replace_once(root, EXTRACT,
+                  "    except FailClosed:" + nl
+                  + "        # A named state raised inside the loop must keep its name.",
+                  "    except _NeverRaised:" + nl
+                  + "        # A named state raised inside the loop must keep its name.")
+    _replace_once(root, EXTRACT, "class FailClosed(Exception):",
+                  "class _NeverRaised(Exception):" + nl + "    pass" + nl + nl + nl
+                  + "class FailClosed(Exception):")
+
+
+def m_drop_ascii_guard(root: Path) -> None:
+    _replace_once(root, EXTRACT, "                        if not payload.isascii():",
+                  "                        if False:")
+
+
+def m_skip_four_field_records(root: Path) -> None:
+    """The exact slip that happened: a stray continue in the four-field branch."""
+    nl = chr(10)
+    q = root / EXTRACT
+    lines = q.read_text(encoding="utf-8").split(nl)
+    hits = [k for k, L in enumerate(lines) if L.strip().startswith("f[3] = f[3].rstrip")]
+    if len(hits) != 1:
+        raise SystemExit("four-field anchor matched %d lines" % len(hits))
+    lines.insert(hits[0] + 1, " " * 20 + "continue")
+    q.write_text(nl.join(lines), encoding="utf-8")
+
+
 MUTATIONS = [
     {
         "id": "M1_DISABLE_DIGEST_COMPARISON",
@@ -170,6 +199,36 @@ MUTATIONS = [
         "apply": m_restore_peaks_only_denominator,
         "must_fail": [
             "test_a_donor_that_called_no_peak_stays_in_the_denominator",
+        ],
+    },
+    {
+        "id": "M8_LET_BROAD_HANDLER_MASK_NAMED_STATES",
+        "repair_removed": "NAMED_STATES_SURVIVE_THE_BROAD_EXCEPT",
+        "what_it_undoes": ("a named fail-closed state raised inside the streaming loop "
+                           "is relabelled as a decompression failure"),
+        "apply": m_let_broad_handler_mask_named_states,
+        "must_fail": [
+            "test_a_non_ascii_record_in_a_written_cell_fails_closed",
+        ],
+    },
+    {
+        "id": "M9_DROP_ASCII_GUARD",
+        "repair_removed": "ASCII_CHECK_ON_WRITTEN_RECORDS",
+        "what_it_undoes": ("the validity check that per-line decoding used to perform "
+                           "is dropped when the loop moves to bytes"),
+        "apply": m_drop_ascii_guard,
+        "must_fail": [
+            "test_a_non_ascii_record_in_a_written_cell_fails_closed",
+        ],
+    },
+    {
+        "id": "M10_SKIP_FOUR_FIELD_RECORDS",
+        "repair_removed": "FOUR_FIELD_RECORDS_ARE_ROUTED_NOT_SKIPPED",
+        "what_it_undoes": ("a stray continue in the four-field branch, which the "
+                           "five-field-only fixture could not reach"),
+        "apply": m_skip_four_field_records,
+        "must_fail": [
+            "test_a_four_field_fragment_record_is_parsed_not_skipped",
         ],
     },
     {

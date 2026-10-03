@@ -262,7 +262,16 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
     # out-of-cohort / failed-QC split, and the C5 re-count. The third element is the
     # QC verdict, so a cohort cell that FAILED QC is still counted here -- the re-check
     # covers every cohort cell, not only the surviving ones.
-    cohort = {b: (barcode_to_donor[b], barcode_to_sub[b], b in passing)
+    #
+    # PERFORMANCE, NOT METHOD. The loop below runs 5.8e9 times, so it works in BYTES.
+    # Decoding every line to str made this pass several times slower than the
+    # equivalent V69 scan for no scientific gain: the fields are copied through
+    # verbatim either way, and which record lands in which pseudobulk is decided by an
+    # exact barcode match that is identical in either representation. The UTF-8
+    # validity check that per-line decoding incidentally performed is preserved exactly
+    # where it can matter -- on the records actually WRITTEN -- and recorded in the
+    # receipt. Records that are discarded never reach any output.
+    cohort = {b.encode(): (barcode_to_donor[b], barcode_to_sub[b], b in passing)
               for b in barcode_to_donor}
 
     # ---- C1: stream, digesting the bytes actually consumed ------------------------
@@ -271,7 +280,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
     handles, counts = {}, Counter()
     for donor, sub in sorted({v for v in keep.values()}):
         key = f"{donor}__{sub}"
-        handles[key] = open(stage_dir / f"PSEUDOBULK_{key}.bed", "w", newline="\n")
+        handles[key] = open(stage_dir / f"PSEUDOBULK_{key}.bed", "wb")
 
     partial = bool(max_records)
     n_records = n_in = n_out_of_cohort = n_failed_qc = 0
@@ -279,13 +288,15 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
     reader = HashingReader(fragments)
     try:
         with gzip.GzipFile(fileobj=reader, mode="rb") as gz:
-            for raw in gz:
-                line = raw.decode("utf-8", "strict")
-                if line.startswith("#"):
+            for line in gz:
+                if line.startswith(b"#"):
                     continue
-                f = line.rstrip("\n").split("\t")
+                f = line.split(b"\t", 4)
                 if len(f) < 4:
                     continue
+                if len(f) == 4:
+                    # Only a 4-field record carries the newline on the barcode.
+                    f[3] = f[3].rstrip(b"\n")
                 n_records += 1
                 meta = cohort.get(f[3])
                 if meta is None:
@@ -293,8 +304,14 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
                 else:
                     recount[f[3]] += 1
                     if meta[2]:
+                        payload = f[0] + b"\t" + f[1] + b"\t" + f[2] + b"\n"
+                        if not payload.isascii():
+                            raise FailClosed(
+                                "FAIL__NON_ASCII_FRAGMENT_RECORD_IN_A_WRITTEN_CELL",
+                                record_index=n_records,
+                                barcode=f[3].decode("utf-8", "replace"))
                         key = f"{meta[0]}__{meta[1]}"
-                        handles[key].write(f"{f[0]}\t{f[1]}\t{f[2]}\n")
+                        handles[key].write(payload)
                         counts[key] += 1
                         n_in += 1
                     else:
@@ -303,6 +320,15 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
                     break
         if not partial:
             reader.drain()
+    except FailClosed:
+        # A named state raised inside the loop must keep its name. Letting the broad
+        # handler below catch it would relabel, say, a non-ASCII written record as a
+        # decompression failure -- a receipt that points the reader at the wrong cause.
+        for h in handles.values():
+            h.close()
+        reader.close()
+        staged.quarantine_failed()
+        raise
     except Exception as e:                      # truncated / corrupt gzip stream
         for h in handles.values():
             h.close()
@@ -370,7 +396,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
                             qc_tbl["n_fragments"].astype("int64").tolist()))
         disagree = {}
         for bcode in barcode_to_donor:
-            d, o = int(declared[bcode]), int(recount.get(bcode, 0))
+            d, o = int(declared[bcode]), int(recount.get(bcode.encode(), 0))
             if d != o:
                 disagree[bcode] = {"qc_table": d, "verified_pass": o}
         if disagree:
@@ -396,6 +422,7 @@ def run(fragments: Path, fragments_receipt: Path, qc_receipt: Path,
             "n_cells_compared": len(barcode_to_donor),
             "n_cells_disagreeing": 0,
             "total_cohort_fragments_in_verified_pass": int(sum(recount.values())),
+            "written_records_checked_for_ascii_validity": True,
         }
 
     out_dir = staged.promote()
