@@ -10,7 +10,9 @@ on:
       - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
       - 'scripts/v64/build_v73_synthetic_fragments.py'
       - 'scripts/v64/estimate_v73_synthetic_stress_resources.py'
+      - 'scripts/v64/validate_v73_stress_promotion_readiness.py'
       - 'tests/test_v73_synthetic_stress_twin.py'
+      - 'tests/test_v73_stress_promotion_readiness.py'
       - '.github/workflows/v73-synthetic-stress-twin.yml'
   workflow_dispatch:
 
@@ -26,16 +28,19 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: python -m pip install --upgrade pip pytest numpy
-      - name: Compile stress-twin producers
+      - name: Compile stress-twin producers and promotion gate
         run: |
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_synthetic_fragments.py
           python -m py_compile scripts/v64/estimate_v73_synthetic_stress_resources.py
-      - name: Run shard-invariance, source-composition, multiome, fragment and resource tests
-        run: pytest -q tests/test_v73_synthetic_stress_twin.py
-      - name: Build a 2000-cell coupled sharded smoke twin
+          python -m py_compile scripts/v64/validate_v73_stress_promotion_readiness.py
+      - name: Run shard-invariance and fail-closed promotion tests
+        run: |
+          pytest -q tests/test_v73_synthetic_stress_twin.py
+          pytest -q tests/test_v73_stress_promotion_readiness.py
+      - name: Build a 2000-cell coupled sharded smoke twin and prove 100K remains blocked
         run: |
           rm -rf /tmp/v73_stress_smoke
           python scripts/v64/build_v73_sharded_master_truth.py --root /tmp/v73_stress_smoke --cells 2000 --shard-size 333 --seed 7302
@@ -43,3 +48,16 @@ jobs:
           python scripts/v64/build_v73_paired_multiome_sharded_observer.py --root /tmp/v73_stress_smoke --seed 7302
           python scripts/v64/build_v73_synthetic_fragments.py --root /tmp/v73_stress_smoke
           python scripts/v64/estimate_v73_synthetic_stress_resources.py --cells 100000 --shard-size 10000 --measure-root /tmp/v73_stress_smoke --out /tmp/v73_resource.json
+          set +e
+          python scripts/v64/validate_v73_stress_promotion_readiness.py --root /tmp/v73_stress_smoke --resource-receipt /tmp/v73_resource.json --out /tmp/v73_readiness.json
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/v73_readiness.json'))
+          assert x['status']=='BLOCKED'
+          assert 'DONOR_STRUCTURE_NOT_QUALIFIED' in x['blockers']
+          assert 'SOURCE_OPERATOR_STRUCTURE_NOT_QUALIFIED' in x['blockers']
+          print(json.dumps(x, indent=2))
+          PY
