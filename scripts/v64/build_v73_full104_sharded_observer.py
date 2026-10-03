@@ -34,11 +34,7 @@ def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
 
 
 def poisson_from_uniform(lam, u, max_k=80):
-    """Vectorized inverse-CDF Poisson draw using a stateless uniform matrix.
-
-    lam is bounded to <= exp(3) ~20 by construction; tail mass beyond 80 is negligible.
-    This avoids stateful RNG consumption that would make counts depend on shard boundaries.
-    """
+    """Vectorized inverse-CDF Poisson draw using a stateless uniform matrix."""
     lam = np.asarray(lam, dtype=np.float64)
     u = np.asarray(u, dtype=np.float64)
     pmf = np.exp(-lam)
@@ -60,7 +56,6 @@ def poisson_from_uniform(lam, u, max_k=80):
 
 def weights(seed):
     gid = np.arange(N_GENES, dtype=np.uint64)
-    # 11 latent dimensions: global4, query2, shared3, source-embedding2
     return np.stack(
         [T.normal(seed + 100, gid, 200 + j) for j in range(11)], axis=0
     ).astype(np.float32) * np.float32(0.22)
@@ -85,6 +80,7 @@ def observe(root: Path, seed: int = 7302) -> dict:
     src_embed = source_embeddings(seed)
     out_shards = []
     total_cells = 0
+    realised_sources = np.zeros(3, dtype=np.int64)
 
     for s in tm["shards"]:
         tp = truth_root / s["file"]
@@ -93,6 +89,7 @@ def observe(root: Path, seed: int = 7302) -> dict:
         z = np.load(tp, allow_pickle=False)
         ids = z["global_cell_index"].astype(np.int64)
         src = z["source_index"].astype(np.int8)
+        realised_sources += np.bincount(src, minlength=3)
         latent = np.c_[
             z["z_global"], z["z_query"], z["z_reg_shared"], src_embed[src]
         ].astype(np.float32)
@@ -133,7 +130,7 @@ def observe(root: Path, seed: int = 7302) -> dict:
             cell_id=cell_ids,
         )
         mpath = obs / f"META_{start:09d}_{stop:09d}.csv.gz"
-        source_names = np.array(["SEA_AD", "NPH52", "HVS"])
+        source_names = np.array(T.SOURCE_NAMES)
         with gzip.open(mpath, "wt", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["global_cell_index","cell_id","donor","source","operator"])
@@ -150,16 +147,24 @@ def observe(root: Path, seed: int = 7302) -> dict:
         ))
         total_cells += len(ids)
 
+    source_counts = dict(zip(T.SOURCE_NAMES, realised_sources.tolist()))
+    if source_counts != tm["source_counts"]:
+        raise RuntimeError("observer source counts disagree with master truth manifest")
     manifest = dict(
-        schema="V73_FULL104_SHARDED_OBSERVER_MANIFEST_V1",
+        schema="V73_FULL104_SHARDED_OBSERVER_MANIFEST_V2_FULL104_SOURCE_APPORTIONED",
         seed=seed,
         n_cells=total_cells,
         n_genes=N_GENES,
         n_donors=104,
         n_operators=42,
-        source_target="80/14/6 SEA_AD/NPH52/HVS by global-index rule",
+        source_counts=source_counts,
+        source_composition_authority=(
+            "V73_SYNTHETIC_STRESS_TWIN_CONTRACT_AMENDMENT_1_SOURCE_COMPOSITION"
+        ),
         structural_missingness=True,
         hidden_truth_path_exposed=False,
+        donor_assignment_status=tm.get("donor_assignment_status"),
+        operator_assignment_status=tm.get("operator_assignment_status"),
         master_truth_digest_binding=[
             dict(file=s["file"], sha256=s["sha256"]) for s in tm["shards"]
         ],
@@ -180,7 +185,7 @@ def main():
     ap.add_argument("--seed", type=int, default=7302)
     a = ap.parse_args()
     m = observe(Path(a.root), a.seed)
-    print(json.dumps(dict(status="PASS", cells=m["n_cells"], shards=len(m["shards"])), indent=2))
+    print(json.dumps(dict(status="PASS", cells=m["n_cells"], shards=len(m["shards"]), source_counts=m["source_counts"]), indent=2))
 
 
 if __name__ == "__main__":
