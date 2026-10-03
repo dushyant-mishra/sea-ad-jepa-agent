@@ -1,4 +1,33 @@
 {
+  "SUPERSEDED_DO_NOT_CITE_AS_A_CURRENT_RESULT": {
+    "date_of_supersession": "2026-10-02",
+    "finding": "S109 / V74 LANE 4 repository-wide stale-claim audit.",
+    "what_this_file_actually_measured": "the HISTORICAL sampling-with-replacement generator. Confound block labels were drawn as rng.integers(0, K, N_EDGES), so the requested K was only the SIZE OF A FACTOR POOL, never the number of occupied blocks. At K=200 over 200 edges the realised occupancy averages 126.6 (range 115 to 138 over 200 simulations), and the single build receipt kept as a positive control records 131 realised factors. This file's K=200 endpoint was therefore NEVER one factor per edge.",
+    "fields_in_this_file_that_must_not_be_cited_as_current": {
+      "READING": "asserts G2 contributes nothing against an edge-specific cross-modal artifact. WITHDRAWN.",
+      "g2_rate_monotone_in_K": "true of these five numbers, but the numbers come from a factor-pool world, not an exact-K partition world. No convergence-onto-biology inference survives.",
+      "g2_rate_at_max_K_converges_on_biology_rate": "the K=max cell was not the one-factor-per-edge world the convergence test assumed.",
+      "cells.*.edges_per_block": "NOMINAL N_EDGES/K bookkeeping, not realised occupancy. The successor renames this field edges_per_block_nominal and reports realised occupancy beside it.",
+      "degenerate_end_note": "the structural-identity statement is an ARGUMENT and may be true of an exact-K world, but it is FALSE as applied to this file's K=200 world, which carried about 127 factors across 200 edges.",
+      "what_this_cannot_establish": "its closing sentence makes the same misapplication and is withdrawn for the same reason.",
+      "status": "'COMPLETE' describes the run, not the standing of its conclusion."
+    },
+    "superseded_by": {
+      "repaired_experiment": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "what_it_did": "exact K-occupied balanced partition, realised occupancy equal to requested K at every point, 100 draws at 282 donors.",
+      "its_result": "G2 pass rate 0.20, 0.25, 0.40, 0.65, 0.50 at K = 1, 5, 20, 50, 200. NON-MONOTONE. By the pre-committed reading NO protection claim may be made in either direction.",
+      "geometry_evidence": "results/v64/phase_b_design/V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json recovers the partition from the written ATAC bytes and carries the historical generator as its positive control.",
+      "frozen_contract": "results/v64/phase_b_design/V73_STAGE4_G2_REPAIRED_PREEXECUTION_CONTRACT_V1.json"
+    },
+    "the_distinction_that_must_be_preserved": {
+      "A_EMPIRICAL": "whether G2 protects against edge-specific cross-modal confounding. Status: UNRESOLVED. Neither this file nor the repaired curve settles it.",
+      "B_STRUCTURAL": "that a completely edge-private latent factor loading on both RNA and ATAC can be observationally indistinguishable from a regulatory latent under this observation model. This is a CONCEPTUAL ARGUMENT. It never depended on either curve, it is not an empirical result, and it must not be inflated into a stronger biological claim than it supports."
+    },
+    "retained_unchanged_below": true,
+    "sha256_of_this_file_before_this_annotation": "86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbeb5aad3",
+    "original_git_blob": "fc5afb7f07c82f58335e5340cda1d8543fa95952",
+    "nothing_was_deleted": "every field emitted by the historical runner is retained verbatim beneath this header. Deleting a measurement because its interpretation did not survive is worse than carrying it with its qualification attached."
+  },
   "schema": "V64_STAGE4_G2_SENSITIVITY_CURVE_V1",
   "date": "2026-10-02",
   "executes_precommitment": {

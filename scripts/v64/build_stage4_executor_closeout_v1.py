@@ -47,6 +47,97 @@ def receipt(name, keys):
     return out
 
 
+def superseded_v1_curve_receipt():
+    """The withdrawn V1 K-curve, carried with its retraction attached rather than deleted.
+
+    S109 repaired THE_GOVERNING_INTERPRETATION_LIMIT but left this receipts block stating
+    the same withdrawn conclusion verbatim, one level down in the same file. A reader who
+    stops at the receipts inventory still met the retracted claim. The fix is the same
+    shape as S109's: head the block, keep every measured field beneath it.
+    """
+    out = receipt("V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+                  ["executes_precommitment", "cells",
+                   "g2_rate_monotone_in_K",
+                   "g2_rate_at_max_K_converges_on_biology_rate",
+                   "READING", "primary_evidence",
+                   "canonical_state_verified", "status"])
+    head = {
+        "SUPERSEDED_DO_NOT_CITE_AS_A_CURRENT_RESULT": (
+            "This receipt describes the HISTORICAL sampling-with-replacement generator. "
+            "Block labels were drawn as rng.integers(0, K, N_EDGES), so requested K was "
+            "only the SIZE OF A FACTOR POOL. At K=200 over 200 edges realised occupancy "
+            "averages 126.6, and the retained positive-control build records 131. The "
+            "K=200 endpoint was never one factor per edge."),
+        "WITHDRAWN_FIELDS": (
+            "READING, g2_rate_monotone_in_K, "
+            "g2_rate_at_max_K_converges_on_biology_rate and every cells.*.edges_per_block "
+            "value. edges_per_block is NOMINAL N_EDGES/K bookkeeping, not realised "
+            "occupancy."),
+        "superseded_by": "results/v64/phase_b_design/"
+                         "V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json, "
+                         "recorded beside this block as g2_sensitivity_curve_REPAIRED_V2. "
+                         "Its G2 pass rate is NON-MONOTONE -- 0.20, 0.25, 0.40, 0.65, "
+                         "0.50 -- so by the pre-committed reading no protection claim may "
+                         "be made in either direction.",
+        "empirical_status_now": "UNRESOLVED. Whether G2 protects against edge-specific "
+                                "cross-modal confounding is not settled by either curve.",
+        "structural_argument_is_separate": "that a completely edge-private latent loading "
+                                           "on both RNA and ATAC can be observationally "
+                                           "indistinguishable from a regulatory latent is "
+                                           "a CONCEPTUAL ARGUMENT. It never depended on "
+                                           "either curve and is not an empirical result.",
+        "annotated_in_place": "the V1 artifact now carries this supersession in its own "
+                              "bytes; its pre-annotation SHA-256 was "
+                              "86c6f08ce56064f1a6431c0ded423d590b8c3292328e5d3b915fa2cdbe"
+                              "b5aad3 at git blob fc5afb7f07c82f58335e5340cda1d8543fa9595"
+                              "2, and nothing was deleted.",
+        "RETAINED_MEASURED_FIELDS_BELOW": True,
+    }
+    head.update(out)
+    return head
+
+
+def repaired_v2_curve_receipt():
+    """The exact-K successor, with the one field a machine reader could misread guarded.
+
+    g2_rate_at_max_K_converges_on_biology_rate is true here while g2_rate_monotone_in_K is
+    false. The frozen reading requires BOTH, so the convergence flag on its own licenses
+    nothing, and it is recorded with that stated rather than left to be read alone.
+    """
+    out = receipt("V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+                  ["executes_precommitment", "historical_v1_preserved",
+                   "historical_v1_scope", "S102_status", "cells",
+                   "g2_rate_monotone_in_K",
+                   "g2_rate_at_max_K_converges_on_biology_rate",
+                   "READING", "primary_evidence", "status"])
+    head = {
+        "WHAT_THIS_SETTLES": "nothing in either direction. The pass rate is 0.20, 0.25, "
+                             "0.40, 0.65, 0.50 at K = 1, 5, 20, 50, 200: NON-MONOTONE. By "
+                             "the pre-committed reading no protection claim may be made "
+                             "either way, and the Wilson intervals at K=50 and K=200 "
+                             "overlap too heavily to distinguish 0.65 from 0.50 at 20 "
+                             "draws per cell.",
+        "CONVERGENCE_FLAG_ALONE_LICENSES_NOTHING": (
+            "g2_rate_at_max_K_converges_on_biology_rate is true below, but the frozen "
+            "reading requires monotonicity AND overlap together, and monotonicity "
+            "failed. The overlap test is weak by construction: at 20 draws against a "
+            "25-of-40 reference it fails only below about 3 of 20 or at 20 of 20."),
+        "INHERITED_CONTRACT_TEXT_IS_NOT_A_DESCRIPTION_OF_THIS_RUN": (
+            "the V2 artifact's convergence_test block still carries the frozen sentence "
+            "'a monotone rise ... is unmistakable'. That is the pre-committed READING "
+            "RULE, written by the runner into every receipt it emits, not a statement "
+            "about this run, which was not monotone."),
+        "empirical_status": "UNRESOLVED",
+        "structural_argument_is_separate_and_is_not_a_measurement": (
+            "that a completely edge-private latent loading on both RNA and ATAC can be "
+            "observationally indistinguishable from a regulatory latent is a CONCEPTUAL "
+            "ARGUMENT under this observation model. It never depended on either curve."),
+        "MEASURED_FIELDS_BELOW": True,
+    }
+    head.update(out)
+    return head
+
+
 def main() -> int:
     head = git("rev-parse", "HEAD")
     dirty = git("status", "--porcelain")
@@ -115,12 +206,12 @@ def main() -> int:
                                         ["executes_precommitment", "readings",
                                          "scale_reading", "canonical_state_verified",
                                          "status"]),
-        "g2_sensitivity_curve": receipt("V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
-                                        ["executes_precommitment", "cells",
-                                         "g2_rate_monotone_in_K",
-                                         "g2_rate_at_max_K_converges_on_biology_rate",
-                                         "READING", "primary_evidence",
-                                         "canonical_state_verified", "status"]),
+        "g2_sensitivity_curve_SUPERSEDED_V1": superseded_v1_curve_receipt(),
+        "g2_sensitivity_curve_REPAIRED_V2": repaired_v2_curve_receipt(),
+        "confound_block_geometry_verification": receipt(
+            "V64_CONFOUND_BLOCK_GEOMETRY_VERIFICATION_V1.json",
+            ["why", "all_K_recovered_exactly", "ALL_REPAIRED_K_GEOMETRY_QUALIFIED",
+             "status"]),
         "world_seed_robustness": receipt("V64_STAGE4_WORLD_SEED_ROBUSTNESS_V1.json",
                                          ["seed_bases", "n_checks", "n_seed_stable",
                                           "seed_dependent",
