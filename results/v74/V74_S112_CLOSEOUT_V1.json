@@ -1,0 +1,57 @@
+{
+  "schema": "V74_S112_CLOSEOUT_V1",
+  "recorded_utc": "2026-10-04T16:26:11Z",
+  "reconciled_head_sha": "5b486ac197967f95d4ef2876aaa3a8030c956e9b",
+  "scope": "narrow by design: ensure no CURRENT-FACING artifact can convert the withdrawn V1 K-curve interpretation into current authority. Not a second repository-wide intellectual audit.",
+  "files_inspected": {
+    "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json": "107f304b1a76fd9700ed9f32ffa6a325c0b1d73696d7c0b23c4ec301f82a3aa5",
+    "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json": "14eed61c5a37aa7cdda6192a6875b890c63fe09b8fa1559709852ce69af918da",
+    "results/v64/phase_b_design/V67_STAGE4_EXECUTOR_CLOSEOUT_V1.json": "387d1ae3b1b7c08a28ab5a3e34be4111c561b4cd5da25deaed75611dea8072d3",
+    "results/v64/phase_b_design/V74_STALE_CLAIM_AUDIT_V1.json": "049de7a5b5e0551458889e0d89087a33a8b802ea553b0b54a251be1fc4f47334"
+  },
+  "stale_fields_found": [
+    {
+      "field": "g2_rate_at_max_K_converges_on_biology_rate",
+      "artifact": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V2_PARTITION_REPAIRED.json",
+      "value": true,
+      "risk": "a bare boolean adjacent to g2_rate_monotone_in_K=false. Read alone it could be taken as a surviving conclusion, when the frozen reading requires monotonicity AND overlap together and monotonicity failed.",
+      "current_interpretation": "the G2 pass rate is NOT monotone in K. The gate responds to something neither hypothesis predicts and no protection claim may be made in either direction until it is understood.",
+      "guard_already_present_in_the_same_object": {
+        "READING": true,
+        "primary_evidence": "the shape of the G2 pass rate across the five K values",
+        "corroborating_evidence": "the endpoint overlap test, which is weak by construction",
+        "convergence_test_carries_its_own_weakness_note": true
+      },
+      "disposition": "NO MUTATION. See decision below."
+    },
+    {
+      "field": "g2_rate_monotone_in_K",
+      "artifact": "results/v64/phase_b_design/V64_STAGE4_G2_SENSITIVITY_CURVE_V1.json",
+      "value": true,
+      "risk": "true of V1's own five numbers, but its only function was to support the withdrawn reading",
+      "current_interpretation": "V1 measured a sampling-with-replacement factor pool, not exact K",
+      "disposition": "HISTORICAL_RETAIN_FOR_RECORD; supersession header already present in V1"
+    }
+  ],
+  "machine_consumers": {
+    "searched": "all .py, .yml, .yaml at this head, excluding results/",
+    "writers": [
+      "scripts/v64/run_stage4_g2_sensitivity_curve_v1.py"
+    ],
+    "readers": [
+      "scripts/v64/build_stage4_executor_closeout_v1.py"
+    ],
+    "EXECUTABLE_GATES_CONSUMING_THEM": [],
+    "no_gate_threshold_alpha_or_acceptance_criterion_branches_on_these_fields": true,
+    "closeout_reader_already_emits_adjacent_guard_text": true
+  },
+  "DECISION_NOT_TO_MUTATE_V2": "The V2 artifact is a completed execution record. Its READING already states in the same object that no protection claim may be made in either direction, primary_evidence names the curve shape rather than the endpoint, corroborating_evidence calls the endpoint test weak by construction, and convergence_test carries its own weakness note. Editing a completed execution record to re-say what it already says would change historical bytes for no gain, against the preferred policy that historical execution artifacts remain immutable and supersession lives in the current-authority layer. That layer, the closeout, already annotates the field.",
+  "historical_bytes_changed": false,
+  "residual_risk": "a consumer that reads g2_rate_at_max_K_converges_on_biology_rate while ignoring READING in the same object is cherry-picking rather than being misled. No machine consumer does this; the risk is human and is addressed by the guard text in the closeout.",
+  "STATUS": "CLOSED__NO_EXECUTABLE_CONSUMER__GUARD_PRESENT_IN_CURRENT_AUTHORITY_LAYER",
+  "governance": {
+    "S102": "OPEN",
+    "stage_4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED"
+  }
+}

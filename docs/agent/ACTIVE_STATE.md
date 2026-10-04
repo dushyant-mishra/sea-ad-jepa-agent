@@ -434,3 +434,53 @@ An executing script is immutable — launch long jobs from a snapshot outside th
 Write a receipt's verdict BEFORE dumping it to disk. Never declare an artifact missing from a
 filtered search; use an exhaustive listing and state the scope. Retracting a claim in one
 block of an artifact does not retract it from the rest of that artifact.
+
+# V74 Macha reconciliation — 2026-10-04
+
+One reconciled successor now carries all five Macha lanes:
+`claude/v74-macha-reconciliation-20261003`, base `78f13e71`.
+Two lanes (G2 successor, stale-claim audit) were ALREADY ancestors of that base;
+only Route-B custody and Lane E required explicit import. Earlier statements that
+four lanes needed importing are superseded.
+
+## Status by item
+- **Route-A duplicate/conflict**: REPAIRED, SOURCE-QUALIFIED ONLY. Raw rows are audited
+  before `dict(zip(...))`; conflicting donor or subcluster fails closed; exact duplicates
+  permitted under a recorded policy. A mutation restoring the old post-collapse ordering
+  makes the suite fail. NOT re-executed on the real cohort; the defect is believed latent
+  (2,534 rows, 0 conflicts) but that is unconfirmed here.
+- **Route-B custody**: code reconciled. Real replay evidence bound as
+  `RECOVERED_HISTORICAL_EXECUTION_EVIDENCE`, executed at `55488749`, not at the reconciled
+  head. The only post-run source delta is the S-D7 encoding repair, which cannot have
+  altered that run because every receipt the changed lines parse is pure ASCII. An
+  exact-head replay is running; if it reproduces, a narrow successor upgrades this to
+  `PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED`.
+- **Blacklist**: AUTHENTICATED AND BOUND. ENCFF356LFX, GRCh38, 910 intervals, both MD5s
+  matching ENCODE's declared metadata. Attrition 263 / 150,561 regions (0.17%). Blacklist
+  is applied INSIDE consensus construction, never by filtering afterwards.
+- **Lane-E scaling authority**: fail-open repaired. Status is DERIVED from seven evidence
+  gates; deciding conclusions come from a hash-bound artifact, not from argv.
+- **Quiet-512**: outputs BITWISE IDENTICAL under contended and quiet execution, rankings
+  included. Two earlier interpretations are WITHDRAWN: that contention might reach the
+  scientific output, and that per-motif cost rises with shard size.
+- **S112**: CLOSED. No executable gate consumes the stale convergence fields; guard text
+  is present in the current-authority layer; historical bytes unchanged.
+- **S102**: OPEN, and NOT on the critical path.
+- **Stage 4**: NOT AUTHORIZED. Correspondence UNOPENED. Training OFF. Morabito PROTECTED.
+  Recoverability TEST SEALED.
+- **SCENIC+ network**: still does not exist on either route.
+
+## Worker count — narrower than previously stated
+Do NOT write "8 workers optimal". The supported statements are: 8 workers were the measured
+wall-clock minimum ON THE TESTED SMALL WORKER-SCALING BENCHMARK (16 motifs, 1/2/4/8/16
+workers), and 8 workers were shown to FUNCTION for a 512-motif run. Production-scale worker
+optimality at representative motif composition is NOT established. The tested slice is a
+PREFIX of the collection whose motifs are about half the average length.
+
+## Primary next scientific milestone
+**Exact-head 100K FULL104-like synthetic architecture qualification.**
+Reconciliation is closure work, not the programme. Once the exact-head CI and the
+reconciliation authority land, reconciliation STOPS; any outstanding replay lands as a
+narrow successor rather than holding the project open. The path onward is
+reconciled V73/V74 synthetic architecture -> 2K promotion smoke -> 100K qualification ->
+500K -> 4.553M. Do not open another audit queue in front of it.
