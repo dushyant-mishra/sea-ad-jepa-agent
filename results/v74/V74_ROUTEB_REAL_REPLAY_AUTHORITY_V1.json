@@ -1,0 +1,105 @@
+{
+  "schema": "V74_ROUTEB_REAL_REPLAY_AUTHORITY_V1",
+  "recorded_utc": "2026-10-04T03:52:37Z",
+  "reconciled_head_sha": "5e1d0b024df2c5d1a09e60acf7bfca23b6af1265",
+  "CLASSIFICATION": "RECOVERED_HISTORICAL_EXECUTION_EVIDENCE",
+  "classification_is_not": "REPRODUCED_ON_RECONCILED_HEAD",
+  "why_not_reproduced": "The replay executed the sources at commit 55488749, not at the reconciled head. All three executed source digests recorded by the run match the bytes stored at 55488749 exactly, so the run's provenance is authenticated to a real committed source; but those files were subsequently changed by the S-D7 encoding repair, so the reconciled head's bytes differ and this is recovery, not reproduction.",
+  "executed_source_identity": {
+    "executed_at_commit": "55488749",
+    "producer_sha256_recorded_by_the_run": "7e1fc29ed915c3226afee24617be1e63c3534d5f92fffe778e9ec57419f020e7",
+    "barcode_identity_module_sha256": "b34ce9977e8f5632f73935bdbe956c29de43a40d6a66720154cc2e336e1782ea",
+    "custody_module_sha256": "db53ba7339c97a0f75dc0c4a4ddb29787ff551eacbc91db28488e08884249f7f",
+    "all_three_match_bytes_at_55488749": true,
+    "verification_method": "git show 55488749:<path> hashed and compared"
+  },
+  "source_delta_since_execution": {
+    "files_changed": [
+      "scripts/v69/routeb_extract_pseudobulk_fragments_v1.py",
+      "scripts/v69/v69_custody.py"
+    ],
+    "unchanged": [
+      "scripts/v69/v69_barcode_identity.py"
+    ],
+    "nature": "the S-D7 repair only: Path(...).read_text() replaced by read_text_utf8(), plus the helper definitions. Semantic in principle, because the old call decodes cp1252 on Windows.",
+    "could_it_have_changed_this_run": "NO, AND THIS IS MEASURED, NOT ASSUMED",
+    "evidence": "every receipt the changed read_text lines parse is pure ASCII (V69_ROUTEB_FRAGMENT_QC_V1.json 5528 bytes, V69_GSE214979_COHORT_FREEZE_V1.json 5784 bytes, zero bytes above 127), so cp1252 and utf-8 decode them byte-identically",
+    "residual_risk": "a future input containing non-ASCII would be parsed differently by the executed source than by the reconciled head. That is why this remains RECOVERED rather than REPRODUCED."
+  },
+  "fragment_identity": {
+    "path": null,
+    "observed_sha256": "b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f",
+    "expected_authenticated_sha256": "b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f",
+    "byte_count": null,
+    "digest_source": null,
+    "digest_computed_from_bytes_read_by_the_run": true,
+    "independently_rehashed_by_the_coordinator": true
+  },
+  "reconciliation_counts": {
+    "n_cohort_barcodes": 2534,
+    "total_fragment_records_read": 5831261753,
+    "cohort_fragments": 23522438,
+    "out_of_cohort": 5807739315,
+    "out_of_cohort_or_failing_qc": 5807839256,
+    "qc_rows_compared": 2534,
+    "per_cell_recount_disagreements": 0,
+    "cells_used": 2342,
+    "cells_excluded_by_qc": 192,
+    "cells_with_no_qc_verdict": 0,
+    "PARTIAL_SCAN": false,
+    "RECORD_ACCOUNTING_CHECK": {
+      "identity_1_total": {
+        "out_of_cohort": 5807739315,
+        "cohort": 23522438,
+        "sum": 5831261753,
+        "total_records_read": 5831261753,
+        "reconciles": true
+      },
+      "identity_2_cohort": {
+        "written_to_bed": 23422497,
+        "fragments_of_qc_excluded_cells": 99941,
+        "sum": 23522438,
+        "cohort": 23522438,
+        "reconciles": true
+      },
+      "written_matches_reported_bed_lines": {
+        "computed": 23422497,
+        "reported_by_the_run": 23422497,
+        "agree": true
+      },
+      "method": "recomputed here from the recorded counts, not copied from the run's own claim",
+      "MY_FIRST_VERSION_OF_THIS_CHECK_WAS_WRONG": "I first added cohort to out_of_cohort_or_failing_qc and got 99,941 too many. That field already contains the failed-QC fragments, which are a SUBSET of the cohort count, so the pair double-counted them. The arithmetic was right and my pairing was wrong. Recorded because a reconciliation check that is itself miscomposed would have reported a real dataset as inconsistent."
+    }
+  },
+  "comparison_targets_not_expected_constants": {
+    "note": "these are the prior local numbers. They are comparison targets. A future replay that disagrees must be investigated; this receipt must NOT be made to conform to the old transcript.",
+    "cells": 2534,
+    "cohort_fragments": 23522438
+  },
+  "outputs": {
+    "n_bed_files": 60,
+    "per_output_sha256": {
+      "PSEUDOBULK_3329__Mic_0.bed": "48ab180554a76c3756c447e303113dd45931934dd6587c292b96564fa28e9378",
+      "PSEUDOBULK_3329__Mic_1.bed": "cfacca931c86f29648b3b372b63f5074faaed6a68e34de9cae07225c13474f12",
+      "PSEUDOBULK_3329__Mic_2.bed": "11505751ff68a2f6932cf004edd94c21bd96a4d67d4873248319626e78f727f6",
+      "PSEUDOBULK_3329__Mic_3.bed": "0bdb8302c78388cd8175c6de2c2446d80982ba560c6c7132f4a6f235eb730e32"
+    },
+    "per_output_sha256_truncated_to_first_4": true,
+    "staged_output_promotion": "promoted only after digest validation"
+  },
+  "historical_receipt": {
+    "path": "D:\\jepa_v5_outputs_20260925\\v74_laneD\\receipts\\V74_ROUTEB_PSEUDOBULK_FRAGMENTS_V1.json",
+    "sha256": "14ba42ec3ea2242bcf6afb57d65a42e273f1af514ee23b6fffbfdb2df6cd2154",
+    "status_recorded_by_the_run": "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED"
+  },
+  "STATUS": "RECOVERED__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED__EXECUTED_AT_55488749_NOT_AT_THE_RECONCILED_HEAD",
+  "what_would_upgrade_this": "a replay executed from the reconciled head would yield PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED. It costs 3h18m and is not blocked by anything.",
+  "governance": {
+    "stage_4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "S102": "OPEN"
+  }
+}
