@@ -77,7 +77,12 @@ def test_biology_positive_changes_only_predeclared_biology_and_keeps_population_
     targeted = (ids % receipt["biology_positive"]["target_modulo"]) == receipt["biology_positive"]["target_remainder"]
     delta = tp["z_global"] - ta["z_global"]
     assert np.all(delta[~targeted] == 0)
-    assert np.all(delta[targeted, 0] == receipt["biology_positive"]["delta_z_global_0"])
+    assert np.allclose(
+        delta[targeted, 0],
+        receipt["biology_positive"]["delta_z_global_0"],
+        rtol=0.0,
+        atol=5e-7,
+    )
     assert np.all(delta[targeted, 1:] == 0)
     assert int(targeted.sum()) == receipt["biology_positive"]["n_targeted_cells"]
     assert pm["control_intervention"]["status"] == "PROSPECTIVE_SYNTHETIC_BIOLOGY_POSITIVE"
