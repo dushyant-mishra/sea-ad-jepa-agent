@@ -1,0 +1,187 @@
+{
+  "schema": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_branch": "claude/v64-exact-sampler-successor-20260930",
+  "audited_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+  "substrate_contract": {
+    "path": "results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
+    "sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84"
+  },
+  "verdict": "B1_B5_AND_PAIRING_CUSTODY_ACCEPTED__B6_T3_T4_AVAILABILITY_SCHEMA_GAP_BLOCKS_SUBSTRATE_ACCEPTANCE",
+  "upstream_phase_a_v3": {
+    "status": "CODE_AND_RECEIPT_REVIEW_SUPPORTS_CONTRACT_COMPLIANCE__ROW_BYTES_NOT_IN_GIT",
+    "retained_edges": 13175,
+    "funnel": {
+      "denominator": 20709,
+      "DROP_GENE_NOT_IN_NIHCARD": 350,
+      "DROP_GENE_AMBIGUOUS_IN_NIHCARD": 0,
+      "DROP_NO_CONSENSUS_PEAK_OVER_LINKED_DISTAL": 199,
+      "linked_eligible": 20160,
+      "DROP_CONTROL_A_NO_ADMISSIBLE_START": 6985,
+      "retained": 13175
+    },
+    "schema_fields_emitted": true,
+    "provenance_patch_claims_all_v2_required_items_bound": true,
+    "practical_custody_limitation": "PHASE_A_V3_ROWS.jsonl.gz and funnel-per-edge bytes are hash-bound but not committed. Independent byte-level reinspection still requires custody transfer or reproducible rematerialization.",
+    "note": "This closes the earlier code-level omission that made the 13,510 run only a CONTROL_A-availability result. The 13,175 V3 population is the substrate authority being used here."
+  },
+  "accepted_design_elements": [
+    "Phase B is explicitly single-modality only; any two-modality statistic is a stop condition.",
+    "Metacell assignments and metacell-level vectors are persisted so Stage 4 need not reopen matrices.",
+    "T3 RNA is keyed by gene rather than pair, which is information-preserving under the frozen definition that promoter_activity is the linked gene's RNA.",
+    "Recoverability 16/4/4 split is correctly scoped to recoverability model/rank/basis/threshold selection and does not silently shrink the independent Phase-B donor population.",
+    "Only SampleID and cell_type values are read from obs for donor-population construction; demographic columns are not read.",
+    "The 57 additional ENUMERATION_ONLY rows are arithmetically recomputed from admissible sets and do not change Phase-A N.",
+    "Missingness remains explicit; zero-fill is forbidden.",
+    "Phase B, Stage 4, TD60, Morabito and training remain stopped/protected."
+  ],
+  "findings": [
+    {
+      "id": "S57",
+      "severity": "MEDIUM",
+      "title": "S54-style hardcoded denominator remains in substrate producer",
+      "evidence": "build_phase_b_measurement_substrate_contract_v1.py computes as_fraction_of_controls_already_measured as round(len(extra) / 24187, 6). 24187 equals current CONTROL_A_rows + CONTROL_B_rows (13175 + 11012), but is not recomputed.",
+      "impact": "Correct today, but stale if Phase-A/null availability population changes. This directly contradicts the claim that every emitted count/derived count is recomputed.",
+      "required_fix": "Replace 24187 with a denominator recomputed from the loaded Phase-A V3 rows (or explicitly derive len(already) with the intended semantics) and add a negative-control test that changes row availability and requires the fraction to update."
+    },
+    {
+      "id": "S58",
+      "severity": "HIGH_BLOCKING",
+      "title": "R3 exact-conditional rule is a new statistical decision not present in the bound V2 statistical contract",
+      "evidence": [
+        "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V2 freezes exact enumeration for CONTROL_A support 2-10, but does not specify the R3 rule: enumerate the small arm while conditioning on the realised large-arm draw.",
+        "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1 introduces R2 exact-joint and especially R3 exact-conditional semantics.",
+        "The substrate contract simultaneously declares changes_no_statistical_decision=true.",
+        "T16 only checks that this boolean is true, governance equals V2, and the V2 digest is current; it cannot detect that R3 itself is new."
+      ],
+      "impact": "R3 determines the reference distribution for 21 A/B pairs and therefore is inferential/statistical semantics, not merely storage layout. It is prospectively chosen before biological values, so it can be made lawful now, but it must be an explicit statistical-contract amendment rather than hidden inside a measurement-substrate contract.",
+      "required_fix": [
+        "Create a successor/null-contract amendment (e.g. V3) that explicitly freezes R1/R2/R3 semantics before Phase B.",
+        "State that R3 is conditional on the realised large-arm draw and define exactly which downstream statistic/reference it governs.",
+        "Update the decision-state artifact and tests to bind the new statistical-contract digest.",
+        "Change substrate changes_no_statistical_decision to true only after the R1/R2/R3 rule is upstream authority; otherwise mark the substrate as introducing a prospective statistical amendment.",
+        "Add a test that fails if substrate enumeration semantics are absent from or differ from the bound statistical contract."
+      ]
+    },
+    {
+      "id": "S59",
+      "severity": "MEDIUM_CUSTODY",
+      "title": "Phase-A V3 row artifacts are hash-bound but not independently available in Git",
+      "evidence": "Patched receipt binds PHASE_A_V3_ROWS.jsonl.gz (1,866,271 bytes, sha256 ab103675...) and PHASE_A_V3_FUNNEL_PER_EDGE.jsonl.gz (63,355 bytes, sha256 b4c6eb6f...), but both are marked external/hash-only.",
+      "impact": "The substrate producer and tests rely on these bytes. Independent future agents cannot reproduce row-level checks from repository contents alone.",
+      "required_fix": "Because both artifacts are small, place their exact bytes in durable repository/release/Actions custody or add a deterministic rematerialization workflow that verifies the recorded hashes."
+    },
+    {
+      "id": "B6",
+      "severity": "HIGH_BLOCKING_CONTRACT_COMPLIANCE",
+      "title": "Frozen contract requires per-element availability in T3/T4, but executed substrate leaves it implicit and closeout moves flags into T5",
+      "evidence": [
+        "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json defines T3_RNA_VECTORS fields [rna_log1p_cp10k, rna_available].",
+        "The same contract defines T4_ATAC_VECTORS fields [atac_log1p_norm, atac_available, n_assigned_peaks].",
+        "The missingness section explicitly requires 'per-element availability columns in T3 and T4, and an availability_state in T5'.",
+        "build_phase_b_substrate_v1.py writes sparse T3/T4 values but no t3_available/t4_available arrays.",
+        "close_phase_b_substrate_v1.py instead adds rna_available and atac_available fields to T5, which does not satisfy the frozen T3/T4 artifact schema."
+      ],
+      "semantic_note": [
+        "An absent sparse T3/T4 value can lawfully represent a measured zero, so sparse absence itself must not be reused as an availability flag.",
+        "The T5 availability_state logic is useful and may remain, but it cannot substitute for the contracted T3/T4 availability representation.",
+        "Current T5 rna_available is donor-wide true and atac_available is based on donor metacell total-depth completeness; these are not the contracted per-element T3/T4 columns."
+      ],
+      "required_fix": [
+        "Do not reread RNA/ATAC matrices and do not rebuild Phase A or the executed T1-T4 values.",
+        "Materialize the contracted T3 and T4 availability representation from the frozen substrate/depth metadata only.",
+        "For T3, explicitly encode availability for every conceptual donor/metacell/gene element represented by the frozen T3 universe; measured zero must remain available=true.",
+        "For T4, explicitly encode availability for every donor/metacell/interval element, with measured zero distinct from unavailable measurement.",
+        "If factorization is used to avoid dense boolean duplication, amend only the physical representation while proving it is exactly equivalent to the frozen per-element availability columns; do not change missingness semantics.",
+        "Validate T5 availability_state against the materialized/factorized T3/T4 availability representation.",
+        "Add adversarial tests showing a zero-valued measured element remains available and a truly unavailable element is not silently encoded as zero.",
+        "Stop for re-audit before Stage 4."
+      ]
+    }
+  ],
+  "t13_assessment": {
+    "arithmetic_recomputation": "VALID",
+    "scientific_authority": "INSUFFICIENT_FOR_R3",
+    "explanation": "T13 independently recomputes the 57-row count from A_exact and Phase-A rows, but it implements the same R3 selection rule. It proves the count under R3, not that R3 was already authorized by the upstream statistical contract."
+  },
+  "hardcoded_dimension_note": {
+    "rna_features_literal": 38606,
+    "atac_features_literal": 521217,
+    "assessment": "These values are already frozen in the correspondence-design measurement definitions, so they are not classified as a new blocker here. The eventual Phase-B executor should still assert authenticated matrix dimensions equal these frozen universes before using them."
+  },
+  "decision": {
+    "phase_B_execution": "COMPLETED_BUT_SUBSTRATE_NOT_YET_ACCEPTED_AS_CONTRACT_COMPLETE",
+    "substrate_contract": "BLOCKED_ON_B6_T3_T4_AVAILABILITY_REPRESENTATION",
+    "stage4": "NOT_AUTHORIZED",
+    "next_gate": "Close B6 without changing executed biological values, then re-audit the frozen substrate before any RNA-ATAC correspondence is computed.",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  },
+  "closed_findings": [
+    {
+      "id": "S60",
+      "status": "DESIGN_CLOSED_PENDING_RECEIPT_RECONCILIATION",
+      "evidence": [
+        "T7_R3_CONDITIONING_REFERENCE materializes 21 per-pair conditioning records with the realized large-arm draw and mandatory conditional label.",
+        "T19 validates the record-level conditioning identity and rejects planted changes.",
+        "T17 now binds rule identifiers, semantic digests and declared counts; the mutation sweep shows semantic drift under the unchanged R3 identifier is detected.",
+        "The 7-mutation sweep reports 7/7 detected and says V3 and the conditioning reference were restored byte-exact."
+      ]
+    },
+    {
+      "id": "S61",
+      "status": "CLOSED",
+      "evidence": [
+        "Committed substrate-test receipt is now PASS 9/9 real with T16/T17/T18/T19 all passing.",
+        "Committed statistical-test receipt is PASS 11/11 real.",
+        "Scratch-only mutation sweep is PASS, detects 7/7 named mutations, and records live_artifacts_untouched=true with identical before/after digests.",
+        "Final-state consistency guard is PASS with C1-C4 and excludes its own output receipt from C1/C2 to avoid the S62 latch."
+      ]
+    }
+  ],
+  "phase_b_execution_audit": {
+    "phase_a_v3_retained": 13175,
+    "qualifying_donors": 282,
+    "metacells": 3231,
+    "pairs": 37419,
+    "intervals": 32153,
+    "T5_rows": 10552158,
+    "T5_sha256": "5403458558ea9d5c4b7adb3a86b8c514526713c4b3561fbb6754584a2066efa8",
+    "aggregate_binding_recomputed_shards": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+    "modality_firewall": "HELD",
+    "stage4_opened": false
+  },
+  "accepted_closeout_findings": [
+    {
+      "id": "B1",
+      "status": "CLOSED",
+      "evidence": "T5 materialized as 10,552,158 = 282 x 37,419 donor-pair rows from frozen T1-T4 only; no matrix reread."
+    },
+    {
+      "id": "B2",
+      "status": "CLOSED",
+      "evidence": "32,117 Phase-A interval coordinates + 57 enumeration keys - 18 enum/Phase-A coordinate overlaps - 3 within-enum coordinate duplicates = 32,153 unique intervals."
+    },
+    {
+      "id": "B3",
+      "status": "CLOSED",
+      "evidence": "All 8 shard NPZ files are re-hashed from disk and required to equal shard receipts before closeout; aggregate binding is recomputed from those live hashes."
+    },
+    {
+      "id": "B4_PARTIAL",
+      "status": "T5_AVAILABILITY_STATE_LOGIC_ACCEPTED__T3_T4_SCHEMA_NOT_CLOSED",
+      "evidence": "Donor-pair missingness states distinguish measured sparse zero from donor-pair zero coverage/zero variance and do not split SUPPORTS vs DOES_NOT_SUPPORT before Stage 4."
+    },
+    {
+      "id": "B5",
+      "status": "CLOSED",
+      "evidence": "All 17 R3 T6 rows resolve to exactly the intended T7 edge/reference relationship; non-R3 rows carry no conditioning reference; 11 unreferenced T7 records are lawful."
+    },
+    {
+      "id": "S63_S64",
+      "status": "CLOSED",
+      "evidence": "Aggregate validator binds both permutation array-content and .npy-file hashes, validates range/uniqueness/inverse round trips, and independently re-derives the mapping from RNA/ATAC obs names."
+    }
+  ]
+}

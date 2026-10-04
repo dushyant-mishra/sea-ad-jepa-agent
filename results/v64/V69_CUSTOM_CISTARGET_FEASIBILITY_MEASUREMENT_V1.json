@@ -1,0 +1,105 @@
+{
+  "schema": "V69_CUSTOM_CISTARGET_FEASIBILITY_MEASUREMENT_V1",
+  "recorded_utc": "2026-10-01T19:40:00Z",
+  "status": "MEASURED__FULL_DATABASE_NOT_BUILT",
+  "purpose": "Price the custom cisTarget database required by amendment 1, from MEASURED runs rather than an estimate, so the decision to build it (or not) rests on numbers.",
+
+  "configuration": {
+    "region_universe": "ROUTE_A_SUBMITTED_PEAKS",
+    "n_regions": 150561,
+    "region_fasta_bp_including_1000bp_padded_background": "431,163,902 bytes of FASTA",
+    "motif_collection": "v10nr_clust_public singletons",
+    "n_motifs_in_full_collection": 10249,
+    "threads": 16,
+    "container": "scenicplus:1.0a2, image id sha256:520053641b60c03e9bbb219f9f8c630a01cce03569ef45d1d50c807b0d441200",
+    "cbust": "/usr/local/bin/cbust, sha256 4c10c768a17dacc8cc01bc71b2f3e0bf540d460054c4edccaf71c9a6d9655c72",
+    "storage": "Windows bind mount (D: drive) presented to the container as /data"
+  },
+
+  "measurements": {
+    "note": "These are the tool's OWN reported timings for the Cluster-Buster scoring phase, which isolates motif scanning from database writing. They are preferred over the wrapper's wall-clock because the wrapper's timer also includes feather I/O.",
+    "run_24_motifs": {
+      "n_motifs": 24,
+      "cbust_scoring_seconds": 284.291693,
+      "seconds_per_motif": 11.845,
+      "write_regions_vs_motifs_scores_seconds": 162.322675,
+      "write_rankings_seconds": 145.557061,
+      "wrapper_wall_clock_seconds": 613,
+      "concurrent_load": "none of this lane's other jobs"
+    },
+    "run_120_motifs": {
+      "n_motifs": 120,
+      "cbust_scoring_seconds": 1738.849674,
+      "seconds_per_motif": 14.490,
+      "write_regions_vs_motifs_scores_seconds": 147.514748,
+      "write_rankings_seconds": 101.541473,
+      "wrapper_wall_clock_seconds": "NOT_MEASURED",
+      "why_wrapper_time_unmeasured": "The wrapper's own timing echo was lost to the shell defect recorded as self-audit S16. The database itself completed correctly and all feathers were written; only the wrapper's trailing echo was lost.",
+      "concurrent_load": "A full-file scan of the 63.6 GB fragment file was running on the same machine for part of this run. This is a known confound that inflates the measured per-motif cost."
+    }
+  },
+
+  "two_point_analysis": {
+    "marginal_seconds_per_motif_between_the_two_points": 15.152,
+    "implied_intercept_seconds": -79.3,
+    "interpretation_HONEST": "The implied intercept is NEGATIVE, which means a simple linear fixed-plus-marginal model does not describe these two points. A negative fixed cost is not physical. The most likely causes are (a) thread-scheduling granularity -- 24 motifs is roughly 1.5 waves of 16 threads while 120 is 7.5 waves -- and (b) the I/O contention during the 120-motif run. No fitted model is reported, because a two-point fit that produces an unphysical intercept should not be dressed up as a projection."
+  },
+
+  "projection_for_the_full_collection": {
+    "method": "Simple per-motif scaling from each measured point separately, reported as a RANGE rather than a single fitted number.",
+    "n_motifs": 10249,
+    "low_end_hours": 33.7,
+    "low_end_basis": "10,249 x 11.845 s (24-motif rate, uncontended) / 3600",
+    "high_end_hours": 41.2,
+    "high_end_basis": "10,249 x 14.490 s (120-motif rate, contended) / 3600",
+    "per_route": true,
+    "both_routes_hours": "67 to 83, since amendment 1 requires a custom database over each route's own region universe",
+    "confidence_statement": "This is a projection from two measured points, not a measurement of the full build. It is labelled as such and must not be cited as a measured runtime."
+  },
+
+  "separate_io_concern_that_may_dominate": {
+    "observation": "Writing the regions-vs-motifs scores feather took 162 s and the rankings feather 146 s at only 24 motifs, for files of roughly 45 MB each, over the Windows bind mount.",
+    "extrapolated_artifact_size": "At 10,249 motifs the regions-vs-motifs scores matrix is 150,561 x 10,249 float32, which is approximately 6.2 GB, and the rankings database is of comparable size.",
+    "risk": "Feather write time over a bind mount may become a large or dominant share of total runtime, and is NOT included in the scoring-phase projection above.",
+    "recommendation": "Build to container-local or WSL-native storage and copy the finished databases to the output directory afterwards. This is an engineering change only; it alters no scientific parameter.",
+    "status": "NOT_YET_MEASURED_AT_SCALE"
+  },
+
+  "decision_surfaced_not_taken": {
+    "fact": "Amendment 1 requires a custom cisTarget database per route. The measured price is roughly 34 to 41 hours of 16-thread compute per route, plus unmeasured feather I/O.",
+    "this_lane_does_not_unilaterally_change_the_design": "The amendment's scientific reasoning is unaffected by its cost: using one custom and one generic database would confound region universe with database type and would defeat the only question Route B exists to answer.",
+    "options_for_the_owner": [
+      "Accept the compute cost and run both builds (recommended, and the only option that preserves the isolation).",
+      "Run on more cores; the scoring phase is embarrassingly parallel across motifs.",
+      "Reduce the motif collection -- but note this would have to be a PROSPECTIVE, documented restriction applied identically to both routes, and it directly weakens control C1, whose whole point is that annotation supply varies 144-fold across TFs."
+    ],
+    "what_must_not_happen": "Silently reducing the motif collection, or quietly reverting to a generic database for one route, because the full build proved expensive."
+  },
+
+  "artifacts_produced": {
+    "note": "Benchmark databases only. These are NOT usable as real cisTarget databases and are written under a BENCHMARK_ prefix so they cannot be mistaken for one.",
+    "benchmark_24_motifs": [
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_24motifs.motifs_vs_regions.scores.feather",
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_24motifs.regions_vs_motifs.scores.feather",
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_24motifs.regions_vs_motifs.rankings.feather"
+    ],
+    "benchmark_120_motifs": [
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_120motifs.motifs_vs_regions.scores.feather",
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_120motifs.regions_vs_motifs.scores.feather",
+      "BENCHMARK_ROUTE_A_SUBMITTED_PEAKS_120motifs.regions_vs_motifs.rankings.feather"
+    ],
+    "region_fasta": {
+      "path": "routeA/cistarget_benchmark/ROUTE_A_SUBMITTED_PEAKS_regions_padded_bg.fa",
+      "sha256": "b20e82c4daa7ec482a9b4c0464f27a49fbe80a5386f83074ed99cd5ad23330a6",
+      "sequences": 150561,
+      "reconciliation": "sequence count equals BED region count exactly; the builder stops if it does not"
+    },
+    "motif_list_digest_caveat": "The motif-list digests recorded for these two benchmark runs are NOT reliable, because at the time they ran the builder wrote the list to a shared fixed path that the second run overwrote. See self-audit S12. The TIMING measurements are unaffected, since they do not depend on that file. The defect is fixed for all future runs."
+  },
+
+  "what_this_receipt_does_not_claim": [
+    "That a full custom cisTarget database exists. It does not.",
+    "That the projected runtime has been observed. It has not.",
+    "That the benchmark databases are usable for motif enrichment. They are not."
+  ]
+}

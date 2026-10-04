@@ -1,0 +1,91 @@
+{
+  "schema": "V64_STAGE4_EXECUTION_AUTHORITY_INDEPENDENT_AUDIT_V2",
+  "date": "2026-10-01",
+  "audited_claude_head": "15158e8db4615bad143cd0acf094b4709c4b8665",
+  "supersedes_for_current_status": "results/v64/V64_STAGE4_EXECUTION_AUTHORITY_INDEPENDENT_AUDIT_V1.json",
+  "verdict": "S68_S70_SUBSTANTIVELY_REPAIRED__EXECUTION_STILL_NOT_GRANTABLE__THREE_NEW_FAIL_OPEN_GAPS",
+  "accepted_repairs": {
+    "S68_missing_file_fail_open": {
+      "status": "CLOSED_FOR_PRESENT_BINDINGS",
+      "evidence": "G1 now records checked/missing/mismatched separately and fails when a present binding points to a nonexistent path.",
+      "current_live_result": "22 bound inputs checked; 0 missing; 0 mismatched"
+    },
+    "S69_permutation_binding": {
+      "status": "CLOSED",
+      "evidence": "Permutation moved out of required Stage-4 execution inputs, explicitly labeled corroborative, and G15 verifies both array-content and .npy-file digests with three negative tests."
+    },
+    "S70_windows_blob_path": {
+      "status": "CLOSED_FOR_PATH_NORMALIZATION",
+      "evidence": "Repo paths normalized to forward slashes and the seven previously false-UNCOMMITTED artifacts now carry the independently confirmed Git blobs."
+    },
+    "S71_executor_absence": {
+      "status": "CORRECTLY_RECORDED_AS_BLOCKING",
+      "evidence": "Authority/preflight explicitly report G16 executor bound and G17 executor opens no matrix as unsatisfied. Executor was deliberately not implemented in this commit."
+    },
+    "mutation_suite": {
+      "design_gates_live_pass": 16,
+      "planted_mutations_rejected": 19,
+      "live_contract_unchanged": true
+    }
+  },
+  "blockers": {
+    "S72_NOT_GRANTABLE_RETURNS_SUCCESS_EXIT_CODE": {
+      "severity": "BLOCKING_BEFORE_ANY_EXECUTOR_CAN_CALL_PREFLIGHT",
+      "observed": "verify_stage4_preflight_v1.py returns 0 whenever no design gate fails, even when EXECUTION_AUTHORITY is NOT_GRANTABLE and G16/G17 are explicitly unsatisfied.",
+      "consequence": "A shell/CI/executor that uses process exit status as the authorization signal can proceed on exit 0 despite the receipt saying execution is forbidden.",
+      "required_fix": [
+        "Separate design-audit success from execution-grant success in the process exit contract.",
+        "Default execution preflight must exit nonzero while any execution prerequisite is unsatisfied.",
+        "If a design-only audit mode is needed, expose it explicitly (for example --design-only) and make its output unmistakably non-authorizing.",
+        "Add an executable test asserting current NOT_GRANTABLE state returns nonzero in execution mode."
+      ]
+    },
+    "S73_REQUIRED_BINDING_SET_NOT_ENFORCED": {
+      "severity": "BLOCKING",
+      "observed": "G1 walks whatever bound entries remain. It does not enforce the exact required key set or expected digest count. Removing a required object such as t5_donor_aggregates, t3_t4_availability, R3 reference, enum intervals, or a governing contract can reduce the checked set without G1 itself failing.",
+      "consequence": "S68 now catches a required file whose binding remains but path is missing; it still does not catch a required binding deleted from the authority.",
+      "required_fix": [
+        "Freeze and validate the exact required binding schema/key set before digest walking.",
+        "Require the expected count and exact named inputs, not merely checked > 0.",
+        "Add planted deletion tests for at least T5, availability, one governing contract, and one non-shard Phase-B receipt.",
+        "Keep the existing 8-shard cardinality gate but do not rely on it as the full manifest completeness check."
+      ]
+    },
+    "S74_GIT_BLOB_GATE_CHECKS_FORMAT_NOT_IDENTITY": {
+      "severity": "BLOCKING_PROVENANCE",
+      "observed": "G1b accepts any 40-character lowercase hex string for repo-resident git_blob. It does not recompute git rev-parse HEAD:<normalized_path> and compare to the recorded blob.",
+      "consequence": "A wrong but syntactically valid blob can pass while the authority claims exact Git provenance.",
+      "required_fix": [
+        "For every repo_resident input, run git rev-parse HEAD:<normalized_path> and require exact equality to recorded git_blob.",
+        "Fail if rev-parse errors or path is absent from HEAD.",
+        "Add a planted wrong-but-valid 40-hex blob mutation, not only UNCOMMITTED/nonhex."
+      ]
+    }
+  },
+  "consistency_defect": {
+    "S75_GATE_REGISTRY_DRIFT": {
+      "severity": "NONBLOCKING_IF_REPAIRED_WITH_S72_S74",
+      "observed": "Authority FAIL_CLOSED_GATES still enumerates only G1-G14, while preflight runs G1b and G15 as additional design gates and reports 16/16.",
+      "consequence": "The authority and verifier now have different gate registries, weakening the stated principle that rules are inherited/bound rather than silently extended.",
+      "required_fix": "Update the authority's declared gate registry or explicitly split METHOD gates from PROVENANCE/PREFLIGHT gates with a frozen registry for each."
+    }
+  },
+  "current_status": {
+    "phaseA": "ACCEPTED_13175",
+    "phaseB_measurement_substrate": "ACCEPTED",
+    "stage4_method_locks": "ACCEPTED",
+    "stage4_design_preflight": "IMPROVED_BUT_NOT_AUDIT_CLEAN",
+    "stage4_execution_authorized": false,
+    "correspondence_opened": false,
+    "executor_implemented": false,
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  },
+  "next_action": [
+    "Repair S72-S74 and reconcile S75 without implementing the Stage-4 executor in the same commit.",
+    "Add real negative tests for deleted required bindings, wrong-but-valid Git blobs, and NOT_GRANTABLE execution-mode exit status.",
+    "Stop again for independent audit.",
+    "Only after that design/preflight layer is accepted should S71 executor implementation begin; executor must then be bound and audited before any correspondence is computed."
+  ]
+}

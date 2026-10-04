@@ -1,0 +1,89 @@
+{
+  "schema": "V65_HISTORICAL_T1_U0_REAL_DATA_FORWARD_COMPATIBILITY_SMOKE_V1",
+  "date": "2026-09-30",
+  "status": "PASS_REAL_DATA_SMOKE_NON_AUTHORITY",
+  "purpose": "Exercise authenticated historical RNA JEPA online/target encoder plumbing on preserved real measurement masks without training or post-u0 weights.",
+  "checkpoint": {
+    "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+    "bytes": 26831531,
+    "schema": "prod41k-teacher-t1-v2",
+    "experiment_id": "EXP-20260823-PROD41K-TEACHER-T1",
+    "update": 0,
+    "lineage_class": "UNAFFECTED_STATIC_OR_U0"
+  },
+  "fixture": {
+    "source": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip / FOUNDATION_84_CELL_TRUTH_TABLE.npz",
+    "truth_table_sha256": "2aca870343b65f2deabe32fdc8e18bd26211f505e8bcb3b6f2d53cb0dc6573c3",
+    "truth_table_bytes": 4960396,
+    "cells_total": 84,
+    "addresses": 41238,
+    "carries_expression_log1p10k": true,
+    "carries_observation_state": true,
+    "carries_measured_mask": true,
+    "carries_four_preserved_hidden_masks": true
+  },
+  "source": {
+    "ipb_jepa_sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a",
+    "gene_tokenizer_sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+    "masking_sha256": "8126c1bb0c7a0e7c093fb09b27a7431d871389f750f940bec121688679445efc",
+    "compatibility_contract_note": "The calibration bundle omitted src/sea_ad_jepa/v4/contracts.py. The forward smoke used a compatibility shim carrying the lineage-audit constants (gene_identity_dim=48, width=160, heads=4) while instantiating vocabulary_size=41238 and blocks=6 explicitly. Therefore this is a compatibility smoke, not an exact clean-clone historical replay.",
+    "exact_historical_core_model_source": true
+  },
+  "u0_integrity": {
+    "online_parameter_tensors": 108,
+    "target_parameter_tensors": 108,
+    "online_target_mismatches": 0,
+    "online_target_max_abs_difference": 0,
+    "optimizer_state_entries": 0,
+    "global_update_step": 0,
+    "ema_update_count": 0
+  },
+  "forward_sample": {
+    "rows": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "distinct_operators": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "measured_genes_each": [
+      18736,
+      18736,
+      18736,
+      18736
+    ],
+    "hidden_genes_each_view": 7494,
+    "views_per_cell": 4,
+    "online_target_full_view_max_abs_difference": 0,
+    "all_full_and_masked_outputs_finite": true,
+    "masked_attention_min_denominator_min": 344373.46875,
+    "masked_cell_state_l2_from_full_range": [
+      0.11583922058343887,
+      0.16944743692874908
+    ]
+  },
+  "interpretation": [
+    "The authenticated u0 online and target encoders load consistently and are identical before any optimizer/EMA update.",
+    "Real historical expression plus preserved measurement/hidden masks produce finite full-target and masked-student representations.",
+    "Masking changes the student cell representation rather than collapsing or producing non-finite states.",
+    "This says nothing about post-u0 training health, biological usefulness of the representation, or current multimodal architecture."
+  ],
+  "forbidden_interpretations": [
+    "post-u0 checkpoint validation",
+    "biological target qualification",
+    "training authority",
+    "multimodal student validation",
+    "production threshold or dimension selection"
+  ],
+  "governance": {
+    "post_u0_weights_used": false,
+    "optimizer_step_executed": false,
+    "training": "OFF",
+    "biological_authority": false
+  }
+}

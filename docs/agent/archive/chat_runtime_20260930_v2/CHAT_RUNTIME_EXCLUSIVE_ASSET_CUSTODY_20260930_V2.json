@@ -1,0 +1,197 @@
+{
+  "schema": "V64_CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2",
+  "date": "2026-09-30",
+  "branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "purpose": "Inventory and preserve artifacts whose exact bytes/content were available in this chat runtime but were not already present as repository files. Small text artifacts are committed. Binary artifacts are hash-bound with recovery status; no manifest entry implies bytes are in Git unless bytes_in_git=true.",
+  "connector_limitation": "The available GitHub write connector accepts UTF-8 text, not arbitrary local binary file references. Large/binary chat uploads therefore cannot be truthfully claimed as repository bytes from this environment.",
+  "text_artifacts_committed": [
+    {
+      "source_filename": "WSL execution issue.txt",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v2/WSL_execution_issue.txt",
+      "source_bytes": 15189,
+      "source_sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "bytes_in_git": true,
+      "note": "Exact chat text copied into repository custody."
+    },
+    {
+      "source_filename": "Status and Repair Plan.txt",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v2/Status_and_Repair_Plan.txt",
+      "source_bytes": 5304,
+      "source_sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "bytes_in_git": true,
+      "note": "Exact chat text copied into repository custody."
+    },
+    {
+      "source_filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v2/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "source_bytes": 437,
+      "source_sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "bytes_in_git": true,
+      "note": "Checksum manifest for the two uploaded split parts and reconstructed ZIP."
+    },
+    {
+      "source_filename": "V64_PROMOTER_CANDIDATE_LEDGER_PARTIAL_RECEIPT_V1.json",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v2/V64_PROMOTER_CANDIDATE_LEDGER_PARTIAL_RECEIPT_V1.json",
+      "source_bytes": 989,
+      "source_sha256": "51366a42d5c8122095050569d7a83574301c228c178814ecb1f53a41430cd61a",
+      "bytes_in_git": true,
+      "scientific_status": "ARCHIVED_SUPERSEDED",
+      "note": "Preserved for custody only. Current chromosome-aware Dong bridge is authoritative."
+    },
+    {
+      "source_filename": "promoter_structural_summary.json",
+      "git_path": "docs/agent/archive/chat_runtime_20260930_v2/promoter_structural_summary.json",
+      "source_bytes": 979,
+      "source_sha256": "6f636a2899c3dfb0033e70fd411aa1e07afe170124e823b2fb309181660c96dc",
+      "bytes_in_git": true,
+      "scientific_status": "ARCHIVED_SUPERSEDED",
+      "note": "Raw chat summary retained; Data7 ENST row/duplicate handling was later corrected."
+    }
+  ],
+  "binary_artifacts": [
+    {
+      "filename": "41467_2024_54448_MOESM10_ESM.xlsx",
+      "bytes": 12564632,
+      "sha256": "eb3c2e0eaf055bac3954802497cbdd07ccc65638ae361e1cf9af10668f224a74",
+      "bytes_in_git": false,
+      "source": "Dong/Roussos 2024 Supplementary Data 8",
+      "public_recovery_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM10_ESM.xlsx",
+      "recovery_status": "PUBLIC_URL_EXISTS_BUT_AUTOMATED_FETCH_CAN_RETURN_CLIENT_CHALLENGE",
+      "validated_here": true,
+      "structure": "XLSX, 10 worksheets; regional differential promoter-isoform usage; 12,510 promoter isoforms per comparison.",
+      "derived_authority": "results/v64/V64_DONG_ROUSSOS_PROMOTER_RESOURCE_CUSTODY_AND_BRIDGE_AUDIT_V1.json"
+    },
+    {
+      "filename": "41467_2024_54448_MOESM12_ESM.xlsx",
+      "bytes": 10139581,
+      "sha256": "c2005fb8947b4352450a9a86f297673cce5350aab1b2ac69fe3949317c4f1f59",
+      "bytes_in_git": false,
+      "source": "Dong/Roussos 2024 Supplementary Data 10",
+      "public_recovery_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-024-54448-y/MediaObjects/41467_2024_54448_MOESM12_ESM.xlsx",
+      "recovery_status": "PUBLIC_URL_EXISTS_BUT_AUTOMATED_FETCH_CAN_RETURN_CLIENT_CHALLENGE",
+      "validated_here": true,
+      "structure": "XLSX, one data worksheet; 252,512 promoter-isoform-resolution enhancer-promoter ABC rows.",
+      "derived_authority": "results/v64/V64_DONG_ROUSSOS_PROMOTER_RESOURCE_CUSTODY_AND_BRIDGE_AUDIT_V1.json"
+    },
+    {
+      "filename": "full104_discovery_subset.npz",
+      "bytes": 50646637,
+      "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+      "bytes_in_git": false,
+      "origin": "Claude GPT handoff bundle output; exact expected hash matched in this chat runtime.",
+      "structure": {
+        "sparse_triplets": 21750141,
+        "n_cells": 6000,
+        "backbone_address_index": 17186,
+        "metadata": [
+          "cell_donor",
+          "cell_source",
+          "cell_operator",
+          "cell_sample",
+          "cell_native_class",
+          "cell_broad_class",
+          "cell_id"
+        ]
+      },
+      "recovery": "Rebuild using scripts/v64/build_gpt_handoff_bundle_v1.py on Claude successor inputs, or recover the local JEPA_V64_GPT_HANDOFF_BUNDLE_20260930.zip previously recorded by Claude.",
+      "scientific_note": "17,186 is an address-level backbone count, not a gene count."
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "bytes_in_git": false,
+      "derived_in_chat": true,
+      "reconstruction": "cat FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001 FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002 > FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "reconstruction_verified": true,
+      "zip_member_count": 3,
+      "payload": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.npz"
+    },
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY",
+      "zip_member_count": 60,
+      "contents_summary": "Calibration reviews, shortcut atlas, synthetic adjudication, code, contracts and metadata."
+    },
+    {
+      "filename": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY",
+      "contents": [
+        "checkpoint_manifest.json",
+        "t1_checkpoint_u0000.pt",
+        "t1_checkpoint_u0205.pt"
+      ]
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY",
+      "contents": [
+        "t1_checkpoint_u0200.pt",
+        "t1_checkpoint_u0010.pt",
+        "t1_checkpoint_u0025.pt",
+        "t1_checkpoint_u0050.pt",
+        "t1_checkpoint_u0100.pt"
+      ]
+    },
+    {
+      "filename": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY",
+      "zip_member_count": 48,
+      "contents_summary": "FOUNDATION_DISCOVERY_EXPRESSION_AUDIT, sample freeze, and per-operator metadata."
+    },
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "bytes_in_git": false,
+      "recovery_status": "CHAT_UPLOAD_ONLY",
+      "structure": "41,238 molecular addresses with raw and L2 arrays for broad_common, weak_distributed, local/core/halo, sparse_marker_like, innovation_tail, recurrent_5pct and recurrent_1pct."
+    },
+    {
+      "filename": "V64_PROMOTER_CANDIDATE_LEDGER_PARTIAL_V1.tsv.gz",
+      "bytes": 9250092,
+      "sha256": "7b2551e01b1bc0629ef3d9a630adcce87efdbddb009145abc968cab943ec9eba",
+      "bytes_in_git": false,
+      "derived_in_chat": true,
+      "scientific_status": "SUPERSEDED_PARTIAL",
+      "reconstruction": "Regenerate from the committed annotation-first promoter ledger builder and exact GENCODE/SCREEN/Dong inputs; do not use this partial file as current authority.",
+      "note": "Generated before FANTOM hg38 BED integration and before chromosome-aware Dong duplicate repair."
+    }
+  ],
+  "not_duplicated": [
+    "GitHub Actions artifact ZIPs downloaded in this chat: these remain reconstructible from committed workflows/source branches and are not treated as exclusive scientific inputs.",
+    "Claude paired NIH-CARD subset and exact supplement shards: source bytes are already in Claude's successor Git branch and therefore are not chat-exclusive."
+  ],
+  "authority_rules": [
+    "Hash/custody does not imply scientific authority.",
+    "Archived superseded promoter summaries must not override current corrected bridge/ledger contracts.",
+    "bytes_in_git=false means future agents must recover/retransmit the binary before byte-level use.",
+    "TRAINING remains OFF; Phase B STOPPED; Stage 4 NOT AUTHORIZED; Morabito PROTECTED."
+  ]
+}

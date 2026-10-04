@@ -1,0 +1,192 @@
+Continue the JEPA project from the current V64/V65 successor state. Do not restart the scientific architecture from scratch.
+
+Repository:
+
+`dushyant-mishra/sea-ad-jepa-agent`
+
+Primary ChatGPT successor branch:
+
+`chatgpt/v64-privileged-information-recoverability-20260930`
+
+Current head:
+
+`54d631461f6749bccae58b74e46f5c132fed08d1`
+
+Draft PR:
+
+`#199 — V64 privileged-information boundary and recoverability architecture`
+
+PR #199 is currently draft, mergeable, and the current-head deterministic/custody workflows are green.
+
+Claude execution branch:
+
+`claude/v64-exact-sampler-successor-20260930`
+
+Last verified Claude head:
+
+`f2b45699d1be88cc599971da243ba6e36a50c4a7`
+
+Before doing any work, refresh both branches because Claude may have advanced.
+
+# Governance
+
+These remain hard constraints:
+
+- TRAINING = OFF
+- Phase B = STOPPED
+- Stage 4 = NOT AUTHORIZED
+- TD60 = BLOCKED
+- Morabito = PROTECTED
+- protected biological correspondence stays unopened
+- no post-outcome gate tuning
+- NOT_MEASURED must never become zero
+- resource count must never become evidence-independence count
+- address count must never silently become gene count
+- a multimodal teacher must never impose information that an RNA-only student cannot lawfully recover
+
+# Read first
+
+Read:
+
+1. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V65_PRIVILEGED_RECOVERABILITY_SUCCESSOR.md`
+2. `docs/agent/JEPA_HANDOFF_STATE_20260930_V65.json`
+3. `docs/agent/JEPA_V65_TAKEOVER_COMMANDS_20260930.md`
+4. `docs/agent/V64_CLAUDE_NEXT_INSTRUCTIONS_20260930.md`
+5. `docs/agent/archive/chat_runtime_20260930_v2/README.md`
+6. `docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json`
+
+Then read the privileged-information, common-support, promoter-universe and held-out-family contracts referenced by the handoff.
+
+# There are three separate work lanes
+
+Do not merge their scientific decisions.
+
+## Lane A — exact-control sampler and Phase A
+
+Claude owns:
+
+`exact supplement -> full frozen sampler qualification -> Phase-A rerun -> HARD STOP`
+
+The exact supplement itself is now strongly closed.
+
+Independent totals:
+
+- 20,709 E2 edges
+- 41,418 edge-sides
+- 1,576,398,690 total band positions
+- 1,560,436,760 safe-affine positions
+- 15,961,930 supplement candidate positions
+- zero uncovered positions
+- `A_interior = 235,726,268`
+- `A_supplement = 177,442`
+- `A_exact = 235,903,710`
+
+Exact identities:
+
+`1,560,436,760 + 15,961,930 = 1,576,398,690`
+
+and
+
+`235,726,268 + 177,442 = 235,903,710`
+
+All 12 supplement shards have independently matching canonical content hashes.
+
+Independent audit:
+
+`results/v64/V64_EXACT_SUPPLEMENT_INDEPENDENT_SHARD_AUDIT_V1.json`
+
+The important scientific result is that the supplement recovered 177,442 valid control starts that the original single-block affine procedure would have omitted.
+
+Therefore the completeness defect was real.
+
+But the sampler is NOT yet qualified.
+
+At the last Claude report:
+
+`15 / 64`
+
+real edge-side comparisons were complete with zero inequalities.
+
+The next chat must refresh Claude and see whether this has advanced.
+
+Phase A remains blocked until:
+
+- all 64/64 real-edge comparisons complete;
+- non-empty comparisons are explicitly counted;
+- zero set inequalities;
+- uniformity test passes;
+- all frozen failure-path/fixture tests pass.
+
+Do not count empty 0-vs-0 equality as affirmative evidence.
+
+If the sampler passes, Claude may rerun Phase A.
+
+After Phase A:
+
+STOP FOR INDEPENDENT AUDIT.
+
+Do not proceed directly into Phase B.
+
+# S50 repair
+
+Claude repaired the cross-chain ambiguity weakness at:
+
+`f2b45699d1be88cc599971da243ba6e36a50c4a7`
+
+The fast affine path now explicitly removes target spans shadowed by another chain and routes unsafe cases to exact liftOver.
+
+Production blast-radius audit:
+
+- shortcut-accepted target span = 2,847,258,323 bp
+- overlap with another chain block = 0 bp
+
+Positive control:
+
+- planted F3 overlap = 4,000 bp
+- detector recovered 4,000 bp
+
+Shard 0 was rebuilt with the repair:
+
+- 3,452 edge-sides
+- all interior intervals identical
+- all supplement starts identical
+- canonical payload SHA unchanged:
+
+`577f86c530f2a87e108db7e81bb2160def4344bd32999032f91f2e34b35101e9`
+
+Interpretation:
+
+The defect was a production-data no-op for this chain/data, but the repaired gate remains necessary and must not be removed.
+
+# Lane B — privileged-information / teacher-student architecture
+
+The current V5 teacher/student implementation was audited.
+
+Current runtime is RNA-to-RNA:
+
+- teacher and online/student use the same RNA encoder family;
+- teacher receives measured RNA;
+- student receives masked RNA;
+- teacher targets are RNA-derived;
+- the runtime currently has one query-local biological state;
+- there is no native distinction between RNA-recoverable and modality-private teacher information.
+
+Therefore adding ATAC, promoter state, enhancer state, contact information, genetics, or perturbational data to the existing teacher is NOT a harmless enrichment.
+
+It is an architecture change.
+
+The key new rule is the privileged-information boundary:
+
+> Rich regulatory information may constrain, validate or augment the RNA representation, but compulsory universal RNA-student supervision is restricted to privileged structure demonstrated to be recoverable from lawful RNA.
+
+Every privileged factor must ultimately receive exactly one state:
+
+`RNA-RECOVERABLE`
+
+`PARTIALLY-RNA-RECOVERABLE`
+
+`REGULATORY-PRIVATE`
+
+`UNQUALIFIED`
+
+The remainder of this historical runtime handoff described the preferred RNA-backbone/privileged-critic architecture, the paired NIH-CARD 16/4/4 donor split, annotation-first promoter ledger, evidence-independence/common-support rules, chat-exclusive custody, and then-current PR #199 CI state. It is preserved here because the exact local file remained in this runtime, but its execution status is superseded by the current V66 handoff. Do not use its old sampler/Phase-B status as present authority.

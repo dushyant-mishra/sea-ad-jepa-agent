@@ -1,0 +1,90 @@
+{
+  "schema": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_AMENDMENT_V1",
+  "amends": "V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1",
+  "amendment_number": 2,
+  "amended_utc": "2026-10-01T20:10:00Z",
+  "parent_freeze_commit": "500a8cfdba63a3f26193f3fb165aeb05f97aec34",
+  "prior_amendment_commit": "0358639e644f04cb2b2b801d84089f5c02642770",
+  "status": "PROSPECTIVE__STILL_BEFORE_ANY_NETWORK_EXISTS",
+
+  "exposure_state_at_amendment": {
+    "eregulons_computed": 0,
+    "cistarget_databases_built": 0,
+    "route_comparison_statistics_computed": 0,
+    "control_statistics_computed": 0,
+    "stage4_artifacts_inspected": 0,
+    "statement": "Nothing downstream of these clauses has been computed. This amendment is driven by a corrected diagnosis of a PRIOR run's limits, not by any result of this lane."
+  },
+
+  "why_this_amendment_exists": {
+    "corrected_diagnosis_of_stage75f": "The previous attempt's shortfall was NOT a region-mapping or indexing bug. One real mapping defect existed -- the mapper used min_overlap_bp=1 instead of pycisTarget's rule of overlap/query_length > 0.4 OR overlap/database_length > 0.4 -- but it was corrected in commit 98c5b763 (2026-07-12 16:19) and the first result commit d7a2435d (20:48 the same day) postdates it. Every published Stage75F number used the corrected 0.4 rule, and region-mapping coverage was 93-95% for every TF. Mapping worked.",
+    "what_actually_limited_it": [
+      "SCALE: each TF batch tested only 57-91 query regions, mapping to 173-286 database regions, against a peak universe of 219,070. Motif enrichment on ~80 regions cannot resolve a TF-specific signal. This is the single biggest reason only 2 of 11 TFs reached the primary summary.",
+      "DIRECT MOTIF ANNOTATION SUPPLY: of 5,876 motifs tested, 69-81 were enriched per TF, but enriched motifs DIRECTLY annotated to the batch TF numbered BACH1 0, CEBPA 0, MITF 0, NRF1 0, RELA 0, STAT3 0, ELF1 1, SPI1 3. Three had zero direct AND zero extended support, so no support at all."
+    ],
+    "consequence": "Two clauses are added and one is tightened. None of them changes an acceptance threshold already frozen."
+  },
+
+  "NEW_CLAUSE_A__REGION_UNIVERSE_SCALE": {
+    "added_to": "SECTION_4_NETWORK_SCOPE",
+    "rule": "Both routes infer eRegulons from the FULL consensus region universe, never from a per-TF handful of candidate regions. Route A uses all 150,561 scoreable submitted peaks; Route B will use its full donor-aware consensus region set.",
+    "mandatory_reporting": "Every eRegulon records n_regions_inferred_from and n_regions_after_motif_enrichment, so a reviewer can see immediately whether a program rests on a region set too small to resolve.",
+    "MIN_REGIONS_FOR_A_RESOLVED_PROGRAM": 100,
+    "below_threshold_behaviour": "A program inferred from fewer than 100 regions is reported as UNRESOLVED, explicitly NOT as absent and NOT as a negative finding. UNRESOLVED means the evidence was too thin to decide.",
+    "threshold_label": "CONVENTION ANCHORED TO AN OBSERVED FAILURE BAND, not a calibrated operating point. Stage75F demonstrably failed to resolve TF-specific signal at 57-91 query regions on this tissue and this motif collection; 100 sits just above that observed band. It has no external calibration study behind it and must not be presented as one.",
+    "why_UNRESOLVED_and_not_absent": "Reporting a thin-evidence program as absent would encode a measurement limit as a biological zero, which this project forbids. UNRESOLVED is the STRUCTURALLY_UNMEASURED analogue at the program level."
+  },
+
+  "NEW_CLAUSE_B__INDEX_CORRESPONDENCE_AND_VISIBLE_DROPS": {
+    "added_to": "SECTION_3_MOTIF_RESOURCES_AND_CISTARGET_DATABASE",
+    "rule_1_schema_parity": "The cisTarget scores database and rankings database must be checked for schema parity before use: identical region axis, identical motif axis, identical ordering. A mismatch fails closed. Adopted from the Stage75F correction, which added a 32-column parity check between the two databases after the coordinate sidecar moved from the rankings database to the scores database.",
+    "why": "The scores and rankings databases are indexed positionally. If their axes drift apart, every motif-to-region assignment silently points at the wrong region, and nothing crashes.",
+    "rule_2_visible_drops": "Region mapping must emit an explicit unmapped-regions list (the Stage75F correction's *.unmapped_regions.txt habit). Queries that fail to map are WRITTEN DOWN, never silently dropped, and their count enters the receipt.",
+    "rule_3_overlap_rule": "Region mapping uses pycisTarget's actual rule -- overlap/query_length > 0.4 OR overlap/database_length > 0.4 -- never a 1 bp minimum overlap. Since this lane builds a CUSTOM database over its own regions, query and database regions are the same objects and mapping should be exact; the rule is recorded so that any deviation from exactness is detected rather than assumed away."
+  },
+
+  "TIGHTENED_CLAUSE_C__CONTROL_C1_EXTENDED_ONLY_IS_A_SEPARATE_CLASS": {
+    "replaces": "SECTION_7_MANDATORY_NEGATIVE_CONTROLS.C1_TF_ANNOTATION_SUPPLY.procedure",
+    "old_formulation_insufficient": "Stratify per-TF statistics on 'the TF's motif-annotation count'. A single count conflates direct and inferred annotation.",
+    "new_rule": [
+      "The annotation-supply denominator is at least TWO numbers per TF: n_distinct_motifs_direct and n_distinct_motifs_extended (extended = inferred from orthology or motif similarity).",
+      "Any TF whose enriched-motif support is EXTENDED_ONLY (zero directly annotated enriched motifs) is reported as a SEPARATE EVIDENCE CLASS and cannot carry the same weight as a direct-supported TF.",
+      "A TF with zero direct and zero extended support is NO_MOTIF_SUPPORT, which is distinct from both."
+    ],
+    "why_this_matters_here": "On this tissue and this motif collection the extended-only case is the COMMON case, not the rare one: 7 of Stage75F's 10 TFs reached support with zero direct motifs. A control that could not separate them would have passed every one of those TFs.",
+    "already_implemented": "scripts/v69/build_tf_annotation_supply_table_v1.py emits n_distinct_motifs_direct, n_distinct_motifs_orthology, n_distinct_motifs_similarity, n_distinct_motifs_extended and n_tfs_with_extended_support_but_zero_direct. Measured on the pinned v10nr collection: 1,605 TFs, direct supply 0-144 (median 6), and 110 TFs with extended support and zero direct motifs."
+  },
+
+  "OPEN_ITEMS_CARRIED_NOT_CLOSED": [
+    {
+      "item": "The corrected Stage75F mapper was not re-run.",
+      "status": "OPEN",
+      "what_is_established": "The chronology (correction at 98c5b763 precedes the first result commit d7a2435d) and the coverage the corrected mapper REPORTED (93-95%).",
+      "what_is_NOT_established": "That the corrected mapper is itself correct. Its coverage figure is self-reported.",
+      "rule": "Any citation of the 93-95% coverage must carry this caveat."
+    },
+    {
+      "item": "results/tables/stage75f_cistarget_region_coverage_v1.csv, named by the Stage75 config, is not present in the preserved tree of branch claude/stage75f-specificity-20260928.",
+      "status": "OPEN",
+      "basis": "A full tree listing of that branch was performed and the file is not there.",
+      "what_is_NOT_established": "Whether it exists elsewhere in the repository or in another worktree.",
+      "rule": "Do not cite a per-run coverage file this lane has not located. The coverage numbers used here come from the summary tables, not from that file."
+    }
+  ],
+
+  "correction_to_this_lanes_own_earlier_wording": {
+    "where": "V69_STAGE75_PRIOR_ART_REUSE_LEDGER_V1.json, entry for the Stage75F region/gene summary tables.",
+    "what_was_wrong": "It said 'the ATAC side genuinely did not map', which reads as though cisTarget region mapping failed. It did not; coverage was 93-95%.",
+    "correct_statement": "Two different steps must be kept apart. (1) cisTarget REGION MAPPING -- query peaks to database regions -- WORKED, at 93-95% coverage after the 0.4-overlap correction. (2) PEAK-TO-GENE from a processed matrix did NOT work, which is what edge_atac_peak_support_status='not_gene_mappable_from_processed_peak_matrix' records, and that remains the documented reason Route B exists.",
+    "route_b_rationale_unchanged": true
+  },
+
+  "what_is_NOT_changed_by_this_amendment": [
+    "No acceptance threshold frozen in V1 is altered.",
+    "The ROUTE_STABLE definition and its 0.30 Jaccard convention are untouched.",
+    "The donor-stability thresholds (0.80 recurrence, 0.50 Jaccard) are untouched.",
+    "The Route-B QC thresholds and MACS parameters are untouched.",
+    "The prospective insufficiency rule (fewer than 8 QC-passing donors) is untouched.",
+    "The broad TF scope is untouched: the Stage75F ten still receive no privileged status."
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "V69_SCENICPLUS_EXECUTION_ENVIRONMENT_RECEIPT_V1",
+  "recorded_utc": "2026-10-01T19:05:00Z",
+  "status": "PASS__CONTAINER_VERIFIED_BY_DIRECT_SMOKE_TEST",
+  "purpose": "Record the exact SCENIC+ execution environment used by the V69 lane, with every tool verified by running it rather than by reading a tool list.",
+
+  "image_identity": {
+    "tag_used": "scenicplus:1.0a2",
+    "image_id": "sha256:520053641b60c03e9bbb219f9f8c630a01cce03569ef45d1d50c807b0d441200",
+    "created": "2026-07-11T17:51:57Z",
+    "size_bytes_reported_by_docker": "5.33GB",
+    "equivalent_tags_same_image_id": ["scenicplus:1.0a2-clean2", "scenicplus:1.0a2-runtime"],
+    "images_present_but_NOT_used": [
+      {"tag": "scenicplus:1.0a2-container.1", "image_id_short": "bfca94edaff8",
+       "reason_not_used": "not the validated image"},
+      {"tag": "scenicplus:1.0a2-build1-mixed", "image_id_short": "4b3ecdf83531",
+       "reason_not_used": "not the validated image"}
+    ]
+  },
+
+  "recipe_digests_recorded_as_SEPARATE_FACTS": {
+    "published_recipe": {
+      "repository": "https://github.com/dushyant-mishra/scenicplus-docker.git",
+      "path": "docker/Dockerfile",
+      "sha256": "c22c56dce8a0e7c9fe492646f2c525b1356cec70d13d8caf6033c4b089a22e85",
+      "verified_by_this_lane": false,
+      "note": "Digest supplied by the coordinator, who reports it matches that repository's own validation/dockerfile_sha256.txt."
+    },
+    "jepa_repository_recipe": {
+      "path": "docker/scenicplus/Dockerfile",
+      "sha256": "7eb07858f66ce0150b478b9d0d9a0498deea634c063f0d29b34ae4cdb077fce8",
+      "verified_by_this_lane": true,
+      "verification": "Recomputed from the file in worktree D:/jepa_wt_v69_scenicplus_20261001 and matched.",
+      "note": "A DIFFERENT recipe from the published one. It is the recipe that adds create_cisTarget_databases, cbust, liftOver and bigWigAverageOverBed, which Section 4 of the V69 freeze depends on."
+    }
+  },
+
+  "PROVENANCE_CAVEAT__DO_NOT_OVERSTATE": {
+    "what_is_verified": [
+      "Image 520053641b60... exists locally and runs.",
+      "Every tool this lane uses was executed inside that image and returned its version.",
+      "The JEPA repository recipe's sha256 was recomputed and matches."
+    ],
+    "what_is_NOT_verified": "That image 520053641b60... was BUILT FROM either recipe.",
+    "why_not": "Docker does not retain a binding between an image and the Dockerfile text that produced it. Layer history is not proof of that binding.",
+    "binding_status": "UNVERIFIED",
+    "wording_rule": "No receipt in this lane may say 'image built from recipe X'. The image id and the recipe digests are recorded as separate facts.",
+    "which_recipe_the_running_image_RESEMBLES": "The running image contains /opt/create_cisTarget_databases, /usr/local/bin/cbust, /usr/local/bin/liftOver, /usr/local/bin/bigWigAverageOverBed and /opt/mallet, which are features of the JEPA repository recipe. This is consistent with that recipe and is NOT proof of it."
+  },
+
+  "tool_smoke_tests_executed_inside_the_running_image": {
+    "method": "Each tool was invoked and its own output captured. The container README's tool list was not treated as evidence.",
+    "results": {
+      "bedtools": {"path": "/opt/conda/bin/bedtools", "version": "v2.31.1", "status": "PASS"},
+      "macs2": {"path": "/opt/conda/bin/macs2", "version": "2.2.9.1", "status": "PASS"},
+      "samtools": {"path": "/opt/conda/bin/samtools", "version": "1.24", "status": "PASS"},
+      "meme": {"path": "/opt/conda/bin/meme", "version": "5.5.9", "status": "PASS"},
+      "cbust": {"path": "/usr/local/bin/cbust", "evidence": "Usage: cbust [options] matrixfile myseqs.fa", "status": "PASS"},
+      "mallet": {"path": "/opt/mallet/bin/mallet", "evidence": "train-topics --help exposes --num-topics", "status": "PASS"},
+      "liftOver": {"path": "/usr/local/bin/liftOver", "evidence": "liftOver - Move annotations from one assembly to another", "status": "PASS_PRESENT_BUT_NOT_NEEDED"},
+      "bigWigAverageOverBed": {"path": "/usr/local/bin/bigWigAverageOverBed", "evidence": "bigWigAverageOverBed v2", "status": "PASS_PRESENT_NOT_YET_USED"},
+      "create_cistarget_motif_databases.py": {"path": "/opt/create_cisTarget_databases/create_cistarget_motif_databases.py", "evidence": "--help emits usage with -f/-M/-m/-o/-c/-t", "status": "PASS"},
+      "convert_motifs_or_tracks_vs_regions_or_genes_scores_to_rankings_cistarget_dbs.py": {"path": "/opt/create_cisTarget_databases/", "evidence": "--help emits usage", "status": "PASS"}
+    },
+    "PATH_CAVEAT_FOUND_BY_THIS_LANE": {
+      "observation": "`command -v bedtools` (and macs2, samtools, meme, mallet) under `docker run ... bash -lc` reports ABSENT.",
+      "cause": "The micromamba base environment is not on a login shell's PATH.",
+      "consequence_if_unnoticed": "A naive PATH probe yields a FALSE ABSENT for five tools that are in fact present and working, which could have been written into a receipt as a missing-dependency blocker.",
+      "rule_adopted": "Every conda-provided tool is invoked through `micromamba run -n base`; /usr/local/bin and /opt/mallet/bin tools are invoked by absolute path."
+    }
+  },
+
+  "python_stack_in_running_image": {
+    "scenicplus": "1.0a2",
+    "pycisTopic": "2.0a0",
+    "pycistarget": "1.1",
+    "pyscenic": "0.12.1+11.g06bafba",
+    "pybedtools": "0.9.1",
+    "pysam": "0.22.0",
+    "scanpy": "1.8.2",
+    "anndata": "0.10.5.post1",
+    "numpy": "1.26.4",
+    "pandas": "1.5.0",
+    "scipy": "1.12.0",
+    "pyarrow": "15.0.0",
+    "sklearn": "1.3.2"
+  },
+
+  "environment_manifest": {
+    "regenerated_from_running_container": {
+      "pip_freeze": "D:/jepa_v5_outputs_20260925/v69_scenicplus/env/container/pip_freeze_regenerated_from_running_container.txt",
+      "n_pip_packages": 235,
+      "micromamba_list": "D:/jepa_v5_outputs_20260925/v69_scenicplus/env/container/micromamba_list_regenerated_from_running_container.txt",
+      "pip_check": "No broken requirements found."
+    },
+    "published_validation_receipts_to_cross_reference": {
+      "repository": "https://github.com/dushyant-mishra/scenicplus-docker.git",
+      "files": ["validation/pip_check.txt", "validation/import_check.txt",
+                "validation/micromamba_list.txt", "validation/pip_freeze.txt"],
+      "status": "NOT_RETRIEVED_BY_THIS_LANE",
+      "note": "Both the published manifest and the regenerated one are to be recorded. Only the regenerated one has been produced here."
+    },
+    "expected_warning": "A pkg_resources DeprecationWarning is emitted on import. The runtime deliberately pins setuptools<81; this is expected and not a defect."
+  },
+
+  "abandoned_alternative": {
+    "what": "A conda environment built directly in WSL by scripts/v69/build_scenicplus_env_wsl_v1.sh.",
+    "outcome": "ABANDONED in favour of the validated container.",
+    "why_it_failed": "SCENIC+ 1.0a2 hard-pins datrie==0.8.2, whose C source does not compile against the modern GCC in this WSL image (incompatible-pointer-type errors in libdatrie's AlphaMap). pycisTopic, pycistarget, pyscenic and scenicplus itself all built successfully; only that one transitive pin blocked the install.",
+    "script_retained": "Yes, as a record of what was attempted and why it failed. It is NOT the execution environment and must not be used as one.",
+    "note": "The container already solves this: it installs datrie=0.8.2 through conda with a compatible toolchain."
+  },
+
+  "execution_pattern": {
+    "command": "docker run --rm --shm-size=16g -v D:/jepa_wt_v69_scenicplus_20261001:/workspace -v D:/jepa_v5_outputs_20260925/v69_scenicplus:/data -w /workspace scenicplus:1.0a2 micromamba run -n base <command>",
+    "mounts": "Only this lane's own worktree and its own output directory.",
+    "explicitly_not_mounted": [
+      "D:/jepa_wt_v64_sampler_20260930",
+      "D:/jepa_v5_outputs_20260925/v64_phase_b",
+      "D:/jepa_v5_outputs_20260925/v64_stage4_synthetic"
+    ],
+    "reason": "Another lane owns those. Stage-4 vocabulary was read read-only from outside the container and is not mounted into it."
+  }
+}

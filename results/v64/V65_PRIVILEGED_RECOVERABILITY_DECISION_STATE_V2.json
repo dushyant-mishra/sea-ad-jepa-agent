@@ -1,0 +1,239 @@
+{
+  "schema": "V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVE_LOCK__EXECUTION_NOT_AUTHORIZED",
+  "factor": {
+    "id": "Z_priv_ATAC_V1",
+    "modality": "ATAC_ONLY",
+    "full_rank": 16,
+    "construction_scope": "TRAIN_ONLY",
+    "rna_enters_factor_construction": false
+  },
+  "source": {
+    "paired_subset_sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "canonical_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
+    "split_authority_resolution": "docs/agent/V65_NIHCARD_RECOVERABILITY_SPLIT_AUTHORITY_20260930.md",
+    "precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md"
+  },
+  "split": {
+    "train_donors": 16,
+    "validation_donors": 4,
+    "test_donors": 4,
+    "test_opened": false
+  },
+  "predictor": {
+    "type": "RIDGE",
+    "alpha_grid": [
+      0.01,
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "alpha_selection": "LEAVE_ONE_DONOR_OUT_CV_WITHIN_TRAIN_ONLY",
+    "fit_scope": "ONE_FULL_16D_MODEL_ON_TRAIN_ONLY",
+    "rank_or_shell_refit": false,
+    "rank_or_shell_alpha_choice": false
+  },
+  "candidate_shared_ranks": [
+    0,
+    2,
+    4,
+    8,
+    16
+  ],
+  "target_projection": {
+    "cross_covariance": "C = Z_true_train^T Z_pred_train",
+    "svd": "C = U S V^T",
+    "projector": "P_k = U[:, :k] U[:, :k]^T",
+    "applies_to": [
+      "Z_true",
+      "Z_pred"
+    ],
+    "validation_or_test_rotation": false,
+    "singular_value_tie_at_boundary": "UNQUALIFIED_FOR_SELECTION",
+    "boundary_tie_tolerance": {
+      "relative": 1e-8,
+      "formula": "abs(s[k-1]-s[k]) <= 1e-8 * max(1, abs(s[k-1]), abs(s[k]))",
+      "consequence": "UNQUALIFIED_FOR_SELECTION_AND_NO_SKIPPING_BOUNDARY"
+    }
+  },
+  "primary_metric": "DONOR_LEVEL_MULTIVARIATE_EXPLAINED_VARIANCE",
+  "delta_metric": "candidate_R2_multi - max(technical_baseline_R2_multi, global_RNA_baseline_R2_multi)",
+  "materiality": {
+    "median_delta_r2_min": 0.05,
+    "interpretation": "project decision margin, not universal biological threshold"
+  },
+  "permutation": {
+    "within_donor": true,
+    "permutations_per_donor": 10000,
+    "digest": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>'.encode('utf-8')).digest()",
+    "seed_uint64": "int.from_bytes(digest[:8], byteorder='big', signed=False)",
+    "rng": "numpy.random.Generator(numpy.random.PCG64(seed_uint64))",
+    "generation": "10,000 sequential rng.permutation(n_donor_nuclei) calls",
+    "reused_across": [
+      "R2_PAIRING_GATE",
+      "G1_CANONICAL",
+      "G2_RELATIONAL_GEOMETRY",
+      "ALL_AGGREGATE_RANKS",
+      "ALL_INCREMENTAL_SHELLS"
+    ],
+    "quantile": "numpy.quantile(null, 0.99, method='higher')",
+    "pass_rule": "OBSERVED_STRICTLY_GREATER_THAN_OWN_NULL_THRESHOLD"
+  },
+  "validation_rule": {
+    "all_4_donors_delta_positive": true,
+    "median_delta_r2_min": 0.05,
+    "all_4_candidate_r2_positive": true,
+    "all_4_permutation_gate": true,
+    "all_4_geometry_gate": true,
+    "technical_baseline_within_candidate_r2_forbidden_margin": 0.01,
+    "rank_choice": "LARGEST_CONTIGUOUS_ELIGIBLE_RANK_FROM_2_UPWARD",
+    "if_none": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "no_skipping_failed_lower_rank": true,
+    "if_rank2_fails": "LOCK_RANK_0_AND_UNQUALIFIED_WITHOUT_TEST_RESCUE",
+    "previous_rule": "SMALLEST_ELIGIBLE_NONZERO_RANK__SUPERSEDED_BEFORE_REAL_EXECUTION",
+    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_VALIDATION_DONORS",
+    "aggregate_and_incremental_shell_must_both_pass": true,
+    "shells": {
+      "rank2": "S2=P2",
+      "rank4": "S4=P4-P2",
+      "rank8": "S8=P8-P4",
+      "rank16": "S16=P16-P8"
+    }
+  },
+  "test_rule": {
+    "all_4_donors_delta_positive": true,
+    "median_delta_r2_min": 0.05,
+    "all_4_candidate_r2_positive": true,
+    "all_4_permutation_gate": true,
+    "all_4_geometry_gate": true,
+    "median_test_delta_at_least_fraction_of_validation": 0.5,
+    "retuning_after_open": false,
+    "geometry_gate": "G1_AND_G2_BOTH_PASS_IN_ALL_4_TEST_DONORS",
+    "aggregate_and_all_shells_through_selected_rank_must_pass": true,
+    "test_does_not_inherit_validation_only_technical_margin": true
+  },
+  "classifications": {
+    "RNA_RECOVERABLE": "rank 16 selected on VALIDATION and confirmed on TEST",
+    "PARTIALLY_RNA_RECOVERABLE": "rank 2,4,8 selected on VALIDATION and confirmed on TEST",
+    "UNQUALIFIED": "no nonzero VALIDATION rank or locked rank fails TEST/shortcut gates",
+    "PRIVILEGED_PRIVATE": "NOT_ASSIGNABLE_BY_THIS_EXPERIMENT"
+  },
+  "governance": {
+    "execution_authorized": false,
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "multimodal_teacher": "NOT_AUTHORIZED"
+  },
+  "synthetic_qualification": {
+    "script": "scripts/v64/qualify_recoverability_decision_synthetic_v1.py",
+    "finding": "SMALLEST_ELIGIBLE misclassifies a monotone fully-recoverable nested factor as rank 2; repaired rule selects the largest contiguous eligible rank.",
+    "real_biological_values_used": false
+  },
+  "supersedes": {
+    "path": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V1.json",
+    "reason": "V1 geometry gate counted canonical correlation and principal-angle cosine as separate gates even though they are the same singular-value object under the intended centered-column-space implementation."
+  },
+  "geometry_gate": {
+    "status": "V2_DISTINCT_TWO_METRIC_GATE",
+    "G1": {
+      "metric": "MEDIAN_CANONICAL_CORRELATION",
+      "object": "centered Z_true_shared vs centered Z_pred_shared",
+      "principal_angle_cosines": "REPORTABLE_ALIAS_NOT_INDEPENDENT_GATE"
+    },
+    "G2": {
+      "metric": "PEARSON_CORRELATION_OF_UPPER_TRIANGLE_PAIRWISE_SQUARED_EUCLIDEAN_DISTANCE_VECTORS",
+      "object": "within-donor relational geometry of Z_true_shared vs Z_pred_shared using squared Euclidean distances"
+    },
+    "permutation": {
+      "within_donor": true,
+      "permutations_per_donor": 10000,
+      "seed_rule": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>')",
+      "same_permutations_reused_across_ranks": true,
+      "true_rows_permuted_predicted_rows_fixed": true,
+      "quantile": "numpy.quantile(null, 0.99, method='higher')",
+      "pass_rule": "OBSERVED_STRICTLY_GREATER_THAN_OWN_NULL_THRESHOLD",
+      "seed_digest": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>'.encode('utf-8')).digest()",
+      "seed_uint64": "int.from_bytes(digest[:8], byteorder='big', signed=False)",
+      "rng": "numpy.random.Generator(numpy.random.PCG64(seed_uint64))",
+      "generation": "10,000 sequential rng.permutation(n_donor_nuclei) calls",
+      "digest": "sha256('V65_RECOVERABILITY_PERMUTATION|<donor_id>'.encode('utf-8')).digest()",
+      "reused_across": [
+        "R2_PAIRING_GATE",
+        "G1_CANONICAL",
+        "G2_RELATIONAL_GEOMETRY",
+        "ALL_AGGREGATE_RANKS",
+        "ALL_INCREMENTAL_SHELLS"
+      ]
+    },
+    "fail_closed_on": [
+      "requested projected rank deficiency",
+      "zero-variance pairwise-distance vector",
+      "non-finite geometry metric",
+      "non-reproducible deterministic permutation sequence"
+    ],
+    "redundancy_audit": "scripts/v64/audit_recoverability_geometry_gate_redundancy_v1.py",
+    "real_biological_values_used_to_make_repair": false,
+    "intrinsic_rank_rule": {
+      "ambient_storage_width": 16,
+      "aggregate": {
+        "P2": 2,
+        "P4": 4,
+        "P8": 8,
+        "P16": 16
+      },
+      "shell": {
+        "S2": 2,
+        "S4": 2,
+        "S8": 4,
+        "S16": 8
+      },
+      "canonical_basis": "NONZERO_LEFT_SINGULAR_SUBSPACE_AT_DECLARED_INTRINSIC_RANK",
+      "fail_if_rank_below_declared": true
+    }
+  },
+  "nested_shells": {
+    "projector_source": "ONE_SHARED_TRAIN_ONLY_SVD",
+    "definitions": {
+      "P0": "0",
+      "S2": "P2",
+      "S4": "P4-P2",
+      "S8": "P8-P4",
+      "S16": "P16-P8"
+    },
+    "aggregate_intrinsic_ranks": {
+      "P2": 2,
+      "P4": 4,
+      "P8": 8,
+      "P16": 16
+    },
+    "shell_intrinsic_ranks": {
+      "S2": 2,
+      "S4": 2,
+      "S8": 4,
+      "S16": 8
+    },
+    "rank_qualification": "AGGREGATE_AND_INCREMENTAL_SHELL_MUST_BOTH_PASS",
+    "lower_boundary_failure": "NO_HIGHER_RANK_SKIP",
+    "singular_value_tie_at_boundary": "SELECTION_STOPS_BELOW_TIED_BOUNDARY"
+  },
+  "baselines": {
+    "technical": {
+      "inputs": [
+        "log_RNA_library_size",
+        "detected_gene_count"
+      ],
+      "fit_scope": "ONE_FULL_16D_MODEL_ON_TRAIN_ONLY",
+      "rank_or_shell_refit": false
+    },
+    "global_rna": {
+      "inputs": "FIRST_16_TRAIN_FITTED_RNA_PCA_COORDINATES",
+      "fit_scope": "ONE_FULL_16D_MODEL_ON_TRAIN_ONLY",
+      "rank_or_shell_refit": false
+    },
+    "projection_rule": "PROJECT_FIXED_FULL_STATE_BASELINE_PREDICTIONS_THROUGH_SAME_P_K_OR_S_K_AS_CANDIDATE"
+  }
+}

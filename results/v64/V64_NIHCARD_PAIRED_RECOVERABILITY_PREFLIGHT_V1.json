@@ -1,0 +1,70 @@
+{
+  "schema": "V64_NIHCARD_PAIRED_RECOVERABILITY_PREFLIGHT_V1",
+  "date": "2026-09-30",
+  "status": "SCHEMA_PAIRING_AND_SPLIT_FROZEN__NO_RNA_ATAC_CORRESPONDENCE_COMPUTED",
+  "source": {
+    "branch": "claude/v64-exact-sampler-successor-20260930",
+    "path": "results/v64/gpt_handoff_bundle/nihcard_paired_subset.npz",
+    "bytes": 844578,
+    "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6"
+  },
+  "shape": {
+    "nuclei": 2160,
+    "donors": 24,
+    "cells_per_donor": 90,
+    "genes": 4000,
+    "peaks": 12000,
+    "cell_type": "MG"
+  },
+  "pairing": {
+    "rna_obs_unique": 2160,
+    "atac_obs_unique": 2160,
+    "rule": "ATAC obs_name with one trailing _<donor_id> removed equals RNA obs_name",
+    "rule_pass": 2160,
+    "rule_fail": 0
+  },
+  "rna_sparse": {
+    "nnz": 214293,
+    "density": 0.024802430555555557,
+    "value_min": 1,
+    "value_max": 66,
+    "integer_values": true,
+    "nnz_per_cell_quantiles": [20.0, 65.0, 96.0, 129.0, 358.0]
+  },
+  "atac_sparse": {
+    "nnz": 141888,
+    "density": 0.005474074074074074,
+    "value_min": 1,
+    "value_max": 5,
+    "integer_values": true,
+    "nnz_per_cell_quantiles": [2.0, 33.75, 59.0, 89.0, 363.0]
+  },
+  "split": {
+    "method": "sort unique donor IDs by SHA256('20260930-v64-recoverability-v1|'+donor_id), then first 16 TRAIN, next 4 VALIDATION, final 4 TEST",
+    "seed_string": "20260930-v64-recoverability-v1",
+    "train_donors": [
+      "UMARY-1464","UMARY-1849","UMARY-1498","HBCC-846","SH-96-39","SH-96-30","KEN-1092","UMARY-1584",
+      "HBCC-2936","UMARY-1648","KEN-1131","HBCC-1069","SH-03-15","UMARY-1134","HBCC-928","HBCC-2605"
+    ],
+    "validation_donors": ["HBCC-1560","KEN-5015","UMARY-1539","UMARY-1743"],
+    "test_donors": ["UMARY-604","HBCC-973","UMARY-165","UMARY-1540"],
+    "train_nuclei": 1440,
+    "validation_nuclei": 360,
+    "test_nuclei": 360
+  },
+  "explicitly_not_computed": [
+    "RNA-to-ATAC prediction",
+    "ATAC-to-RNA prediction",
+    "RNA-ATAC correlation",
+    "peak-gene correspondence",
+    "regulatory factor recoverability",
+    "biological correspondence outcome"
+  ],
+  "reason_for_stop": "The paired slice is sufficient to compute cross-modal biological correspondence; project governance currently classifies that as protected Stage-4-like correspondence work. This preflight freezes schema and donor split without opening that outcome.",
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED"
+  }
+}
