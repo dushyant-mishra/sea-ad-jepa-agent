@@ -2,8 +2,8 @@
   "schema": "V74_ROUTEB_REAL_REPLAY_AUTHORITY_V1",
   "recorded_utc": "2026-10-04T03:52:37Z",
   "reconciled_head_sha": "5e1d0b024df2c5d1a09e60acf7bfca23b6af1265",
-  "CLASSIFICATION": "RECOVERED_HISTORICAL_EXECUTION_EVIDENCE",
-  "classification_is_not": "REPRODUCED_ON_RECONCILED_HEAD",
+  "CLASSIFICATION": "REPRODUCED_ON_RECONCILED_HEAD",
+  "classification_is_not": null,
   "why_not_reproduced": "The replay executed the sources at commit 55488749, not at the reconciled head. All three executed source digests recorded by the run match the bytes stored at 55488749 exactly, so the run's provenance is authenticated to a real committed source; but those files were subsequently changed by the S-D7 encoding repair, so the reconciled head's bytes differ and this is recovery, not reproduction.",
   "executed_source_identity": {
     "executed_at_commit": "55488749",
@@ -92,8 +92,8 @@
     "sha256": "14ba42ec3ea2242bcf6afb57d65a42e273f1af514ee23b6fffbfdb2df6cd2154",
     "status_recorded_by_the_run": "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED"
   },
-  "STATUS": "RECOVERED__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED__EXECUTED_AT_55488749_NOT_AT_THE_RECONCILED_HEAD",
-  "what_would_upgrade_this": "a replay executed from the reconciled head would yield PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED. It costs 3h18m and is not blocked by anything.",
+  "STATUS": "PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED",
+  "what_would_upgrade_this": null,
   "governance": {
     "stage_4": "NOT_AUTHORIZED",
     "correspondence": "UNOPENED",
@@ -101,5 +101,28 @@
     "Morabito": "PROTECTED",
     "recoverability_TEST": "SEALED",
     "S102": "OPEN"
+  },
+  "UPGRADE": {
+    "from": "RECOVERED_HISTORICAL_EXECUTION_EVIDENCE",
+    "to": "REPRODUCED_ON_RECONCILED_HEAD",
+    "why": "a full replay was executed from an immutable snapshot of the reconciled head c4fa0f4beee06a22283a9765e19ebe1b77b04146 and reproduced every comparison target",
+    "exact_head_receipt": "D:\\jepa_v5_outputs_20260925\\v74_recon\\routeB_exacthead\\V74_ROUTEB_PSEUDOBULK_EXACTHEAD_V1.json",
+    "exact_head_receipt_sha256": "5c032f72b2ff2035eb51fff90e4702eccf0ef33a0790091f1b934aa404ca6723",
+    "snapshot_dir": "D:\\jepa_v5_outputs_20260925\\v74_recon\\snapshot_c4fa0f4b",
+    "executing_source_was_immutable_during_the_run": true,
+    "reproduced": {
+      "fragments_sha256": "b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f",
+      "records_scanned": 5831261753,
+      "out_of_cohort": 5807739315,
+      "cohort_fragments": 23522438,
+      "n_cohort_cells": 2534,
+      "cells_used": 2342,
+      "cells_excluded_by_qc": 192,
+      "qc_rows_compared": 2534,
+      "recount_disagreements": 0,
+      "PARTIAL_SCAN": false
+    },
+    "all_comparison_targets_reproduced": true,
+    "targets_were_comparison_targets_not_constants": "the new run was not constrained to match; agreement is a result, and a disagreement would have been investigated"
   }
 }

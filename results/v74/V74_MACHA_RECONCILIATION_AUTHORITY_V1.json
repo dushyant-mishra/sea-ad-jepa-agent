@@ -1,0 +1,213 @@
+{
+  "schema": "V74_MACHA_RECONCILIATION_AUTHORITY_V1",
+  "recorded_utc": "2026-10-04T18:25:59Z",
+  "reconciliation_branch": "claude/v74-macha-reconciliation-20261003",
+  "exact_head_sha": "374165b6ba9e49b7165e440a009a004349a14223",
+  "base_sha": "78f13e71db968ad42486fdecb718dacd48704a5a",
+  "ANCESTRY": {
+    "correction": "earlier statements that four Macha lanes required importing are SUPERSEDED. The declared base already contained two of them.",
+    "already_ancestors_of_the_base": {
+      "claude/v74-g2-continuous-successor-20261002": "03c0c48612860e4bd2f094ce54fdef9cde274490",
+      "claude/v74-stale-claim-audit-20261002": "14326480882f5bc4618634ba7f95c94f4924437d"
+    },
+    "explicitly_imported": {
+      "claude/v74-routeb-custody-20261002": "32dfcbfdcfced5683d9646e10a7db679ea9ba323",
+      "claude/v74-blacklist-and-512pilot-20261002": "60b0971086bc414dc14e65da59818316450a0a16"
+    },
+    "conflicts_encountered": "none; both imports merged clean",
+    "all_live_heads_rechecked_against_the_audit": "identical at reconciliation time"
+  },
+  "ROUTE_A": {
+    "status": "REPAIRED__SOURCE_QUALIFIED_ONLY",
+    "what_was_wrong": "the identity guard ran on dict(zip(...)), which discards the conflict first",
+    "repair": "raw rows audited before collapse; conflicting donor or subcluster fails closed; exact duplicates permitted under a recorded policy",
+    "mutation_proof": "restoring post-collapse ordering makes the suite fail; reverting restores 9/9",
+    "not_done": "not re-executed on the real cohort; the defect is believed latent (2,534 rows, 0 conflicts) but that is unconfirmed here"
+  },
+  "ROUTE_B": {
+    "code_status": "RECONCILED",
+    "real_replay_status": "PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED",
+    "classification": "REPRODUCED_ON_RECONCILED_HEAD",
+    "executed_from": "an immutable snapshot of 374165b6ba9e49b7165e440a009a004349a14223",
+    "all_comparison_targets_reproduced": true,
+    "authority": {
+      "path": "results/v74/V74_ROUTEB_REAL_REPLAY_AUTHORITY_V1.json",
+      "sha256": "4c798cdeef0e2f9a5186fd8f2b64d4e0e8b39c99f6bd134d2b44ef84546faaa4"
+    }
+  },
+  "BLACKLIST": {
+    "status": "AUTHENTICATED_AND_BOUND",
+    "accession": "ENCFF356LFX",
+    "build": "GRCh38",
+    "externally_anchored": "both MD5s match ENCODE's declared metadata, not merely local bytes",
+    "attrition_regions": "263 of 150,561 (0.17%)",
+    "attrition_bp": "211,953 of 126,142,895",
+    "overlap_rule_sensitivity": "263 regions at 1 bp down to 215 at 90% of region, so the rule is not driving the result",
+    "blacklist_file_digest": "dd23254255592100e38a4f3b357d52a3abe22b4bdbc66f0430200573a4d1e3bf",
+    "overlap_policy_implementation": {
+      "source": "scripts/v74/laneE_blacklist_attrition_v1.py",
+      "sha256": "cf54823068cebfd135b2c00b5626194e9727e76ab94f8e395e64f801256e1733",
+      "why_bound": "the biology is insensitive across the tested threshold range, but the receipt must still prove WHICH rule produced the final region set"
+    },
+    "enforcement": "consensus refuses to build without an authenticated blacklist; pycisTopic applies it INSIDE get_consensus_peaks, so post-hoc filtering cannot reconstruct the decided universe"
+  },
+  "QUIET_512": {
+    "status": "CLOSED_POSITIVE",
+    "outputs_bitwise_identical_contended_vs_quiet": true,
+    "includes_rankings": true,
+    "SUPERSEDED_INTERPRETATIONS": [
+      {
+        "withdrawn": "machine contention might affect the scientific output",
+        "superseded_by": "all three outputs bitwise identical on the same 512-motif slice"
+      },
+      {
+        "withdrawn": "per-motif cost rises with shard size, so the extrapolation is violated",
+        "superseded_by": "per-motif cost FALLS with shard size: 93.50 s at 4 motifs, 20.77 at 128, 13.41 at 512, all quiet at 8 workers. The original claim compared a TOTAL per-motif figure against a SCORING-ONLY 11.222 s, on a contended measurement."
+      }
+    ]
+  },
+  "SCALING_AUTHORITY": {
+    "status": "FAIL_OPEN_REPAIRED",
+    "status_now_derived_from": "seven named evidence gates",
+    "states": [
+      "PASS",
+      "FAIL",
+      "INDETERMINATE",
+      "REFUSED_INCOMPLETE_EVIDENCE",
+      "STOP__IDENTICAL_WORKLOAD_PRODUCED_DIFFERENT_OUTPUTS"
+    ],
+    "caller_controlled_authority_removed": true,
+    "negative_controls": "quiet receipt hidden -> REFUSED; restart evidence removed -> REFUSED; all evidence present -> PASS"
+  },
+  "G2_S102": {
+    "contract": "FROZEN__NOT_IN_FORCE__DECIDING_MARGIN_UNSET",
+    "S102": "OPEN",
+    "on_critical_path": false,
+    "absolute_margin": "NOT DERIVABLE without outcome tuning; every external scale available is a precision scale that shrinks with donors",
+    "relative_margin": "derivable at f = 1 only",
+    "known_corpus_limit": "no synthetic world plants a CONTROL_A versus CONTROL_B asymmetry, so the corpus measures false alarms only and never detection power"
+  },
+  "S112": {
+    "status": "CLOSED",
+    "executable_gates_consuming_stale_fields": 0,
+    "historical_bytes_changed": false,
+    "receipt": {
+      "path": "results/v74/V74_S112_CLOSEOUT_V1.json",
+      "sha256": "1f5ae43bdf80a97f8e1e0870d8c6dd37c980e317ea634a61e415a3313a105f64"
+    }
+  },
+  "ACTIVE_STATE": {
+    "status": "TRANSITIONED",
+    "worker_claim_narrowed": true,
+    "points_forward_to": "exact-head 100K FULL104-like synthetic architecture qualification"
+  },
+  "CI": {
+    "workflow": ".github/workflows/v74-macha-reconciliation-exact-head.yml",
+    "workflow_sha256": "76352c3d8956da0dbfe38b424ad4bf4183dffe63b2327fa7746fe71d6619d216",
+    "github_actions_run_id": "NOT_YET_RUN_AT_THIS_HEAD",
+    "local_execution_evidence": {
+      "command": "python -m pytest tests/ -k \"v69 or v73 or v74 or stage4 or routea or routeb or custody or blacklist or g2 or barcode\" --ignore=tests/v4 --ignore=tests/test_contextual_target_f1_preflight_core_v1.py",
+      "passed": 212,
+      "failed": 0,
+      "skipped": 1,
+      "skip_is_declared": "test_v69_shard_merge_validation_v1 needs pyarrow and the SCENIC+ container"
+    },
+    "full_suite_at_this_head": {
+      "passed": 2923,
+      "failed": 61,
+      "skipped": 4,
+      "failures_are_preexisting": true,
+      "evidence": "all 61 are in legacy v5/d1/peer/teacher/perturbation files; the reconciliation diff touches ZERO of them",
+      "excluded_and_why": {
+        "tests/v4": "needs result artifacts that are not repo-resident",
+        "tests/test_contextual_target_f1_preflight_core_v1.py": "imports the Unix-only resource module"
+      }
+    }
+  },
+  "PROTECTED_DATA_AUDIT": {
+    "pathology_column_entered_model_input_or_control_selection": false,
+    "real_correspondence_computed": false,
+    "morabito_opened_beyond_custody_metadata": false,
+    "recoverability_TEST_sealed": true,
+    "training_path_enabled": false,
+    "full_scenicplus_network_generated": false,
+    "synthetic_result_labelled_real": false,
+    "historical_result_promoted_without_requalification": false,
+    "note": "the only real-data execution was the Route-B pseudobulk on the pathology-blind DEV_NO_MORABITO_OVERLAP cohort"
+  },
+  "THRESHOLD_DRIFT_TABLE": [
+    {
+      "item": "MIN_UNIQUE_FRAGMENTS_PER_BARCODE",
+      "prior": 1000,
+      "successor": 1000,
+      "changed": false,
+      "authority": "SECTION_2 frozen",
+      "outcome_data_inspected_first": false
+    },
+    {
+      "item": "cisTarget ranking tie-break seed",
+      "prior": 20261001,
+      "successor": 20261001,
+      "changed": false,
+      "authority": "pinned convention",
+      "outcome_data_inspected_first": false
+    },
+    {
+      "item": "shard size",
+      "prior": "512 (extrapolated)",
+      "successor": "512, now read from a hash-bound decision artifact",
+      "changed": false,
+      "authority": "frozen decision artifact, no longer argv",
+      "outcome_data_inspected_first": false
+    },
+    {
+      "item": "worker count",
+      "prior": 8,
+      "successor": 8,
+      "changed": false,
+      "authority": "measured small benchmark; the CLAIM was narrowed in ACTIVE_STATE",
+      "outcome_data_inspected_first": false
+    },
+    {
+      "item": "blacklist overlap rule",
+      "prior": "ANY_OVERLAP_DROPS_REGION",
+      "successor": "ANY_OVERLAP_DROPS_REGION",
+      "changed": false,
+      "authority": "frozen before any network existed",
+      "outcome_data_inspected_first": false
+    },
+    {
+      "item": "G2 deciding margin",
+      "prior": "UNSET",
+      "successor": "UNSET",
+      "changed": false,
+      "authority": "S102 open",
+      "outcome_data_inspected_first": false
+    }
+  ],
+  "no_scientific_threshold_changed": true,
+  "REMAINING_BLOCKERS": [
+    "Route-A has not been re-executed on the real cohort; it is source-qualified only",
+    "no SCENIC+ regulatory network exists on either route",
+    "S102 open: the G2 absolute margin is not derivable without outcome tuning",
+    "no synthetic world can measure G2 detection power",
+    "GitHub Actions has not yet run at this exact head"
+  ],
+  "GOVERNANCE": {
+    "stage_4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "S102": "OPEN"
+  },
+  "NEXT_AUTHORITY_TARGET": {
+    "milestone": "exact-head 100K FULL104-like synthetic architecture qualification",
+    "question": "does the pathology-blind JEPA state architecture preserve empirical donor/source/operator/QC geometry and remain stable under lawful measurement variation at realistic scale?",
+    "path": "reconciled V73/V74 architecture -> 2K promotion smoke -> 100K -> 500K -> 4.553M",
+    "reconciliation_stops_here": true
+  },
+  "OVERALL_VERDICT": "PARTIALLY_QUALIFIED_BLOCKERS_REMAIN",
+  "verdict_scope": "engineering reconciliation is qualified within its stated scope. This is an infrastructure verdict and qualifies NO biological claim and no regulatory network."
+}

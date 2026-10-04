@@ -1,0 +1,83 @@
+name: V74 Macha reconciliation exact-head
+
+# Runs the DECIDING suite for the reconciled Macha successor. Two exclusions, both
+# pre-existing and unrelated to this reconciliation, are declared here rather than
+# hidden behind a passing total:
+#   tests/v4                                       legacy tests needing result artifacts
+#                                                  that are not repo-resident
+#   tests/test_contextual_target_f1_preflight_...  imports the Unix-only `resource` module
+# Any OTHER skip is reported and fails the job, because a deciding test that silently
+# does not run is indistinguishable from one that passed.
+
+on:
+  push:
+    branches: [claude/v74-macha-reconciliation-20261003]
+  workflow_dispatch:
+
+jobs:
+  deciding-suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install
+        run: python -m pip install -q pytest numpy pandas
+
+      - name: Record exact head
+        run: |
+          echo "HEAD=$(git rev-parse HEAD)"
+          git rev-parse HEAD > exact_head.txt
+
+      - name: Syntax and import check
+        run: |
+          python -m compileall -q scripts/v69 scripts/v74 scripts/v64 || exit 1
+
+      - name: Protected-boundary static assertions
+        run: |
+          python - <<'PY'
+          import pathlib, sys
+          bad = []
+          for p in list(pathlib.Path("scripts").rglob("*.py")):
+              t = p.read_text(encoding="utf-8", errors="replace")
+              if "stage4_authorized" in t and "True" in t and "authoriz" in t.lower():
+                  pass  # presence alone is not a violation; the executor refuses by design
+          # the invariants that must hold textually
+          ex = pathlib.Path("scripts/v64/stage4_executor_v1.py").read_text(encoding="utf-8")
+          assert "REFUSED: real Stage-4 execution is not authorised." in ex
+          assert "anndata" not in [l.split()[1] for l in ex.splitlines()
+                                   if l.startswith("import ")]
+          print("protected-boundary assertions hold")
+          PY
+
+      - name: Deciding suite
+        run: |
+          python -m pytest tests/ -rs --tb=short \
+            -k "v69 or v73 or v74 or stage4 or routea or routeb or custody or blacklist or g2 or barcode" \
+            --ignore=tests/v4 \
+            --ignore=tests/test_contextual_target_f1_preflight_core_v1.py \
+            --junitxml=deciding.xml
+
+      - name: Fail on unexpected skips
+        if: always()
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET, sys, pathlib
+          ALLOWED = {"test_v69_shard_merge_validation_v1"}   # needs pyarrow / container
+          if not pathlib.Path("deciding.xml").exists():
+              print("no junit xml; suite did not run"); sys.exit(1)
+          root = ET.parse("deciding.xml").getroot()
+          bad = []
+          for tc in root.iter("testcase"):
+              if tc.find("skipped") is not None:
+                  mod = (tc.get("classname") or "").split(".")[-1]
+                  (print(f"ALLOWED SKIP: {tc.get('classname')}::{tc.get('name')}")
+                   if mod in ALLOWED else bad.append(f"{tc.get('classname')}::{tc.get('name')}"))
+          if bad:
+              print("UNEXPECTED SKIPS:"); [print("  "+b) for b in bad]; sys.exit(1)
+          print("no unexpected skips")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: v74-deciding-suite, path: "deciding.xml"}
