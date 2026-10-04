@@ -1,0 +1,38 @@
+name: V75 100K architecture qualification
+
+on:
+  pull_request:
+    paths:
+      - 'results/v75/**'
+      - 'scripts/v64/build_v73_sharded_master_truth.py'
+      - 'scripts/v64/build_v73_full104_sharded_observer.py'
+      - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
+      - 'scripts/v64/v73_full104_population_geometry.py'
+      - 'scripts/v64/v73_full104_qc_calibration.py'
+      - 'tests/test_v75_*.py'
+      - '.github/workflows/v75-100k-architecture-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  v75-qualification:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install
+        run: python -m pip install --upgrade pip pytest numpy
+      - name: Record source identity
+        run: git rev-parse HEAD
+      - name: Compile
+        run: |
+          python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
+          python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
+          python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
+      - name: V75 measurement-realization tests
+        run: pytest -q tests/test_v75_measurement_realization_seed.py
+      - name: V74 regression subset
+        run: |
+          pytest -q tests/test_v73_synthetic_stress_twin.py
+          pytest -q tests/test_v74_rna_qc_consumption.py
