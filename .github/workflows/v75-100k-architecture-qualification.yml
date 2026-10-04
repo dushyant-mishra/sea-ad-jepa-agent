@@ -30,8 +30,10 @@ jobs:
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
-      - name: V75 measurement-realization tests
-        run: pytest -q tests/test_v75_measurement_realization_seed.py
+      - name: V75 qualification tests
+        run: |
+          pytest -q tests/test_v75_measurement_realization_seed.py
+          pytest -q tests/test_v75_qc_authority_causal_consumption.py
       - name: V74 regression subset
         run: |
           pytest -q tests/test_v73_synthetic_stress_twin.py
