@@ -34,6 +34,7 @@ from scipy import sparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from v69_barcode_identity import (  # noqa: E402
+    audit_barcode_authority_frame, BarcodeAuthorityError,
     BarcodeIdentityError, assert_donor_map_is_not_suffix_derived)
 
 FORBIDDEN_COVARIATES = ("Status", "Braak", "Diagnosis", "APOE_Status")
@@ -109,10 +110,30 @@ def build(routea_receipt: Path, cohort_receipt: Path, population: str,
         raise FailClosed("FAIL__PATHOLOGY_COLUMN_PRESENT_IN_CELL_ANNOTATION",
                          columns=leaked)
 
-    # ENFORCED barcode-identity guard: donor comes from the full barcode string only.
+    # P0 ORDERING: the raw ROWS are audited BEFORE any dictionary collapse. dict(zip(...))
+    # keeps the last value for a repeated key, so a barcode bound to two donors or two
+    # subclusters is discarded by the collapse itself and the identity guard downstream
+    # can never see it. Auditing after the collapse inspects evidence the defect has
+    # already destroyed. Exact duplicate rows are permitted under the recorded policy
+    # below; conflicting ones fail closed.
     try:
-        guard_evidence = assert_donor_map_is_not_suffix_derived(
-            dict(zip(bc["barcode"].astype(str), bc["donor"].astype(str))))
+        authority_audit = audit_barcode_authority_frame(
+            bc, barcode_col="barcode", donor_col="donor", subcluster_col="subcluster")
+    except BarcodeAuthorityError as e:
+        raise FailClosed(getattr(e, "status", "FAIL__BARCODE_AUTHORITY"), reason=str(e),
+                         **{k: v for k, v in getattr(e, "detail", {}).items()})
+    authority_policy = {
+        "exact_duplicate_rows": "PERMITTED_AND_COUNTED",
+        "conflicting_donor_assignment": "FAIL_CLOSED",
+        "conflicting_subcluster_assignment": "FAIL_CLOSED",
+        "missing_required_column": "FAIL_CLOSED",
+        "audited_before_dict_collapse": True,
+    }
+
+    # Only now, on a validated frame, is the collapse allowed.
+    donor_map = dict(zip(bc["barcode"].astype(str), bc["donor"].astype(str)))
+    try:
+        guard_evidence = assert_donor_map_is_not_suffix_derived(donor_map)
     except BarcodeIdentityError as e:
         raise FailClosed("FAIL__DONOR_IDENTITY_GUARD", reason=str(e))
 
