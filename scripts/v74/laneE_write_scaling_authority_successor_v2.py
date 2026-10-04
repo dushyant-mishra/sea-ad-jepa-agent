@@ -102,12 +102,31 @@ def run_row(label, receipt: Path, log: Path, machine, motif_names):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--recommended-shard-size", type=int, required=True)
-    ap.add_argument("--shard-size-changed", required=True, choices=["yes", "no"])
-    ap.add_argument("--decision-branch", required=True)
-    ap.add_argument("--restart-evidence", required=True)
+    # P0: deciding conclusions may NOT arrive as caller-supplied scalars. A producer that
+    # accepts its own verdict as an argument launders the caller's opinion into authority.
+    # Paths to authority documents are acceptable; the conclusions inside them are read and
+    # hash-bound, never taken on the command line.
+    ap.add_argument("--shard-decision-artifact", required=True,
+                    help="path to a frozen shard-size decision artifact; its content hash "
+                         "is recorded and its conclusions are read from it")
+    ap.add_argument("--restart-evidence", required=True,
+                    help="path to restart evidence; existence and digest are verified")
     ap.add_argument("--out", required=True)
     a = ap.parse_args(argv)
+
+    # Read the deciding conclusions out of the frozen artifact, or refuse. Missing or
+    # unreadable authority yields None and the gates below turn that into a refusal
+    # rather than into a default.
+    DEC = Path(a.shard_decision_artifact)
+    decision = None
+    if DEC.exists():
+        try:
+            decision = json.loads(DEC.read_text(encoding="utf-8"))
+        except Exception:
+            decision = None
+    rec_shard = (decision or {}).get("recommended_shard_size_motifs")
+    shard_changed = (decision or {}).get("changed_from_the_previously_extrapolated_512")
+    decision_branch = (decision or {}).get("branch_that_fired")
 
     names = [l.strip() for l in UNIVERSE.read_text(encoding="utf-8").splitlines() if l.strip()]
     random.seed(20261001)
@@ -173,7 +192,7 @@ def main(argv=None) -> int:
         all_mean, all_tot, all_max = pwm_stats(names)
         o_vals = [v["O_n_non_scoring_s"] for v in table.values()
                   if isinstance(v.get("O_n_non_scoring_s"), float)]
-        n_shards = -(-len(names) // a.recommended_shard_size)
+        n_shards = (-(-len(names) // rec_shard)) if rec_shard else None
         overhead_h = round(n_shards * max(o_vals) / 3600, 2) if o_vals else "UNMEASURED"
         projection = {
             "matched_comparison": (
@@ -220,10 +239,59 @@ def main(argv=None) -> int:
                 "measurement beside it."),
         }
 
+    # ---- P0: the status is DERIVED from the evidence, never asserted ----------------
+    # The predecessor wrote COMPLETE as a literal, so it would have declared the build
+    # authorised with the quiet run absent and the digest comparison unmeasured. "Not
+    # measured" must never encode as success. Each gate below names the evidence it
+    # requires; a missing item yields REFUSED_INCOMPLETE_EVIDENCE and a contradicted one
+    # yields FAIL, and neither can be reached by omission.
+    q = table.get("QUIET512_t8") or {}
+    rst = Path(a.restart_evidence)
+    gates = {
+        # run_row surfaces the wall time as wall_s, not wall_clock_seconds. My first
+        # version of this gate checked a key that does not exist, so it refused even with
+        # every piece of evidence present -- a gate that cannot pass is as useless as one
+        # that cannot fail, and it was caught by the all-evidence-present control rather
+        # than by reading the code.
+        "quiet512_receipt_present": bool(q) and q.get("wall_s") is not None
+                                    and q.get("status") != "RECEIPT_ABSENT",
+        "quiet_machine_condition_verified": (
+            q.get("quiet_machine_condition_met") not in (None, "NOT_INSTRUMENTED", False)
+            or bool(q.get("machine_state"))),
+        "contended_and_quiet_digests_comparable": bool(digest_check.get("comparable")),
+        "contended_and_quiet_digests_identical": bool(digest_check.get("identical")),
+        "restart_evidence_present": rst.exists(),
+        "shard_size_decision_resolved": rec_shard is not None,
+        "decision_artifact_readable": decision is not None,
+    }
+    missing = sorted(k for k, v in gates.items() if not v)
+    if gates["contended_and_quiet_digests_comparable"] and not gates[
+            "contended_and_quiet_digests_identical"]:
+        STATUS = "STOP__IDENTICAL_WORKLOAD_PRODUCED_DIFFERENT_OUTPUTS"
+    elif missing:
+        STATUS = "REFUSED_INCOMPLETE_EVIDENCE"
+    else:
+        STATUS = ("PASS__WORKERS_AND_SHARD_SIZE_MEASURED__BUILD_INFRASTRUCTURE_MAY_RUN"
+                  "__RUNTIME_PROJECTION_REVISED_UPWARD")
+
     rec = {
         "schema": "V74_CISTARGET_SCALING_AUTHORITY_SUCCESSOR_V1",
-        "STATUS": ("COMPLETE__WORKERS_AND_SHARD_SIZE_MEASURED__BUILD_INFRASTRUCTURE_MAY_RUN"
-                   "__RUNTIME_PROJECTION_REVISED_UPWARD"),
+        "STATUS": STATUS,
+        "STATUS_IS_DERIVED_NOT_ASSERTED": {
+            "gates": gates,
+            "missing_evidence": missing,
+            "states": ["PASS", "FAIL", "INDETERMINATE", "REFUSED_INCOMPLETE_EVIDENCE",
+                       "STOP__IDENTICAL_WORKLOAD_PRODUCED_DIFFERENT_OUTPUTS"],
+            "predecessor_defect": ("the V2 producer wrote COMPLETE as a string literal "
+                                   "independent of the evidence, so an absent quiet run "
+                                   "and an unmeasured digest comparison would still have "
+                                   "read as authorisation to run the build"),
+            "restart_evidence_path": str(rst),
+            "decision_artifact": {
+                "path": str(DEC),
+                "sha256": sha256_file(DEC) if DEC.exists() else "NOT_FOUND",
+                "conclusions_were_read_from_it_not_from_argv": True},
+        },
         "status_is_singular": ("This receipt carries exactly one status. Its predecessor "
                                "carried two contradictory ones; see SUPERSESSION."),
         "recorded_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -295,16 +363,16 @@ def main(argv=None) -> int:
             "source_receipt": "V69_CISTARGET_WORKER_SCALING_TABLE_V1.json",
         },
         "SHARD_SIZE": {
-            "recommended_shard_size_motifs": a.recommended_shard_size,
-            "changed_from_the_previously_extrapolated_512": a.shard_size_changed == "yes",
+            "recommended_shard_size_motifs": rec_shard,
+            "changed_from_the_previously_extrapolated_512": shard_changed,
             "decision_rule": "docs/agent/V74_LANEE_SHARD_SIZE_DECISION_RULE_FROZEN_20261002.md",
             "decision_rule_frozen_before_the_measurement": True,
-            "branch_that_fired": a.decision_branch,
+            "branch_that_fired": decision_branch,
             "deciding_quantity": ("O(n), the non-scoring segment paid ONCE PER SHARD. It is "
                                   "the only term shard size multiplies."),
-            "n_shards_over_10249_motifs": -(-10249 // a.recommended_shard_size),
-            "last_shard_motifs": (10249 - (-(-10249 // a.recommended_shard_size) - 1)
-                                  * a.recommended_shard_size),
+            "n_shards_over_10249_motifs": (-(-10249 // rec_shard)) if rec_shard else None,
+            "last_shard_motifs": ((10249 - (-(-10249 // rec_shard) - 1) * rec_shard)
+                                  if rec_shard else None),
             "plan_proven": ("scripts/v74/laneE_shard_plan_v1.py verified exact tiling of "
                             "the frozen 10,249-motif universe at this shard size, "
                             "including the ragged tail."),
