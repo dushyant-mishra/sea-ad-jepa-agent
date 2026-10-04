@@ -1,0 +1,110 @@
+{
+  "schema": "V69_REMOTE_OBJECT_ACQUISITION_RECEIPT_V1",
+  "successor_of": null,
+  "label": "ENCODE_GRCh38_EXCLUSION_LIST_ENCFF356LFX",
+  "status": "PASS__BYTE_COMPLETE_AND_AUTHENTICATED",
+  "recorded_utc": "2026-10-03T01:39:55Z",
+  "acquisition_started_utc": "2026-10-03T01:33:47Z",
+  "acquisition_finished_utc": "2026-10-03T01:33:48Z",
+  "acquisition_timestamps_note": "Taken from the acquisition script's own clock around the curl GET. Not estimated.",
+  "accession": "ENCFF356LFX",
+  "source_url": "https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz",
+  "resolved_object_url": "https://encode-public.s3.amazonaws.com/2020/05/05/bc5dcc02-eafb-4471-aba0-4ebc7ee8c3e6/ENCFF356LFX.bed.gz",
+  "portal_record_url": "https://www.encodeproject.org/files/ENCFF356LFX/",
+  "genome_build": "GRCh38",
+  "output_type": "exclusion list regions",
+  "annotation_dataset": {
+    "accession": "ENCSR636HFF",
+    "annotation_type": "exclusion list",
+    "assemblies": [
+      "mm10",
+      "hg19",
+      "GRCh38"
+    ],
+    "date_released": "2011-10-28",
+    "lab": "/labs/ewan-birney/",
+    "award": "/awards/U01HG004695/",
+    "description": "The DAC Exclusion List Regions (previously named \"DAC Blacklisted Regions\") aim to identify a comprehensive set of regions in the human genome that have anomalous, unstructured, high signal/read counts in next gen sequencing experiments independent of cell line and type of experiment. There were 80 open chromatin tracks (DNase and FAIRE datasets) and 20 ChIP-seq input/control tracks spanning ~60 human tissue types/cell lines in total used to identify these regions with signal artifacts. These regions tend to have a very high ratio of multi-mapping to unique mapping reads and high variance in mappability. Some of these regions overlap pathological repeat elements such as satellite, centromeric and telomeric repeats. However, simple mappability based filters do not account for most of these regions. Hence, it is recommended to use this exclusion list alongside mappability filters. The DAC Exclusion List Regions track was generated for the ENCODE project."
+  },
+  "file_lab": "/labs/anshul-kundaje/",
+  "file_award": "/awards/U24HG009446/",
+  "file_date_created": "2020-05-05T18:22:46.145886+00:00",
+  "remote_identity_declared_by_source": {
+    "encode_metadata_file_size": 8211,
+    "encode_metadata_md5sum": "393688b4f06c9ce26165d47433dd8c37",
+    "encode_metadata_content_md5sum": "e18ece427a686932268efbb4fc759d99",
+    "http_get_status_line": "HTTP/1.1 200 OK",
+    "http_get_content_length": "8211",
+    "http_get_etag": "\"393688b4f06c9ce26165d47433dd8c37\"",
+    "http_get_last_modified": "Thu, 07 May 2020 07:38:16 GMT",
+    "note": "A HEAD request against the portal URL returns 307 to a presigned S3 object that answers 403 to HEAD, so the authoritative length was taken from the GET response headers and cross-checked against the ENCODE metadata record. Both agree."
+  },
+  "local_identity_measured_on_disk": {
+    "gz_bytes": 8211,
+    "gz_sha256": "a9d086ce90ca67f933b29adfbff56ea768bbce2ec4b0d51e2d405e5a1d61bb56",
+    "gz_md5": "393688b4f06c9ce26165d47433dd8c37",
+    "bed_uncompressed_bytes": 21720,
+    "bed_uncompressed_sha256": "5d214c58c07f33a4fa1d6bcfe61ff00c666510e8fee5520fc1015c5d3ef16f3b",
+    "bed_uncompressed_md5": "e18ece427a686932268efbb4fc759d99"
+  },
+  "local_paths": {
+    "gz": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\ENCFF356LFX.bed.gz",
+    "bed_uncompressed": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\ENCFF356LFX.bed",
+    "file_metadata_json": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\ENCFF356LFX.metadata.json",
+    "annotation_metadata_json": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\ENCSR636HFF.metadata.json",
+    "get_response_headers": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\get_headers.txt",
+    "data_use_policy_capture": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\encode_citing.html"
+  },
+  "content_structure": {
+    "n_intervals": 910,
+    "genome_bp_covered_unmerged": 71570285,
+    "contigs": [
+      "chr1",
+      "chr10",
+      "chr11",
+      "chr12",
+      "chr13",
+      "chr14",
+      "chr15",
+      "chr16",
+      "chr17",
+      "chr18",
+      "chr19",
+      "chr2",
+      "chr20",
+      "chr21",
+      "chr22",
+      "chr3",
+      "chr4",
+      "chr5",
+      "chr6",
+      "chr7",
+      "chr8",
+      "chr9",
+      "chrX",
+      "chrY"
+    ],
+    "bed_flavour": "bed bed3"
+  },
+  "AUTHENTICATION_CHECKS": {
+    "server_declared_content_length_equals_bytes_on_disk": true,
+    "encode_metadata_file_size_equals_bytes_on_disk": true,
+    "s3_etag_equals_local_md5_of_the_gz": true,
+    "encode_published_md5sum_equals_local_md5_of_the_gz": true,
+    "encode_published_content_md5sum_equals_local_md5_of_the_UNCOMPRESSED_bed": true,
+    "assembly_is_GRCh38": true,
+    "output_type_is_an_exclusion_list": true,
+    "release_status_is_released": true
+  },
+  "why_three_independent_identities": "The acquisition tool's exit code proves nothing about completeness. Three identities published by the source and reproduced locally do: the declared byte length, the S3 ETag (which equals the object md5 for a single-part upload), and ENCODE's own content_md5sum of the UNCOMPRESSED payload. The last is the strongest, because it survives any re-compression.",
+  "licence_terms": {
+    "observed_utc": "2026-10-03T01:35Z",
+    "source": "https://www.encodeproject.org/help/citing-encode/",
+    "policy_quoted_verbatim": "Data Use Policy for External Users. External data users may freely download, analyze and publish results based on any ENCODE data without restrictions. This applies to all datasets, regardless of type or size, and includes no grace period for ENCODE data producers, either as individual members or as part of the Consortium.",
+    "citation_requested": "ENCODE requests citation of the Consortium's integrative analysis (PMID 22955616) and portal (PMID 31713622) publications, and of the dataset and file accessions used: ENCSR636HFF / ENCFF356LFX.",
+    "api_rate_limit_observed": "10 GET requests/sec per user, group, company or lab.",
+    "downloadable_is_not_licensed": "Recorded because the two are different questions. The terms above were read off the portal at acquisition time and are quoted, not summarised from memory. No registration, access control or data-use agreement was presented at any point in the acquisition.",
+    "underlying_method_citation": "Amemiya HM, Kundaje A, Boyle AP. The ENCODE Blacklist: Identification of Problematic Regions of the Genome. Sci Rep 2019;9:9354. PMID 31249361."
+  },
+  "recovery_locator": "https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz -- deterministically recoverable: verify sha256 a9d086ce90ca67f933b29adfbff56ea768bbce2ec4b0d51e2d405e5a1d61bb56"
+}

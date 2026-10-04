@@ -1,0 +1,72 @@
+{
+  "schema": "V74_LANEE_BLACKLIST_ATTRITION_V1",
+  "status": "PASS__ATTRITION_MEASURED",
+  "recorded_utc": "2026-10-03T01:37:07Z",
+  "route_id": "ROUTE_A_SUBMITTED_PEAKS",
+  "policy": {
+    "blacklist": "ON",
+    "rule": "ANY_OVERLAP_DROPS_THE_WHOLE_REGION",
+    "semantics": "EXCLUDED_BY_POLICY. These regions are NOT biological zeros, NOT absent signal and NOT unmeasured. They are regions the project decided in advance not to scan. Any downstream artifact carrying them must carry this label.",
+    "distinct_from": "The 53 STRUCTURALLY_UNSCOREABLE regions dropped at region-universe construction are a DIFFERENT class: those have no reference sequence under the source's contig spelling, so a scanner could never score them. Policy exclusion and structural unscoreability must not be merged into one count."
+  },
+  "inputs": {
+    "region_universe_bed": "D:\\jepa_v5_outputs_20260925\\v69_scenicplus\\routeA\\V69_ROUTE_A_SUBMITTED_PEAKS_REGION_UNIVERSE.bed",
+    "region_universe_bed_sha256": "dd0d2d00904345c1b6489de99f62d95581b82fed7946cefa3254ca815a73be32",
+    "exclusion_list_bed": "D:\\jepa_v5_outputs_20260925\\v74_laneE\\blacklist\\ENCFF356LFX.bed",
+    "exclusion_list_bed_sha256": "5d214c58c07f33a4fa1d6bcfe61ff00c666510e8fee5520fc1015c5d3ef16f3b",
+    "exclusion_list_accession": "ENCFF356LFX"
+  },
+  "exclusion_list_structure": {
+    "n_intervals_as_distributed": 910,
+    "n_intervals_after_merge": 910,
+    "n_contigs": 24,
+    "genome_bp_covered_after_merge": 71570285,
+    "why_merged": "Overlap arithmetic over an unmerged list would double-count a base covered by two exclusion intervals."
+  },
+  "region_universe_before": {
+    "n_regions": 150561,
+    "total_bp": 126142895
+  },
+  "ATTRITION": {
+    "n_regions_excluded": 263,
+    "fraction_of_regions_excluded": 0.0017468003002105458,
+    "bp_in_excluded_regions": 211953,
+    "fraction_of_bp_excluded": 0.0016802611038853991,
+    "bp_actually_intersecting_the_exclusion_list": 187762,
+    "bp_collaterally_removed": 24191,
+    "collateral_note": "Under the any-overlap rule a region is dropped whole, so more base pairs leave the universe than actually intersect the exclusion list. Both numbers are reported because only the first is a consequence of the rule and only the second is a consequence of the exclusion list."
+  },
+  "region_universe_after": {
+    "n_regions": 150298,
+    "total_bp": 125930942
+  },
+  "sensitivity_to_the_rule": {
+    "n_regions_excluded_at_min_overlap_bp": {
+      "1": 263,
+      "10": 263,
+      "50": 261,
+      "100": 257,
+      "250": 244,
+      "500": 222
+    },
+    "n_regions_excluded_at_min_overlap_fraction_of_region": {
+      "0.01": 263,
+      "0.10": 259,
+      "0.25": 247,
+      "0.50": 230,
+      "0.90": 215
+    },
+    "why_reported": "The any-overlap rule is a choice. Reporting how the count moves with the threshold prevents the chosen number from looking more inevitable than it is."
+  },
+  "outputs": {
+    "excluded_bed": "D:/jepa_v5_outputs_20260925/v74_laneE/blacklist/ROUTE_A_REGIONS_EXCLUDED_BY_POLICY.bed",
+    "retained_bed": "D:/jepa_v5_outputs_20260925/v74_laneE/blacklist/ROUTE_A_REGIONS_RETAINED_AFTER_BLACKLIST.bed",
+    "retained_ordered_region_digest": "387c24c4e1d6d22536a9ae45de329d6607b11c7dee49e0ce9c257e58c4175a77",
+    "excluded_ordered_region_digest": "b949f6dd498122cdb04f25f66c8758bb889d1372872228f3dbf1d42446fb2140"
+  },
+  "accounting_check": {
+    "retained_plus_excluded_equals_input_regions": true,
+    "retained_bp_plus_excluded_bp_equals_input_bp": true,
+    "intersected_bp_not_greater_than_excluded_bp": true
+  }
+}
