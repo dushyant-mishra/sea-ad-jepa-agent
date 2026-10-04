@@ -1,0 +1,157 @@
+name: V75 100K measurement architecture execution
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/v75-100k-measurement-architecture-execution.yml'
+  workflow_dispatch:
+
+jobs:
+  execute-100k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install
+        run: python -m pip install --upgrade pip numpy
+
+      - name: Record exact execution source
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v75_100k_receipts
+          git rev-parse HEAD | tee /tmp/v75_100k_receipts/exact_head_sha.txt
+
+      - name: Materialize three prospectively frozen 100K control worlds
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/v75_100k
+          /usr/bin/time -f '{"wall_seconds":%e,"max_rss_kb":%M}' \
+            -o /tmp/v75_100k_receipts/control_worlds_time.json \
+            python scripts/v75/build_v75_control_twins.py \
+              --root /tmp/v75_100k/controls \
+              --cells 100000 \
+              --shard-size 10000 \
+              --out /tmp/v75_100k_receipts/controls.json \
+              > /tmp/v75_100k_receipts/control_worlds_stdout.json
+
+      - name: Build fragments for reference measurement-null world
+        run: |
+          set -euo pipefail
+          A=/tmp/v75_100k/controls/measurement_null_a
+          /usr/bin/time -f '{"wall_seconds":%e,"max_rss_kb":%M}' \
+            -o /tmp/v75_100k_receipts/fragments_time.json \
+            python scripts/v64/build_v73_synthetic_fragments.py --root "$A" \
+              > /tmp/v75_100k_receipts/fragments_stdout.json
+
+      - name: Measure full 100K RNA QC realization
+        run: |
+          set -euo pipefail
+          A=/tmp/v75_100k/controls/measurement_null_a
+          /usr/bin/time -f '{"wall_seconds":%e,"max_rss_kb":%M}' \
+            -o /tmp/v75_100k_receipts/qc_summary_time.json \
+            python scripts/v75/summarize_v75_rna_qc_realization.py \
+              --root "$A" \
+              --out /tmp/v75_100k_receipts/qc.json \
+              > /tmp/v75_100k_receipts/qc_stdout.json
+
+      - name: Measure 100K serialized resource footprint
+        run: |
+          set -euo pipefail
+          A=/tmp/v75_100k/controls/measurement_null_a
+          python scripts/v64/estimate_v73_synthetic_stress_resources.py \
+            --cells 100000 \
+            --shard-size 10000 \
+            --measure-root "$A" \
+            --out /tmp/v75_100k_receipts/resource.json \
+            > /tmp/v75_100k_receipts/resource_stdout.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/v75_100k_receipts/resource.json'))
+          assert x['measured']['n_cells'] == 100000
+          assert x['calibrated_projection']['calibration_is_ci_scale_only'] is False
+          assert x['calibrated_projection']['hundred_k_measurement_completed'] is True
+          assert x['calibrated_projection']['calibration_scale'] == '100K_MEASURED'
+          assert x['calibrated_projection']['requires_100k_measurement_before_500k_promotion'] is True
+          PY
+
+      - name: Validate actual protected boundaries and manifest identities
+        run: |
+          set -euo pipefail
+          python scripts/v75/validate_v75_run_boundaries.py \
+            --receipt /tmp/v75_100k_receipts/controls.json \
+            --out /tmp/v75_100k_receipts/boundary.json \
+            > /tmp/v75_100k_receipts/boundary_stdout.json
+
+      - name: Bind deciding manifests into receipt bundle
+        run: |
+          set -euo pipefail
+          A=/tmp/v75_100k/controls/measurement_null_a
+          cp "$A/hidden_truth/TRUTH_MANIFEST.json" /tmp/v75_100k_receipts/truth.json
+          cp "$A/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json" /tmp/v75_100k_receipts/rna.json
+          cp "$A/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json" /tmp/v75_100k_receipts/multi.json
+          cp "$A/observable_raw/PAIRED_MULTIOME_fragments/SYNTHETIC_FRAGMENT_MANIFEST.json" /tmp/v75_100k_receipts/fragments.json
+          sha256sum \
+            /tmp/v75_100k_receipts/truth.json \
+            /tmp/v75_100k_receipts/rna.json \
+            /tmp/v75_100k_receipts/multi.json \
+            /tmp/v75_100k_receipts/fragments.json \
+            /tmp/v75_100k_receipts/resource.json \
+            /tmp/v75_100k_receipts/controls.json \
+            /tmp/v75_100k_receipts/boundary.json \
+            /tmp/v75_100k_receipts/qc.json \
+            > /tmp/v75_100k_receipts/receipt_sha256.txt
+
+      - name: Decide 100K measurement-architecture qualification
+        run: |
+          set -euo pipefail
+          python scripts/v75/validate_v75_100k_result.py \
+            --truth /tmp/v75_100k_receipts/truth.json \
+            --rna /tmp/v75_100k_receipts/rna.json \
+            --multi /tmp/v75_100k_receipts/multi.json \
+            --fragments /tmp/v75_100k_receipts/fragments.json \
+            --resource /tmp/v75_100k_receipts/resource.json \
+            --controls /tmp/v75_100k_receipts/controls.json \
+            --boundary /tmp/v75_100k_receipts/boundary.json \
+            --qc /tmp/v75_100k_receipts/qc.json \
+            --out /tmp/v75_100k_receipts/result.json \
+            | tee /tmp/v75_100k_receipts/result_stdout.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/v75_100k_receipts/result.json'))
+          assert x['status'] == 'PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED'
+          assert x['promotion_recommendation'] == 'PASS_TO_500K_MEASUREMENT_STRESS'
+          assert x['learned_160d_jepa_state_qualified'] is False
+          assert not x['blockers']
+          PY
+
+      - name: Aggregate execution metrics
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib, subprocess
+          root=pathlib.Path('/tmp/v75_100k_receipts')
+          def read(name):
+              p=root/name
+              return json.loads(p.read_text()) if p.exists() else None
+          out={
+            'schema':'V75_100K_EXECUTION_METRICS_V1',
+            'exact_head_sha': subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
+            'control_worlds': read('control_worlds_time.json'),
+            'fragments': read('fragments_time.json'),
+            'qc_summary': read('qc_summary_time.json'),
+            'runner':'ubuntu-latest',
+            'bulk_outputs_uploaded': False,
+            'receipt_bundle_only': True,
+          }
+          (root/'execution_metrics.json').write_text(json.dumps(out,indent=2)+'\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v75-100k-measurement-architecture-receipts
+          path: /tmp/v75_100k_receipts/
+          retention-days: 30
