@@ -7,6 +7,9 @@ on:
       - 'scripts/v64/build_v73_sharded_master_truth.py'
       - 'scripts/v64/build_v73_full104_sharded_observer.py'
       - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
+      - 'scripts/v64/build_v73_synthetic_fragments.py'
+      - 'scripts/v64/estimate_v73_synthetic_stress_resources.py'
+      - 'scripts/v64/validate_v73_stress_promotion_readiness.py'
       - 'scripts/v64/v73_full104_population_geometry.py'
       - 'scripts/v64/v73_full104_qc_calibration.py'
       - 'scripts/v75/**'
@@ -31,10 +34,61 @@ jobs:
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
-          if [ -f scripts/v75/build_v75_control_twins.py ]; then python -m py_compile scripts/v75/build_v75_control_twins.py; fi
+          python -m py_compile scripts/v64/build_v73_synthetic_fragments.py
+          python -m py_compile scripts/v64/estimate_v73_synthetic_stress_resources.py
+          python -m py_compile scripts/v64/validate_v73_stress_promotion_readiness.py
+          python -m py_compile scripts/v75/build_v75_control_twins.py
+          python -m py_compile scripts/v75/validate_v75_run_boundaries.py
+          python -m py_compile scripts/v75/validate_v75_100k_readiness.py
       - name: V75 qualification tests
         run: pytest -q tests/test_v75_*.py
       - name: V74 regression subset
         run: |
           pytest -q tests/test_v73_synthetic_stress_twin.py
           pytest -q tests/test_v74_rna_qc_consumption.py
+      - name: Exact 2K V75 promotion smoke
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/v75_legacy /tmp/v75_controls /tmp/v75_receipts
+          mkdir -p /tmp/v75_receipts
+
+          python scripts/v64/build_v73_sharded_master_truth.py --root /tmp/v75_legacy --cells 2000 --shard-size 333 --seed 7302
+          python scripts/v64/build_v73_full104_sharded_observer.py --root /tmp/v75_legacy --seed 7302
+          python scripts/v64/build_v73_paired_multiome_sharded_observer.py --root /tmp/v75_legacy --seed 7302
+          python scripts/v64/build_v73_synthetic_fragments.py --root /tmp/v75_legacy
+          python scripts/v64/estimate_v73_synthetic_stress_resources.py \
+            --cells 100000 --shard-size 10000 --measure-root /tmp/v75_legacy \
+            --out /tmp/v75_receipts/resource.json
+          python scripts/v64/validate_v73_stress_promotion_readiness.py \
+            --root /tmp/v75_legacy --resource-receipt /tmp/v75_receipts/resource.json \
+            --out /tmp/v75_receipts/legacy_readiness.json
+
+          python scripts/v75/build_v75_control_twins.py \
+            --root /tmp/v75_controls --cells 2000 --shard-size 333 \
+            --out /tmp/v75_receipts/controls.json
+          python scripts/v75/validate_v75_run_boundaries.py \
+            --receipt /tmp/v75_receipts/controls.json \
+            --out /tmp/v75_receipts/boundary.json
+          python scripts/v75/validate_v75_100k_readiness.py \
+            --legacy-readiness /tmp/v75_receipts/legacy_readiness.json \
+            --controls /tmp/v75_receipts/controls.json \
+            --boundary /tmp/v75_receipts/boundary.json \
+            --resource /tmp/v75_receipts/resource.json \
+            --out /tmp/v75_receipts/readiness.json
+
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/v75_receipts/readiness.json'))
+          assert x['status']=='READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY'
+          assert x['authorized_scale']=='100K_STRESS_ONLY'
+          assert x['learned_160d_jepa_state_qualified'] is False
+          assert not x['blockers']
+          assert '500K_STRESS' in x['explicitly_not_authorized']
+          assert 'REAL_JEPA_TRAINING' in x['explicitly_not_authorized']
+          print(json.dumps(x, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v75-2k-promotion-smoke-receipts
+          path: /tmp/v75_receipts/*.json
