@@ -9,6 +9,7 @@ on:
       - 'scripts/v64/build_v73_paired_multiome_sharded_observer.py'
       - 'scripts/v64/v73_full104_population_geometry.py'
       - 'scripts/v64/v73_full104_qc_calibration.py'
+      - 'scripts/v75/**'
       - 'tests/test_v75_*.py'
       - '.github/workflows/v75-100k-architecture-qualification.yml'
   workflow_dispatch:
@@ -30,10 +31,9 @@ jobs:
           python -m py_compile scripts/v64/build_v73_sharded_master_truth.py
           python -m py_compile scripts/v64/build_v73_full104_sharded_observer.py
           python -m py_compile scripts/v64/build_v73_paired_multiome_sharded_observer.py
+          if [ -f scripts/v75/build_v75_control_twins.py ]; then python -m py_compile scripts/v75/build_v75_control_twins.py; fi
       - name: V75 qualification tests
-        run: |
-          pytest -q tests/test_v75_measurement_realization_seed.py
-          pytest -q tests/test_v75_qc_authority_causal_consumption.py
+        run: pytest -q tests/test_v75_*.py
       - name: V74 regression subset
         run: |
           pytest -q tests/test_v73_synthetic_stress_twin.py
