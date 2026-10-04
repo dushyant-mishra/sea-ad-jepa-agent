@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - name: Install
-        run: python -m pip install -q pytest numpy pandas
+        run: python -m pip install -q pytest numpy pandas scipy
 
       - name: Record exact head
         run: |
@@ -51,12 +51,13 @@ jobs:
           PY
 
       - name: Deciding suite
+        # Collected BY PATH, not by -k. The first hosted run (37224450995) failed
+        # because -k only DESELECTS: pytest still imports every module under tests/
+        # during collection, so 57 modules needing scipy or torch errored before the
+        # filter applied. Naming the files makes collection deterministic and keeps
+        # the unexpected-skip check meaningful.
         run: |
-          python -m pytest tests/ -rs --tb=short \
-            -k "v69 or v73 or v74 or stage4 or routea or routeb or custody or blacklist or g2 or barcode" \
-            --ignore=tests/v4 \
-            --ignore=tests/test_contextual_target_f1_preflight_core_v1.py \
-            --junitxml=deciding.xml
+          python -m pytest -rs --tb=short --junitxml=deciding.xml \n            tests/test_v69_acquisition_fail_closed_v1.py \n            tests/test_v69_barcode_identity_guard_v1.py \n            tests/test_v69_cohort_freeze_fail_closed_v1.py \n            tests/test_v69_multisource_regulatory_evidence_stack.py \n            tests/test_v69_routea_substrate_fail_closed_v1.py \n            tests/test_v69_shard_merge_validation_v1.py \n            tests/test_v69_structural_crosswalk_fail_closed_v1.py \n            tests/test_v69_tf_annotation_supply_fail_closed_v1.py \n            tests/test_v73_stage4_kcurve_runner_successor.py \n            tests/test_v73_stage4_preexecution_gates.py \n            tests/test_v74_g2_continuous_candidates_v1.py \n            tests/test_v74_routea_authority_ordering_v1.py \n            tests/test_v74_routeb_custody_v1.py \n            tests/v64/test_stage4_execution_authority_validator_v1.py
 
       - name: Fail on unexpected skips
         if: always()

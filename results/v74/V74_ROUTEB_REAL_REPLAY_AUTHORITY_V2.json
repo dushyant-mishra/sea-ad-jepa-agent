@@ -1,0 +1,104 @@
+{
+  "schema": "V74_ROUTEB_REAL_REPLAY_AUTHORITY_V2",
+  "recorded_utc": "2026-10-04T20:58:19Z",
+  "supersedes": {
+    "path": "results/v74/V74_ROUTEB_REAL_REPLAY_AUTHORITY_V1.json",
+    "sha256": "4c798cdeef0e2f9a5186fd8f2b64d4e0e8b39c99f6bd134d2b44ef84546faaa4",
+    "why": "V1 was written before the exact-head replay existed and was then upgraded in place, so it carries its own superseded reasoning beside the later result and requires precedence rules to read. V1 is preserved unchanged as chronology; this V2 states only the final current state.",
+    "v1_is_not_modified_by_this_artifact": true
+  },
+  "STATUS": "PASS__REAL_ROUTEB_REPLAY_BYTE_BOUND_AND_QC_RECONCILED",
+  "CLASSIFICATION": "REPRODUCED_ON_RECONCILED_SOURCE",
+  "SHA_SEMANTICS": {
+    "why_separate_fields": "a commit cannot contain the hash of itself, so an artifact must not call its parent the SHA of the commit that carries it. These are four distinct facts and are named separately.",
+    "routeb_execution_snapshot_sha": "c4fa0f4beee06a22283a9765e19ebe1b77b04146",
+    "local_qualification_source_sha": "374165b6ba9e49b7165e440a009a004349a14223",
+    "authority_parent_sha": "733829c69e14b094537481fbfaceafe08bf179d1",
+    "authority_successor_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT_CREATION",
+    "source_equivalent_through_sha": "733829c69e14b094537481fbfaceafe08bf179d1",
+    "source_equivalence_proof": {
+      "method": "git rev-parse <sha>:<path> compared blob-for-blob",
+      "files": {
+        "scripts/v69/routeb_extract_pseudobulk_fragments_v1.py": {
+          "blob_at_execution_snapshot": "f89513926f3743990f32c1f1eebe883a115182c0",
+          "blob_at_authority_parent": "f89513926f3743990f32c1f1eebe883a115182c0",
+          "byte_identical": true
+        },
+        "scripts/v69/v69_custody.py": {
+          "blob_at_execution_snapshot": "90f2541aff3133578f5d586f81c262fbdef0e176",
+          "blob_at_authority_parent": "90f2541aff3133578f5d586f81c262fbdef0e176",
+          "byte_identical": true
+        },
+        "scripts/v69/v69_barcode_identity.py": {
+          "blob_at_execution_snapshot": "270695c63647190c104c66c86d8a876190328341",
+          "blob_at_authority_parent": "270695c63647190c104c66c86d8a876190328341",
+          "byte_identical": true
+        }
+      },
+      "all_routeb_executable_sources_byte_identical": true,
+      "between": "c4fa0f4beee06a22283a9765e19ebe1b77b04146 .. 733829c69e14b094537481fbfaceafe08bf179d1"
+    },
+    "qualification_source_equivalence": {
+      "method": "git diff --name-only limited to *.py",
+      "between": "374165b6ba9e49b7165e440a009a004349a14223 .. 733829c69e14b094537481fbfaceafe08bf179d1",
+      "python_files_changed": 0,
+      "non_python_changed": [
+        ".github/workflows/v74-macha-reconciliation-exact-head.yml",
+        "results/v74/V74_MACHA_RECONCILIATION_AUTHORITY_V1.json",
+        "results/v74/V74_ROUTEB_REAL_REPLAY_AUTHORITY_V1.json"
+      ],
+      "meaning": "the deciding suite ran on source byte-identical to the authority parent; only a workflow file and two receipts differ"
+    }
+  },
+  "EXECUTION": {
+    "executed_from": "an immutable snapshot taken outside the worktree",
+    "snapshot_dir": "D:\\jepa_v5_outputs_20260925\\v74_recon\\snapshot_c4fa0f4b",
+    "executing_source_immutable_during_run": true,
+    "receipt": "D:\\jepa_v5_outputs_20260925\\v74_recon\\routeB_exacthead\\V74_ROUTEB_PSEUDOBULK_EXACTHEAD_V1.json",
+    "receipt_sha256": "5c032f72b2ff2035eb51fff90e4702eccf0ef33a0790091f1b934aa404ca6723",
+    "producer_status": "PASS__PSEUDOBULK_FRAGMENTS_EXTRACTED",
+    "wall_clock": "about 2 h 37 m"
+  },
+  "FRAGMENT_IDENTITY": {
+    "expected_authenticated_sha256": "b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f",
+    "observed_sha256": "b7c5aa2d39fb1a3c6e5c9cf06dc83cdcf2c5bb3239151c4276a73f675cb71e8f",
+    "bytes": 63641120882,
+    "digest_source": "COMPUTED_FROM_THE_COMPRESSED_BYTES_READ_BY_THIS_RUN",
+    "independently_rehashed_by_the_coordinator": true
+  },
+  "RECONCILIATION": {
+    "n_cohort_barcodes": 2534,
+    "total_fragment_records_read": 5831261753,
+    "cohort_fragments": 23522438,
+    "out_of_cohort": 5807739315,
+    "qc_rows_compared": 2534,
+    "per_cell_recount_disagreements": 0,
+    "cells_used": 2342,
+    "cells_excluded_by_qc": 192,
+    "cells_with_no_qc_verdict": 0,
+    "PARTIAL_SCAN": false,
+    "identity_1": "5,807,739,315 out-of-cohort + 23,522,438 cohort = 5,831,261,753 read",
+    "identity_2": "23,422,497 written + 99,941 from QC-excluded cells = 23,522,438 cohort",
+    "both_identities_reconcile_exactly": true,
+    "targets_were_comparison_targets_not_constants": "the replay was not constrained to match the earlier local run; agreement is a result, and a disagreement would have been investigated rather than explained away"
+  },
+  "OUTPUT_BINDING": {
+    "manifest": "results/v74/V74_ROUTEB_EXACTHEAD_OUTPUT_MANIFEST_V1.json",
+    "manifest_sha256": "af79322cbd47536339258dd5547f7d49a0317f7497d6cbca691874986946585d",
+    "n_files": 60,
+    "aggregate_bytes": 559110571,
+    "aggregate_lines": 23422497,
+    "all_outputs_bound": true,
+    "supersedes_partial_binding": "the V1 receipt bound only 4 of 60 outputs; all 60 are now hashed with byte and line counts, deterministically sorted",
+    "third_independent_confirmation": "the manifest's aggregate line count of 23,422,497 equals the written-fragment figure derived from the accounting identity and the count the producer reported"
+  },
+  "GOVERNANCE": {
+    "stage_4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "S102": "OPEN"
+  },
+  "scope": "an execution and custody verdict. It qualifies no biological claim and no regulatory network."
+}
