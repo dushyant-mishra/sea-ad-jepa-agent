@@ -67,6 +67,29 @@ def estimate(n_cells: int, shard_size: int, metadata_bytes_per_cell: int = DEFAU
     )
 
 
+def calibration_scope(measured_cells: int) -> dict:
+    """Describe what scale actually supplied the empirical resource calibration.
+
+    The policy remains prospective: 100K must be measured before any 500K promotion.
+    This function distinguishes that policy from whether the requirement has already
+    been satisfied by the current measurement.
+    """
+    n = int(measured_cells)
+    if n < 100000:
+        scale = "CI_SCALE"
+    elif n == 100000:
+        scale = "100K_MEASURED"
+    else:
+        scale = "AT_LEAST_100K_MEASURED"
+    return dict(
+        calibration_cells=n,
+        calibration_scale=scale,
+        calibration_is_ci_scale_only=n < 100000,
+        hundred_k_measurement_completed=n >= 100000,
+        requires_100k_measurement_before_500k_promotion=True,
+    )
+
+
 def measured_bytes(root: Path):
     truth = root / "hidden_truth"
     full = root / "observable_raw" / "FULL104_like_sharded"
@@ -119,7 +142,7 @@ def main():
     a = ap.parse_args()
     est = estimate(a.cells, a.shard_size)
     out = dict(
-        schema="V73_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V3_COUPLED_FRAGMENTS",
+        schema="V75_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V4_SCALE_AWARE_CALIBRATION",
         estimate=est,
     )
     if a.measure_root:
@@ -131,9 +154,7 @@ def main():
             known_matrices_plus_fragments_bytes=(
                 est["known_combined_payload_bytes"] + projected_frag
             ),
-            calibration_cells=measured["n_cells"],
-            calibration_is_ci_scale_only=True,
-            requires_100k_measurement_before_500k_promotion=True,
+            **calibration_scope(measured["n_cells"]),
         )
         out["measurement_scope"] = (
             "actual serialized master truth + FULL104-like RNA + paired multiome + "
