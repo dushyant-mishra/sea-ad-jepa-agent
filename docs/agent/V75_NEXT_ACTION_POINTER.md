@@ -1,25 +1,61 @@
 # V75 next action pointer
 
-Current phase: **100K measurement architecture QUALIFIED. 500K promotion INDETERMINATE.**
+Current phase: **STOP. The synthetic state-qualification ladder has no defined objective.**
 
-Do not run 500K.
+Do not run 500K. Do not run 4.553M. Do not build a further synthetic substrate for state
+qualification.
 
-The repaired 100K qualification has executed and passed on the provider. Run 37252622570
-on the V75 workflow succeeded in both jobs at execution head
-`f863215358772d55fb1b1c9f285e33d2c33e7083`: the 2K promotion smoke physically ran, and the
-dependent 100K job then executed the three frozen control worlds, fragment generation and
-independent byte-linkage validation, the full 100K RNA-QC realization, serialized resource
-measurement, protected-boundary validation and deciding-manifest binding.
+## Why this pointer changed
 
-Current authority:
-`results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V3_REPAIRED_AUTHORITY.json`
+A previous version of this file named "the learned 160-D state" as the next action. That
+was wrong and it was written by transcribing a forward plan without auditing whether its
+prerequisites existed. Five independent blockers were all true at once:
+
+1. **No defined target.** `AGENTS.md:61` and `ACTIVE_STATE.md:134` both say so. This is a
+   closed negative result, not an open choice: three candidate families (T0 block mean, T1
+   full gene H_g, TCTX query-self-masked H_g) were causally tested and all three were
+   rejected, with complete-H mean R2 deltas of -0.0766 / -0.0939 / -0.0943. The real
+   production forward gate found the target ~99% predictable from gene identity alone
+   (T1 0.9114 conditional versus 0.9105 identity-only). Three critics: STOP/STOP/STOP.
+2. **No trained model.** The only canonical-vocabulary IPB checkpoint,
+   `exports/prod41k_teacher_t1_20260823/phase_e_restart_checkpoint.pt`, has
+   `global_update_step = 10` and is an engineering smoke.
+3. **Wrong vocabulary.** The V75 observer uses 96 `ENSG_SYN_*` placeholders; the encoder
+   carries 41,238 canonical addresses.
+4. **No dimensional claim to qualify.** 160 is token width. The authority index denies
+   5/96/160/224/320/512 as production D authority.
+5. **Circularity.** A synthetic-trained model judged against its own generator.
+
+Any one of these blocks the plan.
+
+## What still stands
+
+The V75 100K measurement-architecture qualification is **valid for its own narrow claim** —
+that the synthetic generator preserves empirical donor/source/operator/QC geometry at scale.
+That claim never depended on a target and is not retracted. Authority remains
+`results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V3_REPAIRED_AUTHORITY.json`,
 status `PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE`.
 
-Next action is NOT 500K. It is the learned 160-D state:
-audit the canonical `IPBEncoder(width=160)` in `src/sea_ad_jepa/v4/ipb_jepa.py` and the
-production configuration in `src/sea_ad_jepa/v4/teacher_student_runtime.py`, then freeze a
-prospective measurement-null versus biology-positive state-qualification contract. Do not
-build a second arbitrary 160-D architecture before that audit accepts or rejects this one.
+## The actual next action
+
+The **real TRAIN-only forward target/evidence gate** already specified in
+`docs/agent/ACTIVE_STATE.md` under "Next authorized experiment". It is inside
+`TRAINING = OFF`:
+
+- zero encoder optimizer updates, zero EMA updates
+- TRAIN only, no pathology, no DEV/SEALED
+- production-first (~41K addresses), not 4K-first
+- distinguish representation loss from identifiability loss
+- stratify by N_eff, physical support and retained evidence
+- named prerequisite: strict donor-cross-fitted per-address centering of H
+- **predeclared promotion criterion: incremental evidence OVER identity**
+
+It produces a target winner, or another qualified STOP. Everything downstream — training,
+the representation-role identifiability experiments, the choice among z_cell / {h_g} /
+a program subspace, and any dimensional claim — is blocked on its outcome.
+
+Full reasoning and the corrected dependency order:
+`results/v76/V76_PLAN_PREMISE_STOP_V3.json`.
 
 TRAINING = OFF. Stage 4 = NOT AUTHORIZED. Real correspondence = UNOPENED.
 Morabito = PROTECTED. Recoverability TEST = SEALED.
@@ -28,18 +64,17 @@ Morabito = PROTECTED. Recoverability TEST = SEALED.
 
 ## Superseded text, retained
 
-The following was true before provider run 37252622570 and is kept so the transition is
-auditable rather than silently overwritten:
+Kept so the transition is auditable rather than silently overwritten.
 
-> Current phase: intentional RED pre-repair gate.
->
-> Do not run 100K yet.
->
-> Next action: open/execute hosted CI on
-> `chatgpt/v75-100k-architecture-qualification-20261004`, confirm the two expected RED
-> failures (2K operator occupancy and missing fragment byte-linkage validator), then
-> restore the audited V73 protections without altering the V74 empirical-QC consumption
-> semantics.
+> Next action is NOT 500K. It is the learned 160-D state: audit the canonical
+> `IPBEncoder(width=160)` in `src/sea_ad_jepa/v4/ipb_jepa.py` and the production
+> configuration in `src/sea_ad_jepa/v4/teacher_student_runtime.py`, then freeze a
+> prospective measurement-null versus biology-positive state-qualification contract. Do not
+> build a second arbitrary 160-D architecture before that audit accepts or rejects this one.
 
-Both expected RED failures were subsequently repaired and the gate is green at the
-execution head above.
+The audit was performed (`results/v76/V76_STATE_PREMISE_REDTEAM_AUDIT_V1.json` and
+`_V2_AMENDED.json`) and rejected the premise. The contract must not be frozen.
+
+An earlier version of this file, before provider run 37252622570, described an intentional
+RED pre-repair gate and said not to run 100K yet. Both expected RED failures were repaired
+and that gate went green at execution head `f863215358772d55fb1b1c9f285e33d2c33e7083`.
