@@ -1,0 +1,120 @@
+{
+  "schema": "JEPA_PREMISE_QUALIFICATION_STATE_V2_AUDITED",
+  "date": "2026-10-05",
+  "role": "PROSPECTIVE_SCIENTIFIC_GOVERNANCE__PREFREEZE_ONLY",
+  "status": "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS__TRAINING_OFF",
+  "premise_gates": {
+    "P1": "TARGET_MEANING",
+    "P2": "RECOVERABILITY_SEMANTICS",
+    "P3": "STRUCTURED_STATE_TEST",
+    "P4": "TECHNICAL_IDENTIFIABILITY",
+    "P5": "TRANSPORT_AND_FOUNDATION_ESTIMAND",
+    "P6": "CLAIM_BOUNDARY"
+  },
+  "training_authorized": false,
+  "stage_a_execution_authorized": false,
+  "test_open": false,
+  "morabito_open": false,
+  "promotion_500k_authorized": false,
+  "stage4_authorized": false,
+  "selected_target": "UNSET_REQUIRES_APPROVAL",
+  "selected_representation": "UNSET_REQUIRES_APPROVAL",
+  "selected_estimand": "UNSET_REQUIRES_APPROVAL",
+  "numeric_deciding_margins": "UNSET_REQUIRES_APPROVAL",
+  "stage_a": {
+    "status": "PREFREEZE_EXECUTION_CONTRACT__NOT_EXECUTION_AUTHORITY",
+    "encoder_optimizer_updates": 0,
+    "ema_updates": 0,
+    "maximum_claim": "RNA_REPRESENTATION",
+    "allowed_verdicts": [
+      "QUALIFIED_FOR_RNA_REPRESENTATION",
+      "INFORMATIVE_BUT_NOT_QUALIFIED",
+      "FAIL_LEAKAGE",
+      "FAIL_SHORTCUT",
+      "FAIL_TRANSPORT",
+      "NONRECOVERABLE_FROM_VIEW",
+      "INDETERMINATE"
+    ],
+    "external_assets_may_select_target": false
+  },
+  "recoverability": {
+    "real_rna_quantity": "TARGET_OBJECT_RECOVERABILITY",
+    "biological_truth_quantity": "BIOLOGICAL_TRUTH_RECOVERABILITY",
+    "real_rna_target_object_is_not_biological_truth": true,
+    "nonrecoverable_biology_is_model_failure": false
+  },
+  "representations": {
+    "required_families": [
+      "GLOBAL_CELL_STATE",
+      "QUERY_LOCAL_STATE",
+      "PROGRAM_STATE",
+      "STRUCTURED_COMBINED_STATE"
+    ],
+    "default_family": "NONE",
+    "cell_state_qualified_by_implementation": false,
+    "dimensionality": "UNSET_EVIDENCE_DERIVED"
+  },
+  "transport": {
+    "axes": [
+      "DONOR_TRANSFER",
+      "OPERATOR_TRANSFER",
+      "STUDY_TRANSFER",
+      "TECHNOLOGY_TRANSFER"
+    ],
+    "nested_ladder": false,
+    "not_tested_counts_as_pass": false,
+    "not_identifiable_counts_as_pass": false
+  },
+  "diagnostic_readout": {
+    "fit_partition": "INNER_TRAIN_ONLY",
+    "freeze_before": "HELD_DONOR_EVALUATION",
+    "may_change_target_definition_from_deciding_outcomes": false,
+    "fit_on_deciding_units": false,
+    "is_encoder_training_authority": false
+  },
+  "rare_novelty": {
+    "rna_structure_is_automatically_biological_novelty": false,
+    "required_language_before_independent_support": "RARE_OR_NOVEL_RNA_STRUCTURE"
+  },
+  "synthetic_scale_authority": {
+    "world_a_class": "REDUCED_MEASUREMENT_AND_METRIC_CONTROL_WORLD",
+    "world_a_feature_count": 96,
+    "canonical_address_count": 41238,
+    "world_a_can_qualify_production_pipeline": false,
+    "reduced_bcd_can_qualify_production_pipeline": false,
+    "production_pipeline_required_universe": "CANONICAL_41238_ADDRESS_SYNTHETIC_UNIVERSE",
+    "prospectively_justified_equivalent_allowed": true,
+    "equivalent_requires_lawful_identity_mapping": true,
+    "arbitrary_96_to_41238_mapping_allowed": false,
+    "independent_noise_padding_satisfies_scale": false,
+    "minimum_structural_opportunities": [
+      "HETEROGENEOUS_ABUNDANCE",
+      "LONG_TAIL_SUPPORT",
+      "GENE_SPECIFIC_DETECTABILITY",
+      "OPERATOR_SPECIFIC_SUPPORT",
+      "DENSE_AND_SPARSE_PROGRAMS",
+      "PARTIALLY_OVERLAPPING_REDUNDANT_MODULES",
+      "RARE_AND_LOCAL_PROGRAMS",
+      "DISTRIBUTED_COVARIANCE",
+      "NONLINEAR_INTERACTIONS_WHERE_RELEVANT",
+      "GENE_IDENTITY_SHORTCUT_OPPORTUNITY"
+    ]
+  },
+  "claim_ladder": [
+    "RNA_REPRESENTATION",
+    "TRANSFERABLE_BIOLOGICAL_STATE",
+    "REGULATORY_SUPPORT",
+    "CAUSAL_PERTURBATIONAL_PREDICTION"
+  ],
+  "automatic_claim_promotion": false,
+  "authority_freshness_rule": "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES",
+  "hard_boundaries": {
+    "TRAINING": "OFF",
+    "MULTIMODAL_TRAINING": "OFF",
+    "STAGE_A_EXECUTION": "NOT_AUTHORIZED__PREFREEZE_ONLY",
+    "TEST": "SEALED",
+    "MORABITO": "PROTECTED",
+    "PROMOTION_500K": "NOT_AUTHORIZED",
+    "STAGE4": "NOT_AUTHORIZED"
+  }
+}
