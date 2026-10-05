@@ -1,16 +1,15 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-10-05
-Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_AUTHORITY_UNRESOLVED__TRAINING_OFF`
+Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
 
 ## Read first
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md`
-3. `docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json`
-4. `docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md`
-5. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-6. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+2. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
+3. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+4. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md` for preserved Oct-5 custody/reset context
 
 Always re-fetch the live branch/head before acting.
 
@@ -19,6 +18,7 @@ Always re-fetch the live branch/head before acting.
 - V75 100K measurement architecture: `PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE`.
 - 500K promotion: **NOT AUTHORIZED**.
 - Production target winner: **NONE QUALIFIED**.
+- Target lineage reconstruction is complete and merged; do **not** reopen it as the current task.
 - Synthetic learned-state scaling ladder: **STOPPED**.
 - `width=160`: network/token capacity, **not** biological dimensionality authority.
 - `cell_state`: implemented, but **not qualified as the designated global biological state**.
@@ -29,18 +29,22 @@ Always re-fetch the live branch/head before acting.
 - Recoverability TEST: **SEALED**.
 - Morabito: **PROTECTED**.
 
-## Current scientific task
+## Current task
 
-Finish the target-authority lineage reconstruction from V6R5B through later Contextual/F1 and target-architecture work.
+Premise qualification prefreeze: publish and audit the P1-P6 premise contract, representation-family comparison, claim ladder, Stage-A real-RNA **prefreeze** contract, external-validation asset classification, and foundation-population estimand choices before any deciding TRAIN-only result is opened.
 
-Do **not** rerun the August donor-cross-fitted residual-target experiment: it was later executed and adjudicated as `RESIDUAL_TARGET_DOES_NOT_RESCUE`.
+Stage A is **not execution authority yet**. Real-RNA recoverability of an observation-defined target must remain distinct from biological-truth recoverability; donor/operator/study/technology transfer are separate evidence axes; fitted readouts require prospective inner-TRAIN fitting and held-donor evaluation; rare/novel RNA structure is not automatically biological novelty.
 
-The terminal unresolved target question must be identified before designing another target experiment, training a model, or qualifying a learned state.
+## Authority freshness
+
+`UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES`
+
+When a controlling task closes, is blocked, or is superseded, the same change set—or an immediate successor governance PR—must update the canonical startup surface (`START_HERE`, latest pointer, current authority index, supersession map, active state, and generic next-action router). A completed task must never remain advertised as current.
 
 ## Main-branch role
 
-`main` is the canonical landing/navigation surface. The current scientific/custody evidence remains on its exact audited branches and PRs; this file mirrors the governing October-5 state so new agents do not start from stale V25-era instructions.
+`main` is the canonical landing/navigation surface. Exact scientific/custody evidence may remain on audited branches/PRs, but current routing must stay synchronized with the actual work frontier.
 
 ## Historical evidence
 
-Older V5/V20/V21/V25/V66/V67 files remain valuable provenance but are **not current startup authority**. Use them only where the October 5 authority chain explicitly preserves their scientific result or contract.
+Older V5/V20/V21/V25/V66/V67 files remain provenance, not current startup authority. Historical results retain their recorded scope; local old “next action” text does not override the current surface.

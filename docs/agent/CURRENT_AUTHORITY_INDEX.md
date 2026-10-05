@@ -1,45 +1,30 @@
 # CURRENT AUTHORITY INDEX — JEPA PROJECT
 
 Date: 2026-10-05
-Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_AUTHORITY_RECONCILIATION_REQUIRED__TRAINING_OFF`
+Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
 
 ## Canonical startup precedence
 
 Read in this order:
 
-1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md`
-3. `docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json`
-4. `docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md`
-5. current lane-specific machine-readable authorities, including V75/V76 results
-6. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-7. older historical authority/index documents where not explicitly superseded
+1. `START_HERE.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+3. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
+4. this file
+5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+6. lane-specific machine-readable authorities and older historical evidence where explicitly preserved
 
-Branch names, dates, passing CI, smoke results, decreasing loss, or filenames containing `CURRENT` do not independently confer scientific authority.
+Branch names, dates, green CI, smoke results, decreasing loss, or filenames containing `CURRENT` do not independently confer scientific authority.
 
 ## Controlling current authority
 
 ### Measurement architecture
 
-V75 controls:
+V75 controls within its declared scope:
 
 `PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE`
 
-Established within scope:
-- all 104 donors and all 42 operators represented at 100K;
-- empirical RNA QC realization reconciled;
-- deciding fragment-byte linkage reconciled;
-- same-operator stochastic remeasurement null and planted synthetic-positive controls constructed;
-- protected-boundary checks passed;
-- measured 100K resource footprint recorded.
-
-Not established by V75:
-- 500K compatibility;
-- a production teacher target;
-- a learned biological state;
-- biological dimension 160;
-- general technology invariance;
-- Stage 4 correspondence or multimodal training.
+It does not establish 500K compatibility, a production target, learned biological state, biological dimension 160, general technology invariance, Stage 4 correspondence, or multimodal training.
 
 ### Target authority
 
@@ -47,34 +32,34 @@ Current status:
 
 `NO_QUALIFIED_PRODUCTION_TARGET_WINNER`
 
-Important closed historical findings:
-- T0/T1/TCTX did not qualify as production targets;
-- identity explained essentially all impressive T1/TCTX row predictability in the real forward gate;
-- donor-cross-fitted residual targeting was later executed and returned `RESIDUAL_TARGET_DOES_NOT_RESCUE`;
-- historical PROD41K/T1 checkpoints are forensic/historical evidence, not production biological-model authority;
-- PR #163 prospectively defined competing value-blind target constructions but selected none;
-- PR #178's corrected synthetic T_A/T_B comparison was `NOT_INFORMATIVE` and explicitly required real RNA to discriminate the constructions.
+**Target lineage reconstruction is complete.** The controlling audit is `JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`. Do not advertise lineage reconstruction as the current task and do not rerun donor-cross-fitted residualization as an untried rescue.
 
-Therefore the next scientific task is **target-lineage reconciliation**, not model training and not another synthetic scale rung.
+### Current task — premise qualification prefreeze
+
+Freeze and audit, before any deciding TRAIN-only result is opened:
+
+- P1 target meaning;
+- P2 recoverability semantics, separating real-RNA target-object recoverability from biological-truth recoverability;
+- P3 representation comparison across global, query-local, program and structured-combined state;
+- P4 technical identifiability and biology × operator effects where supported;
+- P5 transport as separate donor/operator/study/technology evidence axes plus an explicit foundation-population estimand;
+- P6 claim boundary: RNA representation -> transferable biological state -> regulatory support -> causal/perturbational prediction.
+
+The Stage-A real-RNA artifact is currently a **prefreeze contract**, not execution authority. Encoder optimizer updates and EMA updates remain zero for target discrimination. Any fitted diagnostic readout must be prospectively fit on inner TRAIN only and frozen before held-donor evaluation.
 
 ### Representation / dimension authority
 
-- canonical encoder emits a 160-wide `cell_state`;
 - `width=160` is architecture capacity, not biological-rank authority;
-- `cell_state` is not currently identified/qualified as the designated global biological state;
-- gene-block states are direct objective targets but are not thereby qualified as the global biological state;
-- online-versus-EMA downstream extraction authority remains unresolved;
-- historical D_shared/D_private/D_total/D_obs machinery remains relevant methodology, but no architectural width becomes a biological dimension by inheritance.
+- `cell_state` is not qualified as the designated global biological state;
+- gene/block states are not automatically global biological state;
+- no single-vector representation is privileged prospectively;
+- dimensionality remains evidence-derived, not inherited from width.
 
 ### Synthetic compatibility
 
-The V75 observer has 96 anonymous `ENSG_SYN_*` features. The canonical runtime uses learned identity embeddings over 41,238 addresses.
+Macha's V77 synthetic work may test known planted truth and metric behavior. World A is a locked linear/common-biology recoverability and nuisance-control world, not a biological-state testbed. Worlds B/C/D are prospective synthetic premise testbeds. Synthetic success cannot select a real biological target or confer real biological validation.
 
-Direct V75 -> canonical learned-state evaluation is therefore:
-
-`BLOCKED__GENE_IDENTITY_MAPPING_UNDEFINED`
-
-Do not map the 96 features to arbitrary canonical slots.
+The V75 96-anonymous-feature -> canonical 41,238-address identity bridge remains undefined; arbitrary mapping is forbidden.
 
 ## Protected boundaries
 
@@ -84,21 +69,20 @@ Do not map the 96 features to arbitrary canonical slots.
 - `500K_PROMOTION = NOT_AUTHORIZED`
 - `RECOVERABILITY_TEST = SEALED`
 - `MORABITO = PROTECTED`
-- pathology must not define observation operators
+- pathology labels do not define the primary optimization target
+
+## Authority freshness
+
+**Authority freshness: update canonical surface when the current task closes or the next authorized task changes.**
+
+Binding token:
+
+`UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES`
+
+When a controlling task closes, blocks, or is superseded, update `START_HERE.md`, the latest pointer, this index, the supersession map, active state, and generic next-action router in the same change set or an immediate successor governance PR. A completed task must never remain advertised as current.
 
 ## Historical authority policy
 
-Older T0/V5/V20/V21/V25/V66/V67 documents remain preserved as historical evidence. Their local “next action” text is not current unless explicitly carried forward by the October 5 authority chain.
-
-Known example: an older instruction to run donor-cross-fitted residual targeting is superseded because that experiment was later executed and failed to rescue the target.
-
-Known retraction example: PR #147's claim that the `sea-ad-jepa` NumPy/BLAS environment was defective and prior results required recheck was fully retracted by PR #178; no such blanket re-execution is required.
-
-## Immediate work
-
-1. Reconstruct the target sequence from V6R5B -> PROD41K -> FOUNDATION/FULL104 -> Contextual/F1 -> later target-architecture/masking work.
-2. For each transition record: `QUESTION -> EXPERIMENT -> RESULT -> RULED OUT -> AUTHORIZED SUCCESSOR`.
-3. Identify the last target candidate actually tested and the last genuinely unresolved target-design question.
-4. Only then freeze a new real-TRAIN, forward-only, identity-controlled target gate.
+Historical documents remain evidence, not current routing. Preserve their exact scientific scope and retractions; do not silently rewrite historical results simply because current authority moved.
 
 **Training remains OFF.**
