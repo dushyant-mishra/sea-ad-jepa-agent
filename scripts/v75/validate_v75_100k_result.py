@@ -3,7 +3,8 @@
 
 This validator can recommend only the next *measurement-stress* tier. It does not qualify
 a learned 160-D JEPA representation, biological efficacy, training, Stage-4, Morabito, or
-recoverability TEST.
+recoverability TEST. Fragment integrity is deciding only when independently re-derived
+from compressed bytes and reconciled to the paired-multiome source.
 """
 from __future__ import annotations
 
@@ -19,6 +20,7 @@ def validate(
     rna: dict,
     multi: dict,
     fragments: dict,
+    fragment_linkage: dict,
     resource: dict,
     controls: dict,
     boundary: dict,
@@ -70,6 +72,20 @@ def validate(
     check("fragment_truth_firewall", fragments.get("hidden_truth_read") is False, "FRAGMENT_TRUTH_FIREWALL_FAILED")
     check("fragment_rows_positive", int(fragments.get("total_rows", 0)) > 0, "FRAGMENT_STREAM_EMPTY")
     check("fragment_multiplicity_positive", int(fragments.get("total_multiplicity", 0)) > 0, "FRAGMENT_MULTIPLICITY_EMPTY")
+    check(
+        "fragment_byte_linkage_qualified",
+        fragment_linkage.get("status") == "PASS"
+        and fragment_linkage.get("qualified") is True
+        and fragment_linkage.get("compressed_sha256_recomputed_from_bytes") is True
+        and fragment_linkage.get("barcode_multiplicity_reconciled_to_multiome") is True,
+        "FRAGMENT_BYTE_LINKAGE_NOT_QUALIFIED",
+    )
+    check(
+        "fragment_linkage_totals_reconcile",
+        int(fragment_linkage.get("total_rows", -1)) == int(fragments.get("total_rows", -2))
+        and int(fragment_linkage.get("total_multiplicity", -1)) == int(fragments.get("total_multiplicity", -2)),
+        "FRAGMENT_LINKAGE_TOTALS_DISAGREE",
+    )
 
     check(
         "controls_exact_100k",
@@ -119,7 +135,7 @@ def validate(
         recommendation = "PASS_TO_500K_MEASUREMENT_STRESS"
 
     return {
-        "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_RESULT_V1",
+        "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_RESULT_V2_FRAGMENT_LINKAGE_BOUND",
         "status": status,
         "promotion_recommendation": recommendation,
         "learned_160d_jepa_state_qualified": False,
@@ -139,11 +155,12 @@ def validate(
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    for name in ["truth", "rna", "multi", "fragments", "resource", "controls", "boundary", "qc"]:
+    for name in ["truth", "rna", "multi", "fragments", "fragment-linkage", "resource", "controls", "boundary", "qc"]:
         ap.add_argument("--" + name, required=True)
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
-    vals = [json.loads(Path(getattr(a, name)).read_text()) for name in ["truth", "rna", "multi", "fragments", "resource", "controls", "boundary", "qc"]]
+    arg_names = ["truth", "rna", "multi", "fragments", "fragment_linkage", "resource", "controls", "boundary", "qc"]
+    vals = [json.loads(Path(getattr(a, name)).read_text()) for name in arg_names]
     result = validate(*vals)
     text = json.dumps(result, indent=2) + "\n"
     if a.out:
