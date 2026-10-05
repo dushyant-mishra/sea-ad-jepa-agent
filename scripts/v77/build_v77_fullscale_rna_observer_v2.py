@@ -250,6 +250,19 @@ def observe(root: Path, seed: int, mseed: int | None,
         rel *= (1.0 / (1.0 + np.exp(-uni.logit_detect)))[None, :]
         rel *= sup
         lib, det = depth_targets(ids, op, sup, qc, operator_ids, qprobs, mseed)
+        if "C3" in enabled:
+            # BIOLOGY x MEASUREMENT-OPERATOR coupling. Measurement quality depends partly on
+            # biological state: cells with high z_bioqc yield fewer detected features and a
+            # smaller library. This deliberately breaks the independence World A assumes and
+            # measures at |corr| <= 0.009.
+            #
+            # This was present in the 96-feature observer and was LOST when the full-scale
+            # observer was written, leaving z_bioqc consumed by nothing -- the same inert-latent
+            # defect recorded against technical_latents[1:2] in the Phase 2 inventory.
+            q = np.tanh(z["z_bioqc"].astype(np.float64))
+            keep = 1.0 - 0.30 * (q + 1.0) / 2.0          # 1.00 .. 0.70
+            det = np.clip(np.rint(det * keep), 1, np.maximum(sup.sum(1), 1)).astype(np.int64)
+            lib = np.maximum(np.rint(lib * keep).astype(np.int64), det)
         idx, val, indptr = sparse_counts(rel, sup, ids, lib, det, mseed)
         dens.append(float(det.mean() / N))
         start, stop = int(ids[0]), int(ids[-1]) + 1

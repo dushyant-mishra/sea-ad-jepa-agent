@@ -1,0 +1,134 @@
+{
+  "schema": "V77_ORACLE_DESIGN_AUDIT_V1",
+  "recorded_utc": "2026-10-05T18:49:22Z",
+  "question_asked_by_the_review_lane": "whether module-score projection is the correct oracle for EVERY B/C/D component, or whether some regimes need prospectively defined component-specific sufficient statistics",
+  "answer": "NOT_FOR_EVERY_COMPONENT__5_OF_13_NEED_COMPONENT_SPECIFIC_STATISTICS",
+  "audited_artifact": {
+    "path": "scripts/v77/v77_measure_oracle_ceilings_v2.py",
+    "origin": "chatgpt/v77-v2-oracle-loader-successor-20261005 @ f0d0f2ea",
+    "sha256_after_fix": "3c85c1b57298e1208e1569afafd372ab83744838be7a3f45e08285e2fe834fad"
+  },
+  "MECHANICAL_FIX_APPLIED": {
+    "defect": "X @ membership returns a SciPy sparse matrix; np.asarray gives a 0-d object array",
+    "fix": "(X @ membership).toarray()",
+    "scope": "only the SMALL (cells x n_modules) score matrix; the 41,238-address matrix is never densified",
+    "tests": "3/3 green in tests/v77/test_v77_sparse_oracle_v2.py"
+  },
+  "WHY_THE_MODULE_PROJECTION_DESIGN_IS_RIGHT_IN_GENERAL": {
+    "p_over_n_at_2000_cells": 0.0185,
+    "alternative_rejected": "41,238 free regressors would give p >> n and manufacture interpolation ceilings",
+    "verdict": "the projection is the correct DEFAULT and the right call by the review lane"
+  },
+  "FINDINGS": [
+    {
+      "id": "O1",
+      "component": "B4 transient",
+      "severity": "HIGH",
+      "finding": "the universal reader targets the wrong quantity. The planted effect is a band that is SYMMETRIC about pseudotime 0.5, so a linear reader cannot recover t from it.",
+      "measured": {
+        "R2_pseudotime_from_module_scores": -0.0329,
+        "R2_band_from_module_scores": 0.3551
+      },
+      "consequence": "reporting pseudotime R2 would call a well-recovered component unrecoverable",
+      "required": "target the band, prospectively defined, not pseudotime"
+    },
+    {
+      "id": "O2",
+      "component": "C2 local gain",
+      "severity": "HIGH",
+      "finding": "the effect is multiplicative, so it lives in module_score / drive, not in any linear combination of module scores",
+      "measured": {
+        "R2_linear_over_module_scores": 0.1175,
+        "R2_with_ratio_features": 0.159
+      },
+      "required": "explicit ratio contrast as a prospectively declared sufficient statistic"
+    },
+    {
+      "id": "O3",
+      "component": "C3 biology x operator",
+      "severity": "HIGH",
+      "finding": "not a module quantity at all; its sufficient statistic is depth/support, which the module-score design matrix does not contain",
+      "required": "library size and support count as explicit features"
+    },
+    {
+      "id": "O4",
+      "component": "C1 interaction",
+      "severity": "MEDIUM",
+      "finding": "a single R2 is not the estimand; the estimand is the full-versus-additive GAP",
+      "measured": {
+        "R2_full_from_module_scores": 0.6368,
+        "R2_additive_summary": 0.5592,
+        "gap": 0.0776
+      },
+      "note": "the gap now EXCEEDS the 0.05 designed threshold at full scale, where it was 0.015 at 96 features"
+    },
+    {
+      "id": "O5",
+      "component": "D1 graph recovery",
+      "severity": "MEDIUM",
+      "finding": "region-to-gene precision/recall against the planted graph is a different evaluation entirely and is not expressible as a module score"
+    },
+    {
+      "id": "O6",
+      "component": "ALL",
+      "severity": "INTERPRETIVE_NOT_A_BUG",
+      "finding": "the design matrix is built FROM module_address_sets, i.e. from truth. A real model must DISCOVER modules. So this measures recoverability GIVEN PERFECT MODULE DISCOVERY.",
+      "required": "label every ceiling as an upper bound under known support, never as a blind achievable ceiling"
+    },
+    {
+      "id": "O7",
+      "component": "ALL",
+      "severity": "LOW",
+      "finding": "pathway-redundancy families make module scores collinear by design",
+      "measured": {
+        "max_abs_corr_between_module_scores": 0.8539,
+        "condition_number": 895.0
+      },
+      "note": "tolerable at p=37 and n=2000; component-specific statistics avoid it entirely"
+    }
+  ],
+  "PER_COMPONENT_VERDICT": {
+    "B1 state mixture": "MODULE_SCORE_OK",
+    "B2 donor biology": "MODULE_SCORE_OK",
+    "B3 rare states": "MODULE_SCORE_OK_WITH_AVERAGE_PRECISION",
+    "B4 transient": "NEEDS_COMPONENT_SPECIFIC",
+    "B5 sparse markers": "MODULE_SCORE_OK",
+    "B6 partial ladder": "MODULE_SCORE_OK",
+    "C1 interaction": "NEEDS_EXPLICIT_CONTRAST",
+    "C2 local gain": "NEEDS_COMPONENT_SPECIFIC",
+    "C3 biology x operator": "NOT_A_MODULE_QUANTITY",
+    "D1 TF activity": "MODULE_SCORE_OK",
+    "D1 graph recovery": "NOT_A_MODULE_QUANTITY",
+    "E1 spatial niche": "MODULE_SCORE_OK",
+    "E2 perturbation": "MODULE_SCORE_OK_WITH_AVERAGE_PRECISION"
+  },
+  "adequately_served_by_the_universal_reader": "8 of 13",
+  "SELF_AUDIT": {
+    "S124": {
+      "defect": "C3 was implemented in the 96-feature observer and was LOST when I wrote the full-scale observer. The truth kept emitting z_bioqc and nothing consumed it.",
+      "why_it_matters": "this recreated exactly the inert-latent defect I had myself recorded against technical_latents[1:2] in the Phase 2 inventory, in new code, within the same cycle",
+      "found_by": "the oracle audit, because R2(z_bioqc | anything) came back at zero",
+      "repair": "biology-coupled detected-feature and library targets restored at full scale",
+      "verified": {
+        "abs_corr_z_bioqc_vs_library": 0.0988,
+        "world_A_reference": 0.0086
+      },
+      "status": "CLOSED"
+    }
+  },
+  "NEXT": [
+    "implement the component-specific oracle layer on top of the qualified loader",
+    "rebuild all worlds on the v2 canonical observer",
+    "measure every ceiling and compare against the designed class, without widening thresholds"
+  ],
+  "GOVERNANCE": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "legacy_checkpoint_as_biological_authority": "NO",
+    "world_A": "LOCKED_UNTOUCHED"
+  }
+}

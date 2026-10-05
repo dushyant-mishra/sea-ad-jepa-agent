@@ -123,7 +123,11 @@ def load_v2_world(root: Path):
             if shard_n_addresses != n_addresses:
                 raise ValueError("observer shard n_addresses mismatch")
             X, lib = _cpm_log1p_csr(z, n_addresses)
-            scores = X @ membership
+            # X is (cells x 41238) sparse and membership is (41238 x n_modules) sparse, so the
+            # product is sparse too and np.asarray would yield a 0-d object array. Densify the
+            # SMALL (cells x n_modules) score matrix explicitly; the 41,238-address matrix is
+            # never densified.
+            scores = (X @ membership).toarray()
             score_parts.append(np.asarray(scores, dtype=np.float64))
             cell_parts.append(np.asarray(z["global_cell_index"], dtype=np.int64))
             lib_parts.append(lib)
