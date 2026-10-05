@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Deciding validator for the V75 100K synthetic measurement-architecture run.
 
-This validator can recommend only the next *measurement-stress* tier. It does not qualify
-a learned 160-D JEPA representation, biological efficacy, training, Stage-4, Morabito, or
-recoverability TEST. Fragment integrity is deciding only when independently re-derived
-from compressed bytes and reconciled to the paired-multiome source.
+This validator can qualify the completed 100K measurement-architecture run while keeping
+promotion to 500K separate. A 500K recommendation requires an independently frozen,
+budget-bound resource compatibility gate; observing a successful 100K run is not itself
+such a gate. The validator does not qualify a learned 160-D JEPA representation,
+biological efficacy, training, Stage-4, Morabito, or recoverability TEST.
 """
 from __future__ import annotations
 
@@ -124,18 +125,32 @@ def validate(
         "RESOURCE_500K_GUARD_MISSING",
     )
 
+    resource_500k = resource.get("five_hundred_k_promotion", {})
+    resource_500k_bound = (
+        resource_500k.get("status") == "QUALIFIED_FOR_500K_MEASUREMENT_STRESS"
+        and resource_500k.get("rule_frozen_before_500k_execution") is True
+        and resource_500k.get("budget_authority_bound") is True
+    )
+    checks["resource_500k_promotion_gate_bound"] = bool(resource_500k_bound)
+    if not resource_500k_bound:
+        indeterminate.append("500K_RESOURCE_COMPATIBILITY_RULE_NOT_BOUND")
+
     if blockers:
         status = "FAIL__100K_MEASUREMENT_ARCHITECTURE"
         recommendation = "FAIL_ARCHITECTURE"
-    elif indeterminate:
+    elif "RESOURCE_MEASUREMENT_MISSING" in indeterminate:
         status = "INDETERMINATE__DO_NOT_PROMOTE"
+        recommendation = "INDETERMINATE_DO_NOT_PROMOTE"
+    elif indeterminate:
+        # The 100K architecture itself may be qualified even when the *next scale* is not.
+        status = "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE"
         recommendation = "INDETERMINATE_DO_NOT_PROMOTE"
     else:
         status = "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED"
         recommendation = "PASS_TO_500K_MEASUREMENT_STRESS"
 
     return {
-        "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_RESULT_V2_FRAGMENT_LINKAGE_BOUND",
+        "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_RESULT_V3_RESOURCE_PROMOTION_SEPARATED",
         "status": status,
         "promotion_recommendation": recommendation,
         "learned_160d_jepa_state_qualified": False,
@@ -166,6 +181,8 @@ def main() -> int:
     if a.out:
         Path(a.out).write_text(text)
     print(text, end="")
+    # A qualified 100K architecture with a pending 500K resource gate is still a successful
+    # 100K execution; the caller must inspect promotion_recommendation before scaling.
     return 0 if result["status"].startswith("PASS") else 2
 
 
