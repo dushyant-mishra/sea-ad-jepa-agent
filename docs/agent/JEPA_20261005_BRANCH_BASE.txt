@@ -1,0 +1,2 @@
+handoff/jepa-20261005-historical-audit-custody
+base audited head: a9146d930c132978b6297722314e7af9f8507338
