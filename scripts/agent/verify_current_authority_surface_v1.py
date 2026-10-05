@@ -62,14 +62,21 @@ def audit_authority_surface(root: Path) -> list[str]:
     if texts and not any(any(p in text.lower() for p in off_phrases) for text in texts.values()):
         failures.append("training boundary missing: no current file states training OFF")
 
-    required_boundaries = {
-        "500K": ("500k", "not authorized"),
-        "target winner": ("no qualified production target",),
-        "width 160": ("160", "not biological"),
-    }
-    for label, needles in required_boundaries.items():
-        if not all(needle in joined for needle in needles):
-            failures.append(f"missing current boundary: {label}")
+    if "500k" not in joined or "not authorized" not in joined:
+        failures.append("missing current boundary: 500K")
+
+    target_boundary_phrases = (
+        "no qualified production target",
+        "no production teacher target is currently qualified",
+        "production target winner: **none qualified**",
+        "production target winner | **none qualified**",
+        "production target winner = none qualified",
+    )
+    if not any(phrase in joined for phrase in target_boundary_phrases):
+        failures.append("missing current boundary: target winner")
+
+    if "160" not in joined or "not biological" not in joined:
+        failures.append("missing current boundary: width 160")
 
     return failures
 
