@@ -9,14 +9,14 @@ def _write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def _write_pointer(root: Path) -> None:
+def _write_pointer(root: Path, *, key: str = "handoff_path") -> None:
     _write(
         root / "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
         json.dumps(
             {
                 "date": "2026-10-05",
-                "status": "TARGET_AUTHORITY_RESET",
-                "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+                "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_AUTHORITY_RECONCILIATION_REQUIRED__TRAINING_OFF",
+                key: "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
             }
         ),
     )
@@ -36,7 +36,7 @@ def test_rejects_stale_and_conflicting_current_surface(tmp_path: Path) -> None:
     assert any("training contradiction" in failure for failure in failures)
 
 
-def test_accepts_consistent_oct5_surface(tmp_path: Path) -> None:
+def test_accepts_consistent_oct5_surface_with_live_pointer_schema(tmp_path: Path) -> None:
     fixtures = {
         "START_HERE.md": "Date: 2026-10-05\nTraining: OFF\n500K: NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
         "README.md": "Current status — October 5, 2026\nTraining and multimodal training are OFF.\n500K is not authorized.\nNo qualified production target winner.\n160 is not biological dimensional authority.\n",
@@ -46,6 +46,21 @@ def test_accepts_consistent_oct5_surface(tmp_path: Path) -> None:
     }
     for rel, text in fixtures.items():
         _write(tmp_path / rel, text)
-    _write_pointer(tmp_path)
+    _write_pointer(tmp_path, key="handoff_path")
+
+    assert audit_authority_surface(tmp_path) == []
+
+
+def test_legacy_handoff_key_remains_accepted_for_old_pointer_shape(tmp_path: Path) -> None:
+    fixtures = {
+        "START_HERE.md": "Date: 2026-10-05\nTraining: OFF\n500K: NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
+        "README.md": "Current status — October 5, 2026\nTraining and multimodal training are OFF.\n500K is not authorized.\nNo qualified production target winner.\n160 is not biological dimensional authority.\n",
+        "docs/agent/CURRENT_AUTHORITY_INDEX.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
+        "docs/agent/CURRENT_SUPERSESSION_MAP.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
+        "docs/agent/memory-os/ACTIVE_STATE.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
+    }
+    for rel, text in fixtures.items():
+        _write(tmp_path / rel, text)
+    _write_pointer(tmp_path, key="handoff")
 
     assert audit_authority_surface(tmp_path) == []
