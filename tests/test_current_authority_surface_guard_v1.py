@@ -37,6 +37,16 @@ def _write_good_surface(root: Path) -> None:
                 "canonical_current_state": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
             }
         ),
+        "docs/agent/memory-os/NEXT_ALLOWED_ACTION.json": json.dumps(
+            {
+                "status": "SUPERSEDED_ALIAS_ROUTER",
+                "date": "2026-10-05",
+                "canonical_current_state": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
+                "next_action": "RECONSTRUCT_TERMINAL_TARGET_LINEAGE_BEFORE_NEW_EXPERIMENT",
+            }
+        ),
+        "docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt": "Date: 2026-10-05\nStatus: CURRENT_BOOTSTRAP_ROUTER\nREAD FIRST: START_HERE.md\n",
+        "docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md": "# JEPA PROJECT MEMORY OS\nDate: 2026-10-05\nStatus: CURRENT_BOOTSTRAP_FRAMEWORK\nCanonical startup: START_HERE.md\n",
     }
     for rel, text in fixtures.items():
         _write(root / rel, text)
@@ -50,12 +60,16 @@ def test_rejects_stale_and_conflicting_current_surface(tmp_path: Path) -> None:
     _write(tmp_path / "docs/agent/memory-os/ACTIVE_STATE.md", "Date: 2026-09-09\n")
     _write(tmp_path / "docs/agent/ACTIVE_STATE.md", "Date: 2026-09-03\nJEPA v4 Current Scientific State\n")
     _write(tmp_path / "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json", json.dumps({"active_agent": "CLAUDE_CODE"}))
+    _write(tmp_path / "docs/agent/memory-os/NEXT_ALLOWED_ACTION.json", json.dumps({"last_updated": "2026-09-10", "next_action": "OLD_GATE"}))
+    _write(tmp_path / "docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt", "CURRENT FAIL-CLOSED RULE: 15C controls.\n")
+    _write(tmp_path / "docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md", "Date: 2026-08-23\nStatus: controlling project-governance layer\n")
     _write_pointer(tmp_path)
 
     failures = audit_authority_surface(tmp_path)
     assert any("stale date" in failure for failure in failures)
     assert any("training contradiction" in failure for failure in failures)
     assert any("legacy current-looking alias" in failure for failure in failures)
+    assert any("memory-os bootstrap" in failure for failure in failures)
 
 
 def test_accepts_consistent_oct5_surface_with_live_pointer_schema(tmp_path: Path) -> None:
