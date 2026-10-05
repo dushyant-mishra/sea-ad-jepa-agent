@@ -26,7 +26,7 @@ def audit_authority_surface(root: Path) -> list[str]:
     pointer_path = root / POINTER
     try:
         pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
-    except Exception as exc:  # fail closed on any parse/read error
+    except Exception as exc:
         failures.append(f"pointer invalid: {exc}")
         pointer = {}
 
@@ -34,12 +34,7 @@ def audit_authority_surface(root: Path) -> list[str]:
         failures.append(f"pointer stale date: {pointer.get('date')!r}")
     if "TARGET_AUTHORITY" not in str(pointer.get("status", "")):
         failures.append("pointer status is not target-authority reset/reconciliation")
-    handoff_value = str(
-        pointer.get(
-            "handoff_path",
-            pointer.get("handoff", pointer.get("current_handoff", "")),
-        )
-    )
+    handoff_value = str(pointer.get("handoff_path", pointer.get("handoff", pointer.get("current_handoff", ""))))
     if "20261005_TARGET_AUTHORITY_RESET" not in handoff_value:
         failures.append("pointer handoff is not Oct-5 target-authority reset")
 
@@ -60,32 +55,28 @@ def audit_authority_surface(root: Path) -> list[str]:
                 failures.append(f"{rel} stale date")
 
     joined = "\n".join(texts.values()).lower()
-    forbidden_training_claims = (
-        "training is authorized",
-        "training authorized",
-        "training = on",
-        "training: on",
-    )
-    if any(claim in joined for claim in forbidden_training_claims):
+    if any(claim in joined for claim in ("training is authorized", "training authorized", "training = on", "training: on")):
         failures.append("training contradiction: an authority surface authorizes training")
 
-    off_phrases = (
-        "training = off",
-        "training: off",
-        "training remains off",
-        "training and multimodal training are off",
-    )
+    off_phrases = ("training = off", "training: off", "training remains off", "training and multimodal training are off")
     if texts and not any(any(p in text.lower() for p in off_phrases) for text in texts.values()):
         failures.append("training boundary missing: no current file states training OFF")
 
-    required_boundaries = {
-        "500K": ("500k", "not authorized"),
-        "target winner": ("no qualified production target",),
-        "width 160": ("160", "not biological"),
-    }
-    for label, needles in required_boundaries.items():
-        if not all(needle in joined for needle in needles):
-            failures.append(f"missing current boundary: {label}")
+    if "500k" not in joined or "not authorized" not in joined:
+        failures.append("missing current boundary: 500K")
+
+    target_boundary_phrases = (
+        "no qualified production target",
+        "no production teacher target is currently qualified",
+        "production target winner: **none qualified**",
+        "production target winner | **none qualified**",
+        "production target winner = none qualified",
+    )
+    if not any(phrase in joined for phrase in target_boundary_phrases):
+        failures.append("missing current boundary: target winner")
+
+    if "160" not in joined or "not biological" not in joined:
+        failures.append("missing current boundary: width 160")
 
     return failures
 
