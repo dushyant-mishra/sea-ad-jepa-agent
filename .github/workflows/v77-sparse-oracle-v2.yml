@@ -1,0 +1,37 @@
+name: V77 sparse oracle v2
+
+on:
+  push:
+    branches:
+      - chatgpt/v77-v2-oracle-loader-successor-20261005
+    paths:
+      - scripts/v77/v77_measure_oracle_ceilings_v2.py
+      - tests/v77/test_v77_sparse_oracle_v2.py
+      - .github/workflows/v77-sparse-oracle-v2.yml
+  pull_request:
+    paths:
+      - scripts/v77/v77_measure_oracle_ceilings_v2.py
+      - tests/v77/test_v77_sparse_oracle_v2.py
+      - .github/workflows/v77-sparse-oracle-v2.yml
+
+permissions:
+  contents: read
+
+jobs:
+  sparse-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check numpy scipy pytest
+      - name: Run sparse-oracle tests with zero skips
+        run: |
+          set -o pipefail
+          python -m pytest -q -rsx tests/v77/test_v77_sparse_oracle_v2.py | tee v77_sparse_oracle.log
+          if grep -qiE "[0-9]+ (skipped|xfailed|deselected)" v77_sparse_oracle.log; then
+            echo "FAIL: a V77 sparse-oracle test did not execute"
+            exit 1
+          fi
