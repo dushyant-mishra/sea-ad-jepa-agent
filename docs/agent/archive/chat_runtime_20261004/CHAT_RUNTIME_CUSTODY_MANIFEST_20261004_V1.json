@@ -1,0 +1,58 @@
+{
+  "schema": "CHAT_RUNTIME_CUSTODY_MANIFEST_20261004_V1",
+  "created_date": "2026-10-04",
+  "purpose": "Inventory every source artifact physically present in this chat runtime, preserve only bytes not already preserved in prior Git custody, and bind all repeated large artifacts to their prior custody identities without duplicating them into ordinary Git history.",
+  "base_science_branch": "chatgpt/v75-100k-architecture-qualification-20261004",
+  "base_science_head": "189e62092e095efba71ffaa23522f627b819e37e",
+  "prior_custody": {
+    "branch": "chatgpt/v73-chat-runtime-custody-20261003",
+    "head": "318896621957141472ba9eb9ef0700fe67812e0c",
+    "manifest": "docs/agent/archive/chat_runtime_20261003/CHAT_RUNTIME_CUSTODY_MANIFEST_20261003_V4.json"
+  },
+  "runtime_source_artifact_count": 11,
+  "new_chat_exclusive_artifact_count": 1,
+  "new_chat_exclusive_artifacts": [
+    {
+      "name": "Pasted markdown.md",
+      "bytes": 78449,
+      "sha256": "aba2bc2d049c425febe02621eaeff300d64f87cc7a28d8a12a92a8502b7e0fce",
+      "status": "BYTE_PRESERVED_AS_BASE64_PARTS",
+      "repository_parts": [
+        "docs/agent/archive/chat_runtime_20261004/CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part00",
+        "docs/agent/archive/chat_runtime_20261004/CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part01",
+        "docs/agent/archive/chat_runtime_20261004/CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part02",
+        "docs/agent/archive/chat_runtime_20261004/CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part03",
+        "docs/agent/archive/chat_runtime_20261004/CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part04"
+      ],
+      "base64_total_characters": 104600,
+      "recovery_command": "cat CHAT_UPLOAD_01_PASTED_MARKDOWN.b64.part* | base64 -d > 'Pasted markdown.md'",
+      "verification": "Recovered file must be exactly 78449 bytes and SHA-256 aba2bc2d049c425febe02621eaeff300d64f87cc7a28d8a12a92a8502b7e0fce.",
+      "authority_scope": "Historical chat/lane transcript evidence only. Contains intermediate claims later superseded by audited Macha reconciliation and V75 authorities; preservation does not promote any contained claim to current authority."
+    }
+  ],
+  "already_preserved_or_hash_bound_artifacts": [
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356","disposition":"MATCHES_20261003_BYTE_PRESERVED_SMALL_PAYLOAD"},
+    {"name":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56","disposition":"MATCHES_20261003_BYTE_PRESERVED_SMALL_PAYLOAD"},
+    {"name":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e","disposition":"MATCHES_20261003_BYTE_PRESERVED_SMALL_PAYLOAD"},
+    {"name":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c","disposition":"MATCHES_20261003_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"}
+  ],
+  "prior_split_expression_reassembly": {
+    "assembly_order": ["FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002"],
+    "bytes": 607959761,
+    "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "status": "VERIFIED_IN_20261003_CUSTODY__NOT_REPEATED_HERE"
+  },
+  "policy": {
+    "deduplication_rule": "Do not duplicate files whose exact byte length and SHA-256 already match an earlier custody artifact.",
+    "large_binary_rule": "Do not add large scientific binaries/checkpoints to ordinary Git history; retain exact cryptographic identity and prior recovery/custody references.",
+    "historical_transcript_rule": "Chat transcripts are preserved for provenance but do not override later machine-readable scientific authorities or audited supersessions.",
+    "scientific_claim_rule": "Custody does not itself qualify a scientific result.",
+    "branch_scope_rule": "This handoff/custody branch must contain documentation/custody payloads only and must not modify source, tests, thresholds, model code, scientific contracts, or scientific result artifacts inherited from the V75 base."
+  }
+}
