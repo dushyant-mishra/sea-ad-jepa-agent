@@ -1,9 +1,7 @@
 name: V75 100K measurement architecture execution
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/v75-100k-measurement-architecture-execution.yml'
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -24,6 +22,36 @@ jobs:
           mkdir -p /tmp/v75_100k_receipts
           git rev-parse HEAD | tee /tmp/v75_100k_receipts/exact_head_sha.txt
 
+      - name: Re-prove exact-head 2K authorization before any 100K materialization
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/v75_preflight_legacy /tmp/v75_preflight_controls /tmp/v75_preflight_receipts
+          mkdir -p /tmp/v75_preflight_receipts
+          python scripts/v64/build_v73_sharded_master_truth.py --root /tmp/v75_preflight_legacy --cells 2000 --shard-size 333 --seed 7302
+          python scripts/v64/build_v73_full104_sharded_observer.py --root /tmp/v75_preflight_legacy --seed 7302
+          python scripts/v64/build_v73_paired_multiome_sharded_observer.py --root /tmp/v75_preflight_legacy --seed 7302
+          python scripts/v64/build_v73_synthetic_fragments.py --root /tmp/v75_preflight_legacy
+          python scripts/v64/validate_v73_fragment_byte_linkage.py --root /tmp/v75_preflight_legacy --out /tmp/v75_preflight_receipts/fragment_linkage.json
+          python scripts/v64/estimate_v73_synthetic_stress_resources.py --cells 100000 --shard-size 10000 --measure-root /tmp/v75_preflight_legacy --out /tmp/v75_preflight_receipts/resource.json
+          python scripts/v64/validate_v73_stress_promotion_readiness.py --root /tmp/v75_preflight_legacy --resource-receipt /tmp/v75_preflight_receipts/resource.json --fragment-receipt /tmp/v75_preflight_receipts/fragment_linkage.json --out /tmp/v75_preflight_receipts/legacy_readiness.json
+          python scripts/v75/build_v75_control_twins.py --root /tmp/v75_preflight_controls --cells 2000 --shard-size 333 --out /tmp/v75_preflight_receipts/controls.json
+          python scripts/v75/validate_v75_run_boundaries.py --receipt /tmp/v75_preflight_receipts/controls.json --out /tmp/v75_preflight_receipts/boundary.json
+          python scripts/v75/validate_v75_100k_readiness.py --legacy-readiness /tmp/v75_preflight_receipts/legacy_readiness.json --controls /tmp/v75_preflight_receipts/controls.json --boundary /tmp/v75_preflight_receipts/boundary.json --resource /tmp/v75_preflight_receipts/resource.json --out /tmp/v75_preflight_receipts/readiness.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/v75_preflight_receipts/readiness.json'))
+          l=json.load(open('/tmp/v75_preflight_receipts/legacy_readiness.json'))
+          assert x['status']=='READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY'
+          assert x['authorized_scale']=='100K_STRESS_ONLY'
+          assert x['learned_160d_jepa_state_qualified'] is False
+          assert not x['blockers']
+          assert l['checks']['realised_operator_support_complete'] is True
+          assert l['checks']['fragment_byte_linkage_qualified'] is True
+          PY
+          cp /tmp/v75_preflight_receipts/readiness.json /tmp/v75_100k_receipts/preflight_readiness.json
+          cp /tmp/v75_preflight_receipts/legacy_readiness.json /tmp/v75_100k_receipts/preflight_legacy_readiness.json
+          cp /tmp/v75_preflight_receipts/fragment_linkage.json /tmp/v75_100k_receipts/preflight_fragment_linkage.json
+
       - name: Materialize three prospectively frozen 100K control worlds
         run: |
           set -euo pipefail
@@ -37,7 +65,7 @@ jobs:
               --out /tmp/v75_100k_receipts/controls.json \
               > /tmp/v75_100k_receipts/control_worlds_stdout.json
 
-      - name: Build fragments for reference measurement-null world
+      - name: Build and independently validate fragments for reference measurement-null world
         run: |
           set -euo pipefail
           A=/tmp/v75_100k/controls/measurement_null_a
@@ -45,6 +73,9 @@ jobs:
             -o /tmp/v75_100k_receipts/fragments_time.json \
             python scripts/v64/build_v73_synthetic_fragments.py --root "$A" \
               > /tmp/v75_100k_receipts/fragments_stdout.json
+          python scripts/v64/validate_v73_fragment_byte_linkage.py \
+            --root "$A" --out /tmp/v75_100k_receipts/fragment_linkage.json \
+            > /tmp/v75_100k_receipts/fragment_linkage_stdout.json
 
       - name: Measure full 100K RNA QC realization
         run: |
@@ -98,10 +129,12 @@ jobs:
             /tmp/v75_100k_receipts/rna.json \
             /tmp/v75_100k_receipts/multi.json \
             /tmp/v75_100k_receipts/fragments.json \
+            /tmp/v75_100k_receipts/fragment_linkage.json \
             /tmp/v75_100k_receipts/resource.json \
             /tmp/v75_100k_receipts/controls.json \
             /tmp/v75_100k_receipts/boundary.json \
             /tmp/v75_100k_receipts/qc.json \
+            /tmp/v75_100k_receipts/preflight_readiness.json \
             > /tmp/v75_100k_receipts/receipt_sha256.txt
 
       - name: Decide 100K measurement-architecture qualification
@@ -121,6 +154,10 @@ jobs:
           python - <<'PY'
           import json
           x=json.load(open('/tmp/v75_100k_receipts/result.json'))
+          f=json.load(open('/tmp/v75_100k_receipts/fragment_linkage.json'))
+          p=json.load(open('/tmp/v75_100k_receipts/preflight_readiness.json'))
+          assert p['status']=='READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY'
+          assert f['status']=='PASS' and f['qualified'] is True
           assert x['status'] == 'PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED'
           assert x['promotion_recommendation'] == 'PASS_TO_500K_MEASUREMENT_STRESS'
           assert x['learned_160d_jepa_state_qualified'] is False
@@ -142,6 +179,7 @@ jobs:
             'control_worlds': read('control_worlds_time.json'),
             'fragments': read('fragments_time.json'),
             'qc_summary': read('qc_summary_time.json'),
+            'preflight_status': (read('preflight_readiness.json') or {}).get('status'),
             'runner':'ubuntu-latest',
             'bulk_outputs_uploaded': False,
             'receipt_bundle_only': True,
