@@ -19,6 +19,9 @@ CURRENT_FILES = (
 POINTER = "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json"
 LEGACY_ACTIVE_ALIAS = "docs/agent/ACTIVE_STATE.md"
 LEGACY_CHECKPOINT_ALIAS = "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json"
+NEXT_ACTION_ALIAS = "docs/agent/memory-os/NEXT_ALLOWED_ACTION.json"
+CHAT_BOOTSTRAP = "docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt"
+MEMORY_OS = "docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md"
 
 
 def audit_authority_surface(root: Path) -> list[str]:
@@ -77,6 +80,33 @@ def audit_authority_surface(root: Path) -> list[str]:
             failures.append(f"legacy current-looking alias is not superseded: {LEGACY_CHECKPOINT_ALIAS}")
         if checkpoint.get("canonical_current_state") != "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json":
             failures.append(f"legacy current-looking alias has wrong canonical route: {LEGACY_CHECKPOINT_ALIAS}")
+
+    next_action_path = root / NEXT_ACTION_ALIAS
+    try:
+        next_action = json.loads(next_action_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        failures.append(f"memory-os bootstrap invalid: {NEXT_ACTION_ALIAS}: {exc}")
+        next_action = {}
+    if next_action.get("status") != "SUPERSEDED_ALIAS_ROUTER" or next_action.get("date") != CURRENT_DATE:
+        failures.append(f"memory-os bootstrap alias is stale: {NEXT_ACTION_ALIAS}")
+    if next_action.get("canonical_current_state") != "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json":
+        failures.append(f"memory-os bootstrap alias has wrong canonical route: {NEXT_ACTION_ALIAS}")
+
+    bootstrap_path = root / CHAT_BOOTSTRAP
+    if not bootstrap_path.exists():
+        failures.append(f"memory-os bootstrap missing: {CHAT_BOOTSTRAP}")
+    else:
+        bootstrap_text = bootstrap_path.read_text(encoding="utf-8")
+        if "Date: 2026-10-05" not in bootstrap_text or "CURRENT_BOOTSTRAP_ROUTER" not in bootstrap_text or "START_HERE.md" not in bootstrap_text:
+            failures.append(f"memory-os bootstrap is stale: {CHAT_BOOTSTRAP}")
+
+    memory_os_path = root / MEMORY_OS
+    if not memory_os_path.exists():
+        failures.append(f"memory-os bootstrap missing: {MEMORY_OS}")
+    else:
+        memory_os_text = memory_os_path.read_text(encoding="utf-8")
+        if "Date: 2026-10-05" not in memory_os_text or "CURRENT_BOOTSTRAP_FRAMEWORK" not in memory_os_text or "START_HERE.md" not in memory_os_text:
+            failures.append(f"memory-os bootstrap is stale: {MEMORY_OS}")
 
     joined = "\n".join(texts.values()).lower()
     if any(claim in joined for claim in ("training is authorized", "training authorized", "training = on", "training: on")):
