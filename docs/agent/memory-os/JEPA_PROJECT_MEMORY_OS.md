@@ -1,74 +1,49 @@
 # JEPA PROJECT MEMORY OS
-Date: 2026-08-23
-Status: controlling project-governance layer
+Date: 2026-10-05
+Status: CURRENT_BOOTSTRAP_FRAMEWORK
 
-## Purpose
+## Authority boundary
+This file defines durable operating principles only. It is **not** an independent scientific authority and must not override the current startup surface.
+
+Canonical startup authority:
+1. `START_HERE.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+3. the handoff/state named by that pointer
+4. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+
+The exact historical August 23 version is preserved at:
+`docs/agent/archive/memory_os_historical/JEPA_PROJECT_MEMORY_OS_20260823.md`
+
+## Durable purpose
 Prevent repeated experiments, loss of prior conclusions, silent resurrection of rejected ideas, and drift from the protected scientific objective.
-
-## Canonical state
-Do not rely on conversational memory alone. Controlling state is externalized into:
-- DECISION_REGISTRY.csv
-- EXPERIMENT_LEDGER.csv
-- ACTIVE_STATE.md
-- ARCHITECTURE_CONTRACT.md
-- NEXT_ALLOWED_ACTION.json
 
 ## Mandatory novelty preflight
 Before proposing or running any experiment, record:
 1. Exact scientific question.
-2. Closest prior experiment IDs.
+2. Closest prior experiment IDs / target lineage.
 3. Closed decisions that constrain it.
 4. Genuine novel delta.
 5. Why prior evidence does not already answer it.
-6. Duplication verdict:
-   - NOVEL_AND_AUTHORIZED
-   - REVISIT_JUSTIFIED
-   - DUPLICATE_DO_NOT_RUN
-   - CONTRADICTS_CLOSED_DECISION
-   - INSUFFICIENT_NEW_INFORMATION
+6. Duplication verdict: `NOVEL_AND_AUTHORIZED`, `REVISIT_JUSTIFIED`, `DUPLICATE_DO_NOT_RUN`, `CONTRADICTS_CLOSED_DECISION`, or `INSUFFICIENT_NEW_INFORMATION`.
 
-No experiment proceeds without this check.
-
-## Evidence-consistency critic comes first
-The first critic for every major design is PROJECT HISTORIAN / EVIDENCE CONSISTENCY:
-- Have we already tested this?
-- Did we reject or qualify this mechanism?
-- Does this recreate an old failure under a new name?
-- Is a recent result merely rediscovering an older one?
-- Is a mechanics fixture being mistaken for production biology?
-
-Only after it passes do Target/Predictor, Biology/Rare-State, Statistics/Leakage, and Compute critics run.
-
-## Experiment IDs
-Every experiment gets an ID: EXP-YYYYMMDD-NNN.
-Every experiment records question, data, intervention, controls, teacher/student state, view count, mask/exposure policy, key results, limitations, affected decisions, and supersession links.
-
-## Decision IDs
-Every durable conclusion gets DEC-NNN with status OPEN / PROVISIONAL / CLOSED / SUPERSEDED.
-A CLOSED decision can only be reopened by specifically documented new evidence.
-
-## Experiment classes
-- MECHANICS_DIAGNOSTIC
-- BIOLOGY_DIAGNOSTIC
-- CAUSAL_INTERVENTION
-- TEACHER_QUALIFICATION
-- STUDENT_QUALIFICATION
-- PRODUCTION_QUALIFICATION
-
-Claims may not silently jump classes.
+## Evidence-consistency rule
+Historical evidence comes before new design. A later current-authority file may supersede an older next action without erasing the older evidence.
 
 ## Protected objective
-Infer latent biological programs/states from incomplete RNA evidence.
-Not exact hidden-transcript reconstruction, dataset/source prediction, or loss minimization for its own sake.
+Infer biologically meaningful latent programs/states from incomplete lawful observations. Do not equate masked-RNA prediction, source prediction, loss minimization, or network width with biological-state qualification.
 
 ## Permanent operating rules
 - Negative results are first-class evidence.
 - Loss improvement never substitutes for biological qualification.
-- Broad molecular address coverage and biology-aware exposure are orthogonal.
-- Do not call tier-hiding a production cascade.
-- Random/frozen u0 is a mechanics fixture, not a biological teacher.
-- Teacher target fidelity and downstream biology are separate endpoints.
-- Every completed experiment must update the ledger, registry, active state, and next action.
+- Claims may not silently jump from RNA representation to transferable biology, regulatory support, or causal qualification.
+- Mechanics fixtures and legacy checkpoints are not biological-model authority.
+- Training, protected-data access, or scale escalation require explicit current authority.
+- At gate completion, preserve exact decision-bearing bytes/hashes and update the canonical startup surface.
 
-## Bootstrap rule
-Every new JEPA chat/Codex session must first read the canonical state files completely, then perform the novelty preflight before proposing experiments.
+## Current Oct-5 boundaries
+- V75 100K measurement architecture: qualified within measurement scope only.
+- Production target winner: none qualified.
+- Training: OFF.
+- 500K: NOT AUTHORIZED.
+- Width 160: architecture capacity, not biological-dimension authority.
+- Current scientific next step: terminal target-lineage reconstruction before another target experiment.
