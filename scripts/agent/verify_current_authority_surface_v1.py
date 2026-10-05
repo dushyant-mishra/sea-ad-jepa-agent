@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""Fail-closed consistency check for JEPA's canonical current-authority surface."""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+CURRENT_DATE = "2026-10-05"
+CURRENT_FILES = (
+    "START_HERE.md",
+    "README.md",
+    "docs/agent/CURRENT_AUTHORITY_INDEX.md",
+    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
+    "docs/agent/memory-os/ACTIVE_STATE.md",
+)
+POINTER = "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json"
+
+
+def audit_authority_surface(root: Path) -> list[str]:
+    root = Path(root)
+    failures: list[str] = []
+
+    pointer_path = root / POINTER
+    try:
+        pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+    except Exception as exc:  # fail closed on any parse/read error
+        failures.append(f"pointer invalid: {exc}")
+        pointer = {}
+
+    if pointer.get("date") != CURRENT_DATE:
+        failures.append(f"pointer stale date: {pointer.get('date')!r}")
+    if "TARGET_AUTHORITY_RESET" not in str(pointer.get("status", "")):
+        failures.append("pointer status is not target-authority reset")
+    handoff_value = str(pointer.get("handoff", pointer.get("current_handoff", "")))
+    if "20261005_TARGET_AUTHORITY_RESET" not in handoff_value:
+        failures.append("pointer handoff is not Oct-5 target-authority reset")
+
+    texts: dict[str, str] = {}
+    for rel in CURRENT_FILES:
+        path = root / rel
+        if not path.exists():
+            failures.append(f"missing current file: {rel}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        texts[rel] = text
+        if rel == "README.md":
+            if "October 5, 2026" not in text and CURRENT_DATE not in text:
+                failures.append(f"{rel} stale date")
+        else:
+            match = re.search(r"Date:\s*(\d{4}-\d{2}-\d{2})", text)
+            if not match or match.group(1) != CURRENT_DATE:
+                failures.append(f"{rel} stale date")
+
+    joined = "\n".join(texts.values()).lower()
+    forbidden_training_claims = (
+        "training is authorized",
+        "training authorized",
+        "training = on",
+        "training: on",
+    )
+    if any(claim in joined for claim in forbidden_training_claims):
+        failures.append("training contradiction: an authority surface authorizes training")
+
+    off_phrases = (
+        "training = off",
+        "training: off",
+        "training remains off",
+        "training and multimodal training are off",
+    )
+    if texts and not any(any(p in text.lower() for p in off_phrases) for text in texts.values()):
+        failures.append("training boundary missing: no current file states training OFF")
+
+    required_boundaries = {
+        "500K": ("500k", "not authorized"),
+        "target winner": ("no qualified production target",),
+        "width 160": ("160", "not biological"),
+    }
+    for label, needles in required_boundaries.items():
+        if not all(needle in joined for needle in needles):
+            failures.append(f"missing current boundary: {label}")
+
+    return failures
+
+
+def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    root = Path(argv[0]) if argv else Path(".")
+    failures = audit_authority_surface(root)
+    if failures:
+        for failure in failures:
+            print(f"FAIL: {failure}")
+        return 1
+    print("PASS_AUTHORITY_SURFACE_CONSISTENCY")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
