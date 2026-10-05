@@ -1,0 +1,6 @@
+Do not repeat by default:
+- August donor-centering/residual target gate (later adjudicated in V6R5B)
+- broad historical T1 checkpoint forensics
+- 96-feature V75 -> arbitrary 41K slot mapping
+- synthetic 500K/full learned-state scaling
+- 160-D biological-state qualification
