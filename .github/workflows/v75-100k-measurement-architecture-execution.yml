@@ -145,6 +145,7 @@ jobs:
             --rna /tmp/v75_100k_receipts/rna.json \
             --multi /tmp/v75_100k_receipts/multi.json \
             --fragments /tmp/v75_100k_receipts/fragments.json \
+            --fragment-linkage /tmp/v75_100k_receipts/fragment_linkage.json \
             --resource /tmp/v75_100k_receipts/resource.json \
             --controls /tmp/v75_100k_receipts/controls.json \
             --boundary /tmp/v75_100k_receipts/boundary.json \
@@ -158,6 +159,8 @@ jobs:
           p=json.load(open('/tmp/v75_100k_receipts/preflight_readiness.json'))
           assert p['status']=='READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY'
           assert f['status']=='PASS' and f['qualified'] is True
+          assert x['checks']['fragment_byte_linkage_qualified'] is True
+          assert x['checks']['fragment_linkage_totals_reconcile'] is True
           assert x['status'] == 'PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED'
           assert x['promotion_recommendation'] == 'PASS_TO_500K_MEASUREMENT_STRESS'
           assert x['learned_160d_jepa_state_qualified'] is False
