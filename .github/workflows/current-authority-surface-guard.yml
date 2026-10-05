@@ -11,6 +11,9 @@ on:
       - docs/agent/memory-os/ACTIVE_STATE.md
       - docs/agent/ACTIVE_STATE.md
       - docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json
+      - docs/agent/memory-os/NEXT_ALLOWED_ACTION.json
+      - docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt
+      - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
       - .github/workflows/current-authority-surface-guard.yml
@@ -24,6 +27,9 @@ on:
       - docs/agent/memory-os/ACTIVE_STATE.md
       - docs/agent/ACTIVE_STATE.md
       - docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json
+      - docs/agent/memory-os/NEXT_ALLOWED_ACTION.json
+      - docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt
+      - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
       - .github/workflows/current-authority-surface-guard.yml
