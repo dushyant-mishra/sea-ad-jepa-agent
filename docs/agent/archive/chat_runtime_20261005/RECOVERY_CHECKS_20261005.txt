@@ -1,0 +1,12 @@
+Recovered SHA-256 checks from the chat runtime before publication:
+
+Pasted text(20261005-014928).txt
+1632c568b99742c9bb538e1f35e5bdee93fb91bdbba72fadceb32d3d96b508fc
+
+v75-2k-promotion-smoke-receipts.zip
+231fcc17c1e4e09c937d9f1e4d17e68402337f7cc26b0374c5f2c3f441413f05
+
+v75-100k-measurement-architecture-receipts.zip
+df2bdad2939c0f46e529e0ebb8d126aba97686f1d78897da163de32ceea7de4e
+
+Local reconstruction tests used the recovery commands in CHAT_RUNTIME_CUSTODY_MANIFEST_20261005_V1.json and byte-for-byte `cmp` against the runtime originals. All three reconstructed bytes exactly before publication.
