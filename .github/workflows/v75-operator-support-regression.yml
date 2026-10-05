@@ -6,7 +6,9 @@ on:
       - 'scripts/v64/v73_full104_population_geometry.py'
       - 'tests/test_v73_population_geometry_authority.py'
       - 'tests/test_v75_operator_support_regression.py'
+      - 'tests/test_v75_100k_stress_workflow_contract.py'
       - '.github/workflows/v75-operator-support-regression.yml'
+      - '.github/workflows/v75-100k-stress-only.yml'
   workflow_dispatch:
 
 jobs:
@@ -19,4 +21,4 @@ jobs:
         with: {python-version: '3.11'}
       - run: python -m pip install --upgrade pip pytest numpy
       - run: python -m py_compile scripts/v64/v73_full104_population_geometry.py
-      - run: pytest -q tests/test_v73_population_geometry_authority.py tests/test_v75_operator_support_regression.py
+      - run: pytest -q tests/test_v73_population_geometry_authority.py tests/test_v75_operator_support_regression.py tests/test_v75_100k_stress_workflow_contract.py
