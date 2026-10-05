@@ -1,0 +1,121 @@
+{
+  "schema": "JEPA_REPRESENTATION_FAMILY_QUALIFICATION_V1",
+  "date": "2026-10-05",
+  "role": "PROSPECTIVE_REPRESENTATION_COMPARISON__NO_WINNER_SELECTED",
+  "selected_family": "UNSET_REQUIRES_APPROVAL",
+  "default_family": "NONE",
+  "cell_state_is_qualified_default": false,
+  "structured_combined_is_qualified_default": false,
+  "dimensionality": "UNSET_EVIDENCE_DERIVED",
+  "families": {
+    "GLOBAL_CELL_STATE": {
+      "extraction_object": "ONE_CELL_LEVEL_VECTOR_OR_SUMMARY",
+      "intended_scope": "BROAD_SHARED_RECOVERABLE_RNA_STRUCTURE_ACROSS_THE_CELL",
+      "legitimate_losses": [
+        "GENUINELY_QUERY_LOCAL_INFORMATION",
+        "RARE_NOVEL_INFORMATION_NOT_SHARED_GLOBALLY",
+        "PROGRAM_SPECIFIC_DETAIL_NOT_REQUIRED_FOR_GLOBAL_SUMMARY"
+      ],
+      "mandatory_shortcut_controls": [
+        "ADDRESS_IDENTITY",
+        "QUERY_EXCHANGEABILITY",
+        "CAPACITY_MATCHED_GLOBAL_SUMMARY",
+        "SOURCE_OPERATOR_DEPTH_SUPPORT",
+        "TECHNICAL_ONLY"
+      ],
+      "transport_axes": [
+        "DONOR_TRANSFER",
+        "OPERATOR_TRANSFER",
+        "STUDY_TRANSFER",
+        "TECHNOLOGY_TRANSFER"
+      ],
+      "rare_novel_rna_behavior": "MAY_FAIL_TO_RETAIN_RARE_OR_LOCAL_STRUCTURE_WITHOUT_AUTOMATIC_DISQUALIFICATION_OF_OTHER_FAMILIES",
+      "maximum_claim_before_external_evidence": "RNA_REPRESENTATION",
+      "is_complete_cell_state_claim": false
+    },
+    "QUERY_LOCAL_STATE": {
+      "extraction_object": "ADDRESS_CONDITIONED_OR_QUERY_CONDITIONED_STATE",
+      "intended_scope": "RECOVERABLE_RNA_STRUCTURE_SPECIFIC_TO_A_MOLECULAR_ADDRESS_OR_LOCAL_CONTEXT",
+      "legitimate_losses": [
+        "GLOBAL_INFORMATION_NOT_NEEDED_FOR_QUERY_CONDITIONAL_STATE",
+        "UNRELATED_PROGRAM_STRUCTURE"
+      ],
+      "mandatory_shortcut_controls": [
+        "ADDRESS_IDENTITY",
+        "QUERY_EXCHANGEABILITY",
+        "CAPACITY_MATCHED_GLOBAL_SUMMARY",
+        "SOURCE_OPERATOR_DEPTH_SUPPORT",
+        "TECHNICAL_ONLY"
+      ],
+      "transport_axes": [
+        "DONOR_TRANSFER",
+        "OPERATOR_TRANSFER",
+        "STUDY_TRANSFER",
+        "TECHNOLOGY_TRANSFER"
+      ],
+      "rare_novel_rna_behavior": "MAY_RETAIN_LOCAL_OR_RARE_STRUCTURE_IF_PRESENT_IN_LAWFUL_EVIDENCE_BUT_MUST_NOT_LABEL_IT_BIOLOGICAL_WITHOUT_EXTERNAL_SUPPORT",
+      "maximum_claim_before_external_evidence": "RNA_REPRESENTATION",
+      "is_complete_cell_state_claim": false
+    },
+    "PROGRAM_STATE": {
+      "extraction_object": "ONE_OR_MORE_PROGRAM_OR_SUBSPACE_LEVEL_STATES",
+      "intended_scope": "RECOVERABLE_MODULE_PROGRAM_OR_SUBSPACE_STRUCTURE",
+      "legitimate_losses": [
+        "SINGLE_ADDRESS_DETAIL_OUTSIDE_PROGRAMS",
+        "GLOBAL_INFORMATION_NOT_CAPTURED_BY_THE_PROGRAM_BASIS",
+        "NOVEL_STRUCTURE_NOT_ASSIGNED_TO_AN_EXISTING_PROGRAM"
+      ],
+      "mandatory_shortcut_controls": [
+        "ADDRESS_IDENTITY",
+        "QUERY_EXCHANGEABILITY",
+        "CAPACITY_MATCHED_GLOBAL_SUMMARY",
+        "SOURCE_OPERATOR_DEPTH_SUPPORT",
+        "TECHNICAL_ONLY"
+      ],
+      "transport_axes": [
+        "DONOR_TRANSFER",
+        "OPERATOR_TRANSFER",
+        "STUDY_TRANSFER",
+        "TECHNOLOGY_TRANSFER"
+      ],
+      "rare_novel_rna_behavior": "MAY_RETAIN_RARE_PROGRAMS_IF_IDENTIFIABLE_BUT_MUST_DISTINGUISH_UNASSIGNED_NOVELTY_FROM_MEASUREMENT_FAILURE",
+      "maximum_claim_before_external_evidence": "RNA_REPRESENTATION",
+      "is_complete_cell_state_claim": false
+    },
+    "STRUCTURED_COMBINED_STATE": {
+      "extraction_object": "EXPLICIT_GLOBAL_PLUS_PROGRAM_PLUS_QUERY_LOCAL_OR_NOVELTY_COMPONENT_INTERFACE",
+      "intended_scope": "STRUCTURED_RECOVERABLE_RNA_STATE_WHEN_NO_SINGLE_SUMMARY_IS_SUFFICIENT",
+      "legitimate_losses": [
+        "NONRECOVERABLE_INFORMATION_FROM_THE_PERMITTED_VIEW",
+        "COMPONENTS_NOT_SUPPORTED_BY_PROSPECTIVE_EVIDENCE"
+      ],
+      "mandatory_shortcut_controls": [
+        "ADDRESS_IDENTITY",
+        "QUERY_EXCHANGEABILITY",
+        "CAPACITY_MATCHED_GLOBAL_SUMMARY",
+        "SOURCE_OPERATOR_DEPTH_SUPPORT",
+        "TECHNICAL_ONLY"
+      ],
+      "transport_axes": [
+        "DONOR_TRANSFER",
+        "OPERATOR_TRANSFER",
+        "STUDY_TRANSFER",
+        "TECHNOLOGY_TRANSFER"
+      ],
+      "rare_novel_rna_behavior": "MAY_CARRY_A_SEPARATE_NOVELTY_OR_LOCAL_COMPONENT_BUT_BIOLOGICAL_MEANING_REQUIRES_INDEPENDENT_SUPPORT",
+      "maximum_claim_before_external_evidence": "RNA_REPRESENTATION",
+      "is_complete_cell_state_claim": false,
+      "must_show_incremental_value_over_components": true,
+      "more_components_is_not_automatic_advantage": true
+    }
+  },
+  "comparison_rules": {
+    "same_information_legality_contract": true,
+    "same_shortcut_firewall": true,
+    "same_biological_resampling_policy_within_estimand": true,
+    "no_family_wins_by_dimensionality_or_parameter_count": true,
+    "nonrecoverable_information_is_not_required": true,
+    "different_families_may_legitimately_retain_different_information": true
+  },
+  "hard_boundary": "NO_REPRESENTATION_WINNER_SELECTED__TRAINING_OFF"
+}
