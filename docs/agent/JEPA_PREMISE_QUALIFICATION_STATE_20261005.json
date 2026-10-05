@@ -83,15 +83,43 @@
     "world_a_can_qualify_production_pipeline": false,
     "reduced_bcd_can_qualify_production_pipeline": false,
     "production_pipeline_required_universe": "CANONICAL_41238_ADDRESS_SYNTHETIC_UNIVERSE",
+    "bcd_implemented_at_canonical_41238": true,
+    "bcd_41k_implementation_commit": "9840cafe51309cade9a88889c66bdba666bf2eee",
+    "v2_canonical_observer_commit": "4e95aac41222fdf67faa29f86f4221021b566acc",
+    "v2_oracle_ceilings_remeasured": false,
+    "next_required_action": "REBUILD_ALL_EXTENDED_WORLDS_ON_V2_AND_REMEASURE_ORACLE_CEILINGS",
     "prospectively_justified_equivalent_allowed": true,
     "equivalent_requires_lawful_identity_mapping": true,
     "arbitrary_96_to_41238_mapping_allowed": false,
     "independent_noise_padding_satisfies_scale": false,
+    "canonical_identity_semantics": "REAL_REGISTRY_IDENTIFIERS_IN_FROZEN_ORDER__SYNTHETIC_MODULE_ALLOCATION_RANDOM_WITH_RESPECT_TO_GENE_SYMBOL",
+    "real_gene_semantic_claim_from_random_module_assignment_allowed": false,
+    "source_structural_unmeasurement": {
+      "HVS_measured_fraction": 0.454,
+      "NPH52_measured_fraction": 0.862,
+      "SEA_AD_measured_fraction": 0.868,
+      "addresses_common_to_all_three": 17569,
+      "addresses_unique_to_one_source": 9990
+    },
+    "v2_observer_realism": {
+      "abundance_max_median": 27514,
+      "declared_abundance_band": [100, 10000],
+      "abundance_exceeds_declared_band": true,
+      "top_1pct_count_share": 0.324,
+      "detect_rate_sd": 0.218,
+      "addresses_never_detected": 11972,
+      "background_covariance_programs": 60,
+      "measured_state_family_overlap": 0.323,
+      "measured_regulon_family_overlap": 0.367,
+      "declared_adjacent_family_overlap": 0.45,
+      "posthoc_rebanding_allowed": false
+    },
     "minimum_structural_opportunities": [
       "HETEROGENEOUS_ABUNDANCE",
       "LONG_TAIL_SUPPORT",
       "GENE_SPECIFIC_DETECTABILITY",
       "OPERATOR_SPECIFIC_SUPPORT",
+      "SOURCE_STRUCTURAL_UNMEASUREMENT",
       "DENSE_AND_SPARSE_PROGRAMS",
       "PARTIALLY_OVERLAPPING_REDUNDANT_MODULES",
       "RARE_AND_LOCAL_PROGRAMS",
@@ -99,6 +127,20 @@
       "NONLINEAR_INTERACTIONS_WHERE_RELEVANT",
       "GENE_IDENTITY_SHORTCUT_OPPORTUNITY"
     ]
+  },
+  "synthetic_identity_use_modes": {
+    "SCRATCH_SYNTHETIC_TRAINING": {
+      "random_planted_biology_on_real_identity_slots_allowed": true,
+      "reason": "MODEL_STARTS_WITHOUT_REAL_DATA_TRAINED_GENE_IDENTITY_SEMANTICS",
+      "real_gene_semantic_claim_allowed": false,
+      "required_caveat": "REAL_IDENTIFIERS_DEFINE_TOKENIZER_VOCABULARY_ONLY; RANDOM_SYNTHETIC_SIGNAL_AT_A_GENE_DOES_NOT_ASSERT_BIOLOGY_OF_THAT_GENE"
+    },
+    "REAL_DATA_TRAINED_CHECKPOINT_EVALUATION": {
+      "random_planted_biology_on_real_identity_slots_allowed": false,
+      "status": "UNRESOLVED_REQUIRES_PROSPECTIVE_IDENTITY_SEMANTICS",
+      "reason": "A_REAL_DATA_TRAINED_CHECKPOINT_CARRIES_LEARNED_GENE_IDENTITY_EMBEDDING_SEMANTICS_AND_RANDOM_REASSIGNMENT_WOULD_BE_ADVERSARIAL",
+      "required_before_use": "SEPARATE_PROSPECTIVE_CHECKPOINT_EVALUATION_IDENTITY_CONTRACT"
+    }
   },
   "claim_ladder": [
     "RNA_REPRESENTATION",
