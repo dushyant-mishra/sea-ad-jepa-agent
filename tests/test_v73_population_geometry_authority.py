@@ -26,5 +26,18 @@ def test_100k_has_exact_frozen_source_apportionment_and_real_joint_support(monke
  assert s['donor_count_summary']['gini']>0.5
  assert s['operator_count_summary']['gini']>0.7
 
+def test_2k_smoke_preserves_all_feasible_operator_support(monkeypatch):
+ """The 2K promotion smoke must not erase observation operators before authorizing 100K.
+
+ All three source quotas at n=2,000 are large enough to give at least one cell to every
+ operator nested in that source, so all 42 authenticated operators are feasible and must
+ remain represented. This is a smoke-scale scientific-geometry requirement, not merely a
+ 100K property.
+ """
+ monkeypatch.chdir(ROOT);G=load();a,trip,q=G.quotas_for_n(2_000)
+ s=G.summary_from_quotas(a,trip,q)
+ assert s['source_operator_nonzero_cells']==42
+ assert min(s['operator_counts'])>=1
+
 def test_payload_parts_are_digest_bound(monkeypatch):
  monkeypatch.chdir(ROOT);G=load();a,trip=G.load_authority();assert trip.shape==(1400,3);assert int(trip[:,2].sum())==4_553_407

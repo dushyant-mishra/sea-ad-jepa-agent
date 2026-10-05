@@ -6,6 +6,9 @@ GSE214979. Every output row is tied to the SAME global synthetic cell used by th
 observer. RNA observes global/query/shared state; ATAC observes global/shared plus private
 regulatory state. The private truth is consumed only inside this generator and is never
 serialized into observable output.
+
+V75 separates the truth/operator-model seed from stochastic measurement realization.
+Omitting measurement_seed preserves V73/V74 semantics.
 """
 from __future__ import annotations
 
@@ -51,18 +54,19 @@ def _source_embeddings(seed: int):
     ).astype(np.float32)
 
 
-def observe(root: Path, seed: int = 7302) -> dict:
+def observe(root: Path, seed: int = 7302, measurement_seed: int | None = None) -> dict:
     truth_root = root / "hidden_truth"
     obs = root / "observable_raw" / "PAIRED_MULTIOME_like_sharded"
     obs.mkdir(parents=True, exist_ok=True)
     tm = json.loads((truth_root / "TRUTH_MANIFEST.json").read_text())
     if int(tm["seed"]) != int(seed):
         raise ValueError("observer seed must equal master-truth seed")
+    measurement_seed = int(seed if measurement_seed is None else measurement_seed)
 
     src_embed = _source_embeddings(seed)
-    # RNA: global4 + query2 + shared3 + source2 = 11 dimensions; no private state.
+    # Operator/model mappings stay tied to the truth seed; only stochastic count
+    # realization changes with measurement_seed.
     Wr = _weights(seed + 1100, N_RNA_GENES, 11, 1000, 0.20)
-    # ATAC: global4 + shared3 + private2 + source2 + technical1 = 12 dimensions.
     Wa = _weights(seed + 1200, N_ATAC_REGIONS, 12, 1200, 0.18)
     out_shards = []
     total = 0
@@ -92,14 +96,14 @@ def observe(root: Path, seed: int = 7302) -> dict:
         rkeys = (ids.astype(np.uint64)[:, None] * np.uint64(1140071481932319849)
                  + rgid[None, :] * np.uint64(1402946736689701973))
         rcounts = F.poisson_from_uniform(
-            rlam, T.u01(seed + 1300, rkeys, 1400), max_k=64
+            rlam, T.u01(measurement_seed + 1300, rkeys, 1400), max_k=64
         ).T.astype(np.int16)
 
         rid = np.arange(N_ATAC_REGIONS, dtype=np.uint64)
         akeys = (ids.astype(np.uint64)[:, None] * np.uint64(6364136223846793005)
                  + rid[None, :] * np.uint64(1442695040888963407))
         acounts = F.poisson_from_uniform(
-            alam, T.u01(seed + 1400, akeys, 1500), max_k=64
+            alam, T.u01(measurement_seed + 1400, akeys, 1500), max_k=64
         ).T.astype(np.int16)
 
         start, stop = int(ids[0]), int(ids[-1]) + 1
@@ -124,8 +128,10 @@ def observe(root: Path, seed: int = 7302) -> dict:
         total += len(ids)
 
     manifest = dict(
-        schema="V73_PAIRED_MULTIOME_SHARDED_OBSERVER_MANIFEST_V1",
+        schema="V75_PAIRED_MULTIOME_SHARDED_OBSERVER_MANIFEST_V2_MEASUREMENT_SEED_SEPARATED",
         seed=seed,
+        truth_seed=seed,
+        measurement_seed=measurement_seed,
         n_cells=total,
         paired_same_cell_identity=True,
         n_rna_genes=N_RNA_GENES,
@@ -139,8 +145,10 @@ def observe(root: Path, seed: int = 7302) -> dict:
         master_truth_digest_binding=[
             dict(file=s["file"], sha256=s["sha256"]) for s in tm["shards"]
         ],
+        observation_operator_seed=seed,
+        measurement_realization_seed=measurement_seed,
         count_randomization=(
-            "stateless feature-by-cell inverse-CDF Poisson; invariant to shard boundaries"
+            "stateless feature-by-cell inverse-CDF Poisson keyed by measurement realization seed; invariant to shard boundaries"
         ),
         shards=out_shards,
     )
@@ -153,9 +161,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", required=True)
     ap.add_argument("--seed", type=int, default=7302)
+    ap.add_argument("--measurement-seed", type=int, default=None)
     a = ap.parse_args()
-    m = observe(Path(a.root), a.seed)
-    print(json.dumps(dict(status="PASS", cells=m["n_cells"], shards=len(m["shards"])), indent=2))
+    m = observe(Path(a.root), a.seed, a.measurement_seed)
+    print(json.dumps(dict(status="PASS", cells=m["n_cells"], shards=len(m["shards"]), truth_seed=m["truth_seed"], measurement_seed=m["measurement_seed"]), indent=2))
 
 
 if __name__ == "__main__":
