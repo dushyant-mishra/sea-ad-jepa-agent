@@ -9,14 +9,23 @@ def _write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def _write_pointer(root: Path, *, key: str = "handoff_path") -> None:
+def _write_pointer(
+    root: Path,
+    *,
+    key: str = "handoff_path",
+    current_task_status: str = "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS",
+    current_task: str = "Freeze the premise qualification and real-RNA prefreeze contract before any deciding TRAIN-only result is opened.",
+) -> None:
     _write(
         root / "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
         json.dumps(
             {
                 "date": "2026-10-05",
-                "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_AUTHORITY_RECONCILIATION_REQUIRED__TRAINING_OFF",
+                "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF",
                 key: "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+                "current_task_status": current_task_status,
+                "current_task": current_task,
+                "authority_freshness_rule": "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES",
             }
         ),
     )
@@ -24,11 +33,11 @@ def _write_pointer(root: Path, *, key: str = "handoff_path") -> None:
 
 def _write_good_surface(root: Path) -> None:
     fixtures = {
-        "START_HERE.md": "Date: 2026-10-05\nTraining: OFF\n500K: NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
-        "README.md": "Current status — October 5, 2026\nTraining and multimodal training are OFF.\n500K is not authorized.\nNo qualified production target winner.\n160 is not biological dimensional authority.\n",
-        "docs/agent/CURRENT_AUTHORITY_INDEX.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
-        "docs/agent/CURRENT_SUPERSESSION_MAP.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
-        "docs/agent/memory-os/ACTIVE_STATE.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\n",
+        "START_HERE.md": "Date: 2026-10-05\nTraining: OFF\n500K: NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\nTarget lineage reconstruction is COMPLETE.\nCurrent task: premise qualification prefreeze.\nAuthority freshness: update canonical surface when the current task closes or the next authorized task changes.\n",
+        "README.md": "Current status — October 5, 2026\nTraining and multimodal training are OFF.\n500K is not authorized.\nNo qualified production target winner.\n160 is not biological dimensional authority.\nTarget lineage reconstruction is complete.\nCurrent task: premise qualification prefreeze.\nAuthority freshness: update canonical surface when the current task closes or the next authorized task changes.\n",
+        "docs/agent/CURRENT_AUTHORITY_INDEX.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\nTarget lineage reconstruction is COMPLETE.\nCurrent task: premise qualification prefreeze.\nAuthority freshness: update canonical surface when the current task closes or the next authorized task changes.\n",
+        "docs/agent/CURRENT_SUPERSESSION_MAP.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\nTarget lineage reconstruction is COMPLETE.\nCurrent task: premise qualification prefreeze.\nAuthority freshness: update canonical surface when the current task closes or the next authorized task changes.\n",
+        "docs/agent/memory-os/ACTIVE_STATE.md": "Date: 2026-10-05\nTRAINING = OFF\n500K NOT AUTHORIZED\nNo qualified production target winner.\n160 is not biological dimension authority.\nTarget lineage reconstruction is COMPLETE.\nCurrent task: premise qualification prefreeze.\nAuthority freshness: update canonical surface when the current task closes or the next authorized task changes.\n",
         "docs/agent/ACTIVE_STATE.md": "Date: 2026-10-05\nStatus: SUPERSEDED_ALIAS_ROUTER\nCanonical: docs/agent/memory-os/ACTIVE_STATE.md\n",
         "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json": json.dumps(
             {
@@ -41,8 +50,8 @@ def _write_good_surface(root: Path) -> None:
             {
                 "status": "SUPERSEDED_ALIAS_ROUTER",
                 "date": "2026-10-05",
-                "canonical_current_state": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
-                "next_action": "RECONSTRUCT_TERMINAL_TARGET_LINEAGE_BEFORE_NEW_EXPERIMENT",
+                "canonical_current_state": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+                "next_action": "FOLLOW_POINTER_CURRENT_TASK",
             }
         ),
         "docs/agent/memory-os/START_EVERY_JEPA_CHAT.txt": "Date: 2026-10-05\nStatus: CURRENT_BOOTSTRAP_ROUTER\nREAD FIRST: START_HERE.md\n",
@@ -82,3 +91,14 @@ def test_legacy_handoff_key_remains_accepted(tmp_path: Path) -> None:
     _write_good_surface(tmp_path)
     _write_pointer(tmp_path, key="handoff")
     assert audit_authority_surface(tmp_path) == []
+
+
+def test_rejects_completed_target_lineage_still_advertised_as_current_task(tmp_path: Path) -> None:
+    _write_good_surface(tmp_path)
+    _write_pointer(
+        tmp_path,
+        current_task_status="TARGET_LINEAGE_RECONCILIATION_REQUIRED",
+        current_task="Reconstruct the terminal target lineage before any new target experiment.",
+    )
+    failures = audit_authority_surface(tmp_path)
+    assert any("authority freshness" in failure.lower() for failure in failures)
