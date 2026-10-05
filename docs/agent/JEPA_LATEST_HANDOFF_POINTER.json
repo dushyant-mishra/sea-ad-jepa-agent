@@ -1,20 +1,23 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V24",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V25",
   "date": "2026-10-05",
-  "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__V76_SYNTHETIC_STATE_LADDER_STOPPED__TARGET_AUTHORITY_RECONCILIATION_REQUIRED__TRAINING_OFF",
+  "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF",
   "handoff_branch": "handoff/jepa-20261005-historical-audit-custody",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
   "historical_audit_path": "docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md",
+  "terminal_target_lineage_path": "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
   "custody_manifest": "docs/agent/archive/chat_runtime_20261005/CHAT_RUNTIME_CUSTODY_MANIFEST_20261005_V1.json",
-  "authority_supersession_notice": "docs/agent/CURRENT_AUTHORITY_INDEX_20261005_SUPERSESSION_NOTICE.md",
-  "base_audited_branch": "claude/v75-authority-provenance-correction-20261004",
   "base_audited_head": "a9146d930c132978b6297722314e7af9f8507338",
   "v75_science_head": "189e62092e095efba71ffaa23522f627b819e37e",
   "current_measurement_status": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
   "current_target_status": "NO_QUALIFIED_PRODUCTION_TARGET_WINNER",
-  "current_blocker": "The terminal target-design lineage must be reconciled from V6R5B through later contextual/F1 and target-architecture work before any new target experiment, training, or learned-state qualification is designed.",
-  "next_action": "Read the 2026-10-05 historical audit and handoff. Reconstruct the terminal target lineage; do not rerun the August donor-centering gate, which was later executed and adjudicated as RESIDUAL_TARGET_DOES_NOT_RESCUE.",
+  "target_lineage_status": "COMPLETE__MERGED_TO_MAIN__NO_PRODUCTION_TARGET_QUALIFIED",
+  "current_task_status": "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS",
+  "current_task": "Freeze the P1-P6 premise qualification, representation-family, claim-ladder, Stage-A real-RNA prefreeze, external-asset classification, and estimand-choice contracts before any deciding TRAIN-only result is opened.",
+  "current_blocker": "The Stage-A real-RNA gate is not execution authority until premise semantics, estimand, fitted-readout split rules, and justified numeric margins are prospectively frozen.",
+  "next_action": "Audit and publish the prospective premise/real-RNA governance contracts; do not reopen target-lineage reconstruction, do not train, and do not open protected validation assets.",
+  "authority_freshness_rule": "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES",
   "governance": {
     "training": "OFF",
     "multimodal_training": "OFF",
@@ -24,7 +27,8 @@
     "Morabito": "PROTECTED",
     "v75_measurement_authority": "STANDS_WITHIN_DECLARED_SCOPE",
     "synthetic_learned_state_scaling_ladder": "STOPPED",
-    "width_160": "NETWORK_TOKEN_CAPACITY_NOT_BIOLOGICAL_DIMENSION_AUTHORITY"
+    "width_160": "NETWORK_TOKEN_CAPACITY_NOT_BIOLOGICAL_DIMENSION_AUTHORITY",
+    "stage_a_execution_authority": "NOT_AUTHORIZED__PREFREEZE_ONLY"
   },
-  "read_me_first": "Read docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md, then docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md. Treat older next-action pointers as historical unless explicitly preserved by these documents."
+  "read_me_first": "Read START_HERE.md, this pointer, the terminal target-lineage reconstruction, and CURRENT_AUTHORITY_INDEX.md. Older local next-action text is historical unless explicitly preserved by this current surface."
 }
