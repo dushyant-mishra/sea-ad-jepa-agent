@@ -62,6 +62,15 @@ def quotas_for_n(n_cells:int, authority_path:Path=AUTHORITY):
     for si,source in enumerate(SOURCE_ORDER):
         ops=np.where(op_sources==source)[0]
         op_quota=largest_remainder(full_operator_counts[ops],int(source_quota[si]))
+        if int(source_quota[si])>=len(ops) and np.any(op_quota==0):
+            zeros=np.flatnonzero(op_quota==0)
+            for zi in zeros:
+                donors=np.flatnonzero(op_quota>1)
+                if len(donors)==0:
+                    raise RuntimeError(f'cannot preserve operator support for source {source}')
+                take=donors[np.argmax(op_quota[donors])]
+                op_quota[take]-=1
+                op_quota[zi]=1
         realised_operator_quota[ops]=op_quota
         for op,oq in zip(ops,op_quota):
             mask=trip[:,1]==op
