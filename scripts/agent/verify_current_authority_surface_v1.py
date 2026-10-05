@@ -32,9 +32,14 @@ def audit_authority_surface(root: Path) -> list[str]:
 
     if pointer.get("date") != CURRENT_DATE:
         failures.append(f"pointer stale date: {pointer.get('date')!r}")
-    if "TARGET_AUTHORITY_RESET" not in str(pointer.get("status", "")):
-        failures.append("pointer status is not target-authority reset")
-    handoff_value = str(pointer.get("handoff", pointer.get("current_handoff", "")))
+    if "TARGET_AUTHORITY" not in str(pointer.get("status", "")):
+        failures.append("pointer status is not target-authority reset/reconciliation")
+    handoff_value = str(
+        pointer.get(
+            "handoff_path",
+            pointer.get("handoff", pointer.get("current_handoff", "")),
+        )
+    )
     if "20261005_TARGET_AUTHORITY_RESET" not in handoff_value:
         failures.append("pointer handoff is not Oct-5 target-authority reset")
 
