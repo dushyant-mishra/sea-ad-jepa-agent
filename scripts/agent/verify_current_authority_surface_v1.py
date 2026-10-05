@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 
 CURRENT_DATE = "2026-10-05"
+CURRENT_TASK_STATUS = "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS"
+FRESHNESS_RULE = "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES"
 CURRENT_FILES = (
     "START_HERE.md",
     "README.md",
@@ -37,11 +39,22 @@ def audit_authority_surface(root: Path) -> list[str]:
 
     if pointer.get("date") != CURRENT_DATE:
         failures.append(f"pointer stale date: {pointer.get('date')!r}")
-    if "TARGET_AUTHORITY" not in str(pointer.get("status", "")):
-        failures.append("pointer status is not target-authority reset/reconciliation")
+    if "TARGET" not in str(pointer.get("status", "")):
+        failures.append("pointer status is not target/premise authority state")
     handoff_value = str(pointer.get("handoff_path", pointer.get("handoff", pointer.get("current_handoff", ""))))
     if "20261005_TARGET_AUTHORITY_RESET" not in handoff_value:
         failures.append("pointer handoff is not Oct-5 target-authority reset")
+
+    current_task_status = str(pointer.get("current_task_status", ""))
+    current_task = str(pointer.get("current_task", ""))
+    if current_task_status != CURRENT_TASK_STATUS:
+        failures.append(
+            f"authority freshness failure: current_task_status={current_task_status!r}, expected {CURRENT_TASK_STATUS!r}"
+        )
+    if "reconstruct" in current_task.lower() and "target" in current_task.lower() and "lineage" in current_task.lower():
+        failures.append("authority freshness failure: completed target-lineage reconstruction is still advertised as current")
+    if pointer.get("authority_freshness_rule") != FRESHNESS_RULE:
+        failures.append("authority freshness rule missing from pointer")
 
     texts: dict[str, str] = {}
     for rel in CURRENT_FILES:
@@ -58,6 +71,13 @@ def audit_authority_surface(root: Path) -> list[str]:
             match = re.search(r"Date:\s*(\d{4}-\d{2}-\d{2})", text)
             if not match or match.group(1) != CURRENT_DATE:
                 failures.append(f"{rel} stale date")
+        lowered = text.lower()
+        if "target lineage reconstruction is complete" not in lowered:
+            failures.append(f"authority freshness failure: {rel} does not record target lineage reconstruction complete")
+        if "current task" not in lowered or "premise qualification" not in lowered:
+            failures.append(f"authority freshness failure: {rel} does not route to premise qualification current task")
+        if "authority freshness" not in lowered:
+            failures.append(f"authority freshness failure: {rel} does not state freshness policy")
 
     active_alias = root / LEGACY_ACTIVE_ALIAS
     if not active_alias.exists():
@@ -89,8 +109,10 @@ def audit_authority_surface(root: Path) -> list[str]:
         next_action = {}
     if next_action.get("status") != "SUPERSEDED_ALIAS_ROUTER" or next_action.get("date") != CURRENT_DATE:
         failures.append(f"memory-os bootstrap alias is stale: {NEXT_ACTION_ALIAS}")
-    if next_action.get("canonical_current_state") != "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json":
+    if next_action.get("canonical_current_state") != POINTER:
         failures.append(f"memory-os bootstrap alias has wrong canonical route: {NEXT_ACTION_ALIAS}")
+    if next_action.get("next_action") != "FOLLOW_POINTER_CURRENT_TASK":
+        failures.append(f"memory-os bootstrap alias hard-codes a stale next action: {NEXT_ACTION_ALIAS}")
 
     bootstrap_path = root / CHAT_BOOTSTRAP
     if not bootstrap_path.exists():
