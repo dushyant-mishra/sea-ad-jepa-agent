@@ -13,7 +13,7 @@ def load(path, name):
     return mod
 
 
-def fixtures():
+def fixtures(with_500k_resource_gate=True):
     truth = {
         "n_cells": 100000,
         "n_donors": 104,
@@ -66,6 +66,12 @@ def fixtures():
         },
         "calibrated_projection": {"requires_100k_measurement_before_500k_promotion": True},
     }
+    if with_500k_resource_gate:
+        resource["five_hundred_k_promotion"] = {
+            "status": "QUALIFIED_FOR_500K_MEASUREMENT_STRESS",
+            "rule_frozen_before_500k_execution": True,
+            "budget_authority_bound": True,
+        }
     controls = {
         "status": "SYNTHETIC_CONTROL_MATERIALIZED__NO_MODEL_QUALIFICATION",
         "n_cells_per_world": 100000,
@@ -81,7 +87,7 @@ def fixtures():
     return truth, rna, multi, fragments, fragment_linkage, resource, controls, boundary, qc
 
 
-def test_clean_100k_result_passes_measurement_architecture(monkeypatch):
+def test_clean_100k_result_passes_measurement_architecture_when_500k_resource_gate_is_bound(monkeypatch):
     monkeypatch.chdir(ROOT)
     V = load(VAL, "v75_result_clean")
     out = V.validate(*fixtures())
@@ -89,7 +95,17 @@ def test_clean_100k_result_passes_measurement_architecture(monkeypatch):
     assert out["promotion_recommendation"] == "PASS_TO_500K_MEASUREMENT_STRESS"
     assert out["learned_160d_jepa_state_qualified"] is False
     assert out["checks"]["fragment_byte_linkage_qualified"] is True
+    assert out["checks"]["resource_500k_promotion_gate_bound"] is True
     assert not out["blockers"]
+
+
+def test_clean_100k_without_frozen_500k_resource_gate_is_indeterminate_for_promotion(monkeypatch):
+    monkeypatch.chdir(ROOT)
+    V = load(VAL, "v75_result_resource_promotion")
+    out = V.validate(*fixtures(with_500k_resource_gate=False))
+    assert out["status"] == "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE"
+    assert out["promotion_recommendation"] == "INDETERMINATE_DO_NOT_PROMOTE"
+    assert "500K_RESOURCE_COMPATIBILITY_RULE_NOT_BOUND" in out["indeterminate_reasons"]
 
 
 def test_wrong_population_geometry_blocks(monkeypatch):
