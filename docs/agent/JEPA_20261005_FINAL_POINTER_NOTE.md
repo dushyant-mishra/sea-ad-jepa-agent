@@ -1,0 +1,1 @@
+The live routing file for future agents is `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`. This Oct-5 branch updates that pointer to the target-authority-reset handoff and historical reconciliation audit.
