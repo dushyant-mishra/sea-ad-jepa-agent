@@ -1,0 +1,43 @@
+name: Current authority surface guard
+
+on:
+  pull_request:
+    paths:
+      - START_HERE.md
+      - README.md
+      - docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+      - docs/agent/CURRENT_AUTHORITY_INDEX.md
+      - docs/agent/CURRENT_SUPERSESSION_MAP.md
+      - docs/agent/memory-os/ACTIVE_STATE.md
+      - scripts/agent/verify_current_authority_surface_v1.py
+      - tests/test_current_authority_surface_guard_v1.py
+      - .github/workflows/current-authority-surface-guard.yml
+  push:
+    paths:
+      - START_HERE.md
+      - README.md
+      - docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+      - docs/agent/CURRENT_AUTHORITY_INDEX.md
+      - docs/agent/CURRENT_SUPERSESSION_MAP.md
+      - docs/agent/memory-os/ACTIVE_STATE.md
+      - scripts/agent/verify_current_authority_surface_v1.py
+      - tests/test_current_authority_surface_guard_v1.py
+      - .github/workflows/current-authority-surface-guard.yml
+
+permissions:
+  contents: read
+
+jobs:
+  authority-surface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Run adversarial guard tests
+        run: python -m pytest -q tests/test_current_authority_surface_guard_v1.py
+      - name: Validate live current-authority surface
+        run: python scripts/agent/verify_current_authority_surface_v1.py .
