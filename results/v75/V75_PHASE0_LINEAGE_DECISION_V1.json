@@ -1,0 +1,45 @@
+{
+  "schema": "V75_PHASE0_LINEAGE_DECISION_V1",
+  "status": "FROZEN_BEFORE_100K_EXECUTION",
+  "base_sha": "525611a8a70faf425c4f7f0f5d2354269beb3322",
+  "base_branch": "chatgpt/v74-synthetic-calibration-closure-20261003",
+  "required_imports_from_v73_stress_twin": {
+    "source_head": "ed7ac610601580ae3bc3ca185d6047f34b7cb042",
+    "operator_zero_quota_rescue": "REQUIRED_BEFORE_2K_SMOKE_AUTHORITY",
+    "fragment_byte_linkage_validator": "REQUIRED_BEFORE_2K_SMOKE_AUTHORITY"
+  },
+  "required_v74_semantics_to_preserve": {
+    "empirical_rna_depth_and_detected_support_consumption": true,
+    "v2_qc_authority_binding": true,
+    "full104_n_cells_api": true
+  },
+  "measured_operator_occupancy": {
+    "v73_stress_twin": {
+      "2000": {"nonzero": 42, "total": 42, "minimum_cells": 1},
+      "10000": {"nonzero": 42, "total": 42, "minimum_cells": 1},
+      "100000": {"nonzero": 42, "total": 42, "minimum_cells": 4},
+      "500000": {"nonzero": 42, "total": 42, "minimum_cells": 20},
+      "4553407": {"nonzero": 42, "total": 42, "minimum_cells": 179}
+    },
+    "v74_calibration_closure": {
+      "2000": {"nonzero": 36, "total": 42, "minimum_cells": 0},
+      "10000": {"nonzero": 41, "total": 42, "minimum_cells": 0},
+      "100000": {"nonzero": 42, "total": 42, "minimum_cells": 4},
+      "500000": {"nonzero": 42, "total": 42, "minimum_cells": 20},
+      "4553407": {"nonzero": 42, "total": 42, "minimum_cells": 179}
+    }
+  },
+  "smoke_interpretation": "A 2K smoke is an authorization gate and must preserve every observation operator whose within-source quota makes nonzero occupancy feasible. A smoke missing six of 42 operators cannot authorize the 100K run merely because 100K itself would restore them.",
+  "claim_boundary": {
+    "100k_lane_qualifies": "FULL104-like measurement/population architecture and scaling mechanics",
+    "does_not_qualify": "a learned 160-dimensional JEPA state representation",
+    "learned_160d_jepa_state_qualified": false
+  },
+  "governance": {
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED"
+  }
+}
