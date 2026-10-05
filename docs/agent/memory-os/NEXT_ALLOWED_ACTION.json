@@ -1,84 +1,15 @@
 {
-  "schema": "JEPA_NEXT_ALLOWED_ACTION_V7",
-  "last_updated": "2026-09-10",
-  "canonical_branch": "main",
-  "status": "T0_V20_IMMUTABLE__V21_DRAFT_NOT_FROZEN__V5_HARDENING__NO_TRAINING_AUTHORITY",
-  "current_status": "T0 V20 remains immutable with broad state supported internally and rare tail underdetermined by measurement. Steps 1-4 diagnosed the tail/QC problem; Step 4 showed 1:1 QC matching removes imbalance but destroys held-out-statistic power, so balancing cannot carry rejection authority without exact-geometry discrimination controls. V21 is draft-only and unexecuted. V5 anti-cheat/qualification wiring has advanced substantially, but real full-reader shard binding, data-derived dimensions, real invariance evidence, prospective numeric thresholds, production-geometry GPU evidence and independent review remain open.",
-  "primary_next_action": "T0: perform only the pathology-blind fresh-donor feasibility audit for AT8-available donors outside the frozen V20 membership, without reading AT8 values or fitting any estimator. V5 in parallel: verify the real discovery-expression asset and run only a tiny REAL_DATA_SMOKE_NON_AUTHORITY mechanics/data-path test if feasible; continue structural hardening but do not infer production dimensions or thresholds from the subset.",
-  "t0": {
-    "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
-    "v20_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "primary_terminal": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
-    "tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
-    "step4_commit": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f",
-    "v21_branch": "t0/v21-prospective-design-20260910",
-    "v21_draft_head": "e770f6dc83c44a36232d15541d3529e71c7611c9",
-    "v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
-    "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
-    "standing_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
-    "training_authorized": false
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_SUPERSESSION_ROUTER_V1",
+  "date": "2026-10-05",
+  "status": "SUPERSEDED_ALIAS_ROUTER",
+  "canonical_current_state": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
+  "canonical_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+  "canonical_start": "START_HERE.md",
+  "next_action": "RECONSTRUCT_TERMINAL_TARGET_LINEAGE_BEFORE_NEW_EXPERIMENT",
+  "boundaries": {
+    "training": "OFF",
+    "production_target_winner": "NONE_QUALIFIED",
+    "500k": "NOT_AUTHORIZED"
   },
-  "v5": {
-    "branch": "planning/v5-full-population-cheat-proofing-20260909",
-    "observed_head_at_handoff": "5668e3d71c720219ec823d5ff089f246091f2be2",
-    "training_authorized": false,
-    "population": {
-      "cells": 4553407,
-      "donors": 104,
-      "operators": 42,
-      "matrices": 42,
-      "addresses": 41238,
-      "common_core": 17186
-    },
-    "full_reader_expression_status": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
-    "required_expression_shard_pairs": 42,
-    "historical_expression_blocks": 8915,
-    "dimension_authority": {
-      "D_shared": null,
-      "D_private": null,
-      "D_total": null,
-      "D_obs": null,
-      "d_gene": null
-    },
-    "structural_hardening": [
-      "Z_BIO_ONLY_FOR_BIOLOGY_OBJECTIVES_AND_CHECKPOINT_SELECTION",
-      "CROSS_CELL_QC_ASSOCIATION_WARNING_ONLY",
-      "COMPLETE_SAME_CELL_TECHNICAL_INTERVENTION_FAMILY_REQUIRED",
-      "PREEXECUTION_AND_POSTQUALIFICATION_PHASES_SEPARATED",
-      "EXACT_CHECKPOINT_AND_DESIGN_CONTEXT_BINDING",
-      "QC_AND_POWER_PARENT_CHILD_DEPENDENCY_CLOSURE",
-      "TWO_SIDED_EXACT_GEOMETRY_REJECTION_GATE_CALIBRATION",
-      "BOUNDED_QUALIFICATION_ENTRY_ONLY",
-      "PRODUCTION_GEOMETRY_GPU_EVIDENCE_REQUIRED"
-    ],
-    "real_data_smoke_allowed": true,
-    "real_data_smoke_status": "REAL_DATA_SMOKE_NON_AUTHORITY_ONLY"
-  },
-  "required_actions": [
-    "T0: keep V20 immutable.",
-    "T0: resolve fresh-donor feasibility pathology-blind before freezing V21.",
-    "T0: if V21 proceeds, freeze estimator selection, ridge bracketing, QC/discrimination rules and target definitions prospectively before any new confirmation outcome is read.",
-    "V5: bind exact 42 full-reader corrected TRAIN counts/meta shard pairs; no 50K/synthetic substitution for production authority.",
-    "V5: derive D_shared, D_private, D_total, D_obs and d_gene from the full real reader-fit corpus under prospective rules.",
-    "V5: run/verify proposal-weight and packing/order/restart invariance on real production geometry.",
-    "V5: freeze numeric collapse, shortcut-superiority, same-cell and power-control thresholds prospectively.",
-    "V5: complete actual production-geometry CUDA Gate-2 and bounded qualification.",
-    "V5: independent review before any production training authority."
-  ],
-  "forbidden_actions": [
-    "Do not modify or reinterpret frozen V20 retrospectively.",
-    "Do not inspect AT8 values while choosing V21 design machinery.",
-    "Do not use the V20 binary rare tail as a production training target.",
-    "Do not treat cross-cell QC association alone as causal rejection authority.",
-    "Do not let a rejection gate operate without exact-geometry valid and invalid discrimination controls.",
-    "Do not train, finetune, write production checkpoints or advance production EMA.",
-    "Do not execute reader_validation/oracle, DEV/SEALED, protected populations or pathology-guided tuning.",
-    "Do not infer production dimensions or thresholds from a small smoke subset or synthetic fixture.",
-    "Do not accept decreasing loss or above-chance performance as biological qualification."
-  ],
-  "controlling_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_T0_V21_V5_CURRENT.md",
-  "controlling_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT.json",
-  "formulas": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
-  "heavy_assets": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "training_authorized": false
+  "historical_original": "docs/agent/archive/memory_os_historical/NEXT_ALLOWED_ACTION_20260910.json"
 }
