@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_REPOSITORY_AUTHORITY_CLEANUP_AUDIT_20261005_V1",
+  "date": "2026-10-05",
+  "current_science": {
+    "v75_measurement_authority": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
+    "promotion_500k": "NOT_AUTHORIZED",
+    "production_target_winner": null,
+    "target_status": "NO_QUALIFIED_PRODUCTION_TARGET_WINNER",
+    "synthetic_learned_state_scaling_ladder": "STOPPED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "width_160": "NETWORK_TOKEN_CAPACITY_NOT_BIOLOGICAL_DIMENSION_AUTHORITY"
+  },
+  "target_lineage_terminal": {
+    "residual_target": "RESIDUAL_TARGET_DOES_NOT_RESCUE",
+    "pr163": "COMPETING_TARGETS_DEFINED__NONE_SELECTED",
+    "pr178": "SYNTHETIC_TA_TB_NOT_INFORMATIVE__REAL_RNA_REQUIRED",
+    "unresolved_question": "Which lawful real-TRAIN target construction retains biological information while adding material conditional information beyond gene/address identity with zero encoder/EMA updates?"
+  },
+  "current_file_repairs": [
+    "START_HERE.md",
+    "docs/agent/CURRENT_AUTHORITY_INDEX.md",
+    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
+    "docs/agent/memory-os/ACTIVE_STATE.md",
+    "README.md"
+  ],
+  "high_risk_prs": {
+    "147": "HISTORICAL_EVIDENCE__CONTAINS_RETRACTED_S9_CLAIM",
+    "163": "HISTORICAL_EVIDENCE__OPEN_TARGET_DESIGN",
+    "178": "HISTORICAL_EVIDENCE__CORRECTIVE_AUTHORITY_FOR_PRIOR_CLAIMS",
+    "207": "CURRENT_MEASUREMENT_AUTHORITY__NEXT_ACTION_TEXT_SUPERSEDED",
+    "208": "CUSTODY_ONLY"
+  },
+  "classification_enum": [
+    "CURRENT",
+    "SUPERSEDED",
+    "HISTORICAL_EVIDENCE",
+    "CUSTODY_ONLY",
+    "INCOMPLETE_STOPPED",
+    "DEFERRED"
+  ],
+  "observed_repository_scale": {
+    "open_prs_observed": 167,
+    "branches_observed": ">300",
+    "deletion_policy": "NO_BULK_DELETION_WITHOUT_ANCESTRY_AND_EVIDENCE_PRESERVATION_REVIEW"
+  },
+  "next_cleanup": [
+    "add corrective notice to PR 147",
+    "add next-action supersession notice to PR 207",
+    "classify open PRs",
+    "close only proven superseded PRs with successor links",
+    "add current-file consistency CI"
+  ]
+}
