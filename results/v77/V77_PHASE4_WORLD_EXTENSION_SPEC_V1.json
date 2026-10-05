@@ -1,0 +1,200 @@
+{
+  "schema": "V77_PHASE4_WORLD_EXTENSION_SPEC_V1_PROSPECTIVE",
+  "recorded_utc": "2026-10-05T17:08:57Z",
+  "status": "PROSPECTIVE_DESIGN_FROZEN_BEFORE_IMPLEMENTATION",
+  "mandate": "Phase 4 - decide what the synthetic world must gain before Phase 3 can freeze tests. Written before any implementation, as the mandate requires: 'Any extension must be prospective and documented before testing the JEPA against it.'",
+  "depends_on": {
+    "world_A_lock": "V77_WORLD_A_BEHAVIOURAL_LOCK_V1",
+    "inventory": {
+      "path": "results\\v77\\V77_PLANTED_TRUTH_INVENTORY_V1.json",
+      "sha256": "c643cc20193fb39cf56ade66b61256ed8b2c3dab491261f7ab90eece81104d08"
+    }
+  },
+  "GOVERNING_DESIGN_RULE": "every new component carries a DESIGNED recoverability class written here, before implementation, and a MEASURED oracle ceiling computed after implementation and before any JEPA sees the world. A component whose measured class contradicts its designed class is a construction failure and is repaired or withdrawn, never reinterpreted.",
+  "SECOND_RULE_NEW_FILES_ONLY": "Worlds B, C and D are NEW generator files. World A's generators are frozen by the lock and must not gain flags, branches or parameters.",
+  "RECONCILED_DIVERGENCE_BETWEEN_THE_TWO_INSTRUCTIONS": {
+    "owner_instruction": "three worlds B/C/D; 'Spatial/SCENIC+/causal perturbation should be added only if required for a specific qualification claim; don't build a kitchen-sink simulator.'",
+    "review_lane_instruction": "isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised",
+    "the_tension": "minimal world count versus per-regime isolation, and conditional versus mandatory scope",
+    "resolution_adopted": [
+      "world COUNT follows the owner: three worlds, B, C and D. A fourth, E, exists only as a conditional stub.",
+      "per-regime ISOLATION follows the review lane, achieved WITHOUT extra worlds: every component below draws from its own orthogonal RNG stream and carries an independent on/off switch, so any single regime can be instantiated alone. Isolation is a property of the component, not of the world.",
+      "SCOPE follows the owner: spatial and rich causal perturbation are DEFERRED, but each is bound here to the exact qualification claim that would require it, so the deferral is an explicit decision rather than an omission.",
+      "directed regulator->target structure is NOT deferred, because the owner's own World D bullet requires 'explicit regulatory structure rather than shared linear loadings.'"
+    ],
+    "dissent_preserved": "the review lane would build spatial and full perturbation truth now. That position is recorded, not adopted. If a spatial or causal claim is later made, World E is required first."
+  },
+  "WORLD_B_HETEROGENEOUS_BIOLOGY": {
+    "purpose": "supply the biological heterogeneity World A has none of",
+    "closes": [
+      "cell-type/state programs",
+      "donor biology",
+      "rare biological states",
+      "transient states",
+      "sparse marker-like programs",
+      "the missing partially-recoverable continuum"
+    ],
+    "components": [
+      {
+        "id": "B1",
+        "component": "cell-state mixture",
+        "mechanism": "K=6 discrete states by categorical draw on an orthogonal stream; each state carries its own dense program loading vector added to the log-relative rate",
+        "designed_recoverability_class": "RECOVERABLE",
+        "target_oracle_ceiling_from_permitted_RNA": "0.55-0.75",
+        "isolable_by": "B1 alone",
+        "closes_premise_gap": "cell-type/state programs were ABSENT"
+      },
+      {
+        "id": "B2",
+        "component": "donor biology",
+        "mechanism": "a 3-dim latent drawn per DONOR index and shared by every cell of that donor, added to the cell's log-relative rate. Drawn on a stream keyed by donor, never by operator",
+        "designed_recoverability_class": "RECOVERABLE_AT_DONOR_LEVEL",
+        "target_oracle_ceiling_from_permitted_RNA": "0.40-0.65 at cell level",
+        "isolable_by": "B2 alone",
+        "closes_premise_gap": "donor biology was ABSENT with ICC at the independence null"
+      },
+      {
+        "id": "B3",
+        "component": "rare states, designed on both sides of the recoverability line",
+        "mechanism": "four low-prevalence subpopulations at prevalences 0.05, 0.01, 0.002 and 0.0005. Two carry a program on genes that are available under most operators (recoverable); two carry a program on genes that are structurally unavailable under most operators (non-recoverable from the permitted view)",
+        "designed_recoverability_class": "MIXED_BY_DESIGN: two RECOVERABLE, two NON_RECOVERABLE_FROM_PARTIAL_RNA",
+        "target_oracle_ceiling_from_permitted_RNA": "detection AP, not R2: recoverable arm designed well above the prevalence base rate, non-recoverable arm designed at the base rate",
+        "isolable_by": "B3 alone, and each prevalence separately",
+        "closes_premise_gap": "rare biology was ABSENT; tails were exactly Gaussian, so rare-state sensitivity could not be tested at all"
+      },
+      {
+        "id": "B4",
+        "component": "transient states",
+        "mechanism": "a continuous pseudotime per cell plus a program whose loading is a smooth unimodal function of pseudotime, so the effect exists only in a middle band",
+        "designed_recoverability_class": "PARTIALLY_RECOVERABLE",
+        "target_oracle_ceiling_from_permitted_RNA": "0.25-0.45",
+        "isolable_by": "B4 alone",
+        "closes_premise_gap": "transient states were ABSENT"
+      },
+      {
+        "id": "B5",
+        "component": "sparse marker programs",
+        "mechanism": "programs loading on 3 to 8 genes only, with large per-gene effect and small total transcriptome weight, so they are biologically salient but do not dominate library composition",
+        "designed_recoverability_class": "RECOVERABLE_BUT_LOW_WEIGHT",
+        "target_oracle_ceiling_from_permitted_RNA": "0.30-0.60 for the module score",
+        "isolable_by": "B5 alone",
+        "closes_premise_gap": "all World A loadings are dense; no marker structure existed"
+      },
+      {
+        "id": "B6",
+        "component": "partially-recoverable continuum - THE KEY ADDITION",
+        "mechanism": "a graded family of five factors. Factor j splits its loading between genes measured under essentially all operators and genes unavailable under a controlled fraction of operators, with the mixing fraction stepped across the family",
+        "designed_recoverability_class": "GRADED_PARTIAL",
+        "target_oracle_ceiling_from_permitted_RNA": "designed ladder approximately 0.05, 0.15, 0.30, 0.45, 0.60",
+        "isolable_by": "each rung separately",
+        "closes_premise_gap": "World A is sharply bimodal - every factor is about 0.67 recoverable or exactly 0.00 - so it contains NO partially recoverable case and cannot calibrate a partial-recoverability metric. This is the single most important gap for the premise question."
+      }
+    ],
+    "shared_substrate": "World A's population geometry, QC calibration and observation operator are reused unchanged"
+  },
+  "WORLD_C_STRUCTURED_BIOLOGY": {
+    "purpose": "supply structure that a global linear coordinate cannot absorb",
+    "closes": [
+      "nonlinear program interactions",
+      "genuinely query-local effects",
+      "biology x measurement-operator interactions"
+    ],
+    "components": [
+      {
+        "id": "C1",
+        "component": "nonlinear program interaction",
+        "mechanism": "states A and B each carry their own program; their CO-occurrence additionally activates a third, disjoint gene module. The interaction module is driven by the product term and loads on genes used by neither parent program",
+        "designed_recoverability_class": "RECOVERABLE_ONLY_BY_A_NONLINEAR_READER",
+        "target_oracle_ceiling_from_permitted_RNA": "linear oracle designed near 0.05-0.15; nonlinear oracle designed 0.45-0.65",
+        "isolable_by": "C1 alone",
+        "closes_premise_gap": "World A is linear in the latents, so no model can be credited or penalised for capturing interaction. The gap between the linear and nonlinear ceilings is the whole measurement"
+      },
+      {
+        "id": "C2",
+        "component": "genuinely query-local effects",
+        "mechanism": "a per-cell multiplicative GAIN applied to one specific gene module's loading vector, rather than an additive global coordinate. The effect changes the relationship between a module and the state instead of shifting the cell's position",
+        "designed_recoverability_class": "RECOVERABLE_ONLY_BY_CONDITIONING_ON_THE_MODULE",
+        "target_oracle_ceiling_from_permitted_RNA": "global-readout oracle designed near 0.00-0.10; module-conditional oracle designed 0.40-0.60",
+        "isolable_by": "C2 alone",
+        "closes_premise_gap": "World A's z_query is named local but passes through the same global linear map, so it is an RNA-private GLOBAL factor. A true local effect must be invisible to a global linear readout and visible to a module-conditional one"
+      },
+      {
+        "id": "C3",
+        "component": "biology x measurement-operator interaction",
+        "mechanism": "per-gene availability probability and cell library complexity are made to depend jointly on operator AND cell state - for example cells in one state have systematically reduced complexity, and one program raises dropout within its own genes",
+        "designed_recoverability_class": "CONFOUNDED_BY_DESIGN",
+        "target_oracle_ceiling_from_permitted_RNA": "not a ceiling; the deliverable is a measurable confounding magnitude",
+        "isolable_by": "C3 alone, with a C3-off twin",
+        "closes_premise_gap": "measured in World A at |corr| <= 0.0086, i.e. independent by construction. The mandate explicitly says not to assume the observation operator is independent of biological state, and World A currently cannot test it at all"
+      }
+    ],
+    "mandatory_twin": "every World C instance ships with a C-off twin at identical seeds so the structured effect is measured as a difference, not as a level"
+  },
+  "WORLD_D_REGULATORY_MULTIMODAL": {
+    "purpose": "replace shared linear loadings with directed regulation, and repair defect D2",
+    "closes": [
+      "regulatory relationships as mechanism rather than latent sharing",
+      "the biological versus technical ATAC-private degeneracy"
+    ],
+    "components": [
+      {
+        "id": "D1",
+        "component": "directed regulator -> region -> target gene structure",
+        "mechanism": "a set of regulators; each regulator is assigned a SPARSE set of bound ATAC regions and a sparse set of target genes. Regulator activity raises accessibility at its bound regions and, through a directed signed coefficient, raises or lowers its target genes. Non-bound regions and non-target genes are explicit known negatives",
+        "designed_recoverability_class": "RECOVERABLE_AS_A_GRAPH, with known positives and known negatives",
+        "target_oracle_ceiling_from_permitted_RNA": "region-to-gene link precision and recall against the planted graph",
+        "isolable_by": "D1 alone",
+        "closes_premise_gap": "World A has no transcription factor, motif or peak-to-gene link. Its ATAC regions are a uniform 5 kb tiling of chr1 and its loading matrix is dense random, so no cis-regulatory question is even expressible"
+      },
+      {
+        "id": "D2",
+        "component": "REPAIR - distinguishable ATAC-private signatures",
+        "mechanism": "biological ATAC-private regulation acts through D1's directed graph: SPARSE, structured region loadings that are statistically linked to specific target genes. Technical ATAC-private variation acts on measurement properties: DENSE and near-uniform across regions, correlated with fragment depth and operator QC, and carrying no region-to-gene structure",
+        "designed_recoverability_class": "SEPARABLE_BY_SIGNATURE",
+        "target_oracle_ceiling_from_permitted_RNA": "the deliverable is a separation statistic, not a ceiling",
+        "isolable_by": "D2 alone, and jointly with D1",
+        "closes_premise_gap": "in World A, technical_latents[0] and z_reg_private both score 0.000 from RNA and about 0.85 from ATAC. They are structurally identical, so no cross-modal biological-meaning claim is possible. This repair is mandatory before any such claim"
+      }
+    ],
+    "scope_limit": "D1 supplies TF-like regulator to region to gene TRUTH with known positives and negatives. It does NOT build cisTarget databases, motif rankings or the SCENIC+ software path - those are an inference pipeline, not ground truth, and are out of scope here"
+  },
+  "WORLD_E_CONDITIONAL_NOT_BUILT": {
+    "status": "DEFERRED_BY_OWNER_INSTRUCTION",
+    "contents_if_ever_required": [
+      "spatial / neighbourhood / compartment biology",
+      "multi-target perturbations with dose, direct effects, downstream cascades and null perturbations"
+    ],
+    "exact_claims_that_would_require_it": {
+      "spatial": "any claim that the representation preserves microenvironment or niche context",
+      "causal_perturbation": "any claim that the representation supports CAUSAL prediction. The Oct-5 reset already holds causal qualification as a separate level, so this is not on the current critical path"
+    },
+    "rule": "if either claim is proposed, World E is a prerequisite and must be built and measured first"
+  },
+  "ORDER_OF_OPERATIONS": [
+    "1. DONE - World A locked, including its generator blob digests and behavioural signatures",
+    "2. DONE - repair R1 applied at the metric level; denominators use 11 biological dimensions, not 14",
+    "3. THIS ARTIFACT - B/C/D designed prospectively with recoverability classes, before implementation",
+    "4. NEXT - implement B, C and D as new generator files; World A generators remain untouched",
+    "5. NEXT - measure the oracle ceiling of every component and compare it against its designed class",
+    "6. ONLY THEN - Phase 3 freezes the qualification tests across all four worlds",
+    "7. AFTER THAT - train and evaluate, judged as fraction of RECOVERABLE truth"
+  ],
+  "WHAT_PHASE_4_DELIBERATELY_DOES_NOT_DO": [
+    "it does not implement anything yet; the design is frozen first so the tests cannot be fitted to it",
+    "it does not mutate World A",
+    "it does not build a kitchen-sink simulator",
+    "it does not define the Phase 3 metrics; those are frozen only after the ceilings are measured",
+    "it makes no biological claim"
+  ],
+  "GOVERNANCE": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "500K": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A_generators_untouched": true,
+    "no_model_trained": true,
+    "no_41238_identity_bridge_invented": true
+  }
+}
