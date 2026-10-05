@@ -1,0 +1,115 @@
+{
+  "schema": "JEPA_STAGE_A_REAL_RNA_TARGET_GATE_V1_PREFREEZE",
+  "date": "2026-10-05",
+  "status": "PREFREEZE_EXECUTION_CONTRACT__NOT_EXECUTION_AUTHORITY",
+  "execution_authorized": false,
+  "encoder_optimizer_updates": 0,
+  "ema_updates": 0,
+  "test_open": false,
+  "morabito_open": false,
+  "external_assets_may_select_target": false,
+  "pathology_outcomes_may_select_target": false,
+  "selected_target": "UNSET_REQUIRES_APPROVAL",
+  "selected_representation": "UNSET_REQUIRES_APPROVAL",
+  "selected_estimand": "UNSET_REQUIRES_APPROVAL",
+  "gates": {
+    "LEAKAGE": {
+      "absolute_fail": true,
+      "fail_verdict": "FAIL_LEAKAGE",
+      "seams": [
+        "DIRECT_QUERY_VALUE",
+        "TEACHER_PRECONTEXT_QUERY_VALUE",
+        "NORMALIZATION_MEDIATED_QUERY_DEPENDENCE",
+        "SUPPORT_OR_MISSINGNESS_ANSWER_CHANNEL",
+        "DETERMINISTIC_TRANSFORM_OF_HIDDEN_VALUE",
+        "FUNCTIONALLY_EQUIVALENT_UNENUMERATED_SEAM"
+      ]
+    },
+    "SHORTCUT": {
+      "absolute_fail": true,
+      "fail_verdict": "FAIL_SHORTCUT",
+      "controls": [
+        "ADDRESS_IDENTITY_ONLY",
+        "QUERY_EXCHANGEABILITY",
+        "CAPACITY_MATCHED_GLOBAL_SUMMARY",
+        "SOURCE_OPERATOR_DEPTH_SUPPORT_ONLY",
+        "TECHNICAL_ONLY",
+        "BIOLOGY_ABSENT_COVARIANCE_ONLY_WHERE_AVAILABLE",
+        "REMAINING_RNA_NECESSITY_WHERE_MEANINGFUL"
+      ]
+    }
+  },
+  "recoverability": {
+    "real_rna_quantity": "TARGET_OBJECT_RECOVERABILITY",
+    "biological_truth_quantity_requires_independent_truth": "BIOLOGICAL_TRUTH_RECOVERABILITY",
+    "target_object_recoverability_is_biological_validation": false,
+    "nonrecoverable_information_is_model_failure": false
+  },
+  "diagnostic_readout": {
+    "fit_partition": "INNER_TRAIN_ONLY",
+    "freeze_before": "HELD_DONOR_EVALUATION",
+    "fit_on_deciding_units": false,
+    "may_change_target_definition_after_deciding_outcomes": false,
+    "may_change_features_after_deciding_outcomes": false,
+    "may_change_hyperparameters_after_deciding_outcomes": false,
+    "requires_fit_and_evaluation_unit_provenance": true
+  },
+  "transport": {
+    "axes": [
+      "DONOR_TRANSFER",
+      "OPERATOR_TRANSFER",
+      "STUDY_TRANSFER",
+      "TECHNOLOGY_TRANSFER"
+    ],
+    "allowed_axis_statuses": [
+      "PASS",
+      "FAIL",
+      "NOT_TESTED",
+      "NOT_IDENTIFIABLE_UNDER_CURRENT_CONFOUNDING"
+    ],
+    "not_tested_is_pass": false,
+    "not_identifiable_is_pass": false,
+    "donor_level_uncertainty_required_where_estimand_requires_donor_inference": true
+  },
+  "threshold_policy": {
+    "post_hoc_origin_allowed": false,
+    "allowed_origins": [
+      "PREEXISTING_INDEPENDENT_AUTHORITY",
+      "PROSPECTIVELY_APPROVED_CALIBRATION_WITHOUT_DECIDING_OUTCOMES",
+      "UNSET_REQUIRES_APPROVAL"
+    ],
+    "unjustified_numeric_margin": "UNSET_REQUIRES_APPROVAL"
+  },
+  "metrics_prefreeze": {
+    "report_target_object_recoverability": true,
+    "report_candidate_recovery": true,
+    "report_recovery_over_recoverable_target_information": true,
+    "report_biological_unit_uncertainty": true,
+    "report_global_rna_structure": true,
+    "report_query_local_rna_structure": true,
+    "report_program_rna_structure": true,
+    "report_rare_novel_rna_structure_without_automatic_biological_label": true
+  },
+  "allowed_verdicts": [
+    "QUALIFIED_FOR_RNA_REPRESENTATION",
+    "INFORMATIVE_BUT_NOT_QUALIFIED",
+    "FAIL_LEAKAGE",
+    "FAIL_SHORTCUT",
+    "FAIL_TRANSPORT",
+    "NONRECOVERABLE_FROM_VIEW",
+    "INDETERMINATE"
+  ],
+  "maximum_claim": "RNA_REPRESENTATION",
+  "qualification_authorizes_production_training": false,
+  "open_fields_before_execution": [
+    "SELECTED_TARGET_CANDIDATE_SET",
+    "SELECTED_REPRESENTATION_COMPARISON_SET",
+    "FOUNDATION_POPULATION_ESTIMAND",
+    "DECIDING_NUMERIC_MARGINS_OR_APPROVED_CALIBRATION",
+    "EXACT_TRAIN_INNER_FIT_SPLITS",
+    "EXACT_HELD_DONOR_DECIDING_SPLIT",
+    "MULTIPLICITY_POLICY",
+    "FINAL_METRIC_IMPLEMENTATIONS"
+  ],
+  "hard_boundary": "NO_EXECUTION_UNTIL_SEPARATE_AUTHORITY_CLOSES_OPEN_FIELDS__TRAINING_OFF"
+}
