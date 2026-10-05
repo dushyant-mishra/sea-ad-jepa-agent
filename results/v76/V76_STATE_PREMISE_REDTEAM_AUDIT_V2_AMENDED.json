@@ -1,0 +1,192 @@
+{
+  "schema": "V76_STATE_PREMISE_REDTEAM_AUDIT_V2_AMENDED",
+  "recorded_utc": "2026-10-05T02:54:33Z",
+  "head_at_amendment": "ee9f02bc6ef84b3e3398d057d5812ea224bef673",
+  "amends": {
+    "path": "results/v76/V76_STATE_PREMISE_REDTEAM_AUDIT_V1.json",
+    "sha256": "a2ce558dde3adb1ce4c74af6384605305ce9c2d36b22b43d7f573cdbf1ddad39",
+    "v1_bytes_unchanged_by_this_amendment": true,
+    "why_a_successor_not_an_edit": "V1 was pushed and reviewed at ee9f02bc. The corrected reading is published beside it so the change of position is visible, not overwritten."
+  },
+  "trigger": "external review by the Sol lane, forwarded by the project owner",
+  "AMENDMENT_1_Q3_OVERSTATEMENT": {
+    "v1_said": "Q3 cell_state as the state object: CONTRADICTED",
+    "v2_says": "Q3 cell_state as designated global scientific state: UNQUALIFIED__NOT_IDENTIFIED_BY_THE_OBJECTIVE",
+    "the_reviewer_is_correct": true,
+    "what_was_overstated": "V1 asserted that 'a degenerate cell_state would not by itself raise the loss'. That is an ablation result. No ablation was run. It was stated as a finding and it was not one.",
+    "mechanism_verified_in_source_this_turn": {
+      "file": "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "line_298": "tokens = torch.cat((cell, gene_tokens), dim=1)",
+      "line_301": "for block in self.blocks:",
+      "ordering": "the cell token is concatenated BEFORE the block loop, so it participates in self-attention in all six token-preserving blocks alongside every gene token",
+      "line_307_return": "EncoderOutput(tokens[:, 1:], tokens[:, 0], ...)",
+      "consequence": "gene_states are tokens[:,1:] and are computed in the same attention as the cell token. Gradients from the gene-block loss therefore DO reach pathways involving the cell token. cell_state is not gradient-isolated."
+    },
+    "what_still_stands_from_V1": [
+      "no loss term designates cell_state as the global scientific state",
+      "the JEPA target is teacher gene_states, not teacher cell_state",
+      "cell_state is not a sufficient statistic by construction: the predictor also receives every student gene state, so nothing forces the cell token to carry the information",
+      "the one objective that WOULD identify cell_state, teacher_student_relational_target_v2, is inactive and an audit asserts its absence"
+    ],
+    "the_precise_distinction": "'participates in the computation' is established. 'carries the cell-specific information' is untested. V1 conflated them."
+  },
+  "AMENDMENT_2_NEW_PREMISE_Q7": {
+    "question": "Does a single global cell vector need to exist at all?",
+    "classification": "OPEN__NOT_PREVIOUSLY_ASKED",
+    "statement": "a token-preserving architecture may naturally learn a SET-VALUED cell representation -- the configuration of contextualized gene states -- rather than compressing a cell into one sufficient statistic. Biology may favour that: inflammatory, synaptic, stress, metabolic and lineage programs are modular.",
+    "three_candidate_scientific_objects_to_compare": [
+      {
+        "id": "z_cell",
+        "what": "the final cell token state"
+      },
+      {
+        "id": "{h_g}",
+        "what": "the set of contextualized gene states"
+      },
+      {
+        "id": "program_subspace",
+        "what": "a learned or post-hoc low-rank subspace / program set over {h_g}"
+      }
+    ],
+    "why_the_third_may_reconcile_the_project": "160 stays token width, the network keeps its distributed gene representation, and biological dimensionality is DISCOVERED as stable program/subspace rank instead of being equated to an architectural width. This is consistent with the ledger's separation of D_shared/D_private/D_total/D_obs from d_gene.",
+    "accepted_into_the_ledger": true
+  },
+  "AMENDMENT_3_A_TRAINED_CHECKPOINT_WAS_FOUND_AND_IT_CHANGES_Q2_AND_Q6": {
+    "status": "MATERIAL_NEW_EVIDENCE",
+    "artifact": {
+      "path": "exports/prod41k_teacher_t1_20260823/phase_e_restart_checkpoint.pt",
+      "bytes": 54521276,
+      "sha256": "ce5932349630b5ea0281289f6110ff2c46b2845dbc610f7bf9b56b01cb08e187",
+      "sha256_matches_the_smoke_report": true
+    },
+    "it_is_a_canonical_production_vocabulary_IPB_encoder": {
+      "online_encoder.cell_token": [
+        1,
+        1,
+        160
+      ],
+      "online_encoder.tokenizer.gene_identity.weight": [
+        41238,
+        48
+      ],
+      "identity_projection": [
+        160,
+        48
+      ],
+      "n_tensors_online": 108,
+      "n_tensors_target": 108,
+      "n_tensors_predictor": 15,
+      "contains": [
+        "online_encoder",
+        "target_encoder (EMA)",
+        "predictor",
+        "optimizer",
+        "full RNG state",
+        "masking_rng_state"
+      ],
+      "meaning": "this is the PRODUCTION molecular universe of 41,238 addresses at d_gene=160, not the historical 4,096-gene Stage81B artifact"
+    },
+    "BUT_IT_IS_NOT_A_LEARNED_CHECKPOINT": {
+      "global_update_step": 10,
+      "ema_update_count": 10,
+      "microbatch": 8,
+      "effective_batch": 128,
+      "cohort": "4,726 FOUNDATION TRAIN cells, 149 donors, 42 operators, zero DEV/SEALED overlap",
+      "its_own_report_says": "Scope: engineering feasibility only. This report does not qualify biology and does not authorize or auto-start Phase T1.",
+      "ema_consequence": "at momentum 0.996 over 10 updates the EMA target has moved approximately 4% of the way from its initialization. The target encoder is, for practical purposes, still u0."
+    },
+    "effect_on_Q2": {
+      "v1_said": "BLOCKED -- substrate/encoder identity incompatibility",
+      "v2_says": "BLOCKED__BUT_NARROWER_WITH_A_NAMED_REMEDY",
+      "correction": "the incompatibility is a property of the 96-gene V75 SUBSTRATE, not of the encoder. The encoder already carries 41,238 canonical identities, and the ordering authority exists and is SHA-pinned (stage81a2r_exact_canonical_gene_registry_candidate.csv, 5BAFBBF7AECA7A58D3B8C8E40E4393D67601841914D97818023205EEF5CB5BA0). A synthetic substrate built over the canonical address space is therefore constructible today."
+    },
+    "effect_on_Q6": {
+      "v1_said": "BLOCKED -- no route avoids both circularity traps",
+      "v2_says": "BLOCKED__BY_ABSENCE_OF_TRAINING_NOT_BY_IDENTITY",
+      "correction": "a non-circular route exists in principle: synthesize over the canonical 41,238 addresses and evaluate a real checkpoint. What blocks it today is that no LEARNED checkpoint exists -- only a 10-update engineering smoke."
+    }
+  },
+  "AMENDMENT_4_THE_PROPOSED_EXPERIMENT_PROGRAM_IS_NOT_YET_EXECUTABLE": {
+    "program_reviewed": "six representation-role identifiability experiments: cell-token necessity, cell-token causal participation inside the encoder, gene-state sufficiency, cell-state sufficiency, identity-only shortcut, u0 versus learned",
+    "scientific_assessment": "CORRECT_AND_IT_IS_THE_RIGHT_NEXT_QUESTION",
+    "agreement": "switching the qualified object to the gene-block representation now would be a second premature freeze. Gene-block state is the directly supervised object but may be dominated by gene identity. The question of WHERE the trained model stores cell-specific information must be answered first.",
+    "BLOCKER": {
+      "id": "no learned checkpoint exists",
+      "why_it_blocks": "experiment 6 is explicitly 'at initialization and at the frozen learned checkpoint', and experiments 1-5 are only interpretable as 'what training added' against that contrast. At 10 updates the checkpoint and u0 are nearly the same model, so the contrast axis carries almost no signal.",
+      "what_running_1-5_on_it_would_measure": "where an essentially untrained transformer puts information -- a fact about attention architecture, not about JEPA",
+      "the_failure_mode_this_avoids": "a statistically clean answer to an experiment that was not the experiment intended. This is the S99 pattern."
+    },
+    "WHAT_IS_EXECUTABLE_TODAY_UNDER_TRAINING_OFF": {
+      "the_u0_baseline_arm": "experiments 1-5 at initialization, and at the 10-update checkpoint, reported as the BASELINE arm of experiment 6 and labelled as such",
+      "value": "it is a genuine prospective deliverable: it fixes the initialization reference before any trained checkpoint exists, so the later comparison cannot be accused of choosing its baseline after seeing the outcome",
+      "it_must_not_be_called": "an answer to where JEPA put the cell-specific information"
+    },
+    "GOVERNANCE_FLAG_ON_EXPERIMENTS_4_AND_5": {
+      "observation": "GeneAnchorDecoder exists and its docstring is 'Two bilinear heads that decode hidden genes only through z_cell'. It is NOT present in the checkpoint's saved state dicts, so it has never been trained.",
+      "two_separate_issues": [
+        "AGENTS.md states the incumbent CELL + hidden-gene identity -> hidden RNA value/detection anchor is REJECTED as an encoder objective. Using it read-only as a probe does not violate that, but the artifact must say which it is.",
+        "a cell-state-sufficiency probe has to be FITTED. Fitting a head on a frozen encoder is still an optimization step and is not obviously inside TRAINING = OFF. This needs an explicit authorization decision before the experiment, not after."
+      ],
+      "not_proceeding_without_that_decision": true
+    }
+  },
+  "SELF_AUDIT": {
+    "S117": {
+      "defect": "I twice scanned for an IPB checkpoint and twice missed a 54.5 MB one in exports/. The first scan was scoped to results/, the second used a find expression whose -o branches did not bind as intended. I was one step from recording that no canonical-vocabulary checkpoint exists.",
+      "caught": "BEFORE_PUBLICATION, by widening to an exhaustive content scan",
+      "why_it_matters": "a false absence is the specific error this project has a standing rule against. Had it been published, Q2 and Q6 would have been wrong in the direction that makes the project look more blocked than it is.",
+      "status": "CLOSED",
+      "fix": "content-scan every candidate file; never conclude absence from a scoped search"
+    },
+    "S118": {
+      "defect": "V1's Q3 asserted an ablation result without running an ablation. The sentence 'a degenerate cell_state would not by itself raise the loss' reads as a measurement and is an inference from the loss expression alone.",
+      "caught": "AFTER_PUBLICATION, by the external reviewer, not by my own lane",
+      "why_my_lane_missed_it": "I checked what the loss targets and did not ask what the architecture lets gradients reach. Reading a loss function is not an ablation.",
+      "status": "CLOSED_BY_THIS_AMENDMENT",
+      "generalization": "any claim that a component is unconstrained requires an intervention on that component, not a reading of the objective"
+    }
+  },
+  "REVISED_SUMMARY": {
+    "Q1_160_biological_dimension": "CONTRADICTED (unchanged; closed -- token capacity)",
+    "Q2_substrate_encoder_compatibility": "BLOCKED__BUT_NARROWER_WITH_A_NAMED_REMEDY",
+    "Q3_cell_state_is_the_state_object": "UNQUALIFIED__NOT_IDENTIFIED_BY_THE_OBJECTIVE",
+    "Q4_which_encoder_downstream": "PLAUSIBLE_BUT_UNQUALIFIED (unchanged)",
+    "Q5_controls_as_state_qualification": "PLAUSIBLE_BUT_UNQUALIFIED (unchanged)",
+    "Q6_circularity_escape_route": "BLOCKED__BY_ABSENCE_OF_TRAINING_NOT_BY_IDENTITY",
+    "Q7_must_a_single_global_cell_vector_exist": "OPEN__NOT_PREVIOUSLY_ASKED"
+  },
+  "VERDICT": "DO_NOT_FREEZE_STATE_CONTRACT__PREMISE_GAPS_REMAIN",
+  "verdict_unchanged_from_V1": true,
+  "and_additionally": "DO_NOT_SWITCH_THE_QUALIFIED_OBJECT_TO_GENE_BLOCK_STATE_EITHER",
+  "HIGHEST_PRIORITY_SCIENTIFIC_BLOCKER": {
+    "statement": "determine where the trained model actually stores cell-specific information, and whether that information exceeds identity, raw-expression and u0 baselines",
+    "status": "CANNOT_BE_ANSWERED_TODAY",
+    "because": "no learned checkpoint exists; the only one is 10 updates of engineering smoke",
+    "ordered_prerequisites": [
+      "1. decide whether a probe head may be fitted on a frozen encoder under TRAINING = OFF",
+      "2. freeze the six-experiment protocol and its statistics BEFORE any checkpoint exists",
+      "3. execute the u0 + 10-update baseline arm and publish it as a baseline, not an answer",
+      "4. the trained-checkpoint arm requires an authorized training run and is out of scope here"
+    ]
+  },
+  "GOVERNANCE": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "500K_promotion": "INDETERMINATE_DO_NOT_PROMOTE",
+    "S102": "OPEN",
+    "nothing_modified": [
+      "model code",
+      "training code",
+      "thresholds",
+      "V75 scientific results",
+      "Task A artifacts",
+      "V75 authorities",
+      "V76 V1 bytes"
+    ]
+  },
+  "scope": "a premise audit and its amendment. It makes no biological claim. The checkpoint was READ, not executed and not trained."
+}
