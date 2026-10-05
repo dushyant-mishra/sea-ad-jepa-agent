@@ -1,0 +1,61 @@
+{
+  "schema": "V64_P1S_V2_SENSITIVITY_COMPLETION_AFTER_EXPOSURE_V1",
+  "date": "2026-09-29",
+  "status": "OUTCOME_EXPOSED__DESCRIPTIVE_ONLY__MUST_NOT_CHANGE_P1S_PASS",
+  "authority_context": {
+    "primary_contract": "results/v64/V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2.json",
+    "primary_result_commit": "303ca8b657b38863b5652c8cc8df132731152662",
+    "independent_audit": "results/v64/V64_P1S_V2_INDEPENDENT_AUDIT_V1.json",
+    "primary_P1S": "PASS"
+  },
+  "governance": {
+    "TRAINING": "OFF",
+    "TD60": "BLOCKED",
+    "changes_primary_population": false,
+    "changes_null": false,
+    "changes_overlap_rule": false,
+    "changes_R1_R2_R3": false,
+    "changes_bootstrap": false,
+    "changes_thresholds": false,
+    "can_rescue_or_revoke_primary_PASS": false
+  },
+  "unambiguous_missing_reports": {
+    "post_C3_log_distance_quartiles": {
+      "definition": "For every analysed P1S pair, compute absolute promoter-distal midpoint distance in hg38 after C3. Stratify analysed pairs by quartiles of log(distance_bp), using the full analysed-pair population to define the three cutpoints.",
+      "report_each_quartile": [
+        "n",
+        "E_microglia",
+        "E_neuron",
+        "E_oligo",
+        "D_MN",
+        "D_MO"
+      ],
+      "role": "descriptive sensitivity only"
+    },
+    "promoter_degree_quartiles": {
+      "definition": "For every analysed P1S pair, define promoter degree as the number of analysed P1S edges assigned to the same source-oriented promoter anchor. Assign the same degree to all edges from that promoter and stratify analysed pairs by quartiles of this degree using the full analysed-pair population.",
+      "report_each_quartile": [
+        "n",
+        "number_of_distinct_promoters",
+        "E_microglia",
+        "E_neuron",
+        "E_oligo",
+        "D_MN",
+        "D_MO"
+      ],
+      "role": "descriptive sensitivity only"
+    }
+  },
+  "local_density_status": {
+    "original_contract_text": "For each observed/null distal interval and each ATAC track, count peak midpoints within +/-50 kb of the interval midpoint; report E_c and D contrasts by pooled quartiles of local peak density.",
+    "under_specification": "The contract does not define a unique mapping from six per-pair density measurements (observed/null x three tracks) to one common pooled-quartile stratum.",
+    "already_exposed_result": "Claude reported quartiles defined from microglia observed-distal density only; this is informative but is not the frozen pooled-density sensitivity.",
+    "rule_now": "Do not select one pooling operator post-exposure and call it prospectively frozen.",
+    "acceptable_followup": "If local-density sensitivity is completed, label it outcome-exposed and report a transparent multi-definition panel rather than selecting one favorable stratification. None may alter P1S PASS."
+  },
+  "required_output_status": {
+    "P1S_primary": "PASS",
+    "P1S_contract_reporting": "COMPLETE only after log-distance and promoter-degree reports are added; local-density remains an explicitly exposed sensitivity limitation unless a multi-definition descriptive successor is executed.",
+    "low_density_claim": "Current microglia-only density Q1 warning is provisional/non-authoritative for the frozen pooled-density sensitivity, but must remain visible as a possible limitation."
+  }
+}

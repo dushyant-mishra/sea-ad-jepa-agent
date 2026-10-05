@@ -1,0 +1,78 @@
+{
+  "schema": "V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_V1",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVE_ARCHITECTURE_ONLY__TRAINING_NOT_AUTHORIZED",
+  "universal": {
+    "student_input": "LAWFUL_RNA_ONLY",
+    "teacher": "RNA_EMA_TEACHER",
+    "conceptual_state": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_shared"
+    ],
+    "universal_mass_source": "FULL104_RNA",
+    "paired_subset_sets_universal_mass": false
+  },
+  "multimodal": {
+    "initial_inputs": [
+      "RNA",
+      "ATAC",
+      "MODALITY_MASK"
+    ],
+    "conceptual_state": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_shared",
+      "Z_reg_private"
+    ],
+    "strict_information_extension": true,
+    "replacement_for_universal_rna": false,
+    "training_authorized": false
+  },
+  "shared_private": {
+    "shared_requires_recoverability_authority": true,
+    "partial_shared_projection_only": true,
+    "private_compulsory_rna_loss": false,
+    "poor_rna_prediction_assigns_private": false,
+    "private_residual_preserved": true
+  },
+  "alignment": {
+    "raw_coordinate_equality_required": false,
+    "qualified_object": "LOCKED_RECOVERABLE_SUBSPACE_OR_EQUIVALENT_PROSPECTIVE_GEOMETRY",
+    "rotation_aware": true,
+    "test_may_select_rotation": false
+  },
+  "missing_modality": {
+    "not_measured_is_zero": false,
+    "rna_only_private_state": "NOT_OBSERVED_OR_NOT_IDENTIFIABLE_FROM_CURRENT_EVIDENCE",
+    "probabilistic_private_inference_must_be_labeled_inferred": true,
+    "availability_mask_is_biology_feature_by_default": false
+  },
+  "modality_gain": {
+    "scientific_object": "INCREMENTAL_IDENTIFIABLE_BIOLOGICAL_INFORMATION_FROM_MEASURED_MODALITY",
+    "literal_coordinate_subtraction_authorized": false,
+    "donor_heldout_required": true
+  },
+  "prerequisites_before_multimodal_training": [
+    "privileged factor qualified",
+    "recoverability/shared rank qualified",
+    "shared projection locked",
+    "private residual definition locked",
+    "multimodal losses prospectively frozen"
+  ],
+  "relation_to_recoverability": {
+    "current_factor": "Z_priv_ATAC_V1",
+    "real_shared_rank": "UNRESOLVED",
+    "real_paired_execution_authorized": false,
+    "test_opened": false
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "NOT_AUTHORIZED",
+    "current_runtime_modified": false,
+    "phaseB": "MEASUREMENT_ONLY_SEPARATE_AUTHORITY",
+    "stage4": "NOT_AUTHORIZED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  }
+}

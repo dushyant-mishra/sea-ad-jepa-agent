@@ -1,0 +1,116 @@
+{
+  "schema": "V64_NIH_CARD_E2_CORRESPONDENCE_EXECUTION_PLAN_V1",
+  "date": "2026-09-29",
+  "status": "FROZEN_WITH_THE_DESIGN_CONTRACT__NOT_YET_EXECUTED",
+  "governs": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+  "canonical_parent_commit": "211e3d7c1ca04a266e875d8f4f215d720b691f47",
+
+  "ORDERED_STAGES": [
+    {
+      "stage": 0,
+      "name": "ACQUIRE_AND_AUTHENTICATE",
+      "outcome_blind": true,
+      "actions": [
+        "download final_rna_data.h5ad and final_atac_data.h5ad complete from Zenodo 20834804",
+        "verify md5 over the FULL bytes against f628b17aab355f80b912e3c715543cbd and b71589e0033e391e2fe97c1ae3928a7f",
+        "verify byte lengths 18439154935 and 14508702462"
+      ],
+      "fail_closed": "STOP on any mismatch. The previous local ATAC copy failed truncated at 6,059,254,368 bytes while curl exited 0, so acquisition success is not evidence of completeness.",
+      "emits": "V64_NIH_CARD_LOCAL_AUTHENTICATION_V1.json"
+    },
+    {
+      "stage": 1,
+      "name": "PAIRING_QUALIFICATION",
+      "outcome_blind": true,
+      "blocking": true,
+      "actions": [
+        "C-1 cardinality and composite-key uniqueness in both files",
+        "C-2 donor agreement RNA.SampleID vs ATAC.sample_id over every composite-joined nucleus",
+        "C-3 cell-type agreement RNA.cell_type vs ATAC.cell_type",
+        "C-4 cohort agreement",
+        "C-5 raw-barcode collision audit across samples"
+      ],
+      "pass_rule": "C-1 exact, C-2 zero mismatches, C-4 zero mismatches, C-5 reported, C-3 agreement >= 0.99",
+      "fail_closed": "STOP. Escalate for a depositor-provided pairing key. Do not execute correspondence on an asserted bridge.",
+      "emits": "V64_NIH_CARD_PAIRING_QUALIFICATION_V1.json"
+    },
+    {
+      "stage": 2,
+      "name": "SCHEMA_AND_BUILD_PRECONDITIONS",
+      "outcome_blind": true,
+      "actions": [
+        "assert RNA .X integrality on a bounded sample and confirm the REVERSED layout (raw/X log-like)",
+        "assert ATAC .X integrality",
+        "verify var['gene_ids'] is Ensembl-formatted",
+        "verify the ATAC consensus peak build is hg38 using hg38 chromosome lengths taken from the authenticated hg19ToHg38 chain headers",
+        "recompute microglia totals, donor count and per-donor quantiles from the authenticated local bytes and compare against the committed schema receipt"
+      ],
+      "fail_closed": "STOP on any failed assertion or on disagreement with the committed receipt.",
+      "emits": "V64_NIH_CARD_SCHEMA_PRECONDITIONS_V1.json"
+    },
+    {
+      "stage": 3,
+      "name": "SUPPORT_AND_GEOMETRY_DIAGNOSTIC",
+      "outcome_blind": true,
+      "actions": [
+        "apply the symmetric measurement-support rules to linked edges and construct matched controls",
+        "report the full attrition funnel reconciling to 20,709",
+        "compute the 14 frozen features for linked and control pairs",
+        "run the out-of-span geometry diagnostic and emit its predeclared IN_SPAN / OUT_OF_SPAN verdict"
+      ],
+      "explicitly_not_computed_here": "no RNA-ATAC correspondence value of any kind",
+      "emits": "V64_NIH_CARD_E2_SUPPORT_AND_SPAN_DIAGNOSTIC_V1.json",
+      "note": "This stage is the last one that may be run before the design is audited. It opens no outcome."
+    },
+    {
+      "stage": 4,
+      "name": "CORRESPONDENCE_EXECUTION",
+      "outcome_blind": false,
+      "requires": "explicit authorisation after independent audit of the frozen design",
+      "actions": [
+        "build within-donor RNA-only metacells",
+        "compute per-donor per-pair correspondence scores for linked and control arms",
+        "residualise through the unmodified continuous-adjustment estimator",
+        "compute the gene-balanced donor-averaged Delta and its donor cluster bootstrap interval",
+        "run all four anti-false-green controls",
+        "run every predeclared sensitivity arm"
+      ],
+      "emits": "V64_NIH_CARD_E2_CORRESPONDENCE_RESULT_V1.json"
+    }
+  ],
+
+  "EXPECTED_RESULT_SCHEMA": {
+    "schema": "V64_NIH_CARD_E2_CORRESPONDENCE_RESULT_V1",
+    "required_fields": {
+      "lineage": ["canonical_parent_commit", "design_contract_sha256", "e2_edge_table_uncompressed_sha256"],
+      "input_authentication": ["rna_md5_verified", "atac_md5_verified", "byte_lengths_match"],
+      "pairing": ["verdict", "c2_donor_mismatches", "c3_celltype_agreement", "c4_cohort_mismatches"],
+      "population": ["microglia_total", "donors_total", "donors_qualifying", "metacells_total",
+                     "per_donor_metacell_quantiles"],
+      "ATTRITION_FUNNEL": ["e2_edges_start", "after_gene_resolution", "after_peak_overlap",
+                           "after_admissible_control", "after_min_donors",
+                           "reason_counts", "reconciles_to_20709",
+                           "distinct_genes_each_step", "donors_each_step"],
+      "span_diagnostic": ["verdict", "per_feature_out_of_range_fraction",
+                          "centroid_mahalanobis", "fraction_beyond_p99_radius"],
+      "PRIMARY": ["delta_gene_balanced", "lcb95_one_sided", "bootstrap_replicates",
+                  "bootstrap_seed", "donors_in_bootstrap", "kish_ess_donors"],
+      "anti_false_green": ["control_vs_control_delta", "control_vs_control_lcb95",
+                           "worst_abs_smd_over_14_features", "top1pct_donor_weight_share"],
+      "sensitivity_arms": ["spearman", "donor_pseudobulk", "hg38_distance", "edge_equal_weight"],
+      "support_stratified": ["by_donor_depth_quartile", "by_donors_per_edge"],
+      "low_support_stratum": ["n_edges_labelled_LOW_DONOR_SUPPORT"],
+      "ADJUDICATION": ["pass_all_criteria", "criteria_table"],
+      "claim_scope": ["what_a_pass_supports", "what_a_pass_does_not_support"],
+      "governance": ["training", "td60", "uses_AD_loci", "uses_Morabito", "uses_SEA_AD"]
+    },
+    "fail_closed_requirement": "The result artifact must not be emitted unless stages 0-3 all passed and are referenced by digest."
+  },
+
+  "STOP_POINT_IN_FORCE": {
+    "current_deliverable": "the frozen prospective design only",
+    "may_execute_now": "nothing beyond stages 0-3, and only after the design is audited",
+    "must_not_execute_now": "stage 4",
+    "e2_correspondence_outcome_opened": false
+  }
+}

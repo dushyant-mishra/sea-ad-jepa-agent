@@ -1,0 +1,14 @@
+{
+  "blocks": 152,
+  "blocks_per_operator": 4,
+  "measurability_source": "FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz state==MEASURED_SCALAR",
+  "n_addresses": 600,
+  "n_cells": 74881,
+  "n_common": 400,
+  "n_donors": 85,
+  "n_native": 200,
+  "namespace": "JEPA_V5_MASKING_QUALIFICATION_SAMPLE_V1",
+  "no_protected_data": true,
+  "normalization": "log1p(raw*10000/source_library) applied exactly once",
+  "read_only_full104": true
+}

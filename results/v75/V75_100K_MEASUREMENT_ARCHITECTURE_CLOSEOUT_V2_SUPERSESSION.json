@@ -1,0 +1,46 @@
+{
+  "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V2_SUPERSESSION",
+  "status": "SUPERSEDES_V1_AS_CURRENT_AUTHORITY__PRESERVES_V1_AS_HISTORICAL_EXECUTION_EVIDENCE",
+  "supersedes": "results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V1.json",
+  "v1_execution_source_sha": "b3e341566c786b78cbaa5eb7ff81d2634e22ab53",
+  "v1_provider_run_id": 37236375813,
+  "v1_execution_remains_real": true,
+  "v1_execution_is_current_promotion_authority": false,
+  "reasons_for_supersession": [
+    {
+      "finding": "2K_PROMOTION_SMOKE_OPERATOR_OCCUPANCY_REGRESSION",
+      "detail": "The calibration-closure lineage used by V1 could realize only 36 of 42 authenticated observation operators at 2,000 cells even though all 42 were feasible within source quotas. The smoke gate checked a qualification status string rather than realized occupancy."
+    },
+    {
+      "finding": "FRAGMENT_BYTE_LINKAGE_NOT_DECIDING_IN_V1",
+      "detail": "V1 built a fragment stream but its final 100K authority did not require an independent recomputation of compressed fragment SHA-256 and per-barcode multiplicity reconciliation to the paired-multiome source."
+    },
+    {
+      "finding": "500K_RESOURCE_COMPATIBILITY_RULE_UNBOUND",
+      "detail": "V1 recommended PASS_TO_500K after measuring the 100K footprint, but no prospectively frozen 500K resource budget or compatibility rule existed. Positive 100K resource measurements do not establish 500K compatibility."
+    }
+  ],
+  "what_v1_can_still_support": [
+    "a real provider-backed 100K execution occurred at the recorded source SHA",
+    "the historical run produced its recorded 100K population/QC/resource measurements",
+    "the historical run does not by itself authorize 500K or learned JEPA training"
+  ],
+  "replacement_authority_requirements": [
+    "exact-head 2K smoke with source-feasible realized operator occupancy",
+    "independent fragment-byte linkage receipt bound into readiness",
+    "100K result authority consuming the independent fragment-linkage receipt",
+    "separate 100K architecture qualification from 500K resource-promotion authority"
+  ],
+  "expected_current_outcome_if_repaired_100k_checks_pass": {
+    "100k_status": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
+    "500k_promotion": "INDETERMINATE_DO_NOT_PROMOTE",
+    "learned_160d_jepa_state_qualified": false
+  },
+  "governance": {
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED"
+  }
+}

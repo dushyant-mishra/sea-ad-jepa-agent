@@ -1,0 +1,71 @@
+{
+  "schema": "V70_PRIVILEGED_TEACHER_FEATURE_PRODUCER_INTERFACE_V1",
+  "date": "2026-10-01",
+  "status": "INTERFACE_ONLY__NO_REAL_TEACHER_FEATURES_MATERIALIZED",
+  "purpose": "Freeze the software/scientific interface that converts qualified multisource regulatory programs into candidate privileged teacher features without leaking validation outcomes or confusing evidence statistics with state coordinates.",
+  "inputs": {
+    "required": [
+      "frozen regulatory program namespace artifact",
+      "program-specific structural crosswalks",
+      "explicit training-population split receipt",
+      "authorized direct privileged measurements for the training unit",
+      "source-specific measurement masks",
+      "observation-operator descriptors only if prospectively qualified"
+    ],
+    "forbidden": [
+      "Stage-4 Delta/LCB/p-value as per-cell features",
+      "Morabito protected validation outcomes",
+      "recoverability TEST",
+      "TD60",
+      "disease/pathology fields used to select representation",
+      "dataset ID/donor ID as biological state",
+      "post-hoc source weights chosen from validation agreement"
+    ]
+  },
+  "output": {
+    "blocks": [
+      "Z_global",
+      "Z_query",
+      "Z_reg_candidate"
+    ],
+    "per_training_unit_required": [
+      "training_unit_id",
+      "Z_reg_candidate",
+      "program_measurement_mask",
+      "program_evidence_provenance",
+      "program_uncertainty_or_availability",
+      "observation_operator_receipt_id"
+    ],
+    "semantics": "Z_reg_candidate is the richer teacher regulatory state before RNA recoverability partitioning. It is not automatically a student target."
+  },
+  "construction_rules": [
+    "Teacher feature coordinates must be constructed from direct authorized training-population measurements and frozen regulatory programs, not from aggregate Stage-4 significance statistics.",
+    "Unavailable privileged programs stay masked/unavailable and may increase uncertainty; they are never zero-filled as measured biology.",
+    "If latent coordinates rotate across fits, authority attaches to the stable subspace/geometry unless basis stability separately qualifies coordinate identities.",
+    "Source disagreement remains encoded in provenance/uncertainty or blocks the program under the prospective disagreement policy; it cannot be solved by favorable source selection.",
+    "Representation dimension and any compression method are frozen using TRAIN/VALIDATION only before recoverability TEST is opened.",
+    "No program enters Z_reg_candidate unless it passes the prospective teacher-candidate selection contract or is explicitly retained as an unqualified diagnostic channel that cannot supervise the student."
+  ],
+  "postconstruction": {
+    "next_step": "RNA recoverability TRAIN/VALIDATION",
+    "split": "Z_reg_candidate -> Z_reg_shared + Z_reg_private",
+    "shared_rule": "Only donor-held-out RNA-recoverable components/subspaces can become Z_reg_shared.",
+    "private_rule": "Unrecoverable privileged information remains Z_reg_private and is never forced into the RNA student loss.",
+    "test_rule": "recoverability TEST stays sealed until construction, projection, baselines, metrics and decision rules are frozen."
+  },
+  "anti_leakage_assertions": [
+    "No protected validation outcome participates in feature construction.",
+    "No evidence-source agreement score becomes a per-cell feature.",
+    "No direct ATAC/SCENIC+/perturbation value enters the RNA student inference schema.",
+    "No missingness mask may reveal a protected outcome label."
+  ],
+  "governance": {
+    "teacher_features_materialized": false,
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED"
+  }
+}

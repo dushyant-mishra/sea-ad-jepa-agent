@@ -1,0 +1,98 @@
+{
+  "schema": "V64_NIH_CARD_REALISM_QUALIFICATION_STAGE_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-29",
+  "audited_branch": "claude/v64-nihcard-realism-design-20260929",
+  "audited_commit": "f4ac517b6157de4babffbeb02e11b7dc1c3508ed",
+  "canonical_at_audit": "b73a9e807cabaea007da0dae7b0330a65850b2d1",
+  "ancestry": {
+    "claude_parent": "07b485dd61c5005b525b756612f240acc62e1d0f",
+    "canonical_ahead_of_same_parent_by_commits": 5,
+    "merge_rule": "DO_NOT_FAST_FORWARD_OR_MERGE_STAGE_UNCHANGED; branch must first rebase/reconcile canonical successor contracts and the findings below."
+  },
+  "verdict": "S40_CONFIRMED__QUALIFICATION_STAGE_REPAIR_REQUIRED_BEFORE_REAL_GEOMETRY",
+  "accepted_findings": {
+    "S35": "tie-aware rank repair accepted in canonical successor executor",
+    "S36": "exact finite-sample marginal multiset repair accepted in canonical successor executor",
+    "S37": "row-resampling sensitivity required",
+    "S38": "separate nuisance-family qualification stage is required",
+    "S39": "input artifact provenance binding required",
+    "S40": {
+      "severity": "HIGH",
+      "finding": "NEG_TECH_OUTSPAN_1 is not in T.ALL_ARMS and would be silently omitted by any stage that iterates only ALL_ARMS.",
+      "audit": "CONFIRMED",
+      "correct_source": "scripts/v64/v64_frozen_stress_runner_v1.py",
+      "required": "Import and reuse OUTSPAN/simulate_outspan/outspan_geometry from the frozen runner; do not reimplement."
+    }
+  },
+  "new_findings": {
+    "S41_missing_governing_file": {
+      "severity": "HIGH",
+      "finding": "The stage sets ADDENDUM='results/v64/V64_NIH_CARD_REALISM_CALIBRATION_ADDENDUM_V1.json', but Claude explicitly did not commit that addendum and it is absent from canonical. The result writer calls sha256_file(ADDENDUM), so a clean checkout cannot complete result emission.",
+      "required": "Bind to the existing canonical V64_NIH_CARD_REALISM_CALIBRATED_SYNTHETIC_DESIGN_CONTRACT_V1.json plus V64_NIH_CARD_REALISM_EXECUTOR_SUCCESSOR_RULE_V1.json; remove the nonexistent addendum dependency."
+    },
+    "S42_confidence_calculation_not_frozen_method": {
+      "severity": "CRITICAL",
+      "finding": "run_arm() computes a scalar positive floor from arm medians, a scalar family margin, then approximates LCB by subtracting 1.645*SE of one negative arm. The frozen tournament/stress method instead forms the paired per-seed margin min(positive scores)-max(family negative scores) and applies T.lower_confidence_bound() to that per-seed margin distribution.",
+      "consequence": "Current stage can materially misstate PASS/FAIL and loses common-random-number pairing.",
+      "required": "Use the frozen stress-runner family calculation exactly: arm_seed arrays, per-seed positive minimum, per-seed family negative maximum, margin vector, T.lower_confidence_bound(margin_vector)."
+    },
+    "S43_heldout_semantics_drift": {
+      "severity": "HIGH",
+      "finding": "The generic NEG_* parser turns NEG_HELDOUT_1 into a gating HELDOUT family and includes it in all_families_pass. Historical tournament semantics make held-out ambient a reported generalisation diagnostic, not a represented-family gate.",
+      "required": "Retain T.FAMILIES as gating families, add OUTSPAN_TECH explicitly, and report T.HELDOUT_FAMILY separately using its frozen generalisation semantics."
+    },
+    "S44_realism_geometry_not_preserved_after_world_reconstruction": {
+      "severity": "CRITICAL",
+      "finding": "calibrated_world() samples pair rows G but world schema requires degree and promoter_activity to be promoter-level. The code takes only the first distal row for those variables while using accessibility/density/anchor values from independently sampled pair rows. This breaks the calibrated joint dependence between promoter-level and pair-level covariates.",
+      "consequence": "The geometry actually seen by the estimator is not the geometry in calibrated_geometry_*.npz, even if that NPZ has excellent realism diagnostics.",
+      "required": "Define an outcome-blind hierarchical geometry construction that preserves promoter-level constancy and real promoter-to-edge dependence. After world construction, recompute E.build_features-compatible geometry and emit real-vs-constructed realism diagnostics on the ACTUAL world used in simulation."
+    },
+    "S45_two_of_8_main_features_ignored": {
+      "severity": "CRITICAL",
+      "finding": "The calibrated input includes rna_depth_sensitivity and atac_depth_sensitivity, but calibrated_world() consumes only columns 0-5. E.per_donor_residual_scores recomputes depth sensitivities from the generic simulated R/A, so the real calibrated depth-sensitivity distributions never enter the world.",
+      "consequence": "The stage cannot claim to calibrate all 14 frozen nuisance features.",
+      "required": "Either prospectively define a simulator mechanism that reproduces the outcome-blind real depth-sensitivity distributions/covariances and verify them on generated worlds, or explicitly narrow the qualification claim. Do not silently label six-feature calibration as 14-feature realism."
+    },
+    "S46_support_measurement_geometry_missing": {
+      "severity": "HIGH",
+      "finding": "The design requires real donor/metacell/support/missingness/sparsity geometry, but the stage retains T.N_METACELL=40 for every donor, full pair support, no edge-specific donor missingness, no real RNA/ATAC sparsity, and only accepts donor count as a scalar.",
+      "consequence": "Outcome class D (support collapse/precision unusable) cannot actually be evaluated, and the simulation does not yet mimic major NIH-CARD measurement geometry.",
+      "required": "Add a prospectively specified measurement/support layer driven by outcome-blind ETL: per-donor metacell counts, edge-specific measurement support/missingness, and the declared sparsity/depth structure; then calculate Kish/concentration/support criteria on the generated/scored object."
+    },
+    "S47_B_classification_not_identified": {
+      "severity": "HIGH",
+      "finding": "classify() labels failure confined to TECH_OUTSPAN as class B 'historical support too narrow'. But the outspan arm is a deliberately nonlinear hidden-quality mechanism outside the estimator basis; failing it does not establish that historical geometric support width caused the failure.",
+      "required": "Class B requires a direct support-domain demonstration: failures must localize to recalibrated regions outside historical support while previously covered regions retain qualification. Do not equate OUTSPAN_TECH failure with support-range failure."
+    },
+    "S48_downstream_provenance_binding_incomplete": {
+      "severity": "MEDIUM",
+      "finding": "The stage verifies caller-supplied geometry SHA-256s but does not bind them to the canonical calibration receipt/producer receipt. A caller can supply any 14-column geometry and its matching digest.",
+      "required": "Consume the canonical calibration receipt and verify both geometry artifact digests, design/successor rule digests, and producer source digest before qualification."
+    }
+  },
+  "status_of_standin_run": {
+    "scientific_weight": "NONE",
+    "reason": "Stand-in feature matrix only; additionally current stage has frozen-method and realism-construction defects.",
+    "outspan_standin_pass": "NO_SCIENTIFIC_INTERPRETATION"
+  },
+  "data_state": {
+    "RNA": "AUTHENTICATED_REPORTED_BY_CLAUDE",
+    "ATAC": "DOWNLOAD_IN_PROGRESS_AT_LAST_REPORT_36.1_PERCENT__NOT_AUTHENTICATED",
+    "matrix_dependent_ETL": "BLOCKED",
+    "Stage4": "NOT_AUTHORISED",
+    "correspondence_opened": false
+  },
+  "next_action": [
+    "Claude re-fetch live canonical and rebase/reconcile from current head.",
+    "Repair S41-S48 outcome-blindly before real Stage-3 geometry is consumed.",
+    "Run focused fixtures that prove paired-margin LCB exactly reproduces frozen stress-runner output when given historical geometry.",
+    "Add a realism-after-world-construction receipt; input NPZ realism alone is insufficient.",
+    "Only then run qualification on authenticated NIH-CARD outcome-blind ETL geometry."
+  ],
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "Stage4": "NOT_AUTHORISED"
+  }
+}

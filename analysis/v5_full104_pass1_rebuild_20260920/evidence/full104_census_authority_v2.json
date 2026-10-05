@@ -1,0 +1,121 @@
+{
+  "schema": "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2",
+  "date": "2026-09-20",
+  "authority_revision_id": "FULL_REDERIVATION__PATH_INDEPENDENT__20260920_V1",
+  "status": "FULL104_READONLY_CENSUS_EXECUTION_RECEIPTS_BOUND__TERMINAL_MASKING_OUTCOMES_UNOPENED",
+  "training_authorized": false,
+  "terminal_masking_outcomes_inspected": false,
+  "substrate": {
+    "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "operator_address_observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "pass1_npz_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+  },
+  "support_estimability_authority": {
+    "repo_relpath": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+    "sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+    "file_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+    "canonical_json_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
+  },
+  "code_provenance": {
+    "builder": {
+      "repo_relpath": "scripts/agent/build_full104_census_authority_v2_20260918.py",
+      "sha256": "8c6b33629a6a20431d1310b61ffc2f13b7de61075052b15d0bc11c9cbc03a45c"
+    },
+    "receipt_generator": {
+      "repo_relpath": "analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py",
+      "sha256": "d151b1113a5a1b0a7b25465f5d9dc81982e5655dc45a3bea43bfcf8d9aa2e5bd"
+    },
+    "physical_binding_verifier": {
+      "repo_relpath": "src/sea_ad_jepa/v5/full104_pass1_physical_binding_v1.py",
+      "sha256": "c94166b08c4ba438838fad0232542767bea26ac48f35ca8675fb0e10be38d354"
+    },
+    "census_receipt_library": {
+      "repo_relpath": "src/sea_ad_jepa/v5/full104_census_receipt_v2.py",
+      "sha256": "66e1a55dea3b6952eab4a243596880bcfc1eef0fe9566eac85f47030144e6564"
+    }
+  },
+  "execution_receipts": {
+    "pass1_physical_binding_file_sha256": "1f9136e14d9b65b2ec8804f5d42ec71d573c4cb3d4e273a6638d9a00d37d2d7b",
+    "pass1_physical_binding_receipt_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+    "summary_file_sha256": "f66acc5d90f663e68ddec6b2584df5a4141b4f761d114f60c9e98694fd60a247",
+    "summary_receipt_sha256": "ebe31809e29c3462854e0ecebe9e3ad1af1ae21885a0dcca4ca3e3581425676d",
+    "split_file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "target_eligibility_file_sha256": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+    "target_eligibility_receipt_sha256": "33539852932a8d71eea6984b9a3c946a22574e7fccfba5ed09bd59438e4aa2f9"
+  },
+  "corrected_core_zero_accounting": {
+    "total_core_slots": 78254852702,
+    "core_nonzero_sum_per_cell": 13069917135,
+    "core_nonzero_sum_donor_address": 13069917135,
+    "core_measured_zero_count": 65184935567,
+    "core_measured_zero_frequency": 0.8329826626244999
+  },
+  "target_support": {
+    "rule": "donor_nonzero_cells>=30__train_donors>=20__validation_donors>=5",
+    "per_fold_estimable": [
+      17070,
+      17071,
+      17072,
+      17060
+    ],
+    "estimable_in_all_folds": 17053
+  },
+  "donor_sampling_context": {
+    "independent_donor_units": 104,
+    "cell_count_weight_kish_ess_descriptive_only": 41.986712737651175,
+    "cell_count_weight_kish_ess_by_source_descriptive_only": {
+      "HVS": 34.4963315793996,
+      "NPH52": 14.09458981597572,
+      "SEA_AD": 34.703724602143154
+    },
+    "kish_ess_is_inferential_donor_sample_size": false,
+    "interpretation": "Kish ESS here summarizes imbalance in cell-count weights only. It does not reduce or replace the 104 independent donor units and must not be used as a donor-level power or confirmation sample size.",
+    "donor_cell_count_min": 81,
+    "donor_cell_count_median": 14749.0,
+    "donor_cell_count_max": 174111
+  },
+  "burden_stress_ladder": [
+    {
+      "fraction": "1/20",
+      "co_mask_count_floor_over_17185": 859,
+      "mean_remaining_nonzero": 2726.8419621285775,
+      "p01_remaining_nonzero": 416.09999999999997
+    },
+    {
+      "fraction": "1/10",
+      "co_mask_count_floor_over_17185": 1718,
+      "mean_remaining_nonzero": 2583.323964121814,
+      "p01_remaining_nonzero": 394.2
+    },
+    {
+      "fraction": "3/20",
+      "co_mask_count_floor_over_17185": 2577,
+      "mean_remaining_nonzero": 2439.8059661150387,
+      "p01_remaining_nonzero": 372.3
+    },
+    {
+      "fraction": "1/5",
+      "co_mask_count_floor_over_17185": 3437,
+      "mean_remaining_nonzero": 2296.2879681082745,
+      "p01_remaining_nonzero": 350.40000000000003
+    },
+    {
+      "fraction": "3/10",
+      "co_mask_count_floor_over_17185": 5155,
+      "mean_remaining_nonzero": 2009.2519720947425,
+      "p01_remaining_nonzero": 306.59999999999997
+    },
+    {
+      "fraction": "1/2",
+      "co_mask_count_floor_over_17185": 8592,
+      "mean_remaining_nonzero": 1435.1799800676724,
+      "p01_remaining_nonzero": 219.0
+    }
+  ],
+  "withdrawn_v1_builder_semantics": "V1 packaged hard-coded census constants with script and substrate hashes but did not bind the actual pass1/result receipts. V2 requires the pass1 NPZ and receipt files, re-derives pass1 semantics from the authenticated 8,915-block FULL104 substrate, and refuses mismatched roots.",
+  "v2_hardening_note": "All summary, split, and target-eligibility fields are rederived from the bound pass1 bytes and must match the persisted receipts exactly. Machine-local filesystem paths are excluded from the canonical authority digest.",
+  "census_authority_sha256": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21"
+}

@@ -1,0 +1,38 @@
+{
+  "authorized_sample_level": "N1",
+  "burden_computed": false,
+  "contract_sha256": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
+  "direct_n2_n3_execution_authorized": false,
+  "masks_executed": false,
+  "precision_estimator_id": "HYBRID_ABSOLUTE_OR_RELATIVE_TARGET_SAMPLE_SE_V2",
+  "precision_scope_id": "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
+  "primary_policy_id": "RIDGE8_CONDITIONAL",
+  "primary_rung": [
+    1,
+    20
+  ],
+  "runtime_bindings": {
+    "burden_estimator_source_sha256": "7f589f548bf94fd0bd207717f1b0289e2718958915e08d3a6d716b22164d441a",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "heavy_qualification_receipt_sha256": "21fd10f07187c8e59457cf8860a67359ab179878c194833ee119e0323a7c8d53",
+    "mask_plan_generator_sha256": "fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e",
+    "phase_iv_bound::evidence_budget_authority": "b10c3ee0354d37d59ba43051b5b2e21a2afe19d1d4bfbc1038fcff87e8eb44e4",
+    "phase_iv_bound::mask_plan_generator": "fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e",
+    "phase_iv_bound::masking_parameters_authority": "e53b454673010a9ec20c044662bef61a48a64be58c26cc31c3287bce7901cb39",
+    "phase_iv_bound::planner_source": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+    "phase_iv_bound::qualification_runner": "a98e81cd1c6ba2a9faf0652c422dc1debe007719e6d7b3db1a5be987df571541",
+    "phase_iv_bound::split_receipt": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "phase_iv_bound::target_universe": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+    "phase_iv_sample_artifact_sha256": "d0ce8abbff0076071009997113f1b73ebb8bab9b0ada5d6ce9367eb786733c06",
+    "precision_rule_authority_sha256": "0a712b3aeebc42732726667722c90b2b9d97a6110cba157c2d99aa642c0c97b4",
+    "rng_authority_file_sha256": "ee95306997c33d76066579e77db88c53ff0bc6c0fcb964003b75da5717e3d396",
+    "rng_authority_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "scientific_resolution_sha256": "766f467f4566cf0087ca4bc22f5263575a8ae50d7e5905666886190c3ad95889"
+  },
+  "state": "READY_FOR_AUDIT_B_N1_EXECUTION",
+  "terminal_masking_authorized": false,
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}

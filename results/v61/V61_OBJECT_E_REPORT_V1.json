@@ -1,0 +1,618 @@
+{
+  "schema": "V61_CORCES_OBJECT_E_V1",
+  "frozen_by": "docs/agent/V61_CORCES_OBJECT_E_CONSTRUCTION_FREEZE_20260928.md @ 0639a2d3",
+  "frozen_rules": {
+    "F1_q_primary": 0.01,
+    "F1_arms": [
+      0.001,
+      0.05
+    ],
+    "F2_donors_primary": 2,
+    "F2_arms": [
+      1,
+      3
+    ],
+    "F3": "both anchors accessible; >=1 anchor as arm",
+    "F4": "cis only, no self-loops",
+    "F5": "no distance filter; distance recorded",
+    "F6": "hg38 both sides, literal chrom match, 10kb bins"
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "gene_annotation_joined": false,
+    "regulatory_molecular_outcome_opened": false
+  },
+  "accessibility": {
+    "peak_rows": 205547,
+    "unique_intervals": 54330,
+    "chromosomes": 24,
+    "median_peak_width_bp": 964,
+    "accessible_10kb_bins": 45147,
+    "genome_fraction_of_bins_note": "bins are counted only where a peak exists; no genome-wide bin denominator is asserted",
+    "file": "Cluster24.idr.optimal.narrowPeak.gz",
+    "sha256": "b298a1b4c0cb4cb07f16365c26c984342b8dd1bea77cdf0e59082619616aab8a"
+  },
+  "samples": [
+    {
+      "file": "GSM4441830_PD-00-38-CTRL-MDFG-X007-S04-X017-S01-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "00_38",
+      "rows": 4107387,
+      "cis": 4107387,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 56041,
+      "kept_q01": 79110,
+      "kept_q05": 108018
+    },
+    {
+      "file": "GSM4441831_PD-00-38-CTRL-SUNI-X015-S10-X017-S02-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "00_38",
+      "rows": 3272128,
+      "cis": 3272128,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 38303,
+      "kept_q01": 54201,
+      "kept_q05": 74289
+    },
+    {
+      "file": "GSM4441832_PD-03-41-CTRL-SUNI-X017-S11-X011-S04-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "03_41",
+      "rows": 12605654,
+      "cis": 12605654,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 199424,
+      "kept_q01": 290096,
+      "kept_q05": 408193
+    },
+    {
+      "file": "GSM4441833_PD-03-66-CTRL-MDFG-X018-S11-X017-S07-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "03_66",
+      "rows": 4463433,
+      "cis": 4463433,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 47449,
+      "kept_q01": 69023,
+      "kept_q05": 97072
+    },
+    {
+      "file": "GSM4441834_RCLN-CAUD-14-0941-X005-S05-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "14_0941",
+      "rows": 8296529,
+      "cis": 8296529,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 54747,
+      "kept_q01": 86629,
+      "kept_q05": 130556
+    },
+    {
+      "file": "GSM4441835_RCLN-CAUD-14-1018-X006-S07-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "14_1018",
+      "rows": 9813871,
+      "cis": 9813871,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 67075,
+      "kept_q01": 102972,
+      "kept_q05": 152276
+    },
+    {
+      "file": "GSM4441836_RCLN-HIPP-06-1516-X006-S05-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "06_1516",
+      "rows": 5828819,
+      "cis": 5828819,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 43440,
+      "kept_q01": 67635,
+      "kept_q05": 100671
+    },
+    {
+      "file": "GSM4441837_RCLN-HIPP-14-0586-X006-S08-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "14_0586",
+      "rows": 8689057,
+      "cis": 8689057,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 53526,
+      "kept_q01": 84336,
+      "kept_q05": 127754
+    },
+    {
+      "file": "GSM4441838_RCLN-PARL-09-1589-X005-S06-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "09_1589",
+      "rows": 2498187,
+      "cis": 2498187,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 4153,
+      "kept_q01": 7363,
+      "kept_q05": 12046
+    },
+    {
+      "file": "GSM4441839_RCLN-PARL-14-0586-X006-S09-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "14_0586",
+      "rows": 4599318,
+      "cis": 4599318,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 21355,
+      "kept_q01": 34926,
+      "kept_q05": 54142
+    },
+    {
+      "file": "GSM4441840_RCLN-SMTG-09-1589-X006-S10-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "09_1589",
+      "rows": 1826471,
+      "cis": 1826471,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 4759,
+      "kept_q01": 7761,
+      "kept_q05": 12406
+    },
+    {
+      "file": "GSM4441841_RCLN-SMTG-14-1018-X005-S03-B1-T1_H3K27ac.FitHiChIP.interactions.bed.gz",
+      "donor": "14_1018",
+      "rows": 4087842,
+      "cis": 4087842,
+      "trans": 0,
+      "self_loops": 0,
+      "kept_q001": 9760,
+      "kept_q01": 16842,
+      "kept_q05": 27535
+    }
+  ],
+  "sample_count": 12,
+  "donor_count": 8,
+  "donors": [
+    "00_38",
+    "03_41",
+    "03_66",
+    "06_1516",
+    "09_1589",
+    "14_0586",
+    "14_0941",
+    "14_1018"
+  ],
+  "totals": {
+    "rows": 70088696,
+    "cis": 70088696,
+    "trans": 0,
+    "self": 0
+  },
+  "F4_trans_edges": 0,
+  "F4_self_loops": 0,
+  "F6_bin_widths_observed": {
+    "10000": 1304958
+  },
+  "F6_grid_violations": 0,
+  "F6_check_scope": "bin width, grid alignment and chromosome tokens verified on every row entering E's candidate pool (cis, non-self-loop, q<0.05), not on every row in the files; trans and self-loop counts are over ALL rows",
+  "F6_chromosome_tokens": [
+    "chr1",
+    "chr10",
+    "chr11",
+    "chr12",
+    "chr13",
+    "chr14",
+    "chr15",
+    "chr16",
+    "chr17",
+    "chr18",
+    "chr19",
+    "chr2",
+    "chr20",
+    "chr21",
+    "chr22",
+    "chr3",
+    "chr4",
+    "chr5",
+    "chr6",
+    "chr7",
+    "chr8",
+    "chr9",
+    "chrX",
+    "chrY"
+  ],
+  "F6_chrom_naming_matches_peaks": true,
+  "funnel": {
+    "q001|d1|both": {
+      "edges": 70276,
+      "chromosomes": 23,
+      "distinct_bins": 28555,
+      "distance_bp": {
+        "min": 40000,
+        "median": 160000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 35016,
+        "2": 11741,
+        "3": 6829,
+        "4": 4614,
+        "5": 3696,
+        "6": 3198,
+        "7": 3376,
+        "8": 1806
+      },
+      "is_primary": false
+    },
+    "q001|d1|one": {
+      "edges": 168377,
+      "chromosomes": 24,
+      "distinct_bins": 66465,
+      "distance_bp": {
+        "min": 40000,
+        "median": 170000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 90430,
+        "2": 28231,
+        "3": 15299,
+        "4": 10218,
+        "5": 7656,
+        "6": 6607,
+        "7": 6500,
+        "8": 3436
+      },
+      "is_primary": false
+    },
+    "q001|d2|both": {
+      "edges": 35260,
+      "chromosomes": 23,
+      "distinct_bins": 20282,
+      "distance_bp": {
+        "min": 40000,
+        "median": 140000,
+        "max": 1970000
+      },
+      "donor_support_histogram": {
+        "2": 11741,
+        "3": 6829,
+        "4": 4614,
+        "5": 3696,
+        "6": 3198,
+        "7": 3376,
+        "8": 1806
+      },
+      "is_primary": false
+    },
+    "q001|d2|one": {
+      "edges": 77947,
+      "chromosomes": 24,
+      "distinct_bins": 41115,
+      "distance_bp": {
+        "min": 40000,
+        "median": 150000,
+        "max": 1980000
+      },
+      "donor_support_histogram": {
+        "2": 28231,
+        "3": 15299,
+        "4": 10218,
+        "5": 7656,
+        "6": 6607,
+        "7": 6500,
+        "8": 3436
+      },
+      "is_primary": false
+    },
+    "q001|d3|both": {
+      "edges": 23519,
+      "chromosomes": 23,
+      "distinct_bins": 16116,
+      "distance_bp": {
+        "min": 40000,
+        "median": 130000,
+        "max": 1970000
+      },
+      "donor_support_histogram": {
+        "3": 6829,
+        "4": 4614,
+        "5": 3696,
+        "6": 3198,
+        "7": 3376,
+        "8": 1806
+      },
+      "is_primary": false
+    },
+    "q001|d3|one": {
+      "edges": 49716,
+      "chromosomes": 23,
+      "distinct_bins": 30526,
+      "distance_bp": {
+        "min": 40000,
+        "median": 140000,
+        "max": 1980000
+      },
+      "donor_support_histogram": {
+        "3": 15299,
+        "4": 10218,
+        "5": 7656,
+        "6": 6607,
+        "7": 6500,
+        "8": 3436
+      },
+      "is_primary": false
+    },
+    "q01|d1|both": {
+      "edges": 97402,
+      "chromosomes": 23,
+      "distinct_bins": 31948,
+      "distance_bp": {
+        "min": 40000,
+        "median": 180000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 48001,
+        "2": 16173,
+        "3": 9467,
+        "4": 6644,
+        "5": 5145,
+        "6": 4522,
+        "7": 4756,
+        "8": 2694
+      },
+      "is_primary": false
+    },
+    "q01|d1|one": {
+      "edges": 248116,
+      "chromosomes": 24,
+      "distinct_bins": 82016,
+      "distance_bp": {
+        "min": 40000,
+        "median": 180000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 133848,
+        "2": 41622,
+        "3": 22511,
+        "4": 15056,
+        "5": 11031,
+        "6": 9450,
+        "7": 9357,
+        "8": 5241
+      },
+      "is_primary": false
+    },
+    "q01|d2|both": {
+      "edges": 49401,
+      "chromosomes": 23,
+      "distinct_bins": 23636,
+      "distance_bp": {
+        "min": 40000,
+        "median": 150000,
+        "max": 1970000
+      },
+      "donor_support_histogram": {
+        "2": 16173,
+        "3": 9467,
+        "4": 6644,
+        "5": 5145,
+        "6": 4522,
+        "7": 4756,
+        "8": 2694
+      },
+      "is_primary": true
+    },
+    "q01|d2|one": {
+      "edges": 114268,
+      "chromosomes": 24,
+      "distinct_bins": 51292,
+      "distance_bp": {
+        "min": 40000,
+        "median": 160000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "2": 41622,
+        "3": 22511,
+        "4": 15056,
+        "5": 11031,
+        "6": 9450,
+        "7": 9357,
+        "8": 5241
+      },
+      "is_primary": false
+    },
+    "q01|d3|both": {
+      "edges": 33228,
+      "chromosomes": 23,
+      "distinct_bins": 19202,
+      "distance_bp": {
+        "min": 40000,
+        "median": 140000,
+        "max": 1970000
+      },
+      "donor_support_histogram": {
+        "3": 9467,
+        "4": 6644,
+        "5": 5145,
+        "6": 4522,
+        "7": 4756,
+        "8": 2694
+      },
+      "is_primary": false
+    },
+    "q01|d3|one": {
+      "edges": 72646,
+      "chromosomes": 23,
+      "distinct_bins": 38496,
+      "distance_bp": {
+        "min": 40000,
+        "median": 150000,
+        "max": 1980000
+      },
+      "donor_support_histogram": {
+        "3": 22511,
+        "4": 15056,
+        "5": 11031,
+        "6": 9450,
+        "7": 9357,
+        "8": 5241
+      },
+      "is_primary": false
+    },
+    "q05|d1|both": {
+      "edges": 130836,
+      "chromosomes": 24,
+      "distinct_bins": 34834,
+      "distance_bp": {
+        "min": 40000,
+        "median": 200000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 63621,
+        "2": 22141,
+        "3": 12772,
+        "4": 9010,
+        "5": 6920,
+        "6": 6195,
+        "7": 6319,
+        "8": 3858
+      },
+      "is_primary": false
+    },
+    "q05|d1|one": {
+      "edges": 353695,
+      "chromosomes": 24,
+      "distinct_bins": 98360,
+      "distance_bp": {
+        "min": 40000,
+        "median": 200000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "1": 191298,
+        "2": 59982,
+        "3": 32131,
+        "4": 21436,
+        "5": 15556,
+        "6": 13010,
+        "7": 12684,
+        "8": 7598
+      },
+      "is_primary": false
+    },
+    "q05|d2|both": {
+      "edges": 67215,
+      "chromosomes": 23,
+      "distinct_bins": 26820,
+      "distance_bp": {
+        "min": 40000,
+        "median": 160000,
+        "max": 1990000
+      },
+      "donor_support_histogram": {
+        "2": 22141,
+        "3": 12772,
+        "4": 9010,
+        "5": 6920,
+        "6": 6195,
+        "7": 6319,
+        "8": 3858
+      },
+      "is_primary": false
+    },
+    "q05|d2|one": {
+      "edges": 162397,
+      "chromosomes": 24,
+      "distinct_bins": 62546,
+      "distance_bp": {
+        "min": 40000,
+        "median": 170000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "2": 59982,
+        "3": 32131,
+        "4": 21436,
+        "5": 15556,
+        "6": 13010,
+        "7": 12684,
+        "8": 7598
+      },
+      "is_primary": false
+    },
+    "q05|d3|both": {
+      "edges": 45074,
+      "chromosomes": 23,
+      "distinct_bins": 22135,
+      "distance_bp": {
+        "min": 40000,
+        "median": 150000,
+        "max": 1970000
+      },
+      "donor_support_histogram": {
+        "3": 12772,
+        "4": 9010,
+        "5": 6920,
+        "6": 6195,
+        "7": 6319,
+        "8": 3858
+      },
+      "is_primary": false
+    },
+    "q05|d3|one": {
+      "edges": 102415,
+      "chromosomes": 23,
+      "distinct_bins": 47100,
+      "distance_bp": {
+        "min": 40000,
+        "median": 160000,
+        "max": 2000000
+      },
+      "donor_support_histogram": {
+        "3": 32131,
+        "4": 21436,
+        "5": 15556,
+        "6": 13010,
+        "7": 12684,
+        "8": 7598
+      },
+      "is_primary": false
+    }
+  },
+  "PRIMARY": {
+    "rule": "q01|d2|both",
+    "edges": 49401,
+    "chromosomes": 23,
+    "distinct_bins": 23636,
+    "distance_bp": {
+      "min": 40000,
+      "median": 150000,
+      "max": 1970000
+    },
+    "donor_support_histogram": {
+      "2": 16173,
+      "3": 9467,
+      "4": 6644,
+      "5": 5145,
+      "6": 4522,
+      "7": 4756,
+      "8": 2694
+    },
+    "is_primary": true
+  },
+  "stop_conditions": {
+    "S1_min_edges": 1000,
+    "S1_triggered": false,
+    "S2_min_chromosomes": 10,
+    "S2_triggered": false,
+    "S3_triggered": false
+  },
+  "VERDICT": "OBJECT_E_CONSTRUCTED",
+  "object_file": {
+    "path": "D:/jepa_v5_outputs_20260925/v61_object_E\\V61_OBJECT_E_PRIMARY.tsv.gz",
+    "bytes": 424116,
+    "sha256": "61893aeb87c3a5bb86113520e391bca773b58e6dea20adea66b3d28d67af145e"
+  }
+}

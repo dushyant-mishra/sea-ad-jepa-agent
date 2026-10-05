@@ -1,0 +1,40 @@
+{
+  "atlas_builder_replay": {
+    "all_byte_identical": true,
+    "machine_outputs_compared": 13,
+    "narrative_report_is_separately_authored": true
+  },
+  "atlas_output_manifest_sha256": "11b19fea96b1fd4696401566bbc306d024ee52a02e17f82cec0ffb7729ec63e7",
+  "atlas_summary_sha256": "069057b9a265c27e90b1965ee7ee15e42ba44b1f8ace220a2bc56af677902b43",
+  "calibration_bundle": {
+    "bytes": 410278055,
+    "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+  },
+  "date": "2026-09-21",
+  "metadata_sqlite": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "bytes": 2709786624,
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "notes": [
+    "All SQL aggregates were regenerated from the authenticated SQLite in a fresh output directory.",
+    "All regenerated SQL CSVs and the SQL SHA manifest matched the prior cache byte-for-byte.",
+    "The V3 atlas was rebuilt from the regenerated SQL cache; all 13 machine-generated atlas outputs matched byte-for-byte.",
+    "The Markdown report is a separately authored interpretation of machine evidence and is not emitted by the builder."
+  ],
+  "protected_state": {
+    "d_shared": "SEALED",
+    "dev_sealed": "SEALED",
+    "pathology": "SEALED",
+    "terminal_masking_outcomes": "UNOPENED",
+    "training": "OFF"
+  },
+  "schema": "FULL104_DATASET_ETL_REPRODUCIBILITY_RECEIPT_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "sql_aggregate_manifest_sha256": "7e50b6439eef388a186b363500c8339aed7462564232ed522986eb1b988a4ec6",
+  "sql_aggregate_replay": {
+    "all_byte_identical": true,
+    "files_compared": 11
+  }
+}

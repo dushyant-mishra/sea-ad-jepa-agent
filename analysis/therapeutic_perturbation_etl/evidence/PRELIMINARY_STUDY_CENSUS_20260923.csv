@@ -1,0 +1,9 @@
+accession,cell_model,role,guide_assignment_declared,processed_assets,remote_bytes_gb,archive_member_rows,current_training_ready,guide_join_fully_resolved,controls_fully_resolved,replicates_fully_resolved,perturbation_ids_fully_resolved,feature_ids_fully_resolved
+GSE175721,hESC_cortical_organoid_engineered_microglia,amyloid_context_validation,True,2,0.160,6,False,False,False,False,False,False
+GSE178317,iTF_iPSC_derived_microglia,primary_microglial_perturbation_training,True,2,1.012,16,False,False,False,False,False,True
+GSE240609,iPSC_microglia_neuron_coculture,mechanistic_bulk_validation,False,1,0.00044,4,False,False,False,False,False,True
+GSE241858,iPSC_derived_microglia,genotype_context_validation,False,2,0.00145,0,False,False,False,False,False,True
+GSE254205,human_brain_and_iPSC_derived_microglia,genotype_context_validation,False,4,0.740,21,False,False,False,False,False,False
+GSE293118,HMC3_microglial_cell_line,regulatory_element_perturbation,True,2,1.114,4,False,False,False,False,False,False
+GSE301119,primary_human_macrophage,myeloid_auxiliary_training,True,2,0.753,0,False,True,True,True,True,False
+GSE311359,iPSC_derived_microglia,microglial_auxiliary_training,True,1,0.670,21,False,False,False,False,False,True

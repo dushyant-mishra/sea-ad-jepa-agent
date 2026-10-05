@@ -1,0 +1,25 @@
+{
+  "schema": "V5_MASKING_V2_EXECUTION_CLARIFICATION_V1",
+  "date": "2026-09-16",
+  "status": "FROZEN_BEFORE_ANY_CORRECTED_LADDER_RESULT_IS_READ",
+  "clarifies": "V5_MASKING_V2_SHORTCUT_PREDICTABILITY_CONTRACT_20260916.json (0c3e89cf...)",
+  "changes_no_scientific_threshold": true,
+  "why_needed": "The frozen contract sets shortcut_set_rule_frozen.cap = 8 and combines inner directions under UNION_WITH_SUPPORT, but does not say how the cap applies once TWO directions each return up to 8. Repairing defect D-B (two independent directions) therefore made the global cap inoperable: the union could reach 16. This is the minimal execution clarification that makes the existing cap operable.",
+  "defect_provenance": "introduced by the D-B repair, not present in the original contract",
+  "combination_rule": {
+    "id": "UNION_WITH_SUPPORT_THEN_DETERMINISTIC_GLOBAL_CAP_V1",
+    "steps": [
+      "form the union of the direction-specific shortcut sets",
+      "support count = number of directions in which an address appears (2 or 1)",
+      "rank by support count DESCENDING",
+      "within equal support, rank by combined evidence score DESCENDING",
+      "ties broken by canonical address index ASCENDING",
+      "take at most cap = 8"
+    ],
+    "combined_evidence_score": "the donor- and source-balanced screening score computed over ALL outer-training donors (iA union iB). This is the union of the two directions' own evidence bases, is fully available before outer validation, and is never a function of outer-validation performance.",
+    "explicitly_rejected_alternative": "truncating an index-sorted union, which would reintroduce the address-index dependence that defect D-A caused",
+    "invariants": ["len(final_shortcut_set) <= 8", "selection is evidence-driven, not address-index-driven", "exactly one authoritative capped set exists before mask construction"]
+  },
+  "unchanged_frozen_terms": ["30 percent relative threshold", "0.02 absolute threshold", "no-shortcut floor 0.05", "50 percent shortcut-reduction rule", "global cap 8", "candidate budget 20", "ridge alpha 0.01", "max attacker features 64", "power ladder 3/8/20", "10 outer folds", "V1 control definition K=10 R=0.6", "matched mask burden"],
+  "training_authorized": false
+}

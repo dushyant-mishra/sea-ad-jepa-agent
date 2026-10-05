@@ -1,0 +1,749 @@
+{
+  "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
+  "development_status": "THRESHOLDS_FIXED_AFTER_BOUNDED_SMOKE_RUN",
+  "prospective_confirmation_eligible": false,
+  "verdict_scope": "DEVELOPMENT_USABILITY_ONLY",
+  "verdict": "PASS_LANE_SUPPORT_ONLY",
+  "qualification_scope": "DEVELOPMENT_POST_SMOKE_NOT_GUIDE_IDENTITY_VALIDATION",
+  "guide_identity_independently_verified": false,
+  "biological_replication_verified": false,
+  "verdict_basis": {
+    "min_cells_per_usable_target": 40,
+    "min_usable_targets": 30,
+    "usable_targets": 37,
+    "ntc_cells_sufficient": true,
+    "min_paired_lanes": 3,
+    "min_target_and_ntc_cells_per_lane": 10,
+    "ntc_cells_by_lane": {
+      "L1": 184,
+      "L2": 183,
+      "L3": 207,
+      "L4": 226
+    },
+    "ntc_supported_lanes": [
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "target_lane_support": {
+      "AARS": {
+        "assigned_cells": 42,
+        "cells_by_lane": {
+          "L1": 8,
+          "L2": 7,
+          "L3": 18,
+          "L4": 9
+        },
+        "paired_lanes": [
+          "L3"
+        ],
+        "lane_support_sufficient": false
+      },
+      "ATP1A1": {
+        "assigned_cells": 260,
+        "cells_by_lane": {
+          "L1": 58,
+          "L2": 59,
+          "L3": 79,
+          "L4": 64
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "AURKB": {
+        "assigned_cells": 63,
+        "cells_by_lane": {
+          "L1": 16,
+          "L2": 13,
+          "L3": 15,
+          "L4": 19
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CDC25B": {
+        "assigned_cells": 342,
+        "cells_by_lane": {
+          "L1": 78,
+          "L2": 78,
+          "L3": 91,
+          "L4": 95
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CDK12": {
+        "assigned_cells": 265,
+        "cells_by_lane": {
+          "L1": 63,
+          "L2": 51,
+          "L3": 84,
+          "L4": 67
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CDK8": {
+        "assigned_cells": 277,
+        "cells_by_lane": {
+          "L1": 5,
+          "L2": 17,
+          "L3": 205,
+          "L4": 50
+        },
+        "paired_lanes": [
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CSF1R": {
+        "assigned_cells": 246,
+        "cells_by_lane": {
+          "L1": 53,
+          "L2": 59,
+          "L3": 75,
+          "L4": 59
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CSF2RA": {
+        "assigned_cells": 254,
+        "cells_by_lane": {
+          "L1": 54,
+          "L2": 64,
+          "L3": 62,
+          "L4": 74
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CSF2RB": {
+        "assigned_cells": 273,
+        "cells_by_lane": {
+          "L1": 56,
+          "L2": 67,
+          "L3": 59,
+          "L4": 91
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "CSNK2A1": {
+        "assigned_cells": 467,
+        "cells_by_lane": {
+          "L1": 101,
+          "L2": 92,
+          "L3": 146,
+          "L4": 128
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "DBF4": {
+        "assigned_cells": 301,
+        "cells_by_lane": {
+          "L1": 71,
+          "L2": 61,
+          "L3": 73,
+          "L4": 96
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "DCPS": {
+        "assigned_cells": 145,
+        "cells_by_lane": {
+          "L1": 33,
+          "L2": 25,
+          "L3": 51,
+          "L4": 36
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "DDX39B": {
+        "assigned_cells": 61,
+        "cells_by_lane": {
+          "L1": 17,
+          "L2": 13,
+          "L3": 18,
+          "L4": 13
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "EPOR": {
+        "assigned_cells": 290,
+        "cells_by_lane": {
+          "L1": 68,
+          "L2": 62,
+          "L3": 72,
+          "L4": 88
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "IFNAR2": {
+        "assigned_cells": 252,
+        "cells_by_lane": {
+          "L1": 53,
+          "L2": 52,
+          "L3": 74,
+          "L4": 73
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "INPP5D": {
+        "assigned_cells": 407,
+        "cells_by_lane": {
+          "L1": 92,
+          "L2": 97,
+          "L3": 114,
+          "L4": 104
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "LSM6": {
+        "assigned_cells": 33,
+        "cells_by_lane": {
+          "L1": 4,
+          "L2": 13,
+          "L3": 9,
+          "L4": 7
+        },
+        "paired_lanes": [
+          "L2"
+        ],
+        "lane_support_sufficient": false
+      },
+      "MAP2K6": {
+        "assigned_cells": 388,
+        "cells_by_lane": {
+          "L1": 75,
+          "L2": 86,
+          "L3": 112,
+          "L4": 115
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "MAPK14": {
+        "assigned_cells": 403,
+        "cells_by_lane": {
+          "L1": 73,
+          "L2": 95,
+          "L3": 123,
+          "L4": 112
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "MED1": {
+        "assigned_cells": 195,
+        "cells_by_lane": {
+          "L1": 43,
+          "L2": 44,
+          "L3": 51,
+          "L4": 57
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "MTHFD2": {
+        "assigned_cells": 400,
+        "cells_by_lane": {
+          "L1": 81,
+          "L2": 88,
+          "L3": 123,
+          "L4": 108
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "NDUFA8": {
+        "assigned_cells": 228,
+        "cells_by_lane": {
+          "L1": 45,
+          "L2": 48,
+          "L3": 62,
+          "L4": 73
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "NDUFS5": {
+        "assigned_cells": 207,
+        "cells_by_lane": {
+          "L1": 47,
+          "L2": 49,
+          "L3": 51,
+          "L4": 60
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "NDUFV2": {
+        "assigned_cells": 394,
+        "cells_by_lane": {
+          "L1": 81,
+          "L2": 81,
+          "L3": 120,
+          "L4": 112
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "PFN2": {
+        "assigned_cells": 301,
+        "cells_by_lane": {
+          "L1": 55,
+          "L2": 57,
+          "L3": 90,
+          "L4": 99
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "PKM": {
+        "assigned_cells": 395,
+        "cells_by_lane": {
+          "L1": 75,
+          "L2": 74,
+          "L3": 125,
+          "L4": 121
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "PLK1": {
+        "assigned_cells": 75,
+        "cells_by_lane": {
+          "L1": 15,
+          "L2": 15,
+          "L3": 25,
+          "L4": 20
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "PPM1D": {
+        "assigned_cells": 297,
+        "cells_by_lane": {
+          "L1": 63,
+          "L2": 65,
+          "L3": 90,
+          "L4": 79
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "RIOK2": {
+        "assigned_cells": 53,
+        "cells_by_lane": {
+          "L1": 8,
+          "L2": 13,
+          "L3": 19,
+          "L4": 13
+        },
+        "paired_lanes": [
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "RPS6KA6": {
+        "assigned_cells": 402,
+        "cells_by_lane": {
+          "L1": 84,
+          "L2": 86,
+          "L3": 121,
+          "L4": 111
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "RPS6KB1": {
+        "assigned_cells": 374,
+        "cells_by_lane": {
+          "L1": 98,
+          "L2": 88,
+          "L3": 95,
+          "L4": 93
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "RPS6KB2": {
+        "assigned_cells": 388,
+        "cells_by_lane": {
+          "L1": 81,
+          "L2": 81,
+          "L3": 110,
+          "L4": 116
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "SPTLC2": {
+        "assigned_cells": 239,
+        "cells_by_lane": {
+          "L1": 48,
+          "L2": 59,
+          "L3": 67,
+          "L4": 65
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "STK40": {
+        "assigned_cells": 272,
+        "cells_by_lane": {
+          "L1": 60,
+          "L2": 63,
+          "L3": 81,
+          "L4": 68
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "TGFBR1": {
+        "assigned_cells": 232,
+        "cells_by_lane": {
+          "L1": 57,
+          "L2": 62,
+          "L3": 68,
+          "L4": 45
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "TGFBR2": {
+        "assigned_cells": 564,
+        "cells_by_lane": {
+          "L1": 110,
+          "L2": 143,
+          "L3": 155,
+          "L4": 156
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "TRAPPC3": {
+        "assigned_cells": 228,
+        "cells_by_lane": {
+          "L1": 63,
+          "L2": 46,
+          "L3": 65,
+          "L4": 54
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "TRIM24": {
+        "assigned_cells": 464,
+        "cells_by_lane": {
+          "L1": 95,
+          "L2": 115,
+          "L3": 110,
+          "L4": 144
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      },
+      "ZMYND8": {
+        "assigned_cells": 498,
+        "cells_by_lane": {
+          "L1": 105,
+          "L2": 104,
+          "L3": 141,
+          "L4": 148
+        },
+        "paired_lanes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "lane_support_sufficient": true
+      }
+    },
+    "failure_reasons": [],
+    "note": "development thresholds reflect downstream lane-paired pseudobulk needs but were frozen AFTER an inspected smoke run; this is not prospective confirmation or guide identity validation"
+  },
+  "counts_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+  "method": "agreement of a per-guide robust z-score on cell fraction with a Poisson test against an ambient expectation; a cell is assigned only if exactly one guide passes both",
+  "declared_before_calling": {
+    "z_threshold": 5.0,
+    "poisson_alpha_family_wise": 0.01,
+    "poisson_tests": 3832758,
+    "min_assigned_umi": 5,
+    "min_cell_total_umi": 10,
+    "rationale": "z of 5 is motivated by the number of tests rather than a published assignment count; however a bounded smoke run had already been inspected, so this is development-calibrated, not prospective"
+  },
+  "cells_total": 58302,
+  "cells_judged": 47318,
+  "cells_assigned": 11775,
+  "assignment_rate_of_called_cells": 0.202,
+  "cells_multiplet": 44,
+  "cells_no_guide_passed": 46483,
+  "targets_represented": 39,
+  "ntc_cells": 800,
+  "cells_per_target_min": 33,
+  "cells_per_target_median": 277,
+  "cells_per_target_max": 800,
+  "cells_per_target": {
+    "AARS": 42,
+    "ATP1A1": 260,
+    "AURKB": 63,
+    "CDC25B": 342,
+    "CDK12": 265,
+    "CDK8": 277,
+    "CSF1R": 246,
+    "CSF2RA": 254,
+    "CSF2RB": 273,
+    "CSNK2A1": 467,
+    "DBF4": 301,
+    "DCPS": 145,
+    "DDX39B": 61,
+    "EPOR": 290,
+    "IFNAR2": 252,
+    "INPP5D": 407,
+    "LSM6": 33,
+    "MAP2K6": 388,
+    "MAPK14": 403,
+    "MED1": 195,
+    "MTHFD2": 400,
+    "NDUFA8": 228,
+    "NDUFS5": 207,
+    "NDUFV2": 394,
+    "NTC": 800,
+    "PFN2": 301,
+    "PKM": 395,
+    "PLK1": 75,
+    "PPM1D": 297,
+    "RIOK2": 53,
+    "RPS6KA6": 402,
+    "RPS6KB1": 374,
+    "RPS6KB2": 388,
+    "SPTLC2": 239,
+    "STK40": 272,
+    "TGFBR1": 232,
+    "TGFBR2": 564,
+    "TRAPPC3": 228,
+    "TRIM24": 464,
+    "ZMYND8": 498
+  },
+  "sensitivity": {
+    "z>=3.0": {
+      "assigned": 13180,
+      "multiplet_gt1_guide": 279,
+      "no_guide_passed": 44843
+    },
+    "z>=4.0": {
+      "assigned": 12654,
+      "multiplet_gt1_guide": 113,
+      "no_guide_passed": 45535
+    },
+    "z>=5.0": {
+      "assigned": 11775,
+      "multiplet_gt1_guide": 44,
+      "no_guide_passed": 46483
+    },
+    "z>=6.0": {
+      "assigned": 10228,
+      "multiplet_gt1_guide": 23,
+      "no_guide_passed": 48051
+    },
+    "z>=8.0": {
+      "assigned": 4976,
+      "multiplet_gt1_guide": 3,
+      "no_guide_passed": 53323
+    },
+    "z>=10.0": {
+      "assigned": 1897,
+      "multiplet_gt1_guide": 2,
+      "no_guide_passed": 56403
+    }
+  },
+  "assignments_csv_sha256": "3719a109f18ce9f5b10cf01b3e35aa670ed1e68d35d8ff77bf04efe2c48d3214",
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false
+}

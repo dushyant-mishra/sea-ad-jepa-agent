@@ -1,0 +1,30 @@
+name: V64 fetch FANTOM hg38 CAGE peak coordinates
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/v64-fetch-fantom-hg38-cage-bed.yml'
+  workflow_dispatch:
+
+jobs:
+  fetch-fantom-bed:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch exact hg38 CAGE peak BED
+        run: |
+          mkdir -p fantom_hg38
+          curl -fL --retry 3 \
+            'https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair%2Bnew_CAGE_peaks_phase1and2.bed.gz' \
+            -o 'fantom_hg38/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz'
+          gzip -t 'fantom_hg38/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz'
+          zcat 'fantom_hg38/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz' | awk 'BEGIN{OFS="\t"} NF>=3 {n++; if($2<0 || $3<=$2) bad++} END{print "rows",n; print "bad_coordinates",bad+0; if(n==0 || bad>0) exit 1}'
+          sha256sum fantom_hg38/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-fantom-hg38-cage-bed
+          path: fantom_hg38/
+          if-no-files-found: error
+          retention-days: 30

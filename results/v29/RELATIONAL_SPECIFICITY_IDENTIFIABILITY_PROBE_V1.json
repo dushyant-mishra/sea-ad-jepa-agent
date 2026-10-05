@@ -1,0 +1,75 @@
+{
+  "schema": "V5_RELATIONAL_SPECIFICITY_IDENTIFIABILITY_PROBE_V1",
+  "rows": [
+    {
+      "arm": "NEG0_clean",
+      "rho": null,
+      "raw_mean": 0.49885350925632704,
+      "raw_sd": 0.008709372991190255,
+      "resid_mean": 0.4990006859093914,
+      "resid_sd": 0.0110003864498628
+    },
+    {
+      "arm": "NEG1_technical_measured",
+      "rho": null,
+      "raw_mean": 0.901014952526287,
+      "raw_sd": 0.005779842682274849,
+      "resid_mean": 0.4934728421032194,
+      "resid_sd": 0.016268337772000124
+    },
+    {
+      "arm": "POS1_planted_state",
+      "rho": null,
+      "raw_mean": 0.942233445883623,
+      "raw_sd": 0.006754810495226715,
+      "resid_mean": 0.9334653234470028,
+      "resid_sd": 0.006458554493401028
+    },
+    {
+      "arm": "NEG2_latent_capture",
+      "rho": 0.3,
+      "raw_mean": 0.9445028914794285,
+      "raw_sd": 0.004526743201858732,
+      "resid_mean": 0.9293792994100509,
+      "resid_sd": 0.0051869054688323145
+    },
+    {
+      "arm": "NEG2_latent_capture",
+      "rho": 0.5,
+      "raw_mean": 0.9402840435892326,
+      "raw_sd": 0.004164021973970149,
+      "resid_mean": 0.9263196924002843,
+      "resid_sd": 0.006538517306366292
+    },
+    {
+      "arm": "NEG2_latent_capture",
+      "rho": 0.7,
+      "raw_mean": 0.9289271554810271,
+      "raw_sd": 0.005500168748447598,
+      "resid_mean": 0.9168434153100277,
+      "resid_sd": 0.00566109975815539
+    },
+    {
+      "arm": "NEG2_latent_capture",
+      "rho": 0.9,
+      "raw_mean": 0.9026659572008169,
+      "raw_sd": 0.012454333871108987,
+      "resid_mean": 0.8799235178959541,
+      "resid_sd": 0.009883266177658416
+    },
+    {
+      "arm": "NEG2_latent_capture",
+      "rho": 0.95,
+      "raw_mean": 0.8887508226567145,
+      "raw_sd": 0.01612048388340794,
+      "resid_mean": 0.8347766624748081,
+      "resid_sd": 0.011767638786421458
+    }
+  ],
+  "pos1_residualised": 0.9334653234470028,
+  "worst_neg2_residualised": 0.9293792994100509,
+  "worst_neg2_rho": 0.3,
+  "separable_by_a_fixed_threshold": false,
+  "what_this_is_not": "not the gate and not a decision. A synthetic identifiability probe on the real NPH52 covariate scaffold. No expression read, no protected readout touched.",
+  "training_authorized": false
+}

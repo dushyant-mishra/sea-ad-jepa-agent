@@ -1,0 +1,13 @@
+fold,source,available_train_donors,available_heldout_donors,current_score_terms_per_target,targets_current_score_includes_undefined_zero_terms,targets_no_scorer_variable_heldout_donor,train_supported_min,train_supported_median,train_supported_max,train_supported_targets_zero,train_supported_targets_one,train_supported_targets_two,train_supported_targets_three_or_more,heldout_supported_min,heldout_supported_median,heldout_supported_max,heldout_supported_targets_zero,heldout_supported_targets_one,heldout_supported_targets_two,heldout_supported_targets_three_or_more,train_scorer_variable_min,train_scorer_variable_median,train_scorer_variable_max,train_scorer_variable_targets_zero,train_scorer_variable_targets_one,train_scorer_variable_targets_two,train_scorer_variable_targets_three_or_more,heldout_scorer_variable_min,heldout_scorer_variable_median,heldout_scorer_variable_max,heldout_scorer_variable_targets_zero,heldout_scorer_variable_targets_one,heldout_scorer_variable_targets_two,heldout_scorer_variable_targets_three_or_more
+0,HVS,30,11,11,214,0,0,30.0,30,348,232,142,16331,0,11.0,11,483,403,252,15915,7,30.0,30,0,0,0,17053,5,11.0,11,0,0,0,17053
+0,NPH52,12,5,5,4897,1,0,12.0,12,292,114,125,16522,0,4.0,5,439,217,282,16115,4,12.0,12,0,0,0,17053,0,5.0,5,1,2,8,17042
+0,SEA_AD,34,12,12,1681,118,0,34.0,34,944,142,57,15910,0,12.0,12,1100,155,104,15694,0,34.0,34,87,38,23,16905,0,12.0,12,118,58,42,16835
+1,HVS,31,10,10,114,0,0,31.0,31,388,200,132,16333,0,10.0,10,459,421,229,15944,7,31.0,31,0,0,0,17053,5,10.0,10,0,0,0,17053
+1,NPH52,13,4,4,623,0,0,12.0,13,276,121,125,16531,0,4.0,4,430,334,320,15969,3,13.0,13,0,0,0,17053,1,4.0,4,0,2,14,17037
+1,SEA_AD,34,12,12,1438,135,0,34.0,34,937,134,73,15909,0,12.0,12,1130,147,96,15680,0,34.0,34,81,36,22,16914,0,12.0,12,135,60,51,16807
+2,HVS,31,10,10,203,0,0,31.0,31,286,213,159,16395,0,10.0,10,729,369,246,15709,10,31.0,31,0,0,0,17053,2,10.0,10,0,0,1,17052
+2,NPH52,13,4,4,64,0,0,12.0,13,319,131,106,16497,0,4.0,4,352,256,545,15900,4,13.0,13,0,0,0,17053,1,4.0,4,0,6,5,17042
+2,SEA_AD,35,11,11,912,112,0,35.0,35,1039,95,80,15839,0,11.0,11,973,163,85,15832,0,35.0,35,87,35,28,16903,0,11.0,11,112,57,36,16848
+3,HVS,31,10,10,84,1,0,31.0,31,290,226,182,16355,0,10.0,10,639,241,169,16004,12,31.0,31,0,0,0,17053,0,10.0,10,1,0,0,17052
+3,NPH52,13,4,4,370,0,0,12.0,13,266,99,104,16584,0,4.0,4,594,328,833,15298,4,13.0,13,0,0,0,17053,1,4.0,4,0,4,37,17012
+3,SEA_AD,35,11,11,1477,164,0,35.0,35,923,130,68,15932,0,11.0,11,1413,183,147,15310,0,35.0,35,79,35,22,16917,0,11.0,11,164,88,58,16743

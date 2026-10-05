@@ -1,0 +1,35 @@
+{
+  "schema": "V5_FULL104_PHYSICAL_SHAKEDOWN_RECEIPT_V1",
+  "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "block_count": 8915,
+  "row_count": 4553407,
+  "donor_count": 104,
+  "operator_count": 42,
+  "address_count": 41238,
+  "source_names": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "total_nnz": 23690278596,
+  "elapsed_seconds": 7884.42636610003,
+  "rows_per_second": 577.5191229609146,
+  "blocks_per_second": 1.1307100334313522,
+  "peak_rss_bytes": 195403776,
+  "peak_current_process_gpu_memory_mib": 0.0,
+  "normalization_probe_columns": [
+    0,
+    1,
+    20619,
+    41236,
+    41237
+  ],
+  "terminal_masking_outcomes_inspected": false,
+  "target_panel_ladder_authorized": false,
+  "protected_outcomes_authorized": false,
+  "training_authorized": false,
+  "receipt_sha256": "56ffb8687275eb81f9e8119c6279d9ef4eb6d536f3bc055bc32e5945064a8722",
+  "scientific_scope_note": "READ-ONLY PHYSICAL FULL104 SHAKEDOWN ONLY. No target-panel ladder, masking-policy outcome, protected outcome, or training authority is opened."
+}

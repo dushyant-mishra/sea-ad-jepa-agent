@@ -1,0 +1,272 @@
+{
+  "schema": "V5_PROVENANCE_CONSUMER_AUDIT_V1",
+  "status": "STATIC_ENUMERATION_AND_CLASSIFICATION__NO_COUNTS_OPENED",
+  "provenance_table": {
+    "path": "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+    "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+    "present": true
+  },
+  "ROOT_CAUSE_IS_THE_CONTRACT_NOT_A_SCRIPT": {
+    "origin": "stage81a2r_authoritative_gene_identity_recovery.py:286 \u2014 result.insert(3, 'source_feature_index', result['source_feature_id'])",
+    "two_meanings": {
+      "_COMMON families (HVS_COMMON, SEA_AD_COMMON)": "indexes the harmonized feature universe, ordered by Ensembl ID. Measured: 100.0% agreement with Ensembl-ascending rank.",
+      "per-object NPH52 entries": "constructed positionally by the R extractors (seq_len(nrow(object)) - 1L), so it IS the object's own row position. Verified 32,176/32,176 for the reader-fit MG derivative."
+    },
+    "why_it_reproduced": "one column, two meanings, no marker distinguishing them. Every count materializer reads it as the object's row position, which is right for NPH52 and wrong for both _COMMON families."
+  },
+  "search_method": "two independent searches - by provenance FILENAME and by the source_feature_index COLUMN - because either alone undercounts. materialize_full104_phase2_nph_blocks.R takes the provenance path as a command-line argument and never names it.",
+  "consumers_found": 18,
+  "count_producing": 6,
+  "count_producing_that_never_name_the_file": [
+    "scripts/v4/full104_expression_interface_nph.R",
+    "scripts/v4/full104_expression_interface_nph_v8.R",
+    "scripts/v4/materialize_full104_phase2_nph_blocks.R"
+  ],
+  "disposition_counts": {
+    "METADATA_ONLY_NO_COUNTS_PRODUCED": 11,
+    "AUDITOR_WITH_THE_SAME_BLIND_SPOT": 1,
+    "AFFECTED_CONFIRMED": 2,
+    "SOUND_VERIFIED": 4
+  },
+  "consumers": [
+    {
+      "path": "scripts/v4/build_pre_stage81a2_harmonization.py",
+      "sha256": "bdc9c3b61fd17eb7a26e477877ff9a575c4224d9866f7360ea7b76036b70e112",
+      "bytes": 49485,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/derive_contextual_target_f1_querydesign_repair_v2.py",
+      "sha256": "97532a40755866c7bec0cdc53a1c6ce93390e6b63c74d4078fe8c42728260594",
+      "bytes": 34731,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/foundation_expression_lineage_reaudit.py",
+      "sha256": "4c163f4f94f3b81f05a45cfb30e0687e73b1c1cf5ff06593c11caa0a525cd6b7",
+      "bytes": 5111,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "AUDITOR_WITH_THE_SAME_BLIND_SPOT",
+      "note": "Hashes the existing discovery shards and checks identity and payload reproduction. It does not verify gene identity against the source feature axis, so it passes a scrambled artifact."
+    },
+    {
+      "path": "scripts/v4/foundation_materialize_discovery_expression.py",
+      "sha256": "ede646be8030ef1644d27496a98eb4661e1c95e4043bc44a6d520e81b7d0228f",
+      "bytes": 7900,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [
+        "source_to_address\\.get"
+      ],
+      "write_patterns_matched": [
+        "save_npz",
+        "csr_matrix"
+      ],
+      "disposition": "AFFECTED_CONFIRMED",
+      "note": "50k discovery corpus (output sha256 4c50f1de...). Shard op19 read from git and probed: APOE 0.0% naive vs 55.5% decoded, CSF1R 0.0% vs 76.6%."
+    },
+    {
+      "path": "scripts/v4/foundation_materialize_nph_discovery_sample.R",
+      "sha256": "c463688e87cbac14ad0ebd07716d160256ff1347731896e7945963f3a3d2f611",
+      "bytes": 3446,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [
+        "counts\\[\\s*mapping\\$source_feature_index\\s*\\+\\s*1L",
+        "source_counts\\[\\s*mapping\\$source_feature_index\\s*\\+\\s*1L"
+      ],
+      "write_patterns_matched": [
+        "writeMM",
+        "sparseMatrix"
+      ],
+      "disposition": "SOUND_VERIFIED",
+      "note": "NPH52 discovery shards. Reads the TRAIN derivative, which is a different file from the reader-fit one, so the earlier verification did not transfer and it was checked separately: 33,441 features by 19,375 cells, 32,176 of 32,176 provenance rows agreeing zero-based, 1-based alternative 0.00%."
+    },
+    {
+      "path": "scripts/v4/full104_expression_interface_nph.R",
+      "sha256": "6d1c54b122d6ae88b90c51c0f273d296765b0199e8ae07e49e3060429442cbbb",
+      "bytes": 5811,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [
+        "counts\\[\\s*mapping\\$source_feature_index\\s*\\+\\s*1L"
+      ],
+      "write_patterns_matched": [
+        "writeMM",
+        "sparseMatrix"
+      ],
+      "disposition": "SOUND_VERIFIED",
+      "note": "NPH52 interface matrices. Reads the TRAIN derivative via the physical split exactness manifest; that axis is verified at 100.00%."
+    },
+    {
+      "path": "scripts/v4/full104_expression_interface_nph_v8.R",
+      "sha256": "b8c543f3413d7747a798dd06c312539341358903b3a43706dff278c33c4a4909",
+      "bytes": 5865,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [
+        "counts\\[\\s*mapping\\$source_feature_index\\s*\\+\\s*1L"
+      ],
+      "write_patterns_matched": [
+        "writeMM",
+        "sparseMatrix"
+      ],
+      "disposition": "SOUND_VERIFIED",
+      "note": "NPH52 interface matrices v8. Reads the reader-fit derivative via NPH_READER_FIT_DERIVATIVE_MANIFEST.csv; that axis is verified at 100.00%."
+    },
+    {
+      "path": "scripts/v4/full104_expression_interface_preflight.py",
+      "sha256": "62afd36a1bf00f7420242288c924f00d476c227666ff550f1c6cc3ff0b2d92a9",
+      "bytes": 25399,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [
+        "savez"
+      ],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/materialize_full104_phase2_expression.py",
+      "sha256": "575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b",
+      "bytes": 21820,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [
+        "source_to_address\\s*\\["
+      ],
+      "write_patterns_matched": [
+        "save_npz",
+        "csr_matrix"
+      ],
+      "disposition": "AFFECTED_CONFIRMED",
+      "note": "Level-4 blocks. Verified against authenticated sources: column agreement 4.2-8.0% against a 90% floor, value multiset identical, row identity intact. Decoders built and verified at 100.00%."
+    },
+    {
+      "path": "scripts/v4/materialize_full104_phase2_nph_blocks.R",
+      "sha256": "ca595536f6144a1f6fb2570fe24f58c5335ba31e43a1f9a4b660e18db58e7529",
+      "bytes": 4657,
+      "kind": "COUNT_PRODUCING",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [
+        "counts\\[\\s*mapping\\$source_feature_index\\s*\\+\\s*1L"
+      ],
+      "write_patterns_matched": [
+        "writeMM",
+        "sparseMatrix"
+      ],
+      "disposition": "SOUND_VERIFIED",
+      "note": "NPH52 Level-4 blocks. Feature axis verified against assay(object,'counts') of the READER-FIT derivative: 32,176 of 32,176, with the 1-based alternative at 0.00%."
+    },
+    {
+      "path": "scripts/v4/stage81a2_audit_nph_freeze.R",
+      "sha256": "b4b93377ade405e31c36ee05dbf988151a2137d7919612d64ced47eb201a2b54",
+      "bytes": 10616,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2_freeze_canonical_contract.py",
+      "sha256": "99c033a54b1b2d4d6b8ec299f5c6313c84727694663d1e821542e9ec46f90b60",
+      "bytes": 52506,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_adjudicate_unresolved_identities.py",
+      "sha256": "4b929aa7e1fe592ad7d316ad732e6254283478baed3b68597b350f7e54480013",
+      "bytes": 40857,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_audit_all_downloaded_identity.py",
+      "sha256": "4ef4611196dec2dded5b8db84b2da7d721d22ddd367318200c37ed4843936960",
+      "bytes": 65933,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_authoritative_gene_identity_recovery.py",
+      "sha256": "b35c420311a2a4a94ea0ce9e9ca04713f921608668c757932acc980f6f71f7bf",
+      "bytes": 54185,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_build_review_package.py",
+      "sha256": "1df934fd6f6afbd52ba0f94f1081b51612ea03290949fd34dcc579e1c845e84e",
+      "bytes": 32456,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_close_authoritative_identity_audit.py",
+      "sha256": "e8e71d714ddf8110a0e375207c30c3996568cb337032a79eecf176f1c94be43c",
+      "bytes": 55995,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": true,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    },
+    {
+      "path": "scripts/v4/stage81a2r_extract_r_feature_metadata.R",
+      "sha256": "b57677b57a529b829b71cac64b6cecb1343260717543edf1f166a7b1ea77d0b9",
+      "bytes": 7940,
+      "kind": "METADATA_ONLY",
+      "names_the_provenance_file": false,
+      "positional_patterns_matched": [],
+      "write_patterns_matched": [],
+      "disposition": "METADATA_ONLY_NO_COUNTS_PRODUCED",
+      "note": ""
+    }
+  ],
+  "derivative_axes_verified": {
+    "nph52_reader_fit_MG": "33,441 x 15,264; 32,176/32,176 zero-based",
+    "nph52_TRAIN_MG": "33,441 x 19,375; 32,176/32,176 zero-based",
+    "note": "the two NPH52 derivatives share a feature axis but not a cell set, and each was verified on its own rather than by transferring the other's result"
+  },
+  "UNVERIFIED_MEANS_UNVERIFIED": "a path marked UNVERIFIED has not been shown sound and has not been shown defective. It must not be relied on until checked against its own source feature axis.",
+  "training_authorized": false,
+  "producer_sha256": "5a8b331b22400c0ea6ed274e4f170b1fff7a03a1c8a3bda55a2365c6e7663d1d"
+}

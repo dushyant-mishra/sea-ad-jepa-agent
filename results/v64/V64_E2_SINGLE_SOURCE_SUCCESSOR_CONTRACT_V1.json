@@ -1,0 +1,69 @@
+{
+  "schema": "V64_E2_SINGLE_SOURCE_SUCCESSOR_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "FROZEN_BEFORE_SINGLE_SOURCE_E2_EXECUTION",
+  "supersedes_for_single_source_path": "V63_E2_DESIGN_CONTRACT_V1 C1/C4/C6/C12 where those clauses are incompatible with the explicitly authorised Nott-centered fallback",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "morabito_target_state_cis_opened": false,
+    "nih_card_biological_correspondence_opened": false
+  },
+  "trigger": {
+    "condition": "Exactly one admissible open primary-microglia contact source is available.",
+    "current_state": "TRIGGERED: Nott Table S5 is authenticated and in hand; DS010 is embargoed until 2027-02-01; Yang pcHi-C artifact remains unlocated; Kosoy Hi-C is access-required/supporting-only."
+  },
+  "core_ruling": {
+    "P1_cross_source_contact_concordance": "NOT_APPLICABLE_ON_SINGLE_SOURCE_PATH",
+    "explicitly_not": "PASS",
+    "reason": "Cross-source concordance cannot be measured with one admissible contact source. Same-study neuron/oligodendrocyte concordance is not independent source replication and must not be relabelled as P1.",
+    "replacement": "P1S_SINGLE_SOURCE_SUBSTRATE_QUALIFICATION"
+  },
+  "object_names_and_claim_scope": {
+    "prevalidation_object": "E2_NOTT_CANDIDATE",
+    "definition": "Nott-defined primary-microglia promoter-distal contact pairs, source-thresholded by the depositors, hg19->hg38 harmonized under the frozen liftover rule, and qualified for microglial substrate fit under same-study cell-type controls.",
+    "must_not_be_called": ["independently replicated contact set","multi-source supported contacts","causal enhancer-gene map"],
+    "promotion_rule": "Only after independent validation-cohort correspondence passes may the object be promoted to the project's validated E2 authority class."
+  },
+  "P1S_SINGLE_SOURCE_SUBSTRATE_QUALIFICATION": {
+    "purpose": "Establish that the Nott contact substrate is nontrivially compatible with microglial regulatory substrate before it becomes load-bearing, without pretending this is independent contact replication.",
+    "required_components": [
+      "mechanical authentication of Table S5 and microglia interactome sheet",
+      "hg19->hg38 liftover plus round-trip qualification",
+      "same-study microglia-vs-neuron-vs-oligodendrocyte substrate-fit test under the separately frozen V64 Nott same-study contract",
+      "promoter-fixed distal shuffle showing observed microglial accessibility support exceeds geometry-preserving chance"
+    ],
+    "interpretation": "A pass supports MICROGLIA_SUBSTRATE_FIT of the Nott-centered contact object. It does not establish cross-source replication."
+  },
+  "C2_source_thresholds_instantiated_from_artifact": {
+    "significance": "FDR < 0.01, inherited from the deposited pre-thresholded interactome; all 104802 microglia rows satisfy it",
+    "cis_span": "10 kb to 1 Mb observed support window, not analyst-selected",
+    "anchor_width": "5 kb uniformly in the deposited interactome",
+    "forbidden": "No rethresholding or contact filtering based on downstream overlap."
+  },
+  "C3_build": {
+    "source_build": "hg19, independently confirmed by coordinates exceeding hg38 chr1 length",
+    "target_build": "hg38",
+    "rule": "single named chain, both anchors must map to same chromosome, attrition counted, round-trip reported"
+  },
+  "C6_successor_adjustment": {
+    "old_rule_status": "COARSENED_EXACT_MATCHING_RETIRED_FOR_PRIMARY_SPECIFICITY_ESTIMATOR",
+    "reason": "The frozen granularity frontier showed NO_FEASIBLE_REGION_ON_THIS_FRONTIER: TECH cleared only after severe support collapse; the continuous-adjustment successor cleared represented nuisance families with 960/960 linked pairs and broad ESS.",
+    "primary": "Use the frozen continuous-adjustment estimator lineage, subject to its V64 leakage and out-of-span stress qualifications.",
+    "matching_role": "coarsened matching may remain a sensitivity analysis only; it must not define the primary estimand or silently trim the population."
+  },
+  "C12_SINGLE_SOURCE_PRECONDITIONS_BEFORE_E2_NOTT_CANDIDATE": [
+    "authenticate Table S5 exact bytes and record digests",
+    "execute hg19->hg38 liftover and round-trip qualification",
+    "execute P1S same-study substrate-fit and promoter-fixed distal shuffle",
+    "verify the chosen accessibility source bytes and terms",
+    "execute cell-type negative eligibility filtering and report trivial-negative attrition",
+    "verify the continuous-adjustment estimator's V64 leakage/out-of-span qualifications before using it for validation-cohort correspondence",
+    "only then instantiate E2_NOTT_CANDIDATE"
+  ],
+  "future_second_source_rule": {
+    "when_Ds010_or_other_source_becomes_admissible": "Reactivate original P1 cross-source concordance prospectively as an upgrade test.",
+    "upgrade": "A successful independent-source concordance result can promote the contact-construction claim from Nott-centered to multi-source supported; failure does not retroactively falsify the Nott object but limits claim scope."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "GSE301119_RAW_PSEUDOBULK_PROVENANCE_V1",
+  "task": "TASK1_RAW_PSEUDOBULK_QUALIFICATION",
+  "execution_mode": "PHYSICAL_QUALIFICATION",
+  "producing_code": {
+    "extract": {
+      "path": "analysis/therapeutic_perturbation_etl/scripts/r/extract_intervention_effects_v1.R",
+      "sha256": "260c7a3609f3fe987bb3c90755cc9369fd25c8d14941d996d6bcdee52c634fdb",
+      "provenance": "verbatim from PR #81 head 9d3440991378"
+    },
+    "verify": {
+      "path": "analysis/therapeutic_perturbation_etl/scripts/r/verify_rawpb_normalization_and_engagement_v1.R",
+      "sha256": "77d90c550eb04ec00c6eaf7864aa8f19dbb29b6d2939f87c10b0720181bb09f8"
+    },
+    "parity": {
+      "path": "analysis/therapeutic_perturbation_etl/scripts/r/crosscheck_seurat5_counts_v1.R",
+      "sha256": "7c2f9fd98e8cc40aaef1c9ca982a4a591b449e3fe6a820f1e1d5c7adaaffca4d"
+    }
+  },
+  "dependency_versions": {
+    "R": "4.6.1",
+    "SeuratObject": "5.4.0",
+    "r_library": "D:/jepa_rlib46"
+  },
+  "authenticated_source_objects": {
+    "CRISPRa": {
+      "path": "D:\\Jepa project\\data\\external\\v4\\perturbation\\GSE301119\\GSE301119_CRISPRa_seurat5.rds",
+      "bytes": 345798341,
+      "sha256": "2f700baff2390e257a7ae1b301204bceb5feeb823671c21f10fd3f1038450829"
+    },
+    "CRISPRi": {
+      "path": "D:\\Jepa project\\data\\external\\v4\\perturbation\\GSE301119\\GSE301119_CRISPRi_seurat5.rds",
+      "bytes": 406836813,
+      "sha256": "fc2584fad6327defb32b939c94e89fa174d3287399ab66e91b6189569b108eb3"
+    }
+  },
+  "heavyweight_outputs_on_local_disk": {
+    "CRISPRa_guide_donor_logcpm.rds": {
+      "path": "D:\\jepa_perturb_outputs_20260923\\gse301119_rawpb_v1\\CRISPRa_guide_donor_logcpm.rds",
+      "bytes": 32763309,
+      "sha256": "c3988a9682561d19c2b7918d5d1da309e34f410ce3e04d97146f4bb507af1e92"
+    },
+    "CRISPRa_guide_donor_raw_counts.rds": {
+      "path": "D:\\jepa_perturb_outputs_20260923\\gse301119_rawpb_v1\\CRISPRa_guide_donor_raw_counts.rds",
+      "bytes": 30245701,
+      "sha256": "9fe028f508ce33a8c968ab05c363c345135b0b6227db4476838c70fb9d874d90"
+    },
+    "CRISPRi_guide_donor_logcpm.rds": {
+      "path": "D:\\jepa_perturb_outputs_20260923\\gse301119_rawpb_v1\\CRISPRi_guide_donor_logcpm.rds",
+      "bytes": 44099141,
+      "sha256": "2c029d95d3e0cef36df88ba0b446c4c416fc384e2d95b0792812113d1080d359"
+    },
+    "CRISPRi_guide_donor_raw_counts.rds": {
+      "path": "D:\\jepa_perturb_outputs_20260923\\gse301119_rawpb_v1\\CRISPRi_guide_donor_raw_counts.rds",
+      "bytes": 40248363,
+      "sha256": "e796504f41ddd65f3a5b72699d12431ce664974e0860ecb255858bd084283549"
+    }
+  },
+  "declared_tolerances": {
+    "logcpm": 1e-09,
+    "log2fc": 1e-09,
+    "note": "declared before inspecting results; both sides are IEEE double from identical integers"
+  },
+  "independent_reproduction": {
+    "normalization_max_abs_delta": {
+      "CRISPRa": 0.0,
+      "CRISPRi": 0.0
+    },
+    "engagement_max_abs_delta_log2fc": {
+      "CRISPRa": 5.329071e-15,
+      "CRISPRi": 4.884981e-15
+    },
+    "engagement_rows_compared": {
+      "CRISPRa": 412,
+      "CRISPRi": 412
+    },
+    "row_coverage_identical": true,
+    "guide_counts_identical": true
+  },
+  "scope": "GSE301119 primary human macrophage; CRISPRa and CRISPRi kept as separate strata",
+  "jepa_training": false,
+  "therapeutic_ranking": false,
+  "protected_full104_outcomes": "UNOPENED",
+  "manifest_sha256": "ebe4683a851a688ea6b19f558c970064f66cf790821d793452d9022e4ba2e7d8"
+}

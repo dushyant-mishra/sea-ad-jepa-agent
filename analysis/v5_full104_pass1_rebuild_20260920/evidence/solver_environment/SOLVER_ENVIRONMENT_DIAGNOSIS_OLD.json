@@ -1,0 +1,237 @@
+{
+  "schema": "V5_DENSE_SOLVER_ENVIRONMENT_DIAGNOSIS_V1",
+  "date": "2026-09-20",
+  "environment": "sea-ad-jepa",
+  "status": "BROKEN__ALL_DENSE_LAPACK_PATHS_TERMINATE_THE_INTERPRETER",
+  "preflight_anchor": {
+    "git_head": "ccaed857171dd51d3559d397c3a0ef51dcdc8d89",
+    "worktree_clean": true,
+    "script_relpath": "analysis/v5_full104_pass1_rebuild_20260920/scripts/solver_backend_preflight_20260920.py",
+    "script_sha256": "b609af7edde8c7ab4ec5fc09d7ff5fa01cf0a6c6f8cd53627806ba7100dd3f33",
+    "note": "rerun from a clean committed head after the first run used a script still being edited"
+  },
+  "observed_fact": {
+    "combinations_tested": 15,
+    "combinations_failed": 15,
+    "methods": [
+      "numpy_solve",
+      "numpy_cholesky",
+      "numpy_lstsq",
+      "scipy_solve_pos",
+      "scipy_cho"
+    ],
+    "sizes": [
+      4,
+      32,
+      64
+    ],
+    "exit_code_decimal": 3228369023,
+    "exit_code_hex": "0xC06D007F",
+    "stderr": "empty on every probe",
+    "interpretation": "hard process termination, not a Python exception"
+  },
+  "diagnosis": {
+    "confidence": "WELL_SUPPORTED_NOT_YET_PROVEN_TO_A_SPECIFIC_DLL",
+    "finding": "mixed conda/pip binary numerical stack with two incompatible BLAS/LAPACK providers",
+    "numpy": "1.26.4 from conda-forge, linked against conda MKL via libblas/libcblas/liblapack 3.11.0 *_mkl builds",
+    "scipy": "1.15.3 from pypi (pip wheel) bundling its own OpenBLAS",
+    "smoking_gun": "libscipy_openblas-f07f5a5d207a3a47104dca54d6d0c86a.dll, a scipy pip-wheel bundled OpenBLAS, is installed inside site-packages/numpy.libs/ -- the pip scipy wheel placed its OpenBLAS in numpy's DLL directory, so two LAPACK providers are present for one process",
+    "not_yet_established": "the exact DLL whose delay-load fails; 0xC06D007F identifies the failure class, not the specific module"
+  },
+  "numerical_packages": [
+    {
+      "name": "libblas",
+      "version": "3.11.0",
+      "channel": "conda-forge",
+      "build": "7_h8455456_mkl"
+    },
+    {
+      "name": "libcblas",
+      "version": "3.11.0",
+      "channel": "conda-forge",
+      "build": "7_h2a3cdd5_mkl"
+    },
+    {
+      "name": "liblapack",
+      "version": "3.11.0",
+      "channel": "conda-forge",
+      "build": "7_hf9ab0e9_mkl"
+    },
+    {
+      "name": "mkl",
+      "version": "2026.0.0",
+      "channel": "conda-forge",
+      "build": "hac47afa_908"
+    },
+    {
+      "name": "numpy",
+      "version": "1.26.4",
+      "channel": "conda-forge",
+      "build": "py311h0b4df5a_0"
+    },
+    {
+      "name": "onemkl-license",
+      "version": "2026.0.0",
+      "channel": "conda-forge",
+      "build": "h57928b3_908"
+    },
+    {
+      "name": "scipy",
+      "version": "1.15.3",
+      "channel": "pypi",
+      "build": "pypi_0"
+    }
+  ],
+  "blas_lapack_dlls_library_bin": [
+    {
+      "name": "libblas.dll",
+      "bytes": 108544,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "libcblas.dll",
+      "bytes": 111104,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "liblapack.dll",
+      "bytes": 181760,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_avx10.3.dll",
+      "bytes": 67684512,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_avx2.3.dll",
+      "bytes": 47482016,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_avx512.3.dll",
+      "bytes": 75416736,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_ilp64.2.dll",
+      "bytes": 742048,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_intelmpi_ilp64.2.dll",
+      "bytes": 154272,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_intelmpi_lp64.2.dll",
+      "bytes": 154272,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_lp64.2.dll",
+      "bytes": 399008,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_msmpi_ilp64.2.dll",
+      "bytes": 154272,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_blacs_msmpi_lp64.2.dll",
+      "bytes": 154272,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_cdft_core.2.dll",
+      "bytes": 451744,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_core.3.dll",
+      "bytes": 71903904,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_def.3.dll",
+      "bytes": 37053600,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_intel_thread.3.dll",
+      "bytes": 39083680,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_mc3.3.dll",
+      "bytes": 47141024,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_rt.3.dll",
+      "bytes": 27890848,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_scalapack_ilp64.2.dll",
+      "bytes": 7984800,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_scalapack_lp64.2.dll",
+      "bytes": 7788192,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_sequential.3.dll",
+      "bytes": 23502496,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_tbb_thread.3.dll",
+      "bytes": 29841056,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_avx10.3.dll",
+      "bytes": 18123936,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_avx2.3.dll",
+      "bytes": 15308448,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_avx512.3.dll",
+      "bytes": 15988896,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_cmpt.3.dll",
+      "bytes": 8067744,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_def.3.dll",
+      "bytes": 9272992,
+      "dir": "Library/bin"
+    },
+    {
+      "name": "mkl_vml_mc3.3.dll",
+      "bytes": 13031584,
+      "dir": "Library/bin"
+    }
+  ],
+  "bundled_wheel_dlls": [
+    {
+      "name": "libscipy_openblas-f07f5a5d207a3a47104dca54d6d0c86a.dll",
+      "bytes": 20155392,
+      "dir": "Lib/site-packages/scipy.libs"
+    }
+  ],
+  "repair_rule": "one internally coherent numerical stack; replace the pip scipy with a conda-forge scipy so numpy and scipy share conda MKL. The ridge estimator is NOT changed -- the goal is the same mathematics on a working backend.",
+  "succession_policy": "old environment frozen as evidence and never mutated; repair happens in a versioned successor",
+  "production_solver_code_changed": false
+}

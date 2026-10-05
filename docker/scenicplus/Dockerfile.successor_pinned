@@ -1,0 +1,108 @@
+# Successor recipe for FUTURE rebuilds only.
+# It does NOT describe the already-validated scenicplus:1.0a2 image.
+FROM mambaorg/micromamba:latest
+
+LABEL org.opencontainers.image.title="SCENIC+ v1.0a2 successor runtime"
+LABEL org.opencontainers.image.description="Future reproducible successor: exact cisTarget commit plus downloaded-tool digests."
+LABEL org.opencontainers.image.source="https://github.com/aertslab/scenicplus"
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential ca-certificates curl gfortran git libcurl4-openssl-dev \
+    libfftw3-dev libgl1 libhdf5-dev libopenblas-dev libsm6 libxext6 \
+    libxml2-dev libxrender1 libxslt1-dev default-jdk pkg-config procps \
+    swig unzip wget zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+USER $MAMBA_USER
+
+RUN micromamba install -y -n base -c conda-forge -c bioconda \
+    bedtools cython=0.29.37 datrie=0.8.2 macs2=2.2.9.1 meme=5.5.9 \
+    numpy=1.26.4 pip=24.3.1 python=3.11.8 python-flatbuffers samtools \
+    "setuptools<81" setuptools-scm wheel \
+    && micromamba clean --all --yes
+
+USER root
+RUN ln -s /opt/conda/bin/python /usr/local/bin/python3
+
+ARG MALLET_VERSION=2.1.0
+RUN wget -q -O /tmp/mallet.zip \
+      "https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip" \
+    && unzip -q /tmp/mallet.zip -d /opt \
+    && ln -s /opt/mallet-${MALLET_VERSION} /opt/mallet \
+    && rm /tmp/mallet.zip \
+    && test -x /opt/mallet/bin/mallet
+
+ENV MALLET_HOME=/opt/mallet
+ENV PATH="/opt/mallet/bin:${PATH}"
+
+# REQUIRED. No default is intentional: future rebuilds must name an immutable commit.
+ARG CREATE_CISTARGET_DATABASES_COMMIT
+RUN test -n "${CREATE_CISTARGET_DATABASES_COMMIT}" \
+    && git clone https://github.com/aertslab/create_cisTarget_databases.git /opt/create_cisTarget_databases \
+    && git -C /opt/create_cisTarget_databases checkout --detach "${CREATE_CISTARGET_DATABASES_COMMIT}" \
+    && git -C /opt/create_cisTarget_databases rev-parse HEAD | tee /opt/create_cisTarget_databases/COMMIT.txt \
+    && test "$(git -C /opt/create_cisTarget_databases rev-parse HEAD)" = "${CREATE_CISTARGET_DATABASES_COMMIT}"
+
+# The selected commit must reproduce the key files from the validated running image.
+RUN cd /opt/create_cisTarget_databases \
+    && printf '%s  %s\n' \
+      e06e80ba6a128ba5c2f07afbc324660b621cfb7ba9f488fcb3a8b2a24516cb81 create_cistarget_motif_databases.py \
+      e16a899829d7959b219173762ca069a0873ff1244b80cb089c7307404909672a clusterbuster.py \
+      5873fbaadcec2006bebf9f6473b1de1068cbdd83ef3fb0e1630ab6b7ca534b13 cistarget_db.py \
+      0bd6c561d3fb49330885349198cf451322b9635e01429c2d8cdee9b387619c84 convert_motifs_or_tracks_vs_regions_or_genes_scores_to_rankings_cistarget_dbs.py \
+      3e9848ac1bed915e6d52b116792bd7f6045a75b76640e6b224c3e2228e14a680 combine_partial_motifs_or_tracks_vs_regions_or_genes_scores_cistarget_dbs.py \
+      2980649f9470798f9c6a0d648cb79144aaa60e310a368a6ad53ccc4797fd8b0e combine_partial_regions_or_genes_vs_motifs_or_tracks_scores_cistarget_dbs.py \
+      1739638242593e5e8305465633c013c89c0ae4daa87ad3ebc1d31654de008921 create_fasta_with_padded_bg_from_bed.sh \
+      > /tmp/create_cistarget_key_files.sha256 \
+    && sha256sum -c /tmp/create_cistarget_key_files.sha256
+
+# Downloaded executables also require caller-supplied immutable digests.
+ARG CBUST_SHA256
+ARG LIFTOVER_SHA256
+ARG BIGWIG_AVERAGE_OVER_BED_SHA256
+RUN test -n "${CBUST_SHA256}" \
+    && test -n "${LIFTOVER_SHA256}" \
+    && test -n "${BIGWIG_AVERAGE_OVER_BED_SHA256}" \
+    && wget -q -O /usr/local/bin/cbust https://resources.aertslab.org/cistarget/programs/cbust \
+    && wget -q -O /usr/local/bin/liftOver https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver \
+    && wget -q -O /usr/local/bin/bigWigAverageOverBed https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed \
+    && echo "${CBUST_SHA256}  /usr/local/bin/cbust" | sha256sum -c - \
+    && echo "${LIFTOVER_SHA256}  /usr/local/bin/liftOver" | sha256sum -c - \
+    && echo "${BIGWIG_AVERAGE_OVER_BED_SHA256}  /usr/local/bin/bigWigAverageOverBed" | sha256sum -c - \
+    && chmod a+x /usr/local/bin/cbust /usr/local/bin/liftOver /usr/local/bin/bigWigAverageOverBed \
+    && chmod a+x /opt/create_cisTarget_databases/*.py /opt/create_cisTarget_databases/*.sh
+
+ENV CREATE_CISTARGET_DATABASES_DIR=/opt/create_cisTarget_databases
+ENV PATH="/opt/create_cisTarget_databases:${PATH}"
+
+USER $MAMBA_USER
+ARG SCENICPLUS_REF=v1.0a2
+RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/scenicplus.git /tmp/scenicplus \
+    && micromamba run -n base python -m pip install --no-cache-dir pysam==0.22.0 \
+    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir pybedtools==0.9.1 \
+    && micromamba run -n base python -m pip install --no-cache-dir packaging==24.0 hatchling==1.21.1 poetry-core==1.0.8 \
+    && micromamba run -n base python -m pip install --no-cache-dir --no-deps poetry==1.1.15 \
+    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir /tmp/scenicplus \
+    && micromamba run -n base python -m pip uninstall -y poetry poetry-core hatchling \
+    && rm -rf /tmp/scenicplus
+
+RUN micromamba run -n base python -m pip check \
+    && micromamba run -n base macs2 --version \
+    && micromamba run -n base scenicplus --help >/dev/null \
+    && command -v cbust >/dev/null \
+    && command -v create_cistarget_motif_databases.py >/dev/null \
+    && command -v liftOver >/dev/null \
+    && command -v bigWigAverageOverBed >/dev/null
+
+# Build-binding receipt inside the image.
+RUN { \
+      echo "create_cistarget_commit=$(cat /opt/create_cisTarget_databases/COMMIT.txt)"; \
+      echo "cbust_sha256=$(sha256sum /usr/local/bin/cbust | awk '{print $1}')"; \
+      echo "liftOver_sha256=$(sha256sum /usr/local/bin/liftOver | awk '{print $1}')"; \
+      echo "bigWigAverageOverBed_sha256=$(sha256sum /usr/local/bin/bigWigAverageOverBed | awk '{print $1}')"; \
+    } > /opt/SCENICPLUS_SUCCESSOR_BUILD_BINDING.txt
+
+WORKDIR /workspace
+CMD ["/bin/bash"]

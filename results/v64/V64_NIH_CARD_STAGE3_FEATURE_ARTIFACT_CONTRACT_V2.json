@@ -1,0 +1,86 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_REPAIRED_PHASE_A_EXECUTION",
+  "supersedes": "V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V1",
+  "reason": "Add the frozen second-control/null role without changing the LINKED|CONTROL population semantic.",
+  "rows": {
+    "population": {
+      "allowed": [
+        "LINKED",
+        "CONTROL"
+      ]
+    },
+    "control_role": {
+      "allowed": [
+        "NONE",
+        "A",
+        "B"
+      ]
+    },
+    "valid_combinations": [
+      "LINKED + NONE",
+      "CONTROL + A",
+      "CONTROL + B"
+    ]
+  },
+  "primary_semantics": {
+    "CONTROL_A": "Primary matched control.",
+    "CONTROL_B": "Independent second control reserved solely for control-vs-control null.",
+    "rule": "CONTROL_B never substitutes for CONTROL_A and never enters the primary linked-vs-control contrast."
+  },
+  "required_structural_fields": [
+    "promoter_key",
+    "promoter_index",
+    "pair_key",
+    "population",
+    "control_role",
+    "source_hg19_distance_bp",
+    "log_distance",
+    "promoter_degree",
+    "re_density",
+    "anchor_frequency",
+    "distal_chrom",
+    "distal_start_hg38",
+    "distal_end_hg38"
+  ],
+  "phaseB_fields": [
+    "promoter_activity",
+    "distal_accessibility"
+  ],
+  "optional_but_if_emitted_must_define_units": [
+    "rna_depth_sensitivity",
+    "atac_depth_sensitivity"
+  ],
+  "hierarchy": [
+    "promoter_degree is defined once per promoter and repeated consistently",
+    "promoter_activity is defined once per promoter at the declared aggregation level",
+    "control rows retain the same promoter_key as their linked edge",
+    "CONTROL_A and CONTROL_B retain separate pair_keys and control_role"
+  ],
+  "forbidden": [
+    "linked-v-control correspondence",
+    "per-edge RNA-ATAC correlation",
+    "Delta/residual correspondence",
+    "disease labels",
+    "AD-locus outcomes",
+    "Morabito/SEA-AD protected validation outcomes"
+  ],
+  "receipt_must_bind": [
+    "artifact sha256",
+    "producer source sha256 and git blob",
+    "row counts by population and control_role",
+    "promoter count",
+    "primary funnel and null-arm availability counts",
+    "authenticated NIH-CARD byte receipts",
+    "pairing closeout",
+    "E2 digest",
+    "Phase-A successor contract digest"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORISED",
+    "correspondence_opened": false,
+    "training": "OFF",
+    "td60": "BLOCKED"
+  }
+}

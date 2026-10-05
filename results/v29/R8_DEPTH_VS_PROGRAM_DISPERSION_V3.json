@@ -1,0 +1,188 @@
+{
+  "schema": "V5_R8_DEPTH_VS_PROGRAM_DISPERSION_V3",
+  "status": "SIMULATION_ON_R8_RECORDED_GEOMETRY__NO_DATA_OPENED",
+  "supersedes": [
+    "V5_R8_SPLIT_HALF_NULL_GEOMETRY_V1",
+    "V5_R8_SPLIT_HALF_NULL_GEOMETRY_V2"
+  ],
+  "withdrawals": {
+    "V1": "interval built at ~47 both-positive cells used to test a statistic computed at 117-134; both borderline verdicts void",
+    "V2": "both-positive fraction summed to k=200, badly wrong at large mu (0.2638 reported where the true value is 0.4236); and the model attributed all over-dispersion to program, which is the assumption V3 exists to relax. V2's SPLIT_NOISIER verdicts are withdrawn."
+  },
+  "n_simulations": 3000,
+  "n_latent_sample": 60000,
+  "seed": 20260927,
+  "per_program": {
+    "APOE_LIPID": {
+      "status": "FITTED",
+      "reference_depth_mu_r": 20044.000000066244,
+      "observed_zero_frac": 0.407202216066482,
+      "observed_bothpos_frac": 0.37119113573407203,
+      "n_feasible_ridge_points": 20,
+      "chosen": {
+        "phi_g": 0.5712843861253786,
+        "phi_d": 0.989062803315599,
+        "mu_p": 4.246575999843271,
+        "bothpos_frac": 0.37136762515426125,
+        "zero_frac": 0.40720221606475415,
+        "bothpos_abs_error": 0.00017648942018921865,
+        "sim_all_cells_mean": 0.6030006695306166,
+        "sim_both_positive_n_mean": 133.8725
+      },
+      "depth_dispersion_var": 1.0110581417557476,
+      "program_dispersion_var": 1.7504416789373483,
+      "program_share_of_per_nucleus_variance": 0.6338735443039113,
+      "fitted_simulation": {
+        "all_cells": {
+          "mean": 0.5999004000861478,
+          "p2_5": 0.4991595741409111,
+          "p97_5": 0.6964211667672149,
+          "n_finite": 3000
+        },
+        "both_positive": {
+          "mean": 0.7472363303873762,
+          "p2_5": 0.6583709852114615,
+          "p97_5": 0.8203336198613053,
+          "n_finite": 3000
+        },
+        "both_positive_n_mean": 133.99566666666666
+      },
+      "in_sample_targets": [
+        "zero fraction",
+        "both-positive fraction",
+        "all-cells split-half correlation"
+      ],
+      "out_of_sample_prediction": {
+        "quantity": "both-positive split-half correlation",
+        "observed": 0.32802519895060755,
+        "predicted_95": [
+          0.6583709852114615,
+          0.8203336198613053
+        ],
+        "predicted_mean": 0.7472363303873762,
+        "both_positive_n_observed": 134,
+        "both_positive_n_simulated": 133.99566666666666,
+        "n_comparable": true,
+        "verdict": "OBSERVED_BELOW_PREDICTION"
+      }
+    },
+    "P2RY12_HOMEOSTATIC": {
+      "status": "FITTED",
+      "reference_depth_mu_r": 8687.999999996784,
+      "observed_zero_frac": 0.4293628808864266,
+      "observed_bothpos_frac": 0.2631578947368421,
+      "n_feasible_ridge_points": 18,
+      "chosen": {
+        "phi_g": 2.29803455352075,
+        "phi_d": 0.985223045258568,
+        "mu_p": 1.7249905223972508,
+        "bothpos_frac": 0.2631808914231071,
+        "zero_frac": 0.4293628808911288,
+        "bothpos_abs_error": 2.2996686264986632e-05,
+        "sim_all_cells_mean": 0.24745940114078097,
+        "sim_both_positive_n_mean": 96.09
+      },
+      "depth_dispersion_var": 1.0149985882004555,
+      "program_dispersion_var": 0.43515446644086786,
+      "program_share_of_per_nucleus_variance": 0.30007485420116414,
+      "fitted_simulation": {
+        "all_cells": {
+          "mean": 0.24628760341568917,
+          "p2_5": 0.1341779701007594,
+          "p97_5": 0.36277898702194783,
+          "n_finite": 3000
+        },
+        "both_positive": {
+          "mean": 0.539046150575579,
+          "p2_5": 0.3637833820054095,
+          "p97_5": 0.683288343158227,
+          "n_finite": 3000
+        },
+        "both_positive_n_mean": 95.65466666666667
+      },
+      "in_sample_targets": [
+        "zero fraction",
+        "both-positive fraction",
+        "all-cells split-half correlation"
+      ],
+      "out_of_sample_prediction": {
+        "quantity": "both-positive split-half correlation",
+        "observed": -0.19932729766370555,
+        "predicted_95": [
+          0.3637833820054095,
+          0.683288343158227
+        ],
+        "predicted_mean": 0.539046150575579,
+        "both_positive_n_observed": 95,
+        "both_positive_n_simulated": 95.65466666666667,
+        "n_comparable": true,
+        "verdict": "OBSERVED_BELOW_PREDICTION"
+      }
+    },
+    "HLA_DRA_ANTIGEN": {
+      "status": "FITTED",
+      "reference_depth_mu_r": 13948.999999971584,
+      "observed_zero_frac": 0.3988919667590028,
+      "observed_bothpos_frac": 0.32409972299168976,
+      "n_feasible_ridge_points": 19,
+      "chosen": {
+        "phi_g": 3.2544874752650417,
+        "phi_d": 0.6817749522847933,
+        "mu_p": 2.3378179111097435,
+        "bothpos_frac": 0.32347389664604087,
+        "zero_frac": 0.39889196675996996,
+        "bothpos_abs_error": 0.0006258263456488944,
+        "sim_all_cells_mean": 0.2506953676363222,
+        "sim_both_positive_n_mean": 116.7625
+      },
+      "depth_dispersion_var": 1.466759664092612,
+      "program_dispersion_var": 0.3072680437704131,
+      "program_share_of_per_nucleus_variance": 0.17320363284547846,
+      "fitted_simulation": {
+        "all_cells": {
+          "mean": 0.24572175286915993,
+          "p2_5": 0.12709067000082666,
+          "p97_5": 0.36457536960444337,
+          "n_finite": 3000
+        },
+        "both_positive": {
+          "mean": 0.5391117471931905,
+          "p2_5": 0.3756890625720812,
+          "p97_5": 0.6852579624275764,
+          "n_finite": 3000
+        },
+        "both_positive_n_mean": 115.93633333333334
+      },
+      "in_sample_targets": [
+        "zero fraction",
+        "both-positive fraction",
+        "all-cells split-half correlation"
+      ],
+      "out_of_sample_prediction": {
+        "quantity": "both-positive split-half correlation",
+        "observed": -0.24529282516128312,
+        "predicted_95": [
+          0.3756890625720812,
+          0.6852579624275764
+        ],
+        "predicted_mean": 0.5391117471931905,
+        "both_positive_n_observed": 117,
+        "both_positive_n_simulated": 115.93633333333334,
+        "n_comparable": true,
+        "verdict": "OBSERVED_BELOW_PREDICTION"
+      }
+    }
+  },
+  "HOW_TO_READ_THE_SHARE": "program_share_of_per_nucleus_variance is the fraction of per-nucleus rate variation that does NOT cancel in the activity ratio. A share near zero means the apparent single-nucleus structure is capture depth and there is no per-nucleus program state to predict. A share near one means the opposite.",
+  "WHAT_THIS_DOES_NOT_SHOW": "that the surviving program variation is BIOLOGICAL. Ambient RNA contamination, nuclear size and dissociation stress all vary per nucleus and do not cancel in the ratio. Separating those from real cell state needs the disjoint-nucleus comparison on the FULL104 cohort, which is not run here. It also rests on R8's summary statistics rather than R8's per-cell counts, which were not released in the package.",
+  "training_authorized": false,
+  "expression_opened": false,
+  "producer_sha256": "10bd8ab80d50b75a706b2f3178079ed476b3ce6f55c489d5359dc716929d5323",
+  "SUPERSEDED_2026_09_27": {
+    "status": "UNVERIFIABLE_INPUT",
+    "why": "this analysis reasons entirely from R8's recorded summary statistics - zero fraction, both-positive count, median sampling sd - every one of which is a function of which genes R8's columns actually held. R8 read an unhashed development cache at /tmp/jepa_tour_logexpr.npz which the R8 package explicitly did not include (original_cell_level_data_included false, original_bundle_copied false) and which no longer exists. The materializer lineage that most plausibly produced it - foundation_materialize_discovery_expression.py, sha256 ede646be8030ef16 - carries the same HVS_COMMON/SEA_AD_COMMON positional mapping defect that scrambled the Level-4 gene identities.",
+    "not_withdrawn_as_wrong": "withdrawn as UNCHECKABLE, which is the same operational status",
+    "superseded_by": "results/v29/FULL104_RESOLUTION_LADDER_MASKED_V1.json and LADDER_VARIANCE_COMPONENTS_MASKED_V1.json, which answer the same question on 187,909 nuclei through decoders verified cell by cell against authenticated sources",
+    "documented_in": "docs/agent/V29_R7_R8_INPUT_LINEAGE_UNVERIFIABLE_20260927.md"
+  }
+}

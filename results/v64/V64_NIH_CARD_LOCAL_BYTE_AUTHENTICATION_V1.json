@@ -1,0 +1,63 @@
+{
+  "schema": "V64_NIH_CARD_LOCAL_BYTE_AUTHENTICATION_V1",
+  "date": "2026-09-29",
+  "part": "1",
+  "status": "BOTH_FILES_AUTHENTICATED",
+  "gate": "exact published byte length AND full-file MD5 equal to the published Zenodo digest. No partial hash, no file-opens-successfully substitute, no HTTP-length-only substitute.",
+
+  "source": {
+    "zenodo_record": "20834804",
+    "doi": "10.5281/zenodo.20834804",
+    "version": "v3",
+    "published": "2026-06-24",
+    "licence": "cc-by-4.0"
+  },
+
+  "files": {
+    "final_rna_data.h5ad": {
+      "local_path": "D:/jepa_v5_outputs_20260925/nihcard/final_rna_data.h5ad",
+      "observed_bytes": 18439154935,
+      "published_bytes": 18439154935,
+      "bytes_match": true,
+      "observed_md5": "f628b17aab355f80b912e3c715543cbd",
+      "published_md5": "f628b17aab355f80b912e3c715543cbd",
+      "md5_match": true,
+      "md5_scope": "FULL FILE, all 18,439,154,935 bytes read",
+      "verdict": "AUTHENTICATED"
+    },
+    "final_atac_data.h5ad": {
+      "local_path": "D:/jepa_v5_outputs_20260925/nihcard/final_atac_data.h5ad",
+      "observed_bytes": 14508702462,
+      "published_bytes": 14508702462,
+      "bytes_match": true,
+      "observed_md5": "b71589e0033e391e2fe97c1ae3928a7f",
+      "published_md5": "b71589e0033e391e2fe97c1ae3928a7f",
+      "md5_match": true,
+      "md5_scope": "FULL FILE, all 14,508,702,462 bytes read",
+      "verdict": "AUTHENTICATED",
+      "acquisition_note": "Re-downloaded fresh rather than resumed. The previous local copy failed truncated and a `curl -C -` resume did not recover it, so a resume onto a tail-corrupt file would have defeated the purpose of this gate."
+    }
+  },
+
+  "PRIOR_FAILURE_RECORDED": {
+    "what_happened": "An earlier acquisition of final_atac_data.h5ad stopped at 6,059,254,368 of 14,508,702,462 bytes -- 58% missing -- while curl exited 0.",
+    "why_it_matters": "Acquisition success is not integrity evidence. This is the exact reason the gate requires a full-byte digest rather than an exit code, a length check, or a successful file open.",
+    "disposition_of_the_bad_copy": "renamed to final_atac_data.TRUNCATED.quarantine rather than deleted, so the failure remains inspectable and cannot be silently re-used under the expected filename",
+    "quarantined_bytes": 6059254368
+  },
+
+  "what_this_unblocks": [
+    "Part 2 outcome-blind pairing gate",
+    "Part 3 empirical metacell precision calibration",
+    "Part 4 E2 support map Phase 2",
+    "Part 5 real 14-feature span diagnostic",
+    "the NIH-CARD ETL summaries the realism calibration consumes"
+  ],
+  "what_this_does_NOT_unblock": "Stage 4 biological correspondence, which remains NOT AUTHORISED.",
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "E2": "CLOSED", "stage_4": "NOT_AUTHORISED",
+    "e2_correspondence_outcome_opened": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "V64_P3_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-29",
+  "audited_commit": "7f54c0cd7bcb3e4f774e6fc840a15aa7e02caa2d",
+  "verdict": "PASS__P3_VALID_NEGATIVE_CONSTRUCTION_VERIFIED",
+  "lineage": {
+    "executed_against_canonical": "8ff7ed1ff64b19ea789681c6b1b4498f56bbfcae",
+    "commit_relation": "exactly_one_commit_ahead_before_fast_forward",
+    "canonical_fast_forwarded_to_audited_commit": true
+  },
+  "input_authentication": {
+    "table_s5_sha256": "81c99689533d9da372cecdd469e7ff02cc985720105b83b3bd66c3ac8c93972e",
+    "gse73721_sha256": "140f376a5162b4d739a0e4224ce5757e7399b24fb2fce1c5f9bf0eb438d2fcef",
+    "pu1_atac_sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+    "liftover_v479_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+    "hg19_to_hg38_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+    "hg38_to_hg19_sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+    "all_match_frozen": true
+  },
+  "implementation_checks": {
+    "source_hg19_orientation_before_liftover": true,
+    "candidate_side_unique_ensembl_and_symbol": true,
+    "microglia_reference_unique_ensembl_only": true,
+    "exact_case_insensitive_symbol_join": true,
+    "expression_rule_mean_myeloid_fpkm_gt_0_5": true,
+    "exact_identity_c3_same_semantics_as_microglia": true,
+    "pu1_distal_overlap_min_1bp": true,
+    "relationship_present_rule_same_ensembl_and_distal_overlap_min_1bp": true,
+    "no_external_gene_repair": true,
+    "no_rescue_or_threshold_change": true,
+    "no_protected_validation_data_opened": true
+  },
+  "crosschecks": {
+    "microglia_orientation_reproduces_P1S": {
+      "promoter_promoter": 7614,
+      "no_active_promoter_match": 32978,
+      "unique_ensembl_promoter_distal": 61624,
+      "pass": true
+    },
+    "canonical_source_stage_reproduction": {
+      "neuron": {
+        "unique_gene_resolved": 65772,
+        "gse73721_matched": 53803,
+        "expression_eligible": 31690
+      },
+      "oligodendrocyte": {
+        "unique_gene_resolved": 40793,
+        "gse73721_matched": 32755,
+        "expression_eligible": 22377
+      },
+      "pass": true
+    }
+  },
+  "results": {
+    "neuron": {
+      "source_denominator": 93290,
+      "c3_retained": 91740,
+      "valid_p3_negatives": 2673,
+      "distinct_genes_in_valid_negatives": 1338,
+      "funnel_reconciles": true
+    },
+    "oligodendrocyte": {
+      "source_denominator": 61895,
+      "c3_retained": 60804,
+      "valid_p3_negatives": 2078,
+      "distinct_genes_in_valid_negatives": 1053,
+      "funnel_reconciles": true
+    }
+  },
+  "S26": {
+    "status": "FIXED_BEFORE_COMMIT",
+    "finding": "Initial microglia reference incorrectly required both unique Ensembl and unique Gene Name, which would shrink the reference and bias valid-negative counts upward.",
+    "corrected_reference_edges": 60340,
+    "effect_on_final_counts": {
+      "neuron": 2673,
+      "oligodendrocyte": 2078
+    },
+    "audit_interpretation": "Correction is in the conservative direction and matches the frozen reference definition."
+  },
+  "S27": {
+    "status": "LABEL_ONLY_OPEN_AMBIGUITY",
+    "finding": "Contract does not uniquely classify symbols absent from GSE73721 as expression failures versus join failures.",
+    "affects_valid_negative_membership": false,
+    "affects_valid_negative_count": false,
+    "acceptable_current_handling": "Report both narrow and wide trivial-negative fractions; do not choose one post hoc."
+  },
+  "scientific_interpretation": {
+    "supports": "Construction of non-trivial neuron and oligodendrocyte contact negatives for which the target gene is expressed in microglia, the distal element is accessible in microglia, but the same gene-distal relationship is absent from the qualified microglia map.",
+    "does_not_support": [
+      "causal enhancer-gene assignment",
+      "independent cross-study replication",
+      "disease-specific regulation",
+      "universal microglia specificity"
+    ]
+  },
+  "decision": {
+    "P3": "PASS",
+    "E2_NOTT_CANDIDATE": "MAY_NOW_BE_INSTANTIATED_SUBJECT_TO_SEPARATE_CONSTRUCTION_RECEIPT",
+    "training": "OFF",
+    "td60": "BLOCKED"
+  }
+}

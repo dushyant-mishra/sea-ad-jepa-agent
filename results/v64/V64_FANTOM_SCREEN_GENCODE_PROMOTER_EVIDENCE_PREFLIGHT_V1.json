@@ -1,0 +1,67 @@
+{
+  "schema": "V64_FANTOM_SCREEN_GENCODE_PROMOTER_EVIDENCE_PREFLIGHT_V1",
+  "date": "2026-09-30",
+  "status": "STRUCTURAL_EVIDENCE_ANNOTATION_ONLY__NO_PROMOTER_SELECTION",
+  "inputs": {
+    "gencode_v50": {
+      "build": "GRCh38.p14",
+      "exact_tss_candidates": 389280,
+      "genes": 78733
+    },
+    "fantom5_hg38": {
+      "file": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+      "sha256": "7e007c3e1fd7a2e24404ad9d5a57d27f76cd7920a6fdc1acaa06b5c4fcfcb018",
+      "bytes": 5500816,
+      "peak_rows": 209911,
+      "representative_tss_semantics": "BED9 thickStart/thickEnd one-base representative TSS",
+      "coordinate_build": "hg38"
+    },
+    "screen_registry_v4_pls": {
+      "rows": 47532,
+      "coordinate_build": "GRCh38"
+    }
+  },
+  "coordinate_rule": "GENCODE transcript TSS converted to 0-based point. FANTOM evidence is strand-aware. Peak support means candidate TSS lies inside same-strand FANTOM peak; exact support means candidate TSS equals FANTOM representative TSS thickStart.",
+  "fantom_results": {
+    "candidates_same_strand_within_fantom_peak": 126712,
+    "fraction_candidates_within_fantom_peak": 0.3255034936292643,
+    "candidates_exact_same_strand_representative_tss": 25321,
+    "fraction_candidates_exact_representative_tss": 0.06504572544184135,
+    "genes_with_any_fantom_peak_supported_candidate": 25932,
+    "genes_with_any_exact_fantom_representative_tss_candidate": 18551
+  },
+  "nearest_same_strand_representative_tss_distance_bp": {
+    "min": 0,
+    "p25": 13,
+    "median": 133,
+    "p75": 11140.25,
+    "p90": 58380,
+    "p95": 119405.15,
+    "p99": 411950.26,
+    "max": 2595271
+  },
+  "screen_fantom_joint_states": {
+    "screen_pls_and_fantom_peak": 102060,
+    "screen_pls_only": 76718,
+    "fantom_peak_only": 24652,
+    "neither": 185850,
+    "total": 389280
+  },
+  "interpretation": [
+    "FANTOM and SCREEN annotate the GENCODE candidate universe; neither defines candidate existence.",
+    "Exact CAGE representative-TSS coincidence is substantially stricter than lying within a CAGE peak.",
+    "The long nearest-CAGE distance tail does not justify choosing a fuzzy TSS-merging threshold after seeing these data.",
+    "SCREEN and FANTOM share promoter/activity biology and are not automatically independent evidence families."
+  ],
+  "thresholds_not_frozen": [
+    "maximum_tss_distance_for_promoter_merging",
+    "minimum_cage_score_for_candidate_retention",
+    "required_screen_fantom_agreement"
+  ],
+  "governance": {
+    "training": "OFF",
+    "promoter_selection_executed": false,
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED"
+  }
+}

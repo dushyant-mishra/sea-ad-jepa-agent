@@ -1,0 +1,72 @@
+{
+  "schema": "V65_PROMOTER_DUAL_LEDGER_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "status": "ACCEPTED_MATERIALIZED_ANNOTATION_FIRST_DUAL_LEDGER",
+  "source_workflow": {
+    "run_id": 36797165423,
+    "head_sha": "00eeee33b6ef610a3885ac9e4ea83a40aba7cf42",
+    "artifact_id": 11134725395,
+    "artifact_name": "v65-open-promoter-resources-and-dual-ledger",
+    "artifact_zip_sha256": "6ac2301abc38e25844b36b4b8466ea2b9f98e2e4604b7e87982c269934475168"
+  },
+  "source_byte_authority": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+  "overlap_bug_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json",
+  "builder": {
+    "path": "scripts/v64/build_promoter_dual_ledger_v2.py",
+    "minimum_acceptable_repair_commit": "1d9a6a1d2258e53fb15a4950bd9954ab7510e7f5",
+    "interval_rule": "robust sorted-start + prefix-max-end point overlap",
+    "fantom_rule": "same-strand overlap only",
+    "dong_join": "transcript_id + chromosome"
+  },
+  "denominators": {
+    "transcript_promoter_isoform_rows": 644292,
+    "exact_tss_loci": 389280,
+    "genes": 78733,
+    "transcript_membership_rows": 644292,
+    "transcript_membership_unique_candidate_ids": 644292,
+    "transcript_membership_unique_candidate_tss_pairs": 644292
+  },
+  "evidence_coverage": {
+    "transcript_level": {
+      "screen_supported": 377974,
+      "fantom_supported": 255687,
+      "dong_transcript_present_any": 115678,
+      "dong_same_chrom_present": 115678,
+      "dong_coordinate_match": 92669
+    },
+    "exact_tss_level": {
+      "screen_supported": 178778,
+      "fantom_same_strand_supported": 126712,
+      "screen_and_fantom": 102060,
+      "screen_only": 76718,
+      "fantom_only": 24652,
+      "neither": 185850
+    }
+  },
+  "output_artifacts": {
+    "transcript_ledger": {
+      "bytes": 10673433,
+      "sha256": "7eb830009a2f1513a427c9d63c30f0ff0a6c9cba7a793963a1a36ee43b7ba23b"
+    },
+    "exact_tss_ledger": {
+      "bytes": 4317631,
+      "sha256": "31cc0199ac6d6fa4f36cfb509485908c6b614958c933250142ca242b7bb402f0"
+    },
+    "transcript_to_tss_membership": {
+      "bytes": 9722543,
+      "sha256": "9657a4b99bfd6a4dbdbebbf55fa2b54a82d8655ed513420b56b8a1e9f9427b97"
+    }
+  },
+  "invariants": [
+    "644292 transcript rows sum exactly to 389280 exact-TSS loci via 644292 membership records.",
+    "GENCODE defines candidate existence; SCREEN/FANTOM/Dong annotate and never prune the denominator.",
+    "SCREEN exact-TSS coverage and FANTOM same-strand coverage reproduce the frozen structural preflight exactly.",
+    "Historical V1 point_hits helper is not authoritative for this ledger because nested intervals can be hidden."
+  ],
+  "scientific_scope": {
+    "promoter_selection_executed": false,
+    "biological_correspondence_opened": false,
+    "training": "OFF",
+    "interpretation": "This closes annotation/evidence materialization only. It does not qualify promoter biology or authorize target selection."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "V5_MASKING_BURDEN_LADDER_AUTHORITY_V2",
+  "authority_id": "JEPA_V5_FULL104_MASKING_BURDEN_LADDER_AUTHORITY_V2",
+  "census_authority_sha256": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21",
+  "ladder_id": "FULL104_CENSUS_BURDEN_LADDER_20260918_V2",
+  "selection_rule_id": "LOWEST_QUALIFYING_BURDEN_V1",
+  "escalation_rule_id": "ASCENDING_STOP_AT_FIRST_FULLY_QUALIFYING_RUNG_V2",
+  "no_qualifier_policy_id": "FAIL_CLOSED_NO_MASKING_AUTHORITY_V1",
+  "terminal_universe_size": 17186,
+  "rungs": [
+    [
+      1,
+      20
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      3,
+      20
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      3,
+      10
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "training_authorized": false,
+  "authority_sha256": "85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685",
+  "terminal_masking_outcomes_inspected": false
+}

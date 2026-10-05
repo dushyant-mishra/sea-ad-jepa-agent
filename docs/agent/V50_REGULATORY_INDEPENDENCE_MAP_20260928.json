@@ -1,0 +1,433 @@
+{
+  "schema": "V50_REGULATORY_INDEPENDENCE_MAP_V1",
+  "status": "PROVISIONAL_SCIENTIFIC_DESIGN__MUST_BE_RED_TEAMED",
+  "generated_date": "2026-09-28",
+  "base_pr": 178,
+  "base_sha": "5d49a970030fc7e783b822437ac4761b3f9e4865",
+  "training": "OFF",
+  "independence_dimensions": [
+    "unit_independence",
+    "assay_independence",
+    "cohort_lab_independence",
+    "feature_definition_independence",
+    "technical_environment_independence",
+    "causal_direction",
+    "tissue_context_independence",
+    "outcome_exposure",
+    "population_scope"
+  ],
+  "claims": [
+    {
+      "id": "C0",
+      "claim": "reproducible relational RNA structure exists",
+      "status": "SUPPORTED_HISTORICALLY",
+      "evidence": [
+        "TD56S",
+        "TD57B",
+        "TD58S",
+        "TD59"
+      ],
+      "boundary": "does not establish biological specificity"
+    },
+    {
+      "id": "C1",
+      "claim": "tested measured-QC nuisance is insufficient to explain the signal",
+      "status": "PARTIALLY_SUPPORTED",
+      "evidence": [
+        "V47",
+        "V48"
+      ],
+      "boundary": "unobserved same-assay latent remains non-identifiable under semantic twin"
+    },
+    {
+      "id": "C2",
+      "claim": "an independently learned enhancer-driven regulatory architecture explains the state",
+      "status": "OPEN"
+    },
+    {
+      "id": "C3",
+      "claim": "FULL104-defined state has independent chromatin support",
+      "status": "OPEN"
+    },
+    {
+      "id": "C4",
+      "claim": "regulatory relationship survives separate-nucleus replication",
+      "status": "OPEN"
+    },
+    {
+      "id": "C5",
+      "claim": "qualified perturbation produces predicted regulon/state displacement",
+      "status": "OPEN"
+    },
+    {
+      "id": "C6",
+      "claim": "state/regulatory program recurs in intact spatial tissue",
+      "status": "OPEN"
+    },
+    {
+      "id": "C7",
+      "claim": "anchored RNA state transports across all FULL104 sources",
+      "status": "OPEN"
+    },
+    {
+      "id": "C8",
+      "claim": "lawful JEPA teacher/student preserves anchored state",
+      "status": "BLOCKED_DOWNSTREAM"
+    }
+  ],
+  "evidence_sources": [
+    {
+      "id": "TD56_59",
+      "role": "historical relational discovery",
+      "evidence_class": "QUALIFIED_FOR_REPRODUCIBILITY_NOT_SPECIFICITY",
+      "independent_of": [
+        "exact gene panel in TD56S",
+        "some donor/fold partitions"
+      ],
+      "not_independent_of": [
+        "RNA assay",
+        "FULL104 source structure"
+      ],
+      "can_address": [
+        "relational recurrence",
+        "partial-evidence recovery",
+        "mesoscale locality"
+      ],
+      "cannot_address": [
+        "biological-vs-hidden-technical identity"
+      ],
+      "outcome_exposure": "HISTORICALLY_EXPOSED"
+    },
+    {
+      "id": "V47_V48",
+      "role": "same-RNA specificity red-team",
+      "evidence_class": "QUALIFIED_IDENTIFIABILITY_BOUNDARY",
+      "can_address": [
+        "measured-QC nuisance",
+        "semantic-twin non-identifiability"
+      ],
+      "cannot_address": [
+        "cross-modal specificity"
+      ],
+      "outcome_exposure": "CONTROL_EVIDENCE"
+    },
+    {
+      "id": "STAGE73R",
+      "role": "historical graph-control audit",
+      "evidence_class": "NEGATIVE_METHOD_RESULT",
+      "can_address": [
+        "need for shuffled-graph comparator",
+        "need for structural-distinctness proof"
+      ],
+      "cannot_address": [
+        "validated regulatory network"
+      ],
+      "outcome_exposure": "HISTORICALLY_EXPOSED"
+    },
+    {
+      "id": "STAGE75F",
+      "role": "historical regulatory hypothesis set",
+      "evidence_class": "HYPOTHESIS_GENERATING_ONLY",
+      "repository_pr": 164,
+      "facts": [
+        "10 regulators",
+        "96 TF-target rows",
+        "authenticated source chain"
+      ],
+      "independent_of": [
+        "nothing on RNA-edge definition; candidate edges use Morabito RNA pseudobulk"
+      ],
+      "can_address": [
+        "historical hypothesis recurrence after a new network is frozen"
+      ],
+      "cannot_address": [
+        "independent RNA validation",
+        "causal regulation",
+        "complete eRegulon network"
+      ],
+      "outcome_exposure": "HISTORICALLY_EXPOSED"
+    },
+    {
+      "id": "PR179_SCENICPLUS_AUDIT",
+      "role": "unfinished control design",
+      "evidence_class": "INCOMPLETE_STOPPED",
+      "repository_pr": 179,
+      "can_address": [
+        "future annotation-supply/TF-label control design"
+      ],
+      "cannot_address": [
+        "any citable numerical or scientific verdict"
+      ],
+      "outcome_exposure": "INCOMPLETE"
+    },
+    {
+      "id": "MORABITO_GSE174367",
+      "role": "external separate-nucleus RNA/ATAC",
+      "evidence_class": "AUTHENTICATED_CONDITIONALLY_INDEPENDENT",
+      "repository_pr": 164,
+      "independent_of": [
+        "FULL104 donors",
+        "same-nucleus coupling",
+        "Stage75F use of ATAC values"
+      ],
+      "not_independent_of": [
+        "same donor tissue",
+        "Morabito cohort processing"
+      ],
+      "facts": [
+        "18 shared RNA/ATAC donors",
+        "4126 RNA microglia",
+        "12232 ATAC microglia",
+        "no cell-level pairing"
+      ],
+      "can_address": [
+        "donor-level regulatory replication",
+        "same-nucleus technical alternative"
+      ],
+      "cannot_address": [
+        "exact-cell correspondence"
+      ],
+      "outcome_exposure": "ATAC_BIOLOGICAL_OUTCOME_UNOPENED_FOR_NEW_TEST"
+    },
+    {
+      "id": "FULL104_MORABITO_CROSSWALK",
+      "role": "coverage infrastructure",
+      "evidence_class": "QUALIFIED_STRUCTURAL_COVERAGE",
+      "repository_pr": 175,
+      "facts": [
+        "41238 canonical addresses resolved",
+        "37966 donor-level RNA/ATAC eligible"
+      ],
+      "can_address": [
+        "feature-support planning",
+        "missing-vs-zero protection"
+      ],
+      "cannot_address": [
+        "biological validity"
+      ],
+      "outcome_exposure": "STRUCTURAL"
+    },
+    {
+      "id": "SEAAD_PUBLIC_MULTIOME",
+      "role": "internal same-nucleus independent-modality anchor",
+      "evidence_class": "PAIRING_QUALIFIED_BIOLOGICAL_OUTCOME_UNOPENED",
+      "facts": [
+        "66288 exact paired nuclei overall",
+        "MTG only",
+        "1594 candidate-myeloid paired nuclei",
+        "15 myeloid donors"
+      ],
+      "independent_of": [
+        "RNA assay at measurement level because ATAC is orthogonal"
+      ],
+      "not_independent_of": [
+        "FULL104 target discovery",
+        "SEA-AD cohort",
+        "same nucleus",
+        "MTG region"
+      ],
+      "can_address": [
+        "same-nucleus chromatin support"
+      ],
+      "cannot_address": [
+        "pristine independent cohort replication",
+        "regional generalization"
+      ],
+      "outcome_exposure": "UNOPENED"
+    },
+    {
+      "id": "GSE214979",
+      "role": "candidate external regulatory-development paired Multiome",
+      "evidence_class": "AUTHENTICATED_WITH_FROZEN_EXCLUSIONS",
+      "repository_pr": 182,
+      "facts": [
+        "true same-nucleus RNA+ATAC",
+        "about 2872 microglia after current exclusions",
+        "about 12 usable donors"
+      ],
+      "proposed_use": "regulatory network development with diagnosis/pathology blinded",
+      "consequence_if_used": "DEVELOPMENT_EXPOSED_FOR_REGULATORY_MODEL",
+      "can_address": [
+        "external eRegulon construction",
+        "realistic technical distributions"
+      ],
+      "cannot_address": [
+        "independent confirmation of a network trained on all of its own data"
+      ]
+    },
+    {
+      "id": "GSE272082",
+      "role": "candidate independent paired-Multiome replication",
+      "evidence_class": "OPEN_GEO_NEEDS_MINIMAL_AUTHENTICATION",
+      "repository_pr": 182,
+      "facts": [
+        "9 donors",
+        "multiple region libraries"
+      ],
+      "can_address": [
+        "external same-nucleus replication",
+        "regional transport if support adequate"
+      ],
+      "cannot_address": [
+        "large donor replication"
+      ],
+      "outcome_exposure": "UNOPENED"
+    },
+    {
+      "id": "GSE301119",
+      "role": "auxiliary myeloid perturbation",
+      "evidence_class": "TARGET_ENGAGEMENT_QUALIFIED_AUXILIARY",
+      "repository_pr": 77,
+      "facts": [
+        "CRISPRi and CRISPRa",
+        "2 donors",
+        "primary human macrophage"
+      ],
+      "can_address": [
+        "causal direction for overlapping regulators in myeloid context"
+      ],
+      "cannot_address": [
+        "microglia-specific causal validation",
+        "population generalization"
+      ],
+      "outcome_exposure": "DEVELOPMENT_EXPOSED"
+    },
+    {
+      "id": "GSE289721",
+      "role": "candidate microglial perturbation support",
+      "evidence_class": "FEASIBLE_PENDING_QUALIFICATION",
+      "repository_pr": 158,
+      "facts": [
+        "6 CRISPRi targets",
+        "2 differentiations",
+        "one genetic background",
+        "engagement measurable but not yet qualified"
+      ],
+      "can_address": [
+        "microglial causal support if engagement/control gates pass"
+      ],
+      "cannot_address": [
+        "donor-population generalization"
+      ],
+      "outcome_exposure": "PRESERVE_WHERE_UNOPENED"
+    },
+    {
+      "id": "CRISPRBRAIN_PAIR",
+      "role": "perturbation reliability negative/control asset",
+      "evidence_class": "NOT_BENCHMARK_TRUTH",
+      "repository_pr": 137,
+      "facts": [
+        "1 of 31 jointly engaged",
+        "near-chance profile concordance",
+        "not independent replication"
+      ],
+      "can_address": [
+        "adversarial/noise control"
+      ],
+      "cannot_address": [
+        "causal truth",
+        "model benchmark truth"
+      ],
+      "outcome_exposure": "EXPOSED"
+    },
+    {
+      "id": "GSE178317",
+      "role": "same-experiment perturbation development",
+      "evidence_class": "DEVELOPMENT_ONLY",
+      "repository_pr": 114,
+      "can_address": [
+        "development mechanics"
+      ],
+      "cannot_address": [
+        "independent biological replication"
+      ],
+      "outcome_exposure": "EXPOSED"
+    },
+    {
+      "id": "SEAAD_SPATIAL",
+      "role": "candidate intact-tissue support",
+      "evidence_class": "PUBLIC_RESOURCE_NEEDS_PROJECT_AUDIT",
+      "modalities": [
+        "MERFISH",
+        "Xenium"
+      ],
+      "can_address": [
+        "dissociation/extraction component of handling nuisance",
+        "spatial/neighborhood coherence"
+      ],
+      "cannot_address": [
+        "all postmortem confounding"
+      ],
+      "outcome_exposure": "UNKNOWN_UNTIL_AUDIT"
+    },
+    {
+      "id": "NPH52_READER",
+      "role": "provenance/measurement boundary",
+      "evidence_class": "PARTIALLY_CLOSED",
+      "repository_pr": 187,
+      "can_address": [
+        "structural availability"
+      ],
+      "cannot_address": [
+        "full value-level fidelity until .qs comparison/materializer identity close"
+      ],
+      "consequence": "quarantine unsupported NPH52 value claims rather than treat missing as zero"
+    },
+    {
+      "id": "Q_SAFETY",
+      "role": "teacher/student information-boundary",
+      "evidence_class": "OPEN_ENGINEERING_BLOCKER",
+      "repository_pr": 178,
+      "can_address": [
+        "query-value leakage"
+      ],
+      "consequence": "scientific training remains blocked until q-safe mechanics qualify"
+    },
+    {
+      "id": "PERTURBATION_EXPOSURE_LEDGER",
+      "role": "outcome-governance pattern",
+      "evidence_class": "EXECUTABLE_GOVERNANCE",
+      "repository_pr": 90,
+      "can_address": [
+        "prevent exposed outcomes being relabeled pristine"
+      ],
+      "proposed_extension": "reuse pattern for regulatory and spatial outcome exposure"
+    }
+  ],
+  "mandatory_nuisance_classes": [
+    "N0_independent",
+    "N1_measured_QC",
+    "N2A_hidden_nucleus_quality",
+    "N2B_handling_exAM",
+    "N2C_donor_fingerprint",
+    "N2D_broad_cell_class_identity",
+    "N2E_motif_annotation_supply",
+    "N2F_structurally_ineffective_control",
+    "N2G_source_lab_fingerprint",
+    "N2H_feature_support_artifact"
+  ],
+  "proposed_sequence": [
+    "complete evidence and regulatory-exposure ledger",
+    "finish/supersede Stage75F annotation-supply control question",
+    "audit SEA-AD spatial assets",
+    "develop external eRegulon architecture in diagnosis-blinded GSE214979 or superior audited cohort",
+    "freeze regulatory model and control suite",
+    "test SEA-AD MTG as internal independent-modality anchor",
+    "test GSE272082 as external paired replication if qualified",
+    "test Morabito as separate-nucleus donor-level replication",
+    "execute qualified perturbational support only for eligible regulators/outcomes",
+    "test intact-tissue spatial support where panel/identity permits",
+    "freeze RNA/regulon representation and transport across SEA-AD/HVS/NPH52",
+    "close q-safety and relevant reader boundaries",
+    "only then execute TD60 successor and consider bounded training"
+  ],
+  "forbidden_upgrades": [
+    "Stage75F hypothesis to validated GRN",
+    "same-nucleus agreement to independent cohort replication",
+    "cell count to donor replication",
+    "structural missingness to biological zero",
+    "failed validation design to absence of biology",
+    "development-exposed perturbation outcome to pristine confirmation",
+    "joint integration latent agreement to independent multimodal evidence"
+  ]
+}

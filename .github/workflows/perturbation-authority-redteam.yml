@@ -1,0 +1,37 @@
+name: Perturbation physical-authority red-team
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/perturbation/execution_authority_v1.py'
+      - 'tests/test_perturbation_execution_authority_v1.py'
+      - 'tests/test_perturbation_authority_spoof_redteam_20260923.py'
+      - '.github/workflows/perturbation-authority-redteam.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authority-negative-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Execute both original and independent gate-level attacks
+        env:
+          PYTHONPATH: src
+        run: |
+          set -o pipefail
+          python -m pytest -q tests/test_perturbation_execution_authority_v1.py tests/test_perturbation_authority_spoof_redteam_20260923.py | tee /tmp/perturbation-authority.txt
+      - name: Fail closed on any skip
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/perturbation-authority.txt; then
+            echo "MANDATORY AUTHORITY TESTS SKIPPED — STOP"
+            exit 1
+          fi

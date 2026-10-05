@@ -1,0 +1,56 @@
+{
+  "schema": "V64_NIH_CARD_E2_OUTCOME_BLIND_PRECONDITIONS_V2",
+  "date": "2026-09-29",
+  "governing_contracts": {
+    "v1": {
+      "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+      "sha256": "7a16aeebac4a47287e61a3855b17e69e3993552a2be8c0c15b36790d5426f51b"
+    },
+    "v2": {
+      "path": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V2.json",
+      "sha256": "e1cfde2e6930a0b88fb198b772d9e7a868d08f80706a81bb59612211c3941c11"
+    }
+  },
+  "correspondence_outcome_opened": false,
+  "stages_run": [
+    1
+  ],
+  "stage1_pairing": {
+    "R1_exact_key_recovery": {
+      "bijection": true,
+      "bad_suffix": 0,
+      "unmapped": 0,
+      "distinct_targets": 1501089
+    },
+    "R1b_secondary_recovery": {
+      "available": true,
+      "unmapped": 1501089,
+      "agrees_with_R1": false
+    },
+    "C2_donor_mismatches_TAUTOLOGICAL": 0,
+    "C3_celltype_agreement_COPIED_LABEL": 1.0,
+    "C4_cohort_mismatches_INHERITED": 0,
+    "I1_depth_permutation_witness": {
+      "n_samples_evaluated": 357,
+      "observed_median_spearman": 0.49452957156297306,
+      "within_sample_permuted_median": -7.079387633302813e-05,
+      "permutations_per_sample": 20,
+      "interpretation_rule": "Observed far above the permuted null CORROBORATES nucleus-level alignment. Observed indistinguishable from the null is INCONCLUSIVE, NOT refutation: RNA and ATAC depth need not correlate within a nucleus. This asymmetry was frozen before the value was computed.",
+      "no_threshold_predeclared": true
+    },
+    "verdict": "PAIRING_KEY_RECOVERED_EXACTLY__PIPELINE_LINEAGE_CIRCUMSTANTIAL",
+    "standing_caveat": "The nucleus key is recovered exactly from the deposited identifier structure and matches the depositor pipeline's published construction, but the exact producing commit of the deposit is not cryptographically established and no depositor-provided per-nucleus key exists."
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "uses_AD_loci": false,
+    "uses_JEPA_targets": false,
+    "uses_Morabito": false,
+    "uses_SEA_AD": false,
+    "uses_disease_labels": false,
+    "rna_atac_correspondence_computed": false
+  },
+  "SUPERSEDED_BY": "results/v64/V64_NIH_CARD_PAIRING_STAGE1_RAW_SUCCESSOR_V2.json",
+  "SUPERSEDED_REASON": "records the broken R1b attempt and the capped 20-permutation I-1; retained for inspectability, NOT authoritative"
+}

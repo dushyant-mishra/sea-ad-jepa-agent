@@ -1,0 +1,352 @@
+"""Audit C -- is every eligible target actually estimable within each source?
+
+Current eligibility is global and donor-based::
+
+    donor_nonzero_cells    >= 30
+    train supported donors >= 20
+    validation supported donors >= 5
+
+yielding 17,053 all-fold eligible targets. But the masking estimand is
+**source-balanced** across HVS, NPH52 and SEA_AD: the primary score averages
+within source and then across sources, so every source contributes equally to
+the verdict regardless of how few donors or cells it has for that target.
+
+Global eligibility does not imply per-source estimability. This audit
+characterizes the gap. **It does not alter the 17,053 set.**
+
+C3 is the sharp part
+--------------------
+The frozen scorer computes a within-donor centred correlation and, from
+``_source_balanced_prediction_score`` verbatim::
+
+    den = float(np.sqrt(max(rss_y, 0.0) * max(pred_ss, 0.0)))
+    r = 0.0 if den <= _EPS else cov / den
+
+where ``rss_y`` is the within-donor centred sum of squares of the target. So when
+a target does not vary within a donor, ``rss_y = 0``, ``r = 0``, and that donor
+contributes ``r**2 = 0`` to its source's mean -- a **perfect "no shortcut
+detected" score**, not a missing value.
+
+A source guardrail can therefore look clean because the target was essentially
+unvarying there, which is the opposite of evidence that masking worked. Counting
+those donor/target pairs is the point of C3.
+
+Exactly-zero variance is identified without any subtraction: a target detected in
+**no** cell of a donor is identically zero across that donor, so its within-donor
+variance is exactly 0. Near-zero variance is additionally screened against the
+scorer's own ``_EPS = 1e-12``, with the caveat that the ``sumsq/n - mean**2``
+form suffers catastrophic cancellation precisely there -- which is why the exact
+detection-count route carries the headline and the epsilon route is reported
+beside it rather than instead of it.
+
+Nothing here opens a terminal masking outcome, target-panel ladder,
+null-equivalence margin, D_shared, protected/pathology/DEV/SEALED data, or
+training.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+from pathlib import Path
+
+import numpy as np
+
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha
+
+SCHEMA = "V5_FULL104_TARGET_SOURCE_ESTIMABILITY_V1"
+_EPS = 1e-12                      # the scorer's own epsilon, not a new constant
+
+#: Frozen current eligibility constants, restated for per-source evaluation.
+MIN_DONOR_NONZERO_CELLS = 30
+MIN_TRAIN_SUPPORTED_DONORS = 20
+MIN_VALIDATION_SUPPORTED_DONORS = 5
+
+SOURCE_NAMES = ("HVS", "NPH52", "SEA_AD")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--stats", type=Path, required=True,
+                    help="core sufficient-statistics NPZ from build_core_sufficient_statistics")
+    ap.add_argument("--eligibility", type=Path,
+                    default=Path("analysis/v5_full104_pass1_rebuild_20260920/evidence/"
+                                 "full104_target_eligibility_v1.json"))
+    ap.add_argument("--split-receipt", type=Path,
+                    default=Path("analysis/v5_full104_pass1_rebuild_20260920/evidence/"
+                                 "full104_split_receipt_v1.json"),
+                    help="authenticated FULL104 donor/source/fold receipt; its SHA, donor "
+                         "order and source codes are verified before C2 is computed")
+    ap.add_argument("--out-dir", type=Path, required=True)
+    args = ap.parse_args()
+
+    stats = np.load(args.stats, allow_pickle=True)
+    core = np.asarray(stats["core"], dtype=np.int64)
+    donor_nnz = np.asarray(stats["donor_nnz"], dtype=np.int64)        # (donors, core)
+    donor_nsum = np.asarray(stats["donor_nsum"], dtype=np.float64)
+    donor_nsq = np.asarray(stats["donor_nsq"], dtype=np.float64)
+    donor_cells = np.asarray(stats["donor_cells"], dtype=np.int64)
+    donor_src = np.asarray(stats["donor_src"], dtype=np.int64)
+    duniq = [str(x) for x in stats["duniq"]]
+    n_donors, n_core = donor_nnz.shape
+
+    eligibility = json.loads(args.eligibility.read_text(encoding="utf-8"))
+    eligible_addresses = None
+    for key in ("eligible_target_cols_all_folds", "all_fold_eligible_addresses",
+                "all_fold_eligible", "eligible_addresses"):
+        if key in eligibility and isinstance(eligibility[key], list):
+            eligible_addresses = np.asarray(eligibility[key], dtype=np.int64)
+            break
+    if eligible_addresses is None:
+        raise SystemExit(
+            "could not locate the all-fold eligible address list in the eligibility receipt; "
+            f"available keys: {sorted(eligibility)[:20]}")
+
+    # C2 is bound to the CURRENT authenticated FULL104 split. A historical,
+    # fixture or convenience fold vector cannot be substituted silently.
+    split = json.loads(args.split_receipt.read_text(encoding="utf-8"))
+    declared_split_sha256 = str(split.get("receipt_sha256", ""))
+    split_semantic = dict(split)
+    split_semantic.pop("receipt_sha256", None)
+    if not declared_split_sha256 or declared_split_sha256 != canonical_sha(split_semantic):
+        raise SystemExit("split receipt canonical digest mismatch")
+    expected_split_sha256 = str(eligibility.get("split_receipt_sha256", ""))
+    if not expected_split_sha256 or declared_split_sha256 != expected_split_sha256:
+        raise SystemExit("split receipt SHA does not match the eligibility authority")
+    split_sha256 = declared_split_sha256
+    if [str(x) for x in split.get("donor_ids", [])] != duniq:
+        raise SystemExit("split receipt donor order does not match sufficient statistics")
+    split_src = np.asarray(split.get("donor_source_code", []), dtype=np.int64)
+    if split_src.shape != donor_src.shape or not np.array_equal(split_src, donor_src):
+        raise SystemExit("split receipt source codes do not match sufficient statistics")
+    fold_by_donor = np.asarray(split.get("fold_by_donor", []), dtype=np.int64)
+    n_folds = int(split.get("n_folds", 0))
+    if fold_by_donor.shape != (n_donors,) or n_folds < 2:
+        raise SystemExit("split receipt fold geometry is invalid")
+    if np.any(fold_by_donor < 0) or np.any(fold_by_donor >= n_folds):
+        raise SystemExit("split receipt contains out-of-range fold assignments")
+
+    pos_of_address = {int(a): i for i, a in enumerate(core)}
+    missing = [int(a) for a in eligible_addresses if int(a) not in pos_of_address]
+    if missing:
+        raise SystemExit(f"{len(missing)} eligible targets are not in the strict core")
+    target_pos = np.asarray([pos_of_address[int(a)] for a in eligible_addresses], dtype=np.int64)
+    n_targets = target_pos.size
+
+    # ---------------------------------------------------------------- C1
+    supported = donor_nnz >= MIN_DONOR_NONZERO_CELLS          # (donors, core)
+    src_rows = []
+    per_source_supported = np.zeros((len(SOURCE_NAMES), n_targets), dtype=np.int64)
+    per_source_donors = np.zeros(len(SOURCE_NAMES), dtype=np.int64)
+    for s, name in enumerate(SOURCE_NAMES):
+        donors_s = np.flatnonzero(donor_src == s)
+        per_source_donors[s] = donors_s.size
+        sup = supported[np.ix_(donors_s, target_pos)]         # (donors_s, targets)
+        per_source_supported[s] = sup.sum(axis=0)
+        nnz_total = donor_nnz[np.ix_(donors_s, target_pos)].sum(axis=0)
+        cells_total = int(donor_cells[donors_s].sum())
+        src_rows.append({
+            "source": name,
+            "donors": int(donors_s.size),
+            "cells": cells_total,
+            "targets": int(n_targets),
+            "mean_supported_donors_per_target": float(per_source_supported[s].mean()),
+            "targets_with_zero_supported_donors": int((per_source_supported[s] == 0).sum()),
+            "targets_with_fewer_than_5_supported_donors": int((per_source_supported[s] < 5).sum()),
+            "mean_detection_rate": float(nnz_total.sum() / (cells_total * n_targets))
+            if cells_total else float("nan"),
+        })
+
+    # ---------------------------------------------------------------- C3
+    # Exact route: a target detected in NO cell of a donor has identically zero
+    # within-donor variance. No subtraction, so no cancellation.
+    zero_by_detection = donor_nnz[:, target_pos] == 0                  # (donors, targets)
+
+    # Epsilon route, for comparison only. Reported beside the exact route.
+    n_d = donor_cells[:, None].astype(np.float64)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        mean = donor_nsum[:, target_pos] / np.maximum(n_d, 1.0)
+        var = donor_nsq[:, target_pos] / np.maximum(n_d, 1.0) - mean * mean
+    rss = np.maximum(var, 0.0) * np.maximum(n_d, 1.0)
+    near_zero_by_epsilon = rss <= _EPS
+    scorer_variable = ~near_zero_by_epsilon
+
+    # ---------------------------------------------------------------- C2
+    # Descriptive target x source x outer-fold geometry. No new threshold is
+    # chosen here. "Supported" restates the current >=30-nonzero-cell donor
+    # rule; "scorer-variable" asks whether target correlation is mathematically
+    # defined for that donor (rss_y > EPS).
+    c2_rows = []
+    detail_shape = (n_folds, len(SOURCE_NAMES), n_targets)
+    train_supported_detail = np.zeros(detail_shape, dtype=np.int16)
+    held_supported_detail = np.zeros(detail_shape, dtype=np.int16)
+    train_variable_detail = np.zeros(detail_shape, dtype=np.int16)
+    held_variable_detail = np.zeros(detail_shape, dtype=np.int16)
+
+    def _qcounts(values: np.ndarray) -> dict:
+        a = np.asarray(values, dtype=np.int64)
+        return {
+            "min": int(a.min()) if a.size else 0,
+            "median": float(np.median(a)) if a.size else 0.0,
+            "max": int(a.max()) if a.size else 0,
+            "targets_zero": int((a == 0).sum()),
+            "targets_one": int((a == 1).sum()),
+            "targets_two": int((a == 2).sum()),
+            "targets_three_or_more": int((a >= 3).sum()),
+        }
+
+    for fold in range(n_folds):
+        held_fold = fold_by_donor == fold
+        for s, name in enumerate(SOURCE_NAMES):
+            src_mask = donor_src == s
+            train_donors = np.flatnonzero(src_mask & ~held_fold)
+            held_donors = np.flatnonzero(src_mask & held_fold)
+            train_sup = supported[np.ix_(train_donors, target_pos)].sum(axis=0)
+            held_sup = supported[np.ix_(held_donors, target_pos)].sum(axis=0)
+            train_var = scorer_variable[train_donors].sum(axis=0)
+            held_var = scorer_variable[held_donors].sum(axis=0)
+            train_supported_detail[fold, s] = train_sup
+            held_supported_detail[fold, s] = held_sup
+            train_variable_detail[fold, s] = train_var
+            held_variable_detail[fold, s] = held_var
+            row = {
+                "fold": int(fold),
+                "source": name,
+                "available_train_donors": int(train_donors.size),
+                "available_heldout_donors": int(held_donors.size),
+                "current_score_terms_per_target": int(held_donors.size),
+                "train_supported": _qcounts(train_sup),
+                "heldout_supported": _qcounts(held_sup),
+                "train_scorer_variable": _qcounts(train_var),
+                "heldout_scorer_variable": _qcounts(held_var),
+                "targets_current_score_includes_undefined_zero_terms":
+                    int((held_var < held_donors.size).sum()),
+                "targets_no_scorer_variable_heldout_donor": int((held_var == 0).sum()),
+            }
+            c2_rows.append(row)
+
+    rows_zero = []
+    for s, name in enumerate(SOURCE_NAMES):
+        donors_s = np.flatnonzero(donor_src == s)
+        zd = zero_by_detection[donors_s]
+        ze = near_zero_by_epsilon[donors_s]
+        total_pairs = zd.size
+        rows_zero.append({
+            "source": name,
+            "donor_target_pairs": int(total_pairs),
+            "zero_variance_pairs_exact": int(zd.sum()),
+            "zero_variance_fraction_exact": float(zd.mean()),
+            "near_zero_variance_pairs_scorer_epsilon": int(ze.sum()),
+            "near_zero_variance_fraction_scorer_epsilon": float(ze.mean()),
+            "targets_with_every_donor_zero_variance": int((zd.all(axis=0)).sum()),
+            "targets_with_any_donor_zero_variance": int((zd.any(axis=0)).sum()),
+        })
+
+    # ----------------------------------------- estimable-in-all-three summary
+    estimable_per_source = per_source_supported >= MIN_VALIDATION_SUPPORTED_DONORS
+    n_weak_sources = (~estimable_per_source).sum(axis=0)
+    fully_estimable = int((n_weak_sources == 0).sum())
+    one_weak = int((n_weak_sources == 1).sum())
+    two_weak = int((n_weak_sources == 2).sum())
+    three_weak = int((n_weak_sources == 3).sum())
+
+    reasons = {}
+    for s, name in enumerate(SOURCE_NAMES):
+        weak = ~estimable_per_source[s]
+        reasons[name] = {
+            "targets_weak_in_this_source": int(weak.sum()),
+            "of_which_zero_supported_donors": int((per_source_supported[s] == 0).sum()),
+            "criterion": f"supported donors (>= {MIN_DONOR_NONZERO_CELLS} nonzero cells) "
+                         f"< {MIN_VALIDATION_SUPPORTED_DONORS}",
+        }
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+
+    def write_csv(name: str, rows: list[dict]) -> None:
+        with (args.out_dir / name).open("w", newline="", encoding="utf-8") as handle:
+            w = csv.DictWriter(handle, fieldnames=list(rows[0].keys()), lineterminator="\n")
+            w.writeheader()
+            w.writerows(rows)
+
+    write_csv("TARGET_SOURCE_SUPPORT_SUMMARY.csv", src_rows)
+    write_csv("TARGET_SOURCE_ZERO_VARIANCE_SUMMARY.csv", rows_zero)
+
+    # Flatten the fold summaries for a compact human-readable table while
+    # retaining the exact target-level counts in a compressed detail artifact.
+    c2_csv_rows = []
+    for r in c2_rows:
+        flat = {k: v for k, v in r.items()
+                if not isinstance(v, dict)}
+        for group in ("train_supported", "heldout_supported",
+                      "train_scorer_variable", "heldout_scorer_variable"):
+            for k, v in r[group].items():
+                flat[f"{group}_{k}"] = v
+        c2_csv_rows.append(flat)
+    write_csv("TARGET_SOURCE_FOLD_ESTIMABILITY_SUMMARY.csv", c2_csv_rows)
+    np.savez_compressed(
+        args.out_dir / "TARGET_SOURCE_FOLD_ESTIMABILITY_DETAIL.npz",
+        eligible_addresses=eligible_addresses,
+        fold_by_donor=fold_by_donor,
+        donor_src=donor_src,
+        train_supported=train_supported_detail,
+        heldout_supported=held_supported_detail,
+        train_scorer_variable=train_variable_detail,
+        heldout_scorer_variable=held_variable_detail,
+        split_receipt_sha256=np.array(split_sha256),
+    )
+
+    payload = {
+        "schema": SCHEMA,
+        "eligibility_set_altered": False,
+        "targets_examined": int(n_targets),
+        "donors": int(n_donors),
+        "criteria_restated_per_source": {
+            "min_donor_nonzero_cells": MIN_DONOR_NONZERO_CELLS,
+            "min_validation_supported_donors": MIN_VALIDATION_SUPPORTED_DONORS,
+            "min_train_supported_donors": MIN_TRAIN_SUPPORTED_DONORS,
+        },
+        "c1_per_source": src_rows,
+        "c2_fold_geometry": c2_rows,
+        "c2_split_receipt_sha256": split_sha256,
+        "c2_interpretation":
+            "DESCRIPTIVE_ONLY__NO_NEW_PER_SOURCE_THRESHOLD_FROZEN; reports authenticated "
+            "available/support/scorer-variable donor counts and preserves the distinction "
+            "between current serialized zero terms and mathematically estimable correlations",
+        "c3_zero_variance": rows_zero,
+        "estimable_in_all_three_sources": fully_estimable,
+        "estimable_in_all_three_sources_fraction": fully_estimable / n_targets,
+        "targets_with_one_weak_source": one_weak,
+        "targets_with_two_weak_sources": two_weak,
+        "targets_with_three_weak_sources": three_weak,
+        "reasons_by_source": reasons,
+        "scorer_behaviour_note":
+            "A donor where the target does not vary yields rss_y = 0, so the frozen scorer "
+            "returns r = 0 and contributes r**2 = 0 to its source mean. That is a perfect "
+            "'no shortcut detected' contribution, NOT a missing value. A source guardrail can "
+            "therefore look clean because the target was unvarying there.",
+        "zero_variance_method_note":
+            "The headline uses the EXACT route -- a target detected in no cell of a donor is "
+            "identically zero across that donor -- which involves no subtraction. The "
+            "scorer-epsilon route is reported beside it because sumsq/n - mean**2 suffers "
+            "catastrophic cancellation exactly at near-zero variance.",
+        "design_issue_if_mismatch":
+            "If a material share of the 17,053 targets is weak or non-estimable in a source "
+            "whose guardrail nonetheless votes, the global eligibility universe and the "
+            "source-balanced guardrails are measuring different populations. That is an OPEN "
+            "design issue; the target set is NOT shrunk here.",
+        "training_authorized": False,
+    }
+    (args.out_dir / "TARGET_SOURCE_ESTIMABILITY.json").write_text(
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({k: v for k, v in payload.items()
+                      if k not in ("c1_per_source", "c2_fold_geometry", "c3_zero_variance")},
+                     indent=2))
+    for r in src_rows:
+        print(r)
+    for r in rows_zero:
+        print(r)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

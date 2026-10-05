@@ -1,0 +1,212 @@
+{
+  "schema": "V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V2",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_ANY_E2_CORRESPONDENCE_OUTCOME_IS_INSPECTED",
+  "supersedes": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json",
+  "supersedes_scope": "ONLY the BLOCKING_PRECONDITION__NUCLEUS_PAIRING clause and the donor-level minimum-support clause. Every other clause of V1 -- population, donor unit, RNA-only metacell aggregation, measurement definitions, hg19-primary distance convention, promoter-fixed matched controls, the frozen 14-feature adjustment, the out-of-span diagnostic, the gene-balanced set-level primary estimand, the success criterion, the interpretation asymmetry, the firewall and the forbidden-tuning list -- REMAINS IN FORCE UNCHANGED.",
+  "responds_to": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_INDEPENDENT_AUDIT_V1.json at 67a482df2f695caf43e2ab678669a95b27f956fc",
+  "canonical_parent_commit": "67a482df2f695caf43e2ab678669a95b27f956fc",
+
+  "PROSPECTIVITY_ATTESTATION": {
+    "e2_correspondence_outcome_opened": false,
+    "what_was_inspected_to_write_this": [
+      "the canonical design audit V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_INDEPENDENT_AUDIT_V1",
+      "the public NIH-CARD scMAVERICS repository at its single tagged release",
+      "the Zenodo record 20834804 landing page metadata",
+      "the already-committed NIH-CARD schema receipt"
+    ],
+    "what_was_NOT_inspected": [
+      "any linked-vs-control correspondence value",
+      "any RNA-ATAC relationship in NIH-CARD",
+      "any NIH-CARD matrix values beyond the bounded dtype sample already committed"
+    ]
+  },
+
+  "F1_REPAIR__PAIRING": {
+    "audit_finding_accepted_in_full": true,
+    "MY_ERROR_WAS_WORSE_THAN_THE_AUDIT_STATED": {
+      "what_I_claimed_in_V1": "that cross-modal cell-type agreement (C-3) was 'the strongest check of the five precisely because the two labels come from different modalities', with a predeclared threshold of >= 0.99",
+      "what_the_depositor_code_shows": "scMAVERICS scripts/atac_annotate.py, at tagged commit 0ddde6e6b27e6116ce48a6a31066a16170801bea, sets the ATAC cell_type by COPYING IT FROM THE RNA ANNOTATION through the same atlas_identifier key: 'celltype_bc = dict(zip(rna_annot[\"atlas_identifier\", \"cell_type\"]))' then 'adata.obs[\"cell_type\"] = [celltype_bc[x] for x in adata.obs[\"atlas_identifier\"]]'.",
+      "consequence": "ATAC cell_type is not an independent classification of the nucleus. It is the RNA label transported across the very key under test. C-3 is therefore DEFINITIONALLY 1.0, not >= 0.99, and it carries ZERO evidential weight. My V1 named the weakest possible check as the strongest.",
+      "status": "C-2, C-3 and C-4 are ALL reclassified as tautological or inherited consistency checks."
+    },
+    "RECLASSIFIED_CHECKS": {
+      "C2_donor_agreement": {
+        "class": "TAUTOLOGICAL",
+        "why": "sample identity is a component of the join key, so agreement is guaranteed by construction",
+        "evidential_weight": "none",
+        "still_run": "yes, as a corruption tripwire only -- a nonzero mismatch would indicate a broken join, never a correct one"
+      },
+      "C3_celltype_agreement": {
+        "class": "TAUTOLOGICAL",
+        "why": "ATAC cell_type is copied from the RNA annotation through atlas_identifier by scripts/atac_annotate.py",
+        "evidential_weight": "none",
+        "predeclared_expectation": "exactly 1.000000; any value below 1.0 indicates a reconstruction error on our side, not biology",
+        "V1_threshold_0.99_is_WITHDRAWN": true
+      },
+      "C4_cohort_agreement": {
+        "class": "INHERITED",
+        "why": "cohort is a deterministic function of sample identity, which is already in the key",
+        "evidential_weight": "none",
+        "still_run": "yes, as a corruption tripwire only"
+      }
+    },
+
+    "REFRAMING__THE_REAL_QUESTION_IS_RECONSTRUCTION_FIDELITY": {
+      "finding": "The composite bridge is not an assumption WE are introducing. It is the deposit's OWN definitional identity relation: scMAVERICS scripts/filter_rna_atac.py subsets both objects to the intersection of atlas_identifier ('rna = rna[rna.obs[\"atlas_identifier\"].isin(atac.obs[\"atlas_identifier\"])]' and the symmetric ATAC line) before the multiome merge. The two deposited files are therefore restricted, by construction, to the same nucleus set under that key.",
+      "so_the_residual_risk_is_not": "whether (sample, barcode) identifies a nucleus in this deposit -- the pipeline says it does",
+      "the_residual_risk_IS": "whether OUR reconstruction of that key from the deposited obs frames reproduces the pipeline's atlas_identifier exactly. The deposited obs do not carry atlas_identifier, so it must be recovered, and a wrong recovery would silently align the wrong nuclei."
+    },
+
+    "R1_EXACT_KEY_RECOVERY__NEW_PRIMARY_GATE": {
+      "observation": "The deposited index strings are deterministically related. RNA obs_name has the form '<barcode>_<SampleID>' (e.g. 'AAACAGCCACGTGCTG-1_HBCC-1193'). ATAC obs_name has the form '<barcode>_<sample_id>_<sample_id>' (e.g. 'CCTATAGCAATATAGG-1_HBCC-1193_HBCC-1193'), consistent with scripts/filter_rna_atac.py building the ATAC atlas_identifier as index + '_' + sample where the index was already '<barcode>_<sample>'.",
+      "recovery_rule": "rna_obs_name == atac_obs_name with a single trailing '_<sample_id>' removed",
+      "validity_condition": "sample_id must contain no '_' character. This is VERIFIED as part of the gate, not assumed; the observed identifiers are of the form 'HBCC-1193' and 'NABEC-...' which use '-' only.",
+      "R1_PASS_REQUIRES": [
+        "every sample_id contains no '_' character",
+        "for every ATAC nucleus, stripping the trailing '_<sample_id>' yields a string present in the RNA index",
+        "the resulting map is a BIJECTION: 1,501,089 ATAC nuclei to 1,501,089 distinct RNA nuclei with no collisions and no residual on either side"
+      ],
+      "why_this_is_stronger_than_V1": "It is exact string identity on the pipeline's own carried identifier, not a composite we assemble from two separate columns. If it holds, the namespace is RECOVERED rather than corroborated, and the V1 'named assumption' caveat is discharged for the key itself.",
+      "R1b_secondary_recovery": "Independently test whether atac.obs['barcode'] equals the RNA obs_name namespace exactly. If so it provides a second, separately derived route to the same bijection, and both must agree on every nucleus.",
+      "if_R1_and_R1b_disagree_on_any_nucleus": "STOP. A disagreement between two independent recoveries of the same key is a reconstruction defect and must be resolved before anything else runs.",
+      "barcode_derivation_correction": "V1's precondition script derived the RNA barcode as obs_name.split('-')[0], which truncates a barcode of the form 'AAACAGCCACGTGCTG-1' to 'AAACAGCCACGTGCTG' and discards the '-1' suffix. That was sloppy and is replaced by the exact suffix-strip rule above. Recorded rather than silently fixed."
+    },
+
+    "I1_GENUINELY_INDEPENDENT_WITNESS__PERMUTATION_NULL": {
+      "purpose": "Provide at least one check whose result is NOT guaranteed by the join construction, by isolating the BARCODE component of the key from the SAMPLE component.",
+      "quantities_used": {
+        "RNA_side": "obs['total_counts'] (and obs['n_genes_by_counts'] as a second arm)",
+        "ATAC_side": "obs['Unique_nr_frag'] (and obs['cisTopic_nr_frag'] as a second arm)",
+        "why_these_are_independent": "RNA total_counts is computed by counting RNA reads; ATAC Unique_nr_frag is computed by counting ATAC fragments from the fragment files. Neither is copied across modalities by any scMAVERICS script inspected. Unlike cell_type, they are genuinely separate measurements of the same nucleus."
+      },
+      "statistic": "Spearman correlation between the RNA-side and ATAC-side depth measures across nuclei, computed WITHIN each sample and summarised across samples.",
+      "null": "WITHIN-SAMPLE PERMUTATION. Barcodes are permuted at random inside each sample, holding sample identity exactly fixed and destroying only the nucleus-level component of the key. 200 permutations, seed 20260929.",
+      "why_this_is_the_right_null": "A join that is correct only at the SAMPLE level -- the failure mode the canonical receipt warns about -- produces exactly the permuted distribution. A join that is correct at the NUCLEUS level should not.",
+      "INTERPRETATION_ASYMMETRY_FROZEN": {
+        "observed_far_above_permuted_null": "CORROBORATES nucleus-level alignment. Reported as supporting evidence.",
+        "observed_indistinguishable_from_null": "INCONCLUSIVE, NOT REFUTATION. RNA and ATAC depth need not correlate strongly within a nucleus, so a null result does not establish that the pairing is wrong. It means this witness had no power here, and the pairing rests on R1 exact key recovery plus pipeline lineage alone.",
+        "rule": "This asymmetry is frozen NOW so that a weak result cannot later be reported as either a pass or a failure according to convenience."
+      },
+      "no_effect_threshold_is_set": "No minimum correlation is predeclared, because no defensible value exists a priori. The observed value and the permutation null distribution are both reported."
+    },
+
+    "PIPELINE_LINEAGE_RECORD": {
+      "depositor_repository": "https://github.com/NIH-CARD/scMAVERICS",
+      "zenodo_record": "20834804, version v3, published 2026-06-24, licence CC-BY-4.0",
+      "zenodo_software_link": "https://github.com/NIH-CARD/scMAVERICS/tree/main",
+      "PROVENANCE_GAP_RECORDED": {
+        "problem": "The Zenodo record links tree/main, which is a MOVING reference, not a fixed version. It therefore does not identify the state of the code that produced the deposited files.",
+        "evidence_that_it_has_moved": "The repository default branch main was at dd6e2dd7de98f0c32b3fe64a0d58980adc9ca2a7 dated 2026-09-28, which is more than three months AFTER the record's 2026-06-24 publication. The link as published no longer resolves to the producing state.",
+        "only_tagged_release": {
+          "tag": "PFC_Cell_Reports",
+          "commit": "0ddde6e6b27e6116ce48a6a31066a16170801bea",
+          "published": "2026-01-02T21:47:38Z"
+        },
+        "what_can_be_asserted": "The pairing logic cited in this contract was read at the tagged commit 0ddde6e6b27e6116ce48a6a31066a16170801bea and is quoted verbatim. The record's title matches the PFC multiome aging study to which that tag refers.",
+        "what_CANNOT_be_asserted": "That commit 0ddde6e6 is cryptographically the producing version of the deposited h5ad files. Zenodo names no commit, the deposit carries no workflow provenance, and the tag predates the record by ~6 months. The association is STRONG CIRCUMSTANTIAL LINEAGE, not proof, and must be described that way.",
+        "why_this_still_helps": "It converts the pairing question from 'is our guessed composite right' into 'does the depositor's own published pipeline define nuclei by this key'. It does, in every script inspected. That is materially stronger provenance than V1 had, without overstating it."
+      },
+      "scripts_read_verbatim_at_the_tag": {
+        "scripts/filter_rna_atac.py": "builds atlas_identifier on both sides and subsets each object to the intersection before merging",
+        "scripts/atac_annotate.py": "copies cell_type from the RNA annotation via atlas_identifier -- the finding that invalidates C-3"
+      }
+    },
+
+    "REVISED_PAIRING_PASS_RULE": {
+      "PASS_requires": [
+        "R1 exact key recovery holds as a strict bijection over all 1,501,089 nuclei",
+        "R1b secondary recovery agrees with R1 on every nucleus",
+        "C-2 and C-4 tripwires show zero mismatches",
+        "C-3 returns exactly 1.000000, confirming the copied-label relationship and therefore that our key reproduces the pipeline's",
+        "I-1 permutation witness is computed and REPORTED, whatever it shows"
+      ],
+      "verdict_label_on_pass": "PAIRING_KEY_RECOVERED_EXACTLY__PIPELINE_LINEAGE_CIRCUMSTANTIAL",
+      "standing_caveat_that_must_travel": "The nucleus key is recovered exactly from the deposited identifiers and matches the depositor pipeline's published construction, but the exact producing commit of the deposit is not cryptographically established. No depositor-provided per-nucleus key exists.",
+      "on_failure": "STOP. Do not execute correspondence."
+    }
+  },
+
+  "F2_REPAIR__STAGE3_MUST_BE_COMPLETE": {
+    "audit_finding_accepted": true,
+    "what_was_missing": "The V1 precondition script's stage 3 computed only donor support and NIH-CARD peak-overlap attrition. It did not construct matched controls, did not compute the 14 frozen features, and did not run the out-of-span Mahalanobis diagnostic, all of which the frozen design promises.",
+    "required_before_stage3_may_be_declared_complete": [
+      "promoter-fixed matched-control construction exactly as frozen in V1 (same promoter, same chromosome, 5 kb, source-hg19 separation matched within +/-10% or 10 kb, non-overlapping with any E2 distal partner of that promoter, >= 1 NIH-CARD consensus peak, >= 1 Nott PU.1 peak, passing the same C3 exact-identity lift)",
+      "computation of all 14 frozen features for linked pairs and controls under the V1 NIH_CARD_observable_mapping",
+      "recovery of the synthetic feature means, SDs, full observed ranges and the p99 Mahalanobis radius from the committed qualification lineage WITHOUT recomputing or altering the estimator",
+      "emission of the predeclared IN_SPAN / OUT_OF_SPAN verdict",
+      "a full attrition funnel reconciling to 20,709"
+    ],
+    "stage3_remains_outcome_blind": "Every quantity above is a covariate or a count. None of it pairs a gene's RNA with its distal element's ATAC.",
+    "gate": "Stage 3 may not be declared complete, and stage 4 may not be authorised, until the executor demonstrably implements all of the above."
+  },
+
+  "F3_REPAIR__METACELL_PRECISION_QUALIFICATION": {
+    "audit_finding_accepted": true,
+    "problem": "A donor contributing the minimum 4 metacells yields a Pearson correlation from 4 points. That is estimable, not precisely measured. V1's >= 100 microglia rule established estimability only.",
+    "refused_shortcut": "Raising the cutoff to 8 or 10 metacells would replace one arbitrary threshold with another and is explicitly NOT done.",
+    "OUTCOME_BLIND_QUALIFICATION_STUDY": {
+      "analytic_component": {
+        "basis": "For a Pearson correlation on m paired observations, the Fisher z transform has variance 1/(m-3).",
+        "implication": "m=4 gives Var(z)=1.000 and SE(z)=1.000; m=8 gives 0.447; m=10 gives 0.378; m=20 gives 0.243. The information contributed by a donor is proportional to (m-3).",
+        "status": "analytic, requires no data at all, and is therefore incapable of being influenced by any outcome"
+      },
+      "empirical_component": {
+        "purpose": "test whether the OBSERVED instability of a within-donor correlation actually tracks the analytic 1/(m-3) curve in this cohort's real sparsity, rather than being materially worse",
+        "method": "within-donor split-half reliability. For each donor, partition its metacells at random into two halves, compute the correlation in each half, and measure agreement across halves as a function of metacell count.",
+        "CALIBRATION_SET__PERMANENTLY_EXCLUDED": {
+          "definition": "2,000 randomly drawn (gene, peak-set) pairs where the gene is NOT any E2 linked gene and the peak set is NOT any E2 distal interval and NOT any candidate control interval",
+          "seed": 20260929,
+          "SPENT_RULE": "This calibration set is DECLARED SPENT. Its genes and intervals are permanently excluded from the primary analysis and from control construction. Measuring on it cannot leak the E2 outcome because no E2 edge or control is in it.",
+          "why_a_calibration_set_at_all": "Measurement precision is a property of the assay and the aggregation, not of E2. It can therefore be calibrated on material that is disjoint from the test."
+        }
+      }
+    },
+    "PROSPECTIVE_DECISION_RULE__FIXED_NOW": {
+      "primary_handling": "PRECISION WEIGHTING, NOT A CUTOFF. Each donor's contribution to the set-level statistic is weighted by its Fisher-z information (m - 3), where m is that donor's metacell count. A donor with 4 metacells receives weight 1; a donor with 20 receives weight 17.",
+      "why_this_is_preferable_to_any_threshold": "It is the correct inverse-variance weighting for the statistic actually being combined, it requires no arbitrary cutoff anywhere, and it degrades smoothly instead of discarding donors at a line someone drew.",
+      "estimability_floor_retained": "m >= 4, because (m-3) must be strictly positive and a correlation on 3 points has no residual degree of freedom. This is the V1 minimum-microglia rule of 100 unchanged.",
+      "PREDECLARED_FALLBACK": {
+        "trigger": "if the empirical split-half variance for donors with m in [4,7] exceeds the analytic 1/(m-3) expectation by more than a factor of 2",
+        "action": "donors with m < 8 are moved OUT of the primary into a separately reported stratum, and the primary is computed on m >= 8 with the same precision weighting",
+        "why_this_is_not_post_hoc": "The trigger, the factor of 2, the fallback cutoff of 8 and the weighting scheme are all fixed in this document BEFORE the calibration study is run and before any correspondence value exists. The number 8 is not chosen by us after seeing a curve; it is the value this rule selects if and only if the measured instability exceeds the analytic expectation by the stated factor."
+      },
+      "mandatory_reporting_either_way": [
+        "the full metacell-count distribution across qualifying donors",
+        "the analytic and empirical precision curves side by side",
+        "the effective number of donors under precision weighting (Kish ESS on the weights)",
+        "the primary result recomputed unweighted, as a declared sensitivity"
+      ]
+    }
+  },
+
+  "UNCHANGED_FROM_V1": [
+    "donor is the independent unit",
+    "within-donor RNA-only metacells; joint RNA+ATAC embeddings forbidden",
+    "source hg19 distance primary, hg38 sensitivity, no edge excluded for leaving the hg19 window after lift",
+    "promoter-fixed matched controls with symmetric measurement support",
+    "frozen 14-feature continuous-adjustment estimator imported unmodified",
+    "out-of-span diagnostic, with OUT_OF_SPAN narrowing the claim and adding no basis functions",
+    "gene-balanced donor-averaged set-level Delta as the primary estimand",
+    "donor cluster bootstrap, 4000 replicates, seed 20260929, one-sided LCB95",
+    "no minimum effect size imposed; p<0.05 alone is not the success definition",
+    "interpretation asymmetry for PASS and FAIL",
+    "structural and biological evidence reported separately",
+    "the full forbidden-tuning list and firewall"
+  ],
+
+  "STAGE_AUTHORISATION_STATE": {
+    "stages_0_to_2": "MAY_RUN_OUTCOME_BLIND once the executor implements R1/R1b/I-1",
+    "stage_3": "MAY_RUN_OUTCOME_BLIND once controls, 14 features and the span diagnostic are implemented",
+    "metacell_precision_study": "MAY_RUN_OUTCOME_BLIND on the declared-spent calibration set",
+    "stage_4_correspondence": "NOT_AUTHORISED"
+  },
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED",
+    "E2": "CLOSED",
+    "e2_correspondence_outcome_opened": false,
+    "uses_AD_loci": false, "uses_JEPA_targets": false, "uses_Morabito": false,
+    "uses_SEA_AD": false, "uses_disease_labels": false
+  }
+}

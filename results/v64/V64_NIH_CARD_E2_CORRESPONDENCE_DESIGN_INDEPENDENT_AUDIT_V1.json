@@ -1,0 +1,79 @@
+{
+  "schema": "V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-29",
+  "audited_commit": "10bd363b1c419579ea59482879f682862a11efdf",
+  "verdict": "DESIGN_SCIENTIFICALLY_SOUND_IN_STRUCTURE__STAGE4_NOT_AUTHORISED__THREE_PREEXECUTION_REPAIRS_REQUIRED",
+  "prospectivity": {
+    "e2_correspondence_outcome_opened": false,
+    "confirmed_design_only": true
+  },
+  "strengths": [
+    "Donor is the independent unit.",
+    "RNA-only within-donor aggregation avoids joint-modality construction of the correspondence.",
+    "Source hg19 distance is prospectively primary with hg38 sensitivity, resolving S28 without trimming E2.",
+    "Linked/control construction is promoter-fixed and imposes symmetric accessibility/measurement support.",
+    "The frozen 14-feature nuisance basis is mapped to explicit NIH-CARD observables.",
+    "The out-of-span failure is carried forward as a claim limitation rather than repaired after outcomes.",
+    "No real-data minimum effect size is invented by transferring the synthetic M_MIN across units.",
+    "Structural and biological validation evidence remain separated."
+  ],
+  "findings": {
+    "F1_pairing_corrobation": {
+      "severity": "HIGH",
+      "status": "OPEN_BEFORE_STAGE4",
+      "finding": "Canonical correctly marks the RNA/ATAC namespace unresolved. The proposed composite key is plausible, but C-2 donor/sample agreement is tautological because sample is part of the key itself; C-4 cohort agreement is largely inherited from sample identity and is not an independent pairing witness.",
+      "external_source_lineage": "Public NIH-CARD scMAVERICS code provides stronger provenance: ATAC construction takes cell barcodes from RNA obs for each sample, creates atlas_identifier = barcode + '_' + sample_id, and the multiome merge defines paired nuclei by exact intersection of RNA and ATAC obs_names.",
+      "limitation": "The exact scMAVERICS commit/version that produced Zenodo record 20834804 has not yet been cryptographically tied to the deposited final files in this audit.",
+      "required_repair": [
+        "Amend the pairing gate so C-2/C-4 are labelled consistency checks, not independent corroboration.",
+        "Add pipeline-lineage corroboration from the depositor repository and, if possible, pin the producing commit/version or deposited workflow provenance.",
+        "Keep the composite bridge as a named assumption unless an authoritative depositor key or exact producing lineage closes it.",
+        "Cross-modal cell-type agreement may remain a corroborating check only if its provenance is shown not to be copied directly from one modality to the other."
+      ]
+    },
+    "F2_stage3_executor_incomplete": {
+      "severity": "HIGH",
+      "status": "OPEN_BEFORE_STAGE4",
+      "finding": "The committed precondition script's stage3 currently computes only NIH-CARD peak-overlap attrition and qualifying donor counts. It does not yet construct matched controls, compute all 14 frozen features, or run the promised out-of-span Mahalanobis diagnostic.",
+      "consequence": "The design contract is frozen, but the executable precondition implementation does not yet satisfy its own stage-3 specification.",
+      "required_repair": [
+        "Implement promoter-fixed matched-control construction exactly as frozen.",
+        "Implement the full 14-feature real-data mapping for linked and controls.",
+        "Recover the synthetic feature mean/SD, full ranges, and p99 Mahalanobis radius from the committed qualification lineage without recomputing or changing the estimator.",
+        "Emit the predeclared IN_SPAN/OUT_OF_SPAN verdict before stage4."
+      ]
+    },
+    "F3_four_metacell_precision": {
+      "severity": "MEDIUM",
+      "status": "QUALIFICATION_REQUIRED_BEFORE_STAGE4",
+      "finding": "A donor with the minimum four metacells contributes a Pearson correlation estimated from only four points. This is mathematically defined but extremely noisy; the current >=100 nuclei rule establishes estimability, not measurement precision.",
+      "why_not_change_threshold_now": "No biological outcome has been opened, but inventing a larger cutoff without a precision criterion would simply replace one arbitrary threshold with another.",
+      "required_repair": [
+        "Add an outcome-blind precision/stability qualification for the per-donor correlation as a function of metacell count.",
+        "Prefer an analytic or simulation-based measurement-error study using no E2 linked-vs-control outcomes.",
+        "Predeclare how low-metacell donors are handled if precision is inadequate: support stratum, precision weighting only if prospectively justified, or a revised minimum derived from the qualification.",
+        "Do not choose the rule after seeing Delta."
+      ]
+    }
+  },
+  "pairing_context": {
+    "canonical_receipt": "results/v63/NIHCARD_SCHEMA_RECEIPT_V2.json",
+    "canonical_state": "PAIRING_NAMESPACE_UNRESOLVED__QUALIFIED_FOR_PAIRED_USE_FALSE",
+    "composite_match": "1501089_of_1501089",
+    "exact_index_match": 0,
+    "public_pipeline_evidence": [
+      "scMAVERICS scripts/atac_by_celltype.py derives ATAC valid barcodes from RNA observation metadata and constructs atlas_identifier from barcode plus sample_id.",
+      "scMAVERICS scripts/multiome_merge.py computes paired_barcodes as the exact intersection of RNA and ATAC obs_names before constructing the MuData object."
+    ]
+  },
+  "design_decision": {
+    "design_contract": "ACCEPTED_AS_PROSPECTIVE_FRAMEWORK",
+    "stages_0_to_2": "MAY_RUN_OUTCOME_BLIND_AFTER_EXECUTOR_RECONCILIATION",
+    "stage_3": "MAY_RUN_ONLY_AFTER_F2_IMPLEMENTATION_IS_COMPLETED",
+    "stage_4_correspondence": "NOT_AUTHORISED",
+    "E2": "CLOSED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}

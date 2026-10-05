@@ -1,0 +1,295 @@
+{
+  "schema": "CRISPRBRAIN_ACQUISITION_V1",
+  "source": "https://crisprbrain.org",
+  "client": "crisprbrain (PyPI)",
+  "screens_total": 54,
+  "catalog_sha256": "1b1cc32aa67cafe2cd2fcb7eb1ff80bf273c96ca38baa7473e272b1c57f2ae56",
+  "by_screen_type": {
+    "RNA-Seq": 5,
+    "Simple": 45,
+    "Single-cell": 4
+  },
+  "by_cell_type": {
+    "Glutamatergic Neuron": 26,
+    "iPSC": 3,
+    "Hematopoietic Stem and Progenitor Cell": 1,
+    "T Cell": 1,
+    "Microglia": 11,
+    "Astrocyte": 7,
+    "iTF-Microglia": 3,
+    "iPSC-Microglia": 2
+  },
+  "by_lab": {
+    "Kampmann (UCSF)": 50,
+    "Snead (Novartis)": 1,
+    "Marson (UCSF)": 1,
+    "Ward (NINDS)": 2
+  },
+  "transcriptomic_screens": [
+    {
+      "screen": "Glutamatergic Neuron-RNA-Seq-CRISPRa-2020",
+      "screen_type": "RNA-Seq",
+      "cell_type": "Glutamatergic Neuron",
+      "crispr_mode": "CRISPRa",
+      "screen_method": "CROP-Seq",
+      "reference": "Tian et al. (2020)",
+      "rows": 789684,
+      "targets": 97,
+      "measured_features": 8165,
+      "target_engagement": {
+        "targets_with_self_row": 76,
+        "knocked_down_log2fc_lt_0": 13,
+        "median_self_log2fc": 1.7904,
+        "self_row_fdr_lt_0.05": 40
+      },
+      "csv_sha256": "bae3dee340bc24038f1e595c04a1eab98e35718f7c984622267110af9200e76f"
+    },
+    {
+      "screen": "Glutamatergic Neuron-RNA-Seq-CRISPRi-2019",
+      "screen_type": "RNA-Seq",
+      "cell_type": "Glutamatergic Neuron",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-Seq",
+      "reference": "Tian, Gachechiladze, Ludwig, et al. (2019)",
+      "rows": 582895,
+      "targets": 27,
+      "measured_features": 25097,
+      "target_engagement": {
+        "targets_with_self_row": 25,
+        "knocked_down_log2fc_lt_0": 25,
+        "median_self_log2fc": -1.7553,
+        "self_row_fdr_lt_0.05": 19
+      },
+      "csv_sha256": "976adc4bc08728f8c42b7f1624ed0093dede449e93cfe605cb532229e8e02dd0"
+    },
+    {
+      "screen": "Glutamatergic Neuron-RNA-Seq-CRISPRi-2020",
+      "screen_type": "RNA-Seq",
+      "cell_type": "Glutamatergic Neuron",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-Seq",
+      "reference": "Tian et al. (2020)",
+      "rows": 1499765,
+      "targets": 184,
+      "measured_features": 8167,
+      "target_engagement": {
+        "targets_with_self_row": 167,
+        "knocked_down_log2fc_lt_0": 161,
+        "median_self_log2fc": -1.1834,
+        "self_row_fdr_lt_0.05": 61
+      },
+      "csv_sha256": "cc50a1b837ed463cfd21e2b013f7b6dc82d07f57961b0218fde06edb6b8515fc"
+    },
+    {
+      "screen": "iPSC-Microglia-CITE-seq-CRISPRi",
+      "screen_type": "Single-cell",
+      "cell_type": "iPSC-Microglia",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CITE-seq",
+      "reference": "McQuade et al. 2026",
+      "rows": 5270,
+      "targets": 31,
+      "measured_features": 170,
+      "target_engagement": null,
+      "csv_sha256": "94cee8ca5ccb24057dcd98226f8fd58472151e6799d3aa7e46491d152f64f412"
+    },
+    {
+      "screen": "iPSC-Microglia-CROP-seq-CRISPRi",
+      "screen_type": "Single-cell",
+      "cell_type": "iPSC-Microglia",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-seq",
+      "reference": "McQuade et al. 2026",
+      "rows": 417630,
+      "targets": 31,
+      "measured_features": 13936,
+      "target_engagement": {
+        "targets_with_self_row": 29,
+        "knocked_down_log2fc_lt_0": 27,
+        "median_self_log2fc": -0.6077,
+        "self_row_fdr_lt_0.05": 3
+      },
+      "csv_sha256": "1efd4d840a46f0de32ce7839043df33e07db04d92f826855923e24f8fd36cdd2"
+    },
+    {
+      "screen": "iPSC-RNA-Seq-CRISPRi-2019",
+      "screen_type": "RNA-Seq",
+      "cell_type": "iPSC",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-Seq",
+      "reference": "Tian, Gachechiladze, Ludwig, et al. (2019)",
+      "rows": 561117,
+      "targets": 27,
+      "measured_features": 24083,
+      "target_engagement": {
+        "targets_with_self_row": 23,
+        "knocked_down_log2fc_lt_0": 23,
+        "median_self_log2fc": -2.5802,
+        "self_row_fdr_lt_0.05": 19
+      },
+      "csv_sha256": "178dda2fbfcd00514003a8f702d4f5d7fe92fa89cb5e7afc249e590492e10955"
+    },
+    {
+      "screen": "iTF Microglia-Day-8-CROP-seq-CRISPRi",
+      "screen_type": "RNA-Seq",
+      "cell_type": "Microglia",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-Seq",
+      "reference": "TBD",
+      "rows": 343707,
+      "targets": 39,
+      "measured_features": 10549,
+      "target_engagement": {
+        "targets_with_self_row": 35,
+        "knocked_down_log2fc_lt_0": 35,
+        "median_self_log2fc": -0.2328,
+        "self_row_fdr_lt_0.05": 17
+      },
+      "csv_sha256": "41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39"
+    },
+    {
+      "screen": "iTF-Microglia-CITE-seq-CRISPRi",
+      "screen_type": "Single-cell",
+      "cell_type": "iTF-Microglia",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CITE-seq",
+      "reference": "McQuade et al. 2026",
+      "rows": 5270,
+      "targets": 31,
+      "measured_features": 170,
+      "target_engagement": null,
+      "csv_sha256": "7b97a1098fb6144ba5c053620a18d6ab9d9fcb9fc50cf07124c6e3139c8014c8"
+    },
+    {
+      "screen": "iTF-Microglia-CROP-seq-CRISPRi",
+      "screen_type": "Single-cell",
+      "cell_type": "iTF-Microglia",
+      "crispr_mode": "CRISPRi",
+      "screen_method": "CROP-seq",
+      "reference": "McQuade et al. 2026",
+      "rows": 505527,
+      "targets": 31,
+      "measured_features": 16398,
+      "target_engagement": {
+        "targets_with_self_row": 30,
+        "knocked_down_log2fc_lt_0": 27,
+        "median_self_log2fc": -0.3296,
+        "self_row_fdr_lt_0.05": 3
+      },
+      "csv_sha256": "6f65d728699863d207012227c72ac88cc2033cc1277ee6a74132bac8f3afbea8"
+    }
+  ],
+  "simple_screens": [
+    "Glutamatergic Neuron-CellRox-CRISPRi",
+    "Glutamatergic Neuron-Day-14-Survival-CRISPRi",
+    "Glutamatergic Neuron-Day-21-Survival-CRISPRi",
+    "Glutamatergic Neuron-Day-28-Survival-CRISPRi",
+    "Glutamatergic Neuron-FeRhoNox-CRISPRi",
+    "Glutamatergic Neuron-Halo-TDP-43-CRISPRi",
+    "Glutamatergic Neuron-Liperfluo-CRISPRi",
+    "Glutamatergic Neuron-Lysotracker-CRISPRi",
+    "Glutamatergic Neuron-No Antioxidants-Survival-CRISPRa",
+    "Glutamatergic Neuron-No Antioxidants-Survival-CRISPRi",
+    "Glutamatergic Neuron-PSAP KO-No Antioxidants-Survival-CRISPRa",
+    "Glutamatergic Neuron-PSAP KO-No Antioxidants-Survival-CRISPRi",
+    "Glutamatergic Neuron-PSAP KO-Survival-CRISPRa",
+    "Glutamatergic Neuron-PSAP KO-Survival-CRISPRi",
+    "Glutamatergic Neuron-Survival-CRISPRa",
+    "Glutamatergic Neuron-Survival-CRISPRi",
+    "Glutamatergic-Neuron-DAKO-CRISPRi-Retest",
+    "Glutamatergic-Neuron-M204-CRISPRi-Retest",
+    "Glutamatergic-Neuron-T22-CRISPRi",
+    "Glutamatergic-Neuron-T22-CRISPRi-Retest",
+    "Glutamatergic-Neuron-TOC1-CRISPRi-Retest",
+    "Glutamatergic-Neuron-WT-DAKO-CRISPRi-Retest",
+    "Glutamatergic-Neuron-WT-T22-CRISPRi-Retest",
+    "HSPC-CD34-CRISPRn",
+    "T Cell-CFSE-CRISPRn",
+    "iAstrocyte-LAMP1-ITC-CRISPRi",
+    "iAstrocyte-LAMP1-Veh-CRISPRi",
+    "iAstrocyte-LysoTracker-ITC-CRISPRi",
+    "iAstrocyte-LysoTracker-Veh-CRISPRi",
+    "iAstrocyte-Phagocytosis-ITC-CRISPRi",
+    "iAstrocyte-Phagocytosis-Veh-CRISPRi",
+    "iAstrocyte-VCAM1-ITC-CRISPRi",
+    "iPSC-Halo-TDP-43-CRISPRi",
+    "iPSC-Survival-CRISPRi",
+    "iTF-Microglia-Antigen-presenting-HLA-DMB-TF-library",
+    "iTF-Microglia-Chemokine-CCL13-TF-library",
+    "iTF-Microglia-Disease-associated-CD9-TF-library",
+    "iTF-Microglia-Homeostatic-P2RY12-TF-library",
+    "iTF-Microglia-Immune Activation-CRISPRi",
+    "iTF-Microglia-Interferon-responsive-IFIT1-GenomeWide-library",
+    "iTF-Microglia-Interferon-responsive-IFIT1-TF-library",
+    "iTF-Microglia-Lipid-rich-BODIPY-TF-library",
+    "iTF-Microglia-Phagocytosis-CRISPRa",
+    "iTF-Microglia-Phagocytosis-CRISPRi",
+    "iTF-Microglia-Survival-Proliferation-CRISPRi"
+  ],
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false,
+  "distinct_targets_across_transcriptomic_screens": 352,
+  "full104_gene_space_overlap": {
+    "full104_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "full104_addresses": 41238,
+    "full104_source_families": [
+      "HVS",
+      "NPH52",
+      "SEA-AD"
+    ],
+    "note": "gene-space intersection must be HIGH: a model cannot be asked about a gene outside its feature space.  Study and donor overlap, which must be ZERO, are separate axes and are NOT checked by this producer.",
+    "targets_in_full104_symbol_space": 344,
+    "targets_total": 352,
+    "targets_outside": [
+      "ATP5A1",
+      "ATP5B",
+      "C6orf203",
+      "FAM57B",
+      "NDUFAF6",
+      "RNF165",
+      "SLC2A3",
+      "WDR66"
+    ],
+    "per_screen": {
+      "Glutamatergic Neuron-RNA-Seq-CRISPRa-2020": {
+        "targets": 97,
+        "in_full104": 95
+      },
+      "Glutamatergic Neuron-RNA-Seq-CRISPRi-2019": {
+        "targets": 27,
+        "in_full104": 25
+      },
+      "Glutamatergic Neuron-RNA-Seq-CRISPRi-2020": {
+        "targets": 184,
+        "in_full104": 180
+      },
+      "iPSC-Microglia-CITE-seq-CRISPRi": {
+        "targets": 31,
+        "in_full104": 31
+      },
+      "iPSC-Microglia-CROP-seq-CRISPRi": {
+        "targets": 31,
+        "in_full104": 31
+      },
+      "iPSC-RNA-Seq-CRISPRi-2019": {
+        "targets": 27,
+        "in_full104": 25
+      },
+      "iTF Microglia-Day-8-CROP-seq-CRISPRi": {
+        "targets": 39,
+        "in_full104": 39
+      },
+      "iTF-Microglia-CITE-seq-CRISPRi": {
+        "targets": 31,
+        "in_full104": 31
+      },
+      "iTF-Microglia-CROP-seq-CRISPRi": {
+        "targets": 31,
+        "in_full104": 31
+      }
+    }
+  },
+  "full104_donor_and_study_overlap": "NOT_CHECKED",
+  "full104_cell_barcode_overlap": "NOT_CHECKED"
+}

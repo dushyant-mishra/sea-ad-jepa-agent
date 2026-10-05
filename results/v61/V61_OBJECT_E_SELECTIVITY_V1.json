@@ -1,0 +1,125 @@
+{
+  "schema": "V61_OBJECT_E_ACCESSIBILITY_SELECTIVITY_V1",
+  "question": "Does F3 (both anchors accessible in Cluster 24) actually filter?",
+  "rule": {
+    "q": 0.01,
+    "min_donors": 2,
+    "draws_per_edge": 20
+  },
+  "accessible_bins": 45147,
+  "funnel_at_the_accessibility_step": {
+    "candidate_edges_q01_d2": 165891,
+    "both_anchors_accessible": 49401,
+    "exactly_one_accessible": 64867,
+    "neither_accessible": 51623,
+    "observed_both_rate": 0.297792
+  },
+  "distance_matched_null": {
+    "draws": 988020,
+    "null_both_rate": 0.050984,
+    "enrichment_observed_over_null": 5.8409,
+    "per_chromosome": {
+      "chr1": {
+        "edges": 5595,
+        "null_rate": 0.048919
+      },
+      "chr10": {
+        "edges": 2322,
+        "null_rate": 0.03975
+      },
+      "chr11": {
+        "edges": 3082,
+        "null_rate": 0.052579
+      },
+      "chr12": {
+        "edges": 2715,
+        "null_rate": 0.054494
+      },
+      "chr13": {
+        "edges": 786,
+        "null_rate": 0.021438
+      },
+      "chr14": {
+        "edges": 1740,
+        "null_rate": 0.042529
+      },
+      "chr15": {
+        "edges": 1583,
+        "null_rate": 0.033607
+      },
+      "chr16": {
+        "edges": 2164,
+        "null_rate": 0.054506
+      },
+      "chr17": {
+        "edges": 3405,
+        "null_rate": 0.093979
+      },
+      "chr18": {
+        "edges": 900,
+        "null_rate": 0.030722
+      },
+      "chr19": {
+        "edges": 3218,
+        "null_rate": 0.13381
+      },
+      "chr2": {
+        "edges": 3376,
+        "null_rate": 0.035945
+      },
+      "chr20": {
+        "edges": 1620,
+        "null_rate": 0.052778
+      },
+      "chr21": {
+        "edges": 546,
+        "null_rate": 0.032784
+      },
+      "chr22": {
+        "edges": 1178,
+        "null_rate": 0.046732
+      },
+      "chr3": {
+        "edges": 2445,
+        "null_rate": 0.038384
+      },
+      "chr4": {
+        "edges": 1441,
+        "null_rate": 0.021825
+      },
+      "chr5": {
+        "edges": 1958,
+        "null_rate": 0.027605
+      },
+      "chr6": {
+        "edges": 2793,
+        "null_rate": 0.044289
+      },
+      "chr7": {
+        "edges": 2093,
+        "null_rate": 0.036957
+      },
+      "chr8": {
+        "edges": 1616,
+        "null_rate": 0.032642
+      },
+      "chr9": {
+        "edges": 2225,
+        "null_rate": 0.036022
+      },
+      "chrX": {
+        "edges": 600,
+        "null_rate": 0.0155
+      }
+    }
+  },
+  "interpretation_rule_declared_before_the_numbers_were_read": "F3 is doing real work if the observed both-accessible rate is materially below 1.0 (so it rejects candidates) AND materially above the distance-matched null (so what it keeps is not what chance would keep). Both must hold. A high rate alone would mean the filter passes everything; an enrichment alone would not rule out that it rejects nothing.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "gene_annotation_joined": false
+  },
+  "F3_REJECTS": true,
+  "F3_IS_ENRICHED": true,
+  "VERDICT": "F3_IS_A_REAL_FILTER"
+}

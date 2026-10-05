@@ -1,0 +1,88 @@
+{
+  "schema": "V64_PHASE_B_T5_INDEPENDENT_AUDIT_SPEC_V1",
+  "date": "2026-09-30",
+  "status": "AUDIT_SPEC_ONLY__DERIVED_FROM_FROZEN_CONTRACTS__NO_NEW_STATISTICAL_AUTHORITY",
+  "sources": {
+    "substrate_contract": "results/v64/phase_b_design/V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1.json",
+    "correspondence_design": "results/v64/V64_NIH_CARD_E2_CORRESPONDENCE_DESIGN_CONTRACT_V1.json"
+  },
+  "key": "donor_id x pair_key",
+  "required_fields": [
+    "promoter_activity",
+    "distal_accessibility",
+    "n_assigned_peaks",
+    "rna_depth_sensitivity",
+    "atac_depth_sensitivity",
+    "n_metacells_contributing",
+    "availability_state"
+  ],
+  "formulas": {
+    "promoter_activity": {
+      "source": "T3_RNA_VECTORS",
+      "rule": "mean across the donor's frozen metacells of linked-gene log1p CP10K RNA",
+      "linked_gene_shared_across_arms": true
+    },
+    "distal_accessibility": {
+      "source": "T4_ATAC_VECTORS",
+      "rule": "mean across the donor's frozen metacells of log1p normalized ATAC over that interval's assigned consensus-peak set"
+    },
+    "n_assigned_peaks": {
+      "source": "T4 interval metadata",
+      "rule": "number of NIH-CARD consensus peaks overlapping the 5kb interval by >=1bp; no widening or nearest-peak rescue"
+    },
+    "rna_depth_sensitivity": {
+      "source": [
+        "T3_RNA_VECTORS",
+        "T2_METACELL_DEPTH"
+      ],
+      "rule": "within-donor OLS slope of the linked gene's metacell RNA value on total RNA counts for the same metacells"
+    },
+    "atac_depth_sensitivity": {
+      "source": [
+        "T4_ATAC_VECTORS",
+        "T2_METACELL_DEPTH"
+      ],
+      "rule": "within-donor OLS slope of the interval's metacell ATAC value on total ATAC counts for the same metacells"
+    },
+    "n_metacells_contributing": {
+      "rule": "count of frozen donor metacells with the measurement support required for this donor-pair row"
+    }
+  },
+  "missingness": {
+    "observed_zero_is_not_missing": true,
+    "not_measured_is_not_zero": true,
+    "donor_pair_missing_if": [
+      "linked gene has zero RNA counts in all donor metacells",
+      "assigned peak set has zero ATAC counts in all donor metacells",
+      "required measurement vector is otherwise unavailable under frozen support rules"
+    ],
+    "degenerate_variance": "belongs to Stage-4 correlation eligibility and must not be converted to a zero correspondence score",
+    "availability_state_must_use_frozen_four_state_vocabulary": true
+  },
+  "firewall": {
+    "forbidden_in_T5": [
+      "RNA x ATAC product",
+      "Pearson RNA-ATAC correlation",
+      "Spearman RNA-ATAC correlation",
+      "linked-minus-control quantity",
+      "residualised correspondence",
+      "one-sided test statistic"
+    ],
+    "single_modality_means_allowed": true,
+    "single_modality_depth_slopes_allowed": true
+  },
+  "validation_requirements": [
+    "T5 key uniqueness",
+    "all T5 pair_key values resolve to frozen Phase-A or enumeration-only pair mapping",
+    "all donor_id values belong to the 282 qualifying-donor universe",
+    "T5 values recompute exactly/tolerance-bound from frozen T2-T4 without returning to RNA/ATAC matrices",
+    "linked/A/B rows sharing a linked gene have identical promoter_activity within donor when their pair mapping references the same gene",
+    "no missing value is serialized as biological zero",
+    "T5 artifact bytes and producer are hash-bound"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence_opened": false,
+    "training": "OFF"
+  }
+}

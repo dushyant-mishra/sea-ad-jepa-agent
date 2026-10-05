@@ -1,0 +1,115 @@
+{
+  "schema": "V5_FULL104_LEVEL4_PERMUTATION_RECOVERY_V1",
+  "status": "COLUMN_FINGERPRINT_MATCHING__NO_TRAINING",
+  "matrix_id": "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+  "block": "op19/block-00000",
+  "source_asset": "data/external/v4/living_human/hvs/c5e9db26-7b51-4290-b721-dd540ac906b1.h5ad",
+  "source_ensembl_column": "_index",
+  "nuclei_used": 512,
+  "min_nnz_to_attempt_match": 4,
+  "l4_nonzero_columns": 17421,
+  "source_nonzero_columns": 17421,
+  "matched_uniquely": 15149,
+  "ambiguous_fingerprint_or_too_sparse": 2272,
+  "no_source_column_with_that_fingerprint": 0,
+  "match_rate_over_attempted": 1.0,
+  "l4_column_equals_source_column": 2,
+  "recovered_map_is_monotone_in_source_order": 1,
+  "candidate_orderings_tested": {
+    "namespace_molecular_address_index": {
+      "agree": 0,
+      "of": 15149,
+      "fraction": 0.0
+    },
+    "namespace_sorted_by_symbol": {
+      "agree": 0,
+      "of": 15149,
+      "fraction": 0.0
+    },
+    "namespace_sorted_by_address_id_string": {
+      "agree": 0,
+      "of": 15149,
+      "fraction": 0.0
+    }
+  },
+  "example_recovered_pairs": [
+    {
+      "l4_column": 0,
+      "source_ensg": "ENSG00000227232",
+      "namespace_address_for_that_ensg": 22355,
+      "symbol": "WASH7P"
+    },
+    {
+      "l4_column": 2,
+      "source_ensg": "ENSG00000225880",
+      "namespace_address_for_that_ensg": 21899,
+      "symbol": "LINC00115"
+    },
+    {
+      "l4_column": 4,
+      "source_ensg": "ENSG00000228794",
+      "namespace_address_for_that_ensg": 22852,
+      "symbol": "LINC01128"
+    },
+    {
+      "l4_column": 7,
+      "source_ensg": "ENSG00000188976",
+      "namespace_address_for_that_ensg": 16409,
+      "symbol": "NOC2L"
+    },
+    {
+      "l4_column": 8,
+      "source_ensg": "ENSG00000187961",
+      "namespace_address_for_that_ensg": 16179,
+      "symbol": "KLHL17"
+    },
+    {
+      "l4_column": 11,
+      "source_ensg": "ENSG00000188290",
+      "namespace_address_for_that_ensg": 16253,
+      "symbol": "HES4"
+    },
+    {
+      "l4_column": 12,
+      "source_ensg": "ENSG00000187608",
+      "namespace_address_for_that_ensg": 16093,
+      "symbol": "ISG15"
+    },
+    {
+      "l4_column": 13,
+      "source_ensg": "ENSG00000188157",
+      "namespace_address_for_that_ensg": 16223,
+      "symbol": "AGRN"
+    },
+    {
+      "l4_column": 14,
+      "source_ensg": "ENSG00000131591",
+      "namespace_address_for_that_ensg": 6429,
+      "symbol": "C1orf159"
+    },
+    {
+      "l4_column": 18,
+      "source_ensg": "ENSG00000186827",
+      "namespace_address_for_that_ensg": 15944,
+      "symbol": "TNFRSF4"
+    },
+    {
+      "l4_column": 19,
+      "source_ensg": "ENSG00000078808",
+      "namespace_address_for_that_ensg": 1435,
+      "symbol": "SDF4"
+    },
+    {
+      "l4_column": 20,
+      "source_ensg": "ENSG00000176022",
+      "namespace_address_for_that_ensg": 13832,
+      "symbol": "B3GALT6"
+    }
+  ],
+  "verdict": "PERMUTATION_RECOVERED_BUT_NO_TESTED_ORDERING_EXPLAINS_IT",
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "producer_sha256": "2e46fb5b0ce330e5c9271967f5eb145cff0c51becac865c54d26ff80a272e65b",
+  "recovered_map_entries": 15149,
+  "recovered_map_location": "D:/jepa_v5_outputs_20260925/l4_perm_hvs/FULL104_LEVEL4_PERMUTATION_RECOVERY_V1.json"
+}

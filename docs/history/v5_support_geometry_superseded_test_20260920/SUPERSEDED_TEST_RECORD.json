@@ -1,0 +1,36 @@
+{
+  "schema": "V5_SUPERSEDED_TEST_RECORD_V1",
+  "date_retired": "2026-09-20",
+  "retired_artifact": {
+    "original_path": "tests/test_teacher_student_v5_support_geometry_v1.py",
+    "sha256": "0c81f62ddabbccb8ef584936b8a2a5f46a882f720233bb41ea4b6e28acdecd64",
+    "bytes": 2844,
+    "exact_bytes_preserved_at": "docs/history/v5_support_geometry_superseded_test_20260920/source_snapshot/test_teacher_student_v5_support_geometry_v1.py"
+  },
+  "superseded_at_commit": "1db33ff0faead3edbdcee6d1ac0fe4fd43b4381b",
+  "superseded_at_commit_subject": "reconcile: restore current V5 data-first tree onto consolidated main",
+  "superseded_at_commit_date": "2026-09-08T16:06:16-04:00",
+  "active_successor": "tests/test_teacher_student_v5_support_schedule_v1.py",
+  "removed_apis_not_restored": [
+    "sea_ad_jepa.v5.support_geometry_v1.max_fixed_visible_for_support",
+    "sea_ad_jepa.v5.support_geometry_v1.validate_fixed_visible_across_support",
+    "sea_ad_jepa.v5.support_geometry_v1.fixed_visible_evidence -> returned key 'measured_fraction_of_universe'"
+  ],
+  "reason": "Current V5 numerical evidence scheduling is intentionally unfrozen. The removed APIs computed a frozen feasible visible-gene budget at contract time. Evidence dose, block geometry and schedule parameters are now derived from real dataset geometry at the point of use and frozen with their own justification. Restoring the APIs would reintroduce the frozen budget the reconcile deliberately removed.",
+  "disposition": "RETIRED_NOT_SKIPPED_NOT_XFAILED",
+  "disposition_reason": "a skipped test advertises a check that is not running; an xfail implies the code is expected to be fixed. Neither is true: the removal was a scientific design decision.",
+  "regressions_added_to_successor_in_this_change": [
+    "balanced_block_sizes output sums exactly to hidden_count (conservation)",
+    "fixed_visible_evidence has no implicit visible_genes budget (TypeError, not a default)",
+    "fixed_visible_evidence does NOT return 'measured_fraction_of_universe' (removal pinned)"
+  ],
+  "regressions_deliberately_not_carried_forward": [
+    "max_fixed_visible_for_support feasibility arithmetic (removed API)",
+    "validate_fixed_visible_across_support joint fail-closed report (removed API)",
+    "measured_fraction_of_universe ordering across supports (removed return key)"
+  ],
+  "collection_error_removed": "ImportError: cannot import name 'max_fixed_visible_for_support' from 'sea_ad_jepa.v5.support_geometry_v1'",
+  "uncollectable_since": "1db33ff0faead3edbdcee6d1ac0fe4fd43b4381b (2026-09-08)",
+  "training_authorized": false,
+  "removed_api_discovery_note": "The retirement instruction named two removed functions. A third piece of removed API surface was found while carrying regressions forward: fixed_visible_evidence no longer returns the key 'measured_fraction_of_universe'. It was added in c6af0c58 and removed by the same commit 1db33ff0. It was NOT restored. The assertion depending on it is not carried forward; instead the successor now pins the key's ABSENCE, so a silent reintroduction of a frozen universe-fraction notion fails the suite."
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "V64_PROMOTER_CANDIDATE_LEDGER_PARTIAL_RECEIPT_V1",
+  "date": "2026-09-30",
+  "candidate_authority": "GENCODE_V50_TRANSCRIPT_TSS",
+  "candidates": 644292,
+  "genes": 78733,
+  "screen_pls_overlap": 377974,
+  "screen_pls_overlap_pct": 58.665015241536445,
+  "dong_transcript_present": 115678,
+  "dong_transcript_present_pct": 17.95428159902653,
+  "dong_coordinate_match": 92600,
+  "fantom_status": "PENDING_HG38_BED_CUSTODY",
+  "inputs": {
+    "gencode_sha256": "83fba3e9b03f0b8c958f3595c6c350adc55f468abf8b0e47b6d5284cfe13a453",
+    "screen_sha256": "65443e5ace6db2f1cb067616afc426510cdb8b9ed7e890f2a29b52cd0b15533b",
+    "dong_data7_sha256": "6a46fd3bfdff213ca11111975ef01958be8238c349559e90dca43e5857a1d1dd"
+  },
+  "output": {
+    "bytes": 9250092,
+    "sha256": "7b2551e01b1bc0629ef3d9a630adcce87efdbddb009145abc968cab943ec9eba"
+  },
+  "denominator_rule": "all GENCODE v50 transcript/TSS candidates retained regardless of evidence support",
+  "training_authorized": false,
+  "_custody_note": "Archived exact chat-runtime receipt. Superseded for scientific authority by the chromosome-aware Dong bridge correction on the current V64 architecture branch."
+}

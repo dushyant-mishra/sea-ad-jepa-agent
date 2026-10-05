@@ -1,0 +1,61 @@
+{
+  "schema": "V64_NOTT_ATAC_AND_CHAIN_AUTHENTICATION_RECEIPT_V1",
+  "date": "2026-09-29",
+  "status": "AUTHENTICATED__READY_FOR_SUBSTRATE_FIT_EXECUTION",
+  "files": {
+    "PU1_microglia_ATAC_hg38": {
+      "filename": "formatted_output_PU1_optimal_peak_IDR_ENCODE.ATAC_lifted.bed.gz",
+      "size_bytes": 841467,
+      "md5": "9fc7767d501a938f90c44caa25a2d68f",
+      "sha256": "7cadc9906dbf335e252c823a8f19da738b64c7c45692ab4abbb962e18971cf36",
+      "rows": 50199,
+      "columns": 6,
+      "coordinate_schema": "first triplet hg38 lifted coordinates; second triplet source-coordinate provenance",
+      "malformed_rows": 0
+    },
+    "NeuN_ATAC_hg38": {
+      "filename": "formatted_output_NeuN_optimal_peak_IDR_ENCODE.ATAC_lifted.bed.gz",
+      "size_bytes": 943524,
+      "md5": "021f5f79663b653312674edba82d0333",
+      "sha256": "e5a094c69ef4d06338583c7d3fec5aced1e6b4fdf4e49a5d726c3e20d96299a4",
+      "rows": 55932,
+      "columns": 6,
+      "malformed_rows": 0
+    },
+    "Olig2_ATAC_hg38": {
+      "filename": "formatted_output_Olig2_optimal_peak_IDR_ENCODE.ATAC_lifted.bed.gz",
+      "size_bytes": 655864,
+      "md5": "6b2c4ffe6b3231aad4c075865a59f6ed",
+      "sha256": "220db7ae656001e81dd9af84c0382c6d020c1b023ffdbd5abb231a61ba1b0922",
+      "rows": 38476,
+      "columns": 6,
+      "malformed_rows": 0
+    },
+    "hg19ToHg38_chain": {
+      "filename": "hg19ToHg38.over.chain.gz",
+      "size_bytes": 227698,
+      "md5": "35887f73fe5e2231656504d1f6430900",
+      "sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+      "first_chain": "chr1 249250621 -> chr1 248956422"
+    },
+    "hg38ToHg19_chain": {
+      "filename": "hg38ToHg19.over.chain.gz",
+      "size_bytes": 1246411,
+      "md5": "ff3031d93792f4cbb86af44055efd903",
+      "sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+      "first_chain": "chr1 248956422 -> chr1 249250621"
+    }
+  },
+  "observed_peak_widths_bp": {
+    "PU1_microglia": {"min": 73, "median": 435, "max": 2785},
+    "NeuN": {"min": 73, "median": 412, "max": 2274},
+    "Olig2": {"min": 74, "median": 456, "max": 2450}
+  },
+  "qualification": {
+    "all_expected_FILER_md5s_match": true,
+    "all_bed_rows_parse": true,
+    "both_chain_directions_present": true,
+    "next_step": "Execute Table S5 hg19->hg38 liftover with round-trip audit, then P1S same-study microglia substrate-fit and promoter-fixed distal shuffle."
+  },
+  "governance": {"training":"OFF","td60":"BLOCKED"}
+}

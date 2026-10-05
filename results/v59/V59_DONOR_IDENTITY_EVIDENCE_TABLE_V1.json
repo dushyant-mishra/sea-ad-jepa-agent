@@ -1,0 +1,123 @@
+{
+  "schema": "jepa_v59_donor_identity_evidence_table_v1",
+  "date": "2026-09-28",
+  "rule": "Different donor namespaces do not prove different people. No pair may be classified PROVEN_DISJOINT on pseudonym or institution mismatch alone.",
+  "identifier_layers_searched": {
+    "GEO_GSE": "SEARCHED \u2014 0 hits (eutils db=gds)",
+    "BioProject_PRJNA": "SEARCHED \u2014 0 hits (eutils db=bioproject)",
+    "BioSample_SAMN": "NOT PRESENT \u2014 no NCBI deposit exists",
+    "SRA_SRP_SRX": "SEARCHED \u2014 0 hits (eutils db=sra)",
+    "dbGaP": "NONE CITED by the paper",
+    "NIAGADS": "cited only for a THIRD-PARTY dataset (Lopes eQTL NG00105.v1), not for Kosoy donors",
+    "Synapse_syn26207321": "EXISTS \u2014 JS application, not machine-readable; managed access",
+    "supplementary_tables": "Tables 1-4 hold per-sample QC metadata; donor identifiers NOT exposed in the public record",
+    "genotype": "EXISTS \u2014 Infinium PsychChip, imputed, 7,723,699 SNPs MAF>0.05; deposited in AD Knowledge Portal under managed access",
+    "WGS_WES": "NOT MENTIONED",
+    "per_source_donor_counts": "NOT STATED \u2014 the 150 are not broken down across the three sources",
+    "demographics": "supporting evidence only, never proof"
+  },
+  "false_lead_recorded": {
+    "GSE160523": "surfaced by search alongside Kosoy; verified via eutils to be a MOUSE TAM-receptor study (PRJNA673444, Mus musculus, 4 samples). NOT Kosoy. Checked rather than assumed."
+  },
+  "pairs": [
+    {
+      "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
+      "cohort_b": "FULL104_SEAAD",
+      "alias_namespace_shared": false,
+      "repository_shared": false,
+      "biosample": "ABSENT_FOR_A",
+      "sra_gsm": "ABSENT_FOR_A",
+      "biospecimen_id": "NOT_PUBLIC",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
+      "brain_bank_subject_id": "NOT_PUBLIC",
+      "cross_publication_subject_id": "NONE_FOUND",
+      "classification": "UNRESOLVED",
+      "note": "Kosoy: Rush ADRC (ROS/MAP) + Mount Sinai NBTR + Living Brain Project. SEA-AD: Allen Institute + UW ADRC/ACT. No shared institution, no shared namespace, no NCBI deposit on the Kosoy side to join through.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence.",
+      "dua_status": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT"
+    },
+    {
+      "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
+      "cohort_b": "MORABITO_GSE174367",
+      "alias_namespace_shared": false,
+      "repository_shared": false,
+      "biosample": "ABSENT_FOR_A",
+      "sra_gsm": "ABSENT_FOR_A",
+      "biospecimen_id": "NOT_PUBLIC",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
+      "brain_bank_subject_id": "NOT_PUBLIC",
+      "cross_publication_subject_id": "NONE_FOUND",
+      "classification": "UNRESOLVED",
+      "note": "Morabito donors are Sample-* pseudonyms (UCI). Kosoy exposes no public donor identifier at all. PR #164 already recorded Morabito-vs-FULL104 non-overlap as INFERRED from study provenance, not proven from IDs; the same standard applies here.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence.",
+      "dua_status": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT"
+    },
+    {
+      "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
+      "cohort_b": "GSE214979",
+      "alias_namespace_shared": false,
+      "repository_shared": false,
+      "biosample": "ABSENT_FOR_A",
+      "sra_gsm": "ABSENT_FOR_A",
+      "biospecimen_id": "NOT_PUBLIC",
+      "genotype_evidence": "STRONGEST_AVAILABLE_RUNG__BOTH_GENOTYPED__BOTH_GATED",
+      "brain_bank_subject_id": "NOT_PUBLIC",
+      "cross_publication_subject_id": "NONE_FOUND",
+      "classification": "UNRESOLVED",
+      "note": "Both sides have genotype-level identity: Kosoy typed on Infinium PsychChip (7,723,699 SNPs MAF>0.05, deposited in AD Knowledge Portal); GSE214979 donors assigned by cellSNP/vireo demultiplexing. A genotype crosswalk is the one key that is not a pseudonym - and it is access-gated on the Kosoy side. This is where the ladder stops.",
+      "dua_status": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT"
+    },
+    {
+      "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
+      "cohort_b": "GSE272082",
+      "alias_namespace_shared": false,
+      "repository_shared": false,
+      "biosample": "ABSENT_FOR_A",
+      "sra_gsm": "ABSENT_FOR_A",
+      "biospecimen_id": "NOT_PUBLIC",
+      "genotype_evidence": "NOT_ESTABLISHED_AS_SHARED_IDENTITY_RUNG",
+      "brain_bank_subject_id": "NOT_PUBLIC",
+      "cross_publication_subject_id": "NONE_FOUND",
+      "classification": "UNRESOLVED",
+      "note": "CORRECTED. PR #182 DOES establish GSE272082: 9 reconstructed donors (4 sEOAD + 5 control) from NIH NeuroBioBank (NIH* libraries) and UTHealth Houston (UT* libraries), with PFC n=9, EC n=6, HIP n=5. Contact institute University of Texas Health Science Center at Houston; consent obtained by UTHealth. What remains unestablished is molecular/cell-level authentication and - for THIS question - any public identity bridge to Kosoy. Person-level overlap is UNRESOLVED for want of a shared key, not for want of cohort facts.",
+      "genotype_evidence_note": "Downgraded. The strong 'exists both sides' claim is earned ONLY for Kosoy<->GSE214979, where Kosoy has PsychChip genotypes and GSE214979 used cellSNP/vireo demultiplexing. It was generalised to the other pairs by a permissive DEFAULT in the table builder, not by evidence.",
+      "comparator_facts_source": "PR #182 results/lane_pm/lane_pm_gse272082_donor_reconstruction_v1.csv",
+      "dua_status": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT"
+    },
+    {
+      "cohort_a": "KOSOY_FULLARD_MICROGLIA_REGULOME",
+      "cohort_b": "ROSMAP_2025_MULTIOME_syn66271521",
+      "alias_namespace_shared": true,
+      "repository_shared": true,
+      "biosample": "ABSENT_FOR_A",
+      "sra_gsm": "ABSENT_FOR_A",
+      "biospecimen_id": "NOT_PUBLIC",
+      "genotype_evidence": "SHARED_AMP_AD_INDIVIDUAL_NAMESPACE",
+      "brain_bank_subject_id": "NOT_PUBLIC",
+      "cross_publication_subject_id": "NONE_FOUND",
+      "classification": "LIKELY_OVERLAP__RESOLVABLE_INSIDE_AMP_AD",
+      "note": "Kosoy draws 123 autopsy donors partly from Rush ADRC's ROS and MAP cohorts, and is deposited in the AD Knowledge Portal. AMP-AD keys ROS/MAP individuals consistently across studies, so this pair is the ONE that is resolvable - and is likely to resolve as OVERLAP for the ROS/MAP subset. Not a hypothetical: ROSMAP multiome sits in the V49 acquisition inventory.",
+      "dua_status": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT"
+    }
+  ],
+  "conclusion": "No pair is PROVEN_DISJOINT. Four are UNRESOLVED because Kosoy exposes no public donor identifier of any kind and has no NCBI deposit to join through. The strongest rung that exists is GENOTYPE, present on both sides for GSE214979, and it is access-gated. One pair - ROSMAP - is LIKELY_OVERLAP and is the only one that is resolvable, via the shared AMP-AD individual namespace.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "controlled_data_requested": false,
+    "molecular_outcomes_opened": false
+  },
+  "corrections_20260928": {
+    "gse272082_statement": "My earlier note said GSE272082's institution, donor count and tissue were 'not established in this project'. That CONTRADICTED project history: PR #182 had already reconstructed 9 donors with institutions and regional structure. Verified against the PR #182 CSV before correcting.",
+    "genotype_field_overreach": "The table builder used 'EXISTS_BOTH_SIDES_ACCESS_GATED' as a DEFAULT value, so it propagated to four pairs where no such evidence was documented. A default that asserts evidence is the same defect the R3 ledger avoids by making UNKNOWN block. Defaults must be conservative; only the GSE214979 pair retains the strong claim.",
+    "cerebellum_speculation_withdrawn": "I had floated that GSE272082 might be a cerebellum study with 17 donors. PR #182 settles it: cortical PFC/EC/HIP, 9 donors. The speculation is WITHDRAWN."
+  },
+  "dua_decision_20260928": {
+    "decision": "NO_INSTITUTIONAL_DUA_WILL_BE_PURSUED",
+    "donor_identity_crosswalk": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT",
+    "distributed_enhancer_gene_artifact_inspection": "BLOCKED_BY_CONTROLLED_ACCESS__OUT_OF_SCOPE_FOR_THIS_PROJECT",
+    "consequence_for_kosoy": "FreshMicro/Kosoy is demoted to PUBLISHED_SUPPORTING_EVIDENCE_ONLY. It must NOT become a load-bearing qualification dependency, because the two questions that would have qualified it - donor identity and artifact inspection - are now permanently unanswerable within this project's access posture.",
+    "what_is_preserved": "All public provenance work stands: the layer-by-layer identifier search, the zero-NCBI-deposit finding, the ROS/MAP-to-ROSMAP forward constraint, and the contact-not-covariance construction fact. None of that depended on controlled access.",
+    "outcome_2_status": "Outcome 2 was conditional on two provenance checks. Those checks are now CLOSED-UNRESOLVABLE rather than open. Kosoy therefore cannot reach Outcome 1 and is not eligible as THE frozen external cis object. A fully public replacement is required."
+  }
+}

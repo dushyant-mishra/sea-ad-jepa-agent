@@ -1,0 +1,140 @@
+{
+  "schema": "V5_AUDIT_MASKED_MYELOID_ARTIFACT_V1",
+  "status": "INDEPENDENT_AUDIT__RE_DERIVED_FROM_THE_ARTIFACT",
+  "artifact_dir": "D:/jepa_v5_outputs_20260925/myeloid_panel_masked_full",
+  "all_checks_pass": true,
+  "checks": {
+    "digests": {
+      "pass": true,
+      "artifact_sha256": "9c7c5ce0bc68f67520814c306ca376675ceb234aa6db813361c5799fbb7855c4",
+      "artifact_bytes": 5657841,
+      "receipt_sha256": "29763a7116ed5c1a9c26fbacc85e05ac4875229923ec040ad9e67fb78c5fdba6",
+      "producer_sha256_recorded": "f00945643725898ae09f27d10855acee087c8a75b0766b7bcc80c43526963c31"
+    },
+    "coverage_13_matrices": {
+      "pass": true,
+      "matrices_present": 13,
+      "expected": 13,
+      "missing": [],
+      "count_mismatches": {}
+    },
+    "identity_closure": {
+      "pass": true,
+      "n": 187909,
+      "expected": 187909,
+      "unique_cell_ids": 187909,
+      "unique_selection_rows": 187909
+    },
+    "donor_identities_92": {
+      "pass": true,
+      "source_specific_donor_identities": 92,
+      "per_source": {
+        "HVS": 30,
+        "NPH52": 16,
+        "SEA_AD": 46
+      },
+      "expected_per_source": {
+        "HVS": 30,
+        "NPH52": 16,
+        "SEA_AD": 46
+      },
+      "note": "source-specific, NOT harmonized across sources"
+    },
+    "mask_present_and_shaped": {
+      "pass": true,
+      "present": true,
+      "shape": [
+        187909,
+        29
+      ],
+      "expected_shape": [
+        187909,
+        29
+      ]
+    },
+    "mask_matches_receipt_per_matrix": {
+      "pass": true,
+      "matrices_checked": 13,
+      "disagreements": {}
+    },
+    "no_counts_at_unavailable_positions": {
+      "pass": true,
+      "sum_of_counts_at_unavailable_positions": 0
+    },
+    "known_absences": {
+      "pass": true,
+      "LPL_unavailable_in": [
+        "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1"
+      ],
+      "LPL_expected": [
+        "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1"
+      ],
+      "PGK1_unavailable_in_n": 11,
+      "PGK1_expected_n": 11,
+      "PGK1_matches": true,
+      "NPH52_unavailable": []
+    },
+    "all_query_and_panel_addresses_available": {
+      "pass": true,
+      "unreachable": [],
+      "checked": 15
+    },
+    "denominator_arithmetic": {
+      "pass": true,
+      "cells_disagreeing": 0,
+      "definition": "total_excluding_29 == total_all - sum(available counts)",
+      "source_specific": true,
+      "ban_subtracted_per_matrix": {
+        "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1": 28,
+        "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs": 29,
+        "sea_ad_ang_rna_final_2026": 28,
+        "sea_ad_caudate_rna_all_2025": 28,
+        "sea_ad_fi_rna_final_2026": 28,
+        "sea_ad_hip_rna_final_2026": 28,
+        "sea_ad_itg_rna_final_2026": 28,
+        "sea_ad_lec_rna_final_2026": 28,
+        "sea_ad_mec_rna_final_2026": 28,
+        "sea_ad_mtg_rna_final_2026": 28,
+        "sea_ad_pfc_a9_rna_final_2026": 28,
+        "sea_ad_stg_rna_final_2026": 28,
+        "sea_ad_v1c_rna_final_2026": 28
+      }
+    }
+  },
+  "marker_detection_reading_not_a_gate": {
+    "HVS": {
+      "APOE": 0.5418,
+      "C1QA": 0.291,
+      "CSF1R": 0.6594,
+      "P2RY12": 0.7459,
+      "CD74": 0.8512,
+      "TREM2": 0.1464,
+      "CX3CR1": 0.3519,
+      "HLA-DRA": 0.6117
+    },
+    "NPH52": {
+      "APOE": 0.5858,
+      "C1QA": 0.5328,
+      "CSF1R": 0.8997,
+      "P2RY12": 0.9545,
+      "CD74": 0.9325,
+      "TREM2": 0.4378,
+      "CX3CR1": 0.8882,
+      "HLA-DRA": 0.7431
+    },
+    "SEA_AD": {
+      "APOE": 0.6581,
+      "C1QA": 0.4857,
+      "CSF1R": 0.8166,
+      "P2RY12": 0.6645,
+      "CD74": 0.7723,
+      "TREM2": 0.2301,
+      "CX3CR1": 0.4664,
+      "HLA-DRA": 0.532
+    }
+  },
+  "scope": "29 addresses in candidate myeloid nuclei. This audit says nothing about the other 41,209 addresses, about Levels 1-3, or about the training substrate.",
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "producer_sha256": "a29d9ebc49b8cacf137249de752ce1f629a6a563e97691b11e1d88c28ea172c4"
+}

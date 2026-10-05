@@ -1,0 +1,39 @@
+{
+  "gencode_v50": {
+    "genes_with_transcripts": 78733,
+    "transcripts": 644292,
+    "unique_gene_exact_tss_candidates": 389280,
+    "genes_multiple_tss": 34598,
+    "frac_genes_multiple_tss": 0.43943454460010417
+  },
+  "dong_supp7": {
+    "rows": 118121,
+    "v50_transcript_id_overlap": 115765,
+    "overlap_frac": 0.9800543510468079,
+    "gene_match_among_overlap": 112451,
+    "gene_match_frac": 0.9713730402107719,
+    "exact_tss_among_overlap": 94986,
+    "exact_tss_frac": 0.8205070617198635
+  },
+  "dong_supp8": {
+    "unique_transcripts": 12510,
+    "v50_overlap": 12220,
+    "frac": 0.9768185451638689
+  },
+  "dong_supp9": {
+    "unique_transcripts": 1368,
+    "v50_overlap": 1339,
+    "frac": 0.9788011695906432
+  },
+  "dong_supp10": {
+    "rows": 252512,
+    "unique_transcripts": 24992,
+    "unique_genes": 13049,
+    "v50_overlap": 24410,
+    "frac": 0.9767125480153649,
+    "ABC_score_min": 0.02,
+    "ABC_score_median": 0.031,
+    "ABC_score_max": 0.732
+  },
+  "_custody_note": "Archived raw chat-runtime summary. The Data7 transcript-overlap fields used row-level logic and are superseded by V64_DONG_ROUSSOS_PROMOTER_RESOURCE_CUSTODY_AND_BRIDGE_AUDIT_V1.json, which records chromosome-aware duplicate handling."
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "GSE178317_GUIDE_ASSIGNMENT_RECOVERY_V1",
+  "study": "GSE178317",
+  "system": "iPSC-derived microglia (iTF-Microglia), CROP-seq CRISPRi",
+  "guide_identity_source": {
+    "why_not_in_geo": "deposited sgRNA-enrichment matrices were processed against the plain transcriptome reference, so they carry 33538 Gene Expression features and no guides",
+    "library_table": "Draeger et al. 2022 Nat Neurosci Supplementary Table 5",
+    "library_sha256": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+    "reads": "SRA (barcode read is flagged TECHNICAL; ENA FASTQ omits it)"
+  },
+  "declared_before_inspection": {
+    "min_top_guide_umi": 5,
+    "min_dominance_fraction": 0.7,
+    "rule_shared_with": "GSE311359 in this collection"
+  },
+  "max_spots_per_lane": null,
+  "lanes": [
+    {
+      "lane": "L1",
+      "srr": "SRR14828091",
+      "gex_gsm": "GSM5387652",
+      "gex_h5_sha256": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+      "gex_called_cells": 13649,
+      "spots_read": 57367708,
+      "reads_on_called_cells": 48811016,
+      "reads_with_guide": 43634784,
+      "reads_no_guide_match": 5176232,
+      "guide_umis_after_dedup": 4508780,
+      "cells_with_any_guide_umi": 12735,
+      "cells_assigned": 0,
+      "assignment_rate_of_called_cells": 0.0,
+      "distinct_guides_observed": 81,
+      "sensitivity_cells_assigned": {
+        "umi>=3,dom>=0.70": 10,
+        "umi>=5,dom>=0.70": 0,
+        "umi>=5,dom>=0.80": 0,
+        "umi>=10,dom>=0.70": 0,
+        "umi>=10,dom>=0.90": 0
+      },
+      "elapsed_s": 707.8
+    },
+    {
+      "lane": "L2",
+      "srr": "SRR14828092",
+      "gex_gsm": "GSM5387653",
+      "gex_h5_sha256": "6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754",
+      "gex_called_cells": 14042,
+      "spots_read": 40668144,
+      "reads_on_called_cells": 35064518,
+      "reads_with_guide": 32079996,
+      "reads_no_guide_match": 2984522,
+      "guide_umis_after_dedup": 3657048,
+      "cells_with_any_guide_umi": 12929,
+      "cells_assigned": 2,
+      "assignment_rate_of_called_cells": 0.0001,
+      "distinct_guides_observed": 81,
+      "sensitivity_cells_assigned": {
+        "umi>=3,dom>=0.70": 17,
+        "umi>=5,dom>=0.70": 2,
+        "umi>=5,dom>=0.80": 1,
+        "umi>=10,dom>=0.70": 0,
+        "umi>=10,dom>=0.90": 0
+      },
+      "elapsed_s": 500.3
+    },
+    {
+      "lane": "L3",
+      "srr": "SRR14828093",
+      "gex_gsm": "GSM5387654",
+      "gex_h5_sha256": "1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9",
+      "gex_called_cells": 15268,
+      "spots_read": 66988930,
+      "reads_on_called_cells": 58490114,
+      "reads_with_guide": 53606975,
+      "reads_no_guide_match": 4883139,
+      "guide_umis_after_dedup": 5174862,
+      "cells_with_any_guide_umi": 14809,
+      "cells_assigned": 5,
+      "assignment_rate_of_called_cells": 0.0003,
+      "distinct_guides_observed": 81,
+      "sensitivity_cells_assigned": {
+        "umi>=3,dom>=0.70": 16,
+        "umi>=5,dom>=0.70": 5,
+        "umi>=5,dom>=0.80": 2,
+        "umi>=10,dom>=0.70": 0,
+        "umi>=10,dom>=0.90": 0
+      },
+      "elapsed_s": 856.2
+    },
+    {
+      "lane": "L4",
+      "srr": "SRR14828094",
+      "gex_gsm": "GSM5387655",
+      "gex_h5_sha256": "9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86",
+      "gex_called_cells": 15343,
+      "spots_read": 56409496,
+      "reads_on_called_cells": 48670973,
+      "reads_with_guide": 44690260,
+      "reads_no_guide_match": 3980713,
+      "guide_umis_after_dedup": 4665805,
+      "cells_with_any_guide_umi": 14477,
+      "cells_assigned": 3,
+      "assignment_rate_of_called_cells": 0.0002,
+      "distinct_guides_observed": 81,
+      "sensitivity_cells_assigned": {
+        "umi>=3,dom>=0.70": 21,
+        "umi>=5,dom>=0.70": 3,
+        "umi>=5,dom>=0.80": 1,
+        "umi>=10,dom>=0.70": 0,
+        "umi>=10,dom>=0.90": 0
+      },
+      "elapsed_s": 756.6
+    }
+  ],
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false,
+  "totals": {
+    "cells_assigned": 10,
+    "gex_called_cells": 58302,
+    "targets_represented": 1,
+    "ntc_cells": 0,
+    "cells_per_target_min": 10,
+    "cells_per_target_median": 10,
+    "cells_per_target_max": 10
+  },
+  "cells_per_target": {
+    "CDK8": 10
+  },
+  "assignments_csv_sha256": "c3243a6f01947b1bfde4943e9ee6440f5446e671a364feaa05774c17f5aade99"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "GSE178317_SAFE_COUNT_REISSUE_V1",
+  "result": "PARITY_VERIFIED_FORMAT_ONLY",
+  "legacy_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+  "legacy_receipt_sha256": "807e5ebd7383ab74ad3d5101791bac31666cf7af640abc7ebe0c34fb100e406d",
+  "safe_npz_sha256": "82ae263f9b3309e349ef7eff601f544600e25c1c3820f7a1f2b3d1720888ac8b",
+  "safe_receipt_sha256": "8b9d5148f523fafdca9c75908da78354e42953e4962ce82fc753ac8b3e711ebe",
+  "counts_shape": [
+    58302,
+    81
+  ],
+  "total_umis": 18006495,
+  "source_extraction_rerun": false,
+  "new_guide_identity_validation": false,
+  "biological_uncertainty_estimable": false,
+  "training_authorized": false,
+  "prospective_confirmation_authorized": false
+}

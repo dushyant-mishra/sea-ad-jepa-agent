@@ -1,0 +1,111 @@
+{
+  "grid": [
+    {
+      "alpha": 0.001,
+      "m": 20,
+      "max_null": -0.02285952092378327,
+      "min_plant": 0.8838883566521007,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "m": 20,
+      "max_null": -0.013477835516923565,
+      "min_plant": 0.8841862902865044,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.1,
+      "m": 20,
+      "max_null": 0.18985466362051953,
+      "min_plant": 0.8789337340190213,
+      "passes_null": false,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "m": 40,
+      "max_null": -0.026828339457688342,
+      "min_plant": 0.88063323374661,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "m": 40,
+      "max_null": -0.0010779835745282488,
+      "min_plant": 0.8807957381994767,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.1,
+      "m": 40,
+      "max_null": 0.20911155524380773,
+      "min_plant": 0.8741456039406089,
+      "passes_null": false,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "m": 80,
+      "max_null": 0.04729273397159358,
+      "min_plant": 0.8755714592290794,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "m": 80,
+      "max_null": 0.04223747564736807,
+      "min_plant": 0.8756462771343522,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.1,
+      "m": 80,
+      "max_null": 0.216446640436907,
+      "min_plant": 0.8677387271372293,
+      "passes_null": false,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "m": 160,
+      "max_null": 0.042408146492649214,
+      "min_plant": 0.871400711644465,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "m": 160,
+      "max_null": 0.04556665506759195,
+      "min_plant": 0.8721578975144176,
+      "passes_null": true,
+      "recall": 1.0
+    },
+    {
+      "alpha": 0.1,
+      "m": 160,
+      "max_null": 0.21050676490945355,
+      "min_plant": 0.8691702008585427,
+      "passes_null": false,
+      "recall": 1.0
+    }
+  ],
+  "no_real_full104_input": true,
+  "selected": {
+    "alpha": 0.01,
+    "m": 20,
+    "max_null": -0.013477835516923565,
+    "min_plant": 0.8841862902865044,
+    "passes_null": true,
+    "recall": 1.0
+  },
+  "selection_rule": "max recall; null partial R2 < 0.10 on every nuisance; tie-break smallest m then largest alpha",
+  "synthetic_only": true
+}

@@ -1,0 +1,125 @@
+{
+  "schema": "V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "artifact": "D:\\jepa_full104_redteam_20260920_external\\core_sufficient_statistics_v1.npz",
+  "artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "bound_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "artifact_sha_matches_bound": true,
+  "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "rows_traversed": 4553407,
+  "donors": 104,
+  "core_addresses": 17186,
+  "selection_row_range": [
+    0,
+    4553406
+  ],
+  "source_cells_from_manifest": {
+    "HVS": 198718,
+    "SEA_AD": 4118213,
+    "NPH52": 236476
+  },
+  "expected_source_cells": {
+    "HVS": 198718,
+    "NPH52": 236476,
+    "SEA_AD": 4118213
+  },
+  "total_source_library_recomputed_from_metadata": 122517308792,
+  "total_source_library_in_artifact": 122517308792,
+  "total_source_library_audit_a_independent": 122517308792,
+  "three_route_total_agreement": true,
+  "all_104_donor_library_totals_agree": true,
+  "per_cell_source_vector_agrees": true,
+  "donor_sample_rule": "SHA-256 of a fixed salt joined to the donor id; independent of any result",
+  "donor_sample": [
+    {
+      "donor": "H19.06.356",
+      "cells_metadata": 6596,
+      "cells_artifact": 6596,
+      "source_library_sum_metadata": 94539553,
+      "source_library_sum_artifact": 94539553
+    },
+    {
+      "donor": "H17.26.005",
+      "cells_metadata": 3236,
+      "cells_artifact": 3236,
+      "source_library_sum_metadata": 114408734,
+      "source_library_sum_artifact": 114408734
+    },
+    {
+      "donor": "H15.03.003",
+      "cells_metadata": 12509,
+      "cells_artifact": 12509,
+      "source_library_sum_metadata": 276991684,
+      "source_library_sum_artifact": 276991684
+    },
+    {
+      "donor": "H15.06.008",
+      "cells_metadata": 2863,
+      "cells_artifact": 2863,
+      "source_library_sum_metadata": 44701804,
+      "source_library_sum_artifact": 44701804
+    },
+    {
+      "donor": "H19.03.319",
+      "cells_metadata": 6948,
+      "cells_artifact": 6948,
+      "source_library_sum_metadata": 88026833,
+      "source_library_sum_artifact": 88026833
+    },
+    {
+      "donor": "H20.06.354",
+      "cells_metadata": 4257,
+      "cells_artifact": 4257,
+      "source_library_sum_metadata": 80985664,
+      "source_library_sum_artifact": 80985664
+    },
+    {
+      "donor": "H20.33.040",
+      "cells_metadata": 149084,
+      "cells_artifact": 149084,
+      "source_library_sum_metadata": 4283118000,
+      "source_library_sum_artifact": 4283118000
+    },
+    {
+      "donor": "H20.33.024",
+      "cells_metadata": 41496,
+      "cells_artifact": 41496,
+      "source_library_sum_metadata": 1228730176,
+      "source_library_sum_artifact": 1228730176
+    },
+    {
+      "donor": "H19.03.314",
+      "cells_metadata": 5564,
+      "cells_artifact": 5564,
+      "source_library_sum_metadata": 123247720,
+      "source_library_sum_artifact": 123247720
+    },
+    {
+      "donor": "H20.33.035",
+      "cells_metadata": 142022,
+      "cells_artifact": 142022,
+      "source_library_sum_metadata": 3929484718,
+      "source_library_sum_artifact": 3929484718
+    },
+    {
+      "donor": "human_NPH_896",
+      "cells_metadata": 12561,
+      "cells_artifact": 12561,
+      "source_library_sum_metadata": 105955506,
+      "source_library_sum_artifact": 105955506
+    },
+    {
+      "donor": "H20.33.017",
+      "cells_metadata": 138533,
+      "cells_artifact": 138533,
+      "source_library_sum_metadata": 4215823264,
+      "source_library_sum_artifact": 4215823264
+    }
+  ],
+  "failures": [],
+  "verdict": "HEAVY_ARTIFACT_QUALIFIED_FOR_REUSE",
+  "workers": 14,
+  "elapsed_seconds": 26.596097469329834,
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}

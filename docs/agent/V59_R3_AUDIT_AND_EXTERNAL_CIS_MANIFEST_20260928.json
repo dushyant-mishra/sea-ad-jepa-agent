@@ -1,0 +1,42 @@
+{
+  "schema": "jepa_v59_r3_audit_and_external_cis_manifest_v1",
+  "date": "2026-09-28",
+  "branch": "claude/v59-r3-audit-and-external-cis-20260928",
+  "base_v58_sha": "7b5860b33e5afb6b3fd30387a07e3e268d76afcf",
+  "historical_record_policy": "The V58 manifest is RESTORED BYTE-FOR-BYTE to its parent version and is NOT edited by this branch. Every correction lives here instead. Editing a historical record on a later branch leaves two contradictory digests in one file, and a future reader can pick up the stale one as current custody.",
+  "corrections": {
+    "external_anchor_result": {
+      "path": "results/v58/V53_EXTERNAL_ANCHOR_SYNTHETIC_IDENTIFIABILITY_V1.json",
+      "historical_v58_claimed_digest": "79c07b9f7f699e5e1bfffea3eda32ae8446b12359ce58348e5149f8274203205",
+      "historical_v58_fresh_replay_digest": "79c07b9f7f699e5e1bfffea3eda32ae8446b12359ce58348e5149f8274203205",
+      "observed_committed_digest": "73ea945b122da4a39785cc87069a9920930e0853e7b642700532417ec54d3a8e",
+      "historical_claim_status": "WITHDRAWN_AS_BYTE_ATTESTATION",
+      "evidence": "The committed bytes are not reproduced by any line-ending variant: the file contains no CR bytes, and as-stored, LF-normalised, CRLF, trailing-newline-stripped and trailing-newline-added all differ from the claimed value. The file carries no self-digest field, so no alternative reading rescues it.",
+      "most_likely_cause_UNVERIFIED": "the V58 manifest's own stated reconciliation mode, exact_file_content_copy_forward through a connector that 'exposes file writes but no branch merge action', which re-serialises JSON and changes bytes while preserving content",
+      "scientific_status": "UNCHANGED \u2014 only the custody class is downgraded",
+      "permitted_use": "cite the finding; do NOT cite this file as byte-pinned"
+    },
+    "r3_ledger_state_pointer": {
+      "field": "results/v58/R3_REGULATORY_EXPOSURE_SNAPSHOT_V1.json :: ledger_sha256",
+      "value": "03dbe2ed966e353aa750c336e7670ee63058c8acba23dd3c381a98521596ea4f",
+      "committed_ledger_source_digest": "c2c8afa217df62fedd6d8fe4b6341d402c09300ac8674abf052a1dd7312a2d9a",
+      "status": "UNRESOLVED_DANGLING_POINTER",
+      "evidence": "equals neither the committed ledger source nor any of 12 canonicalisations tried: outcomes / cross_source_rules / governance / whole-document-minus-this-field, each in compact, sorted-indent and unsorted-indent form",
+      "required_action": "its author must state what object it attests; not inferred here"
+    }
+  },
+  "verified_matching_digests": {
+    "src/sea_ad_jepa/regulatory/regulatory_exposure_ledger_v1.py": "c2c8afa217df62fedd6d8fe4b6341d402c09300ac8674abf052a1dd7312a2d9a",
+    "tests/test_regulatory_exposure_ledger_v1.py": "dab1c6ecef0808f4db5eb2ecaa3f2834a43946c83f4b296fa23361e826b6eda3",
+    "scripts/regulatory/v53_external_anchor_benchmark.py": "90b8154327b0467c73f57695279eaf26ae0831acdebc3145933fbace4f369523"
+  },
+  "r3_verdict": "PRESERVE \u2014 outcome-family keyed exposure is correct and finer than the dataset-keyed ledger on claude/regulatory-ledger-20260928, which is SUPERSEDED and must not be merged",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "molecular_regulatory_outcomes_opened_by_v59": false,
+    "protected_pathology_opened_by_v59": false,
+    "hosted_ci_triggered_by_v59": false
+  },
+  "next_required_work": "KOSOY_DONOR_COHORT_OVERLAP_AND_GENOME_WIDE_VS_DISEASE_LOCUS_SELECTION_CHECKS"
+}

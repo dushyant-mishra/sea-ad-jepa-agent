@@ -1,0 +1,132 @@
+{
+  "schema": "V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V3_REPAIRED_AUTHORITY",
+  "status": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
+  "supersedes_as_current_authority": [
+    "results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V1.json",
+    "results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V2_SUPERSESSION.json"
+  ],
+  "execution_branch_head_sha": "f863215358772d55fb1b1c9f285e33d2c33e7083",
+  "provider_checkout_sha": "1f4186783a572eff5b6f9828ce36fee314588491",
+  "checkout_identity": {
+    "provider_checkout_is_pr_merge_commit": true,
+    "merge_message": "Merge f863215358772d55fb1b1c9f285e33d2c33e7083 into 525611a8a70faf425c4f7f0f5d2354269beb3322",
+    "branch_head_to_checkout_compare_ahead_by": 1,
+    "branch_head_to_checkout_changed_files": 0,
+    "source_tree_equivalent": true
+  },
+  "provider_evidence": {
+    "workflow_run_id": 37252622570,
+    "qualification_job_id": 111583188826,
+    "qualification_conclusion": "success",
+    "hundred_k_job_id": 111583292373,
+    "hundred_k_conclusion": "success",
+    "two_k_artifact": {
+      "id": 11321078249,
+      "name": "v75-2k-promotion-smoke-receipts",
+      "sha256": "231fcc17c1e4e09c937d9f1e4d17e68402337f7cc26b0374c5f2c3f441413f05",
+      "size_bytes": 5958
+    },
+    "hundred_k_artifact": {
+      "id": 11321427182,
+      "name": "v75-100k-measurement-architecture-receipts",
+      "sha256": "df2bdad2939c0f46e529e0ebb8d126aba97686f1d78897da163de32ceea7de4e",
+      "size_bytes": 25223
+    }
+  },
+  "preflight": {
+    "status": "READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY",
+    "realised_operator_support_complete": true,
+    "fragment_byte_linkage_qualified": true,
+    "protected_boundaries_machine_validated": true,
+    "five_hundred_k_explicitly_not_authorized": true,
+    "training_explicitly_not_authorized": true
+  },
+  "population_geometry": {
+    "cells": 100000,
+    "donors": 104,
+    "donor_min_cells": 2,
+    "donor_max_cells": 3824,
+    "operators": 42,
+    "operator_min_cells": 4,
+    "operator_max_cells": 16084,
+    "source_counts": {
+      "SEA_AD": 90443,
+      "NPH52": 5193,
+      "HVS": 4364
+    },
+    "all_donors_nonzero": true,
+    "all_operators_nonzero": true
+  },
+  "measurement_controls": {
+    "measurement_null_worlds": 2,
+    "measurement_null_biology_identical": true,
+    "measurement_null_population_identical": true,
+    "measurement_null_operator_mapping_identical": true,
+    "measurement_null_seeds": [8501, 8502],
+    "biology_positive_measurement_seed_matched_to_reference": true,
+    "biology_positive_target_rule": "global_cell_index % 4 == 0",
+    "biology_positive_delta_z_global_0": 1.0,
+    "biology_positive_targeted_cells": 25000
+  },
+  "rna_qc_realization": {
+    "cells_checked": 100000,
+    "shards_checked": 10,
+    "panel_depth_mismatch_cells": 0,
+    "detected_support_mismatch_cells": 0,
+    "unavailable_features_nonzero_count": 0,
+    "status": "PASS__RNA_QC_TARGETS_REALIZED"
+  },
+  "fragment_integrity": {
+    "fragment_rows": 16147566,
+    "fragment_multiplicity": 30816582,
+    "shards": 10,
+    "compressed_sha256_recomputed_from_bytes": true,
+    "barcode_multiplicity_reconciled_to_multiome": true,
+    "linkage_totals_match_manifest": true
+  },
+  "measured_resources": {
+    "known_total_file_bytes": 184840828,
+    "truth_file_bytes": 13325780,
+    "full104_observable_file_bytes": 39514614,
+    "paired_multiome_file_bytes": 71869340,
+    "fragment_file_bytes": 60131094,
+    "known_total_bytes_per_cell": 1848.40828,
+    "control_worlds_wall_seconds": 15.55,
+    "control_worlds_max_rss_kb": 240632,
+    "fragment_serialization_and_validation_wall_seconds": 121.74,
+    "fragment_step_max_rss_kb": 44956,
+    "qc_summary_wall_seconds": 0.18,
+    "qc_summary_max_rss_kb": 35964,
+    "scope_limit": "peak/consensus/motif/cisTarget/network/perturbation/spatial terms remain unestimated"
+  },
+  "protected_boundaries": {
+    "status": "PASS__PROTECTED_BOUNDARIES_HOLD",
+    "pathology_absent": true,
+    "training_off": true,
+    "multimodal_training_off": true,
+    "stage4_not_authorized": true,
+    "real_correspondence_unopened": true,
+    "morabito_protected": true,
+    "recoverability_test_sealed": true,
+    "model_facing_truth_firewalls_hold": true
+  },
+  "promotion": {
+    "recommendation": "INDETERMINATE_DO_NOT_PROMOTE",
+    "reason": "500K_RESOURCE_COMPATIBILITY_RULE_NOT_BOUND",
+    "hundred_k_architecture_itself_qualified": true,
+    "five_hundred_k_authorized": false,
+    "required_successor": "freeze a budget-bound 500K resource compatibility gate before any 500K execution"
+  },
+  "claim_boundary": {
+    "learned_160d_jepa_state_qualified": false,
+    "learned_state_subspace_stability_qualified": false,
+    "biological_claim_qualified": false,
+    "scenicplus_network_qualified": false
+  },
+  "next_scientific_priority": {
+    "milestone": "CANONICAL_160D_JEPA_STATE_INTEGRATION_AND_SYNTHETIC_QUALIFICATION",
+    "canonical_runtime": "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+    "canonical_encoder": "src/sea_ad_jepa/v4/ipb_jepa.py::IPBEncoder(width=160)",
+    "instruction": "Do not spend the next scientific cycle on 500K measurement-only scaling by default; integrate and qualify the actual 160-D state on the now-qualified 100K substrate first."
+  }
+}
