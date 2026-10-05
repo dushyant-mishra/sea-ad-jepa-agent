@@ -1,0 +1,74 @@
+{
+  "schema": "CHAT_RUNTIME_CUSTODY_MANIFEST_20261005_V1",
+  "created_date": "2026-10-05",
+  "purpose": "Inventory every source artifact physically present in the 2026-10-05 chat runtime, preserve only bytes not already covered by prior custody, and bind repeated large artifacts cryptographically without duplicating them into ordinary Git history.",
+  "base_audited_head": "a9146d930c132978b6297722314e7af9f8507338",
+  "base_branch": "claude/v75-authority-provenance-correction-20261004",
+  "handoff_branch": "handoff/jepa-20261005-historical-audit-custody",
+  "runtime_source_artifact_count": 13,
+  "new_chat_exclusive_artifact_count": 3,
+  "new_chat_exclusive_artifacts": [
+    {
+      "name": "Pasted text(20261005-014928).txt",
+      "bytes": 26635,
+      "sha256": "1632c568b99742c9bb538e1f35e5bdee93fb91bdbba72fadceb32d3d96b508fc",
+      "status": "BYTE_PRESERVED_AS_BASE64_PARTS",
+      "repository_parts": [
+        "docs/agent/archive/chat_runtime_20261005/CHAT_UPLOAD_20261005_PASTED_TEXT.b64.part00",
+        "docs/agent/archive/chat_runtime_20261005/CHAT_UPLOAD_20261005_PASTED_TEXT.b64.part01",
+        "docs/agent/archive/chat_runtime_20261005/CHAT_UPLOAD_20261005_PASTED_TEXT.b64.part02"
+      ],
+      "recovery_command": "cat CHAT_UPLOAD_20261005_PASTED_TEXT.b64.part* | base64 -d > 'Pasted text(20261005-014928).txt'",
+      "authority_scope": "Historical handoff/chat evidence only. Contained next-action statements may be superseded by V76 and the 2026-10-05 historical target-authority audit."
+    },
+    {
+      "name": "v75-2k-promotion-smoke-receipts.zip",
+      "bytes": 5958,
+      "sha256": "231fcc17c1e4e09c937d9f1e4d17e68402337f7cc26b0374c5f2c3f441413f05",
+      "status": "BYTE_PRESERVED_AS_BASE64_PARTS",
+      "repository_parts": [
+        "docs/agent/archive/chat_runtime_20261005/V75_2K_RECEIPTS.b64.part00"
+      ],
+      "recovery_command": "cat V75_2K_RECEIPTS.b64.part* | base64 -d > v75-2k-promotion-smoke-receipts.zip",
+      "authority_scope": "Provider execution receipt bytes. Custody does not independently qualify scientific claims."
+    },
+    {
+      "name": "v75-100k-measurement-architecture-receipts.zip",
+      "bytes": 25223,
+      "sha256": "df2bdad2939c0f46e529e0ebb8d126aba97686f1d78897da163de32ceea7de4e",
+      "status": "BYTE_PRESERVED_AS_BASE64_PARTS",
+      "repository_parts": [
+        "docs/agent/archive/chat_runtime_20261005/V75_100K_RECEIPTS.b64.part00",
+        "docs/agent/archive/chat_runtime_20261005/V75_100K_RECEIPTS.b64.part01",
+        "docs/agent/archive/chat_runtime_20261005/V75_100K_RECEIPTS.b64.part02"
+      ],
+      "recovery_command": "cat V75_100K_RECEIPTS.b64.part* | base64 -d > v75-100k-measurement-architecture-receipts.zip",
+      "authority_scope": "Provider execution receipt bytes. Current scientific interpretation remains controlled by the repaired V75 authority artifact."
+    }
+  ],
+  "already_preserved_or_hash_bound_artifacts": [
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356","disposition":"MATCHES_PRIOR_BYTE_PRESERVED_PAYLOAD"},
+    {"name":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56","disposition":"MATCHES_PRIOR_BYTE_PRESERVED_PAYLOAD"},
+    {"name":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e","disposition":"MATCHES_PRIOR_BYTE_PRESERVED_PAYLOAD"},
+    {"name":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"},
+    {"name":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c","disposition":"MATCHES_PRIOR_CUSTODY__NO_DUPLICATE_GIT_PAYLOAD"}
+  ],
+  "prior_expression_reassembly": {
+    "assembly_order": ["FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001", "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002"],
+    "bytes": 607959761,
+    "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "status": "PRIOR_CUSTODY_VERIFIED__NOT_DUPLICATED"
+  },
+  "policy": {
+    "deduplication": "Exact-size + SHA-256 matches to prior custody are referenced, not duplicated.",
+    "large_binary": "Large scientific binaries/checkpoints are not inserted into ordinary Git history solely for custody.",
+    "base64": "New small binary/chat-exclusive artifacts are losslessly preserved as base64 text parts because the GitHub text connector cannot write raw binary bytes.",
+    "scientific_authority": "Custody and provider receipts do not themselves create or broaden scientific authority.",
+    "branch_scope": "Documentation/custody only; no source, test, workflow, threshold, model, training, or inherited scientific-result modifications."
+  }
+}
