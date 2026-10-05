@@ -17,6 +17,8 @@ CURRENT_FILES = (
     "docs/agent/memory-os/ACTIVE_STATE.md",
 )
 POINTER = "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json"
+LEGACY_ACTIVE_ALIAS = "docs/agent/ACTIVE_STATE.md"
+LEGACY_CHECKPOINT_ALIAS = "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json"
 
 
 def audit_authority_surface(root: Path) -> list[str]:
@@ -53,6 +55,28 @@ def audit_authority_surface(root: Path) -> list[str]:
             match = re.search(r"Date:\s*(\d{4}-\d{2}-\d{2})", text)
             if not match or match.group(1) != CURRENT_DATE:
                 failures.append(f"{rel} stale date")
+
+    active_alias = root / LEGACY_ACTIVE_ALIAS
+    if not active_alias.exists():
+        failures.append(f"missing legacy current-looking alias: {LEGACY_ACTIVE_ALIAS}")
+    else:
+        active_text = active_alias.read_text(encoding="utf-8")
+        if "SUPERSEDED_ALIAS_ROUTER" not in active_text or "docs/agent/memory-os/ACTIVE_STATE.md" not in active_text:
+            failures.append(f"legacy current-looking alias is not superseded: {LEGACY_ACTIVE_ALIAS}")
+
+    checkpoint_alias = root / LEGACY_CHECKPOINT_ALIAS
+    if not checkpoint_alias.exists():
+        failures.append(f"missing legacy current-looking alias: {LEGACY_CHECKPOINT_ALIAS}")
+    else:
+        try:
+            checkpoint = json.loads(checkpoint_alias.read_text(encoding="utf-8"))
+        except Exception as exc:
+            failures.append(f"legacy current-looking alias invalid: {LEGACY_CHECKPOINT_ALIAS}: {exc}")
+            checkpoint = {}
+        if checkpoint.get("status") != "SUPERSEDED_ALIAS_ROUTER" or checkpoint.get("date") != CURRENT_DATE:
+            failures.append(f"legacy current-looking alias is not superseded: {LEGACY_CHECKPOINT_ALIAS}")
+        if checkpoint.get("canonical_current_state") != "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json":
+            failures.append(f"legacy current-looking alias has wrong canonical route: {LEGACY_CHECKPOINT_ALIAS}")
 
     joined = "\n".join(texts.values()).lower()
     if any(claim in joined for claim in ("training is authorized", "training authorized", "training = on", "training: on")):
