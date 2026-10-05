@@ -130,8 +130,9 @@ def sparse_counts(rel, sup, ids, lib, det, mseed):
     return np.concatenate(idx_all), np.concatenate(val_all), indptr
 
 
-def build_eta(z, enabled, seed, uni, alloc, bg, n):
+def build_eta(z, enabled, seed, uni, alloc, bg, n, suppress=frozenset()):
     """eta = registry abundance + background covariance + World A base + planted components."""
+    present = set(enabled) | set(suppress)   # allocate for every planted component
     eta = np.tile(uni.log_abundance.astype(np.float32), (n, 1))     # heavy-tailed abundance
 
     # background correlated programs: the 'correlated substitutes' a model can exploit
@@ -149,80 +150,90 @@ def build_eta(z, enabled, seed, uni, alloc, bg, n):
                  axis=0).astype(np.float32) * np.float32(0.22)
     eta += lat @ W
 
-    def vec(name, k, stream, scale, family=None, parent=None):
+    def vec(name, k, stream, scale, family=None, parent=None, gate=1.0):
+        # the module is ALLOCATED even when gated to zero, so a suppressed off-twin has the
+        # identical planted design and identical module_address_sets. Only the EFFECT is removed.
         g = (alloc.take_redundant(family, name, k, REDUNDANT_OVERLAP, parent)
              if family else alloc.take(name, k))
+        scale = scale * gate
         v = np.zeros(N, dtype=np.float32)
         s = T.normal(seed + stream, np.asarray(g, dtype=np.uint64), stream)
         v[g] = np.sign(s).astype(np.float32) * np.float32(scale)
         return v
 
-    if "B1" in enabled:
+    if "B1" in present:
         # states form a FAMILY with partial overlap: adjacent states share a pathway
         prev = None
         for k in range(6):
             nm = f"B1_state{k}"
             eta += (z["state_index"] == k).astype(np.float32)[:, None] * \
-                   vec(nm, MOD["state"], 9200 + k, SC["state"], family="B1_states", parent=prev)[None, :]
+                   vec(nm, MOD["state"], 9200 + k, SC["state"], gate=(0.0 if "B1" in suppress else 1.0), family="B1_states", parent=prev)[None, :]
             prev = nm
-    if "B2" in enabled:
+    if "B2" in present:
         for j in range(z["z_donor"].shape[1]):
             eta += z["z_donor"][:, j].astype(np.float32)[:, None] * \
-                   vec(f"B2_donor{j}", MOD["donor"], 9300 + j, SC["donor"])[None, :]
-    if "B3" in enabled:
+                   vec(f"B2_donor{j}", MOD["donor"], 9300 + j, SC["donor"], gate=(0.0 if "B2" in suppress else 1.0))[None, :]
+    if "B3" in present:
         from build_v77_extended_truth import RARE_RECOVERABLE
         for j, rec in enumerate(RARE_RECOVERABLE):
             if not rec:
                 continue
             eta += z["rare_flags"][:, j].astype(np.float32)[:, None] * \
-                   vec(f"B3_rare{j}", MOD["rare"], 9400 + j, SC["rare"])[None, :]
-    if "B4" in enabled:
+                   vec(f"B3_rare{j}", MOD["rare"], 9400 + j, SC["rare"], gate=(0.0 if "B3" in suppress else 1.0))[None, :]
+    if "B4" in present:
         band = np.exp(-((z["pseudotime"].astype(np.float32) - .5) / .15) ** 2)
-        eta += band[:, None] * vec("B4_transient", MOD["transient"], 9500, SC["transient"])[None, :]
-    if "B5" in enabled:
+        eta += band[:, None] * vec("B4_transient", MOD["transient"], 9500, SC["transient"], gate=(0.0 if "B4" in suppress else 1.0))[None, :]
+    if "B5" in present:
         for j in range(z["z_marker"].shape[1]):
             eta += z["z_marker"][:, j].astype(np.float32)[:, None] * \
-                   vec(f"B5_marker{j}", MOD["marker"], 9600 + j, SC["marker"])[None, :]
-    if "B6" in enabled:
+                   vec(f"B5_marker{j}", MOD["marker"], 9600 + j, SC["marker"], gate=(0.0 if "B5" in suppress else 1.0))[None, :]
+    if "B6" in present:
         K = z["z_partial"].shape[1]
         for j, f in enumerate(np.linspace(0.0, 1.0, K)):
             eta += (f * z["z_partial"][:, j].astype(np.float32))[:, None] * \
-                   vec(f"B6_rung{j}", MOD["partial"], 9700 + j, SC["partial"])[None, :]
-    if "C1" in enabled:
+                   vec(f"B6_rung{j}", MOD["partial"], 9700 + j, SC["partial"], gate=(0.0 if "B6" in suppress else 1.0))[None, :]
+    if "C1" in present:
         A = z["c_state_a"].astype(np.float32); B = z["c_state_b"].astype(np.float32)
-        eta += A[:, None] * vec("C1_A", MOD["interact"], 9800, SC["interact"])[None, :]
-        eta += B[:, None] * vec("C1_B", MOD["interact"], 9801, SC["interact"])[None, :]
-        eta += (A * B)[:, None] * vec("C1_AB", MOD["interact"], 9802, SC["interact"])[None, :]
-    if "C2" in enabled:
-        base = vec("C2_local", MOD["local"], 9900, 1.0)
+        eta += A[:, None] * vec("C1_A", MOD["interact"], 9800, SC["interact"], gate=(0.0 if "C1" in suppress else 1.0))[None, :]
+        eta += B[:, None] * vec("C1_B", MOD["interact"], 9801, SC["interact"], gate=(0.0 if "C1" in suppress else 1.0))[None, :]
+        eta += (A * B)[:, None] * vec("C1_AB", MOD["interact"], 9802, SC["interact"], gate=(0.0 if "C1" in suppress else 1.0))[None, :]
+    if "C2" in present:
+        base = vec("C2_local", MOD["local"], 9900, 1.0, gate=(0.0 if "C2" in suppress else 1.0))
         drive = z["z_global"][:, 0].astype(np.float32)
         gain = (1.0 + SC["gain"] * np.tanh(z["z_gain"].astype(np.float32))).astype(np.float32)
         eta += (drive * gain)[:, None] * base[None, :]
-    if ("D1" in enabled):
+    if "D1" in present:
         ztf = z.get("_z_tf_effective", z["z_tf"]).astype(np.float32)
         prev = None
         for t in range(ztf.shape[1]):
             nm = f"D1_tf{t}"
-            eta += ztf[:, t][:, None] * vec(nm, MOD["tf_target"], 9950 + t, SC["tf"],
+            eta += ztf[:, t][:, None] * vec(nm, MOD["tf_target"], 9950 + t, SC["tf"] * (0.0 if "D1" in suppress else 1.0),
                                             family="D1_regulons", parent=prev)[None, :]
             prev = nm
-    if "E1" in enabled:
+    if "E1" in present:
         eta += z["niche_score"].astype(np.float32)[:, None] * \
-               vec("E1_niche", MOD["niche"], 9990, SC["niche"])[None, :]
-    if "E2" in enabled:
+               vec("E1_niche", MOD["niche"], 9990, SC["niche"], gate=(0.0 if "E1" in suppress else 1.0))[None, :]
+    if "E2" in present:
         d = (z["pert_id"] == 3).astype(np.float32) * z["pert_dose"].astype(np.float32)
-        eta += d[:, None] * vec("E2_direct", MOD["pert"], 9995, SC["pert_direct"])[None, :]
+        eta += d[:, None] * vec("E2_direct", MOD["pert"], 9995, SC["pert_direct"], gate=(0.0 if "E2" in suppress else 1.0))[None, :]
     return eta
 
 
 def observe(root: Path, seed: int, mseed: int | None,
-            out_name="FULLSCALE_V2_CANONICAL_sharded") -> dict:
+            out_name="FULLSCALE_V2_CANONICAL_sharded", suppress: set[str] | None = None) -> dict:
+    """`suppress` removes components from the OBSERVATION while the truth keeps their latents.
+
+    This is what makes an off-twin a real control: the statistic can still be computed, and
+    must return approximately zero. Removing the component from the TRUTH instead would mean
+    the statistic is never evaluated, which is a check that cannot fail."""
     truth_root = root / "hidden_truth"
     obs = root / "observable_raw" / out_name
     obs.mkdir(parents=True, exist_ok=True)
     tm = json.loads((truth_root / "TRUTH_MANIFEST.json").read_text())
     mseed = int(seed if mseed is None else mseed)
-    enabled = set(tm["enabled_components"])
+    truth_components = set(tm["enabled_components"])
+    suppress = set(suppress or ())
+    enabled = truth_components - suppress
     qmeta, qc = Q.by_operator()
     qprobs = np.array(qmeta["quantile_probabilities"], dtype=float)
     operator_ids = tm["operator_ids"]
@@ -242,7 +253,7 @@ def observe(root: Path, seed: int, mseed: int | None,
         op = z["operator_index"].astype(np.int16)
         src = z["source_index"].astype(np.int64)
         apply_perturbation_to_tf(z, enabled)
-        eta = build_eta(z, enabled, seed, uni, alloc, bg, len(ids))
+        eta = build_eta(z, enabled, seed, uni, alloc, bg, len(ids), suppress=suppress)
         np.clip(eta, -8, 8, out=eta)
         rel = np.exp(eta, dtype=np.float32)
         sup = structural_support(uni, src, op, qc, operator_ids, seed)
@@ -250,7 +261,7 @@ def observe(root: Path, seed: int, mseed: int | None,
         rel *= (1.0 / (1.0 + np.exp(-uni.logit_detect)))[None, :]
         rel *= sup
         lib, det = depth_targets(ids, op, sup, qc, operator_ids, qprobs, mseed)
-        if "C3" in enabled:
+        if "C3" in truth_components and "C3" not in suppress:
             # BIOLOGY x MEASUREMENT-OPERATOR coupling. Measurement quality depends partly on
             # biological state: cells with high z_bioqc yield fewer detected features and a
             # smaller library. This deliberately breaks the independence World A assumes and
@@ -286,6 +297,8 @@ def observe(root: Path, seed: int, mseed: int | None,
         schema="V77_FULLSCALE_CANONICAL_RNA_OBSERVER_MANIFEST_V2",
         seed=seed, truth_seed=seed, measurement_seed=mseed, n_cells=total, n_addresses=N,
         enabled_components=sorted(enabled),
+        truth_components=sorted(truth_components),
+        suppressed_from_observation=sorted(suppress),
         address_universe=uni.summary(),
         vocabulary=dict(uses_canonical_registry_order=True,
                         tokenizer_compatible=True,
@@ -315,8 +328,12 @@ def main():
     ap.add_argument("--root", required=True)
     ap.add_argument("--seed", type=int, default=7302)
     ap.add_argument("--measurement-seed", type=int, default=None)
+    ap.add_argument("--suppress", default=None,
+                    help="comma-separated components removed from OBSERVATION only; "
+                         "the truth keeps their latents so off-twin statistics still run")
     a = ap.parse_args()
-    m = observe(Path(a.root), a.seed, a.measurement_seed)
+    sup = {c.strip() for c in a.suppress.split(",")} if a.suppress else None
+    m = observe(Path(a.root), a.seed, a.measurement_seed, suppress=sup)
     print(json.dumps(dict(status="PASS", cells=m["n_cells"], addresses=m["n_addresses"],
                           modules=m["modules"]["n"],
                           fraction_of_space=round(m["modules"]["fraction_of_space"], 4),
