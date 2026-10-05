@@ -106,3 +106,7 @@ jobs:
         with:
           name: v75-2k-promotion-smoke-receipts
           path: /tmp/v75_receipts/*.json
+
+  execute-100k-after-qualified-smoke:
+    needs: v75-qualification
+    uses: ./.github/workflows/v75-100k-measurement-architecture-execution.yml
