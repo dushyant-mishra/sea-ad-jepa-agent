@@ -50,6 +50,7 @@ jobs:
       - name: V74 regression subset
         run: |
           pytest -q tests/test_v73_synthetic_stress_twin.py
+          pytest -q tests/test_v73_stress_promotion_readiness.py
           pytest -q tests/test_v74_rna_qc_consumption.py
       - name: Exact 2K V75 promotion smoke
         run: |
@@ -66,7 +67,9 @@ jobs:
             --cells 100000 --shard-size 10000 --measure-root /tmp/v75_legacy \
             --out /tmp/v75_receipts/resource.json
           python scripts/v64/validate_v73_stress_promotion_readiness.py \
-            --root /tmp/v75_legacy --resource-receipt /tmp/v75_receipts/resource.json \
+            --root /tmp/v75_legacy \
+            --resource-receipt /tmp/v75_receipts/resource.json \
+            --fragment-receipt /tmp/v75_receipts/fragment_linkage.json \
             --out /tmp/v75_receipts/legacy_readiness.json
 
           python scripts/v75/build_v75_control_twins.py \
@@ -85,8 +88,11 @@ jobs:
           python - <<'PY'
           import json
           x=json.load(open('/tmp/v75_receipts/readiness.json'))
+          l=json.load(open('/tmp/v75_receipts/legacy_readiness.json'))
           f=json.load(open('/tmp/v75_receipts/fragment_linkage.json'))
           assert f['status']=='PASS' and f['qualified'] is True
+          assert l['checks']['realised_operator_support_complete'] is True
+          assert l['checks']['fragment_byte_linkage_qualified'] is True
           assert x['status']=='READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY'
           assert x['authorized_scale']=='100K_STRESS_ONLY'
           assert x['learned_160d_jepa_state_qualified'] is False
