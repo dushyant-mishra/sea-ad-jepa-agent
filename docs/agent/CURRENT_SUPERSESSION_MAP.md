@@ -27,6 +27,8 @@ Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OF
 | recoverability TEST | **SEALED** |
 | Morabito | **PROTECTED** |
 
+**Target lineage reconstruction is complete.** The terminal audit is merged and is no longer the current task.
+
 ## High-impact supersessions and corrections
 
 | Historical/current-looking statement | Current classification | Controlling correction |
@@ -40,6 +42,7 @@ Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OF
 | donor < operator < study < technology is a single nested pass ladder | **OVERSIMPLIFIED / SUPERSEDED** | track donor/operator/study/technology transfer as separate evidence axes |
 | rare or novel RNA structure is automatically biological novelty | **FALSE** | biological meaning requires independent support |
 | any fitted diagnostic may tune target definition | **FORBIDDEN** | fit inner TRAIN only, freeze before held-donor evaluation, no target-definition changes from deciding readout outcomes |
+| 96 anonymous synthetic features are production-scale biological surrogates | **FALSE** | 96-feature worlds qualify only reduced control/metric behavior; production-pipeline synthetic qualification requires canonical 41,238-address scale or a prospectively justified equivalent identity universe |
 | map V75 anonymous 96 features to arbitrary canonical slots | **FORBIDDEN** | lawful 41,238 identity bridge remains undefined |
 | run donor-cross-fitted residual targeting next | **SUPERSEDED / ALREADY EXECUTED** | `RESIDUAL_TARGET_DOES_NOT_RESCUE` |
 | PR #163 selects a target | **FALSE** | candidate-space design only |
@@ -52,6 +55,8 @@ Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OF
 Premise qualification prefreeze: freeze P1-P6, representation families, claim ladder, Stage-A real-RNA prefreeze semantics, external-validation asset roles, and estimand choices before any deciding TRAIN-only result is opened.
 
 No representation winner, target winner, estimand, or numeric deciding margin is selected merely by publishing these contracts.
+
+Synthetic premise work must preserve the distinction between reduced control worlds and production-scale pipeline qualification. World A remains a reduced 96-feature control world. Any future synthetic result used to qualify production architecture behavior must operate in the canonical 41,238-address identity universe or a prospectively justified equivalent; simply padding a 96-feature simulator with independent noise does not satisfy this requirement.
 
 ## Authority freshness
 
