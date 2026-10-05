@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_CLAIM_LADDER_V1",
+  "date": "2026-10-05",
+  "role": "PROSPECTIVE_CLAIM_PROMOTION_FIREWALL",
+  "levels": [
+    "RNA_REPRESENTATION",
+    "TRANSFERABLE_BIOLOGICAL_STATE",
+    "REGULATORY_SUPPORT",
+    "CAUSAL_PERTURBATIONAL_PREDICTION"
+  ],
+  "automatic_promotion": false,
+  "transitive_auto_promotion": false,
+  "stage_a_maximum_claim": "RNA_REPRESENTATION",
+  "promotions": {
+    "RNA_REPRESENTATION->TRANSFERABLE_BIOLOGICAL_STATE": {
+      "required_evidence": [
+        "INDEPENDENT_SEMANTIC_EVIDENCE",
+        "RELEVANT_TRANSFER_AXES",
+        "BIOLOGICAL_UNIT_UNCERTAINTY"
+      ],
+      "stage_a_alone_sufficient": false,
+      "rna_self_supervision_alone_sufficient": false
+    },
+    "TRANSFERABLE_BIOLOGICAL_STATE->REGULATORY_SUPPORT": {
+      "required_evidence": [
+        "INDEPENDENT_CHROMATIN_OR_REGULATORY_EVIDENCE",
+        "PROSPECTIVELY_DEFINED_SUPPORT_RULE",
+        "KNOWN_NEGATIVES_OR_NULLS_WHERE_AVAILABLE"
+      ],
+      "rna_derived_edges_alone_sufficient": false,
+      "same_rna_association_alone_sufficient": false
+    },
+    "REGULATORY_SUPPORT->CAUSAL_PERTURBATIONAL_PREDICTION": {
+      "required_evidence": [
+        "INTERVENTION_OR_PERTURBATION_EVIDENCE",
+        "EXPERIMENTAL_UNIT_AWARE_UNCERTAINTY",
+        "PROSPECTIVE_CAUSAL_VERDICT_RULE"
+      ],
+      "observational_association_sufficient": false,
+      "masked_prediction_sufficient": false
+    }
+  },
+  "forbidden_inferences": [
+    "MASKED_RNA_SUCCESS_IMPLIES_BIOLOGICAL_VALIDITY",
+    "RNA_ATAC_ASSOCIATION_IMPLIES_REGULATORY_QUALIFICATION",
+    "OBSERVATIONAL_PREDICTION_IMPLIES_INTERVENTION_EFFECT",
+    "LARGE_CELL_COUNT_IMPLIES_LARGE_BIOLOGICAL_UNIT_COUNT",
+    "SYNTHETIC_SUCCESS_IMPLIES_REAL_BIOLOGICAL_VALIDATION",
+    "DONOR_TRANSFER_IMPLIES_STUDY_OR_TECHNOLOGY_TRANSFER",
+    "PATHOLOGY_LABEL_BLIND_IMPLIES_PATHOLOGY_INFORMATION_ABSENT"
+  ],
+  "support_is_qualification": false,
+  "training_authority_conferred": false,
+  "hard_boundary": "EACH_CLAIM_PROMOTION_REQUIRES_NEW_INDEPENDENT_EVIDENCE__TRAINING_OFF"
+}
