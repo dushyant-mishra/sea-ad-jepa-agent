@@ -161,8 +161,9 @@ jobs:
           assert f['status']=='PASS' and f['qualified'] is True
           assert x['checks']['fragment_byte_linkage_qualified'] is True
           assert x['checks']['fragment_linkage_totals_reconcile'] is True
-          assert x['status'] == 'PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED'
-          assert x['promotion_recommendation'] == 'PASS_TO_500K_MEASUREMENT_STRESS'
+          assert x['status'] == 'PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE'
+          assert x['promotion_recommendation'] == 'INDETERMINATE_DO_NOT_PROMOTE'
+          assert '500K_RESOURCE_COMPATIBILITY_RULE_NOT_BOUND' in x['indeterminate_reasons']
           assert x['learned_160d_jepa_state_qualified'] is False
           assert not x['blockers']
           PY
