@@ -1,0 +1,22 @@
+name: V75 operator support regression
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v64/v73_full104_population_geometry.py'
+      - 'tests/test_v73_population_geometry_authority.py'
+      - 'tests/test_v75_operator_support_regression.py'
+      - '.github/workflows/v75-operator-support-regression.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-support:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install --upgrade pip pytest numpy
+      - run: python -m py_compile scripts/v64/v73_full104_population_geometry.py
+      - run: pytest -q tests/test_v73_population_geometry_authority.py tests/test_v75_operator_support_regression.py
