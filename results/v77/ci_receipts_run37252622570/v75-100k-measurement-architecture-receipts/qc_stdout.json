@@ -1,0 +1,87 @@
+{
+  "schema": "V75_RNA_QC_REALIZATION_SUMMARY_V1",
+  "status": "PASS__RNA_QC_TARGETS_REALIZED",
+  "n_cells_checked": 100000,
+  "manifest_n_cells": 100000,
+  "cell_count_reconciles": true,
+  "panel_depth_matches_target": true,
+  "panel_depth_mismatch_cells": 0,
+  "detected_support_matches_target": true,
+  "detected_support_mismatch_cells": 0,
+  "unavailable_features_nonzero_count": 0,
+  "all_unavailable_features_zero": true,
+  "shards_checked": 10,
+  "per_shard": [
+    {
+      "file": "RNA_000000000_000010000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000010000_000020000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000020000_000030000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000030000_000040000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000040000_000050000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000050000_000060000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000060000_000070000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000070000_000080000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000080000_000090000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    },
+    {
+      "file": "RNA_000090000_000100000.npz",
+      "cells": 10000,
+      "panel_depth_mismatch_cells": 0,
+      "detected_support_mismatch_cells": 0,
+      "unavailable_features_nonzero_count": 0
+    }
+  ],
+  "claim_scope": "technical measurement-realization verification only; no learned-state or biological qualification"
+}

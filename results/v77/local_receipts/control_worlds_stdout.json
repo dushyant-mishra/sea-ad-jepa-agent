@@ -1,0 +1,97 @@
+{
+  "schema": "V75_CONTROL_TWINS_RECEIPT_V1",
+  "status": "SYNTHETIC_CONTROL_MATERIALIZED__NO_MODEL_QUALIFICATION",
+  "truth_seed": 7302,
+  "n_cells_per_world": 100000,
+  "shard_size": 10000,
+  "worlds": {
+    "measurement_null_a": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_a",
+      "truth_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_a\\hidden_truth\\TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "fd91cd1107dc08ab4136b45c54045c50762fc8254858667f669424520059f180",
+      "rna_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_a\\observable_raw\\FULL104_like_sharded\\FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "38772f2b894fd7486793f01531eef5c31ff50b3a8b9df86938d687373bd95b0a",
+      "multiome_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_a\\observable_raw\\PAIRED_MULTIOME_like_sharded\\PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "9ea54097946f4ca618650478751c3ee790e7df0fc70a13d6f6c4423b2af50644",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "measurement_null_b": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_b",
+      "truth_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_b\\hidden_truth\\TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "fd91cd1107dc08ab4136b45c54045c50762fc8254858667f669424520059f180",
+      "rna_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_b\\observable_raw\\FULL104_like_sharded\\FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "3f0b0ffeb4dbd6bbeb7cac0a5425407ed3b5dd56414d0e4ee1aa95387838a537",
+      "multiome_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\measurement_null_b\\observable_raw\\PAIRED_MULTIOME_like_sharded\\PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "f637e378bee164ee34c6700bf6f4b243c39a9b35fd6b234876a0c1e1eec9a1b9",
+      "truth_seed": 7302,
+      "measurement_seed": 8502,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "biology_positive": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\biology_positive",
+      "truth_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\biology_positive\\hidden_truth\\TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "3e18fe0b63ad2a8dbdcdc37b43510b4aff9325aaafd941f8cd1c8151cbea2911",
+      "rna_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\biology_positive\\observable_raw\\FULL104_like_sharded\\FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "cd4605668096cec172ea90ddf02a1655cfb5d7477b4acc7601ca56f0a4bff243",
+      "multiome_manifest": "D:\\jepa_v77_synthetic_custody_20261005\\regen\\v75_100k\\controls\\biology_positive\\observable_raw\\PAIRED_MULTIOME_like_sharded\\PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "da50c9bfb8e4742225be6fbbf6f4e3deba2ef2501dee9556a82dcf9409b05691",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 25000
+    }
+  },
+  "measurement_null": {
+    "world_a_measurement_seed": 8501,
+    "world_b_measurement_seed": 8502,
+    "biology_identical": true,
+    "population_identical": true,
+    "observation_operator_mapping_identical": true
+  },
+  "biology_positive": {
+    "reference_world": "measurement_null_a",
+    "measurement_seed": 8501,
+    "target_rule": "global_cell_index % 4 == 0",
+    "target_modulo": 4,
+    "target_remainder": 0,
+    "delta_z_global_0": 1.0,
+    "n_targeted_cells": 25000,
+    "measurement_conditions_matched_to_reference": true
+  },
+  "claim_boundary": {
+    "learned_160d_jepa_evaluated": false,
+    "biological_claim_qualified": false,
+    "purpose": "materialize identifiable measurement-null and biology-positive controls for later learned-state qualification"
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "pathology_used": false
+  }
+}

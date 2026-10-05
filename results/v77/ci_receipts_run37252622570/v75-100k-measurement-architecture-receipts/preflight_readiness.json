@@ -1,0 +1,39 @@
+{
+  "schema": "V75_100K_PROMOTION_READINESS_V1",
+  "status": "READY_FOR_100K_MEASUREMENT_ARCHITECTURE_STRESS_ONLY",
+  "authorized_scale": "100K_STRESS_ONLY",
+  "learned_160d_jepa_state_qualified": false,
+  "explicitly_not_authorized": [
+    "500K_STRESS",
+    "FULL_4553407",
+    "REAL_JEPA_TRAINING",
+    "MULTIMODAL_TRAINING",
+    "STAGE4_REAL_CORRESPONDENCE",
+    "RECOVERABILITY_TEST",
+    "MORABITO_OPENING"
+  ],
+  "checks": {
+    "prospective_contract_frozen": true,
+    "control_freeze_prospective": true,
+    "legacy_v74_ready_for_100k_only": true,
+    "control_worlds_materialized": true,
+    "smoke_scale_exact": true,
+    "truth_seed_frozen": true,
+    "measurement_seed_a_frozen": true,
+    "measurement_seed_b_frozen": true,
+    "positive_measurement_seed_matched": true,
+    "positive_target_modulo_frozen": true,
+    "positive_target_remainder_frozen": true,
+    "positive_delta_frozen": true,
+    "no_learned_160d_claim": true,
+    "no_biological_claim": true,
+    "protected_boundaries_machine_validated": true,
+    "resource_target_is_100k": true,
+    "resource_has_measured_2k_calibration": true,
+    "resource_calibration_scoped": true,
+    "resource_requires_100k_before_500k": true,
+    "full_ecosystem_not_falsely_estimated": true
+  },
+  "blockers": [],
+  "claim_scope": "100K synthetic population/measurement architecture stress only; no learned 160-D state or biological qualification"
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "V75_SYNTHETIC_STRESS_RESOURCE_ESTIMATE_V4_SCALE_AWARE_CALIBRATION",
+  "estimate": {
+    "n_cells": 100000,
+    "shard_size": 10000,
+    "n_shards": 10,
+    "truth_payload_bytes": 6900000,
+    "full104_observable_payload_bytes": 35400000,
+    "paired_multiome_payload_bytes": 65300000,
+    "known_combined_payload_bytes": 107600000,
+    "combined_payload_bytes": 107600000,
+    "conservative_peak_working_bytes": 57600000,
+    "fragment_projection_requires_measured_calibration": true,
+    "excluded_unestimated_terms": [
+      "pseudobulk fragment files",
+      "peak calls and consensus region universe",
+      "motif databases and ranking matrices",
+      "cisTarget database outputs",
+      "regulatory network outputs",
+      "perturbation observer",
+      "spatial observer"
+    ],
+    "full_ecosystem_total_is_not_yet_estimated": true,
+    "assumptions": {
+      "full104_genes": 96,
+      "paired_multiome_rna_genes": 64,
+      "paired_multiome_atac_regions": 256,
+      "truth_float32_dimensions": 14,
+      "counts_dtype": "int16",
+      "availability_dtype": "uint8",
+      "metadata_bytes_per_cell": 58,
+      "excludes_compression_gain": true,
+      "excludes_filesystem_npz_zip_headers": true
+    }
+  },
+  "measured": {
+    "n_cells": 2000,
+    "truth_file_bytes": 284046,
+    "full104_observable_file_bytes": 874527,
+    "paired_multiome_file_bytes": 1552538,
+    "fragment_file_bytes": 1206498,
+    "fragment_rows": 322201,
+    "fragment_multiplicity": 615941,
+    "known_total_file_bytes": 3917609,
+    "truth_bytes_per_cell": 142.023,
+    "full104_observable_bytes_per_cell": 437.2635,
+    "paired_multiome_bytes_per_cell": 776.269,
+    "fragment_bytes_per_cell": 603.249,
+    "fragment_rows_per_cell": 161.1005,
+    "fragment_multiplicity_per_cell": 307.9705,
+    "known_total_bytes_per_cell": 1958.8045
+  },
+  "calibrated_projection": {
+    "fragment_bytes_at_requested_cells": 60324900,
+    "known_matrices_plus_fragments_bytes": 167924900,
+    "calibration_cells": 2000,
+    "calibration_scale": "CI_SCALE",
+    "calibration_is_ci_scale_only": true,
+    "hundred_k_measurement_completed": false,
+    "requires_100k_measurement_before_500k_promotion": true
+  },
+  "measurement_scope": "actual serialized master truth + FULL104-like RNA + paired multiome + deterministic synthetic fragments; peak/motif/network terms remain unestimated"
+}

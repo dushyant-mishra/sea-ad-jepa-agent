@@ -1,0 +1,72 @@
+{
+  "schema": "V75_FRAGMENT_BYTE_LINKAGE_RECEIPT_V1",
+  "status": "PASS",
+  "qualified": true,
+  "compressed_sha256_recomputed_from_bytes": true,
+  "barcode_multiplicity_reconciled_to_multiome": true,
+  "duplicate_barcode_guard_runs_before_mapping": true,
+  "total_rows": 16147566,
+  "total_multiplicity": 30816582,
+  "shards": [
+    {
+      "file": "FRAGMENTS_000000000_000010000.tsv.gz",
+      "sha256": "708992971602e1e2262806a609c05bb824d036bf0fb98dff74d9996cb0c73158",
+      "rows": 1615190,
+      "multiplicity": 3080359
+    },
+    {
+      "file": "FRAGMENTS_000010000_000020000.tsv.gz",
+      "sha256": "e1f51dc11761c1943f4aa9f14e29e5cc7e470081959c260a6d253b3d7c92d969",
+      "rows": 1614462,
+      "multiplicity": 3080367
+    },
+    {
+      "file": "FRAGMENTS_000020000_000030000.tsv.gz",
+      "sha256": "f66d6a06e06402af3fdd68ecb8426d351c7852d17727fc52512f81990394f3b1",
+      "rows": 1615013,
+      "multiplicity": 3084105
+    },
+    {
+      "file": "FRAGMENTS_000030000_000040000.tsv.gz",
+      "sha256": "357d7b90154a54dcf92d421b56e6f1a697f42674a34115008a5e3320d64222e4",
+      "rows": 1614377,
+      "multiplicity": 3081958
+    },
+    {
+      "file": "FRAGMENTS_000040000_000050000.tsv.gz",
+      "sha256": "56f39c5723cb71f4a3bd6a0ac22456d7376f4387c4eb198ea39086b2726ebde7",
+      "rows": 1614549,
+      "multiplicity": 3081548
+    },
+    {
+      "file": "FRAGMENTS_000050000_000060000.tsv.gz",
+      "sha256": "dc0340b199fca3f7bdf5387302f8f94f7f9281f9bf1a02318d2d13f5a9b79a31",
+      "rows": 1614340,
+      "multiplicity": 3077886
+    },
+    {
+      "file": "FRAGMENTS_000060000_000070000.tsv.gz",
+      "sha256": "5a57395104499a038da0c862aa699850fe07abb25d250451c8e433dd737bbbe4",
+      "rows": 1613265,
+      "multiplicity": 3077352
+    },
+    {
+      "file": "FRAGMENTS_000070000_000080000.tsv.gz",
+      "sha256": "e3aaf001ae326ec35b3d28ede39c3cb48ef1097deda74188a0e167bdad3c1086",
+      "rows": 1615369,
+      "multiplicity": 3080294
+    },
+    {
+      "file": "FRAGMENTS_000080000_000090000.tsv.gz",
+      "sha256": "4060b40e081820d09425b9d5bd8c3fb7adf21fd77bc0073ba3c87e6fcb260435",
+      "rows": 1615593,
+      "multiplicity": 3088408
+    },
+    {
+      "file": "FRAGMENTS_000090000_000100000.tsv.gz",
+      "sha256": "f9c3cce828c0ee30f5e19818d15660b7a9d3f257937f42e2281932c72022f0f1",
+      "rows": 1615408,
+      "multiplicity": 3084305
+    }
+  ]
+}
