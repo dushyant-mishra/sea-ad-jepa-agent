@@ -1,0 +1,61 @@
+name: Premise qualification surface guard
+
+on:
+  push:
+    branches:
+      - design/premise-qualification-contract-v2-20261005
+    paths:
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_*.md
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_*.json
+      - docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_*.md
+      - docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_*.json
+      - docs/agent/JEPA_CLAIM_LADDER_*.md
+      - docs/agent/JEPA_CLAIM_LADDER_*.json
+      - docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_*.md
+      - docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_*.json
+      - docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_DECISION_*.md
+      - docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_DECISION_*.json
+      - docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_*.md
+      - docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_*.json
+      - tests/governance/**
+      - scripts/governance/verify_premise_qualification_surface.py
+      - .github/workflows/premise-qualification-surface-guard.yml
+  pull_request:
+    paths:
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_*.md
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_*.json
+      - docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_*.md
+      - docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_*.json
+      - docs/agent/JEPA_CLAIM_LADDER_*.md
+      - docs/agent/JEPA_CLAIM_LADDER_*.json
+      - docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_*.md
+      - docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_*.json
+      - docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_DECISION_*.md
+      - docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_DECISION_*.json
+      - docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_*.md
+      - docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_*.json
+      - tests/governance/**
+      - scripts/governance/verify_premise_qualification_surface.py
+      - .github/workflows/premise-qualification-surface-guard.yml
+
+permissions:
+  contents: read
+
+jobs:
+  premise-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Run premise governance tests with zero skips
+        run: |
+          set -o pipefail
+          python -m pytest -q -rsx tests/governance | tee premise_governance.log
+          if grep -qiE "[0-9]+ (skipped|xfailed|deselected)" premise_governance.log; then
+            echo "FAIL: a premise-governance test did not execute"
+            exit 1
+          fi
