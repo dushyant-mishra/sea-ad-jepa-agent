@@ -82,6 +82,64 @@ CANDIDATES = {
             dict(n=250, frac=0.01, scale=0.26)],
     coherent=True, sign_balance=0.5, mag_jitter=0.25,
     substitute_frac=0.22, substitute_size=6),
+ "E2_two_dominant_calibrated": dict(
+    note=("two dominant coherent balanced-sign factors spanning nearly all addresses, plus a weak "
+          "tail. Derived, not searched: dichotomising a Gaussian latent at a 10% detection rate "
+          "attenuates correlation by a measured transfer function, so reaching the real observed "
+          "median of 0.329 REQUIRES a latent median near 0.65. Scaling eta cannot deliver that "
+          "because correlation is scale-invariant; only reducing the number of dominant factors can."),
+    layers=[dict(n=2, frac=0.99, scale=1.00),
+            dict(n=30, frac=0.05, scale=0.18),
+            dict(n=150, frac=0.008, scale=0.15)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25,
+    substitute_frac=0.22, substitute_size=6),
+ "F1_two_dom_more_mid": dict(
+    note="E2 plus a richer mid band to raise rank and break the single giant component",
+    layers=[dict(n=2, frac=0.99, scale=1.00), dict(n=150, frac=0.05, scale=0.30),
+            dict(n=400, frac=0.012, scale=0.22)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.05, substitute_size=6),
+ "F2_two_dom_strong_mid": dict(
+    note="F1 with a stronger mid band, trading some dominant share for rank",
+    layers=[dict(n=2, frac=0.99, scale=0.90), dict(n=200, frac=0.07, scale=0.40),
+            dict(n=400, frac=0.012, scale=0.24)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.03, substitute_size=6),
+ "F3_three_dom_rich_mid": dict(
+    note="three dominant factors with a rich mid band, aiming at var_top10 near 0.509",
+    layers=[dict(n=3, frac=0.95, scale=0.85), dict(n=250, frac=0.08, scale=0.42),
+            dict(n=500, frac=0.012, scale=0.24)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.03, substitute_size=6),
+ "G1_interp_60mid": dict(
+    note="between E2 and F1: E2 hits the correlation targets but is too low-rank; F1 hits rank but loses correlation",
+    layers=[dict(n=2, frac=0.99, scale=1.00), dict(n=60, frac=0.05, scale=0.24),
+            dict(n=250, frac=0.010, scale=0.18)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.06, substitute_size=6),
+ "G2_interp_90mid": dict(
+    note="as G1 with a slightly richer mid band",
+    layers=[dict(n=2, frac=0.99, scale=1.00), dict(n=90, frac=0.05, scale=0.26),
+            dict(n=300, frac=0.010, scale=0.20)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.06, substitute_size=6),
+ "G3_interp_120mid": dict(
+    note="as G1 with a richer mid band again, approaching F1",
+    layers=[dict(n=2, frac=0.99, scale=1.00), dict(n=120, frac=0.05, scale=0.28),
+            dict(n=350, frac=0.012, scale=0.20)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.08, substitute_size=6),
+ "H1_dom_cover82": dict(
+    note=("G1 with dominant factors covering 82% of addresses instead of 99%. Real data leaves "
+          "about 18% of highly variable genes OUTSIDE the giant component; factors spanning "
+          "everything cannot reproduce that."),
+    layers=[dict(n=2, frac=0.82, scale=1.00), dict(n=60, frac=0.05, scale=0.24),
+            dict(n=250, frac=0.010, scale=0.18)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.06, substitute_size=6),
+ "H2_dom_cover70": dict(
+    note="as H1 with 70% dominant coverage",
+    layers=[dict(n=2, frac=0.70, scale=1.05), dict(n=60, frac=0.05, scale=0.24),
+            dict(n=250, frac=0.010, scale=0.18)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.06, substitute_size=6),
+ "H3_dom_cover82_richmid": dict(
+    note="H1 with a richer mid band, aiming at rank and community jointly",
+    layers=[dict(n=2, frac=0.82, scale=1.00), dict(n=110, frac=0.05, scale=0.26),
+            dict(n=320, frac=0.011, scale=0.19)],
+    coherent=True, sign_balance=0.5, mag_jitter=0.25, substitute_frac=0.07, substitute_size=6),
  "C5_denser_broad": dict(
     note="C4 with broader top-layer factors, targeting mean degree and the giant component",
     layers=[dict(n=20, frac=0.32, scale=0.46),

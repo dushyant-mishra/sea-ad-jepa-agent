@@ -17,6 +17,9 @@ sys.path.insert(0, str(HERE))
 import v77_background_candidates as CAND
 import build_v77_calibration_envelope as ENV
 import build_v77_topology_calibration as TC
+import v77_address_universe as AU
+
+ABUNDANCE = AU.AddressUniverse(seed=7302).log_abundance.astype('float32')
 
 TARGETS = ["median_abs_corr", "frac_abs_gt_0p3", "var_top10_pc", "mean_degree",
            "largest_community_frac", "transitivity", "substitute_frac",
@@ -72,7 +75,11 @@ def main():
         t0 = time.time()
         eta, cls, nfac = CAND.build_eta(cfg, a.cells, a.addresses, a.seed)
         lat = geometry(eta, a.n_hvg, cls)
-        counts = CAND.observe_counts(eta, a.seed)
+        # The abundance prior is LOAD-BEARING and must be present, exactly as in the real
+        # observer. Without it every address is equivalent, detection is near-binary and
+        # censoring at zero destroys the negative correlation tail entirely. An earlier
+        # version of this harness omitted it and therefore measured a different object.
+        counts = CAND.observe_counts(eta + ABUNDANCE[None, :], a.seed)
         obs = geometry(cpm_log(counts), a.n_hvg, cls)
         inside = {k: bool(E[k]["accept_low"] <= obs[k] <= E[k]["accept_high"]) for k in TARGETS}
         n_in = sum(inside.values())
