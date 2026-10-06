@@ -2,8 +2,7 @@
 
 Role: `SELF_REVIEW__NOT_INDEPENDENT_REVIEW`
 Branch reviewed: `design/premise-qualification-contract-v3-20261006`
-Reviewed through behavioral/governance head: `b90eb8104d464693cdf0367bf08a4dd88e2fa178`
-Current branch head after review-record updates: `ed739f23db00f47691a0dad72a5b160be30f901c`
+Last behavioral/governance head explicitly tested GREEN: `b90eb8104d464693cdf0367bf08a4dd88e2fa178`
 
 ## Scope
 
@@ -69,7 +68,7 @@ After the bounded repairs, GREEN run `37504545106` at behavioral/governance head
 
 `40 passed`
 
-The later `bc23a81...` and `ed739f23...` commits change only this non-authoritative review record.
+Any subsequent commit that only updates this review record does not change the tested behavioral/governance surface.
 
 ## Remaining authority boundary
 
