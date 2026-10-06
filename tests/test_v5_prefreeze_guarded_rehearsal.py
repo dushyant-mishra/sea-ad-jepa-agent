@@ -53,7 +53,7 @@ def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
     def validate(): events.append("validate"); return True
     def optimizer_step(): events.append("optimizer_step")
     def ema_update(): events.append("ema")
-    def checkpoint(): events.append("checkpoint"); return _sha("checkpoint-A")
+    def checkpoint(): events.append("checkpoint"); return _sha("checkpoint-B")
 
     result = rehearsal.run_test_only_guarded_rehearsal(
         authority=authority,
@@ -71,9 +71,15 @@ def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
     assert result["schema"] == "V5_PREFREEZE_GUARDED_REHEARSAL_V1"
     assert result["training_authorized"] is False
     assert result["execution_authorized"] is False
-    assert result["checkpoint_digest"] == _sha("checkpoint-A")
-    restored = auth.CurrentTrainingAuthorityV2.reload(result["authority_receipt"], result["checkpoint_digest"])
-    assert restored.test_only is True
+    assert result["starting_checkpoint_digest"] == _sha("checkpoint-A")
+    assert result["checkpoint_digest"] == _sha("checkpoint-B")
+    receipt = result["checkpoint_receipt"]
+    assert receipt["parent_checkpoint_digest"] == _sha("checkpoint-A")
+    assert receipt["checkpoint_digest"] == _sha("checkpoint-B")
+    verified = auth.CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
+        receipt, _sha("checkpoint-B")
+    )
+    assert verified["checkpoint_digest"] == _sha("checkpoint-B")
 
 
 def test_failed_gradient_validation_prevents_optimizer_ema_and_checkpoint():
@@ -91,7 +97,7 @@ def test_failed_gradient_validation_prevents_optimizer_ema_and_checkpoint():
             validate_gradients=lambda: events.append("validate") or False,
             optimizer_step=lambda: events.append("optimizer_step"),
             ema_update=lambda: events.append("ema"),
-            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-A"),
+            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
         )
     assert events == ["backward", "unscale", "validate"]
 
@@ -115,15 +121,15 @@ def test_optimizer_exception_prevents_ema_and_checkpoint():
             validate_gradients=lambda: events.append("validate") or True,
             optimizer_step=boom,
             ema_update=lambda: events.append("ema"),
-            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-A"),
+            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
         )
     assert events == ["backward", "unscale", "validate", "optimizer_step"]
 
 
-def test_checkpoint_must_match_authority_bound_digest():
+def test_post_update_checkpoint_must_be_new_state():
     authority = _future_test_authority()
     guard = auth.OptimizerGuardV4(authority)
-    with pytest.raises(auth.PrefreezeGovernanceError, match="checkpoint digest"):
+    with pytest.raises(auth.PrefreezeGovernanceError, match="new post-update state"):
         rehearsal.run_test_only_guarded_rehearsal(
             authority=authority,
             guard=guard,
@@ -133,7 +139,16 @@ def test_checkpoint_must_match_authority_bound_digest():
             validate_gradients=lambda: True,
             optimizer_step=lambda: None,
             ema_update=lambda: None,
-            checkpoint=lambda: _sha("checkpoint-B"),
+            checkpoint=lambda: _sha("checkpoint-A"),
+        )
+
+
+def test_completed_checkpoint_receipt_rejects_wrong_reload_digest():
+    authority = _future_test_authority()
+    receipt = authority.completed_checkpoint_receipt(_sha("checkpoint-B"))
+    with pytest.raises(auth.PrefreezeGovernanceError, match="checkpoint digest"):
+        auth.CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
+            receipt, _sha("checkpoint-C")
         )
 
 
@@ -150,5 +165,5 @@ def test_rehearsal_refuses_non_test_authority_object():
             validate_gradients=lambda: True,
             optimizer_step=lambda: None,
             ema_update=lambda: None,
-            checkpoint=lambda: _sha("checkpoint-A"),
+            checkpoint=lambda: _sha("checkpoint-B"),
         )
