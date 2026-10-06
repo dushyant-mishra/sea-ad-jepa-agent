@@ -24,10 +24,12 @@ def _valid_batch_identity(**overrides):
     values = {
         "observation_ids": ("cell-a", "cell-b"),
         "feature_receipt_digest": _valid_feature_receipt().digest(),
+        "operator_identity_receipt_digest": "a" * 64,
+        "measurement_support_receipt_digest": "b" * 64,
         "query_spec_digest": canonical_digest({"query": "g2"}),
         "evidence_mask_digest": canonical_digest({"mask": [1, 0, 1, 1]}),
         "measurement_mask_digest": canonical_digest({"mask": [1, 1, 1, 1]}),
-        "operator_context_digest": canonical_digest({"operator": "op-a"}),
+        "operator_context_digest": "a" * 64,
         "evaluation_weight_digest": canonical_digest({"weights": [0.5, 0.5]}),
         "grouping_digest": canonical_digest({"donor": ["d1", "d2"]}),
         "split_digest": canonical_digest({"split": "inner-train"}),
@@ -101,6 +103,8 @@ def test_packing_changes_do_not_change_scientific_identity():
         ("query_spec_digest", canonical_digest({"query": "g3"})),
         ("grouping_digest", canonical_digest({"donor": ["d1", "d1"]})),
         ("evaluation_weight_digest", canonical_digest({"weights": [0.9, 0.1]})),
+        ("operator_identity_receipt_digest", "c" * 64),
+        ("measurement_support_receipt_digest", "d" * 64),
     ],
 )
 def test_semantic_batch_changes_change_scientific_identity(field, replacement):
