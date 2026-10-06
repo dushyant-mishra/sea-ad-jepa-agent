@@ -38,6 +38,8 @@ class QualificationProvenanceReceiptV1:
     adapter_id: str
     adapter_digest: str
     feature_identity_digest: str
+    operator_identity_digest: str
+    measurement_support_digest: str
     batch_scientific_identity_digest: str
     q_safety_policy_id: str
     preprocessing_version: str
@@ -79,6 +81,8 @@ class QualificationProvenanceReceiptV1:
             "protocol_digest",
             "adapter_digest",
             "feature_identity_digest",
+            "operator_identity_digest",
+            "measurement_support_digest",
             "batch_scientific_identity_digest",
             "environment_digest",
         ):
