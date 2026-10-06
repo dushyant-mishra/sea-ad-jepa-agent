@@ -125,6 +125,58 @@ def test_completed_checkpoint_receipt_is_one_shot():
         guard.completed_checkpoint_receipt(token, _sha("checkpoint-C"))
 
 
+def test_duplicate_guard_installation_on_same_optimizer_is_rejected():
+    authority = _authority()
+    optimizer = FakeOptimizer()
+    Guard(authority, optimizer)
+    with pytest.raises(PrefreezeGovernanceError, match="already has"):
+        Guard(authority, optimizer)
+
+
+def test_start_receipt_rejects_unknown_and_missing_fields():
+    authority = _authority()
+    receipt = authority.start_checkpoint_receipt()
+    extra = deepcopy(receipt)
+    extra["historical_authority_root"] = "V64"
+    with pytest.raises(PrefreezeGovernanceError, match="start checkpoint receipt fields"):
+        Authority.reload_start_checkpoint(extra, authority.checkpoint_digest, governance_state=_state())
+    missing = deepcopy(receipt)
+    missing.pop("optimizer_identity")
+    with pytest.raises(PrefreezeGovernanceError, match="start checkpoint receipt fields"):
+        Authority.reload_start_checkpoint(missing, authority.checkpoint_digest, governance_state=_state())
+
+
+def test_completed_receipt_rejects_unknown_and_missing_fields():
+    _, _, guard, token = _completed_guard()
+    receipt = guard.completed_checkpoint_receipt(token, _sha("checkpoint-B"))
+    extra = deepcopy(receipt)
+    extra["historical_authority_root"] = "V64"
+    with pytest.raises(PrefreezeGovernanceError, match="completed checkpoint receipt fields"):
+        Authority.verify_completed_checkpoint_receipt(extra, _sha("checkpoint-B"), governance_state=_state())
+    missing = deepcopy(receipt)
+    missing.pop("guarded_step_token")
+    with pytest.raises(PrefreezeGovernanceError, match="completed checkpoint receipt fields"):
+        Authority.verify_completed_checkpoint_receipt(missing, _sha("checkpoint-B"), governance_state=_state())
+
+
+def test_start_receipt_must_match_current_validated_governance():
+    authority = _authority()
+    receipt = authority.start_checkpoint_receipt()
+    changed = deepcopy(_state())
+    changed["claim_ladder"] = list(changed["claim_ladder"]) + ["FUTURE_CONTRACT_CHANGE"]
+    with pytest.raises(PrefreezeGovernanceError, match="current governance digest"):
+        Authority.reload_start_checkpoint(receipt, authority.checkpoint_digest, governance_state=changed)
+
+
+def test_completed_receipt_must_match_current_validated_governance():
+    _, _, guard, token = _completed_guard()
+    receipt = guard.completed_checkpoint_receipt(token, _sha("checkpoint-B"))
+    changed = deepcopy(_state())
+    changed["claim_ladder"] = list(changed["claim_ladder"]) + ["FUTURE_CONTRACT_CHANGE"]
+    with pytest.raises(PrefreezeGovernanceError, match="current governance digest"):
+        Authority.verify_completed_checkpoint_receipt(receipt, _sha("checkpoint-B"), governance_state=changed)
+
+
 def test_source_does_not_import_or_expose_superseded_scientific_authority():
     source = MODULE_PATH.read_text(encoding="utf-8")
     forbidden_imports = (
