@@ -119,6 +119,43 @@ def _exact_fields(value: object, expected: set[str], label: str, *, governance: 
     return value
 
 
+def _optimizer_jsonable(value: Any) -> Any:
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if isinstance(value, Mapping):
+        return {str(k): _optimizer_jsonable(v) for k, v in sorted(value.items(), key=lambda item: str(item[0]))}
+    if isinstance(value, (tuple, list)):
+        return [_optimizer_jsonable(v) for v in value]
+    return repr(value)
+
+
+def _optimizer_configuration_identity_or_none(optimizer: Any) -> str | None:
+    defaults = getattr(optimizer, "defaults", None)
+    groups = getattr(optimizer, "param_groups", None)
+    if defaults is None and groups is None:
+        return None
+    if not isinstance(defaults, Mapping) or not isinstance(groups, list) or not groups:
+        raise PrefreezeGovernanceError("optimizer configuration surface is malformed")
+    group_specs = []
+    for group in groups:
+        if not isinstance(group, Mapping) or "params" not in group:
+            raise PrefreezeGovernanceError("optimizer parameter group is malformed")
+        params = list(group["params"])
+        group_specs.append({
+            "hyperparameters": {
+                str(k): _optimizer_jsonable(v)
+                for k, v in sorted(group.items(), key=lambda item: str(item[0]))
+                if k not in {"params", "param_names"}
+            },
+            "parameter_count": len(params),
+            "parameter_shapes": [list(getattr(p, "shape", ())) for p in params],
+            "parameter_dtypes": [str(getattr(p, "dtype", None)) for p in params],
+        })
+    cls = f"{type(optimizer).__module__}.{type(optimizer).__qualname__}"
+    core = {"class": cls, "defaults": _optimizer_jsonable(defaults), "param_groups": group_specs}
+    return f"{cls}:{_digest(core)}"
+
+
 def _canonical_prefreeze_governance(state: Mapping[str, Any]) -> dict[str, Any]:
     state = _exact_fields(state, EXPECTED_TOP_LEVEL_FIELDS, "contract")
     for key in ("recoverability_semantics", "observation_operator", "representation_stability",
@@ -184,6 +221,15 @@ class PrefreezeMechanicalAuthorityV1:
         }
         return cls(governance_state=canonical, optimizer_identity=optimizer_identity,
                    checkpoint_digest=checkpoint_digest, authority_digest=_digest(core))
+
+    @classmethod
+    def issue_for_optimizer(cls, *, governance_state: Mapping[str, Any], optimizer: Any,
+                            checkpoint_digest: str) -> "PrefreezeMechanicalAuthorityV1":
+        optimizer_identity = _optimizer_configuration_identity_or_none(optimizer)
+        if optimizer_identity is None:
+            raise PrefreezeGovernanceError("optimizer configuration identity is unavailable")
+        return cls.issue(governance_state=governance_state, optimizer_identity=optimizer_identity,
+                         checkpoint_digest=checkpoint_digest)
 
     def _core(self) -> dict[str, Any]:
         return {
@@ -276,6 +322,9 @@ class PrefreezeOptimizerGuardV1:
         for name in ("step", "register_step_pre_hook", "register_step_post_hook"):
             if not callable(getattr(optimizer, name, None)):
                 raise PrefreezeGovernanceError(f"optimizer must provide {name}()")
+        actual_optimizer_identity = _optimizer_configuration_identity_or_none(optimizer)
+        if actual_optimizer_identity is not None and actual_optimizer_identity != authority.optimizer_identity:
+            raise PrefreezeGovernanceError("optimizer configuration identity does not match authority")
         if getattr(optimizer, "_v5_prefreeze_optimizer_guard_v1", None) is not None:
             raise PrefreezeGovernanceError("optimizer already has a prefreeze guard")
         self.authority, self.optimizer = authority, optimizer
