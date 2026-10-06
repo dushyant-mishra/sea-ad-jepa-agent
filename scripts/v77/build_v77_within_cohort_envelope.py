@@ -28,6 +28,20 @@ constant below is inherited from the frozen pooled builders; nothing is chosen f
 Gene selection is redone inside each stratum, which removes the caveat on the coverage
 diagnostic, whose within-stratum rows reused the pooled gene set.
 
+V2 ACCEPTANCE RULE (S159). The inherited percentile rule put the real point estimate OUTSIDE its
+own acceptance range for 2 of 30 metrics in HVS and 5 of 30 in SEA_AD, every one shifted upward
+and every one a correlation-magnitude statistic (median |corr|, community size, variance share,
+T5). A with-replacement donor resample keeps only about 63% distinct cells, and correlation
+magnitudes rise as the number of distinct cells falls, so the resample distribution is displaced
+upward. The pooled envelopes, with more donors and cells, show no such case. A range that
+excludes the real value would reject a generator that matched it exactly. V2 keeps the resampled
+SPREAD and removes its LOCATION bias: acceptance = [point - (median - q05), point + (q95 - median)],
+applied to every metric alike, with every replicate stored. Decided before any synthetic world was
+scored against either version.
+
+COMPARISON PROTOCOL. The same n-dependence means a synthetic world is comparable with a stratum
+only when scored on the same number of cells. Each stratum records its cell count and class sizes.
+
 Real TRAIN access is pathology-blind, TRAIN-only and read-only, through load_real.
 """
 from __future__ import annotations
@@ -160,7 +174,8 @@ def main():
         cls_s = cls[m]
         uc, cc = np.unique(cls_s, return_counts=True)
         big = int((cc >= TC.MIN_CLASS_CELLS).sum())
-        info = dict(n_cells=n, n_donors=int(len(np.unique(don[m]))), classes_at_t5_floor=big)
+        info = dict(n_cells=n, n_donors=int(len(np.unique(don[m]))), classes_at_t5_floor=big,
+                    class_sizes={str(c): int(k) for c, k in zip(uc, cc)})
         if big < 2:
             strata[f] = dict(info, ELIGIBLE=False,
                              reason=f"fewer than two classes with >= {TC.MIN_CLASS_CELLS} cells")
@@ -189,9 +204,13 @@ def main():
         env = {}
         for k in point:
             v = np.array([bb[k] for bb in boots], dtype=float)
+            q05, q50, q95 = (float(np.nanquantile(v, q)) for q in (QUANTILES[0], 0.5, QUANTILES[1]))
             env[k] = dict(point=point[k], boot_sd=float(np.nanstd(v, ddof=1)),
-                          accept_low=float(np.nanquantile(v, QUANTILES[0])),
-                          accept_high=float(np.nanquantile(v, QUANTILES[1])))
+                          accept_low=point[k] - (q50 - q05), accept_high=point[k] + (q95 - q50),
+                          inherited_percentile_range=[q05, q95],
+                          inherited_range_excludes_point=bool(not (q05 <= point[k] <= q95)),
+                          resample_median_minus_point=q50 - point[k],
+                          replicates=[float(x) for x in v])
 
         mask = np.zeros(AU.N_ADDRESSES, dtype=bool); mask[uni_s] = True
         name = f"TRAIN_WITHIN_{f}_PREVALENCE05_{len(uni_s)}"
@@ -216,7 +235,13 @@ def main():
                         for k, v in envs.items()}
     pooled_reference["t5.within_over_pooled"] = pooled_t5
     rec = dict(
-        schema="V77_REAL_WITHIN_COHORT_ENVELOPE_V1",
+        schema="V77_REAL_WITHIN_COHORT_ENVELOPE_V2",
+        supersedes=dict(receipt="results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json",
+                        why="S159: the inherited percentile range excluded the point for 7 metrics"),
+        acceptance_rule=("[point - (median - q05), point + (q95 - median)] over the donor resamples; "
+                         "the inherited percentile range is kept beside it for every metric"),
+        comparison_protocol=("score a synthetic world on the stratum's own universe AND on the stratum's "
+                             "own number of cells; correlation-magnitude statistics depend on n"),
         claim_class="V77_SYNTHETIC_WORLD_QUALIFICATION",
         status="FROZEN_BEFORE_ANY_SYNTHETIC_WORLD_IS_SCORED_AGAINST_IT",
         material_pivot=dict(
