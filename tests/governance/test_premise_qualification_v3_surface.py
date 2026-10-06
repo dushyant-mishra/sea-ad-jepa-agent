@@ -40,6 +40,12 @@ def test_v3_state_is_fail_closed_and_neutral():
     }
 
 
+def test_all_machine_referenced_source_documents_exist():
+    state = _state()
+    missing = [path for path in state["source_documents"] if not (ROOT / path).is_file()]
+    assert missing == []
+
+
 def test_validator_accepts_canonical_state():
     validator = _load_validator()
     assert validator.validate_state(_state()) == []
