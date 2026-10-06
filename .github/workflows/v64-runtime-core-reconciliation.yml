@@ -1,0 +1,50 @@
+name: v64-runtime-core-reconciliation
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/prefreeze_runtime_authority.py'
+      - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
+      - 'tests/test_v5_prefreeze_runtime_authority_redteam.py'
+      - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
+      - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
+      - '.github/workflows/v64-runtime-core-reconciliation.yml'
+      - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
+  push:
+    branches:
+      - 'reconcile/v64-runtime-core-onto-prefreeze-main-20261006'
+    paths:
+      - 'src/sea_ad_jepa/v5/prefreeze_runtime_authority.py'
+      - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
+      - 'tests/test_v5_prefreeze_runtime_authority_redteam.py'
+      - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
+      - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
+      - '.github/workflows/v64-runtime-core-reconciliation.yml'
+      - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
+
+jobs:
+  runtime-core:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: >-
+          python -m pip install pytest torch
+          --index-url https://download.pytorch.org/whl/cpu
+          --extra-index-url https://pypi.org/simple
+      - name: Run focused runtime reconciliation tests
+        env:
+          PYTHONPATH: src
+        run: >-
+          python -m pytest -q
+          tests/test_v5_prefreeze_runtime_authority_reconciliation.py
+          tests/test_v5_prefreeze_runtime_authority_redteam.py
+          tests/test_v5_prefreeze_guarded_rehearsal.py
+          tests/test_v5_prefreeze_runtime_torch_integration.py
