@@ -48,6 +48,45 @@ GREEN sequence:
 - `9b7256bd83da1f06d0232f5974b331afe9a3dd82` — oracle tests migrated to the strengthened schema.
 - workflow `37545078986`: SUCCESS.
 
+### A4 — retry child could reuse parent run identity
+
+A failed run could previously call `retry_as_child()` with the same `experiment_run_id` as its parent. That preserved parent metadata while defeating explicit child-run identity.
+
+RED:
+- `2751619d97ecf500035032df78804071eebdae29`
+- workflow `37545621892`: `1 failed / 129 passed`; same-ID child retry was accepted.
+
+GREEN:
+- `789023a6f7ae08ed8bb4bdcd45187b6cd8c8d1a2`
+- child/retry identity must now be distinct from the parent at both constructor and retry boundary.
+- workflow `37545709895`: SUCCESS.
+
+### A5 — governance changes could bypass the shared-interface PR workflow
+
+The workflow executed two governance tests, but `pull_request.paths` did not include `tests/governance/**`; the frozen V3 governance state JSON also did not retrigger the gate. After merge, a governance-interface change could therefore skip this workflow even though its tests depend on that surface.
+
+RED:
+- `928e4edd1afa7d58652107978b01d606d4d54223`
+- PR workflow `37545827690`: `1 failed / 130 passed`; exact missing trigger assertion.
+
+GREEN:
+- `728ab042ef3800cefd538307e281ac5d365abc30`
+- workflow now retriggers on `tests/governance/**` and `docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json` as well as the qualification surface.
+- workflow `37545917635`: qualification test step SUCCESS.
+
+### A6 — invalid synthetic challenge partition failed only after callbacks had run
+
+`QualificationBatchV1` previously required only a nonempty synthetic `challenge_partition`. An unreviewed partition string therefore survived construction and callback execution, then failed later when frozen outputs attempted to interpret it.
+
+RED:
+- `5e5c3e229887536bf5ac42e00d729901d85b3b0c`
+- workflow `37546032478`: `1 failed / 131 passed`; the representation callback ran before the invalid partition was rejected.
+
+GREEN:
+- `7a7e207f4bbafc6e83d8ad8024f88dd73223ce31`
+- synthetic challenge partition is now validated against the recognized `ChallengeStatus` values in `QualificationBatchV1.__post_init__`, before any callback can run.
+- workflow `37546148319`: SUCCESS.
+
 ## Architectural result — physical no-mutation is NOT proven by PR #223
 
 A stronger RED demonstrated that the generic Python callback boundary cannot prove physical no-mutation. A callback can mutate state through a closure and return a benign dictionary; the existing payload-key defense does not see the side effect.
@@ -87,15 +126,22 @@ PR #223 may **not** independently claim:
 
 Those proofs must be supplied by the bound runtime successor during #221/#222 convergence. This is the same trust-boundary lesson as the caller-supplied optimizer-step probe defect already identified in PR #222: an arbitrary callback/probe cannot be treated as conclusive physical authority evidence.
 
+## Q-safety proof scope
+
+`QSafetyPolicyV1` currently proves that the declared forbidden-descendant roster is complete and exact. It does not inspect arbitrary preprocessing transformations to prove that every executed descendant is q-safe. Therefore PR #223 alone should be described as providing a **q-safety policy/visibility contract**, not a physical transformation-level q-safety proof. That stronger proof belongs at the bound adapter/runtime execution boundary and remains part of the final convergence audit.
+
 ## PR #223 merge status
 
 Still draft / NOT READY TO MERGE.
 
+Latest verified implementation head in this checkpoint:
+- `7a7e207f4bbafc6e83d8ad8024f88dd73223ce31`
+- workflow `37546148319`: SUCCESS.
+
 Remaining whole-branch audit targets include:
-- retry/child-run lineage identity;
 - oracle demotion/current-status semantics;
-- q-safety transformation enforcement boundary;
-- final diff and CI/path-trigger audit;
+- q-safety transformation enforcement boundary / runtime binding;
+- final full diff and CI/path-trigger review;
 - explicit runtime-convergence contract for future physical mutation proof.
 
 ## Scientific lane boundary
