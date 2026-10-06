@@ -8,12 +8,20 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from prefreeze_runtime_authority import (
-    CurrentTrainingAuthorityV2,
-    OptimizerGuardV4,
-    PrefreezeGovernanceError,
-    StepCompletionError,
-)
+try:
+    from .prefreeze_runtime_authority import (
+        CurrentTrainingAuthorityV2,
+        OptimizerGuardV4,
+        PrefreezeGovernanceError,
+        StepCompletionError,
+    )
+except ImportError:  # direct-file loading used by the focused pure-Python tests
+    from prefreeze_runtime_authority import (
+        CurrentTrainingAuthorityV2,
+        OptimizerGuardV4,
+        PrefreezeGovernanceError,
+        StepCompletionError,
+    )
 
 
 REHEARSAL_SCHEMA = "V5_PREFREEZE_GUARDED_REHEARSAL_V1"
@@ -30,6 +38,7 @@ def run_test_only_guarded_rehearsal(
     authority: CurrentTrainingAuthorityV2,
     guard: OptimizerGuardV4,
     optimizer_identity: str,
+    optimizer_step_index: Callable[[], object],
     backward: Callable[[], Any],
     unscale: Callable[[], Any],
     validate_gradients: Callable[[], bool],
@@ -44,6 +53,7 @@ def run_test_only_guarded_rehearsal(
     if not isinstance(guard, OptimizerGuardV4) or guard.authority is not authority:
         raise PrefreezeGovernanceError("guard must be bound to the supplied test-only authority")
 
+    optimizer_step_index = _callable(optimizer_step_index, "optimizer_step_index")
     backward = _callable(backward, "backward")
     unscale = _callable(unscale, "unscale")
     validate_gradients = _callable(validate_gradients, "validate_gradients")
@@ -52,7 +62,9 @@ def run_test_only_guarded_rehearsal(
     checkpoint = _callable(checkpoint, "checkpoint")
 
     starting_checkpoint_digest = authority.checkpoint_digest
-    token = guard.begin_step(optimizer_identity, starting_checkpoint_digest)
+    token = guard.begin_step(
+        optimizer_identity, starting_checkpoint_digest, optimizer_step_index
+    )
 
     backward()
     unscale()
@@ -66,6 +78,7 @@ def run_test_only_guarded_rehearsal(
 
     guard.run_optimizer_step(token, optimizer_step)
     guard.assert_step_complete(token)
+    optimizer_step_before, optimizer_step_after = guard.step_indices(token)
 
     # Authorization must be consumed before the EMA mutation itself.
     guard.authorize_ema(token)
@@ -82,6 +95,8 @@ def run_test_only_guarded_rehearsal(
         "test_only": True,
         "training_authorized": False,
         "execution_authorized": False,
+        "optimizer_step_before": optimizer_step_before,
+        "optimizer_step_after": optimizer_step_after,
         "starting_checkpoint_digest": starting_checkpoint_digest,
         "checkpoint_digest": checkpoint_digest,
         "checkpoint_receipt": receipt,
