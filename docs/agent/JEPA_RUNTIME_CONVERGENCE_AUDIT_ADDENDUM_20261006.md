@@ -32,9 +32,36 @@ The runtime layer must not:
 
 PR #220 on `main@f5a8ebeddbcd52a94274a7f72ecda1f71b82d777` remains the controlling scientific/prefreeze governance.
 
+### Lane ownership correction
+
+The separate GPT lane is the **future real-data scientific lane**, not the synthetic lane.
+
+That real-data lane owns/reopens only the prospectively governed scientific work required for future real-data execution, including:
+
+- representation-family qualification on real data;
+- observation-operator semantics on real data;
+- estimand choice;
+- representation/subspace stability;
+- biological-evidence versus sequencing-depth uncertainty;
+- biological OOD versus measurement OOD;
+- donor/source/study/technology transfer and external-validation rules;
+- future real-data gates that must be satisfied before any biological training/execution authority can exist.
+
+Do not duplicate or preempt that work in runtime convergence.
+
+By contrast, `Claude`/`Macha` are the same local GPU-laptop agent and currently own the local runtime/mechanics work **and** the V77/S127 synthetic/instrument work. Those two local workstreams are scientifically distinct, but they belong to the same local agent/environment.
+
+The intended coordination model is therefore:
+
+1. **runtime/mechanics lane (Claude/Macha, local GPU laptop)** — optimizer/scaler/EMA/checkpoint/restart and single-consumer convergence;
+2. **synthetic/instrument lane (Claude/Macha, local GPU laptop)** — V77/S127 anti-cheat, observation/measurement instrument, synthetic adapter/protocol work;
+3. **future real-data scientific lane (separate GPT agent)** — prospective real-data representation/premise/estimand/stability/transfer qualification.
+
+Synthetic success must never be used to stand in for the separate real-data lane.
+
 ## 3. `width=160` is architecture capacity, not biological dimensionality
 
-`width=160` is network/token capacity only. It does not establish a 160-dimensional biological state and does not confer biological meaning on learned coordinates. Any later coordinate interpretation remains subject to the representation-stability governance frozen in PR #220.
+`width=160` is network/token capacity only. It does not establish a 160-dimensional biological state and does not confer biological meaning on learned coordinates. Any later coordinate interpretation remains subject to the representation-stability governance frozen in PR #220 and any future real-data qualification performed in the separate real-data lane.
 
 ## 4. The 41,238-address identity chain remains a separate hard requirement
 
@@ -50,7 +77,7 @@ An eventual production path must authenticate the complete chain:
 
 Shape, byte identity, hashes, and historical reproducibility are insufficient by themselves because registry rank/source index can differ from actual matrix column identity.
 
-This issue is separate from optimizer/runtime convergence and must not be silently declared closed by runtime tests.
+This issue is separate from optimizer/runtime convergence and must not be silently declared closed by runtime tests. It is a prerequisite for future real-data execution and therefore must be coordinated with the separate real-data scientific lane when that lane advances toward execution.
 
 ## 5. q-leakage is transitive
 
@@ -67,6 +94,8 @@ New consumers must preserve q-safety through every downstream transformation and
 - other descendants of the hidden/query feature.
 
 Historical fixes are evidence, not an automatic guarantee for a new consumer.
+
+For convergence, preserve the runtime-side ability to enforce/verify this property without redefining the scientific q-safe preprocessing contract. Future real-data requalification belongs to the separate real-data lane.
 
 ## 6. Historical residual-target work is closed negative evidence
 
@@ -92,6 +121,8 @@ It did not qualify:
 
 The source-feasible zero-quota rescue at 2K remains important. The alternative calibration-closure lineage erased operators at smoke scale and must not spill into future smoke qualification.
 
+Any future real-data execution lane must inherit this narrow scope correctly rather than treating V75/100K as generic biological or training authority.
+
 ## 8. V77 / S127 is an instrument lane
 
 Synthetic worlds can support:
@@ -105,11 +136,18 @@ They cannot select the real-RNA biological target or representation and cannot p
 
 Weak-covariance synthetic worlds are known to differ materially from real TRAIN geometry; the historical unsigned module oracle also under-read mixed-sign programs. Synthetic success must therefore remain scoped to the synthetic/mechanical claim actually tested.
 
+V77/S127 work is owned locally by Claude/Macha, not by the separate real-data GPT lane.
+
 ## 9. Claude and Macha are the same local GPU agent
 
 Do not invent a dependency between Claude and Macha. Those names refer to the same local GPU-laptop agent/environment.
 
-A separate GPT lane is working on real-data premise/representation qualification. Coordinate with that lane and avoid duplicating its scientific work.
+That local agent advances both:
+
+- runtime/mechanics convergence and local PyTorch/AMP/restart qualification;
+- V77/S127 synthetic/instrument and anti-cheat work.
+
+A separate GPT lane is working on **future real-data scientific qualification**. Coordinate with that lane and avoid duplicating its real-data representation/premise/estimand/stability/transfer work.
 
 ## 10. PR #221 and PR #222 are overlapping donor lanes
 
@@ -197,11 +235,13 @@ Next job:
 
 `independent audit → #221/#222 convergence → real AdamW/AMP qualification → complete restart qualification → independent review`
 
+This runtime sequence runs in parallel with, but does not replace, the separate future real-data scientific lane.
+
 Even after successful mechanics qualification:
 
 `TRAINING=OFF`
 
-until a separate prospective execution authority is explicitly created and approved.
+until a separate prospective execution authority is explicitly created and approved after the required future real-data scientific gates are satisfied.
 
 ## 16. Additional convergence acceptance gates introduced by this addendum
 
@@ -213,5 +253,7 @@ The single-successor audit must also demonstrate that convergence did not regres
 - no resurrection of residual-target or corrected T_A/T_B work as open rescue routes;
 - no broadening of V75/100K claims;
 - no synthetic-to-biological authority promotion;
+- no synthetic work used as a substitute for the separate future real-data qualification lane;
+- no runtime code that preselects target/representation/estimand/threshold decisions reserved for the real-data scientific lane;
 - no historical receipt/checkpoint retroactive promotion;
 - no deletion/obscuring of negative findings.
