@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Any, Callable, Mapping
+from typing import Callable, Mapping
 
 from .authorities import AuthorityBundleV1
 from .canonical import canonical_digest
@@ -33,7 +33,6 @@ class BatchFieldV1:
 @dataclass(frozen=True)
 class ModelQualificationViewV1:
     model_inputs: Mapping[str, object]
-    preprocessing_context: Mapping[str, object]
     lawful_operator_context: Mapping[str, object]
 
 
@@ -72,6 +71,8 @@ class QualificationBatchV1:
             raise ValueError("q-safety policy is invalid")
         if not isinstance(self.fields, tuple) or not all(isinstance(field, BatchFieldV1) for field in self.fields):
             raise ValueError("fields must be an explicit tuple of BatchFieldV1")
+        if any(field.declaration.visibility is VisibilityClass.ORACLE_ONLY for field in self.fields):
+            raise ValueError("ORACLE_ONLY data must remain physically outside QualificationBatchV1")
         names = [field.declaration.name for field in self.fields]
         if len(names) != len(set(names)):
             raise ValueError("batch field names must be unique")
@@ -110,7 +111,6 @@ class QualificationBatchV1:
     def model_view(self) -> ModelQualificationViewV1:
         return ModelQualificationViewV1(
             model_inputs=MappingProxyType(self._values_for(VisibilityClass.MODEL_VISIBLE)),
-            preprocessing_context=MappingProxyType(self._values_for(VisibilityClass.PREPROCESSING_VISIBLE)),
             lawful_operator_context=MappingProxyType(self._values_for(VisibilityClass.LAWFUL_OPERATOR_CONTEXT)),
         )
 
