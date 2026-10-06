@@ -59,6 +59,19 @@ def test_well_formed_same_length_permutation_fails_feature_identity():
         )
 
 
+def test_direct_constructor_cannot_create_invalid_feature_identity_object():
+    registry = ("g1", "g2", "g3", "g4")
+    permuted = ("g1", "g3", "g2", "g4")
+    with pytest.raises(FeatureIdentityError, match="ordered feature identity"):
+        FeatureIdentityReceiptV1(
+            registry_ids=registry,
+            reader_axis_ids=registry,
+            tokenizer_axis_ids=permuted,
+            tensor_feature_axis_ids=permuted,
+            synthetic=False,
+        )
+
+
 def test_feature_identity_cannot_be_created_from_attestation_boolean():
     with pytest.raises(TypeError):
         FeatureIdentityReceiptV1(mapping_verified=True)  # type: ignore[call-arg]
