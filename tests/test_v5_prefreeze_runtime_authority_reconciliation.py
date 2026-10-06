@@ -37,6 +37,18 @@ def _future_fixture():
     return state
 
 
+def _armed_guard():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    return authority, guard, token
+
+
 def test_canonical_prefreeze_state_refuses_training_authority():
     with pytest.raises(PrefreezeGovernanceError, match="training_authorized=false"):
         CurrentTrainingAuthorityV2.issue(
@@ -107,31 +119,22 @@ def test_checkpoint_digest_mismatch_is_rejected():
 
 
 def test_gradient_validation_must_follow_unscale_and_precede_step():
-    authority = CurrentTrainingAuthorityV2.issue(
-        governance_state=_future_fixture(),
-        optimizer_identity="adamw:v1",
-        checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
-    )
-    guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    _, guard, token = _armed_guard()
     with pytest.raises(StepCompletionError, match="unscaled"):
         guard.mark_gradients_valid(token)
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
-    guard.mark_optimizer_step_complete(token)
+    guard.run_optimizer_step(token, lambda: None)
     assert guard.assert_step_complete(token) is True
 
 
+def test_manual_step_completion_cannot_be_forged():
+    _, guard, _ = _armed_guard()
+    assert not hasattr(guard, "mark_optimizer_step_complete")
+
+
 def test_rejected_step_cannot_advance_ema():
-    authority = CurrentTrainingAuthorityV2.issue(
-        governance_state=_future_fixture(),
-        optimizer_identity="adamw:v1",
-        checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
-    )
-    guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    _, guard, token = _armed_guard()
     guard.mark_unscaled(token)
     guard.reject_step(token, "nonfinite gradients")
     with pytest.raises(StepCompletionError, match="EMA"):
@@ -139,47 +142,42 @@ def test_rejected_step_cannot_advance_ema():
 
 
 def test_incomplete_step_cannot_advance_ema():
-    authority = CurrentTrainingAuthorityV2.issue(
-        governance_state=_future_fixture(),
-        optimizer_identity="adamw:v1",
-        checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
-    )
-    guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    _, guard, token = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
     with pytest.raises(StepCompletionError, match="EMA"):
         guard.authorize_ema(token)
 
 
-def test_successful_optimizer_step_is_required_before_ema():
-    authority = CurrentTrainingAuthorityV2.issue(
-        governance_state=_future_fixture(),
-        optimizer_identity="adamw:v1",
-        checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
-    )
-    guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+def test_failed_optimizer_call_cannot_advance_ema():
+    _, guard, token = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
-    guard.mark_optimizer_step_complete(token)
+
+    def fail():
+        raise RuntimeError("optimizer failure")
+
+    with pytest.raises(RuntimeError, match="optimizer failure"):
+        guard.run_optimizer_step(token, fail)
+    with pytest.raises(StepCompletionError, match="EMA"):
+        guard.authorize_ema(token)
+
+
+def test_successful_optimizer_step_is_required_before_ema():
+    _, guard, token = _armed_guard()
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    called = []
+    guard.run_optimizer_step(token, lambda: called.append("stepped"))
+    assert called == ["stepped"]
     assert guard.authorize_ema(token) is True
 
 
 def test_step_completion_token_is_one_shot_and_cannot_be_replayed():
-    authority = CurrentTrainingAuthorityV2.issue(
-        governance_state=_future_fixture(),
-        optimizer_identity="adamw:v1",
-        checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
-    )
-    guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    _, guard, token = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
-    guard.mark_optimizer_step_complete(token)
+    guard.run_optimizer_step(token, lambda: None)
     assert guard.authorize_ema(token) is True
     with pytest.raises(StepCompletionError, match="already consumed"):
         guard.authorize_ema(token)
