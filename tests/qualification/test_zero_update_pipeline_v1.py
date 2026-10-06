@@ -24,6 +24,7 @@ from sea_ad_jepa.qualification.protocol import (
     ThresholdStatus,
 )
 from sea_ad_jepa.qualification.qsafe import QSafetyPolicyV1, REQUIRED_Q_SAFETY_CHANNELS
+from sea_ad_jepa.qualification.receipts import DataKind
 from sea_ad_jepa.qualification.visibility import FieldDeclaration, VisibilityClass
 
 
@@ -68,14 +69,22 @@ def _authorities(protocol):
     )
 
 
-def _batch(protocol, *, inference_unit="DONOR", extra_fields=()):
+def _batch(
+    protocol,
+    *,
+    inference_unit="DONOR",
+    extra_fields=(),
+    data_kind=DataKind.SYNTHETIC,
+    adapter_digest="1" * 64,
+):
+    synthetic = data_kind is DataKind.SYNTHETIC
     features = ("g1", "g2", "g3")
     feature_receipt = FeatureIdentityReceiptV1.from_ordered_ids(
         registry_ids=features,
         reader_axis_ids=features,
         tokenizer_axis_ids=features,
         tensor_feature_axis_ids=features,
-        synthetic=True,
+        synthetic=synthetic,
     )
     identity = QualificationBatchIdentityV1(
         observation_ids=("c1", "c2", "c3"),
@@ -95,12 +104,13 @@ def _batch(protocol, *, inference_unit="DONOR", extra_fields=()):
         BatchFieldV1(FieldDeclaration("depth", VisibilityClass.LAWFUL_OPERATOR_CONTEXT), "low"),
         BatchFieldV1(FieldDeclaration("donor_id", VisibilityClass.SPLIT_ONLY), ("d1", "d1", "d2")),
         BatchFieldV1(FieldDeclaration("diagnostic_label", VisibilityClass.READOUT_ONLY), (0, 1, 0)),
-        BatchFieldV1(FieldDeclaration("source_file", VisibilityClass.PROVENANCE_ONLY), "synthetic://v77"),
+        BatchFieldV1(FieldDeclaration("source_file", VisibilityClass.PROVENANCE_ONLY), "synthetic://v77" if synthetic else "real://authenticated"),
     ) + tuple(extra_fields)
     return QualificationBatchV1(
         experiment_run_id="run-zero-001",
-        adapter_id="v77-adapter-v1",
-        adapter_digest="1" * 64,
+        data_kind=data_kind,
+        adapter_id="v77-adapter-v1" if synthetic else "real-rna-adapter-v1",
+        adapter_digest=adapter_digest,
         feature_identity_receipt=feature_receipt,
         scientific_identity=identity,
         q_safety_policy=QSafetyPolicyV1(REQUIRED_Q_SAFETY_CHANNELS),
@@ -109,8 +119,8 @@ def _batch(protocol, *, inference_unit="DONOR", extra_fields=()):
         inference_group_ids=("d1", "d1", "d2"),
         code_commit="1234567890abcdef1234567890abcdef12345678",
         environment_digest="2" * 64,
-        synthetic_realization_id="v77-challenge-001",
-        challenge_partition="DEVELOPMENT_CALIBRATION",
+        synthetic_realization_id="v77-challenge-001" if synthetic else None,
+        challenge_partition="DEVELOPMENT_CALIBRATION" if synthetic else None,
     )
 
 
@@ -142,13 +152,34 @@ def test_zero_update_runner_exposes_filtered_views_and_freezes_outputs():
     assert seen["operator"] == ("depth",)
 
 
+def test_shared_batch_schema_supports_real_data_without_synthetic_provenance():
+    protocol = _protocol()
+    batch = _batch(protocol, data_kind=DataKind.REAL_RNA)
+    assert batch.data_kind is DataKind.REAL_RNA
+    assert batch.synthetic_realization_id is None
+    assert batch.challenge_partition is None
+
+
 def test_oracle_only_field_is_physically_rejected_from_ordinary_batch():
     protocol = _protocol()
-    oracle_field = BatchFieldV1(
-        FieldDeclaration("z_reg_private", VisibilityClass.ORACLE_ONLY), "sealed"
-    )
+    oracle_field = BatchFieldV1(FieldDeclaration("z_reg_private", VisibilityClass.ORACLE_ONLY), "sealed")
     with pytest.raises(ValueError, match="ORACLE_ONLY"):
         _batch(protocol, extra_fields=(oracle_field,))
+
+
+def test_malformed_adapter_provenance_fails_before_callbacks_can_run():
+    protocol = _protocol()
+    called = {"representation": False}
+    with pytest.raises(ValueError, match="adapter_digest"):
+        batch = _batch(protocol, adapter_digest="not-a-digest")
+        run_zero_update_qualification(
+            protocol,
+            _authorities(protocol),
+            batch,
+            lambda view: called.__setitem__("representation", True),
+            lambda rep, view: {"score": 0.0},
+        )
+    assert called["representation"] is False
 
 
 def test_donor_inference_protocol_rejects_cell_only_grouping_metadata():
