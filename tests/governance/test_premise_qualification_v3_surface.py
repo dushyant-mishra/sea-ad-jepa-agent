@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 STATE = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
 VALIDATOR = ROOT / "scripts/governance/verify_premise_qualification_v3_surface.py"
 WORKFLOW = ROOT / ".github/workflows/premise-qualification-v3-surface-guard.yml"
+DESIGN = ROOT / "docs/superpowers/specs/2026-10-06-premise-qualification-contract-v3-design.md"
+REPRESENTATION_CONTRACT = ROOT / "docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_V3_PREFREEZE_20261006.md"
 
 
 def _load_validator():
@@ -51,6 +53,13 @@ def test_v3_state_is_fail_closed_and_neutral():
     }
 
 
+def test_machine_state_binds_all_hard_execution_boundaries():
+    state = _state()
+    assert state["multimodal_training_authorized"] is False
+    assert state["stage4_authorized"] is False
+    assert state["five_hundred_k_authorized"] is False
+
+
 def test_all_machine_referenced_source_documents_exist():
     state = _state()
     missing = [path for path in state["source_documents"] if not (ROOT / path).is_file()]
@@ -61,6 +70,12 @@ def test_every_binding_source_document_triggers_guard():
     workflow = WORKFLOW.read_text()
     for path in _state()["source_documents"]:
         assert path in workflow, f"binding source does not trigger V3 guard: {path}"
+
+
+def test_binding_docs_use_canonical_stability_status_vocabulary():
+    text = DESIGN.read_text() + "\n" + REPRESENTATION_CONTRACT.read_text()
+    for stale in ("AXES_STABLE", "SUBSPACE_STABLE_AXES_ROTATE", "SUBSPACE_UNSTABLE"):
+        assert stale not in text, f"stale stability status remains in binding prose: {stale}"
 
 
 def test_validator_accepts_canonical_state():
@@ -111,6 +126,18 @@ def test_validator_rejects_training_authorization():
     assert "training_authorized must remain false" in validator.validate_state(state)
 
 
+def test_validator_rejects_multimodal_training_authorization():
+    validator = _load_validator(); state = _state(); state["multimodal_training_authorized"] = True
+    assert "multimodal training must remain unauthorized" in validator.validate_state(state)
+
+
+def test_validator_rejects_stage4_or_500k_authorization():
+    validator = _load_validator(); state = _state(); state["stage4_authorized"] = True
+    assert "Stage 4 must remain unauthorized" in validator.validate_state(state)
+    state = _state(); state["five_hundred_k_authorized"] = True
+    assert "500K must remain unauthorized" in validator.validate_state(state)
+
+
 def test_validator_rejects_representation_winner():
     validator = _load_validator(); state = _state(); state["representation_winner"] = "GLOBAL_CELL_STATE"
     assert "representation_winner must remain null" in validator.validate_state(state)
@@ -159,6 +186,14 @@ def test_validator_rejects_donor_id_as_free_observation_covariate():
     validator = _load_validator(); state = _state()
     state["observation_operator"]["forbidden_free_shortcuts"] = ["UNRESTRICTED_DATASET_ID", "ARBITRARY_MATRIX_ID"]
     assert "donor identity must remain a forbidden free observation shortcut" in validator.validate_state(state)
+
+
+def test_validator_requires_outcome_and_study_memorization_shortcuts_to_remain_forbidden():
+    validator = _load_validator(); state = _state()
+    state["observation_operator"]["forbidden_free_shortcuts"] = [
+        "DONOR_ID", "UNRESTRICTED_DATASET_ID", "ARBITRARY_MATRIX_ID"
+    ]
+    assert "pathology/outcome and unrestricted study identity must remain forbidden observation shortcuts" in validator.validate_state(state)
 
 
 def test_validator_rejects_blanket_technology_invariance_requirement():
