@@ -8,6 +8,7 @@ on:
       - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
       - 'tests/test_v5_prefreeze_runtime_authority_redteam.py'
       - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
       - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
       - '.github/workflows/v64-runtime-core-reconciliation.yml'
       - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
@@ -20,6 +21,7 @@ on:
       - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
       - 'tests/test_v5_prefreeze_runtime_authority_redteam.py'
       - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
       - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
       - '.github/workflows/v64-runtime-core-reconciliation.yml'
       - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
@@ -32,8 +34,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install test dependency
-        run: python -m pip install pytest
+      - name: Install test dependencies
+        run: >-
+          python -m pip install pytest torch
+          --index-url https://download.pytorch.org/whl/cpu
+          --extra-index-url https://pypi.org/simple
       - name: Run focused runtime reconciliation tests
         env:
           PYTHONPATH: src
@@ -42,3 +47,4 @@ jobs:
           tests/test_v5_prefreeze_runtime_authority_reconciliation.py
           tests/test_v5_prefreeze_runtime_authority_redteam.py
           tests/test_v5_prefreeze_guarded_rehearsal.py
+          tests/test_v5_prefreeze_runtime_torch_integration.py
