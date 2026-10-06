@@ -28,6 +28,7 @@ def _valid_protocol(**overrides):
         "estimand_spec": "UNSET_REQUIRES_APPROVAL",
         "threshold_status": ThresholdStatus.UNSET_REQUIRES_APPROVAL,
         "deciding_numeric_thresholds": "UNSET_REQUIRES_APPROVAL",
+        "exploratory_thresholds": (),
         "execution_mode": ExecutionMode.ZERO_UPDATE_QUALIFICATION,
         "claim_ceiling": "RNA_REPRESENTATION",
     }
@@ -55,9 +56,39 @@ def test_protocol_rejects_fifth_representation_family():
         _valid_protocol(representation_family="UNAPPROVED_FIFTH_FAMILY").validate()
 
 
+def test_experiment_representation_request_does_not_create_winner_authority():
+    protocol = _valid_protocol(representation_family="PROGRAM_STATE")
+    protocol.validate()
+    assert protocol.representation_family == "PROGRAM_STATE"
+    assert not hasattr(protocol, "representation_winner")
+
+
+def test_candidate_estimand_evaluation_does_not_create_selected_estimand_authority():
+    protocol = _valid_protocol(estimand_spec="DONOR_WEIGHTED")
+    protocol.validate()
+    assert protocol.estimand_spec == "DONOR_WEIGHTED"
+    assert not hasattr(protocol, "selected_estimand")
+
+
 def test_unset_threshold_status_cannot_carry_deciding_thresholds():
     with pytest.raises(ValueError, match="threshold"):
         _valid_protocol(deciding_numeric_thresholds={"score": 0.8}).validate()
+
+
+def test_exploratory_thresholds_cannot_be_promoted_to_deciding_thresholds():
+    protocol = _valid_protocol(
+        threshold_status=ThresholdStatus.EXPLORATORY_ONLY,
+        exploratory_thresholds=(("score", 0.8),),
+    )
+    protocol.validate()
+    assert protocol.deciding_numeric_thresholds == "UNSET_REQUIRES_APPROVAL"
+
+    with pytest.raises(ValueError, match="deciding"):
+        _valid_protocol(
+            threshold_status=ThresholdStatus.EXPLORATORY_ONLY,
+            exploratory_thresholds=(("score", 0.8),),
+            deciding_numeric_thresholds={"score": 0.8},
+        ).validate()
 
 
 def test_protocol_requires_explicit_execution_mode():
