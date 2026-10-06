@@ -42,6 +42,20 @@ Repair: `d53394d836f645b4a6810e606163406ef768c69a`; workflow `37537287392` SUCCE
 
 Task 1: complete. Exact governance digest is bound; representation/estimand requests remain experiment-specific rather than winner authority; exploratory thresholds cannot populate deciding state; malformed threshold values fail closed.
 
+## Task 2 — transitive visibility firewall
+
+RED: commit `18905c10f5f66bb251b1b7a495caee07227acd0a`; workflow `37537419024` failed with `ModuleNotFoundError: sea_ad_jepa.qualification.visibility`.
+
+GREEN: implementation `fa59c6b157220324e2d33996bf3450b849b58d8b`; workflow `37537503989` SUCCESS.
+
+Self-audit: V1 intentionally rejects mixed-parent visibility derivations rather than trying to infer a least-restrictive class. There is no declassification API. `SPLIT_ONLY`, `ORACLE_ONLY`, and `LAWFUL_OPERATOR_CONTEXT` cannot become free model/preprocessing inputs through derivation.
+
+Task 2: complete.
+
+## Task 3 ruling — mechanical feature identity proof
+
+Ruling: the original plan's digest-only `FeatureIdentityReceiptV1` is insufficient under the binding review amendment because a boolean or self-attested digest relationship could repeat the historical 41K semantic mapping failure. V1 will construct the receipt from independently inspectable ordered ID sequences and recompute every chain digest mechanically. A well-formed permutation must fail even when dimensions and per-component hash syntax are valid. Persisted downstream receipts may bind the resulting proof digest, but construction/validation requires inspectable ordered identifiers.
+
 ## Status
 
-Task 2: starting RED phase for transitive visibility laundering.
+Task 3: starting RED phase for feature-chain permutation and packing/scientific-identity separation.
