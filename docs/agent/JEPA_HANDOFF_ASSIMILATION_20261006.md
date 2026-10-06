@@ -69,11 +69,9 @@ Outstanding runtime proof remains centered on real PyTorch optimizer binding, AM
 
 The handoff snapshot recorded PR #223 at head `902de2ee46f62f0dc01122aa48970843a19662f7`. That is stale.
 
-GitHub recheck on 2026-10-06 shows PR #223 is still open/draft but has advanced to head:
+GitHub recheck on 2026-10-06 showed PR #223 still open/draft and already beyond that snapshot. This lane is being changed independently, so every future cross-lane read must re-fetch its exact head rather than inheriting a stale SHA.
 
-`1d572286f977c8b240e974eaf373fa279b75a88b`
-
-Its current PR description reports additional closures after the handoff snapshot, including:
+Its reported additional closures after the handoff snapshot include:
 
 - retry children require distinct run identity;
 - governance tests/state changes retrigger the shared-interface CI gate;
@@ -86,12 +84,39 @@ Accordingly, those items must no longer be treated as open merely because the ol
 
 The key architectural limitation remains unchanged and should be preserved: arbitrary callbacks cannot prove physical no-mutation. `MutationProofStatus.NOT_PROVEN_BY_SHARED_INTERFACE` is the correct default; `PROVEN_BY_BOUND_RUNTIME` requires provenance from the converged runtime successor. Likewise q-safety at the interface is a policy/visibility contract, not full transformation-level proof.
 
+## Iterative S149 reconstruction checkpoint
+
+The independent Macha/V77 audit brief has now been incorporated into the working audit. Its branch anchor was rechecked: `claude/v77-synthetic-premise-custody-20261005` remains at `8497916e5a9d9b232597ac1891b6c630d3b17931` at this checkpoint.
+
+Primary S149 evidence was then reconstructed rather than accepted from the handoff summary.
+
+### What is currently reproduced from committed primary evidence
+
+Commit `3cec0c3692c9110b647532db5718eb2a4276bd2f` records the real detection-topology diagnostic. On the frozen 3,000-gene set, the pooled real row had `frac>0.3 = 0.6148` and mean degree `1843.8`; a cohort-composition null with no within-stratum dependence had `0.5463` and `1638.2`. Thus the quoted approximately 89% is simply the null/real ratio for those two measures: approximately 88.9% and 88.8%, respectively. This numerical statement is coherent.
+
+The same diagnostic reports much lower within-stratum density (`0.0768` HVS, `0.0602` SEA-AD, `0.0312` NPH52) and explicitly notes an important caveat: the 3,000 genes were themselves chosen on pooled expression variance. Therefore the within-stratum rows are diagnostic, not a prospectively qualified replacement envelope.
+
+Commit `fd21f649a7671dd345160e60079d0fac8d01418f` records the study/coverage-stratum cross-tabulation. For all 3,292 calibration-cache cells belonging to production donors, inferred detection-support stratum matched the population-authority study label 3,292/3,292. The committed code derives the inferred stratum from which registry source-family support set can contain the cell's detected addresses, while the comparison study label comes from the production donor/operator authority.
+
+### Self-audit qualification on the 3,292/3,292 result
+
+This is strong evidence that the detection-support signature is study/operator-specific. It is not independent biological validation. The registry support signature and the operator study label are separate artifacts, but both encode the same upstream measurement/source structure. The result therefore supports a measurement-process interpretation of S149; it should not be described as two independent biological measurements agreeing.
+
+The depth alternative is weakened but not fully eliminated by the reported medians: HVS-stratum cells have median 4,427.5 detected genes, NPH52 3,717.5, SEA-AD 4,848.5. HVS is therefore not simply the shallowest group. However, a full adversarial audit still needs to inspect the stratum-inference rule and composition-null generator for additional coupled assumptions.
+
+### Historical-spillover rule now active
+
+No pre-S146/S147 V77 PASS or synthetic-world result is inherited as current evidence merely because it remains in repository history. The active audit will distinguish preserved history from valid current evidence, identify every consumer of the swapped/double-applied support worlds, and verify that repaired executors physically refuse those older worlds before any newer V77 PASS is trusted.
+
+No S149 finding currently selects TD41, invalidates TD41, selects a production target, or authorizes a new real-data outcome analysis. The TD34 panel genealogy remains the immediate scientific blocker for the TD41 lane.
+
 ## Active priorities after assimilation
 
-1. Scientific lane: reconstruct TD34 512-gene-panel genealogy from primary historical artifacts before further TD41 real-RNA outcome work.
-2. Runtime lane: compare/converge PR #221 and #222 into one inactive canonical consumer and qualify the actual optimizer/GradScaler/EMA/checkpoint path.
-3. Shared-interface lane: use the current PR #223 head, not the handoff snapshot; finish exact-head diff/status review and the explicit runtime-convergence contract.
-4. Keep this handoff branch updated as new evidence changes any of these verdicts.
+1. Continue adversarial S146/S147/S149 reconstruction and historical-spillover inventory until the assumptions behind S149 and repaired V77 worlds are independently satisfactory.
+2. Scientific lane: reconstruct TD34 512-gene-panel genealogy from primary historical artifacts before further TD41 real-RNA outcome work.
+3. Runtime lane: compare/converge PR #221 and #222 into one inactive canonical consumer and qualify the actual optimizer/GradScaler/EMA/checkpoint path.
+4. Shared-interface lane: always use its current exact head; finish exact-head diff/status review and the explicit runtime-convergence contract.
+5. Keep this handoff branch updated as new evidence changes any verdict.
 
 ## Non-authorizations
 
