@@ -112,3 +112,16 @@ def test_semantic_batch_changes_change_scientific_identity(field, replacement):
 def test_empty_observation_identity_fails_closed():
     with pytest.raises(ValueError, match="observation"):
         _valid_batch_identity(observation_ids=()).validate()
+
+
+def test_invalid_batch_identity_cannot_exist_before_validate_call():
+    with pytest.raises(ValueError, match="observation"):
+        _valid_batch_identity(observation_ids=())
+
+
+def test_invalid_packing_receipt_cannot_exist_before_validate_call():
+    with pytest.raises(ValueError, match="packing_digest"):
+        PackingReceiptV1(
+            scientific_identity_digest=_valid_batch_identity().digest(),
+            packing_digest="not-a-digest",
+        )
