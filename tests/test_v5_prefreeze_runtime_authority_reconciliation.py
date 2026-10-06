@@ -1,20 +1,25 @@
 import hashlib
+import importlib.util
 import json
 from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
-from sea_ad_jepa.v5.prefreeze_runtime_authority import (
-    CurrentTrainingAuthorityV2,
-    OptimizerGuardV4,
-    PrefreezeGovernanceError,
-    StepCompletionError,
-)
-
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE_PATH = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
+MODULE_PATH = ROOT / "src/sea_ad_jepa/v5/prefreeze_runtime_authority.py"
+
+spec = importlib.util.spec_from_file_location("prefreeze_runtime_authority", MODULE_PATH)
+module = importlib.util.module_from_spec(spec)
+assert spec.loader is not None
+spec.loader.exec_module(module)
+
+CurrentTrainingAuthorityV2 = module.CurrentTrainingAuthorityV2
+OptimizerGuardV4 = module.OptimizerGuardV4
+PrefreezeGovernanceError = module.PrefreezeGovernanceError
+StepCompletionError = module.StepCompletionError
 
 
 def _state():
