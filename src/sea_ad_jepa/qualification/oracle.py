@@ -55,6 +55,7 @@ class FrozenQualificationOutputsV1:
     output_digest: str
     provenance_receipt_digest: str
     synthetic_realization_id: str | None = None
+    challenge_partition: str | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.run_id, str) or not self.run_id.strip():
@@ -66,6 +67,11 @@ class FrozenQualificationOutputsV1:
             or not self.synthetic_realization_id.strip()
         ):
             raise ValueError("synthetic_realization_id must be explicit when supplied")
+        if self.synthetic_realization_id is None:
+            if self.challenge_partition is not None:
+                raise ValueError("challenge_partition requires synthetic realization identity")
+        elif self.challenge_partition not in {status.value for status in ChallengeStatus}:
+            raise ValueError("synthetic frozen outputs require a recognized challenge_partition")
 
 
 @dataclass(frozen=True)
@@ -83,10 +89,10 @@ class OracleUnblindingReceiptV1:
         _digest(self.oracle_digest, "oracle_digest")
         if not isinstance(self.challenge_status, ChallengeStatus):
             raise ValueError("challenge_status must be explicit")
-        if self.challenge_status is ChallengeStatus.DEVELOPMENT_CALIBRATION and (
+        if self.retune_reason is not None and (
             not isinstance(self.retune_reason, str) or not self.retune_reason.strip()
         ):
-            raise ValueError("development/calibration reclassification requires a retune_reason")
+            raise ValueError("retune_reason must be explicit when supplied")
         if self.challenge_status is ChallengeStatus.PROSPECTIVE_SEALED_CHALLENGE and self.retune_reason is not None:
             raise ValueError("prospective sealed challenge cannot carry a retune reason")
 
@@ -104,12 +110,15 @@ def unblind_oracle(
         raise ValueError("oracle unblinding requires frozen synthetic realization identity")
     if frozen_outputs.synthetic_realization_id != oracle.realization_id:
         raise ValueError("oracle realization does not match frozen output realization")
+    if frozen_outputs.challenge_partition is None:
+        raise ValueError("oracle unblinding requires frozen challenge partition identity")
+    challenge_status = ChallengeStatus(frozen_outputs.challenge_partition)
     run.record_oracle_unblinded(event_run_id=frozen_outputs.run_id)
     return OracleUnblindingReceiptV1(
         run_id=run.experiment_run_id,
         output_digest=frozen_outputs.output_digest,
         oracle_digest=oracle.digest(),
-        challenge_status=ChallengeStatus.PROSPECTIVE_SEALED_CHALLENGE,
+        challenge_status=challenge_status,
     )
 
 
