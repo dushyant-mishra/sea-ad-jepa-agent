@@ -1,0 +1,256 @@
+{
+  "schema": "V77_LOCAL_ONLY_JEPA_WORK_RECOVERY_CUSTODY_V1",
+  "recorded_utc": "2026-10-06T15:22:40Z",
+  "purpose": "preserve JEPA work that existed ONLY on this machine. Found by an exhaustive scan of every local branch, every worktree and the stash list.",
+  "HOW_THE_SCAN_WAS_DONE": {
+    "branches": "every local ref tested with: git rev-list <branch> --not --remotes=origin",
+    "worktrees": "git status --porcelain in each of ~80 worktrees",
+    "stashes": "git stash list, empty",
+    "why_it_looked_worse_than_it_was": "the main worktree is checked out on an AUGUST branch, stage81a2r-authoritative-mapping-recovery-20260813, so 148 of 151 'untracked' scripts/v4 files and all 430 docs/agent files are present on newer origin branches and were never at risk. This is very likely the main source of the tracing difficulty."
+  },
+  "BRANCHES_PUSHED_UNCHANGED": [
+    {
+      "branch": "f1-real-production-executor-20260904",
+      "sha": "f1b591613d0a593cc49e7765845aa36b12c1ae01",
+      "unpushed_commits": 8,
+      "rebased_or_rewritten": false,
+      "classification": "V5_RUNTIME_EXECUTOR_MECHANICS__POTENTIALLY_USEFUL_TO_RUNTIME_RECONSTRUCTION",
+      "contents": [
+        "real F1 production executor implementation",
+        "frozen production executor contract",
+        "launch and resume authority hardening",
+        "closure of production executor verifier vetoes",
+        "binding of F1 launch to external owner review",
+        "independent executor and package validation",
+        "repair of independent F1 mechanics telemetry validation"
+      ]
+    },
+    {
+      "branch": "claude/v5-phase4-preexecution-redteam-20260921",
+      "sha": "d5ab33b337b50ac1b90bdac9ea239018cfea6cb7",
+      "unpushed_commits": 1,
+      "rebased_or_rewritten": false,
+      "classification": "PREEXECUTION_GUARD_AUDIT__RELEVANT_TO_CURRENT_GUARD_WORK",
+      "contents": [
+        "Phase-IV pre-execution red-team report",
+        "audit-B execution-rule addendum and its freeze script"
+      ]
+    }
+  ],
+  "UNCOMMITTED_SOURCE_PRESERVED_HERE": {
+    "classification": "HISTORICAL_SCIENTIFIC_EVIDENCE_PENDING_AUDIT__NOT_CURRENT_TARGET_AUTHORITY",
+    "instruction_honoured": "kept together as a derive -> finalize -> validate unit; NOT merged into current runtime authority",
+    "files": [
+      {
+        "path": "scripts/v4/derive_contextual_target_f1_nuisance_authority_v1.py",
+        "bytes": 18849,
+        "sha256": "d781b86c91ae17a696f08f5bf4d2d05d569b729ad5913c328a8fec7a41703e2d",
+        "source_mtime_utc": "2026-09-02T05:18:32Z"
+      },
+      {
+        "path": "scripts/v4/finalize_contextual_target_f1_nuisance_authority_v1.py",
+        "bytes": 6405,
+        "sha256": "1f52b3f42d26e85c9a09d4c25b9bca124354cde4fe73f445b6e6789d02988d96",
+        "source_mtime_utc": "2026-09-02T06:02:54Z"
+      },
+      {
+        "path": "scripts/v4/validate_contextual_target_f1_nuisance_authority_v1.py",
+        "bytes": 10925,
+        "sha256": "97ed40e98ddb2284b6cf22351dbbef25ec3684575a0aaaf558877d59922ec688",
+        "source_mtime_utc": "2026-09-02T05:47:02Z"
+      }
+    ],
+    "what_they_are": {
+      "derive": "outcome-blind F1 nuisance authority derivation from authenticated FULL104 rows",
+      "finalize": "publishes the outcome-blind nuisance recovery as a truthful HC3 STOP package",
+      "validate": "independent outcome-blind reproduction of the F1 nuisance authority"
+    },
+    "note": "all three dated 2026-09-02, a coherent single workstream"
+  },
+  "LOCAL_ONLY_DOCUMENTS_PRESERVED_HERE": {
+    "files": [
+      {
+        "path": "docs/exec-plans/active/REAL_PRODUCTION_FORWARD_TARGET_GATE.md",
+        "bytes": 5428,
+        "sha256": "ffbfb3324d0c93606880553736fcef6f040d18d3f9b84752a0ac313ee580f2cf",
+        "source_mtime_utc": "2026-08-22T01:08:46Z"
+      },
+      {
+        "path": "docs/exec-plans/active/FULL104_PHASE2_STATE_DERIVATION.md",
+        "bytes": 1466,
+        "sha256": "4a552dcdb12a7ea25614751a8b8e05c53b758bb4fa679e06cf71d99e0ad370ec",
+        "source_mtime_utc": "2026-08-27T13:03:34Z"
+      },
+      {
+        "path": "critics/observation_provenance_adversarial.md",
+        "bytes": 3915,
+        "sha256": "492cf0b6e7a93e4b632eef696ab78642ed83e3db71f880eea98ada464b289f39",
+        "source_mtime_utc": "2026-08-22T00:50:00Z"
+      },
+      {
+        "path": "docs/superpowers/plans/2026-09-02-f1-hc3-15a4-replication-frontier.md",
+        "bytes": 4455,
+        "sha256": "286d39fdcd5c8a5ebae2ebe45f960ebd2884ac005eea22d37e2389536458201c",
+        "source_mtime_utc": "2026-09-02T16:14:52Z"
+      }
+    ],
+    "most_relevant": "docs/exec-plans/active/REAL_PRODUCTION_FORWARD_TARGET_GATE.md bears directly on the target-gate lineage, which remains the open scientific question"
+  },
+  "CONTEXTUAL_TEACHER_PACKET_MANIFEST_BOUND_NOT_COMMITTED": {
+    "classification": "FORENSIC_REFERENCE_MATERIAL__NOT_AUTOMATICALLY_CURRENT_AUTHORITY",
+    "why_manifest_bound": "24 MB of reference material; bound by hash rather than inserted into ordinary Git history",
+    "bytes_location": "D:\\Jepa project\\CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2",
+    "wsl_equivalent": "D:/Jepa project/CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2",
+    "n_files": 24,
+    "aggregate_bytes": 81955,
+    "files": [
+      {
+        "path": "CODEX_HANDOFF_CONTEXTUAL_TEACHER_TARGET_V1.md",
+        "bytes": 4327,
+        "sha256": "c79fe8c39f300549e151f161e94d2b514c897b2c00cd21c2a6b993e45a2f2333"
+      },
+      {
+        "path": "CONTEXTUAL_TEACHER_TARGET_V1_CODE_PITFALLS.md",
+        "bytes": 3850,
+        "sha256": "7778eaeb9d3fde48fc48a8d4b0363ad08ddff602ab5b4f98964e0e72b171463e"
+      },
+      {
+        "path": "CONTEXTUAL_TEACHER_TARGET_V1_PROSPECTIVE_CONTRACT.md",
+        "bytes": 13967,
+        "sha256": "e7c33317b2ca9da59f8c836f70062409fb9cfc4e5489222978afcff83aeb5be3"
+      },
+      {
+        "path": "local_reference/context_alpha_historical_sweep_compact.csv",
+        "bytes": 1882,
+        "sha256": "884cc70ea3e79f3e37dfbf735d91b6f82eb82320b801ee879d568b24f673fd3e"
+      },
+      {
+        "path": "local_reference/context_size_sensitivity.csv",
+        "bytes": 1056,
+        "sha256": "441a1ac3499edcdf5ab0ba59b1f91711ccbe7dca39486ba533294c5fa43f1caf"
+      },
+      {
+        "path": "local_reference/ctx_common.py",
+        "bytes": 6166,
+        "sha256": "c53ec4a5b887cdee74b3df51427856483abe226d17f7df6f067ab9105d4b6436"
+      },
+      {
+        "path": "local_reference/LOCAL_CONTEXTUAL_CANDIDATE_ADJUDICATION_V4.md",
+        "bytes": 8660,
+        "sha256": "6f54ebb18013b25308c3a237df3d97b1d98b2b48a1d03e552e716f36df912e89"
+      },
+      {
+        "path": "local_reference/query_identity_retention.py",
+        "bytes": 2394,
+        "sha256": "3b953d3183c4e4b93d4ec0b029bd16b70dac8bf23b9788cb0426a9bec4e600f8"
+      },
+      {
+        "path": "local_reference/query_identity_retention_compact.csv",
+        "bytes": 241,
+        "sha256": "1dedb60a34451ca254b177c8f343fda64c946a259dbc573df078d8a2fda4483d"
+      },
+      {
+        "path": "local_reference/query_self_leakage_control.csv",
+        "bytes": 631,
+        "sha256": "1723123e2e21a5c2ec3d1ad4119c60a6976d1d99686b727374d9c450fd199b89"
+      },
+      {
+        "path": "local_reference/query_self_leakage_control.py",
+        "bytes": 2190,
+        "sha256": "24908c107b83d933bb782670a5dddfe3508a8f3c6a20fb0cf011febb325597a1"
+      },
+      {
+        "path": "local_reference/random_context_sensitivity.csv",
+        "bytes": 785,
+        "sha256": "9104af36c085e8df786205f6dc9d793ee1776e4546e6c0888ab2f6e921f6dddf"
+      },
+      {
+        "path": "local_reference/student_singleton_predictor_ema_direct.csv",
+        "bytes": 2797,
+        "sha256": "62ca9a545ad6e28df748bb5d9f4cf8a0d9c9276f4dc2c8588f942d865444c198"
+      },
+      {
+        "path": "local_reference/student_singleton_predictor_ema_direct.py",
+        "bytes": 5494,
+        "sha256": "fc96ddd5c162dc0664f1d70412491685bf5042763e001075c8274668fbc40145"
+      },
+      {
+        "path": "local_reference/student_singleton_predictor_ema_qcontext.csv",
+        "bytes": 2784,
+        "sha256": "8ac310d9a88c57ccd517b4e995de4c3794884014af496a2260efdbf266c54fa6"
+      },
+      {
+        "path": "local_reference/student_singleton_predictor_ema_qcontext.py",
+        "bytes": 5499,
+        "sha256": "2dc4a0ebe452ef2709caca0b8ae09c6928cfb943a7ea9c7377d1502099977d57"
+      },
+      {
+        "path": "local_reference/target_dimensional_structure_compact.csv",
+        "bytes": 621,
+        "sha256": "da90a5549896ef38b916b25885f07744fb65511c81c63858f4039aaf5f397b34"
+      },
+      {
+        "path": "local_reference/targeted_program_evidence_curve.csv",
+        "bytes": 1278,
+        "sha256": "8877545ce75bc45ddaf1ae5f08304e3f428143dce33f62c4ae11c9e0c41f6bb7"
+      },
+      {
+        "path": "local_reference/targeted_program_evidence_curve.py",
+        "bytes": 2452,
+        "sha256": "c69caea57bc1c098ef10db4ee907cfe3420f3b071cd9fb47e720d5418c682a1b"
+      },
+      {
+        "path": "local_reference/true_singleton_validation.py",
+        "bytes": 2143,
+        "sha256": "6ce06925df7964fd49ac27d11ea8e04df2c842bb90d3b34cafef0f8dc8e5a0c2"
+      },
+      {
+        "path": "local_reference/true_singleton_vs_batched_candidate.csv",
+        "bytes": 1794,
+        "sha256": "0b7efa1d8e99b7dcac59d6918c006149cdc7c433b7872e8cdbc18b13a621db65"
+      },
+      {
+        "path": "LOCAL_REFERENCE_MANIFEST.csv",
+        "bytes": 3080,
+        "sha256": "b127d95243d56454236b7a00cb806324f50bfe7d81d9d74e9cbabf922f25e299"
+      },
+      {
+        "path": "MULTIAGENT_PROSPECTIVE_REVIEW_V1.md",
+        "bytes": 3871,
+        "sha256": "5135d530e0fb6417a196bbce91281bf2fcddf2c868222c174dbd2f48bb667462"
+      },
+      {
+        "path": "PACKET_MANIFEST.json",
+        "bytes": 3993,
+        "sha256": "1dff6e54365cb0dbea741160e4ba21afb9547eac8b0bd5dd77b80a67c34e0fe5"
+      }
+    ],
+    "notable": "local_reference implementations of query identity retention and query self-leakage control"
+  },
+  "DELIBERATELY_UNTOUCHED": {
+    "crlf_only_worktrees": {
+      "D:/jepa_v_f1b": "160 files, git diff --ignore-all-space is EMPTY",
+      "D:/jepa_v_pp": "13 files, same class"
+    },
+    "large_local_data": {
+      "data/": "550 GB",
+      "exports/": "100 GB",
+      "status": "local by design under the large-data policy, not a missing-work incident"
+    },
+    "rule_followed": "nothing was reset, cleaned, checked out over or force-pushed"
+  },
+  "CLASSIFICATION_CARRIED_FORWARD": {
+    "V5_runtime_executor_mechanics": "potentially useful to current runtime reconstruction",
+    "old_PROD41K_T1_checkpoint_and_results": "FORENSIC ONLY. phase_e_restart_checkpoint.pt is from the PROD41K/T1 lineage, whose exact reproduction found all 48 mandatory pre-attention tensors gradient-dead in the historical fp16 configuration while the loss still fell. The gradient defect prevents promotion. It is NOT evidence that V5 training was healthy.",
+    "F1_nuisance_and_target_gate_materials": "historical scientific evidence pending audit, not current target authority"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}
