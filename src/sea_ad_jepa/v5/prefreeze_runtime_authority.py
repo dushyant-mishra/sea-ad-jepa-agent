@@ -1,13 +1,14 @@
 """Prefreeze-compatible V5 runtime safety core.
 
 This module recovers only the mechanical guarantees from the historical V64
-training-authority lineage.  It deliberately does not import or recognize the
+training-authority lineage. It deliberately does not import or recognize the
 old E2/target-specific scientific authority graph.
 
 The canonical V3 premise state currently has training and Stage-A execution
-turned off, so it cannot issue an authority.  Tests may use an explicit
+turned off, so it cannot issue an authority. Tests may use an explicit
 ``test_only`` future-state fixture to exercise the mechanics without changing
-canonical governance.
+canonical governance. Production authority issuance is intentionally disabled
+until a separate future execution-authority schema is prospectively frozen.
 """
 from __future__ import annotations
 
@@ -76,7 +77,11 @@ def _governance_core(state: Mapping[str, Any]) -> dict[str, Any]:
 
 
 class CurrentTrainingAuthorityV2:
-    """Digest-bound mechanical authority derived from current governance only."""
+    """Digest-bound test authority for exercising recovered runtime mechanics.
+
+    This prefreeze adapter cannot issue production authority. A later,
+    independently governed execution-authority schema must replace that gap.
+    """
 
     def __init__(
         self,
@@ -93,6 +98,10 @@ class CurrentTrainingAuthorityV2:
         self.optimizer_identity = optimizer_identity
         self.checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
         self.test_only = bool(test_only)
+        if self.test_only is not True:
+            raise PrefreezeGovernanceError(
+                "production issuance disabled until separate execution authority exists"
+            )
         self.authority_digest = _sha256(authority_digest, "authority_digest")
         self._validate_digest()
 
@@ -106,6 +115,10 @@ class CurrentTrainingAuthorityV2:
         test_only: bool = False,
     ) -> "CurrentTrainingAuthorityV2":
         core = _governance_core(governance_state)
+        if test_only is not True:
+            raise PrefreezeGovernanceError(
+                "production issuance disabled until separate execution authority exists"
+            )
         if not isinstance(optimizer_identity, str) or not optimizer_identity.strip():
             raise PrefreezeGovernanceError("optimizer identity must be non-empty")
         checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
@@ -115,13 +128,13 @@ class CurrentTrainingAuthorityV2:
             "governance_digest": governance_digest,
             "optimizer_identity": optimizer_identity,
             "checkpoint_digest": checkpoint_digest,
-            "test_only": bool(test_only),
+            "test_only": True,
         }
         return cls(
             governance_digest=governance_digest,
             optimizer_identity=optimizer_identity,
             checkpoint_digest=checkpoint_digest,
-            test_only=bool(test_only),
+            test_only=True,
             authority_digest=_digest(authority_core),
         )
 
@@ -135,6 +148,8 @@ class CurrentTrainingAuthorityV2:
         }
 
     def _validate_digest(self) -> None:
+        if self.test_only is not True:
+            raise PrefreezeGovernanceError("non-test runtime authority is forbidden")
         if self.authority_digest != _digest(self._authority_core()):
             raise PrefreezeGovernanceError("authority digest mismatch")
 
@@ -146,7 +161,7 @@ class CurrentTrainingAuthorityV2:
             "governance_digest": self.governance_digest,
             "optimizer_identity": self.optimizer_identity,
             "checkpoint_digest": self.checkpoint_digest,
-            "test_only": self.test_only,
+            "test_only": True,
         }
         return {**core, "receipt_digest": _digest(core)}
 
@@ -156,6 +171,10 @@ class CurrentTrainingAuthorityV2:
     ) -> "CurrentTrainingAuthorityV2":
         if receipt.get("schema") != RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("runtime receipt schema mismatch")
+        if receipt.get("test_only") is not True:
+            raise PrefreezeGovernanceError(
+                "production reload disabled until separate execution authority exists"
+            )
         observed_checkpoint_digest = _sha256(
             observed_checkpoint_digest, "checkpoint digest"
         )
@@ -170,7 +189,7 @@ class CurrentTrainingAuthorityV2:
             "governance_digest": receipt.get("governance_digest"),
             "optimizer_identity": receipt.get("optimizer_identity"),
             "checkpoint_digest": expected_checkpoint,
-            "test_only": bool(receipt.get("test_only")),
+            "test_only": True,
         }
         if receipt.get("receipt_digest") != _digest(core):
             raise PrefreezeGovernanceError("runtime receipt digest mismatch")
@@ -178,7 +197,7 @@ class CurrentTrainingAuthorityV2:
             governance_digest=receipt.get("governance_digest"),
             optimizer_identity=receipt.get("optimizer_identity"),
             checkpoint_digest=expected_checkpoint,
-            test_only=bool(receipt.get("test_only")),
+            test_only=True,
             authority_digest=receipt.get("authority_digest"),
         )
 
