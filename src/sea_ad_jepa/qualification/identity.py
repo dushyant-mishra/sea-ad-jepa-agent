@@ -38,6 +38,9 @@ class FeatureIdentityReceiptV1:
     tensor_feature_axis_ids: tuple[str, ...]
     synthetic: bool
 
+    def __post_init__(self) -> None:
+        self.validate()
+
     @classmethod
     def from_ordered_ids(
         cls,
@@ -48,15 +51,13 @@ class FeatureIdentityReceiptV1:
         tensor_feature_axis_ids: tuple[str, ...],
         synthetic: bool,
     ) -> "FeatureIdentityReceiptV1":
-        receipt = cls(
+        return cls(
             registry_ids=registry_ids,
             reader_axis_ids=reader_axis_ids,
             tokenizer_axis_ids=tokenizer_axis_ids,
             tensor_feature_axis_ids=tensor_feature_axis_ids,
             synthetic=synthetic,
         )
-        receipt.validate()
-        return receipt
 
     def validate(self) -> None:
         registry = _ordered_ids(self.registry_ids, "registry_ids")
@@ -91,7 +92,6 @@ class FeatureIdentityReceiptV1:
         return canonical_digest(self.tensor_feature_axis_ids)
 
     def digest(self) -> str:
-        self.validate()
         return canonical_digest(
             {
                 "registry_digest": self.registry_digest,
