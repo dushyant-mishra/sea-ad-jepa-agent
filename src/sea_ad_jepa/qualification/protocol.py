@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+import math
 from typing import Any
 
 from .canonical import canonical_digest
@@ -93,6 +94,19 @@ class QualificationProtocolV1:
             raise ValueError("transport_ood_axes must be an explicit nonempty tuple")
         if not all(isinstance(axis, str) and axis for axis in self.transport_ood_axes):
             raise ValueError("transport_ood_axes entries must be nonempty strings")
+        if not isinstance(self.exploratory_thresholds, tuple):
+            raise ValueError("exploratory thresholds must be an explicit tuple")
+        for item in self.exploratory_thresholds:
+            if (
+                not isinstance(item, tuple)
+                or len(item) != 2
+                or not isinstance(item[0], str)
+                or not item[0]
+                or isinstance(item[1], bool)
+                or not isinstance(item[1], (int, float))
+                or not math.isfinite(float(item[1]))
+            ):
+                raise ValueError("exploratory thresholds must contain finite named numeric values")
 
         unset = self.deciding_numeric_thresholds == "UNSET_REQUIRES_APPROVAL"
         if self.threshold_status is ThresholdStatus.UNSET_REQUIRES_APPROVAL:
