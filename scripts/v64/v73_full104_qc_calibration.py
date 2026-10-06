@@ -6,12 +6,21 @@ import numpy as np
 
 AUTHORITY=Path('results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json')
 
-def sha256_file(path:Path): return hashlib.sha256(path.read_bytes()).hexdigest()
+# Relative paths are project-relative and are RECORDED as such, but READ against the repository
+# root, so loading no longer depends on the working directory (S145). From the root, unchanged.
+_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _resolve(path) -> Path:
+    p = Path(path)
+    return p if p.is_absolute() else _ROOT / p
+
+def sha256_file(path:Path): return hashlib.sha256(_resolve(path).read_bytes()).hexdigest()
 
 def load(path:Path=AUTHORITY):
-    meta=json.loads(path.read_text())
+    meta=json.loads(_resolve(path).read_text())
     if meta.get('status')!='QUALIFIED_SAMPLED_QC_AUTHORITY': raise ValueError('QC authority not qualified')
-    enc=''.join(Path(p).read_text().strip() for p in meta['payload_parts']); comp=base64.b64decode(enc)
+    enc=''.join(_resolve(p).read_text().strip() for p in meta['payload_parts']); comp=base64.b64decode(enc)
     if hashlib.sha256(comp).hexdigest()!=meta['payload_compressed_sha256']: raise ValueError('QC compressed digest mismatch')
     raw=zlib.decompress(comp)
     if hashlib.sha256(raw).hexdigest()!=meta['payload_canonical_json_sha256']: raise ValueError('QC canonical digest mismatch')

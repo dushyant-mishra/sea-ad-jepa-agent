@@ -5,18 +5,27 @@ from pathlib import Path
 import numpy as np
 
 AUTHORITY = Path('results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json')
+
+# Relative paths are project-relative and are RECORDED as such, but READ against the repository
+# root, so loading no longer depends on the working directory (S145). From the root, unchanged.
+_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _resolve(path) -> Path:
+    p = Path(path)
+    return p if p.is_absolute() else _ROOT / p
 SOURCE_ORDER = ('SEA_AD','NPH52','HVS')
 
 
 def sha256_file(path: Path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(_resolve(path).read_bytes()).hexdigest()
 
 
 def load_authority(path: Path = AUTHORITY):
-    a=json.loads(path.read_text())
+    a=json.loads(_resolve(path).read_text())
     if a.get('status')!='QUALIFIED_AGGREGATE_POPULATION_AUTHORITY':
         raise ValueError('population authority is not qualified')
-    encoded=''.join(Path(p).read_text().strip() for p in a['triplets_payload_parts'])
+    encoded=''.join(_resolve(p).read_text().strip() for p in a['triplets_payload_parts'])
     compressed=base64.b64decode(encoded)
     if hashlib.sha256(compressed).hexdigest()!=a['triplets_compressed_sha256']:
         raise ValueError('population triplet compressed digest mismatch')
