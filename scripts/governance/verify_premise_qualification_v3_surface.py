@@ -10,6 +10,22 @@ EXPECTED_FAMILIES = {
     "PROGRAM_STATE",
     "STRUCTURED_COMBINED_STATE",
 }
+EXPECTED_TRANSPORT_AXES = {
+    "DONOR_TRANSFER",
+    "OPERATOR_TRANSFER",
+    "STUDY_TRANSFER",
+    "TECHNOLOGY_TRANSFER",
+}
+EXPECTED_OOD_AXES = {
+    "BIOLOGICAL_SUPPORT_OOD",
+    "MEASUREMENT_REGIME_OOD",
+}
+EXPECTED_CLAIM_LADDER = [
+    "RNA_REPRESENTATION",
+    "TRANSFERABLE_BIOLOGICAL_STATE",
+    "REGULATORY_SUPPORT",
+    "CAUSAL_PERTURBATIONAL_PREDICTION",
+]
 
 
 def validate_state(state: dict) -> list[str]:
@@ -40,6 +56,16 @@ def validate_state(state: dict) -> list[str]:
     if families != EXPECTED_FAMILIES:
         errors.append("representation family roster must remain the frozen four-way neutral comparison")
 
+    recoverability = state.get("recoverability_semantics", {})
+    if recoverability.get("automatic_equivalence_forbidden") is not True:
+        errors.append("target-object recoverability must not be equated with biological-truth recoverability")
+
+    if set(state.get("transport_axes", [])) != EXPECTED_TRANSPORT_AXES:
+        errors.append("donor/operator/study/technology transfer axes must remain separate")
+
+    if set(state.get("ood_axes", [])) != EXPECTED_OOD_AXES:
+        errors.append("biological-support OOD and measurement-regime OOD must remain separate")
+
     uncertainty = state.get("uncertainty_axes", {})
     if uncertainty.get("must_remain_separate") is not True:
         errors.append("biological-evidence and measurement-depth uncertainty must remain separate")
@@ -52,6 +78,19 @@ def validate_state(state: dict) -> list[str]:
     forbidden = set(observation.get("forbidden_free_shortcuts", []))
     if not {"UNRESTRICTED_DATASET_ID", "ARBITRARY_MATRIX_ID"}.issubset(forbidden):
         errors.append("unrestricted dataset and arbitrary matrix identifiers must remain forbidden shortcuts")
+
+    if state.get("claim_ladder") != EXPECTED_CLAIM_LADDER:
+        errors.append("claim ladder must preserve four non-automatic levels")
+    if state.get("stage_a_maximum_claim") != "RNA_REPRESENTATION":
+        errors.append("Stage A maximum claim must remain RNA_REPRESENTATION")
+
+    asset_rules = state.get("external_asset_rules", {})
+    if asset_rules.get("protected_assets_forbidden_for_target_selection") is not True:
+        errors.append("protected assets must remain forbidden for target selection")
+    if asset_rules.get("cell_count_cannot_substitute_for_donor_count") is not True:
+        errors.append("cell count must not substitute for donor count")
+    if asset_rules.get("observational_multimodal_support_is_not_causal") is not True:
+        errors.append("observational multimodal support must not be promoted to causal evidence")
 
     return errors
 
