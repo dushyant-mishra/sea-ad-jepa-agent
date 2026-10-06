@@ -275,6 +275,8 @@ class MeasurementSupportReceiptV1:
 class QualificationBatchIdentityV1:
     observation_ids: tuple[str, ...]
     feature_receipt_digest: str
+    operator_identity_receipt_digest: str
+    measurement_support_receipt_digest: str
     query_spec_digest: str
     evidence_mask_digest: str
     measurement_mask_digest: str
@@ -296,6 +298,8 @@ class QualificationBatchIdentityV1:
             raise ValueError("observation_ids must be unique")
         for name in (
             "feature_receipt_digest",
+            "operator_identity_receipt_digest",
+            "measurement_support_receipt_digest",
             "query_spec_digest",
             "evidence_mask_digest",
             "measurement_mask_digest",
