@@ -10,10 +10,7 @@ from sea_ad_jepa.qualification.authorities import (
     ScientificExperimentAuthorityV1,
 )
 from sea_ad_jepa.qualification.canonical import canonical_digest
-from sea_ad_jepa.qualification.identity import (
-    FeatureIdentityReceiptV1,
-    QualificationBatchIdentityV1,
-)
+from sea_ad_jepa.qualification.identity import FeatureIdentityReceiptV1, QualificationBatchIdentityV1
 from sea_ad_jepa.qualification.pipeline import (
     BatchFieldV1,
     QualificationBatchV1,
@@ -71,7 +68,7 @@ def _authorities(protocol):
     )
 
 
-def _batch(protocol, *, inference_unit="DONOR"):
+def _batch(protocol, *, inference_unit="DONOR", extra_fields=()):
     features = ("g1", "g2", "g3")
     feature_receipt = FeatureIdentityReceiptV1.from_ordered_ids(
         registry_ids=features,
@@ -94,11 +91,12 @@ def _batch(protocol, *, inference_unit="DONOR"):
     )
     fields = (
         BatchFieldV1(FieldDeclaration("expression", VisibilityClass.MODEL_VISIBLE), (1.0, 2.0, 3.0)),
+        BatchFieldV1(FieldDeclaration("normalization_context", VisibilityClass.PREPROCESSING_VISIBLE), "q-safe-only"),
         BatchFieldV1(FieldDeclaration("depth", VisibilityClass.LAWFUL_OPERATOR_CONTEXT), "low"),
         BatchFieldV1(FieldDeclaration("donor_id", VisibilityClass.SPLIT_ONLY), ("d1", "d1", "d2")),
         BatchFieldV1(FieldDeclaration("diagnostic_label", VisibilityClass.READOUT_ONLY), (0, 1, 0)),
         BatchFieldV1(FieldDeclaration("source_file", VisibilityClass.PROVENANCE_ONLY), "synthetic://v77"),
-    )
+    ) + tuple(extra_fields)
     return QualificationBatchV1(
         experiment_run_id="run-zero-001",
         adapter_id="v77-adapter-v1",
@@ -123,6 +121,7 @@ def test_zero_update_runner_exposes_filtered_views_and_freezes_outputs():
     def representation_fn(model_view):
         seen["model"] = tuple(sorted(model_view.model_inputs))
         seen["operator"] = tuple(sorted(model_view.lawful_operator_context))
+        assert not hasattr(model_view, "preprocessing_context")
         assert "donor_id" not in model_view.model_inputs
         assert "diagnostic_label" not in model_view.model_inputs
         return {"embedding": [0.1, 0.2]}
@@ -143,15 +142,21 @@ def test_zero_update_runner_exposes_filtered_views_and_freezes_outputs():
     assert seen["operator"] == ("depth",)
 
 
+def test_oracle_only_field_is_physically_rejected_from_ordinary_batch():
+    protocol = _protocol()
+    oracle_field = BatchFieldV1(
+        FieldDeclaration("z_reg_private", VisibilityClass.ORACLE_ONLY), "sealed"
+    )
+    with pytest.raises(ValueError, match="ORACLE_ONLY"):
+        _batch(protocol, extra_fields=(oracle_field,))
+
+
 def test_donor_inference_protocol_rejects_cell_only_grouping_metadata():
     protocol = _protocol()
     with pytest.raises(ValueError, match="unit of inference"):
         run_zero_update_qualification(
-            protocol,
-            _authorities(protocol),
-            _batch(protocol, inference_unit="CELL"),
-            lambda view: {"embedding": [0.0]},
-            lambda rep, view: {"score": 0.0},
+            protocol, _authorities(protocol), _batch(protocol, inference_unit="CELL"),
+            lambda view: {"embedding": [0.0]}, lambda rep, view: {"score": 0.0},
         )
 
 
@@ -159,18 +164,13 @@ def test_mutation_or_ema_signal_from_callback_is_hard_failure():
     protocol = _protocol()
     with pytest.raises(ZeroUpdateViolation, match="mutation"):
         run_zero_update_qualification(
-            protocol,
-            _authorities(protocol),
-            _batch(protocol),
+            protocol, _authorities(protocol), _batch(protocol),
             lambda view: {"optimizer_event": "step", "embedding": [0.0]},
             lambda rep, view: {"score": 0.0},
         )
-
     with pytest.raises(ZeroUpdateViolation, match="EMA"):
         run_zero_update_qualification(
-            protocol,
-            _authorities(protocol),
-            _batch(protocol),
+            protocol, _authorities(protocol), _batch(protocol),
             lambda view: {"embedding": [0.0]},
             lambda rep, view: {"ema_event": "updated", "score": 0.0},
         )
@@ -180,9 +180,6 @@ def test_bounded_mutation_protocol_cannot_run_through_zero_update_runner():
     protocol = _protocol(execution_mode=ExecutionMode.BOUNDED_MUTATION_REHEARSAL)
     with pytest.raises(ZeroUpdateViolation, match="ZERO_UPDATE"):
         run_zero_update_qualification(
-            protocol,
-            _authorities(protocol),
-            _batch(protocol),
-            lambda view: {"embedding": [0.0]},
-            lambda rep, view: {"score": 0.0},
+            protocol, _authorities(protocol), _batch(protocol),
+            lambda view: {"embedding": [0.0]}, lambda rep, view: {"score": 0.0},
         )
