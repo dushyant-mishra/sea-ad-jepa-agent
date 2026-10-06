@@ -107,7 +107,7 @@ def test_future_fixture_can_exercise_mechanical_guard_without_changing_canonical
 def test_authority_digest_binds_entire_governance_state_not_selected_subset():
     state_a = _future_fixture()
     state_b = deepcopy(state_a)
-    state_b["representation_winner"] = "ILLEGAL_TEST_MUTATION"
+    state_b["claim_ladder"] = list(state_b["claim_ladder"]) + ["ILLEGAL_TEST_MUTATION"]
     a = CurrentTrainingAuthorityV2.issue(
         governance_state=state_a,
         optimizer_identity="adamw:v1",
