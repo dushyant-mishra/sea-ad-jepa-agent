@@ -50,6 +50,15 @@ Required diagnostics:
 
 Where two fitted bases occupy the same stable subspace, align only by a prospectively declared orthogonal method such as Procrustes rotation.
 
+The alignment itself must not see the held donor used for coordinate-stability evaluation:
+
+1. fit the alignment/mapping on lawful `INNER_TRAIN_ONLY` units;
+2. freeze that transformation;
+3. apply the frozen transformation to the held donor;
+4. compute held-donor coordinate stability only after the freeze.
+
+Held-out donor coordinates may not influence the rotation, sign/order mapping, canonical mapping or other transformation used to declare those same coordinates stable.
+
 Then report:
 
 - coordinate-wise correlation;
@@ -87,6 +96,8 @@ No stability result by itself promotes a representation from `RNA_REPRESENTATION
 ## Shortcut controls
 
 Stability must be checked alongside technical-identifiability controls. A perfectly stable representation dominated by source/operator/depth/identity is not biologically qualified.
+
+Alignment leakage is also a shortcut: using held-donor coordinates to choose the transform and then evaluating those coordinates is not held-donor evidence.
 
 ## Protected boundaries
 
