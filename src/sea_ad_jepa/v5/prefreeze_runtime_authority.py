@@ -20,6 +20,7 @@ from typing import Any, Callable, Mapping
 GOVERNANCE_SCHEMA = "JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006"
 AUTHORITY_SCHEMA = "V5_PREFREEZE_RUNTIME_AUTHORITY_V1"
 RECEIPT_SCHEMA = "V5_PREFREEZE_RUNTIME_AUTHORITY_RECEIPT_V1"
+COMPLETED_CHECKPOINT_RECEIPT_SCHEMA = "V5_PREFREEZE_COMPLETED_CHECKPOINT_RECEIPT_V1"
 
 
 class PrefreezeGovernanceError(RuntimeError):
@@ -154,6 +155,7 @@ class CurrentTrainingAuthorityV2:
             raise PrefreezeGovernanceError("authority digest mismatch")
 
     def checkpoint_receipt(self) -> dict[str, Any]:
+        """Receipt for the exact starting checkpoint bound to this authority."""
         self._validate_digest()
         core = {
             "schema": RECEIPT_SCHEMA,
@@ -165,10 +167,71 @@ class CurrentTrainingAuthorityV2:
         }
         return {**core, "receipt_digest": _digest(core)}
 
+    def completed_checkpoint_receipt(self, checkpoint_digest: str) -> dict[str, Any]:
+        """Bind a new post-update checkpoint to its exact starting checkpoint."""
+        self._validate_digest()
+        checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
+        if checkpoint_digest == self.checkpoint_digest:
+            raise PrefreezeGovernanceError(
+                "completed checkpoint must represent a new post-update state"
+            )
+        core = {
+            "schema": COMPLETED_CHECKPOINT_RECEIPT_SCHEMA,
+            "authority_digest": self.authority_digest,
+            "governance_digest": self.governance_digest,
+            "optimizer_identity": self.optimizer_identity,
+            "parent_checkpoint_digest": self.checkpoint_digest,
+            "checkpoint_digest": checkpoint_digest,
+            "test_only": True,
+        }
+        return {**core, "receipt_digest": _digest(core)}
+
+    @classmethod
+    def verify_completed_checkpoint_receipt(
+        cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
+    ) -> dict[str, Any]:
+        """Verify exact post-update bytes and their parent-state linkage."""
+        if receipt.get("schema") != COMPLETED_CHECKPOINT_RECEIPT_SCHEMA:
+            raise PrefreezeGovernanceError("completed checkpoint receipt schema mismatch")
+        if receipt.get("test_only") is not True:
+            raise PrefreezeGovernanceError(
+                "production reload disabled until separate execution authority exists"
+            )
+        observed = _sha256(observed_checkpoint_digest, "checkpoint digest")
+        expected = _sha256(receipt.get("checkpoint_digest"), "checkpoint digest")
+        parent = _sha256(
+            receipt.get("parent_checkpoint_digest"), "parent checkpoint digest"
+        )
+        if observed != expected:
+            raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
+        if expected == parent:
+            raise PrefreezeGovernanceError(
+                "completed checkpoint must represent a new post-update state"
+            )
+        core = {
+            "schema": COMPLETED_CHECKPOINT_RECEIPT_SCHEMA,
+            "authority_digest": _sha256(
+                receipt.get("authority_digest"), "authority_digest"
+            ),
+            "governance_digest": _sha256(
+                receipt.get("governance_digest"), "governance_digest"
+            ),
+            "optimizer_identity": receipt.get("optimizer_identity"),
+            "parent_checkpoint_digest": parent,
+            "checkpoint_digest": expected,
+            "test_only": True,
+        }
+        if not isinstance(core["optimizer_identity"], str) or not core["optimizer_identity"].strip():
+            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
+        if receipt.get("receipt_digest") != _digest(core):
+            raise PrefreezeGovernanceError("completed checkpoint receipt digest mismatch")
+        return core
+
     @classmethod
     def reload(
         cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
     ) -> "CurrentTrainingAuthorityV2":
+        """Reload the exact starting checkpoint receipt (pre-update path)."""
         if receipt.get("schema") != RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("runtime receipt schema mismatch")
         if receipt.get("test_only") is not True:
