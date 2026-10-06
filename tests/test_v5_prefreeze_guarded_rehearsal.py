@@ -45,13 +45,16 @@ def _future_test_authority():
 
 def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
     events = []
+    counter = {"value": 11}
     authority = _future_test_authority()
     guard = auth.OptimizerGuardV4(authority)
 
     def backward(): events.append("backward")
     def unscale(): events.append("unscale")
     def validate(): events.append("validate"); return True
-    def optimizer_step(): events.append("optimizer_step")
+    def optimizer_step():
+        events.append("optimizer_step")
+        counter["value"] += 1
     def ema_update(): events.append("ema")
     def checkpoint(): events.append("checkpoint"); return _sha("checkpoint-B")
 
@@ -59,6 +62,7 @@ def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
         authority=authority,
         guard=guard,
         optimizer_identity="adamw:v1",
+        optimizer_step_index=lambda: counter["value"],
         backward=backward,
         unscale=unscale,
         validate_gradients=validate,
@@ -68,6 +72,9 @@ def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
     )
 
     assert events == ["backward", "unscale", "validate", "optimizer_step", "ema", "checkpoint"]
+    assert counter["value"] == 12
+    assert result["optimizer_step_before"] == 11
+    assert result["optimizer_step_after"] == 12
     assert result["schema"] == "V5_PREFREEZE_GUARDED_REHEARSAL_V1"
     assert result["training_authorized"] is False
     assert result["execution_authorized"] is False
@@ -92,6 +99,7 @@ def test_failed_gradient_validation_prevents_optimizer_ema_and_checkpoint():
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
+            optimizer_step_index=lambda: 0,
             backward=lambda: events.append("backward"),
             unscale=lambda: events.append("unscale"),
             validate_gradients=lambda: events.append("validate") or False,
@@ -116,6 +124,7 @@ def test_optimizer_exception_prevents_ema_and_checkpoint():
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
+            optimizer_step_index=lambda: 0,
             backward=lambda: events.append("backward"),
             unscale=lambda: events.append("unscale"),
             validate_gradients=lambda: events.append("validate") or True,
@@ -126,7 +135,29 @@ def test_optimizer_exception_prevents_ema_and_checkpoint():
     assert events == ["backward", "unscale", "validate", "optimizer_step"]
 
 
+def test_noop_optimizer_prevents_ema_and_checkpoint():
+    events = []
+    counter = {"value": 5}
+    authority = _future_test_authority()
+    guard = auth.OptimizerGuardV4(authority)
+    with pytest.raises(auth.StepCompletionError, match="exactly once"):
+        rehearsal.run_test_only_guarded_rehearsal(
+            authority=authority,
+            guard=guard,
+            optimizer_identity="adamw:v1",
+            optimizer_step_index=lambda: counter["value"],
+            backward=lambda: events.append("backward"),
+            unscale=lambda: events.append("unscale"),
+            validate_gradients=lambda: events.append("validate") or True,
+            optimizer_step=lambda: events.append("optimizer_step"),
+            ema_update=lambda: events.append("ema"),
+            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
+        )
+    assert events == ["backward", "unscale", "validate", "optimizer_step"]
+
+
 def test_post_update_checkpoint_must_be_new_state():
+    counter = {"value": 0}
     authority = _future_test_authority()
     guard = auth.OptimizerGuardV4(authority)
     with pytest.raises(auth.PrefreezeGovernanceError, match="new post-update state"):
@@ -134,10 +165,11 @@ def test_post_update_checkpoint_must_be_new_state():
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
+            optimizer_step_index=lambda: counter["value"],
             backward=lambda: None,
             unscale=lambda: None,
             validate_gradients=lambda: True,
-            optimizer_step=lambda: None,
+            optimizer_step=lambda: counter.__setitem__("value", 1),
             ema_update=lambda: None,
             checkpoint=lambda: _sha("checkpoint-A"),
         )
@@ -160,6 +192,7 @@ def test_rehearsal_refuses_non_test_authority_object():
             authority=FakeAuthority(),
             guard=None,
             optimizer_identity="adamw:v1",
+            optimizer_step_index=lambda: 0,
             backward=lambda: None,
             unscale=lambda: None,
             validate_gradients=lambda: True,
