@@ -10,7 +10,12 @@ from sea_ad_jepa.qualification.authorities import (
     ScientificExperimentAuthorityV1,
 )
 from sea_ad_jepa.qualification.canonical import canonical_digest
-from sea_ad_jepa.qualification.identity import FeatureIdentityReceiptV1, QualificationBatchIdentityV1
+from sea_ad_jepa.qualification.identity import (
+    FeatureIdentityReceiptV1,
+    MeasurementSupportReceiptV1,
+    ObservationOperatorIdentityReceiptV1,
+    QualificationBatchIdentityV1,
+)
 from sea_ad_jepa.qualification.pipeline import (
     BatchFieldV1,
     QualificationBatchV1,
@@ -79,6 +84,7 @@ def _batch(
 ):
     synthetic = data_kind is DataKind.SYNTHETIC
     features = ("g1", "g2", "g3")
+    observations = ("c1", "c2", "c3")
     feature_receipt = FeatureIdentityReceiptV1.from_ordered_ids(
         registry_ids=features,
         reader_axis_ids=features,
@@ -86,13 +92,35 @@ def _batch(
         tensor_feature_axis_ids=features,
         synthetic=synthetic,
     )
+    operator_receipt = ObservationOperatorIdentityReceiptV1(
+        source_roster=("SEA_AD",),
+        source_indices=(0, 0, 0),
+        source_names=("SEA_AD", "SEA_AD", "SEA_AD"),
+        operator_ids=("op-a", "op-a", "op-a"),
+        operator_source_map=(("op-a", "SEA_AD"),),
+        support_rule_id="test-support-v1",
+    )
+    support_rows = (
+        (True, True, True),
+        (True, True, True),
+        (True, True, True),
+    )
+    support_receipt = MeasurementSupportReceiptV1.from_support_rows(
+        observation_ids=observations,
+        producer_support_rows=support_rows,
+        batch_measurement_rows=support_rows,
+        support_rule_id="test-support-v1",
+        producer_manifest_digest=canonical_digest({"manifest": "test-producer-v1"}),
+    )
     identity = QualificationBatchIdentityV1(
-        observation_ids=("c1", "c2", "c3"),
+        observation_ids=observations,
         feature_receipt_digest=feature_receipt.digest(),
+        operator_identity_receipt_digest=operator_receipt.digest(),
+        measurement_support_receipt_digest=support_receipt.digest(),
         query_spec_digest=canonical_digest({"q": "g2"}),
         evidence_mask_digest=canonical_digest([1, 0, 1]),
-        measurement_mask_digest=canonical_digest([1, 1, 1]),
-        operator_context_digest=canonical_digest({"depth": "low"}),
+        measurement_mask_digest=support_receipt.batch_measurement_digest,
+        operator_context_digest=operator_receipt.digest(),
         evaluation_weight_digest=canonical_digest([1.0, 1.0, 1.0]),
         grouping_digest=canonical_digest(["d1", "d1", "d2"]),
         split_digest=canonical_digest(["inner", "inner", "held"]),
@@ -112,6 +140,8 @@ def _batch(
         adapter_id="v77-adapter-v1" if synthetic else "real-rna-adapter-v1",
         adapter_digest=adapter_digest,
         feature_identity_receipt=feature_receipt,
+        operator_identity_receipt=operator_receipt,
+        measurement_support_receipt=support_receipt,
         scientific_identity=identity,
         q_safety_policy=QSafetyPolicyV1(REQUIRED_Q_SAFETY_CHANNELS),
         fields=fields,
