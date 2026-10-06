@@ -1,31 +1,30 @@
-"""Prefreeze-compatible V5 runtime safety core.
+"""Non-authorizing V5 runtime mechanics bound to the V3 prefreeze state.
 
-This module recovers only the mechanical guarantees from the historical V64
-training-authority lineage. It deliberately does not import or recognize the
-old E2/target-specific scientific authority graph.
+This module selectively recovers mechanical safety ideas from the historical
+V64 training-authority / optimizer-guard lineage while deliberately refusing
+its scientific authority graph.  It is a rehearsal surface, not a training
+authority: the canonical V3 governance state must remain OFF/SEALED/PROTECTED.
 
-The canonical V3 premise state currently has training and Stage-A execution
-turned off, so it cannot issue an authority. Tests may use an explicit
-``test_only`` future-state fixture to exercise the mechanics without changing
-canonical governance. Production authority issuance is intentionally disabled
-until a separate future execution-authority schema is prospectively frozen.
+The optimizer guard is installed on the optimizer object itself and observes
+that object's pre/post step hooks.  It does not trust a caller-supplied step
+counter or a caller assertion that a step occurred.
 """
 from __future__ import annotations
 
 import hashlib
 import json
-from numbers import Integral
-from typing import Any, Callable, Mapping
+from typing import Any, Mapping
 
 
 GOVERNANCE_SCHEMA = "JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006"
-AUTHORITY_SCHEMA = "V5_PREFREEZE_RUNTIME_AUTHORITY_V1"
-RECEIPT_SCHEMA = "V5_PREFREEZE_RUNTIME_AUTHORITY_RECEIPT_V1"
-COMPLETED_CHECKPOINT_RECEIPT_SCHEMA = "V5_PREFREEZE_COMPLETED_CHECKPOINT_RECEIPT_V1"
+AUTHORITY_SCHEMA = "V5_PREFREEZE_MECHANICAL_AUTHORITY_V1"
+START_RECEIPT_SCHEMA = "V5_PREFREEZE_START_CHECKPOINT_RECEIPT_V1"
+COMPLETED_RECEIPT_SCHEMA = "V5_PREFREEZE_COMPLETED_CHECKPOINT_RECEIPT_V1"
+STEP_TOKEN_KWARG = "v5_prefreeze_guard_step_token"
 
 
 class PrefreezeGovernanceError(RuntimeError):
-    """Current scientific governance does not permit the requested action."""
+    """The current prefreeze governance does not permit the requested action."""
 
 
 class StepCompletionError(RuntimeError):
@@ -53,28 +52,38 @@ def _sha256(value: object, name: str) -> str:
     return value
 
 
-def _step_index(value: object) -> int:
-    if isinstance(value, bool) or not isinstance(value, Integral) or int(value) < 0:
-        raise StepCompletionError(
-            "optimizer step counter must be an exact nonnegative integer"
-        )
-    return int(value)
+def _nonempty(value: object, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise PrefreezeGovernanceError(f"{name} must be non-empty")
+    return value.strip()
 
 
-def _governance_core(state: Mapping[str, Any]) -> dict[str, Any]:
+def _canonical_prefreeze_governance(state: Mapping[str, Any]) -> dict[str, Any]:
+    if not isinstance(state, Mapping):
+        raise PrefreezeGovernanceError("governance state must be a mapping")
     if state.get("schema") != GOVERNANCE_SCHEMA:
-        raise PrefreezeGovernanceError(
-            f"governance schema must be {GOVERNANCE_SCHEMA}"
-        )
-    if state.get("training_authorized") is not True:
-        raise PrefreezeGovernanceError("training_authorized=false; runtime authority refused")
-    if state.get("stage_a_execution_authorized") is not True:
-        raise PrefreezeGovernanceError(
-            "stage_a_execution_authorized=false; runtime authority refused"
-        )
-    # Bind the entire machine-readable governance object, not a hand-picked
-    # subset. Any scientific/governance mutation must change the authority
-    # digest even though this adapter remains test-only.
+        raise PrefreezeGovernanceError(f"governance schema must be {GOVERNANCE_SCHEMA}")
+    required = {
+        "role": "PROSPECTIVE_SCIENTIFIC_GOVERNANCE__PREFREEZE_ONLY",
+        "training_authorized": False,
+        "multimodal_training_authorized": False,
+        "stage_a_execution_authorized": False,
+        "stage4_authorized": False,
+        "five_hundred_k_authorized": False,
+        "optimizer_updates_during_target_discrimination": 0,
+        "ema_updates_during_target_discrimination": 0,
+        "test_state": "SEALED",
+        "morabito_state": "PROTECTED",
+        "production_target_winner": None,
+        "representation_winner": None,
+        "selected_estimand": "UNSET_REQUIRES_APPROVAL",
+        "deciding_numeric_thresholds": "UNSET_REQUIRES_APPROVAL",
+    }
+    for key, expected in required.items():
+        if state.get(key) != expected:
+            raise PrefreezeGovernanceError(
+                f"prefreeze mechanical authority requires {key}={expected!r}"
+            )
     try:
         return json.loads(
             json.dumps(
@@ -89,12 +98,8 @@ def _governance_core(state: Mapping[str, Any]) -> dict[str, Any]:
         raise PrefreezeGovernanceError("governance state must be canonical JSON") from exc
 
 
-class CurrentTrainingAuthorityV2:
-    """Digest-bound test authority for exercising recovered runtime mechanics.
-
-    This prefreeze adapter cannot issue production authority. A later,
-    independently governed execution-authority schema must replace that gap.
-    """
+class PrefreezeMechanicalAuthorityV1:
+    """Digest-bound rehearsal authority that cannot authorize execution."""
 
     def __init__(
         self,
@@ -102,20 +107,15 @@ class CurrentTrainingAuthorityV2:
         governance_digest: str,
         optimizer_identity: str,
         checkpoint_digest: str,
-        test_only: bool,
         authority_digest: str,
     ) -> None:
         self.governance_digest = _sha256(governance_digest, "governance_digest")
-        if not isinstance(optimizer_identity, str) or not optimizer_identity.strip():
-            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
-        self.optimizer_identity = optimizer_identity
+        self.optimizer_identity = _nonempty(optimizer_identity, "optimizer identity")
         self.checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
-        self.test_only = bool(test_only)
-        if self.test_only is not True:
-            raise PrefreezeGovernanceError(
-                "production issuance disabled until separate execution authority exists"
-            )
-        self.authority_digest = _sha256(authority_digest, "authority_digest")
+        self.authority_digest = _sha256(authority_digest, "authority digest")
+        self.rehearsal_only = True
+        self.training_authorized = False
+        self.execution_authorized = False
         self._validate_digest()
 
     @classmethod
@@ -125,15 +125,9 @@ class CurrentTrainingAuthorityV2:
         governance_state: Mapping[str, Any],
         optimizer_identity: str,
         checkpoint_digest: str,
-        test_only: bool = False,
-    ) -> "CurrentTrainingAuthorityV2":
-        core = _governance_core(governance_state)
-        if test_only is not True:
-            raise PrefreezeGovernanceError(
-                "production issuance disabled until separate execution authority exists"
-            )
-        if not isinstance(optimizer_identity, str) or not optimizer_identity.strip():
-            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
+    ) -> "PrefreezeMechanicalAuthorityV1":
+        core = _canonical_prefreeze_governance(governance_state)
+        optimizer_identity = _nonempty(optimizer_identity, "optimizer identity")
         checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
         governance_digest = _digest(core)
         authority_core = {
@@ -141,281 +135,305 @@ class CurrentTrainingAuthorityV2:
             "governance_digest": governance_digest,
             "optimizer_identity": optimizer_identity,
             "checkpoint_digest": checkpoint_digest,
-            "test_only": True,
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
         }
         return cls(
             governance_digest=governance_digest,
             optimizer_identity=optimizer_identity,
             checkpoint_digest=checkpoint_digest,
-            test_only=True,
             authority_digest=_digest(authority_core),
         )
 
-    def _authority_core(self) -> dict[str, Any]:
+    def _core(self) -> dict[str, Any]:
         return {
             "schema": AUTHORITY_SCHEMA,
             "governance_digest": self.governance_digest,
             "optimizer_identity": self.optimizer_identity,
             "checkpoint_digest": self.checkpoint_digest,
-            "test_only": self.test_only,
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
         }
 
     def _validate_digest(self) -> None:
-        if self.test_only is not True:
-            raise PrefreezeGovernanceError("non-test runtime authority is forbidden")
-        if self.authority_digest != _digest(self._authority_core()):
+        if self.rehearsal_only is not True:
+            raise PrefreezeGovernanceError("prefreeze authority must remain rehearsal-only")
+        if self.training_authorized or self.execution_authorized:
+            raise PrefreezeGovernanceError("prefreeze authority cannot authorize execution")
+        if self.authority_digest != _digest(self._core()):
             raise PrefreezeGovernanceError("authority digest mismatch")
 
-    def checkpoint_receipt(self) -> dict[str, Any]:
-        """Receipt for the exact starting checkpoint bound to this authority."""
+    def start_checkpoint_receipt(self) -> dict[str, Any]:
         self._validate_digest()
         core = {
-            "schema": RECEIPT_SCHEMA,
+            "schema": START_RECEIPT_SCHEMA,
             "authority_digest": self.authority_digest,
             "governance_digest": self.governance_digest,
             "optimizer_identity": self.optimizer_identity,
             "checkpoint_digest": self.checkpoint_digest,
-            "test_only": True,
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
         }
         return {**core, "receipt_digest": _digest(core)}
 
-    def completed_checkpoint_receipt(self, checkpoint_digest: str) -> dict[str, Any]:
-        """Bind a new post-update checkpoint to its exact starting checkpoint."""
-        self._validate_digest()
-        checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
-        if checkpoint_digest == self.checkpoint_digest:
-            raise PrefreezeGovernanceError(
-                "completed checkpoint must represent a new post-update state"
-            )
+    @classmethod
+    def reload_start_checkpoint(
+        cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
+    ) -> "PrefreezeMechanicalAuthorityV1":
+        if receipt.get("schema") != START_RECEIPT_SCHEMA:
+            raise PrefreezeGovernanceError("start checkpoint receipt schema mismatch")
+        if receipt.get("rehearsal_only") is not True:
+            raise PrefreezeGovernanceError("non-rehearsal reload is forbidden")
+        if receipt.get("training_authorized") is not False or receipt.get("execution_authorized") is not False:
+            raise PrefreezeGovernanceError("prefreeze receipt cannot authorize execution")
+        observed = _sha256(observed_checkpoint_digest, "checkpoint digest")
+        expected = _sha256(receipt.get("checkpoint_digest"), "checkpoint digest")
+        if observed != expected:
+            raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
         core = {
-            "schema": COMPLETED_CHECKPOINT_RECEIPT_SCHEMA,
-            "authority_digest": self.authority_digest,
-            "governance_digest": self.governance_digest,
-            "optimizer_identity": self.optimizer_identity,
-            "parent_checkpoint_digest": self.checkpoint_digest,
-            "checkpoint_digest": checkpoint_digest,
-            "test_only": True,
+            "schema": START_RECEIPT_SCHEMA,
+            "authority_digest": receipt.get("authority_digest"),
+            "governance_digest": receipt.get("governance_digest"),
+            "optimizer_identity": receipt.get("optimizer_identity"),
+            "checkpoint_digest": expected,
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
         }
-        return {**core, "receipt_digest": _digest(core)}
+        if receipt.get("receipt_digest") != _digest(core):
+            raise PrefreezeGovernanceError("start checkpoint receipt digest mismatch")
+        return cls(
+            governance_digest=receipt.get("governance_digest"),
+            optimizer_identity=receipt.get("optimizer_identity"),
+            checkpoint_digest=expected,
+            authority_digest=receipt.get("authority_digest"),
+        )
 
     @classmethod
     def verify_completed_checkpoint_receipt(
         cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
     ) -> dict[str, Any]:
-        """Verify exact post-update bytes and their parent-state lineage."""
-        if receipt.get("schema") != COMPLETED_CHECKPOINT_RECEIPT_SCHEMA:
+        if receipt.get("schema") != COMPLETED_RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("completed checkpoint receipt schema mismatch")
-        if receipt.get("test_only") is not True:
-            raise PrefreezeGovernanceError(
-                "production reload disabled until separate execution authority exists"
-            )
+        if receipt.get("rehearsal_only") is not True:
+            raise PrefreezeGovernanceError("non-rehearsal completed receipt is forbidden")
+        if receipt.get("training_authorized") is not False or receipt.get("execution_authorized") is not False:
+            raise PrefreezeGovernanceError("prefreeze receipt cannot authorize execution")
         observed = _sha256(observed_checkpoint_digest, "checkpoint digest")
         expected = _sha256(receipt.get("checkpoint_digest"), "checkpoint digest")
-        parent = _sha256(
-            receipt.get("parent_checkpoint_digest"), "parent checkpoint digest"
-        )
-        governance_digest = _sha256(
-            receipt.get("governance_digest"), "governance_digest"
-        )
-        optimizer_identity = receipt.get("optimizer_identity")
-        if not isinstance(optimizer_identity, str) or not optimizer_identity.strip():
-            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
+        parent = _sha256(receipt.get("parent_checkpoint_digest"), "parent checkpoint digest")
         if observed != expected:
             raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
         if expected == parent:
-            raise PrefreezeGovernanceError(
-                "completed checkpoint must represent a new post-update state"
-            )
-
-        expected_authority_digest = _digest(
-            {
-                "schema": AUTHORITY_SCHEMA,
-                "governance_digest": governance_digest,
-                "optimizer_identity": optimizer_identity,
-                "checkpoint_digest": parent,
-                "test_only": True,
-            }
-        )
-        authority_digest = _sha256(
-            receipt.get("authority_digest"), "authority digest"
-        )
-        if authority_digest != expected_authority_digest:
-            raise PrefreezeGovernanceError("parent authority digest mismatch")
-
+            raise PrefreezeGovernanceError("completed checkpoint must be a new state")
         core = {
-            "schema": COMPLETED_CHECKPOINT_RECEIPT_SCHEMA,
-            "authority_digest": authority_digest,
-            "governance_digest": governance_digest,
-            "optimizer_identity": optimizer_identity,
+            "schema": COMPLETED_RECEIPT_SCHEMA,
+            "authority_digest": _sha256(receipt.get("authority_digest"), "authority digest"),
+            "governance_digest": _sha256(receipt.get("governance_digest"), "governance digest"),
+            "optimizer_identity": _nonempty(receipt.get("optimizer_identity"), "optimizer identity"),
             "parent_checkpoint_digest": parent,
             "checkpoint_digest": expected,
-            "test_only": True,
+            "guarded_step_token": _nonempty(receipt.get("guarded_step_token"), "guarded step token"),
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
         }
         if receipt.get("receipt_digest") != _digest(core):
             raise PrefreezeGovernanceError("completed checkpoint receipt digest mismatch")
+        expected_authority = _digest(
+            {
+                "schema": AUTHORITY_SCHEMA,
+                "governance_digest": core["governance_digest"],
+                "optimizer_identity": core["optimizer_identity"],
+                "checkpoint_digest": parent,
+                "rehearsal_only": True,
+                "training_authorized": False,
+                "execution_authorized": False,
+            }
+        )
+        if core["authority_digest"] != expected_authority:
+            raise PrefreezeGovernanceError("parent authority digest mismatch")
         return core
 
-    @classmethod
-    def reload(
-        cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
-    ) -> "CurrentTrainingAuthorityV2":
-        """Reload the exact starting checkpoint receipt (pre-update path)."""
-        if receipt.get("schema") != RECEIPT_SCHEMA:
-            raise PrefreezeGovernanceError("runtime receipt schema mismatch")
-        if receipt.get("test_only") is not True:
-            raise PrefreezeGovernanceError(
-                "production reload disabled until separate execution authority exists"
-            )
-        observed_checkpoint_digest = _sha256(
-            observed_checkpoint_digest, "checkpoint digest"
-        )
-        expected_checkpoint = _sha256(
-            receipt.get("checkpoint_digest"), "checkpoint digest"
-        )
-        if observed_checkpoint_digest != expected_checkpoint:
-            raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
-        core = {
-            "schema": RECEIPT_SCHEMA,
-            "authority_digest": receipt.get("authority_digest"),
-            "governance_digest": receipt.get("governance_digest"),
-            "optimizer_identity": receipt.get("optimizer_identity"),
-            "checkpoint_digest": expected_checkpoint,
-            "test_only": True,
-        }
-        if receipt.get("receipt_digest") != _digest(core):
-            raise PrefreezeGovernanceError("runtime receipt digest mismatch")
-        return cls(
-            governance_digest=receipt.get("governance_digest"),
-            optimizer_identity=receipt.get("optimizer_identity"),
-            checkpoint_digest=expected_checkpoint,
-            test_only=True,
-            authority_digest=receipt.get("authority_digest"),
-        )
 
+class PrefreezeOptimizerGuardV1:
+    """Optimizer-bound one-shot guard mirroring the historical V4 hook pattern."""
 
-class OptimizerGuardV4:
-    """One-shot state machine that proves an optimizer advanced before EMA."""
-
-    def __init__(self, authority: CurrentTrainingAuthorityV2) -> None:
-        if not isinstance(authority, CurrentTrainingAuthorityV2):
-            raise PrefreezeGovernanceError("CurrentTrainingAuthorityV2 required")
+    def __init__(self, authority: PrefreezeMechanicalAuthorityV1, optimizer: Any) -> None:
+        if not isinstance(authority, PrefreezeMechanicalAuthorityV1):
+            raise PrefreezeGovernanceError("PrefreezeMechanicalAuthorityV1 required")
         authority._validate_digest()
+        for name in ("step", "register_step_pre_hook", "register_step_post_hook"):
+            if not callable(getattr(optimizer, name, None)):
+                raise PrefreezeGovernanceError(f"optimizer must provide {name}()")
         self.authority = authority
+        self.optimizer = optimizer
         self._counter = 0
         self._steps: dict[str, dict[str, Any]] = {}
+        self._armed: str | None = None
+        self._consumed: str | None = None
+        self._closed = False
+        self._pre_handle = optimizer.register_step_pre_hook(self._pre_step)
+        self._post_handle = optimizer.register_step_post_hook(self._post_step)
 
-    def begin_step(
-        self,
-        optimizer_identity: str,
-        checkpoint_digest: str,
-        optimizer_step_probe: Callable[[], object],
-    ) -> str:
+    def _ensure_open(self) -> None:
+        if self._closed:
+            raise StepCompletionError("optimizer guard is closed")
         self.authority._validate_digest()
+
+    def begin_step(self, optimizer_identity: str, checkpoint_digest: str) -> str:
+        self._ensure_open()
         if optimizer_identity != self.authority.optimizer_identity:
             raise PrefreezeGovernanceError("optimizer identity mismatch")
         if _sha256(checkpoint_digest, "checkpoint digest") != self.authority.checkpoint_digest:
             raise PrefreezeGovernanceError("checkpoint digest mismatch")
-        if not callable(optimizer_step_probe):
-            raise StepCompletionError("optimizer step counter probe is required")
-        before = _step_index(optimizer_step_probe())
-        token = f"step-{self._counter:08d}"
+        if self._armed is not None or self._consumed is not None:
+            raise StepCompletionError("prior optimizer authorization is still active")
+        token = f"prefreeze-step-{self._counter:08d}"
         self._counter += 1
         self._steps[token] = {
             "unscaled": False,
             "gradients_valid": False,
-            "step_complete": False,
+            "optimizer_completed": False,
+            "ema_completed": False,
             "rejected": False,
-            "reject_reason": None,
             "ema_consumed": False,
-            "optimizer_step_before": before,
-            "optimizer_step_after": None,
-            "optimizer_step_probe": optimizer_step_probe,
         }
+        self._armed = token
         return token
 
-    def _step(self, token: str) -> dict[str, Any]:
+    def _step_state(self, token: str) -> dict[str, Any]:
         try:
             return self._steps[token]
         except KeyError as exc:
             raise StepCompletionError("unknown guarded step token") from exc
 
     def mark_unscaled(self, token: str) -> None:
-        step = self._step(token)
-        if step["rejected"] or step["step_complete"]:
+        step = self._step_state(token)
+        if step["rejected"] or step["optimizer_completed"]:
             raise StepCompletionError("cannot unscale a closed step")
         step["unscaled"] = True
 
     def mark_gradients_valid(self, token: str) -> None:
-        step = self._step(token)
+        step = self._step_state(token)
         if not step["unscaled"]:
             raise StepCompletionError("gradients must be unscaled before validation")
-        if step["rejected"] or step["step_complete"]:
+        if step["rejected"] or step["optimizer_completed"]:
             raise StepCompletionError("cannot validate gradients on a closed step")
         step["gradients_valid"] = True
 
     def reject_step(self, token: str, reason: str) -> None:
-        step = self._step(token)
-        if step["step_complete"]:
+        step = self._step_state(token)
+        if step["optimizer_completed"]:
             raise StepCompletionError("cannot reject a completed optimizer step")
         step["rejected"] = True
         step["reject_reason"] = str(reason)
+        if self._armed == token:
+            self._armed = None
 
-    def run_optimizer_step(self, token: str, step_callable: Callable[[], Any]) -> Any:
-        step = self._step(token)
+    def _pre_step(self, optimizer: Any, args: tuple[Any, ...], kwargs: dict[str, Any]):
+        self._ensure_open()
+        if optimizer is not self.optimizer:
+            raise StepCompletionError("optimizer identity object mismatch")
+        token = kwargs.pop(STEP_TOKEN_KWARG, None)
+        if self._armed is None or token != self._armed:
+            expected = self._armed
+            self._armed = None
+            raise StepCompletionError(
+                f"optimizer step not armed for supplied token; expected={expected!r} observed={token!r}"
+            )
+        step = self._step_state(token)
+        if step["rejected"] or not step["unscaled"] or not step["gradients_valid"]:
+            self._armed = None
+            raise StepCompletionError("optimizer step requires unscaled validated gradients")
+        if self._consumed is not None:
+            self._armed = None
+            raise StepCompletionError("optimizer authorization replay")
+        self._consumed = token
+        return args, kwargs
+
+    def _post_step(self, optimizer: Any, args: tuple[Any, ...], kwargs: dict[str, Any]):
+        self._ensure_open()
+        if optimizer is not self.optimizer or self._consumed is None:
+            self._armed = None
+            raise StepCompletionError("optimizer post-step lacks consumed authorization")
+        token = self._consumed
+        step = self._step_state(token)
+        step["optimizer_completed"] = True
+        self._armed = None
+
+    def run_optimizer_step(self, token: str) -> Any:
+        step = self._step_state(token)
         if step["rejected"]:
             raise StepCompletionError("rejected step cannot execute optimizer")
         if not step["unscaled"] or not step["gradients_valid"]:
-            raise StepCompletionError(
-                "optimizer step requires unscaled and validated gradients"
-            )
-        if step["step_complete"]:
-            raise StepCompletionError("optimizer step already completed")
-        if not callable(step_callable):
-            raise StepCompletionError("optimizer step callable required")
+            raise StepCompletionError("optimizer step requires unscaled validated gradients")
         try:
-            result = step_callable()
+            result = self.optimizer.step(**{STEP_TOKEN_KWARG: token})
         except Exception:
             step["rejected"] = True
-            step["reject_reason"] = "optimizer callable raised"
+            self._armed = None
+            self._consumed = None
             raise
-        try:
-            after = _step_index(step["optimizer_step_probe"]())
-        except Exception:
+        if self._consumed != token or not step["optimizer_completed"]:
             step["rejected"] = True
-            step["reject_reason"] = "optimizer step counter probe failed"
-            raise
-        before = step["optimizer_step_before"]
-        step["optimizer_step_after"] = after
-        if after != before + 1:
-            step["rejected"] = True
-            step["reject_reason"] = (
-                f"optimizer must advance exactly once: {before}->{after}"
-            )
-            raise StepCompletionError(
-                f"optimizer must advance exactly once: {before}->{after}"
-            )
-        step["step_complete"] = True
+            self._armed = None
+            self._consumed = None
+            raise StepCompletionError("guarded optimizer step did not complete")
+        self._consumed = None
         return result
 
     def assert_step_complete(self, token: str) -> bool:
-        step = self._step(token)
-        if step["rejected"] or not step["step_complete"]:
+        step = self._step_state(token)
+        if step["rejected"] or not step["optimizer_completed"]:
             raise StepCompletionError("guarded optimizer step did not complete")
-        if step["optimizer_step_after"] != step["optimizer_step_before"] + 1:
-            raise StepCompletionError("optimizer completion proof is inconsistent")
         return True
 
-    def step_indices(self, token: str) -> tuple[int, int]:
-        step = self._step(token)
+    def run_ema(self, token: str, ema_callable: Any) -> Any:
+        step = self._step_state(token)
         self.assert_step_complete(token)
-        return step["optimizer_step_before"], step["optimizer_step_after"]
-
-    def authorize_ema(self, token: str) -> bool:
-        step = self._step(token)
         if step["ema_consumed"]:
             raise StepCompletionError("EMA authorization already consumed")
-        if step["rejected"] or not step["step_complete"]:
-            raise StepCompletionError("EMA forbidden before successful optimizer step")
-        self.assert_step_complete(token)
+        if not callable(ema_callable):
+            raise StepCompletionError("EMA callback is required")
         step["ema_consumed"] = True
-        return True
+        try:
+            result = ema_callable()
+        except Exception:
+            step["rejected"] = True
+            raise
+        step["ema_completed"] = True
+        return result
+
+    def completed_checkpoint_receipt(self, token: str, checkpoint_digest: str) -> dict[str, Any]:
+        step = self._step_state(token)
+        self.assert_step_complete(token)
+        if step["rejected"] or not step["ema_completed"]:
+            raise StepCompletionError("completed checkpoint requires successful EMA")
+        checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
+        if checkpoint_digest == self.authority.checkpoint_digest:
+            raise PrefreezeGovernanceError("completed checkpoint must be a new state")
+        core = {
+            "schema": COMPLETED_RECEIPT_SCHEMA,
+            "authority_digest": self.authority.authority_digest,
+            "governance_digest": self.authority.governance_digest,
+            "optimizer_identity": self.authority.optimizer_identity,
+            "parent_checkpoint_digest": self.authority.checkpoint_digest,
+            "checkpoint_digest": checkpoint_digest,
+            "guarded_step_token": token,
+            "rehearsal_only": True,
+            "training_authorized": False,
+            "execution_authorized": False,
+        }
+        return {**core, "receipt_digest": _digest(core)}
+
+    def close(self) -> None:
+        if not self._closed:
+            self._pre_handle.remove()
+            self._post_handle.remove()
+            self._armed = None
+            self._consumed = None
+            self._closed = True
