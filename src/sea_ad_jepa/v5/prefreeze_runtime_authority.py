@@ -344,16 +344,42 @@ class PrefreezeOptimizerGuardV1:
         token = self._consumed; self._step_state(token)["optimizer_completed"] = True
         self._armed, self._pending_ema = None, token
 
-    def run_optimizer_step(self, token: str) -> Any:
+    def _require_step_ready(self, token: str) -> dict[str, Any]:
         step = self._step_state(token)
         if step["rejected"] or not step["unscaled"] or not step["gradients_valid"]:
             raise StepCompletionError("optimizer step requires unscaled validated gradients")
+        return step
+
+    def run_optimizer_step(self, token: str) -> Any:
+        step = self._require_step_ready(token)
         try: result = self.optimizer.step(**{STEP_TOKEN_KWARG: token})
         except Exception:
             step["rejected"] = True; self._armed = self._consumed = None; self._poisoned = True; raise
         if self._consumed != token or not step["optimizer_completed"]:
             step["rejected"] = True; self._armed = self._consumed = None; self._poisoned = True
             raise StepCompletionError("guarded optimizer step did not complete")
+        self._consumed = None
+        return result
+
+    def run_scaler_step(self, token: str, scaler: Any) -> Any:
+        """Run the guarded optimizer through a GradScaler-like step boundary.
+
+        The optimizer hooks are the completion proof. If the scaler skips the optimizer
+        (for example after detecting nonfinite gradients), neither hook consumes/completes
+        the token, so the step is rejected and EMA remains unavailable.
+        """
+        step = self._require_step_ready(token)
+        scaler_step = getattr(scaler, "step", None)
+        if not callable(scaler_step):
+            raise StepCompletionError("scaler step callback is required")
+        try:
+            result = scaler_step(self.optimizer, **{STEP_TOKEN_KWARG: token})
+        except Exception:
+            step["rejected"] = True; self._armed = self._consumed = None; self._poisoned = True; raise
+        if self._consumed != token or not step["optimizer_completed"]:
+            step["rejected"] = True
+            self._armed = self._consumed = self._pending_ema = None
+            raise StepCompletionError("scaler skipped optimizer step or guarded optimizer step did not complete")
         self._consumed = None
         return result
 
