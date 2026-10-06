@@ -199,6 +199,8 @@ def run_zero_update_qualification(
     if protocol.execution_mode is not ExecutionMode.ZERO_UPDATE_QUALIFICATION:
         raise ZeroUpdateViolation("run_zero_update_qualification requires ZERO_UPDATE_QUALIFICATION mode")
     authorities.validate_against(protocol)
+    if not authorities.scientific.evaluation_authorized:
+        raise ValueError("scientific authority does not authorize evaluation")
     batch.validate_against(protocol)
 
     run = ExperimentRunV1(
