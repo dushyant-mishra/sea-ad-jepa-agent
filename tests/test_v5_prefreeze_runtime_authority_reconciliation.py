@@ -1,0 +1,207 @@
+import hashlib
+import json
+from copy import deepcopy
+from pathlib import Path
+
+import pytest
+
+from sea_ad_jepa.v5.prefreeze_runtime_authority import (
+    CurrentTrainingAuthorityV2,
+    OptimizerGuardV4,
+    PrefreezeGovernanceError,
+    StepCompletionError,
+)
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_PATH = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
+
+
+def _state():
+    return json.loads(STATE_PATH.read_text())
+
+
+def _sha(text: str) -> str:
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+def _future_fixture():
+    state = deepcopy(_state())
+    state["training_authorized"] = True
+    state["stage_a_execution_authorized"] = True
+    return state
+
+
+def test_canonical_prefreeze_state_refuses_training_authority():
+    with pytest.raises(PrefreezeGovernanceError, match="training_authorized=false"):
+        CurrentTrainingAuthorityV2.issue(
+            governance_state=_state(),
+            optimizer_identity="adamw:v1",
+            checkpoint_digest=_sha("checkpoint-A"),
+        )
+
+
+def test_stage_a_off_independently_refuses_training_authority():
+    state = _future_fixture()
+    state["stage_a_execution_authorized"] = False
+    with pytest.raises(PrefreezeGovernanceError, match="stage_a_execution_authorized=false"):
+        CurrentTrainingAuthorityV2.issue(
+            governance_state=state,
+            optimizer_identity="adamw:v1",
+            checkpoint_digest=_sha("checkpoint-A"),
+        )
+
+
+def test_old_scientific_roots_cannot_substitute_for_current_prefreeze_state():
+    old_v64 = {
+        "training_authorized": True,
+        "stage_a_execution_authorized": True,
+        "authority_roots": ["RNA_PLUS_E2_INTEGRATION_AUTHORITY"],
+    }
+    with pytest.raises(PrefreezeGovernanceError, match="schema"):
+        CurrentTrainingAuthorityV2.issue(
+            governance_state=old_v64,
+            optimizer_identity="adamw:v1",
+            checkpoint_digest=_sha("checkpoint-A"),
+        )
+
+
+def test_future_fixture_can_exercise_mechanical_guard_without_changing_canonical_state():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    assert authority.test_only is True
+    assert _state()["training_authorized"] is False
+
+
+def test_optimizer_identity_mismatch_is_rejected():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    with pytest.raises(PrefreezeGovernanceError, match="optimizer identity"):
+        guard.begin_step("sgd:v1", _sha("checkpoint-A"))
+
+
+def test_checkpoint_digest_mismatch_is_rejected():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    with pytest.raises(PrefreezeGovernanceError, match="checkpoint digest"):
+        guard.begin_step("adamw:v1", _sha("checkpoint-B"))
+
+
+def test_gradient_validation_must_follow_unscale_and_precede_step():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    with pytest.raises(StepCompletionError, match="unscaled"):
+        guard.mark_gradients_valid(token)
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    guard.mark_optimizer_step_complete(token)
+    assert guard.assert_step_complete(token) is True
+
+
+def test_rejected_step_cannot_advance_ema():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    guard.mark_unscaled(token)
+    guard.reject_step(token, "nonfinite gradients")
+    with pytest.raises(StepCompletionError, match="EMA"):
+        guard.authorize_ema(token)
+
+
+def test_incomplete_step_cannot_advance_ema():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    with pytest.raises(StepCompletionError, match="EMA"):
+        guard.authorize_ema(token)
+
+
+def test_successful_optimizer_step_is_required_before_ema():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    guard.mark_optimizer_step_complete(token)
+    assert guard.authorize_ema(token) is True
+
+
+def test_step_completion_token_is_one_shot_and_cannot_be_replayed():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    guard.mark_optimizer_step_complete(token)
+    assert guard.authorize_ema(token) is True
+    with pytest.raises(StepCompletionError, match="already consumed"):
+        guard.authorize_ema(token)
+
+
+def test_restart_authority_binds_exact_checkpoint_digest():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    receipt = authority.checkpoint_receipt()
+    assert receipt["checkpoint_digest"] == _sha("checkpoint-A")
+    assert CurrentTrainingAuthorityV2.reload(receipt, _sha("checkpoint-A")).checkpoint_digest == _sha("checkpoint-A")
+    with pytest.raises(PrefreezeGovernanceError, match="checkpoint digest"):
+        CurrentTrainingAuthorityV2.reload(receipt, _sha("checkpoint-B"))
+
+
+def test_runtime_layer_never_selects_scientific_winners():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    receipt = authority.checkpoint_receipt()
+    assert "production_target_winner" not in receipt
+    assert "representation_winner" not in receipt
+    assert "selected_estimand" not in receipt
