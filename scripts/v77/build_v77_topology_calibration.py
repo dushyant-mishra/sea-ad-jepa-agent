@@ -75,6 +75,33 @@ def summarize_degree(deg, n):
                 mean_degree_fraction_of_graph=float(deg.mean() / max(n - 1, 1)))
 
 
+def class_conditional_t5(Ld, sel, C, cls, min_cells=MIN_CLASS_CELLS):
+    """T5, the class-conditional guard, as ONE function, so the real calibration and every
+    synthetic scorer compute the same statistic. Synthetic T5 had been computed on the binary
+    detection layer with a 150-cell class floor, against this definition on the CPM-log1p
+    expression layer with a 200-cell floor (defect S140). Moved out of main() unchanged."""
+    nh = C.shape[0]
+    uc, cc = np.unique(cls, return_counts=True)
+    classes = [c for c, k in zip(uc, cc) if k >= min_cells]
+    per_class = {}
+    for c in classes:
+        m = cls == c
+        Hc = Ld[m][:, sel]
+        Hc = (Hc - Hc.mean(0)) / (Hc.std(0) + 1e-9)
+        Cc = (Hc.T @ Hc) / m.sum()
+        offc = Cc[~np.eye(nh, dtype=bool)]
+        degc, transc, _ = topology(Cc)
+        per_class[str(c)] = dict(
+            n_cells=int(m.sum()),
+            median_abs_corr=float(np.quantile(np.abs(offc), .5)),
+            fraction_gt_0p3=float((np.abs(offc) > .3).mean()),
+            mean_degree=float(degc.mean()), transitivity=float(transc))
+    off = C[~np.eye(nh, dtype=bool)]
+    pooled_med = float(np.quantile(np.abs(off), .5))
+    wc_med = float(np.mean([v["median_abs_corr"] for v in per_class.values()])) if per_class else float("nan")
+    return per_class, pooled_med, wc_med
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default=str(RC.DEFAULT_CACHE))
@@ -98,24 +125,7 @@ def main():
     best = Cabs.max(1)
 
     # ---- T5: class-conditional, the guard ----
-    uc, cc = np.unique(cls, return_counts=True)
-    classes = [c for c, k in zip(uc, cc) if k >= MIN_CLASS_CELLS]
-    per_class = {}
-    for c in classes:
-        m = cls == c
-        Hc = Ld[m][:, sel]
-        Hc = (Hc - Hc.mean(0)) / (Hc.std(0) + 1e-9)
-        Cc = (Hc.T @ Hc) / m.sum()
-        offc = Cc[~np.eye(nh, dtype=bool)]
-        degc, transc, _ = topology(Cc)
-        per_class[str(c)] = dict(
-            n_cells=int(m.sum()),
-            median_abs_corr=float(np.quantile(np.abs(offc), .5)),
-            fraction_gt_0p3=float((np.abs(offc) > .3).mean()),
-            mean_degree=float(degc.mean()), transitivity=float(transc))
-    off = C[~np.eye(nh, dtype=bool)]
-    pooled_med = float(np.quantile(np.abs(off), .5))
-    wc_med = float(np.mean([v["median_abs_corr"] for v in per_class.values()])) if per_class else float("nan")
+    per_class, pooled_med, wc_med = class_conditional_t5(Ld, sel, C, cls)
 
     rec = dict(
         schema="V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1",
