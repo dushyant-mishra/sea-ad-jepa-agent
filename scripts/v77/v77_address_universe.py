@@ -34,7 +34,21 @@ import build_v73_sharded_master_truth as T
 
 N_ADDRESSES = 41238
 REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
-SOURCE_FAMILIES = ("HVS", "NPH52", "SEA_AD")   # matches World A's SOURCE_ORDER
+# Row order of AddressUniverse.source_support. This is NOT World A's SOURCE_ORDER, which is
+# ('SEA_AD', 'NPH52', 'HVS') and is the order truth shards use for source_index. A comment here
+# once claimed the two matched. They never did, and indexing source_support with a truth
+# source_index silently swapped HVS and SEA-AD coverage in every canonical V2 world (defect
+# S146). Map by NAME with family_rows_for_source_names(); never index by position.
+SOURCE_FAMILIES = ("HVS", "NPH52", "SEA_AD")
+
+
+def family_rows_for_source_names(source_names) -> np.ndarray:
+    """Row of source_support for each truth source_index, matched by NAME, never by position."""
+    names = [str(s).replace("SEA-AD", "SEA_AD") for s in source_names]
+    unknown = sorted(set(names) - set(SOURCE_FAMILIES))
+    if unknown:
+        raise ValueError(f"truth source names with no registry family: {unknown}")
+    return np.array([SOURCE_FAMILIES.index(s) for s in names], dtype=np.int64)
 
 # Abundance and detectability priors by biotype family. These are the one genuinely external
 # choice in this module: they encode that ribosomal/mitochondrial transcripts dominate counts,

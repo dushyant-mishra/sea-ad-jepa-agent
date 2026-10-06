@@ -103,11 +103,23 @@ def _ncdf(x):
     return np.where(x >= 0, 1.0 - tail, tail)
 
 
-def structural_support(uni, source_ix, op_index, qc, operator_ids, seed):
-    """Support = the cohort really measured the address AND this operator retained it.
+STRUCTURAL_SUPPORT_RULE = "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1"
 
-    The first factor is a registry fact. The second is the operator-level attrition already
-    modelled in World A, applied within what the cohort measured.
+
+def structural_support(uni, source_ix, op_index, qc, operator_ids, seed):
+    """PRE-REPAIR RULE, retained only so worlds built before the repair stay reproducible.
+    Never call it for a new world. It carries two defects, both introduced in 4e95aac4:
+
+    S146  it indexes uni.source_support, whose rows are (HVS, NPH52, SEA_AD), with a truth
+          source_index that follows World A's order (SEA_AD, NPH52, HVS). HVS and SEA-AD
+          coverage were swapped, so the ~90% of cells that are SEA-AD received HVS coverage.
+    S147  structural_missing_fraction is measured against the whole registry, so it already
+          contains the cohort's own coverage gap. Applying it again inside that coverage counts
+          the gap twice: an HVS operator keeps 0.4543 of the registry, exactly HVS coverage, yet
+          this rule left an HVS-operator cell with about 0.21.
+
+    Original description: support = the cohort really measured the address AND this operator
+    retained it, with the operator attrition applied within what the cohort measured.
     """
     sup = uni.source_support[np.asarray(source_ix, dtype=np.int64)].copy()   # (cells, N) bool
     aid = np.arange(N, dtype=np.uint64)
@@ -120,6 +132,46 @@ def structural_support(uni, source_ix, op_index, qc, operator_ids, seed):
         drop = s > frac_keep
         rows = np.where(op_index == op)[0]
         sup[np.ix_(rows, np.where(drop)[0])] = False
+    return sup
+
+
+def structural_support_v2(uni, source_ix, op_index, qc, operator_ids, operator_sources,
+                          source_names, seed):
+    """Support = the cohort measured the address AND this operator retained it, with both
+    defects of the pre-repair rule removed.
+
+    * source_index is mapped to its registry family by NAME, never by position (S146).
+    * an operator's kept fraction is registry-relative, and a real operator cannot measure an
+      address its cohort does not cover, so the attrition WITHIN the cohort's coverage is
+      keep_registry / coverage (S147). An HVS operator therefore keeps all of HVS coverage,
+      which is exactly what its own QC row reports.
+    * a cell whose operator belongs to a different cohort than its source_index describes an
+      impossible measurement and is refused rather than modelled.
+    """
+    fam_of_source = AU.family_rows_for_source_names(source_names)
+    fam_of_operator = AU.family_rows_for_source_names(operator_sources)
+    src_rows = fam_of_source[np.asarray(source_ix, dtype=np.int64)]
+    op_index = np.asarray(op_index, dtype=np.int64)
+    bad = fam_of_operator[op_index] != src_rows
+    if bad.any():
+        raise RuntimeError(f"{int(bad.sum())} cells have an operator from a different cohort than "
+                           "their source_index; refusing to model an impossible measurement")
+    sup = uni.source_support[src_rows].copy()                                 # (cells, N) bool
+    aid = np.arange(N, dtype=np.uint64)
+    for op in np.unique(op_index):
+        row = qc[operator_ids[int(op)]]
+        keep_registry = (1.0 - float(row["structural_missing_fraction"])
+                         - float(row.get("collision_unresolved_fraction", 0.0)))
+        coverage = float(uni.source_support[fam_of_operator[int(op)]].mean())
+        within = keep_registry / coverage
+        if within > 1.0 + 1e-9:
+            raise RuntimeError(f"operator {operator_ids[int(op)]} keeps {keep_registry:.6f} of the "
+                               f"registry but its cohort covers only {coverage:.6f}")
+        within = float(np.clip(within, 0.05, 1.0))
+        s = T.u01(seed + 811, aid, 1100 + int(op))
+        drop = s > within
+        cells = np.where(op_index == op)[0]
+        sup[np.ix_(cells, np.where(drop)[0])] = False
     return sup
 
 
@@ -284,6 +336,7 @@ def observe(root: Path, seed: int, mseed: int | None,
     from build_v77_extended_rna_observer import apply_perturbation_to_tf
 
     shards, total, dens = [], 0, []
+    sup_acc = {}
     for s in tm["shards"]:
         tp = truth_root / s["file"]
         if sha256_file(tp) != s["sha256"]:
@@ -297,7 +350,12 @@ def observe(root: Path, seed: int, mseed: int | None,
         eta = build_eta(z, enabled, seed, uni, alloc, bg, len(ids), suppress=suppress, bg2=bg2)
         np.clip(eta, -8, 8, out=eta)
         rel = np.exp(eta, dtype=np.float32)
-        sup = structural_support(uni, src, op, qc, operator_ids, seed)
+        sup = structural_support_v2(uni, src, op, qc, operator_ids, tm["operator_sources"],
+                                    tm["source_names"], seed)
+        for si in np.unique(src):
+            m = src == si
+            acc = sup_acc.setdefault(str(tm["source_names"][int(si)]), [0.0, 0])
+            acc[0] += float(sup[m].mean(1).sum()); acc[1] += int(m.sum())
         # gene-specific detectability modulates preference within what is supported
         rel *= (1.0 / (1.0 + np.exp(-uni.logit_detect)))[None, :]
         rel *= sup
@@ -322,6 +380,9 @@ def observe(root: Path, seed: int, mseed: int | None,
         np.savez_compressed(p, indices=idx, data=val, indptr=indptr,
                             n_addresses=np.int64(N), global_cell_index=ids, cell_id=z["cell_id"],
                             support_count=sup.sum(1).astype(np.int32),
+                            # per-element structural support, so a consumer never has to guess
+                            # which zeros were measurable (S135); bits run along addresses
+                            support_mask_packed=np.packbits(sup, axis=1),
                             library_target=lib.astype(np.int64), detected_target=det.astype(np.int64))
         shards.append(dict(start=start, stop=stop, cells=len(ids), file=p.name,
                            sha256=sha256_file(p), nnz=int(len(idx))))
@@ -336,6 +397,9 @@ def observe(root: Path, seed: int, mseed: int | None,
 
     manifest = dict(
         schema="V77_FULLSCALE_CANONICAL_RNA_OBSERVER_MANIFEST_V2",
+        structural_support_rule=STRUCTURAL_SUPPORT_RULE,
+        support_mask_in_shards="support_mask_packed, np.packbits along addresses",
+        realized_support_fraction_by_source={k: v[0] / v[1] for k, v in sorted(sup_acc.items())},
         seed=seed, truth_seed=seed, measurement_seed=mseed, n_cells=total, n_addresses=N,
         enabled_components=sorted(enabled),
         truth_components=sorted(truth_components),
