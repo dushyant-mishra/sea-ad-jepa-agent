@@ -69,6 +69,16 @@ def test_stage_a_off_independently_refuses_training_authority():
         )
 
 
+def test_mutated_prefreeze_state_cannot_issue_production_authority():
+    with pytest.raises(PrefreezeGovernanceError, match="production issuance disabled"):
+        CurrentTrainingAuthorityV2.issue(
+            governance_state=_future_fixture(),
+            optimizer_identity="adamw:v1",
+            checkpoint_digest=_sha("checkpoint-A"),
+            test_only=False,
+        )
+
+
 def test_old_scientific_roots_cannot_substitute_for_current_prefreeze_state():
     old_v64 = {
         "training_authorized": True,
