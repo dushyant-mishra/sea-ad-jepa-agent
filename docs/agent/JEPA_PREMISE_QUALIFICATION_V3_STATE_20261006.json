@@ -63,15 +63,22 @@
       "UNSTABLE_REPRESENTATION",
       "INDETERMINATE__INSUFFICIENT_BIOLOGICAL_UNITS"
     ],
-    "coordinate_claim_allowed_when_subspace_only": false
+    "coordinate_claim_allowed_when_subspace_only": false,
+    "alignment_fit_partition": "INNER_TRAIN_ONLY",
+    "alignment_freeze_before_held_donor_evaluation": true,
+    "held_out_donors_may_influence_alignment": false
   },
   "uncertainty_axes": {
     "biological_evidence_convergence": {
       "purpose": "state movement as additional biologically relevant molecular evidence becomes available",
+      "operator_class": "FEATURE_OR_CONTEXT_SUPPORT_RESTRICTION",
+      "count_depth_thinning_forbidden": true,
       "exact_fractions": "UNSET_REQUIRES_APPROVAL"
     },
     "measurement_depth_convergence": {
       "purpose": "state movement when the same biological information is measured at different count depths",
+      "operator_class": "COUNT_DEPTH_THINNING",
+      "information_universe_fixed": true,
       "exact_fractions": "UNSET_REQUIRES_APPROVAL"
     },
     "must_remain_separate": true
