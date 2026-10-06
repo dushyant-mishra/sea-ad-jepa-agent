@@ -17,7 +17,12 @@ from .lifecycle import ExperimentRunV1, RunMode
 from .oracle import ChallengeStatus, FrozenQualificationOutputsV1
 from .protocol import ExecutionMode, QualificationProtocolV1
 from .qsafe import QSafetyPolicyV1
-from .receipts import DataKind, MutationProofStatus, QualificationProvenanceReceiptV1
+from .receipts import (
+    DataKind,
+    MutationProofStatus,
+    QSafetyExecutionProofStatus,
+    QualificationProvenanceReceiptV1,
+)
 from .visibility import FieldDeclaration, VisibilityClass
 
 
@@ -228,6 +233,7 @@ def run_zero_update_qualification(
     _assert_zero_update_payload(readout)
 
     mutation_proof_status = MutationProofStatus.NOT_PROVEN_BY_SHARED_INTERFACE
+    q_safety_execution_proof_status = QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
     provenance = QualificationProvenanceReceiptV1(
         experiment_run_id=batch.experiment_run_id,
         data_kind=batch.data_kind,
@@ -251,6 +257,7 @@ def run_zero_update_qualification(
         code_commit=batch.code_commit,
         environment_digest=batch.environment_digest,
         mutation_proof_status=mutation_proof_status,
+        q_safety_execution_proof_status=q_safety_execution_proof_status,
         runtime_successor_digest=None,
         checkpoint_digest=None,
         synthetic_realization_id=batch.synthetic_realization_id,
@@ -263,6 +270,7 @@ def run_zero_update_qualification(
         output_digest=output_digest,
         provenance_receipt_digest=provenance.digest(),
         mutation_proof_status=mutation_proof_status,
+        q_safety_execution_proof_status=q_safety_execution_proof_status,
         synthetic_realization_id=batch.synthetic_realization_id,
         challenge_partition=batch.challenge_partition,
     )
