@@ -26,6 +26,21 @@ import build_v77_real_calibration as RC
 import build_v77_topology_calibration as TC
 
 
+def abundance_stats(counts, lib):
+    """Abundance marginal targets. Frozen with donor-resampled envelopes BEFORE any
+    Observer-V2 candidate is evaluated, so the Issue-1 tolerances cannot be set after
+    looking at candidates."""
+    import numpy as _np
+    n, G = counts.shape
+    gmean = _np.asarray(counts.sum(0)).ravel() / n
+    nz = gmean[gmean > 0]
+    srt = _np.sort(gmean)[::-1]
+    return dict(
+        abundance_max_over_median_nonzero=float(srt[0] / _np.median(nz)) if len(nz) else float("nan"),
+        top1pct_count_share=float(srt[:max(1, G // 100)].sum() / gmean.sum()),
+        expressed_fraction=float((gmean > 0).mean()))
+
+
 def stats_from_logmatrix(Ld, sel, n_hvg):
     """All dependence targets, global and topological, signed and absolute."""
     H = Ld[:, sel]
