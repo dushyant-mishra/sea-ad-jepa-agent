@@ -52,10 +52,24 @@ Self-audit: V1 intentionally rejects mixed-parent visibility derivations rather 
 
 Task 2: complete.
 
-## Task 3 ruling — mechanical feature identity proof
+## Task 3 — mechanical feature and scientific identity
 
-Ruling: the original plan's digest-only `FeatureIdentityReceiptV1` is insufficient under the binding review amendment because a boolean or self-attested digest relationship could repeat the historical 41K semantic mapping failure. V1 will construct the receipt from independently inspectable ordered ID sequences and recompute every chain digest mechanically. A well-formed permutation must fail even when dimensions and per-component hash syntax are valid. Persisted downstream receipts may bind the resulting proof digest, but construction/validation requires inspectable ordered identifiers.
+Ruling: the original plan's digest-only `FeatureIdentityReceiptV1` was insufficient under the binding review amendment because a boolean or self-attested digest relationship could repeat the historical 41K semantic mapping failure. V1 constructs the receipt from independently inspectable ordered ID sequences and recomputes every chain digest mechanically.
+
+Initial RED: commit `05e07ada7ec91c224faddde4e46285a3d4705152`; workflow `37537664458` failed with `ModuleNotFoundError: sea_ad_jepa.qualification.identity`.
+
+Initial GREEN: `ef5297841b10994315da70424fc33ffb27233842`; workflow `37537762273` SUCCESS.
+
+Self-audit finding 1: direct dataclass construction could create a mismatched feature receipt before `validate()` was called. RED `eca5fd6ab606ff8dd33ab3992d297b646e7c2c5e`; workflow `37537856236` failed only on that constructor escape with 71 tests passing. Repair `408ae6206eccb9fe8b8f63b79fccdff9f74e803f`; workflow `37537959985` SUCCESS.
+
+Self-audit finding 2: the same unchecked-construction pattern remained in `QualificationBatchIdentityV1` and `PackingReceiptV1`. RED `37d40d81bd2eac66308e8460d901eff34d9f6663`; workflow `37538130689` failed only those two tests with 72 passing. Repair `b0814a98ddc2e1af98ecc24d4bab26374ad3ba9d`; workflow `37538237916` SUCCESS.
+
+Task 3: complete. Registry/reader/tokenizer/tensor-axis identity is mechanically checked from ordered IDs; same-length permutations fail; no attestation boolean exists; feature, batch, and packing identity records are valid-by-construction; compute packing is distinct from scientific identity.
+
+## Task 4 ruling — OFF-only mutation authority
+
+Ruling: per binding review amendment, `MutationAuthorityV1` in this plan may represent only `MUTATION_NOT_AUTHORIZED`. A protocol may describe `BOUNDED_MUTATION_REHEARSAL` as a future experiment request, but this V1 authority bundle must reject it because no compatible mutation authority exists in this slice. The later #221/#222 convergence plan must introduce any mutation-authorized schema under separate RED-first review.
 
 ## Status
 
-Task 3: starting RED phase for feature-chain permutation and packing/scientific-identity separation.
+Task 4: starting RED phase for authority escalation and OFF-only mutation structure.
