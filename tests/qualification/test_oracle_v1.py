@@ -18,12 +18,17 @@ def _run(run_id="run-oracle"):
     )
 
 
-def _outputs(run_id="run-oracle", realization_id="v77-challenge-001"):
+def _outputs(
+    run_id="run-oracle",
+    realization_id="v77-challenge-001",
+    challenge_partition="PROSPECTIVE_SEALED_CHALLENGE",
+):
     return FrozenQualificationOutputsV1(
         run_id=run_id,
         output_digest="d" * 64,
         provenance_receipt_digest="e" * 64,
         synthetic_realization_id=realization_id,
+        challenge_partition=challenge_partition,
     )
 
 
@@ -59,6 +64,19 @@ def test_oracle_realization_must_match_frozen_output_realization():
             _outputs(realization_id="v77-challenge-001"),
             _oracle(realization_id="v77-challenge-002"),
         )
+
+
+def test_development_partition_cannot_be_minted_as_prospective_challenge():
+    run = _run()
+    run.prepare()
+    run.freeze_outputs()
+    receipt = unblind_oracle(
+        run,
+        _outputs(challenge_partition="DEVELOPMENT_CALIBRATION"),
+        _oracle(),
+    )
+    assert receipt.challenge_status is ChallengeStatus.DEVELOPMENT_CALIBRATION
+    assert receipt.retune_reason is None
 
 
 def test_unblinding_records_one_way_receipt_after_frozen_outputs():
