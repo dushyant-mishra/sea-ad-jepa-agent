@@ -30,9 +30,9 @@ def _state():
 
 def _guard(param):
     optimizer = torch.optim.SGD([param], lr=0.1)
-    authority = Authority.issue(
+    authority = Authority.issue_for_optimizer(
         governance_state=_state(),
-        optimizer_identity="torch.optim.SGD:lr=0.1",
+        optimizer=optimizer,
         checkpoint_digest=_sha("checkpoint-A"),
     )
     guard = Guard(authority, optimizer)
@@ -67,6 +67,20 @@ def test_authority_optimizer_identity_cannot_lie_about_real_optimizer_configurat
 
     with pytest.raises(PrefreezeGovernanceError, match="optimizer.*configuration|optimizer.*identity"):
         Guard(authority, optimizer)
+
+
+def test_optimizer_hyperparameter_change_changes_bound_authority_identity():
+    p1 = torch.nn.Parameter(torch.tensor([2.0], dtype=torch.float32))
+    p2 = torch.nn.Parameter(torch.tensor([2.0], dtype=torch.float32))
+    opt_a = torch.optim.SGD([p1], lr=0.1, momentum=0.0)
+    opt_b = torch.optim.SGD([p2], lr=0.01, momentum=0.0)
+    a = Authority.issue_for_optimizer(
+        governance_state=_state(), optimizer=opt_a, checkpoint_digest=_sha("checkpoint-A")
+    )
+    b = Authority.issue_for_optimizer(
+        governance_state=_state(), optimizer=opt_b, checkpoint_digest=_sha("checkpoint-A")
+    )
+    assert a.optimizer_identity != b.optimizer_identity
 
 
 def test_cpu_gradscaler_finite_step_completes_through_guard():
