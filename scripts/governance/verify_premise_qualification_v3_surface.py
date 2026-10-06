@@ -53,6 +53,14 @@ EXPECTED_OBSERVATION_DESCRIPTORS = {
     "COUNT_SPLIT_NOISE",
     "DOCUMENTED_ACQUISITION_PROPERTIES",
 }
+EXPECTED_FORBIDDEN_OBSERVATION_SHORTCUTS = {
+    "DONOR_ID",
+    "UNRESTRICTED_DATASET_ID",
+    "ARBITRARY_MATRIX_ID",
+    "UNRESTRICTED_STUDY_ID",
+    "PATHOLOGY_OUTCOME_LABEL",
+    "PROTECTED_OUTCOME_DERIVED_LABEL",
+}
 EXPECTED_STABILITY_DIAGNOSTICS = {
     "DONOR_BALANCED_BOOTSTRAP",
     "LEAVE_DONOR_GROUP_OUT",
@@ -84,7 +92,10 @@ TOP_LEVEL_FIELDS = {
     "schema",
     "role",
     "training_authorized",
+    "multimodal_training_authorized",
     "stage_a_execution_authorized",
+    "stage4_authorized",
+    "five_hundred_k_authorized",
     "optimizer_updates_during_target_discrimination",
     "ema_updates_during_target_discrimination",
     "test_state",
@@ -223,8 +234,14 @@ def validate_state(state: dict) -> list[str]:
         errors.append("role must remain prospective prefreeze governance only")
     if state.get("training_authorized") is not False:
         errors.append("training_authorized must remain false")
+    if state.get("multimodal_training_authorized") is not False:
+        errors.append("multimodal training must remain unauthorized")
     if state.get("stage_a_execution_authorized") is not False:
         errors.append("stage_a_execution_authorized must remain false")
+    if state.get("stage4_authorized") is not False:
+        errors.append("Stage 4 must remain unauthorized")
+    if state.get("five_hundred_k_authorized") is not False:
+        errors.append("500K must remain unauthorized")
     if state.get("optimizer_updates_during_target_discrimination") != 0:
         errors.append("optimizer updates during target discrimination must remain zero")
     if state.get("ema_updates_during_target_discrimination") != 0:
@@ -280,6 +297,10 @@ def validate_state(state: dict) -> list[str]:
         errors.append("unrestricted dataset and arbitrary matrix identifiers must remain forbidden shortcuts")
     if "DONOR_ID" not in forbidden:
         errors.append("donor identity must remain a forbidden free observation shortcut")
+    if not {"UNRESTRICTED_STUDY_ID", "PATHOLOGY_OUTCOME_LABEL", "PROTECTED_OUTCOME_DERIVED_LABEL"}.issubset(forbidden):
+        errors.append("pathology/outcome and unrestricted study identity must remain forbidden observation shortcuts")
+    if forbidden != EXPECTED_FORBIDDEN_OBSERVATION_SHORTCUTS:
+        errors.append("observation shortcut roster must remain frozen")
     if observation.get("technology_invariance_is_not_blanket_requirement") is not True:
         errors.append("technology invariance must not become a blanket qualification rule")
     if set(observation.get("allowed_descriptor_classes", [])) != EXPECTED_OBSERVATION_DESCRIPTORS:
