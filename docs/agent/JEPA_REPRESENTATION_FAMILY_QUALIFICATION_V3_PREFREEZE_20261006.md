@@ -142,12 +142,14 @@ For representations with coordinates/subspaces, use donor-balanced resampling or
 - Procrustes-aligned coordinate stability;
 - spectral/eigenvalue gaps where applicable.
 
+Any coordinate alignment used for held-donor evaluation must be fit on lawful inner TRAIN data and frozen before the held donors are evaluated.
+
 Interpretation:
 
-- `AXES_STABLE`: coordinate-level interpretation may become eligible for later biological testing;
-- `SUBSPACE_STABLE_AXES_ROTATE`: only subspace/block claims are allowed;
-- `SUBSPACE_UNSTABLE`: representation family is not qualified as stable state;
-- `NOT_IDENTIFIED`: insufficient evidence.
+- `STABLE_COORDINATES`: coordinate-level interpretation may become eligible for later biological testing;
+- `STABLE_SUBSPACE_ONLY`: only subspace/block claims are allowed;
+- `UNSTABLE_REPRESENTATION`: representation family is not qualified as stable state;
+- `INDETERMINATE__INSUFFICIENT_BIOLOGICAL_UNITS`: insufficient biological units for a stability conclusion.
 
 No coordinate receives biological semantics from stability alone.
 
