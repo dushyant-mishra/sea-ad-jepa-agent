@@ -7,7 +7,12 @@ from typing import Callable, Mapping
 
 from .authorities import AuthorityBundleV1
 from .canonical import canonical_digest
-from .identity import FeatureIdentityReceiptV1, QualificationBatchIdentityV1
+from .identity import (
+    FeatureIdentityReceiptV1,
+    MeasurementSupportReceiptV1,
+    ObservationOperatorIdentityReceiptV1,
+    QualificationBatchIdentityV1,
+)
 from .lifecycle import ExperimentRunV1, RunMode
 from .oracle import FrozenQualificationOutputsV1
 from .protocol import ExecutionMode, QualificationProtocolV1
@@ -60,6 +65,8 @@ class QualificationBatchV1:
     adapter_id: str
     adapter_digest: str
     feature_identity_receipt: FeatureIdentityReceiptV1
+    operator_identity_receipt: ObservationOperatorIdentityReceiptV1
+    measurement_support_receipt: MeasurementSupportReceiptV1
     scientific_identity: QualificationBatchIdentityV1
     q_safety_policy: QSafetyPolicyV1
     fields: tuple[BatchFieldV1, ...]
@@ -80,6 +87,10 @@ class QualificationBatchV1:
         _require_digest(self.adapter_digest, "adapter_digest")
         if not isinstance(self.feature_identity_receipt, FeatureIdentityReceiptV1):
             raise ValueError("feature identity receipt is invalid")
+        if not isinstance(self.operator_identity_receipt, ObservationOperatorIdentityReceiptV1):
+            raise ValueError("operator identity receipt is invalid")
+        if not isinstance(self.measurement_support_receipt, MeasurementSupportReceiptV1):
+            raise ValueError("measurement support receipt is invalid")
         if not isinstance(self.scientific_identity, QualificationBatchIdentityV1):
             raise ValueError("scientific identity is invalid")
         if not isinstance(self.q_safety_policy, QSafetyPolicyV1):
@@ -91,8 +102,27 @@ class QualificationBatchV1:
         names = [field.declaration.name for field in self.fields]
         if len(names) != len(set(names)):
             raise ValueError("batch field names must be unique")
+
+        observations = self.scientific_identity.observation_ids
         if self.scientific_identity.feature_receipt_digest != self.feature_identity_receipt.digest():
             raise ValueError("feature identity receipt does not match scientific batch identity")
+        if self.scientific_identity.operator_identity_receipt_digest != self.operator_identity_receipt.digest():
+            raise ValueError("operator identity receipt does not match scientific batch identity")
+        if self.scientific_identity.measurement_support_receipt_digest != self.measurement_support_receipt.digest():
+            raise ValueError("measurement support receipt does not match scientific batch identity")
+        if self.measurement_support_receipt.observation_ids != observations:
+            raise ValueError("measurement support observation ordering does not match scientific batch identity")
+        if len(self.operator_identity_receipt.source_indices) != len(observations):
+            raise ValueError("operator identity observation count does not match scientific batch identity")
+        if self.measurement_support_receipt.support_shape[1] != len(self.feature_identity_receipt.tensor_feature_axis_ids):
+            raise ValueError("measurement support feature width does not match authenticated feature identity")
+        if self.operator_identity_receipt.support_rule_id != self.measurement_support_receipt.support_rule_id:
+            raise ValueError("operator identity and measurement support use different support rules")
+        if self.scientific_identity.measurement_mask_digest != self.measurement_support_receipt.batch_measurement_digest:
+            raise ValueError("measurement support does not match scientific measurement mask")
+        if self.scientific_identity.operator_context_digest != self.operator_identity_receipt.digest():
+            raise ValueError("operator identity does not match scientific operator context")
+
         expected_synthetic = self.data_kind is DataKind.SYNTHETIC
         if self.feature_identity_receipt.synthetic is not expected_synthetic:
             raise ValueError("feature identity receipt data kind does not match qualification batch")
@@ -100,7 +130,7 @@ class QualificationBatchV1:
             raise ValueError("inference unit must be explicit")
         if (
             not isinstance(self.inference_group_ids, tuple)
-            or len(self.inference_group_ids) != len(self.scientific_identity.observation_ids)
+            or len(self.inference_group_ids) != len(observations)
             or not all(isinstance(group, str) and group for group in self.inference_group_ids)
         ):
             raise ValueError("inference grouping must align one-to-one with observations")
@@ -191,6 +221,8 @@ def run_zero_update_qualification(
         adapter_id=batch.adapter_id,
         adapter_digest=batch.adapter_digest,
         feature_identity_digest=batch.feature_identity_receipt.digest(),
+        operator_identity_digest=batch.operator_identity_receipt.digest(),
+        measurement_support_digest=batch.measurement_support_receipt.digest(),
         batch_scientific_identity_digest=batch.scientific_identity.digest(),
         q_safety_policy_id=protocol.q_safety_policy_id,
         preprocessing_version="qualification-interface-v1",
