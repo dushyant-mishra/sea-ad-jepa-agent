@@ -5,6 +5,8 @@ on:
     paths:
       - 'src/sea_ad_jepa/qualification/**'
       - 'tests/qualification/**'
+      - 'tests/governance/**'
+      - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
       - 'docs/agent/JEPA_SHARED_QUALIFICATION_PIPELINE_DESIGN_20261006.md'
       - 'docs/agent/JEPA_SHARED_QUALIFICATION_PIPELINE_FINAL_SAFEGUARDS_20261006.md'
       - '.github/workflows/shared-qualification-interface-v1.yml'
