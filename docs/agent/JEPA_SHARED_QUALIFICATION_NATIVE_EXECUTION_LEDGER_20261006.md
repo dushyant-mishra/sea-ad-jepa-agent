@@ -3,10 +3,19 @@
 Plan: `docs/superpowers/plans/2026-10-06-shared-qualification-interface-implementation-plan.md`
 Spec: `docs/agent/JEPA_SHARED_QUALIFICATION_PIPELINE_DESIGN_20261006.md` + final safeguards/lifecycle correction
 Execution: Native / RED-first
+Implementation PR: #223 (`shared-qualification-interface-v1-20261006`)
 
 ## Environment ruling
 
 Ruling: this chat has GitHub repository mutation and GitHub Actions inspection, but no repository worktree/shell execution surface. Therefore the plan's local `pytest` RED/GREEN commands are witnessed through a draft PR and GitHub Actions instead. Tests still land before production code, and production code must not be written until the relevant workflow has produced the expected RED. This preserves the TDD requirement while changing only the execution transport.
+
+## Binding review amendments
+
+See `docs/agent/JEPA_SHARED_QUALIFICATION_PLAN_AMENDMENTS_20261006.md` at commit `12d27476056de1ff0b69b8476803ec5a4270128d`.
+
+- V1 mutation authority is OFF-only; no usable future authorized state in this slice.
+- Feature identity must be mechanically proven, never boolean-attested.
+- Experiment-specific representation/estimand/threshold requests must not become winner/selected/deciding authority.
 
 ## Pre-flight shared interfaces
 
@@ -21,6 +30,18 @@ Ruling: this chat has GitHub repository mutation and GitHub Actions inspection, 
 
 No conflict found with the frozen spec. Runtime convergence and adapters remain out of scope for this plan.
 
+## Task 1 — protocol/governance binding
+
+RED 1: commit `891b0372cbc5144f29bbd66af307db43fbf71896`; workflow `37536914465` failed with `ModuleNotFoundError: sea_ad_jepa.qualification`, proving the strengthened protocol tests preceded production code.
+
+GREEN 1: implementation through `c5fe0d273ca47a40bdd66f01f9707c3e1f91b6e6`; workflow `37537061400` passed, including untouched PR #220 governance tests.
+
+Self-audit finding: `QualificationProtocolV1.validate()` did not reject a non-finite exploratory threshold; only later digesting would have failed. Added RED at `5fab889f59598a3fd4e76bb569bd324ee12caf45`; workflow `37537186060` failed exactly on `test_protocol_validation_rejects_nonfinite_exploratory_thresholds` with 55 other tests passing.
+
+Repair: `d53394d836f645b4a6810e606163406ef768c69a`; workflow `37537287392` SUCCESS.
+
+Task 1: complete. Exact governance digest is bound; representation/estimand requests remain experiment-specific rather than winner authority; exploratory thresholds cannot populate deciding state; malformed threshold values fail closed.
+
 ## Status
 
-Task 1: starting RED phase.
+Task 2: starting RED phase for transitive visibility laundering.
