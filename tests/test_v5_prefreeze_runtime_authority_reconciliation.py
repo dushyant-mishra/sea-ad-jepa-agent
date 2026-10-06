@@ -129,7 +129,7 @@ def test_old_v64_authority_graph_cannot_substitute_for_current_governance():
         "training_authorized": False,
         "authority_roots": ["RNA_PLUS_E2_INTEGRATION_AUTHORITY"],
     }
-    with pytest.raises(PrefreezeGovernanceError, match="schema"):
+    with pytest.raises(PrefreezeGovernanceError, match="governance"):
         _authority(old)
 
 
@@ -242,11 +242,11 @@ def test_ema_requires_completed_optimizer_and_is_one_shot():
         guard.run_ema(token, lambda: calls.append("again"))
 
 
-def test_next_optimizer_step_is_forbidden_until_prior_ema_finishes():
+def test_next_optimizer_step_is_forbidden_after_first_update():
     _, _, guard, token = _armed()
     _ready(guard, token)
     guard.run_optimizer_step(token)
-    with pytest.raises(StepCompletionError, match="EMA"):
+    with pytest.raises(StepCompletionError, match="exactly one"):
         guard.begin_step("adamw:v1", _sha("checkpoint-A"))
 
 
