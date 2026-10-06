@@ -127,6 +127,8 @@ It must bind the exact governance digest and explicitly declare execution semant
 At minimum it must contain:
 
 - governance digest/version;
+- qualification-contract version;
+- runtime-interface version requirement;
 - candidate representation family;
 - target/evidence construction identifier;
 - q-safety policy identifier;
@@ -137,13 +139,91 @@ At minimum it must contain:
 - representation-stability protocol;
 - transport/OOD axes being tested;
 - diagnostic-readout firewall;
+- unit-of-inference declaration;
 - estimand/evaluation aggregation spec or explicit `UNSET`;
 - numeric decision margins or explicit `UNSET`;
+- threshold status (`FROZEN_DECIDING`, `EXPLORATORY_ONLY`, or equivalent fail-closed vocabulary);
 - mutation mode (`ZERO_UPDATE` or separately authorized `BOUNDED_MUTATION_REHEARSAL`);
 - checkpoint/diagnostic ladder for bounded mutation rehearsals;
 - claim ceiling.
 
 Unresolved scientific choices must remain explicit unresolved fields. The synthetic harness must not silently choose them and then imply they were approved for real-data use.
+
+## Independent versioning and compatibility
+
+The scientific qualification contract and the runtime implementation must version independently.
+
+A runtime implementation change must not silently redefine a scientific experiment. A scientific contract change must not be accepted merely because an older runtime can still parse the schema.
+
+Required compatibility rule:
+
+- every `QualificationProtocol` declares its own semantic version/digest;
+- every runtime successor declares which protocol versions/digests it is qualified to execute;
+- protocol successor changes require explicit requalification of compatibility;
+- runtime successor changes require explicit requalification of the mechanics relevant to the protocol;
+- schema parseability alone never establishes semantic compatibility.
+
+Every future change must declare whether it changes **science**, **mechanics**, or **both**.
+
+## Feature-identity receipt
+
+Every `QualificationBatch` must carry a provenance-only feature-identity receipt.
+
+For real data it must bind at least:
+
+`41,238 registry -> canonical ordering -> reader/index mapping -> tokenizer IDs -> tensor entering the model`
+
+For synthetic data it must bind the equivalent synthetic registry/address mapping.
+
+The receipt is part of the qualification provenance chain and must fail closed on mismatch. Correct shape, byte identity, or historical hash reuse does not substitute for semantic feature identity.
+
+## Oracle one-way flow
+
+Synthetic oracle access must be physically one-way:
+
+`normal pipeline outputs -> oracle evaluator`
+
+The oracle evaluator may consume frozen pipeline outputs and oracle truth, but nothing returned by the oracle layer may feed back into:
+
+- preprocessing;
+- q-safety construction;
+- target construction;
+- representation fitting;
+- threshold selection for the same deciding challenge;
+- optimizer updates;
+- EMA updates;
+- checkpoint model state.
+
+Oracle-evaluator outputs are evaluation artifacts only.
+
+Any workflow that uses oracle results to redesign or retune the same deciding synthetic challenge must mark the earlier challenge as development/calibration evidence rather than independent validation.
+
+## Synthetic development and sealed challenge separation
+
+Where feasible, V77/S127 should have separate synthetic partitions/realizations for:
+
+1. **development/calibration** — used to debug qualification machinery, choose non-scientific implementation details, and expose broken diagnostics;
+2. **sealed synthetic challenge** — not inspected while tuning the qualification machinery and used only after the protocol, thresholds, diagnostics, and failure logic are frozen.
+
+A diagnostic repeatedly redesigned using the same synthetic truth cannot later count that same world as independent challenge evidence.
+
+If a sealed challenge set is not feasible, the resulting evidence must be labeled development/calibration rather than independent synthetic qualification.
+
+## Prospective thresholds
+
+Any threshold used to make a deciding synthetic claim must be prospectively frozen before opening the deciding challenge result or explicitly labeled `EXPLORATORY_ONLY`.
+
+Thresholds derived after inspecting deciding outcomes cannot be retroactively treated as prospective pass/fail criteria.
+
+Synthetic thresholds do not become real-data thresholds unless a separate scientific authority explicitly adopts them.
+
+## Unit-of-inference firewall
+
+The batch/protocol boundary must preserve unit-of-inference metadata needed for valid aggregation and uncertainty.
+
+Cells may be model inputs, but downstream statistical conclusions must retain donor/source/study/operator grouping as non-model-visible metadata.
+
+The protocol must declare the biological resampling/evaluation unit being used for each claim. Downstream code must fail closed rather than silently treating cell count as independent biological replication when donor/study/operator is the intended unit.
 
 ## q-safety contract
 
@@ -206,6 +286,8 @@ The model batch may carry precomputed scientific weights only when the protocol 
 
 ## Two execution modes
 
+Execution mode is a required machine field of `QualificationProtocol` and cannot be inferred from caller behavior.
+
 ### Mode 1 — `ZERO_UPDATE_QUALIFICATION`
 
 Default scientific qualification mode.
@@ -228,6 +310,8 @@ Requires:
 - predictor/encoder training updates = 0 except a separately allowed diagnostic readout that is not JEPA training;
 - EMA updates = 0.
 
+Any attempted optimizer/EMA mutation under this mode is a hard contract failure.
+
 ### Mode 2 — `BOUNDED_MUTATION_REHEARSAL`
 
 Optional mechanics/anti-cheat mode, only after a separate narrow authority explicitly permits it.
@@ -237,6 +321,28 @@ Routes through the single converged runtime:
 `backward -> unscale/no-AMP equivalent -> gradient validation -> guarded optimizer/scaler transition -> proven completion -> one-shot EMA -> persisted checkpoint/restart`
 
 Synthetic mutation success does not authorize real-data training.
+
+## End-to-end provenance receipt
+
+Every result artifact must preserve enough immutable provenance to answer:
+
+- which scientific governance digest;
+- which qualification-contract version/digest;
+- which dataset adapter version/digest;
+- which feature-identity receipt;
+- which preprocessing/q-safety policy version;
+- which representation-family request;
+- which target/evidence definition;
+- which observation-operator policy;
+- which split/resampling/unit-of-inference contract;
+- which estimand/evaluation aggregation spec;
+- which threshold status/margins;
+- which runtime successor/guard version, if mutation was enabled;
+- which checkpoint lineage, if applicable;
+- which synthetic generator/observer realization and challenge partition, if synthetic;
+- which code commit/container/environment identity produced the result.
+
+A result missing required provenance is not eligible for a deciding qualification claim.
 
 ## Common pipeline vs oracle-specific diagnostics
 
@@ -315,6 +421,20 @@ The successor must preserve #222's governance/spillover protections and selectiv
 
 The shared qualification contract must be frozen before final runtime interface decisions so runtime does not hard-code assumptions that conflict with real-data qualification.
 
+## Supersession rule
+
+Once a single successor has:
+
+1. reproduced every retained behavior from #221 and #222;
+2. passed the shared RED→GREEN convergence suite;
+3. passed real AdamW/AMP and deterministic-restart qualification;
+4. passed historical-spillover audit;
+5. passed independent review;
+
+then PR #221 and PR #222 must be explicitly marked `SUPERSEDED_BY_<successor>` and closed without independent merge unless a narrowly documented archival reason requires otherwise.
+
+Multiple open “almost canonical” runtime paths are themselves a spillover risk.
+
 ## Historical spillover constraints
 
 The design must not resurrect:
@@ -334,26 +454,38 @@ Negative findings remain part of the audit history.
 Before Claude/Macha uses V77 to exercise the intended real-data pipeline, require:
 
 1. exact V3 governance digest is bound;
-2. every field has a machine-enforced visibility class;
-3. donor/source/study identifiers cannot accidentally enter model input;
-4. oracle truth is physically/API separated from normal pipeline code;
-5. q-safety is machine-bound transitively;
-6. four representation families are expressible without preselection;
-7. observation-operator context is explicit and shortcut-controlled;
-8. evidence and depth perturbations are separately declared;
-9. estimand is evaluation-contract state, not an implicit model feature;
-10. unresolved real-data choices remain explicit unresolved values;
-11. zero-update qualification is a first-class mode;
-12. bounded mutation is separate and requires narrow authority;
-13. synthetic-only oracle metrics are separated from common qualification metrics;
-14. pipeline-validity and realism/calibration evidence are reported separately;
-15. 41K identity authentication remains an explicit real-adapter gate;
-16. one canonical runtime successor is used for any mutation rehearsal;
-17. historical spillover audit passes;
-18. TRAINING remains OFF.
+2. qualification-contract version is independent from runtime version and compatibility is explicit;
+3. every field has a machine-enforced visibility class;
+4. donor/source/study identifiers cannot accidentally enter model input;
+5. feature-identity receipt is present and verified;
+6. oracle truth is physically/API separated from normal pipeline code;
+7. oracle flow is one-way and cannot feed back into the same deciding challenge;
+8. q-safety is machine-bound transitively;
+9. four representation families are expressible without preselection;
+10. observation-operator context is explicit and shortcut-controlled;
+11. evidence and depth perturbations are separately declared;
+12. estimand is evaluation-contract state, not an implicit model feature;
+13. unit-of-inference metadata is retained and machine-enforced for aggregation;
+14. unresolved real-data choices remain explicit unresolved values;
+15. zero-update qualification is a first-class machine mode;
+16. bounded mutation is separate and requires narrow authority;
+17. deciding synthetic thresholds are prospectively frozen or exploratory-labeled;
+18. development/calibration synthetic use is separated from sealed challenge evidence where feasible;
+19. synthetic-only oracle metrics are separated from common qualification metrics;
+20. pipeline-validity and realism/calibration evidence are reported separately;
+21. 41K identity authentication remains an explicit real-adapter gate;
+22. every result carries end-to-end provenance sufficient for reconstruction and audit;
+23. one canonical runtime successor is used for any mutation rehearsal;
+24. donor PR supersession rule is satisfied after convergence;
+25. historical spillover audit passes;
+26. TRAINING remains OFF.
 
 ## Non-authority statement
 
 This design freezes architecture for review only.
 
 It does not authorize Stage A, JEPA training, multimodal training, 500K, Stage 4, TEST opening, Morabito opening, a target winner, a representation winner, an estimand, or deciding numeric thresholds.
+
+## Architectural north star
+
+**Freeze interfaces before implementations, keep oracle/evaluation information physically downstream of model-visible data, and require every future change to declare whether it changes science, mechanics, or both.**
