@@ -45,6 +45,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
+import sys
 from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Any
@@ -301,6 +303,7 @@ def build_from_world(root: Path, obs_dir: str, universe: np.ndarray,
         claim_namespace="SYNTHETIC_PIPELINE_ANTICHEAT_REHEARSAL",
         world_root=str(root), observer_dir=obs_dir,
         observer_manifest_schema=man.get("schema"),
+        observer_manifest_sha256=hashlib.sha256(manifests[0].read_bytes()).hexdigest(),
         structural_support_rule=man.get("structural_support_rule"),
         support_source="per-element support_mask_packed read from every observer shard",
         n_cells=int(nc), n_shards_read=int(n_shards_read),
@@ -336,12 +339,24 @@ def main() -> None:
     ap.add_argument("--max-cells", type=int, default=None)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    here = Path(__file__).resolve().parent
+
+    def git(*args):
+        return subprocess.run(["git", *args], capture_output=True, text=True, cwd=here).stdout.strip()
+
+    dirty = git("status", "--porcelain", "--untracked-files=no")
+    if dirty or not git("ls-files", "--", Path(__file__).name):
+        sys.exit("refusing: an integration receipt must describe committed code\n" + dirty)
+    adapter_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     upath = Path(a.universe)
     universe = np.load(upath, allow_pickle=False)["evaluation_universe"]
     _, _, prov = build_from_world(Path(a.world), a.observer_dir, universe,
                                   a.hidden_fraction, a.seed, a.max_cells)
     prov["universe_file"] = dict(path=str(upath),
                                  sha256=hashlib.sha256(upath.read_bytes()).hexdigest())
+    prov.update(source_commit=git("rev-parse", "HEAD"), adapter_sha256=adapter_sha256,
+                provenance_status="CLEAN_COMMITTED_HEAD__ADAPTER_TRACKED",
+                command=" ".join(["python", "scripts/v77/v77_synthetic_batch_adapter.py", *sys.argv[1:]]))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     with open(a.out, "w", newline="\n") as fh:
         fh.write(json.dumps(prov, indent=2) + "\n")
