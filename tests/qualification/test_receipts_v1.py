@@ -16,6 +16,8 @@ def _receipt(**overrides):
         "adapter_id": "v77-adapter-v1",
         "adapter_digest": "c" * 64,
         "feature_identity_digest": "d" * 64,
+        "operator_identity_digest": "1" * 64,
+        "measurement_support_digest": "2" * 64,
         "batch_scientific_identity_digest": "e" * 64,
         "q_safety_policy_id": "qsafe-v1",
         "preprocessing_version": "qualification-preprocess-v1",
@@ -54,6 +56,10 @@ def test_synthetic_provenance_requires_realization_and_challenge_partition():
 def test_missing_required_provenance_fails_at_construction():
     with pytest.raises(ValueError, match="adapter"):
         _receipt(adapter_id="")
+    with pytest.raises(ValueError, match="operator_identity"):
+        _receipt(operator_identity_digest="not-a-digest")
+    with pytest.raises(ValueError, match="measurement_support"):
+        _receipt(measurement_support_digest="not-a-digest")
 
 
 def test_zero_update_receipt_rejects_checkpoint_without_runtime_successor():
