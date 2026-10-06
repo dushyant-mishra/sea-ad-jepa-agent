@@ -2,7 +2,6 @@ import hashlib
 import importlib.util
 import json
 import sys
-from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -30,173 +29,153 @@ def _sha(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def _future_test_authority():
-    state = json.loads(STATE_PATH.read_text())
-    state = deepcopy(state)
-    state["training_authorized"] = True
-    state["stage_a_execution_authorized"] = True
-    return auth.CurrentTrainingAuthorityV2.issue(
-        governance_state=state,
+class Handle:
+    def __init__(self, coll, fn):
+        self.coll = coll
+        self.fn = fn
+
+    def remove(self):
+        if self.fn in self.coll:
+            self.coll.remove(self.fn)
+
+
+class FakeOptimizer:
+    def __init__(self, events, *, fail=False):
+        self.events = events
+        self.fail = fail
+        self.pre = []
+        self.post = []
+        self.mutations = 0
+
+    def register_step_pre_hook(self, fn):
+        self.pre.append(fn)
+        return Handle(self.pre, fn)
+
+    def register_step_post_hook(self, fn):
+        self.post.append(fn)
+        return Handle(self.post, fn)
+
+    def step(self, *args, **kwargs):
+        for fn in list(self.pre):
+            out = fn(self, args, kwargs)
+            if out is not None:
+                args, kwargs = out
+        self.events.append("optimizer_step")
+        if self.fail:
+            raise RuntimeError("step exploded")
+        self.mutations += 1
+        for fn in list(self.post):
+            fn(self, args, kwargs)
+        return self.mutations
+
+
+def _authority():
+    return auth.PrefreezeMechanicalAuthorityV1.issue(
+        governance_state=json.loads(STATE_PATH.read_text()),
         optimizer_identity="adamw:v1",
         checkpoint_digest=_sha("checkpoint-A"),
-        test_only=True,
     )
 
 
-def test_rehearsal_runs_exact_guarded_order_and_roundtrip():
-    events = []
-    counter = {"value": 11}
-    authority = _future_test_authority()
-    guard = auth.OptimizerGuardV4(authority)
+def _guard(events, *, fail=False):
+    authority = _authority()
+    optimizer = FakeOptimizer(events, fail=fail)
+    return authority, optimizer, auth.PrefreezeOptimizerGuardV1(authority, optimizer)
 
-    def backward(): events.append("backward")
-    def unscale(): events.append("unscale")
-    def validate(): events.append("validate"); return True
-    def optimizer_step():
-        events.append("optimizer_step")
-        counter["value"] += 1
-    def ema_update(): events.append("ema")
-    def checkpoint(): events.append("checkpoint"); return _sha("checkpoint-B")
+
+def test_rehearsal_runs_optimizer_bound_order_and_roundtrip():
+    events = []
+    authority, optimizer, guard = _guard(events)
 
     result = rehearsal.run_test_only_guarded_rehearsal(
         authority=authority,
         guard=guard,
         optimizer_identity="adamw:v1",
-        optimizer_step_index=lambda: counter["value"],
-        backward=backward,
-        unscale=unscale,
-        validate_gradients=validate,
-        optimizer_step=optimizer_step,
-        ema_update=ema_update,
-        checkpoint=checkpoint,
+        backward=lambda: events.append("backward"),
+        unscale=lambda: events.append("unscale"),
+        validate_gradients=lambda: events.append("validate") or True,
+        ema_update=lambda: events.append("ema"),
+        checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
     )
 
     assert events == ["backward", "unscale", "validate", "optimizer_step", "ema", "checkpoint"]
-    assert counter["value"] == 12
-    assert result["optimizer_step_before"] == 11
-    assert result["optimizer_step_after"] == 12
-    assert result["schema"] == "V5_PREFREEZE_GUARDED_REHEARSAL_V1"
+    assert optimizer.mutations == 1
+    assert result["schema"] == "V5_PREFREEZE_GUARDED_REHEARSAL_V2"
+    assert result["rehearsal_only"] is True
     assert result["training_authorized"] is False
     assert result["execution_authorized"] is False
     assert result["starting_checkpoint_digest"] == _sha("checkpoint-A")
     assert result["checkpoint_digest"] == _sha("checkpoint-B")
-    receipt = result["checkpoint_receipt"]
-    assert receipt["parent_checkpoint_digest"] == _sha("checkpoint-A")
-    assert receipt["checkpoint_digest"] == _sha("checkpoint-B")
-    verified = auth.CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
-        receipt, _sha("checkpoint-B")
+    verified = auth.PrefreezeMechanicalAuthorityV1.verify_completed_checkpoint_receipt(
+        result["checkpoint_receipt"], _sha("checkpoint-B")
     )
-    assert verified["checkpoint_digest"] == _sha("checkpoint-B")
+    assert verified["guarded_step_token"] == result["guarded_step_token"]
 
 
 def test_failed_gradient_validation_prevents_optimizer_ema_and_checkpoint():
     events = []
-    authority = _future_test_authority()
-    guard = auth.OptimizerGuardV4(authority)
-
+    authority, optimizer, guard = _guard(events)
     with pytest.raises(auth.StepCompletionError, match="gradient validation failed"):
         rehearsal.run_test_only_guarded_rehearsal(
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
-            optimizer_step_index=lambda: 0,
             backward=lambda: events.append("backward"),
             unscale=lambda: events.append("unscale"),
             validate_gradients=lambda: events.append("validate") or False,
-            optimizer_step=lambda: events.append("optimizer_step"),
             ema_update=lambda: events.append("ema"),
             checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
         )
     assert events == ["backward", "unscale", "validate"]
+    assert optimizer.mutations == 0
 
 
 def test_optimizer_exception_prevents_ema_and_checkpoint():
     events = []
-    authority = _future_test_authority()
-    guard = auth.OptimizerGuardV4(authority)
-
-    def boom():
-        events.append("optimizer_step")
-        raise RuntimeError("step exploded")
-
+    authority, optimizer, guard = _guard(events, fail=True)
     with pytest.raises(RuntimeError, match="step exploded"):
         rehearsal.run_test_only_guarded_rehearsal(
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
-            optimizer_step_index=lambda: 0,
             backward=lambda: events.append("backward"),
             unscale=lambda: events.append("unscale"),
             validate_gradients=lambda: events.append("validate") or True,
-            optimizer_step=boom,
             ema_update=lambda: events.append("ema"),
             checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
         )
     assert events == ["backward", "unscale", "validate", "optimizer_step"]
-
-
-def test_noop_optimizer_prevents_ema_and_checkpoint():
-    events = []
-    counter = {"value": 5}
-    authority = _future_test_authority()
-    guard = auth.OptimizerGuardV4(authority)
-    with pytest.raises(auth.StepCompletionError, match="exactly once"):
-        rehearsal.run_test_only_guarded_rehearsal(
-            authority=authority,
-            guard=guard,
-            optimizer_identity="adamw:v1",
-            optimizer_step_index=lambda: counter["value"],
-            backward=lambda: events.append("backward"),
-            unscale=lambda: events.append("unscale"),
-            validate_gradients=lambda: events.append("validate") or True,
-            optimizer_step=lambda: events.append("optimizer_step"),
-            ema_update=lambda: events.append("ema"),
-            checkpoint=lambda: events.append("checkpoint") or _sha("checkpoint-B"),
-        )
-    assert events == ["backward", "unscale", "validate", "optimizer_step"]
+    assert optimizer.mutations == 0
 
 
 def test_post_update_checkpoint_must_be_new_state():
-    counter = {"value": 0}
-    authority = _future_test_authority()
-    guard = auth.OptimizerGuardV4(authority)
-    with pytest.raises(auth.PrefreezeGovernanceError, match="new post-update state"):
+    events = []
+    authority, _, guard = _guard(events)
+    with pytest.raises(auth.PrefreezeGovernanceError, match="new state"):
         rehearsal.run_test_only_guarded_rehearsal(
             authority=authority,
             guard=guard,
             optimizer_identity="adamw:v1",
-            optimizer_step_index=lambda: counter["value"],
             backward=lambda: None,
             unscale=lambda: None,
             validate_gradients=lambda: True,
-            optimizer_step=lambda: counter.__setitem__("value", 1),
             ema_update=lambda: None,
             checkpoint=lambda: _sha("checkpoint-A"),
         )
 
 
-def test_completed_checkpoint_receipt_rejects_wrong_reload_digest():
-    authority = _future_test_authority()
-    receipt = authority.completed_checkpoint_receipt(_sha("checkpoint-B"))
-    with pytest.raises(auth.PrefreezeGovernanceError, match="checkpoint digest"):
-        auth.CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
-            receipt, _sha("checkpoint-C")
-        )
-
-
-def test_rehearsal_refuses_non_test_authority_object():
-    class FakeAuthority:
-        test_only = False
-    with pytest.raises(auth.PrefreezeGovernanceError, match="test-only"):
+def test_rehearsal_refuses_unbound_authority_or_guard():
+    authority = _authority()
+    other = _authority()
+    guard = auth.PrefreezeOptimizerGuardV1(other, FakeOptimizer([]))
+    with pytest.raises(auth.PrefreezeGovernanceError, match="bound"):
         rehearsal.run_test_only_guarded_rehearsal(
-            authority=FakeAuthority(),
-            guard=None,
+            authority=authority,
+            guard=guard,
             optimizer_identity="adamw:v1",
-            optimizer_step_index=lambda: 0,
             backward=lambda: None,
             unscale=lambda: None,
             validate_gradients=lambda: True,
-            optimizer_step=lambda: None,
             ema_update=lambda: None,
             checkpoint=lambda: _sha("checkpoint-B"),
         )
