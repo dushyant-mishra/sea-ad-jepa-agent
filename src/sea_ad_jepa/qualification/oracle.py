@@ -6,6 +6,7 @@ import string
 
 from .canonical import canonical_digest
 from .lifecycle import ExperimentRunV1, RunState
+from .receipts import MutationProofStatus
 
 
 def _digest(value: object, name: str) -> str:
@@ -54,6 +55,7 @@ class FrozenQualificationOutputsV1:
     run_id: str
     output_digest: str
     provenance_receipt_digest: str
+    mutation_proof_status: MutationProofStatus = MutationProofStatus.NOT_PROVEN_BY_SHARED_INTERFACE
     synthetic_realization_id: str | None = None
     challenge_partition: str | None = None
 
@@ -62,6 +64,8 @@ class FrozenQualificationOutputsV1:
             raise ValueError("run_id must be explicit")
         _digest(self.output_digest, "output_digest")
         _digest(self.provenance_receipt_digest, "provenance_receipt_digest")
+        if not isinstance(self.mutation_proof_status, MutationProofStatus):
+            raise ValueError("mutation_proof_status must be explicit")
         if self.synthetic_realization_id is not None and (
             not isinstance(self.synthetic_realization_id, str)
             or not self.synthetic_realization_id.strip()
