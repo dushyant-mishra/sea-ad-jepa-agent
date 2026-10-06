@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from numbers import Integral
 from typing import Any, Callable, Mapping
 
 
@@ -50,6 +51,14 @@ def _sha256(value: object, name: str) -> str:
     except ValueError as exc:
         raise PrefreezeGovernanceError(f"{name} must be lowercase SHA-256") from exc
     return value
+
+
+def _step_index(value: object) -> int:
+    if isinstance(value, bool) or not isinstance(value, Integral) or int(value) < 0:
+        raise StepCompletionError(
+            "optimizer step counter must be an exact nonnegative integer"
+        )
+    return int(value)
 
 
 def _governance_core(state: Mapping[str, Any]) -> dict[str, Any]:
@@ -285,7 +294,7 @@ class CurrentTrainingAuthorityV2:
 
 
 class OptimizerGuardV4:
-    """One-shot state machine that proves a step completed before EMA."""
+    """One-shot state machine that proves an optimizer advanced before EMA."""
 
     def __init__(self, authority: CurrentTrainingAuthorityV2) -> None:
         if not isinstance(authority, CurrentTrainingAuthorityV2):
@@ -295,12 +304,20 @@ class OptimizerGuardV4:
         self._counter = 0
         self._steps: dict[str, dict[str, Any]] = {}
 
-    def begin_step(self, optimizer_identity: str, checkpoint_digest: str) -> str:
+    def begin_step(
+        self,
+        optimizer_identity: str,
+        checkpoint_digest: str,
+        optimizer_step_probe: Callable[[], object],
+    ) -> str:
         self.authority._validate_digest()
         if optimizer_identity != self.authority.optimizer_identity:
             raise PrefreezeGovernanceError("optimizer identity mismatch")
         if _sha256(checkpoint_digest, "checkpoint digest") != self.authority.checkpoint_digest:
             raise PrefreezeGovernanceError("checkpoint digest mismatch")
+        if not callable(optimizer_step_probe):
+            raise StepCompletionError("optimizer step counter probe is required")
+        before = _step_index(optimizer_step_probe())
         token = f"step-{self._counter:08d}"
         self._counter += 1
         self._steps[token] = {
@@ -310,6 +327,9 @@ class OptimizerGuardV4:
             "rejected": False,
             "reject_reason": None,
             "ema_consumed": False,
+            "optimizer_step_before": before,
+            "optimizer_step_after": None,
+            "optimizer_step_probe": optimizer_step_probe,
         }
         return token
 
@@ -358,6 +378,22 @@ class OptimizerGuardV4:
             step["rejected"] = True
             step["reject_reason"] = "optimizer callable raised"
             raise
+        try:
+            after = _step_index(step["optimizer_step_probe"]())
+        except Exception:
+            step["rejected"] = True
+            step["reject_reason"] = "optimizer step counter probe failed"
+            raise
+        before = step["optimizer_step_before"]
+        step["optimizer_step_after"] = after
+        if after != before + 1:
+            step["rejected"] = True
+            step["reject_reason"] = (
+                f"optimizer must advance exactly once: {before}->{after}"
+            )
+            raise StepCompletionError(
+                f"optimizer must advance exactly once: {before}->{after}"
+            )
         step["step_complete"] = True
         return result
 
@@ -365,7 +401,14 @@ class OptimizerGuardV4:
         step = self._step(token)
         if step["rejected"] or not step["step_complete"]:
             raise StepCompletionError("guarded optimizer step did not complete")
+        if step["optimizer_step_after"] != step["optimizer_step_before"] + 1:
+            raise StepCompletionError("optimizer completion proof is inconsistent")
         return True
+
+    def step_indices(self, token: str) -> tuple[int, int]:
+        step = self._step(token)
+        self.assert_step_complete(token)
+        return step["optimizer_step_before"], step["optimizer_step_after"]
 
     def authorize_ema(self, token: str) -> bool:
         step = self._step(token)
@@ -373,5 +416,6 @@ class OptimizerGuardV4:
             raise StepCompletionError("EMA authorization already consumed")
         if step["rejected"] or not step["step_complete"]:
             raise StepCompletionError("EMA forbidden before successful optimizer step")
+        self.assert_step_complete(token)
         step["ema_consumed"] = True
         return True
