@@ -1,0 +1,280 @@
+{
+  "schema": "V77_COVERAGE_STRATA_VALIDATION_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "question": "are the detection-inferred coverage strata the real studies, and how is the cache weighted?",
+  "inferred_vs_true_study_for_cells_of_production_donors": {
+    "rows": "true study from the population authority's operators",
+    "cols": "inferred stratum",
+    "table": {
+      "HVS": {
+        "HVS": 2059,
+        "NPH52": 0,
+        "SEA_AD": 0,
+        "NONE": 0
+      },
+      "NPH52": {
+        "HVS": 0,
+        "NPH52": 218,
+        "SEA_AD": 0,
+        "NONE": 0
+      },
+      "SEA_AD": {
+        "HVS": 0,
+        "NPH52": 0,
+        "SEA_AD": 1015,
+        "NONE": 0
+      }
+    },
+    "cells": 3292,
+    "agreeing": 3292,
+    "agreement": 1.0,
+    "production_donors_measured_by_more_than_one_study": []
+  },
+  "median_detected_per_cell_by_stratum": {
+    "HVS": 4427.5,
+    "NPH52": 3717.5,
+    "SEA_AD": 4848.5
+  },
+  "weighting": {
+    "calibration_cache": {
+      "cells": {
+        "HVS": 3072,
+        "NPH52": 246,
+        "SEA_AD": 1408
+      },
+      "donors_by_majority_stratum": {
+        "HVS": 62,
+        "SEA_AD": 68,
+        "NPH52": 19
+      },
+      "cell_fraction": {
+        "HVS": 0.6500211595429539,
+        "NPH52": 0.052052475666525606,
+        "SEA_AD": 0.29792636479052054
+      },
+      "donor_fraction": {
+        "HVS": 0.4161073825503356,
+        "SEA_AD": 0.4563758389261745,
+        "NPH52": 0.12751677852348994
+      },
+      "cells_per_donor": {
+        "min": 2,
+        "median": 37.0,
+        "max": 74
+      }
+    },
+    "production_full104": {
+      "cells": {
+        "SEA_AD": 4118213,
+        "NPH52": 236476,
+        "HVS": 198718
+      },
+      "donors": {
+        "HVS": 41,
+        "SEA_AD": 46,
+        "NPH52": 17
+      },
+      "cell_fraction": {
+        "SEA_AD": 0.9044245331023562,
+        "NPH52": 0.05193385963521381,
+        "HVS": 0.04364160726243009
+      },
+      "donor_fraction": {
+        "HVS": 0.3942307692307692,
+        "SEA_AD": 0.4423076923076923,
+        "NPH52": 0.16346153846153846
+      }
+    },
+    "donors_shared": 104,
+    "cache_only_donors": 45
+  },
+  "source": {
+    "cache": "D:\\Jepa project\\data\\cache\\stage81a3r_corrected_real_train",
+    "n_shards": 42,
+    "shard_digests": [
+      {
+        "file": "01a8084c32680dfb.counts.npz",
+        "sha256": "7fb4c75e17dad66a25a38bae62c20f631debfb8933e6396a3636dbfce4916ceb"
+      },
+      {
+        "file": "0428d814f189ca87.counts.npz",
+        "sha256": "10becd678eab4c8c27c0c4387507c35687573f703fb39445d32987b250dea38d"
+      },
+      {
+        "file": "117e1b89adbf25e4.counts.npz",
+        "sha256": "0366ec50f1ec489c311206a487f4d4e625f1dc9fdc2b79c7ca3ff2f4d91b44de"
+      },
+      {
+        "file": "120794b6773c7cf9.counts.npz",
+        "sha256": "4b2a9f2cec21ee9142d027d86931aa32a0643631631a29bde3731b4a922dddae"
+      },
+      {
+        "file": "15b1f72fcc49200e.counts.npz",
+        "sha256": "4a9e007d47be60b413e7b472b0b8bbe8f70ade35bb67397557fdc532f5bc66b3"
+      },
+      {
+        "file": "16632e1b92d2409b.counts.npz",
+        "sha256": "5e9f66073e4170234e6e14b97b5124a20143847745837b8881f79ce71d9a3f74"
+      },
+      {
+        "file": "1cf08334d3b12f5f.counts.npz",
+        "sha256": "33be459c3c53f3e30ca4aa8f3565c17855a15269bb3327732d08393c758d59e5"
+      },
+      {
+        "file": "246008367b5ed2fb.counts.npz",
+        "sha256": "093c1ef9e77bad83aac31679fed92eb79e42094426113d7b09cc74d53067edae"
+      },
+      {
+        "file": "2bfa3b9301efa393.counts.npz",
+        "sha256": "15ae730671e9a20ef5b9fd2516e661a343f8c255712ea51125b9d4c5f96f6072"
+      },
+      {
+        "file": "3230dd0fe3beb954.counts.npz",
+        "sha256": "da6c8d3bd23e6e7810c68e3203fa22258aee0fc375b856cfe5ff134d0a9dcd64"
+      },
+      {
+        "file": "46a2e68f12d45643.counts.npz",
+        "sha256": "a45446ac8064d6dd4fbc5715cf6e31a4584e205b25d10a5dc93f454acb4a1608"
+      },
+      {
+        "file": "4777ea704d910eee.counts.npz",
+        "sha256": "d90eb06676a8e54ed6a44e0871f24fc31bfa8d1e2fb6a4b7e68d768bae49c865"
+      },
+      {
+        "file": "4a3db0b3a3ee23e5.counts.npz",
+        "sha256": "adb3b414d2c8d7c98ad7b673487ee4d8baba96a38dc95249c7cff6be5750a36c"
+      },
+      {
+        "file": "4be84f5869689fe5.counts.npz",
+        "sha256": "d795e06aa290a08a587a7bb657ce4b816e9248bce21ad725d4b3b7de986a06f9"
+      },
+      {
+        "file": "57791abbd401df2b.counts.npz",
+        "sha256": "4476fa4acb904861fa11dbb09eda151e2e4015d12886b5c19fcbd99dc19e0192"
+      },
+      {
+        "file": "58baaeadf44eab57.counts.npz",
+        "sha256": "83724b6fbc3772fcb07c3e315b3e8ac8eb7040b1477dd0629d0c57f1b129d6d3"
+      },
+      {
+        "file": "5a104c17a7d6e5cf.counts.npz",
+        "sha256": "0566fa4ee9471e84a5dca3bd4b30c461bb72ce5d80a077b13f8bcc9e62895cdc"
+      },
+      {
+        "file": "5a1c193be7cd49cc.counts.npz",
+        "sha256": "3343c4a143e340e4445d69d31ff94f8191ef57905094e63107468c71539caace"
+      },
+      {
+        "file": "5dab94333efd8e21.counts.npz",
+        "sha256": "632c529f10db97432a7b741cc99ff19a25bec201061aab15b67fb92ace518457"
+      },
+      {
+        "file": "62544b4c7ab48cd1.counts.npz",
+        "sha256": "5bb9daaf89ed94b4bb0d5f025722e18eac0ba8da310dfee0c280361be16f4080"
+      },
+      {
+        "file": "65db086233248c4c.counts.npz",
+        "sha256": "b4bbdce37d026e3bafac1b0dbbf4919c5de773752c6e8051eb88faec3f7c3c28"
+      },
+      {
+        "file": "697169906cb1a773.counts.npz",
+        "sha256": "adfae9c892591e743929d8aeb6874d76832b8f34f8739f49e850979091684221"
+      },
+      {
+        "file": "701d4db85fd51088.counts.npz",
+        "sha256": "54b5223c7aa485e3ab4e9d677f65af3b051e5e071303a16c43738906b4bfa1e5"
+      },
+      {
+        "file": "728ef515d050d789.counts.npz",
+        "sha256": "ba7a239611552074a759bbcb29331af1a68adee6f0df9f13b6cc9e2abd7f116a"
+      },
+      {
+        "file": "7da7c897180c16b5.counts.npz",
+        "sha256": "1dcbe94d2b8ebf37145f7e147bdb20238abe63d82ab01e2a84ed49de407ea36e"
+      },
+      {
+        "file": "868d05542e5e7cf2.counts.npz",
+        "sha256": "454120fb1a7d3a693def16b5bfb7a00c018d477d76332e0297c83c79201bb736"
+      },
+      {
+        "file": "8a1613e724707595.counts.npz",
+        "sha256": "df454df2cd6a2338edbc85b6c292d5e94316c77e8897d8d321d25bbb91bbdcc7"
+      },
+      {
+        "file": "97c509331469cc92.counts.npz",
+        "sha256": "b2a847d6f0eeef5de1b43633878ac6af9b038c9e8a3d5d5eccda581c7d6f5e67"
+      },
+      {
+        "file": "9fc20935b65302ee.counts.npz",
+        "sha256": "d03a3fcdf7688f6e6db3664185a13ad4998fb07f4de86014d562783a78202e46"
+      },
+      {
+        "file": "a410358f191a3e4c.counts.npz",
+        "sha256": "e6a85b0965ca7d2f059bb1b9bbbc83a277c35d3e73bdb4e491c9071162947add"
+      },
+      {
+        "file": "a6a34c7d7c6723a0.counts.npz",
+        "sha256": "c12d89d87a1ee7be381cb6e1c5f63ac2f4b74866ae8f1cd2980764c584294813"
+      },
+      {
+        "file": "bbffd755c3f71256.counts.npz",
+        "sha256": "93a947c6c5ed2ce8b2ecf4e8917a16843c10bfe2adb99901a12941cd820665ad"
+      },
+      {
+        "file": "c70df1e5200f419f.counts.npz",
+        "sha256": "abeca26304408b5440fd5f9b31d25d735e353c5631b80584c885789d074418ba"
+      },
+      {
+        "file": "c9d1fc26b487b582.counts.npz",
+        "sha256": "cdc07bf7fc868df5c924575c394c7cd02a5f05c321cb039f594e2aa65b9d5d7f"
+      },
+      {
+        "file": "d35f9b260b727137.counts.npz",
+        "sha256": "3713d758e7c10373a268f09efa8ace7bb29660d6a0230aa1ee03641f0c254369"
+      },
+      {
+        "file": "dd26eaeaed7d104f.counts.npz",
+        "sha256": "bc63c152418d95262d2a4047fd5281736dd67a1b3834808b8a29ad4db07a1611"
+      },
+      {
+        "file": "de88e08b50c44dbe.counts.npz",
+        "sha256": "dd0d65374de7b78d5d1cc0c5e11c5dfef4b52c66c960f692779525de53483cfe"
+      },
+      {
+        "file": "dfcb594c1abeb0c0.counts.npz",
+        "sha256": "8f916bcf233bd1962529655539d1078a78b1f153ed5015931c3ef8251176a2a2"
+      },
+      {
+        "file": "e31a8c262e8be576.counts.npz",
+        "sha256": "f7b4dc0978b4af397e6137206b77729ea932356d9d403f87bbc3d2fc1711d72f"
+      },
+      {
+        "file": "e38be9d52b6f8e0b.counts.npz",
+        "sha256": "ae2f5f5d3a0bdd94017a9fd1886fdc659bf169f33095a6a27dd559ef5b21ab7f"
+      },
+      {
+        "file": "e5ef92fa6bf68bb4.counts.npz",
+        "sha256": "9b0d2ad075750f52c964c21584d9fa0ab7ef02f7df2f42d6cde8cea5514f6647"
+      },
+      {
+        "file": "fa1d6cf6e74837f2.counts.npz",
+        "sha256": "864758a444e5b0d31c4eb2d5bbd3cbec2f32543c0ec8bc50ae102edddc8a9ed1"
+      }
+    ],
+    "population_authority": "results\\v64\\V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json",
+    "pathology_blind": true,
+    "train_only": true,
+    "read_only": true,
+    "metadata_csvs_opened": false
+  },
+  "command": "python scripts/v77/validate_v77_coverage_strata.py --out results/v77/V77_COVERAGE_STRATA_VALIDATION_V1.json",
+  "source_commit": "f91feac9199b27f531be31057cac3178c0ea3dd9",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "scripts/v77/validate_v77_coverage_strata.py": "52a2209b021af3ec8f0d3855799cab0f7867a46b6ae8e0d3704a66810c1a6195",
+    "scripts/v77/build_v77_real_calibration.py": "81d516704a8414084a11742ab3ea7aeed0aca64b35077a5e2f49b3c34d097504",
+    "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7",
+    "scripts/v64/v73_full104_population_geometry.py": "5905c88c791fa59e208f703382ff68e395c4c2cbba5fee6bc49c8d81a9dd36df"
+  },
+  "no_training_performed": true
+}
