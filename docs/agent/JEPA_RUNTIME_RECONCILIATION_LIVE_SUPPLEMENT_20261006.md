@@ -36,9 +36,13 @@ Base:
 
 `main@f5a8ebeddbcd52a94274a7f72ecda1f71b82d777`
 
-Current audited head at this checkpoint:
+Earlier audited RED head:
 
 `dbf2ebef227f7250e2b9ab792ec5c285f195a31a`
+
+Later audited implementation head:
+
+`de36481409773b7396d536602ec6d1048ee247a4`
 
 The older docs-first branch `reconcile/v64-runtime-authority-onto-main-20261006` is a predecessor, not the current implementation branch.
 
@@ -53,73 +57,105 @@ Current code uses:
 
 The guard is installed on the exact optimizer object using optimizer pre/post step hooks. It rejects direct or wrongly-tokened stepping, requires unscale followed by gradient validation, poisons the guard after ambiguous optimizer/EMA failures, blocks a new step while EMA is pending, and emits authority-bound completed-checkpoint receipts only after optimizer + EMA completion.
 
+The prefreeze guard has also been narrowed to an exactly-one-update rehearsal surface, preventing it from silently becoming an iterative trainer.
+
 This is still non-authorizing rehearsal infrastructure. `TRAINING=OFF` and `STAGE_A_EXECUTION=OFF` remain binding.
 
-## Current RED state — intentional and unresolved
+## RED history and current narrowing
 
-GitHub Actions run for `dbf2ebef...` is RED with:
+### `dbf2ebef...`
+
+GitHub Actions was RED with:
 
 `7 failed, 41 passed`
 
-The seven failures are useful and must not be hidden or bypassed.
+Those REDs established:
 
-### RED 1 — EMA one-shot error ordering
+- exact governance-shape rejection for extra/missing fields;
+- EMA one-shot diagnostic precedence;
+- exactly-one-update rehearsal boundary;
+- completed-checkpoint receipt one-shot behavior.
 
-Behavior is one-shot in substance, but the second EMA attempt currently fails with:
+### `de364814...`
 
-`EMA token does not match pending optimizer step`
+The substantive seven REDs were mostly closed. GitHub Actions narrowed to:
 
-instead of the more precise already-consumed rejection required by the test.
+`2 failed, 46 passed`
 
-This is an error-ordering/state-reporting issue, not evidence that a second EMA actually executes.
+The two remaining failures were diagnostic/error-ordering:
 
-### RED 2-5 — exact governance-shape / historical-spillover firewall
+1. old V64 governance was rejected, but exact-field validation fired before the clearer schema-mismatch diagnostic;
+2. a second update was rejected, but exactly-one-update fired before the more specific pending-EMA diagnostic.
 
-Current `_canonical_prefreeze_governance()` checks selected required field values but accepts the remainder of the supplied governance object and hashes it.
+These are not reasons to weaken the safety constraints; they are ordering issues in fail-closed diagnostics.
 
-New red-team tests correctly require rejection of:
+## Historical-spillover self-audit — deeper finding
 
-- unknown top-level governance fields;
-- missing canonical top-level fields;
-- unknown nested fields;
-- missing nested canonical fields.
+The exact-field-shape fix is **necessary but not sufficient** for preventing historical or caller-controlled spillover.
 
-This matters specifically for historical-spillover control: an old V64-era or caller-injected authority field must not become tolerated merely because the rest of the V3 state has valid values.
+At `de364814...`, the code enforces the exact set of allowed top-level and selected nested keys, but many legal fields can still contain altered values while retaining the same structure. The full altered object is then hashed into a fresh mechanically valid authority.
 
-The canonical current V3 state at `main@f5a8ebed...` is the source of truth for exact allowed structure. Do not hand-maintain only a small subset and silently permit extras.
+Examples that require explicit consideration/tests include same-shape mutations to:
 
-### RED 6 — exactly-one-update rehearsal boundary
+- `representation_families`;
+- `claim_ladder`;
+- `source_documents`;
+- `transport_axes`;
+- `ood_axes`;
+- `estimand_candidates`;
+- observation-operator descriptor lists;
+- representation-stability diagnostic/status lists;
+- nested scientific strings/values not already fixed by the hard-boundary checks.
 
-The new red-team requires the prefreeze guard to permit exactly one optimizer+EMA update and then refuse a second update.
+Therefore do **not** yet claim that the runtime accepts only the canonical current V3 governance state merely because unknown/missing fields now fail closed.
 
-This is a deliberate anti-hidden-trainer boundary. The prefreeze reconciliation should not quietly become an iterative trainer before a separate prospective execution-authority contract exists.
+The successor/local agent must decide and test the intended contract explicitly:
 
-### RED 7 — completed checkpoint receipt one-shot
+### Preferred strict interpretation for this prefreeze adapter
 
-A completed-step checkpoint receipt must be emitted once. Re-emitting a second receipt with different bytes from the same guarded update would create ambiguous lineage and must fail closed.
+If this adapter is intended to bind **the exact approved current V3 prefreeze state**, authority issuance should fail unless the supplied governance object is semantically identical to the canonical approved governance object for the bound base/contract, not merely schema-compatible.
 
-## Self-audit of these REDs
+That can be enforced by an exact canonical governance digest/reference or equivalently exhaustive value validation. A digest/reference is less likely to drift silently than maintaining a partial handwritten schema/value mirror.
 
-These are legitimate REDs, not test churn.
+### If controlled governance evolution is intended instead
 
-- Exact governance-shape checks directly address the user's historical-spillover requirement.
-- Exactly-one-update blocks accidental conversion of the rehearsal surface into a trainer.
-- One-shot completed receipt prevents forked provenance from one authority consumption.
-- EMA error-ordering should be fixed without weakening one-shot behavior.
+Then the adapter must define exactly which fields may vary and why, and RED tests must reject historical/scientific substitutions in every other field. Do not leave same-shape arbitrary variation implicitly permitted.
 
-Do not weaken the tests to regain green.
+Until this is resolved, historical-spillover qualification remains OPEN.
 
-## Remaining major runtime gaps after these REDs
+## Iterative self-audit conclusion at this checkpoint
 
-Even after the seven focused REDs are made GREEN, do not call the runtime fully qualified. Still required locally on the GPU laptop:
+Established:
 
-1. real PyTorch optimizer integration;
-2. real AMP/GradScaler skip proof — `scaler.step(optimizer)` skip must not authorize EMA or lawful cursor advancement;
-3. canonical inactive/test-only V5 one-update consumer integration;
-4. deterministic checkpoint/restart completeness;
-5. interrupt/resume equivalence;
-6. synthetic anti-cheat adapter/target/checkpoint ladder integration through the same canonical consumer;
-7. explicit bounded synthetic mutation authorization before any new IPBEncoder optimizer/EMA run.
+- optimizer object binding is stronger than the superseded arbitrary-counter design;
+- direct/wrong-token bypass is mechanically guarded in the focused adapter;
+- ambiguous optimizer/EMA failures fail closed;
+- exactly-one-update and one-shot receipt semantics are now represented in code/tests;
+- exact-field shape rejection catches a class of stale-field spillovers.
+
+Still unproved:
+
+- exact-current-governance semantic binding rather than shape-only binding;
+- real PyTorch optimizer behavior;
+- AMP/GradScaler skip semantics;
+- canonical V5 consumer integration;
+- deterministic restart completeness;
+- synthetic anti-cheat integration through the canonical consumer.
+
+Do not move these items from OPEN to DONE without physical evidence on the exact current head.
+
+## Remaining major runtime gaps
+
+Even after focused REDs are GREEN, do not call the runtime fully qualified. Still required locally on the GPU laptop:
+
+1. exact-current-governance semantic binding / spillover REDs;
+2. real PyTorch optimizer integration;
+3. real AMP/GradScaler skip proof — `scaler.step(optimizer)` skip must not authorize EMA or lawful cursor advancement;
+4. canonical inactive/test-only V5 one-update consumer integration;
+5. deterministic checkpoint/restart completeness;
+6. interrupt/resume equivalence;
+7. synthetic anti-cheat adapter/target/checkpoint ladder integration through the same canonical consumer;
+8. explicit bounded synthetic mutation authorization before any new IPBEncoder optimizer/EMA run.
 
 ## Parallel local Claude/Macha work
 
