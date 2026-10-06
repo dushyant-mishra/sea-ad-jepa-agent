@@ -123,6 +123,21 @@ Then the adapter must define exactly which fields may vary and why, and RED test
 
 Until this is resolved, historical-spillover qualification remains OPEN.
 
+## Optimizer identity provenance self-audit
+
+The mutation path is now bound to a concrete optimizer **object**, which is materially stronger than the superseded caller-counter design.
+
+However, the authority field called `optimizer_identity` remains a caller-supplied string. The guard checks that callers repeat that string, but the constructor does not prove that the string truthfully describes the optimizer object being guarded.
+
+Therefore distinguish these claims:
+
+- **optimizer object bound at mutation boundary:** supported by focused guard design/tests;
+- **optimizer identity/provenance exactly bound:** still OPEN.
+
+A future RED should demonstrate that an authority labeled `adamw:v1` cannot silently guard an incompatible optimizer implementation merely because it exposes compatible step hooks. The canonical/local consumer should derive or verify optimizer provenance from the actual configured optimizer/adaptor rather than trusting a free label.
+
+Do not use the phrase “exact optimizer identity is bound” until that provenance link is physical.
+
 ## Iterative self-audit conclusion at this checkpoint
 
 Established:
@@ -136,6 +151,7 @@ Established:
 Still unproved:
 
 - exact-current-governance semantic binding rather than shape-only binding;
+- truthful optimizer identity/provenance binding rather than object-only binding;
 - real PyTorch optimizer behavior;
 - AMP/GradScaler skip semantics;
 - canonical V5 consumer integration;
@@ -149,13 +165,14 @@ Do not move these items from OPEN to DONE without physical evidence on the exact
 Even after focused REDs are GREEN, do not call the runtime fully qualified. Still required locally on the GPU laptop:
 
 1. exact-current-governance semantic binding / spillover REDs;
-2. real PyTorch optimizer integration;
-3. real AMP/GradScaler skip proof — `scaler.step(optimizer)` skip must not authorize EMA or lawful cursor advancement;
-4. canonical inactive/test-only V5 one-update consumer integration;
-5. deterministic checkpoint/restart completeness;
-6. interrupt/resume equivalence;
-7. synthetic anti-cheat adapter/target/checkpoint ladder integration through the same canonical consumer;
-8. explicit bounded synthetic mutation authorization before any new IPBEncoder optimizer/EMA run.
+2. optimizer identity/provenance binding REDs;
+3. real PyTorch optimizer integration;
+4. real AMP/GradScaler skip proof — `scaler.step(optimizer)` skip must not authorize EMA or lawful cursor advancement;
+5. canonical inactive/test-only V5 one-update consumer integration;
+6. deterministic checkpoint/restart completeness;
+7. interrupt/resume equivalence;
+8. synthetic anti-cheat adapter/target/checkpoint ladder integration through the same canonical consumer;
+9. explicit bounded synthetic mutation authorization before any new IPBEncoder optimizer/EMA run.
 
 ## Parallel local Claude/Macha work
 
