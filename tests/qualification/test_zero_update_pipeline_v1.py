@@ -62,12 +62,12 @@ def _protocol(**overrides):
     return p
 
 
-def _authorities(protocol):
+def _authorities(protocol, *, evaluation_authorized=True):
     return AuthorityBundleV1(
         scientific=ScientificExperimentAuthorityV1(
             protocol_digest=protocol.digest(),
             scope=ExperimentScope.SYNTHETIC_PIPELINE_VALIDITY,
-            evaluation_authorized=True,
+            evaluation_authorized=evaluation_authorized,
         ),
         mutation=MutationAuthorityV1(MutationStatus.MUTATION_NOT_AUTHORIZED),
         claim=ClaimAuthorityV1(ClaimLevel.SYNTHETIC_PIPELINE_VALIDITY),
@@ -176,10 +176,25 @@ def test_zero_update_runner_exposes_filtered_views_and_freezes_outputs():
         protocol, _authorities(protocol), _batch(protocol), representation_fn, readout_fn
     )
     assert frozen.run_id == "run-zero-001"
+    assert frozen.synthetic_realization_id == "v77-challenge-001"
     assert len(frozen.output_digest) == 64
     assert len(frozen.provenance_receipt_digest) == 64
     assert seen["model"] == ("expression",)
     assert seen["operator"] == ("depth",)
+
+
+def test_runner_rejects_scientific_authority_that_does_not_authorize_evaluation():
+    protocol = _protocol()
+    called = {"representation": False}
+    with pytest.raises(ValueError, match="evaluation"):
+        run_zero_update_qualification(
+            protocol,
+            _authorities(protocol, evaluation_authorized=False),
+            _batch(protocol),
+            lambda view: called.__setitem__("representation", True),
+            lambda rep, view: {"score": 0.0},
+        )
+    assert called["representation"] is False
 
 
 def test_shared_batch_schema_supports_real_data_without_synthetic_provenance():
