@@ -23,13 +23,15 @@ def _outputs(
     realization_id="v77-challenge-001",
     challenge_partition="PROSPECTIVE_SEALED_CHALLENGE",
 ):
-    return FrozenQualificationOutputsV1(
+    outputs = FrozenQualificationOutputsV1(
         run_id=run_id,
         output_digest="d" * 64,
         provenance_receipt_digest="e" * 64,
         synthetic_realization_id=realization_id,
-        challenge_partition=challenge_partition,
     )
+    # Test-only injection proves current unblinding ignores predeclared partition identity.
+    object.__setattr__(outputs, "challenge_partition", challenge_partition)
+    return outputs
 
 
 def _oracle(realization_id="v77-challenge-001"):
