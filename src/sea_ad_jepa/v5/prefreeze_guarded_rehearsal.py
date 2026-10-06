@@ -1,6 +1,6 @@
 """Test-only full-cycle rehearsal for the prefreeze runtime guard.
 
-This is deliberately not a trainer.  It composes callbacks supplied by a test
+This is deliberately not a trainer. It composes callbacks supplied by a test
 or inactive mechanics harness so the ordering can be proved without selecting
 biology, loading protected data, or granting execution authority.
 """
@@ -37,7 +37,7 @@ def run_test_only_guarded_rehearsal(
     ema_update: Callable[[], Any],
     checkpoint: Callable[[], str],
 ) -> dict[str, Any]:
-    """Exercise one guarded update and checkpoint round-trip in test mode only."""
+    """Exercise one guarded update and post-update checkpoint proof in test mode."""
     if not isinstance(authority, CurrentTrainingAuthorityV2) or authority.test_only is not True:
         raise PrefreezeGovernanceError("guarded rehearsal requires test-only authority")
     authority._validate_digest()
@@ -51,7 +51,8 @@ def run_test_only_guarded_rehearsal(
     ema_update = _callable(ema_update, "ema_update")
     checkpoint = _callable(checkpoint, "checkpoint")
 
-    token = guard.begin_step(optimizer_identity, authority.checkpoint_digest)
+    starting_checkpoint_digest = authority.checkpoint_digest
+    token = guard.begin_step(optimizer_identity, starting_checkpoint_digest)
 
     backward()
     unscale()
@@ -71,16 +72,17 @@ def run_test_only_guarded_rehearsal(
     ema_update()
 
     checkpoint_digest = checkpoint()
-    receipt = authority.checkpoint_receipt()
-    # The reload call is the fail-closed digest check; a different physical
-    # checkpoint cannot inherit this authority receipt.
-    CurrentTrainingAuthorityV2.reload(receipt, checkpoint_digest)
+    receipt = authority.completed_checkpoint_receipt(checkpoint_digest)
+    CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
+        receipt, checkpoint_digest
+    )
 
     return {
         "schema": REHEARSAL_SCHEMA,
         "test_only": True,
         "training_authorized": False,
         "execution_authorized": False,
+        "starting_checkpoint_digest": starting_checkpoint_digest,
         "checkpoint_digest": checkpoint_digest,
-        "authority_receipt": receipt,
+        "checkpoint_receipt": receipt,
     }
