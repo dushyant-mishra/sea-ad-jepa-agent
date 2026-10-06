@@ -77,7 +77,7 @@ def run_test_only_guarded_rehearsal(
     checkpoint_digest = checkpoint()
     receipt = guard.completed_checkpoint_receipt(token, checkpoint_digest)
     PrefreezeMechanicalAuthorityV1.verify_completed_checkpoint_receipt(
-        receipt, checkpoint_digest
+        receipt, checkpoint_digest, governance_state=authority.governance_state
     )
 
     return {
