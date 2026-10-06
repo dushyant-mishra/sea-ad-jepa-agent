@@ -178,9 +178,13 @@ def main():
                     help="development only; the receipt is then marked NOT_FROM_A_CLEAN_COMMITTED_HEAD")
     a = ap.parse_args()
     dirty = _git("status", "--porcelain", "--untracked-files=no")
-    if dirty and not a.allow_dirty:
-        sys.exit("refusing to run: tracked files are modified, and a receipt must describe a "
-                 "committed head\n" + dirty)
+    # an untracked executor passes a status check, so check each one explicitly (S154)
+    untracked = [f for f in EXECUTOR_FILES if not _git("ls-files", "--", f)]
+    if (dirty or untracked) and not a.allow_dirty:
+        sys.exit("refusing to run: a receipt must describe committed code\n" + dirty
+                 + "".join(f"\nuntracked executor: {f}" for f in untracked))
+    # digests taken BEFORE the work, so an edit during the run cannot be misrecorded (S153)
+    executor_digests = {f: hashlib.sha256((HERE / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES}
 
     universe = np.load(a.universe, allow_pickle=False)["evaluation_universe"]
     N = AU.N_ADDRESSES
@@ -233,8 +237,9 @@ def main():
         command=f"python scripts/v77/run_v77_dynamic_range_tournament.py --universe {a.universe} "
                 f"--out {a.out} --cells {a.cells} --seed {a.seed}",
         source_commit=_git("rev-parse", "HEAD"),
-        provenance_status=("NOT_FROM_A_CLEAN_COMMITTED_HEAD" if dirty else "CLEAN_COMMITTED_HEAD"),
-        executor_sha256={f: hashlib.sha256((here / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES},
+        provenance_status=("NOT_FROM_A_CLEAN_COMMITTED_HEAD" if (dirty or untracked)
+                           else "CLEAN_COMMITTED_HEAD"),
+        executor_sha256=executor_digests,
         universe_sha256=hashlib.sha256(Path(a.universe).read_bytes()).hexdigest(),
         arms=results,
         no_training_performed=True)

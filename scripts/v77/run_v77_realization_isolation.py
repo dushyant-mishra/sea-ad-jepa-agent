@@ -87,9 +87,13 @@ def main():
                     help="development only; the receipt is then marked NOT_FROM_A_CLEAN_COMMITTED_HEAD")
     a = ap.parse_args()
     dirty = _git("status", "--porcelain", "--untracked-files=no")
-    if dirty and not a.allow_dirty:
-        sys.exit("refusing to run: tracked files are modified, and a receipt must describe a "
-                 "committed head\n" + dirty)
+    # an untracked executor passes a status check, so check each one explicitly (S154)
+    untracked = [f for f in EXECUTOR_FILES if not _git("ls-files", "--", f)]
+    if (dirty or untracked) and not a.allow_dirty:
+        sys.exit("refusing to run: a receipt must describe committed code\n" + dirty
+                 + "".join(f"\nuntracked executor: {f}" for f in untracked))
+    # digests taken BEFORE the work, so an edit during the run cannot be misrecorded (S153)
+    executor_digests = {f: hashlib.sha256((HERE / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES}
 
     universe = np.load(a.universe, allow_pickle=False)["evaluation_universe"]
     N = AU.N_ADDRESSES
@@ -139,8 +143,9 @@ def main():
                         why="S139/S140: V1 gene selection did not match the real envelope"),
         scorers=dict(v1_binary_hvg="retained for reproduction only (S139, S140)",
                      matched_to_real_envelopes=MS.RULE),
-        provenance_status=("NOT_FROM_A_CLEAN_COMMITTED_HEAD" if dirty else "CLEAN_COMMITTED_HEAD"),
-        executor_sha256={f: hashlib.sha256((HERE / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES},
+        provenance_status=("NOT_FROM_A_CLEAN_COMMITTED_HEAD" if (dirty or untracked)
+                           else "CLEAN_COMMITTED_HEAD"),
+        executor_sha256=executor_digests,
         question="does stochastic counting, alone, destroy the recovered dependence topology?",
         held_identical_between_arms=["sub-state generator and its eta", "capture propensity kappa",
                                      "cell measurement state", "abundance at full scale",

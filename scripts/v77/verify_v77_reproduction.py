@@ -44,9 +44,10 @@ def main():
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     dirty = _git("status", "--porcelain", "--untracked-files=no")
-    if dirty:
-        sys.exit("refusing: tracked files are modified; the receipt must describe a committed head\n"
-                 + dirty)
+    me = Path(__file__).name
+    if dirty or not _git("ls-files", "--", me):      # an untracked verifier passes a status check (S154)
+        sys.exit("refusing: the receipt must describe committed code\n" + dirty)
+    verifier_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     fb, rb = Path(a.frozen).read_bytes(), Path(a.reproduced).read_bytes()
     fj, rj = json.loads(fb), json.loads(rb)
     fl, rl = dict(_leaves(fj)), dict(_leaves(rj))
@@ -62,6 +63,7 @@ def main():
         producer_command=a.producer_command,
         source_commit=_git("rev-parse", "HEAD"),
         provenance_status="CLEAN_COMMITTED_HEAD",
+        verifier_sha256=verifier_sha256,
         rule="byte identity, decided before the comparison; no tolerance is applied after seeing it")
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     with open(a.out, "w", newline="\n") as fh:
