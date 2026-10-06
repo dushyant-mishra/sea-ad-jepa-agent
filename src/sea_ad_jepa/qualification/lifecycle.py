@@ -62,6 +62,8 @@ class ExperimentRunV1:
             not isinstance(self.parent_run_id, str) or not self.parent_run_id.strip()
         ):
             raise LifecycleError("parent_run_id must be explicit when supplied")
+        if self.parent_run_id == self.experiment_run_id:
+            raise LifecycleError("child run identity must be distinct from parent run identity")
         if self.parent_run_id is not None and (
             not isinstance(self.retry_reason, str) or not self.retry_reason.strip()
         ):
@@ -161,6 +163,8 @@ class ExperimentRunV1:
     def retry_as_child(self, child_run_id: str, *, reason: str) -> "ExperimentRunV1":
         if self.state is not RunState.FAILED:
             raise LifecycleError("retry requires a terminal failed parent run")
+        if child_run_id == self.experiment_run_id:
+            raise LifecycleError("retry child run identity must be distinct from parent run identity")
         return ExperimentRunV1(
             experiment_run_id=child_run_id,
             protocol_digest=self.protocol_digest,
