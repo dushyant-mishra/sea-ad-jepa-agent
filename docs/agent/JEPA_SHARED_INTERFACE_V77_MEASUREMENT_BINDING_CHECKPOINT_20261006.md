@@ -58,11 +58,31 @@ Branch: `shared-qualification-interface-v1-20261006` (draft PR #223)
    - validates operator-context digest against operator identity;
    - provenance carries both proof digests.
 
-8. Existing tests were migrated to the stronger contract rather than retaining the pre-S146/S147 API as historical spillover. Latest fully verified head before the final edge-case self-audit: `10961995f1794c40aebbc578c62f7c75ec3dbe4a`; workflow `37542142301`: SUCCESS.
+8. Existing tests were migrated to the stronger contract rather than retaining the pre-S146/S147 API as historical spillover. Head `10961995f1794c40aebbc578c62f7c75ec3dbe4a`; workflow `37542142301`: SUCCESS.
 
 9. `1bb227f7e8f5f0cf480299299a1d404ef0c4c98c`
-   - final edge-case self-audit tests added for support observation-order mismatch, support feature-width mismatch, and operator/support rule disagreement.
-   - CI state was pending when this checkpoint was written; update this record with the exact result before calling the milestone closed.
+   - final edge-case self-audit tests added for support observation-order mismatch, support feature-width mismatch, and operator/support rule disagreement;
+   - workflow `37542265623`: SUCCESS.
+
+### Measurement-binding milestone verdict
+
+**CLOSED GREEN at exact head `1bb227f7e8f5f0cf480299299a1d404ef0c4c98c`.**
+
+The shared qualification interface now fails closed on the historical measurement-identity defect classes exposed by S135/S146/S147:
+
+- same-shaped source-roster permutation;
+- source-index/source-name mismatch;
+- operator-to-source mismatch;
+- support-count-only provenance;
+- downstream reconstructed/ORed support;
+- producer/batch per-element support mismatch;
+- correct receipt paired with a different measurement-mask digest;
+- correct receipt paired with a different operator-context digest;
+- support observation-order mismatch;
+- support width inconsistent with the authenticated feature axis;
+- operator/support structural-support-rule disagreement.
+
+This is interface qualification only. It does not yet prove the V77 adapter produces these receipts correctly, nor does it qualify the future real-RNA adapter.
 
 ## V77 repository state independently observed
 
@@ -99,9 +119,9 @@ That choice belongs to the real-data scientific/reviewer lane and must be prospe
 
 ## Next actions
 
-1. verify `1bb227f7...` exact-head CI;
-2. if GREEN, record the measurement-binding milestone complete in the native-execution ledger;
-3. re-check the Claude/Macha remote for later pushed S149/within-cohort receipts and independently audit them;
-4. hand S149's scientific target question to the real-data qualification/reviewer lane;
-5. finish whole-branch PR #223 audit before starting #221/#222 runtime convergence;
-6. only after shared interface + runtime successor are qualified, implement the V77 adapter against this common contract.
+1. independently re-check the Claude/Macha remote for later pushed S149/within-cohort receipts and audit them once present;
+2. hand S149's scientific target question to the real-data qualification/reviewer lane;
+3. finish whole-branch PR #223 audit and reconcile its parallel Task-4–8 implementation history before merge consideration;
+4. only after the shared interface is independently signed off, start #221/#222 runtime convergence against this contract;
+5. only after shared interface + runtime successor are qualified, implement the V77 adapter against the common contract;
+6. bounded synthetic mutation remains separately authorized future work; zero-update pipeline validity can proceed first.
