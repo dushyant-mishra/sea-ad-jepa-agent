@@ -275,6 +275,8 @@ class PrefreezeOptimizerGuardV1:
         self._steps: dict[str, dict[str, Any]] = {}
         self._armed: str | None = None
         self._consumed: str | None = None
+        self._pending_ema: str | None = None
+        self._poisoned = False
         self._closed = False
         self._pre_handle = optimizer.register_step_pre_hook(self._pre_step)
         self._post_handle = optimizer.register_step_post_hook(self._post_step)
@@ -282,10 +284,14 @@ class PrefreezeOptimizerGuardV1:
     def _ensure_open(self) -> None:
         if self._closed:
             raise StepCompletionError("optimizer guard is closed")
+        if self._poisoned:
+            raise StepCompletionError("optimizer guard is poisoned after ambiguous failure")
         self.authority._validate_digest()
 
     def begin_step(self, optimizer_identity: str, checkpoint_digest: str) -> str:
         self._ensure_open()
+        if self._pending_ema is not None:
+            raise StepCompletionError("prior optimizer step awaits EMA completion")
         if optimizer_identity != self.authority.optimizer_identity:
             raise PrefreezeGovernanceError("optimizer identity mismatch")
         if _sha256(checkpoint_digest, "checkpoint digest") != self.authority.checkpoint_digest:
@@ -359,11 +365,13 @@ class PrefreezeOptimizerGuardV1:
         self._ensure_open()
         if optimizer is not self.optimizer or self._consumed is None:
             self._armed = None
+            self._poisoned = True
             raise StepCompletionError("optimizer post-step lacks consumed authorization")
         token = self._consumed
         step = self._step_state(token)
         step["optimizer_completed"] = True
         self._armed = None
+        self._pending_ema = token
 
     def run_optimizer_step(self, token: str) -> Any:
         step = self._step_state(token)
@@ -377,11 +385,13 @@ class PrefreezeOptimizerGuardV1:
             step["rejected"] = True
             self._armed = None
             self._consumed = None
+            self._poisoned = True
             raise
         if self._consumed != token or not step["optimizer_completed"]:
             step["rejected"] = True
             self._armed = None
             self._consumed = None
+            self._poisoned = True
             raise StepCompletionError("guarded optimizer step did not complete")
         self._consumed = None
         return result
@@ -395,6 +405,8 @@ class PrefreezeOptimizerGuardV1:
     def run_ema(self, token: str, ema_callable: Any) -> Any:
         step = self._step_state(token)
         self.assert_step_complete(token)
+        if self._pending_ema != token:
+            raise StepCompletionError("EMA token does not match pending optimizer step")
         if step["ema_consumed"]:
             raise StepCompletionError("EMA authorization already consumed")
         if not callable(ema_callable):
@@ -404,15 +416,17 @@ class PrefreezeOptimizerGuardV1:
             result = ema_callable()
         except Exception:
             step["rejected"] = True
+            self._poisoned = True
             raise
         step["ema_completed"] = True
+        self._pending_ema = None
         return result
 
     def completed_checkpoint_receipt(self, token: str, checkpoint_digest: str) -> dict[str, Any]:
         step = self._step_state(token)
-        self.assert_step_complete(token)
         if step["rejected"] or not step["ema_completed"]:
             raise StepCompletionError("completed checkpoint requires successful EMA")
+        self.assert_step_complete(token)
         checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
         if checkpoint_digest == self.authority.checkpoint_digest:
             raise PrefreezeGovernanceError("completed checkpoint must be a new state")
@@ -436,4 +450,5 @@ class PrefreezeOptimizerGuardV1:
             self._post_handle.remove()
             self._armed = None
             self._consumed = None
+            self._pending_ema = None
             self._closed = True
