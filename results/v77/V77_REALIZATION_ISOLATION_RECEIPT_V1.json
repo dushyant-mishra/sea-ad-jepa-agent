@@ -1,0 +1,76 @@
+{
+  "schema": "V77_REALIZATION_ISOLATION_RECEIPT_V1",
+  "question": "does stochastic counting, alone, destroy the recovered dependence topology?",
+  "held_identical_between_arms": [
+    "sub-state generator and its eta",
+    "capture propensity kappa",
+    "cell measurement state",
+    "abundance at full scale",
+    "rate field",
+    "seed",
+    "evaluation universe"
+  ],
+  "single_variable": "realization: deterministic threshold versus Poisson",
+  "command": "python scripts/v77/run_v77_realization_isolation.py --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --out results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V1.json --cells 2500 --seed 20261006 --generator L1_two_giant --capture O3_capture_independent_wide",
+  "source_commit": "c4f1259757471a09931de576a6e6c095c6ab210a",
+  "seed": 20261006,
+  "cells": 2500,
+  "generator": "L1_two_giant",
+  "capture": "O3_capture_independent_wide",
+  "evaluation_universe": {
+    "path": "D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz",
+    "n_genes": 19569,
+    "name": "TRAIN_PREVALENCE05_19569",
+    "sha256": "e7ad8e5aa74f2fe6ecdaf6d6dbbaef54882a02897639f7c3dc50268f502d351a"
+  },
+  "comparability_fix": "BOTH arms scored on the frozen universe, not on each arm's own prevalence filter, which previously gave vertex sets of 12,468 to 28,884 genes and made the comparison non-promotion-grade",
+  "arms": {
+    "A_deterministic": {
+      "realization": "deterministic threshold on rate; detection is a function of rate alone",
+      "abundance_max_median__TRAIN_PREVALENCE05_19569": 7625.780373831776,
+      "top1pct_count_share__TRAIN_PREVALENCE05_19569": 0.518306862065808,
+      "expressed_fraction_in_universe": 0.5005876641627063,
+      "topology": {
+        "median_abs_corr": 0.30728347627967967,
+        "frac_abs_gt_0p3": 0.5207598088251639,
+        "var_top10_pc": 0.5608545148618957,
+        "mean_degree": 1561.7586666666666,
+        "largest_community_frac": 0.9276666666666666,
+        "transitivity": 0.7645488879536756,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.5207598088251639,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 520759808.8251639,
+        "mean_signed_corr": 0.30144039440185527,
+        "universe_size": 19569,
+        "nonzero_variance_genes_in_universe": 9605,
+        "genes_lost_by_candidate": 9964
+      },
+      "median_detected_per_cell": 4197.5
+    },
+    "B_poisson": {
+      "realization": "Poisson(rate); identical rate field, stochastic counting",
+      "abundance_max_median__TRAIN_PREVALENCE05_19569": 26753.360655737706,
+      "top1pct_count_share__TRAIN_PREVALENCE05_19569": 0.5195118069683231,
+      "expressed_fraction_in_universe": 0.9394961418570188,
+      "topology": {
+        "median_abs_corr": 0.11916398781363485,
+        "frac_abs_gt_0p3": 0.0027891519395354006,
+        "var_top10_pc": 0.1989172129436092,
+        "mean_degree": 8.364666666666666,
+        "largest_community_frac": 0.0003333333333333333,
+        "transitivity": 0.35545503665921263,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.0027891519395354006,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 2789151.9395354004,
+        "mean_signed_corr": 0.11645978076010552,
+        "universe_size": 19569,
+        "nonzero_variance_genes_in_universe": 18372,
+        "genes_lost_by_candidate": 1197
+      },
+      "median_detected_per_cell": 3595.0,
+      "mean_count_per_detected_gene": 4.917304515838623
+    }
+  }
+}
