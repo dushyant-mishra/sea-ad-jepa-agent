@@ -83,7 +83,7 @@ jobs:
           python-version: "3.12"
       - name: Install focused runtime dependencies
         run: |
-          python -m pip install --disable-pip-version-check pytest
+          python -m pip install --disable-pip-version-check pytest numpy
           python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
       - name: Run guarded inactive-runtime tests
         env:
