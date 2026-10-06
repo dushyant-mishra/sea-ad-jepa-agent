@@ -1,24 +1,29 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-10-06
-Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
+Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 
 ## Read first
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
-3. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-4. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md` for preserved Oct-5 custody/reset context
-6. Historical audit custody branch `handoff/jepa-20261005-historical-audit-custody`, current recorded head `f6b101938058895f6a67cac4902717f66497e5a1`: read `docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md` and `docs/agent/JEPA_20261005_DO_NOT_REPEAT.txt` before claiming old work is missing or proposing to rebuild it.
+2. `docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json`
+3. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
+4. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md` for preserved Oct-5 custody/reset context
+7. Historical audit custody branch `handoff/jepa-20261005-historical-audit-custody`, recorded head `f6b101938058895f6a67cac4902717f66497e5a1`: read `docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md` and `docs/agent/JEPA_20261005_DO_NOT_REPEAT.txt` before claiming old work is missing or proposing to rebuild it.
 
 Always re-fetch the live branch/head before acting.
 
 ## Current hard state
 
 - V75 100K measurement architecture: `PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE`.
+- Premise V3 governance: **FROZEN / MERGED on main at `f5a8ebeddbcd52a94274a7f72ecda1f71b82d777`**.
 - 500K promotion: **NOT AUTHORIZED**.
 - Production target winner: **NONE QUALIFIED**.
+- Representation winner: **NONE QUALIFIED**.
+- Estimand: **UNSET / REQUIRES APPROVAL**.
+- Deciding numeric thresholds: **UNSET / REQUIRES APPROVAL**.
 - Target lineage reconstruction is complete and merged; do **not** reopen it as the current task.
 - Synthetic learned-state scaling ladder: **STOPPED**.
 - `width=160`: network/token capacity, **not** biological dimensionality authority.
@@ -26,15 +31,18 @@ Always re-fetch the live branch/head before acting.
 - V75 96-feature observer -> canonical 41,238-address encoder: **BLOCKED unless a lawful identity bridge is prospectively defined**.
 - Training: **OFF**.
 - Multimodal training: **OFF**.
+- Stage A execution: **NOT AUTHORIZED**.
 - Stage 4: **NOT AUTHORIZED**.
 - Recoverability TEST: **SEALED**.
 - Morabito: **PROTECTED**.
 
 ## Current task
 
-Premise qualification prefreeze: publish and audit the P1-P6 premise contract, representation-family comparison, claim ladder, Stage-A real-RNA **prefreeze** contract, external-validation asset classification, and foundation-population estimand choices before any deciding TRAIN-only result is opened.
+**Runtime-safety reconciliation onto the frozen V3 premise.** Reconcile the already-recovered V5 mechanics with fail-closed optimizer-step sequencing, explicit step-completion proof before EMA, and later authority-bound checkpoint/reload semantics without importing historical scientific authority.
 
-Stage A is **not execution authority yet**. Real-RNA recoverability of an observation-defined target must remain distinct from biological-truth recoverability; donor/operator/study/technology transfer are separate evidence axes; fitted readouts require prospective inner-TRAIN fitting and held-donor evaluation; rare/novel RNA structure is not automatically biological novelty.
+The current runtime work is mechanics only. It does not create `CurrentTrainingAuthorityV2`, does not select a target or representation, and does not authorize Stage A or JEPA training. A historical final-training authority object may be reused only after a future authority path proves all then-current scientific prerequisites; today that issuance path must remain unreachable.
+
+Premise V3 remains controlling science: real-RNA target-object recoverability is distinct from biological-truth recoverability; donor/operator/study/technology transfer remain separate axes; fitted diagnostic readouts are inner-TRAIN/frozen; biological-evidence perturbation is distinct from depth thinning; held donors may not influence alignment used to evaluate their coordinate stability.
 
 ## Historical recovery guardrail
 

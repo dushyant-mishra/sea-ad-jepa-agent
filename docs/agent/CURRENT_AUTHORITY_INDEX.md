@@ -1,7 +1,7 @@
 # CURRENT AUTHORITY INDEX — JEPA PROJECT
 
 Date: 2026-10-06
-Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
+Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 
 ## Canonical startup precedence
 
@@ -9,11 +9,12 @@ Read in this order:
 
 1. `START_HERE.md`
 2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-3. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
-4. this file
-5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-6. the historical-audit custody branch `handoff/jepa-20261005-historical-audit-custody`, especially `docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md` and `docs/agent/JEPA_20261005_DO_NOT_REPEAT.txt`, before declaring old work absent or rebuilding it
-7. lane-specific machine-readable authorities and older historical evidence where explicitly preserved
+3. `docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json`
+4. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
+5. this file
+6. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+7. the historical-audit custody branch `handoff/jepa-20261005-historical-audit-custody`, especially `docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md` and `docs/agent/JEPA_20261005_DO_NOT_REPEAT.txt`, before declaring old work absent or rebuilding it
+8. lane-specific machine-readable authorities and older historical evidence where explicitly preserved
 
 Branch names, dates, green CI, smoke results, decreasing loss, or filenames containing `CURRENT` do not independently confer scientific authority.
 
@@ -27,26 +28,28 @@ V75 controls within its declared scope:
 
 It does not establish 500K compatibility, a production target, learned biological state, biological dimension 160, general technology invariance, Stage 4 correspondence, or multimodal training.
 
-### Target authority
+### Scientific premise / target authority
 
-Current status:
+Premise V3 is frozen and merged on main at `f5a8ebeddbcd52a94274a7f72ecda1f71b82d777`.
+
+Current target status:
 
 `NO_QUALIFIED_PRODUCTION_TARGET_WINNER`
 
-**Target lineage reconstruction is complete.** The controlling audit is `JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`. Do not advertise lineage reconstruction as the current task and do not rerun donor-cross-fitted residualization as an untried rescue.
+No representation winner, estimand, or deciding numeric threshold is selected. Stage A remains a prefreeze execution contract only; it is not execution authority. Target lineage reconstruction is complete and must not be reopened as current work.
 
-### Current task — premise qualification prefreeze
+### Current task — runtime-safety reconciliation
 
-Freeze and audit, before any deciding TRAIN-only result is opened:
+Reconcile the recovered V5 mechanics onto the frozen V3 science without importing old authority assumptions. The current implementation lane must prove:
 
-- P1 target meaning;
-- P2 recoverability semantics, separating real-RNA target-object recoverability from biological-truth recoverability;
-- P3 representation comparison across global, query-local, program and structured-combined state;
-- P4 technical identifiability and biology × operator effects where supported;
-- P5 transport as separate donor/operator/study/technology evidence axes plus an explicit foundation-population estimand;
-- P6 claim boundary: RNA representation -> transferable biological state -> regulatory support -> causal/perturbational prediction.
+- an optimizer update cannot occur through an unguarded step path;
+- step permission is single-use and cursor-bound;
+- a successful optimizer step is explicitly proved before EMA can advance;
+- rejected or incomplete steps cannot advance EMA;
+- checkpoint/reload semantics are later bound to the then-current authority graph;
+- all of this remains mechanics-only while `TRAINING=OFF`.
 
-The Stage-A real-RNA artifact is currently a **prefreeze contract**, not execution authority. Encoder optimizer updates and EMA updates remain zero for target discrimination. Any fitted diagnostic readout must be prospectively fit on inner TRAIN only and frozen before held-donor evaluation.
+Historical `CurrentTrainingAuthorityV2` is a final training authority object. Its mechanics may inform the reconciliation, but its issuance path must remain unreachable while no production target or representation is qualified.
 
 ### Representation / dimension authority
 
@@ -58,9 +61,7 @@ The Stage-A real-RNA artifact is currently a **prefreeze contract**, not executi
 
 ### Synthetic compatibility
 
-Macha's V77 synthetic work may test known planted truth and metric behavior. World A is a locked linear/common-biology recoverability and nuisance-control world, not a biological-state testbed. Worlds B/C/D are prospective synthetic premise testbeds. Synthetic success cannot select a real biological target or confer real biological validation.
-
-The V75 96-anonymous-feature -> canonical 41,238-address identity bridge remains undefined; arbitrary mapping is forbidden.
+V77 synthetic work may test known planted truth and metric behavior. Synthetic success cannot select a real biological target or confer real biological validation. The V75 96-anonymous-feature -> canonical 41,238-address identity bridge remains undefined; arbitrary mapping is forbidden.
 
 ## Historical recovery requirement
 
@@ -72,6 +73,7 @@ Historical existence and current authority remain separate questions: a recovere
 
 - `TRAINING = OFF`
 - `MULTIMODAL_TRAINING = OFF`
+- `STAGE_A_EXECUTION = NOT_AUTHORIZED`
 - `STAGE4 = NOT_AUTHORIZED`
 - `500K_PROMOTION = NOT_AUTHORIZED`
 - `RECOVERABILITY_TEST = SEALED`
