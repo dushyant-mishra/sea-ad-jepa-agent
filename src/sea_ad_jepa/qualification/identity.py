@@ -117,6 +117,9 @@ class QualificationBatchIdentityV1:
     split_digest: str
     target_spec_digest: str
 
+    def __post_init__(self) -> None:
+        self.validate()
+
     def validate(self) -> None:
         if not isinstance(self.observation_ids, tuple) or not self.observation_ids:
             raise ValueError("observation_ids must be a nonempty tuple")
@@ -138,7 +141,6 @@ class QualificationBatchIdentityV1:
             _digest_string(getattr(self, name), name)
 
     def digest(self) -> str:
-        self.validate()
         return canonical_digest(self)
 
 
@@ -146,6 +148,9 @@ class QualificationBatchIdentityV1:
 class PackingReceiptV1:
     scientific_identity_digest: str
     packing_digest: str
+
+    def __post_init__(self) -> None:
+        self.validate()
 
     def validate(self) -> None:
         _digest_string(self.scientific_identity_digest, "scientific_identity_digest")
