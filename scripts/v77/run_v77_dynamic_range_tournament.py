@@ -174,6 +174,10 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--cells", type=int, default=2500)
     ap.add_argument("--seed", type=int, default=20261006)
+    ap.add_argument("--universe-name", default="TRAIN_PREVALENCE05_19569",
+                    help="must match the 'name' stored in the universe file when it carries one")
+    ap.add_argument("--exploratory", action="store_true",
+                    help="label the receipt EXPLORATORY: these arms have already been seen")
     ap.add_argument("--allow-dirty", action="store_true",
                     help="development only; the receipt is then marked NOT_FROM_A_CLEAN_COMMITTED_HEAD")
     a = ap.parse_args()
@@ -186,7 +190,10 @@ def main():
     # digests taken BEFORE the work, so an edit during the run cannot be misrecorded (S153)
     executor_digests = {f: hashlib.sha256((HERE / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES}
 
-    universe = np.load(a.universe, allow_pickle=False)["evaluation_universe"]
+    uz = np.load(a.universe, allow_pickle=False)
+    universe = uz["evaluation_universe"]
+    if "name" in uz.files and str(uz["name"]) != a.universe_name:
+        sys.exit(f"refusing: universe file is named {uz['name']}, not {a.universe_name}")
     N = AU.N_ADDRESSES
     AB = AU.AddressUniverse(seed=7302).log_abundance.astype(np.float32)
     cfg_cap = OV2.OBSERVER_CANDIDATES[CAPTURE]
@@ -220,7 +227,8 @@ def main():
         supersedes=dict(receipt="results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V1.json",
                         why="S129/S138 DR5 implementation, S139/S140 scorer mismatch"),
         question="does larger latent rate dynamic range let the topology survive Poisson realization?",
-        frozen=dict(evaluation_universe="TRAIN_PREVALENCE05_19569",
+        analysis_status=("EXPLORATORY__ARMS_ALREADY_SEEN" if a.exploratory else "AS_DECLARED"),
+        frozen=dict(evaluation_universe=a.universe_name,
                     capture=CAPTURE, realization="Poisson", base_generator=BASE_GENERATOR,
                     seed=a.seed, cells=a.cells),
         varied="generator dynamic range only",
@@ -235,7 +243,8 @@ def main():
                          "pathological community structure rejects the arm"],
         deterministic_observer="retained as diagnostic control only; not optimized",
         command=f"python scripts/v77/run_v77_dynamic_range_tournament.py --universe {a.universe} "
-                f"--out {a.out} --cells {a.cells} --seed {a.seed}",
+                f"--out {a.out} --cells {a.cells} --seed {a.seed} --universe-name {a.universe_name}"
+                + (" --exploratory" if a.exploratory else ""),
         source_commit=_git("rev-parse", "HEAD"),
         provenance_status=("NOT_FROM_A_CLEAN_COMMITTED_HEAD" if (dirty or untracked)
                            else "CLEAN_COMMITTED_HEAD"),
