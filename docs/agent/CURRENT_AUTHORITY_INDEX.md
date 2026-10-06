@@ -1,6 +1,6 @@
 # CURRENT AUTHORITY INDEX — JEPA PROJECT
 
-Date: 2026-10-05
+Date: 2026-10-06
 Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
 
 ## Canonical startup precedence
@@ -12,7 +12,8 @@ Read in this order:
 3. `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
 4. this file
 5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-6. lane-specific machine-readable authorities and older historical evidence where explicitly preserved
+6. the historical-audit custody branch `handoff/jepa-20261005-historical-audit-custody`, especially `docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md` and `docs/agent/JEPA_20261005_DO_NOT_REPEAT.txt`, before declaring old work absent or rebuilding it
+7. lane-specific machine-readable authorities and older historical evidence where explicitly preserved
 
 Branch names, dates, green CI, smoke results, decreasing loss, or filenames containing `CURRENT` do not independently confer scientific authority.
 
@@ -61,6 +62,12 @@ Macha's V77 synthetic work may test known planted truth and metric behavior. Wor
 
 The V75 96-anonymous-feature -> canonical 41,238-address identity bridge remains undefined; arbitrary mapping is forbidden.
 
+## Historical recovery requirement
+
+The project has already lost track of completed work because project milestone versions, runtime implementation versions, authority/guard versions, checkpoint schema versions, and renamed branches were treated as if they were the same axis. Future agents must check the historical-audit custody branch before asserting that a component or experiment is absent.
+
+Historical existence and current authority remain separate questions: a recovered implementation can be real and reusable while still requiring a current compatibility/integration proof before execution.
+
 ## Protected boundaries
 
 - `TRAINING = OFF`
@@ -83,6 +90,6 @@ When a controlling task closes, blocks, or is superseded, update `START_HERE.md`
 
 ## Historical authority policy
 
-Historical documents remain evidence, not current routing. Preserve their exact scientific scope and retractions; do not silently rewrite historical results simply because current authority moved.
+Historical documents remain evidence, not current routing. Preserve their exact scientific scope and retractions; do not silently rewrite historical results simply because current authority moved. The Oct-6 runtime/authority recovery ledger is the required first check for recovered implementation and version lineage before repeating old work.
 
 **Training remains OFF.**
