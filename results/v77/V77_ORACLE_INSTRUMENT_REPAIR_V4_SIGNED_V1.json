@@ -1,0 +1,119 @@
+{
+  "schema": "V77_ORACLE_INSTRUMENT_REPAIR_V4_SIGNED_PROJECTION",
+  "recorded_utc": "2026-10-06T01:33:14Z",
+  "head": "831e1c9eac2451e38785c48c8561aed91fd8b11e",
+  "repairs": "S127",
+  "successor_not_in_place": true,
+  "superseded_instrument": "UNWEIGHTED_MODULE_MEAN (v77_component_oracle_v3), retained on disk and readable",
+  "new_instrument": "SIGNED_PROJECTION_ONTO_PLANTED_LOADING",
+  "thresholds_changed": false,
+  "measured_on": "the EXISTING generated worlds, so instrument change is isolated from generator change",
+  "CEILING_LABEL": "ORACLE_CEILING_UNDER_KNOWN_SUPPORT_AND_KNOWN_SIGN__UPPER_BOUND_NOT_BLIND_ACHIEVABLE",
+  "ACCEPTANCE_GATE": {
+    "rule": "acceptable only if the intended positive signal is restored AND the negative controls still reject",
+    "negative_controls_reject": "4 of 4",
+    "off_twin_values": {
+      "B4": -0.021707751008487763,
+      "C1": -0.014066048540694043,
+      "C2": -0.00103545179090192,
+      "C3": 0.015069275138696213
+    },
+    "verdict": "GRANTED"
+  },
+  "COMPONENT_SPECIFIC": {
+    "B4": {
+      "v3": 0.3812,
+      "v4": 0.7437603425209143,
+      "band": [
+        0.25,
+        0.45
+      ],
+      "verdict": "OUTSIDE_DESIGNED_CLASS__MORE_RECOVERABLE_THAN_DESIGNED",
+      "band_moved": false,
+      "note": "the designed band was set while the instrument under-read; with the correct statistic B4 exceeds it"
+    },
+    "C1": {
+      "v3": 0.0737,
+      "v4": 0.22604070200990412,
+      "threshold": 0.05,
+      "verdict": "PASS"
+    },
+    "C2": {
+      "v3": 0.1525,
+      "v4": 0.48535014768103046,
+      "band": [
+        0.4,
+        0.6
+      ],
+      "verdict": "PASS",
+      "classification": "MEASUREMENT_CORRECTION_REEVALUATION",
+      "explicitly_not": "a new C2 design attempt; the stopping-rule attempt count is unchanged at 3",
+      "finding": "C2's prior failure was INSTRUMENTAL. Its ratio statistic consumes the C2_local module score, which the unweighted mean under-read. On the exact same data with the unchanged band it now passes."
+    },
+    "C3": {
+      "v3": 0.0988,
+      "v4": 0.09875133968709258,
+      "threshold": 0.05,
+      "verdict": "PASS",
+      "note": "unchanged by construction; C3's statistic is depth/support and does not use module scores"
+    }
+  },
+  "DEFAULT_READER_V3_VS_V4": {
+    "B1": [
+      0.280065441684972,
+      0.8638647224840524
+    ],
+    "B2": [
+      0.09382271770994748,
+      0.936419038809604
+    ],
+    "B5": [
+      0.2680417907035922,
+      0.8187532841190244
+    ],
+    "D1_tf_activity": [
+      0.24427139213049373,
+      0.8653366902103179
+    ],
+    "E1": [
+      -0.05823935992597784,
+      0.9255554276912186
+    ],
+    "B6_ladder_v3": [
+      -0.039795062091534605,
+      0.03265556198701236,
+      0.023420637987408455,
+      -0.029575773843934172,
+      0.024238875207883814
+    ],
+    "B6_ladder_v4": [
+      -0.03725221320280503,
+      0.7276741378723889,
+      0.9336747490372337,
+      0.9491790136761994,
+      0.9645552269249158
+    ]
+  },
+  "CONSEQUENCE_THE_WORLD_IS_TOO_EASY": {
+    "observation": "with the correct instrument the oracle ceilings sit between about 0.82 and 0.96 for most components, and the B6 ladder saturates at 0.73/0.93/0.95/0.96 against a designed 0.05/0.15/0.30/0.45/0.60",
+    "reading": "given known support AND known sign the planted structure is close to trivially recoverable. Several components are now OUTSIDE their designed classes by being too easy, not too hard.",
+    "bearing_on_the_covariance_defect": "this reinforces the review lane's priority. A world whose dependence structure is five-fold weaker than real RNA has little competing structure to hide a planted module in, so recoverability is inflated. The designed classes should be re-examined only AFTER the generator is recalibrated, never by moving a band now.",
+    "no_band_moved": true
+  },
+  "WHAT_THIS_DOES_NOT_DO": [
+    "it does not promote these ceilings to decision evidence; the generator is still miscalibrated",
+    "it does not change any designed recoverability class or acceptance band",
+    "it does not verify S126, which needs the ATAC oracle under the same repair",
+    "it does not qualify any model; no model has been run"
+  ],
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

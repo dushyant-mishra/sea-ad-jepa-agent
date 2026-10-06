@@ -54,6 +54,38 @@ BACKGROUND_GENES_PER = 600
 REDUNDANT_OVERLAP = 0.45     # declared pathway-redundancy fraction within a module family
 
 
+# Stream registry for planted module loadings. The oracle needs the SIGN of each loading to
+# read a signed module correctly (defect S127: an unweighted mean of a mixed-sign module is a
+# symmetric function of its driver and destroys the signal). This table mirrors the vec() calls
+# below, and `module_sign_vector` reconstructs the exact signs the observer used, so the
+# correction works on worlds that were already generated.
+MODULE_STREAMS = {}
+for _k in range(6):   MODULE_STREAMS[f"B1_state{_k}"]   = 9200 + _k
+for _j in range(3):   MODULE_STREAMS[f"B2_donor{_j}"]   = 9300 + _j
+for _j in range(4):   MODULE_STREAMS[f"B3_rare{_j}"]    = 9400 + _j
+MODULE_STREAMS["B4_transient"] = 9500
+for _j in range(2):   MODULE_STREAMS[f"B5_marker{_j}"]  = 9600 + _j
+for _j in range(5):   MODULE_STREAMS[f"B6_rung{_j}"]    = 9700 + _j
+MODULE_STREAMS["C1_A"] = 9800; MODULE_STREAMS["C1_B"] = 9801; MODULE_STREAMS["C1_AB"] = 9802
+MODULE_STREAMS["C2_local"] = 9900
+for _t in range(4):   MODULE_STREAMS[f"D1_tf{_t}"]      = 9950 + _t
+MODULE_STREAMS["E1_niche"] = 9990
+MODULE_STREAMS["E2_direct"] = 9995
+
+
+def module_sign_vector(seed: int, name: str, addresses):
+    """Exact signs the observer used for this module, or None if the module has no own loading.
+
+    `*__private` entries are sub-allocations made by the redundancy allocator; the loading is
+    applied to the parent union, so they carry no independent sign vector.
+    """
+    if name.endswith("__private") or name not in MODULE_STREAMS:
+        return None
+    stream = MODULE_STREAMS[name]
+    g = np.asarray(addresses, dtype=np.uint64)
+    return np.sign(T.normal(seed + stream, g, stream)).astype(np.float64)
+
+
 def sha256_file(p: Path, chunk: int = 1 << 20) -> str:
     h = hashlib.sha256()
     with open(p, "rb") as fh:
@@ -315,6 +347,9 @@ def observe(root: Path, seed: int, mseed: int | None,
         modules=dict(n=len(alloc.assigned), addresses_used=alloc.used,
                      fraction_of_space=alloc.used / N, sizes={k: len(v) for k, v in alloc.assigned.items()}),
         module_address_sets=alloc.assigned,
+        module_streams={k: v for k, v in MODULE_STREAMS.items() if k in alloc.assigned},
+        signed_loadings_note=("module loadings are mixed-sign; an unweighted mean is a symmetric "
+                              "function of the driver and destroys the signal. See defect S127."),
         mean_detected_fraction=float(np.mean(dens)),
         effect_scales=SC, module_sizes=MOD,
         master_truth_digest_binding=[dict(file=x["file"], sha256=x["sha256"]) for x in tm["shards"]],
