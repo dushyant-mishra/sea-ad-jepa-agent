@@ -104,6 +104,26 @@ def test_future_fixture_can_exercise_mechanical_guard_without_changing_canonical
     assert _state()["training_authorized"] is False
 
 
+def test_authority_digest_binds_entire_governance_state_not_selected_subset():
+    state_a = _future_fixture()
+    state_b = deepcopy(state_a)
+    state_b["representation_winner"] = "ILLEGAL_TEST_MUTATION"
+    a = CurrentTrainingAuthorityV2.issue(
+        governance_state=state_a,
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    b = CurrentTrainingAuthorityV2.issue(
+        governance_state=state_b,
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    assert a.governance_digest != b.governance_digest
+    assert a.authority_digest != b.authority_digest
+
+
 def test_optimizer_identity_mismatch_is_rejected():
     authority = CurrentTrainingAuthorityV2.issue(
         governance_state=_future_fixture(),
@@ -205,6 +225,24 @@ def test_restart_authority_binds_exact_checkpoint_digest():
     assert CurrentTrainingAuthorityV2.reload(receipt, _sha("checkpoint-A")).checkpoint_digest == _sha("checkpoint-A")
     with pytest.raises(PrefreezeGovernanceError, match="checkpoint digest"):
         CurrentTrainingAuthorityV2.reload(receipt, _sha("checkpoint-B"))
+
+
+def test_completed_checkpoint_receipt_reconstructs_parent_authority_digest():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    receipt = authority.completed_checkpoint_receipt(_sha("checkpoint-B"))
+    forged = deepcopy(receipt)
+    forged["authority_digest"] = _sha("forged-authority")
+    core = {k: v for k, v in forged.items() if k != "receipt_digest"}
+    forged["receipt_digest"] = module._digest(core)
+    with pytest.raises(PrefreezeGovernanceError, match="authority digest"):
+        CurrentTrainingAuthorityV2.verify_completed_checkpoint_receipt(
+            forged, _sha("checkpoint-B")
+        )
 
 
 def test_runtime_layer_never_selects_scientific_winners():
