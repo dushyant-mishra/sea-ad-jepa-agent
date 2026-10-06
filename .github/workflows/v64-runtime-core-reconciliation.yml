@@ -7,6 +7,7 @@ on:
       - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
       - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
       - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
       - '.github/workflows/v64-runtime-core-reconciliation.yml'
       - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
   push:
@@ -17,6 +18,7 @@ on:
       - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
       - 'tests/test_v5_prefreeze_runtime_authority_reconciliation.py'
       - 'tests/test_v5_prefreeze_guarded_rehearsal.py'
+      - 'docs/agent/JEPA_V64_RUNTIME_CORE_RECONCILIATION_20261006.md'
       - '.github/workflows/v64-runtime-core-reconciliation.yml'
       - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
 
