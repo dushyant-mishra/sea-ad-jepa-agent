@@ -2,7 +2,10 @@
   "schema": "JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006",
   "role": "PROSPECTIVE_SCIENTIFIC_GOVERNANCE__PREFREEZE_ONLY",
   "training_authorized": false,
+  "multimodal_training_authorized": false,
   "stage_a_execution_authorized": false,
+  "stage4_authorized": false,
+  "five_hundred_k_authorized": false,
   "optimizer_updates_during_target_discrimination": 0,
   "ema_updates_during_target_discrimination": 0,
   "test_state": "SEALED",
@@ -42,7 +45,10 @@
     "forbidden_free_shortcuts": [
       "DONOR_ID",
       "UNRESTRICTED_DATASET_ID",
-      "ARBITRARY_MATRIX_ID"
+      "ARBITRARY_MATRIX_ID",
+      "UNRESTRICTED_STUDY_ID",
+      "PATHOLOGY_OUTCOME_LABEL",
+      "PROTECTED_OUTCOME_DERIVED_LABEL"
     ],
     "technology_invariance_is_not_blanket_requirement": true
   },
