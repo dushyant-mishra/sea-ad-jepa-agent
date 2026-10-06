@@ -1,5 +1,4 @@
 from __future__ import annotations
-import copy
 import torch
 import pytest
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
@@ -73,6 +72,27 @@ def _module_state_equal(a,b):
     for ma,mb in ((a.online,b.online),(a.teacher,b.teacher),(a.predictor,b.predictor)):
         sa=ma.state_dict(); sb=mb.state_dict(); assert sa.keys()==sb.keys()
         for name in sa: assert torch.equal(sa[name],sb[name]),name
+
+
+def test_incomplete_post_step_failure_cannot_advance_teacher_ema(monkeypatch):
+    data=_case(); modules=_modules()
+    teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
+    online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
+    original_step=modules.optimizer.step
+
+    def step_then_reject(*args, **kwargs):
+        original_step(*args, **kwargs)
+        raise RuntimeError('PLANTED_POST_STEP_FAILURE')
+
+    monkeypatch.setattr(modules.optimizer,'step',step_then_reject)
+    with pytest.raises(RuntimeError, match='PLANTED_POST_STEP_FAILURE'):
+        _run(modules,data)
+
+    teacher_after=modules.teacher.state_dict()
+    online_after=modules.online.state_dict()
+    for name,before in teacher_before.items():
+        assert torch.equal(teacher_after[name],before),name
+    assert any(not torch.equal(online_after[name],before) for name,before in online_before.items())
 
 
 def test_inactive_reference_checkpoint_resume_matches_uninterrupted_two_update_path():
