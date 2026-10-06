@@ -117,10 +117,18 @@ def validate_state(state: dict) -> list[str]:
     return errors
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
     root = Path(__file__).resolve().parents[2]
-    state_path = root / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
-    state = json.loads(state_path.read_text())
+    if len(argv) > 1:
+        print("ERROR: expected at most one state JSON path")
+        return 2
+    state_path = Path(argv[0]) if argv else root / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
+    try:
+        state = json.loads(state_path.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"ERROR: cannot read premise state: {exc}")
+        return 2
     errors = validate_state(state)
     if errors:
         for error in errors:
