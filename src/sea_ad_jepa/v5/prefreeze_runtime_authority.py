@@ -63,18 +63,21 @@ def _governance_core(state: Mapping[str, Any]) -> dict[str, Any]:
         raise PrefreezeGovernanceError(
             "stage_a_execution_authorized=false; runtime authority refused"
         )
-    return {
-        "schema": state["schema"],
-        "role": state.get("role"),
-        "training_authorized": state["training_authorized"],
-        "stage_a_execution_authorized": state["stage_a_execution_authorized"],
-        "test_state": state.get("test_state"),
-        "morabito_state": state.get("morabito_state"),
-        "production_target_winner": state.get("production_target_winner"),
-        "representation_winner": state.get("representation_winner"),
-        "selected_estimand": state.get("selected_estimand"),
-        "deciding_numeric_thresholds": state.get("deciding_numeric_thresholds"),
-    }
+    # Bind the entire machine-readable governance object, not a hand-picked
+    # subset. Any scientific/governance mutation must change the authority
+    # digest even though this adapter remains test-only.
+    try:
+        return json.loads(
+            json.dumps(
+                dict(state),
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+                allow_nan=False,
+            )
+        )
+    except (TypeError, ValueError) as exc:
+        raise PrefreezeGovernanceError("governance state must be canonical JSON") from exc
 
 
 class CurrentTrainingAuthorityV2:
@@ -190,7 +193,7 @@ class CurrentTrainingAuthorityV2:
     def verify_completed_checkpoint_receipt(
         cls, receipt: Mapping[str, Any], observed_checkpoint_digest: str
     ) -> dict[str, Any]:
-        """Verify exact post-update bytes and their parent-state linkage."""
+        """Verify exact post-update bytes and their parent-state lineage."""
         if receipt.get("schema") != COMPLETED_CHECKPOINT_RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("completed checkpoint receipt schema mismatch")
         if receipt.get("test_only") is not True:
@@ -202,27 +205,43 @@ class CurrentTrainingAuthorityV2:
         parent = _sha256(
             receipt.get("parent_checkpoint_digest"), "parent checkpoint digest"
         )
+        governance_digest = _sha256(
+            receipt.get("governance_digest"), "governance_digest"
+        )
+        optimizer_identity = receipt.get("optimizer_identity")
+        if not isinstance(optimizer_identity, str) or not optimizer_identity.strip():
+            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
         if observed != expected:
             raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
         if expected == parent:
             raise PrefreezeGovernanceError(
                 "completed checkpoint must represent a new post-update state"
             )
+
+        expected_authority_digest = _digest(
+            {
+                "schema": AUTHORITY_SCHEMA,
+                "governance_digest": governance_digest,
+                "optimizer_identity": optimizer_identity,
+                "checkpoint_digest": parent,
+                "test_only": True,
+            }
+        )
+        authority_digest = _sha256(
+            receipt.get("authority_digest"), "authority digest"
+        )
+        if authority_digest != expected_authority_digest:
+            raise PrefreezeGovernanceError("parent authority digest mismatch")
+
         core = {
             "schema": COMPLETED_CHECKPOINT_RECEIPT_SCHEMA,
-            "authority_digest": _sha256(
-                receipt.get("authority_digest"), "authority_digest"
-            ),
-            "governance_digest": _sha256(
-                receipt.get("governance_digest"), "governance_digest"
-            ),
-            "optimizer_identity": receipt.get("optimizer_identity"),
+            "authority_digest": authority_digest,
+            "governance_digest": governance_digest,
+            "optimizer_identity": optimizer_identity,
             "parent_checkpoint_digest": parent,
             "checkpoint_digest": expected,
             "test_only": True,
         }
-        if not isinstance(core["optimizer_identity"], str) or not core["optimizer_identity"].strip():
-            raise PrefreezeGovernanceError("optimizer identity must be non-empty")
         if receipt.get("receipt_digest") != _digest(core):
             raise PrefreezeGovernanceError("completed checkpoint receipt digest mismatch")
         return core
