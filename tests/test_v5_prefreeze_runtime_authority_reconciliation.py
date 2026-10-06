@@ -312,3 +312,22 @@ def test_guard_close_removes_optimizer_hooks():
     assert optimizer.pre == [] and optimizer.post == []
     with pytest.raises(StepCompletionError, match="closed"):
         guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+
+
+def test_optimizer_exception_poisons_guard_against_further_steps():
+    _, _, guard, token = _armed(optimizer=FakeOptimizer(fail=True))
+    _ready(guard, token)
+    with pytest.raises(RuntimeError, match="optimizer failure"):
+        guard.run_optimizer_step(token)
+    with pytest.raises(StepCompletionError, match="poisoned"):
+        guard.begin_step("adamw:v1", _sha("checkpoint-A"))
+
+
+def test_ema_exception_poisons_guard_against_further_steps():
+    _, _, guard, token = _armed()
+    _ready(guard, token)
+    guard.run_optimizer_step(token)
+    with pytest.raises(RuntimeError, match="ema failure"):
+        guard.run_ema(token, lambda: (_ for _ in ()).throw(RuntimeError("ema failure")))
+    with pytest.raises(StepCompletionError, match="poisoned"):
+        guard.begin_step("adamw:v1", _sha("checkpoint-A"))
