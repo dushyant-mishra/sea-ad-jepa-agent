@@ -4,3 +4,16 @@ Do not repeat by default:
 - 96-feature V75 -> arbitrary 41K slot mapping
 - synthetic 500K/full learned-state scaling
 - 160-D biological-state qualification
+
+Runtime/version traps added 2026-10-06:
+- do not call the recovered teacher/student runtime V4; V5 is a real separately tested successor
+- do not equate project milestone V64/V75/V77 with teacher/student runtime generation
+- do not assume a V65/V6 trainer exists merely because milestone numbering advanced
+- do not merge the historical V64 lineage wholesale into current main
+- do not mistake the F1 production executor for a neural optimizer/EMA trainer
+- do not use PROD41K/T1 checkpoints as evidence of healthy V5 training; historical fp16 gradient flow was defective
+- do not infer current authority from one version label; training authority, root graph, optimizer guard and checkpoint are independently versioned
+- do not treat an authority as active until the actual executor consumes and enforces it
+
+Detailed recovery ledger:
+docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_HISTORICAL_RECOVERY_LEDGER.md
