@@ -13,6 +13,11 @@ class DataKind(str, Enum):
     SYNTHETIC = "SYNTHETIC"
 
 
+class MutationProofStatus(str, Enum):
+    NOT_PROVEN_BY_SHARED_INTERFACE = "NOT_PROVEN_BY_SHARED_INTERFACE"
+    PROVEN_BY_BOUND_RUNTIME = "PROVEN_BY_BOUND_RUNTIME"
+
+
 def _nonempty(value: object, name: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be explicit and nonempty")
@@ -52,6 +57,7 @@ class QualificationProvenanceReceiptV1:
     threshold_status: ThresholdStatus
     code_commit: str
     environment_digest: str
+    mutation_proof_status: MutationProofStatus = MutationProofStatus.NOT_PROVEN_BY_SHARED_INTERFACE
     runtime_successor_digest: str | None = None
     checkpoint_digest: str | None = None
     synthetic_realization_id: str | None = None
@@ -76,6 +82,8 @@ class QualificationProvenanceReceiptV1:
             raise ValueError("data_kind must be explicit")
         if not isinstance(self.threshold_status, ThresholdStatus):
             raise ValueError("threshold_status must be explicit")
+        if not isinstance(self.mutation_proof_status, MutationProofStatus):
+            raise ValueError("mutation_proof_status must be explicit")
         for name in (
             "governance_digest",
             "protocol_digest",
@@ -89,6 +97,8 @@ class QualificationProvenanceReceiptV1:
             _digest(getattr(self, name), name)
         if self.runtime_successor_digest is not None:
             _digest(self.runtime_successor_digest, "runtime_successor_digest")
+        if self.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME and self.runtime_successor_digest is None:
+            raise ValueError("physical mutation proof requires bound runtime successor provenance")
         if self.checkpoint_digest is not None:
             _digest(self.checkpoint_digest, "checkpoint_digest")
             if self.runtime_successor_digest is None:
