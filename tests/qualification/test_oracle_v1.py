@@ -18,17 +18,18 @@ def _run(run_id="run-oracle"):
     )
 
 
-def _outputs(run_id="run-oracle"):
+def _outputs(run_id="run-oracle", realization_id="v77-challenge-001"):
     return FrozenQualificationOutputsV1(
         run_id=run_id,
         output_digest="d" * 64,
         provenance_receipt_digest="e" * 64,
+        synthetic_realization_id=realization_id,
     )
 
 
-def _oracle():
+def _oracle(realization_id="v77-challenge-001"):
     return SyntheticOracleTruthV1(
-        realization_id="v77-challenge-001",
+        realization_id=realization_id,
         truth_payload=(("z_reg_private", "sealed"), ("b6_level", 3)),
     )
 
@@ -46,6 +47,18 @@ def test_oracle_run_identity_must_match_frozen_outputs():
     run.freeze_outputs()
     with pytest.raises(ValueError, match="run identity"):
         unblind_oracle(run, _outputs("run-b"), _oracle())
+
+
+def test_oracle_realization_must_match_frozen_output_realization():
+    run = _run()
+    run.prepare()
+    run.freeze_outputs()
+    with pytest.raises(ValueError, match="realization"):
+        unblind_oracle(
+            run,
+            _outputs(realization_id="v77-challenge-001"),
+            _oracle(realization_id="v77-challenge-002"),
+        )
 
 
 def test_unblinding_records_one_way_receipt_after_frozen_outputs():
