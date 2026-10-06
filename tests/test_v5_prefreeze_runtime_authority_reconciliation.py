@@ -317,3 +317,17 @@ def test_runtime_layer_never_selects_scientific_winners():
     assert "production_target_winner" not in receipt
     assert "representation_winner" not in receipt
     assert "selected_estimand" not in receipt
+
+
+def test_external_counter_can_not_forge_optimizer_completion():
+    """RED: a caller-controlled counter must not substitute for the actual optimizer."""
+    _, guard, token, counter = _armed_guard(step_index=9)
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+
+    def fake_step():
+        # No optimizer is touched; only the independent proof counter is changed.
+        counter["value"] += 1
+
+    with pytest.raises(StepCompletionError, match="optimizer"):
+        guard.run_optimizer_step(token, fake_step)
