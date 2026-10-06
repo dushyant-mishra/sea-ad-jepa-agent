@@ -2,7 +2,8 @@
 
 Role: `SELF_REVIEW__NOT_INDEPENDENT_REVIEW`
 Branch reviewed: `design/premise-qualification-contract-v3-20261006`
-Reviewed through: `b90eb8104d464693cdf0367bf08a4dd88e2fa178`
+Reviewed through behavioral/governance head: `b90eb8104d464693cdf0367bf08a4dd88e2fa178`
+Current branch head after this artifact update: `bc23a81ace92363d7adc9fd15194a02c869a6b65`
 
 ## Scope
 
@@ -64,9 +65,11 @@ RED run `37504021676` at test head `d632f1b905ba198e589ce599b0abbb7e3f92eeaa` pr
 
 The failures corresponded to the five addendum items: Stage-A binding, schema closure, CI coverage, uncertainty-operator separation and held-donor alignment isolation.
 
-After the bounded repairs, GREEN run `37504545106` at head `b90eb8104d464693cdf0367bf08a4dd88e2fa178` produced:
+After the bounded repairs, GREEN run `37504545106` at behavioral/governance head `b90eb8104d464693cdf0367bf08a4dd88e2fa178` produced:
 
 `40 passed`
+
+The later `bc23a81...` update changes only this non-authoritative review record.
 
 ## Remaining authority boundary
 
