@@ -15,6 +15,24 @@ Do not create a new trainer, a parallel handoff branch, or another downstream-au
 
 This document is the active downstream-audit ledger for draft PR #218. Historical documents remain evidence and must not be rewritten to appear current.
 
+## Historical audit inheritance
+
+The user-supplied September-27 independent Claude audit has now been reviewed and folded prospectively at:
+
+`docs/agent/JEPA_V46_INDEPENDENT_AUDIT_RETROSPECTIVE_20261005.md`
+
+Its old teacher-fidelity action routing is superseded, but the current downstream audit inherits these durable anti-cheat requirements:
+
+- physical/byte custody does not establish semantic feature-axis correctness;
+- narrow-panel repair does not establish full 41K reader authority;
+- removing q's visible token is insufficient if q survives in normalization denominators, QC or transformed descendants;
+- verdict code must enforce the exact required execution cardinality and reject empty/partial subsets;
+- required ablations must be verdict-bearing rather than merely logged;
+- execution authority must bind physical execution evidence rather than caller-declared PASS strings;
+- historical receipts must remain bound to the exact producer that created them and must not be relabeled as outputs of later repaired code.
+
+These are downstream test/lineage requirements, not a revival of the V46 experimental plan.
+
 ## Confirmed historical implementation spine
 
 The audit has recovered the following existing pieces:
@@ -84,6 +102,14 @@ The N1 physical-lineage adapter authenticates corrected physical inputs and deli
 
 Disposition: `QUALIFIED_IN_OWN_SCOPE__NOT_NEURAL_CONSUMER_PROOF`.
 
+### F-DP-5 — Historical semantic-axis and narrow-panel repairs must not leak into current identity authority
+
+The V46 independent audit records an HVS/SEA-AD feature-axis defect in historical gene-labelled analyses and a separate 29-address masked-myeloid repair. The former means byte-reproducible artifacts can still be semantically wrong; the latter was explicitly scoped and does not qualify the remaining 41,209 addresses.
+
+Disposition: `HISTORICAL_SEMANTIC_DEFECT_PRESERVED__SCOPED_REPAIR_NOT_GENERALIZED`.
+
+Required closure: current 41K identity/order/tokenizer mapping must be authenticated directly; no current path may inherit authority merely from the historical 29-address repair.
+
 ## Candidate minimal successor architecture — not yet implementation authority
 
 If history does not reveal an already-complete later consumer, the preferred repair is a **thin current-runtime successor**, not a new trainer and not mutation of the historical inactive reference.
@@ -106,9 +132,9 @@ Any such successor must initially remain mechanical/synthetic-only and cannot co
 
 ## Audit order
 
-1. **Canonical input identity.** Verify the 41,238-address registry, frozen ordering, tokenizer/index mapping, registry digest and any source-family/support metadata consumed by the runtime. Reject arbitrary 96→41K mapping or identity reordering.
+1. **Canonical input identity.** Verify the 41,238-address registry, frozen ordering, tokenizer/index mapping, registry digest and any source-family/support metadata consumed by the runtime. Reject arbitrary 96→41K mapping or identity reordering. Include negative tests for historical feature-axis/rank-vs-column mistakes.
 2. **Loader and normalization contract.** Trace sparse/dense formats, counts/log transforms, zero-library behavior, library normalization, support masks and any hidden query-value dependence. Ensure the future consumer is compatible with the current production geometry and does not inherit World-A/v1 assumptions.
-3. **Mask/view construction.** Identify exactly how teacher and student views are built, what is lawful for each to see, how query addresses are withheld, and whether total count, support, missingness or normalization leaks the hidden value.
+3. **Mask/view construction.** Identify exactly how teacher and student views are built, what is lawful for each to see, how query addresses are withheld, and whether total count, support, missingness or normalization leaks the hidden value. Test descendants, not just token absence.
 4. **Encoder path.** Establish the encoder class/function actually intended for future execution. Record tensor shapes, address embeddings, cell/global tokens and exposed representation families.
 5. **Predictor/target path.** Trace predictor inputs and teacher targets. Planted truth/module memberships/oracle statistics are forbidden from optimizer inputs and target construction.
 6. **EMA teacher mechanics.** Establish authoritative EMA implementation, ordering, schedule, initialization, dtype/device behavior and serialization. Target-selection experiments must perform zero EMA updates.
@@ -119,7 +145,7 @@ Any such successor must initially remain mechanical/synthetic-only and cannot co
 11. **Representation extraction.** Provide explicit extraction for online vs EMA and global/cell, gene/query-local and program-level representations. Availability does not qualify `cell_state` or any representation as biology.
 12. **Evaluation isolation.** Known synthetic truth is an answer key only. It may not flow into training, target construction or checkpoint selection.
 13. **Synthetic checkpoint ladder readiness.** Only after V77 world/instrument qualification is frozen, define checkpoint times and metrics prospectively; never choose interesting checkpoints post hoc.
-14. **Workflow/entrypoint audit.** Map historical/current CI and runtime entrypoints and identify one canonical future rehearsal command.
+14. **Workflow/entrypoint audit.** Map historical/current CI and runtime entrypoints and identify one canonical future rehearsal command. Any gate/runner that can issue PASS must reject empty/partial required execution and bind required ablations into its verdict.
 15. **Legacy-assumption sweep.** Search constants, shapes, masks, feature counts and configs for 96-feature/700-gene/historical assumptions.
 16. **Authority-surface synchronization.** If this audit changes the next authorized technical action, canonical startup surfaces must be updated in the same merge or immediate successor governance change.
 
