@@ -5,7 +5,7 @@ import string
 from types import MappingProxyType
 from typing import Callable, Mapping
 
-from .authorities import AuthorityBundleV1
+from .authorities import AuthorityBundleV1, ExperimentScope
 from .canonical import canonical_digest
 from .identity import (
     FeatureIdentityReceiptV1,
@@ -188,6 +188,17 @@ def _assert_zero_update_payload(value: object) -> None:
             _assert_zero_update_payload(child)
 
 
+def _validate_execution_scope(authorities: AuthorityBundleV1, batch: QualificationBatchV1) -> None:
+    scope = authorities.scientific.scope
+    if batch.data_kind is DataKind.SYNTHETIC:
+        if scope is not ExperimentScope.SYNTHETIC_PIPELINE_VALIDITY:
+            raise ValueError("scientific authority scope does not authorize synthetic batch execution")
+        return
+    if batch.data_kind is DataKind.REAL_RNA:
+        raise ValueError("scientific authority scope does not authorize real-RNA execution in V1")
+    raise ValueError("scientific authority scope does not authorize unknown data kind")
+
+
 def run_zero_update_qualification(
     protocol: QualificationProtocolV1,
     authorities: AuthorityBundleV1,
@@ -199,6 +210,7 @@ def run_zero_update_qualification(
     if protocol.execution_mode is not ExecutionMode.ZERO_UPDATE_QUALIFICATION:
         raise ZeroUpdateViolation("run_zero_update_qualification requires ZERO_UPDATE_QUALIFICATION mode")
     authorities.validate_against(protocol)
+    _validate_execution_scope(authorities, batch)
     if not authorities.scientific.evaluation_authorized:
         raise ValueError("scientific authority does not authorize evaluation")
     batch.validate_against(protocol)
