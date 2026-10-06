@@ -62,10 +62,121 @@ Self-review found and repaired two concrete defects:
 
 No additional Critical/Important self-review finding remained after those repairs. This is **not** independent review.
 
-## Next gate
+## Independent PR #220 freeze audit — additional required changes before sign-off
 
-1. Re-fetch live main before any readiness/merge claim.
-2. Independent whole-branch scientific/governance review.
-3. Keep PR #220 draft until that review is clean and owner direction is explicit.
+Do **not** merge #220 yet, but do not reopen the entire design. Independent review has bounded the remaining work to five concrete items:
+
+1. **Bind Stage-A verdicts + diagnostic firewall into `validate_state()`**, including adversarial supplied-file tests. Existing JSON/tests are not sufficient if the validator itself can ignore those fields.
+2. **Define whole-JSON fail-closed behavior.** Prefer rejecting missing required contract fields and unrecognized contract fields instead of silently ignoring them.
+3. **Expand CI path coverage** so every binding V3 governance source triggers the guard.
+4. **Operationally distinguish biological-evidence removal from count-depth thinning.** `U_bio` and `U_measurement` must use demonstrably different perturbation operators.
+5. **Require inner-fit/frozen alignment for held-donor coordinate-stability evaluation.** Alignment/canonical maps must fit on lawful inner TRAIN, freeze, then evaluate held donors.
+
+Current PR #220 status should therefore be described as:
+
+`SCIENTIFICALLY_WELL_DESIGNED_PREFREEZE_DRAFT__ADDITIONAL_BOUNDED_FIXES_REQUIRED`
+
+Only after those five items are closed should it become:
+
+`CANDIDATE_FOR_INDEPENDENT_WHOLE_BRANCH_PREFREEZE_APPROVAL`
+
+Neither status is Stage-A execution authority or training authority.
+
+## Macha / V77 update — `d76631b6d5f2f6cbf9ae57e202d9b38c4c400b32`
+
+Branch: `claude/v77-synthetic-premise-custody-20261005`
+Decision: `SUPPORTED_FOR_NEXT_STAGE__WITH_TWO_NAMED_UNRESOLVED_ISSUES`
+
+### A_REPLICA control
+
+A_REPLICA was frozen before the new family was built. It uses an unsupervised 50-component PCA readout that does not require planted module support.
+
+Frozen thresholds before the reader ran:
+- recoverable floor = `0.30`;
+- null band = `0.05`.
+
+First run:
+- recoverable mean = `0.9821`;
+- non-recoverable mean = `-0.0012`;
+- DETECT = true;
+- REJECT = true;
+- SEPARATED = true.
+
+This is a control/readability result, not a biological ceiling.
+
+### Major corrected diagnosis
+
+The synthetic-lane bottleneck was primarily the **observation model**, not the latent generator family.
+
+The discrete block-switching family generated near-perfect latent cliques immediately (`latent transitivity 0.9649–0.9999`), but the observation layer capped observed transitivity around the same range that had limited the old factor family.
+
+The specific culprit was the **exact per-cell detected-count constraint**. Previous variants forced each cell to detect exactly `k` genes. In real data, detected-gene count is an outcome of the cell's state and measurement process, not a hard constraint.
+
+Removing exact top-k detection materially changed observed topology:
+
+- previous exact-top-k: median `0.1430`, frac>|0.3| `0.0623`, transitivity `0.6885`, degree `186.9`;
+- free threshold + noise: median `0.2677`, frac>|0.3| `0.4140`, transitivity `0.7590`, degree `1241.7`, largest community `0.7727`;
+- free threshold/no noise: median `0.3243`, frac>|0.3| `0.5504`, transitivity `0.7990`, degree `1650.6`;
+- real binarized: median `0.3770`, frac>|0.3| `0.6148`, transitivity `0.8871`, degree `1843.8`, largest community `0.7630`.
+
+Best current setting entered the frozen transitivity envelope:
+- transitivity `0.8844` vs real `0.8871`, envelope `[0.8752, 0.8928]`;
+- degree `1855.9` vs real `1843.8`;
+- frac>|0.3| `0.6188` vs real `0.6148`;
+- T5 `0.9957` vs real `1.012`.
+
+This means the earlier 37-candidate search over generator space was partly diagnosing an observer defect. Do not send Macha back into blind generator-only sweeps.
+
+### Unresolved issue 1 — HIGH
+
+A genuine abundance/topology conflict remains.
+
+The abundance scaling that produces realistic dependence topology destroys the previously matched abundance marginal:
+
+- max/median abundance: real `6685`; scale 1.0 `1889`; scale 0.3 `10`;
+- top-1% count share: real `0.322`; scale 1.0 `0.307`; scale 0.3 `0.038`.
+
+One scalar cannot satisfy both marginal and topology constraints.
+
+Recommended scientific direction: **decouple gene-specific detection thresholds/capture efficiency from transcript-abundance scale**. This is biologically reasonable because capture/detection efficiency and underlying transcript abundance are distinct processes.
+
+Resolve this before expensive world regeneration.
+
+### Unresolved issue 2 — MEDIUM
+
+The current two giant single-signed modules produce:
+- effectively unbounded positive/negative correlation ratio vs real `1.669`;
+- largest-community fraction `0.921` vs real `0.763`.
+
+Known levers exist, but must be calibrated jointly:
+- module count/sign structure affects sign balance;
+- independent-gene fraction affects community size;
+- more modules may lower transitivity.
+
+Do not tune these sequentially and declare victory on one metric while breaking another.
+
+### T5 anti-cheat guard
+
+T5 held `0.9926–1.1128`, best `0.9957` vs real `1.012`.
+
+This is structurally meaningful because hidden substates were drawn independently of annotated cell class, so the family cannot obtain the topology merely by separating known classes.
+
+### Authority boundary remains unchanged
+
+At `d76631b6`:
+- no 100K rebuild authorized;
+- no production-world regeneration;
+- no target-selection claim;
+- no generator frozen as production winner;
+- no model training.
+
+Recommended next V77 step: fix Issue 1 first by decoupling detection thresholds from abundance, then jointly calibrate module count, sign balance, and independent-gene fraction while retaining T5 and all already-frozen topology targets.
+
+## Next gate for this premise lane
+
+1. Close the five bounded independent-review findings on PR #220 through RED→GREEN tests where machine-enforceable.
+2. Re-fetch live main before any readiness/merge claim.
+3. Re-run independent whole-branch scientific/governance review after those fixes.
+4. Keep PR #220 draft until review is clean and owner direction is explicit.
 
 Do not duplicate the runtime optimizer/EMA/checkpoint lane or Macha V77 simulator lane.
