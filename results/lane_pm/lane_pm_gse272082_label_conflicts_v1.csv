@@ -1,0 +1,5 @@
+gsm,library,disease_state_from_title,disease_state_from_characteristics
+GSM8392671,UT04,sEOAD,Control
+GSM8392672,UT09,sEOAD,Control
+GSM8392691,UT04,sEOAD,Control
+GSM8392692,UT09,sEOAD,Control

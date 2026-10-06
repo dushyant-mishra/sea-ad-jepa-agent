@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE eSummaryResult PUBLIC "-//NLM//DTD esummary v1 20041029//EN" "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20041029/esummary-v1.dtd">
+<eSummaryResult>
+<DocSum>
+	<Id>41406216</Id>
+	<Item Name="PubDate" Type="Date">2025 Dec 19</Item>
+	<Item Name="EPubDate" Type="Date">2025 Dec 17</Item>
+	<Item Name="Source" Type="String">Sci Adv</Item>
+	<Item Name="AuthorList" Type="List">
+		<Item Name="Author" Type="String">Liu A</Item>
+		<Item Name="Author" Type="String">Citu C</Item>
+		<Item Name="Author" Type="String">Enduru N</Item>
+		<Item Name="Author" Type="String">Chen X</Item>
+		<Item Name="Author" Type="String">Tung CH</Item>
+		<Item Name="Author" Type="String">Sinha T</Item>
+		<Item Name="Author" Type="String">Sepulveda SE</Item>
+		<Item Name="Author" Type="String">Manuel AM</Item>
+		<Item Name="Author" Type="String">Gorski D</Item>
+		<Item Name="Author" Type="String">Fernandes BS</Item>
+		<Item Name="Author" Type="String">Yu M</Item>
+		<Item Name="Author" Type="String">Schulz PE</Item>
+		<Item Name="Author" Type="String">Simon LM</Item>
+		<Item Name="Author" Type="String">Soto C</Item>
+		<Item Name="Author" Type="String">Zhao Z</Item>
+	</Item>
+	<Item Name="LastAuthor" Type="String">Zhao Z</Item>
+	<Item Name="Title" Type="String">Single-nucleus multiomics reveals the disrupted regulatory programs in three brain regions of sporadic early-onset Alzheimer's disease.</Item>
+	<Item Name="Volume" Type="String">11</Item>
+	<Item Name="Issue" Type="String">51</Item>
+	<Item Name="Pages" Type="String">eadw4917</Item>
+	<Item Name="LangList" Type="List">
+		<Item Name="Lang" Type="String">English</Item>
+	</Item>
+	<Item Name="NlmUniqueID" Type="String">101653440</Item>
+	<Item Name="ISSN" Type="String"></Item>
+	<Item Name="ESSN" Type="String">2375-2548</Item>
+	<Item Name="PubTypeList" Type="List">
+		<Item Name="PubType" Type="String">Journal Article</Item>
+		<Item Name="PubType" Type="String">Research Support, Non-U.S. Gov't</Item>
+		<Item Name="PubType" Type="String">Research Support, N.I.H., Extramural</Item>
+	</Item>
+	<Item Name="RecordStatus" Type="String">PubMed - indexed for MEDLINE</Item>
+	<Item Name="PubStatus" Type="String">ppublish+epublish</Item>
+	<Item Name="ArticleIds" Type="List">
+		<Item Name="pubmed" Type="String">41406216</Item>
+		<Item Name="pmc" Type="String">PMC12710691</Item>
+		<Item Name="pmcid" Type="String">pmc-id: PMC12710691;</Item>
+		<Item Name="doi" Type="String">10.1126/sciadv.adw4917</Item>
+	</Item>
+	<Item Name="DOI" Type="String">10.1126/sciadv.adw4917</Item>
+	<Item Name="History" Type="List">
+		<Item Name="medline" Type="Date">2025/12/17 19:12</Item>
+		<Item Name="pubmed" Type="Date">2025/12/17 19:11</Item>
+		<Item Name="entrez" Type="Date">2025/12/17 14:03</Item>
+		<Item Name="pmc-release" Type="Date">2025/12/17 00:00</Item>
+	</Item>
+	<Item Name="References" Type="List">
+		<Item Name="Update of" Type="String">bioRxiv. 2024 Jun 29:2024.06.25.600720. doi: 10.1101/2024.06.25.600720. PMID: 38979371</Item>
+		<Item Name="Update of" Type="String">Res Sq. 2024 Aug 01:rs.3.rs-4622123. doi: 10.21203/rs.3.rs-4622123/v1. PMID: 39149497</Item>
+	</Item>
+	<Item Name="HasAbstract" Type="Integer">1</Item>
+	<Item Name="PmcRefCount" Type="Integer">100</Item>
+	<Item Name="FullJournalName" Type="String">Science advances</Item>
+	<Item Name="ELocationID" Type="String">doi: 10.1126/sciadv.adw4917</Item>
+	<Item Name="SO" Type="String">2025 Dec 19;11(51):eadw4917</Item>
+</DocSum>
+
+</eSummaryResult>
