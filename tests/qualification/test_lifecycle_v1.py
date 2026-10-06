@@ -89,6 +89,14 @@ def test_retry_is_explicit_child_run_with_parent_and_reason():
     assert child.state is RunState.NOT_STARTED
 
 
+def test_retry_child_must_have_distinct_run_identity():
+    run = _zero_run("run-parent")
+    run.prepare()
+    run.fail("readout failed")
+    with pytest.raises(LifecycleError, match="distinct"):
+        run.retry_as_child("run-parent", reason="retry with corrected readout")
+
+
 def test_no_arbitrary_set_state_escape_hatch_exists():
     run = _zero_run()
     assert not hasattr(run, "set_state")
