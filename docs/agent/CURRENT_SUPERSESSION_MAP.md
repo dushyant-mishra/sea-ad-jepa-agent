@@ -1,12 +1,13 @@
 # CURRENT SUPERSESSION MAP — JEPA PROJECT
 
-Date: 2026-10-05
-Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF`
+Date: 2026-10-06
+Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 
 ## Current startup layer
 
 - `START_HERE.md`
 - `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+- `docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json`
 - `docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`
 - `docs/agent/CURRENT_AUTHORITY_INDEX.md`
 - this file
@@ -19,44 +20,40 @@ Status: `TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OF
 | V75 100K measurement architecture | **CURRENT WITHIN DECLARED SCOPE** |
 | V75 500K promotion | **INDETERMINATE / NOT AUTHORIZED** |
 | target lineage reconstruction | **COMPLETE / MERGED** |
+| premise qualification V3 | **FROZEN / MERGED GOVERNANCE** |
 | production target winner | **NONE QUALIFIED** |
+| representation winner | **NONE QUALIFIED** |
 | Stage-A real-RNA gate | **PREFREEZE ONLY / NOT EXECUTION AUTHORITY** |
+| runtime reconciliation | **MECHANICS ONLY / IN PROGRESS** |
 | training | **OFF** |
 | multimodal training | **OFF** |
 | Stage 4 | **NOT AUTHORIZED** |
 | recoverability TEST | **SEALED** |
 | Morabito | **PROTECTED** |
 
-**Target lineage reconstruction is complete.** The terminal audit is merged and is no longer the current task.
-
 ## High-impact supersessions and corrections
 
 | Historical/current-looking statement | Current classification | Controlling correction |
 |---|---|---|
 | target-lineage reconstruction is still the next task | **SUPERSEDED / COMPLETE** | terminal lineage V3 merged to main |
-| proceed from V75 directly to learned 160-D state qualification | **STOPPED** | V76/Oct-5 premise reset |
+| premise qualification prefreeze is still the current task | **SUPERSEDED / COMPLETE** | premise V3 merged in PR #220 / `f5a8ebed...` |
+| proceed from V75 directly to learned 160-D state qualification | **STOPPED** | target/state authority remains unresolved |
 | 160 is biological state dimension | **NON-AUTHORITY** | width is token/network capacity only |
-| canonical `cell_state` is qualified global biological state | **NOT ESTABLISHED** | representation family remains open |
-| Stage-A target gate file exists, therefore execute it | **FORBIDDEN** | Stage A remains prefreeze until open governance fields close prospectively |
-| real-RNA target recoverability equals biological-truth recoverability | **FALSE** | distinguish target-object recoverability from independently grounded biological-truth recoverability |
-| donor < operator < study < technology is a single nested pass ladder | **OVERSIMPLIFIED / SUPERSEDED** | track donor/operator/study/technology transfer as separate evidence axes |
+| canonical `cell_state` is qualified global biological state | **NOT ESTABLISHED** | representation winner remains unset |
+| historical `CurrentTrainingAuthorityV2` exists, therefore training is authorized | **FALSE** | final authority issuance remains unreachable under current unqualified target/representation state |
+| direct `optimizer.step()` in an inactive harness is sufficient runtime safety | **SUPERSEDED FOR CURRENT RECONCILIATION** | guarded step + explicit completion proof before EMA is required |
+| Stage-A target gate file exists, therefore execute it | **FORBIDDEN** | Stage A remains prefreeze / not execution authority |
+| real-RNA target recoverability equals biological-truth recoverability | **FALSE** | V3 separates these claims |
+| donor < operator < study < technology is a single nested pass ladder | **OVERSIMPLIFIED / SUPERSEDED** | track transfer axes separately |
 | rare or novel RNA structure is automatically biological novelty | **FALSE** | biological meaning requires independent support |
-| any fitted diagnostic may tune target definition | **FORBIDDEN** | fit inner TRAIN only, freeze before held-donor evaluation, no target-definition changes from deciding readout outcomes |
-| 96 anonymous synthetic features are production-scale biological surrogates | **FALSE** | 96-feature worlds qualify only reduced control/metric behavior; production-pipeline synthetic qualification requires canonical 41,238-address scale or a prospectively justified equivalent identity universe |
-| map V75 anonymous 96 features to arbitrary canonical slots | **FORBIDDEN** | lawful 41,238 identity bridge remains undefined |
-| run donor-cross-fitted residual targeting next | **SUPERSEDED / ALREADY EXECUTED** | `RESIDUAL_TARGET_DOES_NOT_RESCUE` |
-| PR #163 selects a target | **FALSE** | candidate-space design only |
-| PR #178 synthetic T_A/T_B selects a target | **FALSE** | `NOT_INFORMATIVE`; real RNA required |
-| PROD41K/T1 checkpoint is current biological-model authority | **FALSE** | forensic/historical only |
+| 96 anonymous synthetic features are production-scale biological surrogates | **FALSE** | canonical 41,238-address identity bridge remains required |
 | decreasing loss or green CI establishes biology | **FORBIDDEN** | mechanics/infrastructure != biological qualification |
 
 ## Current task
 
-Premise qualification prefreeze: freeze P1-P6, representation families, claim ladder, Stage-A real-RNA prefreeze semantics, external-validation asset roles, and estimand choices before any deciding TRAIN-only result is opened.
+Runtime-safety reconciliation onto the frozen V3 premise. Reuse recovered mechanics rather than rebuilding them, but require current-main compatibility and fail-closed sequencing before any future execution authority can compose them.
 
-No representation winner, target winner, estimand, or numeric deciding margin is selected merely by publishing these contracts.
-
-Synthetic premise work must preserve the distinction between reduced control worlds and production-scale pipeline qualification. World A remains a reduced 96-feature control world. Any future synthetic result used to qualify production architecture behavior must operate in the canonical 41,238-address identity universe or a prospectively justified equivalent; simply padding a 96-feature simulator with independent noise does not satisfy this requirement.
+The immediate runtime contract is: gradients validated before stepping; guarded single-use optimizer step; explicit proof that the step completed; only then EMA; later authority-bound checkpoint and deterministic reload. The current reconciliation itself remains non-authorizing.
 
 ## Authority freshness
 
