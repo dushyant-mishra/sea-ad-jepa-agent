@@ -1,9 +1,10 @@
-"""Non-authorizing V5 runtime rehearsal mechanics bound to V3 prefreeze governance.
+"""Non-authorizing V5 runtime rehearsal mechanics bound to merged V3 governance.
 
 Only mechanical ideas are recovered from V64. No historical target/E2 authority
 is imported. The canonical V3 state must remain OFF/SEALED/PROTECTED. This
 surface permits exactly one guarded rehearsal update and can never authorize
-Stage A or training.
+Stage A or training. A future governance revision requires an explicit
+successor rather than silently inheriting this rehearsal authority.
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ import json
 from typing import Any, Mapping
 
 GOVERNANCE_SCHEMA = "JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006"
+CANONICAL_V3_GOVERNANCE_DIGEST = "ab0603b0a9c92c3680badc252205ddd27fa74ae83ef3ada4019b4dcf637b7611"
 AUTHORITY_SCHEMA = "V5_PREFREEZE_MECHANICAL_AUTHORITY_V1"
 START_RECEIPT_SCHEMA = "V5_PREFREEZE_START_CHECKPOINT_RECEIPT_V1"
 COMPLETED_RECEIPT_SCHEMA = "V5_PREFREEZE_COMPLETED_CHECKPOINT_RECEIPT_V1"
@@ -75,11 +77,11 @@ COMPLETED_RECEIPT_FIELDS = {
 
 
 class PrefreezeGovernanceError(RuntimeError):
-    pass
+    """Fail-closed governance mismatch."""
 
 
 class StepCompletionError(RuntimeError):
-    pass
+    """Fail-closed guarded mutation mismatch."""
 
 
 def _digest(value: object) -> str:
@@ -108,24 +110,19 @@ def _exact_fields(value: object, expected: set[str], label: str, *, governance: 
         raise PrefreezeGovernanceError(f"{label} must be an object")
     actual = set(value)
     if actual != expected:
-        missing = sorted(expected - actual)
-        unknown = sorted(actual - expected)
+        missing, unknown = sorted(expected - actual), sorted(actual - expected)
         prefix = "governance " if governance else ""
         details = []
-        if missing:
-            details.append("missing=" + ",".join(missing))
-        if unknown:
-            details.append("unknown=" + ",".join(unknown))
+        if missing: details.append("missing=" + ",".join(missing))
+        if unknown: details.append("unknown=" + ",".join(unknown))
         raise PrefreezeGovernanceError(f"{prefix}{label} fields mismatch: {'; '.join(details)}")
     return value
 
 
 def _canonical_prefreeze_governance(state: Mapping[str, Any]) -> dict[str, Any]:
     state = _exact_fields(state, EXPECTED_TOP_LEVEL_FIELDS, "contract")
-    for key in (
-        "recoverability_semantics", "observation_operator", "representation_stability",
-        "uncertainty_axes", "diagnostic_readout_firewall", "external_asset_rules",
-    ):
+    for key in ("recoverability_semantics", "observation_operator", "representation_stability",
+                "uncertainty_axes", "diagnostic_readout_firewall", "external_asset_rules"):
         _exact_fields(state.get(key), EXPECTED_NESTED_FIELDS[key], key)
     uncertainty = state["uncertainty_axes"]
     for key in ("biological_evidence_convergence", "measurement_depth_convergence"):
@@ -134,17 +131,13 @@ def _canonical_prefreeze_governance(state: Mapping[str, Any]) -> dict[str, Any]:
         raise PrefreezeGovernanceError(f"governance schema must be {GOVERNANCE_SCHEMA}")
     frozen = {
         "role": "PROSPECTIVE_SCIENTIFIC_GOVERNANCE__PREFREEZE_ONLY",
-        "training_authorized": False,
-        "multimodal_training_authorized": False,
-        "stage_a_execution_authorized": False,
-        "stage4_authorized": False,
+        "training_authorized": False, "multimodal_training_authorized": False,
+        "stage_a_execution_authorized": False, "stage4_authorized": False,
         "five_hundred_k_authorized": False,
         "optimizer_updates_during_target_discrimination": 0,
         "ema_updates_during_target_discrimination": 0,
-        "test_state": "SEALED",
-        "morabito_state": "PROTECTED",
-        "production_target_winner": None,
-        "representation_winner": None,
+        "test_state": "SEALED", "morabito_state": "PROTECTED",
+        "production_target_winner": None, "representation_winner": None,
         "selected_estimand": "UNSET_REQUIRES_APPROVAL",
         "deciding_numeric_thresholds": "UNSET_REQUIRES_APPROVAL",
     }
@@ -152,9 +145,12 @@ def _canonical_prefreeze_governance(state: Mapping[str, Any]) -> dict[str, Any]:
         if state.get(key) != expected:
             raise PrefreezeGovernanceError(f"prefreeze mechanical authority requires {key}={expected!r}")
     try:
-        return json.loads(json.dumps(dict(state), sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False))
+        canonical = json.loads(json.dumps(dict(state), sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False))
     except (TypeError, ValueError) as exc:
         raise PrefreezeGovernanceError("governance state must be canonical JSON") from exc
+    if _digest(canonical) != CANONICAL_V3_GOVERNANCE_DIGEST:
+        raise PrefreezeGovernanceError("canonical V3 governance digest mismatch; explicit successor required")
+    return canonical
 
 
 def _current_governance_digest(state: Mapping[str, Any]) -> tuple[dict[str, Any], str]:
@@ -163,19 +159,16 @@ def _current_governance_digest(state: Mapping[str, Any]) -> tuple[dict[str, Any]
 
 
 class PrefreezeMechanicalAuthorityV1:
-    """Digest-bound, rehearsal-only authority. It never grants execution."""
+    """Digest-bound rehearsal authority that never grants execution."""
 
     def __init__(self, *, governance_state: Mapping[str, Any], optimizer_identity: str,
                  checkpoint_digest: str, authority_digest: str) -> None:
         canonical, governance_digest = _current_governance_digest(governance_state)
-        self.governance_state = canonical
-        self.governance_digest = governance_digest
+        self.governance_state, self.governance_digest = canonical, governance_digest
         self.optimizer_identity = _nonempty(optimizer_identity, "optimizer identity")
         self.checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
         self.authority_digest = _sha256(authority_digest, "authority digest")
-        self.rehearsal_only = True
-        self.training_authorized = False
-        self.execution_authorized = False
+        self.rehearsal_only, self.training_authorized, self.execution_authorized = True, False, False
         self._validate_digest()
 
     @classmethod
@@ -224,14 +217,12 @@ class PrefreezeMechanicalAuthorityV1:
         _exact_fields(receipt, START_RECEIPT_FIELDS, "start checkpoint receipt", governance=False)
         if receipt.get("schema") != START_RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("start checkpoint receipt schema mismatch")
-        canonical, current_governance_digest = _current_governance_digest(governance_state)
-        receipt_governance = _sha256(receipt.get("governance_digest"), "governance digest")
-        if receipt_governance != current_governance_digest:
+        canonical, current_g = _current_governance_digest(governance_state)
+        if _sha256(receipt.get("governance_digest"), "governance digest") != current_g:
             raise PrefreezeGovernanceError("start checkpoint current governance digest mismatch")
         if receipt.get("rehearsal_only") is not True or receipt.get("training_authorized") is not False or receipt.get("execution_authorized") is not False:
             raise PrefreezeGovernanceError("prefreeze receipt cannot authorize execution")
-        observed = _sha256(observed_checkpoint_digest, "checkpoint digest")
-        expected = _sha256(receipt.get("checkpoint_digest"), "checkpoint digest")
+        observed, expected = _sha256(observed_checkpoint_digest, "checkpoint digest"), _sha256(receipt.get("checkpoint_digest"), "checkpoint digest")
         if observed != expected:
             raise PrefreezeGovernanceError("checkpoint digest mismatch on reload")
         core = {k: receipt[k] for k in START_RECEIPT_FIELDS if k != "receipt_digest"}
@@ -246,9 +237,9 @@ class PrefreezeMechanicalAuthorityV1:
         _exact_fields(receipt, COMPLETED_RECEIPT_FIELDS, "completed checkpoint receipt", governance=False)
         if receipt.get("schema") != COMPLETED_RECEIPT_SCHEMA:
             raise PrefreezeGovernanceError("completed checkpoint receipt schema mismatch")
-        _, current_governance_digest = _current_governance_digest(governance_state)
+        _, current_g = _current_governance_digest(governance_state)
         governance_digest = _sha256(receipt.get("governance_digest"), "governance digest")
-        if governance_digest != current_governance_digest:
+        if governance_digest != current_g:
             raise PrefreezeGovernanceError("completed checkpoint current governance digest mismatch")
         if receipt.get("rehearsal_only") is not True or receipt.get("training_authorized") is not False or receipt.get("execution_authorized") is not False:
             raise PrefreezeGovernanceError("prefreeze receipt cannot authorize execution")
@@ -288,169 +279,119 @@ class PrefreezeOptimizerGuardV1:
         if getattr(optimizer, "_v5_prefreeze_optimizer_guard_v1", None) is not None:
             raise PrefreezeGovernanceError("optimizer already has a prefreeze guard")
         self.authority, self.optimizer = authority, optimizer
-        self._counter = 0
-        self._steps: dict[str, dict[str, Any]] = {}
-        self._armed: str | None = None
-        self._consumed: str | None = None
-        self._pending_ema: str | None = None
-        self._poisoned = False
-        self._closed = False
+        self._counter, self._steps = 0, {}
+        self._armed = self._consumed = self._pending_ema = None
+        self._poisoned, self._closed = False, False
         self._pre_handle = optimizer.register_step_pre_hook(self._pre_step)
         self._post_handle = optimizer.register_step_post_hook(self._post_step)
         setattr(optimizer, "_v5_prefreeze_optimizer_guard_v1", self)
 
     def _ensure_open(self) -> None:
-        if self._closed:
-            raise StepCompletionError("optimizer guard is closed")
-        if self._poisoned:
-            raise StepCompletionError("optimizer guard is poisoned after ambiguous failure")
+        if self._closed: raise StepCompletionError("optimizer guard is closed")
+        if self._poisoned: raise StepCompletionError("optimizer guard is poisoned after ambiguous failure")
         self.authority._validate_digest()
 
     def begin_step(self, optimizer_identity: str, checkpoint_digest: str) -> str:
         self._ensure_open()
-        if self._counter != 0:
-            raise StepCompletionError("prefreeze guard permits exactly one optimizer update")
-        if optimizer_identity != self.authority.optimizer_identity:
-            raise PrefreezeGovernanceError("optimizer identity mismatch")
-        if _sha256(checkpoint_digest, "checkpoint digest") != self.authority.checkpoint_digest:
-            raise PrefreezeGovernanceError("checkpoint digest mismatch")
-        token = "prefreeze-step-00000000"
-        self._counter = 1
-        self._steps[token] = {
-            "unscaled": False, "gradients_valid": False, "optimizer_completed": False,
-            "ema_completed": False, "rejected": False, "ema_consumed": False,
-            "checkpoint_emitted": False,
-        }
+        if self._counter != 0: raise StepCompletionError("prefreeze guard permits exactly one optimizer update")
+        if optimizer_identity != self.authority.optimizer_identity: raise PrefreezeGovernanceError("optimizer identity mismatch")
+        if _sha256(checkpoint_digest, "checkpoint digest") != self.authority.checkpoint_digest: raise PrefreezeGovernanceError("checkpoint digest mismatch")
+        token = "prefreeze-step-00000000"; self._counter = 1
+        self._steps[token] = {"unscaled": False, "gradients_valid": False, "optimizer_completed": False,
+                              "ema_completed": False, "rejected": False, "ema_consumed": False,
+                              "checkpoint_emitted": False}
         self._armed = token
         return token
 
     def _step_state(self, token: str) -> dict[str, Any]:
-        try:
-            return self._steps[token]
-        except KeyError as exc:
-            raise StepCompletionError("unknown guarded step token") from exc
+        try: return self._steps[token]
+        except KeyError as exc: raise StepCompletionError("unknown guarded step token") from exc
 
     def mark_unscaled(self, token: str) -> None:
         step = self._step_state(token)
-        if step["rejected"] or step["optimizer_completed"]:
-            raise StepCompletionError("cannot unscale a closed step")
+        if step["rejected"] or step["optimizer_completed"]: raise StepCompletionError("cannot unscale a closed step")
         step["unscaled"] = True
 
     def mark_gradients_valid(self, token: str) -> None:
         step = self._step_state(token)
-        if not step["unscaled"]:
-            raise StepCompletionError("gradients must be unscaled before validation")
-        if step["rejected"] or step["optimizer_completed"]:
-            raise StepCompletionError("cannot validate gradients on a closed step")
+        if not step["unscaled"]: raise StepCompletionError("gradients must be unscaled before validation")
+        if step["rejected"] or step["optimizer_completed"]: raise StepCompletionError("cannot validate gradients on a closed step")
         step["gradients_valid"] = True
 
     def reject_step(self, token: str, reason: str) -> None:
         step = self._step_state(token)
-        if step["optimizer_completed"]:
-            raise StepCompletionError("cannot reject a completed optimizer step")
-        step["rejected"] = True
-        step["reject_reason"] = str(reason)
-        if self._armed == token:
-            self._armed = None
+        if step["optimizer_completed"]: raise StepCompletionError("cannot reject a completed optimizer step")
+        step["rejected"], step["reject_reason"] = True, str(reason)
+        if self._armed == token: self._armed = None
 
     def _pre_step(self, optimizer: Any, args: tuple[Any, ...], kwargs: dict[str, Any]):
-        self._ensure_open()
-        token = kwargs.pop(STEP_TOKEN_KWARG, None)
+        self._ensure_open(); token = kwargs.pop(STEP_TOKEN_KWARG, None)
         if optimizer is not self.optimizer or self._armed is None or token != self._armed:
-            expected = self._armed
-            self._armed = None
+            expected, self._armed = self._armed, None
             raise StepCompletionError(f"optimizer step not armed for supplied token; expected={expected!r} observed={token!r}")
         step = self._step_state(token)
         if step["rejected"] or not step["unscaled"] or not step["gradients_valid"]:
-            self._armed = None
-            raise StepCompletionError("optimizer step requires unscaled validated gradients")
+            self._armed = None; raise StepCompletionError("optimizer step requires unscaled validated gradients")
         if self._consumed is not None:
-            self._armed = None
-            raise StepCompletionError("optimizer authorization replay")
+            self._armed = None; raise StepCompletionError("optimizer authorization replay")
         self._consumed = token
         return args, kwargs
 
     def _post_step(self, optimizer: Any, args: tuple[Any, ...], kwargs: dict[str, Any]):
         self._ensure_open()
         if optimizer is not self.optimizer or self._consumed is None:
-            self._poisoned = True
-            raise StepCompletionError("optimizer post-step lacks consumed authorization")
-        token = self._consumed
-        self._step_state(token)["optimizer_completed"] = True
-        self._armed = None
-        self._pending_ema = token
+            self._poisoned = True; raise StepCompletionError("optimizer post-step lacks consumed authorization")
+        token = self._consumed; self._step_state(token)["optimizer_completed"] = True
+        self._armed, self._pending_ema = None, token
 
     def run_optimizer_step(self, token: str) -> Any:
         step = self._step_state(token)
         if step["rejected"] or not step["unscaled"] or not step["gradients_valid"]:
             raise StepCompletionError("optimizer step requires unscaled validated gradients")
-        try:
-            result = self.optimizer.step(**{STEP_TOKEN_KWARG: token})
+        try: result = self.optimizer.step(**{STEP_TOKEN_KWARG: token})
         except Exception:
-            step["rejected"] = True
-            self._armed = self._consumed = None
-            self._poisoned = True
-            raise
+            step["rejected"] = True; self._armed = self._consumed = None; self._poisoned = True; raise
         if self._consumed != token or not step["optimizer_completed"]:
-            step["rejected"] = True
-            self._armed = self._consumed = None
-            self._poisoned = True
+            step["rejected"] = True; self._armed = self._consumed = None; self._poisoned = True
             raise StepCompletionError("guarded optimizer step did not complete")
         self._consumed = None
         return result
 
     def assert_step_complete(self, token: str) -> bool:
         step = self._step_state(token)
-        if step["rejected"] or not step["optimizer_completed"]:
-            raise StepCompletionError("guarded optimizer step did not complete")
+        if step["rejected"] or not step["optimizer_completed"]: raise StepCompletionError("guarded optimizer step did not complete")
         return True
 
     def run_ema(self, token: str, ema_callable: Any) -> Any:
-        step = self._step_state(token)
-        self.assert_step_complete(token)
-        if step["ema_consumed"]:
-            raise StepCompletionError("EMA authorization already consumed")
-        if self._pending_ema != token:
-            raise StepCompletionError("EMA token does not match pending optimizer step")
-        if not callable(ema_callable):
-            raise StepCompletionError("EMA callback is required")
+        step = self._step_state(token); self.assert_step_complete(token)
+        if step["ema_consumed"]: raise StepCompletionError("EMA authorization already consumed")
+        if self._pending_ema != token: raise StepCompletionError("EMA token does not match pending optimizer step")
+        if not callable(ema_callable): raise StepCompletionError("EMA callback is required")
         step["ema_consumed"] = True
-        try:
-            result = ema_callable()
-        except Exception:
-            step["rejected"] = True
-            self._poisoned = True
-            raise
-        step["ema_completed"] = True
-        self._pending_ema = None
+        try: result = ema_callable()
+        except Exception: step["rejected"] = True; self._poisoned = True; raise
+        step["ema_completed"], self._pending_ema = True, None
         return result
 
     def completed_checkpoint_receipt(self, token: str, checkpoint_digest: str) -> dict[str, Any]:
         step = self._step_state(token)
-        if step["checkpoint_emitted"]:
-            raise StepCompletionError("completed checkpoint receipt already emitted")
-        if step["rejected"] or not step["ema_completed"]:
-            raise StepCompletionError("completed checkpoint requires successful EMA")
-        self.assert_step_complete(token)
-        checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
-        if checkpoint_digest == self.authority.checkpoint_digest:
-            raise PrefreezeGovernanceError("completed checkpoint must be a new state")
+        if step["checkpoint_emitted"]: raise StepCompletionError("completed checkpoint receipt already emitted")
+        if step["rejected"] or not step["ema_completed"]: raise StepCompletionError("completed checkpoint requires successful EMA")
+        self.assert_step_complete(token); checkpoint_digest = _sha256(checkpoint_digest, "checkpoint digest")
+        if checkpoint_digest == self.authority.checkpoint_digest: raise PrefreezeGovernanceError("completed checkpoint must be a new state")
         core = {
             "schema": COMPLETED_RECEIPT_SCHEMA, "authority_digest": self.authority.authority_digest,
-            "governance_digest": self.authority.governance_digest,
-            "optimizer_identity": self.authority.optimizer_identity,
-            "parent_checkpoint_digest": self.authority.checkpoint_digest,
-            "checkpoint_digest": checkpoint_digest, "guarded_step_token": token,
-            "rehearsal_only": True, "training_authorized": False, "execution_authorized": False,
+            "governance_digest": self.authority.governance_digest, "optimizer_identity": self.authority.optimizer_identity,
+            "parent_checkpoint_digest": self.authority.checkpoint_digest, "checkpoint_digest": checkpoint_digest,
+            "guarded_step_token": token, "rehearsal_only": True, "training_authorized": False,
+            "execution_authorized": False,
         }
         step["checkpoint_emitted"] = True
         return {**core, "receipt_digest": _digest(core)}
 
     def close(self) -> None:
         if not self._closed:
-            self._pre_handle.remove()
-            self._post_handle.remove()
+            self._pre_handle.remove(); self._post_handle.remove()
             if getattr(self.optimizer, "_v5_prefreeze_optimizer_guard_v1", None) is self:
                 delattr(self.optimizer, "_v5_prefreeze_optimizer_guard_v1")
-            self._armed = self._consumed = self._pending_ema = None
-            self._closed = True
+            self._armed = self._consumed = self._pending_ema = None; self._closed = True
