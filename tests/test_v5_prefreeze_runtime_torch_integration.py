@@ -16,6 +16,7 @@ assert spec.loader is not None
 spec.loader.exec_module(module)
 Authority = module.PrefreezeMechanicalAuthorityV1
 Guard = module.PrefreezeOptimizerGuardV1
+PrefreezeGovernanceError = module.PrefreezeGovernanceError
 StepCompletionError = module.StepCompletionError
 
 
@@ -53,6 +54,19 @@ def test_real_torch_optimizer_step_is_observed_by_bound_hooks():
     assert guard.assert_step_complete(token) is True
     assert not torch.equal(param.detach(), before)
     optimizer.zero_grad(set_to_none=True)
+
+
+def test_authority_optimizer_identity_cannot_lie_about_real_optimizer_configuration():
+    param = torch.nn.Parameter(torch.tensor([2.0], dtype=torch.float32))
+    optimizer = torch.optim.SGD([param], lr=0.1)
+    authority = Authority.issue(
+        governance_state=_state(),
+        optimizer_identity="torch.optim.AdamW:lr=0.001",
+        checkpoint_digest=_sha("checkpoint-A"),
+    )
+
+    with pytest.raises(PrefreezeGovernanceError, match="optimizer.*configuration|optimizer.*identity"):
+        Guard(authority, optimizer)
 
 
 def test_cpu_gradscaler_finite_step_completes_through_guard():
