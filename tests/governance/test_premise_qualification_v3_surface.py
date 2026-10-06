@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 STATE = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
 VALIDATOR = ROOT / "scripts/governance/verify_premise_qualification_v3_surface.py"
+WORKFLOW = ROOT / ".github/workflows/premise-qualification-v3-surface-guard.yml"
 
 
 def _load_validator():
@@ -20,6 +21,17 @@ def _load_validator():
 
 def _state():
     return json.loads(STATE.read_text())
+
+
+def _run_cli(state: dict, tmp_path):
+    supplied = tmp_path / "supplied_state.json"
+    supplied.write_text(json.dumps(state))
+    return subprocess.run(
+        [sys.executable, str(VALIDATOR), str(supplied)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
 
 
 def test_v3_state_is_fail_closed_and_neutral():
@@ -45,6 +57,12 @@ def test_all_machine_referenced_source_documents_exist():
     assert missing == []
 
 
+def test_every_binding_source_document_triggers_guard():
+    workflow = WORKFLOW.read_text()
+    for path in _state()["source_documents"]:
+        assert path in workflow, f"binding source does not trigger V3 guard: {path}"
+
+
 def test_validator_accepts_canonical_state():
     validator = _load_validator()
     assert validator.validate_state(_state()) == []
@@ -59,16 +77,33 @@ def test_cli_accepts_canonical_state():
 def test_cli_rejects_supplied_corrupt_state(tmp_path):
     state = _state()
     state["training_authorized"] = True
-    corrupt = tmp_path / "corrupt.json"
-    corrupt.write_text(json.dumps(state))
-    result = subprocess.run(
-        [sys.executable, str(VALIDATOR), str(corrupt)],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-    )
+    result = _run_cli(state, tmp_path)
     assert result.returncode != 0
     assert "training_authorized must remain false" in result.stdout
+
+
+def test_cli_rejects_missing_required_contract_field(tmp_path):
+    state = _state()
+    del state["stage_a_verdicts"]
+    result = _run_cli(state, tmp_path)
+    assert result.returncode != 0
+    assert "missing required contract fields" in result.stdout
+
+
+def test_cli_rejects_unrecognized_top_level_contract_field(tmp_path):
+    state = _state()
+    state["surprise_authority"] = True
+    result = _run_cli(state, tmp_path)
+    assert result.returncode != 0
+    assert "unrecognized contract fields" in result.stdout
+
+
+def test_cli_rejects_unrecognized_nested_contract_field(tmp_path):
+    state = _state()
+    state["diagnostic_readout_firewall"]["held_out_override"] = True
+    result = _run_cli(state, tmp_path)
+    assert result.returncode != 0
+    assert "unrecognized diagnostic_readout_firewall fields" in result.stdout
 
 
 def test_validator_rejects_training_authorization():
@@ -86,9 +121,33 @@ def test_validator_rejects_collapsed_uncertainty_axes():
     assert "biological-evidence and measurement-depth uncertainty must remain separate" in validator.validate_state(state)
 
 
+def test_validator_rejects_same_operator_for_bio_evidence_and_depth():
+    validator = _load_validator(); state = _state()
+    state["uncertainty_axes"]["biological_evidence_convergence"]["operator_class"] = "COUNT_DEPTH_THINNING"
+    assert "biological-evidence perturbation must not be count-depth thinning" in validator.validate_state(state)
+
+
+def test_validator_requires_measurement_depth_to_hold_information_universe_fixed():
+    validator = _load_validator(); state = _state()
+    state["uncertainty_axes"]["measurement_depth_convergence"]["information_universe_fixed"] = False
+    assert "measurement-depth perturbation must hold the information universe fixed" in validator.validate_state(state)
+
+
 def test_validator_rejects_coordinate_claim_from_subspace_only():
     validator = _load_validator(); state = _state(); state["representation_stability"]["coordinate_claim_allowed_when_subspace_only"] = True
     assert "coordinate claims are forbidden for stable-subspace-only results" in validator.validate_state(state)
+
+
+def test_validator_requires_inner_train_frozen_alignment():
+    validator = _load_validator(); state = _state()
+    state["representation_stability"]["alignment_fit_partition"] = "HELD_DONOR"
+    assert "coordinate alignment must fit on inner TRAIN and freeze before held-donor evaluation" in validator.validate_state(state)
+
+
+def test_validator_rejects_held_donor_influence_on_alignment():
+    validator = _load_validator(); state = _state()
+    state["representation_stability"]["held_out_donors_may_influence_alignment"] = True
+    assert "held-out donors must not influence coordinate alignment" in validator.validate_state(state)
 
 
 def test_validator_rejects_unrestricted_dataset_identity():
