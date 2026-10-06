@@ -1,0 +1,168 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "C0_baseline_independent": {
+      "note": "the current shipped background, for regression reference",
+      "n_factors": 60,
+      "seconds": 26.8,
+      "latent": {
+        "median_abs_corr": 0.013642943929880857,
+        "frac_abs_gt_0p3": 0.035712348560631324,
+        "var_top10_pc": 0.21644502766927085,
+        "mean_degree": 107.10133333333333,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.5492723607217112,
+        "substitute_frac": 0.875,
+        "frac_pos_gt_0p3": 0.017826164276981214,
+        "frac_neg_lt_m0p3": 0.017886184283650106,
+        "pos_over_neg_ratio": 0.9966443370079913,
+        "mean_signed_corr": -1.9458761016721837e-05,
+        "t5_within_over_pooled": 2.41339783421159
+      },
+      "observed": {
+        "median_abs_corr": 0.013443540316075087,
+        "frac_abs_gt_0p3": 0.015353117705901967,
+        "var_top10_pc": 0.12307302856445312,
+        "mean_degree": 46.044,
+        "largest_community_frac": 0.953,
+        "transitivity": 0.6052087764407336,
+        "substitute_frac": 0.4746666666666667,
+        "frac_pos_gt_0p3": 0.012521951761698343,
+        "frac_neg_lt_m0p3": 0.0028311659442036233,
+        "pos_over_neg_ratio": 4.422895728643216,
+        "mean_signed_corr": 0.0006405320600606501,
+        "t5_within_over_pooled": 2.3959013939707594
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 2.3959013939707594,
+      "verdict": "REJECT"
+    },
+    "C1_coherent_balanced": {
+      "note": "coherent magnitude, balanced signs, same factor budget as the baseline",
+      "n_factors": 60,
+      "seconds": 29.2,
+      "latent": {
+        "median_abs_corr": 0.01422735070809722,
+        "frac_abs_gt_0p3": 0.07474647104590419,
+        "var_top10_pc": 0.2177570597330729,
+        "mean_degree": 224.16466666666668,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.38375835079407267,
+        "substitute_frac": 0.543,
+        "frac_pos_gt_0p3": 0.037220406802267424,
+        "frac_neg_lt_m0p3": 0.03752606424363677,
+        "pos_over_neg_ratio": 0.9918547961921913,
+        "mean_signed_corr": -0.00010545248369453475,
+        "t5_within_over_pooled": 2.4535544563873697
+      },
+      "observed": {
+        "median_abs_corr": 0.01446638023480773,
+        "frac_abs_gt_0p3": 0.006515727464710459,
+        "var_top10_pc": 0.10692484684856389,
+        "mean_degree": 19.540666666666667,
+        "largest_community_frac": 0.012,
+        "transitivity": 0.44002500847804155,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.006515727464710459,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 6515727.464710459,
+        "mean_signed_corr": 0.00028456965810619295,
+        "t5_within_over_pooled": 2.408874263544507
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 2.408874263544507,
+      "verdict": "REJECT"
+    },
+    "C2_coherent_more_factors": {
+      "note": "coherent, balanced, many more overlapping factors to raise degree",
+      "n_factors": 400,
+      "seconds": 27.4,
+      "latent": {
+        "median_abs_corr": 0.02832607552409172,
+        "frac_abs_gt_0p3": 1.5560742469712126e-05,
+        "var_top10_pc": 0.05615962270836404,
+        "mean_degree": 0.04666666666666667,
+        "largest_community_frac": 0.0003333333333333333,
+        "transitivity": 0.0,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 8.002667555851951e-06,
+        "frac_neg_lt_m0p3": 7.558074913860176e-06,
+        "pos_over_neg_ratio": 1.0588235294117647,
+        "mean_signed_corr": -6.336515070870519e-06,
+        "t5_within_over_pooled": 1.5179137684701736
+      },
+      "observed": {
+        "median_abs_corr": 0.017683569341897964,
+        "frac_abs_gt_0p3": 0.0,
+        "var_top10_pc": 0.028277430216471354,
+        "mean_degree": 0.0,
+        "largest_community_frac": 0.0003333333333333333,
+        "transitivity": NaN,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.0,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 0.0,
+        "mean_signed_corr": -6.811496859882027e-05,
+        "t5_within_over_pooled": 1.8797279394658586
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.8797279394658586,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}
