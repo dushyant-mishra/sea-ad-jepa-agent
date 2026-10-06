@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py'
+      - 'src/sea_ad_jepa/v5/inactive_guarded_update_v1.py'
       - 'src/sea_ad_jepa/v5/inactive_update_reference.py'
       - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
       - 'tests/test_teacher_student_v5_inactive_update_reference.py'
