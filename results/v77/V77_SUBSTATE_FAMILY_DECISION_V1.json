@@ -1,0 +1,146 @@
+{
+  "schema": "V77_SUBSTATE_FAMILY_DECISION_V1",
+  "recorded_utc": "2026-10-06T16:21:02Z",
+  "head": "4f89b0d33a7368799c32ff713d07cc8c1e23a321",
+  "FAMILY_DECISION": "SUPPORTED_FOR_NEXT_STAGE__WITH_TWO_NAMED_UNRESOLVED_ISSUES",
+  "HEADLINE": "the transitivity envelope was entered for the first time. Transitivity is the single invariant that falsified the factor/hurdle family, where it never left 0.515 to 0.775 across 37 candidates. The discrete sub-state family reaches 0.8844, inside the envelope of 0.8752 to 0.8928, while mean degree and the fraction above 0.3 land essentially on target.",
+  "THE_ENABLING_CHANGE_WAS_THE_OBSERVATION_MODEL_NOT_THE_GENERATOR": {
+    "finding": "block-switching produced near-perfect cliques at the LATENT layer immediately: latent transitivity 0.9649 to 0.9999 on the first giant-module candidates. The observation model then capped observed transitivity at 0.60 to 0.75, the SAME ceiling the factor family hit. So both families failed for one shared reason, and the generator family was never the binding constraint.",
+    "the_culprit": "the exact per-cell detected-count constraint. Every prior variant forced each cell to detect exactly k features. In real data that count is an OUTCOME of the cell's state, not a constraint on it.",
+    "measured_effect_of_removing_it": [
+      {
+        "model": "A exact per-cell top-k, the previous default",
+        "median": 0.143,
+        "frac_gt_0p3": 0.0623,
+        "transitivity": 0.6885,
+        "degree": 186.9,
+        "largest_community": 0.001
+      },
+      {
+        "model": "B free global threshold, count is an outcome, with selection noise",
+        "median": 0.2677,
+        "frac_gt_0p3": 0.414,
+        "transitivity": 0.759,
+        "degree": 1241.7,
+        "largest_community": 0.7727
+      },
+      {
+        "model": "C free global threshold, no selection noise",
+        "median": 0.3243,
+        "frac_gt_0p3": 0.5504,
+        "transitivity": 0.799,
+        "degree": 1650.6,
+        "largest_community": 0.9607
+      },
+      {
+        "model": "REAL binarised",
+        "median": 0.377,
+        "frac_gt_0p3": 0.6148,
+        "transitivity": 0.8871,
+        "degree": 1843.8,
+        "largest_community": 0.763
+      }
+    ],
+    "note": "candidate B's largest-community fraction of 0.7727 is near-exact against a real 0.7630"
+  },
+  "BEST_SETTING_AND_WHY_IT_REVEALS_THE_MECHANISM": {
+    "generator": "L1_two_giant: two giant near-disjoint modules switched by 40 hidden sub-states",
+    "observation": "free global threshold, detected count as an outcome, no selection noise",
+    "abundance_prior_scale": 0.3,
+    "measured": {
+      "median_abs_corr": 0.3549,
+      "frac_abs_gt_0p3": 0.6188,
+      "transitivity": 0.8844,
+      "mean_degree": 1855.9,
+      "largest_community_frac": 0.921,
+      "t5": 0.9957
+    },
+    "real": {
+      "median_abs_corr": 0.377,
+      "frac_abs_gt_0p3": 0.6148,
+      "transitivity": 0.8871,
+      "mean_degree": 1843.8,
+      "largest_community_frac": 0.763,
+      "t5": 1.012
+    },
+    "why_abundance_scale_is_the_dial": "a wide abundance spread gives each gene its own effective detection threshold, which breaks cliques apart under thresholding. Narrowing it lets genes in a switched module cross together. The dial brackets the target cleanly: transitivity 0.8220 at x0.5, 0.8844 at x0.3 and 0.9410 at x0.2."
+  },
+  "UNRESOLVED_ISSUE_1_ABUNDANCE_MARGINAL_TRADE_OFF": {
+    "severity": "HIGH, and it is a genuine conflict rather than a tuning gap",
+    "statement": "the abundance scaling that buys the dependence topology destroys the abundance marginal that was previously matched",
+    "evidence": {
+      "abundance_max_over_median": {
+        "real": 6685,
+        "scale_1.0": 1889,
+        "scale_0.3": 10
+      },
+      "top1pct_count_share": {
+        "real": 0.322,
+        "scale_1.0": 0.307,
+        "scale_0.3": 0.038
+      }
+    },
+    "reading": "at full abundance spread the marginal matches and the topology does not; at x0.3 the topology matches and the marginal does not. One scalar cannot satisfy both, so a successor needs gene-specific detection thresholds DECOUPLED from gene abundance, which is biologically reasonable: capture efficiency and transcript abundance are different things.",
+    "not_resolved_here": true
+  },
+  "UNRESOLVED_ISSUE_2_SIGN_BALANCE_AND_COMMUNITY_SIZE": {
+    "severity": "MEDIUM, both previously responded to known levers",
+    "pos_over_neg_ratio": {
+      "observed": "astronomically high, effectively no negative correlations",
+      "real_detection": 1.669,
+      "cause": "two giant single-signed modules with no selection noise"
+    },
+    "largest_community_frac": {
+      "observed": 0.921,
+      "real": 0.763,
+      "known_lever": "the independent-gene fraction, which previously moved this across the real value at 0.9993, 0.8373 and 0.7177"
+    },
+    "tension_to_watch": "more modules would improve sign balance but previously lowered transitivity, so these must be calibrated jointly rather than in sequence"
+  },
+  "T5_HARD_GUARD_HELD_THROUGHOUT": {
+    "range_across_all_substate_candidates": [
+      0.9926,
+      1.1128
+    ],
+    "best_setting": 0.9957,
+    "real": 1.012,
+    "why_it_is_structural_here": "hidden sub-states are drawn INDEPENDENTLY of the annotated cell class, so they are orthogonal to it by construction. The family cannot produce its structure by separating known classes."
+  },
+  "A_REPLICA_CONTROL_FROZEN_AND_PASSING": {
+    "frozen_before_this_family_was_tested": true,
+    "statistic": "unsupervised PCA readout, 50 components, requiring no planted module support",
+    "thresholds": {
+      "recoverable_floor": 0.3,
+      "null_band": 0.05,
+      "separation_min": 0.25
+    },
+    "threshold_provenance": "the 0.05 null band is the same one the component off-twin controls already used; the 0.30 floor is roughly half of World A's locked 96-gene ceilings of 0.6832, 0.6629 and 0.6678. This exact reader had never been run when the thresholds were set.",
+    "first_run_result": {
+      "recoverable_mean": 0.9821,
+      "not_recoverable_mean": -0.0012,
+      "DETECT": true,
+      "REJECT": true,
+      "SEPARATED": true,
+      "VERDICT": "PASS"
+    },
+    "what_it_proves": "the control detects the base latents that drive RNA and rejects both z_reg_private, which is ATAC-only by design, and the inert technical latents"
+  },
+  "WHAT_IS_NOT_CLAIMED": [
+    "no 100K rebuild and no production-world regeneration",
+    "no target-selection claim",
+    "no candidate is frozen as the production generator",
+    "the family is supported for the NEXT STAGE, not qualified",
+    "no model has been trained"
+  ],
+  "RECOMMENDED_NEXT_STEP": "decouple gene detection thresholds from gene abundance, then co-calibrate module count, sign balance and independent-gene fraction jointly against the full envelope. The abundance trade-off is the one genuine conflict and should be resolved first, because every other remaining gap already has a demonstrated lever.",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}
