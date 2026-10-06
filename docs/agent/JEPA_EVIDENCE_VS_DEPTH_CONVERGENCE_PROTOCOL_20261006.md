@@ -20,6 +20,15 @@ For a fixed cell/state and representation extractor, construct lawful partial-ev
 
 The fractions are placeholders until an execution authority freezes exact values and construction rules.
 
+The **perturbation itself must remove biological information support, not merely molecules**. Lawful future operators may restrict, for example:
+
+- measured feature/panel support;
+- program/pathway support;
+- contextual evidence;
+- an additional lawful modality or molecular evidence channel.
+
+Count thinning alone is **not** a biological-evidence perturbation. If the same feature/information universe is retained and only fewer molecules are sampled, that belongs exclusively to the measurement-depth axis below.
+
 For each representation family report:
 
 - distance from the 100%-evidence representation;
@@ -36,11 +45,13 @@ This is an uncertainty/readiness diagnostic, not evidence of pathology or novelt
 
 ## B. Measurement-depth convergence
 
-Hold the biological information target fixed and vary only count/depth realization, for example:
+Hold the biological information universe fixed and vary only count/depth realization, for example:
 
 `25% -> 50% -> 75% -> 100%` of counts
 
 Exact fractions and thinning operator remain `UNSET_REQUIRES_APPROVAL` until prospectively frozen.
+
+The feature/panel/context support must remain unchanged across the depth curve. The operator may reduce molecule/count realization, but it may not remove genes, programs, modalities or other biological evidence channels.
 
 Report:
 
@@ -54,7 +65,16 @@ Interpretation:
 
 Large movement under depth-only thinning is measurement uncertainty, not missing biological-state information.
 
-## C. Two-axis classification
+## C. Operator-separation rule
+
+The two curves must use demonstrably different perturbation operators:
+
+- biological evidence: `FEATURE_OR_CONTEXT_SUPPORT_RESTRICTION`;
+- measurement depth: `COUNT_DEPTH_THINNING` with the information universe fixed.
+
+A future execution contract must record the exact operator used for each axis. Reusing count thinning for both axes is a contract violation, not a valid estimate of two uncertainties.
+
+## D. Two-axis classification
 
 A candidate may therefore be:
 
@@ -65,15 +85,15 @@ A candidate may therefore be:
 
 Do not treat these states as equivalent.
 
-## D. Observation-operator interaction
+## E. Observation-operator interaction
 
 The measurement-depth curve must be reported within the declared observation regime. Cross-technology differences are a separate transfer axis and must not be smuggled into the depth curve.
 
-## E. Information efficiency
+## F. Information efficiency
 
 A later authority may define the minimum evidence needed for representation stabilization. This can support panel/spatial design, but it is not a production objective or winner-selection metric in this document.
 
-## F. Required controls
+## G. Required controls
 
 - same biological unit wherever technically possible;
 - prospectively frozen subsampling seed/rule;
@@ -81,9 +101,10 @@ A later authority may define the minimum evidence needed for representation stab
 - no post-hoc choice of evidence fractions from deciding outcomes;
 - donor-level uncertainty;
 - source/operator diagnostics reported separately;
-- representation-family comparison remains neutral.
+- representation-family comparison remains neutral;
+- explicit declaration of the perturbation operator for each uncertainty axis.
 
-## G. Claim boundary
+## H. Claim boundary
 
 These curves can qualify statements about robustness of an RNA representation to missing biological evidence and measurement depth.
 
