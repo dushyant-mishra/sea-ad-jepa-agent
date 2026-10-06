@@ -18,6 +18,11 @@ class MutationProofStatus(str, Enum):
     PROVEN_BY_BOUND_RUNTIME = "PROVEN_BY_BOUND_RUNTIME"
 
 
+class QSafetyExecutionProofStatus(str, Enum):
+    POLICY_ONLY_NOT_EXECUTION_PROVEN = "POLICY_ONLY_NOT_EXECUTION_PROVEN"
+    PROVEN_BY_BOUND_ADAPTER_RUNTIME = "PROVEN_BY_BOUND_ADAPTER_RUNTIME"
+
+
 def _nonempty(value: object, name: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be explicit and nonempty")
@@ -58,6 +63,7 @@ class QualificationProvenanceReceiptV1:
     code_commit: str
     environment_digest: str
     mutation_proof_status: MutationProofStatus = MutationProofStatus.NOT_PROVEN_BY_SHARED_INTERFACE
+    q_safety_execution_proof_status: QSafetyExecutionProofStatus = QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
     runtime_successor_digest: str | None = None
     checkpoint_digest: str | None = None
     synthetic_realization_id: str | None = None
@@ -84,6 +90,8 @@ class QualificationProvenanceReceiptV1:
             raise ValueError("threshold_status must be explicit")
         if not isinstance(self.mutation_proof_status, MutationProofStatus):
             raise ValueError("mutation_proof_status must be explicit")
+        if not isinstance(self.q_safety_execution_proof_status, QSafetyExecutionProofStatus):
+            raise ValueError("q_safety_execution_proof_status must be explicit")
         for name in (
             "governance_digest",
             "protocol_digest",
@@ -99,6 +107,11 @@ class QualificationProvenanceReceiptV1:
             _digest(self.runtime_successor_digest, "runtime_successor_digest")
         if self.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME and self.runtime_successor_digest is None:
             raise ValueError("physical mutation proof requires bound runtime successor provenance")
+        if (
+            self.q_safety_execution_proof_status is QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
+            and self.runtime_successor_digest is None
+        ):
+            raise ValueError("q-safety execution proof requires bound runtime successor provenance")
         if self.checkpoint_digest is not None:
             _digest(self.checkpoint_digest, "checkpoint_digest")
             if self.runtime_successor_digest is None:
