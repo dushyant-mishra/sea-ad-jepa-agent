@@ -14,7 +14,7 @@ from .identity import (
     QualificationBatchIdentityV1,
 )
 from .lifecycle import ExperimentRunV1, RunMode
-from .oracle import FrozenQualificationOutputsV1
+from .oracle import ChallengeStatus, FrozenQualificationOutputsV1
 from .protocol import ExecutionMode, QualificationProtocolV1
 from .qsafe import QSafetyPolicyV1
 from .receipts import DataKind, MutationProofStatus, QualificationProvenanceReceiptV1
@@ -140,8 +140,8 @@ class QualificationBatchV1:
         if expected_synthetic:
             if not isinstance(self.synthetic_realization_id, str) or not self.synthetic_realization_id.strip():
                 raise ValueError("synthetic batch requires synthetic_realization_id")
-            if not isinstance(self.challenge_partition, str) or not self.challenge_partition.strip():
-                raise ValueError("synthetic batch requires challenge_partition")
+            if self.challenge_partition not in {status.value for status in ChallengeStatus}:
+                raise ValueError("synthetic batch challenge_partition is not recognized")
         else:
             if self.synthetic_realization_id is not None or self.challenge_partition is not None:
                 raise ValueError("real-RNA batch cannot carry synthetic challenge provenance")
