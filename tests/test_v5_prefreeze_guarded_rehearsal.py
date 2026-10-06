@@ -107,7 +107,8 @@ def test_rehearsal_runs_optimizer_bound_order_and_roundtrip():
     assert result["starting_checkpoint_digest"] == _sha("checkpoint-A")
     assert result["checkpoint_digest"] == _sha("checkpoint-B")
     verified = auth.PrefreezeMechanicalAuthorityV1.verify_completed_checkpoint_receipt(
-        result["checkpoint_receipt"], _sha("checkpoint-B")
+        result["checkpoint_receipt"], _sha("checkpoint-B"),
+        governance_state=json.loads(STATE_PATH.read_text())
     )
     assert verified["guarded_step_token"] == result["guarded_step_token"]
 
