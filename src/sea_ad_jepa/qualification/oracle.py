@@ -54,12 +54,18 @@ class FrozenQualificationOutputsV1:
     run_id: str
     output_digest: str
     provenance_receipt_digest: str
+    synthetic_realization_id: str | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.run_id, str) or not self.run_id.strip():
             raise ValueError("run_id must be explicit")
         _digest(self.output_digest, "output_digest")
         _digest(self.provenance_receipt_digest, "provenance_receipt_digest")
+        if self.synthetic_realization_id is not None and (
+            not isinstance(self.synthetic_realization_id, str)
+            or not self.synthetic_realization_id.strip()
+        ):
+            raise ValueError("synthetic_realization_id must be explicit when supplied")
 
 
 @dataclass(frozen=True)
@@ -94,6 +100,10 @@ def unblind_oracle(
         raise ValueError("ordinary qualification outputs must be frozen before oracle unblinding")
     if frozen_outputs.run_id != run.experiment_run_id:
         raise ValueError("oracle unblinding run identity does not match frozen outputs")
+    if frozen_outputs.synthetic_realization_id is None:
+        raise ValueError("oracle unblinding requires frozen synthetic realization identity")
+    if frozen_outputs.synthetic_realization_id != oracle.realization_id:
+        raise ValueError("oracle realization does not match frozen output realization")
     run.record_oracle_unblinded(event_run_id=frozen_outputs.run_id)
     return OracleUnblindingReceiptV1(
         run_id=run.experiment_run_id,
