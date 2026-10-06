@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -33,10 +35,7 @@ def test_v3_state_is_fail_closed_and_neutral():
     assert state["selected_estimand"] == "UNSET_REQUIRES_APPROVAL"
     assert state["deciding_numeric_thresholds"] == "UNSET_REQUIRES_APPROVAL"
     assert set(state["representation_families"]) == {
-        "GLOBAL_CELL_STATE",
-        "QUERY_LOCAL_STATE",
-        "PROGRAM_STATE",
-        "STRUCTURED_COMBINED_STATE",
+        "GLOBAL_CELL_STATE", "QUERY_LOCAL_STATE", "PROGRAM_STATE", "STRUCTURED_COMBINED_STATE"
     }
 
 
@@ -51,158 +50,133 @@ def test_validator_accepts_canonical_state():
     assert validator.validate_state(_state()) == []
 
 
-def test_validator_rejects_training_authorization():
-    validator = _load_validator()
+def test_cli_accepts_canonical_state():
+    result = subprocess.run([sys.executable, str(VALIDATOR)], cwd=ROOT, capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "PASS:" in result.stdout
+
+
+def test_cli_rejects_supplied_corrupt_state(tmp_path):
     state = _state()
     state["training_authorized"] = True
+    corrupt = tmp_path / "corrupt.json"
+    corrupt.write_text(json.dumps(state))
+    result = subprocess.run(
+        [sys.executable, str(VALIDATOR), str(corrupt)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "training_authorized must remain false" in result.stdout
+
+
+def test_validator_rejects_training_authorization():
+    validator = _load_validator(); state = _state(); state["training_authorized"] = True
     assert "training_authorized must remain false" in validator.validate_state(state)
 
 
 def test_validator_rejects_representation_winner():
-    validator = _load_validator()
-    state = _state()
-    state["representation_winner"] = "GLOBAL_CELL_STATE"
+    validator = _load_validator(); state = _state(); state["representation_winner"] = "GLOBAL_CELL_STATE"
     assert "representation_winner must remain null" in validator.validate_state(state)
 
 
 def test_validator_rejects_collapsed_uncertainty_axes():
-    validator = _load_validator()
-    state = _state()
-    state["uncertainty_axes"]["must_remain_separate"] = False
+    validator = _load_validator(); state = _state(); state["uncertainty_axes"]["must_remain_separate"] = False
     assert "biological-evidence and measurement-depth uncertainty must remain separate" in validator.validate_state(state)
 
 
 def test_validator_rejects_coordinate_claim_from_subspace_only():
-    validator = _load_validator()
-    state = _state()
-    state["representation_stability"]["coordinate_claim_allowed_when_subspace_only"] = True
+    validator = _load_validator(); state = _state(); state["representation_stability"]["coordinate_claim_allowed_when_subspace_only"] = True
     assert "coordinate claims are forbidden for stable-subspace-only results" in validator.validate_state(state)
 
 
 def test_validator_rejects_unrestricted_dataset_identity():
-    validator = _load_validator()
-    state = _state()
-    state["observation_operator"]["forbidden_free_shortcuts"] = ["DONOR_ID"]
+    validator = _load_validator(); state = _state(); state["observation_operator"]["forbidden_free_shortcuts"] = ["DONOR_ID"]
     assert "unrestricted dataset and arbitrary matrix identifiers must remain forbidden shortcuts" in validator.validate_state(state)
 
 
 def test_validator_rejects_donor_id_as_free_observation_covariate():
-    validator = _load_validator()
-    state = _state()
-    state["observation_operator"]["forbidden_free_shortcuts"] = [
-        "UNRESTRICTED_DATASET_ID",
-        "ARBITRARY_MATRIX_ID",
-    ]
+    validator = _load_validator(); state = _state()
+    state["observation_operator"]["forbidden_free_shortcuts"] = ["UNRESTRICTED_DATASET_ID", "ARBITRARY_MATRIX_ID"]
     assert "donor identity must remain a forbidden free observation shortcut" in validator.validate_state(state)
 
 
 def test_validator_rejects_blanket_technology_invariance_requirement():
-    validator = _load_validator()
-    state = _state()
-    state["observation_operator"]["technology_invariance_is_not_blanket_requirement"] = False
+    validator = _load_validator(); state = _state(); state["observation_operator"]["technology_invariance_is_not_blanket_requirement"] = False
     assert "technology invariance must not become a blanket qualification rule" in validator.validate_state(state)
 
 
 def test_validator_rejects_estimand_selection():
-    validator = _load_validator()
-    state = _state()
-    state["selected_estimand"] = "DONOR_WEIGHTED"
+    validator = _load_validator(); state = _state(); state["selected_estimand"] = "DONOR_WEIGHTED"
     assert "selected_estimand must remain UNSET_REQUIRES_APPROVAL" in validator.validate_state(state)
 
 
 def test_validator_rejects_estimand_roster_drift():
-    validator = _load_validator()
-    state = _state()
-    state["estimand_candidates"] = ["CELL_WEIGHTED_EMPIRICAL", "DONOR_WEIGHTED"]
+    validator = _load_validator(); state = _state(); state["estimand_candidates"] = ["CELL_WEIGHTED_EMPIRICAL", "DONOR_WEIGHTED"]
     assert "estimand candidate roster must remain prospectively explicit" in validator.validate_state(state)
 
 
 def test_validator_rejects_post_hoc_tempering_parameter():
-    validator = _load_validator()
-    state = _state()
-    state["hierarchical_tempering_parameter"] = "TUNE_ON_BIOLOGICAL_OUTCOME"
+    validator = _load_validator(); state = _state(); state["hierarchical_tempering_parameter"] = "TUNE_ON_BIOLOGICAL_OUTCOME"
     assert "hierarchical tempering may not be tuned post hoc on biological outcomes" in validator.validate_state(state)
 
 
 def test_validator_rejects_recoverability_conflation():
-    validator = _load_validator()
-    state = _state()
-    state["recoverability_semantics"]["automatic_equivalence_forbidden"] = False
+    validator = _load_validator(); state = _state(); state["recoverability_semantics"]["automatic_equivalence_forbidden"] = False
     assert "target-object recoverability must not be equated with biological-truth recoverability" in validator.validate_state(state)
 
 
 def test_validator_rejects_collapsed_transfer_axes():
-    validator = _load_validator()
-    state = _state()
-    state["transport_axes"] = ["DONOR_TRANSFER", "TECHNOLOGY_TRANSFER"]
+    validator = _load_validator(); state = _state(); state["transport_axes"] = ["DONOR_TRANSFER", "TECHNOLOGY_TRANSFER"]
     assert "donor/operator/study/technology transfer axes must remain separate" in validator.validate_state(state)
 
 
 def test_validator_rejects_collapsed_ood_axes():
-    validator = _load_validator()
-    state = _state()
-    state["ood_axes"] = ["GENERIC_OOD"]
+    validator = _load_validator(); state = _state(); state["ood_axes"] = ["GENERIC_OOD"]
     assert "biological-support OOD and measurement-regime OOD must remain separate" in validator.validate_state(state)
 
 
 def test_validator_rejects_claim_ladder_shortening():
-    validator = _load_validator()
-    state = _state()
-    state["claim_ladder"] = ["RNA_REPRESENTATION", "TRANSFERABLE_BIOLOGICAL_STATE"]
+    validator = _load_validator(); state = _state(); state["claim_ladder"] = ["RNA_REPRESENTATION", "TRANSFERABLE_BIOLOGICAL_STATE"]
     assert "claim ladder must preserve four non-automatic levels" in validator.validate_state(state)
 
 
 def test_validator_rejects_stage_a_biological_promotion():
-    validator = _load_validator()
-    state = _state()
-    state["stage_a_maximum_claim"] = "TRANSFERABLE_BIOLOGICAL_STATE"
+    validator = _load_validator(); state = _state(); state["stage_a_maximum_claim"] = "TRANSFERABLE_BIOLOGICAL_STATE"
     assert "Stage A maximum claim must remain RNA_REPRESENTATION" in validator.validate_state(state)
 
 
 def test_validator_rejects_protected_asset_selection():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["protected_assets_forbidden_for_target_selection"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["protected_assets_forbidden_for_target_selection"] = False
     assert "protected assets must remain forbidden for target selection" in validator.validate_state(state)
 
 
 def test_validator_rejects_cell_count_as_donor_substitute():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["cell_count_cannot_substitute_for_donor_count"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["cell_count_cannot_substitute_for_donor_count"] = False
     assert "cell count must not substitute for donor count" in validator.validate_state(state)
 
 
 def test_validator_rejects_observational_to_causal_promotion():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["observational_multimodal_support_is_not_causal"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["observational_multimodal_support_is_not_causal"] = False
     assert "observational multimodal support must not be promoted to causal evidence" in validator.validate_state(state)
 
 
 def test_validator_rejects_external_equal_independent():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["external_not_equal_independent"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["external_not_equal_independent"] = False
     assert "external assets must not be assumed independent" in validator.validate_state(state)
 
 
 def test_validator_rejects_access_equal_exposure():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["access_not_equal_exposure"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["access_not_equal_exposure"] = False
     assert "access and prior exposure must remain separate axes" in validator.validate_state(state)
 
 
 def test_validator_rejects_pairing_class_collapse():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["same_nucleus_pairing_not_equal_separate_nucleus_evidence"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["same_nucleus_pairing_not_equal_separate_nucleus_evidence"] = False
     assert "same-nucleus and separate-nucleus evidence classes must remain distinct" in validator.validate_state(state)
 
 
 def test_validator_rejects_unknown_field_guessing():
-    validator = _load_validator()
-    state = _state()
-    state["external_asset_rules"]["unknown_fields_fail_closed"] = False
+    validator = _load_validator(); state = _state(); state["external_asset_rules"]["unknown_fields_fail_closed"] = False
     assert "unknown external-asset fields must fail closed" in validator.validate_state(state)
