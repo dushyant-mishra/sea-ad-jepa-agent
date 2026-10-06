@@ -1,0 +1,136 @@
+{
+  "schema": "V77_STEP3_FACTOR_FAMILY_FALSIFICATION_V1",
+  "recorded_utc": "2026-10-06T14:47:57Z",
+  "head": "bcc92bcc01ef3fe23a9753a0965575c82e6754bb",
+  "VERDICT": "FACTOR_MODEL_FAMILY_FALSIFIED__INCLUDING_THE_TWO_LAYER_HURDLE_EXTENSION",
+  "reported_rather_than_tuned_further": true,
+  "instruction_followed": "if the two-layer model still cannot jointly satisfy the envelope, report the family as falsified rather than endlessly tuning it",
+  "TARGET_SOURCES_UNCHANGED": {
+    "expression_envelope": {
+      "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+      "sha256": "2367d3c146d298d68246cadcd37e426f7d9e4c01ecc3c3fb7d24e31d0b9853d4"
+    },
+    "detection_envelope": {
+      "path": "results/v77/V77_REAL_DETECTION_ENVELOPE_V1.json",
+      "sha256": "e5d26cb5219a03cf78a5b80733da587177253cf3f9ea66a5b671dd28b62bb979"
+    },
+    "no_target_or_threshold_was_moved_at_any_point": true
+  },
+  "WHAT_THE_TWO_LAYER_MODEL_DID_ACHIEVE": {
+    "the_conceptual_shift_was_correct": "real covariance is driven heavily by correlated detection: binarised real RNA has median |corr| 0.3770 against its own CPM-log1p 0.3291",
+    "detection_asymmetry_mechanism_confirmed": "real detection is positively skewed at a positive-over-negative ratio of 1.669 and mean signed correlation 0.102, against 1.116 and 0.032 for expression. A shared positive-only cell-activity factor reproduces this: candidate H_D1 reached 1.7150, inside the envelope of 1.605 to 1.731. Balanced-sign factors alone cannot.",
+    "community_structure_is_controllable": "an explicit independent-gene fraction moves the largest-community fraction across the real value: 0.9993 at 0%, 0.8373 at 25% and 0.7177 at 40%, against a real 0.7630. var_top10_pc reaches 0.5669 inside its envelope at 40%."
+  },
+  "THE_INVARIANT_THAT_FALSIFIES_THE_FAMILY": {
+    "statistic": "global transitivity",
+    "real": 0.8871,
+    "envelope": [
+      0.8752,
+      0.8928
+    ],
+    "observed_across_every_configuration": [
+      0.6896,
+      0.6931,
+      0.6895,
+      0.6972,
+      0.7067,
+      0.707,
+      0.515,
+      0.5773,
+      0.5186,
+      0.775,
+      0.7395
+    ],
+    "range": "0.515 to 0.775, never once approaching 0.875",
+    "did_not_respond_to": [
+      "factor count",
+      "factor size",
+      "dominant coverage from 35% to 99%",
+      "loading coherence",
+      "sign balance",
+      "latent amplitude",
+      "shared activity factors",
+      "independent-gene fraction",
+      "single-layer versus two-layer hurdle structure"
+    ],
+    "interpretation": "transitivity of 0.887 at a degree of 61% means that if A correlates with B and B with C then A almost always correlates with C. That is the signature of NEAR-CLIQUE MODULAR structure. A sum of overlapping continuous factors cannot produce it: every factor a gene joins adds partners that are not partners of each other, which caps transitivity well below the real value."
+  },
+  "THE_SECOND_STRUCTURAL_TENSION": {
+    "statement": "the correlation targets and the rank/community targets move in opposite directions under every lever tested",
+    "evidence": [
+      {
+        "candidate": "H1 single-layer",
+        "median_abs_corr": 0.3528,
+        "var_top10_pc": 0.6537,
+        "largest_community": 0.9833,
+        "inside": "5 of 11"
+      },
+      {
+        "candidate": "independent fraction 0.40",
+        "median_abs_corr": 0.1515,
+        "var_top10_pc": 0.5669,
+        "largest_community": 0.7177,
+        "inside": "1 of 11"
+      }
+    ],
+    "reading": "configurations that hit correlation miss rank and community, and the reverse"
+  },
+  "SEARCH_EXTENT": {
+    "candidates_tested": 37,
+    "families": [
+      "single-layer Gaussian factor models, 25 candidates",
+      "two-layer hurdle models with separate detection and abundance, 12 candidates"
+    ],
+    "axes_swept": [
+      "factor count 1 to 600",
+      "factor size 0.8% to 99% of the address space",
+      "loading coherence",
+      "sign balance",
+      "latent amplitude x1 to x4",
+      "abundance prior scale",
+      "Gumbel selection noise 0.00 to 0.35",
+      "fixed versus variable per-cell detection count",
+      "shared activity factors",
+      "independent-gene fraction 0% to 40%"
+    ],
+    "all_recorded_including_failures": true
+  },
+  "WHAT_A_SUCCESSOR_FAMILY_MUST_HAVE": {
+    "requirement": "near-clique modular structure, not a sum of overlapping continuous factors",
+    "candidate_mechanisms_not_yet_tested": [
+      "discrete latent cell states that switch whole gene blocks together, which produces within-block near-cliques directly",
+      "a hierarchical block/community partition of addresses with sparse between-block coupling",
+      "a stochastic block model on the gene graph, calibrated to the real community size spectrum rather than to a factor count"
+    ],
+    "why_discrete_states_are_the_leading_candidate": "real transitivity, real community size spectrum and the real detection asymmetry are all natural consequences of cells occupying a finite set of states in which coherent gene blocks are jointly on or off. T5 remains the guard: such a model must still produce within-class correlation equal to pooled, which the real data shows at a ratio of 1.012, so the states cannot simply be the broad cell classes."
+  },
+  "T5_GUARD_NEVER_VIOLATED": {
+    "range_across_all_candidates": [
+      0.9982,
+      1.0632
+    ],
+    "real": 1.012,
+    "meaning": "no candidate reached any target through class separation"
+  },
+  "WHAT_IS_NOT_CLAIMED": [
+    "no candidate is frozen as the successor background",
+    "no world is regenerated and no 100K run is authorised",
+    "the old 100K ceilings remain void",
+    "no model has been trained and no biological interpretation is offered",
+    "the real calibration targets are unchanged and were never widened"
+  ],
+  "STILL_OUTSTANDING": [
+    "the A_REPLICA control statistic, which must be frozen before any production rebuild",
+    "Step 3 closure under a successor model family"
+  ],
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

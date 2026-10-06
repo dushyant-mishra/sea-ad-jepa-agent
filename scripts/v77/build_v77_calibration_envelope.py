@@ -63,6 +63,10 @@ def main():
     ap.add_argument("--n-hvg", type=int, default=3000)
     ap.add_argument("--n-boot", type=int, default=24)
     ap.add_argument("--seed", type=int, default=20261006)
+    ap.add_argument("--binarise", action="store_true",
+                    help="measure the DETECTION PATTERN (counts>0) instead of CPM-log1p. Real "
+                         "binarised correlation is HIGHER than its CPM-log1p correlation, so the "
+                         "detection layer of a hurdle generator must be calibrated against these.")
     a = ap.parse_args()
 
     X, cls, don, src, digests = RC.load_real(Path(a.cache))
@@ -75,6 +79,11 @@ def main():
     Xk.data = np.log1p(Xk.data / np.repeat(np.maximum(lib, 1), np.diff(Xk.indptr)) * 1e4)
     Ld = np.asarray(Xk.todense())
     sel = np.argsort(-Ld.var(0))[:a.n_hvg]
+    if a.binarise:
+        # HVGs are chosen on the expression matrix, as in the CPM analysis, then the DETECTION
+        # pattern of those same genes is measured. Choosing HVGs on the binary matrix instead
+        # would select a different gene set and the two calibrations would not be comparable.
+        Ld = (np.asarray(X[:, keep].todense()) > 0).astype(np.float64)
 
     point = stats_from_logmatrix(Ld, sel, a.n_hvg)
 
@@ -94,9 +103,10 @@ def main():
                       accept_low=float(np.quantile(v, .05)), accept_high=float(np.quantile(v, .95)))
 
     rec = dict(
-        schema="V77_REAL_CALIBRATION_ENVELOPE_V1",
+        schema=("V77_REAL_DETECTION_ENVELOPE_V1" if a.binarise else "V77_REAL_CALIBRATION_ENVELOPE_V1"),
         source=dict(cache=str(a.cache), n_shards=len(digests), shard_digests=digests,
                     pathology_blind=True, train_only=True, read_only=True),
+        layer=("DETECTION_PATTERN_BINARISED" if a.binarise else "CPM_LOG1P_EXPRESSION"),
         resampling=dict(unit="donor", n_donors=int(len(donors)), n_bootstrap=a.n_boot,
                         seed=a.seed, n_hvg=a.n_hvg,
                         why_donor=("cells within a donor are not independent, so resampling cells "
