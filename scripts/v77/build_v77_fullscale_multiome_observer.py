@@ -52,6 +52,7 @@ CELL_CHUNK = 2500          # sub-batch so peak memory stays near 0.4 GB per chun
 # realistic scATAC geometry: a few thousand accessible regions per cell, near-binary counts
 ACCESSIBLE_FRAC = (0.08, 0.28)      # per-cell fraction of regions with a fragment
 MAX_COUNT = 6
+GUMBEL_SCALE = 0.35      # matched to the RNA observer; see the note in sparse realisation
 
 SC = dict(shared=0.55, reg_private=1.15, atac_bio=1.30, atac_tech=0.75,
           tf=1.05, rare_hidden=2.30, partial_hidden=1.45, decoy=0.85)
@@ -219,7 +220,13 @@ def observe(root: Path, seed: int, mseed: int | None,
                 k = int(k_per_cell[i])
                 u = T.u01(mseed + 9810,
                           np.uint64(ids[i]) * np.uint64(2654435761) + rid, 9810)
-                score = np.log(np.maximum(rel[i], 1e-30)) - np.log(-np.log(np.clip(u, 1e-12, 1 - 1e-12)))
+                # NOISE SCALE. This previously used a full-scale Gumbel (sd ~1.28) where the RNA
+                # observer uses 0.35x (sd ~0.45), so realization noise swamped every planted
+                # effect and all ATAC module-score R2 came back at approximately zero. Matching
+                # the RNA observer repairs the OBSERVATION MODEL ONLY. No D2 threshold and no
+                # effect scale is altered.
+                score = (np.log(np.maximum(rel[i], 1e-30))
+                         + GUMBEL_SCALE * (-np.log(-np.log(np.clip(u, 1e-12, 1 - 1e-12)))))
                 top = np.argpartition(score, -k)[-k:]
                 top = top[np.argsort(top)]
                 uu = T.u01(mseed + 9820,
@@ -267,6 +274,10 @@ def observe(root: Path, seed: int, mseed: int | None,
         region_modules=alloc.assigned,
         regions_used=alloc.used,
         effect_scales=SC,
+        gumbel_noise_scale=GUMBEL_SCALE,
+        observation_model_repair=("ATAC realisation noise was full-scale Gumbel and swamped the "
+                                  "planted signal; matched to the RNA observer at 0.35. No D2 "
+                                  "threshold or effect scale was changed."),
         identity_caveat=("synthetic coordinates and synthetic region identities; no claim is made "
                          "about the real locus of any named gene"),
         master_truth_digest_binding=[dict(file=x["file"], sha256=x["sha256"]) for x in tm["shards"]],
