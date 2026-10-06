@@ -104,6 +104,25 @@ This is strong evidence that the detection-support signature is study/operator-s
 
 The depth alternative is weakened but not fully eliminated by the reported medians: HVS-stratum cells have median 4,427.5 detected genes, NPH52 3,717.5, SEA-AD 4,848.5. HVS is therefore not simply the shallowest group. However, a full adversarial audit still needs to inspect the stratum-inference rule and composition-null generator for additional coupled assumptions.
 
+## S146/S147 historical-spillover checkpoint
+
+Commit `954cee9e2a2e818b1ee712569bdd71715890853b` provides primary repair evidence for two observer defects introduced in `4e95aac4`.
+
+- **S146:** truth source indices use `(SEA_AD, NPH52, HVS)` while registry support rows use `(HVS, NPH52, SEA_AD)`. Positional indexing therefore swapped HVS and SEA-AD structural coverage.
+- **S147:** operator `structural_missing_fraction` was already registry-relative and therefore already included cohort coverage loss. Applying that keep fraction again within cohort coverage double-counted the structural gap.
+
+The repair maps source/operator cohorts by name and computes operator attrition within cohort support as registry-relative keep divided by cohort coverage. It also writes per-element support into observer shards so consumers no longer need to infer whether a zero was measurable.
+
+The repair commit explicitly scopes the historical spillover: every canonical V2 world already built (`fs_smoke`, `bg2_test`, `off_*`, `sup_*`, `worlds_v2`) carries defective measurement support. Their latent truth generation is not changed by S146/S147, and same-instrument twin contrasts may remain useful, but their absolute measurement structure is wrong and is superseded for calibration/realism claims.
+
+The topology/abundance calibration experiments are not contaminated by S146/S147 in the same way because they did not apply structural support at all. That is not a clean bill of health; it is a different mismatch with real data and is one reason S149 must be audited separately.
+
+### Repaired component rerun has not yet produced evidence
+
+The current Macha/V77 branch head `8497916e5a9d9b232597ac1891b6c630d3b17931` adds `scripts/v77/run_v77_component_detect_reject_v2.py`. Its own commit labels it `Executor only; receipt follows`. Because this is the branch head, there is no downstream committed result receipt on this branch.
+
+Therefore no claim that the B4/C1/C2/C3 component instrument still PASSes on repaired support is accepted yet. The executor is designed to build five fresh worlds, refuse reuse, require the repaired support-rule manifest, keep the frozen signed oracle and thresholds, and compare ON versus component-OFF twins. Those are good prospective safeguards, but execution evidence remains pending.
+
 ### Historical-spillover rule now active
 
 No pre-S146/S147 V77 PASS or synthetic-world result is inherited as current evidence merely because it remains in repository history. The active audit will distinguish preserved history from valid current evidence, identify every consumer of the swapped/double-applied support worlds, and verify that repaired executors physically refuse those older worlds before any newer V77 PASS is trusted.
