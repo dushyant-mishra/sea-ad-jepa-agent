@@ -129,6 +129,15 @@ class ExperimentRunV1:
             event_run_id,
         )
 
+    def record_oracle_unblinded(self, *, event_run_id: str | None = None) -> None:
+        self._require_live()
+        self._check_run_id(event_run_id)
+        if self.state is not RunState.QUALIFICATION_OUTPUTS_FROZEN:
+            raise LifecycleError("oracle may unblind only after qualification outputs are frozen")
+        if "ORACLE_UNBLINDED" in self._event_names:
+            raise LifecycleError("oracle unblinding is one-shot for a run")
+        self._event_names.append("ORACLE_UNBLINDED")
+
     def verify(self, *, event_run_id: str | None = None) -> None:
         self._advance(
             RunState.QUALIFICATION_OUTPUTS_FROZEN,
