@@ -29,14 +29,17 @@ Hard state remains:
 
 ## 1. Governing scientific distinction
 
-The claim ladder remains:
+Two pre-claim evidence states describe what was observed and what recoverable RNA structure exists:
 
 `OBSERVED_RNA`
 → `RECOVERABLE_RNA_STRUCTURE`
-→ `RNA_REPRESENTATION`
-→ `TRANSFERABLE_BIOLOGICAL_STATE`
-→ `REGULATORY_SUPPORT`
-→ `CAUSAL_PERTURBATIONAL_PREDICTION`
+
+The biological claim ladder itself has four levels:
+
+1. `RNA_REPRESENTATION`
+2. `TRANSFERABLE_BIOLOGICAL_STATE`
+3. `REGULATORY_SUPPORT`
+4. `CAUSAL_PERTURBATIONAL_PREDICTION`
 
 No transition is automatic.
 
@@ -178,8 +181,9 @@ Do not use as unrestricted model covariates:
 - donor ID;
 - arbitrary dataset ID;
 - arbitrary matrix/file ID;
-- labels that encode study identity without a measurement rationale;
-- pathology/outcome labels during target selection.
+- study identity without a measurement rationale;
+- pathology/outcome labels during target selection;
+- labels derived from protected outcomes.
 
 If a dataset/study identifier is required for an audit or stratified metric, that does not make it a lawful model input.
 
@@ -201,14 +205,16 @@ Before interpreting individual coordinates, require donor-balanced resampling or
 - eigenvalue/singular-value gaps;
 - coordinate sign/order stability after lawful alignment.
 
+Any alignment used to judge held-donor coordinate stability must be fit on lawful inner TRAIN data, frozen, and then applied to held donors; held-donor coordinates may not influence the alignment.
+
 Allowed outcomes:
 
-- `AXES_STABLE`
-- `SUBSPACE_STABLE_AXES_ROTATE`
-- `SUBSPACE_UNSTABLE`
-- `NOT_IDENTIFIED`
+- `STABLE_COORDINATES`
+- `STABLE_SUBSPACE_ONLY`
+- `UNSTABLE_REPRESENTATION`
+- `INDETERMINATE__INSUFFICIENT_BIOLOGICAL_UNITS`
 
-If the outcome is `SUBSPACE_STABLE_AXES_ROTATE`, report stable subspaces/blocks rather than assigning biological meaning to individual coordinates.
+If the outcome is `STABLE_SUBSPACE_ONLY`, report stable subspaces/blocks rather than assigning biological meaning to individual coordinates.
 
 ## 5. Evidence-response and measurement-depth curves
 
@@ -217,6 +223,8 @@ Two different curves are required and must not be conflated.
 ### 5.1 Biological-evidence convergence
 
 For the same biological cell/state, evaluate representation as progressively more lawful biological evidence is revealed, e.g. 20%, 40%, 60%, 80%, 100% of the prospectively defined evidence universe.
+
+The biological-evidence perturbation must change feature/context support rather than merely thin counts.
 
 Record representation displacement to the full-evidence reference and incremental change as evidence increases.
 
