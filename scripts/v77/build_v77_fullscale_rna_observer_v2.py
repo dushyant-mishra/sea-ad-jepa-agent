@@ -41,6 +41,7 @@ import build_v73_sharded_master_truth as T
 import v73_full104_qc_calibration as Q
 import v77_regulatory_graph as RG
 import v77_address_universe as AU
+import v77_background_v2 as BG2
 
 N = AU.N_ADDRESSES
 
@@ -162,19 +163,25 @@ def sparse_counts(rel, sup, ids, lib, det, mseed):
     return np.concatenate(idx_all), np.concatenate(val_all), indptr
 
 
-def build_eta(z, enabled, seed, uni, alloc, bg, n, suppress=frozenset()):
+def build_eta(z, enabled, seed, uni, alloc, bg, n, suppress=frozenset(), bg2=None):
     """eta = registry abundance + background covariance + World A base + planted components."""
     present = set(enabled) | set(suppress)   # allocate for every planted component
     eta = np.tile(uni.log_abundance.astype(np.float32), (n, 1))     # heavy-tailed abundance
 
     # background correlated programs: the 'correlated substitutes' a model can exploit
-    brow, bcol, bval, n_prog = bg
-    aidu = np.arange(n, dtype=np.uint64)
-    Zb = np.stack([T.normal(seed + 8100 + p, aidu + np.uint64(z["global_cell_index"][0]), 8100 + p)
-                   for p in range(n_prog)], axis=1).astype(np.float32)
-    Wb = np.zeros((n_prog, N), dtype=np.float32)
-    Wb[brow, bcol] = bval
-    eta += SC["background"] * (Zb @ Wb)
+    if bg2 is not None:
+        # successor background: hierarchical broad/mid/narrow factors plus paralog groups,
+        # calibrated to the real dependence topology rather than to the marginals alone
+        Zb = bg2.cell_factors(z["global_cell_index"])
+        eta += Zb @ bg2.loading_matrix()
+    else:
+        brow, bcol, bval, n_prog = bg
+        aidu = np.arange(n, dtype=np.uint64)
+        Zb = np.stack([T.normal(seed + 8100 + p, aidu + np.uint64(z["global_cell_index"][0]), 8100 + p)
+                       for p in range(n_prog)], axis=1).astype(np.float32)
+        Wb = np.zeros((n_prog, N), dtype=np.float32)
+        Wb[brow, bcol] = bval
+        eta += SC["background"] * (Zb @ Wb)
 
     lat = np.c_[z["z_global"], z["z_query"], z["z_reg_shared"]].astype(np.float32)
     aid = np.arange(N, dtype=np.uint64)
@@ -252,7 +259,8 @@ def build_eta(z, enabled, seed, uni, alloc, bg, n, suppress=frozenset()):
 
 
 def observe(root: Path, seed: int, mseed: int | None,
-            out_name="FULLSCALE_V2_CANONICAL_sharded", suppress: set[str] | None = None) -> dict:
+            out_name="FULLSCALE_V2_CANONICAL_sharded", suppress: set[str] | None = None,
+            background: str = "v1") -> dict:
     """`suppress` removes components from the OBSERVATION while the truth keeps their latents.
 
     This is what makes an off-twin a real control: the statistic can still be computed, and
@@ -272,6 +280,7 @@ def observe(root: Path, seed: int, mseed: int | None,
     uni = AU.AddressUniverse(seed)
     alloc = uni.module_allocator()
     bg = uni.background_programs(N_BACKGROUND_PROGRAMS, BACKGROUND_GENES_PER)
+    bg2 = BG2.BackgroundV2(seed, N) if background == "v2" else None
     from build_v77_extended_rna_observer import apply_perturbation_to_tf
 
     shards, total, dens = [], 0, []
@@ -285,7 +294,7 @@ def observe(root: Path, seed: int, mseed: int | None,
         op = z["operator_index"].astype(np.int16)
         src = z["source_index"].astype(np.int64)
         apply_perturbation_to_tf(z, enabled)
-        eta = build_eta(z, enabled, seed, uni, alloc, bg, len(ids), suppress=suppress)
+        eta = build_eta(z, enabled, seed, uni, alloc, bg, len(ids), suppress=suppress, bg2=bg2)
         np.clip(eta, -8, 8, out=eta)
         rel = np.exp(eta, dtype=np.float32)
         sup = structural_support(uni, src, op, qc, operator_ids, seed)
@@ -340,6 +349,8 @@ def observe(root: Path, seed: int, mseed: int | None,
                                          "knowledge of gene symbols. Synthetic signal at a real gene "
                                          "identity asserts NOTHING about that gene and must never be "
                                          "read as a biological finding about it.")),
+        background_model=background,
+        background_v2=(bg2.summary() if bg2 is not None else None),
         background=dict(n_programs=N_BACKGROUND_PROGRAMS, genes_per_program=BACKGROUND_GENES_PER,
                         purpose=("correlated substitutes spanning the whole space, so broad covariance "
                                  "is not a free win; these carry no truth label")),
@@ -363,12 +374,14 @@ def main():
     ap.add_argument("--root", required=True)
     ap.add_argument("--seed", type=int, default=7302)
     ap.add_argument("--measurement-seed", type=int, default=None)
+    ap.add_argument("--background", choices=["v1", "v2"], default="v1",
+                    help="v2 is the topology-calibrated successor background")
     ap.add_argument("--suppress", default=None,
                     help="comma-separated components removed from OBSERVATION only; "
                          "the truth keeps their latents so off-twin statistics still run")
     a = ap.parse_args()
     sup = {c.strip() for c in a.suppress.split(",")} if a.suppress else None
-    m = observe(Path(a.root), a.seed, a.measurement_seed, suppress=sup)
+    m = observe(Path(a.root), a.seed, a.measurement_seed, suppress=sup, background=a.background)
     print(json.dumps(dict(status="PASS", cells=m["n_cells"], addresses=m["n_addresses"],
                           modules=m["modules"]["n"],
                           fraction_of_space=round(m["modules"]["fraction_of_space"], 4),
