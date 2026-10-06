@@ -31,6 +31,8 @@ Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 | recoverability TEST | **SEALED** |
 | Morabito | **PROTECTED** |
 
+**Target lineage reconstruction is complete.** Premise qualification V3 is also complete as governance and merged; neither remains the current task.
+
 ## High-impact supersessions and corrections
 
 | Historical/current-looking statement | Current classification | Controlling correction |
@@ -40,7 +42,7 @@ Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 | proceed from V75 directly to learned 160-D state qualification | **STOPPED** | target/state authority remains unresolved |
 | 160 is biological state dimension | **NON-AUTHORITY** | width is token/network capacity only |
 | canonical `cell_state` is qualified global biological state | **NOT ESTABLISHED** | representation winner remains unset |
-| historical `CurrentTrainingAuthorityV2` exists, therefore training is authorized | **FALSE** | final authority issuance remains unreachable under current unqualified target/representation state |
+| historical `CurrentTrainingAuthorityV2` by itself permits current training | **FALSE** | final authority issuance remains unreachable under current unqualified target/representation state |
 | direct `optimizer.step()` in an inactive harness is sufficient runtime safety | **SUPERSEDED FOR CURRENT RECONCILIATION** | guarded step + explicit completion proof before EMA is required |
 | Stage-A target gate file exists, therefore execute it | **FORBIDDEN** | Stage A remains prefreeze / not execution authority |
 | real-RNA target recoverability equals biological-truth recoverability | **FALSE** | V3 separates these claims |
