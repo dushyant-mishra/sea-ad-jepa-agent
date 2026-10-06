@@ -3,6 +3,7 @@ import pytest
 from sea_ad_jepa.qualification.protocol import ThresholdStatus
 from sea_ad_jepa.qualification.receipts import (
     DataKind,
+    QSafetyExecutionProofStatus,
     QualificationProvenanceReceiptV1,
 )
 
@@ -44,6 +45,18 @@ def test_complete_zero_update_synthetic_provenance_receipt_is_digestible():
     assert len(receipt.digest()) == 64
     assert receipt.runtime_successor_digest is None
     assert receipt.checkpoint_digest is None
+    assert receipt.q_safety_execution_proof_status is QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
+
+
+def test_q_safety_execution_proof_requires_bound_runtime_successor():
+    with pytest.raises(ValueError, match="q-safety execution proof"):
+        _receipt(q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME)
+
+    proven = _receipt(
+        q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
+        runtime_successor_digest="9" * 64,
+    )
+    assert proven.q_safety_execution_proof_status is QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
 
 
 def test_synthetic_provenance_requires_realization_and_challenge_partition():
