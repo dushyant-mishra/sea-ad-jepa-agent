@@ -246,4 +246,5 @@ def run_zero_update_qualification(
         run_id=batch.experiment_run_id,
         output_digest=output_digest,
         provenance_receipt_digest=provenance.digest(),
+        synthetic_realization_id=batch.synthetic_realization_id,
     )
