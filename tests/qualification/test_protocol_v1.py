@@ -91,6 +91,14 @@ def test_exploratory_thresholds_cannot_be_promoted_to_deciding_thresholds():
         ).validate()
 
 
+def test_protocol_validation_rejects_nonfinite_exploratory_thresholds():
+    with pytest.raises(ValueError, match="exploratory"):
+        _valid_protocol(
+            threshold_status=ThresholdStatus.EXPLORATORY_ONLY,
+            exploratory_thresholds=(("score", math.nan),),
+        ).validate()
+
+
 def test_protocol_requires_explicit_execution_mode():
     with pytest.raises(ValueError, match="execution_mode"):
         _valid_protocol(execution_mode=None).validate()
