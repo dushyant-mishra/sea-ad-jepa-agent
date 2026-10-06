@@ -29,7 +29,7 @@ from sea_ad_jepa.qualification.protocol import (
     ThresholdStatus,
 )
 from sea_ad_jepa.qualification.qsafe import QSafetyPolicyV1, REQUIRED_Q_SAFETY_CHANNELS
-from sea_ad_jepa.qualification.receipts import DataKind
+from sea_ad_jepa.qualification.receipts import DataKind, QSafetyExecutionProofStatus
 from sea_ad_jepa.qualification.visibility import FieldDeclaration, VisibilityClass
 
 
@@ -178,6 +178,7 @@ def test_zero_update_runner_exposes_filtered_views_and_freezes_outputs():
     )
     assert frozen.run_id == "run-zero-001"
     assert frozen.synthetic_realization_id == "v77-challenge-001"
+    assert frozen.q_safety_execution_proof_status is QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
     assert len(frozen.output_digest) == 64
     assert len(frozen.provenance_receipt_digest) == 64
     assert seen["model"] == ("expression",)
