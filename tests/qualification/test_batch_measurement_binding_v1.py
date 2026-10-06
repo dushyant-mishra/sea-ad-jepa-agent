@@ -115,3 +115,48 @@ def test_batch_rejects_operator_context_not_bound_to_operator_identity():
     )
     with pytest.raises(ValueError, match="operator identity"):
         _batch(identity, feature, operator, support)
+
+
+def test_batch_rejects_support_observation_order_mismatch():
+    feature, operator, _ = _receipts()
+    rows = ((True, False, True), (True, True, False))
+    support = MeasurementSupportReceiptV1.from_support_rows(
+        observation_ids=("c2", "c1"),
+        producer_support_rows=rows,
+        batch_measurement_rows=rows,
+        support_rule_id="name-mapped-registry-relative-v1",
+        producer_manifest_digest=canonical_digest({"manifest": "observer-v2-repaired"}),
+    )
+    identity = _identity(feature, operator, support)
+    with pytest.raises(ValueError, match="observation ordering"):
+        _batch(identity, feature, operator, support)
+
+
+def test_batch_rejects_support_width_not_equal_to_authenticated_feature_axis():
+    feature, operator, _ = _receipts()
+    rows = ((True, False), (True, True))
+    support = MeasurementSupportReceiptV1.from_support_rows(
+        observation_ids=("c1", "c2"),
+        producer_support_rows=rows,
+        batch_measurement_rows=rows,
+        support_rule_id="name-mapped-registry-relative-v1",
+        producer_manifest_digest=canonical_digest({"manifest": "observer-v2-repaired"}),
+    )
+    identity = _identity(feature, operator, support)
+    with pytest.raises(ValueError, match="feature width"):
+        _batch(identity, feature, operator, support)
+
+
+def test_batch_rejects_operator_and_support_rule_disagreement():
+    feature, operator, _ = _receipts()
+    rows = ((True, True, False), (True, False, True))
+    support = MeasurementSupportReceiptV1.from_support_rows(
+        observation_ids=("c1", "c2"),
+        producer_support_rows=rows,
+        batch_measurement_rows=rows,
+        support_rule_id="different-support-rule-v2",
+        producer_manifest_digest=canonical_digest({"manifest": "observer-v2-repaired"}),
+    )
+    identity = _identity(feature, operator, support)
+    with pytest.raises(ValueError, match="different support rules"):
+        _batch(identity, feature, operator, support)
