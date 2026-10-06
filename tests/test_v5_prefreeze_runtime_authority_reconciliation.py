@@ -37,7 +37,7 @@ def _future_fixture():
     return state
 
 
-def _armed_guard():
+def _armed_guard(step_index=0):
     authority = CurrentTrainingAuthorityV2.issue(
         governance_state=_future_fixture(),
         optimizer_identity="adamw:v1",
@@ -45,8 +45,11 @@ def _armed_guard():
         test_only=True,
     )
     guard = OptimizerGuardV4(authority)
-    token = guard.begin_step("adamw:v1", _sha("checkpoint-A"))
-    return authority, guard, token
+    counter = {"value": step_index}
+    token = guard.begin_step(
+        "adamw:v1", _sha("checkpoint-A"), lambda: counter["value"]
+    )
+    return authority, guard, token, counter
 
 
 def test_canonical_prefreeze_state_refuses_training_authority():
@@ -133,7 +136,7 @@ def test_optimizer_identity_mismatch_is_rejected():
     )
     guard = OptimizerGuardV4(authority)
     with pytest.raises(PrefreezeGovernanceError, match="optimizer identity"):
-        guard.begin_step("sgd:v1", _sha("checkpoint-A"))
+        guard.begin_step("sgd:v1", _sha("checkpoint-A"), lambda: 0)
 
 
 def test_checkpoint_digest_mismatch_is_rejected():
@@ -145,26 +148,26 @@ def test_checkpoint_digest_mismatch_is_rejected():
     )
     guard = OptimizerGuardV4(authority)
     with pytest.raises(PrefreezeGovernanceError, match="checkpoint digest"):
-        guard.begin_step("adamw:v1", _sha("checkpoint-B"))
+        guard.begin_step("adamw:v1", _sha("checkpoint-B"), lambda: 0)
 
 
 def test_gradient_validation_must_follow_unscale_and_precede_step():
-    _, guard, token = _armed_guard()
+    _, guard, token, counter = _armed_guard()
     with pytest.raises(StepCompletionError, match="unscaled"):
         guard.mark_gradients_valid(token)
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
-    guard.run_optimizer_step(token, lambda: None)
+    guard.run_optimizer_step(token, lambda: counter.__setitem__("value", counter["value"] + 1))
     assert guard.assert_step_complete(token) is True
 
 
 def test_manual_step_completion_cannot_be_forged():
-    _, guard, _ = _armed_guard()
+    _, guard, _, _ = _armed_guard()
     assert not hasattr(guard, "mark_optimizer_step_complete")
 
 
 def test_rejected_step_cannot_advance_ema():
-    _, guard, token = _armed_guard()
+    _, guard, token, _ = _armed_guard()
     guard.mark_unscaled(token)
     guard.reject_step(token, "nonfinite gradients")
     with pytest.raises(StepCompletionError, match="EMA"):
@@ -172,7 +175,7 @@ def test_rejected_step_cannot_advance_ema():
 
 
 def test_incomplete_step_cannot_advance_ema():
-    _, guard, token = _armed_guard()
+    _, guard, token, _ = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
     with pytest.raises(StepCompletionError, match="EMA"):
@@ -180,7 +183,7 @@ def test_incomplete_step_cannot_advance_ema():
 
 
 def test_failed_optimizer_call_cannot_advance_ema():
-    _, guard, token = _armed_guard()
+    _, guard, token, _ = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
 
@@ -193,21 +196,79 @@ def test_failed_optimizer_call_cannot_advance_ema():
         guard.authorize_ema(token)
 
 
+def test_noop_optimizer_call_is_rejected_and_cannot_advance_ema():
+    _, guard, token, _ = _armed_guard(step_index=7)
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    with pytest.raises(StepCompletionError, match="exactly once"):
+        guard.run_optimizer_step(token, lambda: None)
+    with pytest.raises(StepCompletionError, match="EMA"):
+        guard.authorize_ema(token)
+
+
+def test_optimizer_counter_jump_by_two_is_rejected():
+    _, guard, token, counter = _armed_guard(step_index=7)
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+    with pytest.raises(StepCompletionError, match="exactly once"):
+        guard.run_optimizer_step(
+            token, lambda: counter.__setitem__("value", counter["value"] + 2)
+        )
+
+
+def test_optimizer_counter_probe_must_return_exact_nonnegative_integer():
+    authority = CurrentTrainingAuthorityV2.issue(
+        governance_state=_future_fixture(),
+        optimizer_identity="adamw:v1",
+        checkpoint_digest=_sha("checkpoint-A"),
+        test_only=True,
+    )
+    guard = OptimizerGuardV4(authority)
+    with pytest.raises(StepCompletionError, match="step counter"):
+        guard.begin_step("adamw:v1", _sha("checkpoint-A"), lambda: True)
+    with pytest.raises(StepCompletionError, match="step counter"):
+        guard.begin_step("adamw:v1", _sha("checkpoint-A"), lambda: -1)
+
+
+def test_optimizer_counter_probe_exception_rejects_step_and_blocks_ema():
+    _, guard, token, counter = _armed_guard(step_index=3)
+    guard.mark_unscaled(token)
+    guard.mark_gradients_valid(token)
+
+    def step():
+        counter["value"] += 1
+
+    def broken_probe():
+        raise RuntimeError("counter unavailable")
+
+    guard._step(token)["optimizer_step_probe"] = broken_probe
+    with pytest.raises(RuntimeError, match="counter unavailable"):
+        guard.run_optimizer_step(token, step)
+    with pytest.raises(StepCompletionError, match="EMA"):
+        guard.authorize_ema(token)
+
+
 def test_successful_optimizer_step_is_required_before_ema():
-    _, guard, token = _armed_guard()
+    _, guard, token, counter = _armed_guard(step_index=4)
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
     called = []
-    guard.run_optimizer_step(token, lambda: called.append("stepped"))
+
+    def step():
+        called.append("stepped")
+        counter["value"] += 1
+
+    guard.run_optimizer_step(token, step)
     assert called == ["stepped"]
+    assert counter["value"] == 5
     assert guard.authorize_ema(token) is True
 
 
 def test_step_completion_token_is_one_shot_and_cannot_be_replayed():
-    _, guard, token = _armed_guard()
+    _, guard, token, counter = _armed_guard()
     guard.mark_unscaled(token)
     guard.mark_gradients_valid(token)
-    guard.run_optimizer_step(token, lambda: None)
+    guard.run_optimizer_step(token, lambda: counter.__setitem__("value", 1))
     assert guard.authorize_ema(token) is True
     with pytest.raises(StepCompletionError, match="already consumed"):
         guard.authorize_ema(token)
