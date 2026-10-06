@@ -47,9 +47,8 @@ class FakeOptimizer:
 
 
 def _authority(state=None):
-    return Authority.issue(
-        governance_state=_state() if state is None else state,
-        optimizer_identity="adamw:v1", checkpoint_digest=_sha("checkpoint-A"))
+    return Authority.issue(governance_state=_state() if state is None else state,
+                           optimizer_identity="adamw:v1", checkpoint_digest=_sha("checkpoint-A"))
 
 
 def _armed(optimizer=None):
@@ -88,12 +87,11 @@ def test_old_v64_authority_graph_is_rejected():
         _authority(old)
 
 
-def test_entire_governance_object_is_digest_bound():
-    a_state, b_state = _state(), deepcopy(_state())
+def test_scientific_mutation_is_rejected_not_rebound():
+    b_state = deepcopy(_state())
     b_state["claim_ladder"] = list(b_state["claim_ladder"]) + ["ILLEGAL_TEST_MUTATION"]
-    a, b = _authority(a_state), _authority(b_state)
-    assert a.governance_digest != b.governance_digest
-    assert a.authority_digest != b.authority_digest
+    with pytest.raises(PrefreezeGovernanceError, match="canonical V3 governance digest"):
+        _authority(b_state)
 
 
 def test_historical_training_authority_names_not_exposed():
@@ -102,7 +100,7 @@ def test_historical_training_authority_names_not_exposed():
 
 
 def test_optimizer_requires_real_hook_interface():
-    class Bad: 
+    class Bad:
         def step(self): pass
     with pytest.raises(PrefreezeGovernanceError, match="register_step_pre_hook"):
         Guard(_authority(), Bad())
@@ -194,8 +192,7 @@ def test_completed_receipt_requires_guarded_step_and_ema_and_current_governance(
         g.completed_checkpoint_receipt(t, _sha("checkpoint-B"))
     g.run_ema(t, lambda: None)
     receipt = g.completed_checkpoint_receipt(t, _sha("checkpoint-B"))
-    core = Authority.verify_completed_checkpoint_receipt(
-        receipt, _sha("checkpoint-B"), governance_state=_state())
+    core = Authority.verify_completed_checkpoint_receipt(receipt, _sha("checkpoint-B"), governance_state=_state())
     assert core["parent_checkpoint_digest"] == a.checkpoint_digest
     assert core["guarded_step_token"] == t
 
