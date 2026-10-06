@@ -81,6 +81,7 @@ def _batch(
     extra_fields=(),
     data_kind=DataKind.SYNTHETIC,
     adapter_digest="1" * 64,
+    challenge_partition="DEVELOPMENT_CALIBRATION",
 ):
     synthetic = data_kind is DataKind.SYNTHETIC
     features = ("g1", "g2", "g3")
@@ -150,7 +151,7 @@ def _batch(
         code_commit="1234567890abcdef1234567890abcdef12345678",
         environment_digest="2" * 64,
         synthetic_realization_id="v77-challenge-001" if synthetic else None,
-        challenge_partition="DEVELOPMENT_CALIBRATION" if synthetic else None,
+        challenge_partition=challenge_partition if synthetic else None,
     )
 
 
@@ -191,6 +192,21 @@ def test_runner_rejects_scientific_authority_that_does_not_authorize_evaluation(
             protocol,
             _authorities(protocol, evaluation_authorized=False),
             _batch(protocol),
+            lambda view: called.__setitem__("representation", True),
+            lambda rep, view: {"score": 0.0},
+        )
+    assert called["representation"] is False
+
+
+def test_invalid_synthetic_challenge_partition_fails_before_callbacks_can_run():
+    protocol = _protocol()
+    called = {"representation": False}
+    with pytest.raises(ValueError, match="challenge_partition"):
+        batch = _batch(protocol, challenge_partition="UNREVIEWED_PARTITION")
+        run_zero_update_qualification(
+            protocol,
+            _authorities(protocol),
+            batch,
             lambda view: called.__setitem__("representation", True),
             lambda rep, view: {"score": 0.0},
         )
