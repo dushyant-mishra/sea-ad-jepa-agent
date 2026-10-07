@@ -18,6 +18,32 @@ V43 is explicitly a read-only/research teacher-target design layer. Its workflow
 
 Therefore the current low-level student/predictor/tokenizer mechanics are accepted as the latest authenticated reusable mechanics found in the audited lineage. Scientific teacher-target semantics remain owned by the scientific qualification lane and are not promoted by this runtime audit.
 
+## Project-wide provenance invariant: coordinates must be inseparable from the values they address
+
+The project history contains two distinct failures that must constrain every current and future adapter/runtime join.
+
+First, the TD23/TD33 lineage records a row-addressing corruption in which a B-side `sample_row` coordinate reset to the local 0–24,999 range after merge/reset while downstream code treated it as the preserved global row coordinate. That path produced a false RNA relationship (historically about 0.39 dependency) that collapsed to about 0.0063 when the preserved global row was used. The durable lesson is that post-merge dataframe indices, local row counters, storage-order coordinates, and source-global row identities are **not interchangeable**, even when they look numerically plausible.
+
+Second, the September 8 B2 execution-authority repair made explicit that authentic metadata and an authentic payload digest still do not prove that the values consumed came from the intended row. Commit `032ad149c76317466eae5f5e6b2fa8b451733fba` repaired this by requiring, among other checks:
+
+- `source_row_index == expression_row` for the original physical source matrix;
+- source cell identity and donor identity to match the bound logical row;
+- the source digest/matrix slot/feature-space contract to be authenticated before summing or consuming values;
+- the block-local `row_index` to remain distinct from source-global `expression_row`;
+- the row selected from the authenticated block payload to be the same row actually validated;
+- payload bytes and parsed row values to be coupled, rather than authenticating one payload while validating an independently supplied vector;
+- physical-plan entries to be checked against the logical row they claim to realize, not merely against a permutation/root string.
+
+This is now a standing runtime/join invariant: **an identifier, coordinate, digest, or metadata record is insufficient authority for an expression vector unless the exact consumed values are physically coupled to the exact authenticated source row and logical identity.**
+
+Consequences for the current work:
+
+1. PR #224's optimizer/EMA/checkpoint mechanics may remain data-agnostic, but any joined adapter execution must never accept a model batch whose row/value provenance is established only by labels or coordinates.
+2. PR #223 q-safety and physical-zero-mutation proof must not be treated as sufficient source-value provenance; source-row/value coupling is an independent requirement.
+3. The V77 adapter's producer-side support and visibility checks must remain upstream of any value-bearing model batch, and future real-RNA adapters must bind source-global row, logical cell/donor identity, exact payload bytes, selected block-local row, and resulting values in one fail-closed chain.
+4. No free `dataset_id`, matrix ID, post-merge row number, local batch index, or storage-order coordinate may substitute for that chain.
+5. The final joined self-audit must include deliberate coordinate-substitution attacks: global-vs-local row swap, reset-index substitution, correct digest/wrong selected row, correct metadata/wrong values, and correct logical row/wrong physical payload location.
+
 ## Confirmed historical spillover: EMA operating point versus EMA mechanics
 
 The 2026-09-15/16 V5 current-authority lineage explicitly left the numeric EMA presentation half-life OPEN and prohibited silently inheriting historical `EMA 0.996` as current authority. User-supplied custody packages independently corroborate the same boundary: an older V3 configuration froze `.996`, while later V5 records separate mechanics from numeric authority and keep the current operating point unresolved.
@@ -66,7 +92,8 @@ After the canonicalization repair is GREEN:
 4. close the previously identified `runtime_contract` physical-proof field mismatch if still present;
 5. restack/revalidate PR #223 against the final #224 runtime head;
 6. execute q-safety proof on the joined V77 adapter + shared interface + canonical runtime path;
-7. run a final bypass and historical-spillover audit before any bounded synthetic mutation rehearsal is handed to Macha.
+7. add the coordinate/value substitution attacks listed above before accepting any real-data-capable adapter join;
+8. run a final bypass and historical-spillover audit before any bounded synthetic mutation rehearsal is handed to Macha.
 
 ## Current classifications
 
@@ -77,6 +104,7 @@ After the canonicalization repair is GREEN:
 | V4 predictor/IPB mechanics | AUTHENTICATED REUSABLE MECHANICS |
 | gene tokenizer mechanics | AUTHENTICATED REUSABLE MECHANICS |
 | scientific teacher target | UNRESOLVED / SCIENCE-LANE AUTHORITY |
+| source-row/value provenance | FAIL-CLOSED PROJECT INVARIANT; COORDINATE/VALUE COUPLING REQUIRED |
 | EMA update mechanics | AUTHENTICATED PRESENTATION-NORMALIZED MECHANICS |
 | EMA presentation unit | SUCCESSFUL BASE-CELL PRESENTATIONS (mechanical unit) |
 | EMA numeric half-life | UNSET / NOT PRODUCTION-AUTHORIZED |
