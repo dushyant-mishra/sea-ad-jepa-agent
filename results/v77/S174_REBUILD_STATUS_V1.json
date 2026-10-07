@@ -1,0 +1,112 @@
+{
+ "schema": "S174_REBUILD_STATUS_V1",
+ "recorded_utc": "2026-10-07T18:40:51Z",
+ "head": "cf4d4708af68d32c8c1ec73b1a4b09294b2df6ef",
+ "gates_as_frozen": {
+  "G1": false,
+  "G2": true,
+  "G3": true,
+  "G4": true,
+  "G5": true,
+  "G6": true
+ },
+ "all_frozen_gates_pass": false,
+ "g1_failure": {
+  "matrices_failing": [
+   "sea_ad_ang_rna_final_2026",
+   "sea_ad_caudate_rna_all_2025",
+   "sea_ad_fi_rna_final_2026",
+   "sea_ad_hip_rna_final_2026",
+   "sea_ad_itg_rna_final_2026",
+   "sea_ad_lec_rna_final_2026",
+   "sea_ad_mec_rna_final_2026",
+   "sea_ad_mtg_rna_final_2026",
+   "sea_ad_pfc_a9_rna_final_2026",
+   "sea_ad_stg_rna_final_2026",
+   "sea_ad_v1c_rna_final_2026"
+  ],
+  "sea_ad_g1_range": [
+   0.9990411065781095,
+   0.9991981990316712
+  ],
+  "hvs": "all 24 HVS matrices pass G1 exactly"
+ },
+ "explanation": {
+  "checks": {
+   "E1": true,
+   "E2": true,
+   "E3": true
+  },
+  "all_explained": true,
+  "reading": "every G1 disagreement is one of the 897 SEA-AD source IDs that the frozen Stage81A2R provenance assigns to another gene's address; the independent re-read looks IDs up as registry address IDs and cannot resolve them. On every other address the rebuilt cache equals the re-read exactly, and every remapped entry equals its physical count"
+ },
+ "old_cache_characterization": "the old cache equals the scrambled positional map exactly in all 35 matrices: S174 holds everywhere",
+ "recovery_sea_ad": {
+  "sea_ad_ang_rna_final_2026": {
+   "recovered_total": 948,
+   "of_which_remapped_ids": 37,
+   "positionally_lost_genes_recovered": 911
+  },
+  "sea_ad_caudate_rna_all_2025": {
+   "recovered_total": 1034,
+   "of_which_remapped_ids": 39,
+   "positionally_lost_genes_recovered": 995
+  },
+  "sea_ad_fi_rna_final_2026": {
+   "recovered_total": 980,
+   "of_which_remapped_ids": 38,
+   "positionally_lost_genes_recovered": 942
+  },
+  "sea_ad_hip_rna_final_2026": {
+   "recovered_total": 987,
+   "of_which_remapped_ids": 38,
+   "positionally_lost_genes_recovered": 949
+  },
+  "sea_ad_itg_rna_final_2026": {
+   "recovered_total": 984,
+   "of_which_remapped_ids": 35,
+   "positionally_lost_genes_recovered": 949
+  },
+  "sea_ad_lec_rna_final_2026": {
+   "recovered_total": 1024,
+   "of_which_remapped_ids": 36,
+   "positionally_lost_genes_recovered": 988
+  },
+  "sea_ad_mec_rna_final_2026": {
+   "recovered_total": 1018,
+   "of_which_remapped_ids": 35,
+   "positionally_lost_genes_recovered": 983
+  },
+  "sea_ad_mtg_rna_final_2026": {
+   "recovered_total": 997,
+   "of_which_remapped_ids": 37,
+   "positionally_lost_genes_recovered": 960
+  },
+  "sea_ad_pfc_a9_rna_final_2026": {
+   "recovered_total": 1030,
+   "of_which_remapped_ids": 38,
+   "positionally_lost_genes_recovered": 992
+  },
+  "sea_ad_stg_rna_final_2026": {
+   "recovered_total": 1034,
+   "of_which_remapped_ids": 41,
+   "positionally_lost_genes_recovered": 993
+  },
+  "sea_ad_v1c_rna_final_2026": {
+   "recovered_total": 975,
+   "of_which_remapped_ids": 37,
+   "positionally_lost_genes_recovered": 938
+  }
+ },
+ "recovery_reading": "per SEA-AD matrix, about 910 to 995 genes lost under the positional map (blocked or summed into another gene's column) now carry their own counts in these 128 cells; 35 to 41 more are remapped-ID addresses. The 1,525 ledger collisions stay MEASURED_COLLISION_UNRESOLVED (710 addresses per SEA-AD matrix)",
+ "identity_observation": "not an S174 finding: of the 897 remapped SEA-AD source IDs, 544 reach an address with the same symbol (alternate-locus or patch IDs) and 353 reach a successor gene with a different symbol through Ensembl ID history (EXACT_HISTORICAL_ENSEMBL_TO_CURRENT), for example VASH1-AS1 to ANGEL1. The rebuild follows the frozen authority; whether expression should follow ID history this way is for the identity lane",
+ "decision_required": "G1 failed as frozen, and the frozen rule says the rebuilt cache may be used only if every gate passes. The explanation accounts for every disagreement but does not amend the gate. Using the rebuilt cache for the replays needs the owner's decision",
+ "status": "REBUILT__G1_FAILED_AS_FROZEN__FULLY_EXPLAINED__NOT_YET_USED",
+ "evidence": {
+  "results/v77/S174_REBUILD_FREEZE_V1.json": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+  "results/v77/S174_REBUILD_BUILD_RECEIPT_V1.json": "68b07f0f0acda98e17aa913258a3a460db52cb4b68380c218c1f44678c386b49",
+  "results/v77/S174_REBUILD_VERIFY_AND_COMPARISON_V1.json": "2e3c032d0c9593ea072496871f039c05af3f0dc79de0c4987193596260f8b4f1",
+  "results/v77/S174_REBUILD_G1_EXPLANATION_V1.json": "124e19daa59d9f85f4008ad00ca9a703fc8b2043e6ce4ec67a25a25bce8c971e",
+  "results/v77/S174_REBUILD_RECOVERY_V1.json": "5a73a70398ede77feda7a7976e04eebc4017bbdca908f192f5b9027b99850a7e"
+ }
+}
