@@ -10,6 +10,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 REC = ROOT / "results" / "v77" / "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_4.json"
 CACHE = "stage81a3r_corrected_real_train"
+# Files that read the cache only to investigate S174, not to consume it. Each needs a reason.
+INVESTIGATION = {
+    "scripts/v77/probe_v77_s174_cache_axis.py":
+        "the owner-authorized read-only TRAIN probe of 2026-10-07 that tests S174 against direct H5AD reads",
+    "results/v77/V77_S174_CACHE_AXIS_PROBE_PREREGISTRATION_V1.json": "that probe's pre-registration",
+    "results/v77/V77_S174_CACHE_AXIS_PROBE_RESULT_V1.json": "that probe's result",
+}
 
 
 def _s174():
@@ -25,12 +32,17 @@ def _files_naming(pattern: str, folder: str) -> set[str]:
 
 
 def test_every_script_reading_the_cache_is_listed():
-    assert _files_naming(CACHE, "scripts/v77") <= set(_s174()["affected_scripts"])
+    assert _files_naming(CACHE, "scripts/v77") <= set(_s174()["affected_scripts"]) | set(INVESTIGATION)
 
 
 def test_every_result_built_from_the_cache_is_listed():
     found = {f for f in _files_naming(CACHE, "results/v77") if "ADDENDUM_4" not in f}
-    assert found <= set(_s174()["affected_results"])
+    assert found <= set(_s174()["affected_results"]) | set(INVESTIGATION)
+
+
+def test_investigation_entries_carry_a_reason_and_are_not_consumers():
+    assert all(INVESTIGATION.values())
+    assert not set(INVESTIGATION) & (set(_s174()["affected_scripts"]) | set(_s174()["affected_results"]))
 
 
 def test_the_record_does_not_overstate_verification_or_repair():
