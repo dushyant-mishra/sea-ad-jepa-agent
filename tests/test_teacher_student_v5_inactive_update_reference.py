@@ -5,13 +5,14 @@ from pathlib import Path
 
 import torch
 import pytest
+import sea_ad_jepa.v5.inactive_update_reference as update_reference
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
 from sea_ad_jepa.v5.inactive_update_reference import (
     build_reference_modules,
     capture_reference_checkpoint, restore_reference_checkpoint,
 )
 from sea_ad_jepa.v5.inactive_guarded_update_v1 import run_guarded_inactive_reference_update
-from sea_ad_jepa.v5.prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
+from sea_ad_jepa.v5.prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1, StepCompletionError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,9 +47,9 @@ def _authority(modules, update_index):
     )
 
 
-def _run(modules, data, *, update_index=0, max_tokens=40):
+def _run(modules, data, *, update_index=0, max_tokens=40, scaler=None):
     return run_guarded_inactive_reference_update(
-        modules,authority=_authority(modules,update_index),
+        modules,authority=_authority(modules,update_index),scaler=scaler,
         expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
         scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
         max_teacher_tokens_per_microbatch=max_tokens,run_seed=8113002,update_index=update_index,ema_momentum=.996)
@@ -65,6 +66,40 @@ def test_inactive_reference_update_steps_once_has_no_teacher_grad_and_exact_ema(
     assert report['guarded_ema'] is True
     assert report['guard_kind']=='V5_PREFREEZE_OPTIMIZER_GUARD_V1'
     assert sorted(x for mb in report['microbatch_plan'] for x in mb)==list(range(6))
+
+
+def test_canonical_v5_adamw_gradscaler_finite_step_completes_before_ema():
+    data=_case(); modules=_modules(); scaler=torch.amp.GradScaler('cpu')
+    report=_run(modules,data,scaler=scaler)
+    assert report['optimizer_step_before']==0 and report['optimizer_step_after']==1
+    assert report['guarded_optimizer_step'] is True
+    assert report['guarded_ema'] is True
+    assert report['amp_scaler_used'] is True
+    assert report['ema_max_abs_error']<=1e-7
+
+
+def test_canonical_v5_gradscaler_skip_cannot_advance_optimizer_or_teacher(monkeypatch):
+    data=_case(); modules=_modules(); scaler=torch.amp.GradScaler('cpu')
+    online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
+    teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
+
+    # Plant nonfinite gradients inside the real V5 backward path. Then deliberately
+    # bypass the software gradient report so GradScaler itself must independently
+    # refuse the physical optimizer step.
+    parameter=next(modules.online.parameters())
+    hook=parameter.register_hook(lambda grad: torch.full_like(grad,float('inf')))
+    monkeypatch.setattr(update_reference,'_gradient_report',lambda _modules: {
+        'missing':0,'nonfinite':0,'exact_zero':0,'teacher_gradients':0,'max_abs_gradient':1.0})
+    try:
+        with pytest.raises(StepCompletionError,match='scaler.*skipped|did not complete'):
+            _run(modules,data,scaler=scaler)
+    finally:
+        hook.remove()
+
+    for name,before in online_before.items():
+        assert torch.equal(modules.online.state_dict()[name],before),name
+    for name,before in teacher_before.items():
+        assert torch.equal(modules.teacher.state_dict()[name],before),name
 
 
 def test_inactive_reference_update_is_deterministic_replay_on_same_initial_state():
