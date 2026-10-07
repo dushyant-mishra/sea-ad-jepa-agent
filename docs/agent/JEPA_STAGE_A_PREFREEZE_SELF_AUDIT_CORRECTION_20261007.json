@@ -1,0 +1,66 @@
+{
+  "schema": "JEPA_STAGE_A_PREFREEZE_SELF_AUDIT_CORRECTION_20261007",
+  "status": "SUPERSEDING_CORRECTION__NO_EXECUTION_AUTHORITY",
+  "supersedes_overbroad_fields_in": [
+    "docs/agent/JEPA_STAGE_A_PREFREEZE_DECISIONS_20261007.md",
+    "docs/agent/JEPA_STAGE_A_PREFREEZE_DECISIONS_20261007.json"
+  ],
+  "hard_state": {
+    "target_winner": null,
+    "representation_winner": null,
+    "training_authorized": false,
+    "stage_a_execution_authorized": false,
+    "test_state": "SEALED",
+    "morabito_state": "PROTECTED"
+  },
+  "foundation_estimand": "UNSET_REQUIRES_APPROVAL",
+  "stage_a_diagnostic": {
+    "population": "UNSET_REQUIRES_APPROVAL",
+    "deciding_summary_weighting": "UNSET_REQUIRES_APPROVAL",
+    "donor_weighted_status": "CANDIDATE__BIOLOGICALLY_WELL_MOTIVATED__NOT_PRODUCTION_ESTIMAND_SELECTION",
+    "source_balanced_donor_weighted_status": "CANDIDATE_SENSITIVITY_ONLY_IF_PROSPECTIVELY_FROZEN",
+    "fit_evaluation_split": "UNSET_REQUIRES_APPROVAL",
+    "prior_68_36_split_status": "CANDIDATE_SPLIT__NOT_DECIDING_AUTHORITY",
+    "bootstrap_draw_count": "UNSET_REQUIRES_APPROVAL",
+    "confidence_rule": "PR163_INHERITED_DIRECTION__DONOR_CLUSTERED_95_PERCENT_INTERVAL_ZERO_CROSSING_FOR_QUERY_EXCHANGEABILITY"
+  },
+  "query_panel": {
+    "historical_membership_count": 2464,
+    "historical_sha256": "56e2012a7a93bfc6ecd8cbba820144c2dbe74653d28311f34f07cd7b3aae3a2e",
+    "selection_expression_or_outcome_blind": true,
+    "provenance_status": "ACCEPTED",
+    "current_support_status": "REQUALIFICATION_REQUIRED_BEFORE_DECIDING_USE"
+  },
+  "nph52": {
+    "hvs_seaad_positional_axis_defect": "NOT_AFFECTED",
+    "scope_status": "QUALIFIED_AGAINST_THIS_SPECIFIC_POSITIONAL_AXIS_DEFECT__OTHER_PROVENANCE_AND_VALUE_GATES_REMAIN"
+  },
+  "macha_s174": {
+    "branch": "claude/s174-train-cache-rebuild-20261007",
+    "observed_head": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+    "g1b_status": "PASS",
+    "v77_cache_repair_status": "STRONGER_THAN_METADATA_ONLY_VERIFIER_FOR_EXPLICIT_V77_SCOPE",
+    "target_discovery_50k_full104_repair_status": "NOT_IMPLIED"
+  },
+  "query_exchangeability": {
+    "role": "REQUIRED_QUERY_LOCALITY_AND_SHORTCUT_FALSIFIER",
+    "incremental_global_plus_local_test": false
+  },
+  "structured_combined": {
+    "incremental_question": "DOES_LOCAL_OR_PROGRAM_INFORMATION_ADD_RECOVERABLE_INFORMATION_BEYOND_THE_SAME_GLOBAL_OR_RELATIONAL_BASELINE",
+    "status": "NOT_YET_FROZEN"
+  },
+  "relational_family": {
+    "status": "HISTORICAL_LEADING_CANDIDATE__CORRECTED_REPLAY_REQUIRED",
+    "td57c_status": "FAIL_STANDS__NO_POST_HOC_RESCUE"
+  },
+  "next_sequence": [
+    "reuse Macha S174 only within its explicit V77 scope",
+    "requalify 2464 query membership against current source-specific/materialized support",
+    "re-materialize/replay only HVS/SEA-AD Target-Discovery evidence affected by the scrambled physical-axis binding using original frozen rules",
+    "reclassify relational family after corrected replay",
+    "retain PR163 q-safety and QUERY_EXCHANGEABILITY as prerequisite controls",
+    "freeze separate nested incremental test if STRUCTURED_COMBINED_STATE survives prerequisites",
+    "freeze Stage-A diagnostic population, deciding weighting, split, score, bootstrap precision and multiplicity before any deciding outcome"
+  ]
+}
