@@ -2,14 +2,19 @@
 
 The envelope binds the in-memory V5 proof checkpoint to the exact frozen
 premise-state bytes and to every source file that currently defines the
-canonical mutation/checkpoint semantics. It grants no execution or training
+canonical mutation/checkpoint semantics. Persisted artifacts are SHA-256
+verified before deserialization. This grants no execution or training
 authority.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from hashlib import sha256
+from io import BytesIO
 from pathlib import Path
+from typing import Any
+
+import torch
 
 from .inactive_update_reference import (
     V5ReferenceCheckpoint,
@@ -50,7 +55,32 @@ def _runtime_source_sha256() -> str:
     return h.hexdigest()
 
 
-@dataclass(frozen=True)
+def _checkpoint_value_equal(left: Any, right: Any) -> bool:
+    if torch.is_tensor(left) or torch.is_tensor(right):
+        return torch.is_tensor(left) and torch.is_tensor(right) and torch.equal(left, right)
+    if isinstance(left, dict) or isinstance(right, dict):
+        if not isinstance(left, dict) or not isinstance(right, dict) or left.keys() != right.keys():
+            return False
+        return all(_checkpoint_value_equal(left[key], right[key]) for key in left)
+    if isinstance(left, (list, tuple)) or isinstance(right, (list, tuple)):
+        if type(left) is not type(right) or len(left) != len(right):
+            return False
+        return all(_checkpoint_value_equal(a, b) for a, b in zip(left, right))
+    return left == right
+
+
+def _reference_checkpoint_equal(left: V5ReferenceCheckpoint, right: V5ReferenceCheckpoint) -> bool:
+    if not isinstance(left, V5ReferenceCheckpoint) or not isinstance(right, V5ReferenceCheckpoint):
+        return False
+    fields = (
+        "schema", "online_state", "teacher_state", "predictor_state", "optimizer_state",
+        "scaler_state", "amp_scaler_used", "next_update_index", "presentations_seen",
+        "execution_authorized", "training_authorized",
+    )
+    return all(_checkpoint_value_equal(getattr(left, name), getattr(right, name)) for name in fields)
+
+
+@dataclass(frozen=True, eq=False)
 class V5PrefreezeBoundCheckpointV1:
     schema: str
     runtime_contract: str
@@ -61,6 +91,21 @@ class V5PrefreezeBoundCheckpointV1:
     execution_authorized: bool = False
     training_authorized: bool = False
     production_promotable: bool = False
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, V5PrefreezeBoundCheckpointV1):
+            return NotImplemented
+        return (
+            self.schema == other.schema
+            and self.runtime_contract == other.runtime_contract
+            and self.premise_state_sha256 == other.premise_state_sha256
+            and self.runtime_source_sha256 == other.runtime_source_sha256
+            and _reference_checkpoint_equal(self.reference_checkpoint, other.reference_checkpoint)
+            and self.training_authority_digest == other.training_authority_digest
+            and self.execution_authorized == other.execution_authorized
+            and self.training_authorized == other.training_authorized
+            and self.production_promotable == other.production_promotable
+        )
 
 
 def capture_prefreeze_bound_checkpoint(
@@ -87,6 +132,61 @@ def capture_prefreeze_bound_checkpoint(
         runtime_source_sha256=_runtime_source_sha256(),
         reference_checkpoint=reference,
     )
+
+
+def persist_prefreeze_bound_checkpoint(
+    envelope: V5PrefreezeBoundCheckpointV1,
+    path: Path,
+) -> str:
+    """Persist one non-authorizing checkpoint and return the exact artifact SHA-256."""
+    if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
+        raise RuntimeError("unsupported prefreeze checkpoint envelope")
+    if envelope.training_authority_digest is not None:
+        raise RuntimeError("prefreeze checkpoint cannot carry training authority")
+    if envelope.execution_authorized or envelope.training_authorized or envelope.production_promotable:
+        raise RuntimeError("prefreeze checkpoint cannot be promoted to execution/training authority")
+
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    buffer = BytesIO()
+    torch.save(envelope, buffer)
+    payload = buffer.getvalue()
+    digest = sha256(payload).hexdigest()
+    destination.write_bytes(payload)
+    if _file_sha256(destination) != digest:
+        raise RuntimeError("persisted checkpoint digest mismatch after write")
+    return digest
+
+
+def load_persisted_prefreeze_bound_checkpoint(
+    path: Path,
+    *,
+    expected_sha256: str,
+) -> V5PrefreezeBoundCheckpointV1:
+    """Verify artifact bytes before deserializing the persisted checkpoint."""
+    checkpoint_path = Path(path)
+    if not checkpoint_path.is_file():
+        raise FileNotFoundError(f"persisted checkpoint missing: {checkpoint_path}")
+    expected = str(expected_sha256)
+    if len(expected) != 64 or expected.lower() != expected:
+        raise RuntimeError("expected checkpoint digest must be lowercase SHA-256")
+    try:
+        int(expected, 16)
+    except ValueError as exc:
+        raise RuntimeError("expected checkpoint digest must be lowercase SHA-256") from exc
+    payload = checkpoint_path.read_bytes()
+    observed = sha256(payload).hexdigest()
+    if observed != expected:
+        raise RuntimeError("persisted checkpoint digest mismatch")
+
+    loaded = torch.load(BytesIO(payload), map_location="cpu", weights_only=False)
+    if not isinstance(loaded, V5PrefreezeBoundCheckpointV1) or loaded.schema != SCHEMA:
+        raise RuntimeError("persisted checkpoint payload type/schema mismatch")
+    if loaded.training_authority_digest is not None:
+        raise RuntimeError("persisted prefreeze checkpoint cannot carry training authority")
+    if loaded.execution_authorized or loaded.training_authorized or loaded.production_promotable:
+        raise RuntimeError("persisted prefreeze checkpoint cannot authorize execution/training")
+    return loaded
 
 
 def restore_prefreeze_bound_checkpoint(
