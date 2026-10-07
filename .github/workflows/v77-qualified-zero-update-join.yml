@@ -5,8 +5,10 @@ on:
     paths:
       - 'scripts/v77/v77_synthetic_batch_adapter.py'
       - 'src/sea_ad_jepa/qualification/v77_join.py'
+      - 'src/sea_ad_jepa/qualification/v77_zero_update.py'
       - 'tests/integration/test_v77_joined_zero_update.py'
       - 'tests/integration/test_v77_executed_q_safety.py'
+      - 'tests/integration/test_v77_canonical_zero_update.py'
       - '.github/workflows/v77-qualified-zero-update-join.yml'
       - 'docs/superpowers/plans/2026-10-07-v77-qualified-zero-update-join.md'
   push:
@@ -22,7 +24,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install focused test dependencies
-        run: python -m pip install --disable-pip-version-check pytest numpy scipy
+        run: python -m pip install --disable-pip-version-check pytest numpy scipy torch
       - name: Run V77 joined ZERO_UPDATE contract
         env:
           PYTHONPATH: src:.
@@ -30,3 +32,4 @@ jobs:
           python -m pytest -q
           tests/integration/test_v77_joined_zero_update.py
           tests/integration/test_v77_executed_q_safety.py
+          tests/integration/test_v77_canonical_zero_update.py
