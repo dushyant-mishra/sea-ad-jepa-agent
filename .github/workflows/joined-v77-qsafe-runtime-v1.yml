@@ -1,0 +1,43 @@
+name: joined-v77-qsafe-runtime-v1
+
+on:
+  push:
+    branches:
+      - 'integrate/v77-qsafe-runtime-successor-20261007'
+    paths:
+      - 'scripts/v77/v77_synthetic_batch_adapter.py'
+      - 'src/sea_ad_jepa/qualification/**'
+      - 'src/sea_ad_jepa/v5/**'
+      - 'tests/integration/test_v77_qsafe_joined_execution_v1.py'
+      - '.github/workflows/joined-v77-qsafe-runtime-v1.yml'
+      - 'docs/agent/JOINED_V77_QSAFE_RUNTIME_SUCCESSOR_20261007.md'
+  pull_request:
+    paths:
+      - 'scripts/v77/v77_synthetic_batch_adapter.py'
+      - 'src/sea_ad_jepa/qualification/**'
+      - 'src/sea_ad_jepa/v5/**'
+      - 'tests/integration/test_v77_qsafe_joined_execution_v1.py'
+      - '.github/workflows/joined-v77-qsafe-runtime-v1.yml'
+      - 'docs/agent/JOINED_V77_QSAFE_RUNTIME_SUCCESSOR_20261007.md'
+
+jobs:
+  joined-q-safety:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy scipy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Run joined q-safety RED/qualification
+        env:
+          PYTHONPATH: src:.
+        run: >-
+          python -m pytest -q
+          tests/qualification/test_receipts_v1.py
+          tests/qualification/test_qsafe_v1.py
+          tests/integration/test_shared_interface_v5_runtime_binding_v1.py
+          tests/integration/test_v77_qsafe_joined_execution_v1.py
