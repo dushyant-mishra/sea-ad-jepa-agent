@@ -1,12 +1,28 @@
 from __future__ import annotations
-import copy
+from pathlib import Path
+
 import torch
 import pytest
+import sea_ad_jepa.v5.inactive_update_reference as update_reference
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
 from sea_ad_jepa.v5.inactive_update_reference import (
-    build_reference_modules, run_inactive_reference_update,
-    capture_reference_checkpoint, restore_reference_checkpoint,
+    build_reference_modules,
+    capture_reference_checkpoint,
 )
+from sea_ad_jepa.v5.inactive_guarded_update_v1 import run_guarded_inactive_reference_update
+from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
+    capture_prefreeze_bound_checkpoint,
+    issue_prefreeze_authority_from_bound_checkpoint,
+    load_persisted_prefreeze_bound_checkpoint,
+    persist_prefreeze_bound_checkpoint,
+    reference_checkpoint_sha256,
+    restore_prefreeze_bound_checkpoint,
+)
+from sea_ad_jepa.v5.prefreeze_runtime_authority import StepCompletionError
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_PATH = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
 
 
 def _case():
@@ -28,20 +44,96 @@ def _modules():
     return build_reference_modules(vocabulary_size=32,width=16,heads=4,blocks=1,ffn_width=24,dropout=.10,learning_rate=3e-4,betas=(.9,.999),eps=1e-8,weight_decay=.01,init_seed=8113002)
 
 
+def _amp_scaler():
+    return torch.amp.GradScaler('cpu',init_scale=8.0,growth_factor=2.0,backoff_factor=.5,growth_interval=1)
+
+
+def _genesis(modules, scaler=None):
+    return capture_prefreeze_bound_checkpoint(
+        modules,next_update_index=0,presentations_seen=0,
+        premise_state_path=STATE_PATH,scaler=scaler)
+
+
+def _run(modules, data, *, update_index=0, max_tokens=40, scaler=None, parent=None):
+    if parent is None:
+        if update_index != 0:
+            raise ValueError('noninitial update requires its exact parent checkpoint')
+        parent=_genesis(modules,scaler=scaler)
+    authority=issue_prefreeze_authority_from_bound_checkpoint(
+        modules,parent,premise_state_path=STATE_PATH,scaler=scaler)
+    next_update_index=update_index+1
+    presentations_seen=next_update_index*len(data[0])
+
+    def completed_state_digest():
+        checkpoint=capture_reference_checkpoint(
+            modules,next_update_index=next_update_index,
+            presentations_seen=presentations_seen,scaler=scaler)
+        return reference_checkpoint_sha256(checkpoint)
+
+    return run_guarded_inactive_reference_update(
+        modules,authority=authority,scaler=scaler,
+        completion_checkpoint_digest=completed_state_digest,
+        expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
+        scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
+        max_teacher_tokens_per_microbatch=max_tokens,run_seed=8113002,
+        update_index=update_index,ema_momentum=.996)
+
+
+def _child_checkpoint(modules, data, report, *, update_index, scaler=None):
+    return capture_prefreeze_bound_checkpoint(
+        modules,next_update_index=update_index+1,
+        presentations_seen=(update_index+1)*len(data[0]),
+        premise_state_path=STATE_PATH,scaler=scaler,
+        completed_guard_receipt=report['completed_guard_receipt'])
+
+
 def test_inactive_reference_update_steps_once_has_no_teacher_grad_and_exact_ema():
     data=_case(); modules=_modules()
-    report=run_inactive_reference_update(modules,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=0,ema_momentum=.996)
+    report=_run(modules,data)
     assert report['optimizer_step_before']==0 and report['optimizer_step_after']==1
     assert report['ema_max_abs_error']<=1e-7
     assert report['gradient_gate']['teacher_gradients']==0
     assert report['execution_authorized'] is False and report['training_authorized'] is False
+    assert report['guarded_optimizer_step'] is True
+    assert report['guarded_ema'] is True
+    assert report['completed_guard_receipt'] is not None
+    assert report['guard_kind']=='V5_PREFREEZE_OPTIMIZER_GUARD_V1'
     assert sorted(x for mb in report['microbatch_plan'] for x in mb)==list(range(6))
+
+
+def test_canonical_v5_adamw_gradscaler_finite_step_completes_before_ema():
+    data=_case(); modules=_modules(); scaler=torch.amp.GradScaler('cpu')
+    report=_run(modules,data,scaler=scaler)
+    assert report['optimizer_step_before']==0 and report['optimizer_step_after']==1
+    assert report['guarded_optimizer_step'] is True
+    assert report['guarded_ema'] is True
+    assert report['amp_scaler_used'] is True
+    assert report['completed_guard_receipt'] is not None
+    assert report['ema_max_abs_error']<=1e-7
+
+
+def test_canonical_v5_gradscaler_skip_cannot_advance_optimizer_or_teacher(monkeypatch):
+    data=_case(); modules=_modules(); scaler=torch.amp.GradScaler('cpu')
+    online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
+    teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
+    parameter=next(modules.online.parameters())
+    hook=parameter.register_hook(lambda grad: torch.full_like(grad,float('inf')))
+    monkeypatch.setattr(update_reference,'_gradient_report',lambda _modules: {
+        'missing':0,'nonfinite':0,'exact_zero':0,'teacher_gradients':0,'max_abs_gradient':1.0})
+    try:
+        with pytest.raises(StepCompletionError,match='scaler.*skipped|did not complete'):
+            _run(modules,data,scaler=scaler)
+    finally:
+        hook.remove()
+    for name,before in online_before.items():
+        assert torch.equal(modules.online.state_dict()[name],before),name
+    for name,before in teacher_before.items():
+        assert torch.equal(modules.teacher.state_dict()[name],before),name
 
 
 def test_inactive_reference_update_is_deterministic_replay_on_same_initial_state():
     data=_case(); a=_modules(); b=_modules()
-    ra=run_inactive_reference_update(a,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=0,ema_momentum=.996)
-    rb=run_inactive_reference_update(b,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=0,ema_momentum=.996)
+    ra=_run(a,data); rb=_run(b,data)
     assert ra==rb
     for ma,mb in ((a.online,b.online),(a.teacher,b.teacher),(a.predictor,b.predictor)):
         sa=ma.state_dict(); sb=mb.state_dict(); assert sa.keys()==sb.keys()
@@ -50,12 +142,10 @@ def test_inactive_reference_update_is_deterministic_replay_on_same_initial_state
 
 def test_compute_token_budget_changes_partition_not_scientific_cell_set_or_weight_mass():
     data=_case(); a=_modules(); b=_modules()
-    ra=run_inactive_reference_update(a,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=0,ema_momentum=.996)
-    rb=run_inactive_reference_update(b,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],max_teacher_tokens_per_microbatch=80,run_seed=8113002,update_index=0,ema_momentum=.996)
+    ra=_run(a,data,max_tokens=40); rb=_run(b,data,max_tokens=80)
     assert ra['microbatch_plan']!=rb['microbatch_plan']
     assert ra['cells']==rb['cells']==6
     assert ra['scientific_weight_mass']==rb['scientific_weight_mass']==float(data[4].double().sum())
-    # Different reduction order is allowed to create a distinct V5 numerical trajectory.
     assert abs(ra['loss']-rb['loss']) < 1e-5
 
 
@@ -65,35 +155,117 @@ def _module_state_equal(a,b):
         for name in sa: assert torch.equal(sa[name],sb[name]),name
 
 
-def test_inactive_reference_checkpoint_resume_matches_uninterrupted_two_update_path():
-    data=_case(); continuous=_modules(); first_report=run_inactive_reference_update(
-        continuous,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
-        scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
-        max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=0,ema_momentum=.996)
-    assert first_report['optimizer_step_after']==1
-    ckpt=capture_reference_checkpoint(continuous,next_update_index=1,presentations_seen=len(data[0]))
+def test_canonical_guard_emits_receipt_that_mints_and_restores_bound_checkpoint():
+    data=_case(); modules=_modules()
+    report=_run(modules,data)
+    envelope=_child_checkpoint(modules,data,report,update_index=0)
+    assert envelope.completed_guard_receipt==report['completed_guard_receipt']
+    assert envelope.completed_guard_receipt['checkpoint_digest']==reference_checkpoint_sha256(envelope.reference_checkpoint)
 
-    resumed=_modules(); cursor,presentations=restore_reference_checkpoint(resumed,ckpt)
-    assert cursor==1 and presentations==6
-    kwargs=dict(expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
-        scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
-        max_teacher_tokens_per_microbatch=40,run_seed=8113002,update_index=1,ema_momentum=.996)
-    ra=run_inactive_reference_update(continuous,**kwargs)
-    rb=run_inactive_reference_update(resumed,**kwargs)
+    restored=_modules()
+    cursor,presentations=restore_prefreeze_bound_checkpoint(
+        restored,envelope,premise_state_path=STATE_PATH)
+    assert (cursor,presentations)==(1,6)
+    _module_state_equal(modules,restored)
+
+
+def test_incomplete_post_step_failure_cannot_advance_teacher_ema(monkeypatch):
+    data=_case(); modules=_modules()
+    teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
+    online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
+    original_step=modules.optimizer.step
+    def step_then_reject(*args, **kwargs):
+        original_step(*args, **kwargs)
+        raise RuntimeError('PLANTED_POST_STEP_FAILURE')
+    monkeypatch.setattr(modules.optimizer,'step',step_then_reject)
+    with pytest.raises(RuntimeError, match='PLANTED_POST_STEP_FAILURE'):
+        _run(modules,data)
+    teacher_after=modules.teacher.state_dict(); online_after=modules.online.state_dict()
+    for name,before in teacher_before.items(): assert torch.equal(teacher_after[name],before),name
+    assert any(not torch.equal(online_after[name],before) for name,before in online_before.items())
+
+
+def test_inactive_reference_checkpoint_resume_matches_uninterrupted_two_update_path():
+    data=_case(); continuous=_modules()
+    first_report=_run(continuous,data,update_index=0)
+    parent=_child_checkpoint(continuous,data,first_report,update_index=0)
+
+    resumed=_modules(); cursor,presentations=restore_prefreeze_bound_checkpoint(
+        resumed,parent,premise_state_path=STATE_PATH)
+    assert (cursor,presentations)==(1,6)
+    ra=_run(continuous,data,update_index=1,parent=parent)
+    rb=_run(resumed,data,update_index=1,parent=parent)
     assert ra==rb
     assert ra['optimizer_step_before']==1 and ra['optimizer_step_after']==2
     _module_state_equal(continuous,resumed)
 
 
+def test_amp_checkpoint_resume_preserves_scaler_and_exact_two_update_trajectory():
+    data=_case(); continuous=_modules(); continuous_scaler=_amp_scaler()
+    first=_run(continuous,data,update_index=0,scaler=continuous_scaler)
+    assert first['optimizer_step_after']==1
+    assert continuous_scaler.get_scale()==16.0
+    parent=_child_checkpoint(
+        continuous,data,first,update_index=0,scaler=continuous_scaler)
+    assert parent.reference_checkpoint.amp_scaler_used is True
+    assert parent.reference_checkpoint.scaler_state==continuous_scaler.state_dict()
+
+    resumed=_modules(); resumed_scaler=_amp_scaler()
+    assert resumed_scaler.get_scale()==8.0
+    cursor,presentations=restore_prefreeze_bound_checkpoint(
+        resumed,parent,premise_state_path=STATE_PATH,scaler=resumed_scaler)
+    assert (cursor,presentations)==(1,6)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+
+    ra=_run(continuous,data,update_index=1,scaler=continuous_scaler,parent=parent)
+    rb=_run(resumed,data,update_index=1,scaler=resumed_scaler,parent=parent)
+    assert ra==rb
+    _module_state_equal(continuous,resumed)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+    assert continuous_scaler.get_scale()==32.0
+
+
+def test_persisted_amp_checkpoint_resume_is_exact_and_independent_of_global_rng(tmp_path):
+    data=_case(); continuous=_modules(); continuous_scaler=_amp_scaler()
+    first=_run(continuous,data,update_index=0,scaler=continuous_scaler)
+    parent=_child_checkpoint(
+        continuous,data,first,update_index=0,scaler=continuous_scaler)
+
+    checkpoint_path=tmp_path/'signed-parent.pt'
+    artifact_digest=persist_prefreeze_bound_checkpoint(parent,checkpoint_path)
+    loaded=load_persisted_prefreeze_bound_checkpoint(
+        checkpoint_path,expected_sha256=artifact_digest)
+    assert loaded==parent
+
+    resumed=_modules(); resumed_scaler=_amp_scaler()
+    restore_prefreeze_bound_checkpoint(
+        resumed,loaded,premise_state_path=STATE_PATH,scaler=resumed_scaler)
+
+    torch.manual_seed(123456789)
+    _=torch.randn(4096)
+    ra=_run(continuous,data,update_index=1,scaler=continuous_scaler,parent=parent)
+    torch.manual_seed(987654321)
+    _=torch.randn(8192)
+    rb=_run(resumed,data,update_index=1,scaler=resumed_scaler,parent=loaded)
+
+    assert ra==rb
+    _module_state_equal(continuous,resumed)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+    assert ra['completed_guard_receipt']==rb['completed_guard_receipt']
+
+
 def test_reference_checkpoint_fails_closed_on_cursor_step_mismatch():
     modules=_modules()
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=1,presentations_seen=0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=1,presentations_seen=0)
 
 
 def test_reference_checkpoint_rejects_float_cursor_even_if_integral_value():
     modules=_modules()
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=0.0,presentations_seen=0)
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=0,presentations_seen=0.0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0.0,presentations_seen=0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0,presentations_seen=0.0)
+
+
+def test_canonical_runtime_tests_do_not_fabricate_parent_checkpoint_hashes():
+    source=Path(__file__).read_text(encoding='utf-8')
+    historical_marker='inactive' + '-reference-start-'
+    assert historical_marker not in source
