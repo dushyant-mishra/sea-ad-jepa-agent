@@ -1,15 +1,7 @@
-from pathlib import Path
-import importlib.util
+import sea_ad_jepa.v5.inactive_update_reference as module
 
 
 def test_v5_reference_loss_declares_mechanics_only_not_scientific_target_authority():
-    root = Path(__file__).resolve().parents[1]
-    module_path = root / "src/sea_ad_jepa/v5/inactive_update_reference.py"
-    spec = importlib.util.spec_from_file_location("v5_update_reference_semantics", module_path)
-    module = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    spec.loader.exec_module(module)
-
     assert getattr(module, "SCIENTIFIC_TARGET_SEMANTICS_AUTHORIZED", None) is False, (
         "the runtime mechanics harness does not explicitly disclaim scientific target authority"
     )
