@@ -65,7 +65,7 @@ def main():
   mat=sparse.csr_matrix((data,(rows,cols)),shape=(len(order),ADDRESS_N),dtype=np.int32); sparse.save_npz(out,mat,compressed=True)
   order[['stable_key','cell_id','donor_id']].assign(source_library=libs).to_csv(mp,index=False,lineterminator='\n')
   shard_audit.append({'matrix_id':matrix_id,'operator_index':op,'cells':len(order),'nnz':int(mat.nnz),'counts_sha256':sha(out),'meta_sha256':sha(mp)})
-  print('H5 shard',op,len(order),mat.nnnz if False else mat.nnz,flush=True)
+  print('H5 shard',op,len(order),mat.nnz,flush=True)
 
  # NPH uses exact physical TRAIN-only derivatives and the same collision authorities.
  rscript=Path(r'C:\Program Files\R\R-4.1.2\bin\Rscript.exe')
