@@ -18,7 +18,7 @@ from sea_ad_jepa.qualification.receipts import (
 )
 
 
-def _batch():
+def _batch(adapter_digest):
     measurement = np.array([[True, True, True, True], [True, True, True, True]], dtype=bool)
     hidden = np.array([[False, True, False, False], [False, False, True, False]], dtype=bool)
     conversion = SyntheticConversion(
@@ -66,7 +66,7 @@ def _batch():
         feature_ids=("g0", "g1", "g2", "g3"),
         experiment_run_id="v77-zero-update-001",
         adapter_id="v77-synthetic-batch-adapter",
-        adapter_digest="a" * 64,
+        adapter_digest=adapter_digest,
         code_commit="1234567890abcdef1234567890abcdef12345678",
         environment_digest="e" * 64,
         synthetic_realization_id="v77-zero-update-dev",
@@ -99,7 +99,8 @@ def _proof(batch, runtime_source_sha256):
 def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
     from sea_ad_jepa.qualification import v77_zero_update
 
-    batch = _batch()
+    adapter_digest = v77_join.canonical_v77_adapter_source_sha256()
+    batch = _batch(adapter_digest)
     runtime_digest = v77_zero_update.canonical_v5_runtime_source_sha256()
     receipt = v77_zero_update.run_canonical_v5_zero_update(
         batch,
@@ -109,6 +110,7 @@ def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
     )
     assert receipt["schema"] == "V77_CANONICAL_V5_ZERO_UPDATE_V1"
     assert receipt["runtime_source_sha256"] == runtime_digest
+    assert receipt["adapter_source_sha256"] == adapter_digest
     assert receipt["checkpoint_digest_before"] == receipt["checkpoint_digest_after"]
     assert receipt["optimizer_step_before"] == receipt["optimizer_step_after"] == 0
     assert receipt["teacher_presentations_before"] == receipt["teacher_presentations_after"] == 0
@@ -124,7 +126,7 @@ def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
 def test_caller_cannot_substitute_fake_runtime_source_digest():
     from sea_ad_jepa.qualification import v77_zero_update
 
-    batch = _batch()
+    batch = _batch(v77_join.canonical_v77_adapter_source_sha256())
     actual = v77_zero_update.canonical_v5_runtime_source_sha256()
     fake = "c" * 64
     assert fake != actual
@@ -133,5 +135,22 @@ def test_caller_cannot_substitute_fake_runtime_source_digest():
             batch,
             q_safety_proof=_proof(batch, fake),
             runtime_source_sha256=fake,
+            init_seed=8113002,
+        )
+
+
+def test_caller_cannot_substitute_fake_v77_adapter_source_digest():
+    from sea_ad_jepa.qualification import v77_zero_update
+
+    actual = v77_join.canonical_v77_adapter_source_sha256()
+    fake = "a" * 64
+    assert fake != actual
+    batch = _batch(fake)
+    runtime_digest = v77_zero_update.canonical_v5_runtime_source_sha256()
+    with pytest.raises(ValueError, match="adapter.*source|canonical.*adapter|digest"):
+        v77_zero_update.run_canonical_v5_zero_update(
+            batch,
+            q_safety_proof=_proof(batch, runtime_digest),
+            runtime_source_sha256=runtime_digest,
             init_seed=8113002,
         )
