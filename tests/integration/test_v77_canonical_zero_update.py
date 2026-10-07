@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from scripts.v77.v77_synthetic_batch_adapter import (
     SyntheticConversion,
@@ -73,14 +74,14 @@ def _batch():
     )
 
 
-def _proof(batch):
+def _proof(batch, runtime_source_sha256):
     return BoundAdapterQSafetyProofV1(
         schema=BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
         q_safety_policy_id="qsafe-v1",
         adapter_id=batch.adapter_id,
         adapter_digest=batch.adapter_digest,
         batch_scientific_identity_digest=batch.scientific_identity.digest(),
-        runtime_source_sha256="c" * 64,
+        runtime_source_sha256=runtime_source_sha256,
         channel_evidence=tuple(
             QSafetyChannelExecutionEvidenceV1(
                 channel=channel,
@@ -99,13 +100,15 @@ def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
     from sea_ad_jepa.qualification import v77_zero_update
 
     batch = _batch()
+    runtime_digest = v77_zero_update.canonical_v5_runtime_source_sha256()
     receipt = v77_zero_update.run_canonical_v5_zero_update(
         batch,
-        q_safety_proof=_proof(batch),
-        runtime_source_sha256="c" * 64,
+        q_safety_proof=_proof(batch, runtime_digest),
+        runtime_source_sha256=runtime_digest,
         init_seed=8113002,
     )
     assert receipt["schema"] == "V77_CANONICAL_V5_ZERO_UPDATE_V1"
+    assert receipt["runtime_source_sha256"] == runtime_digest
     assert receipt["checkpoint_digest_before"] == receipt["checkpoint_digest_after"]
     assert receipt["optimizer_step_before"] == receipt["optimizer_step_after"] == 0
     assert receipt["teacher_presentations_before"] == receipt["teacher_presentations_after"] == 0
@@ -116,3 +119,19 @@ def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
     assert receipt["ema_performed"] is False
     assert receipt["optimizer_step_performed"] is False
     assert receipt["training_authorized"] is False
+
+
+def test_caller_cannot_substitute_fake_runtime_source_digest():
+    from sea_ad_jepa.qualification import v77_zero_update
+
+    batch = _batch()
+    actual = v77_zero_update.canonical_v5_runtime_source_sha256()
+    fake = "c" * 64
+    assert fake != actual
+    with pytest.raises(ValueError, match="runtime.*source|canonical.*runtime|digest"):
+        v77_zero_update.run_canonical_v5_zero_update(
+            batch,
+            q_safety_proof=_proof(batch, fake),
+            runtime_source_sha256=fake,
+            init_seed=8113002,
+        )
