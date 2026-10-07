@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 import torch
 
@@ -57,3 +59,16 @@ def test_guard_is_explicitly_mechanics_only_and_never_training_authority():
     assert guard.mechanics_only is True
     assert guard.training_authorized is False
     guard.close()
+
+
+def test_canonical_consumer_does_not_mutate_teacher_ema_directly():
+    """EMA must be owned by the mutation guard, not the V5 consumer body."""
+    source = Path("src/sea_ad_jepa/v5/inactive_update_reference.py").read_text(encoding="utf-8")
+    forbidden = (
+        "teacher.mul_(m).add_(online,alpha=1.0-m)",
+        "teacher.mul_(m).add_(online, alpha=1.0-m)",
+    )
+    assert not any(fragment in source for fragment in forbidden), (
+        "inactive_update_reference.py still has a directly reachable EMA mutation path; "
+        "the canonical successor must route EMA through the guarded completion boundary"
+    )
