@@ -1,5 +1,7 @@
 import pytest
 
+from sea_ad_jepa.qualification import v77_join
+from sea_ad_jepa.qualification.receipts import QSafetyExecutionProofStatus
 from sea_ad_jepa.qualification.v77_join import (
     PhysicalRowValueBindingV1,
     build_learnable_model_context,
@@ -69,3 +71,10 @@ def test_unreviewed_measurement_identity_proxy_fails_closed():
                 "dataset_embedding": [99],
             },
         )
+
+
+def test_policy_only_q_safety_cannot_count_as_executed_joined_proof():
+    gate = getattr(v77_join, "require_executed_q_safety", None)
+    assert callable(gate), "V77 join has no execution-bound q-safety gate"
+    with pytest.raises(ValueError, match="executed|q-safety"):
+        gate(QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN)
