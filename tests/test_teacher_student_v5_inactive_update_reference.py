@@ -48,11 +48,14 @@ def _authority(modules, update_index):
 
 
 def _run(modules, data, *, update_index=0, max_tokens=40, scaler=None):
-    return run_guarded_inactive_reference_update(
-        modules,authority=_authority(modules,update_index),scaler=scaler,
+    kwargs=dict(
         expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
         scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
         max_teacher_tokens_per_microbatch=max_tokens,run_seed=8113002,update_index=update_index,ema_momentum=.996)
+    if scaler is not None:
+        kwargs['scaler']=scaler
+    return run_guarded_inactive_reference_update(
+        modules,authority=_authority(modules,update_index),**kwargs)
 
 
 def test_inactive_reference_update_steps_once_has_no_teacher_grad_and_exact_ema():
