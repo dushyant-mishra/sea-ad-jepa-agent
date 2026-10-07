@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 CURRENT_DATE = "2026-10-06"
-CURRENT_TASK_STATUS = "RUNTIME_SAFETY_RECONCILIATION_IN_PROGRESS"
+CURRENT_TASK_STATUS = "CANONICAL_V5_RUNTIME_CONVERGED__SHARED_INTERFACE_BINDING_PENDING"
 FRESHNESS_RULE = "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES"
 CURRENT_FILES = (
     "START_HERE.md",
@@ -40,8 +40,8 @@ def audit_authority_surface(root: Path) -> list[str]:
     if pointer.get("date") != CURRENT_DATE:
         failures.append(f"pointer stale date: {pointer.get('date')!r}")
     status = str(pointer.get("status", ""))
-    if "RUNTIME_SAFETY_RECONCILIATION" not in status or "TRAINING_OFF" not in status:
-        failures.append("pointer status is not current runtime-reconciliation/training-off state")
+    if "CANONICAL_V5_RUNTIME_CONVERGED" not in status or "SHARED_INTERFACE_BINDING" not in status or "TRAINING_OFF" not in status:
+        failures.append("pointer status is not current runtime-converged/shared-interface-binding/training-off state")
     handoff_value = str(pointer.get("handoff_path", pointer.get("handoff", pointer.get("current_handoff", ""))))
     if "20261005_TARGET_AUTHORITY_RESET" not in handoff_value:
         failures.append("pointer does not preserve Oct-5 target-authority reset handoff")
@@ -53,12 +53,14 @@ def audit_authority_surface(root: Path) -> list[str]:
             f"authority freshness failure: current_task_status={current_task_status!r}, expected {CURRENT_TASK_STATUS!r}"
         )
     task_lower = current_task.lower()
-    if "runtime" not in task_lower or "reconcil" not in task_lower:
-        failures.append("authority freshness failure: pointer does not route to runtime safety reconciliation")
-    if "premise qualification" in task_lower and "runtime" not in task_lower:
+    if not all(term in task_lower for term in ("runtime", "shared", "interface", "bind")):
+        failures.append("authority freshness failure: pointer does not route to shared-interface runtime binding")
+    if "premise qualification" in task_lower and "shared" not in task_lower:
         failures.append("authority freshness failure: completed premise prefreeze is still advertised as current")
     if "reconstruct" in task_lower and "target" in task_lower and "lineage" in task_lower:
         failures.append("authority freshness failure: completed target-lineage reconstruction is still advertised as current")
+    if "reconcil" in task_lower and "shared" not in task_lower:
+        failures.append("authority freshness failure: completed standalone runtime reconciliation is still advertised as current")
     if pointer.get("authority_freshness_rule") != FRESHNESS_RULE:
         failures.append("authority freshness rule missing from pointer")
 
@@ -80,8 +82,8 @@ def audit_authority_surface(root: Path) -> list[str]:
         lowered = text.lower()
         if "target lineage reconstruction is complete" not in lowered:
             failures.append(f"authority freshness failure: {rel} does not record target lineage reconstruction complete")
-        if "runtime" not in lowered or "reconcil" not in lowered:
-            failures.append(f"authority freshness failure: {rel} does not route to runtime reconciliation current task")
+        if "runtime" not in lowered or "shared" not in lowered or "interface" not in lowered:
+            failures.append(f"authority freshness failure: {rel} does not route to shared-interface runtime binding current task")
         if "authority freshness" not in lowered:
             failures.append(f"authority freshness failure: {rel} does not state freshness policy")
 
