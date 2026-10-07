@@ -113,6 +113,22 @@ def test_persisted_checkpoint_is_hashed_reloaded_and_tamper_evident(tmp_path):
         binding.load_persisted_prefreeze_bound_checkpoint(path,expected_sha256=digest)
 
 
+def test_persisted_checkpoint_can_be_revalidated_against_current_runtime_and_premise(tmp_path):
+    revalidate = getattr(binding, "revalidate_persisted_prefreeze_checkpoint", None)
+    assert callable(revalidate), "canonical runtime has no public stale-proof revalidation boundary"
+    envelope = capture_prefreeze_bound_checkpoint(
+        _modules(), next_update_index=0, presentations_seen=0, premise_state_path=PREMISE)
+    path = tmp_path / "checkpoint.pt"
+    digest = binding.persist_prefreeze_bound_checkpoint(envelope, path)
+    loaded = revalidate(path, expected_sha256=digest, premise_state_path=PREMISE)
+    assert loaded == envelope
+
+    changed = tmp_path / "premise.json"
+    changed.write_bytes(PREMISE.read_bytes() + b"\n")
+    with pytest.raises(RuntimeError, match="premise state digest mismatch"):
+        revalidate(path, expected_sha256=digest, premise_state_path=changed)
+
+
 def test_noninitial_bound_checkpoint_requires_completed_guard_receipt():
     modules=_modules()
     modules.optimizer.zero_grad(set_to_none=True)
