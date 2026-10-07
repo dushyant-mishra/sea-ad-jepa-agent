@@ -6,7 +6,9 @@ on:
       - 'scripts/v77/v77_synthetic_batch_adapter.py'
       - 'src/sea_ad_jepa/qualification/v77_join.py'
       - 'src/sea_ad_jepa/qualification/v77_zero_update.py'
+      - 'src/sea_ad_jepa/qualification/physical_binding_v2.py'
       - 'tests/integration/test_v77_joined_zero_update.py'
+      - 'tests/integration/test_v77_physical_binding_v2_payload_digest.py'
       - 'tests/integration/test_v77_executed_q_safety.py'
       - 'tests/integration/test_v77_canonical_zero_update.py'
       - 'tests/integration/test_shared_interface_v5_runtime_binding_v1.py'
@@ -33,6 +35,7 @@ jobs:
         run: >-
           python -m pytest -q
           tests/integration/test_v77_joined_zero_update.py
+          tests/integration/test_v77_physical_binding_v2_payload_digest.py
           tests/integration/test_v77_executed_q_safety.py
           tests/integration/test_v77_canonical_zero_update.py
           tests/integration/test_shared_interface_v5_runtime_binding_v1.py

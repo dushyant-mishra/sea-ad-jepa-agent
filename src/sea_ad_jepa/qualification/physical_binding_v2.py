@@ -19,8 +19,8 @@ class PhysicalRowValueBindingV2:
     """One fail-closed proof chain from logical identity to physically consumed values.
 
     V2 extends the historical row/value binding with donor identity, matrix slot,
-    feature-space identity and physical payload location. A joined execution may
-    only consume values whose complete chain agrees with the authenticated source.
+    feature-space identity and physical payload location/digest. A joined execution
+    may only consume values whose complete chain agrees with the authenticated source.
     """
 
     expression_row: int
@@ -38,6 +38,7 @@ class PhysicalRowValueBindingV2:
     payload_location: str
     authenticated_payload_location: str
     payload_sha256: str
+    authenticated_payload_sha256: str
     authenticated_values_sha256: str
     consumed_values_sha256: str
 
@@ -95,6 +96,14 @@ class PhysicalRowValueBindingV2:
             raise ValueError("feature space must equal authenticated feature space")
 
         object.__setattr__(self, "payload_sha256", _require_sha256(self.payload_sha256, "payload_sha256"))
+        object.__setattr__(
+            self,
+            "authenticated_payload_sha256",
+            _require_sha256(self.authenticated_payload_sha256, "authenticated_payload_sha256"),
+        )
+        if self.payload_sha256 != self.authenticated_payload_sha256:
+            raise ValueError("payload digest must equal authenticated payload digest")
+
         object.__setattr__(
             self,
             "authenticated_values_sha256",

@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -5,6 +6,8 @@ import numpy as np
 
 from scripts.v77.v77_synthetic_batch_adapter import build_from_world, sample_hidden_targets
 from sea_ad_jepa.qualification import v77_join, v77_zero_update
+from sea_ad_jepa.qualification.canonical import canonical_digest
+from sea_ad_jepa.qualification.physical_binding_v2 import PhysicalRowValueBindingV2
 from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import BoundAdapterQSafetyProofV1
 
@@ -45,6 +48,37 @@ def _write_world(root: Path, counts: np.ndarray) -> None:
         },
     }
     (obs / "OBSERVER_MANIFEST.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+
+def _physical_bindings(batch):
+    row = tuple(float(value) for value in batch.model_view().model_inputs["student_expression"][0])
+    values_digest = canonical_digest(row)
+    payload_digest = hashlib.sha256(b"qsafe-test-payload-row-0").hexdigest()
+    feature_digest = batch.feature_identity_receipt.digest()
+    observation_id = batch.scientific_identity.observation_ids[0]
+    donor_id = batch.inference_group_ids[0]
+    return (
+        PhysicalRowValueBindingV2(
+            expression_row=0,
+            source_row_index=0,
+            block_row_index=0,
+            selected_block_row_index=0,
+            logical_cell_id=observation_id,
+            source_cell_id=observation_id,
+            logical_donor_id=donor_id,
+            source_donor_id=donor_id,
+            matrix_slot="model/student_expression",
+            authenticated_matrix_slot="model/student_expression",
+            feature_space_sha256=feature_digest,
+            authenticated_feature_space_sha256=feature_digest,
+            payload_location="qsafe-test:row-0",
+            authenticated_payload_location="qsafe-test:row-0",
+            payload_sha256=payload_digest,
+            authenticated_payload_sha256=payload_digest,
+            authenticated_values_sha256=values_digest,
+            consumed_values_sha256=values_digest,
+        ),
+    )
 
 
 def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_bound_proof(tmp_path):
@@ -100,6 +134,7 @@ def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_boun
 
     receipt = v77_zero_update.run_canonical_v5_zero_update(
         batch,
+        physical_bindings=_physical_bindings(batch),
         q_safety_proof=proof,
         runtime_source_sha256=runtime_digest,
         init_seed=8113002,
@@ -107,6 +142,7 @@ def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_boun
     assert receipt["schema"] == "V77_CANONICAL_V5_ZERO_UPDATE_V1"
     assert receipt["q_safety_proof_digest"] == proof.digest()
     assert receipt["batch_scientific_identity_digest"] == batch.scientific_identity.digest()
+    assert len(receipt["physical_bindings_digest"]) == 64
     assert receipt["runtime_source_sha256"] == runtime_digest
     assert receipt["checkpoint_digest_before"] == receipt["checkpoint_digest_after"]
     assert receipt["online_parameters_unchanged"] is True
