@@ -1,9 +1,9 @@
 """Non-authorizing EMA-configuration binding for the canonical V5 rehearsal.
 
-This successor layer deliberately does not choose an EMA operating point. It
-binds whatever explicit constant momentum a rehearsal supplies to the exact
-parent checkpoint/runtime authority, so changing the teacher timescale cannot
-silently reuse an otherwise-valid mechanical proof.
+The current V5 EMA mechanics are presentation-normalized. No production
+half-life is selected here. A legacy constant-momentum identity remains only as
+a compatibility/test adapter while the successor proof is migrated to the
+presentation-unit + half-life contract.
 """
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ from .prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
 
 EMA_BINDING_SCHEMA = "V5_PREFREEZE_EMA_BOUND_AUTHORITY_V1"
 EMA_CONFIGURATION_SCHEMA = "V5_CONSTANT_EMA_CONFIGURATION_V1"
+PRESENTATION_EMA_CONFIGURATION_SCHEMA = "V5_PRESENTATION_EMA_CONFIGURATION_V1"
 
 
 def _digest(value: object) -> str:
@@ -38,7 +39,7 @@ def _digest(value: object) -> str:
 
 
 def constant_ema_configuration_identity(momentum: float) -> str:
-    """Return a deterministic mechanical identity; this grants no scientific authority."""
+    """Legacy constant-momentum identity for compatibility tests only."""
     if isinstance(momentum, bool):
         raise ValueError("EMA momentum must be a finite float in [0,1)")
     try:
@@ -49,6 +50,20 @@ def constant_ema_configuration_identity(momentum: float) -> str:
         raise ValueError("EMA momentum must be a finite float in [0,1)")
     core = {"schema": EMA_CONFIGURATION_SCHEMA, "constant_momentum": value}
     return f"V5_CONSTANT_EMA:{_digest(core)}"
+
+
+def presentation_ema_configuration_identity(*, half_life_presentations: int, presentation_unit_id: str) -> str:
+    """Bind explicit rehearsal EMA timescale mechanics without selecting production authority."""
+    if isinstance(half_life_presentations, bool) or not isinstance(half_life_presentations, int) or half_life_presentations < 1:
+        raise ValueError("half_life_presentations must be a positive integer")
+    if not isinstance(presentation_unit_id, str) or not presentation_unit_id.strip():
+        raise ValueError("presentation_unit_id must be non-empty")
+    core = {
+        "schema": PRESENTATION_EMA_CONFIGURATION_SCHEMA,
+        "half_life_presentations": half_life_presentations,
+        "presentation_unit_id": presentation_unit_id.strip(),
+    }
+    return f"V5_PRESENTATION_EMA:{_digest(core)}"
 
 
 @dataclass(frozen=True)
@@ -158,7 +173,7 @@ def run_ema_bound_guarded_reference_update(
     completion_checkpoint_digest: Any | None = None,
     **kwargs: Any,
 ) -> dict[str, object]:
-    """Canonical successor wrapper: reject EMA configuration drift before mutation."""
+    """Legacy constant-momentum wrapper retained only until successor migration is complete."""
     if not isinstance(authority, EmaBoundPrefreezeAuthorityV1):
         raise ValueError("EmaBoundPrefreezeAuthorityV1 is required")
     authority.verify_ema_momentum(ema_momentum)
