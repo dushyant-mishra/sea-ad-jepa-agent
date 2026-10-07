@@ -197,6 +197,42 @@ def observation_identity_block(tm: dict, support_rule_id: str) -> dict:
                 support_rule_id=support_rule_id)
 
 
+CHALLENGE_SPEC_FILE = "CHALLENGE_SPEC.json"   # hidden truth only; never copied to observable output
+CHALLENGE_STREAM = 7710
+CHALLENGE_KINDS = ("BIO", "TWIN_EXACT", "TWIN_OPERATOR")
+
+
+def load_challenge(truth_root: Path):
+    """The S157 paired-challenge spec, read from the HIDDEN truth folder. The observer never writes
+    it, or anything derived from its arm label, into the observable layer."""
+    p = Path(truth_root) / CHALLENGE_SPEC_FILE
+    if not p.exists():
+        return None
+    spec = json.loads(p.read_text())
+    if spec.get("kind") not in CHALLENGE_KINDS:
+        raise RuntimeError(f"unknown challenge kind {spec.get('kind')!r}")
+    return spec
+
+
+def challenge_latent(spec: dict, z: dict, ids, seed: int) -> np.ndarray:
+    """The S157 challenge latent; one implementation, used by the observer and by the scorer.
+
+    BIO and TWIN_EXACT group cells by their biological state and draw the same stateless noise, so
+    their latents, and therefore their observables, are identical: an exact semantic twin, in which
+    only the hidden interpretation (biology or capture) differs. TWIN_OPERATOR groups cells by the
+    operator that measured them instead."""
+    kind = spec["kind"]
+    if kind in ("BIO", "TWIN_EXACT"):
+        g = (np.asarray(z["state_index"]).astype(np.int64) == int(spec["k_star"]))
+    elif kind == "TWIN_OPERATOR":
+        g = np.isin(np.asarray(z["operator_index"]).astype(np.int64),
+                    np.asarray(spec["operator_set"], dtype=np.int64))
+    else:
+        raise RuntimeError(f"unknown challenge kind {kind!r}")
+    eps = T.normal(seed + CHALLENGE_STREAM, np.asarray(ids, dtype=np.uint64), 1)
+    return float(spec["delta"]) * g.astype(np.float64) + eps
+
+
 def depth_targets(ids, op, sup, qc, operator_ids, qprobs, mseed):
     ids_u = np.asarray(ids, dtype=np.uint64)
     zd = T.normal(mseed + 701, ids_u, 951); zi = T.normal(mseed + 704, ids_u, 954)
@@ -344,6 +380,7 @@ def observe(root: Path, seed: int, mseed: int | None,
     obs = root / "observable_raw" / out_name
     obs.mkdir(parents=True, exist_ok=True)
     tm = json.loads((truth_root / "TRUTH_MANIFEST.json").read_text())
+    challenge = load_challenge(truth_root)
     mseed = int(seed if mseed is None else mseed)
     truth_components = set(tm["enabled_components"])
     suppress = set(suppress or ())
@@ -381,6 +418,12 @@ def observe(root: Path, seed: int, mseed: int | None,
         # gene-specific detectability modulates preference within what is supported
         rel *= (1.0 / (1.0 + np.exp(-uni.logit_detect)))[None, :]
         rel *= sup
+        if challenge is not None:
+            # S157 paired challenge. The biological arm and its exact twin enter through IDENTICAL
+            # arithmetic on purpose: an exact semantic twin is defined by identical observables.
+            zc = challenge_latent(challenge, z, ids, seed)
+            mod = np.asarray(challenge["module_addresses"], dtype=np.int64)
+            rel[:, mod] *= np.exp(float(challenge["beta"]) * zc).astype(np.float32)[:, None]
         lib, det = depth_targets(ids, op, sup, qc, operator_ids, qprobs, mseed)
         if "C3" in truth_components and "C3" not in suppress:
             # BIOLOGY x MEASUREMENT-OPERATOR coupling. Measurement quality depends partly on
