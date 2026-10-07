@@ -43,6 +43,24 @@ Contacts unique to one map relative to the other two:
 - Neuronal: `62,444 / 93,290 = 66.94%`
 - Oligodendrocyte: `33,563 / 61,895 = 54.23%`
 
+## Anchor annotation check inside the same workbook
+
+There are `71,266` unique genomic 5-kb anchors in the microglia interactome. Each anchor was tested for interval overlap against enhancer and promoter annotations from the three same-study cell-type sheets.
+
+Enhancer overlap of microglia contact anchors:
+
+- microglia enhancers: `23,974 / 71,266 = 33.64%`
+- neuronal enhancers: `22,751 / 71,266 = 31.92%`
+- oligodendrocyte enhancers: `17,916 / 71,266 = 25.14%`
+
+Promoter overlap of microglia contact anchors:
+
+- microglia promoters: `12,598 / 71,266 = 17.68%`
+- neuronal promoters: `12,614 / 71,266 = 17.70%`
+- oligodendrocyte promoters: `12,493 / 71,266 = 17.53%`
+
+Interpretation: enhancer context carries modest same-study cell-type specificity, whereas promoter overlap is essentially non-discriminatory at this substrate level. Therefore a future specificity statistic should not treat promoter presence alone as evidence of microglial specificity.
+
 ## Scientific interpretation
 
 This is useful structural evidence: Nott Table S5 contains substantial cell-type-specific physical-contact structure under a same-study comparison. Therefore the Nott object can support a specificity test that asks whether a prospectively frozen JEPA program is preferentially wired in the relevant cell type relative to neuronal and oligodendrocyte comparators.
