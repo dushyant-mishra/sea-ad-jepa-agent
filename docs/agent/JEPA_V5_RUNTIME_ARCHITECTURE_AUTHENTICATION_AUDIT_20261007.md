@@ -1,6 +1,6 @@
 # V5 runtime architecture authentication audit — 2026-10-07
 
-Status: **RUNTIME CONVERGENCE PAUSED ON EMA-CONFIGURATION BINDING RED**
+Status: **PRESENTATION-NORMALIZED EMA MECHANICS RECOVERED; CANONICALIZATION / PERSISTENCE AUDIT IN PROGRESS**
 
 This checkpoint records the historical-spillover audit triggered before further PR #224 runtime changes. It does not authorize training, Stage A, real-RNA execution, target selection, or any production operating point.
 
@@ -18,45 +18,55 @@ V43 is explicitly a read-only/research teacher-target design layer. Its workflow
 
 Therefore the current low-level student/predictor/tokenizer mechanics are accepted as the latest authenticated reusable mechanics found in the audited lineage. Scientific teacher-target semantics remain owned by the scientific qualification lane and are not promoted by this runtime audit.
 
-## Confirmed historical spillover: EMA operating point
+## Confirmed historical spillover: EMA operating point versus EMA mechanics
 
-The 2026-09-15 current-authority handoff explicitly left `EMA presentation unit/half-life` OPEN and explicitly prohibited silently inheriting historical `EMA 0.996`, optimizer defaults, geometry, masking, or target semantics as current authority.
+The 2026-09-15/16 V5 current-authority lineage explicitly left the numeric EMA presentation half-life OPEN and prohibited silently inheriting historical `EMA 0.996` as current authority. User-supplied custody packages independently corroborate the same boundary: an older V3 configuration froze `.996`, while later V5 records separate mechanics from numeric authority and keep the current operating point unresolved.
 
-No later prospective closure of the EMA half-life/timescale was found in the searched authority/commit lineage. The current update function is already parameterized by an explicit `ema_momentum`; it does not hard-code 0.996. However current tests/rehearsal fixtures still commonly supply `.996`, and the current checkpoint/mechanical-authority chain does **not** bind the EMA configuration.
+The audit also recovered a newer authenticated V5 mechanical contract that PR #224 had omitted:
 
-This is a real proof defect: a restart or subsequent guarded update could use a different teacher timescale while retaining otherwise valid model/optimizer/scaler/checkpoint provenance.
+- `src/sea_ad_jepa/v5/ema_presentation_v1.py`
+- momentum is presentation-normalized: `exp(log(0.5) * presentations_this_update / half_life_presentations)`;
+- the source explicitly states that it **does not select a half-life**;
+- the associated historical `ema_timescale_authority_v1.py` separates `presentation_unit_id`, `half_life_presentations`, momentum-function identity and schedule authority, while keeping `training_authorized=False`.
 
-Accordingly:
+Therefore the canonical V5 EMA abstraction is **presentation-normalized**, not a fixed scalar momentum. The numeric half-life remains unselected.
 
-- `.996` is **NOT an authorized production EMA value**;
-- any occurrence in focused tests is a **test-only fixture value** unless a future scientific/operating-point authority prospectively selects it;
-- PR #224 must bind an explicit EMA-configuration identity to the mechanical checkpoint/authority path before runtime handoff;
-- the bound identity is mechanical provenance only and does not itself make the chosen EMA timescale scientifically optimal or production-authorized.
+A recovered candidate value of 16,249 successful presentations remains candidate evidence only; it is not frozen current authority. Historical `.996` remains an older V3/test value only.
 
-## RED established
+## RED / GREEN sequence preserved on GitHub
 
-Commits `d9051093633ad0990d0f77226d1a884d51ee591c` and `16a5946368e083cab4d0aafd7d80c179077166d6` added and executed the focused EMA-configuration-binding RED.
+1. Initial EMA-binding RED at `16a5946368e083cab4d0aafd7d80c179077166d6`: **35 existing tests passed; exactly 3 new failures** because no EMA configuration identity existed.
+2. A temporary constant-momentum successor was added. Before accepting it as canonical, the local custody / historical-lineage audit showed that this abstraction was too narrow.
+3. Presentation-normalized successor RED at `266246677353a5953a1f804e6e6ade711159bd83`: **38 existing tests passed; exactly 3 new failures** because `ema_presentation_v1.py` and a presentation-timescale identity were missing.
+4. Exact authenticated presentation mechanics were restored and the presentation identity added. Focused runtime CI passed at `288cca9d2473dedca34115367763cd821cc3ddb4`.
+5. Post-GREEN self-audit then found two spillovers: the runtime-source digest omitted the restored EMA mechanics, and the temporary constant-momentum issuer/runner remained an alternate executable route.
+6. Canonicalization RED at `f6b31a3ac96104adf5cf0b05c67d65cbd108038e`: **41 tests passed; exactly 2 failures**, isolated to those two known spillovers.
+7. The successor repair now adds the presentation EMA files to transitive runtime provenance and removes the constant-momentum issuer/runner in favor of a presentation-based authority and runner. Fresh CI is required before acceptance.
 
-GitHub CI result on `16a5946368e083cab4d0aafd7d80c179077166d6`:
+## Current canonical EMA semantics under test
 
-- 35 pre-existing focused runtime tests passed;
-- exactly 3 new EMA-configuration-binding tests failed;
-- all three failed because the canonical runtime has no explicit EMA-configuration identity/binding surface yet.
+The canonical rehearsal path must:
 
-This is the expected RED and is not accepted as a runtime regression.
+1. receive an explicit `half_life_presentations` and `presentation_unit_id`;
+2. use `SUCCESSFUL_BASE_CELL_PRESENTATIONS` as the current authenticated mechanical unit;
+3. derive the scalar momentum for each completed update from the number of base-cell presentations in that update;
+4. reject caller-supplied scalar-momentum override on the canonical presentation route;
+5. bind the EMA configuration identity to the exact parent runtime/checkpoint authority;
+6. remain completely non-authorizing for training or production use.
 
-## Required next repair
+No numeric half-life is selected by this runtime work.
 
-The next bounded repair must:
+## Required remaining self-audits before handoff
 
-1. define an explicit, deterministic identity for the EMA configuration actually used by the rehearsal;
-2. bind that identity to checkpoint/mechanical authority provenance rather than to an implicit historical default;
-3. reject configuration drift before teacher mutation on the canonical guarded path;
-4. carry the EMA configuration identity through completed/persisted proof sufficient to reject restart drift;
-5. retain `training_authorized=false`, `execution_authorized=false`, and `production_promotable=false`;
-6. avoid selecting a production EMA timescale or scientific teacher target.
+After the canonicalization repair is GREEN:
 
-After GREEN, perform a fresh bypass/spillover audit before returning to the previously established `runtime_contract` proof-field RED and PR #223 rebasing/binding.
+1. prove the EMA presentation configuration survives checkpoint persistence/restart and cannot drift silently;
+2. prove `presentations_seen` advances only after a successfully completed optimizer+EMA transition and matches the actual base-cell presentation count;
+3. ensure completed/persisted runtime proof carries sufficient EMA configuration provenance for #223 to reject mismatches;
+4. close the previously identified `runtime_contract` physical-proof field mismatch if still present;
+5. restack/revalidate PR #223 against the final #224 runtime head;
+6. execute q-safety proof on the joined V77 adapter + shared interface + canonical runtime path;
+7. run a final bypass and historical-spillover audit before any bounded synthetic mutation rehearsal is handed to Macha.
 
 ## Current classifications
 
@@ -67,9 +77,11 @@ After GREEN, perform a fresh bypass/spillover audit before returning to the prev
 | V4 predictor/IPB mechanics | AUTHENTICATED REUSABLE MECHANICS |
 | gene tokenizer mechanics | AUTHENTICATED REUSABLE MECHANICS |
 | scientific teacher target | UNRESOLVED / SCIENCE-LANE AUTHORITY |
-| EMA update mechanism | REUSABLE MECHANIC, CONFIGURATION BINDING INCOMPLETE |
-| EMA momentum / half-life | UNSET / NOT PRODUCTION-AUTHORIZED |
-| historical `.996` | TEST/HISTORICAL VALUE ONLY |
-| PR #224 runtime handoff | BLOCKED ON CURRENT RED + FINAL AUDIT |
+| EMA update mechanics | AUTHENTICATED PRESENTATION-NORMALIZED MECHANICS |
+| EMA presentation unit | SUCCESSFUL BASE-CELL PRESENTATIONS (mechanical unit) |
+| EMA numeric half-life | UNSET / NOT PRODUCTION-AUTHORIZED |
+| candidate half-life 16,249 presentations | CANDIDATE ONLY / NOT FROZEN AUTHORITY |
+| historical `.996` | HISTORICAL V3 / TEST VALUE ONLY |
+| PR #224 runtime handoff | BLOCKED UNTIL CANONICALIZATION + PERSISTENCE + FINAL JOINED AUDITS |
 
 Hard boundaries remain unchanged: TRAINING=OFF; MULTIMODAL_TRAINING=OFF; STAGE_A_EXECUTION=OFF; 500K=NOT_AUTHORIZED; STAGE4=NOT_AUTHORIZED; TEST=SEALED; MORABITO=PROTECTED.
