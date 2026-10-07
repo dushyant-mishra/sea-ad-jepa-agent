@@ -1,0 +1,104 @@
+{
+  "schema": "JEPA_V43_TEAM_ARCHITECTURE_COMPARISON_NONAUTHORIZING_V1",
+  "date": "2026-09-26",
+  "authority": {
+    "execution_authorized": false,
+    "training_authorized": false,
+    "audit_b_n1_opened": false,
+    "d_shared_g5_opened": false,
+    "protected_full104_outcomes_opened": false,
+    "scientific_target_selected": false,
+    "architecture_selected": false
+  },
+  "base_ref": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "historical_roles": {
+    "common_core_addresses": 17186,
+    "canonical_addresses": 41238,
+    "donors": 104,
+    "operators": 42,
+    "reader_fit_cells": 4553407,
+    "rare_head_historical_stage70_not_benchmark": true,
+    "stage71_real_vs_random_graph_lock_failed": true,
+    "pr163_competing_targets_unselected": true,
+    "pr169_versioned_repair_not_scientific_approval": true
+  },
+  "arms": [
+    {
+      "id": "A_SINGLE_RICH",
+      "teacher": [
+        "RICH_NATIVE"
+      ],
+      "student": [
+        "SINGLE_MASKED"
+      ],
+      "hypothesis": "One rich EMA teacher captures reproducible query-local state with minimal parameter overhead"
+    },
+    {
+      "id": "B_SHARED_MULTIPLE_HEADS",
+      "teacher": [
+        "COMMON_CORE_HEAD",
+        "FINE_NATIVE_HEAD",
+        "CONDITIONAL_RARE_HEAD"
+      ],
+      "student": [
+        "SHARED_CORE_FINE_RARE_HEADS"
+      ],
+      "hypothesis": "Independent head targets capture additional fine/rare state in one shared EMA backbone"
+    },
+    {
+      "id": "C_COMPLEMENTARY_TEACHER_TEAM",
+      "teacher": [
+        "INDEPENDENT_COMMON_CORE",
+        "INDEPENDENT_FINE_NATIVE",
+        "CONDITIONAL_INDEPENDENT_RARE"
+      ],
+      "student": [
+        "CORE_STUDENT",
+        "FINE_RARE_STUDENT"
+      ],
+      "hypothesis": "Complementary teacher evidence and specialist student capacity preserve unique supported rare state"
+    }
+  ],
+  "teacher_query_scalar_policy": "UNSET_REQUIRES_APPROVAL",
+  "student_query_scalar_policy": "MUST_EXCLUDE_DIRECT_SCALAR_AND_ALL_DERIVED_LEAKAGE",
+  "teacher_head_independent_biological_falsifiers": "UNSET_REQUIRES_APPROVAL",
+  "rare_state_eligibility_and_recurrence": "UNSET_REQUIRES_APPROVAL",
+  "independent_biology_measurement": "UNSET_REQUIRES_APPROVAL",
+  "train_population": "UNSET_REQUIRES_APPROVAL",
+  "donor_split": "UNSET_REQUIRES_APPROVAL",
+  "head_loss_weights": "UNSET_REQUIRES_APPROVAL",
+  "model_capacities_and_compute": "UNSET_REQUIRES_APPROVAL",
+  "masking_budgets": "UNSET_REQUIRES_APPROVAL",
+  "selection_thresholds": "UNSET_REQUIRES_APPROVAL",
+  "control_margins": "UNSET_REQUIRES_APPROVAL",
+  "query_policy_options": [
+    "TEACHER_RICH_MAY_SEE_Q_VALUE_BUT_MEASURE_SCALAR_DEPENDENCE",
+    "TEACHER_Q_EXCLUDED_WITH_TRUSTED_Q_INVARIANT_PREPROCESSING"
+  ],
+  "validity_rules": {
+    "unmeasured_gene_is_zero": false,
+    "rare_head_missing_support_abstains": true,
+    "rare_donors_independent_unit": true,
+    "diagnostic_teacher_disagreement_retained": true,
+    "teacher_weights_update_only_post_verified_optimizer": true
+  },
+  "mandatory_controls": [
+    "STUDENT_Q_COUNT_COUNTERFACTUAL_INVARIANCE",
+    "FULL_LIBRARY_DENOMINATOR_LEAKAGE_EXPECTED_FAIL",
+    "STRUCTURAL_UNMEASURED_NE_ZERO",
+    "DONOR_DUPLICATION_NO_PSEUDOREPLICATION",
+    "GENERIC_CELL_ONLY_COMPARATOR",
+    "QUERY_IDENTITY_ONLY_COMPARATOR",
+    "TECHNICAL_ONLY_COMPARATOR",
+    "QUERY_EXCHANGEABILITY",
+    "CAPACITY_AND_COMPUTE_MATCHED_SINGLE_TEACHER",
+    "RARE_EXPERT_VS_SHUFFLED_EXPERT",
+    "RARE_DONOR_RECURRENCE",
+    "SPECIALIST_NONCOLLAPSE",
+    "TEACHER_DISAGREEMENT_DOMAIN_AUDIT",
+    "REAL_VS_IDENTICAL_GRAPH_NEGATIVE_CONTROL",
+    "ORIGINAL_EXECUTED_TEST_EVIDENCE"
+  ],
+  "physically_executed_current_v5": false,
+  "notes": "All controls specified as directions/failure identities only; numerical thresholds and scientific approval deliberately UNSET. This file does not grant any V5 authority."
+}
