@@ -13,6 +13,8 @@ from sea_ad_jepa.v5.inactive_guarded_update_v1 import run_guarded_inactive_refer
 from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
     capture_prefreeze_bound_checkpoint,
     issue_prefreeze_authority_from_bound_checkpoint,
+    load_persisted_prefreeze_bound_checkpoint,
+    persist_prefreeze_bound_checkpoint,
     reference_checkpoint_sha256,
     restore_prefreeze_bound_checkpoint,
 )
@@ -221,6 +223,35 @@ def test_amp_checkpoint_resume_preserves_scaler_and_exact_two_update_trajectory(
     _module_state_equal(continuous,resumed)
     assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
     assert continuous_scaler.get_scale()==32.0
+
+
+def test_persisted_amp_checkpoint_resume_is_exact_and_independent_of_global_rng(tmp_path):
+    data=_case(); continuous=_modules(); continuous_scaler=_amp_scaler()
+    first=_run(continuous,data,update_index=0,scaler=continuous_scaler)
+    parent=_child_checkpoint(
+        continuous,data,first,update_index=0,scaler=continuous_scaler)
+
+    checkpoint_path=tmp_path/'signed-parent.pt'
+    artifact_digest=persist_prefreeze_bound_checkpoint(parent,checkpoint_path)
+    loaded=load_persisted_prefreeze_bound_checkpoint(
+        checkpoint_path,expected_sha256=artifact_digest)
+    assert loaded==parent
+
+    resumed=_modules(); resumed_scaler=_amp_scaler()
+    restore_prefreeze_bound_checkpoint(
+        resumed,loaded,premise_state_path=STATE_PATH,scaler=resumed_scaler)
+
+    torch.manual_seed(123456789)
+    _=torch.randn(4096)
+    ra=_run(continuous,data,update_index=1,scaler=continuous_scaler,parent=parent)
+    torch.manual_seed(987654321)
+    _=torch.randn(8192)
+    rb=_run(resumed,data,update_index=1,scaler=resumed_scaler,parent=loaded)
+
+    assert ra==rb
+    _module_state_equal(continuous,resumed)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+    assert ra['completed_guard_receipt']==rb['completed_guard_receipt']
 
 
 def test_reference_checkpoint_fails_closed_on_cursor_step_mismatch():
