@@ -1,0 +1,66 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_3",
+  "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and addenda 1-2",
+  "record_type": "AUDIT RECORD, written by hand",
+  "recorded_utc": "2026-10-07T02:30:56Z",
+  "head_when_recorded": "b1d8ca9fb0f1d03102c8e117e2792b0e3b100326",
+  "NEW_ENTRIES": [
+    {
+      "id": "S170",
+      "defect": "a git command on a heredoc-separated line ran in the main project worktree after an earlier step failed and the cd never ran",
+      "caught": "by the command's own failure: a stale index.lock (Aug 27, not this session's) blocked it; nothing was staged, committed or pushed there",
+      "fix": "every git command now names its worktree with git -C",
+      "status": "REPAIRED_IN_PRACTICE"
+    },
+    {
+      "id": "S171",
+      "defect": "the S157 scorer's bootstrap drew from one random stream shared across worlds",
+      "why_it_matters": "the exact twin would have received different intervals on byte-identical data and RED_2 would have reported a false leak",
+      "caught": "self-audit before the first scoring run",
+      "fix": "5357ac24: fixed resampling indices for every statistic",
+      "status": "REPAIRED"
+    },
+    {
+      "id": "S172",
+      "defect": "the shell transport rewrote a line continuation in the CI workflow into a literal backslash-n",
+      "why_it_matters": "the CI command would have broken",
+      "caught": "a byte-level check of the workflow before commit; an earlier escaped check was itself unreliable for the same reason",
+      "fix": "workflow written directly; verified to contain no backslash-n",
+      "status": "REPAIRED_BEFORE_COMMIT"
+    },
+    {
+      "id": "S173",
+      "defect": "the challenge builder's truth-identity check initially included TRUTH_MANIFEST.json",
+      "why_it_matters": "a manifest that legitimately differs between folders would have failed the check for the wrong reason",
+      "caught": "self-audit before commit",
+      "fix": "d532ca11: compare the truth data shards only",
+      "status": "REPAIRED_BEFORE_COMMIT"
+    }
+  ],
+  "S157_OUTCOME": {
+    "verdict": "NON_IDENTIFIABLE from same-assay RNA: the exact twin is NON_IDENTIFIABLE_BY_DESIGN under every context arm",
+    "operator_twin": "separated only by raw identity (exploratory positive control); lawful depth and coverage descriptors fail",
+    "identity_proxy": "the measurable-address count keys the operator for 95.6% of cells",
+    "weak_synthetic_state_structure": "the chosen state is not linearly recoverable from 20 components in NULL",
+    "records": [
+      "results/v77/V77_S157_PAIRED_CHALLENGE_PREREGISTRATION_V1.json",
+      "results/v77/V77_S157_CHALLENGE_WORLDS_BUILD_V1.json",
+      "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARM1_V1.json",
+      "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARMS_V1.json",
+      "results/v77/V77_S157_CONTEXT_ABLATION_SUMMARY_V1.json",
+      "results/v77/V77_S157_LINEAGE_CROSSWALK_V1.json",
+      "docs/agent/V77_S157_MULTIMODAL_HANDOFF_REQUIREMENTS.md"
+    ],
+    "status": "S157 RESOLVED AS A QUESTION; OPEN AS A DECISION for the deciding lane"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "mode": "ZERO_UPDATE",
+    "TEST_or_Morabito": false,
+    "five_hundred_K_or_stage_4": false,
+    "selections": null,
+    "runtime_work": false,
+    "S159_recentred": false,
+    "within_cohort_promoted": false
+  }
+}
