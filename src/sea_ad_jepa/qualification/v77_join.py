@@ -25,12 +25,36 @@ def _require_sha256(value: str, name: str) -> str:
 def require_executed_q_safety(
     status: QSafetyExecutionProofStatus,
     proof: BoundAdapterQSafetyProofV1 | None = None,
+    *,
+    adapter_id: str | None = None,
+    adapter_digest: str | None = None,
+    batch_scientific_identity_digest: str | None = None,
+    runtime_source_sha256: str | None = None,
 ) -> BoundAdapterQSafetyProofV1:
-    """Fail closed unless q-safety is backed by the typed adapter/runtime proof."""
+    """Require a typed q-safety proof bound to this exact adapter, batch and runtime."""
     if status is not QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME:
         raise ValueError("executed q-safety proof is required at the V77 joined boundary")
     if not isinstance(proof, BoundAdapterQSafetyProofV1):
         raise ValueError("typed executed q-safety proof is required at the V77 joined boundary")
+    if not isinstance(adapter_id, str) or not adapter_id.strip():
+        raise ValueError("exact adapter identity is required for executed q-safety proof")
+    if adapter_digest is None or batch_scientific_identity_digest is None or runtime_source_sha256 is None:
+        raise ValueError("exact adapter, batch and runtime digests are required for executed q-safety proof")
+
+    expected_adapter_digest = _require_sha256(adapter_digest, "adapter_digest")
+    expected_batch_digest = _require_sha256(
+        batch_scientific_identity_digest, "batch_scientific_identity_digest"
+    )
+    expected_runtime_digest = _require_sha256(runtime_source_sha256, "runtime_source_sha256")
+
+    if proof.adapter_id != adapter_id:
+        raise ValueError("executed q-safety proof adapter identity mismatch")
+    if proof.adapter_digest != expected_adapter_digest:
+        raise ValueError("executed q-safety proof adapter digest mismatch")
+    if proof.batch_scientific_identity_digest != expected_batch_digest:
+        raise ValueError("executed q-safety proof batch identity mismatch")
+    if proof.runtime_source_sha256 != expected_runtime_digest:
+        raise ValueError("executed q-safety proof runtime digest mismatch")
     return proof
 
 
