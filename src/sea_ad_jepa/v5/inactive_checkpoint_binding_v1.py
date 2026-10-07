@@ -230,6 +230,7 @@ class V5PrefreezeBoundCheckpointV1:
 class V5PersistedCheckpointProofV1:
     """Non-authorizing proof that one completed checkpoint survived physical round-trip validation."""
     schema: str
+    runtime_contract: str
     artifact_sha256: str
     logical_checkpoint_sha256: str
     premise_state_sha256: str
@@ -422,6 +423,7 @@ def persist_and_verify_completed_prefreeze_checkpoint(
         raise RuntimeError("completed guard receipt lacks a valid digest")
     return V5PersistedCheckpointProofV1(
         schema=PERSISTED_COMPLETION_PROOF_SCHEMA,
+        runtime_contract=loaded.runtime_contract,
         artifact_sha256=artifact_digest,
         logical_checkpoint_sha256=logical_digest,
         premise_state_sha256=loaded.premise_state_sha256,
