@@ -93,13 +93,30 @@ CI coverage itself initially omitted the new test; this was caught before claimi
 
 At `1e6e28d...`, the focused test step passed. The proof is minted only from an actually executed hidden-query perturbation and creates typed per-channel evidence for all required q-safety channels while remaining `execution_authorized=False`, `training_authorized=False`, `production_promotable=False`.
 
+## 2026-10-07 late update — canonical ZERO_UPDATE and physical adapter-source binding
+
+PR #228 advanced to `7664ce758c86b021b8614768a274edcb40f40783` while this audit branch was behind. The current changed-file surface is still constrained to workflow/plan, the V77 adapter, qualification join/zero-update bridge, and integration tests; inherited canonical V5 runtime source remains untouched.
+
+The canonical ZERO_UPDATE bridge now exists at `src/sea_ad_jepa/qualification/v77_zero_update.py`. It imports and executes the canonical V5 reference constructor/checkpoint path rather than defining a second teacher/student/optimizer/EMA implementation. It computes a source manifest over the exact inherited runtime modules, constructs student/teacher/predictor through `build_reference_modules`, executes forward mechanics under `torch.no_grad()`, and requires exact invariance of online parameters, teacher parameters, predictor parameters, optimizer state, checkpoint digest, optimizer step count and teacher presentation count. It explicitly records `optimizer_step_performed=False`, `ema_performed=False`, `training_authorized=False`, and `production_promotable=False`.
+
+A subsequent RED gate `787915d67575501c6fd4629c2a1c0c555f62da1f` required the ZERO_UPDATE receipt to be bound not only to the canonical V5 source manifest but also to the physical V77 adapter source. GitHub Actions run `37663195693` executed the joined test step and failed, so this is a real CI RED rather than an unexecuted test.
+
+The branch then added a narrow source-binding facade at `src/sea_ad_jepa/qualification/v77_bound_zero_update.py` and updated the workflow/dispatch surface through `7664ce758c86b021b8614768a274edcb40f40783`. This facade is intentionally non-owning: it hashes the physical V77 adapter source, rejects a batch whose adapter digest is not that exact source digest, and delegates to the canonical ZERO_UPDATE implementation. No canonical V5 runtime mechanics were modified. As of this audit update, GitHub has not yet returned a workflow run for `7664ce758...`, so this candidate is **verification pending**, not GREEN.
+
+## Separate S174 real-data repair lane — relevant but not part of PR #228
+
+Macha independently value-verified S174: the historical Stage81A3R TRAIN cache carries the HVS/SEA-AD feature-axis scramble. The full TRAIN cache was rebuilt on separate branch `claude/s174-train-cache-rebuild-20261007` by fresh gene-ID join, with the old cache left untouched.
+
+At rebuild head `70a27edb68319020104dc722aef9e2ef886ba74c`, frozen gates G2-G6 pass, while frozen G1 fails narrowly on SEA-AD because the independent reread does not follow 897 pre-existing provenance remappings. The follow-up explanation accounts for every discrepancy: HVS is exact, all non-remapped SEA-AD addresses are exact, every remapped entry equals its physical source count, and 100% of G1 disagreements are confined to the remap set. The frozen G1 remains FAILED; it is not retroactively rewritten.
+
+Owner guidance recorded here: define and freeze a successor G1b prospectively. G1b may authorize the rebuilt cache only if the existing explanatory checks rerun exactly, there are zero unexplained discrepancies, collision exclusions remain unchanged, and the rebuilt-cache hashes remain identical. The separate identity question involving 353 historical Ensembl-ID remappings to different symbols must not be tuned based on replay outcomes. S149 and other affected real-data conclusions remain suspended until corrected replay.
+
 ## Remaining blockers before any bounded mutation
 
-1. Execute the joined shared qualification path with this bound q-safety evidence.
-2. Execute a canonical **ZERO_UPDATE** teacher/student/predictor forward path and prove online parameters, teacher parameters/age, predictor, optimizer and EMA state are unchanged.
-3. Strengthen physical row/value binding to cover the full Sept-8 chain: payload location/digest, donor identity, matrix slot/feature-space identity, reset/global/local substitutions, correct digest/wrong row and correct logical row/wrong physical payload.
-4. Run the inherited runtime-binding regression tests, proving V1 cannot promote and V2 remains the only mutation-promotion route.
-5. Perform final changed-file/spillover audit, including no `.996` inheritance and no alternate optimizer/EMA/checkpoint route.
-6. Confirm the correct 2K rehearsal lineage preserves all 42 observation operators before any later bounded rehearsal.
+1. Obtain fresh GitHub Actions evidence for PR #228 head `7664ce758...` and close the physical adapter-source binding RED→GREEN cycle.
+2. Strengthen physical row/value binding to cover the full Sept-8 chain: payload location/digest, donor identity, matrix slot/feature-space identity, reset/global/local substitutions, correct digest/wrong row and correct logical row/wrong physical payload.
+3. Run the inherited runtime-binding regression tests, proving V1 cannot promote and V2 remains the only mutation-promotion route.
+4. Perform final changed-file/spillover audit, including no `.996` inheritance and no alternate optimizer/EMA/checkpoint route.
+5. Confirm the correct 2K rehearsal lineage preserves all 42 observation operators before any later bounded rehearsal.
 
 Only after those gates are GREEN may exact runtime/interface/adapter/join SHAs be frozen for the preregistered tiny **synthetic** mutation rehearsal. Production or real-RNA training remains unauthorized.
