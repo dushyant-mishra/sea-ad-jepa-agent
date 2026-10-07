@@ -1,4 +1,7 @@
 import inspect
+from dataclasses import replace
+
+import pytest
 
 from tests.integration.test_v77_canonical_zero_update import _batch, _bindings, _proof
 
@@ -55,6 +58,42 @@ def test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload(tmp
     assert len(receipt["typed_continuation_sha256"]) == 64
     assert len(receipt["completed_guard_receipt_digest"]) == 64
     assert len(receipt["presentation_ema_completion_proof_digest"]) == 64
+    assert receipt["adapter_source_sha256"] == adapter_digest
+    assert len(receipt["mutation_runtime_source_sha256"]) == 64
     assert receipt["half_life_presentations"] == 1000
     assert receipt["training_authorized"] is False
     assert receipt["production_promotable"] is False
+
+
+def test_bounded_mutation_rejects_self_consistent_fake_adapter_binding_before_mutation(tmp_path):
+    from sea_ad_jepa.qualification import v77_bound_zero_update, v77_bounded_mutation
+
+    real_digest = v77_bound_zero_update.canonical_v77_adapter_source_sha256()
+    fake_batch = replace(_batch(real_digest), adapter_digest="0" * 64)
+    runtime_digest = v77_bound_zero_update.canonical_v5_runtime_source_sha256()
+
+    with pytest.raises(ValueError, match="adapter source digest"):
+        v77_bounded_mutation.run_bounded_synthetic_mutation(
+            fake_batch,
+            _bindings(fake_batch),
+            _proof(fake_batch, runtime_digest),
+            runtime_digest,
+            8113002,
+            tmp_path / "fake-adapter.pt",
+        )
+    assert not (tmp_path / "fake-adapter.pt").exists()
+
+
+def test_bounded_mutation_rejects_reuse_of_completed_rehearsal_path(tmp_path):
+    from sea_ad_jepa.qualification import v77_bound_zero_update, v77_bounded_mutation
+
+    adapter_digest = v77_bound_zero_update.canonical_v77_adapter_source_sha256()
+    batch = _batch(adapter_digest)
+    runtime_digest = v77_bound_zero_update.canonical_v5_runtime_source_sha256()
+    path = tmp_path / "single-use.pt"
+    args = (batch, _bindings(batch), _proof(batch, runtime_digest), runtime_digest, 8113002, path)
+
+    first = v77_bounded_mutation.run_bounded_synthetic_mutation(*args)
+    assert first["optimizer_step_after"] == 1
+    with pytest.raises(ValueError, match="already exists"):
+        v77_bounded_mutation.run_bounded_synthetic_mutation(*args)
