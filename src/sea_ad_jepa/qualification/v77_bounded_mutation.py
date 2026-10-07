@@ -18,6 +18,7 @@ from sea_ad_jepa.v5.inactive_update_reference import (
 from .physical_binding_v2 import PhysicalRowValueBindingV2
 from .pipeline import QualificationBatchV1
 from .receipts import BoundAdapterQSafetyProofV1, DataKind, QSafetyExecutionProofStatus
+from .v77_bound_zero_update import canonical_v77_adapter_source_sha256
 from .v77_join import require_executed_q_safety
 from .v77_zero_update import (
     _optimizer_digest,
@@ -55,6 +56,12 @@ def run_bounded_synthetic_mutation(
         raise ValueError("bounded rehearsal init_seed differs from preregistration")
     if not isinstance(persistence_path, Path):
         persistence_path = Path(persistence_path)
+    if persistence_path.exists():
+        raise ValueError("bounded rehearsal persistence path already exists")
+
+    actual_adapter_digest = canonical_v77_adapter_source_sha256()
+    if batch.adapter_digest != actual_adapter_digest:
+        raise ValueError("adapter source digest does not match the canonical V77 adapter source")
 
     actual_runtime = canonical_v5_runtime_source_sha256()
     if runtime_source_sha256 != actual_runtime:
@@ -219,9 +226,11 @@ def run_bounded_synthetic_mutation(
         "schema": "V77_BOUNDED_SYNTHETIC_MUTATION_REHEARSAL_V1",
         "verdict": SUCCESS_VERDICT,
         "batch_scientific_identity_digest": batch.scientific_identity.digest(),
+        "adapter_source_sha256": actual_adapter_digest,
         "physical_bindings_digest": physical_bindings_digest,
         "q_safety_proof_digest": q_safety_proof.digest(),
         "runtime_source_sha256": actual_runtime,
+        "mutation_runtime_source_sha256": parent.runtime_source_sha256,
         "optimizer_step_before": report["optimizer_step_before"],
         "optimizer_step_after": report["optimizer_step_after"],
         "teacher_presentations_before": 0,
