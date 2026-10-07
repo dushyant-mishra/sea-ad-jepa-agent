@@ -57,7 +57,13 @@ def main():
     ap.add_argument("--addresses", type=int, default=41238)
     ap.add_argument("--seed", type=int, default=20261006)
     ap.add_argument("--only", default=None)
+    ap.add_argument("--acknowledge-pooled-reference-s149", action="store_true",
+                    help="required: the pooled envelopes are composition-confounded (S149)")
     a = ap.parse_args()
+    if not a.acknowledge_pooled_reference_s149:
+        sys.exit("refusing: this search scores candidates against the POOLED real envelopes, which are "
+                 "dominated by cohort composition (S149); its counts are not for decisions. Pass "
+                 "--acknowledge-pooled-reference-s149 to reproduce it anyway.")
 
     expr = json.loads(Path("results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"]
     det = json.loads(Path("results/v77/V77_REAL_DETECTION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"]
@@ -90,6 +96,7 @@ def main():
                  obs["transitivity"], r["t5_observed"]))
 
     rec = dict(schema="V77_SUBSTATE_FAMILY_SEARCH_V1",
+               pooled_reference_status="COMPOSITION_CONFOUNDED_S149__COUNTS_NOT_FOR_DECISIONS",
                smoke_scale=dict(cells=a.cells, addresses=a.addresses, seed=a.seed),
                t5_real=T5_REAL, candidates=out,
                headline_target=dict(statistic="transitivity", real=0.8871,

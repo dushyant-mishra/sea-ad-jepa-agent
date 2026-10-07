@@ -72,7 +72,7 @@ DET_FLOOR = 0.05                                     # frozen pooled universe fl
 N_HVG = 3000                                         # frozen pooled gene count
 N_BOOT = 24                                          # frozen pooled replicate count
 SEED = 20261006                                      # frozen pooled seed
-QUANTILES = (0.05, 0.95)                             # frozen pooled acceptance rule
+QUANTILES = (0.05, 0.95)                             # inherited percentile rule (S159 open)
 
 
 def _git(*args):

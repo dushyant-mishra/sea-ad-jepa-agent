@@ -93,7 +93,25 @@ def signed_world(root: Path):
     return W
 
 
-def measure(root: Path) -> dict:
+def _require_repaired_support(root, allow_pre_repair_world):
+    """Refuse a world observed before the S146/S147 support repair unless historical reproduction
+    is requested explicitly. Such worlds carry swapped and double-counted structural support, and
+    measuring them silently would bring the old support semantics back."""
+    import importlib.util as _ilu
+    spec = _ilu.spec_from_file_location("v77_observer_rule_source", HERE / "build_v77_fullscale_rna_observer_v2.py")
+    obs = _ilu.module_from_spec(spec); spec.loader.exec_module(obs)
+    man = json.loads((Path(root) / "observable_raw" / "FULLSCALE_V2_CANONICAL_sharded" /
+                      "FULLSCALE_V2_MANIFEST.json").read_text())
+    rule = man.get("structural_support_rule")
+    if rule != obs.STRUCTURAL_SUPPORT_RULE and not allow_pre_repair_world:
+        raise RuntimeError(f"{root}: observed with support rule {rule!r}, not {obs.STRUCTURAL_SUPPORT_RULE}; "
+                           "pre-repair worlds carry swapped and double-counted support (S146, S147). "
+                           "Pass allow_pre_repair_world=True only to reproduce historical numbers.")
+    return rule
+
+
+def measure(root: Path, allow_pre_repair_world: bool = False) -> dict:
+    support_rule = _require_repaired_support(root, allow_pre_repair_world)
     v3 = _load("v77_oracle_v3", "v77_component_oracle_v3.py")
     W = signed_world(root)
     S_signed = W.signed_scores
@@ -155,6 +173,7 @@ def measure(root: Path) -> dict:
 
     return dict(
         root=str(root), n_cells=W.n_cells, n_addresses=W.n_addresses,
+        structural_support_rule=support_rule, pre_repair_world=bool(allow_pre_repair_world),
         n_modules=len(names),
         modules_with_own_sign_vector=int(W.signed_available.sum()),
         modules_without=int((~W.signed_available).sum()),
@@ -170,8 +189,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--allow-pre-repair-world", action="store_true",
+                    help="only to reproduce historical numbers on worlds observed before S146/S147")
     a = ap.parse_args()
-    r = measure(Path(a.root))
+    r = measure(Path(a.root), a.allow_pre_repair_world)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(r, indent=2) + "\n")
     cs = r["v4_signed"]["component_specific"]

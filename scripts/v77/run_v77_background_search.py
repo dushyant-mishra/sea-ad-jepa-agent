@@ -60,9 +60,15 @@ def main():
     ap.add_argument("--cells", type=int, default=4000)
     ap.add_argument("--addresses", type=int, default=41238)
     ap.add_argument("--n-hvg", type=int, default=3000)
+    ap.add_argument("--acknowledge-pooled-reference-s149", action="store_true",
+                    help="required: the pooled envelope is composition-confounded (S149)")
     ap.add_argument("--seed", type=int, default=20261006)
     ap.add_argument("--only", default=None, help="comma-separated candidate ids")
     a = ap.parse_args()
+    if not a.acknowledge_pooled_reference_s149:
+        sys.exit("refusing: this search scores candidates against the POOLED real envelope, which is "
+                 "dominated by cohort composition (S149); its verdicts are not for decisions. Pass "
+                 "--acknowledge-pooled-reference-s149 to reproduce it anyway.")
 
     env = json.loads(Path(a.envelope).read_text())
     E = env["ACCEPTANCE_ENVELOPES"]
@@ -93,6 +99,7 @@ def main():
                                                          results[cid]["verdict"]))
 
     rec = dict(schema="V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+               pooled_reference_status="COMPOSITION_CONFOUNDED_S149__VERDICTS_NOT_FOR_DECISIONS",
                envelope_source=dict(path=a.envelope, schema=env["schema"]),
                smoke_scale=dict(cells=a.cells, addresses=a.addresses, n_hvg=a.n_hvg, seed=a.seed),
                t5_real_reference=t5_env,

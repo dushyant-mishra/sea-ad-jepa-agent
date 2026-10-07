@@ -136,7 +136,25 @@ def default_reader(W, S, name, y, kind="r2"):
     return dict(component=name, statistic="module_score_r2", r2=sp.r2(S, y))
 
 
-def measure(root: Path) -> dict:
+def _require_repaired_support(root, allow_pre_repair_world):
+    """Refuse a world observed before the S146/S147 support repair unless historical reproduction
+    is requested explicitly. Such worlds carry swapped and double-counted structural support, and
+    measuring them silently would bring the old support semantics back."""
+    import importlib.util as _ilu
+    spec = _ilu.spec_from_file_location("v77_observer_rule_source", Path(__file__).resolve().parent / "build_v77_fullscale_rna_observer_v2.py")
+    obs = _ilu.module_from_spec(spec); spec.loader.exec_module(obs)
+    man = json.loads((Path(root) / "observable_raw" / "FULLSCALE_V2_CANONICAL_sharded" /
+                      "FULLSCALE_V2_MANIFEST.json").read_text())
+    rule = man.get("structural_support_rule")
+    if rule != obs.STRUCTURAL_SUPPORT_RULE and not allow_pre_repair_world:
+        raise RuntimeError(f"{root}: observed with support rule {rule!r}, not {obs.STRUCTURAL_SUPPORT_RULE}; "
+                           "pre-repair worlds carry swapped and double-counted support (S146, S147). "
+                           "Pass allow_pre_repair_world=True only to reproduce historical numbers.")
+    return rule
+
+
+def measure(root: Path, allow_pre_repair_world: bool = False) -> dict:
+    _require_repaired_support(root, allow_pre_repair_world)
     ld = _loader()
     W = ld.load_v2_world(Path(root))
     S, names = W.module_scores, W.module_names
