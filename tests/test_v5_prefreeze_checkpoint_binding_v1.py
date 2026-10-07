@@ -15,7 +15,6 @@ from sea_ad_jepa.v5.inactive_update_reference import build_reference_modules
 
 ROOT = Path(__file__).resolve().parents[1]
 PREMISE = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
-CHECKPOINT_BINDING = ROOT / "src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py"
 
 
 def _modules():
@@ -53,21 +52,27 @@ def test_capture_binds_frozen_premise_and_remains_non_authorizing():
 
 
 def test_checkpoint_provenance_binds_actual_canonical_runtime_not_legacy_guard():
-    source = CHECKPOINT_BINDING.read_text(encoding="utf-8")
+    bound = tuple(binding.CANONICAL_RUNTIME_SOURCE_FILES)
     required = (
         "inactive_update_reference.py",
         "inactive_guarded_update_v1.py",
         "prefreeze_runtime_authority.py",
         "inactive_checkpoint_binding_v1.py",
+        "_inactive_checkpoint_binding_impl_v1.py",
+        "ema_presentation_v1.py",
+        "ema_bound_runtime_proof_v1.py",
+        "_ema_bound_runtime_proof_impl_v1.py",
+        "ema_persisted_continuation_v2.py",
         "data_first_geometry.py",
         "keyed_dropout_prototype_v2.py",
         "keyed_rng_contract_v2.py",
-        "ipb_jepa.py",
-        "gene_tokenizer.py",
+        "../v4/ipb_jepa.py",
+        "../v4/gene_tokenizer.py",
     )
     for name in required:
-        assert name in source, f"checkpoint runtime provenance omits {name}"
-    assert "inactive_runtime_step_guard_v1.py" not in source
+        assert name in bound, f"checkpoint runtime provenance omits {name}"
+    assert "inactive_runtime_step_guard_v1.py" not in bound
+    assert len(bound) == len(set(bound)), "runtime provenance contains duplicate source entries"
 
 
 def test_restore_roundtrip_requires_exact_premise_and_preserves_mechanics_state():
