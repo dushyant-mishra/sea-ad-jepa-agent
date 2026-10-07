@@ -1,0 +1,98 @@
+{
+  "schema": "JEPA_RUNTIME_INTERFACE_CHAT_CUSTODY_MANIFEST_20261007_V1",
+  "created_date": "2026-10-07",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "custody_branch": "handoff/jepa-20261007-runtime-interface-custody",
+  "branch_base": "e83bb8d90bbabefdfe6bfa7c5dfff994d7a41005",
+  "canonical_runtime_checkpoint": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+  "runtime_pr": 224,
+  "shared_interface_successor_pr": 226,
+  "shared_interface_status": "CLEAN_RESTACK_ON_CANONICAL_RUNTIME__CI_GREEN__DRAFT_NONAUTHORIZING",
+  "prior_exact_hash_custody_commit": "cb7a98d00359eecece8525b23c43fbc8578c69ef",
+  "prior_exact_hash_manifest": "docs/agent/archive/chat_runtime_20261003/CHAT_RUNTIME_CUSTODY_MANIFEST_20261003_V2.json",
+  "verified_chat_runtime_artifacts_from_prior_custody": [
+    {"name":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"},
+    {"name":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"},
+    {"name":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"},
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"},
+    {"name":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"},
+    {"name":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56"}
+  ],
+  "split_expression_reassembly": {
+    "assembly_order": [
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002"
+    ],
+    "bytes": 607959761,
+    "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "matches_supplied_checksum_csv": true,
+    "verification_source": "prior custody commit cb7a98d00359eecece8525b23c43fbc8578c69ef"
+  },
+  "user_reported_local_candidates": [
+    {
+      "path": "C:/Users/dushy/Downloads/JEPA_CHAT_EXCLUSIVE_FINAL_SOURCES_20261005.zip",
+      "reported_sha256": "7A036B5CCF9965088D7730A54715E257E478D9BB7D768D34FE37E4BA3441BF34",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "HISTORICAL_CUSTODY_EVIDENCE__NOT_CURRENT_EMA_AUTHORITY"
+    },
+    {
+      "path": "C:/Users/dushy/Downloads/JEPA_NEW_CHAT_HANDOFF_20260916_V5_CURRENT.zip",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "HIGH_VALUE_CURRENT_AUTHORITY_HISTORY__EMA_TIMESCALE_OPEN"
+    },
+    {
+      "path": "C:/Users/dushy/Downloads/TEACHER_STUDENT_V5_ELIGIBLE_DONOR_ESTIMATOR_CANDIDATE_20260909.zip",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "EMA_HALF_LIFE_16249_CANDIDATE_ONLY__NOT_FROZEN"
+    },
+    {
+      "path": "C:/Users/dushy/Downloads/TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_REVIEW_PACKAGE.zip",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "HISTORICAL_V3_EMA_0_996_AUTHORITY__NOT_CURRENT_V5"
+    },
+    {
+      "path": "C:/Users/dushy/Downloads/JEPA_NEW_CHAT_HANDOFF_20260929_V63_AUDITED.md",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "LATER_GOVERNANCE_HISTORY"
+    },
+    {
+      "path": "D:/Jepa project/CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2",
+      "verification": "USER_REPORTED_NOT_REHASHED_IN_THIS_SESSION",
+      "classification": "FORENSIC_REFERENCE__NOT_CURRENT_AUTHORITY"
+    }
+  ],
+  "reported_local_recovery_branch": {
+    "name": "custody/local-only-jepa-recovery-20261006",
+    "sha": "c86dac574bdf99f228d3e2040673855c701b10c4",
+    "reported_status": "already pushed to origin after local branch/worktree/stash audit",
+    "notable_classification": "old PROD41K/T1 checkpoint forensic-only due to 48 gradient-dead mandatory tensors on historical fp16 path"
+  },
+  "scientific_runtime_invariants": [
+    "RICH_TEACHER_DESIRABLE__FULL_RICH_STATE_NOT_GENERALLY_IDENTIFIABLE_FROM_PARTIAL_RNA",
+    "DETERMINISTIC_V5_TEACHER_BLOCK_LOSS_IS_MECHANICS_FIXTURE_ONLY__NOT_TARGET_AUTHORITY",
+    "EMA_MECHANICS_PRESENTATION_NORMALIZED__NUMERIC_HALF_LIFE_UNSET",
+    "HISTORICAL_0_996_IS_V3_ONLY__NOT_CURRENT_V5_AUTHORITY",
+    "COORDINATES_LOGICAL_IDENTITY_PAYLOAD_PROVENANCE_AND_CONSUMED_VALUES_MUST_BE_ONE_PROOF_CHAIN",
+    "TD23_RESET_ROW_ALIAS_MUST_NEVER_RECUR",
+    "BOUND_RUNTIME_MUTATION_PROOF_V1_DIAGNOSTIC_ONLY",
+    "MUTATION_PROMOTION_REQUIRES_TYPED_PRESENTATION_EMA_V2_PHYSICAL_PROOF",
+    "EXECUTED_Q_SAFETY_IS_SEPARATE_FROM_RUNTIME_PROVENANCE",
+    "RAW_SOURCE_OPERATOR_ID_NOT_AUTOMATICALLY_AUTHORIZED_AS_LEARNED_COVARIATE"
+  ],
+  "hard_boundaries": {
+    "TRAINING": "OFF",
+    "STAGE_A_EXECUTION": "OFF",
+    "MULTIMODAL_TRAINING": "OFF",
+    "500K": "NOT_AUTHORIZED",
+    "STAGE4": "NOT_AUTHORIZED",
+    "TEST": "SEALED",
+    "MORABITO": "PROTECTED"
+  },
+  "large_binary_policy": "Do not duplicate large scientific binaries into ordinary Git history. Preserve exact size/hash/inventory/recovery provenance; hash custody alone does not establish scientific validity.",
+  "next_gate": "JOINED_V77_ADAPTER_PLUS_SHARED_INTERFACE_V2_PLUS_CANONICAL_RUNTIME_ZERO_UPDATE_QSAFE_AND_ROW_VALUE_PROVENANCE_ATTACKS",
+  "handoff_document": "docs/agent/JEPA_RUNTIME_INTERFACE_CUSTODY_AND_HANDOFF_20261007.md"
+}
