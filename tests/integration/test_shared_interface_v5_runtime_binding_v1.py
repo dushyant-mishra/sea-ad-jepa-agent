@@ -87,7 +87,7 @@ def _provenance(bound_proof):
     return QualificationProvenanceReceiptV1(
         experiment_run_id="joined-runtime-proof-001",
         data_kind=DataKind.SYNTHETIC,
-        governance_digest="a" * 64,
+        governance_digest=bound_proof.governance_digest,
         protocol_digest="b" * 64,
         adapter_id="integration-fixture-v1",
         adapter_digest="c" * 64,
@@ -130,6 +130,7 @@ def test_actual_persisted_v5_proof_binds_shared_mutation_status(tmp_path):
     receipt = _provenance(bound)
     assert receipt.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME
     assert receipt.q_safety_execution_proof_status is QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
+    assert receipt.governance_digest == physical_proof.governance_digest
     assert receipt.runtime_successor_digest == physical_proof.runtime_source_sha256
     assert receipt.checkpoint_digest == physical_proof.artifact_sha256
 
