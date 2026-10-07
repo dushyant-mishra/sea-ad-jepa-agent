@@ -4,11 +4,13 @@ import pytest
 import torch
 
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
-import sea_ad_jepa.v5.ema_bound_runtime_proof_v1 as ema_binding
 from sea_ad_jepa.v5.ema_bound_runtime_proof_v1 import (
     PRESENTATION_UNIT_SUCCESSFUL_BASE_CELLS,
     issue_presentation_ema_bound_authority_from_checkpoint,
     run_presentation_ema_bound_guarded_reference_update,
+)
+from sea_ad_jepa.v5.ema_persisted_continuation_v2 import (
+    persist_presentation_ema_continuation_checkpoint,
 )
 from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
     capture_prefreeze_bound_checkpoint,
@@ -104,11 +106,12 @@ def test_physical_ema_proof_rejects_self_consistent_but_false_presentation_curso
         completed_guard_receipt=report["completed_guard_receipt"],
     )
 
-    with pytest.raises(RuntimeError, match="presentation|cursor|teacher age"):
-        ema_binding.persist_and_verify_presentation_ema_checkpoint(
+    with pytest.raises(RuntimeError, match="presentation|cursor|teacher.age|teacher-age"):
+        persist_presentation_ema_continuation_checkpoint(
             forged_child,
-            tmp_path / "forged-age.pt",
+            tmp_path / "forged-age.json",
             premise_state_path=PREMISE,
+            parent_checkpoint=parent,
             authority=authority,
             completed_update_proof=report["presentation_ema_completion_proof"],
             half_life_presentations=HALF_LIFE,
