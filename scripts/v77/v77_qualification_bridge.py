@@ -22,6 +22,15 @@ WHAT IT AUTHENTICATES, from the producer side:
 
 Visibility classes map one-to-one from the adapter's structures; nothing ORACLE_ONLY enters the
 batch, and the oracle record stays outside, sealed.
+
+RESTRICTION ON OBSERVATION CONTEXT, recorded when a3e272ba was accepted as the synthetic plumbing
+baseline. Raw source_index and operator_index are authenticated measurement context and
+provenance for qualification. They are NOT automatically authorized learned model covariates: a
+model given raw study or operator identity can memorise which experiment produced a cell instead
+of learning the measurement process. Any production observation-context representation must be
+approved by the real-data scientific lane and should encode defensible measurement properties
+(depth, coverage, capture, chemistry) rather than unrestricted dataset identity. The plumbing
+qualification below passes them as LAWFUL_OPERATOR_CONTEXT only because it learns nothing.
 """
 from __future__ import annotations
 
@@ -47,6 +56,11 @@ INTERFACE_COMMIT = "f6d63b2f53209786e3c45e7545b9bd442838a3d4"
 INTERFACE_MODULES = ("canonical", "protocol", "visibility", "identity", "qsafe", "receipts",
                      "authorities", "lifecycle", "oracle", "pipeline")
 UNSET = "UNSET_REQUIRES_APPROVAL"
+OBSERVATION_CONTEXT_RESTRICTION = dict(
+    raw_identity_fields=["source_index", "operator_index"],
+    status="AUTHENTICATED_MEASUREMENT_CONTEXT__NOT_AN_AUTHORIZED_LEARNED_COVARIATE",
+    production_observation_context="requires real-data scientific-lane approval; should encode defensible "
+                                   "measurement properties, not unrestricted dataset identity")
 PACKAGE_NAME = "v77_shared_qualification_interface"
 
 
@@ -325,6 +339,7 @@ def main():
                             mutation_proof_status=out.mutation_proof_status.value,
                             q_safety_execution_proof_status=out.q_safety_execution_proof_status.value),
         oracle=dict(digest=conv.oracle.digest(), status="held outside the batch, sealed, not unblinded"),
+        observation_context_restriction=OBSERVATION_CONTEXT_RESTRICTION,
         adapter_provenance_digest=canon(json.loads(json.dumps(conv.provenance, default=str))),
         command=" ".join(["python", "scripts/v77/v77_qualification_bridge.py", *sys.argv[1:]]),
         source_commit=head, provenance_status="CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED",

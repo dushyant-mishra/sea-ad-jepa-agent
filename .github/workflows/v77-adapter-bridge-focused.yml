@@ -1,0 +1,72 @@
+name: V77 adapter, bridge and world tests
+
+# Remote re-run of the whole V77 test suite: the synthetic adapter, the PR #223 bridge, producer
+# identity, structural support, the harness and the sparse oracle. Same library versions as the
+# local evidence, so a pass here is the same suite on an independent machine.
+#
+# The canonical address registry is not in the current tree. It is restored from the commit that
+# froze it (95d2cafe, on main's history) and verified against its pinned SHA-256 before any test
+# runs. The shared qualification interface is checked out at its pinned commit (PR #223). A
+# skipped test proves nothing, so any skip fails this job.
+
+on:
+  push:
+    branches:
+      - claude/v77-synthetic-premise-custody-20261005
+    paths:
+      - scripts/v77/**
+      - scripts/v64/v73_full104_qc_calibration.py
+      - scripts/v64/v73_full104_population_geometry.py
+      - tests/v77/**
+      - .github/workflows/v77-adapter-bridge-focused.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v77-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      QUALIFICATION_INTERFACE_SHA: f6d63b2f53209786e3c45e7545b9bd442838a3d4
+      REGISTRY_COMMIT: 95d2cafe5cde68773f81c4aa64afc5788ae1d73b
+      REGISTRY_PATH: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+      REGISTRY_SHA256: 7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out the shared qualification interface at its pinned commit (PR 223)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.QUALIFICATION_INTERFACE_SHA }}
+          path: qualification-interface
+      - name: Restore the canonical address registry from its freezing commit and verify it
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$REGISTRY_COMMIT"
+          mkdir -p "$(dirname "$REGISTRY_PATH")"
+          git show "$REGISTRY_COMMIT:$REGISTRY_PATH" > "$REGISTRY_PATH"
+          echo "$REGISTRY_SHA256  $REGISTRY_PATH" | sha256sum -c -
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - run: python -m pip install --disable-pip-version-check numpy==1.24.2 scipy==1.10.1 pytest==6.2.4
+      - name: Run the V77 suite with zero skips
+        env:
+          V77_QUALIFICATION_INTERFACE: ${{ github.workspace }}/qualification-interface
+        run: |
+          set -o pipefail
+          python --version
+          test "$(git -C qualification-interface rev-parse HEAD)" = "$QUALIFICATION_INTERFACE_SHA"
+          python -m pytest -q -rsx -p no:cacheprovider --junitxml=v77_suite_junit.xml tests/v77 | tee v77_suite.log
+          if grep -qiE "[0-9]+ (skipped|xfailed|deselected)" v77_suite.log; then
+            echo "FAIL: a V77 test did not execute"
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v77-suite-junit
+          path: |
+            v77_suite_junit.xml
+            v77_suite.log
