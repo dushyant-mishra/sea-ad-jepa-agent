@@ -1,0 +1,54 @@
+{
+  "schema": "V77_SYNTHETIC_PLUMBING_CHECKPOINT_RECEIPT_V1",
+  "claim_namespace": "SYNTHETIC_PIPELINE_ANTICHEAT_REHEARSAL",
+  "recorded_utc": "2026-10-07T02:06:34Z",
+  "accepted_checkpoint_sha": "a3e272ba5fcab65f3b0f613b1ba32c53df2e5ad2",
+  "ci_confirmed_sha": "3ae2b9b53eda5a80c46fbd5551127456b00e7103",
+  "diff_checkpoint_to_ci_sha": "additions only: a docstring paragraph, OBSERVATION_CONTEXT_RESTRICTION and one receipt field in the bridge's command-line entry point (no test exercises it), the CI workflow, and register addendum 2; no tested code path changed",
+  "tests": {
+    "remote": {
+      "run_id": 37560117041,
+      "run_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37560117041",
+      "conclusion": "success",
+      "summary_line": "55 passed in 4.22s",
+      "skipped_xfailed_or_deselected": false,
+      "interpreter": "Python 3.9.25",
+      "libraries": "numpy 1.24.2, scipy 1.10.1, pytest 6.2.4",
+      "registry_restored_from": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+      "registry_sha256_verified": true,
+      "artifacts": [
+        {
+          "name": "v77-suite-junit",
+          "id": 11456890436,
+          "bytes": 1854
+        }
+      ]
+    },
+    "local_at_accepted_checkpoint": "55 of 55 passed, local execution only (Python 3.9.7)"
+  },
+  "interface": {
+    "pr": 223,
+    "sha": "f6d63b2f53209786e3c45e7545b9bd442838a3d4"
+  },
+  "synthetic_realization": {
+    "id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION",
+    "note": "seed-7302 2K worlds are DEVELOPMENT_CALIBRATION, never independent confirmation"
+  },
+  "execution_mode": "ZERO_UPDATE",
+  "mutation_proof": "NOT_PROVEN_BY_SHARED_INTERFACE",
+  "executed_q_safety_proof": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+  "winners": {
+    "target": null,
+    "estimand": null,
+    "threshold": null,
+    "representation": null
+  },
+  "zero_update_result": {
+    "path": "results/v77/REHEARSAL_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1.json",
+    "sha256": "e5062dbe2f5a26e958a785104329beb0f710c1efd4903eea9fa6934a346ff76c",
+    "unchanged_since_accepted_checkpoint": true
+  },
+  "observation_context_restriction": "raw source_index and operator_index are authenticated measurement context, NOT authorized learned covariates (register addendum 2)",
+  "training": "OFF"
+}
