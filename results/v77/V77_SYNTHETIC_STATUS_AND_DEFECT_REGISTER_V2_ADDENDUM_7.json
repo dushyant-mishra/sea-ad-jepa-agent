@@ -1,0 +1,98 @@
+{
+ "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_7",
+ "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and addenda 1-6",
+ "record_type": "AUDIT RECORD, written from the committed downstream re-score; every number is read from it",
+ "lane": "claude/s174-train-cache-rebuild-20261007 (separate real-data lane, not PR #228)",
+ "recorded_utc": "2026-10-07T21:11:26Z",
+ "head_when_recorded": "c9975b24f3332a5ba3001890a15f6959e903b5f4",
+ "S174_DOWNSTREAM_UPDATE": {
+  "status": "RESCORED_FROM_RECORDED_STATISTICS__UNIVERSE_DEPENDENT_RECORDS_PENDING_SYNTHETIC_REPLAY",
+  "method": "each record's recorded synthetic statistics are re-scored under its own rule against the old and the corrected envelopes. The re-scorer first reproduced every recorded count: background 18 of 18 entries (True), substate 8 of 8 (True). Nothing is generated, tuned or selected",
+  "scope": "item 6 of the authorized dependency order (the background-search rounds, both Step 3 verdicts and the Observer-V2 decision), plus the records found to depend on the same targets: the substate search rounds, the substate family decision and the T5 reference they all cite",
+  "why_the_scope_grew": "item 6 named the background rounds, both Step 3 verdicts and the Observer-V2 decision. A search of every V77 result by file name, sha256 and embedded old target value found the substate search rounds, the substate family decision and the T5 reference resting on the same old targets; they are re-scored here too. Records whose synthetic statistics were computed on the cache-derived evaluation universe cannot be re-scored and are pending a synthetic replay"
+ },
+ "SUPERSEDED_PREMISES": [
+  {
+   "record": "V77_STEP3_BACKGROUND_CALIBRATION_RESULT_V1",
+   "recorded_verdict": "STEP_3_NOT_CLOSED__LATENT_MECHANISM_SOLVED__OBSERVATION_MODEL_IS_THE_BINDING_CONSTRAINT",
+   "premise": "the latent mechanism is solved (reproduces real geometry on five of six targets)",
+   "corrected": "the 5 statistics the record called close are 6.134 to 47.5315 times the corrected points; transitivity, the one it missed, is 1.071 times"
+  },
+  {
+   "record": "V77_STEP3_BACKGROUND_CALIBRATION_RESULT_V1",
+   "recorded_verdict": "STEP_3_NOT_CLOSED__LATENT_MECHANISM_SOLVED__OBSERVATION_MODEL_IS_THE_BINDING_CONSTRAINT",
+   "premise": "the observation model is the binding constraint (it attenuates correlation below real)",
+   "corrected": "the recorded figures fell short of the old target on median_abs_corr, mean_degree, transitivity; 3 of those 3 are above the corrected point (median_abs_corr, mean_degree, transitivity), so there the shortfall the record attributed to the observation model exists only against the old target; the figure it recorded as running high stays high against the corrected point: var_top10_pc (2.5953 times)"
+  },
+  {
+   "record": "V77_STEP3_FACTOR_FAMILY_FALSIFICATION_V1",
+   "recorded_verdict": "FACTOR_MODEL_FAMILY_FALSIFIED__INCLUDING_THE_TWO_LAYER_HURDLE_EXTENSION",
+   "premise": "transitivity is out of the family's reach",
+   "corrected": "the record's invariant is on the detection layer (its recorded real 0.8871 is the old detection point) and falsified the family because transitivity never approached it at an edge density of 0.6148. The corrected detection value 0.6672 is inside the range the family produced [0.515, 0.775], at an edge density of 0.1348, so the stated reason no longer holds. The corrected expression value 0.5127 is below the lowest recorded value 0.515. This does not show that the family fits the corrected targets: that was never scored"
+  },
+  {
+   "record": "V77_SUBSTATE_FAMILY_DECISION_V1",
+   "recorded_verdict": "SUPPORTED_FOR_NEXT_STAGE__WITH_TWO_NAMED_UNRESOLVED_ISSUES",
+   "premise": "the sub-state family entered the transitivity envelope, with degree and the fraction above 0.3 on target",
+   "corrected": "the headline setting is inside the corrected detection band on 0 of 5 statistics (old: 4); against the corrected points the free-threshold model the record moved to (C) is further from the real value than the exact top-k default it replaced (A) on 4 of 5 statistics (median_abs_corr, frac_abs_gt_0p3, transitivity, mean_degree); the dial brackets the old target; none of the 3 recorded settings is inside the corrected band"
+  },
+  {
+   "record": "V77_OBSERVER_V2_DECISION_RECEIPT_V1",
+   "recorded_verdict": "OBSERVER_V2_SUPPORTED_FOR_NEXT_STAGE",
+   "premise": "decoupling abundance from capture restores the topology at full abundance scale",
+   "corrected": "the decision cited the deterministic-threshold variant reproducing the real fraction above 0.3 and mean degree essentially exactly; those real values are the old detection points. Against the corrected points, on the four topology statistics, the deterministic variant is 1.2346 to 4.5652 times the real value and the Poisson variant, recorded as destroying detection correlation, 0.0438 to 0.7011 times"
+  },
+  {
+   "record": "the T5 references in all of the above",
+   "recorded_verdict": "T5 guard held",
+   "premise": "the real within-class over pooled ratio is about 1",
+   "corrected": "the guard fails a candidate whose ratio collapses toward zero, and no recorded candidate did (lowest 0.9794). But the real ratio is 0.7435, not 1.0118: within-class dependence is about 74% of pooled, so part of the real pooled dependence is class separation. Every recorded synthetic range lies above the corrected real ratio. The inferences built on a ratio of about 1, that real dependence carries essentially no class separation and that a successor's states cannot simply be the broad cell classes, rested on the old input"
+  }
+ ],
+ "STANDS": [
+  "no background candidate is accepted under either envelope (0 and 0 of 18 entries), so Step 3 stays not closed",
+  "detection still carries more dependence than expression (corrected 0.1946 against 0.0562) and is still more positively skewed, so the direction of the two-layer findings survives",
+  "the T5 guard's failure direction (a ratio collapsing toward zero) is unchanged and no recorded candidate collapsed (lowest 0.9794)",
+  "part of the Observer-V2 residual: the corrected real fraction above 0.3 (0.1348) lies above the roster's range [0.0065, 0.1095], which is 0.0479 to 0.8121 times the real value"
+ ],
+ "NOT_CLAIMED": [
+  "no generator, observer, target, estimand or weighting is selected or promoted",
+  "the factor family is not re-qualified: it was never scored against the corrected targets",
+  "no envelope is re-centred and no new threshold is introduced; S159 stays open",
+  "the old records are unchanged history; this addendum marks their premises superseded"
+ ],
+ "S159": {
+  "points_outside_their_own_band": {
+   "V77_REAL_CALIBRATION_ENVELOPE_V1.json::corrected": [
+    "median_abs_corr"
+   ],
+   "V77_REAL_DETECTION_ENVELOPE_V1.json::corrected": [
+    "transitivity"
+   ]
+  },
+  "resampling": {
+   "unit": "donor",
+   "n_bootstrap": 20
+  }
+ },
+ "PENDING_SYNTHETIC_REPLAY": {
+  "records": {
+   "V77_REALIZATION_ISOLATION_RECEIPT_V1.json": "scores synthetic counts on the cache-derived evaluation universe",
+   "V77_REALIZATION_ISOLATION_RECEIPT_V2.json": "scores synthetic counts on the cache-derived evaluation universe",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V1.json": "scores synthetic counts on the cache-derived evaluation universe",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": "scores synthetic counts on the cache-derived evaluation universe",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "exploratory; same universe dependence",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "exploratory; same universe dependence",
+   "V77_OBSERVER_V2_AUDIT_CORRECTION_V1.json": "its canonical-universe numbers come from the realization isolation",
+   "V77_DYNAMIC_RANGE_VERDICT_V1.json": "the verdict on the dynamic-range tournament; it also quotes the old detection points"
+  },
+  "how": "authorized as downstream of the replayed evaluation universe; same code, seeds and arms; each rerun on the old universe must reproduce its recorded result before the corrected universe is used"
+ },
+ "OPEN_FOR_THE_OWNER": "what replaces the superseded premises in the synthetic lane's plan: the Step 3 framing, the factor-family falsification, and the two decisions recorded as supported for the next stage (sub-state family, Observer-V2)",
+ "IDENTITY_FLAG": "353 historical-Ensembl-ID-to-different-symbol mappings followed as frozen; flagged for the identity lane; not tuned",
+ "evidence": {
+  "results/v77/s174_replay/S174_DOWNSTREAM_RESCORE_V1.json": "3103aafe4c2ed5127de2580b96d77f256acc9659089332aa8425e2644968e042",
+  "docs/agent/S174_DOWNSTREAM_RESCORE.md": "7f5bebe29209958614d9320f1ce362e2cdfdefc8e2fd41d72bca54309a938ec2",
+  "scripts/v77/rescore_s174_downstream.py": "7912dd8505ca4c49338623904e0a5b78c0a9986aef234b9d20e69cc08e16c1ad"
+ }
+}
