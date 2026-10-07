@@ -49,6 +49,7 @@ CANONICAL_RUNTIME_SOURCE_FILES = (
     "inactive_checkpoint_binding_v1.py",
     "ema_presentation_v1.py",
     "ema_bound_runtime_proof_v1.py",
+    "ema_persisted_continuation_v2.py",
     "data_first_geometry.py",
     "keyed_dropout_prototype_v2.py",
     "keyed_rng_contract_v2.py",
