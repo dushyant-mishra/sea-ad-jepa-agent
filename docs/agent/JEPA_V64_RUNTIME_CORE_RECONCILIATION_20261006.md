@@ -1,37 +1,37 @@
 # JEPA V64 runtime-core reconciliation — 2026-10-06
 
-Status: `DRAFT_RECONCILIATION__PREFREEZE_MECHANICS_ONLY__NO_EXECUTION_AUTHORITY`
+Status: `CONVERGED_IN_PR224__PREFREEZE_MECHANICS_ONLY__SHARED_INTERFACE_BINDING_PENDING__NO_EXECUTION_AUTHORITY`
 
 Base: post-PR-220 `main@f5a8ebeddbcd52a94274a7f72ecda1f71b82d777`
 
-Branch: `reconcile/v64-runtime-core-onto-prefreeze-main-20261006`
+Canonical successor: PR #224 / `reconcile/canonical-v5-runtime-successor-20261006`
 
-PR: `#222`
+Historical donors: PR #219, PR #221, PR #222
 
 ## Purpose
 
-Recover only reusable mechanical safety ideas from historical V64 without reviving its target/E2 scientific authority graph. This branch is not a trainer and does not authorize Stage A or training.
+Recover only reusable mechanical safety ideas from historical runtime work and converge them into one current V5 successor without reviving historical scientific/training authority. This remains a bounded rehearsal runtime, not production training authority.
 
 ## Historical-spillover ruling
 
-Historical PR #219 must not be merged wholesale. Its optimizer pre/post-hook idea is reusable; its old scientific authority roots are not.
+Historical PR #219 must not be merged wholesale. Its optimizer pre/post-hook idea was reusable; its old scientific authority roots were not.
 
-The reconciliation also rejects an earlier design created on this branch that called the rehearsal object `CurrentTrainingAuthorityV2` and exercised it by flipping V3 OFF booleans in a test fixture. That design was removed because it blurred current scientific governance with hypothetical future execution authority.
+PR #221 and PR #222 were overlapping donors and are now superseded by PR #224 as the single canonical convergence successor. They must not be merged independently as parallel runtime authorities.
 
-A second rejected intermediate design used a caller-supplied optimizer-step counter/probe. Self-audit showed that a caller could increment an unrelated counter while the real optimizer did nothing. That proof was therefore forgeable and was replaced by direct binding to the optimizer object through its pre/post step hooks.
+Rejected/retired paths include:
+
+- `CurrentTrainingAuthorityV2` as a current authority object;
+- caller-supplied step-counter/probe completion proof;
+- the older inactive runtime step guard;
+- the generic callback-based `prefreeze_guarded_rehearsal.py` alternate executable path.
+
+Historical evidence remains preserved in Git history/audit custody; executable alternate mutation paths are not retained merely for provenance.
 
 ## Current governance binding
 
 The current surface is `PrefreezeMechanicalAuthorityV1`, not a training authority.
 
-It requires the exact merged PR #220 V3 governance state:
-
-- schema: `JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006`;
-- exact top-level and selected nested field closure;
-- all hard OFF/SEALED/PROTECTED boundaries;
-- exact canonical JSON digest: `ab0603b0a9c92c3680badc252205ddd27fa74ae83ef3ada4019b4dcf637b7611`.
-
-A same-shape scientific mutation cannot mint a new rehearsal authority. A legitimate future governance revision therefore requires an explicit successor rather than silently inheriting this runtime surface.
+It requires the exact merged PR #220 V3 governance state and keeps all hard OFF/SEALED/PROTECTED boundaries. A legitimate future governance revision requires an explicit successor rather than silently inheriting this rehearsal authority.
 
 Hard boundaries remain:
 
@@ -47,82 +47,97 @@ Hard boundaries remain:
 - no estimand selected
 - no deciding numeric thresholds selected
 
-## Current optimizer mechanics
+## Canonical mutation path
 
-`PrefreezeOptimizerGuardV1` is installed on the exact optimizer object and uses its step pre/post hooks.
+The converged path is:
 
-Current proved invariants in the focused rehearsal surface:
+`actual V5 consumer -> PrefreezeMechanicalAuthorityV1 -> PrefreezeOptimizerGuardV1 -> guarded AdamW / optional GradScaler -> optimizer completion proof -> guard-owned EMA -> bound checkpoint -> persisted completion proof`
 
-- optimizer identity label and starting checkpoint are bound into the authority receipt;
-- gradients must be marked unscaled before validation;
-- optimizer entry requires validated gradients;
-- direct or wrongly-tokened optimizer stepping is rejected while the guard owns the optimizer;
-- the guard calls the bound optimizer itself rather than accepting a caller-supplied step callback/probe;
-- optimizer exception or missing completion poisons the guard;
-- EMA is forbidden before a completed optimizer step;
-- EMA is one-shot and an EMA exception poisons the guard;
-- the guard permits exactly one optimizer update, so this surface cannot become a hidden multi-step trainer;
-- only the guard may mint a completed-checkpoint receipt, and only after successful optimizer + EMA completion;
-- completed-checkpoint receipt emission is one-shot;
-- start and completed receipt schemas reject missing/unknown fields;
-- reload/verification requires the exact current canonical V3 governance state;
-- the post-update checkpoint digest must differ from its parent and remains linked to the parent authority/checkpoint.
+There is no second generic rehearsal runtime in the successor tree.
 
-Important qualification: this proves the optimizer-hook transition in a focused pure-Python rehearsal. It does not yet prove AMP/GradScaler skip behavior or deterministic restart completeness.
+## Physically exercised invariants
 
-## Current-main consumer and overlapping PR #221
+Current PR #224 tests physically exercise:
 
-Current `main` contains `src/sea_ad_jepa/v5/inactive_update_reference.py`, an explicitly inactive one-update mechanics reference. It already contains real PyTorch optimizer-state inspection and an exact `after == before + 1` check, but it remains an inactive reference rather than execution authority.
+- exact optimizer object/configuration binding;
+- one guarded optimizer update only;
+- unscale before gradient validation;
+- direct/wrongly-tokened optimizer bypass rejection while the guard owns the optimizer;
+- real AdamW stepping through the actual V5 consumer;
+- finite GradScaler completion;
+- nonfinite/scaler-skipped update rejection with no optimizer completion and no EMA;
+- optimizer exception/incomplete post-step paths fail closed;
+- EMA only after successful optimizer completion;
+- one-shot EMA authorization;
+- no teacher gradients;
+- exact EMA equation checks;
+- model/student, predictor, EMA teacher, optimizer and GradScaler checkpoint state;
+- exact nonnegative update cursor and presentations-seen state;
+- uninterrupted vs interrupted/reloaded two-update equivalence, including AMP scaler trajectory;
+- keyed-dropout restart independence from unrelated global Torch RNG perturbations on the active V5 path;
+- premise-state binding;
+- transitive runtime-source digest binding covering the numerical path (`inactive_update_reference`, guarded wrapper, guard/authority, checkpoint binding, data geometry, keyed dropout/RNG, V4 JEPA mechanics and tokenizer);
+- persisted checkpoint SHA-256 verification before deserialization;
+- completed physical proof only after a noninitial checkpoint is written, hashed, reloaded, and governance/runtime/guard-receipt revalidated;
+- tamper detection for persisted checkpoint bytes;
+- no alternate `prefreeze_guarded_rehearsal.py` runtime.
 
-PR #221 is a separate post-#220 runtime reconciliation that wraps this inactive reference with an optimizer-hook guard and adds a non-authorizing checkpoint envelope. It is useful as a donor implementation, but it overlaps #222 and must not become a second canonical guard.
+## Checkpoint semantics
 
-Reconciliation rule:
+A logical completed-guard receipt is not the same thing as physical persistence proof.
 
-- do not merge #221 and #222 independently as competing runtime authorities;
-- preserve #221's canonical-consumer/checkpoint ideas selectively after review;
-- keep #222's stronger exact-V3 governance binding and adversarial spillover protections;
-- converge to one inactive/test-only consumer before any future mutation authorization is designed.
+The chain is:
+
+1. guarded optimizer transition completes;
+2. EMA completes through the guard;
+3. the resulting logical trajectory state is captured;
+4. its completed guard receipt is verified against that logical state;
+5. the bound checkpoint is physically written;
+6. exact artifact SHA-256 is verified;
+7. the artifact is reloaded;
+8. governance digest, runtime-source digest and completed guard receipt are revalidated;
+9. only then may the runtime emit `V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1`.
+
+The proof object remains explicitly non-authorizing: it does not grant Stage A, real-RNA execution, production promotion, or training.
 
 ## Iterative RED/GREEN history
 
-This branch has deliberately stayed draft while repeated self-audits reopened apparently green work. Material defects found after earlier greens included:
+This work deliberately reopened apparently green states. Material defects caught by subsequent self-audit included:
 
-1. copied V3 booleans could be flipped to create a misleading training-authority-shaped test object;
-2. post-update checkpoint was initially treated as if it should equal the parent digest;
-3. governance/parent-authority provenance binding was incomplete;
-4. a caller-supplied optimizer counter could forge apparent step completion;
-5. a second update could begin from the same parent rehearsal surface;
-6. optimizer/EMA failures did not initially poison ambiguous state;
-7. completed-checkpoint receipts could be emitted without sufficiently tight one-shot/schema rules;
-8. receipt replay did not initially require current governance;
-9. same-shape scientific mutations could initially mint a new rehearsal authority.
+1. historical training-authority semantics leaking into the proposed current design;
+2. forgeable caller-supplied optimizer completion counters;
+3. direct EMA ownership in the V5 consumer;
+4. two discoverable guard implementations;
+5. stale checkpoint provenance naming the superseded guard;
+6. missing actual-consumer GradScaler proof;
+7. missing GradScaler checkpoint state;
+8. in-memory checkpoint-only persistence;
+9. checkpoint provenance that covered wrappers but not transitive numerical mechanics;
+10. a logical completed-checkpoint receipt that could be mistaken for physical persistence proof;
+11. a retained generic callback rehearsal that formed a second executable mutation/checkpoint path;
+12. CI workflow drift where the broader runtime suite did not install all dependencies required by the actual consumer tests.
 
-The current head must be judged only by fresh current-head CI, not by any earlier green run from a superseded design.
+The current head must always be judged by fresh current-head CI, not by any earlier green run from a superseded design.
 
-## Still missing before a canonical mutation boundary exists
+## Remaining work before synthetic handoff
 
-These are not solved by focused unit-test green:
+The runtime mechanics themselves are now converged enough for shared-interface binding. Remaining work is cross-lane rather than another independent runtime implementation:
 
-1. **Canonical consumer convergence** — adapt/select one guarded inactive V5 consumer; do not leave #221 and #222 as parallel competing implementations.
-2. **Real PyTorch optimizer qualification** — exercise the final guard against the exact optimizer class/configuration used by the inactive V5 path.
-3. **AMP/GradScaler semantics** — physically prove that a scaler-skipped update cannot authorize EMA or a completed update receipt.
-4. **Optimizer provenance** — `optimizer_identity` is still a supplied provenance label; bind it to the actual configured optimizer/adaptor in the final consumer.
-5. **Unguarded-handle reachability** — prove the canonical consumer does not leave another reachable optimizer/EMA mutation path around the guard.
-6. **Deterministic checkpoint completeness** — digest lineage is not sufficient. Bind model/student, predictor, EMA teacher, optimizer, scaler, update/global index, RNG, sampler/data position, and accumulation state as applicable.
-7. **Interrupt/resume equivalence** — prove a bounded synthetic trajectory resumes identically to the claimed deterministic strength.
-8. **V77 integration** — only after the single canonical consumer is qualified and a separate bounded synthetic-mutation authority exists; V77 cannot grant runtime authority itself.
+1. **Bind PR #224 into PR #223** — `MutationProofStatus.PROVEN_BY_BOUND_RUNTIME` must require exact machine-verifiable runtime provenance and the physical completion proof.
+2. **Do not over-upgrade q-safety** — `QSafetyExecutionProofStatus` remains policy-only until the repaired V77 adapter and the bound runtime physically execute and prove the required transformations.
+3. **Joined bounded synthetic rehearsal** — after interface binding, run the repaired V77 `QualificationBatch` through the canonical runtime under explicitly bounded synthetic rehearsal authority only.
+4. **Final bypass/spillover audit** — confirm no historical authority root, alternate guard, direct optimizer path, alternate EMA path, stale donor runtime or checkpoint shortcut remains reachable.
 
-## Active-lane relationship
+## Relationship to the science lanes
 
-- PR #220: merged V3 scientific/prefreeze governance; authoritative.
-- PR #218: custody/downstream audit; compatible, updated independently.
-- PR #219: historical runtime donor only; do not merge wholesale.
-- PR #221: overlapping inactive-consumer donor; reconcile, do not independently canonize alongside #222.
-- V77/S127: synthetic instrument lane; cannot select real-RNA biology or grant execution authority.
-- V75/PR #207: 100K measurement-architecture qualification only; no training permission.
+The runtime does not decide the target, representation, estimand, weighting, dimensionality or thresholds.
+
+The real-data/target-discovery lane controls those scientific questions. The independent S149 audit currently keeps the proposed within-cohort calibration envelope at `NEEDS_REPAIR`; therefore runtime progress must not be interpreted as authority to freeze those real-data thresholds.
+
+V77/Macha may use the runtime only after the shared-interface binding is qualified, initially for bounded synthetic work. Synthetic success does not prove real biological identification.
 
 ## Merge decision
 
-Keep PR #222 draft while canonical-consumer / PyTorch / AMP questions remain unresolved or explicitly deferred by a reviewed scope decision.
+Keep PR #224 draft while shared-interface binding and the final joined audit remain open.
 
-Do not merge merely because focused tests are green. Any later Stage-A or training authority must be a new prospective contract.
+Do not merge merely because runtime tests are green. Any future Stage-A or training authority must be a new prospective contract satisfying then-current scientific prerequisites.
