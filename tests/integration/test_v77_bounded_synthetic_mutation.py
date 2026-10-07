@@ -60,6 +60,12 @@ def test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload(tmp
     assert len(receipt["presentation_ema_completion_proof_digest"]) == 64
     assert receipt["adapter_source_sha256"] == adapter_digest
     assert len(receipt["mutation_runtime_source_sha256"]) == 64
+    for component in ("online", "predictor", "teacher", "optimizer", "checkpoint"):
+        before = receipt[f"{component}_digest_before"]
+        after = receipt[f"{component}_digest_after"]
+        assert len(before) == 64
+        assert len(after) == 64
+        assert before != after
     assert receipt["half_life_presentations"] == 1000
     assert receipt["training_authorized"] is False
     assert receipt["production_promotable"] is False
