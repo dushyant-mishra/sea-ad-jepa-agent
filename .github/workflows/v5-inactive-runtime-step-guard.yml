@@ -8,6 +8,7 @@ on:
       - 'src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py'
       - 'src/sea_ad_jepa/v5/inactive_update_reference.py'
       - 'src/sea_ad_jepa/v5/ema_bound_runtime_proof_v1.py'
+      - 'src/sea_ad_jepa/v5/ema_presentation_v1.py'
       - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
       - 'tests/test_v5_canonical_runtime_convergence_red.py'
       - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
@@ -16,6 +17,7 @@ on:
       - 'tests/test_teacher_student_v5_inactive_update_reference.py'
       - 'tests/test_v5_durable_checkpoint_completion_v1.py'
       - 'tests/test_v5_ema_configuration_binding_red.py'
+      - 'tests/test_v5_ema_presentation_successor_red.py'
       - '.github/workflows/v5-inactive-runtime-step-guard.yml'
 
 jobs:
@@ -41,4 +43,5 @@ jobs:
             tests/test_v5_prefreeze_checkpoint_binding_v1.py \
             tests/test_teacher_student_v5_inactive_update_reference.py \
             tests/test_v5_durable_checkpoint_completion_v1.py \
-            tests/test_v5_ema_configuration_binding_red.py
+            tests/test_v5_ema_configuration_binding_red.py \
+            tests/test_v5_ema_presentation_successor_red.py
