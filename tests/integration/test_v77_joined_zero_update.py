@@ -39,6 +39,7 @@ def _valid_binding(**overrides):
         payload_location="shard-0042:row-3",
         authenticated_payload_location="shard-0042:row-3",
         payload_sha256="a" * 64,
+        authenticated_payload_sha256="a" * 64,
         authenticated_values_sha256="b" * 64,
         consumed_values_sha256="b" * 64,
     )
@@ -121,6 +122,7 @@ def _minimal_conversion():
 def test_physical_row_value_binding_accepts_one_inseparable_chain():
     binding = _valid_binding()
     assert binding.expression_row == 91
+    assert binding.payload_sha256 == binding.authenticated_payload_sha256
     assert binding.consumed_values_sha256 == binding.authenticated_values_sha256
 
 
@@ -134,6 +136,7 @@ def test_physical_row_value_binding_accepts_one_inseparable_chain():
         ({"authenticated_matrix_slot": "raw/X"}, "matrix slot"),
         ({"authenticated_feature_space_sha256": "e" * 64}, "feature space"),
         ({"authenticated_payload_location": "shard-9999:row-3"}, "payload location"),
+        ({"authenticated_payload_sha256": "c" * 64}, "payload digest"),
         ({"consumed_values_sha256": "c" * 64}, "consumed values"),
     ],
 )
