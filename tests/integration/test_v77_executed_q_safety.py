@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 
 from scripts.v77.v77_synthetic_batch_adapter import build_from_world, sample_hidden_targets
-from sea_ad_jepa.qualification import v77_join
+from sea_ad_jepa.qualification import v77_join, v77_zero_update
 from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import BoundAdapterQSafetyProofV1
 
@@ -95,3 +95,21 @@ def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_boun
     assert isinstance(proof, BoundAdapterQSafetyProofV1)
     assert {item.channel for item in proof.channel_evidence} == set(REQUIRED_Q_SAFETY_CHANNELS)
     assert proof.batch_scientific_identity_digest == batch.scientific_identity.digest()
+
+    receipt = v77_zero_update.run_canonical_v5_zero_update(
+        batch,
+        q_safety_proof=proof,
+        runtime_source_sha256="c" * 64,
+        init_seed=8113002,
+    )
+    assert receipt["schema"] == "V77_CANONICAL_V5_ZERO_UPDATE_V1"
+    assert receipt["q_safety_proof_digest"] == proof.digest()
+    assert receipt["batch_scientific_identity_digest"] == batch.scientific_identity.digest()
+    assert receipt["checkpoint_digest_before"] == receipt["checkpoint_digest_after"]
+    assert receipt["online_parameters_unchanged"] is True
+    assert receipt["teacher_parameters_unchanged"] is True
+    assert receipt["predictor_parameters_unchanged"] is True
+    assert receipt["optimizer_state_unchanged"] is True
+    assert receipt["optimizer_step_performed"] is False
+    assert receipt["ema_performed"] is False
+    assert receipt["training_authorized"] is False
