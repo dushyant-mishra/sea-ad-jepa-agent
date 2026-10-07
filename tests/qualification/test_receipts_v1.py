@@ -2,6 +2,7 @@ import pytest
 
 import sea_ad_jepa.qualification.receipts as receipts
 from sea_ad_jepa.qualification.protocol import ThresholdStatus
+from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import (
     DataKind,
     MutationProofStatus,
@@ -68,6 +69,35 @@ def _bound_proof(**overrides):
     return proof_type(**values)
 
 
+def _q_evidence(channel: str, digest_char: str = "3"):
+    evidence_type = getattr(receipts, "QSafetyChannelExecutionEvidenceV1", None)
+    assert evidence_type is not None, "shared interface has no typed per-channel q-safety evidence"
+    return evidence_type(
+        channel=channel,
+        evidence_digest=digest_char * 64,
+        executed=True,
+    )
+
+
+def _q_proof(**overrides):
+    proof_type = getattr(receipts, "BoundAdapterQSafetyProofV1", None)
+    assert proof_type is not None, "shared interface has no typed executed q-safety proof"
+    values = {
+        "schema": "BOUND_ADAPTER_Q_SAFETY_PROOF_V1",
+        "q_safety_policy_id": "qsafe-v1",
+        "adapter_id": "v77-adapter-v1",
+        "adapter_digest": "c" * 64,
+        "batch_scientific_identity_digest": "e" * 64,
+        "runtime_source_sha256": "9" * 64,
+        "channel_evidence": tuple(_q_evidence(channel) for channel in REQUIRED_Q_SAFETY_CHANNELS),
+        "execution_authorized": False,
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+    values.update(overrides)
+    return proof_type(**values)
+
+
 def test_complete_zero_update_synthetic_provenance_receipt_is_digestible():
     receipt = _receipt()
     assert len(receipt.digest()) == 64
@@ -108,15 +138,45 @@ def test_bound_runtime_mutation_proof_must_match_receipt_governance():
         )
 
 
-def test_q_safety_execution_proof_requires_bound_runtime_successor():
-    with pytest.raises(ValueError, match="q-safety execution proof"):
-        _receipt(q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME)
+def test_q_safety_execution_cannot_be_promoted_from_runtime_digest_only():
+    with pytest.raises(ValueError, match="executed q-safety proof"):
+        _receipt(
+            q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
+            runtime_successor_digest="9" * 64,
+        )
 
+
+def test_bound_q_safety_proof_requires_every_required_channel():
+    partial = tuple(_q_evidence(channel) for channel in REQUIRED_Q_SAFETY_CHANNELS[:-1])
+    with pytest.raises(ValueError, match="q-safety.*channel|channel.*q-safety"):
+        _q_proof(channel_evidence=partial)
+
+
+def test_bound_q_safety_proof_matches_adapter_batch_policy_and_runtime():
+    proof = _q_proof()
     proven = _receipt(
         q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
         runtime_successor_digest="9" * 64,
+        q_safety_execution_proof=proof,
     )
     assert proven.q_safety_execution_proof_status is QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
+    assert proven.q_safety_execution_proof is proof
+
+    mismatch_cases = (
+        ("adapter", dict(adapter_digest="4" * 64)),
+        ("batch", dict(batch_scientific_identity_digest="4" * 64)),
+        ("policy", dict(q_safety_policy_id="qsafe-v2")),
+        ("runtime", dict(runtime_successor_digest="4" * 64)),
+    )
+    for label, changed in mismatch_cases:
+        values = dict(
+            q_safety_execution_proof_status=QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
+            runtime_successor_digest="9" * 64,
+            q_safety_execution_proof=proof,
+        )
+        values.update(changed)
+        with pytest.raises(ValueError, match=label):
+            _receipt(**values)
 
 
 def test_synthetic_provenance_requires_realization_and_challenge_partition():
