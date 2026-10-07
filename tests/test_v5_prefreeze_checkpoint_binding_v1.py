@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 import torch
+import sea_ad_jepa.v5.inactive_checkpoint_binding_v1 as binding
 
 from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
     PREFREEZE_RUNTIME_CONTRACT,
@@ -42,11 +43,7 @@ def _assert_modules_equal(a, b):
 
 def test_capture_binds_frozen_premise_and_remains_non_authorizing():
     envelope = capture_prefreeze_bound_checkpoint(
-        _modules(),
-        next_update_index=0,
-        presentations_seen=0,
-        premise_state_path=PREMISE,
-    )
+        _modules(), next_update_index=0, presentations_seen=0, premise_state_path=PREMISE)
     assert envelope.runtime_contract == PREFREEZE_RUNTIME_CONTRACT
     assert len(envelope.premise_state_sha256) == 64
     assert envelope.training_authority_digest is None
@@ -91,6 +88,24 @@ def test_bound_checkpoint_roundtrip_preserves_amp_scaler_state():
     _assert_modules_equal(source,restored)
     with pytest.raises(ValueError,match='scaler|AMP'):
         restore_prefreeze_bound_checkpoint(_modules(),envelope,premise_state_path=PREMISE)
+
+
+def test_persisted_checkpoint_is_hashed_reloaded_and_tamper_evident(tmp_path):
+    assert callable(getattr(binding,"persist_prefreeze_bound_checkpoint",None)), (
+        "canonical checkpoint has no physical persistence function")
+    assert callable(getattr(binding,"load_persisted_prefreeze_bound_checkpoint",None)), (
+        "canonical checkpoint has no verified reload function")
+    envelope=capture_prefreeze_bound_checkpoint(
+        _modules(),next_update_index=0,presentations_seen=0,premise_state_path=PREMISE)
+    path=tmp_path/'checkpoint.pt'
+    digest=binding.persist_prefreeze_bound_checkpoint(envelope,path)
+    assert path.is_file()
+    assert len(digest)==64
+    loaded=binding.load_persisted_prefreeze_bound_checkpoint(path,expected_sha256=digest)
+    assert loaded==envelope
+    payload=bytearray(path.read_bytes()); payload[-1]^=1; path.write_bytes(payload)
+    with pytest.raises(RuntimeError,match='digest'):
+        binding.load_persisted_prefreeze_bound_checkpoint(path,expected_sha256=digest)
 
 
 def test_restore_rejects_premise_drift(tmp_path):
