@@ -22,6 +22,8 @@ from sea_ad_jepa.v5.inactive_update_reference import (
     capture_reference_checkpoint,
 )
 
+from .canonical import canonical_digest
+from .physical_binding_v2 import PhysicalRowValueBindingV2
 from .pipeline import QualificationBatchV1
 from .receipts import BoundAdapterQSafetyProofV1, DataKind, QSafetyExecutionProofStatus
 from .v77_join import require_executed_q_safety
@@ -153,14 +155,63 @@ def _target_blocks(hidden_mask: torch.Tensor) -> TargetBlocks:
     )
 
 
+def _require_physical_bindings(
+    batch: QualificationBatchV1,
+    physical_bindings: tuple[PhysicalRowValueBindingV2, ...],
+    student_expression: object,
+) -> str:
+    """Bind every model-consumed expression row to the authenticated V2 proof chain."""
+    if not isinstance(physical_bindings, tuple) or not physical_bindings:
+        raise ValueError("physical row/value bindings must be a nonempty tuple")
+    observation_ids = tuple(batch.scientific_identity.observation_ids)
+    donor_ids = tuple(batch.inference_group_ids)
+    rows = tuple(tuple(float(value) for value in row) for row in student_expression)
+    if len(physical_bindings) != len(observation_ids) or len(rows) != len(observation_ids):
+        raise ValueError("physical row/value bindings must cover every executed observation exactly once")
+    if len(donor_ids) != len(observation_ids):
+        raise ValueError("batch donor identity does not align to executed observations")
+    feature_digest = batch.feature_identity_receipt.digest()
+    receipt_rows = []
+    for local_row, (binding, observation_id, donor_id, values) in enumerate(
+        zip(physical_bindings, observation_ids, donor_ids, rows)
+    ):
+        if not isinstance(binding, PhysicalRowValueBindingV2):
+            raise TypeError("physical provenance must use PhysicalRowValueBindingV2")
+        if binding.block_row_index != local_row or binding.selected_block_row_index != local_row:
+            raise ValueError("physical binding block row does not match executed batch row")
+        if binding.logical_cell_id != observation_id or binding.source_cell_id != observation_id:
+            raise ValueError("physical binding cell identity does not match executed batch row")
+        if binding.logical_donor_id != donor_id or binding.source_donor_id != donor_id:
+            raise ValueError("physical binding donor identity does not match executed batch row")
+        if binding.feature_space_sha256 != feature_digest:
+            raise ValueError("physical binding feature space does not match executed batch")
+        values_digest = canonical_digest(values)
+        if binding.consumed_values_sha256 != values_digest:
+            raise ValueError("physical binding consumed values do not match executed batch values")
+        receipt_rows.append(
+            {
+                "local_row": local_row,
+                "expression_row": binding.expression_row,
+                "cell_id": observation_id,
+                "donor_id": donor_id,
+                "feature_space_sha256": feature_digest,
+                "payload_location": binding.payload_location,
+                "payload_sha256": binding.payload_sha256,
+                "consumed_values_sha256": values_digest,
+            }
+        )
+    return canonical_digest(tuple(receipt_rows))
+
+
 def run_canonical_v5_zero_update(
     batch: QualificationBatchV1,
     *,
+    physical_bindings: tuple[PhysicalRowValueBindingV2, ...],
     q_safety_proof: BoundAdapterQSafetyProofV1,
     runtime_source_sha256: str,
     init_seed: int,
 ) -> dict[str, object]:
-    """Execute canonical V5 forward mechanics and prove exact state invariance."""
+    """Execute canonical V5 forward mechanics after fail-closed physical provenance binding."""
     if not isinstance(batch, QualificationBatchV1):
         raise TypeError("canonical V5 ZERO_UPDATE requires QualificationBatchV1")
     if batch.data_kind is not DataKind.SYNTHETIC:
@@ -183,6 +234,9 @@ def run_canonical_v5_zero_update(
     required = {"gene_ids", "student_expression", "measurement_mask", "hidden_target_mask"}
     if set(view.model_inputs) != required:
         raise ValueError("canonical V5 ZERO_UPDATE received unexpected model-visible fields")
+    physical_bindings_digest = _require_physical_bindings(
+        batch, physical_bindings, view.model_inputs["student_expression"]
+    )
 
     gene_ids = torch.tensor(view.model_inputs["gene_ids"], dtype=torch.int64)
     expression = torch.tensor(view.model_inputs["student_expression"], dtype=torch.float32)
@@ -273,6 +327,7 @@ def run_canonical_v5_zero_update(
     return {
         "schema": SCHEMA,
         "batch_scientific_identity_digest": batch.scientific_identity.digest(),
+        "physical_bindings_digest": physical_bindings_digest,
         "q_safety_proof_digest": q_safety_proof.digest(),
         "runtime_source_sha256": actual_runtime_source_sha256,
         "runtime_source_manifest": canonical_v5_runtime_source_manifest(),
