@@ -1,7 +1,13 @@
 import pytest
 
 from sea_ad_jepa.qualification import v77_join
-from sea_ad_jepa.qualification.receipts import QSafetyExecutionProofStatus
+from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
+from sea_ad_jepa.qualification.receipts import (
+    BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
+    BoundAdapterQSafetyProofV1,
+    QSafetyChannelExecutionEvidenceV1,
+    QSafetyExecutionProofStatus,
+)
 from sea_ad_jepa.qualification.v77_join import (
     PhysicalRowValueBindingV1,
     build_learnable_model_context,
@@ -22,6 +28,30 @@ def _valid_binding(**overrides):
     )
     values.update(overrides)
     return PhysicalRowValueBindingV1(**values)
+
+
+def _valid_q_safety_proof(**overrides):
+    values = dict(
+        schema=BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
+        q_safety_policy_id="qsafe-v1",
+        adapter_id="v77-synthetic-batch-adapter",
+        adapter_digest="a" * 64,
+        batch_scientific_identity_digest="b" * 64,
+        runtime_source_sha256="c" * 64,
+        channel_evidence=tuple(
+            QSafetyChannelExecutionEvidenceV1(
+                channel=channel,
+                evidence_digest=f"{i + 1:064x}",
+                executed=True,
+            )
+            for i, channel in enumerate(REQUIRED_Q_SAFETY_CHANNELS)
+        ),
+        execution_authorized=False,
+        training_authorized=False,
+        production_promotable=False,
+    )
+    values.update(overrides)
+    return BoundAdapterQSafetyProofV1(**values)
 
 
 def test_physical_row_value_binding_accepts_one_inseparable_chain():
@@ -85,3 +115,36 @@ def test_executed_status_enum_alone_cannot_mint_q_safety_proof():
         v77_join.require_executed_q_safety(
             QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
         )
+
+
+def test_q_safety_proof_is_bound_to_exact_adapter_batch_and_runtime():
+    proof = _valid_q_safety_proof()
+    accepted = v77_join.require_executed_q_safety(
+        QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
+        proof,
+        adapter_id="v77-synthetic-batch-adapter",
+        adapter_digest="a" * 64,
+        batch_scientific_identity_digest="b" * 64,
+        runtime_source_sha256="c" * 64,
+    )
+    assert accepted is proof
+
+    for field, wrong in (
+        ("adapter_id", "wrong-adapter"),
+        ("adapter_digest", "d" * 64),
+        ("batch_scientific_identity_digest", "e" * 64),
+        ("runtime_source_sha256", "f" * 64),
+    ):
+        kwargs = dict(
+            adapter_id="v77-synthetic-batch-adapter",
+            adapter_digest="a" * 64,
+            batch_scientific_identity_digest="b" * 64,
+            runtime_source_sha256="c" * 64,
+        )
+        kwargs[field] = wrong
+        with pytest.raises(ValueError, match="identity|digest|batch|runtime|adapter"):
+            v77_join.require_executed_q_safety(
+                QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
+                proof,
+                **kwargs,
+            )
