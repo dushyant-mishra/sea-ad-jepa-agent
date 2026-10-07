@@ -1,7 +1,7 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-10-06
-Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
+Status: `V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__PREMISE_V3_FROZEN__CANONICAL_V5_RUNTIME_CONVERGED_PENDING_SHARED_INTERFACE_BINDING__TRAINING_OFF`
 
 ## Read first
 
@@ -19,16 +19,20 @@ Always re-fetch the live branch/head before acting.
 
 - V75 100K measurement architecture: `PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE`.
 - Premise V3 governance: **FROZEN / MERGED on main at `f5a8ebeddbcd52a94274a7f72ecda1f71b82d777`**.
+- Canonical V5 runtime successor: **PR #224 / `reconcile/canonical-v5-runtime-successor-20261006`, draft and non-authorizing**.
+- One active V5 mutation path: **actual V5 consumer -> `PrefreezeMechanicalAuthorityV1` -> `PrefreezeOptimizerGuardV1` -> guarded AdamW/GradScaler -> proven completion -> EMA -> bound checkpoint**.
+- Alternate generic `prefreeze_guarded_rehearsal.py`: **RETIRED from the successor**.
+- Persisted checkpoint proof: **write -> SHA-256 -> reload -> governance/runtime/guard-receipt revalidation is physically exercised**.
+- Shared qualification interface binding (#223): **PENDING**. Mutation proof must not be upgraded there until exact runtime provenance is bound.
+- Executed q-safety proof: **NOT YET PROVEN BY THE RUNTIME**.
 - 500K promotion: **NOT AUTHORIZED**.
 - Production target winner: **NONE QUALIFIED**.
 - Representation winner: **NONE QUALIFIED**.
 - Estimand: **UNSET / REQUIRES APPROVAL**.
 - Deciding numeric thresholds: **UNSET / REQUIRES APPROVAL**.
 - Target lineage reconstruction is complete and merged; do **not** reopen it as the current task.
-- Synthetic learned-state scaling ladder: **STOPPED**.
 - `width=160`: network/token capacity, **not** biological dimensionality authority.
 - `cell_state`: implemented, but **not qualified as the designated global biological state**.
-- V75 96-feature observer -> canonical 41,238-address encoder: **BLOCKED unless a lawful identity bridge is prospectively defined**.
 - Training: **OFF**.
 - Multimodal training: **OFF**.
 - Stage A execution: **NOT AUTHORIZED**.
@@ -38,15 +42,26 @@ Always re-fetch the live branch/head before acting.
 
 ## Current task
 
-**Runtime-safety reconciliation onto the frozen V3 premise.** Reconcile the already-recovered V5 mechanics with fail-closed optimizer-step sequencing, explicit step-completion proof before EMA, and later authority-bound checkpoint/reload semantics without importing historical scientific authority.
+**Bind the now-converged canonical V5 mechanics to the shared qualification interface (#223) without expanding authority.**
 
-The current runtime work is mechanics only. It does not create `CurrentTrainingAuthorityV2`, does not select a target or representation, and does not authorize Stage A or JEPA training. A historical final-training authority object may be reused only after a future authority path proves all then-current scientific prerequisites; today that issuance path must remain unreachable.
+The successor has already physically exercised the actual V5 AdamW path, finite and skipped GradScaler behavior, completion-before-EMA, checkpoint state including scaler/cursor, deterministic bounded restart, global-RNG independence for the keyed path, transitive runtime-source provenance, persisted checkpoint hashing/reload, and removal of the second generic rehearsal path.
+
+What remains before handoff to the synthetic lane is narrower:
+
+1. bind the exact PR #224 runtime provenance into #223's `PROVEN_BY_BOUND_RUNTIME` mutation-proof surface;
+2. keep q-safety at policy-only until the adapter+runtime path physically executes and proves the required transformations;
+3. run the first joined rehearsal as bounded synthetic qualification/mutation only under explicit non-training authority;
+4. perform a final historical-spillover and bypass audit before declaring the runtime handoff-ready.
+
+This runtime work remains mechanics only. It does not create `CurrentTrainingAuthorityV2`, does not select a target, representation, estimand, or deciding threshold, and does not authorize Stage A or JEPA training.
 
 Premise V3 remains controlling science: real-RNA target-object recoverability is distinct from biological-truth recoverability; donor/operator/study/technology transfer remain separate axes; fitted diagnostic readouts are inner-TRAIN/frozen; biological-evidence perturbation is distinct from depth thinning; held donors may not influence alignment used to evaluate their coordinate stability.
 
 ## Historical recovery guardrail
 
 The historical-audit custody branch exists specifically to prevent completed work from being lost through branch drift, version-axis mismatches, renaming, or supersession. Before declaring a runtime/component/test/checkpoint/audit absent, future agents must check that branch and distinguish project milestone version, runtime implementation version, training-authority version, optimizer-guard version, checkpoint schema generation, and scientific authority version. Historical existence does not by itself grant current execution authority.
+
+Historical `CurrentTrainingAuthorityV2`, the removed V5 inactive-runtime guard, and the removed generic prefreeze rehearsal are donor/history surfaces only. Do not reintroduce them as parallel canonical paths.
 
 ## Authority freshness
 
@@ -60,4 +75,4 @@ When a controlling task closes, is blocked, or is superseded, the same change se
 
 ## Historical evidence
 
-Older V5/V20/V21/V25/V66/V67 files remain provenance, not current startup authority. Historical results retain their recorded scope; local old “next action” text does not override the current surface. The Oct-6 runtime/authority recovery ledger on the historical-audit custody branch is the first stop for recovered implementation/version lineage before redoing work.
+Older V5/V20/V21/V25/V64/V66/V67 files remain provenance, not current startup authority. Historical results retain their recorded scope; local old “next action” text does not override the current surface. The Oct-6 runtime/authority recovery ledger on the historical-audit custody branch is the first stop for recovered implementation/version lineage before redoing work.
