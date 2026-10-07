@@ -1,0 +1,50 @@
+{
+  "schema": "V77_SPILLOVER_DISPOSITIONS_V1",
+  "audit_record": "V77_SPILLOVER_AUDIT_PHASE1_BEFORE.json",
+  "audit_sha256": "a6e9d033fafcd18ed53cb5250ed73dd89c2e23ab925282cafc16b3058e0cbe28",
+  "phase": "PHASE1_S157_TERMINAL_before",
+  "structural_pass": true,
+  "dispositions": [
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_historical_spillover_audit.py",
+      "line": 56,
+      "text": "hits = S.text_checks_lines([(\"x.md\", [\"identifiability is resolved by the new generator\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "planted positive claim in the audit's own fixture; it exists to prove the check can fire"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_ADVERSARIAL_SELF_AUDIT_V1.json",
+      "line": 59,
+      "text": "\"finding\": \"two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdi",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "records defect S163 (verdicts issued against pooled envelopes) as a finding to repair; it does not use pooled topology as a target"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+      "line": 437,
+      "text": "\"defect\": \"the pooled expression calibration describes itself as a calibration TARGET\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "register entry naming the defect that the pooled calibration called itself a TARGET (S165); describes the defect, does not assert it"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "scripts/v77/v77_regulatory_graph.py",
+      "line": 2,
+      "text": "\"\"\"Deterministic SCENIC+-like regulatory ground truth: TF -> enhancer region -> target gene.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the synthetic world's planted regulatory truth, an oracle-only generator component; makes no claim that real SCENIC+ output is independent evidence"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+      "line": 17,
+      "text": "\"review_lane_instruction\": \"isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "review-lane instruction to model SCENIC+-like truth inside the synthetic generator; makes no independence claim about real SCENIC+"
+    }
+  ],
+  "note": "text checks are pattern searches; a clean check is not proof of absence"
+}

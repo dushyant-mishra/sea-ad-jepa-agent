@@ -3,6 +3,7 @@ violation that must be flagged and a clean case that must pass; the text check m
 positive claim and spare the same claim negated."""
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 import sys
@@ -62,3 +63,32 @@ def test_negation_words_like_nothing_and_none_spare_a_line():
     hits = S.text_checks_lines([("x.json", ["DEVELOPMENT_CALIBRATION: nothing here is independent confirmation",
                                             "none of this is confirmatory", "this run is confirmatory"])])
     assert [h["line"] for h in hits["SEED7302_AS_CONFIRMATION"]] == [3]
+
+
+def test_disposition_gaps_flag_missing_unexplained_and_unrepaired_items():
+    audit = dict(text_candidates={"SEED7302_AS_CONFIRMATION": [dict(file="a.json", line=3, text="x")]},
+                 structural={"RAW_IDS_MODEL_VISIBLE": dict(status="FAIL", problems=["p"]),
+                             "OLD_RUNTIME_CLASSES": dict(status="PASS", problems=[])})
+    assert len(S.disposition_gaps(audit, dict(dispositions=[]))) == 2
+    fp = dict(check="SEED7302_AS_CONFIRMATION", file="a.json", line=3, disposition="FALSE_POSITIVE", reason="fixture")
+    st = dict(check="RAW_IDS_MODEL_VISIBLE", file="STRUCTURAL", line=0, disposition="FINDING_REPAIRED", reason="leak")
+    assert S.disposition_gaps(audit, dict(dispositions=[fp, st])) == [("RAW_IDS_MODEL_VISIBLE", "STRUCTURAL", 0)], (
+        "a structural failure needs a repair reference")
+    st["repair"] = "abc1234 RED to GREEN"
+    assert S.disposition_gaps(audit, dict(dispositions=[fp, st])) == []
+    assert S.disposition_gaps(audit, dict(dispositions=[dict(fp, reason=""), st])) == [
+        ("SEED7302_AS_CONFIRMATION", "a.json", 3)], "a disposition without a reason is not a disposition"
+    assert S.disposition_gaps(audit, dict(dispositions=[dict(fp, disposition="FINDING_OPEN"), st])) == [
+        ("SEED7302_AS_CONFIRMATION", "a.json", 3)], "an open finding stops the phase; it cannot be committed as done"
+
+
+def test_every_committed_spillover_record_is_fully_dispositioned():
+    folder = ROOT / "results" / "v77" / "spillover"
+    recs = sorted(p for p in folder.glob("V77_SPILLOVER_AUDIT_*.json") if not p.name.endswith("_DISPOSITIONS.json"))
+    assert recs, "phase records are committed with the lane"
+    for p in recs:
+        d = p.with_name(p.stem + "_DISPOSITIONS.json")
+        assert d.exists(), f"{p.name} has no dispositions"
+        disp = json.loads(d.read_text(encoding="utf-8"))
+        assert disp["audit_sha256"] == hashlib.sha256(p.read_bytes()).hexdigest(), f"{d.name} reviews another record"
+        assert S.disposition_gaps(json.loads(p.read_text(encoding="utf-8")), disp) == [], p.name

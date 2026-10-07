@@ -18,6 +18,11 @@ meaning. A candidate is not a finding until reviewed; a clean text check is not 
 
 Scope: scripts/v77, tests/v77, results/v77 and docs/agent/V77_*. Older lanes' history is read-only
 and outside scope. Lines that carry a negation or supersession word are not flagged.
+
+Every text candidate and every structural failure is dispositioned in <record>_DISPOSITIONS.json:
+FALSE_POSITIVE with a reason, or FINDING_REPAIRED with a reason and the repair. An open finding
+stops the phase, so it is never a committed disposition; the V77 suite refuses a committed record
+that is not fully dispositioned.
 """
 from __future__ import annotations
 
@@ -122,6 +127,31 @@ def zero_quota_operator_loss(truth_dirs):
                         unexpected_operator_loss=lost))
     bad = any(o["unexpected_operator_loss"] for o in out)
     return dict(status="FAIL" if bad else "PASS", worlds=out)
+
+
+DISPOSITIONS = ("FALSE_POSITIVE", "FINDING_REPAIRED")
+
+
+def review_items(audit: dict):
+    """Everything that needs a disposition: each text candidate and each failing structural check."""
+    items = [(k, h["file"], h["line"]) for k, hits in audit["text_candidates"].items() for h in hits]
+    items += [(k, "STRUCTURAL", 0) for k, v in audit["structural"].items() if v["status"] != "PASS"]
+    return items
+
+
+def disposition_gaps(audit: dict, disp: dict):
+    """Review items without a lawful disposition. A structural failure must be FINDING_REPAIRED with
+    the repair named."""
+    have = {(d["check"], d["file"], d["line"]): d for d in disp.get("dispositions", [])}
+    gaps = []
+    for key in review_items(audit):
+        d = have.get(key)
+        if d is None or d.get("disposition") not in DISPOSITIONS or not d.get("reason"):
+            gaps.append(key)
+        elif (key[1] == "STRUCTURAL" or d["disposition"] == "FINDING_REPAIRED") and (
+                d["disposition"] != "FINDING_REPAIRED" or not d.get("repair")):
+            gaps.append(key)
+    return gaps
 
 
 def main():
