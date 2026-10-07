@@ -14,6 +14,7 @@ from sea_ad_jepa.v5.inactive_update_reference import build_reference_modules
 
 ROOT = Path(__file__).resolve().parents[1]
 PREMISE = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
+CHECKPOINT_BINDING = ROOT / "src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py"
 
 
 def _modules():
@@ -52,6 +53,22 @@ def test_capture_binds_frozen_premise_and_remains_non_authorizing():
     assert envelope.execution_authorized is False
     assert envelope.training_authorized is False
     assert envelope.production_promotable is False
+
+
+def test_checkpoint_provenance_binds_actual_canonical_runtime_not_legacy_guard():
+    """The persisted runtime identity must cover the code that actually controls mutation."""
+    source = CHECKPOINT_BINDING.read_text(encoding="utf-8")
+    required = (
+        "inactive_update_reference.py",
+        "inactive_guarded_update_v1.py",
+        "prefreeze_runtime_authority.py",
+        "inactive_checkpoint_binding_v1.py",
+    )
+    for name in required:
+        assert name in source, f"checkpoint runtime provenance omits {name}"
+    assert "inactive_runtime_step_guard_v1.py" not in source, (
+        "checkpoint provenance still binds the superseded #221 guard"
+    )
 
 
 def test_restore_roundtrip_requires_exact_premise_and_preserves_mechanics_state():
