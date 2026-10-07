@@ -10,15 +10,19 @@ Its purpose is to prove V5 invariants after support-aware packing:
   * weighted accumulation is update-level, not equal-per-microbatch;
   * keyed dropout is addressed by scientific identity;
   * teacher gradients remain absent;
-  * AdamW steps exactly once;
+  * the caller-owned mutation boundary steps exactly once;
   * EMA follows only the proved optimizer step;
   * replay is deterministic for the same frozen inputs and initial state.
+
+The consumer computes gradients and verifies postconditions, but it does not
+own optimizer.step() or teacher mutation. Those operations are injected by the
+canonical guarded wrapper so there is one mutation authority boundary.
 """
 from __future__ import annotations
 from dataclasses import dataclass
 from copy import deepcopy
 from numbers import Integral
-from typing import Mapping, Sequence
+from typing import Callable, Mapping, Sequence
 import torch
 
 from sea_ad_jepa.v4.ipb_jepa import BlockPredictor, TargetBlocks, gather_block_states
@@ -137,6 +141,9 @@ def run_inactive_reference_update(
     run_seed:int,
     update_index:int,
     ema_momentum:float,
+    before_gradient_validation:Callable[[],object],
+    guarded_optimizer_step:Callable[[dict[str,object]],object],
+    guarded_ema_step:Callable[[float],object],
 )->dict[str,object]:
     if expression.ndim!=2 or measurement_mask.shape!=expression.shape or measurement_mask.dtype!=torch.bool:
         raise ValueError('expression/measurement_mask must be aligned [cells,genes] with boolean mask')
@@ -151,6 +158,8 @@ def run_inactive_reference_update(
         if view.hidden_mask.shape!=measurement_mask.shape: raise ValueError('target block view shape mismatch')
         if bool((view.hidden_mask & ~measurement_mask).any()): raise ValueError('target block outside measured support')
     if not 0.0<=float(ema_momentum)<1.0: raise ValueError('ema_momentum must lie in [0,1)')
+    if not callable(before_gradient_validation) or not callable(guarded_optimizer_step) or not callable(guarded_ema_step):
+        raise ValueError('canonical mutation callbacks are required')
 
     plan=operator_homogeneous_microbatch_plan(operator_ids,measured_tokens_by_operator,max_teacher_tokens_per_microbatch=max_teacher_tokens_per_microbatch)
     before_teacher=_snapshot(modules.teacher)
@@ -178,14 +187,16 @@ def run_inactive_reference_update(
             contribution.backward()
             loss_total+=float(local.detach())*alpha
 
+    # Non-AMP callers explicitly mark the no-op unscale boundary here; AMP
+    # successors must perform scaler.unscale_ before this callback returns.
+    before_gradient_validation()
     gradient_report=_gradient_report(modules)
-    modules.optimizer.step()
+    guarded_optimizer_step(gradient_report)
     step_after=_optimizer_step_scalar(modules.optimizer)
     if step_after!=step_before+1: raise RuntimeError(f'optimizer did not step exactly once: {step_before}->{step_after}')
     m=float(ema_momentum)
-    with torch.no_grad():
-        for teacher,online in zip(modules.teacher.parameters(),modules.online.parameters()):
-            teacher.mul_(m).add_(online,alpha=1.0-m)
+    guarded_ema_step(m)
+
     # Exact EMA equation relative to pre-step teacher and post-step V5 online.
     online_state=modules.online.state_dict(); teacher_state=modules.teacher.state_dict()
     max_ema_error=0.0
