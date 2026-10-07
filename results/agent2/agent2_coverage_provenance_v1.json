@@ -1,0 +1,235 @@
+{
+  "annotation_release": "Ensembl 116 (GRCh38.p14)",
+  "authentication": {
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "canonical_registry_verified": true,
+    "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "full104_block_manifest_verified": true
+  },
+  "counts": {
+    "addresses_ambiguously_mapped": 35,
+    "collision_rows": 261,
+    "collisions_ensembl_id": 45,
+    "collisions_symbol": 216,
+    "ensembl116_gene_lines_parsed": 78941,
+    "ensembl116_gene_records": 78941,
+    "hgnc_records": 45031,
+    "hgnc_withdrawn_symbols": 5290,
+    "morabito_atac_microglia_cells": 12232,
+    "morabito_atac_n_cells": 143401,
+    "morabito_atac_n_peaks": 219070,
+    "morabito_atac_peaks_accessible_any_cell": 217707,
+    "morabito_atac_peaks_accessible_in_microglia": 210137,
+    "morabito_atac_peaks_zero_in_all_cells": 1363,
+    "morabito_atac_unparseable_peak_ids": 0,
+    "morabito_rna_barcodes_without_metadata": 298,
+    "morabito_rna_features_detected_any_cell": 39638,
+    "morabito_rna_features_detected_in_microglia": 27922,
+    "morabito_rna_features_with_version_suffix": 58721,
+    "morabito_rna_features_zero_in_all_cells": 19083,
+    "morabito_rna_microglia_cells": 4126,
+    "morabito_rna_microglia_cells_scanned": 4126,
+    "morabito_rna_n_cells": 61770,
+    "morabito_rna_n_features": 58721,
+    "morabito_rna_par_y_features": 45,
+    "morabito_rna_reference_genome": [
+      "GRCh38.p12.premrna2"
+    ],
+    "morabito_rna_unique_stable_ids": 58676,
+    "morabito_rna_unique_symbols": 57133,
+    "n_canonical_addresses": 41238,
+    "one_row_per_address_verified": true,
+    "query_panel_absent_symbols": [
+      "PLCG2"
+    ],
+    "query_panel_genes_absent_from_registry": 1,
+    "query_panel_genes_declared": 45,
+    "query_panel_genes_in_registry": 44,
+    "query_panel_unique_symbols": 45,
+    "registry_identity_closure_verified": true,
+    "rows_written": 41238,
+    "stage75c_genes_with_nearest_peak": 43674,
+    "stage75f_regulators_in_registry": 10,
+    "stage75f_regulators_tested": 10,
+    "stage75f_regulators_with_supported_targets": 7,
+    "stage75f_tf_target_rows": 96
+  },
+  "distal_bp": 100000,
+  "generated_utc": "2026-09-26T16:25:08.722293+00:00",
+  "governance": "TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF",
+  "inputs": {
+    "atac_h5": {
+      "bytes": 360317403,
+      "path": "D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+      "sha256": "ff7c46e755ec0e3fecb319c5b3dd9ac0ada318525746ebe7dddb8e2c0dcab87f"
+    },
+    "atac_meta": {
+      "bytes": 1066930,
+      "path": "D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz",
+      "sha256": "0657e92aa49eed953aae3b3c5f70aacebe86621c0a930356ec53ba0107c81767"
+    },
+    "canonical_registry": {
+      "bytes": 24946770,
+      "path": "D:/Jepa project/results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "full104_block_manifest": {
+      "bytes": 2372002,
+      "path": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+    },
+    "gtf": {
+      "bytes": 141121632,
+      "path": "D:/Jepa project/data/external/v4/gene_identity_authority/ensembl_116/Homo_sapiens.GRCh38.116.gtf.gz",
+      "sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6"
+    },
+    "hgnc": {
+      "bytes": 16931491,
+      "path": "D:/Jepa project/data/external/v4/gene_identity_authority/hgnc_2026-08/hgnc_complete_set_2026-08-07.txt",
+      "sha256": "faaeb6ae1e2a596be658b5f23ee44937c9c5379fa37d1f5ace54b94b16962b1c"
+    },
+    "hgnc_withdrawn": {
+      "bytes": 258931,
+      "path": "D:/Jepa project/data/external/v4/gene_identity_authority/hgnc_2026-08/withdrawn_2026-08-04.txt",
+      "sha256": "77235063bba9492d09997e58387a50b6f750aed2de67a44c519c920b48f7ff87"
+    },
+    "query_panel": {
+      "bytes": 33796,
+      "path": "D:/Jepa project/results/tables/discovery_targeted_manifold_audit_gene_list_v1.csv",
+      "sha256": "1616b01288b5b7137766fbb122b2b55e036fe3ea3e4e480fd24d9169d82ac1ab"
+    },
+    "rna_h5": {
+      "bytes": 273975534,
+      "path": "D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+      "sha256": "6ba98a1af8772af08c8cdd5e5e63eebb0890daed48cac2e1b8961dcc67069b77"
+    },
+    "rna_meta": {
+      "bytes": 435170,
+      "path": "D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz",
+      "sha256": "ab1a029deb43196e2bb1fea5907d838885750cfff3850c600c07588c7c7cdb2b"
+    },
+    "s75f_primary": {
+      "bytes": 11901,
+      "path": "D:/Jepa project/results/tables/stage75f_primary_tf_target_gene_evidence_summary_v1.csv",
+      "sha256": "8c9e78b472b306cb4e26c693879c2ec5132a4c17420bbb293b8c7e9f29a544a8"
+    },
+    "s75f_primary_motif": {
+      "bytes": 768,
+      "path": "D:/Jepa project/results/tables/stage75f_primary_tf_motif_support_summary_v1.csv",
+      "sha256": "479ea265b0e4f732609dcb559fb32faa576dd763041394e30dcba327f7d87dac"
+    },
+    "s75f_secondary": {
+      "bytes": 35060,
+      "path": "D:/Jepa project/results/tables/stage75f_secondary_tf_target_gene_evidence_summary_v1.csv",
+      "sha256": "273622223107780aa8a4912c8752aecb160d156a114a76ed2453b6e9f662a408"
+    },
+    "s75f_secondary_motif": {
+      "bytes": 1728,
+      "path": "D:/Jepa project/results/tables/stage75f_secondary_tf_motif_support_summary_v1.csv",
+      "sha256": "6ccf637d83d3e71f6e301e3a0d29bb7b6580b685291dd40638e9b79dce187170"
+    },
+    "stage75c": {
+      "bytes": 27534773,
+      "path": "D:/Jepa project/results/tables/stage75c_peak_to_gene_preflight_v1.csv",
+      "sha256": "0e7d1a143bea1534b057edb2f73f1e8f37c8f8139d27fe6dad7f45ee42497030"
+    }
+  },
+  "missing_is_not_zero": "UNMEASURED (no feature in the assay) and MEASURED_BUT_UNDETECTED (feature present, zero observed) are separate states in separate columns. No missing feature is ever assigned a zero count.",
+  "notes": [
+    "GSE174367 snRNA matrix is 58721 features x 61770 CELLS. The figure 61,770 is a NUCLEUS count, not a feature count; it is never comparable to the 41,238 canonical addresses.",
+    "45 snRNA features carry the CellRanger _PAR_Y suffix. They share an Ensembl stable ID with their X-copy, so the affected canonical addresses resolve to two assay features and are reported AMBIGUOUSLY_MAPPED rather than silently collapsed to one copy.",
+    "298 of 61770 snRNA barcodes carry no cell-type metadata row; they are held as UNKNOWN cell type and are NOT counted as non-microglia.",
+    "Stage75C assigns each peak to exactly ONE nearest gene, so absence from that table is NOT evidence of no nearby peak. It is carried as a cross-check column only; the promoter/distal states in this crosswalk come from direct interval overlap against Ensembl 116 TSS geometry.",
+    "Stage75F is a HYPOTHESIS set (motif-enrichment and coactivity evidence), not a validated regulatory network. No causal or therapeutic claim is carried by these columns."
+  ],
+  "outputs": {
+    "agent2_ambiguous_address_report_v1.csv": {
+      "bytes": 4607,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_ambiguous_address_report_v1.csv",
+      "sha256": "ba51ef810ea27b9570a08f8ba980bb2893ca40de61e7f9283e225dd7662a5d12"
+    },
+    "agent2_collision_report_v1.csv": {
+      "bytes": 60517,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_collision_report_v1.csv",
+      "sha256": "55e704f23fd984d00e533b858193e9fe36daacabfb6682684de34fc324774961"
+    },
+    "agent2_full104_feature_crosswalk_v1.csv": {
+      "bytes": 16383559,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_full104_feature_crosswalk_v1.csv",
+      "sha256": "4afff98d219450bef8d9ffff156c2190275254d1660657ab2d732ae6b48cf8ac"
+    },
+    "agent2_query_panel_coverage_v1.csv": {
+      "bytes": 681,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_query_panel_coverage_v1.csv",
+      "sha256": "df6877b17f90ac0cd5f02ce9281d36d938b422722beaef98618360c426b687b9"
+    },
+    "agent2_tf_coverage_v1.csv": {
+      "bytes": 832,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_tf_coverage_v1.csv",
+      "sha256": "35a63b65beb950d6f97518ca358c8d116a8627efba2b70569cec930698fa2749"
+    }
+  },
+  "promoter_bp": 2000,
+  "stage": "agent2_full104_full_gene_universe_coverage_crosswalk_v1",
+  "state_counts": {
+    "annotation_regulatory_state": {
+      "DISTAL_CANDIDATE_ONLY": 13798,
+      "NO_ANNOTATED_REGION_IN_ASSAYED_PEAK_SET": 698,
+      "PROMOTER_SUPPORTED": 25987,
+      "UNKNOWN": 755
+    },
+    "atac_accessibility_state": {
+      "ACCESSIBLE_DISTAL_ONLY": 13814,
+      "ACCESSIBLE_PROMOTER": 25966,
+      "NO_ASSAYED_REGION": 698,
+      "REGION_PRESENT_BUT_NOT_ACCESSIBLE": 5,
+      "UNKNOWN": 755
+    },
+    "atac_microglia_accessibility_state": {
+      "ACCESSIBLE_DISTAL_ONLY": 13911,
+      "ACCESSIBLE_PROMOTER": 25855,
+      "NO_ASSAYED_REGION": 698,
+      "REGION_PRESENT_BUT_NOT_ACCESSIBLE": 19,
+      "UNKNOWN": 755
+    },
+    "matched_rna_atac_state": {
+      "AMBIGUOUSLY_MAPPED": 35,
+      "ELIGIBLE_MATCHED_RNA_ATAC": 37966,
+      "NOT_ELIGIBLE_NO_ACCESSIBLE_REGION": 681,
+      "UNKNOWN": 434,
+      "UNMEASURED": 2122
+    },
+    "regulatory_evidence_state": {
+      "AMBIGUOUSLY_MAPPED": 35,
+      "MAPPED_WITHOUT_REGULATORY_EVIDENCE": 676,
+      "REGULATORY_EVIDENCE_PRESENT": 37971,
+      "UNKNOWN": 434,
+      "UNMEASURED": 2122
+    },
+    "rna_map_route": {
+      "current_symbol": 265,
+      "deprecated_alias_symbol": 13,
+      "ensembl_stable_id": 38838,
+      "none": 2122
+    },
+    "rna_microglia_state": {
+      "AMBIGUOUSLY_MAPPED": 35,
+      "MEASURED_BUT_UNDETECTED": 14257,
+      "MEASURED_DETECTED": 24824,
+      "UNMEASURED": 2122
+    },
+    "rna_state": {
+      "AMBIGUOUSLY_MAPPED": 35,
+      "MEASURED_BUT_UNDETECTED": 7626,
+      "MEASURED_DETECTED": 31455,
+      "UNMEASURED": 2122
+    },
+    "stage75f_role": {
+      "NOT_IN_STAGE75F": 41200,
+      "REGULATOR": 9,
+      "REGULATOR_AND_TARGET": 1,
+      "TARGET": 28
+    }
+  },
+  "symbol_collision_policy": "Symbol routes are used ONLY when the Ensembl stable-ID route fails. A symbol resolving to more than one assay feature is recorded as AMBIGUOUSLY_MAPPED with every candidate listed; it is never deduplicated to a single arbitrary winner and never silently dropped."
+}
