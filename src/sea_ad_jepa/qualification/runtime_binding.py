@@ -5,8 +5,8 @@ from pathlib import Path
 
 from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
     V5PersistedCheckpointProofV1,
-    load_persisted_prefreeze_bound_checkpoint,
     reference_checkpoint_sha256,
+    revalidate_persisted_prefreeze_checkpoint,
 )
 
 from .receipts import BoundRuntimeMutationProofV1
@@ -24,6 +24,7 @@ def bind_v5_persisted_runtime_proof(
     proof: V5PersistedCheckpointProofV1,
     *,
     artifact_path: Path,
+    premise_state_path: Path,
 ) -> BoundRuntimeMutationProofV1:
     """Verify and copy one actual V5 physical completion proof into shared provenance.
 
@@ -43,9 +44,10 @@ def bind_v5_persisted_runtime_proof(
     if _file_sha256(path) != proof.artifact_sha256:
         raise ValueError("physical runtime proof artifact digest mismatch")
 
-    loaded = load_persisted_prefreeze_bound_checkpoint(
+    loaded = revalidate_persisted_prefreeze_checkpoint(
         path,
         expected_sha256=proof.artifact_sha256,
+        premise_state_path=Path(premise_state_path),
     )
     if loaded.runtime_contract != proof.runtime_contract:
         raise ValueError("physical runtime proof contract does not match persisted checkpoint")
