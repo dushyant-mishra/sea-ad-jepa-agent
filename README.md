@@ -10,6 +10,9 @@ For the live scientific boundary, read [`START_HERE.md`](START_HERE.md) first. H
 
 - **V75 100K measurement architecture is qualified within its declared scope.**
 - **Premise qualification V3 is frozen and merged as governance.**
+- **Canonical V5 runtime mechanics are converged on draft PR #224 for bounded prefreeze rehearsal only.**
+- **The current engineering frontier is binding that exact runtime proof into shared qualification interface PR #223.**
+- **Executed q-safety remains unproven until the adapter+runtime path physically demonstrates it.**
 - **500K promotion is not authorized.**
 - **No production teacher target or representation is currently qualified.**
 - **Target lineage reconstruction is complete.**
@@ -17,15 +20,16 @@ For the live scientific boundary, read [`START_HERE.md`](START_HERE.md) first. H
 - **Stage A execution and Stage 4 are not authorized.**
 - **TEST remains sealed and Morabito protected.**
 - **`width=160` is network/token capacity, not a biological-dimension result.**
-- **The synthetic learned-state scaling ladder is stopped.**
 
 ## Current task
 
-The current task is **runtime-safety reconciliation onto the frozen V3 premise**, not model training and not another target-design cycle.
+The current task is **shared-interface binding of the physically qualified canonical V5 runtime**, not another runtime implementation, not model training, and not another target-design cycle.
 
-The immediate engineering question is whether the recovered V5 teacher/student mechanics can be composed with fail-closed optimizer-step sequencing on current `main`: gradient validation before stepping, single-use guarded optimizer permission, explicit proof that the optimizer step completed, and only then EMA. The next bounded runtime issue is authority-bound checkpoint/reload semantics.
+The canonical runtime successor already exercises the actual V5 AdamW path with fail-closed optimizer ownership, unscale-before-gradient-validation, finite and skipped GradScaler behavior, explicit optimizer completion before EMA, bound checkpoint state, bounded restart equivalence, transitive runtime provenance, and persisted checkpoint write/hash/reload verification. Alternate donor-era mutation/rehearsal paths are not canonical.
 
-This work is mechanics only. Historical `CurrentTrainingAuthorityV2` / `OptimizerGuardV4` code can inform the implementation, but historical existence does not grant current training authority. With no qualified production target or representation, final training-authority issuance must remain unreachable.
+The next engineering question is whether PR #223 can machine-verify the exact PR #224 runtime proof before it reports `PROVEN_BY_BOUND_RUNTIME`. A pair of caller-supplied digest strings must not be sufficient. Q-safety remains policy-only until the repaired adapter plus bound runtime physically executes and proves the required transformations.
+
+This work is mechanics only. Historical `CurrentTrainingAuthorityV2` / `OptimizerGuardV4` code is provenance, not current authority. Real-RNA execution, Stage A, production training, 500K and Stage 4 remain NOT AUTHORIZED.
 
 ## Authority freshness
 
