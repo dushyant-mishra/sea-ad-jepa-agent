@@ -1,6 +1,9 @@
 import pytest
 
-from sea_ad_jepa.qualification.v77_join import PhysicalRowValueBindingV1
+from sea_ad_jepa.qualification.v77_join import (
+    PhysicalRowValueBindingV1,
+    build_learnable_model_context,
+)
 
 
 def _valid_binding(**overrides):
@@ -37,3 +40,32 @@ def test_physical_row_value_binding_accepts_one_inseparable_chain():
 def test_physical_row_value_binding_rejects_historical_substitutions(overrides, message):
     with pytest.raises(ValueError, match=message):
         _valid_binding(**overrides)
+
+
+def test_raw_source_and_operator_identity_do_not_reach_learnable_context():
+    context = build_learnable_model_context(
+        model_inputs={"student_expression": [[1.0, 0.0]], "measurement_mask": [[True, True]]},
+        lawful_operator_context={
+            "source_index": [4],
+            "operator_index": [11],
+            "visible_library_size": [37.0],
+            "n_measured": [2],
+        },
+    )
+    assert set(context.operator_context) == {"visible_library_size", "n_measured"}
+    assert "source_index" not in context.operator_context
+    assert "operator_index" not in context.operator_context
+
+
+def test_unreviewed_measurement_identity_proxy_fails_closed():
+    with pytest.raises(ValueError, match="unreviewed|operator context"):
+        build_learnable_model_context(
+            model_inputs={"student_expression": [[1.0]]},
+            lawful_operator_context={
+                "source_index": [4],
+                "operator_index": [11],
+                "visible_library_size": [37.0],
+                "n_measured": [1],
+                "dataset_embedding": [99],
+            },
+        )
