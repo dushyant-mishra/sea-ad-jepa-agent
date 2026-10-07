@@ -89,7 +89,7 @@ def main():
  order=np.concatenate([d for d,_ in blocks]); stacked=sparse.vstack([x for _,x in blocks],format='csr'); inv=np.argsort(order); final=stacked[inv]
  if not np.array_equal(np.sort(order),np.arange(len(fz))) or final.shape!=(50_000,ADDRESS_N) or not np.isfinite(final.data).all(): raise RuntimeError('global sparse merge failed')
  final_path=OUT/'FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.npz'; sparse.save_npz(final_path,final,compressed=True)
- audit={'schema':'foundation-discovery-expression-v1','freeze_sha256':sha(FREEZE),'cells':len(fz),'addresses':ADDRESS_N,'nnz':int(final.nnz),'density':float(final.nnnz/(len(fz)*ADDRESS_N)) if False else float(final.nnz/(len(fz)*ADDRESS_N)),'normalization':'log1p(raw_count*10000/full_source_library) exactly once','output_sha256':sha(final_path),'shards':shard_audit,'wall_seconds':time.time()-started,'firewalls':meta['firewalls']}
+ audit={'schema':'foundation-discovery-expression-v1','freeze_sha256':sha(FREEZE),'cells':len(fz),'addresses':ADDRESS_N,'nnz':int(final.nnz),'density':float(final.nnz/(len(fz)*ADDRESS_N)),'normalization':'log1p(raw_count*10000/full_source_library) exactly once','output_sha256':sha(final_path),'shards':shard_audit,'wall_seconds':time.time()-started,'firewalls':meta['firewalls']}
  (OUT/'FOUNDATION_DISCOVERY_EXPRESSION_AUDIT.json').write_text(json.dumps(audit,indent=2)+'\n')
  print(json.dumps({k:audit[k] for k in ('cells','addresses','nnz','density','wall_seconds')},indent=2))
 if __name__=='__main__': main()
