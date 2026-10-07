@@ -5,6 +5,8 @@ import string
 from types import MappingProxyType
 from typing import Mapping
 
+from .receipts import QSafetyExecutionProofStatus
+
 
 RAW_MEASUREMENT_IDENTITY_FIELDS = frozenset({"source_index", "operator_index"})
 ALLOWED_LEARNABLE_OPERATOR_CONTEXT_FIELDS = frozenset({"visible_library_size", "n_measured"})
@@ -18,6 +20,12 @@ def _require_sha256(value: str, name: str) -> str:
     ):
         raise ValueError(f"{name} must be a 64-character hexadecimal digest")
     return value.lower()
+
+
+def require_executed_q_safety(status: QSafetyExecutionProofStatus) -> None:
+    """Fail closed unless q-safety was proven by the bound adapter/runtime path."""
+    if status is not QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME:
+        raise ValueError("executed q-safety proof is required at the V77 joined boundary")
 
 
 @dataclass(frozen=True)
