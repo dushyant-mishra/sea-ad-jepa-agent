@@ -54,9 +54,10 @@
   "split": {
     "name": "JEPA_STAGE_A_V3_SPLIT_20261007",
     "stratify_by_source": true,
-    "hash_input": "JEPA_STAGE_A_V3_SPLIT_20261007|<SOURCE>|<CANONICAL_PERSON_ID>",
+    "split_key": "reader_fit donor_id from TEACHER_STUDENT_READER_FIT_DONOR_SUPPORT_PROFILE_V1.csv after exact donor-level deduplication",
+    "hash_input": "JEPA_STAGE_A_V3_SPLIT_20261007|<SOURCE>|<DONOR_ID>",
     "hash": "SHA256",
-    "sort": "ascending lowercase hex digest; canonical person ID tie-breaker",
+    "sort": "ascending lowercase hex digest; donor_id tie-breaker",
     "fit_rule": "first floor(2*n_source/3)",
     "held_rule": "remainder",
     "counts": {
@@ -65,7 +66,12 @@
       "SEA_AD": {"inner_train_fit": 30, "held_donor_eval": 16},
       "TOTAL": {"inner_train_fit": 68, "held_donor_eval": 36}
     },
-    "exact_manifest_materialized": false,
+    "source_profile_rows": 196,
+    "source_profile_unique_donors": 104,
+    "nph52_profile_note": "NPH52 has repeated rows for distinct support fingerprints; split uses one exact donor_id per donor, not support-profile rows",
+    "exact_manifest_materialized": true,
+    "manifest_path": "docs/agent/JEPA_STAGE_A_V3_SPLIT_20261007.csv",
+    "manifest_sha256": "cc2c87cc7b8085f71850a7817cc28524ae518e109584da4cdfae07b2c6f75fe7",
     "outcome_adaptive_changes_forbidden": true
   },
   "query_exchangeability": {
@@ -114,7 +120,6 @@
   },
   "next_lawful_sequence": [
     "QUALIFY_HVS_SEAAD_PHYSICAL_AXIS_REPAIR_DESIGN_AND_SENTINELS",
-    "MATERIALIZE_AND_HASH_104_DONOR_68_36_SPLIT_WITHOUT_OPENING_EXPRESSION_OUTCOMES",
     "FREEZE_CANDIDATE_SPECIFIC_SCORE_EXTRACTION_AND_LEAKAGE_SEAMS",
     "SEPARATE_OWNER_APPROVAL_FOR_NARROW_REAL_RNA_STAGE_A_EXECUTION",
     "EXECUTE_Q_LOCALITY_AND_SHORTCUT_GATE_ONLY_IF_AUTHORIZED",
