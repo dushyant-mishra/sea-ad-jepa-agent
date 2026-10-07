@@ -219,16 +219,14 @@ def run_inactive_reference_update(
 
 @dataclass(frozen=True)
 class V5ReferenceCheckpoint:
-    """In-memory proof checkpoint for the inactive V5 mechanics harness.
-
-    This is not a production checkpoint schema. It proves which state is
-    mechanically necessary once dropout is keyed by scientific coordinates.
-    """
+    """In-memory proof checkpoint for the inactive V5 mechanics harness."""
     schema: str
     online_state: dict[str, torch.Tensor]
     teacher_state: dict[str, torch.Tensor]
     predictor_state: dict[str, torch.Tensor]
     optimizer_state: dict[str, object]
+    scaler_state: dict[str, object] | None
+    amp_scaler_used: bool
     next_update_index: int
     presentations_seen: int
     execution_authorized: bool = False
@@ -240,22 +238,28 @@ def capture_reference_checkpoint(
     *,
     next_update_index: int,
     presentations_seen: int,
+    scaler: object | None = None,
 ) -> V5ReferenceCheckpoint:
     if isinstance(next_update_index, bool) or not isinstance(next_update_index, Integral) or int(next_update_index) < 0:
         raise ValueError('next_update_index must be an exact nonnegative integer')
     if isinstance(presentations_seen, bool) or not isinstance(presentations_seen, Integral) or int(presentations_seen) < 0:
         raise ValueError('presentations_seen must be an exact nonnegative integer')
+    if scaler is not None and not callable(getattr(scaler,'state_dict',None)):
+        raise ValueError('scaler must provide state_dict when AMP is active')
     update = int(next_update_index)
     presentations = int(presentations_seen)
     step = _optimizer_step_scalar(modules.optimizer)
     if step != update:
         raise ValueError(f'checkpoint cursor/optimizer step mismatch: next_update_index={update} optimizer_step={step}')
+    scaler_state=deepcopy(scaler.state_dict()) if scaler is not None else None
     return V5ReferenceCheckpoint(
         schema='V5_INACTIVE_REFERENCE_CHECKPOINT_V1',
         online_state=deepcopy(modules.online.state_dict()),
         teacher_state=deepcopy(modules.teacher.state_dict()),
         predictor_state=deepcopy(modules.predictor.state_dict()),
         optimizer_state=deepcopy(modules.optimizer.state_dict()),
+        scaler_state=scaler_state,
+        amp_scaler_used=scaler is not None,
         next_update_index=update,
         presentations_seen=presentations,
     )
@@ -264,15 +268,29 @@ def capture_reference_checkpoint(
 def restore_reference_checkpoint(
     modules: V5ReferenceModules,
     checkpoint: V5ReferenceCheckpoint,
+    *,
+    scaler: object | None = None,
 ) -> tuple[int, int]:
     if not isinstance(checkpoint, V5ReferenceCheckpoint) or checkpoint.schema != 'V5_INACTIVE_REFERENCE_CHECKPOINT_V1':
         raise ValueError('unsupported V5 reference checkpoint')
     if checkpoint.execution_authorized or checkpoint.training_authorized:
         raise ValueError('reference checkpoint cannot contain execution authority')
+    if checkpoint.amp_scaler_used != (scaler is not None):
+        raise ValueError('checkpoint/scaler AMP mode mismatch')
+    if checkpoint.amp_scaler_used:
+        if checkpoint.scaler_state is None:
+            raise ValueError('AMP checkpoint is missing scaler state')
+        if not callable(getattr(scaler,'load_state_dict',None)):
+            raise ValueError('scaler must provide load_state_dict for AMP restore')
+    elif checkpoint.scaler_state is not None:
+        raise ValueError('non-AMP checkpoint cannot contain scaler state')
+
     modules.online.load_state_dict(deepcopy(checkpoint.online_state), strict=True)
     modules.teacher.load_state_dict(deepcopy(checkpoint.teacher_state), strict=True)
     modules.predictor.load_state_dict(deepcopy(checkpoint.predictor_state), strict=True)
     modules.optimizer.load_state_dict(deepcopy(checkpoint.optimizer_state))
+    if scaler is not None:
+        scaler.load_state_dict(deepcopy(checkpoint.scaler_state))
     modules.online.train(); modules.predictor.train(); modules.teacher.eval()
     for p in modules.teacher.parameters():
         p.requires_grad_(False)
