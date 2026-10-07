@@ -4,6 +4,7 @@ build a cache the defective way (POS), the correct way (ID), or at random."""
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -78,3 +79,11 @@ def test_an_identity_axis_cannot_produce_a_verdict_either_way():
         agree.append(a / t)
     m = dict(agree_id=float(np.mean(agree)), agree_pos=1.0)
     assert P.classify([m]) == "INCONCLUSIVE__STOP", "when both maps agree, the probe cannot tell them apart"
+
+
+def test_records_are_written_as_utf8_with_lf_on_the_ci_python(tmp_path):
+    p = tmp_path / "nested" / "record.json"
+    P.write_json(p, {"gene": "SNAP25", "note": "caf\u00e9"})
+    data = p.read_bytes()
+    assert 13 not in data and data.endswith(bytes([10])), "LF only, ending in a newline"
+    assert json.loads(data.decode("utf-8")) == {"gene": "SNAP25", "note": "caf\u00e9"}

@@ -107,6 +107,14 @@ def sha256_file(p: Path, chunk: int = 1 << 24) -> str:
     return h.hexdigest()
 
 
+def write_json(path: Path, obj) -> None:
+    """UTF-8 with LF line endings. Path.write_text(newline=...) needs Python 3.10; CI runs 3.9."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(obj, indent=1) + "\n")
+
+
 def git(*a) -> str:
     return subprocess.run(["git", *a], capture_output=True, text=True, cwd=ROOT).stdout.strip()
 
@@ -220,8 +228,7 @@ def prepare(out: Path) -> None:
                     "no TEST, no mutation, no training, no rebuild"],
         code=dict(path="scripts/v77/probe_v77_s174_cache_axis.py",
                   sha256=sha256_file(ROOT / "scripts/v77/probe_v77_s174_cache_axis.py"), head=git("rev-parse", "HEAD")))
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(rec, indent=1) + "\n", encoding="utf-8", newline="\n")
+    write_json(out, rec)
     print("pre-registration written", out)
 
 
@@ -309,7 +316,7 @@ def run(prereg_path: Path, out: Path) -> None:
                h5ad_sizes_unchanged=all((SOURCE / m["h5ad"]["path"]).stat().st_size == m["h5ad"]["bytes"]
                                         for m in pre["matrices"]),
                governance=pre["governance"])
-    out.write_text(json.dumps(rec, indent=1) + "\n", encoding="utf-8", newline="\n")
+    write_json(out, rec)
     print("VERDICT", verdict)
 
 
