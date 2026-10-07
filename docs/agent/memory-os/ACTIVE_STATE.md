@@ -1,7 +1,7 @@
 # ACTIVE STATE — JEPA PROJECT
 
 Date: 2026-10-06
-Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
+Status: `PREMISE_V3_FROZEN__CANONICAL_V5_RUNTIME_CONVERGED_PENDING_SHARED_INTERFACE_BINDING__TRAINING_OFF`
 
 ## Canonical current routing
 
@@ -20,17 +20,39 @@ Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
 - No production target or representation is qualified.
 - No estimand or deciding numeric threshold is selected.
 - Target lineage reconstruction is complete and merged.
-- The synthetic learned-state scaling ladder is stopped.
 - `width=160` is capacity, not biological dimensionality authority.
 - `cell_state` is not qualified as the designated global biological state.
-- V75 96 anonymous features cannot be arbitrarily mapped into the canonical 41,238-address identity-aware runtime.
 - Historical final-training authority artifacts remain historical until a future current authority path lawfully requalifies every prerequisite.
+
+## Current runtime state
+
+PR #224 (`reconcile/canonical-v5-runtime-successor-20261006`) is the single canonical V5 runtime successor and remains draft/non-authorizing.
+
+Physically qualified mechanics on that successor include:
+
+- one actual V5 mutation path only;
+- `PrefreezeMechanicalAuthorityV1` bound to the actual optimizer configuration;
+- `PrefreezeOptimizerGuardV1` single-use step ownership;
+- unscale before gradient validation;
+- finite AdamW/GradScaler completion and nonfinite scaler-skip rejection;
+- optimizer completion before EMA and no EMA after failed/incomplete step;
+- online/predictor/EMA-teacher/optimizer/scaler/cursor checkpoint state;
+- bounded interrupted/reloaded AMP equivalence;
+- keyed-dropout restart independence from unrelated global Torch RNG perturbations;
+- transitive runtime source digest coverage;
+- persisted checkpoint SHA-256 verification before deserialization;
+- completed physical proof only after noninitial write -> hash -> reload -> governance/runtime/guard-receipt revalidation;
+- alternate generic `prefreeze_guarded_rehearsal.py` retired from the successor.
 
 ## Current task
 
-Runtime-safety reconciliation. Reconcile the recovered V5 mechanics with guarded optimizer-step sequencing, explicit step-completion proof before EMA, and later authority-bound checkpoint/reload behavior while preserving the frozen V3 scientific contract unchanged.
+Bind the exact PR #224 runtime proof into PR #223's shared qualification interface without broadening scientific authority.
 
-This is mechanics-only work. Stage A is not execution authority. Training remains OFF. The existence of historical `CurrentTrainingAuthorityV2` / `OptimizerGuardV4` code does not itself create current training permission.
+The mutation-proof status in #223 may only become `PROVEN_BY_BOUND_RUNTIME` when exact runtime provenance and physical completion proof are machine-verified. Executed q-safety remains unproven until the adapter+runtime path physically executes the required transformations.
+
+The first joined run remains bounded synthetic rehearsal only. No real-RNA execution, Stage A, TEST, Morabito, 500K, Stage 4 or production training is authorized.
+
+Historical `CurrentTrainingAuthorityV2`, the removed inactive-runtime guard, and the removed generic rehearsal are donor/history surfaces only and must not reappear as parallel canonical paths.
 
 ## Authority freshness
 
