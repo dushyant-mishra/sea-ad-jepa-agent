@@ -82,6 +82,7 @@ def test_physical_completion_proof_exists_only_after_write_hash_reload_and_reval
     )
     assert path.is_file()
     assert proof.schema == "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1"
+    assert proof.runtime_contract == binding.PREFREEZE_RUNTIME_CONTRACT
     assert proof.persisted_verified_reload is True
     assert proof.artifact_sha256 == binding._file_sha256(path)
     assert proof.logical_checkpoint_sha256 == binding.reference_checkpoint_sha256(envelope.reference_checkpoint)
