@@ -2,12 +2,13 @@
 
 The envelope binds the in-memory V5 proof checkpoint to the exact frozen
 premise-state bytes and to every source file that currently defines the
-canonical mutation/checkpoint semantics. Persisted artifacts are SHA-256
-verified before deserialization. The initial state may exist without a prior
-transition; every post-update state must carry a verified guard completion
-receipt proving optimizer completion followed by EMA. Rehearsal authority may
-only be issued from a live state that exactly matches its claimed parent
-checkpoint. This grants no execution or training authority.
+canonical mutation/checkpoint semantics, including the transitive numerical
+mechanics used by the consumer. Persisted artifacts are SHA-256 verified before
+deserialization. The initial state may exist without a prior transition; every
+post-update state must carry a verified guard completion receipt proving
+optimizer completion followed by EMA. Rehearsal authority may only be issued
+from a live state that exactly matches its claimed parent checkpoint. This
+grants no execution or training authority.
 """
 from __future__ import annotations
 
@@ -35,11 +36,19 @@ PREFREEZE_RUNTIME_CONTRACT = (
     "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
 )
 
+# Relative to src/sea_ad_jepa/v5. This list is deliberately explicit: changing
+# any file capable of changing the numerical trajectory must change the bound
+# runtime digest rather than silently inheriting an older proof.
 CANONICAL_RUNTIME_SOURCE_FILES = (
     "inactive_update_reference.py",
     "inactive_guarded_update_v1.py",
     "prefreeze_runtime_authority.py",
     "inactive_checkpoint_binding_v1.py",
+    "data_first_geometry.py",
+    "keyed_dropout_prototype_v2.py",
+    "keyed_rng_contract_v2.py",
+    "../v4/ipb_jepa.py",
+    "../v4/gene_tokenizer.py",
 )
 
 
@@ -51,10 +60,11 @@ def _runtime_source_sha256() -> str:
     root = Path(__file__).resolve().parent
     h = sha256()
     for name in CANONICAL_RUNTIME_SOURCE_FILES:
-        path = root / name
+        path = (root / name).resolve()
         if not path.is_file():
             raise RuntimeError(f"canonical runtime source missing: {name}")
-        h.update(name.encode("utf-8"))
+        normalized = path.relative_to(root.parent).as_posix()
+        h.update(normalized.encode("utf-8"))
         h.update(b"\0")
         h.update(path.read_bytes())
         h.update(b"\0")
@@ -367,7 +377,7 @@ def restore_prefreeze_bound_checkpoint(
     premise_state_path: Path,
     scaler: object | None = None,
 ) -> tuple[int, int]:
-    premise_path = _validate_bound_checkpoint_for_current_runtime(
+    _validate_bound_checkpoint_for_current_runtime(
         envelope,
         premise_state_path=premise_state_path,
     )
