@@ -220,3 +220,8 @@ def test_reference_checkpoint_rejects_float_cursor_even_if_integral_value():
     modules=_modules()
     with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0.0,presentations_seen=0)
     with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0,presentations_seen=0.0)
+
+
+def test_canonical_runtime_tests_do_not_fabricate_parent_checkpoint_hashes():
+    source=Path(__file__).read_text(encoding='utf-8')
+    assert 'inactive-reference-start-' not in source
