@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import importlib
 from pathlib import Path
 
 import pytest
@@ -117,81 +116,73 @@ def _completed_state():
         premise_state_path=PREMISE,
         completed_guard_receipt=report["completed_guard_receipt"],
     )
-    return modules, parent, authority, report, child
+    return modules, authority, report, child
 
 
-def _successor():
-    try:
-        return importlib.import_module("sea_ad_jepa.v5.ema_persisted_continuation_v2")
-    except ModuleNotFoundError as exc:
-        pytest.fail(f"canonical EMA continuation manifest layer is missing: {exc}")
-
-
-def test_persisted_ema_continuation_manifest_physically_binds_checkpoint_and_proof(tmp_path):
-    _, parent, authority, report, child = _completed_state()
-    successor = _successor()
-    path = tmp_path / "presentation-ema-continuation.json"
-    digest = successor.persist_presentation_ema_continuation_checkpoint(
+def _bound(authority, report, child):
+    return ema_binding.bind_completed_checkpoint_to_presentation_ema(
         child,
-        path,
-        premise_state_path=PREMISE,
-        parent_checkpoint=parent,
+        report["presentation_ema_completion_proof"],
         authority=authority,
-        completed_update_proof=report["presentation_ema_completion_proof"],
         half_life_presentations=HALF_LIFE,
         presentation_unit_id=UNIT,
     )
-    assert path.is_file()
-    assert len(digest) == 64
-    checkpoint_sidecar = tmp_path / "presentation-ema-continuation.json.checkpoint.pt"
-    assert checkpoint_sidecar.is_file(), "EMA proof manifest exists but physical checkpoint sidecar is missing"
 
-    loaded = successor.load_presentation_ema_continuation_checkpoint(
+
+def test_typed_ema_continuation_physically_binds_checkpoint_and_completion_proof(tmp_path):
+    _, authority, report, child = _completed_state()
+    envelope = _bound(authority, report, child)
+    assert envelope.base_checkpoint == child
+    assert envelope.ema_configuration_identity == authority.ema_configuration_identity
+    assert envelope.presentation_unit_id == UNIT
+    assert envelope.half_life_presentations == HALF_LIFE
+    assert envelope.training_authorized is False
+    assert envelope.execution_authorized is False
+    assert envelope.production_promotable is False
+
+    path = tmp_path / "presentation-ema-continuation.pt"
+    digest = ema_binding.persist_presentation_ema_bound_checkpoint(
+        envelope,
+        path,
+        premise_state_path=PREMISE,
+    )
+    assert path.is_file() and len(digest) == 64
+    loaded = ema_binding.load_presentation_ema_bound_checkpoint(
         path,
         expected_sha256=digest,
         premise_state_path=PREMISE,
     )
-    assert loaded.base_checkpoint == child
-    assert loaded.ema_configuration_identity == authority.ema_configuration_identity
-    assert loaded.presentation_unit_id == UNIT
-    assert loaded.half_life_presentations == HALF_LIFE
-    assert loaded.training_authorized is False
-    assert loaded.execution_authorized is False
-    assert loaded.production_promotable is False
+    assert loaded == envelope
+    assert loaded.presentation_ema_completion_proof == report["presentation_ema_completion_proof"]
 
 
-def test_persisted_ema_continuation_restart_refuses_configuration_drift(tmp_path):
-    _, parent, authority, report, child = _completed_state()
-    successor = _successor()
-    path = tmp_path / "presentation-ema-continuation.json"
-    digest = successor.persist_presentation_ema_continuation_checkpoint(
-        child,
+def test_typed_ema_continuation_restart_refuses_configuration_drift(tmp_path):
+    _, authority, report, child = _completed_state()
+    envelope = _bound(authority, report, child)
+    path = tmp_path / "presentation-ema-continuation.pt"
+    digest = ema_binding.persist_presentation_ema_bound_checkpoint(
+        envelope,
         path,
         premise_state_path=PREMISE,
-        parent_checkpoint=parent,
-        authority=authority,
-        completed_update_proof=report["presentation_ema_completion_proof"],
-        half_life_presentations=HALF_LIFE,
-        presentation_unit_id=UNIT,
     )
-    loaded = successor.load_presentation_ema_continuation_checkpoint(
+    loaded = ema_binding.load_presentation_ema_bound_checkpoint(
         path,
         expected_sha256=digest,
         premise_state_path=PREMISE,
     )
 
-    resumed_modules = _modules()
-    resumed = successor.restore_and_issue_presentation_ema_continuation_authority(
-        resumed_modules,
+    resumed = ema_binding.issue_presentation_ema_bound_authority_from_persisted_checkpoint(
+        _modules(),
         loaded,
         premise_state_path=PREMISE,
         half_life_presentations=HALF_LIFE,
         presentation_unit_id=UNIT,
     )
     assert resumed.ema_configuration_identity == authority.ema_configuration_identity
+    assert resumed.parent_presentations_seen == child.reference_checkpoint.presentations_seen
 
     with pytest.raises(RuntimeError, match="EMA|ema|configuration|half-life"):
-        successor.restore_and_issue_presentation_ema_continuation_authority(
+        ema_binding.issue_presentation_ema_bound_authority_from_persisted_checkpoint(
             _modules(),
             loaded,
             premise_state_path=PREMISE,
@@ -200,40 +191,31 @@ def test_persisted_ema_continuation_restart_refuses_configuration_drift(tmp_path
         )
 
 
-def test_persisted_ema_manifest_or_completed_proof_tamper_fails_closed(tmp_path):
-    _, parent, authority, report, child = _completed_state()
-    successor = _successor()
-    path = tmp_path / "presentation-ema-continuation.json"
-
+def test_typed_ema_continuation_rejects_detached_proof_and_artifact_tamper(tmp_path):
+    _, authority, report, child = _completed_state()
     tampered_proof = dict(report["presentation_ema_completion_proof"])
     tampered_proof["completion_checkpoint_digest"] = "0" * 64
     with pytest.raises(RuntimeError, match="checkpoint|proof|digest|mismatch"):
-        successor.persist_presentation_ema_continuation_checkpoint(
+        ema_binding.bind_completed_checkpoint_to_presentation_ema(
             child,
-            path,
-            premise_state_path=PREMISE,
-            parent_checkpoint=parent,
+            tampered_proof,
             authority=authority,
-            completed_update_proof=tampered_proof,
             half_life_presentations=HALF_LIFE,
             presentation_unit_id=UNIT,
         )
 
-    digest = successor.persist_presentation_ema_continuation_checkpoint(
-        child,
+    envelope = _bound(authority, report, child)
+    path = tmp_path / "presentation-ema-continuation.pt"
+    digest = ema_binding.persist_presentation_ema_bound_checkpoint(
+        envelope,
         path,
         premise_state_path=PREMISE,
-        parent_checkpoint=parent,
-        authority=authority,
-        completed_update_proof=report["presentation_ema_completion_proof"],
-        half_life_presentations=HALF_LIFE,
-        presentation_unit_id=UNIT,
     )
     raw = bytearray(path.read_bytes())
-    raw[-2] ^= 1
+    raw[-1] ^= 1
     path.write_bytes(bytes(raw))
-    with pytest.raises(RuntimeError, match="digest|manifest"):
-        successor.load_presentation_ema_continuation_checkpoint(
+    with pytest.raises(RuntimeError, match="digest"):
+        ema_binding.load_presentation_ema_bound_checkpoint(
             path,
             expected_sha256=digest,
             premise_state_path=PREMISE,
