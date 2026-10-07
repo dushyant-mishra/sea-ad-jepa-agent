@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/sea_ad_jepa/qualification/**'
       - 'tests/qualification/**'
+      - 'tests/integration/test_shared_interface_v5_runtime_binding_v1.py'
       - 'tests/governance/**'
       - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
       - 'docs/agent/JEPA_SHARED_QUALIFICATION_PIPELINE_DESIGN_20261006.md'
@@ -30,3 +31,13 @@ jobs:
           tests/qualification
           tests/governance/test_premise_qualification_v3_surface.py
           tests/governance/test_stage_a_v3_machine_contract.py
+      - name: Install stacked runtime integration dependencies
+        if: github.event_name == 'pull_request'
+        run: |
+          python -m pip install numpy
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Run stacked V5 runtime binding test
+        if: github.event_name == 'pull_request'
+        env:
+          PYTHONPATH: src:.
+        run: python -m pytest -q tests/integration/test_shared_interface_v5_runtime_binding_v1.py
