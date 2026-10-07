@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import string
+from types import MappingProxyType
+from typing import Mapping
+
+
+RAW_MEASUREMENT_IDENTITY_FIELDS = frozenset({"source_index", "operator_index"})
+ALLOWED_LEARNABLE_OPERATOR_CONTEXT_FIELDS = frozenset({"visible_library_size", "n_measured"})
 
 
 def _require_sha256(value: str, name: str) -> str:
@@ -67,3 +73,36 @@ class PhysicalRowValueBindingV1:
         )
         if self.consumed_values_sha256 != self.authenticated_values_sha256:
             raise ValueError("consumed values must equal authenticated values")
+
+
+@dataclass(frozen=True)
+class LearnableModelContextV1:
+    model_inputs: Mapping[str, object]
+    operator_context: Mapping[str, object]
+
+
+def build_learnable_model_context(
+    *,
+    model_inputs: Mapping[str, object],
+    lawful_operator_context: Mapping[str, object],
+) -> LearnableModelContextV1:
+    """Keep provenance identity outside learnable inputs and fail closed on new context fields."""
+
+    leaked_model_identity = RAW_MEASUREMENT_IDENTITY_FIELDS.intersection(model_inputs)
+    if leaked_model_identity:
+        raise ValueError(f"raw measurement identity reached model inputs: {sorted(leaked_model_identity)}")
+
+    supplied_context = set(lawful_operator_context)
+    unknown = supplied_context - RAW_MEASUREMENT_IDENTITY_FIELDS - ALLOWED_LEARNABLE_OPERATOR_CONTEXT_FIELDS
+    if unknown:
+        raise ValueError(f"unreviewed operator context fields require explicit scientific approval: {sorted(unknown)}")
+
+    filtered_context = {
+        name: lawful_operator_context[name]
+        for name in ALLOWED_LEARNABLE_OPERATOR_CONTEXT_FIELDS
+        if name in lawful_operator_context
+    }
+    return LearnableModelContextV1(
+        model_inputs=MappingProxyType(dict(model_inputs)),
+        operator_context=MappingProxyType(filtered_context),
+    )
