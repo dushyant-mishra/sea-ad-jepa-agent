@@ -2,6 +2,15 @@
 
 Date: 2026-09-03
 
+## 2026-10-07 V77 lane: S157 closed; independent-evidence, circularity, shortcut and handoff analyses
+Scope: branch `claude/v77-synthetic-premise-custody-20261005` only. Synthetic seed 7302 = DEVELOPMENT_CALIBRATION. TRAINING=OFF; ZERO_UPDATE only; nothing selected.
+- S157 terminal frozen and test-guarded (`results/v77/V77_S157_TERMINAL_RECEIPT_V1.json`): the exact same-assay twin is non-identifiable from RNA under every context; raw source/operator identity is an exploratory positive control, never a production input; lawful depth/support descriptors do not resolve the operator twin; the measurable-address count is an identity proxy; S157 establishes no cell-state biology.
+- Evidence matrix (`results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json`): no candidate object can break a lineage twin today. Only measurements on the query's own nuclei, cells or donors can in principle; static or external objects (Nott, motifs, eRegulon catalogues, external perturbation, other-donor spatial) are supportive at best. Same-nucleus multiome, separate-nucleus chromatin of the query donors and same-donor spatial are UNQUALIFIED (controls missing), not unusable. Eight handoff-table claims narrowed, not rewritten.
+- SCENIC+ (`results/v77/V77_REGULATORY_CIRCULARITY_AUDIT_V1.json`): built on the query RNA it is circular; built on other data it is static and assay-class circular; no network exists yet.
+- Context shortcut audit (`results/v77/V77_CONTEXT_SHORTCUT_AUDIT_V1.json`): the support pattern (model-visible by necessity), the measurable-address count and the hidden-target count are high identity proxies; depth is low in the synthetic observer only.
+- Runtime handoff (`results/v77/V77_RUNTIME_HANDOFF_PACKAGE_V1.json`): executed q-safety probe PASS on all S157 arms. Boundary finding BF1: the shared interface's model view carries lawful operator context, raw identity included, beside model inputs; only model inputs may reach learnable parameters.
+- First bounded-mutation experiment pre-registered, not executed (`results/v77/V77_S157_BOUNDED_MUTATION_PREREGISTRATION_V1.json`); awaits the runtime lane's reviewed bound SHA and rehearsal contract.
+
 ## 2026-09-03 F1 real-reader/forward/executor preflight
 - Terminal candidate: `PASS_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_AWAITING_EXTERNAL_REVIEW`; real F1 remains unauthorized pending external review.
 - Real-reader query-safe parity passed on 51 frozen `(cell,q)` identities across 38 donors, all 42 operators, all three sources, five evidence levels, and teacher/correct/null roles. Singleton reference differences were zero; query permutation restored identities exactly; batch-7 outputs stayed within the frozen float32 authority.
