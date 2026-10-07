@@ -24,9 +24,6 @@ PREFREEZE_RUNTIME_CONTRACT = (
     "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
 )
 
-# Declared, ordered provenance closure for the current canonical rehearsal.
-# Path names are hashed together with bytes so substitution/renaming changes
-# the identity. Historical guards are deliberately excluded.
 CANONICAL_RUNTIME_SOURCE_FILES = (
     "inactive_update_reference.py",
     "inactive_guarded_update_v1.py",
@@ -72,6 +69,7 @@ def capture_prefreeze_bound_checkpoint(
     next_update_index: int,
     presentations_seen: int,
     premise_state_path: Path,
+    scaler: object | None = None,
 ) -> V5PrefreezeBoundCheckpointV1:
     premise_path = Path(premise_state_path)
     if not premise_path.is_file():
@@ -80,6 +78,7 @@ def capture_prefreeze_bound_checkpoint(
         modules,
         next_update_index=next_update_index,
         presentations_seen=presentations_seen,
+        scaler=scaler,
     )
     return V5PrefreezeBoundCheckpointV1(
         schema=SCHEMA,
@@ -95,6 +94,7 @@ def restore_prefreeze_bound_checkpoint(
     envelope: V5PrefreezeBoundCheckpointV1,
     *,
     premise_state_path: Path,
+    scaler: object | None = None,
 ) -> tuple[int, int]:
     if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
         raise RuntimeError("unsupported prefreeze checkpoint envelope")
@@ -113,4 +113,4 @@ def restore_prefreeze_bound_checkpoint(
     if _runtime_source_sha256() != envelope.runtime_source_sha256:
         raise RuntimeError("canonical runtime source digest mismatch")
 
-    return restore_reference_checkpoint(modules, envelope.reference_checkpoint)
+    return restore_reference_checkpoint(modules, envelope.reference_checkpoint, scaler=scaler)
