@@ -7,8 +7,10 @@ mechanics used by the consumer. Persisted artifacts are SHA-256 verified before
 deserialization. The initial state may exist without a prior transition; every
 post-update state must carry a verified guard completion receipt proving
 optimizer completion followed by EMA. Rehearsal authority may only be issued
-from a live state that exactly matches its claimed parent checkpoint. This
-grants no execution or training authority.
+from a live state that exactly matches its claimed parent checkpoint. A
+persisted completion proof is emitted only after a noninitial checkpoint has
+been written, hashed, reloaded, and revalidated against current governance and
+runtime provenance. This grants no execution or training authority.
 """
 from __future__ import annotations
 
@@ -31,6 +33,7 @@ from .inactive_update_reference import (
 from .prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
 
 SCHEMA = "V5_PREFREEZE_BOUND_INACTIVE_CHECKPOINT_V1"
+PERSISTED_COMPLETION_PROOF_SCHEMA = "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1"
 PREFREEZE_RUNTIME_CONTRACT = (
     "V5_CANONICAL_PREFREEZE_GUARDED_STEP__COMPLETION_BEFORE_EMA__"
     "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
@@ -223,6 +226,23 @@ class V5PrefreezeBoundCheckpointV1:
         )
 
 
+@dataclass(frozen=True)
+class V5PersistedCheckpointProofV1:
+    """Non-authorizing proof that one completed checkpoint survived physical round-trip validation."""
+    schema: str
+    artifact_sha256: str
+    logical_checkpoint_sha256: str
+    premise_state_sha256: str
+    runtime_source_sha256: str
+    completed_guard_receipt_digest: str
+    next_update_index: int
+    presentations_seen: int
+    persisted_verified_reload: bool = True
+    execution_authorized: bool = False
+    training_authorized: bool = False
+    production_promotable: bool = False
+
+
 def capture_prefreeze_bound_checkpoint(
     modules: V5ReferenceModules,
     *,
@@ -368,6 +388,48 @@ def load_persisted_prefreeze_bound_checkpoint(
     if loaded.execution_authorized or loaded.training_authorized or loaded.production_promotable:
         raise RuntimeError("persisted prefreeze checkpoint cannot authorize execution/training")
     return loaded
+
+
+def persist_and_verify_completed_prefreeze_checkpoint(
+    envelope: V5PrefreezeBoundCheckpointV1,
+    path: Path,
+    *,
+    premise_state_path: Path,
+) -> V5PersistedCheckpointProofV1:
+    """Emit physical completion proof only after write, hash verification, reload, and revalidation."""
+    if not isinstance(envelope, V5PrefreezeBoundCheckpointV1):
+        raise RuntimeError("completed physical proof requires a bound checkpoint")
+    if envelope.reference_checkpoint.next_update_index <= 0 or envelope.completed_guard_receipt is None:
+        raise RuntimeError("completed physical proof requires a noninitial completed checkpoint")
+    _validate_bound_checkpoint_for_current_runtime(
+        envelope,
+        premise_state_path=premise_state_path,
+    )
+    logical_digest = reference_checkpoint_sha256(envelope.reference_checkpoint)
+    artifact_digest = persist_prefreeze_bound_checkpoint(envelope, path)
+    loaded = load_persisted_prefreeze_bound_checkpoint(path, expected_sha256=artifact_digest)
+    _validate_bound_checkpoint_for_current_runtime(
+        loaded,
+        premise_state_path=premise_state_path,
+    )
+    if loaded != envelope:
+        raise RuntimeError("persisted checkpoint reload differs from the completed in-memory checkpoint")
+    receipt = loaded.completed_guard_receipt
+    if receipt is None:
+        raise RuntimeError("persisted completed checkpoint lost its guard receipt")
+    receipt_digest = receipt.get("receipt_digest")
+    if not isinstance(receipt_digest, str) or len(receipt_digest) != 64:
+        raise RuntimeError("completed guard receipt lacks a valid digest")
+    return V5PersistedCheckpointProofV1(
+        schema=PERSISTED_COMPLETION_PROOF_SCHEMA,
+        artifact_sha256=artifact_digest,
+        logical_checkpoint_sha256=logical_digest,
+        premise_state_sha256=loaded.premise_state_sha256,
+        runtime_source_sha256=loaded.runtime_source_sha256,
+        completed_guard_receipt_digest=receipt_digest,
+        next_update_index=loaded.reference_checkpoint.next_update_index,
+        presentations_seen=loaded.reference_checkpoint.presentations_seen,
+    )
 
 
 def restore_prefreeze_bound_checkpoint(
