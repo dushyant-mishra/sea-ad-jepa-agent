@@ -1,74 +1,33 @@
 from pathlib import Path
 
-import pytest
-import torch
 
-from sea_ad_jepa.v5.inactive_runtime_step_guard_v1 import (
-    CURSOR_KWARG,
-    InactiveReferenceOptimizerStepGuardV1,
-    install_inactive_reference_optimizer_guard_v1,
-)
+ROOT = Path(__file__).resolve().parents[1]
+V5 = ROOT / "src/sea_ad_jepa/v5"
 
 
-def _optimizer():
-    p = torch.nn.Parameter(torch.tensor([1.0]))
-    return p, torch.optim.SGD([p], lr=0.1)
+def test_superseded_inactive_guard_no_longer_exists_as_active_source():
+    """A single canonical mutation lock means the #221 donor guard is not executable source."""
+    legacy = V5 / "inactive_runtime_step_guard_v1.py"
+    assert not legacy.exists(), (
+        "superseded #221 guard remains discoverable as active source; "
+        "canonical runtime must have exactly one mutation guard"
+    )
 
 
-def test_direct_step_is_rejected_when_guard_installed():
-    p, opt = _optimizer()
-    guard = install_inactive_reference_optimizer_guard_v1(opt)
-    p.grad = torch.ones_like(p)
-    before = p.detach().clone()
-    with pytest.raises(RuntimeError, match="authority not armed"):
-        opt.step()
-    assert torch.equal(p.detach(), before)
-    guard.close()
-
-
-def test_guarded_step_requires_explicit_completion_acknowledgement():
-    p, opt = _optimizer()
-    guard = install_inactive_reference_optimizer_guard_v1(opt)
-    p.grad = torch.ones_like(p)
-    guard.arm_for_step(schedule_cursor=0)
-    opt.step(**{CURSOR_KWARG: 0})
-    with pytest.raises(RuntimeError, match="prior step unacknowledged"):
-        guard.arm_for_step(schedule_cursor=1)
-    proof = guard.assert_step_completed(schedule_cursor=0)
-    assert proof["guarded_optimizer_step"] is True
-    assert proof["training_authorized"] is False
-    guard.close()
-
-
-def test_wrong_cursor_fails_closed_without_parameter_update():
-    p, opt = _optimizer()
-    guard = install_inactive_reference_optimizer_guard_v1(opt)
-    p.grad = torch.ones_like(p)
-    before = p.detach().clone()
-    guard.arm_for_step(schedule_cursor=0)
-    with pytest.raises(RuntimeError, match="cursor mismatch"):
-        opt.step(**{CURSOR_KWARG: 1})
-    assert torch.equal(p.detach(), before)
-    guard.close()
-
-
-def test_guard_is_explicitly_mechanics_only_and_never_training_authority():
-    _, opt = _optimizer()
-    guard = install_inactive_reference_optimizer_guard_v1(opt)
-    assert isinstance(guard, InactiveReferenceOptimizerStepGuardV1)
-    assert guard.mechanics_only is True
-    assert guard.training_authorized is False
-    guard.close()
-
-
-def test_canonical_consumer_does_not_mutate_teacher_ema_directly():
-    """EMA must be owned by the mutation guard, not the V5 consumer body."""
-    source = Path("src/sea_ad_jepa/v5/inactive_update_reference.py").read_text(encoding="utf-8")
-    forbidden = (
+def test_canonical_consumer_has_no_direct_optimizer_or_ema_mutation():
+    source = (V5 / "inactive_update_reference.py").read_text(encoding="utf-8")
+    assert ".optimizer.step(" not in source
+    forbidden_ema = (
         "teacher.mul_(m).add_(online,alpha=1.0-m)",
         "teacher.mul_(m).add_(online, alpha=1.0-m)",
     )
-    assert not any(fragment in source for fragment in forbidden), (
-        "inactive_update_reference.py still has a directly reachable EMA mutation path; "
-        "the canonical successor must route EMA through the guarded completion boundary"
-    )
+    assert not any(fragment in source for fragment in forbidden_ema)
+
+
+def test_canonical_wrapper_uses_prefreeze_guard_and_guard_owned_ema():
+    source = (V5 / "inactive_guarded_update_v1.py").read_text(encoding="utf-8")
+    assert "PrefreezeOptimizerGuardV1" in source
+    assert "guard.run_optimizer_step(token)" in source
+    assert "guard.assert_step_complete(token)" in source
+    assert "guard.run_ema(token, apply_ema)" in source
+    assert "InactiveReferenceOptimizerStepGuardV1" not in source
