@@ -409,53 +409,62 @@ def revalidate_persisted_prefreeze_checkpoint(
     return loaded
 
 
-def persist_and_revalidate_prefreeze_checkpoint(
-    envelope: V5PrefreezeBoundCheckpointV1,
-    path: Path,
-    *,
-    premise_state_path: Path,
-) -> tuple[str, V5PrefreezeBoundCheckpointV1]:
-    digest = persist_prefreeze_bound_checkpoint(envelope, path)
-    loaded = revalidate_persisted_prefreeze_checkpoint(
-        path,
-        expected_sha256=digest,
-        premise_state_path=premise_state_path,
-    )
-    return digest, loaded
-
-
-def persisted_checkpoint_completion_proof(
+def persist_and_verify_completed_prefreeze_checkpoint(
     envelope: V5PrefreezeBoundCheckpointV1,
     path: Path,
     *,
     premise_state_path: Path,
 ) -> V5PersistedCheckpointProofV1:
-    """Emit physical proof only after exact persisted bytes survive reload/revalidation."""
-    if envelope.reference_checkpoint.next_update_index <= 0:
-        raise RuntimeError("persisted completion proof requires a noninitial completed checkpoint")
-    if envelope.completed_guard_receipt is None:
-        raise RuntimeError("persisted completion proof requires completed guard receipt")
-    artifact_sha256, loaded = persist_and_revalidate_prefreeze_checkpoint(
+    """Emit physical completion proof only after write, hash verification, reload, and revalidation."""
+    if not isinstance(envelope, V5PrefreezeBoundCheckpointV1):
+        raise RuntimeError("completed physical proof requires a bound checkpoint")
+    if envelope.reference_checkpoint.next_update_index <= 0 or envelope.completed_guard_receipt is None:
+        raise RuntimeError("completed physical proof requires a noninitial completed checkpoint")
+    _validate_bound_checkpoint_for_current_runtime(
         envelope,
-        path,
         premise_state_path=premise_state_path,
     )
-    logical = reference_checkpoint_sha256(loaded.reference_checkpoint)
-    receipt_digest = str(loaded.completed_guard_receipt.get("receipt_digest", ""))
-    if len(receipt_digest) != 64:
-        raise RuntimeError("completed guard receipt digest missing from persisted checkpoint")
-    governance_digest = str(loaded.completed_guard_receipt.get("governance_digest", ""))
-    if len(governance_digest) != 64:
-        raise RuntimeError("completed guard governance digest missing from persisted checkpoint")
+    logical_digest = reference_checkpoint_sha256(envelope.reference_checkpoint)
+    artifact_digest = persist_prefreeze_bound_checkpoint(envelope, path)
+    loaded = revalidate_persisted_prefreeze_checkpoint(
+        path,
+        expected_sha256=artifact_digest,
+        premise_state_path=premise_state_path,
+    )
+    if loaded != envelope:
+        raise RuntimeError("persisted checkpoint reload differs from the completed in-memory checkpoint")
+    receipt = loaded.completed_guard_receipt
+    if receipt is None:
+        raise RuntimeError("persisted completed checkpoint lost its guard receipt")
+    receipt_digest = receipt.get("receipt_digest")
+    governance_digest = receipt.get("governance_digest")
+    if not isinstance(receipt_digest, str) or len(receipt_digest) != 64:
+        raise RuntimeError("completed guard receipt lacks a valid digest")
+    if not isinstance(governance_digest, str) or len(governance_digest) != 64:
+        raise RuntimeError("completed guard receipt lacks a valid governance digest")
     return V5PersistedCheckpointProofV1(
         schema=PERSISTED_COMPLETION_PROOF_SCHEMA,
         runtime_contract=loaded.runtime_contract,
         governance_digest=governance_digest,
-        artifact_sha256=artifact_sha256,
-        logical_checkpoint_sha256=logical,
+        artifact_sha256=artifact_digest,
+        logical_checkpoint_sha256=logical_digest,
         premise_state_sha256=loaded.premise_state_sha256,
         runtime_source_sha256=loaded.runtime_source_sha256,
         completed_guard_receipt_digest=receipt_digest,
         next_update_index=loaded.reference_checkpoint.next_update_index,
         presentations_seen=loaded.reference_checkpoint.presentations_seen,
     )
+
+
+def restore_prefreeze_bound_checkpoint(
+    modules: V5ReferenceModules,
+    envelope: V5PrefreezeBoundCheckpointV1,
+    *,
+    premise_state_path: Path,
+    scaler: object | None = None,
+) -> tuple[int, int]:
+    _validate_bound_checkpoint_for_current_runtime(
+        envelope,
+        premise_state_path=premise_state_path,
+    )
+    return restore_reference_checkpoint(modules, envelope.reference_checkpoint, scaler=scaler)
