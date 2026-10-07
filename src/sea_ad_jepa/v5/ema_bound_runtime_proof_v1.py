@@ -1,13 +1,20 @@
 """Canonical export surface for presentation-normalized V5 EMA runtime proof.
 
-The implementation body is preserved under a private module so the audited
-mechanics remain byte-identical. This public surface retires the legacy
-dictionary persistence route and requires noninitial continuation to use the
-canonical V2 physical continuation manifest.
+The audited implementation is preserved under a private module. This public
+surface is the only normal import route, retires the legacy dictionary
+persistence route, and requires noninitial continuation to use the canonical V2
+physical continuation manifest.
 """
 from __future__ import annotations
 
-from . import _ema_bound_runtime_proof_impl_v1 as _impl
+import sea_ad_jepa.v5 as _package
+
+_PRIVATE_FULLNAME = __package__ + "._ema_bound_runtime_proof_impl_v1"
+_package._permit_private_runtime_import(_PRIVATE_FULLNAME)
+try:
+    from . import _ema_bound_runtime_proof_impl_v1 as _impl
+finally:
+    _package._revoke_private_runtime_import(_PRIVATE_FULLNAME)
 
 _BLOCKED = {"persist_and_verify_presentation_ema_checkpoint"}
 
