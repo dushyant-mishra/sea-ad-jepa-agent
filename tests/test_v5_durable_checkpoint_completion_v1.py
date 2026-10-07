@@ -4,7 +4,10 @@ import torch
 
 import sea_ad_jepa.v5.inactive_checkpoint_binding_v1 as binding
 from sea_ad_jepa.v5.inactive_update_reference import build_reference_modules, capture_reference_checkpoint
-from sea_ad_jepa.v5.prefreeze_runtime_authority import PrefreezeOptimizerGuardV1
+from sea_ad_jepa.v5.prefreeze_runtime_authority import (
+    CANONICAL_V3_GOVERNANCE_DIGEST,
+    PrefreezeOptimizerGuardV1,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -83,6 +86,8 @@ def test_physical_completion_proof_exists_only_after_write_hash_reload_and_reval
     assert path.is_file()
     assert proof.schema == "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1"
     assert proof.runtime_contract == binding.PREFREEZE_RUNTIME_CONTRACT
+    assert proof.governance_digest == CANONICAL_V3_GOVERNANCE_DIGEST
+    assert proof.governance_digest == envelope.completed_guard_receipt["governance_digest"]
     assert proof.persisted_verified_reload is True
     assert proof.artifact_sha256 == binding._file_sha256(path)
     assert proof.logical_checkpoint_sha256 == binding.reference_checkpoint_sha256(envelope.reference_checkpoint)
