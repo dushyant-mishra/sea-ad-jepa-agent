@@ -1,3 +1,5 @@
+import inspect
+
 import numpy as np
 import pytest
 
@@ -154,3 +156,15 @@ def test_caller_cannot_substitute_fake_v77_adapter_source_digest():
             runtime_source_sha256=runtime_digest,
             init_seed=8113002,
         )
+
+
+def test_zero_update_requires_physical_row_value_bindings_at_execution_boundary():
+    from sea_ad_jepa.qualification import v77_bound_zero_update as v77_zero_update
+
+    parameters = inspect.signature(v77_zero_update.run_canonical_v5_zero_update).parameters
+    assert "physical_bindings" in parameters, (
+        "V77 execution can currently run without the PhysicalRowValueBindingV2 proof chain"
+    )
+    assert parameters["physical_bindings"].default is inspect.Parameter.empty, (
+        "physical provenance must be mandatory, not an optional execution decoration"
+    )
