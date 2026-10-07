@@ -2,13 +2,15 @@
 
 This module proves that an authenticated V77 QualificationBatchV1 can traverse
 canonical V5 student/teacher/predictor mechanics without changing any runtime
-state.  It deliberately owns no training, optimizer-step, EMA, or persistence
+state. It deliberately owns no training, optimizer-step, EMA, or persistence
 implementation; those remain in the canonical V5 runtime modules.
 """
 from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+from importlib import import_module
+from pathlib import Path
 from typing import Mapping
 
 import torch
@@ -26,6 +28,47 @@ from .v77_join import require_executed_q_safety
 
 
 SCHEMA = "V77_CANONICAL_V5_ZERO_UPDATE_V1"
+CANONICAL_V5_RUNTIME_SOURCE_MODULES = (
+    "sea_ad_jepa.v4.gene_tokenizer",
+    "sea_ad_jepa.v4.ipb_jepa",
+    "sea_ad_jepa.v5.keyed_rng_contract_v2",
+    "sea_ad_jepa.v5.keyed_dropout_prototype_v2",
+    "sea_ad_jepa.v5.inactive_update_reference",
+)
+
+
+def canonical_v5_runtime_source_manifest() -> tuple[tuple[str, str], ...]:
+    """Hash the exact repository source files used by the ZERO_UPDATE V5 path.
+
+    The manifest contains stable module names plus byte digests, never machine-local
+    paths. This prevents a caller from substituting an arbitrary well-formed digest.
+    """
+    entries: list[tuple[str, str]] = []
+    for module_name in CANONICAL_V5_RUNTIME_SOURCE_MODULES:
+        module = import_module(module_name)
+        filename = getattr(module, "__file__", None)
+        if not isinstance(filename, str) or not filename:
+            raise RuntimeError(f"canonical runtime module has no physical source file: {module_name}")
+        path = Path(filename)
+        if path.suffix == ".pyc":
+            source = path.with_suffix(".py")
+            if source.exists():
+                path = source
+        if not path.is_file():
+            raise RuntimeError(f"canonical runtime source is not a physical file: {module_name}")
+        entries.append((module_name, hashlib.sha256(path.read_bytes()).hexdigest()))
+    return tuple(entries)
+
+
+def canonical_v5_runtime_source_sha256() -> str:
+    """Digest the exact canonical V5 source manifest used by this execution."""
+    h = hashlib.sha256()
+    for module_name, source_digest in canonical_v5_runtime_source_manifest():
+        h.update(module_name.encode("utf-8"))
+        h.update(b"\0")
+        h.update(source_digest.encode("ascii"))
+        h.update(b"\n")
+    return h.hexdigest()
 
 
 def _tensor_digest(tensor: torch.Tensor) -> str:
@@ -34,14 +77,6 @@ def _tensor_digest(tensor: torch.Tensor) -> str:
     h.update(str(value.dtype).encode("utf-8"))
     h.update(str(tuple(value.shape)).encode("utf-8"))
     h.update(value.numpy().tobytes(order="C"))
-    return h.hexdigest()
-
-
-def _module_digest(module: torch.nn.Module) -> str:
-    h = hashlib.sha256()
-    for name, value in sorted(module.state_dict().items()):
-        h.update(name.encode("utf-8"))
-        h.update(_tensor_digest(value).encode("ascii"))
     return h.hexdigest()
 
 
@@ -77,8 +112,6 @@ def _checkpoint_digest(checkpoint: V5ReferenceCheckpoint) -> str:
         for name, value in sorted(state.items()):
             h.update(f"{prefix}:{name}".encode("utf-8"))
             h.update(_tensor_digest(value).encode("ascii"))
-    # At ZERO_UPDATE the optimizer has no tensor state yet; bind its full
-    # canonical state representation including param groups and cursor.
     h.update(repr(checkpoint.optimizer_state).encode("utf-8"))
     h.update(str(checkpoint.next_update_index).encode("ascii"))
     h.update(str(checkpoint.presentations_seen).encode("ascii"))
@@ -133,13 +166,17 @@ def run_canonical_v5_zero_update(
     if batch.data_kind is not DataKind.SYNTHETIC:
         raise ValueError("canonical V77 ZERO_UPDATE bridge accepts synthetic batches only")
 
+    actual_runtime_source_sha256 = canonical_v5_runtime_source_sha256()
+    if runtime_source_sha256 != actual_runtime_source_sha256:
+        raise ValueError("runtime source digest does not match the canonical V5 source manifest")
+
     require_executed_q_safety(
         QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME,
         q_safety_proof,
         adapter_id=batch.adapter_id,
         adapter_digest=batch.adapter_digest,
         batch_scientific_identity_digest=batch.scientific_identity.digest(),
-        runtime_source_sha256=runtime_source_sha256,
+        runtime_source_sha256=actual_runtime_source_sha256,
     )
 
     view = batch.model_view()
@@ -175,11 +212,7 @@ def run_canonical_v5_zero_update(
     cell_keys = _stable_cell_keys(batch.scientific_identity.observation_ids)
     blocks = _target_blocks(hidden_target_mask)
 
-    before = capture_reference_checkpoint(
-        modules,
-        next_update_index=0,
-        presentations_seen=0,
-    )
+    before = capture_reference_checkpoint(modules, next_update_index=0, presentations_seen=0)
     online_before = deepcopy(modules.online.state_dict())
     teacher_before = deepcopy(modules.teacher.state_dict())
     predictor_before = deepcopy(modules.predictor.state_dict())
@@ -224,11 +257,7 @@ def run_canonical_v5_zero_update(
             (_tensor_digest(prediction) + _tensor_digest(target)).encode("ascii")
         ).hexdigest()
 
-    after = capture_reference_checkpoint(
-        modules,
-        next_update_index=0,
-        presentations_seen=0,
-    )
+    after = capture_reference_checkpoint(modules, next_update_index=0, presentations_seen=0)
     checkpoint_after = _checkpoint_digest(after)
     online_unchanged = _same_state(online_before, modules.online.state_dict())
     teacher_unchanged = _same_state(teacher_before, modules.teacher.state_dict())
@@ -245,7 +274,8 @@ def run_canonical_v5_zero_update(
         "schema": SCHEMA,
         "batch_scientific_identity_digest": batch.scientific_identity.digest(),
         "q_safety_proof_digest": q_safety_proof.digest(),
-        "runtime_source_sha256": runtime_source_sha256,
+        "runtime_source_sha256": actual_runtime_source_sha256,
+        "runtime_source_manifest": canonical_v5_runtime_source_manifest(),
         "canonical_constructor": "sea_ad_jepa.v5.inactive_update_reference.build_reference_modules",
         "canonical_checkpoint": "sea_ad_jepa.v5.inactive_update_reference.capture_reference_checkpoint",
         "forward_digest": forward_digest,
