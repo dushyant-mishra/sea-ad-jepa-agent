@@ -10,7 +10,7 @@ This checkpoint does **not** promote a production target and does not authorize 
 
 Uploaded bundle `TEACHER_STUDENT_V5_ELIGIBLE_DONOR_ESTIMATOR_CANDIDATE_20260909.zip` remains explicitly `CANDIDATE__NO_EXECUTION_AUTHORITY`.
 
-Relevant scientific properties:
+Relevant scientific properties of that historical V5 candidate:
 
 - reader-fit donor set: 104 donors;
 - base teacher donor mass is uniform over eligible donors;
@@ -21,7 +21,9 @@ Relevant scientific properties:
 - all 104 reader-fit donors remain relational-target estimable in the candidate ledger;
 - source cell counts are highly unequal (SEA-AD 4,118,213; NPH52 236,476; HVS 198,718), so equal-donor mass is a material safeguard against source-size domination.
 
-Interpretation: useful candidate statistical machinery; no production estimand or execution authority is selected by this artifact.
+**Critical authority distinction:** this is historical V5 reader-fit/training-estimator machinery. It is **not** the current Stage-A population authority. Current Phase-A eligibility is the separately governed 13,510-cell population. Therefore only the donor-first/equal-donor statistical principle may be reused prospectively; the 104-donor/4.55M-cell V5 population must not be imported into Stage A and does not select the production population estimand.
+
+Interpretation: useful candidate statistical machinery; no production estimand, Stage-A population, or execution authority is selected by this artifact.
 
 ## TD55: query-specific proxy selection does not earn target status
 
@@ -95,7 +97,8 @@ The historical lineage now supports a narrower and stronger statement than eithe
 2. there is strong evidence for a source-recurrent, donor-level relational RNA geometry that is reproducible across disjoint gene views;
 3. that relational geometry persists when the student sees only ~60% of one gene view;
 4. these observations are compatible with a structured/program relational target family and should inform a prospective Stage-A arm;
-5. they do **not** select an exact production target, exact dimensionality, exact loss, or execution threshold.
+5. they do **not** select an exact production target, exact dimensionality, exact loss, or execution threshold;
+6. Stage-A inference/population must remain bound to the current 13,510-cell Phase-A authority, not historical V5 reader-fit counts.
 
 The prospective use should therefore be to derive a **new q-safe structured relational candidate** from these construction principles, not to inherit TD56–TD58 numerical thresholds or promote historical outputs directly.
 
@@ -104,6 +107,7 @@ The prospective use should therefore be to derive a **new q-safe structured rela
 - TARGET_WINNER: none
 - REPRESENTATION_WINNER: none
 - selected foundation-population estimand: unset
+- Phase-A eligible population authority: 13,510 cells
 - Stage A execution: OFF
 - training: OFF
 - TD60: not authorized
