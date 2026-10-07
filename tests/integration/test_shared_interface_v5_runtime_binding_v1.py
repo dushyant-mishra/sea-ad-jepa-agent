@@ -126,6 +126,7 @@ def test_actual_persisted_v5_proof_binds_shared_mutation_status(tmp_path):
     bound = shared_binding.bind_v5_persisted_runtime_proof(
         physical_proof,
         artifact_path=artifact_path,
+        premise_state_path=PREMISE,
     )
     receipt = _provenance(bound)
     assert receipt.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME
@@ -141,4 +142,22 @@ def test_runtime_binder_rejects_shape_compatible_forgery(tmp_path):
     physical_proof, artifact_path = _physical_runtime_proof(tmp_path)
     fake = SimpleNamespace(**physical_proof.__dict__)
     with pytest.raises((TypeError, ValueError), match="V5|runtime proof|physical"):
-        shared_binding.bind_v5_persisted_runtime_proof(fake, artifact_path=artifact_path)
+        shared_binding.bind_v5_persisted_runtime_proof(
+            fake,
+            artifact_path=artifact_path,
+            premise_state_path=PREMISE,
+        )
+
+
+def test_runtime_binder_rejects_current_premise_drift(tmp_path):
+    from sea_ad_jepa.qualification import runtime_binding as shared_binding
+
+    physical_proof, artifact_path = _physical_runtime_proof(tmp_path)
+    changed = tmp_path / "premise.json"
+    changed.write_bytes(PREMISE.read_bytes() + b"\n")
+    with pytest.raises(RuntimeError, match="premise state digest mismatch"):
+        shared_binding.bind_v5_persisted_runtime_proof(
+            physical_proof,
+            artifact_path=artifact_path,
+            premise_state_path=changed,
+        )
