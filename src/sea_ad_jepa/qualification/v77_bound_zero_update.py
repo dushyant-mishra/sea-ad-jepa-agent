@@ -10,6 +10,7 @@ import hashlib
 from importlib import import_module
 from pathlib import Path
 
+from .physical_binding_v2 import PhysicalRowValueBindingV2
 from .pipeline import QualificationBatchV1
 from .receipts import BoundAdapterQSafetyProofV1
 from . import v77_zero_update as _canonical
@@ -45,17 +46,19 @@ def canonical_v5_runtime_source_manifest() -> tuple[tuple[str, str], ...]:
 def run_canonical_v5_zero_update(
     batch: QualificationBatchV1,
     *,
+    physical_bindings: tuple[PhysicalRowValueBindingV2, ...],
     q_safety_proof: BoundAdapterQSafetyProofV1,
     runtime_source_sha256: str,
     init_seed: int,
 ) -> dict[str, object]:
-    """Bind adapter source identity, then execute the canonical non-mutating path."""
+    """Bind adapter source identity and physical provenance, then execute ZERO_UPDATE."""
     actual_adapter_digest = canonical_v77_adapter_source_sha256()
     if batch.adapter_digest != actual_adapter_digest:
         raise ValueError("adapter source digest does not match the canonical V77 adapter source")
 
     receipt = _canonical.run_canonical_v5_zero_update(
         batch,
+        physical_bindings=physical_bindings,
         q_safety_proof=q_safety_proof,
         runtime_source_sha256=runtime_source_sha256,
         init_seed=init_seed,
