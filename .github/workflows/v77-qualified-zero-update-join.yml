@@ -9,6 +9,8 @@ on:
       - 'tests/integration/test_v77_joined_zero_update.py'
       - 'tests/integration/test_v77_executed_q_safety.py'
       - 'tests/integration/test_v77_canonical_zero_update.py'
+      - 'tests/integration/test_shared_interface_v5_runtime_binding_v1.py'
+      - 'tests/integration/test_shared_interface_v5_ema_runtime_binding_v2_red.py'
       - '.github/workflows/v77-qualified-zero-update-join.yml'
       - 'docs/superpowers/plans/2026-10-07-v77-qualified-zero-update-join.md'
   push:
@@ -25,7 +27,7 @@ jobs:
           python-version: '3.12'
       - name: Install focused test dependencies
         run: python -m pip install --disable-pip-version-check pytest numpy scipy torch
-      - name: Run V77 joined ZERO_UPDATE contract
+      - name: Run V77 joined ZERO_UPDATE and runtime-binding regressions
         env:
           PYTHONPATH: src:.
         run: >-
@@ -33,3 +35,5 @@ jobs:
           tests/integration/test_v77_joined_zero_update.py
           tests/integration/test_v77_executed_q_safety.py
           tests/integration/test_v77_canonical_zero_update.py
+          tests/integration/test_shared_interface_v5_runtime_binding_v1.py
+          tests/integration/test_shared_interface_v5_ema_runtime_binding_v2_red.py
