@@ -3,16 +3,20 @@
 The envelope binds the in-memory V5 proof checkpoint to the exact frozen
 premise-state bytes and to every source file that currently defines the
 canonical mutation/checkpoint semantics. Persisted artifacts are SHA-256
-verified before deserialization. This grants no execution or training
-authority.
+verified before deserialization. The initial state may exist without a prior
+transition; every post-update state must carry a verified guard completion
+receipt proving optimizer completion followed by EMA. This grants no execution
+or training authority.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from hashlib import sha256
 from io import BytesIO
+import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import torch
 
@@ -22,6 +26,7 @@ from .inactive_update_reference import (
     capture_reference_checkpoint,
     restore_reference_checkpoint,
 )
+from .prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
 
 SCHEMA = "V5_PREFREEZE_BOUND_INACTIVE_CHECKPOINT_V1"
 PREFREEZE_RUNTIME_CONTRACT = (
@@ -80,6 +85,103 @@ def _reference_checkpoint_equal(left: V5ReferenceCheckpoint, right: V5ReferenceC
     return all(_checkpoint_value_equal(getattr(left, name), getattr(right, name)) for name in fields)
 
 
+def _hash_value(h: Any, value: Any) -> None:
+    if value is None:
+        h.update(b"N;")
+    elif isinstance(value, bool):
+        h.update(b"B1;" if value else b"B0;")
+    elif isinstance(value, int):
+        h.update(b"I" + str(value).encode("ascii") + b";")
+    elif isinstance(value, float):
+        h.update(b"F" + repr(value).encode("ascii") + b";")
+    elif isinstance(value, str):
+        raw = value.encode("utf-8")
+        h.update(b"S" + str(len(raw)).encode("ascii") + b":" + raw + b";")
+    elif torch.is_tensor(value):
+        tensor = value.detach().cpu().contiguous()
+        h.update(b"T")
+        _hash_value(h, str(tensor.dtype))
+        _hash_value(h, list(tensor.shape))
+        h.update(tensor.numpy().tobytes(order="C"))
+        h.update(b";")
+    elif isinstance(value, Mapping):
+        h.update(b"D{")
+        for key in sorted(value.keys(), key=lambda item: (type(item).__name__, repr(item))):
+            _hash_value(h, key)
+            _hash_value(h, value[key])
+        h.update(b"};")
+    elif isinstance(value, list):
+        h.update(b"L[")
+        for item in value:
+            _hash_value(h, item)
+        h.update(b"];")
+    elif isinstance(value, tuple):
+        h.update(b"U(")
+        for item in value:
+            _hash_value(h, item)
+        h.update(b");")
+    else:
+        raise RuntimeError(f"unsupported checkpoint digest value: {type(value).__name__}")
+
+
+def reference_checkpoint_sha256(checkpoint: V5ReferenceCheckpoint) -> str:
+    """Deterministic digest of the exact logical trajectory state."""
+    if not isinstance(checkpoint, V5ReferenceCheckpoint):
+        raise RuntimeError("V5ReferenceCheckpoint required for logical state digest")
+    h = sha256()
+    fields = (
+        checkpoint.schema,
+        checkpoint.online_state,
+        checkpoint.teacher_state,
+        checkpoint.predictor_state,
+        checkpoint.optimizer_state,
+        checkpoint.scaler_state,
+        checkpoint.amp_scaler_used,
+        checkpoint.next_update_index,
+        checkpoint.presentations_seen,
+        checkpoint.execution_authorized,
+        checkpoint.training_authorized,
+    )
+    _hash_value(h, fields)
+    return h.hexdigest()
+
+
+def _load_governance_state(path: Path) -> Mapping[str, Any]:
+    try:
+        value = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError("premise governance state is not readable canonical JSON") from exc
+    if not isinstance(value, Mapping):
+        raise RuntimeError("premise governance state must be a JSON object")
+    return value
+
+
+def _validate_receipt_presence(reference: V5ReferenceCheckpoint, receipt: Mapping[str, Any] | None) -> None:
+    if reference.next_update_index == 0:
+        if receipt is not None:
+            raise RuntimeError("initial checkpoint cannot carry a completed guard receipt")
+    elif receipt is None:
+        raise RuntimeError("completed guard receipt required for noninitial bound checkpoint")
+
+
+def _verify_completed_receipt(
+    reference: V5ReferenceCheckpoint,
+    receipt: Mapping[str, Any] | None,
+    *,
+    premise_state_path: Path,
+) -> dict[str, Any] | None:
+    _validate_receipt_presence(reference, receipt)
+    if receipt is None:
+        return None
+    logical_digest = reference_checkpoint_sha256(reference)
+    PrefreezeMechanicalAuthorityV1.verify_completed_checkpoint_receipt(
+        receipt,
+        logical_digest,
+        governance_state=_load_governance_state(premise_state_path),
+    )
+    return deepcopy(dict(receipt))
+
+
 @dataclass(frozen=True, eq=False)
 class V5PrefreezeBoundCheckpointV1:
     schema: str
@@ -87,6 +189,7 @@ class V5PrefreezeBoundCheckpointV1:
     premise_state_sha256: str
     runtime_source_sha256: str
     reference_checkpoint: V5ReferenceCheckpoint
+    completed_guard_receipt: dict[str, Any] | None = None
     training_authority_digest: str | None = None
     execution_authorized: bool = False
     training_authorized: bool = False
@@ -101,6 +204,7 @@ class V5PrefreezeBoundCheckpointV1:
             and self.premise_state_sha256 == other.premise_state_sha256
             and self.runtime_source_sha256 == other.runtime_source_sha256
             and _reference_checkpoint_equal(self.reference_checkpoint, other.reference_checkpoint)
+            and self.completed_guard_receipt == other.completed_guard_receipt
             and self.training_authority_digest == other.training_authority_digest
             and self.execution_authorized == other.execution_authorized
             and self.training_authorized == other.training_authorized
@@ -115,6 +219,7 @@ def capture_prefreeze_bound_checkpoint(
     presentations_seen: int,
     premise_state_path: Path,
     scaler: object | None = None,
+    completed_guard_receipt: Mapping[str, Any] | None = None,
 ) -> V5PrefreezeBoundCheckpointV1:
     premise_path = Path(premise_state_path)
     if not premise_path.is_file():
@@ -125,12 +230,18 @@ def capture_prefreeze_bound_checkpoint(
         presentations_seen=presentations_seen,
         scaler=scaler,
     )
+    receipt = _verify_completed_receipt(
+        reference,
+        completed_guard_receipt,
+        premise_state_path=premise_path,
+    )
     return V5PrefreezeBoundCheckpointV1(
         schema=SCHEMA,
         runtime_contract=PREFREEZE_RUNTIME_CONTRACT,
         premise_state_sha256=_file_sha256(premise_path),
         runtime_source_sha256=_runtime_source_sha256(),
         reference_checkpoint=reference,
+        completed_guard_receipt=receipt,
     )
 
 
@@ -141,6 +252,7 @@ def persist_prefreeze_bound_checkpoint(
     """Persist one non-authorizing checkpoint and return the exact artifact SHA-256."""
     if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
         raise RuntimeError("unsupported prefreeze checkpoint envelope")
+    _validate_receipt_presence(envelope.reference_checkpoint, envelope.completed_guard_receipt)
     if envelope.training_authority_digest is not None:
         raise RuntimeError("prefreeze checkpoint cannot carry training authority")
     if envelope.execution_authorized or envelope.training_authorized or envelope.production_promotable:
@@ -182,6 +294,7 @@ def load_persisted_prefreeze_bound_checkpoint(
     loaded = torch.load(BytesIO(payload), map_location="cpu", weights_only=False)
     if not isinstance(loaded, V5PrefreezeBoundCheckpointV1) or loaded.schema != SCHEMA:
         raise RuntimeError("persisted checkpoint payload type/schema mismatch")
+    _validate_receipt_presence(loaded.reference_checkpoint, loaded.completed_guard_receipt)
     if loaded.training_authority_digest is not None:
         raise RuntimeError("persisted prefreeze checkpoint cannot carry training authority")
     if loaded.execution_authorized or loaded.training_authorized or loaded.production_promotable:
@@ -212,5 +325,10 @@ def restore_prefreeze_bound_checkpoint(
         raise RuntimeError("premise state digest mismatch")
     if _runtime_source_sha256() != envelope.runtime_source_sha256:
         raise RuntimeError("canonical runtime source digest mismatch")
+    _verify_completed_receipt(
+        envelope.reference_checkpoint,
+        envelope.completed_guard_receipt,
+        premise_state_path=premise_path,
+    )
 
     return restore_reference_checkpoint(modules, envelope.reference_checkpoint, scaler=scaler)
