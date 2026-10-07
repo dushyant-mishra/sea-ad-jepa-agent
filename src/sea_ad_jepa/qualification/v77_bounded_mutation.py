@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import hashlib
 from pathlib import Path
 
 import torch
@@ -21,11 +22,13 @@ from .receipts import BoundAdapterQSafetyProofV1, DataKind, QSafetyExecutionProo
 from .v77_bound_zero_update import canonical_v77_adapter_source_sha256
 from .v77_join import require_executed_q_safety
 from .v77_zero_update import (
+    _checkpoint_digest,
     _optimizer_digest,
     _require_physical_bindings,
     _same_state,
     _stable_cell_keys,
     _target_blocks,
+    _tensor_digest,
     canonical_v5_runtime_source_sha256,
 )
 
@@ -33,6 +36,16 @@ HALF_LIFE_PRESENTATIONS = 1000
 PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL = 2
 SUCCESS_VERDICT = "PASS__ONE_SYNTHETIC_GUARDED_UPDATE_PHYSICALLY_BOUND__NON_PRODUCTION"
 _PREMISE = Path(__file__).resolve().parents[3] / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
+
+
+def _module_state_digest(state: dict[str, torch.Tensor]) -> str:
+    h = hashlib.sha256()
+    for name, value in sorted(state.items()):
+        h.update(name.encode("utf-8"))
+        h.update(b"\0")
+        h.update(_tensor_digest(value).encode("ascii"))
+        h.update(b"\n")
+    return h.hexdigest()
 
 
 def run_bounded_synthetic_mutation(
@@ -111,7 +124,10 @@ def run_bounded_synthetic_mutation(
     online_before = deepcopy(modules.online.state_dict())
     predictor_before = deepcopy(modules.predictor.state_dict())
     teacher_before = deepcopy(modules.teacher.state_dict())
-    optimizer_before = _optimizer_digest(modules.optimizer)
+    online_digest_before = _module_state_digest(online_before)
+    predictor_digest_before = _module_state_digest(predictor_before)
+    teacher_digest_before = _module_state_digest(teacher_before)
+    optimizer_digest_before = _optimizer_digest(modules.optimizer)
 
     parent = capture_prefreeze_bound_checkpoint(
         modules,
@@ -119,6 +135,7 @@ def run_bounded_synthetic_mutation(
         presentations_seen=0,
         premise_state_path=_PREMISE,
     )
+    checkpoint_digest_before = _checkpoint_digest(parent.reference_checkpoint)
     authority = ema_binding.issue_presentation_ema_bound_authority_from_checkpoint(
         modules,
         parent,
@@ -171,6 +188,7 @@ def run_bounded_synthetic_mutation(
         premise_state_path=_PREMISE,
         completed_guard_receipt=report["completed_guard_receipt"],
     )
+    checkpoint_digest_after = _checkpoint_digest(child.reference_checkpoint)
     envelope = ema_binding.bind_completed_checkpoint_to_presentation_ema(
         child,
         report["presentation_ema_completion_proof"],
@@ -213,10 +231,18 @@ def run_bounded_synthetic_mutation(
     if resumed.parent_presentations_seen != PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL:
         raise RuntimeError("typed continuation restart did not preserve teacher age")
 
-    online_changed = not _same_state(online_before, modules.online.state_dict())
-    predictor_changed = not _same_state(predictor_before, modules.predictor.state_dict())
-    teacher_changed = not _same_state(teacher_before, modules.teacher.state_dict())
-    optimizer_changed = optimizer_before != _optimizer_digest(modules.optimizer)
+    online_after = modules.online.state_dict()
+    predictor_after = modules.predictor.state_dict()
+    teacher_after = modules.teacher.state_dict()
+    online_digest_after = _module_state_digest(online_after)
+    predictor_digest_after = _module_state_digest(predictor_after)
+    teacher_digest_after = _module_state_digest(teacher_after)
+    optimizer_digest_after = _optimizer_digest(modules.optimizer)
+
+    online_changed = not _same_state(online_before, online_after)
+    predictor_changed = not _same_state(predictor_before, predictor_after)
+    teacher_changed = not _same_state(teacher_before, teacher_after)
+    optimizer_changed = optimizer_digest_before != optimizer_digest_after
     if not all((online_changed, predictor_changed, teacher_changed, optimizer_changed)):
         raise RuntimeError("bounded rehearsal did not mutate every intended runtime state")
 
@@ -231,6 +257,16 @@ def run_bounded_synthetic_mutation(
         "q_safety_proof_digest": q_safety_proof.digest(),
         "runtime_source_sha256": actual_runtime,
         "mutation_runtime_source_sha256": parent.runtime_source_sha256,
+        "online_digest_before": online_digest_before,
+        "online_digest_after": online_digest_after,
+        "predictor_digest_before": predictor_digest_before,
+        "predictor_digest_after": predictor_digest_after,
+        "teacher_digest_before": teacher_digest_before,
+        "teacher_digest_after": teacher_digest_after,
+        "optimizer_digest_before": optimizer_digest_before,
+        "optimizer_digest_after": optimizer_digest_after,
+        "checkpoint_digest_before": checkpoint_digest_before,
+        "checkpoint_digest_after": checkpoint_digest_after,
         "optimizer_step_before": report["optimizer_step_before"],
         "optimizer_step_after": report["optimizer_step_after"],
         "teacher_presentations_before": 0,
