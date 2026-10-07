@@ -15,8 +15,10 @@ from .identity import (
 from .pipeline import BatchFieldV1, QualificationBatchV1
 from .qsafe import QSafetyPolicyV1, REQUIRED_Q_SAFETY_CHANNELS
 from .receipts import (
+    BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
     BoundAdapterQSafetyProofV1,
     DataKind,
+    QSafetyChannelExecutionEvidenceV1,
     QSafetyExecutionProofStatus,
 )
 from .visibility import FieldDeclaration, VisibilityClass
@@ -107,6 +109,150 @@ def require_executed_q_safety(
     if proof.runtime_source_sha256 != expected_runtime_digest:
         raise ValueError("executed q-safety proof runtime digest mismatch")
     return proof
+
+
+def prove_v77_executed_q_safety_from_query_perturbation(
+    baseline: object,
+    challenge: object,
+    *,
+    batch: QualificationBatchV1,
+    adapter_id: str,
+    adapter_digest: str,
+    runtime_source_sha256: str,
+) -> BoundAdapterQSafetyProofV1:
+    """Mint q-safety evidence only after a hidden-query perturbation was physically executed.
+
+    The challenge must change the hidden readout while leaving every model-facing and lawful
+    operator object bit-identical. This directly exercises the S167/S168 repair: query values,
+    normalization/depth descendants, support summaries, masks and preprocessing cannot change
+    what the student can see. The proof remains non-authorizing and is bound to the exact batch,
+    adapter and runtime identities.
+    """
+    if not isinstance(batch, QualificationBatchV1):
+        raise TypeError("executed q-safety proof requires the exact QualificationBatchV1")
+    if batch.adapter_id != adapter_id:
+        raise ValueError("executed q-safety proof adapter identity does not match joined batch")
+    expected_adapter_digest = _require_sha256(adapter_digest, "adapter_digest")
+    if batch.adapter_digest != expected_adapter_digest:
+        raise ValueError("executed q-safety proof adapter digest does not match joined batch")
+    runtime_digest = _require_sha256(runtime_source_sha256, "runtime_source_sha256")
+
+    for name in ("model", "operator_context", "readout", "split_context"):
+        if not hasattr(baseline, name) or not hasattr(challenge, name):
+            raise ValueError(f"executed q-safety perturbation lacks {name}")
+    if not hasattr(baseline, "global_cell_index") or not hasattr(challenge, "global_cell_index"):
+        raise ValueError("executed q-safety perturbation lacks global cell identity")
+
+    baseline_readout = baseline.readout.digest()
+    challenge_readout = challenge.readout.digest()
+    if baseline_readout == challenge_readout:
+        raise ValueError("query perturbation did not physically change hidden readout values")
+    baseline_model = baseline.model.digest()
+    challenge_model = challenge.model.digest()
+    if baseline_model != challenge_model:
+        raise ValueError("query perturbation changed model-visible state")
+    baseline_operator = baseline.operator_context.digest()
+    challenge_operator = challenge.operator_context.digest()
+    if baseline_operator != challenge_operator:
+        raise ValueError("query perturbation changed lawful operator summaries")
+    if baseline.split_context.digest() != challenge.split_context.digest():
+        raise ValueError("query perturbation changed split identity")
+    if _plain(baseline.global_cell_index) != _plain(challenge.global_cell_index):
+        raise ValueError("query perturbation changed observation identity")
+
+    base_hidden = _rows(baseline.model.hidden_target_mask, "baseline hidden_target_mask")
+    challenge_hidden = _rows(challenge.model.hidden_target_mask, "challenge hidden_target_mask")
+    if base_hidden != challenge_hidden:
+        raise ValueError("query perturbation changed mask construction")
+    base_measurement = _rows(baseline.model.measurement_mask, "baseline measurement_mask")
+    challenge_measurement = _rows(challenge.model.measurement_mask, "challenge measurement_mask")
+    if base_measurement != challenge_measurement:
+        raise ValueError("query perturbation changed structural support")
+    if any(
+        bool(hidden) and not bool(measured)
+        for mrow, hrow in zip(base_measurement, base_hidden)
+        for measured, hidden in zip(mrow, hrow)
+    ):
+        raise ValueError("hidden query target escaped structural support")
+
+    base_query = _rows(baseline.readout.query_counts, "baseline query_counts")
+    challenge_query = _rows(challenge.readout.query_counts, "challenge query_counts")
+    changed_query_positions = tuple(
+        (row_index, column_index)
+        for row_index, (base_row, challenge_row, hidden_row) in enumerate(
+            zip(base_query, challenge_query, base_hidden)
+        )
+        for column_index, (before, after, hidden) in enumerate(zip(base_row, challenge_row, hidden_row))
+        if before != after and bool(hidden)
+    )
+    if not changed_query_positions:
+        raise ValueError("query perturbation did not change a hidden query position")
+    if any(
+        before != after and not bool(hidden)
+        for base_row, challenge_row, hidden_row in zip(base_query, challenge_query, base_hidden)
+        for before, after, hidden in zip(base_row, challenge_row, hidden_row)
+    ):
+        raise ValueError("query perturbation changed a non-query readout position")
+
+    model_view = batch.model_view()
+    readout_view = batch.readout_view()
+    if "query_counts" in model_view.model_inputs or "full_library_size" in model_view.model_inputs:
+        raise ValueError("query/readout values reached model-visible inputs")
+    if "query_counts" not in readout_view.readout_only:
+        raise ValueError("joined batch lost readout-only query separation")
+    learnable = build_learnable_model_context(
+        model_inputs=model_view.model_inputs,
+        lawful_operator_context=model_view.lawful_operator_context,
+    )
+    if RAW_MEASUREMENT_IDENTITY_FIELDS.intersection(learnable.operator_context):
+        raise ValueError("raw source/operator identity reached learnable context")
+
+    batch_digest = batch.scientific_identity.digest()
+    common = {
+        "baseline_model_digest": baseline_model,
+        "challenge_model_digest": challenge_model,
+        "baseline_operator_digest": baseline_operator,
+        "challenge_operator_digest": challenge_operator,
+        "baseline_readout_digest": baseline_readout,
+        "challenge_readout_digest": challenge_readout,
+        "changed_query_positions": changed_query_positions,
+        "batch_scientific_identity_digest": batch_digest,
+    }
+    channel_payloads = {
+        "QUERY_VALUE": {**common, "readout_changed": True, "model_unchanged": True},
+        "NORMALIZATION_DENOMINATOR": {**common, "model_unchanged_under_query_perturbation": True},
+        "LIBRARY_SIZE_SUMMARY": {**common, "operator_context_unchanged": True},
+        "DETECTED_FEATURE_SUMMARY": {**common, "allowed_operator_fields": tuple(sorted(learnable.operator_context))},
+        "QC_DESCENDANTS": {**common, "model_fields": tuple(sorted(model_view.model_inputs))},
+        "SUPPORT_OR_MISSINGNESS_SUMMARY": {**common, "measurement_mask": base_measurement},
+        "MASK_CONSTRUCTION": {**common, "hidden_target_mask": base_hidden},
+        "QUERY_DEPENDENT_PREPROCESSING": {**common, "model_digest_invariant": baseline_model},
+        "TARGET_OR_TEACHER_PRE_CONTEXT": {
+            **common,
+            "query_counts_absent_from_model": True,
+            "full_library_absent_from_model": True,
+        },
+    }
+    evidence = tuple(
+        QSafetyChannelExecutionEvidenceV1(
+            channel=channel,
+            evidence_digest=canonical_digest(channel_payloads[channel]),
+            executed=True,
+        )
+        for channel in REQUIRED_Q_SAFETY_CHANNELS
+    )
+    return BoundAdapterQSafetyProofV1(
+        schema=BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
+        q_safety_policy_id="qsafe-v1",
+        adapter_id=adapter_id,
+        adapter_digest=expected_adapter_digest,
+        batch_scientific_identity_digest=batch_digest,
+        runtime_source_sha256=runtime_digest,
+        channel_evidence=evidence,
+        execution_authorized=False,
+        training_authorized=False,
+        production_promotable=False,
+    )
 
 
 def build_qualification_batch_from_v77_conversion(
