@@ -16,11 +16,12 @@ on:
       - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
-      - src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py
+      - src/sea_ad_jepa/v5/prefreeze_runtime_authority.py
       - src/sea_ad_jepa/v5/inactive_guarded_update_v1.py
       - src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py
       - src/sea_ad_jepa/v5/inactive_update_reference.py
       - tests/test_v5_inactive_runtime_step_guard_v1.py
+      - tests/test_v5_prefreeze_runtime_torch_integration.py
       - tests/test_v5_prefreeze_checkpoint_binding_v1.py
       - tests/test_teacher_student_v5_inactive_update_reference.py
       - docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json
@@ -42,11 +43,12 @@ on:
       - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
-      - src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py
+      - src/sea_ad_jepa/v5/prefreeze_runtime_authority.py
       - src/sea_ad_jepa/v5/inactive_guarded_update_v1.py
       - src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py
       - src/sea_ad_jepa/v5/inactive_update_reference.py
       - tests/test_v5_inactive_runtime_step_guard_v1.py
+      - tests/test_v5_prefreeze_runtime_torch_integration.py
       - tests/test_v5_prefreeze_checkpoint_binding_v1.py
       - tests/test_teacher_student_v5_inactive_update_reference.py
       - docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json
@@ -95,14 +97,15 @@ jobs:
         run: |
           python -m pytest -q \
             tests/test_v5_inactive_runtime_step_guard_v1.py \
+            tests/test_v5_prefreeze_runtime_torch_integration.py \
             tests/test_v5_prefreeze_checkpoint_binding_v1.py \
             tests/test_teacher_student_v5_inactive_update_reference.py
-      - name: Compile guarded V5 successor modules
+      - name: Compile canonical V5 successor modules
         env:
           PYTHONPATH: src:.
         run: |
           python -m py_compile \
-            src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py \
+            src/sea_ad_jepa/v5/prefreeze_runtime_authority.py \
             src/sea_ad_jepa/v5/inactive_guarded_update_v1.py \
             src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py \
             src/sea_ad_jepa/v5/inactive_update_reference.py
