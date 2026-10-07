@@ -1,4 +1,8 @@
 from __future__ import annotations
+import hashlib
+import json
+from pathlib import Path
+
 import torch
 import pytest
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
@@ -7,6 +11,11 @@ from sea_ad_jepa.v5.inactive_update_reference import (
     capture_reference_checkpoint, restore_reference_checkpoint,
 )
 from sea_ad_jepa.v5.inactive_guarded_update_v1 import run_guarded_inactive_reference_update
+from sea_ad_jepa.v5.prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_PATH = ROOT / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
 
 
 def _case():
@@ -28,9 +37,19 @@ def _modules():
     return build_reference_modules(vocabulary_size=32,width=16,heads=4,blocks=1,ffn_width=24,dropout=.10,learning_rate=3e-4,betas=(.9,.999),eps=1e-8,weight_decay=.01,init_seed=8113002)
 
 
+def _authority(modules, update_index):
+    checkpoint_digest=hashlib.sha256(f"inactive-reference-start-{update_index}".encode()).hexdigest()
+    return PrefreezeMechanicalAuthorityV1.issue_for_optimizer(
+        governance_state=json.loads(STATE_PATH.read_text()),
+        optimizer=modules.optimizer,
+        checkpoint_digest=checkpoint_digest,
+    )
+
+
 def _run(modules, data, *, update_index=0, max_tokens=40):
     return run_guarded_inactive_reference_update(
-        modules,expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
+        modules,authority=_authority(modules,update_index),
+        expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
         scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
         max_teacher_tokens_per_microbatch=max_tokens,run_seed=8113002,update_index=update_index,ema_momentum=.996)
 
@@ -43,7 +62,8 @@ def test_inactive_reference_update_steps_once_has_no_teacher_grad_and_exact_ema(
     assert report['gradient_gate']['teacher_gradients']==0
     assert report['execution_authorized'] is False and report['training_authorized'] is False
     assert report['guarded_optimizer_step'] is True
-    assert report['guard_kind']=='INACTIVE_REFERENCE_MECHANICS_ONLY'
+    assert report['guarded_ema'] is True
+    assert report['guard_kind']=='V5_PREFREEZE_OPTIMIZER_GUARD_V1'
     assert sorted(x for mb in report['microbatch_plan'] for x in mb)==list(range(6))
 
 
