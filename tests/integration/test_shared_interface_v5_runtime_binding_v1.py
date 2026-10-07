@@ -116,24 +116,21 @@ def _provenance(bound_proof):
     )
 
 
-def test_actual_persisted_v5_proof_binds_shared_mutation_status(tmp_path):
+def test_actual_persisted_v5_v1_proof_remains_verifiable_but_cannot_promote_mutation(tmp_path):
     from sea_ad_jepa.qualification import runtime_binding as shared_binding
 
-    assert callable(getattr(shared_binding, "bind_v5_persisted_runtime_proof", None)), (
-        "shared interface has no verifier that consumes the actual persisted V5 proof"
-    )
+    assert callable(getattr(shared_binding, "bind_v5_persisted_runtime_proof", None))
     physical_proof, artifact_path = _physical_runtime_proof(tmp_path)
     bound = shared_binding.bind_v5_persisted_runtime_proof(
         physical_proof,
         artifact_path=artifact_path,
         premise_state_path=PREMISE,
     )
-    receipt = _provenance(bound)
-    assert receipt.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME
-    assert receipt.q_safety_execution_proof_status is QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
-    assert receipt.governance_digest == physical_proof.governance_digest
-    assert receipt.runtime_successor_digest == physical_proof.runtime_source_sha256
-    assert receipt.checkpoint_digest == physical_proof.artifact_sha256
+    assert bound.governance_digest == physical_proof.governance_digest
+    assert bound.runtime_source_sha256 == physical_proof.runtime_source_sha256
+    assert bound.artifact_sha256 == physical_proof.artifact_sha256
+    with pytest.raises(ValueError, match="V2|presentation-EMA|runtime proof"):
+        _provenance(bound)
 
 
 def test_runtime_binder_rejects_shape_compatible_forgery(tmp_path):
