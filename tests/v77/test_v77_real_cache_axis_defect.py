@@ -17,6 +17,11 @@ INVESTIGATION = {
         "the owner-authorized read-only TRAIN probe of 2026-10-07 that tests S174 against direct H5AD reads",
     "results/v77/V77_S174_CACHE_AXIS_PROBE_PREREGISTRATION_V1.json": "that probe's pre-registration",
     "results/v77/V77_S174_CACHE_AXIS_PROBE_RESULT_V1.json": "that probe's result",
+    "scripts/v77/rebuild_s174_train_cache.py":
+        "the owner-authorized S174 repair: reads the old cache only to rebuild it by identifier and to compare",
+    "results/v77/S174_REBUILD_FREEZE_V1.json": "that repair's freeze record",
+    "results/v77/S174_REBUILD_BUILD_RECEIPT_V1.json": "that repair's build receipt",
+    "results/v77/S174_REBUILD_VERIFY_AND_COMPARISON_V1.json": "that repair's verification and old-against-new receipt",
 }
 
 
