@@ -175,6 +175,28 @@ def structural_support_v2(uni, source_ix, op_index, qc, operator_ids, operator_s
     return sup
 
 
+def observation_identity_block(tm: dict, support_rule_id: str) -> dict:
+    """Producer-side observation identity (S161): which study, operator and donor measured each
+    cell, with every positional index resolvable by NAME against a roster (the S146 failure was a
+    positional index read against the wrong order). These are facts of the measurement design,
+    known for real cells too, so they belong to the observable layer and a consumer never needs
+    the hidden-truth folder to learn them."""
+    rows = AU.family_rows_for_source_names(tm["source_names"])
+    roster = [AU.SOURCE_FAMILIES[r] for r in rows]
+    op_src = [AU.SOURCE_FAMILIES[r] for r in AU.family_rows_for_source_names(tm["operator_sources"])]
+    ops = [str(o) for o in tm["operator_ids"]]
+    if len(ops) != len(op_src) or len(set(ops)) != len(ops):
+        raise RuntimeError("operator roster is malformed: ids and sources must align one-to-one, ids unique")
+    if len(set(roster)) != len(roster):
+        raise RuntimeError("source roster contains duplicate cohorts")
+    donors = [str(d) for d in tm.get("donor_ids", [])]
+    return dict(source_roster=roster, source_index_semantics="index into source_roster",
+                operator_ids=ops, operator_index_semantics="index into operator_ids",
+                operator_source_map=[[o, s] for o, s in zip(ops, op_src)],
+                donor_ids=donors, donor_index_semantics="index into donor_ids",
+                support_rule_id=support_rule_id)
+
+
 def depth_targets(ids, op, sup, qc, operator_ids, qprobs, mseed):
     ids_u = np.asarray(ids, dtype=np.uint64)
     zd = T.normal(mseed + 701, ids_u, 951); zi = T.normal(mseed + 704, ids_u, 954)
@@ -383,6 +405,9 @@ def observe(root: Path, seed: int, mseed: int | None,
                             # per-element structural support, so a consumer never has to guess
                             # which zeros were measurable (S135); bits run along addresses
                             support_mask_packed=np.packbits(sup, axis=1),
+                            # producer-side observation identity, per cell (S161)
+                            source_index=src.astype(np.int16), operator_index=op.astype(np.int16),
+                            donor_index=np.asarray(z["donor_index"]).astype(np.int32),
                             library_target=lib.astype(np.int64), detected_target=det.astype(np.int64))
         shards.append(dict(start=start, stop=stop, cells=len(ids), file=p.name,
                            sha256=sha256_file(p), nnz=int(len(idx))))
@@ -399,6 +424,10 @@ def observe(root: Path, seed: int, mseed: int | None,
         schema="V77_FULLSCALE_CANONICAL_RNA_OBSERVER_MANIFEST_V2",
         structural_support_rule=STRUCTURAL_SUPPORT_RULE,
         support_mask_in_shards="support_mask_packed, np.packbits along addresses",
+        observation_identity=observation_identity_block(tm, STRUCTURAL_SUPPORT_RULE),
+        feature_identity=dict(registry_sha256=AU.REGISTRY_SHA256, n_addresses=N,
+                              address_id_order_sha256=hashlib.sha256(
+                                  "\n".join(map(str, uni.address_id)).encode()).hexdigest()),
         realized_support_fraction_by_source={k: v[0] / v[1] for k, v in sorted(sup_acc.items())},
         seed=seed, truth_seed=seed, measurement_seed=mseed, n_cells=total, n_addresses=N,
         enabled_components=sorted(enabled),
