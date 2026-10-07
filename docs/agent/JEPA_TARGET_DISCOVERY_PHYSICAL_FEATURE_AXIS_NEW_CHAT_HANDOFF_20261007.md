@@ -51,7 +51,7 @@ The next agent should read these before making any scientific claim or code chan
 
 Recovered byte-exact source material relevant to the defect is under the target-recovery/chat-runtime archives, including the historical HVS/SEA-AD discovery-expression producer and the NPH52 R materializer.
 
-## Scientific correction 1: HVS/SEA-AD physical feature identity is not currently requalified
+## Scientific correction 1: HVS/SEA-AD physical feature identity authority exists, but historical address binding is invalid
 
 The recovered historical discovery-expression producer was inspected directly. Its critical assumption is effectively:
 
@@ -59,7 +59,7 @@ The recovered historical discovery-expression producer was inspected directly. I
 
 The producer builds a source-address map from provenance `source_feature_index` values and then applies that mapping to sparse-matrix physical `indices` values. That is only valid if the physical column order of the authenticated matrix has already been proven to be the same feature order represented by the provenance index.
 
-That proof is currently missing for the affected HVS and SEA-AD historical substrate.
+Repository archaeology on 2026-10-07 narrowed this substantially. Stage81A2 directly reads the physical feature axes from the authenticated H5AD families and hashes them: HVS from `raw/var/_index` (paired with `raw/var/feature_name`) and SEA-AD from `var/gene_ids` (paired with `var/index`). HVS is recorded as a shared 18,736-feature order with hash `4c1e94c02df22d936270bd82e5229efa81af156c4666ad95849eeabea2e21788`; the Stage81A2 SEA-AD family is a shared 36,601-feature order. However, `canonical_genes()` then sorts the HVS/SEA-AD mappings by Ensembl/symbol and re-enumerates them. That sorted ordinal becomes `source_feature_index`. Later materializers incorrectly apply that canonical/sorted ordinal to sparse physical H5 column indices. Thus the missing proof is no longer the existence of a physical feature authority; the demonstrated defect is loss of physical-column identity when the canonical provenance index was constructed and later treated as a column number.
 
 The corrected binding requirement is:
 
@@ -123,12 +123,13 @@ TD58 should be treated as an ingredient/evidence source for shared relational st
 
 ## NPH52 scope
 
-The HVS/SEA-AD physical-column defect must not automatically be projected onto NPH52.
+NPH52 has now been audited independently and does not share the HVS/SEA-AD defect. The Stage81A2 NPH audit writes `source_feature_index = seq_len(nrow(object)) - 1` together with `source_feature_symbol = rownames(object)`, binding the index to the physical gene axis of each source object. The reader-fit quarantine subsequently filters/reorders **columns only**; it does not reorder feature rows. The later NPH materializer indexes `counts[source_feature_index + 1, ...]`, which therefore preserves the audited physical row binding. This is also recorded by the V77 S174 lineage as independently verified NPH52 scope.
 
-A separate recovered NPH52 R materializer exists. NPH52 must be audited independently for explicit feature-identity binding. Until that audit is completed, the correct language is:
+Accordingly:
 
-- NPH52 is **not invalidated merely by the HVS/SEA-AD defect**;
-- NPH52 is **not automatically promoted to fully qualified** without its own feature-axis audit.
+- NPH52 is **not invalidated by the HVS/SEA-AD defect**;
+- NPH52 may remain qualified for this specific feature-axis issue, subject to its other existing custody/role restrictions;
+- no HVS/SEA-AD repair should rewrite or reinterpret the NPH52 feature axis.
 
 ## Current feature-axis recovery leads
 
@@ -176,50 +177,62 @@ A repaired source is not qualified until all of the following are proven:
 
 A checksum over an order vector is useful only after the vector itself and its matrix relationship are authenticated.
 
-## Open question at the moment of this handoff
+## Historical archaeology closed: no full rebuild exists
 
-A focused historical search was underway to determine whether a later branch had already generalized the Sept-27 decoder/repair lineage into a full corrected 50K HVS/SEA-AD physical-feature decoder and rematerialization.
+The wider 2026-10-07 search is now considered closed for this question. Commit messages, added files across branches, PR titles, the recovery ledger, related worktrees/stashes, local output folders, and the available project transcript were checked. No full corrected 41K/50K HVS/SEA-AD rematerialization was found.
 
-Current status at handoff:
+What does exist:
 
-- no later commit **message** had yet been found that clearly advertises a complete corrected 50K rebuild;
-- this absence is **not** proof that no implementation exists;
-- the code/history search was not complete when this handoff was requested;
-- therefore the next agent must continue the search before writing a new decoder, to avoid duplicating or contradicting an existing qualified implementation.
+- committed 2026-09-27 decoder lineage at `b642dce6`, covering five matrices;
+- a later local decoder run at `D:/jepa_v5_outputs_20260925/l4_decoder_all`, covering one HVS object plus all eleven SEA-AD regions and reporting 100% agreement on 32 checked cells per matrix;
+- those decoder receipts explicitly say `NO_REBUILD`;
+- only the narrow 29-address artifact was re-extracted with corrected physical-column decoding;
+- therefore a new full repair/rematerialization is required rather than recovery of an already-completed rebuild.
 
-Search descendants and related V48-V59 / V64 / Oct-7 audit lineages for actual decoder/rematerializer code, receipts, manifests, or feature-order artifacts rather than relying only on commit messages.
+The repair must prefer identity joins against matrix-native feature IDs (or verified per-matrix decoder tables) and must never reconstruct physical columns from the canonical provenance ordinal.
+
+## V77 S174 expansion of the contamination boundary
+
+Macha's V77 audit at commit `8784ba68680d18f8fa41a77c719be3572d217690` established that `data/cache/stage81a3r_corrected_real_train` is not feature-axis-corrected. Its name refers to collision-aware extraction. The HVS/SEA-AD path in `extract_h5_corrected` uses the same canonical `source_feature_index` provenance ordinal as if it were the physical sparse H5 column index.
+
+Consequences now controlling:
+
+- the real TRAIN cache is contaminated for HVS/SEA-AD address identity;
+- all V77 real-data calibrations that read it are suspended pending decoded replay;
+- S149's pooled-topology result, including the approximately 89% null-envelope reproduction, is **SUSPENDED**, not declared false;
+- fixed within-family relabeling means some within-family gene-label-free summaries may survive, but address-specific or pooled cross-family quantities are not qualified;
+- S174 lists 10 directly affected V77 scripts and 10 directly affected result artifacts, with 20 citing results requiring individual review;
+- S157 terminal conclusions remain unaffected by this defect, although its 19,569-address evaluation-universe membership was selected using the contaminated cache and must not be repurposed as an address-qualified biological result;
+- S174 is code/provenance verified, not count-value verified, because real-RNA reads remain unauthorized.
+
+The S174 commit message says 120 tests passed; the execution record supplied at takeover gives the actual count as 117. Treat 117 as the operative test count unless a fresh authorized CI receipt establishes otherwise.
+
+### Repair implication
+
+A future authorized repair has two linked replay scopes:
+
+1. target-discovery HVS/SEA-AD expression artifacts whose values were produced through the invalid canonical-index-to-physical-column assumption; and
+2. the V77 real TRAIN cache and every calibration/result that directly depends on it.
+
+The repaired outputs must be new immutable artifacts. Historical contaminated caches/results remain custody evidence and must not be overwritten.
 
 ## Recommended next sequence
 
-### A. Finish historical archaeology first
+### A. Lock the repair design before any real-RNA execution
 
-Search for:
+Historical archaeology is closed: no full rebuild exists. Write the repair contract against the now-localized defect. The contract must bind matrix-native physical feature identity to canonical molecular address, authenticate matrix/slot/feature-vector lineage, fail closed on unresolved IDs or collisions, emit fresh immutable outputs, and define sentinel identity/value checks.
 
-- `full104_level4_column_decoder`
-- `a7391464`
-- `feature_universe`
-- `feature_order_sha256`
-- `feature_identifier_registry`
-- `gene_identifier`
-- `source_feature_index`
-- H5/H5AD `var`, `_index`, `gene_ids`, `feature_name`, `features.tsv`
-- 18,736 / 36,601 feature widths
-- corrected discovery-expression materializers
-- manifests or receipts that bind physical column -> exact feature identity
-
-Check branch history, not only current `main`.
-
-### B. Prove SEA-AD feature authority
+### B. Reconfirm SEA-AD matrix-specific authority for the exact replay inputs
 
 Recover the actual ordered 36,601-vector and prove it belongs to the exact authenticated matrix family. Match its order hash to the recorded authority only after reconstructing the vector from a primary matrix/source artifact.
 
-### C. Prove HVS feature authority independently
+### C. Reconfirm HVS matrix-specific authority for the exact replay inputs
 
-Recover the ordered 18,736-vector(s), matrix by matrix if necessary. Do not infer shared order without evidence.
+Use the matrix-native 18,736-feature order and verify the exact HVS object(s) used by each historical artifact/cache. The local all-matrix decoder covers one HVS object; S174 notes that a second HVS object still needs its decoder confirmed if it is in replay scope.
 
-### D. Audit NPH52 independently
+### D. Preserve NPH52 as a separate qualified axis lineage
 
-Read the recovered R materializer and determine whether its feature identity is explicitly bound to the matrix's physical feature axis. Classify NPH52 as qualified, partially qualified, or replay-required based on that evidence only.
+Do not rebuild NPH52 merely because HVS/SEA-AD are being repaired. Only replay NPH-dependent results when their dependence on contaminated pooled/address-specific outputs requires it.
 
 ### E. Design rematerialization before implementation
 
