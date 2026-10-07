@@ -23,6 +23,13 @@ class QSafetyExecutionProofStatus(str, Enum):
     PROVEN_BY_BOUND_ADAPTER_RUNTIME = "PROVEN_BY_BOUND_ADAPTER_RUNTIME"
 
 
+BOUND_RUNTIME_PROOF_SCHEMA = "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1"
+BOUND_RUNTIME_CONTRACT = (
+    "V5_CANONICAL_PREFREEZE_GUARDED_STEP__COMPLETION_BEFORE_EMA__"
+    "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
+)
+
+
 def _nonempty(value: object, name: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be explicit and nonempty")
@@ -37,6 +44,55 @@ def _digest(value: object, name: str) -> str:
     ):
         raise ValueError(f"{name} must be a 64-character hexadecimal digest")
     return value.lower()
+
+
+@dataclass(frozen=True)
+class BoundRuntimeMutationProofV1:
+    """Typed copy of the non-authorizing physical proof emitted by the V5 runtime successor.
+
+    This object proves the qualification receipt is bound to the full physical-proof surface
+    rather than to caller-supplied runtime/checkpoint digest strings alone. It is deliberately
+    non-authorizing: scientific/execution/training authority remains outside this receipt.
+    """
+
+    schema: str
+    runtime_contract: str
+    artifact_sha256: str
+    logical_checkpoint_sha256: str
+    premise_state_sha256: str
+    runtime_source_sha256: str
+    completed_guard_receipt_digest: str
+    next_update_index: int
+    presentations_seen: int
+    persisted_verified_reload: bool
+    execution_authorized: bool
+    training_authorized: bool
+    production_promotable: bool
+
+    def __post_init__(self) -> None:
+        if self.schema != BOUND_RUNTIME_PROOF_SCHEMA:
+            raise ValueError("physical runtime proof schema mismatch")
+        if self.runtime_contract != BOUND_RUNTIME_CONTRACT:
+            raise ValueError("physical runtime proof contract mismatch")
+        for name in (
+            "artifact_sha256",
+            "logical_checkpoint_sha256",
+            "premise_state_sha256",
+            "runtime_source_sha256",
+            "completed_guard_receipt_digest",
+        ):
+            _digest(getattr(self, name), name)
+        if isinstance(self.next_update_index, bool) or not isinstance(self.next_update_index, int) or self.next_update_index <= 0:
+            raise ValueError("physical runtime proof must describe a completed noninitial update")
+        if isinstance(self.presentations_seen, bool) or not isinstance(self.presentations_seen, int) or self.presentations_seen < 0:
+            raise ValueError("physical runtime proof presentations_seen must be a nonnegative integer")
+        if self.persisted_verified_reload is not True:
+            raise ValueError("physical runtime proof requires persisted verified reload")
+        if self.execution_authorized or self.training_authorized or self.production_promotable:
+            raise ValueError("physical runtime proof cannot carry execution/training/promotion authority")
+
+    def digest(self) -> str:
+        return canonical_digest(self)
 
 
 @dataclass(frozen=True)
@@ -66,6 +122,7 @@ class QualificationProvenanceReceiptV1:
     q_safety_execution_proof_status: QSafetyExecutionProofStatus = QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
     runtime_successor_digest: str | None = None
     checkpoint_digest: str | None = None
+    runtime_mutation_proof: BoundRuntimeMutationProofV1 | None = None
     synthetic_realization_id: str | None = None
     challenge_partition: str | None = None
 
@@ -103,19 +160,34 @@ class QualificationProvenanceReceiptV1:
             "environment_digest",
         ):
             _digest(getattr(self, name), name)
+        runtime_digest = None
+        checkpoint_digest = None
         if self.runtime_successor_digest is not None:
-            _digest(self.runtime_successor_digest, "runtime_successor_digest")
-        if self.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME and self.runtime_successor_digest is None:
-            raise ValueError("physical mutation proof requires bound runtime successor provenance")
+            runtime_digest = _digest(self.runtime_successor_digest, "runtime_successor_digest")
+        if self.checkpoint_digest is not None:
+            checkpoint_digest = _digest(self.checkpoint_digest, "checkpoint_digest")
+            if runtime_digest is None:
+                raise ValueError("runtime successor provenance is required when checkpoint provenance exists")
+
+        if self.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME:
+            if not isinstance(self.runtime_mutation_proof, BoundRuntimeMutationProofV1):
+                raise ValueError("physical runtime proof is required for bound mutation proof")
+            if runtime_digest is None:
+                raise ValueError("physical mutation proof requires bound runtime successor provenance")
+            if checkpoint_digest is None:
+                raise ValueError("physical mutation proof requires persisted checkpoint provenance")
+            if runtime_digest != self.runtime_mutation_proof.runtime_source_sha256:
+                raise ValueError("runtime successor digest does not match physical runtime proof")
+            if checkpoint_digest != self.runtime_mutation_proof.artifact_sha256:
+                raise ValueError("checkpoint digest does not match physical runtime proof")
+        elif self.runtime_mutation_proof is not None:
+            raise ValueError("physical runtime proof cannot be attached while mutation proof remains unproven")
+
         if (
             self.q_safety_execution_proof_status is QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
-            and self.runtime_successor_digest is None
+            and runtime_digest is None
         ):
             raise ValueError("q-safety execution proof requires bound runtime successor provenance")
-        if self.checkpoint_digest is not None:
-            _digest(self.checkpoint_digest, "checkpoint_digest")
-            if self.runtime_successor_digest is None:
-                raise ValueError("runtime successor provenance is required when checkpoint provenance exists")
         if self.data_kind is DataKind.SYNTHETIC:
             if not isinstance(self.synthetic_realization_id, str) or not self.synthetic_realization_id.strip():
                 raise ValueError("synthetic provenance requires synthetic_realization_id")
