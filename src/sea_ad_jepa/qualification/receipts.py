@@ -25,6 +25,7 @@ class QSafetyExecutionProofStatus(str, Enum):
 
 
 BOUND_RUNTIME_PROOF_SCHEMA = "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1"
+BOUND_RUNTIME_MUTATION_PROOF_V2_SCHEMA = "BOUND_RUNTIME_MUTATION_PROOF_V2"
 BOUND_RUNTIME_CONTRACT = (
     "V5_CANONICAL_PREFREEZE_GUARDED_STEP__COMPLETION_BEFORE_EMA__"
     "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
@@ -50,7 +51,12 @@ def _digest(value: object, name: str) -> str:
 
 @dataclass(frozen=True)
 class BoundRuntimeMutationProofV1:
-    """Typed copy of the non-authorizing physical proof emitted by the V5 runtime successor."""
+    """Historical/diagnostic copy of the base V5 persisted checkpoint proof.
+
+    V1 remains readable for audit compatibility but is no longer sufficient to
+    promote MutationProofStatus.PROVEN_BY_BOUND_RUNTIME because it predates the
+    presentation-normalized EMA configuration and teacher-age proof chain.
+    """
 
     schema: str
     runtime_contract: str
@@ -89,6 +95,74 @@ class BoundRuntimeMutationProofV1:
             raise ValueError("physical runtime proof requires persisted verified reload")
         if self.execution_authorized or self.training_authorized or self.production_promotable:
             raise ValueError("physical runtime proof cannot carry execution/training/promotion authority")
+
+    def digest(self) -> str:
+        return canonical_digest(self)
+
+
+@dataclass(frozen=True)
+class BoundRuntimeMutationProofV2:
+    """Canonical shared copy of the typed presentation-EMA physical continuation proof."""
+
+    schema: str
+    runtime_contract: str
+    governance_digest: str
+    artifact_sha256: str
+    logical_checkpoint_sha256: str
+    premise_state_sha256: str
+    runtime_source_sha256: str
+    completed_guard_receipt_digest: str
+    next_update_index: int
+    presentations_seen: int
+    ema_configuration_identity: str
+    ema_bound_checkpoint_binding_digest: str
+    ema_bound_authority_digest: str
+    presentation_ema_completion_proof_digest: str
+    presentation_unit_id: str
+    half_life_presentations: int
+    parent_presentations_seen: int
+    presentations_this_update: int
+    persisted_verified_reload: bool
+    execution_authorized: bool
+    training_authorized: bool
+    production_promotable: bool
+
+    def __post_init__(self) -> None:
+        if self.schema != BOUND_RUNTIME_MUTATION_PROOF_V2_SCHEMA:
+            raise ValueError("V2 physical runtime proof schema mismatch")
+        if self.runtime_contract != BOUND_RUNTIME_CONTRACT:
+            raise ValueError("V2 physical runtime proof contract mismatch")
+        for name in (
+            "governance_digest",
+            "artifact_sha256",
+            "logical_checkpoint_sha256",
+            "premise_state_sha256",
+            "runtime_source_sha256",
+            "completed_guard_receipt_digest",
+            "ema_bound_checkpoint_binding_digest",
+            "ema_bound_authority_digest",
+            "presentation_ema_completion_proof_digest",
+        ):
+            _digest(getattr(self, name), name)
+        if not isinstance(self.ema_configuration_identity, str) or not self.ema_configuration_identity.startswith("V5_PRESENTATION_EMA:"):
+            raise ValueError("V2 physical runtime proof requires presentation EMA configuration identity")
+        _nonempty(self.presentation_unit_id, "presentation_unit_id")
+        if isinstance(self.next_update_index, bool) or not isinstance(self.next_update_index, int) or self.next_update_index <= 0:
+            raise ValueError("V2 physical runtime proof must describe a completed noninitial update")
+        if isinstance(self.presentations_seen, bool) or not isinstance(self.presentations_seen, int) or self.presentations_seen < 0:
+            raise ValueError("V2 physical runtime proof presentations_seen must be a nonnegative integer")
+        if isinstance(self.half_life_presentations, bool) or not isinstance(self.half_life_presentations, int) or self.half_life_presentations <= 0:
+            raise ValueError("V2 physical runtime proof half_life_presentations must be a positive integer")
+        if isinstance(self.parent_presentations_seen, bool) or not isinstance(self.parent_presentations_seen, int) or self.parent_presentations_seen < 0:
+            raise ValueError("V2 physical runtime proof parent_presentations_seen must be nonnegative")
+        if isinstance(self.presentations_this_update, bool) or not isinstance(self.presentations_this_update, int) or self.presentations_this_update <= 0:
+            raise ValueError("V2 physical runtime proof presentations_this_update must be positive")
+        if self.parent_presentations_seen + self.presentations_this_update != self.presentations_seen:
+            raise ValueError("V2 physical runtime proof teacher-age arithmetic mismatch")
+        if self.persisted_verified_reload is not True:
+            raise ValueError("V2 physical runtime proof requires persisted verified reload")
+        if self.execution_authorized or self.training_authorized or self.production_promotable:
+            raise ValueError("V2 physical runtime proof cannot carry execution/training/promotion authority")
 
     def digest(self) -> str:
         return canonical_digest(self)
@@ -179,7 +253,7 @@ class QualificationProvenanceReceiptV1:
     q_safety_execution_proof_status: QSafetyExecutionProofStatus = QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN
     runtime_successor_digest: str | None = None
     checkpoint_digest: str | None = None
-    runtime_mutation_proof: BoundRuntimeMutationProofV1 | None = None
+    runtime_mutation_proof: BoundRuntimeMutationProofV1 | BoundRuntimeMutationProofV2 | None = None
     q_safety_execution_proof: BoundAdapterQSafetyProofV1 | None = None
     synthetic_realization_id: str | None = None
     challenge_partition: str | None = None
@@ -228,8 +302,8 @@ class QualificationProvenanceReceiptV1:
                 raise ValueError("runtime successor provenance is required when checkpoint provenance exists")
 
         if self.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME:
-            if not isinstance(self.runtime_mutation_proof, BoundRuntimeMutationProofV1):
-                raise ValueError("physical runtime proof is required for bound mutation proof")
+            if not isinstance(self.runtime_mutation_proof, BoundRuntimeMutationProofV2):
+                raise ValueError("V2 typed presentation-EMA runtime proof is required for bound mutation proof")
             if runtime_digest is None:
                 raise ValueError("physical mutation proof requires bound runtime successor provenance")
             if checkpoint_digest is None:
