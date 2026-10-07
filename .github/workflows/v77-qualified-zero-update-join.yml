@@ -54,3 +54,9 @@ jobs:
           tests/test_v5_prefreeze_runtime_torch_integration.py
           tests/test_v5_ema_completed_update_proof_red.py
           tests/test_v5_ema_persisted_continuation_red.py
+      - name: Emit successful bounded-mutation custody receipt
+        env:
+          PYTHONPATH: src:.
+        run: >-
+          python -m pytest -q -s
+          tests/integration/test_v77_bounded_synthetic_mutation.py::test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload
