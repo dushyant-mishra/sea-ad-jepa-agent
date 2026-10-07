@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -11,6 +12,7 @@ import torch
 from scripts.v77 import v77_synthetic_batch_adapter as AD
 from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import BoundAdapterQSafetyProofV1
+from sea_ad_jepa.v5 import inactive_checkpoint_binding_v1 as runtime_binding
 from sea_ad_jepa.v5.inactive_update_reference import build_reference_modules
 
 
@@ -95,6 +97,10 @@ def _modules():
     )
 
 
+def _adapter_sha256() -> str:
+    return hashlib.sha256(Path(AD.__file__).read_bytes()).hexdigest()
+
+
 def test_joined_qsafe_execution_proves_all_channels_and_student_invariance(tmp_path):
     import sea_ad_jepa.qualification.v77_qsafe_joined as joined
 
@@ -114,13 +120,14 @@ def test_joined_qsafe_execution_proves_all_channels_and_student_invariance(tmp_p
     assert torch.equal(input_b.teacher_expression[evidence], input_b.student_expression[evidence])
     assert not torch.equal(input_a.teacher_expression[hidden], input_b.teacher_expression[hidden])
 
+    runtime_digest = runtime_binding._runtime_source_sha256()
     proof = joined.prove_executed_v77_q_safety(
         conv_a,
         conv_b,
         modules=_modules(),
         adapter_id="V77_SYNTHETIC_BATCH_ADAPTER_V3",
         batch_scientific_identity_digest="e" * 64,
-        runtime_source_sha256="9" * 64,
+        runtime_source_sha256=runtime_digest,
         q_safety_policy_id="qsafe-v1",
         run_seed=77,
         update_index=0,
@@ -128,6 +135,8 @@ def test_joined_qsafe_execution_proves_all_channels_and_student_invariance(tmp_p
     assert isinstance(proof, BoundAdapterQSafetyProofV1)
     assert tuple(item.channel for item in proof.channel_evidence) == REQUIRED_Q_SAFETY_CHANNELS
     assert all(item.executed for item in proof.channel_evidence)
+    assert proof.adapter_digest == _adapter_sha256()
+    assert proof.runtime_source_sha256 == runtime_digest
     assert proof.execution_authorized is False
     assert proof.training_authorized is False
     assert proof.production_promotable is False
@@ -160,7 +169,7 @@ def test_joined_qsafe_execution_rejects_non_counterfactual_student_change(tmp_pa
             modules=_modules(),
             adapter_id="V77_SYNTHETIC_BATCH_ADAPTER_V3",
             batch_scientific_identity_digest="e" * 64,
-            runtime_source_sha256="9" * 64,
+            runtime_source_sha256=runtime_binding._runtime_source_sha256(),
             q_safety_policy_id="qsafe-v1",
             run_seed=77,
             update_index=0,
