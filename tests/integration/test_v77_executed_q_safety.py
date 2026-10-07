@@ -82,6 +82,7 @@ def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_boun
         challenge_partition="DEVELOPMENT_CALIBRATION",
     )
 
+    runtime_digest = v77_zero_update.canonical_v5_runtime_source_sha256()
     prove = getattr(v77_join, "prove_v77_executed_q_safety_from_query_perturbation", None)
     assert callable(prove), "V77 join has no executed query-perturbation q-safety proof"
     proof = prove(
@@ -90,21 +91,23 @@ def test_hidden_query_value_perturbation_cannot_change_model_side_and_mints_boun
         batch=batch,
         adapter_id="v77-synthetic-batch-adapter",
         adapter_digest="a" * 64,
-        runtime_source_sha256="c" * 64,
+        runtime_source_sha256=runtime_digest,
     )
     assert isinstance(proof, BoundAdapterQSafetyProofV1)
     assert {item.channel for item in proof.channel_evidence} == set(REQUIRED_Q_SAFETY_CHANNELS)
     assert proof.batch_scientific_identity_digest == batch.scientific_identity.digest()
+    assert proof.runtime_source_sha256 == runtime_digest
 
     receipt = v77_zero_update.run_canonical_v5_zero_update(
         batch,
         q_safety_proof=proof,
-        runtime_source_sha256="c" * 64,
+        runtime_source_sha256=runtime_digest,
         init_seed=8113002,
     )
     assert receipt["schema"] == "V77_CANONICAL_V5_ZERO_UPDATE_V1"
     assert receipt["q_safety_proof_digest"] == proof.digest()
     assert receipt["batch_scientific_identity_digest"] == batch.scientific_identity.digest()
+    assert receipt["runtime_source_sha256"] == runtime_digest
     assert receipt["checkpoint_digest_before"] == receipt["checkpoint_digest_after"]
     assert receipt["online_parameters_unchanged"] is True
     assert receipt["teacher_parameters_unchanged"] is True
