@@ -97,9 +97,9 @@ def _proof(batch, runtime_source_sha256):
 
 
 def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
-    from sea_ad_jepa.qualification import v77_zero_update
+    from sea_ad_jepa.qualification import v77_bound_zero_update as v77_zero_update
 
-    adapter_digest = v77_join.canonical_v77_adapter_source_sha256()
+    adapter_digest = v77_zero_update.canonical_v77_adapter_source_sha256()
     batch = _batch(adapter_digest)
     runtime_digest = v77_zero_update.canonical_v5_runtime_source_sha256()
     receipt = v77_zero_update.run_canonical_v5_zero_update(
@@ -124,9 +124,9 @@ def test_joined_batch_executes_canonical_v5_zero_update_without_any_mutation():
 
 
 def test_caller_cannot_substitute_fake_runtime_source_digest():
-    from sea_ad_jepa.qualification import v77_zero_update
+    from sea_ad_jepa.qualification import v77_bound_zero_update as v77_zero_update
 
-    batch = _batch(v77_join.canonical_v77_adapter_source_sha256())
+    batch = _batch(v77_zero_update.canonical_v77_adapter_source_sha256())
     actual = v77_zero_update.canonical_v5_runtime_source_sha256()
     fake = "c" * 64
     assert fake != actual
@@ -140,9 +140,9 @@ def test_caller_cannot_substitute_fake_runtime_source_digest():
 
 
 def test_caller_cannot_substitute_fake_v77_adapter_source_digest():
-    from sea_ad_jepa.qualification import v77_zero_update
+    from sea_ad_jepa.qualification import v77_bound_zero_update as v77_zero_update
 
-    actual = v77_join.canonical_v77_adapter_source_sha256()
+    actual = v77_zero_update.canonical_v77_adapter_source_sha256()
     fake = "a" * 64
     assert fake != actual
     batch = _batch(fake)
