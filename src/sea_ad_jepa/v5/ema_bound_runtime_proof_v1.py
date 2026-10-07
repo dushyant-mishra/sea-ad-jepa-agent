@@ -1,10 +1,11 @@
 """Non-authorizing presentation-normalized EMA binding for the canonical V5 rehearsal.
 
-This successor restores the authenticated V5 EMA mechanics: teacher age is
-measured in successful base-cell presentations and the scalar momentum used for
-one completed update is derived from an explicitly supplied presentation
-half-life. This module selects no production half-life and grants no execution
-or training authority.
+Teacher age is measured in successful base-cell presentations. The scalar EMA
+momentum for one completed update is derived from an explicitly supplied
+presentation half-life. The numeric half-life remains a rehearsal input, not a
+production choice. Completed and persisted proofs bind parent teacher age,
+actual presentations in the update, and resulting teacher age. This module
+never grants execution or training authority.
 """
 from __future__ import annotations
 
@@ -53,6 +54,19 @@ def _require_sha256(value: object, label: str) -> str:
     return value
 
 
+def _require_nonnegative_int(value: object, label: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise RuntimeError(f"{label} must be an exact nonnegative integer")
+    return value
+
+
+def _require_positive_int(value: object, label: str) -> int:
+    result = _require_nonnegative_int(value, label)
+    if result < 1:
+        raise RuntimeError(f"{label} must be a positive integer")
+    return result
+
+
 def presentation_ema_configuration_identity(*, half_life_presentations: int, presentation_unit_id: str) -> str:
     """Bind explicit rehearsal EMA timescale mechanics without selecting production authority."""
     if isinstance(half_life_presentations, bool) or not isinstance(half_life_presentations, int) or half_life_presentations < 1:
@@ -72,6 +86,7 @@ def _ema_binding_core_from_parts(
     base_authority_digest: str,
     parent_checkpoint_digest: str,
     parent_runtime_source_sha256: str,
+    parent_presentations_seen: int,
     ema_configuration_identity: str,
 ) -> dict[str, object]:
     return {
@@ -79,6 +94,7 @@ def _ema_binding_core_from_parts(
         "base_authority_digest": _require_sha256(base_authority_digest, "base authority digest"),
         "parent_checkpoint_digest": _require_sha256(parent_checkpoint_digest, "parent checkpoint digest"),
         "parent_runtime_source_sha256": _require_sha256(parent_runtime_source_sha256, "parent runtime digest"),
+        "parent_presentations_seen": _require_nonnegative_int(parent_presentations_seen, "parent presentations seen"),
         "ema_configuration_identity": ema_configuration_identity,
         "training_authorized": False,
         "execution_authorized": False,
@@ -92,6 +108,7 @@ class PresentationEmaBoundPrefreezeAuthorityV1:
 
     base_authority: PrefreezeMechanicalAuthorityV1
     parent_runtime_source_sha256: str
+    parent_presentations_seen: int
     half_life_presentations: int
     presentation_unit_id: str
     ema_configuration_identity: str
@@ -105,6 +122,7 @@ class PresentationEmaBoundPrefreezeAuthorityV1:
             raise RuntimeError("presentation-EMA authority requires PrefreezeMechanicalAuthorityV1")
         self.base_authority._validate_digest()
         _require_sha256(self.parent_runtime_source_sha256, "presentation-EMA parent runtime digest")
+        _require_nonnegative_int(self.parent_presentations_seen, "parent presentations seen")
         expected = presentation_ema_configuration_identity(
             half_life_presentations=self.half_life_presentations,
             presentation_unit_id=self.presentation_unit_id,
@@ -133,6 +151,7 @@ class PresentationEmaBoundPrefreezeAuthorityV1:
             base_authority_digest=self.base_authority.authority_digest,
             parent_checkpoint_digest=self.base_authority.checkpoint_digest,
             parent_runtime_source_sha256=self.parent_runtime_source_sha256,
+            parent_presentations_seen=self.parent_presentations_seen,
             ema_configuration_identity=self.ema_configuration_identity,
         )
 
@@ -147,6 +166,74 @@ class PresentationEmaBoundPrefreezeAuthorityV1:
         if self.binding_digest != _digest(self._core()):
             raise RuntimeError("presentation-EMA authority digest mismatch")
         return True
+
+
+def _completed_update_proof_core(
+    *,
+    authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    presentations_this_update: int,
+) -> dict[str, object]:
+    count = _require_positive_int(presentations_this_update, "presentations_this_update")
+    receipt_digest = _require_sha256(completed_guard_receipt.get("receipt_digest"), "completed guard receipt digest")
+    checkpoint_digest = _require_sha256(completed_guard_receipt.get("checkpoint_digest"), "completed checkpoint digest")
+    child_presentations_seen = authority.parent_presentations_seen + count
+    return {
+        "schema": PRESENTATION_EMA_COMPLETED_UPDATE_PROOF_SCHEMA,
+        "ema_configuration_identity": authority.ema_configuration_identity,
+        "ema_bound_authority_digest": authority.binding_digest,
+        "parent_checkpoint_digest": authority.checkpoint_digest,
+        "parent_runtime_source_sha256": authority.parent_runtime_source_sha256,
+        "parent_presentations_seen": authority.parent_presentations_seen,
+        "presentations_this_update": count,
+        "child_presentations_seen": child_presentations_seen,
+        "completed_guard_receipt_digest": receipt_digest,
+        "completion_checkpoint_digest": checkpoint_digest,
+        "execution_authorized": False,
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+
+
+def _issue_presentation_ema_completed_update_proof(
+    *, authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    presentations_this_update: int,
+) -> dict[str, object]:
+    core = _completed_update_proof_core(
+        authority=authority,
+        completed_guard_receipt=completed_guard_receipt,
+        presentations_this_update=presentations_this_update,
+    )
+    return {**core, "proof_digest": _digest(core)}
+
+
+def verify_presentation_ema_completed_update_proof(
+    proof: object,
+    *,
+    authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    half_life_presentations: int,
+    presentation_unit_id: str,
+) -> bool:
+    if not isinstance(proof, Mapping):
+        raise RuntimeError("presentation EMA completed-update proof is required")
+    authority.verify_ema_configuration(
+        half_life_presentations=half_life_presentations,
+        presentation_unit_id=presentation_unit_id,
+    )
+    count = proof.get("presentations_this_update")
+    core = _completed_update_proof_core(
+        authority=authority,
+        completed_guard_receipt=completed_guard_receipt,
+        presentations_this_update=count,  # type: ignore[arg-type]
+    )
+    for key, expected in core.items():
+        if proof.get(key) != expected:
+            raise RuntimeError(f"presentation EMA completed-update proof mismatch: {key}")
+    if proof.get("proof_digest") != _digest(core):
+        raise RuntimeError("presentation EMA completed-update proof digest mismatch")
+    return True
 
 
 def _verify_persisted_presentation_ema_checkpoint_proof(
@@ -189,6 +276,7 @@ def _verify_persisted_presentation_ema_checkpoint_proof(
         raise RuntimeError("persisted presentation EMA proof cannot authorize execution or training")
     _require_sha256(proof.get("artifact_sha256"), "persisted artifact digest")
     _require_sha256(proof.get("governance_digest"), "persisted governance digest")
+
     completion_proof = proof.get("presentation_ema_completion_proof")
     if not isinstance(completion_proof, Mapping):
         raise RuntimeError("persisted presentation EMA proof lacks completed-update proof")
@@ -198,6 +286,13 @@ def _verify_persisted_presentation_ema_checkpoint_proof(
         raise RuntimeError("persisted presentation EMA completed-update proof digest mismatch")
     if proof.get("presentation_ema_completion_proof_digest") != completion_digest:
         raise RuntimeError("persisted presentation EMA proof does not bind completed-update proof")
+    if completion_proof.get("child_presentations_seen") != parent.reference_checkpoint.presentations_seen:
+        raise RuntimeError("persisted presentation EMA teacher age does not match checkpoint cursor")
+    parent_age = _require_nonnegative_int(completion_proof.get("parent_presentations_seen"), "completed proof parent presentations seen")
+    update_count = _require_positive_int(completion_proof.get("presentations_this_update"), "completed proof presentations this update")
+    if parent_age + update_count != parent.reference_checkpoint.presentations_seen:
+        raise RuntimeError("persisted presentation EMA teacher age arithmetic mismatch")
+
     receipt = parent.completed_guard_receipt
     if not isinstance(receipt, Mapping):
         raise RuntimeError("noninitial checkpoint lacks completed guard receipt")
@@ -208,16 +303,16 @@ def _verify_persisted_presentation_ema_checkpoint_proof(
         raise RuntimeError("completed presentation EMA proof guard receipt mismatch")
     if completion_proof.get("completion_checkpoint_digest") != logical:
         raise RuntimeError("completed presentation EMA proof checkpoint mismatch")
+
     base_authority_digest = _require_sha256(receipt.get("authority_digest"), "completed guard authority digest")
-    parent_checkpoint_digest = _require_sha256(receipt.get("parent_checkpoint_digest"), "completed guard parent checkpoint digest")
-    expected_binding = _digest(
-        _ema_binding_core_from_parts(
-            base_authority_digest=base_authority_digest,
-            parent_checkpoint_digest=parent_checkpoint_digest,
-            parent_runtime_source_sha256=parent.runtime_source_sha256,
-            ema_configuration_identity=identity,
-        )
-    )
+    previous_checkpoint_digest = _require_sha256(receipt.get("parent_checkpoint_digest"), "completed guard parent checkpoint digest")
+    expected_binding = _digest(_ema_binding_core_from_parts(
+        base_authority_digest=base_authority_digest,
+        parent_checkpoint_digest=previous_checkpoint_digest,
+        parent_runtime_source_sha256=parent.runtime_source_sha256,
+        parent_presentations_seen=parent_age,
+        ema_configuration_identity=identity,
+    ))
     if proof.get("ema_bound_authority_digest") != expected_binding:
         raise RuntimeError("persisted presentation EMA authority binding mismatch")
     if completion_proof.get("ema_bound_authority_digest") != expected_binding:
@@ -238,7 +333,6 @@ def issue_presentation_ema_bound_authority_from_checkpoint(
     scaler: object | None = None,
     persisted_ema_proof: Mapping[str, object] | None = None,
 ) -> PresentationEmaBoundPrefreezeAuthorityV1:
-    """Bind an explicit rehearsal half-life/unit to an exact parent runtime state."""
     if not isinstance(parent, V5PrefreezeBoundCheckpointV1):
         raise RuntimeError("presentation EMA binding requires the canonical bound parent checkpoint")
     if parent.reference_checkpoint.next_update_index > 0:
@@ -260,95 +354,23 @@ def issue_presentation_ema_bound_authority_from_checkpoint(
         half_life_presentations=half_life_presentations,
         presentation_unit_id=presentation_unit_id,
     )
+    parent_age = _require_nonnegative_int(parent.reference_checkpoint.presentations_seen, "parent presentations seen")
     core = _ema_binding_core_from_parts(
         base_authority_digest=base.authority_digest,
         parent_checkpoint_digest=base.checkpoint_digest,
         parent_runtime_source_sha256=parent.runtime_source_sha256,
+        parent_presentations_seen=parent_age,
         ema_configuration_identity=identity,
     )
     return PresentationEmaBoundPrefreezeAuthorityV1(
         base_authority=base,
         parent_runtime_source_sha256=parent.runtime_source_sha256,
+        parent_presentations_seen=parent_age,
         half_life_presentations=half_life_presentations,
         presentation_unit_id=presentation_unit_id,
         ema_configuration_identity=identity,
         binding_digest=_digest(core),
     )
-
-
-def _completed_update_proof_core(
-    *,
-    authority: PresentationEmaBoundPrefreezeAuthorityV1,
-    completed_guard_receipt: Mapping[str, object],
-    presentations_this_update: int,
-) -> dict[str, object]:
-    if isinstance(presentations_this_update, bool) or not isinstance(presentations_this_update, int) or presentations_this_update < 1:
-        raise RuntimeError("presentations_this_update must be a positive integer")
-    receipt_digest = _require_sha256(
-        completed_guard_receipt.get("receipt_digest"),
-        "completed guard receipt digest",
-    )
-    checkpoint_digest = _require_sha256(
-        completed_guard_receipt.get("checkpoint_digest"),
-        "completed checkpoint digest",
-    )
-    return {
-        "schema": PRESENTATION_EMA_COMPLETED_UPDATE_PROOF_SCHEMA,
-        "ema_configuration_identity": authority.ema_configuration_identity,
-        "ema_bound_authority_digest": authority.binding_digest,
-        "parent_checkpoint_digest": authority.checkpoint_digest,
-        "parent_runtime_source_sha256": authority.parent_runtime_source_sha256,
-        "completed_guard_receipt_digest": receipt_digest,
-        "completion_checkpoint_digest": checkpoint_digest,
-        "presentations_this_update": presentations_this_update,
-        "execution_authorized": False,
-        "training_authorized": False,
-        "production_promotable": False,
-    }
-
-
-def _issue_presentation_ema_completed_update_proof(
-    *,
-    authority: PresentationEmaBoundPrefreezeAuthorityV1,
-    completed_guard_receipt: Mapping[str, object],
-    presentations_this_update: int,
-) -> dict[str, object]:
-    core = _completed_update_proof_core(
-        authority=authority,
-        completed_guard_receipt=completed_guard_receipt,
-        presentations_this_update=presentations_this_update,
-    )
-    return {**core, "proof_digest": _digest(core)}
-
-
-def verify_presentation_ema_completed_update_proof(
-    proof: object,
-    *,
-    authority: PresentationEmaBoundPrefreezeAuthorityV1,
-    completed_guard_receipt: Mapping[str, object],
-    half_life_presentations: int,
-    presentation_unit_id: str,
-) -> bool:
-    """Reject any completed-update proof detached from its EMA configuration or guard receipt."""
-    if not isinstance(proof, Mapping):
-        raise RuntimeError("presentation EMA completed-update proof is required")
-    authority.verify_ema_configuration(
-        half_life_presentations=half_life_presentations,
-        presentation_unit_id=presentation_unit_id,
-    )
-    presentations_this_update = proof.get("presentations_this_update")
-    core = _completed_update_proof_core(
-        authority=authority,
-        completed_guard_receipt=completed_guard_receipt,
-        presentations_this_update=presentations_this_update,  # type: ignore[arg-type]
-    )
-    for key, expected in core.items():
-        if proof.get(key) != expected:
-            raise RuntimeError(f"presentation EMA completed-update proof mismatch: {key}")
-    observed_digest = proof.get("proof_digest")
-    if observed_digest != _digest(core):
-        raise RuntimeError("presentation EMA completed-update proof digest mismatch")
-    return True
 
 
 def persist_and_verify_presentation_ema_checkpoint(
@@ -361,7 +383,6 @@ def persist_and_verify_presentation_ema_checkpoint(
     half_life_presentations: int,
     presentation_unit_id: str = PRESENTATION_UNIT_SUCCESSFUL_BASE_CELLS,
 ) -> dict[str, object]:
-    """Persist one completed EMA-bound checkpoint and bind physical bytes to EMA mechanics."""
     if not isinstance(envelope, V5PrefreezeBoundCheckpointV1):
         raise RuntimeError("presentation EMA persistence requires canonical bound checkpoint")
     if envelope.reference_checkpoint.next_update_index <= 0:
@@ -376,9 +397,17 @@ def persist_and_verify_presentation_ema_checkpoint(
         half_life_presentations=half_life_presentations,
         presentation_unit_id=presentation_unit_id,
     )
+    expected_child_age = authority.parent_presentations_seen + _require_positive_int(
+        completed_update_proof.get("presentations_this_update"), "presentations_this_update"
+    )
+    if completed_update_proof.get("child_presentations_seen") != expected_child_age:
+        raise RuntimeError("presentation EMA completed proof has invalid teacher age")
+    if envelope.reference_checkpoint.presentations_seen != expected_child_age:
+        raise RuntimeError("presentation EMA checkpoint presentation cursor / teacher age mismatch")
     logical = reference_checkpoint_sha256(envelope.reference_checkpoint)
     if completed_update_proof.get("completion_checkpoint_digest") != logical:
         raise RuntimeError("presentation EMA completed-update proof does not match checkpoint state")
+
     base = persist_and_verify_completed_prefreeze_checkpoint(
         envelope,
         path,
@@ -425,7 +454,6 @@ def run_presentation_ema_bound_guarded_reference_update(
     completion_checkpoint_digest: Any | None = None,
     **kwargs: Any,
 ) -> dict[str, object]:
-    """Run one bounded update with momentum derived from successful base-cell presentations."""
     if not isinstance(authority, PresentationEmaBoundPrefreezeAuthorityV1):
         raise ValueError("PresentationEmaBoundPrefreezeAuthorityV1 is required")
     authority.verify_ema_configuration(
@@ -468,7 +496,9 @@ def run_presentation_ema_bound_guarded_reference_update(
     report["ema_bound_authority_digest"] = authority.binding_digest
     report["ema_presentation_unit_id"] = presentation_unit_id
     report["ema_half_life_presentations"] = half_life_presentations
+    report["ema_parent_presentations_seen"] = authority.parent_presentations_seen
     report["ema_presentations_this_update"] = presentations_this_update
+    report["ema_child_presentations_seen"] = authority.parent_presentations_seen + presentations_this_update
     report["ema_momentum_used"] = momentum
     report["presentation_ema_completion_proof"] = presentation_completion_proof
     report["training_authorized"] = False
