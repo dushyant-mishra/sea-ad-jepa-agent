@@ -1,0 +1,295 @@
+# Lane D - executable evaluation specification (DESIGN ONLY, NOT EXECUTED)
+#
+# TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED
+# D_SHARED_G5=UNOPENED · RARE_TAIL_MOLECULAR=UNOPENED · THERAPEUTIC_RANKING=OFF
+#
+# This file specifies a test. It does not run one. Every biological result it
+# refers to is NOT_EXECUTED until the prerequisites in `gates` pass.
+
+spec_id: lane_d_atac_independence_v1
+status: DESIGNED_NOT_EXECUTED
+execution_authorised: false
+
+question: >
+  Do frozen JEPA states, encoded from GSE174367 microglial snRNA, explain
+  independently measured microglial chromatin accessibility in the same donors
+  beyond cell-type composition, technical covariates, and a linear readout of
+  the very same RNA?
+
+what_this_can_and_cannot_establish:
+  can_establish: >
+    A cross-modality association at donor level: that a frozen RNA-derived
+    state carries information about a chromatin measurement that used no RNA.
+  cannot_establish:
+    - validated regulation
+    - a validated gene regulatory network
+    - causal effect of any regulator on any target
+    - any therapeutic ranking
+  claim_levels_kept_distinct:
+    - external_observational_validation
+    - regulatory_association
+    - causal_validation
+
+# ---------------------------------------------------------------- population
+population:
+  unit_of_inference: donor
+  n_independent_units: 18
+  donor_set: shared_rna_atac_samples_gse174367
+  atac_only_negative_stratum: [Sample-40, Sample-101]
+  note: >
+    Cells improve the measurement precision of the donor state X. They never
+    increase the independent sample size, which is 18 donors. Any statistic
+    reported must use n=18 as its inferential n, and must report the cell-level
+    Kish effective sample size separately if cell weighting is used.
+  cell_level_pairing: NONE
+  pairing_rule: >
+    RNA and ATAC nuclei are separate. Joins are permitted at donor level only.
+    A cell-level RNA-ATAC correspondence does not exist and must not be created.
+
+# ------------------------------------------------------------------ outcome
+outcome:
+  name: donor_microglial_chromatin_activity
+  modality: ATAC_ONLY
+  source: data/processed/stage75f/gse174367_mg_snatac.csc.h5
+  source_shape: [219070, 12232]
+  rna_contribution: NONE
+  definition: >
+    For each donor d and each peak p in the analysis peak set, the fraction of
+    that donor's microglial nuclei with >=1 fragment in p, logit-transformed
+    after a frozen pseudocount. Aggregated to the donor x peak-module level by
+    a peak grouping declared before the outcome is opened.
+  depth_normalisation:
+    required: true
+    covariates: [median_fragments_per_nucleus, n_microglial_nuclei, total_nnz]
+    rationale: >
+      Detection fraction rises with sequencing depth. Without depth adjustment,
+      any predictor correlated with library quality will appear to explain
+      accessibility.
+  peak_set_variants:
+    - id: promoter_accessible
+      description: peaks with a GENCODE v44 TSS within 2 kb, detected in >=1 microglial nucleus
+      evidence_class: DIRECT_ATAC_ACCESSIBILITY
+    - id: distal_provisional
+      description: peaks with no TSS within 2 kb but a TSS within 100 kb
+      evidence_class: GENOMIC_PROXIMITY_PROVISIONAL
+      caution: nearest gene is NOT the target; results stay provisional
+    - id: orphan
+      description: peaks with no TSS within 100 kb
+      evidence_class: UNASSIGNABLE
+      use: negative stratum only
+
+# ---------------------------------------------------------------- predictor
+predictor:
+  name: frozen_jepa_donor_state
+  frozen: true
+  refit_permitted: false
+  encoding_path: >
+    GSE174367 microglial snRNA -> FULL104 molecular address space -> frozen
+    JEPA encoder -> donor-level state by a declared pooling rule.
+  address_projection:
+    registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+    addresses_total: 41238
+    addresses_covered_by_gse174367: 38838
+    addresses_absent: 2400
+    missingness_rule: >
+      Absent addresses are MISSING BY DESIGN and must be masked, never imputed
+      as zero. Zero-imputation would encode an annotation difference as a
+      biological measurement of zero expression.
+    collision_rule: >
+      294 unresolved identity collisions are carried explicitly (45 PAR_Y
+      duplicate Ensembl ids, 45 PAR_Y X/Y locus collisions, 172 symbols mapping
+      to multiple Ensembl ids, 32 many-to-one feature-to-address collapses).
+      An explicit aggregation rule must be declared per class before any join.
+      Silent deduplication is prohibited.
+
+# ----------------------------------------------------------------- baselines
+baselines:
+  - id: B0
+    name: intercept_only
+  - id: B1
+    name: celltype_and_technical
+    terms: [microglial_fraction_of_all_nuclei, batch, n_microglial_nuclei,
+            median_fragments_per_nucleus, RIN, PMI, age, sex]
+  - id: B2
+    name: rna_only_linear
+    terms: B1 + leading principal components of the SAME microglial snRNA pseudobulk
+    n_components: frozen_before_execution
+    why_this_is_the_real_bar: >
+      B2 is a linear readout of exactly the RNA the JEPA state was encoded
+      from. Beating B0 or B1 shows only that RNA carries chromatin information,
+      which is already known. The claim of interest is that the learned state
+      adds something a linear readout of the same RNA does not.
+  - id: B3
+    name: frozen_jepa_state
+    terms: B1 + frozen JEPA donor state
+
+# ----------------------------------------------------------- estimation plan
+estimation:
+  scheme: leave_one_donor_out
+  folds: 18
+  fold_key: donor_id
+  leakage_guard: >
+    All preprocessing - scaling, PC bases, peak filtering, depth normalisation
+    constants - is fit inside the training fold only and applied to the held-out
+    donor. Nothing may be fit on all 18 donors and then evaluated.
+  common_random_numbers: true
+  crn_rationale: >
+    Every condition - baselines, JEPA, and all negative controls - is evaluated
+    on identical folds and identical bootstrap resamples, so deltas are paired
+    and their variance reflects the condition, not resampling noise.
+  primary_metric:
+    name: out_of_fold_spearman_rho
+    bounded: true
+    range: [-1, 1]
+    rationale: >
+      The metric is bounded in the rewarded direction, so a relative
+      improvement threshold is well defined. Unbounded metrics such as raw
+      likelihood ratios are prohibited for threshold setting.
+  secondary_metrics: [out_of_fold_R2_capped_at_0, concordance_of_sign]
+  uncertainty: paired bootstrap over donors, 2000 resamples, BCa interval
+
+# ------------------------------------------------------- negative controls
+# THE STAGE73 LESSON, STATED AS A REQUIREMENT
+#
+# Stage73 ran shuffled-graph controls, but a mode-label bug made them
+# bit-identical to the real graph: bootstrap deltas were exactly 0 with
+# zero-width CIs over 1000 iterations. Stage73R repaired the controls, proved
+# them structurally distinct, and the real graph then LOST to its own
+# target-shuffled control (context 0.32361 vs target-shuffled 0.33229).
+#
+# Therefore: beating a no-graph or no-prior baseline is NOT sufficient evidence
+# for any structure-specific claim. Every control below must additionally pass
+# a structural distinctness gate BEFORE its scores are interpreted.
+negative_controls:
+  structural_distinctness_gate:
+    required: true
+    blocking: true
+    checks_per_control:
+      - sha256_of_control_structure_differs_from_real
+      - diff_nnz_vs_real > 0
+      - fraction_changed_edges_vs_real >= 0.2
+      - abs(weighted_adjacency_correlation_with_real) <= 0.5
+      - distinct_from_real == true
+    degenerate_input_tests:
+      - empty structure
+      - single-edge structure
+      - structure identical to real by construction (must FAIL the gate)
+      - all-labels-identical shuffle (must FAIL the gate)
+    on_failure: >
+      HALT. Do not interpret any score. A control that is not provably
+      distinct from the real structure is not a control.
+  controls:
+    - id: N1
+      name: shuffled_tf_labels
+      procedure: permute TF identity across the 10 Stage75F regulators
+      exchangeability_restriction: >
+        Permute within motif-support tier (A/B/C) so that the number of
+        direct-motif-supported regulators is preserved and the shuffle tests
+        TF identity, not tier membership.
+    - id: N2
+      name: shuffled_region_gene_links
+      procedure: permute peak-to-gene assignments
+      exchangeability_restriction: >
+        Permute within (chromosome, peak_gene_class) strata so the shuffled
+        link set preserves chromosome composition and promoter/distal balance.
+        A free permutation would also destroy those, and would then be a test
+        of the wrong null.
+    - id: N3
+      name: shuffled_donor_associations
+      procedure: permute the donor label linking X to Y
+      exchangeability_restriction: >
+        Permute within diagnosis x sex strata. Diagnosis is associated with
+        both modalities; an unrestricted permutation would break confounding
+        structure that is not the null of interest and would inflate the
+        apparent signal of the real assignment.
+      n_permutations: 2000
+    - id: N4
+      name: matched_random_feature_sets
+      procedure: draw random peak sets of equal size
+      matching_variables: [chromosome, peak_width_decile,
+                           microglial_detection_fraction_decile]
+      rationale: >
+        Unmatched random peaks differ in detectability and would lose for
+        trivial reasons. Matching forces the comparison onto position and
+        identity rather than on how easy a peak is to detect.
+    - id: N5
+      name: shuffled_graph_prior
+      applies_when: any graph-structured prior is used
+      procedure: target-shuffled and node-label-permuted variants
+      gate: structural_distinctness_gate (blocking)
+      historical_note: >
+        The Stage72B context graph already failed this control in Stage73R.
+        Any reuse must re-pass it; a prior that failed before is not
+        rehabilitated by beating a no-graph baseline again.
+
+# ------------------------------------------------------- acceptance criteria
+# Frozen BEFORE any outcome is computed. If a test fails, the run stops; the
+# thresholds are not widened after seeing the discrepancy.
+acceptance:
+  frozen_before_execution: true
+  thresholds_may_be_revised_after_seeing_results: false
+  criteria:
+    - id: A1
+      requirement: B3 beats B2 on the primary metric
+      rule: paired delta (B3 - B2) BCa 95% CI excludes 0 in the positive direction
+      note: beating B0 or B1 alone is explicitly insufficient
+    - id: A2
+      requirement: B3 beats every negative control N1-N5
+      rule: paired delta CI excludes 0 against EACH control separately
+    - id: A3
+      requirement: every negative control passed the structural distinctness gate
+      rule: blocking; a failed gate voids the entire comparison
+    - id: A4
+      requirement: result is not carried by one donor
+      rule: >
+        leave-one-donor-out jackknife on the delta; no single donor may flip
+        the sign of the conclusion
+    - id: A5
+      requirement: depth is not the explanation
+      rule: >
+        the delta must survive adjustment for median fragments per nucleus and
+        microglial nucleus count, and must not correlate with them
+  power_statement_required_before_execution: >
+    With n=18 donors the detectable effect must be declared in advance. State
+    the smallest delta the design can detect at 80% power and record it before
+    the outcome is opened. If the honest answer is that only a large effect is
+    detectable, that is the finding and it must be reported as a bound, not
+    hidden by running the test anyway.
+
+# ------------------------------------------------------------------- gates
+gates:
+  - id: P1
+    requirement: frozen JEPA encoder checkpoint identified, path + SHA-256 recorded
+    status: NOT_SATISFIED
+  - id: P2
+    requirement: GSE174367 -> FULL104 address projection rule frozen, including
+      the masking rule for the 2,400 absent addresses and an explicit
+      aggregation rule for each of the 294 collision classes
+    status: NOT_SATISFIED
+  - id: P3
+    requirement: donor-level ATAC outcome definition frozen with its producer
+      script digest, and replayed from disk before any claim
+    status: NOT_SATISFIED
+  - id: P4
+    requirement: structural distinctness gate implemented and tested against
+      degenerate inputs
+    status: NOT_SATISFIED
+  - id: P5
+    requirement: acceptance thresholds and power statement frozen in a signed
+      record before the outcome is computed
+    status: NOT_SATISFIED
+  - id: P6
+    requirement: leakage register reviewed and each entry either cleared or
+      carried as a stated limitation
+    status: SATISFIED
+    evidence: docs/lane_d/LANE_D_LEAKAGE_AND_OVERLAP_REGISTER.md
+
+# ------------------------------------------------------------- prohibitions
+prohibitions:
+  - Stage75F TF-target edges must never be the outcome. They are RNA-derived
+    and the predictor is RNA-derived; that comparison is circular.
+  - No cell-level RNA-ATAC pairing may be constructed.
+  - No protected SEA-AD pathology, sealed confirmation outcome, terminal
+    masking result or D_shared artifact may be opened by this evaluation.
+  - No threshold may be adjusted after a failed comparison.
+  - The nearest gene may not be reported as the regulated target.

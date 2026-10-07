@@ -1,0 +1,526 @@
+{
+  "lane": "LANE_D_external_multiomics",
+  "artifact": "physical_asset_inventory",
+  "generated_utc": "2026-09-26T08:42:22.799696+00:00",
+  "execution_class": "RECONNAISSANCE_ONLY",
+  "biological_evaluation_status": "NOT_EXECUTED",
+  "governance_footer": "TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF",
+  "summary": {
+    "assets_total": 10,
+    "authenticated": 6,
+    "digest_established_here": 3,
+    "digest_not_computed": 1,
+    "absent": 0,
+    "mismatched": 0,
+    "total_bytes_on_disk": 49859486171,
+    "downloads_required": 0
+  },
+  "assets": [
+    {
+      "resource_id": "gse174367_snrna_matrix",
+      "relative_path": "data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+      "resource_class": "geo_primary",
+      "exists_locally": true,
+      "size_bytes": 273975534,
+      "digest_algorithm": "sha256",
+      "expected_digest": "6ba98a1af8772af08c8cdd5e5e63eebb0890daed48cac2e1b8961dcc67069b77",
+      "observed_digest": "6ba98a1af8772af08c8cdd5e5e63eebb0890daed48cac2e1b8961dcc67069b77",
+      "expectation_source": "stage72a_resource_inventory_v1.csv; stage38a_download_manifest_v1.csv",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5"
+    },
+    {
+      "resource_id": "gse174367_snrna_cell_meta",
+      "relative_path": "data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz",
+      "resource_class": "geo_primary",
+      "exists_locally": true,
+      "size_bytes": 435170,
+      "digest_algorithm": "sha256",
+      "expected_digest": "ab1a029deb43196e2bb1fea5907d838885750cfff3850c600c07588c7c7cdb2b",
+      "observed_digest": "ab1a029deb43196e2bb1fea5907d838885750cfff3850c600c07588c7c7cdb2b",
+      "expectation_source": "stage72a_resource_inventory_v1.csv; stage38a_download_manifest_v1.csv",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snRNA-seq_cell_meta.csv.gz"
+    },
+    {
+      "resource_id": "gse174367_snatac_matrix",
+      "relative_path": "data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+      "resource_class": "geo_primary",
+      "exists_locally": true,
+      "size_bytes": 360317403,
+      "digest_algorithm": "sha256",
+      "expected_digest": "ff7c46e755ec0e3fecb319c5b3dd9ac0ada318525746ebe7dddb8e2c0dcab87f",
+      "observed_digest": "ff7c46e755ec0e3fecb319c5b3dd9ac0ada318525746ebe7dddb8e2c0dcab87f",
+      "expectation_source": "stage72a_resource_inventory_v1.csv",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5"
+    },
+    {
+      "resource_id": "gse174367_snatac_cell_meta",
+      "relative_path": "data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz",
+      "resource_class": "geo_primary",
+      "exists_locally": true,
+      "size_bytes": 1066930,
+      "digest_algorithm": "sha256",
+      "expected_digest": "0657e92aa49eed953aae3b3c5f70aacebe86621c0a930356ec53ba0107c81767",
+      "observed_digest": "0657e92aa49eed953aae3b3c5f70aacebe86621c0a930356ec53ba0107c81767",
+      "expectation_source": "stage72a_resource_inventory_v1.csv",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snATAC-seq_cell_meta.csv.gz"
+    },
+    {
+      "resource_id": "gse174367_series_matrix",
+      "relative_path": "data/external/public_schema_audit/GSE174367/GSE174367_series_matrix.txt.gz",
+      "resource_class": "geo_metadata",
+      "exists_locally": true,
+      "size_bytes": 13280,
+      "digest_algorithm": "sha256",
+      "expected_digest": "e36488f44e30d0bdf48f5864b8cd091629203defecbb41d9e7fec721b5115928",
+      "observed_digest": "e36488f44e30d0bdf48f5864b8cd091629203defecbb41d9e7fec721b5115928",
+      "expectation_source": "stage38a_download_manifest_v1.csv",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/matrix/"
+    },
+    {
+      "resource_id": "gencode_v44_gtf",
+      "relative_path": "data/external_resources/stage75b/gencode.v44.annotation.gtf.gz",
+      "resource_class": "annotation",
+      "exists_locally": true,
+      "size_bytes": 49721965,
+      "digest_algorithm": "sha256",
+      "expected_digest": null,
+      "observed_digest": "01f817afed65feee863361b4baf30a95e722ee5c5d508ff77b04106ef7ba20d3",
+      "expectation_source": "stage75b_acquisition_manifest_v1.csv records size 49721965 only",
+      "authenticity_status": "PRESENT_DIGEST_ESTABLISHED_HERE",
+      "required_action": "NONE: vendor publishes no digest for this file; the digest recorded by this lane becomes the local reference",
+      "canonical_url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/gencode.v44.annotation.gtf.gz"
+    },
+    {
+      "resource_id": "hg38_chrom_sizes",
+      "relative_path": "data/external_resources/stage75b/hg38.chrom.sizes",
+      "resource_class": "annotation",
+      "exists_locally": true,
+      "size_bytes": 11672,
+      "digest_algorithm": "sha256",
+      "expected_digest": null,
+      "observed_digest": "e1d9152418038457a959e949d99c9caf7ae3e4f87cfbb4ffe7d8b9a54ba1202b",
+      "expectation_source": "stage75b_acquisition_manifest_v1.csv records size 11672 only",
+      "authenticity_status": "PRESENT_DIGEST_ESTABLISHED_HERE",
+      "required_action": "NONE: vendor publishes no digest for this file; the digest recorded by this lane becomes the local reference",
+      "canonical_url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes"
+    },
+    {
+      "resource_id": "cistarget_rankings",
+      "relative_path": "data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather",
+      "resource_class": "cistarget_database",
+      "exists_locally": true,
+      "size_bytes": 35192958114,
+      "digest_algorithm": "sha1",
+      "expected_digest": "1688a925f22d312769798258d990f13866bb4924",
+      "observed_digest": null,
+      "expectation_source": "vendor sha1sum.txt shipped by Aerts Lab alongside the database",
+      "authenticity_status": "PRESENT_DIGEST_NOT_COMPUTED",
+      "required_action": "VERIFY_DIGEST",
+      "canonical_url": "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
+    },
+    {
+      "resource_id": "cistarget_scores",
+      "relative_path": "data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather",
+      "resource_class": "cistarget_database",
+      "exists_locally": true,
+      "size_bytes": 13882267682,
+      "digest_algorithm": "sha1",
+      "expected_digest": "07b5e527d2ed082e081e439e68dffa77b5f6129c",
+      "observed_digest": "07b5e527d2ed082e081e439e68dffa77b5f6129c",
+      "expectation_source": "vendor sha1sum.txt shipped by Aerts Lab alongside the database",
+      "authenticity_status": "AUTHENTICATED",
+      "required_action": "NONE",
+      "canonical_url": "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.scores.feather"
+    },
+    {
+      "resource_id": "motif_annotation",
+      "relative_path": "data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl",
+      "resource_class": "motif_annotation",
+      "exists_locally": true,
+      "size_bytes": 98718421,
+      "digest_algorithm": "sha256",
+      "expected_digest": null,
+      "observed_digest": "81eb754118e27e854974301b1400fcf519489f8be5249239671fb288cb501c31",
+      "expectation_source": "stage75e_input_inventory_v1.json records size 98718421 only",
+      "authenticity_status": "PRESENT_DIGEST_ESTABLISHED_HERE",
+      "required_action": "NONE: vendor publishes no digest for this file; the digest recorded by this lane becomes the local reference",
+      "canonical_url": "https://resources.aertslab.org/cistarget/motif2tf/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+    }
+  ],
+  "duplicate_copy_scan": {
+    "search_roots": [
+      "D:/Jepa project/data",
+      "D:/Jepa project/outputs"
+    ],
+    "note": "Duplicate copies are searched for BEFORE any download is proposed, so no acquisition asks for bytes already on disk.",
+    "hits": [
+      {
+        "basename": "GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+        "path": "D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+        "size_bytes": 273975534,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "GSE174367_snRNA-seq_cell_meta.csv.gz",
+        "path": "D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz",
+        "size_bytes": 435170,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+        "path": "D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+        "size_bytes": 360317403,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "GSE174367_snATAC-seq_cell_meta.csv.gz",
+        "path": "D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz",
+        "size_bytes": 1066930,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "GSE174367_series_matrix.txt.gz",
+        "path": "D:/Jepa project/data/external/public_schema_audit/GSE174367/GSE174367_series_matrix.txt.gz",
+        "size_bytes": 13280,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "gencode.v44.annotation.gtf.gz",
+        "path": "D:/Jepa project/data/external_resources/stage75b/gencode.v44.annotation.gtf.gz",
+        "size_bytes": 49721965,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "hg38.chrom.sizes",
+        "path": "D:/Jepa project/data/external_resources/stage75b/hg38.chrom.sizes",
+        "size_bytes": 11672,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "hg38_screen_v10_clust.regions_vs_motifs.rankings.feather",
+        "path": "D:/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather",
+        "size_bytes": 35192958114,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "hg38_screen_v10_clust.regions_vs_motifs.scores.feather",
+        "path": "D:/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather",
+        "size_bytes": 13882267682,
+        "is_canonical_path": true
+      },
+      {
+        "basename": "motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl",
+        "path": "D:/Jepa project/data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl",
+        "size_bytes": 98718421,
+        "is_canonical_path": true
+      }
+    ]
+  },
+  "acquisition_plan": [],
+  "environment": {
+    "execution_substrate": "WSL2 + Docker on Windows",
+    "container_image": "scenicplus:1.0a2-container.1",
+    "dockerfile": "docker/scenicplus/Dockerfile",
+    "wsl_entrypoints": [
+      {
+        "script": "scripts/stage75d_create_scenicplus_env_wsl.sh",
+        "sha256": "154bd4c8830a751ec6ac0d7e35451f8bf206ebe11a509b139303dd45c2453f24"
+      },
+      {
+        "script": "scripts/stage75d_download_large_cistarget_resources_wsl.sh",
+        "sha256": "73c9ee8f52ee49c641a607f872394f64fd521d03772fc051900ba9b05afd0959"
+      },
+      {
+        "script": "scripts/stage75e_build_scenicplus_container_wsl.sh",
+        "sha256": "7d49408ef613da9292a663692105648fe7308dac39be1f2d8152f77cf6ebcf95"
+      },
+      {
+        "script": "scripts/stage75e_download_motif_annotation_wsl.sh",
+        "sha256": "30c8167f294a7b9f7ba7fb7b2339a908bcfb10b02fd931ff31be9782bc52de91"
+      },
+      {
+        "script": "scripts/stage75e_run_preflight_wsl.sh",
+        "sha256": "512ea4d2320015455fc6defe0088df782bfd620f25a370a16c5be669a2a401a8"
+      },
+      {
+        "script": "scripts/stage75e_run_pycistarget_smoke_wsl.sh",
+        "sha256": "5d36a3f9334ba0d665a583dc1936463284cf89fd8f9a8882ee2107b58a0b8d7c"
+      },
+      {
+        "script": "scripts/stage75f_run_cistarget_region_mapping_wsl.sh",
+        "sha256": "e0e5e83cf1791ca3950e8513df8919c55e1bffe64e8c1522624ee76eeb4aa164"
+      },
+      {
+        "script": "scripts/stage75f_run_integrated_regulatory_evidence_wsl.sh",
+        "sha256": "03711a8e053b7ffd9391b24a2f5036b43c6d733d2a8f8dc3006945bbb1605bf6"
+      },
+      {
+        "script": "scripts/stage75f_run_prepare_batches_wsl.sh",
+        "sha256": "b7f4f5ee21c130424fe32192087f11ceb52fe46fee4aefab7cdb7ea60f825a18"
+      },
+      {
+        "script": "scripts/stage75f_run_primary_motif_pilot_wsl.sh",
+        "sha256": "782db6308732d68de0847c56dda8b906e3106041cdd472b8cb8bbca41db46319"
+      },
+      {
+        "script": "scripts/stage75f_run_primary_tf_region_gene_evidence_wsl.sh",
+        "sha256": "868c5b1fed9568c71eb08b7e14cbc97c54f3693a2afd21ff667bdf5a8d88d75f"
+      },
+      {
+        "script": "scripts/stage75f_run_secondary_motif_pilot_wsl.sh",
+        "sha256": "80373dbb3506006bd43832cf480970698fc838275bd0690a3f03e0839d71be03"
+      },
+      {
+        "script": "scripts/stage75f_run_secondary_tf_region_gene_evidence_wsl.sh",
+        "sha256": "c1ee438ad8867308ac0d90a4f75de4a3abf50537a220390ed44502c2365ec338"
+      },
+      {
+        "script": "scripts/stage75f_run_stream_microglia_10x_wsl.sh",
+        "sha256": "ff4976a4327b39453128d5834a1ec162ade3573729cb9a573bc7d6a7103ddc48"
+      }
+    ],
+    "stage75f_scripts": [
+      {
+        "script": "scripts/stage75f_assemble_primary_tf_region_gene_evidence.py",
+        "sha256": "08d11241ed8daa08eee718452cca70a3ec0b11209b3a207003a672a85de762a1"
+      },
+      {
+        "script": "scripts/stage75f_assemble_secondary_tf_region_gene_evidence.py",
+        "sha256": "f39feef44eac23614c4ebeb33dd7b2ad2f9ded2d074bcb040608a0d4ce488be9"
+      },
+      {
+        "script": "scripts/stage75f_audit_cistarget_region_mapping.py",
+        "sha256": "fdc1959a657475e1c0ff706e7c18eb3be9388b0b131b6f77fd620145d85bfe5c"
+      },
+      {
+        "script": "scripts/stage75f_integrate_regulatory_evidence.py",
+        "sha256": "e63295f94355798280fdd9373722d6fa64026ec5fcb92206a4eb474703c9293b"
+      },
+      {
+        "script": "scripts/stage75f_prepare_out_of_core_batches.py",
+        "sha256": "12647ab982454499107ec66f4f7441f94c521d7d6762bdc7bea5aac75b214ee7"
+      },
+      {
+        "script": "scripts/stage75f_run_primary_motif_pilot.py",
+        "sha256": "75f9d3c10f9dd644b0da73c54d0a5ac24565abf37d087d781bbd1542aae70672"
+      },
+      {
+        "script": "scripts/stage75f_run_secondary_motif_pilot.py",
+        "sha256": "ef99465a0d29f2e90c0168eb45b6b2c0a663ccf421b74a46c9fb0d99de06cfd5"
+      },
+      {
+        "script": "scripts/stage75f_stream_microglia_10x_h5.py",
+        "sha256": "c101e36ab2982ef086e1a392b6638372352a606a433ba870217d490325cc1699"
+      },
+      {
+        "script": "scripts/run_stage75c_peak_gene_preflight_annotation_v1.py",
+        "sha256": "334bb08184d56b8dda2824ea61283e7d61e1317fea0c7c594151ed34fbcf75a0"
+      }
+    ],
+    "python_runtime": {
+      "python": "3.9.7",
+      "numpy": "1.24.2",
+      "pandas": "1.5.3",
+      "h5py": "3.2.1",
+      "note": "This is the LANE D audit runtime, which is NOT the Stage75F execution runtime; Stage75F ran inside the scenicplus container above."
+    },
+    "dockerfile_sha256": "7eb07858f66ce0150b478b9d0d9a0498deea634c063f0d29b34ae4cdb077fce8",
+    "dockerfile_lines": [
+      "FROM mambaorg/micromamba:latest",
+      "",
+      "LABEL org.opencontainers.image.title=\"SCENIC+ v1.0a2 runtime\"",
+      "LABEL org.opencontainers.image.description=\"Pinned SCENIC+ v1.0a2 runtime with pycisTopic, pycisTarget, pySCENIC, MACS2, MEME, MALLET, and Snakemake.\"",
+      "LABEL org.opencontainers.image.source=\"https://github.com/aertslab/scenicplus\"",
+      "",
+      "USER root",
+      "",
+      "RUN apt-get update && apt-get install -y --no-install-recommends \\",
+      "    build-essential \\",
+      "    ca-certificates \\",
+      "    curl \\",
+      "    gfortran \\",
+      "    git \\",
+      "    libcurl4-openssl-dev \\",
+      "    libfftw3-dev \\",
+      "    libgl1 \\",
+      "    libhdf5-dev \\",
+      "    libopenblas-dev \\",
+      "    libsm6 \\",
+      "    libxext6 \\",
+      "    libxml2-dev \\",
+      "    libxrender1 \\",
+      "    libxslt1-dev \\",
+      "    default-jdk \\",
+      "    pkg-config \\",
+      "    procps \\",
+      "    swig \\",
+      "    unzip \\",
+      "    wget \\",
+      "    zlib1g-dev \\",
+      "    && rm -rf /var/lib/apt/lists/*",
+      "",
+      "USER $MAMBA_USER",
+      "",
+      "RUN micromamba install -y -n base \\",
+      "    -c conda-forge \\",
+      "    -c bioconda \\",
+      "    bedtools \\",
+      "    cython=0.29.37 \\",
+      "    datrie=0.8.2 \\",
+      "    macs2=2.2.9.1 \\",
+      "    meme=5.5.9 \\",
+      "    numpy=1.26.4 \\",
+      "    pip=24.3.1 \\",
+      "    python=3.11.8 \\",
+      "    python-flatbuffers \\",
+      "    samtools \\",
+      "    \"setuptools<81\" \\",
+      "    setuptools-scm \\",
+      "    wheel \\",
+      "    && micromamba clean --all --yes",
+      "",
+      "USER root",
+      "",
+      "RUN ln -s /opt/conda/bin/python /usr/local/bin/python3",
+      "",
+      "ARG MALLET_VERSION=2.1.0",
+      "",
+      "RUN wget -q -O /tmp/mallet.zip \\",
+      "      \"https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip\" \\",
+      "    && unzip -q /tmp/mallet.zip -d /opt \\",
+      "    && ln -s /opt/mallet-${MALLET_VERSION} /opt/mallet \\",
+      "    && rm /tmp/mallet.zip \\",
+      "    && test -x /opt/mallet/bin/mallet",
+      "",
+      "ENV MALLET_HOME=/opt/mallet",
+      "ENV PATH=\"/opt/mallet/bin:${PATH}\"",
+      "",
+      "ARG CREATE_CISTARGET_DATABASES_REF=master",
+      "",
+      "RUN git clone \\",
+      "      --depth 1 \\",
+      "      --branch ${CREATE_CISTARGET_DATABASES_REF} \\",
+      "      https://github.com/aertslab/create_cisTarget_databases.git \\",
+      "      /opt/create_cisTarget_databases \\",
+      "    && wget -q -O /usr/local/bin/cbust \\",
+      "      https://resources.aertslab.org/cistarget/programs/cbust \\",
+      "    && wget -q -O /usr/local/bin/liftOver \\",
+      "      https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver \\",
+      "    && wget -q -O /usr/local/bin/bigWigAverageOverBed \\",
+      "      https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed \\",
+      "    && chmod a+x \\",
+      "      /usr/local/bin/cbust \\",
+      "      /usr/local/bin/liftOver \\",
+      "      /usr/local/bin/bigWigAverageOverBed \\",
+      "    && chmod a+x \\",
+      "      /opt/create_cisTarget_databases/*.py \\",
+      "      /opt/create_cisTarget_databases/*.sh",
+      "",
+      "ENV CREATE_CISTARGET_DATABASES_DIR=/opt/create_cisTarget_databases",
+      "ENV PATH=\"/opt/create_cisTarget_databases:${PATH}\"",
+      "",
+      "USER $MAMBA_USER",
+      "",
+      "ARG SCENICPLUS_REF=v1.0a2",
+      "",
+      "RUN git clone \\",
+      "      --depth 1 \\",
+      "      --branch ${SCENICPLUS_REF} \\",
+      "      https://github.com/aertslab/scenicplus.git \\",
+      "      /tmp/scenicplus \\",
+      "    && micromamba run -n base python -c \\",
+      "      \"import setuptools, pkg_resources; print('setuptools', setuptools.__version__); print('pkg_resources OK')\" \\",
+      "    && micromamba run -n base python -m pip install \\",
+      "      --no-cache-dir \\",
+      "      pysam==0.22.0 \\",
+      "    && micromamba run -n base python -m pip install \\",
+      "      --no-build-isolation \\",
+      "      --no-cache-dir \\",
+      "      pybedtools==0.9.1 \\",
+      "    && micromamba run -n base python -m pip install \\",
+      "      --no-cache-dir \\",
+      "      packaging==24.0 \\",
+      "      hatchling==1.21.1 \\",
+      "      poetry-core==1.0.8 \\",
+      "    && micromamba run -n base python -m pip install \\",
+      "      --no-cache-dir \\",
+      "      --no-deps \\",
+      "      poetry==1.1.15 \\",
+      "    && micromamba run -n base python -m pip install \\",
+      "      --no-build-isolation \\",
+      "      --no-cache-dir \\",
+      "      /tmp/scenicplus \\",
+      "    && micromamba run -n base python -m pip uninstall -y \\",
+      "      poetry \\",
+      "      poetry-core \\",
+      "      hatchling \\",
+      "    && rm -rf /tmp/scenicplus",
+      "",
+      "RUN micromamba run -n base python - <<'PY'",
+      "import anndata",
+      "import pybedtools",
+      "import pycisTopic",
+      "import pycistarget",
+      "import pyscenic",
+      "import pysam",
+      "import scanpy",
+      "import scenicplus",
+      "import setuptools",
+      "",
+      "print(\"setuptools:\", setuptools.__version__)",
+      "print(\"scenicplus:\", getattr(scenicplus, \"__version__\", \"version unavailable\"))",
+      "print(\"pybedtools:\", pybedtools.__version__)",
+      "print(\"pysam:\", pysam.__version__)",
+      "print(\"SCENIC+ container import test passed\")",
+      "PY",
+      "",
+      "RUN micromamba run -n base python -m pip check",
+      "",
+      "RUN micromamba run -n base bedtools --version \\",
+      "    && micromamba run -n base macs2 --version \\",
+      "    && micromamba run -n base snakemake --version \\",
+      "    && micromamba run -n base scenicplus --help >/dev/null \\",
+      "    && test -x /opt/mallet/bin/mallet \\",
+      "    && ( \\",
+      "         /opt/mallet/bin/mallet train-topics --help TRUE \\",
+      "           >/tmp/mallet-train-topics-help.txt 2>&1 \\",
+      "         || true \\",
+      "       ) \\",
+      "    && grep -q -- \"--num-topics\" /tmp/mallet-train-topics-help.txt \\",
+      "    && command -v cbust >/dev/null \\",
+      "    && (cbust --help >/tmp/cbust-help.txt 2>&1 || true) \\",
+      "    && command -v create_cistarget_motif_databases.py >/dev/null \\",
+      "    && create_cistarget_motif_databases.py --help >/dev/null \\",
+      "    && command -v liftOver >/dev/null \\",
+      "    && (liftOver >/tmp/liftover-help.txt 2>&1 || true) \\",
+      "    && grep -q \"liftOver\" /tmp/liftover-help.txt \\",
+      "    && command -v bigWigAverageOverBed >/dev/null \\",
+      "    && ( \\",
+      "         bigWigAverageOverBed \\",
+      "           >/tmp/bigwig-average-over-bed-help.txt 2>&1 \\",
+      "         || true \\",
+      "       ) \\",
+      "    && grep -q \"bigWigAverageOverBed\" \\",
+      "         /tmp/bigwig-average-over-bed-help.txt \\",
+      "    && rm -f \\",
+      "         /tmp/mallet-train-topics-help.txt \\",
+      "         /tmp/cbust-help.txt \\",
+      "         /tmp/liftover-help.txt \\",
+      "         /tmp/bigwig-average-over-bed-help.txt",
+      "",
+      "WORKDIR /workspace",
+      "",
+      "CMD [\"/bin/bash\"]"
+    ]
+  }
+}

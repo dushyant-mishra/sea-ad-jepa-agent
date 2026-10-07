@@ -1,0 +1,182 @@
+{
+  "lane": "LANE_D_external_multiomics",
+  "artifact": "peak_to_gene_full_universe_map",
+  "generated_utc": "2026-09-26T08:44:35.414587+00:00",
+  "execution_class": "RECONNAISSANCE_ONLY",
+  "biological_evaluation_status": "NOT_EXECUTED",
+  "governance_footer": "TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF",
+  "coordinate_conventions": {
+    "declared_genome": "GRCh38",
+    "assembly": "hg38 / GRCh38",
+    "chromosome_naming": "UCSC chr-prefixed",
+    "peak_id_format": "chrN:start-end",
+    "peak_coordinate_system": "CellRanger-ATAC BED-like: 0-based half-open start, end exclusive",
+    "gtf_coordinate_system": "GENCODE GTF is 1-based inclusive",
+    "reconciliation_applied": "GTF start converted to 0-based via col4 - 1",
+    "tss_definition": "gene-level, strand-aware: TSS = gene start on + strand, gene end on - strand",
+    "annotation_release": "GENCODE v44",
+    "gencode_genes": 62700,
+    "gencode_protein_coding": 20046,
+    "peaks_parseable": 219070,
+    "peaks_unparseable": 0,
+    "peak_contigs": 24,
+    "contigs_absent_from_gencode": []
+  },
+  "peak_universe": {
+    "n_peaks": 219070,
+    "n_barcodes_full_matrix": 143401,
+    "microglial_matrix": {
+      "status": "PRESENT",
+      "path": "D:/Jepa project\\data/processed/stage75f/gse174367_mg_snatac.csc.h5",
+      "subset_shape": [
+        219070,
+        12232
+      ],
+      "n_microglial_nuclei": 12232,
+      "stored_nonzeros": 17891090,
+      "source_attrs": {
+        "backend": "hdf5",
+        "format": "stage75f_10x_csc_hdf5_v1",
+        "max_selected_column_nnz": 11137,
+        "nnz": 17891090,
+        "source_group": "matrix",
+        "source_path": "/workspace/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+        "source_shape": "[219070, 143401]",
+        "subset_shape": "[219070, 12232]"
+      },
+      "definition": "det[p] = number of microglial nuclei with at least one fragment in peak p. Derived from ATAC fragments only; no RNA value enters this quantity."
+    },
+    "peaks_detected_in_at_least_one_microglial_nucleus": 210137,
+    "peaks_never_detected_in_microglia": 8933,
+    "microglial_detection_fraction_quantiles": {
+      "0.5": 0.001308,
+      "0.9": 0.017168,
+      "0.99": 0.084532,
+      "1.0": 0.308535
+    }
+  },
+  "mapping_counts": {
+    "peaks_with_promoter_tss_within_2kb": 27133,
+    "peaks_with_tss_within_100kb": 199488,
+    "peaks_with_no_tss_within_100kb": 19582,
+    "peaks_with_tied_nearest_tss": 210,
+    "max_nearest_tss_tie_multiplicity": 2,
+    "peaks_with_multiple_tss_in_promoter_window": 6099,
+    "peaks_with_multiple_tss_in_100kb": 169076,
+    "median_genes_within_100kb": 3,
+    "max_genes_within_100kb": 90,
+    "evidence_class_counts": {
+      "GENOMIC_PROXIMITY_PROVISIONAL": 165095,
+      "DIRECT_ATAC_ACCESSIBILITY_AT_PROMOTER": 26615,
+      "NO_GENE_WITHIN_100KB_UNASSIGNABLE": 19582,
+      "GENOMIC_PROXIMITY_NOT_DETECTED_IN_MICROGLIA": 7260,
+      "PROMOTER_OVERLAP_NOT_DETECTED_IN_MICROGLIA": 518
+    }
+  },
+  "gene_counts": {
+    "gencode_genes_total": 61228,
+    "genes_with_accessible_promoter_in_microglia": 29670,
+    "genes_with_promoter_peak_not_detected_in_microglia": 285,
+    "genes_with_distal_candidate_only": 28436,
+    "genes_with_no_usable_atac_evidence": 2837,
+    "gene_evidence_class_counts": {
+      "ACCESSIBLE_PROMOTER_IN_MICROGLIA": 29670,
+      "DISTAL_CANDIDATE_ONLY_PROVISIONAL": 28436,
+      "NO_USABLE_ATAC_EVIDENCE": 2837,
+      "PROMOTER_PEAK_PRESENT_NOT_DETECTED_IN_MICROGLIA": 285
+    }
+  },
+  "evidence_ladder": {
+    "DIRECT_ATAC_ACCESSIBILITY": {
+      "available": true,
+      "definition": "peak detected in >=1 microglial nucleus and overlapping a TSS within 2 kb",
+      "strength": "measured; the ATAC fragments are the measurement"
+    },
+    "NEAREST_GENE_ANNOTATION": {
+      "available": true,
+      "strength": "annotation convention, NOT evidence",
+      "caution": "the nearest gene is never the established target"
+    },
+    "GENOMIC_PROXIMITY": {
+      "available": true,
+      "strength": "weak; many-to-many",
+      "median_candidate_genes_per_peak": 3
+    },
+    "COACCESSIBILITY": {
+      "status": "NOT_AVAILABLE",
+      "searched": [
+        "Cicero",
+        "pycisTopic",
+        "SCENIC+ eRegulon",
+        "peak-peak coaccessibility",
+        "ArchR"
+      ],
+      "reason": "No coaccessibility artifact exists in the repository. Stage75C/E/F record no_scenicplus_run=True and no pycisTopic object was ever built, so peak-peak covariation links were never computed.",
+      "consequence": "Distal peak-to-gene assignment therefore rests on proximity alone and stays PROVISIONAL."
+    },
+    "INDEPENDENT_ENHANCER_GENE_LINK": {
+      "status": "NOT_AVAILABLE",
+      "searched": [
+        "ABC model",
+        "Hi-C / HiChIP loops",
+        "brain eQTL",
+        "CRISPRi enhancer screens"
+      ],
+      "reason": "No externally validated enhancer-gene link set is present. Without one, no peak-gene assignment in this dataset can be called validated."
+    }
+  },
+  "motif_support": {
+    "status": "RECOVERED",
+    "rows": 13195,
+    "distinct_motifs": 183,
+    "distinct_tfs": 10,
+    "columns": [
+      "batch_id",
+      "tf",
+      "MotifID",
+      "mapped_db_region",
+      "database_rank",
+      "leading_edge_weight",
+      "Rank_at_max",
+      "query_region",
+      "query_name",
+      "overlap_bp",
+      "overlap_fraction_query",
+      "overlap_fraction_db",
+      "exact_match"
+    ],
+    "scope": "Motif support was screened only on the 286 cisTarget SCREEN regions reachable from 91 candidate peaks, i.e. 0.0415% of the 219,070-peak universe. It is NOT genome-wide motif evidence."
+  },
+  "reproducibility": {
+    "independent_implementation": {
+      "sample_size": 1500,
+      "distance_agreement": 1500,
+      "gene_agreement": 1500,
+      "agreement_is_exact": true,
+      "note": "A second implementation written without the vectorised code path reproduces the nearest-TSS distance. Agreement between two independent routines is the reproducibility evidence."
+    },
+    "coordinate_perturbation_control": {
+      "shift_bp": 50000,
+      "sample_size": 20000,
+      "peaks_whose_nearest_gene_changed": 12761,
+      "fraction_nearest_gene_changed": 0.63805,
+      "peaks_whose_tss_distance_changed": 19998,
+      "fraction_tss_distance_changed": 0.9999,
+      "control_verdict": "POSITION_SENSITIVE_PASS",
+      "note": "A 50 kb rigid shift must move almost every TSS distance and must reassign a substantial minority of nearest genes. A mapping that survived this shift unchanged would not be measuring position."
+    },
+    "stage75c_frozen_table_authentication": {
+      "frozen_rows": 219070,
+      "joined_rows": 219070,
+      "tss_distance_reproduced": 219070,
+      "tss_distance_reproduction_fraction": 1.0,
+      "gene_symbol_reproduced_case_insensitive": 218975,
+      "gene_symbol_reproduced_case_sensitive": 217621,
+      "differences_that_are_symbol_case_only": 1354,
+      "frozen_gene_is_among_tied_nearest": 219070,
+      "frozen_gene_among_tied_fraction": 1.0,
+      "verdict": "REPRODUCED",
+      "note": "Stage75C stored gene symbols upper-cased. After case normalisation the frozen assignment is reproduced exactly; the residual difference is tie-breaking among genes at an identical TSS distance, not a different mapping."
+    }
+  }
+}
