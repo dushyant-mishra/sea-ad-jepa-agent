@@ -1,4 +1,6 @@
 import importlib
+import subprocess
+import sys
 
 from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import CANONICAL_RUNTIME_SOURCE_FILES
 
@@ -24,3 +26,14 @@ def test_constant_momentum_authority_route_is_not_canonical():
     )
     assert callable(getattr(proof, "issue_presentation_ema_bound_authority_from_checkpoint", None))
     assert callable(getattr(proof, "run_presentation_ema_bound_guarded_reference_update", None))
+
+
+def test_private_ema_implementation_cannot_reopen_retired_dictionary_persistence_in_fresh_process():
+    code = (
+        "import sea_ad_jepa.v5._ema_bound_runtime_proof_impl_v1 as m; "
+        "raise SystemExit(1 if hasattr(m, 'persist_and_verify_presentation_ema_checkpoint') else 0)"
+    )
+    result = subprocess.run([sys.executable, "-c", code], check=False)
+    assert result.returncode == 0, (
+        "fresh direct import of private EMA implementation reopens the retired dictionary persistence route"
+    )
