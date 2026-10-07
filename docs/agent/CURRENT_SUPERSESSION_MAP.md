@@ -67,7 +67,10 @@ The remaining cross-lane contract is:
 - #223 mutation proof may upgrade only when it verifies the exact bound runtime provenance;
 - q-safety must remain policy-only until adapter+runtime execution proves the required transformations;
 - first joined execution is bounded synthetic rehearsal only;
-- no real-RNA execution, target/representation/estimand selection, TEST, Morabito, 500K, Stage 4 or production training is authorized.
+- real-RNA execution remains NOT AUTHORIZED;
+- target/representation/estimand selection remains UNSET;
+- TEST and Morabito remain protected;
+- 500K, Stage 4, and production training remain NOT AUTHORIZED.
 
 ## Runtime donor supersession
 
