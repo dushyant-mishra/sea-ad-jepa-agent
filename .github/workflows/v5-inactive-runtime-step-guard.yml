@@ -21,6 +21,7 @@ on:
       - 'tests/test_v5_ema_canonicalization_red.py'
       - 'tests/test_v5_ema_completed_update_proof_red.py'
       - 'tests/test_v5_ema_presentation_cursor_red.py'
+      - 'tests/test_v5_ema_persisted_continuation_red.py'
       - '.github/workflows/v5-inactive-runtime-step-guard.yml'
 
 jobs:
@@ -50,4 +51,5 @@ jobs:
             tests/test_v5_ema_presentation_successor_red.py \
             tests/test_v5_ema_canonicalization_red.py \
             tests/test_v5_ema_completed_update_proof_red.py \
-            tests/test_v5_ema_presentation_cursor_red.py
+            tests/test_v5_ema_presentation_cursor_red.py \
+            tests/test_v5_ema_persisted_continuation_red.py
