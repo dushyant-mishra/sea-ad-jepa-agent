@@ -1,4 +1,5 @@
 import inspect
+import json
 from dataclasses import replace
 
 import pytest
@@ -44,6 +45,7 @@ def test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload(tmp
         path,
     )
 
+    print("V77_BOUNDED_MUTATION_RECEIPT=" + json.dumps(receipt, sort_keys=True))
     assert receipt["verdict"] == v77_bounded_mutation.SUCCESS_VERDICT
     assert receipt["optimizer_step_before"] == 0
     assert receipt["optimizer_step_after"] == 1
