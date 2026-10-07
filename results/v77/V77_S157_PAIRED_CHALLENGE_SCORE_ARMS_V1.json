@@ -1,0 +1,1012 @@
+{
+  "schema": "V77_S157_PAIRED_CHALLENGE_SCORE_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "mode": "ZERO_UPDATE; diagnostic PCA and linear readouts only, not a representation candidate",
+  "preregistration": {
+    "path": "results/v77/V77_S157_PAIRED_CHALLENGE_PREREGISTRATION_V1.json",
+    "sha256": "628d8be0f50b94ee4d6974161f25bd58ecba5ea5c2b38327f7dd3438cd47ed55"
+  },
+  "build": {
+    "path": "results/v77/V77_S157_CHALLENGE_WORLDS_BUILD_V1.json",
+    "sha256": "0c31195edea7ab8278079d60e37f9a79ab25675ff895376275b0fff2d19e6ae9"
+  },
+  "realization": "seed 7302, 2,000 cells, DEVELOPMENT_CALIBRATION",
+  "arms_scored": [
+    "ARM1",
+    "ARM2",
+    "ARM3",
+    "ARM2_DEPTH_ONLY",
+    "ARM2_SUPPORT_ONLY"
+  ],
+  "red_checks": {
+    "RED_1_exact_twin_byte_identical": true,
+    "RED_1_shown_able_to_fail_by_one_count": true,
+    "RED_2_exact_twin_scored_identically": true,
+    "RED_2_bitwise_equal": true,
+    "RED_2_max_abs_difference": 0.0,
+    "RED_2_tolerance": 1e-09,
+    "RED_3_schema_identical": true,
+    "RED_4_unblinding_before_freezing_refused": true
+  },
+  "model_facing_digests": {
+    "NULL": {
+      "model": "99d0588d7cd64e1774538b0d7f66b0a6a0ed2e4575cdf73a270d42f41801bcce",
+      "operator_context": "e3dc552c9d817a610b589c55618832e731761477b20456de2e542443ba05968c",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "a0207dca40471709ed1320920f0412f3fa5adb53ae54aed2ecaa5c48b4bab3b0"
+    },
+    "BIO": {
+      "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+      "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    },
+    "TWIN_EXACT": {
+      "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+      "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    },
+    "TWIN_OPERATOR": {
+      "model": "9ca19c541772d120008ded8fd7d8057ce032490642991f12a98c2001d6a17576",
+      "operator_context": "550d9e36cee4a46a2b78ee6ec8f49a1386805e24832beb7c178188dcad67e573",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "5b676e8877c362505d9e33b26c2dc33fba61a8ad7e1d2585da2a51f12e369b2d"
+    }
+  },
+  "frozen": {
+    "frozen_feature_digest": "0ab1ad2b07c9960691be958e757cbdfcc34a3de5acfc9f3dfbec8cfcd70dbecd",
+    "sequence": "FROZEN_BEFORE_ANY_ORACLE_ACCESS"
+  },
+  "oracle_spec_digests": {
+    "NULL": null,
+    "BIO": "55fcb22489726e6889f95200641e0967c741d66ade7272cb5573e9ee070b6311",
+    "TWIN_EXACT": "4cf0dc0685fd18dabacef02c0f10fff609100e872dbd167ed71c53d3680629c3",
+    "TWIN_OPERATOR": "a2d2c9862778173b137e0459b639df649a7a31f5de5c377c4eaefb284d69588a"
+  },
+  "design_adequacy": {
+    "rule": "BIO, ARM1, MODULE test R2 >= 0.3",
+    "pass_": true
+  },
+  "exact_twin_verdict": "NON_IDENTIFIABLE_BY_DESIGN",
+  "operator_twin_separation": {
+    "ARM1": "NOT_APPLICABLE_NO_CONTEXT",
+    "ARM2": "NOT_SEPARATED",
+    "ARM3": "SEPARABLE",
+    "ARM2_DEPTH_ONLY": "NOT_SEPARATED",
+    "ARM2_SUPPORT_ONLY": "NOT_SEPARATED"
+  },
+  "run_verdict": "SCORED",
+  "results": {
+    "NULL": {
+      "kind": "NULL",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.0008562617800997874,
+              "ci95": [
+                -0.006778519612283433,
+                8.034258640642626e-05
+              ]
+            },
+            "PCS": {
+              "r2": -0.02563428195385109,
+              "ci95": [
+                -0.04621242488960926,
+                -0.009077132798814742
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.004075164918496688,
+              "ci95": [
+                -0.010921190226492971,
+                -0.0003132271245069923
+              ]
+            },
+            "PCS": {
+              "r2": -0.025535895358047123,
+              "ci95": [
+                -0.04939148609638155,
+                -0.0074971116417737
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        },
+        "ARM2": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.00043117770776790465,
+              "ci95": [
+                -0.00596713607823267,
+                0.0007785954256215256
+              ]
+            },
+            "PCS": {
+              "r2": -0.026471039204967628,
+              "ci95": [
+                -0.04910364908313838,
+                -0.008807619148773146
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.0011741036469674615,
+              "ci95": [
+                -0.006547721696321112,
+                0.002643046912322585
+              ]
+            },
+            "PCS": {
+              "r2": -0.014002712295061226,
+              "ci95": [
+                -0.03839736077614759,
+                0.004688436931404359
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.5160520007427539,
+            "ci95": [
+              0.4547087587456639,
+              0.5544437095573997
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.03135759943992484,
+            "operators_scored": 15
+          }
+        },
+        "ARM3": {
+          "status": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.0007874909678386999,
+              "ci95": [
+                -0.006646629202991121,
+                1.807197714231161e-05
+              ]
+            },
+            "PCS": {
+              "r2": -0.024876548831340717,
+              "ci95": [
+                -0.04485576209757011,
+                -0.0067486697730775
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.001577893406571107,
+              "ci95": [
+                -0.0055876117200992165,
+                -0.00042135177769014827
+              ]
+            },
+            "PCS": {
+              "r2": -0.01377783749480499,
+              "ci95": [
+                -0.02971326689502845,
+                -0.001400163172211015
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.035128691732754125,
+            "ci95": [
+              -0.007494667187823021,
+              0.07591123577939715
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.9995534378789349,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_DEPTH_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.0006989845087130853,
+              "ci95": [
+                -0.0065326293270494586,
+                -9.68052904314341e-06
+              ]
+            },
+            "PCS": {
+              "r2": -0.026946842589956832,
+              "ci95": [
+                -0.04408898109179128,
+                -0.011826636400263364
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.0017643545792003223,
+              "ci95": [
+                -0.00777419943927477,
+                0.002720932901432822
+              ]
+            },
+            "PCS": {
+              "r2": -0.02347938751136458,
+              "ci95": [
+                -0.04755339052109333,
+                -0.005562725510368787
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.5034966638138625,
+            "ci95": [
+              0.4479437140391089,
+              0.5427619977855428
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.004036878010115082,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_SUPPORT_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.0007579287533623358,
+              "ci95": [
+                -0.006553527658591666,
+                5.407569221193017e-05
+              ]
+            },
+            "PCS": {
+              "r2": -0.025175508899373256,
+              "ci95": [
+                -0.04826107690081831,
+                -0.00664619821648759
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.003933410809828786,
+              "ci95": [
+                -0.010758024778003639,
+                -0.00029645105297630925
+              ]
+            },
+            "PCS": {
+              "r2": -0.01653367397192662,
+              "ci95": [
+                -0.04084627436711602,
+                0.0035128215936990996
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -0.009189798268985028,
+            "ci95": [
+              -0.025377398196206113,
+              0.0005987930199135145
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.028209175438599375,
+            "operators_scored": 15
+          }
+        }
+      },
+      "support_count_identifies_operator": 0.956
+    },
+    "BIO": {
+      "kind": "BIO",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8528793323771284,
+              "ci95": [
+                0.8358940275500433,
+                0.866025248086994
+              ]
+            },
+            "PCS": {
+              "r2": 0.7242828739745162,
+              "ci95": [
+                0.6702410268848893,
+                0.7635762010535356
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29094628042935855,
+              "ci95": [
+                0.2519615139408747,
+                0.3255490701437039
+              ]
+            },
+            "PCS": {
+              "r2": 0.19930625658021173,
+              "ci95": [
+                0.15563401662184442,
+                0.23475207624539074
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        },
+        "ARM2": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8889194543946606,
+              "ci95": [
+                0.8775676539967356,
+                0.8985315338193378
+              ]
+            },
+            "PCS": {
+              "r2": 0.7207471977855266,
+              "ci95": [
+                0.6631845702272575,
+                0.7601577985639296
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29503091563730555,
+              "ci95": [
+                0.25145701875693083,
+                0.33146328523952845
+              ]
+            },
+            "PCS": {
+              "r2": 0.20674898383153295,
+              "ci95": [
+                0.1639796237822094,
+                0.2411099241461649
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.042450621273367184,
+            "ci95": [
+              0.0176879650985417,
+              0.06341998348399329
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.03135794668487927,
+            "operators_scored": 15
+          }
+        },
+        "ARM3": {
+          "status": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8241735610483348,
+              "ci95": [
+                0.7990381561188195,
+                0.8423307003383385
+              ]
+            },
+            "PCS": {
+              "r2": 0.6856769682180814,
+              "ci95": [
+                0.6240765354188667,
+                0.7301746658974804
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.24151517714634974,
+              "ci95": [
+                0.19931317884444638,
+                0.2780483327670842
+              ]
+            },
+            "PCS": {
+              "r2": 0.15010280860751646,
+              "ci95": [
+                0.10703228472054656,
+                0.179398554981649
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -0.04304073853877233,
+            "ci95": [
+              -0.07019191821898749,
+              -0.008593930106484252
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.9995534378789349,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_DEPTH_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8897390040016816,
+              "ci95": [
+                0.8784019616602404,
+                0.8993912603560028
+              ]
+            },
+            "PCS": {
+              "r2": 0.7248725344002379,
+              "ci95": [
+                0.6714011320903053,
+                0.7634563657198479
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.2953606188426252,
+              "ci95": [
+                0.25173891619821565,
+                0.33140015290571
+              ]
+            },
+            "PCS": {
+              "r2": 0.20058789357672613,
+              "ci95": [
+                0.15442706001671858,
+                0.2355134985103202
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.044476199581451104,
+            "ci95": [
+              0.01954610293537105,
+              0.06563501546789849
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.004038119025767968,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_SUPPORT_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8510944296372471,
+              "ci95": [
+                0.8338300361357519,
+                0.8643620361371387
+              ]
+            },
+            "PCS": {
+              "r2": 0.720167787052133,
+              "ci95": [
+                0.6602817373442132,
+                0.7599118210729753
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.28996450326703127,
+              "ci95": [
+                0.2515768549288374,
+                0.3251382548695399
+              ]
+            },
+            "PCS": {
+              "r2": 0.2050943533135705,
+              "ci95": [
+                0.16379070629887432,
+                0.2408050123466407
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -0.008432942338825633,
+            "ci95": [
+              -0.017925219262233148,
+              -0.0030826710535583834
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.028209175438599375,
+            "operators_scored": 15
+          }
+        }
+      },
+      "support_count_identifies_operator": 0.956
+    },
+    "TWIN_EXACT": {
+      "kind": "TWIN_EXACT",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8528793323771284,
+              "ci95": [
+                0.8358940275500433,
+                0.866025248086994
+              ]
+            },
+            "PCS": {
+              "r2": 0.7242828739745162,
+              "ci95": [
+                0.6702410268848893,
+                0.7635762010535356
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29094628042935855,
+              "ci95": [
+                0.2519615139408747,
+                0.3255490701437039
+              ]
+            },
+            "PCS": {
+              "r2": 0.19930625658021173,
+              "ci95": [
+                0.15563401662184442,
+                0.23475207624539074
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        },
+        "ARM2": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8889194543946606,
+              "ci95": [
+                0.8775676539967356,
+                0.8985315338193378
+              ]
+            },
+            "PCS": {
+              "r2": 0.7207471977855266,
+              "ci95": [
+                0.6631845702272575,
+                0.7601577985639296
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29503091563730555,
+              "ci95": [
+                0.25145701875693083,
+                0.33146328523952845
+              ]
+            },
+            "PCS": {
+              "r2": 0.20674898383153295,
+              "ci95": [
+                0.1639796237822094,
+                0.2411099241461649
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.042450621273367184,
+            "ci95": [
+              0.0176879650985417,
+              0.06341998348399329
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.03135794668487927,
+            "operators_scored": 15
+          }
+        },
+        "ARM3": {
+          "status": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8241735610483348,
+              "ci95": [
+                0.7990381561188195,
+                0.8423307003383385
+              ]
+            },
+            "PCS": {
+              "r2": 0.6856769682180814,
+              "ci95": [
+                0.6240765354188667,
+                0.7301746658974804
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.24151517714634974,
+              "ci95": [
+                0.19931317884444638,
+                0.2780483327670842
+              ]
+            },
+            "PCS": {
+              "r2": 0.15010280860751646,
+              "ci95": [
+                0.10703228472054656,
+                0.179398554981649
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -0.04304073853877233,
+            "ci95": [
+              -0.07019191821898749,
+              -0.008593930106484252
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.9995534378789349,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_DEPTH_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8897390040016816,
+              "ci95": [
+                0.8784019616602404,
+                0.8993912603560028
+              ]
+            },
+            "PCS": {
+              "r2": 0.7248725344002379,
+              "ci95": [
+                0.6714011320903053,
+                0.7634563657198479
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.2953606188426252,
+              "ci95": [
+                0.25173891619821565,
+                0.33140015290571
+              ]
+            },
+            "PCS": {
+              "r2": 0.20058789357672613,
+              "ci95": [
+                0.15442706001671858,
+                0.2355134985103202
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.044476199581451104,
+            "ci95": [
+              0.01954610293537105,
+              0.06563501546789849
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.004038119025767968,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_SUPPORT_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8510944296372471,
+              "ci95": [
+                0.8338300361357519,
+                0.8643620361371387
+              ]
+            },
+            "PCS": {
+              "r2": 0.720167787052133,
+              "ci95": [
+                0.6602817373442132,
+                0.7599118210729753
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.28996450326703127,
+              "ci95": [
+                0.2515768549288374,
+                0.3251382548695399
+              ]
+            },
+            "PCS": {
+              "r2": 0.2050943533135705,
+              "ci95": [
+                0.16379070629887432,
+                0.2408050123466407
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -0.008432942338825633,
+            "ci95": [
+              -0.017925219262233148,
+              -0.0030826710535583834
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.028209175438599375,
+            "operators_scored": 15
+          }
+        }
+      },
+      "support_count_identifies_operator": 0.956
+    },
+    "TWIN_OPERATOR": {
+      "kind": "TWIN_OPERATOR",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.3095410457664016,
+              "ci95": [
+                0.2678755591180078,
+                0.3487152063353261
+              ]
+            },
+            "PCS": {
+              "r2": 0.20166570433034725,
+              "ci95": [
+                0.15914364455321994,
+                0.24236337663775345
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.8722755257778709,
+              "ci95": [
+                0.8582660127118759,
+                0.8880989174331441
+              ]
+            },
+            "PCS": {
+              "r2": 0.7855660251571454,
+              "ci95": [
+                0.7637441785333529,
+                0.8055334227006371
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        },
+        "ARM2": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.3225031282033871,
+              "ci95": [
+                0.2805961079115256,
+                0.36509219949947425
+              ]
+            },
+            "PCS": {
+              "r2": 0.19607472370699242,
+              "ci95": [
+                0.1554152020167241,
+                0.23385823500452907
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.9039668075850684,
+              "ci95": [
+                0.8933197066539501,
+                0.913287935391711
+              ]
+            },
+            "PCS": {
+              "r2": 0.7839669895168058,
+              "ci95": [
+                0.7616797427594445,
+                0.8044938740181602
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.05229681328787139,
+            "ci95": [
+              0.03477785202756608,
+              0.06746229779208479
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.03135662781175102,
+            "operators_scored": 15
+          }
+        },
+        "ARM3": {
+          "status": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.4746070410824399,
+              "ci95": [
+                0.4204104575167396,
+                0.5218944135667212
+              ]
+            },
+            "PCS": {
+              "r2": 0.38252775163623554,
+              "ci95": [
+                0.3217067168845094,
+                0.437354729928377
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.374339979076586,
+              "ci95": [
+                0.32192693545453716,
+                0.430986286769985
+              ]
+            },
+            "PCS": {
+              "r2": 0.2707363615303572,
+              "ci95": [
+                0.21985740031646653,
+                0.32201157486969084
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.41650638275106044,
+            "ci95": [
+              0.35933495632199597,
+              0.47270370229007613
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.9995534378789349,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_DEPTH_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.3231718842492397,
+              "ci95": [
+                0.28168028204333506,
+                0.3649390319580626
+              ]
+            },
+            "PCS": {
+              "r2": 0.20077450443382505,
+              "ci95": [
+                0.1565191474615417,
+                0.2413379462016902
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.9025392473561573,
+              "ci95": [
+                0.8917366668905119,
+                0.9123202138084858
+              ]
+            },
+            "PCS": {
+              "r2": 0.7861473549320865,
+              "ci95": [
+                0.7651865726857979,
+                0.8063591330851644
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": 0.04927524833875607,
+            "ci95": [
+              0.031514074878293885,
+              0.06418226243752344
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.004035397079849012,
+            "operators_scored": 15
+          }
+        },
+        "ARM2_SUPPORT_ONLY": {
+          "status": "EXPLORATORY_DECOMPOSITION",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.30943071406141087,
+              "ci95": [
+                0.267918187899333,
+                0.3486246198121578
+              ]
+            },
+            "PCS": {
+              "r2": 0.1973099255704306,
+              "ci95": [
+                0.15742492869360597,
+                0.23439165796825484
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.8723425182617027,
+              "ci95": [
+                0.8584280816815802,
+                0.8881370285518493
+              ]
+            },
+            "PCS": {
+              "r2": 0.7833447573230043,
+              "ci95": [
+                0.7611100804044817,
+                0.8043577318837569
+              ]
+            }
+          },
+          "module_context_share": {
+            "r2": -4.370067623882257e-05,
+            "ci95": [
+              -0.006652232707400713,
+              0.00042031446714266567
+            ]
+          },
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.028209175438599375,
+            "operators_scored": 15
+          }
+        }
+      },
+      "support_count_identifies_operator": 0.956
+    }
+  },
+  "command": "python scripts/v77/run_v77_s157_identifiability.py --worlds-dir D:/jepa_v77_synthetic_custody_20261005/s157_challenge_v1 --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --arms ARM1,ARM2,ARM3 --out results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARMS_V1.json",
+  "source_commit": "fec1b41ad2eb017c65eb571a29798d87b5e3fbe4",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "scripts/v77/run_v77_s157_identifiability.py": "c67525cd8e21fa39532e99f65ee70d369551962fabaf314f0cd6ed6d87c75d54",
+    "scripts/v77/v77_synthetic_batch_adapter.py": "15092b16d1a71241e8e5883ff228b5d89595073d79e8df70adaf63641103c4d6",
+    "scripts/v77/build_v77_fullscale_rna_observer_v2.py": "a96bae91b1024d56c3356ccea621fee8046370a6200870161ea0f00230636b3a",
+    "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+  },
+  "no_training_performed": true
+}
