@@ -9,6 +9,7 @@ on:
       - 'src/sea_ad_jepa/v5/inactive_update_reference.py'
       - 'src/sea_ad_jepa/v5/ema_bound_runtime_proof_v1.py'
       - 'src/sea_ad_jepa/v5/ema_presentation_v1.py'
+      - 'src/sea_ad_jepa/v5/ema_persisted_continuation_v2.py'
       - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
       - 'tests/test_v5_canonical_runtime_convergence_red.py'
       - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
@@ -22,6 +23,7 @@ on:
       - 'tests/test_v5_ema_completed_update_proof_red.py'
       - 'tests/test_v5_ema_presentation_cursor_red.py'
       - 'tests/test_v5_ema_persisted_continuation_red.py'
+      - 'tests/test_v5_ema_continuation_canonicalization_red.py'
       - '.github/workflows/v5-inactive-runtime-step-guard.yml'
 
 jobs:
@@ -52,4 +54,5 @@ jobs:
             tests/test_v5_ema_canonicalization_red.py \
             tests/test_v5_ema_completed_update_proof_red.py \
             tests/test_v5_ema_presentation_cursor_red.py \
-            tests/test_v5_ema_persisted_continuation_red.py
+            tests/test_v5_ema_persisted_continuation_red.py \
+            tests/test_v5_ema_continuation_canonicalization_red.py
