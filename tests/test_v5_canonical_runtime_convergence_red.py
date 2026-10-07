@@ -2,6 +2,7 @@ from pathlib import Path
 
 
 RUNTIME = Path("src/sea_ad_jepa/v5/inactive_update_reference.py")
+ALTERNATE_REHEARSAL = Path("src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py")
 
 
 def test_canonical_consumer_does_not_mutate_teacher_ema_directly():
@@ -14,4 +15,11 @@ def test_canonical_consumer_does_not_mutate_teacher_ema_directly():
     assert not any(fragment in source for fragment in forbidden), (
         "inactive_update_reference.py still has a directly reachable EMA mutation path; "
         "the canonical successor must route EMA through the guarded completion boundary"
+    )
+
+
+def test_canonical_successor_has_no_alternate_generic_rehearsal_runtime():
+    assert not ALTERNATE_REHEARSAL.exists(), (
+        "prefreeze_guarded_rehearsal.py remains as a second executable mutation/checkpoint path; "
+        "the canonical successor must expose only the actual V5 guarded consumer"
     )
