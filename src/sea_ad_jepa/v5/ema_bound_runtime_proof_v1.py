@@ -12,7 +12,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from .ema_presentation_v1 import ema_momentum_for_presentations
 from .inactive_checkpoint_binding_v1 import (
@@ -25,6 +25,7 @@ from .prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1
 
 EMA_BINDING_SCHEMA = "V5_PREFREEZE_PRESENTATION_EMA_BOUND_AUTHORITY_V1"
 PRESENTATION_EMA_CONFIGURATION_SCHEMA = "V5_PRESENTATION_EMA_CONFIGURATION_V1"
+PRESENTATION_EMA_COMPLETED_UPDATE_PROOF_SCHEMA = "V5_PRESENTATION_EMA_COMPLETED_UPDATE_PROOF_V1"
 PRESENTATION_UNIT_SUCCESSFUL_BASE_CELLS = "SUCCESSFUL_BASE_CELL_PRESENTATIONS"
 
 
@@ -37,6 +38,16 @@ def _digest(value: object) -> str:
         allow_nan=False,
     ).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()
+
+
+def _require_sha256(value: object, label: str) -> str:
+    if not isinstance(value, str) or len(value) != 64 or value.lower() != value:
+        raise RuntimeError(f"{label} must be lowercase SHA-256")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise RuntimeError(f"{label} must be lowercase SHA-256") from exc
+    return value
 
 
 def presentation_ema_configuration_identity(*, half_life_presentations: int, presentation_unit_id: str) -> str:
@@ -71,12 +82,7 @@ class PresentationEmaBoundPrefreezeAuthorityV1:
         if not isinstance(self.base_authority, PrefreezeMechanicalAuthorityV1):
             raise RuntimeError("presentation-EMA authority requires PrefreezeMechanicalAuthorityV1")
         self.base_authority._validate_digest()
-        if not isinstance(self.parent_runtime_source_sha256, str) or len(self.parent_runtime_source_sha256) != 64:
-            raise RuntimeError("presentation-EMA authority requires parent runtime SHA-256")
-        try:
-            int(self.parent_runtime_source_sha256, 16)
-        except ValueError as exc:
-            raise RuntimeError("presentation-EMA authority requires parent runtime SHA-256") from exc
+        _require_sha256(self.parent_runtime_source_sha256, "presentation-EMA parent runtime digest")
         expected = presentation_ema_configuration_identity(
             half_life_presentations=self.half_life_presentations,
             presentation_unit_id=self.presentation_unit_id,
@@ -167,6 +173,81 @@ def issue_presentation_ema_bound_authority_from_checkpoint(
     )
 
 
+def _completed_update_proof_core(
+    *,
+    authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    presentations_this_update: int,
+) -> dict[str, object]:
+    if isinstance(presentations_this_update, bool) or not isinstance(presentations_this_update, int) or presentations_this_update < 1:
+        raise RuntimeError("presentations_this_update must be a positive integer")
+    receipt_digest = _require_sha256(
+        completed_guard_receipt.get("receipt_digest"),
+        "completed guard receipt digest",
+    )
+    checkpoint_digest = _require_sha256(
+        completed_guard_receipt.get("checkpoint_digest"),
+        "completed checkpoint digest",
+    )
+    return {
+        "schema": PRESENTATION_EMA_COMPLETED_UPDATE_PROOF_SCHEMA,
+        "ema_configuration_identity": authority.ema_configuration_identity,
+        "ema_bound_authority_digest": authority.binding_digest,
+        "parent_checkpoint_digest": authority.checkpoint_digest,
+        "parent_runtime_source_sha256": authority.parent_runtime_source_sha256,
+        "completed_guard_receipt_digest": receipt_digest,
+        "completion_checkpoint_digest": checkpoint_digest,
+        "presentations_this_update": presentations_this_update,
+        "execution_authorized": False,
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+
+
+def _issue_presentation_ema_completed_update_proof(
+    *,
+    authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    presentations_this_update: int,
+) -> dict[str, object]:
+    core = _completed_update_proof_core(
+        authority=authority,
+        completed_guard_receipt=completed_guard_receipt,
+        presentations_this_update=presentations_this_update,
+    )
+    return {**core, "proof_digest": _digest(core)}
+
+
+def verify_presentation_ema_completed_update_proof(
+    proof: object,
+    *,
+    authority: PresentationEmaBoundPrefreezeAuthorityV1,
+    completed_guard_receipt: Mapping[str, object],
+    half_life_presentations: int,
+    presentation_unit_id: str,
+) -> bool:
+    """Reject any completed-update proof detached from its EMA configuration or guard receipt."""
+    if not isinstance(proof, Mapping):
+        raise RuntimeError("presentation EMA completed-update proof is required")
+    authority.verify_ema_configuration(
+        half_life_presentations=half_life_presentations,
+        presentation_unit_id=presentation_unit_id,
+    )
+    presentations_this_update = proof.get("presentations_this_update")
+    core = _completed_update_proof_core(
+        authority=authority,
+        completed_guard_receipt=completed_guard_receipt,
+        presentations_this_update=presentations_this_update,  # type: ignore[arg-type]
+    )
+    for key, expected in core.items():
+        if proof.get(key) != expected:
+            raise RuntimeError(f"presentation EMA completed-update proof mismatch: {key}")
+    observed_digest = proof.get("proof_digest")
+    if observed_digest != _digest(core):
+        raise RuntimeError("presentation EMA completed-update proof digest mismatch")
+    return True
+
+
 def run_presentation_ema_bound_guarded_reference_update(
     modules: V5ReferenceModules,
     *,
@@ -205,12 +286,24 @@ def run_presentation_ema_bound_guarded_reference_update(
         **kwargs,
     )
     report = dict(report)
+    completed_guard_receipt = report.get("completed_guard_receipt")
+    if completed_guard_receipt is None:
+        presentation_completion_proof = None
+    elif isinstance(completed_guard_receipt, Mapping):
+        presentation_completion_proof = _issue_presentation_ema_completed_update_proof(
+            authority=authority,
+            completed_guard_receipt=completed_guard_receipt,
+            presentations_this_update=presentations_this_update,
+        )
+    else:
+        raise RuntimeError("completed guard receipt has unexpected type")
     report["ema_configuration_identity"] = authority.ema_configuration_identity
     report["ema_bound_authority_digest"] = authority.binding_digest
     report["ema_presentation_unit_id"] = presentation_unit_id
     report["ema_half_life_presentations"] = half_life_presentations
     report["ema_presentations_this_update"] = presentations_this_update
     report["ema_momentum_used"] = momentum
+    report["presentation_ema_completion_proof"] = presentation_completion_proof
     report["training_authorized"] = False
     report["execution_authorized"] = False
     return report
