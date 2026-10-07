@@ -50,7 +50,7 @@ Bind the exact PR #224 runtime proof into PR #223's shared qualification interfa
 
 The mutation-proof status in #223 may only become `PROVEN_BY_BOUND_RUNTIME` when exact runtime provenance and physical completion proof are machine-verified. Executed q-safety remains unproven until the adapter+runtime path physically executes the required transformations.
 
-The first joined run remains bounded synthetic rehearsal only. No real-RNA execution, Stage A, TEST, Morabito, 500K, Stage 4 or production training is authorized.
+The first joined run remains bounded synthetic rehearsal only. Real-RNA execution remains NOT AUTHORIZED. Stage A, 500K, Stage 4, and production training remain NOT AUTHORIZED. TEST remains SEALED and Morabito remains PROTECTED.
 
 Historical `CurrentTrainingAuthorityV2`, the removed inactive-runtime guard, and the removed generic rehearsal are donor/history surfaces only and must not reappear as parallel canonical paths.
 
