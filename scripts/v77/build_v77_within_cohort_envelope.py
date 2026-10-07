@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Within-cohort real envelopes: the repair of the synthetic calibration target (S149).
+"""Within-cohort real measurements: a CANDIDATE CALIBRATION DIAGNOSTIC, for review (S149).
 
-MATERIAL PIVOT, LOGGED. The pooled real envelopes (detection, expression, topology T1-T5,
-abundance) pool cells from cohorts measured by different processes. A null with no biological
-dependence reproduces 89% of the pooled detection correlation density and exceeds its
-transitivity (V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1), so the pooled envelopes mainly measure
-cohort composition and are not a valid target for planted biology. This executor builds the
-replacement target: envelopes computed WITHIN one cohort's measurement process at a time. The
-pooled envelopes are not edited or deleted; they remain as composition-inclusive references.
+AUTHORITY. This executor produces scientific evidence, not a target. The pooled real envelopes
+pool cells from studies measured by different processes, and a null with no biological dependence
+reproduces 89% of the pooled detection correlation density (V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1).
+The measurements below show what the dependence looks like inside one measurement process.
+Whether and how they become a calibration target, estimand or weighting is decided by the
+real-data scientific lane, not here, and no synthetic pass/fail decision may use them until it
+does. Earlier wording in this file called them a "replacement target" and a "material pivot";
+that language is withdrawn (results/v77/V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1.json).
 
-THE RULE, fixed on physical grounds before any synthetic world is scored against it. Every
-constant below is inherited from the frozen pooled builders; nothing is chosen from outcomes.
+THE MEASUREMENT RULE. Every constant below is inherited from the frozen pooled builders; nothing
+is chosen from outcomes.
 
  1. Stratum. A cell's measured coverage is evidenced by its detections: its cell-level stratum is
     the smallest cohort coverage containing every one of its detections, over all 41,238
@@ -23,24 +24,23 @@ constant below is inherited from the frozen pooled builders; nothing is chosen f
     detection layer (binarised) and the expression layer on that one gene set; T5 by the shared
     class_conditional_t5; abundance by abundance_stats; and depth.
  4. Envelope. Donor bootstrap within the stratum, 24 replicates, seed 20261006, gene set held at
-    the point estimate's, acceptance range from the 5% to the 95% quantile, as frozen.
+    the point estimate's, and the inherited 5%-95% percentile range, as frozen (see S159).
 
 Gene selection is redone inside each stratum, which removes the caveat on the coverage
 diagnostic, whose within-stratum rows reused the pooled gene set.
 
-V2 ACCEPTANCE RULE (S159). The inherited percentile rule put the real point estimate OUTSIDE its
-own acceptance range for 2 of 30 metrics in HVS and 5 of 30 in SEA_AD, every one shifted upward
+S159, OPEN METHODOLOGICAL DEFECT. The inherited percentile rule puts the real point estimate
+OUTSIDE its own range for 2 of 30 metrics in HVS and 5 of 30 in SEA_AD, every one shifted upward
 and every one a correlation-magnitude statistic (median |corr|, community size, variance share,
 T5). A with-replacement donor resample keeps only about 63% distinct cells, and correlation
-magnitudes rise as the number of distinct cells falls, so the resample distribution is displaced
-upward. The pooled envelopes, with more donors and cells, show no such case. A range that
-excludes the real value would reject a generator that matched it exactly. V2 keeps the resampled
-SPREAD and removes its LOCATION bias: acceptance = [point - (median - q05), point + (q95 - median)],
-applied to every metric alike, with every replicate stored. Decided before any synthetic world was
-scored against either version.
+magnitudes rise as distinct cells fall, which is the likely mechanism. The pooled envelopes show
+no such case. A CANDIDATE repair, recorded for review and NOT authoritative, keeps the resampled
+spread and removes its location bias: [point - (median - q05), point + (q95 - median)]. Both
+ranges and every replicate are stored; neither is an acceptance rule.
 
-COMPARISON PROTOCOL. The same n-dependence means a synthetic world is comparable with a stratum
-only when scored on the same number of cells. Each stratum records its cell count and class sizes.
+CANDIDATE COMPARISON PROTOCOL, for review. The same n-dependence suggests a synthetic world is
+comparable with a stratum only when scored on the same number of cells, so each stratum records
+its cell count and class sizes.
 
 Real TRAIN access is pathology-blind, TRAIN-only and read-only, through load_real.
 """
@@ -206,7 +206,7 @@ def main():
             v = np.array([bb[k] for bb in boots], dtype=float)
             q05, q50, q95 = (float(np.nanquantile(v, q)) for q in (QUANTILES[0], 0.5, QUANTILES[1]))
             env[k] = dict(point=point[k], boot_sd=float(np.nanstd(v, ddof=1)),
-                          accept_low=point[k] - (q50 - q05), accept_high=point[k] + (q95 - q50),
+                          candidate_recentered_range_S159=[point[k] - (q50 - q05), point[k] + (q95 - q50)],
                           inherited_percentile_range=[q05, q95],
                           inherited_range_excludes_point=bool(not (q05 <= point[k] <= q95)),
                           resample_median_minus_point=q50 - point[k],
@@ -226,7 +226,7 @@ def main():
             genes=dict(n=int(len(sel)),
                        address_sha256=hashlib.sha256(np.sort(hvg_addr).astype(np.int64).tobytes()).hexdigest(),
                        jaccard_with_pooled_gene_set=float(len(hv & pooled_hvg) / len(hv | pooled_hvg))),
-            ACCEPTANCE_ENVELOPES=env)
+            DIAGNOSTIC_RANGES=env)
         print(f"{f}: {n} cells, {info['n_donors']} donors, universe {len(uni_s)}; "
               f"det frac>.3 {point['detection.frac_abs_gt_0p3']:.4f} trans {point['detection.transitivity']:.4f} "
               f"deg {point['detection.mean_degree']:.1f} | T5 {point['t5.within_over_pooled']:.4f}")
@@ -235,22 +235,22 @@ def main():
                         for k, v in envs.items()}
     pooled_reference["t5.within_over_pooled"] = pooled_t5
     rec = dict(
-        schema="V77_REAL_WITHIN_COHORT_ENVELOPE_V2",
-        supersedes=dict(receipt="results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json",
-                        why="S159: the inherited percentile range excluded the point for 7 metrics"),
-        acceptance_rule=("[point - (median - q05), point + (q95 - median)] over the donor resamples; "
-                         "the inherited percentile range is kept beside it for every metric"),
-        comparison_protocol=("score a synthetic world on the stratum's own universe AND on the stratum's "
-                             "own number of cells; correlation-magnitude statistics depend on n"),
+        schema="V77_REAL_WITHIN_COHORT_DIAGNOSTIC_V3",
+        relabels=dict(receipts=["results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json",
+                                "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json"],
+                      why="authority language corrected; the computation is unchanged"),
+        inherited_rule="5%-95% percentile of the donor resamples; OPEN defect S159: it can exclude the point",
+        candidate_repair_S159=("[point - (median - q05), point + (q95 - median)]; recorded for review, "
+                               "NOT authoritative"),
+        candidate_comparison_protocol=("score a synthetic world on the stratum's own universe and own number "
+                                       "of cells; for review"),
         claim_class="V77_SYNTHETIC_WORLD_QUALIFICATION",
-        status="FROZEN_BEFORE_ANY_SYNTHETIC_WORLD_IS_SCORED_AGAINST_IT",
-        material_pivot=dict(
-            from_target="pooled real envelopes (V77_REAL_DETECTION/CALIBRATION/ABUNDANCE_ENVELOPE_V1, "
-                        "V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1)",
-            to_target="within-cohort envelopes in this file",
+        status="CANDIDATE_CALIBRATION_DIAGNOSTIC__FOR_REVIEW__NOT_FOR_SYNTHETIC_PASS_FAIL",
+        authority=dict(
+            decides_target_estimand_and_weighting="the real-data scientific lane",
+            synthetic_pass_fail_use="NOT AUTHORIZED",
             evidence="results/v77/V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1.json",
-            pooled_envelopes="kept unchanged as composition-inclusive references",
-            open_to_veto="owner and reviewer lane"),
+            pooled_envelopes="unchanged; composition-inclusive references"),
         rule=dict(stratum="smallest cohort coverage containing every detection of the cell, over all "
                           "addresses; donor-level majority used",
                   eligibility=f"at least two classes with >= {TC.MIN_CLASS_CELLS} cells (frozen T5 floor)",
