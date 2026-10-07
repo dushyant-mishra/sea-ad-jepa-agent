@@ -5,7 +5,7 @@ import string
 from types import MappingProxyType
 from typing import Mapping
 
-from .receipts import QSafetyExecutionProofStatus
+from .receipts import BoundAdapterQSafetyProofV1, QSafetyExecutionProofStatus
 
 
 RAW_MEASUREMENT_IDENTITY_FIELDS = frozenset({"source_index", "operator_index"})
@@ -22,10 +22,16 @@ def _require_sha256(value: str, name: str) -> str:
     return value.lower()
 
 
-def require_executed_q_safety(status: QSafetyExecutionProofStatus) -> None:
-    """Fail closed unless q-safety was proven by the bound adapter/runtime path."""
+def require_executed_q_safety(
+    status: QSafetyExecutionProofStatus,
+    proof: BoundAdapterQSafetyProofV1 | None = None,
+) -> BoundAdapterQSafetyProofV1:
+    """Fail closed unless q-safety is backed by the typed adapter/runtime proof."""
     if status is not QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME:
         raise ValueError("executed q-safety proof is required at the V77 joined boundary")
+    if not isinstance(proof, BoundAdapterQSafetyProofV1):
+        raise ValueError("typed executed q-safety proof is required at the V77 joined boundary")
+    return proof
 
 
 @dataclass(frozen=True)
