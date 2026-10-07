@@ -12,6 +12,11 @@ from sea_ad_jepa.v5.inactive_update_reference import (
     capture_reference_checkpoint, restore_reference_checkpoint,
 )
 from sea_ad_jepa.v5.inactive_guarded_update_v1 import run_guarded_inactive_reference_update
+from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
+    capture_prefreeze_bound_checkpoint,
+    reference_checkpoint_sha256,
+    restore_prefreeze_bound_checkpoint,
+)
 from sea_ad_jepa.v5.prefreeze_runtime_authority import PrefreezeMechanicalAuthorityV1, StepCompletionError
 
 
@@ -51,13 +56,15 @@ def _authority(modules, update_index):
     )
 
 
-def _run(modules, data, *, update_index=0, max_tokens=40, scaler=None):
+def _run(modules, data, *, update_index=0, max_tokens=40, scaler=None, completion_checkpoint_digest=None):
     kwargs=dict(
         expression=data[0],measurement_mask=data[1],stable_cell_keys=data[2],operator_ids=data[3],
         scientific_cell_weights=data[4],target_block_views=data[5],measured_tokens_by_operator=data[6],
         max_teacher_tokens_per_microbatch=max_tokens,run_seed=8113002,update_index=update_index,ema_momentum=.996)
     if scaler is not None:
         kwargs['scaler']=scaler
+    if completion_checkpoint_digest is not None:
+        kwargs['completion_checkpoint_digest']=completion_checkpoint_digest
     return run_guarded_inactive_reference_update(
         modules,authority=_authority(modules,update_index),**kwargs)
 
@@ -126,6 +133,29 @@ def _module_state_equal(a,b):
     for ma,mb in ((a.online,b.online),(a.teacher,b.teacher),(a.predictor,b.predictor)):
         sa=ma.state_dict(); sb=mb.state_dict(); assert sa.keys()==sb.keys()
         for name in sa: assert torch.equal(sa[name],sb[name]),name
+
+
+def test_canonical_guard_emits_receipt_that_mints_and_restores_bound_checkpoint():
+    data=_case(); modules=_modules()
+
+    def completed_state_digest():
+        checkpoint=capture_reference_checkpoint(
+            modules,next_update_index=1,presentations_seen=len(data[0]))
+        return reference_checkpoint_sha256(checkpoint)
+
+    report=_run(modules,data,completion_checkpoint_digest=completed_state_digest)
+    receipt=report['completed_guard_receipt']
+    assert receipt['checkpoint_digest']==completed_state_digest()
+    envelope=capture_prefreeze_bound_checkpoint(
+        modules,next_update_index=1,presentations_seen=len(data[0]),
+        premise_state_path=STATE_PATH,completed_guard_receipt=receipt)
+    assert envelope.completed_guard_receipt==receipt
+
+    restored=_modules()
+    cursor,presentations=restore_prefreeze_bound_checkpoint(
+        restored,envelope,premise_state_path=STATE_PATH)
+    assert (cursor,presentations)==(1,6)
+    _module_state_equal(modules,restored)
 
 
 def test_incomplete_post_step_failure_cannot_advance_teacher_ema(monkeypatch):
