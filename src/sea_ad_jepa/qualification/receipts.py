@@ -48,15 +48,11 @@ def _digest(value: object, name: str) -> str:
 
 @dataclass(frozen=True)
 class BoundRuntimeMutationProofV1:
-    """Typed copy of the non-authorizing physical proof emitted by the V5 runtime successor.
-
-    This object proves the qualification receipt is bound to the full physical-proof surface
-    rather than to caller-supplied runtime/checkpoint digest strings alone. It is deliberately
-    non-authorizing: scientific/execution/training authority remains outside this receipt.
-    """
+    """Typed copy of the non-authorizing physical proof emitted by the V5 runtime successor."""
 
     schema: str
     runtime_contract: str
+    governance_digest: str
     artifact_sha256: str
     logical_checkpoint_sha256: str
     premise_state_sha256: str
@@ -75,6 +71,7 @@ class BoundRuntimeMutationProofV1:
         if self.runtime_contract != BOUND_RUNTIME_CONTRACT:
             raise ValueError("physical runtime proof contract mismatch")
         for name in (
+            "governance_digest",
             "artifact_sha256",
             "logical_checkpoint_sha256",
             "premise_state_sha256",
@@ -176,6 +173,8 @@ class QualificationProvenanceReceiptV1:
                 raise ValueError("physical mutation proof requires bound runtime successor provenance")
             if checkpoint_digest is None:
                 raise ValueError("physical mutation proof requires persisted checkpoint provenance")
+            if self.governance_digest != self.runtime_mutation_proof.governance_digest:
+                raise ValueError("governance digest does not match physical runtime proof")
             if runtime_digest != self.runtime_mutation_proof.runtime_source_sha256:
                 raise ValueError("runtime successor digest does not match physical runtime proof")
             if checkpoint_digest != self.runtime_mutation_proof.artifact_sha256:
