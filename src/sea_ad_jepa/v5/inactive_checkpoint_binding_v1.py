@@ -39,9 +39,6 @@ PREFREEZE_RUNTIME_CONTRACT = (
     "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
 )
 
-# Relative to src/sea_ad_jepa/v5. This list is deliberately explicit: changing
-# any file capable of changing the numerical trajectory must change the bound
-# runtime digest rather than silently inheriting an older proof.
 CANONICAL_RUNTIME_SOURCE_FILES = (
     "inactive_update_reference.py",
     "inactive_guarded_update_v1.py",
@@ -139,7 +136,6 @@ def _hash_value(h: Any, value: Any) -> None:
 
 
 def reference_checkpoint_sha256(checkpoint: V5ReferenceCheckpoint) -> str:
-    """Deterministic digest of the exact logical trajectory state."""
     if not isinstance(checkpoint, V5ReferenceCheckpoint):
         raise RuntimeError("V5ReferenceCheckpoint required for logical state digest")
     h = sha256()
@@ -231,6 +227,7 @@ class V5PersistedCheckpointProofV1:
     """Non-authorizing proof that one completed checkpoint survived physical round-trip validation."""
     schema: str
     runtime_contract: str
+    governance_digest: str
     artifact_sha256: str
     logical_checkpoint_sha256: str
     premise_state_sha256: str
@@ -312,7 +309,6 @@ def issue_prefreeze_authority_from_bound_checkpoint(
     premise_state_path: Path,
     scaler: object | None = None,
 ) -> PrefreezeMechanicalAuthorityV1:
-    """Issue rehearsal authority only when live state equals the exact parent state."""
     premise_path = _validate_bound_checkpoint_for_current_runtime(
         parent,
         premise_state_path=premise_state_path,
@@ -338,7 +334,6 @@ def persist_prefreeze_bound_checkpoint(
     envelope: V5PrefreezeBoundCheckpointV1,
     path: Path,
 ) -> str:
-    """Persist one non-authorizing checkpoint and return the exact artifact SHA-256."""
     if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
         raise RuntimeError("unsupported prefreeze checkpoint envelope")
     _validate_receipt_presence(envelope.reference_checkpoint, envelope.completed_guard_receipt)
@@ -364,7 +359,6 @@ def load_persisted_prefreeze_bound_checkpoint(
     *,
     expected_sha256: str,
 ) -> V5PrefreezeBoundCheckpointV1:
-    """Verify artifact bytes before deserializing the persisted checkpoint."""
     checkpoint_path = Path(path)
     if not checkpoint_path.is_file():
         raise FileNotFoundError(f"persisted checkpoint missing: {checkpoint_path}")
@@ -397,7 +391,6 @@ def persist_and_verify_completed_prefreeze_checkpoint(
     *,
     premise_state_path: Path,
 ) -> V5PersistedCheckpointProofV1:
-    """Emit physical completion proof only after write, hash verification, reload, and revalidation."""
     if not isinstance(envelope, V5PrefreezeBoundCheckpointV1):
         raise RuntimeError("completed physical proof requires a bound checkpoint")
     if envelope.reference_checkpoint.next_update_index <= 0 or envelope.completed_guard_receipt is None:
@@ -419,11 +412,15 @@ def persist_and_verify_completed_prefreeze_checkpoint(
     if receipt is None:
         raise RuntimeError("persisted completed checkpoint lost its guard receipt")
     receipt_digest = receipt.get("receipt_digest")
+    governance_digest = receipt.get("governance_digest")
     if not isinstance(receipt_digest, str) or len(receipt_digest) != 64:
         raise RuntimeError("completed guard receipt lacks a valid digest")
+    if not isinstance(governance_digest, str) or len(governance_digest) != 64:
+        raise RuntimeError("completed guard receipt lacks a valid governance digest")
     return V5PersistedCheckpointProofV1(
         schema=PERSISTED_COMPLETION_PROOF_SCHEMA,
         runtime_contract=loaded.runtime_contract,
+        governance_digest=governance_digest,
         artifact_sha256=artifact_digest,
         logical_checkpoint_sha256=logical_digest,
         premise_state_sha256=loaded.premise_state_sha256,
