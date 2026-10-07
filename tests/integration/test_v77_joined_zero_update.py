@@ -1,6 +1,16 @@
+import numpy as np
 import pytest
 
+from scripts.v77.v77_synthetic_batch_adapter import (
+    SyntheticConversion,
+    SyntheticModelBatch,
+    SyntheticOperatorContext,
+    SyntheticOracleRecord,
+    SyntheticReadoutRecord,
+    SyntheticSplitContext,
+)
 from sea_ad_jepa.qualification import v77_join
+from sea_ad_jepa.qualification.pipeline import QualificationBatchV1
 from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import (
     BOUND_ADAPTER_Q_SAFETY_PROOF_SCHEMA,
@@ -52,6 +62,54 @@ def _valid_q_safety_proof(**overrides):
     )
     values.update(overrides)
     return BoundAdapterQSafetyProofV1(**values)
+
+
+def _minimal_conversion():
+    measurement = np.array([[True, True, False], [True, False, True]], dtype=bool)
+    hidden = np.array([[False, True, False], [False, False, True]], dtype=bool)
+    model = SyntheticModelBatch(
+        gene_ids=np.array([[0, 1, 2], [0, 1, 2]], dtype=np.int64),
+        student_expression=np.array([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], dtype=np.float32),
+        measurement_mask=measurement,
+        hidden_target_mask=hidden,
+    )
+    operator = SyntheticOperatorContext(
+        source_index=np.array([0, 0], dtype=np.int16),
+        operator_index=np.array([0, 0], dtype=np.int16),
+        visible_library_size=np.array([11.0, 7.0], dtype=np.float32),
+        n_measured=np.array([2, 2], dtype=np.int32),
+    )
+    split = SyntheticSplitContext(donor_index=np.array([0, 1], dtype=np.int32))
+    readout = SyntheticReadoutRecord(
+        query_counts=np.array([[0.0, 3.0, 0.0], [0.0, 0.0, 5.0]], dtype=np.float32),
+        full_library_size=np.array([14.0, 12.0], dtype=np.float32),
+    )
+    oracle = SyntheticOracleRecord(
+        global_cell_index=np.array([101, 102], dtype=np.int64),
+        latents={},
+        b3_arm_membership=None,
+        b6_ladder_level=None,
+        substate=None,
+        annotated_class=None,
+    )
+    return SyntheticConversion(
+        model=model,
+        operator_context=operator,
+        split_context=split,
+        readout=readout,
+        oracle=oracle,
+        global_cell_index=np.array([101, 102], dtype=np.int64),
+        provenance={
+            "observer_manifest_sha256": "d" * 64,
+            "structural_support_rule": "name-mapped-registry-relative-v1",
+            "observation_identity": {
+                "source_roster": ["SEA_AD"],
+                "operator_ids": ["op-a"],
+                "operator_source_map": [["op-a", "SEA_AD"]],
+                "donor_ids": ["d1", "d2"],
+            },
+        },
+    )
 
 
 def test_physical_row_value_binding_accepts_one_inseparable_chain():
@@ -148,3 +206,34 @@ def test_q_safety_proof_is_bound_to_exact_adapter_batch_and_runtime():
                 proof,
                 **kwargs,
             )
+
+
+def test_actual_v77_conversion_builds_shared_qualification_batch():
+    builder = getattr(v77_join, "build_qualification_batch_from_v77_conversion", None)
+    assert callable(builder), "V77 conversion is not physically joined to QualificationBatchV1"
+    batch = builder(
+        _minimal_conversion(),
+        feature_ids=("g0", "g1", "g2"),
+        experiment_run_id="v77-joined-zero-update-001",
+        adapter_id="v77-synthetic-batch-adapter",
+        adapter_digest="a" * 64,
+        code_commit="1234567890abcdef1234567890abcdef12345678",
+        environment_digest="e" * 64,
+        synthetic_realization_id="v77-dev-001",
+        challenge_partition="DEVELOPMENT_CALIBRATION",
+    )
+    assert isinstance(batch, QualificationBatchV1)
+    model_view = batch.model_view()
+    readout_view = batch.readout_view()
+    assert "student_expression" in model_view.model_inputs
+    assert "measurement_mask" in model_view.model_inputs
+    assert "hidden_target_mask" in model_view.model_inputs
+    assert "query_counts" not in model_view.model_inputs
+    assert "query_counts" in readout_view.readout_only
+    assert "donor_index" in readout_view.split_only
+    learnable = build_learnable_model_context(
+        model_inputs=model_view.model_inputs,
+        lawful_operator_context=model_view.lawful_operator_context,
+    )
+    assert "source_index" not in learnable.operator_context
+    assert "operator_index" not in learnable.operator_context
