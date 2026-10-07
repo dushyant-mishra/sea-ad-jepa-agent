@@ -59,6 +59,11 @@ def test_checkpoint_provenance_binds_actual_canonical_runtime_not_legacy_guard()
         "inactive_guarded_update_v1.py",
         "prefreeze_runtime_authority.py",
         "inactive_checkpoint_binding_v1.py",
+        "data_first_geometry.py",
+        "keyed_dropout_prototype_v2.py",
+        "keyed_rng_contract_v2.py",
+        "ipb_jepa.py",
+        "gene_tokenizer.py",
     )
     for name in required:
         assert name in source, f"checkpoint runtime provenance omits {name}"
