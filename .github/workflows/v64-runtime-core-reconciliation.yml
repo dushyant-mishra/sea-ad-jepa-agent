@@ -46,7 +46,7 @@ jobs:
           python-version: '3.12'
       - name: Install test dependencies
         run: >-
-          python -m pip install pytest torch
+          python -m pip install pytest numpy torch
           --index-url https://download.pytorch.org/whl/cpu
           --extra-index-url https://pypi.org/simple
       - name: Run focused runtime reconciliation tests
