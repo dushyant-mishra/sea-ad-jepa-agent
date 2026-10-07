@@ -108,6 +108,18 @@ def test_persisted_checkpoint_is_hashed_reloaded_and_tamper_evident(tmp_path):
         binding.load_persisted_prefreeze_bound_checkpoint(path,expected_sha256=digest)
 
 
+def test_noninitial_bound_checkpoint_requires_completed_guard_receipt():
+    modules=_modules()
+    modules.optimizer.zero_grad(set_to_none=True)
+    for group in modules.optimizer.param_groups:
+        for parameter in group['params']:
+            parameter.grad=torch.zeros_like(parameter)
+    modules.optimizer.step()
+    with pytest.raises(RuntimeError, match='completed guard receipt'):
+        capture_prefreeze_bound_checkpoint(
+            modules,next_update_index=1,presentations_seen=6,premise_state_path=PREMISE)
+
+
 def test_restore_rejects_premise_drift(tmp_path):
     envelope=capture_prefreeze_bound_checkpoint(
         _modules(),next_update_index=0,presentations_seen=0,premise_state_path=PREMISE)
