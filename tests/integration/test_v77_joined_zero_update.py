@@ -10,6 +10,7 @@ from scripts.v77.v77_synthetic_batch_adapter import (
     SyntheticSplitContext,
 )
 from sea_ad_jepa.qualification import v77_join
+from sea_ad_jepa.qualification.physical_binding_v2 import PhysicalRowValueBindingV2
 from sea_ad_jepa.qualification.pipeline import QualificationBatchV1
 from sea_ad_jepa.qualification.qsafe import REQUIRED_Q_SAFETY_CHANNELS
 from sea_ad_jepa.qualification.receipts import (
@@ -18,10 +19,7 @@ from sea_ad_jepa.qualification.receipts import (
     QSafetyChannelExecutionEvidenceV1,
     QSafetyExecutionProofStatus,
 )
-from sea_ad_jepa.qualification.v77_join import (
-    PhysicalRowValueBindingV1,
-    build_learnable_model_context,
-)
+from sea_ad_jepa.qualification.v77_join import build_learnable_model_context
 
 
 def _valid_binding(**overrides):
@@ -45,7 +43,7 @@ def _valid_binding(**overrides):
         consumed_values_sha256="b" * 64,
     )
     values.update(overrides)
-    return PhysicalRowValueBindingV1(**values)
+    return PhysicalRowValueBindingV2(**values)
 
 
 def _valid_q_safety_proof(**overrides):
