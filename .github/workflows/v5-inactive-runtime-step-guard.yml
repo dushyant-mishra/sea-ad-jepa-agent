@@ -3,6 +3,7 @@ name: v5-inactive-runtime-step-guard
 on:
   pull_request:
     paths:
+      - 'src/sea_ad_jepa/v5/__init__.py'
       - 'src/sea_ad_jepa/v5/prefreeze_runtime_authority.py'
       - 'src/sea_ad_jepa/v5/inactive_guarded_update_v1.py'
       - 'src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py'
