@@ -1,0 +1,336 @@
+{
+  "schema": "V77_REGULATORY_CIRCULARITY_AUDIT_V1",
+  "claim_class": "ANALYSIS_ONLY",
+  "title": "V77 SCENIC+ and regulatory-evidence circularity audit",
+  "status": "ANALYSIS_ONLY. Classifies constructions; selects no evidence object, network, target or threshold",
+  "question": "Can regulatory evidence tell true regulatory biology from a capture or measurement process that generates the same RNA covariance? Answered separately for (a) SCENIC+ built partly from the same RNA, (b) SCENIC+ built with independent chromatin plus RNA, and (c) links supported by evidence physically independent of the query RNA",
+  "circularity_classes": [
+    {
+      "id": "C0_QUERY_MATCHED_INDEPENDENT",
+      "meaning": "measured on the query's own nuclei, cells or donors and constructed without the query RNA; can change the likelihood ratio between biology and a lineage twin, given its controls"
+    },
+    {
+      "id": "C1_STATIC_INDEPENDENT",
+      "meaning": "constructed without any RNA of the query and fixed with respect to it; supportive only (matrix P1)"
+    },
+    {
+      "id": "C2_ASSAY_CLASS_CIRCULAR",
+      "meaning": "constructed from other RNA of the same assay class; not circular with the query values, but it absorbs whatever artefact the assay class produces everywhere (TW_ASSAY)"
+    },
+    {
+      "id": "C3_QUERY_CIRCULAR",
+      "meaning": "constructed from the query RNA; any agreement with the query's covariance is guaranteed"
+    }
+  ],
+  "selection_flag": "SELECTION_COUPLED: constructed without RNA values but selected on expression or activity (active promoters, H3K27ac enhancers, regulators chosen from query correlations, panels chosen from RNA markers). A modifier, not a class: it needs selection-matched controls and is never counted as independent of expression",
+  "pipeline": [
+    {
+      "step": "S1 cell grouping for chromatin (metacells, pseudobulks, labels)",
+      "query_rna": "LEAKS if labels or metacells come from the query RNA, including joint RNA-ATAC embeddings",
+      "consequence": "peaks, topics and differential regions inherit the RNA's partition, biological or not"
+    },
+    {
+      "step": "S2 peak calling and consensus region universe (iterative overlap, blacklist)",
+      "query_rna": "LEAKS when pseudobulks are RNA-defined; independent when groups come from chromatin alone",
+      "consequence": "the region universe itself encodes the RNA partition"
+    },
+    {
+      "step": "S3 topics and differentially accessible regions",
+      "query_rna": "chromatin only, unless contrasts are between RNA-defined groups",
+      "consequence": "region sets selected by RNA contrasts are RNA-derived"
+    },
+    {
+      "step": "S4 motif enrichment (cisTarget rankings, differential motif enrichment)",
+      "query_rna": "sequence only; inherits S3's region sets",
+      "consequence": "annotation supply and GC structure need the PR #179 controls"
+    },
+    {
+      "step": "S5 TF-to-gene importance (gradient boosting on expression)",
+      "query_rna": "USES the RNA directly",
+      "consequence": "a TF gene inside a capture-affected module becomes its regulator"
+    },
+    {
+      "step": "S6 region-to-gene importance (accessibility against expression across cells or metacells)",
+      "query_rna": "USES the RNA; with unpaired data the pairing itself comes from RNA-derived integration",
+      "consequence": "the only step where independent same-nucleus chromatin can disagree with an RNA-confined twin; with unpaired data it is circular"
+    },
+    {
+      "step": "S7 eRegulon assembly (TF to motif-bearing regions to linked genes, sign filters)",
+      "query_rna": "combines S4 to S6; sign filters use TF-gene correlation in the RNA",
+      "consequence": "membership mixes circular and independent evidence without separating them"
+    },
+    {
+      "step": "S8 activity scoring (gene-based AUC on RNA, region-based AUC on chromatin)",
+      "query_rna": "gene-based scores are functions of the query RNA",
+      "consequence": "identical under TW_EXACT; region-based scores are per-nucleus chromatin (the R1 object)"
+    },
+    {
+      "step": "S9 triplet ranking and specificity scores",
+      "query_rna": "uses S5, S6 and S8",
+      "consequence": "rankings inherit every leak above"
+    }
+  ],
+  "settings": [
+    {
+      "id": "A_SAME_RNA",
+      "setting": "SCENIC+ built partly from the same RNA being explained",
+      "circularity_class": "C3_QUERY_CIRCULAR",
+      "matrix_rows": [
+        "R5a",
+        "R5c"
+      ],
+      "can_distinguish": "No, from the RNA side: S5, S6's RNA input, S8 gene-based and S9 are functions of the query RNA, identical under TW_EXACT. The only discriminating content is per-nucleus accessibility (S1 to S4 and region-based S8) when it is same-nucleus and built without the RNA; that is the R1 object, and it should be tested as R1 directly, with R1's controls, not through eRegulon presence, which mixes it with circular evidence. With unpaired chromatin the S6 pairing is RNA-derived, so nothing escapes the circularity",
+      "twins_broken": [],
+      "twins_absorbed": [
+        "TW_EXACT",
+        "TW_OPERATOR",
+        "TW_TARGET_CAPTURE",
+        "TW_ASSAY",
+        "TW_PROPERTY"
+      ],
+      "verdict": "CIRCULAR_WITH_CURRENT_RNA"
+    },
+    {
+      "id": "B_INDEPENDENT_CHROMATIN_PLUS_RNA",
+      "setting": "SCENIC+ built with independent chromatin plus RNA (another dataset), applied to the query",
+      "circularity_class": "C2_ASSAY_CLASS_CIRCULAR",
+      "matrix_rows": [
+        "R5b"
+      ],
+      "can_distinguish": "No lineage twin: the network is fixed with respect to the query (P1), and its activity on the query is a function of the query RNA. Its own RNA side absorbs the source dataset's covariance, including any assay-class capture structure. It can argue against TW_ASSAY only where its region evidence shows the program coupled to chromatin in the source dataset",
+      "twins_broken": [],
+      "twins_absorbed": [
+        "TW_ASSAY"
+      ],
+      "verdict": "SUPPORTIVE_BUT_NOT_IDENTIFYING"
+    },
+    {
+      "id": "C_PHYSICALLY_INDEPENDENT_LINKS",
+      "setting": "regulatory links supported by evidence physically independent of the query RNA: motif sequence, enhancer-promoter contacts, histone marks, perturbation responses, eQTL and caQTL",
+      "circularity_class": "C1_STATIC_INDEPENDENT",
+      "matrix_rows": [
+        "R3",
+        "R4",
+        "R6",
+        "R8b"
+      ],
+      "can_distinguish": "Not against a twin acting on the same genes: a fixed link set takes the same value whichever process generated the query RNA. It can reject nuisances whose gene membership it predicts differently (V63 E2 classes, TW_PROPERTY) given matched controls, but V63 Task 8 failed on a latent capture factor correlated with the target, and an anchor-keyed nuisance passed unless anchor frequency was matched. A handling-induced program (TW_PROCESS_PROGRAM) is genuine regulation and passes every link test",
+      "twins_broken": [
+        "TW_MODELLED",
+        "TW_PROPERTY"
+      ],
+      "twins_absorbed": [
+        "TW_PROCESS_PROGRAM"
+      ],
+      "verdict": "SUPPORTIVE_BUT_NOT_IDENTIFYING"
+    }
+  ],
+  "not_only_atac": [
+    {
+      "evidence": "enhancer-promoter contacts (Nott PLAC-seq)",
+      "circularity_class": "C1_STATIC_INDEPENDENT",
+      "selection_coupled": true,
+      "matrix_row": "R3"
+    },
+    {
+      "evidence": "TF motifs and cisTarget rankings",
+      "circularity_class": "C1_STATIC_INDEPENDENT",
+      "selection_coupled": false,
+      "matrix_row": "R4"
+    },
+    {
+      "evidence": "perturbation responses in an external system",
+      "circularity_class": "C1_STATIC_INDEPENDENT",
+      "selection_coupled": true,
+      "matrix_row": "R6"
+    },
+    {
+      "evidence": "external eQTL and caQTL catalogues",
+      "circularity_class": "C2_ASSAY_CLASS_CIRCULAR",
+      "selection_coupled": false,
+      "matrix_row": "R8b",
+      "note": "discovered on RNA of other cohorts; capture-altering variants in those cohorts are absorbed"
+    },
+    {
+      "evidence": "query-donor genotypes with allele-resolved query RNA",
+      "circularity_class": "C0_QUERY_MATCHED_INDEPENDENT",
+      "selection_coupled": false,
+      "matrix_row": "R8a"
+    },
+    {
+      "evidence": "same-nucleus accessibility at a region universe fixed without RNA",
+      "circularity_class": "C0_QUERY_MATCHED_INDEPENDENT",
+      "selection_coupled": false,
+      "matrix_row": "R1"
+    },
+    {
+      "evidence": "spatial in situ data from the query donors",
+      "circularity_class": "C0_QUERY_MATCHED_INDEPENDENT",
+      "selection_coupled": true,
+      "matrix_row": "R7a"
+    },
+    {
+      "evidence": "protein in the same cells or the query donors",
+      "circularity_class": "C0_QUERY_MATCHED_INDEPENDENT",
+      "selection_coupled": true,
+      "matrix_row": "R10a"
+    },
+    {
+      "evidence": "donor and sample handling covariates",
+      "circularity_class": "C0_QUERY_MATCHED_INDEPENDENT",
+      "selection_coupled": false,
+      "matrix_row": "R9d",
+      "note": "breaks no lineage twin; the only object addressing TW_PROCESS_PROGRAM"
+    }
+  ],
+  "project_evidence": [
+    {
+      "evidence": "PR #179 SCENIC+ recovery and expansion",
+      "where": "PR #179 (open), agent-4/scenicplus-recovery-expansion-20260926",
+      "status": "INCOMPLETE_STOPPED: 'Do not cite any number from this branch as evidence'",
+      "bearing": "no citable SCENIC+ result exists; nothing here can be counted as regulatory support"
+    },
+    {
+      "evidence": "Stage75F edges",
+      "where": "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json",
+      "local_paths": [
+        "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json"
+      ],
+      "status": "HYPOTHESIS_GENERATING_ONLY; 10 regulators, 96 TF-target rows; HISTORICALLY_EXPOSED; forbidden upgrade 'Stage75F hypothesis to validated GRN'",
+      "bearing": "setting A for Morabito RNA (C3), and Morabito is protected"
+    },
+    {
+      "evidence": "V50 forbidden upgrades",
+      "where": "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json",
+      "local_paths": [
+        "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json"
+      ],
+      "status": "'joint integration latent agreement to independent multimodal evidence'; 'same-nucleus agreement to independent cohort replication'",
+      "bearing": "project law already forbids reading joint-embedding agreement as independent evidence (pipeline step S1)"
+    },
+    {
+      "evidence": "GSE214979 in the V50 map",
+      "where": "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json",
+      "local_paths": [
+        "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json"
+      ],
+      "status": "AUTHENTICATED_WITH_FROZEN_EXCLUSIONS; cannot address 'independent confirmation of a network trained on all of its own data'",
+      "bearing": "setting A in GSE214979's own frame; setting B for any other query"
+    },
+    {
+      "evidence": "V69 Route A/B prospective freeze on GSE214979",
+      "where": "claude/v74-authority-correction-20261004: results/v64/V69_GSE214979_ROUTE_AB_PROSPECTIVE_FREEZE_V1.json (500a8cfd) and amendments 1-2",
+      "status": "pseudobulk unit donor x published microglial subcluster (Mic_0..Mic_4); 'microglial identity is taken from the published multiome annotation and cannot be re-derived from ATAC alone without circularity'; no recurrence filter on the universe 'because filtering regions by recurrence and then measuring recurrence would be circular'; TF-label permutation within annotation-supply strata, donor-fingerprint and broad-class controls frozen before any eRegulon",
+      "bearing": "OPEN QUESTION: how the depositor derived Mic_0..Mic_4 is not recorded in the receipts read. If from RNA or a joint embedding, the Route-B region universe inherits the RNA partition (steps S1 and S2) for any test on the same nuclei. The freeze avoided ATAC-only circularity by accepting this dependence"
+    },
+    {
+      "evidence": "Stage-4 synthetic qualification preserved by the V69 freeze",
+      "where": "claude/v74-authority-correction-20261004: same freeze, SECTION_9 stage4_hidden_confound_preservation",
+      "status": "planted biology Delta ~ +0.785; hidden within-donor metacell-varying technical confound Delta ~ +0.654; control-vs-control ~ 0",
+      "bearing": "the project's own synthetic already shows a hidden technical confound scoring close to planted biology on a regulatory-correspondence criterion (the TW_TARGET_CAPTURE pattern). V69's point that an external network has a DIFFERENT failure mode is consistent with this audit: setting B fails by absorbing the assay class (C2) rather than the query's own covariance (C3). A different failure mode is not identification"
+    },
+    {
+      "evidence": "V74 reconciliation",
+      "where": "claude/v74-authority-correction-20261004@733829c6 results/v74/V74_MACHA_RECONCILIATION_AUTHORITY_V1.json",
+      "status": "Route-B fragment replay REPRODUCED_ON_RECONCILED_HEAD; blacklist ENCFF356LFX AUTHENTICATED_AND_BOUND; REMAINING_BLOCKERS: 'no SCENIC+ regulatory network exists on either route'",
+      "bearing": "infrastructure only; there is no network yet, so this audit classifies constructions, not results"
+    },
+    {
+      "evidence": "V68 coverage map",
+      "where": "results/v64/V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_MAP_V1.json",
+      "local_paths": [
+        "results/v64/V68_FULL104_PRIVILEGED_EVIDENCE_COVERAGE_MAP_V1.json"
+      ],
+      "status": "scenic_plus current_qualified_broad_network false; NOT_YET_QUANTIFIABLE_AGAINST_FULL104",
+      "bearing": "no qualified network to transport to FULL104"
+    },
+    {
+      "evidence": "V50 nuisance class N2B handling/exAM",
+      "where": "docs/agent/V50_REGULATORY_TRIANGULATION_AND_TRANSPORT_FRAMEWORK_20260928.md",
+      "local_paths": [
+        "docs/agent/V50_REGULATORY_TRIANGULATION_AND_TRANSPORT_FRAMEWORK_20260928.md"
+      ],
+      "status": "'Handling induces apparent activation/homeostatic loss and chromatin changes not captured by PMI'",
+      "bearing": "chromatin evidence cannot separate a handling-induced program (TW_PROCESS_PROGRAM); every setting passes it"
+    },
+    {
+      "evidence": "V49 exAM and PMI",
+      "where": "docs/agent/V49_SNRNA_UNDERDETECTS_TWO_OF_OUR_THREE_PROGRAMS_20260928.md",
+      "local_paths": [
+        "docs/agent/V49_SNRNA_UNDERDETECTS_TWO_OF_OUR_THREE_PROGRAMS_20260928.md"
+      ],
+      "status": "the exAM signature does not correlate with recorded PMI",
+      "bearing": "recorded handling variables are a weak handle on TW_PROCESS_PROGRAM"
+    },
+    {
+      "evidence": "V50 nuisance class N2E motif annotation supply",
+      "where": "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json",
+      "local_paths": [
+        "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json"
+      ],
+      "status": "mandatory nuisance class",
+      "bearing": "the motif step (S4) needs the supply-stratified TF-label permutation that V69 froze"
+    },
+    {
+      "evidence": "Stage75F motif power",
+      "where": "claude/v74-authority-correction-20261004: V69 freeze amendment 2",
+      "status": "Stage75F failed to resolve TF-specific signal at 57-91 query regions on this tissue and motif collection",
+      "bearing": "motif evidence on small region sets is underpowered as well as static"
+    },
+    {
+      "evidence": "Nott S5 re-authentication",
+      "where": "handoff/jepa-20261006-macha-audit-successor@b1382ab4 docs/agent/JEPA_NOTT_TABLE_S5_REAUTH_AND_CELLTYPE_CONTACT_SPECIFICITY_20261006.md",
+      "status": "'Exact-edge specificity can reflect both biology and interaction-calling power/assay properties'; 'Nott contacts remain physical wiring evidence, not activity, causality, or state-specific expression evidence'",
+      "bearing": "setting C, static: supportive only"
+    },
+    {
+      "evidence": "V63 E2 and Task 8",
+      "where": "results/v63/V63_E2_IDENTIFIABILITY_BENCHMARK_V1.json; docs/agent/V63_TASK8_TOURNAMENT_RESULT_20260929.md",
+      "local_paths": [
+        "results/v63/V63_E2_IDENTIFIABILITY_BENCHMARK_V1.json",
+        "docs/agent/V63_TASK8_TOURNAMENT_RESULT_20260929.md"
+      ],
+      "status": "E2: ALL_TESTED_NEGATIVES_REJECTED, NEG5 NON_IDENTIFIABLE_BY_DESIGN; Task 8: gate_may_proceed false on FAIL__TECH; anchor family fails without anchor-frequency matching",
+      "bearing": "the empirical limits of setting C"
+    },
+    {
+      "evidence": "same-nucleus instances",
+      "where": "handoff/jepa-20261006-macha-audit-successor@e966e05b; main@7018edea asset matrix V3",
+      "status": "GSE214979 VERIFIED_SAME_NUCLEUS_PAIRING__CONDITIONAL; GSE272082 NEEDS_AUTHENTICATION; SEA-AD public multiome PAIRING_QUALIFIED_BIOLOGICAL_OUTCOME_UNOPENED",
+      "bearing": "the only route out of setting A's circularity is the region side measured in these nuclei (R1)"
+    },
+    {
+      "evidence": "V77 S157 terminal",
+      "where": "results/v77/V77_S157_TERMINAL_RECEIPT_V1.json",
+      "local_paths": [
+        "results/v77/V77_S157_TERMINAL_RECEIPT_V1.json"
+      ],
+      "status": "T1: the exact same-assay twin is observationally indistinguishable from RNA",
+      "bearing": "anything computed from the query RNA alone, eRegulon activity included, is identical under TW_EXACT"
+    }
+  ],
+  "requirements_if_used": [
+    "use only the region side measured in the query's own nuclei, tested as R1 rather than through eRegulon presence",
+    "cell groupings, the region universe and differential contrasts built from chromatin alone, frozen before outcomes",
+    "a region-to-gene rule fixed in advance (distance or external contacts), never fitted on the query RNA",
+    "the PR #179 controls: annotation supply and TF-label permutation",
+    "a planted nucleus-quality-keyed control for TW_ANCHOR",
+    "handling covariates for TW_PROCESS_PROGRAM",
+    "donor-level inference; exposure-ledger entries before any outcome is read"
+  ],
+  "summary": "(a) is circular with the query RNA; (b) is circular with the assay class and static with respect to the query; (c) is static. None can break a lineage twin in the query. Only measurements on the query's own nuclei, cells or donors can: among available objects the matrix's R1, R2a and R7a (R8a and R10a are not available), not SCENIC+ as such. No SCENIC+ network exists in the project yet",
+  "does_not": [
+    "build, run or select any network",
+    "open protected data (Morabito, DS010, DEV, SEALED, TEST)",
+    "read any real outcome",
+    "train, mutate or touch runtime code"
+  ],
+  "recorded_utc": "2026-10-07T06:13:48Z",
+  "head_when_recorded": "ffe4e73d24137d6818167bd98fc2f9c98e350997",
+  "evidence": {
+    "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json": "6f2a61831ae816264b943b777bcfd43df7d40a48f17a98d11180c313898a5b32",
+    "docs/agent/V50_REGULATORY_INDEPENDENCE_MAP_20260928.json": "206e2ef0833e6cf936215f1dc6f8a4f1ace2d2d81d887b344831b0bc5cfcf015",
+    "docs/agent/V50_REGULATORY_TRIANGULATION_AND_TRANSPORT_FRAMEWORK_20260928.md": "3617eb11fcaca6f9a311ae6b0e3332308efcc788b0849bdfd284d533bbcb409b",
+    "results/v77/V77_S157_TERMINAL_RECEIPT_V1.json": "9c4fd3820631dc9920f91278a75899291101045eab2ed785a457fcd2ab0cec00"
+  }
+}
