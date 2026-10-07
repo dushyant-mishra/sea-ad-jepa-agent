@@ -47,6 +47,8 @@ def _git(*args):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
+    ap.add_argument("--cache", default=str(RC.DEFAULT_CACHE),
+                    help="real TRAIN cache; the default is the original (S174-affected) cache")
     a = ap.parse_args()
     for rel in EXECUTOR_FILES:
         if subprocess.run(["git", "ls-files", "--error-unmatch", rel], capture_output=True, cwd=ROOT).returncode:
@@ -65,7 +67,7 @@ def main():
     multi_study_donors = sorted(d for d, c in per.items() if len(c) > 1)
     true_src = {d: c.most_common(1)[0][0] for d, c in per.items()}
 
-    X, cls, don, src, dig = RC.load_real(RC.DEFAULT_CACHE)
+    X, cls, don, src, dig = RC.load_real(Path(a.cache))
     X = X.tocsr(); X.eliminate_zeros()
     don = don.astype(str)
     uni = AU.AddressUniverse(7302)
@@ -111,10 +113,10 @@ def main():
                                     cell_fraction={k: v / tot_pc for k, v in prod_cells.items()},
                                     donor_fraction={k: v / tot_pd for k, v in prod_donors.items()}),
             donors_shared=int(len(set(don) & set(true_src))), cache_only_donors=int(len(set(don) - set(true_src)))),
-        source=dict(cache=str(RC.DEFAULT_CACHE), n_shards=len(dig), shard_digests=dig,
+        source=dict(cache=str(a.cache), n_shards=len(dig), shard_digests=dig,
                     population_authority=str(G.AUTHORITY), pathology_blind=True, train_only=True,
                     read_only=True, metadata_csvs_opened=False),
-        command=f"python scripts/v77/validate_v77_coverage_strata.py --out {a.out}",
+        command=f"python scripts/v77/validate_v77_coverage_strata.py --out {a.out} --cache {a.cache}",
         source_commit=head, provenance_status="CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
         executor_sha256=digests, no_training_performed=True)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)

@@ -141,10 +141,14 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--universe-dir", required=True,
                     help="where per-stratum universe npz files are written (custody, not git)")
+    ap.add_argument("--cache", default=str(RC.DEFAULT_CACHE),
+                    help="real TRAIN cache; the default is the original (S174-affected) cache")
+    ap.add_argument("--inputs-dir", default=str(ROOT / "results" / "v77"),
+                    help="where the pooled envelopes and topology calibration this run reads live")
     a = ap.parse_args()
     head, digests = _require_committed_executors()
 
-    X, cls, don, src, dig = RC.load_real(RC.DEFAULT_CACHE)
+    X, cls, don, src, dig = RC.load_real(Path(a.cache))
     X = X.tocsr(); X.eliminate_zeros()
     uni = AU.AddressUniverse(7302)
     cs, fits = cell_strata(X, uni)
@@ -153,11 +157,11 @@ def main():
     mixed_donors = sorted(d for d in by_donor if len(set(cs[don == d].astype(str))) > 1)
 
     frozen = {
-        "detection": json.loads((ROOT / "results/v77/V77_REAL_DETECTION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
-        "expression": json.loads((ROOT / "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
-        "abundance": json.loads((ROOT / "results/v77/V77_REAL_ABUNDANCE_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
+        "detection": json.loads((Path(a.inputs_dir) / "V77_REAL_DETECTION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
+        "expression": json.loads((Path(a.inputs_dir) / "V77_REAL_CALIBRATION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
+        "abundance": json.loads((Path(a.inputs_dir) / "V77_REAL_ABUNDANCE_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"],
     }
-    pooled_t5 = json.loads((ROOT / "results/v77/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json").read_text())[
+    pooled_t5 = json.loads((Path(a.inputs_dir) / "V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json").read_text())[
         "T5_class_conditional_structure"]["within_over_pooled_ratio"]
 
     # the pooled gene set, to report how much the within-stratum selection departs from it
@@ -266,10 +270,10 @@ def main():
             cells_whose_detections_violate_their_donor_stratum_coverage=int(violators.sum())),
         strata=strata,
         pooled_reference_points=pooled_reference,
-        source=dict(cache=str(RC.DEFAULT_CACHE), n_shards=len(dig), shard_digests=dig,
+        source=dict(cache=str(a.cache), n_shards=len(dig), shard_digests=dig,
                     pathology_blind=True, train_only=True, read_only=True),
         command=f"python scripts/v77/build_v77_within_cohort_envelope.py --out {a.out} "
-                f"--universe-dir {a.universe_dir}",
+                f"--universe-dir {a.universe_dir} --cache {a.cache} --inputs-dir {a.inputs_dir}",
         source_commit=head,
         provenance_status="CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
         executor_sha256=digests,

@@ -35,13 +35,15 @@ FROZEN = HERE.parents[1] / "results" / "v77" / "V77_REAL_ABUNDANCE_ENVELOPE_V1.j
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True, help="where to write the reproduced envelope")
+    ap.add_argument("--cache", default=str(RC.DEFAULT_CACHE),
+                    help="real TRAIN cache; the default is the original (S174-affected) cache")
     a = ap.parse_args()
     out = Path(a.out).resolve()
     if out == FROZEN.resolve():
         sys.exit("refusing: the frozen envelope is never overwritten; write the reproduction elsewhere")
 
     # ---- transcribed unchanged from the inline producer ----
-    X, cls, don, src, dig = RC.load_real(RC.DEFAULT_CACHE)
+    X, cls, don, src, dig = RC.load_real(Path(a.cache))
     n, G = X.shape; lib = np.asarray(X.sum(1)).ravel()
     gdet = np.asarray((X > 0).sum(0)).ravel() / n
     keep = np.where(gdet > 0.05)[0]
@@ -59,7 +61,7 @@ def main():
                       accept_low=float(np.quantile(v, .05)), accept_high=float(np.quantile(v, .95)))
     rec = dict(schema="V77_REAL_ABUNDANCE_ENVELOPE_V1",
                frozen_before_any_observer_v2_candidate_was_evaluated=True,
-               source=dict(cache=str(RC.DEFAULT_CACHE), n_shards=len(dig), shard_digests=dig,
+               source=dict(cache=str(a.cache), n_shards=len(dig), shard_digests=dig,
                            pathology_blind=True, train_only=True, read_only=True),
                gene_universe=dict(detection_floor=0.05, genes_kept=int(len(keep)),
                                   note="the SAME filtering used for the frozen topology envelope"),

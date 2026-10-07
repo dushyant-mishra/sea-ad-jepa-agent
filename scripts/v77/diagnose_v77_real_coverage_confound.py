@@ -79,10 +79,14 @@ def _stats(det, sel):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
+    ap.add_argument("--cache", default=str(RC.DEFAULT_CACHE),
+                    help="real TRAIN cache; the default is the original (S174-affected) cache")
+    ap.add_argument("--inputs-dir", default=str(HERE.parents[1] / "results" / "v77"),
+                    help="where the detection envelope this run is checked against lives")
     a = ap.parse_args()
     head = _require_committed_executors()
 
-    X, cls, don, src, dig = RC.load_real(RC.DEFAULT_CACHE)
+    X, cls, don, src, dig = RC.load_real(Path(a.cache))
     X = X.tocsr(); n = X.shape[0]
     lib = np.asarray(X.sum(1)).ravel()
     gdet = np.asarray((X > 0).sum(0)).ravel() / n
@@ -124,7 +128,7 @@ def main():
                 if k in ("frac_abs_gt_0p3", "median_abs_corr", "transitivity", "mean_degree",
                          "largest_community_frac", "pos_over_neg_ratio")})
 
-    frozen = json.loads((HERE.parents[1] / "results" / "v77" /
+    frozen = json.loads((Path(a.inputs_dir) /
                          "V77_REAL_DETECTION_ENVELOPE_V1.json").read_text())["ACCEPTANCE_ENVELOPES"]
     reproduces = all(abs(A[k] - frozen[k]["point"]) < 1e-9 for k in A if k in frozen)
 
@@ -133,7 +137,7 @@ def main():
         claim_class="V77_SYNTHETIC_WORLD_QUALIFICATION",
         status="DIAGNOSTIC_ONLY__NO_ENVELOPE_CHANGED__NO_THRESHOLD_SET",
         question="how much of the frozen real detection topology does cohort coverage alone produce?",
-        source=dict(cache=str(RC.DEFAULT_CACHE), n_shards=len(dig), shard_digests=dig,
+        source=dict(cache=str(a.cache), n_shards=len(dig), shard_digests=dig,
                     pathology_blind=True, train_only=True, read_only=True),
         envelope_genes=dict(rule="frozen: expression-variance selection on TRAIN_PREVALENCE05_19569",
                             n=int(len(sel))),
@@ -150,7 +154,8 @@ def main():
         S_within_single_coverage_stratum=S,
         G_all_cells_genes_covered_by_all_three_cohorts=G,
         frozen_detection_envelope_points={k: frozen[k]["point"] for k in A if k in frozen},
-        command=f"python scripts/v77/diagnose_v77_real_coverage_confound.py --out {a.out}",
+        command=(f"python scripts/v77/diagnose_v77_real_coverage_confound.py --out {a.out} --cache {a.cache} "
+                 f"--inputs-dir {a.inputs_dir}"),
         source_commit=head,
         provenance_status="CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
         executor_sha256={f: hashlib.sha256((HERE / f).read_bytes()).hexdigest() for f in EXECUTOR_FILES},
