@@ -3,6 +3,7 @@ feature-axis defect. Every V77 script or result that touches it must be listed a
 defect cannot spread silently into new work, and the record must not overstate what was verified."""
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -38,6 +39,21 @@ def test_every_script_reading_the_cache_is_listed():
 def test_every_result_built_from_the_cache_is_listed():
     found = {f for f in _files_naming(CACHE, "results/v77") if "ADDENDUM_4" not in f}
     assert found <= set(_s174()["affected_results"]) | set(INVESTIGATION)
+
+
+def test_the_probe_outcome_is_recorded_faithfully():
+    res = ROOT / "results" / "v77" / "V77_S174_CACHE_AXIS_PROBE_RESULT_V1.json"
+    add5 = ROOT / "results" / "v77" / "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_5.json"
+    r = json.loads(res.read_text(encoding="utf-8"))
+    a = json.loads(add5.read_text(encoding="utf-8"))["S174_UPDATE"]
+    assert a["verdict"] == r["verdict"]
+    assert a["probe"]["result"]["sha256"] == hashlib.sha256(res.read_bytes()).hexdigest()
+    pre = ROOT / a["probe"]["preregistration"]["path"]
+    assert r["preregistration"]["sha256"] == hashlib.sha256(pre.read_bytes()).hexdigest()
+    assert r["code"]["equals_preregistered"] is True
+    if r["verdict"] == "S174_VALUE_VERIFIED":
+        assert a["verification_status"] == "VALUE_VERIFIED"
+        assert "REMAIN_SUSPENDED" in a["status"] and "REBUILD_NOT_AUTHORIZED" in a["status"]
 
 
 def test_investigation_entries_carry_a_reason_and_are_not_consumers():
