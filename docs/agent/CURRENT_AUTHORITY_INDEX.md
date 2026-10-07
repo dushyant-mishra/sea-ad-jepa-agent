@@ -1,7 +1,7 @@
 # CURRENT AUTHORITY INDEX — JEPA PROJECT
 
 Date: 2026-10-06
-Status: `PREMISE_V3_FROZEN__RUNTIME_SAFETY_RECONCILIATION__TRAINING_OFF`
+Status: `PREMISE_V3_FROZEN__CANONICAL_V5_RUNTIME_CONVERGED_PENDING_SHARED_INTERFACE_BINDING__TRAINING_OFF`
 
 ## Canonical startup precedence
 
@@ -38,18 +38,44 @@ Current target status:
 
 No representation winner, estimand, or deciding numeric threshold is selected. Stage A remains a prefreeze execution contract only; it is not execution authority. Target lineage reconstruction is complete and must not be reopened as current work.
 
-### Current task — runtime-safety reconciliation
+### Runtime mechanics authority
 
-Reconcile the recovered V5 mechanics onto the frozen V3 science without importing old authority assumptions. The current implementation lane must prove:
+The current canonical runtime successor is PR #224 on `reconcile/canonical-v5-runtime-successor-20261006`. It remains draft and non-authorizing.
 
-- an optimizer update cannot occur through an unguarded step path;
-- step permission is single-use and cursor-bound;
-- a successful optimizer step is explicitly proved before EMA can advance;
-- rejected or incomplete steps cannot advance EMA;
-- checkpoint/reload semantics are later bound to the then-current authority graph;
-- all of this remains mechanics-only while `TRAINING=OFF`.
+The active mutation path is:
 
-Historical `CurrentTrainingAuthorityV2` is a final training authority object. Its mechanics may inform the reconciliation, but its issuance path must remain unreachable while no production target or representation is qualified.
+`actual V5 consumer -> PrefreezeMechanicalAuthorityV1 -> PrefreezeOptimizerGuardV1 -> guarded AdamW / optional GradScaler -> optimizer completion proof -> guard-owned EMA -> bound checkpoint -> persisted artifact proof`
+
+Current physically exercised mechanics include:
+
+- the exact optimizer object/configuration is bound into mechanical authority;
+- gradients are unscaled before validation under AMP;
+- finite GradScaler updates complete through the guarded AdamW path;
+- a GradScaler-skipped/nonfinite update cannot authorize optimizer completion or EMA;
+- EMA can occur only after successful guarded optimizer completion;
+- incomplete/post-step failure cannot advance the teacher;
+- there is one canonical V5 mutation path; the alternate generic `prefreeze_guarded_rehearsal.py` path has been retired;
+- checkpoint state binds online/student, EMA teacher, predictor, optimizer, GradScaler state when used, update cursor, and presentations seen;
+- bounded uninterrupted vs interrupted/reloaded AMP trajectories have been shown identical;
+- the active keyed-dropout path is deterministic from scientific identity/run/update/view/layer/site keys and bounded restart is insensitive to unrelated global Torch RNG perturbations;
+- persisted checkpoint bytes are SHA-256 verified before deserialization;
+- a completed physical proof is emitted only after noninitial checkpoint write, hash verification, reload, and governance/runtime/guard-receipt revalidation;
+- checkpoint runtime provenance covers the transitive numerical path, not only the top-level wrappers.
+
+This remains `PREFREEZE_MECHANICAL_AUTHORITY`, not training authority. It does not authorize real-RNA execution, Stage A, production training, target selection, representation selection, estimand selection, or deciding thresholds.
+
+### Current task — shared-interface binding
+
+Bind the exact canonical runtime provenance into PR #223 without broadening scientific authority.
+
+Required next proofs:
+
+- #223 `MutationProofStatus.PROVEN_BY_BOUND_RUNTIME` must require the exact bound PR #224 runtime proof, not merely a string/digest claim;
+- q-safety remains `POLICY_ONLY_NOT_EXECUTION_PROVEN` until the adapter+runtime path physically executes and proves each required transformation;
+- the first joined run remains bounded synthetic qualification/mutation only, not real-RNA execution or production training;
+- final bypass/historical-spillover audit must confirm no donor-era guard, generic rehearsal, direct optimizer path, alternate EMA path, or old scientific authority root remains reachable.
+
+Historical `CurrentTrainingAuthorityV2` is not current authority and must not be imported as the canonical runtime object.
 
 ### Representation / dimension authority
 
@@ -61,7 +87,9 @@ Historical `CurrentTrainingAuthorityV2` is a final training authority object. It
 
 ### Synthetic compatibility
 
-V77 synthetic work may test known planted truth and metric behavior. Synthetic success cannot select a real biological target or confer real biological validation. The V75 96-anonymous-feature -> canonical 41,238-address identity bridge remains undefined; arbitrary mapping is forbidden.
+V77 synthetic work may test planted truth, anti-cheat boundaries, identifiability and metric behavior. Synthetic success cannot select a real biological target or confer real biological validation.
+
+The current V77 adapter can build a PR #223-compatible ZERO_UPDATE batch from repaired worlds, but mutation and executed q-safety remain unproven by that interface alone. Raw source/operator identity is authenticated measurement context, not automatically authorized learned model covariate.
 
 ## Historical recovery requirement
 
