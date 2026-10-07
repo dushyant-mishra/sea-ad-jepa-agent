@@ -1,0 +1,117 @@
+{
+  "schema": "V77_HISTORICAL_SPILLOVER_AUDIT_V1",
+  "phase": "S174_REPLAY_before_commit",
+  "head": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+  "files_scanned": 163,
+  "structural": {
+    "RAW_IDS_MODEL_VISIBLE": {
+      "status": "PASS",
+      "problems": []
+    },
+    "OLD_RUNTIME_CLASSES": {
+      "status": "PASS",
+      "problems": []
+    },
+    "ZERO_QUOTA_OPERATOR_LOSS": {
+      "status": "PASS",
+      "worlds": [
+        {
+          "truth": "D:\\jepa_v77_synthetic_custody_20261005\\s157_challenge_v1\\NULL\\hidden_truth",
+          "operators": 42,
+          "operators_with_zero_cells": 0,
+          "unexpected_operator_loss": []
+        },
+        {
+          "truth": "D:\\jepa_v77_synthetic_custody_20261005\\worlds\\fs_smoke_s161\\hidden_truth",
+          "operators": 42,
+          "operators_with_zero_cells": 0,
+          "unexpected_operator_loss": []
+        }
+      ]
+    }
+  },
+  "text_candidates": {
+    "V47_V48_OVERWRITTEN": [
+      {
+        "file": "tests/v77/test_v77_historical_spillover_audit.py",
+        "line": 57,
+        "text": "hits = S.text_checks_lines([(\"x.md\", [\"identifiability is resolved by the new generator\","
+      },
+      {
+        "file": "tests/v77/test_v77_s157_terminal_frozen.py",
+        "line": 48,
+        "text": "mutated[\"TERMINAL_STATEMENTS\"][0][\"statement\"] = \"The exact same-assay semantic twin is resolved.\""
+      },
+      {
+        "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+        "line": 88,
+        "text": "\"text\": \"A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim.\""
+      },
+      {
+        "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+        "line": 16,
+        "text": "- **P5_LOCALITY.** A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim."
+      }
+    ],
+    "V63_MISREPRESENTED": [],
+    "S149_POOLED_AS_TARGET": [
+      {
+        "file": "results/v77/V77_ADVERSARIAL_SELF_AUDIT_V1.json",
+        "line": 59,
+        "text": "\"finding\": \"two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdi"
+      },
+      {
+        "file": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+        "line": 437,
+        "text": "\"defect\": \"the pooled expression calibration describes itself as a calibration TARGET\","
+      }
+    ],
+    "S159_RECENTRED_AS_AUTHORITY": [],
+    "MORABITO_AS_VALIDATION": [],
+    "SCENIC_ATAC_CIRCULAR": [
+      {
+        "file": "scripts/v77/v77_regulatory_graph.py",
+        "line": 2,
+        "text": "\"\"\"Deterministic SCENIC+-like regulatory ground truth: TF -> enhancer region -> target gene."
+      },
+      {
+        "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+        "line": 385,
+        "text": "\"name\": \"SCENIC+ eRegulons built on an independent multiome, applied to the query\","
+      },
+      {
+        "file": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+        "line": 17,
+        "text": "\"review_lane_instruction\": \"isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised\","
+      },
+      {
+        "file": "results/v77/V77_REGULATORY_CIRCULARITY_AUDIT_V1.json",
+        "line": 6,
+        "text": "\"question\": \"Can regulatory evidence tell true regulatory biology from a capture or measurement process that generates the same RNA covariance? Answered separately for (a) SCENIC+ built partly from th"
+      },
+      {
+        "file": "results/v77/V77_REGULATORY_CIRCULARITY_AUDIT_V1.json",
+        "line": 95,
+        "text": "\"setting\": \"SCENIC+ built with independent chromatin plus RNA (another dataset), applied to the query\","
+      },
+      {
+        "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+        "line": 222,
+        "text": "### R5b. SCENIC+ eRegulons built on an independent multiome, applied to the query"
+      },
+      {
+        "file": "docs/agent/V77_REGULATORY_CIRCULARITY_AUDIT.md",
+        "line": 5,
+        "text": "**Question:** Can regulatory evidence tell true regulatory biology from a capture or measurement process that generates the same RNA covariance? Answered separately for (a) SCENIC+ built partly from t"
+      },
+      {
+        "file": "docs/agent/V77_REGULATORY_CIRCULARITY_AUDIT.md",
+        "line": 42,
+        "text": "### B_INDEPENDENT_CHROMATIN_PLUS_RNA: SCENIC+ built with independent chromatin plus RNA (another dataset), applied to the query"
+      }
+    ],
+    "SEED7302_AS_CONFIRMATION": []
+  },
+  "reading": "structural checks decide PASS/FAIL; text candidates require review and carry dispositions in the phase record; a clean text check is not proof of absence",
+  "structural_pass": true
+}

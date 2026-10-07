@@ -1,0 +1,2748 @@
+{
+  "schema": "V77_REAL_WITHIN_COHORT_DIAGNOSTIC_V3",
+  "relabels": {
+    "receipts": [
+      "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json",
+      "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json"
+    ],
+    "why": "authority language corrected; the computation is unchanged"
+  },
+  "inherited_rule": "5%-95% percentile of the donor resamples; OPEN defect S159: it can exclude the point",
+  "candidate_repair_S159": "[point - (median - q05), point + (q95 - median)]; recorded for review, NOT authoritative",
+  "candidate_comparison_protocol": "score a synthetic world on the stratum's own universe and own number of cells; for review",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "status": "CANDIDATE_CALIBRATION_DIAGNOSTIC__FOR_REVIEW__NOT_FOR_SYNTHETIC_PASS_FAIL",
+  "authority": {
+    "decides_target_estimand_and_weighting": "the real-data scientific lane",
+    "synthetic_pass_fail_use": "NOT AUTHORIZED",
+    "evidence": "results/v77/V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1.json",
+    "pooled_envelopes": "unchanged; composition-inclusive references"
+  },
+  "rule": {
+    "stratum": "smallest cohort coverage containing every detection of the cell, over all addresses; donor-level majority used",
+    "eligibility": "at least two classes with >= 200 cells (frozen T5 floor)",
+    "universe": "detected in more than 5% of the stratum's cells (frozen floor)",
+    "genes": "3000 by CPM-log1p expression variance within the stratum (frozen rule)",
+    "envelope": "donor bootstrap within stratum, 24 replicates, seed 20261006, gene set held at the point estimate's, range = quantiles (0.05, 0.95)"
+  },
+  "stratum_assignment": {
+    "cell_level": {
+      "HVS": 3072,
+      "NPH52": 246,
+      "SEA_AD": 1408,
+      "NONE": 0
+    },
+    "donor_level_cells": {
+      "HVS": 3072,
+      "NPH52": 246,
+      "SEA_AD": 1408
+    },
+    "donor_level_donors": {
+      "HVS": 62,
+      "NPH52": 19,
+      "SEA_AD": 68
+    },
+    "donors_with_mixed_cell_strata": 0,
+    "cells_whose_detections_violate_their_donor_stratum_coverage": 0
+  },
+  "strata": {
+    "HVS": {
+      "n_cells": 3072,
+      "n_donors": 62,
+      "classes_at_t5_floor": 3,
+      "class_sizes": {
+        "Neuronal: GABAergic": 1152,
+        "Neuronal: Glutamatergic": 1152,
+        "Non-neuronal and Non-neural": 768
+      },
+      "ELIGIBLE": true,
+      "universe": {
+        "name": "TRAIN_WITHIN_HVS_PREVALENCE05_13326",
+        "n_genes": 13326,
+        "index_sha256": "cf86826cbfe832a309f5223c55a8cec7541cbf408c68c3c33d6b6295a804a7e1",
+        "npz": "D:\\jepa_v77_synthetic_custody_20261005\\s174_replay\\within_cohort_universes_v2\\TRAIN_WITHIN_HVS_PREVALENCE05_13326.npz",
+        "npz_sha256": "e37d041e77f83e678370a91dfd5aab9145b63fe80ae4d1f7ee02f5c8bcaccd89",
+        "mask_packbits_b64": "K//7Pfr/v3Ki9qd53/98/8/K1uvdbi35T+f7+b/V9/6v53////29l9/75f/zeji35r9/x/v+vfvnm1/2/9//77+u1vP+er/+e77d+7//v/7v/xPfv767fft+fvX/+9/93+///9fn/d++f/ef+jef35v//t++v3/vN7f2///////////fh3t6f8/P/z/f/b8/Wf+v//93//3/b49332/9v37b3/6/z37/7/X78/7/Oef/3mf567/vr/z129/a535v6P7H7v9/+97295/77ef/v3vvucvt33t5///LP/e/dy7fv/rfltvP//vs9r7v+v+/y796Of6p++n2fH33v/5nke13v7vvezF/e+/+5DVX3M5/ef+TX3/5/5n5/rd6Xf/9uP//y/77j+93/83ffmP2jd++f8Hf/GzNv/65nr7//+/5d4N4+UZMfsrz0Xu6f17/f1n4/7r7v379/39/6f7rf39737+/913/a7/eef/u/9/r/Ob9f9lJPh8/WT9na7X/UNjWnVMUTfJz/M2/7f/rn/f6zINV3vne9zQ3vK9eZvq9/3//rz/0H//6dr///Gk///P//4/d/X/ue+/X+A8qD/1/8d518xa+666u+1+997u+/M7WPe/yz69vfq3+fFv6fG/4gvJ/e7e9+P9d7+//f5zef6zntPifV3yPX/v/a/ie7fz3Bp+f/q1rf+//t//rP+b993b/3b+fPrf///naq5/W0bp9v7v/1uNFG5p339vXX7h3/8/7v////z93c66Px97+T/Ob9Pufj/979t3+7O+M0/6vv/PSdPnSnt/f7f///+/Nd//v//f/95N+7hQXYP44Wyq/v2/+//f/PZ59bn2ifnGPE3k/F9/rJDnf+/+z+d3y+g+22//896mwnbLqjn3sO+lTaZ33fjopfn7SF7w7VVLq77ngTlfdpunL/o9EP34hf6lDW61+yiXn3O3/paiuxUG/gtf18Xd+148L+9xxvrfRlv9lzaQYBHt39zmbwv+77w/2to/+wk79fb5If1f2H+r3uc3/2evb1uof1z3f+tfX833frTTX+Odh3b/teYOflbw/9487z3nuV//3e/+T9Vv/8e41Tj99+6/16zW35u///T/hP3239/nef01/v1Ovqf/97PK639FtK/c1ak/9+p///qf+i55/549PJPh7+jP//9X3/9s63/u/2///9t/W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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIIIAAEAAAAIAAAEAEABAAAAAAgAAAAAAAQAgAAAAAACAAAAQAAgIRIAAGAApEAAAAIAAAAAAAAAAAQAAAAAAASAAAAAAAAQAAAAAQAAAAAAABACAAAAAIAEAEAACAAAAADAAAAAAAAAQBAACAEAAAAAAAAIQaAAQEAIAAAAAAAAIEAAAIAQCAAAIAAAAAAAAAAAAAAQAAIAAEAACAEIAAEgEABAAAQAQAAEAoAIAAAAAAQAAQAAAAARAAAEAAQAAAgAAAIAiCgAAgCAIAAAAAAAAAAAAAAACBCAAAkAAAAIAAAABAAAAAAAICAAAAEAAAEAAAAAAEAAIAAAAAAAIAAAQAAMAAAAAEQAkAAIIAAAAAAAAAIAAACAAFAABIEAAEAAEEEAAIAAAIAEBAAAEBAAAIAAAAAgioAFIAAgQAAAAAAAAAAAABAAAABAQAAAAAACAAAAACAAAACAABAABAAASAgAAAAAAAAQAACAAIAQgAAAAgQAAAQCQAAAAAgABAAAAAABAAAAAQAAAAAAAAgAAAAAAAEAAAIAAAAABQAAAAAAAAFAQAAAAAECCAAAAAAgBAAAjQAAAAAAIAAAABAACAIABAAAFEAAgAAAAAAAABQAAQAAAAIQAAAAAAAAAEAFABCAAAAgAASAUAIAAAAAACAAEAAgABAAAAAAAAAAiBAAAAAMAAAQAAAAAAAAAAABEAAAAACAAAAAAJAAAgAQBAAAAAAAAAAAAAAAQAAAAAIAAAEAAIACQAAAAABAQAAAAAAAAAAAAJAQAACAAAIACJBAAAEAAAAAAAAgABAACAAAAAAAAACCAAAAAAAQAAACAAAAAAAQAAAIFIABAAAAAAAAAAABAEAAAAAhAAAAAAAAAAIAAAAQAAAAACAAIAAACIAAAAAIAAAAgFAAAAAQIMAAAQAAAEBAAAAAAAAAAAAAAAAAAAAAAgAAAAAAggBEGQEAAAAAAIAIAEBAQEoABAAAAABCAAACAAAAAAIAAAEEAQCAAQAAABMAABAIiAAAAQCAAAEAAQgAIAAHAIIAAAAABAAAAAAAAAAAAAIAAAAAACAEAAAAAAAgACAAABAAAAAAAACAAAACAAgACAAAAAAQAAAAAAAAAAwAAAAAEAAACSUAAQAAAAAAAAAAAIAAAACAAACAAAAAAAAAASAQKAABAAAAQAAACAgAAAAAAAAAgIAAgAIAIgAAAAAAIAAAAAiCICEAQAAAAEAAAAAAAAAAAAAIIAAQDAAAACBAAAAASABAAQAgIAAAACAAIAAgAAAAAAAAABAGAACAEAACACgEAAABAAAAAASAAAAAQAAgAQoAAgYAAAAEFQAIAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAIAAAAAQAAAAAAAAAEBHIkQAEwAhIKAQGEAAEIAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAAAQAAQAAEBAAABBAAAAAAAAAAAAAAAAAAABAAYMAAAAAAAAABAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGgAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "genes": {
+        "n": 3000,
+        "address_sha256": "faf08f94df6d56d88e011a9063c6ee9459bc217b5f5b7a49c835546aafd0860e",
+        "jaccard_with_pooled_gene_set": 0.8674136321195145
+      },
+      "DIAGNOSTIC_RANGES": {
+        "detection.median_abs_corr": {
+          "point": 0.19437681141040936,
+          "boot_sd": 0.00463964001608724,
+          "candidate_recentered_range_S159": [
+            0.18864515789855396,
+            0.20123709585209598
+          ],
+          "inherited_percentile_range": [
+            0.18553754072314313,
+            0.19812947867668515
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0031076171754108317,
+          "replicates": [
+            0.18552332936914862,
+            0.19524842546497256,
+            0.1955619522298282,
+            0.1861798362979017,
+            0.19861031503612864,
+            0.190625492162693,
+            0.19157144690138567,
+            0.1970431363846081,
+            0.18675185981578718,
+            0.1980931053807135,
+            0.191718095584725,
+            0.1880405601507419,
+            0.19449299754538624,
+            0.1950116832852866,
+            0.19813589749362132,
+            0.19096694156861138,
+            0.18576720852903572,
+            0.19613640560408985,
+            0.18483592945998084,
+            0.19040275353189384,
+            0.18561807172911204,
+            0.18969164600568778,
+            0.18590412794050343,
+            0.19388397670952107
+          ]
+        },
+        "detection.frac_abs_gt_0p3": {
+          "point": 0.1146210959208625,
+          "boot_sd": 0.015192171045704713,
+          "candidate_recentered_range_S159": [
+            0.0939858286095365,
+            0.13841809492052903
+          ],
+          "inherited_percentile_range": [
+            0.09266094253640102,
+            0.13709320884739357
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0013248860731354811,
+          "replicates": [
+            0.09438146048682894,
+            0.12172879848838501,
+            0.1137894853840169,
+            0.09338557296876737,
+            0.14640924752695342,
+            0.11151717239079693,
+            0.11564388129376459,
+            0.12467600311214849,
+            0.09414871623874625,
+            0.1378704012448594,
+            0.11333111037012338,
+            0.10289629876625542,
+            0.11818094920529065,
+            0.12945915305101702,
+            0.1315360675780816,
+            0.11326130932533067,
+            0.09253306657774814,
+            0.13268911859508725,
+            0.10105501833944648,
+            0.1066860064465933,
+            0.09123618984105814,
+            0.11005579637656997,
+            0.10811159275313993,
+            0.11855840835834167
+          ]
+        },
+        "detection.var_top10_pc": {
+          "point": 0.29531129550076063,
+          "boot_sd": 0.004705798905393238,
+          "candidate_recentered_range_S159": [
+            0.2881335474491084,
+            0.30333111785112193
+          ],
+          "inherited_percentile_range": [
+            0.28911489458117456,
+            0.3043124649831881
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.000981347132066157,
+          "replicates": [
+            0.28903306664516903,
+            0.29837744327367444,
+            0.2995104622185391,
+            0.2901547172091684,
+            0.3048969422001135,
+            0.2960862626635324,
+            0.2968748594816075,
+            0.29969296061962497,
+            0.2930932970685299,
+            0.3047920023480863,
+            0.2964990226021212,
+            0.29300314818128403,
+            0.29913630420514764,
+            0.2990796802784445,
+            0.30155884769075986,
+            0.29401971707902613,
+            0.28957858621853916,
+            0.3015950865820984,
+            0.2903778438765975,
+            0.29519600014703257,
+            0.2889435201694048,
+            0.2940457877704098,
+            0.2939807965552551,
+            0.29799704141421834
+          ]
+        },
+        "detection.mean_degree": {
+          "point": 343.7486666666667,
+          "boot_sd": 45.56132096606844,
+          "candidate_recentered_range_S159": [
+            281.86350000000004,
+            415.1158666666667
+          ],
+          "inherited_percentile_range": [
+            277.8901666666667,
+            411.14253333333335
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -3.9733333333333576,
+          "replicates": [
+            283.05,
+            365.06466666666665,
+            341.25466666666665,
+            280.06333333333333,
+            439.08133333333336,
+            334.44,
+            346.816,
+            373.9033333333333,
+            282.352,
+            413.47333333333336,
+            339.88,
+            308.586,
+            354.42466666666667,
+            388.248,
+            394.4766666666667,
+            339.67066666666665,
+            277.50666666666666,
+            397.93466666666666,
+            303.064,
+            319.9513333333333,
+            273.6173333333333,
+            330.05733333333336,
+            324.2266666666667,
+            355.5566666666667
+          ]
+        },
+        "detection.largest_community_frac": {
+          "point": 0.09766666666666667,
+          "boot_sd": 0.016498566521443006,
+          "candidate_recentered_range_S159": [
+            0.07354999999999999,
+            0.11858333333333333
+          ],
+          "inherited_percentile_range": [
+            0.09004999999999999,
+            0.13508333333333333
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0165,
+          "replicates": [
+            0.09733333333333333,
+            0.11533333333333333,
+            0.105,
+            0.09,
+            0.155,
+            0.10766666666666666,
+            0.12566666666666668,
+            0.10966666666666666,
+            0.09366666666666666,
+            0.13366666666666666,
+            0.11666666666666667,
+            0.101,
+            0.116,
+            0.12933333333333333,
+            0.12766666666666668,
+            0.11366666666666667,
+            0.09033333333333333,
+            0.13533333333333333,
+            0.09966666666666667,
+            0.10433333333333333,
+            0.087,
+            0.11466666666666667,
+            0.11866666666666667,
+            0.11833333333333333
+          ]
+        },
+        "detection.transitivity": {
+          "point": 0.6358993455521378,
+          "boot_sd": 0.01740016473880204,
+          "candidate_recentered_range_S159": [
+            0.6071464438248975,
+            0.6627027518279504
+          ],
+          "inherited_percentile_range": [
+            0.5829418358501869,
+            0.6384981438532398
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.02420460797471058,
+          "replicates": [
+            0.5874410133902966,
+            0.6272547213706918,
+            0.6114635224759278,
+            0.5821478633431086,
+            0.6442362073123168,
+            0.6100787644239775,
+            0.6179708326849286,
+            0.6282445157331601,
+            0.5797957018940583,
+            0.6391169547912634,
+            0.6073362701917725,
+            0.6079087404955984,
+            0.6226702999423523,
+            0.6313580603917085,
+            0.6349915485377728,
+            0.6193961030219833,
+            0.5966112426861193,
+            0.6288140419489547,
+            0.6043835201004754,
+            0.6087668135341605,
+            0.5915018838184786,
+            0.6119259526789266,
+            0.6077691773090574,
+            0.6167198779971109
+          ]
+        },
+        "detection.substitute_frac": {
+          "point": 0.0006666666666666666,
+          "boot_sd": 0.0004555526098644012,
+          "candidate_recentered_range_S159": [
+            0.0,
+            0.0015666666666666654
+          ],
+          "inherited_percentile_range": [
+            0.0,
+            0.0015666666666666654
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            0.0,
+            0.0006666666666666666,
+            0.001,
+            0.0,
+            0.0,
+            0.0,
+            0.0006666666666666666,
+            0.0006666666666666666,
+            0.0006666666666666666,
+            0.001,
+            0.0006666666666666666,
+            0.001,
+            0.0006666666666666666,
+            0.0006666666666666666,
+            0.001,
+            0.0006666666666666666,
+            0.0006666666666666666,
+            0.0006666666666666666,
+            0.0,
+            0.0006666666666666666,
+            0.001,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0006666666666666666
+          ]
+        },
+        "detection.frac_pos_gt_0p3": {
+          "point": 0.11432988774035789,
+          "boot_sd": 0.015147355646714704,
+          "candidate_recentered_range_S159": [
+            0.09375032788707345,
+            0.13809093031010333
+          ],
+          "inherited_percentile_range": [
+            0.09241810603534512,
+            0.13675870845837498
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0013322218517283352,
+          "replicates": [
+            0.09415916416583306,
+            0.12146382127375792,
+            0.11351005890852506,
+            0.09317372457485829,
+            0.14588974102478605,
+            0.11109903301100367,
+            0.11537423585639657,
+            0.12441258197176837,
+            0.09383839057463599,
+            0.13755474046904523,
+            0.11307458041569413,
+            0.1026808936312104,
+            0.11782327442480826,
+            0.12913904634878293,
+            0.13117905968656218,
+            0.11292075136156497,
+            0.09228476158719573,
+            0.13224786039791042,
+            0.1007131265977548,
+            0.10634122485272869,
+            0.09100011114816049,
+            0.1097079026342114,
+            0.10771990663554518,
+            0.11830098921862843
+          ]
+        },
+        "detection.frac_neg_lt_m0p3": {
+          "point": 0.00029120818050461266,
+          "boot_sd": 7.697504255212683e-05,
+          "candidate_recentered_range_S159": [
+            0.00019465377348004893,
+            0.0004160053351117039
+          ],
+          "inherited_percentile_range": [
+            0.00021643881293764586,
+            0.00043779037456930084
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 2.1785039457596935e-05,
+          "replicates": [
+            0.0002222963209958875,
+            0.00026497721462709795,
+            0.00027942647549183063,
+            0.0002118483939090808,
+            0.0005195065021673891,
+            0.0004181393797932644,
+            0.00026964543736801154,
+            0.0002634211403801267,
+            0.000310325664110259,
+            0.00031566077581416025,
+            0.0002565299544292542,
+            0.000215405135045015,
+            0.00035767478048238303,
+            0.00032010670223407803,
+            0.00035700789151939537,
+            0.0003405579637656997,
+            0.00024830499055240635,
+            0.00044125819717683674,
+            0.000341891741691675,
+            0.00034478159386462155,
+            0.00023607869289763255,
+            0.00034789374235856394,
+            0.0003916861175947538,
+            0.0002574191397132377
+          ]
+        },
+        "detection.pos_over_neg_ratio": {
+          "point": 392.60534351145037,
+          "boot_sd": 70.2148597507755,
+          "candidate_recentered_range_S159": [
+            289.93037279822687,
+            484.4292089913319
+          ],
+          "inherited_percentile_range": [
+            275.88706321880113,
+            470.38589941190617
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -14.043309579425738,
+          "replicates": [
+            423.57500000000005,
+            458.39345637583887,
+            406.2251392203659,
+            439.81322140608603,
+            280.82370560547713,
+            265.69856459330146,
+            427.87386644682607,
+            472.2953586497891,
+            302.3868194842407,
+            435.7676056338028,
+            440.78509532062395,
+            476.687306501548,
+            329.4145431945307,
+            403.425,
+            367.4402241594022,
+            331.5757180156658,
+            371.6589077887198,
+            299.70629722921916,
+            294.57607282184654,
+            308.4306898774984,
+            385.46516007532955,
+            315.3488817891374,
+            275.0158910329171,
+            459.56563039723665
+          ]
+        },
+        "detection.mean_signed_corr": {
+          "point": 0.17883553997263973,
+          "boot_sd": 0.00411144871582144,
+          "candidate_recentered_range_S159": [
+            0.17387213926024783,
+            0.18526348569466317
+          ],
+          "inherited_percentile_range": [
+            0.17132175864596141,
+            0.18271310508037675
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0025503806142864183,
+          "replicates": [
+            0.1717002033626391,
+            0.18025940303635188,
+            0.179861080546216,
+            0.17227617566394487,
+            0.18278238193599072,
+            0.1752532319013881,
+            0.17656555804984858,
+            0.18138600228019996,
+            0.17239647097048613,
+            0.18327178492093799,
+            0.17710010682042587,
+            0.17479051605721535,
+            0.17865548825898694,
+            0.1802313602012674,
+            0.18232053623189748,
+            0.17600476066685802,
+            0.17170058521157816,
+            0.18111712573368224,
+            0.17104501000189795,
+            0.17564887819063452,
+            0.17128505233044292,
+            0.17459302343750358,
+            0.17152976110056614,
+            0.17962361526505974
+          ]
+        },
+        "expression.median_abs_corr": {
+          "point": 0.05454122382372603,
+          "boot_sd": 0.0011181427172620132,
+          "candidate_recentered_range_S159": [
+            0.05275738555126123,
+            0.056314882165254064
+          ],
+          "inherited_percentile_range": [
+            0.05484297783336761,
+            0.05840047444736045
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.002085592282106384,
+          "replicates": [
+            0.05523223928589456,
+            0.05744076216767959,
+            0.05586143976846847,
+            0.054429949237145316,
+            0.05850902009575085,
+            0.05641690248662189,
+            0.05664511882974667,
+            0.05709409457633306,
+            0.05778538243981488,
+            0.059126588109018316,
+            0.056239172434755215,
+            0.05626502372569046,
+            0.056177597040244553,
+            0.05716187113892236,
+            0.05660851338191816,
+            0.05529888260988796,
+            0.05610362610842476,
+            0.05775327334153636,
+            0.056766097286463965,
+            0.0567510715285546,
+            0.054774284635862855,
+            0.05559269710630699,
+            0.05739797106178006,
+            0.057011829135274125
+          ]
+        },
+        "expression.frac_abs_gt_0p3": {
+          "point": 0.01689829943314438,
+          "boot_sd": 0.001010439002869613,
+          "candidate_recentered_range_S159": [
+            0.015076814493720128,
+            0.018000811381571634
+          ],
+          "inherited_percentile_range": [
+            0.015470501278203846,
+            0.018394498166055352
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0003936867844837183,
+          "replicates": [
+            0.015428920751361565,
+            0.017581860620206734,
+            0.017356674447037902,
+            0.014882071801711682,
+            0.019182394131377126,
+            0.0169136378792931,
+            0.018420806935645215,
+            0.01735578526175392,
+            0.016726686673335555,
+            0.017981993997999334,
+            0.017495387351339334,
+            0.0159513171057019,
+            0.01716438812937646,
+            0.016658663999110816,
+            0.018245415138379458,
+            0.017228187173502277,
+            0.016228076025341782,
+            0.017771479382016227,
+            0.01692853173279982,
+            0.017809936645548516,
+            0.015706124263643435,
+            0.017786373235522953,
+            0.01771190396798933,
+            0.01618228298321663
+          ]
+        },
+        "expression.var_top10_pc": {
+          "point": 0.23355901965166748,
+          "boot_sd": 0.0024005344708678054,
+          "candidate_recentered_range_S159": [
+            0.22903299401632415,
+            0.23639875333676424
+          ],
+          "inherited_percentile_range": [
+            0.23184737022639937,
+            0.23921312954683946
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0028143762100752145,
+          "replicates": [
+            0.23324323380319828,
+            0.2378821671402144,
+            0.2375524338510773,
+            0.2308702030977865,
+            0.23719735691714844,
+            0.23160104135990545,
+            0.23821632332622691,
+            0.2376509343159218,
+            0.2410116854125543,
+            0.23803027539425134,
+            0.23659225544129545,
+            0.23519335042372363,
+            0.23450974548359504,
+            0.23602775249633898,
+            0.23723499368474257,
+            0.233878987174792,
+            0.23615453628218994,
+            0.235886557256064,
+            0.23763744507201684,
+            0.2390238790281438,
+            0.23515449001213468,
+            0.23495233012822359,
+            0.2392465266971975,
+            0.2343743075771899
+          ]
+        },
+        "expression.mean_degree": {
+          "point": 50.678,
+          "boot_sd": 3.030306569605971,
+          "candidate_recentered_range_S159": [
+            45.21536666666666,
+            53.984433333333335
+          ],
+          "inherited_percentile_range": [
+            46.39603333333333,
+            55.1651
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 1.1806666666666672,
+          "replicates": [
+            46.27133333333333,
+            52.728,
+            52.05266666666667,
+            44.63133333333333,
+            57.528,
+            50.724,
+            55.244,
+            52.05,
+            50.163333333333334,
+            53.928,
+            52.468666666666664,
+            47.838,
+            51.476,
+            49.95933333333333,
+            54.718,
+            51.66733333333333,
+            48.668,
+            53.29666666666667,
+            50.76866666666667,
+            53.412,
+            47.102666666666664,
+            53.34133333333333,
+            53.118,
+            48.53066666666667
+          ]
+        },
+        "expression.largest_community_frac": {
+          "point": 0.164,
+          "boot_sd": 0.008633530111722328,
+          "candidate_recentered_range_S159": [
+            0.14683333333333334,
+            0.1762166666666667
+          ],
+          "inherited_percentile_range": [
+            0.15483333333333332,
+            0.18421666666666667
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.00799999999999998,
+          "replicates": [
+            0.16133333333333333,
+            0.16833333333333333,
+            0.17733333333333334,
+            0.159,
+            0.18166666666666667,
+            0.16966666666666666,
+            0.17833333333333334,
+            0.17366666666666666,
+            0.17233333333333334,
+            0.16633333333333333,
+            0.173,
+            0.15433333333333332,
+            0.17366666666666666,
+            0.16533333333333333,
+            0.17166666666666666,
+            0.17066666666666666,
+            0.15766666666666668,
+            0.174,
+            0.17566666666666667,
+            0.17366666666666666,
+            0.16433333333333333,
+            0.18466666666666667,
+            0.18466666666666667,
+            0.154
+          ]
+        },
+        "expression.transitivity": {
+          "point": 0.44541362638603343,
+          "boot_sd": 0.00535570349360586,
+          "candidate_recentered_range_S159": [
+            0.43570223393932117,
+            0.4524791436924723
+          ],
+          "inherited_percentile_range": [
+            0.4313090679725391,
+            0.4480859777256902
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0043931659667820755,
+          "replicates": [
+            0.4307563362330783,
+            0.4477922220234032,
+            0.43970548811781424,
+            0.42814575578897235,
+            0.4481378169672703,
+            0.4419159037822624,
+            0.44583316319344646,
+            0.44217795457645004,
+            0.43760749030575113,
+            0.44157917456685614,
+            0.4466499440672896,
+            0.4391070642299411,
+            0.4389051933264515,
+            0.4360903134875985,
+            0.44655156750455494,
+            0.4413407129411102,
+            0.4407002078973925,
+            0.4438416605269998,
+            0.4398126325743385,
+            0.4498437541784679,
+            0.4344412144961503,
+            0.4420669136021482,
+            0.4375216071983611,
+            0.4369813002008506
+          ]
+        },
+        "expression.substitute_frac": {
+          "point": 0.004,
+          "boot_sd": 0.0009428090415820634,
+          "candidate_recentered_range_S159": [
+            0.00255,
+            0.00545
+          ],
+          "inherited_percentile_range": [
+            0.0027166666666666667,
+            0.0056166666666666665
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.00016666666666666653,
+          "replicates": [
+            0.003,
+            0.0026666666666666666,
+            0.006,
+            0.0026666666666666666,
+            0.004666666666666667,
+            0.004333333333333333,
+            0.0033333333333333335,
+            0.005666666666666667,
+            0.004666666666666667,
+            0.0036666666666666666,
+            0.0033333333333333335,
+            0.004333333333333333,
+            0.005,
+            0.0033333333333333335,
+            0.004666666666666667,
+            0.004,
+            0.005,
+            0.004,
+            0.005333333333333333,
+            0.005333333333333333,
+            0.004333333333333333,
+            0.003,
+            0.004,
+            0.0036666666666666666
+          ]
+        },
+        "expression.frac_pos_gt_0p3": {
+          "point": 0.013549849949983327,
+          "boot_sd": 0.0008066637165716119,
+          "candidate_recentered_range_S159": [
+            0.012109792152939869,
+            0.01439136378792931
+          ],
+          "inherited_percentile_range": [
+            0.012335311770590196,
+            0.014616883405579637
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.00022551961765032713,
+          "replicates": [
+            0.012306102034011336,
+            0.014161831721685007,
+            0.013746582194064688,
+            0.011852617539179726,
+            0.015315994220295654,
+            0.013450705790819162,
+            0.014618650661331554,
+            0.013794820495720795,
+            0.013083027675891964,
+            0.014457041235967544,
+            0.01393242191841725,
+            0.01284272535289541,
+            0.013808602867622541,
+            0.013419139713237747,
+            0.014606868956318773,
+            0.013755918639546515,
+            0.012853395576303212,
+            0.014121373791263754,
+            0.013209514282538625,
+            0.014151828387240191,
+            0.012500833611203735,
+            0.014051795042792041,
+            0.013991997332444148,
+            0.013119928865177282
+          ]
+        },
+        "expression.frac_neg_lt_m0p3": {
+          "point": 0.0033484494831610536,
+          "boot_sd": 0.00024532371477028623,
+          "candidate_recentered_range_S159": [
+            0.0028747804823830167,
+            0.003597510281204846
+          ],
+          "inherited_percentile_range": [
+            0.0030692897632544182,
+            0.0037920195620762473
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.00019450928087140149,
+          "replicates": [
+            0.0031228187173502277,
+            0.0034200288985217295,
+            0.003610092252973213,
+            0.003029454262531955,
+            0.0038663999110814715,
+            0.003462932088473936,
+            0.00380215627431366,
+            0.003560964766033122,
+            0.0036436589974435923,
+            0.0035249527620317884,
+            0.0035629654329220853,
+            0.003108591752806491,
+            0.003355785261753918,
+            0.003239524285873069,
+            0.0036385461820606867,
+            0.003472268533955763,
+            0.0033746804490385686,
+            0.0036501055907524733,
+            0.0037190174502611984,
+            0.003658108258308325,
+            0.003205290652439702,
+            0.0037345781927309103,
+            0.003719906635545182,
+            0.0030623541180393463
+          ]
+        },
+        "expression.pos_over_neg_ratio": {
+          "point": 4.046604262099184,
+          "boot_sd": 0.1735585321691492,
+          "candidate_recentered_range_S159": [
+            3.757643109079238,
+            4.2834988639501
+          ],
+          "inherited_percentile_range": [
+            3.6162422544541064,
+            4.142098009324968
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.14140085462513152,
+          "replicates": [
+            3.9407033029612757,
+            4.140851478713032,
+            3.807820197044335,
+            3.912459641913707,
+            3.961306272638418,
+            3.884195660546925,
+            3.8448316183348923,
+            3.873899744053936,
+            3.5906290037215545,
+            4.101343255344642,
+            3.9103443973047165,
+            4.131364416475972,
+            4.114864864864865,
+            4.14231798531531,
+            4.014479472140763,
+            3.961651728553137,
+            3.8087741255516763,
+            3.868757612667478,
+            3.5518828451882847,
+            3.868619348565873,
+            3.900062417643387,
+            3.7626190476190473,
+            3.761384008605235,
+            4.284262485481998
+          ]
+        },
+        "expression.mean_signed_corr": {
+          "point": 0.024852697495097633,
+          "boot_sd": 0.0011931732341799526,
+          "candidate_recentered_range_S159": [
+            0.023092988235187257,
+            0.02622098198908241
+          ],
+          "inherited_percentile_range": [
+            0.022414946751343097,
+            0.02554294050523825
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0006780414838441599,
+          "replicates": [
+            0.023314166204706395,
+            0.025508118226282215,
+            0.024524697230703146,
+            0.02234489874708565,
+            0.025400023442712024,
+            0.024283092452543807,
+            0.02389276465113184,
+            0.024526378617970294,
+            0.023060012402822724,
+            0.026722660524004176,
+            0.02308850407869418,
+            0.024878230363416732,
+            0.02527824460886276,
+            0.02473692392556498,
+            0.024801772548967663,
+            0.024066219569963136,
+            0.023450319586825065,
+            0.025275739422510483,
+            0.022811885442135294,
+            0.023842459529738697,
+            0.021694049630598213,
+            0.023370224712260166,
+            0.023026134509005727,
+            0.025549085613289318
+          ]
+        },
+        "t5.within_over_pooled": {
+          "point": 0.7747191280512261,
+          "boot_sd": 0.025255227451569544,
+          "candidate_recentered_range_S159": [
+            0.7358409739011817,
+            0.8181970281643663
+          ],
+          "inherited_percentile_range": [
+            0.827365883130477,
+            0.9097219373936616
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.09152490922929524,
+          "replicates": [
+            0.9025248625775771,
+            0.842368462047239,
+            0.8796109607455311,
+            0.9229965362224863,
+            0.8249709322951069,
+            0.8737886321251418,
+            0.8555100688803088,
+            0.8475122537289937,
+            0.9109920094200294,
+            0.8601402325182984,
+            0.8859584368861758,
+            0.8672497110380336,
+            0.8695932339999338,
+            0.8590188004890329,
+            0.8251438875240865,
+            0.8399571915666894,
+            0.8652383635230091,
+            0.8457423914670704,
+            0.8535687395651159,
+            0.8676224670136952,
+            0.8797647799978332,
+            0.8487228623991604,
+            0.8901150108670088,
+            0.8918977816157047
+          ]
+        },
+        "t5.n_classes_used": {
+          "point": 3.0,
+          "boot_sd": 0.0,
+          "candidate_recentered_range_S159": [
+            3.0,
+            3.0
+          ],
+          "inherited_percentile_range": [
+            3.0,
+            3.0
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0
+          ]
+        },
+        "abundance.abundance_max_over_median_nonzero": {
+          "point": 2627.024124513619,
+          "boot_sd": 123.46373620825992,
+          "candidate_recentered_range_S159": [
+            2471.7070688608014,
+            2856.0366532805992
+          ],
+          "inherited_percentile_range": [
+            2432.956954636751,
+            2817.286539056549
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -38.75011422405032,
+          "replicates": [
+            2612.9695772421965,
+            2585.7646610814922,
+            2528.682422451994,
+            2565.5824520172346,
+            2824.166468489893,
+            2751.6089979550106,
+            2613.9387602688575,
+            2498.86659475009,
+            2430.416788321168,
+            2861.6442155309032,
+            2452.983314794216,
+            2763.1126760563384,
+            2638.5182778229087,
+            2620.201331766549,
+            2542.0479221265446,
+            2645.597422289613,
+            2584.570436125048,
+            2778.3002722676,
+            2590.7833594976455,
+            2426.48193697156,
+            2447.3512304250557,
+            2498.610182370821,
+            2499.8763197586727,
+            2641.261525907793
+          ]
+        },
+        "abundance.top1pct_count_share": {
+          "point": 0.28088080522730796,
+          "boot_sd": 0.002410497213197653,
+          "candidate_recentered_range_S159": [
+            0.276840755241082,
+            0.28502307887198014
+          ],
+          "inherited_percentile_range": [
+            0.2763608804986222,
+            0.28454320412952033
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0004798747424598071,
+          "replicates": [
+            0.2784461169391923,
+            0.28002741136907466,
+            0.28131202686698314,
+            0.27909110447913926,
+            0.2856909777148853,
+            0.28230491028531424,
+            0.282564615699578,
+            0.27771686026642983,
+            0.276121589951362,
+            0.2847272237467311,
+            0.2803737377590094,
+            0.27919448501793515,
+            0.2835004262986594,
+            0.2801320396581419,
+            0.2822312515593836,
+            0.28084991218256633,
+            0.27934788913764197,
+            0.2827789781367248,
+            0.28042812321068694,
+            0.2757579041246625,
+            0.27871285615294566,
+            0.2815830374688818,
+            0.2807613523782883,
+            0.28030844235107455
+          ]
+        },
+        "abundance.expressed_fraction": {
+          "point": 1.0,
+          "boot_sd": 0.0,
+          "candidate_recentered_range_S159": [
+            1.0,
+            1.0
+          ],
+          "inherited_percentile_range": [
+            1.0,
+            1.0
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "depth.median_library": {
+          "point": 14207.5,
+          "boot_sd": 547.930983171093,
+          "candidate_recentered_range_S159": [
+            13085.5,
+            14701.475
+          ],
+          "inherited_percentile_range": [
+            13241.25,
+            14857.225
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 155.75,
+          "replicates": [
+            14302.0,
+            14295.0,
+            14349.0,
+            14616.0,
+            14122.0,
+            13221.0,
+            14872.0,
+            14617.0,
+            14739.0,
+            13896.0,
+            15368.5,
+            13356.0,
+            13036.0,
+            14294.0,
+            14643.5,
+            14354.0,
+            14112.0,
+            14553.0,
+            14636.0,
+            14372.5,
+            14552.0,
+            14753.0,
+            14773.5,
+            13695.0
+          ]
+        },
+        "depth.median_detected_all_addresses": {
+          "point": 4427.5,
+          "boot_sd": 95.58951103319453,
+          "candidate_recentered_range_S159": [
+            4240.15,
+            4511.525
+          ],
+          "inherited_percentile_range": [
+            4306.65,
+            4578.025
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 66.5,
+          "replicates": [
+            4431.0,
+            4403.0,
+            4476.0,
+            4495.0,
+            4513.0,
+            4305.0,
+            4564.0,
+            4562.0,
+            4506.0,
+            4343.0,
+            4619.0,
+            4316.0,
+            4294.0,
+            4477.0,
+            4550.5,
+            4526.0,
+            4356.5,
+            4493.0,
+            4535.0,
+            4485.0,
+            4515.5,
+            4543.0,
+            4580.5,
+            4344.5
+          ]
+        },
+        "depth.median_detected_in_universe": {
+          "point": 4349.5,
+          "boot_sd": 93.88930230306605,
+          "candidate_recentered_range_S159": [
+            4174.8,
+            4429.55
+          ],
+          "inherited_percentile_range": [
+            4236.05,
+            4490.8
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 61.25,
+          "replicates": [
+            4357.5,
+            4323.0,
+            4386.0,
+            4413.0,
+            4427.0,
+            4235.0,
+            4484.0,
+            4482.0,
+            4449.0,
+            4267.0,
+            4550.5,
+            4242.0,
+            4226.0,
+            4390.0,
+            4474.5,
+            4456.0,
+            4292.0,
+            4408.5,
+            4462.0,
+            4390.0,
+            4449.0,
+            4467.0,
+            4492.0,
+            4270.0
+          ]
+        }
+      }
+    },
+    "NPH52": {
+      "n_cells": 246,
+      "n_donors": 19,
+      "classes_at_t5_floor": 0,
+      "class_sizes": {
+        "Astro": 36,
+        "Endo": 38,
+        "ExN": 32,
+        "InN": 32,
+        "MG": 36,
+        "OPC": 36,
+        "Oligo": 36
+      },
+      "ELIGIBLE": false,
+      "reason": "fewer than two classes with >= 200 cells"
+    },
+    "SEA_AD": {
+      "n_cells": 1408,
+      "n_donors": 68,
+      "classes_at_t5_floor": 3,
+      "class_sizes": {
+        "AstrocyteSubclass": 18,
+        "CN LAMP5-CXCL14 GABASubclass": 1,
+        "CN ST18 GABASubclass": 6,
+        "EndothelialSubclass": 11,
+        "EpendymalSubclass": 1,
+        "Microglia-PVMSubclass": 10,
+        "Neuronal: GABAergic": 290,
+        "Neuronal: Glutamatergic": 642,
+        "Non-neuronal and Non-neural": 348,
+        "OPCSubclass": 6,
+        "OligodendrocyteSubclass": 7,
+        "STR D1 MSNSubclass": 34,
+        "STR D2 MSNSubclass": 18,
+        "STR Hybrid MSNSubclass": 4,
+        "Sst ChodlSubclass": 1,
+        "VLMCSubclass": 10,
+        "VipSubclass": 1
+      },
+      "ELIGIBLE": true,
+      "universe": {
+        "name": "TRAIN_WITHIN_SEA_AD_PREVALENCE05_15158",
+        "n_genes": 15158,
+        "index_sha256": "29807fc0b2998def3db75e78147b13a8b7a4c2b8f422a7e8cdd9e69ee2ed0868",
+        "npz": "D:\\jepa_v77_synthetic_custody_20261005\\s174_replay\\within_cohort_universes_v2\\TRAIN_WITHIN_SEA_AD_PREVALENCE05_15158.npz",
+        "npz_sha256": "1953dfe4673af313e6d1a4f24f75162ff123aa47a5c2eee53e69608898127ac3",
+        "mask_packbits_b64": "Of3/Pbr//3Hm9u953998/83K1/2V7i35T+P72f/F9/6vp3v//+8/l//+9ffyejv3pv9v7///ffvvu1/23////7++1vP/+r9+e77d+7///+7v/x/fv75vff7+fvX//9/93+/3/+/n/5/e7//f+jeX35v//t//v+/vNr/2////7/93//9/h3t6f8/fv7+f+b1/ff/vv/131/zvb4N+33/9/37z3/9fz/7/bvX72/7/i+/+zn/56//vr/z329/45/5/7P/f//9/3973/9/77/X/v3v/vevv3395/77Pv/W/d27fv/r/v99L//vs9r7unvfz379+Of7p+u32fD33v35nke1Xv739+z1/eu/u5TW3nI57+f+SX//5/5l5/r96Xf//uP//y/b/7693/+3f/nP3j+/++83e/mzFv/643r//++/494N4+UZsbuv30Xu+f97/31m4/7rrv37///9/+fbvd39bf7//933/797+/f/i/9/rlOb9TxnJPk8/WX9na7X/cNjfn1sfTfF77M2v///7n+/73IPV//zf9zQ+vL/+Z/ad////qz/13//6ft///ml///P//4/f/X/uf7/X9A/qOd3/8t91sxa++7+u+0+9/7v+/M7GPf/yfa/vXq3+fFvafG/oQvJue/e92P/d79//f5zef67npfz/13YP3d+/a3i+/fzfBhef/u9Lf+//t//Lv/X993/+3b3fPrf3//n6q9/f1ft997/+1v/BG55//5uff7h3/2/7///////286+v19/2X/O79Hufj/fr993+/e7O0969v/vacf3TXt/f/f///+/vZP/3//f//5f+/RU3QP47m2qfP3/+///vfZ59ZnxifnGPc3k/vd/rJBnd+/+36fXz/od3u//s92mynzPqjn3sc+gSe5/3Xloofn7at707V1KK770gTnedgqnL781FX3epP+BRW+9+yiXW2O/9paiuzcH/19f3sfdm949D+1hRvjf11f0tzbwcIDt/97ifw/+771/2NJ/+wm77/a5IP1f2P8rzuc//+evb1uoP1z3f/tf393hfLTTXuucn3f/N+a+fFbw/5+877/H+5vf/f/+T9x//9e6lTj9986v9b7Xy5u///T+wPX33//va/39//FOvqf997PK6XtFtK3+x4s7/+n/f/qf3jZ7/549Pdvz7+je///b3//s63/u/////99/e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AAAACQgAJAggICAJAAAEJAAKCAQCBATAASQQAAAEQwAAEIAMAgBgBAZEAIEAQAEAgAMAEIICQiCICwAQAAAAEIkAAAAAAABEBAIAYQAHAAAAABAAAAgABBLARgAAgoAhgQAIAAAAAAAAAAEAAACgAiAECACAChEBWABAAACAACAEAAgQAAgA4IACiYASAAAFEAIAYABIIQEAABAoAIIFAEYggAAAQgAoSBAAAhEEIEQAIAEAYBICgAHggAHFwkgYOAUGGgBQKAAgAQEYAAAAAYEQAACBAPVQgAAAACBUChEAgEAgABEAAABAAAEIAABAAwAIAAMIAAAgBAQIJAAwANiAMQAAYoDMIRQAwJAhIAWBEABAAAHgjiOiQEyAEEJIQBOACAgwIgIAQAAABREAgAADAgZARIkAHgAEAAJkBAEABkAAyBgAAAAAZEAiggYIEgAAAMQCMJAKAJBAAACADgAQAEAEAAGAghAAEAUUIAhAoABghBMACCCIAoARFCgQBCgBAJEgACRwEMIgIkgCAxQEAIEAJACFIACBAAAAACAEBAEAWAAAIEEAhJACBEIACgIAIEABAgQgCGAMIIABCgBwIIAQCAEJBSRCAABAAAACAAQABBBQAABAgCGAAIsgBQAAAIEpAAAgABAAUAApAHIAwAwUAAMAAAsIAAAAAISQwAAUFghkABCADQJADAYCiIikAACggIAogSUggAABgApEEKRIgUAwDAAIAAAAEAAAAAAAAACAAAAAAAAIAAAAAAAAAhAAAEmEAAAAAAQAAIAAAAKABBAEgAAYAAAACABAAAAAgAABAgAAgAQCAAQAAAACAAAAgAAAAgAAAAAAAAQAAAAAAAsAwGAAAAAAAA=="
+      },
+      "genes": {
+        "n": 3000,
+        "address_sha256": "2f7f3cf877dd1229d0baad9b6f3c44061c557ee6989f739e20619303199b2be8",
+        "jaccard_with_pooled_gene_set": 0.7487612940833577
+      },
+      "DIAGNOSTIC_RANGES": {
+        "detection.median_abs_corr": {
+          "point": 0.22846530825718953,
+          "boot_sd": 0.006492501165721254,
+          "candidate_recentered_range_S159": [
+            0.21738488049194615,
+            0.23624923464486652
+          ],
+          "inherited_percentile_range": [
+            0.2155333997169126,
+            0.23439775386983297
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.0018514807750335538,
+          "replicates": [
+            0.22032157866256613,
+            0.23271077044104926,
+            0.22485294765404854,
+            0.22511531318015832,
+            0.21378132442764375,
+            0.2294498102743906,
+            0.2318477923588878,
+            0.23066180745769543,
+            0.2324016919788443,
+            0.226144491101153,
+            0.22593832550250825,
+            0.2409237297458306,
+            0.2336702020654064,
+            0.21614237290941124,
+            0.22804130707984377,
+            0.22372576194858693,
+            0.2345261453647318,
+            0.22972616498008103,
+            0.2270831638631589,
+            0.22503607914102886,
+            0.228812712776899,
+            0.22280682784997247,
+            0.21542593385941283,
+            0.22008376516108785
+          ]
+        },
+        "detection.frac_abs_gt_0p3": {
+          "point": 0.2426966766700011,
+          "boot_sd": 0.024299591821458997,
+          "candidate_recentered_range_S159": [
+            0.2024800155607425,
+            0.27609177503612314
+          ],
+          "inherited_percentile_range": [
+            0.20922770923641215,
+            0.2828394687117928
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.006747693675669658,
+          "replicates": [
+            0.22684139157496944,
+            0.27305724130265646,
+            0.24206735578526176,
+            0.24856885628542846,
+            0.20242391908413915,
+            0.2538214960542403,
+            0.270648216072024,
+            0.27085072802045124,
+            0.2628600644659331,
+            0.2411675002778704,
+            0.24203378904079137,
+            0.3044150272312993,
+            0.2670536845615205,
+            0.2089563187729243,
+            0.25519550961431586,
+            0.2395785261753918,
+            0.28456574413693453,
+            0.2580851394909414,
+            0.2503198844059131,
+            0.24152584194731577,
+            0.2547882627542514,
+            0.22360275647438035,
+            0.21076558852950983,
+            0.23013248860731356
+          ]
+        },
+        "detection.var_top10_pc": {
+          "point": 0.35594950992658425,
+          "boot_sd": 0.005221687840975417,
+          "candidate_recentered_range_S159": [
+            0.3463042090851928,
+            0.3650120035755275
+          ],
+          "inherited_percentile_range": [
+            0.3513729999926957,
+            0.3700807944830304
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.005068790907502896,
+          "replicates": [
+            0.353794981914232,
+            0.3640321941228943,
+            0.3604418704542564,
+            0.3581613334745531,
+            0.35086754241735035,
+            0.3657284070528232,
+            0.36536255407860724,
+            0.36533697584261227,
+            0.3635669155848903,
+            0.3583702441203995,
+            0.3583853909098094,
+            0.3713157762939148,
+            0.3652250219984009,
+            0.35094559141830695,
+            0.36119511117582626,
+            0.3603124112382691,
+            0.37084886285306695,
+            0.3628136393337546,
+            0.36111239640857223,
+            0.36158727882419445,
+            0.36092420525960206,
+            0.357660592704186,
+            0.3549907749728241,
+            0.3601737916323856
+          ]
+        },
+        "detection.mean_degree": {
+          "point": 727.8473333333334,
+          "boot_sd": 72.87447587255554,
+          "candidate_recentered_range_S159": [
+            607.2375666666667,
+            827.9992333333333
+          ],
+          "inherited_percentile_range": [
+            627.4739,
+            848.2355666666666
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 20.236333333333278,
+          "replicates": [
+            680.2973333333333,
+            818.8986666666667,
+            725.96,
+            745.458,
+            607.0693333333334,
+            761.2106666666666,
+            811.674,
+            812.2813333333334,
+            788.3173333333333,
+            723.2613333333334,
+            725.8593333333333,
+            912.9406666666666,
+            800.894,
+            626.66,
+            765.3313333333333,
+            718.496,
+            853.4126666666667,
+            773.9973333333334,
+            750.7093333333333,
+            724.336,
+            764.11,
+            670.5846666666666,
+            632.086,
+            690.1673333333333
+          ]
+        },
+        "detection.largest_community_frac": {
+          "point": 0.23433333333333334,
+          "boot_sd": 0.023062035641345825,
+          "candidate_recentered_range_S159": [
+            0.20441666666666664,
+            0.27596666666666664
+          ],
+          "inherited_percentile_range": [
+            0.24691666666666667,
+            0.3184666666666667
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.04250000000000004,
+          "replicates": [
+            0.25866666666666666,
+            0.297,
+            0.2796666666666667,
+            0.27,
+            0.24166666666666667,
+            0.2843333333333333,
+            0.31366666666666665,
+            0.31733333333333336,
+            0.2743333333333333,
+            0.251,
+            0.266,
+            0.325,
+            0.2723333333333333,
+            0.24666666666666667,
+            0.282,
+            0.2796666666666667,
+            0.31866666666666665,
+            0.27666666666666667,
+            0.26466666666666666,
+            0.2806666666666667,
+            0.277,
+            0.24833333333333332,
+            0.25933333333333336,
+            0.2853333333333333
+          ]
+        },
+        "detection.transitivity": {
+          "point": 0.7012082172176833,
+          "boot_sd": 0.0224997737285836,
+          "candidate_recentered_range_S159": [
+            0.6694331419139287,
+            0.731720881047
+          ],
+          "inherited_percentile_range": [
+            0.6530448689643602,
+            0.7153326080974315
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.01638827294956846,
+          "replicates": [
+            0.6690630780582257,
+            0.702974586641447,
+            0.6770286246679214,
+            0.6876244007326482,
+            0.6249355609127248,
+            0.68510690012852,
+            0.7052362691095969,
+            0.6968736759278574,
+            0.6934351438607577,
+            0.6736494117217411,
+            0.676210333662969,
+            0.7280083371515307,
+            0.6979930573085728,
+            0.6570039185070206,
+            0.6964615634439284,
+            0.6784987692691781,
+            0.7171143149776376,
+            0.6893590135200064,
+            0.6845329884077096,
+            0.6764347189934962,
+            0.6968885084058161,
+            0.652930575135242,
+            0.6536925339960302,
+            0.6641204028254846
+          ]
+        },
+        "detection.substitute_frac": {
+          "point": 0.0016666666666666668,
+          "boot_sd": 0.00013608276348795435,
+          "candidate_recentered_range_S159": [
+            0.0016666666666666668,
+            0.0016666666666666668
+          ],
+          "inherited_percentile_range": [
+            0.0016666666666666668,
+            0.0016666666666666668
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0023333333333333335,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668,
+            0.0016666666666666668
+          ]
+        },
+        "detection.frac_pos_gt_0p3": {
+          "point": 0.2418643992441925,
+          "boot_sd": 0.024298148971892492,
+          "candidate_recentered_range_S159": [
+            0.2012734133600089,
+            0.27472810936978986
+          ],
+          "inherited_percentile_range": [
+            0.2080413360008892,
+            0.2814960320106702
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.006767922640880303,
+          "replicates": [
+            0.2258766255418473,
+            0.2720798043792375,
+            0.24124552628653995,
+            0.24780437923752363,
+            0.2014269200844726,
+            0.2526797821496054,
+            0.2693577859286429,
+            0.2699326442147382,
+            0.2620126708902968,
+            0.24046059797710348,
+            0.2412221851728354,
+            0.30335911970656887,
+            0.26596687784817163,
+            0.20780749138601756,
+            0.2542329665444037,
+            0.23853929087473602,
+            0.2831577192397466,
+            0.2570096698899633,
+            0.249460264532622,
+            0.24046837834833834,
+            0.25391574969434255,
+            0.22258575080582416,
+            0.20936645548516172,
+            0.22893809047460265
+          ]
+        },
+        "detection.frac_neg_lt_m0p3": {
+          "point": 0.0008322774258086029,
+          "boot_sd": 0.0001844011786568743,
+          "candidate_recentered_range_S159": [
+            0.0005968211626097589,
+            0.0012081027009003
+          ],
+          "inherited_percentile_range": [
+            0.0007715460709125264,
+            0.0013828276092030674
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.00017472490830276754,
+          "replicates": [
+            0.0009647660331221519,
+            0.0009774369234189174,
+            0.0008218294987217961,
+            0.0007644770479048572,
+            0.0009969989996665555,
+            0.0011417139046348782,
+            0.001290430143381127,
+            0.0009180838057130155,
+            0.0008473935756363232,
+            0.0007069023007669224,
+            0.0008116038679559853,
+            0.0010559075247304657,
+            0.0010868067133488941,
+            0.0011488273869067467,
+            0.000962543069912193,
+            0.001039235300655774,
+            0.0014080248971879514,
+            0.0010754696009781038,
+            0.000859619873291097,
+            0.001057463598977437,
+            0.0008725130599088585,
+            0.0010170056685561853,
+            0.001399133044348116,
+            0.0011943981327109036
+          ]
+        },
+        "detection.pos_over_neg_ratio": {
+          "point": 290.60550213675214,
+          "boot_sd": 49.62564095171318,
+          "candidate_recentered_range_S159": [
+            231.2617872462116,
+            370.6629857837657
+          ],
+          "inherited_percentile_range": [
+            182.50509804137647,
+            321.90629657893055
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -48.75668920483514,
+          "replicates": [
+            234.1258064516129,
+            278.36047304980667,
+            293.5469299431972,
+            324.1488804885141,
+            202.03322185061316,
+            221.31619937694703,
+            208.73488372093024,
+            294.0174334140435,
+            309.19832109129067,
+            340.16100628930815,
+            297.21665297178856,
+            287.29705263157894,
+            244.7232562896298,
+            180.88660990712074,
+            264.1263279445728,
+            229.5334759358289,
+            201.10277865487845,
+            238.97436957420422,
+            290.1983449702612,
+            227.40109312591972,
+            291.01656050955415,
+            218.86382513661204,
+            149.6401334604385,
+            191.67653080215894
+          ]
+        },
+        "detection.mean_signed_corr": {
+          "point": 0.20606559733699834,
+          "boot_sd": 0.0056143213647355476,
+          "candidate_recentered_range_S159": [
+            0.19566518311731218,
+            0.2118368940318799
+          ],
+          "inherited_percentile_range": [
+            0.19559835619925736,
+            0.2117700671138251
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -6.682691805481866e-05,
+          "replicates": [
+            0.19967924296005923,
+            0.21093251959704842,
+            0.20564143202540264,
+            0.20512365234519905,
+            0.1945596527876497,
+            0.20836823833256113,
+            0.21001022145907972,
+            0.20999641087441243,
+            0.2102265208306456,
+            0.20576121647920928,
+            0.2048771605495466,
+            0.21768718876689733,
+            0.2104255212666629,
+            0.195699948889331,
+            0.20697092348247773,
+            0.20378577859815808,
+            0.2119178696167857,
+            0.20762150625114242,
+            0.20623632435867775,
+            0.20447308362487804,
+            0.20832370401060818,
+            0.20128568216336162,
+            0.19558042807747966,
+            0.2004651248089854
+          ]
+        },
+        "expression.median_abs_corr": {
+          "point": 0.06672647989995611,
+          "boot_sd": 0.0011091622758416535,
+          "candidate_recentered_range_S159": [
+            0.0653393316641657,
+            0.06868059553115918
+          ],
+          "inherited_percentile_range": [
+            0.06969944398763314,
+            0.07304070785462663
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.004360112323467447,
+          "replicates": [
+            0.06956059830668539,
+            0.07176165102184887,
+            0.07069261767421428,
+            0.07055085652120935,
+            0.07139356187000515,
+            0.0720220037878864,
+            0.07288099358302214,
+            0.07317304011259645,
+            0.07062629974326157,
+            0.07046798951061951,
+            0.06967653107172582,
+            0.07216143307140344,
+            0.07079010619125076,
+            0.07019566099331906,
+            0.07116764625004095,
+            0.07168588922452614,
+            0.07306175873443387,
+            0.0710735440859447,
+            0.07023772538763157,
+            0.07109964036090241,
+            0.0698292838444413,
+            0.0699819404825053,
+            0.07215888309418222,
+            0.072921419535719
+          ]
+        },
+        "expression.frac_abs_gt_0p3": {
+          "point": 0.038213404468156055,
+          "boot_sd": 0.0023744653052851323,
+          "candidate_recentered_range_S159": [
+            0.034923574524841614,
+            0.0419540402356341
+          ],
+          "inherited_percentile_range": [
+            0.037299699899966655,
+            0.04433016561075914
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.002376125375125042,
+          "replicates": [
+            0.03792330776925642,
+            0.04023607869289763,
+            0.0375514060242303,
+            0.03748071579415361,
+            0.03765077247971546,
+            0.04290519061909526,
+            0.04449505390685784,
+            0.040816049794375905,
+            0.039719906635545185,
+            0.0367513615649661,
+            0.037267755918639546,
+            0.04036300989218628,
+            0.041739246415471824,
+            0.04107346893408914,
+            0.04111726130932533,
+            0.04199866622207402,
+            0.044189396465488494,
+            0.04087673669000778,
+            0.03801311548293876,
+            0.041123485606313216,
+            0.03873913526731133,
+            0.039655885295098364,
+            0.044355007224630434,
+            0.043128153829054126
+          ]
+        },
+        "expression.var_top10_pc": {
+          "point": 0.2811186089880381,
+          "boot_sd": 0.003559587537995947,
+          "candidate_recentered_range_S159": [
+            0.27731773885276995,
+            0.2877272214177167
+          ],
+          "inherited_percentile_range": [
+            0.2837043272890523,
+            0.2941138098539991
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.00638658843628237,
+          "replicates": [
+            0.2837823788497208,
+            0.28595739397198683,
+            0.2879237398535427,
+            0.28588468096829595,
+            0.28759048160091716,
+            0.29145257212282827,
+            0.2914172147163339,
+            0.2908771017225204,
+            0.2865120052774724,
+            0.28354491711522845,
+            0.28369055348422845,
+            0.2845278934502511,
+            0.2874199132477237,
+            0.28553274106623955,
+            0.289369895308335,
+            0.29416395635842896,
+            0.2938296463288964,
+            0.2870750476400749,
+            0.28384378662463655,
+            0.29154823306592204,
+            0.28515743837686486,
+            0.28807650525819983,
+            0.292772801494249,
+            0.2942549756503184
+          ]
+        },
+        "expression.mean_degree": {
+          "point": 114.602,
+          "boot_sd": 7.121021450550113,
+          "candidate_recentered_range_S159": [
+            104.73580000000001,
+            125.82016666666668
+          ],
+          "inherited_percentile_range": [
+            111.8618,
+            132.94616666666667
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 7.125999999999991,
+          "replicates": [
+            113.732,
+            120.668,
+            112.61666666666666,
+            112.40466666666667,
+            112.91466666666666,
+            128.67266666666666,
+            133.44066666666666,
+            122.40733333333333,
+            119.12,
+            110.21733333333333,
+            111.766,
+            121.04866666666666,
+            125.176,
+            123.17933333333333,
+            123.31066666666666,
+            125.954,
+            132.524,
+            122.58933333333333,
+            114.00133333333333,
+            123.32933333333334,
+            116.17866666666667,
+            118.928,
+            133.02066666666667,
+            129.34133333333332
+          ]
+        },
+        "expression.largest_community_frac": {
+          "point": 0.24933333333333332,
+          "boot_sd": 0.009065648919860305,
+          "candidate_recentered_range_S159": [
+            0.2353333333333333,
+            0.2616666666666667
+          ],
+          "inherited_percentile_range": [
+            0.25166666666666665,
+            0.278
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.01633333333333334,
+          "replicates": [
+            0.25833333333333336,
+            0.26166666666666666,
+            0.264,
+            0.26033333333333336,
+            0.25633333333333336,
+            0.273,
+            0.277,
+            0.27266666666666667,
+            0.26566666666666666,
+            0.25166666666666665,
+            0.25166666666666665,
+            0.26166666666666666,
+            0.268,
+            0.26566666666666666,
+            0.27,
+            0.2773333333333333,
+            0.278,
+            0.2623333333333333,
+            0.248,
+            0.2703333333333333,
+            0.25966666666666666,
+            0.2713333333333333,
+            0.2793333333333333,
+            0.278
+          ]
+        },
+        "expression.transitivity": {
+          "point": 0.5239247850848837,
+          "boot_sd": 0.007555163957855665,
+          "candidate_recentered_range_S159": [
+            0.5091146274662951,
+            0.5326494624004585
+          ],
+          "inherited_percentile_range": [
+            0.5067994752918954,
+            0.5303343102260588
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.002315152174399704,
+          "replicates": [
+            0.5149133777728052,
+            0.5250440764814776,
+            0.5060688406916519,
+            0.5109397380266087,
+            0.5052116270166842,
+            0.5274496525138646,
+            0.5298320169897381,
+            0.5173845928979508,
+            0.5204928393581043,
+            0.5116292439230203,
+            0.513711198034097,
+            0.52196613833407,
+            0.5304229502089389,
+            0.5280141377835873,
+            0.5223618045268276,
+            0.5200433570469034,
+            0.5289593414565755,
+            0.5283973733619932,
+            0.5212531274868979,
+            0.5206415373503072,
+            0.5193457796493326,
+            0.5260893273811661,
+            0.5313506640404516,
+            0.5250880712938077
+          ]
+        },
+        "expression.substitute_frac": {
+          "point": 0.013,
+          "boot_sd": 0.0023981675774366975,
+          "candidate_recentered_range_S159": [
+            0.011049999999999999,
+            0.017799999999999996
+          ],
+          "inherited_percentile_range": [
+            0.012383333333333333,
+            0.019133333333333332
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.001333333333333334,
+          "replicates": [
+            0.012333333333333333,
+            0.012666666666666666,
+            0.018,
+            0.013,
+            0.015666666666666666,
+            0.018,
+            0.017,
+            0.014333333333333333,
+            0.014333333333333333,
+            0.013,
+            0.013333333333333334,
+            0.013666666666666667,
+            0.014333333333333333,
+            0.015,
+            0.013,
+            0.019333333333333334,
+            0.015333333333333332,
+            0.014666666666666666,
+            0.009666666666666667,
+            0.017666666666666667,
+            0.014333333333333333,
+            0.013666666666666667,
+            0.019666666666666666,
+            0.016
+          ]
+        },
+        "expression.frac_pos_gt_0p3": {
+          "point": 0.028971657219073025,
+          "boot_sd": 0.001730593623328772,
+          "candidate_recentered_range_S159": [
+            0.026459942202956544,
+            0.03159044125819718
+          ],
+          "inherited_percentile_range": [
+            0.02806325441813938,
+            0.033193753473380015
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.001603312215182836,
+          "replicates": [
+            0.028418139379793265,
+            0.030409469823274426,
+            0.028208958541736134,
+            0.028160942536401022,
+            0.02789574302545293,
+            0.03256529954429254,
+            0.03388507280204513,
+            0.03133733466711126,
+            0.030527286873402244,
+            0.02804601533844615,
+            0.028362787595865288,
+            0.03083338890741358,
+            0.031442480826942315,
+            0.03050150050016672,
+            0.03132799822162943,
+            0.03110436812270757,
+            0.033304657107924865,
+            0.03062265199510948,
+            0.028748916305435145,
+            0.03076381015894187,
+            0.029518728465043904,
+            0.029733911303767922,
+            0.03240680226742247,
+            0.03189085250639102
+          ]
+        },
+        "expression.frac_neg_lt_m0p3": {
+          "point": 0.009241747249083028,
+          "boot_sd": 0.0007919588022768453,
+          "candidate_recentered_range_S159": [
+            0.008381927309103036,
+            0.010619662109592086
+          ],
+          "inherited_percentile_range": [
+            0.00894811603867956,
+            0.01118585083916861
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0005661887295765246,
+          "replicates": [
+            0.009505168389463154,
+            0.009826608869623207,
+            0.009342447482494165,
+            0.009319773257752585,
+            0.009755029454262532,
+            0.010339891074802711,
+            0.010609981104812715,
+            0.009478715127264644,
+            0.009192619762142936,
+            0.008705346226519951,
+            0.008904968322774258,
+            0.009529620984772702,
+            0.01029676558852951,
+            0.010571968433922418,
+            0.009789263087695899,
+            0.010894298099366456,
+            0.010884739357563632,
+            0.010254084694898299,
+            0.009264199177503612,
+            0.010359675447371345,
+            0.009220406802267423,
+            0.009921973991330444,
+            0.011948204957207957,
+            0.01123730132266311
+          ]
+        },
+        "expression.pos_over_neg_ratio": {
+          "point": 3.1348679463125992,
+          "boot_sd": 0.1585832291917945,
+          "candidate_recentered_range_S159": [
+            2.918695744863958,
+            3.373668708116065
+          ],
+          "inherited_percentile_range": [
+            2.84051975468583,
+            3.2954927179379365
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.07817599017812826,
+          "replicates": [
+            2.9897565424822847,
+            3.0946046827281983,
+            3.0194398838841696,
+            3.021633870005963,
+            2.8596267347264317,
+            3.1494818764243027,
+            3.193697751890884,
+            3.306074108818011,
+            3.320847338766232,
+            3.2217001608743394,
+            3.1850520482288625,
+            3.2355315029508502,
+            3.0536269430051814,
+            2.885129736321965,
+            3.200240706678475,
+            2.855105288932419,
+            3.05975696926376,
+            2.9863857093305586,
+            3.1032273545290945,
+            2.9695727742849174,
+            3.2014561936448236,
+            2.996773759913967,
+            2.712273716720311,
+            2.8379458368776085
+          ]
+        },
+        "expression.mean_signed_corr": {
+          "point": 0.02941893725243814,
+          "boot_sd": 0.0015658605939924673,
+          "candidate_recentered_range_S159": [
+            0.0266066339035119,
+            0.03105125209876302
+          ],
+          "inherited_percentile_range": [
+            0.02663923955601134,
+            0.03108385775126246
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 3.260565249944142e-05,
+          "replicates": [
+            0.027615103384210027,
+            0.03101945112413563,
+            0.028329352185537702,
+            0.02890378232779253,
+            0.02653101015020628,
+            0.031095223626637785,
+            0.030974903478453573,
+            0.030819453773769382,
+            0.030961883024022765,
+            0.029551256225951665,
+            0.029333002018156175,
+            0.031173086872129163,
+            0.030115307742014277,
+            0.02725253952224002,
+            0.030295013010156743,
+            0.027368188780114298,
+            0.03039893335817725,
+            0.0293518295839235,
+            0.03041064136605826,
+            0.028856862010847667,
+            0.029905642592221844,
+            0.02867498037842056,
+            0.025937723761129062,
+            0.027596576876838665
+          ]
+        },
+        "t5.within_over_pooled": {
+          "point": 0.811218158977936,
+          "boot_sd": 0.026641729919749117,
+          "candidate_recentered_range_S159": [
+            0.7758596947599176,
+            0.8404785741290816
+          ],
+          "inherited_percentile_range": [
+            0.8886671330578095,
+            0.9532860124269735
+          ],
+          "inherited_range_excludes_point": true,
+          "resample_median_minus_point": 0.11280743829789197,
+          "replicates": [
+            0.9351213185673971,
+            0.9193437080921013,
+            0.9533241409763973,
+            0.9398755882057521,
+            1.0049597305677282,
+            0.912356074056188,
+            0.8907219208440555,
+            0.9530699506469059,
+            0.8970007873517116,
+            0.9356492387120494,
+            0.934333973717826,
+            0.9065899152029792,
+            0.8940893257072609,
+            0.9049690458895948,
+            0.8875225731093335,
+            0.9226211058676009,
+            0.888304523448472,
+            0.9250448956286784,
+            0.9451801291819405,
+            0.9230062989229776,
+            0.903675478897686,
+            0.9288200379754521,
+            0.9274899195863469,
+            0.9436954987129389
+          ]
+        },
+        "t5.n_classes_used": {
+          "point": 3.0,
+          "boot_sd": 0.0,
+          "candidate_recentered_range_S159": [
+            3.0,
+            3.0
+          ],
+          "inherited_percentile_range": [
+            3.0,
+            3.0
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0
+          ]
+        },
+        "abundance.abundance_max_over_median_nonzero": {
+          "point": 1520.8203883495146,
+          "boot_sd": 35.415392265240385,
+          "candidate_recentered_range_S159": [
+            1469.0241573864369,
+            1568.5372851775765
+          ],
+          "inherited_percentile_range": [
+            1468.8413217241982,
+            1568.3544495153378
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.1828356622386309,
+          "replicates": [
+            1560.133148404993,
+            1521.2031523642731,
+            1497.1661585365855,
+            1556.7824620573356,
+            1507.5071942446043,
+            1570.7826086956522,
+            1569.80526735834,
+            1492.174774774775,
+            1472.6485061511423,
+            1431.9610829103217,
+            1551.3343799058086,
+            1540.923076923077,
+            1480.3348281016442,
+            1497.8875192604005,
+            1522.174193548387,
+            1468.169465648855,
+            1530.013062409289,
+            1500.2235294117647,
+            1518.6136363636365,
+            1521.223154362416,
+            1520.0719530102788,
+            1481.8825324180016,
+            1544.1096296296298,
+            1549.9661764705882
+          ]
+        },
+        "abundance.top1pct_count_share": {
+          "point": 0.2781168765196702,
+          "boot_sd": 0.002003981940655526,
+          "candidate_recentered_range_S159": [
+            0.27614595246094903,
+            0.28238687259004525
+          ],
+          "inherited_percentile_range": [
+            0.2759040291622778,
+            0.282144949291374
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": -0.00024192329867123163,
+          "replicates": [
+            0.2758010927602904,
+            0.27865453750698044,
+            0.28336715775635835,
+            0.2765750513114371,
+            0.27918146031471996,
+            0.2775504914569905,
+            0.27659620008501107,
+            0.27847011024462426,
+            0.27752929964635004,
+            0.2798880687814027,
+            0.27793092178523726,
+            0.28078953210293156,
+            0.2798107029610403,
+            0.2773381797478202,
+            0.2769853307856276,
+            0.2812743259208057,
+            0.2778652143005512,
+            0.2766144097439512,
+            0.2764873354402063,
+            0.2777438549211831,
+            0.2778846921414467,
+            0.2822985887097096,
+            0.27565882000438385,
+            0.27877489338205563
+          ]
+        },
+        "abundance.expressed_fraction": {
+          "point": 1.0,
+          "boot_sd": 0.0,
+          "candidate_recentered_range_S159": [
+            1.0,
+            1.0
+          ],
+          "inherited_percentile_range": [
+            1.0,
+            1.0
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 0.0,
+          "replicates": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "depth.median_library": {
+          "point": 16735.0,
+          "boot_sd": 775.5803504356489,
+          "candidate_recentered_range_S159": [
+            15729.3,
+            17986.975
+          ],
+          "inherited_percentile_range": [
+            15744.3,
+            18001.975
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 15.0,
+          "replicates": [
+            16791.5,
+            17389.5,
+            18022.0,
+            17432.0,
+            16612.0,
+            16015.0,
+            16731.0,
+            16951.0,
+            16252.0,
+            16186.0,
+            16549.0,
+            16716.0,
+            15967.0,
+            15705.0,
+            17060.0,
+            19031.5,
+            17520.0,
+            16597.5,
+            16731.0,
+            17888.5,
+            17198.0,
+            15663.0,
+            17198.0,
+            16769.0
+          ]
+        },
+        "depth.median_detected_all_addresses": {
+          "point": 4960.5,
+          "boot_sd": 154.37642213157073,
+          "candidate_recentered_range_S159": [
+            4652.95,
+            5085.475
+          ],
+          "inherited_percentile_range": [
+            4696.45,
+            5128.975
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 43.5,
+          "replicates": [
+            5104.0,
+            5063.0,
+            5131.0,
+            5062.0,
+            4839.0,
+            4733.0,
+            5063.0,
+            5060.0,
+            4784.0,
+            4800.0,
+            4888.0,
+            4832.0,
+            4759.0,
+            4690.0,
+            4999.0,
+            5170.5,
+            5059.0,
+            4849.0,
+            4933.0,
+            5117.5,
+            5045.0,
+            4659.0,
+            5059.0,
+            5009.0
+          ]
+        },
+        "depth.median_detected_in_universe": {
+          "point": 4826.5,
+          "boot_sd": 154.53255250143476,
+          "candidate_recentered_range_S159": [
+            4522.2,
+            4934.05
+          ],
+          "inherited_percentile_range": [
+            4571.7,
+            4983.55
+          ],
+          "inherited_range_excludes_point": false,
+          "resample_median_minus_point": 49.5,
+          "replicates": [
+            4950.0,
+            4927.0,
+            4987.0,
+            4936.0,
+            4695.0,
+            4638.0,
+            4917.5,
+            4933.0,
+            4647.0,
+            4664.5,
+            4732.0,
+            4695.0,
+            4640.0,
+            4560.0,
+            4877.0,
+            5032.0,
+            4927.0,
+            4689.0,
+            4823.0,
+            4964.0,
+            4887.0,
+            4474.0,
+            4919.0,
+            4875.0
+          ]
+        }
+      }
+    }
+  },
+  "pooled_reference_points": {
+    "detection.median_abs_corr": 0.19456419986728707,
+    "detection.frac_abs_gt_0p3": 0.1348331666110926,
+    "detection.var_top10_pc": 0.3348711769346594,
+    "detection.mean_degree": 404.36466666666666,
+    "detection.largest_community_frac": 0.13666666666666666,
+    "detection.transitivity": 0.6672406627478484,
+    "detection.substitute_frac": 0.021333333333333333,
+    "detection.frac_pos_gt_0p3": 0.13258663999110815,
+    "detection.frac_neg_lt_m0p3": 0.002246526619984439,
+    "detection.pos_over_neg_ratio": 59.018503859093606,
+    "detection.mean_signed_corr": 0.17738061975136662,
+    "expression.median_abs_corr": 0.0562006937031856,
+    "expression.frac_abs_gt_0p3": 0.024242969878848504,
+    "expression.var_top10_pc": 0.26201311473044325,
+    "expression.mean_degree": 72.70466666666667,
+    "expression.largest_community_frac": 0.23766666666666666,
+    "expression.transitivity": 0.5127140304802444,
+    "expression.substitute_frac": 0.016666666666666666,
+    "expression.frac_pos_gt_0p3": 0.018391686117594754,
+    "expression.frac_neg_lt_m0p3": 0.0058512837612537515,
+    "expression.pos_over_neg_ratio": 3.14318820758301,
+    "expression.mean_signed_corr": 0.02572992443599759,
+    "abundance.abundance_max_over_median_nonzero": 2273.2074603985693,
+    "abundance.top1pct_count_share": 0.2740953146829694,
+    "abundance.expressed_fraction": 1.0,
+    "t5.within_over_pooled": 0.7434589733649325
+  },
+  "source": {
+    "cache": "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1",
+    "n_shards": 42,
+    "shard_digests": [
+      {
+        "file": "01a8084c32680dfb.counts.npz",
+        "sha256": "7fb4c75e17dad66a25a38bae62c20f631debfb8933e6396a3636dbfce4916ceb"
+      },
+      {
+        "file": "0428d814f189ca87.counts.npz",
+        "sha256": "a234c3564b23b595a0580f0a170776e7e60880206c4aef8383ba55b195dcb4a7"
+      },
+      {
+        "file": "117e1b89adbf25e4.counts.npz",
+        "sha256": "4540020dd671e4388f324d5a2381c360bf0f35b2681913682cbf9c1c1e655d50"
+      },
+      {
+        "file": "120794b6773c7cf9.counts.npz",
+        "sha256": "6652b6500ca7e48c0893a967d901f41bb74738ef92d7a95e1166953d317ea2dc"
+      },
+      {
+        "file": "15b1f72fcc49200e.counts.npz",
+        "sha256": "f3cb9bcb3acd18feebd2d012fcea2bd55c5bf8fba4f3f17259723a3c942fc579"
+      },
+      {
+        "file": "16632e1b92d2409b.counts.npz",
+        "sha256": "55c679ac3672166c1a14a0ad2492c5a6f1298701cfa32f61d4edd128b6b922a0"
+      },
+      {
+        "file": "1cf08334d3b12f5f.counts.npz",
+        "sha256": "0a8ac927e1596b8d8d33164c0b4cf62e30661532ee342bd2a84e681a468de55e"
+      },
+      {
+        "file": "246008367b5ed2fb.counts.npz",
+        "sha256": "3e0127b2ca95021d55a43c2998ea1e475a748d15551ffdad4fe98343a32b9734"
+      },
+      {
+        "file": "2bfa3b9301efa393.counts.npz",
+        "sha256": "65fe643c2d8e88614bc28dfb587c7723e949d03c77487678eb90fd70618610d0"
+      },
+      {
+        "file": "3230dd0fe3beb954.counts.npz",
+        "sha256": "ab5f9f3e78f9b100db08a41a4d8888d777097725b29eadf557551c059b03dccf"
+      },
+      {
+        "file": "46a2e68f12d45643.counts.npz",
+        "sha256": "8a19c7b71a05358b6eda65d65577153708c5b66a8d951fbcb0c7e42d42167459"
+      },
+      {
+        "file": "4777ea704d910eee.counts.npz",
+        "sha256": "5920d9a0226845336e5a2a28d7a04f76b069654850da5bd6c43def9276a74475"
+      },
+      {
+        "file": "4a3db0b3a3ee23e5.counts.npz",
+        "sha256": "e4b34412e644f42be97d2f90c246cf2ad052b52741b758f0149a673af7eb4f10"
+      },
+      {
+        "file": "4be84f5869689fe5.counts.npz",
+        "sha256": "34f44355d2724fd581b2a17b266a0314611a765466963869a00f6d39f6689858"
+      },
+      {
+        "file": "57791abbd401df2b.counts.npz",
+        "sha256": "4d8bb21c0823aafbff0cb3ccf50dce85a6f154120f7529cc51c6fcb56d083eb3"
+      },
+      {
+        "file": "58baaeadf44eab57.counts.npz",
+        "sha256": "b46375033f4e2363dadd1b30471bac800f11a1602b96d4cda5704fd72a59e6a9"
+      },
+      {
+        "file": "5a104c17a7d6e5cf.counts.npz",
+        "sha256": "6b1f86c3bbf375750e3335d1a3e598a8c3cc174e1cefb61acf7908642f8ebfe0"
+      },
+      {
+        "file": "5a1c193be7cd49cc.counts.npz",
+        "sha256": "3343c4a143e340e4445d69d31ff94f8191ef57905094e63107468c71539caace"
+      },
+      {
+        "file": "5dab94333efd8e21.counts.npz",
+        "sha256": "2e3a3e418389c081c46bc8bce4934b04898a86b4cb7361f5bd363dcd3457c974"
+      },
+      {
+        "file": "62544b4c7ab48cd1.counts.npz",
+        "sha256": "5d76ba5750f12665170f5329101516d656a53aa10cc4c56259f15754396ec9d3"
+      },
+      {
+        "file": "65db086233248c4c.counts.npz",
+        "sha256": "b4bbdce37d026e3bafac1b0dbbf4919c5de773752c6e8051eb88faec3f7c3c28"
+      },
+      {
+        "file": "697169906cb1a773.counts.npz",
+        "sha256": "adfae9c892591e743929d8aeb6874d76832b8f34f8739f49e850979091684221"
+      },
+      {
+        "file": "701d4db85fd51088.counts.npz",
+        "sha256": "cb0174a25260f63446336534294161ade1a335008781b886306b5481d60b63a4"
+      },
+      {
+        "file": "728ef515d050d789.counts.npz",
+        "sha256": "ba7a239611552074a759bbcb29331af1a68adee6f0df9f13b6cc9e2abd7f116a"
+      },
+      {
+        "file": "7da7c897180c16b5.counts.npz",
+        "sha256": "aaeb5e0d68601ec40f82f01db1e9a12d1f6c0e2cf1e1e55e42f74627efdf950d"
+      },
+      {
+        "file": "868d05542e5e7cf2.counts.npz",
+        "sha256": "454120fb1a7d3a693def16b5bfb7a00c018d477d76332e0297c83c79201bb736"
+      },
+      {
+        "file": "8a1613e724707595.counts.npz",
+        "sha256": "8f961de2abf731dc559d4f0604e5277889642ad76ddb550acb1cbc4720a4e268"
+      },
+      {
+        "file": "97c509331469cc92.counts.npz",
+        "sha256": "8dc9429276682c376da1192047211c088e910eb9622746f16a3ef023b134d70c"
+      },
+      {
+        "file": "9fc20935b65302ee.counts.npz",
+        "sha256": "9caaaf291fe6fb8ac04104723ddb247063aaa508606788fd1e081d82c51af3a7"
+      },
+      {
+        "file": "a410358f191a3e4c.counts.npz",
+        "sha256": "ba5292b3eb2865d547379f7a97cdae82b4a2e0a1206742f03144d75f5fddbf68"
+      },
+      {
+        "file": "a6a34c7d7c6723a0.counts.npz",
+        "sha256": "4a77a21902e51c28f41ed3624d823ec94177b675179cbc69cdf37394f51540aa"
+      },
+      {
+        "file": "bbffd755c3f71256.counts.npz",
+        "sha256": "c07fc6b1255ec696ab93cd1a28f32603f8eeced8d965decf770524f06576526e"
+      },
+      {
+        "file": "c70df1e5200f419f.counts.npz",
+        "sha256": "2dcc49f894bee8c6274a3ca85244f5c35eaffeb4812ffb39119604352754355d"
+      },
+      {
+        "file": "c9d1fc26b487b582.counts.npz",
+        "sha256": "267b8f4f3b3b8653b7bf184808e04657104657128a93128b670397fec04e0efa"
+      },
+      {
+        "file": "d35f9b260b727137.counts.npz",
+        "sha256": "a974943c9d7fe6d45cc33f96c8c6caa365de84198e2918ac5401270961514feb"
+      },
+      {
+        "file": "dd26eaeaed7d104f.counts.npz",
+        "sha256": "7aadb0274a75f6cf46ad967a49acd0aa4a9c3de688241e98534728c94a2e3483"
+      },
+      {
+        "file": "de88e08b50c44dbe.counts.npz",
+        "sha256": "645df92bab23d274048c4d7fa15b55a13ec5c2f5daadde0531aa807d2712aade"
+      },
+      {
+        "file": "dfcb594c1abeb0c0.counts.npz",
+        "sha256": "72eb1e3ea01f6b57c28a8f93f6d6a287e8f70fa4654440d1fcf84afdd5fc497d"
+      },
+      {
+        "file": "e31a8c262e8be576.counts.npz",
+        "sha256": "09bc5d8b830b358e178e6b3d317aa2bd8761d19018dcaa16b09cf0fb651a3c66"
+      },
+      {
+        "file": "e38be9d52b6f8e0b.counts.npz",
+        "sha256": "1fa3a1f4dfddf1c84b776f109e5bfb803f59ae12129d76f72d09d30105440da8"
+      },
+      {
+        "file": "e5ef92fa6bf68bb4.counts.npz",
+        "sha256": "9b0d2ad075750f52c964c21584d9fa0ab7ef02f7df2f42d6cde8cea5514f6647"
+      },
+      {
+        "file": "fa1d6cf6e74837f2.counts.npz",
+        "sha256": "4066948f9b26fbf0a59a1f6716b4c5665a61b6d4dd659271d8de72638b96c2b1"
+      }
+    ],
+    "pathology_blind": true,
+    "train_only": true,
+    "read_only": true
+  },
+  "command": "python scripts/v77/build_v77_within_cohort_envelope.py --out results/v77/s174_replay/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json --universe-dir D:/jepa_v77_synthetic_custody_20261005/s174_replay/within_cohort_universes_v2 --cache D:/Jepa project/data/cache/s174_rebuilt_real_train_v1 --inputs-dir results/v77/s174_replay",
+  "source_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "build_v77_within_cohort_envelope.py": "d70786202df60963fe14a251cd55abf4de2193fb277c3ba5fd01b861962be0d8",
+    "build_v77_real_calibration.py": "81d516704a8414084a11742ab3ea7aeed0aca64b35077a5e2f49b3c34d097504",
+    "build_v77_calibration_envelope.py": "0f9fe5ddb84a16894d5018d9fd6f14bd4b41693e20d058f4f8467be8960da847",
+    "build_v77_topology_calibration.py": "60c242290bca14b3860507028932c3f8c2cdba397a26d6e01a0d8db6117ec4dc",
+    "v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+  },
+  "no_training_performed": true
+}
