@@ -120,6 +120,23 @@ def test_noninitial_bound_checkpoint_requires_completed_guard_receipt():
             modules,next_update_index=1,presentations_seen=6,premise_state_path=PREMISE)
 
 
+def test_authority_is_issued_only_from_exact_parent_bound_state():
+    assert callable(getattr(binding,"issue_prefreeze_authority_from_bound_checkpoint",None)), (
+        "canonical runtime has no parent-checkpoint-bound authority issuer")
+    modules=_modules()
+    parent=capture_prefreeze_bound_checkpoint(
+        modules,next_update_index=0,presentations_seen=0,premise_state_path=PREMISE)
+    authority=binding.issue_prefreeze_authority_from_bound_checkpoint(
+        modules,parent,premise_state_path=PREMISE)
+    assert authority.checkpoint_digest==binding.reference_checkpoint_sha256(parent.reference_checkpoint)
+
+    with torch.no_grad():
+        next(modules.online.parameters()).add_(1.0)
+    with pytest.raises(RuntimeError,match='parent|state'):
+        binding.issue_prefreeze_authority_from_bound_checkpoint(
+            modules,parent,premise_state_path=PREMISE)
+
+
 def test_restore_rejects_premise_drift(tmp_path):
     envelope=capture_prefreeze_bound_checkpoint(
         _modules(),next_update_index=0,presentations_seen=0,premise_state_path=PREMISE)
