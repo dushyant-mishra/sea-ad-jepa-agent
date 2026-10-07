@@ -78,3 +78,10 @@ def test_policy_only_q_safety_cannot_count_as_executed_joined_proof():
     assert callable(gate), "V77 join has no execution-bound q-safety gate"
     with pytest.raises(ValueError, match="executed|q-safety"):
         gate(QSafetyExecutionProofStatus.POLICY_ONLY_NOT_EXECUTION_PROVEN)
+
+
+def test_executed_status_enum_alone_cannot_mint_q_safety_proof():
+    with pytest.raises(ValueError, match="typed|proof"):
+        v77_join.require_executed_q_safety(
+            QSafetyExecutionProofStatus.PROVEN_BY_BOUND_ADAPTER_RUNTIME
+        )
