@@ -56,7 +56,6 @@ def test_capture_binds_frozen_premise_and_remains_non_authorizing():
 
 
 def test_checkpoint_provenance_binds_actual_canonical_runtime_not_legacy_guard():
-    """The persisted runtime identity must cover the code that actually controls mutation."""
     source = CHECKPOINT_BINDING.read_text(encoding="utf-8")
     required = (
         "inactive_update_reference.py",
@@ -66,9 +65,7 @@ def test_checkpoint_provenance_binds_actual_canonical_runtime_not_legacy_guard()
     )
     for name in required:
         assert name in source, f"checkpoint runtime provenance omits {name}"
-    assert "inactive_runtime_step_guard_v1.py" not in source, (
-        "checkpoint provenance still binds the superseded #221 guard"
-    )
+    assert "inactive_runtime_step_guard_v1.py" not in source
 
 
 def test_restore_roundtrip_requires_exact_premise_and_preserves_mechanics_state():
@@ -79,6 +76,21 @@ def test_restore_roundtrip_requires_exact_premise_and_preserves_mechanics_state(
         restored,envelope,premise_state_path=PREMISE)
     assert (cursor,presentations)==(0,0)
     _assert_modules_equal(source,restored)
+
+
+def test_bound_checkpoint_roundtrip_preserves_amp_scaler_state():
+    source=_modules(); source_scaler=torch.amp.GradScaler('cpu',init_scale=8.0,growth_interval=1)
+    envelope=capture_prefreeze_bound_checkpoint(
+        source,next_update_index=0,presentations_seen=0,premise_state_path=PREMISE,scaler=source_scaler)
+    assert envelope.reference_checkpoint.amp_scaler_used is True
+    restored=_modules(); restored_scaler=torch.amp.GradScaler('cpu',init_scale=2.0,growth_interval=17)
+    cursor,presentations=restore_prefreeze_bound_checkpoint(
+        restored,envelope,premise_state_path=PREMISE,scaler=restored_scaler)
+    assert (cursor,presentations)==(0,0)
+    assert restored_scaler.state_dict()==source_scaler.state_dict()
+    _assert_modules_equal(source,restored)
+    with pytest.raises(ValueError,match='scaler|AMP'):
+        restore_prefreeze_bound_checkpoint(_modules(),envelope,premise_state_path=PREMISE)
 
 
 def test_restore_rejects_premise_drift(tmp_path):
