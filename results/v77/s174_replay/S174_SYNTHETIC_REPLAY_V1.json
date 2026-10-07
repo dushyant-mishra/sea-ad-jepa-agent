@@ -1,0 +1,2248 @@
+{
+ "schema": "S174_SYNTHETIC_REPLAY_V1",
+ "record_path": "results/v77/s174_replay/S174_SYNTHETIC_REPLAY_V1.json",
+ "rule": "each replay reran the committed runner with the receipt's original arguments; only the universe (and --out) changed; a rerun on the old universe reproduced each committed receipt first; no seed, arm, preprocessing or scoring rule changed and no arm was tuned after the corrected target was seen",
+ "statistical_ruling": {
+  "pooled_envelopes": "not qualification targets until S159 is resolved",
+  "real_point_estimates": "descriptive reference values",
+  "donor_resampled_distributions": "uncertainty diagnostics",
+  "binary_inside_every_envelope_decision": "not made",
+  "recentring": "not done; an interval is never moved to make the point fit",
+  "why": "S159: the corrected real point lies outside its own donor-bootstrap p05-p95 interval for some statistics, so a candidate identical to the real point could fail a gate built on these intervals"
+ },
+ "universe_label_note": "the runners write TRAIN_PREVALENCE05_19569, the builder's fixed name for the frozen universe; in s174_replay it denotes the corrected 14,417-address universe",
+ "abundance_note": "S130: abundance max/median on the frozen universe divides by the median of nonzero gene means and so also penalises detection coverage; read it that way",
+ "reproduction_on_the_old_universe": {
+  "V77_REALIZATION_ISOLATION_RECEIPT_V2.json": {
+   "exact": true,
+   "numeric_leaves": 106,
+   "differing": [],
+   "reproduced_sha256": "2462ce506066a719c88f2846a9ef0cce8f4e48602122fc10501317d65ed2f5e1"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": {
+   "exact": true,
+   "numeric_leaves": 253,
+   "differing": [],
+   "reproduced_sha256": "81c701149108c8a7c4411652d38654ba790817b158aad0cf892f0a19af15fa9d"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": {
+   "exact": true,
+   "numeric_leaves": 253,
+   "differing": [],
+   "reproduced_sha256": "9f337f20f0f6bbf035c56be287b5cc16be1f114c40a9879f7efd4391ecac559a"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": {
+   "exact": true,
+   "numeric_leaves": 253,
+   "differing": [],
+   "reproduced_sha256": "4e59f89a6e93f745eef3ae0be4c466e11c1d4ac64bc3f9b248a0f49a2495f640"
+  }
+ },
+ "corrected_receipts": {
+  "V77_REALIZATION_ISOLATION_RECEIPT_V2.json": {
+   "sha256": "f0b92339d4e9fb523de98a7bee2e32719f93ef79b0e0c9c86f84861192898c52",
+   "command": "python scripts/v77/run_v77_realization_isolation.py --universe D:/jepa_v77_synthetic_custody_20261005/s174_replay/frozen_evaluation_universe.npz --out results/v77/s174_replay/V77_REALIZATION_ISOLATION_RECEIPT_V2.json --cells 2500 --seed 20261006 --generator L1_two_giant --capture O3_capture_independent_wide",
+   "source_commit": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+   "provenance_status": "CLEAN_COMMITTED_HEAD"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": {
+   "sha256": "1de586182d2f34bc4a4d7684644238c4c237625947d10bf2a3e0a91add3dcd14",
+   "command": "python scripts/v77/run_v77_dynamic_range_tournament.py --universe D:/jepa_v77_synthetic_custody_20261005/s174_replay/frozen_evaluation_universe.npz --out results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json --cells 2500 --seed 20261006 --universe-name TRAIN_PREVALENCE05_19569",
+   "source_commit": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+   "provenance_status": "CLEAN_COMMITTED_HEAD"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": {
+   "sha256": "500693d9032f3ff90de009fa03899d15d0e3c04d213fa32061574997e56841d6",
+   "command": "python scripts/v77/run_v77_dynamic_range_tournament.py --universe D:/jepa_v77_synthetic_custody_20261005/s174_replay/within_cohort_universes_v2/TRAIN_WITHIN_HVS_PREVALENCE05_13326.npz --out results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json --cells 3072 --seed 20261006 --universe-name TRAIN_WITHIN_HVS_PREVALENCE05_13326 --exploratory",
+   "source_commit": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+   "provenance_status": "CLEAN_COMMITTED_HEAD"
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": {
+   "sha256": "7dbc9cd5af819b08e7f06ca8886628393000358fcfc88ed53b07de89a6705fe0",
+   "command": "python scripts/v77/run_v77_dynamic_range_tournament.py --universe D:/jepa_v77_synthetic_custody_20261005/s174_replay/within_cohort_universes_v2/TRAIN_WITHIN_SEA_AD_PREVALENCE05_15158.npz --out results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json --cells 1408 --seed 20261006 --universe-name TRAIN_WITHIN_SEA_AD_PREVALENCE05_15158 --exploratory",
+   "source_commit": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+   "provenance_status": "CLEAN_COMMITTED_HEAD"
+  }
+ },
+ "superseded_before_s174": {
+  "V77_REALIZATION_ISOLATION_RECEIPT_V1.json": "superseded by V2 (S139/S140 scorer mismatch); not replayed",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V1.json": "superseded by V2 (S129/S138 DR5, S139/S140 scorer mismatch); not replayed"
+ },
+ "references": {
+  "expression.median_abs_corr": {
+   "old": {
+    "point": 0.3291,
+    "interval": [
+     0.3064,
+     0.3443
+    ],
+    "boot_sd": 0.0138,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.0562,
+    "interval": [
+     0.0569,
+     0.0591
+    ],
+    "boot_sd": 0.0007,
+    "point_inside_own_interval": false
+   }
+  },
+  "expression.frac_abs_gt_0p3": {
+   "old": {
+    "point": 0.5621,
+    "interval": [
+     0.5143,
+     0.5921
+    ],
+    "boot_sd": 0.0281,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.0242,
+    "interval": [
+     0.0233,
+     0.026
+    ],
+    "boot_sd": 0.001,
+    "point_inside_own_interval": true
+   }
+  },
+  "expression.var_top10_pc": {
+   "old": {
+    "point": 0.5089,
+    "interval": [
+     0.4984,
+     0.5228
+    ],
+    "boot_sd": 0.0084,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.262,
+    "interval": [
+     0.2613,
+     0.2679
+    ],
+    "boot_sd": 0.0024,
+    "point_inside_own_interval": true
+   }
+  },
+  "detection.median_abs_corr": {
+   "old": {
+    "point": 0.377,
+    "interval": [
+     0.3548,
+     0.389
+    ],
+    "boot_sd": 0.0115,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.1946,
+    "interval": [
+     0.1889,
+     0.1965
+    ],
+    "boot_sd": 0.0029,
+    "point_inside_own_interval": true
+   }
+  },
+  "detection.frac_abs_gt_0p3": {
+   "old": {
+    "point": 0.6148,
+    "interval": [
+     0.5868,
+     0.6298
+    ],
+    "boot_sd": 0.0138,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.1348,
+    "interval": [
+     0.1242,
+     0.1513
+    ],
+    "boot_sd": 0.0084,
+    "point_inside_own_interval": true
+   }
+  },
+  "detection.mean_degree": {
+   "old": {
+    "point": 1843.804,
+    "interval": [
+     1759.8974,
+     1888.667
+    ],
+    "boot_sd": 41.4852,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 404.3647,
+    "interval": [
+     372.4921,
+     453.687
+    ],
+    "boot_sd": 25.3125,
+    "point_inside_own_interval": true
+   }
+  },
+  "detection.transitivity": {
+   "old": {
+    "point": 0.8871,
+    "interval": [
+     0.8752,
+     0.8928
+    ],
+    "boot_sd": 0.0063,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.6672,
+    "interval": [
+     0.6454,
+     0.667
+    ],
+    "boot_sd": 0.0082,
+    "point_inside_own_interval": false
+   }
+  },
+  "detection.largest_community_frac": {
+   "old": {
+    "point": 0.763,
+    "interval": [
+     0.7496,
+     0.7818
+    ],
+    "boot_sd": 0.0121,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.1367,
+    "interval": [
+     0.127,
+     0.2128
+    ],
+    "boot_sd": 0.0359,
+    "point_inside_own_interval": true
+   }
+  },
+  "class_separation.t5_within_over_pooled": {
+   "old": {
+    "point": 1.0118,
+    "interval": null,
+    "boot_sd": null,
+    "point_inside_own_interval": null
+   },
+   "corrected": {
+    "point": 0.7435,
+    "interval": null,
+    "boot_sd": null,
+    "point_inside_own_interval": null
+   }
+  },
+  "abundance.abundance_max_over_median_nonzero": {
+   "old": {
+    "point": 1976.6481,
+    "interval": [
+     1804.7542,
+     2187.6696
+    ],
+    "boot_sd": 135.273,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 2273.2075,
+    "interval": [
+     2183.824,
+     2382.7249
+    ],
+    "boot_sd": 65.4141,
+    "point_inside_own_interval": true
+   }
+  },
+  "abundance.top1pct_count_share": {
+   "old": {
+    "point": 0.2457,
+    "interval": [
+     0.2431,
+     0.2503
+    ],
+    "boot_sd": 0.0028,
+    "point_inside_own_interval": true
+   },
+   "corrected": {
+    "point": 0.2741,
+    "interval": [
+     0.2716,
+     0.2767
+    ],
+    "boot_sd": 0.0015,
+    "point_inside_own_interval": true
+   }
+  },
+  "depth.median_detected_per_cell": {
+   "old": {
+    "point": 4467.0,
+    "interval": null,
+    "boot_sd": null,
+    "point_inside_own_interval": null
+   },
+   "corrected": {
+    "point": 4495.5,
+    "interval": null,
+    "boot_sd": null,
+    "point_inside_own_interval": null
+   }
+  }
+ },
+ "s159_points_outside_their_own_interval": [
+  "expression.median_abs_corr",
+  "detection.transitivity"
+ ],
+ "realization_isolation": {
+  "arms": [
+   {
+    "arm": "A_deterministic",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1783,
+       "point": 0.3291,
+       "over_point": 0.5419,
+       "position": "below",
+       "sd_from_point": -10.9612
+      },
+      "corrected_universe": {
+       "value": 0.1642,
+       "point": 0.0562,
+       "over_point": 2.922,
+       "position": "above",
+       "sd_from_point": 149.0789
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2236,
+       "point": 0.5621,
+       "over_point": 0.3978,
+       "position": "below",
+       "sd_from_point": -12.0555
+      },
+      "corrected_universe": {
+       "value": 0.2025,
+       "point": 0.0242,
+       "over_point": 8.3527,
+       "position": "above",
+       "sd_from_point": 174.5668
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.438,
+       "point": 0.5089,
+       "over_point": 0.8606,
+       "position": "below",
+       "sd_from_point": -8.4268
+      },
+      "corrected_universe": {
+       "value": 0.4269,
+       "point": 0.262,
+       "over_point": 1.6294,
+       "position": "above",
+       "sd_from_point": 68.9807
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.14,
+       "point": 0.377,
+       "over_point": 0.3715,
+       "position": "below",
+       "sd_from_point": -20.5841
+      },
+      "corrected_universe": {
+       "value": 0.1579,
+       "point": 0.1946,
+       "over_point": 0.8116,
+       "position": "below",
+       "sd_from_point": -12.6242
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2641,
+       "point": 0.6148,
+       "over_point": 0.4296,
+       "position": "below",
+       "sd_from_point": -25.3504
+      },
+      "corrected_universe": {
+       "value": 0.2818,
+       "point": 0.1348,
+       "over_point": 2.0903,
+       "position": "above",
+       "sd_from_point": 17.4174
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 792.14,
+       "point": 1843.804,
+       "over_point": 0.4296,
+       "position": "below",
+       "sd_from_point": -25.3504
+      },
+      "corrected_universe": {
+       "value": 845.2427,
+       "point": 404.3647,
+       "over_point": 2.0903,
+       "position": "above",
+       "sd_from_point": 17.4174
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.7369,
+       "point": 0.8871,
+       "over_point": 0.8307,
+       "position": "below",
+       "sd_from_point": -23.9137
+      },
+      "corrected_universe": {
+       "value": 0.7436,
+       "point": 0.6672,
+       "over_point": 1.1145,
+       "position": "above",
+       "sd_from_point": 9.3021
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.7627,
+       "point": 0.763,
+       "over_point": 0.9996,
+       "position": "inside",
+       "sd_from_point": -0.0276
+      },
+      "corrected_universe": {
+       "value": 0.771,
+       "point": 0.1367,
+       "over_point": 5.6415,
+       "position": "above",
+       "sd_from_point": 17.667
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.0109,
+       "point": 1.0118,
+       "over_point": 0.9991,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.0166,
+       "point": 0.7435,
+       "over_point": 1.3673,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 7625.7804,
+       "point": 1976.6481,
+       "over_point": 3.8579,
+       "position": "above",
+       "sd_from_point": 41.761
+      },
+      "corrected_universe": {
+       "value": 6146.58,
+       "point": 2273.2075,
+       "over_point": 2.7039,
+       "position": "above",
+       "sd_from_point": 59.2131
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5183,
+       "point": 0.2457,
+       "over_point": 2.1098,
+       "position": "above",
+       "sd_from_point": 98.4157
+      },
+      "corrected_universe": {
+       "value": 0.4835,
+       "point": 0.2741,
+       "over_point": 1.7641,
+       "position": "above",
+       "sd_from_point": 141.4056
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 2476.5,
+       "point": 4467.0,
+       "over_point": 0.5544,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 2155.0,
+       "point": 4495.5,
+       "over_point": 0.4794,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "detection.median_abs_corr"
+    ],
+    "corrected_above": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac",
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [
+     "detection.largest_community_frac"
+    ],
+    "canonical_genes_lost": {
+     "old_universe": 9773,
+     "corrected_universe": 6467
+    }
+   },
+   {
+    "arm": "B_poisson",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.0596,
+       "point": 0.3291,
+       "over_point": 0.1811,
+       "position": "below",
+       "sd_from_point": -19.5928
+      },
+      "corrected_universe": {
+       "value": 0.0526,
+       "point": 0.0562,
+       "over_point": 0.9367,
+       "position": "below",
+       "sd_from_point": -4.9075
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.0112,
+       "point": 0.5621,
+       "over_point": 0.0198,
+       "position": "below",
+       "sd_from_point": -19.6225
+      },
+      "corrected_universe": {
+       "value": 0.0084,
+       "point": 0.0242,
+       "over_point": 0.3483,
+       "position": "below",
+       "sd_from_point": -15.4736
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.1801,
+       "point": 0.5089,
+       "over_point": 0.354,
+       "position": "below",
+       "sd_from_point": -39.0469
+      },
+      "corrected_universe": {
+       "value": 0.1669,
+       "point": 0.262,
+       "over_point": 0.6369,
+       "position": "below",
+       "sd_from_point": -39.7943
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1022,
+       "point": 0.377,
+       "over_point": 0.2711,
+       "position": "below",
+       "sd_from_point": -23.8712
+      },
+      "corrected_universe": {
+       "value": 0.0995,
+       "point": 0.1946,
+       "over_point": 0.5113,
+       "position": "below",
+       "sd_from_point": -32.7397
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.003,
+       "point": 0.6148,
+       "over_point": 0.0049,
+       "position": "below",
+       "sd_from_point": -44.2276
+      },
+      "corrected_universe": {
+       "value": 0.0024,
+       "point": 0.1348,
+       "over_point": 0.0182,
+       "position": "below",
+       "sd_from_point": -15.6848
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 9.0133,
+       "point": 1843.804,
+       "over_point": 0.0049,
+       "position": "below",
+       "sd_from_point": -44.2276
+      },
+      "corrected_universe": {
+       "value": 7.342,
+       "point": 404.3647,
+       "over_point": 0.0182,
+       "position": "below",
+       "sd_from_point": -15.6848
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.3477,
+       "point": 0.8871,
+       "over_point": 0.392,
+       "position": "below",
+       "sd_from_point": -85.886
+      },
+      "corrected_universe": {
+       "value": 0.3377,
+       "point": 0.6672,
+       "over_point": 0.5061,
+       "position": "below",
+       "sd_from_point": -40.1326
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.0003,
+       "point": 0.763,
+       "over_point": 0.0004,
+       "position": "below",
+       "sd_from_point": -63.1261
+      },
+      "corrected_universe": {
+       "value": 0.0003,
+       "point": 0.1367,
+       "over_point": 0.0024,
+       "position": "below",
+       "sd_from_point": -3.7971
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.1638,
+       "point": 1.0118,
+       "over_point": 1.1503,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.2087,
+       "point": 0.7435,
+       "over_point": 1.6258,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 26753.3607,
+       "point": 1976.6481,
+       "over_point": 13.5347,
+       "position": "above",
+       "sd_from_point": 183.1609
+      },
+      "corrected_universe": {
+       "value": 20147.5926,
+       "point": 2273.2075,
+       "over_point": 8.8631,
+       "position": "above",
+       "sd_from_point": 273.2497
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5195,
+       "point": 0.2457,
+       "over_point": 2.1147,
+       "position": "above",
+       "sd_from_point": 98.8506
+      },
+      "corrected_universe": {
+       "value": 0.4858,
+       "point": 0.2741,
+       "over_point": 1.7725,
+       "position": "above",
+       "sd_from_point": 142.9628
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 2082.5,
+       "point": 4467.0,
+       "over_point": 0.4662,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1783.0,
+       "point": 4495.5,
+       "over_point": 0.3966,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.median_abs_corr",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac"
+    ],
+    "corrected_above": [
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1184,
+     "corrected_universe": 679
+    }
+   }
+  ],
+  "collapse_from_counting_alone_persists_on_the_corrected_universe": true,
+  "audit_correction_figures_came_from": {
+   "scorer": "topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL (S139/S140), old universe",
+   "values": {
+    "A_deterministic": {
+     "frac_abs_gt_0p3": 0.5208,
+     "transitivity": 0.7645,
+     "mean_degree": 1561.7587
+    },
+    "B_poisson": {
+     "frac_abs_gt_0p3": 0.0028,
+     "transitivity": 0.3555,
+     "mean_degree": 8.3647
+    }
+   }
+  },
+  "reading": "between arms identical except realization, Poisson counting lowers detection transitivity from 0.7436 to 0.3377 and mean degree from 845.2427 to 7.342 on the corrected universe (old universe: 0.7369 to 0.3477, 792.14 to 9.0133); the collapse persists. Relative to the corrected real points the deterministic arm is 1.1145 and 2.0903 times, the Poisson arm 0.5061 and 0.0182 times"
+ },
+ "dynamic_range_tournament": {
+  "arms": [
+   {
+    "arm": "DR1_scale_1p20_baseline",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.0596,
+       "point": 0.3291,
+       "over_point": 0.1811,
+       "position": "below",
+       "sd_from_point": -19.5928
+      },
+      "corrected_universe": {
+       "value": 0.0526,
+       "point": 0.0562,
+       "over_point": 0.9367,
+       "position": "below",
+       "sd_from_point": -4.9075
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.0112,
+       "point": 0.5621,
+       "over_point": 0.0198,
+       "position": "below",
+       "sd_from_point": -19.6225
+      },
+      "corrected_universe": {
+       "value": 0.0084,
+       "point": 0.0242,
+       "over_point": 0.3483,
+       "position": "below",
+       "sd_from_point": -15.4736
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.1801,
+       "point": 0.5089,
+       "over_point": 0.354,
+       "position": "below",
+       "sd_from_point": -39.0469
+      },
+      "corrected_universe": {
+       "value": 0.1669,
+       "point": 0.262,
+       "over_point": 0.6369,
+       "position": "below",
+       "sd_from_point": -39.7943
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1022,
+       "point": 0.377,
+       "over_point": 0.2711,
+       "position": "below",
+       "sd_from_point": -23.8712
+      },
+      "corrected_universe": {
+       "value": 0.0995,
+       "point": 0.1946,
+       "over_point": 0.5113,
+       "position": "below",
+       "sd_from_point": -32.7397
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.003,
+       "point": 0.6148,
+       "over_point": 0.0049,
+       "position": "below",
+       "sd_from_point": -44.2276
+      },
+      "corrected_universe": {
+       "value": 0.0024,
+       "point": 0.1348,
+       "over_point": 0.0182,
+       "position": "below",
+       "sd_from_point": -15.6848
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 9.0133,
+       "point": 1843.804,
+       "over_point": 0.0049,
+       "position": "below",
+       "sd_from_point": -44.2276
+      },
+      "corrected_universe": {
+       "value": 7.342,
+       "point": 404.3647,
+       "over_point": 0.0182,
+       "position": "below",
+       "sd_from_point": -15.6848
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.3477,
+       "point": 0.8871,
+       "over_point": 0.392,
+       "position": "below",
+       "sd_from_point": -85.886
+      },
+      "corrected_universe": {
+       "value": 0.3377,
+       "point": 0.6672,
+       "over_point": 0.5061,
+       "position": "below",
+       "sd_from_point": -40.1326
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.0003,
+       "point": 0.763,
+       "over_point": 0.0004,
+       "position": "below",
+       "sd_from_point": -63.1261
+      },
+      "corrected_universe": {
+       "value": 0.0003,
+       "point": 0.1367,
+       "over_point": 0.0024,
+       "position": "below",
+       "sd_from_point": -3.7971
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.1638,
+       "point": 1.0118,
+       "over_point": 1.1503,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.2087,
+       "point": 0.7435,
+       "over_point": 1.6258,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 26753.3607,
+       "point": 1976.6481,
+       "over_point": 13.5347,
+       "position": "above",
+       "sd_from_point": 183.1609
+      },
+      "corrected_universe": {
+       "value": 20147.5926,
+       "point": 2273.2075,
+       "over_point": 8.8631,
+       "position": "above",
+       "sd_from_point": 273.2497
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5195,
+       "point": 0.2457,
+       "over_point": 2.1147,
+       "position": "above",
+       "sd_from_point": 98.8506
+      },
+      "corrected_universe": {
+       "value": 0.4858,
+       "point": 0.2741,
+       "over_point": 1.7725,
+       "position": "above",
+       "sd_from_point": 142.9628
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 2082.5,
+       "point": 4467.0,
+       "over_point": 0.4662,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1783.0,
+       "point": 4495.5,
+       "over_point": 0.3966,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.median_abs_corr",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac"
+    ],
+    "corrected_above": [
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1184,
+     "corrected_universe": 679
+    }
+   },
+   {
+    "arm": "DR2_scale_2p50",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1207,
+       "point": 0.3291,
+       "over_point": 0.3669,
+       "position": "below",
+       "sd_from_point": -15.148
+      },
+      "corrected_universe": {
+       "value": 0.107,
+       "point": 0.0562,
+       "over_point": 1.9039,
+       "position": "above",
+       "sd_from_point": 70.1055
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.113,
+       "point": 0.5621,
+       "over_point": 0.2011,
+       "position": "below",
+       "sd_from_point": -15.9942
+      },
+      "corrected_universe": {
+       "value": 0.0902,
+       "point": 0.0242,
+       "over_point": 3.7222,
+       "position": "above",
+       "sd_from_point": 64.631
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.3135,
+       "point": 0.5089,
+       "over_point": 0.616,
+       "position": "below",
+       "sd_from_point": -23.2071
+      },
+      "corrected_universe": {
+       "value": 0.2928,
+       "point": 0.262,
+       "over_point": 1.1174,
+       "position": "above",
+       "sd_from_point": 12.8679
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.0844,
+       "point": 0.377,
+       "over_point": 0.2239,
+       "position": "below",
+       "sd_from_point": -25.4187
+      },
+      "corrected_universe": {
+       "value": 0.0869,
+       "point": 0.1946,
+       "over_point": 0.4467,
+       "position": "below",
+       "sd_from_point": -37.0682
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.1534,
+       "point": 0.6148,
+       "over_point": 0.2496,
+       "position": "below",
+       "sd_from_point": -33.3536
+      },
+      "corrected_universe": {
+       "value": 0.1338,
+       "point": 0.1348,
+       "over_point": 0.9921,
+       "position": "inside",
+       "sd_from_point": -0.1262
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 460.126,
+       "point": 1843.804,
+       "over_point": 0.2496,
+       "position": "below",
+       "sd_from_point": -33.3536
+      },
+      "corrected_universe": {
+       "value": 401.1713,
+       "point": 404.3647,
+       "over_point": 0.9921,
+       "position": "inside",
+       "sd_from_point": -0.1262
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.8142,
+       "point": 0.8871,
+       "over_point": 0.9179,
+       "position": "below",
+       "sd_from_point": -11.5975
+      },
+      "corrected_universe": {
+       "value": 0.7786,
+       "point": 0.6672,
+       "over_point": 1.1669,
+       "position": "above",
+       "sd_from_point": 13.561
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.1303,
+       "point": 0.763,
+       "over_point": 0.1708,
+       "position": "below",
+       "sd_from_point": -52.3659
+      },
+      "corrected_universe": {
+       "value": 0.1257,
+       "point": 0.1367,
+       "over_point": 0.9195,
+       "position": "below",
+       "sd_from_point": -0.3064
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.0347,
+       "point": 1.0118,
+       "over_point": 1.0227,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.0472,
+       "point": 0.7435,
+       "over_point": 1.4086,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 30848.2903,
+       "point": 1976.6481,
+       "over_point": 15.6064,
+       "position": "above",
+       "sd_from_point": 213.4325
+      },
+      "corrected_universe": {
+       "value": 23612.2716,
+       "point": 2273.2075,
+       "over_point": 10.3872,
+       "position": "above",
+       "sd_from_point": 326.215
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5271,
+       "point": 0.2457,
+       "over_point": 2.1455,
+       "position": "above",
+       "sd_from_point": 101.5828
+      },
+      "corrected_universe": {
+       "value": 0.4956,
+       "point": 0.2741,
+       "over_point": 1.808,
+       "position": "above",
+       "sd_from_point": 149.5242
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 1882.5,
+       "point": 4467.0,
+       "over_point": 0.4214,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1590.0,
+       "point": 4495.5,
+       "over_point": 0.3537,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree"
+    ],
+    "corrected_below": [
+     "detection.median_abs_corr",
+     "detection.largest_community_frac"
+    ],
+    "corrected_above": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.transitivity",
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1191,
+     "corrected_universe": 678
+    }
+   },
+   {
+    "arm": "DR3_scale_4p00",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1519,
+       "point": 0.3291,
+       "over_point": 0.4615,
+       "position": "below",
+       "sd_from_point": -12.8853
+      },
+      "corrected_universe": {
+       "value": 0.1357,
+       "point": 0.0562,
+       "over_point": 2.4151,
+       "position": "above",
+       "sd_from_point": 109.7592
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.1899,
+       "point": 0.5621,
+       "over_point": 0.3378,
+       "position": "below",
+       "sd_from_point": -13.2578
+      },
+      "corrected_universe": {
+       "value": 0.1618,
+       "point": 0.0242,
+       "over_point": 6.6747,
+       "position": "above",
+       "sd_from_point": 134.7273
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.3924,
+       "point": 0.5089,
+       "over_point": 0.771,
+       "position": "below",
+       "sd_from_point": -13.8386
+      },
+      "corrected_universe": {
+       "value": 0.3679,
+       "point": 0.262,
+       "over_point": 1.4041,
+       "position": "above",
+       "sd_from_point": 44.2845
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.0614,
+       "point": 0.377,
+       "over_point": 0.1629,
+       "position": "below",
+       "sd_from_point": -27.4169
+      },
+      "corrected_universe": {
+       "value": 0.0634,
+       "point": 0.1946,
+       "over_point": 0.3258,
+       "position": "below",
+       "sd_from_point": -45.1658
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2453,
+       "point": 0.6148,
+       "over_point": 0.399,
+       "position": "below",
+       "sd_from_point": -26.7095
+      },
+      "corrected_universe": {
+       "value": 0.233,
+       "point": 0.1348,
+       "over_point": 1.7279,
+       "position": "above",
+       "sd_from_point": 11.6286
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 735.7553,
+       "point": 1843.804,
+       "over_point": 0.399,
+       "position": "below",
+       "sd_from_point": -26.7095
+      },
+      "corrected_universe": {
+       "value": 698.7133,
+       "point": 404.3647,
+       "over_point": 1.7279,
+       "position": "above",
+       "sd_from_point": 11.6286
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.9042,
+       "point": 0.8871,
+       "over_point": 1.0193,
+       "position": "above",
+       "sd_from_point": 2.7208
+      },
+      "corrected_universe": {
+       "value": 0.8767,
+       "point": 0.6672,
+       "over_point": 1.3139,
+       "position": "above",
+       "sd_from_point": 25.5085
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.6223,
+       "point": 0.763,
+       "over_point": 0.8156,
+       "position": "below",
+       "sd_from_point": -11.643
+      },
+      "corrected_universe": {
+       "value": 0.5717,
+       "point": 0.1367,
+       "over_point": 4.1829,
+       "position": "above",
+       "sd_from_point": 12.1153
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.02,
+       "point": 1.0118,
+       "over_point": 1.0081,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.0251,
+       "point": 0.7435,
+       "over_point": 1.3788,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 32790.9677,
+       "point": 1976.6481,
+       "over_point": 16.5892,
+       "position": "above",
+       "sd_from_point": 227.7936
+      },
+      "corrected_universe": {
+       "value": 25099.2593,
+       "point": 2273.2075,
+       "over_point": 11.0413,
+       "position": "above",
+       "sd_from_point": 348.9469
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5303,
+       "point": 0.2457,
+       "over_point": 2.1585,
+       "position": "above",
+       "sd_from_point": 102.7376
+      },
+      "corrected_universe": {
+       "value": 0.4994,
+       "point": 0.2741,
+       "over_point": 1.822,
+       "position": "above",
+       "sd_from_point": 152.1275
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 1741.5,
+       "point": 4467.0,
+       "over_point": 0.3899,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1469.0,
+       "point": 4495.5,
+       "over_point": 0.3268,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "detection.median_abs_corr"
+    ],
+    "corrected_above": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac",
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1182,
+     "corrected_universe": 687
+    }
+   },
+   {
+    "arm": "DR4_scale_5p50",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1586,
+       "point": 0.3291,
+       "over_point": 0.4818,
+       "position": "below",
+       "sd_from_point": -12.3983
+      },
+      "corrected_universe": {
+       "value": 0.1425,
+       "point": 0.0562,
+       "over_point": 2.5353,
+       "position": "above",
+       "sd_from_point": 119.0791
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2038,
+       "point": 0.5621,
+       "over_point": 0.3625,
+       "position": "below",
+       "sd_from_point": -12.7619
+      },
+      "corrected_universe": {
+       "value": 0.1779,
+       "point": 0.0242,
+       "over_point": 7.3375,
+       "position": "above",
+       "sd_from_point": 150.4641
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.4182,
+       "point": 0.5089,
+       "over_point": 0.8216,
+       "position": "below",
+       "sd_from_point": -10.7811
+      },
+      "corrected_universe": {
+       "value": 0.3925,
+       "point": 0.262,
+       "over_point": 1.4979,
+       "position": "above",
+       "sd_from_point": 54.5713
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.06,
+       "point": 0.377,
+       "over_point": 0.159,
+       "position": "below",
+       "sd_from_point": -27.5428
+      },
+      "corrected_universe": {
+       "value": 0.0603,
+       "point": 0.1946,
+       "over_point": 0.3098,
+       "position": "below",
+       "sd_from_point": -46.2376
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2552,
+       "point": 0.6148,
+       "over_point": 0.4151,
+       "position": "below",
+       "sd_from_point": -25.9976
+      },
+      "corrected_universe": {
+       "value": 0.249,
+       "point": 0.1348,
+       "over_point": 1.8468,
+       "position": "above",
+       "sd_from_point": 13.5277
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 765.2893,
+       "point": 1843.804,
+       "over_point": 0.4151,
+       "position": "below",
+       "sd_from_point": -25.9976
+      },
+      "corrected_universe": {
+       "value": 746.784,
+       "point": 404.3647,
+       "over_point": 1.8468,
+       "position": "above",
+       "sd_from_point": 13.5277
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.9102,
+       "point": 0.8871,
+       "over_point": 1.026,
+       "position": "above",
+       "sd_from_point": 3.6786
+      },
+      "corrected_universe": {
+       "value": 0.8863,
+       "point": 0.6672,
+       "over_point": 1.3283,
+       "position": "above",
+       "sd_from_point": 26.6752
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.6563,
+       "point": 0.763,
+       "over_point": 0.8602,
+       "position": "below",
+       "sd_from_point": -8.8288
+      },
+      "corrected_universe": {
+       "value": 0.616,
+       "point": 0.1367,
+       "over_point": 4.5073,
+       "position": "above",
+       "sd_from_point": 13.3501
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.0175,
+       "point": 1.0118,
+       "over_point": 1.0057,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.0222,
+       "point": 0.7435,
+       "over_point": 1.375,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 32807.3651,
+       "point": 1976.6481,
+       "over_point": 16.5975,
+       "position": "above",
+       "sd_from_point": 227.9148
+      },
+      "corrected_universe": {
+       "value": 25516.8395,
+       "point": 2273.2075,
+       "over_point": 11.225,
+       "position": "above",
+       "sd_from_point": 355.3305
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5312,
+       "point": 0.2457,
+       "over_point": 2.1622,
+       "position": "above",
+       "sd_from_point": 103.0611
+      },
+      "corrected_universe": {
+       "value": 0.5002,
+       "point": 0.2741,
+       "over_point": 1.8251,
+       "position": "above",
+       "sd_from_point": 152.691
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 1686.0,
+       "point": 4467.0,
+       "over_point": 0.3774,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1412.0,
+       "point": 4495.5,
+       "over_point": 0.3141,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "detection.median_abs_corr"
+    ],
+    "corrected_above": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac",
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1186,
+     "corrected_universe": 670
+    }
+   },
+   {
+    "arm": "DR5_true_on_off",
+    "invariants": {
+     "expression.median_abs_corr": {
+      "old_universe": {
+       "value": 0.1605,
+       "point": 0.3291,
+       "over_point": 0.4877,
+       "position": "below",
+       "sd_from_point": -12.2584
+      },
+      "corrected_universe": {
+       "value": 0.1443,
+       "point": 0.0562,
+       "over_point": 2.5671,
+       "position": "above",
+       "sd_from_point": 121.5519
+      }
+     },
+     "expression.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.2055,
+       "point": 0.5621,
+       "over_point": 0.3656,
+       "position": "below",
+       "sd_from_point": -12.7001
+      },
+      "corrected_universe": {
+       "value": 0.1799,
+       "point": 0.0242,
+       "over_point": 7.422,
+       "position": "above",
+       "sd_from_point": 152.4707
+      }
+     },
+     "expression.var_top10_pc": {
+      "old_universe": {
+       "value": 0.4244,
+       "point": 0.5089,
+       "over_point": 0.8339,
+       "position": "below",
+       "sd_from_point": -10.0365
+      },
+      "corrected_universe": {
+       "value": 0.3979,
+       "point": 0.262,
+       "over_point": 1.5186,
+       "position": "above",
+       "sd_from_point": 56.8398
+      }
+     },
+     "detection.median_abs_corr": {
+      "old_universe": {
+       "value": 0.0608,
+       "point": 0.377,
+       "over_point": 0.1613,
+       "position": "below",
+       "sd_from_point": -27.4672
+      },
+      "corrected_universe": {
+       "value": 0.0604,
+       "point": 0.1946,
+       "over_point": 0.3105,
+       "position": "below",
+       "sd_from_point": -46.189
+      }
+     },
+     "detection.frac_abs_gt_0p3": {
+      "old_universe": {
+       "value": 0.257,
+       "point": 0.6148,
+       "over_point": 0.418,
+       "position": "below",
+       "sd_from_point": -25.8658
+      },
+      "corrected_universe": {
+       "value": 0.251,
+       "point": 0.1348,
+       "over_point": 1.8616,
+       "position": "above",
+       "sd_from_point": 13.7636
+      }
+     },
+     "detection.mean_degree": {
+      "old_universe": {
+       "value": 770.7573,
+       "point": 1843.804,
+       "over_point": 0.418,
+       "position": "below",
+       "sd_from_point": -25.8658
+      },
+      "corrected_universe": {
+       "value": 752.756,
+       "point": 404.3647,
+       "over_point": 1.8616,
+       "position": "above",
+       "sd_from_point": 13.7636
+      }
+     },
+     "detection.transitivity": {
+      "old_universe": {
+       "value": 0.9125,
+       "point": 0.8871,
+       "over_point": 1.0287,
+       "position": "above",
+       "sd_from_point": 4.0502
+      },
+      "corrected_universe": {
+       "value": 0.8893,
+       "point": 0.6672,
+       "over_point": 1.3329,
+       "position": "above",
+       "sd_from_point": 27.0463
+      }
+     },
+     "detection.largest_community_frac": {
+      "old_universe": {
+       "value": 0.3823,
+       "point": 0.763,
+       "over_point": 0.5011,
+       "position": "below",
+       "sd_from_point": -31.5079
+      },
+      "corrected_universe": {
+       "value": 0.3877,
+       "point": 0.1367,
+       "over_point": 2.8366,
+       "position": "above",
+       "sd_from_point": 6.9907
+      }
+     },
+     "class_separation.t5_within_over_pooled": {
+      "old_universe": {
+       "value": 1.0159,
+       "point": 1.0118,
+       "over_point": 1.0041,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1.0207,
+       "point": 0.7435,
+       "over_point": 1.3729,
+       "position": null,
+       "sd_from_point": null
+      }
+     },
+     "abundance.abundance_max_over_median_nonzero": {
+      "old_universe": {
+       "value": 33446.0,
+       "point": 1976.6481,
+       "over_point": 16.9206,
+       "position": "above",
+       "sd_from_point": 232.6359
+      },
+      "corrected_universe": {
+       "value": 25288.439,
+       "point": 2273.2075,
+       "over_point": 11.1246,
+       "position": "above",
+       "sd_from_point": 351.8389
+      }
+     },
+     "abundance.top1pct_count_share": {
+      "old_universe": {
+       "value": 0.5312,
+       "point": 0.2457,
+       "over_point": 2.1623,
+       "position": "above",
+       "sd_from_point": 103.0689
+      },
+      "corrected_universe": {
+       "value": 0.5003,
+       "point": 0.2741,
+       "over_point": 1.8254,
+       "position": "above",
+       "sd_from_point": 152.7574
+      }
+     },
+     "depth.median_detected_per_cell": {
+      "old_universe": {
+       "value": 1674.0,
+       "point": 4467.0,
+       "over_point": 0.3747,
+       "position": null,
+       "sd_from_point": null
+      },
+      "corrected_universe": {
+       "value": 1397.0,
+       "point": 4495.5,
+       "over_point": 0.3108,
+       "position": null,
+       "sd_from_point": null
+      }
+     }
+    },
+    "corrected_inside": [],
+    "corrected_below": [
+     "detection.median_abs_corr"
+    ],
+    "corrected_above": [
+     "expression.median_abs_corr",
+     "expression.frac_abs_gt_0p3",
+     "expression.var_top10_pc",
+     "detection.frac_abs_gt_0p3",
+     "detection.mean_degree",
+     "detection.transitivity",
+     "detection.largest_community_frac",
+     "abundance.abundance_max_over_median_nonzero",
+     "abundance.top1pct_count_share"
+    ],
+    "old_inside": [],
+    "canonical_genes_lost": {
+     "old_universe": 1143,
+     "corrected_universe": 675
+    }
+   }
+  ],
+  "recorded_verdict": "HYPOTHESIS_CONFIRMED__ALL_ARMS_REJECTED_BY_PREDECLARED_RULES",
+  "verdict_cites": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V1.json",
+  "verdict_note": "the verdict was written on tournament V1, whose DR5 values the register withdrew (S129) and whose scorer was not comparable to the real envelopes (S139/S140); its claims are restated here with the V2 matched numbers",
+  "transitivity_rises_monotonically_over_graded_arms": {
+   "old_universe": true,
+   "corrected_universe": true
+  },
+  "mean_degree_rises_monotonically_over_graded_arms": {
+   "old_universe": true,
+   "corrected_universe": true
+  },
+  "arms_above_the_real_transitivity_point": {
+   "old_universe": [
+    "DR3_scale_4p00",
+    "DR4_scale_5p50",
+    "DR5_true_on_off"
+   ],
+   "corrected_universe": [
+    "DR2_scale_2p50",
+    "DR3_scale_4p00",
+    "DR4_scale_5p50",
+    "DR5_true_on_off"
+   ]
+  },
+  "verdict_recorded_grounds_against_corrected_references": {
+   "abundance_max_over_median_outside_the_corrected_interval": [
+    "DR1_scale_1p20_baseline",
+    "DR2_scale_2p50",
+    "DR3_scale_4p00",
+    "DR4_scale_5p50",
+    "DR5_true_on_off"
+   ],
+   "of": 5,
+   "median_detected_per_cell_over_corrected_real": [
+    0.3108,
+    0.3966
+   ]
+  },
+  "twelve_fold_arm": {
+   "arm": "DR2_scale_2p50",
+   "status": "OBSERVATION; NOT A WINNER; NOT SELECTED",
+   "facts": {
+    "density_inside": true,
+    "degree_inside": true,
+    "transitivity_overshoots": true,
+    "abundance_outside_interval": true,
+    "depth_below_real": true
+   },
+   "detection_density": {
+    "value": 0.1338,
+    "point": 0.1348,
+    "over_point": 0.9921,
+    "position": "inside",
+    "sd_from_point": -0.1262
+   },
+   "detection_mean_degree": {
+    "value": 401.1713,
+    "point": 404.3647,
+    "over_point": 0.9921,
+    "position": "inside",
+    "sd_from_point": -0.1262
+   },
+   "detection_transitivity": {
+    "value": 0.7786,
+    "point": 0.6672,
+    "over_point": 1.1669,
+    "position": "above",
+    "sd_from_point": 13.561
+   },
+   "abundance_max_over_median": {
+    "value": 23612.2716,
+    "point": 2273.2075,
+    "over_point": 10.3872,
+    "position": "above",
+    "sd_from_point": 326.215
+   },
+   "median_detected_per_cell": {
+    "value": 1590.0,
+    "point": 4495.5,
+    "over_point": 0.3537,
+    "position": null,
+    "sd_from_point": null
+   },
+   "verdict_recorded_objections": [
+    "abundance max/median 30848.3 outside frozen envelope [1804.8, 2187.7]",
+    "abundance WORSENS versus the baseline arm (30848.3 against 26753.4)",
+    "depth marginal distorted: 1882 detected per cell against a real 4467"
+   ],
+   "reading": "on the corrected universe the 12-fold arm lands close to the corrected real detection density (0.1338 against 0.1348, 0.9921 times, inside the interval) and mean degree (401.1713 against 404.3647, 0.9921 times, inside). Its transitivity overshoots (0.7786 against 0.6672, 1.1669 times); its abundance max/median is 10.3872 times the real point (above the interval) and its median detected per cell 0.3537 times the real value, so the abundance and depth objections the verdict recorded still apply. It is recorded as an observation, not as a winner or a selected model"
+  },
+  "reading": "detection transitivity above the real point: DR3_scale_4p00, DR4_scale_5p50, DR5_true_on_off on the old universe against the old point; DR2_scale_2p50, DR3_scale_4p00, DR4_scale_5p50, DR5_true_on_off on the corrected universe against the corrected point, so the verdict's 'the mechanism overshoots the real transitivity' was measured against the old point. The grounds the verdict recorded for rejecting every arm remain against the corrected references: abundance max/median lies outside the corrected interval for 5 of 5 arms, and the median detected per cell is 0.3108 to 0.3966 times the corrected real value"
+ },
+ "exploratory": {
+  "status": "EXPLORATORY; within-cohort references are not authorized for synthetic pass or fail, and none are applied",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": {
+   "universe": {
+    "old": "TRAIN_WITHIN_HVS_PREVALENCE05_13326",
+    "corrected": "TRAIN_WITHIN_HVS_PREVALENCE05_13326"
+   },
+   "arms": [
+    {
+     "arm": "DR1_scale_1p20_baseline",
+     "median_abs_corr": {
+      "old_universe": 0.0942,
+      "corrected_universe": 0.0982
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.0017,
+      "corrected_universe": 0.0022
+     },
+     "transitivity": {
+      "old_universe": 0.3691,
+      "corrected_universe": 0.3834
+     },
+     "mean_degree": {
+      "old_universe": 5.024,
+      "corrected_universe": 6.484
+     }
+    },
+    {
+     "arm": "DR2_scale_2p50",
+     "median_abs_corr": {
+      "old_universe": 0.0821,
+      "corrected_universe": 0.0857
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.1218,
+      "corrected_universe": 0.131
+     },
+     "transitivity": {
+      "old_universe": 0.7743,
+      "corrected_universe": 0.7842
+     },
+     "mean_degree": {
+      "old_universe": 365.19,
+      "corrected_universe": 392.7507
+     }
+    },
+    {
+     "arm": "DR3_scale_4p00",
+     "median_abs_corr": {
+      "old_universe": 0.0608,
+      "corrected_universe": 0.0637
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.2191,
+      "corrected_universe": 0.2295
+     },
+     "transitivity": {
+      "old_universe": 0.8696,
+      "corrected_universe": 0.8695
+     },
+     "mean_degree": {
+      "old_universe": 657.0513,
+      "corrected_universe": 688.2093
+     }
+    },
+    {
+     "arm": "DR4_scale_5p50",
+     "median_abs_corr": {
+      "old_universe": 0.0593,
+      "corrected_universe": 0.0614
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.2375,
+      "corrected_universe": 0.2468
+     },
+     "transitivity": {
+      "old_universe": 0.8817,
+      "corrected_universe": 0.8806
+     },
+     "mean_degree": {
+      "old_universe": 712.2633,
+      "corrected_universe": 740.0113
+     }
+    },
+    {
+     "arm": "DR5_true_on_off",
+     "median_abs_corr": {
+      "old_universe": 0.0594,
+      "corrected_universe": 0.0618
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.2397,
+      "corrected_universe": 0.2492
+     },
+     "transitivity": {
+      "old_universe": 0.8839,
+      "corrected_universe": 0.882
+     },
+     "mean_degree": {
+      "old_universe": 718.8407,
+      "corrected_universe": 747.3847
+     }
+    }
+   ]
+  },
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": {
+   "universe": {
+    "old": "TRAIN_WITHIN_SEA_AD_PREVALENCE05_14948",
+    "corrected": "TRAIN_WITHIN_SEA_AD_PREVALENCE05_15158"
+   },
+   "arms": [
+    {
+     "arm": "DR1_scale_1p20_baseline",
+     "median_abs_corr": {
+      "old_universe": 0.0871,
+      "corrected_universe": 0.1018
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.0024,
+      "corrected_universe": 0.0051
+     },
+     "transitivity": {
+      "old_universe": 0.3271,
+      "corrected_universe": 0.3407
+     },
+     "mean_degree": {
+      "old_universe": 7.2173,
+      "corrected_universe": 15.24
+     }
+    },
+    {
+     "arm": "DR2_scale_2p50",
+     "median_abs_corr": {
+      "old_universe": 0.0829,
+      "corrected_universe": 0.0921
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.0985,
+      "corrected_universe": 0.1469
+     },
+     "transitivity": {
+      "old_universe": 0.7461,
+      "corrected_universe": 0.7915
+     },
+     "mean_degree": {
+      "old_universe": 295.496,
+      "corrected_universe": 440.5207
+     }
+    },
+    {
+     "arm": "DR3_scale_4p00",
+     "median_abs_corr": {
+      "old_universe": 0.0654,
+      "corrected_universe": 0.069
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.1917,
+      "corrected_universe": 0.2363
+     },
+     "transitivity": {
+      "old_universe": 0.8261,
+      "corrected_universe": 0.8795
+     },
+     "mean_degree": {
+      "old_universe": 574.972,
+      "corrected_universe": 708.718
+     }
+    },
+    {
+     "arm": "DR4_scale_5p50",
+     "median_abs_corr": {
+      "old_universe": 0.0616,
+      "corrected_universe": 0.0656
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.2123,
+      "corrected_universe": 0.2526
+     },
+     "transitivity": {
+      "old_universe": 0.8419,
+      "corrected_universe": 0.8863
+     },
+     "mean_degree": {
+      "old_universe": 636.6413,
+      "corrected_universe": 757.5527
+     }
+    },
+    {
+     "arm": "DR5_true_on_off",
+     "median_abs_corr": {
+      "old_universe": 0.0609,
+      "corrected_universe": 0.0654
+     },
+     "frac_abs_gt_0p3": {
+      "old_universe": 0.2152,
+      "corrected_universe": 0.2542
+     },
+     "transitivity": {
+      "old_universe": 0.8465,
+      "corrected_universe": 0.8878
+     },
+     "mean_degree": {
+      "old_universe": 645.3507,
+      "corrected_universe": 762.4067
+     }
+    }
+   ]
+  }
+ },
+ "dr1_identical_to_b_poisson": {
+  "old": true,
+  "corrected": true
+ },
+ "distinct_replayed_arms": [
+  "A_deterministic",
+  "B_poisson",
+  "DR2_scale_2p50",
+  "DR3_scale_4p00",
+  "DR4_scale_5p50",
+  "DR5_true_on_off"
+ ],
+ "invariant_coverage_across_replayed_arms": {
+  "expression.median_abs_corr": {
+   "min_over_point": 0.9367,
+   "max_over_point": 2.922,
+   "real_point_bracketed": true
+  },
+  "expression.frac_abs_gt_0p3": {
+   "min_over_point": 0.3483,
+   "max_over_point": 8.3527,
+   "real_point_bracketed": true
+  },
+  "expression.var_top10_pc": {
+   "min_over_point": 0.6369,
+   "max_over_point": 1.6294,
+   "real_point_bracketed": true
+  },
+  "detection.median_abs_corr": {
+   "min_over_point": 0.3098,
+   "max_over_point": 0.8116,
+   "real_point_bracketed": false
+  },
+  "detection.frac_abs_gt_0p3": {
+   "min_over_point": 0.0182,
+   "max_over_point": 2.0903,
+   "real_point_bracketed": true
+  },
+  "detection.mean_degree": {
+   "min_over_point": 0.0182,
+   "max_over_point": 2.0903,
+   "real_point_bracketed": true
+  },
+  "detection.transitivity": {
+   "min_over_point": 0.5061,
+   "max_over_point": 1.3329,
+   "real_point_bracketed": true
+  },
+  "detection.largest_community_frac": {
+   "min_over_point": 0.0024,
+   "max_over_point": 5.6415,
+   "real_point_bracketed": true
+  },
+  "class_separation.t5_within_over_pooled": {
+   "min_over_point": 1.3673,
+   "max_over_point": 1.6258,
+   "real_point_bracketed": false
+  },
+  "abundance.abundance_max_over_median_nonzero": {
+   "min_over_point": 2.7039,
+   "max_over_point": 11.225,
+   "real_point_bracketed": false
+  },
+  "abundance.top1pct_count_share": {
+   "min_over_point": 1.7641,
+   "max_over_point": 1.8254,
+   "real_point_bracketed": false
+  },
+  "depth.median_detected_per_cell": {
+   "min_over_point": 0.3108,
+   "max_over_point": 0.4794,
+   "real_point_bracketed": false
+  }
+ },
+ "class_separation_across_replayed_arms": {
+  "corrected_real": 0.7435,
+  "replayed_arm_range": [
+   1.0166,
+   1.2087
+  ],
+  "every_arm_above_the_real_ratio": true,
+  "recorded_generator_design": "hidden sub-states are drawn INDEPENDENTLY of the annotated cell class, so they are orthogonal to it by construction. The family cannot produce its structure by separating known classes.",
+  "reading": "every replayed arm has a within-class over pooled ratio of 1.0166 to 1.2087, against a corrected real 0.7435: none reproduces the part of the real pooled dependence that comes from broad cell-class separation. The substate decision records that its sub-states are drawn independently of annotated cell class by construction, which is consistent with this. Recorded as a constraint on the next design; it does not change this replay"
+ },
+ "inputs": {
+  "results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V2.json": "29c416ac517f95191c70d86327cb1947e072f5f771b2820e8f920421a6562cdf",
+  "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": "a7de6ce2a3aafc4619156f5fc93e42e24e1130cbae52a430be7475107d9a443b",
+  "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "889fc1f606aff7479cbe7a3e900270cfbc2991bc908922b346bf612baec15a36",
+  "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "a0fe509adc9af686597f6d9497ee4761bd1a37fb7d23b467deb89bca13d80057",
+  "results/v77/s174_replay/V77_REALIZATION_ISOLATION_RECEIPT_V2.json": "f0b92339d4e9fb523de98a7bee2e32719f93ef79b0e0c9c86f84861192898c52",
+  "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": "1de586182d2f34bc4a4d7684644238c4c237625947d10bf2a3e0a91add3dcd14",
+  "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "500693d9032f3ff90de009fa03899d15d0e3c04d213fa32061574997e56841d6",
+  "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "7dbc9cd5af819b08e7f06ca8886628393000358fcfc88ed53b07de89a6705fe0",
+  "results/v77/V77_DYNAMIC_RANGE_VERDICT_V1.json": "011d3fcadfbb26a3c3dfda9ca5ab5addcf10946cba2e45c61f9d7c37f740d3c3"
+ },
+ "code_sha256": "d675d01c42f3e5fdbb906ccd5e1e438c4fbf8a89e0adf9247baa7f7c680f9ec3"
+}

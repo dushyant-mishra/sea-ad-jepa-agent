@@ -1,0 +1,122 @@
+{
+  "schema": "V77_SPILLOVER_DISPOSITIONS_V1",
+  "audit_record": "V77_SPILLOVER_AUDIT_S174_SYNTHETIC_REPLAY.json",
+  "audit_sha256": "313c05b9173dedc887c0c2e01911001393f5ce47db8b498dd94d80eb90927771",
+  "phase": "S174_SYNTHETIC_REPLAY_before_commit",
+  "structural_pass": true,
+  "dispositions": [
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_historical_spillover_audit.py",
+      "line": 57,
+      "text": "hits = S.text_checks_lines([(\"x.md\", [\"identifiability is resolved by the new generator\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "planted positive claim in the audit's own fixture"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_s157_terminal_frozen.py",
+      "line": 48,
+      "text": "mutated[\"TERMINAL_STATEMENTS\"][0][\"statement\"] = \"The exact same-assay semantic twin is resolved.\"",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the deliberate mutation proving the S157 freeze guard can fail"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+      "line": 88,
+      "text": "\"text\": \"A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim.\"",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "P5_LOCALITY caveat, not a claim that a twin is broken"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+      "line": 16,
+      "text": "- **P5_LOCALITY.** A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "rendered P5_LOCALITY caveat"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_ADVERSARIAL_SELF_AUDIT_V1.json",
+      "line": 59,
+      "text": "\"finding\": \"two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdi",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "records defect S163 as a finding to repair"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+      "line": 437,
+      "text": "\"defect\": \"the pooled expression calibration describes itself as a calibration TARGET\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "register entry naming defect S165"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "scripts/v77/v77_regulatory_graph.py",
+      "line": 2,
+      "text": "\"\"\"Deterministic SCENIC+-like regulatory ground truth: TF -> enhancer region -> target gene.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the synthetic world's planted, oracle-only regulatory truth"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+      "line": 385,
+      "text": "\"name\": \"SCENIC+ eRegulons built on an independent multiome, applied to the query\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "R5b row title; the row classifies it as assay-class circular and static"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+      "line": 17,
+      "text": "\"review_lane_instruction\": \"isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "review-lane instruction for the synthetic generator"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_REGULATORY_CIRCULARITY_AUDIT_V1.json",
+      "line": 6,
+      "text": "\"question\": \"Can regulatory evidence tell true regulatory biology from a capture or measurement process that generates the same RNA covariance? Answered separately for (a) SCENIC+ built partly from th",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the audit's question, answered in the same record as circular or static"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_REGULATORY_CIRCULARITY_AUDIT_V1.json",
+      "line": 95,
+      "text": "\"setting\": \"SCENIC+ built with independent chromatin plus RNA (another dataset), applied to the query\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "setting B's title; the setting is classified C2_ASSAY_CLASS_CIRCULAR, supportive only"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+      "line": 222,
+      "text": "### R5b. SCENIC+ eRegulons built on an independent multiome, applied to the query",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "rendered R5b row title"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "docs/agent/V77_REGULATORY_CIRCULARITY_AUDIT.md",
+      "line": 5,
+      "text": "**Question:** Can regulatory evidence tell true regulatory biology from a capture or measurement process that generates the same RNA covariance? Answered separately for (a) SCENIC+ built partly from t",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "rendered question line"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "docs/agent/V77_REGULATORY_CIRCULARITY_AUDIT.md",
+      "line": 42,
+      "text": "### B_INDEPENDENT_CHROMATIN_PLUS_RNA: SCENIC+ built with independent chromatin plus RNA (another dataset), applied to the query",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "rendered setting B heading"
+    }
+  ],
+  "note": "the same 14 candidates as the downstream re-score phase, carried with the same dispositions. The text checks do not scan results/v77/s174_replay, docs/agent/S174_* or ACTIVE_STATE.md; the new files there (the synthetic replay record and side-by-side, the four corrected receipts, the four old-universe reproductions, the rendering and the new ACTIVE_STATE entry) were run through the same text checks by hand: zero candidates"
+}

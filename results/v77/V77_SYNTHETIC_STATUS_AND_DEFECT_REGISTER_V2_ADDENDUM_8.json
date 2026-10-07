@@ -1,0 +1,242 @@
+{
+ "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_8",
+ "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and addenda 1-7",
+ "record_type": "AUDIT RECORD; numbers are read from the committed synthetic replay record; the ruling, premise and mechanism status are the owner's instruction of 2026-10-07, recorded as given",
+ "lane": "claude/s174-train-cache-rebuild-20261007 (separate real-data lane; not PR #228 and not the runtime/V77 ZERO_UPDATE reconciliation lane)",
+ "recorded_utc": "2026-10-07T22:00:59Z",
+ "head_when_recorded": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+ "SETTLED_BY_THE_OWNER": [
+  "the old Stage81A3R TRAIN cache was gene-axis scrambled",
+  "frozen G1 failed and remains recorded as failed",
+  "G1b authorized the rebuilt corrected cache",
+  "S149's old ~89% cohort-coverage explanation is superseded; the corrected value is about 3%",
+  "coverage/study identity remains strong",
+  "the claims that the latent mechanism was solved and that the observation model was the main bottleneck are superseded",
+  "the factor-family falsification based on transitivity being unreachable is superseded",
+  "the sub-state family and Observer-V2 'supported for next stage' conclusions are superseded",
+  "no synthetic family is currently selected, qualified or newly falsified",
+  "detection still carries more dependence than expression",
+  "the 353 historical Ensembl-ID remappings are an identity-governance problem and are not changed in this lane"
+ ],
+ "S174_SYNTHETIC_REPLAY_UPDATE": {
+  "status": "UNIVERSE_DEPENDENT_SYNTHETIC_RECORDS_REPLAYED",
+  "replayed": [
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json",
+   "V77_REALIZATION_ISOLATION_RECEIPT_V2.json"
+  ],
+  "reproduced_exactly_on_the_old_universe_first": {
+   "V77_REALIZATION_ISOLATION_RECEIPT_V2.json": {
+    "exact": true,
+    "numeric_leaves": 106
+   },
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": {
+    "exact": true,
+    "numeric_leaves": 253
+   },
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": {
+    "exact": true,
+    "numeric_leaves": 253
+   },
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": {
+    "exact": true,
+    "numeric_leaves": 253
+   }
+  },
+  "what_changed": "only the universe (and --out); no seed, arm, preprocessing or scoring rule; no arm tuned",
+  "superseded_before_s174_not_replayed": {
+   "V77_REALIZATION_ISOLATION_RECEIPT_V1.json": "superseded by V2 (S139/S140 scorer mismatch); not replayed",
+   "V77_DYNAMIC_RANGE_TOURNAMENT_V1.json": "superseded by V2 (S129/S138 DR5, S139/S140 scorer mismatch); not replayed"
+  },
+  "re_read_not_rerun": [
+   "V77_DYNAMIC_RANGE_VERDICT_V1: written on tournament V1; its claims restated with the V2 matched numbers",
+   "V77_OBSERVER_V2_AUDIT_CORRECTION_V1: its headline figures came from the binary-HVG scorer that S139/S140 ruled not comparable to the real envelopes"
+  ],
+  "universe_label_note": "the runners write TRAIN_PREVALENCE05_19569, the builder's fixed name for the frozen universe; in s174_replay it denotes the corrected 14,417-address universe",
+  "pending_list_of_addendum_7": "closed: every record it listed is replayed, re-read, or recorded as superseded before S174"
+ },
+ "STATISTICAL_RULING": {
+  "pooled_envelopes": "not qualification targets until S159 is resolved",
+  "real_point_estimates": "descriptive reference values",
+  "donor_resampled_distributions": "uncertainty diagnostics",
+  "binary_inside_every_envelope_decision": "not made",
+  "recentring": "not done; an interval is never moved to make the point fit",
+  "why": "S159: the corrected real point lies outside its own donor-bootstrap p05-p95 interval for some statistics, so a candidate identical to the real point could fail a gate built on these intervals",
+  "given_by": "owner, 2026-10-07",
+  "s159_points_outside_their_own_interval": [
+   "expression.median_abs_corr",
+   "detection.transitivity"
+  ]
+ },
+ "PER_ARM_DESCRIPTION_CORRECTED_UNIVERSE": {
+  "A_deterministic": {
+   "inside": [],
+   "below": [
+    "detection.median_abs_corr"
+   ],
+   "above": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree",
+    "detection.transitivity",
+    "detection.largest_community_frac",
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  },
+  "B_poisson": {
+   "inside": [],
+   "below": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.median_abs_corr",
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree",
+    "detection.transitivity",
+    "detection.largest_community_frac"
+   ],
+   "above": [
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  },
+  "DR2_scale_2p50": {
+   "inside": [
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree"
+   ],
+   "below": [
+    "detection.median_abs_corr",
+    "detection.largest_community_frac"
+   ],
+   "above": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.transitivity",
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  },
+  "DR3_scale_4p00": {
+   "inside": [],
+   "below": [
+    "detection.median_abs_corr"
+   ],
+   "above": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree",
+    "detection.transitivity",
+    "detection.largest_community_frac",
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  },
+  "DR4_scale_5p50": {
+   "inside": [],
+   "below": [
+    "detection.median_abs_corr"
+   ],
+   "above": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree",
+    "detection.transitivity",
+    "detection.largest_community_frac",
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  },
+  "DR5_true_on_off": {
+   "inside": [],
+   "below": [
+    "detection.median_abs_corr"
+   ],
+   "above": [
+    "expression.median_abs_corr",
+    "expression.frac_abs_gt_0p3",
+    "expression.var_top10_pc",
+    "detection.frac_abs_gt_0p3",
+    "detection.mean_degree",
+    "detection.transitivity",
+    "detection.largest_community_frac",
+    "abundance.abundance_max_over_median_nonzero",
+    "abundance.top1pct_count_share"
+   ]
+  }
+ },
+ "TWELVE_FOLD_ARM": {
+  "arm": "DR2_scale_2p50",
+  "status": "OBSERVATION; NOT A WINNER; NOT SELECTED",
+  "reading": "on the corrected universe the 12-fold arm lands close to the corrected real detection density (0.1338 against 0.1348, 0.9921 times, inside the interval) and mean degree (401.1713 against 404.3647, 0.9921 times, inside). Its transitivity overshoots (0.7786 against 0.6672, 1.1669 times); its abundance max/median is 10.3872 times the real point (above the interval) and its median detected per cell 0.3537 times the real value, so the abundance and depth objections the verdict recorded still apply. It is recorded as an observation, not as a winner or a selected model",
+  "facts": {
+   "density_inside": true,
+   "degree_inside": true,
+   "transitivity_overshoots": true,
+   "abundance_outside_interval": true,
+   "depth_below_real": true
+  }
+ },
+ "CROSS_ARM": {
+  "invariants_spanned_by_the_replayed_arms": [
+   "expression.median_abs_corr",
+   "expression.frac_abs_gt_0p3",
+   "expression.var_top10_pc",
+   "detection.frac_abs_gt_0p3",
+   "detection.mean_degree",
+   "detection.transitivity",
+   "detection.largest_community_frac"
+  ],
+  "invariants_not_spanned": [
+   "detection.median_abs_corr",
+   "class_separation.t5_within_over_pooled",
+   "abundance.abundance_max_over_median_nonzero",
+   "abundance.top1pct_count_share",
+   "depth.median_detected_per_cell"
+  ],
+  "class_separation": "every replayed arm has a within-class over pooled ratio of 1.0166 to 1.2087, against a corrected real 0.7435: none reproduces the part of the real pooled dependence that comes from broad cell-class separation. The substate decision records that its sub-states are drawn independently of annotated cell class by construction, which is consistent with this. Recorded as a constraint on the next design; it does not change this replay",
+  "counting_noise": "between arms identical except realization, Poisson counting lowers detection transitivity from 0.7436 to 0.3377 and mean degree from 845.2427 to 7.342 on the corrected universe (old universe: 0.7369 to 0.3477, 792.14 to 9.0133); the collapse persists. Relative to the corrected real points the deterministic arm is 1.1145 and 2.0903 times, the Poisson arm 0.5061 and 0.0182 times",
+  "verdict_restated": "detection transitivity above the real point: DR3_scale_4p00, DR4_scale_5p50, DR5_true_on_off on the old universe against the old point; DR2_scale_2p50, DR3_scale_4p00, DR4_scale_5p50, DR5_true_on_off on the corrected universe against the corrected point, so the verdict's 'the mechanism overshoots the real transitivity' was measured against the old point. The grounds the verdict recorded for rejecting every arm remain against the corrected references: abundance max/median lies outside the corrected interval for 5 of 5 arms, and the median detected per cell is 0.3108 to 0.3966 times the corrected real value"
+ },
+ "REPLACEMENT_PREMISE": "The corrected real data define a substantially weaker expression-correlation structure than previously believed. No synthetic mechanism is currently qualified. The purpose of the synthetic lane is now to identify which biological and observation mechanisms are necessary to jointly reproduce the corrected expression structure, detection structure, class-separation contribution, abundance/depth behavior, and topology—without tuning to a single pooled correlation target.",
+ "MECHANISM_STATUS": {
+  "factor_family": "REOPENED: neither falsified nor accepted",
+  "substate_mechanisms": "REOPENED",
+  "observer_and_capture_mechanisms": "REOPENED",
+  "selected_or_qualified": "none",
+  "comparison": "mechanisms are compared by which corrected invariants they explain",
+  "attribution_of_remaining_error": "not assumed to belong to the observer",
+  "preserved_facts": [
+   "corrected T5: within-class correlation is about 74% of pooled, so broad cell-class separation contributes materially to the pooled signal",
+   "detection carries more dependence than expression"
+  ]
+ },
+ "UNCHANGED": [
+  "real-data training authorization",
+  "TEST",
+  "Morabito",
+  "500K",
+  "Stage 4",
+  "production EMA selection",
+  "target freeze",
+  "representation freeze",
+  "runtime architecture",
+  "the 353 historical gene mappings"
+ ],
+ "IDENTITY_FLAG": "353 historical-Ensembl-ID-to-different-symbol mappings followed as frozen; flagged for the identity lane; not tuned",
+ "evidence": {
+  "results/v77/s174_replay/S174_SYNTHETIC_REPLAY_V1.json": "d28d2f1d9419fa8280ea2d7e92d0aca96f2f9f1b83b4f28408020d1375a1aeb7",
+  "results/v77/s174_replay/S174_SYNTHETIC_REPLAY_SIDE_BY_SIDE_V1.json": "de07eddb41597fe558b2b5e3294221663e788b9cc1b2b71467139d1c137dd358",
+  "docs/agent/S174_SYNTHETIC_REPLAY.md": "30314ece025e952a594d316bd90a3a3d834d4fb5639bbc07b5c933ef47276f92",
+  "scripts/v77/summarize_s174_synthetic_replay.py": "d675d01c42f3e5fdbb906ccd5e1e438c4fbf8a89e0adf9247baa7f7c680f9ec3"
+ }
+}
