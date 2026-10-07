@@ -10,6 +10,7 @@ on:
       - 'src/sea_ad_jepa/v5/ema_bound_runtime_proof_v1.py'
       - 'src/sea_ad_jepa/v5/ema_presentation_v1.py'
       - 'src/sea_ad_jepa/v5/ema_persisted_continuation_v2.py'
+      - 'src/sea_ad_jepa/v5/runtime_target_semantics_boundary_v1.py'
       - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
       - 'tests/test_v5_canonical_runtime_convergence_red.py'
       - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
