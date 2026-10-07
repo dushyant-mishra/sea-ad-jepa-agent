@@ -1,0 +1,123 @@
+{
+  "schema": "JEPA_STAGE_A_PREFREEZE_DECISIONS_20261007",
+  "status": "PREFREEZE_ONLY__NO_REAL_RNA_EXECUTION_AUTHORITY",
+  "authority_binding": {
+    "oct7_audit_lineage": "handoff/jepa-20261006-macha-audit-successor@121449cd99c7f13c67ccf8421848e6d26e39e474",
+    "premise_v3_lineage": "main@f5a8ebeddbcd52a94274a7f72ecda1f71b82d777"
+  },
+  "hard_state": {
+    "target_winner": null,
+    "representation_winner": null,
+    "training_authorized": false,
+    "stage_a_execution_authorized": false,
+    "test_state": "SEALED",
+    "morabito_state": "PROTECTED",
+    "stage4_authorized": false,
+    "five_hundred_k_authorized": false,
+    "reader_validation_oracle_expression_open": false,
+    "pathology_open": false
+  },
+  "corrections": {
+    "phase_a_13510_cell_authority": "NONCONTROLLING_CROSS_LANE_CARRYOVER",
+    "stage_a_13510_cell_authority_exists": false
+  },
+  "query_panel": {
+    "membership_reusable": true,
+    "membership_reason": "selection used no cell expression values or outcomes",
+    "n_queries": 2464,
+    "n_address_balanced": 1536,
+    "n_biology_coverage": 928,
+    "historical_panel_sha256": "56e2012a7a93bfc6ecd8cbba820144c2dbe74653d28311f34f07cd7b3aae3a2e",
+    "historical_hvs_seaad_values_reusable": false
+  },
+  "estimand": {
+    "primary": "DONOR_WEIGHTED",
+    "sensitivity_only": "SOURCE_BALANCED_DONOR_WEIGHTED",
+    "cell_weighted_deciding": false,
+    "hierarchical_tempered_selected": false
+  },
+  "stage_a_population": {
+    "reader_fit_only": true,
+    "total_donors": 104,
+    "source_counts": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "reader_validation_open": false,
+    "reader_oracle_open": false,
+    "foundation_dev_open": false,
+    "foundation_sealed_open": false,
+    "independent_confirmation_claim_allowed": false,
+    "exposure_note": "all 104 reader-fit donors were previously used in the historical 56/28/20 developmental mechanism screen"
+  },
+  "split": {
+    "name": "JEPA_STAGE_A_V3_SPLIT_20261007",
+    "stratify_by_source": true,
+    "hash_input": "JEPA_STAGE_A_V3_SPLIT_20261007|<SOURCE>|<CANONICAL_PERSON_ID>",
+    "hash": "SHA256",
+    "sort": "ascending lowercase hex digest; canonical person ID tie-breaker",
+    "fit_rule": "first floor(2*n_source/3)",
+    "held_rule": "remainder",
+    "counts": {
+      "HVS": {"inner_train_fit": 27, "held_donor_eval": 14},
+      "NPH52": {"inner_train_fit": 11, "held_donor_eval": 6},
+      "SEA_AD": {"inner_train_fit": 30, "held_donor_eval": 16},
+      "TOTAL": {"inner_train_fit": 68, "held_donor_eval": 36}
+    },
+    "exact_manifest_materialized": false,
+    "outcome_adaptive_changes_forbidden": true
+  },
+  "query_exchangeability": {
+    "primary_delta": "S(own_query)-S(wrong_query)",
+    "wrong_query_rule": {
+      "hash_input": "JEPA_STAGE_A_WRONG_QUERY_V1|<CANONICAL_QUERY_ADDRESS>",
+      "hash": "SHA256",
+      "sort": "ascending digest then canonical query address",
+      "mapping": "next query in circular ordering",
+      "fixed_points": 0
+    },
+    "candidate_specific_score_s_frozen": false,
+    "held_units_may_influence_fit": false
+  },
+  "uncertainty": {
+    "resampling_unit": "DONOR",
+    "donor_mass": "EQUAL",
+    "bootstrap_resamples": 5000,
+    "ci": "TWO_SIDED_95_PERCENT_PERCENTILE",
+    "primary_gate_multiplicity": "NONE__ONE_PRESPECIFIED_DONOR_AGGREGATED_Q_LOCALITY_COMPARISON",
+    "per_query_and_per_source": "DIAGNOSTIC_ONLY"
+  },
+  "decision_rule": {
+    "query_locality_not_qualified_if": "95% CI includes zero",
+    "clears_q_locality_gate_if": "entire 95% CI above zero",
+    "minimum_effect_size_margin": "NOT_ADDED",
+    "clearing_gate_selects_target": false,
+    "clearing_gate_selects_representation": false,
+    "clearing_gate_authorizes_training": false
+  },
+  "required_controls": [
+    "Q_ANSWER_LEAKAGE_AUDIT",
+    "QUERY_ADDRESS_IDENTITY_CONTROL",
+    "TECHNICAL_ONLY_CONTROL",
+    "SUPPORT_VISIBILITY_ONLY_CONTROL",
+    "REMAINING_RNA_NECESSITY_WITHIN_CELL_VALUE_SHUFFLE",
+    "CAPACITY_MATCHED_GLOBAL_SUMMARY_DIAGNOSTIC",
+    "DONOR_SOURCE_IMBALANCE_AUDIT",
+    "POSITIVE_LEAK_INJECTION_CONTROL",
+    "HELD_DONOR_FIT_ALIGNMENT_FIREWALL"
+  ],
+  "feature_axis_prerequisite": {
+    "hvs_seaad_deciding_stage_a_before_repair": false,
+    "required_chain": "matrix-native feature identity -> physical column -> raw count slot -> canonical molecular address",
+    "historical_contaminated_cache_allowed": false
+  },
+  "next_lawful_sequence": [
+    "QUALIFY_HVS_SEAAD_PHYSICAL_AXIS_REPAIR_DESIGN_AND_SENTINELS",
+    "MATERIALIZE_AND_HASH_104_DONOR_68_36_SPLIT_WITHOUT_OPENING_EXPRESSION_OUTCOMES",
+    "FREEZE_CANDIDATE_SPECIFIC_SCORE_EXTRACTION_AND_LEAKAGE_SEAMS",
+    "SEPARATE_OWNER_APPROVAL_FOR_NARROW_REAL_RNA_STAGE_A_EXECUTION",
+    "EXECUTE_Q_LOCALITY_AND_SHORTCUT_GATE_ONLY_IF_AUTHORIZED",
+    "CONSIDER_FOUR_FAMILY_REPRESENTATION_TOURNAMENT_ONLY_AFTER_GATE"
+  ]
+}
