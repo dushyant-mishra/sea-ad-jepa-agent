@@ -38,6 +38,10 @@ def _modules():
     return build_reference_modules(vocabulary_size=32,width=16,heads=4,blocks=1,ffn_width=24,dropout=.10,learning_rate=3e-4,betas=(.9,.999),eps=1e-8,weight_decay=.01,init_seed=8113002)
 
 
+def _amp_scaler():
+    return torch.amp.GradScaler('cpu',init_scale=8.0,growth_factor=2.0,backoff_factor=.5,growth_interval=1)
+
+
 def _authority(modules, update_index):
     checkpoint_digest=hashlib.sha256(f"inactive-reference-start-{update_index}".encode()).hexdigest()
     return PrefreezeMechanicalAuthorityV1.issue_for_optimizer(
@@ -85,10 +89,6 @@ def test_canonical_v5_gradscaler_skip_cannot_advance_optimizer_or_teacher(monkey
     data=_case(); modules=_modules(); scaler=torch.amp.GradScaler('cpu')
     online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
     teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
-
-    # Plant nonfinite gradients inside the real V5 backward path. Then deliberately
-    # bypass the software gradient report so GradScaler itself must independently
-    # refuse the physical optimizer step.
     parameter=next(modules.online.parameters())
     hook=parameter.register_hook(lambda grad: torch.full_like(grad,float('inf')))
     monkeypatch.setattr(update_reference,'_gradient_report',lambda _modules: {
@@ -98,7 +98,6 @@ def test_canonical_v5_gradscaler_skip_cannot_advance_optimizer_or_teacher(monkey
             _run(modules,data,scaler=scaler)
     finally:
         hook.remove()
-
     for name,before in online_before.items():
         assert torch.equal(modules.online.state_dict()[name],before),name
     for name,before in teacher_before.items():
@@ -107,8 +106,7 @@ def test_canonical_v5_gradscaler_skip_cannot_advance_optimizer_or_teacher(monkey
 
 def test_inactive_reference_update_is_deterministic_replay_on_same_initial_state():
     data=_case(); a=_modules(); b=_modules()
-    ra=_run(a,data)
-    rb=_run(b,data)
+    ra=_run(a,data); rb=_run(b,data)
     assert ra==rb
     for ma,mb in ((a.online,b.online),(a.teacher,b.teacher),(a.predictor,b.predictor)):
         sa=ma.state_dict(); sb=mb.state_dict(); assert sa.keys()==sb.keys()
@@ -117,12 +115,10 @@ def test_inactive_reference_update_is_deterministic_replay_on_same_initial_state
 
 def test_compute_token_budget_changes_partition_not_scientific_cell_set_or_weight_mass():
     data=_case(); a=_modules(); b=_modules()
-    ra=_run(a,data,max_tokens=40)
-    rb=_run(b,data,max_tokens=80)
+    ra=_run(a,data,max_tokens=40); rb=_run(b,data,max_tokens=80)
     assert ra['microbatch_plan']!=rb['microbatch_plan']
     assert ra['cells']==rb['cells']==6
     assert ra['scientific_weight_mass']==rb['scientific_weight_mass']==float(data[4].double().sum())
-    # Different reduction order is allowed to create a distinct V5 numerical trajectory.
     assert abs(ra['loss']-rb['loss']) < 1e-5
 
 
@@ -137,19 +133,14 @@ def test_incomplete_post_step_failure_cannot_advance_teacher_ema(monkeypatch):
     teacher_before={k:v.detach().clone() for k,v in modules.teacher.state_dict().items()}
     online_before={k:v.detach().clone() for k,v in modules.online.state_dict().items()}
     original_step=modules.optimizer.step
-
     def step_then_reject(*args, **kwargs):
         original_step(*args, **kwargs)
         raise RuntimeError('PLANTED_POST_STEP_FAILURE')
-
     monkeypatch.setattr(modules.optimizer,'step',step_then_reject)
     with pytest.raises(RuntimeError, match='PLANTED_POST_STEP_FAILURE'):
         _run(modules,data)
-
-    teacher_after=modules.teacher.state_dict()
-    online_after=modules.online.state_dict()
-    for name,before in teacher_before.items():
-        assert torch.equal(teacher_after[name],before),name
+    teacher_after=modules.teacher.state_dict(); online_after=modules.online.state_dict()
+    for name,before in teacher_before.items(): assert torch.equal(teacher_after[name],before),name
     assert any(not torch.equal(online_after[name],before) for name,before in online_before.items())
 
 
@@ -157,25 +148,45 @@ def test_inactive_reference_checkpoint_resume_matches_uninterrupted_two_update_p
     data=_case(); continuous=_modules(); first_report=_run(continuous,data,update_index=0)
     assert first_report['optimizer_step_after']==1
     ckpt=capture_reference_checkpoint(continuous,next_update_index=1,presentations_seen=len(data[0]))
-
     resumed=_modules(); cursor,presentations=restore_reference_checkpoint(resumed,ckpt)
     assert cursor==1 and presentations==6
-    ra=_run(continuous,data,update_index=1)
-    rb=_run(resumed,data,update_index=1)
+    ra=_run(continuous,data,update_index=1); rb=_run(resumed,data,update_index=1)
     assert ra==rb
     assert ra['optimizer_step_before']==1 and ra['optimizer_step_after']==2
     _module_state_equal(continuous,resumed)
 
 
+def test_amp_checkpoint_resume_preserves_scaler_and_exact_two_update_trajectory():
+    data=_case(); continuous=_modules(); continuous_scaler=_amp_scaler()
+    first=_run(continuous,data,update_index=0,scaler=continuous_scaler)
+    assert first['optimizer_step_after']==1
+    assert continuous_scaler.get_scale()==16.0
+
+    checkpoint=capture_reference_checkpoint(
+        continuous,next_update_index=1,presentations_seen=len(data[0]),scaler=continuous_scaler)
+    assert checkpoint.amp_scaler_used is True
+    assert checkpoint.scaler_state==continuous_scaler.state_dict()
+
+    resumed=_modules(); resumed_scaler=_amp_scaler()
+    assert resumed_scaler.get_scale()==8.0
+    cursor,presentations=restore_reference_checkpoint(resumed,checkpoint,scaler=resumed_scaler)
+    assert (cursor,presentations)==(1,6)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+
+    ra=_run(continuous,data,update_index=1,scaler=continuous_scaler)
+    rb=_run(resumed,data,update_index=1,scaler=resumed_scaler)
+    assert ra==rb
+    _module_state_equal(continuous,resumed)
+    assert resumed_scaler.state_dict()==continuous_scaler.state_dict()
+    assert continuous_scaler.get_scale()==32.0
+
+
 def test_reference_checkpoint_fails_closed_on_cursor_step_mismatch():
     modules=_modules()
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=1,presentations_seen=0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=1,presentations_seen=0)
 
 
 def test_reference_checkpoint_rejects_float_cursor_even_if_integral_value():
     modules=_modules()
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=0.0,presentations_seen=0)
-    with pytest.raises(ValueError):
-        capture_reference_checkpoint(modules,next_update_index=0,presentations_seen=0.0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0.0,presentations_seen=0)
+    with pytest.raises(ValueError): capture_reference_checkpoint(modules,next_update_index=0,presentations_seen=0.0)
