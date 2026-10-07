@@ -42,6 +42,32 @@ def _receipt(**overrides):
     return QualificationProvenanceReceiptV1(**values)
 
 
+def _bound_proof(**overrides):
+    proof_type = getattr(receipts, "BoundRuntimeMutationProofV1", None)
+    assert proof_type is not None, "shared interface has no typed physical runtime proof"
+    values = {
+        "schema": "V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1",
+        "runtime_contract": (
+            "V5_CANONICAL_PREFREEZE_GUARDED_STEP__COMPLETION_BEFORE_EMA__"
+            "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
+        ),
+        "governance_digest": "a" * 64,
+        "artifact_sha256": "8" * 64,
+        "logical_checkpoint_sha256": "7" * 64,
+        "premise_state_sha256": "6" * 64,
+        "runtime_source_sha256": "9" * 64,
+        "completed_guard_receipt_digest": "5" * 64,
+        "next_update_index": 1,
+        "presentations_seen": 32,
+        "persisted_verified_reload": True,
+        "execution_authorized": False,
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+    values.update(overrides)
+    return proof_type(**values)
+
+
 def test_complete_zero_update_synthetic_provenance_receipt_is_digestible():
     receipt = _receipt()
     assert len(receipt.digest()) == 64
@@ -60,26 +86,7 @@ def test_mutation_proof_cannot_be_promoted_from_arbitrary_digest_strings():
 
 
 def test_bound_runtime_mutation_proof_type_is_explicit_and_non_authorizing():
-    proof_type = getattr(receipts, "BoundRuntimeMutationProofV1", None)
-    assert proof_type is not None, "shared interface has no typed physical runtime proof"
-    proof = proof_type(
-        schema="V5_PREFREEZE_PERSISTED_COMPLETION_PROOF_V1",
-        runtime_contract=(
-            "V5_CANONICAL_PREFREEZE_GUARDED_STEP__COMPLETION_BEFORE_EMA__"
-            "FROZEN_PREMISE_BOUND__NO_TRAINING_AUTHORITY"
-        ),
-        artifact_sha256="8" * 64,
-        logical_checkpoint_sha256="7" * 64,
-        premise_state_sha256="6" * 64,
-        runtime_source_sha256="9" * 64,
-        completed_guard_receipt_digest="5" * 64,
-        next_update_index=1,
-        presentations_seen=32,
-        persisted_verified_reload=True,
-        execution_authorized=False,
-        training_authorized=False,
-        production_promotable=False,
-    )
+    proof = _bound_proof()
     proven = _receipt(
         mutation_proof_status=MutationProofStatus.PROVEN_BY_BOUND_RUNTIME,
         runtime_successor_digest="9" * 64,
@@ -88,6 +95,17 @@ def test_bound_runtime_mutation_proof_type_is_explicit_and_non_authorizing():
     )
     assert proven.mutation_proof_status is MutationProofStatus.PROVEN_BY_BOUND_RUNTIME
     assert proven.runtime_mutation_proof is proof
+
+
+def test_bound_runtime_mutation_proof_must_match_receipt_governance():
+    proof = _bound_proof(governance_digest="4" * 64)
+    with pytest.raises(ValueError, match="governance"):
+        _receipt(
+            mutation_proof_status=MutationProofStatus.PROVEN_BY_BOUND_RUNTIME,
+            runtime_successor_digest="9" * 64,
+            checkpoint_digest="8" * 64,
+            runtime_mutation_proof=proof,
+        )
 
 
 def test_q_safety_execution_proof_requires_bound_runtime_successor():
