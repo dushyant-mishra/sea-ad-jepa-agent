@@ -5,8 +5,9 @@ premise-state bytes and to every source file that currently defines the
 canonical mutation/checkpoint semantics. Persisted artifacts are SHA-256
 verified before deserialization. The initial state may exist without a prior
 transition; every post-update state must carry a verified guard completion
-receipt proving optimizer completion followed by EMA. This grants no execution
-or training authority.
+receipt proving optimizer completion followed by EMA. Rehearsal authority may
+only be issued from a live state that exactly matches its claimed parent
+checkpoint. This grants no execution or training authority.
 """
 from __future__ import annotations
 
@@ -245,6 +246,63 @@ def capture_prefreeze_bound_checkpoint(
     )
 
 
+def _validate_bound_checkpoint_for_current_runtime(
+    envelope: V5PrefreezeBoundCheckpointV1,
+    *,
+    premise_state_path: Path,
+) -> Path:
+    if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
+        raise RuntimeError("unsupported prefreeze checkpoint envelope")
+    if envelope.runtime_contract != PREFREEZE_RUNTIME_CONTRACT:
+        raise RuntimeError("runtime contract mismatch")
+    if envelope.training_authority_digest is not None:
+        raise RuntimeError("prefreeze checkpoint cannot carry training authority")
+    if envelope.execution_authorized or envelope.training_authorized or envelope.production_promotable:
+        raise RuntimeError("prefreeze checkpoint cannot be promoted to execution/training authority")
+    premise_path = Path(premise_state_path)
+    if not premise_path.is_file():
+        raise RuntimeError("premise state missing")
+    if _file_sha256(premise_path) != envelope.premise_state_sha256:
+        raise RuntimeError("premise state digest mismatch")
+    if _runtime_source_sha256() != envelope.runtime_source_sha256:
+        raise RuntimeError("canonical runtime source digest mismatch")
+    _verify_completed_receipt(
+        envelope.reference_checkpoint,
+        envelope.completed_guard_receipt,
+        premise_state_path=premise_path,
+    )
+    return premise_path
+
+
+def issue_prefreeze_authority_from_bound_checkpoint(
+    modules: V5ReferenceModules,
+    parent: V5PrefreezeBoundCheckpointV1,
+    *,
+    premise_state_path: Path,
+    scaler: object | None = None,
+) -> PrefreezeMechanicalAuthorityV1:
+    """Issue rehearsal authority only when live state equals the exact parent state."""
+    premise_path = _validate_bound_checkpoint_for_current_runtime(
+        parent,
+        premise_state_path=premise_state_path,
+    )
+    expected = parent.reference_checkpoint
+    live = capture_reference_checkpoint(
+        modules,
+        next_update_index=expected.next_update_index,
+        presentations_seen=expected.presentations_seen,
+        scaler=scaler,
+    )
+    parent_digest = reference_checkpoint_sha256(expected)
+    if reference_checkpoint_sha256(live) != parent_digest:
+        raise RuntimeError("live runtime state does not match parent checkpoint state")
+    return PrefreezeMechanicalAuthorityV1.issue_for_optimizer(
+        governance_state=_load_governance_state(premise_path),
+        optimizer=modules.optimizer,
+        checkpoint_digest=parent_digest,
+    )
+
+
 def persist_prefreeze_bound_checkpoint(
     envelope: V5PrefreezeBoundCheckpointV1,
     path: Path,
@@ -309,26 +367,8 @@ def restore_prefreeze_bound_checkpoint(
     premise_state_path: Path,
     scaler: object | None = None,
 ) -> tuple[int, int]:
-    if not isinstance(envelope, V5PrefreezeBoundCheckpointV1) or envelope.schema != SCHEMA:
-        raise RuntimeError("unsupported prefreeze checkpoint envelope")
-    if envelope.runtime_contract != PREFREEZE_RUNTIME_CONTRACT:
-        raise RuntimeError("runtime contract mismatch")
-    if envelope.training_authority_digest is not None:
-        raise RuntimeError("prefreeze checkpoint cannot carry training authority")
-    if envelope.execution_authorized or envelope.training_authorized or envelope.production_promotable:
-        raise RuntimeError("prefreeze checkpoint cannot be promoted to execution/training authority")
-
-    premise_path = Path(premise_state_path)
-    if not premise_path.is_file():
-        raise RuntimeError("premise state missing at restore")
-    if _file_sha256(premise_path) != envelope.premise_state_sha256:
-        raise RuntimeError("premise state digest mismatch")
-    if _runtime_source_sha256() != envelope.runtime_source_sha256:
-        raise RuntimeError("canonical runtime source digest mismatch")
-    _verify_completed_receipt(
-        envelope.reference_checkpoint,
-        envelope.completed_guard_receipt,
-        premise_state_path=premise_path,
+    premise_path = _validate_bound_checkpoint_for_current_runtime(
+        envelope,
+        premise_state_path=premise_state_path,
     )
-
     return restore_reference_checkpoint(modules, envelope.reference_checkpoint, scaler=scaler)
