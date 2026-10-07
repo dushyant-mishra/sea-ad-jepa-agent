@@ -88,17 +88,19 @@ All 104 reader-fit donors have prior developmental exposure in the historical 56
 
 The deciding Stage-A q-locality test will use a new deterministic source-stratified split over the 104 reader-fit donors.
 
+The exact roster was recovered from the Sept-8 reader-fit support-profile artifact. That table has 196 support-profile rows but exactly 104 unique `(source, donor_id)` pairs because NPH52 donors recur across support fingerprints. The split operates on the 104 deduplicated donor IDs, not the 196 support rows.
+
 For each source family independently:
 
-1. use the canonical person/donor identifier already bound by the foundation authority;
+1. use the exact `donor_id` from the authenticated reader-fit support profile;
 2. construct the UTF-8 string
-   `JEPA_STAGE_A_V3_SPLIT_20261007|<SOURCE>|<CANONICAL_PERSON_ID>`;
+   `JEPA_STAGE_A_V3_SPLIT_20261007|<SOURCE>|<DONOR_ID>`;
 3. compute SHA-256;
-4. sort ascending by the lowercase hexadecimal digest, with canonical person ID as the deterministic tie-breaker;
+4. sort ascending by the lowercase hexadecimal digest, with `donor_id` as deterministic tie-breaker;
 5. assign the first `floor(2*n_source/3)` donors to `INNER_TRAIN_FIT`;
 6. assign the remainder to `HELD_DONOR_EVAL`.
 
-This deterministically yields the following counts from the frozen 104-donor source totals:
+This deterministically yields:
 
 | Source | INNER_TRAIN_FIT | HELD_DONOR_EVAL | Total |
 |---|---:|---:|---:|
@@ -107,9 +109,17 @@ This deterministically yields the following counts from the frozen 104-donor sou
 | SEA-AD | 30 | 16 | 46 |
 | **Total** | **68** | **36** | **104** |
 
-The exact donor-ID manifest must be materialized and hash-bound before any deciding real-RNA result is opened. The split algorithm may not be changed after outcome inspection.
+The exact manifest is now frozen at:
 
-Historical 56/28/20 roles do not control this new split and do not create independence. Their overlap with the new split must be reported only as exposure bookkeeping.
+`docs/agent/JEPA_STAGE_A_V3_SPLIT_20261007.csv`
+
+SHA-256:
+
+`cc2c87cc7b8085f71850a7817cc28524ae518e109584da4cdfae07b2c6f75fe7`
+
+The split algorithm and manifest may not be changed after outcome inspection.
+
+Historical 56/28/20 roles do not control this new split and do not create independence. Their overlap with the new split is exposure bookkeeping only.
 
 ## Primary first biological question
 
@@ -201,6 +211,10 @@ with immutable receipts and fail-closed handling of unresolved IDs/collisions.
 
 Historical contaminated HVS/SEA-AD caches/50K values are not lawful substitutes.
 
+The implementation contract is frozen separately in:
+
+`docs/agent/JEPA_HVS_SEAAD_PHYSICAL_AXIS_REPAIR_CONTRACT_20261007.md`
+
 ## What this document authorizes
 
 Only prospective governance freeze.
@@ -222,9 +236,8 @@ It does **not** authorize:
 
 ## Next lawful sequence
 
-1. finish/qualify the HVS and SEA-AD physical-axis repair design and sentinel proof;
-2. materialize the exact 104-donor deterministic 68/36 split manifest and hash it without opening expression outcomes;
-3. freeze the candidate-specific score/extraction definitions and leakage seams;
-4. issue a separate narrow execution authority if the owner approves real-RNA Stage A;
-5. only then execute the q-locality/shortcut gate;
-6. only after that consider the four-family representation tournament.
+1. qualify the HVS and SEA-AD physical-axis identities under the frozen repair contract;
+2. freeze candidate-specific score/extraction definitions and leakage seams;
+3. issue a separate narrow execution authority only if the owner approves real-RNA Stage A;
+4. only then execute the q-locality/shortcut gate;
+5. only after that consider the four-family representation tournament.
