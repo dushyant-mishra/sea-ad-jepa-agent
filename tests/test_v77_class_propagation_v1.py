@@ -24,6 +24,7 @@ def _load(path: Path, name: str):
 
 
 def _calibration(tmp_path: Path, counts=None, extra_source=None):
+    tmp_path.mkdir(parents=True, exist_ok=True)
     counts = counts or {"Astro": 30, "Micro": 20, "Neuron": 50}
     source = {
         "pathology_blind": True,
@@ -56,10 +57,7 @@ def test_authority_rejects_pathology_like_metadata(tmp_path):
 def test_authority_order_is_stable_and_counts_reconcile(tmp_path):
     A = _load(AUTH_PATH, "v77_class_authority_order")
     p1 = _calibration(tmp_path / "a", {"Neuron": 50, "Astro": 30, "Micro": 20})
-    p1.parent.mkdir(parents=True, exist_ok=True)
-    p1 = _calibration(p1.parent, {"Neuron": 50, "Astro": 30, "Micro": 20})
-    p2dir = tmp_path / "b"; p2dir.mkdir()
-    p2 = _calibration(p2dir, {"Micro": 20, "Neuron": 50, "Astro": 30})
+    p2 = _calibration(tmp_path / "b", {"Micro": 20, "Neuron": 50, "Astro": 30})
     a1, a2 = A.build_authority(p1), A.build_authority(p2)
     assert a1["class_labels"] == a2["class_labels"] == ["Astro", "Micro", "Neuron"]
     assert a1["class_counts"] == [30, 20, 50]
