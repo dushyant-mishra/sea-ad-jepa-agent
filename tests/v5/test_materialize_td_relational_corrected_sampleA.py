@@ -75,6 +75,44 @@ def test_corrected_row_keeps_only_frozen_replay_addresses():
     assert row == {100: 3}
 
 
+def test_g7_exact_overlap_passes_only_zero_mismatch():
+    m = load_module()
+    current = {100: 3, 200: 5}
+    s174 = {100: 3, 200: 5, 999: 8}
+    rec = m.g7_compare_rows(current, s174, {100, 200})
+    assert rec == {"checked": 2, "mismatches": 0}
+
+
+def test_g7_counts_missing_as_zero_and_fails_difference():
+    m = load_module()
+    rec = m.g7_compare_rows({100: 3}, {100: 3, 200: 7}, {100, 200})
+    assert rec == {"checked": 2, "mismatches": 1}
+
+
+def test_g1b_freeze_shard_hashes_must_match(tmp_path):
+    m = load_module()
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    (cache / "abc.counts.npz").write_bytes(b"counts")
+    (cache / "abc.meta.npz").write_bytes(b"meta")
+    freeze = {
+        "rebuilt_cache": {"shards": {
+            "abc": {
+                "counts": m.sha256_file(cache / "abc.counts.npz"),
+                "meta": m.sha256_file(cache / "abc.meta.npz"),
+            }
+        }}
+    }
+    assert m.verify_s174_cache_hashes(cache, freeze) == 1
+    (cache / "abc.counts.npz").write_bytes(b"changed")
+    try:
+        m.verify_s174_cache_hashes(cache, freeze)
+    except RuntimeError as e:
+        assert "s174" in str(e).lower() or "hash" in str(e).lower()
+    else:
+        raise AssertionError("changed G1b-authorized cache must fail closed")
+
+
 def test_output_namespace_refuses_overwrite(tmp_path):
     m = load_module()
     out = tmp_path / "cache"
