@@ -1,7 +1,7 @@
 {
-  "schema": "JEPA_TD_RELATIONAL_REPLAY_PREFLIGHT_STATUS_V1",
+  "schema": "JEPA_TD_RELATIONAL_REPLAY_PREFLIGHT_STATUS_V2",
   "date": "2026-10-07",
-  "status": "PREFLIGHT_PARTIALLY_CLOSED__TD_MAPPING_METADATA_RUN_REMAINS",
+  "status": "PREFLIGHT_CODE_AND_AUTHORITIES_CLOSED__CANONICAL_LOCAL_G4_G5_RUN_REMAINS",
   "gates": {
     "G1_exact_9216_historical_replay_manifest": {
       "status": "PASS",
@@ -19,43 +19,53 @@
       "freeze_commit": "cf4d4708af68d32c8c1ec73b1a4b09294b2df6ef",
       "g1b_pass_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
       "ci_confirmed_code_commit": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
-      "interpretation": "All 24 HVS and 11 SEA-AD raw H5ADs were hash-bound before count read. The corrected join is physical var identifier -> frozen provenance exact Ensembl ID -> molecular address; positional source_feature_index is not used. G1b later verified the corrected values under that identity policy. This is inherited implementation/source authority, not TD outcome authority."
+      "freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+      "interpretation": "All 24 HVS and 11 SEA-AD raw H5ADs were hash-bound before count read. Corrected join is physical var identifier -> frozen provenance exact Ensembl ID -> molecular address; positional source_feature_index is not used. This is inherited implementation/source authority, not TD outcome authority."
     },
     "G4_TD_specific_9216_address_one_to_one_coverage_on_all_HVS_SEAAD_matrices": {
-      "status": "OPEN_EXECUTOR_FROZEN_NOT_RUN",
+      "status": "OPEN_CANONICAL_LOCAL_RUN__DRIVER_FROZEN",
+      "driver": "scripts/v5/run_td_relational_replay_preflight.py",
       "executor": "scripts/v5/audit_td_relational_replay_mapping_preflight.py",
-      "rule": "Every one of the exact 9,216 frozen TD addresses must resolve to exactly one non-collision physical column in every required HVS/SEA-AD matrix. No replacement address is permitted.",
+      "rule": "Every exact frozen TD address must resolve to exactly one non-collision physical column in every required HVS/SEA-AD matrix; no replacement address permitted.",
       "value_blind": true
     },
     "G5_exact_sample_A_cell_resolution_in_raw_HVS_SEAAD_obs": {
-      "status": "OPEN_EXECUTOR_FROZEN_NOT_RUN",
+      "status": "OPEN_CANONICAL_LOCAL_RUN__DRIVER_FROZEN",
+      "driver": "scripts/v5/run_td_relational_replay_preflight.py",
       "executor": "scripts/v5/audit_td_relational_replay_mapping_preflight.py",
-      "rule": "For each Sample-A HVS/SEA-AD row, raw obs[local_row] must equal the frozen cell_id exactly.",
+      "rule": "For every Sample-A HVS/SEA-AD row, raw obs[local_row] must equal the frozen cell_id exactly.",
       "value_blind": true
     },
     "G6_sample_A_library_and_detected_count_value_sentinels": {
-      "status": "OPEN_AFTER_G4_G5",
-      "rule": "Before normalized TD values are accepted, recomputed whole-cell raw library size and detected-feature count must equal the preserved TD metadata sentinels for every Sample-A cell."
+      "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
+      "rule": "Before normalized TD values are accepted, recomputed whole-cell raw library size and detected-feature count must equal preserved TD metadata sentinels for every Sample-A cell."
     },
     "G7_cross_check_against_existing_S174_value_authority": {
-      "status": "OPEN_AFTER_G4_G5",
+      "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
       "inherited_reference": "Macha S174 G1b PASS at 4ab8e2101f2e595d9a97df05517d6e672768ecec",
-      "rule": "Where the Sample-A read overlaps an already checked S174 matrix/address condition, corrected physical-ID reads must agree. No new tolerance may be invented."
+      "rule": "Where Sample-A reads overlap existing S174 checked conditions, corrected physical-ID reads must agree under the inherited rule; no new tolerance may be invented."
     },
     "G8_new_immutable_output_namespace": {
-      "status": "REQUIRED_BEFORE_VALUE_REPLAY",
-      "rule": "Historical 50K arrays/results are never overwritten."
+      "status": "PASS_NAMESPACE_FROZEN_BEFORE_REAL_VALUES",
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_IMMUTABLE_NAMESPACE_FREEZE_20261007.json",
+      "preflight": "results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1",
+      "corrected_value_cache": "data/cache/td_relational_corrected_sampleA_9216_v1",
+      "replay_results": "results/target_discovery/td_relational_corrected_replay_20261007/value_replay_v1"
     }
   },
-  "executor_verification": {
-    "synthetic_tests_committed": "tests/v5/test_audit_td_relational_replay_mapping_preflight.py",
+  "operational_authority": {
+    "runbook": "docs/agent/JEPA_TD_RELATIONAL_PREFLIGHT_RUNBOOK_20261007.md",
+    "one_command_driver": "scripts/v5/run_td_relational_replay_preflight.py",
+    "driver_test": "tests/v5/test_run_td_relational_replay_preflight.py",
+    "mapping_test": "tests/v5/test_audit_td_relational_replay_mapping_preflight.py",
     "remote_CI_status_on_this_branch": "NO_STATUS_RETURNED",
-    "claim": "CODE_READY_FOR_VALUE_BLIND_METADATA_PREFLIGHT__NOT_REAL_DATA_PASS"
+    "required_local_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
   },
-  "current_terminal": "STOP_TD_RELATIONAL_CORRECTED_REPLAY_PREFLIGHT_INCOMPLETE",
+  "current_terminal": "STOP_TD_RELATIONAL_CORRECTED_REPLAY_PREFLIGHT_INCOMPLETE_UNTIL_CANONICAL_LOCAL_G4_G5_PASS",
   "target_selected": false,
   "representation_selected": false,
   "td60_authorized": false,
+  "real_value_replay_authorized": false,
   "training_authorized": false,
   "protected_data_authorized": false
 }
