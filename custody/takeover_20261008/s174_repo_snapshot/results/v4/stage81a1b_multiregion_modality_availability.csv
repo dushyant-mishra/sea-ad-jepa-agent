@@ -1,0 +1,12 @@
+region,rna_status,atac_status,fragments_status
+AnG,processed_current,announced_pending,access_blocked
+Caudate_Nucleus,processed_current,announced_pending,access_blocked
+FI,processed_current,announced_pending,access_blocked
+HIP,processed_current,announced_pending,access_blocked
+ITG,processed_current,announced_pending,access_blocked
+LEC,processed_current,announced_pending,access_blocked
+MEC,processed_current,announced_pending,access_blocked
+MTG,processed_current,processed_current,access_blocked
+PFC_A9_DFC,processed_current,announced_pending,access_blocked
+STG,processed_current,announced_pending,access_blocked
+V1C,processed_current,announced_pending,access_blocked

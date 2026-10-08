@@ -1,0 +1,91 @@
+{
+  "schema": "V64_NOTT_PROMOTER_ORIENTATION_AND_GENE_MAPPING_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_P1S_P3_CONTACT_CLASSIFICATION",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "uses_external_gene_annotation": false,
+    "uses_target_or_AD_identity": false
+  },
+  "source_authority": {
+    "artifact": "NIHMS1066836-supplement-Table_S5.xlsx",
+    "sha256": "81c99689533d9da372cecdd469e7ff02cc985720105b83b3bd66c3ac8c93972e",
+    "interaction_sheet": "Microglia interactome",
+    "promoter_annotation_sheet": "H3K4me3_around_TSS_annotated_pe",
+    "promoter_annotation_fields": [
+      "PeakID",
+      "Chr",
+      "Start",
+      "End",
+      "Annotation",
+      "Detailed Annotation",
+      "Distance to TSS",
+      "Nearest PromoterID",
+      "Entrez ID",
+      "Nearest Refseq",
+      "Nearest Ensembl",
+      "Gene Name",
+      "Gene Type",
+      "PU1_active_promoter"
+    ]
+  },
+  "coordinate_stage": {
+    "orientation_is_assigned_in": "original hg19 source coordinates before liftover",
+    "reason": "Both the interactome and the Nott promoter annotation are distributed in their native hg19 coordinate context. Orientation should be resolved before any coordinate transformation so liftover cannot determine promoter identity.",
+    "after_orientation": "Carry promoter/distal role labels and the depositor gene annotation through C3 as metadata bound to the source interaction row."
+  },
+  "promoter_match_rule": {
+    "candidate_promoters": "Rows in H3K4me3_around_TSS_annotated_pe with PU1_active_promoter == True.",
+    "anchor_match": "An interaction 5-kb anchor matches a candidate promoter if it overlaps that promoter interval by >=1 bp in hg19.",
+    "no_peak_expansion": true,
+    "no_nearest_gene_rescue": true,
+    "no_external_TSS_annotation": true
+  },
+  "contact_orientation_classes": {
+    "PROMOTER_DISTAL_UNIQUE": "Exactly one interaction anchor overlaps one or more PU1-active promoter rows and the other anchor overlaps none.",
+    "PROMOTER_PROMOTER": "Both interaction anchors overlap >=1 PU1-active promoter row.",
+    "NO_PROMOTER_MATCH": "Neither interaction anchor overlaps a PU1-active promoter row.",
+    "GENE_AMBIGUOUS_PROMOTER_DISTAL": "Exactly one anchor is promoter-positive but the overlapping promoter annotations imply more than one distinct non-empty gene identity.",
+    "GENE_UNANNOTATED_PROMOTER_DISTAL": "Exactly one anchor is promoter-positive but no stable gene identity is supplied by the overlapping promoter annotation."
+  },
+  "gene_identity_rule": {
+    "primary_id": "Nearest Ensembl when present",
+    "secondary_report_fields": ["Gene Name", "Nearest Refseq", "Entrez ID"],
+    "unique_gene_requirement_for_P3": "All promoter rows overlapping the promoter anchor must resolve to one unique non-empty primary gene identity for the contact to enter gene-specific P3 eligibility.",
+    "duplicate_rows_same_gene": "Allowed; collapse to one gene identity while preserving the source-row multiplicity in audit metadata.",
+    "multiple_distinct_genes": "Do not choose one. Classify GENE_AMBIGUOUS_PROMOTER_DISTAL and count/drop from gene-specific P3.",
+    "missing_Ensembl": "Do not silently substitute a different gene system for primary identity. Report separately; a later explicit successor may authorize a fallback if justified prospectively."
+  },
+  "P1S_population": {
+    "allowed": ["PROMOTER_DISTAL_UNIQUE", "GENE_AMBIGUOUS_PROMOTER_DISTAL", "GENE_UNANNOTATED_PROMOTER_DISTAL"],
+    "reason": "P1S tests distal accessibility compatibility and does not require a target-gene identity, but it does require a uniquely oriented promoter-vs-distal pair.",
+    "excluded": ["PROMOTER_PROMOTER", "NO_PROMOTER_MATCH"]
+  },
+  "P3_population": {
+    "allowed": ["PROMOTER_DISTAL_UNIQUE"],
+    "excluded": [
+      "PROMOTER_PROMOTER",
+      "NO_PROMOTER_MATCH",
+      "GENE_AMBIGUOUS_PROMOTER_DISTAL",
+      "GENE_UNANNOTATED_PROMOTER_DISTAL"
+    ]
+  },
+  "mandatory_reporting": [
+    "104802 original microglia interaction denominator",
+    "count/fraction in every orientation class",
+    "number of source promoter annotation rows matched",
+    "number of contacts with duplicate promoter rows resolving to one gene",
+    "number with >1 distinct gene identity",
+    "number with missing primary gene identity",
+    "P1S-oriented population before C3 attrition",
+    "P3-gene-resolved population before expression/accessibility eligibility"
+  ],
+  "spillover_prohibitions": [
+    "Do not infer that anchor1 or anchor2 is always the promoter from column order.",
+    "Do not use the simplified coordinate-only 'Microglia promoters' sheet as a gene annotation source.",
+    "Do not import GENCODE/Ensembl/UCSC nearest-gene annotation to repair ambiguous Nott rows without a prospective successor.",
+    "Do not use target identity, AD genes, NIH-CARD, Morabito or JEPA expression to choose promoter orientation or gene mapping."
+  ]
+}

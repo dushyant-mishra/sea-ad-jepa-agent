@@ -1,0 +1,135 @@
+{
+  "schema": "V75_PAIRED_MULTIOME_SHARDED_OBSERVER_MANIFEST_V2_MEASUREMENT_SEED_SEPARATED",
+  "seed": 7302,
+  "truth_seed": 7302,
+  "measurement_seed": 8501,
+  "n_cells": 100000,
+  "paired_same_cell_identity": true,
+  "n_rna_genes": 64,
+  "n_atac_regions": 256,
+  "feature_scale_status": "STRESS_ARCHITECTURE_ONLY__NOT_GSE214979_FEATURE_SCALE",
+  "source_counts": {
+    "SEA_AD": 90443,
+    "NPH52": 5193,
+    "HVS": 4364
+  },
+  "private_regulatory_state": "consumed only by the synthetic ATAC observation operator; not serialized into output",
+  "model_facing_output_contains_hidden_truth": false,
+  "master_truth_digest_binding": [
+    {
+      "file": "TRUTH_000000000_000010000.npz",
+      "sha256": "1f47d5a6de685b9e73e49edc90d9cafe7b1557bafe1ad57ab79d00788092e925"
+    },
+    {
+      "file": "TRUTH_000010000_000020000.npz",
+      "sha256": "a86e358b4e228d2057c79f46787c6e56461088c4b5c65056aac9825e1031d72f"
+    },
+    {
+      "file": "TRUTH_000020000_000030000.npz",
+      "sha256": "716a8697028fca260ce5b1ba72c1a2f074a7b95e67e5eb7bf6436e8d11b2913a"
+    },
+    {
+      "file": "TRUTH_000030000_000040000.npz",
+      "sha256": "e5f018b301bbf8be235683fe537c2168ad3b4a55a0b664577bd78e86ad01977f"
+    },
+    {
+      "file": "TRUTH_000040000_000050000.npz",
+      "sha256": "d6f9f63ab52b6d36d06ade2a97da97a1bc45e1ca520c41486abab64e2acb5a97"
+    },
+    {
+      "file": "TRUTH_000050000_000060000.npz",
+      "sha256": "8775862ca357d0a67aa7bbb9dfdb3eae96c0e9a0eb27211dd0eed059fa47cbd0"
+    },
+    {
+      "file": "TRUTH_000060000_000070000.npz",
+      "sha256": "91f654d10d18abd6f97c2b78972ecba5323e1aaabc2d39794ff98bdce10557a1"
+    },
+    {
+      "file": "TRUTH_000070000_000080000.npz",
+      "sha256": "00d6ddb9c842fc2ebd2f1ae615a0ac0b815e47adf51e2ba9fc829010b2304293"
+    },
+    {
+      "file": "TRUTH_000080000_000090000.npz",
+      "sha256": "f3707c6beeba6d19907953ae4236a8c927cad76d02768bad0dbf2867a10583e7"
+    },
+    {
+      "file": "TRUTH_000090000_000100000.npz",
+      "sha256": "bb5811d31ad991452f685cb9af451aa2ee8b7e2c5bf5af6244da4de8e4d4a3f6"
+    }
+  ],
+  "observation_operator_seed": 7302,
+  "measurement_realization_seed": 8501,
+  "count_randomization": "stateless feature-by-cell inverse-CDF Poisson keyed by measurement realization seed; invariant to shard boundaries",
+  "shards": [
+    {
+      "start": 0,
+      "stop": 10000,
+      "cells": 10000,
+      "file": "MULTIOME_000000000_000010000.npz",
+      "sha256": "ebda5c53d91327e3400c38aca978e88d439e806bde9fe357002de67b74ab974e"
+    },
+    {
+      "start": 10000,
+      "stop": 20000,
+      "cells": 10000,
+      "file": "MULTIOME_000010000_000020000.npz",
+      "sha256": "64432e930f0d7a91e63d43dff6501709a1d28cb1c21ad5c73478944b08e988ea"
+    },
+    {
+      "start": 20000,
+      "stop": 30000,
+      "cells": 10000,
+      "file": "MULTIOME_000020000_000030000.npz",
+      "sha256": "5f9a2adb99ba874d2983903778150c1651134b8332c21b31618334c7a54b9f52"
+    },
+    {
+      "start": 30000,
+      "stop": 40000,
+      "cells": 10000,
+      "file": "MULTIOME_000030000_000040000.npz",
+      "sha256": "affcade0ce4915d0d07083e6b74a457f7e92285f9889ca9fc6866da29730e55e"
+    },
+    {
+      "start": 40000,
+      "stop": 50000,
+      "cells": 10000,
+      "file": "MULTIOME_000040000_000050000.npz",
+      "sha256": "2ce378d3516ff48fa97a3f0055176dde0ee3d85b3bf9debafc8e62d749f10610"
+    },
+    {
+      "start": 50000,
+      "stop": 60000,
+      "cells": 10000,
+      "file": "MULTIOME_000050000_000060000.npz",
+      "sha256": "22d9b90999eb9e0afdf861d489072eb02fcc42cbdf4ac5cf6119fa125c019d6d"
+    },
+    {
+      "start": 60000,
+      "stop": 70000,
+      "cells": 10000,
+      "file": "MULTIOME_000060000_000070000.npz",
+      "sha256": "f07488dea3c834b5294cae1863ac4b004fbcb6df9438560d71daa05e56ffb466"
+    },
+    {
+      "start": 70000,
+      "stop": 80000,
+      "cells": 10000,
+      "file": "MULTIOME_000070000_000080000.npz",
+      "sha256": "b65f5c28e37f82f73a6eab11ef97bbd65cb5b3575c3882078d854899416bfa70"
+    },
+    {
+      "start": 80000,
+      "stop": 90000,
+      "cells": 10000,
+      "file": "MULTIOME_000080000_000090000.npz",
+      "sha256": "2af9608abf988d8897a3619c152cb2184194de1c39d96752624da6906dfc66ef"
+    },
+    {
+      "start": 90000,
+      "stop": 100000,
+      "cells": 10000,
+      "file": "MULTIOME_000090000_000100000.npz",
+      "sha256": "4a8f4633484fb216200b3f339101fd99111f2ecb859fafc33cb1901decdad338"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+forbidden_feature,feature_source,reason_forbidden,affected_target,allowed_alternative_use
+AT8 stain features as AT8 predictors,target image stain,same-stain same-target leakage/proxy risk,AT8,use only as outcome or cross-target sensitivity with explicit audit
+6E10 stain features as A_beta predictors,target image stain,same-stain same-target leakage/proxy risk,6e10/A_beta,use only as outcome or cross-target sensitivity with explicit audit
+GFAP stain features as GFAP predictors,target image stain,same-stain same-target leakage/proxy risk,GFAP,use non-target morphology features instead
+IBA1 stain features as Iba1 predictors,target image stain,same-stain same-target leakage/proxy risk,Iba1,use non-target morphology or safe microenvironment features
+NeuN stain features as NeuN predictors,target image stain,same-stain same-target leakage/proxy risk,NeuN,use non-target morphology or safe anatomy features
+HALO target quantifications,HALO/pathology quantification,direct or near-direct target leakage,all pathology targets,outcome/label audit only
+Luminex A_beta/tau predictors,biochemical pathology,direct disease/pathology burden proxy,A_beta/tau-related targets,"support-only/manual review, not benchmark predictor"
+Braak/CERAD/Thal/ADNC predictors,neuropathology staging,disease burden proxy,all pathology targets,stratification/reporting only
+quantitative neuropathology summaries as predictors,pathology metadata,target-adjacent leakage,all pathology targets,outcome/support context only
+pseudo-labels derived from held-out targets,derived labels,fold leakage and target leakage,all targets,forbidden

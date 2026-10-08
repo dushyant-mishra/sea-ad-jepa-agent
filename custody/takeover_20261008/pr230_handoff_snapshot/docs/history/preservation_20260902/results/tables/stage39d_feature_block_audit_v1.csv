@@ -1,0 +1,4 @@
+feature_block,n_features_available,source,allowed,proxy_risk_note
+latent_module_pca,15,Stage 27C reconstructed module features,True,
+safe_metadata,7,SEA-AD donor metadata safe covariates,True,
+microglia_pvm_composition,33,local SEA-AD microglia/PVM H5AD obs,True,13 high-risk and 8 moderate-risk proxy features flagged; restricted sensitivity required

@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_ENGINEERING_PYTORCH_DLL_INITIALIZATION_FAILURE",
+  "scientific_result": false,
+  "expression_or_null_arithmetic_started": false,
+  "published_gate": false,
+  "error": "WinError 127 while loading torch fbgemm.dll; isolated fresh-process imports passed immediately afterward."
+}

@@ -1,0 +1,5 @@
+run_id,architecture_condition,status,mean_pooled_oof_spearman,minimum_success_threshold,all_five_targets_reported,target_degradation_check_pass,clean_holdout_used,heldout_donor_leakage_detected,stage27_pass,notes
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,complete,0.1484237782015982,0.3228,True,False,False,False,False,SEA-AD-only non-graph v3 condition; no graph topology.
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,complete,0.1781277802259438,0.3228,True,False,False,False,False,SEA-AD-only non-graph v3 condition; no graph topology.
+v3_sea_ad_only_non_graph,module_only_mlp,complete,0.18826769261921633,0.3228,True,False,False,False,False,SEA-AD-only non-graph v3 condition; no graph topology.
+v3_external_pretrained_non_graph,external_pretraining_interface,missing_external_matrix,,0.3228,False,False,False,False,False,No automatic downloads are allowed; Stage 27B is skipped unless approved local aligned matrices exist.

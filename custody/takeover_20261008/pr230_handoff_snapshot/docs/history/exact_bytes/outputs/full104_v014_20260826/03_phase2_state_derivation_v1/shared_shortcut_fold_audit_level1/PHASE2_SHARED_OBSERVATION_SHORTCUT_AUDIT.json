@@ -1,0 +1,40 @@
+{
+  "cells": 345017,
+  "channels": [
+    {
+      "channel": "VALUE_ONLY",
+      "full_exceeds_channel_by_one_donor_se": true,
+      "full_minus_channel_paired_donor_mean": 0.06094431866893287,
+      "full_minus_channel_paired_donor_se": 0.002842202241291019,
+      "full_value_plus_visibility_mean": 0.8447070014132196,
+      "held_donor_predictability_mean": 0.7837626827442867,
+      "selection_role": "NONSELECTING_SHORTCUT_FALSIFICATION"
+    },
+    {
+      "channel": "VISIBILITY_OR_SUPPORT_ONLY",
+      "full_exceeds_channel_by_one_donor_se": true,
+      "full_minus_channel_paired_donor_mean": 0.892387912988775,
+      "full_minus_channel_paired_donor_se": 0.027869620943351422,
+      "full_value_plus_visibility_mean": 0.8447070014132196,
+      "held_donor_predictability_mean": -0.04768091157555527,
+      "selection_role": "NONSELECTING_SHORTCUT_FALSIFICATION"
+    }
+  ],
+  "descriptive_candidate_coordinate_decodability": {
+    "operator_centroid_weighted_R2": 0.9701115771100502,
+    "source_centroid_weighted_R2": 0.6785336462830807
+  },
+  "dimension": 5,
+  "donors": 104,
+  "folds": 5,
+  "input_hashes": {
+    "analytic_manifest": "40747b7ab5a96de11be2e092bead1c40cef65165eb13d9f3f0980e8f1c091405",
+    "empirical_selection": "cb6d70d794df6d5ed55d199f56c8b398566fe1fc8f6c71efd1b14532115b6819",
+    "matrix_manifest": "85d13e67af444515b8bf0c5d047122735d2804bba1387060431c35c7585387ad"
+  },
+  "no_biology_labels_or_protected_data": true,
+  "operator_unseen_fold_rows": 0,
+  "schema": "full104-shared-observation-shortcut-audit-v1",
+  "selection_role": "NONSELECTING_DIAGNOSTIC_WITH_CATASTROPHIC_SHORTCUT_VETO_ONLY",
+  "status": "PASS_SHORTCUT_FALSIFIED"
+}

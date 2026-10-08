@@ -1,0 +1,38 @@
+{
+  "authority_tag": "DERIVE_ON_104_FIT",
+  "expected_rows_from_authenticated_selection": 292633,
+  "failures": {},
+  "input_hashes": {
+    "block_manifest": "2928167527609a5e4b36b2841fb4d7452c1626bd5419d166eefe18a2d8b5d334",
+    "observation_states": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "selection_audit": "bf71009d905f77c0f8553c77c116e70f1e0d89323c1c69956dd4cbf9413e2be2"
+  },
+  "measured_zero_retained_as_state_evidence": true,
+  "no_gpu_training_or_protected_expression": true,
+  "no_hardcoded_expected_row_count": true,
+  "normalization": "log1p(raw_count*10000/source_library) applied downstream exactly once; raw blocks remain integer counts",
+  "numeric_zero_outside_measured_scalar": true,
+  "observed": {
+    "measured_zero_slots": 6933872717,
+    "negative": 0,
+    "nnz": 1367435533,
+    "non_scalar_nnz": 0,
+    "noninteger": 0,
+    "nonpositive_library": 0,
+    "represented_count_sum": 6058185916,
+    "represented_exceeds_library": 0,
+    "roundtrip_failures": 0,
+    "rows": 292633,
+    "source_library_sum": 6207690926
+  },
+  "operators": 42,
+  "roundtrip_samples": 10000,
+  "schema": "phase2-materialization-semantics-audit-v1",
+  "sources": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "status": "PASS_PHASE2_MATERIALIZATION_SEMANTICS",
+  "structurally_unmeasured_or_collision_scalar_nnz": 0
+}

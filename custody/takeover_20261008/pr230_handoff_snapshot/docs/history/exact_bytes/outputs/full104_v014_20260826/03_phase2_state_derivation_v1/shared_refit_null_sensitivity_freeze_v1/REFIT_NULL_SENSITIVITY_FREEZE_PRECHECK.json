@@ -1,0 +1,12 @@
+{
+  "ALL_weight_reduces_to_equal_cell_within_donor": true,
+  "cells": 4553407,
+  "donor_weight_mass_formula_verified_symbolically": true,
+  "donors": 104,
+  "future_result_directory_absent": true,
+  "operators": 42,
+  "protected_expression_opened": false,
+  "sensitivity_result_inspected": false,
+  "status": "PASS_PROSPECTIVE_FREEZE_INPUT_INTEGRITY",
+  "strata": 1400
+}

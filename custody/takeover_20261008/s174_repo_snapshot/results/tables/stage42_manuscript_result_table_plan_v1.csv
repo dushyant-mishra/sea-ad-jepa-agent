@@ -1,0 +1,7 @@
+table_id,proposed_table,purpose
+1,Internal benchmark progression table,benchmark history
+2,Guard and lock-decision table,why Stage41C is not locked
+3,Frozen mechanism/candidate table,hypothesis registry
+4,External support/readiness table,support/readiness context
+5,Negative/null result table,preserve negative results
+6,Claim-boundary table,safe language

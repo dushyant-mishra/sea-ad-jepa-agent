@@ -1,0 +1,9 @@
+question_id,decision_question,recommendation,consequence
+Q1,Which candidates have strongest known-evidence concordance?,Use stage49_candidate_known_evidence_concordance_v1.csv top rows.,Prioritizes manual review.
+Q2,Which candidates have perturbation evidence?,Use perturbation score/raw summary; do not call it our ablation validation.,Separates external evidence from model claims.
+Q3,Which candidates are druggable but lack directionality?,Use druggability score plus directionality score.,Avoids therapeutic overclaim.
+Q4,Which modules are strongest for main text?,Use module/network concordance table.,Supports mechanism-level story.
+Q5,Should druggability stay supplement?,Yes unless PI approves manual curated mapping.,Keeps manuscript safe.
+Q6,Which candidates should be tested first?,High concordance plus Stage47/48 traceability.,Experimental follow-up queue.
+Q7,Use Stage49 to say Graph-JEPA recovers known biology?,"Yes, as post hoc concordance/biological plausibility only.",Not validation.
+Q8,Run Stage46 graph-diffusion JEPA?,"Optional, not required for candidate evidence concordance.",Avoids rabbit hole.

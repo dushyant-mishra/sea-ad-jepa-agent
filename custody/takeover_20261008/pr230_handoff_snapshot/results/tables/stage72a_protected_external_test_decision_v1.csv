@@ -1,0 +1,2 @@
+dataset_id,local_schema_found,prior_stage37e_analysis_can_run,protected_external_expression_ready,manual_approval_required_before_expression_opening,recommended_use,claim_level
+GSE157827,True,False,False,True,frozen external expression projection only after approval and expression acquisition,conditional external support only; not clean validation unless registry gate changes

@@ -1,0 +1,50 @@
+stage_id: stage81a3_rbb_adaptive_correlated_probe
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+fixture:
+  cells: 4096
+  genes: 4096
+  factors: 32
+  train: 3072
+  validation: 512
+  sealed: 512
+state_basis:
+  artifact: results/v4/stage81a3_reproducible_state_basis.pt
+  sha256: ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c
+architecture:
+  width: 160
+  blocks: 6
+  heads: 4
+  head_width: 40
+  ffn_width: 320
+  dropout: 0.10
+  correlated_rank_capacity: 32
+  cell_token: false
+  perceiver: false
+  learned_global_pooling: false
+masks:
+  hidden_count: 1638
+  visible_count: 2458
+  random_bank_size: 128
+  block_bank_size: 128
+  alternation: RANDOM_40_BLOCK_40
+training:
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  effective_batch: 256
+  optimizer_updates: 150
+  telemetry_updates: [0, 25, 50, 100, 150]
+  mixed_precision: fp16
+memory_probe:
+  microbatches: [64, 48, 40, 32, 24, 16, 8]
+  maximum_peak_allocated_gb: 13.0
+boundaries:
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_in_training: forbidden
+  lambda_norm_in_training: forbidden
+  true_dag_in_training: forbidden
+  hyperparameter_sweep: forbidden
+  seed_sweep: forbidden
+  continuation: forbidden

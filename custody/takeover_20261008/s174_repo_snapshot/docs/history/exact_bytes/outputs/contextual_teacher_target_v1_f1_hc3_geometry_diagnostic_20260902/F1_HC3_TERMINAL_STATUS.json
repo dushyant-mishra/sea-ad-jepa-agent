@@ -1,0 +1,19 @@
+{
+  "blocking_findings": {
+    "actual_ill_conditioned_basis_arithmetic_not_certified": true,
+    "affected_frontier_rows": 35,
+    "frozen_engine_full_column_rank_gate_omitted_from_frontier": true,
+    "nph52_augmented_space_residual_rank": 1,
+    "reported_residual_rank": 2
+  },
+  "design_frozen": false,
+  "expression_or_candidate_outcomes_accessed": false,
+  "frontier_promotable": false,
+  "model_or_checkpoint_accessed": false,
+  "old_failure_reproduced": true,
+  "production_integration_patched": false,
+  "synthesis": "DO_NOT_RUN_INVALID",
+  "terminal_status": "STOP_F1_HC3_SVD_NUMERICAL_NONREPRODUCIBLE",
+  "training_or_ema": false,
+  "valid_root_cause_label": "ROOT_CAUSE_RAW_OPERATOR_MIXTURE_DONOR_ISOLATION"
+}

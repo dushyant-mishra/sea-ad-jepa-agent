@@ -1,0 +1,39 @@
+stage_id: stage81a3_rbb_frozen_encoder_probe
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+comparison:
+  previous_report: results/v4/stage81a3_rbb_adaptive_correlated_probe.json
+  previous_step0_retention: 1.0020574895396623
+  previous_step150_retention: 0.8811191875486374
+  maximum_step0_absolute_difference: 0.01
+single_change:
+  tokenizer_frozen: true
+  six_encoder_blocks_frozen: true
+  molecular_ledger_detached: true
+  belief_architecture_changed: false
+architecture:
+  genes: 4096
+  width: 160
+  blocks: 6
+  heads: 4
+  ffn_width: 320
+  dropout: 0.10
+  correlated_rank_capacity: 32
+training:
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  microbatch: 64
+  accumulation_microbatches: 4
+  effective_batch: 256
+  belief_optimizer_updates: 150
+  molecular_optimizer_updates: 0
+  telemetry_updates: [0, 25, 50, 100, 150]
+boundaries:
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_in_training: forbidden
+  lambda_norm_in_training: forbidden
+  true_dag_in_training: forbidden
+  preservation_regularizer: forbidden
+  sweep: forbidden

@@ -1,0 +1,8 @@
+covariate_column,forbidden_term_hits,leakage_risk,allowed_for_stage39c
+Age at Death,,False,True
+PMI,,False,True
+RIN,,False,True
+Years of education,,False,True
+Sex,,False,True
+APOE Genotype,,False,True
+Primary Study Name,,False,True

@@ -1,0 +1,2 @@
+model_variant,context_view,target_view,latent_dim,epochs,seeds,pathology_targets_used_in_pretraining,training_ran,skip_reason
+not_run_gap,raw donor expression/module matrix,graph-diffused view,,0,,False,False,No usable curated graph/control set; no graph-topology-specific model training performed.

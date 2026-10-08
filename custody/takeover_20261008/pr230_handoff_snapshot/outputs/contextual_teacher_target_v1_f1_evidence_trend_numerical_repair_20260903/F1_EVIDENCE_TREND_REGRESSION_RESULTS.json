@@ -1,0 +1,71 @@
+{
+  "accepted_15c_hc3_veto_unchanged": true,
+  "accepted_hc3_repair_manifest_sha256": "f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5",
+  "attacks_rejected": {
+    "donor_omission": true,
+    "donor_relabel": true,
+    "forged_evidence_gate": true,
+    "nonfinite": true,
+    "wrong_evidence_length": true
+  },
+  "donor_insertion_order_exact": true,
+  "frozen_14_cases": [
+    {
+      "attack": "A_protected_program_finite_negative_report_only",
+      "isolated_pass": true
+    },
+    {
+      "attack": "B_direct_degradation",
+      "isolated_pass": true
+    },
+    {
+      "attack": "C_evidence_trend",
+      "isolated_pass": true
+    },
+    {
+      "attack": "D_qid_margin",
+      "isolated_pass": true
+    },
+    {
+      "attack": "E_qid_win",
+      "isolated_pass": true
+    },
+    {
+      "attack": "F_draw_sign",
+      "isolated_pass": true
+    },
+    {
+      "attack": "G_hc3_nuisance",
+      "isolated_pass": true
+    },
+    {
+      "attack": "H_cross_source",
+      "isolated_pass": true
+    },
+    {
+      "attack": "I_nonfinite_qid_margin",
+      "isolated_pass": true
+    },
+    {
+      "attack": "J_zero_variance_qid_win",
+      "isolated_pass": true
+    },
+    {
+      "attack": "K_overall_primary_failure_with_declared_shared_outcome_coupling",
+      "isolated_pass": true
+    },
+    {
+      "attack": "L_qid_program_negative_holm",
+      "isolated_pass": true
+    },
+    {
+      "attack": "M_legal_provenance",
+      "isolated_pass": true
+    },
+    {
+      "attack": "N_protected_program_unestimable",
+      "isolated_pass": true
+    }
+  ],
+  "status": "PASS"
+}

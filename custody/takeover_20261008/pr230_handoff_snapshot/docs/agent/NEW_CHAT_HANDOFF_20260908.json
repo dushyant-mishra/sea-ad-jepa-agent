@@ -1,0 +1,76 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_SNAPSHOT_V1",
+  "date": "2026-09-08",
+  "canonical_branch": "main",
+  "snapshot_basis_main": "d8917ea3fedfd4b1de457b25e8e8be4cd0e6ea88",
+  "handoff_markdown_commit": "9aaae02e7c13f37727ed63d873640eba298719a0",
+  "handoff_markdown_path": "docs/agent/NEW_CHAT_HANDOFF_20260908.md",
+  "current_project_terminal": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
+  "sealed_base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+  "lane_heads": {
+    "t0": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+    "v5_data_first": "c7b1663cc4390843978b973986edfe58f93320a3",
+    "target_discovery": "26c3cfaba77bb8e5935e76473ab1fd5f90a562bf",
+    "f1b_c3": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+    "f1_real": "a884f558970479278bc21f3f2274dc24bee89758",
+    "d1_v2": "c13c06c103a588fc95bb93174730bf26dd613884",
+    "population_access": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f"
+  },
+  "t0": {
+    "production_b2_authorized": false,
+    "donor_role_gate_open": false,
+    "numeric_confirmation_at8_accessed": false,
+    "real_execution_ready": false,
+    "blockers": [
+      "B2_LOGICAL_ROOT_CHAIN",
+      "B2_RAW_H5AD_NOT_AUTHENTICATED",
+      "AGE_SEX_CANDIDATE_PARENT_UNBOUND"
+    ]
+  },
+  "v5": {
+    "active_tests": "66/66 PASS",
+    "v4_regression": "98/98 PASS",
+    "scientific_target_frozen": true,
+    "relational_proposal_frozen": true,
+    "base_proposal_frozen": false,
+    "evidence_schedule_frozen": false,
+    "training_horizon_frozen": false,
+    "ema_half_life_frozen": false,
+    "gpu_rng_kernel_authorized": false,
+    "integrated_trainer_frozen": false,
+    "training_authorized": false
+  },
+  "branch_hygiene": {
+    "consolidated_to_main": true,
+    "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
+    "verified_safe_non_main_refs": 57,
+    "deletion_performed": false,
+    "cleanup_script": "scripts/agent/delete_verified_merged_branches_20260908.sh",
+    "delete_tags": false
+  },
+  "protected_data": {
+    "reader_validation_open": false,
+    "reader_oracle_open": false,
+    "foundation_development_sealed_open": false,
+    "external_holdout_open": false,
+    "unauthorized_pathology_open": false
+  },
+  "key_data_sha256": {
+    "t0_pathology_metadata": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
+    "mtg_h5ad": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+    "foundation_calibration_bundle": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "foundation_discovery_expression": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7"
+  },
+  "next_actions": [
+    "repair and externally close the three T0 STOPs",
+    "freeze V5 base proposal after horizon/repeat constraints",
+    "freeze support-aware evidence/view/block schedule",
+    "freeze V5 horizon and EMA half-life in presentation units",
+    "qualify GPU Philox V2 implementation against reference",
+    "calibrate hardware packing budget",
+    "freeze movement-vs-decay rule and predictor registry",
+    "bind one integrated trainer and pass implementation verifier",
+    "mechanics qualification before any full-reader biological training",
+    "TD60 only after lawful full-reader exposure-defined learned teacher"
+  ]
+}

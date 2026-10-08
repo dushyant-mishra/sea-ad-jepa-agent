@@ -1,0 +1,10 @@
+candidate_id,target,abeta_score,n_donors,abeta_guard_pass
+cellxgene_composition_only,6e10/A_beta,0.08516756100030375,84,True
+latent_plus_cellxgene_composition,6e10/A_beta,0.14109547433431205,84,True
+latent_plus_mri_engineered,6e10/A_beta,0.13370456616381493,84,True
+latent_plus_safe_metadata_plus_cellxgene_composition,6e10/A_beta,0.2639465424724107,84,True
+latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,6e10/A_beta,0.347413182140326,84,True
+latent_plus_safe_metadata_plus_mri_engineered,6e10/A_beta,0.30948668624076137,84,True
+mri_engineered_only,6e10/A_beta,0.1844708360005047,84,True
+stage39e_reference,6e10/A_beta,0.3746733755407961,84,True
+stage41b_reference,6e10/A_beta,0.45637339273058625,84,True

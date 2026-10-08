@@ -1,0 +1,2 @@
+dataset_id,dataset_name,local_path,n_genes_raw,n_genes_aligned,gene_overlap_fraction,gene_overlap_status,missing_gene_count,included_in_candidate_matrix
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,data/external_pretraining/stage32c/stage32c_human_external_pretraining_matrix.h5ad,2863,2863,0.968211024687183,good,94,True

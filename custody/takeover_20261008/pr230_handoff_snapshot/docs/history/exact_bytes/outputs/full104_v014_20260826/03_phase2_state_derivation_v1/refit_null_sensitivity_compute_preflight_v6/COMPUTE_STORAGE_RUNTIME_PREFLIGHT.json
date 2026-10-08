@@ -1,0 +1,54 @@
+{
+  "actual_benchmark": {
+    "mmap_read_seconds": 0.1137035999854561,
+    "one_rank320_generalized_fit_seconds": 0.48945999998250045,
+    "rows": 16384,
+    "six_full512_float64_cross_products_seconds": 0.19255800000973977,
+    "synthetic_1400_stratum_cap4_production_kernel_seconds": 6.785607400001027,
+    "synthetic_fragmentation_rows": 5485
+  },
+  "checks": {
+    "freeze_root": true,
+    "independent_validator": true,
+    "mechanics_tokens": true,
+    "no_dense_pattern": true,
+    "resource_headroom": true
+  },
+  "execution": {
+    "atomic_replicate_checkpoints": true,
+    "blockwise_mmap": true,
+    "exact_reuse": "ALL observed donor sufficient statistics only; all null eigensystems independently refitted",
+    "one_null_replicate_at_a_time": true,
+    "resume_hash_gate": true,
+    "whole_corpus_densification": false
+  },
+  "input_hashes": {
+    "core": "838d9c6f2dbdd6ee201566b281e22e6a621548723bb55b6286c51187d119f6e4",
+    "fit_basis_source": "395562010dcfa3a546e50d22164de70e40d995d0ca02245230a1deb96166db8f",
+    "freeze_manifest": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "independent_manifest": "e93e562cf3dd03297b57a41960c8d74644280b9c836ede5e7f23434b20f60fa1",
+    "runner": "6fdeb4cbb2fa5297257f0035b259365858502824eadba27c2df90829daf73ac6",
+    "validator_code": "08edc56e0e9835e3135359a7de403e042606ec4601b251a3ca96e372c9b69444"
+  },
+  "projection": {
+    "caps": 6,
+    "diagnostic_plus_ALL_selected_row_instances": 5488876,
+    "estimated_cpu_peak_bytes": 3493347328,
+    "estimated_gpu_peak_bytes": 3173564416,
+    "estimated_total_hours": 26.727986253051217,
+    "estimated_total_seconds": 96220.75051098438,
+    "fragmentation_safety_factor": 1.15,
+    "null_replicates": 256,
+    "projected_new_disk_bytes": 12884901888,
+    "sketches": 2
+  },
+  "resources": {
+    "disk_free_bytes": 6735521644544,
+    "gpu_name": "NVIDIA GeForce RTX 3080 Laptop GPU",
+    "gpu_total_bytes": 17179344896,
+    "ram_available_bytes": 17961361408,
+    "ram_total_bytes": 34115739648
+  },
+  "schema": "full104-refit-null-compute-preflight-v1",
+  "status": "PASS_COMPUTE_PREFLIGHT"
+}

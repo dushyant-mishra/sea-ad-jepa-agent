@@ -1,0 +1,2 @@
+candidate_id,proxy_leakage_risk_pass,decision,training_status
+,,no safe feature matrix built; no training,skipped_missing_safe_features

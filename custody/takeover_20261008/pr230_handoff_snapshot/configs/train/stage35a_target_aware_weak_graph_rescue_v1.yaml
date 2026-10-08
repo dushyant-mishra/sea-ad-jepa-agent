@@ -1,0 +1,45 @@
+stage: stage35a_target_aware_weak_graph_rescue_v1
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+minimum_success_threshold: 0.3228
+stage27c_reference_mean: 0.3267024400121495
+stage31_best_reference_mean: 0.32637035537106407
+max_target_drop_vs_stage27c_reference: -0.02
+
+references:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage31_oof: results/tables/stage31_residual_graph_oof_predictions_v1.csv
+  stage31_condition: weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05
+
+graph:
+  alpha: 0.05
+  aux_weights: [0.025, 0.05, 0.10]
+  optional_aux_weights: [0.01]
+  run_optional_weights: true
+  real_edges: results/tables/v2_graph_consensus_edges.csv
+  no_graph_edges: results/tables/ablation_edge_sets/no_graph_identity_edges_v1.csv
+  strict_shuffled_edges: results/tables/ablation_edge_sets/strict_shuffled_graph_edges_v1.csv
+  strict_shuffled_diagnostics: results/tables/ablation_edge_sets/strict_shuffled_graph_edge_diagnostics_v1.csv
+
+backbone:
+  module_pca_components: 8
+
+downstream:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+
+target_contexts:
+  glial_context:
+    - GFAP
+    - Iba1
+  neuronal_tau_context:
+    - AT8
+    - NeuN
+  amyloid_context:
+    - 6e10/A_beta
+
+required_targets:
+  - AT8
+  - 6e10/A_beta
+  - GFAP
+  - Iba1
+  - NeuN

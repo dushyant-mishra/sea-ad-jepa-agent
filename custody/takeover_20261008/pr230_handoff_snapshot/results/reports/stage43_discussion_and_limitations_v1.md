@@ -1,0 +1,3 @@
+# Stage43 discussion and limitations
+
+Stage41C is promising because it improved the point estimate and passed key guards, but it is not locked because the bootstrap lower bound remains below Stage27C. Stage45 matters because it shows that successful donor-linked CELLxGENE composition and engineered MRI acquisition were not sufficient to rescue performance. Composition features may be too coarse; future work may require spatial neighborhoods, image morphology, or richer cell-state expression summaries. Limitations include small donor count, bootstrap instability, external dataset incompatibility, metadata proxy risk, no clean external validation, no causal inference, and no therapeutic interpretation.

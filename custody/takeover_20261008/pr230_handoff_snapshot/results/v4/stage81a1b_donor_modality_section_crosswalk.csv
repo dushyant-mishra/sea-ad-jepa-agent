@@ -1,0 +1,18 @@
+dataset,region,modality,donor_field,donor_count,specimen_field,library_field,library_run_field,section_field,method_field,region_field,cell_or_nucleus_id_field,identity_combination_count,exact_official_values_recorded,placeholder_values_used,unresolved_fields,split_grouping_status
+sea_ad_ang_rna_final_2026,AnG,snRNA,Donor ID,43,,sample_name,load_name,,method,Brain Region,exp_component_name,62,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_caudate_rna_all_2025,Caudate_Nucleus,snRNA,Donor ID,43,,,,,,Brain Region,exp_component_name,43,True,False,specimen;library;section,candidate_only_not_frozen
+sea_ad_caudate_xenium_combined_2026,Caudate_Nucleus,Xenium,Donor ID,10,Specimen_ID,LIMS2_Barcode,,,segmentation_method,Brain Region,_index,105,True,False,section,candidate_only_not_frozen
+sea_ad_fi_rna_final_2026,FI,snRNA,Donor ID,41,,sample_name,load_name,,method,Brain Region,exp_component_name,45,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_hip_merscope_combined_2026,HIP,MERSCOPE,,0,,,,,segmentation_method,region,_index,3,True,False,donor;specimen;library;section,candidate_only_not_frozen
+sea_ad_hip_rna_final_2026,HIP,snRNA,Donor ID,40,,sample_name,load_name,,method,Brain Region,exp_component_name,41,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_itg_rna_final_2026,ITG,snRNA,Donor ID,43,,sample_name,load_name,,method,Brain Region,exp_component_name,45,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_lec_rna_final_2026,LEC,snRNA,Donor ID,34,,sample_name,load_name,,method,Brain Region,exp_component_name,34,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_mec_merscope_combined_2026,MEC,MERSCOPE,,0,,,,,segmentation_method,region,_index,3,True,False,donor;specimen;library;section,candidate_only_not_frozen
+sea_ad_mec_rna_final_2026,MEC,snRNA,Donor ID,81,,sample_name,load_name,,method,Brain Region,exp_component_name,171,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_mtg_atac_final_2024,MTG,snATAC,Donor ID,86,,sample_name,load_name,,method,Brain Region,index,130,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_mtg_merfish_combined_2024,MTG,MERFISH,Donor ID,27,Specimen Barcode,Merscope,,Section,,,_index,138,True,False,,candidate_only_not_frozen
+sea_ad_mtg_rna_final_2026,MTG,snRNA,Donor ID,84,,sample_name,load_name,,method,Brain Region,exp_component_name,205,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_multiregion_immune_rna_final_2026,MULTIREGION_10,snRNA,Donor ID,84,,sample_name,load_name,,method,Brain Region,exp_component_name,905,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_pfc_a9_rna_final_2026,PFC_A9_DFC,snRNA,Donor ID,80,,sample_name,load_name,,method,Brain Region,exp_component_name,196,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_stg_rna_final_2026,STG,snRNA,Donor ID,43,,sample_name,load_name,,method,Brain Region,exp_component_name,44,True,False,specimen;section,candidate_only_not_frozen
+sea_ad_v1c_rna_final_2026,V1C,snRNA,Donor ID,43,,sample_name,load_name,,method,Brain Region,exp_component_name,64,True,False,specimen;section,candidate_only_not_frozen

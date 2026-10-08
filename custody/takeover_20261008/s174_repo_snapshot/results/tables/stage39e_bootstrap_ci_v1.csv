@@ -1,0 +1,2 @@
+condition,n_bootstrap,bootstrap_mean,ci_lower_95,ci_upper_95
+rank_inverse_normal_module_direct_elasticnet,500,0.37223767455441303,0.28346790137616135,0.4556144030588269

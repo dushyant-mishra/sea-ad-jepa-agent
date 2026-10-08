@@ -1,0 +1,168 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "G1_interp_60mid": {
+      "note": "between E2 and F1: E2 hits the correlation targets but is too low-rank; F1 hits rank but loses correlation",
+      "n_factors": 724,
+      "seconds": 26.2,
+      "latent": {
+        "median_abs_corr": 0.6849310100078583,
+        "frac_abs_gt_0p3": 0.5664403690118929,
+        "var_top10_pc": 0.8976144205729166,
+        "mean_degree": 1698.7546666666667,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8681088338215232,
+        "substitute_frac": 0.997,
+        "frac_pos_gt_0p3": 0.28342358563965764,
+        "frac_neg_lt_m0p3": 0.2830167833722352,
+        "pos_over_neg_ratio": 1.0014373785984536,
+        "mean_signed_corr": 0.00037248447188176215,
+        "t5_within_over_pooled": 0.995897112194768
+      },
+      "observed": {
+        "median_abs_corr": 0.3408227562904358,
+        "frac_abs_gt_0p3": 0.5171134822718684,
+        "var_top10_pc": 0.6731932639002878,
+        "mean_degree": 1550.8233333333333,
+        "largest_community_frac": 0.9976666666666667,
+        "transitivity": 0.926262241062588,
+        "substitute_frac": 0.30333333333333334,
+        "frac_pos_gt_0p3": 0.2622872068467267,
+        "frac_neg_lt_m0p3": 0.2548262754251417,
+        "pos_over_neg_ratio": 1.0292785012422188,
+        "mean_signed_corr": 0.02360645867884159,
+        "t5_within_over_pooled": 1.0063192211386958
+      },
+      "inside_envelope": {
+        "median_abs_corr": true,
+        "frac_abs_gt_0p3": true,
+        "var_top10_pc": false,
+        "mean_degree": true,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": true,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 4,
+      "n_targets": 11,
+      "t5_observed": 1.0063192211386958,
+      "verdict": "REJECT"
+    },
+    "G2_interp_90mid": {
+      "note": "as G1 with a slightly richer mid band",
+      "n_factors": 804,
+      "seconds": 24.0,
+      "latent": {
+        "median_abs_corr": 0.7233031094074249,
+        "frac_abs_gt_0p3": 0.5959446482160721,
+        "var_top10_pc": 0.8550064408360644,
+        "mean_degree": 1787.238,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.908029565024271,
+        "substitute_frac": 0.9716666666666667,
+        "frac_pos_gt_0p3": 0.2978234967211293,
+        "frac_neg_lt_m0p3": 0.2981211514949428,
+        "pos_over_neg_ratio": 0.9990015643897762,
+        "mean_signed_corr": -0.0001759795268299058,
+        "t5_within_over_pooled": 0.9974683036653925
+      },
+      "observed": {
+        "median_abs_corr": 0.30273377895355225,
+        "frac_abs_gt_0p3": 0.5014522618650661,
+        "var_top10_pc": 0.6093145167131321,
+        "mean_degree": 1503.8553333333334,
+        "largest_community_frac": 0.9946666666666667,
+        "transitivity": 0.9363753276065614,
+        "substitute_frac": 0.099,
+        "frac_pos_gt_0p3": 0.2566095365121707,
+        "frac_neg_lt_m0p3": 0.24484272535289542,
+        "pos_over_neg_ratio": 1.0480586512926435,
+        "mean_signed_corr": 0.02027936838567257,
+        "t5_within_over_pooled": 1.0038798993114828
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.0038798993114828,
+      "verdict": "REJECT"
+    },
+    "G3_interp_120mid": {
+      "note": "as G1 with a richer mid band again, approaching F1",
+      "n_factors": 1021,
+      "seconds": 24.9,
+      "latent": {
+        "median_abs_corr": 0.5407506823539734,
+        "frac_abs_gt_0p3": 0.5410919195287318,
+        "var_top10_pc": 0.7967366536458333,
+        "mean_degree": 1622.7346666666667,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8963450276563123,
+        "substitute_frac": 0.907,
+        "frac_pos_gt_0p3": 0.2709031899522063,
+        "frac_neg_lt_m0p3": 0.2701887295765255,
+        "pos_over_neg_ratio": 1.002644301177183,
+        "mean_signed_corr": 0.0005131685175001621,
+        "t5_within_over_pooled": 0.9900986237471145
+      },
+      "observed": {
+        "median_abs_corr": 0.2648024260997772,
+        "frac_abs_gt_0p3": 0.4752488607313549,
+        "var_top10_pc": 0.5409239501953125,
+        "mean_degree": 1425.2713333333334,
+        "largest_community_frac": 0.977,
+        "transitivity": 0.9356732225361735,
+        "substitute_frac": 0.013,
+        "frac_pos_gt_0p3": 0.24824497054573746,
+        "frac_neg_lt_m0p3": 0.22700389018561742,
+        "pos_over_neg_ratio": 1.0935714376645773,
+        "mean_signed_corr": 0.015605728141963482,
+        "t5_within_over_pooled": 0.9997564796666852
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": true,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 1,
+      "n_targets": 11,
+      "t5_observed": 0.9997564796666852,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}

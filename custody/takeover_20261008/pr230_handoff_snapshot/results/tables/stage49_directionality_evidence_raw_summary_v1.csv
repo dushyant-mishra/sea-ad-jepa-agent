@@ -1,0 +1,19 @@
+gene_symbol,pubmed_directionality_records,directionality_known,directionality_rule
+APOE,20,True,title/query metadata only; no favorable therapeutic direction inferred
+BSG,15,True,title/query metadata only; no favorable therapeutic direction inferred
+CST7,16,True,title/query metadata only; no favorable therapeutic direction inferred
+CTSB,20,True,title/query metadata only; no favorable therapeutic direction inferred
+CTSD,20,True,title/query metadata only; no favorable therapeutic direction inferred
+GPX4,20,True,title/query metadata only; no favorable therapeutic direction inferred
+HMOX1,20,True,title/query metadata only; no favorable therapeutic direction inferred
+IL27RA,3,True,title/query metadata only; no favorable therapeutic direction inferred
+LAMP2,20,True,title/query metadata only; no favorable therapeutic direction inferred
+LAPTM5,4,True,title/query metadata only; no favorable therapeutic direction inferred
+LGALS3,20,True,title/query metadata only; no favorable therapeutic direction inferred
+NFKBIA,20,True,title/query metadata only; no favorable therapeutic direction inferred
+NPC2,20,True,title/query metadata only; no favorable therapeutic direction inferred
+NQO1,20,True,title/query metadata only; no favorable therapeutic direction inferred
+SLC6A12,2,True,title/query metadata only; no favorable therapeutic direction inferred
+SOD1,20,True,title/query metadata only; no favorable therapeutic direction inferred
+SOD2,20,True,title/query metadata only; no favorable therapeutic direction inferred
+TREM2,20,True,title/query metadata only; no favorable therapeutic direction inferred

@@ -1,0 +1,2 @@
+input_id,path,found,readable,selected,n_donors,n_features_after_forbidden_strip_and_variance_cap,forbidden_columns_removed,notes
+programming_matrix,data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv,True,True,True,89,3000,NAT8;CRIPAK;NAT8L;SCAT8;KAT8;GFAP;GRIPAP1,donor-level microglia/PVM pseudobulk; pathology/diagnosis columns stripped if present

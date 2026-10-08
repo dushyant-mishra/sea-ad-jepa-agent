@@ -1,0 +1,9 @@
+{
+  "status": "SUPERSEDED_ALIAS_ROUTER",
+  "date": "2026-10-05",
+  "historical_role": "Sep-5 C2 continuity/checkpoint work-state record",
+  "historical_exact_copy": "docs/agent/archive/governance/CURRENT_WORK_CHECKPOINT_STATE_20260905_HISTORICAL.json",
+  "canonical_current_state": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
+  "canonical_start": "START_HERE.md",
+  "note": "This alias is retained only to prevent stale links from silently becoming authority. Historical contents remain byte-preserved at the dated archive path."
+}

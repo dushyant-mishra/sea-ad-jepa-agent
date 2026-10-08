@@ -1,0 +1,2 @@
+matrix_family,safe_metadata_matrix_built,mri_matrix_built,safe_metadata_plus_mri_built,n_safe_metadata_features,n_mri_features,n_overlap_target_donors,notes
+safe_metadata_mri,False,False,False,0,0,0,Automatic discovery/download did not yield a ready donor-linked metadata/MRI feature matrix.

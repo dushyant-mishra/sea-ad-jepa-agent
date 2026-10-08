@@ -1,0 +1,3 @@
+claim_area,allowed_claim,disallowed_claim,passes
+target_gating,inner-CV target-specific branch gating was audited internally,post hoc outer-test optimized benchmark,True
+biology,state-module branch may carry target-specific follow-up signal,causal state or therapeutic target,True

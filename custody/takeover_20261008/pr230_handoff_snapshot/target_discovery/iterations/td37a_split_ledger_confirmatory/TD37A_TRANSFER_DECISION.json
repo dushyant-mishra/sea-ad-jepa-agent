@@ -1,0 +1,5 @@
+{
+  "schema": "td37a-transfer-gate-v1",
+  "terminal_after_transfer": "DONOR_RECURRENT_BUT_NOT_CROSS_SOURCE_SPLIT_LEDGER_STATE__TARGET_UNQUALIFIED",
+  "surviving_transfers": []
+}

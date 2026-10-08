@@ -1,0 +1,7 @@
+figure_id,proposed_figure,purpose
+1,Pipeline schematic,workflow overview
+2,Benchmark score progression plot,score context
+3,Guard/CI plot,lock limitation
+4,Mechanism map across targets,biology map
+5,External support/readiness heatmap,external readiness
+6,Claim-boundary schematic,avoid overclaiming

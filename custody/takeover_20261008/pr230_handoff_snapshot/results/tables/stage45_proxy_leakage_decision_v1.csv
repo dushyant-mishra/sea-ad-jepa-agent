@@ -1,0 +1,11 @@
+candidate_id,risk_tiers_used,tier3_proxy_used,tier4_forbidden_used,proxy_leakage_pass,lock_allowed
+cellxgene_composition_only,Tier0/Tier1/Tier2,False,False,True,True
+latent_plus_cellxgene_composition,Tier0/Tier1/Tier2,False,False,True,True
+latent_plus_mri_engineered,Tier0/Tier1,False,False,True,True
+latent_plus_safe_metadata_plus_cellxgene_composition,Tier0/Tier1/Tier2,False,False,True,True
+latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,Tier0/Tier1/Tier2,False,False,True,True
+latent_plus_safe_metadata_plus_mri_engineered,Tier0/Tier1,False,False,True,True
+mri_engineered_only,Tier0/Tier1,False,False,True,True
+stage27c_reference,Tier0/Tier1,False,False,True,False
+stage39e_reference,Tier0/Tier1,False,False,True,False
+stage41b_reference,Tier0/Tier1,False,False,True,False

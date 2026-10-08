@@ -1,0 +1,62 @@
+{
+  "adjudicated_provenance_class": "NEUROTYPICAL_DECLARED",
+  "adjudicated_role": "CORE_SAME_ENTITY_BROAD_CONTEXT",
+  "contract_changed": false,
+  "dataset_id": "SCP2167",
+  "evidence_location": "Russell AJ et al., Nature 2024;625:101-109, human-cortex section and Data Availability statement",
+  "evidence_summary": "The primary peer-reviewed publication explicitly identifies the human prefrontal-cortex donor used for the reported Slide-tags experiment as neurotypical and identifies SCP2167 as the human-brain data deposition.",
+  "human_adjudication": true,
+  "immutable_input_hashes": {
+    "configs/v4/stage81a3_uniform_context_data_qualification.yaml": {
+      "expected_sha256": "b66c420f01741b5a044d2309ffdde0c8e20aceb1952400aff4f23bb559f48723",
+      "observed_sha256": "b66c420f01741b5a044d2309ffdde0c8e20aceb1952400aff4f23bb559f48723",
+      "pass": true
+    },
+    "results/v4/stage81a3_context_dataset_role_matrix.csv": {
+      "expected_sha256": "234052599547f47230e2ab5857644dec9168f58a93aa1c94e239af2a610f4f54",
+      "observed_sha256": "234052599547f47230e2ab5857644dec9168f58a93aa1c94e239af2a610f4f54",
+      "pass": true
+    },
+    "results/v4/stage81a3_context_identifiability_decision.json": {
+      "expected_sha256": "165e733babee7b6a05bbd26c45c95f95db910d0ab6be933a8a128dfe6a07a0a9",
+      "observed_sha256": "165e733babee7b6a05bbd26c45c95f95db910d0ab6be933a8a128dfe6a07a0a9",
+      "pass": true
+    },
+    "results/v4/stage81a3_uniform_context_data_qualification.json": {
+      "expected_sha256": "dc976d3d51633b4693e2efae51189925a288b26aad2d3f7927ff6a95fa116a99",
+      "observed_sha256": "dc976d3d51633b4693e2efae51189925a288b26aad2d3f7927ff6a95fa116a99",
+      "pass": true
+    },
+    "results/v4/stage81a3_uniform_context_data_qualification_contract.json": {
+      "expected_sha256": "812678ba4f4f08523b91e18e1207e90f965a6b3873a10d4691d30e99f7460340",
+      "observed_sha256": "812678ba4f4f08523b91e18e1207e90f965a6b3873a10d4691d30e99f7460340",
+      "pass": true
+    }
+  },
+  "original_governance_incident_preserved": true,
+  "pathology_values_used": false,
+  "prior_provenance_class": "UNKNOWN",
+  "prior_role": "QUARANTINED_PENDING_GOVERNANCE",
+  "publication_doi": "10.1038/s41586-023-06837-4",
+  "publication_pmcid": "PMC10764288",
+  "publication_pmid": "38093010",
+  "publication_title": "Slide-tags enables single-nucleus barcoding for multimodal spatial genomics.",
+  "role_reason": "all frozen broad same-entity gates pass",
+  "stage": "STAGE81A3-UCDQ-HPA",
+  "thresholds_changed": false,
+  "unchanged_non_provenance_evidence": {
+    "coordinate_class": "PHYSICAL_XY_UNKNOWN_UNITS",
+    "direct_measurement": true,
+    "duplicated_pairing_identifiers": 0,
+    "frozen4096_support_fraction": 1.0,
+    "frozen4096_supported": 4096,
+    "measurement_semantics": "RAW_UMI_COUNT",
+    "n_exact_matches": 4065,
+    "n_spatial_entities": 4067,
+    "pairing_class": "SAME_ENTITY_EXACT",
+    "pairing_fraction": 0.9995082370297516,
+    "physical_geometry": true,
+    "source_feature_count": 36601,
+    "spatial_entity_type": "NUCLEUS"
+  }
+}

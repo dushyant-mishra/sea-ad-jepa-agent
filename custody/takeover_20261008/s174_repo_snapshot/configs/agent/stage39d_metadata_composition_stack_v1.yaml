@@ -1,0 +1,76 @@
+stage: Stage39D
+version: v1
+description: Metadata and microglia/PVM composition enrichment stack under locked internal donor-held-out safeguards.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  stage39c_best_mean: 0.3458094563126456
+  stage39c_best_condition: rank_int_module_pca_ridge
+  rescue_threshold: 0.330
+  random_seed: 7
+  bootstrap_iterations: 500
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  donor_metadata_targets: results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+  stage39c_mean_metrics: results/tables/stage39c_mean_metrics_v1.csv
+  stage39c_target_metrics: results/tables/stage39c_target_metrics_v1.csv
+  h5ad_module_preserved: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  microglia_cell_count: data/processed/sea_ad_mtg_microglia_pvm_counts_module_preserved_refresh.csv
+
+outputs:
+  input_inventory: results/tables/stage39d_input_inventory_v1.csv
+  donor_composition_features: results/tables/stage39d_donor_composition_features_v1.csv
+  feature_block_audit: results/tables/stage39d_feature_block_audit_v1.csv
+  model_registry: results/tables/stage39d_model_registry_v1.csv
+  oof_predictions: results/tables/stage39d_oof_predictions_v1.csv
+  target_metrics: results/tables/stage39d_target_metrics_v1.csv
+  mean_metrics: results/tables/stage39d_mean_metrics_v1.csv
+  block_ablation_results: results/tables/stage39d_block_ablation_results_v1.csv
+  control_results: results/tables/stage39d_control_results_v1.csv
+  composition_proxy_audit: results/tables/stage39d_composition_proxy_audit_v1.csv
+  restricted_composition_sensitivity: results/tables/stage39d_restricted_composition_sensitivity_v1.csv
+  bootstrap_ci: results/tables/stage39d_bootstrap_ci_v1.csv
+  leakage_audit: results/tables/stage39d_leakage_audit_v1.csv
+  delta_vs_stage39c_stage27c: results/tables/stage39d_delta_vs_stage39c_stage27c_v1.csv
+  claim_boundary_audit: results/tables/stage39d_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39d_pass_fail_v1.csv
+  technical_report: results/reports/stage39d_metadata_composition_stack_report_v1.md
+  pi_summary: results/reports/stage39d_pi_metadata_composition_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safe_metadata_covariates:
+  numeric:
+    - Age at Death
+    - PMI
+    - RIN
+    - Years of education
+  categorical:
+    - Sex
+    - APOE Genotype
+    - Primary Study Name
+
+models:
+  ridge_alphas: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]
+  module_pca_components: 8
+  include_interactions: true
+  max_interaction_features: 20
+
+safety:
+  train_fold_only_preprocessing: true
+  donor_heldout_only: true
+  no_external_data: true
+  no_candidate_selection: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

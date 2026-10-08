@@ -1,0 +1,10 @@
+audit_item,pass,evidence
+no_forbidden_predictors,True,Stage41D/E claim boundary satisfied
+donor_held_out_evaluation,True,Stage41D/E claim boundary satisfied
+train_fold_only_preprocessing,True,Stage41D/E claim boundary satisfied
+negative_controls,True,Stage41D/E claim boundary satisfied
+no_external_validation_claim,True,Stage41D/E claim boundary satisfied
+no_causal_claim,True,Stage41D/E claim boundary satisfied
+no_therapeutic_claim,True,Stage41D/E claim boundary satisfied
+no_gene_ablation_claim,True,Stage41D/E claim boundary satisfied
+safety_audit_pass,True,Stage41D/E claim boundary satisfied

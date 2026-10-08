@@ -1,0 +1,2 @@
+safe_feature_matrix_built,reason,n_candidate_sources,n_new_safe_multimodal_sources,candidate_source_paths,matrix_path,training_allowed
+False,new donor-linked safe multimodal/spatial/image feature table not found,289,0,,,False

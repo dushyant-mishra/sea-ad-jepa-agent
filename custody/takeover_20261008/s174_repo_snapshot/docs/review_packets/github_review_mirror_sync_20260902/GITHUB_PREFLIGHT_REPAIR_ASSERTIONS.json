@@ -1,0 +1,46 @@
+{
+  "assertions": {
+    "archive_member_literal_repo_paths": 0,
+    "commit_performed": false,
+    "conflicting_proposed_repo_paths": 0,
+    "donor_level_sync_candidates": 0,
+    "git_filter_altered_direct_sync": 0,
+    "malformed_boolean_fields": 0,
+    "push_performed": false,
+    "pytest_output_backfill": 0
+  },
+  "chronology_class": "RECOVERED_HISTORICAL_BYTES__BACKFILLED_20260902",
+  "counts": {
+    "direct_sync_candidates": 787,
+    "excluded_by_default": {
+      "NONCANONICAL_OUTPUT_COPY": 41,
+      "PYTEST_GENERATED_OUTPUT": 1184
+    },
+    "historical_backfill": 288,
+    "ledger_only_donor": 7,
+    "ledger_only_git_filter_altered": 818,
+    "original_candidates": 2837,
+    "repaired_candidates_including_ledger_only": 1612
+  },
+  "git_identity": {
+    "head_before": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+    "origin_main_before": "808ce4f170055c5568cc5c1e0e3a56415b52f908"
+  },
+  "input_hashes": {
+    "GITHUB_CANDIDATE_CONTENT_MANIFEST.csv": "a8c05d9e6c4bace34416aa03ab965e285a0d2741ca4e211f94040d566a4ea411",
+    "GITHUB_CURRENT_REVIEW_SURFACE.csv": "eb700d1863bcf5e32c45bc067a745814c9fbe2c3b794720ea8a4f5fa023ea694",
+    "GITHUB_EXCLUDED_SENSITIVE_LARGE.csv": "17e2e579f56aad1c44a56fe3c3d9ce1cc47d2edfaa3fa83f9df22244863aab11",
+    "GITHUB_KNOWN_HISTORY_GAPS.md": "6992883ecb9226e3d3831a4871500fb7c07a475278131c2175cff450c5cf9793",
+    "GITHUB_MISSING_HISTORY_INVENTORY.csv": "3e0e0a171be49345ef2bb7dd2c56e2e8a8b19cf9b8f3e723c894be4c07eb31bb",
+    "GITHUB_REMOTE_BASELINE.json": "c47c97c61da332b786a459f28f6fa4d436ffee40491cff8f25b6257a9d93d332"
+  },
+  "notes": [
+    "No filesystem rescan was performed; this repair derives from the frozen preflight CSVs.",
+    "Archive ZIP member identifiers remain inventory-only and are never literal repository paths.",
+    "No pytest recovered-authority exception was allowlisted in this repair.",
+    "Git-filter-altered and donor-level bytes are ledger/hash-only, not direct sync candidates."
+  ],
+  "source_package_sha256_reviewed": "9b9701387f1cf071add367f6c2ad71d986a90b07585cc7d77f3640fcce2771c4",
+  "source_preflight_manifest_sha256": "2df5222929a1de6cb0ff075830d5d987d21f95399b1e2b3f8cacdaccc0647a87",
+  "terminal_status": "PASS_GITHUB_REVIEW_MIRROR_PREFLIGHT_REPAIR_AWAITING_EXTERNAL_REVIEW"
+}

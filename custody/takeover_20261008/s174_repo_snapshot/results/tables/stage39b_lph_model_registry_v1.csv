@@ -1,0 +1,7 @@
+model_id,condition,model_type,description,graph_context_used
+stage27c_reference,stage27c_reference,reference,locked Stage 27C module_pca_ridge reference,False
+no_lph_matched_baseline,no_lph_matched_baseline,ridge,module PCA ridge using same donor folds and target transforms,False
+lph_aux_head_real,lph_aux_head_real,ridge_lph_plus_ridge_downstream,ridge LPH predicts masked modules; downstream appends predicted/residual/uncertainty features,False
+lph_aux_head_shuffled_latent_target,lph_aux_head_shuffled_latent_target,negative_control,LPH target columns shuffled in training folds,False
+lph_aux_head_shuffled_context,lph_aux_head_shuffled_context,negative_control,LPH context rows shuffled in training folds,False
+lph_aux_head_no_graph_or_identity,lph_aux_head_no_graph_or_identity,identity_control,same as real no-graph LPH; included to make graph claim boundary explicit,False

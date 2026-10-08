@@ -1,0 +1,22 @@
+{
+  "cell_class_weight_rule": "inverse_available_class_frequency_with_exposure_cap",
+  "donor_weight_rule": "uniform_within_source",
+  "freeze_seed": 8102,
+  "hierarchy": [
+    "tissue_state",
+    "study",
+    "donor",
+    "broad_cell_class",
+    "cell"
+  ],
+  "implied_starting_source_weights": {
+    "HVS": 0.01282051282051282,
+    "NPH_Ctrl": 0.04,
+    "SEA_AD": 0.011904761904761904
+  },
+  "pathology_labels_allowed": false,
+  "sealed_donors_allowed": false,
+  "source_weight_rule": "inverse_training_donor_count_renormalized_across_tissue_state_then_study",
+  "stage_id": "stage81a2",
+  "weights_are_rules_not_loader_implementation": true
+}

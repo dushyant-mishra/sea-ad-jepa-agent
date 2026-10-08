@@ -1,0 +1,62 @@
+stage: Stage39F
+version: v1
+description: Robustness confirmation and benchmark-lock audit for Stage 39C-E rescue candidates.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  material_threshold: 0.3317024400121495
+  target_drop_guard: 0.05
+  bootstrap_iterations: 500
+  random_seed: 7
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage39c_oof: results/tables/stage39c_oof_predictions_v1.csv
+  stage39c_target_metrics: results/tables/stage39c_target_metrics_v1.csv
+  stage39c_control_results: results/tables/stage39c_control_results_v1.csv
+  stage39d_oof: results/tables/stage39d_oof_predictions_v1.csv
+  stage39d_restricted_composition_sensitivity: results/tables/stage39d_restricted_composition_sensitivity_v1.csv
+  stage39d_delta: results/tables/stage39d_delta_vs_stage39c_stage27c_v1.csv
+  stage39e_oof: results/tables/stage39e_oof_predictions_v1.csv
+  stage39e_negative_controls: results/tables/stage39e_negative_control_results_v1.csv
+  stage39e_leaderboard: results/tables/stage39e_strong_simple_model_leaderboard_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage39f_input_inventory_v1.csv
+  candidate_model_registry: results/tables/stage39f_candidate_model_registry_v1.csv
+  oof_score_confirmation: results/tables/stage39f_oof_score_confirmation_v1.csv
+  target_level_confirmation: results/tables/stage39f_target_level_confirmation_v1.csv
+  bootstrap_confidence_intervals: results/tables/stage39f_bootstrap_confidence_intervals_v1.csv
+  fold_sensitivity: results/tables/stage39f_fold_sensitivity_v1.csv
+  donor_sensitivity: results/tables/stage39f_donor_sensitivity_v1.csv
+  target_drop_guard_audit: results/tables/stage39f_target_drop_guard_audit_v1.csv
+  iba1_rescue_audit: results/tables/stage39f_iBa1_rescue_audit_v1.csv
+  abeta_guard_failure_audit: results/tables/stage39f_abeta_guard_failure_audit_v1.csv
+  negative_control_confirmation: results/tables/stage39f_negative_control_confirmation_v1.csv
+  proxy_leakage_risk_audit: results/tables/stage39f_proxy_leakage_risk_audit_v1.csv
+  benchmark_lock_decision: results/tables/stage39f_benchmark_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage39f_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39f_pass_fail_v1.csv
+  technical_report: results/reports/stage39f_robustness_confirmation_report_v1.md
+  pi_summary: results/reports/stage39f_pi_benchmark_lock_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_new_training: true
+  no_external_data: true
+  no_external_model_selection: true
+  no_candidate_selection: true
+  donor_heldout_evaluation_preserved: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

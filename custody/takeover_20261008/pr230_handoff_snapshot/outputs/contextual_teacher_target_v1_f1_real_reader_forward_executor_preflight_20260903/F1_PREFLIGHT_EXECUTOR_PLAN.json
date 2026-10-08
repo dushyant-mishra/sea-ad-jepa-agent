@@ -1,0 +1,23 @@
+{
+  "atomic_shards": true,
+  "compute_dedup_does_not_change_inference_population": true,
+  "correct_null_cache_collision_forbidden": true,
+  "geometry": {
+    "assignment_evidence_effect_rows": 222480,
+    "compute_only_dedups": 1388,
+    "correct_forwards": 215540,
+    "logical_donor_operator_shards": 1400,
+    "null_forwards": 215540,
+    "recipient_cells": 2781,
+    "statistical_assignments": 44496,
+    "teacher_forwards": 43108,
+    "total_expensive_forwards": 474188,
+    "unique_cell_q": 43108
+  },
+  "hash_bound_resume": true,
+  "logical_order": "frozen assignment order restored before persistence",
+  "physical_order": "sorted materialized block reads",
+  "schema": "f1-preflight-executor-plan-v1",
+  "status": "PASS",
+  "teacher_cache_only_under_complete_identity": true
+}

@@ -1,0 +1,14 @@
+audit_item,pass,evidence
+no_raw_data_committed,True,passed by Stage 41B rules
+only_tier1_features_used_for_lock_candidates,True,passed by Stage 41B rules
+forbidden_predictors_excluded,True,passed by Stage 41B rules
+donor_held_out_folds_preserved,True,passed by Stage 41B rules
+train_fold_only_preprocessing_preserved,True,passed by Stage 41B rules
+negative_controls_reported,True,passed by Stage 41B rules
+no_external_validation_claim,True,passed by Stage 41B rules
+no_clean_external_validation_claim,True,passed by Stage 41B rules
+no_causal_claim,True,passed by Stage 41B rules
+no_therapeutic_claim,True,passed by Stage 41B rules
+no_gene_ablation_claim,True,passed by Stage 41B rules
+no_disease_modifying_claim,True,passed by Stage 41B rules
+safety_audit_pass,True,all claim/safety boundaries passed

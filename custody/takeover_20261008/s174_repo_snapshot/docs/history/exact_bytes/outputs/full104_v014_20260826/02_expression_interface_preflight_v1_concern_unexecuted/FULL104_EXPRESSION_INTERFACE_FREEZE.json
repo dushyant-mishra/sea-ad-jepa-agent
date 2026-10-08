@@ -1,0 +1,111 @@
+{
+  "schema": "full104-expression-interface-freeze-v1",
+  "status": "FROZEN_BEFORE_EXPRESSION",
+  "selection": {
+    "algorithm": "two minimum SHA256 rows per operator",
+    "seed": "FULL104_EXPRESSION_INTERFACE_V1_20260826",
+    "rows_per_operator": 2,
+    "rows": 84,
+    "operators": 42,
+    "path": "FULL104_EXPRESSION_INTERFACE_SELECTION.csv",
+    "sha256": "2f2eacee4274a0e07684e1744adf3750aae6b712f86264e061ccf517a6240acb"
+  },
+  "asset_pins": {
+    "path": "FULL104_EXPRESSION_ASSET_PINS.csv",
+    "sha256": "25ee518c52e4a24e9b539f68e3d0360d2f7594d052e1f93dc2a630273ee2d9e0",
+    "HVS_SEA_mode": "authenticated registry content identity plus live byte-size check",
+    "NPH_mode": "exact TRAIN derivative SHA256 checked before qread"
+  },
+  "payload": {
+    "addresses": 41238,
+    "teacher_inputs": [
+      "normalized_values",
+      "observation_states"
+    ],
+    "metadata_sidecar_only": [
+      "donor_id",
+      "canonical_donor_id",
+      "source",
+      "matrix_id",
+      "operator_index",
+      "cell_id"
+    ],
+    "normalization": "log1p(raw_count*10000/full_source_library) exactly once",
+    "measured_zero": "state=MEASURED_SCALAR and numeric value=0 remains evidence",
+    "non_scalar_numeric_value": "must equal 0"
+  },
+  "prohibited": [
+    "D selection",
+    "parameter selection",
+    "reader_validation expression",
+    "reader_oracle expression",
+    "DEV expression",
+    "SEALED expression",
+    "pathology",
+    "biological endpoint use"
+  ],
+  "authorities": {
+    "metadata_status": {
+      "path": "outputs\\full104_v014_20260826\\01_full104_metadata_adapter\\FULL104_METADATA_SCOPE_STATUS.json",
+      "sha256": "7ce2e8351c46419c56eacc6ce6e236644e264b4fb5d68ae762fbe82054b05fb2"
+    },
+    "metadata_manifest": {
+      "path": "outputs\\full104_v014_20260826\\01_full104_metadata_adapter\\FULL104_ADAPTER_SHA256_MANIFEST.csv",
+      "sha256": "54e4ba5b60e9c5d3ff23a307df03576f45ac725f3b71642888500a469ebdbc74"
+    },
+    "reader_split": {
+      "path": "exports\\contextual_biology_v6r5a_20260822\\reader_donor_split.csv",
+      "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+    },
+    "assets": {
+      "path": "results\\v4\\stage81a2_canonical_asset_registry.csv",
+      "sha256": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f"
+    },
+    "semantics": {
+      "path": "results\\v4\\stage81a2_matrix_semantics_contract.csv",
+      "sha256": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba"
+    },
+    "address_registry": {
+      "path": "results\\v4\\stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "provenance": {
+      "path": "results\\v4\\stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+      "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51"
+    },
+    "operator_state": {
+      "path": "exports\\foundation_calibration_bundle_20260824\\support\\FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    "collision": {
+      "path": "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz",
+      "sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+    },
+    "collision_supplement": {
+      "path": "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_scalar_mapping_unregistered_collisions.csv",
+      "sha256": "16f4b62565d483bb4d77bb653f300dd1515df0423877b7dd36eb2545d89aedb1"
+    },
+    "hvs_hashes": {
+      "path": "results\\v4\\stage81a1d_living_human_download_hashes.csv",
+      "sha256": "7f17228429609641594cd609bb808b93575742d612f8a5fd4d081edc5083029b"
+    },
+    "sea_hashes": {
+      "path": "results\\v4\\pre_stage81a2_dataset_manifest.csv",
+      "sha256": "e10d338c4f4e953cf947ed3cfc9817e30a0217da3f81711b52169a6e5df01284"
+    },
+    "nph_exactness": {
+      "path": "data\\processed\\v4\\stage81a2r\\nph52_physical_split\\nph52_physical_split_exactness_manifest.csv",
+      "sha256": "dca1a4014a4fafa1fec27e23be9866d97962600b2444ef447a156555b5e018ae"
+    }
+  },
+  "code": {
+    "scripts\\v4\\full104_expression_interface_preflight.py": {
+      "sha256": "20f0bf87edd0a29fb226df9fd4f33b1bc3a78a84d8313ab382dc7cd9ddfa5f21"
+    },
+    "scripts\\v4\\full104_expression_interface_nph.R": {
+      "sha256": "228a314b920fd10be3d5d75245c8a64e6737b807de0813de69f2229f2f69daf2"
+    }
+  },
+  "expression_read": false,
+  "phase2_started": false
+}

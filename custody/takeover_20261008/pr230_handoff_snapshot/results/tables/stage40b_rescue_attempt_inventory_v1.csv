@@ -1,0 +1,13 @@
+stage,attempt,best_or_relevant_mean_oof_spearman,status,terminal_interpretation
+Stage 27C,module_pca_ridge locked internal reference,0.3267024400121495,locked_benchmark,official locked internal benchmark remains active
+Stage 30,graph controls versus rescue baseline,,failed_or_negative,graph controls did not establish a superior benchmark
+Stage 31,anti-oversmoothing residual graph controls,,failed_or_negative,graph residual strategy did not replace non-graph baseline
+Stage 33/34/35,external pretraining / graph rescue diagnostics,,failed_or_negative,external-pretraining/graph rescue branch did not beat locked internal benchmark safely
+Stage 36,ranked hypothesis package,,planning_only,hypothesis package; not a benchmark rescue
+Stage 37/38,external dataset readiness/support branch,,support_readiness_only,"support/readiness, not clean external validation"
+Stage 39C,target engineering rank-int module PCA ridge,0.3458094563126456,point_estimate_improved_not_locked,CI lower too weak; not locked
+Stage 39D,full metadata/composition context,0.5048658499544396,proxy_sensitive_not_lockable,large point estimate but proxy/leakage risk
+Stage 39E,rank_inverse_normal_module_pca8_ridge,0.35808116279206914,best_unlocked_candidate,best credible simple-model candidate but CI weak
+Stage 39F,robustness confirmation,,no_new_benchmark_locked,confirmed no lock-eligible Stage39 candidate
+Stage 39H,proxy-safe context decomposition,0.38781411359724616,useful_not_lockable,context signal useful but not lockable
+Stage 40A,conditional dual-head EMA+VICReg,0.20855839806587548,architecture_rescue_failed,neural route failed versus Stage39E pca8

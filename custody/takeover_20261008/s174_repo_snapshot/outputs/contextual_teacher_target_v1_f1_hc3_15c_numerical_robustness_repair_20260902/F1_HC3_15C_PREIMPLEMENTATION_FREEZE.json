@@ -1,0 +1,7 @@
+{
+  "contract_sha256": "4ece6ea2fb85dad49e91d2087f6ce8d16941deb0e9c3226209add66057c2a3c7",
+  "freeze_sequence": "contract and tolerance authority written and hashed before new conclusion-bearing source",
+  "git_head": "b5cf47cd59eac2b7fe0c5c35cb7271806f10c867",
+  "schema": "F1_HC3_15C_PREIMPLEMENTATION_FREEZE_V1",
+  "tolerance_authority_sha256": "3c504c94ed08c45a1b4ac634ddbe54b3a7fc0cddd9948ce781fa7f49da01c49a"
+}

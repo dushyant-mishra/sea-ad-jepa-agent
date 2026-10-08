@@ -1,0 +1,8 @@
+question_id,decision_question,recommendation,consequence
+Q1,Should manuscript be reframed around Graph-JEPA as disease-state world model?,Yes; SEA-AD remains rigorous testbed,central narrative
+Q2,SEA-AD main application or one benchmark testbed?,Main application/testbed for v3,keeps scope concrete
+Q3,Candidate gene/network synthesis main text or supplement?,"Main text overview, detailed tables supplement",balanced novelty and safety
+Q4,Druggability mapping now or follow-up?,Include gap/placeholder unless curated resource is approved,avoid fabricated drug claims
+Q5,Which candidates prioritize experimentally?,"M1/M2 genes first, then M3/M4 as target-context follow-up",aligns with frozen registry
+Q6,Include v2 exploratory Aβ/microglia evidence?,Use as exploratory support only if PI accepts limitations,avoid overclaiming
+Q7,Run Stage46 before freeze?,Optional only if expression/graph-prior gap is judged critical,not required for synthesis story

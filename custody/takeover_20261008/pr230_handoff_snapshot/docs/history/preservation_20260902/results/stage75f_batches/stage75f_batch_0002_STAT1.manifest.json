@@ -1,0 +1,9 @@
+{
+  "batch_id": 2,
+  "tf": "STAT1",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 27,
+  "n_regions": 82,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

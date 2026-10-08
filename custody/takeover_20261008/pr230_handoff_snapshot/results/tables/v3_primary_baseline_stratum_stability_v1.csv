@@ -1,0 +1,541 @@
+baseline_id,target,stratum_variable,stratum_value,n_donors,pooled_spearman_or_error_metric,underpowered,notes
+lightgbm_raw_expression,6e10/Aβ,diagnosis,Dementia,42,0.08338060124787294,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,diagnosis,No dementia,42,0.028441779434405637,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,sex,Female,51,0.06570135746606334,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,sex,Male,33,0.32486631016042783,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,pathology_stratum,High,42,-0.08662182967344624,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,pathology_stratum,Intermediate,21,-0.251948051948052,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,pathology_stratum,Low,12,-0.18181818181818185,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,pathology_stratum,Not AD,9,0.6166666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.08662182967344624,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.251948051948052,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.18181818181818185,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.6166666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,diagnosis,Dementia,42,0.5679442508710802,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,diagnosis,No dementia,42,0.40912405801798885,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,sex,Female,51,0.5503167420814479,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,sex,Male,33,0.6681149732620322,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,pathology_stratum,High,42,0.4442913864354591,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,pathology_stratum,Intermediate,21,0.21818181818181817,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,pathology_stratum,Low,12,0.14685314685314685,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,pathology_stratum,Not AD,9,0.21666666666666667,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,locked_fold_pathology_stratum,High,42,0.4442913864354591,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,locked_fold_pathology_stratum,Intermediate,21,0.21818181818181817,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,locked_fold_pathology_stratum,Low,12,0.14685314685314685,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,AT8,locked_fold_pathology_stratum,Not AD,9,0.21666666666666667,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,diagnosis,Dementia,42,0.17154201442346648,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,diagnosis,No dementia,42,-0.060367879426302576,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,sex,Female,51,0.12398190045248869,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,sex,Male,33,0.09024064171122995,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,pathology_stratum,High,42,0.2537071550117495,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,pathology_stratum,Intermediate,21,0.08051948051948052,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,pathology_stratum,Low,12,-0.013986013986013986,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,pathology_stratum,Not AD,9,-0.38333333333333336,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,locked_fold_pathology_stratum,High,42,0.2537071550117495,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,locked_fold_pathology_stratum,Intermediate,21,0.08051948051948052,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,locked_fold_pathology_stratum,Low,12,-0.013986013986013986,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.38333333333333336,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,diagnosis,Dementia,42,-0.0076979175107365705,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,diagnosis,No dementia,42,-0.04156875455797747,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,sex,Female,51,0.023348416289592756,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,sex,Male,33,-0.030748663101604276,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,pathology_stratum,High,42,-0.17494530427031849,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,pathology_stratum,Intermediate,21,0.3103896103896104,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,pathology_stratum,Low,12,0.3216783216783217,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,pathology_stratum,Not AD,9,-0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,locked_fold_pathology_stratum,High,42,-0.17494530427031849,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.3103896103896104,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,locked_fold_pathology_stratum,Low,12,0.3216783216783217,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,Iba1,locked_fold_pathology_stratum,Not AD,9,-0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,diagnosis,Dementia,42,0.397941819949761,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,diagnosis,No dementia,42,0.3485130864597683,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,sex,Female,51,0.3904072398190045,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,sex,Male,33,0.3773395721925134,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,pathology_stratum,High,42,0.4848067417551252,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,pathology_stratum,Intermediate,21,0.3987012987012987,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,pathology_stratum,Low,12,0.1958041958041958,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,locked_fold_pathology_stratum,High,42,0.4848067417551252,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.3987012987012987,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,locked_fold_pathology_stratum,Low,12,0.1958041958041958,False,Pooled stratum Spearman on log1p OOF predictions.
+lightgbm_raw_expression,NeuN,locked_fold_pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,diagnosis,Dementia,42,0.1665181103638279,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,diagnosis,No dementia,42,0.24835912810955355,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,sex,Female,51,0.3290497737556561,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,sex,Male,33,0.34090909090909094,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,pathology_stratum,High,42,-0.0707398103881371,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,pathology_stratum,Intermediate,21,-0.39090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,pathology_stratum,Low,12,0.17482517482517487,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,pathology_stratum,Not AD,9,0.38333333333333336,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.0707398103881371,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.39090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,locked_fold_pathology_stratum,Low,12,0.17482517482517487,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.38333333333333336,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,diagnosis,Dementia,42,0.6016530264970424,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,diagnosis,No dementia,42,0.33619641844258974,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,sex,Female,51,0.5860633484162896,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,sex,Male,33,0.49665775401069523,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,pathology_stratum,High,42,0.584474515841504,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,pathology_stratum,Intermediate,21,0.025974025974025972,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,pathology_stratum,Low,12,-0.46153846153846156,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,pathology_stratum,Not AD,9,0.06666666666666667,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,locked_fold_pathology_stratum,High,42,0.584474515841504,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,locked_fold_pathology_stratum,Intermediate,21,0.025974025974025972,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,locked_fold_pathology_stratum,Low,12,-0.46153846153846156,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,AT8,locked_fold_pathology_stratum,Not AD,9,0.06666666666666667,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,diagnosis,Dementia,42,0.23588039867109636,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,diagnosis,No dementia,42,0.04610647435378009,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,sex,Female,51,0.28769230769230764,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,sex,Male,33,0.14872994652406418,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,pathology_stratum,High,42,0.2344218458795884,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,pathology_stratum,Intermediate,21,0.26103896103896107,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,pathology_stratum,Low,12,-0.2937062937062937,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,pathology_stratum,Not AD,9,-0.33333333333333337,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,locked_fold_pathology_stratum,High,42,0.2344218458795884,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,locked_fold_pathology_stratum,Intermediate,21,0.26103896103896107,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,locked_fold_pathology_stratum,Low,12,-0.2937062937062937,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.33333333333333337,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,diagnosis,Dementia,42,-0.06441941495826918,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,diagnosis,No dementia,42,0.02584879669394701,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,sex,Female,51,-0.06823529411764705,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,sex,Male,33,0.2560160427807487,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,pathology_stratum,High,42,-0.1632768819382546,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,pathology_stratum,Intermediate,21,0.20649350649350648,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,pathology_stratum,Low,12,0.4755244755244756,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,pathology_stratum,Not AD,9,0.26666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,locked_fold_pathology_stratum,High,42,-0.1632768819382546,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.20649350649350648,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,locked_fold_pathology_stratum,Low,12,0.4755244755244756,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,Iba1,locked_fold_pathology_stratum,Not AD,9,0.26666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,diagnosis,Dementia,42,0.46568349404424286,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,diagnosis,No dementia,42,0.29827404586338224,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,sex,Female,51,0.5323076923076923,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,sex,Male,33,0.1303475935828877,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,pathology_stratum,High,42,0.5582205655943603,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,pathology_stratum,Intermediate,21,0.37532467532467534,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,pathology_stratum,Low,12,-0.0979020979020979,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,pathology_stratum,Not AD,9,0.45,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,locked_fold_pathology_stratum,High,42,0.5582205655943603,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.37532467532467534,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,locked_fold_pathology_stratum,Low,12,-0.0979020979020979,False,Pooled stratum Spearman on log1p OOF predictions.
+module_mean_baseline,NeuN,locked_fold_pathology_stratum,Not AD,9,0.45,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,diagnosis,Dementia,42,-0.057774896685843936,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,diagnosis,No dementia,42,0.15306701239769874,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,sex,Female,51,0.06307692307692307,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,sex,Male,33,0.4024064171122995,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,pathology_stratum,High,42,-0.23409772303703105,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,pathology_stratum,Intermediate,21,-0.28831168831168835,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,pathology_stratum,Low,12,-0.4055944055944056,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.23409772303703105,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.28831168831168835,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.4055944055944056,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,diagnosis,Dementia,42,0.29746373875698895,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,diagnosis,No dementia,42,0.13054047483996437,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,sex,Female,51,0.29972850678733026,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,sex,Male,33,0.4214572192513369,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,pathology_stratum,High,42,0.17202819868730249,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,pathology_stratum,Intermediate,21,-0.0012987012987012987,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,pathology_stratum,Low,12,-0.027972027972027972,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,pathology_stratum,Not AD,9,0.049999999999999996,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,locked_fold_pathology_stratum,High,42,0.17202819868730249,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,locked_fold_pathology_stratum,Intermediate,21,-0.0012987012987012987,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,locked_fold_pathology_stratum,Low,12,-0.027972027972027972,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,AT8,locked_fold_pathology_stratum,Not AD,9,0.049999999999999996,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,diagnosis,Dementia,42,0.010939145936309864,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,diagnosis,No dementia,42,-0.016449234259784458,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,sex,Female,51,0.040452488687782805,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,sex,Male,33,0.0357620320855615,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,pathology_stratum,High,42,-0.03848958755368285,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,pathology_stratum,Intermediate,21,-0.07662337662337662,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,pathology_stratum,Low,12,0.09090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,pathology_stratum,Not AD,9,0.03333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,locked_fold_pathology_stratum,High,42,-0.03848958755368285,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,locked_fold_pathology_stratum,Intermediate,21,-0.07662337662337662,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,locked_fold_pathology_stratum,Low,12,0.09090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,GFAP,locked_fold_pathology_stratum,Not AD,9,0.03333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,diagnosis,Dementia,42,-0.15063609107851877,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,diagnosis,No dementia,42,-0.04529616724738676,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,sex,Female,51,-0.04199095022624434,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,sex,Male,33,-0.09592245989304814,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,pathology_stratum,High,42,-0.05550603678794263,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,pathology_stratum,Intermediate,21,-0.17922077922077922,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,pathology_stratum,Low,12,-0.09090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,pathology_stratum,Not AD,9,-0.19999999999999998,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,locked_fold_pathology_stratum,High,42,-0.05550603678794263,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,locked_fold_pathology_stratum,Intermediate,21,-0.17922077922077922,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,locked_fold_pathology_stratum,Low,12,-0.09090909090909093,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,Iba1,locked_fold_pathology_stratum,Not AD,9,-0.19999999999999998,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,diagnosis,Dementia,42,0.5470383275261324,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,diagnosis,No dementia,42,0.44882910623126165,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,sex,Female,51,0.5764705882352942,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,sex,Male,33,0.45287433155080214,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,pathology_stratum,High,42,0.556437889960295,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,pathology_stratum,Intermediate,21,0.6779220779220779,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,pathology_stratum,Low,12,0.2797202797202798,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,pathology_stratum,Not AD,9,0.35,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,locked_fold_pathology_stratum,High,42,0.556437889960295,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.6779220779220779,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,locked_fold_pathology_stratum,Low,12,0.2797202797202798,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_elasticnet,NeuN,locked_fold_pathology_stratum,Not AD,9,0.35,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,diagnosis,Dementia,42,0.10266591038003405,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,diagnosis,No dementia,42,0.013370067255489832,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,sex,Female,51,0.08072398190045249,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,sex,Male,33,0.3813502673796792,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,pathology_stratum,High,42,0.0318450692812576,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,pathology_stratum,Intermediate,21,-0.31428571428571433,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,pathology_stratum,Low,12,-0.15384615384615385,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,pathology_stratum,Not AD,9,0.39999999999999997,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,locked_fold_pathology_stratum,High,42,0.0318450692812576,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.31428571428571433,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.15384615384615385,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.39999999999999997,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,diagnosis,Dementia,42,0.32420387326796857,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,diagnosis,No dementia,42,0.12373389514626043,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,sex,Female,51,0.28226244343891405,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,sex,Male,33,0.42245989304812837,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,pathology_stratum,High,42,0.22356373065391785,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,pathology_stratum,Intermediate,21,-0.17922077922077922,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,pathology_stratum,Low,12,0.027972027972027972,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,pathology_stratum,Not AD,9,0.48333333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,locked_fold_pathology_stratum,High,42,0.22356373065391785,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,locked_fold_pathology_stratum,Intermediate,21,-0.17922077922077922,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,locked_fold_pathology_stratum,Low,12,0.027972027972027972,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,AT8,locked_fold_pathology_stratum,Not AD,9,0.48333333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,diagnosis,Dementia,42,0.07414310023498906,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,diagnosis,No dementia,42,-0.06328498500931853,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,sex,Female,51,0.12705882352941178,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,sex,Male,33,0.0427807486631016,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,pathology_stratum,High,42,0.10850012154606595,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,pathology_stratum,Intermediate,21,-0.024675324675324677,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,pathology_stratum,Low,12,-0.31468531468531474,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,pathology_stratum,Not AD,9,-0.33333333333333337,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,locked_fold_pathology_stratum,High,42,0.10850012154606595,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,locked_fold_pathology_stratum,Intermediate,21,-0.024675324675324677,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,locked_fold_pathology_stratum,Low,12,-0.31468531468531474,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.33333333333333337,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,diagnosis,Dementia,42,-0.1647354347297626,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,diagnosis,No dementia,42,0.12146503524835914,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,sex,Female,51,0.06018099547511312,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,sex,Male,33,-0.0645053475935829,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,pathology_stratum,High,42,-0.19779596467061017,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,pathology_stratum,Intermediate,21,0.20649350649350648,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,pathology_stratum,Low,12,0.43356643356643365,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,pathology_stratum,Not AD,9,0.016666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,locked_fold_pathology_stratum,High,42,-0.19779596467061017,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.20649350649350648,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,locked_fold_pathology_stratum,Low,12,0.43356643356643365,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,Iba1,locked_fold_pathology_stratum,Not AD,9,0.016666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,diagnosis,Dementia,42,0.5076574021554169,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,diagnosis,No dementia,42,0.4494773519163764,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,sex,Female,51,0.4955656108597285,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,sex,Male,33,0.4445187165775401,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,pathology_stratum,High,42,0.5381249493558059,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,pathology_stratum,Intermediate,21,0.5402597402597402,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,pathology_stratum,Low,12,0.27272727272727276,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,locked_fold_pathology_stratum,High,42,0.5381249493558059,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.5402597402597402,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,locked_fold_pathology_stratum,Low,12,0.27272727272727276,False,Pooled stratum Spearman on log1p OOF predictions.
+pca_ridge,NeuN,locked_fold_pathology_stratum,Not AD,9,0.31666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,diagnosis,Dementia,42,-0.13226616811546046,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,diagnosis,No dementia,42,0.1057475680255606,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,sex,Female,51,0.08518000160796561,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,sex,Male,33,0.04900608926311552,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,pathology_stratum,High,42,-0.08863452865227432,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,pathology_stratum,Intermediate,21,-0.481990529533417,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,pathology_stratum,Low,12,-0.22382966687820907,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,pathology_stratum,Not AD,9,-0.03361463227264072,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.08863452865227432,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.481990529533417,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.22382966687820907,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,-0.03361463227264072,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,diagnosis,Dementia,42,0.5741025848796695,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,diagnosis,No dementia,42,0.2031439915728061,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,sex,Female,51,0.49266968325791854,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,sex,Male,33,0.572192513368984,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,pathology_stratum,High,42,0.41333765497123415,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,pathology_stratum,Intermediate,21,0.04155844155844156,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,pathology_stratum,Low,12,-0.3636363636363637,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,pathology_stratum,Not AD,9,0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,locked_fold_pathology_stratum,High,42,0.41333765497123415,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,locked_fold_pathology_stratum,Intermediate,21,0.04155844155844156,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,locked_fold_pathology_stratum,Low,12,-0.3636363636363637,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,AT8,locked_fold_pathology_stratum,Not AD,9,0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,diagnosis,Dementia,42,0.05317536493893016,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,diagnosis,No dementia,42,-0.1476281766693581,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,sex,Female,51,-0.060134406480306914,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,sex,Male,33,0.2434546714736847,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,pathology_stratum,High,42,0.01032610297743751,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,pathology_stratum,Intermediate,21,-0.04364844002883749,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,pathology_stratum,Low,12,-0.08450913782447984,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,pathology_stratum,Not AD,9,-0.31799441532717476,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,locked_fold_pathology_stratum,High,42,0.01032610297743751,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,locked_fold_pathology_stratum,Intermediate,21,-0.04364844002883749,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,locked_fold_pathology_stratum,Low,12,-0.08450913782447984,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.31799441532717476,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,diagnosis,Dementia,42,-0.0870099457461009,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,diagnosis,No dementia,42,-0.058582111286870145,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,sex,Female,51,0.018173621434031836,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,sex,Male,33,-0.21089517034609712,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,pathology_stratum,High,42,-0.05165564574554377,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,pathology_stratum,Intermediate,21,0.04539866695222406,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,pathology_stratum,Low,12,-0.01413506985480439,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,pathology_stratum,Not AD,9,-0.35445877847928325,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,locked_fold_pathology_stratum,High,42,-0.05165564574554377,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.04539866695222406,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,locked_fold_pathology_stratum,Low,12,-0.01413506985480439,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,Iba1,locked_fold_pathology_stratum,Not AD,9,-0.35445877847928325,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,diagnosis,Dementia,42,0.5817194716797667,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,diagnosis,No dementia,42,0.49696134835102507,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,sex,Female,51,0.56,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,sex,Male,33,0.5474598930481284,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,pathology_stratum,High,42,0.5634065310752776,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,pathology_stratum,Intermediate,21,0.7974025974025974,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,pathology_stratum,Low,12,0.41958041958041964,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,pathology_stratum,Not AD,9,0.2833333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,locked_fold_pathology_stratum,High,42,0.5634065310752776,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.7974025974025974,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,locked_fold_pathology_stratum,Low,12,0.41958041958041964,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_elasticnet,NeuN,locked_fold_pathology_stratum,Not AD,9,0.2833333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,diagnosis,Dementia,42,0.10315209464387004,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,diagnosis,No dementia,42,0.2311806174540151,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,sex,Female,51,0.22805429864253393,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,sex,Male,33,0.37667112299465244,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,pathology_stratum,High,42,-0.009480593144801881,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,pathology_stratum,Intermediate,21,0.029870129870129873,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,pathology_stratum,Low,12,-0.14685314685314685,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,pathology_stratum,Not AD,9,-0.11666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.009480593144801881,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,0.029870129870129873,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.14685314685314685,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,-0.11666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,diagnosis,Dementia,42,0.35061988493639096,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,diagnosis,No dementia,42,0.23555627582853905,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,sex,Female,51,0.3759276018099547,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,sex,Male,33,0.5083556149732621,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,pathology_stratum,High,42,0.30459444129325014,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,pathology_stratum,Intermediate,21,-0.006493506493506493,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,pathology_stratum,Low,12,-0.22377622377622378,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,pathology_stratum,Not AD,9,0.5,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,locked_fold_pathology_stratum,High,42,0.30459444129325014,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,locked_fold_pathology_stratum,Intermediate,21,-0.006493506493506493,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,locked_fold_pathology_stratum,Low,12,-0.22377622377622378,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,AT8,locked_fold_pathology_stratum,Not AD,9,0.5,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,diagnosis,Dementia,42,0.19698565756421685,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,diagnosis,No dementia,42,-0.1276233692569484,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,sex,Female,51,0.17909502262443439,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,sex,Male,33,0.03542780748663102,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,pathology_stratum,High,42,0.14123652864435624,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,pathology_stratum,Intermediate,21,0.01818181818181818,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,pathology_stratum,Low,12,-0.3636363636363637,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,pathology_stratum,Not AD,9,-0.41666666666666663,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,locked_fold_pathology_stratum,High,42,0.14123652864435624,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,locked_fold_pathology_stratum,Intermediate,21,0.01818181818181818,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,locked_fold_pathology_stratum,Low,12,-0.3636363636363637,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.41666666666666663,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,diagnosis,Dementia,42,-0.0840288469329876,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,diagnosis,No dementia,42,0.11887205250790049,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,sex,Female,51,0.05276018099547511,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,sex,Male,33,-0.0411096256684492,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,pathology_stratum,High,42,-0.11919617535045784,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,pathology_stratum,Intermediate,21,0.24025974025974026,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,pathology_stratum,Low,12,0.4825174825174825,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,pathology_stratum,Not AD,9,-0.016666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,locked_fold_pathology_stratum,High,42,-0.11919617535045784,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.24025974025974026,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,locked_fold_pathology_stratum,Low,12,0.4825174825174825,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,Iba1,locked_fold_pathology_stratum,Not AD,9,-0.016666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,diagnosis,Dementia,42,0.46568349404424286,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,diagnosis,No dementia,42,0.33198282148934455,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,sex,Female,51,0.39565610859728506,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,sex,Male,33,0.3790106951871658,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,pathology_stratum,High,42,0.48026902195932264,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,pathology_stratum,Intermediate,21,0.40389610389610386,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,pathology_stratum,Low,12,0.11188811188811189,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,pathology_stratum,Not AD,9,0.25,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,locked_fold_pathology_stratum,High,42,0.48026902195932264,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.40389610389610386,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,locked_fold_pathology_stratum,Low,12,0.11188811188811189,False,Pooled stratum Spearman on log1p OOF predictions.
+raw_expression_ridge,NeuN,locked_fold_pathology_stratum,Not AD,9,0.25,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,diagnosis,Dementia,42,-0.26528374355990014,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,diagnosis,No dementia,42,-0.1336374182197238,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,sex,Female,51,-0.3962007436256603,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,sex,Male,33,0.03396018245193439,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,pathology_stratum,High,42,-0.3020118492074635,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,pathology_stratum,Intermediate,21,-0.39807400433336537,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,pathology_stratum,Low,12,0.2725872931160741,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,pathology_stratum,Not AD,9,0.008439494725697222,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.3020118492074635,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.39807400433336537,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Low,12,0.2725872931160741,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.008439494725697222,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,diagnosis,Dementia,42,-0.04894378313384689,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,diagnosis,No dementia,42,-0.14754071286703443,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,sex,Female,51,-0.11850414649983806,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,sex,Male,33,0.028003948619691243,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,pathology_stratum,High,42,0.03709582214938763,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,pathology_stratum,Intermediate,21,-0.05163508982958021,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,pathology_stratum,Low,12,-0.05291211025645316,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,pathology_stratum,Not AD,9,-0.23431167445160245,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,locked_fold_pathology_stratum,High,42,0.03709582214938763,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,locked_fold_pathology_stratum,Intermediate,21,-0.05163508982958021,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,locked_fold_pathology_stratum,Low,12,-0.05291211025645316,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,AT8,locked_fold_pathology_stratum,Not AD,9,-0.23431167445160245,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,diagnosis,Dementia,42,-0.3410858938312463,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,diagnosis,No dementia,42,-0.12307112148316407,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,sex,Female,51,-0.3365481118428824,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,sex,Male,33,-0.025685950234460547,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,pathology_stratum,High,42,-0.24745514104770017,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,pathology_stratum,Intermediate,21,-0.3442789496667264,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,pathology_stratum,Low,12,0.4938464078741438,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,pathology_stratum,Not AD,9,-0.39497192920352836,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,locked_fold_pathology_stratum,High,42,-0.24745514104770017,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,locked_fold_pathology_stratum,Intermediate,21,-0.3442789496667264,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,locked_fold_pathology_stratum,Low,12,0.4938464078741438,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.39497192920352836,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,diagnosis,Dementia,42,0.1647354347297626,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,diagnosis,No dementia,42,0.3616400615833401,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,sex,Female,51,0.18497737556561084,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,sex,Male,33,0.4889705882352942,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,pathology_stratum,High,42,0.18369662101936635,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,pathology_stratum,Intermediate,21,0.2506493506493506,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,pathology_stratum,Low,12,0.2867132867132868,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,pathology_stratum,Not AD,9,0.3,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,locked_fold_pathology_stratum,High,42,0.18369662101936635,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.2506493506493506,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,locked_fold_pathology_stratum,Low,12,0.2867132867132868,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,Iba1,locked_fold_pathology_stratum,Not AD,9,0.3,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,diagnosis,Dementia,42,-0.3488188483861913,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,diagnosis,No dementia,42,-0.10982655886984702,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,sex,Female,51,-0.28381577255656254,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,sex,Male,33,0.09237169626926155,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,pathology_stratum,High,42,-0.28429491944495205,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,pathology_stratum,Intermediate,21,0.06250541102117806,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,pathology_stratum,Low,12,-0.07830421195446947,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,pathology_stratum,Not AD,9,-0.15191090506254998,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,locked_fold_pathology_stratum,High,42,-0.28429491944495205,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.06250541102117806,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,locked_fold_pathology_stratum,Low,12,-0.07830421195446947,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_elasticnet,NeuN,locked_fold_pathology_stratum,Not AD,9,-0.15191090506254998,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,diagnosis,Dementia,42,-0.3083218539826595,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,diagnosis,No dementia,42,-0.13750911595494694,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,sex,Female,51,-0.2401809954751131,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,sex,Male,33,-0.15808823529411764,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,pathology_stratum,High,42,-0.3383032169192124,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,pathology_stratum,Intermediate,21,-0.4090909090909091,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,pathology_stratum,Low,12,0.2027972027972028,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,pathology_stratum,Not AD,9,0.11666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.3383032169192124,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.4090909090909091,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,locked_fold_pathology_stratum,Low,12,0.2027972027972028,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.11666666666666665,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,diagnosis,Dementia,42,0.03378980633660157,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,diagnosis,No dementia,42,-0.1459363098614375,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,sex,Female,51,0.1655203619909502,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,sex,Male,33,-0.19719251336898397,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,pathology_stratum,High,42,0.0368689733408962,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,pathology_stratum,Intermediate,21,0.21168831168831168,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,pathology_stratum,Low,12,-0.1958041958041958,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,pathology_stratum,Not AD,9,-0.5333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,locked_fold_pathology_stratum,High,42,0.0368689733408962,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,locked_fold_pathology_stratum,Intermediate,21,0.21168831168831168,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,locked_fold_pathology_stratum,Low,12,-0.1958041958041958,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,AT8,locked_fold_pathology_stratum,Not AD,9,-0.5333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,diagnosis,Dementia,42,-0.37006725548983066,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,diagnosis,No dementia,42,-0.14107446722307757,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,sex,Female,51,-0.3598190045248868,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,sex,Male,33,-0.0357620320855615,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,pathology_stratum,High,42,-0.31253545093590474,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,pathology_stratum,Intermediate,21,-0.174025974025974,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,pathology_stratum,Low,12,0.49650349650349657,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,pathology_stratum,Not AD,9,-0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,locked_fold_pathology_stratum,High,42,-0.31253545093590474,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,locked_fold_pathology_stratum,Intermediate,21,-0.174025974025974,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,locked_fold_pathology_stratum,Low,12,0.49650349650349657,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.16666666666666669,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,diagnosis,Dementia,42,0.18515517381087435,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,diagnosis,No dementia,42,0.35953326310671746,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,sex,Female,51,0.18705882352941178,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,sex,Male,33,0.4899732620320856,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,pathology_stratum,High,42,0.1922858763471356,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,pathology_stratum,Intermediate,21,0.26493506493506497,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,pathology_stratum,Low,12,0.2867132867132868,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,pathology_stratum,Not AD,9,0.3,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,locked_fold_pathology_stratum,High,42,0.1922858763471356,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.26493506493506497,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,locked_fold_pathology_stratum,Low,12,0.2867132867132868,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,Iba1,locked_fold_pathology_stratum,Not AD,9,0.3,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,diagnosis,Dementia,42,-0.19860627177700346,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,diagnosis,No dementia,42,-0.059395510898630585,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,sex,Female,51,-0.13520361990950225,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,sex,Male,33,0.11697860962566847,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,pathology_stratum,High,42,-0.09926262053318208,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,pathology_stratum,Intermediate,21,0.12727272727272726,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,pathology_stratum,Low,12,-0.02097902097902098,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,pathology_stratum,Not AD,9,-0.13333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,locked_fold_pathology_stratum,High,42,-0.09926262053318208,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.12727272727272726,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,locked_fold_pathology_stratum,Low,12,-0.02097902097902098,False,Pooled stratum Spearman on log1p OOF predictions.
+wgcna_module_summary_ridge,NeuN,locked_fold_pathology_stratum,Not AD,9,-0.13333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,diagnosis,Dementia,42,0.11627906976744186,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,diagnosis,No dementia,42,-0.09666963779272343,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,sex,Female,51,0.030769230769230767,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,sex,Male,33,0.37466577540106955,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,pathology_stratum,High,42,-0.1198444210355725,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,pathology_stratum,Intermediate,21,-0.38831168831168833,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,pathology_stratum,Low,12,-0.10489510489510491,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,pathology_stratum,Not AD,9,0.65,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,High,42,-0.1198444210355725,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Intermediate,21,-0.38831168831168833,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Low,12,-0.10489510489510491,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,6e10/Aβ,locked_fold_pathology_stratum,Not AD,9,0.65,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,diagnosis,Dementia,42,0.5773438133052426,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,diagnosis,No dementia,42,0.14658455554655217,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,sex,Female,51,0.498552036199095,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,sex,Male,33,0.5307486631016043,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,pathology_stratum,High,42,0.4118791021797262,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,pathology_stratum,Intermediate,21,0.07272727272727272,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,pathology_stratum,Low,12,0.43356643356643365,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,pathology_stratum,Not AD,9,-0.08333333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,locked_fold_pathology_stratum,High,42,0.4118791021797262,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,locked_fold_pathology_stratum,Intermediate,21,0.07272727272727272,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,locked_fold_pathology_stratum,Low,12,0.43356643356643365,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,AT8,locked_fold_pathology_stratum,Not AD,9,-0.08333333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,diagnosis,Dementia,42,0.19520298193015154,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,diagnosis,No dementia,42,-0.08143586419252898,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,sex,Female,51,0.03031674208144796,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,sex,Male,33,0.31885026737967914,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,pathology_stratum,High,42,0.13248521189530835,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,pathology_stratum,Intermediate,21,0.11428571428571428,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,pathology_stratum,Low,12,0.0,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,pathology_stratum,Not AD,9,-0.5833333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,locked_fold_pathology_stratum,High,42,0.13248521189530835,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,locked_fold_pathology_stratum,Intermediate,21,0.11428571428571428,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,locked_fold_pathology_stratum,Low,12,0.0,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,GFAP,locked_fold_pathology_stratum,Not AD,9,-0.5833333333333334,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,diagnosis,Dementia,42,-0.11368608702698323,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,diagnosis,No dementia,42,-0.07057774896685845,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,sex,Female,51,-0.045067873303167416,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,sex,Male,33,-0.09592245989304814,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,pathology_stratum,High,42,-0.22502228344542585,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,pathology_stratum,Intermediate,21,0.26103896103896107,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,pathology_stratum,Low,12,0.2937062937062937,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,pathology_stratum,Not AD,9,-0.26666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,locked_fold_pathology_stratum,High,42,-0.22502228344542585,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,locked_fold_pathology_stratum,Intermediate,21,0.26103896103896107,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,locked_fold_pathology_stratum,Low,12,0.2937062937062937,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,Iba1,locked_fold_pathology_stratum,Not AD,9,-0.26666666666666666,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,diagnosis,Dementia,42,0.4935580585041731,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,diagnosis,No dementia,42,0.3376549712340977,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,sex,Female,51,0.41837104072398196,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,sex,Male,33,0.4127673796791444,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,pathology_stratum,High,42,0.48253788185722396,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,pathology_stratum,Intermediate,21,0.5584415584415584,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,pathology_stratum,Low,12,0.25874125874125875,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,pathology_stratum,Not AD,9,0.13333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,locked_fold_pathology_stratum,High,42,0.48253788185722396,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,locked_fold_pathology_stratum,Intermediate,21,0.5584415584415584,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,locked_fold_pathology_stratum,Low,12,0.25874125874125875,False,Pooled stratum Spearman on log1p OOF predictions.
+xgboost_raw_expression,NeuN,locked_fold_pathology_stratum,Not AD,9,0.13333333333333333,False,Pooled stratum Spearman on log1p OOF predictions.

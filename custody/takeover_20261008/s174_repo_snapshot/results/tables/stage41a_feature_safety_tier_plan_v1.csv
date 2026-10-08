@@ -1,0 +1,6 @@
+risk_tier,tier_name,examples,allowed_for_lock_candidate,comparator_only,forbidden,recommended_use
+0,existing internal module/latent features,Stage 27C/39E module PCA or train-fold-safe equivalents,True,False,False,reference/baseline
+1,safe donor metadata and MRI/anatomy,"age, sex, PMI, RIN, APOE, MRI volumetrics, broad region/anatomy, technical covariates",True,False,False,first benchmark candidate tier
+2,target-adjacent biology/context,"cell-type composition, spatial neighborhoods, state summaries, snATAC modules, H&E-LFB morphology",False,False,False,caution candidate after proxy audit
+3,high-risk proxy features,"section/pathology-adjacent summaries, disease-burden descriptors, highly target-correlated features",False,True,False,comparator-only
+4,forbidden predictors,"quantitative target summaries, Luminex Aβ/tau, Braak/CERAD/Thal/ADNC, same-stain same-target features, HALO target quantifications, pseudo-labels",False,False,True,do not use for benchmark predictors

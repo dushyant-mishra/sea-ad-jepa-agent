@@ -1,0 +1,666 @@
+{
+  "schema": "V77_REAL_WITHIN_COHORT_ENVELOPE_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "status": "FROZEN_BEFORE_ANY_SYNTHETIC_WORLD_IS_SCORED_AGAINST_IT",
+  "material_pivot": {
+    "from_target": "pooled real envelopes (V77_REAL_DETECTION/CALIBRATION/ABUNDANCE_ENVELOPE_V1, V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1)",
+    "to_target": "within-cohort envelopes in this file",
+    "evidence": "results/v77/V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1.json",
+    "pooled_envelopes": "kept unchanged as composition-inclusive references",
+    "open_to_veto": "owner and reviewer lane"
+  },
+  "rule": {
+    "stratum": "smallest cohort coverage containing every detection of the cell, over all addresses; donor-level majority used",
+    "eligibility": "at least two classes with >= 200 cells (frozen T5 floor)",
+    "universe": "detected in more than 5% of the stratum's cells (frozen floor)",
+    "genes": "3000 by CPM-log1p expression variance within the stratum (frozen rule)",
+    "envelope": "donor bootstrap within stratum, 24 replicates, seed 20261006, gene set held at the point estimate's, range = quantiles (0.05, 0.95)"
+  },
+  "stratum_assignment": {
+    "cell_level": {
+      "HVS": 3072,
+      "NPH52": 246,
+      "SEA_AD": 1408,
+      "NONE": 0
+    },
+    "donor_level_cells": {
+      "HVS": 3072,
+      "NPH52": 246,
+      "SEA_AD": 1408
+    },
+    "donor_level_donors": {
+      "HVS": 62,
+      "NPH52": 19,
+      "SEA_AD": 68
+    },
+    "donors_with_mixed_cell_strata": 0,
+    "cells_whose_detections_violate_their_donor_stratum_coverage": 0
+  },
+  "strata": {
+    "HVS": {
+      "n_cells": 3072,
+      "n_donors": 62,
+      "classes_at_t5_floor": 3,
+      "ELIGIBLE": true,
+      "universe": {
+        "name": "TRAIN_WITHIN_HVS_PREVALENCE05_13326",
+        "n_genes": 13326,
+        "index_sha256": "fac3d7aabb4efd97a1e12c4fdaf3c07e274f9200c48f22519ef2746899c64fea",
+        "npz": "D:\\jepa_v77_synthetic_custody_20261005\\within_cohort_universes_v1\\TRAIN_WITHIN_HVS_PREVALENCE05_13326.npz",
+        "npz_sha256": "b00ea5a9829666a71e1c66fa16daecc4fddd9178a10bada602962391b9ccd50e",
+        "mask_packbits_b64": "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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAggAAAAIIIAgEKAAIIAQAMAEABAAAEAAgAAACAAAYAgAAAABACAAgAQAAgABoAAEAABEAQAAIAAAAAAAAQgASAAAAAAESAAAAAgAARAAAAAQAAAAAAABACIAEiAAAABEAAAAAAAQDgCAAAABAAABAEAAQACAAAAAAIQcAAAACAAAAAAAAAAEAAAAAEiAEAIQAAAAAAAAAABAAQABIgAEgRAMGIJAkkEABIAhQAAAAACpAgAAQAgASAAAAACIABAIBAkAAAgAkAAAIAmiwkAgAAIAADAAAAEAAAAAAICBAAAAEEAABIAEAABAAAgAAIICAAAAEAAAUAAAAAAEAAIAAAAAEAIiAGwCAIAACAgGZAggAAIAAAAAAAEQAAEAAAAFAADAAAAEgAFEEgBIAAAMIkBAAEEBCAoIAAAAAgipAFIgAASgAAAAgAAABAAgAAAABIQAAAAAACAICAAAAAAAIAABAAAgAASAAAAAAAAAASBACAAYAQiEAAAAQAAAAAYBEEAAAEBAACAAAAAAAAAQAAAAAAAAgAACAABAgEAgYAAAAEBAQAAAAIAAFAAAAAAAECCggAJAAgBAAIDQgAAAAINAAAAFAAAAYQIAAAEEQAgBBwBoAAgBBAAAAAAAgAAgEAAAAAAEAJABACAAAgAASAQAIAQAAAACAAABAgABAACAACAAAAiBAAAACMABAUAAAAAAAAAAAiAAAAAAAACAAAAAAAAAAABACgEAAACAAAAAAAAAAAAAIAAAAAAoACYAAAAABAQBAAAAEBAAABgAAAQAAAABAIAABAAAABAAQAAAAgABAACAAAEAAAAAADAAAAQAASAAECAAAAAAAQACAIFcAAAAAAAIAAAAABAAAAEAgxCACAAAAAAAIAwAAABgAAACgAAAACCIgAEAABAAQAAEAAABAAIABAAQAAQEBAAEAAAAAAAUAAAEAAAYAEAwAIAAEAgAAAEQEHCAAEIIAIAEBAAAoABIQAAABIAAAAAAAAEAAAABQAAQCQIUAAABMABBAEiAAAAwCIAAARAQABIgAHAQAAAAAAAAAAAAAAAAAAAIIAAAAABCAAAAAAAAIgACAAABIIAAAAAACQAAAiCAgAAAAAAAAQQAAAAAAAAAQAAAABAAAgCSUAAQAAAIAAAAAAAAAAAACAAECAAAQAAAAAAiAAIAAAAAQAQAAACQgAAQAAABAAoIAAgAIAIAAIAAAAYAACAAiSICEAAEAAIMAAkAEAAAAAIAAoIAgQDAAAAABDCAAQCAAAAQCgEACAACAEIAAAIAAAAAAAABACCASCEAACBAAEQAgQACAACAQAAAgAQAgAAQgBAAYAAAAERIAYAQAIBICEABEAAAAAAACAAAAABABACAAAQIAABAIAAAAAAAAQQUSVMAUoMQKBNKAwKJCQiIAAAgAAAAAAAAAABAAAAAAAQAAABAAAAAAAAAAAgQAAAAAEAAAAABABAAAAAAAAAAAAAAAIAAAAQIAAABAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+gAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "genes": {
+        "n": 3000,
+        "address_sha256": "7786c511e1a87977d76d6a65fc4fcb664aa462d09ed84d58db63df2d76e44215",
+        "jaccard_with_pooled_gene_set": 0.5113350125944585
+      },
+      "ACCEPTANCE_ENVELOPES": {
+        "detection.median_abs_corr": {
+          "point": 0.19437681141040936,
+          "boot_sd": 0.00463964001608724,
+          "accept_low": 0.18553754072314313,
+          "accept_high": 0.19812947867668515
+        },
+        "detection.frac_abs_gt_0p3": {
+          "point": 0.1146210959208625,
+          "boot_sd": 0.015192171045704713,
+          "accept_low": 0.09266094253640102,
+          "accept_high": 0.13709320884739357
+        },
+        "detection.var_top10_pc": {
+          "point": 0.29531129550076063,
+          "boot_sd": 0.004705798905393238,
+          "accept_low": 0.28911489458117456,
+          "accept_high": 0.3043124649831881
+        },
+        "detection.mean_degree": {
+          "point": 343.7486666666667,
+          "boot_sd": 45.56132096606844,
+          "accept_low": 277.8901666666667,
+          "accept_high": 411.14253333333335
+        },
+        "detection.largest_community_frac": {
+          "point": 0.09766666666666667,
+          "boot_sd": 0.016498566521443006,
+          "accept_low": 0.09004999999999999,
+          "accept_high": 0.13508333333333333
+        },
+        "detection.transitivity": {
+          "point": 0.6358993455521378,
+          "boot_sd": 0.01740016473880204,
+          "accept_low": 0.5829418358501869,
+          "accept_high": 0.6384981438532398
+        },
+        "detection.substitute_frac": {
+          "point": 0.0006666666666666666,
+          "boot_sd": 0.0004555526098644012,
+          "accept_low": 0.0,
+          "accept_high": 0.0015666666666666654
+        },
+        "detection.frac_pos_gt_0p3": {
+          "point": 0.11432988774035789,
+          "boot_sd": 0.015147355646714704,
+          "accept_low": 0.09241810603534512,
+          "accept_high": 0.13675870845837498
+        },
+        "detection.frac_neg_lt_m0p3": {
+          "point": 0.00029120818050461266,
+          "boot_sd": 7.697504255212683e-05,
+          "accept_low": 0.00021643881293764586,
+          "accept_high": 0.00043779037456930084
+        },
+        "detection.pos_over_neg_ratio": {
+          "point": 392.60534351145037,
+          "boot_sd": 70.2148597507755,
+          "accept_low": 275.88706321880113,
+          "accept_high": 470.38589941190617
+        },
+        "detection.mean_signed_corr": {
+          "point": 0.17883553997263973,
+          "boot_sd": 0.00411144871582144,
+          "accept_low": 0.17132175864596141,
+          "accept_high": 0.18271310508037675
+        },
+        "expression.median_abs_corr": {
+          "point": 0.05454122382372603,
+          "boot_sd": 0.0011181427172620132,
+          "accept_low": 0.05484297783336761,
+          "accept_high": 0.05840047444736045
+        },
+        "expression.frac_abs_gt_0p3": {
+          "point": 0.01689829943314438,
+          "boot_sd": 0.001010439002869613,
+          "accept_low": 0.015470501278203846,
+          "accept_high": 0.018394498166055352
+        },
+        "expression.var_top10_pc": {
+          "point": 0.23355901965166748,
+          "boot_sd": 0.0024005344708678054,
+          "accept_low": 0.23184737022639937,
+          "accept_high": 0.23921312954683946
+        },
+        "expression.mean_degree": {
+          "point": 50.678,
+          "boot_sd": 3.030306569605971,
+          "accept_low": 46.39603333333333,
+          "accept_high": 55.1651
+        },
+        "expression.largest_community_frac": {
+          "point": 0.164,
+          "boot_sd": 0.008633530111722328,
+          "accept_low": 0.15483333333333332,
+          "accept_high": 0.18421666666666667
+        },
+        "expression.transitivity": {
+          "point": 0.44541362638603343,
+          "boot_sd": 0.00535570349360586,
+          "accept_low": 0.4313090679725391,
+          "accept_high": 0.4480859777256902
+        },
+        "expression.substitute_frac": {
+          "point": 0.004,
+          "boot_sd": 0.0009428090415820634,
+          "accept_low": 0.0027166666666666667,
+          "accept_high": 0.0056166666666666665
+        },
+        "expression.frac_pos_gt_0p3": {
+          "point": 0.013549849949983327,
+          "boot_sd": 0.0008066637165716119,
+          "accept_low": 0.012335311770590196,
+          "accept_high": 0.014616883405579637
+        },
+        "expression.frac_neg_lt_m0p3": {
+          "point": 0.0033484494831610536,
+          "boot_sd": 0.00024532371477028623,
+          "accept_low": 0.0030692897632544182,
+          "accept_high": 0.0037920195620762473
+        },
+        "expression.pos_over_neg_ratio": {
+          "point": 4.046604262099184,
+          "boot_sd": 0.1735585321691492,
+          "accept_low": 3.6162422544541064,
+          "accept_high": 4.142098009324968
+        },
+        "expression.mean_signed_corr": {
+          "point": 0.024852697495097633,
+          "boot_sd": 0.0011931732341799526,
+          "accept_low": 0.022414946751343097,
+          "accept_high": 0.02554294050523825
+        },
+        "t5.within_over_pooled": {
+          "point": 0.7747191280512261,
+          "boot_sd": 0.025255227451569544,
+          "accept_low": 0.827365883130477,
+          "accept_high": 0.9097219373936616
+        },
+        "t5.n_classes_used": {
+          "point": 3.0,
+          "boot_sd": 0.0,
+          "accept_low": 3.0,
+          "accept_high": 3.0
+        },
+        "abundance.abundance_max_over_median_nonzero": {
+          "point": 2627.024124513619,
+          "boot_sd": 123.46373620825992,
+          "accept_low": 2432.956954636751,
+          "accept_high": 2817.286539056549
+        },
+        "abundance.top1pct_count_share": {
+          "point": 0.28088080522730796,
+          "boot_sd": 0.0024104972131976524,
+          "accept_low": 0.27636088049862223,
+          "accept_high": 0.28454320412952033
+        },
+        "abundance.expressed_fraction": {
+          "point": 1.0,
+          "boot_sd": 0.0,
+          "accept_low": 1.0,
+          "accept_high": 1.0
+        },
+        "depth.median_library": {
+          "point": 14207.5,
+          "boot_sd": 547.930983171093,
+          "accept_low": 13241.25,
+          "accept_high": 14857.225
+        },
+        "depth.median_detected_all_addresses": {
+          "point": 4427.5,
+          "boot_sd": 95.58951103319453,
+          "accept_low": 4306.65,
+          "accept_high": 4578.025
+        },
+        "depth.median_detected_in_universe": {
+          "point": 4349.5,
+          "boot_sd": 93.88930230306605,
+          "accept_low": 4236.05,
+          "accept_high": 4490.8
+        }
+      }
+    },
+    "NPH52": {
+      "n_cells": 246,
+      "n_donors": 19,
+      "classes_at_t5_floor": 0,
+      "ELIGIBLE": false,
+      "reason": "fewer than two classes with >= 200 cells"
+    },
+    "SEA_AD": {
+      "n_cells": 1408,
+      "n_donors": 68,
+      "classes_at_t5_floor": 3,
+      "ELIGIBLE": true,
+      "universe": {
+        "name": "TRAIN_WITHIN_SEA_AD_PREVALENCE05_14948",
+        "n_genes": 14948,
+        "index_sha256": "fb774b791fecbf40ef2a76316ce7d5420476f37a3b603ba11ed38ba9d4e7d8ca",
+        "npz": "D:\\jepa_v77_synthetic_custody_20261005\\within_cohort_universes_v1\\TRAIN_WITHIN_SEA_AD_PREVALENCE05_14948.npz",
+        "npz_sha256": "38d027fb259b5247384dcc6a1341a44462ee76b28fe37b6215c661a6cff8d086",
+        "mask_packbits_b64": "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"
+      },
+      "genes": {
+        "n": 3000,
+        "address_sha256": "c4f6b1b94be00098af51b4956817b026dcc860a222f6fa236c24906324a2c1d5",
+        "jaccard_with_pooled_gene_set": 0.25496758000418324
+      },
+      "ACCEPTANCE_ENVELOPES": {
+        "detection.median_abs_corr": {
+          "point": 0.22731717886091113,
+          "boot_sd": 0.0063192987091255015,
+          "accept_low": 0.2149733426550473,
+          "accept_high": 0.2332281576682767
+        },
+        "detection.frac_abs_gt_0p3": {
+          "point": 0.23939913304434812,
+          "boot_sd": 0.023643099810040043,
+          "accept_low": 0.20721476047571413,
+          "accept_high": 0.2793558630654662
+        },
+        "detection.var_top10_pc": {
+          "point": 0.3550395309065019,
+          "boot_sd": 0.005116708765649977,
+          "accept_low": 0.3506933347667746,
+          "accept_high": 0.3690417555302316
+        },
+        "detection.mean_degree": {
+          "point": 717.958,
+          "boot_sd": 70.90565633031011,
+          "accept_low": 621.4370666666667,
+          "accept_high": 837.7882333333333
+        },
+        "detection.largest_community_frac": {
+          "point": 0.23166666666666666,
+          "boot_sd": 0.021858938778194528,
+          "accept_low": 0.24516666666666667,
+          "accept_high": 0.31385
+        },
+        "detection.transitivity": {
+          "point": 0.7012820743552791,
+          "boot_sd": 0.021872439143626812,
+          "accept_low": 0.6542310872802886,
+          "accept_high": 0.7142684133310303
+        },
+        "detection.substitute_frac": {
+          "point": 0.0016666666666666668,
+          "boot_sd": 0.00013608276348795435,
+          "accept_low": 0.0016666666666666668,
+          "accept_high": 0.0016666666666666668
+        },
+        "detection.frac_pos_gt_0p3": {
+          "point": 0.23859019673224408,
+          "boot_sd": 0.02363251903614668,
+          "accept_low": 0.2060627875958653,
+          "accept_high": 0.2780491608313882
+        },
+        "detection.frac_neg_lt_m0p3": {
+          "point": 0.0008089363121040347,
+          "boot_sd": 0.0001789977113798876,
+          "accept_low": 0.0007451483827942648,
+          "accept_high": 0.001343336667778148
+        },
+        "detection.pos_over_neg_ratio": {
+          "point": 294.9431162407255,
+          "boot_sd": 49.52940634198844,
+          "accept_low": 186.1432062347373,
+          "accept_high": 328.5727392923932
+        },
+        "detection.mean_signed_corr": {
+          "point": 0.2052110403006402,
+          "boot_sd": 0.005470294813659078,
+          "accept_low": 0.19516245976148575,
+          "accept_high": 0.21082233756693314
+        },
+        "expression.median_abs_corr": {
+          "point": 0.06648370528091659,
+          "boot_sd": 0.001101790412602671,
+          "accept_low": 0.0694746585473766,
+          "accept_high": 0.07275207214162548
+        },
+        "expression.frac_abs_gt_0p3": {
+          "point": 0.03754162498610648,
+          "boot_sd": 0.002366598516781633,
+          "accept_low": 0.03656283205512949,
+          "accept_high": 0.04356863398910748
+        },
+        "expression.var_top10_pc": {
+          "point": 0.2793480021015319,
+          "boot_sd": 0.0035437109147260725,
+          "accept_low": 0.2817799006196803,
+          "accept_high": 0.29211800697075396
+        },
+        "expression.mean_degree": {
+          "point": 112.58733333333333,
+          "boot_sd": 7.097428951828119,
+          "accept_low": 109.65193333333333,
+          "accept_high": 130.66233333333332
+        },
+        "expression.largest_community_frac": {
+          "point": 0.24833333333333332,
+          "boot_sd": 0.009371686209826865,
+          "accept_low": 0.24948333333333333,
+          "accept_high": 0.27695000000000003
+        },
+        "expression.transitivity": {
+          "point": 0.5238948510114652,
+          "boot_sd": 0.007566616956458761,
+          "accept_low": 0.5064999557967013,
+          "accept_high": 0.5304860906811935
+        },
+        "expression.substitute_frac": {
+          "point": 0.012666666666666666,
+          "boot_sd": 0.0024704371235310663,
+          "accept_low": 0.011483333333333335,
+          "accept_high": 0.01908333333333333
+        },
+        "expression.frac_pos_gt_0p3": {
+          "point": 0.02859842169612093,
+          "boot_sd": 0.0017305011239873156,
+          "accept_low": 0.02765996443258864,
+          "accept_high": 0.03282062909858842
+        },
+        "expression.frac_neg_lt_m0p3": {
+          "point": 0.008943203289985551,
+          "boot_sd": 0.0007739681477730804,
+          "accept_low": 0.008635378459486497,
+          "accept_high": 0.010809447593642324
+        },
+        "expression.pos_over_neg_ratio": {
+          "point": 3.1977828043051377,
+          "boot_sd": 0.16041792978064942,
+          "accept_low": 2.905675519934008,
+          "accept_high": 3.3567980360715604
+        },
+        "expression.mean_signed_corr": {
+          "point": 0.02973409898608709,
+          "boot_sd": 0.0015480099880301416,
+          "accept_low": 0.02706482423297945,
+          "accept_high": 0.031413583597043174
+        },
+        "t5.within_over_pooled": {
+          "point": 0.809178800839818,
+          "boot_sd": 0.0266715079084058,
+          "accept_low": 0.888079782254868,
+          "accept_high": 0.9528620870717674
+        },
+        "t5.n_classes_used": {
+          "point": 3.0,
+          "boot_sd": 0.0,
+          "accept_low": 3.0,
+          "accept_high": 3.0
+        },
+        "abundance.abundance_max_over_median_nonzero": {
+          "point": 1540.7655737704918,
+          "boot_sd": 36.89390650572118,
+          "accept_low": 1485.8723335537918,
+          "accept_high": 1590.4930364372467
+        },
+        "abundance.top1pct_count_share": {
+          "point": 0.27848440469921326,
+          "boot_sd": 0.0019575410205147736,
+          "accept_low": 0.27629195652899596,
+          "accept_high": 0.2823934409890033
+        },
+        "abundance.expressed_fraction": {
+          "point": 1.0,
+          "boot_sd": 0.0,
+          "accept_low": 1.0,
+          "accept_high": 1.0
+        },
+        "depth.median_library": {
+          "point": 16290.0,
+          "boot_sd": 770.388833453695,
+          "accept_low": 15340.6,
+          "accept_high": 17548.3
+        },
+        "depth.median_detected_all_addresses": {
+          "point": 4848.5,
+          "boot_sd": 152.11340729053515,
+          "accept_low": 4583.65,
+          "accept_high": 5013.05
+        },
+        "depth.median_detected_in_universe": {
+          "point": 4711.5,
+          "boot_sd": 147.94613199071645,
+          "accept_low": 4472.05,
+          "accept_high": 4858.775
+        }
+      }
+    }
+  },
+  "pooled_reference_points": {
+    "detection.median_abs_corr": 0.37697424394530443,
+    "detection.frac_abs_gt_0p3": 0.6148062687562521,
+    "detection.var_top10_pc": 0.5602393979338193,
+    "detection.mean_degree": 1843.804,
+    "detection.largest_community_frac": 0.763,
+    "detection.transitivity": 0.8870660483247294,
+    "detection.substitute_frac": 0.22333333333333333,
+    "detection.frac_pos_gt_0p3": 0.3844216961209292,
+    "detection.frac_neg_lt_m0p3": 0.2303845726353229,
+    "detection.pos_over_neg_ratio": 1.668608673417697,
+    "detection.mean_signed_corr": 0.10164599103604326,
+    "expression.median_abs_corr": 0.32906243330611984,
+    "expression.frac_abs_gt_0p3": 0.5621264866066467,
+    "expression.var_top10_pc": 0.5089303135173231,
+    "expression.mean_degree": 1685.8173333333334,
+    "expression.largest_community_frac": 0.8243333333333334,
+    "expression.transitivity": 0.8604709718215305,
+    "expression.substitute_frac": 0.19833333333333333,
+    "expression.frac_pos_gt_0p3": 0.2964225853062132,
+    "expression.frac_neg_lt_m0p3": 0.2657039013004335,
+    "expression.pos_over_neg_ratio": 1.1156124688250093,
+    "expression.mean_signed_corr": 0.03223948118944797,
+    "abundance.abundance_max_over_median_nonzero": 1976.6481264637,
+    "abundance.top1pct_count_share": 0.24566847522440013,
+    "abundance.expressed_fraction": 1.0,
+    "t5.within_over_pooled": 1.0117691320039965
+  },
+  "source": {
+    "cache": "D:\\Jepa project\\data\\cache\\stage81a3r_corrected_real_train",
+    "n_shards": 42,
+    "shard_digests": [
+      {
+        "file": "01a8084c32680dfb.counts.npz",
+        "sha256": "7fb4c75e17dad66a25a38bae62c20f631debfb8933e6396a3636dbfce4916ceb"
+      },
+      {
+        "file": "0428d814f189ca87.counts.npz",
+        "sha256": "10becd678eab4c8c27c0c4387507c35687573f703fb39445d32987b250dea38d"
+      },
+      {
+        "file": "117e1b89adbf25e4.counts.npz",
+        "sha256": "0366ec50f1ec489c311206a487f4d4e625f1dc9fdc2b79c7ca3ff2f4d91b44de"
+      },
+      {
+        "file": "120794b6773c7cf9.counts.npz",
+        "sha256": "4b2a9f2cec21ee9142d027d86931aa32a0643631631a29bde3731b4a922dddae"
+      },
+      {
+        "file": "15b1f72fcc49200e.counts.npz",
+        "sha256": "4a9e007d47be60b413e7b472b0b8bbe8f70ade35bb67397557fdc532f5bc66b3"
+      },
+      {
+        "file": "16632e1b92d2409b.counts.npz",
+        "sha256": "5e9f66073e4170234e6e14b97b5124a20143847745837b8881f79ce71d9a3f74"
+      },
+      {
+        "file": "1cf08334d3b12f5f.counts.npz",
+        "sha256": "33be459c3c53f3e30ca4aa8f3565c17855a15269bb3327732d08393c758d59e5"
+      },
+      {
+        "file": "246008367b5ed2fb.counts.npz",
+        "sha256": "093c1ef9e77bad83aac31679fed92eb79e42094426113d7b09cc74d53067edae"
+      },
+      {
+        "file": "2bfa3b9301efa393.counts.npz",
+        "sha256": "15ae730671e9a20ef5b9fd2516e661a343f8c255712ea51125b9d4c5f96f6072"
+      },
+      {
+        "file": "3230dd0fe3beb954.counts.npz",
+        "sha256": "da6c8d3bd23e6e7810c68e3203fa22258aee0fc375b856cfe5ff134d0a9dcd64"
+      },
+      {
+        "file": "46a2e68f12d45643.counts.npz",
+        "sha256": "a45446ac8064d6dd4fbc5715cf6e31a4584e205b25d10a5dc93f454acb4a1608"
+      },
+      {
+        "file": "4777ea704d910eee.counts.npz",
+        "sha256": "d90eb06676a8e54ed6a44e0871f24fc31bfa8d1e2fb6a4b7e68d768bae49c865"
+      },
+      {
+        "file": "4a3db0b3a3ee23e5.counts.npz",
+        "sha256": "adb3b414d2c8d7c98ad7b673487ee4d8baba96a38dc95249c7cff6be5750a36c"
+      },
+      {
+        "file": "4be84f5869689fe5.counts.npz",
+        "sha256": "d795e06aa290a08a587a7bb657ce4b816e9248bce21ad725d4b3b7de986a06f9"
+      },
+      {
+        "file": "57791abbd401df2b.counts.npz",
+        "sha256": "4476fa4acb904861fa11dbb09eda151e2e4015d12886b5c19fcbd99dc19e0192"
+      },
+      {
+        "file": "58baaeadf44eab57.counts.npz",
+        "sha256": "83724b6fbc3772fcb07c3e315b3e8ac8eb7040b1477dd0629d0c57f1b129d6d3"
+      },
+      {
+        "file": "5a104c17a7d6e5cf.counts.npz",
+        "sha256": "0566fa4ee9471e84a5dca3bd4b30c461bb72ce5d80a077b13f8bcc9e62895cdc"
+      },
+      {
+        "file": "5a1c193be7cd49cc.counts.npz",
+        "sha256": "3343c4a143e340e4445d69d31ff94f8191ef57905094e63107468c71539caace"
+      },
+      {
+        "file": "5dab94333efd8e21.counts.npz",
+        "sha256": "632c529f10db97432a7b741cc99ff19a25bec201061aab15b67fb92ace518457"
+      },
+      {
+        "file": "62544b4c7ab48cd1.counts.npz",
+        "sha256": "5bb9daaf89ed94b4bb0d5f025722e18eac0ba8da310dfee0c280361be16f4080"
+      },
+      {
+        "file": "65db086233248c4c.counts.npz",
+        "sha256": "b4bbdce37d026e3bafac1b0dbbf4919c5de773752c6e8051eb88faec3f7c3c28"
+      },
+      {
+        "file": "697169906cb1a773.counts.npz",
+        "sha256": "adfae9c892591e743929d8aeb6874d76832b8f34f8739f49e850979091684221"
+      },
+      {
+        "file": "701d4db85fd51088.counts.npz",
+        "sha256": "54b5223c7aa485e3ab4e9d677f65af3b051e5e071303a16c43738906b4bfa1e5"
+      },
+      {
+        "file": "728ef515d050d789.counts.npz",
+        "sha256": "ba7a239611552074a759bbcb29331af1a68adee6f0df9f13b6cc9e2abd7f116a"
+      },
+      {
+        "file": "7da7c897180c16b5.counts.npz",
+        "sha256": "1dcbe94d2b8ebf37145f7e147bdb20238abe63d82ab01e2a84ed49de407ea36e"
+      },
+      {
+        "file": "868d05542e5e7cf2.counts.npz",
+        "sha256": "454120fb1a7d3a693def16b5bfb7a00c018d477d76332e0297c83c79201bb736"
+      },
+      {
+        "file": "8a1613e724707595.counts.npz",
+        "sha256": "df454df2cd6a2338edbc85b6c292d5e94316c77e8897d8d321d25bbb91bbdcc7"
+      },
+      {
+        "file": "97c509331469cc92.counts.npz",
+        "sha256": "b2a847d6f0eeef5de1b43633878ac6af9b038c9e8a3d5d5eccda581c7d6f5e67"
+      },
+      {
+        "file": "9fc20935b65302ee.counts.npz",
+        "sha256": "d03a3fcdf7688f6e6db3664185a13ad4998fb07f4de86014d562783a78202e46"
+      },
+      {
+        "file": "a410358f191a3e4c.counts.npz",
+        "sha256": "e6a85b0965ca7d2f059bb1b9bbbc83a277c35d3e73bdb4e491c9071162947add"
+      },
+      {
+        "file": "a6a34c7d7c6723a0.counts.npz",
+        "sha256": "c12d89d87a1ee7be381cb6e1c5f63ac2f4b74866ae8f1cd2980764c584294813"
+      },
+      {
+        "file": "bbffd755c3f71256.counts.npz",
+        "sha256": "93a947c6c5ed2ce8b2ecf4e8917a16843c10bfe2adb99901a12941cd820665ad"
+      },
+      {
+        "file": "c70df1e5200f419f.counts.npz",
+        "sha256": "abeca26304408b5440fd5f9b31d25d735e353c5631b80584c885789d074418ba"
+      },
+      {
+        "file": "c9d1fc26b487b582.counts.npz",
+        "sha256": "cdc07bf7fc868df5c924575c394c7cd02a5f05c321cb039f594e2aa65b9d5d7f"
+      },
+      {
+        "file": "d35f9b260b727137.counts.npz",
+        "sha256": "3713d758e7c10373a268f09efa8ace7bb29660d6a0230aa1ee03641f0c254369"
+      },
+      {
+        "file": "dd26eaeaed7d104f.counts.npz",
+        "sha256": "bc63c152418d95262d2a4047fd5281736dd67a1b3834808b8a29ad4db07a1611"
+      },
+      {
+        "file": "de88e08b50c44dbe.counts.npz",
+        "sha256": "dd0d65374de7b78d5d1cc0c5e11c5dfef4b52c66c960f692779525de53483cfe"
+      },
+      {
+        "file": "dfcb594c1abeb0c0.counts.npz",
+        "sha256": "8f916bcf233bd1962529655539d1078a78b1f153ed5015931c3ef8251176a2a2"
+      },
+      {
+        "file": "e31a8c262e8be576.counts.npz",
+        "sha256": "f7b4dc0978b4af397e6137206b77729ea932356d9d403f87bbc3d2fc1711d72f"
+      },
+      {
+        "file": "e38be9d52b6f8e0b.counts.npz",
+        "sha256": "ae2f5f5d3a0bdd94017a9fd1886fdc659bf169f33095a6a27dd559ef5b21ab7f"
+      },
+      {
+        "file": "e5ef92fa6bf68bb4.counts.npz",
+        "sha256": "9b0d2ad075750f52c964c21584d9fa0ab7ef02f7df2f42d6cde8cea5514f6647"
+      },
+      {
+        "file": "fa1d6cf6e74837f2.counts.npz",
+        "sha256": "864758a444e5b0d31c4eb2d5bbd3cbec2f32543c0ec8bc50ae102edddc8a9ed1"
+      }
+    ],
+    "pathology_blind": true,
+    "train_only": true,
+    "read_only": true
+  },
+  "command": "python scripts/v77/build_v77_within_cohort_envelope.py --out results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json --universe-dir D:/jepa_v77_synthetic_custody_20261005/within_cohort_universes_v1",
+  "source_commit": "66bd9bed48753dd8eaae357e07a062364357688d",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "build_v77_within_cohort_envelope.py": "e1b12ca3fb0d03781b6744db89e665d2569c24c779795e43eca7ce2c668c9fde",
+    "build_v77_real_calibration.py": "81d516704a8414084a11742ab3ea7aeed0aca64b35077a5e2f49b3c34d097504",
+    "build_v77_calibration_envelope.py": "0f9fe5ddb84a16894d5018d9fd6f14bd4b41693e20d058f4f8467be8960da847",
+    "build_v77_topology_calibration.py": "60c242290bca14b3860507028932c3f8c2cdba397a26d6e01a0d8db6117ec4dc",
+    "v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+  },
+  "no_training_performed": true
+}

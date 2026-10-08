@@ -1,0 +1,7 @@
+# Stage62 lock gate decision
+
+| robust_regional_support_pass | benchmark_lock_candidate_pass | new_locked_benchmark_pass | clean_external_validation_pass | primary_branch | primary_score | same80_mtg_programming_score | best_negative_control | best_negative_control_score | stage27c_locked_score | decision_basis |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| False | False | False | False | mtg_programming_plus_dlpfc_state_modules_full | 0.2773150492264417 | 0.26612423816221287 | negative_control_state_label_shuffled_within_donor | 0.28139076418190345 | 0.3267024400121495 | aggregate across predeclared seeds/latent dims, bootstrap deltas, negative controls, feature-source and claim-boundary audits |
+
+Clean external validation is explicitly false for Stage62.

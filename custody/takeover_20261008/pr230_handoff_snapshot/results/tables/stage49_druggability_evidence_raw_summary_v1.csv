@@ -1,0 +1,50 @@
+gene_symbol,source_name,mapping_status,target_id,drug_or_compound,interaction_type,approval_or_development_status,evidence_level,source_url_or_id,directionality_known,therapeutic_claim_allowed,notes
+APOE,ChEMBL,target_search_hit,CHEMBL4549,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4549,False,False,Apolipoprotein B-100
+APOE,ChEMBL,target_search_hit,CHEMBL5813,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5813,False,False,Tumor necrosis factor ligand superfamily member 10
+APOE,ChEMBL,target_search_hit,CHEMBL2364185,,NUCLEIC-ACID,,target_search_metadata,CHEMBL2364185,False,False,Apo-B 100 mRNA
+APOE,ChEMBL,target_search_hit,CHEMBL4523160,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4523160,False,False,Apolipoprotein C-III
+APOE,ChEMBL,target_search_hit,CHEMBL4680021,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4680021,False,False,Apolipoprotein L1
+APOE,ChEMBL,target_search_hit,CHEMBL5984,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5984,False,False,Apolipoprotein A-I
+APOE,ChEMBL,target_search_hit,CHEMBL2417350,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2417350,False,False,Tumor necrosis factor receptor superfamily member 6
+APOE,ChEMBL,target_search_hit,CHEMBL4523207,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4523207,False,False,Tumor necrosis factor receptor superfamily member 6
+APOE,ChEMBL,target_search_hit,CHEMBL2062354,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2062354,False,False,Biotin--protein ligase
+BSG,ChEMBL,target_search_hit,CHEMBL3580492,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3580492,False,False,Basigin
+BSG,ChEMBL,target_search_hit,CHEMBL5169083,,PROTEIN-PROTEIN INTERACTION,,target_search_metadata,CHEMBL5169083,False,False,Protein cereblon/Basigin
+CTSB,ChEMBL,target_search_hit,CHEMBL3232689,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3232689,False,False,Cathepsin B
+CTSB,ChEMBL,target_search_hit,CHEMBL2323,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2323,False,False,Cathepsin B
+CTSB,ChEMBL,target_search_hit,CHEMBL5187,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5187,False,False,Cathepsin B
+CTSB,ChEMBL,target_search_hit,CHEMBL4072,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4072,False,False,Cathepsin B
+CTSB,ChEMBL,target_search_hit,CHEMBL2602,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2602,False,False,Cathepsin B
+CTSB,ChEMBL,target_search_hit,CHEMBL2111396,,SELECTIVITY GROUP,,target_search_metadata,CHEMBL2111396,False,False,Cathepsin (B and K)
+CTSD,ChEMBL,target_search_hit,CHEMBL4106,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4106,False,False,Cathepsin D
+CTSD,ChEMBL,target_search_hit,CHEMBL2581,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2581,False,False,Cathepsin D
+GPX4,ChEMBL,target_search_hit,CHEMBL4295754,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4295754,False,False,Phospholipid hydroperoxide glutathione peroxidase GPX4
+GPX4,ChEMBL,target_search_hit,CHEMBL4523148,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4523148,False,False,Phospholipid hydroperoxide glutathione peroxidase GPX4
+GPX4,ChEMBL,target_search_hit,CHEMBL5465208,,PROTEIN-PROTEIN INTERACTION,,target_search_metadata,CHEMBL5465208,False,False,Protein cereblon/Phospholipid hydroperoxide glutathione peroxidase GPX4
+GPX4,ChEMBL,target_search_hit,CHEMBL5465231,,PROTEIN-PROTEIN INTERACTION,,target_search_metadata,CHEMBL5465231,False,False,von Hippel-Lindau disease tumor suppressor/Phospholipid hydroperoxide glutathione peroxidase GPX4
+GPX4,ChEMBL,target_search_hit,CHEMBL6196147,,PROTEIN-PROTEIN INTERACTION,,target_search_metadata,CHEMBL6196147,False,False,Baculoviral IAP repeat-containing protein 2/Phospholipid hydroperoxide glutathione peroxidase GPX4
+HMOX1,ChEMBL,target_search_hit,CHEMBL5035,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5035,False,False,Heme oxygenase 1
+HMOX1,ChEMBL,target_search_hit,CHEMBL1255146,,SINGLE PROTEIN,,target_search_metadata,CHEMBL1255146,False,False,Heme oxygenase 1
+HMOX1,ChEMBL,target_search_hit,CHEMBL2823,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2823,False,False,Heme oxygenase 1
+HMOX1,ChEMBL,target_search_hit,CHEMBL4434,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4434,False,False,Heme oxygenase 1
+LAMP2,ChEMBL,target_search_hit,CHEMBL4630812,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4630812,False,False,Lysosome-associated membrane glycoprotein 2
+LAMP2,ChEMBL,target_search_hit,CHEMBL5465542,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5465542,False,False,Lysosome-associated membrane glycoprotein 2
+LGALS3,ChEMBL,target_search_hit,CHEMBL3668,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3668,False,False,Galectin-3
+LGALS3,ChEMBL,target_search_hit,CHEMBL4531,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4531,False,False,Galectin-3
+NFKBIA,ChEMBL,target_search_hit,CHEMBL1926493,,SINGLE PROTEIN,,target_search_metadata,CHEMBL1926493,False,False,NF-kappa-B inhibitor alpha
+NFKBIA,ChEMBL,target_search_hit,CHEMBL2898,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2898,False,False,NF-kappa-B inhibitor alpha
+NQO1,ChEMBL,target_search_hit,CHEMBL2169730,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2169730,False,False,NQO1 protein
+NQO1,ChEMBL,target_search_hit,CHEMBL3091269,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3091269,False,False,NAD(P)H dehydrogenase [quinone] 1
+NQO1,ChEMBL,target_search_hit,CHEMBL3623,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3623,False,False,NAD(P)H dehydrogenase [quinone] 1
+NQO1,ChEMBL,target_search_hit,CHEMBL5611,,SINGLE PROTEIN,,target_search_metadata,CHEMBL5611,False,False,NAD(P)H dehydrogenase [quinone] 1
+SLC6A12,ChEMBL,target_search_hit,CHEMBL3715,,SINGLE PROTEIN,,target_search_metadata,CHEMBL3715,False,False,Sodium- and chloride-dependent betaine transporter
+SLC6A12,ChEMBL,target_search_hit,CHEMBL4228,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4228,False,False,GABA transporter 2
+SLC6A12,ChEMBL,target_search_hit,CHEMBL2111478,,PROTEIN FAMILY,,target_search_metadata,CHEMBL2111478,False,False,GABA transporter
+SLC6A12,ChEMBL,target_search_hit,CHEMBL2096685,,PROTEIN FAMILY,,target_search_metadata,CHEMBL2096685,False,False,GABA transporter
+SOD1,ChEMBL,target_search_hit,CHEMBL3833461,,NUCLEIC-ACID,,target_search_metadata,CHEMBL3833461,False,False,SOD1 mRNA
+SOD1,ChEMBL,target_search_hit,CHEMBL2354,,SINGLE PROTEIN,,target_search_metadata,CHEMBL2354,False,False,Superoxide dismutase [Cu-Zn]
+SOD1,ChEMBL,target_search_hit,CHEMBL4106171,,PROTEIN FAMILY,,target_search_metadata,CHEMBL4106171,False,False,Superoxide dismutase 1/2
+SOD2,ChEMBL,target_search_hit,CHEMBL4105776,,SINGLE PROTEIN,,target_search_metadata,CHEMBL4105776,False,False,"Superoxide dismutase [Mn], mitochondrial"
+SOD2,ChEMBL,target_search_hit,CHEMBL4106171,,PROTEIN FAMILY,,target_search_metadata,CHEMBL4106171,False,False,Superoxide dismutase 1/2
+TREM2,ChEMBL,target_search_hit,CHEMBL6196124,,SINGLE PROTEIN,,target_search_metadata,CHEMBL6196124,False,False,Triggering receptor expressed on myeloid cells 2
+APOE,local:v2_2_druggability_summary.csv,local_file_gene_mention,APOE,,,,1_local_rows,results\tables\v2_2_druggability_summary.csv,False,False,local file hit requires manual review

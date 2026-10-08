@@ -1,0 +1,2 @@
+condition,mean_pooled_oof_spearman,delta_vs_stage27c,delta_vs_stage39e_pca8,delta_vs_stage39h_context,reason
+training_skipped,,,,,No schema-reviewed donor-linked safe feature matrix was built from automatic Stage 41ABC downloads.

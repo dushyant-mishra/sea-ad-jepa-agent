@@ -1,0 +1,28 @@
+{
+  "schema": "jepa-population-access-registry-authority-validation-v1",
+  "generated_from": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip metadata-only split authorities",
+  "calibration_bundle_transport_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "foundation_sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+  "reader_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+  "foundation_rows": 215,
+  "reader_rows": 149,
+  "foundation_split_counts": {
+    "development": 24,
+    "sealed_holdout": 24,
+    "train": 166,
+    "whole_study_external_holdout": 1
+  },
+  "reader_partition_counts": {
+    "reader_fit": 104,
+    "reader_validation": 22,
+    "reader_oracle": 23
+  },
+  "missing_reader_donors": 0,
+  "reader_nontrain": 0,
+  "continuation_reader_overlap": 0,
+  "normalized_foundation_identity_collisions": 0,
+  "pathology_used_for_foundation_split_values": [
+    "false"
+  ],
+  "terminal": "PASS_POPULATION_ACCESS_REGISTRY_INPUTS"
+}

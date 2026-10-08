@@ -1,0 +1,8 @@
+model_variant,n_donors,n_features
+programming_only_pca_jepa,84,3000
+repaired_state_modules_full,84,105
+repaired_state_modules_compressed_pc,84,8
+programming_plus_repaired_state_modules_full,84,3105
+programming_plus_repaired_state_modules_compressed,84,3008
+negative_control_programming_plus_state_shuffled_compressed,84,3008
+negative_control_programming_plus_module_shuffled_compressed,84,3008

@@ -1,0 +1,112 @@
+{
+  "artifacts": [
+    {
+      "bytes": 4922,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/TEACHER_STUDENT_V5_REAL_DATA_ANTI_CHEAT_AUTHORITY_V1.md",
+      "sha256": "2b4896c2ba3a55c675e339c344547bddf5dfbef01c4f639acd0a352f84ca7a17"
+    },
+    {
+      "bytes": 2302,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/PROPOSED_INTEGRATED_TRAINER_ANTI_CHEAT_BINDING_V1.md",
+      "sha256": "a22f7b8deb26722580cfc3174a781099395469a4f2a3c63f43a065ec002423fb"
+    },
+    {
+      "bytes": 4335,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/ANTI_COLLAPSE_MECHANISM_REVIEW_V1.md",
+      "sha256": "c0e023f5f38f540e77353e04767b8ccf3538d4a1e94fd943e44046d51cbfd76b"
+    },
+    {
+      "bytes": 9288,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/BIOLOGY_DESTRUCTION_SENTINEL_V1.md",
+      "sha256": "3ba64847efe0a689824906b95bfa11ca3951e3ae64154a59bdd4fc65c37b9e09"
+    },
+    {
+      "bytes": 4525,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/HISTORICAL_T1_MECHANICS_DEFECT_CAUSAL_REVIEW_V1.md",
+      "sha256": "57a493105eb4a8c85d82e68812d4146fc6f77a93b89c462edbcd892cca7ae44f"
+    },
+    {
+      "bytes": 2279,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/CHECKPOINT_QUALIFICATION_GUARD_V1.md",
+      "sha256": "4affb934193880bbbe61ca00123219d0beec700ffe28f40353dc8b680a810df9"
+    },
+    {
+      "bytes": 2302,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/T1_TRAJECTORY_JSON_REVIEW_V1.md",
+      "sha256": "169e804be1b2cd631b153c9ca3a0db7588eeb7ce45b0fbebe01453f4215ded13"
+    },
+    {
+      "bytes": 12161,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/REAL_DATA_ANTI_CHEAT_AUDIT_V1.json",
+      "sha256": "f375533a9b8a6a4a930d01839efe3cef1bd288e1a8f5a38b4c349932fe8afdab"
+    },
+    {
+      "bytes": 7389,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/ANTI_COLLAPSE_MECHANISM_REVIEW_V1.json",
+      "sha256": "54f44b69108408017a72f49a571b14e0330c2727f56cdb76eb1220304e3eb3ad"
+    },
+    {
+      "bytes": 2293,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/HISTORICAL_T1_MECHANICS_DEFECT_CAUSAL_REVIEW_V1.json",
+      "sha256": "8b45fb7ae0a1f3e3b9819a0e1d711dbb99145a9817487ded66e7e54fe898da0f"
+    },
+    {
+      "bytes": 16566,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/BIOLOGY_DESTRUCTION_SENTINEL_V1.json",
+      "sha256": "d629d429a7040db8eec367196674bd264565f6b2ad7b555f7f504190ddfde5bb"
+    },
+    {
+      "bytes": 7760,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/ANTI_CHEAT_GATE_TABLE_V4.csv",
+      "sha256": "b73cf0875963051adfe9bde4cd0533950dae78bbc56a6699b87b4b72fea333e5"
+    },
+    {
+      "bytes": 3999,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/T1_TRAJECTORY_JSON_REVIEW_V1.json",
+      "sha256": "6cc082a8c654683aa31c9c4da042b6d7d7222426a330778f73bbb24abb2da589"
+    },
+    {
+      "bytes": 1748,
+      "path": "/mnt/data/jepa_v5_anticheat_work/results/T1_TRAJECTORY_LOSS_GRADIENT_SUMMARY_V1.csv",
+      "sha256": "ba6606541e76a9c2dd9995f2868048217bae26affedc2db96c8ac3fbab2ad1ee"
+    },
+    {
+      "bytes": 8971,
+      "path": "/mnt/data/jepa_v5_anticheat_work/scripts/analyze_t1_trajectory_json_v1.py",
+      "sha256": "a548d07d19481dd1c6c93acaf78b4d64906957302a0292e54d716f86ae690cc8"
+    },
+    {
+      "bytes": 2585,
+      "path": "/mnt/data/jepa_v5_anticheat_work/scripts/review_t1_trajectory_json_outputs_v1.py",
+      "sha256": "8bc6dc1ea571b5d23747dea3f500631ed2a2df2b385f5aef6e62873cb9a8c978"
+    },
+    {
+      "bytes": 8273,
+      "path": "/mnt/data/jepa_v5_anticheat_work/scripts/checkpoint_qualification_guard_v1.py",
+      "sha256": "25b30bb877e385ab946cfad1f5f511c7cee983cc49ed2977e59fc86d3ed012a9"
+    },
+    {
+      "bytes": 7894,
+      "path": "/mnt/data/jepa_v5_anticheat_work/scripts/mechanics_defect_guard_v1.py",
+      "sha256": "d950ccdd9c7dbee2af7e9a653907d6f6e0e1f187f9fa7d35eb06cfeb149392c0"
+    },
+    {
+      "bytes": 4215,
+      "path": "/mnt/data/jepa_v5_anticheat_work/tests/test_checkpoint_qualification_guard_v1.py",
+      "sha256": "9b1f2007b26b39b381319d953c6797949b8a44e678f322654c284fa6bf817bfc"
+    },
+    {
+      "bytes": 3612,
+      "path": "/mnt/data/jepa_v5_anticheat_work/tests/test_mechanics_defect_guard_v1.py",
+      "sha256": "22006f5e97f9ac2f8baa225bc2221562f4a3a3376ad6842fe907e7a7c26a7f2e"
+    },
+    {
+      "bytes": 1537,
+      "path": "/mnt/data/jepa_v5_anticheat_work/tests/test_t1_trajectory_json_outputs_v1.py",
+      "sha256": "e465d9d84f14f9333cb593932ce45c65514bc1356618bb4b3ba6b4502a64f30b"
+    }
+  ],
+  "note": "SHA manifest for important chat-local artifacts. Large binary inputs are excluded and should be referenced by their own authority manifests.",
+  "schema": "V5_ANTI_CHEAT_LOCAL_ARTIFACT_MANIFEST_20260909",
+  "source": "/mnt/data/jepa_v5_anticheat_work"
+}

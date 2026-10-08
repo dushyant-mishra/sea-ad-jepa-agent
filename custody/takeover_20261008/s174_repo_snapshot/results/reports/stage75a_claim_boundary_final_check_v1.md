@@ -1,0 +1,5 @@
+# Stage75A claim-boundary final check
+
+| stage75a_readiness_only | no_scenicplus_run | no_celloracle_run | no_model_training | no_prediction_benchmark_update | no_external_validation_claim | no_causal_knockout_claim | no_therapeutic_claim | no_validated_grn_claim | raw_data_not_committed | safety_audit_pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True | True | True | True | True |

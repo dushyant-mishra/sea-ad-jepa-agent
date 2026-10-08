@@ -1,0 +1,160 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "test": "freeze_root"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "test": "gapped_D6"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D6_order_chunk"
+    },
+    {
+      "candidate": null,
+      "pass": true,
+      "prefix": [],
+      "test": "first_D1"
+    },
+    {
+      "pass": true,
+      "test": "first_D1_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "test": "gapped_D5_D13"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D5_D13_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "test": "planted_contiguous"
+    },
+    {
+      "pass": true,
+      "test": "planted_contiguous_order_chunk"
+    },
+    {
+      "pass": true,
+      "test": "dense_solver_independence_small"
+    },
+    {
+      "details": {
+        "dimension": 512,
+        "eigenvalue_max_abs": 9.769962616701378e-15,
+        "frozen_tolerance": 3.967257101647895e-08,
+        "maximum_residual": 2.1538594327761687e-15,
+        "metric_orthogonality": 1.7374737241498016e-16,
+        "pass": true,
+        "principal_subspace_loss": 0.0,
+        "rank": 320
+      },
+      "pass": true,
+      "test": "dense_vs_production_full512_rank320_solver"
+    },
+    {
+      "pass": true,
+      "test": "no_top32_or_stale_path"
+    },
+    {
+      "pass": true,
+      "test": "null_refits_basis_with_numerical_gate"
+    },
+    {
+      "pass": true,
+      "test": "streaming_no_cell_cell"
+    },
+    {
+      "pass": true,
+      "test": "independent_selector_not_imported"
+    },
+    {
+      "maximum_error": 4.440892098500626e-16,
+      "pass": true,
+      "test": "ALL_natural_donor_mass"
+    },
+    {
+      "pass": true,
+      "test": "authority_population"
+    },
+    {
+      "pass": true,
+      "test": "independent_lossless_plan_exact_membership_weights_mass"
+    },
+    {
+      "pass": true,
+      "test": "csv_not_conclusion_authority"
+    },
+    {
+      "pass": true,
+      "test": "plan_semantic_bound_to_checkpoint"
+    },
+    {
+      "details": {
+        "boolean_exact": true,
+        "candidate_exact": true,
+        "distinct_A_B_exact": true,
+        "forced_interruption_resume_exact": true,
+        "map_hash_exact": true,
+        "max_abs_differences": {
+          "between": 8.881784197001252e-16,
+          "mean": 0.0,
+          "null_full_eigen": 6.503131366741854e-14,
+          "null_heldout": 3.959055305813308e-13,
+          "null_stability": 3.602673714908633e-13,
+          "observed_bootstrap_eigen": 8.876233081878127e-14,
+          "observed_heldout": 1.0813572259849025e-13,
+          "observed_stability": 1.021094320208249e-11,
+          "paired_null_bootstrap_eigen": 7.691070003090772e-14,
+          "within": 4.440892098500626e-16
+        },
+        "pass": true
+      },
+      "pass": true,
+      "test": "independent_end_to_end_weight_null_bootstrap_stability_heldout_selection"
+    },
+    {
+      "pass": true,
+      "test": "recursive_taint_private_block"
+    }
+  ],
+  "independent_selector": "local while-loop implementation; no production selector/core import",
+  "input_hashes": {
+    "core": "838d9c6f2dbdd6ee201566b281e22e6a621548723bb55b6286c51187d119f6e4",
+    "freeze_manifest": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "production_fixture": "acd6596ea0919cbb7017596c4d4c60bd22fdfe0011056addc39467a19fa335a8",
+    "runner": "d18fdb12c59ca2e008204f9471181176c95b11d493d6b510a84813e13a103420",
+    "validator": "fefcd6d14d988f11674f9a2ced7b2bcb7d3a8c044968334d10186b5022845f53"
+  },
+  "schema": "full104-refit-null-independent-implementation-validator-v1",
+  "status": "PASS_INDEPENDENT_IMPLEMENTATION_VALIDATOR"
+}

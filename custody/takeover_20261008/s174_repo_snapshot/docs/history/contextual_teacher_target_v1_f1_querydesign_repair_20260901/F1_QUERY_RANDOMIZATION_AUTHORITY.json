@@ -1,0 +1,18 @@
+{
+  "schema": "f1-query-randomization-authority-v1",
+  "result_state": "PROSPECTIVE_PRE_OUTCOME_FROZEN",
+  "generated_utc": "2026-09-02T01:14:22.3788554Z",
+  "generator": "Windows System.Security.Cryptography.RNGCryptoServiceProvider",
+  "entropy_bytes": 32,
+  "public_hmac_sha256_key_hex": "173e4abb2faf45387b4ce1c21df9681bc891f571f3646b937bb5484b4f94be8b",
+  "public_key_sha256": "7d91edec79ae27fd7c9fd35ebaf33454e05aaf39a0dd8c24d23a9460a3b5242a",
+  "key_generation_attempt": 1,
+  "key_replacement_count": 0,
+  "commit_rule": "This first generated key became immediately authoritative and is immutable. A repair may change serialization or code, but may not replace this key or condition on any resulting assignment.",
+  "assignment_generation_started_after_key_commit": true,
+  "assignment_rows_or_selected_queries_inspected_before_key_commit": false,
+  "outcome_or_expression_inspected_before_key_commit": false,
+  "probability_model": "The 256-bit key was sampled once from the operating-system CSPRNG before any F1 candidate outcome existed. Conditional reproducibility uses HMAC-SHA256. Design-unbiasedness is claimed over the key-generation experiment under the standard keyed-PRF/random-oracle idealization; it is not claimed over a fixed deterministic identifier hash.",
+  "candidate_outcomes_inspected_before_generation": false,
+  "protected_expression_opened": false
+}

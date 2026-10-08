@@ -1,0 +1,43 @@
+stage: Stage67
+version: v1
+stage_name: Stage67_legacy_cell_level_artifact_and_seaad_availability_audit_v1
+description: Inventory v1/v2/v3 legacy cell-level JEPA/Graph-JEPA artifacts and SEA-AD data availability for rare-tail cell extraction.
+
+inputs:
+  results_root: results
+  data_root: data
+  stage64_cell_scores: results/tables/stage64_cell_level_module_score_table_v1.csv
+  stage64_handoff: results/tables/stage64_external_handoff_signature_v1.csv
+  stage65_handoff: results/tables/stage65_external_handoff_signature_v1.csv
+  stage66_graph_registry: results/tables/stage66_rare_signature_gene_registry_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  artifact_name_patterns:
+    - "*cell_embeddings*.csv"
+    - "*cell_trajectory*.csv"
+    - "*cell_scores*.csv"
+    - "*trajectory_scores*.csv"
+    - "*umap_coordinates*.csv"
+    - "*coordinates*.csv"
+    - "*latent*.csv"
+    - "*module_scores*.csv"
+    - "*mixing*.csv"
+  h5ad_patterns:
+    - "*.h5ad"
+  max_csv_rows_for_schema: 50
+
+outputs:
+  input_inventory: results/tables/stage67_input_inventory_v1.csv
+  legacy_cell_artifact_inventory: results/tables/stage67_legacy_cell_artifact_inventory_v1.csv
+  legacy_artifact_joinability_audit: results/tables/stage67_legacy_artifact_joinability_audit_v1.csv
+  sea_ad_h5ad_availability_audit: results/tables/stage67_sea_ad_h5ad_availability_audit_v1.csv
+  rare_tail_cell_join_plan: results/tables/stage67_rare_tail_cell_join_plan_v1.csv
+  recommended_stage68_inputs: results/tables/stage67_recommended_stage68_inputs_v1.csv
+  claim_boundary_audit: results/tables/stage67_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage67_pass_fail_v1.csv
+  report: results/reports/stage67_legacy_cell_level_artifact_and_seaad_availability_audit_report_v1.md
+  pi_summary: results/reports/stage67_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage67_claim_boundary_final_check_v1.md

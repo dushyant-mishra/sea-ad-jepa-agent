@@ -1,0 +1,52 @@
+defaults:
+  - _self_
+
+h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+edge_csv: results/tables/v2_graph_consensus_edge_index.csv
+annotation_csv: results/tables/jepa_v2_translational_actionability_matrix.csv
+
+out_dir: results/models/v2_2_topology_dropout_full_e50_fast
+log_dir: runs/v2_2_topology_dropout_full_e50_fast
+history_csv: results/tables/v2_2_topology_dropout_full_e50_fast_history.csv
+log_file: results/logs/v2_2_topology_dropout_full_e50_fast.log
+
+epochs: 50
+checkpoint_every: 5
+batch_size: 256
+hidden_dim: 128
+latent_dim: 128
+gene_embed_dim: 32
+n_layers: 2
+dropout: 0.1
+
+ema_decay: 0.9995
+ema_start_decay: 0.992
+ema_warmup_epochs: 10
+mask_fraction: 0.5
+mask_start_fraction: 0.2
+mask_warmup_epochs: 10
+
+random_gene_dropout: 0.15
+module_dropout_prob: 0.10
+external_mask_files:
+  - results/tables/external_gene_masks/gse174367_morabito_missing_genes.txt
+  - results/tables/external_gene_masks/gse138852_grubman_missing_genes.txt
+external_mask_prob: 0.25
+edge_dropout: 0.10
+
+variance_weight: 0.20
+variance_gamma: 0.02
+covariance_weight: 0.05
+
+lr: 0.0002
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+use_node_annotations: false
+max_cells: 0
+num_workers: 0
+device: auto
+seed: 7
+
+hydra:
+  job:
+    chdir: false

@@ -1,0 +1,152 @@
+{
+  "schema": "V77_WORLD_A_BEHAVIOURAL_LOCK_V1",
+  "recorded_utc": "2026-10-05T17:08:56Z",
+  "purpose": "lock the current verified synthetic world's behaviour BEFORE any extension, so that any later change to it is detectable. Required by the owner instruction: 'Do not mutate World A until its current behavior is locked.'",
+  "WORLD_A": {
+    "canonical_name": "World A",
+    "alias": "World 0 (the parallel review lane's name for the same object)",
+    "role": "linear / common-biology recoverability control and technical-shortcut nuisance rejection",
+    "status": "LOCKED__IMMUTABLE",
+    "it_is_not": [
+      "a biological-state testbed",
+      "a rare-biology testbed",
+      "a regulatory-mechanism testbed",
+      "a causal testbed"
+    ]
+  },
+  "IMMUTABILITY_RULE": {
+    "statement": "World A's generator files are FROZEN. Worlds B, C and D must be implemented as NEW generator files, never as edits or new flags inside these files.",
+    "why": "editing a World A generator would change World A's output bytes even when the new code path is not taken, because the file digest is part of the lock. A new flag is still a mutation.",
+    "frozen_generator_blobs": {
+      "scripts/v64/build_v73_sharded_master_truth.py": "7a2ed8fb8258b9567cb3085933f0b94bc54819dd",
+      "scripts/v64/build_v73_full104_sharded_observer.py": "ce4407dbe4489e37fe3936a2d634b133ead43ac3",
+      "scripts/v64/build_v73_paired_multiome_sharded_observer.py": "7834dace8169a4fc60acd300dc8e8e0be6833949",
+      "scripts/v64/build_v73_synthetic_fragments.py": "5f7ccb40e06860e5f5e05d6b0108505eb7e52f63",
+      "scripts/v64/v73_full104_population_geometry.py": "8031ca172c53178232fcff22a7c3c0c2e4252f7c",
+      "scripts/v64/v73_full104_qc_calibration.py": "6d6a8f7920c341401dbcc22f4d1ef5e56130f8d8",
+      "scripts/v75/build_v75_control_twins.py": "9412689cebd165d5d0c8fffd5f5280dd503f2538"
+    },
+    "frozen_at_commit": "1f4186783a572eff5b6f9828ce36fee314588491"
+  },
+  "LOCKED_DATA_IDENTITY": {
+    "reference_world": "measurement_null_a",
+    "all_three_worlds": [
+      "measurement_null_a",
+      "measurement_null_b",
+      "biology_positive"
+    ],
+    "n_cells_per_world": 100000,
+    "seeds": {
+      "truth_seed": 7302,
+      "measurement_seed_a": 8501,
+      "measurement_seed_b": 8502
+    },
+    "shard_size": 10000,
+    "custody_manifest": {
+      "path": "results\\v77\\V77_SYNTHETIC_ECOSYSTEM_CUSTODY_MANIFEST_V1.json",
+      "sha256": "549d635eb509dcd1184fbcddeb3270dc7d01196f87b6a8be68f8403d895d481a"
+    },
+    "file_level_digests_are_in": "the custody manifest's WHAT_PHYSICALLY_EXISTS_NOW section",
+    "fragment_shard_digests_match_original_ci_run": true,
+    "local_bytes": 434338289,
+    "local_files": 141,
+    "permanent_root": "D:/jepa_v77_synthetic_custody_20261005",
+    "wsl_equivalent": "/mnt/d/jepa_v77_synthetic_custody_20261005"
+  },
+  "LOCKED_BEHAVIOURAL_SIGNATURES": {
+    "note": "any future rebuild of World A must reproduce every one of these",
+    "planted_truth_dimensions": 14,
+    "max_abs_corr_between_distinct_latents": 0.00826,
+    "donor_ICC_range": [
+      0.000865,
+      0.001307
+    ],
+    "donor_ICC_independence_null": 0.00103,
+    "operator_ICC_range": [
+      0.000273,
+      0.000495
+    ],
+    "tail_mass_abs_z_gt_3_range": [
+      0.00248,
+      0.00302
+    ],
+    "gaussian_reference_tail_mass": 0.0027,
+    "kurtosis_range": [
+      2.9736,
+      3.0281
+    ],
+    "availability_ICC_by_operator": 1.0,
+    "panel_depth_ICC_by_operator": 0.058929,
+    "max_abs_corr_latent_vs_panel_depth": 0.008637,
+    "max_abs_corr_latent_vs_n_available": 0.006898,
+    "planted_perturbation": {
+      "block": "z_global",
+      "dim": 0,
+      "displacement": 1.0,
+      "rule": "global_cell_index % 4 == 0",
+      "n_targeted": 25000,
+      "max_change_in_other_dims": 0.0
+    }
+  },
+  "LOCKED_ORACLE_CEILINGS": {
+    "method": "linear oracle probe, 50/50 held-out split, seed 20261005, CPM-log1p features",
+    "preserved_because": "the owner instruction: 'downstream model performance should be judged as fraction of recoverable truth, not fraction of planted truth'",
+    "from_permitted_RNA_view": {
+      "z_global": 0.6831728102221755,
+      "z_query": 0.662894018222939,
+      "z_reg_shared": 0.6678015809065395,
+      "z_reg_private": -0.0016150327078482407
+    },
+    "from_ATAC": {
+      "z_global": 0.8525844026442286,
+      "z_reg_shared": 0.8503855840819473,
+      "z_reg_private": 0.8492721872845965,
+      "z_query": -0.004771265898352417
+    },
+    "from_all_modalities": {
+      "z_global": 0.9042615795934417,
+      "z_query": 0.776993440844608,
+      "z_reg_shared": 0.9016190170081986,
+      "z_reg_private": 0.850185149006196,
+      "technical_latents": 0.2784131080203351
+    },
+    "headline": "a perfect linear reader of the 96-gene view recovers about 0.67 of each shared latent",
+    "reproduce_with": "scripts/v77/v77_phase2_recoverability_probe_v1.py"
+  },
+  "REPAIR_R1_APPLIED_NOW_AT_THE_METRIC_LEVEL": {
+    "defect": "technical_latents[1] and technical_latents[2] are consumed by nothing",
+    "evidence_heldout_R2_all_modalities": [
+      -0.0088,
+      -0.00844
+    ],
+    "repair": "they are EXCLUDED from every truth-recovery denominator. No generator change is needed and none is made, so World A is not mutated.",
+    "WORLD_A_DENOMINATOR_AFTER_REPAIR": {
+      "biological_truth_dimensions": 11,
+      "composition": {
+        "z_global": 4,
+        "z_query": 2,
+        "z_reg_shared": 3,
+        "z_reg_private": 2
+      },
+      "excluded_as_nuisance": {
+        "technical_latents[0]": "ATAC-consumed nuisance, not biological truth",
+        "technical_latents[1]": "inert",
+        "technical_latents[2]": "inert"
+      },
+      "rule": "fraction-of-recoverable-truth is computed over the 11 biological dimensions, each normalised by its own locked oracle ceiling, never over 14"
+    }
+  },
+  "REPAIR_R2_DEFERRED_TO_WORLD_D_BY_NECESSITY": {
+    "defect": "technical_latents[0] and z_reg_private enter ATAC identically; both score 0.000 from RNA and about 0.85 from ATAC, so biological and technical ATAC-private variation are structurally indistinguishable",
+    "why_it_cannot_be_repaired_in_world_A": "the repair requires changing how a factor enters the observation model, which is a generator change. World A is locked, so the repair lands in World D.",
+    "interim_rule_binding_immediately": "until World D exists, NO cross-modal biological-meaning claim may be made from an ATAC-private factor in World A. World A may be used to show that an RNA-non-recoverable factor is not falsely reported as recovered, which does not require distinguishing its biological from its technical origin."
+  },
+  "GOVERNANCE": {
+    "generator_modified": false,
+    "seeds_unchanged": true,
+    "world_A_mutated": false,
+    "training": "OFF",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED"
+  }
+}

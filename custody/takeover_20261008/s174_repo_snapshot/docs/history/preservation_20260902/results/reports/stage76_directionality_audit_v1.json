@@ -1,0 +1,53 @@
+{
+  "stage": "stage76_directionality_audit_v1",
+  "purpose": "signed coactivity and perturbation-direction audit without activation/repression claims",
+  "git_commit": "e7cbe620c1ed28d0434ab0b7755d508e818f1233",
+  "source_tables": {
+    "integrated_regulator_summary": {
+      "path": "results/tables/stage75_integrated_regulator_summary_v1.csv",
+      "sha256": "4fa3d182b1d3d903dd7ae95eae0aeac2004f937db2b76eddecf661c04816ae73"
+    },
+    "integrated_tf_target_summary": {
+      "path": "results/tables/stage75_integrated_tf_target_summary_v1.csv",
+      "sha256": "996c4e6e6c86dae1f15cbc0970f548d56dfbb69faa43cf7fc93beda8f107f4b5"
+    },
+    "integrated_negative_regulator_gate": {
+      "path": "results/tables/stage75_integrated_negative_regulator_gate_v1.csv",
+      "sha256": "330de5fec99190b2d7c7911427dcff3145a0c7633f2398741712f4a607a81517"
+    },
+    "integrated_manifest": {
+      "path": "results/reports/stage75_integrated_evidence_manifest_v1.json",
+      "sha256": "3df7fb9b8a4a8ab7a9831c5bd664c787b5541b0b2f97040a864f50a6719c5df8"
+    }
+  },
+  "inspection_findings": {
+    "stage72b_sign_thresholds_reused": true,
+    "min_abs_spearman": 0.2,
+    "min_bootstrap_sign_stability": 0.7,
+    "tf_level_state_direction_source_found": false,
+    "desired_tf_change_policy": "unresolved unless existing TF-level state-association evidence is available"
+  },
+  "row_counts": {
+    "signed_tf_target_hypotheses": 96,
+    "regulator_directionality_summary": 10,
+    "unresolved_directionality": 10,
+    "negative_gate_regulators": 3
+  },
+  "resolved_direction_counts": {
+    "false": 10
+  },
+  "outputs": {
+    "signed_tf_target_csv": "results/tables/stage76_signed_tf_target_hypotheses_v1.csv",
+    "regulator_directionality_csv": "results/tables/stage76_regulator_directionality_summary_v1.csv",
+    "unresolved_directionality_csv": "results/tables/stage76_unresolved_directionality_v1.csv",
+    "report_json": "results/reports/stage76_directionality_audit_v1.json"
+  },
+  "claim_boundaries": {
+    "validated_regulation": false,
+    "validated_grn_claim": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "activation_or_repression_claim": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}

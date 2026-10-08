@@ -1,0 +1,3 @@
+label,n_cells,latent_dim,mean_cosine_before_after,median_cosine_before_after,mean_l2_delta,median_l2_delta,mean_abs_coordinate_delta,median_abs_coordinate_delta
+cellxgene_normal_microglia_stage_b_to_c,10000,128,0.9992388486862184,0.9993550777435304,0.3082472085952759,0.3030185103416443,0.0223142001777887,0.0220387168228626
+sea_ad_low_pathology_relaxed_stage_b_to_c,4467,128,0.9997601509094238,0.9998290538787842,0.5186368823051453,0.344388484954834,0.03864060342311859,0.025808950886130333

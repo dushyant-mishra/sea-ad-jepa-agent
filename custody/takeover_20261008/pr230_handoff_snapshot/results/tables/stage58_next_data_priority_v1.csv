@@ -1,0 +1,4 @@
+priority_rank,next_action,reason,claim_boundary
+1,Stage60_gene_preserved_MTG_module_rebuild,raw MTG contains missing stress/module genes and decodable Micro-PVM state labels; can test whether missing genes explain near-miss,internal benchmark only
+2,Stage59_DLPFC_Microglia_PVM_acquisition_support_audit,DLPFC Microglia-PVM exists online/local metadata; region support may clarify generality,support/acquisition audit unless donor/pathology linkage exists
+3,spatial_or_plaque_proximity_feature_acquisition,current transcriptomic state modules are subthreshold; spatial/pathology-proximity features are likely missing signal,manual acquisition/readiness only

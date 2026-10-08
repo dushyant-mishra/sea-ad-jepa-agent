@@ -1,0 +1,114 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V1",
+  "recorded_utc": "2026-10-05T21:56:16Z",
+  "parent_implementation_head": "d18277f0",
+  "SYNTHETIC_STATUS": {
+    "previous": "v2 oracle pending",
+    "current": "SPARSE_LOADER_QUALIFIED__COMPONENT_STATISTICS_FROZEN_AND_CONTROLLED__FULL_V2_REBUILD_PENDING",
+    "qualified": [
+      "the sparse 41,238-address loader: 3/3 tests green, no densification, p/n = 0.019",
+      "five component-specific sufficient statistics, frozen prospectively before the deciding rebuild",
+      "detect/reject controls for B4, C1, C2 and C3 against genuine off-twins"
+    ],
+    "not_yet_done": [
+      "the full B/C/D/E rebuild on the repaired v2 observer at production cell counts",
+      "the complete oracle/recoverability matrix",
+      "D1 graph recovery, whose threshold remains genuinely blind"
+    ],
+    "model_evaluation": "NOT STARTED AND NOT AUTHORIZED"
+  },
+  "DETECT_REJECT_RESULTS": {
+    "design": "the off-twin retains the truth latent AND the planted module design; only the EFFECT is zeroed. Module address sets are byte-identical between each world and its twin, so the statistic is computed over exactly the same addresses.",
+    "results": [
+      {
+        "component": "B4",
+        "statistic": "R2(band)",
+        "signal": 0.3812,
+        "off_twin": -0.0202,
+        "criterion": "in [0.25,0.45]",
+        "detect": "PASS",
+        "reject": "PASS",
+        "note": "under the universal reader this scored -0.0329 and would have been called unrecoverable"
+      },
+      {
+        "component": "C1",
+        "statistic": "full-minus-additive gap",
+        "signal": 0.0737,
+        "off_twin": -0.0237,
+        "criterion": "> 0.05",
+        "detect": "PASS",
+        "reject": "PASS"
+      },
+      {
+        "component": "C2",
+        "statistic": "R2(ratio features)",
+        "signal": 0.1525,
+        "off_twin": -0.0033,
+        "criterion": "in [0.40,0.60]",
+        "detect": "FAIL",
+        "reject": "PASS",
+        "note": "fails exactly as the freeze predicted; the band was NOT moved"
+      },
+      {
+        "component": "C3",
+        "statistic": "max abs corr",
+        "signal": 0.0988,
+        "off_twin": 0.0151,
+        "criterion": "> 0.05",
+        "detect": "PASS",
+        "reject": "PASS"
+      }
+    ],
+    "summary": "detect 3 of 4, reject 4 of 4"
+  },
+  "C2_CONSTRUCTION_FAILURE": {
+    "status": "OPEN__DECLARED_IN_ADVANCE",
+    "designed_class": "module-conditional oracle 0.40 to 0.60",
+    "measured_with_the_frozen_statistic": 0.1525,
+    "ruling": "a SIMULATOR CONSTRUCTION FAILURE under the frozen rule, not a result to explain away. The correct statistic was used, the control rejects cleanly, and the component still does not reach its designed class.",
+    "causes_already_excluded": [
+      "module collision, because C1 recovered at full scale while C2 did not",
+      "a wrong statistic, because the ratio form was frozen before measuring",
+      "a vacuous control, because the off-twin rejects at -0.0033"
+    ],
+    "attempts_so_far": 3,
+    "stopping_rule_declared_now": "C2 gets at most 2 further construction attempts. If it still misses its designed band it is WITHDRAWN from the battery and recorded as a regime this simulator cannot express, rather than re-banded."
+  },
+  "DEFECT_REGISTER": [
+    {
+      "id": "S124",
+      "status": "REPAIRED_AND_PRESERVED",
+      "defect": "C3 was implemented in the 96-feature observer and lost when the full-scale observer was written; the truth kept emitting z_bioqc and nothing consumed it",
+      "why_it_matters": "recreated the inert-latent defect recorded against technical_latents[1:2] in Phase 2",
+      "found_by": "the oracle design audit, because R2(z_bioqc given anything) returned zero",
+      "repair": "biology-coupled detected-feature and library targets restored at full scale",
+      "verification": {
+        "abs_corr_bioqc_vs_library": 0.0988,
+        "world_A_reference": 0.0086,
+        "off_twin": 0.0151
+      },
+      "preserved_as": "a defect-and-successor record, not folded away"
+    },
+    {
+      "id": "S125",
+      "status": "REPAIRED",
+      "defect": "the first off-twin control was VACUOUS. Removing a component from the TRUTH meant its statistic was never computed, and not running was scored as correctly rejecting.",
+      "why_it_matters": "the check-that-cannot-fail pattern this project has a standing rule against. All four controls would have reported PASS without measuring anything.",
+      "found_by": "my own review of the control output before accepting it",
+      "repair": "suppression now removes a component from the OBSERVATION while the truth retains the latent and the planted module design is still allocated, so the statistic runs over identical addresses and must return approximately zero",
+      "verification": "all four off-twin statistics are computed and all four reject"
+    }
+  ],
+  "UNIVERSAL_CEILING_LABEL": "ORACLE_CEILING_UNDER_KNOWN_SUPPORT. The design matrix is built from the planted module sets, i.e. from truth, so every number measures recoverability GIVEN PERFECT MODULE DISCOVERY. It is an upper bound and must never be reported as a blind achievable ceiling.",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "legacy_checkpoint_as_biological_authority": "NO",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

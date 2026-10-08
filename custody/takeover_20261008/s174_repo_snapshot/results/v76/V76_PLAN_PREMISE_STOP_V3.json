@@ -1,0 +1,228 @@
+{
+  "schema": "V76_PLAN_PREMISE_STOP_V3",
+  "recorded_utc": "2026-10-05T03:24:22Z",
+  "head": "6698463b68672dedf57d12f89b5ccc35303acac5",
+  "amends": {
+    "V1": {
+      "path": "results\\v76\\V76_STATE_PREMISE_REDTEAM_AUDIT_V1.json",
+      "sha256": "a2ce558dde3adb1ce4c74af6384605305ce9c2d36b22b43d7f573cdbf1ddad39"
+    },
+    "V2": {
+      "path": "results\\v76\\V76_STATE_PREMISE_REDTEAM_AUDIT_V2_AMENDED.json",
+      "sha256": "a26d6ad386a80f531a2ba2b43bb39cf31e42cc99a34d99577b8879ae60f66da3"
+    },
+    "prior_bytes_unchanged": true
+  },
+  "trigger": "the project owner asked whether a target is defined before further synthetic dataset work, then asked what the plan actually was",
+  "VERDICT": "STOP__SYNTHETIC_STATE_QUALIFICATION_LADDER_HAS_NO_DEFINED_OBJECTIVE",
+  "THE_FINDING": {
+    "question": "is a production JEPA target defined?",
+    "answer": "NO",
+    "and_it_is_worse_than_undecided": "three candidate target families were built, causally tested and all three REJECTED. This is a closed negative result, not an open question awaiting a choice.",
+    "documentary": [
+      {
+        "source": "AGENTS.md:61",
+        "quote": "No locally qualified production JEPA target winner currently exists."
+      },
+      {
+        "source": "docs/agent/ACTIVE_STATE.md:134",
+        "quote": "No locally qualified production target winner exists."
+      },
+      {
+        "source": "docs/agent/ACTIVE_STATE.md:169",
+        "quote": "T0/T1/TCTX remain hypotheses, not production winners."
+      },
+      {
+        "source": "docs/agent/ACTIVE_STATE.md:200",
+        "quote": "PRODUCTION PIPELINE REPAIR REQUIRED; no T0/T1/TCTX candidate qualifies for a tiny causal encoder experiment."
+      },
+      {
+        "source": "docs/agent/ACTIVE_STATE.md:219",
+        "quote": "STOP. No production target winner and no encoder/EMA optimizer authorization."
+      }
+    ],
+    "measured_evidence": {
+      "design": "three corrected reduced six-IPB runs, 32 updates, three seeds, matched initialization/cells/masks/RNG, no anchor",
+      "complete_H_mean_R2_delta": {
+        "T0_block_mean": -0.07663,
+        "T1_full_gene_Hg": -0.09387,
+        "TCTX_query_self_masked_Hg": -0.09432
+      },
+      "all_three_negative": true,
+      "real_production_forward_gate_20260821": {
+        "cohort": "446 FOUNDATION TRAIN cells, 149 donors, 42 operators, 41,238 addresses",
+        "optimizer_and_EMA_updates": 0,
+        "T1_conditional_row_R2": 0.9114,
+        "T1_identity_only_R2": 0.9105,
+        "TCTX_conditional_row_R2": 0.9595,
+        "TCTX_identity_only_R2": 0.9591,
+        "meaning": "the target was approximately 99% predictable from gene identity alone, before any cell-specific evidence was used",
+        "critics": "STOP / STOP / STOP, no dissent"
+      }
+    }
+  },
+  "THE_RUNTIME_IMPLEMENTS_A_REJECTED_FAMILY": {
+    "source": "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+    "code": "teacher_blocks = gather_block_states(teacher_state.gene_states, block)",
+    "teacher_view": "view='target' -> gene_valid = measurement_mask (unmasked, all measured)",
+    "classification": "T1 FULL GENE H_g",
+    "T1_causal_delta": -0.09387,
+    "statement": "the canonical runtime's de facto target is the family with the WORST measured causal delta of the three. It is an unqualified default, not a chosen target.",
+    "not_a_retraction_of_the_runtime": "this does not say the runtime is wrong. It says no evidence qualifies its target."
+  },
+  "WHAT_THE_PLAN_ACTUALLY_WAS": {
+    "stated_next_action_before_this_stop": "audit the canonical IPBEncoder(width=160), then freeze a prospective measurement-null versus biology-positive state-qualification contract, on a synthetic substrate scaled 2K -> 100K -> 500K -> 4.553M",
+    "where_it_came_from": "a scaling ladder built for MEASUREMENT ARCHITECTURE qualification. V73/V74 built a synthetic stress twin reproducing empirical donor/source/operator/QC geometry; V75 qualified it at 100K.",
+    "the_structural_error": "the next rung was written as a continuation of the same ladder, but it is a different KIND of question. Measurement-architecture qualification is engineering and needs only the generator. State qualification is science and needs a target, a trained model and a canonical vocabulary.",
+    "five_independent_blockers_all_true_simultaneously": [
+      {
+        "id": "B1",
+        "blocker": "no defined target",
+        "status": "CLOSED NEGATIVE: three families tested, all rejected",
+        "severity": "fatal to the objective"
+      },
+      {
+        "id": "B2",
+        "blocker": "no trained model",
+        "status": "only a 10-update engineering smoke exists",
+        "severity": "fatal to the experiment"
+      },
+      {
+        "id": "B3",
+        "blocker": "wrong vocabulary",
+        "status": "96 ENSG_SYN_* placeholders versus 41,238 canonical addresses",
+        "severity": "fatal to the substrate"
+      },
+      {
+        "id": "B4",
+        "blocker": "no dimensional claim to qualify",
+        "status": "160 is token width; the authority index denies it as production D",
+        "severity": "fatal to the deliverable"
+      },
+      {
+        "id": "B5",
+        "blocker": "circularity",
+        "status": "synthetic-trained is judged against its own generator",
+        "severity": "fatal to the inference"
+      }
+    ],
+    "any_one_of_these_blocks_the_plan": true,
+    "honest_statement": "the plan was not designed and then found defective. It accreted from a legitimate engineering ladder and was never tested for whether its next step was well-posed."
+  },
+  "WHAT_STILL_STANDS_UNCHANGED": [
+    "V75 100K measurement-architecture qualification. It is valid for its own narrow claim: the synthetic generator preserves empirical geometry at scale. That claim never depended on a target.",
+    "the Phase E engineering smoke, as an engineering feasibility result",
+    "all Stage-4 executor, SCENIC+ Route-A/Route-B, blacklist and custody infrastructure",
+    "every V76 finding Q1 through Q7; none is retracted",
+    "all protected-data boundaries"
+  ],
+  "CORRECTED_DEPENDENCY_ORDER": [
+    {
+      "step": 1,
+      "what": "real TRAIN-only forward target/evidence gate",
+      "authorized_by": "docs/agent/ACTIVE_STATE.md, 'Next authorized experiment'",
+      "inside_TRAINING_OFF": true,
+      "constraints": [
+        "zero encoder optimizer updates",
+        "zero EMA updates",
+        "TRAIN only",
+        "no pathology",
+        "no DEV/SEALED",
+        "production-first ~41K not 4K-first",
+        "distinguish representation loss from identifiability loss",
+        "stratify by N_eff, physical support, retained evidence"
+      ],
+      "named_prerequisite": "strict donor-cross-fitted per-address centering of H",
+      "predeclared_promotion_criterion": "incremental evidence OVER identity",
+      "produces": "a target winner, or another qualified STOP"
+    },
+    {
+      "step": 2,
+      "what": "authorize training",
+      "blocked_until": "step 1 yields a winner",
+      "produces": "a learned checkpoint"
+    },
+    {
+      "step": 3,
+      "what": "representation-role identifiability experiments (the six-experiment program reviewed in V2 amendment 4)",
+      "blocked_until": "step 2",
+      "produces": "where the trained model stores cell-specific information"
+    },
+    {
+      "step": 4,
+      "what": "choose the scientific object among z_cell, {h_g}, or a program subspace (V76 Q7)",
+      "blocked_until": "step 3"
+    },
+    {
+      "step": 5,
+      "what": "a dimensional claim, DISCOVERED as stable program/subspace rank",
+      "blocked_until": "step 4",
+      "never": "asserted as the architectural width 160"
+    }
+  ],
+  "WHERE_SYNTHETIC_DATA_LEGITIMATELY_FITS": {
+    "principle": "synthetic data is a TOOL built to the specification a stage needs, not a ladder climbed for its own sake",
+    "stop_the_ladder_here": {
+      "500K": "DO_NOT_PROCEED",
+      "4.553M": "DO_NOT_PROCEED",
+      "why": "nothing currently needs that scale; the 100K claim is already made"
+    },
+    "the_one_design_constraint_statable_today": "any synthetic substrate intended to support a target or state result must make INCREMENTAL-EVIDENCE-OVER-IDENTITY measurable: it must contain genuine cell-to-cell variation that gene identity cannot explain. A substrate without that property is structurally incapable of detecting the exact failure that rejected all three target families.",
+    "canonical_vocabulary_substrate": {
+      "constructible_today": true,
+      "ordering_authority": "stage81a2r_exact_canonical_gene_registry_candidate.csv",
+      "sha256": "5BAFBBF7AECA7A58D3B8C8E40E4393D67601841914D97818023205EEF5CB5BA0",
+      "but": "premature; its design depends on the target"
+    },
+    "ACTIVE_STATE_do_not_rerun_list_includes": "broad synthetic architecture/dropout/mask sweeps"
+  },
+  "EXTERNAL_LANE_STATE_CHECKED_ON_GITHUB": {
+    "fetched": true,
+    "branch": "origin/chatgpt/v76-learned-state-qualification-20261004",
+    "head": "189e6209",
+    "new_commits_over_the_v75_branch": 0,
+    "meaning": "a placeholder at the V75 head; no target has been defined there either",
+    "handoff_doc": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261004_V75_160D_STATE_TAKEOVER.md",
+    "how_it_treats_the_target": "as open questions to audit, not as decided: 'What target object is constructed from richer measured evidence?' and 'Does the training path still satisfy the later teacher-target scientific corrections?'"
+  },
+  "SELF_AUDIT": {
+    "S119": {
+      "defect": "my V76 audit red-teamed six premises about the STATE object and never asked the prior question of whether a target exists. Every finding was correct and all six sat on an untested premise.",
+      "caught": "BY_THE_PROJECT_OWNER, not by my own lane",
+      "generalization": "audit the premise STACK down to the objective, not only the premise handed to you. A rigorous audit of a well-specified question is worth nothing if the question is downstream of an undecided one.",
+      "status": "CLOSED_BY_THIS_ARTIFACT"
+    },
+    "S120": {
+      "defect": "during the V75 provenance correction I REWROTE docs/agent/V75_NEXT_ACTION_POINTER.md to name the learned 160-D state as the next action. I treated it as a documentation edit and transcribed the forward plan without auditing whether its prerequisites existed.",
+      "why_it_matters": "a next-action pointer is a scientific claim about what should happen next, not a record of what happened. Editing one carries the obligation to check its prerequisites.",
+      "caught": "BY_THE_PROJECT_OWNER",
+      "status": "CLOSED_BY_THIS_ARTIFACT",
+      "pointer_correction_required": true
+    },
+    "S121": {
+      "defect": "my V2 artifact named 'where does the trained model store cell-specific information' as the HIGHEST priority scientific blocker. That is downstream of the target. With no qualified target there is no defined sense in which a trained model is the right model.",
+      "status": "CORRECTED_HERE",
+      "superseded_text": "HIGHEST_PRIORITY_SCIENTIFIC_BLOCKER in V2",
+      "superseded_by": "the corrected dependency order above, whose step 1 is the target gate"
+    }
+  },
+  "GOVERNANCE": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "500K_promotion": "INDETERMINATE_DO_NOT_PROMOTE",
+    "S102": "OPEN",
+    "nothing_modified": [
+      "model code",
+      "training code",
+      "thresholds",
+      "V75 scientific results",
+      "V76 V1 and V2 bytes",
+      "Task A artifacts"
+    ]
+  },
+  "scope": "a plan-level stop. It retracts no measurement and qualifies no biology. It records that the objective the next step depended on does not exist."
+}

@@ -1,0 +1,15 @@
+scenario_id,no_nan_values,no_infinite_values,feature_order_unchanged,no_changes_outside_selected_tf_targets,baseline_zero_delta,output_values_within_observed_bounds,clipping_count,clipping_fraction,n_values_checked,exact_scenario_count,edge_count_validation_pass,normalized_weight_sums_to_one,opposite_direction_check_pass,deterministic_repeat_check_pass
+baseline,True,True,True,True,True,True,0,0.0,832,,,,,
+STAT1_up_0p10,True,True,True,True,True,True,27,0.04963235294117647,544,,,,,
+STAT1_down_0p10,True,True,True,True,True,True,370,0.6801470588235294,544,,,,,
+STAT1_up_0p25,True,True,True,True,True,True,27,0.04963235294117647,544,,,,,
+STAT1_down_0p25,True,True,True,True,True,True,370,0.6801470588235294,544,,,,,
+ELF1_up_0p10,True,True,True,True,True,True,0,0.0,768,,,,,
+ELF1_down_0p10,True,True,True,True,True,True,573,0.74609375,768,,,,,
+ELF1_up_0p25,True,True,True,True,True,True,0,0.0,768,,,,,
+ELF1_down_0p25,True,True,True,True,True,True,573,0.74609375,768,,,,,
+SPI1_up_0p10,True,True,True,True,True,True,0,0.0,480,,,,,
+SPI1_down_0p10,True,True,True,True,True,True,351,0.73125,480,,,,,
+SPI1_up_0p25,True,True,True,True,True,True,0,0.0,480,,,,,
+SPI1_down_0p25,True,True,True,True,True,True,351,0.73125,480,,,,,
+GLOBAL_QC,True,True,True,True,True,True,2642,0.33025,8000,True,True,True,True,True

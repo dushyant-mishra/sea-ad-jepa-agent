@@ -1,0 +1,512 @@
+{
+  "schema": "V77_PLANTED_TRUTH_INVENTORY_V1",
+  "recorded_utc": "2026-10-05T16:57:39Z",
+  "mandate_phase": "Phase 2 - audit what biological truth is actually planted",
+  "generator_modified": false,
+  "measured_on": {
+    "world": "measurement_null_a (reference world)",
+    "n_cells": 100000,
+    "source": "locally regenerated and SHA-256 verified against CI run 37252622570",
+    "custody_manifest": "results/v77/V77_SYNTHETIC_ECOSYSTEM_CUSTODY_MANIFEST_V1.json"
+  },
+  "THE_COMPLETE_PLANTED_TRUTH": {
+    "total_dimensions": 14,
+    "blocks": {
+      "z_global": 4,
+      "z_query": 2,
+      "z_reg_shared": 3,
+      "z_reg_private": 2,
+      "technical_latents": 3
+    },
+    "how_they_are_drawn": "every dimension is an independent standard normal keyed by (seed, global_cell_index, stream) via stateless SplitMix64. There is no covariance, no hierarchy, no mixture and no group structure among them",
+    "measured_max_abs_correlation_between_distinct_latents": 0.00826,
+    "what_consumes_each_block": {
+      "z_global": [
+        "FULL104 RNA",
+        "multiome RNA",
+        "multiome ATAC"
+      ],
+      "z_query": [
+        "FULL104 RNA",
+        "multiome RNA"
+      ],
+      "z_reg_shared": [
+        "FULL104 RNA",
+        "multiome RNA",
+        "multiome ATAC"
+      ],
+      "z_reg_private": [
+        "multiome ATAC"
+      ],
+      "technical_latents[0]": [
+        "multiome ATAC"
+      ],
+      "technical_latents[1]": [
+        "NOTHING"
+      ],
+      "technical_latents[2]": [
+        "NOTHING"
+      ]
+    }
+  },
+  "RECOVERABILITY_MATRIX": {
+    "method": "linear oracle probe, 50/50 held-out split, seed 20261005, CPM-log1p features. This is an upper bound for linear readout and a reference for any learned model",
+    "per_block_heldout_R2": {
+      "z_global": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6831728102221755,
+        "FULL104_RNA + availability mask": 0.6860638425066519,
+        "multiome_RNA_only": 0.6023804014104022,
+        "multiome_ATAC_only": 0.8525844026442286,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7879680661515456,
+        "ALL modalities incl ATAC": 0.9042615795934417
+      },
+      "z_query": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.662894018222939,
+        "FULL104_RNA + availability mask": 0.6673114266159742,
+        "multiome_RNA_only": 0.5896587158179505,
+        "multiome_ATAC_only": -0.004771265898352417,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7758033866570376,
+        "ALL modalities incl ATAC": 0.776993440844608
+      },
+      "z_reg_shared": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6678015809065395,
+        "FULL104_RNA + availability mask": 0.6712426797052463,
+        "multiome_RNA_only": 0.5833040061746557,
+        "multiome_ATAC_only": 0.8503855840819473,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7780717351156169,
+        "ALL modalities incl ATAC": 0.9016190170081986
+      },
+      "z_reg_private": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0016150327078482407,
+        "FULL104_RNA + availability mask": -0.0027811417170712227,
+        "multiome_RNA_only": -0.0013790476224693204,
+        "multiome_ATAC_only": 0.8492721872845965,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.0029814010388922174,
+        "ALL modalities incl ATAC": 0.850185149006196
+      },
+      "technical_latents": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.00116241606332886,
+        "FULL104_RNA + availability mask": -0.0019933738649312214,
+        "multiome_RNA_only": -0.0012469034244811568,
+        "multiome_ATAC_only": 0.2803525430809186,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.002352863529855235,
+        "ALL modalities incl ATAC": 0.2784131080203351
+      }
+    },
+    "per_latent_heldout_R2": {
+      "z_global[0]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6752764173052246,
+        "FULL104_RNA + availability mask": 0.6779641066647305,
+        "multiome_RNA_only": 0.6114937544408231,
+        "multiome_ATAC_only": 0.8351147965455056,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7868147048497148,
+        "ALL modalities incl ATAC": 0.8968518845062907
+      },
+      "z_global[1]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6588119273823225,
+        "FULL104_RNA + availability mask": 0.6608906078932211,
+        "multiome_RNA_only": 0.5538795295712529,
+        "multiome_ATAC_only": 0.8522207384572112,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7687819544183843,
+        "ALL modalities incl ATAC": 0.8994621594776369
+      },
+      "z_global[2]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6930525908467194,
+        "FULL104_RNA + availability mask": 0.6968811751928606,
+        "multiome_RNA_only": 0.6272163300893507,
+        "multiome_ATAC_only": 0.8457749393933514,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.796245296116164,
+        "ALL modalities incl ATAC": 0.904229306636519
+      },
+      "z_global[3]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.7055503053544354,
+        "FULL104_RNA + availability mask": 0.7085194802757953,
+        "multiome_RNA_only": 0.6169319915401821,
+        "multiome_ATAC_only": 0.8772271361808464,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.800030309221919,
+        "ALL modalities incl ATAC": 0.9165029677533202
+      },
+      "z_query[0]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6609612414626498,
+        "FULL104_RNA + availability mask": 0.6640971522093062,
+        "multiome_RNA_only": 0.5810092306820591,
+        "multiome_ATAC_only": -0.0042276351007861646,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7742619366253802,
+        "ALL modalities incl ATAC": 0.7754325391029164
+      },
+      "z_query[1]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6648267949832283,
+        "FULL104_RNA + availability mask": 0.6705257010226422,
+        "multiome_RNA_only": 0.5983082009538417,
+        "multiome_ATAC_only": -0.005314896695918669,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.777344836688695,
+        "ALL modalities incl ATAC": 0.7785543425862996
+      },
+      "z_reg_shared[0]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6592366541291939,
+        "FULL104_RNA + availability mask": 0.663203983549734,
+        "multiome_RNA_only": 0.6263442783334194,
+        "multiome_ATAC_only": 0.8428684950908368,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7862330639885837,
+        "ALL modalities incl ATAC": 0.9009045533936582
+      },
+      "z_reg_shared[1]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.7159631314527226,
+        "FULL104_RNA + availability mask": 0.7188557955690849,
+        "multiome_RNA_only": 0.5284069886276346,
+        "multiome_ATAC_only": 0.858948249377393,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7866861761289572,
+        "ALL modalities incl ATAC": 0.9061890865617468
+      },
+      "z_reg_shared[2]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": 0.6282049571377019,
+        "FULL104_RNA + availability mask": 0.6316682599969204,
+        "multiome_RNA_only": 0.5951607515629131,
+        "multiome_ATAC_only": 0.8493400077776122,
+        "RNA(FULL104)+RNA(multi) both RNA views": 0.7612959652293095,
+        "ALL modalities incl ATAC": 0.8977634110691907
+      },
+      "z_reg_private[0]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0014333665218431157,
+        "FULL104_RNA + availability mask": -0.002560725747503323,
+        "multiome_RNA_only": -0.0011954910255826956,
+        "multiome_ATAC_only": 0.8519375459800578,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.002644248369220392,
+        "ALL modalities incl ATAC": 0.852798543426336
+      },
+      "z_reg_private[1]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0017966988938533657,
+        "FULL104_RNA + availability mask": -0.0030015576866391225,
+        "multiome_RNA_only": -0.0015626042193559453,
+        "multiome_ATAC_only": 0.8466068285891354,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.0033185537085640426,
+        "ALL modalities incl ATAC": 0.8475717545860559
+      },
+      "technical_latents[0]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0015354273563246146,
+        "FULL104_RNA + availability mask": -0.0024592896188495583,
+        "multiome_RNA_only": -0.001022945734377112,
+        "multiome_ATAC_only": 0.8517076156013177,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.0024011597130124684,
+        "ALL modalities incl ATAC": 0.8524792080013196
+      },
+      "technical_latents[1]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0007631131511165457,
+        "FULL104_RNA + availability mask": -0.0014487059816279402,
+        "multiome_RNA_only": -0.0016491681264294566,
+        "multiome_ATAC_only": -0.005441795093776847,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.0025760041015376878,
+        "ALL modalities incl ATAC": -0.008797248058235008
+      },
+      "technical_latents[2]": {
+        "FULL104_RNA_only (the permitted partial-RNA view)": -0.0011887076825454201,
+        "FULL104_RNA + availability mask": -0.002072125994316165,
+        "multiome_RNA_only": -0.0010685964126369019,
+        "multiome_ATAC_only": -0.005208191264785,
+        "RNA(FULL104)+RNA(multi) both RNA views": -0.002081426775015549,
+        "ALL modalities incl ATAC": -0.008442635882079275
+      }
+    },
+    "THE_CEILING_FROM_THE_PERMITTED_RNA_VIEW": {
+      "z_global": 0.6831728102221755,
+      "z_query": 0.662894018222939,
+      "z_reg_shared": 0.6678015809065395,
+      "statement": "even a perfect linear reader of the 96-gene view recovers about 0.67 of each shared latent, not 1.0. Anything above that must come from nonlinearity, not from more data"
+    },
+    "mandate_phase3A_categories": {
+      "biologically_real_and_recoverable": [
+        "z_global",
+        "z_query",
+        "z_reg_shared"
+      ],
+      "biologically_real_and_partially_recoverable": [],
+      "biologically_real_and_NON_recoverable_from_the_permitted_view": [
+        "z_reg_private"
+      ],
+      "note": "there is no PARTIALLY recoverable component. The world is sharply bimodal: a factor is either ~0.67 recoverable from RNA or exactly 0.00. No intermediate case exists, so the world cannot calibrate a partial-recoverability metric"
+    }
+  },
+  "TWO_DEFECTS_FOUND": {
+    "D1_inert_truth_dimensions": {
+      "finding": "technical_latents[1] and technical_latents[2] are consumed by NOTHING",
+      "evidence": {
+        "heldout_R2_from_all_modalities_combined": [
+          -0.008797248058235008,
+          -0.008442635882079275
+        ]
+      },
+      "consequence": "2 of 14 planted truth dimensions are inert. They inflate the apparent dimensionality of the ground truth and would make any 'fraction of truth recovered' metric wrong by construction unless they are excluded",
+      "severity": "MEDIUM - metric-distorting, not result-invalidating"
+    },
+    "D2_private_biology_and_private_technical_are_indistinguishable": {
+      "finding": "technical_latents[0] and z_reg_private enter ATAC identically and have identical recoverability signatures",
+      "evidence": {
+        "technical_latents[0]": {
+          "RNA": -0.0015354273563246146,
+          "ATAC": 0.8517076156013177
+        },
+        "z_reg_private[0]": {
+          "RNA": -0.0014333665218431157,
+          "ATAC": 0.8519375459800578
+        }
+      },
+      "consequence": "a model that recovers an ATAC-private factor cannot be shown to have recovered BIOLOGY rather than a technical effect, because the world makes them structurally identical. This directly undermines the mandate's Phase 3G cross-modal semantic validity test",
+      "severity": "HIGH for any cross-modal biological-meaning claim"
+    }
+  },
+  "SUMMARY_TABLE": {
+    "global/shared biological programs": "PRESENT_AND_IDENTIFIABLE",
+    "cell-type / cell-state programs": "ABSENT",
+    "donor biology": "ABSENT",
+    "rare biological states": "ABSENT",
+    "transient states": "ABSENT",
+    "query-local effects": "AMBIGUOUS",
+    "sparse marker-like programs": "ABSENT",
+    "nonlinear program interactions": "ABSENT",
+    "regulatory relationships": "PRESENT_BUT_WEAK",
+    "RNA <-> ATAC relationships": "PRESENT_AND_IDENTIFIABLE",
+    "SCENIC+-like regulatory structure": "ABSENT",
+    "perturbation effects": "PRESENT_BUT_WEAK",
+    "spatial / context effects": "ABSENT",
+    "technical / operator effects": "PRESENT_AND_IDENTIFIABLE",
+    "source effects": "PRESENT_AND_IDENTIFIABLE",
+    "sequencing-depth effects": "PRESENT_AND_IDENTIFIABLE",
+    "structural unmeasurement": "PRESENT_AND_IDENTIFIABLE",
+    "biology x measurement-operator interactions": "ABSENT"
+  },
+  "INVENTORY": [
+    {
+      "component": "global/shared biological programs",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "z_global, 4 i.i.d. N(0,1) dims per cell; enters FULL104 RNA, multiome RNA and ATAC through dense linear maps then exp link",
+      "evidence": {
+        "heldout_R2_from_permitted_RNA": 0.6831728102221755,
+        "heldout_R2_from_ATAC": 0.8525844026442286,
+        "heldout_R2_all_modalities": 0.9042615795934417
+      }
+    },
+    {
+      "component": "cell-type / cell-state programs",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "no discrete types, no mixture component, no cluster structure anywhere in the generator",
+      "evidence": {
+        "marginal_kurtosis_range_over_14_latents": [
+          2.9736,
+          3.0281
+        ],
+        "standard_normal_reference": 3.0,
+        "interpretation": "every planted latent is a unimodal Gaussian; there are no states to belong to"
+      }
+    },
+    {
+      "component": "donor biology",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "latents are keyed by (seed, global_cell_index, stream) ONLY. donor_index is assigned by a separate population-geometry routine and never enters any latent",
+      "evidence": {
+        "donor_ICC_range_over_14_latents": [
+          0.000865,
+          0.001307
+        ],
+        "null_expectation_(n_donors-1)/n_cells": 0.00103,
+        "interpretation": "observed ICC equals the pure-independence expectation; two cells from the same donor have independent biology"
+      }
+    },
+    {
+      "component": "rare biological states",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "no mixture, no heavy tail, no outlier class, no low-prevalence program",
+      "evidence": {
+        "fraction_|z|>3_range": [
+          0.00248,
+          0.00302
+        ],
+        "standard_normal_reference": 0.0027,
+        "skew_range": [
+          -0.011,
+          0.0087
+        ],
+        "interpretation": "the tails are exactly Gaussian. There is no rare biology to detect, so this world cannot test rare-state sensitivity at all"
+      }
+    },
+    {
+      "component": "transient states",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "no time, pseudotime, trajectory or lineage variable exists in the truth or any observer",
+      "evidence": {}
+    },
+    {
+      "component": "query-local effects",
+      "classification": "AMBIGUOUS",
+      "mechanism_in_generator": "z_query, 2 dims, is RNA-private: it enters FULL104 RNA and multiome RNA but not ATAC. It is NOT query-conditional - it passes through the same global linear map as z_global with no locality mechanism",
+      "evidence": {
+        "heldout_R2_from_permitted_RNA": 0.662894018222939,
+        "heldout_R2_from_ATAC": -0.004771265898352417
+      },
+      "note": "named 'query' but operationally it is an RNA-private GLOBAL factor. No local/query-conditional effect is planted anywhere"
+    },
+    {
+      "component": "sparse marker-like programs",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "all loading matrices are dense Gaussian: FULL104 W is 9x96 at scale 0.22, multiome Wr 11x64 at 0.20, Wa 12x256 at 0.18. Every latent loads on every feature",
+      "evidence": {
+        "nonzero_loading_fraction": 1.0,
+        "interpretation": "no marker genes, no sparse programs, no feature selection structure"
+      }
+    },
+    {
+      "component": "nonlinear program interactions",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "eta = latent @ W is strictly linear in the latents; exp() is a monotone link applied to the SUM, not an interaction term",
+      "evidence": {
+        "interpretation": "programs combine multiplicatively on the relative-abundance scale purely as a consequence of the exponential link. No interaction coefficient is planted, so a model cannot be credited or penalised for capturing one"
+      }
+    },
+    {
+      "component": "regulatory relationships",
+      "classification": "PRESENT_BUT_WEAK",
+      "mechanism_in_generator": "z_reg_shared (3 dims) drives RNA and ATAC; z_reg_private (2 dims) drives ATAC only",
+      "evidence": {
+        "z_reg_shared_R2_RNA": 0.6678015809065395,
+        "z_reg_shared_R2_ATAC": 0.8503855840819473,
+        "z_reg_private_R2_RNA": -0.0016150327078482407,
+        "z_reg_private_R2_ATAC": 0.8492721872845965
+      },
+      "note": "this is LATENT SHARING between modalities, not a regulatory mechanism. Nothing regulates anything"
+    },
+    {
+      "component": "RNA <-> ATAC relationships",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "7 dims (z_global 4 + z_reg_shared 3) are common to RNA and ATAC; same-cell pairing is exact and asserted by the generator",
+      "evidence": {
+        "paired_same_cell_identity": true,
+        "shared_latent_dims": 7,
+        "ATAC_recovers_shared_biology_R2": 0.8525844026442286
+      }
+    },
+    {
+      "component": "SCENIC+-like regulatory structure",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "no transcription factors, no motifs, no peak-to-gene links, no regulon graph",
+      "evidence": {
+        "atac_regions": "a uniform 5 kb tiling of chr1: REGION_START = arange(256)*5000 + 1,000,000",
+        "atac_loading_matrix": "dense random Gaussian, 12x256",
+        "interpretation": "region coordinates carry no biological adjacency, so no cis-regulatory question is expressible"
+      }
+    },
+    {
+      "component": "perturbation effects",
+      "classification": "PRESENT_BUT_WEAK",
+      "mechanism_in_generator": "the V75 biology_positive control adds a fixed +1.0 to z_global[0] for cells where global_cell_index %% 4 == 0",
+      "evidence": {
+        "verified_displacement_on_targeted_cells": 1.0,
+        "verified_displacement_on_untargeted_cells": 0.0,
+        "max_change_in_z_global_dims_1_to_3": 0.0,
+        "n_targeted": 25000,
+        "n_total": 100000,
+        "targeted_fraction": 0.25
+      },
+      "note": "a single mean shift on one coordinate that is ALREADY the most recoverable thing in the world. There is no causal graph, no dose, no downstream cascade and no off-target structure, so it cannot support any causal qualification"
+    },
+    {
+      "component": "spatial / context effects",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "no coordinates, no neighbourhood, no niche or context variable exists",
+      "evidence": {}
+    },
+    {
+      "component": "technical / operator effects",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "operator determines the structural availability mask and the depth/detected-support quantiles, calibrated from frozen 50k operator-level QC summaries",
+      "evidence": {
+        "availability_ICC_by_operator": 1.0,
+        "panel_depth_ICC_by_operator": 0.058929,
+        "interpretation": "availability is a DETERMINISTIC function of operator. This is the strongest single structure in the world"
+      }
+    },
+    {
+      "component": "source effects",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "a 2-dim source embedding enters multiome RNA and ATAC; source quotas are calibrated to the authenticated FULL104 population geometry",
+      "evidence": {
+        "source_counts": {
+          "SEA_AD": 90443,
+          "NPH52": 5193,
+          "HVS": 4364
+        },
+        "caveat": "source does NOT enter the 96-gene FULL104 observer's biology at all; there it acts only through operator nesting"
+      }
+    },
+    {
+      "component": "sequencing-depth effects",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "per-operator library-size and detected-feature quantiles, coupled by a Gaussian copula using the within-operator log1p-library-vs-detected Pearson as rho",
+      "evidence": {
+        "cell_level_depth_latent_stream": "T.normal(measurement_seed+701, ids, 951)",
+        "is_it_one_of_the_14_truth_dims": false,
+        "interpretation": "depth is drawn from a stream outside the truth object, so it is structurally independent of biology"
+      }
+    },
+    {
+      "component": "structural unmeasurement",
+      "classification": "PRESENT_AND_IDENTIFIABLE",
+      "mechanism_in_generator": "per-operator availability mask projecting measured_scalar_addresses/41238 onto the 96 panel slots; the generator asserts that unavailable features receive zero counts",
+      "evidence": {
+        "distinct_states_respected": [
+          "MEASURED_SCALAR",
+          "STRUCTURALLY_UNMEASURED",
+          "MEASURED_COLLISION_UNRESOLVED"
+        ],
+        "unavailable_feature_receives_counts": false,
+        "measured_zero_retained_as_evidence": true
+      }
+    },
+    {
+      "component": "biology x measurement-operator interactions",
+      "classification": "ABSENT",
+      "mechanism_in_generator": "availability and depth are computed without any reference to the biological latents",
+      "evidence": {
+        "max_abs_corr_latent_vs_panel_depth": 0.008637,
+        "max_abs_corr_latent_vs_n_available": 0.006898,
+        "n_latents_tested": 14,
+        "interpretation": "the generator ASSUMES the observation operator is independent of biological state. The mandate names this as something not to assume, and the world currently cannot test it"
+      }
+    }
+  ],
+  "WHAT_THIS_WORLD_CAN_AND_CANNOT_TEST": {
+    "CAN_TEST": [
+      "recoverability ceilings from a partial RNA view, with an exact known answer",
+      "that a genuinely RNA-non-recoverable factor (z_reg_private) is NOT falsely reported as recovered",
+      "rejection of technical shortcuts: operator, source, depth and structural missingness are all strong and known",
+      "same-cell cross-modal consistency",
+      "sensitivity to a known planted mean shift",
+      "measurement-realization stability under a fixed observation operator"
+    ],
+    "CANNOT_TEST": [
+      "rare biology - none is planted; the tails are exactly Gaussian",
+      "cell types or states - none are planted",
+      "donor biology - donor ICC equals the independence null",
+      "local or query-conditional effects - z_query is global despite its name",
+      "sparse marker programs - all loadings are dense",
+      "nonlinear program interaction - the model is linear in the latents",
+      "regulatory mechanism or SCENIC+ structure - no TF, motif or peak-gene link exists",
+      "causal perturbation response - one mean shift on the most recoverable coordinate",
+      "spatial or context effects - none exist",
+      "biology x operator interaction - measured independent by construction",
+      "technology transport - the measurement null holds the operator mapping identical"
+    ],
+    "bearing_on_the_premise_question": "the premise asks which biological state is recoverable from partial RNA and what representation structure preserves common AND rare biology. This world can answer the recoverability half for COMMON biology and can police technical shortcuts. It cannot address rare, local, sparse, interacting or regulatory biology at all, because none of it is planted"
+  },
+  "GOVERNANCE": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage_4": "NOT_AUTHORIZED",
+    "500K": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "generator_unmodified": true,
+    "no_seed_or_parameter_changed": true,
+    "no_model_trained": true,
+    "no_41238_identity_bridge_invented": true
+  },
+  "scope": "an inventory of what is planted and a measured recoverability ceiling. It qualifies no representation, no target and no biology, and makes no claim about real data"
+}

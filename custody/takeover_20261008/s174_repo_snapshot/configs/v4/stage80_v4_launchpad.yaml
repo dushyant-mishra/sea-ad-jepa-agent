@@ -1,0 +1,29 @@
+stage80_v4_launchpad:
+  status: planning_only
+  project_name: SEA-AD Graph-JEPA v4 regulatory-aware model
+  predecessor_checkpoint: Graph-JEPA v3 / Stage79 frozen checkpoint
+  central_v3_result: self_supervised_jepa_recovered_disease_relevant_microglial_state_geometry_without_disease_label_training
+  v3_perturbation_status: technically_valid_but_extremely_small_latent_effects
+  v4_primary_goal: regulatory_aware_feature_space_without_turning_training_into_disease_label_supervision
+  protected_inputs:
+    raw_data_committed: false
+    preserve_v3_frozen_outputs: true
+    preserve_stage75_to_stage79_provenance: true
+  planned_namespaces:
+    configs: configs/v4/
+    docs: docs/v4/
+    scripts: scripts/v4/
+    local_runs: runs/v4/
+    local_logs: logs/v4/
+    local_outputs: outputs/v4/
+    local_results: results/v4/
+  claim_boundaries:
+    validated_grn_claim: false
+    causal_validation_pass: false
+    therapeutic_target_claim: false
+    perturbation_biological_effect_claim: false
+  next_required_steps:
+    - freeze_v3_milestone_interpretation
+    - audit_v4_feature_universe_candidates
+    - define_v3_to_v4_non_regression_metrics
+    - prepare_training_manifest_before_model_training

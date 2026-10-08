@@ -1,0 +1,2 @@
+graph_id,control_type,n_donors,n_features_raw,n_features_graph_overlap,beta,diffusion_method,view_written,path_if_written,notes
+not_run,pending,89,36600,0,0.1;0.5;1.0;0,would_use_sparse_laplacian_expm_or_kstep,False,,Ready for future controlled run.

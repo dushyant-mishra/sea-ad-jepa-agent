@@ -1,0 +1,59 @@
+{
+  "schema": "V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "status": "BUG_CONFIRMED_AND_SUCCESSOR_BUILDER_REPAIRED",
+  "source_bytes": {
+    "gencode_v50_sha256": "83fba3e9b03f0b8c958f3595c6c350adc55f468abf8b0e47b6d5284cfe13a453",
+    "screen_pls_sha256": "65443e5ace6db2f1cb067616afc426510cdb8b9ed7e890f2a29b52cd0b15533b",
+    "fantom_hg38_sha256": "7e007c3e1fd7a2e24404ad9d5a57d27f76cd7920a6fdc1acaa06b5c4fcfcb018"
+  },
+  "denominator": {
+    "exact_tss_loci": 389280,
+    "genes": 78733
+  },
+  "historical_preflight_authority": {
+    "path": "results/v64/V64_FANTOM_SCREEN_GENCODE_PROMOTER_EVIDENCE_PREFLIGHT_V1.json",
+    "screen_overlap": 178778,
+    "fantom_same_strand_overlap": 126712,
+    "fantom_exact_representative_tss": 25321,
+    "joint": {
+      "screen_and_fantom": 102060,
+      "screen_only": 76718,
+      "fantom_only": 24652,
+      "neither": 185850
+    }
+  },
+  "defect": {
+    "helper": "scripts/v64/build_promoter_candidate_ledger_v1.py::point_hits",
+    "mechanism": "Backward interval scan stopped when the immediately prior interval ended before the query point. BED interval ends are not monotonic in start order, so a short nested interval can hide an earlier long interval that still overlaps the point.",
+    "screen_effect": "No count difference observed on Registry-V4 PLS for this denominator; SCREEN overlap remained 178778.",
+    "fantom_effect": {
+      "defective_same_strand_overlap": 126520,
+      "correct_same_strand_overlap": 126712,
+      "missing_due_to_bug": 192,
+      "defective_exact_representative_tss": 25306,
+      "correct_exact_representative_tss": 25321,
+      "missing_exact_due_to_bug": 15
+    },
+    "independent_reproduction": "Correct query used sorted starts plus prefix-maximum interval ends and same-strand FANTOM filtering."
+  },
+  "repaired_successor": {
+    "builder": "scripts/v64/build_promoter_dual_ledger_v2.py",
+    "repair_commit": "1d9a6a1d2258e53fb15a4950bd9954ab7510e7f5",
+    "rules": [
+      "SCREEN uses robust point overlap without strand filtering.",
+      "FANTOM uses robust point overlap and requires BED strand == GENCODE transcript strand.",
+      "Nested intervals cannot terminate the backward search unless the prefix maximum end is <= the query point."
+    ],
+    "regression_tests": [
+      "opposite-strand FANTOM overlap does not annotate candidate",
+      "short later-starting nested interval cannot hide an earlier long overlap"
+    ]
+  },
+  "interpretation": "The frozen FANTOM/SCREEN preflight counts are retained as correct. The historical V1 helper is not suitable for authoritative dual-ledger materialization; only the repaired successor builder may produce the new ledger.",
+  "governance": {
+    "training": "OFF",
+    "promoter_selection_executed": false,
+    "biological_correspondence_opened": false
+  }
+}

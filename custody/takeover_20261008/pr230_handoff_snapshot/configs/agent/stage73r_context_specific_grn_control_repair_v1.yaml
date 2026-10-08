@@ -1,0 +1,70 @@
+stage: stage73r_context_specific_grn_control_repair_v1
+description: >
+  Repair rerun for Stage73. Fixes the candidate-GRN negative-control mode-label
+  bug by applying explicit target-shuffled and gene-label-permuted controls,
+  writes structural graph-control integrity audits, and requires those controls
+  to be distinct from the context graph before interpreting graph specificity.
+
+references:
+  stage27c_locked_mean_pooled_oof_spearman: 0.3267024400121495
+  stage41c_credible_unlocked_mean_pooled_oof_spearman: 0.36808747595423713
+  aux_weight: 0.20
+  n_splits: 5
+  seeds: [7, 11, 17, 23, 29]
+  bootstrap_iterations: 1000
+  random_seed: 7301
+  core_signature_genes:
+    - APOE
+    - C1QA
+    - C1QB
+    - C1QC
+    - HLA-DRA
+    - HLA-DRB1
+    - CD74
+    - B2M
+    - CTSD
+    - TREM2
+    - TYROBP
+
+inputs:
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  stage72b_candidate_edges: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+  stage72b_readiness: results/tables/stage72b_grn_readiness_decision_v1.csv
+  string_edges: results/tables/v2_graph_string_edges_t700.csv
+  stage68_expression_contrast: results/tables/stage68_high_vs_low_expression_contrast_v1.csv
+  stage68_candidate_cells: results/tables/stage68_candidate_cell_export_index_v1.csv
+  stage70_lock_gate: results/tables/stage70_lock_gate_decision_v1.csv
+  stage71_script: scripts/run_stage71_full_rare_microglia_graph_jepa_hierarchical_benchmark_v1.py
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage73r_input_inventory_v1.csv
+  graph_registry: results/tables/stage73r_graph_registry_v1.csv
+  graph_control_integrity_audit: results/tables/stage73r_graph_control_integrity_audit_v1.csv
+  graph_control_results: results/tables/stage73r_graph_control_results_v1.csv
+  cell_auxiliary_metrics: results/tables/stage73r_cell_auxiliary_metrics_v1.csv
+  oof_predictions: results/tables/stage73r_oof_predictions_v1.csv
+  target_metrics: results/tables/stage73r_target_metrics_v1.csv
+  seed_summary: results/tables/stage73r_seed_summary_v1.csv
+  bootstrap_delta_ci: results/tables/stage73r_bootstrap_delta_ci_v1.csv
+  prediction_lock_decision: results/tables/stage73r_prediction_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage73r_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage73r_pass_fail_v1.csv
+  report: results/reports/stage73r_context_specific_grn_control_repair_report_v1.md
+  pi_summary: results/reports/stage73r_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage73r_claim_boundary_final_check_v1.md
+
+safety:
+  uses_frozen_stage72b_edges: true
+  uses_frozen_stage64_68_signature: true
+  no_graph_threshold_tuning: true
+  no_new_candidate_selection: true
+  no_model_architecture_search: true
+  no_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_validated_grn_claim: true

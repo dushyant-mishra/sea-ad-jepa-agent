@@ -1,0 +1,8 @@
+model_variant,control_type,n_nodes,n_edges,beta,valid_control,notes
+raw_jepa_no_graph,identity,1789,894,0.5,True,
+identity_diffusion_jepa,identity,1789,894,0.5,True,
+beta0_diffusion_jepa,beta0,1789,894,0.0,True,
+real_string_t900_diffusion_jepa,real,1789,6781,0.5,True,
+random_graph_diffusion_jepa,random_edge_matched,1789,6781,0.5,True,
+gene_label_shuffled_graph_jepa,gene_label_shuffled,1789,6781,0.5,True,
+degree_preserving_shuffled_graph_jepa,degree_preserving_shuffled,1789,6781,0.5,True,degree_preserving uses label-shuffle topology-preserving fallback

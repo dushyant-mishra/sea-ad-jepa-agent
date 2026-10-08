@@ -1,0 +1,7 @@
+dataset,embedding_space,external_donor_id,condition,n_cells,trajectory_AT8/pTau_score,trajectory_A beta/6e10_score,trajectory_GFAP_score,trajectory_Iba1_score,trajectory_NeuN_score,n_cells_before_filter,n_cells_after_filter,n_external_groups,n_jepa_genes,n_matched_genes,gene_overlap_fraction,control_centroid_shift_applied,control_centroid_shift_l2,missing_gene_imputation,alignment
+GSE138852_Grubman_Leng,projector,AD1_AD2,AD,21,-0.03502758,-0.02630353,1.0643975,-0.5250293,-0.3840213,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none
+GSE138852_Grubman_Leng,projector,AD3_AD4,AD,87,-0.37868184,-0.33006752,1.6567996,-1.0068591,-0.75746065,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none
+GSE138852_Grubman_Leng,projector,AD5_AD6,AD,64,-0.08211984,-0.07186527,1.092131,-0.56883514,-0.4251637,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none
+GSE138852_Grubman_Leng,projector,Ct1_Ct2,Control,54,-0.07155643,-0.061338585,1.0909998,-0.56117713,-0.41690406,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none
+GSE138852_Grubman_Leng,projector,Ct3_Ct4,Control,142,-0.4785841,-0.41997495,1.8028909,-1.1360539,-0.8611561,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none
+GSE138852_Grubman_Leng,projector,Ct5_Ct6,Control,81,-0.15401067,-0.12899187,1.3024385,-0.70558393,-0.5191274,13214,449,6,2957,2626,0.8880622252282719,False,,zero,none

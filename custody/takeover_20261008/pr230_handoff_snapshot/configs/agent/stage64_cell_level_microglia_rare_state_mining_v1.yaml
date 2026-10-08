@@ -1,0 +1,48 @@
+stage: Stage64
+version: v1
+stage_name: Stage64_cell_level_microglia_rare_state_mining_v1
+description: Bounded cell-level rare/high-tail Micro-PVM disease-program mining for MTG and DLPFC without new rescue modeling.
+
+inputs:
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  stage63_external_handoff: results/tables/stage63_external_handoff_table_v1.csv
+  stage63_pass_fail: results/tables/stage63_pass_fail_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_column_candidates: [Donor ID, donor_id, donor]
+  state_column_candidates: [Supertype, supertype, Subclass, subclass, cell_type, Cell Type]
+  high_quantile: 0.95
+  low_quantile: 0.50
+  top_cell_quantiles: [0.90, 0.95, 0.99]
+  max_cells_in_cell_score_output_per_dataset: 5000
+  min_cells_per_donor: 20
+  min_high_cells_per_donor: 5
+  min_donors_for_signature: 10
+  random_seed: 6401
+
+outputs:
+  input_inventory: results/tables/stage64_input_inventory_v1.csv
+  dataset_schema_audit: results/tables/stage64_dataset_schema_audit_v1.csv
+  gene_availability: results/tables/stage64_gene_availability_v1.csv
+  cell_level_module_score_table: results/tables/stage64_cell_level_module_score_table_v1.csv
+  donor_module_tail_metrics: results/tables/stage64_donor_module_tail_metrics_v1.csv
+  donor_state_tail_metrics: results/tables/stage64_donor_state_tail_metrics_v1.csv
+  composite_disease_program_metrics: results/tables/stage64_composite_disease_program_metrics_v1.csv
+  mean_vs_tail_target_association: results/tables/stage64_mean_vs_tail_target_association_v1.csv
+  rare_state_enrichment_by_pathology: results/tables/stage64_rare_state_enrichment_by_pathology_v1.csv
+  within_donor_high_low_module_contrast: results/tables/stage64_within_donor_high_low_module_contrast_v1.csv
+  high_vs_low_module_gene_contrast: results/tables/stage64_high_vs_low_module_gene_contrast_v1.csv
+  mtg_dlpfc_signature_overlap: results/tables/stage64_mtg_dlpfc_signature_overlap_v1.csv
+  rare_cell_signature_registry: results/tables/stage64_rare_cell_signature_registry_v1.csv
+  external_handoff_signature: results/tables/stage64_external_handoff_signature_v1.csv
+  claim_boundary_audit: results/tables/stage64_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage64_pass_fail_v1.csv
+  report: results/reports/stage64_cell_level_microglia_rare_state_mining_report_v1.md
+  pi_summary: results/reports/stage64_pi_summary_v1.md
+  external_handoff_report: results/reports/stage64_external_handoff_report_v1.md
+  claim_boundary_final_check: results/reports/stage64_claim_boundary_final_check_v1.md

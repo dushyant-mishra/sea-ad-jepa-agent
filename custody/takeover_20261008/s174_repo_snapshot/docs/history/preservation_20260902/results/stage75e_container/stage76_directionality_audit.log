@@ -1,0 +1,16 @@
+Wrote: /workspace/results/tables/stage76_signed_tf_target_hypotheses_v1.csv
+Wrote: /workspace/results/tables/stage76_regulator_directionality_summary_v1.csv
+Wrote: /workspace/results/tables/stage76_unresolved_directionality_v1.csv
+Wrote: /workspace/results/reports/stage76_directionality_audit_v1.json
+{
+  "stage": "stage76_directionality_audit_v1",
+  "signed_tf_target_rows": 96,
+  "regulators_represented": 10,
+  "direction_resolved_rows": 0,
+  "unresolved_rows": 10,
+  "tier_c_excluded_regulators": 3,
+  "validated_regulation": false,
+  "validated_grn_claim": false,
+  "causal_validation_pass": false,
+  "therapeutic_target_claim": false
+}

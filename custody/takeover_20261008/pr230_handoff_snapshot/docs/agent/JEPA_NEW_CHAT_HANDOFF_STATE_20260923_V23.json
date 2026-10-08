@@ -1,0 +1,229 @@
+{
+  "schema": "JEPA_CURRENT_FULL_HANDOFF_STATE_V23",
+  "date": "2026-09-23",
+  "snapshot_timezone": "America/New_York",
+  "authority": "DOCUMENTATION_ONLY__NOT_REAL_EXECUTION_AUTHORIZATION",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "base_main_before_handoff": "7cb02833ba000e911489dc2de02508505086efd8",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md",
+  "takeover_path": "docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260923_V23.md",
+  "historical_audits": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+  "prior_handoffs": [
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md"
+  ],
+  "hard_stops": {
+    "jepa_training": "OFF",
+    "audit_b_n1": "UNOPENED_NOT_AUTHORIZED",
+    "rare_tail_molecular": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "therapeutic_ranking": "OFF"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "ledger_addresses": 41238,
+    "strict_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "corrected_derivative_sha256": "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc4800b",
+    "quarantined_wrong_source_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "frozen_pass1_npz_wholefile_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "pr83_metadata_physical_preflight": "PASS_PHYSICAL_METADATA",
+    "pr85_independent_authority_redteam": "PASS_SYNTHETIC",
+    "n1_gate": "ACTUALLY_CALLED_AND_STOPPED_UNAUTHORIZED",
+    "all104_level4_raw_reaggregation": "UNPROVED",
+    "physical_burden_stream": "UNOPENED"
+  },
+  "experimental": {
+    "number_of_studies": 8,
+    "number_of_authenticated_processed_assets": 16,
+    "GSE301119": {
+      "assay": "primary_macrophage_CRISPRa_CRISPRi",
+      "crispr_a_cells": 23584,
+      "crispr_i_cells": 28466,
+      "biological_donors": 2,
+      "crispr_a_guide_donor_groups": 2098,
+      "crispr_i_guide_donor_groups": 2137,
+      "count_reader_seurat5_parity": "PASS_PHYSICAL",
+      "raw_pseudobulk": "PASS_PHYSICAL",
+      "guide_support_audit": "PASS_METADATA_ONLY_PR91",
+      "target_engagement": "PASS_PHYSICAL_PRODUCER",
+      "transcriptome_wide_de": "NOT_EXECUTED_LAST_LIVE_REVIEW"
+    },
+    "GSE293118": {
+      "assay": "HMC3_noncoding_CRISPRi",
+      "initial_etl": "PASS_PHYSICAL_PRODUCER",
+      "measurable_target_genes": 6,
+      "remaining_noncoding_cis_identity": "NOT_QUALIFIED"
+    },
+    "GSE254205": {
+      "assay": "amyloid_GNE317_iPSC_microglia",
+      "bulk_samples": 9,
+      "measured_bulk_contrasts": 3,
+      "bulk_v1": "PASS_PHYSICAL_PRODUCER",
+      "assay_present_undetected_genes": 22278,
+      "assayed_gene_universe": 58395,
+      "v2_detection_corrected_code": "PASS_SYNTHETIC_PR86",
+      "v2_physical_rerun": "NOT_EXECUTED",
+      "remaining_assets": [
+        "single_nucleus_RNA",
+        "ATAC",
+        "LD_sort"
+      ]
+    },
+    "GSE311359": {
+      "assay": "seven_sample_iPSC_microglia_CRISPRi_PerturbSeq",
+      "original_cells": 105509,
+      "producer_confidently_assigned_cells_v1": 27737,
+      "gene_features": 36601,
+      "guide_feature_rows": 381,
+      "distinct_guide_names_in_v1_committed_table": 379,
+      "collision": "BIN1_OCCURS_THREE_TIMES",
+      "original_v1_producer_claim": "HISTORICAL_NOT_INDEPENDENTLY_REQUALIFIED",
+      "guide_level_effects": "STOP_PR92",
+      "reviewed_feature_id_protospacer_map": "NOT_AVAILABLE_FROM_LIGHT_EVIDENCE",
+      "v2_physical_rerun": "NOT_EXECUTED"
+    },
+    "GSE178317": {
+      "assay": "iPSC_microglia_CRISPRi_CRISPRa",
+      "lane_pairing": "PASS_PHYSICAL",
+      "deposited_enrichment_guide_capture_features": 0,
+      "guide_to_cell": "STOP_NO_AUTHENTICATED_ASSIGNMENT",
+      "separate_bulk_LPS_differentiation": "CONTEXT_ONLY"
+    },
+    "GSE175721": {
+      "assay": "engineered_organoid_microglia",
+      "physical_asset": "PASS_AUTHENTICATED",
+      "guide_to_cell": "NOT_EXECUTED"
+    },
+    "GSE241858": {
+      "assay": "TREM2_R47H_genotype_by_IFN_LPS_context",
+      "v1_producer": "PASS_PHYSICAL_PRODUCER",
+      "baseline_samples": 12,
+      "cytokine_samples": 23,
+      "features": 28395,
+      "independent_clones_per_genotype": 2,
+      "v2_source_gate": "PASS_SYNTHETIC_PR94",
+      "v2_physical_rerun": "NOT_EXECUTED"
+    },
+    "GSE240609": {
+      "assay": "purified_microglia_after_neuron_coculture_APOE3ch_WT_PSEN1",
+      "v1_producer": "PASS_PHYSICAL_PRODUCER",
+      "biological_samples": 4,
+      "replicates_per_factorial_cell": 1,
+      "features": 27154,
+      "biological_uncertainty_estimable": false,
+      "public_geo_identity_review": "PASS_PUBLIC_METADATA_PR94",
+      "v2_source_gate": "PASS_SYNTHETIC_PR94",
+      "v2_physical_rerun": "NOT_EXECUTED"
+    }
+  },
+  "prs_as_observed": {
+    "77": {
+      "head": "3e293a43e4d6dfb6bba85eaf188bdbbe5ecb2821",
+      "state": "OPEN_DRAFT"
+    },
+    "81": {
+      "head": "9d3440991378405bcba4ebff030922dc8085d670",
+      "state": "OPEN_DRAFT"
+    },
+    "82": {
+      "head": "d65c45745ba36ff93c384d435af1edcc99982453",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "83": {
+      "head": "6ff12edb8f97287ae994f41b5217350a453e6d77",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "85": {
+      "head": "0bccba8ce62d9006539b8d7a0f649faf906255fd",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "86": {
+      "head": "0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "87": {
+      "head": "52ed6e27205ef72ac7f0c7c6f8dbdad059806220",
+      "state": "OPEN_DRAFT"
+    },
+    "88": {
+      "head": "03c5ff97decbad38cd0b688c16e1bcd226654c51",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "89": {
+      "head": "06c2b498d13d289382e804340d98baa736dea3ee",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "90": {
+      "head": "3669e5c2a9f3e9466ce269efcbd696c4c28746b2",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "91": {
+      "head": "56600f66492b18af20edcfe5d11761d2cdca9383",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "92": {
+      "head": "bc09c0f432db6e17bec3047baeb0812975043937",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    },
+    "94": {
+      "head": "9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf",
+      "state": "OPEN_DRAFT",
+      "ci": "GREEN"
+    }
+  },
+  "dependencies": {
+    "full104": [
+      "69",
+      "73",
+      "74",
+      "76",
+      "78",
+      "80",
+      "83",
+      "85"
+    ],
+    "experimental": [
+      "77",
+      "81",
+      "82",
+      "86",
+      "91",
+      "92",
+      "94"
+    ],
+    "benchmark": [
+      "84",
+      "88",
+      "90"
+    ],
+    "feature_mapping": [
+      "87",
+      "89"
+    ],
+    "superseded": [
+      "79"
+    ]
+  },
+  "latest_doc_main_before_v23": "7cb02833ba000e911489dc2de02508505086efd8",
+  "instructions": [
+    "FIRST_READ_START_HERE_AND_POINTER_THEN_THIS_HANDOFF_AND_HISTORICAL_INDEX",
+    "REFETCH_LIVE_PR_HEADS_AND_CI_BEFORE_CHANGES",
+    "DO_NOT_CONFUSE_SYNTHETIC_CI_WITH_GPU_PHYSICAL_EXECUTION",
+    "DO_NOT_REOPEN_GSE178317_CRISPR_GUIDE_ASSIGNMENT_WITHOUT_REAL_DATA",
+    "DO_NOT_PROMOTE_GSE311359_COLLIDED_V1_GUIDE_EFFECTS",
+    "NO_PROTECTED_OUTCOME_OR_REAL_N1_OR_TRAINING_WITHOUT_SEPARATE_AUTHORIZATION"
+  ]
+}

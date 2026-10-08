@@ -1,0 +1,78 @@
+stage: Stage45
+version: v1
+description: New safe SEA-AD feature acquisition and benchmark using CELLxGENE metadata composition plus engineered MRI summaries.
+
+references:
+  stage27c_score: 0.3267024400121495
+  stage39e_score: 0.35808116279206914
+  stage41b_score: 0.3394229016907968
+  stage41c_score: 0.36808747595423713
+  material_threshold: 0.3317
+
+paths:
+  cellxgene_dir: data/sea_ad/stage45/cellxgene
+  processed_dir: data/sea_ad/stage45/processed
+  spatial_dir: data/sea_ad/stage45/spatial
+  image_dir: data/sea_ad/stage45/image
+
+inputs:
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage39e_oof: results/tables/stage39e_oof_predictions_v1.csv
+  stage41b_oof: results/tables/stage41b_oof_results_v1.csv
+  stage41c_oof: results/tables/stage41c_oof_results_v1.csv
+  stage41b_latent_metadata: data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_feature_matrix_v1.csv
+  stage41b_safe_metadata: data/sea_ad/stage41b/processed/stage41b_safe_metadata_only_feature_matrix_v1.csv
+  stage41b_mri: data/sea_ad/stage41b/processed/stage41b_mri_only_feature_matrix_v1.csv
+  stage41abc_mri_xlsx: data/sea_ad/stage41abc/raw/68debdfdae5f82b97af2fb0f_sea-ad_cohort_mri_volumetrics.xlsx
+  stage42_decision: results/tables/stage42_next_action_decision_v1.csv
+
+targets_map:
+  AT8: percent AT8 positive area_Grey matter
+  6e10/A_beta: percent 6e10 positive area_Grey matter
+  GFAP: percent GFAP positive area_Grey matter
+  Iba1: percent Iba1 positive area_Grey matter
+  NeuN: percent NeuN positive area_Grey matter
+
+model:
+  ridge_alphas: [10, 30, 100, 300, 1000, 3000, 10000]
+  bootstrap_samples: 500
+  random_seed: 7
+
+outputs:
+  input_inventory: results/tables/stage45_input_inventory_v1.csv
+  resource_inventory: results/tables/stage45_resource_inventory_v1.csv
+  cellxgene_dataset_inventory: results/tables/stage45_cellxgene_dataset_inventory_v1.csv
+  cellxgene_metadata_query_log: results/tables/stage45_cellxgene_metadata_query_log_v1.csv
+  cellxgene_metadata_analysis: results/tables/stage45_cellxgene_metadata_analysis_v1.csv
+  cellxgene_donor_linkage_audit: results/tables/stage45_cellxgene_donor_linkage_audit_v1.csv
+  cellxgene_composition_feature_manifest: results/tables/stage45_cellxgene_composition_feature_manifest_v1.csv
+  mri_engineering_manifest: results/tables/stage45_mri_engineering_manifest_v1.csv
+  spatial_resource_manifest: results/tables/stage45_spatial_resource_manifest_v1.csv
+  image_resource_manifest: results/tables/stage45_image_resource_manifest_v1.csv
+  feature_risk_tier_assignment: results/tables/stage45_feature_risk_tier_assignment_v1.csv
+  safe_feature_matrix_manifest: results/tables/stage45_safe_feature_matrix_manifest_v1.csv
+  forbidden_predictor_audit: results/tables/stage45_forbidden_predictor_audit_v1.csv
+  manual_acquisition_gaps: results/tables/stage45_manual_acquisition_gaps_v1.csv
+  model_registry: results/tables/stage45_model_registry_v1.csv
+  oof_results: results/tables/stage45_oof_results_v1.csv
+  target_level_results: results/tables/stage45_target_level_results_v1.csv
+  delta_vs_references: results/tables/stage45_delta_vs_references_v1.csv
+  bootstrap_ci: results/tables/stage45_bootstrap_ci_v1.csv
+  fold_sensitivity: results/tables/stage45_fold_sensitivity_v1.csv
+  donor_influence: results/tables/stage45_donor_influence_audit_v1.csv
+  abeta_guard: results/tables/stage45_abeta_guard_audit_v1.csv
+  iba1_rescue: results/tables/stage45_iba1_rescue_audit_v1.csv
+  target_guard: results/tables/stage45_target_guard_audit_v1.csv
+  negative_control: results/tables/stage45_negative_control_results_v1.csv
+  proxy_leakage: results/tables/stage45_proxy_leakage_decision_v1.csv
+  benchmark_lock_decision: results/tables/stage45_benchmark_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage45_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage45_pass_fail_v1.csv
+  technical_report: results/reports/stage45_new_safe_feature_acquisition_and_benchmark_report_v1.md
+  pi_summary: results/reports/stage45_pi_summary_v1.md
+  manual_gaps_report: results/reports/stage45_manual_acquisition_gaps_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv

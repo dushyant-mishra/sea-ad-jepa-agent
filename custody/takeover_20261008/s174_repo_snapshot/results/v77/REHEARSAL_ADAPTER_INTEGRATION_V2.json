@@ -1,0 +1,434 @@
+{
+  "schema": "V77_SYNTHETIC_BATCH_ADAPTER_PROVENANCE_V3",
+  "claim_namespace": "SYNTHETIC_PIPELINE_ANTICHEAT_REHEARSAL",
+  "world_root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds\\fs_smoke_s161",
+  "observer_dir": "FULLSCALE_V2_CANONICAL_sharded",
+  "observer_manifest_schema": "V77_FULLSCALE_CANONICAL_RNA_OBSERVER_MANIFEST_V2",
+  "observer_manifest_sha256": "3195a6a20b1ed3559b4a929aba9646d0e5bbf2a61d3d3b5d281b37a6fd4e2bf9",
+  "structural_support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+  "observation_identity": {
+    "source_roster": [
+      "SEA_AD",
+      "NPH52",
+      "HVS"
+    ],
+    "source_index_semantics": "index into source_roster",
+    "operator_ids": [
+      "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+      "HVS::38374d1b-6549-4429-b59a-ff2706dacd96",
+      "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c",
+      "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd",
+      "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9",
+      "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d",
+      "HVS::5fff0955-173e-407d-b160-64f513ca6db6",
+      "HVS::6201fd7d-f35b-4487-bace-99426881237b",
+      "HVS::77dc6994-2777-4fad-a445-4ff7d143a682",
+      "HVS::7958eba0-1d79-42e3-8947-a198f98578f2",
+      "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa",
+      "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551",
+      "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf",
+      "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f",
+      "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d",
+      "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb",
+      "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2",
+      "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241",
+      "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354",
+      "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+      "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97",
+      "HVS::d1303087-592a-4c3d-aa3e-21de203927dc",
+      "HVS::e813d04b-7833-4b02-b14f-0247d6128516",
+      "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96",
+      "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+      "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+      "sea_ad_ang_rna_final_2026",
+      "sea_ad_caudate_rna_all_2025",
+      "sea_ad_fi_rna_final_2026",
+      "sea_ad_hip_rna_final_2026",
+      "sea_ad_itg_rna_final_2026",
+      "sea_ad_lec_rna_final_2026",
+      "sea_ad_mec_rna_final_2026",
+      "sea_ad_mtg_rna_final_2026",
+      "sea_ad_pfc_a9_rna_final_2026",
+      "sea_ad_stg_rna_final_2026",
+      "sea_ad_v1c_rna_final_2026"
+    ],
+    "operator_index_semantics": "index into operator_ids",
+    "operator_source_map": [
+      [
+        "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+        "HVS"
+      ],
+      [
+        "HVS::38374d1b-6549-4429-b59a-ff2706dacd96",
+        "HVS"
+      ],
+      [
+        "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c",
+        "HVS"
+      ],
+      [
+        "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd",
+        "HVS"
+      ],
+      [
+        "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9",
+        "HVS"
+      ],
+      [
+        "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d",
+        "HVS"
+      ],
+      [
+        "HVS::5fff0955-173e-407d-b160-64f513ca6db6",
+        "HVS"
+      ],
+      [
+        "HVS::6201fd7d-f35b-4487-bace-99426881237b",
+        "HVS"
+      ],
+      [
+        "HVS::77dc6994-2777-4fad-a445-4ff7d143a682",
+        "HVS"
+      ],
+      [
+        "HVS::7958eba0-1d79-42e3-8947-a198f98578f2",
+        "HVS"
+      ],
+      [
+        "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa",
+        "HVS"
+      ],
+      [
+        "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551",
+        "HVS"
+      ],
+      [
+        "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf",
+        "HVS"
+      ],
+      [
+        "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f",
+        "HVS"
+      ],
+      [
+        "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d",
+        "HVS"
+      ],
+      [
+        "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb",
+        "HVS"
+      ],
+      [
+        "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2",
+        "HVS"
+      ],
+      [
+        "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241",
+        "HVS"
+      ],
+      [
+        "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354",
+        "HVS"
+      ],
+      [
+        "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+        "HVS"
+      ],
+      [
+        "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97",
+        "HVS"
+      ],
+      [
+        "HVS::d1303087-592a-4c3d-aa3e-21de203927dc",
+        "HVS"
+      ],
+      [
+        "HVS::e813d04b-7833-4b02-b14f-0247d6128516",
+        "HVS"
+      ],
+      [
+        "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96",
+        "HVS"
+      ],
+      [
+        "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+        "NPH52"
+      ],
+      [
+        "sea_ad_ang_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_caudate_rna_all_2025",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_fi_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_hip_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_itg_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_lec_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_mec_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_mtg_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_pfc_a9_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_stg_rna_final_2026",
+        "SEA_AD"
+      ],
+      [
+        "sea_ad_v1c_rna_final_2026",
+        "SEA_AD"
+      ]
+    ],
+    "donor_ids": [
+      "H15.03.003",
+      "H15.03.005",
+      "H15.03.006",
+      "H15.06.008",
+      "H15.06.017",
+      "H16.03.001",
+      "H16.03.002",
+      "H16.03.008",
+      "H16.03.010",
+      "H16.03.011",
+      "H16.06.003",
+      "H16.06.008",
+      "H16.06.012",
+      "H17.03.012",
+      "H17.26.005",
+      "H18.03.002",
+      "H18.03.003",
+      "H18.03.008",
+      "H18.03.012",
+      "H18.03.313",
+      "H18.03.323",
+      "H18.06.002",
+      "H18.06.004",
+      "H18.06.005",
+      "H18.06.359",
+      "H18.06.363",
+      "H18.06.367",
+      "H18.06.368",
+      "H18.26.404",
+      "H19.03.306",
+      "H19.03.310",
+      "H19.03.313",
+      "H19.03.314",
+      "H19.03.317",
+      "H19.03.319",
+      "H19.03.322",
+      "H19.06.356",
+      "H19.06.362",
+      "H19.26.404",
+      "H19.33.004",
+      "H20.06.354",
+      "H20.26.406",
+      "H20.33.001",
+      "H20.33.004",
+      "H20.33.008",
+      "H20.33.011",
+      "H20.33.012",
+      "H20.33.013",
+      "H20.33.017",
+      "H20.33.018",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.026",
+      "H20.33.027",
+      "H20.33.029",
+      "H20.33.030",
+      "H20.33.031",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.037",
+      "H20.33.038",
+      "H20.33.039",
+      "H20.33.040",
+      "H20.33.041",
+      "H20.33.043",
+      "H20.33.044",
+      "H21.33.001",
+      "H21.33.002",
+      "H21.33.005",
+      "H21.33.009",
+      "H21.33.010",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.017",
+      "H21.33.018",
+      "H21.33.025",
+      "H21.33.028",
+      "H21.33.032",
+      "H21.33.033",
+      "H21.33.034",
+      "H21.33.035",
+      "H21.33.036",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.042",
+      "H21.33.043",
+      "H21.33.047",
+      "human_NPH_1031",
+      "human_NPH_1055",
+      "human_NPH_1069",
+      "human_NPH_1075",
+      "human_NPH_873",
+      "human_NPH_881",
+      "human_NPH_884",
+      "human_NPH_896",
+      "human_NPH_898",
+      "human_NPH_906",
+      "human_NPH_907",
+      "human_NPH_909",
+      "human_NPH_910",
+      "human_NPH_916",
+      "human_NPH_923",
+      "human_NPH_944",
+      "human_NPH_976"
+    ],
+    "donor_index_semantics": "index into donor_ids",
+    "support_rule_id": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1"
+  },
+  "feature_identity": {
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "n_addresses": 41238,
+    "address_id_order_sha256": "e4d8e17a1d7661ae7fc35eafef7f0aeaeb3fed604f29182cd49b032f8fc45af8"
+  },
+  "support_source": "per-element support_mask_packed read from every observer shard",
+  "identity_source": "source, operator and donor read from every observer shard, checked by name",
+  "n_cells": 2000,
+  "n_shards_read": 4,
+  "n_genes_in_universe": 19569,
+  "hidden_fraction": 0.15,
+  "seed": 20261006,
+  "three_state_counts": {
+    "measured_detected": 6218137,
+    "measured_zero": 30641155,
+    "structurally_unmeasured": 2278708
+  },
+  "hidden_targets": {
+    "total": 5529144,
+    "on_measured_zero": 4595999,
+    "on_detected": 933145,
+    "on_unmeasured": 0
+  },
+  "q_safety": "student evidence and every model-facing depth summary exclude hidden-target counts; hidden values exist only in the readout record",
+  "digests": {
+    "model": "99d0588d7cd64e1774538b0d7f66b0a6a0ed2e4575cdf73a270d42f41801bcce",
+    "operator_context": "e3dc552c9d817a610b589c55618832e731761477b20456de2e542443ba05968c",
+    "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+    "readout": "a0207dca40471709ed1320920f0412f3fa5adb53ae54aed2ecaa5c48b4bab3b0",
+    "oracle": "0033cea1ade13fa77db82e53959ad79cef43a77f5e9b1b40fbd43262c4edc696"
+  },
+  "oracle_only_fields": [
+    "c_state_a",
+    "c_state_b",
+    "compartment",
+    "niche_score",
+    "pert_dose",
+    "pert_id",
+    "pseudotime",
+    "rare_flags",
+    "spatial_x",
+    "spatial_y",
+    "state_index",
+    "substate",
+    "technical_latents",
+    "z_atac_bio",
+    "z_atac_tech",
+    "z_bioqc",
+    "z_donor",
+    "z_gain",
+    "z_global",
+    "z_marker",
+    "z_partial",
+    "z_query",
+    "z_reg_private",
+    "z_reg_shared",
+    "z_tf"
+  ],
+  "truth_fields_routed_to_oracle": [
+    "c_state_a",
+    "c_state_b",
+    "compartment",
+    "niche_score",
+    "pert_dose",
+    "pert_id",
+    "pseudotime",
+    "rare_flags",
+    "spatial_x",
+    "spatial_y",
+    "state_index",
+    "technical_latents",
+    "z_atac_bio",
+    "z_atac_tech",
+    "z_bioqc",
+    "z_donor",
+    "z_gain",
+    "z_global",
+    "z_marker",
+    "z_partial",
+    "z_query",
+    "z_reg_private",
+    "z_reg_shared",
+    "z_tf"
+  ],
+  "runtime_binding": "NONE; this adapter names no runtime loader class",
+  "no_training_performed": true,
+  "universe_file": {
+    "path": "D:\\jepa_v77_synthetic_custody_20261005\\frozen_evaluation_universe.npz",
+    "sha256": "e7ad8e5aa74f2fe6ecdaf6d6dbbaef54882a02897639f7c3dc50268f502d351a"
+  },
+  "source_commit": "20fc5a5c493ff9789b2c33dbe02a475c8b638f80",
+  "adapter_sha256": "15092b16d1a71241e8e5883ff228b5d89595073d79e8df70adaf63641103c4d6",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__ADAPTER_TRACKED",
+  "command": "python scripts/v77/v77_synthetic_batch_adapter.py --world D:/jepa_v77_synthetic_custody_20261005/worlds/fs_smoke_s161 --observer-dir FULLSCALE_V2_CANONICAL_sharded --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --out results/v77/REHEARSAL_ADAPTER_INTEGRATION_V2.json"
+}

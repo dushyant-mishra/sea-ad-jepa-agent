@@ -1,0 +1,15 @@
+{
+  "AB_stable_key_overlap": 0,
+  "annotations_dropped_before_discovery": true,
+  "common_scalar": 17186,
+  "global_row_max": 24999,
+  "global_row_min": 0,
+  "inverse_log1p_first_nonzero_fraction_lt_1e8": 1.0,
+  "inverse_log1p_max_residual": 3.552713678800501e-15,
+  "rows": 25000,
+  "sample_row_max": 24999,
+  "sample_row_min": 0,
+  "source_donors": {"HVS": 41, "NPH52": 17, "SEA_AD": 46},
+  "source_operators": {"HVS": 23, "NPH52": 7, "SEA_AD": 11},
+  "source_rows": {"HVS": 1129, "NPH52": 1310, "SEA_AD": 22561}
+}

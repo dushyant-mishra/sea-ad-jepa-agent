@@ -1,0 +1,63 @@
+{
+  "schema": "V71_SYNTHETIC_PIPELINE_READINESS_CONTRACT_V1",
+  "date": "2026-10-01",
+  "status": "PRE_FULL_TWIN_READINESS_GATE",
+  "required_components": {
+    "synthetic_system_contract": "results/v64/V71_FULL_SYNTHETIC_TWIN_SYSTEM_CONTRACT_V1.json",
+    "synthetic_etl_contract": "results/v64/V71_SYNTHETIC_RAW_ETL_CONTRACT_V1.json",
+    "failure_library": "results/v64/V71_SYNTHETIC_ETL_FAILURE_INJECTION_MATRIX_V1.json",
+    "truth_firewall": "results/v64/V71_SYNTHETIC_TRUTH_FIREWALL_CONTRACT_V1.json",
+    "stage4_authority": "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json",
+    "multisource_contract": "results/v64/V69_STAGE4_MULTISOURCE_EVIDENCE_INTEGRATION_CONTRACT_V1.json",
+    "program_namespace": "results/v64/V69_REGULATORY_PROGRAM_NAMESPACE_CONTRACT_V1.json",
+    "crosswalk_schema": "results/v64/V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1.json",
+    "teacher_candidate_contract": "results/v64/V70_TEACHER_REGULATORY_CANDIDATE_SELECTION_CONTRACT_V1.json",
+    "teacher_feature_interface": "results/v64/V70_PRIVILEGED_TEACHER_FEATURE_PRODUCER_INTERFACE_V1.json"
+  },
+  "readiness_gates": [
+    "all required contract files exist and parse",
+    "synthetic ETL failure library contains at least 20 distinct behavioral cases",
+    "truth firewall explicitly forbids pipeline access to hidden truth",
+    "SMALL_CI synthetic raw fixture generator exists",
+    "SMALL_CI ETL behavioral qualification exists",
+    "multimodal synthetic landing fixture exists for Stage4/SCENIC+/multisource interfaces",
+    "checkpoint synthetic fixture includes healthy, collapse, shortcut, private-leak and corrupt cases",
+    "real-scale resource estimator exists before FULL104_SCALE execution",
+    "Macha Route-A/Route-B external network return interface is frozen",
+    "Stage4 interpretation limitations are carried into final scoring",
+    "no real protected outcome is required to execute the synthetic challenge"
+  ],
+  "stages": [
+    {
+      "id": "R0_CONTRACTS",
+      "promotion": "all contracts/validators green"
+    },
+    {
+      "id": "R1_SMALL_CI",
+      "promotion": "raw ETL + planted corruption qualification"
+    },
+    {
+      "id": "R2_MEDIUM_STRESS",
+      "promotion": "resource/streaming and multimodal integration qualification"
+    },
+    {
+      "id": "R3_FULL104_SCALE",
+      "promotion": "full synthetic twin execution"
+    },
+    {
+      "id": "R4_FROZEN_PRE_UNBLIND_REPORT",
+      "promotion": "all selections frozen"
+    },
+    {
+      "id": "R5_UNBLIND_AND_SCORE",
+      "promotion": "truth opened exactly once for final audit"
+    }
+  ],
+  "current_expected_state": "R0_CONTRACTS_IN_PROGRESS",
+  "forbidden_promotion": [
+    "skip SMALL_CI because unit tests are green",
+    "skip MEDIUM_STRESS because full-scale hardware is available",
+    "use hidden truth to tune generator-facing thresholds in the pipeline",
+    "modify challenge truth after pipeline results are seen without versioning a new challenge"
+  ]
+}

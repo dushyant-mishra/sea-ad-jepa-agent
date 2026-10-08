@@ -1,0 +1,8 @@
+"matrix_id","operator_index","reader_partition","derivative_sha256","path_inside_package","original_path_and_hash_denied"
+"NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",35,"reader_fit","4ec0e6e85a32f63c775a7ea4a2023093d34d534c7b487207a82ea081061c2b2c",TRUE,TRUE
+"NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",36,"reader_fit","3f9ea15e24cb82d14ce98dde769a07a0c157545bac96431a98d8dd5bb6b4b563",TRUE,TRUE
+"NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",37,"reader_fit","dfbca254c73a35ee8cbadad328f006117940e92bd5236819351aeb36bf32b887",TRUE,TRUE
+"NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",38,"reader_fit","76ea68607af364adc093e0ca50321287c1ddcf3ddb0da63229740699e429506f",TRUE,TRUE
+"NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",39,"reader_fit","5f2cd65c8bb1746388969682823bacd244d88871c5229b325ca19b31513c639c",TRUE,TRUE
+"NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",41,"reader_fit","1002f2157cbbfeaf1b80f89ef58fbfdf9ef43727cb2b08c96453130b2f9db766",TRUE,TRUE
+"NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",40,"reader_fit","88c17e3696ef79b57124b39da216de4c81fcd2efb17676775a87a01787c121c3",TRUE,TRUE

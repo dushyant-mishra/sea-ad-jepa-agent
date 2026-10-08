@@ -1,0 +1,7 @@
+input_name,path,exists,filesize_bytes
+results_root,C:\Users\dushy\Desktop\Jepa project\results,True,
+data_root,C:\Users\dushy\Desktop\Jepa project\data,True,
+stage64_cell_scores,C:\Users\dushy\Desktop\Jepa project\results\tables\stage64_cell_level_module_score_table_v1.csv,True,1875529
+stage64_handoff,C:\Users\dushy\Desktop\Jepa project\results\tables\stage64_external_handoff_signature_v1.csv,True,21361
+stage65_handoff,C:\Users\dushy\Desktop\Jepa project\results\tables\stage65_external_handoff_signature_v1.csv,True,28068
+stage66_graph_registry,C:\Users\dushy\Desktop\Jepa project\results\tables\stage66_rare_signature_gene_registry_v1.csv,True,2337

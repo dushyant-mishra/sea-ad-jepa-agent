@@ -1,0 +1,6 @@
+question_id,decision_question,recommendation,consequence
+Q1,Benchmark/methods paper or AD hypothesis-support paper?,Benchmark/methods framing,Controls claim scope.
+Q2,Stage45 main text or supplement?,"Main text concise, details supplement",Shows new-feature negative result transparently.
+Q3,Frozen mechanisms main text or supplement?,"Main text overview, supplement details",Avoids biology overclaim.
+Q4,Title emphasizes benchmark discipline or SEA-AD prediction?,Benchmark discipline,Best matches evidence.
+Q5,Future spatial/image as future work or grant aim?,Future work plus grant aim seed,Avoids delaying manuscript.

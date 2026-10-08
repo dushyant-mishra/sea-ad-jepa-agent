@@ -1,0 +1,75 @@
+stage: Stage39B-LPH
+version: v1
+description: Internal latent-prediction auxiliary head rescue experiment under donor-held-out rules.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  official_module_mean_baseline: 0.3128
+  minimum_success_threshold: 0.3228
+  max_target_drop_vs_module_mean: -0.02
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage27c_mean_metrics: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage27c_pass_fail: results/tables/stage27c_rescue_pass_fail_v1.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  module_mean_baseline: results/tables/v3_primary_baseline_pooled_oof_recompute_v1.csv
+  stage35c_mean_metrics: results/tables/stage35c_mean_metrics_v1.csv
+  stage35c_target_metrics: results/tables/stage35c_target_metrics_v1.csv
+
+outputs:
+  failure_mode_inventory: results/tables/stage39b_lph_failure_mode_inventory_v1.csv
+  input_inventory: results/tables/stage39b_lph_input_inventory_v1.csv
+  feature_target_design: results/tables/stage39b_lph_feature_target_design_v1.csv
+  training_gate: results/tables/stage39b_lph_training_gate_v1.csv
+  model_registry: results/tables/stage39b_lph_model_registry_v1.csv
+  internal_oof_results: results/tables/stage39b_lph_internal_oof_results_v1.csv
+  target_level_results: results/tables/stage39b_lph_target_level_results_v1.csv
+  control_results: results/tables/stage39b_lph_control_results_v1.csv
+  delta_vs_stage27c: results/tables/stage39b_lph_delta_vs_stage27c_v1.csv
+  uncertainty_diagnostics: results/tables/stage39b_lph_uncertainty_diagnostics_v1.csv
+  candidate_interpretation_audit: results/tables/stage39b_lph_candidate_interpretation_audit_v1.csv
+  claim_boundary_audit: results/tables/stage39b_lph_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39b_lph_pass_fail_v1.csv
+  technical_report: results/reports/stage39b_lph_internal_model_rescue_report_v1.md
+  pi_summary: results/reports/stage39b_lph_pi_model_rescue_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+model:
+  random_seed: 7
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+  pca_components: 8
+  use_ridge_only_first_pass: true
+  use_mlp: false
+  use_external_data: false
+  use_graph_context: false
+
+conditions:
+  - stage27c_reference
+  - no_lph_matched_baseline
+  - lph_aux_head_real
+  - lph_aux_head_shuffled_latent_target
+  - lph_aux_head_shuffled_context
+  - lph_aux_head_no_graph_or_identity
+
+safety:
+  no_synthetic_biological_data_generated: true
+  no_external_training: true
+  no_external_model_selection: true
+  no_external_candidate_selection: true
+  frozen_stage36e_candidates_preserved: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_disease_modifying_claim: true

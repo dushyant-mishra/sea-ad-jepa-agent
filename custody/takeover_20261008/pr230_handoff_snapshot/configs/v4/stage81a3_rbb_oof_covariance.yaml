@@ -1,0 +1,39 @@
+stage_id: stage81a3_rbb_oof_covariance
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+fixture:
+  seed: 8114001
+  cells: 4096
+  genes: 4096
+  factors: 32
+  train: 3072
+  validation: 512
+  sealed: 512
+oof:
+  folds: 8
+  assignment: cell_index_modulo_8
+  ridge_alpha: 1.0e-3
+masks:
+  primary_families: [RANDOM_40, COEXPRESSION_BLOCK_40]
+  views_per_family: 4
+low_rank_diagonal:
+  positive_correlated_energy_target: 0.50
+  minimum_rank: 4
+  maximum_rank: 32
+  diagonal_floor_multiplier: 1.0e-4
+  full_covariance_stabilizer_multiplier: 1.0e-4
+predeclared_qualification:
+  material_variance_ratio: 1.25
+  acceptable_standardized_variance: [0.80, 1.25]
+  acceptable_mahalanobis_mean_ratio: [0.80, 1.25]
+  meaningful_mahalanobis_relative_error_improvement: 0.05
+  maximum_lrd_nll_disadvantage_per_dimension: 0.02
+  unrestricted_full_required_advantage_per_dimension: 0.02
+  maximum_severe_non_gaussian_fraction: 0.25
+boundaries:
+  neural_training: forbidden
+  optimizer_updates: 0
+  real_rna: forbidden
+  pathology: forbidden
+  sealed_rank_selection: forbidden
+  factor_labels_in_fitting: forbidden
+  hyperparameter_sweep: forbidden

@@ -1,0 +1,350 @@
+{
+  "schema": "JEPA_HANDOFF_STATE_20260930_V65_PRIVILEGED_RECOVERABILITY",
+  "date": "2026-09-30",
+  "status": "V65_PHASE_B_EXECUTED__B1_B5_CLOSED__B6_T3_T4_AVAILABILITY_SCHEMA_BLOCKER__STAGE4_SEALED",
+  "handoff_branch": "chatgpt/v64-privileged-information-recoverability-20260930",
+  "handoff_head_before_package": "9abb4a1daa00f6bfc7b44b286d88c974a951fc45",
+  "live_heads_at_creation": {
+    "chatgpt_architecture": "dfcbe5cfbe768a42b81c1f2bb1bd899e7b4843d3",
+    "claude_exact_sampler": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+    "prior_handoff": "ad3a33198fc23292b09db5e3ea6d297fdf19f3fd",
+    "prior_canonical": "23255baaf81381d5c22c655a605642db27f2a173"
+  },
+  "claude_lane": {
+    "branch": "claude/v64-exact-sampler-successor-20260930",
+    "supplement": {
+      "edges": 20709,
+      "edge_sides": 41418,
+      "band_positions": 1576398690,
+      "safe_affine_positions": 1560436760,
+      "supplement_candidates": 15961930,
+      "uncovered": 0,
+      "A_interior": 235726268,
+      "A_supplement": 177442,
+      "A_exact": 235903710
+    },
+    "S50": {
+      "repaired": true,
+      "commit": "f2b45699d1be88cc599971da243ba6e36a50c4a7",
+      "shard0_payload_identical": true,
+      "payload_sha256": "577f86c530f2a87e108db7e81bb2160def4344bd32999032f91f2e34b35101e9",
+      "production_shadow_overlap_bp": 0,
+      "positive_control_bp": 4000
+    },
+    "real_edge_qualification_last_reported": "64/64 complete; 42 non-empty; 0 inequalities; deterministic replay 64/64; supplement-targeted 8/8",
+    "sampler_qualified": true,
+    "phaseA_rerun_authorized": true,
+    "phaseA": {
+      "status": "V3_FULL_FUNNEL_PRESENT_AND_USED_AS_SUBSTRATE_AUTHORITY",
+      "retained_primary": 13175,
+      "retained_genes": 4372,
+      "retained_promoters": 5964,
+      "funnel": {
+        "denominator": 20709,
+        "gene_not_in_nihcard": 350,
+        "gene_ambiguous": 0,
+        "linked_no_consensus_peak": 199,
+        "linked_eligible": 20160,
+        "control_A_failed": 6985,
+        "retained": 13175
+      },
+      "provenance_patch": "results/v64/phase_a_v3/PHASE_A_V3_RECEIPT_PROVENANCE_PATCHED_V1.json",
+      "row_bytes_in_git": false
+    },
+    "phaseB_statistical_contract": {
+      "head": "af5038f0ef00faa057bb5ebe2e0cde21ba3e7a64",
+      "status": "ACCEPTED_DESIGN_V2",
+      "randomized_null_denominator": 10654,
+      "primary_weighting": "GENE_BALANCED",
+      "mandatory_companion": "PROMOTER_EQUAL",
+      "predeclared_sensitivity": "EDGE_EQUAL",
+      "sole_resampling_unit": "DONOR",
+      "bootstrap_replicates": 4000,
+      "bootstrap_seed": 20260929,
+      "phaseB_executed": false,
+      "remaining_execution_blocker": "Freeze complete Phase-B measurement substrate before matrix opening: persisted metacell assignment; metacell-level RNA/ATAC values and masks; depth quantities needed by frozen nuisance basis; exact small-support enumeration alternatives/measurements; scope recoverability TEST-donor firewall separately from Phase-B population."
+    },
+    "phaseB_substrate": {
+      "status": "B1_B5_ACCEPTED__B6_PRECOMMIT_REPAIR_REQUIRED",
+      "claude_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+      "authoritative_closeout_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+      "accepted": [
+        "B1 T5 donor×pair aggregates materialized from frozen T1-T4",
+        "B2 32153 interval reconciliation",
+        "B3 current shard-byte rehash and receipt equality",
+        "B4 donor-pair zero-coverage/variance semantics",
+        "B5 T6→T7 reference integrity",
+        "pairing permutation content/file digest, bijection, inverse and obs-namespace re-derivation"
+      ],
+      "b6_precommit_audit": "results/v64/V64_PHASE_B_B6_AVAILABILITY_PRECOMMIT_AUDIT_V1.json",
+      "blockers": [
+        "B6 proof 3 must independently rederive T5 availability_state_code for all donor×pair rows and compare elementwise; holds=True is not evidence.",
+        "B6 sparse-zero proof must cover T4 ATAC as well as T3 RNA.",
+        "B6 must prove global metacell IDs are unique contiguous 0..3230 before using them as dense row indices.",
+        "B6 must prove all 8 shards share identical gene/interval axis dictionaries and n_assigned_peaks ordering.",
+        "B6 output must bind exact shard/T5/closeout/producer bytes plus packbits shape/bitorder/padding semantics."
+      ],
+      "stage4_authorized": false
+    }
+  },
+  "architecture": {
+    "universal_teacher": "RNA_EMA_TEACHER",
+    "privileged_prequalification_role": "AUXILIARY_CRITIC_OR_VALIDATOR",
+    "recoverability_classes": [
+      "RNA-RECOVERABLE",
+      "PARTIALLY-RNA-RECOVERABLE",
+      "REGULATORY-PRIVATE",
+      "UNQUALIFIED"
+    ],
+    "private_state_policy": "PRESERVE_NO_COMPULSORY_RNA_STUDENT_LOSS",
+    "missing_privileged_policy": "MASK_NOT_ZERO",
+    "test_selects_rotation": false,
+    "test_selects_rank": false,
+    "canonical_paired_split": "results/v64/V64_NIHCARD_PAIRED_DONOR_SPLIT_V1.json",
+    "split_authority_resolution": "docs/agent/V65_NIHCARD_RECOVERABILITY_SPLIT_AUTHORITY_20260930.md",
+    "first_privileged_factor_contract": "docs/agent/V65_FIRST_PRIVILEGED_FACTOR_RECOVERABILITY_EXECUTION_CONTRACT_20260930.md",
+    "recoverability_precision_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_PRECISION_DECISION_CONTRACT_V2_20260930.md",
+    "recoverability_decision_state": "results/v64/V65_PRIVILEGED_RECOVERABILITY_DECISION_STATE_V2.json",
+    "recoverability_execution_authorized": false,
+    "recoverability_synthetic_software_qualification": "results/v64/V65_PRIVILEGED_RECOVERABILITY_SYNTHETIC_SOFTWARE_QUALIFICATION_V1.json",
+    "recoverability_synthetic_software_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY",
+    "recoverability_real_paired_values_opened": false,
+    "recoverability_test_opened": false,
+    "recoverability_authority_version": "V2_SOLE_LIVE_AUTHORITY",
+    "recoverability_execution_mechanics_contract": "docs/agent/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_CONTRACT_20260930.md",
+    "recoverability_execution_mechanics_qualification": "results/v64/V65_PRIVILEGED_RECOVERABILITY_EXECUTION_MECHANICS_QUALIFICATION_V1.json",
+    "recoverability_execution_mechanics_status": "QUALIFIED_ON_SYNTHETIC_FIXTURES_ONLY",
+    "recoverability_train_validation_preflight": {
+      "status": "PASS_OUTCOME_BLIND_STRUCTURAL_PREFLIGHT",
+      "script": "scripts/v64/privileged_recoverability_train_validation_preflight_v1.py",
+      "tests": "tests/test_v65_recoverability_train_validation_preflight.py",
+      "receipt": "results/v64/V65_PRIVILEGED_RECOVERABILITY_TRAIN_VALIDATION_PREFLIGHT_RECEIPT_V1.json",
+      "source_sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+      "train_nuclei": 1440,
+      "validation_nuclei": 360,
+      "test_nuclei_sealed": 360,
+      "test_numeric_access": "SEALED_BY_PREFLIGHT_API",
+      "real_outcome_computed": false
+    },
+    "multimodal_student": {
+      "status": "PLANNED_PROSPECTIVE_ARCHITECTURE__TRAINING_NOT_AUTHORIZED",
+      "contract": "docs/agent/V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_CONTRACT_20260930.md",
+      "state": "results/v64/V65_NESTED_RNA_MULTIMODAL_STUDENT_ARCHITECTURE_V1.json",
+      "topology": "NESTED_INFORMATION_EXTENSION_OF_UNIVERSAL_RNA",
+      "universal_rna_state": [
+        "Z_global",
+        "Z_query",
+        "Z_reg_shared"
+      ],
+      "multimodal_state": [
+        "Z_global",
+        "Z_query",
+        "Z_reg_shared",
+        "Z_reg_private"
+      ],
+      "universal_rna_replaced": false,
+      "raw_coordinate_identity_required": false,
+      "private_compulsory_rna_loss": false,
+      "missing_private_zero_fill": false,
+      "real_shared_rank": "UNRESOLVED_PENDING_RECOVERABILITY",
+      "multimodal_training_authorized": false
+    },
+    "nested_student_teacher_smokes": {
+      "full104_like_synthetic": {
+        "status": "PASS_SYNTHETIC_INTEGRATION_ONLY",
+        "receipt": "results/v64/V65_FULL104_LIKE_NESTED_STUDENT_TEACHER_SYNTHETIC_QUALIFICATION_V1.json",
+        "ci_run": 36804320183,
+        "donors": 104,
+        "operators": 42,
+        "sources": 3,
+        "metrics": {
+          "rna_shared_r2": 0.5640371488918989,
+          "multimodal_shared_r2": 0.6746087233362175,
+          "multimodal_private_r2": 0.8779468284584567,
+          "rna_private_r2": -0.026887372837845813,
+          "technical_shared_r2": -0.02450509888278951
+        },
+        "biological_authority": false
+      },
+      "historical_u0_real_data": {
+        "status": "PASS_REAL_DATA_SMOKE_NON_AUTHORITY",
+        "integrity_receipt": "results/v64/V65_HISTORICAL_T1_U0_INTEGRITY_SMOKE_V1.json",
+        "forward_receipt": "results/v64/V65_HISTORICAL_T1_U0_REAL_DATA_FORWARD_COMPATIBILITY_SMOKE_V1.json",
+        "checkpoint_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+        "post_u0_weights_used": false,
+        "optimizer_step_executed": false,
+        "exact_historical_replay": false,
+        "limitation": "Calibration bundle omitted historical contracts.py; forward used an explicitly documented compatibility shim while core ipb_jepa.py bytes match frozen 732ea46f source."
+      }
+    },
+    "synthetic_training_mechanics": {
+      "status": "PASS_SYNTHETIC_SOFTWARE_MECHANICS_ONLY",
+      "receipt": "results/v64/V65_NESTED_STUDENT_TEACHER_SYNTHETIC_TRAINING_MECHANICS_QUALIFICATION_V1.json",
+      "ci_run": 36805792282,
+      "steps": 120,
+      "optimizer": "full_batch_gradient_descent",
+      "ema_decay": 0.99,
+      "donor_heldout_validation": {
+        "rna_shared_r2": 0.5952843409333543,
+        "multimodal_shared_r2": 0.6990926229702407,
+        "multimodal_private_r2": 0.8753170620298067
+      },
+      "real_training_authorized": false
+    }
+  },
+  "paired_nihcard": {
+    "sha256": "6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "nuclei": 2160,
+    "donors": 24,
+    "nuclei_per_donor": 90,
+    "genes": 4000,
+    "peaks": 12000,
+    "cell_type": "MG",
+    "split_seed": 20260930,
+    "split": {
+      "train_donors": 16,
+      "validation_donors": 4,
+      "test_donors": 4,
+      "train_nuclei": 1440,
+      "validation_nuclei": 360,
+      "test_nuclei": 360
+    },
+    "biological_recoverability_test_opened": false
+  },
+  "promoter": {
+    "candidate_authority": "GENCODE_V50_TRANSCRIPT_TSS",
+    "gencode_candidates": 644292,
+    "gencode_genes": 78733,
+    "screen_pls_overlap_preliminary": 377974,
+    "dong_data7_unique_transcripts": 118033,
+    "dong_gencode_unique_transcript_overlap_corrected": 115678,
+    "dong_duplicate_enst_ids": 88,
+    "dong_join_rule": "transcript_id + chromosome",
+    "fantom_coordinate_authority": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+    "fantom_bed_workflow_run": 36749777293,
+    "full_ledger_status": "MATERIALIZED_AND_STRUCTURALLY_ACCEPTED",
+    "denominators": {
+      "transcript_promoter_isoform_records": 644292,
+      "exact_tss_loci": 389280,
+      "genes": 78733,
+      "contract": "docs/agent/V65_PROMOTER_LEDGER_DENOMINATOR_CONTRACT_20260930.md",
+      "builder": "scripts/v64/build_promoter_dual_ledger_v2.py",
+      "source_custody": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+      "frozen_screen_overlap": 178778,
+      "frozen_fantom_same_strand_overlap": 126712,
+      "frozen_fantom_exact_representative_tss": 25321
+    },
+    "source_byte_custody": "results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json",
+    "interval_overlap_audit": "results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json",
+    "materialization_audit": "results/v64/V65_PROMOTER_DUAL_LEDGER_MATERIALIZATION_AUDIT_V1.json",
+    "materialization_workflow": {
+      "run_id": 36797622994,
+      "head_sha": "2120aadcc216ada04148ba7e83d093fcdce8d1bb",
+      "artifact_id": 11134735950,
+      "artifact_sha256": "f4c1912e4cec23e1e159708fd5a7f46198ed72a0c1b2f3bec7a6e50ade02f090",
+      "committed_in_git": false
+    },
+    "output_hashes": {
+      "transcript_ledger": "aa02297a816c37420956b1a943572ba951f5659cc56c98760b2ef66323afd054",
+      "exact_tss_ledger": "2931960f321ccaae3fb1124dd07df9b3bd78e53032134648207c221b079eca32",
+      "transcript_to_tss_membership": "a409d7a19b2c2045be621826a2f262fe0ac50249e024329004672dd398811f35"
+    }
+  },
+  "full104_discovery_subset": {
+    "bytes": 50646637,
+    "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f",
+    "cells": 6000,
+    "backbone_addresses": 17186,
+    "address_is_gene": false,
+    "bytes_in_git": false,
+    "custody_manifest": "docs/agent/archive/chat_runtime_20260930_v2/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json"
+  },
+  "ci": {
+    "repaired_code_head": "4bd6f43b9cdb429a1cfcf8e1a35bca615ca3467f",
+    "pr": 199,
+    "mergeable": true,
+    "architecture_smoke": {
+      "run_id": 36800492975,
+      "job_id": 110173494009,
+      "conclusion": "success",
+      "tests_passed": 116,
+      "qualified_head": "ccc45a7f27abcc39469a4a01c71923b638fd6c77",
+      "scope": "synthetic recoverability decision + preprocessing/fit mechanics; not real biological execution"
+    },
+    "fantom_hg38_fetch": {
+      "run_id": 36752876636,
+      "conclusion": "success"
+    },
+    "claude_paired_import": {
+      "run_id": 36752876843,
+      "conclusion": "success"
+    },
+    "claude_exact_supplement_import": {
+      "run_id": 36752876592,
+      "conclusion": "success"
+    },
+    "claude_paired_export": {
+      "run_id": 36752876849,
+      "conclusion": "success"
+    },
+    "broad_open_resource_fetch_policy": "MANUAL_WORKFLOW_DISPATCH_ONLY__NOT_PR_GATING",
+    "manual_custody_resources": [
+      "DONG_ROUSSOS_2024_SUPPLEMENTARY_DATA_8",
+      "DONG_ROUSSOS_2024_SUPPLEMENTARY_DATA_10"
+    ],
+    "note": "Focused architecture/custody CI is green on repaired code head; this is not full production/training qualification."
+  },
+  "next_chat_priority": [
+    "Claude B6 only: keep B1-B5 untouched. Fix the B6 pre-commit audit blockers, commit the availability artifact/receipt/producer, and stop again for audit.",
+    "Do not rerun Phase A, sampler, substrate build, T5, interval reconciliation or T6/T7.",
+    "Nested RNA+multimodal synthetic semantics and optimizer/EMA mechanics remain clean software qualifications only; real training stays OFF.",
+    "Recoverability TRAIN+VALIDATION remains authorization-gated and TEST remains sealed.",
+    "Stage 4, Morabito and TD60 remain closed."
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "SUBSTRATE_EXECUTED_CLOSEOUT_PENDING",
+    "stage4": "NOT_AUTHORIZED",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  },
+  "blocked": [
+    "Phase B execution until measurement-substrate/enumeration contract is frozen and audited",
+    "Stage 4 correspondence",
+    "paired NIH-CARD recoverability execution until separately authorized under frozen V65 precision contract",
+    "Morabito",
+    "training",
+    "final factorized-target tournament"
+  ],
+  "phaseB_substrate": {
+    "claude_head": "154935c5ff1fe1c8f9cc09ab8ddb208256930c7f",
+    "contract_sha256": "060be8c7653aa9cd56126731895fd4abdb47e06cbd494d43d2cabee446299e84",
+    "status": "EXECUTED_NOT_YET_CONTRACT_COMPLETE",
+    "accepted_elements": [
+      "single-modality-only Phase-B boundary",
+      "persisted metacell substrate",
+      "gene-keyed RNA table",
+      "recoverability split scoped separately",
+      "protected demographic values not read",
+      "57 enumeration rows arithmetically recomputed"
+    ],
+    "blockers": [
+      "B6 frozen per-element T3/T4 availability columns are not materialized; T5 flags do not satisfy the contracted T3/T4 schema"
+    ],
+    "closed_findings": [
+      "S57",
+      "S58",
+      "S59",
+      "S60",
+      "S61",
+      "S62",
+      "S63",
+      "S64",
+      "B1",
+      "B2",
+      "B3",
+      "B4_T5_LOGIC",
+      "B5"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "PASS_F1_15C_NUISANCE_SEMANTICS_UNIQUELY_RESOLVED_BEFORE_SOURCE_EDIT",
+  "performed_before_15c_source_edit": true,
+  "scientific_scope": "synthetic_only_no_real_f1_execution",
+  "dependent_variable": {
+    "value": "agg[overall][0.6][A]",
+    "unit": "one value per frozen reader-fit donor",
+    "length": 104,
+    "evidence_level": 0.6,
+    "identity_constraint": "nuisance_y is bytewise-numeric-equal to overall_A after float64 conversion",
+    "owner": "scripts/v4/contextual_target_f1_decision_integration_v4.py::integrate_records and scripts/v4/contextual_target_f1_decision_v4.py::exact_payload"
+  },
+  "design": {
+    "row_order": "exact donor_order in F1_HC3_SELECTED_DONOR_DESIGN_SCHEMA.json",
+    "shape": [104, 16],
+    "dtype": "float64 little-endian row-major C",
+    "selected_triple": [5, 0, 4],
+    "binary_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+    "rank": 16,
+    "df": 88,
+    "owner": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_freeze_20260902/F1_HC3_SELECTED_DONOR_DESIGN_SCHEMA.json"
+  },
+  "test_object": {
+    "coefficient": "intercept beta[0] from equal-donor OLS on intercept plus centered retained nuisance columns",
+    "contrast": "beta[0] > 0",
+    "owner": "scripts/v4/contextual_target_f1_decision_v1.py::nuisance_design and hc3_intercept"
+  },
+  "hc3": {
+    "formula": "XtX_inv @ (X.T @ (X * (residual/(1-hat))^2[:,None])) @ XtX_inv",
+    "hat": "diag(X @ inverse(X.T@X) @ X.T), implemented by einsum",
+    "standard_error": "sqrt(covariance[0,0])",
+    "rank_tolerance": "max(X.shape)*float64_epsilon*largest_singular_value",
+    "owner": "scripts/v4/contextual_target_f1_decision_v1.py::hc3_intercept"
+  },
+  "inference": {
+    "ci": "two-sided 95% Student-t interval beta0 +/- t_(0.975,df)*SE",
+    "p_value": "positive one-sided Student-t survival probability at beta0/SE, report only for this gate",
+    "gate": "hc3_nuisance_positive passes iff estimable and two-sided lower bound > 0",
+    "owner": "scripts/v4/contextual_target_f1_decision_v4.py::qualify_current"
+  },
+  "fail_closed_behavior": {
+    "nonfinite": "unestimable/fails",
+    "zero_variance_or_zero_se": "unestimable/fails",
+    "collinearity": "nuisance_design retains only sorted centered columns that increase numerical rank; selected frozen X must independently remain rank 16",
+    "leverage_boundary": "any 1-h <= sqrt(float64_epsilon) makes HC3 unestimable/fail",
+    "source_confined": "separate cross_source_replication gate requires the two-sided lower bound > 0 in each HVS, NPH52, and SEA_AD donor group; it is not folded into HC3",
+    "owner": "scripts/v4/contextual_target_f1_decision_v1.py and scripts/v4/contextual_target_f1_decision_v4.py"
+  },
+  "decision_payload_fields": [
+    "overall_A", "program_A", "program_delta", "evidence_A", "qid_margin",
+    "qid_win_minus_half", "program_qid_margin", "draw0", "draw1", "nuisance_y",
+    "source_group", "nuisance_columns", "legal"
+  ],
+  "legal_boundary": "type(legal) is bool and only literal True passes",
+  "claim_scope": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION",
+  "program_estimand": "DESIGN_SAMPLED_W2_PROGRAM_ESTIMAND",
+  "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+  "decision_v4_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+  "integration_v4_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a",
+  "real_reader_forward_authority": null,
+  "resolution": "The existing truth table and code uniquely determine the donor outcome, evidence level, HC3 arithmetic, inference convention, and PASS/VETO mapping. No new statistical mapping is introduced."
+}

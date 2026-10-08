@@ -1,0 +1,17 @@
+input_id,expected_path,found,input_type,used_in_stage44,notes
+stage43_manuscript,results/reports/stage43_manuscript_draft_v1.md,True,md,True,found
+stage43_benchmark_progression,results/tables/stage43_benchmark_progression_table_v1.csv,True,csv,True,found
+stage43_rescue_summary,results/tables/stage43_rescue_attempt_summary_v1.csv,True,csv,True,found
+stage43_stage41_signal,results/tables/stage43_stage41_signal_table_v1.csv,True,csv,True,found
+stage43_stage45_negative,results/tables/stage43_stage45_negative_result_table_v1.csv,True,csv,True,found
+stage43_mechanisms,results/tables/stage43_frozen_mechanism_table_v1.csv,True,csv,True,found
+stage43_external_readiness,results/tables/stage43_external_support_readiness_table_v1.csv,True,csv,True,found
+stage43_claims,results/tables/stage43_claim_boundary_table_v1.csv,True,csv,True,found
+stage43_pass_fail,results/tables/stage43_pass_fail_v1.csv,True,csv,True,found
+stage41c_decision,results/tables/stage41c_stability_rescue_decision_v1.csv,True,csv,True,found
+stage45_manifest,results/tables/stage45_safe_feature_matrix_manifest_v1.csv,True,csv,True,found
+stage45_lock,results/tables/stage45_benchmark_lock_decision_v1.csv,True,csv,True,found
+stage42_readiness,results/tables/stage42_external_support_readiness_v1.csv,True,csv,True,found
+active_status,docs/ACTIVE_V3_STATUS.md,True,md,True,found
+v3_scorecard_md,docs/V3_SCORECARD.md,True,md,True,found
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,csv,True,found

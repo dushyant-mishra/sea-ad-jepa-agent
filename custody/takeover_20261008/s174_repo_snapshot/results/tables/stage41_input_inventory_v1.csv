@@ -1,0 +1,9 @@
+input_name,path,exists,size_bytes
+stage27c_oof,results/tables/stage27c_rescue_oof_predictions_v1.csv,True,568535
+stage39e_oof,results/tables/stage39e_oof_predictions_v1.csv,True,1758241
+stage39h_lock_decision,results/tables/stage39h_benchmark_lock_decision_v1.csv,True,6064
+stage39h_feature_blocks,results/tables/stage39h_feature_risk_tier_assignment_v1.csv,True,3636
+stage40a_decision,results/tables/stage40a_benchmark_decision_v1.csv,True,2499
+stage40b_multimodal_plan,results/tables/stage40b_multimodal_feature_acquisition_plan_v1.csv,True,1733
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,12554
+donor_metadata_targets,results/tables/sea_ad_full_metadata_targets_with_covariates.csv,True,63304

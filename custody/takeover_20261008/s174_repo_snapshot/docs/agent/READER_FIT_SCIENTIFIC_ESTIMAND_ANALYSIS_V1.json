@@ -1,0 +1,119 @@
+{
+  "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "candidate_estimands": {
+    "cell_uniform": {
+      "if_proposed_cell_uniform": {
+        "effective_sample_size_fraction": 1.0,
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "importance_weight_mean_over_cells": 1.0,
+        "importance_weight_median_across_donors": 1.0,
+        "importance_weight_min": 1.0
+      },
+      "if_sampled_directly_from_target": {
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_max": 1.0,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_median_across_donors": 1.0,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_min": 1.0
+      },
+      "target_donor_mass_max": 0.03823752192588978,
+      "target_donor_mass_median": 0.0032391130421682048,
+      "target_donor_mass_min": 1.7788877647001464e-05,
+      "target_source_mass": {
+        "HVS": 0.04364160726243009,
+        "NPH52": 0.05193385963521381,
+        "SEA_AD": 0.9044245331023562
+      }
+    },
+    "donor_uniform": {
+      "if_proposed_cell_uniform": {
+        "effective_sample_size_fraction": 0.09677462572795775,
+        "importance_weight_max": 540.5278964862298,
+        "importance_weight_max_to_min_ratio": 2149.5185185185187,
+        "importance_weight_mean_over_cells": 1.0,
+        "importance_weight_median_across_donors": 2.9687371806439393,
+        "importance_weight_min": 0.2514646381640713
+      },
+      "if_sampled_directly_from_target": {
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_max": 540.5278964862298,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_median_across_donors": 2.9687371806439393,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_min": 0.2514646381640713
+      },
+      "target_donor_mass_max": 0.009615384615384616,
+      "target_donor_mass_median": 0.009615384615384616,
+      "target_donor_mass_min": 0.009615384615384614,
+      "target_source_mass": {
+        "HVS": 0.39423076923076916,
+        "NPH52": 0.16346153846153844,
+        "SEA_AD": 0.4423076923076921
+      }
+    },
+    "source_donor_uniform": {
+      "if_proposed_cell_uniform": {
+        "effective_sample_size_fraction": 0.03668764715972057,
+        "importance_weight_max": 1102.2529653836843,
+        "importance_weight_max_to_min_ratio": 5816.344226579521,
+        "importance_weight_mean_over_cells": 1.0,
+        "importance_weight_median_across_donors": 4.4755212531954065,
+        "importance_weight_min": 0.18950958238451748
+      },
+      "if_sampled_directly_from_target": {
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_max": 1102.2529653836843,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_median_across_donors": 4.4755212531954065,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells_min": 0.18950958238451748
+      },
+      "target_donor_mass_max": 0.0196078431372549,
+      "target_donor_mass_median": 0.008130081300813007,
+      "target_donor_mass_min": 0.007246376811594202,
+      "target_source_mass": {
+        "HVS": 0.3333333333333333,
+        "NPH52": 0.33333333333333337,
+        "SEA_AD": 0.33333333333333337
+      }
+    }
+  },
+  "donor_capacity_by_source": [
+    {
+      "cells": 198718,
+      "donors": 41,
+      "max_cells_per_donor": 12509,
+      "median_cells_per_donor": 4292.0,
+      "min_cells_per_donor": 1625,
+      "source": "HVS"
+    },
+    {
+      "cells": 236476,
+      "donors": 17,
+      "max_cells_per_donor": 23972,
+      "median_cells_per_donor": 14874.0,
+      "min_cells_per_donor": 81,
+      "source": "NPH52"
+    },
+    {
+      "cells": 4118213,
+      "donors": 46,
+      "max_cells_per_donor": 174111,
+      "median_cells_per_donor": 91242.5,
+      "min_cells_per_donor": 9127,
+      "source": "SEA_AD"
+    }
+  ],
+  "execution_authorized": false,
+  "interpretation": [
+    "Cell-uniform, donor-uniform, and source-donor-uniform are distinct scientific estimands, not interchangeable batching recipes.",
+    "Under a raw cell-uniform proposal, donor-balanced targets require high-variance importance weights; direct target sampling avoids p/q variance but can repeatedly expose cells from very small donors.",
+    "Scientific target p(cell), proposal q(cell), and compute packing must be frozen as separate authorities.",
+    "No candidate is selected by this descriptive analysis and no training authority is created."
+  ],
+  "metadata_authority": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "population": "reader_fit",
+  "reader_fit_cells": 4553407,
+  "reader_fit_donors": 104,
+  "reader_fit_sources": 3,
+  "schema": "READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1",
+  "selected_estimand": null,
+  "selected_proposal_sampler": null,
+  "training_authorized": false
+}

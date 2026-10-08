@@ -1,0 +1,15 @@
+{
+  "authorization": "FRESH_ALL_ONLY",
+  "backend": "WSL2_CUDA_RTX3080_LAPTOP",
+  "batch_size": 32,
+  "benchmark_fixture_replicates_per_hour": 3049.0283366673375,
+  "checkpoint_every_strata": 1400,
+  "checkpoint_policy": "NO_IN_BATCH_CHECKPOINT__BATCH_BOUNDARY_RECOVERY",
+  "freeze_root": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+  "gate_manifest_sha256": "91805d5527bc33ac2f6cfb6269a05a4a601d3f8982e3ad21602a8aca14b766ed",
+  "implementation_fingerprint": "fee24675bfe69bfc703b840725e444441983088a93afece2922b666b376c5047",
+  "schema": "full104-block-major-wsl-implementation-gate-v1",
+  "scientific_outcome_inspected": false,
+  "status": "PASS_IMPLEMENTATION_AND_COMPUTE_GATE",
+  "terminal_hold": "ALL_COMPLETE_AWAITING_INDEPENDENT_REAL_RESULT_VALIDATION"
+}

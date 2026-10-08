@@ -1,0 +1,2 @@
+cellxgene_metadata_available,exact_donor_overlap,feature_matrices_built,best_score,delta_vs_stage27c,delta_vs_stage41c,decision,interpretation
+True,84/84,7,0.3121433633694442,-0.014559,-0.055944,do_not_lock_stage45,successful acquisition but negative benchmark result

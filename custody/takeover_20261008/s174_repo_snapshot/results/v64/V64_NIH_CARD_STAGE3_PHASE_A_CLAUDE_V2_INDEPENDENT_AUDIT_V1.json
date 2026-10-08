@@ -1,0 +1,57 @@
+{
+  "schema": "V64_NIH_CARD_STAGE3_PHASE_A_CLAUDE_V2_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_commit": "a129ce5a94a659f571a927a8c29a5c737d79f1f4",
+  "audited_path": "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json",
+  "verdict": "B1_B2_B4_B5_REPAIRS_ACCEPTED__BOUNDED_REJECTION_SEARCH_NOT_ACCEPTED_AS_EXACT_STRUCTURAL_AUTHORITY",
+  "accepted": {
+    "control_A_primary_only": true,
+    "control_B_never_rescues_A": true,
+    "A_B_independent_without_forced_nonidentity": true,
+    "coincidence_recorded_without_redraw": true,
+    "population_enum_preserved_with_control_role": true,
+    "surprising_low_support_is_result_not_redesign_trigger": true,
+    "hg19_PU1_prefilter_removed": true
+  },
+  "blocking_finding": {
+    "id": "C_AUDIT_B6_BOUNDED_REJECTION_IS_NOT_EXACT_ELIGIBILITY",
+    "severity": "CRITICAL",
+    "finding": "The contract defines the scientific admissible set as all hg19 starts passing the frozen post-liftover gates, but implements discovery by at most 512 iid proposals from the pre-gate side/distance/exclusion set. A failed 512-draw search does not establish that the final admissible set is empty.",
+    "mathematics": {
+      "notation": "Let N=|A_S| pre-gate integer starts and k=number that pass exact C3 + hg38 PU.1 + NIH-CARD gates.",
+      "miss_probability": "P(false not-found | k>0) = (1-k/N)^512.",
+      "key_problem": "The quoted genome-wide PU.1 overlap probability ~0.0895 is not a per-edge lower bound on k/N after exact round-trip, side restriction, promoter-specific exclusion and NIH-CARD support.",
+      "counterexample": "If k=1 and N=200000, P(miss)≈0.99744; even though a valid control exists, a 512-draw search almost always reports not found.",
+      "conditional_uniformity": "Conditional on obtaining a success, the first accepted iid proposal is uniform over the accepted subset. This does NOT repair false-negative edge classification caused by the finite search budget."
+    },
+    "consequence": [
+      "The resulting primary funnel would measure 'control found within 512 proposals', not 'edge has an admissible frozen control'.",
+      "Retention remains proposal-budget dependent.",
+      "It cannot support the structural-support interpretation required by the parent design's 'if no admissible control exists' trimming rule."
+    ],
+    "required": "Use the canonical exact admissible-set construction and qualification tests. Compute the final admissible integer start set exactly (e.g. interval algebra over valid liftOver chain segments) and sample uniformly by exact cumulative cardinality. No finite proposal budget may decide whether an edge has zero admissible controls."
+  },
+  "canonical_authority_conflict": {
+    "current_canonical_branch": "chatgpt/v64-e2-single-source-successor-20260929",
+    "authoritative_files": [
+      "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_SUCCESSOR_CONTRACT_V2.json",
+      "results/v64/V64_NIH_CARD_STAGE3_FEATURE_ARTIFACT_CONTRACT_V2.json",
+      "results/v64/V64_NIH_CARD_STAGE3_PHASE_A_EXACT_SAMPLER_TEST_CONTRACT_V1.json"
+    ],
+    "note": "These canonical files were frozen after audit 924fbb56. The Claude branch was based on older canonical state 924fbb56 and independently created a different file with the same V2 name. The canonical V2 therefore governs; the Claude V2 must not overwrite it."
+  },
+  "next_action": [
+    "Fetch/merge the current canonical branch before implementing the producer.",
+    "Treat a129ce5a as a useful rejected design checkpoint, not execution authority.",
+    "Implement the canonical exact interval-algebra sampler.",
+    "Pass the frozen brute-force exact-set tests on fixtures and 32 deterministic real structural edges before the full Phase-A rerun.",
+    "Then rerun Phase A and stop for audit before Phase B."
+  ],
+  "governance": {
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORISED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "correspondence_opened": false
+  }
+}

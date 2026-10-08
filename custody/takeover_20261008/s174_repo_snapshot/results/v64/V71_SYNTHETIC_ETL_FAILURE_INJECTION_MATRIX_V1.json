@@ -1,0 +1,128 @@
+{
+  "schema": "V71_SYNTHETIC_ETL_FAILURE_INJECTION_MATRIX_V1",
+  "date": "2026-10-01",
+  "status": "FROZEN_FAILURE_LIBRARY",
+  "cases": [
+    [
+      "F01_DUPLICATE_BARCODE",
+      "duplicate one barcode within a source",
+      "FAIL_CLOSED_OR_EXPLICIT_DEDUP_POLICY"
+    ],
+    [
+      "F02_MISSING_METADATA_ROW",
+      "remove metadata for a measured cell",
+      "FAIL_CLOSED_OR_EXPLICIT_UNMATCHED"
+    ],
+    [
+      "F03_EXTRA_METADATA_ROW",
+      "add metadata-only cell",
+      "EXPLICIT_UNMATCHED"
+    ],
+    [
+      "F04_TRANSPOSED_MATRIX",
+      "swap feature/cell axes while preserving plausible dimensions",
+      "FAIL_CLOSED"
+    ],
+    [
+      "F05_FEATURE_REORDER",
+      "reorder feature table without matrix reorder",
+      "FAIL_CLOSED_BY_BINDING"
+    ],
+    [
+      "F06_BARCODE_REORDER",
+      "reorder barcodes without matrix columns",
+      "FAIL_CLOSED_BY_BINDING"
+    ],
+    [
+      "F07_OLD_GENE_ID",
+      "replace current gene id with valid legacy id",
+      "MAP_ONLY_WITH_FROZEN_MAPPING"
+    ],
+    [
+      "F08_AMBIGUOUS_GENE",
+      "one legacy id maps to multiple current addresses",
+      "UNRESOLVED"
+    ],
+    [
+      "F09_BUILD_SHIFT",
+      "supply hg19 intervals labeled/expected as hg38",
+      "FAIL_CLOSED"
+    ],
+    [
+      "F10_LIFTOVER_DROPOUT",
+      "interval cannot map uniquely across builds",
+      "UNRESOLVED"
+    ],
+    [
+      "F11_STRUCTURAL_MISSING_BLOCK",
+      "source does not measure a feature block",
+      "MISSING_NOT_ZERO"
+    ],
+    [
+      "F12_ZERO_COVERAGE",
+      "measured feature has zero coverage",
+      "ZERO_COVERAGE_STATUS"
+    ],
+    [
+      "F13_ZERO_VARIANCE",
+      "covered feature has constant values",
+      "ZERO_VARIANCE_STATUS"
+    ],
+    [
+      "F14_DONOR_RELABEL",
+      "swap donor labels for a subset",
+      "DETECTED_BY_TRUTH_AUDIT; PIPELINE_CANNOT_SELF_REPAIR_FROM_TRUTH"
+    ],
+    [
+      "F15_SOURCE_OPERATOR_SWAP",
+      "misassign operator metadata",
+      "DETECTED_OR_FAIL_BY_PROVENANCE_BINDING"
+    ],
+    [
+      "F16_FRAGMENT_CORRUPTION",
+      "truncate/corrupt a fragment gzip block",
+      "FAIL_CLOSED_DIGEST_OR_PARSE"
+    ],
+    [
+      "F17_PEAK_BOUNDARY_SHIFT",
+      "shift peak boundaries while retaining biological program",
+      "ALLOWED_AS_DISTINCT_ROUTE_VERSION"
+    ],
+    [
+      "F18_GUIDE_ASSIGNMENT_NOISE",
+      "inject multi-guide/low-UMI ambiguity",
+      "EXPLICIT_AMBIGUOUS_ASSIGNMENT"
+    ],
+    [
+      "F19_SPATIAL_PANEL_OMISSION",
+      "remove all genes for one program from panel",
+      "NOT_MEASURED_NOT_ABSENT"
+    ],
+    [
+      "F20_CHECKPOINT_MANIFEST_MISMATCH",
+      "checkpoint bytes differ from manifest",
+      "FAIL_CLOSED"
+    ],
+    [
+      "F21_COLLAPSED_CHECKPOINT",
+      "constant/near-constant representation",
+      "ANTI_COLLAPSE_GATE_FAIL"
+    ],
+    [
+      "F22_SHORTCUT_CHECKPOINT",
+      "encodes donor/source identity",
+      "SHORTCUT_GATE_FAIL"
+    ],
+    [
+      "F23_PRIVATE_STATE_LEAK",
+      "student checkpoint predicts private latent via forbidden input",
+      "INFORMATION_BOUNDARY_FAIL"
+    ],
+    [
+      "F24_TRUTH_MANIFEST_EXPOSURE",
+      "place truth file in discoverable pipeline input root",
+      "FIREWALL_FAIL"
+    ]
+  ],
+  "rule": "Each case must have a positive control demonstrating the gate can fail. Do not count string assertions as behavioral qualification."
+}

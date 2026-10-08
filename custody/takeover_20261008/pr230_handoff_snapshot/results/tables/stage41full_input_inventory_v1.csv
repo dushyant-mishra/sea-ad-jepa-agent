@@ -1,0 +1,20 @@
+input_id,expected_path,found,input_type,stage_source,required_for_stage41c,required_for_stage41de,notes
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,csv,locked,True,False,found
+targets,data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv,True,csv,targets,True,False,found
+stage27c_oof,results/tables/stage27c_rescue_oof_predictions_v1.csv,True,csv,stage27c,False,False,found
+stage27c_mean,results/tables/stage27c_rescue_mean_metrics_v1.csv,True,csv,stage27c,False,False,found
+stage27c_target,results/tables/stage27c_rescue_target_metrics_v1.csv,True,csv,stage27c,False,False,found
+stage39e_oof,results/tables/stage39e_oof_predictions_v1.csv,True,csv,stage39e,False,False,found
+stage39e_mean,results/tables/stage39e_mean_metrics_v1.csv,True,csv,stage39e,False,False,found
+stage39e_target,results/tables/stage39e_target_metrics_v1.csv,True,csv,stage39e,False,False,found
+stage39h_decision,results/tables/stage39h_proxy_safe_lock_decision_v1.csv,False,csv,stage39h,False,False,missing; downstream table will report skip/limitation
+stage40a_pass_fail,results/tables/stage40a_pass_fail_v1.csv,True,csv,stage40a,False,False,found
+stage41_pass_fail,results/tables/stage41_pass_fail_v1.csv,True,csv,stage41,False,False,found
+stage41abc_pass_fail,results/tables/stage41abc_pass_fail_v1.csv,True,csv,stage41abc,False,False,found
+stage41b_oof,results/tables/stage41b_oof_results_v1.csv,True,csv,stage41b,True,True,found
+stage41b_mean,results/tables/stage41b_mean_metrics_v1.csv,True,csv,stage41b,False,False,found
+stage41b_target,results/tables/stage41b_target_level_results_v1.csv,True,csv,stage41b,False,False,found
+stage41b_bootstrap,results/tables/stage41b_bootstrap_ci_v1.csv,True,csv,stage41b,False,False,found
+stage41b_lock,results/tables/stage41b_benchmark_lock_decision_v1.csv,True,csv,stage41b,False,True,found
+stage41b_latent_metadata_matrix,data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_feature_matrix_v1.csv,True,csv,stage41b,True,False,found
+stage41b_latent_metadata_mri_matrix,data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_plus_mri_feature_matrix_v1.csv,True,csv,stage41b,False,False,found

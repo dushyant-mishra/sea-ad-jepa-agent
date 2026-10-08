@@ -1,0 +1,12 @@
+{
+  "schema": "td37a-within-source-gate-v1",
+  "case_count": 96,
+  "terminal_after_within": "WITHIN_SOURCE_RECURRENCE_EXISTS__TRANSFER_REQUIRED",
+  "recurrent_rows": [
+    {"source":"SEA_AD","prefix":1,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true,"median_observed":0.8126952466428274,"min_observed":0.774882746695788,"median_null_p95":0.1189312686545195},
+    {"source":"SEA_AD","prefix":2,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true,"median_observed":0.7575989142134161,"min_observed":0.7348580528324802,"median_null_p95":0.08039760647693454},
+    {"source":"SEA_AD","prefix":4,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true,"median_observed":0.7075317752310252,"min_observed":0.6679082085722428,"median_null_p95":0.05798418719670473},
+    {"source":"SEA_AD","prefix":8,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true,"median_observed":0.5491562582060416,"min_observed":0.4714976210316385,"median_null_p95":0.03969937921754922},
+    {"source":"SEA_AD","prefix":16,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true,"median_observed":0.3496513616845398,"min_observed":0.30297867774332937,"median_null_p95":0.027107756001560162}
+  ]
+}

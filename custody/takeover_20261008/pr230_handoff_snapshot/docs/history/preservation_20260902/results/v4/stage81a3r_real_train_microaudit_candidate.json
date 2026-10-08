@@ -1,0 +1,41 @@
+{
+  "authorized_train_only_cached_statistics_read": true,
+  "candidate_gene_count": 37346,
+  "classification": "DATA / PROVENANCE LIMITATION, not architecture failure",
+  "countsplit_coverage_note": "historical count-split evidence covers the frozen 4096 vocabulary, not the complete A2R address space",
+  "full_g_real_basis_run": false,
+  "h5_cached_gene_stat_rows": 55337,
+  "historical_countsplit_rows": 72,
+  "new_real_rna_values_opened": false,
+  "nph_cached_gene_stat_rows": 38199,
+  "reason": "Existing bounded TRAIN caches do not contain a paired full-G cell-by-gene view; creating one would exceed this micro-audit and approach representation materialization.",
+  "status": "PARTIAL - DATA / PROVENANCE LIMITATION",
+  "synthetic_fixture_summaries": [
+    {
+      "basis_fit_labels_used": false,
+      "final_contiguous_supported_prefix": 0,
+      "fixture": "overlapping_programs",
+      "k_bulk_cross_view_candidate": 16,
+      "one_se_threshold": 0.08284925929509475,
+      "ordering_status": "AUDIT / FIXTURE LIMITATION - ordinary PCA and weighted basis both donor-unstable",
+      "ordinary_pca_donor_subspace_median_canonical_correlation": 0.019234899431467056,
+      "ordinary_pca_projected_state_similarity": 0.5171695526986824,
+      "u_bio_u_meas_correlation": 0.27807701834288445,
+      "weighted_basis_donor_subspace_median_canonical_correlation": 0.0226952712982893,
+      "weighted_basis_projected_state_similarity": 0.5632281866012103
+    },
+    {
+      "basis_fit_labels_used": false,
+      "final_contiguous_supported_prefix": 0,
+      "fixture": "rare_tail_difficult",
+      "k_bulk_cross_view_candidate": 16,
+      "one_se_threshold": 0.09483904280095833,
+      "ordering_status": "AUDIT / FIXTURE LIMITATION - ordinary PCA and weighted basis both donor-unstable",
+      "ordinary_pca_donor_subspace_median_canonical_correlation": 0.01870977319777012,
+      "ordinary_pca_projected_state_similarity": 0.4828479958883801,
+      "u_bio_u_meas_correlation": 0.3047786482702679,
+      "weighted_basis_donor_subspace_median_canonical_correlation": 0.028469784185290337,
+      "weighted_basis_projected_state_similarity": 0.5293289824894863
+    }
+  ]
+}

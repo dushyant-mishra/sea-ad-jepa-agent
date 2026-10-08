@@ -1,0 +1,25 @@
+{
+  "schema": "td16-claude-memo-discriminating-attacks-v1",
+  "status": "PILOT_FALSIFICATION_ONLY__NOT_PRODUCTION_AUTHORITY",
+  "historical_predecessor": "Stage81A3 basis/domain-imprint work + TD13-15 history-gated subspace tests",
+  "what_is_materially_new": "Directly tests Claude memo's support-intersection explanation and preferred cross-source dependency/module object using the only native_class shared by all three sources (OPC).",
+  "historical_failure_being_attacked": "Raw loading instability may be support geometry; a capture-invariant dependency/module object may still replicate across disjoint source cohorts.",
+  "result_of_that_attack": {
+    "support_intersection_rescues_loadings": false,
+    "opc_dependency_within_source_reproducible": true,
+    "opc_dependency_cross_source_replicated": false,
+    "opc_top_edge_membership_cross_source_replicated": false
+  },
+  "promotion_status": "FALSIFICATION_ONLY",
+  "common_scalar_addresses_all_42": 17186,
+  "pathology_accessed": false,
+  "protected_expression_accessed": false,
+  "production_threshold_selected": false,
+  "production_target_selected": false,
+  "notes": [
+    "Full 4.553M metadata independently confirms OPC is the only native_class shared by all three sources; NPH52 broad_class is blank.",
+    "HVS and SEA_AD do share three coarse broad_class labels, so no shared broad labels is true only for three-way sharing.",
+    "Dependency test used 4 deterministic 256-gene panels from the 17,186 common-scalar set, donor×operator centering, library/detected-count residualization, OPC Sample-B cells, split-half within-source positive controls, and gene-label permutation nulls.",
+    "Top-edge membership tested diagnostic top fractions 1%,2%,5%,10%; no threshold is promoted."
+  ]
+}

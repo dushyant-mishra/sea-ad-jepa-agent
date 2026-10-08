@@ -1,0 +1,44 @@
+FULL104 Audit-B runtime binding verification -- read-only, no mask, no burden
+branch gpu/v5-full104-b3-v1-receipts-20260922, parent 18b9476625d14ecf90b0b6b1efd12d5a7495b548
+2026-09-22T03:27:41Z
+
+The shipped no-compute preflight CLI refuses this contract at its FIRST gate:
+
+  ValueError: STOP_AUDIT_B_V1_PREEXECUTION_ONLY: V1 intentionally cannot authorize
+  Phase-IV N1. A successor execution contract is required after outcome-blind
+  scientific review resolves precision scope and weighting.
+
+That refusal is the designed behaviour and is recorded here as a PASS of the
+authorization gate, not as a failure of these artifacts. Because the CLI stops
+there, the second half of the preflight -- physical binding verification -- was
+exercised directly against the same validated contract object. It is read-only:
+it hashes files and reconstructs the RNG authority. It draws no mask and computes
+no burden.
+
+verify_runtime_bindings(...) returned, all bindings satisfied:
+
+  phase_iv_sample_artifact_sha256              d0ce8abbff0076071009997113f1b73ebb8bab9b0ada5d6ce9367eb786733c06
+  heavy_artifact_sha256                        f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae
+  heavy_qualification_receipt_sha256           21fd10f07187c8e59457cf8860a67359ab179878c194833ee119e0323a7c8d53
+  rng_authority_file_sha256                    ee95306997c33d76066579e77db88c53ff0bc6c0fcb964003b75da5717e3d396
+  mask_plan_generator_sha256                   fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e
+  burden_estimator_source_sha256               7f589f548bf94fd0bd207717f1b0289e2718958915e08d3a6d716b22164d441a
+  full104_manifest_sha256                      66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29
+  canonical_registry_sha256                    7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd
+
+  phase_iv_bound::target_universe               3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e
+  phase_iv_bound::split_receipt                 56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585
+  phase_iv_bound::planner_source                143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d
+  phase_iv_bound::qualification_runner          a98e81cd1c6ba2a9faf0652c422dc1debe007719e6d7b3db1a5be987df571541
+  phase_iv_bound::masking_parameters_authority  e53b454673010a9ec20c044662bef61a48a64be58c26cc31c3287bce7901cb39
+  phase_iv_bound::evidence_budget_authority     b10c3ee0354d37d59ba43051b5b2e21a2afe19d1d4bfbc1038fcff87e8eb44e4
+  phase_iv_bound::mask_plan_generator           fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e
+
+Note: the preflight recomputes the RNG authority's canonical digest by rebuilding
+MaskingRngReplayAuthorityV3 from the emitted JSON and comparing it against the
+contract's rng_authority_sha256, and likewise compares the declared digest and the
+global_seed. All three matched.
+
+MASKS EXECUTED = NONE
+BURDEN CALCULATION = NOT RUN
+SEED FROZEN, NOT SPENT

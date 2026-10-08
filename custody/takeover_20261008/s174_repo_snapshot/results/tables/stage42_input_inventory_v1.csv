@@ -1,0 +1,24 @@
+input_id,expected_path,found,stage_source,required_for_stage42,input_type,notes
+stage27c_mean,results/tables/stage27c_rescue_mean_metrics_v1.csv,True,stage27c,True,csv,found
+stage27c_target,results/tables/stage27c_rescue_target_metrics_v1.csv,True,stage27c,False,csv,found
+stage36e_mechanisms,results/tables/stage36e_frozen_mechanism_registry_v1.csv,True,stage36e,False,csv,found
+stage36e_candidates,results/tables/stage36e_priority_candidate_registry_v1.csv,True,stage36e,False,csv,found
+stage37_readiness,results/tables/stage37b_manual_dataset_validation_readiness_dossier_v1.csv,False,stage37,False,csv,missing; marked not testable/readiness only
+stage38a_claims,results/tables/stage38a_external_dataset_claim_level_v1.csv,True,stage38a,False,csv,found
+stage38b_support,results/tables/stage38b_external_support_tiers_v1.csv,True,stage38b,False,csv,found
+stage38c_priority,results/tables/stage38c_candidate_priority_after_external_support_v1.csv,True,stage38c,False,csv,found
+stage39e_mean,results/tables/stage39e_mean_metrics_v1.csv,True,stage39e,False,csv,found
+stage39h_decision,results/tables/stage39h_proxy_safe_lock_decision_v1.csv,False,stage39h,False,csv,missing; marked not testable/readiness only
+stage40a_pass_fail,results/tables/stage40a_pass_fail_v1.csv,True,stage40a,False,csv,found
+stage40b_decision,results/tables/stage40b_stop_continue_decision_v1.csv,True,stage40b,False,csv,found
+stage41_pass_fail,results/tables/stage41_pass_fail_v1.csv,True,stage41,False,csv,found
+stage41abc_pass_fail,results/tables/stage41abc_pass_fail_v1.csv,True,stage41abc,False,csv,found
+stage41b_mean,results/tables/stage41b_mean_metrics_v1.csv,True,stage41b,False,csv,found
+stage41b_target,results/tables/stage41b_target_level_results_v1.csv,True,stage41b,False,csv,found
+stage41full_decision,results/tables/stage41full_benchmark_lock_decision_v1.csv,True,stage41full,True,csv,found
+stage41c_decision,results/tables/stage41c_stability_rescue_decision_v1.csv,True,stage41c,True,csv,found
+stage41c_target,results/tables/stage41c_target_level_results_v1.csv,True,stage41c,False,csv,found
+stage41c_bootstrap,results/tables/stage41c_bootstrap_ci_v1.csv,True,stage41c,False,csv,found
+active_status,docs/ACTIVE_V3_STATUS.md,True,active,True,md,found
+v3_scorecard_md,docs/V3_SCORECARD.md,True,v3,True,md,found
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,v3,True,csv,found

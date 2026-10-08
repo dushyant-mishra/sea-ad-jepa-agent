@@ -1,0 +1,9 @@
+missing_feature_class,why_missing_matters,priority
+internal image-derived pathology morphology,quantitative plaque/tangle/glial morphology beyond scalar pathology targets,high
+section-level pathology image descriptors,slide/section heterogeneity and staining context,high
+spatial neighborhood summaries,cell-cell neighborhood context around pathology structures,high
+region/anatomy covariates,anatomical context and region-specific burden,medium
+donor-level cell-neighborhood composition,local rather than global composition effects,high
+manually curated pathology metadata,safer expert-curated descriptors not derived from held-out targets,high
+slide/section-level covariates,batch/section technical variation and morphology context,medium
+clean external dataset metadata for support-only analysis,"external support/readiness, not clean validation",medium

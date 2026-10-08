@@ -1,0 +1,365 @@
+{
+  "baseline_cell_ids": [
+    "cell_175373",
+    "cell_180462",
+    "cell_187074",
+    "cell_201736",
+    "cell_261352",
+    "cell_274368",
+    "cell_370769",
+    "cell_375042",
+    "cell_401299",
+    "cell_437135",
+    "cell_479376",
+    "cell_484102",
+    "cell_510533",
+    "cell_552620",
+    "cell_738025",
+    "cell_750202",
+    "cell_869310",
+    "cell_944745",
+    "cell_983846",
+    "cell_1002809",
+    "cell_1007971",
+    "cell_1011733",
+    "cell_1019647",
+    "cell_1024862",
+    "cell_1027874",
+    "cell_1044616",
+    "cell_1045671",
+    "cell_1067599",
+    "cell_1276205",
+    "cell_1317669",
+    "cell_1337335",
+    "cell_1355277"
+  ],
+  "baseline_cell_order_hash": "9fac19274b33850fed9593e0ef37cdc9ccd51b86133e9d5918592c3b2aae2acd",
+  "checkpoint_hash": "83b67fc582e556c278dc5d816f89024e52adc0bf48e2954a7a1185a0a10be957",
+  "claim_boundaries": {
+    "approved_wording": "Stage79 compares the frozen real graph against bounded structural and expression-matched controls. Differences are model-based control results and do not establish causal regulation or therapeutic benefit.",
+    "causal_validation_pass": false,
+    "not_causal_validation": true,
+    "not_therapeutic_benefit": true,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "validated_regulation": false
+  },
+  "control_definitions": {
+    "degree_preserving_edge_shuffle": "bounded model-control graph variant",
+    "expression_matched_random_targets": "bounded model-control graph variant",
+    "no_graph": "bounded model-control graph variant",
+    "real_graph": "bounded model-control graph variant",
+    "tf_label_shuffle": "bounded model-control graph variant"
+  },
+  "control_graph_integrity": {
+    "graph_count_total": 152,
+    "nonreal_by_cell_rows": 57984,
+    "nonreal_control_variants": 151,
+    "nonreal_scenario_runs": 1812,
+    "stochastic_graph_count": 150
+  },
+  "donor_aggregation_unit": "Donor ID",
+  "empirical_p_value_formula": "p=(1+tail_count)/(1+number_of_seeds); two-sided=min(1,2*min(upper,lower))",
+  "expected_counts": {
+    "nonreal_by_cell_rows": 57984,
+    "nonreal_control_variants_including_no_graph": 151,
+    "nonreal_scenario_runs": 1812,
+    "stochastic_control_graphs": 150
+  },
+  "failed_gates": [],
+  "feature_order_hash": "4f65c677c8673754756118c6d978a3c04e73a57f7002d42e8550932b94b89662",
+  "implementation_git_commit": "201589df6b89d1bc7eb088aad47757e7c3987222",
+  "numerical_tolerances": {
+    "basis": "exact_same_runtime_repeated_inference_then_archived_reference_review",
+    "max_abs_diff": 1e-06,
+    "min_cosine_similarity": 0.999999,
+    "not_biological_effect_size_threshold": true,
+    "scope": "project_level_deterministic_inference_reproduction"
+  },
+  "observed_counts": {
+    "centroids": 8,
+    "donors": 6,
+    "nonreal_by_cell_rows": 57984,
+    "nonreal_control_variants_including_no_graph": 151,
+    "nonreal_scenario_runs": 1812,
+    "stochastic_control_graphs": 150
+  },
+  "outputs": {
+    "control_donor_summary_csv": {
+      "byte_size": 4696756,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_donor_summary_v1.csv",
+      "row_count": 10872,
+      "scenario_count": 12,
+      "sha256": "5f1ebef963c30b388543123716b2b44e6ae33a24e8e6cd953b2147e911361718"
+    },
+    "control_edge_sets_csv_gz": {
+      "byte_size": 108944,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_edge_sets_v1.csv.gz",
+      "row_count": 8003,
+      "scenario_count": 12,
+      "sha256": "eac86dcbe76845a8e61b3e4d5da4c46857a8b2977bfac769775a7cf309915492"
+    },
+    "control_expression_deltas_by_cell_csv_gz": {
+      "byte_size": 12250246,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_expression_deltas_by_cell_v1.csv.gz",
+      "row_count": 1075584,
+      "scenario_count": 12,
+      "sha256": "2a66d4689a01305719b4edc0d7e31cf5d09a6ab7b03e8fa512089bc5150edba5"
+    },
+    "control_expression_summary_csv": {
+      "byte_size": 381324,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_expression_summary_v1.csv",
+      "row_count": 1812,
+      "scenario_count": 12,
+      "sha256": "a4fe9bbc06fac91159c6b30064e24371d2f84fa01828a14ee914adc3c51dc0c0"
+    },
+    "control_graph_manifest_csv": {
+      "byte_size": 17348,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_graph_manifest_v1.csv",
+      "row_count": 152,
+      "scenario_count": 12,
+      "sha256": "4118207f5f2794d904b0a41581c069056e1715ff2049f276302119ef737d59e9"
+    },
+    "control_latent_shift_by_cell_csv_gz": {
+      "byte_size": 6101841,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_latent_shift_by_cell_v1.csv.gz",
+      "row_count": 57984,
+      "scenario_count": 12,
+      "sha256": "95a3ad7efd49af1eda081dd9597de9b8c749f37e58da7b5b7d770d5e3ebc6912"
+    },
+    "control_latent_summary_csv": {
+      "byte_size": 684641,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_latent_summary_v1.csv",
+      "row_count": 1812,
+      "scenario_count": 12,
+      "sha256": "ca8fcd7a6e37b0ce1e823a3f932908cfc5592112327b72130e150207064932c8"
+    },
+    "control_qc_csv": {
+      "byte_size": 463,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_qc_v1.csv",
+      "row_count": 15,
+      "scenario_count": 12,
+      "sha256": "ba4d0f5a0dc43718ce2c5a2019dfc4f5caece64a385792f109db3f3f0d34352d"
+    },
+    "control_scenario_manifest_csv": {
+      "byte_size": 196688,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_control_scenario_manifest_v1.csv",
+      "row_count": 1812,
+      "scenario_count": 12,
+      "sha256": "0894cf853e4e1261f788060e8bea6898dfc68c0d9b0c7058dc44d791dc3327d4"
+    },
+    "real_vs_control_statistics_csv": {
+      "byte_size": 111998,
+      "cell_count": 32,
+      "control_graph_count": 152,
+      "donor_count": 6,
+      "feature_count": 2957,
+      "path": "results/tables/stage79_real_vs_control_statistics_v1.csv",
+      "row_count": 336,
+      "scenario_count": 12,
+      "sha256": "69f1e0bb0292cd57a102eff035f4699932b1cd24ef35a62d639507329df9c4f8"
+    }
+  },
+  "preprocessing_provenance": {
+    "blocking_reason": "",
+    "centering_or_scaling": "not applied to model inputs by training or embedding scripts",
+    "clipping": "not applied to model inputs by training or embedding scripts",
+    "configuration": {
+      "assumed_transform_from_training_lineage": "existing_processed_h5ad_values",
+      "feature_order": "var_names",
+      "independent_preprocessing_verification_required": false,
+      "matrix_source": "h5ad_X",
+      "preprocessing_provenance_verified": true,
+      "verification_basis": "training_and_embedding_code_plus_checkpoint_metadata"
+    },
+    "configured_feature_h5ad": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "dtype": "float32 model input tensor",
+    "ema_vs_non_ema": "archived embeddings and fresh inference use context_encoder, not EMA target_encoder",
+    "embedding_encoder_branch": "context_encoder via GeneJEPA.encode with L2 normalization",
+    "evaluation_mode": "model.eval() with torch.no_grad()",
+    "feature_order": "adata.var_names / h5ad var/_index",
+    "feature_selection": "pre-existing H5AD var_names; no additional selection in training or embedding scripts",
+    "inference_masks_or_augmentations": "disabled; embedding script calls model.encode on full unmasked batch in model.eval()/torch.no_grad()",
+    "layer_or_raw_used": "X; no raw.X or named layer used by scripts/train_jepa_snrna.py or scripts/embed_jepa_snrna.py",
+    "log1p_usage": "not applied by training or embedding scripts",
+    "matrix_used": "adata.X",
+    "missing_value_handling": "no imputation or NaN handling in training/embedding scripts; values are passed through from H5AD X",
+    "model_input_tensor_shape": [
+      40000,
+      2957
+    ],
+    "normalization_from_training_script": "none applied in training or embedding scripts after reading H5AD",
+    "preprocessing_config_sha256": "d4237a7f39c3e8fc01525285238d4534a1ec95ccb984fe8a0210c01ef7689617",
+    "preprocessing_established": true,
+    "source_files": [
+      {
+        "exists": true,
+        "path": "scripts/train_jepa_snrna.py",
+        "sha256": "409140d17240be791b0f6d22d72a5ffda62a41617458c5c6777346a588bcf60f"
+      },
+      {
+        "exists": true,
+        "path": "scripts/embed_jepa_snrna.py",
+        "sha256": "dccf81dd4b5db0f157d4bb4a2bb56b87e3034a139d96d62ddbc092d6dfb334ac"
+      },
+      {
+        "exists": true,
+        "path": "src/sea_ad_jepa/datasets.py",
+        "sha256": "445fea9407e80aecf7701950f80c14e0abeeeea1e5593da9b7d7b3ba3619f713"
+      },
+      {
+        "exists": true,
+        "path": "src/sea_ad_jepa/jepa.py",
+        "sha256": "0675e606e48fd261a9ca6be14c1abc03ee3e95ee057ccae7ddd51f23763e57e8"
+      },
+      {
+        "exists": true,
+        "path": "src/sea_ad_jepa/evaluation_utils.py",
+        "sha256": "f7a97fefbc699bf3dc20dff06b1b180ab600e6908f27e337f87249463a256784"
+      },
+      {
+        "exists": true,
+        "path": "src/sea_ad_jepa/gene_sets.py",
+        "sha256": "3864f081768fdf9ba01f0c65db41c7382b2e4b307c849af55de7e5533fd02928"
+      },
+      {
+        "exists": true,
+        "path": "src/sea_ad_jepa/data.py",
+        "sha256": "b91c3e18ae57955a5dc6a005d582a81ccdc03c41bc1725b07cf35ba365b68552"
+      },
+      {
+        "exists": true,
+        "path": "docs/runbook.md",
+        "sha256": "b92ab92c3bcab7de71b0afad263ab8b29e208bbb4201c97f7402f7ff42ae3543"
+      },
+      {
+        "exists": true,
+        "path": "configs/stage75f_out_of_core_v1.yaml",
+        "sha256": "29de3f8a465d907aa0dfd00c25c3015829b821ac308ad34a98b54f6b42727e63"
+      }
+    ],
+    "source_h5ad_matches_config": true,
+    "source_h5ad_path_from_checkpoint": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "sparse_handling_embedding": "embed_jepa_snrna.to_dense_float32 converts sparse AnnData X to dense numpy array",
+    "sparse_handling_training": "DenseExpressionDataset converts sparse AnnData X to dense numpy array",
+    "target_sum_normalization": "not applied by training or embedding scripts",
+    "training_masking": {
+      "mask_fraction": 0.35,
+      "mask_mode": "mixed",
+      "min_module_genes": 2,
+      "module_random_fill": true
+    }
+  },
+  "qc": [
+    {
+      "check": "source_hashes_match",
+      "passed": true
+    },
+    {
+      "check": "checkpoint_hash_matches",
+      "passed": true
+    },
+    {
+      "check": "feature_order_hash_matches",
+      "passed": true
+    },
+    {
+      "check": "baseline_cell_order_matches",
+      "passed": true
+    },
+    {
+      "check": "real_graph_reproduction_passes",
+      "passed": true
+    },
+    {
+      "check": "no_graph_target_deltas_zero",
+      "passed": true
+    },
+    {
+      "check": "stochastic_graph_count_150",
+      "passed": true
+    },
+    {
+      "check": "nonreal_control_variants_151",
+      "passed": true
+    },
+    {
+      "check": "nonreal_scenario_runs_1812",
+      "passed": true
+    },
+    {
+      "check": "nonreal_by_cell_rows_57984",
+      "passed": true
+    },
+    {
+      "check": "six_donors",
+      "passed": true
+    },
+    {
+      "check": "eight_centroids",
+      "passed": true
+    },
+    {
+      "check": "deterministic_repeated_inference",
+      "passed": true
+    },
+    {
+      "check": "no_nan_or_inf",
+      "passed": true
+    },
+    {
+      "check": "claim_boundaries",
+      "passed": true
+    }
+  ],
+  "real_graph_reproduction": {
+    "max_abs_clipped_delta_diff": 2.0469737016526324e-16,
+    "passes": true,
+    "tolerance": 1e-06
+  },
+  "schema_version": "1.0",
+  "seed_list": 50,
+  "source_hashes": {
+    "stage76_report": "3970ac9bc8cbde670ab40c2d4e76ac8b20684874d4a52adeb3f4b770f7f21897",
+    "stage77_delta": "9d04ecf268e5e8b3318a766ff3a5a669d29dbde9d746140e7077467663e7734f",
+    "stage78_by_cell": "1c79e3763786dae9b8ba7fa035cf33bbee176072c7a2d19c9ef4729bb57aab62"
+  },
+  "stage": "stage79_graph_controls_v1",
+  "stage79_pass": true
+}

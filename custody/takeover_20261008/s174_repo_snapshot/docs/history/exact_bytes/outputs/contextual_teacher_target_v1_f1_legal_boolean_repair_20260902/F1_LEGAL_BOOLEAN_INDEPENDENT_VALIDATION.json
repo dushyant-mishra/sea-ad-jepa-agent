@@ -1,0 +1,17 @@
+{
+  "authority_verified": true,
+  "current_source_sha256": {
+    "decision_v4": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+    "integration_v4": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a"
+  },
+  "expression_or_candidate_outcomes_accessed": false,
+  "external_failure_reproduced": true,
+  "forward_and_nuisance_authorities_unfrozen": true,
+  "frozen_14_decision_and_population_regressions_exact": true,
+  "source_type_boundary_verified": true,
+  "status": "PASS_F1_LEGAL_BOOLEAN_INDEPENDENT_VALIDATION",
+  "strict_domain_independently_verified": true,
+  "training_or_ema_accessed": false,
+  "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+  "truth_table_sha256_unchanged": true
+}

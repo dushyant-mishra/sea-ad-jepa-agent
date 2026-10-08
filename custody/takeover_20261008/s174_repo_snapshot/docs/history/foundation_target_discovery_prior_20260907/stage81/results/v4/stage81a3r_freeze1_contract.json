@@ -1,0 +1,139 @@
+{
+  "carried_forward": [
+    "BIOLOGICAL_SUFFICIENCY_OF_D_GENE_160_NOT_ESTABLISHED",
+    "GLOBAL_STATE_NOT_CLAIMED_TO_CONTAIN_ALL_MOLECULAR_BIOLOGY",
+    "U_BIO_U_MEAS_CALIBRATION_UNRESOLVED",
+    "STAGE81B_ONE_TIME_FULL_AUTHORIZED_TRAIN_BASIS_REFIT_NOT_STARTED",
+    "PHASE_B_IMMUNE_SAMPLING_MUST_HANDLE_EXACT_CELL_OVERLAP",
+    "KNOWN_28_HISTORICAL_PORTABILITY_FAILURES"
+  ],
+  "foundation_molecular_space": {
+    "current_exact": 40422,
+    "legacy_exact": 773,
+    "semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "source_native_anchored": 43,
+    "universal_addresses": 41238
+  },
+  "global_state": {
+    "d_global": 224,
+    "dimension_selection_closed": true,
+    "measurement_aware_masked_projection": true,
+    "ordered_linear_construction": true,
+    "pathology_blind": true,
+    "qualification_basis_sha256": "5ddee92a83cd4f54ae61a6c9ed192847ac8f941f725e5a5678512460f5308b84",
+    "reproducibility_weighted": true
+  },
+  "governance": {
+    "pathology_accessed": false,
+    "stage81a2r": "FROZEN",
+    "stage81a3_freeze1": "DECLARED",
+    "stage81a3r_real_train_qualification": "COMPLETE",
+    "stage81a3r_synthetic_qualification": "COMPLETE",
+    "stage81b": "NOT_STARTED",
+    "stage81c": "NOT_STARTED"
+  },
+  "immune_phase_b": {
+    "exact_cells_overlapping_regional_rna": 240651,
+    "independent_phase_a_cohort": false,
+    "role": "PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION",
+    "total_cells": 240651
+  },
+  "molecular_ledger": {
+    "blocks": 6,
+    "cell_token_retained": true,
+    "d_gene": 160,
+    "full_universal_address_namespace": true,
+    "graph_free_masking": true,
+    "heads": 4,
+    "token_preserving_ipb": true
+  },
+  "observation_model": {
+    "collision_unresolved_is_structural_absence": false,
+    "dataset_id_is_unrestricted_biological_input": false,
+    "measured_zero_is_structurally_unmeasured": false,
+    "operator_information_role": "MEASUREMENT_AND_SUPPORT_ONLY"
+  },
+  "production_basis_policy": {
+    "biology_outcome_tuning_forbidden": true,
+    "dev_rna_forbidden": true,
+    "dimension_reselection_forbidden": true,
+    "pathology_forbidden": true,
+    "qualification_basis_role": "DIMENSION_QUALIFICATION_EVIDENCE_ONLY",
+    "refit_dimension": 224,
+    "sealed_rna_forbidden": true,
+    "stage81b_action": "ONE_TIME_COMPLETE_AUTHORIZED_TRAIN_REFIT"
+  },
+  "qualification_evidence": {
+    "historical_pre_range_closure": {
+      "authority": "SUPERSEDED_BY_RANGE_CLOSURE",
+      "first_unsupported_block": [
+        209,
+        224
+      ],
+      "k_bulk": 208
+    },
+    "real_train": {
+      "best_mean_r2": 0.2708165995713791,
+      "best_standard_error": 0.00617362331278569,
+      "best_tested_prefix": 336,
+      "classification": "ORDERED_GLOBAL_STATE_CANDIDATE_EARNED",
+      "donor_refit_median_canonical_correlation": 0.9949065446853638,
+      "donor_refit_median_projector_similarity": 0.8609739542007446,
+      "donor_support_threshold": 0.5,
+      "first_residual_bh_q": 0.009900990099009901,
+      "first_residual_block": [
+        225,
+        240
+      ],
+      "first_residual_donor_correlation": 0.11886070668697357,
+      "first_residual_empirical_p": 0.009900990099009901,
+      "one_se_threshold": 0.2646429762585934,
+      "ordering_failure": false,
+      "phase_a_operators": 42,
+      "positive_reproducibility_weights": {
+        "current_exact": 29013,
+        "legacy_exact": 298,
+        "source_native_anchored": 3
+      },
+      "qualification_cells": 4726,
+      "residual_retained": false,
+      "train_donors": 149
+    },
+    "synthetic": {
+      "anti_top_k_regression_pass": true,
+      "d_gene_160_supported_under_bounded_synthetic_tests": true,
+      "full_address_mechanics_pass": true,
+      "graph_free_masking_supported": true,
+      "measurement_aware_transfer_supported": true,
+      "u_bio_u_meas_separation_demonstrated": false,
+      "width_256_gate_fired": false
+    }
+  },
+  "rare_fine_biology": {
+    "global_state_contains_all_molecular_biology": false,
+    "high_resolution_escape_hatch": "MOLECULAR_LEDGER"
+  },
+  "scalar_observation_contract": {
+    "allowed_states": [
+      "MEASURED_SCALAR",
+      "STRUCTURALLY_UNMEASURED",
+      "MEASURED_COLLISION_UNRESOLVED"
+    ],
+    "collision_only_scalar_unobservable": 289,
+    "forbidden_collision_materialization": [
+      "sum",
+      "mean",
+      "max",
+      "first_row",
+      "zero"
+    ],
+    "scalar_observable_somewhere_in_train": 40949
+  },
+  "schema_version": "1.0",
+  "stage": "stage81a3r_freeze1",
+  "status": "STAGE81A3_FREEZE1_DECLARED",
+  "uncertainty": {
+    "calibrated_outputs_in_freeze1_contract": false,
+    "u_bio_u_meas_preferential_separation_demonstrated": false
+  }
+}

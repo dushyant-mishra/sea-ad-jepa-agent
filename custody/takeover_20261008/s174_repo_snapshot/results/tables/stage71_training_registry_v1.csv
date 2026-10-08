@@ -1,0 +1,4 @@
+condition,encoder,aux_weight,graph
+real_graph_aux,compact_residual_graph_aware_cell_encoder,0.2,hub_capped_STRING_t700
+no_aux_raw,raw_frozen_module_cell_encoder,0.0,none
+random_graph_aux,compact_residual_graph_aware_cell_encoder,0.2,degree_preserved_randomized_STRING_t700

@@ -1,0 +1,70 @@
+stage: Stage41B
+version: v1
+description: Build donor-linked safe SEA-AD metadata/MRI feature matrices from Stage 41ABC downloads and run first donor-held-out benchmark.
+
+references:
+  locked_benchmark_condition: Stage27C module_pca_ridge
+  locked_benchmark_mean_pooled_oof_spearman: 0.3267024400121495
+  material_rescue_threshold: 0.3317
+  stage39e_best_credible_unlocked: rank_inverse_normal_module_pca8_ridge
+  stage39e_best_credible_unlocked_mean_pooled_oof_spearman: 0.35808116279206914
+
+inputs:
+  stage41abc_download_manifest: results/tables/stage41abc_download_manifest_v1.csv
+  targets_path: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  stage27c_mean_metrics: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage39e_mean_metrics: results/tables/stage39e_mean_metrics_v1.csv
+  stage39e_target_metrics: results/tables/stage39e_target_metrics_v1.csv
+
+paths:
+  processed_dir: data/sea_ad/stage41b/processed
+
+targets:
+  AT8: percent AT8 positive area_Grey matter
+  6e10/A_beta: percent 6e10 positive area_Grey matter
+  GFAP: percent GFAP positive area_Grey matter
+  Iba1: percent Iba1 positive area_Grey matter
+  NeuN: percent NeuN positive area_Grey matter
+
+model:
+  ridge_alphas: [0.1, 0.3, 1.0, 3.0, 10.0, 30.0, 100.0, 300.0]
+  random_seed: 7
+
+outputs:
+  input_inventory: results/tables/stage41b_input_inventory_v1.csv
+  source_schema_audit: results/tables/stage41b_source_schema_audit_v1.csv
+  safe_feature_matrix_manifest: results/tables/stage41b_safe_feature_matrix_manifest_v1.csv
+  forbidden_predictor_audit: results/tables/stage41b_forbidden_predictor_audit_v1.csv
+  donor_linkage_audit: results/tables/stage41b_donor_linkage_audit_v1.csv
+  model_registry: results/tables/stage41b_model_registry_v1.csv
+  oof_results: results/tables/stage41b_oof_results_v1.csv
+  target_level_results: results/tables/stage41b_target_level_results_v1.csv
+  mean_metrics: results/tables/stage41b_mean_metrics_v1.csv
+  delta_vs_references: results/tables/stage41b_delta_vs_references_v1.csv
+  bootstrap_ci: results/tables/stage41b_bootstrap_ci_v1.csv
+  target_guard_audit: results/tables/stage41b_target_guard_audit_v1.csv
+  abeta_guard_audit: results/tables/stage41b_abeta_guard_audit_v1.csv
+  iba1_rescue_audit: results/tables/stage41b_iba1_rescue_audit_v1.csv
+  negative_control_results: results/tables/stage41b_negative_control_results_v1.csv
+  proxy_leakage_decision: results/tables/stage41b_proxy_leakage_decision_v1.csv
+  benchmark_lock_decision: results/tables/stage41b_benchmark_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage41b_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage41b_pass_fail_v1.csv
+  technical_report: results/reports/stage41b_safe_metadata_mri_benchmark_report_v1.md
+  pi_summary: results/reports/stage41b_pi_safe_metadata_mri_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_raw_data_committed: true
+  use_only_tier1_features_for_lock_candidate: true
+  exclude_diagnosis_cognitive_neuropathology_luminex_and_target_columns: true
+  donor_held_out_folds_only: true
+  train_fold_only_preprocessing: true
+  no_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

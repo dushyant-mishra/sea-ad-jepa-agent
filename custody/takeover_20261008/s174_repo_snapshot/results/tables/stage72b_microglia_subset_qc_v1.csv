@@ -1,0 +1,3 @@
+subset,n_microglia_cells_matched,n_samples,min_cells_per_sample,max_cells_per_sample
+GSE174367 snRNA microglia,4126,18,141.0,372.0
+GSE174367 snATAC microglia,12232,20,,

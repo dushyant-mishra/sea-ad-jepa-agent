@@ -1,0 +1,39 @@
+{
+  "schema": "V5_COLLECTION_EVIDENCE_V1",
+  "date": "2026-09-20",
+  "command": "pytest -q -p no:randomly --collect-only tests/   (NO --ignore flags)",
+  "before": {
+    "git_head": "f8aef9e030ae32d7cf5a1fe31aa66a3e74b49428",
+    "collection_errors": 5,
+    "error_files": [
+      "tests/test_contextual_target_f1_preflight_core_v1.py",
+      "tests/test_teacher_student_v5_support_geometry_v1.py",
+      "tests/v4/test_stage81a2r_authoritative_mapping.py",
+      "tests/v4/test_stage81a3_fbsdq_outputs.py",
+      "tests/v4/test_stage81a3_prrc_outputs.py"
+    ]
+  },
+  "after": {
+    "collection_errors": 4,
+    "error_files": [
+      "tests/test_contextual_target_f1_preflight_core_v1.py",
+      "tests/v4/test_stage81a2r_authoritative_mapping.py",
+      "tests/v4/test_stage81a3_fbsdq_outputs.py",
+      "tests/v4/test_stage81a3_prrc_outputs.py"
+    ],
+    "tests_collected": 2784
+  },
+  "error_removed": "tests/test_teacher_student_v5_support_geometry_v1.py",
+  "removal_method": "RETIRED_TO_DOCS_HISTORY__NOT_SKIPPED_NOT_XFAILED",
+  "remaining_errors_are_preexisting_and_unrelated": {
+    "tests/test_contextual_target_f1_preflight_core_v1.py": "ModuleNotFoundError: 'resource' (POSIX-only stdlib module, unavailable on Windows)",
+    "tests/v4/test_stage81a2r_authoritative_mapping.py": "ModuleNotFoundError: sea_ad_jepa.v4.gene_identity_authority",
+    "tests/v4/test_stage81a3_fbsdq_outputs.py": "FileNotFoundError: V4 output artifacts absent on this machine",
+    "tests/v4/test_stage81a3_prrc_outputs.py": "FileNotFoundError: V4 output artifacts absent on this machine"
+  },
+  "successor_suite": {
+    "path": "tests/test_teacher_student_v5_support_schedule_v1.py",
+    "passed": 6, "failed": 0, "skipped": 0
+  },
+  "training_authorized": false
+}

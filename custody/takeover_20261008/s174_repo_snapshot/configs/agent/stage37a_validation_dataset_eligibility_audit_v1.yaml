@@ -1,0 +1,61 @@
+stage: stage37a_validation_dataset_eligibility_audit_v1
+random_seed: 7
+
+inputs:
+  stage36e_report: results/reports/stage36e_frozen_validation_protocol_v1.md
+  stage36e_validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  stage36e_pass_fail: results/tables/stage36e_pass_fail_v1.csv
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  active_v3_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+optional_context_inputs:
+  stage32_dataset_role_audit: results/tables/stage32_external_dataset_role_audit_v1.csv
+  stage32c_download_manifest: results/tables/stage32c_download_manifest_v1.csv
+  stage34a_filtered_matrix_manifest: results/tables/stage34a_filtered_matrix_manifest_v1.csv
+  stage34b_hbcc_matrix_manifest: results/tables/stage34b_hbcc_matrix_manifest_v1.csv
+
+scan:
+  roots:
+    - docs
+    - configs
+    - scripts
+    - results
+  max_file_bytes: 2000000
+  terms:
+    - GSE138852
+    - Grubman
+    - Leng
+    - GSE174367
+    - Morabito
+    - HBCC
+    - HBCA
+    - CELLxGENE
+    - SEA-AD
+    - spatial
+    - pathology
+    - Lu
+    - PIG
+    - WGCNA
+    - microglia
+    - external pretraining
+    - external validation
+    - holdout
+    - validation
+
+outputs:
+  dataset_inventory: results/tables/stage37a_dataset_inventory_v1.csv
+  role_classification: results/tables/stage37a_dataset_role_classification_v1.csv
+  clean_validation_eligibility: results/tables/stage37a_clean_validation_eligibility_v1.csv
+  contamination_audit: results/tables/stage37a_contamination_audit_v1.csv
+  stage37b_recommendation: results/tables/stage37a_stage37b_recommendation_v1.csv
+  pass_fail: results/tables/stage37a_pass_fail_v1.csv
+  report: results/reports/stage37a_validation_dataset_eligibility_audit_v1.md
+  pi_report: results/reports/stage37a_pi_dataset_decision_summary_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

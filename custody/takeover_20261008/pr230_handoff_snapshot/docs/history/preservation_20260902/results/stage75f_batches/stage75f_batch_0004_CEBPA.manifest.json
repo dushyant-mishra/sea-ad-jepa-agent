@@ -1,0 +1,9 @@
+{
+  "batch_id": 4,
+  "tf": "CEBPA",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 19,
+  "n_regions": 57,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

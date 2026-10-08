@@ -1,0 +1,29 @@
+{
+  "decision": "CONCERN",
+  "lens_id": "Review 1: prospective selection, statistics and authority chronology",
+  "record_sha256": "92fa1b35edb86a5860129d27d0079e4b752a0ad5110ee09f1f0c0b971e86a0b0",
+  "review_content_path": "review_content/07_review_1_prospective_selection_statistics_and_authority_chronology.md",
+  "review_content_sha256": "b52f8dd5d1078ffc2340dd11fb3600758553c5714a3180fde3a69a707fdaa48b",
+  "review_round_id": "POST_15B_EXTERNAL_REVIEW",
+  "reviewed_artifacts": [
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_freeze_20260902/F1_HC3_15B_MANIFEST.csv",
+      "sha256": "a9d10fa17f162f3552c15095f3ef3ed7111f71c7a83978682303a2138088e174"
+    },
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_freeze_20260902/F1_HC3_SELECTED_DONOR_DESIGN_F64LE.bin",
+      "sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3"
+    }
+  ],
+  "reviewer_id": "/root/a4_largecohort",
+  "schema": "F1_HC3_15B_STRUCTURED_REVIEW_V1",
+  "scientific_judgment_regenerated": false,
+  "source_review_path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_external_review_20260902/F1_HC3_15B_INDEPENDENT_REVIEWS.md",
+  "source_review_sha256": "812a7cc05f10b651f17e0ba4f6ccdffd08b355a8151c4d0c1714541ba6b085dc",
+  "temporal_sequence": {
+    "mode": "PRESENTATION_ORDER_ONLY_NOT_WALL_CLOCK",
+    "ordinal": 7,
+    "review_timestamp_utc": null,
+    "timestamp_status": "UNAVAILABLE_IN_DURABLE_REVIEW_ARTIFACT"
+  }
+}

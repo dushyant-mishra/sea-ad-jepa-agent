@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-08",
+  "fine_local_failure": {
+    "cases_passed": 2,
+    "cases_total": 4,
+    "experiment": "TD57C",
+    "panel": 0,
+    "same_xy_without_localization_cases_passed": 4,
+    "same_xy_without_localization_cases_total": 4,
+    "source": "HVS",
+    "terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL"
+  },
+  "foundational_global": {
+    "all_cases_beat_null_max": true,
+    "cases_passed": 24,
+    "cases_total": 24,
+    "experiment": "TD57B",
+    "terminal": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT",
+    "weakest_observed_minus_null_p95": 0.0375178074843
+  },
+  "learned_teacher_gate": {
+    "distance": "direct 160-D cell_state cosine distance",
+    "experiment": "TD60",
+    "global_cases_required": "24/24",
+    "mesoscale_cases_required": "24/24",
+    "primary_checkpoint": "lawful successor u40 EMA teacher only",
+    "prospective_commit": "79c893ab27f87c1c2c4e57241bfc3af8d855a250",
+    "status": "PROSPECTIVE_ONLY__WAITING_FOR_LAWFUL_SUCCESSOR_U40__NO_TRAINING_AUTHORITY",
+    "total_required": "48/48"
+  },
+  "mechanics_boundaries": {
+    "authority_integer_coercion_allowed": false,
+    "collapse_no_pooled_group_rescue": true,
+    "external_frozen_triplets_require_canonical_j_lt_k": true,
+    "fine_matched_null_requires_within_stratum_derangement": true,
+    "production_group_geometry_defaults_present": false
+  },
+  "mesoscale": {
+    "cases_beating_null_max": 22,
+    "cases_passed": 24,
+    "cases_total": 24,
+    "cases_total_for_null_max_diagnostic": 24,
+    "experiment": "TD59",
+    "locality_fraction_tuning_on_50k_closed": true,
+    "selector_fraction": "1/2",
+    "terminal": "TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY",
+    "weakest_observed_minus_null_p95": 0.0011566307718604563
+  },
+  "qualified_target_family": {
+    "absolute_distance_equality_required": false,
+    "deep_nearest_third_primary_loss_authorized": false,
+    "production_locality_fraction_frozen": false,
+    "production_relational_loss_weight_frozen": false,
+    "relation": "anchored triplet ordering sign(d(i,j)-d(i,k))",
+    "scale_free": true
+  },
+  "schema": "TEACHER_STUDENT_RELATIONAL_TARGET_AUTHORITY_V2",
+  "scientific_state": "RELATIONAL_OBJECTIVE_QUALIFICATION",
+  "target_discovery_branch": "planning/foundation-target-discovery-v1-20260907",
+  "terminal": "RELATIONAL_TARGET_AUTHORITY_V2_FROZEN__SCALE_FREE_ORDER_ONLY__NO_TRAINING_AUTHORITY",
+  "training_authorized": false
+}

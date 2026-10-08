@@ -1,0 +1,107 @@
+{
+  "schema": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V2",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_ANY_P1S_OUTCOME_INSPECTION",
+  "supersedes": "V64_NOTT_P1S_OPERATIONAL_SUCCESSOR_CONTRACT_V1",
+  "supersession_reason": "V1's raw cross-cell-type support-rate contrast did not fully separate contact-specific alignment from cell-type differences in ATAC peak opportunity/burden. This was identified before any P1S outcome was computed. V2 makes the primary comparison a difference-in-differences: observed-minus-geometry-null support within each ATAC track, then microglia excess support versus comparator excess support.",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "p1s_outcome_opened_before_this_freeze": false,
+    "protected_outcomes_opened": false,
+    "uses_AD_loci_or_target_genes": false,
+    "changes_original_P1S_claim_scope": false
+  },
+  "inherits": [
+    "results/v64/V64_NOTT_SAME_STUDY_SUBSTRATE_FIT_CONTRACT_V1.json",
+    "results/v64/V64_NOTT_C3_TERMS_AND_P1S_CLAIM_SCOPE_AMENDMENT_V1.json",
+    "results/v64/V64_NOTT_C3_EXACT_IDENTITY_SUCCESSOR_RULE_V1.json",
+    "results/v64/V64_NOTT_PROMOTER_ORIENTATION_AND_GENE_MAPPING_CONTRACT_V1.json"
+  ],
+  "analysis_population": {
+    "contacts": "C3-admissible, source-oriented Nott microglia PROMOTER_DISTAL contacts only.",
+    "paired_structure": "Every retained contact pair and its single deterministic geometry-null interval are evaluated against all three authenticated ATAC tracks.",
+    "tracks": ["PU1_microglia_ATAC", "NeuN_ATAC", "Olig2_ATAC"],
+    "no_posthoc_subset": true
+  },
+  "binary_accessibility_support": {
+    "rule": "A distal interval is supported in a cell-type ATAC track if it overlaps >=1 bp of >=1 authenticated ATAC peak.",
+    "multiplicity": "Binary per interval; multiple overlapping peaks do not add weight.",
+    "forbidden": [
+      "peak widening",
+      "nearest-peak rescue",
+      "cell-type-specific overlap tolerances",
+      "target-gene-dependent overlap rules"
+    ]
+  },
+  "promoter_fixed_exact_distance_null": {
+    "construction": [
+      "Work in the C3-admissible hg38 coordinate space.",
+      "Hold the promoter anchor fixed.",
+      "Let d be the signed midpoint displacement from promoter midpoint to observed distal midpoint.",
+      "Construct the null distal interval with the same interval length at signed displacement -d from the same promoter midpoint.",
+      "Require the null interval to remain fully within the same chromosome.",
+      "If invalid at a chromosome boundary, classify NULL_NOT_CONSTRUCTIBLE; do not change distance or choose a substitute interval."
+    ],
+    "preserved_exactly": [
+      "promoter identity",
+      "chromosome",
+      "absolute promoter-distal midpoint distance",
+      "distal interval width",
+      "one null opportunity per constructible observed edge",
+      "promoter contact degree among constructible edges"
+    ],
+    "not_claimed_preserved": [
+      "local regulatory-element density",
+      "sequence composition",
+      "mappability",
+      "replication timing"
+    ],
+    "deterministic": true
+  },
+  "per_pair_quantities": {
+    "for_each_cell_type_c": {
+      "observed_support": "O_c in {0,1}",
+      "null_support": "N_c in {0,1}",
+      "excess_support": "E_c = O_c - N_c"
+    },
+    "primary_microglia_vs_neuron": "D_MN = E_microglia - E_neuron",
+    "primary_microglia_vs_oligo": "D_MO = E_microglia - E_oligo"
+  },
+  "uncertainty": {
+    "independent_cluster": "promoter identity",
+    "method": "nonparametric cluster bootstrap over promoters, resampling promoters with replacement and carrying all of each selected promoter's edges",
+    "bootstrap_replicates": 4000,
+    "bootstrap_seed": 20260929,
+    "interval": "two-sided 95% percentile interval",
+    "why": "Contacts sharing a promoter are not independent; pair-level bootstrap would be anti-conservative."
+  },
+  "primary_requirements": {
+    "R1_microglia_contact_alignment_above_own_null": "Lower 95% promoter-cluster-bootstrap bound of mean E_microglia must be > 0.",
+    "R2_microglia_excess_alignment_above_neuron": "Lower 95% bound of mean D_MN must be > 0.",
+    "R3_microglia_excess_alignment_above_oligo": "Lower 95% bound of mean D_MO must be > 0.",
+    "PASS": "R1 AND R2 AND R3."
+  },
+  "mandatory_reporting": [
+    "C3-admissible PROMOTER_DISTAL denominator",
+    "NULL_NOT_CONSTRUCTIBLE count and fraction",
+    "for each cell type: observed support rate, null support rate, mean excess support E_c",
+    "for microglia-neuron and microglia-oligo: mean difference-in-differences and 95% promoter-cluster-bootstrap interval",
+    "microglia-only, comparator-only, both-supported and neither-supported observed-pair counts",
+    "same four-way counts for null intervals",
+    "results by predeclared quartiles of post-C3 log distance and promoter degree as descriptive sensitivity only"
+  ],
+  "coverage_and_local_density_sensitivity": {
+    "purpose": "Expose residual dependence on genomic accessibility opportunity not eliminated by the within-track null.",
+    "local_density_definition": "For each observed/null distal interval and each ATAC track, count peak midpoints within +/-50 kb of the interval midpoint.",
+    "report": "Report E_c and D contrasts by pooled quartiles of local peak density. Do not trim or reweight the primary population based on these results.",
+    "no_rescue": "A primary fail may not be rescued by a favorable density stratum."
+  },
+  "hard_stops": [
+    "If any R1/R2/R3 lower bound <= 0: NOT_MICROGLIA_FIT_FOR_TARGET_CONSTRUCTION under P1S.",
+    "Do not substitute raw support-rate superiority for the difference-in-differences gate.",
+    "Do not import the NIH-CARD continuous-adjustment estimator.",
+    "Do not change the null after seeing cell-type support."
+  ],
+  "claim_scope": "A P1S pass establishes internal microglial substrate compatibility of the Nott-centered contact object relative to same-study neuronal/oligodendrocyte ATAC and the frozen geometry null. It is not independent external corroboration, donor-independent replication, multi-source contact replication, or causal enhancer-gene assignment."
+}

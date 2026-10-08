@@ -1,0 +1,281 @@
+{
+  "schema": "V5_FULL104_ATTACKER_STANDARDIZATION_ESTIMAND_AUDIT_V1",
+  "regimes": {
+    "D1_CURRENT": "standardize with each donor's own mean/SD, held-out donor included (transductive feature adaptation; no held-out TARGET label is used)",
+    "D2_TRAIN_ONLY": "standardize with mean/SD pooled over training donors only",
+    "D3_NO_DONOR_ADAPTATION": "no donor-specific recentring or rescaling beyond the frozen production normalization"
+  },
+  "estimands": {
+    "D1_CURRENT": "within-donor predictability given that donor's own feature geometry",
+    "D2_TRAIN_ONLY": "transfer of a train-fitted, train-scaled predictor to an unseen donor",
+    "D3_NO_DONOR_ADAPTATION": "predictability from absolute normalized values, including donor- and source-level scale"
+  },
+  "fixture_results": {
+    "null": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.001922231125739816,
+        "min_score": 0.0007318429272694819,
+        "max_score": 0.003202337507823009,
+        "per_fold": [
+          0.0007318429272694819,
+          0.0015226614944326186,
+          0.0022320825734341554,
+          0.003202337507823009
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0018620935179896837,
+        "min_score": 0.0006962897547639871,
+        "max_score": 0.0031557791999673886,
+        "per_fold": [
+          0.0006962897547639871,
+          0.0014390146565011978,
+          0.002157290460726161,
+          0.0031557791999673886
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.00186209863596061,
+        "min_score": 0.0006963360919032503,
+        "max_score": 0.0031551818895165632,
+        "per_fold": [
+          0.0006963360919032503,
+          0.0014389476953759709,
+          0.0021579288670466566,
+          0.0031551818895165632
+        ]
+      }
+    },
+    "within_donor_signal": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.7944503209425493,
+        "min_score": 0.783306948121057,
+        "max_score": 0.8018679540443902,
+        "per_fold": [
+          0.783306948121057,
+          0.8018679540443902,
+          0.7927096787568315,
+          0.7999167028479185
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.7954957108861376,
+        "min_score": 0.7838887699933487,
+        "max_score": 0.802716613065415,
+        "per_fold": [
+          0.7838887699933487,
+          0.802716613065415,
+          0.7946782732769725,
+          0.8006991872088142
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.7954968757604703,
+        "min_score": 0.7838950137787416,
+        "max_score": 0.8027201652266888,
+        "per_fold": [
+          0.7838950137787416,
+          0.8027201652266888,
+          0.794675063680813,
+          0.8006972603556379
+        ]
+      }
+    },
+    "donor_scale_nuisance": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0019222311257398178,
+        "min_score": 0.0007318429272694834,
+        "max_score": 0.00320233750782301,
+        "per_fold": [
+          0.0007318429272694834,
+          0.0015226614944326197,
+          0.0022320825734341576,
+          0.00320233750782301
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0014595604079674653,
+        "min_score": 0.0002815707354873568,
+        "max_score": 0.002186961589979476,
+        "per_fold": [
+          0.0002815707354873568,
+          0.0020639909468700593,
+          0.0013057183595329691,
+          0.002186961589979476
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0014588437492824196,
+        "min_score": 0.00028167371723251147,
+        "max_score": 0.0021872377650360617,
+        "per_fold": [
+          0.00028167371723251147,
+          0.0020611197778710394,
+          0.001305343736990066,
+          0.0021872377650360617
+        ]
+      }
+    },
+    "within_donor_signal_plus_donor_scale": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.7944503209425492,
+        "min_score": 0.783306948121057,
+        "max_score": 0.8018679540443899,
+        "per_fold": [
+          0.783306948121057,
+          0.8018679540443899,
+          0.7927096787568316,
+          0.7999167028479182
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.7802702789424563,
+        "min_score": 0.767752091815893,
+        "max_score": 0.7890868065969108,
+        "per_fold": [
+          0.767752091815893,
+          0.7890868065969108,
+          0.7788419331159991,
+          0.7854002842410223
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.779460478166092,
+        "min_score": 0.76688890723142,
+        "max_score": 0.7881617950072316,
+        "per_fold": [
+          0.76688890723142,
+          0.7881617950072316,
+          0.778120905056714,
+          0.7846703053690023
+        ]
+      }
+    },
+    "per_cell_denominator_channel": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.003063022457029339,
+        "min_score": 0.0018647298371541326,
+        "max_score": 0.005824533407314231,
+        "per_fold": [
+          0.0018647298371541326,
+          0.0022069137154489267,
+          0.0023559128682000673,
+          0.005824533407314231
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.003166492656478761,
+        "min_score": 0.001923237799656454,
+        "max_score": 0.0058650851310681875,
+        "per_fold": [
+          0.001923237799656454,
+          0.002506602694999405,
+          0.0023710450001909965,
+          0.0058650851310681875
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0027368002728934016,
+        "min_score": 0.0008186476661278712,
+        "max_score": 0.0050947022212935265,
+        "per_fold": [
+          0.0027549008883860113,
+          0.0008186476661278712,
+          0.002278950315766198,
+          0.0050947022212935265
+        ]
+      }
+    },
+    "per_cell_denominator_channel_no_target_link": {
+      "D1_CURRENT": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.0026347437036822094,
+        "min_score": 0.0009161706487226102,
+        "max_score": 0.004385857223112084,
+        "per_fold": [
+          0.004385857223112084,
+          0.0009161706487226102,
+          0.0038746627126230505,
+          0.0013622842302710915
+        ]
+      },
+      "D2_TRAIN_ONLY": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.00264039203618925,
+        "min_score": 0.0008560006867805585,
+        "max_score": 0.004071953699641652,
+        "per_fold": [
+          0.004011237880308744,
+          0.0008560006867805585,
+          0.004071953699641652,
+          0.0016223758780260441
+        ]
+      },
+      "D3_NO_DONOR_ADAPTATION": {
+        "folds_attempted": 4,
+        "folds_finite": 4,
+        "mean_score": 0.002624032508990768,
+        "min_score": 0.0008648252461294841,
+        "max_score": 0.0041003743648021914,
+        "per_fold": [
+          0.003964222235723736,
+          0.0008648252461294841,
+          0.0041003743648021914,
+          0.00156670818930766
+        ]
+      }
+    }
+  },
+  "affine_invariance_check": {
+    "D1_CURRENT": {
+      "before": 0.8073577812446403,
+      "after": 0.8073577812446403,
+      "absolute_change": 0.0
+    },
+    "D2_TRAIN_ONLY": {
+      "before": 0.8084384127206592,
+      "after": 0.8074883893826963,
+      "absolute_change": 0.000950023337962902
+    },
+    "D3_NO_DONOR_ADAPTATION": {
+      "before": 0.8084360557498478,
+      "after": 0.8073647175956533,
+      "absolute_change": 0.0010713381541944678
+    }
+  },
+  "regime_selected": null,
+  "canonical_attacker_changed": false,
+  "training_authorized": false
+}

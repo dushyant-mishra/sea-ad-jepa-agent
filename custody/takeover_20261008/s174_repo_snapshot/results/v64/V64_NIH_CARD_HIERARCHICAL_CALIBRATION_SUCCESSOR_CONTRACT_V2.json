@@ -1,0 +1,105 @@
+{
+  "schema": "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V2",
+  "date": "2026-09-30",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_REAL_STAGE3_FEATURE_ARTIFACT",
+  "supersedes": "V64_NIH_CARD_HIERARCHICAL_CALIBRATION_SUCCESSOR_CONTRACT_V1",
+  "responds_to_audit": "2054cfacd10a78ff15ca1dd9891ff756eb44bef7",
+  "governing_principle": "Calibrate real hierarchical nuisance geometry without changing the frozen stress simulator topology or nuisance-family logic.",
+  "frozen_topology": {
+    "n_promoters": 240,
+    "candidate_distal_slots_per_promoter": 24,
+    "linked_slots_per_promoter": 4,
+    "rule": "N_DISTAL=24 and N_LINKED_PER_PROM=4 remain unchanged in this geometry-only qualification. Real promoter degree is a nuisance covariate, NOT the number of synthetic candidate slots."
+  },
+  "variable_levels": {
+    "promoter_level": {
+      "variables": [
+        "promoter_degree",
+        "promoter_activity"
+      ],
+      "definition": "One value per real promoter anchor. promoter_degree is the number of real E2 linked edges sharing that promoter anchor and is a covariate only."
+    },
+    "edge_level": {
+      "variables": [
+        "log_distance",
+        "distal_accessibility",
+        "re_density",
+        "anchor_frequency"
+      ],
+      "definition": "One value per real edge/control row within promoter."
+    },
+    "derived": {
+      "variables": [
+        "log_distance^2",
+        "promoter_degree^2",
+        "distal_accessibility^2",
+        "log_distance*promoter_degree",
+        "log_distance*distal_accessibility",
+        "promoter_degree*anchor_frequency"
+      ],
+      "rule": "Always recomputed from generated base variables; never independently sampled."
+    },
+    "excluded_open": [
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity"
+    ]
+  },
+  "populations": {
+    "linked_edges": {
+      "definition": "The 20,709 E2 candidate linked relations or their Stage-3-supported subset, with stable promoter key.",
+      "use": "Outcome-blind geometry calibration only. Biological correspondence values forbidden."
+    },
+    "matched_controls": {
+      "definition": "Frozen matched-control rows constructed under Stage-3 rules.",
+      "use": "Control-geometry characterization and sensitivity only; never used as evidence of biological correspondence."
+    },
+    "synthetic_candidate_pool": {
+      "definition": "Exactly 24 candidate slots per synthetic promoter, required by the frozen tournament.",
+      "construction_rule": "Populate candidate-slot covariates from outcome-blind real edge/control geometry conditional on the sampled promoter-level state, but do not equate the number of candidate slots with real promoter_degree."
+    },
+    "synthetic_linked_slots": {
+      "definition": "Exactly 4 of the 24 candidate slots selected by the frozen tournament's existing linked-selection preference rule.",
+      "prohibition": "Observed real linked_flag may not directly assign the four synthetic linked slots."
+    }
+  },
+  "generation": {
+    "step1": "Sample one promoter-level state (promoter_degree, promoter_activity) from the empirical promoter-level calibration with equal promoter weight.",
+    "step2": "Generate exactly 24 candidate distal slots for that promoter from the edge-level calibration conditional on the sampled promoter-level state. V2 freezes degree-bin conditioning as the primary conditioning variable; any richer conditioning requires a separately frozen successor before execution.",
+    "step3": "Apply the frozen linked-selection rule unchanged to choose exactly four linked slots.",
+    "step4": "Recompute all derived features from the generated bases.",
+    "sensitivity": "Whole-promoter-block bootstrap preserves real promoter blocks as a descriptive sensitivity arm but must be mapped onto the same 24-slot frozen candidate topology without using real linked_flag to choose the four synthetic linked slots."
+  },
+  "feasibility_and_exactness": {
+    "promoter_level": "Exact empirical marginal multiset reproduction is required for promoter_degree and promoter_activity when the generated promoter count equals the calibration promoter count; otherwise deterministic rank-reordering with explicit multiplicity receipt is required.",
+    "edge_level": "Exact global marginal reproduction is subordinate to preserving the frozen 24-slot topology and declared conditional hierarchy. The producer must report any incompatibility rather than silently relax either constraint.",
+    "conditional_model": "Per-degree-bin empirical distributions and rank dependence must be reported before and after generation.",
+    "fail_closed": "If the primary construction cannot satisfy the declared topology plus hierarchy checks, emit NO qualification geometry and STOP."
+  },
+  "hierarchy_checks": [
+    "promoter_degree distribution over promoters",
+    "promoter_activity distribution over promoters",
+    "within-promoter variance for each edge-level variable",
+    "intraclass correlation for each edge-level variable by promoter",
+    "degree-bin conditional edge-level quantiles and rank-correlation matrices",
+    "number of generated promoters and exactly 24 candidate slots per promoter",
+    "exactly 4 linked slots per promoter after frozen linked-selection",
+    "post-construction E.build_features diagnostics on the exact worlds passed to the stress runner"
+  ],
+  "claim_scope": {
+    "allowed": "Realistic promoter/edge structural nuisance geometry under the frozen 24/4 topology.",
+    "forbidden": [
+      "NIH-CARD-like depth-sensitivity geometry until S45 closes",
+      "NIH-CARD-like donor/metacell/support/missingness geometry until S46 closes",
+      "changing N_DISTAL or N_LINKED_PER_PROM",
+      "using observed real linked_flag to assign synthetic linked slots",
+      "using biological correspondence to calibrate any distribution"
+    ]
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED",
+    "stage4": "NOT_AUTHORISED",
+    "correspondence_opened": false
+  }
+}

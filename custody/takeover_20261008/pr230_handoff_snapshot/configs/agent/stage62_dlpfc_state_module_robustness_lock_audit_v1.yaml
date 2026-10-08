@@ -1,0 +1,60 @@
+stage: Stage62
+version: v1
+stage_name: Stage62_dlpfc_state_module_robustness_lock_audit_v1
+description: Strict robustness and lock-gate audit for corrected Stage61 DLPFC Microglia-PVM state-module signal.
+
+inputs:
+  local_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  programming_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  stage61_branch_comparison: results/tables/stage61_branch_comparison_v1.csv
+  stage61_feature_inventory: results/tables/stage61_dlpfc_feature_inventory_v1.csv
+  stage61_gene_availability: results/tables/stage61_dlpfc_gene_availability_v1.csv
+  stage61_pass_fail: results/tables/stage61_pass_fail_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_column_candidates: [Donor ID, donor_id]
+  state_column_candidates: [Supertype, supertype, cell_type]
+  max_programming_features: 3000
+  latent_dims: [8, 16]
+  random_seeds: [107, 211, 307, 401, 503, 607, 701, 809, 911, 1009]
+  n_splits: 5
+  ridge_alpha: 1.0
+  high_cell_quantile: 0.90
+  min_cells_per_donor_state: 5
+  bootstrap_iterations: 500
+  control_seed: 6201
+  primary_branch: mtg_programming_plus_dlpfc_state_modules_full
+
+outputs:
+  input_inventory: results/tables/stage62_input_inventory_v1.csv
+  stage61_reproducibility_check: results/tables/stage62_stage61_reproducibility_check_v1.csv
+  dlpfc_schema_audit: results/tables/stage62_dlpfc_schema_audit_v1.csv
+  feature_source_audit: results/tables/stage62_feature_source_audit_v1.csv
+  gene_availability: results/tables/stage62_gene_availability_v1.csv
+  branch_matrix_summary: results/tables/stage62_branch_matrix_summary_v1.csv
+  frozen_probe_results: results/tables/stage62_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage62_target_level_results_v1.csv
+  branch_comparison: results/tables/stage62_branch_comparison_v1.csv
+  seed_stability_summary: results/tables/stage62_seed_stability_summary_v1.csv
+  delta_summary: results/tables/stage62_delta_summary_v1.csv
+  bootstrap_summary: results/tables/stage62_bootstrap_summary_v1.csv
+  target_family_summary: results/tables/stage62_target_family_summary_v1.csv
+  feature_family_ablation: results/tables/stage62_feature_family_ablation_v1.csv
+  state_ablation: results/tables/stage62_state_ablation_v1.csv
+  module_ablation: results/tables/stage62_module_ablation_v1.csv
+  negative_control_results: results/tables/stage62_negative_control_results_v1.csv
+  lock_gate_decision: results/tables/stage62_lock_gate_decision_v1.csv
+  claim_boundary_audit: results/tables/stage62_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage62_pass_fail_v1.csv
+  report: results/reports/stage62_dlpfc_state_module_robustness_lock_audit_report_v1.md
+  feature_source_report: results/reports/stage62_feature_source_and_gene_availability_report_v1.md
+  seed_bootstrap_report: results/reports/stage62_seed_bootstrap_and_delta_report_v1.md
+  ablation_negative_control_report: results/reports/stage62_ablation_and_negative_control_report_v1.md
+  lock_gate_report: results/reports/stage62_lock_gate_decision_report_v1.md
+  claim_final_check: results/reports/stage62_claim_boundary_final_check_v1.md
+  pi_summary: results/reports/stage62_pi_summary_v1.md
+  manuscript_update_note: results/reports/stage62_manuscript_update_note_v1.md

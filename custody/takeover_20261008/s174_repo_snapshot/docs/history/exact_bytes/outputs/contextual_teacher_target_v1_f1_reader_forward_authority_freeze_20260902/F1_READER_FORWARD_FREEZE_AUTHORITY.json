@@ -1,0 +1,136 @@
+{
+  "assignments_randomization_null_truth_table_unchanged": true,
+  "evidence_mask_authority_resolved": true,
+  "fail_fast_reason": "exact nuisance construction is absent from prior frozen authority",
+  "file_authorities": [
+    {
+      "actual_sha256": "805893791d8290186ee948f10429681c0fb3af6880d5fc2ad7001214bcb2f3e4",
+      "authority": "legal_boolean_zip",
+      "expected_sha256": "805893791d8290186ee948f10429681c0fb3af6880d5fc2ad7001214bcb2f3e4",
+      "pass": true,
+      "path": "outputs/CONTEXTUAL_TEACHER_TARGET_V1_F1_LEGAL_BOOLEAN_REPAIR_REVIEW_20260902.zip"
+    },
+    {
+      "actual_sha256": "e95aac28c3dacaeba94b202a2be53b46e94c848dd7fbb433b9d99b58efa94976",
+      "authority": "legal_boolean_manifest",
+      "expected_sha256": "e95aac28c3dacaeba94b202a2be53b46e94c848dd7fbb433b9d99b58efa94976",
+      "pass": true,
+      "path": "outputs/contextual_teacher_target_v1_f1_legal_boolean_repair_20260902/F1_LEGAL_BOOLEAN_REPAIR_MANIFEST.csv"
+    },
+    {
+      "actual_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+      "authority": "decision_truth_table",
+      "expected_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+      "pass": true,
+      "path": "outputs/contextual_teacher_target_v1_f1_decision_truth_table_repair_20260902/F1_FINAL_DECISION_TRUTH_TABLE_V2.json"
+    },
+    {
+      "actual_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+      "authority": "decision_v4",
+      "expected_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+      "pass": true,
+      "path": "scripts/v4/contextual_target_f1_decision_v4.py"
+    },
+    {
+      "actual_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a",
+      "authority": "integration_v4",
+      "expected_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a",
+      "pass": true,
+      "path": "scripts/v4/contextual_target_f1_decision_integration_v4.py"
+    },
+    {
+      "actual_sha256": "ac8157105b66ccd1617efb3740768a91711b429e5288afc34fb9a54adedcc462",
+      "authority": "population_component_v2",
+      "expected_sha256": "ac8157105b66ccd1617efb3740768a91711b429e5288afc34fb9a54adedcc462",
+      "pass": true,
+      "path": "scripts/v4/contextual_target_f1_querydesign_decision_v2.py"
+    },
+    {
+      "actual_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+      "authority": "assignments",
+      "expected_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+      "pass": true,
+      "path": "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_ASSIGNMENTS_2DRAW.csv"
+    },
+    {
+      "actual_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "authority": "observation_states",
+      "expected_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "pass": true,
+      "path": "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz"
+    },
+    {
+      "actual_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+      "authority": "primary_null_map",
+      "expected_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+      "pass": true,
+      "path": "outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_MATCHED_NULL_PRIMARY_MAP.csv"
+    },
+    {
+      "actual_sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+      "authority": "f0_constructor",
+      "expected_sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+      "pass": true,
+      "path": "src/sea_ad_jepa/v4/contextual_query_local.py"
+    },
+    {
+      "actual_sha256": "80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6",
+      "authority": "f0_slow_reference",
+      "expected_sha256": "80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6",
+      "pass": true,
+      "path": "scripts/v4/contextual_target_v1_f0_slow_reference.py"
+    },
+    {
+      "actual_sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a",
+      "authority": "encoder",
+      "expected_sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a",
+      "pass": true,
+      "path": "src/sea_ad_jepa/v4/ipb_jepa.py"
+    },
+    {
+      "actual_sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+      "authority": "tokenizer",
+      "expected_sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+      "pass": true,
+      "path": "src/sea_ad_jepa/v4/gene_tokenizer.py"
+    },
+    {
+      "actual_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+      "authority": "u0_checkpoint",
+      "expected_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+      "pass": true,
+      "path": "exports/prod41k_teacher_t1_20260823/t1_run/t1_checkpoint_u0000.pt"
+    },
+    {
+      "actual_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+      "authority": "reader_split",
+      "expected_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+      "pass": true,
+      "path": "exports/contextual_biology_v6r5a_20260822/reader_donor_split.csv"
+    },
+    {
+      "actual_sha256": "a6065751667b35a38c5990107c6b3f0177e262f7d145addb24bea24206eeb61b",
+      "authority": "full104_row_lineage",
+      "expected_sha256": "a6065751667b35a38c5990107c6b3f0177e262f7d145addb24bea24206eeb61b",
+      "pass": true,
+      "path": "outputs/full104_v014_20260826/01_full104_metadata_adapter/FULL104_ROW_LINEAGE.csv"
+    },
+    {
+      "actual_sha256": "d1eefdab177501a00370d71521ae86932e60540fb9f769dfe2b56c7994ca5c5a",
+      "authority": "evidence_mask_contract",
+      "expected_sha256": "d1eefdab177501a00370d71521ae86932e60540fb9f769dfe2b56c7994ca5c5a",
+      "pass": true,
+      "path": "outputs/contextual_teacher_target_v1_f1_preflight_20260901/CONTEXTUAL_TARGET_V1_F1_EVIDENCE_MASK_CONTRACT.md"
+    }
+  ],
+  "forward_identity_freeze_completed": false,
+  "no_expression_or_model_outcomes_accessed": true,
+  "nuisance_authority_frozen": false,
+  "reader_freeze_completed": false,
+  "semantic_authorities": {
+    "cell_weight_semantic_root": "018d80428c25a0060168a942ca03dc9e814783463cc077e3661008ba5f7b5eeb",
+    "f0_output_root": "e45dd8d885c4f6918bcaf0b24bde971c08c16322b27555e112693f46e42ddb4b",
+    "namespace_semantic_root": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f"
+  },
+  "terminal_status": "STOP_F1_NUISANCE_AUTHORITY_UNRESOLVED"
+}

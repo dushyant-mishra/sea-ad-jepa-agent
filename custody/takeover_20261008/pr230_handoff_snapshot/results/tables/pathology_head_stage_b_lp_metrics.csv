@@ -1,0 +1,11 @@
+head,target,oof_spearman,n_donors,n_splits,epochs,hidden_dim,dropout,lr,weight_decay
+linear,percent AT8 positive area_Grey matter,0.45685937025412576,84,5,500,0,0.0,0.001,0.001
+linear,percent NeuN positive area_Grey matter,0.47427356484762584,84,5,500,0,0.0,0.001,0.001
+linear,percent GFAP positive area_Grey matter,0.1772805507745267,84,5,500,0,0.0,0.001,0.001
+linear,percent Iba1 positive area_Grey matter,0.1050723904019439,84,5,500,0,0.0,0.001,0.001
+linear,percent 6e10 positive area_Grey matter,0.18254530727953833,84,5,500,0,0.0,0.001,0.001
+mlp,percent AT8 positive area_Grey matter,0.29075630252100837,84,5,500,64,0.15,0.001,0.001
+mlp,percent NeuN positive area_Grey matter,0.23472714386959606,84,5,500,64,0.15,0.001,0.001
+mlp,percent GFAP positive area_Grey matter,0.26538422597954847,84,5,500,64,0.15,0.001,0.001
+mlp,percent Iba1 positive area_Grey matter,-0.059046269110053666,84,5,500,64,0.15,0.001,0.001
+mlp,percent 6e10 positive area_Grey matter,0.14694745368026726,84,5,500,64,0.15,0.001,0.001

@@ -1,0 +1,2 @@
+condition,bootstrap_lower_95,bootstrap_upper_95,passes_lower_ci_guard,reason
+training_skipped,,,False,No schema-reviewed donor-linked safe feature matrix was built from automatic Stage 41ABC downloads.

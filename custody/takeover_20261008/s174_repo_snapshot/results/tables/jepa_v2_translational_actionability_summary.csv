@@ -1,0 +1,11 @@
+metric,value
+n_jepa_genes,2957
+n_hpa_fda_drug_targets,136
+n_hpa_predicted_secreted,105
+n_hpa_predicted_membrane,735
+n_fda_and_membrane,66
+category_biology_first_hard_target,2092
+category_surface_target_candidate,669
+category_known_drug_target,70
+category_actionable_surface_drug_target,66
+category_secreted_biomarker_candidate,60

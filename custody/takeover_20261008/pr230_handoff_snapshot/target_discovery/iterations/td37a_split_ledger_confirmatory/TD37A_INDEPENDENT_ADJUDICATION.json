@@ -1,0 +1,31 @@
+{
+  "schema":"td37a-independent-adjudication-v1",
+  "within_case_count":96,
+  "transfer_case_count":64,
+  "within_gate_reproduced_exactly":true,
+  "transfer_fails_under_strict_and_contract_literal_rules":true,
+  "within_recurrent":[
+    {"source":"SEA_AD","prefix":1,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true},
+    {"source":"SEA_AD","prefix":2,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true},
+    {"source":"SEA_AD","prefix":4,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true},
+    {"source":"SEA_AD","prefix":8,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true},
+    {"source":"SEA_AD","prefix":16,"panels_all8_pass":4,"panel_pass_bits":"1111","within_recurrent":true}
+  ],
+  "transfer_panel_counts":[
+    {"target":"HVS","prefix":1,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"HVS","prefix":2,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"HVS","prefix":4,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"HVS","prefix":8,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"HVS","prefix":16,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"NPH52","prefix":1,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"NPH52","prefix":2,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"NPH52","prefix":4,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"NPH52","prefix":8,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"},
+    {"target":"NPH52","prefix":16,"strict_panels":0,"literal_panels":0,"strict_bits":"0000","literal_bits":"0000"}
+  ],
+  "panel_overlaps":[
+    {"panel_i":0,"panel_j":1,"overlap":14},{"panel_i":0,"panel_j":2,"overlap":22},{"panel_i":0,"panel_j":3,"overlap":17},
+    {"panel_i":1,"panel_j":2,"overlap":14},{"panel_i":1,"panel_j":3,"overlap":22},{"panel_i":2,"panel_j":3,"overlap":14}
+  ],
+  "terminal":"DONOR_RECURRENT_BUT_NOT_CROSS_SOURCE_SPLIT_LEDGER_STATE__TARGET_UNQUALIFIED"
+}

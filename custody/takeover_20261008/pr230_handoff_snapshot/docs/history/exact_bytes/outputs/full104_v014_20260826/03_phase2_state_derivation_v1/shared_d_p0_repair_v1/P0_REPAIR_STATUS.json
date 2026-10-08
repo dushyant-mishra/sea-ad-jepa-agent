@@ -1,0 +1,21 @@
+{
+  "cap4_top32": "PROSPECTIVE_AMENDMENT_REQUIRED",
+  "full104_D_selection_authorized": false,
+  "manifest_sha256": "ebc5987e193f2cf083330518903bd4db46e7d6675bbb5f32a063e1a55b4b16fb",
+  "next_authorized_stage": "freeze a prospective natural-weight/full-feature-space refit-null convergence amendment; then run only that sensitivity using existing FULL104 matrix/sufficient outputs",
+  "previous_D_changed": {
+    "level1": {
+      "old": 22,
+      "repaired": 1
+    },
+    "level2": {
+      "old": 6,
+      "repaired": null
+    },
+    "level3": {
+      "old": 13,
+      "repaired": 1
+    }
+  },
+  "status": "PASS_P0_MECHANICAL_REPAIR__STOP_SCIENTIFIC_PROMOTION"
+}

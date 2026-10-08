@@ -1,0 +1,7 @@
+# F1 nuisance formula contract v1
+
+This prospective, outcome-blind contract recovers historical dataset primitives and freezes only the two previously unspecified paired quantities. Physical support for operator `o` is `count_g[state[o,g]==MEASURED_SCALAR]`. Sequencing depth is the raw full-source `source_library L` used by `x=log1p(10000*c/L)`; integer counts are recovered as `round(expm1(x)*L/10000)` and must round-trip exactly. Cell weight is `a_dc=1/(|O_d| n_do)` and `m_do=sum_{c in(d,o)}a_dc`.
+
+At the frozen primary 60% recipient evidence mask `U`, `visible_read_fraction(r,U)=sum_{g in U}c_rg/L_r` and `measured_zero_rate(r,U)=count_{g in U}[c_rg=0]/|U|`. Correct-minus-null quantities subtract the frozen matched-null source value using its own library and the identical recipient U. For each cell, average exactly eight protected programs times two PPS draws, then aggregate cells with `a_dc`.
+
+The 104-row matrix contains source one-hots in frozen registry order HVS,NPH52,SEA_AD; operator masses 000..041; weighted recipient physical support; weighted recipient source library; weighted paired visible-read-fraction delta; weighted paired measured-zero-rate delta. No pooled-cell weighting and no pre-centering variance standardization are permitted. The existing downstream centering, lexicographic rank selection, numerical rank tolerance, HC3, df, and cross-source rule remain unchanged.

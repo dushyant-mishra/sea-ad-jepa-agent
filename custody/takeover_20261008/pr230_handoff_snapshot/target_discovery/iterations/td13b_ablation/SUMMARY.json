@@ -1,0 +1,12 @@
+{
+  "schema": "td13b-history-gated-subspace-ablation-v1",
+  "status": "PILOT_FALSIFICATION_ONLY__NOT_PRODUCTION_AUTHORITY",
+  "historical_predecessor": "Stage81A3 basis stability/donor refits plus TD13 disjoint-donor QC collapse",
+  "what_is_materially_new": "same computational seam tested with positive control preserving donors plus RAW/group-center/QC ablation",
+  "historical_failure_being_attacked": "TD13 collapse may be pipeline failure or QC overcorrection rather than donor non-recurrence",
+  "promotion_status": "FALSIFICATION_ONLY",
+  "pathology_accessed": false,
+  "protected_expression_accessed": false,
+  "diagnostic_only_panels": 2,
+  "diagnostic_only_classes_per_source": 2
+}

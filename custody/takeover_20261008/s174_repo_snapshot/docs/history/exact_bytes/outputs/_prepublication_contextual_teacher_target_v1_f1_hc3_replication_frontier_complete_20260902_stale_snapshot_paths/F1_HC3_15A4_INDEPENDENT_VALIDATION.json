@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "all_70_identities": true,
+    "all_7280_donor_deletions_computed": true,
+    "all_classifications_match": true,
+    "authenticated_inputs": true,
+    "incremental_ranks": true,
+    "local_ranks": true,
+    "mandatory_base_columns": true,
+    "mandatory_base_rank": true,
+    "no_expression_model_outcome_training_access": true,
+    "nph_free_rows_35": true,
+    "nph_nested_structural_result": true,
+    "numerical_summaries_within_tolerance": true,
+    "production_helpers_not_imported": true
+  },
+  "donor_deletion_rank_calculations": 7280,
+  "frontier_rows": 70,
+  "max_numeric_difference": 1.0658141036401503e-14,
+  "mismatches": [],
+  "status": "PASS",
+  "tolerance": 2.3092638912203256e-12
+}

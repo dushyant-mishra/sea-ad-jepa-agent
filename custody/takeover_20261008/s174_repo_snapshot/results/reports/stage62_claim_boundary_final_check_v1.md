@@ -1,0 +1,5 @@
+# Stage62 claim boundary final check
+
+| stage27c_locked_benchmark_preserved | stage55_near_miss_preserved | stage56_target_gate_negative_preserved | stage57_repaired_mtg_result_preserved | stage61_corrected_result_preserved | no_pathology_targets_used_in_feature_construction | no_target_derived_gene_selection | no_target_derived_module_selection | no_target_derived_state_selection | donor_held_out_evaluation_used | no_external_data_used_to_tune_internal_model | dlpfc_not_called_clean_external_validation | regional_support_not_called_clean_validation | no_causal_claim | no_therapeutic_claim | no_validated_ablation_claim | no_new_microglia_subtype_claim | raw_h5ad_not_committed | raw_data_not_committed | safety_audit_pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True | True | True | True | True | True | True | True | True | True | True | True | True | True |

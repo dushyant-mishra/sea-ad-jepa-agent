@@ -1,0 +1,39 @@
+input authentication: all 6 exact-byte checks PASS
+expression reference: 15,041 gene rows, 15,041 unique case-insensitive symbols
+  microglia reference: 60,340 qualified edges over 7,606 genes (11,793 PU1 active-promoter rows)
+  microglia orientation cross-check vs committed P1S structure artifact: PROMOTER_PROMOTER 7,614 (P1S 7,614) | NO_ACTIVE_PROMOTER_MATCH 32,978 (P1S 32,978) | unique-Ensembl 61,624 (P1S 61,624)
+  PU1 microglia ATAC peaks: 50,199
+
+=== neuron ===
+  source interactions: 93,290  (13,367 NeuN_active_promoter rows)
+  [source-side, no C3] unique gene 65,772 | GSE73721 matched 53,803 | expressed 31,690
+  [neu] anchors written: 186,580
+  [neu] forward-admissible pairs: 91,741
+  [neu] C3 exact-identity retained pairs: 91,740
+  funnel reconciles to source denominator: True (93,290/93,290)
+    FAIL_C3_EXACT_IDENTITY                             1,550   1.661%
+    FAIL_ORIENTATION_NOT_EXACTLY_ONE_PROMOTER         25,024  26.824%
+    FAIL_GENE_ENSEMBL_UNRESOLVED                       1,988   2.131%
+    FAIL_JOIN_SYMBOL_UNRESOLVED                           50   0.054%
+    FAIL_NOT_IN_EXPRESSION_REFERENCE                  11,689  12.530%
+    FAIL_EXPRESSION_INELIGIBLE_TRIVIAL                21,761  23.326%
+    FAIL_MICROGLIA_DISTAL_NOT_ACCESSIBLE_TRIVIAL      25,424  27.253%
+    RELATIONSHIP_PRESENT_IN_MICROGLIA                  3,131   3.356%
+    VALID_P3_NEGATIVE                                  2,673   2.865%
+
+=== oligodendrocyte ===
+  source interactions: 61,895  (13,057 Olig2_active_promoter rows)
+  [source-side, no C3] unique gene 40,793 | GSE73721 matched 32,755 | expressed 22,377
+  [oli] anchors written: 123,790
+  [oli] forward-admissible pairs: 60,804
+  [oli] C3 exact-identity retained pairs: 60,804
+  funnel reconciles to source denominator: True (61,895/61,895)
+    FAIL_C3_EXACT_IDENTITY                             1,091   1.763%
+    FAIL_ORIENTATION_NOT_EXACTLY_ONE_PROMOTER         19,066  30.804%
+    FAIL_GENE_ENSEMBL_UNRESOLVED                       1,663   2.687%
+    FAIL_JOIN_SYMBOL_UNRESOLVED                           24   0.039%
+    FAIL_NOT_IN_EXPRESSION_REFERENCE                   7,790  12.586%
+    FAIL_EXPRESSION_INELIGIBLE_TRIVIAL                10,196  16.473%
+    FAIL_MICROGLIA_DISTAL_NOT_ACCESSIBLE_TRIVIAL      17,041  27.532%
+    RELATIONSHIP_PRESENT_IN_MICROGLIA                  2,946   4.760%
+    VALID_P3_NEGATIVE                                  2,078   3.357%

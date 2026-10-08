@@ -1,0 +1,3903 @@
+{
+  "schema": "V5_R8_PANEL_SUPPORT_IN_FULL104_MICROGLIA_V1",
+  "status": "CONTRACT_ONLY__NO_EXPRESSION_OPENED__NO_TRAINING",
+  "question": "is every R8 panel gene DECLARED MEASURED in each matrix that contains candidate myeloid nuclei?",
+  "why_it_is_not_a_zero_question": "an address absent from a matrix's measured set is UNMEASURED, not zero. The support ledger exists precisely so those two are never averaged together.",
+  "input_digests": {
+    "address_namespace.csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "address_measurement_support.csv.gz": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+    "foundation_metadata_rows.sqlite": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "JEPA_R8_STRUCTURED_TARGET_PROBE_20260926.py": "d9c3cd078eab2899fdd351b87e76a4332b912e447ab00db40bea3357aba781f5"
+  },
+  "r8_programs_transcribed": {
+    "APOE_LIPID": {
+      "query": "APOE",
+      "panel": [
+        "APOC1",
+        "ABCA1",
+        "GPNMB",
+        "TREM2"
+      ],
+      "readout": [
+        "CTSD",
+        "LPL"
+      ]
+    },
+    "P2RY12_HOMEOSTATIC": {
+      "query": "P2RY12",
+      "panel": [
+        "TMEM119",
+        "CX3CR1",
+        "GPR34",
+        "C1QA"
+      ],
+      "readout": [
+        "SALL1",
+        "CSF1R"
+      ]
+    },
+    "HLA_DRA_ANTIGEN": {
+      "query": "HLA-DRA",
+      "panel": [
+        "CD74",
+        "HLA-DPA1",
+        "HLA-DMA",
+        "IFI30"
+      ],
+      "readout": [
+        "HLA-DMB",
+        "CTSS"
+      ]
+    }
+  },
+  "symbol_resolution": {
+    "symbols_required": [
+      "ABCA1",
+      "APOC1",
+      "APOE",
+      "C1QA",
+      "CD74",
+      "CSF1R",
+      "CTSD",
+      "CTSS",
+      "CX3CR1",
+      "GPNMB",
+      "GPR34",
+      "HLA-DMA",
+      "HLA-DMB",
+      "HLA-DPA1",
+      "HLA-DRA",
+      "IFI30",
+      "LPL",
+      "P2RY12",
+      "SALL1",
+      "TMEM119",
+      "TREM2"
+    ],
+    "symbols_absent_from_address_namespace": [],
+    "symbols_with_multiple_addresses": {
+      "HLA-DMB": [
+        {
+          "address_index": 26659,
+          "address_id": "ENSG00000242574",
+          "identity_class": "current_exact",
+          "biotype": ""
+        },
+        {
+          "address_index": 40569,
+          "address_id": "ENSG00000226264",
+          "identity_class": "legacy_exact",
+          "biotype": "protein_coding"
+        }
+      ],
+      "HLA-DPA1": [
+        {
+          "address_index": 23673,
+          "address_id": "ENSG00000231389",
+          "identity_class": "current_exact",
+          "biotype": ""
+        },
+        {
+          "address_index": 40452,
+          "address_id": "ENSG00000168384",
+          "identity_class": "legacy_exact",
+          "biotype": "protein_coding"
+        }
+      ]
+    },
+    "ambiguity_policy": "reported, never silently resolved to the first hit"
+  },
+  "matrices_absent_from_support_contract": [],
+  "per_matrix": [
+    {
+      "source": "HVS",
+      "native_class": "Microglia-PVM",
+      "matrix_id": "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+      "cells": 2117,
+      "donors": 30,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "DECLARED_UNMEASURED"
+              },
+              "state": "DECLARED_UNMEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "DECLARED_UNMEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "NPH52",
+      "native_class": "MG",
+      "matrix_id": "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+      "cells": 15264,
+      "donors": 16,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "DECLARED_UNMEASURED",
+                "40452": "MEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "DECLARED_UNMEASURED",
+                "40569": "MEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "DECLARED_UNMEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "DECLARED_UNMEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": false
+          },
+          "r8_contract_satisfiable": false,
+          "note_if_partial": "fewer than four supported partners at R8's own addresses; R8's construct_measured_anchor raises on any panel length other than 4, so this is not a weakened R8 target but a different target requiring its own prospective definition"
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "cells": 6244,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_fi_rna_final_2026",
+      "cells": 11226,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_hip_rna_final_2026",
+      "cells": 9128,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_itg_rna_final_2026",
+      "cells": 10375,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_lec_rna_final_2026",
+      "cells": 8255,
+      "donors": 22,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "cells": 31619,
+      "donors": 44,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "cells": 20804,
+      "donors": 46,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+      "cells": 22197,
+      "donors": 42,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_stg_rna_final_2026",
+      "cells": 9270,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Immune",
+      "matrix_id": "sea_ad_v1c_rna_final_2026",
+      "cells": 9124,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    },
+    {
+      "source": "SEA_AD",
+      "native_class": "Microglia-PVMSubclass",
+      "matrix_id": "sea_ad_caudate_rna_all_2025",
+      "cells": 32286,
+      "donors": 27,
+      "programs": {
+        "APOE_LIPID": {
+          "genes": {
+            "APOE": {
+              "role": "query",
+              "state_by_address": {
+                "6186": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "APOC1": {
+              "role": "panel",
+              "state_by_address": {
+                "6188": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "ABCA1": {
+              "role": "panel",
+              "state_by_address": {
+                "11425": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPNMB": {
+              "role": "panel",
+              "state_by_address": {
+                "7194": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TREM2": {
+              "role": "panel",
+              "state_by_address": {
+                "2044": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CTSD": {
+              "role": "readout",
+              "state_by_address": {
+                "4748": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "LPL": {
+              "role": "readout",
+              "state_by_address": {
+                "13734": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 6186,
+              "panel": [
+                6188,
+                11425,
+                7194,
+                2044
+              ],
+              "readout": [
+                4748,
+                13734
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "P2RY12_HOMEOSTATIC": {
+          "genes": {
+            "P2RY12": {
+              "role": "query",
+              "state_by_address": {
+                "12469": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "TMEM119": {
+              "role": "panel",
+              "state_by_address": {
+                "15109": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CX3CR1": {
+              "role": "panel",
+              "state_by_address": {
+                "12239": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "GPR34": {
+              "role": "panel",
+              "state_by_address": {
+                "12995": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "C1QA": {
+              "role": "panel",
+              "state_by_address": {
+                "13365": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "SALL1": {
+              "role": "readout",
+              "state_by_address": {
+                "2810": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CSF1R": {
+              "role": "readout",
+              "state_by_address": {
+                "14980": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 4,
+            "partners_required": 4,
+            "readouts_measured": 2,
+            "satisfiable": true,
+            "blocked_by_symbol_ambiguity": []
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 12469,
+              "panel": [
+                15109,
+                12239,
+                12995,
+                13365
+              ],
+              "readout": [
+                2810,
+                14980
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        },
+        "HLA_DRA_ANTIGEN": {
+          "genes": {
+            "HLA-DRA": {
+              "role": "query",
+              "state_by_address": {
+                "18511": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "CD74": {
+              "role": "panel",
+              "state_by_address": {
+                "392": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DPA1": {
+              "role": "panel",
+              "state_by_address": {
+                "23673": "MEASURED",
+                "40452": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "HLA-DMA": {
+              "role": "panel",
+              "state_by_address": {
+                "18500": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "IFI30": {
+              "role": "panel",
+              "state_by_address": {
+                "20496": "MEASURED"
+              },
+              "state": "MEASURED"
+            },
+            "HLA-DMB": {
+              "role": "readout",
+              "state_by_address": {
+                "26659": "MEASURED",
+                "40569": "DECLARED_UNMEASURED"
+              },
+              "state": "AMBIGUOUS_SYMBOL_MIXED_SUPPORT"
+            },
+            "CTSS": {
+              "role": "readout",
+              "state_by_address": {
+                "10846": "MEASURED"
+              },
+              "state": "MEASURED"
+            }
+          },
+          "symbol_only": {
+            "query_measured": true,
+            "partners_measured": 3,
+            "partners_required": 4,
+            "readouts_measured": 1,
+            "satisfiable": false,
+            "blocked_by_symbol_ambiguity": [
+              "HLA-DPA1"
+            ]
+          },
+          "r8_resolved": {
+            "addresses": {
+              "query": 18511,
+              "panel": [
+                392,
+                23673,
+                18500,
+                20496
+              ],
+              "readout": [
+                26659,
+                10846
+              ]
+            },
+            "query_state": "MEASURED",
+            "panel_states": [
+              "MEASURED",
+              "MEASURED",
+              "MEASURED",
+              "MEASURED"
+            ],
+            "readout_states": [
+              "MEASURED",
+              "MEASURED"
+            ],
+            "satisfiable": true
+          },
+          "r8_contract_satisfiable": true,
+          "note_if_partial": null
+        }
+      }
+    }
+  ],
+  "per_source_label_rollup": {
+    "HVS::Microglia-PVM": {
+      "APOE_LIPID": {
+        "matrices_total": 1,
+        "cells_total": 2117,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 2117,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 2117
+      },
+      "P2RY12_HOMEOSTATIC": {
+        "matrices_total": 1,
+        "cells_total": 2117,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 2117,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 2117
+      },
+      "HLA_DRA_ANTIGEN": {
+        "matrices_total": 1,
+        "cells_total": 2117,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 2117,
+        "matrices_satisfiable_symbol_only": 0,
+        "cells_satisfiable_symbol_only": 0
+      }
+    },
+    "NPH52::MG": {
+      "APOE_LIPID": {
+        "matrices_total": 1,
+        "cells_total": 15264,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 15264,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 15264
+      },
+      "P2RY12_HOMEOSTATIC": {
+        "matrices_total": 1,
+        "cells_total": 15264,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 15264,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 15264
+      },
+      "HLA_DRA_ANTIGEN": {
+        "matrices_total": 1,
+        "cells_total": 15264,
+        "matrices_satisfiable_r8_resolved": 0,
+        "cells_satisfiable_r8_resolved": 0,
+        "matrices_satisfiable_symbol_only": 0,
+        "cells_satisfiable_symbol_only": 0
+      }
+    },
+    "SEA_AD::Immune": {
+      "APOE_LIPID": {
+        "matrices_total": 10,
+        "cells_total": 138242,
+        "matrices_satisfiable_r8_resolved": 10,
+        "cells_satisfiable_r8_resolved": 138242,
+        "matrices_satisfiable_symbol_only": 10,
+        "cells_satisfiable_symbol_only": 138242
+      },
+      "P2RY12_HOMEOSTATIC": {
+        "matrices_total": 10,
+        "cells_total": 138242,
+        "matrices_satisfiable_r8_resolved": 10,
+        "cells_satisfiable_r8_resolved": 138242,
+        "matrices_satisfiable_symbol_only": 10,
+        "cells_satisfiable_symbol_only": 138242
+      },
+      "HLA_DRA_ANTIGEN": {
+        "matrices_total": 10,
+        "cells_total": 138242,
+        "matrices_satisfiable_r8_resolved": 10,
+        "cells_satisfiable_r8_resolved": 138242,
+        "matrices_satisfiable_symbol_only": 0,
+        "cells_satisfiable_symbol_only": 0
+      }
+    },
+    "SEA_AD::Microglia-PVMSubclass": {
+      "APOE_LIPID": {
+        "matrices_total": 1,
+        "cells_total": 32286,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 32286,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 32286
+      },
+      "P2RY12_HOMEOSTATIC": {
+        "matrices_total": 1,
+        "cells_total": 32286,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 32286,
+        "matrices_satisfiable_symbol_only": 1,
+        "cells_satisfiable_symbol_only": 32286
+      },
+      "HLA_DRA_ANTIGEN": {
+        "matrices_total": 1,
+        "cells_total": 32286,
+        "matrices_satisfiable_r8_resolved": 1,
+        "cells_satisfiable_r8_resolved": 32286,
+        "matrices_satisfiable_symbol_only": 0,
+        "cells_satisfiable_symbol_only": 0
+      }
+    }
+  },
+  "SOURCES_NOT_HARMONIZED": "each (source, native_class) is reported on its own. No panel result is pooled across sources, because the labels do not denote the same population.",
+  "training_authorized": false,
+  "expression_opened": false,
+  "protected_outcomes_opened": false,
+  "producer_sha256": "ca78a04e891dcd9d93f1f65f3e9385e129b5ba296d8f8e57332831ca2ef3eb3d"
+}

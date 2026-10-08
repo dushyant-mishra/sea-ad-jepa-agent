@@ -1,0 +1,15 @@
+{
+  "schema": "F1_EVIDENCE_TREND_REPAIR_HISTORICAL_HASH_BINDING_V1",
+  "status": "FROZEN_BEFORE_CONCLUSION_BEARING_SOURCE",
+  "accepted_hc3_repair_commit": "5e8127d360d1effd0867a73c2bb007ddffb2c901",
+  "accepted_hc3_repair_manifest_git_blob_sha256": "f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5",
+  "accepted_hc3_adapter_v2_sha256": "c5432f84cb51105419a68c4d14e81d52d84818bad206af0458b4ba6fc37d5a3d",
+  "accepted_hc3_stable_qr_v2_sha256": "8a4a18314687f410b01a3e798670d9cffb6ee377abe9217c719dfceaec941961",
+  "historical_decision_v1_sha256": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+  "historical_decision_v4_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+  "historical_integration_v4_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a",
+  "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+  "selected_nuisance_triple": [5, 0, 4],
+  "effective_centered_design_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
+  "historical_files_modified": false
+}

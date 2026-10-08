@@ -1,0 +1,6 @@
+dataset_id,processed_expression_path,processed_metadata_path,processed_gene_index_path,processed_celltype_column,processed_disease_column,processed_pathology_columns,n_samples_or_cells,n_genes,n_candidate_genes_detectable,analysis_ready,analysis_ready_for_stage38b,notes
+gse160936,,,,,,,0,0,0,False,False,manual_acquisition_or_full_preprocessing_required
+gse125050,,,,,,,0,0,0,False,False,manual_acquisition_or_full_preprocessing_required
+gse157827,,,,,,,0,0,0,False,False,manual_acquisition_or_full_preprocessing_required
+gse138852,data\external\gse138852\processed\stage38a_gse138852_candidate_expression.csv,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,data\external\gse138852\processed\stage38a_gse138852_gene_index.csv,oupSample.cellType,oupSample.batchCond,,13214,12,12,True,True,candidate-gene matrix prepared from local files
+gse174367,,,,,Diagnosis,Plaque.Stage,0,0,0,False,False,manual_acquisition_or_full_preprocessing_required

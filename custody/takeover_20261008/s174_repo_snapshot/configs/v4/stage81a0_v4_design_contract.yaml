@@ -1,0 +1,189 @@
+schema_version: "1.0"
+stage: stage81a0
+model_lineage: sea_ad_graph_jepa_v4_separate_from_v1_v2_v3
+foundation_training_mode: self_supervised_pathology_label_free
+
+pathology_firewall:
+  enabled: true
+  forbidden_foundation_training_fields:
+    - diagnosis
+    - pathology_burden
+    - braak
+    - cerad
+    - gfap
+    - iba1
+    - neun
+    - clinical_status
+    - disease_state
+  forbidden_checkpoint_selection_fields:
+    - diagnosis
+    - pathology_burden
+    - braak
+    - cerad
+    - gfap
+    - iba1
+    - neun
+    - clinical_status
+    - disease_state
+  labels_allowed_only_after_foundation_freeze: true
+
+model_sequence:
+  - stage: v4A
+    model: expression_only_gene_token_jepa
+    gate: required_parent_baseline
+  - stage: v4B
+    model: v4A_plus_soft_regulator_adapter_and_regulator_target_masking
+    parent: v4A
+  - stage: v4C
+    model: spatial_panel_teacher_student_encoder_plus_section_local_context
+    parent: v4A
+  - stage: v4D
+    model: gated_fusion_of_validated_v4B_and_v4C
+    parents: [v4B, v4C]
+  - stage: v4E
+    model: native_biologically_calibrated_perturbation_controller
+    parent: v4D
+
+required_baselines:
+  - expression_only_v4A
+  - simpler_parent_for_every_added_branch
+  - strong_expression_only_baseline
+  - no_graph_baseline
+  - strict_shuffled_graph_baseline
+
+required_regulatory_controls:
+  - no_prior
+  - prior_weight_zero
+  - tf_label_shuffle
+  - edge_shuffle
+  - expression_matched_random_targets
+
+required_spatial_controls:
+  - no_spatial
+  - real_section_local_graph
+  - shuffled_section_local_graph
+  - distance_matched_random_neighbors
+  - coordinates_only
+  - zero_cross_section_edges
+
+split_policy:
+  biological_split_unit: donor
+  spatial_split_unit: tissue_section
+  random_cell_split_for_final_evaluation: forbidden
+  test_donors: sealed_until_architecture_checkpoint_and_self_supervised_evaluation_rules_are_frozen
+  donor_overlap_across_splits: forbidden
+  section_overlap_across_spatial_splits: forbidden
+
+checkpoint_selection_policy:
+  mode: self_supervised_metrics_only
+  pathology_or_diagnosis_labels_allowed: false
+  required_telemetry:
+    - jepa_alignment
+    - latent_variance
+    - latent_covariance
+    - effective_dimension
+    - top_singular_value_ratio
+    - ema_target_stability
+    - anchor_drift_when_applicable
+  required_reproducibility:
+    - deterministic_feature_order_hash
+    - deterministic_dataset_hash
+    - deterministic_split_hash
+    - checkpoint_hash
+  pipeline_integrity_and_biological_value_are_separate: true
+
+dataset_role_policy:
+  training_data_cannot_be_clean_validation: true
+  architecture_or_threshold_data_cannot_be_clean_validation: true
+  used_plausibility_data_cannot_be_clean_validation: true
+  external_pretraining_requires_domain_gene_normalization_and_identity_audits: true
+  clean_holdouts_remain_sealed_until_design_freeze: true
+
+agent_boundary:
+  role: post_model_scientific_council
+  included_in_foundation_checkpoint_selection: false
+  may_review_results: true
+  may_propose_experiments: true
+  persistent_memory_requires_context_packets: true
+  changes_requiring_explicit_human_approval:
+    - source_data
+    - normalization
+    - feature_vocabulary
+    - donor_splits
+    - checkpoint_selection
+    - evaluation_thresholds
+    - frozen_model_weights
+    - historical_scientific_results
+
+positive_components_to_retain:
+  - self_supervised_jepa_training
+  - pathology_label_free_foundation_training
+  - ema_target_encoder
+  - gene_identity_representation
+  - donor_aware_sampling
+  - donor_held_out_evaluation
+  - variance_and_covariance_monitoring
+  - effective_dimension_monitoring
+  - top_singular_value_monitoring
+  - anchor_drift_monitoring_when_applicable
+  - deterministic_feature_dataset_split_and_checkpoint_hashes
+  - strong_expression_only_baseline
+  - no_graph_and_shuffled_graph_controls
+  - negative_and_null_results
+  - separate_technical_and_biological_pass_criteria
+  - conservative_claims
+  - separate_implementation_and_artifact_freeze_provenance
+
+protected_artifacts:
+  - docs/stage_c_finetuning_analysis.md
+  - data/
+  - results/tables/v2_1_gse174367_cell_trajectory_scores.csv
+  - results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+  - stage75e_prep_bundle/
+  - stage75f_f5a_mapping_fix_bundle.zip
+  - stage75f_f5b_primary_motif_pilot_bundle.zip
+  - stage75f_f5c_primary_evidence_bundle.zip
+  - stage75f_f6_secondary_motif_pilot_bundle.zip
+  - stage75f_f7_secondary_evidence_bundle.zip
+  - stage77_graph_visualization_bundle.zip
+  - web/stage78_graph_explorer/.gitignore
+  - results/tables/stage75*
+  - results/reports/stage75*
+  - results/tables/stage76*
+  - results/reports/stage76*
+  - results/tables/stage77*
+  - results/reports/stage77*
+  - results/visualization/stage77*
+  - results/tables/stage78*
+  - results/reports/stage78*
+  - results/visualization/stage78*
+  - results/tables/stage79*
+  - results/reports/stage79*
+  - results/visualization/stage79*
+  - checkpoints_and_existing_model_weights
+  - existing_h5ad_files
+  - unrelated_zip_logs_caches_and_intermediates
+
+unknowns_requiring_resolution:
+  - D01_matrix_scale_semantics
+  - D02_source_layer_semantics
+  - D04_gene_symbol_uniqueness
+  - D07_donor_sample_identity_lineage_audit
+  - S01_lineage_wide_split_audit
+  - S02_lineage_wide_donor_overlap_audit
+  - S03_spatial_section_split_provenance
+  - R05_ema_target_stability
+  - R08_seed_stability
+  - G06_graph_lineage_separation
+  - E01_external_domain_compatibility
+  - E03_external_gene_space_contract
+  - E04_external_normalization_equivalence
+  - SP01_spatial_panel_coverage
+  - SP02_spatial_cell_matching
+  - SP03_coordinate_units
+  - SP04_cross_section_edge_prevention
+  - SP05_spatial_split_design
+  - SP06_spatial_expression_scale
+  - SP07_spatial_causal_wording
+
+stage81a0_pass: true

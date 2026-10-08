@@ -1,0 +1,65 @@
+{
+  "schema": "full104-shared-state-final-adjudication-v1",
+  "result_state": "FROZEN",
+  "terminal_status": "TEACHER_BIOLOGY_LIMIT",
+  "scope": "the frozen FULL104 shared-state estimand only",
+  "D_shared": null,
+  "lawful_contiguous_prefix": [],
+  "first_jointly_unsupported_dimension": 1,
+  "one_se_candidate": null,
+  "downstream_consumable": false,
+  "private_state_authorized": false,
+  "decision_basis": {
+    "sketch_A_dimension_1": {
+      "signal_supported": true,
+      "stability_supported": true,
+      "predictability_supported": true,
+      "jointly_supported": true
+    },
+    "sketch_B_dimension_1": {
+      "signal_supported": true,
+      "stability_supported": false,
+      "predictability_supported": true,
+      "jointly_supported": false,
+      "signal_margin": 0.001489917990053,
+      "stability_margin": -0.00001578461633200412,
+      "predictability_margin": 0.6227491406755028
+    },
+    "cap1024_sketch_B_dimension_1_stability_margin": -0.000011347598358191213,
+    "production_independent_support_rows_exact": 640,
+    "later_dimension_reentry_forbidden": true
+  },
+  "numerical_integrity": {
+    "all_fits_passed": true,
+    "fits": 4108,
+    "maximum_generalized_residual": 2.8467e-7,
+    "decision_margin_to_residual_ratio_approx": 55
+  },
+  "firewall": {
+    "protected_or_heldout_expression_opened": false,
+    "immutable_ALL_manifest_rows_verified": 519,
+    "mutable_monitoring_sidecars_excluded": 2,
+    "immutable_scientific_subset_sha256": "62848a8e8c20c4ee329e81aab2f6b18be44a1c80c9bcfacb0c30a72231434020"
+  },
+  "nonselecting_controls": {
+    "status": "PASS_REQUIRED_NONSELECTING_CONTROLS_CLOSED",
+    "unshufflable_singleton_global_weight_mass": 0.00004967196712227679,
+    "limited_permutation_n2_n3_global_weight_mass": 0.00021716374724366338,
+    "candidate_coordinate_controls": "NOT_APPLICABLE_NO_QUALIFIED_SHARED_STATE"
+  },
+  "council": {
+    "historian_authority": "NOVEL_AND_AUTHORIZED",
+    "statistics_representation_geometry": "PASS",
+    "observation_provenance": "PASS",
+    "scientific_red_team": "PASS_WITH_INTERPRETATION_CONCERN"
+  },
+  "interpretation_boundary": "This does not mean the corpus lacks biology. It means the prospectively frozen multiview shared-state estimand did not qualify a reproducible leading dimension under its matched-null, donor-stability, held-donor-predictability, independent-sketch, and contiguity rules.",
+  "input_authorities": {
+    "ALL_manifest_sha256": "8f292673c84447ee88f3a78936aa88920b96f0ffd681237e2b5af3e7dfe4d60c",
+    "independent_manifest_sha256": "b3cc29cbdf401d2ff8daaf865ee5890fda633cb3ca9818a6a42b835e38fc72d2",
+    "independent_vs_production_comparison_sha256": "73d71372facd677dc9e0a9363e452ad4db600e7f11b16818fcfb70fe669a4555",
+    "nonselecting_control_manifest_sha256": "f83b4c5756351395b1e3f1f7004943d33ef17998b18091d9e7aea6f1432d946a",
+    "freeze_root_sha256": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "implementation_fingerprint": "a0fe5bc7be0769c9880763b3831ea330a251dfa710a8635b05f678c5d6e94202"
+  }
+}

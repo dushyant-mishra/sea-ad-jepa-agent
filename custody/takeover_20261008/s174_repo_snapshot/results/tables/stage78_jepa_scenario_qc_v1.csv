@@ -1,0 +1,14 @@
+scenario_id,all_baseline_cells_present,baseline_to_baseline_zero_within_tolerance,no_cell_order_mismatch,no_feature_order_mismatch,deterministic_repeated_inference,max_repeat_embedding_abs_diff,n_cells,n_donors
+ELF1_down_0p10,True,True,True,True,True,0.0,32,6
+ELF1_down_0p25,True,True,True,True,True,0.0,32,6
+ELF1_up_0p10,True,True,True,True,True,0.0,32,6
+ELF1_up_0p25,True,True,True,True,True,0.0,32,6
+SPI1_down_0p10,True,True,True,True,True,0.0,32,6
+SPI1_down_0p25,True,True,True,True,True,0.0,32,6
+SPI1_up_0p10,True,True,True,True,True,0.0,32,6
+SPI1_up_0p25,True,True,True,True,True,0.0,32,6
+STAT1_down_0p10,True,True,True,True,True,0.0,32,6
+STAT1_down_0p25,True,True,True,True,True,0.0,32,6
+STAT1_up_0p10,True,True,True,True,True,0.0,32,6
+STAT1_up_0p25,True,True,True,True,True,0.0,32,6
+baseline,True,True,True,True,True,0.0,32,6

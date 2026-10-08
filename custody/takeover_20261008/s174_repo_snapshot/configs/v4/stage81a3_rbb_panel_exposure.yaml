@@ -1,0 +1,53 @@
+stage_id: stage81a3_rbb_panel_exposure
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+single_scientific_change: structural_panel_exposure_for_belief_reasoner
+model:
+  tokenizer_frozen: true
+  molecular_encoder_frozen: true
+  belief_architecture_unchanged: true
+  correlated_rank: 32
+training:
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  updates: 150
+  effective_batch: 256
+  microbatch: 32
+  accumulation_microbatches: 8
+  seed: 8114001
+  strata:
+    ORDINARY_RANDOM_40: 32
+    ORDINARY_BLOCK_40: 32
+    STRUCTURAL_RANDOM_P80: 32
+    STRUCTURAL_RANDOM_P60: 32
+    STRUCTURAL_RANDOM_P40: 32
+    STRUCTURAL_COHERENT_P80: 32
+    STRUCTURAL_COHERENT_P60: 32
+    STRUCTURAL_COHERENT_P40: 32
+  p20_training_examples: 0
+panel_banks:
+  masks_per_family_fraction: 128
+  train_only: true
+scalar_recalibration:
+  one_positive_global_variance_temperature: true
+  fit_split: validation
+  shared_across_families_and_fractions: true
+  fractions: [P80, P60, P40]
+  posterior_mean_unchanged: true
+evaluation_order:
+  - ordinary_random_40
+  - ordinary_block_40
+  - structural_random
+  - structural_coherent
+  - complementary_panels
+  - correlated_ablation
+  - counterfactual_omitted
+boundaries:
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_for_training: forbidden
+  sealed_for_fitting: forbidden
+  hyperparameter_sweep: forbidden
+  seed_sweep: forbidden
+  continuation_after_150: forbidden

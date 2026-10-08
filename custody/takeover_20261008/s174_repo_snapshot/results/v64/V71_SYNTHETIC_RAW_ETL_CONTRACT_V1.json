@@ -1,0 +1,99 @@
+{
+  "schema": "V71_SYNTHETIC_RAW_ETL_CONTRACT_V1",
+  "date": "2026-10-01",
+  "status": "PROSPECTIVE_ETL_QUALIFICATION_DESIGN",
+  "principle": "Synthetic data must enter as realistic raw-ish files and pass through the same ETL semantics as real data. The generator may know truth; ETL may not.",
+  "raw_format_emulators": {
+    "tenx_multiome_h5": [
+      "barcodes",
+      "features",
+      "feature_type",
+      "sparse CSC matrix",
+      "gene and peak rows"
+    ],
+    "atac_fragments_tsvgz": [
+      "chrom",
+      "start",
+      "end",
+      "barcode",
+      "count"
+    ],
+    "metadata_csv": [
+      "cell barcode",
+      "donor",
+      "cell type",
+      "source",
+      "operator",
+      "forbidden protected fields"
+    ],
+    "separate_rna_atac": [
+      "non-paired cell/nucleus identifiers sharing donor labels"
+    ],
+    "perturbation": [
+      "cell-guide-UMI counts",
+      "guide annotation",
+      "target table",
+      "replicate/donor metadata"
+    ],
+    "spatial": [
+      "panel genes",
+      "cell/spot coordinates",
+      "segmentation ids",
+      "region metadata"
+    ],
+    "checkpoints": [
+      "state dicts",
+      "optimizer/EMA metadata",
+      "training receipts",
+      "manifest SHA bindings"
+    ]
+  },
+  "canonical_outputs": [
+    "authenticated source manifest",
+    "canonical cell registry",
+    "canonical donor registry",
+    "canonical molecular-address registry",
+    "source/operator feature-support masks",
+    "genome-build mapping receipt",
+    "missingness classification",
+    "sparse matrices with explicit axis dictionaries",
+    "provenance/exposure ledger",
+    "ETL reconciliation receipt"
+  ],
+  "mandatory_invariants": [
+    "row/column identity is explicit and SHA-bound",
+    "feature order cannot be inferred from shape",
+    "structural missingness never becomes measured zero",
+    "zero coverage and zero variance remain distinct",
+    "hg19/hg38 conversion is explicit and receipted",
+    "ambiguous identifiers remain unresolved rather than guessed",
+    "donor/cell identities are not reconstructed from row order",
+    "no protected/hidden truth field is available to ETL logic",
+    "synthetic provenance cannot bypass production validation gates"
+  ],
+  "truth_audit_metrics": [
+    "cell identity recovery",
+    "donor identity recovery",
+    "barcode recovery",
+    "gene/address identity mapping precision/recall",
+    "peak/interval mapping precision/recall",
+    "genome-build conversion accuracy",
+    "missingness classification confusion matrix",
+    "sparse value fidelity",
+    "axis-order fidelity",
+    "source/operator support reconstruction",
+    "hash/custody consistency"
+  ],
+  "acceptance": {
+    "SMALL_CI": "exact where deterministic; every planted corruption either corrected by an explicitly qualified transform or fails closed",
+    "MEDIUM_STRESS": "same semantics plus resource/streaming robustness",
+    "FULL104_SCALE": "same ETL code path and schemas; no scale-specific scientific shortcuts"
+  },
+  "forbidden": [
+    "generating already-clean canonical matrices as the only synthetic input",
+    "letting the ETL read truth manifests",
+    "special-casing synthetic files to skip validation",
+    "silently repairing ambiguous donor/gene/region identity",
+    "using downstream model success to judge ETL correctness"
+  ]
+}

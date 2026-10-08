@@ -1,0 +1,16 @@
+condition,aux_weight,target,target_key,delta_vs_stage27c,delta_vs_matched_no_graph,delta_vs_matched_strict_shuffled,target_specific_module_graph_rescue_candidate
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,6e10/Aβ,6e10/A_beta,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,AT8,AT8,-0.007188417535688996,-0.007188417535688996,-0.002065404475042998,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,GFAP,GFAP,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,Iba1,Iba1,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,NeuN,NeuN,0.00024298876176975792,0.00024298876176975792,0.00018224157132729069,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,6e10/Aβ,6e10/A_beta,0.0017211703958691094,0.0017211703958691094,0.0017211703958691094,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,AT8,AT8,-0.016745975498633103,-0.016745975498633103,-0.003989065505720313,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,GFAP,GFAP,0.0014376835071378546,0.0014376835071378546,0.0014376835071378546,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,Iba1,Iba1,-0.000809962539232557,-0.000809962539232557,0.001660423205426748,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,NeuN,NeuN,-0.00010124531740413056,-0.00010124531740413056,-0.0004049812696162447,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,6e10/Aβ,6e10/A_beta,0.007087172218284865,0.007087172218284865,0.007066923154804117,True
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,AT8,AT8,-0.003361344537815114,-0.003361344537815114,0.0059937227903210655,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,GFAP,GFAP,0.0018629138402349588,0.0018629138402349588,0.00048597752353957135,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,Iba1,Iba1,-0.004556039283183152,-0.004556039283183152,0.0018021666497924464,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,NeuN,NeuN,0.0017819175863115766,0.0017819175863115766,0.0030171104586412256,False

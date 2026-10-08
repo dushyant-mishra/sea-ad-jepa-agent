@@ -1,0 +1,80 @@
+stage: stage38a_external_data_acquisition_preprocessing_v1
+random_seed: 7
+
+inputs:
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  stage37c_f_dataset_readiness: results/tables/stage37c_f_dataset_readiness_matrix_v1.csv
+  stage37c_f_acquisition_manifest: results/tables/stage37c_f_data_acquisition_manifest_v1.csv
+  stage37c_f_pass_fail: results/tables/stage37c_f_pass_fail_v1.csv
+
+datasets:
+  - dataset_id: gse160936
+    accession: GSE160936
+    dataset_name: GSE160936 pTau-linked glial support
+    intended_stage: Stage37C/38B
+    intended_use: pTau/AT8-linked glial external support
+    priority: high
+    expected_modality: human AD transcriptomic expression with glial/pathology metadata
+    expected_metadata: cell type, donor/sample, disease/pathology, pTau/tau where available
+    expected_pathology_or_disease_readout: pTau/AT8, GFAP/Iba1-relevant glial metadata if available
+  - dataset_id: gse125050
+    accession: GSE125050
+    dataset_name: GSE125050 pathology-confirmed AD cell-type support
+    intended_stage: Stage37D/38B
+    intended_use: pathology-confirmed AD/control cell-type support
+    priority: high
+    expected_modality: human AD single-cell/single-nucleus expression
+    expected_metadata: cell type, donor/sample, AD/control, pathology-confirmed labels
+    expected_pathology_or_disease_readout: amyloid/pathology-confirmed AD/control where available
+  - dataset_id: gse157827
+    accession: GSE157827
+    dataset_name: GSE157827 broad AD/control snRNA-seq support
+    intended_stage: Stage37E/38B
+    intended_use: broad AD/control mechanism directionality support
+    priority: high
+    expected_modality: human AD single-nucleus expression
+    expected_metadata: cell type, donor/sample, disease status
+    expected_pathology_or_disease_readout: AD/control labels
+  - dataset_id: gse138852
+    accession: GSE138852
+    dataset_name: GSE138852 Grubman-Leng entorhinal cortex smoke test
+    intended_stage: Stage37F/38B
+    intended_use: entorhinal cortex directional smoke test
+    priority: medium
+    expected_modality: human AD/control single-nucleus expression
+    expected_metadata: cell type and AD/control covariates
+    expected_pathology_or_disease_readout: AD/control labels
+  - dataset_id: gse174367
+    accession: GSE174367
+    dataset_name: GSE174367 Morabito optional secondary stress-test
+    intended_stage: optional_secondary
+    intended_use: optional stress-test/projection only
+    priority: low
+    expected_modality: human AD single-nucleus expression
+    expected_metadata: cell type, donor/sample, disease status if available
+    expected_pathology_or_disease_readout: optional secondary AD/control labels
+    optional: true
+
+outputs:
+  acquisition_plan: results/tables/stage38a_dataset_acquisition_plan_v1.csv
+  download_manifest: results/tables/stage38a_download_manifest_v1.csv
+  local_file_inventory: results/tables/stage38a_local_file_inventory_v1.csv
+  checksum_manifest: results/tables/stage38a_file_checksum_manifest_v1.csv
+  preprocessing_readiness: results/tables/stage38a_preprocessing_readiness_v1.csv
+  processed_input_index: results/tables/stage38a_processed_input_index_v1.csv
+  gene_symbol_harmonization: results/tables/stage38a_gene_symbol_harmonization_summary_v1.csv
+  metadata_harmonization: results/tables/stage38a_metadata_harmonization_summary_v1.csv
+  celltype_metadata_summary: results/tables/stage38a_celltype_metadata_summary_v1.csv
+  pathology_metadata_summary: results/tables/stage38a_pathology_metadata_summary_v1.csv
+  external_dataset_claim_level: results/tables/stage38a_external_dataset_claim_level_v1.csv
+  data_commit_exclusion_audit: results/tables/stage38a_data_commit_exclusion_audit_v1.csv
+  pass_fail: results/tables/stage38a_pass_fail_v1.csv
+  report: results/reports/stage38a_external_data_acquisition_preprocessing_report_v1.md
+  pi_report: results/reports/stage38a_pi_data_readiness_summary_v1.md
+  manual_acquisition: results/reports/stage38a_manual_acquisition_instructions_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

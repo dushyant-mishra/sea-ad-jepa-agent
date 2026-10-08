@@ -1,0 +1,98 @@
+stage_id: stage81a3_fbsdq
+schema_version: "1.0"
+anchor_commit: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+
+governance:
+  pathology_blind: true
+  train_expression_only: true
+  development_expression_forbidden: true
+  sealed_expression_forbidden: true
+  neural_optimizer_updates: 0
+  backward_calls_on_real_rna: 0
+  ema_updates: 0
+  stage81b_started: false
+  production_basis_frozen: false
+
+inputs:
+  fhra_config: configs/v4/stage81a3_foundation_heterogeneity_reality_audit.yaml
+  fhra_report: results/v4/stage81a3_foundation_heterogeneity_reality_audit.json
+  uli_report: results/v4/stage81a3_rbb_uncertainty_localization_identifiability.json
+
+randomness:
+  count_split_root: 8115101
+  evidence_mask_root: 8115201
+  depth_thinning_root: 8115301
+
+basis:
+  cells_per_matrix_cap: 2048
+  dimensions: 160
+  donor_folds: 8
+  equal_matrix_weight: true
+  relative_eigengap_threshold: 0.01
+  axis_median_correlation_threshold: 0.90
+  axis_p10_correlation_threshold: 0.80
+  subspace_median_correlation_threshold: 0.90
+
+rep_complexity_gate:
+  minimum_relative_distance_improvement: 0.05
+  minimum_favorable_matrix_fraction: 0.70
+  maximum_biological_transfer_degradation: 0.02
+  maximum_technology_imprint_worsening: 0.02
+
+diagnostics:
+  knn_k: 15
+  logistic_c: 1.0
+  logistic_max_iter: 1000
+  grouped_cv_folds: 5
+  conditional_min_technologies: 2
+  conditional_min_donors_per_technology: 2
+  conditional_min_cells_per_technology: 100
+  qc_ridge_alpha: 1.0e-3
+  qc_min_median_spearman_improvement: 0.05
+  qc_min_favorable_matrix_fraction: 0.70
+  qc_max_technology_median_decrease: 0.10
+  domain_threshold_quantile: 0.90
+
+# Predeclared descriptive labels used only where the master contract supplies a
+# taxonomy but no numerical boundary. They are audit labels, not acceptance gates.
+descriptive_classification:
+  countsplit_strong_min_cosine: 0.90
+  countsplit_moderate_min_cosine: 0.70
+  transfer_strong_min_balanced_accuracy: 0.70
+  transfer_moderate_min_balanced_accuracy: 0.50
+  technology_strong_min_balanced_accuracy: 0.75
+  technology_moderate_min_balanced_accuracy: 0.55
+  separation_distinct_max_abs_spearman: 0.30
+  separation_partial_max_abs_spearman: 0.60
+
+evidence:
+  cells_per_matrix_cap: 256
+  visible_fractions: [0.20, 0.40, 0.60, 0.80, 1.00]
+  random_sequences: 4
+  depth_fractions: [0.25, 0.50, 0.75, 1.00]
+  thinning_replicates: 4
+
+cache_dir: data/cache/stage81a3_fbsdq
+
+outputs:
+  report: results/v4/stage81a3_foundation_biological_state_domain_qualification.json
+  basis_comparison: results/v4/stage81a3_basis_comparison.csv
+  basis_stability: results/v4/stage81a3_basis_stability.csv
+  coordinate_accountability: results/v4/stage81a3_coordinate_accountability.csv
+  countsplit_reproducibility: results/v4/stage81a3_countsplit_reproducibility.csv
+  conditional_domain_imprint: results/v4/stage81a3_conditional_domain_imprint.csv
+  technology_surgery: results/v4/stage81a3_technology_surgery.csv
+  donor_transfer: results/v4/stage81a3_donor_transfer.csv
+  matrix_transfer: results/v4/stage81a3_matrix_transfer.csv
+  dataset_transfer: results/v4/stage81a3_dataset_transfer.csv
+  technology_transfer: results/v4/stage81a3_technology_transfer.csv
+  measurement_quality_earning: results/v4/stage81a3_measurement_quality_earning.csv
+  evidence_response: results/v4/stage81a3_evidence_response.csv
+  depth_response: results/v4/stage81a3_depth_response.csv
+  evidence_depth_separation: results/v4/stage81a3_evidence_depth_separation.csv
+  domain_support: results/v4/stage81a3_domain_support_2axis.csv
+  sampling_analysis: results/v4/stage81a3_sampling_analysis.csv
+  observation_input_policy: results/v4/stage81a3_observation_input_policy.csv
+  freeze_readiness: results/v4/stage81a3_freeze_readiness.csv
+  pca_basis: results/v4/stage81a3_balanced_pca160_diagnostic.npz
+  rep_basis: results/v4/stage81a3_balanced_rep160_diagnostic.npz

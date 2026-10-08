@@ -1,0 +1,156 @@
+{
+  "candidate_design_attacks_rejected": {
+    "forbidden_HVS_C6": true,
+    "forbidden_NPH_C1": true,
+    "old_rank18": true,
+    "one_bit": true,
+    "truncated": true,
+    "wrong_triple": true
+  },
+  "donor_permutation_exact_gate_vector": true,
+  "fresh_legacy_14_cases": [
+    {
+      "attack": "A_protected_program_finite_negative_report_only",
+      "changed_gates": [],
+      "isolated_pass": true
+    },
+    {
+      "attack": "B_direct_degradation",
+      "changed_gates": [
+        "no_contextual_minus_direct_degradation"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "C_evidence_trend",
+      "changed_gates": [
+        "evidence_trend_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "D_qid_margin",
+      "changed_gates": [
+        "qid_v2_margin_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "E_qid_win",
+      "changed_gates": [
+        "qid_v2_win_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "F_draw_sign",
+      "changed_gates": [
+        "two_draw_sign_stable"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "G_hc3_nuisance",
+      "changed_gates": [
+        "hc3_nuisance_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "H_cross_source",
+      "changed_gates": [
+        "cross_source_replication"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "I_nonfinite_qid_margin",
+      "changed_gates": [
+        "qid_v2_margin_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "J_zero_variance_qid_win",
+      "changed_gates": [
+        "qid_v2_win_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "K_overall_primary_failure_with_declared_shared_outcome_coupling",
+      "changed_gates": [
+        "overall_A_60_one_sided_positive",
+        "hc3_nuisance_positive",
+        "cross_source_replication"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "L_qid_program_negative_holm",
+      "changed_gates": [
+        "no_qid_v2_program_negative_margin"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "M_legal_provenance",
+      "changed_gates": [
+        "legal_provenance"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "N_protected_program_unestimable",
+      "changed_gates": [
+        "protected_program_family_estimable"
+      ],
+      "isolated_pass": true
+    }
+  ],
+  "hc3_veto_exact_gate_vector": true,
+  "input_attacks_rejected": {
+    "donor_duplicate": true,
+    "donor_omission": true,
+    "donor_relabel": true,
+    "forged_caller_hc3_pass": true,
+    "nonfinite": true
+  },
+  "source_confined_veto": true,
+  "status": "PASS",
+  "strict_legal_domain": {
+    "dict": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "false": {
+      "accepted": true,
+      "legal_gate": false
+    },
+    "list": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "none": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "numpy_true": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "one": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "string_false": {
+      "accepted": false,
+      "legal_gate": false
+    },
+    "true": {
+      "accepted": true,
+      "legal_gate": true
+    }
+  },
+  "zero_variance_nonestimable": true
+}

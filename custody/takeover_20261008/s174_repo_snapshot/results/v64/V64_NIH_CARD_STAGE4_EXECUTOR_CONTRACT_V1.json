@@ -1,0 +1,59 @@
+{
+  "schema": "V64_NIH_CARD_STAGE4_EXECUTOR_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN__EXECUTION_NOT_AUTHORISED",
+  "purpose": "Bind the future NIH-CARD biological correspondence executor to already-frozen design/precondition/realism authorities and prevent Stage-4 implementation drift.",
+  "requires_all_before_execution": [
+    "full RNA and ATAC byte authentication receipts PASS",
+    "pairing R1/R1b exact agreement PASS with Lane-A provenance limitation carried",
+    "schema/build preconditions PASS",
+    "20,709-edge support funnel complete and reconciled",
+    "real 14-feature span verdict emitted under the frozen rule",
+    "empirical metacell precision calibration adjudicated under V2 frozen rule",
+    "realism-calibrated synthetic qualification independently audited",
+    "explicit human-independent audit authorization after all above"
+  ],
+  "immutable_scientific_choices": {
+    "independent_unit": "DONOR",
+    "aggregation": "WITHIN_DONOR_RNA_ONLY_METACELLS",
+    "target_metacell_size": 25,
+    "correspondence": "per-donor per-pair Pearson across metacells",
+    "donor_precision_weight": "m_minus_3_or_prospectively_frozen_fallback_if_triggered",
+    "primary_distance": "source_hg19",
+    "distance_sensitivity": "harmonized_hg38",
+    "edge_weighting": "gene_balanced_primary__edge_equal_sensitivity",
+    "nuisance_estimator": "frozen_14_feature_continuous_adjustment",
+    "control": "promoter_fixed_distal_matched_symmetric_measurement_and_Nott_PU1_support",
+    "bootstrap_unit": "DONOR",
+    "bootstrap_seed": 20260929,
+    "success": "one_sided_LCB95_Delta_gt_0_plus_all_frozen_anti_false_green_controls",
+    "no_real_scale_M_MIN": true
+  },
+  "mandatory_bindings": [
+    "exact E2 uncompressed SHA-256 bec25e0a653c9eeb5013b6ca707114517229d428bda715ef5adcdeecbe5e913c",
+    "design V1 and V2 digests",
+    "authenticated local NIH-CARD file digests",
+    "pairing receipt digest",
+    "support/span receipt digest",
+    "metacell precision receipt digest",
+    "realism synthetic qualification result digest",
+    "exact executor source digest"
+  ],
+  "fail_closed": [
+    "no result artifact if any prerequisite receipt is absent or non-PASS",
+    "no nearest-peak/control rescue",
+    "no estimator basis modification",
+    "no E2 edge modification",
+    "no threshold modification",
+    "no protected external dataset access",
+    "no disease labels"
+  ],
+  "output": "V64_NIH_CARD_E2_CORRESPONDENCE_RESULT_V1.json",
+  "post_execution": "STOP for independent audit; no automatic E2 promotion.",
+  "governance": {
+    "stage4": "NOT_AUTHORISED",
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "Morabito": "PROTECTED"
+  }
+}

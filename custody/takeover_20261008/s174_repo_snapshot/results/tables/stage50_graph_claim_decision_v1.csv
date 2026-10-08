@@ -1,0 +1,2 @@
+decision,graph_topology_benefit_established,graph_specific_test_inconclusive_missing_inputs,graph_specific_test_inconclusive_missing_controls,allowed_claim,forbidden_claims,rationale
+graph_specific_test_inconclusive_missing_controls,False,False,True,Graph-specific evaluation requires a clean donor-expression/module matrix and curated graph/background controls.,graph proves causality; graph validates mechanism; graph discovers therapeutic target; graph performs experimental perturbation,Inputs require future alignment/training before a graph-specific claim can be made.

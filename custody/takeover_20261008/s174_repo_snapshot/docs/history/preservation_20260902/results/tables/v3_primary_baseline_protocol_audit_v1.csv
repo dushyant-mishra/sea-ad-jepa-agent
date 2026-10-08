@@ -1,0 +1,6 @@
+audit_item,status,finding,risk_level,recommended_action
+aggregation_check,pass_with_revision,Stage25 ranking used mean fold-level Spearman. Pooled module_mean_baseline mean OOF Spearman is 0.3128 vs fold-mean 0.3325 (difference -0.0197).,medium,Use pooled donor-level OOF Spearman as official Stage25B metric.
+prediction_storage_check,pass,Per-donor OOF predictions recomputed and saved for 84 donors.,low,Keep OOF prediction table with benchmark artifacts.
+apples_to_apples_v2_comparison,caution,5 protocol components are unknown or different at medium/high risk.,medium,Do not compare Stage25B directly to 0.2999 without caveat unless feature/module provenance is reconciled.
+module_baseline_sanity_check,pass,Module features are computed from expression-only predefined target-independent modules; module feature sources observed: ['predefined_microglia_gene_modules'].,low,Module baseline is acceptable as an internal locked-CV baseline.
+generalization_caution,caution,Locked donor CV prevents cell leakage but does not prove external cohort generalization.,medium,Run external/stress tests before broad generalization claims.

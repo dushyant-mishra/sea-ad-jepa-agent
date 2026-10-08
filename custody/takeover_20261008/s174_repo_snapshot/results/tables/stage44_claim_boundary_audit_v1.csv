@@ -1,0 +1,14 @@
+audit_item,pass
+stage27c_locked_benchmark_preserved,True
+stage41c_not_rebranded_as_locked,True
+stage45_not_rebranded_as_improvement,True
+external_support_not_called_validation,True
+clean_validation_not_claimed,True
+causal_claim_not_made,True
+therapeutic_claim_not_made,True
+gene_ablation_claim_not_made,True
+disease_modifying_claim_not_made,True
+negative_null_results_preserved,True
+raw_data_not_committed,True
+no_new_modeling,True
+safety_audit_pass,True

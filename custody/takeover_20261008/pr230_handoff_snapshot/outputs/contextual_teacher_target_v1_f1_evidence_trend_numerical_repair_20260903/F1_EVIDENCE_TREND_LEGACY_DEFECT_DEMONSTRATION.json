@@ -1,0 +1,10 @@
+{
+  "fixture": "mathematically flat rows with donor levels linearly spanning 0.1 to 1.1",
+  "legacy_gate": true,
+  "legacy_max_abs_slope": 6.134790625877746e-16,
+  "legacy_nonzero_count": 104,
+  "repaired_all_exact_zero": true,
+  "repaired_estimable": false,
+  "repaired_gate": false,
+  "status": "PASS"
+}

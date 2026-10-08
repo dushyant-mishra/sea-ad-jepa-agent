@@ -1,0 +1,17 @@
+candidate_id,n_bootstrap,bootstrap_unit,mean_oof_spearman,ci_lower_95,ci_upper_95,lower_ci_above_stage27c,lower_ci_above_material_threshold,lower_ci_above_stage39e_pca8,bootstrap_confirmation_pass,notes
+blend_stage41b_with_stage27c,500,donor,0.3583031284803078,0.2519556017379069,0.44137869192255896,False,False,False,False,donor bootstrap
+blend_stage41b_with_stage27c_and_stage39e_pca8,500,donor,0.3625473321858864,0.2620679788859309,0.4526873341271875,False,False,False,False,donor bootstrap
+blend_stage41b_with_stage39e_pca8,500,donor,0.36808747595423713,0.2603604646376338,0.4584498010822767,False,False,False,False,donor bootstrap
+guard_aware_target_specific_blend,500,donor,0.36421180520400936,0.26341045893303894,0.44697566007818873,False,False,False,False,donor bootstrap
+latent_only_control,500,donor,0.2843697478991597,0.1540571214651874,0.39665765289705335,False,False,False,False,donor bootstrap
+latent_plus_stable_metadata_bagged_ridge,500,donor,0.26930444466943404,0.15506304129832066,0.36847191746395946,False,False,False,False,donor bootstrap
+latent_plus_stable_metadata_pruned,500,donor,0.2810165029867369,0.19376646222203256,0.3740334001687733,False,False,False,False,donor bootstrap
+latent_plus_stable_metadata_shared_alpha,500,donor,0.36307785764908374,0.2662344164001352,0.45110981961322283,False,False,False,False,donor bootstrap
+latent_plus_stable_metadata_strong_ridge,500,donor,0.2778050015186798,0.15710608224301728,0.37256321876812704,False,False,False,False,donor bootstrap
+latent_plus_stable_metadata_target_specific_alpha,500,donor,0.2810165029867369,0.20078948900074448,0.3641831879197661,False,False,False,False,donor bootstrap
+metadata_only_control,500,donor,0.05443353244912421,-0.05319386971822173,0.1523968713266138,False,False,False,False,donor bootstrap
+stage27c_reference,500,donor,0.3246937329148527,0.20803586671931393,0.42838327880712884,False,False,False,False,donor bootstrap
+stage39e_pca8_reference,500,donor,0.35808116279206914,0.26027030467967577,0.45618047582728205,False,False,False,False,donor bootstrap
+stage41b_latent_plus_safe_metadata_original,500,donor,0.3394229016907968,0.24960775493368131,0.41238175759511725,False,False,False,False,donor bootstrap
+stage41b_latent_plus_safe_metadata_plus_mri_original,500,donor,0.3214012351928724,0.221669264725526,0.40247844302442276,False,False,False,False,donor bootstrap
+target_shuffled_control,500,donor,0.03884580338159359,-0.07188785546500251,0.14161046616643586,False,False,False,False,donor bootstrap

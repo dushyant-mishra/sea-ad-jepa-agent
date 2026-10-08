@@ -1,0 +1,2 @@
+claim_area,allowed_claim,disallowed_claim,passes
+gene_preserved_module_rebuild,selected raw-H5AD module genes restored for internal benchmark audit,"external validation, causality, therapeutic target, new subtype",True

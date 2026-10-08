@@ -1,0 +1,145 @@
+{
+  "schema": "JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006",
+  "role": "PROSPECTIVE_SCIENTIFIC_GOVERNANCE__PREFREEZE_ONLY",
+  "training_authorized": false,
+  "multimodal_training_authorized": false,
+  "stage_a_execution_authorized": false,
+  "stage4_authorized": false,
+  "five_hundred_k_authorized": false,
+  "optimizer_updates_during_target_discrimination": 0,
+  "ema_updates_during_target_discrimination": 0,
+  "test_state": "SEALED",
+  "morabito_state": "PROTECTED",
+  "production_target_winner": null,
+  "representation_winner": null,
+  "selected_estimand": "UNSET_REQUIRES_APPROVAL",
+  "deciding_numeric_thresholds": "UNSET_REQUIRES_APPROVAL",
+  "representation_families": [
+    "GLOBAL_CELL_STATE",
+    "QUERY_LOCAL_STATE",
+    "PROGRAM_STATE",
+    "STRUCTURED_COMBINED_STATE"
+  ],
+  "recoverability_semantics": {
+    "target_object_recoverability": "observation-defined target information recoverable from lawful partial RNA view",
+    "biological_truth_recoverability": "reserved for independently defined biological/planted truth",
+    "automatic_equivalence_forbidden": true
+  },
+  "transport_axes": [
+    "DONOR_TRANSFER",
+    "OPERATOR_TRANSFER",
+    "STUDY_TRANSFER",
+    "TECHNOLOGY_TRANSFER"
+  ],
+  "observation_operator": {
+    "form": "z_biology -> O_t -> X_observed",
+    "allowed_descriptor_classes": [
+      "ASSAY_CLASS",
+      "PLATFORM_OR_CHEMISTRY",
+      "MEASURED_VOCABULARY",
+      "DEPTH_CHARACTERISTICS",
+      "DETECTION_CHARACTERISTICS",
+      "COUNT_SPLIT_NOISE",
+      "DOCUMENTED_ACQUISITION_PROPERTIES"
+    ],
+    "forbidden_free_shortcuts": [
+      "DONOR_ID",
+      "UNRESTRICTED_DATASET_ID",
+      "ARBITRARY_MATRIX_ID",
+      "UNRESTRICTED_STUDY_ID",
+      "PATHOLOGY_OUTCOME_LABEL",
+      "PROTECTED_OUTCOME_DERIVED_LABEL"
+    ],
+    "technology_invariance_is_not_blanket_requirement": true
+  },
+  "representation_stability": {
+    "primary_resampling_unit": "DONOR",
+    "required_diagnostics": [
+      "DONOR_BALANCED_BOOTSTRAP",
+      "LEAVE_DONOR_GROUP_OUT",
+      "PRINCIPAL_ANGLES",
+      "CANONICAL_CORRELATIONS",
+      "PROCRUSTES_ORTHOGONAL_ALIGNMENT",
+      "COORDINATE_STABILITY_AFTER_ALIGNMENT",
+      "EIGENVALUE_GAP_OR_DEGENERACY_AUDIT"
+    ],
+    "statuses": [
+      "STABLE_COORDINATES",
+      "STABLE_SUBSPACE_ONLY",
+      "UNSTABLE_REPRESENTATION",
+      "INDETERMINATE__INSUFFICIENT_BIOLOGICAL_UNITS"
+    ],
+    "coordinate_claim_allowed_when_subspace_only": false,
+    "alignment_fit_partition": "INNER_TRAIN_ONLY",
+    "alignment_freeze_before_held_donor_evaluation": true,
+    "held_out_donors_may_influence_alignment": false
+  },
+  "uncertainty_axes": {
+    "biological_evidence_convergence": {
+      "purpose": "state movement as additional biologically relevant molecular evidence becomes available",
+      "operator_class": "FEATURE_OR_CONTEXT_SUPPORT_RESTRICTION",
+      "count_depth_thinning_forbidden": true,
+      "exact_fractions": "UNSET_REQUIRES_APPROVAL"
+    },
+    "measurement_depth_convergence": {
+      "purpose": "state movement when the same biological information is measured at different count depths",
+      "operator_class": "COUNT_DEPTH_THINNING",
+      "information_universe_fixed": true,
+      "exact_fractions": "UNSET_REQUIRES_APPROVAL"
+    },
+    "must_remain_separate": true
+  },
+  "ood_axes": [
+    "BIOLOGICAL_SUPPORT_OOD",
+    "MEASUREMENT_REGIME_OOD"
+  ],
+  "estimand_candidates": [
+    "CELL_WEIGHTED_EMPIRICAL",
+    "DONOR_WEIGHTED",
+    "SOURCE_BALANCED_DONOR_WEIGHTED",
+    "HIERARCHICAL_TEMPERED"
+  ],
+  "hierarchical_tempering_parameter": "SCIENTIFIC_ESTIMAND_PARAMETER__NO_POST_HOC_OUTCOME_TUNING",
+  "claim_ladder": [
+    "RNA_REPRESENTATION",
+    "TRANSFERABLE_BIOLOGICAL_STATE",
+    "REGULATORY_SUPPORT",
+    "CAUSAL_PERTURBATIONAL_PREDICTION"
+  ],
+  "stage_a_maximum_claim": "RNA_REPRESENTATION",
+  "stage_a_verdicts": [
+    "QUALIFIED_FOR_RNA_REPRESENTATION",
+    "INFORMATIVE_BUT_NOT_QUALIFIED",
+    "FAIL_LEAKAGE",
+    "FAIL_SHORTCUT",
+    "FAIL_TRANSPORT",
+    "NONRECOVERABLE_FROM_VIEW",
+    "INDETERMINATE"
+  ],
+  "diagnostic_readout_firewall": {
+    "fit_partition": "INNER_TRAIN_ONLY",
+    "freeze_before_held_donor_evaluation": true,
+    "held_out_units_may_influence_fit": false,
+    "authorizes_jepa_training": false
+  },
+  "external_asset_rules": {
+    "external_not_equal_independent": true,
+    "access_not_equal_exposure": true,
+    "same_nucleus_pairing_not_equal_separate_nucleus_evidence": true,
+    "cell_count_cannot_substitute_for_donor_count": true,
+    "observational_multimodal_support_is_not_causal": true,
+    "protected_assets_forbidden_for_target_selection": true,
+    "unknown_fields_fail_closed": true
+  },
+  "source_documents": [
+    "docs/superpowers/specs/2026-10-06-premise-qualification-contract-v3-design.md",
+    "docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_V3_PREFREEZE_20261006.md",
+    "docs/agent/JEPA_OBSERVATION_OPERATOR_CONTRACT_V1_PREFREEZE_20261006.md",
+    "docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_V3_DRAFT_20261006.md",
+    "docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_V3_PREFREEZE_20261006.md",
+    "docs/agent/JEPA_REPRESENTATION_STABILITY_PROTOCOL_20261006.md",
+    "docs/agent/JEPA_EVIDENCE_VS_DEPTH_CONVERGENCE_PROTOCOL_20261006.md",
+    "docs/agent/JEPA_CLAIM_LADDER_V3_PREFREEZE_20261006.md",
+    "docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_V3_PREFREEZE_20261006.md"
+  ]
+}

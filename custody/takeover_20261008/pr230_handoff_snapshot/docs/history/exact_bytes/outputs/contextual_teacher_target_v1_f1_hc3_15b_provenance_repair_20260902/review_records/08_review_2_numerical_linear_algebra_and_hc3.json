@@ -1,0 +1,29 @@
+{
+  "decision": "PASS",
+  "lens_id": "Review 2: numerical linear algebra and HC3",
+  "record_sha256": "0488f7ce9053530802f2970850993de53fc2fb8c8eb86657e342a719a83378d6",
+  "review_content_path": "review_content/08_review_2_numerical_linear_algebra_and_hc3.md",
+  "review_content_sha256": "3a2d8bd019280e2ea813f33978c49263b4533e8403d2d6e8676873bbbc280b4d",
+  "review_round_id": "POST_15B_EXTERNAL_REVIEW",
+  "reviewed_artifacts": [
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_freeze_20260902/F1_HC3_15B_MANIFEST.csv",
+      "sha256": "a9d10fa17f162f3552c15095f3ef3ed7111f71c7a83978682303a2138088e174"
+    },
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_freeze_20260902/F1_HC3_SELECTED_DONOR_DESIGN_F64LE.bin",
+      "sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3"
+    }
+  ],
+  "reviewer_id": "/root/a4_synthesis",
+  "schema": "F1_HC3_15B_STRUCTURED_REVIEW_V1",
+  "scientific_judgment_regenerated": false,
+  "source_review_path": "outputs/contextual_teacher_target_v1_f1_hc3_nuisance_design_external_review_20260902/F1_HC3_15B_INDEPENDENT_REVIEWS.md",
+  "source_review_sha256": "812a7cc05f10b651f17e0ba4f6ccdffd08b355a8151c4d0c1714541ba6b085dc",
+  "temporal_sequence": {
+    "mode": "PRESENTATION_ORDER_ONLY_NOT_WALL_CLOCK",
+    "ordinal": 8,
+    "review_timestamp_utc": null,
+    "timestamp_status": "UNAVAILABLE_IN_DURABLE_REVIEW_ARTIFACT"
+  }
+}

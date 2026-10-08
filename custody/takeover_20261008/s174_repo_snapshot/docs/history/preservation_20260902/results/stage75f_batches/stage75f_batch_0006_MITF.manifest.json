@@ -1,0 +1,9 @@
+{
+  "batch_id": 6,
+  "tf": "MITF",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 26,
+  "n_regions": 73,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

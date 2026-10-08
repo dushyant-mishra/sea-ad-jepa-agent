@@ -1,0 +1,40 @@
+{
+  "schema": "V64_POST_E2_PROTECTED_VALIDATION_BOUNDARY_CONTRACT_V1",
+  "date": "2026-09-29",
+  "status": "BOUNDARIES_FROZEN__ESTIMAND_TO_BE_FILLED_ONLY_AFTER_EXACT_INTEGRATED_TARGET_DIGEST_EXISTS",
+  "purpose": "Prevent protected external resources from becoming target-construction or tuning data after NIH-CARD/E2 work.",
+  "Morabito": {
+    "dataset": "GSE174367",
+    "role": "separate-nucleus donor-level external replication",
+    "independent_unit": "DONOR",
+    "known_shared_donors": 18,
+    "cell_level_pairing": false,
+    "protected_outcome_family": "target-state cis/regulatory correspondence for the future exact integrated target",
+    "allowed_before_target_freeze": [
+      "structural coverage",
+      "feature identity/support",
+      "donor/sample metadata",
+      "previously exposed RNA/coactivity or marginal ATAC families only as explicitly ledgered"
+    ],
+    "forbidden_before_target_freeze": [
+      "new target-state cis correspondence",
+      "per-target protected regulatory outcome",
+      "using protected values to select E2 edges, integration weights, q-safety path, nuisance basis, or thresholds"
+    ]
+  },
+  "required_before_opening": [
+    "exact validated-E2 authority digest",
+    "exact RNA+E2 integrated-target authority digest",
+    "q-safety executed PASS digest",
+    "outcome-family-specific exposure ledger",
+    "prospectively frozen donor-level estimand and support/missingness rules",
+    "single-shot execution receipt schema",
+    "independent audit authorization"
+  ],
+  "after_opening": "No redesign of E2, integrated target, nuisance basis, or validation threshold using the opened protected family.",
+  "governance": {
+    "Morabito": "PROTECTED",
+    "training": "OFF",
+    "td60": "BLOCKED"
+  }
+}

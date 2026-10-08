@@ -1,0 +1,129 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_1",
+  "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+  "record_type": "AUDIT RECORD, written by hand; numbers read from the receipts listed",
+  "recorded_utc": "2026-10-07T00:41:49Z",
+  "head_when_recorded": "20fc5a5c493ff9789b2c33dbe02a475c8b638f80",
+  "STATUS_CHANGES": [
+    {
+      "id": "S161",
+      "previous": "OPEN",
+      "now": "REPAIRED",
+      "by": [
+        "7cbdb7a0 observer writes source, operator and donor per cell with name rosters",
+        "85ed84ae adapter reads them from the producer and checks a truth copy"
+      ]
+    },
+    {
+      "id": "S162",
+      "previous": "OPEN",
+      "now": "REPAIRED",
+      "by": [
+        "85ed84ae source, operator, depth and measurable count are operator context; the model batch holds only model inputs"
+      ]
+    }
+  ],
+  "NEW_ENTRIES": [
+    {
+      "id": "S167",
+      "introduced": "5c644ced adapter (and every version since, until 85ed84ae)",
+      "defect": "visible expression was normalised by a library INCLUDING the hidden-target counts, and library_size on the model batch carried the same information",
+      "why_it_matters": "the visible values' shortfall revealed how much expression was hidden: a query leak through the normalisation denominator, a channel the shared interface's q-safety policy names",
+      "caught": "by aligning with PR #223's q-safety policy, before any model saw a batch",
+      "caught_by": "SELF_AUDIT",
+      "fix": "85ed84ae (every model-facing denominator and depth summary from visible counts)",
+      "status": "REPAIRED",
+      "evidence": "on two worlds differing only at hidden positions, the previous adapter changes its batch digest, its zeroed student view and library_size; the new adapter changes neither model inputs nor operator context"
+    },
+    {
+      "id": "S168",
+      "introduced": "5c644ced adapter",
+      "defect": "the model batch carried the full expression, hidden values included, behind a zeroing method",
+      "why_it_matters": "separation by convention: any consumer reading the field directly received the answers",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "85ed84ae (the batch holds student evidence only; hidden values live in the readout record)",
+      "status": "REPAIRED"
+    }
+  ],
+  "ADAPTER_CHAIN_ITEM_8": {
+    "repaired_world": "fs_smoke_s161, built at 7cbdb7a0; truth seed 7302, the realization inspected before (S166)",
+    "authenticated_feature_identity": "registry and address-order digests checked by the bridge",
+    "authenticated_source_operator_identity": "producer rosters by name; interface cross-check",
+    "producer_side_per_element_support": "read independently by the bridge; interface requires equality with the batch",
+    "qualification_batch": "QualificationBatchV1 at PR #223 commit f6d63b2f5320",
+    "zero_update": {
+      "run_id": "v77-zero-update-plumbing-20fc5a5c493f",
+      "output_digest": "2ea0f060600eb4293c206f643f8e8e556d38d59c9aa04ee0437ea9c816cd810a",
+      "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+      "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+      "seen": {
+        "model_inputs": [
+          "gene_ids",
+          "hidden_target_mask",
+          "measurement_mask",
+          "student_expression"
+        ],
+        "lawful_operator_context": [
+          "n_measured",
+          "operator_index",
+          "source_index",
+          "visible_library_size"
+        ],
+        "readout_only": [
+          "full_library_size",
+          "query_counts"
+        ],
+        "split_only": [
+          "donor_id"
+        ]
+      }
+    },
+    "adapter_integration": {
+      "cells": 2000,
+      "three_state_counts": {
+        "measured_detected": 6218137,
+        "measured_zero": 30641155,
+        "structurally_unmeasured": 2278708
+      },
+      "hidden_targets": {
+        "total": 5529144,
+        "on_measured_zero": 4595999,
+        "on_detected": 933145,
+        "on_unmeasured": 0
+      }
+    }
+  },
+  "POST_ITEM_8_RE_AUDIT": {
+    "oracle_leakage": "PASS: nothing ORACLE_ONLY in the batch (the interface also refuses it); oracle held outside, sealed",
+    "study_identity_in_model_inputs": "PASS for explicit fields (source, operator now operator context). The measurement mask still reveals the study by construction; recorded as a required anti-cheat measurement",
+    "support_from_expression": "PASS: producer support read on an independent path; interface requires equality",
+    "inspected_world_called_independent": "PASS: realization id names seed 7302; partition DEVELOPMENT_CALIBRATION",
+    "pooled_topology_authoritative": "PASS: neither adapter nor bridge reads any envelope",
+    "s146_s147_semantics": "PASS: pre-S161 worlds lack producer identity and are refused",
+    "candidate_becoming_target": "PASS: estimand, thresholds, target, split and weights UNSET; NO_CLAIM; plumbing-only representation"
+  },
+  "STILL_OPEN": [
+    "S159 percentile ranges (real-data scientific lane)",
+    "S149 target, estimand and weighting (real-data scientific lane)",
+    "S157 class-linked biology (owner and reviewer)",
+    "the mutation-proof and q-safety-execution-proof statuses are NOT proven by the shared interface; they stay unproven here"
+  ],
+  "EVIDENCE": {
+    "results/v77/REHEARSAL_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1.json": "e5062dbe2f5a26e958a785104329beb0f710c1efd4903eea9fa6934a346ff76c",
+    "results/v77/REHEARSAL_ADAPTER_INTEGRATION_V2.json": "78aaafa6513e81c4a60e77e913b343f04652ab206b3cc0ed6c47d0961f4c3fb4"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "synthetic_mutation": false,
+    "real_RNA_execution": false,
+    "representation_winner": null,
+    "target_winner": null,
+    "estimand_selected": null,
+    "threshold_selected": null,
+    "TEST_access": false,
+    "Morabito": false,
+    "stage_4": false,
+    "five_hundred_K": false
+  }
+}

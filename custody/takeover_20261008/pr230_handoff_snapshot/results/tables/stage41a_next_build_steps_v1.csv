@@ -1,0 +1,8 @@
+next_stage,required_inputs,expected_outputs,manual_work_required,priority,estimated_complexity,recommended_order
+Stage41B_metadata_mri_matrix_build,donor metadata; MRI volumetrics; donor linkage table,safe metadata/MRI feature matrix + audit,manual downloads/checksums,high,medium,1
+Stage41C_metadata_mri_benchmark,Stage41B safe metadata/MRI matrix,donor-held-out benchmark against Stage27C/39E,none after matrix exists,high,medium,2
+Stage41D_cellxgene_composition_build,CELLxGENE/snRNA donor-cell metadata; linkage table,broad donor cell-type/state summaries,manual download/schema mapping,medium,high,3
+Stage41E_celltype_state_proxy_audit,Stage41D summaries,Tier2 proxy audit and benchmark-readiness decision,manual review of state labels,medium,medium,4
+Stage41F_spatial_summary_build,spatial transcriptomics/coordinate summaries,donor-linked spatial neighborhood features,manual acquisition and linkage,medium,high,5
+Stage41G_snatac_regulatory_summary_build,snATAC/regulatory module summaries,donor-linked regulatory features,manual acquisition/QC,low,high,6
+Stage41H_non_target_image_morphology_build,H&E-LFB/non-target image morphology features,donor/section-linked morphology feature matrix,image feature extraction/provenance,low,high,7

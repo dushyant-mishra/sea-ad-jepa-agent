@@ -1,0 +1,6 @@
+test_name,status,details,blocking,notes
+donor_folds_built,pass,"donors=84; folds=[1, 2, 3, 4, 5]",True,Donor-level held-out fold assignments only; no cell-level split.
+target_manifest_built,pass,AT8:n=84; 6e10/Aβ:n=84; GFAP:n=84; Iba1:n=84; NeuN:n=84,True,All five pathology targets preserved before seeing benchmark results.
+baseline_registry_leakage_labels,pass,"{'deferred': 12, 'primary': 9, 'exploratory': 4}",True,"Registry distinguishes primary, deferred, and exploratory/leakage-sensitive baselines."
+runtime_package_imports,pass,available=18/18,True,Imports checked in runtime `sea-ad-jepa-v3`.
+tiny_synthetic_ridge_smoke,pass,fit 8 synthetic samples; predicted 4 held-out synthetic samples,False,Synthetic sklearn-only smoke test; not a biological benchmark result.

@@ -1,0 +1,2 @@
+feature_recipe,proxy_leakage_decision,tier3_used,tier4_used,notes
+metadata_mri_tier1,tier1_safe_after_forbidden_column_exclusion,False,False,diagnosis/cognitive/neuropathology/Luminex/target columns excluded

@@ -1,0 +1,11 @@
+candidate_id,target,iba1_score,n_donors,stage27c_iba1_score,iba1_nonnegative,iba1_improved_vs_stage27c
+cellxgene_composition_only,Iba1,-0.06973777462792347,84,0.016077756403766325,False,False
+latent_plus_cellxgene_composition,Iba1,-0.0329452262832844,84,0.016077756403766325,False,False
+latent_plus_mri_engineered,Iba1,0.08427660220714793,84,0.016077756403766325,True,True
+latent_plus_safe_metadata_plus_cellxgene_composition,Iba1,0.0192163612432925,84,0.016077756403766325,True,True
+latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,Iba1,0.13336033208464107,84,0.016077756403766325,True,True
+latent_plus_safe_metadata_plus_mri_engineered,Iba1,0.09440113394755494,84,0.016077756403766325,True,True
+mri_engineered_only,Iba1,-0.01342526501298953,84,0.016077756403766325,False,False
+stage27c_reference,Iba1,0.016077756403766325,84,0.016077756403766325,True,False
+stage39e_reference,Iba1,0.056974172849842526,84,0.016077756403766325,True,True
+stage41b_reference,Iba1,0.03239850156930242,84,0.016077756403766325,True,True

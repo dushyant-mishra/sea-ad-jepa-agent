@@ -1,0 +1,76 @@
+# Stage81A1D Living-Human Data Bridge
+
+Stage81A1D acquires and audits processed living-human expression and regulatory
+references before Stage81A2. It does not harmonize expression values, choose a
+gene vocabulary or donor split, merge matrices, or train a model.
+
+## Biological roles
+
+- HVS surgical neocortex is a direct living-cortex foundation candidate pending
+  exact feature and donor harmonization. Its epilepsy/tumor surgical context is
+  retained and is not described as a healthy-volunteer cohort.
+- The 52-donor NPH release is split only through exact source annotations. Its
+  pathology fields are written to an ignored sealed sidecar that foundation
+  selection must not load.
+- CSF, PBMC, whole-blood, olfactory and miRNA studies remain tissue-specific
+  adapter or validation candidates. They are not pooled with cortical cells.
+- GSE146639 remains a postmortem microglia reference and is not redownloaded.
+- Synapse candidates are audited file by file without accepting terms or
+  printing credentials. Controlled optional data do not block open acquisition.
+
+## Commands
+
+Run in the `sea-ad-jepa-v3` environment:
+
+```powershell
+conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1d_acquire_living_human.py `
+  --mode catalog --project-dir . --output-dir results/v4
+
+conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1d_acquire_living_human.py `
+  --mode acquire --resume --project-dir . --output-dir results/v4
+
+conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1d_acquire_living_human.py `
+  --mode audit --offline --project-dir . --output-dir results/v4
+```
+
+`--study HVS` or another study ID bounds acquisition to one study. Catalog mode
+performs metadata requests only. Required downloads are written below
+`data/external/v4/living_human/` through resumable `.part` files. The script
+checks actual free space before transfers and applies no arbitrary stage cap.
+
+The exact NPH annotation audit uses `scripts/v4/stage81a1d_audit_nph_annotations.R`
+with R `qs`. Set `STAGE81A1D_RSCRIPT` (or pass `--rscript`) when that reader is
+not on `PATH`. It filters exactly on `ds_batch == human_NPH`, treats
+`anno_batch` as the source donor field, and seals `anno_condition` outside
+committed evidence. The helper also reads only the seven exact NPH
+`SingleCellExperiment` source objects from the integrated archive, verifies the
+sparse `counts` assay, records per-object gene-symbol order plus feature union
+and intersection, verifies donor linkage and disjoint cell IDs, and leaves every
+non-NPH object unextracted. Unequal source feature universes require explicit
+measurement masks in later harmonization; they are never zero-filled silently.
+The source-matrix and final-annotation cell counts are reported separately and
+are never assumed to describe identical cell populations.
+
+The GEO audit derives donor IDs only from accession-specific, anchored source
+title rules. In particular, GSE226602 RNA and GSE226267 ATAC each contain 50
+exact donor IDs and share 45 IDs; no fuzzy matching is used. Published GEO RDS
+objects are nested-gzip streams. `scripts/v4/stage81a1d_audit_geo_rds.R` opens
+both compression layers read-only, verifies the sparse object dimensions and
+unique feature/cell identifiers, and records those facts in the matrix-semantics
+registry. Raw counts, log-normalized expression, genomic peak matrices, bulk
+RNA, and miRNA representations remain explicitly distinct.
+
+Nested GEO 10x archives are inspected in place without extraction. Barcode,
+feature, and Matrix Market dimensions must agree for every partition. The
+current audit finds 25,092 cells across 18 GSE134577 CSF partitions, 150,505
+cells across 20 paired GSE292141 CSF/PBMC partitions, and 351,327 cells across
+22 GSE302937 olfactory partitions. GSE302937 has unequal published feature
+universes (36,601 to 38,606), so later harmonization must use explicit feature
+alignment and measurement masks.
+
+## Claim boundaries
+
+The outputs are acquisition and provenance evidence. Living surgical, NPH,
+CSF, blood and olfactory measurements are biologically distinct. No pathology
+label is foundation supervision, ATAC peaks are not RNA features, bulk samples
+are not cells, and no source is a validated regulatory or causal model.

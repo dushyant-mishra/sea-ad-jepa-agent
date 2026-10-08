@@ -1,0 +1,74 @@
+{
+  "schema": "V5_NUMERICAL_ENVIRONMENT_QUALIFICATION_V1",
+  "date": "2026-09-20",
+  "status": "QUALIFIED_FOR_PRETERMINAL_MASKING_CALCULATION",
+  "qualification_is_conditional": true,
+  "what_is_qualified": "the environment TOGETHER WITH its invocation condition, not the environment alone",
+  "environment": {
+    "name": "sea-ad-jepa",
+    "interpreter": "C:/Users/dushy/anaconda3/envs/sea-ad-jepa/python.exe",
+    "python": "3.11",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "blas_provider_numpy": "conda MKL 2026.0.0 via libblas/libcblas/liblapack 3.11.0 *_mkl forwarders into mkl_rt.3.dll",
+    "blas_provider_scipy": "pip wheel bundled OpenBLAS in scipy.libs",
+    "succession_performed": false,
+    "succession_reason": "none required; the environment was never defective. See SOLVER_ENVIRONMENT_DIAGNOSIS_CORRECTION_20260920.md"
+  },
+  "required_invocation_condition": {
+    "condition": "<env>/Library/bin must be on PATH when the interpreter runs",
+    "why": "numpy's libblas/libcblas/liblapack are pure forwarder DLLs; forwarder targets resolve at first call using the loader's own search order, which does not consult os.add_dll_directory entries",
+    "if_violated": "import numpy succeeds and the first BLAS or LAPACK call terminates the process with Win32 status 127 (ERROR_PROC_NOT_FOUND, surfaced as 0xC06D007F): no exception, no traceback, empty stderr",
+    "enforced_by": [
+      "scripts/agent/prepare_full104_runtime_envelope_v1.py::require_dense_linear_algebra",
+      "analysis/v5_full104_pass1_rebuild_20260920/scripts/reproduce_full104_pass1_rebuild_20260920.ps1",
+      "tests/test_v5_dense_ridge_backend_equivalence_v1.py::test_blas_backend_is_reachable_in_a_child_process"
+    ]
+  },
+  "solver_preflight": {
+    "evidence": "solver_preflight_CANONICAL_8c1feae6.json",
+    "combinations_tested": 15,
+    "combinations_completed": 15,
+    "combinations_failed": 0,
+    "classification": "ALL_PROBES_COMPLETED__DLL_DIRECTORY_REACHABLE"
+  },
+  "ridge_equivalence": {
+    "evidence": "ridge_backend_qualification_8c1feae6.json",
+    "equations": {"A": "X.T @ X + alpha * n * I", "b": "X.T @ y / scale"},
+    "note": "the production equations verbatim from full104_masking_streaming_executor_v1._fit_ridge",
+    "estimator_changed": false,
+    "tolerances_declared_before_execution": true,
+    "tolerance_derivation": "backward-error analysis, not observation: residual <= 64*n*u; pairwise <= 64*n*u*cond_2(A), with u = 2**-52",
+    "geometries": [
+      {"n_features": 4,  "cond_2_A": 6.2171, "residual_tol": 5.684e-14, "max_observed_residual": 3.415e-16, "pairwise_tol": 3.534e-13, "max_observed_pairwise": 8.075e-16, "all_finite": true},
+      {"n_features": 32, "cond_2_A": 7.1272, "residual_tol": 4.547e-13, "max_observed_residual": 3.217e-16, "pairwise_tol": 3.241e-12, "max_observed_pairwise": 1.077e-15, "all_finite": true},
+      {"n_features": 64, "cond_2_A": 7.6035, "residual_tol": 9.095e-13, "max_observed_residual": 3.936e-16, "pairwise_tol": 6.915e-12, "max_observed_pairwise": 1.822e-15, "all_finite": true}
+    ],
+    "methods_compared": ["numpy_solve", "numpy_cholesky", "numpy_lstsq", "scipy_solve_pos", "scipy_cho"],
+    "tests_passed": 20,
+    "tests_skipped": 0
+  },
+  "regression_suites": {
+    "evidence": "../REGRESSION_SUITE_8c1feae6.json",
+    "passed": 2718, "failed": 63, "skipped": 0,
+    "new_failures_introduced": 0,
+    "v5_full104_failures": 0
+  },
+  "history_preserved": {
+    "statement": "the failing receipts are kept byte-identical and superseded, never rewritten",
+    "artifacts": ["SOLVER_ENVIRONMENT_DIAGNOSIS_OLD.json", "solver_preflight_OLD_sea-ad-jepa.json"]
+  },
+  "what_this_does_not_authorize": [
+    "TERMINAL_MASKING_OUTCOMES",
+    "TARGET_PANEL_LADDER",
+    "NULL_EQUIVALENCE_MARGIN_SELECTION",
+    "TERMINAL_RUN_CONTRACT",
+    "MASKING_POLICY_SELECTION",
+    "D_SHARED",
+    "PROTECTED_OUTCOMES",
+    "PATHOLOGY",
+    "USE_OF_THE_CALIBRATION_CACHE_AS_TERMINAL_INPUT",
+    "TRAINING"
+  ],
+  "training_authorized": false
+}

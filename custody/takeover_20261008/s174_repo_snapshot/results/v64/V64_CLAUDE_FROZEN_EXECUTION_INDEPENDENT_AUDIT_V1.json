@@ -1,0 +1,98 @@
+{
+  "schema": "V64_CLAUDE_FROZEN_EXECUTION_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-29",
+  "audited_commit": "31cc724197a7829df9a417c658203efef97fe05e",
+  "audited_branch": "claude/v64-frozen-execution-20260929",
+  "canonical_parent": "2d6fa8a1c4201e836e089b798d36617c07d92a7e",
+  "verdict": "PASS_NUMERICAL_AND_LINEAGE_EXECUTION__MINOR_REPORTING_REPAIRS_RECOMMENDED",
+  "lineage": {
+    "directly_descends_from_canonical_parent": true,
+    "commits_ahead": 1,
+    "modified_canonical_contracts": false,
+    "modified_V63_parent_estimator": false,
+    "modified_V63_parent_simulator": false,
+    "modified_src_or_tests": false,
+    "changed_files": [
+      "docs/agent/V64_FROZEN_STATISTICAL_REDTEAM_RESULT_20260929.md",
+      "results/v64/V64_FROZEN_STRESS_BASELINE_V1.json",
+      "results/v64/V64_FROZEN_STRESS_DEPTH_ABLATION_V1.json",
+      "results/v64/V64_FROZEN_STRESS_OUTSPAN_V1.json",
+      "scripts/v64/v64_frozen_stress_runner_v1.py"
+    ]
+  },
+  "exact_authority_blob_checks": {
+    "depth_contract_unchanged": true,
+    "outspan_contract_unchanged": true,
+    "V63_estimator_unchanged": true,
+    "V63_tournament_simulator_unchanged": true,
+    "V63_committed_primary_unchanged": true
+  },
+  "spillover_checks": {
+    "superseded_v64_nott_draft_contract_used": false,
+    "old_parallel_same_name_contract_used_instead_of_canonical": false,
+    "smoke_run_committed_as_decision_output": false,
+    "decision_outputs_all_18_donors_24_seeds": true,
+    "Corces_data_used": false,
+    "Nott_real_biology_used_in_synthetic_redteam": false,
+    "Morabito_opened": false,
+    "NIH_CARD_biological_correspondence_opened": false,
+    "AD_target_rescue_used": false
+  },
+  "runner_fidelity": {
+    "baseline_reproduces_committed_primary_exactly_on_reported_decision_values": true,
+    "depth_ablation_removes_only_feature_columns_6_and_7": true,
+    "depth_ablation_replacement_features_added": false,
+    "outspan_existing_estimator_basis_changed": false,
+    "outspan_sin_or_tanh_basis_terms_added": false,
+    "outspan_hidden_quality_mixing_matches_NEG_TECH_2": true,
+    "outspan_effect_amplitude_matches_NEG_TECH_2": true,
+    "outspan_rng_consumption_preserves_common_random_number_lineage": true,
+    "outspan_zscore_population": "full synthetic pair universe within each world",
+    "outspan_zscore_population_conditioned_on_linked_or_control": false
+  },
+  "result_checks": {
+    "depth_ablation": {
+      "TECH_lcb95": 0.019464252854320418,
+      "TECH_pass": true,
+      "all_preexisting_families_pass": true,
+      "positive_changes_are_numerically_tiny": true,
+      "support_broad": true,
+      "twin_identity_preserved": true,
+      "heldout_ambient_generalises": true
+    },
+    "outspan": {
+      "NEG_TECH_OUTSPAN_1_median": 0.0613472621655512,
+      "OUTSPAN_TECH_margin": -0.03210908910630048,
+      "OUTSPAN_TECH_lcb95": -0.03557910811528421,
+      "OUTSPAN_TECH_pass": false,
+      "all_preexisting_families_pass": true,
+      "support_bit_identical_to_baseline": true,
+      "twin_identity_preserved": true,
+      "heldout_ambient_generalises": true,
+      "classification": "B_OUTSPAN_FAILS_ONLY"
+    }
+  },
+  "minor_reporting_findings": [
+    {
+      "severity": "LOW",
+      "finding": "The report says Reading C is 'ruled out', but the frozen contract did not define a numeric threshold for 'materially restored'.",
+      "recommended_wording": "Reading C is not supported; no material restoration is evident at the observed scale.",
+      "affects_numeric_result": false,
+      "affects_A_pass_survives": false
+    },
+    {
+      "severity": "LOW",
+      "finding": "The report says the near-zero out-of-fold R2 is retro-explained because the two removed depth features had essentially no predictive weight. The ablation establishes dispensability for the reported result, not necessarily zero coefficient/partial predictive weight because redundancy or collinearity are possible.",
+      "recommended_wording": "Their removal had essentially no effect on the decision metrics; do not infer individual fitted weight without a coefficient/partial-prediction diagnostic.",
+      "affects_numeric_result": false,
+      "affects_A_pass_survives": false
+    },
+    {
+      "severity": "LOW",
+      "finding": "Machine-readable result JSONs identify contract names but do not bind the exact contract/code blob SHAs or canonical parent SHA internally.",
+      "mitigation": "V64_SPILLOVER_FIREWALL_MANIFEST_V1 independently pins these exact identities.",
+      "affects_numeric_result": false
+    }
+  ],
+  "licensed_scientific_conclusion": "Continuous adjustment clears the represented in-span nuisance families with broad support and without material dependence of the decision result on the two outcome-derived depth-sensitivity features, but fails the prospectively frozen out-of-span hidden-quality stress. Its empirical qualification is therefore limited to nuisance geometry within or near the frozen adjustment basis."
+}

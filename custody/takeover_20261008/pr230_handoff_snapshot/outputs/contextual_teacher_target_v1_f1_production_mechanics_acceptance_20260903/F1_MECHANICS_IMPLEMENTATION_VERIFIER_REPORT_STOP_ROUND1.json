@@ -1,0 +1,113 @@
+{
+  "schema": "jepa-implementation-verifier-report-v1",
+  "gate": "F1_PRODUCTION_MECHANICS_ACCEPTANCE_20260903",
+  "base_commit": "c533fdda40eb23e6a775277e98cbdfcee568ee8b",
+  "implementation_commit": "82f0cf31dd4b897b7c84b5cb9f5c5ec00620a706",
+  "verifier_agent_identity": "MANDATORY_IMPLEMENTATION_VERIFIER_V1:/root/mechanics_implementation_verifier",
+  "controlling_contracts": [
+    "docs/agent/F1_PRODUCTION_MECHANICS_ACCEPTANCE_CONTRACT_20260903.md",
+    "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
+    "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_POLICY_V1.json"
+  ],
+  "authority_hashes": {
+    "contract_sha256": "18427626b87cdecfb8427b68427ecba62f638f1989d507801fbc9ccce8a241fa",
+    "governance_markdown_sha256": "ef7faee33dfb895d1d2512f00d3c83617a00a475deb253fbad6b7514948997f3",
+    "assignment_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+    "compute_dedup_sha256": "3fcd11908723e2cc80db0f5a0f017ad382bd1ed9be522f97081587ae989c2423",
+    "matched_null_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+    "accepted_real_forward_root": "007bc6f182354a133a2ec49ce0ef5966831d4995a0a2a5f004bb845772469ad3",
+    "validator_sha256": "ea912f6f7e64036b93ff354d33356c2ebb61437e6d34a5abc7bb6e9857ca95ca",
+    "accepted_executor_sha256": "9d82d0de48591eff705da41faf4a0235ca657a882000ce5f1264564ae18583b8",
+    "accepted_querydesign_sha256": "bc015a8ac415fb1536cd382c4823be3e5ff42a77bdfcd322fc51cbc61cca4026",
+    "verifier_test_sha256": "e1643a2bb558889e4a8f815b5e4dc8651027a8ce15a1b3c9df7c55e158c96a6d"
+  },
+  "changed_files": [
+    "docs/agent/F1_PRODUCTION_MECHANICS_ACCEPTANCE_CONTRACT_20260903.md",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_DEDUP_TO_INFERENCE_RECONCILIATION.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FINALIZER_FAILCLOSED.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FIREWALL.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FULL_FORWARD_TOPOLOGY.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_FULL_SYNTHETIC_TOPOLOGY.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_INDEPENDENT_VALIDATION.json",
+    "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903/F1_MECHANICS_PRODUCTION_SHARD_RESUME.json",
+    "scripts/v4/validate_f1_production_mechanics_acceptance_v1.py",
+    "tests/test_f1_production_mechanics_acceptance_v1.py"
+  ],
+  "conclusion_bearing_symbols": [
+    "build_identity_topology",
+    "independent_identity_root",
+    "reconcile_dedup_to_inference",
+    "synthetic_values",
+    "synthetic_record",
+    "build_full_synthetic",
+    "exercise_shard_resume",
+    "reuse_or_exercise_shards",
+    "validate_finalization",
+    "prepare",
+    "independent_validation"
+  ],
+  "requirement_matrix": [
+    {
+      "requirement": "A: full role-sensitive identity construction over assignment-first-appearance unique (cell,q), with evidence-invariant teachers and evidence/role/null-sensitive students",
+      "production_behavior": "Builds 43,108 teacher, 215,540 correct, and 215,540 null identities in required order; total 474,188 and root 2f9a7529cc86ba4a39949b10818341f26a0ce6930c27159ad478c4d9fc30400f.",
+      "independently_reconstructed_expectation": "Verifier standard-library canonical JSON/SHA-256 reconstruction over all authority rows produced the same root and 474,188 unique identities.",
+      "deliberate_detected_mutation": "Role removal, evidence removal, null-source removal, and query collision were excluded by full-root and uniqueness comparison.",
+      "status": "PASS"
+    },
+    {
+      "requirement": "B: compute-only dedup while retaining all 44,496 assignments and five evidence mappings each",
+      "production_behavior": "Uses assignment-first-appearance (cell,q), reports 43,108 unique keys, 1,388 dedups, and 222,480 assignment-evidence mappings.",
+      "independently_reconstructed_expectation": "Verifier confirmed exact dedup membership against the frozen dedup CSV, no duplicate dedup members, and counts 44,496/43,108/1,388/222,480.",
+      "deliberate_detected_mutation": "Dropping compute duplicates from inference would reduce the independently enumerated 222,480 assignment-evidence keyspace.",
+      "status": "PASS"
+    },
+    {
+      "requirement": "C: 222,480 deterministic float64 synthetic records with exact schema, endpoint reuse by (cell,q,evidence), and full downstream population topology",
+      "production_behavior": "Creates one record per assignment-evidence row and passes accepted downstream aggregate population validation.",
+      "independently_reconstructed_expectation": "Verifier recomputed every endpoint from SHA-256 without production expected-value helpers; all 222,480 records had exact schema and values, 215,540 compute endpoint keys, and 1,400 donor-operator groups.",
+      "deliberate_detected_mutation": "Evidence, field-label, or compute-key perturbations change independently reconstructed values or reuse equality.",
+      "status": "PASS"
+    },
+    {
+      "requirement": "D: 1,400 lexicographic donor-operator shards with byte-exact interruption/resume and fail-closed AtomicShardStore binding",
+      "production_behavior": "Artifact reports all 1,400 shards, 466 reused, byte/root equality, and rejection of membership, forward, dtype, shard-ID, order, duplicate-write, and payload-corruption attacks.",
+      "independently_reconstructed_expectation": "Verifier independently counted 1,400 donor-operator pairs and exercised bounded interruption/resume with byte/root equality and all AtomicShardStore attacks rejected.",
+      "deliberate_detected_mutation": "Stale membership/forward roots, reordered IDs, payload corruption, and duplicate commit all fail on bounded filesystem-safe shard IDs.",
+      "status": "PASS_WITH_PORTABILITY_DEFECT"
+    },
+    {
+      "requirement": "E: finalizer must itself require exact shard, forward-identity, and ordered effect-row populations under bound roots and implementation/root commit",
+      "production_behavior": "validate_finalization only compares an actual six-field summary dictionary supplied by its caller with another six-field summary; it receives no shard IDs, forward IDs, effect-row IDs/order, or payloads from which to recompute counts/roots. Checked-in artifact binds e4414c6c74e4ebf8b89038771414a5959afb86d4, not implementation commit 82f0cf31dd4b897b7c84b5cb9f5c5ec00620a706.",
+      "independently_reconstructed_expectation": "Shape-preserving missing+duplicate/replacement attacks must be detected even when scalar counts remain 1,400/474,188/222,480; roots and commit must be recomputed from actual finalization inputs.",
+      "deliberate_detected_mutation": "A missing required shard plus replacement duplicate and a missing effect row plus duplicate both survive when the caller supplies unchanged summary fields; stale implementation provenance is accepted by independent_validation.",
+      "status": "FAIL"
+    }
+  ],
+  "independent_reference_summary": "Verifier code directly parsed frozen assignment/dedup/null authorities and reconstructed canonical identity hashes, ordered line root, SHA-derived synthetic values, record schema, compute-reuse mapping, and donor-operator geometry using only Python standard library arithmetic/hash logic. Production functions were called only as subjects under test, never as sources of expected values.",
+  "independent_reference_uses_production_helper": false,
+  "verifier_tests": [
+    {
+      "path": "tests/test_verifier_f1_production_mechanics_acceptance_v1.py",
+      "command": "python -m unittest discover -s tests -p 'test_verifier_f1_production_mechanics_acceptance_v1.py' -v",
+      "result": "FAILED: 6 run, 3 passed (A/B, C, D), 3 failed (two shape-preserving finalizer attacks survived; checked-in implementation commit mismatch)"
+    }
+  ],
+  "mutation_tests": [
+    {"mutation": "M07_QUERY_IDENTITY_REMOVED/M23_NULL_OR_QUERY_IDENTITY_COLLISION", "result": "KILLED by full independent identity root and uniqueness"},
+    {"mutation": "M08_EVIDENCE_INCLUDED_IN_TEACHER_CACHE_ID/M09_EVIDENCE_REMOVED_FROM_STUDENT_CACHE_ID", "result": "KILLED by exact role/evidence identity reconstruction"},
+    {"mutation": "M15_DTYPE_LABEL_PAYLOAD_MISMATCH/M16_STALE_SHARD_ACCEPTED", "result": "KILLED by bounded AtomicShardStore adversarial test"},
+    {"mutation": "M17_HASH_NOT_RECOMPUTED", "result": "SURVIVED: finalizer trusts copied root strings and never receives/recomputes topology"},
+    {"mutation": "M22_DUPLICATE_DROPPED_FROM_INFERENCE_POPULATION", "result": "SURVIVED_AT_FINALIZER: missing+duplicate effect or shard membership preserves scalar count and is unobservable"}
+  ],
+  "production_tests_observed": [
+    {
+      "command": "python -m unittest discover -s tests -p 'test_f1_production_mechanics_acceptance_v1.py' -v",
+      "result": "FAILED: 8 run, 6 passed, 2 errors; shard IDs d0|0 and d1|1 are interpolated directly into Windows filenames and raise OSError [Errno 22]"
+    }
+  ],
+  "coverage_complete": true,
+  "independence_confirmed": true,
+  "verifier_verdict": "STOP_IMPLEMENTATION_VERIFIER_CONTRACT_MISMATCH",
+  "stop_reason": "Finalizer requirement E is not implemented: topology-complete missing/duplicate/extra/order attacks cannot be evaluated from caller-supplied scalar summaries, shape-preserving mutations survive, and checked-in finalizer provenance is bound to the parent rather than the implementation commit. Implementer-authored focused tests also fail on the canonical Windows workspace due to unsanitized shard IDs in filenames.",
+  "timestamp": "2026-09-03T21:30:00-04:00"
+}

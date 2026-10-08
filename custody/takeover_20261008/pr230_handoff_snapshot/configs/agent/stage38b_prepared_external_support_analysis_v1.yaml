@@ -1,0 +1,36 @@
+stage: stage38b_prepared_external_support_analysis_v1
+random_seed: 7
+
+inputs:
+  stage38a_processed_input_index: results/tables/stage38a_processed_input_index_v1.csv
+  stage38a_preprocessing_readiness: results/tables/stage38a_preprocessing_readiness_v1.csv
+  stage38a_gene_symbol_harmonization_summary: results/tables/stage38a_gene_symbol_harmonization_summary_v1.csv
+  stage38a_metadata_harmonization_summary: results/tables/stage38a_metadata_harmonization_summary_v1.csv
+  stage38a_celltype_metadata_summary: results/tables/stage38a_celltype_metadata_summary_v1.csv
+  stage38a_pathology_metadata_summary: results/tables/stage38a_pathology_metadata_summary_v1.csv
+  stage38a_external_dataset_claim_level: results/tables/stage38a_external_dataset_claim_level_v1.csv
+  stage38a_pass_fail: results/tables/stage38a_pass_fail_v1.csv
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  stage36e_validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+
+outputs:
+  dataset_analysis_status: results/tables/stage38b_dataset_analysis_status_v1.csv
+  candidate_gene_external_results: results/tables/stage38b_candidate_gene_external_results_v1.csv
+  mechanism_external_results: results/tables/stage38b_mechanism_external_results_v1.csv
+  celltype_specificity_results: results/tables/stage38b_celltype_specificity_results_v1.csv
+  microglia_specificity_results: results/tables/stage38b_microglia_specificity_results_v1.csv
+  tau_ptau_support_results: results/tables/stage38b_tau_ptau_support_results_v1.csv
+  abeta_amyloid_support_results: results/tables/stage38b_abeta_amyloid_support_results_v1.csv
+  cross_dataset_concordance: results/tables/stage38b_cross_dataset_concordance_v1.csv
+  external_support_tiers: results/tables/stage38b_external_support_tiers_v1.csv
+  negative_null_results: results/tables/stage38b_negative_null_results_v1.csv
+  claim_boundary_audit: results/tables/stage38b_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage38b_pass_fail_v1.csv
+  report: results/reports/stage38b_prepared_external_support_analysis_report_v1.md
+  pi_report: results/reports/stage38b_pi_external_support_summary_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

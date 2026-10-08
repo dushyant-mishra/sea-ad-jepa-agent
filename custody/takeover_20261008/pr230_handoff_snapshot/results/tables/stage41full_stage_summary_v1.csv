@@ -1,0 +1,11 @@
+stage,status,best_candidate,mean_pooled_oof_spearman,bootstrap_lower_95,benchmark_lock_decision,recommended_next_step
+Stage 27C,locked,module_pca_ridge,0.3267024400121495,,locked official benchmark,reference
+Stage 39E,credible_unlocked,rank_inverse_normal_module_pca8_ridge,0.35808116279206914,,not locked,reference
+Stage 39H,not_locked,context/proxy audit candidate,,,not locked,reference only
+Stage 40A,failed,neural rescue,,,not locked,stop neural rescue
+Stage 41 inventory,complete,no pre-existing safe matrix,,,manual acquisition required,Stage41ABC
+Stage 41ABC,complete,download/analyze gate,,,manual_feature_acquisition_required,Stage41B
+Stage 41B,credible_unlocked,latent_plus_safe_metadata,0.3394229016907968,0.24331358424470376,do_not_lock_stage41b,Stage41C
+Stage 41C,complete,blend_stage41b_with_stage39e_pca8,0.36808747595423713,0.2603604646376338,credible_unlocked_stability_signal,Stage41D/E if strict gates pass
+Stage 41D/E,complete,,,,No Stage41C lock-confirmation candidate.,Stage42_safe_external_support_or_manuscript_synthesis
+Stage 41 Full final,complete,blend_stage41b_with_stage39e_pca8,0.36808747595423713,0.2603604646376338,credible_unlocked_stage41_signal,Stage42_safe_external_support_or_manuscript_synthesis

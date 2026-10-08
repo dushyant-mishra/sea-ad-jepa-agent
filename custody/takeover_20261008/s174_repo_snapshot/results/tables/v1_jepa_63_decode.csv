@@ -1,0 +1,6 @@
+target,latent_dimension,mean_coefficient,std_coefficient,mean_abs_coefficient,fold_1_coef,fold_2_coef,fold_3_coef,fold_4_coef,fold_5_coef,section,latent_id,module,correlation,abs_correlation
+percent AT8 positive area_Grey matter,jepa_63,-0.11750966,0.02305577,0.11750966,-0.09149176,-0.090513855,-0.13335405,-0.12363817,-0.14855051,pathology_weight,,,,
+percent NeuN positive area_Grey matter,jepa_63,-0.055048514,0.01970684,0.055048514,-0.07549937,-0.05909239,-0.017791387,-0.057089552,-0.06576988,pathology_weight,,,,
+,,,,,,,,,,module_annotation,63.0,complement,0.3856734026932495,0.3856734026932495
+,,,,,,,,,,module_annotation,63.0,antigen_presentation,0.3419718604761885,0.3419718604761885
+,,,,,,,,,,module_annotation,63.0,synapse_pruning,0.3359160292340234,0.3359160292340234

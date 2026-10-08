@@ -1,0 +1,62 @@
+stage_id: stage81a3_prrc
+schema_version: "1.0"
+anchor_commit: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+inputs:
+  fbsdq_config: configs/v4/stage81a3_foundation_biological_state_domain_qualification.yaml
+  fbsdq_report: results/v4/stage81a3_foundation_biological_state_domain_qualification.json
+  fbsdq_sha256: 912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3
+  split_registry: results/v4/stage81a2_split_registry.csv
+  pca_basis: results/v4/stage81a3_balanced_pca160_diagnostic.npz
+  rep_basis: results/v4/stage81a3_balanced_rep160_diagnostic.npz
+  matrix_transfer: results/v4/stage81a3_matrix_transfer.csv
+  dataset_transfer: results/v4/stage81a3_dataset_transfer.csv
+  technology_transfer: results/v4/stage81a3_technology_transfer.csv
+  qc_results: results/v4/stage81a3_measurement_quality_earning.csv
+fixed:
+  knn_k: 15
+  local_density_k: 30
+  local_isolation_fraction: 0.01
+  rare_max_frequency: 0.01
+  rare_min_cells: 100
+  recurring_min_donors: 5
+  recurring_min_cells_per_donor: 3
+  rare_sample_cap: 512
+  stable_eigengap: 0.01
+  context_width: 160
+  context_heads: 4
+  context_ffn: 320
+  context_dropout: 0.10
+  context_exemplars: 8
+  context_seed: 8116101
+  context_learning_rate: 1.0e-3
+  context_weight_decay: 1.0e-4
+  context_updates: 150
+  context_train_visible_fraction: 0.60
+  context_eval_visible_fractions: [0.40, 0.60, 0.80]
+context_assets:
+  - data/external/v4/sea_ad/merfish/SEAAD_MTG_MERFISH.2024-12-11.h5ad
+  - data/external/v4/sea_ad/merfish/1444211893_HPF_mapped.h5ad
+  - data/external/v4/sea_ad/merfish/1444201261_MEC_mapped.h5ad
+  - data/external/v4/sea_ad/xenium/CaH_Xenium.2026-01-07.h5ad
+outputs:
+  report: results/v4/stage81a3_prrc_report.json
+  transfer: results/v4/stage81a3_transfer_taxonomy_repair.csv
+  qc: results/v4/stage81a3_qc_earning_repair.csv
+  donor_class: results/v4/stage81a3_donor_transfer_by_class.csv
+  rare_registry: results/v4/stage81a3_rare_state_registry.csv
+  rare_preservation: results/v4/stage81a3_rare_state_preservation.csv
+  data_rare: results/v4/stage81a3_data_defined_rare_candidates.csv
+  uncertainty: results/v4/stage81a3_subspace_uncertainty_blocks.csv
+  context_inventory: results/v4/stage81a3_context_data_inventory.csv
+  context_mechanics: results/v4/stage81a3_context_mechanics.json
+  context_rare_neighbor: results/v4/stage81a3_context_rare_neighbor.csv
+  freeze_readiness: results/v4/stage81a3_prrc_freeze_readiness.csv
+governance:
+  pathology_opened: false
+  development_expression_accessed: false
+  sealed_expression_accessed: false
+  train_expression_only: true
+  intrinsic_optimizer_updates: 0
+  context_optimizer_updates: 0
+  stage81b_started: false
+  production_basis_frozen: false

@@ -1,0 +1,128 @@
+{
+  "schema": "V64_NIH_CARD_PAIRING_PROVENANCE_QUALIFICATION_V1",
+  "date": "2026-09-29",
+  "lane": "A",
+  "question": "Can we establish that the two final deposited modalities preserve a shared nucleus identity through a documented barcode + sample namespace?",
+  "FINAL_CLASSIFICATION": "STRONG_PROVENANCE_CORROBORATION",
+  "explicitly_not": "AUTHORITATIVE",
+  "why_not_authoritative": "No artifact ties a specific scMAVERICS commit to the deposited bytes. Zenodo names the repository but not a version; the deposit contains no README, manifest, workflow record or provenance file; and the repository's single tag predates the record by ~6 months while its default branch has advanced ~3 months past it. The pairing namespace is documented by the depositor's published code, but the producing version is not cryptographically established.",
+  "e2_correspondence_outcome_opened": false,
+
+  "DEPOSITED_FILE_IDENTITIES": {
+    "zenodo_record": "20834804",
+    "doi": "10.5281/zenodo.20834804",
+    "version": "v3",
+    "published": "2026-06-24",
+    "licence": "cc-by-4.0",
+    "title": "Single nucleus multiome analysis in the human pre-frontal cortex identifies cell-type restricted gene expression and cis-regulatory elements associated with aging",
+    "files": {
+      "final_rna_data.h5ad": {"bytes": 18439154935, "published_md5": "f628b17aab355f80b912e3c715543cbd"},
+      "final_atac_data.h5ad": {"bytes": 14508702462, "published_md5": "b71589e0033e391e2fe97c1ae3928a7f"}
+    },
+    "other_deposited_files": ["neuron_subtype.csv", "TableS1_CohortDemographics.xlsx",
+                              "TableS2_NucleusCountandPercentagebyCohort.xlsx",
+                              "TableS3.Significant_genes_and_peaks_age.xlsx"],
+    "deposited_provenance_manifest": "NONE. No README, no workflow record, no software-version file is deposited alongside the data."
+  },
+
+  "SOURCE_CODE_REFS": {
+    "repository": "https://github.com/NIH-CARD/scMAVERICS",
+    "zenodo_software_link_as_published": "https://github.com/NIH-CARD/scMAVERICS/tree/main",
+    "zenodo_link_is_a_moving_reference": true,
+    "only_tagged_release": {
+      "tag": "PFC_Cell_Reports",
+      "commit": "0ddde6e6b27e6116ce48a6a31066a16170801bea",
+      "published": "2026-01-02T21:47:38Z",
+      "relation_to_record": "~6 months BEFORE the 2026-06-24 record"
+    },
+    "default_branch_head_observed": {
+      "commit": "dd6e2dd7de98f0c32b3fe64a0d58980adc9ca2a7",
+      "date": "2026-09-28",
+      "relation_to_record": "~3 months AFTER the record; the published tree/main link therefore no longer resolves to the producing state"
+    }
+  },
+
+  "BARCODE_CONSTRUCTION_LINEAGE": {
+    "read_at_commit": "0ddde6e6b27e6116ce48a6a31066a16170801bea",
+    "scripts/atac_by_celltype.py": {
+      "observed": "ATAC objects are built per cell type from fragment files, using cell metadata taken from the RNA object ('rna = sc.read_h5ad(...merged_rna_anndata); cell_data = rna.obs'), and then 'adata.obs_names = adata.obs[\"atlas_identifier\"].astype(str).to_list()'.",
+      "consequence": "the ATAC object's index BECOMES atlas_identifier at this step, and the valid barcode universe is inherited from RNA"
+    },
+    "scripts/filter_rna_atac.py": {
+      "observed_rna": "rna.obs['atlas_identifier'] built from sample and barcode",
+      "observed_atac": "atac_df['atlas_identifier'] = atac_df['index'] + '_' + atac_df['sample']",
+      "observed_intersection": "rna = rna[rna.obs['atlas_identifier'].isin(atac.obs['atlas_identifier'])].copy(); atac = atac[atac.obs['atlas_identifier'].isin(rna.obs['atlas_identifier'])].copy()",
+      "consequence": "BOTH objects are subset to the intersection of atlas_identifier. The composite (sample, barcode) relation is therefore the deposit's own definitional nucleus identity, not an assumption imposed by us."
+    }
+  },
+
+  "DOES_THE_EXPORT_EXPLAIN_THE_REPEATED_ATAC_SUFFIX": {
+    "observed_in_deposit": {
+      "rna_obs_name_example": "AAACAGCCACGTGCTG-1_HBCC-1193",
+      "atac_obs_name_example": "CCTATAGCAATATAGG-1_HBCC-1193_HBCC-1193",
+      "exact_index_overlap": 0,
+      "of_total": 1501089
+    },
+    "EXPLANATION_FOUND": "YES. The '_<sample>' suffix is appended TWICE by two successive scripts. scripts/atac_by_celltype.py first sets the ATAC index to atlas_identifier, which already has the form '<barcode>_<sample>'. scripts/filter_rna_atac.py then computes atlas_identifier again as index + '_' + sample, appending a SECOND '_<sample>' to a string that already carried one. The deposited ATAC index is therefore exactly the RNA index plus one extra '_<sample_id>'.",
+    "status": "MECHANISTICALLY_EXPLAINED_BY_PUBLISHED_CODE",
+    "implication": "The deposited ATAC obs_name is a deterministic, exactly invertible function of the RNA obs_name. Stripping one trailing '_<sample_id>' recovers the RNA name, which is why the V2 design gate uses exact key recovery rather than composite corroboration."
+  },
+
+  "CRITICAL_FINDING__WHAT_THE_DEPOSIT_IS": {
+    "observation": "scripts/multiome_merge.py DOES NOT EXIST at the tagged commit 0ddde6e6 (HTTP 404). It exists only at the current default-branch head dd6e2dd7.",
+    "what_it_does_at_main": "rna_barcodes = rna.obs_names; atac_barcodes = atac.obs_names; paired_barcodes = rna_barcodes.intersection(atac_barcodes, sort=False) -- an intersection of obs_names DIRECTLY, not of atlas_identifier.",
+    "the_contradiction": "Run against the DEPOSITED files, that intersection would be EMPTY, because their obs_names share exactly 0 of 1,501,089 entries. The deposited files therefore cannot be the output of multiome_merge.py as currently written.",
+    "resolution": "The deposited files are the PRE-MERGE modality objects -- i.e. the 'merged_rna_anndata' and 'merged_atac_anndata' INPUTS that multiome_merge.py reads -- not the MuData it writes. This is consistent with their names (final_rna_data.h5ad / final_atac_data.h5ad, two separate AnnData files rather than one MuData) and with the record predating that script.",
+    "why_this_matters_for_pairing": "It means the authoritative pairing step for the DEPOSIT is filter_rna_atac.py's atlas_identifier intersection, which is present at the tag, and NOT multiome_merge.py's obs_names intersection. The audit brief cited multiome_merge.py as evidence; that script post-dates the tag and is inconsistent with the deposited identifiers, so it must NOT be used as the provenance basis.",
+    "classification_of_this_finding": "STRONG_PROVENANCE_CORROBORATION for filter_rna_atac.py; multiome_merge.py is EXCLUDED as evidence for this deposit."
+  },
+
+  "CROSS_MODAL_CELL_TYPE": {
+    "question": "were RNA and ATAC cell_type labels independently generated?",
+    "answer": "NO. INHERITED.",
+    "evidence": "scripts/atac_annotate.py at commit 0ddde6e6: 'rna_annot = pd.read_csv(snakemake.input.annot_csv); celltype_bc = dict(zip(rna_annot[\"atlas_identifier\", \"cell_type\"])); adata.obs[\"cell_type\"] = [celltype_bc[x] for x in adata.obs[\"atlas_identifier\"]]'",
+    "consequence": "ATAC cell_type is the RNA label transported across the very key under test. Cross-modal cell-type agreement is DEFINITIONALLY 1.0 and is NOT independent pairing evidence.",
+    "supersedes": "The V1 design contract called this 'the strongest check of the five' with a >=0.99 threshold. That characterisation is WITHDRAWN."
+  },
+
+  "CHECK_CLASSIFICATION": {
+    "TAUTOLOGICAL__NO_EVIDENTIAL_WEIGHT": {
+      "RNA_SampleID_equals_ATAC_sample_id": "sample is a component of the join key",
+      "cross_modal_cell_type_agreement": "ATAC label copied from RNA via the same key",
+      "cohort_agreement": "cohort is a deterministic function of sample identity",
+      "retained_as": "corruption tripwires only -- a nonzero mismatch reveals a broken join; zero mismatches confirm nothing"
+    },
+    "GENUINELY_INDEPENDENT": {
+      "exact_key_recovery_bijection": "the suffix-strip relation is a structural property of the deposited strings, independently checkable, and must hold as a strict bijection over all 1,501,089 nuclei",
+      "secondary_recovery_via_barcode_column": "an independently derived route to the same map; the two must agree on every nucleus",
+      "depth_permutation_witness": "RNA total_counts vs ATAC Unique_nr_frag per nucleus against a WITHIN-SAMPLE permutation null. Neither quantity is copied across modalities by any inspected script, and permuting within sample destroys only the nucleus-level component of the key while holding sample identity fixed.",
+      "witness_interpretation_asymmetry_frozen": "far above null CORROBORATES; indistinguishable from null is INCONCLUSIVE, not refutation, because RNA and ATAC depth need not correlate within a nucleus"
+    }
+  },
+
+  "NAMED_RESIDUAL_ASSUMPTION": {
+    "assumption": "that the deposited final_rna_data.h5ad and final_atac_data.h5ad were produced by a scMAVERICS pipeline state whose nucleus-identity logic matches filter_rna_atac.py at commit 0ddde6e6, as the deposited identifier structure indicates.",
+    "why_it_cannot_be_discharged_here": "Zenodo names no commit, the deposit carries no provenance manifest, and the repository's default-branch link has moved. Discharging it would require the depositors to publish the producing version or a per-nucleus key.",
+    "how_it_travels": "carried as a named assumption in every downstream claim that depends on same-nucleus pairing, including any NIH-CARD E2 correspondence result.",
+    "what_would_upgrade_it_to_AUTHORITATIVE": [
+      "a depositor-published commit/version pin for record 20834804",
+      "a deposited workflow provenance record or manifest",
+      "an atlas_identifier column retained in the deposited obs",
+      "a depositor-provided per-nucleus pairing key"
+    ]
+  },
+
+  "LANE_A_STOP_RULE_EVALUATION": {
+    "gate_weakened": false,
+    "verdict": "PROCEED_TO_EXECUTION_OF_THE_PAIRING_GATE_ONLY",
+    "meaning": "The evidence is strong enough to justify RUNNING the exact-key-recovery gate, which is itself a hard bijection test that fails closed. It is NOT strong enough to declare pairing AUTHORITATIVE in advance, and Stage 4 remains unauthorised regardless of this lane's outcome."
+  },
+
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED", "Morabito": "PROTECTED", "E2": "CLOSED",
+    "stage_4": "NOT_AUTHORISED",
+    "uses_AD_loci": false, "uses_JEPA_targets": false, "uses_Morabito": false,
+    "uses_SEA_AD": false, "uses_disease_labels": false,
+    "e2_linked_rna_atac_correlation_computed": false
+  }
+}

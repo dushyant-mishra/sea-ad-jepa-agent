@@ -1,0 +1,17 @@
+{
+  "development_rna_accessed": false,
+  "expression_matrices_opened": false,
+  "opened_paths": [
+    "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz",
+    "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv",
+    "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz",
+    "results/v4/stage81a2_canonical_asset_registry.csv",
+    "data/external/v4/gene_identity_authority/ensembl_116/Homo_sapiens.GRCh38.116.gtf.gz",
+    "data/external/v4/gene_identity_authority/hgnc_2026-08/hgnc_complete_set_2026-08-07.txt",
+    "data/external/v4/gene_identity_authority/hgnc_2026-08/withdrawn_2026-08-04.txt",
+    "data/external/v4/gene_identity_authority/ensembl_archive_responses"
+  ],
+  "pathology_accessed": false,
+  "sealed_rna_accessed": false,
+  "stage": "stage81a2r_authoritative_gene_identity_recovery"
+}

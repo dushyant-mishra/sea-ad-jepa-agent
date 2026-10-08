@@ -1,0 +1,33 @@
+feature_name,feature_type,recommended_action,reason
+module_plaque_response,module,keep,Tier0 latent/module feature
+module_complement,module,keep,Tier0 latent/module feature
+module_lipid_metabolism,module,keep,Tier0 latent/module feature
+module_lysosome_phagocytosis,module,keep,Tier0 latent/module feature
+module_interferon_response,module,keep,Tier0 latent/module feature
+module_inflammatory_signaling,module,keep,Tier0 latent/module feature
+module_at8_associated_first_pass,module,keep,Tier0 latent/module feature
+module_homeostatic_microglia,module,keep,Tier0 latent/module feature
+module_disease_associated_microglia,module,keep,Tier0 latent/module feature
+module_senescence_stress,module,keep,Tier0 latent/module feature
+module_oxidative_stress,module,keep,Tier0 latent/module feature
+module_synapse_pruning,module,keep,Tier0 latent/module feature
+module_antigen_presentation,module,keep,Tier0 latent/module feature
+module_vascular_barrier_myeloid,module,keep,Tier0 latent/module feature
+module_chemokine_migration,module,keep,Tier0 latent/module feature
+meta__Age at Death,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Sex_Female,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Sex_Male,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Bachelors,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Graduate (PhD/Masters),metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_High School,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Professional,metadata,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__Highest level of education_Trade School/ Tech School,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__Years of education,metadata,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_2/2,metadata,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_2/3,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_2/4,metadata,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_3/3,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_3/4,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_4/4,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__PMI,metadata,keep,safe metadata column with acceptable missingness/fold balance
+meta__RIN,metadata,keep,safe metadata column with acceptable missingness/fold balance

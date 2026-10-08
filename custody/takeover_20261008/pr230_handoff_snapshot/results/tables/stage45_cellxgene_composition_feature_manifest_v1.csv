@@ -1,0 +1,2 @@
+matrix_id,built,local_path,n_donors,n_features,risk_tier,notes
+cellxgene_composition,True,data/sea_ad/stage45/processed/stage45_cellxgene_composition_feature_matrix_v1.csv,89,24,Tier2,donor-level CELLxGENE metadata composition; disease labels not used

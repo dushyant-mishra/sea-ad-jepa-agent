@@ -1,0 +1,2 @@
+feature_source,n_metadata_files,n_cells,n_donors,n_cell_types,n_features,pathology_labels_used_to_define_features,notes
+data\sea_ad\stage45\cellxgene,50,5547624,89,18,29,False,Stage45 CELLxGENE standardized donor/cell_type metadata proportions

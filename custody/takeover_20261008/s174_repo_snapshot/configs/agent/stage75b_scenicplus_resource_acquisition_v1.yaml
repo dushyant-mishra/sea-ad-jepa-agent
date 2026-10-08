@@ -1,0 +1,57 @@
+stage: stage75b_scenicplus_resource_acquisition_v1
+description: >
+  Controlled acquisition scaffold for SCENIC+/CellOracle prerequisite resources.
+  Downloads only small safe resources by default when requested, records large
+  cisTarget database URLs without fetching them, and keeps all raw/downloaded
+  files under data/external_resources/stage75b.
+
+resource_dir: data/external_resources/stage75b
+
+small_resources:
+  hg38_chrom_sizes:
+    url: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes
+    output: data/external_resources/stage75b/hg38.chrom.sizes
+    required_for_stage75c: true
+  gencode_v44_gtf:
+    url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/gencode.v44.annotation.gtf.gz
+    output: data/external_resources/stage75b/gencode.v44.annotation.gtf.gz
+    required_for_stage75c: true
+  cistarget_rankings_sha1:
+    url: https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather.sha1sum.txt
+    output: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather.sha1sum.txt
+    required_for_stage75b_scenicplus: true
+  cistarget_scores_sha1:
+    url: https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.scores.feather.sha1sum.txt
+    output: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather.sha1sum.txt
+    required_for_stage75b_scenicplus: true
+
+large_resources:
+  hg38_screen_region_motif_rankings:
+    url: https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
+    expected_size: 33G
+    output: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
+    required_for_stage75b_scenicplus: true
+  hg38_screen_region_motif_scores:
+    url: https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.scores.feather
+    expected_size: 13G
+    output: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather
+    required_for_stage75b_scenicplus: true
+outputs:
+  acquisition_manifest: results/tables/stage75b_acquisition_manifest_v1.csv
+  download_status: results/tables/stage75b_download_status_v1.csv
+  large_resource_handoff: results/tables/stage75b_large_resource_handoff_v1.csv
+  stage75b_readiness: results/tables/stage75b_readiness_v1.csv
+  claim_boundary_audit: results/tables/stage75b_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage75b_pass_fail_v1.csv
+  report: results/reports/stage75b_scenicplus_resource_acquisition_report_v1.md
+  pi_summary: results/reports/stage75b_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage75b_claim_boundary_final_check_v1.md
+
+safety:
+  raw_downloads_not_committed: true
+  no_scenicplus_run: true
+  no_celloracle_run: true
+  no_model_training: true
+  no_external_validation_claim: true
+  no_causal_knockout_claim: true
+  no_therapeutic_claim: true

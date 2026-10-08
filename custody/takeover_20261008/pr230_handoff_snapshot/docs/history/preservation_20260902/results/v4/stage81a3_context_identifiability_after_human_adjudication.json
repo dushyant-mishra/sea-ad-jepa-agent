@@ -1,0 +1,39 @@
+{
+  "BOUNDED_REAL_CONTEXT_VALUE_IDENTIFIABLE": "YES",
+  "CROSS_DONOR_CONTEXT_VALUE_IDENTIFIABLE": "YES",
+  "CROSS_TECHNOLOGY_CONTEXT_REPLICATION_IDENTIFIABLE": "YES",
+  "broad_anchor": {
+    "dataset_id": "SCP2167",
+    "exact_donors": 1,
+    "n_exact_paired_nuclei": 4065,
+    "technology": "Slide-tags"
+  },
+  "context_benefit_demonstrated": false,
+  "context_model_training_started": false,
+  "contract_changed": false,
+  "excluded_from_core_decision": {
+    "fang_mtg_experiments": 5,
+    "reason": "SURGICAL_TISSUE_PROVENANCE_REVIEW"
+  },
+  "experiment_run": false,
+  "final_classification": "REAL CONTEXT VALUE + CROSS-DONOR + CROSS-TECHNOLOGY QUALIFICATION IDENTIFIABLE",
+  "human_provenance_adjudication_complete": true,
+  "independent_high_plex_replication": {
+    "dataset_id": "doi:10.5061/dryad.x3ffbg7mw",
+    "exact_donors": 2,
+    "experiments": 5,
+    "frozen4096_supported": 954,
+    "region": "STG",
+    "technology": "MERFISH"
+  },
+  "original_automated_result": {
+    "final_classification": "REAL CONTEXT QUALIFICATION NOT IDENTIFIABLE",
+    "governance_compliant_completion": false,
+    "reason": "SCP2167 publication provenance had not yet been human-adjudicated."
+  },
+  "original_governance_incident_preserved": true,
+  "pathology_used_for_adjudication": false,
+  "scp2167_adjudicated_role": "CORE_SAME_ENTITY_BROAD_CONTEXT",
+  "stage": "STAGE81A3-UCDQ-HPA",
+  "thresholds_changed": false
+}

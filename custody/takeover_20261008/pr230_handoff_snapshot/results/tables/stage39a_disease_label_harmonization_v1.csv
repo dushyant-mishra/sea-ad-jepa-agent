@@ -1,0 +1,6 @@
+dataset_id,metadata_path,disease_column,disease_values_detected,disease_case_values,disease_control_values,disease_label_ready,harmonization_note
+gse138852,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,oupSample.batchCond,AD;ct,AD,ct,True,explicit disease/control-like metadata found
+gse157827,,,,,,False,disease/control labels not safely harmonized
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,Diagnosis,AD;Control,AD,Control,True,explicit disease/control-like metadata found
+gse160936,,,,,,False,disease/control labels not safely harmonized
+gse125050,,,,,,False,disease/control labels not safely harmonized

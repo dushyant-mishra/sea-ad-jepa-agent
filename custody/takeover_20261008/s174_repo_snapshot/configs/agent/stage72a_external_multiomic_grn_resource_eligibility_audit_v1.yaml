@@ -1,0 +1,66 @@
+stage: stage72a_external_multiomic_grn_resource_eligibility_audit_v1
+description: >
+  Audit and acquire, where public and reproducible, the resources needed for a
+  context-specific Micro-PVM regulatory-network branch: GSE174367 multiomic
+  Morabito snRNA/snATAC, SEA-AD RNA/ATAC/Multiome availability, GSE157827
+  frozen external expression support, and optional SEA-AD spatial resources.
+  This stage does not construct a graph, train a model, or make validation
+  claims.
+
+sources:
+  gse174367_geo: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174367
+  gse174367_supplement_base: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl
+  gse174367_title: Single-nucleus chromatin accessibility and transcriptomic characterization of Alzheimer's Disease
+
+inputs:
+  gse174367_dir: data/external/gse174367
+  gse157827_schema_dir: data/external/public_schema_audit/GSE157827
+  stage37e_readiness: results/tables/stage37e_gse157827_readiness_v1.csv
+  stage41abc_resource_inventory: results/tables/stage45_resource_inventory_v1.csv
+  seaad_mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  seaad_dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+public_downloads:
+  - dataset_id: GSE174367
+    resource_id: snATAC_cell_metadata
+    url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snATAC-seq_cell_meta.csv.gz
+    local_path: data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz
+    expected_role: graph_construction_metadata
+  - dataset_id: GSE174367
+    resource_id: snATAC_peak_matrix
+    url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+    local_path: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+    expected_role: graph_construction_accessibility
+  - dataset_id: GSE174367
+    resource_id: snRNA_cell_metadata
+    url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snRNA-seq_cell_meta.csv.gz
+    local_path: data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz
+    expected_role: graph_construction_expression_metadata
+  - dataset_id: GSE174367
+    resource_id: snRNA_expression_matrix
+    url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+    local_path: data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+    expected_role: graph_construction_expression
+
+outputs:
+  resource_inventory: results/tables/stage72a_resource_inventory_v1.csv
+  acquisition_manifest: results/tables/stage72a_acquisition_manifest_v1.csv
+  download_attempt_log: results/tables/stage72a_download_attempt_log_v1.csv
+  grn_readiness_decision: results/tables/stage72a_grn_readiness_decision_v1.csv
+  protected_external_test_decision: results/tables/stage72a_protected_external_test_decision_v1.csv
+  next_action_plan: results/tables/stage72a_next_action_plan_v1.csv
+  claim_boundary_audit: results/tables/stage72a_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage72a_pass_fail_v1.csv
+  report: results/reports/stage72a_external_multiomic_grn_resource_eligibility_audit_report_v1.md
+  pi_summary: results/reports/stage72a_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage72a_claim_boundary_final_check_v1.md
+
+safety:
+  no_graph_construction: true
+  no_model_training: true
+  no_external_validation_claim: true
+  raw_data_not_committed: true
+  downloaded_data_under_data_dir_only: true

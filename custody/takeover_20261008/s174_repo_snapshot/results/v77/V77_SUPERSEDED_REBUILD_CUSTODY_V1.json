@@ -1,0 +1,555 @@
+{
+  "schema": "V77_SUPERSEDED_REBUILD_CUSTODY_V1",
+  "recorded_utc": "2026-10-06T02:38:02Z",
+  "STATUS": "PRESERVED_NOT_PROMOTED",
+  "headline": "this rebuild completed AFTER both defects that affect it were already known. It is retained for instrument-fix validation, regression comparison and historical custody. It is NOT evidence for recoverability ceilings or any premise decision.",
+  "WHY_IT_IS_SUPERSEDED": {
+    "defect_1_instrument": {
+      "id": "S127",
+      "what": "its 9 ceiling files were computed with the UNWEIGHTED module mean, which is a symmetric function of a signed module's driver and under-reads every planted module",
+      "repaired_by": "v77_component_oracle_v4_signed.py",
+      "consequence": "every ceiling number in this rebuild is an under-read and is void"
+    },
+    "defect_2_generator": {
+      "what": "its dependence structure is far weaker than real FOUNDATION TRAIN RNA: median |corr| 0.068 against 0.329, fraction above 0.3 of 2.3% against 56.2%, mean degree 70 against 1686, transitivity 0.324 against 0.860, substitutes 1.4% against 19.8%",
+      "root_cause": "loadings drawn as INDEPENDENT normals, so correlation accumulates as a random walk instead of coherently. Real co-expression is block-structured.",
+      "repair_in_progress": "coherent-sign block loadings, mechanism verified, calibration not converged",
+      "consequence": "the world is too easy; recoverability measured in it is inflated"
+    },
+    "both_known_before_completion": true,
+    "sunk_cost_explicitly_rejected": "it was allowed to finish only because the already-generated portion isolates instrument change from generator change, which is exactly how the S127 repair was validated. It was not finished because it was underway."
+  },
+  "LAWFUL_USES": [
+    "instrument-fix validation, which it has already served",
+    "regression comparison against the recalibrated successor",
+    "historical custody"
+  ],
+  "FORBIDDEN_USES": [
+    "final recoverability ceilings",
+    "any premise or representation decision",
+    "any claim about what a model can or cannot recover",
+    "any biological interpretation whatsoever"
+  ],
+  "EXACT_PROVENANCE": {
+    "generator_commit": "8f2a1163094c4a4cf24c6669bdea22c6dc9da2cc",
+    "generator_blob_digests": {
+      "scripts/v77/build_v77_extended_truth.py": "7f584d95b0121c5822f77ec3b77df6a1d3f303df",
+      "scripts/v77/build_v77_fullscale_rna_observer_v2.py": "15e82def9817f818bea8768e37ab03f6b95d6f7a",
+      "scripts/v77/v77_address_universe.py": "b17733459b911d3edfbaa5b97b45d272ef5402c6",
+      "scripts/v77/v77_regulatory_graph.py": "82eeb9746323653fb2c7221126caea1980e148cf"
+    },
+    "truth_seed": 7302,
+    "shard_size": 10000,
+    "cells_per_world": 100000,
+    "background_model": "v1 (independent-loading sparse programs), superseded",
+    "calibration_version": "pre-calibration; built before the real-TRAIN envelope was frozen",
+    "real_calibration_frozen_at": {
+      "global": "results/v77/V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json",
+      "topology": "results/v77/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json"
+    },
+    "note": "the real-data calibration artifacts were frozen DURING this rebuild, so this rebuild does not target them. That is precisely why it is superseded."
+  },
+  "WORLDS": {
+    "world_A_REPLICA": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_A_REPLICA",
+      "bytes": 1199197439,
+      "n_files": 22,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [],
+      "truth_manifest_sha256": "504ff82067cc43624a06d9640758ccfc5cbc31a516653eb41173163a78403b45",
+      "truth_shard_digests": [
+        "dbc92acc9257b620b92da4f7f7ccb00332d7aaef7734397157d4adf8da42101c",
+        "2c69572857ab5c310c5e74ceafed46120086b5a17ea5193bff5dd1c16365f536",
+        "27ca87739aca7fbcb77f2a2f1029398b38f467181b928b4bde57239eabffe285",
+        "23cd19a5b76e34b4dade070684ced4c27460051b41dee7f34aca53058d27748a",
+        "1fe09bcfc9ff993cc537d84d9fbcb47c87e19c594e2f8cb4cd730032cebe4d92",
+        "a54741736d9963ac949c32c63f4a43975c166957d8f2e57665e091b1803eeffe",
+        "768826084c64dc44a7bb411f59b9b9f0b25bc76549eda07672c2d112653ff086",
+        "c4aa9be0982d14843e9b23d4f93f47b4f5495e5bcaa2ffa5d9347952ac55ef12",
+        "cd8c538430a77b84d6e4a80b6ad8a673ae2015464e77c6e11a710875e757802e",
+        "34b1e40da99344e6415de157cef446530cee3e646c48f33100ffa46abb17eba7"
+      ],
+      "observer_manifest_sha256": "c961c392b76e59a580c7353881b20d133644ac4224f52fb3a977131da8887efe",
+      "observer_shard_digests": [
+        "ca7d6d5767e40af74590e4a8a62d042669df11d5dd7dc3252d0f93a2c4afd06c",
+        "f5d1c850770b6e670f71f4863a8112c0e073312cfbf3f75a2052decdcd8d0631",
+        "0df25ba604f8561c8ea5fd253357e8116dd0c1ed2e853902eb804313ad9bcaaf",
+        "775241da2efca340f26a9b3bf382ff5e1f708c88f68ed72d96118de8c948cbfe",
+        "066a946a09213643705e4abfd376189a936ec6ecb26a411d1dd3169b2aae94d7",
+        "785de8b5f61572e44bd989c5a1c5c63450748cd662926abe64c03c59efe9db1d",
+        "05e5ca29fad5e07bbe396261703d4dbc7905ac032ccb22c388cf337dc20cd2bb",
+        "7fa077e5e33409455bf2127036b5d43088a1186c4a510ad2e468a0a494a09484",
+        "81d532e57ad83da82a278e0b8799cbde1f787a51ff19a2c30d4f282ef1180603",
+        "e890f9e86a7f15ab7478e88df7210a4b03333dcf7f2a92d60682ff2f503b27ca"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.12549606770454436
+    },
+    "world_B": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_B",
+      "bytes": 1205045064,
+      "n_files": 22,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "truth_manifest_sha256": "bc37b2b4c3396fc965e34af396a4913238cf0329b045dbbf361aa7159fc2ad3f",
+      "truth_shard_digests": [
+        "3fdfa4ee3801a87091966942274e010a0b0a1be3adeffc75d2b3cd1f1cb8e4c6",
+        "b64aa429ee8e679933c3cdfe508f39a2f915c028b4944b989bbc3eeb10de2114",
+        "38d200726534d070e235fdb4e3d6a3399d534c01117326438e8fb4dd1d9d51fd",
+        "07347c4876f3c2b1f94e1146449348d79700f969e749d7157f67e7f729ba45bf",
+        "85fded97dbce60a07e50850ba3a358c6512884a4e7f71645a54a86e8de57d9c4",
+        "81acbfd132852a831062639de6ef4a9529b5a6ad20853c5c55001b430ccd2391",
+        "b88c5f7f95205982d8b708ceb3d0cb4c2e026c130f2a3caa10c364d7a0116f04",
+        "e234e8b1864aa44312f1c3771de7bb2f97389f63023c3c6d5ad3e2c335f23f2d",
+        "2329faed300264113502e23fb7551279c5c4b4f88472e56d804f4d46ae6e32a1",
+        "09e8955f8d88cd385e9b058b2457e796dded628e84f2ea7b803c2e91fb2a30b4"
+      ],
+      "observer_manifest_sha256": "0892a36ef6a0816dfc4927e17821029bd08a5157473b9c1199e1a35fc3544038",
+      "observer_shard_digests": [
+        "8a8bc4f9da597b2dcaddffc5319a839b6d6ba5a7db49b0936b6d1d2eabf07354",
+        "add5888cd7782110c0c307bd2b4d027c557f8b9b5bbd555003da13469cd4e3b9",
+        "673b5d80b6f3b370b150b0605407227789e91ed36dcf48a8e8cc0a6951527678",
+        "dc8356bdb877a9ef43f83272449e083ed833f86b0a0089a8de0a393df7dc39f9",
+        "8755184270d0634bdeee906bef6575771d4b0cc594e684b3bcf33a363707ec77",
+        "cfb3019de09a835e22a04fee25935398f7f9bcdd7b3091538611967cd0ede4ed",
+        "0914fe8f60303cf0bef622b096823af76a06badc47f2376fe08bb6c1919db40a",
+        "3e6619c2d932d532ab078df35f4c74e23c12ef5c53e5c9922e3179c87bfe4f3a",
+        "971e333609d332f18f4d92792c64948f5dec919672f1551cd93fcc62d3361287",
+        "282a200bd674b28b2526ac3ccc94b31ea3321f7e2af452d7247f9d373bdef90e"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.12549606770454436
+    },
+    "world_C": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_C",
+      "bytes": 1027847345,
+      "n_files": 22,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "truth_manifest_sha256": "554b51a3e4e21e9f4b9376b25bfd98a4dcd8555cce636fd6cab62c3accd5dd2e",
+      "truth_shard_digests": [
+        "fdf9fc486948471ecec50de3c11891ae9a2ed580c8b7c5f5785a4259e37c2afd",
+        "e05ecf5ba564b4bf63310b434683ae772b51b26bd4b16d5ffe1ae9e5741e9bdc",
+        "d22e93ab22e3ce9db776b0769741ae764498edbf8d863800428e80b21849e330",
+        "7ff910cca0632881d51c3f0ed52a0c0a59099de405e4ba3530d5392cd208070f",
+        "488ea17e06a058b30e8593e9c1f7041b977aa8d67952e27311d3aa226792ae02",
+        "49f02d40bfa2d9c0ad7407f1162324e058772be3b09e120a1e4440198e5406fe",
+        "621ebda9b3cc71a1b9f70edd4e0116d01582c51cf5489001b18fbf4e77081550",
+        "4132f0f3f6d228a6e76f7aea4fe13ec07fe1ec48881bb774075a160a991f3d3a",
+        "6beb7e867ab28695bed8ac1653dbe307815451a3ef41f2277b3202c72b927073",
+        "ee309df71e6f49d09d761d74db1167ec383acad548890cd899d71d926e15d3ad"
+      ],
+      "observer_manifest_sha256": "e1c06874839d2e0f3944e3841d73220c2ebeedfaf789609c9ec995d7dbc201c7",
+      "observer_shard_digests": [
+        "bc81379beb94cb1ddeae8ed79a9e40cfa03ef04af4fe1488673fbb50ea69bc5d",
+        "f14631942b8c4349e991053e5a9dd3e586b6f9629d14f7f5b752428767c2030b",
+        "c0196bb9f9e7f980bfc9137ff27f2c23fd8cf5e47c4ea0552eafbc5697e7c2d5",
+        "794e99984f569eaeec7fadca9d06498f5275cf7680ad53023aa2f332932306b0",
+        "9ae0ed262584c76ce671bf1554cff5b1987ee632bcd0519c33959e7e588eccdd",
+        "922ea71c940ebe4f43351ddeec87a96119e407eaba0f237f92ca196d6658ae96",
+        "c3f4d021193ce165dfee310f601b7a12b9a8fcd93472d084b8c33e7fc46d9e4a",
+        "d67eff645870107465405f0a79549bf5219a604a21eca15e6425d50e66b5f9f2",
+        "4452c42b96ddaac414016e7f5bc7aa77f28f2499a619681c40c9382f2f4cb2e7",
+        "0758440029381c92e36304bcaa3bd9ac2aa9ca94ff81a2df598af9d1e907fd93"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.10667024346476553
+    },
+    "world_D": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_D",
+      "bytes": 1201302486,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "D1",
+        "D2",
+        "D3"
+      ],
+      "truth_manifest_sha256": "6dcc09310f26433fbef3d3ea325d19b3dd4f69438b017acf86a53a3965ba4f35",
+      "truth_shard_digests": [
+        "7a37b7539cccfc947e0a63ffee8d81355c384d15c17012b221890dd3fefa0bc2",
+        "5802b821d09c2151ed76b5ef766717a44a351eb214f33c8cdc6814232eeefe17",
+        "ed0ca545c6d6a324d7b591246fd963f82129399ba45b19d8e02b601de0965017",
+        "1428923f8fcd3406d90e984468ea44d8fd0cc0fe8c59d197695070505fd793b5",
+        "ebdf185bf6d002e359ee91d99591a68eb185f719f4a90cab4cb8f5db462e8156",
+        "f3040358708701ab284018e0341ccad6c743bc304d53bd3f93e5f3927839b6c7",
+        "7d7e5a80e57f5f928e615ba01ad87ae0ac0e0e99e2149e61c06c6e81daf59bc7",
+        "3e7798cec335d8f410ed1f5172675832ef7b40797ee1c73a2f33ca1a6f368cd1",
+        "9ceeaa1aab3cc3931c3ca6ce29133a2efafcfed3fd4d42b3356555d04ff071d8",
+        "156fe21bf449ea0297041da98e4a6cea1acfebdbcf9c97e3947e9f219f9b7873"
+      ],
+      "observer_manifest_sha256": "7877add7245781cf01e5c2690771f3e040465fcbbca77b29931df910a98f3b5f",
+      "observer_shard_digests": [
+        "0398e9cf06bfa9f379aff1250ba6d762dd397667d6072ae68da1485bdd176c72",
+        "6704ce4e8083f5a124b277b546134b854c4bd0b9c921520086bcefbd82fa4f8e",
+        "4c3fca9e0741a164e0a7807ce60d0de1a95e2d0557d9036d0c9c5f5d91da0273",
+        "fb8f12ce3808459390a5f8dadabd2947076e87dfc4e9af6c810cd232d1c0dfaf",
+        "69f543561499318edbb34f43a1a0489903180bbe7213cdcb5d41e0aeab2e4457",
+        "4142149f572e89cbcf4a45ff52b8002f29ea1cdeec239fa337700106613fc9e9",
+        "271bbfa22c66f795b2c51113752f59a632c55b91d1293af0f1b6c5f62eacb654",
+        "323bc9d690c9eaf2b3b93fc81e6883e0390fbd69e464e1b64fb626716e055d87",
+        "35edcb2ac00b5e60cdbb1320d286eafdade5cc7574db07b5972e11921e84aa74",
+        "31e8ab84462d276c4e45c5626465e3114c677d025e13ab6e652dd95e0145becb"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.12549606770454436
+    },
+    "world_E": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_E",
+      "bytes": 1202077774,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "E1",
+        "E2",
+        "D1",
+        "D3"
+      ],
+      "truth_manifest_sha256": "09df7b21cb7971f52673ee110af63847bcca6f30a63890bbd9dbf8b6cf2ec8cd",
+      "truth_shard_digests": [
+        "57cda61156b33831d91c55f70917bd4f6f591597427a6c29166b5233c842e197",
+        "7d764d6b214e490f55838731c7638e32d7c618fd26037c0e9cbaf0c6c2e9b680",
+        "9d1aa16ca420a0fea7dcfc280c82200f67a38265e0f215312e2b92152354943a",
+        "618e7db7f4fa80cb5d80f2e467ca3dc224876dfbf6d2d4a3c3df4d8ad50d89b1",
+        "28d8d7d0d929d2d9c3f8ad1842693f3845caea3b046b6737951c6aaedacad4f6",
+        "19b8cc4897ba6defea90f5a3fc04217d6cff23971df55822fb190f5fbe6e2d30",
+        "0bd977486a7041933c62dcac1c2f0da0fd471d880dd0fc8b13626db3c7e1f2c9",
+        "41629d5fb58f4c19de51ac57351b561de62efd960d3d40d3b9d9ac94a2af0537",
+        "2fdaa5443aa058bdba82aacad6a812cb385c78524501fb8a2878805434320f03",
+        "66d67348dcd5dd32fcc140b0e70288088560733399822d1a2f7bf3901143d38c"
+      ],
+      "observer_manifest_sha256": "d8e8467385498a838550ca93b88dd191bbdf35d91ae05bdf7652706908bf7384",
+      "observer_shard_digests": [
+        "6c4b70cc7a0ec5212edfdd32611440434debdfcb197b6b06c39a2c08d8a88338",
+        "0c2d4a9cc5f9897f4e5ba7c6643ed998c399050d9c230128b9124e79f462c605",
+        "d7ca41b069f355a548642a40b87ae7d3c99d7a79e7f2da05533bbc0a6654f9ac",
+        "b320d30a766aaad2f7abeca2562ac37e2a6cf3fd17f95e7eec35270b638c7715",
+        "792aaf39adf231f57dc41badb2b360b8c13309301a4cda72701d4eba0363c4dc",
+        "bc774a9a57441689abbf8726e6cb864eb094292f8380e019d9d5fd659bb197dd",
+        "71b30c1700fba1dee89f68cd71c58377460bc09f5b3e86052b949ec3d7b39b94",
+        "fc79d41bdaf5438acc4bd2276c7cd97f8f4c5b7dec1853012f130ae47c7e0f00",
+        "6871d2008be2249dcfd8418ef78daa5686c61487d2881d97890b13f4e3fce205",
+        "eb70ab61d095ec498ce68b631dda4a584f56505136ca825fdbaed3f216452f06"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.12549606770454436
+    },
+    "world_FULL": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\world_FULL",
+      "bytes": 1038557025,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "C1",
+        "C2",
+        "C3",
+        "D1",
+        "D2",
+        "D3",
+        "E1",
+        "E2"
+      ],
+      "truth_manifest_sha256": "1fae549560965ea6260943e5b405fb04fd41a070befa682261a54f2dbe8c539a",
+      "truth_shard_digests": [
+        "53d893f22176ad63c0905c35830ec1565da9c0d996eb7088f40a2131c8fa4ea8",
+        "851216ed46d687ebf985ab8d1a33dd89f850c97f05d53759c8f9226f0cdc017c",
+        "d4b77731580867c6067ba07115ac705b8c25c02bb910f656dbf32cd9a8aa5ac8",
+        "378c76c7b012119417cccf86129a8e81e81ea2da4cb79aedc9cf982e70ee6082",
+        "a7b4489f918a14a0d086178a2816f5c01817c614dbb72e9d1350585bca6f40e8",
+        "8c701172e3ddba39ab3e497e7f4780b47b43b4ceed6e0dd29a1d22aad0fa2543",
+        "da4811b7daf010b8d5c3720802f912286eeb2484876966c2911ab32527ef5a5f",
+        "7cc0a702a903ef2bac991c2a49ae11d75648815b3abb402e92530f0c3b965024",
+        "d4481ec9b05c80294dcac5961fc5164e809a29a42440f470af42331f1457b1ca",
+        "ecfed495f243a04627d77086a481e9422215b8179ff89bb200ec79920df9aad1"
+      ],
+      "observer_manifest_sha256": "dc5bcd9637cf6888e1de6e48e1ecc99c575a5c7476f855bd2722153374457bbc",
+      "observer_shard_digests": [
+        "2e6bea837015d9552e220da0d104cc321f1e4261ca3d7bcf39a97d5b8360bd9e",
+        "8cee16e959354fbde2bcad58f85f960ed7038f7046ae7a30e70f25cde4123f65",
+        "6ca2bb1bc794f40549de3b72eb62012e22eb5c48d9385f6e96a66f5589b77539",
+        "9f0771249867a4184c4bba2e1f9ee1b44c8ed3af157e3d9c515205f8e2b6bcba",
+        "b983efbd4ffa539a2b640fb27d8371af12d95a715b599e0f5916e7fe7461cfa4",
+        "d96d45802cc567b88e9dd20a9491cd19c5e6680db1625f53a4c77fc74b974214",
+        "523d0d55d24ddd497373258e938beecb9addf415b0ee79c3da822254bf79ecc0",
+        "a3e29e82ef44d5dc74b72b432a194d52da0cad6dfaec5f717e91cc9eddf7b0fc",
+        "b4ec3212c64712b6d31fc0874c7568b138a6dc883e539dccb24e99b49fe1c065",
+        "62ef6320c31381c3e296d8f72aceb3ef05c7144df759d1d70a43933856cf4eb8"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [],
+      "mean_detected_fraction": 0.10667024346476553
+    },
+    "sup_B4": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\sup_B4",
+      "bytes": 1038530159,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "C1",
+        "C2",
+        "C3",
+        "D1",
+        "D2",
+        "D3",
+        "E1",
+        "E2"
+      ],
+      "truth_manifest_sha256": "1fae549560965ea6260943e5b405fb04fd41a070befa682261a54f2dbe8c539a",
+      "truth_shard_digests": [
+        "53d893f22176ad63c0905c35830ec1565da9c0d996eb7088f40a2131c8fa4ea8",
+        "851216ed46d687ebf985ab8d1a33dd89f850c97f05d53759c8f9226f0cdc017c",
+        "d4b77731580867c6067ba07115ac705b8c25c02bb910f656dbf32cd9a8aa5ac8",
+        "378c76c7b012119417cccf86129a8e81e81ea2da4cb79aedc9cf982e70ee6082",
+        "a7b4489f918a14a0d086178a2816f5c01817c614dbb72e9d1350585bca6f40e8",
+        "8c701172e3ddba39ab3e497e7f4780b47b43b4ceed6e0dd29a1d22aad0fa2543",
+        "da4811b7daf010b8d5c3720802f912286eeb2484876966c2911ab32527ef5a5f",
+        "7cc0a702a903ef2bac991c2a49ae11d75648815b3abb402e92530f0c3b965024",
+        "d4481ec9b05c80294dcac5961fc5164e809a29a42440f470af42331f1457b1ca",
+        "ecfed495f243a04627d77086a481e9422215b8179ff89bb200ec79920df9aad1"
+      ],
+      "observer_manifest_sha256": "0c59e8670603534a1031c9c5d32b2f55bab710caeba7267942339133a0cf8d3a",
+      "observer_shard_digests": [
+        "925e4f8d2189317282c7a6dd6a4b71ec9dd4d10332c17791999ed51969044b1f",
+        "79d16dd58309f429a7f7d574e8d4c221cf8a6da27a093169e3a0e2336ec67b9f",
+        "175da543970bc4e6850add81096b754e0cb0129383db89f49ab874df5b5750d0",
+        "1cc6759239f7a3bef6454931c7c5be96365c205a5257cb9e27a5cc248fc93e83",
+        "c3d376b45e93b292673636362e91168c70f854289e317c45868bfb45b9c66321",
+        "9601a0e41bc7d270fa06f6d925305589e27efc187ec39cc739dca49961707d8b",
+        "29d8cdc21b92bca232490f4ffb53dfbdb4513e967494cff3c036f4efe6c25f09",
+        "48301a862e904a8e4f465b0257189f2d6ab975c20b4658f51e0ced4e0f457586",
+        "4003d770dc6499dd620bba9f64c427c000d2c0327f08c61a6d3eeafaf2889745",
+        "11c2d9501732800815fcdd38bad2b4d46c163f66047297cce1a3d360afd4e721"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [
+        "B4"
+      ],
+      "mean_detected_fraction": 0.10667024346476553
+    },
+    "sup_C1": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\sup_C1",
+      "bytes": 1038220779,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "C1",
+        "C2",
+        "C3",
+        "D1",
+        "D2",
+        "D3",
+        "E1",
+        "E2"
+      ],
+      "truth_manifest_sha256": "1fae549560965ea6260943e5b405fb04fd41a070befa682261a54f2dbe8c539a",
+      "truth_shard_digests": [
+        "53d893f22176ad63c0905c35830ec1565da9c0d996eb7088f40a2131c8fa4ea8",
+        "851216ed46d687ebf985ab8d1a33dd89f850c97f05d53759c8f9226f0cdc017c",
+        "d4b77731580867c6067ba07115ac705b8c25c02bb910f656dbf32cd9a8aa5ac8",
+        "378c76c7b012119417cccf86129a8e81e81ea2da4cb79aedc9cf982e70ee6082",
+        "a7b4489f918a14a0d086178a2816f5c01817c614dbb72e9d1350585bca6f40e8",
+        "8c701172e3ddba39ab3e497e7f4780b47b43b4ceed6e0dd29a1d22aad0fa2543",
+        "da4811b7daf010b8d5c3720802f912286eeb2484876966c2911ab32527ef5a5f",
+        "7cc0a702a903ef2bac991c2a49ae11d75648815b3abb402e92530f0c3b965024",
+        "d4481ec9b05c80294dcac5961fc5164e809a29a42440f470af42331f1457b1ca",
+        "ecfed495f243a04627d77086a481e9422215b8179ff89bb200ec79920df9aad1"
+      ],
+      "observer_manifest_sha256": "6b901ee96d530966f2a233c01043cf421cee02144bf34f3bc84ed42238f6c47e",
+      "observer_shard_digests": [
+        "6f53a4127d36c1573cb9654cd68de34d99f46d24917361e778914692920dd864",
+        "17cb16e35c58c7a0392e8c38fd67e0e507456461b494445b62cddd6e4ca426c3",
+        "2add5a5bfa0641626438f6956a60084450ff7c7f4103d69018867f53a5dee3fc",
+        "cd6463b48c9a1b682739255250a19e8d2dedc40f4a70298bfd514457762c4a8f",
+        "74b1800a42398efd91506a1568e4521c3db842466870459a197f448b51d16ca4",
+        "768032ef742d0ba01d17b648d0f4f53a3646e258c0c695f22f6501f9cb4f57a0",
+        "722eba64e8ec8be5baa0e71a610aad3b20411fc3322c203c71a6f64e7f62c2a4",
+        "e02b76da5fca607488a333e31bd10319de65b13cf5c288cbf7dad133e8df583f",
+        "07a15555787a1c365232b70cd4ad48b9fde535c021cb3cb7ea29429f530460c5",
+        "3217581a6d257760c02b05ecdbf5ad5ecc580283cd41bd20c27d037680ab6cb5"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [
+        "C1"
+      ],
+      "mean_detected_fraction": 0.10667024346476553
+    },
+    "sup_C2": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\sup_C2",
+      "bytes": 1038479153,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "C1",
+        "C2",
+        "C3",
+        "D1",
+        "D2",
+        "D3",
+        "E1",
+        "E2"
+      ],
+      "truth_manifest_sha256": "1fae549560965ea6260943e5b405fb04fd41a070befa682261a54f2dbe8c539a",
+      "truth_shard_digests": [
+        "53d893f22176ad63c0905c35830ec1565da9c0d996eb7088f40a2131c8fa4ea8",
+        "851216ed46d687ebf985ab8d1a33dd89f850c97f05d53759c8f9226f0cdc017c",
+        "d4b77731580867c6067ba07115ac705b8c25c02bb910f656dbf32cd9a8aa5ac8",
+        "378c76c7b012119417cccf86129a8e81e81ea2da4cb79aedc9cf982e70ee6082",
+        "a7b4489f918a14a0d086178a2816f5c01817c614dbb72e9d1350585bca6f40e8",
+        "8c701172e3ddba39ab3e497e7f4780b47b43b4ceed6e0dd29a1d22aad0fa2543",
+        "da4811b7daf010b8d5c3720802f912286eeb2484876966c2911ab32527ef5a5f",
+        "7cc0a702a903ef2bac991c2a49ae11d75648815b3abb402e92530f0c3b965024",
+        "d4481ec9b05c80294dcac5961fc5164e809a29a42440f470af42331f1457b1ca",
+        "ecfed495f243a04627d77086a481e9422215b8179ff89bb200ec79920df9aad1"
+      ],
+      "observer_manifest_sha256": "9248d6b0008bd8adcbe9b50c9f0fc94e8805271f31236c3dd51f17269b960ca6",
+      "observer_shard_digests": [
+        "bb027beb878b90af6dc8ef0d087a247dc28c1d30b61b9c68175c7c183abe0df0",
+        "c07b6d16906acb2c12472d4171c2042f008e46213bfdbdbe7d6a1621b05ddc62",
+        "1d35b57ab2a208dc172b16abc2dce20bcd268cc464bb2566fa1216302818eb67",
+        "c12705fde0c706aede62c90520d48fdf74bb12ca2558862360c747974beee0fc",
+        "e26eed321f4b97e196a143603fd0b8659749a79f14c01023d0ba8d7322249dda",
+        "bdf0514831539431acdec16c6fb330f379e4fdb3963370893ea0e2104b47a419",
+        "ed7d2a3286abaf642f9f845dd3e58a2367ba7c7676029d26dfdc132893033cc2",
+        "c879c896222709a4ce9991f7f493aefcc4ae50ec9f56dae37cf9726ccbfc1784",
+        "8d9e87edd8239f5216aa24a8b5bac7e881504f85e488bac16e31c8c096bea0ba",
+        "e436d18d35a33a2a3892ee3a628362d32faa584a1fc48427d13c367bed5fbbd6"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [
+        "C2"
+      ],
+      "mean_detected_fraction": 0.10667024346476553
+    },
+    "sup_C3": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\worlds_v2\\sup_C3",
+      "bytes": 1210189844,
+      "n_files": 23,
+      "seed": 7302,
+      "n_cells": 100000,
+      "shard_size": 10000,
+      "enabled_components": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "C1",
+        "C2",
+        "C3",
+        "D1",
+        "D2",
+        "D3",
+        "E1",
+        "E2"
+      ],
+      "truth_manifest_sha256": "1fae549560965ea6260943e5b405fb04fd41a070befa682261a54f2dbe8c539a",
+      "truth_shard_digests": [
+        "53d893f22176ad63c0905c35830ec1565da9c0d996eb7088f40a2131c8fa4ea8",
+        "851216ed46d687ebf985ab8d1a33dd89f850c97f05d53759c8f9226f0cdc017c",
+        "d4b77731580867c6067ba07115ac705b8c25c02bb910f656dbf32cd9a8aa5ac8",
+        "378c76c7b012119417cccf86129a8e81e81ea2da4cb79aedc9cf982e70ee6082",
+        "a7b4489f918a14a0d086178a2816f5c01817c614dbb72e9d1350585bca6f40e8",
+        "8c701172e3ddba39ab3e497e7f4780b47b43b4ceed6e0dd29a1d22aad0fa2543",
+        "da4811b7daf010b8d5c3720802f912286eeb2484876966c2911ab32527ef5a5f",
+        "7cc0a702a903ef2bac991c2a49ae11d75648815b3abb402e92530f0c3b965024",
+        "d4481ec9b05c80294dcac5961fc5164e809a29a42440f470af42331f1457b1ca",
+        "ecfed495f243a04627d77086a481e9422215b8179ff89bb200ec79920df9aad1"
+      ],
+      "observer_manifest_sha256": "81275f79eef348cc9d8b801baf67a9224318ed707dbe9b6ad75d459fcc325c27",
+      "observer_shard_digests": [
+        "e5d61edcf37e806ac8bbc18e557de8aac8bedc015465ccc209e550bba6d2aaac",
+        "257ef9cef9fd0e5e8a76e3398407a6d7edbfe139a1ff2ded1e7b17769dc21264",
+        "46ead5c92bc71534efd2a57f44672526681a6a9de51438e5aba634fa36db0eb6",
+        "4268b97b457de252faa934fd4e47d0d05b1a0d2506743122a266514bae47be43",
+        "788af6f1eb680c58174962d8bae323a81d6654b02960c687bc7cfc491fd5392d",
+        "5445c70a7d47ead081cf34aef68020c455312c05dd7a669ef6b3d927d13928e0",
+        "ad025ccabb5fb3d7b27c8f473642c73f3b7ffc810471d33ef3db833e7daf1240",
+        "6e7123b860e045f600bd92ec69933e006417619223a7a7c09d02e9faa54c835d",
+        "cc889d7cd5a7e2ccdf38088473d8856d13b7501d10e787278923b29beb80f2b5",
+        "d02939436fe1afdbf52d2fb3eee71c2f35ed7c2aa0f96c440ab196321b05b80c"
+      ],
+      "background_model": "v1",
+      "suppressed_from_observation": [
+        "C3"
+      ],
+      "mean_detected_fraction": 0.12549606770454436
+    }
+  },
+  "totals": {
+    "n_worlds": 10,
+    "aggregate_bytes": 11199447068,
+    "aggregate_files": 227,
+    "ceiling_files_produced": 9,
+    "wall_clock": "about 6 h 30 m"
+  },
+  "A_REPLICA_note": "the A_REPLICA world produced no ceiling file. Its loader fails closed because the world has no planted modules, so module-score projection has nothing to project onto. That is correct fail-closed behaviour, not a run failure, and it means the control world needs a different statistic which is not in the freeze.",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

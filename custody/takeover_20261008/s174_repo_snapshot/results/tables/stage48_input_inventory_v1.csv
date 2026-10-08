@@ -1,0 +1,14 @@
+input_id,expected_path,found,input_type,used_in_stage48,notes
+stage36c_genes,results/tables/stage36c_ranked_gene_hypotheses_v1.csv,True,frozen_candidate_or_mechanism,True,read-only evidence source; no rediscovery or modeling
+stage36d_shortlist,results/tables/stage36d_candidate_shortlist_v1.csv,True,frozen_candidate_or_mechanism,True,read-only evidence source; no rediscovery or modeling
+stage36e_mechanisms,results/tables/stage36e_frozen_mechanism_registry_v1.csv,True,frozen_candidate_or_mechanism,True,read-only evidence source; no rediscovery or modeling
+stage36e_candidates,results/tables/stage36e_priority_candidate_registry_v1.csv,True,frozen_candidate_or_mechanism,True,read-only evidence source; no rediscovery or modeling
+stage38c_candidates,results/tables/stage38c_candidate_priority_after_external_support_v1.csv,True,external_support,True,read-only evidence source; no rediscovery or modeling
+stage47_consensus,results/tables/stage47_candidate_gene_consensus_v1.csv,True,stage47_synthesis,True,read-only evidence source; no rediscovery or modeling
+stage47_validation_priority,results/tables/stage47_candidate_validation_priority_v1.csv,True,stage47_synthesis,True,read-only evidence source; no rediscovery or modeling
+stage47_drug_mapping,results/tables/stage47_druggable_candidate_mapping_v1.csv,True,stage47_synthesis,True,read-only evidence source; no rediscovery or modeling
+v2_trajectory,results/tables/v2_1_gse174367_cell_trajectory_scores.csv,True,v2_exploratory_evidence,True,read-only evidence source; no rediscovery or modeling
+v2_abeta_microglia,results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv,True,v2_exploratory_evidence,True,read-only evidence source; no rediscovery or modeling
+active_status,docs/ACTIVE_V3_STATUS.md,True,status_doc,False,read-only evidence source; no rediscovery or modeling
+v3_scorecard_md,docs/V3_SCORECARD.md,True,status_doc,False,read-only evidence source; no rediscovery or modeling
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,status_doc,False,read-only evidence source; no rediscovery or modeling

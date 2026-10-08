@@ -1,0 +1,28 @@
+stage: stage35e_graph_diagnostics_synthesis_v1
+stage27c_reference_mean: 0.3267024400121495
+headline: Module-scale graph topology produced a small guarded internal improvement, while gene-scale graph strategies remained negative or diagnostic.
+
+inputs:
+  stage30_mean: results/tables/stage30_graph_controls_mean_metrics_v1.csv
+  stage31_pass_fail: results/tables/stage31_residual_graph_pass_fail_v1.csv
+  stage35a_pass_fail: results/tables/stage35a_pass_fail_v1.csv
+  stage35a_graph_control: results/tables/stage35a_graph_control_audit_v1.csv
+  stage35a_target_rescue: results/tables/stage35a_target_specific_rescue_v1.csv
+  stage35b_pass_fail: results/tables/stage35b_pass_fail_v1.csv
+  stage35b_graph_control: results/tables/stage35b_graph_control_audit_v1.csv
+  stage35b_leakage: results/tables/stage35b_leakage_audit_v1.csv
+  stage35c_pass_fail: results/tables/stage35c_pass_fail_v1.csv
+  stage35c_module_graph_audit: results/tables/stage35c_module_graph_audit_v1.csv
+  stage35c_graph_control: results/tables/stage35c_graph_control_audit_v1.csv
+  stage35c_target_rescue: results/tables/stage35c_target_specific_rescue_v1.csv
+  stage35c_leakage: results/tables/stage35c_leakage_audit_v1.csv
+  stage35d_pass_fail: results/tables/stage35d_pass_fail_v1.csv
+  stage35d_resource_audit: results/tables/stage35d_perturbation_resource_audit_v1.csv
+  stage35d_leakage: results/tables/stage35d_leakage_audit_v1.csv
+
+outputs:
+  summary: results/tables/stage35e_graph_diagnostics_summary_v1.csv
+  decision_matrix: results/tables/stage35e_stage_decision_matrix_v1.csv
+  claims_audit: results/tables/stage35e_graph_claims_audit_v1.csv
+  pass_fail: results/tables/stage35e_pass_fail_v1.csv
+  report: results/reports/stage35e_graph_diagnostics_synthesis_report_v1.md

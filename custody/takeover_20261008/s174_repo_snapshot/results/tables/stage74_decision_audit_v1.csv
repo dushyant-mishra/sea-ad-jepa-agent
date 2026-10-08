@@ -1,0 +1,2 @@
+directed_graph_organization_pass,ablation_stability_pass,ablation_control_specificity_pass,biological_coherence_pass,candidate_prioritization_pass,causal_validation_pass,prediction_benchmark_updated,interpretation
+True,True,True,True,True,False,False,directed perturbation hypotheses only; not causal knockout validation

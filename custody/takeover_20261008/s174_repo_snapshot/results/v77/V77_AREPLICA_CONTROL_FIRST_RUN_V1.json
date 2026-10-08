@@ -1,0 +1,66 @@
+{
+  "schema": "V77_AREPLICA_CONTROL_STATISTIC_RESULT_V1",
+  "statistic": "UNSUPERVISED_PCA_READOUT__NO_PLANTED_MODULE_SUPPORT_REQUIRED",
+  "n_components": 50,
+  "n_cells": 100000,
+  "n_addresses": 41238,
+  "recoverable": {
+    "z_global": {
+      "per_dim": [
+        0.9827294245680757,
+        0.9824798346898606,
+        0.9820435652468612,
+        0.9811848133296575
+      ],
+      "mean": 0.9821094094586138
+    },
+    "z_query": {
+      "per_dim": [
+        0.9819128623934067,
+        0.9822491993168087
+      ],
+      "mean": 0.9820810308551077
+    },
+    "z_reg_shared": {
+      "per_dim": [
+        0.9822213765139983,
+        0.9825103673354767,
+        0.9817647100817742
+      ],
+      "mean": 0.9821654846437498
+    }
+  },
+  "not_recoverable": {
+    "z_reg_private": {
+      "per_dim": [
+        -0.0010661069140891488,
+        -0.00094708395781673
+      ],
+      "mean": -0.0010065954359529394
+    },
+    "technical_latents[1]": {
+      "per_dim": [
+        -0.0008761747411774046
+      ],
+      "mean": -0.0008761747411774046
+    },
+    "technical_latents[2]": {
+      "per_dim": [
+        -0.0017200480556074371
+      ],
+      "mean": -0.0017200480556074371
+    }
+  },
+  "recoverable_mean": 0.9821186416524904,
+  "not_recoverable_mean": -0.0012009394109125937,
+  "thresholds": {
+    "recoverable_floor": 0.3,
+    "null_band": 0.05,
+    "separation_min": 0.25
+  },
+  "DETECT": true,
+  "REJECT": true,
+  "SEPARATED": true,
+  "VERDICT": "PASS",
+  "ceiling_label": "this is a CONTROL, not a ceiling; it asserts readability and leak-freedom only"
+}

@@ -1,0 +1,57 @@
+{
+  "purpose": "mechanics-only SCENIC+/pycisTarget smoke subset",
+  "not_for_candidate_selection": true,
+  "not_motif_supported_yet": true,
+  "not_validated_regulation": true,
+  "primary_regulators": [
+    "IRF8",
+    "STAT1"
+  ],
+  "secondary_descriptive_regulators": [
+    "ELF1",
+    "RELA",
+    "BACH1",
+    "NRF1",
+    "SPI1",
+    "CEBPA",
+    "STAT3",
+    "MITF"
+  ],
+  "n_regulators_present": 10,
+  "regulators_present": [
+    "IRF8",
+    "STAT1",
+    "ELF1",
+    "RELA",
+    "BACH1",
+    "NRF1",
+    "SPI1",
+    "CEBPA",
+    "STAT3",
+    "MITF"
+  ],
+  "n_tf_target_edges": 100,
+  "n_target_genes": 31,
+  "n_target_genes_with_proximity_peaks": 27,
+  "targets_without_selected_proximity_peaks": [
+    "C1QA",
+    "CTSS",
+    "PLD3",
+    "STAT1"
+  ],
+  "n_selected_peak_gene_links": 60,
+  "outputs": {
+    "edges": "results/tables/stage75e_smoke_tf_target_edges_v1.csv",
+    "peak_gene_links": "results/tables/stage75e_smoke_peak_gene_links_v1.csv",
+    "regions_bed": "results/tables/stage75e_smoke_regions_v1.bed",
+    "tf_list": "results/tables/stage75e_smoke_tf_list_v1.txt",
+    "gene_list": "results/tables/stage75e_smoke_gene_list_v1.txt"
+  },
+  "safety": {
+    "prediction_benchmark_updated": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}

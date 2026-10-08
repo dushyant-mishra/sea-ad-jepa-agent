@@ -1,0 +1,5 @@
+negative_control,run,gap_or_reason
+target_label_shuffle,False,requires frozen graph-JEPA embeddings; gap written
+donor_id_shuffle,False,requires frozen graph-JEPA embeddings; gap written
+graph_shuffle_controls,False,usable graph controls missing; gap written
+feature_permutation,False,no model training run; gap written

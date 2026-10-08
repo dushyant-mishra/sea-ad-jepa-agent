@@ -1,0 +1,68 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "E2_two_dominant_calibrated": {
+      "note": "two dominant coherent balanced-sign factors spanning nearly all addresses, plus a weak tail. Derived, not searched: dichotomising a Gaussian latent at a 10% detection rate attenuates correlation by a measured transfer function, so reaching the real observed median of 0.329 REQUIRES a latent median near 0.65. Scaling eta cannot deliver that because correlation is scale-invariant; only reducing the number of dominant factors can.",
+      "n_factors": 1694,
+      "seconds": 24.4,
+      "latent": {
+        "median_abs_corr": 0.6955685615539551,
+        "frac_abs_gt_0p3": 0.5658306102034011,
+        "var_top10_pc": 0.8742723186405731,
+        "mean_degree": 1696.926,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8762752084315552,
+        "substitute_frac": 0.9996666666666667,
+        "frac_pos_gt_0p3": 0.283135045015005,
+        "frac_neg_lt_m0p3": 0.2826955651883961,
+        "pos_over_neg_ratio": 1.0015546046020072,
+        "mean_signed_corr": 0.0003428272611927241,
+        "t5_within_over_pooled": 0.9929428729868954
+      },
+      "observed": {
+        "median_abs_corr": 0.1395655870437622,
+        "frac_abs_gt_0p3": 0.09305590752473046,
+        "var_top10_pc": 0.33532302533553265,
+        "mean_degree": 279.07466666666664,
+        "largest_community_frac": 0.10333333333333333,
+        "transitivity": 0.6194177733017305,
+        "substitute_frac": 0.007666666666666666,
+        "frac_pos_gt_0p3": 0.09305368456152051,
+        "frac_neg_lt_m0p3": 2.222963209958875e-06,
+        "pos_over_neg_ratio": 41860.200000000004,
+        "mean_signed_corr": 0.0010873572900891304,
+        "t5_within_over_pooled": 0.9981639079197205
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 0.9981639079197205,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}

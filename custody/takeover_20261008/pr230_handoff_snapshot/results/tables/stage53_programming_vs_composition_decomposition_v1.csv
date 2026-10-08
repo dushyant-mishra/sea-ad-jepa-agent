@@ -1,0 +1,4 @@
+question,answer,delta,interpretation
+heterogeneity_improved_over_programming,False,-0.00017009213323881944,heterogeneity adds signal beyond pseudobulk if positive
+composition_explained_signal,False,-0.1049630454591475,composition-only near programming implies composition/proxy contribution
+all_branches_best,True,0.0006641692821707235,combined branches may capture programming plus heterogeneity/composition

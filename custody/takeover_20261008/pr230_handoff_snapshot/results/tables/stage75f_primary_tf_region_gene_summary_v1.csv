@@ -1,0 +1,3 @@
+tf,n_supported_motifs,n_direct_supported_motifs,n_extended_only_supported_motifs,n_supported_target_genes,n_supported_query_peaks,n_supported_screen_regions,n_evidence_rows,max_motif_NES,motif_support_interpretation,validated_regulation,validated_grn_claim,causal_validation_pass,therapeutic_target_claim
+IRF8,1,0,1,6,7,7,7,3.5077968729109004,extended_only,False,False,False,False
+STAT1,2,1,1,18,27,40,46,5.282175557880517,direct_and_or_extended,False,False,False,False

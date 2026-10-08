@@ -1,0 +1,38 @@
+{
+  "cases": {
+    "baseline": {
+      "estimability_agreement": true,
+      "gate_agreement": true,
+      "max_abs_slope_difference": 0.0,
+      "pass": true,
+      "sign_agreement": true
+    },
+    "near_negative": {
+      "estimability_agreement": true,
+      "gate_agreement": true,
+      "max_abs_slope_difference": 0.0,
+      "pass": true,
+      "sign_agreement": true
+    },
+    "near_positive": {
+      "estimability_agreement": true,
+      "gate_agreement": true,
+      "max_abs_slope_difference": 0.0,
+      "pass": true,
+      "sign_agreement": true
+    }
+  },
+  "complete_gate_vector_exact": true,
+  "maximum_per_donor_slope_abs_difference": 0.0,
+  "near_boundary": {
+    "negative": {
+      "independent_gate": false,
+      "production_gate": false
+    },
+    "positive": {
+      "independent_gate": true,
+      "production_gate": true
+    }
+  },
+  "status": "PASS"
+}

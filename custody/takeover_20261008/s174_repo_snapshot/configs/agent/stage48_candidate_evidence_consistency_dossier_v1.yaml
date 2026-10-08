@@ -1,0 +1,33 @@
+stage: Stage48
+version: v1
+stage_name: Stage48_candidate_evidence_consistency_dossier_v1
+description: Candidate evidence consistency and final dossier audit. No new modeling, no rediscovery, no benchmark changes.
+
+inputs:
+  stage36c_genes: results/tables/stage36c_ranked_gene_hypotheses_v1.csv
+  stage36d_shortlist: results/tables/stage36d_candidate_shortlist_v1.csv
+  stage36e_mechanisms: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_candidates: results/tables/stage36e_priority_candidate_registry_v1.csv
+  stage38c_candidates: results/tables/stage38c_candidate_priority_after_external_support_v1.csv
+  stage47_consensus: results/tables/stage47_candidate_gene_consensus_v1.csv
+  stage47_validation_priority: results/tables/stage47_candidate_validation_priority_v1.csv
+  stage47_drug_mapping: results/tables/stage47_druggable_candidate_mapping_v1.csv
+  v2_trajectory: results/tables/v2_1_gse174367_cell_trajectory_scores.csv
+  v2_abeta_microglia: results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage48_input_inventory_v1.csv
+  final_candidate_traceability: results/tables/stage48_final_candidate_traceability_v1.csv
+  candidate_evidence_dossier: results/tables/stage48_candidate_evidence_dossier_v1.csv
+  mechanism_consistency_audit: results/tables/stage48_mechanism_consistency_audit_v1.csv
+  missing_or_ambiguous_evidence: results/tables/stage48_missing_or_ambiguous_evidence_v1.csv
+  rerun_decision: results/tables/stage48_gene_discovery_rerun_decision_v1.csv
+  claim_boundary_audit: results/tables/stage48_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage48_pass_fail_v1.csv
+  dossier_report: results/reports/stage48_candidate_evidence_consistency_dossier_report_v1.md
+  pi_summary: results/reports/stage48_pi_candidate_dossier_summary_v1.md
+  rerun_decision_report: results/reports/stage48_gene_discovery_rerun_decision_v1.md
+  claim_final_check: results/reports/stage48_claim_boundary_final_check_v1.md

@@ -1,0 +1,2 @@
+"tag","declared_tol_logcpm","declared_tol_log2fc","n_features","n_guide_donor_groups","raw_counts_integral","library_size_matches_counts","max_abs_delta_logcpm","n_values_over_tol_logcpm","normalization_reproduced","engagement_rows_compared","max_abs_delta_log2fc","n_over_tol_log2fc","engagement_reproduced","row_coverage_identical","measured_flag_identical","guide_counts_identical","verification_pass"
+"CRISPRa",1e-09,1e-09,19162,2098,TRUE,TRUE,0,0,TRUE,412,5.32907051820075e-15,0,TRUE,TRUE,TRUE,TRUE,TRUE

@@ -1,0 +1,140 @@
+{
+  "schema": "V63_E2_CONTINUOUS_ADJUSTMENT_ESTIMATOR_V1",
+  "date": "2026-09-29",
+  "contract": "results/v63/V63_CONTINUOUS_ADJUSTMENT_ESTIMATOR_CONTRACT_V1.json @ 4f774e0b",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "real_data_read": false
+  },
+  "ablation": null,
+  "config": {
+    "donors": 18,
+    "seeds": 24,
+    "M_MIN": 0.01,
+    "ridge_alpha": 1.0,
+    "k_folds_by_promoter": 5,
+    "features": [
+      "log_distance",
+      "promoter_degree",
+      "promoter_activity",
+      "distal_accessibility",
+      "re_density",
+      "anchor_frequency",
+      "rna_depth_sensitivity",
+      "atac_depth_sensitivity",
+      "log_distance^2",
+      "degree^2",
+      "accessibility^2",
+      "log_distance_x_degree",
+      "log_distance_x_accessibility",
+      "degree_x_anchor_frequency"
+    ]
+  },
+  "arm_medians": {
+    "POS_BIO_1": 0.2282527590455996,
+    "POS_BIO_2": 0.0313988510709398,
+    "NEG_NULL_0": -0.0011321106793287304,
+    "NEG_TECH_1": -0.0004868394138730868,
+    "NEG_TECH_2": 0.011847680963695754,
+    "NEG_GEO_1": 0.0053009971860407635,
+    "NEG_ACC_1": 0.0013580668947496435,
+    "NEG_ANCHOR_1": -0.0059948556385602736,
+    "NEG_DONOR_1": -0.000662220604890248,
+    "NEG_HELDOUT_1": -0.0007829587317880426,
+    "NEG_SEMANTIC_TWIN": 0.2282527590455996
+  },
+  "A_REPRESENTED_NUISANCE_SPECIFICITY": {
+    "families": {
+      "NULL": {
+        "margin": 0.03228487353571551,
+        "lcb95": 0.032057626587968874,
+        "passes_M_MIN": true
+      },
+      "TECH": {
+        "margin": 0.01995560304936889,
+        "lcb95": 0.01948446698612133,
+        "passes_M_MIN": true
+      },
+      "GEO": {
+        "margin": 0.025559206200230163,
+        "lcb95": 0.025168452270884586,
+        "passes_M_MIN": true
+      },
+      "ACC": {
+        "margin": 0.031662530834829526,
+        "lcb95": 0.030310809530394053,
+        "passes_M_MIN": true
+      },
+      "ANCHOR": {
+        "margin": 0.03699971365827357,
+        "lcb95": 0.03577889865122327,
+        "passes_M_MIN": true
+      },
+      "DONOR": {
+        "margin": 0.03201568385318623,
+        "lcb95": 0.03161151973050115,
+        "passes_M_MIN": true
+      }
+    },
+    "all_families_pass": true
+  },
+  "B_IDENTIFIABILITY_BOUNDARY": {
+    "twin_median": 0.2282527590455996,
+    "pos_bio_1_median": 0.2282527590455996,
+    "twin_identical_to_POS_BIO_1": true,
+    "classification": "NON_IDENTIFIABLE_BY_DESIGN",
+    "is_a_gate_failure": false
+  },
+  "SUPPORT_PROOF": {
+    "linked_pairs_scored": 960,
+    "linked_pairs_total": 960,
+    "fraction_of_linked_scored": 1.0,
+    "no_trimming": true,
+    "kish_effective_sample_size": 935.4469599793607,
+    "ess_fraction_of_linked": 0.9744239166451674,
+    "contribution_concentration_top_pct": {
+      "1": 0.013356546922616832,
+      "5": 0.06645690120079352,
+      "10": 0.12814298507709554
+    },
+    "residual_correlation_with_adjustment_vars_on_LINKED": {
+      "log_distance": 0.0024185739028657403,
+      "promoter_degree": 0.001377268981685489,
+      "distal_accessibility": -0.006557565649884446,
+      "anchor_frequency": -0.006205468313299065
+    },
+    "worst_abs_residual_correlation": 0.006557565649884446,
+    "linked_vs_control_SMD_before_adjustment": {
+      "log_distance": -1.963714703609473,
+      "promoter_degree": 0.0,
+      "promoter_activity": 1.8889941860477488e-19,
+      "distal_accessibility": 0.5301395682184421,
+      "re_density": -0.004619717427505609,
+      "anchor_frequency": 0.5118318949722749
+    },
+    "worst_abs_linked_vs_control_SMD": 1.963714703609473,
+    "nuisance_model_out_of_fold_r2": -0.0048756891232172
+  },
+  "ANTI_FALSE_GREEN": {
+    "positive_detectability_lcb95": 0.032057626587968874,
+    "detectable": true,
+    "ordering_POS1_gt_POS2_gt_negatives": true,
+    "twin_identical": true,
+    "heldout_family": {
+      "HELDOUT_NOT_USED_IN_DESIGN": {
+        "margin": 0.032332784651480186,
+        "lcb95": 0.03173560301494896,
+        "generalises_at_M_MIN": true
+      }
+    }
+  },
+  "PREDECLARED_CLASSIFICATION": "A_TECH_CLEARS_WITH_BROAD_COVERAGE",
+  "classification_note": "Strong evidence that the problem was COARSE SUPPORT ADJUSTMENT rather than intrinsic non-identifiability.",
+  "broad_coverage_test": {
+    "rule": "top-10% contribution share < 0.50 AND Kish ESS > 30% of linked pairs",
+    "top10_share": 0.12814298507709554,
+    "ess_fraction": 0.9744239166451674,
+    "broad": true
+  }
+}

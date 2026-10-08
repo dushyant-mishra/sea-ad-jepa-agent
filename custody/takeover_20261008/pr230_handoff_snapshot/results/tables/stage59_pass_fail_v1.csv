@@ -1,0 +1,2 @@
+stage59_run,dataset_audit_written,donor_overlap_audit_written,acquisition_plan_written,raw_h5ad_committed,no_external_validation_claim,stage59_run_pass
+True,True,True,True,False,True,True

@@ -1,0 +1,115 @@
+{
+  "stage": "stage77_tier_a_perturbation_mvp_v1",
+  "purpose": "bounded Tier A one-hop input-space expression delta simulation only",
+  "git_commit": "6acb2ec9af895ec244bb17fede334d3a8420f723",
+  "prior_compatible_perturbation_code_found": {
+    "stage74_directed_audit": "inspected; broader one/two-hop program audit, not reused for F11 MVP",
+    "graph_counterfactual_knockout": "inspected; runs JEPA/pathology heads, deferred to later stages",
+    "selected_method": "transparent one-hop linear fallback"
+  },
+  "input_scale": {
+    "matrix_source": "h5ad_X",
+    "model_input_scale": "existing_processed_h5ad_X_values",
+    "interpretation": "unitless_model_input_space_not_dose_or_fold_change",
+    "dtype": "float32",
+    "storage": "csr_matrix",
+    "shape": [
+      40000,
+      2957
+    ]
+  },
+  "baseline_subset": {
+    "selection_rule": "deterministic first pass over state groups, then donor/state/cell ordered fill",
+    "n_cells": 32,
+    "n_donors": 6,
+    "n_regions": 2,
+    "n_states": 8,
+    "cell_ids": [
+      "cell_175373",
+      "cell_180462",
+      "cell_187074",
+      "cell_201736",
+      "cell_261352",
+      "cell_274368",
+      "cell_370769",
+      "cell_375042",
+      "cell_401299",
+      "cell_437135",
+      "cell_479376",
+      "cell_484102",
+      "cell_510533",
+      "cell_552620",
+      "cell_738025",
+      "cell_750202",
+      "cell_869310",
+      "cell_944745",
+      "cell_983846",
+      "cell_1002809",
+      "cell_1007971",
+      "cell_1011733",
+      "cell_1019647",
+      "cell_1024862",
+      "cell_1027874",
+      "cell_1044616",
+      "cell_1045671",
+      "cell_1067599",
+      "cell_1276205",
+      "cell_1317669",
+      "cell_1337335",
+      "cell_1355277"
+    ]
+  },
+  "edge_counts": {
+    "ELF1": 23,
+    "SPI1": 14,
+    "STAT1": 16
+  },
+  "scenario_count": {
+    "baseline": 1,
+    "perturbation": 12,
+    "total": 13
+  },
+  "detailed_delta_artifact": {
+    "path": "results/tables/stage77_predicted_expression_deltas_v1.csv.gz",
+    "sha256": "9d04ecf268e5e8b3318a766ff3a5a669d29dbde9d746140e7077467663e7734f",
+    "byte_size": 95570,
+    "row_count": 8000,
+    "cell_count": 32,
+    "scenario_count": 13,
+    "affected_gene_count": 26,
+    "regulator_count": 3,
+    "local_detailed_artifact_not_committed_by_default": true
+  },
+  "qc_global": {
+    "scenario_id": "GLOBAL_QC",
+    "no_nan_values": true,
+    "no_infinite_values": true,
+    "feature_order_unchanged": true,
+    "no_changes_outside_selected_tf_targets": true,
+    "baseline_zero_delta": true,
+    "output_values_within_observed_bounds": true,
+    "clipping_count": 2642,
+    "clipping_fraction": 0.33025,
+    "n_values_checked": 8000,
+    "exact_scenario_count": true,
+    "edge_count_validation_pass": true,
+    "normalized_weight_sums_to_one": true,
+    "opposite_direction_check_pass": true,
+    "deterministic_repeat_check_pass": true
+  },
+  "outputs": {
+    "scenario_manifest_csv": "results/tables/stage77_perturbation_scenario_manifest_v1.csv",
+    "edge_weights_csv": "results/tables/stage77_tier_a_edge_weights_v1.csv",
+    "qc_summary_csv": "results/tables/stage77_perturbation_qc_summary_v1.csv",
+    "predicted_expression_deltas_csv_gz": "results/tables/stage77_predicted_expression_deltas_v1.csv.gz",
+    "report_json": "results/reports/stage77_tier_a_perturbation_mvp_v1.json"
+  },
+  "claim_boundaries": {
+    "validated_regulation": false,
+    "validated_grn_claim": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "jepa_embedding_run": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}

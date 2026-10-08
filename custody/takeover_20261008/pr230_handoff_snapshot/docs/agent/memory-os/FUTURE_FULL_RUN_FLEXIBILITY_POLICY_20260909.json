@@ -1,0 +1,49 @@
+{
+  "schema": "FUTURE_FULL_RUN_FLEXIBILITY_POLICY_REVIEW_20260909",
+  "date": "2026-09-09",
+  "status": "DESIGN_REVIEW__NO_EXECUTION_AUTHORITY",
+  "flexible_before_freeze": true,
+  "flexible_after_outcome_or_decision_evidence": false,
+  "flexible_after_production_training_start": false,
+  "current_t0_v20_redo_recommended_now": false,
+  "future_full_run_should_have_wider_prefreeze_design_grids": true,
+  "target_discovery_review": {
+    "qualified_object": "scale-free anchored triplet ordering",
+    "absolute_distance_equality_required": false,
+    "td57b": "24/24 foundational/global cases passed",
+    "td59": "24/24 nearest-half mesoscale cases passed under frozen pilot criterion",
+    "td57c": "nearest-third fine-locality failed/closed as primary target",
+    "td60": "prospective only; waits for lawful full-reader exposure-defined learned teacher"
+  },
+  "v5_review": {
+    "status": "PARTIALLY_HARDENED__NOT_YET_CHEAT_QUALIFIED",
+    "training_authorized": false,
+    "core_principles": [
+      "dataset defines support and estimability",
+      "donor-uniform target mass",
+      "proposal q separate from target p with exact p/q correction",
+      "support/operator/depth routed as observation state, not direct biology",
+      "EMA in successful base-cell presentations",
+      "historical u10-u205 quarantined as training-mechanics-defect inherited"
+    ]
+  },
+  "recommended_new_rules": [
+    "DESIGN_GRID_WIDE_ENOUGH_AUDIT",
+    "BOUNDARY_SELECTION_POLICY",
+    "EXPLORATION_CONFIRMATION_SEPARATION",
+    "FLEXIBLE_PRETRAINING_AUTHORITY",
+    "NO_FLEX_AFTER_OPTIMIZER_START",
+    "MECHANICS_HEALTH_BEFORE_BIOLOGY",
+    "REAL_DATA_ANTI_CHEAT_BEFORE_TRAINING",
+    "NO_TEST_SKIP_GREEN"
+  ],
+  "does_not_authorize": [
+    "T0 redo",
+    "confirmation AT8",
+    "V5 training",
+    "successor u0",
+    "TD60",
+    "D1",
+    "protected populations"
+  ]
+}

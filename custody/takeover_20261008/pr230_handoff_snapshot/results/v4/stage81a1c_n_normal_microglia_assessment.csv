@@ -1,0 +1,2 @@
+dataset_id,study_id,normal_label_verified,adult_only_verified,microglia_cell_count,cataloged_separate_microglia_partition_cell_count,observed_minus_cataloged_cell_count,partition_counts_assumed_equivalent,count_difference_interpretation,donor_count,region_count,primary_role,training_use_prohibited
+b165f033-9dec-468a-9248-802fc6902a74,siletti_human_brain_cell_atlas_v1,True,True,88494,91838,-3344,False,separate official collection partitions and curation scopes; no cell-level equivalence inferred,4,88,normal_microglia_holdout,True

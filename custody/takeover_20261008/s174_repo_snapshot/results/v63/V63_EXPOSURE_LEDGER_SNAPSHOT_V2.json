@@ -1,0 +1,215 @@
+{
+  "schema": "V63_EXPOSURE_LEDGER_SNAPSHOT_V2",
+  "date": "2026-09-29",
+  "ledger_schema": "JEPA_REGULATORY_OUTCOME_EXPOSURE_LEDGER_V2",
+  "supersedes": "JEPA_REGULATORY_OUTCOME_EXPOSURE_LEDGER_V1",
+  "ledger_sha256": "9ab5122b449d777bf30a08f7d25b902e22800071031fe3b814a6ac1c1708f720",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED"
+  },
+  "exposure_states": {
+    "DS010_WANG2025|COHORT|DONOR_DIAGNOSIS_APOE_BRAAK": "INSPECTED",
+    "DS010_WANG2025|METHYLATION|AD_VS_CONTROL_DIFFERENTIAL_METHYLATION": "DEVELOPMENT",
+    "DS010_WANG2025|SNM3C_CONTACT|AD_VS_CONTROL_LOOP_AND_COMPARTMENT": "DEVELOPMENT",
+    "GSE335887_MCQUADE|UNSPECIFIED|PUBLISHED_ABSTRACT_CLAIMS": "ABSTRACT_LEVEL",
+    "KOSOY2022|HIC_CONTACT|MICROGLIA_REGULOME_LOOPS": "STRUCTURAL_ONLY",
+    "NIH_CARD_CATCHING2026|MULTIOME|AGING_ASSOCIATED_GENES_AND_PEAKS": "ABSTRACT_LEVEL",
+    "NIH_CARD_CATCHING2026|MULTIOME|SCHEMA_AND_COUNTS": "STRUCTURAL_ONLY",
+    "NOTT2019|PLACSEQ_CONTACT|CELLTYPE_LOOP_CALLS": "STRUCTURAL_ONLY"
+  },
+  "access_records": [
+    {
+      "source": "NOTT2019_PROCESSED_LOOPS",
+      "access_class": "OPEN_PUBLIC",
+      "evidence_ref": "V63_TASK6;PMC7028213 supplementary Table S5",
+      "note": "Published open-access supplementary table. Open in TERMS; not retrievable in this environment because of a download gate. Obtainability and licence are different questions and only the licence is recorded here.",
+      "scheduled_release": "",
+      "load_bearing_allowed": true
+    },
+    {
+      "source": "NOTT2019_RAW",
+      "access_class": "CONTROLLED_OR_ACCESS_REQUIRED",
+      "evidence_ref": "V63_TASK6;dbGaP phs001373.v2.p1",
+      "note": "Raw PLAC-seq is dbGaP-controlled. Excluded by the no-DUA rule.",
+      "scheduled_release": "",
+      "load_bearing_allowed": false
+    },
+    {
+      "source": "DS010_WANG2025_CONTACT",
+      "access_class": "EMBARGOED",
+      "evidence_ref": "V63_TASK4;GSE308668,GSE308906",
+      "note": "Both SubSeries are private. GEO verbatim: 'currently private and is scheduled to be released on Feb 01, 2027'.",
+      "scheduled_release": "2027-02-01",
+      "load_bearing_allowed": false
+    },
+    {
+      "source": "DS010_COMPANION_MULTIOME",
+      "access_class": "EMBARGOED",
+      "evidence_ref": "V63_TASK5;GSE308668/GSE308906",
+      "note": "The companion 10x Multiome is one of the two private SubSeries; which one is not publicly determinable.",
+      "scheduled_release": "2027-02-01",
+      "load_bearing_allowed": false
+    },
+    {
+      "source": "KOSOY2022_HIC",
+      "access_class": "CONTROLLED_OR_ACCESS_REQUIRED",
+      "evidence_ref": "V59_KOSOY_PROVENANCE;AD Knowledge Portal",
+      "note": "SUPPORTING_ONLY. Rediscovered copies on GitHub, Zenodo or elsewhere do NOT make this open unless the data owners released it under open terms.",
+      "scheduled_release": "",
+      "load_bearing_allowed": false
+    },
+    {
+      "source": "KOSOY2022_ATAC",
+      "access_class": "UNKNOWN",
+      "evidence_ref": "V63_TASK6",
+      "note": "Terms NOT verified. V59 established Kosoy has no NCBI deposit at all, so any open distribution must be located and its licence read before use. UNKNOWN is fail-closed: not usable as load-bearing.",
+      "scheduled_release": "",
+      "load_bearing_allowed": false
+    },
+    {
+      "source": "YANG_GSE173316",
+      "access_class": "OPEN_PUBLIC",
+      "evidence_ref": "V63_TASK6;GSE173316",
+      "note": "Series is public, but the pcHi-C interaction artifact was NOT located in it: the series RAW tar holds only RSEM gene results and CRISPR count matrices. Open terms, artifact unlocated.",
+      "scheduled_release": "",
+      "load_bearing_allowed": true
+    },
+    {
+      "source": "NIH_CARD_CATCHING2026",
+      "access_class": "OPEN_PUBLIC",
+      "evidence_ref": "V63_TASK3;Zenodo 10.5281/zenodo.20834804",
+      "note": "CC-BY 4.0. final_rna_data.h5ad 18.4 GB, final_atac_data.h5ad 14.5 GB. Validation candidate ONLY.",
+      "scheduled_release": "",
+      "load_bearing_allowed": true
+    }
+  ],
+  "load_bearing_gate": {
+    "NOTT2019_PROCESSED_LOOPS": {
+      "source": "NOTT2019_PROCESSED_LOOPS",
+      "allowed": true,
+      "access_class": "OPEN_PUBLIC",
+      "reason": "OPEN_PUBLIC"
+    },
+    "NOTT2019_RAW": {
+      "source": "NOTT2019_RAW",
+      "allowed": false,
+      "access_class": "CONTROLLED_OR_ACCESS_REQUIRED",
+      "reason": "NOT_LOAD_BEARING__CONTROLLED_OR_ACCESS_REQUIRED"
+    },
+    "DS010_WANG2025_CONTACT": {
+      "source": "DS010_WANG2025_CONTACT",
+      "allowed": false,
+      "access_class": "EMBARGOED",
+      "reason": "NOT_LOAD_BEARING__EMBARGOED"
+    },
+    "DS010_COMPANION_MULTIOME": {
+      "source": "DS010_COMPANION_MULTIOME",
+      "allowed": false,
+      "access_class": "EMBARGOED",
+      "reason": "NOT_LOAD_BEARING__EMBARGOED"
+    },
+    "KOSOY2022_HIC": {
+      "source": "KOSOY2022_HIC",
+      "allowed": false,
+      "access_class": "CONTROLLED_OR_ACCESS_REQUIRED",
+      "reason": "NOT_LOAD_BEARING__CONTROLLED_OR_ACCESS_REQUIRED"
+    },
+    "KOSOY2022_ATAC": {
+      "source": "KOSOY2022_ATAC",
+      "allowed": false,
+      "access_class": "UNKNOWN",
+      "reason": "NOT_LOAD_BEARING__UNKNOWN"
+    },
+    "YANG_GSE173316": {
+      "source": "YANG_GSE173316",
+      "allowed": true,
+      "access_class": "OPEN_PUBLIC",
+      "reason": "OPEN_PUBLIC"
+    },
+    "NIH_CARD_CATCHING2026": {
+      "source": "NIH_CARD_CATCHING2026",
+      "allowed": true,
+      "access_class": "OPEN_PUBLIC",
+      "reason": "OPEN_PUBLIC"
+    }
+  },
+  "construction_prohibitions": {
+    "NIH_CARD_CATCHING2026": "VALIDATION CANDIDATE ONLY. Its derived co-accessibility and peak-gene links must NEVER enter E2 construction. Its consensus peak universe may be used only as a measurement-support restriction applied IDENTICALLY to matched linked and unlinked pairs, which is not construction evidence.",
+    "DS010_WANG2025": "Published AD-vs-control loop and methylation outcomes are development-exposed and must not select or weight edges. A controls-only sensitivity arm is permissible; the primary contact geometry must ignore diagnosis labels.",
+    "KOSOY2022_HIC": "Not load-bearing while access-required.",
+    "SEAAD_MORABITO_GSE214979_GSE272082": "Validation-cohort accessibility must not construct the edge set."
+  },
+  "cross_source_rules": {
+    "FULL104|GSE174367_MORABITO": {
+      "determination": "INDEPENDENT_DONORS_BY_CURRENT_AUDIT",
+      "evidence_ref": "PR164"
+    },
+    "FULL104|NIH_CARD": {
+      "determination": "UNKNOWN_REQUIRES_AUDIT",
+      "binding_rule": "no donor-level crosswalk attempted; do not assert independence",
+      "evidence_ref": "V63_TASK9"
+    },
+    "FULL104|SEAAD_PUBLIC_MULTIOME": {
+      "determination": "NOT_INDEPENDENT__SEAAD_IS_FULL104_SOURCE",
+      "evidence_ref": "V50_PR189"
+    },
+    "GSE174367_MORABITO|GSE214979": {
+      "determination": "UNDETERMINED_POSSIBLE_UCI_DONOR_OVERLAP",
+      "binding_rule": "agreement claim must exclude GSE214979 donors 1224,1230,1238 or carry explicit caveat",
+      "evidence_ref": "PR182"
+    },
+    "GSE214979|GSE272082": {
+      "determination": "INDEPENDENT_BY_CURRENT_AUDIT",
+      "evidence_ref": "PR182"
+    },
+    "SILETTI|TIAN_LI": {
+      "determination": "PROBABLE_SHARED_DONORS",
+      "binding_rule": "PROBABLE is strictly weaker than PROVEN. Do not treat these as the same donors and do not treat them as disjoint. Any claim spanning both must state the overlap as unresolved, per the standing rule that donor identity is resolved through stable key layers and never inferred from institution or demographics alone.",
+      "evidence_ref": "V63_TASK9"
+    }
+  },
+  "hidden_quality_sweep": [
+    {
+      "hq_b_orthogonal": 0.0,
+      "NEG2_median": 0.0013157897542398114,
+      "NEG2_q90": 0.002010002275958827,
+      "positive_floor_q10": 0.04328357174005844,
+      "margin": 0.022541153827709427,
+      "NEG2_rejected": true
+    },
+    {
+      "hq_b_orthogonal": 0.4,
+      "NEG2_median": 0.0114713269563207,
+      "NEG2_q90": 0.014042928252243759,
+      "positive_floor_q10": 0.04328357174005844,
+      "margin": 0.022541153827709427,
+      "NEG2_rejected": true
+    },
+    {
+      "hq_b_orthogonal": 0.8,
+      "NEG2_median": 0.022413521651212118,
+      "NEG2_q90": 0.02771220817680585,
+      "positive_floor_q10": 0.04328357174005844,
+      "margin": 0.015571363563252588,
+      "NEG2_rejected": true
+    },
+    {
+      "hq_b_orthogonal": 1.6,
+      "NEG2_median": 0.034315004091595394,
+      "NEG2_q90": 0.04137265154710826,
+      "positive_floor_q10": 0.04328357174005844,
+      "margin": 0.0019109201929501801,
+      "NEG2_rejected": true
+    },
+    {
+      "hq_b_orthogonal": 3.2,
+      "NEG2_median": 0.02983294921392335,
+      "NEG2_q90": 0.03694560351074973,
+      "positive_floor_q10": 0.04328357174005844,
+      "margin": 0.00633796822930871,
+      "NEG2_rejected": true
+    }
+  ],
+  "note": "V1 ledger module is unmodified; this is an additive successor snapshot."
+}

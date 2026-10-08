@@ -1,0 +1,8 @@
+safety_field,pass
+no_model_training_run,True
+no_external_validation_claim,True
+no_causal_regulatory_claim,True
+no_therapeutic_claim,True
+no_gene_ablation_claim,True
+no_validated_tf_peak_gene_grn_claim,True
+raw_data_not_committed,True

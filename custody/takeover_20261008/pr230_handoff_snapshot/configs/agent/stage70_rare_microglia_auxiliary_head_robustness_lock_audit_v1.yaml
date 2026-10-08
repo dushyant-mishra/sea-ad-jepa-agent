@@ -1,0 +1,57 @@
+stage: stage70_rare_microglia_auxiliary_head_robustness_lock_audit_v1
+description: >
+  Strict robustness and lock-candidate audit for the frozen Stage69 rare-microglia
+  auxiliary-head signal. This stage reproduces Stage69 exactly, then tests the
+  frozen rare_aux_pls4_w0p2 setup across repeated donor-held-out folds,
+  stronger controls, bootstrap deltas, target-level guards, and predeclared
+  auxiliary target ablations. No new external validation or candidate selection.
+
+references:
+  stage27c_locked_mean_pooled_oof_spearman: 0.3267024400121495
+  stage41c_credible_unlocked_mean_pooled_oof_spearman: 0.36808747595423713
+  stage69_best_condition: rare_aux_pls4_w0p2
+  stage69_best_mean_pooled_oof_spearman: 0.3591037979163019
+  material_rescue_threshold: 0.3317
+  frozen_latent_components: 4
+  frozen_aux_weight: 0.20
+  exact_reproduction_tolerance: 0.000001
+  robustness_seeds: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  n_splits: 5
+  bootstrap_iterations: 1000
+  random_seed: 7
+
+inputs:
+  stage69_script: scripts/run_stage69_rare_microglia_auxiliary_head_jepa_audit_v1.py
+  stage69_pass_fail: results/tables/stage69_pass_fail_v1.csv
+  stage69_mean_metrics: results/tables/stage69_mean_metrics_v1.csv
+  stage69_target_metrics: results/tables/stage69_target_metrics_v1.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage70_input_inventory_v1.csv
+  exact_reproduction: results/tables/stage70_exact_reproduction_v1.csv
+  repeated_seed_summary: results/tables/stage70_repeated_seed_summary_v1.csv
+  repeated_seed_target_metrics: results/tables/stage70_repeated_seed_target_metrics_v1.csv
+  negative_control_results: results/tables/stage70_negative_control_results_v1.csv
+  ablation_results: results/tables/stage70_auxiliary_ablation_results_v1.csv
+  bootstrap_delta_ci: results/tables/stage70_bootstrap_delta_ci_v1.csv
+  target_guard_summary: results/tables/stage70_target_guard_summary_v1.csv
+  lock_gate_decision: results/tables/stage70_lock_gate_decision_v1.csv
+  claim_boundary_audit: results/tables/stage70_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage70_pass_fail_v1.csv
+  report: results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md
+  pi_summary: results/reports/stage70_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage70_claim_boundary_final_check_v1.md
+
+safety:
+  frozen_stage69_setup: true
+  donor_heldout_only: true
+  no_new_feature_tuning: true
+  no_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_new_microglia_subtype_claim: true

@@ -1,0 +1,62 @@
+{
+  "schema": "V5_FULL104_REGRESSION_SUITE_RESULT_V1",
+  "date": "2026-09-20",
+  "git_head": "8c1feae69ad5ef3783b4b158e00f1d8ee37c7cd2",
+  "worktree": "clean detached worktree at that commit",
+  "interpreter": "C:/Users/dushy/anaconda3/envs/sea-ad-jepa/python.exe",
+  "dll_directory_on_path": true,
+  "command": "pytest -p no:randomly --strict-markers -rsf --tb=no -q tests/ (5 uncollectable files ignored)",
+  "result": {
+    "passed": 2718,
+    "failed": 63,
+    "skipped": 0,
+    "subtests_passed": 4,
+    "wall_clock_seconds": 386.32
+  },
+  "zero_skips": true,
+  "v5_full104_failures": 0,
+  "uncollectable_files": [
+    {"path": "tests/test_contextual_target_f1_preflight_core_v1.py",
+     "cause": "ModuleNotFoundError: 'resource' (POSIX-only stdlib module; unavailable on Windows)",
+     "preexisting": true},
+    {"path": "tests/test_teacher_student_v5_support_geometry_v1.py",
+     "cause": "ImportError: max_fixed_visible_for_support absent from sea_ad_jepa.v5.support_geometry_v1",
+     "preexisting": true,
+     "introduced_by": "1db33ff0 'reconcile: restore current V5 data-first tree onto consolidated main', which dropped the function added in c6af0c58 while keeping the test",
+     "note": "a real code/test drift, outside the scope of this work and not repaired here"},
+    {"path": "tests/v4/test_stage81a2r_authoritative_mapping.py",
+     "cause": "ModuleNotFoundError: sea_ad_jepa.v4.gene_identity_authority", "preexisting": true},
+    {"path": "tests/v4/test_stage81a3_fbsdq_outputs.py",
+     "cause": "FileNotFoundError: V4 output artifacts absent on this machine", "preexisting": true},
+    {"path": "tests/v4/test_stage81a3_prrc_outputs.py",
+     "cause": "FileNotFoundError: V4 output artifacts absent on this machine", "preexisting": true}
+  ],
+  "failure_attribution": {
+    "method": "every failure rerun at baseline fb3a28a77c17b136ab59cff29efee20b0390beb0, the head before any change in this session",
+    "tests_v4": {"at_head": 53, "at_baseline": 53, "verdict": "IDENTICAL__PREEXISTING"},
+    "non_v4": {
+      "at_head": 9,
+      "at_baseline": 9,
+      "verdict": "IDENTICAL__PREEXISTING",
+      "modules": ["tests/test_d1_resampling_engine_v2.py",
+                  "tests/test_peer_continuity_entrypoints_v1.py",
+                  "tests/test_teacher_student_integration_freeze_v1.py",
+                  "tests/test_teacher_student_integration_freeze_v2.py",
+                  "tests/test_teacher_student_integration_freeze_v3.py"]
+    },
+    "verifier_f1": {
+      "at_head": 1,
+      "at_baseline": "collection error, same cause",
+      "cause": "ModuleNotFoundError: 'resource' (POSIX-only)",
+      "verdict": "PREEXISTING"
+    },
+    "new_failures_introduced": 0
+  },
+  "newly_added_suites_all_green": [
+    {"path": "tests/test_v5_dense_ridge_backend_equivalence_v1.py", "passed": 20, "skipped": 0},
+    {"path": "tests/test_v5_full104_query_scalar_leakage_v1.py", "passed": 3, "skipped": 0}
+  ],
+  "terminal_masking_opened": false,
+  "target_panel_ladder_executed": false,
+  "training_authorized": false
+}

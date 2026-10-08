@@ -1,0 +1,168 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "H1_dom_cover82": {
+      "note": "G1 with dominant factors covering 82% of addresses instead of 99%. Real data leaves about 18% of highly variable genes OUTSIDE the giant component; factors spanning everything cannot reproduce that.",
+      "n_factors": 724,
+      "seconds": 26.2,
+      "latent": {
+        "median_abs_corr": 0.6166675686836243,
+        "frac_abs_gt_0p3": 0.5707111259308658,
+        "var_top10_pc": 0.8947214441144659,
+        "mean_degree": 1711.5626666666667,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8564453805211254,
+        "substitute_frac": 0.994,
+        "frac_pos_gt_0p3": 0.28526731132599753,
+        "frac_neg_lt_m0p3": 0.2854438146048683,
+        "pos_over_neg_ratio": 0.9993816531666132,
+        "mean_signed_corr": -0.00012188809341751039,
+        "t5_within_over_pooled": 0.9969529022506198
+      },
+      "observed": {
+        "median_abs_corr": 0.35276639461517334,
+        "frac_abs_gt_0p3": 0.5732081805046126,
+        "var_top10_pc": 0.6537282996640381,
+        "mean_degree": 1719.0513333333333,
+        "largest_community_frac": 0.9833333333333333,
+        "transitivity": 0.7750013833601317,
+        "substitute_frac": 0.23366666666666666,
+        "frac_pos_gt_0p3": 0.3008465043903523,
+        "frac_neg_lt_m0p3": 0.2723616761142603,
+        "pos_over_neg_ratio": 1.1045845681465924,
+        "mean_signed_corr": 0.02081676945090294,
+        "t5_within_over_pooled": 1.0002270165427656
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": true,
+        "var_top10_pc": false,
+        "mean_degree": true,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": true,
+        "frac_neg_lt_m0p3": true,
+        "pos_over_neg_ratio": true,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 5,
+      "n_targets": 11,
+      "t5_observed": 1.0002270165427656,
+      "verdict": "REJECT"
+    },
+    "H2_dom_cover70": {
+      "note": "as H1 with 70% dominant coverage",
+      "n_factors": 724,
+      "seconds": 25.2,
+      "latent": {
+        "median_abs_corr": 0.6247095465660095,
+        "frac_abs_gt_0p3": 0.5870572413026565,
+        "var_top10_pc": 0.8995515950520834,
+        "mean_degree": 1760.5846666666666,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8498115789404749,
+        "substitute_frac": 0.9923333333333333,
+        "frac_pos_gt_0p3": 0.29352717572524173,
+        "frac_neg_lt_m0p3": 0.2935300655774147,
+        "pos_over_neg_ratio": 0.9999901548341658,
+        "mean_signed_corr": 1.2721179700747598e-05,
+        "t5_within_over_pooled": 0.9988106525080687
+      },
+      "observed": {
+        "median_abs_corr": 0.35018351674079895,
+        "frac_abs_gt_0p3": 0.5875196176503279,
+        "var_top10_pc": 0.6355413004557292,
+        "mean_degree": 1761.9713333333334,
+        "largest_community_frac": 0.9703333333333334,
+        "transitivity": 0.7395353670804459,
+        "substitute_frac": 0.20866666666666667,
+        "frac_pos_gt_0p3": 0.3023450038901856,
+        "frac_neg_lt_m0p3": 0.28517461376014225,
+        "pos_over_neg_ratio": 1.0602100934008285,
+        "mean_signed_corr": 0.018208444118499756,
+        "t5_within_over_pooled": 1.0000226662634966
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": true,
+        "var_top10_pc": false,
+        "mean_degree": true,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": true,
+        "frac_pos_gt_0p3": true,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 4,
+      "n_targets": 11,
+      "t5_observed": 1.0000226662634966,
+      "verdict": "REJECT"
+    },
+    "H3_dom_cover82_richmid": {
+      "note": "H1 with a richer mid band, aiming at rank and community jointly",
+      "n_factors": 913,
+      "seconds": 23.5,
+      "latent": {
+        "median_abs_corr": 0.5255411863327026,
+        "frac_abs_gt_0p3": 0.557352895409581,
+        "var_top10_pc": 0.82056884765625,
+        "mean_degree": 1671.5013333333334,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.8731307843351286,
+        "substitute_frac": 0.9343333333333333,
+        "frac_pos_gt_0p3": 0.2786384350339002,
+        "frac_neg_lt_m0p3": 0.27871446037568076,
+        "pos_over_neg_ratio": 0.9997272285704943,
+        "mean_signed_corr": -4.1816310840658844e-05,
+        "t5_within_over_pooled": 1.0014786010576244
+      },
+      "observed": {
+        "median_abs_corr": 0.28801266849040985,
+        "frac_abs_gt_0p3": 0.47916394353673447,
+        "var_top10_pc": 0.5552182165349758,
+        "mean_degree": 1437.0126666666667,
+        "largest_community_frac": 0.953,
+        "transitivity": 0.768552617204419,
+        "substitute_frac": 0.024,
+        "frac_pos_gt_0p3": 0.25813404468156054,
+        "frac_neg_lt_m0p3": 0.22102989885517393,
+        "pos_over_neg_ratio": 1.1678693516966157,
+        "mean_signed_corr": 0.01705380342900753,
+        "t5_within_over_pooled": 1.0011466922196544
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.0011466922196544,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}

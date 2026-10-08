@@ -1,0 +1,141 @@
+{
+  "schema": "BENCHMARK_TRAINING_OVERLAP_V1",
+  "training_corpus": {
+    "pass1_npz": "full104_pass1_v2_selection_row_keyed.npz",
+    "pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "donors": 104,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "source_families": [
+      "HVS",
+      "NPH52",
+      "SEA-AD"
+    ]
+  },
+  "axis_semantics": {
+    "study_accession": "must be ZERO",
+    "donor_cell_line": "must be ZERO",
+    "cell_barcode": "must be ZERO",
+    "gene_feature_space": "must be HIGH",
+    "expression_support": "must be HIGH"
+  },
+  "study_accession_overlap": {
+    "training_source_families": [
+      "HVS",
+      "NPH52",
+      "SEA-AD"
+    ],
+    "benchmark_accessions": [
+      "GSE301119",
+      "GSE311359",
+      "GSE293118",
+      "GSE254205",
+      "GSE241858",
+      "GSE240609",
+      "GSE178317",
+      "GSE175721"
+    ],
+    "intersection": [],
+    "basis": "training families are HVS, NPH52 and SEA-AD; no benchmark accession appears among them"
+  },
+  "donor_cell_line_overlap": "NOT_CHECKED",
+  "cell_barcode_overlap": "NOT_CHECKED",
+  "target_sets": {
+    "GSE178317": {
+      "targets": 39,
+      "in_address_space": 39,
+      "absent_symbols": [],
+      "in_common_core": 35,
+      "detected_in_all_donors": 29,
+      "detected_in_at_least_100_donors": 34,
+      "detected_in_zero_donors": 0,
+      "unobserved_symbols": [],
+      "median_donors_detected": 104.0,
+      "min_donors_detected": 63,
+      "median_cells_expressing": 428411.0,
+      "min_cells_expressing": 8763
+    },
+    "CRISPRbrain_all": {
+      "targets": 352,
+      "in_address_space": 344,
+      "absent_symbols": [
+        "ATP5A1",
+        "ATP5B",
+        "C6orf203",
+        "FAM57B",
+        "NDUFAF6",
+        "RNF165",
+        "SLC2A3",
+        "WDR66"
+      ],
+      "in_common_core": 317,
+      "detected_in_all_donors": 246,
+      "detected_in_at_least_100_donors": 297,
+      "detected_in_zero_donors": 0,
+      "unobserved_symbols": [],
+      "median_donors_detected": 104.0,
+      "min_donors_detected": 17,
+      "median_cells_expressing": 273039.0,
+      "min_cells_expressing": 311
+    },
+    "CRISPRbrain_neuron": {
+      "targets": 284,
+      "in_address_space": 276,
+      "absent_symbols": [
+        "ATP5A1",
+        "ATP5B",
+        "C6orf203",
+        "FAM57B",
+        "NDUFAF6",
+        "RNF165",
+        "SLC2A3",
+        "WDR66"
+      ],
+      "in_common_core": 255,
+      "detected_in_all_donors": 197,
+      "detected_in_at_least_100_donors": 238,
+      "detected_in_zero_donors": 0,
+      "unobserved_symbols": [],
+      "median_donors_detected": 104.0,
+      "min_donors_detected": 17,
+      "median_cells_expressing": 266514.5,
+      "min_cells_expressing": 311
+    },
+    "CRISPRbrain_other": {
+      "targets": 27,
+      "in_address_space": 25,
+      "absent_symbols": [
+        "ATP5A1",
+        "ATP5B"
+      ],
+      "in_common_core": 24,
+      "detected_in_all_donors": 18,
+      "detected_in_at_least_100_donors": 23,
+      "detected_in_zero_donors": 0,
+      "unobserved_symbols": [],
+      "median_donors_detected": 104.0,
+      "min_donors_detected": 63,
+      "median_cells_expressing": 211874.0,
+      "min_cells_expressing": 56904
+    },
+    "CRISPRbrain_microglia": {
+      "targets": 70,
+      "in_address_space": 70,
+      "absent_symbols": [],
+      "in_common_core": 64,
+      "detected_in_all_donors": 50,
+      "detected_in_at_least_100_donors": 61,
+      "detected_in_zero_donors": 0,
+      "unobserved_symbols": [],
+      "median_donors_detected": 104.0,
+      "min_donors_detected": 63,
+      "median_cells_expressing": 359246.0,
+      "min_cells_expressing": 8763
+    }
+  },
+  "filtering_applied": "none; this producer reports coverage only",
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false
+}

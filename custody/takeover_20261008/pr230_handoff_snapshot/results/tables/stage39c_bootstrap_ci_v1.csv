@@ -1,0 +1,2 @@
+condition,n_bootstrap,bootstrap_mean,ci_lower_95,ci_upper_95
+rank_int_module_pca_ridge,500,0.33886499638236506,0.2384706378799647,0.4378608499288575

@@ -1,0 +1,86 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V3",
+  "date": "2026-09-30",
+  "supersedes_for_current_status": "results/v64/V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V2.json",
+  "audited_claude_head": "dc30caede6369a31df3098205db11c83381784e5",
+  "verdict": "SUBSTRATE_STRUCTURAL_CUSTODY_PARTIALLY_ACCEPTED__T5_REHASH_AND_AVAILABILITY_REMAIN",
+  "closed": {
+    "S63_S64_permutation": {
+      "status": "ACCEPTED",
+      "note": "array-content and .npy-file digests are explicit; bijection/inverse checks and obs-namespace re-derivation all pass"
+    },
+    "S66_interval_count": {
+      "status": "CLOSED_CONTRACT_COUNTING_DEFECT",
+      "correct_unique_intervals": 32153,
+      "old_contract_count": 32174,
+      "decomposition": {
+        "phase_a_unique": 32117,
+        "enumeration_rows": 57,
+        "enumeration_unique": 54,
+        "enumeration_duplicates": 3,
+        "enumeration_unique_already_in_phase_a": 18
+      },
+      "ci_run": 36806250372
+    },
+    "T6_T7_referential_integrity": {
+      "status": "CLOSED",
+      "enum_artifact_sha256": "4b78ef131b06f69729ca92db436ffaad3fe8f966b8d0e62e9771dc7d2c1fc619",
+      "t7_artifact_sha256": "82045d8fe26c46ac03462adffeff1dca266465e44384b9e97bf58f32b4a2f0a2",
+      "t7_records": 21,
+      "r3_enumeration_only_rows": 17,
+      "unresolved_references": 0,
+      "semantic_mismatches": 0,
+      "ci_run": 36806452858
+    },
+    "donor_metacell_reconciliation": {
+      "donors_completed": 282,
+      "qualifying_donors": 282,
+      "metacells": 3231,
+      "metacell_ids_globally_disjoint": true
+    }
+  },
+  "remaining_blockers": {
+    "S65_T5_NOT_MATERIALISED": {
+      "status": "OPEN_BLOCKING",
+      "audit_spec": "results/v64/V64_PHASE_B_T5_INDEPENDENT_AUDIT_SPEC_V1.json",
+      "required_fields": [
+        "promoter_activity",
+        "distal_accessibility",
+        "n_assigned_peaks",
+        "rna_depth_sensitivity",
+        "atac_depth_sensitivity",
+        "n_metacells_contributing",
+        "availability_state"
+      ],
+      "constraint": "derive from frozen T2-T4 only; do not return to RNA/ATAC matrices and do not compute RNA×ATAC correspondence"
+    },
+    "S67_CURRENT_SHARD_BYTES_NOT_REHASHED": {
+      "status": "OPEN_BLOCKING",
+      "requirement": "recompute SHA-256 of every current shard .npz, require equality to receipt and custody, and construct aggregate binding from the recomputed digests"
+    },
+    "explicit_availability_representation": {
+      "status": "OPEN_BLOCKING_SCHEMA_CLOSEOUT",
+      "authority": "V64_PHASE_B_DOWNSTREAM_NULL_CONTRACT_V3 SECTION_5_MISSINGNESS",
+      "rule": "NOT_MEASURED != 0; availability must be carried inside the artifact consumer reads",
+      "frozen_states": [
+        "MEASURED_AND_SUPPORTS",
+        "MEASURED_AND_DOES_NOT_SUPPORT",
+        "NOT_MEASURED",
+        "UNRESOLVED"
+      ],
+      "note": "Sparse absence alone cannot be the only undocumented availability convention in the final accepted substrate."
+    }
+  },
+  "accepted_scope": {
+    "substrate_measurements_materialized": true,
+    "correspondence_opened": false,
+    "stage4_authorized": false,
+    "training": "OFF"
+  },
+  "next_required_action": [
+    "Materialize T5 from the frozen T2-T4 bytes under the existing formulas.",
+    "Carry explicit availability/missingness state in the closeout artifact.",
+    "Rehash all current shard bytes and bind those recomputed hashes.",
+    "Stop again for independent audit before Stage 4."
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "jepa_v60_corces_public_substrate_facts_v1",
+  "date": "2026-09-28",
+  "accession": "GSE147672",
+  "access": "OPEN_PUBLIC_NO_DUA_NO_GATE (GEO FTP)",
+  "genome_build": "hg38",
+  "cluster24_microglia_idr_peaks": {
+    "file": "Cluster24.idr.optimal.narrowPeak.gz",
+    "sha256_of_member": "b298a1b4c0cb4cb07f16365c26c984342b8dd1bea77cdf0e59082619616aab8a",
+    "archive": "GSE147672_scATAC_idr_peaks.tar.gz",
+    "archive_sha256": "bc3475e35f32817ed44898e812ae8cf33b29ef421a470a9e51e5881b2a95d1f5",
+    "summit_level_rows": 205547,
+    "UNIQUE_PEAK_INTERVALS": 54330,
+    "duplication_explained": "zero verbatim duplicate lines; the same interval recurs with different summit offsets and signal/p/q values, i.e. multiple summits per peak. The cis-element unit is the INTERVAL, so 54,330 is the number to use, not 205,547.",
+    "format": "narrowPeak, 10 columns",
+    "chromosomes": 24
+  },
+  "scatac_substrate": {
+    "file": "GSE147672_200324_...barcodes.tsv.gz",
+    "sha256": "38a1375ba855e6d4e3bec4bcb94d6c3ab1c317b7991cde192d5fc710bf3fb17d",
+    "cells": 70631,
+    "distinct_samples": 10,
+    "DISTINCT_DONOR_TOKENS": 6,
+    "donor_tokens": [
+      "03",
+      "04",
+      "06",
+      "09",
+      "11",
+      "14"
+    ],
+    "regions": [
+      "CAUD",
+      "HIPP",
+      "MDFG",
+      "PARL",
+      "SMTG",
+      "SUNI"
+    ],
+    "cells_per_sample": {
+      "scATAC_CTRL_CAUD_06_0615": 10016,
+      "scATAC_CTRL_CAUD_09_1589": 8492,
+      "scATAC_CTRL_CAUD_14_1018": 7225,
+      "scATAC_CTRL_HIPP_11_0393": 7387,
+      "scATAC_CTRL_HIPP_14_0586": 8872,
+      "scATAC_CTRL_MDFG_09_35": 5641,
+      "scATAC_CTRL_PARL_09_1589": 5619,
+      "scATAC_CTRL_SMTG_09_1589": 6097,
+      "scATAC_CTRL_SUNI_03_39": 7560,
+      "scATAC_CTRL_SUNI_04_38": 3722
+    },
+    "header_caveat": "the file has 8 header names and 9 data fields: the first column is an unnamed R rownames/barcode column, so a naive header index is off by one and reads binarizedCountSums as the sample. Corrected here."
+  },
+  "per_cell_technical_qc_available": {
+    "fields": [
+      "readsInPeaks",
+      "totalReads",
+      "FRIP",
+      "fragmentsPerCell",
+      "tssEnrichment",
+      "countSums",
+      "binarizedCountSums"
+    ],
+    "FRIP_median": 0.4059,
+    "tssEnrichment_median": 7.7322,
+    "fragmentsPerCell_median": 13033.0,
+    "use": "MEASURED global technical nuisance for the synthetic benchmark"
+  },
+  "STILL_OPEN": {
+    "cluster24_cell_count": "NOT OBTAINED - needs Supplementary Data Set 2",
+    "hichip_vs_coaccessibility_rows": "NOT OBTAINED - needs Supplementary Data Set 9",
+    "why": "PMC gates supplementary downloads behind a proof-of-work anti-bot challenge (cloudpmc-viewer-pow, difficulty 4). I declined to defeat it. Europe PMC's supplementaryFiles API returns only a zero-byte figure for this article. These files are PUBLIC and trivially downloadable from a browser - the block is an anti-bot gate, not an access restriction."
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "molecular_outcomes_opened": false,
+    "target_overlap_computed": false
+  }
+}

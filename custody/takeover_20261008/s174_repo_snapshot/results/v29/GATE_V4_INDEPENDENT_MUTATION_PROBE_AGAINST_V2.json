@@ -1,0 +1,226 @@
+{
+  "scope": "original pinned v4 only; receipt mutations; no Monte Carlo",
+  "producer_sha256": "648dee5850670c3587e3f8bbe346003ec1d4c08d20fdd54f724a4b959d71eab6",
+  "receipt_sha256": "09f66e2049fad95235d10343daaaaec38380c1266519b691d964e03c10d12ea2",
+  "baseline_pass": true,
+  "results": [
+    {
+      "case": "empty_regimes",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "regimes [] != required ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap', 'D_untuned_verysparse']",
+        "ZERO regime records: a verdict over empty containers is vacuous",
+        "calibration cell 'A_tuning_sparse|NEG_CAP' is MISSING from the census",
+        "calibration cell 'A_tuning_sparse|NEG_NOCAP' is MISSING from the census",
+        "calibration cell 'A_tuning_sparse|POS_AMP' is MISSING from the census"
+      ]
+    },
+    {
+      "case": "partial_regimes",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "regimes ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap'] != required ['A_tuning_sparse', 'B_tuning_dense', 'C_untuned_highcap', 'D_untuned_verysparse']",
+        "calibration cell 'D_untuned_verysparse|NEG_CAP' is MISSING from the census",
+        "calibration cell 'D_untuned_verysparse|NEG_NOCAP' is MISSING from the census",
+        "calibration cell 'D_untuned_verysparse|POS_AMP' is MISSING from the census",
+        "calibration cell 'D_untuned_verysparse|POS_COMP' is MISSING from the census"
+      ]
+    },
+    {
+      "case": "substituted_calibration_key",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "calibration key 'FAKE_REGIME|POS_COMP' is not a frozen regime|arm cell",
+        "calibration cell 'A_tuning_sparse|POS_COMP' is MISSING from the census",
+        "receipt reports calibration_complete=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "missing_arm",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse: arms ['NEG_NOCAP', 'POS_AMP', 'POS_COMP'] != ['NEG_CAP', 'NEG_NOCAP', 'POS_AMP', 'POS_COMP']",
+        "calibration cell 'A_tuning_sparse|NEG_CAP' is MISSING from the census",
+        "receipt reports calibration_complete=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "wrong_pos_comp_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_COMP|composition_only: stored qualifies=False contradicts the frozen rule (p=0.01 <= 0.05 and donors=1 >= 0.6667) which gives True",
+        "A_tuning_sparse|POS_COMP: channel pattern (True, False, False) != required (True, True, False)",
+        "receipt reports arms_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "wrong_pos_amp_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_AMP|amplitude_only: stored qualifies=False contradicts the frozen rule (p=0.01 <= 0.05 and donors=1 >= 0.6667) which gives True",
+        "A_tuning_sparse|POS_AMP: channel pattern (True, False, False) != required (True, False, True)",
+        "receipt reports arms_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "inconsistent_calibration_counts",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "calibration A_tuning_sparse|NEG_CAP: datasets_requested 121 != the original-v4 120 for a negative cell",
+        "calibration A_tuning_sparse|NEG_CAP: complete=True contradicts datasets_used 120 vs requested 121",
+        "receipt reports calibration_complete=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "tampered_stored_rate",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "calibration A_tuning_sparse|NEG_CAP: stored rate 0.99 != recomputed 6/120 = 0.050000"
+      ]
+    },
+    {
+      "case": "missing_cp_endpoint",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "calibration A_tuning_sparse|NEG_CAP: binomial_upper95 None absent or not finite"
+      ]
+    },
+    {
+      "case": "missing_calibration_arm_type",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "calibration A_tuning_sparse|POS_AMP: required_qualification None absent or not boolean; its absence must not default an arm into the power numerator",
+        "receipt reports calibration_complete=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "missing_model_family",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: model_families None != ['negative_binomial']; the negative-binomial model family is not evidenced",
+        "receipt reports no_silent_model_fallback=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "poisson_disguised_as_nb",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: model_families ['poisson'] != ['negative_binomial']; the negative-binomial model family is not evidenced",
+        "receipt reports no_silent_model_fallback=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "missing_fallback_counter",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: poisson_fallbacks counter ABSENT; a missing counter is not proof of zero fallbacks",
+        "receipt reports no_silent_model_fallback=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "zero_requested_shams",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: sham_draws_requested 0 != 99"
+      ]
+    },
+    {
+      "case": "string_boolean",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_COMP|full: qualifies 'true' is type str, not a JSON boolean; a truthy string must not pass as True",
+        "A_tuning_sparse|POS_COMP: channel pattern (None, True, False) != required (True, True, False)",
+        "receipt reports arms_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "infinite_p",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_AMP|full: sham_null_p inf is not finite within [0.01, 1]"
+      ]
+    },
+    {
+      "case": "p_qualification_contradiction",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_COMP|full: stored qualifies=True contradicts the frozen rule (p=0.99 <= 0.05 and donors=1 >= 0.6667) which gives False"
+      ]
+    },
+    {
+      "case": "missing_nonlinear_amplitude_diagnostic",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|POS_COMP: amplitude_leakage diagnostic ABSENT"
+      ]
+    },
+    {
+      "case": "contradictory_overall_gate",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "receipt reports gate_pass=False but independent recomputation gives True; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "missing_channel",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: channels ['composition_only', 'full'] != ['amplitude_only', 'composition_only', 'full']",
+        "receipt reports arms_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "positive_fallback_counter",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "A_tuning_sparse|NEG_CAP: 1 Poisson fallbacks",
+        "receipt reports no_silent_model_fallback=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict",
+        "receipt reports gate_pass=True but independent recomputation gives False; an internally contradictory receipt is not a clean verdict"
+      ]
+    },
+    {
+      "case": "forged_producer_sha_argument",
+      "status": "REJECTED_INTENDED_REASON",
+      "failure_reasons": [
+        "producer digest mismatch: the supplied script hashes to 0000000000000000000000000000000000000000000000000000000000000000, the receipt names 648dee5850670c3587e3f8bbe346003ec1d4c08d20fdd54f724a4b959d71eab6. The receipt was not produced by this script."
+      ]
+    },
+    {
+      "case": "duplicate_raw_json_key",
+      "status": "REJECTED",
+      "exit_code": 1,
+      "note": "mutated-file SHA supplied to isolate duplicate parser check; not proof of source authenticity",
+      "stdout_tail": "RAW JSON REJECTED: duplicate JSON key 'A_tuning_sparse': json.load would silently keep the last one, hiding a second regime, arm or calibration cell\n\n  VALIDATED_PASS: False\n",
+      "stderr_tail": ""
+    },
+    {
+      "case": "cross_process_seed_stability",
+      "status": "PASS",
+      "note": "PASS means no cross-process seed divergence was detected",
+      "values": [
+        "[34397089, 718330363]",
+        "[34397089, 718330363]"
+      ]
+    }
+  ],
+  "tally": {
+    "REJECTED_INTENDED_REASON": 22,
+    "REJECTED": 1,
+    "REJECTED_WRONG_REASON": 0,
+    "FALSE_GREEN": 0,
+    "PASS": 1,
+    "FAIL_SEED_DRIFT": 0,
+    "ERROR": 0
+  }
+}

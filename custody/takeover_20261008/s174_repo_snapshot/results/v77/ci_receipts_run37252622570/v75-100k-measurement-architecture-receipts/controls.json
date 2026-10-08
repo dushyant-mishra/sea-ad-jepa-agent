@@ -1,0 +1,97 @@
+{
+  "schema": "V75_CONTROL_TWINS_RECEIPT_V1",
+  "status": "SYNTHETIC_CONTROL_MATERIALIZED__NO_MODEL_QUALIFICATION",
+  "truth_seed": 7302,
+  "n_cells_per_world": 100000,
+  "shard_size": 10000,
+  "worlds": {
+    "measurement_null_a": {
+      "root": "/tmp/v75_100k/controls/measurement_null_a",
+      "truth_manifest": "/tmp/v75_100k/controls/measurement_null_a/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "03c2af7c59869e1756be87999ded66533bae5811b51bf84cf55f5414c8d0015f",
+      "rna_manifest": "/tmp/v75_100k/controls/measurement_null_a/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "1ea7b40c3bffea98e64409ddba3c2e977907b0f2ba544bda0da682a0fd473bd0",
+      "multiome_manifest": "/tmp/v75_100k/controls/measurement_null_a/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "5ef967b54f920f34cb040f3e4c3b454594890989eff87c65cb03e5d249ff0849",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "measurement_null_b": {
+      "root": "/tmp/v75_100k/controls/measurement_null_b",
+      "truth_manifest": "/tmp/v75_100k/controls/measurement_null_b/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "03c2af7c59869e1756be87999ded66533bae5811b51bf84cf55f5414c8d0015f",
+      "rna_manifest": "/tmp/v75_100k/controls/measurement_null_b/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "218022a1cbf2c0fe413e5c310583354611456cac8b8986ded60471bdc4c4994d",
+      "multiome_manifest": "/tmp/v75_100k/controls/measurement_null_b/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "ccad3e90d22e8c2b61b70888078cd48b5301674411f82ebd7159728ab8b0918e",
+      "truth_seed": 7302,
+      "measurement_seed": 8502,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "biology_positive": {
+      "root": "/tmp/v75_100k/controls/biology_positive",
+      "truth_manifest": "/tmp/v75_100k/controls/biology_positive/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "5c4a5c52574be97155a2184c18bae1d51def22d1bfdb456e85dfbfa595727c21",
+      "rna_manifest": "/tmp/v75_100k/controls/biology_positive/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "b7027f32d521a3cb34a2425619142bc847b12636ec713f0cfcd9a192e799dde9",
+      "multiome_manifest": "/tmp/v75_100k/controls/biology_positive/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "7e970f12d20163878006ab95eca059b1f39e105654e67b3901df03196fb68846",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 100000,
+      "source_counts": {
+        "SEA_AD": 90443,
+        "NPH52": 5193,
+        "HVS": 4364
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 25000
+    }
+  },
+  "measurement_null": {
+    "world_a_measurement_seed": 8501,
+    "world_b_measurement_seed": 8502,
+    "biology_identical": true,
+    "population_identical": true,
+    "observation_operator_mapping_identical": true
+  },
+  "biology_positive": {
+    "reference_world": "measurement_null_a",
+    "measurement_seed": 8501,
+    "target_rule": "global_cell_index % 4 == 0",
+    "target_modulo": 4,
+    "target_remainder": 0,
+    "delta_z_global_0": 1.0,
+    "n_targeted_cells": 25000,
+    "measurement_conditions_matched_to_reference": true
+  },
+  "claim_boundary": {
+    "learned_160d_jepa_evaluated": false,
+    "biological_claim_qualified": false,
+    "purpose": "materialize identifiable measurement-null and biology-positive controls for later learned-state qualification"
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "pathology_used": false
+  }
+}

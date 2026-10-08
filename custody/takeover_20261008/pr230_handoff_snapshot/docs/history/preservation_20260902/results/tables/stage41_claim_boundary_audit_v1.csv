@@ -1,0 +1,16 @@
+audit_item,pass,evidence
+no_external_data_used_for_model_training,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_external_model_selection,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_candidate_selection,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+frozen_candidates_preserved,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+donor_held_out_evaluation_preserved,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+train_fold_only_preprocessing_preserved,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+forbidden_features_excluded,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+proxy_risk_features_comparator_only,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+negative_controls_reported,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_clean_external_validation_claim,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_causal_claim,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_therapeutic_claim,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_gene_ablation_claim,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+no_disease_modifying_claim,True,Stage 41 inventory/acquisition workflow; no unsupported claims.
+safety_audit_pass,True,all safety checks passed

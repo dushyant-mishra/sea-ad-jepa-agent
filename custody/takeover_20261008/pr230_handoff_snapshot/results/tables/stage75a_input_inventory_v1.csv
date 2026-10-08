@@ -1,0 +1,11 @@
+input_name,path,exists,size_bytes,h5_dim1,h5_dim2,feature_example
+stage72b_edges,results/tables/stage72b_tf_target_candidate_edges_v1.csv,True,287059,,,
+stage72b_readiness,results/tables/stage72b_grn_readiness_decision_v1.csv,True,367,,,
+stage73r_control_integrity,results/tables/stage73r_graph_control_integrity_audit_v1.csv,True,1017,,,
+stage74_decision,results/tables/stage74_decision_audit_v1.csv,True,323,,,
+gse174367_snrna_matrix,data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,True,273975534,58721.0,61770.0,DDX11L1;WASH7P;MIR6859-1;MIR1302-2HG;MIR1302-2
+gse174367_snrna_metadata,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,True,435170,,,
+gse174367_snatac_matrix,data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5,True,360317403,219070.0,143401.0,chr1:190849-191920;chr1:629708-630559;chr1:631640-631948;chr1:632511-633105;chr1:633740-634682
+gse174367_snatac_metadata,data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz,True,1066930,,,
+mtg_h5ad,data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617,,,read_error:AttributeError
+dlpfc_h5ad,data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151,,,read_error:AttributeError

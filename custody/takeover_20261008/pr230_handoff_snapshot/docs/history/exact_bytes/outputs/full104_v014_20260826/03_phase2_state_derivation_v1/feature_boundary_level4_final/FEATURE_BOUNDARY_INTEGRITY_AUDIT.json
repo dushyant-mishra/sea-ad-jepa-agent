@@ -1,0 +1,11 @@
+{
+  "all_feature_hashes_recomputed": true,
+  "blocks": 8915,
+  "cells": 4553407,
+  "duplicate_selection_rows": 0,
+  "feature_block_manifest_sha256": "3a8d8dbbe2aa1c60fcd57b57b6263e3316c177a94220ea84698aa5ac8be61ab7",
+  "missing_selection_rows": 0,
+  "schema": "full104-phase2-feature-boundary-audit-v1",
+  "status": "PASS_FEATURE_BOUNDARY_INTEGRITY",
+  "unique_block_keys": true
+}

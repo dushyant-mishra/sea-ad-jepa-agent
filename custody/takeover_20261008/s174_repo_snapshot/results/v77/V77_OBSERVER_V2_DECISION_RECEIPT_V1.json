@@ -1,0 +1,226 @@
+{
+  "schema": "V77_OBSERVER_V2_DECISION_RECEIPT_V1",
+  "recorded_utc": "2026-10-06T18:27:13Z",
+  "baseline_commit": "d76631b6d5f2f6cbf9ae57e202d9b38c4c400b32",
+  "head_at_decision": "d76631b6d5f2f6cbf9ae57e202d9b38c4c400b32",
+  "DECISION": "OBSERVER_V2_SUPPORTED_FOR_NEXT_STAGE",
+  "ISSUE_1_STATUS": "NARROWED__DECOUPLING_WORKS__RESIDUAL_IS_STOCHASTIC_REALIZATION_NOT_COUPLING",
+  "substate_family_decision_unchanged": "SUPPORTED_FOR_NEXT_STAGE__WITH_TWO_NAMED_UNRESOLVED_ISSUES",
+  "HYPOTHESIS_TESTED": "can realistic heavy-tailed abundance and real-like detection topology coexist once biological abundance and observation capture are represented as DISTINCT mechanisms, with the sub-state generator held fixed?",
+  "ANSWER": "YES for the coupling. Decoupling removes the trade-off: at FULL abundance scale the topology is nearly restored, with the fraction above 0.3 at 0.6154 against a real 0.6148 and mean degree at 1846 against a real 1844. The abundance marginal is retained rather than collapsed. The residual gap is a DIFFERENT mechanism.",
+  "WHAT_CHANGED_IN_THE_OBSERVER": {
+    "before": "a single abundance scalar controlled both transcriptome share and detectability",
+    "after": [
+      "latent biological abundance mu = exp(eta + A), with A at FULL registry scale and never shrunk",
+      "gene capture propensity kappa[g], drawn from a declared mechanism INDEPENDENT of abundance",
+      "cell measurement state s[c]",
+      "stochastic realization"
+    ],
+    "detected_count_is_an_outcome": true,
+    "exact_per_cell_count_matching_not_reintroduced": true
+  },
+  "BIOLOGICAL_JUSTIFICATION_PER_DEGREE_OF_FREEDOM": {
+    "kappa": "per-molecule capture probability. Real drivers are transcript length, GC content, 3' bias and priming efficiency, none of which is expression level.",
+    "cell_state": "per-droplet capture efficiency and sequencing depth",
+    "anticorrelated_variant": "per-molecule capture saturates for very highly expressed transcripts",
+    "bimodal_variant": "short, GC-extreme and weakly primed transcripts form a genuinely separate poorly-captured class rather than a tail of one distribution",
+    "no_free_fitting": "no per-gene or per-pair parameter is fitted to observed covariance; kappa is drawn, not solved for"
+  },
+  "ABUNDANCE_ENVELOPE_FROZEN_FIRST": {
+    "path": "results/v77/V77_REAL_ABUNDANCE_ENVELOPE_V1.json",
+    "sha256": "b590c7f69063b3a5743eafcf4ea1ce2ac47624a9f0dd5bbfb74bbd4b85c9d979",
+    "derived_from": "the same frozen real TRAIN source and the same donor-resampling logic as the topology envelope",
+    "comparability_proved_not_assumed": "the SAME detection-floor filtering of 0.05 and the same gene universe of 19,569 genes that produced the frozen topology envelope",
+    "targets": {
+      "abundance_max_over_median_nonzero": {
+        "point": 1976.65,
+        "envelope": [
+          1804.75,
+          2187.67
+        ]
+      },
+      "top1pct_count_share": {
+        "point": 0.2457,
+        "envelope": [
+          0.2431,
+          0.2503
+        ]
+      }
+    },
+    "note_on_earlier_figures": "the previously quoted 6685 and 0.322 were computed over ALL 41,238 addresses. These are over the filtered universe, which is what the topology envelope uses. The difference is the gene universe, not a change of target."
+  },
+  "ALL_CANDIDATES_INCLUDING_FAILURES": {
+    "roster_frozen_before_any_result_was_seen": true,
+    "results": {
+      "O1_null_capture_constant": {
+        "max_over_median": 560.7962646484375,
+        "top1": 0.24171262979507446,
+        "median_abs_corr": 0.14610227761834854,
+        "frac_abs_gt_0p3": 0.010728242747582528,
+        "transitivity": 0.39064033499951445,
+        "mean_degree": 32.174,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 10728242.747582527,
+        "t5": 0.9848339935521865,
+        "detected_per_cell": 6090.0,
+        "genes_kept": 23891
+      },
+      "O2_capture_independent_moderate": {
+        "max_over_median": 1199.3338623046875,
+        "top1": 0.28725066781044006,
+        "median_abs_corr": 0.14285069997191002,
+        "frac_abs_gt_0p3": 0.008649327553628988,
+        "transitivity": 0.3719103182672218,
+        "mean_degree": 25.939333333333334,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 8649327.553628989,
+        "t5": 0.9794012005789678,
+        "detected_per_cell": 5288.5,
+        "genes_kept": 19825
+      },
+      "O3_capture_independent_wide": {
+        "max_over_median": 3511.69921875,
+        "top1": 0.3887094259262085,
+        "median_abs_corr": 0.1377919702579861,
+        "frac_abs_gt_0p3": 0.0064550405690785816,
+        "transitivity": 0.383899938282275,
+        "mean_degree": 19.358666666666668,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 6455040.569078581,
+        "t5": 0.9825292448307502,
+        "detected_per_cell": 3593.0,
+        "genes_kept": 12468
+      },
+      "O4_capture_anticorrelated": {
+        "max_over_median": 861.7765502929688,
+        "top1": 0.24506257474422455,
+        "median_abs_corr": 0.14640976382434115,
+        "frac_abs_gt_0p3": 0.01026808936312104,
+        "transitivity": 0.37317128695705715,
+        "mean_degree": 30.794,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 10268089.363121038,
+        "t5": 0.9804857508245665,
+        "detected_per_cell": 6829.0,
+        "genes_kept": 28884
+      },
+      "O5_poorly_captured_subpopulation": {
+        "max_over_median": 1243.0648193359375,
+        "top1": 0.3016788363456726,
+        "median_abs_corr": 0.14181677783726687,
+        "frac_abs_gt_0p3": 0.0082431921751695,
+        "transitivity": 0.3908766304743861,
+        "mean_degree": 24.721333333333334,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 8243192.1751695,
+        "t5": 0.9837042849255365,
+        "detected_per_cell": 4526.5,
+        "genes_kept": 15657
+      },
+      "O6_wide_capture_plus_cell_state": {
+        "max_over_median": 4021.545166015625,
+        "top1": 0.3998086154460907,
+        "median_abs_corr": 0.22205620598517933,
+        "frac_abs_gt_0p3": 0.10949627653662332,
+        "transitivity": 0.6650094079765686,
+        "mean_degree": 328.3793333333333,
+        "largest_community_frac": 0.0003333333333333333,
+        "pos_over_neg_ratio": 109496276.53662331,
+        "t5": 0.9906169993357475,
+        "detected_per_cell": 3577.0,
+        "genes_kept": 13487
+      }
+    },
+    "every_candidate_failed_on_topology": true,
+    "best_of_roster": "O6_wide_capture_plus_cell_state, transitivity 0.6650 and degree 328",
+    "abundance_was_however_retained": "O2 at 1199 and O5 at 1243 against a real 1977, versus a collapse to about 10 under the old abundance-shrinking workaround"
+  },
+  "THE_CONFOUND_I_INTRODUCED_AND_REMOVED": {
+    "defect": "the frozen roster changed TWO things at once relative to the result that produced the diagnosis: it decoupled abundance from capture AND replaced deterministic thresholding with Poisson realization. The roster's uniform topology failure could therefore not be attributed to either change.",
+    "isolation_run": [
+      {
+        "variant": "decoupled + DETERMINISTIC threshold",
+        "abundance_max_over_median": 2908.1,
+        "top1pct": 0.3647,
+        "median_abs_corr": 0.3486,
+        "frac_abs_gt_0p3": 0.6154,
+        "transitivity": 0.8238,
+        "mean_degree": 1846
+      },
+      {
+        "variant": "decoupled + POISSON realization",
+        "abundance_max_over_median": 3429.4,
+        "top1pct": 0.3865,
+        "median_abs_corr": 0.1364,
+        "frac_abs_gt_0p3": 0.0059,
+        "transitivity": 0.3558,
+        "mean_degree": 18
+      },
+      {
+        "variant": "REAL",
+        "abundance_max_over_median": 1976.6,
+        "top1pct": 0.2457,
+        "median_abs_corr": 0.377,
+        "frac_abs_gt_0p3": 0.6148,
+        "transitivity": 0.8871,
+        "mean_degree": 1843.8
+      }
+    ],
+    "conclusion": "decoupling is NOT the failure. Under deterministic thresholding the decoupled observer retains full-scale abundance AND reproduces degree and the fraction above 0.3 essentially exactly. Poisson realization at a mean of about 5 counts per detected gene is what destroys detection correlation."
+  },
+  "THE_DIAGNOSED_RESIDUAL_AND_WHERE_IT_BELONGS": {
+    "mechanism": "detection correlation survives counting noise only when the biological rate swings far across the detection boundary. In the current sub-state generator a module switch changes a gene's rate by about e^1.2, roughly 3.3-fold, which moves detection probability from about 0.63 to about 0.96 at realistic depth. Poisson noise dominates that margin.",
+    "real_data_implication": "real detection reaches a correlation of 0.377 at comparable depth, so real biological rate swings must carry genes from effectively absent to clearly present, not from 1.5 counts to 5.",
+    "this_is_a_GENERATOR_property_not_an_observer_one": true,
+    "handoff": "Issue 1 hands the generator a precise, falsifiable requirement: biological dynamic range across a module switch must be large relative to the detection threshold. That is a quantitative target, not a free parameter.",
+    "generator_was_not_touched_this_cycle": true
+  },
+  "GUARDS": {
+    "T5": {
+      "range_across_roster": [
+        0.9794,
+        0.9906
+      ],
+      "real": 1.012,
+      "verdict": "HELD; no candidate approached structure through class separation"
+    },
+    "A_REPLICA": {
+      "status": "UNCHANGED_AND_NOT_REDESIGNED",
+      "why_not_rerun": "the observer change alters counts, but A_REPLICA already passed prospectively and the mandate says not to turn a settled control into a new gate unless the change threatens its conclusion. It will be rerun when an observer is proposed for promotion, not during diagnosis."
+    },
+    "detected_count_forced": false,
+    "real_covariance_or_detection_vectors_supplied": false,
+    "donor_or_class_identity_used_in_capture": false
+  },
+  "WHAT_THIS_STRENGTHENS_WEAKENS_OR_SUPERSEDES": {
+    "SUPERSEDED": "the earlier conclusion that reaching the topology REQUIRES shrinking the abundance prior to about 0.3, which collapsed max/median to roughly 10. That workaround is unnecessary: decoupling achieves the topology at full abundance scale.",
+    "STRENGTHENED": "the finding that the observation operator, not the latent family, was the dominant limiting factor. It now has a second independent confirmation, and the specific destroyer has been narrowed from the exact-count constraint to counting noise relative to biological dynamic range.",
+    "WEAKENED": "any reading of the 37-candidate factor-family failure as clean proof that the latent generator alone was at fault. Those failures remain real results but are now partly attributable to a shared observer defect."
+  },
+  "ONE_HUNDRED_K_WORDING_CLARIFIED": {
+    "100K_CONTROL_QUALIFICATION_COMPUTATION": "HAS OCCURRED. The A_REPLICA control artifact itself records n_cells = 100000, and the superseded rebuild computed over 100K-cell worlds.",
+    "100K_PRODUCTION_WORLD_REBUILD": "REMAINS UNAUTHORIZED",
+    "why_recorded": "saying simply 'no 100K' is internally contradictory against committed artifacts and would mislead a future auditor"
+  },
+  "BOUNDARIES_UNCHANGED_THIS_CYCLE": {
+    "generator_touched": false,
+    "real_targets_moved": false,
+    "A_REPLICA_redesigned": false,
+    "T5_redefined": false,
+    "production_world_regenerated": false,
+    "production_generator_frozen": false,
+    "target_selection_claim": false,
+    "model_trained": false,
+    "any_prospective_boundary_changed": false
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "model_evaluation": "NOT_STARTED",
+    "PR_220": "governance/prefreeze only; does not authorize Stage A or training"
+  }
+}

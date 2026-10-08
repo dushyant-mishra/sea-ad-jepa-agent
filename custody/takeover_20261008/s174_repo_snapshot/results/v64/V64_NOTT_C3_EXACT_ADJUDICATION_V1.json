@@ -1,0 +1,73 @@
+{
+  "schema": "V64_NOTT_C3_EXACT_IDENTITY_ADJUDICATION_V1",
+  "date": "2026-09-29",
+  "rule": {
+    "contract": "V64_NOTT_C3_EXACT_IDENTITY_SUCCESSOR_RULE_V1",
+    "frozen_at_commit": "38d789aceecfdc71beca8852fbb19ab1621fee55",
+    "frozen_at": "2026-09-29 13:33:44 -0400",
+    "descriptive_result_committed_at": "2026-09-29 13:42:12 -0400 (5131bc6c)",
+    "prospectivity_verified": true,
+    "note": "the freeze precedes the descriptive result by ~8.5 minutes; the ordering is checkable from commit timestamps, not asserted",
+    "tolerance_bp": 0,
+    "no_threshold_chosen_here": true
+  },
+  "implementation_recorded_permanently": {
+    "tool": "UCSC liftOver archived build linux.x86_64.v479",
+    "tool_sha256": "80c77de53b8bbd5fec661242f24d4b2f0ac54446df6954d934d1a838927dd19c",
+    "tool_bytes": 19779328,
+    "minMatch": 0.95,
+    "authoritative_multiple": false,
+    "multiple_used_only_to_detect_and_reject_ambiguity": true,
+    "chain_hg19ToHg38_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+    "chain_hg38ToHg19_sha256": "14a712e8e147d9fc8e9d87d51977b46f6f8ddb93efbe5d0843d86b6205f587b1",
+    "rerun_warning": "C3 must not be re-run with a different liftOver executable and the outputs mixed without an equivalence audit."
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "gene_annotation_joined": false,
+    "protected_outcomes_opened": false
+  },
+  "ATTRITION_FUNNEL": {
+    "original_pairs": 104802,
+    "original_anchor_instances": 209604,
+    "forward_anchor_disposition": {
+      "admissible": 207283,
+      "length_changed": 2239,
+      "unmapped": 73,
+      "ambiguous_or_split": 3,
+      "chromosome_changed": 6
+    },
+    "forward_anchor_accounting_reconciles": true,
+    "pairs_forward_admissible": 102702,
+    "roundtrip_anchor_disposition": {
+      "exact": 205403,
+      "unmapped_on_return": 1
+    },
+    "roundtrip_anchor_accounting_reconciles": true,
+    "PAIRS_C3_RETAINED": 102701,
+    "identity_violations_among_retained": 0
+  },
+  "RETENTION_NUMBERS_THAT_MUST_NEVER_BE_CONFLATED": {
+    "descriptive_mapping_retention": {
+      "definition": "both anchors mapped at all, permissive",
+      "value": "104728 / 104802",
+      "fraction": 0.999294
+    },
+    "C3_exact_identity_retention": {
+      "definition": "both anchors single, same chromosome, length preserved exactly, and both round-trip exactly",
+      "value": "102701 / 104802",
+      "fraction": 0.979953
+    },
+    "warning": "The descriptive figure is NOT the C3 qualified retention and must not be quoted as such."
+  },
+  "retained_object": {
+    "path": "D:/jepa_v5_outputs_20260925/v64_c3_exact\\V64_NOTT_C3_RETAINED_CONTACTS_HG38.tsv.gz",
+    "bytes": 856268,
+    "sha256": "94f99590cf57de6e31b83765ccee6066104c005da1cc7173a5fbf567b6f6db05",
+    "content": "coordinate pairs only; no gene annotation"
+  },
+  "C3_ADJUDICATION": "PASS",
+  "adjudication_basis": "PASS requires a non-empty retained set in which EVERY pair preserves exact anchor identity in both directions, with the full attrition funnel reported from the original denominator and no silent rescue.",
+  "coverage_caveat": "C3 PASS does not establish that the retained support is large or representative enough for P1S/P3. Retention fraction and any geometry or composition shift are downstream claim-scope evidence, not part of this gate."
+}

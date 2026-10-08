@@ -1,0 +1,2 @@
+decision,rationale,n_final_candidates,n_traceable_candidates,n_high_severity_traceability_issues,allowed_next_step,disallowed_next_step,stage27c_locked_benchmark_preserved,stage41c_not_rebranded_as_locked,stage45_not_rebranded_as_improvement
+do_not_rerun_broad_gene_discovery,"Final candidates are traceable to frozen Stage36E/Stage47 synthesis; recent updates changed framing, not underlying model evidence.",18,18,0,targeted manual/PI review or candidate-level validation planning,full rediscovery/model sweep without a specific PI question,True,True,True

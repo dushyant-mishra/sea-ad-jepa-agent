@@ -1,0 +1,20 @@
+input_name,path,exists,filesize_bytes
+stage61_branch_comparison,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_branch_comparison_v1.csv,True,531
+stage61_target_level_results,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_target_level_results_v1.csv,True,8792
+stage61_frozen_probe_results,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_frozen_probe_results_v1.csv,True,898453
+stage61_feature_inventory,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_feature_inventory_v1.csv,True,20089
+stage61_gene_availability,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_gene_availability_v1.csv,True,777
+stage62_branch_comparison,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_branch_comparison_v1.csv,True,2503
+stage62_target_level_results,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_target_level_results_v1.csv,True,112014
+stage62_frozen_probe_results,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_frozen_probe_results_v1.csv,True,11275343
+stage62_feature_source_audit,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_feature_source_audit_v1.csv,True,333
+stage62_gene_availability,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_gene_availability_v1.csv,True,777
+stage62_delta_summary,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_delta_summary_v1.csv,True,405
+stage62_bootstrap_summary,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_bootstrap_summary_v1.csv,True,562
+stage62_negative_control_results,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_negative_control_results_v1.csv,True,1383
+stage62_feature_family_ablation,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_feature_family_ablation_v1.csv,True,806
+stage62_module_ablation,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_module_ablation_v1.csv,True,1223
+stage62_state_ablation,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_state_ablation_v1.csv,True,1171
+stage62_lock_gate_decision,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_lock_gate_decision_v1.csv,True,590
+stage62_pass_fail,C:\Users\dushy\Desktop\Jepa project\results\tables\stage62_pass_fail_v1.csv,True,1453
+pathology_targets,C:\Users\dushy\Desktop\Jepa project\data\processed\metadata\sea_ad_mtg_donor_pathology_targets.csv,True,21982

@@ -1,0 +1,9 @@
+{
+  "data_root": "data/external/v4/sea_ad",
+  "estimated_free_bytes_after": 7453618995200,
+  "filesystem_free_bytes_before": 7453618995200,
+  "filesystem_total_bytes": 16000835649536,
+  "minimum_free_bytes_after": 805306368000,
+  "outstanding_download_bytes": 0,
+  "storage_preflight_pass": true
+}

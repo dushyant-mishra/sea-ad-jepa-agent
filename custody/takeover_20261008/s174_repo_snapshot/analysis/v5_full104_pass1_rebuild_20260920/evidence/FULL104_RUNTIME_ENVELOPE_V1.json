@@ -1,0 +1,14 @@
+{
+  "schema": "V5_FULL104_RUNTIME_ENVELOPE_V1",
+  "scientific_anchor_git_oid": "1fef4452e7d9b178adc532eef9786996e412943f",
+  "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "runtime_role_id": "FRESH_CURRENT_FULL104_NONTERMINAL_SHAKEDOWN_RUNTIME_V1",
+  "spillover_policy_id": "NO_HISTORICAL_OR_SMALLER_RUN_RUNTIME_INPUT_WITHOUT_EXPLICIT_CURRENT_FULL104_REAUTHORIZATION_V1",
+  "target_panel_ladder_authorized": false,
+  "terminal_masking_authorized": false,
+  "protected_outcomes_authorized": false,
+  "training_authorized": false,
+  "runtime_envelope_sha256": "8022e6f683a9fbe00296fe0c6a9d3fd4ab48ad3340696b8fe5a05c07f1d48a14"
+}

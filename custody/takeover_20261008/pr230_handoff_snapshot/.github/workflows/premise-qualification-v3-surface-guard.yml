@@ -1,0 +1,35 @@
+name: premise-qualification-v3-surface-guard
+
+on:
+  pull_request:
+    paths:
+      - 'docs/superpowers/specs/2026-10-06-premise-qualification-contract-v3-design.md'
+      - 'docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json'
+      - 'docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_V3_PREFREEZE_20261006.md'
+      - 'docs/agent/JEPA_OBSERVATION_OPERATOR_CONTRACT_V1_PREFREEZE_20261006.md'
+      - 'docs/agent/JEPA_EXTERNAL_VALIDATION_ASSET_MATRIX_V3_DRAFT_20261006.md'
+      - 'docs/agent/JEPA_FOUNDATION_POPULATION_ESTIMAND_V3_PREFREEZE_20261006.md'
+      - 'docs/agent/JEPA_REPRESENTATION_STABILITY_PROTOCOL_20261006.md'
+      - 'docs/agent/JEPA_EVIDENCE_VS_DEPTH_CONVERGENCE_PROTOCOL_20261006.md'
+      - 'docs/agent/JEPA_CLAIM_LADDER_V3_PREFREEZE_20261006.md'
+      - 'docs/agent/JEPA_STAGE_A_REAL_RNA_TARGET_GATE_V3_PREFREEZE_20261006.md'
+      - 'tests/governance/test_premise_qualification_v3_surface.py'
+      - 'tests/governance/test_stage_a_v3_machine_contract.py'
+      - 'scripts/governance/verify_premise_qualification_v3_surface.py'
+      - '.github/workflows/premise-qualification-v3-surface-guard.yml'
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Run V3 premise governance tests
+        run: >-
+          python -m pytest -q
+          tests/governance/test_premise_qualification_v3_surface.py
+          tests/governance/test_stage_a_v3_machine_contract.py

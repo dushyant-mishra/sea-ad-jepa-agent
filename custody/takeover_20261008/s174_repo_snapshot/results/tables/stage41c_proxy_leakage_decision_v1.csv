@@ -1,0 +1,17 @@
+candidate_id,risk_tiers_used,tier2_caution_used,tier3_proxy_used,tier4_forbidden_used,proxy_leakage_risk_pass,reason,lock_allowed
+blend_stage41b_with_stage27c,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+blend_stage41b_with_stage27c_and_stage39e_pca8,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+blend_stage41b_with_stage39e_pca8,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+guard_aware_target_specific_blend,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+latent_only_control,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,False
+latent_plus_stable_metadata_bagged_ridge,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+latent_plus_stable_metadata_pruned,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+latent_plus_stable_metadata_shared_alpha,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+latent_plus_stable_metadata_strong_ridge,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+latent_plus_stable_metadata_target_specific_alpha,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+metadata_only_control,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,False
+stage27c_reference,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,False
+stage39e_pca8_reference,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,False
+stage41b_latent_plus_safe_metadata_original,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+stage41b_latent_plus_safe_metadata_plus_mri_original,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,True
+target_shuffled_control,Tier0;Tier1,False,False,False,True,Only module/latent and safe metadata/MRI Stage41B features or OOF references used.,False

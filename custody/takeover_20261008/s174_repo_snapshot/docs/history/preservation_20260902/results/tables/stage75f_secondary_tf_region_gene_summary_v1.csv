@@ -1,0 +1,6 @@
+tf,regulator_role,evidence_gate,n_supported_motifs,n_direct_supported_motifs,n_extended_only_supported_motifs,n_supported_target_genes,n_supported_query_peaks,n_supported_screen_regions,n_evidence_rows,max_motif_NES,motif_support_interpretation,validated_regulation,validated_grn_claim,causal_validation_pass,therapeutic_target_claim
+BACH1,descriptive_secondary_hypothesis,advance_supported,1,0,1,9,11,13,13,3.878694038397005,extended_only,False,False,False,False
+CEBPA,descriptive_secondary_hypothesis,advance_supported,4,0,4,12,23,29,37,4.987698110859991,extended_only,False,False,False,False
+ELF1,descriptive_secondary_hypothesis,advance_supported,10,1,9,25,46,78,153,5.138000835504443,direct_and_or_extended,False,False,False,False
+RELA,descriptive_secondary_hypothesis,advance_supported,1,0,1,11,12,14,14,5.400085902870549,extended_only,False,False,False,False
+SPI1,descriptive_secondary_hypothesis,advance_supported,4,3,1,15,23,28,49,5.5182584919817295,direct_and_or_extended,False,False,False,False

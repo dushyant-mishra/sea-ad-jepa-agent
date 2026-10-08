@@ -1,0 +1,17 @@
+{
+  "stage": "stage75f_out_of_core_batch_manifest_v1",
+  "purpose": "resumable regulator/region batch preparation only",
+  "n_candidate_edges": 278,
+  "n_candidate_peak_gene_links": 91,
+  "n_batches": 10,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true,
+  "safety": {
+    "prediction_benchmark_updated": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "motif_enrichment_completed": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}

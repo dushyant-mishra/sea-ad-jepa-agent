@@ -1,0 +1,8 @@
+limitation_or_risk,impact,mitigation
+small donor count,limits lock confidence,preserve Stage27C lock
+bootstrap CI instability,prevents Stage41C relock,show CI guard
+external dataset incompatibility,limits external support tests,manual acquisition/readiness tables
+metadata proxy risk,requires careful Tier filtering,claim-boundary audit
+no clean external validation,support/readiness only,explicit prohibited claims
+no causal inference,hypothesis generating only,experimental follow-up only
+no therapeutic validation,no treatment claims,avoid therapeutic language

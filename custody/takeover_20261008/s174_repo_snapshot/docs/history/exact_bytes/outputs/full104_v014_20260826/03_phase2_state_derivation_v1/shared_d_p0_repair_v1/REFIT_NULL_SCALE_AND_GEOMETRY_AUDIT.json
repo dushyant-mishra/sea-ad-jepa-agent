@@ -1,0 +1,55 @@
+{
+  "additional_convergence_validation_required": true,
+  "completed_levels": {
+    "1": {
+      "cells": 5420,
+      "cells_per_stratum_cap": 4,
+      "donors": 104,
+      "n_lt_4_strata": 77,
+      "operators": 42,
+      "singleton_strata": 26,
+      "strata": 1393,
+      "validation_rank": 32,
+      "validation_rank_authority": "first four prospectively frozen coarse prefixes through 32; includes all dimensions capable of winning the frozen one-SE curve"
+    },
+    "2": {
+      "cells": 5456,
+      "cells_per_stratum_cap": 4,
+      "donors": 104,
+      "n_lt_4_strata": 61,
+      "operators": 42,
+      "singleton_strata": 21,
+      "strata": 1395,
+      "validation_rank": 32,
+      "validation_rank_authority": "first four prospectively frozen coarse prefixes through 32; includes all dimensions capable of winning the frozen one-SE curve"
+    },
+    "3": {
+      "cells": 5485,
+      "cells_per_stratum_cap": 4,
+      "donors": 104,
+      "n_lt_4_strata": 57,
+      "operators": 42,
+      "singleton_strata": 19,
+      "strata": 1400,
+      "validation_rank": 32,
+      "validation_rank_authority": "first four prospectively frozen coarse prefixes through 32; includes all dimensions capable of winning the frozen one-SE curve"
+    }
+  },
+  "coordinate_space": "project selected A/B views through the observed-data full-level top-32 basis, then refit observed and null generalized eigensystems only inside that coordinate space",
+  "expression_reopen_required": false,
+  "frozen_authority_status": "cap4 and observed-top32 projection are not explicitly authorized by the prospective freeze, amendment, or promotion harness",
+  "full104_exact_if_current_cap4_rule_were_run": {
+    "donor_operator_strata": 1400,
+    "maximum_stratum_cells": 42209,
+    "n_lt_4_strata": 57,
+    "population_cells": 4553407,
+    "selected_cells": 5485,
+    "singleton_strata": 19
+  },
+  "independent_validator_scope": "reuses the production subset/maps and observed top-32 coordinates; confirms reproducibility, not adequacy of the approximation",
+  "required_prospective_resolution": "before inspecting a revised answer, freeze a sensitivity/amendment comparing natural within-donor weighting and a full tested-feature-space refit (or demonstrate hash-bound equivalence) using existing feature matrices/sufficient outputs",
+  "sampling_rule": "deterministically hash-rank rows within donor\u00d7operator and retain min(4,n)",
+  "schema": "full104-refit-null-scale-and-geometry-audit-v1",
+  "status": "STOP_PROSPECTIVE_METHOD_AMENDMENT_REQUIRED",
+  "weighting_rule": "selected cells are averaged within donor, with equal donor weighting; cap4 changes natural within-donor operator/cell composition by capping abundant strata and relatively upweighting sparse strata"
+}

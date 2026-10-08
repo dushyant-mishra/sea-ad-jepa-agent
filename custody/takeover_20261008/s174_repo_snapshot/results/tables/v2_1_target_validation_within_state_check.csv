@@ -1,0 +1,6 @@
+gene,state_definition,n_state_cells,n_state_donors,full_delta_raw_scale,within_state_delta_raw_scale,same_sign,effect_retention_fraction,compositional_artifact
+APP,top_quartile_plaque_response_DAM_score,2917,87,0.0128721520304679,0.011770621873438358,True,0.9144246200116002,False
+BCL2,top_quartile_plaque_response_DAM_score,2917,87,0.0048683919012546,0.0040544443763792515,True,0.8328080669211821,False
+TLR2,top_quartile_plaque_response_DAM_score,2917,87,-0.0029971925541758,-0.0014034773921594024,True,0.4682624436590153,False
+CD4,top_quartile_plaque_response_DAM_score,2917,87,-0.0025843996554613,-0.0021456857211887836,True,0.8302421083494184,False
+P2RY12,top_quartile_plaque_response_DAM_score,2917,87,0.0020372555591166,0.002742792945355177,True,1.346310957391587,False

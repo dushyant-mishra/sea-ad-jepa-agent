@@ -1,0 +1,4 @@
+candidate_id,feature_set_id,mean_pooled_oof_spearman,min_target_spearman,n_targets
+latent_plus_tier1_plus_tier2,latent_plus_tier1_plus_tier2,0.38781411359724616,0.11258479295332592,5
+latent_plus_tier1_safe_metadata,latent_plus_tier1_safe_metadata,0.37668522830819073,0.013688366913030272,5
+latent_plus_tier2_composition,latent_plus_tier2_composition,0.34010732003644834,0.04837501265566467,5

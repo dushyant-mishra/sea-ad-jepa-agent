@@ -1,0 +1,103 @@
+{
+  "schema": "V77_ADVERSARIAL_SELF_AUDIT_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION and SYNTHETIC_PIPELINE_ANTICHEAT_REHEARSAL",
+  "record_type": "AUDIT RECORD, written by hand; the checks it names were run at the head below",
+  "requested_by": "reviewer-lane instruction, item 9, relayed by the owner on 2026-10-06",
+  "recorded_utc": "2026-10-07T00:24:02Z",
+  "head_when_recorded": "99cb4d3ba0f8c0d392d5c52fbe8efd458786dfe0",
+  "risks": [
+    {
+      "risk": "oracle leakage into model-facing structures",
+      "checks": [
+        "SyntheticModelBatch fields are disjoint from ORACLE_ONLY_FIELDS (test)",
+        "changing an unconsumed latent leaves the batch byte-identical (test)",
+        "every truth field must be declared oracle-only or permitted, or conversion stops (test)",
+        "measurement_mask, expression and hidden targets derive from observer shards, support, seed and cell identity only"
+      ],
+      "finding": "no planted latent reaches the batch. Source and operator indices do reach it, from the hidden-truth folder (S161)",
+      "verdict": "CONCERN",
+      "disposition": "S161 open; fixed in the next adapter step by producer-side identity"
+    },
+    {
+      "risk": "study or source identity leaking into model-visible biology",
+      "checks": [
+        "field inventory of SyntheticModelBatch",
+        "V5 encoder forward signature (gene ids, expression, measurement mask, hidden mask, cell keys; no source or operator)",
+        "PR 223 ModelQualificationViewV1"
+      ],
+      "finding": "source, operator, library size and cell index sit inside the model-visible batch (S162). Separately, the per-element measurement mask reveals the study by construction, because studies cover different addresses; that channel cannot be removed without collapsing unmeasured into zero, so it must be measured by the anti-cheat panel (study predictability from the representation)",
+      "verdict": "CONCERN",
+      "disposition": "S162 open; the batch is split into model inputs and lawful operator context in the next adapter step; the mask channel is recorded as a required anti-cheat measurement"
+    },
+    {
+      "risk": "structural support reconstructed from expression",
+      "checks": [
+        "no '|= detected' or detection-defined mask in the adapter",
+        "adapter refuses worlds without producer-side support_mask_packed and checks it against support_count",
+        "counts are drawn inside support by the observer, never the reverse"
+      ],
+      "finding": "none in any model-facing path. Real-data diagnostics infer a cell's STUDY from its detections, which was validated against operator-recorded studies (100% of 3,292 cells); that inference never feeds a model mask",
+      "verdict": "PASS",
+      "disposition": "none"
+    },
+    {
+      "risk": "previously inspected worlds called independent",
+      "checks": [
+        "truth seeds of every V77 2,000-cell world",
+        "seeds of the dynamic-range arms"
+      ],
+      "finding": "all 2,000-cell worlds share truth seed 7302 and are one planted realization; the arms share seed 20261006 and have been seen (S166). The repaired-support re-measurements re-measure that realization",
+      "verdict": "CONCERN",
+      "disposition": "recorded; no confirmatory claim from them; a confirmatory run needs a never-inspected seed"
+    },
+    {
+      "risk": "old pooled topology silently remaining authoritative",
+      "checks": [
+        "executors that read pooled envelopes",
+        "receipts that issue verdicts against them"
+      ],
+      "finding": "two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdict rejects arms against pooled limits",
+      "verdict": "CONCERN",
+      "disposition": "S163 repaired in 99cb4d3b; S165 and the V1 verdict carried as corrected claims in the register"
+    },
+    {
+      "risk": "old S146/S147 support semantics reappearing",
+      "checks": [
+        "callers of the pre-repair structural_support",
+        "positional indexing of source_support",
+        "support-rule checks wherever worlds are measured or converted"
+      ],
+      "finding": "no caller of the pre-repair function remains; it is kept only for reproduction. The component oracles did not check the support rule of the world they measured (S164)",
+      "verdict": "CONCERN",
+      "disposition": "S164 repaired in 99cb4d3b; the adapter already refuses pre-repair worlds"
+    },
+    {
+      "risk": "a candidate diagnostic becoming a scientific target",
+      "checks": [
+        "language in executors, receipts and commit messages",
+        "statuses and field names"
+      ],
+      "finding": "it happened: 'replacement target', 'material pivot' and an 'acceptance rule' were used for the within-cohort measurements and the re-centred interval",
+      "verdict": "STOP_CORRECTED",
+      "disposition": "withdrawn in 3ac06576 and f0f03d1c; commit messages not rewritten but listed in V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1; V2 not usable for pass/fail"
+    }
+  ],
+  "summary": {
+    "PASS": 1,
+    "CONCERN": 5,
+    "STOP_CORRECTED": 1
+  },
+  "runtime_boundary": "stopped: no optimizer, EMA, checkpoint, trainer or mutation rehearsal is designed on this branch; adapter work continues only toward the published PR 223 interface",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "synthetic_mutation": false,
+    "real_RNA_execution": false,
+    "target_winner": null,
+    "representation_winner": null,
+    "estimand_selected": null,
+    "threshold_selected": null,
+    "TEST_access": false,
+    "Morabito": false,
+    "stage_4": false
+  }
+}

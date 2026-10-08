@@ -1,0 +1,312 @@
+{
+  "hierarchy_exact": true,
+  "population_overall_vq_exact": true,
+  "negative_qid_program_veto": true,
+  "assignment_query_swap_rejected": true,
+  "inconsistent_duplicate_reuse_rejected": true,
+  "caller_variance_rejected": true,
+  "forward_identity_mutation_rejected": true,
+  "assignment_authority_mutation_rejected": true,
+  "donor_operator_relabel_rejected": true,
+  "production_unfrozen_forward_rejected": true,
+  "base": {
+    "qualified_query_design_component": false,
+    "gates": {
+      "overall_one_sided_95lcb_positive": false,
+      "qid_margin_one_sided_95lcb_positive": false,
+      "qid_win_one_sided_95lcb_positive": false,
+      "no_qid_negative_program_holm": true,
+      "draw_sign_stable": true,
+      "all_programs_estimable": false
+    },
+    "overall": {
+      "A": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "direct": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.19999999999999998,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "qid_margin": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.39999999999999997,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "qid_win_minus_half": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.5,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      }
+    },
+    "program": {
+      "broad_common": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "weak_distributed": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local_core": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local_halo": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "core_halo": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "sparse_marker_like": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "innovation_tail": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      }
+    },
+    "qid_negative_holm": {
+      "broad_common": 1.0,
+      "weak_distributed": 1.0,
+      "local": 1.0,
+      "local_core": 1.0,
+      "local_halo": 1.0,
+      "core_halo": 1.0,
+      "sparse_marker_like": 1.0,
+      "innovation_tail": 1.0
+    },
+    "draw_means": [
+      1.5,
+      1.5099999999999998
+    ],
+    "claim_scope": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION; donor-t is a superpopulation working inference; Vq is finite-design randomization uncertainty"
+  },
+  "attack": {
+    "qualified_query_design_component": false,
+    "gates": {
+      "overall_one_sided_95lcb_positive": false,
+      "qid_margin_one_sided_95lcb_positive": false,
+      "qid_win_one_sided_95lcb_positive": false,
+      "no_qid_negative_program_holm": false,
+      "draw_sign_stable": true,
+      "all_programs_estimable": false
+    },
+    "overall": {
+      "A": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "direct": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.19999999999999998,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "qid_margin": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.39999999999999997,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "qid_win_minus_half": {
+        "estimable": false,
+        "n": 2,
+        "mean": 0.5,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      }
+    },
+    "program": {
+      "broad_common": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "weak_distributed": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local_core": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "local_halo": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "core_halo": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "sparse_marker_like": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      },
+      "innovation_tail": {
+        "estimable": false,
+        "n": 2,
+        "mean": 1.505,
+        "lower_95": null,
+        "upper_95": null,
+        "lower_one_sided_95": null,
+        "p_positive": null,
+        "p_negative": null
+      }
+    },
+    "qid_negative_holm": {
+      "broad_common": 1.0,
+      "weak_distributed": 1.0,
+      "local": 1.0,
+      "local_core": 0.0031791233039823886,
+      "local_halo": 1.0,
+      "core_halo": 1.0,
+      "sparse_marker_like": 1.0,
+      "innovation_tail": 1.0
+    },
+    "draw_means": [
+      1.5,
+      1.5099999999999998
+    ],
+    "claim_scope": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION; donor-t is a superpopulation working inference; Vq is finite-design randomization uncertainty"
+  }
+}

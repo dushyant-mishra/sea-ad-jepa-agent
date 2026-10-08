@@ -1,0 +1,41 @@
+{
+  "artifacts": {
+    "docs/v4/STAGE81A2R_PROJECTWIDE_IDENTITY_AUDIT_CANDIDATE.md": {
+      "bytes": 1460,
+      "sha256": "9e6799f2ce50e3c6f93a4e0cc9f5fd95a10f046f5c515ec6692f97b2c7a48af0"
+    },
+    "results/v4/stage81a2r_authority_batch_integrity_candidate.csv": {
+      "bytes": 35147,
+      "sha256": "1aa704c51ecf661187ca0cde980147753cd3421076cec40bdba9449a2243fe57"
+    },
+    "results/v4/stage81a2r_foundation_registry_reconciliation_candidate.csv": {
+      "bytes": 266,
+      "sha256": "863eb1d6d41e9948b6e3a8dc13197998762d27474db0c68795d61f0671c2abf7"
+    },
+    "results/v4/stage81a2r_nph_frozen_vocab_adjudication.csv": {
+      "bytes": 1982790,
+      "sha256": "0082932cedc44314e3ca8903d92071a13107ca6dbc42b21e4309e175e32e4e7a"
+    },
+    "results/v4/stage81a2r_nph_source_cache_validation_candidate.csv": {
+      "bytes": 6636,
+      "sha256": "522edeabad727005e64055c7effe194abef406a4d2677712620a1cfdc0295f5d"
+    },
+    "results/v4/stage81a2r_projectwide_identity_report_candidate.json": {
+      "bytes": 8967,
+      "sha256": "0429f4b19de6e962071d882933b65a8e3df4f66b10e09150ff63ca3631e438cf"
+    },
+    "results/v4/stage81a2r_protected_identity_change_dossier_candidate.csv": {
+      "bytes": 13822,
+      "sha256": "6244e4b0df2b53f91d9476326fab5ce45ad7cd1a20624e5a44314535d971d511"
+    },
+    "results/v4/stage81a2r_protected_identity_change_source_rows_candidate.csv": {
+      "bytes": 48664,
+      "sha256": "c9bcb2c85a8f400a76cd8e1f38baabac3a604b508ac0c5fb2512289be15edf27"
+    },
+    "results/v4/stage81a2r_r_feature_audit_environment.txt": {
+      "bytes": 941,
+      "sha256": "f1a6442fc874176685b76f4f8789b8999a1dc03ee27e3dff24b8e7dcd3f17938"
+    }
+  },
+  "stage": "stage81a2r_projectwide_identity_review_package"
+}

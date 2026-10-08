@@ -1,0 +1,47 @@
+{
+  "schema": "V64_DONG_ROUSSOS_SUPPLEMENT_USER_CUSTODY_V1",
+  "date": "2026-09-30",
+  "status": "VALIDATED_USER_UPLOADS",
+  "files": [
+    {
+      "filename": "41467_2024_54448_MOESM10_ESM.xlsx",
+      "interpreted_as": "Supplementary Data 8",
+      "bytes": 12564632,
+      "sha256": "eb3c2e0eaf055bac3954802497cbdd07ccc65638ae361e1cf9af10668f224a74",
+      "xlsx_valid": true,
+      "worksheet_count": 10,
+      "observed_sheet_dimensions": "10 sheets, each 12,511 rows x 8 columns including header",
+      "content_summary": "Differential promoter-isoform analyses across neuronal brain-region comparisons; columns include promoter isoform, gene_id, logFC, AveExpr, t, P.Value, adj.P.Val, z.std."
+    },
+    {
+      "filename": "41467_2024_54448_MOESM12_ESM.xlsx",
+      "interpreted_as": "Supplementary Data 10",
+      "bytes": 10139581,
+      "sha256": "c2005fb8947b4352450a9a86f297673cce5350aab1b2ac69fe3949317c4f1f59",
+      "xlsx_valid": true,
+      "worksheet_count": 1,
+      "observed_sheet_dimensions": "252,514 rows x 8 columns including descriptive/header rows",
+      "content_summary": "Enhancer-promoter links at promoter-isoform resolution; columns include OCR, TargetGene, TargetTranscript, order, ABC.Score, BR_Region."
+    }
+  ],
+  "supersedes_invalid_automated_payloads": [
+    {
+      "resource": "Supplementary Data 8 automated fetch",
+      "bytes": 3038,
+      "sha256": "32ed63159c77e21ee19ca1b9aa3213ccf0218eb59539560b132a8e68ef0e18ea",
+      "reason": "HTML client-challenge payload, not XLSX"
+    },
+    {
+      "resource": "Supplementary Data 10 automated fetch",
+      "bytes": 3038,
+      "sha256": "32ed63159c77e21ee19ca1b9aa3213ccf0218eb59539560b132a8e68ef0e18ea",
+      "reason": "HTML client-challenge payload, not XLSX"
+    }
+  ],
+  "governance": {
+    "training": "OFF",
+    "phaseB": "STOPPED",
+    "stage4": "NOT_AUTHORIZED",
+    "biological_target_use_authorized": false
+  }
+}

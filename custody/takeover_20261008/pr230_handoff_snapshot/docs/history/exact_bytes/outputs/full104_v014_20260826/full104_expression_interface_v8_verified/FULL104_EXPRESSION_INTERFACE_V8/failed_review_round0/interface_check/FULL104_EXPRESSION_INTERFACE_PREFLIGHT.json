@@ -1,0 +1,33 @@
+{
+  "schema": "full104-expression-interface-preflight-v8",
+  "status": "PASS_FULL104_EXPRESSION_INTERFACE_AWAITING_INDEPENDENT_REVIEWS",
+  "cells": 84,
+  "operators": 42,
+  "addresses": 41238,
+  "deterministic_replay_exact": true,
+  "row_identity_exact": true,
+  "address_order_exact": true,
+  "normalization": "log1p(raw_count*10000/full_source_library) exactly once",
+  "raw_nonnegative_integer": true,
+  "numeric_only_measured_scalar": true,
+  "measured_zero_retained": true,
+  "measured_zero_slots": 1751880,
+  "structurally_unmeasured_slots": 1317288,
+  "collision_unresolved_slots": 22898,
+  "teacher_payload_fields": [
+    "normalized_values",
+    "observation_states"
+  ],
+  "unrestricted_covariates_in_teacher_payload": false,
+  "source_asset_pins_sha256": "8598bd25b22b317cd3046da5a4ba60921140eb1a3f557b5aab4ae4a754645944",
+  "selection_sha256": "2f2eacee4274a0e07684e1744adf3750aae6b712f86264e061ccf517a6240acb",
+  "payload_sha256": "7faa3ebf4885563c055cba05897d8e421f65315dc991adb5e5bc6d23f46db18c",
+  "expression_read": true,
+  "reader_fit_only": true,
+  "original_mixed_nph_opened_in_v8_process": false,
+  "protected_expression_opened_in_v8_process": false,
+  "quarantine_splitter_transient_protected_deserialization": true,
+  "quarantine_splitter_protected_expression_used_for_derived_quantity": false,
+  "parameter_selected": false,
+  "phase2_started": false
+}

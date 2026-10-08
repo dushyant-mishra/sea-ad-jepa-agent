@@ -1,0 +1,17 @@
+{
+  "all_journaled_count_and_metadata_hashes_recomputed": true,
+  "duplicate_selection_rows": 0,
+  "hash_jobs": 17830,
+  "journal_blocks": 8915,
+  "journal_rows": 4553407,
+  "journal_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "materializer_code_sha256": "575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b",
+  "missing_rows_within_journaled_blocks": 0,
+  "protected_expression_opened": false,
+  "sample_level": 4,
+  "schema": "full104-phase2-materialization-boundary-audit-v1",
+  "selection_cells": 4553407,
+  "selection_sha256": "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b",
+  "status": "PASS_RESUMABLE_BOUNDARY_INTEGRITY",
+  "unique_block_keys": true
+}

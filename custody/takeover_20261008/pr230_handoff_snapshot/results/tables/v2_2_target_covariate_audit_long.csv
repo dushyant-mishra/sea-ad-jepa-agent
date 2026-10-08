@@ -1,0 +1,29 @@
+Gene,covariate,covariate_type,test,effect,p_value,warning
+APOE,Age at Death,biological_or_pathology,spearman,-0.10339277237738094,0.3493128270510998,False
+APOE,donor_mean_total_counts_proxy,technical,spearman,-0.1387668320340184,0.20807987916202664,False
+APOE,donor_median_total_counts_proxy,technical,spearman,-0.15415612027943706,0.16148979404682265,False
+APOE,donor_mean_n_genes_detected_proxy,technical,spearman,-0.09822820694542878,0.3740357955047511,False
+APOE,donor_median_n_genes_detected_proxy,technical,spearman,-0.09935353884215781,0.3685602405470678,False
+APOE,n_cells,biological_or_pathology,spearman,-0.0397300704435599,0.7197314478232822,False
+APOE,Sex,reported_categorical,mannwhitney_rank_biserial,-0.2251931075460487,0.08344903576273113,False
+APP,Age at Death,biological_or_pathology,spearman,-0.09589172810686505,0.38556113634071654,False
+APP,donor_mean_total_counts_proxy,technical,spearman,0.07020350308798218,0.5257099510656456,False
+APP,donor_median_total_counts_proxy,technical,spearman,0.06499949377341298,0.5569179123993216,False
+APP,donor_mean_n_genes_detected_proxy,technical,spearman,0.11448820492052242,0.29973884737866857,False
+APP,donor_median_n_genes_detected_proxy,technical,spearman,0.11265737559326301,0.3075846698508049,False
+APP,n_cells,biological_or_pathology,spearman,0.056608262958701173,0.6090291635500539,False
+APP,Sex,reported_categorical,mannwhitney_rank_biserial,0.033868092691622165,0.7976059232396007,False
+CD4,Age at Death,biological_or_pathology,spearman,0.22335879797407732,0.041119529462976756,False
+CD4,donor_mean_total_counts_proxy,technical,spearman,0.37697681482231454,0.00040834230423020224,True
+CD4,donor_median_total_counts_proxy,technical,spearman,0.3719347980155918,0.0004946759012906113,True
+CD4,donor_mean_n_genes_detected_proxy,technical,spearman,0.41146096993014075,0.00010094838634379067,True
+CD4,donor_median_n_genes_detected_proxy,technical,spearman,0.4035598394690277,0.00014095013396437983,True
+CD4,n_cells,biological_or_pathology,spearman,-0.009811018924518232,0.9294202760361863,False
+CD4,Sex,reported_categorical,mannwhitney_rank_biserial,-0.03743315508021394,0.7764692794393512,False
+TLR2,Age at Death,biological_or_pathology,spearman,-0.045807052781704355,0.6790533777746169,False
+TLR2,donor_mean_total_counts_proxy,technical,spearman,0.19289257871823431,0.07875607071702577,False
+TLR2,donor_median_total_counts_proxy,technical,spearman,0.20040498126961628,0.06757792404881306,False
+TLR2,donor_mean_n_genes_detected_proxy,technical,spearman,0.1918801255441936,0.08036941411769072,False
+TLR2,donor_median_n_genes_detected_proxy,technical,spearman,0.2071510653939212,0.058666214293396926,False
+TLR2,n_cells,biological_or_pathology,spearman,-0.15313896928105084,0.16430743676031254,False
+TLR2,Sex,reported_categorical,mannwhitney_rank_biserial,0.1538918597742127,0.23740946052485934,False

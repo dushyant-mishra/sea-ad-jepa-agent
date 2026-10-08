@@ -1,0 +1,4 @@
+claim_area,allowed_claim,disallowed_claim,passes
+heterogeneity,donor-linked microglia/PVM Supertype heterogeneity was tested as an auxiliary branch,new microglia type discovered; causal state proven,True
+composition,cell-type/state composition may contribute to donor-level disease-state signal,composition proves disease mechanism,True
+graph,Stage51 graph topology benefit remains not established,STRING graph topology rescued the model,True

@@ -1,0 +1,13 @@
+{
+  "cap": "4",
+  "csv_authoritative": false,
+  "donors": 104,
+  "implementation_fingerprint": "26b8d20a57e107f7bdd56e775c0e5b51adc143a74b44c590bbad081556d54620",
+  "maximum_global_donor_mass_error": 1.734723475976807e-18,
+  "maximum_within_donor_mass_error": 0.0,
+  "operators": 42,
+  "plan_format": "atomic-npz-columnar-v1",
+  "plan_semantic_sha256": "9524833ae11221c743024463c3ae21e930f3ace3a78d046deb849c0dd86c69be",
+  "plan_sha256": "25f764fbae07eee2fe4103f6914d8c210d34f1a50ab3ac2132eb990de02831a5",
+  "rows": 5485
+}

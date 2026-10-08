@@ -1,0 +1,32 @@
+stage_id: stage81a3_rbb_frozen_recovery
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+scientific_contract: exact_repeat_of_stage81a3_rbb_frozen_encoder_probe
+authorized_engineering_changes:
+  counterfactual_dtype_alignment: true
+  step150_belief_only_checkpoint: true
+  incremental_atomic_metrics: true
+model:
+  molecular_encoder_frozen: true
+  molecular_ledger_detached: true
+  dropout: 0.10
+  correlated_rank_capacity: 32
+training:
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  microbatch: 64
+  accumulation: 4
+  effective_batch: 256
+  updates: 150
+  examples: 38400
+durability:
+  checkpoint_contains_frozen_encoder: false
+  persist_retention_each_milestone: true
+  persist_primary_before_counterfactual: true
+boundaries:
+  real_rna: forbidden
+  pathology: forbidden
+  scientific_change: forbidden
+  continuation: forbidden
+  sweep: forbidden

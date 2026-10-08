@@ -1,0 +1,8 @@
+name,path,shape,dtype,bytes,sha256
+A_views,A_views.npy,"[449269, 4, 512]",float32,3680411776,e36d4a52adae399e4a9ed375f8c0f6ea2c68f5d06f5e64169e0c61ab3e6f5340
+B_views,B_views.npy,"[449269, 4, 512]",float32,3680411776,8cb345041741681ba86b9d5cb4ca1e9394c27d8aef4cf316bb979800714771a3
+A_full,A_full.npy,"[449269, 512]",float32,920103040,f2a72156640a1c009ddca569964f51da3358f5b5cb77b330c9cb9580ee3bcfc5
+B_full,B_full.npy,"[449269, 512]",float32,920103040,6484e86f04b3733350cfd27d09bfcde672ff28de3c95896bb457bb161486188c
+physical_descriptors,physical_descriptors.npy,"[449269, 6]",float32,10782584,db448189fca58d4aa971fef01b6f4639cd0f8be649520c3f13ed9dad7ffcdba8
+ASSEMBLY_SEEN,ASSEMBLY_SEEN.npy,[449269],uint8,449397,9cddca85cfdfbcd4cae7bcf2bb97030915e63e14f254b59e9e323ab56e6abdf2
+rows,PHASE2_FEATURE_ROWS.csv,[449269],csv,14202233,2a412be51e996ffbfbde6cb6aaf58a365d197dc65a333044c717b189dd77218c

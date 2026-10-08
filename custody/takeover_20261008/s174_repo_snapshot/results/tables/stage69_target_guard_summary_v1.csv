@@ -1,0 +1,13 @@
+condition,mean_pooled_oof_spearman,beats_best_no_aux,beats_best_shuffled_aux,beats_stage27c_mean,reaches_material_rescue_threshold,iba1_improved_vs_stage27c,target_level_guard_pass
+rare_aux_pls2_w0p05,0.3203283582928226,False,False,False,False,False,True
+rare_aux_pls2_w0p1,0.334016259155253,False,False,True,True,True,False
+rare_aux_pls2_w0p2,0.3276172240344348,False,False,True,False,True,False
+rare_aux_pls4_w0p05,0.32798943496004473,False,False,True,False,False,False
+rare_aux_pls4_w0p1,0.3259626210942552,False,False,False,False,False,False
+rare_aux_pls4_w0p2,0.3591037979163019,True,True,True,True,True,True
+rare_aux_pls6_w0p05,0.34084340873749325,True,False,True,True,False,True
+rare_aux_pls6_w0p1,0.3440717699806878,True,False,True,True,False,True
+rare_aux_pls6_w0p2,0.335640258797479,False,False,True,True,False,True
+rare_aux_pls8_w0p05,0.3251612754297236,False,False,False,False,False,True
+rare_aux_pls8_w0p1,0.3215416503933525,False,False,False,False,False,True
+rare_aux_pls8_w0p2,0.32220363166207244,False,False,False,False,False,True

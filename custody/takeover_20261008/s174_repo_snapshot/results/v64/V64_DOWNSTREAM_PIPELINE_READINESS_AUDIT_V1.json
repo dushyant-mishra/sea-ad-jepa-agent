@@ -1,0 +1,160 @@
+{
+  "schema": "V64_DOWNSTREAM_PIPELINE_READINESS_AUDIT_V1",
+  "date": "2026-09-29",
+  "canonical_branch": "chatgpt/v64-e2-single-source-successor-20260929",
+  "audited_head": "8bd943625da4ae11d3a9fa7e795a40690fcef2b6",
+  "overall_verdict": "NOT_FULLY_SET_UP__SCIENTIFIC_SEQUENCE_DEFINED_BUT_MULTIPLE_EXECUTION_AND_AUTHORITY_TRANSITIONS_MISSING",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "morabito": "PROTECTED",
+    "stage4_nih_card": "NOT_AUTHORISED"
+  },
+  "stages": [
+    {
+      "id": "D0_NIH_CARD_PREEXECUTION",
+      "status": "PARTIAL_READY",
+      "existing": [
+        "prospective design V1+V2",
+        "pairing provenance qualification",
+        "outcome-blind Stage-3 implementation",
+        "historical synthetic span reference",
+        "metacell precision qualification",
+        "support-map Phase 1"
+      ],
+      "missing": [
+        "authenticated full NIH-CARD bytes",
+        "support-map Phase 2",
+        "real 14D span result",
+        "empirical metacell precision calibration",
+        "realism-calibrated synthetic qualification"
+      ]
+    },
+    {
+      "id": "D1_NIH_CARD_STAGE4_EXECUTION",
+      "status": "MISSING_EXECUTOR",
+      "finding": "A result schema and execution plan exist, but canonical scripts contain no Stage-4 E2 correspondence executor.",
+      "required": [
+        "separate fail-closed Stage-4 executor consuming only audited precondition receipts",
+        "exact implementation of frozen gene-balanced donor-level estimand and precision handling",
+        "anti-false-green controls and declared sensitivities",
+        "result receipt binding design, inputs, E2 object and precondition digests"
+      ]
+    },
+    {
+      "id": "D2_E2_PROMOTION",
+      "status": "MISSING_MACHINE_ENFORCED_PROMOTION_AUTHORITY",
+      "finding": "V64 successor contract states that E2_NOTT_CANDIDATE may be promoted only after independent validation-cohort correspondence, but no dedicated validated-E2 authority class or promotion receipt is present.",
+      "required": [
+        "validated E2 authority schema",
+        "PASS/FAIL/limited-pass adjudication rule",
+        "binding to exact E2 edge digest and NIH-CARD result digest",
+        "claim-scope and out-of-span limitations carried forward"
+      ]
+    },
+    {
+      "id": "D3_RNA_PLUS_REGULATORY_TARGET_INTEGRATION",
+      "status": "NOT_IMPLEMENTED_FOR_CURRENT_E2",
+      "finding": "Generic query-local target-construction and teacher-target semantic authorities exist, but no current authority binds the source-balanced RNA backbone plus validated E2 regulatory evidence into one exact teacher-target object.",
+      "required": [
+        "prospective target-integration contract",
+        "feature/evidence budget and normalization rules",
+        "uncertainty/support representation",
+        "no double counting of same-study Nott evidence",
+        "explicit treatment of genes with multiple regulatory edges",
+        "SCENIC+/other evidence roles prospectively classified rather than silently merged"
+      ]
+    },
+    {
+      "id": "D4_Q_SAFETY",
+      "status": "SCHEMA_EXISTS_EXECUTED_AUTHORITY_MISSING",
+      "finding": "QSafetyAuthorityV1 exists and only permits q_excluded_total__q_token_dropped or fixed_reference__q_token_dropped with q-blind teacher target, but no current executed q-intervention receipt is present in the canonical V64 result chain.",
+      "required": [
+        "physical q-intervention design and execution",
+        "teacher-side q-blindness proof",
+        "student normalization/token leakage test",
+        "instantiated QSafetyAuthorityV1 digest bound into current root graph"
+      ]
+    },
+    {
+      "id": "D5_TEACHER_CONTINUITY_TD60",
+      "status": "PROSPECTIVELY_DEFINED_BLOCKED",
+      "finding": "FULL104 learned-teacher relational authority is prospectively defined and TD60 remains the conceptual bridge, but it requires a lawful teacher and does not yet bind the new E2 regulatory component.",
+      "required": [
+        "integrated target authority first",
+        "lawful teacher execution",
+        "TD57B global and TD59 mesoscale continuity results",
+        "rare/heterogeneity preservation diagnostic where claimed"
+      ]
+    },
+    {
+      "id": "D6_PROTECTED_EXTERNAL_VALIDATION",
+      "status": "NOT_CURRENTLY_FROZEN_FOR_POST_E2_EXECUTION",
+      "finding": "Morabito and other external assets are catalogued with exposure boundaries, but the current branch has no dedicated post-E2 protected-validation execution contract binding the exact frozen integrated target.",
+      "required": [
+        "outcome-family-specific Morabito exposure ledger",
+        "frozen donor-level separate-nucleus estimand",
+        "feature-support/missingness rules",
+        "single-shot execution and claim-scope contract",
+        "no redesign of E2 or integrated target after protected outcome exposure"
+      ]
+    },
+    {
+      "id": "D7_FINAL_TRAINING_GOVERNANCE",
+      "status": "HIGH_SEVERITY_OPEN",
+      "finding": "current_authority_roots_v3 adds biological specificity, q-safety and provider-backed critical-test execution, but current_authority_closure_v2, preexecution_v2, teacher-target receipt_v2 and CurrentTrainingAuthorityV1 remain bound to V2 roots. CurrentTrainingAuthorityV1 is still capable of training_authorized=True without the V3 roots.",
+      "evidence": [
+        "docs/agent/V62_AUTHORITY_SUCCESSOR_PARTIAL_IMPLEMENTATION_20260928.md explicitly records this incomplete successor",
+        "src/sea_ad_jepa/v5/current_training_authority_v1.py imports CURRENT_V5_*_ROOTS_V2",
+        "qualified_optimizer_guard_v3 validates V2 receipt and CurrentTrainingAuthorityV1"
+      ],
+      "required": [
+        "current_authority_closure_v3 consuming exact V3 roots",
+        "trainer_preexecution_v3",
+        "teacher_target_receipt_v3",
+        "training authority successor that rejects every V1/V2 root graph",
+        "optimizer guard successor bound only to the new training authority",
+        "old-path rejection/red-team tests"
+      ]
+    },
+    {
+      "id": "D8_PRODUCTION_TRAINER_WIRING",
+      "status": "UNVERIFIED",
+      "finding": "Authority and optimizer-guard components exist, but this audit did not find an explicit canonical production trainer executor demonstrating that every optimizer step is necessarily routed through the final authority/guard chain.",
+      "required": [
+        "identify exact production trainer entrypoint",
+        "prove guard installation is mandatory and cannot be bypassed",
+        "bind schedule cursor/checkpoint/EMA telemetry to final authority receipt",
+        "production-geometry dry-run after governance successor closes"
+      ]
+    },
+    {
+      "id": "D9_BRANCH_OPERATIONAL_GOVERNANCE",
+      "status": "WARNING",
+      "finding": "The current canonical working branch is not GitHub-protected and has no required status checks at the branch protection endpoint.",
+      "consequence": "This is not scientific evidence, but it increases accidental-mutation risk for a branch whose live HEAD is being treated as authority.",
+      "required": [
+        "consider protected integration branch or immutable tagged authority snapshots before training-era execution"
+      ]
+    }
+  ],
+  "already_good": [
+    "target semantics explicitly forbid hidden-gene scalar reconstruction",
+    "query-local state semantics are enumerated",
+    "donor-uniform base training estimand exists",
+    "FULL104 teacher relational qualification is prospective and source-stratified",
+    "protected registry and optimizer step-guard components exist",
+    "training remains OFF while the successor chain is incomplete"
+  ],
+  "next_priority_order": [
+    "finish NIH-CARD authenticated ETL and realism-calibrated synthetic qualification",
+    "build/audit Stage-4 executor before correspondence exposure",
+    "freeze validated-E2 promotion authority",
+    "freeze RNA+E2 target-integration authority",
+    "execute and instantiate q-safety authority",
+    "freeze protected Morabito/post-E2 validation contract",
+    "complete V3-root closure/preexecution/receipt/training/optimizer chain",
+    "verify mandatory production trainer wiring",
+    "only then consider TD60/training authorization"
+  ]
+}

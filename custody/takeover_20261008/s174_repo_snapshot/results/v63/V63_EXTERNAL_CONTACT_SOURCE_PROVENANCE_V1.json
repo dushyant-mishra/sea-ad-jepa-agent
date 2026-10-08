@@ -1,0 +1,174 @@
+{
+  "schema": "V63_EXTERNAL_CONTACT_SOURCE_PROVENANCE_V1",
+  "date": "2026-09-29",
+  "covers": ["Task 4 DS010 feasibility", "Task 5 DS010 companion multiome", "Task 6 contact-source provenance table"],
+  "governance": {
+    "training": "OFF", "td60": "BLOCKED",
+    "no_dua_rule": "BINDING",
+    "method": "Public registry and repository inspection only. No controlled-access request was made. No contact bytes were used to construct anything. No AD-vs-control molecular finding was used for design.",
+    "regulatory_molecular_outcome_opened": false
+  },
+
+  "HEADLINE_CONTRADICTION_WITH_THE_ASSIGNMENT": {
+    "assignment_assumed": "DS010 raw contact information exists at single-nucleus level and cell type x donor x region pseudobulk contact matrices were constructed by the authors; the feasibility question was whether public contact bytes are raw or imputed.",
+    "what_is_actually_true": "The question of raw-vs-imputed does not arise, because NO DS010 contact bytes are public at all. Both SubSeries carrying the data are under GEO embargo.",
+    "evidence_verbatim": "Accession \"GSE308668\" is currently private and is scheduled to be released on Feb 01, 2027. If you are the owner of this accession you must login to view this accession.  --  identical message for GSE308906.",
+    "also_confirmed": "The FTP supplementary directories for both SubSeries return 'Object not found!'.",
+    "consequence": "DS010_CONSTRUCTION_USE = BLOCKED_BY_EMBARGO__NOT_BY_IMPUTATION. The assignment's fallback applies: 'If DS010 cannot yield sufficiently resolved contact support, fall back to a Nott-centered object rather than forcing a weak intersection.'"
+  },
+
+  "DS010": {
+    "publication": {
+      "title": "Brain Region-Specific Epigenomic Reorganization and Altered Cell States in Alzheimer's Disease",
+      "first_author": "Wenliang Wang",
+      "lab_institute": "Genomic Analysis Laboratory, Salk Institute (GEO contact institute: HHMI-Salk-Institute)",
+      "preprint_doi": "10.1101/2025.09.29.678849",
+      "pmc": "PMC12621709", "pubmed": "41256571", "preprint_date": "2025-09-30"
+    },
+    "accession_hierarchy": {
+      "superseries": {"accession": "GSE308132", "status": "PUBLIC_METADATA_ONLY",
+                      "sample_records": 0,
+                      "public_supplementary_files": ["GSE308132_supplementary_table.txt.gz (12,793 bytes, sha256 c4ba6f37735bdd9d619e6014ef3e99e8a9d7c5e1512694bdfbf1c9fe269265ed)"]},
+      "subseries": [
+        {"accession": "GSE308668", "status": "PRIVATE", "scheduled_release": "2027-02-01", "ftp_suppl": "Object not found"},
+        {"accession": "GSE308906", "status": "PRIVATE", "scheduled_release": "2027-02-01", "ftp_suppl": "Object not found"}
+      ],
+      "which_subseries_is_snm3C_vs_multiome": "NOT_DETERMINABLE_FROM_PUBLIC_RECORD. Both are private; the SuperSeries type covers both ('Methylation profiling by high throughput sequencing' and 'Other'). Do not guess."
+    },
+    "raw_vs_processed_vs_imputed": {
+      "stated_in_paper": "contact matrices analysed at 10 kb, 25 kb and 100 kb with scHiCluster imputation; raw contact matrices also used for some analyses",
+      "publicly_downloadable_contact_bytes": "NONE — neither raw nor imputed",
+      "verdict": "the raw-vs-imputed distinction is MOOT for construction until 2027-02-01"
+    },
+    "genome_build": "GRCh38, stated verbatim as 'human Genome Reference Consortium build 38 (GRCh38)'",
+    "contact_resolution": ["10 kb", "25 kb", "100 kb"],
+    "cohort": {
+      "source_institution": "Massachusetts Alzheimer's Disease Research Center (MADRC)",
+      "donors": 20, "AD": 11, "control": 9,
+      "regions": {"BA17": "primary visual cortex", "BA20": "temporal cortex", "BA9": "prefrontal cortex"},
+      "donor_ids_public": ["2012","2021","2026","2027","2037","2057","2058","2068","2097","2112",
+                           "2178","2191","2210","2215","2232","2259","2274","2327","2339","2380"],
+      "note": "donor IDs, diagnosis, sex, age, APOE and Braak stage are exposed by the public SuperSeries table"
+    },
+    "nuclei": {
+      "total_retained_for_methylation_and_3C": 221245,
+      "high_quality_for_3D_genome": 191151,
+      "approx_per_donor_per_region": 3000
+    },
+    "MICROGLIA_BY_DONOR_x_REGION": {
+      "source": "GSE308132_supplementary_table.txt.gz, 1,448 pseudobulk library rows",
+      "granularity": "LIBRARY EXISTENCE, not cell counts. The public table lists one row per donor x region x cell type; it does NOT carry per-library nucleus counts.",
+      "microglia_label": "MGC",
+      "microglia_pseudobulk_libraries": 59,
+      "max_possible": 60,
+      "donors_with_at_least_one_microglia_library": 20,
+      "by_region": {"BA17": 20, "BA20": 20, "BA9": 19},
+      "missing_combination": [["2037", "BA9"]],
+      "cell_types_present": 26,
+      "interpretation": "Coverage is essentially complete at the donor x region level, which is what the assignment hoped for. It is the BYTES that are unavailable, not the design."
+    },
+    "sequencing_batch": {
+      "instruments": ["Illumina NovaSeq 6000", "Illumina NovaSeq X"],
+      "batches": 2, "read_mode": "150 bp paired-end",
+      "note": "the paper states instrument batch effects were observed and corrected; instrument is therefore a named nuisance axis"
+    },
+    "feasibility_verdict": "BLOCKED_UNTIL_2027-02-01",
+    "reconstruction_cost_if_raw_reads_were_public": "NOT_APPLICABLE — raw reads are not public either; there is nothing to reconstruct from.",
+    "revisit_trigger": "GSE308668 / GSE308906 becoming public, or the authors releasing pseudobulk contact matrices elsewhere."
+  },
+
+  "DS010_COMPANION_MULTIOME": {
+    "identified": true,
+    "evidence": "the paper states 'in a companion study using the same samples, we also measured chromatin accessibility and gene expression' and 'companion study using 10x Genomics Chromium Single Cell Multiome ATAC + Gene Expression (10x multiome) data from the same cohort'",
+    "accession": "one of GSE308668 / GSE308906 under SuperSeries GSE308132 — WHICH ONE IS NOT PUBLICLY DETERMINABLE",
+    "public_vs_controlled": "PRIVATE until 2027-02-01. Not controlled-access, not open — embargoed.",
+    "same_nucleus_rna_atac": "10x Multiome is same-nucleus by assay design, but this cannot be verified against the deposit while it is private.",
+    "microglia_counts": "NOT_AVAILABLE",
+    "donor_mapping_to_the_20_DS010_donors": "By construction the companion uses the SAME cohort, and the public SuperSeries table gives the 20 donor IDs, so a donor mapping would be straightforward ONCE both are public. It cannot be executed now.",
+    "PROSPECTIVE_DONOR_SPLIT_STATUS": "CANNOT_BE_FROZEN_YET. The assignment asks for a prospectively frozen, zero-overlap contact-construction vs validation donor split. Freezing a split over donors whose data cannot be inspected would be a paper exercise, and freezing it now buys nothing because the split can be frozen the moment the data is public, still before any outcome is inspected. Recorded as a DEFERRED design step, not a completed one."
+  },
+
+  "CONTACT_SOURCE_PROVENANCE_TABLE": [
+    {
+      "source": "Nott et al. 2019",
+      "citation": "Science 366(6469):1134-1139; PMC7028213",
+      "assay": "H3K4me3 PLAC-seq (proximity ligation then H3K4me3 ChIP) — PROMOTER-ANCHORED by construction",
+      "cell_source": "PU.1+ nuclei FACS-sorted from SURGICALLY RESECTED cortical tissue (fresh, not postmortem)",
+      "donor_count": 6,
+      "age_context": "neurosurgical / pediatric-to-adult resection tissue; NOT an aged postmortem cohort",
+      "genome_build": "hg19",
+      "processed_contact_availability": "PUBLISHED as supplementary Table S5 (~35.2 MB xlsx) and as a public UCSC session (glassLab_BrainCellTypes_hg19). NOT MACHINE-RETRIEVABLE IN THIS ENVIRONMENT: PMC returns a 1,817-byte proof-of-work interstitial for the supplement binaries and Europe PMC returns an error for supplementaryFiles. The gate was not circumvented.",
+      "raw_contact_availability": "dbGaP phs001373.v2.p1 — CONTROLLED ACCESS",
+      "terms": "processed loop calls PUBLIC_PUBLISHED; raw CONTROLLED",
+      "promoter_distal_representation": "promoter-anchored loops; distal end is the variable end — this is exactly the shape P1's promoter-fixed distal shuffle assumes",
+      "rna_enters_construction": "NO — loops are contact-defined; RNA-seq is used for cell-type validation, not link definition",
+      "accessibility_enters_construction": "NO for the loop calls themselves; ATAC/H3K27ac are separate layers in the same study",
+      "overlap_exposure_hazards": "Distinct cohort from SEA-AD, Morabito, GSE214979, GSE272082 and from NIH-CARD (surgical vs postmortem). Age context differs sharply from an aged validation cohort, which is a STATE-REWIRING hazard for interpretation, not a donor-overlap hazard.",
+      "status": "PRIMARY_CONTACT_CANDIDATE__ARTIFACT_NOT_YET_IN_HAND"
+    },
+    {
+      "source": "DS010 / Wang et al. 2025",
+      "assay": "snm3C-seq (joint single-nucleus DNA methylation + 3C)",
+      "cell_source": "postmortem MADRC cortex, 3 regions",
+      "donor_count": 20,
+      "age_context": "aged postmortem, 11 AD / 9 control",
+      "genome_build": "GRCh38",
+      "processed_contact_availability": "EMBARGOED until 2027-02-01",
+      "raw_contact_availability": "EMBARGOED until 2027-02-01",
+      "terms": "PRIVATE__SCHEDULED_RELEASE_2027-02-01",
+      "promoter_distal_representation": "genome-wide bins at 10/25/100 kb, not promoter-anchored",
+      "rna_enters_construction": "NO",
+      "accessibility_enters_construction": "NO",
+      "overlap_exposure_hazards": "MADRC cohort; no established overlap with our validation cohorts. Its published AD-vs-control loop and methylation findings are DEVELOPMENT EXPOSURE and must not select edges.",
+      "status": "BLOCKED_BY_EMBARGO"
+    },
+    {
+      "source": "Yang et al. / GSE173316",
+      "citation": "Functional characterization of Alzheimer's disease genetic variants in microglia (UCSF)",
+      "assay": "promoter capture Hi-C in WTC11 iPSC-derived microglia, plus RNA-seq and CRISPR screens",
+      "cell_source": "iPSC-derived microglia, ONE genetic background (WTC11)",
+      "donor_count": 1,
+      "age_context": "not applicable — iPSC-derived",
+      "genome_build": "hg19 (per assignment; not independently verified here)",
+      "processed_contact_availability": "NOT_VERIFIED_PUBLIC. GSE173316 is public with 26 samples, but the series-level GSE173316_RAW.tar (24,944,640 bytes, sha256 5f3474e5d8f29498c5306a81489dec1e6481250dc70069c185f2874d886bf3ba) contains ONLY 8 RSEM gene-expression results and 2 CRISPR count matrices. NO pcHi-C interaction file is present at series level. The assignment states CHiCAGO interactions are public; that could not be confirmed from the GEO deposit.",
+      "raw_contact_availability": "not established",
+      "terms": "series PUBLIC; the pcHi-C processed artifact UNLOCATED",
+      "rna_enters_construction": "NO for contacts",
+      "accessibility_enters_construction": "NO",
+      "overlap_exposure_hazards": "No human donor overlap risk. One genetic background means it is a STRUCTURAL ROBUSTNESS layer only and can never be genetic replication.",
+      "status": "ROBUSTNESS_ONLY__ARTIFACT_UNLOCATED"
+    },
+    {
+      "source": "Kosoy et al. 2022 — Hi-C layer",
+      "assay": "in situ Hi-C from FACS-sorted CD45+CD11b+ primary microglia",
+      "cell_source": "fresh postmortem primary microglia",
+      "donor_count": 5,
+      "age_context": "aged postmortem — scientifically the ideal aged contact layer",
+      "genome_build": "hg38",
+      "processed_contact_availability": "AD Knowledge Portal, access-required",
+      "raw_contact_availability": "AD Knowledge Portal, access-required",
+      "terms": "CONTROLLED_OR_ACCESS_REQUIRED__SUPPORTING_ONLY",
+      "overlap_exposure_hazards": "draws from ROS/MAP; the standing V59 constraint that Kosoy-derived cis objects and ROSMAP-derived confirmation are MUTUALLY EXCLUSIVE absent a donor-level crosswalk still binds.",
+      "status": "NOT_PUBLIC__SUPPORTING_ONLY — must not be load-bearing. Rediscovered copies on GitHub/Zenodo do NOT change this unless the data owners released them under open terms."
+    },
+    {
+      "source": "Kosoy et al. 2022 — ATAC layer",
+      "assay": "ATAC-seq in primary microglia",
+      "donor_count": "~107 after QC (paper-reported)",
+      "genome_build": "hg38",
+      "terms": "NOT_VERIFIED_IN_THIS_PASS",
+      "status": "UNVERIFIED. V59 established that Kosoy has NO NCBI deposit at all (0 hits across GEO, BioProject and SRA), so any open ATAC distribution must be located and its terms read before use. Until then it cannot be the E2 accessibility source."
+    }
+  ],
+
+  "WHAT_THIS_LEAVES": {
+    "contact_layer": "Nott processed PLAC-seq loops are the ONLY admissible public contact candidate, and the artifact is not yet in hand in this environment.",
+    "accessibility_layer": "UNRESOLVED. Kosoy ATAC terms are unverified; Nott ATAC is a sensitivity layer by the assignment's own hierarchy.",
+    "honest_position": "E2 cannot be constructed today. Two of its three candidate contact sources are unavailable (embargo, controlled access), the primary one is behind a download gate, and the accessibility source is unverified. Writing a frozen E2 design contract is still the right next step, because the contract is what makes construction mechanical once the bytes arrive -- but the contract must be labelled as SPECIFIED_NOT_INSTANTIATED.",
+    "what_would_unblock_it": [
+      "Nott supplementary Table S5 supplied directly (the Corces precedent: the user supplied the XLSX when PMC gated it)",
+      "a verified open distribution of Kosoy ATAC with its licence read",
+      "GSE308668 / GSE308906 release on 2027-02-01"
+    ]
+  }
+}

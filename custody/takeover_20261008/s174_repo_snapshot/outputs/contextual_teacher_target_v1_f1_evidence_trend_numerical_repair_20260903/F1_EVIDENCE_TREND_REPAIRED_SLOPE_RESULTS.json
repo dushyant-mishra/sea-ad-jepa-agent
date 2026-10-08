@@ -1,0 +1,64 @@
+{
+  "cases": {
+    "baseline": {
+      "report": {
+        "estimable": true,
+        "gate": true,
+        "lower": 0.3743774556515864,
+        "lower_one_sided": 0.3745203227570034,
+        "mean": 0.3752533724578443,
+        "n": 104,
+        "p_negative": 1.0,
+        "p_positive": 3.462872419982539e-200,
+        "upper": 0.37612928926410216
+      },
+      "slopes_sha256": "ce3d6dace2671b63bfa92330fc4a1a74eac971eb19e60a516360668bf1a3746f"
+    },
+    "near_negative": {
+      "report": {
+        "estimable": true,
+        "gate": false,
+        "lower": -0.0004697805435347662,
+        "lower_one_sided": -1.000000000000046e-05,
+        "mean": 0.0023491294084585644,
+        "n": 104,
+        "p_negative": 0.9492862228546005,
+        "p_positive": 0.050713777145399465,
+        "upper": 0.005168039360451895
+      },
+      "slopes_sha256": "74bd619295746ae8025d1201895b51b7e8b2a825335a1d159ef160e29fd704ca"
+    },
+    "near_positive": {
+      "report": {
+        "estimable": true,
+        "gate": true,
+        "lower": -0.0004497805435347648,
+        "lower_one_sided": 1.000000000000046e-05,
+        "mean": 0.0023691294084585653,
+        "n": 104,
+        "p_negative": 0.9507056272281753,
+        "p_positive": 0.0492943727718247,
+        "upper": 0.005188039360451896
+      },
+      "slopes_sha256": "55d4b276b872b9c6e9651499f9c1c57dcb99f6ed88d1d7d455da0abf72fee84e"
+    }
+  },
+  "coefficient_vector": [
+    -1.0,
+    -0.5,
+    0.0,
+    0.5,
+    1.0
+  ],
+  "exact_flat_slopes": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "linear_slopes": [
+    5.0,
+    -5.0
+  ],
+  "status": "PASS"
+}

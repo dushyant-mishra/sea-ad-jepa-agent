@@ -1,0 +1,36 @@
+{
+  "schema": "full104-cross-blas-decision-invariance-v1",
+  "status": "STOP_INSUFFICIENT_COMPLETED_GOLD_DECISION_ARTIFACTS",
+  "pass_issued": false,
+  "reason": "The requested D1-D320 decision comparison is not defined by the completed gold artifacts. The old FULL104 run contains one A null replicate and zero B null replicates, while the frozen aggregate selector requires 256 A and 256 B null replicates. No FULL104 calibration table or selection JSON exists. First unsupported D, contiguous prefix, and one-SE consequence therefore cannot be reconstructed or compared without generating new ALL results.",
+  "completed_artifact_inventory": {
+    "old_full104_A_null_replicates": 1,
+    "old_full104_B_null_replicates": 0,
+    "old_full104_calibration_exists": false,
+    "old_full104_selection_exists": false,
+    "new_wsl_gold_scientific_payload_persisted": false,
+    "new_wsl_accumulator_checkpoint_next_stratum": 1390,
+    "new_wsl_accumulator_checkpoint_status": "INCOMPLETE_BATCH_CHECKPOINT"
+  },
+  "known_comparable_gold_results": {
+    "null_mapping_exact": true,
+    "heldout_predictability_bitwise_exact": true,
+    "maximum_null_full_eigenvalue_abs_difference": 2.498001805406602e-16,
+    "maximum_paired_bootstrap_eigenvalue_abs_difference": 2.7755575615628914e-16,
+    "maximum_stability_abs_difference": 1.1102230246251565e-15,
+    "eigenvalue_order_descending": true,
+    "aggregate_decision_booleans_available": false
+  },
+  "authority": {
+    "old_A_replicate_000_sha256": "65794dca42fa147e600e43f7311dc2e6855fd3664d5f2e92082d33a3b97147a4",
+    "wsl_gold_report_sha256": "dcc236700dc240abe2d984c002a9d7ebf300e3bc090d03d71066dc944ec922a3",
+    "authenticated_old_basis_audit_sha256": "7ae00037e6c025ca92841ed993bfe3bb8158e408a8606026384c77e83910702a",
+    "wsl_K_benchmark_sha256": "3582be0e373ca22043ef2cc27bbf715f9bbf05ddebb1ee7af1e7208c87512f2d",
+    "all_plan_file_sha256": "fc7249c4e1aefccc6a9535a30cd311e8b6fa6cf980b85c1c0a7607b65d611a21",
+    "all_plan_semantic_sha256": "132fa3c3b9594a742daa650497d7f212375056f104fdc087375349bcb35b6b20",
+    "matrix_manifest_sha256": "986c9508314fdceadfac2397dad94767f2590126fb5902221307aea536accf91",
+    "null_mapping_sha256": "4728a6b51252327081604205506072d5d80a58d52778f1976ea46587ae3511de"
+  },
+  "prohibited_inference": "Machine-roundoff-scale array deltas cannot be converted into nonexistent 256-replicate empirical-null, stability, predictability, joint-support, first-failure, prefix, or one-SE decisions.",
+  "next_state": "COUNCIL_NOT_RUN_FINGERPRINT_NOT_ISSUED_ALL_NOT_LAUNCHED"
+}

@@ -1,0 +1,6 @@
+failure_mode,stage_or_branch,evidence
+weak_bootstrap_support,Stage 39C/39E/39H,point estimates improved but donor-bootstrap lower CIs did not clear lock thresholds
+target_guard_failure,Stage 39E direct elasticnet / Stage 39H context,"high mean scores traded off Aβ, GFAP, or NeuN"
+proxy_sensitive_context,Stage 39D/39H full context,large context gains involved risky or forbidden proxy features
+architecture_failure,Stage 40A,dual-head EMA+VICReg underperformed simple Stage 39E pca8 reference
+missing_safe_information,terminal synthesis,current module matrix appears insufficient for robust rescue without added safe modalities

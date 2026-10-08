@@ -1,0 +1,15 @@
+{
+  "all_rows_exactly_once": true,
+  "biology_or_identity_as_features": false,
+  "canonical_selection_order": true,
+  "expression_reopened": false,
+  "feature_dim": 512,
+  "feature_manifest_sha256": "d6f70ee1bca777f3d2cbd89dd560395cc46ec25f6a648ae4ba0fd6e77c1c2cf1",
+  "matrix_manifest_sha256": "986c9508314fdceadfac2397dad94767f2590126fb5902221307aea536accf91",
+  "rows": 4553407,
+  "sample_level": 4,
+  "schema": "full104-phase2-feature-matrix-v1",
+  "sketches": 2,
+  "status": "PASS_PHASE2_FEATURE_MATRIX_ASSEMBLED",
+  "views": 4
+}

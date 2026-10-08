@@ -1,0 +1,29 @@
+{
+  "schema": "JEPA_PROJECT_COORDINATION_CONSOLIDATION_FREEZE_V1",
+  "date": "2026-09-07",
+  "status": "FROZEN_COORDINATION_SNAPSHOT__NO_EXECUTION_AUTHORITY",
+  "terminal": "PASS_PROJECT_COORDINATION_CONSOLIDATION__NO_NEW_EXECUTION_AUTHORITY",
+  "branch": "coordination/project-consolidation-20260907",
+  "source_base_commit": "d85391c90eb1f767115e0f4d31cfaf6bff980e2b",
+  "manifest_prefreeze_commit": "698f166e0d49722af0db598a138e45f317d5db1e",
+  "package_root_record_commit": "070bd43e0cae31bd6ee6f11d4b8a94f270626fdd",
+  "manifest_path": "docs/agent/PROJECT_CONSOLIDATION_MANIFEST_20260907.csv",
+  "package_root_sha256": "8f5ce75c0da2d21ea3d5fce306c9248f79789b56dc364b32b60c4be532761386",
+  "package_root_rule": "SHA-256 of exact UTF-8 bytes of PROJECT_CONSOLIDATION_MANIFEST_20260907.csv",
+  "manifest_members": 3,
+  "bound_files": {
+    "docs/agent/PROJECT_CONSOLIDATED_STATE_20260907.md": "1903ce1335c8a669ec84c70e4be1f641d40ef8747fdb37cfef01d99f37131d12",
+    "docs/agent/PROJECT_CONSOLIDATED_STATE_20260907.json": "745a40dfc23a5eb710b507176f4feeeee3e45998cf5d312125db356382278d11",
+    "docs/agent/PROJECT_SESSION_ARTIFACT_INVENTORY_20260907.csv": "b2b7b2694ca8efa7733d77b8acf853d982d1cc802da0632f7294900666ec9cb6"
+  },
+  "coordination_only": true,
+  "may_override_source_authority": false,
+  "execution_authorized": false,
+  "new_data_access_authorized": false,
+  "training_authorized": false,
+  "real_f1_authorized": false,
+  "real_t0_authorized": false,
+  "real_d1_authorized": false,
+  "protected_outcome_access_authorized": false,
+  "note": "Exact scientific/governance authority remains on each referenced source branch, commit and package root. This freeze only preserves a verified cross-lane handoff snapshot."
+}

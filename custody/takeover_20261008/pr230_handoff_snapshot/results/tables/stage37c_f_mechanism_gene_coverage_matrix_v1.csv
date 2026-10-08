@@ -1,0 +1,21 @@
+dataset_id,stage_label,mechanism_id,mechanism_name,n_stage36e_candidate_genes,n_genes_present_in_dataset,gene_coverage_fraction,present_genes,missing_genes,coverage_interpretation
+gse160936,Stage37C,M1,Endolysosomal / autophagy / proteostasis,5,0,0.0,,CTSB;CTSD;LAMP2;LAPTM5;NPC2,not_testable_no_gene_universe
+gse160936,Stage37C,M2,Glial activation / disease-associated microglia-astrocyte state,5,0,0.0,,APOE;CST7;CTSD;LGALS3;TREM2,not_testable_no_gene_universe
+gse160936,Stage37C,M3,Oxidative stress / antioxidant response,5,0,0.0,,GPX4;HMOX1;NQO1;SOD1;SOD2,not_testable_no_gene_universe
+gse160936,Stage37C,M4,Inflammatory signaling / transport / cell-state modulation,4,0,0.0,,BSG;IL27RA;NFKBIA;SLC6A12,not_testable_no_gene_universe
+gse125050,Stage37D,M1,Endolysosomal / autophagy / proteostasis,5,0,0.0,,CTSB;CTSD;LAMP2;LAPTM5;NPC2,not_testable_no_gene_universe
+gse125050,Stage37D,M2,Glial activation / disease-associated microglia-astrocyte state,5,0,0.0,,APOE;CST7;CTSD;LGALS3;TREM2,not_testable_no_gene_universe
+gse125050,Stage37D,M3,Oxidative stress / antioxidant response,5,0,0.0,,GPX4;HMOX1;NQO1;SOD1;SOD2,not_testable_no_gene_universe
+gse125050,Stage37D,M4,Inflammatory signaling / transport / cell-state modulation,4,0,0.0,,BSG;IL27RA;NFKBIA;SLC6A12,not_testable_no_gene_universe
+gse157827,Stage37E,M1,Endolysosomal / autophagy / proteostasis,5,0,0.0,,CTSB;CTSD;LAMP2;LAPTM5;NPC2,not_testable_no_gene_universe
+gse157827,Stage37E,M2,Glial activation / disease-associated microglia-astrocyte state,5,0,0.0,,APOE;CST7;CTSD;LGALS3;TREM2,not_testable_no_gene_universe
+gse157827,Stage37E,M3,Oxidative stress / antioxidant response,5,0,0.0,,GPX4;HMOX1;NQO1;SOD1;SOD2,not_testable_no_gene_universe
+gse157827,Stage37E,M4,Inflammatory signaling / transport / cell-state modulation,4,0,0.0,,BSG;IL27RA;NFKBIA;SLC6A12,not_testable_no_gene_universe
+gse138852,Stage37F,M1,Endolysosomal / autophagy / proteostasis,5,4,0.8,CTSB;LAMP2;LAPTM5;NPC2,CTSD,high_gene_coverage
+gse138852,Stage37F,M2,Glial activation / disease-associated microglia-astrocyte state,5,2,0.4,APOE;LGALS3,CST7;CTSD;TREM2,partial_gene_coverage
+gse138852,Stage37F,M3,Oxidative stress / antioxidant response,5,3,0.6,GPX4;SOD1;SOD2,HMOX1;NQO1,partial_gene_coverage
+gse138852,Stage37F,M4,Inflammatory signaling / transport / cell-state modulation,4,3,0.75,BSG;NFKBIA;SLC6A12,IL27RA,partial_gene_coverage
+gse174367,optional_secondary,M1,Endolysosomal / autophagy / proteostasis,5,0,0.0,,CTSB;CTSD;LAMP2;LAPTM5;NPC2,not_testable_no_gene_universe
+gse174367,optional_secondary,M2,Glial activation / disease-associated microglia-astrocyte state,5,0,0.0,,APOE;CST7;CTSD;LGALS3;TREM2,not_testable_no_gene_universe
+gse174367,optional_secondary,M3,Oxidative stress / antioxidant response,5,0,0.0,,GPX4;HMOX1;NQO1;SOD1;SOD2,not_testable_no_gene_universe
+gse174367,optional_secondary,M4,Inflammatory signaling / transport / cell-state modulation,4,0,0.0,,BSG;IL27RA;NFKBIA;SLC6A12,not_testable_no_gene_universe

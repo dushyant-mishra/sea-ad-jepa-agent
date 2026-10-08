@@ -1,0 +1,65 @@
+{
+  "calibration_classification": "STABILITY MACHINERY VALID AT THIS PREFIX",
+  "calibration_ordinary_pca_stable": true,
+  "dev_rna_accessed": false,
+  "factor_amplitudes_changed_across_hard_levels": false,
+  "global_resolution_decision": "UNADJUDICATED",
+  "hard_fixture_diagnosis": "donor heterogeneity / flat eigenspectrum remains unresolved; ordinary PCA is unstable despite increasing N",
+  "hard_fixture_results": [
+    {
+      "cells": 192,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "overlapping_programs",
+      "ordinary_basis_median_canonical_correlation": 0.019234899431467056,
+      "weighted_basis_median_canonical_correlation": 0.0226952712982893
+    },
+    {
+      "cells": 384,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "overlapping_programs",
+      "ordinary_basis_median_canonical_correlation": 0.020298097282648087,
+      "weighted_basis_median_canonical_correlation": 0.04439728707075119
+    },
+    {
+      "cells": 768,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "overlapping_programs",
+      "ordinary_basis_median_canonical_correlation": 0.02163705602288246,
+      "weighted_basis_median_canonical_correlation": 0.0862453505396843
+    },
+    {
+      "cells": 192,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "rare_tail_difficult",
+      "ordinary_basis_median_canonical_correlation": 0.01870977319777012,
+      "weighted_basis_median_canonical_correlation": 0.028469784185290337
+    },
+    {
+      "cells": 384,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "rare_tail_difficult",
+      "ordinary_basis_median_canonical_correlation": 0.022616364061832428,
+      "weighted_basis_median_canonical_correlation": 0.05137690156698227
+    },
+    {
+      "cells": 768,
+      "classification": "AUDIT / FIXTURE LIMITATION",
+      "fixture": "rare_tail_difficult",
+      "ordinary_basis_median_canonical_correlation": 0.024899300187826157,
+      "weighted_basis_median_canonical_correlation": 0.15277180075645447
+    }
+  ],
+  "heldout_family_reason": "no hard fixture earned a stable supported global prefix",
+  "heldout_family_rerun_on_supported_prefix": false,
+  "historical_negative_outputs_overwritten": false,
+  "neural_optimizer_updates": 0,
+  "pathology_accessed": false,
+  "sample_size_only_changed": true,
+  "sealed_rna_accessed": false,
+  "stage": "stage81a3r_stability_audit_repair_candidate",
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "status": "PROVISIONAL_NOT_FROZEN",
+  "thresholds_changed": false,
+  "valid_stable_hard_hierarchy_earned": false
+}

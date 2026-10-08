@@ -1,0 +1,35 @@
+{
+  "schema": "JEPA_V5_MASKING_SUCCESSOR_EXPLORATORY_STATE_V1",
+  "date": "2026-09-17",
+  "status": "EXPLORATORY_SUCCESSOR_EVIDENCE_NOT_AUTHORITY",
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "authority_parent": {
+    "branch": "authority/v5-masking-shortcut-predictability-v2-20260916",
+    "commit": "8abd3fd6f7036fdea2a00682b1e0059c449c60f6",
+    "tree": "0cc50ff04bac773a96bb1018182a3323e48a181e",
+    "disposition": "V2_PRIMARY_QUALIFICATION_METRIC_NOT_INTERPRETABLE__NO_MASKING_AUTHORITY"
+  },
+  "exploratory_lead_candidate": "RIDGE8",
+  "lead_candidate_scope": "frozen 50k discovery expression sample; exact 8 targets x 4 donor-held-out folds for 800/2000/6000 address scale stress",
+  "key_controls": {
+    "planted_positive_6000": "source rank 1 in 4/4 folds; mean bounded-score drop 0.3633",
+    "within_donor_shuffle_negative_6000": "mean paired delta -0.000240; median -0.000221"
+  },
+  "exact_ridge_scale_stress": {
+    "800": {"mean_drop": 0.01076, "relative_drop_pct": 13.53, "row_win_fraction": 0.906},
+    "2000": {"mean_drop": 0.00692, "relative_drop_pct": 8.06, "row_win_fraction": 0.875},
+    "6000": {"mean_drop": 0.00636, "relative_drop_pct": 6.88, "row_win_fraction": 0.938}
+  },
+  "prefix3_status": "DEMOTED_BY_ADDRESS_UNIVERSE_SCALE_STRESS",
+  "immediate_next_step": "Complete exact 32-target RIDGE8/TOP8 comparison at 6000 addresses with target-clustered uncertainty before freezing any FULL104 successor contract.",
+  "successor_requirements": [
+    "common random base masks",
+    "bounded paired evaluation",
+    "target-clustered uncertainty",
+    "address-universe ladder",
+    "planted positive control",
+    "within-donor shuffled negative control",
+    "no production mask fraction or RIDGE8 authority from this exploratory spike"
+  ]
+}

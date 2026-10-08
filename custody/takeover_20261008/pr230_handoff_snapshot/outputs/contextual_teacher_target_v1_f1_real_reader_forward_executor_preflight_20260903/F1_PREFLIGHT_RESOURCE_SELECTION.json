@@ -1,0 +1,87 @@
+{
+  "final_stability": {
+    "batch": 4,
+    "candidate_start_memavailable_bytes": 31119360000,
+    "configuration": 4,
+    "cuda_peak_allocated_bytes": 1294774784,
+    "cuda_peak_reserved_bytes": 1795162112,
+    "cuda_total_bytes": 17179344896,
+    "major_faults_delta": 19,
+    "median_throughput": 14.12004518384578,
+    "minor_faults_delta": 156561,
+    "model_state_sha256": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+    "peak_rss_bytes": 1714348032,
+    "pin": false,
+    "prefetch": 4,
+    "pswpin_after": 0,
+    "pswpin_before": 0,
+    "pswpout_after": 0,
+    "pswpout_before": 0,
+    "reader": {
+      "physical_block_reads": 64,
+      "physical_read_bytes": 321417587,
+      "reader_chunks": 17,
+      "reader_seconds": 2.37579056200002
+    },
+    "reader_block": 4,
+    "repetitions": [
+      {
+        "constructor_seconds": 1.1001428749998468,
+        "elapsed_seconds": 3.6118864589999475,
+        "h2d_seconds": 0.008923790000039844,
+        "model_forward_seconds": 2.4633592760001193,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.028140402000076392,
+        "throughput": 14.12004518384578
+      },
+      {
+        "constructor_seconds": 1.0135331220000126,
+        "elapsed_seconds": 3.524597526999969,
+        "h2d_seconds": 0.008836250000058499,
+        "model_forward_seconds": 2.4642216240000607,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.02753816400024789,
+        "throughput": 14.469737213771939
+      },
+      {
+        "constructor_seconds": 1.1658284949998006,
+        "elapsed_seconds": 3.6814802869999994,
+        "h2d_seconds": 0.00784851199989589,
+        "model_forward_seconds": 2.4715349740001784,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.026671823000128825,
+        "throughput": 13.853123207012844
+      }
+    ],
+    "role_counts": {
+      "correct_student": 15,
+      "matched_null_student": 16,
+      "teacher": 20
+    },
+    "role_seconds_median": {
+      "correct_student": 1.2545305440000902,
+      "matched_null_student": 1.3579070419999653,
+      "teacher": 0.9994379390000176
+    },
+    "safe": true,
+    "stage": "final_stability",
+    "swap_after_bytes": 0,
+    "swap_before_bytes": 0,
+    "throughput_unit": "query_identities_per_second",
+    "timed_repetitions": 3,
+    "warmups": 1,
+    "workers": 4
+  },
+  "fixture_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "historical_batch_constant_used": false,
+  "prospective_rule": "smallest safe configuration with median throughput >=95% fastest safe",
+  "schema": "f1-preflight-resource-selection-v1",
+  "selected": {
+    "forward_batch": 4,
+    "pinned_memory": false,
+    "prefetch": 4,
+    "reader_block": 4,
+    "workers": 4
+  },
+  "status": "PASS"
+}

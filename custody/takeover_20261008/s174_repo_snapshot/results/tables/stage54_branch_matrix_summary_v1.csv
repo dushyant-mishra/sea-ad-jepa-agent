@@ -1,0 +1,5 @@
+model_variant,n_donors,n_features
+programming_only_pca_jepa,84,3000
+state_specific_module_programming_only,84,176
+programming_plus_state_specific_module_programming,84,3176
+negative_control_programming_plus_donor_shuffled_state_programming,84,3176

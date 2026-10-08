@@ -1,0 +1,7 @@
+input_id,path,found,input_type,n_rows_if_readable,n_columns_if_readable,donor_id_column_found,gene_or_module_columns_found,usable_for_stage50,reason_if_not_usable,notes
+active_status,docs/ACTIVE_V3_STATUS.md,True,status_or_prior_context,,,,,True,,read-only context
+v3_scorecard_md,docs/V3_SCORECARD.md,True,status_or_prior_context,,,,,True,,read-only context
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,status_or_prior_context,61,18,,,True,,read-only context
+stage36e_mechanisms,results/tables/stage36e_frozen_mechanism_registry_v1.csv,True,stage_context,4,13,,,True,,read-only context
+stage47_candidates,results/tables/stage47_candidate_gene_consensus_v1.csv,True,stage_context,18,18,,,True,,read-only context
+stage49_concordance,results/tables/stage49_candidate_known_evidence_concordance_v1.csv,True,stage_context,18,18,,,True,,read-only context

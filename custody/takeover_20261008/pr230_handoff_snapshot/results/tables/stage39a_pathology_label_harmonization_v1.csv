@@ -1,0 +1,6 @@
+dataset_id,metadata_path,tau_ptau_columns,amyloid_abeta_columns,other_pathology_columns,tau_ptau_label_ready,amyloid_abeta_label_ready,pathology_label_ready,harmonization_note
+gse138852,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,,,,False,False,False,pathology columns not safely harmonized
+gse157827,,,,,False,False,False,pathology columns not safely harmonized
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,Tangle.Stage,Plaque.Stage,,True,True,True,pathology columns found
+gse160936,,,,,False,False,False,pathology columns not safely harmonized
+gse125050,,,,,False,False,False,pathology columns not safely harmonized

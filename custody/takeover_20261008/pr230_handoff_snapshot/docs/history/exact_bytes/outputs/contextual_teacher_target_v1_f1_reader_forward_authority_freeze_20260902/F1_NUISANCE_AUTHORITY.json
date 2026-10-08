@@ -1,0 +1,46 @@
+{
+  "candidate_outcome_inspected": false,
+  "expression_opened": false,
+  "missing_conclusion_bearing_authority": [
+    "denominator and aggregation hierarchy for operator_mixture_fractions",
+    "address set, denominator, and cell/donor aggregation for recipient_physical_support",
+    "whether recipient_depth is library size, nonzero count, sum normalized values, or another transform; its aggregation and scaling",
+    "whether correct_minus_null_visible_depth uses counts, normalized-value sums, nonzero breadth, or another depth definition; its evidence level and aggregation",
+    "denominator, evidence level, weighting, and aggregation for correct_minus_null_measured_zero_rate",
+    "exact categorical reference coding, output column order, dtype, and any standardization"
+  ],
+  "model_forward_executed": false,
+  "required_resolution": "Prospectively authorize exact formulas and byte-level serialization for all six categories without inspecting candidate model outcomes.",
+  "searched_authorities": [
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_DECISION_LOGIC_PROPOSAL.md",
+      "sha256": "c7c4938f01762a4f6ae221690b87ef1e77dea0107dcca5fa8e5e7364875963bf"
+    },
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_querydesign_adjudicator_repair_20260902/F1_DECISION_ENGINE_INTEGRATION_CONTRACT.md",
+      "sha256": "485a2e408c361b4382c943031e9a851d9d7ea3c09c98a4b6d1bb10ae69d61bcb"
+    },
+    {
+      "path": "scripts/v4/contextual_target_f1_decision_integration_v4.py",
+      "sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a"
+    },
+    {
+      "path": "outputs/contextual_teacher_target_v1_f1_decision_truth_table_repair_20260902/F1_DECISION_LOGIC_PROPOSAL_FROZEN_COPY.md",
+      "sha256": "c7c4938f01762a4f6ae221690b87ef1e77dea0107dcca5fa8e5e7364875963bf"
+    }
+  ],
+  "status": "STOP_F1_NUISANCE_AUTHORITY_UNRESOLVED",
+  "training_or_ema": false,
+  "what_is_frozen": {
+    "downstream_rule": "center columns; lexicographic rank selection; frozen numerical rank tolerance; HC3; t df n-rank; cross-source replication",
+    "semantic_categories": [
+      "source_indicators",
+      "operator_mixture_fractions",
+      "recipient_physical_support",
+      "recipient_depth",
+      "correct_minus_null_visible_depth",
+      "correct_minus_null_measured_zero_rate"
+    ]
+  },
+  "why_no_derivation_was_made": "The frozen sources name categories but provide no executable or mathematical column-construction formula. Several lawful formulas are not equivalent. Selecting one now would invent a result-bearing nuisance authority after the query design was frozen."
+}

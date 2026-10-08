@@ -1,0 +1,46 @@
+stage_id: stage81a3_rlc_causal_fast_probe
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+candidate: MRA-JEPA_v4.1_RLC-CD
+vocabulary_size: 4096
+synthetic:
+  fixture: causal_multifactor_rlc
+  cells: 2048
+  train_cells: 1536
+  readout_fit_cells: 256
+  readout_test_cells: 256
+  factors: 32
+  causal_mechanisms: 12
+  seed: 8114001
+reference:
+  pca_components: 160
+  epsilon: 1.0e-6
+  fit_source: factual_train_only
+masking:
+  fraction: 0.40
+  exact_hidden_genes: 1638
+  blocks: 4
+  bank_views: 256
+  graph_top_k: 8
+training:
+  conditions: [RLC_BASE, RLC_CF, RLC_CAUSAL_DAG]
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  effective_batch: 256
+  updates: 100
+  checkpoints: [0, 25, 50, 100]
+  precision: fp16_with_protected_float32_reductions
+  ema: null
+loss_weights:
+  counterfactual: 0.25
+  mechanism: 0.10
+  graph_counterfactual: 0.10
+  acyclicity: 0.01
+  sparsity: 0.001
+boundaries:
+  pathology: forbidden
+  real_rna_training: forbidden
+  true_dag_training_input: forbidden
+  factor_labels_training_input: forbidden
+  fourth_trajectory: forbidden
+  hyperparameter_sweep: forbidden

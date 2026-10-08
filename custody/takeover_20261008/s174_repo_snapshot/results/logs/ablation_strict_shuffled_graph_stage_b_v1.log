@@ -1,0 +1,66 @@
+Graph-JEPA Stage B domain-adversarial training log
+stage_a_checkpoint: results/models/ablation_strict_shuffled_graph_stage_a_v1/fast_graph_jepa_epoch_030.pt
+sea_ad_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+rexach_h5ad: data/processed/v2_alignment/rexach_cross_dementia_microglia_jepa_aligned.h5ad
+olah_h5ad: data/processed/v2_alignment/olah_live_microglia_microglia_jepa_aligned.h5ad
+edge_csv: results/tables/ablation_edge_sets/strict_shuffled_graph_edges_v1.csv
+out_dir: results/models/ablation_strict_shuffled_graph_stage_b_v1
+log_dir: runs/v2_2_stage_b_adversarial
+history_csv: results/tables/ablation_strict_shuffled_graph_stage_b_v1_history.csv
+log_file: results/logs/ablation_strict_shuffled_graph_stage_b_v1.log
+epochs: 20
+checkpoint_every: 5
+per_domain_batch_size: 64
+max_steps_per_epoch: 0
+freeze_mode: partial_encoder
+domain_loss_weight: 0.1
+lambda_grl_max: 1.0
+alignment_state: reference_like
+mask_fraction: 0.5
+mask_start_fraction: 0.2
+mask_warmup_epochs: 5
+random_gene_dropout: 0.15
+module_dropout_prob: 0.1
+external_mask_files:
+- results/tables/external_gene_masks/gse174367_morabito_missing_genes.txt
+- results/tables/external_gene_masks/gse138852_grubman_missing_genes.txt
+external_mask_prob: 0.25
+edge_dropout: 0.1
+variance_weight: 0.2
+variance_gamma: 0.02
+covariance_weight: 0.05
+domain_hidden_dim: 128
+domain_dropout: 0.1
+lr: 5.0e-05
+domain_lr: 0.0002
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+device: auto
+seed: 7
+
+State-aware alignment summaries:
+  sea_ad: selected=6263 state_counts={'domain': 'sea_ad', 'state_disease_like': 33737, 'state_reference_like': 6263}
+  rexach: selected=3605 state_counts={'domain': 'rexach', 'state_disease_like': 17970, 'state_reference_like': 3605}
+  olah: selected=2013 state_counts={'domain': 'olah', 'state_disease_like': 14086, 'state_reference_like': 2013}
+
+epoch=001 loss=0.133626 jepa=0.023478 domain=1.101486 acc=0.362 lambda=0.120 eff_dims=31.46 top_sv=0.313 mean_std=0.0190 sec=24.3
+epoch=002 loss=0.130868 jepa=0.023266 domain=1.076020 acc=0.419 lambda=0.354 eff_dims=24.32 top_sv=0.269 mean_std=0.0252 sec=24.3
+epoch=003 loss=0.117398 jepa=0.023432 domain=0.939662 acc=0.547 lambda=0.551 eff_dims=19.91 top_sv=0.348 mean_std=0.0325 sec=24.5
+epoch=004 loss=0.094781 jepa=0.023509 domain=0.712724 acc=0.651 lambda=0.701 eff_dims=36.98 top_sv=0.243 mean_std=0.0161 sec=24.7
+epoch=005 loss=0.091459 jepa=0.023308 domain=0.681515 acc=0.660 lambda=0.807 eff_dims=40.80 top_sv=0.270 mean_std=0.0139 sec=24.8
+epoch=006 loss=0.090883 jepa=0.022936 domain=0.679465 acc=0.654 lambda=0.878 eff_dims=42.03 top_sv=0.270 mean_std=0.0134 sec=24.8
+epoch=007 loss=0.089226 jepa=0.023132 domain=0.660938 acc=0.660 lambda=0.924 eff_dims=41.96 top_sv=0.271 mean_std=0.0132 sec=24.9
+epoch=008 loss=0.089495 jepa=0.023041 domain=0.664540 acc=0.652 lambda=0.954 eff_dims=41.38 top_sv=0.269 mean_std=0.0132 sec=25.0
+epoch=009 loss=0.088712 jepa=0.022727 domain=0.659854 acc=0.657 lambda=0.972 eff_dims=41.91 top_sv=0.262 mean_std=0.0131 sec=25.0
+epoch=010 loss=0.089455 jepa=0.022767 domain=0.666878 acc=0.652 lambda=0.983 eff_dims=42.08 top_sv=0.264 mean_std=0.0129 sec=25.0
+epoch=011 loss=0.088336 jepa=0.022646 domain=0.656905 acc=0.659 lambda=0.989 eff_dims=43.35 top_sv=0.267 mean_std=0.0125 sec=25.1
+epoch=012 loss=0.088498 jepa=0.022728 domain=0.657701 acc=0.659 lambda=0.994 eff_dims=42.94 top_sv=0.275 mean_std=0.0123 sec=25.1
+epoch=013 loss=0.088396 jepa=0.022359 domain=0.660364 acc=0.652 lambda=0.996 eff_dims=42.75 top_sv=0.263 mean_std=0.0125 sec=25.1
+epoch=014 loss=0.085368 jepa=0.022105 domain=0.632630 acc=0.666 lambda=0.998 eff_dims=44.03 top_sv=0.258 mean_std=0.0122 sec=25.3
+epoch=015 loss=0.087750 jepa=0.021916 domain=0.658337 acc=0.648 lambda=0.999 eff_dims=44.33 top_sv=0.264 mean_std=0.0119 sec=25.3
+epoch=016 loss=0.087372 jepa=0.021971 domain=0.654015 acc=0.658 lambda=0.999 eff_dims=45.02 top_sv=0.264 mean_std=0.0117 sec=25.5
+epoch=017 loss=0.086969 jepa=0.021830 domain=0.651389 acc=0.660 lambda=0.999 eff_dims=45.19 top_sv=0.261 mean_std=0.0117 sec=25.4
+epoch=018 loss=0.087855 jepa=0.021763 domain=0.660916 acc=0.648 lambda=1.000 eff_dims=44.90 top_sv=0.260 mean_std=0.0116 sec=25.4
+epoch=019 loss=0.086196 jepa=0.021661 domain=0.645347 acc=0.656 lambda=1.000 eff_dims=44.82 top_sv=0.263 mean_std=0.0115 sec=25.4
+epoch=020 loss=0.086849 jepa=0.021303 domain=0.655462 acc=0.649 lambda=1.000 eff_dims=45.43 top_sv=0.261 mean_std=0.0113 sec=25.7
+Wrote results\models\ablation_strict_shuffled_graph_stage_b_v1\stage_b_adversarial.pt

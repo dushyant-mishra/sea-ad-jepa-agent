@@ -1,0 +1,89 @@
+{
+  "schema": "V64_PHASE_B_SUBSTRATE_MATERIALIZATION_INDEPENDENT_AUDIT_V1",
+  "date": "2026-09-30",
+  "audited_claude_head": "dc30caede6369a31df3098205db11c83381784e5",
+  "verdict": "PERMUTATION_BINDING_ACCEPTED__SUBSTRATE_NOT_YET_CONTRACT_COMPLETE",
+  "accepted": {
+    "phase_a_population": 13175,
+    "permutation": {
+      "array_content_sha256": "c28335d72627d195c0b997a659e3d320139a0a038f746e354ca6de4567b9e120",
+      "npy_file_sha256": "2396c3e9ccef2a4354824a80815d6acb8819f662f6c641d4df72d85bad498828",
+      "p1a": true,
+      "p1b": true,
+      "p2": true,
+      "p3": true,
+      "p4": true,
+      "p5": true,
+      "p6": true,
+      "interpretation": "S63/S64 accepted: the stored permutation is both byte-bound and independently re-derived from the RNA/ATAC obs namespaces."
+    },
+    "donor_reconciliation": {
+      "qualifying_donors": 282,
+      "donors_completed": 282,
+      "metacells": 3231,
+      "microglia_covered": 84129,
+      "all_shards_status_ok": true,
+      "metacell_ids_globally_disjoint": true
+    },
+    "modality_firewall": "No RNA×ATAC correspondence statistic is emitted by the v1/v2 substrate producer."
+  },
+  "blockers": {
+    "S65_T5_NOT_MATERIALISED": {
+      "severity": "BLOCKING",
+      "contract_requirement": "V64_PHASE_B_MEASUREMENT_SUBSTRATE_CONTRACT_V1 SUBSTRATE_TABLES.T5_PAIR_DONOR_AGGREGATES explicitly requires donor_id×pair_key promoter_activity, distal_accessibility, n_assigned_peaks, rna_depth_sensitivity, atac_depth_sensitivity, n_metacells_contributing and availability_state to be STORED as well as derivable.",
+      "observed_producer_schema": [
+        "T1 nucleus→metacell arrays",
+        "T2 metacell depth arrays",
+        "T3 sparse RNA vector arrays",
+        "T4 sparse ATAC vector arrays",
+        "gene/interval/pair mapping arrays"
+      ],
+      "missing": [
+        "T5_PAIR_DONOR_AGGREGATES",
+        "promoter_activity",
+        "distal_accessibility",
+        "rna_depth_sensitivity",
+        "atac_depth_sensitivity",
+        "n_metacells_contributing",
+        "availability_state"
+      ],
+      "consequence": "The contract's self-contained donor-level Phase-B artifact does not exist, and Stage 4 would have to derive contract-required fields after the substrate freeze unless a successor materialises T5 now.",
+      "stop_condition": "The contract says STOP if any substrate table cannot be emitted."
+    },
+    "S66_INTERVAL_COUNT_MISMATCH": {
+      "severity": "BLOCKING_UNTIL_RECONCILED",
+      "frozen_contract_distinct_distal_intervals": 32174,
+      "emitted_distinct_intervals": 32153,
+      "difference": 21,
+      "observation": "The difference equals the number of R3 conditioning pairs, but the cause is not established by this audit and must not be guessed.",
+      "required_resolution": "Recompute the expected distinct-interval universe directly from frozen Phase-A rows + enumeration-only rows + any conditioning-reference measurement requirement, explain the 21-row difference, and either prove 32153 is contract-correct via a prospective/successor authority or materialise the missing intervals."
+    },
+    "S67_SHARD_BYTES_NOT_REHASHED_BY_AGGREGATOR": {
+      "severity": "BLOCKING_CUSTODY_GAP",
+      "observed": "aggregate_phase_b_substrate_v1.py loads each .npz to count IDs/nnz but constructs shard_output_sha256 and aggregate_binding from receipt strings. It does not recompute sha256 of each .npz and compare it to the receipt before PASS.",
+      "consequence": "A shard file altered after its receipt was written could be structurally read while the aggregate binding still points to the old receipt hash.",
+      "required_fix": "For every shard, recompute the .npz SHA-256 from current bytes, require equality to receipt output_sha256 and _CUSTODY sha256, then build aggregate_binding from the recomputed digests."
+    }
+  },
+  "additional_contract_gap_to_check": {
+    "T3_T4_availability": "The contract explicitly names per-element rna_available/atac_available fields. The emitted sparse arrays do not expose explicit availability arrays. If availability is intended to be deterministically derivable from stored structures, that equivalence must be demonstrated and frozen; otherwise materialise the flags.",
+    "T6_T7_binding": "T6 enumeration metadata and T7 R3 conditioning reference exist as separate committed JSON artifacts, but the aggregate PASS does not currently verify that every emitted enumeration key resolves to the correct rule/reference record or bind the T7 artifact digest in its inputs_agreed_across_shards block."
+  },
+  "governance": {
+    "phase_B_substrate_execution": "EXECUTED_BUT_NOT_YET_ACCEPTED_AS_CONTRACT_COMPLETE",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence_opened": false,
+    "training": "OFF",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  },
+  "next_required_action": [
+    "Do not rerun Phase-A or exact sampler.",
+    "Preserve v1 executed bytes and receipts.",
+    "Create a Phase-B substrate closeout successor that materialises T5 from the already-frozen T1-T4 bytes without opening RNA×ATAC correspondence.",
+    "Reconcile 32174 versus 32153 prospectively and explicitly.",
+    "Rehash every shard file inside the closeout validator and bind recomputed digests.",
+    "Validate T6/T7 referential integrity and explicit/derivable availability semantics.",
+    "Stop again for independent audit before Stage 4."
+  ]
+}

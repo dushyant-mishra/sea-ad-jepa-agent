@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_V69_MULTISOURCE_STAGE4_INTEGRATION_STATE_V1",
+  "date": "2026-10-01",
+  "status": "MULTISOURCE_INTEGRATION_INTERFACE_FROZEN__NO_PROTECTED_OUTCOME_OPENED",
+  "completed": [
+    "Stage-4 multisource evidence integration contract frozen",
+    "regulatory-program evidence record schema frozen",
+    "source adapter plan frozen",
+    "versioned regulatory-program namespace contract frozen",
+    "source-specific structural crosswalk schema frozen",
+    "evidence-stack validator implemented with negative tests",
+    "program/crosswalk validator implemented with negative tests",
+    "GSE214979 public acquisition/subsetting producer written",
+    "SCENIC+ acquisition workflow written; large binary acquisition delegated to Macha if this runner remains impractical"
+  ],
+  "integration_principle": "NIH-CARD remains the primary Stage-4 correspondence experiment. External SCENIC+, Morabito, SEA-AD paired multiome, perturbation and spatial evidence attach as separately labeled evidence channels and are never pooled into one biological n.",
+  "artifacts": {
+    "integration_contract": "results/v64/V69_STAGE4_MULTISOURCE_EVIDENCE_INTEGRATION_CONTRACT_V1.json",
+    "evidence_schema": "results/v64/V69_REGULATORY_PROGRAM_EVIDENCE_RECORD_SCHEMA_V1.json",
+    "adapter_plan": "results/v64/V69_STAGE4_MULTISOURCE_ADAPTER_PLAN_V1.json",
+    "program_namespace": "results/v64/V69_REGULATORY_PROGRAM_NAMESPACE_CONTRACT_V1.json",
+    "crosswalk_schema": "results/v64/V69_REGULATORY_PROGRAM_CROSSWALK_SCHEMA_V1.json",
+    "evidence_validator": "scripts/v64/validate_multisource_regulatory_evidence_stack_v1.py",
+    "crosswalk_validator": "scripts/v64/validate_regulatory_program_crosswalk_v1.py",
+    "acquisition_producer": "scripts/v64/acquire_gse214979_scenicplus_v1.py",
+    "acquisition_workflow": ".github/workflows/v69-gse214979-scenicplus-acquisition.yml"
+  },
+  "macha_expected_outputs": [
+    "authenticated GSE214979 matrix, metadata and ~59.3GB ATAC fragments custody",
+    "Route-A submitted-peak SCENIC+ network",
+    "Route-B fragment-reconstructed consensus-peak SCENIC+ network",
+    "donor-aware network stability and required controls",
+    "frozen stable regulatory-program table",
+    "program-level structural crosswalks into FULL104, NIH-CARD, Morabito, SEA-AD paired multiome, perturbation and spatial"
+  ],
+  "landing_rule": "Macha outputs must bind to the V69 program namespace and crosswalk/evidence schemas. They must not modify the frozen Stage-4 primary estimand or use protected outcomes to choose network membership.",
+  "unresolved": [
+    "GSE214979/SCENIC+ large-data acquisition and network construction",
+    "Stage-4 executor S84/G16 post-commit custody",
+    "Stage-4 executor S85 real authorized orchestration path implementation",
+    "real Stage-4 execution authorization and outcome",
+    "real multisource biological scoring",
+    "teacher-state materialization and recoverability"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "scenic_plus_broad_network": "NOT_YET_QUALIFIED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "TD60": "BLOCKED"
+  }
+}

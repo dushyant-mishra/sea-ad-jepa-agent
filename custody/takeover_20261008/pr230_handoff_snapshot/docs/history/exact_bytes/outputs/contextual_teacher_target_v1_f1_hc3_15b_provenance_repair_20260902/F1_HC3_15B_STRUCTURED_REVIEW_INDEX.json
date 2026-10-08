@@ -1,0 +1,88 @@
+{
+  "authority_manifest_sha256": "a9d10fa17f162f3552c15095f3ef3ed7111f71c7a83978682303a2138088e174",
+  "record_count": 9,
+  "records": [
+    {
+      "decision": "PASS",
+      "lens_id": "Historian / Authority",
+      "record_path": "review_records/01_historian_authority.json",
+      "record_sha256": "201b7def8ef5c543b493386b840860c7dd786b5c71cad56d20215ec7fa71889a",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_largecohort"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "Statistical Design",
+      "record_path": "review_records/02_statistical_design.json",
+      "record_sha256": "9b5faf2808f26f9d2890f4e5222d284c3e43ca0c260c0f25e317a698e69a80e2",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_largecohort"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "Numerical Linear Algebra",
+      "record_path": "review_records/03_numerical_linear_algebra.json",
+      "record_sha256": "88f09ae5ea29cf2be16ff02aa44d5a9bd4a468df2d57fc4b2bc76c53716ff6ec",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_synthesis"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "HC3 / Robust Inference",
+      "record_path": "review_records/04_hc3_robust_inference.json",
+      "record_sha256": "53620b3afe9fc1095b9441ef3388789482ab09ab7d6901c87c09c97d45fcdf53",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_dataset"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "Dataset / Biology Semantics",
+      "record_path": "review_records/05_dataset_biology_semantics.json",
+      "record_sha256": "51e856d052c1ee4ccd3a02c277c499eedf8666e52e975c704b853918b80c470e",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_dataset"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "Red-Team",
+      "record_path": "review_records/06_red_team.json",
+      "record_sha256": "7d6dd4f20a3a180da16d8b2aeaffccfdf82c6f4caadc77a276c4247d6ae4a314",
+      "review_round_id": "INTERNAL_15B_TARGETED_REVIEW",
+      "reviewer_id": "/root/a4_synthesis"
+    },
+    {
+      "decision": "CONCERN",
+      "lens_id": "Review 1: prospective selection, statistics and authority chronology",
+      "record_path": "review_records/07_review_1_prospective_selection_statistics_and_authority_chronology.json",
+      "record_sha256": "92fa1b35edb86a5860129d27d0079e4b752a0ad5110ee09f1f0c0b971e86a0b0",
+      "review_round_id": "POST_15B_EXTERNAL_REVIEW",
+      "reviewer_id": "/root/a4_largecohort"
+    },
+    {
+      "decision": "PASS",
+      "lens_id": "Review 2: numerical linear algebra and HC3",
+      "record_path": "review_records/08_review_2_numerical_linear_algebra_and_hc3.json",
+      "record_sha256": "0488f7ce9053530802f2970850993de53fc2fb8c8eb86657e342a719a83378d6",
+      "review_round_id": "POST_15B_EXTERNAL_REVIEW",
+      "reviewer_id": "/root/a4_synthesis"
+    },
+    {
+      "decision": "CONCERN",
+      "lens_id": "Review 3: provenance, firewall, dataset and biology semantics",
+      "record_path": "review_records/09_review_3_provenance_firewall_dataset_and_biology_semantics.json",
+      "record_sha256": "daec5eb9770149e8c99a85b7f0e4aadd7906cbc510825871948a43c6dd0a1141",
+      "review_round_id": "POST_15B_EXTERNAL_REVIEW",
+      "reviewer_id": "/root/a4_dataset"
+    }
+  ],
+  "required_internal_pass_lenses": [
+    "Historian / Authority",
+    "Statistical Design",
+    "Numerical Linear Algebra",
+    "HC3 / Robust Inference",
+    "Dataset / Biology Semantics",
+    "Red-Team"
+  ],
+  "review_prose_reinterpreted": false,
+  "schema": "F1_HC3_15B_STRUCTURED_REVIEW_INDEX_V1"
+}

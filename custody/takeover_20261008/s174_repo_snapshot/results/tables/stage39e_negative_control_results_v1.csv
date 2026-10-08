@@ -1,0 +1,3 @@
+condition,mean_pooled_oof_spearman,min_target_spearman,n_targets,target_transform,feature_view,n_components,model,primary_leaderboard_allowed
+negative_control_rank_int_pca8_shuffled_features_ridge,-0.06368554330095158,-0.1505774930864395,5,rank_inverse_normal,pca,8.0,ridge,False
+negative_control_rank_int_pca8_donor_shuffled_target_ridge,-0.12667518718833465,-0.3585410116617617,5,rank_inverse_normal,pca,8.0,ridge,False

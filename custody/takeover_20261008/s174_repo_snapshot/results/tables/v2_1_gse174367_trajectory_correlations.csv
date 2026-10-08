@@ -1,0 +1,11 @@
+score,outcome,n_donors,spearman_rho,spearman_p
+trajectory_AT8/pTau_score,plaque_stage_numeric,16,0.07610423906471905,0.7793783691463441
+trajectory_A beta/6e10_score,plaque_stage_numeric,16,0.07610423906471905,0.7793783691463441
+trajectory_NeuN_score,plaque_stage_numeric,16,0.061834694240084226,0.8200412870916667
+trajectory_Iba1_score,plaque_stage_numeric,16,0.041223129493389486,0.8795181699027426
+trajectory_GFAP_score,plaque_stage_numeric,16,-0.09037378388935387,0.7392449114824478
+trajectory_AT8/pTau_score,tangle_stage_numeric,18,0.2236569632064799,0.3723116621879353
+trajectory_A beta/6e10_score,tangle_stage_numeric,18,0.2236569632064799,0.3723116621879353
+trajectory_NeuN_score,tangle_stage_numeric,18,0.18438061844826878,0.4639140890076062
+trajectory_Iba1_score,tangle_stage_numeric,18,0.17674355141194995,0.4829410885043357
+trajectory_GFAP_score,tangle_stage_numeric,18,-0.1996547525209064,0.42702194469929156

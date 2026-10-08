@@ -1,0 +1,203 @@
+{
+  "schema": "V5_TEACHER_FIDELITY_SYNTHETIC_GATE_V2",
+  "status": "SYNTHETIC_ONLY__NO_REAL_EXPRESSION_READ__NO_TRAINING",
+  "protocol": "V29_TEACHER_FIDELITY_FROZEN_PROTOCOL_V6_20260927.md",
+  "supersedes": "V5_TEACHER_FIDELITY_SYNTHETIC_GATE_V1, whose NEG-2 arm failed",
+  "null_is_the_matched_sham": true,
+  "permutation_retained_as_diagnostic_only": true,
+  "where_the_capture_leak_is": {
+    "real_clr_vs_log_capture_spearman": 0.014,
+    "real_log1p_partner_sum_vs_log_capture_spearman": 0.649,
+    "sham_log1p_partner_sum_vs_log_capture_spearman": 0.644,
+    "reading": "the capture channel is the AMPLITUDE term, not the CLR. The pseudocount argument is sound in principle and is why the sparse arm belongs here, but at these parameters CLR is close to capture-free. The sham reproduces the amplitude dependence, which is what makes it the right null."
+  },
+  "arms": {
+    "NEG-1": {
+      "median_increment": -0.014546908541968554,
+      "fraction_donors_positive": 0.36363636363636365,
+      "sham_null_p": 0.775,
+      "sham_draws_used": 199,
+      "sham_null_median": -0.0019037983488164809,
+      "permutation_p_DIAGNOSTIC_ONLY": 0.7,
+      "n_eval_donors": 11,
+      "n_strata_used": 44,
+      "sham_match_quality": {
+        "mean_real": [
+          45.464506172839506,
+          45.2125,
+          45.26543209876543,
+          45.32283950617284
+        ],
+        "mean_sham": [
+          45.425308641975306,
+          45.22962962962963,
+          45.132407407407406,
+          45.197685185185186
+        ],
+        "zero_fraction_real": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_fraction_sham": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_abs_mean_error": 0.13302469135802397,
+        "max_abs_zero_fraction_error": 0.0
+      },
+      "qualifies": false,
+      "required_qualification": false,
+      "arm_pass": true
+    },
+    "NEG-2": {
+      "median_increment": 0.022993410519792756,
+      "fraction_donors_positive": 0.7272727272727273,
+      "sham_null_p": 0.005,
+      "sham_draws_used": 199,
+      "sham_null_median": -0.00012783700501939332,
+      "permutation_p_DIAGNOSTIC_ONLY": 0.02,
+      "n_eval_donors": 11,
+      "n_strata_used": 44,
+      "sham_match_quality": {
+        "mean_real": [
+          1.5949074074074074,
+          1.6364197530864197,
+          1.6310185185185184,
+          1.6270061728395062
+        ],
+        "mean_sham": [
+          1.5839506172839506,
+          1.6320987654320989,
+          1.6114197530864198,
+          1.6243827160493827
+        ],
+        "zero_fraction_real": [
+          0.32901234567901233,
+          0.32314814814814813,
+          0.32314814814814813,
+          0.31867283950617287
+        ],
+        "zero_fraction_sham": [
+          0.3263888888888889,
+          0.3199074074074074,
+          0.3212962962962963,
+          0.3212962962962963
+        ],
+        "max_abs_mean_error": 0.019598765432098597,
+        "max_abs_zero_fraction_error": 0.0032407407407407107
+      },
+      "qualifies": true,
+      "required_qualification": false,
+      "arm_pass": false
+    },
+    "POS-1": {
+      "median_increment": 0.7736679866716895,
+      "fraction_donors_positive": 1.0,
+      "sham_null_p": 0.005,
+      "sham_draws_used": 199,
+      "sham_null_median": 0.008544878184822278,
+      "permutation_p_DIAGNOSTIC_ONLY": 0.02,
+      "n_eval_donors": 11,
+      "n_strata_used": 44,
+      "sham_match_quality": {
+        "mean_real": [
+          44.71265432098765,
+          44.64691358024692,
+          44.585956790123454,
+          44.60740740740741
+        ],
+        "mean_sham": [
+          44.70679012345679,
+          44.603858024691355,
+          44.66064814814815,
+          44.56049382716049
+        ],
+        "zero_fraction_real": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_fraction_sham": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_abs_mean_error": 0.07469135802469395,
+        "max_abs_zero_fraction_error": 0.0
+      },
+      "qualifies": true,
+      "required_qualification": true,
+      "arm_pass": true
+    },
+    "POS-2": {
+      "median_increment": 0.20153240209962237,
+      "fraction_donors_positive": 1.0,
+      "sham_null_p": 0.005,
+      "sham_draws_used": 199,
+      "sham_null_median": -0.0011290353014168641,
+      "permutation_p_DIAGNOSTIC_ONLY": 0.02,
+      "n_eval_donors": 11,
+      "n_strata_used": 44,
+      "sham_match_quality": {
+        "mean_real": [
+          1.639969135802469,
+          1.6189814814814816,
+          1.6512345679012346,
+          1.628395061728395
+        ],
+        "mean_sham": [
+          1.6646604938271605,
+          1.6047839506172838,
+          1.6611111111111112,
+          1.6214506172839507
+        ],
+        "zero_fraction_real": [
+          0.3162037037037037,
+          0.32083333333333336,
+          0.3234567901234568,
+          0.3234567901234568
+        ],
+        "zero_fraction_sham": [
+          0.31635802469135804,
+          0.3194444444444444,
+          0.324537037037037,
+          0.32299382716049385
+        ],
+        "max_abs_mean_error": 0.024691358024691468,
+        "max_abs_zero_fraction_error": 0.0013888888888889395
+      },
+      "qualifies": true,
+      "required_qualification": true,
+      "arm_pass": true
+    }
+  },
+  "calibration": {
+    "NEG-2": {
+      "datasets_used": 40,
+      "qualified": 39,
+      "qualification_rate": 0.975
+    },
+    "POS-2": {
+      "datasets_used": 40,
+      "qualified": 40,
+      "qualification_rate": 1.0
+    }
+  },
+  "calibration_bound_neg2": 0.15,
+  "power_bound_pos2": 0.5,
+  "calibration_pass": false,
+  "power_pass": true,
+  "gate_pass": false,
+  "b_sham": 199,
+  "calibration_b_sham": 49,
+  "alpha": 0.05,
+  "donor_fraction_required": 0.6666666666666666,
+  "training_authorized": false,
+  "producer_sha256": "117d08338247edceb9044267a9f724a38df5182893b9d99886938b2a96f05d50"
+}

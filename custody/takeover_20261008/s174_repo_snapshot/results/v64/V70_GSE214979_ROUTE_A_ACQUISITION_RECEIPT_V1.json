@@ -1,0 +1,111 @@
+{
+  "schema": "V70_GSE214979_ROUTE_A_ACQUISITION_RECEIPT_V1",
+  "date": "2026-10-01",
+  "status": "PASS_STRUCTURAL_ACQUISITION__NO_DISEASE_OR_PATHOLOGY_SELECTION",
+  "workflow": {
+    "run_id": 36887158540,
+    "job_id": 110453304037,
+    "head_sha": "df7859f4d076b145aea0cd14c92b2702950af6ef",
+    "artifact_id": 11174633576,
+    "artifact_name": "v69-gse214979-scenicplus-development-substrate",
+    "artifact_zip_bytes": 245349924,
+    "artifact_digest_sha256": "95f69d3088d2d18812e63be3e7095f18f661fc2a2f6d5b89d676ae431318c183",
+    "expires_at": "2026-10-31T15:50:36Z"
+  },
+  "source": {
+    "accession": "GSE214979",
+    "genome_build": "hg38",
+    "metadata": {
+      "filename": "GSE214979_cell_metadata.csv.gz",
+      "bytes": 8820297,
+      "sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE214nnn/GSE214979/suppl/GSE214979_cell_metadata.csv.gz"
+    },
+    "matrix": {
+      "filename": "GSE214979_filtered_feature_bc_matrix.h5",
+      "bytes": 1369492123,
+      "sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE214nnn/GSE214979/suppl/GSE214979_filtered_feature_bc_matrix.h5"
+    },
+    "fragments": {
+      "filename": "GSE214979_atac_fragments.tsv.gz",
+      "downloaded_here": false,
+      "geo_reported_size": "59.3 GB",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE214nnn/GSE214979/suppl/GSE214979_atac_fragments.tsv.gz",
+      "route_b_owner": "Macha"
+    }
+  },
+  "matrix": {
+    "shape_features_by_cells": [
+      187215,
+      105332
+    ],
+    "nnz": 927291782,
+    "feature_type_counts": {
+      "Gene Expression": 36601,
+      "Peaks": 150614
+    }
+  },
+  "metadata": {
+    "rows": 105332,
+    "barcode_column": "Unnamed: 0",
+    "barcode_exact_matches": 105332,
+    "celltype_column": "predicted.id",
+    "celltype_value": "Microglia",
+    "donor_column": "id",
+    "donor_ids": [
+      "1224",
+      "1230",
+      "1238",
+      "3329",
+      "3586",
+      "4305",
+      "4313",
+      "4443",
+      "4481",
+      "4482",
+      "4627",
+      "HCT17HEX",
+      "HCTZZT",
+      "NT1261",
+      "NT1271"
+    ],
+    "diagnosis_pathology_columns_present_but_not_used": [
+      "Braak",
+      "Diagnosis"
+    ]
+  },
+  "subsets": {
+    "all_microglia": {
+      "cells": 3179,
+      "shape": [
+        187215,
+        3179
+      ],
+      "nnz": 15573085,
+      "npz_bytes": 32449543,
+      "npz_sha256": "2ef3bf52186d005610a3aba26ce9a5b432c980d398032910c2521f95c3bf13bb"
+    },
+    "default_development_no_possible_morabito_overlap": {
+      "excluded_donors": [
+        "1224",
+        "1230",
+        "1238"
+      ],
+      "cells": 2534,
+      "shape": [
+        187215,
+        2534
+      ],
+      "nnz": 11751419,
+      "npz_bytes": 24580043,
+      "npz_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34"
+    }
+  },
+  "interpretation": [
+    "This receipt authenticates public Route-A structural substrate only.",
+    "No diagnosis/pathology field was used to select microglia, donors, features or network parameters.",
+    "The exclusion of 1224/1230/1238 is prospective/conservative and does not by itself prove donor identity overlap with Morabito.",
+    "No SCENIC+ network or biological regulatory claim is authorized by acquisition alone."
+  ]
+}

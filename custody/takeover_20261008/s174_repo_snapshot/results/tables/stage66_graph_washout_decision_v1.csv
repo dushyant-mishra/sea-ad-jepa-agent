@@ -1,0 +1,2 @@
+graph_contains_rare_tail_structure,graph_smoothing_washout_supported,weak_graph_preserves_better_than_strong_graph,hub_capping_test_completed,stage66_interpretation
+True,False,False,True,"graph topology contains/organizes rare-tail genes, but fixed graph smoothing did not show a simple global washout pattern; prior graph-JEPA failure is not explained by smoothing alone"

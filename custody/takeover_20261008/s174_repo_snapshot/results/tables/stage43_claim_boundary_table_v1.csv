@@ -1,0 +1,15 @@
+language,status,notes
+internal donor-held-out benchmark,allowed,safe claim
+locked internal reference,allowed,safe claim
+credible unlocked internal signal,allowed,safe claim
+support/readiness only,allowed,safe claim
+hypothesis-generating mechanism,allowed,safe claim
+negative/null result preservation,allowed,safe claim
+external validation,prohibited,do not claim
+clean validation,prohibited,do not claim
+causal mechanism,prohibited,do not claim
+therapeutic target,prohibited,do not claim
+gene-ablation support,prohibited,do not claim
+disease-modifying effect,prohibited,do not claim
+Stage41C as locked benchmark,prohibited,do not claim
+Stage45 as improvement,prohibited,do not claim

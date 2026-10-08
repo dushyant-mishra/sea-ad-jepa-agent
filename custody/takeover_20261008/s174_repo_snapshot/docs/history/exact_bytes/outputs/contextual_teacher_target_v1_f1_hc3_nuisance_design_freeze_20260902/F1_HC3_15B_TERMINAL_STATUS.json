@@ -1,0 +1,13 @@
+{
+  "df": 88,
+  "f1_run_authorized": false,
+  "production_f1_engine_patched": false,
+  "rank": 16,
+  "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+  "selected_triple": [
+    5,
+    0,
+    4
+  ],
+  "terminal_status": "PASS_F1_HC3_NUISANCE_DESIGN_FREEZE_AWAITING_EXTERNAL_REVIEW"
+}

@@ -1,0 +1,5 @@
+target_transform,train_fold_only,description
+raw_log1p,True,log1p target modeling
+winsor_log1p,True,train-fold 5/95 winsorized log1p target
+rank_inverse_normal,True,train-fold rank inverse-normal target
+covariate_residual_log1p,True,train-fold safe-covariate residualized log1p target

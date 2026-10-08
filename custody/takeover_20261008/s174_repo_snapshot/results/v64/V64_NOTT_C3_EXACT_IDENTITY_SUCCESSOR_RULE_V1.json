@@ -1,0 +1,62 @@
+{
+  "schema": "V64_NOTT_C3_EXACT_IDENTITY_SUCCESSOR_RULE_V1",
+  "date": "2026-09-29",
+  "status": "PROSPECTIVELY_FROZEN_BEFORE_C3_OUTCOME_ADJUDICATION",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "opens_protected_outcomes": false,
+    "uses_liftover_outcome_to_set_thresholds": false,
+    "retunes_any_biological_test": false
+  },
+  "supersedes_only_these_uninstantiated_V63_C3_placeholders": [
+    "pre-declared interval-length-change tolerance",
+    "pre-declared round-trip recovery fraction"
+  ],
+  "rationale": {
+    "anchor_semantics": "Nott Table S5 contacts are fixed 5 kb promoter/distal anchors. C3 is a coordinate-identity qualification, not a statistical association test.",
+    "design_choice": "Avoid inventing a percentage-based 'good enough' threshold with no external calibration. Instead, define which mapped anchors remain admissible by exact mechanical identity and report all attrition from the original denominator.",
+    "separation_of_questions": "C3 answers whether retained coordinates preserve anchor identity. Whether enough pairs remain for P1S/P3 is a later support/power question and is not hidden inside the coordinate gate."
+  },
+  "forward_hg19_to_hg38_admissibility": {
+    "tool_and_mapping_defaults": "inherit V64_NOTT_C3_LIFTOVER_IMPLEMENTATION_DEFAULTS_V1",
+    "each_anchor_must": [
+      "produce exactly one target interval",
+      "remain on the same chromosome",
+      "preserve interval length exactly"
+    ],
+    "interval_length_change_tolerance_bp": 0,
+    "pair_rule": "Both anchors must satisfy all forward-admissibility conditions. Otherwise the pair is dropped and counted against the original 104802 denominator.",
+    "no_rescue": [
+      "nearest-neighbour replacement",
+      "multiple-output selection",
+      "overlap-window rescue",
+      "gene/target-aware rescue"
+    ]
+  },
+  "round_trip_admissibility": {
+    "operation": "For every forward-admissible anchor, lift hg38 -> hg19 with the same frozen UCSC implementation defaults.",
+    "anchor_rule": "The returned chromosome, start and end must equal the original hg19 interval exactly.",
+    "pair_rule": "Both anchors must round-trip exactly for the pair to remain C3-admissible.",
+    "required_round_trip_exact_recovery_fraction_among_C3_retained_pairs": 1.0,
+    "important_denominator_note": "This is not a claim that 100% of the original 104802 pairs must survive. Forward or round-trip failures are dropped and counted. It means every pair that is declared C3-admissible must preserve exact interval identity."
+  },
+  "C3_adjudication": {
+    "PASS": "A non-empty set of pairs remains after applying the exact forward-length and exact round-trip identity rules, every retained pair satisfies those rules, and the full attrition funnel from 104802 is reported without silent rescue.",
+    "FAIL": [
+      "implementation deviates from the frozen mapping defaults",
+      "a retained anchor changes chromosome",
+      "a retained anchor changes length",
+      "a retained anchor fails exact round-trip",
+      "attrition denominators are not preserved",
+      "no contact pairs remain admissible"
+    ],
+    "coverage_interpretation": "C3 PASS alone does not establish that retained support is large or representative enough for P1S/P3. Retention fraction and any geometry/composition shift must be reported as downstream claim-scope/support evidence."
+  },
+  "ATAC_coordinate_provenance": {
+    "primary_match_rule": "Exact chromosome/start/end equality between independently UCSC-relifted source coordinates and FILER hg38 coordinates.",
+    "no_match_tolerance_bp": 0,
+    "discordance_policy": "Discordant/unmapped/ambiguous rows are reported, never converted to matches by a widened overlap window.",
+    "role": "This audit qualifies coordinate provenance consistency; it does not by itself gate Nott biology."
+  }
+}

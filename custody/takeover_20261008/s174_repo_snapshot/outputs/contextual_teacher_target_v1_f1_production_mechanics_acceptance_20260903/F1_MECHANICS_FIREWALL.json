@@ -1,0 +1,16 @@
+{
+  "DEV_opened": false,
+  "EMA": false,
+  "SEALED_opened": false,
+  "backward": false,
+  "bounded_fixture_only": true,
+  "full_real_f1_expression_opened": false,
+  "optimizer": false,
+  "pathology_opened": false,
+  "protected_expression_opened": false,
+  "reader_validation_or_oracle_opened": false,
+  "real_f1_biological_effects_computed": false,
+  "schema": "f1-mechanics-firewall-v1",
+  "status": "PASS",
+  "training": false
+}

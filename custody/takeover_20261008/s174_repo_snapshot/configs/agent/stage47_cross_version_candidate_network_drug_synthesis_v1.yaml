@@ -1,0 +1,64 @@
+stage: Stage47
+version: v1
+stage_name: Stage47_cross_version_candidate_network_drug_synthesis_v1
+description: Cross-version candidate, network, in-silico perturbation, and druggability synthesis. Reporting/audit only; no new modeling.
+
+references:
+  stage27c_locked_score: 0.3267024400121495
+  stage41c_credible_unlocked_score: 0.36808747595423713
+  stage41c_bootstrap_lower_ci: 0.2603604646376338
+  stage45_score: 0.3121433633694442
+  stage45_decision: do_not_lock_stage45
+
+frozen_genes:
+  M1:
+    mechanism_name: Endolysosomal / autophagy / proteostasis
+    genes: [CTSD, CTSB, LAPTM5, NPC2, LAMP2]
+  M2:
+    mechanism_name: Glial activation / disease-associated microglia-astrocyte state
+    genes: [TREM2, CST7, APOE, LGALS3, CTSD]
+  M3:
+    mechanism_name: Oxidative stress / antioxidant response
+    genes: [HMOX1, NQO1, SOD2, SOD1, GPX4]
+  M4:
+    mechanism_name: Inflammatory signaling / transport / cell-state modulation
+    genes: [BSG, SLC6A12, IL27RA, NFKBIA]
+
+inputs:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage47_input_inventory_v1.csv
+  evidence_manifest: results/tables/stage47_cross_version_evidence_manifest_v1.csv
+  candidate_inventory: results/tables/stage47_v1_v2_v3_candidate_gene_inventory_v1.csv
+  candidate_consensus: results/tables/stage47_candidate_gene_consensus_v1.csv
+  module_consensus: results/tables/stage47_candidate_module_consensus_v1.csv
+  network_consensus: results/tables/stage47_candidate_network_consensus_v1.csv
+  perturbation_inventory: results/tables/stage47_in_silico_perturbation_inventory_v1.csv
+  perturbation_consensus: results/tables/stage47_in_silico_perturbation_consensus_v1.csv
+  cell_state_evidence: results/tables/stage47_cell_state_evidence_inventory_v1.csv
+  external_support: results/tables/stage47_external_support_evidence_v1.csv
+  evidence_tiers: results/tables/stage47_candidate_evidence_tiers_v1.csv
+  druggability_inventory: results/tables/stage47_druggability_source_inventory_v1.csv
+  druggable_mapping: results/tables/stage47_druggable_candidate_mapping_v1.csv
+  drug_repurposing: results/tables/stage47_drug_repurposing_hypothesis_table_v1.csv
+  network_drug_mechanism: results/tables/stage47_network_drug_mechanism_table_v1.csv
+  validation_priority: results/tables/stage47_candidate_validation_priority_v1.csv
+  claim_audit: results/tables/stage47_claim_boundary_audit_v1.csv
+  manuscript_reframing: results/tables/stage47_manuscript_reframing_table_v1.csv
+  pi_decision: results/tables/stage47_pi_decision_table_v1.csv
+  manual_gaps: results/tables/stage47_manual_acquisition_gaps_v1.csv
+  pass_fail: results/tables/stage47_pass_fail_v1.csv
+
+  synthesis_report: results/reports/stage47_cross_version_candidate_network_drug_synthesis_report_v1.md
+  model_story: results/reports/stage47_graph_jepa_disease_state_model_story_v1.md
+  candidate_summary: results/reports/stage47_candidate_gene_network_summary_v1.md
+  perturbation_summary: results/reports/stage47_in_silico_perturbation_summary_v1.md
+  druggability_summary: results/reports/stage47_druggability_and_drug_candidate_summary_v1.md
+  external_limitations: results/reports/stage47_external_support_and_limitations_v1.md
+  pi_summary: results/reports/stage47_pi_summary_v1.md
+  manuscript_update: results/reports/stage47_manuscript_update_note_v1.md
+  claim_final_check: results/reports/stage47_claim_boundary_final_check_v1.md
+  manual_gaps_report: results/reports/stage47_manual_acquisition_gaps_v1.md

@@ -1,0 +1,2 @@
+knowledge_grounding_status,local_resource_count,knowledge_grounding_pass,non_fatal,notes
+local_resources_found_but_not_schema_mapped,2,False,True,"Local candidate/prior resources were found, but no stable KG schema was available for automatic annotation."

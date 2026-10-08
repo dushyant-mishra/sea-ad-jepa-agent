@@ -1,0 +1,100 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_5",
+  "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and addenda 1-4",
+  "record_type": "AUDIT RECORD, written by hand from the probe result",
+  "recorded_utc": "2026-10-07T17:24:48Z",
+  "head_when_recorded": "7b597a59f1df607a090e2f2f0621f739ed354bc6",
+  "S174_UPDATE": {
+    "id": "S174",
+    "verification_status": "VALUE_VERIFIED",
+    "supersedes_verification_status_of": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_4.json (INFERRED, not value-verified)",
+    "probe": {
+      "authorized": "owner, 2026-10-07: small read-only TRAIN probe; full rebuild not authorized",
+      "preregistration": {
+        "path": "results/v77/V77_S174_CACHE_AXIS_PROBE_PREREGISTRATION_V1.json",
+        "sha256": "e4e930f2f6ae9c6542be735b36d3ad3e4ba7205dc4fabd58e91c9102dd1f1dd2",
+        "committed_and_pushed_before_any_count_read": "7b597a59"
+      },
+      "result": {
+        "path": "results/v77/V77_S174_CACHE_AXIS_PROBE_RESULT_V1.json",
+        "sha256": "bb9c9ec94b74b861d4caeb71b7a1f45b12dfd1f4962389cdb2aca7586587bdf6"
+      },
+      "code_equals_preregistered": true,
+      "cells": 36,
+      "matrices": [
+        "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+        "sea_ad_mtg_rna_final_2026",
+        "sea_ad_pfc_a9_rna_final_2026"
+      ]
+    },
+    "verdict": "S174_VALUE_VERIFIED",
+    "per_matrix": [
+      {
+        "matrix_id": "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+        "agree_pos": 1.0,
+        "agree_id": 0.0298,
+        "agree_decoded": 1.0,
+        "entries_pos": 26230,
+        "entries_id": 48947
+      },
+      {
+        "matrix_id": "sea_ad_mtg_rna_final_2026",
+        "agree_pos": 1.0,
+        "agree_id": 0.0249,
+        "agree_decoded": 0.999,
+        "entries_pos": 64071,
+        "entries_id": 117348
+      },
+      {
+        "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+        "agree_pos": 1.0,
+        "agree_id": 0.024,
+        "agree_decoded": 0.9991,
+        "entries_pos": 57400,
+        "entries_id": 105994
+      }
+    ],
+    "reading": "in every probed matrix the cache equals the scrambled positional map exactly and agrees with the true gene by Ensembl ID only at chance; the 2026-09-27 decoder recovers the true values at 99.9 to 100%",
+    "marker_examples": [
+      {
+        "matrix": "sea_ad_pfc_a9_rna_final_2026",
+        "marker": "MBP",
+        "source_count": 48,
+        "cache_count_at_its_address": 0,
+        "gene_actually_in_that_slot": "CCDC180"
+      },
+      {
+        "matrix": "sea_ad_pfc_a9_rna_final_2026",
+        "marker": "PLP1",
+        "source_count": 45,
+        "cache_count_at_its_address": 0,
+        "gene_actually_in_that_slot": "PCGEM1"
+      },
+      {
+        "matrix": "sea_ad_mtg_rna_final_2026",
+        "marker": "SNAP25",
+        "source_count": 41,
+        "cache_count_at_its_address": 0,
+        "gene_actually_in_that_slot": "GLYCTK"
+      },
+      {
+        "matrix": "sea_ad_pfc_a9_rna_final_2026",
+        "marker": "MOBP",
+        "source_count": 39,
+        "cache_count_at_its_address": 0,
+        "gene_actually_in_that_slot": "AL606923.2"
+      }
+    ],
+    "status": "VALUE_VERIFIED__AFFECTED_REAL_DATA_RESULTS_REMAIN_SUSPENDED__REBUILD_NOT_AUTHORIZED",
+    "rebuild_direction": "owner's preference, recorded: a fresh gene-ID join from the physical H5AD columns, which avoids the old positional assumption and recovers the 682 SEA-AD columns the decoder drops; the decoder stays as an independent cross-check",
+    "not_concluded": [
+      "nothing about matrices outside the three probed, beyond the shared mechanism",
+      "nothing about the biology the suspended results described"
+    ]
+  },
+  "AUTHORITY_UNCHANGED": [
+    "TRAINING=OFF; ZERO_UPDATE only",
+    "no rebuild executed; no further real-RNA reads",
+    "nothing selected"
+  ]
+}

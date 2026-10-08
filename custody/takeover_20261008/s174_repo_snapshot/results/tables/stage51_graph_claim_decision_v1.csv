@@ -1,0 +1,2 @@
+decision,graph_specific_pass,allowed_claim,forbidden_claims
+graph_topology_benefit_not_established,False,Stage51 did not establish graph-topology-specific benefit.,causality; therapeutic target; validated graph mechanism; experimental perturbation

@@ -1,0 +1,7 @@
+stage,candidate_id,candidate_role,mean_pooled_oof_spearman,bootstrap_lower_95,delta_vs_stage27c,target_guard_status,abeta_guard_status,iba1_status,negative_control_status,proxy_leakage_status,lock_status,interpretation
+Stage27C,module_pca_ridge,official locked internal benchmark,0.3267024400121495,,0.0,passed,reference,reference,reference,reference,locked,Stage27C is the official locked internal donor-held-out benchmark.
+Stage39E,rank_inverse_normal_module_pca8_ridge,credible unlocked simple-model candidate,0.35808116279206914,,0.031378722779919654,mixed,mixed,mixed,passed,passed,credible_unlocked,Strong point estimate but previously not lockable under strict robustness.
+Stage39H,context candidate,proxy/context audit candidate,,,,not_locked,not_locked,not_locked,not_locked,proxy caution,not_locked,Useful context signal but not a locked benchmark.
+Stage40A,neural rescue,failed rescue,,,,failed,failed,failed,failed,passed,not_locked,Neural rescue did not justify further architecture tuning.
+Stage41B,latent_plus_safe_metadata,credible unlocked safe metadata/latent candidate,0.3394229016907968,,0.012720461678647321,passed,passed,Iba1 nonnegative/improved,passed,passed,credible_unlocked,Improved point estimate but failed bootstrap lower-CI lock guard.
+Stage41C,blend_stage41b_with_stage39e_pca8,best credible unlocked internal signal,0.36808747595423713,0.2603604646376338,0.041385035942087645,True,True,pass,True,True,credible_unlocked_not_locked,Stage41C is the best credible unlocked signal; it is not the locked benchmark.

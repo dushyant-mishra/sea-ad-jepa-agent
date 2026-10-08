@@ -1,0 +1,5 @@
+metric,minimum,median,maximum,n_non_null,all_zero
+mean_nearest_real_cell_distance,0.0026380573399364,0.0027720557991415,0.0036556618288159,45,False
+p95_nearest_real_cell_distance,0.0095683196559548,0.0095683196559548,0.0103349657729268,45,False
+baseline_nn_p95_threshold,0.0174692813307046,0.0174692813307046,0.0174692813307046,45,False
+manifold_violation_fraction,0.0,0.0,0.0,45,True

@@ -1,0 +1,59 @@
+{
+  "schema": "V64_NOTT_C3_TERMS_AND_P1S_CLAIM_SCOPE_AMENDMENT_V1",
+  "date": "2026-09-29",
+  "status": "FROZEN_BEFORE_P1S_EXECUTION",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "changes_existing_test_thresholds": false,
+    "changes_existing_estimator": false,
+    "opens_protected_outcomes": false
+  },
+  "purpose": "Close three pre-execution audit gaps without redesigning the already-frozen statistical or biological tests: coordinate-provenance concordance, explicit data-use/terms recording, and non-independence wording for same-study Nott contact/accessibility evidence.",
+  "C3_COORDINATE_PROVENANCE_CONCORDANCE": {
+    "requirement": "For each Nott/FILER ATAC track, independently re-lift source coordinates carried in columns 4-6 using the authenticated UCSC hg19ToHg38.over.chain.gz and compare the resulting hg38 intervals against FILER-provided hg38 columns 1-3.",
+    "tracks": ["PU1_microglia_ATAC","NeuN_ATAC","Olig2_ATAC"],
+    "report": [
+      "rows attempted",
+      "rows successfully re-lifted",
+      "exact interval matches to FILER hg38 coordinates",
+      "same-chromosome but coordinate-discordant rows",
+      "unmapped rows",
+      "any interval-length changes",
+      "match fraction with original denominator preserved"
+    ],
+    "interpretation": "This is an outcome-blind harmonization audit. Coordinate discordance must be reported and cannot be hidden by overlap tolerances selected after inspection.",
+    "forbidden": [
+      "retuning overlap windows to maximize agreement",
+      "dropping discordant rows without reporting them",
+      "using JEPA target identity, AD loci, Morabito or NIH-CARD biology to resolve coordinate disagreements"
+    ]
+  },
+  "DATA_USE_AND_TERMS": {
+    "requirement": "For Table S5, FILER-hosted Nott ATAC tracks, and UCSC chain files, record source URL, access state, and explicit licence/terms if available.",
+    "rule": "Publicly downloadable does not by itself establish a licence. If explicit licence/terms are not verified, record terms as UNKNOWN rather than inferring permission.",
+    "scientific_blocking": "Terms uncertainty is not by itself a biological qualification failure, but provenance/usage status must be explicit before describing an artifact as openly reusable."
+  },
+  "P1S_CLAIM_SCOPE_AMENDMENT": {
+    "required_wording": "Nott contact and accessibility layers share study context and PU.1-sorted material and may share donors. Their intersection supports internal microglial substrate compatibility, not independent external corroboration.",
+    "same_study_strength": "Same-study neuron and oligodendrocyte comparators reduce cross-study assay/processing differences for specificity testing.",
+    "same_study_limitation": "Because contact and ATAC layers are not guaranteed independent in donor/material/protocol provenance, P1S must not be presented as independent replication.",
+    "P1S_pass_supports": "internal microglial substrate compatibility of the Nott-centered contact object relative to same-study cell-type comparators and the geometry-preserving null",
+    "P1S_pass_does_not_support": [
+      "independent external corroboration",
+      "independent donor replication across contact and accessibility layers",
+      "multi-source contact replication",
+      "causal enhancer-gene assignment"
+    ]
+  },
+  "EXECUTION_ORDER": [
+    "run the already-frozen depth-sensitivity leakage diagnostic unchanged",
+    "run the already-frozen out-of-span TECH stress unchanged",
+    "execute C3 contact liftover/round-trip and ATAC source-coordinate re-liftover concordance audit",
+    "record data-use/licensing terms explicitly",
+    "execute frozen P1S Nott same-study substrate fit",
+    "execute P3 non-trivial cell-type-negative eligibility filtering",
+    "instantiate E2_NOTT_CANDIDATE only if all required gates pass"
+  ],
+  "authority_note": "This amendment supplements but does not rewrite the already-frozen V64 statistical contracts or the V64 Nott same-study substrate-fit contract."
+}

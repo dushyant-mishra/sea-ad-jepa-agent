@@ -1,0 +1,3 @@
+edge_set,n_edges,n_pass_edges,mean_abs_rho,median_bootstrap_sign_stability
+all_predeclared_tf_target_pairs,966,541,0.39517085165799604,0.9325000000000001
+passed_candidate_edges,541,541,0.5109831804954048,0.98

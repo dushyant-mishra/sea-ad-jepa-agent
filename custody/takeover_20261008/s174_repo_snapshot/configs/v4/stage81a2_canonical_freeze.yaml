@@ -1,0 +1,110 @@
+stage_id: stage81a2
+schema_version: "1.0"
+contract_revision: canonical_data_vocabulary_donor_split_freeze_2026
+freeze_seed: 8102
+target_vocabulary_size: 4096
+
+policy:
+  pathology_blind_foundation: true
+  donor_is_primary_split_and_balance_unit: true
+  exact_identity_only: true
+  fuzzy_gene_mapping: false
+  fuzzy_donor_mapping: false
+  physical_matrix_merge: false
+  training_shards: false
+  cloud_upload: false
+  model_training: false
+  stage81b_started: false
+  no_machine_absolute_paths_in_evidence: true
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
+
+required_prior_inputs:
+  configs/v4/stage81a0_v4_design_contract.yaml: a2fe3d7ada05804d648d8c8b34f90e4baa82cef00d6e6625ef98f42c4a669342
+  results/v4/pre_stage81a2_foundation_readiness.csv: d2dee70202473461ff8297dd3a2eab3fd060aada16deb890914bbed5a639a5fc
+  results/v4/pre_stage81a2_gene_mapping_registry.csv: af3937fbd2d7de5158ad9f394d360cfa9209cdc220b20ac2ab76be3d89b36713
+  results/v4/pre_stage81a2_harmonization_report.json: 677bb63947438a1ac37202a3e540de1169b45624d8edee492f329005ea3141a2
+  results/v4/pre_stage81a2_matrix_semantics_registry.csv: 8a1d0970ed0cd871dd3ad783a968a12f4f8f534e59029302f24a279fdf6713c9
+  results/v4/stage81a1b_acquisition_report.json: 6908f01554c13b333e549a138d17beaafc1ccb5f32637e873df315c124a03e90
+  results/v4/stage81a1b_authoritative_asset_registry.csv: efd57cf9902f2b594cd38c1f4b68280e99f2ceb377c21e5bba3fa344db2157cc
+  results/v4/stage81a1b_dataset_role_registry.csv: 0d4eab6c56258b15c230ec9fdfa7c0f19a31527ea69dae8ebdb9354261737be5
+  results/v4/stage81a1b_matrix_semantics_registry.csv: 1ce47fd5a7a9226e553a08bef4d1a79029c4854ee99ef09084125fd1199676c2
+  results/v4/stage81a1c_n_acquisition_report.json: e4f15eefef2f54e763b186dfe51f86234c3c364559564d781e83d948f0e6e4cb
+  results/v4/stage81a1c_n_dataset_role_registry.csv: 86981d64daa9e8eea3438d2dfd729d8dc99d8387e487a160002d5577ff4fd8ea
+  results/v4/stage81a1c_n_matrix_semantics_registry.csv: 9697ce4ad2ec6876751ec6b471691daa71cd7ce9060778915a7b4a4cb242f558
+  results/v4/stage81a1c_p_acquisition_report.json: 83a0a411ea6dfb79edd2a80ffb9c21cf8771b20c9ea6d15053eb8476202c6b3c
+  results/v4/stage81a1c_p_study_registry.csv: 4cc53cfae22ae0efa7a90c74a1361685b58cd5f4391e49e87f728610a0eb4f88
+  results/v4/stage81a1d_living_human_access_blockers.csv: bf4b617984000fe0f02efafdfb37417348a5221de4fcfe1be2014296787d3e4f
+  results/v4/stage81a1d_living_human_acquisition_report.json: 27f3b226a0512c4242d1a70c4130a9a6d49324e6765c9167ebfb6fbf145edb29
+  results/v4/stage81a1d_living_human_dataset_role_registry.csv: c29f63a61e7c797c67d7d61ac8077b1d022124329d5a1013b8ad676fc6eedca9
+  results/v4/stage81a1d_living_human_donor_sample_crosswalk.csv: a555da9623a460c17cc0e614310650899900e823248d606cc94ecaec5a39466a
+  results/v4/stage81a1d_living_human_download_hashes.csv: 7f17228429609641594cd609bb808b93575742d612f8a5fd4d081edc5083029b
+  results/v4/stage81a1d_living_human_duplicate_overlap_registry.csv: 67aa38934b7544e8f13829cb2d7286650bdda28cecbb7a38d634bafe18978a5c
+  results/v4/stage81a1d_living_human_foundation_candidate_summary.csv: 557aa1e4af7a1783a4d6c9f8138aa41be4d4788d1402dc874a84b6a369440f4e
+  results/v4/stage81a1d_living_human_matrix_semantics_registry.csv: 5652b4b8d48dafe2b945b99c80d08595ceae234aac74e11322fd40d7aeacdccd
+  results/v4/stage81a1d_living_human_remote_asset_catalog.csv: 9696c36cad0514ca4ca776c6c7151c76aaa66ed446e478b11f11c05ce95c7bcd
+  results/v4/stage81a1d_living_human_synapse_access_audit.csv: 6fc48da7be5ce27d8e4abbd0f64e2114c5de26f61ee01c27cbfb094cd1860a98
+  results/v4/stage81a1d_living_human_tissue_state_registry.csv: b24d12c3258716ebf97f1c500ae2b8b83ec1a85b6590acdd65d381da1e3d9163
+
+local_audit_inputs:
+  nph_disposition_summary: data/processed/v4/stage81a2/nph52_cell_disposition_summary.csv
+  nph_exact_donors: data/processed/v4/stage81a1d/sealed/nph52_exact_donors.csv
+  nph_exact_summary: data/processed/v4/stage81a1d/sealed/nph52_exact_summary.csv
+  nph_exact_matrix_audit: data/processed/v4/stage81a1d/sealed/nph52_exact_matrix_audit.csv
+  nph_pathology_sidecar: data/processed/v4/stage81a1d/sealed/nph52_pathology_sidecar.json
+  nph_source_features: data/processed/v4/stage81a2/nph52_source_feature_registry.csv.gz
+  nph_donor_gene_stats: data/processed/v4/stage81a2/nph52_donor_balanced_gene_stats.csv.gz
+  h5_donor_gene_stats: data/processed/v4/stage81a2/h5_donor_balanced_gene_stats.csv.gz
+
+foundation_sources:
+  sea_ad_registry: results/v4/stage81a1b_authoritative_asset_registry.csv
+  hvs_glob: data/external/v4/living_human/hvs/*.h5ad
+  include_sea_ad_asset_regex: '^sea_ad_.*_rna_.*202[456]$'
+  exclude_sea_ad_assets:
+    - sea_ad_multiregion_immune_rna_final_2026
+  nph_dataset_id: NPH52_exact_source_objects
+
+split_contract:
+  foundation:
+    SEA_AD: {development: 8, sealed_holdout: 8}
+    HVS: {development: 8, sealed_holdout: 8}
+    NPH_Ctrl: {development: 3, sealed_holdout: 3}
+  continuation:
+    NPH_Abeta: {development: 3, sealed_holdout: 3}
+    NPH_AbetaTau: {development: 2, sealed_holdout: 2}
+  whole_study_external_holdouts:
+    - siletti_hbca_all_non_neuronal
+  validation_only:
+    - gse243292_full_dlpfc_h5ad
+    - gse146639_processed_microglia_archive
+
+matrix_contract:
+  sea_ad: {slot: layers/UMIs, orientation: cell_by_gene, semantics: raw_integer_counts}
+  hvs: {slot: raw/X, orientation: cell_by_gene, semantics: raw_integer_counts}
+  nph: {slot: counts, orientation: gene_by_cell, semantics: sparse_published_counts}
+  transformation: library_size_normalize_to_10000_then_log1p_with_measurement_mask
+
+vocabulary:
+  bounded_cells_per_donor_class_source: 16
+  minimum_study_family_fraction: 0.6666666667
+  minimum_training_donor_measurement_fraction: 0.80
+  minimum_donor_balanced_detection: 0.01
+  score_weights:
+    study_coverage: 0.25
+    donor_measurement: 0.20
+    donor_detection: 0.20
+    donor_variability: 0.15
+    broad_class_coverage: 0.10
+    cross_study_stability: 0.05
+    missingness_entropy: 0.05
+
+sampling_contract:
+  hierarchy: [tissue_state, study, donor, broad_cell_class, cell]
+  source_weight_rule: inverse_training_donor_count_renormalized_across_tissue_state_then_study
+  donor_weight_rule: uniform_within_source
+  cell_class_weight_rule: inverse_available_class_frequency_with_exposure_cap
+  sealed_donors_allowed: false
+  pathology_labels_allowed: false

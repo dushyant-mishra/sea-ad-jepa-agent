@@ -1,0 +1,62 @@
+stage: Stage43
+version: v1
+description: Manuscript draft and PI review package after Stage42/45. Synthesis only; no new modeling or benchmark changes.
+
+references:
+  stage27c_score: 0.3267024400121495
+  stage41b_score: 0.3394229016907968
+  stage41c_score: 0.36808747595423713
+  stage41c_lower_ci: 0.2603604646376338
+  stage45_score: 0.3121433633694442
+  stage45_delta_vs_stage27c: -0.014559
+  stage45_delta_vs_stage41c: -0.055944
+  official_locked_benchmark: Stage27C
+  best_credible_unlocked_signal: Stage41C
+
+inputs:
+  stage27c_mean: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage36e_mechanisms: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage37_readiness: results/tables/stage37b_manual_dataset_validation_readiness_dossier_v1.csv
+  stage38_support: results/tables/stage38b_external_support_tiers_v1.csv
+  stage39e_mean: results/tables/stage39e_mean_metrics_v1.csv
+  stage39h_decision: results/tables/stage39h_proxy_safe_lock_decision_v1.csv
+  stage40a_pass_fail: results/tables/stage40a_pass_fail_v1.csv
+  stage40b_decision: results/tables/stage40b_stop_continue_decision_v1.csv
+  stage41b_mean: results/tables/stage41b_mean_metrics_v1.csv
+  stage41full_decision: results/tables/stage41full_benchmark_lock_decision_v1.csv
+  stage41c_decision: results/tables/stage41c_stability_rescue_decision_v1.csv
+  stage42_decision: results/tables/stage42_next_action_decision_v1.csv
+  stage42_external_readiness: results/tables/stage42_external_support_readiness_v1.csv
+  stage45_lock: results/tables/stage45_benchmark_lock_decision_v1.csv
+  stage45_linkage: results/tables/stage45_cellxgene_donor_linkage_audit_v1.csv
+  stage45_manifest: results/tables/stage45_safe_feature_matrix_manifest_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage43_input_inventory_v1.csv
+  benchmark_progression: results/tables/stage43_benchmark_progression_table_v1.csv
+  rescue_attempt_summary: results/tables/stage43_rescue_attempt_summary_v1.csv
+  stage41_signal: results/tables/stage43_stage41_signal_table_v1.csv
+  stage45_negative_result: results/tables/stage43_stage45_negative_result_table_v1.csv
+  frozen_mechanism: results/tables/stage43_frozen_mechanism_table_v1.csv
+  external_support_readiness: results/tables/stage43_external_support_readiness_table_v1.csv
+  negative_null_result: results/tables/stage43_negative_null_result_table_v1.csv
+  claim_boundary: results/tables/stage43_claim_boundary_table_v1.csv
+  manuscript_table_index: results/tables/stage43_manuscript_table_index_v1.csv
+  manuscript_figure_index: results/tables/stage43_manuscript_figure_index_v1.csv
+  pi_review_decision: results/tables/stage43_pi_review_decision_table_v1.csv
+  pass_fail: results/tables/stage43_pass_fail_v1.csv
+  manuscript_draft: results/reports/stage43_manuscript_draft_v1.md
+  extended_methods: results/reports/stage43_extended_methods_v1.md
+  results_narrative: results/reports/stage43_results_narrative_v1.md
+  discussion_limitations: results/reports/stage43_discussion_and_limitations_v1.md
+  figure_captions: results/reports/stage43_figure_caption_package_v1.md
+  table_captions: results/reports/stage43_table_caption_package_v1.md
+  pi_summary: results/reports/stage43_pi_review_summary_v1.md
+  claim_checklist: results/reports/stage43_claim_boundary_checklist_v1.md
+  cover_letter: results/reports/stage43_cover_letter_draft_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv

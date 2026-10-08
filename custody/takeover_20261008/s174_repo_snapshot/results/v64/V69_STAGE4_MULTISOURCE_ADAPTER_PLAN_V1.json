@@ -1,0 +1,93 @@
+{
+  "schema": "V69_STAGE4_MULTISOURCE_ADAPTER_PLAN_V1",
+  "date": "2026-10-01",
+  "status": "IMPLEMENTATION_PLAN__NO_PROTECTED_OUTCOMES_OPENED",
+  "shared_program_namespace": {
+    "required_fields": [
+      "program_id",
+      "program_version",
+      "tf_ids",
+      "gene_ids",
+      "region_ids_hg38",
+      "region_ids_hg19_if_available",
+      "source_definition_id"
+    ],
+    "genome_build_rule": "Every interval-bearing source must declare build; liftover must be separately receipted, never implicit.",
+    "gene_identity_rule": "Use explicit stable identifiers/symbol mapping receipt; ambiguous symbols remain unresolved, not guessed.",
+    "version_rule": "Changing program membership creates a new program_version."
+  },
+  "adapters": {
+    "scenicplus": {
+      "inputs": "frozen eRegulon table after external-network qualification",
+      "output": "program definitions and membership only",
+      "no_stage4_outcome_needed": true,
+      "required_crosswalks": [
+        "TF→FULL104 address",
+        "target gene→FULL104 address",
+        "region→NIH-CARD interval overlap/assignment",
+        "region→Morabito/SEA-AD interval representation"
+      ],
+      "missing_semantics": "unsupported target/region recorded explicitly"
+    },
+    "nihcard_stage4": {
+      "inputs": "Phase-B frozen pair/interval/gene substrate",
+      "output": "program-level aggregation of already-computed Stage-4 pair evidence after core execution",
+      "rule": "Core pair-level Stage-4 result remains immutable; program aggregation cannot change core PASS/FAIL."
+    },
+    "morabito": {
+      "inputs": "protected separate-nucleus RNA/ATAC only after dedicated replication authorization",
+      "output": "donor x program replication statistics",
+      "no_same_cell_claim": true
+    },
+    "seaad_multiome": {
+      "inputs": "paired-nucleus MTG myeloid subset after outcome authorization",
+      "output": "donor x program same-nucleus support",
+      "inference_unit": "donor; nuclei increase measurement precision but not biological n"
+    },
+    "gse272082": {
+      "inputs": "only after minimal authentication/custody",
+      "output": "external same-nucleus donor x program replication"
+    },
+    "perturbation": {
+      "inputs": "qualified target engagement + independent-unit effects",
+      "output": "program displacement direction/magnitude for covered programs",
+      "mapping": "perturbed target/regulator→program membership frozen before eligible outcome is opened"
+    },
+    "spatial": {
+      "inputs": "qualified panel/cell mapping",
+      "output": "program support only where panel provides sufficient genes",
+      "rule": "partial panel support yields partial/supporting evidence, not full-state absence"
+    },
+    "full104_transport": {
+      "inputs": "RNA-only FULL104 + frozen recoverable regulatory representation",
+      "output": "per-cell predicted state plus support/uncertainty flags",
+      "prerequisite": "recoverability TRAIN/VALIDATION qualification",
+      "forbidden": "direct multimodal evidence label for RNA-predicted cells"
+    }
+  },
+  "implementation_order": [
+    "A_build empty versioned program namespace and crosswalk tables from structural metadata only",
+    "B_add SCENIC+ adapter once a new broad network is qualified",
+    "C_add NIH-CARD program aggregator after core Stage-4 execution without changing core result",
+    "D_add external replication adapters only under their own outcome authorization",
+    "E_add perturbation/spatial program-support adapters",
+    "F_build evidence ledger and teacher-candidate selector only after source-specific records exist",
+    "G_build FULL104 transport adapter after recoverability qualification"
+  ],
+  "pre_outcome_work_allowed_now": [
+    "schemas",
+    "validators",
+    "structural crosswalk code",
+    "genome-build and identifier mapping receipts",
+    "synthetic adapter fixtures",
+    "coverage masks from already exposed structural metadata"
+  ],
+  "prohibited_now": [
+    "opening Morabito biological target outcome",
+    "running real Stage-4 correspondence",
+    "choosing SCENIC+ programs based on Stage-4 agreement",
+    "using perturbation outcomes to choose network membership",
+    "pooling donor/cell counts across sources",
+    "teacher-state materialization from unqualified sources"
+  ]
+}

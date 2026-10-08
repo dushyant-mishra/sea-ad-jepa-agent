@@ -1,0 +1,50 @@
+{
+  "authority_checks": {
+    "15a4_manifest": true,
+    "15b_manifest": true,
+    "namespace_audit": true,
+    "provenance_manifest": true,
+    "truth_table": true
+  },
+  "design": {
+    "df": 88,
+    "donor_order_exact": true,
+    "effective_centered_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
+    "effective_sha_matches_production": true,
+    "loo_critical_indices": [],
+    "max_leverage": 0.8693731662079764,
+    "rank": 16,
+    "schema_sha256": "d7d0be302b455f7be0982d3e7906778c4fac59aee9b9f5c43e6017090d25e778",
+    "sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+    "triple": [
+      5,
+      0,
+      4
+    ]
+  },
+  "forbidden_access_audit_method": "static import/path/API audit of all production runner and adapter source; no expression/model/checkpoint APIs or suffixes permitted",
+  "forbidden_access_audit_pass": true,
+  "gate_vector_exact": true,
+  "independent_adversarial": {
+    "all_reported_attacks_pass": true,
+    "candidate_authority_mutations_distinct": true,
+    "donor_keyed_api": true,
+    "legal_domain": true,
+    "nuisance_veto_exact": true,
+    "zero_hc3_unestimable": true
+  },
+  "independent_hc3": {
+    "beta0": 0.3368349550816222,
+    "df": 88,
+    "estimable": true,
+    "lower": 0.32850170177661037,
+    "p_positive": 1.998413508845715e-84,
+    "rank": 16
+  },
+  "independent_regression": true,
+  "real_reader_forward_authority_unset": true,
+  "reviewed_sources_unchanged": true,
+  "status": "PASS_F1_15C_INDEPENDENT_VALIDATION",
+  "synthetic_qualified": true,
+  "terminal_status": "PASS_F1_HC3_15C_DECISION_INTEGRATION_AWAITING_EXTERNAL_REVIEW"
+}

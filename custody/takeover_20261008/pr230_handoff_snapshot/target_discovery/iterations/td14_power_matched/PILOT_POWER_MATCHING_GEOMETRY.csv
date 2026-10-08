@@ -1,0 +1,7 @@
+source,class_A,class_B,matched_donors,matched_cells_each,min_cells_per_donor,median_cells_per_donor
+HVS,L2/3 IT,L4 IT,41,805,4,19.0
+HVS,L2/3 IT,Oligodendrocyte,41,1304,4,35.0
+NPH52,ExN,Astro,14,252,6,13.0
+NPH52,ExN,Oligo,14,545,9,41.0
+SEA_AD,L2/3 IT,L4 IT,46,821,8,17.5
+SEA_AD,L2/3 IT,Astrocyte,46,776,6,16.0

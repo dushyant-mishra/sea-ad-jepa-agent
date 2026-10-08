@@ -1,0 +1,9 @@
+source_id,source_name,source_type,local_path,api_or_url,accessible,query_attempted,usable,limitation
+LOCAL,Local curated/resources scan,local_files,data\external\hpa\hpa_fda_drug_target.tsv; data\processed\metadata\pathology_target_columns.csv; data\processed\metadata\pathology_target_spearman_corr.csv; data\processed\metadata\pathology_target_summary.csv; data\processed\metadata\sea_ad_mtg_donor_pathology_targets.csv; results\tables\discovery_targeted_manifold_audit_distance_sanity_check.csv; results\tables\discovery_targeted_manifold_audit_gene_list_v1.csv; results\tables\discovery_targeted_manifold_audit_results_v1.csv; results\tables\discovery_targeted_manifold_audit_smoke_v1.csv; results\tables\discovery_targeted_manifold_audit_v1.csv,,True,True,True,local files require manual quality review
+PUBMED,PubMed E-utilities,metadata_api,,https://eutils.ncbi.nlm.nih.gov/entrez/eutils/,True,True,True,metadata only; no full papers; title-level directionality only
+CHEMBL,ChEMBL API,drug_target_api,,https://www.ebi.ac.uk/chembl/api/data/,True,True,True,target search may miss synonyms; not disease-specific
+DGIDB,DGIdb API,drug_gene_api,,https://dgidb.org/api,True,True,True,availability depends on public endpoint behavior
+OPENTARGETS,Open Targets,target_api,,https://api.platform.opentargets.org/,False,False,False,not queried in automated Stage49 because stable target ID mapping was not prevalidated
+AGORA,Agora / AD Knowledge Portal,web_resource,,https://agora.adknowledgeportal.org/,False,False,False,manual/curated export recommended
+LINCS_CMAP,LINCS/CMap/CLUE,perturbation_resource,,,False,False,False,API key/local matrix not configured
+DRUGCENTRAL_CTD_TTD,DrugCentral/CTD/TTD,drug_disease_resource,,,False,False,False,local tables not prevalidated for automated query

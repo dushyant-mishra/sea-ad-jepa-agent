@@ -1,0 +1,25 @@
+model,target,module,perturbation,intervention,n_genes_perturbed,genes,mean_delta_model_scale,mean_delta_raw_scale,median_delta_raw_scale,abs_mean_delta_raw_scale,n_donors,n_cells
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,APP,global_mean,1,APP,0.004667016211897135,0.019219662994146347,0.019550681114196777,0.019219662994146347,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,disease_associated_microglia;lipid_metabolism;plaque_response,APOE,global_mean,1,APOE,0.0037194625474512577,0.015449436381459236,0.014436960220336914,0.015449436381459236,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,GRB2,global_mean,1,GRB2,0.00358944502659142,0.014653793536126614,0.01259160041809082,0.014653793536126614,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,STAT3,global_mean,1,STAT3,0.0035926145501434803,0.014595494605600834,0.014261603355407715,0.014595494605600834,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,BCL2,global_mean,1,BCL2,0.00328546273522079,0.013266111724078655,0.011572122573852539,0.013266111724078655,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,MAPK1,global_mean,1,MAPK1,0.002544788410887122,0.010369519703090191,0.010061502456665039,0.010369519703090191,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,HIF1A,global_mean,1,HIF1A,0.0024380534887313843,0.009377576410770416,0.008934974670410156,0.009377576410770416,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,TLR2,global_mean,1,TLR2,0.002056639175862074,0.008341051638126373,0.008303284645080566,0.008341051638126373,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,senescence_stress,HSP90AA1,global_mean,1,HSP90AA1,0.001983348047360778,0.008276678621768951,0.008975505828857422,0.008276678621768951,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,RHOA,global_mean,1,RHOA,0.0017875013872981071,0.0069813900627195835,0.00705718994140625,0.0069813900627195835,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,antigen_presentation,CD74,global_mean,1,CD74,0.0015772588085383177,0.00662081316113472,0.006708383560180664,0.00662081316113472,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,UGCG,global_mean,1,UGCG,0.0015649121487513185,0.006364044733345509,0.005980491638183594,0.006364044733345509,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,homeostatic_microglia,P2RY12,global_mean,1,P2RY12,0.0015469775535166264,0.006284225732088089,0.0051479339599609375,0.006284225732088089,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,homeostatic_microglia,CSF1R,global_mean,1,CSF1R,0.0012596497545018792,0.005188587121665478,0.0030984878540039062,0.005188587121665478,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,at8_associated_first_pass,PTPRG,global_mean,1,PTPRG,0.0011776621686294675,0.004990114830434322,0.0042765140533447266,0.004990114830434322,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,chemokine_migration;homeostatic_microglia;synapse_pruning,CX3CR1,global_mean,1,CX3CR1,0.0010159029625356197,0.004151000641286373,0.0036426782608032227,0.004151000641286373,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,lipid_metabolism,PLCG2,global_mean,1,PLCG2,0.0010094103636220098,0.00410360936075449,0.004496932029724121,0.00410360936075449,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,ROCK1,global_mean,1,ROCK1,0.0009294201736338437,0.0037673229817301035,0.003617525100708008,0.0037673229817301035,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,unannotated,CD4,global_mean,1,CD4,0.0005601219017989933,0.0022240281105041504,0.0017879009246826172,0.0022240281105041504,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,at8_associated_first_pass;disease_associated_microglia;lysosome_phagocytosis;plaque_response,CTSD,global_mean,1,CTSD,-0.00035853046574629843,-0.0016845634672790766,-0.0012164115905761719,0.0016845634672790766,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,vascular_barrier_myeloid,F13A1,global_mean,1,F13A1,-0.0003274551418144256,-0.0014567857142537832,-0.0009374618530273438,0.0014567857142537832,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,homeostatic_microglia,P2RY13,global_mean,1,P2RY13,-0.00022898614406585693,-0.0010649107862263918,-0.0011477470397949219,0.0010649107862263918,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,at8_associated_first_pass,CHI3L1,global_mean,1,CHI3L1,-0.00016984839749056846,-0.0007315448601730168,-0.0008976459503173828,0.0007315448601730168,84,11666
+upgrade_fine_08,percent Iba1 positive area_Grey matter,at8_associated_first_pass,DRAM1,global_mean,1,DRAM1,-7.259987614816055e-05,-0.00034116278402507305,-0.0002205371856689453,0.00034116278402507305,84,11666

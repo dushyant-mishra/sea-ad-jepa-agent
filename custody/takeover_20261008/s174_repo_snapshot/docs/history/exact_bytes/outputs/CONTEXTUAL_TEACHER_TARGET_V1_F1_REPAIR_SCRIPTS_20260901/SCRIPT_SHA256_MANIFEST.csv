@@ -1,0 +1,6 @@
+﻿"filename","bytes","sha256","source_path"
+"contextual_target_f1_population_firewall_v2.py","12072","6db3e377285e562346b86e555425a4256839b29713bf81827358070ad27f1ca0","scripts/v4/contextual_target_f1_population_firewall_v2.py"
+"contextual_target_f1_querydesign_decision_v2.py","16088","54728b3b391483e255e25857cd6e37007e9d4643cdbcfa477de8c0d2bfc2eda7","scripts/v4/contextual_target_f1_querydesign_decision_v2.py"
+"derive_contextual_target_f1_querydesign_repair_v2.py","34731","97532a40755866c7bec0cdc53a1c6ce93390e6b63c74d4078fe8c42728260594","scripts/v4/derive_contextual_target_f1_querydesign_repair_v2.py"
+"finalize_contextual_target_f1_querydesign_repair_v2.py","1567","d1df71e651ccbb7515e383e30327370483cd62c224bd874e8521ec94a1890adc","scripts/v4/finalize_contextual_target_f1_querydesign_repair_v2.py"
+"validate_contextual_target_f1_querydesign_repair_v2.py","12475","026d64a3268e601d1edeb7f27ee94fd39bff27d24a2b318ad7377314f68a271b","scripts/v4/validate_contextual_target_f1_querydesign_repair_v2.py"

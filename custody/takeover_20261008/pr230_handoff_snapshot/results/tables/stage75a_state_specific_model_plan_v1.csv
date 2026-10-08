@@ -1,0 +1,5 @@
+context,model,cv_unit,uses_graph_as_predictor_mask,selects_edges_by_pathology,output
+MTG_rare_high,regularized target_gene ~ signed upstream TF activities + donor/technical covariates,donor_grouped,True,False,state_specific_signed_coefficient_matrix
+MTG_background,regularized target_gene ~ signed upstream TF activities + donor/technical covariates,donor_grouped,True,False,state_specific_signed_coefficient_matrix
+DLPFC_rare_high,regularized target_gene ~ signed upstream TF activities + donor/technical covariates,donor_grouped,True,False,state_specific_signed_coefficient_matrix
+DLPFC_background,regularized target_gene ~ signed upstream TF activities + donor/technical covariates,donor_grouped,True,False,state_specific_signed_coefficient_matrix

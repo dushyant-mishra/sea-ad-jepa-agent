@@ -1,0 +1,42 @@
+stage: stage75c_peak_gene_preflight_annotation_v1
+description: >
+  Memory-safe peak-to-nearest-gene preflight annotation for GSE174367 snATAC
+  peaks using downloaded hg38 chromosome sizes and GENCODE v44 annotation. This
+  is a proximity scaffold only, not motif evidence, not SCENIC+ eRegulons, and
+  not validated peak-to-gene regulation.
+
+inputs:
+  snatac_matrix_h5: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+  gencode_gtf_gz: data/external_resources/stage75b/gencode.v44.annotation.gtf.gz
+  chrom_sizes: data/external_resources/stage75b/hg38.chrom.sizes
+  stage72b_edges: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+  stage75b_readiness: results/tables/stage75b_readiness_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  promoter_window_bp: 2000
+  proximal_window_bp: 100000
+
+outputs:
+  input_inventory: results/tables/stage75c_input_inventory_v1.csv
+  gtf_gene_annotation_summary: results/tables/stage75c_gtf_gene_annotation_summary_v1.csv
+  peak_to_gene_preflight: results/tables/stage75c_peak_to_gene_preflight_v1.csv
+  rare_gene_peak_support: results/tables/stage75c_rare_gene_peak_support_v1.csv
+  readiness: results/tables/stage75c_readiness_v1.csv
+  claim_boundary_audit: results/tables/stage75c_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage75c_pass_fail_v1.csv
+  report: results/reports/stage75c_peak_gene_preflight_annotation_report_v1.md
+  pi_summary: results/reports/stage75c_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage75c_claim_boundary_final_check_v1.md
+
+safety:
+  proximity_only_not_regulatory: true
+  no_motif_evidence_claim: true
+  no_scenicplus_run: true
+  no_celloracle_run: true
+  no_model_training: true
+  no_external_validation_claim: true
+  no_causal_knockout_claim: true
+  raw_data_not_committed: true

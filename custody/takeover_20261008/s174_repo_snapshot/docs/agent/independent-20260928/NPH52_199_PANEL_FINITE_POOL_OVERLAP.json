@@ -1,0 +1,482 @@
+{
+  "scope": "four heldout-donor folds, 304 NPH52 MG historical cells only; 40 abstract resampling repeats per tier; gene-level mean-score Neff is an illustration NOT Monte Carlo effective B nor valid p-value adjustment",
+  "results": [
+    {
+      "fold": 0,
+      "program": "APOE_LIPID",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1110,
+        1039,
+        1242,
+        699
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.006116440789807625,
+        "mean_shared_genes": 0.006141820212171971,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 688.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 152.60500963391138
+      }
+    },
+    {
+      "fold": 0,
+      "program": "APOE_LIPID",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        508,
+        618,
+        536,
+        665
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.007994518044769302,
+        "mean_shared_genes": 0.008019897467133648,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 659.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 142.4496402877698
+      }
+    },
+    {
+      "fold": 0,
+      "program": "APOE_LIPID",
+      "tier": "all5_observed_strict",
+      "status": "ZERO_POOL_REFUSAL",
+      "slot_pool_sizes": [
+        0,
+        22,
+        4,
+        142
+      ]
+    },
+    {
+      "fold": 0,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1039,
+        57,
+        226,
+        414
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.0252779046748896,
+        "mean_shared_genes": 0.025455560631440027,
+        "max_gene_reuses": 9.0,
+        "distinct_genes": 525.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 88.05181968967759
+      }
+    },
+    {
+      "fold": 0,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1026,
+        53,
+        203,
+        294
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.0278158469113243,
+        "mean_shared_genes": 0.027993502867874727,
+        "max_gene_reuses": 9.0,
+        "distinct_genes": 508.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 83.41445177749432
+      }
+    },
+    {
+      "fold": 0,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "all5_observed_strict",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        544,
+        17,
+        73,
+        4
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.304197756459063,
+        "mean_shared_genes": 0.32333384092178064,
+        "max_gene_reuses": 56.0,
+        "distinct_genes": 255.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 11.7024231678487
+      }
+    },
+    {
+      "fold": 1,
+      "program": "APOE_LIPID",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1089,
+        1160,
+        1383,
+        716
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.00522816100705548,
+        "mean_shared_genes": 0.00522816100705548,
+        "max_gene_reuses": 3.0,
+        "distinct_genes": 700.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 158.0878243512974
+      }
+    },
+    {
+      "fold": 1,
+      "program": "APOE_LIPID",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        498,
+        1134,
+        1310,
+        692
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.0066747880818232574,
+        "mean_shared_genes": 0.0066747880818232574,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 679.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 149.580048365006
+      }
+    },
+    {
+      "fold": 1,
+      "program": "APOE_LIPID",
+      "tier": "all5_observed_strict",
+      "status": "ZERO_POOL_REFUSAL",
+      "slot_pool_sizes": [
+        0,
+        89,
+        4,
+        199
+      ]
+    },
+    {
+      "fold": 1,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1033,
+        57,
+        246,
+        354
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.028171158824425155,
+        "mean_shared_genes": 0.028399573625704277,
+        "max_gene_reuses": 8.5,
+        "distinct_genes": 499.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 82.71751602847277
+      }
+    },
+    {
+      "fold": 1,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        998,
+        56,
+        217,
+        295
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.028450332470432972,
+        "mean_shared_genes": 0.028627988426983404,
+        "max_gene_reuses": 9.0,
+        "distinct_genes": 493.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 82.33056133056132
+      }
+    },
+    {
+      "fold": 1,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "all5_observed_strict",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        293,
+        22,
+        93,
+        6
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.21501446627074766,
+        "mean_shared_genes": 0.2257753413532308,
+        "max_gene_reuses": 41.0,
+        "distinct_genes": 254.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 16.343791475555484
+      }
+    },
+    {
+      "fold": 2,
+      "program": "APOE_LIPID",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1226,
+        1089,
+        1219,
+        602
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.007233135373838892,
+        "mean_shared_genes": 0.0072585147962032385,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 667.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 146.3992606284658
+      }
+    },
+    {
+      "fold": 2,
+      "program": "APOE_LIPID",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1147,
+        644,
+        741,
+        559
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.009085833206436222,
+        "mean_shared_genes": 0.009111212628800568,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 642.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 137.14642315280685
+      }
+    },
+    {
+      "fold": 2,
+      "program": "APOE_LIPID",
+      "tier": "all5_observed_strict",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        52,
+        9,
+        5,
+        57
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.3551342571443074,
+        "mean_shared_genes": 0.39264504339881223,
+        "max_gene_reuses": 55.0,
+        "distinct_genes": 117.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 9.737770742644894
+      }
+    },
+    {
+      "fold": 2,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1011,
+        60,
+        203,
+        389
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.024744936805238312,
+        "mean_shared_genes": 0.024947972184153087,
+        "max_gene_reuses": 8.0,
+        "distinct_genes": 521.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 89.04128749962084
+      }
+    },
+    {
+      "fold": 2,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        983,
+        57,
+        187,
+        288
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.026978325973300847,
+        "mean_shared_genes": 0.027232120196944317,
+        "max_gene_reuses": 8.5,
+        "distinct_genes": 502.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 84.75336829690022
+      }
+    },
+    {
+      "fold": 2,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "all5_observed_strict",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        200,
+        15,
+        50,
+        5
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.2711029896959545,
+        "mean_shared_genes": 0.29087355971778084,
+        "max_gene_reuses": 47.0,
+        "distinct_genes": 197.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 12.92355397359725
+      }
+    },
+    {
+      "fold": 3,
+      "program": "APOE_LIPID",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1212,
+        1184,
+        1223,
+        731
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.006192579056900665,
+        "mean_shared_genes": 0.006192579056900665,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 686.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 152.31153846153848
+      }
+    },
+    {
+      "fold": 3,
+      "program": "APOE_LIPID",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        689,
+        1023,
+        914,
+        682
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.006877823460738034,
+        "mean_shared_genes": 0.006877823460738034,
+        "max_gene_reuses": 4.0,
+        "distinct_genes": 677.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 148.45748747461545
+      }
+    },
+    {
+      "fold": 3,
+      "program": "APOE_LIPID",
+      "tier": "all5_observed_strict",
+      "status": "ZERO_POOL_REFUSAL",
+      "slot_pool_sizes": [
+        0,
+        41,
+        8,
+        367
+      ]
+    },
+    {
+      "fold": 3,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_25pct",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1051,
+        58,
+        227,
+        446
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.02451652200395919,
+        "mean_shared_genes": 0.024795695649967007,
+        "max_gene_reuses": 8.0,
+        "distinct_genes": 530.0,
+        "mean_score_neff_proxy_independent_gene_assumption": 89.34238600705959
+      }
+    },
+    {
+      "fold": 3,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "mean_detect",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        1016,
+        55,
+        212,
+        338
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.026876808283843458,
+        "mean_shared_genes": 0.026978325973300847,
+        "max_gene_reuses": 8.0,
+        "distinct_genes": 513.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 85.20947419348865
+      }
+    },
+    {
+      "fold": 3,
+      "program": "P2RY12_HOMEOSTATIC",
+      "tier": "all5_observed_strict",
+      "status": "COMBINATORIAL_ONLY_NOT_NULL_CALIBRATION",
+      "slot_pool_sizes": [
+        148,
+        13,
+        72,
+        10
+      ],
+      "n_proposals": 199,
+      "replicates": 40,
+      "median": {
+        "frac_pair_sharing": 0.1860819247753921,
+        "mean_shared_genes": 0.19717273234861174,
+        "max_gene_reuses": 27.0,
+        "distinct_genes": 198.5,
+        "mean_score_neff_proxy_independent_gene_assumption": 18.494343722396103
+      }
+    }
+  ]
+}

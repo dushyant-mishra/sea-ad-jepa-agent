@@ -1,0 +1,57 @@
+stage: stage36b_local_knowledge_grounding_schema_v1
+random_seed: 7
+
+inputs:
+  stage36a_gene_hypotheses: results/tables/stage36a_gene_hypothesis_scores_v1.csv
+  stage36a_ranked_hypotheses: results/tables/stage36a_agent_ranked_hypotheses_v1.csv
+  stage36a_module_scores: results/tables/stage36a_module_counterfactual_scores_v1.csv
+  stage36a_target_summary: results/tables/stage36a_target_summary_v1.csv
+
+resource_discovery:
+  roots:
+    - docs
+    - configs
+    - results/tables
+    - results/reports
+    - resources
+    - reference
+  max_file_size_bytes: 5000000
+  extensions: [.csv, .tsv, .txt, .md, .json, .yaml, .yml]
+  keywords:
+    - AD
+    - Alzheimer
+    - microglia
+    - neuroinflammation
+    - amyloid
+    - tau
+    - GFAP
+    - Iba1
+    - NeuN
+    - DisGeNET
+    - OpenTargets
+    - GWAS
+    - MSigDB
+    - KEGG
+    - Reactome
+    - GO
+    - disease associated microglia
+    - DAM
+    - TREM2
+    - APOE
+    - complement
+    - interferon
+    - lysosome
+    - phagocytosis
+    - senescence
+    - oxidative stress
+    - antigen presentation
+    - chemokine
+
+outputs:
+  inventory: results/tables/stage36b_local_resource_inventory_v1.csv
+  schema_registry: results/tables/stage36b_knowledge_schema_registry_v1.csv
+  gene_annotations: results/tables/stage36b_gene_knowledge_annotations_v1.csv
+  hypothesis_grounding: results/tables/stage36b_hypothesis_grounding_v1.csv
+  audit: results/tables/stage36b_knowledge_grounding_audit_v1.csv
+  pass_fail: results/tables/stage36b_pass_fail_v1.csv
+  report: results/reports/stage36b_local_knowledge_grounding_report_v1.md

@@ -1,0 +1,28 @@
+{
+  "cells": 292633,
+  "coverage_sha256": "1621d709f4afa0d30d29a14b830befc267880395f466cb3862ca35707c4cc554",
+  "donors": 104,
+  "expression_opened": false,
+  "level": 0,
+  "lineage_rows_traversed": 4553407,
+  "operators": 42,
+  "original_mixed_nph_assets_selected": false,
+  "per_donor_cap": 2863,
+  "primary_weight_sum": 1.0000000000000002,
+  "protected_expression_opened": false,
+  "schema": "full104-phase2-metadata-selection-v1",
+  "selection_rule": "SHA256(cell_order_key|source|donor|operator|canonical_cell_id|row_locator)",
+  "selection_sha256": "4a015069d956fbdcd2da19cbe117cffeaa7422e08166c6e2146af8eb6b8cc019",
+  "source_cells": {
+    "HVS": 115046,
+    "NPH52": 45889,
+    "SEA_AD": 131698
+  },
+  "source_primary_weight": {
+    "HVS": 0.3942307692307693,
+    "NPH52": 0.16346153846153846,
+    "SEA_AD": 0.44230769230769235
+  },
+  "sources": 3,
+  "status": "PASS_PHASE2_METADATA_SELECTION_FROZEN"
+}

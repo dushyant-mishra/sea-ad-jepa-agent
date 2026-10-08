@@ -1,0 +1,27 @@
+{
+  "schema": "F1_EVIDENCE_TREND_REPAIR_AUTHORITY_BINDING_V1",
+  "status": "FROZEN_BEFORE_CONCLUSION_BEARING_SOURCE",
+  "implementation_base_head": "67f8bbdae62f5aedcd8ab1cd220d2c966c923e43",
+  "authority_hash_semantics": "SHA-256 of exact committed Git blob bytes; filesystem checkout hashes are recorded separately because Windows CRLF checkout is noncanonical",
+  "prospective_authorities": [
+    {
+      "path": "docs/agent/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_CONTRACT_20260902.md",
+      "git_commit": "d810302bd67a1227f33be54266e59b8f335a94e5",
+      "git_blob_bytes_sha256": "02d3dc3a79dba2835eaa8663d75643ffa7f62e2c77b5bf86b5d616e1a6a229d6",
+      "windows_checkout_bytes_sha256": "47159c4356881b8d18111e7e1aad6907f39ec421757936145bba0e9df900d288"
+    },
+    {
+      "path": "docs/agent/F1_EVIDENCE_TREND_NUMERICAL_TOLERANCE_AUTHORITY_20260902.json",
+      "git_commit": "9af769ae3784dbb4c04d16a840da8faff4e0f135",
+      "git_blob_bytes_sha256": "74f9dc7a9b4a924923109028ed092276878b821c3811dd97402dac59b052c4d4",
+      "windows_checkout_bytes_sha256": "852b6827f2e6aafea16f1b706d4441f4324d3a58e888c80dc01aa30479a7533d"
+    },
+    {
+      "path": "docs/agent/F1_EVIDENCE_TREND_PREIMPLEMENTATION_FREEZE_20260902.json",
+      "git_commit": "1f1ae22d129f8b30860fb0488d34fd52ecb866c2",
+      "git_blob_bytes_sha256": "833885c14dc73db3dd67fe6a5ab98f95ff1b11d6ba6ad6b3e0294b4cafa73cff",
+      "windows_checkout_bytes_sha256": "03d551dbb284171887f4b6a8aabf945190f8f47eb6c25913c46f26f72613eed7"
+    }
+  ],
+  "real_f1_authorized": false
+}

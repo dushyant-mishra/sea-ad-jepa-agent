@@ -1,0 +1,4 @@
+comparison,primary_score,comparison_score,delta,comparison_model
+primary_minus_same80_mtg_programming,0.2773150492264417,0.26612423816221287,0.011190811064228812,
+primary_minus_best_negative_control,0.2773150492264417,0.28139076418190345,-0.004075714955461773,negative_control_state_label_shuffled_within_donor
+primary_minus_stage27c_locked,0.2773150492264417,0.3267024400121495,-0.04938739078570781,

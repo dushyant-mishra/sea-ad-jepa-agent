@@ -1,0 +1,15 @@
+{
+  "all_u60_hashes_exact": true,
+  "columns": 49,
+  "donors": 104,
+  "matrix_byte_exact": true,
+  "model_outcomes_read": false,
+  "pair_delta_max_abs": 9.974659986866641e-17,
+  "pair_keyspace_exact": true,
+  "production_builder_imported": false,
+  "scalar_support_exact": true,
+  "semantic_root_sha256": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "source_library_rows": 2863,
+  "status": "PASS_F1_NUISANCE_INDEPENDENT_VALIDATION",
+  "v8_intersecting_roundtrip_failures": 0
+}

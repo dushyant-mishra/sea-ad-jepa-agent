@@ -1,0 +1,40 @@
+stage: stage36e_frozen_validation_protocol_v1
+random_seed: 7
+
+inputs:
+  stage36c_ranked_gene_hypotheses: results/tables/stage36c_ranked_gene_hypotheses_v1.csv
+  stage36c_ranked_module_hypotheses: results/tables/stage36c_ranked_module_hypotheses_v1.csv
+  stage36c_target_level_hypothesis_summary: results/tables/stage36c_target_level_hypothesis_summary_v1.csv
+  stage36c_validation_planning_table: results/tables/stage36c_validation_planning_table_v1.csv
+  stage36c_safety_claims_audit: results/tables/stage36c_safety_claims_audit_v1.csv
+  stage36c_pass_fail: results/tables/stage36c_pass_fail_v1.csv
+  stage36c_ranked_hypothesis_package_report: results/reports/stage36c_ranked_hypothesis_package_report_v1.md
+  stage36c_pi_readable_hypothesis_shortlist: results/reports/stage36c_pi_readable_hypothesis_shortlist_v1.md
+  stage36d_candidate_shortlist: results/tables/stage36d_candidate_shortlist_v1.csv
+  stage36d_assay_planning_table: results/tables/stage36d_assay_planning_table_v1.csv
+  stage36d_validation_readiness_audit: results/tables/stage36d_validation_readiness_audit_v1.csv
+  stage36d_pass_fail: results/tables/stage36d_pass_fail_v1.csv
+  stage36d_validation_handoff_report: results/reports/stage36d_validation_handoff_report_v1.md
+  stage36d_pi_meeting_summary: results/reports/stage36d_pi_meeting_summary_v1.md
+
+required_targets:
+  - 6e10/A_beta
+  - AT8
+  - GFAP
+  - Iba1
+  - NeuN
+
+outputs:
+  frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+  mechanism_to_assay_map: results/tables/stage36e_mechanism_to_assay_map_v1.csv
+  claim_boundaries_audit: results/tables/stage36e_claim_boundaries_audit_v1.csv
+  pass_fail: results/tables/stage36e_pass_fail_v1.csv
+  report: results/reports/stage36e_frozen_validation_protocol_v1.md
+  pi_report: results/reports/stage36e_pi_scientific_rationale_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

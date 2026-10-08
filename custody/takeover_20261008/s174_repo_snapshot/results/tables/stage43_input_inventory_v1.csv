@@ -1,0 +1,20 @@
+input_id,expected_path,found,stage_source,used_in_stage43,notes
+stage27c_mean,results/tables/stage27c_rescue_mean_metrics_v1.csv,True,stage27c,True,found
+stage36e_mechanisms,results/tables/stage36e_frozen_mechanism_registry_v1.csv,True,stage36e,True,found
+stage37_readiness,results/tables/stage37b_manual_dataset_validation_readiness_dossier_v1.csv,False,stage37,True,missing; synthesis continues without fabrication
+stage38_support,results/tables/stage38b_external_support_tiers_v1.csv,True,stage38,True,found
+stage39e_mean,results/tables/stage39e_mean_metrics_v1.csv,True,stage39e,True,found
+stage39h_decision,results/tables/stage39h_proxy_safe_lock_decision_v1.csv,False,stage39h,True,missing; synthesis continues without fabrication
+stage40a_pass_fail,results/tables/stage40a_pass_fail_v1.csv,True,stage40a,True,found
+stage40b_decision,results/tables/stage40b_stop_continue_decision_v1.csv,True,stage40b,True,found
+stage41b_mean,results/tables/stage41b_mean_metrics_v1.csv,True,stage41b,True,found
+stage41full_decision,results/tables/stage41full_benchmark_lock_decision_v1.csv,True,stage41full,True,found
+stage41c_decision,results/tables/stage41c_stability_rescue_decision_v1.csv,True,stage41c,True,found
+stage42_decision,results/tables/stage42_next_action_decision_v1.csv,True,stage42,True,found
+stage42_external_readiness,results/tables/stage42_external_support_readiness_v1.csv,True,stage42,True,found
+stage45_lock,results/tables/stage45_benchmark_lock_decision_v1.csv,True,stage45,True,found
+stage45_linkage,results/tables/stage45_cellxgene_donor_linkage_audit_v1.csv,True,stage45,True,found
+stage45_manifest,results/tables/stage45_safe_feature_matrix_manifest_v1.csv,True,stage45,True,found
+active_status,docs/ACTIVE_V3_STATUS.md,True,active,True,found
+v3_scorecard_md,docs/V3_SCORECARD.md,True,v3,True,found
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,v3,True,found

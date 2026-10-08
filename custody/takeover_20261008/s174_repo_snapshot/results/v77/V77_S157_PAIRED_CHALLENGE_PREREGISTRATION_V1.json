@@ -1,0 +1,75 @@
+{
+  "schema": "V77_S157_PAIRED_CHALLENGE_PREREGISTRATION_V1",
+  "claim_namespace": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "status": "PREREGISTERED_BEFORE_ANY_CHALLENGE_WORLD_EXISTS",
+  "question": "Can the repaired V77 synthetic world, observed through the repaired observer and the canonical adapter, discriminate (A) a biological latent tied to a legitimate biological state from (B) a hidden measurement or capture process producing similar RNA structure?",
+  "allowed_conclusions": [
+    "NON_IDENTIFIABLE",
+    "SEPARABLE_UNDER_SPECIFIED_CONTEXT",
+    "UNINFORMATIVE_DESIGN",
+    "LEAK"
+  ],
+  "lineage_constraint": "V48: if the realized permitted observables are identical and only the hidden interpretation differs, no statistic over them can pass biology and fail the twin. Do not redesign an RNA-only negative and tune it until it passes.",
+  "realization": {
+    "truth_seed": 7302,
+    "cells": 2000,
+    "preset": "FULL",
+    "status": "DEVELOPMENT_CALIBRATION: the seed-7302 realization has been inspected; nothing here is independent confirmation"
+  },
+  "worlds": {
+    "NULL": "the repaired world with no challenge component; must reproduce fs_smoke_s161 byte for byte",
+    "BIO": "a continuous latent z = delta * 1[state_index == k_star] + N(0,1) raises the expression of module M by exp(beta * z): a program tied to a biological cell state",
+    "TWIN_EXACT": "the same latent, grouping, module and effect, with the hidden interpretation 'capture efficiency' instead of 'biology'. Implemented through identical arithmetic, so its observables equal BIO's exactly; the arm label exists only in the hidden spec",
+    "TWIN_OPERATOR": "a capture nuisance z' = delta * 1[operator_index in O_star] + N(0,1) on the same module with the same effect, where O_star is chosen to match the size of state k_star and to overlap it as much as the measurement design allows"
+  },
+  "design_rules_fixed_now": {
+    "k_star": "the state_index with the most cells in the seed-7302 truth",
+    "module_M": "200 addresses from the frozen evaluation universe TRAIN_PREVALENCE05_19569 that every cohort covers and no existing planted module uses, taken in the order of sha256('S157:' + address id)",
+    "O_star": "operators sorted by descending fraction of their cells in state k_star, ties by operator index, added until their cell count first reaches the cell count of state k_star",
+    "delta": 2.0,
+    "beta": 0.6,
+    "latent_noise": "N(0,1), drawn statelessly from (seed + 7710, global_cell_index), shared by BIO and TWIN_EXACT",
+    "rationale_for_constants": "chosen so the planted program is strong (state k_star cells raise module M about 3.3-fold on average) and the experiment cannot conclude NON_IDENTIFIABLE merely because the signal is weak; not derived from any outcome"
+  },
+  "pipeline": "truth builder -> repaired observer (structural support rule S146_S147) -> canonical adapter at the frozen universe, hidden fraction 0.15, seed 20261006 -> frozen oracle-free features -> unblinding -> scoring",
+  "oracle_blinding": "the challenge spec, latent, module set, state and operator-set labels are loaded only after a digest of every frozen model-visible feature has been recorded; the scorer refuses to unblind otherwise",
+  "features": {
+    "PCS": "top 20 principal components of standardized student evidence over the frozen universe, oracle-free, fit within each world",
+    "MODULE_KNOWN_SUPPORT": "mean student evidence over module M, computed only after unblinding; an ORACLE_CEILING_UNDER_KNOWN_SUPPORT reading"
+  },
+  "context_arms": {
+    "ARM1_EVIDENCE_ONLY": "no context",
+    "ARM2_LAWFUL_MEASUREMENT_DESCRIPTORS": "log visible library size and measurable-address count (n_measured)",
+    "ARM3_RAW_IDENTITY": "one-hot operator and source; EXPLORATORY POSITIVE CONTROL ONLY, never a proposed production design"
+  },
+  "statistics": {
+    "split": "train = even global_cell_index, test = odd; value-independent and fixed now",
+    "recoverability": "features are residualized on the arm's context (OLS fit on train), then the challenge latent is predicted from the residuals (OLS fit on train); report test R2. In BIO this is biological discrimination; in TWIN_OPERATOR it is nuisance discrimination; in TWIN_EXACT it must equal BIO",
+    "context_share": "R2 of the module axis on the arm's context, on test cells",
+    "identity_leakage": "how much dataset identity each arm's context carries: the fraction of test cells whose operator is determined uniquely by the context value seen on train, and the mean R2 of operator indicators on the context",
+    "uncertainty": "200 bootstrap resamples of test cells, seed 20261006, percentile 95% intervals"
+  },
+  "decision_rules": {
+    "RED_1_exact_twin": "every model-facing structure of TWIN_EXACT (model, operator context, split, readout) must be byte-identical to BIO's. Equality is the pass. Any difference is a LEAK and stops the run (stop condition C)",
+    "RED_2_exact_twin_scores": "every statistic must be identical for BIO and TWIN_EXACT. A gate that separates them is reading something the data does not contain",
+    "RED_3_schema": "all four worlds must yield the same field names, dtypes and shapes",
+    "RED_4_blinding": "scoring must refuse to load any oracle quantity before the frozen-feature digest exists",
+    "design_adequacy": "the planted latent must be recoverable in BIO, ARM1, MODULE_KNOWN_SUPPORT with test R2 of at least 0.3; otherwise the verdict is UNINFORMATIVE_DESIGN and the run stops without changing any constant",
+    "separation": "for BIO versus TWIN_OPERATOR under an arm, SEPARABLE if the 95% bootstrap intervals of context_share do not overlap; otherwise NOT_SEPARATED",
+    "exact_twin_verdict": "BIO versus TWIN_EXACT is NON_IDENTIFIABLE_BY_DESIGN when RED_1 and RED_2 pass"
+  },
+  "predictions_recorded_now": [
+    "BIO versus TWIN_EXACT: NON_IDENTIFIABLE under every arm, including raw identity, because the nuisance is tied to state exactly as the biology is",
+    "BIO versus TWIN_OPERATOR, ARM1: separable only through joint structure; the planted latent is recoverable in both worlds, so recoverability alone does not separate them",
+    "ARM2: n_measured is fixed by source and operator in this world, so it is a dataset-identity proxy; whatever nuisance it removes, it removes by carrying identity",
+    "ARM3: raw identity removes the operator-linked nuisance and separates the worlds; this measures shortcut signal, it is not a design"
+  ],
+  "stopping_rule": "one design, run once; no constant changes after any outcome is seen",
+  "authority": {
+    "training": "OFF",
+    "mode": "ZERO_UPDATE",
+    "TEST_or_Morabito": false,
+    "representation_target_estimand_weighting_or_threshold_selected": false,
+    "runtime_work": false
+  }
+}

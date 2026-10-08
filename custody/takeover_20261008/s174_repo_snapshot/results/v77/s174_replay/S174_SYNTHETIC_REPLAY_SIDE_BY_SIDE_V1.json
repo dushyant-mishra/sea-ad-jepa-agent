@@ -1,0 +1,5249 @@
+{
+ "schema": "S174_REPLAY_SIDE_BY_SIDE_V1",
+ "rule": "old numbers are kept beside the corrected ones; nothing is replaced in place",
+ "results": [
+  {
+   "result": "V77_REALIZATION_ISOLATION_RECEIPT_V2.json",
+   "old": {
+    "path": "results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V2.json",
+    "sha256": "29c416ac517f95191c70d86327cb1947e072f5f771b2820e8f920421a6562cdf"
+   },
+   "corrected": {
+    "path": "results/v77/s174_replay/V77_REALIZATION_ISOLATION_RECEIPT_V2.json",
+    "sha256": "f0b92339d4e9fb523de98a7bee2e32719f93ef79b0e0c9c86f84861192898c52"
+   },
+   "n_numbers": 106,
+   "rows": [
+    {
+     "path": "arms.A_deterministic.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 7625.780373831776,
+     "corrected": 6146.580037664784,
+     "delta": -1479.2003361669922
+    },
+    {
+     "path": "arms.A_deterministic.expressed_fraction_in_universe",
+     "old": 0.5005876641627063,
+     "corrected": 0.551432336824582,
+     "delta": 0.050844672661875756
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 7625.780373831776,
+     "corrected": 6146.580037664784,
+     "delta": -1479.2003361669922
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.5005876641627063,
+     "corrected": 0.551432336824582,
+     "delta": 0.050844672661875756
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.518306862065808,
+     "corrected": 0.4835322487842679,
+     "delta": -0.03477461328154008
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 9796,
+     "corrected": 7950,
+     "delta": -1846
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 9773,
+     "corrected": 6467,
+     "delta": -3306
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.2641347115705235,
+     "corrected": 0.2818415027231299,
+     "delta": 0.017706791152606427
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.2641347115705235,
+     "corrected": 0.2818415027231299,
+     "delta": 0.017706791152606427
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.7626666666666667,
+     "corrected": 0.771,
+     "delta": 0.008333333333333304
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.mean_degree",
+     "old": 792.14,
+     "corrected": 845.2426666666667,
+     "delta": 53.102666666666664
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.18685078960188933,
+     "corrected": 0.19554753554425902,
+     "delta": 0.008696745942369688
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.1400477411358509,
+     "corrected": 0.1578989227516246,
+     "delta": 0.017851181615773704
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 264134711.57052347,
+     "corrected": 281841502.72312987,
+     "delta": 17706791.152606398
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 191,
+     "corrected": 170,
+     "delta": -21
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.010666666666666666,
+     "corrected": 0.012666666666666666,
+     "delta": 0.002
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.7368835655817253,
+     "corrected": 0.7436259171890368,
+     "delta": 0.006742351607311514
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.47995828691625053,
+     "corrected": 0.48574868957306633,
+     "delta": 0.005790402656815796
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.22362654218072692,
+     "corrected": 0.20249372012893185,
+     "delta": -0.021132822051795064
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.07165366233188841,
+     "corrected": 0.06291941758363899,
+     "delta": -0.008734244748249423
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.1519728798488385,
+     "corrected": 0.13957430254529288,
+     "delta": -0.012398577303545627
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.5626666666666666,
+     "corrected": 0.5266666666666666,
+     "delta": -0.03600000000000003
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.mean_degree",
+     "old": 670.656,
+     "corrected": 607.2786666666667,
+     "delta": -63.37733333333324
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.021313924397216313,
+     "corrected": 0.026635488323370145,
+     "delta": 0.005321563926153832
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.17831425289151115,
+     "corrected": 0.16422098930462242,
+     "delta": -0.014093263586888727
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 2.120936668176488,
+     "corrected": 2.218302519405179,
+     "delta": 0.09736585122869101
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.6420890106084552,
+     "corrected": 0.6444313743516696,
+     "delta": 0.002342363743214393
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.43797546125565967,
+     "corrected": 0.4269302670518832,
+     "delta": -0.011045194203776476
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 2476.5,
+     "corrected": 2155.0,
+     "delta": -321.5
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.1802517674288184,
+     "corrected": 0.16694026396323222,
+     "delta": -0.013311503465586183
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.17831425289151115,
+     "corrected": 0.16422098930462242,
+     "delta": -0.014093263586888727
+    },
+    {
+     "path": "arms.A_deterministic.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0108657300574064,
+     "corrected": 1.0165586303561092,
+     "delta": 0.00569290029870273
+    },
+    {
+     "path": "arms.A_deterministic.median_detected_per_cell",
+     "old": 4197.5,
+     "corrected": 4197.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.A_deterministic.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.518306862065808,
+     "corrected": 0.4835322487842679,
+     "delta": -0.03477461328154008
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.5207598088251639,
+     "corrected": 0.4688218294987218,
+     "delta": -0.05193797932644212
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.5207598088251639,
+     "corrected": 0.4688218294987218,
+     "delta": -0.05193797932644212
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.genes_lost_by_candidate",
+     "old": 9964,
+     "corrected": 6637,
+     "delta": -3327
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.9276666666666666,
+     "corrected": 0.91,
+     "delta": -0.01766666666666661
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 1561.7586666666666,
+     "corrected": 1405.9966666666667,
+     "delta": -155.76199999999994
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_signed_corr",
+     "old": 0.30144039440185527,
+     "corrected": 0.28813270832616844,
+     "delta": -0.013307686075686831
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.30728347627967967,
+     "corrected": 0.2888041452981164,
+     "delta": -0.01847933098156329
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.nonzero_variance_genes_in_universe",
+     "old": 9605,
+     "corrected": 7780,
+     "delta": -1825
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 520759808.8251639,
+     "corrected": 468821829.4987218,
+     "delta": -51937979.32644212
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.7645488879536756,
+     "corrected": 0.7359719956908232,
+     "delta": -0.028576892262852427
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.universe_size",
+     "old": 19569,
+     "corrected": 14417,
+     "delta": -5152
+    },
+    {
+     "path": "arms.A_deterministic.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.var_top10_pc",
+     "old": 0.5608545148618957,
+     "corrected": 0.5479924105916096,
+     "delta": -0.012862104270286112
+    },
+    {
+     "path": "arms.B_poisson.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 26753.360655737706,
+     "corrected": 20147.592592592595,
+     "delta": -6605.768063145111
+    },
+    {
+     "path": "arms.B_poisson.expressed_fraction_in_universe",
+     "old": 0.9394961418570188,
+     "corrected": 0.9529028230561143,
+     "delta": 0.013406681199095494
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 26753.360655737706,
+     "corrected": 20147.592592592595,
+     "delta": -6605.768063145111
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9394961418570188,
+     "corrected": 0.9529028230561143,
+     "delta": 0.013406681199095494
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5195118069683231,
+     "corrected": 0.48583866515068247,
+     "delta": -0.03367314181764064
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18385,
+     "corrected": 13738,
+     "delta": -4647
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1184,
+     "corrected": 679,
+     "delta": -505
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.0030054462598643993,
+     "corrected": 0.0024481493831277094,
+     "delta": -0.0005572968767366899
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.0030054462598643993,
+     "corrected": 0.0024481493831277094,
+     "delta": -0.0005572968767366899
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.mean_degree",
+     "old": 9.013333333333334,
+     "corrected": 7.342,
+     "delta": -1.671333333333334
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.1033632841786986,
+     "corrected": 0.10133615174602041,
+     "delta": -0.002027132432678186
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.10221262982816048,
+     "corrected": 0.09947601544021814,
+     "delta": -0.0027366143879423432
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 3005446.259864399,
+     "corrected": 2448149.3831277094,
+     "delta": -557296.8767366898
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 13,
+     "corrected": 9,
+     "delta": -4
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.3476858534413384,
+     "corrected": 0.33768797574107307,
+     "delta": -0.009997877700265334
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.19511616349667374,
+     "corrected": 0.18971975419397877,
+     "delta": -0.005396409302694971
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.01115571857285762,
+     "corrected": 0.008442814271423809,
+     "delta": -0.0027129043014338106
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.0028811826164276983,
+     "corrected": 0.002165610759141936,
+     "delta": -0.0007155718572857623
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.008274535956429921,
+     "corrected": 0.006277203512281872,
+     "delta": -0.001997332444148049
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.060333333333333336,
+     "corrected": 0.050666666666666665,
+     "delta": -0.00966666666666667
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.mean_degree",
+     "old": 33.456,
+     "corrected": 25.32,
+     "delta": -8.136000000000003
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.008991870020801807,
+     "corrected": 0.00943590399394883,
+     "delta": 0.00044403397314702296
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.059604791584766274,
+     "corrected": 0.052644824546638574,
+     "delta": -0.0069599670381277
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 2.8719234626957792,
+     "corrected": 2.898583453089715,
+     "delta": 0.02665999039393574
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.49682307802512626,
+     "corrected": 0.4895470671647144,
+     "delta": -0.007276010860411852
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.18014824388626144,
+     "corrected": 0.16687393500494718,
+     "delta": -0.013274308881314256
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 2082.5,
+     "corrected": 1783.0,
+     "delta": -299.5
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.06936877138136818,
+     "corrected": 0.06363284742424725,
+     "delta": -0.005735923957120928
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.059604791584766274,
+     "corrected": 0.052644824546638574,
+     "delta": -0.0069599670381277
+    },
+    {
+     "path": "arms.B_poisson.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.163811994589666,
+     "corrected": 1.208719906889884,
+     "delta": 0.044907912300217845
+    },
+    {
+     "path": "arms.B_poisson.mean_count_per_detected_gene",
+     "old": 4.917304515838623,
+     "corrected": 4.917304515838623,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.median_detected_per_cell",
+     "old": 3595.0,
+     "corrected": 3595.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5195118069683231,
+     "corrected": 0.48583866515068247,
+     "delta": -0.03367314181764064
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.0027891519395354006,
+     "corrected": 0.002401467155718573,
+     "delta": -0.00038768478381682753
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.0027891519395354006,
+     "corrected": 0.002401467155718573,
+     "delta": -0.00038768478381682753
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.genes_lost_by_candidate",
+     "old": 1197,
+     "corrected": 688,
+     "delta": -509
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 8.364666666666666,
+     "corrected": 7.202,
+     "delta": -1.1626666666666665
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_signed_corr",
+     "old": 0.11645978076010552,
+     "corrected": 0.11290176153045081,
+     "delta": -0.0035580192296547075
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.11916398781363485,
+     "corrected": 0.11483559206334915,
+     "delta": -0.004328395750285707
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.nonzero_variance_genes_in_universe",
+     "old": 18372,
+     "corrected": 13729,
+     "delta": -4643
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 2789151.9395354004,
+     "corrected": 2401467.155718573,
+     "delta": -387684.78381682746
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.35545503665921263,
+     "corrected": 0.34119663670103717,
+     "delta": -0.01425839995817546
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.universe_size",
+     "old": 19569,
+     "corrected": 14417,
+     "delta": -5152
+    },
+    {
+     "path": "arms.B_poisson.topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL.var_top10_pc",
+     "old": 0.1989172129436092,
+     "corrected": 0.1932927391212773,
+     "delta": -0.005624473822331888
+    },
+    {
+     "path": "cells",
+     "old": 2500,
+     "corrected": 2500,
+     "delta": 0
+    },
+    {
+     "path": "evaluation_universe.n_genes",
+     "old": 19569,
+     "corrected": 14417,
+     "delta": -5152
+    },
+    {
+     "path": "seed",
+     "old": 20261006,
+     "corrected": 20261006,
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "result": "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json",
+   "old": {
+    "path": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json",
+    "sha256": "a7de6ce2a3aafc4619156f5fc93e42e24e1130cbae52a430be7475107d9a443b"
+   },
+   "corrected": {
+    "path": "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json",
+    "sha256": "1de586182d2f34bc4a4d7684644238c4c237625947d10bf2a3e0a91add3dcd14"
+   },
+   "n_numbers": 253,
+   "rows": [
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 26753.360655737706,
+     "corrected": 20147.592592592595,
+     "delta": -6605.768063145111
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9394961418570188,
+     "corrected": 0.9529028230561143,
+     "delta": 0.013406681199095494
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5195118069683231,
+     "corrected": 0.48583866515068247,
+     "delta": -0.03367314181764064
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18385,
+     "corrected": 13738,
+     "delta": -4647
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1184,
+     "corrected": 679,
+     "delta": -505
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.0030054462598643993,
+     "corrected": 0.0024481493831277094,
+     "delta": -0.0005572968767366899
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.0030054462598643993,
+     "corrected": 0.0024481493831277094,
+     "delta": -0.0005572968767366899
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_degree",
+     "old": 9.013333333333334,
+     "corrected": 7.342,
+     "delta": -1.671333333333334
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.1033632841786986,
+     "corrected": 0.10133615174602041,
+     "delta": -0.002027132432678186
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.10221262982816048,
+     "corrected": 0.09947601544021814,
+     "delta": -0.0027366143879423432
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 3005446.259864399,
+     "corrected": 2448149.3831277094,
+     "delta": -557296.8767366898
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 13,
+     "corrected": 9,
+     "delta": -4
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.3476858534413384,
+     "corrected": 0.33768797574107307,
+     "delta": -0.009997877700265334
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.19511616349667374,
+     "corrected": 0.18971975419397877,
+     "delta": -0.005396409302694971
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.01115571857285762,
+     "corrected": 0.008442814271423809,
+     "delta": -0.0027129043014338106
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.0028811826164276983,
+     "corrected": 0.002165610759141936,
+     "delta": -0.0007155718572857623
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.008274535956429921,
+     "corrected": 0.006277203512281872,
+     "delta": -0.001997332444148049
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.060333333333333336,
+     "corrected": 0.050666666666666665,
+     "delta": -0.00966666666666667
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_degree",
+     "old": 33.456,
+     "corrected": 25.32,
+     "delta": -8.136000000000003
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.008991870020801807,
+     "corrected": 0.00943590399394883,
+     "delta": 0.00044403397314702296
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.059604791584766274,
+     "corrected": 0.052644824546638574,
+     "delta": -0.0069599670381277
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 2.8719234626957792,
+     "corrected": 2.898583453089715,
+     "delta": 0.02665999039393574
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.49682307802512626,
+     "corrected": 0.4895470671647144,
+     "delta": -0.007276010860411852
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.18014824388626144,
+     "corrected": 0.16687393500494718,
+     "delta": -0.013274308881314256
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 2082.5,
+     "corrected": 1783.0,
+     "delta": -299.5
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.06936877138136818,
+     "corrected": 0.06363284742424725,
+     "delta": -0.005735923957120928
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.059604791584766274,
+     "corrected": 0.052644824546638574,
+     "delta": -0.0069599670381277
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.163811994589666,
+     "corrected": 1.208719906889884,
+     "delta": 0.044907912300217845
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.mean_count_per_detected_gene",
+     "old": 4.917304515838623,
+     "corrected": 4.917304515838623,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.module_scale",
+     "old": 1.2,
+     "corrected": 1.2,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 26753.361328125,
+     "corrected": 20147.591796875,
+     "delta": -6605.76953125
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1197,
+     "corrected": 688,
+     "delta": -509
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 18372,
+     "corrected": 13729,
+     "delta": -4643
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.0027891519395354006,
+     "corrected": 0.002401467155718573,
+     "delta": -0.00038768478381682753
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.0027891519395354006,
+     "corrected": 0.002401467155718573,
+     "delta": -0.00038768478381682753
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 8.364666666666666,
+     "corrected": 7.202,
+     "delta": -1.1626666666666665
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.11916398781363485,
+     "corrected": 0.11483559206334915,
+     "delta": -0.004328395750285707
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 2082.5,
+     "corrected": 1783.0,
+     "delta": -299.5
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 2789151.9395354004,
+     "corrected": 2401467.155718573,
+     "delta": -387684.78381682746
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 0.9888366325316991,
+     "corrected": 0.9911272560107789,
+     "delta": 0.002290623479079823
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5195118188858032,
+     "corrected": 0.48583871126174927,
+     "delta": -0.033673107624053955
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.35545503665921263,
+     "corrected": 0.34119663670103717,
+     "delta": -0.01425839995817546
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 30848.290322580648,
+     "corrected": 23612.271604938273,
+     "delta": -7236.018717642375
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.939138433236241,
+     "corrected": 0.9529721856142055,
+     "delta": 0.01383375237796447
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5270806077800507,
+     "corrected": 0.4955568102266178,
+     "delta": -0.03152379755343293
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18378,
+     "corrected": 13739,
+     "delta": -4639
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1191,
+     "corrected": 678,
+     "delta": -513
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.1534264754918306,
+     "corrected": 0.13376836723352228,
+     "delta": -0.019658108258308327
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.1534264754918306,
+     "corrected": 0.13376836723352228,
+     "delta": -0.019658108258308327
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.13033333333333333,
+     "corrected": 0.12566666666666668,
+     "delta": -0.004666666666666652
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 460.126,
+     "corrected": 401.17133333333334,
+     "delta": -58.95466666666664
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.1271939446123917,
+     "corrected": 0.12499073511133331,
+     "delta": -0.002203209501058387
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.08440011061143428,
+     "corrected": 0.08690435586682141,
+     "delta": 0.0025042452553871303
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 153426475.4918306,
+     "corrected": 133768367.23352228,
+     "delta": -19658108.258308306
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 12,
+     "corrected": 8,
+     "delta": -4
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0006666666666666666,
+     "corrected": 0.0006666666666666666,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8142313364327027,
+     "corrected": 0.7785979817159997,
+     "delta": -0.035633354716703036
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.30876344470210987,
+     "corrected": 0.2981531098174795,
+     "delta": -0.010610334884630368
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.11303523396687785,
+     "corrected": 0.0902378570634656,
+     "delta": -0.022797376903412256
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.013975325108369456,
+     "corrected": 0.011092141825052795,
+     "delta": -0.002883183283316661
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.09905990885850839,
+     "corrected": 0.07914571523841281,
+     "delta": -0.019914193620095583
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.39466666666666667,
+     "corrected": 0.3566666666666667,
+     "delta": -0.03799999999999998
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 338.99266666666665,
+     "corrected": 270.62333333333333,
+     "delta": -68.36933333333332
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.017365720783995755,
+     "corrected": 0.017999672464510754,
+     "delta": 0.0006339516805149992
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.1207330792201177,
+     "corrected": 0.10699810340731111,
+     "delta": -0.013734975812806582
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 7.088200674428962,
+     "corrected": 7.13529600384785,
+     "delta": 0.047095329418888277
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.013333333333333334,
+     "corrected": 0.009666666666666667,
+     "delta": -0.003666666666666667
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.5871546583322023,
+     "corrected": 0.5763651332482385,
+     "delta": -0.010789525083963802
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.3135226220620249,
+     "corrected": 0.2927773180098028,
+     "delta": -0.020745304052222135
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1882.5,
+     "corrected": 1590.0,
+     "delta": -292.5
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.12492823656137071,
+     "corrected": 0.11204875577664275,
+     "delta": -0.012879480784727962
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.1207330792201177,
+     "corrected": 0.10699810340731111,
+     "delta": -0.013734975812806582
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0347473730343986,
+     "corrected": 1.047203195276324,
+     "delta": 0.01245582224192554
+    },
+    {
+     "path": "arms.DR2_scale_2p50.mean_count_per_detected_gene",
+     "old": 5.456399440765381,
+     "corrected": 5.456399440765381,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.module_scale",
+     "old": 2.5,
+     "corrected": 2.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 30848.2890625,
+     "corrected": 23612.271484375,
+     "delta": -7236.017578125
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1203,
+     "corrected": 686,
+     "delta": -517
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 18366,
+     "corrected": 13731,
+     "delta": -4635
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.17652017339113038,
+     "corrected": 0.1449458708458375,
+     "delta": -0.03157430254529289
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.17652017339113038,
+     "corrected": 0.1449458708458375,
+     "delta": -0.03157430254529289
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.13233333333333333,
+     "corrected": 0.126,
+     "delta": -0.00633333333333333
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 529.384,
+     "corrected": 434.69266666666664,
+     "delta": -94.69133333333338
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.10524488481568936,
+     "corrected": 0.10394569430790562,
+     "delta": -0.0012991905077837373
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1882.5,
+     "corrected": 1590.0,
+     "delta": -292.5
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 176520173.39113036,
+     "corrected": 144945870.84583747,
+     "delta": -31574302.545292884
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.07211776924387,
+     "corrected": 1.0739857991247224,
+     "delta": 0.0018680298808524398
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5270806550979614,
+     "corrected": 0.4955567717552185,
+     "delta": -0.03152388334274292
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.7880608343370822,
+     "corrected": 0.750145470838073,
+     "delta": -0.03791536349900915
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 32790.967741935485,
+     "corrected": 25099.25925925926,
+     "delta": -7691.708482676226
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9395983443200981,
+     "corrected": 0.9523479225913851,
+     "delta": 0.012749578271286977
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5302797922835062,
+     "corrected": 0.49941265540703667,
+     "delta": -0.030867136876469525
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18387,
+     "corrected": 13730,
+     "delta": -4657
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1182,
+     "corrected": 687,
+     "delta": -495
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.24533355562965434,
+     "corrected": 0.23298210514615983,
+     "delta": -0.012351450483494508
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.24533355562965434,
+     "corrected": 0.23298210514615983,
+     "delta": -0.012351450483494508
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.6223333333333333,
+     "corrected": 0.5716666666666667,
+     "delta": -0.05066666666666664
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_degree",
+     "old": 735.7553333333333,
+     "corrected": 698.7133333333334,
+     "delta": -37.041999999999916
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.14860414089854596,
+     "corrected": 0.14470835037410892,
+     "delta": -0.0038957905244370317
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.0614009280531535,
+     "corrected": 0.06338592709490015,
+     "delta": 0.001984999041746649
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 245333555.62965432,
+     "corrected": 232982105.14615983,
+     "delta": -12351450.48349449
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 10,
+     "corrected": 8,
+     "delta": -2
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.05633333333333333,
+     "corrected": 0.04766666666666667,
+     "delta": -0.008666666666666663
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.9041531255815878,
+     "corrected": 0.8767060289209252,
+     "delta": -0.027447096660662584
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.4138224942553941,
+     "corrected": 0.3962592768816832,
+     "delta": -0.01756321737371086
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.18986884517061242,
+     "corrected": 0.16181349338668444,
+     "delta": -0.028055351783927984
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.018552850950316772,
+     "corrected": 0.015178392797599199,
+     "delta": -0.0033744581527175733
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.17131599422029564,
+     "corrected": 0.14663510058908524,
+     "delta": -0.0246808936312104
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.5906666666666667,
+     "corrected": 0.513,
+     "delta": -0.07766666666666666
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_degree",
+     "old": 569.4166666666666,
+     "corrected": 485.27866666666665,
+     "delta": -84.13799999999998
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.025687329076235162,
+     "corrected": 0.026039584210029384,
+     "delta": 0.00035225513379422146
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.15185289756802028,
+     "corrected": 0.13573058046862363,
+     "delta": -0.016122317099396655
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 9.233944404505152,
+     "corrected": 9.660779144698301,
+     "delta": 0.42683474019314893
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.122,
+     "corrected": 0.107,
+     "delta": -0.015
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.7132555756290029,
+     "corrected": 0.6735167769595272,
+     "delta": -0.03973879866947572
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.39240700020830055,
+     "corrected": 0.36788718703207457,
+     "delta": -0.02451981317622598
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1741.5,
+     "corrected": 1469.0,
+     "delta": -272.5
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.15489031172376186,
+     "corrected": 0.13913828037388498,
+     "delta": -0.015752031349876877
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.15185289756802028,
+     "corrected": 0.13573058046862363,
+     "delta": -0.016122317099396655
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0200023457200151,
+     "corrected": 1.0251063532882267,
+     "delta": 0.00510400756821161
+    },
+    {
+     "path": "arms.DR3_scale_4p00.mean_count_per_detected_gene",
+     "old": 5.904967784881592,
+     "corrected": 5.904967784881592,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 32790.96875,
+     "corrected": 25099.2578125,
+     "delta": -7691.7109375
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1192,
+     "corrected": 695,
+     "delta": -497
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 18377,
+     "corrected": 13722,
+     "delta": -4655
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.296322774258086,
+     "corrected": 0.2744768256085362,
+     "delta": -0.021845948649549807
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.296322774258086,
+     "corrected": 0.2744768256085362,
+     "delta": -0.021845948649549807
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.6496666666666666,
+     "corrected": 0.5783333333333334,
+     "delta": -0.07133333333333325
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 888.672,
+     "corrected": 823.156,
+     "delta": -65.51600000000008
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07718319888619155,
+     "corrected": 0.07979738450382942,
+     "delta": 0.0026141856176378764
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1741.5,
+     "corrected": 1469.0,
+     "delta": -272.5
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 296322774.25808597,
+     "corrected": 274476825.6085362,
+     "delta": -21845948.649549782
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.220195831523209,
+     "corrected": 1.2028923336160686,
+     "delta": -0.017303497907140475
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5302797555923462,
+     "corrected": 0.4994126558303833,
+     "delta": -0.03086709976196289
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.907190017129882,
+     "corrected": 0.8652495051421755,
+     "delta": -0.04194051198770654
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 32807.36507936508,
+     "corrected": 25516.83950617284,
+     "delta": -7290.525573192241
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9393939393939394,
+     "corrected": 0.9535270860789345,
+     "delta": 0.014133146684995102
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5311759952753644,
+     "corrected": 0.5002472514106596,
+     "delta": -0.03092874386470479
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18383,
+     "corrected": 13747,
+     "delta": -4636
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1186,
+     "corrected": 670,
+     "delta": -516
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.25518150494609315,
+     "corrected": 0.2490110036678893,
+     "delta": -0.006170501278203844
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.25518150494609315,
+     "corrected": 0.2490110036678893,
+     "delta": -0.006170501278203844
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.6563333333333333,
+     "corrected": 0.616,
+     "delta": -0.04033333333333333
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 765.2893333333334,
+     "corrected": 746.784,
+     "delta": -18.505333333333397
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.15902598850472086,
+     "corrected": 0.15414669441159554,
+     "delta": -0.004879294093125319
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.05995144269914071,
+     "corrected": 0.060273076419110616,
+     "delta": 0.00032163371996990486
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 255181504.94609314,
+     "corrected": 249011003.6678893,
+     "delta": -6170501.278203845
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 11,
+     "corrected": 9,
+     "delta": -2
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.23966666666666667,
+     "corrected": 0.21566666666666667,
+     "delta": -0.023999999999999994
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.9101681193223852,
+     "corrected": 0.8862865882963316,
+     "delta": -0.023881531026053615
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.46767014547150854,
+     "corrected": 0.44646283230508127,
+     "delta": -0.021207313166427266
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.20379170834722685,
+     "corrected": 0.17788240524619317,
+     "delta": -0.025909303101033676
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.01697121262643103,
+     "corrected": 0.014228965210625765,
+     "delta": -0.0027422474158052667
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.18682049572079582,
+     "corrected": 0.16365344003556742,
+     "delta": -0.023167055685228394
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.39766666666666667,
+     "corrected": 0.375,
+     "delta": -0.02266666666666667
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 611.1713333333333,
+     "corrected": 533.4693333333333,
+     "delta": -77.702
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.02901531956281437,
+     "corrected": 0.028895759917647073,
+     "delta": -0.00011955964516729631
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.15855016017915335,
+     "corrected": 0.1424835820856419,
+     "delta": -0.016066578093511447
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 11.008081734232759,
+     "corrected": 11.501429486478465,
+     "delta": 0.4933477522457057
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.16866666666666666,
+     "corrected": 0.15266666666666667,
+     "delta": -0.015999999999999986
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.7672037942671449,
+     "corrected": 0.7253598224174086,
+     "delta": -0.04184397184973632
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.4181511395471745,
+     "corrected": 0.3924807201299419,
+     "delta": -0.02567041941723258
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1686.0,
+     "corrected": 1412.0,
+     "delta": -274.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.16132860474688418,
+     "corrected": 0.14565277997148426,
+     "delta": -0.015675824775399916
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.15855016017915335,
+     "corrected": 0.1424835820856419,
+     "delta": -0.016066578093511447
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.017524072915419,
+     "corrected": 1.0222425478041215,
+     "delta": 0.004718474888702584
+    },
+    {
+     "path": "arms.DR4_scale_5p50.mean_count_per_detected_gene",
+     "old": 6.101797580718994,
+     "corrected": 6.101797580718994,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.module_scale",
+     "old": 5.5,
+     "corrected": 5.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 32807.3671875,
+     "corrected": 25516.83984375,
+     "delta": -7290.52734375
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1197,
+     "corrected": 679,
+     "delta": -518
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 18372,
+     "corrected": 13738,
+     "delta": -4634
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.3098617316883406,
+     "corrected": 0.2971250416805602,
+     "delta": -0.012736690007780382
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.3098617316883406,
+     "corrected": 0.2971250416805602,
+     "delta": -0.012736690007780382
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.704,
+     "corrected": 0.639,
+     "delta": -0.06499999999999995
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 929.2753333333334,
+     "corrected": 891.078,
+     "delta": -38.197333333333404
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07415155697777523,
+     "corrected": 0.0751593374032817,
+     "delta": 0.001007780425506477
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1686.0,
+     "corrected": 1412.0,
+     "delta": -274.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 309861731.68834054,
+     "corrected": 297125041.6805602,
+     "delta": -12736690.007780373
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.2385945698763021,
+     "corrected": 1.234573068211789,
+     "delta": -0.004021501664513094
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.531175971031189,
+     "corrected": 0.5002471804618835,
+     "delta": -0.03092879056930542
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.919931651984067,
+     "corrected": 0.8857459378042674,
+     "delta": -0.03418571417979965
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[0]",
+     "old": 16221,
+     "corrected": 16221,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[1]",
+     "old": 19217,
+     "corrected": 19217,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.mean",
+     "old": 0.39719281245453214,
+     "corrected": 0.39719281245453214,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p10",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p90",
+     "old": 0.8200203695620544,
+     "corrected": 0.8200203695620544,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 33446.0,
+     "corrected": 25288.43902439024,
+     "delta": -8157.560975609758
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9415912923501456,
+     "corrected": 0.9531802732884789,
+     "delta": 0.011588980938333271
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5311974473778927,
+     "corrected": 0.5003455531110887,
+     "delta": -0.030851894266803903
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 18426,
+     "corrected": 13742,
+     "delta": -4684
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1143,
+     "corrected": 675,
+     "delta": -468
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.25700477937090144,
+     "corrected": 0.25100233411137046,
+     "delta": -0.006002445259530975
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.25700477937090144,
+     "corrected": 0.25100233411137046,
+     "delta": -0.006002445259530975
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.38233333333333336,
+     "corrected": 0.38766666666666666,
+     "delta": 0.005333333333333301
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_degree",
+     "old": 770.7573333333333,
+     "corrected": 752.756,
+     "delta": -18.001333333333378
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.1621720450757955,
+     "corrected": 0.1566346767464779,
+     "delta": -0.005537368329317588
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.06082137382547787,
+     "corrected": 0.06041425370706517,
+     "delta": -0.0004071201184127002
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 257004779.37090144,
+     "corrected": 251002334.11137044,
+     "delta": -6002445.259530991
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 9,
+     "corrected": 8,
+     "delta": -1
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.26766666666666666,
+     "corrected": 0.23733333333333334,
+     "delta": -0.030333333333333323
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.9125019376844823,
+     "corrected": 0.889334449250423,
+     "delta": -0.023167488434059247
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.4860192472563384,
+     "corrected": 0.46270312391907154,
+     "delta": -0.023316123337266847
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.20552806491052572,
+     "corrected": 0.17993131043681226,
+     "delta": -0.025596754473713457
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.015318439479826609,
+     "corrected": 0.012651995109480937,
+     "delta": -0.0026664443703456712
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.1902096254306991,
+     "corrected": 0.16727931532733134,
+     "delta": -0.022930310103367768
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.4076666666666667,
+     "corrected": 0.385,
+     "delta": -0.02266666666666667
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_degree",
+     "old": 616.3786666666666,
+     "corrected": 539.614,
+     "delta": -76.76466666666659
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.029660581362651293,
+     "corrected": 0.02946514553789848,
+     "delta": -0.00019543582475281193
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.16047382761095885,
+     "corrected": 0.144275390761324,
+     "delta": -0.016198436849634845
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 12.417036714555216,
+     "corrected": 13.22157603443732,
+     "delta": 0.8045393198821031
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.175,
+     "corrected": 0.15766666666666668,
+     "delta": -0.01733333333333331
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.7895042944786929,
+     "corrected": 0.7484112709673002,
+     "delta": -0.04109302351139266
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.4244210374117253,
+     "corrected": 0.39790411030297773,
+     "delta": -0.02651692710874759
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1674.0,
+     "corrected": 1397.0,
+     "delta": -277.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.1630327970055165,
+     "corrected": 0.14726260802572724,
+     "delta": -0.015770188979789268
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.16047382761095885,
+     "corrected": 0.144275390761324,
+     "delta": -0.016198436849634845
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.015946334879987,
+     "corrected": 1.020704967414332,
+     "delta": 0.004758632534344942
+    },
+    {
+     "path": "arms.DR5_true_on_off.mean_count_per_detected_gene",
+     "old": 6.159977912902832,
+     "corrected": 6.159977912902832,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 33446.0,
+     "corrected": 25288.439453125,
+     "delta": -8157.560546875
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1152,
+     "corrected": 683,
+     "delta": -469
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 18417,
+     "corrected": 13734,
+     "delta": -4683
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.3099931088140491,
+     "corrected": 0.2983461153717906,
+     "delta": -0.011646993442258502
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.3099931088140491,
+     "corrected": 0.2983461153717906,
+     "delta": -0.011646993442258502
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.429,
+     "corrected": 0.415,
+     "delta": -0.014000000000000012
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 929.6693333333334,
+     "corrected": 894.74,
+     "delta": -34.929333333333375
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07436009541051666,
+     "corrected": 0.075066533967926,
+     "delta": 0.0007064385574093307
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1674.0,
+     "corrected": 1397.0,
+     "delta": -277.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 309993108.8140491,
+     "corrected": 298346115.3717906,
+     "delta": -11646993.442258537
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.2218537449498337,
+     "corrected": 1.2265038332599862,
+     "delta": 0.004650088310152567
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5311974287033081,
+     "corrected": 0.5003455281257629,
+     "delta": -0.030851900577545166
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.9255933565176921,
+     "corrected": 0.8891501346420203,
+     "delta": -0.03644322187567184
+    },
+    {
+     "path": "frozen.cells",
+     "old": 2500,
+     "corrected": 2500,
+     "delta": 0
+    },
+    {
+     "path": "frozen.seed",
+     "old": 20261006,
+     "corrected": 20261006,
+     "delta": 0
+    },
+    {
+     "path": "no_training_performed",
+     "old": true,
+     "corrected": true
+    }
+   ]
+  },
+  {
+   "result": "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json",
+   "old": {
+    "path": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json",
+    "sha256": "889fc1f606aff7479cbe7a3e900270cfbc2991bc908922b346bf612baec15a36"
+   },
+   "corrected": {
+    "path": "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json",
+    "sha256": "500693d9032f3ff90de009fa03899d15d0e3c04d213fa32061574997e56841d6"
+   },
+   "n_numbers": 253,
+   "rows": [
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 20835.705263157895,
+     "corrected": 19032.615384615387,
+     "delta": -1803.0898785425088
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9567011856521087,
+     "corrected": 0.9592525889239082,
+     "delta": 0.0025514032717994795
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5136583517343843,
+     "corrected": 0.48661709841279416,
+     "delta": -0.027041253321590186
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 12749,
+     "corrected": 12783,
+     "delta": 34
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 577,
+     "corrected": 543,
+     "delta": -34
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.0016752250750250084,
+     "corrected": 0.002162054018006002,
+     "delta": 0.00048682894298099377
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.0016752250750250084,
+     "corrected": 0.002162054018006002,
+     "delta": 0.00048682894298099377
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.0006666666666666666,
+     "corrected": 0.0006666666666666666,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_degree",
+     "old": 5.024,
+     "corrected": 6.484,
+     "delta": 1.46
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.09643020961461098,
+     "corrected": 0.09992444626645924,
+     "delta": 0.0034942366518482676
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.09419063118791027,
+     "corrected": 0.09820814281650536,
+     "delta": 0.004017511628595094
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 1675225.0750250083,
+     "corrected": 2162054.018006002,
+     "delta": 486828.9429809938
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 12,
+     "corrected": 11,
+     "delta": -1
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.3690642015955426,
+     "corrected": 0.38344747818440367,
+     "delta": 0.014383276588861071
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.1814232600733149,
+     "corrected": 0.18598250493463694,
+     "delta": 0.0045592448613220316
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.007490052239635434,
+     "corrected": 0.007736801155940869,
+     "delta": 0.00024674891630543493
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.0018781816160942536,
+     "corrected": 0.0020064465933088806,
+     "delta": 0.00012826497721462704
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.00561187062354118,
+     "corrected": 0.005730354562631989,
+     "delta": 0.00011848393909080854
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.024333333333333332,
+     "corrected": 0.024,
+     "delta": -0.0003333333333333313
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_degree",
+     "old": 22.462666666666667,
+     "corrected": 23.202666666666666,
+     "delta": 0.7399999999999984
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.008467039096160494,
+     "corrected": 0.009345426554693247,
+     "delta": 0.000878387458532753
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.04679010694591232,
+     "corrected": 0.04918557189151881,
+     "delta": 0.002395464945606489
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 2.9879275653923543,
+     "corrected": 2.855971637491691,
+     "delta": -0.13195592790066346
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.5221611772305517,
+     "corrected": 0.5080188729591886,
+     "delta": -0.014142304271363093
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.15512419842927444,
+     "corrected": 0.16007606144061204,
+     "delta": 0.004951863011337598
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1608.5,
+     "corrected": 1662.5,
+     "delta": 54.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.057315524025434154,
+     "corrected": 0.05916585401015223,
+     "delta": 0.0018503299847180757
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.04679010694591232,
+     "corrected": 0.04918557189151881,
+     "delta": 0.002395464945606489
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.2249496264603292,
+     "corrected": 1.2029107670160961,
+     "delta": -0.022038859444233116
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.mean_count_per_detected_gene",
+     "old": 4.920415878295898,
+     "corrected": 4.920415878295898,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.module_scale",
+     "old": 1.2,
+     "corrected": 1.2,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 20835.705078125,
+     "corrected": 19032.61328125,
+     "delta": -1803.091796875
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 589,
+     "corrected": 554,
+     "delta": -35
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 12737,
+     "corrected": 12772,
+     "delta": 35
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.0016545515171723908,
+     "corrected": 0.0021369345337334668,
+     "delta": 0.00048238301656107594
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.0016545515171723908,
+     "corrected": 0.0021369345337334668,
+     "delta": 0.00048238301656107594
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 4.962,
+     "corrected": 6.408666666666667,
+     "delta": 1.4466666666666672
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.10661469170536111,
+     "corrected": 0.11153749819529508,
+     "delta": 0.00492280648993397
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1608.5,
+     "corrected": 1662.5,
+     "delta": 54.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 1654551.5171723908,
+     "corrected": 2136934.5337334666,
+     "delta": 482383.0165610758
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 0.9892799069565331,
+     "corrected": 0.9901613757800436,
+     "delta": 0.0008814688235104784
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5136584043502808,
+     "corrected": 0.48661714792251587,
+     "delta": -0.027041256427764893
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.370816645034916,
+     "corrected": 0.3849760769362543,
+     "delta": 0.014159431901338282
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 24830.483870967742,
+     "corrected": 22419.757281553397,
+     "delta": -2410.7265894143457
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9582770523788083,
+     "corrected": 0.9615038271049077,
+     "delta": 0.003226774726099335
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5222927644426725,
+     "corrected": 0.4957903141619047,
+     "delta": -0.026502450280767753
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 12770,
+     "corrected": 12813,
+     "delta": 43
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 556,
+     "corrected": 513,
+     "delta": -43
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.12177059019673224,
+     "corrected": 0.13096054240302324,
+     "delta": 0.009189952206291
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.12177059019673224,
+     "corrected": 0.13096054240302324,
+     "delta": 0.009189952206291
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.11566666666666667,
+     "corrected": 0.19766666666666666,
+     "delta": 0.08199999999999999
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 365.19,
+     "corrected": 392.7506666666667,
+     "delta": 27.56066666666669
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.12059713351685457,
+     "corrected": 0.12461756920442743,
+     "delta": 0.0040204356875728625
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.08214682804240978,
+     "corrected": 0.08571774498580856,
+     "delta": 0.003570916943398783
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 121770590.19673224,
+     "corrected": 130960542.40302323,
+     "delta": 9189952.20629099
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 13,
+     "corrected": 10,
+     "delta": -3
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.7742988452400954,
+     "corrected": 0.7842483583231039,
+     "delta": 0.00994951308300851
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.28745190705737056,
+     "corrected": 0.2941291153880773,
+     "delta": 0.00667720833070673
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.07859175280649106,
+     "corrected": 0.08476581082583083,
+     "delta": 0.006174058019339776
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.009261309325330666,
+     "corrected": 0.010156052017339113,
+     "delta": 0.0008947426920084475
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.06933044348116038,
+     "corrected": 0.07460975880849172,
+     "delta": 0.005279315327331335
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.321,
+     "corrected": 0.3443333333333333,
+     "delta": 0.023333333333333317
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 235.69666666666666,
+     "corrected": 254.21266666666668,
+     "delta": 18.51600000000002
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.016990251939869448,
+     "corrected": 0.018371287197372004,
+     "delta": 0.0013810352575025567
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.09748338772814312,
+     "corrected": 0.10187918154991521,
+     "delta": 0.00439579382177209
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 7.4860304354087654,
+     "corrected": 7.346334843609779,
+     "delta": -0.13969559179898638
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.010666666666666666,
+     "corrected": 0.01,
+     "delta": -0.0006666666666666661
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.5789292746660448,
+     "corrected": 0.5811753383486037,
+     "delta": 0.002246063682558863
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.2750141744306843,
+     "corrected": 0.28345416457005007,
+     "delta": 0.00843999013936575
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1450.0,
+     "corrected": 1494.0,
+     "delta": 44.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.10221610708992207,
+     "corrected": 0.10629252025589203,
+     "delta": 0.004076413165969961
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.09748338772814312,
+     "corrected": 0.10187918154991521,
+     "delta": 0.00439579382177209
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0485489832891048,
+     "corrected": 1.043319338051558,
+     "delta": -0.005229645237546876
+    },
+    {
+     "path": "arms.DR2_scale_2p50.mean_count_per_detected_gene",
+     "old": 5.45943546295166,
+     "corrected": 5.45943546295166,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.module_scale",
+     "old": 2.5,
+     "corrected": 2.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 24830.484375,
+     "corrected": 22419.7578125,
+     "delta": -2410.7265625
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 569,
+     "corrected": 523,
+     "delta": -46
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 12757,
+     "corrected": 12803,
+     "delta": 46
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.12849416472157385,
+     "corrected": 0.14061376014226964,
+     "delta": 0.012119595420695795
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.12849416472157385,
+     "corrected": 0.14061376014226964,
+     "delta": 0.012119595420695795
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.11566666666666667,
+     "corrected": 0.19766666666666666,
+     "delta": 0.08199999999999999
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 385.354,
+     "corrected": 421.7006666666667,
+     "delta": 36.34666666666669
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.09874271177617197,
+     "corrected": 0.10297640355253747,
+     "delta": 0.004233691776365497
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1450.0,
+     "corrected": 1494.0,
+     "delta": 44.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 128494164.72157384,
+     "corrected": 140613760.14226964,
+     "delta": 12119595.420695797
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.0604343964568381,
+     "corrected": 1.057938520650794,
+     "delta": -0.0024958758060440456
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5222927331924438,
+     "corrected": 0.4957903325557709,
+     "delta": -0.026502400636672974
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.7474938055799003,
+     "corrected": 0.7550897497750046,
+     "delta": 0.007595944195104343
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 26203.247311827956,
+     "corrected": 23891.19607843137,
+     "delta": -2312.0512333965853
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9579768872880084,
+     "corrected": 0.9612787032868078,
+     "delta": 0.0033018159987993068
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5255282841351168,
+     "corrected": 0.49944558438173725,
+     "delta": -0.026082699753379512
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 12766,
+     "corrected": 12810,
+     "delta": 44
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 560,
+     "corrected": 516,
+     "delta": -44
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.21909014115816383,
+     "corrected": 0.22947960431254863,
+     "delta": 0.010389463154384798
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.21909014115816383,
+     "corrected": 0.22947960431254863,
+     "delta": 0.010389463154384798
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.526,
+     "corrected": 0.5516666666666666,
+     "delta": 0.025666666666666615
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_degree",
+     "old": 657.0513333333333,
+     "corrected": 688.2093333333333,
+     "delta": 31.158000000000015
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.13949030165882387,
+     "corrected": 0.14473248381044948,
+     "delta": 0.005242182151625613
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.060837601867777404,
+     "corrected": 0.06373574114054695,
+     "delta": 0.002898139272769544
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 219090141.15816382,
+     "corrected": 229479604.3125486,
+     "delta": 10389463.154384792
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 11,
+     "corrected": 8,
+     "delta": -3
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.052333333333333336,
+     "corrected": 0.051,
+     "delta": -0.0013333333333333391
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8695976884730559,
+     "corrected": 0.869513574896914,
+     "delta": -8.411357614179771e-05
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.3803210225761597,
+     "corrected": 0.3893268735778654,
+     "delta": 0.0090058510017057
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.14501856174280317,
+     "corrected": 0.15360342336334334,
+     "delta": 0.008584861620540174
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.012810492386351006,
+     "corrected": 0.013796154273646772,
+     "delta": 0.0009856618872957652
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.13220806935645216,
+     "corrected": 0.13980726908969657,
+     "delta": 0.0075991997332444106
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.48233333333333334,
+     "corrected": 0.5023333333333333,
+     "delta": 0.019999999999999962
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_degree",
+     "old": 434.91066666666666,
+     "corrected": 460.6566666666667,
+     "delta": 25.746000000000038
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.025035852806144766,
+     "corrected": 0.02707420348990914,
+     "delta": 0.002038350683764373
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.12344059455109496,
+     "corrected": 0.12873896642379176,
+     "delta": 0.0052983718726968
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 10.320295689595335,
+     "corrected": 10.13378556926944,
+     "delta": -0.1865101203258952
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.10266666666666667,
+     "corrected": 0.10233333333333333,
+     "delta": -0.00033333333333333826
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.6615081971827852,
+     "corrected": 0.6708783452727916,
+     "delta": 0.009370148090006358
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.34641283595140765,
+     "corrected": 0.3568319055538255,
+     "delta": 0.01041906960241784
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1333.0,
+     "corrected": 1374.0,
+     "delta": 41.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.12694217857876483,
+     "corrected": 0.13198313567498934,
+     "delta": 0.005040957096224513
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.12344059455109496,
+     "corrected": 0.12873896642379176,
+     "delta": 0.0052983718726968
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0283665518657275,
+     "corrected": 1.0251995906236981,
+     "delta": -0.003166961242029309
+    },
+    {
+     "path": "arms.DR3_scale_4p00.mean_count_per_detected_gene",
+     "old": 5.884237289428711,
+     "corrected": 5.884237289428711,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 26203.248046875,
+     "corrected": 23891.197265625,
+     "delta": -2312.05078125
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 571,
+     "corrected": 524,
+     "delta": -47
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 12755,
+     "corrected": 12802,
+     "delta": 47
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.25329398688451704,
+     "corrected": 0.26743292208513947,
+     "delta": 0.014138935200622427
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.25329398688451704,
+     "corrected": 0.26743292208513947,
+     "delta": 0.014138935200622427
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.529,
+     "corrected": 0.556,
+     "delta": 0.027000000000000024
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 759.6286666666666,
+     "corrected": 802.0313333333334,
+     "delta": 42.40266666666673
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.0777791933176812,
+     "corrected": 0.08190801762057787,
+     "delta": 0.004128824302896669
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1333.0,
+     "corrected": 1374.0,
+     "delta": 41.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 253293986.884517,
+     "corrected": 267432922.08513945,
+     "delta": 14138935.20062244
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.147439717106529,
+     "corrected": 1.134920416771575,
+     "delta": -0.012519300334953964
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5255282521247864,
+     "corrected": 0.4994455575942993,
+     "delta": -0.02608269453048706
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.8492562083490394,
+     "corrected": 0.8542089119590021,
+     "delta": 0.004952703609962694
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 26529.752688172044,
+     "corrected": 24188.892156862745,
+     "delta": -2340.8605313092994
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9575266396518085,
+     "corrected": 0.9609034969233078,
+     "delta": 0.0033768572714992784
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5262673488127311,
+     "corrected": 0.5002636666642606,
+     "delta": -0.026003682148470486
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 12760,
+     "corrected": 12805,
+     "delta": 45
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 566,
+     "corrected": 521,
+     "delta": -45
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.23750027787040123,
+     "corrected": 0.24675269534289207,
+     "delta": 0.009252417472490837
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.23750027787040123,
+     "corrected": 0.24675269534289207,
+     "delta": 0.009252417472490837
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.5796666666666667,
+     "corrected": 0.598,
+     "delta": 0.018333333333333313
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 712.2633333333333,
+     "corrected": 740.0113333333334,
+     "delta": 27.748000000000047
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.14901021315678165,
+     "corrected": 0.1540221829155982,
+     "delta": 0.005011969758816542
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.05927479702089307,
+     "corrected": 0.06140014319761017,
+     "delta": 0.0021253461767170995
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 237500277.8704012,
+     "corrected": 246752695.34289205,
+     "delta": 9252417.472490847
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 11,
+     "corrected": 8,
+     "delta": -3
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.19966666666666666,
+     "corrected": 0.20533333333333334,
+     "delta": 0.005666666666666681
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8816512674694467,
+     "corrected": 0.8806006658358707,
+     "delta": -0.0010506016335759538
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.42750145562528347,
+     "corrected": 0.43726317885102617,
+     "delta": 0.009761723225742702
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.162648882960987,
+     "corrected": 0.17079871068133823,
+     "delta": 0.008149827720351221
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.011961987329109703,
+     "corrected": 0.012865621873957987,
+     "delta": 0.0009036345448482832
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.1506868956318773,
+     "corrected": 0.15793308880738025,
+     "delta": 0.007246193175502957
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.352,
+     "corrected": 0.36733333333333335,
+     "delta": 0.015333333333333365
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 487.784,
+     "corrected": 512.2253333333333,
+     "delta": 24.44133333333332
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.028369996788469173,
+     "corrected": 0.030210359458852115,
+     "delta": 0.0018403626703829418
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.13110356403617424,
+     "corrected": 0.13578334253810248,
+     "delta": 0.0046797785019282445
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 12.597145565033172,
+     "corrected": 12.27558919068353,
+     "delta": -0.3215563743496421
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.141,
+     "corrected": 0.147,
+     "delta": 0.006000000000000005
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.7098518210678667,
+     "corrected": 0.7195849394203737,
+     "delta": 0.009733118352507009
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.3708659310415591,
+     "corrected": 0.38133419255033535,
+     "delta": 0.010468261508776222
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1293.0,
+     "corrected": 1330.0,
+     "delta": 37.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.1342250435541662,
+     "corrected": 0.13883474632281,
+     "delta": 0.004609702768643809
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.13110356403617424,
+     "corrected": 0.13578334253810248,
+     "delta": 0.0046797785019282445
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0238092651480526,
+     "corrected": 1.0224725929386462,
+     "delta": -0.0013366722094063643
+    },
+    {
+     "path": "arms.DR4_scale_5p50.mean_count_per_detected_gene",
+     "old": 6.072263240814209,
+     "corrected": 6.072263240814209,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.module_scale",
+     "old": 5.5,
+     "corrected": 5.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 26529.751953125,
+     "corrected": 24188.890625,
+     "delta": -2340.861328125
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 577,
+     "corrected": 529,
+     "delta": -48
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 12749,
+     "corrected": 12797,
+     "delta": 48
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.2796943425586307,
+     "corrected": 0.29247438034900525,
+     "delta": 0.012780037790374565
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.2796943425586307,
+     "corrected": 0.29247438034900525,
+     "delta": 0.012780037790374565
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.5843333333333334,
+     "corrected": 0.6116666666666667,
+     "delta": 0.02733333333333332
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 838.8033333333333,
+     "corrected": 877.1306666666667,
+     "delta": 38.3273333333334
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07462759055699658,
+     "corrected": 0.07764947962981905,
+     "delta": 0.00302188907282247
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1293.0,
+     "corrected": 1330.0,
+     "delta": 37.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 279694342.55863065,
+     "corrected": 292474380.3490052,
+     "delta": 12780037.790374577
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.1638557318360812,
+     "corrected": 1.1568218985290326,
+     "delta": -0.007033833307048543
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.526267409324646,
+     "corrected": 0.5002636909484863,
+     "delta": -0.026003718376159668
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.8687186537594198,
+     "corrected": 0.8715147287872462,
+     "delta": 0.002796075027826417
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[0]",
+     "old": 16221,
+     "corrected": 16221,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[1]",
+     "old": 19217,
+     "corrected": 19217,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.mean",
+     "old": 0.40099388603704916,
+     "corrected": 0.40099388603704916,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p10",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p90",
+     "old": 0.8200203695620544,
+     "corrected": 0.8200203695620544,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 26282.13829787234,
+     "corrected": 24705.21,
+     "delta": -1576.9282978723422
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.9579018460153084,
+     "corrected": 0.9617289509230077,
+     "delta": 0.00382710490769933
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5262639559828711,
+     "corrected": 0.50020321277733,
+     "delta": -0.02606074320554108
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 12765,
+     "corrected": 12816,
+     "delta": 51
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 561,
+     "corrected": 510,
+     "delta": -51
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.23969345337334666,
+     "corrected": 0.2492112926531066,
+     "delta": 0.009517839279759938
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.23969345337334666,
+     "corrected": 0.2492112926531066,
+     "delta": 0.009517839279759938
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.379,
+     "corrected": 0.38966666666666666,
+     "delta": 0.010666666666666658
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_degree",
+     "old": 718.8406666666667,
+     "corrected": 747.3846666666667,
+     "delta": 28.543999999999983
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.15030638158474613,
+     "corrected": 0.1556568114037896,
+     "delta": 0.005350429819043462
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.059429060989030134,
+     "corrected": 0.0617994249712953,
+     "delta": 0.0023703639822651654
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 239693453.37334666,
+     "corrected": 249211292.65310657,
+     "delta": 9517839.279759914
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 9,
+     "corrected": 9,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.22133333333333333,
+     "corrected": 0.23,
+     "delta": 0.008666666666666684
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8839252510345079,
+     "corrected": 0.8820329704728973,
+     "delta": -0.0018922805616106153
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.4417423053268665,
+     "corrected": 0.45325549011127214,
+     "delta": 0.011513184784405661
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.1649403134378126,
+     "corrected": 0.17231032566411025,
+     "delta": 0.007370012226297656
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.01071290430143381,
+     "corrected": 0.011392019562076248,
+     "delta": 0.0006791152606424374
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.15422740913637878,
+     "corrected": 0.160918306102034,
+     "delta": 0.006690896965655224
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.359,
+     "corrected": 0.37666666666666665,
+     "delta": 0.017666666666666664
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_degree",
+     "old": 494.656,
+     "corrected": 516.7586666666666,
+     "delta": 22.102666666666607
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.028810822443695268,
+     "corrected": 0.03065192041771462,
+     "delta": 0.0018410979740193512
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.1321704124569193,
+     "corrected": 0.1371974972700335,
+     "delta": 0.005027084813114202
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 14.396414342629482,
+     "corrected": 14.125529299276053,
+     "delta": -0.2708850433534291
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.145,
+     "corrected": 0.15066666666666667,
+     "delta": 0.005666666666666681
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.7322888164442295,
+     "corrected": 0.7422306414377622,
+     "delta": 0.009941824993532689
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.37562859524253084,
+     "corrected": 0.3865759043095548,
+     "delta": 0.010947309067023958
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1277.5,
+     "corrected": 1312.0,
+     "delta": 34.5
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.13524220923897579,
+     "corrected": 0.1401505678077759,
+     "delta": 0.00490835856880012
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.1321704124569193,
+     "corrected": 0.1371974972700335,
+     "delta": 0.005027084813114202
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.023241183294769,
+     "corrected": 1.0215242303722942,
+     "delta": -0.001716952922474757
+    },
+    {
+     "path": "arms.DR5_true_on_off.mean_count_per_detected_gene",
+     "old": 6.12375545501709,
+     "corrected": 6.12375545501709,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 26282.138671875,
+     "corrected": 24705.2109375,
+     "delta": -1576.927734375
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 570,
+     "corrected": 519,
+     "delta": -51
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 12756,
+     "corrected": 12807,
+     "delta": 51
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.2821351561631655,
+     "corrected": 0.2954427031232633,
+     "delta": 0.013307546960097838
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.2821351561631655,
+     "corrected": 0.2954427031232633,
+     "delta": 0.013307546960097838
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.38666666666666666,
+     "corrected": 0.408,
+     "delta": 0.021333333333333315
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 846.1233333333333,
+     "corrected": 886.0326666666666,
+     "delta": 39.90933333333328
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07502015179733625,
+     "corrected": 0.0777729592579878,
+     "delta": 0.0027528074606515546
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1277.5,
+     "corrected": 1312.0,
+     "delta": 34.5
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 282135156.16316545,
+     "corrected": 295442703.1232633,
+     "delta": 13307546.96009785
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.1512858496787193,
+     "corrected": 1.1481343130112536,
+     "delta": -0.003151536667465704
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.526263952255249,
+     "corrected": 0.5002031922340393,
+     "delta": -0.026060760021209717
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.8729308507278586,
+     "corrected": 0.8761572491660877,
+     "delta": 0.003226398438229139
+    },
+    {
+     "path": "frozen.cells",
+     "old": 3072,
+     "corrected": 3072,
+     "delta": 0
+    },
+    {
+     "path": "frozen.seed",
+     "old": 20261006,
+     "corrected": 20261006,
+     "delta": 0
+    },
+    {
+     "path": "no_training_performed",
+     "old": true,
+     "corrected": true
+    }
+   ]
+  },
+  {
+   "result": "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json",
+   "old": {
+    "path": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json",
+    "sha256": "a0fe509adc9af686597f6d9497ee4761bd1a37fb7d23b467deb89bca13d80057"
+   },
+   "corrected": {
+    "path": "results/v77/s174_replay/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json",
+    "sha256": "7dbc9cd5af819b08e7f06ca8886628393000358fcfc88ed53b07de89a6705fe0"
+   },
+   "n_numbers": 253,
+   "rows": [
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 28906.9375,
+     "corrected": 19681.31914893617,
+     "delta": -9225.61835106383
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.8915573989831416,
+     "corrected": 0.9223512336719883,
+     "delta": 0.030793834688846777
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5444029963102139,
+     "corrected": 0.49478253332128946,
+     "delta": -0.049620462988924474
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 13327,
+     "corrected": 13981,
+     "delta": 654
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1621,
+     "corrected": 1177,
+     "delta": -444
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.002406579971101478,
+     "corrected": 0.005081693897965989,
+     "delta": 0.0026751139268645107
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.002406579971101478,
+     "corrected": 0.005081693897965989,
+     "delta": 0.0026751139268645107
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.0006666666666666666,
+     "corrected": 0.0006666666666666666,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_degree",
+     "old": 7.217333333333333,
+     "corrected": 15.24,
+     "delta": 8.022666666666666
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.09198560308561306,
+     "corrected": 0.10416559279410263,
+     "delta": 0.012179989708489575
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.08708811332075485,
+     "corrected": 0.10182961119393061,
+     "delta": 0.01474149787317576
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 2406579.971101478,
+     "corrected": 5081693.897965988,
+     "delta": 2675113.92686451
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 9,
+     "corrected": 16,
+     "delta": 7
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0006666666666666666,
+     "delta": 0.0006666666666666666
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.3271288331919679,
+     "corrected": 0.3407131860148578,
+     "delta": 0.013584352822889889
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.17599366598480165,
+     "corrected": 0.19570114158864507,
+     "delta": 0.019707475603843422
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.004673557852617539,
+     "corrected": 0.009210403467822608,
+     "delta": 0.004536845615205069
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.001233299988885184,
+     "corrected": 0.0023947982660886963,
+     "delta": 0.0011614982772035123
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.003440257863732355,
+     "corrected": 0.0068156052017339114,
+     "delta": 0.0033753473380015563
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.034333333333333334,
+     "corrected": 0.050333333333333334,
+     "delta": 0.016
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_degree",
+     "old": 14.016,
+     "corrected": 27.622,
+     "delta": 13.606
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.006366327262595184,
+     "corrected": 0.009225360294684914,
+     "delta": 0.0028590330320897297
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.04281647503198474,
+     "corrected": 0.05465245393396648,
+     "delta": 0.011835978901981736
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 2.789473684210526,
+     "corrected": 2.8460038986354776,
+     "delta": 0.05653021442495154
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.47952345735367535,
+     "corrected": 0.4831882125918267,
+     "delta": 0.0036647552381513515
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.1404922530145354,
+     "corrected": 0.1714231270178376,
+     "delta": 0.03093087400330219
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1405.5,
+     "corrected": 1796.0,
+     "delta": 390.5
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.06327184104435195,
+     "corrected": 0.07216947277709233,
+     "delta": 0.008897631732740385
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.04281647503198474,
+     "corrected": 0.05465245393396648,
+     "delta": 0.011835978901981736
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.4777452136610183,
+     "corrected": 1.3205166023156196,
+     "delta": -0.15722861134539867
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.mean_count_per_detected_gene",
+     "old": 4.9867024421691895,
+     "corrected": 4.9867024421691895,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.module_scale",
+     "old": 1.2,
+     "corrected": 1.2,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 28906.935546875,
+     "corrected": 19681.318359375,
+     "delta": -9225.6171875
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1630,
+     "corrected": 1193,
+     "delta": -437
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 13318,
+     "corrected": 13965,
+     "delta": 647
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.002395465155051684,
+     "corrected": 0.004981660553517839,
+     "delta": 0.002586195398466155
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.002395465155051684,
+     "corrected": 0.004981660553517839,
+     "delta": 0.002586195398466155
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.0003333333333333333,
+     "corrected": 0.0003333333333333333,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 7.184,
+     "corrected": 14.94,
+     "delta": 7.755999999999999
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.10269495082600039,
+     "corrected": 0.11954841498626817,
+     "delta": 0.016853464160267784
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1405.5,
+     "corrected": 1796.0,
+     "delta": 390.5
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 2395465.155051684,
+     "corrected": 4981660.553517839,
+     "delta": 2586195.398466155
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.0101370620590109,
+     "corrected": 0.9940915552464594,
+     "delta": -0.016045506812551458
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5444029569625854,
+     "corrected": 0.49478256702423096,
+     "delta": -0.04962038993835449
+    },
+    {
+     "path": "arms.DR1_scale_1p20_baseline.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.3272073132659531,
+     "corrected": 0.34204079104269586,
+     "delta": 0.014833477776742765
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 33931.21875,
+     "corrected": 23102.106382978724,
+     "delta": -10829.112367021276
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.8951030238158951,
+     "corrected": 0.925715793640322,
+     "delta": 0.030612769824426844
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5538216503295387,
+     "corrected": 0.5037139048781182,
+     "delta": -0.05010774545142049
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 13380,
+     "corrected": 14032,
+     "delta": 652
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1568,
+     "corrected": 1126,
+     "delta": -442
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.09853151050350116,
+     "corrected": 0.14688918528398354,
+     "delta": 0.048357674780482376
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.09853151050350116,
+     "corrected": 0.14688918528398354,
+     "delta": 0.048357674780482376
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.097,
+     "corrected": 0.138,
+     "delta": 0.04100000000000001
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 295.496,
+     "corrected": 440.52066666666667,
+     "delta": 145.0246666666667
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.11504883226601961,
+     "corrected": 0.12997717572055703,
+     "delta": 0.014928343454537418
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.08292175266653387,
+     "corrected": 0.09205422991792106,
+     "delta": 0.009132477251387189
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 98531510.50350115,
+     "corrected": 146889185.28398353,
+     "delta": 48357674.78048238
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 5,
+     "corrected": 11,
+     "delta": 6
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.7461155871244651,
+     "corrected": 0.7915430363206142,
+     "delta": 0.04542744919614905
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.2743424742055398,
+     "corrected": 0.30656041208339374,
+     "delta": 0.03221793787785393
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.05360120040013338,
+     "corrected": 0.09447393575636323,
+     "delta": 0.04087273535622985
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.006684228076025342,
+     "corrected": 0.012488385017227965,
+     "delta": 0.005804156941202623
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.04691697232410803,
+     "corrected": 0.08198555073913527,
+     "delta": 0.03506857841502724
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.26066666666666666,
+     "corrected": 0.367,
+     "delta": 0.10633333333333334
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 160.75,
+     "corrected": 283.32733333333334,
+     "delta": 122.57733333333334
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.013380966557824782,
+     "corrected": 0.0172631791395756,
+     "delta": 0.003882212581750819
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.08340914227818219,
+     "corrected": 0.10906292516077983,
+     "delta": 0.025653782882597634
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 7.0190561708071435,
+     "corrected": 6.564944196229908,
+     "delta": -0.45411197457723507
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.005666666666666667,
+     "corrected": 0.010666666666666666,
+     "delta": 0.004999999999999999
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.5495869297874572,
+     "corrected": 0.5797713829127603,
+     "delta": 0.030184453125303157
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.24612384947910396,
+     "corrected": 0.2977966623696785,
+     "delta": 0.05167281289057454
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1262.0,
+     "corrected": 1601.0,
+     "delta": 339.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.09520658105122849,
+     "corrected": 0.11782350824793424,
+     "delta": 0.022616927196705744
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.08340914227818219,
+     "corrected": 0.10906292516077983,
+     "delta": 0.025653782882597634
+    },
+    {
+     "path": "arms.DR2_scale_2p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.1414405957287037,
+     "corrected": 1.0803259501268614,
+     "delta": -0.06111464560184232
+    },
+    {
+     "path": "arms.DR2_scale_2p50.mean_count_per_detected_gene",
+     "old": 5.558601379394531,
+     "corrected": 5.558601379394531,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.module_scale",
+     "old": 2.5,
+     "corrected": 2.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 33931.21875,
+     "corrected": 23102.10546875,
+     "delta": -10829.11328125
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1573,
+     "corrected": 1137,
+     "delta": -436
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 13375,
+     "corrected": 14021,
+     "delta": 646
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.10340068911859508,
+     "corrected": 0.1668271646104257,
+     "delta": 0.06342647549183063
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.10340068911859508,
+     "corrected": 0.1668271646104257,
+     "delta": 0.06342647549183063
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.097,
+     "corrected": 0.138,
+     "delta": 0.04100000000000001
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 310.09866666666665,
+     "corrected": 500.31466666666665,
+     "delta": 190.216
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.10200789710211414,
+     "corrected": 0.11335966034727205,
+     "delta": 0.011351763245157909
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1262.0,
+     "corrected": 1601.0,
+     "delta": 339.0
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 103400689.11859508,
+     "corrected": 166827164.6104257,
+     "delta": 63426475.49183063
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.1164786425585298,
+     "corrected": 1.1113406160798185,
+     "delta": -0.005138026478711311
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5538216829299927,
+     "corrected": 0.5037139058113098,
+     "delta": -0.05010777711868286
+    },
+    {
+     "path": "arms.DR2_scale_2p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.7208658363019951,
+     "corrected": 0.7609314241093643,
+     "delta": 0.04006558780736924
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 36174.46875,
+     "corrected": 24629.425531914894,
+     "delta": -11545.043218085106
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.8965747926143965,
+     "corrected": 0.9261775959889167,
+     "delta": 0.029602803374520148
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5568669856982488,
+     "corrected": 0.5064585674152483,
+     "delta": -0.05040841828300047
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 13402,
+     "corrected": 14039,
+     "delta": 637
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1546,
+     "corrected": 1119,
+     "delta": -427
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.19172124041347116,
+     "corrected": 0.23631810603534512,
+     "delta": 0.044596865621873955
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.19172124041347116,
+     "corrected": 0.23631810603534512,
+     "delta": 0.044596865621873955
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.4613333333333333,
+     "corrected": 0.5883333333333334,
+     "delta": 0.12700000000000006
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_degree",
+     "old": 574.972,
+     "corrected": 708.718,
+     "delta": 133.74599999999998
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.13174986191898175,
+     "corrected": 0.14961684856488172,
+     "delta": 0.017866986645899974
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.06537786474136212,
+     "corrected": 0.06904823724870053,
+     "delta": 0.0036703725073384125
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 191721240.41347116,
+     "corrected": 236318106.0353451,
+     "delta": 44596865.621873945
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 8,
+     "corrected": 12,
+     "delta": 4
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.03666666666666667,
+     "corrected": 0.05333333333333334,
+     "delta": 0.01666666666666667
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8261389255323348,
+     "corrected": 0.8795480262720654,
+     "delta": 0.0534091007397306
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.3566021773905852,
+     "corrected": 0.4031757946559867,
+     "delta": 0.04657361726540149
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.10679937757030121,
+     "corrected": 0.16533866844503722,
+     "delta": 0.058539290874736014
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.009159275313993553,
+     "corrected": 0.017367789263087696,
+     "delta": 0.008208513949094142
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.09764010225630766,
+     "corrected": 0.14797087918194954,
+     "delta": 0.050330776925641876
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.405,
+     "corrected": 0.5356666666666666,
+     "delta": 0.1306666666666666
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_degree",
+     "old": 320.29133333333334,
+     "corrected": 495.85066666666665,
+     "delta": 175.5593333333333
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.019772360247838024,
+     "corrected": 0.02439907661591659,
+     "delta": 0.004626716368078567
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.10652455361980509,
+     "corrected": 0.13715112668070986,
+     "delta": 0.03062657306090477
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 10.660243186175764,
+     "corrected": 8.519845383916344,
+     "delta": -2.14039780225942
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.077,
+     "corrected": 0.11333333333333333,
+     "delta": 0.03633333333333333
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.6017942671382905,
+     "corrected": 0.6762207871106704,
+     "delta": 0.07442651997237981
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.31039439820862763,
+     "corrected": 0.3719687487931133,
+     "delta": 0.06157435058448568
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1188.5,
+     "corrected": 1483.0,
+     "delta": 294.5
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.11460746892328065,
+     "corrected": 0.14365547243577595,
+     "delta": 0.0290480035124953
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.10652455361980509,
+     "corrected": 0.13715112668070986,
+     "delta": 0.03062657306090477
+    },
+    {
+     "path": "arms.DR3_scale_4p00.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0758784245397934,
+     "corrected": 1.047424661484614,
+     "delta": -0.028453763055179326
+    },
+    {
+     "path": "arms.DR3_scale_4p00.mean_count_per_detected_gene",
+     "old": 6.0163893699646,
+     "corrected": 6.0163893699646,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 36174.46875,
+     "corrected": 24629.423828125,
+     "delta": -11545.044921875
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1554,
+     "corrected": 1131,
+     "delta": -423
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 13394,
+     "corrected": 14027,
+     "delta": 633
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.22095809714349227,
+     "corrected": 0.28895765255085026,
+     "delta": 0.067999555407358
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.22095809714349227,
+     "corrected": 0.28895765255085026,
+     "delta": 0.067999555407358
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.4676666666666667,
+     "corrected": 0.606,
+     "delta": 0.1383333333333333
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 662.6533333333333,
+     "corrected": 866.584,
+     "delta": 203.93066666666664
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.08406158769207094,
+     "corrected": 0.08980687783888552,
+     "delta": 0.005745290146814588
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1188.5,
+     "corrected": 1483.0,
+     "delta": 294.5
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 220958097.14349225,
+     "corrected": 288957652.5508503,
+     "delta": 67999555.40735802
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.2788121171902063,
+     "corrected": 1.2723043133000478,
+     "delta": -0.006507803890158481
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.5568670034408569,
+     "corrected": 0.5064585208892822,
+     "delta": -0.05040848255157471
+    },
+    {
+     "path": "arms.DR3_scale_4p00.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.7937437947119154,
+     "corrected": 0.8728715780394445,
+     "delta": 0.07912778332752912
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 36626.84375,
+     "corrected": 24937.425531914894,
+     "delta": -11689.418218085106
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.8977789670858978,
+     "corrected": 0.9249901042353873,
+     "delta": 0.027211137149489528
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5579316607873812,
+     "corrected": 0.5073880609560746,
+     "delta": -0.05054359983130663
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 13420,
+     "corrected": 14021,
+     "delta": 601
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1528,
+     "corrected": 1137,
+     "delta": -391
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.21228453929087474,
+     "corrected": 0.2526017561409359,
+     "delta": 0.04031721685006115
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.21228453929087474,
+     "corrected": 0.2526017561409359,
+     "delta": 0.04031721685006115
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.5143333333333333,
+     "corrected": 0.6293333333333333,
+     "delta": 0.11499999999999999
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_degree",
+     "old": 636.6413333333334,
+     "corrected": 757.5526666666667,
+     "delta": 120.91133333333335
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.13902110830675876,
+     "corrected": 0.16044633387200705,
+     "delta": 0.021425225565248285
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.06155283455984935,
+     "corrected": 0.06560408117782784,
+     "delta": 0.004051246617978496
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 212284539.29087472,
+     "corrected": 252601756.14093587,
+     "delta": 40317216.85006115
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 5,
+     "corrected": 12,
+     "delta": 7
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.16433333333333333,
+     "corrected": 0.22733333333333333,
+     "delta": 0.063
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8418703670753589,
+     "corrected": 0.8862598004137744,
+     "delta": 0.044389433338415496
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.39524590330624865,
+     "corrected": 0.4534306053306771,
+     "delta": 0.058184702024428436
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.12350694676003113,
+     "corrected": 0.18193375569634324,
+     "delta": 0.05842680893631211
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.008721351561631655,
+     "corrected": 0.016764477047904857,
+     "delta": 0.008043125486273202
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.11478559519839947,
+     "corrected": 0.16516927864843836,
+     "delta": 0.050383683450038894
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.2806666666666667,
+     "corrected": 0.38,
+     "delta": 0.09933333333333333
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_degree",
+     "old": 370.39733333333334,
+     "corrected": 545.6193333333333,
+     "delta": 175.22199999999998
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.022374245966415796,
+     "corrected": 0.027607024313378165,
+     "delta": 0.005232778346962369
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.11290094682623153,
+     "corrected": 0.14528032983476585,
+     "delta": 0.032379383008534324
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 13.161445721713864,
+     "corrected": 9.852337068222502,
+     "delta": -3.3091086534913625
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.10633333333333334,
+     "corrected": 0.15733333333333333,
+     "delta": 0.05099999999999999
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.6385932194597314,
+     "corrected": 0.7184276363103138,
+     "delta": 0.07983441685058246
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.3308781752725128,
+     "corrected": 0.3962454718087837,
+     "delta": 0.06536729653627094
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1150.0,
+     "corrected": 1426.5,
+     "delta": 276.5
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.1197052862113039,
+     "corrected": 0.15105175612107044,
+     "delta": 0.03134646990976654
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.11290094682623153,
+     "corrected": 0.14528032983476585,
+     "delta": 0.032379383008534324
+    },
+    {
+     "path": "arms.DR4_scale_5p50.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0602682225114115,
+     "corrected": 1.0397261369991981,
+     "delta": -0.02054208551221337
+    },
+    {
+     "path": "arms.DR4_scale_5p50.mean_count_per_detected_gene",
+     "old": 6.20414400100708,
+     "corrected": 6.20414400100708,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.module_scale",
+     "old": 5.5,
+     "corrected": 5.5,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 36626.84375,
+     "corrected": 24937.423828125,
+     "delta": -11689.419921875
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1533,
+     "corrected": 1149,
+     "delta": -384
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 13415,
+     "corrected": 14009,
+     "delta": 594
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.2525326219851061,
+     "corrected": 0.30734155829721016,
+     "delta": 0.05480893631210404
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.2525326219851061,
+     "corrected": 0.30734155829721016,
+     "delta": 0.05480893631210404
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.522,
+     "corrected": 0.6663333333333333,
+     "delta": 0.1443333333333333
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 757.3453333333333,
+     "corrected": 921.7173333333334,
+     "delta": 164.37200000000007
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.08020700520930246,
+     "corrected": 0.0840698910208971,
+     "delta": 0.003862885811594635
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1150.0,
+     "corrected": 1426.5,
+     "delta": 276.5
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 252532621.9851061,
+     "corrected": 307341558.29721016,
+     "delta": 54808936.31210405
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.3270718882764718,
+     "corrected": 1.3337848335247249,
+     "delta": 0.006712945248253055
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.557931661605835,
+     "corrected": 0.5073880553245544,
+     "delta": -0.05054360628128052
+    },
+    {
+     "path": "arms.DR4_scale_5p50.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.8162912914670596,
+     "corrected": 0.8870819745773518,
+     "delta": 0.07079068311029224
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[0]",
+     "old": 16221,
+     "corrected": 16221,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.module_sizes[1]",
+     "old": 19217,
+     "corrected": 19217,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.mean",
+     "old": 0.3965224973160236,
+     "corrected": 0.3965224973160236,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p10",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.dr5_switching.silenced_fraction_of_addresses_per_cell.p90",
+     "old": 0.8200203695620544,
+     "corrected": 0.8200203695620544,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.abundance_max_over_median_nonzero",
+     "old": 35638.39393939394,
+     "corrected": 25022.702127659577,
+     "delta": -10615.691811734367
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.expressed_fraction",
+     "old": 0.8962402997056462,
+     "corrected": 0.9284866077318907,
+     "delta": 0.03224630802624451
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.abundance.top1pct_count_share",
+     "old": 0.5584669273238894,
+     "corrected": 0.5075342230074626,
+     "delta": -0.050932704316426713
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_detected",
+     "old": 13397,
+     "corrected": 14074,
+     "delta": 677
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.canonical_genes_lost",
+     "old": 1551,
+     "corrected": 1084,
+     "delta": -467
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_abs_gt_0p3",
+     "old": 0.215188618428365,
+     "corrected": 0.2542202956541069,
+     "delta": 0.03903167722574191
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.frac_pos_gt_0p3",
+     "old": 0.215188618428365,
+     "corrected": 0.2542202956541069,
+     "delta": 0.03903167722574191
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.largest_community_frac",
+     "old": 0.32066666666666666,
+     "corrected": 0.39,
+     "delta": 0.06933333333333336
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_degree",
+     "old": 645.3506666666667,
+     "corrected": 762.4066666666666,
+     "delta": 117.05599999999993
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.mean_signed_corr",
+     "old": 0.14035649872550407,
+     "corrected": 0.1623786867790417,
+     "delta": 0.022022188053537617
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.median_abs_corr",
+     "old": 0.06090539457385559,
+     "corrected": 0.06543868766940189,
+     "delta": 0.004533293095546301
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.pos_over_neg_ratio",
+     "old": 215188618.428365,
+     "corrected": 254220295.65410691,
+     "delta": 39031677.22574192
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.selected_genes_with_constant_detection",
+     "old": 9,
+     "corrected": 13,
+     "delta": 4
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.substitute_frac",
+     "old": 0.18033333333333335,
+     "corrected": 0.251,
+     "delta": 0.07066666666666666
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.transitivity",
+     "old": 0.8465165489055027,
+     "corrected": 0.8877661389616206,
+     "delta": 0.041249590056117946
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.detection.var_top10_pc",
+     "old": 0.40724456523280667,
+     "corrected": 0.4688724951631464,
+     "delta": 0.06162792993033972
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_abs_gt_0p3",
+     "old": 0.12602467489163055,
+     "corrected": 0.18435345115038346,
+     "delta": 0.05832877625875291
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_neg_lt_m0p3",
+     "old": 0.008285206179837724,
+     "corrected": 0.015718572857619205,
+     "delta": 0.0074333666777814805
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.frac_pos_gt_0p3",
+     "old": 0.11773946871179282,
+     "corrected": 0.16863487829276425,
+     "delta": 0.050895409580971426
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.largest_community_frac",
+     "old": 0.286,
+     "corrected": 0.3893333333333333,
+     "delta": 0.10333333333333333
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_degree",
+     "old": 377.948,
+     "corrected": 552.876,
+     "delta": 174.928
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.mean_signed_corr",
+     "old": 0.022725326479626738,
+     "corrected": 0.02841315816795645,
+     "delta": 0.0056878316883297135
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.median_abs_corr",
+     "old": 0.11365599153763167,
+     "corrected": 0.1463943474372924,
+     "delta": 0.03273835589966073
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.pos_over_neg_ratio",
+     "old": 14.210807330095784,
+     "corrected": 10.728383538396267,
+     "delta": -3.4824237916995173
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.substitute_frac",
+     "old": 0.10866666666666666,
+     "corrected": 0.16033333333333333,
+     "delta": 0.051666666666666666
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.transitivity",
+     "old": 0.6491549330555125,
+     "corrected": 0.7346934963583183,
+     "delta": 0.08553856330280574
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.expression.var_top10_pc",
+     "old": 0.335144135568709,
+     "corrected": 0.4018361874792695,
+     "delta": 0.06669205191056055
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.median_detected_per_cell",
+     "old": 1146.0,
+     "corrected": 1405.0,
+     "delta": 259.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.mean_within_class_median_abs_corr",
+     "old": 0.1204579944669741,
+     "corrected": 0.1520743813106874,
+     "delta": 0.031616386843713304
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.min_class_cells",
+     "old": 200,
+     "corrected": 200,
+     "delta": 0
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.pooled_median_abs_corr",
+     "old": 0.11365599153763167,
+     "corrected": 0.1463943474372924,
+     "delta": 0.03273835589966073
+    },
+    {
+     "path": "arms.DR5_true_on_off.matched_to_real_envelopes.t5.within_over_pooled",
+     "old": 1.0598472886234975,
+     "corrected": 1.0387995436492383,
+     "delta": -0.021047744974259208
+    },
+    {
+     "path": "arms.DR5_true_on_off.mean_count_per_detected_gene",
+     "old": 6.26159143447876,
+     "corrected": 6.26159143447876,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.module_scale",
+     "old": 4.0,
+     "corrected": 4.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.abundance_max_median__TRAIN_PREVALENCE05_19569",
+     "old": 35638.39453125,
+     "corrected": 25022.701171875,
+     "delta": -10615.693359375
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_lost",
+     "old": 1560,
+     "corrected": 1097,
+     "delta": -463
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.canonical_genes_nonzero_variance",
+     "old": 13388,
+     "corrected": 14061,
+     "delta": 673
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_abs_gt_0p3",
+     "old": 0.2572770923641214,
+     "corrected": 0.3095229520951428,
+     "delta": 0.052245859731021416
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_neg_lt_m0p3",
+     "old": 0.0,
+     "corrected": 0.0,
+     "delta": 0.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.frac_pos_gt_0p3",
+     "old": 0.2572770923641214,
+     "corrected": 0.3095229520951428,
+     "delta": 0.052245859731021416
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.largest_community_frac",
+     "old": 0.32966666666666666,
+     "corrected": 0.435,
+     "delta": 0.10533333333333333
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.mean_degree",
+     "old": 771.574,
+     "corrected": 928.2593333333333,
+     "delta": 156.68533333333335
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_abs_corr",
+     "old": 0.07973140731339196,
+     "corrected": 0.08378084788843493,
+     "delta": 0.004049440575042973
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.median_detected_per_cell",
+     "old": 1146.0,
+     "corrected": 1405.0,
+     "delta": 259.0
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.pos_over_neg_ratio",
+     "old": 257277092.36412138,
+     "corrected": 309522952.0951428,
+     "delta": 52245859.731021404
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.t5_within_over_pooled",
+     "old": 1.3303659597815458,
+     "corrected": 1.3361239042966473,
+     "delta": 0.005757944515101476
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.top1pct_count_share__TRAIN_PREVALENCE05_19569",
+     "old": 0.558466911315918,
+     "corrected": 0.5075342059135437,
+     "delta": -0.05093270540237427
+    },
+    {
+     "path": "arms.DR5_true_on_off.v1_binary_hvg__NOT_COMPARABLE_TO_REAL.transitivity",
+     "old": 0.823695505607193,
+     "corrected": 0.8895693035162204,
+     "delta": 0.06587379790902748
+    },
+    {
+     "path": "frozen.cells",
+     "old": 1408,
+     "corrected": 1408,
+     "delta": 0
+    },
+    {
+     "path": "frozen.seed",
+     "old": 20261006,
+     "corrected": 20261006,
+     "delta": 0
+    },
+    {
+     "path": "no_training_performed",
+     "old": true,
+     "corrected": true
+    }
+   ]
+  }
+ ]
+}

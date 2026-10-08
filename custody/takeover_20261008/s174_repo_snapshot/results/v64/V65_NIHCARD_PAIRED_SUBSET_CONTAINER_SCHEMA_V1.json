@@ -1,0 +1,135 @@
+{
+  "schema": "V65_NIHCARD_PAIRED_SUBSET_CONTAINER_SCHEMA_V1",
+  "date": "2026-09-30",
+  "status": "CONTAINER_METADATA_ONLY__NO_MATRIX_VALUES_READ",
+  "source": {
+    "path": "results/v64/gpt_handoff_bundle/nihcard_paired_subset.npz",
+    "bytes": 844578,
+    "sha256": "6dca0d35ed7fdc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6",
+    "artifact_source_run": 36792410855,
+    "artifact_id": 11131979975
+  },
+  "members": {
+    "rna_row": {
+      "dtype": "<i4",
+      "shape": [
+        214293
+      ]
+    },
+    "rna_col": {
+      "dtype": "<i4",
+      "shape": [
+        214293
+      ]
+    },
+    "rna_val": {
+      "dtype": "<i4",
+      "shape": [
+        214293
+      ]
+    },
+    "atac_row": {
+      "dtype": "<i4",
+      "shape": [
+        141888
+      ]
+    },
+    "atac_col": {
+      "dtype": "<i4",
+      "shape": [
+        141888
+      ]
+    },
+    "atac_val": {
+      "dtype": "<i4",
+      "shape": [
+        141888
+      ]
+    },
+    "n_nuclei": {
+      "dtype": "<i8",
+      "shape": []
+    },
+    "n_genes": {
+      "dtype": "<i8",
+      "shape": []
+    },
+    "n_peaks": {
+      "dtype": "<i8",
+      "shape": []
+    },
+    "gene_ids": {
+      "dtype": "<U15",
+      "shape": [
+        4000
+      ]
+    },
+    "gene_symbols": {
+      "dtype": "<U18",
+      "shape": [
+        4000
+      ]
+    },
+    "peak_names": {
+      "dtype": "<U25",
+      "shape": [
+        12000
+      ]
+    },
+    "pairing_rna_obs_name": {
+      "dtype": "|O",
+      "shape": [
+        2160
+      ]
+    },
+    "pairing_atac_obs_name": {
+      "dtype": "|O",
+      "shape": [
+        2160
+      ]
+    },
+    "donor_id": {
+      "dtype": "|O",
+      "shape": [
+        2160
+      ]
+    },
+    "cell_type": {
+      "dtype": "|O",
+      "shape": [
+        2160
+      ]
+    }
+  },
+  "sparse_encoding": {
+    "RNA": "COO triplets rna_row/rna_col/rna_val; shape n_nuclei x n_genes",
+    "ATAC": "COO triplets atac_row/atac_col/atac_val; shape n_nuclei x n_peaks"
+  },
+  "executor_preconditions": [
+    "member set must match exactly unless a prospectively versioned schema successor is adopted",
+    "RNA row/col/value lengths must match",
+    "ATAC row/col/value lengths must match",
+    "row indices must lie in [0,n_nuclei)",
+    "RNA column indices must lie in [0,n_genes)",
+    "ATAC column indices must lie in [0,n_peaks)",
+    "duplicate COO coordinates must be deterministically summed before dense/sparse algebra",
+    "donor/cell/pairing arrays must have length n_nuclei",
+    "gene_ids/gene_symbols length must equal n_genes",
+    "peak_names length must equal n_peaks"
+  ],
+  "explicitly_not_read": [
+    "rna_val contents",
+    "atac_val contents",
+    "gene identity values",
+    "donor identity values",
+    "pairing name values",
+    "cell_type values",
+    "any cross-modal biological statistic"
+  ],
+  "governance": {
+    "real_recoverability_execution_authorized": false,
+    "test_opened": false,
+    "training": "OFF",
+    "stage4": "NOT_AUTHORIZED"
+  }
+}

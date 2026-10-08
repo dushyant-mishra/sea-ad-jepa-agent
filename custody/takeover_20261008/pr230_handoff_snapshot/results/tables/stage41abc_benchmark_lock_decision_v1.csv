@@ -1,0 +1,2 @@
+candidate,benchmark_training_ran,benchmark_lock_eligible,locked_benchmark_preserved,stage27c_reference,material_threshold,decision,reason
+none,False,False,True,0.3267024400121495,0.3317,manual_feature_acquisition_required,No schema-reviewed donor-linked safe feature matrix was built from automatic Stage 41ABC downloads.

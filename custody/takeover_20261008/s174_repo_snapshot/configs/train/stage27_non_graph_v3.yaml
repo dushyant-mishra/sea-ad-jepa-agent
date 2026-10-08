@@ -1,0 +1,46 @@
+stage: stage27_non_graph_v3
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+module_mean_baseline: 0.3128
+minimum_success_threshold: 0.3228
+max_target_drop_vs_module_mean: -0.02
+
+paths:
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  target_manifest: results/tables/v3_benchmark_target_manifest_v1.csv
+  metadata_targets: results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+  pseudobulk_features: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv
+  dataset_role_registry: results/tables/v3_dataset_role_registry_v1.csv
+  baseline_pooled_oof: results/tables/v3_primary_baseline_pooled_oof_recompute_v1.csv
+
+conditions:
+  - module_only_mlp
+  - expression_residual_only_mlp
+  - late_fusion_module_residual_mlp
+
+model:
+  hidden_dim: 32
+  dropout: 0.1
+  shared_trunk: true
+  max_residual_features: 1000
+
+training:
+  epochs: 250
+  smoke_epochs: 8
+  patience: 40
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  inner_validation_fraction: 0.2
+
+bootstrap:
+  n_resamples: 500
+  smoke_resamples: 25
+
+external_pretraining:
+  enabled: true
+  auto_download: false
+  local_matrix_candidates:
+    - data/processed/v3_pretraining
+    - data/processed/v2_alignment
+    - data/external/cellxgene
+

@@ -1,0 +1,24 @@
+{
+  "schema": "td17-relational-biological-state-geometry-v1",
+  "status": "PILOT_FALSIFICATION_ONLY__NOT_PRODUCTION_AUTHORITY",
+  "historical_predecessor": "Stage81A3 PCA/REP/subspace qualification; TD13-15 subspace/operator attacks; TD16 common-support loading and OPC dependency/module attacks",
+  "what_is_materially_new": "Tests source-specific per-gene-affine-invariant relational geometry among independently shared native biological classes, rather than alignment of genes, loadings, axes, or dependency edges.",
+  "historical_failure_being_attacked": "Same-gene target objects fail cross-source replication; determine whether a coarser relational biological object survives actual source/cohort differences.",
+  "result_of_that_attack": {
+    "HVS_SEA_AD_19class_geometry_replicates": true,
+    "excitatory_subgeometry_replicates": true,
+    "inhibitory_subgeometry_replicates": true,
+    "glial_3class_geometry_inconclusive": true,
+    "NPH52_included": false
+  },
+  "promotion_status": "FALSIFICATION_ONLY",
+  "common_scalar_addresses_all_42": 17186,
+  "class_eligibility_rule": "native_class shared HVS/SEA_AD in frozen Sample B with >=30 cells and >=20 donors in each source; yielded 19 classes",
+  "gene_panels": "4 disjoint deterministic hash panels of 2,048 common-scalar addresses; joint-variable gene mask per panel across both sources",
+  "transformation": "for each source and panel, donor-balanced class centroids; gene-by-gene z-standardization across classes; normalized Euclidean class-distance matrix",
+  "null": "class-identity permutation in SEA_AD; 1000 permutations for 19-class geometry, 3000 for 8-class subgeometries",
+  "pathology_accessed": false,
+  "protected_expression_accessed": false,
+  "production_target_selected": false,
+  "critical_caveat": "native_class annotations are transcriptomic labels and may be used as a validation anchor/positive control, not as the definition of the production target"
+}

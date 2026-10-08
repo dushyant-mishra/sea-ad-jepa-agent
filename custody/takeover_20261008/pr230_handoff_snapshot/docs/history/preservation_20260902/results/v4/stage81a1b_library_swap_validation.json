@@ -1,0 +1,31 @@
+{
+  "absent_from_final_nuclei_rows": 4,
+  "absent_record_interpretation": "correction_authority_retained; library_not_present_in_consolidated_final_nuclei_object",
+  "all_rows_are_corrections": true,
+  "compatible_present_rows": 8,
+  "conflicting_present_rows": 0,
+  "downloaded_release_compatibility_pass": true,
+  "downloaded_release_compatibility_rows": 8,
+  "downloaded_release_coverage_complete": false,
+  "downloaded_release_no_conflict_pass": true,
+  "explicit_semantics": "original_donor_id_to_predicted_corrected_donor_id_by_exact_ar_id",
+  "library_swap_validation_pass": true,
+  "malformed_required_identifier_count": 0,
+  "partial_string_matching_used": false,
+  "pathology_values_used": false,
+  "readable_tabular_structure": true,
+  "release_compatibility_status_counts": {
+    "absent_from_final_nuclei": 4,
+    "compatible_present": 8
+  },
+  "required_columns": [
+    "Brain Region",
+    "ar_id",
+    "original Donor ID",
+    "predicted Donor ID"
+  ],
+  "row_count": 12,
+  "source_path": "data/external/v4/sea_ad/manifests/mixup_investigation_02-14-2025.csv",
+  "source_release": "official_multiregion_repository_2026",
+  "unique_correction_identifier_count": 12
+}

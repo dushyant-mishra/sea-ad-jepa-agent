@@ -1,0 +1,27 @@
+snrna: opening /workspace/data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+snatac: opening /workspace/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+Wrote: /workspace/results/reports/stage75f_stream_microglia_10x_manifest_v1.json
+{
+  "modality": "snrna",
+  "matrix_shape": [
+    58721,
+    61770
+  ],
+  "matched_microglia_barcodes": 4126,
+  "unmatched_microglia_barcodes": 0,
+  "mode": "audit"
+}
+{
+  "modality": "snatac",
+  "matrix_shape": [
+    219070,
+    143401
+  ],
+  "matched_microglia_barcodes": 12232,
+  "unmatched_microglia_barcodes": 0,
+  "mode": "audit"
+}
+prediction_benchmark_updated=False
+causal_validation_pass=False
+therapeutic_target_claim=False
+validated_grn_claim=False

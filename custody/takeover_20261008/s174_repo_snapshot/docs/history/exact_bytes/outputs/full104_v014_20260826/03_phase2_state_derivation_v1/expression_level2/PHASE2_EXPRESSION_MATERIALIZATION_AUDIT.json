@@ -1,0 +1,19 @@
+{
+  "addresses": 41238,
+  "asset_authentication_sha256": "d8bccf6c315b928ea5fc5f384c6eaa7eb7c4690dc5f35e4eb6b3f7161e5aa9ea",
+  "block_manifest_sha256": "fc5d191242ac8b8d8404a47954688cebae25e1d14a02cb4464fdeb31cb1c2e58",
+  "blocks": 896,
+  "cells": 449269,
+  "measured_zero_semantics": "zero remains measured through separate authenticated operator-state authority",
+  "nnz": 2102146820,
+  "normalization": "raw integer counts retained; full-source library retained; downstream log1p10K exactly once",
+  "operators": 42,
+  "optimizer_ema_lambda_query_schedule_gpu_mechanics_or_training": false,
+  "original_mixed_nph_opened": false,
+  "protected_expression_opened": false,
+  "reader_validation_oracle_dev_sealed_pathology_opened": false,
+  "sample_level": 2,
+  "schema": "full104-phase2-expression-materialization-v1",
+  "status": "PASS_PHASE2_EXPRESSION_MATERIALIZED",
+  "wall_seconds": 1227.666744709015
+}

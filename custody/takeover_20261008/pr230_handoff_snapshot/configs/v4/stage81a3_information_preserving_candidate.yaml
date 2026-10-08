@@ -1,0 +1,59 @@
+stage_id: stage81a3_final_information_preservation_qualification
+evidence_commit: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+candidate:
+  genes: 4096
+  gene_identity_width: 48
+  model_width: 160
+  latent_slots: 24
+  latent_blocks: 2
+  attention_heads: 4
+  dropout: 0.10
+  gene_attention_mode: variance_normalized
+  valid_gene_logit_standard_deviation: 1.0
+  logit_standard_deviation_floor: 1.0e-6
+  distributed_representation: final_slots_24x160
+  canonical_summary: train_fitted_pca160_of_flattened_final_slots
+  legacy_arithmetic_mean_role: historical_comparison_only
+training:
+  fixtures: [balanced_multifactor, dominant_axis_multifactor]
+  seeds: [8114001, 8114002, 8114003, 8114004, 8114005]
+  cells: 8192
+  factors: 32
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  gradient_clipping: null
+  microbatch: 8
+  effective_batch: 256
+  gradient_accumulation: 32
+  precision: cuda_fp16
+  mask_fraction: 0.40
+  mask_rule: exact_count
+  ema_momentum: 0.996
+  optimizer_updates: 500
+  checkpoints: [0, 20, 50, 100, 200, 300, 500]
+  factor_labels_used_for_training: false
+qualification_gates:
+  tokenizer_fixture_median_min_r2: 0.80
+  token_to_slot_fixture_median_min: 0.85
+  token_to_slot_individual_min: 0.70
+  slot_to_160_fixture_median_min: 0.90
+  end_to_end_fixture_median_min: 0.80
+  end_to_end_individual_min: 0.65
+  per_factor_tokenizer_min_r2: 0.20
+  per_factor_required_fraction: 0.90
+  per_factor_min_retention: 0.60
+  per_factor_median_retention_min: 0.80
+  masked_to_full_fixture_median_min: 0.80
+  jepa_value_runs_min: 8
+  jepa_value_seeds_per_fixture_min: 4
+  individual_effective_rank_min: 10
+  individual_top_singular_energy_max: 0.90
+  fixture_median_effective_rank_min: 24
+  fixture_median_top_singular_energy_max: 0.80
+boundaries:
+  pathology_access: forbidden
+  real_rna_training: forbidden
+  production_seed_selection: forbidden
+  production_ema_selection: forbidden
+  additional_model_experiments: forbidden

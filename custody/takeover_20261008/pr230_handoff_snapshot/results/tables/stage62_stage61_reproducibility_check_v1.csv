@@ -1,0 +1,5 @@
+stage61_artifact,path,exists,note
+branch_comparison,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_branch_comparison_v1.csv,True,
+feature_inventory,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_feature_inventory_v1.csv,True,uses corrected stage61_dlpfc_feature_inventory path
+gene_availability,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_gene_availability_v1.csv,True,
+pass_fail,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_pass_fail_v1.csv,True,

@@ -1,0 +1,79 @@
+stage: stage71_full_rare_microglia_graph_jepa_hierarchical_benchmark_v1
+description: >
+  Predeclared full-cell rare-microglia graph-aware hierarchical benchmark.
+  Uses full local MTG/DLPFC Micro-PVM H5ADs, frozen Stage64/68 modules/signature
+  genes, one hub-capped STRING graph and one degree-preserved randomized graph
+  control. Produces separate rare-cell representation and donor-pathology
+  prediction lock decisions. This v1 uses a compact residual graph-aware cell
+  encoder and rare-tail MIL pooling, not an architecture search.
+
+references:
+  stage27c_locked_mean_pooled_oof_spearman: 0.3267024400121495
+  stage41c_credible_unlocked_mean_pooled_oof_spearman: 0.36808747595423713
+  aux_weight: 0.20
+  n_splits: 5
+  seeds: [7, 11, 17, 23, 29]
+  bootstrap_iterations: 1000
+  random_seed: 7
+  core_signature_genes:
+    - APOE
+    - C1QA
+    - C1QB
+    - C1QC
+    - HLA-DRA
+    - HLA-DRB1
+    - CD74
+    - B2M
+    - CTSD
+    - TREM2
+    - TYROBP
+
+inputs:
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  string_edges: results/tables/v2_graph_string_edges_t700.csv
+  stage68_expression_contrast: results/tables/stage68_high_vs_low_expression_contrast_v1.csv
+  stage68_candidate_cells: results/tables/stage68_candidate_cell_export_index_v1.csv
+  stage69_script: scripts/run_stage69_rare_microglia_auxiliary_head_jepa_audit_v1.py
+  stage70_lock_gate: results/tables/stage70_lock_gate_decision_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage71_input_inventory_v1.csv
+  donor_split_audit: results/tables/stage71_donor_split_audit_v1.csv
+  gene_graph_registry: results/tables/stage71_gene_graph_registry_v1.csv
+  training_registry: results/tables/stage71_training_registry_v1.csv
+  cell_auxiliary_metrics: results/tables/stage71_cell_auxiliary_metrics_v1.csv
+  cell_attribution_stability: results/tables/stage71_cell_attribution_stability_v1.csv
+  donor_contribution_audit: results/tables/stage71_donor_contribution_audit_v1.csv
+  cross_region_expression_concordance: results/tables/stage71_cross_region_expression_concordance_v1.csv
+  graph_control_results: results/tables/stage71_graph_control_results_v1.csv
+  state_enrichment_stability: results/tables/stage71_state_enrichment_stability_v1.csv
+  oof_predictions: results/tables/stage71_oof_predictions_v1.csv
+  target_metrics: results/tables/stage71_target_metrics_v1.csv
+  seed_summary: results/tables/stage71_seed_summary_v1.csv
+  bootstrap_delta_ci: results/tables/stage71_bootstrap_delta_ci_v1.csv
+  representation_lock_decision: results/tables/stage71_representation_lock_decision_v1.csv
+  prediction_lock_decision: results/tables/stage71_prediction_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage71_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage71_pass_fail_v1.csv
+  report: results/reports/stage71_full_graph_jepa_report_v1.md
+  rare_cell_representation_report: results/reports/stage71_rare_cell_representation_report_v1.md
+  pi_summary: results/reports/stage71_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage71_claim_boundary_final_check_v1.md
+
+safety:
+  frozen_stage64_68_signature: true
+  no_auxiliary_weight_search: true
+  no_graph_strength_search: true
+  no_gene_or_module_replacement: true
+  no_pathology_derived_rare_cell_threshold: true
+  no_target_specific_cell_selection: true
+  no_posthoc_donor_removal: true
+  no_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_new_microglia_subtype_claim: true

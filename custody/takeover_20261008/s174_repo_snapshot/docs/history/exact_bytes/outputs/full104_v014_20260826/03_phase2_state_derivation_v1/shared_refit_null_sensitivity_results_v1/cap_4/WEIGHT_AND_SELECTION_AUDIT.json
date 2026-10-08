@@ -1,0 +1,10 @@
+{
+  "cap": "4",
+  "donors": 104,
+  "implementation_fingerprint": "2498953ad739716c07bdc19869ded93fa0ec9735ec505e6020d3a19107d81dc7",
+  "maximum_global_donor_mass_error": 1.734723475976807e-18,
+  "maximum_within_donor_mass_error": 0.0,
+  "operators": 42,
+  "plan_sha256": "062576d2b519ebab3209830842296feefc188d8c301981d05589204b296d5a78",
+  "rows": 5485
+}

@@ -1,0 +1,63 @@
+name: GSE178317 authenticated safe count reissue
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/reissue_gse178317_safe_counts_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/recover_gse178317_guide_assignments_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_umi_counts_v2.npz'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_count_stage_receipt_v2.json'
+      - 'tests/test_gse178317_safe_reissue_v1.py'
+      - '.github/workflows/gse178317-safe-count-reissue.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reissue-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical test dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy pytest
+      - name: Run synthetic authenticated-input adversaries
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse178317_safe_reissue_v1.py | tee /tmp/gse178317-reissue-tests.log
+      - name: Reject skipped mandatory tests
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse178317-reissue-tests.log; then
+            echo 'MANDATORY GSE178317 REISSUE TESTS SKIPPED -- STOP'
+            exit 1
+          fi
+      - name: Actually convert the COMMITTED physical 58302x81 source
+        run: |
+          set -euo pipefail
+          python analysis/therapeutic_perturbation_etl/scripts/reissue_gse178317_safe_counts_v2.py \
+            --legacy-npz analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_umi_counts_v2.npz \
+            --legacy-count-receipt analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_count_stage_receipt_v2.json \
+            --out-dir /tmp/gse178317-reviewed-safe-reissue
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/gse178317-reviewed-safe-reissue/gse178317_safe_reissue_provenance.json')
+          result=json.loads(p.read_text())
+          assert result['result']=='PARITY_VERIFIED_FORMAT_ONLY'
+          assert result['counts_shape']==[58302,81]
+          assert result['total_umis']==18006495
+          assert result['training_authorized'] is False
+          assert result['prospective_confirmation_authorized'] is False
+          print('PASS_AUTHENTICATED_FORMAT_REISSUE_ONLY', result['safe_npz_sha256'])
+          PY
+      - name: Preserve audited safe-format result as GitHub Actions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gse178317-safe-count-reissue-development-only
+          path: /tmp/gse178317-reviewed-safe-reissue/
+          retention-days: 14
+          if-no-files-found: error

@@ -1,0 +1,141 @@
+{
+  "schema": "JEPA_V51_CHAT_EXCLUSIVE_CUSTODY_MANIFEST_V1",
+  "date": "2026-09-28",
+  "purpose": "Preserve files unique to this ChatGPT conversation and distinguish them from pre-existing Project-mounted assets.",
+  "branch": "handoff/jepa-v51-regulatory-redteam-chat-custody-20260928",
+  "parent_pr_189_head": "6f78b04a88a950ab74366aa3a619beea428ecd3c",
+  "policy": {
+    "user_uploaded_text": "commit exact text bytes verbatim under docs/agent/chat-exclusive-v51-20260928/",
+    "user_uploaded_binary_archives": "record exact byte size and SHA-256; do not duplicate binary if substantive contents already exist on prior evidence branch",
+    "project_mounted_assets": "do not treat as chat-exclusive merely because mounted in /mnt/data",
+    "generated_duplicates": "do not archive duplicate tool-generated copies"
+  },
+  "archived_exact_text_sources": [
+    {
+      "original_name": "Pasted markdown(20260928-040710).md",
+      "conversation_file_id": "file_00000000ff1c81f6a09364f1aee752bc",
+      "uploaded_at": "2026-09-28T04:07:19.584Z",
+      "size_bytes": 51503,
+      "lines": 972,
+      "sha256": "f1e24e5481b7e9e80197aedf1f8a4f64e3c0e39c86a6d25c46e9314786751887",
+      "repository_path": "docs/agent/chat-exclusive-v51-20260928/CHAT_SOURCE_00_PASTED_MARKDOWN_20260928_040710.md",
+      "role": "Earlier chat-exclusive Claude/project execution transcript covering count-route closeout, exposure corrections, and relational-target historical context."
+    },
+    {
+      "original_name": "Pasted text.txt",
+      "conversation_file_id": "file_0000000061fc81f49d8bd3dec15b72b9",
+      "uploaded_at": "2026-09-28T13:20:23.991Z",
+      "size_bytes": 24001,
+      "lines": 286,
+      "sha256": "0fd39bc15797eddec561ec9d5e4380e961689834baff95f7ba89939d34d2a95b",
+      "repository_path": "docs/agent/chat-exclusive-v51-20260928/CHAT_SOURCE_01_NPH52_READER_PROVENANCE_TRANSCRIPT_20260928.txt",
+      "role": "Claude Lane-B NPH52 availability/reader-provenance repair transcript and target-discovery positioning."
+    },
+    {
+      "original_name": "JEPA_NEW_CHAT_HANDOFF_20260928_V47_CONTROL_SPECIFICITY.md",
+      "conversation_file_id": "file_000000001be081f68ec8d320d47627f3",
+      "uploaded_at": "2026-09-28T04:25:14.431Z",
+      "size_bytes": 8713,
+      "lines": 115,
+      "sha256": "c59aab8f684ab54ff5fd900d0e9678e120f6cd0a58a6bf57a05d1e0975628087",
+      "repository_path": "docs/agent/chat-exclusive-v51-20260928/CHAT_SOURCE_02_V47_HANDOFF_USER_UPLOAD_20260928.md",
+      "role": "Exact user-uploaded V47 handoff copy; V47 content also exists on the historical V47 handoff branch."
+    },
+    {
+      "original_name": "Pasted text.txt",
+      "conversation_file_id": "file_000000009d9c820cbaae5efa596c3901",
+      "uploaded_at": "2026-09-28T17:45:47.146Z",
+      "size_bytes": 88189,
+      "lines": 1248,
+      "sha256": "c98bc49539d69ed12fdb711b63da93056a15fb6d011f510fea0736b1b45265f3",
+      "repository_path": "docs/agent/chat-exclusive-v51-20260928/CHAT_SOURCE_03_CLAUDE_V50_REDTEAM_R2_R4_TRANSCRIPT_20260928.txt",
+      "role": "Claude V50 scientific red-team plus in-progress Stage75F R2 and SEA-AD spatial R4 execution transcript."
+    }
+  ],
+  "binary_chat_archives_not_duplicated": [
+    {
+      "original_name": "JEPA_RELATIONAL_CONTROL_AUDIT_20260928.zip",
+      "conversation_file_id": "file_00000000011c81f695d5b6fc6a8f3ae9",
+      "uploaded_at": "2026-09-28T04:20:40.358Z",
+      "size_bytes": 35172,
+      "sha256": "9190f9fe3bf4733e80bed96d8dec97745fb97731af0ea4e526247abeee781d8c",
+      "disposition": "NOT_DUPLICATED_BINARY",
+      "reason": "Core unpacked relational-control evidence is already represented on handoff/jepa-v47-control-specificity-20260928, including RELATIONAL_CONTROL_AUDIT_20260928.md."
+    },
+    {
+      "original_name": "JEPA_CHAT_LOCAL_ONLY_EVIDENCE_20260928.zip",
+      "conversation_file_id": "file_00000000406081f68d773b588341165f",
+      "uploaded_at": "2026-09-28T04:25:14.431Z",
+      "size_bytes": 415682,
+      "sha256": "83ab489570ffd863a6a9c9e54ebc85cd84e0c769948f15e27427a7d3137da873",
+      "disposition": "NOT_DUPLICATED_BINARY",
+      "reason": "Portable prior-chat custody archive; substantial unpacked evidence was already transferred through the V47/V48 evidence branches. Exact archive identity retained here for recovery."
+    }
+  ],
+  "non_chat_exclusive_project_mounted_assets": [
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "size_bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "size_bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "size_bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "size_bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356"
+    },
+    {
+      "name": "checkpoints.zip",
+      "size_bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"
+    },
+    {
+      "name": "expression.zip",
+      "size_bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "size_bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"
+    },
+    {
+      "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "size_bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"
+    },
+    {
+      "name": "Status and Repair Plan.txt",
+      "size_bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "classification": "pre-existing Project-mounted context"
+    },
+    {
+      "name": "WSL execution issue.txt",
+      "size_bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "classification": "pre-existing Project-mounted context"
+    }
+  ],
+  "generated_surface_duplicates_not_archived": [
+    "tool-generated duplicate JEPA_NEW_CHAT_HANDOFF_20260928_V47_CONTROL_SPECIFICITY.md",
+    "assistant-generated duplicate JEPA_CHAT_LOCAL_ONLY_EVIDENCE_20260928.zip",
+    "assistant-generated duplicate JEPA_RELATIONAL_CONTROL_AUDIT_20260928.zip",
+    "generated V48_CPU_CLOSEOUT_20260928.zip copies"
+  ],
+  "governance": {
+    "training": "OFF",
+    "td60": "NOT_EXECUTED",
+    "protected_full104_outcomes": "UNOPENED_BY_THIS_HANDOFF",
+    "note": "Manifest records custody only; it does not upgrade any scientific result or access status."
+  }
+}

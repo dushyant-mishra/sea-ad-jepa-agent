@@ -1,0 +1,107 @@
+{
+ "schema": "S174_CI_RECEIPT_V1",
+ "recorded_utc": "2026-10-07T22:05:18Z",
+ "branch": "claude/s174-train-cache-rebuild-20261007",
+ "remote_head_when_recorded": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+ "final_ci_confirmed_sha": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+ "final_ci_run": {
+  "run_id": 37693603160,
+  "head_sha": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+  "workflow": "V77 adapter, bridge and world tests",
+  "status": "completed",
+  "conclusion": "success",
+  "created_utc": "2026-10-07T22:03:00Z",
+  "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37693603160",
+  "summary_line": "146 passed in 12.27s",
+  "skipped_xfailed_or_deselected": false,
+  "commit_subject": "S174 repair lane: synthetic replay on the corrected universe; statistical ruling and new premise recorded"
+ },
+ "evidence_class": "REMOTE CI: GitHub Actions on the pushed SHA, Python 3.9, numpy 1.24.2, scipy 1.10.1, pytest 6.2.4; the suite reads only committed files",
+ "path_filter_note": "the workflow runs on pushes touching scripts/v77/** or tests/v77/**; a commit that changes only results or docs, such as the one adding this receipt, triggers no run",
+ "all_runs_on_this_branch": [
+  {
+   "run_id": 37662079349,
+   "head_sha": "36e256482fc7a2fe47da0919278ca0dba5a26f40",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T17:49:43Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37662079349",
+   "summary_line": "129 passed in 12.50s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane (code): rebuild the real TRAIN cache by a fresh gene-ID join"
+  },
+  {
+   "run_id": 37663002128,
+   "head_sha": "2d976c48852cf8c1396287ef4df18384e1659235",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T17:56:46Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37663002128",
+   "summary_line": "131 passed in 12.46s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: replay options on the eight affected V77 real-data scripts"
+  },
+  {
+   "run_id": 37664746097,
+   "head_sha": "7de5bb6a5b89d697b50990c1b599fdec5f7f61ea",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T18:10:13Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37664746097",
+   "summary_line": "133 passed in 12.96s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: old-against-new comparator (recovery accounting and side-by-side replay receipts)"
+  },
+  {
+   "run_id": 37668897096,
+   "head_sha": "70a27edb68319020104dc722aef9e2ef886ba74c",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T18:42:34Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37668897096",
+   "summary_line": "133 passed in 12.94s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: rebuilt cache built and verified; frozen G1 failed and is fully explained; not yet used"
+  },
+  {
+   "run_id": 37680091065,
+   "head_sha": "d84db5054815e5186301051f8ea84cc8b92c24c9",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T20:11:10Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37680091065",
+   "summary_line": "137 passed in 6.88s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: successor gate G1b (code), authorized by the owner; frozen G1 stays FAILED"
+  },
+  {
+   "run_id": 37687826101,
+   "head_sha": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T21:13:12Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37687826101",
+   "summary_line": "143 passed in 12.62s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: downstream re-score of the V77 synthetic records judged against the old targets"
+  },
+  {
+   "run_id": 37693603160,
+   "head_sha": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+   "workflow": "V77 adapter, bridge and world tests",
+   "status": "completed",
+   "conclusion": "success",
+   "created_utc": "2026-10-07T22:03:00Z",
+   "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/37693603160",
+   "summary_line": "146 passed in 12.27s",
+   "skipped_xfailed_or_deselected": false,
+   "commit_subject": "S174 repair lane: synthetic replay on the corrected universe; statistical ruling and new premise recorded"
+  }
+ ]
+}

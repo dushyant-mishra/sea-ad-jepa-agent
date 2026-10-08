@@ -1,0 +1,7 @@
+audit_item,pass,evidence
+no_model_training,True,Stage 39A only inspects metadata and writes readiness tables.
+no_threshold_tuning,True,No model thresholds are used.
+no_candidate_selection,True,Frozen Stage 36E candidates are not modified.
+no_clean_external_validation_claim,True,Claim level remains support/readiness only.
+no_causal_or_therapeutic_claim,True,clean external validation; causal regulator; therapeutic target; disease-modifying target; gene ablation result
+no_raw_data_commit,True,Only Stage 39A result tables/reports are written.

@@ -1,0 +1,571 @@
+{
+  "authority_input": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "cells": 4553407,
+  "descriptive_grid_alpha_target": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.95,
+    0.99,
+    1.0
+  ],
+  "donors": 104,
+  "execution_authorized": false,
+  "operator_role_in_operator_coverage_family": "PROPOSAL_COVERAGE_STRATUM_ONLY__EXACT_P_OVER_Q_REQUIRED__NOT_SCIENTIFIC_TARGET_MASS",
+  "operators": 42,
+  "population": "reader_fit",
+  "proposal_families": {
+    "DONOR_TARGET_PLUS_OPERATOR_COVERAGE_MIXTURE__PROPOSAL_ONLY": [
+      {
+        "alpha_target": 0.0,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 0.9393527875089316,
+          "max": 43782.75961538462,
+          "median": 1903.5982441471572,
+          "min": 1824.2816506410254
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.09631347999143092,
+            "0.05": 0.12928196519641946,
+            "0.1": 0.15091570767141405,
+            "0.25": 0.21443006540921636,
+            "0.5": 0.33048580627554813,
+            "0.75": 0.7855241511991068,
+            "0.9": 1.2624786509626476,
+            "0.95": 2.3682998656020238,
+            "0.99": 10.94021979394918
+          },
+          "max": 2084.893315018315
+        },
+        "importance_ess_fraction": 0.4552965729369689,
+        "importance_weight_max": 9.807516684229013,
+        "importance_weight_max_to_min_ratio": 2839.276080084299,
+        "importance_weight_min": 0.003454231433506045,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.25,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 0.9808114503155523,
+          "max": 43782.75961538462,
+          "median": 2033.3251967270207,
+          "min": 1369.7866107360724
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.142956950027211,
+            "0.05": 0.17417486439930507,
+            "0.1": 0.1888249558452695,
+            "0.25": 0.24757500757172063,
+            "0.5": 0.3400809230761867,
+            "0.75": 0.8524934992417674,
+            "0.9": 1.374672680668253,
+            "0.95": 3.1022011613764637,
+            "0.99": 10.465664747430667
+          },
+          "max": 1566.7214749461577
+        },
+        "importance_ess_fraction": 0.6881687267398063,
+        "importance_weight_max": 3.063050215286729,
+        "importance_weight_max_to_min_ratio": 665.8305405479528,
+        "importance_weight_min": 0.004600345025876941,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.5,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.0958163286235465,
+          "max": 43782.75961538462,
+          "median": 2179.115550794704,
+          "min": 915.2915708311191
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.1849428584013935,
+            "0.05": 0.2049826821488682,
+            "0.1": 0.22289228547491646,
+            "0.25": 0.25696380190847395,
+            "0.5": 0.3484909307971618,
+            "0.75": 0.8404004923590246,
+            "0.9": 1.4929849362776075,
+            "0.95": 3.6511879622497427,
+            "0.99": 10.266872836513574
+          },
+          "max": 1048.5496348740007
+        },
+        "importance_ess_fraction": 0.8389421876169384,
+        "importance_weight_max": 1.8149436120770905,
+        "importance_weight_max_to_min_ratio": 263.6205596541974,
+        "importance_weight_min": 0.0068846815834767644,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.75,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.2644566558108958,
+          "max": 43782.75961538462,
+          "median": 2090.907174227501,
+          "min": 460.79653092616576
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.21906408364728883,
+            "0.05": 0.23760168631823644,
+            "0.1": 0.25286241032877993,
+            "0.25": 0.28338525296368466,
+            "0.5": 0.3462261135295694,
+            "0.75": 0.8289411920368838,
+            "0.9": 1.7413115058496043,
+            "0.95": 3.7407005312127732,
+            "0.99": 10.867808437918836
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 0.9442618760533371,
+        "importance_weight_max": 1.2895061942202672,
+        "importance_weight_max_to_min_ratio": 94.29514045235705,
+        "importance_weight_min": 0.013675213675213675,
+        "probability_mass": 0.9999999999999999
+      },
+      {
+        "alpha_target": 0.9,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.3835086206579603,
+          "max": 43782.75961538462,
+          "median": 1817.8083948217231,
+          "min": 188.09950698319378
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.24115933499543576,
+            "0.05": 0.25156217422673416,
+            "0.1": 0.27086989669068934,
+            "0.25": 0.293539520243766,
+            "0.5": 0.3473000587914502,
+            "0.75": 0.800350023502811,
+            "0.9": 1.8477725215047314,
+            "0.95": 3.8493622440855786,
+            "0.99": 11.231800546908923
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 0.9862007109530596,
+        "importance_weight_max": 1.0986641484192095,
+        "importance_weight_max_to_min_ratio": 32.79512483031339,
+        "importance_weight_min": 0.033500837520938034,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.95,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4254526007922714,
+          "max": 43782.75961538462,
+          "median": 1745.7909618854296,
+          "min": 97.20049900220326
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.24631198657975353,
+            "0.05": 0.2547600625647051,
+            "0.1": 0.26640182832356163,
+            "0.25": 0.2959678888156037,
+            "0.5": 0.35002741892247696,
+            "0.75": 0.7955368279789806,
+            "0.9": 1.8370924933442359,
+            "0.95": 4.011561942604495,
+            "0.99": 11.3942291963374
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 0.9953145043300998,
+        "importance_weight_max": 1.0470128336130042,
+        "importance_weight_max_to_min_ratio": 16.1501729584806,
+        "importance_weight_min": 0.06482982171799023,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.99,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4597108332413138,
+          "max": 43782.75961538462,
+          "median": 1691.400893232028,
+          "min": 24.48129261741067
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2504341078472077,
+            "0.05": 0.25796831713677326,
+            "0.1": 0.2617080732528929,
+            "0.25": 0.29752311377987095,
+            "0.5": 0.3529033154991343,
+            "0.75": 0.7717426646994648,
+            "0.9": 1.8285484708158393,
+            "0.95": 4.14132170141963,
+            "0.99": 11.352556340865558
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 0.9996680149962983,
+        "importance_weight_max": 1.0090617518182228,
+        "importance_weight_max_to_min_ratio": 3.9202049058137978,
+        "importance_weight_min": 0.25740025740025724,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 1.0,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4683673675581173,
+          "max": 43782.75961538462,
+          "median": 1675.562839216071,
+          "min": 6.301491021212524
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2514646381640713,
+            "0.05": 0.25904965662632234,
+            "0.1": 0.2614270678508241,
+            "0.25": 0.29872792510701546,
+            "0.5": 0.3535372459697406,
+            "0.75": 0.7690360362429673,
+            "0.9": 1.82641246518374,
+            "0.95": 4.0995093272832035,
+            "0.99": 11.410674906276938
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 1.0,
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "importance_weight_min": 1.0,
+        "probability_mass": 1.0
+      }
+    ],
+    "DONOR_TARGET_PLUS_SOURCE_MIXTURE": [
+      {
+        "alpha_target": 0.0,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 2.0188468073460206,
+          "max": 61616.83384360358,
+          "median": 1468.1543338610145,
+          "min": 7.637971061168758
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.3685584823643977,
+            "0.05": 0.3685584823643977,
+            "0.1": 0.3685584823643977,
+            "0.25": 0.3685584823643977,
+            "0.5": 0.3685584823643977,
+            "0.75": 0.3685584823643977,
+            "0.9": 0.3685584823643977,
+            "0.95": 6.418420192042039,
+            "0.99": 7.637971061168758
+          },
+          "max": 7.637971061168758
+        },
+        "importance_ess_fraction": 0.40578068954821195,
+        "importance_weight_max": 84.21509971509971,
+        "importance_weight_max_to_min_ratio": 295.95061728395063,
+        "importance_weight_min": 0.2845579458085715,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.25,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.7919360489555607,
+          "max": 55163.63281051403,
+          "median": 1625.676740110156,
+          "min": 7.3038510511796995
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.3392850213143161,
+            "0.05": 0.34118127592987885,
+            "0.1": 0.3417756287360043,
+            "0.25": 0.3511008430500522,
+            "0.5": 0.3648031732657334,
+            "0.75": 0.46867787083404006,
+            "0.9": 1.1371997601569217,
+            "0.95": 5.857255554312383,
+            "0.99": 8.525026559506143
+          },
+          "max": 139.94578926558899
+        },
+        "importance_ess_fraction": 0.7898947457665062,
+        "importance_weight_max": 3.8624091465904455,
+        "importance_weight_max_to_min_ratio": 11.145626786443449,
+        "importance_weight_min": 0.3465403265869567,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.5,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.6133378371091212,
+          "max": 49878.584252376124,
+          "median": 1687.6122594147375,
+          "min": 6.9697310411906415
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.3100115602642345,
+            "0.05": 0.31380406949536005,
+            "0.1": 0.31499277510761087,
+            "0.25": 0.3336432037357066,
+            "0.5": 0.3610478641670692,
+            "0.75": 0.5687972593036824,
+            "0.9": 1.9058410379494453,
+            "0.95": 5.2960909165827275,
+            "0.99": 9.524322983722849
+          },
+          "max": 273.473158339136
+        },
+        "importance_ess_fraction": 0.9066397993925722,
+        "importance_weight_max": 1.9765299811103123,
+        "importance_weight_max_to_min_ratio": 4.461248279589665,
+        "importance_weight_min": 0.44304415653192675,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.75,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.5004049289560577,
+          "max": 44593.53569423822,
+          "median": 1690.9937935362213,
+          "min": 6.635611031201583
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2807380992141529,
+            "0.05": 0.28642686306084114,
+            "0.1": 0.28820992147921753,
+            "0.25": 0.31618556442136103,
+            "0.5": 0.35729255506840485,
+            "0.75": 0.6689166477733248,
+            "0.9": 2.6744823157419693,
+            "0.95": 4.679237043472913,
+            "0.99": 10.467498944999893
+          },
+          "max": 407.00052741268286
+        },
+        "importance_ess_fraction": 0.9745922651568522,
+        "importance_weight_max": 1.3280766487512567,
+        "importance_weight_max_to_min_ratio": 2.162846771762918,
+        "importance_weight_min": 0.6140410250462416,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.9,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4708377884286354,
+          "max": 41422.50655935548,
+          "median": 1690.9026474871807,
+          "min": 6.435139025208147
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2631740225841039,
+            "0.05": 0.27000053920012984,
+            "0.1": 0.2721402093021814,
+            "0.25": 0.30571098083275366,
+            "0.5": 0.3550393696092063,
+            "0.75": 0.7289882808551104,
+            "0.9": 2.2856132378695695,
+            "0.95": 4.331400413759087,
+            "0.99": 11.03340452176612
+          },
+          "max": 487.1169488568111
+        },
+        "importance_ess_fraction": 0.9955336900987898,
+        "importance_weight_max": 1.1096470729560244,
+        "importance_weight_max_to_min_ratio": 1.388637061813067,
+        "importance_weight_min": 0.7990907800683493,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.95,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4678564735585942,
+          "max": 41619.61623639316,
+          "median": 1681.28716823804,
+          "min": 6.368315023210336
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2573193303740876,
+            "0.05": 0.2645250979132261,
+            "0.1": 0.2667836385765028,
+            "0.25": 0.3022194529698846,
+            "0.5": 0.35428830778947346,
+            "0.75": 0.7490121585490388,
+            "0.9": 2.056012851526655,
+            "0.95": 4.215454870521145,
+            "0.99": 11.222039714021529
+          },
+          "max": 513.8224226715205
+        },
+        "importance_ess_fraction": 0.9988366887551035,
+        "importance_weight_max": 1.0519741308210324,
+        "importance_weight_max_to_min_ratio": 1.1842189941602468,
+        "importance_weight_min": 0.8883273583759802,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 0.99,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4679856281713874,
+          "max": 43350.13093958632,
+          "median": 1675.030736865205,
+          "min": 6.3148558216120865
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2526355766060745,
+            "0.05": 0.2601447448837031,
+            "0.1": 0.2624983819959598,
+            "0.25": 0.2994262306795893,
+            "0.5": 0.3536874583336872,
+            "0.75": 0.7650312607041816,
+            "0.9": 1.872332542452323,
+            "0.95": 4.122698435930792,
+            "0.99": 11.372947867825856
+          },
+          "max": 535.1868017232879
+        },
+        "importance_ess_fraction": 0.9999517035973773,
+        "importance_weight_max": 1.0099798701046883,
+        "importance_weight_max_to_min_ratio": 1.035373013526021,
+        "importance_weight_min": 0.9754744009264303,
+        "probability_mass": 1.0
+      },
+      {
+        "alpha_target": 1.0,
+        "expected_group_presentations_at_H_equals_reader_fit_cells": {
+          "cv_across_groups": 1.4683673675581173,
+          "max": 43782.75961538462,
+          "median": 1675.562839216071,
+          "min": 6.301491021212524
+        },
+        "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+          "cell_weighted_quantiles": {
+            "0.01": 0.2514646381640713,
+            "0.05": 0.25904965662632234,
+            "0.1": 0.2614270678508241,
+            "0.25": 0.29872792510701546,
+            "0.5": 0.3535372459697406,
+            "0.75": 0.7690360362429673,
+            "0.9": 1.82641246518374,
+            "0.95": 4.0995093272832035,
+            "0.99": 11.410674906276938
+          },
+          "max": 540.5278964862298
+        },
+        "importance_ess_fraction": 1.0,
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "importance_weight_min": 1.0,
+        "probability_mass": 1.0
+      }
+    ],
+    "DONOR_UNIFORM_OPERATOR_GROUP_UNIFORM_CELL_WITHIN_GROUP__PROPOSAL_ONLY": {
+      "expected_group_presentations_at_H_equals_reader_fit_cells": {
+        "cv_across_groups": 0.9393527875089316,
+        "max": 43782.75961538462,
+        "median": 1903.5982441471572,
+        "min": 1824.2816506410254
+      },
+      "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+        "cell_weighted_quantiles": {
+          "0.01": 0.09631347999143092,
+          "0.05": 0.12928196519641946,
+          "0.1": 0.15091570767141405,
+          "0.25": 0.21443006540921636,
+          "0.5": 0.33048580627554813,
+          "0.75": 0.7855241511991068,
+          "0.9": 1.2624786509626476,
+          "0.95": 2.3682998656020238,
+          "0.99": 10.94021979394918
+        },
+        "max": 2084.893315018315
+      },
+      "importance_ess_fraction": 0.4552965729369689,
+      "importance_weight_max": 9.807516684229013,
+      "importance_weight_max_to_min_ratio": 2839.276080084299,
+      "importance_weight_min": 0.003454231433506045,
+      "probability_mass": 1.0
+    },
+    "SOURCE_UNIFORM_CELL_WITHIN_SOURCE": {
+      "expected_group_presentations_at_H_equals_reader_fit_cells": {
+        "cv_across_groups": 2.0188468073460206,
+        "max": 61616.83384360358,
+        "median": 1468.1543338610145,
+        "min": 7.637971061168758
+      },
+      "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+        "cell_weighted_quantiles": {
+          "0.01": 0.3685584823643977,
+          "0.05": 0.3685584823643977,
+          "0.1": 0.3685584823643977,
+          "0.25": 0.3685584823643977,
+          "0.5": 0.3685584823643977,
+          "0.75": 0.3685584823643977,
+          "0.9": 0.3685584823643977,
+          "0.95": 6.418420192042039,
+          "0.99": 7.637971061168758
+        },
+        "max": 7.637971061168758
+      },
+      "importance_ess_fraction": 0.40578068954821195,
+      "importance_weight_max": 84.21509971509971,
+      "importance_weight_max_to_min_ratio": 295.95061728395063,
+      "importance_weight_min": 0.2845579458085715,
+      "probability_mass": 1.0
+    },
+    "TARGET_DONOR_UNIFORM_CELL_WITHIN_DONOR": {
+      "expected_group_presentations_at_H_equals_reader_fit_cells": {
+        "cv_across_groups": 1.4683673675581173,
+        "max": 43782.75961538462,
+        "median": 1675.562839216071,
+        "min": 6.301491021212524
+      },
+      "expected_per_cell_exposure_at_H_equals_reader_fit_cells": {
+        "cell_weighted_quantiles": {
+          "0.01": 0.2514646381640713,
+          "0.05": 0.25904965662632234,
+          "0.1": 0.2614270678508241,
+          "0.25": 0.29872792510701546,
+          "0.5": 0.3535372459697406,
+          "0.75": 0.7690360362429673,
+          "0.9": 1.82641246518374,
+          "0.95": 4.0995093272832035,
+          "0.99": 11.410674906276938
+        },
+        "max": 540.5278964862298
+      },
+      "importance_ess_fraction": 1.0,
+      "importance_weight_max": 1.0,
+      "importance_weight_max_to_min_ratio": 1.0,
+      "importance_weight_min": 1.0,
+      "probability_mass": 1.0
+    }
+  },
+  "schema": "READER_FIT_BASE_PROPOSAL_COVERAGE_PROFILE_V1",
+  "scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+  "selection": {
+    "required_future_constraints": [
+      "total presentations",
+      "maximum expected repeated exposure per cell",
+      "required proposal/importance-weight conditioning",
+      "required donor-by-operator coverage"
+    ],
+    "rule": "Do not select q from this profile alone. Freeze constraints prospectively, then derive q without outcome access.",
+    "selected_alpha": null,
+    "selected_policy_id": null
+  },
+  "training_authorized": false
+}

@@ -1,0 +1,32 @@
+{
+  "base_jepa_scientific_target": {
+    "formula": "mean_over_donors(mean_over_cells_within_donor(mean_over_masked_views(block_JEPA_loss)))",
+    "policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "status": "FROZEN_BY_SUPERSEDING_AUTHORITY"
+  },
+  "basis": {
+    "reader_fit_estimand_profile": "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2.json",
+    "reader_fit_relational_support_profile": "docs/agent/READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1.json",
+    "scientific_rationale": "The qualified target is donor-recurrent biology; cells within a donor are not independent biological replicates, so raw cell count must not set donor objective mass."
+  },
+  "compute_packing_is_not_sampling": true,
+  "execution_authorized": false,
+  "proposal_policy": {
+    "candidate_with_improved_efficiency": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1",
+    "note": "For a donor-uniform target, this candidate proposal has approximately 40.6% importance-sampling ESS on frozen reader_fit versus approximately 9.7% under raw cell-uniform proposal. Proposal choice remains separate authority because repeat/exposure behavior also matters.",
+    "selected": null
+  },
+  "relational_scientific_target": {
+    "formula": "mean_over_donors(mean_over_estimable_operator_groups_within_donor(mean_over_uniform_finite_triplets_within_group(scale_free_order_loss)))",
+    "group_capacity_weighting": "NONE",
+    "policy_id": "DONOR_UNIFORM__ELIGIBLE_OPERATOR_GROUP_UNIFORM__TRIPLET_UNIFORM_V1",
+    "status": "FROZEN_BY_SUPERSEDING_AUTHORITY",
+    "triplet_budget": null,
+    "triplet_budget_note": "The finite triplet count controls Monte Carlo variance/compute only; each group contributes a mean, so large groups do not acquire more scientific weight merely because their combinatorial triplet space is larger."
+  },
+  "schema": "TEACHER_STUDENT_V5_DONOR_PRIMARY_OBJECTIVE_CANDIDATE_V1",
+  "source_role": "SOURCE_IS_DOMAIN_STRATUM_AND_DIAGNOSTIC__NOT_AUTOMATIC_OBJECTIVE_MASS",
+  "status": "SUPERSEDED_BY_TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1",
+  "superseding_authority": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1.json",
+  "training_authorized": false
+}

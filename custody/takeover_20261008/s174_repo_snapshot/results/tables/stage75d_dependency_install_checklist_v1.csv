@@ -1,0 +1,5 @@
+dependency,install_route,required_before_stage75e,required_before_stage75f
+scenicplus,git clone aertslab/scenicplus development branch,True,
+pycisTopic/pycistarget stack,installed through SCENIC+ dependency chain where available,True,
+celloracle,pip install celloracle,,True
+pyranges/pybiomart/mudata/scanpy,pip install helpers,True,

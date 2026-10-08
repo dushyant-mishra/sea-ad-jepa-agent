@@ -1,0 +1,5 @@
+feature_matrix_id,local_processed_path,safe_feature_matrix_built,n_donors,n_features,tier,training_allowed,reason
+safe_donor_metadata,,False,0,0,Tier1,False,No fully schema-reviewed donor-linked safe matrix was available from automatic downloads.
+mri_volumetrics,,False,0,0,Tier1,False,No fully schema-reviewed donor-linked safe matrix was available from automatic downloads.
+safe_metadata_plus_mri,,False,0,0,Tier1,False,No fully schema-reviewed donor-linked safe matrix was available from automatic downloads.
+cellxgene_composition,,False,0,0,Tier2,False,No fully schema-reviewed donor-linked safe matrix was available from automatic downloads.

@@ -1,0 +1,6 @@
+input_name,path,exists,filesize_bytes
+mtg_h5ad,C:\Users\dushy\Desktop\Jepa project\data\processed\sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617
+dlpfc_h5ad,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151
+pathology_targets,C:\Users\dushy\Desktop\Jepa project\data\processed\metadata\sea_ad_mtg_donor_pathology_targets.csv,True,21982
+stage63_external_handoff,C:\Users\dushy\Desktop\Jepa project\results\tables\stage63_external_handoff_table_v1.csv,True,4673
+stage63_pass_fail,C:\Users\dushy\Desktop\Jepa project\results\tables\stage63_pass_fail_v1.csv,True,1205

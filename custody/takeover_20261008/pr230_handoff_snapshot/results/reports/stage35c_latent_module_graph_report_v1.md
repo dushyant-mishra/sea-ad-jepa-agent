@@ -1,0 +1,127 @@
+# Stage 35C latent module graph report v1
+
+## Executive summary
+
+Best Stage 35C condition: `module_graph_real_overlap_aux_weight_0_1_ridge` with mean pooled donor-level OOF Spearman `0.3273`.
+Best real module graph condition: `module_graph_real_overlap_aux_weight_0_1_ridge` with mean `0.3273`.
+Internal performance pass: `True`. Module graph-specific pass: `True`. Target-specific rescue candidates: `1`.
+
+## Controlled interpretation
+
+Stage 35C completed under guarded internal benchmark rules.
+This is an internal SEA-AD benchmark. It is not external validation, graph topology validation, causality, in silico ablation validation, or therapeutic-target discovery.
+
+## Module graph audit
+```csv
+module_graph_source,n_modules,real_module_edges,strict_shuffled_module_edges,real_strict_edge_overlap,target_values_used_to_construct_graph,module_graph_constructed,module_graph_pass
+predefined_microglia_module_gene_membership_jaccard_overlap,15,21,21,0,False,True,True
+```
+## Mean metrics
+```csv
+condition,mean_pooled_oof_spearman,n_targets
+module_graph_real_overlap_aux_weight_0_1_ridge,0.32726536397691613,5
+module_graph_no_graph_identity_ridge,0.3267024400121495,5
+stage27c_module_pca_ridge_reference,0.3267024400121495,5
+stage35a_best_reference,0.3267024400121495,5
+stage35b_best_reference,0.3267024400121495,5
+stage31_weak_residual_real_graph_alpha_0_05_reference,0.32637035537106407,5
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,0.3256899868381088,5
+module_graph_real_overlap_aux_weight_0_025_ridge,0.32531335425736563,5
+module_graph_real_overlap_aux_weight_0_05_ridge,0.32380277412169695,5
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,0.3237177280550775,5
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,0.3235921838614964,5
+```
+## Target metrics
+```csv
+condition,graph_role,aux_weight,target,target_key,target_alias,n_donors,pooled_oof_spearman,pooled_oof_pearson,r2,mae,rmse,target_context,lambda_graph
+module_graph_no_graph_identity_ridge,module_no_graph_identity_control,0.0,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.31635203121758904,0.09975961956193136,0.5908527814398361,0.6954113538288077,,
+module_graph_no_graph_identity_ridge,module_no_graph_identity_control,0.0,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5284398096588033,0.6623974952216048,0.42808995773853975,0.3514371020098168,0.4386596361996293,,
+module_graph_no_graph_identity_ridge,module_no_graph_identity_control,0.0,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30229826870507237,0.2787706505018599,0.0775241338331295,0.4963336075201987,0.5980483240374915,,
+module_graph_no_graph_identity_ridge,module_no_graph_identity_control,0.0,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.016077756403766325,-0.042985908308886905,-0.09295916718496233,0.35916171223590504,0.4595804887952489,,
+module_graph_no_graph_identity_ridge,module_no_graph_identity_control,0.0,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4519590968917688,0.4724359148185014,0.20964454842080227,0.38969685928713976,0.4861320000855131,,
+module_graph_real_overlap_aux_weight_0_025_ridge,real_module_overlap_graph_auxiliary,0.025,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.3164570778267325,0.09982344990151581,0.590837260241702,0.6953866997860197,,
+module_graph_real_overlap_aux_weight_0_025_ridge,real_module_overlap_graph_auxiliary,0.025,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5212513921231143,0.6613422522857312,0.42574860630654454,0.35298181320006744,0.4395566368354404,,
+module_graph_real_overlap_aux_weight_0_025_ridge,real_module_overlap_graph_auxiliary,0.025,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30229826870507237,0.27880151370158784,0.07754104865459766,0.49633962961200206,0.5980428410067836,,
+module_graph_real_overlap_aux_weight_0_025_ridge,real_module_overlap_graph_auxiliary,0.025,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.016077756403766325,-0.04304593932168187,-0.09302101044849787,0.35916779946378385,0.4595934909073574,,
+module_graph_real_overlap_aux_weight_0_025_ridge,real_module_overlap_graph_auxiliary,0.025,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.45220208565353853,0.4724489213574953,0.20967286893233272,0.3896968641850562,0.4861232903143463,,
+module_graph_real_overlap_aux_weight_0_05_ridge,real_module_overlap_graph_auxiliary,0.05,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3364584387972056,0.3167682805464097,0.10001269540135549,0.5907910785250073,0.6953135998364318,,
+module_graph_real_overlap_aux_weight_0_05_ridge,real_module_overlap_graph_auxiliary,0.05,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5116938341601702,0.6585781268007089,0.4203334693418196,0.3552857218663717,0.4416242628917367,,
+module_graph_real_overlap_aux_weight_0_05_ridge,real_module_overlap_graph_auxiliary,0.05,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.3037359522122102,0.2788935246939677,0.07759146797564775,0.4963576541108562,0.5980264970133785,,
+module_graph_real_overlap_aux_weight_0_05_ridge,real_module_overlap_graph_auxiliary,0.05,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.015267793864533767,-0.04322533845217545,-0.09320620895342357,0.35918600467275524,0.4596324253932567,,
+module_graph_real_overlap_aux_weight_0_05_ridge,real_module_overlap_graph_auxiliary,0.05,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.45185785157436464,0.4724825931378926,0.2097495490104203,0.38969742762363196,0.4860997071203759,,
+module_graph_real_overlap_aux_weight_0_1_ridge,real_module_overlap_graph_auxiliary,0.1,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.34182444061962136,0.3179571036084611,0.10073780316311143,0.5906118360224422,0.69503344095048,,
+module_graph_real_overlap_aux_weight_0_1_ridge,real_module_overlap_graph_auxiliary,0.1,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5250784651209882,0.6605722936219528,0.42374336277430313,0.3513402176181626,0.44032341771878464,,
+module_graph_real_overlap_aux_weight_0_1_ridge,real_module_overlap_graph_auxiliary,0.1,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30416118254530733,0.27925304028009923,0.07778834555937386,0.4964291305139188,0.5979626726390488,,
+module_graph_real_overlap_aux_weight_0_1_ridge,real_module_overlap_graph_auxiliary,0.1,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.011521717120583173,-0.043932663859718155,-0.09394207912162811,0.35925798836542555,0.4597870956139295,,
+module_graph_real_overlap_aux_weight_0_1_ridge,real_module_overlap_graph_auxiliary,0.1,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.45374101447808035,0.47254388048110596,0.2099428633081305,0.389707328328326,0.48604024763451464,,
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.025,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.316349960992761,0.09976031098112537,0.590849106621917,0.6954110867774398,,
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.025,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5233167965981573,0.6595740243056665,0.42103094819263354,0.3539245448767634,0.4413584925914379,,
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.025,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30229826870507237,0.2787826707392713,0.07753001047907071,0.4963325592461126,0.5980464190966782,,
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.025,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.016077756403766325,-0.04307444005295903,-0.09302383733815578,0.35917010285718454,0.4595940852322761,,
+module_graph_strict_shuffled_overlap_aux_weight_0_025_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.025,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.45201984408221124,0.47239377237215807,0.20959650685708742,0.3897260836739451,0.4861467745686397,,
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.05,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.3163446866363364,0.09976289420681439,0.5908379894234047,0.6954100890403403,,
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.05,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5156828996658905,0.6550348381463753,0.41187626860728,0.35695175583305716,0.4448341952178398,,
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.05,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30229826870507237,0.27881872827971016,0.07754762595161824,0.4963294022326386,0.5980407089268671,,
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.05,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.01360737065910702,-0.04333938347098073,-0.09321753873259131,0.35919522441824814,0.4596348071581713,,
+module_graph_strict_shuffled_overlap_aux_weight_0_05_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.05,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4522628328439809,0.47226757872892206,0.20945233992767698,0.3898131745838719,0.4861911083125795,,
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.1,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.33475751746481724,0.3163369027413181,0.09978046021659248,0.5907922217523852,0.6954033043610955,,
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.1,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5190847423306671,0.659829083371448,0.4233105684336229,0.3525751520190812,0.4404887379102083,,
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.1,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30367520502176776,0.27896290193855533,0.07761786896983736,0.49631659495818414,0.5980179386542024,,
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.1,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.009719550470790726,-0.044389476247794796,-0.09398774619706507,0.35929496277268,0.4597966925172995,,
+module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,strict_shuffled_module_overlap_graph_auxiliary,0.1,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4507239040194391,0.4717664093659202,0.2088753764794602,0.39015306885939066,0.48636849378177816,,
+stage27c_module_pca_ridge_reference,,,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.3163520312175891,0.09975961956193147,0.5908527814398361,0.6954113538288077,,
+stage27c_module_pca_ridge_reference,,,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5284398096588033,0.6623974952216051,0.4280899577385401,0.35143710200981665,0.4386596361996292,,
+stage27c_module_pca_ridge_reference,,,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.30229826870507237,0.27877065050186,0.07752413383312962,0.4963336075201987,0.5980483240374914,,
+stage27c_module_pca_ridge_reference,,,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.016077756403766325,-0.042985908308886815,-0.09295916718496233,0.359161712235905,0.459580488795249,,
+stage27c_module_pca_ridge_reference,,,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4519590968917688,0.47243591481850106,0.20964454842080216,0.3896968592871398,0.4861320000855132,,
+stage31_weak_residual_real_graph_alpha_0_05_reference,,,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.33204414295838813,0.31600256353109796,0.09956542131218349,0.5909258480482622,0.6954863562328477,,
+stage31_weak_residual_real_graph_alpha_0_05_reference,,,AT8,AT8,percent AT8 positive area_Grey matter,84,0.528136073706591,0.6617975636541716,0.42724710747546824,0.3517552984063907,0.438982753685565,,
+stage31_weak_residual_real_graph_alpha_0_05_reference,,,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.3040194391009416,0.2792586796340217,0.07779071941605731,0.4962670874882245,0.5979619030333984,,
+stage31_weak_residual_real_graph_alpha_0_05_reference,,,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.01565252607066923,-0.04353202637769836,-0.09365891323555298,0.3592720457767519,0.459727584032288,,
+stage31_weak_residual_real_graph_alpha_0_05_reference,,,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.45199959501873044,0.4717509978896238,0.20883927819315518,0.3894818570209831,0.4863795899279116,,
+stage35a_best_reference,,,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.3163520312175891,0.0997596195619313,0.5908527814398361,0.6954113538288077,amyloid_context,
+stage35a_best_reference,,,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5284398096588033,0.6623974952216048,0.4280899577385398,0.3514371020098167,0.4386596361996293,neuronal_tau_context,
+stage35a_best_reference,,,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.3022982687050723,0.27877065050186,0.0775241338331296,0.4963336075201987,0.5980483240374914,glial_context,
+stage35a_best_reference,,,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.0160777564037663,-0.0429859083088869,-0.0929591671849623,0.359161712235905,0.4595804887952489,glial_context,
+stage35a_best_reference,,,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4519590968917688,0.4724359148185012,0.2096445484208021,0.3896968592871397,0.4861320000855131,neuronal_tau_context,
+stage35b_best_reference,,,6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,84,0.3347372684013365,0.3163520312175891,0.0997596195619314,0.5908527814398361,0.6954113538288077,,
+stage35b_best_reference,,,AT8,AT8,percent AT8 positive area_Grey matter,84,0.5284398096588033,0.6623974952216051,0.4280899577385401,0.3514371020098166,0.4386596361996292,,
+stage35b_best_reference,,,GFAP,GFAP,percent GFAP positive area_Grey matter,84,0.3022982687050723,0.27877065050186,0.0775241338331296,0.4963336075201987,0.5980483240374914,,
+stage35b_best_reference,,,Iba1,Iba1,percent Iba1 positive area_Grey matter,84,0.0160777564037663,-0.0429859083088868,-0.0929591671849623,0.359161712235905,0.459580488795249,,
+stage35b_best_reference,,,NeuN,NeuN,percent NeuN positive area_Grey matter,84,0.4519590968917688,0.472435914818501,0.2096445484208021,0.3896968592871398,0.4861320000855132,,
+```
+## Target-specific rescue audit
+```csv
+condition,aux_weight,target,target_key,delta_vs_stage27c,delta_vs_matched_no_graph,delta_vs_matched_strict_shuffled,target_specific_module_graph_rescue_candidate
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,6e10/Aβ,6e10/A_beta,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,AT8,AT8,-0.007188417535688996,-0.007188417535688996,-0.002065404475042998,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,GFAP,GFAP,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,Iba1,Iba1,0.0,0.0,0.0,False
+module_graph_real_overlap_aux_weight_0_025_ridge,0.025,NeuN,NeuN,0.00024298876176975792,0.00024298876176975792,0.00018224157132729069,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,6e10/Aβ,6e10/A_beta,0.0017211703958691094,0.0017211703958691094,0.0017211703958691094,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,AT8,AT8,-0.016745975498633103,-0.016745975498633103,-0.003989065505720313,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,GFAP,GFAP,0.0014376835071378546,0.0014376835071378546,0.0014376835071378546,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,Iba1,Iba1,-0.000809962539232557,-0.000809962539232557,0.001660423205426748,False
+module_graph_real_overlap_aux_weight_0_05_ridge,0.05,NeuN,NeuN,-0.00010124531740413056,-0.00010124531740413056,-0.0004049812696162447,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,6e10/Aβ,6e10/A_beta,0.007087172218284865,0.007087172218284865,0.007066923154804117,True
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,AT8,AT8,-0.003361344537815114,-0.003361344537815114,0.0059937227903210655,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,GFAP,GFAP,0.0018629138402349588,0.0018629138402349588,0.00048597752353957135,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,Iba1,Iba1,-0.004556039283183152,-0.004556039283183152,0.0018021666497924464,False
+module_graph_real_overlap_aux_weight_0_1_ridge,0.1,NeuN,NeuN,0.0017819175863115766,0.0017819175863115766,0.0030171104586412256,False
+```
+## Graph-control audit
+```csv
+comparison,left_condition,right_condition,delta_mean_pooled_oof_spearman,graph_gate_pass
+best_real_minus_no_graph_identity,module_graph_real_overlap_aux_weight_0_1_ridge,module_graph_no_graph_identity_ridge,0.0005629239647666484,True
+best_real_minus_matched_strict_shuffled,module_graph_real_overlap_aux_weight_0_1_ridge,module_graph_strict_shuffled_overlap_aux_weight_0_1_ridge,0.0036731801154197274,True
+```
+## Leakage audit
+```csv
+clean_holdout_used,external_pretraining_matrix_used,external_labels_used_for_supervised_pathology_prediction,sea_ad_used_for_downstream_only,locked_donor_folds_used,fold_local_downstream_scaling_and_ridge,target_values_used_to_construct_graph,in_silico_ablation_run,leakage_audit_pass
+False,False,False,True,True,True,False,False,True
+```
+## Pass/fail
+```csv
+stage35c_run,stage35c_skipped,best_stage35c_condition,best_stage35c_mean_pooled_oof_spearman,best_real_module_graph_condition,best_real_module_graph_mean_pooled_oof_spearman,stage27c_reference_mean,best_minus_stage27c,best_real_minus_no_graph,best_real_minus_matched_strict,all_five_targets_reported,target_degradation_gate_pass,leakage_audit_pass,stage35c_internal_performance_pass,stage35c_module_graph_specific_pass,n_target_specific_rescue_candidates,controlled_interpretation
+True,False,module_graph_real_overlap_aux_weight_0_1_ridge,0.32726536397691613,module_graph_real_overlap_aux_weight_0_1_ridge,0.32726536397691613,0.3267024400121495,0.0005629239647666484,0.0005629239647666484,0.0036731801154197274,True,True,True,True,True,1,Stage 35C completed under guarded internal benchmark rules.
+```

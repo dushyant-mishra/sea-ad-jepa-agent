@@ -1,0 +1,35 @@
+# Stage71 rare-cell representation report
+
+## Cross-region concordance
+
+| gene | DLPFC | MTG | same_direction_mtg_dlpfc |
+| --- | --- | --- | --- |
+| APOE | 2.2697402222515786 | 1.3390667469073565 | True |
+| B2M | 1.5771457258969137 | 1.0299312869707744 | True |
+| C1QA | 1.262109398841858 | 1.089191962702152 | True |
+| C1QB | 1.495737664911845 | 1.024305108265999 | True |
+| C1QC | 1.593201817715005 | 1.2182033222455244 | True |
+| CD74 | 1.475834951825338 | 0.9650768920397148 | True |
+| CTSD | 0.9577037222581368 | 0.9641736684701382 | True |
+| HLA-DRA | 1.445661692178413 | 1.1602287903810158 | True |
+| HLA-DRB1 | 1.308822846575959 | 1.0612144088133788 | True |
+| TREM2 | 0.533654260819089 | 0.6225709267533742 | True |
+| TYROBP | 1.097228079217754 | 1.067315915838266 | True |
+
+## State enrichment
+
+| dataset | state_label | n_high_tail | fraction_high_tail |
+| --- | --- | --- | --- |
+| DLPFC | Micro-PVM_2 | 1820 | 0.8564705882352941 |
+| MTG | Micro-PVM_2 | 1133 | 0.5665 |
+| MTG | Micro-PVM_3-SEAAD | 604 | 0.302 |
+| DLPFC | Micro-PVM_3-SEAAD | 247 | 0.11623529411764706 |
+| MTG | Micro-PVM_1 | 109 | 0.0545 |
+| MTG | Micro-PVM_2_3-SEAAD | 108 | 0.054 |
+| DLPFC | Micro-PVM_1_1-SEAAD | 43 | 0.02023529411764706 |
+| MTG | Micro-PVM_4-SEAAD | 24 | 0.012 |
+| MTG | Monocyte | 20 | 0.01 |
+| DLPFC | Micro-PVM_1 | 9 | 0.0042352941176470585 |
+| DLPFC | Micro-PVM_2_1-SEAAD | 5 | 0.002352941176470588 |
+| MTG | Micro-PVM_2_1-SEAAD | 2 | 0.001 |
+| DLPFC | Micro-PVM_2_2-SEAAD | 1 | 0.00047058823529411766 |

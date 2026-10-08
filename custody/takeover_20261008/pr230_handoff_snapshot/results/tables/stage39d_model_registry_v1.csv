@@ -1,0 +1,10 @@
+condition,feature_blocks,include_interactions,shuffled_context_control,model
+stage39c_rank_int_latent_only_reproduction,latent,False,False,ridge
+rank_int_metadata_only_ridge,metadata,False,False,ridge
+rank_int_composition_only_ridge,composition,False,False,ridge
+rank_int_metadata_composition_ridge,metadata;composition,False,False,ridge
+rank_int_latent_metadata_ridge,latent;metadata,False,False,ridge
+rank_int_latent_composition_ridge,latent;composition,False,False,ridge
+rank_int_latent_metadata_composition_ridge,latent;metadata;composition,False,False,ridge
+rank_int_latent_metadata_composition_interactions_ridge,latent;metadata;composition,True,False,ridge
+rank_int_latent_metadata_composition_shuffled_context_control,latent;metadata;composition,False,True,ridge

@@ -1,0 +1,6 @@
+condition,model_type,latent_dim,lock_candidate,comparator_only,shuffle_targets
+stage39e_pca8_reference,reference_oof,8,False,True,
+dualhead_ema_vicreg_latent8,dualhead_ema_vicreg,8,True,False,
+dualhead_ema_vicreg_latent16,dualhead_ema_vicreg,16,True,False,
+supervised_mlp_no_ema_latent8_control,supervised_mlp_no_ema,8,False,True,
+dualhead_ema_vicreg_latent8_target_shuffled_control,dualhead_ema_vicreg,8,False,True,True

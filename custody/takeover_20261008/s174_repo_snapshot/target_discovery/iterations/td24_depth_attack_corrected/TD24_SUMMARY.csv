@@ -1,0 +1,3 @@
+class,fixed_median,fixed_max,searched_median,null_search_p95_median,null_search_max
+Neuronal: GABAergic,-0.026289,0.151499,0.649760,0.805678,0.879021
+Neuronal: Glutamatergic,0.161609,0.256032,0.802285,0.829715,0.880884

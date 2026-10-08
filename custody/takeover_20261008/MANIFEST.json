@@ -1,0 +1,54 @@
+{
+  "schema": "JEPA_COMPLETE_TAKEOVER_CUSTODY_V1",
+  "date": "2026-10-08",
+  "authority": "NON_AUTHORIZING_CUSTODY",
+  "active_runtime": {
+    "source_branch": "impl/v77-bounded-synthetic-mutation-20261007",
+    "source_commit": "8495c9f0a753dbb25c90bc27e65f28c4ee2e471e",
+    "source_tree": "77f49f11f50123dbfc32a42c112abdd8eebe2122",
+    "pr": 236,
+    "status": "GREEN_SYNTHETIC_ONLY_NON_PRODUCTION",
+    "final_execution_commit": "8dabe9ef9ed87b4beaf00acefda1a3073ed751de",
+    "workflow_run": 37712331165,
+    "focused_tests_passed": 51,
+    "training_authorized": false,
+    "production_promotable": false
+  },
+  "s174_snapshot": {
+    "source_branch": "claude/s174-train-cache-rebuild-20261007",
+    "source_commit": "750cb83c8c0535cc67a70d58b62db5607bd7d01e",
+    "source_tree": "f21515b50a1a7eebc042ac238f5be3231cc0c5e9",
+    "snapshot_path": "custody/takeover_20261008/s174_repo_snapshot",
+    "replay_checkpoint": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+    "replay_ci_run": 37693603160,
+    "replay_tests_passed": 146,
+    "note": "Byte-identical tracked repository snapshot. Large external/local cache bytes not tracked by Git remain represented by their custody receipts/hashes inside the snapshot."
+  },
+  "prior_handoff_snapshot": {
+    "source_branch": "handoff/jepa-20261007-post-v77-s174-takeover",
+    "source_commit": "a33deeae9f68ea48eea2119c9cfeb8a80dda8e0f",
+    "source_tree": "6c1d101a2a2f6840cb5d036ad52f0760c72dce2e",
+    "snapshot_path": "custody/takeover_20261008/pr230_handoff_snapshot",
+    "pr": 230
+  },
+  "canonical_lineage": {
+    "runtime_pr224": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "shared_interface_pr226": "e83bb8d90bbabefdfe6bfa7c5dfff994d7a41005",
+    "v77_zero_update_pr228": "6282b59c7bd961c0dfb99d3cb24bdd55fe2526f7",
+    "provenance_v2_repair_pr232": "d3430ce6c0e878272e92b61e01822334e088d8c8"
+  },
+  "hard_boundaries": [
+    "TRAINING=OFF",
+    "STAGE_A_EXECUTION=OFF",
+    "MULTIMODAL_TRAINING=OFF",
+    "500K=NOT_AUTHORIZED",
+    "STAGE4=NOT_AUTHORIZED",
+    "TEST=SEALED",
+    "MORABITO=PROTECTED",
+    "NO_PRODUCTION_EMA_SELECTION",
+    "NO_TARGET_FREEZE",
+    "NO_REPRESENTATION_FREEZE",
+    "NO_REAL_DATA_TRAINING"
+  ],
+  "next_scientific_problem": "Design a preregistered synthetic family with class-shared biological programs plus within-class heterogeneity while initially holding the observation/counting process fixed. Do not tune only to T5."
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "F1_EVIDENCE_TREND_NUMERICAL_TOLERANCE_AUTHORITY_V1",
+  "authority_status": "FROZEN_BEFORE_IMPLEMENTATION_AND_REPAIR_COMPARISON",
+  "dtype": "float64",
+  "evidence_levels": [0.2, 0.4, 0.6, 0.8, 1.0],
+  "coefficient_vector": [-1.0, -0.5, 0.0, 0.5, 1.0],
+  "eps_float64": 2.220446049250313e-16,
+  "per_donor_slope_absolute_tolerance_formula": "64 * eps_float64 * max(1, max(abs(evidence_row)))",
+  "per_donor_slope_multiplier": 64,
+  "exact_flat_requires_exact_zero": true,
+  "nonzero_reference_sign_agreement_required": true,
+  "evidence_trend_gate_boolean_agreement_required": true,
+  "complete_gate_vector_boolean_agreement_required": true,
+  "tolerance_may_not_excuse_sign_or_gate_disagreement": true,
+  "zero_donor_variance_remains_nonestimable": true,
+  "legacy_v1_centered_slope_is_not_the_numerical_reference": true,
+  "independent_reference": "math.fsum coefficient accumulation or exact/high-precision Decimal reconstruction from stored float64 inputs"
+}

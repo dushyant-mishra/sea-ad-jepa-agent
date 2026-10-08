@@ -1,0 +1,12 @@
+comparison,left_condition,right_condition,delta_mean_pooled_oof_spearman,graph_gate_pass,audit_type
+best_real_minus_no_graph_identity,target_aware_real_graph_aux_weight_0_01_ridge,target_aware_no_graph_identity_aux_ridge,-0.00028753670142761534,False,graph_control_delta
+best_real_minus_matched_strict_shuffled,target_aware_real_graph_aux_weight_0_01_ridge,target_aware_strict_shuffled_graph_aux_weight_0_01_ridge,-0.00013364381897340571,False,graph_control_delta
+canonical_source_gene_count_2957,resource_audit,source=2957,,True,resource_audit
+canonical_target_gene_count_2957,resource_audit,target=2957,,True,resource_audit
+canonical_union_gene_count_2957,resource_audit,union=2957,,True,resource_audit
+asset_node_counts_match,resource_audit,"{'real': (2957, 2957), 'no_graph': (2957, 2957), 'strict': (2957, 2957)}",,True,resource_audit
+real_graph_nonempty,resource_audit,edges=114029,,True,resource_audit
+strict_graph_edge_count_matches_real,resource_audit,real=114029; strict=114029,,True,resource_audit
+strict_degree_sequence_preserved,resource_audit,True,,True,resource_audit
+strict_zero_overlap,resource_audit,0.0,,True,resource_audit
+strict_safe_for_training,resource_audit,True,,True,resource_audit

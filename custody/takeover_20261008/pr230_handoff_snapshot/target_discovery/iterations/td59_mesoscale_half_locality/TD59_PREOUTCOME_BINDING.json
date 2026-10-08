@@ -1,0 +1,32 @@
+{
+  "schema": "TD59_PREOUTCOME_BINDING_V1",
+  "date": "2026-09-08",
+  "status": "PROSPECTIVE_NO_EXPRESSION_OUTCOME_OPENED",
+  "executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+  "local_selector_fraction": "1/2",
+  "pair_count_per_view": 2048,
+  "minimum_informative_pair_coordinates": 256,
+  "triplets_per_stratum_cap": 64,
+  "nulls": 64,
+  "donor_splits": 2,
+  "fresh_ranking_positions": [6144, 9215],
+  "structural_eligible_donors": {"HVS": 29, "NPH52": 16, "SEA_AD": 46},
+  "panel_0": {
+    "Z_gene_sha256": "f09455c4f5c120785608eda0c870bb299951814e895bbb7ff9d4dcf94b5680b2",
+    "Z_pair_sha256": "806553cdacc4d1e3214a2d61880b8795ca4a0637f3762280750cfb502dcd36ed",
+    "X_gene_sha256": "a365be9aa9ccfc80adddfeb080f8fc6b0c0bc515554bace7076b5cf31a990ae5",
+    "X_pair_sha256": "5d9f539d723117bffebfbcd57feefb9b880c50bc4c0aaab55dc9c9f9411a99fd",
+    "Y_gene_sha256": "124246edc85f082477fb354f6f20c09752a08a1e079c509a6f94648658b31bd3",
+    "Y_pair_sha256": "eb6182759465df0e719bc793781ce0964e9a766761508ebe7bb192eda05defad"
+  },
+  "panel_1": {
+    "Z_gene_sha256": "2e1b171e833e248c9107b3f619df66f8ea33677bec7832aad58c6885ba4ae7be",
+    "Z_pair_sha256": "960741f9b74118e8991cb859e3f044176afa8151eed3dace3f7b98102198db84",
+    "X_gene_sha256": "8ef683be715f471f2a0f95531183416d75613eac43c745aa0ab10c7b59db6fa5",
+    "X_pair_sha256": "d28d1bd09181bbfd24ca3d737a95a6d911ace6906a5e94d6bbdf133bbc33e0da",
+    "Y_gene_sha256": "e3dc6ad8c685155458c978d7c5127f26536098a88a10a5d87a6ac127b1689959",
+    "Y_pair_sha256": "bc81c334afdcf169a0e4636ec5f76da51e248b4ac35821e26b2a71b8dbe4599f"
+  },
+  "anti_fishing": "No additional locality fraction will be tried on the 50k archive after TD59 regardless of outcome.",
+  "training_authorized": false
+}

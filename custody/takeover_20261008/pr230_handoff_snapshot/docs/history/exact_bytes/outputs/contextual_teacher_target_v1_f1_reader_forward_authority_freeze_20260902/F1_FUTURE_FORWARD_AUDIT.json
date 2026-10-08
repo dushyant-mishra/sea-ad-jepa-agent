@@ -1,0 +1,10 @@
+{
+  "assignment_rows": 44496,
+  "candidate_outcome_computed": false,
+  "computational_dedup_opportunities": 1388,
+  "forwards_per_unique_cell_query": 11,
+  "future_expensive_forward_identities": 474188,
+  "model_forward_executed": false,
+  "status": "COUNT_RECOMPUTED_METADATA_ONLY_NOT_FROZEN_DUE_TO_NUISANCE_STOP",
+  "unique_cell_query_pairs": 43108
+}

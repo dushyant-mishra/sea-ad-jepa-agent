@@ -1,0 +1,45 @@
+{
+  "schema": "jepa_v53_synthetic_artifact_custody_manifest_v1",
+  "date": "2026-09-28",
+  "branch": "audit/v53-cis-positive-control-synthetic-20260928",
+  "base_sha": "b5c970de0a956188019a6d757a85ca9a31b2ee66",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened": false,
+    "real_regulatory_biology_opened": false
+  },
+  "chat_bundle": {
+    "name": "JEPA_V53_CIS_SYNTHETIC_ARTIFACTS.zip",
+    "sha256": "d430716aca57dd06724e10b6ee9f95d2dcc3cfa6a2143377b3571dd8b1821f08",
+    "size_bytes": 29651,
+    "custody_disposition": "exact_chat_export_snapshot__sha_pinned__not_mirrored_into_git",
+    "contents": [
+      "v53_cis_synthetic_tournament_fast.py",
+      "V53_CIS_SYNTHETIC_TOURNAMENT_V1.json",
+      "v53_cis_module_tournament.py",
+      "V53_CIS_MODULE_PC1_TOURNAMENT_V1.json",
+      "v53_transport_tournament.py",
+      "v53_transport_tournament_opt.py",
+      "V53_CROSS_COHORT_CIS_TRANSPORT_TOURNAMENT_V1.json"
+    ]
+  },
+  "artifact_sha256": {
+    "pairwise_producer": "c666f74ded102554867231289d60eec475d5232601b7862992f732c12b7e391f",
+    "pairwise_result": "0c3638cd54a9ebcbbfc57857d74b4e5f40f7492c29186c58d92580e4ccd9209a",
+    "pc1_producer": "d5a46b303ba1804da05951697ed8e588cad5ec19aeebf5fff3dd25ec30d2fe5e",
+    "pc1_result": "0ae2b5303bda857389b21506213eea3437964566ad2f1b6add8e8ed784d669d3",
+    "transported_producer_optimized": "626127294a5eaad5f6be181ea98024f08392fe93fe2b7d66921b37015f8a8ff6",
+    "transported_result": "69cd16bf9d99a4940620addf4d6bc7e8c5aa1ea29cde06d6002e734b71f46b49"
+  },
+  "accepted_evidence": [
+    "pairwise_tournament_completed",
+    "ATAC_only_PC1_tournament_completed",
+    "transported_frozen_weight_tournament_completed"
+  ],
+  "excluded_from_evidence": [
+    "many_decoy_exploration_attempt_1_timed_out",
+    "many_decoy_exploration_attempt_2_timed_out"
+  ],
+  "scientific_state": "CIS_POSITIVE_SIGNATURE_IMPROVED_BUT_NOT_QUALIFIED__REAL_BIOLOGY_STILL_CLOSED"
+}

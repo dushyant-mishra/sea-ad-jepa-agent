@@ -1,0 +1,10 @@
+input_name,path,exists,filesize_bytes
+mtg_h5ad,C:\Users\dushy\Desktop\Jepa project\data\processed\sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617
+dlpfc_h5ad,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151
+pathology_targets,C:\Users\dushy\Desktop\Jepa project\data\processed\metadata\sea_ad_mtg_donor_pathology_targets.csv,True,21982
+graph_edges,C:\Users\dushy\Desktop\Jepa project\results\tables\v2_graph_string_edges_t700.csv,True,382734
+stage64_gene_availability,C:\Users\dushy\Desktop\Jepa project\results\tables\stage64_gene_availability_v1.csv,True,1540
+stage64_mean_vs_tail_target_association,C:\Users\dushy\Desktop\Jepa project\results\tables\stage64_mean_vs_tail_target_association_v1.csv,True,43871
+stage64_high_vs_low_gene_contrast,C:\Users\dushy\Desktop\Jepa project\results\tables\stage64_high_vs_low_module_gene_contrast_v1.csv,True,3787
+stage65_external_handoff_signature,C:\Users\dushy\Desktop\Jepa project\results\tables\stage65_external_handoff_signature_v1.csv,True,28068
+stage65_pass_fail,C:\Users\dushy\Desktop\Jepa project\results\tables\stage65_pass_fail_v1.csv,True,968

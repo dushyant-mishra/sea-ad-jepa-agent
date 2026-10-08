@@ -1,0 +1,16 @@
+{
+  "diagnostic_ranks": [2, 4],
+  "donor_splits": 4,
+  "historical_failure_being_attacked": "apparent L2/3-IT/ExN recurrence may be explained by larger cell or donor sample size",
+  "historical_predecessor": "Stage81A3 stable basis plus TD13 class-specific donor-disjoint block recurrence",
+  "null_permutations": 32,
+  "panels": 4,
+  "pathology_accessed": false,
+  "production_dimension_selected": false,
+  "promotion_status": "FALSIFICATION_ONLY",
+  "protected_expression_accessed": false,
+  "result_of_that_attack": "SEE_PAIRED_DIFFERENCE",
+  "schema": "td14-power-matched-class-subspace-v1",
+  "status": "PILOT_FALSIFICATION_ONLY__NOT_PRODUCTION_AUTHORITY",
+  "what_is_materially_new": "within-source strong-vs-weak class pairs matched on identical donor set and deterministic equal cell count per donor before the same disjoint-donor/QC-residualized subspace test"
+}

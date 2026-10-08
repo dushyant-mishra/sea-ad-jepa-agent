@@ -1,0 +1,47 @@
+{
+  "schema": "JEPA_POPULATION_ACCESS_REGISTRY_FREEZE_V1",
+  "terminal": "PASS_POPULATION_ACCESS_REGISTRY_FREEZE__NO_NEW_DATA_ACCESS",
+  "status": "FROZEN_GOVERNANCE__TRAINING_CONTRACT_MAY_REFERENCE_REGISTRY__NO_DATA_RELEASE_GRANTED",
+  "source_branch": "planning/sealed-holdout-registry-20260907",
+  "base_planning_commit": "238d3e1baef714cf52eed95e27de083df5422cb0",
+  "prefreeze_commit": "45107e85e253ca9569fd03245604ae8b4c93f3cc",
+  "manifest_path": "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_MANIFEST_20260907.csv",
+  "package_root_sha256": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+  "package_root_rule": "SHA-256 of exact UTF-8 bytes of JEPA_POPULATION_ACCESS_REGISTRY_MANIFEST_20260907.csv",
+  "authority_inputs": {
+    "foundation_split_registry_sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+    "reader_donor_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "t1_biology_evaluation_freeze_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+    "calibration_bundle_transport_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+  },
+  "verified_geometry": {
+    "foundation_rows": 215,
+    "foundation_train": 166,
+    "foundation_development": 24,
+    "foundation_sealed_holdout": 24,
+    "whole_study_external_holdout": 1,
+    "reader_fit": 104,
+    "reader_validation": 22,
+    "reader_oracle": 23,
+    "continuation_train_without_reader_partition": 17
+  },
+  "final_prefreeze_ci": {
+    "run_id": 34078297227,
+    "head_sha": "45107e85e253ca9569fd03245604ae8b4c93f3cc",
+    "adversarial_tests": "6 passed",
+    "governance_terminal": "PASS_POPULATION_REGISTRY_GOVERNANCE_INVARIANTS"
+  },
+  "explicit_non_authorizations": [
+    "no teacher training",
+    "no real F1",
+    "no real T0",
+    "no real D1",
+    "no reader_validation opening",
+    "no reader_oracle opening",
+    "no foundation development opening",
+    "no foundation sealed_holdout opening",
+    "no external holdout opening",
+    "no pathology opening"
+  ],
+  "next_allowed_governance_step": "Healthy-teacher training contract may now be drafted against this frozen population-access registry, but execution remains separately gated."
+}

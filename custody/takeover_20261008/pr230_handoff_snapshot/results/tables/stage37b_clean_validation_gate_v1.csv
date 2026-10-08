@@ -1,0 +1,14 @@
+gate_id,gate_name,gate_pass,evidence_source,consequence_if_fail,stage37c_allowed_if_pass
+G01,Dataset not used for training,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G02,Dataset not used for pretraining,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G03,Dataset not used for model selection,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G04,Dataset not used for candidate selection,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G05,Dataset not used for threshold tuning,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G06,Donor/sample-level metadata available,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G07,Frozen candidate direction can be tested,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G08,Pathology or mechanism readout available,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G09,Gene/module measurement available,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G10,Negative/null results can be reported,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G11,Licensing/access permits analysis,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G12,Batch/sample provenance documented,False,not documented in repository at Stage 37B,dataset cannot be approved for clean validation,False
+G_FINAL,stage37c_clean_external_validation_allowed,False,Stage 37A found zero clean validation candidates; Stage 37B found no complete explicit approval evidence,Stage 37C clean external validation is not allowed; proceed to manual approval/data acquisition,False

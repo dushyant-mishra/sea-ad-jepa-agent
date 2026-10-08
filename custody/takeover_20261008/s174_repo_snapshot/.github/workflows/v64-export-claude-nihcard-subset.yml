@@ -1,0 +1,35 @@
+name: V64 export Claude NIH-CARD paired subset
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/v64-export-claude-nihcard-subset.yml'
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Claude exact-sampler successor
+        uses: actions/checkout@v4
+        with:
+          ref: claude/v64-exact-sampler-successor-20260930
+      - name: Verify paired subset hash
+        run: |
+          python - <<'PY'
+          import hashlib, pathlib
+          p=pathlib.Path("results/v64/gpt_handoff_bundle/nihcard_paired_subset.npz")
+          h=hashlib.sha256(p.read_bytes()).hexdigest()
+          expected="6dca0d35ed7fd6cc16bc086a07e36a9f4dc178b71608d0fdf4de2727428e00a6"
+          print(p.stat().st_size, h)
+          assert h==expected
+          PY
+      - name: Upload paired subset
+        uses: actions/upload-artifact@v4
+        with:
+          name: v64-nihcard-paired-subset
+          path: results/v64/gpt_handoff_bundle/nihcard_paired_subset.npz
+          if-no-files-found: error
+          retention-days: 30

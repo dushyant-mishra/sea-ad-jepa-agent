@@ -1,0 +1,23 @@
+{
+  "cap": "ALL",
+  "column_dtypes": {
+    "donor_id": "<U14",
+    "global_weight": "float64",
+    "operator_index": "int64",
+    "row_index": "int64",
+    "sample_rank": "int64",
+    "selection_row": "int64",
+    "stratum_m": "int64",
+    "stratum_n": "int64",
+    "within_donor_weight": "float64"
+  },
+  "csv_authoritative": false,
+  "csv_file": "NESTED_WEIGHTED_SELECTION.csv",
+  "format": "atomic-npz-columnar-v1",
+  "plan_file": "NESTED_WEIGHTED_SELECTION.npz",
+  "plan_file_sha256": "fc7249c4e1eafccc6a9535a30cd311e8b6fa6cf980b85c1c0a7607b65d611a21",
+  "plan_semantic_sha256": "132fa3c3b9594a742daa650497d7f212375056f104fdc087375349bcb35b6b20",
+  "rng_key_sha256": "bf9705b547ccce0417e331aaa2df76b7e9974356356fc344a8839a63f12ac649",
+  "schema": "full104-lossless-plan-authority-v1",
+  "weights_dtype": "float64"
+}

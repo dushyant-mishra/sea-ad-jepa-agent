@@ -1,0 +1,2 @@
+registry_loaded,roles_normalized,audit_complete,holdouts_protected,no_clean_holdout_included,no_stress_test_only_included,no_plausibility_only_included,all_included_datasets_explicitly_approved,gene_overlap_audit_complete,matrix_manifest_written,matrix_built,stage32_ready_for_stage33,stage32_pass,n_registry_datasets_scanned,n_approved_for_pretraining,n_protected_as_clean_holdout,n_local_matrices_found,n_matrices_included,matrix_path,allow_download
+True,True,True,True,True,True,True,True,True,True,False,False,True,26,6,9,19,0,,False

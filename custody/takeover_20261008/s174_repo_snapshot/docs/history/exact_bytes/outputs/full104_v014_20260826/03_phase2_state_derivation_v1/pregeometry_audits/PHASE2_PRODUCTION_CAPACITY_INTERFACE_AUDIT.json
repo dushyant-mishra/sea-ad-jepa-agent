@@ -1,0 +1,52 @@
+{
+  "active_neural_cell_global_width": 160,
+  "authority_tag": "FROZEN_AUTHORITY",
+  "candidate_rank_320_adequacy": "UNPROVEN_WHILE_SIGNAL_REACHES_BOUNDARY; advance ladder and/or expand search rather than issue STUDENT_CAPACITY_LIMIT",
+  "candidate_rank_320_classification": "PROSPECTIVE_DERIVATION_PROCEDURE_NOT_CAPACITY_AUTHORITY",
+  "contextual_residual": {
+    "fixed_D_ceiling_in_code": null,
+    "hidden_width": "max(320,2*state_dim)",
+    "input_bottleneck": 160,
+    "output_width": "parameterized shared_dim/private_dim"
+  },
+  "direct_route": {
+    "fixed_D_ceiling_in_code": null,
+    "output_width": "parameterized state_dim",
+    "scalar_basis_rank_limit": "min(eligible_scalar_addresses,state_dim)"
+  },
+  "hashes": {
+    "checkpoint_manifest": "b8f0e4f5873c72ec3408cec73e8a78279668515bc881783ee040a56064e9ccb5",
+    "full104_model_components_v2.py": "c69ed6abb68f31e6177170ebafa1b412b0780d47d83e00776707a4c8cd4ae342",
+    "gene_tokenizer.py": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+    "ipb_jepa.py": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a",
+    "u205_checkpoint": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa"
+  },
+  "historical_external_d_global_224_in_active_forward": false,
+  "molecular_ledger_addresses": 41238,
+  "molecular_ledger_token_width": 160,
+  "no_gpu_training_or_protected_expression": true,
+  "schema": "phase2-production-capacity-interface-audit-v1",
+  "serialization_forward_limits": {
+    "encoder_cell_state": [
+      "B",
+      160
+    ],
+    "encoder_gene_states": [
+      "B",
+      41238,
+      160
+    ],
+    "state_dim_runtime_parameterized": true,
+    "state_head": [
+      "B",
+      "state_dim"
+    ]
+  },
+  "singleton_query_local": {
+    "attention_width": 160,
+    "heads": 4,
+    "query_identity_width": 48,
+    "state_head_width": "separate parameterized state_dim"
+  },
+  "status": "PASS_CAPACITY_INTERFACES_AUTHENTICATED"
+}

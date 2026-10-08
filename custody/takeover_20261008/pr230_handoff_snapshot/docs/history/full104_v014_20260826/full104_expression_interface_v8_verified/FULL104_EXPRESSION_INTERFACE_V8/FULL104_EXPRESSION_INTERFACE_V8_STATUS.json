@@ -1,0 +1,26 @@
+{
+  "status": "PASS_FULL104_EXPRESSION_INTERFACE_VERIFIED",
+  "dataset_fidelity": "PASS",
+  "red_team": "PASS",
+  "cells_checked": 84,
+  "operators_checked": 42,
+  "molecular_addresses": 41238,
+  "nph_fit_only_derivatives": 7,
+  "nph_fit_donors": 17,
+  "nph_fit_cells": 236476,
+  "protected_nph_donors_absent": true,
+  "original_mixed_nph_assets_denied_downstream": true,
+  "teacher_input_fields": [
+    "normalized_values",
+    "observation_states"
+  ],
+  "phase2_started": false,
+  "phase2_authorized_order": [
+    "shared-state derivation",
+    "private-state derivation",
+    "D_total capacity gate",
+    "teacher standardization",
+    "direct molecular basis/ridge"
+  ],
+  "gpu_training_authorized": false
+}

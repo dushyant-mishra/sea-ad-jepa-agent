@@ -1,0 +1,36 @@
+{
+  "authority_input": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "conditioning_interpretation": {
+    "ess_floor": "importance-sampling ESS must remain at least one half of raw presentations",
+    "weight_ratio_ceiling": "largest per-cell p/q correction may be at most 64x the smallest"
+  },
+  "constraints_frozen_before_q_selection": {
+    "max_expected_per_cell_exposure": 32,
+    "max_importance_weight_max_to_min_ratio": 64.0,
+    "min_expected_donor_operator_group_presentations": 16,
+    "min_importance_ess_fraction": 0.5
+  },
+  "coverage_interpretation": {
+    "all_1400_group_zero_hit_union_bound": 0.00015754924460696277,
+    "per_group_zero_hit_upper_bound": 1.1253517471925912e-07,
+    "statement": "For independent presentation draws, P(group receives zero draws) <= exp(-expected draws); the 16-presentation floor therefore bounds the union probability that any of 1,400 groups is never drawn by 1,400*exp(-16)."
+  },
+  "ema_half_life_frozen": false,
+  "execution_authorized": false,
+  "extension_policy": "Any horizon extension or constraint relaxation requires a new prospective authority before additional presentations; there is no implicit second epoch.",
+  "horizon_definition": "EXACTLY_ONE_READER_FIT_POPULATION_EQUIVALENT__NO_AUTOMATIC_EXTENSION",
+  "population": "reader_fit",
+  "reader_fit_cells": 4553407,
+  "reader_fit_donor_operator_groups": 1400,
+  "reader_fit_donors": 104,
+  "reader_fit_sources": 3,
+  "schema": "TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1",
+  "status": "PRESENTATION_HORIZON_AND_BASE_PROPOSAL_CONSTRAINTS_FROZEN__TRAINING_UNAUTHORIZED",
+  "token_budget_frozen": false,
+  "total_presentations": 4553407,
+  "training_authorized": false,
+  "update_size_frozen": false
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "contextual-target-v1-f1-preflight-source-authority-v1",
+  "result_state": "PROSPECTIVE_PRE_RESULT",
+  "external_f0_decision": "PASS_CONTEXTUAL_TARGET_V1_F0_EXTERNAL_REVIEW_TO_F1_PREFLIGHT",
+  "candidate_performance_opened": false,
+  "bindings": {
+    "f0_output_manifest_root": "e45dd8d885c4f6918bcaf0b24bde971c08c16322b27555e112693f46e42ddb4b",
+    "prospective_contract": {"path": "CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2/CONTEXTUAL_TEACHER_TARGET_V1_PROSPECTIVE_CONTRACT.md", "sha256": "e7c33317b2ca9da59f8c836f70062409fb9cfc4e5489222978afcff83aeb5be3"},
+    "protected_program_weights": {"path": "exports/contextual_biology_v6r5a_20260822/program_weights.npz", "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"},
+    "closed_shared_state_root": "0641735d6619ff3cfdc3cce8673c38f678591d1a4a685ea229470737c9311e6d",
+    "row_lineage": {"path": "outputs/full104_v014_20260826/01_full104_metadata_adapter/FULL104_ROW_LINEAGE.csv", "sha256": "a6065751667b35a38c5990107c6b3f0177e262f7d145addb24bea24206eeb61b"},
+    "reader_split": {"path": "exports/contextual_biology_v6r5a_20260822/reader_donor_split.csv", "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"},
+    "observation_state": {"path": "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz", "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537", "shape": [42, 41238]},
+    "checkpoint": {"path": "exports/prod41k_teacher_t1_20260823/t1_run/t1_checkpoint_u0000.pt", "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4", "model_state_sha256": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf"},
+    "f0_sources": {
+      "src/sea_ad_jepa/v4/contextual_query_local.py": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+      "scripts/v4/contextual_target_v1_f0_slow_reference.py": "80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6",
+      "scripts/v4/contextual_target_v1_f0_authenticated_fixture.py": "6e865c3f23f6297cb6f9446f2108c8a2d3d8e6b72ec80a2e96ab45a7f8185587",
+      "scripts/v4/run_contextual_target_v1_f0.py": "2e4e5241be1ab1d671a100384d6d807bc66b6c6bdbd87ff15171d9120b25f6d3",
+      "src/sea_ad_jepa/v4/gene_tokenizer.py": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+      "src/sea_ad_jepa/v4/ipb_jepa.py": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a"
+    },
+    "production_ingress_sources": {
+      "scripts/v4/build_full104_production_adapter_metadata.py": "900323e04ea687aa72aebe49d6ba85979a765fda7c9fc9d004f358cd18990d8e",
+      "scripts/v4/materialize_full104_phase2_expression.py": "575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b",
+      "scripts/v4/full104_expression_interface_consumer.py": "1fc1e7fcc90fe639e7826c996584e1fc220cae8c976748210d563a9f560edbdf",
+      "scripts/v4/full104_production_expression_firewall.py": "f09abf60ef343314afe18eb978cde62a003847ca30522a5b25dde5b124c85b4b"
+    }
+  },
+  "firewall": {"allowed_partition": "reader_fit", "donors": 104, "operators": 42, "addresses": 41238, "reader_validation_oracle_dev_sealed_pathology_expression_opened": false},
+  "terminal": "PASS_AUTHORITY_BINDINGS"
+}

@@ -1,0 +1,39 @@
+{
+  "status": "PRE_RESULT_DECISION_SEMANTICS_RECONCILIATION",
+  "superseded_terminal": "PASS_F1_QUERYDESIGN_ADJUDICATOR_REPAIR_AWAITING_EXTERNAL_REVIEW",
+  "historical_stop": "STOP_F1_QUERYDESIGN_DECISION_INTEGRATION_SEMANTIC_MISMATCH",
+  "submitted_package": {
+    "zip_sha256": "47f490fb75d126600092bd77008f3f95e686f75d76c21dd755b8216ee82e9ed5",
+    "manifest_root_sha256": "1f034fb002a97b6b6923835fbdca173e551e908195e6df456c718da71519741f"
+  },
+  "unchanged_authorities": {
+    "assignment_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+    "random_key_sha256": "7d91edec79ae27fd7c9fd35ebaf33454e05aaf39a0dd8c24d23a9460a3b5242a",
+    "cell_weight_semantic_sha256": "018d80428c25a0060168a942ca03dc9e814783463cc077e3661008ba5f7b5eeb",
+    "namespace_semantic_sha256": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f",
+    "primary_null_map_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+    "decision_logic_proposal_sha256": "c7c4938f01762a4f6ae221690b87ef1e77dea0107dcca5fa8e5e7364875963bf",
+    "estimand_contract_sha256": "34af5c31b361eb8d17e1daaf47126f14fb6296f6d998f4855622922ca2f8df14",
+    "two_draw_contract_sha256": "3df23920738169edecfe79a865456f96f73795364d8f074c290b8f3d2c8923f5",
+    "qid_v2_contract_sha256": "15d873871787e0820f63aaead8f27a6f1057541e16640d8492053144a9c69423",
+    "legacy_v1_engine_sha256": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34"
+  },
+  "reconciliation": {
+    "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+    "protected_positive_holm": "REPORT_ONLY; presence and estimability remain mandatory",
+    "direct_negative_holm": "DECISION_VETO",
+    "qid_program_negative_holm": "DECISION_VETO",
+    "current_primary_tail": "ONE_SIDED_POSITIVE",
+    "legacy_wholesale_v1_qualify_active": false,
+    "claim_scope": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION",
+    "program_estimand": "DESIGN_SAMPLED_W2_PROGRAM_ESTIMAND"
+  },
+  "external_reproduction": {
+    "payload_sha256": "c8885c3fe70c4f69af9a158bae89efcc102003ef877781de6a74ac30d28d6c99",
+    "old_v1_result_sha256": "18f1ed8eddc38b7013b6763cb5450a598db877ff16479397162d3bef3cbe725c"
+  },
+  "real_forward_authority_frozen": false,
+  "real_nuisance_authority_frozen": false,
+  "expression_or_candidate_outcomes_accessed": false,
+  "training_or_ema_accessed": false
+}

@@ -1,0 +1,5 @@
+stage,component,purpose,status,causal_validation_claim
+Stage75A,readiness_and_handoff,audit dependencies/resources and freeze design,current stage,False
+Stage75B,scenicplus_egrn_construction,construct TF->region->gene eRegulons with motif/accessibility/region-gene support,not run yet,False
+Stage75C,state_specific_response_models,fit regularized target-gene response models in MTG/DLPFC rare-high/background contexts,not run yet,False
+Stage75D,celloracle_style_perturbation_engine,iterative bounded signed expression-shift propagation with donor bootstrap and JEPA latent readout,not run yet,False

@@ -1,0 +1,2 @@
+stage72b_run_pass,required_inputs_found,snrna_microglia_samples,snrna_microglia_cells,tf_coverage,target_coverage,candidate_edges_total,candidate_edges_pass,candidate_graph_ready,ready_for_stage73_graph_benchmark,validated_tf_peak_gene_grn,atac_gene_mappable_from_processed_files,claim_boundary_pass
+True,True,18,4126,22/22,44/44,966,541,True,True,False,False,True

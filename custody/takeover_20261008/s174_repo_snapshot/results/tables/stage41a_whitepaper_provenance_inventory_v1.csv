@@ -1,0 +1,6 @@
+provenance_id,document_name,source_url,document_type,needed_for,review_status
+sea_ad_methods_overview,SEA-AD methods / resources overview,https://brain-map.org/consortia/sea-ad/our-resources,documentation,provenance and modality definitions,planned_manual_review
+donor_metadata_dictionary,Donor metadata data dictionary,https://brain-map.org/consortia/sea-ad/our-resources,documentation,field definitions and linkage keys,planned_manual_review
+mri_processing_methods,Postmortem MRI processing methods,https://brain-map.org/consortia/sea-ad/our-resources,documentation,MRI feature provenance and scaling,planned_manual_review
+snrna_cellxgene_schema,CELLxGENE collection schema and cell metadata,https://cellxgene.cziscience.com/collections/1ca90a2d-2943-483d-b678-b809bf464c30,documentation,cell/donor metadata fields and donor linkage,planned_manual_review
+image_processing_methods,Image acquisition/processing methods,https://brain-map.org/consortia/sea-ad/our-resources,documentation,stain/source provenance and same-target leakage rules,planned_manual_review

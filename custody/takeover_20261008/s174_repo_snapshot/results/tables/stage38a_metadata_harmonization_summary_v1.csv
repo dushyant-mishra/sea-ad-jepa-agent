@@ -1,0 +1,6 @@
+dataset_id,metadata_file,n_rows,available_columns,inferred_sample_id_column,inferred_donor_id_column,inferred_celltype_column,inferred_disease_column,inferred_pathology_columns,metadata_ready_for_stage38b,missing_required_metadata,notes
+gse160936,,0,,,,,,,False,celltype_or_disease_metadata_incomplete,manual_acquisition_or_full_preprocessing_required
+gse125050,,0,,,,,,,False,celltype_or_disease_metadata_incomplete,manual_acquisition_or_full_preprocessing_required
+gse157827,,0,,,,,,,False,celltype_or_disease_metadata_incomplete,manual_acquisition_or_full_preprocessing_required
+gse138852,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,13214,cell_id;oupSample.batchCond;oupSample.cellType;oupSample.cellType_batchCond;oupSample.subclustID;oupSample.subclustCond,cell_id,oupSample.batchCond,oupSample.cellType,oupSample.batchCond,,True,,
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,50,Barcode;SampleID;Diagnosis;Batch;Cell.Type;cluster;Age;Sex;PMI;Tangle.Stage;Plaque.Stage;RIN,Barcode,SampleID,,Diagnosis,Plaque.Stage,False,celltype_or_disease_metadata_incomplete,manual_acquisition_or_full_preprocessing_required

@@ -1,0 +1,11 @@
+{
+  "schema": "td33-global-row-binding-guard-v1",
+  "B_rows": 25000,
+  "global_row_range": [25000, 49999],
+  "sample_row_range": [0, 24999],
+  "global_first_nonzero_integer_fraction_lt_1e-8": 1.0,
+  "global_max_integer_residual": 3.552713678800501e-15,
+  "alias_first_nonzero_integer_fraction_lt_1e-8": 0.0002,
+  "alias_median_integer_residual": 0.2522529370961396,
+  "decision": "PASS_GLOBAL_ROW_BINDING__RESET_INDEX_FORBIDDEN"
+}

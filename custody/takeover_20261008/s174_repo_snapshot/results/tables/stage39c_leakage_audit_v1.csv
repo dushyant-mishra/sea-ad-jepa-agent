@@ -1,0 +1,11 @@
+covariate_column,forbidden_term_hits,leakage_risk,allowed_for_stage39c,audit_type,audit_item,pass,evidence
+Age at Death,,False,True,covariate,,,
+PMI,,False,True,covariate,,,
+RIN,,False,True,covariate,,,
+Years of education,,False,True,covariate,,,
+Sex,,False,True,covariate,,,
+APOE Genotype,,False,True,covariate,,,
+Primary Study Name,,False,True,covariate,,,
+,,,,oof,no_duplicate_condition_target_donor_rows,True,duplicate_rows=0
+,,,,oof,heldout_donor_leakage_not_detected,True,heldout_donor_leakage_detected=False
+,,,,oof,clean_holdout_not_used,True,clean_holdout_used=False

@@ -1,0 +1,10 @@
+input_name,path,exists,size_bytes,required_for_training
+stage27c_script,scripts\run_stage27c_non_graph_rescue_v1.py,True,36188,True
+stage27c_oof,results\tables\stage27c_rescue_oof_predictions_v1.csv,True,568535,True
+stage27c_target_metrics,results\tables\stage27c_rescue_target_metrics_v1.csv,True,10495,False
+stage27c_mean_metrics,results\tables\stage27c_rescue_mean_metrics_v1.csv,True,792,False
+stage27c_pass_fail,results\tables\stage27c_rescue_pass_fail_v1.csv,True,1005,False
+locked_folds,results\tables\v3_locked_donor_folds_v1.csv,True,12554,True
+module_mean_baseline,results\tables\v3_primary_baseline_pooled_oof_recompute_v1.csv,True,8724,False
+stage35c_mean_metrics,results\tables\stage35c_mean_metrics_v1.csv,True,788,False
+stage35c_target_metrics,results\tables\stage35c_target_metrics_v1.csv,True,12775,False

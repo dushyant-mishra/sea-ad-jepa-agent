@@ -1,0 +1,4 @@
+candidate,mean_pass,material_threshold_pass,bootstrap_ci_pass,target_guard_pass,abeta_guard_pass,iba1_guard_pass,negative_control_pass,proxy_leakage_pass,final_lock_decision
+Stage27C,True,False,True,True,True,True,True,True,locked
+Stage41C,True,True,False,True,True,True,True,True,credible_unlocked_not_locked
+Stage45,False,False,False,True,False,False,True,True,do_not_lock_stage45

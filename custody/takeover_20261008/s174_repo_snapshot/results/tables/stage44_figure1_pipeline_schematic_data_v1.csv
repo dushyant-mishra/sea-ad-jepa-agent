@@ -1,0 +1,7 @@
+node_id,node_label,stage_group,node_type,status,claim_boundary
+n1,Stage27C locked benchmark,benchmark,locked,locked,internal only
+n2,graph/external/neural/LPH rescue attempts,rescue,negative/mixed,not locked,negative preserved
+n3,Stage41 credible signal,signal,credible_unlocked,not locked,CI guard
+n4,Stage45 negative feature acquisition,new_features,negative,not locked,not improvement
+n5,Stage42 external readiness,support,readiness,support only,not validation
+n6,Stage43/44 manuscript package,synthesis,ready,PI review,claim bounded

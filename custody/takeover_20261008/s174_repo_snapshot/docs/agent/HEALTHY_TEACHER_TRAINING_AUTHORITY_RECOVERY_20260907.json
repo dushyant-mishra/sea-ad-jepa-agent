@@ -1,0 +1,138 @@
+{
+  "schema": "HEALTHY_TEACHER_TRAINING_AUTHORITY_RECOVERY_V1",
+  "status": "RECOVERED_PRECONTRACT_FACTS__NOT_EXECUTION_AUTHORITY",
+  "date": "2026-09-07",
+  "population_registry": {
+    "freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+    "package_root_sha256": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
+  },
+  "clean_initialization_reference": {
+    "historical_u0_checkpoint_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+    "bytes": 26831531,
+    "schema": "prod41k-teacher-t1-v2",
+    "experiment_id": "EXP-20260823-PROD41K-TEACHER-T1",
+    "schedule_cursor": 0,
+    "donor_primary_scheduler_cursor": 0,
+    "global_update_step": 0,
+    "ema_update_count": 0,
+    "effective_batch": 128,
+    "microbatch": 8,
+    "historical_contract_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+    "note": "This u0 is clean, but may only become the new exact initialization if the independently reviewed repaired successor proves state-schema/architecture compatibility. u10-u205 are forbidden."
+  },
+  "corpus_and_address_authorities": {
+    "production_loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "production_loader_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "production_loader_source_sha256": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+    "foundation_split_registry_sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+    "reader_donor_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "address_count": 41238,
+    "operator_count": 42,
+    "sources": [
+      "HVS",
+      "NPH52",
+      "SEA_AD"
+    ]
+  },
+  "frozen_training_inventory": {
+    "reader_fit_donors": 104,
+    "cells": 3292,
+    "inventory_sha256": "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30",
+    "schedule_sha256": "4657d669658712234d7ee8ede9496297009b808d4902766a9e43f7591ca640fc",
+    "schedule_summary_sha256": "e7b29c33edb5826d3c30874ec18e305eb8bd296c2f43fb0a941f4887e17f2d2f",
+    "sampler_authority_sha256": "d1f0ca59da99cd6b166294527a17d1aca58dcebe15cb7f60d408d0801730542c",
+    "scheduled_presentations": 26240,
+    "replay_cap": 8,
+    "same_update_duplicates": 0,
+    "max_within_donor_exposure_spread": 1,
+    "full_cap_safe_update": 205,
+    "historical_checkpoint_schedule": [
+      0,
+      10,
+      25,
+      50,
+      100,
+      200,
+      205
+    ]
+  },
+  "model_and_masking": {
+    "vocabulary_size": 41238,
+    "width": 160,
+    "heads": 4,
+    "blocks": 6,
+    "gradient_checkpointing": true,
+    "views": 4,
+    "mask_fraction": 0.4,
+    "target_block_count": 16,
+    "mask_eligibility": "MEASURED_SCALAR only",
+    "training_seed": 8113002,
+    "sampler_generator_seed": 8813003,
+    "historical_sampler_base_seed": 1756835074
+  },
+  "optimizer_and_precision_from_u0": {
+    "optimizer": "AdamW",
+    "lr": 0.0001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-8,
+    "weight_decay": 0.01,
+    "amsgrad": false,
+    "maximize": false,
+    "capturable": false,
+    "differentiable": false,
+    "decoupled_weight_decay": true,
+    "ema_momentum": 0.996,
+    "grad_scaler": {
+      "initial_scale": 65536,
+      "growth_factor": 2,
+      "backoff_factor": 0.5,
+      "growth_interval": 2000
+    },
+    "forward_precision": "CUDA fp16 autocast",
+    "historical_backward_precision": "BUG: backward executed inside fp16 autocast",
+    "repaired_backward_precision": "required: scaled backward under autocast(enabled=False), per C2",
+    "tf32": false,
+    "deterministic_algorithms": true
+  },
+  "frozen_mechanics_requirements": {
+    "f1b_attack_authority_package_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+    "formal_mechanics_qualification_updates": 40,
+    "mandatory_backbone_tensors": 48,
+    "gradient_gate_position": "after scaler.unscale_(optimizer), before optimizer step",
+    "gradient_rejects": [
+      "missing",
+      "nonfinite",
+      "exact_zero"
+    ],
+    "arbitrary_small_gradient_floor_forbidden": true,
+    "adam_moments_required": [
+      "exp_avg",
+      "exp_avg_sq"
+    ],
+    "optimizer_step_must_be_proved_before_ema": true,
+    "ema_only_after_successful_valid_step": true,
+    "movement_must_be_per_tensor": true,
+    "pooled_movement_forbidden": true,
+    "fixed_two_x_decay_margin_is_not_frozen_by_attack_authority": true
+  },
+  "historical_behavior_forbidden_in_new_run": {
+    "resume_from_u10_to_u205": true,
+    "inline_reader_validation_evaluation": true,
+    "inline_reader_oracle_evaluation": true,
+    "pathology_access": true,
+    "development_or_sealed_expression": true,
+    "biology_based_early_stopping": true
+  },
+  "unresolved_before_contract_freeze": [
+    "exact independently reviewed integrated F1-B/C3 successor implementation commit/source hashes",
+    "exact new initialization checkpoint: historical u0 only if successor compatibility is proved; otherwise a newly generated successor-u0 must be frozen before u1",
+    "exact predictor mandatory-parameter registry from reviewed successor",
+    "reviewed production movement criterion/tolerance; no arbitrary 2x factor may be promoted silently"
+  ],
+  "terminal": "PASS_TRAINING_AUTHORITY_RECOVERY__CONTRACT_NOT_READY_FOR_EXECUTION"
+}

@@ -1,0 +1,6 @@
+resource_id,logical_name,expected_future_role,local_availability,no_download_attempted,priority,blocking_scope
+sea_ad_a9_expression,SEA-AD A9 regional expression matrix,regional_replication_candidate,false,true,1,later_stage_only
+sea_ad_mtg_merfish,SEA-AD MTG MERFISH expression with coordinates and sections,spatial_training_and_section_held_out_evaluation,false,true,2,later_stage_only
+sea_ad_multiregion,SEA-AD multiregion expression release,choose_continuation_pretraining_or_generalization_not_both,false,true,3,later_stage_only
+human_ipsc_microglia_crispri_a,human iPSC-derived microglia CRISPRi/a with authoritative perturbation assignments,v4e_calibration_or_held_out_evaluation_not_both,false,true,4,v4e_only
+microglia_compound_response,relevant microglial compound-response expression data,future_drug_signature_evaluation_after_v4e,false,true,5,later_stage_only

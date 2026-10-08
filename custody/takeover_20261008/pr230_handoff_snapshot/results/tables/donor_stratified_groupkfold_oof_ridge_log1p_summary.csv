@@ -1,0 +1,4 @@
+model,target,n_oof_donors,pooled_oof_spearman,pooled_oof_r2,pooled_oof_mae
+jepa_ema_var_e30,percent AT8 positive area_Grey matter,84,0.43948567378758735,0.3242149579069903,0.8116480708122253
+jepa_ema_e20,percent AT8 positive area_Grey matter,84,0.4365698086463501,0.2748296334855199,0.8566021919250488
+pseudobulk,percent AT8 positive area_Grey matter,84,0.4215045054166245,0.36491070593235064,0.8283443450927734

@@ -1,0 +1,114 @@
+{
+  "authority_decision": {
+    "historical_u10_to_u205_biological_teacher_authority": false,
+    "historical_u10_to_u205_resume_authority": false,
+    "loss_decrease_is_not_biological_qualification": true,
+    "requires_48_tensor_elementwise_gradient_and_moment_gate": true,
+    "requires_future_atomic_telemetry": true
+  },
+  "first_update": 1,
+  "gradient_component_surface": {
+    "component_stats": {
+      "CELL": {
+        "first_l2_norm": 7.044847619719607e-05,
+        "last_l2_norm": 1.3526539912503139e-07,
+        "last_over_first": 0.0019200613899213778,
+        "max_l2_norm": 7.044847619719607e-05,
+        "median_l2_norm": 2.5033061163282794e-07,
+        "min_l2_norm": 6.417186067867097e-08
+      },
+      "IPB_shared": {
+        "first_l2_norm": 2.43169440988618,
+        "last_l2_norm": 0.0061311861407725605,
+        "last_over_first": 0.002521363751894936,
+        "max_l2_norm": 2.43169440988618,
+        "median_l2_norm": 0.01566769117875,
+        "min_l2_norm": 0.005017127445850096
+      },
+      "identity_query_path": {
+        "first_l2_norm": 0.002739324683898436,
+        "last_l2_norm": 1.713368859271821e-05,
+        "last_over_first": 0.0062547125915481516,
+        "max_l2_norm": 0.002739324683898436,
+        "median_l2_norm": 2.954255642181796e-05,
+        "min_l2_norm": 1.580528946099107e-05
+      },
+      "predictor": {
+        "first_l2_norm": 5.118738694640949,
+        "last_l2_norm": 0.024220410076478967,
+        "last_over_first": 0.004731714494790771,
+        "max_l2_norm": 5.118738694640949,
+        "median_l2_norm": 0.06345381792961127,
+        "min_l2_norm": 0.023095916437359136
+      },
+      "value_tokenizer_H": {
+        "first_l2_norm": 0.827363545915011,
+        "last_l2_norm": 0.0017578761056850165,
+        "last_over_first": 0.00212467193456163,
+        "max_l2_norm": 0.827363545915011,
+        "median_l2_norm": 0.004535947415101707,
+        "min_l2_norm": 0.0014716685267888725
+      }
+    },
+    "components": [
+      "identity_query_path",
+      "value_tokenizer_H",
+      "CELL",
+      "IPB_shared",
+      "predictor"
+    ],
+    "limitation": "aggregate component l2_norms cannot prove the 48 protected attention-routing tensors were live elementwise",
+    "missing_parameter_tensors_total": 0,
+    "nonfinite_parameter_tensors_total": 0
+  },
+  "input_schema": "prod41k-t1-trajectory-v2",
+  "last_update": 205,
+  "loss": {
+    "min": 0.006054659781511873,
+    "min_update": 203,
+    "strict_decrease_steps": 141,
+    "strict_increase_steps": 63,
+    "u1": 2.344030126929283,
+    "u1_to_u205_pct_reduction": 0.9973795955891789,
+    "u205": 0.006142306883702986,
+    "u205_over_u1": 0.0026204044108210783,
+    "windows": {
+      "u100_to_u205": {
+        "loss_end": 0.006142306883702986,
+        "loss_pct_reduction": 0.3216911880799877,
+        "loss_start": 0.009055325208464637
+      },
+      "u10_to_u40": {
+        "loss_end": 0.021611582225887105,
+        "loss_pct_reduction": 0.9744810189125073,
+        "loss_start": 0.8468826459720731
+      },
+      "u1_to_u10": {
+        "loss_end": 0.8468826459720731,
+        "loss_pct_reduction": 0.6387065864714363,
+        "loss_start": 2.344030126929283
+      },
+      "u1_to_u205": {
+        "loss_end": 0.006142306883702986,
+        "loss_pct_reduction": 0.9973795955891789,
+        "loss_start": 2.344030126929283
+      },
+      "u40_to_u100": {
+        "loss_end": 0.009055325208464637,
+        "loss_pct_reduction": 0.5809966566160133,
+        "loss_start": 0.021611582225887105
+      }
+    }
+  },
+  "runtime": {
+    "ema_updates_match_update_count": true,
+    "max_peak_cuda_allocated_bytes": 5948149760,
+    "max_peak_cuda_reserved_bytes": 6178209792,
+    "total_wall_hours": 4.954137427833371,
+    "total_wall_seconds": 17834.894740200136
+  },
+  "schema": "T1_TRAJECTORY_JSON_REVIEW_V1",
+  "source_file": "/mnt/data/04265c6d-285c-45b6-8e17-184d6e8bdd7b.json",
+  "source_sha256": "64c996b053d35722c7c18eeadf5e9b2dbab97b063c59101881f8a4b578125a49",
+  "update_count": 205
+}

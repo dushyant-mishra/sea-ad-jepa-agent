@@ -1,0 +1,5 @@
+condition,mean_pooled_oof_spearman,min_target_pooled_oof_spearman,n_targets
+stage27c_module_pca_ridge_reference,0.3267024400121495,0.016077756403766325,5
+v3_no_graph,0.3267024400121495,0.016077756403766325,5
+v3_real_graph,0.32047382808545105,0.17454692720461681,5
+v3_strict_shuffled_graph,0.2986088893388681,0.16223549660828185,5

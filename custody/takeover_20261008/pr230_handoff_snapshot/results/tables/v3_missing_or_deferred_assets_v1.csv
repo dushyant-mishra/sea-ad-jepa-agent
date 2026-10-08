@@ -1,0 +1,38 @@
+missing_asset,category,why_needed,blocking_level,suggested_action,can_defer_to_future_extension,notes
+WGCNA module eigengenes,module_asset,WGCNA module baseline,future_extension,defer_to_future_extension,True,Not found; generate or defer.
+module-to-gene mapping file,module_asset,module branch input,future_extension,defer_to_future_extension,True,Can be generated from src/sea_ad_jepa/gene_sets.py.
+pathway graph file,graph_source_asset,pathway typed graph source,future_extension,defer_to_future_extension,True,Missing/deferred; Reactome/KEGG/GO source can be generated later.
+Reactome/KEGG/GO membership files,graph_source_asset,pathway memberships,future_extension,defer_to_future_extension,True,Missing/deferred.
+GRN / TF-target file,graph_source_asset,causal-prior graph source,future_extension,defer_to_future_extension,True,Missing/deferred.
+umap,benchmark_package,UMAP baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+openTSNE,benchmark_package,alternative t-SNE baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+phate,benchmark_package,PHATE baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+pydiffmap,benchmark_package,diffusion maps baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+torch,benchmark_package,"MLP, autoencoder, Graph-JEPA",minimum_v3_blocker,generate_or_restore_before_stage_24,False,Import availability in the current Python environment.
+torch_geometric,benchmark_package,graph-only GNN feasibility,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+scanpy,benchmark_package,single-cell preprocessing and diffusion alternatives,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+scvi,benchmark_package,VAE/scVI-style latent,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+xgboost,benchmark_package,tree/boosting baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+lightgbm,benchmark_package,tree/boosting baseline,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+econml,benchmark_package,observational causal effect estimation,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+dowhy,benchmark_package,observational causal effect estimation and refutation,future_extension,defer_to_future_extension,True,Import availability in the current Python environment.
+UMAP + ridge/kNN,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Requires umap package and fold-safe harness.
+supervised UMAP if leakage-safe,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Must be blocked until leakage-safe fit protocol is written.
+PHATE + ridge/kNN,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Package-dependent; do not install here.
+diffusion maps + ridge/kNN,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Requires pydiffmap or scanpy diffusion-map equivalent.
+expression-only MLP,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Requires a locked no-graph neural baseline.
+module-only MLP,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Needs module feature extraction harness.
+autoencoder latent,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Can be implemented without graph inputs.
+VAE/scVI-style latent,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Future extension if scvi available/installed later.
+graph-only GNN,benchmark_baseline,v3 benchmark suite,future_extension,defer_to_future_extension,True,Requires torch_geometric and locked GNN baseline.
+v3 no-graph,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Minimum v3 control.
+v3 strict shuffled,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Minimum graph-specific control.
+v3 real graph,benchmark_baseline,v3 benchmark suite,minimum_v3_blocker,generate_or_restore_before_stage_24,False,Minimum real graph model.
+batch labels,causal_inference_asset,environment invariance / causal adjustment,future_extension,defer_to_future_extension,True,"Missing expected columns among ['Batch', 'Specimen ID', 'batch', 'library_prep']"
+cell-state cluster labels,causal_inference_asset,environment invariance / causal adjustment,future_extension,defer_to_future_extension,True,Dedicated table not found; may be derivable from H5AD obs in Stage 24.
+microglia/PVM labels,causal_inference_asset,environment invariance / causal adjustment,future_extension,defer_to_future_extension,True,Dedicated table not found; may be derivable from H5AD obs in Stage 24.
+Perturb-seq files,perturbation_asset,perturbation-supervised calibration,future_extension,defer_to_future_extension,True,Future extension unless real perturbation dataset is present and overlap is audited.
+CRISPRi/CRISPRa files,perturbation_asset,perturbation-supervised calibration,future_extension,defer_to_future_extension,True,Future extension unless real perturbation dataset is present and overlap is audited.
+public perturbation dataset references,perturbation_asset,perturbation-supervised calibration,future_extension,defer_to_future_extension,True,Future extension unless real perturbation dataset is present and overlap is audited.
+fake perturbseq generator,perturbation_asset,perturbation-supervised calibration,future_extension,defer_to_future_extension,True,Future extension unless real perturbation dataset is present and overlap is audited.
+perturbation benchmark script,perturbation_asset,perturbation-supervised calibration,future_extension,defer_to_future_extension,True,Future extension unless real perturbation dataset is present and overlap is audited.

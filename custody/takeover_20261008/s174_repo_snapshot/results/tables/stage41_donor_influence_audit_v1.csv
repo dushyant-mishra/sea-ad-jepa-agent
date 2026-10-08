@@ -1,0 +1,2 @@
+candidate_id,donor_id,high_influence_flag,training_status
+,,,skipped_missing_safe_features

@@ -1,0 +1,19 @@
+{
+  "schema": "jepa-full104-v014-phase0-preflight-v1",
+  "date": "2026-08-26",
+  "status": "STOP_PROVENANCE_CONTRACT_NAME_MISMATCH",
+  "source_zip": "C:/Users/dushy/Downloads/JEPA_CODEX_ADAPTIVE_HANDOFF_V014_20260826.zip",
+  "source_zip_sha256": "cd880219bbefcc91950bd6c1d48567a9a26d0b584d82ab63ab73f1dd3d059d5b",
+  "payload_manifest_rows": 92,
+  "payload_manifest_verified_rows": 92,
+  "requested_contract": "JEPA_FULL_DATASET_ADAPTIVE_CALIBRATION_CONTRACT_V1.md",
+  "requested_contract_present": false,
+  "included_contract": "prior_v013/full104/FULL104_ADAPTIVE_CALIBRATION_CONTRACT_V1.md",
+  "included_contract_sha256": "83f7a1912c857d14d20fbe6d1ebeefbf8e2b6b0786e82c2f0536a44a2442231b",
+  "explicit_alias_found": false,
+  "donor_split_matches_repository_authority": true,
+  "donor_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+  "expression_opened": false,
+  "dataset_dependent_values_derived": false,
+  "phase1_or_later_started": false
+}

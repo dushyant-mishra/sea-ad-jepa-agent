@@ -1,0 +1,2 @@
+model_variant,latent_dim,seed,mean_pooled_oof_spearman,delta_vs_stage27c_locked,delta_vs_stage41c_credible_unlocked,negative_control_type,passed_negative_control
+negative_control_programming_plus_donor_shuffled_heterogeneity,8,107,0.31597043636731803,-0.010732003644831456,-0.0521170395869191,donor_shuffled_heterogeneity,True

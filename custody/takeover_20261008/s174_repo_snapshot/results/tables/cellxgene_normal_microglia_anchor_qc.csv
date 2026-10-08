@@ -1,0 +1,7 @@
+metric,value
+n_cells,10000
+n_genes,2957
+n_matched_jepa_genes,2863
+n_missing_jepa_genes,94
+n_donors,692
+obs_filter,disease == 'normal' and cell_type == 'microglial cell' and tissue_general == 'brain' and is_primary_data == True and suspension_type == 'nucleus'

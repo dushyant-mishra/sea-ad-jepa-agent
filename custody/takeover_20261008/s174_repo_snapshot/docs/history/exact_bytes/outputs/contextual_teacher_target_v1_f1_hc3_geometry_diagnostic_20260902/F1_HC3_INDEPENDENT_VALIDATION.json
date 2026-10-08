@@ -1,0 +1,25 @@
+{
+  "candidate_outcomes_read": false,
+  "checks": {
+    "basis_invariance": true,
+    "every_prefix_frontier_row": true,
+    "family_ranks_and_all_loo": true,
+    "firewall": true,
+    "mandatory_base": true,
+    "observation_state_equivalence": true,
+    "old_unit_leverage_failure": true,
+    "source_residual_svd": true,
+    "unit_donor_patterns": true
+  },
+  "expression_read": false,
+  "frontier_max_abs_scalar_difference": 2.44582132324922e-13,
+  "frontier_rows_checked": 105,
+  "independent_basis_invariance_max_hat_abs": 1.0408340855860843e-16,
+  "model_or_checkpoint_read": false,
+  "old_boundary_donors": [
+    "HVS::H20.06.354",
+    "NPH52::human_NPH_906"
+  ],
+  "production_diagnostic_helpers_imported": false,
+  "status": "PASS"
+}

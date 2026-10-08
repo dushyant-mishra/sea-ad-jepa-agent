@@ -1,0 +1,46 @@
+baseline_id,baseline_name,target,target_oof_spearman,target_specific_rank,target_specific_winner,mean_oof_spearman_across_targets,median_oof_spearman_across_targets,rank,is_target_winner
+module_mean_baseline,Module mean baseline,GFAP,0.24941176470588236,1,module_mean_baseline,0.33250980392156865,0.31696078431372554,1,True
+module_mean_baseline,Module mean baseline,6e10/Aβ,0.31696078431372554,2,raw_expression_ridge,0.33250980392156865,0.31696078431372554,1,False
+module_mean_baseline,Module mean baseline,AT8,0.5517647058823529,2,lightgbm_raw_expression,0.33250980392156865,0.31696078431372554,1,False
+module_mean_baseline,Module mean baseline,Iba1,0.10500000000000001,4,wgcna_module_summary_ridge,0.33250980392156865,0.31696078431372554,1,False
+module_mean_baseline,Module mean baseline,NeuN,0.4394117647058824,5,raw_expression_elasticnet,0.33250980392156865,0.31696078431372554,1,False
+pca_elasticnet,PCA elastic net,NeuN,0.5653921568627451,2,raw_expression_elasticnet,0.30011764705882354,0.2085294117647059,2,False
+pca_elasticnet,PCA elastic net,GFAP,0.1674509803921569,3,module_mean_baseline,0.30011764705882354,0.2085294117647059,2,False
+pca_elasticnet,PCA elastic net,Iba1,0.2085294117647059,3,wgcna_module_summary_ridge,0.30011764705882354,0.2085294117647059,2,False
+pca_elasticnet,PCA elastic net,6e10/Aβ,0.17205882352941176,4,raw_expression_ridge,0.30011764705882354,0.2085294117647059,2,False
+pca_elasticnet,PCA elastic net,AT8,0.38715686274509803,6,lightgbm_raw_expression,0.30011764705882354,0.2085294117647059,2,False
+raw_expression_ridge,Raw expression ridge,6e10/Aβ,0.31754901960784315,1,raw_expression_ridge,0.2899607843137255,0.31754901960784315,3,True
+raw_expression_ridge,Raw expression ridge,GFAP,0.18401960784313726,2,module_mean_baseline,0.2899607843137255,0.31754901960784315,3,False
+raw_expression_ridge,Raw expression ridge,AT8,0.4136274509803922,5,lightgbm_raw_expression,0.2899607843137255,0.31754901960784315,3,False
+raw_expression_ridge,Raw expression ridge,Iba1,0.09529411764705882,5,wgcna_module_summary_ridge,0.2899607843137255,0.31754901960784315,3,False
+raw_expression_ridge,Raw expression ridge,NeuN,0.4393137254901961,6,raw_expression_elasticnet,0.2899607843137255,0.31754901960784315,3,False
+lightgbm_raw_expression,LightGBM raw expression,AT8,0.6444117647058825,1,lightgbm_raw_expression,0.28017647058823536,0.15558823529411764,4,True
+lightgbm_raw_expression,LightGBM raw expression,6e10/Aβ,0.12450980392156863,5,raw_expression_ridge,0.28017647058823536,0.15558823529411764,4,False
+lightgbm_raw_expression,LightGBM raw expression,GFAP,0.15558823529411764,5,module_mean_baseline,0.28017647058823536,0.15558823529411764,4,False
+lightgbm_raw_expression,LightGBM raw expression,Iba1,0.07450980392156861,6,wgcna_module_summary_ridge,0.28017647058823536,0.15558823529411764,4,False
+lightgbm_raw_expression,LightGBM raw expression,NeuN,0.4018627450980393,7,raw_expression_elasticnet,0.28017647058823536,0.15558823529411764,4,False
+xgboost_raw_expression,XGBoost raw expression,AT8,0.5293137254901962,3,lightgbm_raw_expression,0.25943137254901966,0.1623529411764706,5,False
+xgboost_raw_expression,XGBoost raw expression,GFAP,0.1623529411764706,4,module_mean_baseline,0.25943137254901966,0.1623529411764706,5,False
+xgboost_raw_expression,XGBoost raw expression,NeuN,0.4875490196078432,4,raw_expression_elasticnet,0.25943137254901966,0.1623529411764706,5,False
+xgboost_raw_expression,XGBoost raw expression,6e10/Aβ,0.10549019607843138,6,raw_expression_ridge,0.25943137254901966,0.1623529411764706,5,False
+xgboost_raw_expression,XGBoost raw expression,Iba1,0.012450980392156853,9,wgcna_module_summary_ridge,0.25943137254901966,0.1623529411764706,5,False
+raw_expression_elasticnet,Raw expression elastic net,NeuN,0.5922549019607843,1,raw_expression_elasticnet,0.2575882352941177,0.09813725490196079,6,True
+raw_expression_elasticnet,Raw expression elastic net,AT8,0.5108823529411766,4,lightgbm_raw_expression,0.2575882352941177,0.09813725490196079,6,False
+raw_expression_elasticnet,Raw expression elastic net,6e10/Aβ,0.03088235294117648,7,raw_expression_ridge,0.2575882352941177,0.09813725490196079,6,False
+raw_expression_elasticnet,Raw expression elastic net,GFAP,0.09813725490196079,7,module_mean_baseline,0.2575882352941177,0.09813725490196079,6,False
+raw_expression_elasticnet,Raw expression elastic net,Iba1,0.0557843137254902,7,wgcna_module_summary_ridge,0.2575882352941177,0.09813725490196079,6,False
+pca_ridge,PCA ridge,6e10/Aβ,0.22245098039215688,3,raw_expression_ridge,0.2444509803921569,0.22245098039215688,7,False
+pca_ridge,PCA ridge,NeuN,0.5077450980392157,3,raw_expression_elasticnet,0.2444509803921569,0.22245098039215688,7,False
+pca_ridge,PCA ridge,GFAP,0.1526470588235294,6,module_mean_baseline,0.2444509803921569,0.22245098039215688,7,False
+pca_ridge,PCA ridge,AT8,0.3181372549019608,7,lightgbm_raw_expression,0.2444509803921569,0.22245098039215688,7,False
+pca_ridge,PCA ridge,Iba1,0.021274509803921576,8,wgcna_module_summary_ridge,0.2444509803921569,0.22245098039215688,7,False
+wgcna_module_summary_ridge,WGCNA module summary ridge,Iba1,0.31450980392156863,1,wgcna_module_summary_ridge,0.08103921568627451,0.15901960784313726,8,True
+wgcna_module_summary_ridge,WGCNA module summary ridge,AT8,0.1727450980392157,8,lightgbm_raw_expression,0.08103921568627451,0.15901960784313726,8,False
+wgcna_module_summary_ridge,WGCNA module summary ridge,GFAP,-0.11509803921568632,8,module_mean_baseline,0.08103921568627451,0.15901960784313726,8,False
+wgcna_module_summary_ridge,WGCNA module summary ridge,NeuN,0.15901960784313726,8,raw_expression_elasticnet,0.08103921568627451,0.15901960784313726,8,False
+wgcna_module_summary_ridge,WGCNA module summary ridge,6e10/Aβ,-0.12598039215686277,9,raw_expression_ridge,0.08103921568627451,0.15901960784313726,8,False
+wgcna_module_summary_elasticnet,WGCNA module summary elastic net,Iba1,0.3115686274509804,2,wgcna_module_summary_ridge,0.02378431372549019,-0.018137254901960786,9,False
+wgcna_module_summary_elasticnet,WGCNA module summary elastic net,6e10/Aβ,-0.09068627450980395,8,raw_expression_ridge,0.02378431372549019,-0.018137254901960786,9,False
+wgcna_module_summary_elasticnet,WGCNA module summary elastic net,AT8,-0.018137254901960786,9,lightgbm_raw_expression,0.02378431372549019,-0.018137254901960786,9,False
+wgcna_module_summary_elasticnet,WGCNA module summary elastic net,GFAP,-0.12794117647058825,9,module_mean_baseline,0.02378431372549019,-0.018137254901960786,9,False
+wgcna_module_summary_elasticnet,WGCNA module summary elastic net,NeuN,0.04411764705882353,9,raw_expression_elasticnet,0.02378431372549019,-0.018137254901960786,9,False

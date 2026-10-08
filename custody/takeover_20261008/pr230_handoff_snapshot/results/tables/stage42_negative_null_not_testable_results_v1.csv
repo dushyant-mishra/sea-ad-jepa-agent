@@ -1,0 +1,7 @@
+stage,result_type,result_summary,preserved_in_manuscript,interpretation
+Stage33/34,failed_external_pretraining,external pretraining did not rescue internal benchmark,True,negative result preserved
+Stage37/38,external_readiness_limitation,external datasets remain support/readiness context unless compatibility gates pass,True,no clean validation inferred
+Stage39B,LPH failure,latent-prediction auxiliary head failed to lock a new benchmark,True,negative rescue result preserved
+Stage40A,neural rescue failure,conditional neural rescue failed,True,stop architecture tuning without new safe data
+Stage41,lock failure despite improved point estimate,Stage41C best credible signal failed bootstrap lower-CI lock guard,True,Stage27C preserved
+Stage42,external support not testable,compatible processed external expression/cell-state tables not available for computation,True,manual acquisition gap

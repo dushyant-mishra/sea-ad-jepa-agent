@@ -1,0 +1,75 @@
+stage_id: stage81a3_ipb_jepa_feasibility
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+architecture:
+  name: MRA-JEPA_v4.1_IPB-JEPA
+  genes: 4096
+  identity_width: 48
+  model_width: 160
+  attention_heads: 4
+  head_width: 40
+  encoder_blocks: 6
+  ffn_width: 320
+  dropout: 0.10
+  linear_attention_feature: elu_plus_one
+  linear_attention_epsilon: 1.0e-6
+  cell_tokens: 1
+  perceiver_slots: 0
+  graph_model_input: false
+target_blocks:
+  graph_source: synthetic_train_normalized_expression_only
+  graph_metric: absolute_pearson
+  graph_top_k: 8
+  graph_symmetrization: union
+  block_count: 16
+  hidden_fraction: 0.40
+  exact_count: true
+  disjoint: true
+objectives:
+  - condition: ipb_jepa
+    gene_anchor_weight: 1.0
+    block_jepa_weight: 1.0
+  - condition: anchor_only
+    gene_anchor_weight: 1.0
+    block_jepa_weight: 0.0
+  gene_anchor_value_weight: 0.5
+  gene_anchor_detection_weight: 0.5
+  huber_delta: 1.0
+  variance_training_weight: 0.0
+  covariance_training_weight: 0.0
+training:
+  fixtures: [balanced_multifactor, dominant_axis_multifactor]
+  seeds: [8114001, 8114002]
+  trajectories: 8
+  optimizer: AdamW
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  gradient_clipping: null
+  starting_microbatch: 8
+  effective_batch: 256
+  precision: cuda_fp16
+  updates: 500
+  ema: 0.996
+  checkpoints: [0, 20, 50, 100, 200, 300, 500]
+feasibility_gates:
+  token_encoder_fixture_median_min: 0.95
+  token_encoder_individual_min: 0.90
+  cell_retention_fixture_median_min: 0.90
+  cell_retention_individual_min: 0.80
+  masked_to_full_individual_min: 0.80
+  masked_must_equal_or_exceed_visible_raw: true
+  concerning_effective_rank_below: 32
+  concerning_top_singular_energy_above: 0.50
+real_forward:
+  expected_cells: 502
+  sources: {HVS: 128, NPH52: 246, SEA_AD: 128}
+  expected_donors: 109
+  optimizer_steps: 0
+  ema_updates: 0
+  backward_calls: 0
+boundaries:
+  pathology_access: forbidden
+  factor_labels_in_training: forbidden
+  real_rna_training: forbidden
+  hyperparameter_sweep: forbidden
+  ninth_trajectory: forbidden
+  graph_role: target_block_sampling_only

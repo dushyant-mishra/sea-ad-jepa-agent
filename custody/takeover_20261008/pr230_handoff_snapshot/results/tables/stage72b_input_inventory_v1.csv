@@ -1,0 +1,5 @@
+resource,path,exists,file_size_bytes,n_features,n_barcodes,feature_name_example,n_rows,n_microglia_rows,n_microglia_samples,columns
+snrna_matrix,C:\Users\dushy\Desktop\Jepa project\data\external\gse174367\GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,True,273975534,58721.0,61770.0,DDX11L1;WASH7P;MIR6859-1;MIR1302-2HG;MIR1302-2,,,,
+snrna_cell_metadata,C:\Users\dushy\Desktop\Jepa project\data\external\gse174367\GSE174367_snRNA-seq_cell_meta.csv.gz,True,435170,,,,61472.0,4126.0,18.0,Barcode;SampleID;Diagnosis;Batch;Cell.Type;cluster;Age;Sex;PMI;Tangle.Stage;Plaque.Stage;RIN
+snatac_matrix,C:\Users\dushy\Desktop\Jepa project\data\external\gse174367\GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5,True,360317403,219070.0,143401.0,chr1:190849-191920;chr1:629708-630559;chr1:631640-631948;chr1:632511-633105;chr1:633740-634682,,,,
+snatac_cell_metadata,C:\Users\dushy\Desktop\Jepa project\data\external\gse174367\GSE174367_snATAC-seq_cell_meta.csv.gz,True,1066930,,,,130418.0,12232.0,20.0,Sample.ID;Batch;Age;Sex;PMI;Tangle.Stage;Plaque.Stage;Diagnosis;RIN;cluster;Cell.Type;Barcode

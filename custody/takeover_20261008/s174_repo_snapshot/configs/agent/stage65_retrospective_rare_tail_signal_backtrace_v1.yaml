@@ -1,0 +1,58 @@
+stage: Stage65
+version: v1
+stage_name: Stage65_retrospective_rare_tail_signal_backtrace_v1
+description: Retrospective audit testing whether prior internal model failures diluted rare/high-tail microglia disease signals.
+
+inputs:
+  stage64_mean_vs_tail_target_association: results/tables/stage64_mean_vs_tail_target_association_v1.csv
+  stage64_donor_module_tail_metrics: results/tables/stage64_donor_module_tail_metrics_v1.csv
+  stage64_composite_disease_program_metrics: results/tables/stage64_composite_disease_program_metrics_v1.csv
+  stage64_mtg_dlpfc_signature_overlap: results/tables/stage64_mtg_dlpfc_signature_overlap_v1.csv
+  stage64_external_handoff_signature: results/tables/stage64_external_handoff_signature_v1.csv
+  stage64_pass_fail: results/tables/stage64_pass_fail_v1.csv
+  stage63_high_leverage_donor_list: results/tables/stage63_high_leverage_donor_list_v1.csv
+  stage63_leave_one_donor_influence: results/tables/stage63_leave_one_donor_influence_v1.csv
+  stage63_per_fold_spearman: results/tables/stage63_per_fold_spearman_v1.csv
+  stage61_frozen_probe_results: results/tables/stage61_frozen_probe_results_v1.csv
+  stage62_frozen_probe_results: results/tables/stage62_frozen_probe_results_v1.csv
+  stage53_branch_comparison: results/tables/stage53_branch_comparison_v1.csv
+  stage54_branch_comparison: results/tables/stage54_branch_comparison_v1.csv
+  stage55_branch_comparison: results/tables/stage55_branch_comparison_v1.csv
+  stage56_branch_comparison: results/tables/stage56_branch_comparison_v1.csv
+  stage57_branch_comparison: results/tables/stage57_branch_comparison_v1.csv
+  stage60_branch_comparison: results/tables/stage60_branch_comparison_v1.csv
+  stage61_branch_comparison: results/tables/stage61_branch_comparison_v1.csv
+  stage62_branch_comparison: results/tables/stage62_branch_comparison_v1.csv
+  stage55_state_feature_inventory: results/tables/stage55_state_feature_inventory_v1.csv
+  stage57_repaired_state_module_feature_inventory: results/tables/stage57_repaired_state_module_feature_inventory_v1.csv
+  stage61_dlpfc_feature_inventory: results/tables/stage61_dlpfc_feature_inventory_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  stage27c_locked_score: 0.3267024400121495
+  rare_tail_metrics: [q90, q95, q99, top_10pct_mean, top_5pct_mean, top_1pct_mean, fraction_high_global_q95, variance]
+  mean_metric: mean
+  fold_models:
+    stage61_best: mtg_programming_plus_dlpfc_state_modules
+    stage62_primary: mtg_programming_plus_dlpfc_state_modules_full
+  rare_burden_feature: disease_program_score
+  rare_burden_metric: fraction_high_global_q95
+
+outputs:
+  input_inventory: results/tables/stage65_input_inventory_v1.csv
+  prior_stage_failure_context: results/tables/stage65_prior_stage_failure_context_v1.csv
+  mean_vs_tail_backtrace: results/tables/stage65_mean_vs_tail_backtrace_v1.csv
+  rare_tail_vs_mean_win_summary: results/tables/stage65_rare_tail_vs_mean_win_summary_v1.csv
+  high_leverage_donor_rare_burden: results/tables/stage65_high_leverage_donor_rare_burden_v1.csv
+  fold_rare_burden_audit: results/tables/stage65_fold_rare_burden_audit_v1.csv
+  prior_feature_dilution_audit: results/tables/stage65_prior_feature_dilution_audit_v1.csv
+  stage64_stage65_external_handoff: results/tables/stage65_external_handoff_signature_v1.csv
+  mechanism_interpretation_table: results/tables/stage65_mechanism_interpretation_table_v1.csv
+  claim_boundary_audit: results/tables/stage65_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage65_pass_fail_v1.csv
+  report: results/reports/stage65_retrospective_rare_tail_signal_backtrace_report_v1.md
+  pi_summary: results/reports/stage65_pi_summary_v1.md
+  external_handoff_report: results/reports/stage65_external_handoff_report_v1.md
+  claim_boundary_final_check: results/reports/stage65_claim_boundary_final_check_v1.md

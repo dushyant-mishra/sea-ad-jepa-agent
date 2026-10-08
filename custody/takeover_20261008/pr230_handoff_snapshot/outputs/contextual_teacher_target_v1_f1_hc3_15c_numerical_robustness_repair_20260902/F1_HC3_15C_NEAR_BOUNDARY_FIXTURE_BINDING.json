@@ -1,0 +1,18 @@
+{
+  "construction_method": "constant shift from independent SVD lower bound",
+  "fixtures": {
+    "negative": {
+      "filename": "F1_HC3_15C_NEAR_BOUNDARY_NEGATIVE_F64LE.bin",
+      "n": 104,
+      "sha256": "fffa7a67c74a1a3e5bfd3ae0731e90449bdf575d8c060b89d603df7b973b940f",
+      "target_lower": -1e-05
+    },
+    "positive": {
+      "filename": "F1_HC3_15C_NEAR_BOUNDARY_POSITIVE_F64LE.bin",
+      "n": 104,
+      "sha256": "a14f8ce3cc0a6d36d58f04133cf229fcc06f7be82fd181cedbb06782e7912f7c",
+      "target_lower": 1e-05
+    }
+  },
+  "status": "FROZEN_BEFORE_PRODUCTION_QR_COMPARISON"
+}

@@ -1,0 +1,53 @@
+stage: stage69_rare_microglia_auxiliary_head_jepa_audit_v1
+description: >
+  Low-capacity auxiliary-head audit testing whether frozen Stage64/68 rare-tail
+  microglia donor features improve donor-held-out pathology inference from the
+  Stage27C module feature space. This is an internal modeling diagnostic only.
+
+references:
+  stage27c_locked_mean_pooled_oof_spearman: 0.3267024400121495
+  material_rescue_threshold: 0.3317
+  random_seed: 7
+  required_targets: [AT8, 6e10/A_beta, GFAP, Iba1, NeuN]
+  aux_weights: [0.05, 0.10, 0.20]
+  latent_components: [2, 4, 6, 8]
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage27c_mean_metrics: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage64_donor_module_tail_metrics: results/tables/stage64_donor_module_tail_metrics_v1.csv
+  stage64_donor_state_tail_metrics: results/tables/stage64_donor_state_tail_metrics_v1.csv
+  stage68_expression_contrast: results/tables/stage68_high_vs_low_expression_contrast_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage69_input_inventory_v1.csv
+  aux_target_table: results/tables/stage69_rare_microglia_aux_target_table_v1.csv
+  model_registry: results/tables/stage69_model_registry_v1.csv
+  oof_predictions: results/tables/stage69_oof_predictions_v1.csv
+  target_metrics: results/tables/stage69_target_metrics_v1.csv
+  mean_metrics: results/tables/stage69_mean_metrics_v1.csv
+  aux_head_learnability: results/tables/stage69_aux_head_learnability_v1.csv
+  negative_control_results: results/tables/stage69_negative_control_results_v1.csv
+  target_guard_summary: results/tables/stage69_target_guard_summary_v1.csv
+  delta_vs_stage27c: results/tables/stage69_delta_vs_stage27c_v1.csv
+  claim_boundary_audit: results/tables/stage69_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage69_pass_fail_v1.csv
+  report: results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md
+  pi_summary: results/reports/stage69_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage69_claim_boundary_final_check_v1.md
+
+safety:
+  donor_heldout_only: true
+  auxiliary_targets_pathology_blind: true
+  no_new_candidate_selection: true
+  no_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_new_microglia_subtype_claim: true
+  no_benchmark_lock_without_controls: true

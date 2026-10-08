@@ -1,0 +1,65 @@
+{
+  "dev_rna_accessed": false,
+  "inputs": [
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2_canonical_gene_registry.csv",
+      "role": "frozen_gene_registry",
+      "sha256": "f2f74f6ecb087e447c425590f21ecb192347dfb9b77246b0865e24a3c7f3abec"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2_canonical_asset_registry.csv",
+      "role": "frozen_asset_registry",
+      "sha256": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2_split_registry.csv",
+      "role": "frozen_split_registry",
+      "sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "data/processed/v4/stage81a2/h5_donor_balanced_gene_stats.csv.gz",
+      "role": "frozen_h5_gene_stats",
+      "sha256": "c37c1b04b47b3e475ae13064558189354f4cb34f13a558d334694b7ff196c377"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "data/processed/v4/stage81a2/nph52_donor_balanced_gene_stats.csv.gz",
+      "role": "frozen_nph_gene_stats",
+      "sha256": "c3e66a0aac5a27505ccf8ba8f9418dedfb913af43445fff60a29cb1530cc9b06"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "data/processed/v4/stage81a2/nph52_source_feature_registry.csv.gz",
+      "role": "frozen_nph_feature_registry",
+      "sha256": "4092025e32d1325a1b4a60221b3627fc41be25a4e42b70b472fb94fc988fd99c"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a3_countsplit_reproducibility.csv",
+      "role": "historical_countsplit",
+      "sha256": "a334da240302c00c7bba68162078d4b5deff8ca775608169aed2748fd60b386c"
+    },
+    {
+      "authorized_scope": "frozen metadata or bounded pathology-blind TRAIN statistic",
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json",
+      "role": "historical_fbsdq_report",
+      "sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3"
+    }
+  ],
+  "pathology_accessed": false,
+  "real_train_rna_accessed": false,
+  "sealed_rna_accessed": false,
+  "stage": "stage81a2r_a3r_full_transcriptome_microqual"
+}

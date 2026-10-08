@@ -1,0 +1,2 @@
+no_new_modeling_run,no_external_validation_run,no_data_download,no_web_scraping,no_causal_claim,no_therapeutic_claim,no_gene_ablation_claim,no_in_silico_validation_claim,no_external_validation_language,all_candidates_described_as_follow_up_hypotheses,safety_audit_pass
+True,True,True,True,True,True,True,True,True,True,True

@@ -1,0 +1,2 @@
+downloaded_h5ad_untracked,raw_h5ad_committed,no_pathology_targets_used_in_feature_construction,donor_held_out_evaluation_used_or_gap,no_clean_external_validation_claim,no_causal_claim,no_therapeutic_claim,raw_data_not_committed,leakage_audit_pass,safety_audit_pass
+True,False,True,True,True,True,True,True,True,True

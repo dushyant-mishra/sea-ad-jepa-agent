@@ -1,0 +1,58 @@
+{
+  "schema": "TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2",
+  "status": "SCIENTIFIC_TARGET_REPAIRED__PROPOSAL_AND_EXECUTION_UNFROZEN",
+  "supersedes": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1.json",
+  "supersession_reason": "Data-first audit showed operator is not a common cross-source scientific axis: HVS and NPH52 operators are native-class-pure partitions while SEA_AD operators are multi-class matrices. V1 incorrectly promoted eligible operator groups from a comparison/admissibility stratum into equal scientific mass.",
+  "population": "reader_fit",
+  "base_jepa": {
+    "policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "formula": "mean_over_donors(mean_over_cells_within_donor(mean_over_masked_views(block_JEPA_loss)))",
+    "primary_biological_unit": "donor",
+    "raw_cell_count_sets_donor_mass": false,
+    "operator_sets_base_scientific_mass": false,
+    "decision": "REAFFIRMED_UNCHANGED"
+  },
+  "relational": {
+    "policy_id": "DONOR_UNIFORM__ELIGIBLE_ANCHOR_CELL_UNIFORM__SAME_OPERATOR_COMPARATOR_PAIR_UNIFORM_V2",
+    "formula": "mean_over_donors(mean_over_eligible_anchor_cells_within_donor(mean_over_unordered_comparator_pairs_within_anchor_operator(scale_free_order_loss)))",
+    "operator_role": "ADMISSIBILITY_BOUNDARY_ONLY__NOT_EQUAL_SCIENTIFIC_MASS",
+    "eligible_group_min_cells": 3,
+    "group_mass": "eligible_cells_in_group / eligible_cells_in_donor",
+    "anchor_mass_within_donor": "UNIFORM_OVER_ELIGIBLE_ANCHOR_CELLS",
+    "comparator_pair_mass_given_anchor": "UNIFORM_WITHIN_SAME_OPERATOR_EXCLUDING_ANCHOR",
+    "triplet_capacity_weighting": "NONE_BEYOND_LINEAR_ANCHOR_PREVALENCE",
+    "triplet_budget": null
+  },
+  "qualification_boundary": {
+    "TD57B": {
+      "executor_sha256": "20ec39dcb00e781aff4149f97df8ad37d050e00c97cdb450bc1207a75d40af87",
+      "historical_semantics": "sample <=64 triplets per donor-by-operator stratum, pool resolved triplets within donor, donor statistic=mean agreement, half statistic=median donor agreement",
+      "changed_by_v2": false
+    },
+    "TD59": {
+      "prospective_screen_sha256": "ca356e6de74aecf1e486772ffd869796e2b5b68b79de86c53f499f6341dc061e",
+      "historical_semantics": "same-operator local triplets with <=64 sampled triplets per stratum, pooled within donor; qualification cap is not production group weight",
+      "changed_by_v2": false
+    },
+    "TD60": {
+      "uses_exact_frozen_TD57B_TD59_triplets": true,
+      "changed_by_v2": false
+    }
+  },
+  "data_basis": {
+    "operator_semantics_profile": "docs/agent/READER_FIT_OPERATOR_SEMANTICS_PROFILE_V1.json",
+    "operator_semantics_profile_sha256": "ccdc1299c80199394ecd814aa0736b562aa3f306345381a0997256a52b900472",
+    "eligible_reader_fit_cells_fraction": 0.9999870426693682,
+    "minimum_per_donor_eligible_cell_fraction": 0.9984362783424551,
+    "maximum_equal_group_upweight_vs_anchor_prevalence": 141.07246376811594
+  },
+  "source_role": "DOMAIN_STRATUM_AND_ROBUSTNESS_DIAGNOSTIC__NOT_AUTOMATIC_OBJECTIVE_MASS",
+  "proposal": {
+    "base_policy_id": null,
+    "relational_policy_id": null,
+    "importance_correction_required_if_q_differs_from_p": true
+  },
+  "compute_packing_can_change_scientific_mass": false,
+  "training_authorized": false,
+  "execution_authorized": false
+}

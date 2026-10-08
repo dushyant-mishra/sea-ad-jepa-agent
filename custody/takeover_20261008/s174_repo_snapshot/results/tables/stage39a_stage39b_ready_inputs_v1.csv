@@ -1,0 +1,6 @@
+dataset_id,expression_path,metadata_path,sample_id_column_expression,sample_id_column_metadata,disease_column,disease_case_values,disease_control_values,celltype_column,microglia_values,astrocyte_values,neuron_values,tau_ptau_columns,amyloid_abeta_columns,other_pathology_columns,ready_for_stage39b,allowed_analysis_type,claim_level_allowed
+gse138852,data\external\gse138852\processed\stage38a_gse138852_candidate_expression.csv,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,cell_id,cell_id,oupSample.batchCond,AD,ct,oupSample.cellType,mg,astro,neuron,,,,True,disease_support;celltype_support;microglia_specificity,external support / conditional validation support only
+gse157827,data/external/public_schema_audit/GSE157827/GSE157827_series_matrix.txt.gz,,,,,,,,,,,,,,False,,not testable yet
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,matrix/barcodes,SampleID,Diagnosis,AD,Control,cluster,MG1;MG3;MG2,ASC3;ASC1;ASC2;ASC4,INH1;INH2;INH4;INH3;EX2;EX3;EX4;EX1;EX5,Tangle.Stage,Plaque.Stage,,False,,not testable yet
+gse160936,,,,,,,,,,,,,,,False,,not testable yet
+gse125050,,,,,,,,,,,,,,,False,,not testable yet

@@ -1,0 +1,127 @@
+{
+  "schema": "V77_COMPONENT_SUFFICIENT_STATISTIC_FREEZE_V1",
+  "status": "FROZEN_PROSPECTIVE__BEFORE_THE_DECIDING_V2_REBUILD",
+  "recorded_utc": "2026-10-05T21:45:21Z",
+  "implementation_head_at_freeze": "d18277f037bb7c6f3d63bf138fa03fa30904bac6",
+  "depends_on": {
+    "oracle_design_audit": {
+      "path": "results/v77/V77_ORACLE_DESIGN_AUDIT_V1.json",
+      "sha256": "fdcf043e5e438977fd517f927ee52939b52a07f624e5d9da5c8a31e27917c0b6"
+    },
+    "phase4_spec": {
+      "path": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+      "sha256": "f9d6887f74252ba148c7511a0638b89a24f1f2827a64ce83ecd57147191c988b"
+    },
+    "world_A_lock": {
+      "path": "results/v77/V77_WORLD_A_BEHAVIOURAL_LOCK_V1.json",
+      "sha256": "f0cd61e2aa311d4d31ecb3e6e401f43f9ff9dd9ecd1a62f462579721cc8aa37f"
+    }
+  },
+  "WHY_THIS_IS_FROZEN_FIRST": "the oracle audit showed a single universal module-score reader is scientifically invalid for B4, C1, C2 and C3, and that graph recovery is not a module quantity at all. Defining those statistics AFTER seeing the deciding rebuild would be fitting the measurement to the outcome. They are therefore fixed here, with their thresholds, before the rebuild runs.",
+  "UNIVERSAL_LABEL_ON_EVERY_CEILING": "every number produced under this freeze is an ORACLE CEILING UNDER KNOWN SUPPORT. The design matrix is built from the planted module_address_sets, i.e. from truth, so it measures recoverability GIVEN PERFECT MODULE DISCOVERY. It is an upper bound and must never be reported as a blind achievable ceiling for a model that has to discover modules itself.",
+  "DEFAULT_READER": {
+    "applies_to": [
+      "B1",
+      "B2",
+      "B3",
+      "B5",
+      "B6",
+      "D1_tf_activity",
+      "E1",
+      "E2"
+    ],
+    "design": "PLANTED_MODULE_SCORES_ONLY__NO_41238_FREE_REGRESSORS",
+    "features": "one CPM-log1p mean per planted module from module_address_sets",
+    "rationale": "p/n is 0.019 at 37 modules and 2,000 cells; 41,238 free regressors would give p>>n",
+    "estimator": "OLS with a 50/50 held-out split, seed 20261005; R2 on the held-out half",
+    "B3_and_E2_exception": "average precision against the held-out label, not R2, because these are rare or categorical"
+  },
+  "COMPONENT_SPECIFIC_STATISTICS": [
+    {
+      "component": "B4_transient",
+      "estimand": "the transient BAND value, band(t) = exp(-((t-0.5)/0.15)^2), NOT pseudotime t",
+      "sufficient_statistic": "planted module scores",
+      "estimator": "OLS on held-out half; report R2(band) as the component result and R2(t) only as a diagnostic",
+      "pass_criterion": "R2(band) within the Phase 4 designed range 0.25 to 0.45",
+      "threshold_provenance": "the 0.25-0.45 range was set prospectively in the Phase 4 spec, before any B4 measurement existed",
+      "required_off_or_null_twin": "a world with B4 disabled, identical seeds",
+      "off_twin_expected_behaviour": "R2(band) must fall below 0.05 in the off twin",
+      "PRIOR_OBSERVATION_DISCLOSURE": "a 2,000-cell smoke measurement of R2(band)=0.3551 and R2(t)=-0.0329 was observed during the oracle audit before this freeze. The threshold is NOT derived from it; it is the pre-existing Phase 4 range. Disclosed so the freeze is not presented as blind."
+    },
+    {
+      "component": "C1_interaction",
+      "estimand": "the GAP between full recoverability of A*B and what an additive summary of A and B supplies",
+      "sufficient_statistic": "planted module scores, plus the two fitted additive predictions pA and pB",
+      "estimator": "gap = R2(A*B | module scores) - R2(A*B | [pA,pB]); both on the same held-out half",
+      "pass_criterion": "gap > 0.05",
+      "threshold_provenance": "the 0.05 gap threshold was set before the first C1 measurement at 96 features",
+      "required_off_or_null_twin": "a world with C1 disabled, identical seeds",
+      "off_twin_expected_behaviour": "gap must fall below 0.01 in the off twin",
+      "PRIOR_OBSERVATION_DISCLOSURE": "gap measured 0.0021 then 0.0150 at 96 features and 0.0776 at full scale in the smoke world, all before this freeze. The threshold is unchanged from its original value."
+    },
+    {
+      "component": "C2_local_gain",
+      "estimand": "z_gain, the per-cell multiplicative gain on one module's loading",
+      "sufficient_statistic": "the C2_local module score ms, the drive z_global[:,0], and the RATIO features [ms, drive, ms*drive, ms/clip(drive,0.25)]",
+      "estimator": "OLS on held-out half; report both the linear-over-module-scores R2 and the ratio-feature R2",
+      "pass_criterion": "ratio-feature R2 within the Phase 4 designed range 0.40 to 0.60, AND ratio R2 minus linear R2 > 0.05",
+      "threshold_provenance": "the 0.40-0.60 range was set prospectively in the Phase 4 spec",
+      "required_off_or_null_twin": "a world with C2 disabled, identical seeds",
+      "off_twin_expected_behaviour": "ratio-feature R2 must fall below 0.05 in the off twin",
+      "PRIOR_OBSERVATION_DISCLOSURE": "measured 0.0089 global and 0.0536 conditional at 96 features, and 0.1175 linear versus 0.1590 ratio in the full-scale smoke world. ALL ARE FAR BELOW the designed 0.40-0.60 band. This freeze therefore PREDICTS C2 WILL FAIL its designed class even with the correct statistic, and the band is deliberately NOT moved."
+    },
+    {
+      "component": "C3_biology_x_operator",
+      "estimand": "the magnitude of coupling between biological state and measurement quality",
+      "sufficient_statistic": "library size and support count per cell; this is NOT a module quantity",
+      "estimator": "absolute Pearson correlation of z_bioqc with library size and with support count; report the maximum of the two",
+      "pass_criterion": "max |corr| > 0.05, against the World A reference of 0.0086",
+      "threshold_provenance": "the 0.05 threshold was set before the first C3 measurement",
+      "required_off_or_null_twin": "a world with C3 disabled, identical seeds",
+      "off_twin_expected_behaviour": "max |corr| must fall below 0.02 in the off twin, i.e. back to the World A level",
+      "PRIOR_OBSERVATION_DISCLOSURE": "measured 0.603 at 96 features, then 0.0988 at full scale after the S124 repair."
+    },
+    {
+      "component": "D1_graph_recovery",
+      "estimand": "recovery of the planted directed TF -> region -> target-gene graph, as a ranking problem over region-gene pairs",
+      "sufficient_statistic": "the planted graph's known positives, versus known negatives formed from decoy regions, unbound regions and never-targeted genes",
+      "estimator": "average precision of the scored pairs against the known-positive label, plus the separate decoy rejection rate",
+      "pass_criterion": "average precision at least 3x the positive base rate, AND decoy regions must not score above bound regions on average",
+      "threshold_provenance": "NOT YET MEASURED ANYWHERE. This threshold is genuinely blind and is the only one in this freeze with no prior observation.",
+      "required_off_or_null_twin": "the decoy regions and never-targeted genes already built into the graph serve as the internal negative control; no separate off twin is required",
+      "off_twin_expected_behaviour": "decoys must not be preferentially scored; a method that ranks decoys with bound regions fails"
+    }
+  ],
+  "OFF_AND_NULL_TWIN_REQUIREMENT": {
+    "rule": "every component-specific statistic must be shown to DETECT its planted signal and to REJECT the corresponding off twin at identical seeds. A statistic that fires in the off twin is measuring something other than the planted component.",
+    "already_available_without_new_worlds": {
+      "E2_null_arm": "the NULL perturbation arm is assigned and dosed exactly like a real arm and has no effect; it is the built-in false-positive control",
+      "B3_non_recoverable_arms": "arms 2 and 3 are routed out of RNA entirely and must score at the base rate",
+      "D1_decoys": "decoy regions are accessible and TF-correlated but regulate nothing"
+    },
+    "off_twins_to_build": [
+      "B4_off",
+      "C1_off",
+      "C2_off",
+      "C3_off"
+    ],
+    "construction": "the same --components selection with the one component removed, identical seed 7302"
+  },
+  "WHAT_A_CONTRADICTION_MEANS": "if a measured recoverability class contradicts the prospectively designed class, that is a SIMULATOR CONSTRUCTION FAILURE. It is repaired or the component is withdrawn. It is never explained away, and no threshold in this freeze is widened after the fact.",
+  "EXPLICITLY_NOT_AUTHORIZED_BY_THIS_FREEZE": [
+    "any JEPA representation comparison or model evaluation",
+    "treating any ceiling as a blind achievable bound",
+    "any change to World A",
+    "500K, Stage 4, training, or use of a legacy checkpoint as biological authority"
+  ],
+  "GOVERNANCE": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "legacy_checkpoint_as_biological_authority": "NO"
+  }
+}

@@ -1,0 +1,26 @@
+stage: stage36c_ranked_hypothesis_package_v1
+random_seed: 7
+
+inputs:
+  stage36a_module_scores: results/tables/stage36a_module_counterfactual_scores_v1.csv
+  stage36a_gene_hypotheses: results/tables/stage36a_gene_hypothesis_scores_v1.csv
+  stage36a_ranked_hypotheses: results/tables/stage36a_agent_ranked_hypotheses_v1.csv
+  stage36a_target_summary: results/tables/stage36a_target_summary_v1.csv
+  stage36b_hypothesis_grounding: results/tables/stage36b_hypothesis_grounding_v1.csv
+  stage36b_pass_fail: results/tables/stage36b_pass_fail_v1.csv
+  stage36b_audit: results/tables/stage36b_knowledge_grounding_audit_v1.csv
+
+ranking:
+  top_genes_per_target_for_report: 8
+  top_modules_per_target_for_report: 6
+  small_delta_threshold: 0.005
+
+outputs:
+  ranked_gene_hypotheses: results/tables/stage36c_ranked_gene_hypotheses_v1.csv
+  ranked_module_hypotheses: results/tables/stage36c_ranked_module_hypotheses_v1.csv
+  target_summary: results/tables/stage36c_target_level_hypothesis_summary_v1.csv
+  validation_planning: results/tables/stage36c_validation_planning_table_v1.csv
+  safety_audit: results/tables/stage36c_safety_claims_audit_v1.csv
+  pass_fail: results/tables/stage36c_pass_fail_v1.csv
+  report: results/reports/stage36c_ranked_hypothesis_package_report_v1.md
+  pi_report: results/reports/stage36c_pi_readable_hypothesis_shortlist_v1.md
