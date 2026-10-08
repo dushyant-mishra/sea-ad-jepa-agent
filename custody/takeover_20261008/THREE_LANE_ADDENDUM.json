@@ -1,0 +1,53 @@
+{
+  "schema": "JEPA_THREE_LANE_TAKEOVER_ADDENDUM_V1",
+  "date": "2026-10-08",
+  "authority": "NON_AUTHORIZING_CUSTODY",
+  "parent_takeover": {
+    "pr": 237,
+    "branch": "handoff/jepa-20261008-complete-runtime-s174-takeover",
+    "head": "cae71f20d15ae7399fd38bc6bf15dbe16048797f"
+  },
+  "lane_a_runtime": {
+    "purpose": "canonical runtime, qualification join, physical provenance, guarded mutation mechanics",
+    "active_source_pr": 236,
+    "active_source_branch": "impl/v77-bounded-synthetic-mutation-20261007",
+    "active_source_head": "8495c9f0a753dbb25c90bc27e65f28c4ee2e471e",
+    "final_execution_commit": "8dabe9ef9ed87b4beaf00acefda1a3073ed751de",
+    "workflow_run": 37712331165,
+    "status": "GREEN_ONE_STEP_SYNTHETIC_ONLY_NON_PRODUCTION",
+    "rule": "Do not import runtime implementation from Lane B or historical Lane C branches."
+  },
+  "lane_b_s174": {
+    "purpose": "real-TRAIN cache repair, corrected calibration replay, statistical/identity audit",
+    "branch": "claude/s174-train-cache-rebuild-20261007",
+    "head": "750cb83c8c0535cc67a70d58b62db5607bd7d01e",
+    "ci_confirmed_checkpoint": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+    "workflow_run": 37693603160,
+    "tests_passed": 146,
+    "snapshot_path": "custody/takeover_20261008/s174_working_snapshot",
+    "status": "CORRECTED_REPLAY_COMPLETE__NO_RUNTIME_AUTHORITY",
+    "rule": "Do not merge the branch's historical runtime lineage into Lane A."
+  },
+  "lane_c_macha_science": {
+    "purpose": "synthetic scientific design, identifiability, shortcut audits, preregistration",
+    "historical_branch": "claude/v77-synthetic-premise-custody-20261005",
+    "historical_head": "976d2be6c8cfaf46e7dfd79bf900fb9fc4c0d4bd",
+    "status": "SCIENCE_HISTORY_VALID_WITH_SUPERSEDED_RUNTIME_PINS",
+    "rule": "Consume Lane A runtime contracts; do not create another optimizer/EMA/checkpoint stack."
+  },
+  "next_primary_problem": "Prospectively design class-shared biological programs plus within-class heterogeneity while initially holding the observation/counting process fixed, then evaluate jointly against corrected S174 real-data geometry.",
+  "handoff_document": "docs/agent/JEPA_THREE_LANE_NEW_AGENT_HANDOFF_20261008.md",
+  "hard_boundaries": [
+    "TRAINING=OFF_FOR_REAL_DATA",
+    "STAGE_A_EXECUTION=OFF",
+    "MULTIMODAL_TRAINING=OFF",
+    "500K=NOT_AUTHORIZED",
+    "STAGE4=NOT_AUTHORIZED",
+    "TEST=SEALED",
+    "MORABITO=PROTECTED",
+    "NO_PRODUCTION_EMA_SELECTION",
+    "NO_TARGET_FREEZE",
+    "NO_REPRESENTATION_FREEZE",
+    "NO_ADDITIONAL_MUTATION_BUDGET_FROM_ONE_STEP_PASS"
+  ]
+}
