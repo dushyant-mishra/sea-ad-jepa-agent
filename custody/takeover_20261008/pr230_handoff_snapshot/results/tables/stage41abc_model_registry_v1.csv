@@ -1,2 +1,0 @@
-condition,training_skipped,reason,allowed_models
-training_skipped,True,No schema-reviewed donor-linked safe feature matrix was built from automatic Stage 41ABC downloads.,ridge; target-specific ridge; conservative elastic net

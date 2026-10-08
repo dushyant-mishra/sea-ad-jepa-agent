@@ -1,2 +1,0 @@
-negative_control,pass,reason
-not_run,True,benchmark training skipped correctly because no safe linked matrix was available

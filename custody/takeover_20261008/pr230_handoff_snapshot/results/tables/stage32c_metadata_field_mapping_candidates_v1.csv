@@ -1,6 +1,0 @@
-dataset_id,metadata_field,candidate_columns,has_candidate
-b165f033-9dec-468a-9248-802fc6902a74,donor,donor_id,True
-b165f033-9dec-468a-9248-802fc6902a74,cell_type,cell_type,True
-b165f033-9dec-468a-9248-802fc6902a74,disease,disease,True
-b165f033-9dec-468a-9248-802fc6902a74,tissue,tissue,True
-b165f033-9dec-468a-9248-802fc6902a74,species,species,True

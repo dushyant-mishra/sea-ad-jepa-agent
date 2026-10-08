@@ -1,4 +1,0 @@
-base=reconcile/canonical-v5-runtime-successor-20261006
-head=reconcile/shared-qualification-v2-on-canonical-runtime-20261007
-draft=true
-purpose=shared qualification interface validation only; no runtime rollback
