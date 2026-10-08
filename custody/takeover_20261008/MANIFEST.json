@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_COMPLETE_TAKEOVER_CUSTODY_V2",
+  "schema": "JEPA_COMPLETE_TAKEOVER_CUSTODY_V3",
   "date": "2026-10-08",
   "authority": "NON_AUTHORIZING_CUSTODY",
   "active_runtime": {
@@ -14,15 +14,23 @@
     "training_authorized": false,
     "production_promotable": false
   },
-  "s174_snapshot": {
+  "s174_working_snapshot": {
     "source_branch": "claude/s174-train-cache-rebuild-20261007",
     "source_commit": "750cb83c8c0535cc67a70d58b62db5607bd7d01e",
-    "source_tree": "f21515b50a1a7eebc042ac238f5be3231cc0c5e9",
-    "snapshot_path": "custody/takeover_20261008/s174_repo_snapshot",
+    "source_root_tree": "f21515b50a1a7eebc042ac238f5be3231cc0c5e9",
+    "snapshot_tree": "d52f665aeb393c368102c5b71afc59f03b10225f",
+    "snapshot_path": "custody/takeover_20261008/s174_working_snapshot",
+    "included_surfaces": [
+      ".github/workflows",
+      "docs/agent",
+      "results/v77",
+      "scripts",
+      "tests"
+    ],
     "replay_checkpoint": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
     "replay_ci_run": 37693603160,
     "replay_tests_passed": 146,
-    "note": "Byte-identical tracked repository snapshot. Large external/local cache bytes not tracked by Git remain represented by their custody receipts/hashes."
+    "note": "Exact Git-tree snapshots of the S174 working/audit surfaces. Unrelated historical repository source trees are intentionally excluded. Large external/local cache bytes not tracked by Git remain represented by their custody receipts/hashes."
   },
   "prior_handoff": {
     "source_pr": 230,
