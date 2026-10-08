@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Successor V77 hidden truth for preregistered broad-cell-class propagation arms.
 
-E0 remains the existing V77 truth. E1 adds only broad-class hidden metadata; it must not change
-any pre-existing truth array or any observable output. E2/E3 are enabled in later RED->GREEN
-steps. E4 is explicitly unauthorized here.
+E0 remains the existing V77 truth. E1 adds only broad-class hidden metadata. E2 uses the exact
+same hidden arrays as E1 and grants only the preregistered class-conditioned expression
+mechanism to the successor observer. E3 is enabled in a later RED->GREEN step. E4 is explicitly
+unauthorized here.
 """
 from __future__ import annotations
 
@@ -20,8 +21,8 @@ sys.path.insert(0, str(HERE))
 import build_v77_class_composition_authority as CA  # noqa: E402
 import build_v77_extended_truth as V77  # noqa: E402
 
-ALLOWED_NOW = {"E0", "E1"}
-FUTURE_ARMS = {"E2", "E3"}
+ALLOWED_NOW = {"E0", "E1", "E2"}
+FUTURE_ARMS = {"E3"}
 FORBIDDEN_ARMS = {"E4"}
 
 
@@ -49,7 +50,7 @@ def build(root: Path, n_cells: int, shard_size: int, seed: int, arm: str,
     if arm in FORBIDDEN_ARMS:
         raise PermissionError("E4 donor×class interaction is not authorized in this implementation")
     if arm in FUTURE_ARMS:
-        raise NotImplementedError(f"{arm} is preregistered but not implemented in the E1 step")
+        raise NotImplementedError(f"{arm} is preregistered but not implemented in the E2 step")
     if arm not in ALLOWED_NOW:
         raise ValueError(f"unknown class-propagation arm: {arm}")
     enabled = list(enabled or [])
@@ -59,7 +60,7 @@ def build(root: Path, n_cells: int, shard_size: int, seed: int, arm: str,
     if arm == "E0":
         return base
     if class_authority_path is None:
-        raise ValueError("E1 requires class_authority_path")
+        raise ValueError(f"{arm} requires class_authority_path")
     authority, authority_sha = _load_authority(Path(class_authority_path))
 
     truth = root / "hidden_truth"
@@ -75,6 +76,7 @@ def build(root: Path, n_cells: int, shard_size: int, seed: int, arm: str,
 
     quotas = CA.largest_remainder_quotas(
         np.asarray(authority["class_counts"], dtype=np.int64), int(n_cells))
+    class_expression = arm == "E2"
     manifest = dict(base)
     manifest.update(
         schema="V77_CLASS_AWARE_MASTER_TRUTH_MANIFEST_V1",
@@ -85,8 +87,9 @@ def build(root: Path, n_cells: int, shard_size: int, seed: int, arm: str,
         class_quotas=[int(x) for x in quotas],
         class_assignment_stream=int(authority["class_assignment_stream"]),
         class_assignment_inputs=["global_cell_index", "seed", "class_authority"],
-        class_conditioned_expression=False,
-        class_program_content="NONE_E1_LABEL_ONLY",
+        class_conditioned_expression=class_expression,
+        class_program_content=("SYNTHETIC_RANDOM_DENSE" if class_expression else "NONE_E1_LABEL_ONLY"),
+        class_program_scale=(0.55 if class_expression else None),
         class_assignment_independent_of=["donor", "source", "operator", "expression", "query"],
     )
     (truth / "TRUTH_MANIFEST.json").write_text(json.dumps(manifest, indent=2) + "\n")
