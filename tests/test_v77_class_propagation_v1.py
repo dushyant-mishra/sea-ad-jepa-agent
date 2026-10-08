@@ -225,3 +225,77 @@ def test_e2_observer_changes_only_biological_rate_not_measurement_targets(tmp_pa
             assert np.array_equal(z1[key], z2[key]), key
         any_count_change |= not np.array_equal(z1["counts"], z2["counts"])
     assert any_count_change
+
+
+def test_e3_truth_has_shard_invariant_within_class_continuous_state(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_e3")
+    authority_path = _authority_file(tmp_path)
+    r1, r2 = tmp_path / "e3s1", tmp_path / "e3s2"
+    m1 = T.build(r1, 180, 41, 7302, "E3", authority_path, enabled=[])
+    m2 = T.build(r2, 180, 67, 7302, "E3", authority_path, enabled=[])
+    assert m1["within_class_dimensions"] == m2["within_class_dimensions"] == 2
+    def arrays(root):
+        m = json.loads((root / "hidden_truth" / "TRUTH_MANIFEST.json").read_text())
+        cls, zw = [], []
+        for s in m["shards"]:
+            z = np.load(root / "hidden_truth" / s["file"], allow_pickle=False)
+            cls.append(z["broad_class_index"]); zw.append(z["z_within_class"])
+        return np.concatenate(cls), np.concatenate(zw)
+    c1, z1 = arrays(r1); c2, z2 = arrays(r2)
+    assert z1.shape == (180, 2)
+    assert np.array_equal(c1, c2)
+    assert np.array_equal(z1, z2)
+    for c in np.unique(c1):
+        vals = z1[c1 == c]
+        if len(vals) >= 2:
+            assert np.all(vals.var(axis=0) > 0)
+
+
+def test_e3_latent_and_contribution_are_nuisance_independent():
+    T = _load(TRUTH_PATH, "v77_class_truth_e3_unit")
+    O = _load(OBSERVER_PATH, "v77_class_observer_e3_unit")
+    ids = np.array([3, 7, 11, 19], dtype=np.int64)
+    z1 = T.within_class_latents(7302, ids)
+    z2 = T.within_class_latents(7302, ids)
+    assert np.array_equal(z1, z2)
+    assert O.WITHIN_CLASS_DIM_SCALE == pytest.approx(0.55 / np.sqrt(2))
+    payload = {
+        "broad_class_index": np.array([0, 1, 1, 2], dtype=np.int16),
+        "z_within_class": z1,
+        "donor_index": np.array([0, 0, 1, 1]),
+        "source_index": np.array([0, 1, 2, 0]),
+        "operator_index": np.array([3, 4, 5, 6]),
+    }
+    c1 = O.within_class_contribution(payload, 7302, 3)
+    payload2 = dict(payload)
+    payload2["donor_index"] = payload["donor_index"][::-1]
+    payload2["source_index"] = payload["source_index"][::-1]
+    payload2["operator_index"] = payload["operator_index"][::-1]
+    c2 = O.within_class_contribution(payload2, 7302, 3)
+    assert np.array_equal(c1, c2)
+    assert not np.allclose(c1, 0.0)
+
+
+def test_e3_preserves_e2_class_assignment_and_measurement_targets(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_e3_observe")
+    O = _load(OBSERVER_PATH, "v77_class_observer_e3")
+    authority_path = _authority_file(tmp_path)
+    e2_root, e3_root = tmp_path / "e2_for_e3", tmp_path / "e3_obs"
+    T.build(e2_root, 96, 48, 7302, "E2", authority_path, enabled=[])
+    T.build(e3_root, 96, 48, 7302, "E3", authority_path, enabled=[])
+    m2 = O.observe(e2_root, 7302, 991)
+    m3 = O.observe(e3_root, 7302, 991)
+    assert m2["counting_mechanics"] == m3["counting_mechanics"] == "FROZEN_BASE_V77"
+    assert m2["availability_mechanics"] == m3["availability_mechanics"] == "FROZEN_BASE_V77"
+    t2 = json.loads((e2_root / "hidden_truth" / "TRUTH_MANIFEST.json").read_text())
+    t3 = json.loads((e3_root / "hidden_truth" / "TRUTH_MANIFEST.json").read_text())
+    c2 = np.concatenate([np.load(e2_root / "hidden_truth" / s["file"], allow_pickle=False)["broad_class_index"] for s in t2["shards"]])
+    c3 = np.concatenate([np.load(e3_root / "hidden_truth" / s["file"], allow_pickle=False)["broad_class_index"] for s in t3["shards"]])
+    assert np.array_equal(c2, c3)
+    _, a2 = _rna_arrays(e2_root); _, a3 = _rna_arrays(e3_root)
+    frozen = ["availability", "empirical_projected_panel_count_target_int",
+              "empirical_projected_detected_feature_target_int",
+              "empirical_full_library_size_target", "empirical_measured_zero_fraction_target"]
+    for z2, z3 in zip(a2, a3):
+        for key in frozen:
+            assert np.array_equal(z2[key], z3[key]), key
