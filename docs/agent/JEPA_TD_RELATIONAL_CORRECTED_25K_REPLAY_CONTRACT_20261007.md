@@ -37,14 +37,20 @@ Replay only historical `A_NATURAL_MIXTURE`, exactly 25,000 rows from the authent
 - NPH52: 1,310
 - SEA_AD: 22,561
 
-The preserved TD metadata files bind source rows to the original `global_row` values. Before any source H5AD read, the executor must additionally authenticate the historical `FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv` row identity (matrix_id/local_row/cell identity) used to build the 50K harness. If this row binding cannot be recovered exactly, STOP; do not infer or resample cells.
+`FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv` is authenticated at SHA-256:
+`79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6`.
+
+Exact historical Sample-A row identity has been recovered with PASS receipt:
+`docs/agent/JEPA_TD_SAMPLE_A_ROW_IDENTITY_RECEIPT_20261007.json`.
+
+Do not resample cells or infer row identity from the corrupted 50K value matrix.
 
 ## Corrected value chain
 For every frozen Sample-A cell and every required address:
 
 `matrix-native stable feature ID -> native physical column -> canonical molecular address -> raw count -> historical normalization`
 
-HVS native feature identity must come from the matrix-native `raw/var` feature vector; SEA-AD from matrix-native `var/gene_ids`; NPH52 retains its already-audited rowname/index identity path. Never use the historical sorted provenance ordinal as a physical column.
+HVS native feature identity must come from matrix-native `raw/var`; SEA-AD from matrix-native `var/gene_ids`; NPH52 retains its separately audited identity path. Never use the historical sorted provenance ordinal as a physical column.
 
 ## Normalization
 Preserve the authenticated historical 50K transformation exactly:
@@ -53,7 +59,13 @@ Preserve the authenticated historical 50K transformation exactly:
 
 `full_source_library` is the whole-cell raw library size, not a 9,216-gene subset sum.
 
-The preserved `td50_HVS.npz`, `td50_NPH52.npz`, and `td50_SEA_AD.npz` source-library and detected-feature vectors are replay sentinels. Recomputed raw library size and detected-feature count must agree exactly per cell before normalized values are accepted. These quantities are permutation-invariant and therefore useful identity/row checks.
+### G6 correction
+The preserved TD50 `source_library` value is an exact replay sentinel because feature permutation/remapping cannot change the total raw molecule count. Recomputed whole-cell raw library totals must equal historical `source_library` exactly for every replayed cell.
+
+The preserved TD50 `detected` value is **not** an exact PASS gate. Historical `compute_td50_source.py` defined `detected` as the nnz of the old 41K materialized CSR row. Corrected SEA-AD collision mapping can legitimately alter post-mapping nnz. Old and corrected detected/nnz counts must therefore be reported side by side as a diagnostic only.
+
+Binding detail:
+`docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md`.
 
 ## Minimal materialized matrix
 Do **not** rebuild 41,238 values for these falsification replays.
@@ -63,29 +75,29 @@ Materialize a sparse CSR object with:
 - logical shape: `(25000, 41238)` so canonical molecular-address indices remain unchanged;
 - stored value columns: only the 9,216 frozen replay addresses;
 - unselected addresses absent from storage and forbidden to be queried by replay executors;
-- selected measured-zero values remain implicit sparse zero, with measurability supplied by the frozen support authority.
+- selected measured-zero values remain implicit sparse zero, with measurability supplied by frozen support authority.
 
-This preserves direct canonical-address indexing used by the frozen TD executors while reducing the value-read scope from 41,238 addresses to 9,216.
+This preserves direct canonical-address indexing used by the frozen TD executors while reducing value-read scope from 41,238 addresses to 9,216.
 
 ## Source scope
-- HVS and SEA-AD: must be rematerialized using corrected physical feature identity.
-- NPH52: may be re-read through its already-qualified identity path for a same-run consistency control, but no new NPH target/search is permitted.
+- HVS and SEA-AD: rematerialize using corrected physical feature identity.
+- NPH52: may be re-read through its separately qualified identity path for same-run consistency control; no new NPH target/search is permitted.
 - No DEV, SEALED, pathology, Morabito, GSE214979, or other protected/external data.
 
 ## Replay order
-No outcomes may be used to change the order or rules.
+No outcomes may be used to change order or rules.
 
 1. TD56 exact original frozen screen.
 2. TD57A exact original compute-safe triplet screen.
 3. TD58 exact primary-60% partial-evidence screen.
 4. TD57B exact independent donor-recurrent screen.
-5. TD57C exact original nearest-third sequential screen. Historical FAIL is preserved as history but current scientific status is `REPLAY_REQUIRED`; proceed beyond HVS Panel-0 only if the corrected replay passes under the already-frozen sequential rule.
+5. TD57C exact original nearest-third sequential screen. Historical FAIL is preserved as history but current scientific status is `REPLAY_REQUIRED`; proceed beyond HVS Panel-0 only if corrected replay passes under the already-frozen sequential rule.
 6. TD59 exact nearest-half mesoscale screen.
 
-No new locality fraction, pair width, mask fraction, threshold, gene replacement, donor split, or target family may be introduced in this replay.
+No new locality fraction, pair width, mask fraction, threshold, gene replacement, donor split, or target family may be introduced.
 
 ## Decision semantics
-This replay can only answer whether the historical relational findings/failure survive correction of the feature-axis defect.
+This replay can only answer whether historical relational findings/failure survive correction of the feature-axis defect.
 
 It cannot by itself:
 - select a Foundation target;
@@ -96,14 +108,27 @@ It cannot by itself:
 - authorize protected data.
 
 ## Required pre-execution gates
-All must PASS before reading real values:
-1. exact 9,216 replay manifest receipt PASS;
-2. exact historical Sample-A row-identity manifest recovered and authenticated;
-3. source asset identities authenticated;
-4. corrected native-feature-ID -> physical-column mapping is one-to-one for every required address/matrix;
-5. full raw library size and detected-count sentinels reproduce for every replayed cell;
-6. a small cross-check against existing S174 decoder/value sentinels agrees where assets overlap;
-7. output is written to a new immutable replay namespace; historical 50K artifacts are never overwritten.
 
-Terminal before those gates pass:
-`STOP_TD_RELATIONAL_CORRECTED_REPLAY_PREFLIGHT_INCOMPLETE`.
+### Closed before value reads
+1. exact 9,216 replay manifest receipt PASS;
+2. exact historical Sample-A row identity PASS;
+3. source asset identity and corrected identifier-join policy inherited from Macha S174 authority;
+4. immutable namespaces frozen in `JEPA_TD_RELATIONAL_IMMUTABLE_NAMESPACE_FREEZE_20261007.json`.
+
+### Still required on canonical local machine
+5. value-blind G4/G5 mapping preflight must return `PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND` using `scripts/v5/run_td_relational_replay_preflight.py`;
+6. under separately explicit value-read authority, every replayed cell's whole-row raw library total must exactly reproduce historical `source_library` (G6); historical `detected` is diagnostic only;
+7. G7 must use Macha's final **G1b PASS** authority at commit `4ab8e2101f2e595d9a97df05517d6e672768ecec`, result `results/v77/S174_REBUILD_G1B_RESULT_V1.json`; compare every natural Sample-A/S174 overlapping cell/address exactly, with zero tolerance. If no natural overlap exists, report `NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP`; never manufacture overlap.
+
+Historical 50K artifacts are never overwritten.
+
+Terminal until G4/G5 pass:
+`STOP_TD_RELATIONAL_CORRECTED_REPLAY_PREFLIGHT_INCOMPLETE_UNTIL_CANONICAL_LOCAL_G4_G5_PASS`.
+
+## Identity-semantic warning
+Macha's lane records 353 frozen historical-Ensembl-ID mappings with a different current symbol. Those identities remain frozen. Before biological interpretation, intersect the exact 9,216 replay addresses with the 353 identity-flag set when that identity-lane artifact is available and carry a warning flag; do not substitute genes based on symbol preference.
+
+## Current operational entry points
+- `docs/agent/JEPA_TARGET_DISCOVERY_CURRENT_TAKEOVER_HANDOFF_20261007.md`
+- `docs/agent/JEPA_TD_RELATIONAL_PREFLIGHT_RUNBOOK_20261007.md`
+- `scripts/v5/run_td_relational_replay_preflight.py`
