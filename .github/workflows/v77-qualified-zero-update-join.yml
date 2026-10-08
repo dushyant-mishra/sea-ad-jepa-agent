@@ -6,18 +6,27 @@ on:
       - 'scripts/v77/v77_synthetic_batch_adapter.py'
       - 'src/sea_ad_jepa/qualification/v77_join.py'
       - 'src/sea_ad_jepa/qualification/v77_zero_update.py'
+      - 'src/sea_ad_jepa/qualification/v77_bounded_mutation.py'
       - 'src/sea_ad_jepa/qualification/physical_binding_v2.py'
       - 'tests/integration/test_v77_joined_zero_update.py'
       - 'tests/integration/test_v77_physical_binding_v2_payload_digest.py'
       - 'tests/integration/test_v77_executed_q_safety.py'
       - 'tests/integration/test_v77_canonical_zero_update.py'
+      - 'tests/integration/test_v77_bounded_synthetic_mutation.py'
       - 'tests/integration/test_shared_interface_v5_runtime_binding_v1.py'
       - 'tests/integration/test_shared_interface_v5_ema_runtime_binding_v2_red.py'
+      - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
+      - 'tests/test_v5_ema_completed_update_proof_red.py'
+      - 'tests/test_v5_ema_persisted_continuation_red.py'
       - '.github/workflows/v77-qualified-zero-update-join.yml'
       - 'docs/superpowers/plans/2026-10-07-v77-qualified-zero-update-join.md'
+      - 'docs/agent/V77_BOUNDED_SYNTHETIC_MUTATION_REHEARSAL_CONTRACT_20261007.md'
+      - 'docs/superpowers/plans/2026-10-07-v77-bounded-synthetic-mutation-rehearsal.md'
   push:
     branches:
       - 'integrate/v77-qualified-zero-update-20261007'
+      - 'impl/v77-bounded-synthetic-mutation-20261007'
 
 jobs:
   joined-zero-update:
@@ -29,7 +38,7 @@ jobs:
           python-version: '3.12'
       - name: Install focused test dependencies
         run: python -m pip install --disable-pip-version-check pytest numpy scipy torch
-      - name: Run V77 joined ZERO_UPDATE and runtime-binding regressions
+      - name: Run V77 joined path plus canonical mutation fail-closed regressions
         env:
           PYTHONPATH: src:.
         run: >-
@@ -38,5 +47,16 @@ jobs:
           tests/integration/test_v77_physical_binding_v2_payload_digest.py
           tests/integration/test_v77_executed_q_safety.py
           tests/integration/test_v77_canonical_zero_update.py
+          tests/integration/test_v77_bounded_synthetic_mutation.py
           tests/integration/test_shared_interface_v5_runtime_binding_v1.py
           tests/integration/test_shared_interface_v5_ema_runtime_binding_v2_red.py
+          tests/test_v5_inactive_runtime_step_guard_v1.py
+          tests/test_v5_prefreeze_runtime_torch_integration.py
+          tests/test_v5_ema_completed_update_proof_red.py
+          tests/test_v5_ema_persisted_continuation_red.py
+      - name: Emit successful bounded-mutation custody receipt
+        env:
+          PYTHONPATH: src:.
+        run: >-
+          python -m pytest -q -s
+          tests/integration/test_v77_bounded_synthetic_mutation.py::test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload
