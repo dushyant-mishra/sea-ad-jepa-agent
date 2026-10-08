@@ -89,6 +89,29 @@ def test_bounded_mutation_executes_exactly_one_guarded_step_and_typed_reload(tmp
     assert marker_payload["experiment_run_id"] == batch.experiment_run_id
 
 
+def test_bounded_mutation_rejects_missing_physical_binding_proof_and_preserves_failure(tmp_path):
+    from sea_ad_jepa.qualification import v77_bound_zero_update, v77_bounded_mutation
+
+    adapter_digest = v77_bound_zero_update.canonical_v77_adapter_source_sha256()
+    batch = replace(_batch(adapter_digest), experiment_run_id="v77-bounded-missing-provenance")
+    runtime_digest = v77_bound_zero_update.canonical_v5_runtime_source_sha256()
+    path = tmp_path / "missing-provenance.pt"
+
+    with pytest.raises(ValueError, match="physical row/value bindings"):
+        v77_bounded_mutation.run_bounded_synthetic_mutation(
+            batch,
+            (),
+            _proof(batch, runtime_digest),
+            runtime_digest,
+            8113002,
+            path,
+        )
+    assert not path.exists()
+    failure = json.loads(_run_marker(path, batch).read_text(encoding="utf-8"))
+    assert failure["verdict"] == "FAIL__NO_COMPLETED_MUTATION_CONTINUATION"
+    assert failure["typed_continuation_persisted"] is False
+
+
 def test_bounded_mutation_rejects_self_consistent_fake_adapter_binding_before_mutation_and_preserves_failure(tmp_path):
     from sea_ad_jepa.qualification import v77_bound_zero_update, v77_bounded_mutation
 
