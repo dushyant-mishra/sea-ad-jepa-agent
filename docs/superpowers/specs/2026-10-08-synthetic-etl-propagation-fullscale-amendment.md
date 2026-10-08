@@ -32,6 +32,16 @@ The wrapper must:
 
 No biological arm, effect magnitude, seed policy, corrected reference point, scoring rule or interpretation criterion is changed by this amendment.
 
+## Frozen E0 biological baseline
+
+The original design said E0 is the current generator but did not name an enabled-component preset. Before any E0–E3 tournament outcome was read, the baseline is therefore frozen to the existing V77 **World B biological preset**:
+
+`B1, B2, B3, B4, B5, B6`
+
+This is the isolated generic-biological regime already defined by `build_v77_extended_truth.py`: cell-state mixture, donor biology, rare states, pseudotime, sparse marker programs and graded within-cell continuum. It is the appropriate baseline for asking whether broad class adds a missing biological hierarchy while leaving existing generic within-class biology intact.
+
+C/D/E components are excluded from this first tournament because they would add separate interaction, biology×measurement, regulatory, ATAC, spatial or perturbation mechanisms and would make attribution of a class-propagation effect ambiguous. This preset may not be changed after outcomes are read.
+
 ## Full-scale background selection
 
 Use the full-scale observer's existing default background selection (`background="v1"`) for the first E0–E3 tournament. Do not switch to the optional topology-calibrated `v2` background after seeing class-propagation results. A later background comparison, if needed, requires its own prospective record.
