@@ -9,15 +9,43 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "scripts" / "v77" / "run_v77_class_propagation_tournament.py"
+FULL_OBSERVER_PATH = ROOT / "scripts" / "v77" / "build_v77_class_aware_fullscale_rna_observer.py"
 
 
-def _load():
-    assert RUNNER_PATH.exists(), "class-propagation tournament runner is not implemented"
-    spec = importlib.util.spec_from_file_location("v77_class_tournament", RUNNER_PATH)
+def _load_path(path: Path, name: str):
+    assert path.exists(), f"missing preregistered implementation: {path.relative_to(ROOT)}"
+    spec = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(spec)
     assert spec and spec.loader
     spec.loader.exec_module(mod)
     return mod
+
+
+def _load():
+    return _load_path(RUNNER_PATH, "v77_class_tournament")
+
+
+def test_fullscale_bridge_is_registry_compatible_and_outcome_blind():
+    O = _load_path(FULL_OBSERVER_PATH, "v77_class_fullscale")
+    assert O.N_ADDRESSES == 41238
+    assert O.CLASS_PROGRAM_SCALE == 0.55
+    assert O.WITHIN_CLASS_DIM_SCALE == pytest.approx(0.55 / np.sqrt(2))
+    z = {
+        "broad_class_index": np.array([0, 1, 1, 2], dtype=np.int16),
+        "z_within_class": np.array([[0.1, -0.2], [0.3, 0.4], [-0.5, 0.2], [0.7, -0.1]], dtype=np.float32),
+        "donor_index": np.array([0, 0, 1, 1]),
+        "source_index": np.array([0, 1, 2, 0]),
+        "operator_index": np.array([3, 4, 5, 6]),
+    }
+    c1 = O.class_program_contribution(z, 7302, 3)
+    w1 = O.within_class_contribution(z, 7302, 3)
+    z2 = dict(z)
+    z2["donor_index"] = z["donor_index"][::-1]
+    z2["source_index"] = z["source_index"][::-1]
+    z2["operator_index"] = z["operator_index"][::-1]
+    assert np.array_equal(c1, O.class_program_contribution(z2, 7302, 3))
+    assert np.array_equal(w1, O.within_class_contribution(z2, 7302, 3))
+    assert c1.shape == w1.shape == (4, 41238)
 
 
 def test_tournament_surface_is_frozen_and_e4_rejected():
