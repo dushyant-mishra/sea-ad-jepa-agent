@@ -12,6 +12,8 @@ SCRIPTS = ROOT / "scripts" / "v77"
 AUTH_PATH = SCRIPTS / "build_v77_class_composition_authority.py"
 TRUTH_PATH = SCRIPTS / "build_v77_class_aware_truth.py"
 OBSERVER_PATH = SCRIPTS / "build_v77_class_aware_rna_observer.py"
+BASE_TRUTH_PATH = SCRIPTS / "build_v77_extended_truth.py"
+BASE_OBSERVER_PATH = SCRIPTS / "build_v77_extended_rna_observer.py"
 
 
 def _load(path: Path, name: str):
@@ -40,6 +42,14 @@ def _calibration(tmp_path: Path, counts=None, extra_source=None):
         "source": source,
         "cohort": {"n_cells": int(sum(counts.values())), "cell_class_counts": counts},
     }))
+    return p
+
+
+def _authority_file(tmp_path: Path) -> Path:
+    A = _load(AUTH_PATH, "v77_class_authority_fixture")
+    authority = A.build_authority(_calibration(tmp_path / "cal"))
+    p = tmp_path / "authority.json"
+    p.write_text(json.dumps(authority, indent=2))
     return p
 
 
@@ -81,12 +91,65 @@ def test_largest_remainder_and_assignment_are_exact_and_shard_invariant(tmp_path
 
 
 def test_current_truth_has_no_broad_class_field():
-    text = (SCRIPTS / "build_v77_extended_truth.py").read_text()
+    text = BASE_TRUTH_PATH.read_text()
     assert "broad_class_index" not in text
 
 
-def test_e1_successor_is_missing_before_implementation():
-    assert TRUTH_PATH.exists(), "E1 class-aware truth successor is not implemented yet"
+def test_e1_truth_adds_only_class_metadata_and_preserves_base_arrays(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_e1")
+    B = _load(BASE_TRUTH_PATH, "v77_base_truth_for_e1")
+    authority_path = _authority_file(tmp_path)
+    base_root = tmp_path / "base"
+    e1_root = tmp_path / "e1"
+    base_manifest = B.build(base_root, 128, 53, 7302, [])
+    e1_manifest = T.build(e1_root, 128, 53, 7302, "E1", authority_path, enabled=[])
+    assert e1_manifest["arm"] == "E1"
+    assert e1_manifest["class_authority_sha256"]
+    assert e1_manifest["class_assignment_inputs"] == ["global_cell_index", "seed", "class_authority"]
+    assert len(base_manifest["shards"]) == len(e1_manifest["shards"])
+    for sb, se in zip(base_manifest["shards"], e1_manifest["shards"]):
+        zb = np.load(base_root / "hidden_truth" / sb["file"], allow_pickle=False)
+        ze = np.load(e1_root / "hidden_truth" / se["file"], allow_pickle=False)
+        assert "broad_class_index" in ze.files
+        assert set(zb.files).issubset(set(ze.files))
+        for key in zb.files:
+            assert np.array_equal(zb[key], ze[key]), key
+
+
+def test_e1_assignment_is_shard_invariant_and_e4_fails_closed(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_shards")
+    authority_path = _authority_file(tmp_path)
+    r1, r2 = tmp_path / "s1", tmp_path / "s2"
+    T.build(r1, 128, 31, 7302, "E1", authority_path, enabled=[])
+    T.build(r2, 128, 47, 7302, "E1", authority_path, enabled=[])
+    def classes(root):
+        m = json.loads((root / "hidden_truth" / "TRUTH_MANIFEST.json").read_text())
+        return np.concatenate([
+            np.load(root / "hidden_truth" / s["file"], allow_pickle=False)["broad_class_index"]
+            for s in m["shards"]
+        ])
+    assert np.array_equal(classes(r1), classes(r2))
+    with pytest.raises(PermissionError):
+        T.build(tmp_path / "e4", 64, 32, 7302, "E4", authority_path, enabled=[])
+
+
+def test_e1_observable_counts_are_identical_to_e0(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_observe")
+    B = _load(BASE_TRUTH_PATH, "v77_base_truth_observe")
+    O = _load(BASE_OBSERVER_PATH, "v77_base_observer_e1")
+    authority_path = _authority_file(tmp_path)
+    base_root = tmp_path / "obs_base"
+    e1_root = tmp_path / "obs_e1"
+    B.build(base_root, 96, 48, 7302, [])
+    T.build(e1_root, 96, 48, 7302, "E1", authority_path, enabled=[])
+    mb = O.observe(base_root, 7302, 991)
+    me = O.observe(e1_root, 7302, 991)
+    assert len(mb["shards"]) == len(me["shards"])
+    for sb, se in zip(mb["shards"], me["shards"]):
+        zb = np.load(base_root / "observable_raw" / "FULL104_like_sharded" / sb["rna_file"], allow_pickle=False)
+        ze = np.load(e1_root / "observable_raw" / "FULL104_like_sharded" / se["rna_file"], allow_pickle=False)
+        for key in zb.files:
+            assert np.array_equal(zb[key], ze[key]), key
 
 
 def test_e2_successor_observer_is_missing_before_implementation():
