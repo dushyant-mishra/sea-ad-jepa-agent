@@ -1,0 +1,46 @@
+name: V77 synthetic class propagation
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v77/**'
+      - 'tests/test_v77_class_propagation_v1.py'
+      - 'tests/test_v77_class_propagation_tournament_v1.py'
+      - 'tests/test_v77_class_authority_artifact_v1.py'
+      - 'results/v77/V77_CLASS_COMPOSITION_AUTHORITY_V1.json'
+      - '.github/workflows/v77-synthetic-class-propagation.yml'
+      - 'docs/superpowers/specs/2026-10-08-synthetic-etl-propagation-design.md'
+      - 'docs/superpowers/specs/2026-10-08-synthetic-etl-propagation-fullscale-amendment.md'
+      - 'docs/superpowers/plans/2026-10-08-synthetic-etl-propagation.md'
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install numpy scipy pytest
+      - name: Focused class-propagation contract
+        run: >-
+          pytest -q
+          tests/test_v77_class_propagation_v1.py
+          tests/test_v77_class_propagation_tournament_v1.py
+          tests/test_v77_class_authority_artifact_v1.py
+      - name: Historical structural spillover
+        run: |
+          python scripts/v77/audit_v77_historical_spillover.py \
+            --phase V77_CLASS_PROPAGATION_STRUCTURAL \
+            --out /tmp/v77_class_spillover.json
+          python - <<'PY'
+          import json
+          rec = json.load(open('/tmp/v77_class_spillover.json'))
+          assert rec['structural_pass'] is True, rec['structural']
+          print(json.dumps({
+              'structural_pass': rec['structural_pass'],
+              'text_candidates': {k: len(v) for k, v in rec['text_candidates'].items()},
+          }, indent=2))
+          PY
