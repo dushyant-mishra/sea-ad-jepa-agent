@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+import json
 from pathlib import Path
 
 import torch
@@ -14,6 +15,7 @@ from sea_ad_jepa.v5.inactive_checkpoint_binding_v1 import (
 from sea_ad_jepa.v5.inactive_update_reference import (
     build_reference_modules,
     capture_reference_checkpoint,
+    restore_reference_checkpoint,
 )
 
 from .physical_binding_v2 import PhysicalRowValueBindingV2
@@ -35,6 +37,7 @@ from .v77_zero_update import (
 HALF_LIFE_PRESENTATIONS = 1000
 PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL = 2
 SUCCESS_VERDICT = "PASS__ONE_SYNTHETIC_GUARDED_UPDATE_PHYSICALLY_BOUND__NON_PRODUCTION"
+FAILURE_VERDICT = "FAIL__NO_COMPLETED_MUTATION_CONTINUATION"
 _PREMISE = Path(__file__).resolve().parents[3] / "docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json"
 
 
@@ -48,7 +51,40 @@ def _module_state_digest(state: dict[str, torch.Tensor]) -> str:
     return h.hexdigest()
 
 
-def run_bounded_synthetic_mutation(
+def rehearsal_run_receipt_path(persistence_path: Path, experiment_run_id: str) -> Path:
+    """Stable per-run custody marker, independent of the continuation filename."""
+    path = Path(persistence_path)
+    if not isinstance(experiment_run_id, str) or not experiment_run_id.strip():
+        raise ValueError("bounded rehearsal experiment_run_id must be nonempty")
+    identity = hashlib.sha256(experiment_run_id.strip().encode("utf-8")).hexdigest()[:24]
+    return path.parent / f"V77_BOUNDED_MUTATION_RUN_{identity}.json"
+
+
+def _write_receipt(path: Path, payload: dict[str, object], *, exclusive: bool) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    mode = "x" if exclusive else "w"
+    with path.open(mode, encoding="utf-8") as handle:
+        json.dump(payload, handle, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        handle.write("\n")
+
+
+def _reference_modules(*, vocabulary_size: int, init_seed: int):
+    return build_reference_modules(
+        vocabulary_size=vocabulary_size,
+        width=16,
+        heads=4,
+        blocks=1,
+        ffn_width=32,
+        dropout=0.10,
+        learning_rate=1e-3,
+        betas=(0.9, 0.999),
+        eps=1e-8,
+        weight_decay=0.01,
+        init_seed=int(init_seed),
+    )
+
+
+def _run_bounded_synthetic_mutation_once(
     batch: QualificationBatchV1,
     physical_bindings: tuple[PhysicalRowValueBindingV2, ...],
     q_safety_proof: BoundAdapterQSafetyProofV1,
@@ -56,7 +92,7 @@ def run_bounded_synthetic_mutation(
     init_seed: int,
     persistence_path: Path,
 ) -> dict[str, object]:
-    """Execute exactly one synthetic-only guarded V5 update and typed EMA continuation."""
+    """Execute the one allowed synthetic guarded update after custody is reserved."""
     if not isinstance(batch, QualificationBatchV1):
         raise TypeError("bounded V77 mutation requires QualificationBatchV1")
     if batch.data_kind is not DataKind.SYNTHETIC:
@@ -67,8 +103,6 @@ def run_bounded_synthetic_mutation(
         raise ValueError("bounded rehearsal is frozen to exactly four synthetic gene addresses")
     if int(init_seed) != 8113002:
         raise ValueError("bounded rehearsal init_seed differs from preregistration")
-    if not isinstance(persistence_path, Path):
-        persistence_path = Path(persistence_path)
     if persistence_path.exists():
         raise ValueError("bounded rehearsal persistence path already exists")
 
@@ -107,19 +141,8 @@ def run_bounded_synthetic_mutation(
     if bool((hidden_target_mask & ~measurement_mask).any()):
         raise ValueError("bounded rehearsal hidden target escaped measured support")
 
-    modules = build_reference_modules(
-        vocabulary_size=int(gene_ids.max().item()) + 1,
-        width=16,
-        heads=4,
-        blocks=1,
-        ffn_width=32,
-        dropout=0.10,
-        learning_rate=1e-3,
-        betas=(0.9, 0.999),
-        eps=1e-8,
-        weight_decay=0.01,
-        init_seed=int(init_seed),
-    )
+    vocabulary_size = int(gene_ids.max().item()) + 1
+    modules = _reference_modules(vocabulary_size=vocabulary_size, init_seed=int(init_seed))
 
     online_before = deepcopy(modules.online.state_dict())
     predictor_before = deepcopy(modules.predictor.state_dict())
@@ -209,27 +232,6 @@ def run_bounded_synthetic_mutation(
     )
     if loaded != envelope:
         raise RuntimeError("typed continuation reload differs from persisted envelope")
-    resumed = ema_binding.issue_presentation_ema_bound_authority_from_persisted_checkpoint(
-        build_reference_modules(
-            vocabulary_size=int(gene_ids.max().item()) + 1,
-            width=16,
-            heads=4,
-            blocks=1,
-            ffn_width=32,
-            dropout=0.10,
-            learning_rate=1e-3,
-            betas=(0.9, 0.999),
-            eps=1e-8,
-            weight_decay=0.01,
-            init_seed=int(init_seed),
-        ),
-        loaded,
-        premise_state_path=_PREMISE,
-        half_life_presentations=HALF_LIFE_PRESENTATIONS,
-        presentation_unit_id=ema_binding.PRESENTATION_UNIT_SUCCESSFUL_BASE_CELLS,
-    )
-    if resumed.parent_presentations_seen != PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL:
-        raise RuntimeError("typed continuation restart did not preserve teacher age")
 
     online_after = modules.online.state_dict()
     predictor_after = modules.predictor.state_dict()
@@ -245,6 +247,45 @@ def run_bounded_synthetic_mutation(
     optimizer_changed = optimizer_digest_before != optimizer_digest_after
     if not all((online_changed, predictor_changed, teacher_changed, optimizer_changed)):
         raise RuntimeError("bounded rehearsal did not mutate every intended runtime state")
+
+    restored_modules = _reference_modules(vocabulary_size=vocabulary_size, init_seed=int(init_seed))
+    next_update_index, restored_presentations = restore_reference_checkpoint(
+        restored_modules,
+        loaded.base_checkpoint.reference_checkpoint,
+    )
+    if next_update_index != 1 or restored_presentations != PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL:
+        raise RuntimeError("typed continuation restored the wrong update/presentation cursor")
+    restored_checkpoint_digest = _checkpoint_digest(loaded.base_checkpoint.reference_checkpoint)
+    restored_online_digest = _module_state_digest(restored_modules.online.state_dict())
+    restored_predictor_digest = _module_state_digest(restored_modules.predictor.state_dict())
+    restored_teacher_digest = _module_state_digest(restored_modules.teacher.state_dict())
+    restored_optimizer_digest = _optimizer_digest(restored_modules.optimizer)
+    expected_restored = {
+        "checkpoint": checkpoint_digest_after,
+        "online": online_digest_after,
+        "predictor": predictor_digest_after,
+        "teacher": teacher_digest_after,
+        "optimizer": optimizer_digest_after,
+    }
+    actual_restored = {
+        "checkpoint": restored_checkpoint_digest,
+        "online": restored_online_digest,
+        "predictor": restored_predictor_digest,
+        "teacher": restored_teacher_digest,
+        "optimizer": restored_optimizer_digest,
+    }
+    if actual_restored != expected_restored:
+        raise RuntimeError("typed continuation did not restore the persisted runtime state exactly")
+
+    resumed = ema_binding.issue_presentation_ema_bound_authority_from_persisted_checkpoint(
+        restored_modules,
+        loaded,
+        premise_state_path=_PREMISE,
+        half_life_presentations=HALF_LIFE_PRESENTATIONS,
+        presentation_unit_id=ema_binding.PRESENTATION_UNIT_SUCCESSFUL_BASE_CELLS,
+    )
+    if resumed.parent_presentations_seen != PRESENTATIONS_PER_SUCCESSFUL_REHEARSAL:
+        raise RuntimeError("typed continuation restart did not preserve teacher age")
 
     completion_proof = report["presentation_ema_completion_proof"]
     completed_receipt = report["completed_guard_receipt"]
@@ -281,8 +322,80 @@ def run_bounded_synthetic_mutation(
         "presentation_ema_completion_proof_digest": completion_proof["proof_digest"],
         "typed_continuation_sha256": continuation_sha256,
         "typed_continuation_persisted": True,
+        "restored_checkpoint_digest": restored_checkpoint_digest,
+        "restored_online_digest": restored_online_digest,
+        "restored_predictor_digest": restored_predictor_digest,
+        "restored_teacher_digest": restored_teacher_digest,
+        "restored_optimizer_digest": restored_optimizer_digest,
         "deterministic_reload_verified": True,
         "execution_authorized": False,
         "training_authorized": False,
         "production_promotable": False,
     }
+
+
+def run_bounded_synthetic_mutation(
+    batch: QualificationBatchV1,
+    physical_bindings: tuple[PhysicalRowValueBindingV2, ...],
+    q_safety_proof: BoundAdapterQSafetyProofV1,
+    runtime_source_sha256: str,
+    init_seed: int,
+    persistence_path: Path,
+) -> dict[str, object]:
+    """Reserve one run identity, execute once, and preserve success/failure custody."""
+    if not isinstance(batch, QualificationBatchV1):
+        raise TypeError("bounded V77 mutation requires QualificationBatchV1")
+    path = Path(persistence_path)
+    if path.exists():
+        raise ValueError("bounded rehearsal persistence path already exists")
+    run_receipt_path = rehearsal_run_receipt_path(path, batch.experiment_run_id)
+    if run_receipt_path.exists():
+        raise ValueError("bounded rehearsal run identity is already recorded; retry requires a new run identity")
+
+    in_progress = {
+        "schema": "V77_BOUNDED_SYNTHETIC_MUTATION_RUN_CUSTODY_V1",
+        "experiment_run_id": batch.experiment_run_id,
+        "verdict": "IN_PROGRESS__FAIL_CLOSED_IF_INTERRUPTED",
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+    _write_receipt(run_receipt_path, in_progress, exclusive=True)
+
+    try:
+        receipt = _run_bounded_synthetic_mutation_once(
+            batch,
+            physical_bindings,
+            q_safety_proof,
+            runtime_source_sha256,
+            init_seed,
+            path,
+        )
+    except Exception as exc:
+        if path.exists():
+            path.unlink()
+        failure = {
+            "schema": "V77_BOUNDED_SYNTHETIC_MUTATION_RUN_CUSTODY_V1",
+            "experiment_run_id": batch.experiment_run_id,
+            "verdict": FAILURE_VERDICT,
+            "error_type": type(exc).__name__,
+            "error_message": str(exc),
+            "typed_continuation_persisted": False,
+            "training_authorized": False,
+            "production_promotable": False,
+        }
+        _write_receipt(run_receipt_path, failure, exclusive=False)
+        raise
+
+    success_custody = {
+        "schema": "V77_BOUNDED_SYNTHETIC_MUTATION_RUN_CUSTODY_V1",
+        "experiment_run_id": batch.experiment_run_id,
+        "verdict": receipt["verdict"],
+        "batch_scientific_identity_digest": receipt["batch_scientific_identity_digest"],
+        "optimizer_step_after": receipt["optimizer_step_after"],
+        "teacher_presentations_after": receipt["teacher_presentations_after"],
+        "typed_continuation_sha256": receipt["typed_continuation_sha256"],
+        "training_authorized": False,
+        "production_promotable": False,
+    }
+    _write_receipt(run_receipt_path, success_custody, exclusive=False)
+    return receipt
