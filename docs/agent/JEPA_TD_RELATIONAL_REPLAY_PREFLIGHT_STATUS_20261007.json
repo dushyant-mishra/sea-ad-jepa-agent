@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_TD_RELATIONAL_REPLAY_PREFLIGHT_STATUS_V2",
+  "schema": "JEPA_TD_RELATIONAL_REPLAY_PREFLIGHT_STATUS_V3",
   "date": "2026-10-07",
   "status": "PREFLIGHT_CODE_AND_AUTHORITIES_CLOSED__CANONICAL_LOCAL_G4_G5_RUN_REMAINS",
   "gates": {
@@ -20,7 +20,7 @@
       "g1b_pass_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
       "ci_confirmed_code_commit": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
       "freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
-      "interpretation": "All 24 HVS and 11 SEA-AD raw H5ADs were hash-bound before count read. Corrected join is physical var identifier -> frozen provenance exact Ensembl ID -> molecular address; positional source_feature_index is not used. This is inherited implementation/source authority, not TD outcome authority."
+      "interpretation": "All 24 HVS and 11 SEA-AD raw H5ADs were hash-bound before count read. Corrected join is physical var identifier -> frozen provenance exact Ensembl ID -> molecular address; positional source_feature_index is not used. Macha G1b later passed exactly. This is inherited implementation/source authority, not TD outcome authority."
     },
     "G4_TD_specific_9216_address_one_to_one_coverage_on_all_HVS_SEAAD_matrices": {
       "status": "OPEN_CANONICAL_LOCAL_RUN__DRIVER_FROZEN",
@@ -36,14 +36,19 @@
       "rule": "For every Sample-A HVS/SEA-AD row, raw obs[local_row] must equal the frozen cell_id exactly.",
       "value_blind": true
     },
-    "G6_sample_A_library_and_detected_count_value_sentinels": {
+    "G6_sample_A_whole_cell_raw_library_total": {
       "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
-      "rule": "Before normalized TD values are accepted, recomputed whole-cell raw library size and detected-feature count must equal preserved TD metadata sentinels for every Sample-A cell."
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md",
+      "rule": "For every exact Sample-A cell, sum every raw count in the physical row before address filtering and require exact equality to preserved TD50 source_library. Zero tolerance.",
+      "historical_detected_nnz": "DIAGNOSTIC_ONLY_NOT_A_PASS_GATE",
+      "reason_detected_not_gate": "TD50 detected was historical 41K CSR nnz after the defective mapping; corrected SEA-AD collision exclusions can legitimately alter post-mapping nnz."
     },
     "G7_cross_check_against_existing_S174_value_authority": {
       "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
-      "inherited_reference": "Macha S174 G1b PASS at 4ab8e2101f2e595d9a97df05517d6e672768ecec",
-      "rule": "Where Sample-A reads overlap existing S174 checked conditions, corrected physical-ID reads must agree under the inherited rule; no new tolerance may be invented."
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md",
+      "binding_reference_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+      "binding_reference_result": "results/v77/S174_REBUILD_G1B_RESULT_V1.json",
+      "rule": "Use all natural Sample-A/S174 overlapping cells and replay addresses; require exact raw-count equality with zero tolerance. Never manufacture overlap. If no natural overlap exists, report NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP."
     },
     "G8_new_immutable_output_namespace": {
       "status": "PASS_NAMESPACE_FROZEN_BEFORE_REAL_VALUES",
