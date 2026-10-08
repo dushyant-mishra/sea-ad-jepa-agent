@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Successor RNA observer for preregistered broad-cell-class propagation arms.
 
-The measurement/counting process is delegated to the frozen V77 observer. E1 is therefore
-observationally identical to the base path. E2 adds exactly one synthetic random-content
-class-shared contribution to pre-count eta and changes nothing about availability, empirical
-depth/detection targets, or exact-count realization.
+The measurement/counting process is delegated to the frozen V77 observer. E1 is observationally
+identical to the base path. E2 adds one synthetic random-content class-shared contribution to
+pre-count eta. E3 keeps that contribution and adds two continuous within-class dimensions with
+an outcome-blind RMS budget. Availability, empirical depth/detection targets, and exact-count
+realization are unchanged.
 """
 from __future__ import annotations
 
@@ -22,12 +23,14 @@ import build_v77_extended_rna_observer as BASE  # noqa: E402
 CLASS_PROGRAM_SCALE = float(BASE.SC["state"])
 CLASS_PROGRAM_CONTENT = "SYNTHETIC_RANDOM_DENSE"
 S_CLASS_PROGRAM = 6200
+S_WITHIN_LOADINGS = 6400
+WITHIN_CLASS_DIM_SCALE = CLASS_PROGRAM_SCALE / np.sqrt(2.0)
+WITHIN_CLASS_DIMS = 2
 
 
 def class_program_loadings(seed: int, n_classes: int) -> np.ndarray:
     if n_classes <= 0:
         raise ValueError("n_classes must be positive")
-    # Synthetic panel index + synthetic RNG stream only. No real marker/program identity enters.
     return BASE._dense(seed + S_CLASS_PROGRAM, int(n_classes), S_CLASS_PROGRAM,
                        CLASS_PROGRAM_SCALE).astype(np.float64)
 
@@ -40,17 +43,39 @@ def class_program_contribution(z, seed, n_classes):
     return W[cls]
 
 
+def within_class_loadings(seed: int, n_classes: int) -> np.ndarray:
+    if n_classes <= 0:
+        raise ValueError("n_classes must be positive")
+    out = []
+    for c in range(int(n_classes)):
+        out.append(BASE._dense(seed + S_WITHIN_LOADINGS + 97 * c, WITHIN_CLASS_DIMS,
+                               S_WITHIN_LOADINGS + 11 * c, WITHIN_CLASS_DIM_SCALE))
+    return np.stack(out, axis=0).astype(np.float64)
+
+
+def within_class_contribution(z, seed, n_classes):
+    cls = np.asarray(z["broad_class_index"], dtype=np.int64)
+    zw = np.asarray(z["z_within_class"], dtype=np.float64)
+    if zw.ndim != 2 or zw.shape[1] != WITHIN_CLASS_DIMS or len(zw) != len(cls):
+        raise ValueError("z_within_class must have shape (n_cells, 2)")
+    if np.any(cls < 0) or np.any(cls >= int(n_classes)):
+        raise ValueError("broad_class_index outside authority range")
+    W = within_class_loadings(int(seed), int(n_classes))
+    return np.einsum("nd,ndg->ng", zw, W[cls], optimize=True)
+
+
 def _write_augmented_manifest(root: Path, rec: dict, truth_manifest: dict) -> dict:
+    arm = truth_manifest.get("arm", "E0")
     rec = dict(rec)
     rec.update(
-        class_propagation_arm=truth_manifest.get("arm", "E0"),
+        class_propagation_arm=arm,
         class_authority_sha256=truth_manifest.get("class_authority_sha256"),
-        class_program_content=(CLASS_PROGRAM_CONTENT
-                               if truth_manifest.get("arm") == "E2" else None),
-        class_program_scale=(CLASS_PROGRAM_SCALE
-                             if truth_manifest.get("arm") == "E2" else None),
-        class_program_stream=(S_CLASS_PROGRAM
-                              if truth_manifest.get("arm") == "E2" else None),
+        class_program_content=(CLASS_PROGRAM_CONTENT if arm in {"E2", "E3"} else None),
+        class_program_scale=(CLASS_PROGRAM_SCALE if arm in {"E2", "E3"} else None),
+        class_program_stream=(S_CLASS_PROGRAM if arm in {"E2", "E3"} else None),
+        within_class_dimensions=(WITHIN_CLASS_DIMS if arm == "E3" else 0),
+        within_class_dimension_scale=(float(WITHIN_CLASS_DIM_SCALE) if arm == "E3" else None),
+        within_class_loading_stream=(S_WITHIN_LOADINGS if arm == "E3" else None),
         counting_mechanics="FROZEN_BASE_V77",
         availability_mechanics="FROZEN_BASE_V77",
         measurement_retuned=False,
@@ -66,9 +91,7 @@ def observe(root: Path, seed: int, measurement_seed: int | None) -> dict:
     arm = tm.get("arm", "E0")
     if arm == "E4":
         raise PermissionError("E4 donor×class interaction is not authorized")
-    if arm == "E3":
-        raise NotImplementedError("E3 is preregistered but not implemented in the E2 step")
-    if arm not in {"E0", "E1", "E2"}:
+    if arm not in {"E0", "E1", "E2", "E3"}:
         raise ValueError(f"unsupported class-propagation arm: {arm}")
 
     if arm in {"E0", "E1"}:
@@ -76,15 +99,19 @@ def observe(root: Path, seed: int, measurement_seed: int | None) -> dict:
 
     n_classes = len(tm.get("class_labels", []))
     if n_classes <= 0:
-        raise ValueError("E2 truth manifest lacks class labels")
+        raise ValueError(f"{arm} truth manifest lacks class labels")
     original = BASE.build_eta
 
     def build_eta_with_class(z, enabled, eta_seed, hi, lo, graph):
         eta, parts = original(z, enabled, eta_seed, hi, lo, graph)
-        contrib = class_program_contribution(z, eta_seed, n_classes)
-        eta = eta + contrib
+        class_contrib = class_program_contribution(z, eta_seed, n_classes)
+        eta = eta + class_contrib
         parts = dict(parts)
-        parts["E2_broad_class"] = contrib
+        parts["E2_broad_class"] = class_contrib
+        if arm == "E3":
+            within = within_class_contribution(z, eta_seed, n_classes)
+            eta = eta + within
+            parts["E3_within_class"] = within
         return eta, parts
 
     BASE.build_eta = build_eta_with_class
