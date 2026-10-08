@@ -1,0 +1,28 @@
+name: V77 runtime snapshot
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/v77-runtime-snapshot.yml'
+      - 'scripts/v77/**'
+      - 'scripts/v64/**'
+      - 'results/v77/**'
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pack audited runtime snapshot
+        run: |
+          git rev-parse HEAD > V77_RUNTIME_SNAPSHOT_HEAD.txt
+          tar -czf /tmp/v77-runtime-snapshot.tar.gz \
+            scripts/v77 scripts/v64 results/v77 tests \
+            V77_RUNTIME_SNAPSHOT_HEAD.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v77-runtime-snapshot
+          path: /tmp/v77-runtime-snapshot.tar.gz
+          if-no-files-found: error
+          retention-days: 1
