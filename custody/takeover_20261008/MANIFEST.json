@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_COMPLETE_TAKEOVER_CUSTODY_V1",
+  "schema": "JEPA_COMPLETE_TAKEOVER_CUSTODY_V2",
   "date": "2026-10-08",
   "authority": "NON_AUTHORIZING_CUSTODY",
   "active_runtime": {
@@ -22,14 +22,23 @@
     "replay_checkpoint": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
     "replay_ci_run": 37693603160,
     "replay_tests_passed": 146,
-    "note": "Byte-identical tracked repository snapshot. Large external/local cache bytes not tracked by Git remain represented by their custody receipts/hashes inside the snapshot."
+    "note": "Byte-identical tracked repository snapshot. Large external/local cache bytes not tracked by Git remain represented by their custody receipts/hashes."
   },
-  "prior_handoff_snapshot": {
+  "prior_handoff": {
+    "source_pr": 230,
     "source_branch": "handoff/jepa-20261007-post-v77-s174-takeover",
     "source_commit": "a33deeae9f68ea48eea2119c9cfeb8a80dda8e0f",
-    "source_tree": "6c1d101a2a2f6840cb5d036ad52f0760c72dce2e",
-    "snapshot_path": "custody/takeover_20261008/pr230_handoff_snapshot",
-    "pr": 230
+    "snapshot_path": "custody/takeover_20261008/PR230_PRIOR_HANDOFF.md"
+  },
+  "runtime_interface_custody": {
+    "source_pr": 227,
+    "source_head": "2708c8870cd32bdf0cd607829c5572af0ee32d46",
+    "files": [
+      "docs/agent/JEPA_NEW_AGENT_FULL_TAKEOVER_HANDOFF_20261007.md",
+      "docs/agent/JEPA_RUNTIME_INTERFACE_CUSTODY_AND_HANDOFF_20261007.md",
+      "docs/agent/archive/chat_runtime_20261007/JEPA_RUNTIME_INTERFACE_CHAT_CUSTODY_MANIFEST_20261007.json"
+    ],
+    "prior_exact_hash_custody_commit": "cb7a98d00359eecece8525b23c43fbc8578c69ef"
   },
   "canonical_lineage": {
     "runtime_pr224": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
