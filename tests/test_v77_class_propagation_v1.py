@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import inspect
 import json
 from pathlib import Path
 
@@ -51,6 +52,12 @@ def _authority_file(tmp_path: Path) -> Path:
     p = tmp_path / "authority.json"
     p.write_text(json.dumps(authority, indent=2))
     return p
+
+
+def _rna_arrays(root: Path):
+    obs = root / "observable_raw" / "FULL104_like_sharded"
+    manifest = json.loads((obs / "FULL104_SHARDED_MANIFEST.json").read_text())
+    return manifest, [np.load(obs / s["rna_file"], allow_pickle=False) for s in manifest["shards"]]
 
 
 def test_authority_module_exists():
@@ -152,5 +159,69 @@ def test_e1_observable_counts_are_identical_to_e0(tmp_path):
             assert np.array_equal(zb[key], ze[key]), key
 
 
-def test_e2_successor_observer_is_missing_before_implementation():
-    assert OBSERVER_PATH.exists(), "E2 class-aware observer successor is not implemented yet"
+def test_e2_truth_is_e1_truth_with_expression_authority_only(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_e2")
+    authority_path = _authority_file(tmp_path)
+    e1_root, e2_root = tmp_path / "e1_truth", tmp_path / "e2_truth"
+    m1 = T.build(e1_root, 96, 48, 7302, "E1", authority_path, enabled=[])
+    m2 = T.build(e2_root, 96, 48, 7302, "E2", authority_path, enabled=[])
+    assert m2["arm"] == "E2"
+    assert m2["class_conditioned_expression"] is True
+    for s1, s2 in zip(m1["shards"], m2["shards"]):
+        z1 = np.load(e1_root / "hidden_truth" / s1["file"], allow_pickle=False)
+        z2 = np.load(e2_root / "hidden_truth" / s2["file"], allow_pickle=False)
+        assert set(z1.files) == set(z2.files)
+        for key in z1.files:
+            assert np.array_equal(z1[key], z2[key]), key
+
+
+def test_e2_class_program_is_random_content_and_nuisance_independent():
+    O = _load(OBSERVER_PATH, "v77_class_observer_unit")
+    params = list(inspect.signature(O.class_program_contribution).parameters)
+    assert params == ["z", "seed", "n_classes"]
+    assert O.CLASS_PROGRAM_SCALE == 0.55
+    assert O.CLASS_PROGRAM_CONTENT == "SYNTHETIC_RANDOM_DENSE"
+    z = {
+        "broad_class_index": np.array([0, 1, 1, 2], dtype=np.int16),
+        "donor_index": np.array([0, 0, 1, 1]),
+        "source_index": np.array([0, 1, 2, 0]),
+        "operator_index": np.array([3, 4, 5, 6]),
+    }
+    c1 = O.class_program_contribution(z, 7302, 3)
+    z2 = dict(z)
+    z2["donor_index"] = z["donor_index"][::-1]
+    z2["source_index"] = z["source_index"][::-1]
+    z2["operator_index"] = z["operator_index"][::-1]
+    c2 = O.class_program_contribution(z2, 7302, 3)
+    assert np.array_equal(c1, c2)
+    assert not np.allclose(c1, 0.0)
+    assert np.array_equal(c1[1], c1[2])
+    assert not np.array_equal(c1[0], c1[1])
+
+
+def test_e2_observer_changes_only_biological_rate_not_measurement_targets(tmp_path):
+    T = _load(TRUTH_PATH, "v77_class_truth_e2_observe")
+    O = _load(OBSERVER_PATH, "v77_class_observer_e2")
+    authority_path = _authority_file(tmp_path)
+    e1_root, e2_root = tmp_path / "e1_obs", tmp_path / "e2_obs"
+    T.build(e1_root, 96, 48, 7302, "E1", authority_path, enabled=[])
+    T.build(e2_root, 96, 48, 7302, "E2", authority_path, enabled=[])
+    m1 = O.observe(e1_root, 7302, 991)
+    m2 = O.observe(e2_root, 7302, 991)
+    assert m1["counting_mechanics"] == m2["counting_mechanics"] == "FROZEN_BASE_V77"
+    assert m1["availability_mechanics"] == m2["availability_mechanics"] == "FROZEN_BASE_V77"
+    _, a1 = _rna_arrays(e1_root)
+    _, a2 = _rna_arrays(e2_root)
+    any_count_change = False
+    frozen = [
+        "availability",
+        "empirical_projected_panel_count_target_int",
+        "empirical_projected_detected_feature_target_int",
+        "empirical_full_library_size_target",
+        "empirical_measured_zero_fraction_target",
+    ]
+    for z1, z2 in zip(a1, a2):
+        for key in frozen:
+            assert np.array_equal(z1[key], z2[key]), key
+        any_count_change |= not np.array_equal(z1["counts"], z2["counts"])
+    assert any_count_change
