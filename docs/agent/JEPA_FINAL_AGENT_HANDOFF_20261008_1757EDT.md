@@ -4,15 +4,24 @@
 
 This is a **non-authorizing, cold-start takeover checkpoint** for the next agent. It supersedes the earlier same-day conversational checkpoint as the first general state document a new agent should read, but it does **not** delete or replace the older custody documents.
 
-**Critical target-discovery correction added after this checkpoint:** PR #237 does not physically mirror every historical target-discovery primary artifact. Before searching for TD34/Nott/SCENIC+/NIH-CARD files, read:
+**Critical target-discovery custody update:** PR #237 does not physically mirror every historical target-discovery primary artifact. Before searching for TD34/Nott/SCENIC+/NIH-CARD files, read:
 
 `docs/agent/TARGET_DISCOVERY_PRIMARY_ARTIFACT_LOCATOR_20261008.md`
 
-That locator classifies requested artifacts as `PRESENT_IN_TAKEOVER`, `PRESENT_HISTORICAL_GIT_ONLY`, `PRESENT_LOCAL_ONLY`, or `REFERENCE_ONLY_NOT_RECOVERED`, and gives exact branches/commits/paths where established. In particular, the historical `JEPA_TARGET_DISCOVERY_NEW_CHAT_HANDOFF_20260907.zip` is known by exact SHA-256 but its bytes are **not currently recovered in PR #237 or the mounted /mnt/data assets**. Do not waste time searching the takeover tree for it.
+and:
+
+`docs/agent/TARGET_DISCOVERY_CUSTODY_UPDATE_20261008.md`
+
+The historical `JEPA_TARGET_DISCOVERY_NEW_CHAT_HANDOFF_20260907.zip` has now been physically recovered in the current chat environment and authenticated against its historical SHA-256. The original TD34 producer bytes were recovered from that package and match the historical recorded producer digest exactly. Authority-critical recovered text bytes and a 97-file checksum inventory are now copied into:
+
+`custody/target_discovery_20260907_recovered/`
+
+The remaining TD34 custody question is no longer “where is the producer?” It is the narrower upstream binding problem: recover/hash-bind `FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz` or an authenticated equivalent common-support vector so the four exact 512-address panel memberships can be independently reconstructed and hashed.
 
 Read this together with:
 
 - `docs/agent/TARGET_DISCOVERY_PRIMARY_ARTIFACT_LOCATOR_20261008.md`
+- `docs/agent/TARGET_DISCOVERY_CUSTODY_UPDATE_20261008.md`
 - `docs/agent/JEPA_COMPLETE_TAKEOVER_20261008.md`
 - `docs/agent/JEPA_NEW_AGENT_HANDOFF_20261008_1518EDT.md`
 - `docs/agent/V77_BOUNDED_SYNTHETIC_MUTATION_REHEARSAL_CONTRACT_20261007.md`
@@ -20,8 +29,9 @@ Read this together with:
 - `custody/takeover_20261008/MANIFEST.json`
 - `custody/takeover_20261008/PR230_PRIOR_HANDOFF.md`
 - `custody/takeover_20261008/s174_working_snapshot/`
+- `custody/target_discovery_20260907_recovered/README.md`
 
-Immediately before the original version of this file was written, PR #237 was open, draft, mergeable at head `438640ee91de310768d02b5f5e342696e166445e`. It has since advanced by documentation-only handoff/locator commits. Re-read PR #237 before relying on any head SHA.
+Immediately before the original version of this file was written, PR #237 was open, draft, mergeable at head `438640ee91de310768d02b5f5e342696e166445e`. It has since advanced through documentation/custody commits. Re-read PR #237 before relying on any recorded “latest” SHA.
 
 PR #237 branch:
 
@@ -35,7 +45,7 @@ Base SHA:
 
 `8495c9f0a753dbb25c90bc27e65f28c4ee2e471e`
 
-This checkpoint and its locator successor are documentation-only. They do not modify runtime code, tests, workflows, scientific outputs, or large binary data.
+This checkpoint and its custody successors are documentation/custody-only. They do not modify runtime code, tests, workflows, scientific outputs, or scientific authorization state.
 
 ---
 
@@ -45,9 +55,9 @@ There are **three distinct lanes**. Do not collapse them.
 
 1. **Runtime/provenance lane.** The project has one audited, preregistered, synthetic-only guarded optimizer update with post-step EMA and deterministic fresh-module restore. That is a bounded runtime proof, not real-data training authority.
 2. **Synthetic-science/S174 lane.** The HVS/SEA-AD feature-axis defect was prospectively repaired and replayed. The current live S174 branch is newer than the snapshot carried in PR #237; consult the artifact locator before judging any old RED state as current.
-3. **Target-discovery lane.** Historical target work is substantially more mature than “find a target tensor,” but exact TD34→TD60 and multimodal genealogy must be reconstructed from primary artifacts. Several of those artifacts live only on historical branches and the Sept. 7 handoff ZIP remains unrecovered by exact bytes.
+3. **Target-discovery lane.** Historical target work is substantially more mature than “find a target tensor,” but exact TD34→TD60 and multimodal genealogy must be reconstructed from primary artifacts. The Sept. 7 primary custody package and authentic TD34 producer are now recovered; several later artifacts still live only on historical branches, and some upstream/external execution assets remain to be located.
 
-The next agent must use a **defect → repair → verification → supersession** method. Do not treat an old audit finding as current merely because it is well documented, and do not treat a later prose handoff as a repair without primary evidence.
+The next agent must use a **defect → repair/recovery → verification → supersession** method. Do not treat an old audit finding as current merely because it is well documented, and do not treat a later prose handoff as a repair without primary evidence.
 
 ---
 
@@ -174,22 +184,67 @@ No synthetic mechanism is currently qualified.
 
 ---
 
-# 7. Target-discovery archaeology: do not search takeover only
+# 7. Target-discovery archaeology: updated primary custody
 
-The target-discovery lane is where the largest handoff risk remains. Historical target work had reportedly pivoted into relational-objective qualification after TD56/TD57B, with later TD59/TD60 work, but those shorthand stage names are not enough.
+The target-discovery lane is where the largest handoff risk remains. Historical target work had reportedly pivoted into relational-objective qualification after TD56/TD57B, with later TD59/TD60 work, but stage shorthand is not enough.
 
-Use:
+Use first:
 
 `docs/agent/TARGET_DISCOVERY_PRIMARY_ARTIFACT_LOCATOR_20261008.md`
 
-Key established anchors include:
+and:
 
-- TD34/S149 genealogy audit branch `audit/td34-genealogy-s149-20261006@efa5c21db479f2feb78892356af3eef42c2886d2`;
-- historical TD34 closure `ff85f5bb18dc7d438113c3a5662856a360d2cd8f`;
-- exact historical Sept. 7 ZIP identity `JEPA_TARGET_DISCOVERY_NEW_CHAT_HANDOFF_20260907.zip`, SHA-256 `d0b883ff798e94933b5e8aade3845551fad0b23d51451b01a59230476a7c59e4`, currently **not recovered**;
-- Nott/V64 successor branch `chatgpt/v64-e2-single-source-successor-20260929`;
-- SCENIC+ lineages `agent-4/scenicplus-recovery-expansion-20260926` and `claude/v69-scenicplus-external-network-20261001`;
-- NIH-CARD design/realism branches `claude/v64-nihcard-e2-design-20260929` and `claude/v64-nihcard-realism-design-20260929`.
+`docs/agent/TARGET_DISCOVERY_CUSTODY_UPDATE_20261008.md`
+
+### Sept. 7 package and TD34 producer
+
+The historical ZIP is now recovered:
+
+`JEPA_TARGET_DISCOVERY_NEW_CHAT_HANDOFF_20260907.zip`
+
+- bytes: `1664383`
+- SHA-256: `d0b883ff798e94933b5e8aade3845551fad0b23d51451b01a59230476a7c59e4`
+- historical expected SHA-256: same
+- verdict: `EXACT_MATCH`
+
+Embedded handoff SHA-256:
+
+`5f49bf4072b44c8f1a269be86d299fb0157a6cf2a923040d2dbe348126af09b1`
+
+Historical expected embedded handoff SHA-256: same.
+
+Recovered authentic TD34 producer:
+
+`scripts/td_iteration34_state_geometry_globalrow.py`
+
+SHA-256:
+
+`1e26f37b760ea049a7b342d7c37229c849f26042871db1c815090f6a6dc5b566`
+
+This exactly matches the historical digest preserved by the TD34/S149 audit. Durable takeover copy:
+
+`custody/target_discovery_20260907_recovered/td_iteration34_state_geometry_globalrow.py`
+
+The recovered producer establishes that TD34's four panels were constructed from the all-state common-support address universe, deterministically ordered by `SHA256("TD25|<address>")`, then split into four consecutive 512-address blocks. The old claim that original producer bytes were unavailable is superseded.
+
+The remaining TD34 question is narrower: the upstream support NPZ `FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz` is not present in the recovered ZIP, and standalone exact panel membership manifests have not yet been located. Current classification:
+
+`PRIMARY_PRODUCER_RECOVERED_AND_HASH_VERIFIED__SELECTION_RULE_RECOVERED__UPSTREAM_SUPPORT_ARRAY_BINDING_PENDING`
+
+Durable package checksum inventory:
+
+`custody/target_discovery_20260907_recovered/RECOVERED_PACKAGE_SHA256_MANIFEST.csv`
+
+### Other established historical starting points
+
+- TD34/S149 genealogy audit: `audit/td34-genealogy-s149-20261006@efa5c21db479f2feb78892356af3eef42c2886d2`
+- historical TD34 closure: `ff85f5bb18dc7d438113c3a5662856a360d2cd8f`
+- Nott/V64 successor: `chatgpt/v64-e2-single-source-successor-20260929@23255baaf81381d5c22c655a605642db27f2a173`
+- Nott substrate-fit contract: `chatgpt/v64-nott-substrate-fit-contract-20260929@a6ecae6c31ba2083de72566fd336b187f7d59bfc`
+- SCENIC+ recovery: `agent-4/scenicplus-recovery-expansion-20260926@5e3d1197749c6d2ac0b4015edea5c042b681af91`
+- SCENIC+/cisTarget external-network: `claude/v69-scenicplus-external-network-20261001@d5b76230c1d2837dfbf643e205c5b2780831d8f9`
+- NIH-CARD design: `claude/v64-nihcard-e2-design-20260929@6d08386f9f996c8db6224a959ca93745669b27ee`
+- NIH-CARD realism lane: `claude/v64-nihcard-realism-design-20260929`
 
 Do not carry an old RED finding forward until checking for a repair successor. Conversely, do not call it fixed unless exact repair and verification artifacts are found.
 
@@ -197,25 +252,34 @@ Do not carry an old RED finding forward until checking for a repair successor. C
 
 # 8. Local binary custody
 
-The current environment contains ten hash-bound `/mnt/data` assets. Exact byte counts and SHA-256 values are in the earlier 15:18 handoff and the artifact locator. The two 41K expression parts concatenate to complete archive SHA-256:
+The current environment contains the previously recorded hash-bound `/mnt/data` runtime/scientific assets **plus** the now-recovered Sept. 7 target-discovery ZIP.
+
+Recovered target-discovery ZIP:
+
+- `/mnt/data/JEPA_TARGET_DISCOVERY_NEW_CHAT_HANDOFF_20260907.zip`
+- bytes `1664383`
+- SHA-256 `d0b883ff798e94933b5e8aade3845551fad0b23d51451b01a59230476a7c59e4`
+
+The two 41K expression parts concatenate to complete archive SHA-256:
 
 `63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`
 
-These local assets do **not** include the Sept. 7 target-discovery ZIP.
+The binary Sept. 7 ZIP itself is not committed because the connected GitHub write interface is text-only; its exact identity and the authority-critical recovered text files are durably recorded under `custody/target_discovery_20260907_recovered/`.
 
 ---
 
 # 9. Ordered continuation plan
 
-1. Cold-start verify current PR/branch heads and CI rather than trusting recorded “latest” SHAs.
-2. Use `TARGET_DISCOVERY_PRIMARY_ARTIFACT_LOCATOR_20261008.md` and reconstruct TD34→TD60 as exact `defect → repair → verification → supersession` chains.
-3. Recover the Sept. 7 target-discovery ZIP bytes by exact filename/hash if any older chat/library/local custody still has them.
-4. Reconstruct Nott/liftover/V64 provenance from the historical V64 successor branch, not from PR #237 alone.
-5. Reconstruct SCENIC+/cisTarget producer/input/region-universe/exposure chains from the two SCENIC+ historical branches.
-6. Reconstruct NIH-CARD design/audit versus actual Stage 3/4 execution outputs; do not confuse a design receipt with an execution result.
-7. Only after the target evidence graph is exact should the historical relational objective be adjudicated or a new prospective target experiment be designed.
-8. Separately, the S174 synthetic agent owns prospective synthetic-biological redesign; do not merge that work into target-discovery archaeology.
-9. No additional runtime mutation is the default next step.
+1. Cold-start verify current PR/branch heads rather than trusting recorded “latest” SHAs.
+2. Use `TARGET_DISCOVERY_PRIMARY_ARTIFACT_LOCATOR_20261008.md` and `TARGET_DISCOVERY_CUSTODY_UPDATE_20261008.md` to reconstruct TD34→TD60 as exact `defect/finding → repair/recovery → verification → supersession` chains.
+3. For TD34, stop searching for the producer. Recover/hash-bind `FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz` or an authenticated equivalent common-support vector, reconstruct the four exact 512-address memberships, hash them, and compare them with downstream TD41 panel/pair artifacts.
+4. Recheck G2 / `PIPELINE_ARTEFACT_m` successor history before carrying the Oct. 6 RED state forward.
+5. Reconstruct Nott/liftover/V64 provenance from the historical V64 successor/contract branches, not from PR #237 alone.
+6. Reconstruct SCENIC+/cisTarget producer/input/region-universe/exposure chains from the two SCENIC+ historical branches.
+7. Reconstruct NIH-CARD design/audit versus actual Stage 3/4 execution outputs; do not confuse a design receipt with an execution result.
+8. Re-adjudicate TD41→TD60 against current substrate/provenance status only after those upstream chains are exact.
+9. Separately, the S174 synthetic agent owns prospective synthetic-biological redesign; do not merge that work into target-discovery archaeology.
+10. No additional runtime mutation is the default next step.
 
 ---
 
