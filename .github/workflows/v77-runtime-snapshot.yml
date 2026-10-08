@@ -7,6 +7,7 @@ on:
       - 'scripts/v77/**'
       - 'scripts/v64/**'
       - 'results/v77/**'
+      - 'results/v64/**'
 
 jobs:
   snapshot:
@@ -18,7 +19,7 @@ jobs:
         run: |
           git rev-parse HEAD > V77_RUNTIME_SNAPSHOT_HEAD.txt
           tar -czf /tmp/v77-runtime-snapshot.tar.gz \
-            scripts/v77 scripts/v64 results/v77 tests \
+            scripts/v77 scripts/v64 results/v77 results/v64 tests \
             V77_RUNTIME_SNAPSHOT_HEAD.txt
       - uses: actions/upload-artifact@v4
         with:
