@@ -38,6 +38,14 @@ def _forbidden_metadata(source: dict) -> list[str]:
     return bad
 
 
+def _portable_path(path: Path) -> str:
+    path = Path(path)
+    try:
+        return path.resolve().relative_to(Path.cwd().resolve()).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def build_authority(calibration_path: Path) -> dict:
     calibration_path = Path(calibration_path)
     rec = json.loads(calibration_path.read_text())
@@ -65,7 +73,7 @@ def build_authority(calibration_path: Path) -> dict:
 
     return {
         "schema": SCHEMA,
-        "calibration_path": str(calibration_path),
+        "calibration_path": _portable_path(calibration_path),
         "calibration_sha256": sha256_file(calibration_path),
         "calibration_schema": rec.get("schema"),
         "pathology_blind": True,
