@@ -30,11 +30,7 @@ If the Macha branch is not locally fetched, STOP and fetch that branch. Do not s
 
 ## What the driver does
 
-1. Verifies the exact hashes of:
-   - `FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv` = `79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6`
-   - Stage81A2R provenance = `df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51`
-   - Stage81A3R collision ledger = `f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722`
-   - Macha S174 freeze = `240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c`
+1. Verifies exact hashes of the sample freeze, Stage81A2R provenance, Stage81A3R collision ledger, and Macha S174 freeze.
 2. Regenerates the exact historical 9,216-address manifest from the calibration bundle + preserved TD artifacts.
 3. Requires regenerated manifest SHA-256 = `4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660`.
 4. Runs `scripts/v5/audit_td_relational_replay_mapping_preflight.py`.
@@ -72,9 +68,12 @@ It does **not** authorize values.
 
 The next separately authorized step would need to close:
 
-- **G6**: for every Sample-A cell, recomputed whole-cell raw library size and detected-feature count exactly reproduce historical sentinels;
-- **G7**: corrected reads overlapping existing S174 sentinels agree exactly under the inherited rule;
-- corrected values are then written only into the already-frozen immutable cache namespace.
+- **G6**: for every Sample-A cell, recompute the **whole-cell raw library total before address filtering** and require exact equality to historical TD50 `source_library`; zero tolerance. Historical TD50 `detected` is old post-materialization CSR nnz and is diagnostic only, not a PASS gate.
+- **G7**: corrected reads on every natural Sample-A/S174 overlapping cell/address agree exactly with Macha's final G1b-authorized result; if natural overlap is empty, report `NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP` rather than manufacturing one.
+- corrected values are then written only into the already-frozen immutable cache namespace under separate explicit value-read authority.
+
+Binding G6/G7 details:
+`docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md`.
 
 ## FAIL consequences
 Any missing address, join collision affecting a required address, missing matrix, wrong file size, row mismatch, authority-hash mismatch, missing Macha branch, or existing terminal output => STOP.
