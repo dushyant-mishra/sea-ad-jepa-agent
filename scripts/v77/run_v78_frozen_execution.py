@@ -9,6 +9,7 @@ abundance/depth marginals. No post-outcome tuning surface is exposed.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import sys
@@ -39,16 +40,60 @@ NO_POST_OUTCOME_RETUNING = True
 BASE_ENABLED_COMPONENTS = tuple(EXT.WORLD_PRESETS["B"])
 
 
-def require_ready_gate(gate_receipt: dict) -> None:
+def _canonical_json_sha256(obj: object) -> str:
+    payload = json.dumps(obj, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def require_ready_gate(gate_receipt: dict, expected_marginal_sha256: str) -> None:
+    """Require the exact authenticated V78 gate, not a caller-supplied READY boolean.
+
+    Scientific execution is authorized only when the gate binds the same marginal
+    authority that will be consumed and proves the physical 42+42 corrected-cache
+    authentication plus inherited E2/operator-support custody.
+    """
+    failures: list[str] = []
+    if not isinstance(gate_receipt, dict) or gate_receipt.get("schema") != "V78_PREEXECUTION_GATE_V1":
+        failures.append("schema")
     if gate_receipt.get("status") != "READY" or gate_receipt.get("blockers"):
-        raise PermissionError(
-            "V78 frozen execution requires READY gate with no blockers: "
-            + ", ".join(map(str, gate_receipt.get("blockers", [])))
-        )
+        failures.append("ready_status")
     if gate_receipt.get("training_authorized") is not False:
-        raise PermissionError("V78 gate must preserve training_authorized=false")
+        failures.append("training_authorized")
     if gate_receipt.get("post_outcome_retuning_authorized") is not False:
-        raise PermissionError("V78 gate must preserve post_outcome_retuning_authorized=false")
+        failures.append("post_outcome_retuning_authorized")
+
+    details = gate_receipt.get("details", {})
+    if not isinstance(details, dict):
+        details = {}
+        failures.append("details")
+    if details.get("e2_reference", {}).get("status") != "AUTHENTICATED":
+        failures.append("e2_reference")
+
+    bridge = details.get("operator_bridge", {})
+    if (bridge.get("status") != "AUTHENTICATED" or int(bridge.get("n_operators", -1)) != 42
+            or bridge.get("operator_indices") != list(range(42))):
+        failures.append("operator_bridge")
+
+    marginal = details.get("marginal_authority", {})
+    if (marginal.get("status") != "AUTHENTICATED"
+            or marginal.get("canonical_corrected_train") is not True
+            or marginal.get("training_authorized") is not False
+            or marginal.get("sha256") != str(expected_marginal_sha256)):
+        failures.append("marginal_authority_binding")
+
+    cache = details.get("corrected_train_cache", {})
+    if (cache.get("status") != "AUTHENTICATED"
+            or int(cache.get("n_count_shards", -1)) != 42
+            or int(cache.get("n_meta_shards", -1)) != 42):
+        failures.append("physical_corrected_cache")
+
+    support = details.get("operator_support_2k", {})
+    if (support.get("status") != "PASS" or int(support.get("operators_present", -1)) != 42
+            or int(support.get("minimum_operator_count", 0)) < 1):
+        failures.append("operator_support_2k")
+
+    if failures:
+        raise PermissionError("V78 frozen execution gate binding failed: " + ", ".join(failures))
 
 
 def _truth_classes(root: Path, n_cells: int) -> np.ndarray:
@@ -172,7 +217,11 @@ def run_frozen_tournament(*, work: Path, e2_reference_path: Path,
                           cells: int = DEFAULT_CELLS,
                           seed: int = DEFAULT_SEED,
                           measurement_seed: int = DEFAULT_MEASUREMENT_SEED) -> dict:
-    require_ready_gate(gate_receipt)
+    marginal_path = Path(marginal_authority_path)
+    if not marginal_path.is_file():
+        raise FileNotFoundError(f"V78 marginal authority unavailable: {marginal_path}")
+    marginal_sha = V77.sha256_file(marginal_path)
+    require_ready_gate(gate_receipt, marginal_sha)
     if int(cells) != DEFAULT_CELLS or int(seed) != DEFAULT_SEED or int(measurement_seed) != DEFAULT_MEASUREMENT_SEED:
         raise PermissionError("first V78 scientific tournament is frozen to 2500 cells and seed 7302")
 
@@ -184,7 +233,6 @@ def run_frozen_tournament(*, work: Path, e2_reference_path: Path,
     authority_path = Path(class_authority_path)
     if V77.sha256_file(authority_path) != CONTRACT.EXPECTED_CLASS_AUTHORITY_SHA256:
         raise RuntimeError("class authority digest mismatch")
-    marginal_path = Path(marginal_authority_path)
     marginal = json.loads(marginal_path.read_text())
     MARGINAL.validate_runtime_authority(marginal)
 
@@ -226,7 +274,9 @@ def run_frozen_tournament(*, work: Path, e2_reference_path: Path,
         "measurement_seed": int(measurement_seed),
         "evaluation_universe_sha256": CONTRACT.EXPECTED_EVALUATION_UNIVERSE_SHA256,
         "class_authority_sha256": CONTRACT.EXPECTED_CLASS_AUTHORITY_SHA256,
-        "marginal_authority_sha256": V77.sha256_file(marginal_path),
+        "marginal_authority_sha256": marginal_sha,
+        "preexecution_gate_sha256": _canonical_json_sha256(gate_receipt),
+        "repaired_archive_sha256": marginal.get("source", {}).get("repaired_archive_sha256"),
         "f0_exact_e2_reproduction": True,
         "real_reference_status": "DESCRIPTIVE_ONLY__S159_NOT_BINARY_AUTHORITY",
         "no_post_outcome_retuning": NO_POST_OUTCOME_RETUNING,
