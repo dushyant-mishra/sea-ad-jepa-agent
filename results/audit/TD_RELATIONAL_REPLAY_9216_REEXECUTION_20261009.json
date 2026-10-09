@@ -1,0 +1,41 @@
+{
+  "schema": "JEPA_TD_RELATIONAL_REPLAY_9216_REEXECUTION_V1",
+  "date": "2026-10-09",
+  "status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+  "scope": "metadata/provenance replay-manifest reconstruction only; no expression values read; no G4/G5 mapping claim; no target/training authority",
+  "implementation_branch": "impl/td-relational-corrected-preflight-20261009",
+  "builder_git_blob_sha": "03dc4949e7e04040db5f85e331da72c5dcab86e6",
+  "inputs": {
+    "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip": {
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    "JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip": {
+      "bytes": 92478083,
+      "sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+      "library_path": "/Jepa project/JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip"
+    }
+  },
+  "outputs": {
+    "common_core_rows": 17186,
+    "common_core_csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "replay_addresses": 9216,
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "receipt_sha256": "9d262fc38b3a7d272302c274b0144d80a3faf184ea664fb33ddab68b78178df4"
+  },
+  "validation": {
+    "observation_state_sha": true,
+    "support_recurrence_sha": true,
+    "common_core_csv_sha": true,
+    "common_core_count": true,
+    "manifest_sha": true,
+    "td57b_exact_and_pair_hash_checks": true,
+    "td57c_exact_and_pair_hash_checks": true,
+    "td59_gene_and_pair_hash_checks": true,
+    "all_frozen_builder_validations_true": true
+  },
+  "g4_g5_mapping_preflight_passed": false,
+  "real_value_read_authorized": false,
+  "training_authorized": false,
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
