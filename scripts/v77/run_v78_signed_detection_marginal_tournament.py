@@ -18,6 +18,7 @@ sys.path.insert(0, str(HERE))
 
 import build_v77_class_aware_fullscale_rna_observer as CLASS_OBSERVER  # noqa: E402
 import build_v78_marginal_authority as MARGINAL  # noqa: E402
+import build_v78_repaired_s174_marginal_authority as REPAIRED  # noqa: E402
 import run_v77_class_propagation_tournament as V77  # noqa: E402
 import v77_background_v2 as BG2  # noqa: E402
 
@@ -30,6 +31,7 @@ EXPECTED_EVALUATION_UNIVERSE_SHA256 = "e950e967dd593b253837017f8bda5c5a683d97507
 EXPECTED_E2_CELLS = 2500
 EXPECTED_CORRECTED_TRAIN_CELLS = 4726
 CORRECTED_CALIBRATION = ROOT / "results" / "v77" / "s174_replay" / "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json"
+REPAIRED_META_DIGEST = ROOT / "results" / "v78" / "V78_S174_SHARD_META_DIGEST_V1.json"
 
 
 def _sha256_file(path: Path) -> str:
@@ -113,22 +115,23 @@ def operator_support_2k() -> dict:
 
 
 def _authenticate_corrected_cache(cache_root: Path) -> tuple[bool, dict]:
-    """Authenticate corrected count shards and require paired metadata shards.
-
-    The committed corrected calibration records the exact 42 count-shard digests. Metadata
-    shards are also required physically because F3 depth strata are cell-level. Paired meta
-    digests are authenticated during canonical marginal-authority construction against the
-    frozen production loader manifest and are explicitly bound in that authority receipt.
-    """
+    """Authenticate the physical repaired S174 count + meta shard pairs."""
     cache_root = Path(cache_root)
-    if not cache_root.is_dir() or not CORRECTED_CALIBRATION.exists():
-        return False, {"reason": "cache_or_calibration_unavailable"}
+    if not cache_root.is_dir() or not CORRECTED_CALIBRATION.exists() or not REPAIRED_META_DIGEST.exists():
+        return False, {"reason": "cache_or_repaired_receipts_unavailable"}
+    if _sha256_file(CORRECTED_CALIBRATION) != REPAIRED.EXPECTED_CORRECTED_CALIBRATION_SHA256:
+        return False, {"reason": "corrected_calibration_digest_mismatch"}
     cal = json.loads(CORRECTED_CALIBRATION.read_text())
-    rows = cal.get("source", {}).get("shard_digests", [])
-    if len(rows) != 42:
-        return False, {"reason": "corrected_calibration_shard_receipt_invalid"}
+    meta = json.loads(REPAIRED_META_DIGEST.read_text())
+    if MARGINAL._canonical_json_sha256(meta) != REPAIRED.EXPECTED_META_DIGEST_SEMANTIC_SHA256:
+        return False, {"reason": "repaired_meta_digest_receipt_mismatch"}
+    count_rows = cal.get("source", {}).get("shard_digests", [])
+    meta_rows = meta.get("rows", [])
+    if len(count_rows) != 42 or len(meta_rows) != 42:
+        return False, {"reason": "repaired_shard_receipt_cardinality_invalid"}
+    meta_by_stem = {Path(str(r.get("file", ""))).name.removesuffix(".meta.npz"): str(r.get("sha256", "")) for r in meta_rows}
     verified = []
-    for row in rows:
+    for row in count_rows:
         name = Path(str(row.get("file", ""))).name
         expected = str(row.get("sha256", ""))
         count_path = cache_root / name
@@ -138,11 +141,13 @@ def _authenticate_corrected_cache(cache_root: Path) -> tuple[bool, dict]:
             return False, {"reason": "corrected_shard_bytes_missing", "missing_stem": stem}
         actual = _sha256_file(count_path)
         if actual != expected:
-            return False, {"reason": "corrected_count_digest_mismatch", "stem": stem,
-                           "expected": expected, "actual": actual}
+            return False, {"reason": "corrected_count_digest_mismatch", "stem": stem, "expected": expected, "actual": actual}
+        expected_meta = meta_by_stem.get(stem)
+        actual_meta = _sha256_file(meta_path)
+        if expected_meta is None or actual_meta != expected_meta:
+            return False, {"reason": "corrected_meta_digest_mismatch", "stem": stem, "expected": expected_meta, "actual": actual_meta}
         verified.append(stem)
-    return True, {"n_count_shards": len(verified), "n_meta_shards": len(verified),
-                  "stems": sorted(verified)}
+    return True, {"n_count_shards": len(verified), "n_meta_shards": len(verified), "stems": sorted(verified)}
 
 
 def preexecution_gate(e2_reference: Path, operator_bridge: Path,
@@ -194,7 +199,9 @@ def preexecution_gate(e2_reference: Path, operator_bridge: Path,
                 "n_shards_42": int(source.get("n_shards", -1)) == MARGINAL.EXPECTED_N_SHARDS,
                 "n_cells_4726": int(source.get("n_cells", -1)) == EXPECTED_CORRECTED_TRAIN_CELLS,
                 "registry_sha256": source.get("registry_sha256") == MARGINAL.EXPECTED_REGISTRY_SHA256,
-                "loader_manifest_sha256": source.get("loader_manifest_sha256") == MARGINAL.EXPECTED_LOADER_MANIFEST_SHA256,
+                "corrected_calibration_sha256": source.get("corrected_calibration_sha256") == REPAIRED.EXPECTED_CORRECTED_CALIBRATION_SHA256,
+                "meta_digest_semantic_sha256": source.get("meta_digest_semantic_sha256") == REPAIRED.EXPECTED_META_DIGEST_SEMANTIC_SHA256,
+                "repaired_archive_sha256": source.get("repaired_archive_sha256") == REPAIRED.EXPECTED_REPAIRED_ARCHIVE_SHA256,
                 "paired_meta_manifest_verified": source.get("paired_meta_manifest_verified") is True,
                 "operator_bridge_sha256": bridge_rec is not None and source.get("operator_bridge_sha256") == bridge_rec.get("bridge_sha256"),
             }
