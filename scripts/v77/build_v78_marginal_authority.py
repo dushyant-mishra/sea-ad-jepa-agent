@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 """V78 corrected-TRAIN marginal authority core.
 
-This module intentionally separates two things:
-
-1. governance/compact-authority mechanics, which are testable with synthetic fixtures; and
-2. the canonical corrected-TRAIN build, which must fail closed unless the exact repaired
-   cache bytes and an authenticated shard-to-operator bridge are physically available.
-
-It must never reconstruct the canonical authority from calibration/envelope summaries.
+The canonical builder reads only authenticated corrected S174 TRAIN count/meta shards,
+uses the frozen shard->matrix->operator bridge, and emits a compact identity-scrubbed
+runtime authority. It must never reconstruct the canonical authority from calibration
+or envelope summaries.
 """
 from __future__ import annotations
 
@@ -20,11 +17,13 @@ import numpy as np
 SCHEMA = "V78_MARGINAL_AUTHORITY_V1"
 OPERATOR_BRIDGE_SCHEMA = "V78_S174_SHARD_OPERATOR_BRIDGE_V1"
 EXPECTED_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+EXPECTED_LOADER_MANIFEST_SHA256 = "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328"
 EXPECTED_N_ADDRESSES = 41238
 EXPECTED_N_SHARDS = 42
 ABUNDANCE_PERMUTATION_STREAM = 14000
 FALLBACK_MIN_CELLS = 50
 FALLBACK_RULE = "operator_if_n>=50_else_source_if_n>=50_else_global"
+QUANTILE_PROBS = np.linspace(0.0, 1.0, 101, dtype=np.float64)
 
 _DENY_FIELD_TOKENS = (
     "pathology", "diagnos", "braak", "cerad", "disease", "target", "query",
@@ -39,6 +38,14 @@ _RUNTIME_FORBIDDEN_KEYS = (
 def _canonical_json_sha256(obj: object) -> str:
     payload = json.dumps(obj, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with Path(path).open("rb") as fh:
+        for block in iter(lambda: fh.read(1 << 20), b""):
+            h.update(block)
+    return h.hexdigest()
 
 
 def _is_sha256(text: object) -> bool:
@@ -73,6 +80,8 @@ def validate_source_contract(source: dict, canonical: bool = False) -> dict:
             raise RuntimeError("malformed shard digest receipt")
         if row["file"] in seen:
             raise RuntimeError("duplicate shard filename in source receipt")
+        if "meta_sha256" in row and not _is_sha256(row.get("meta_sha256")):
+            raise RuntimeError("malformed paired meta digest receipt")
         seen.add(row["file"])
 
     if canonical:
@@ -143,12 +152,6 @@ def choose_depth_stratum(operator_n: int, source_n: int) -> str:
 
 
 def validate_operator_bridge(bridge: dict) -> dict:
-    """Validate a custody bridge from corrected-cache shard stem to frozen operator index.
-
-    The bridge is metadata-only and non-authorizing. It is allowed to carry matrix identity because
-    it never enters synthetic biology or runtime model inputs; the compact F3 authority later stores
-    only the derived stratum summaries and bridge digest.
-    """
     if not isinstance(bridge, dict) or bridge.get("schema") != OPERATOR_BRIDGE_SCHEMA:
         raise RuntimeError("operator bridge schema mismatch")
     if bridge.get("claim_class") != "CUSTODY_DERIVATION__NON_AUTHORIZING":
@@ -220,11 +223,6 @@ def validate_runtime_authority(authority: dict) -> dict:
 
 def build_from_arrays(source: dict, per_address_abundance: np.ndarray,
                       depth_marginals: dict, canonical: bool = False) -> dict:
-    """Fixture/general builder for already-authenticated, already-derived arrays.
-
-    This is not the canonical cache reader. It exists so governance and compact-runtime
-    contracts can be tested independently of possession of protected corrected TRAIN bytes.
-    """
     receipt = validate_source_contract(source, canonical=canonical)
     if depth_marginals.get("fallback_rule") != FALLBACK_RULE:
         raise RuntimeError("depth marginals do not use the preregistered fallback rule")
@@ -243,23 +241,193 @@ def build_from_arrays(source: dict, per_address_abundance: np.ndarray,
     return out
 
 
-def build_from_corrected_cache(cache_root: Path, operator_mapping) -> dict:
-    """Canonical entrypoint; deliberately fail closed until exact cache custody is present.
+def _depth_entry(library: np.ndarray, detected: np.ndarray, source: str | None = None) -> dict:
+    library = np.asarray(library, dtype=np.float64)
+    detected = np.asarray(detected, dtype=np.float64)
+    if library.ndim != 1 or detected.ndim != 1 or len(library) != len(detected) or len(library) == 0:
+        raise RuntimeError("depth stratum must contain aligned nonempty vectors")
+    if np.any(~np.isfinite(library)) or np.any(~np.isfinite(detected)) or np.any(library < 0) or np.any(detected < 0):
+        raise RuntimeError("depth stratum contains invalid values")
+    lx = np.log1p(library)
+    dx = np.log1p(detected)
+    if len(library) < 2 or float(np.std(lx)) == 0.0 or float(np.std(dx)) == 0.0:
+        rho = 0.0
+    else:
+        rho = float(np.corrcoef(lx, dx)[0, 1])
+        if not np.isfinite(rho):
+            rho = 0.0
+    rec = {
+        "n_cells": int(len(library)),
+        "library_quantiles": [float(x) for x in np.quantile(library, QUANTILE_PROBS)],
+        "detected_quantiles": [float(x) for x in np.quantile(detected, QUANTILE_PROBS)],
+        "log1p_library_vs_detected_pearson": rho,
+    }
+    if source is not None:
+        rec["source"] = str(source)
+    return rec
 
-    The S174 rebuild's `source_library` metadata is the physical library total, not an operator
-    identifier. Operator identity therefore comes only from the authenticated shard->matrix->operator
-    bridge. Summary calibration JSON is not an acceptable substitute for corrected count bytes.
+
+def _load_csr_counts(path: Path, n_addresses: int) -> tuple[np.ndarray, np.ndarray, np.ndarray, int]:
+    with np.load(path, allow_pickle=False) as z:
+        required = {"indices", "indptr", "shape", "data"}
+        if not required.issubset(z.files):
+            raise RuntimeError(f"corrected count shard lacks CSR arrays: {path.name}")
+        indices = np.asarray(z["indices"], dtype=np.int64)
+        indptr = np.asarray(z["indptr"], dtype=np.int64)
+        shape = np.asarray(z["shape"], dtype=np.int64)
+        data = np.asarray(z["data"], dtype=np.float64)
+    if shape.shape != (2,) or int(shape[1]) != int(n_addresses):
+        raise RuntimeError(f"corrected count shard address axis mismatch: {path.name}")
+    n_cells = int(shape[0])
+    if indptr.shape != (n_cells + 1,) or len(indices) != len(data):
+        raise RuntimeError(f"corrected count shard CSR cardinality mismatch: {path.name}")
+    if int(indptr[0]) != 0 or int(indptr[-1]) != len(indices) or np.any(np.diff(indptr) < 0):
+        raise RuntimeError(f"corrected count shard CSR indptr invalid: {path.name}")
+    if np.any(indices < 0) or np.any(indices >= n_addresses):
+        raise RuntimeError(f"corrected count shard index outside registry: {path.name}")
+    if np.any(~np.isfinite(data)) or np.any(data <= 0):
+        raise RuntimeError(f"corrected count shard stored values must be finite positive counts: {path.name}")
+    return indices, indptr, data, n_cells
+
+
+def _load_source_library(path: Path, n_cells: int) -> np.ndarray:
+    with np.load(path, allow_pickle=False) as z:
+        if "source_library" not in z.files:
+            raise RuntimeError(f"corrected meta shard lacks source_library: {path.name}")
+        library = np.asarray(z["source_library"], dtype=np.float64)
+    if library.shape != (n_cells,) or np.any(~np.isfinite(library)) or np.any(library <= 0):
+        raise RuntimeError(f"corrected meta source_library invalid: {path.name}")
+    return library
+
+
+def build_from_corrected_cache(cache_root: Path, operator_mapping, loader_manifest_path: Path | None = None,
+                               canonical: bool = True) -> dict:
+    """Build F3 marginals from authenticated corrected TRAIN shard bytes only.
+
+    Only sparse count arrays and the per-cell physical ``source_library`` field are read.
+    Operator/source identity comes exclusively from the authenticated custody bridge.
     """
     cache_root = Path(cache_root)
-    if not cache_root.exists():
+    if not cache_root.is_dir():
         raise FileNotFoundError(f"exact corrected TRAIN cache unavailable: {cache_root}")
     if operator_mapping is None:
         raise PermissionError(
             "authenticated corrected-shard -> observation-operator bridge is required; "
             "refusing to infer operator identity from source_library"
         )
-    validate_operator_bridge(operator_mapping)
-    raise RuntimeError(
-        "canonical corrected-TRAIN authority build is not enabled until the exact 42 corrected "
-        "count/meta shard bytes authenticate against the frozen S174 digest receipt"
-    )
+    bridge_rec = validate_operator_bridge(operator_mapping)
+    if loader_manifest_path is None:
+        raise FileNotFoundError("frozen production loader manifest is required")
+    loader_manifest_path = Path(loader_manifest_path)
+    if not loader_manifest_path.is_file():
+        raise FileNotFoundError(f"production loader manifest unavailable: {loader_manifest_path}")
+    manifest_sha = _sha256_file(loader_manifest_path)
+    if canonical and manifest_sha != EXPECTED_LOADER_MANIFEST_SHA256:
+        raise RuntimeError("frozen loader manifest SHA-256 mismatch")
+    manifest = json.loads(loader_manifest_path.read_text())
+    if manifest.get("schema") != "foundation-train-loader-v1":
+        raise RuntimeError("production loader manifest schema mismatch")
+    if int(manifest.get("address_count", -1)) != EXPECTED_N_ADDRESSES:
+        raise RuntimeError("production loader manifest address count mismatch")
+    if manifest.get("authority_hashes", {}).get("registry") != EXPECTED_REGISTRY_SHA256:
+        raise RuntimeError("production loader manifest registry mismatch")
+    mrows = manifest.get("shards", [])
+    if not isinstance(mrows, list) or len(mrows) != EXPECTED_N_SHARDS:
+        raise RuntimeError("production loader manifest must contain exactly 42 shards")
+    by_matrix = {str(r.get("matrix_id")): r for r in mrows}
+    if len(by_matrix) != EXPECTED_N_SHARDS:
+        raise RuntimeError("production loader manifest matrix IDs are not unique")
+
+    abundance_sum = np.zeros(EXPECTED_N_ADDRESSES, dtype=np.float64)
+    abundance_n = np.zeros(EXPECTED_N_ADDRESSES, dtype=np.int64)
+    operator_depth: dict[str, tuple[list[np.ndarray], list[np.ndarray], str]] = {}
+    source_depth: dict[str, tuple[list[np.ndarray], list[np.ndarray]]] = {}
+    global_lib: list[np.ndarray] = []
+    global_det: list[np.ndarray] = []
+    shard_receipts = []
+    total_cells = 0
+
+    for row in sorted(operator_mapping["rows"], key=lambda r: int(r["operator_index"])):
+        oi = int(row["operator_index"])
+        matrix_id = str(row["matrix_id"])
+        source = str(row["source"])
+        stem = str(row["stem"])
+        expected = by_matrix.get(matrix_id)
+        if expected is None:
+            raise RuntimeError(f"loader manifest missing bridge matrix: {matrix_id}")
+        cp = cache_root / f"{stem}.counts.npz"
+        mp = cache_root / f"{stem}.meta.npz"
+        if not cp.is_file() or not mp.is_file():
+            raise FileNotFoundError(f"corrected shard pair unavailable for stem {stem}")
+        count_sha = _sha256_file(cp)
+        meta_sha = _sha256_file(mp)
+        if count_sha != expected.get("counts_sha256"):
+            raise RuntimeError(f"count digest mismatch for stem {stem}")
+        if meta_sha != expected.get("meta_sha256"):
+            raise RuntimeError(f"meta digest mismatch for stem {stem}")
+
+        indices, indptr, data, n_cells = _load_csr_counts(cp, EXPECTED_N_ADDRESSES)
+        library = _load_source_library(mp, n_cells)
+        detected = np.diff(indptr).astype(np.float64)
+        np.add.at(abundance_sum, indices, data)
+        np.add.at(abundance_n, indices, 1)
+        total_cells += n_cells
+        global_lib.append(library)
+        global_det.append(detected)
+        operator_depth[str(oi)] = ([library], [detected], source)
+        source_depth.setdefault(source, ([], []))[0].append(library)
+        source_depth.setdefault(source, ([], []))[1].append(detected)
+        shard_receipts.append({
+            "file": cp.name,
+            "sha256": count_sha,
+            "meta_file": mp.name,
+            "meta_sha256": meta_sha,
+        })
+
+    abundance = np.zeros(EXPECTED_N_ADDRESSES, dtype=np.float64)
+    nz = abundance_n > 0
+    abundance[nz] = abundance_sum[nz] / abundance_n[nz]
+
+    depth = {
+        "fallback_rule": FALLBACK_RULE,
+        "quantile_probs": [float(x) for x in QUANTILE_PROBS],
+        "global": _depth_entry(np.concatenate(global_lib), np.concatenate(global_det)),
+        "sources": {},
+        "operators": {},
+    }
+    for source, (libs, dets) in sorted(source_depth.items()):
+        depth["sources"][source] = _depth_entry(np.concatenate(libs), np.concatenate(dets))
+    for op_key, (libs, dets, source) in sorted(operator_depth.items(), key=lambda kv: int(kv[0])):
+        depth["operators"][op_key] = _depth_entry(np.concatenate(libs), np.concatenate(dets), source=source)
+
+    source = {
+        "pathology_blind": True,
+        "train_only": True,
+        "read_only": True,
+        "registry_sha256": EXPECTED_REGISTRY_SHA256,
+        "n_addresses": EXPECTED_N_ADDRESSES,
+        "loader_manifest_sha256": manifest_sha,
+        "operator_bridge_sha256": bridge_rec["bridge_sha256"],
+        "fields_read": ["counts.indices", "counts.indptr", "counts.data", "meta.source_library"],
+        "shard_digests": shard_receipts,
+    }
+    receipt = validate_source_contract(source, canonical=True)
+    out = {
+        "schema": SCHEMA,
+        "source": {
+            "source_receipt_sha256": receipt["source_receipt_sha256"],
+            "n_shards": receipt["n_shards"],
+            "n_cells": int(total_cells),
+            "registry_sha256": EXPECTED_REGISTRY_SHA256,
+            "loader_manifest_sha256": manifest_sha,
+            "operator_bridge_sha256": bridge_rec["bridge_sha256"],
+            "paired_meta_manifest_verified": True,
+            "fields_read": list(source["fields_read"]),
+        },
+        "rank_scrubbed_abundance": build_rank_scrubbed_abundance(abundance),
+        "depth_marginals": depth,
+        "canonical_corrected_train": bool(canonical),
+        "training_authorized": False,
+    }
+    validate_runtime_authority(out)
+    return out
