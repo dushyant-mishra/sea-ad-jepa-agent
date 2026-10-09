@@ -16,6 +16,7 @@ on:
       - 'tests/test_v78_preexecution_gate_v1.py'
       - 'results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json'
       - 'results/v78/V78_S174_CACHE_RECOVERY_CUSTODY_V1.json'
+      - 'results/v78/V78_MARGINAL_AUTHORITY_CUSTODY_V1.json'
       - '.github/workflows/v78-signed-detection-marginals.yml'
       - 'docs/superpowers/plans/2026-10-09-v78-signed-detection-marginals.md'
       - 'docs/superpowers/specs/2026-10-08-v78-signed-detection-marginals-design.md'
@@ -40,3 +41,14 @@ jobs:
           tests/test_v78_signed_scoring_v1.py
           tests/test_v78_f3_depth_runtime_v1.py
           tests/test_v78_preexecution_gate_v1.py
+      - name: Package temporary V78 execution snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: v78-execution-snapshot-${{ github.event.pull_request.head.sha }}
+          path: |
+            scripts/v77
+            results/v77
+            results/v78
+            custody/synthetic_dataset_20261008
+          if-no-files-found: error
+          retention-days: 1
