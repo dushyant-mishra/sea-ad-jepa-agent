@@ -40,13 +40,13 @@ Three Library-resident archives were bound by exact local hashes:
 
 The S174 RAR directory contains 85 entries: one directory entry plus 42 `*.counts.npz` and 42 `*.meta.npz` members. The environment could read RAR directory metadata but could not extract compressed members, so per-member S174 SHA-256 values were not recomputed from the RAR itself.
 
-The older Stage81A3R ZIP was fully readable. Comparing the 84 NPZ member basenames against the S174 RAR directory by uncompressed size+CRC leaves 14 unchanged members and 70 changed members, equivalent to seven unchanged shard pairs and 35 changed shard pairs. That pattern is consistent with the documented S174 rule that the seven NPH52 operators are carried byte-identically while HVS/SEA-AD are rebuilt. It is structural consistency, not a substitute for extracting and rehashing the RAR payloads.
+The older Stage81A3R ZIP was fully readable. Comparing the 84 NPZ member basenames against the S174 RAR directory by uncompressed size+CRC leaves 14 unchanged members and 70 changed members, equivalent to seven unchanged shard pairs and 35 changed shard pairs. That pattern is consistent with the documented S174 rule that the seven NPH52 operators are carried byte-identically while HVS/SEA-AD are rebuilt. It is strong structural consistency, not a substitute for extracting and rehashing the RAR payloads.
 
 ## 4. Historical TD archive now under exact custody
 
 The historical TD41–TD58 ZIP was fully extracted. The custody manifest records 155 extracted files with exact size and SHA-256; 98 are text/code/result surfaces and 57 are binary/data surfaces.
 
-Decision-bearing text bytes copied into Git include the TD50 source producer, source-specific TD56 executors, the TD57B fixed-relational-recurrence executor, the six P0/P1 source result JSONs, and SEA-AD replay JSONs. Binary NPZ/NPY files are not duplicated into ordinary Git; every one is hash-bound in the extracted-member manifest, and TD50/TD56 schema/hash summaries are provided.
+The exact recovered TD50 source producer is copied into Git for direct review. The source-specific TD56 executors, TD57B fixed-relational-recurrence executor, six P0/P1 source result JSONs, SEA-AD replay JSONs, and all binary/data members are preserved by exact size/SHA-256 in the 155-row extracted-member manifest; they are not redundantly expanded into ordinary Git. TD50/TD56 schema/hash summaries are also provided.
 
 Historical TD50 metadata hashes recovered from the archive are:
 
@@ -66,22 +66,22 @@ The recovered TD41–TD58 text/code/JSON/CSV/TSV surfaces were searched for `S17
 
 Project Library/repository searches likewise recovered the physical S174 archive, canonical S174 repair receipts, historical TD results, and later V77 corrected-universe replay material, but no separate corrected 50K/TD50 rematerialization receipt and no stage-specific post-S174 TD56/TD57B/TD59 replay receipt.
 
-This does **not** prove such bytes never existed elsewhere. It means they are not currently bound on the audited Library/repository surfaces and therefore cannot be assumed.
+This does **not** prove such bytes never existed elsewhere. It does mean they are not currently bound on the audited Library/repository surfaces and therefore cannot be assumed.
 
 ## 6. Stage adjudication
 
 ### TD56
-Historical source executors/results are physically present and hash-bound.
+Historical source executors/results are physically present and hash-bound. Current classification:
 
 `HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY`
 
 ### TD57B
-Historical executor, six P0/P1 source results and replay surfaces are physically present. Historical 24/24 success remains authentic historical evidence.
+Historical executor, six P0/P1 source results and replay surfaces are physically present. The historical 24/24 success remains authentic historical evidence. Current classification:
 
 `HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY`
 
 ### TD59
-The prior independent reconstruction remains a valid statistic-reproduction receipt and must not be mislabeled as the original first-run executor. No original TD59 first-run executor/result bytes were recovered in the TD41–TD58 package, and no corrected-S174 stage replay was found.
+The prior independent reconstruction remains a valid statistic-reproduction receipt and must not be mislabeled as the original first-run executor. No original TD59 first-run executor/result bytes were recovered in the TD41–TD58 package, and no corrected-S174 stage replay was found. Current classification:
 
 `TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY`
 
@@ -99,7 +99,7 @@ Only pursue evidence that can materially change the stage-specific S174 adjudica
 1. Search for a **post-S174 corrected 50K/TD50 materialization** carrying exact input shard hashes, output matrix/component hashes, source-specific metadata hashes, and `global_row` binding.
 2. If found, verify whether TD56 and TD57B were rerun from that exact corrected substrate; require executor hash + result/root identity, not narrative statements.
 3. Search separately for original TD59 first-run executor/result bytes and for any post-S174 TD59 rerun. Keep original-byte recovery separate from reconstructed replay closure.
-4. If no corrected substrate is found after exhaustive custody search, record the negative search surface and stop. Do not rebuild/replay historical science without explicit owner authorization merely to fill a provenance gap.
+4. If no corrected substrate is found after exhaustive custody search, record the negative search surface and stop. Do not rebuild/replay historical science without explicit owner authorization just to fill a provenance gap.
 5. Keep both custody branches synchronized after every substantive commit and update PR #237 read order/status.
 
 ## 9. Reproduction and custody files
