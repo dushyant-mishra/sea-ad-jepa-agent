@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 
+import numpy as np
 import pytest
 
 
@@ -81,3 +82,18 @@ def test_execution_driver_rejects_incomplete_physical_cache_authentication():
     gate["details"]["corrected_train_cache"]["n_meta_shards"] = 41
     with pytest.raises(PermissionError):
         m.require_ready_gate(gate, "a" * 64)
+
+
+def test_f3_operator_source_labels_come_from_bridge_bound_depth_authority():
+    m = importlib.import_module("scripts.v77.run_v78_frozen_execution")
+    depth = {
+        "operators": {
+            "0": {"source": "HVS"},
+            "1": {"source": "NPH52"},
+            "2": {"source": "SEA_AD"},
+        }
+    }
+    got = m._operator_source_labels_from_depth_authority(np.array([2, 0, 1]), depth)
+    assert got.tolist() == ["SEA_AD", "HVS", "NPH52"]
+    with pytest.raises(RuntimeError):
+        m._operator_source_labels_from_depth_authority(np.array([3]), depth)
