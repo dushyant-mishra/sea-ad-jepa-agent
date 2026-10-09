@@ -139,7 +139,7 @@ This lane is more advanced than the earlier handoff's "provenance to reconstruct
 
 Primary execution evidence recovered:
 
-- P1S execution `44cca55422e85d507db3d9646e10a7db679ea9ba323` lineage / preserved P1S PASS evidence (historical branch custody should be read directly)
+- P1S execution commit `44cca55422e85d507db3da5367bbf088cbad4366`
 - P3 execution commit `7f54c0cd7bcb3e4f774e6fc840a15aa7e02caa2d`
 
 The P3 execution verified six exact-byte inputs, including Nott Table S5/GSE73721/PU1 ATAC/liftOver v479/two chain files, and produced valid negative cohorts of 2,673 neuron and 2,078 oligodendrocyte entries. P1S preserved the positive substrate-fit signal.
