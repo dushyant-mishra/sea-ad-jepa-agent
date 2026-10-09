@@ -1,4 +1,42 @@
+from __future__ import annotations
+
 import importlib
+
+import pytest
+
+
+def _good_gate():
+    return {
+        "schema": "V78_PREEXECUTION_GATE_V1",
+        "status": "READY",
+        "blockers": [],
+        "training_authorized": False,
+        "post_outcome_retuning_authorized": False,
+        "details": {
+            "e2_reference": {"status": "AUTHENTICATED"},
+            "operator_bridge": {
+                "status": "AUTHENTICATED",
+                "n_operators": 42,
+                "operator_indices": list(range(42)),
+            },
+            "marginal_authority": {
+                "status": "AUTHENTICATED",
+                "sha256": "a" * 64,
+                "canonical_corrected_train": True,
+                "training_authorized": False,
+            },
+            "corrected_train_cache": {
+                "status": "AUTHENTICATED",
+                "n_count_shards": 42,
+                "n_meta_shards": 42,
+            },
+            "operator_support_2k": {
+                "status": "PASS",
+                "operators_present": 42,
+                "minimum_operator_count": 1,
+            },
+        },
+    }
 
 
 def test_frozen_execution_driver_surface_exists_and_freezes_arm_order():
@@ -13,9 +51,33 @@ def test_frozen_execution_driver_surface_exists_and_freezes_arm_order():
 
 def test_execution_driver_refuses_unready_gate():
     m = importlib.import_module("scripts.v77.run_v78_frozen_execution")
-    try:
-        m.require_ready_gate({"status": "BLOCKED", "blockers": ["x"]})
-    except PermissionError:
-        pass
-    else:
-        raise AssertionError("blocked V78 gate must refuse scientific execution")
+    with pytest.raises(PermissionError):
+        m.require_ready_gate({"status": "BLOCKED", "blockers": ["x"]}, "a" * 64)
+
+
+def test_execution_driver_refuses_unbound_or_fabricated_ready_gate():
+    m = importlib.import_module("scripts.v77.run_v78_frozen_execution")
+    fake = {
+        "status": "READY",
+        "blockers": [],
+        "training_authorized": False,
+        "post_outcome_retuning_authorized": False,
+    }
+    with pytest.raises(PermissionError):
+        m.require_ready_gate(fake, "a" * 64)
+
+
+def test_execution_driver_binds_ready_gate_to_exact_marginal_authority():
+    m = importlib.import_module("scripts.v77.run_v78_frozen_execution")
+    gate = _good_gate()
+    m.require_ready_gate(gate, "a" * 64)
+    with pytest.raises(PermissionError):
+        m.require_ready_gate(gate, "b" * 64)
+
+
+def test_execution_driver_rejects_incomplete_physical_cache_authentication():
+    m = importlib.import_module("scripts.v77.run_v78_frozen_execution")
+    gate = _good_gate()
+    gate["details"]["corrected_train_cache"]["n_meta_shards"] = 41
+    with pytest.raises(PermissionError):
+        m.require_ready_gate(gate, "a" * 64)
