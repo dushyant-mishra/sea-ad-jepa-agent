@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNNER = ROOT / "scripts" / "v77" / "run_v78_signed_detection_marginal_tournament.py"
 E2 = ROOT / "results" / "v77" / "V77_CLASS_PROPAGATION_TOURNAMENT_V1.json"
 BRIDGE = ROOT / "results" / "v78" / "V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
+EXPECTED_LOADER_MANIFEST_SHA = "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328"
+EXPECTED_REGISTRY_SHA = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 
 
 def _load():
@@ -23,7 +25,16 @@ def _load():
 def _canonical_authority(path: Path):
     path.write_text(json.dumps({
         "schema": "V78_MARGINAL_AUTHORITY_V1",
-        "source": {"source_receipt_sha256": "a" * 64, "n_shards": 42},
+        "source": {
+            "source_receipt_sha256": "a" * 64,
+            "n_shards": 42,
+            "n_cells": 4726,
+            "registry_sha256": EXPECTED_REGISTRY_SHA,
+            "loader_manifest_sha256": EXPECTED_LOADER_MANIFEST_SHA,
+            "operator_bridge_sha256": "b" * 64,
+            "paired_meta_manifest_verified": True,
+            "fields_read": ["counts.indices", "counts.indptr", "counts.data", "meta.source_library"],
+        },
         "rank_scrubbed_abundance": {
             "identity_scrubbed": True,
             "rank_scrubbed": True,
@@ -79,3 +90,16 @@ def test_gate_refuses_noncanonical_or_training_authorizing_marginal_artifact(tmp
     assert gate["status"] == "BLOCKED"
     assert "canonical_f3_marginal_authority" in gate["blockers"]
     assert "training_authorization_contamination" in gate["blockers"]
+
+
+def test_gate_rejects_canonical_claim_without_exact_loader_and_paired_meta_provenance(tmp_path):
+    R = _load()
+    p = _canonical_authority(tmp_path / "authority.json")
+    rec = json.loads(p.read_text())
+    rec["source"].pop("paired_meta_manifest_verified")
+    rec["source"]["loader_manifest_sha256"] = "0" * 64
+    p.write_text(json.dumps(rec))
+    gate = R.preexecution_gate(E2, BRIDGE, p, tmp_path / "missing-cache")
+    assert gate["status"] == "BLOCKED"
+    assert "canonical_f3_marginal_authority" in gate["blockers"]
+    assert gate["details"]["marginal_authority"]["status"] == "REJECTED"
