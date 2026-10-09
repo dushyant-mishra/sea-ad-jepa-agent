@@ -46,7 +46,7 @@ jobs:
         with:
           name: v78-execution-snapshot-${{ github.event.pull_request.head.sha }}
           path: |
-            scripts/v77
+            scripts
             results/v77
             results/v78
             custody/synthetic_dataset_20261008
