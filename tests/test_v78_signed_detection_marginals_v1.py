@@ -164,3 +164,32 @@ def test_nonzero_signed_field_changes_selection_without_changing_cell_totals():
     assert not np.array_equal(zero[0], signed[0])
     assert int(signed[1].sum()) == 80
     assert int(np.diff(signed[2])[0]) == 8
+
+
+def test_f3_replaces_only_positive_count_baseline_geometry():
+    O = _load(OBSERVER, "v78_observer_f3_weights")
+    rel = np.array([[2.0, 8.0, 4.0], [1.0, 4.0, 2.0]], dtype=np.float64)
+    old_baseline = np.array([1.0, 4.0, 2.0], dtype=np.float64)
+    new_baseline = np.array([4.0, 2.0, 1.0], dtype=np.float64)
+    w = O.f3_positive_count_weights(rel, old_baseline, new_baseline)
+    expected_multiplier = rel / old_baseline[None, :]
+    assert np.allclose(w, expected_multiplier * new_baseline[None, :])
+    assert np.allclose(O.f3_positive_count_weights(rel, old_baseline, old_baseline), rel)
+
+
+def test_f3_count_weights_cannot_change_f2_selected_gene_identities():
+    O = _load(OBSERVER, "v78_observer_f3_isolation")
+    B = _load(BASE_OBSERVER, "v77_observer_f3_isolation")
+    g = int(B.N)
+    rel = np.ones((1, g), dtype=np.float32)
+    sup = np.zeros((1, g), dtype=bool); sup[:, :48] = True
+    ids = np.array([17], dtype=np.int64)
+    lib = np.array([120], dtype=np.int64)
+    det = np.array([12], dtype=np.int64)
+    field = np.zeros_like(rel); field[:, 24:48] = 3.0
+    f2 = O.sparse_counts_separated(rel, sup, ids, lib, det, 7302, signed_field=field)
+    weight_rel = np.ones_like(rel); weight_rel[:, :48] = np.linspace(0.2, 4.0, 48)[None, :]
+    f3 = O.sparse_counts_separated(rel, sup, ids, lib, det, 7302, signed_field=field, weight_rel=weight_rel)
+    assert np.array_equal(f2[0], f3[0])
+    assert int(f3[1].sum()) == 120
+    assert int(np.diff(f3[2])[0]) == 12
