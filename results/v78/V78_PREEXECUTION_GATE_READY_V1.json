@@ -52,7 +52,5 @@
   "f0_f2_early_execution_authorized": false,
   "training_authorized": false,
   "post_outcome_retuning_authorized": false,
-  "e4_authorized": false,
-  "receipt_file_sha256": "dcb4f37651ab0cd93621a6465c056026e304c7bb85c688c4948a3848b96898fe",
-  "canonical_json_sha256": "0f3083b0cdb9d4af6198023facebb3136af955154c7e58f8193a23100b5b68d2"
+  "e4_authorized": false
 }
