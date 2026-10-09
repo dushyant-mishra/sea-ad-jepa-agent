@@ -2,39 +2,43 @@
   "schema": "V78_S174_CACHE_RECOVERY_CUSTODY_V1",
   "date": "2026-10-09",
   "claim_class": "CUSTODY_AUTHENTICATION__NON_AUTHORIZING",
-  "supersedes_blocker_component": "missing exact corrected S174 TRAIN count/meta shard bytes",
-  "library_source": {
+  "status": "SUPERSEDED_AS_V78_EXECUTION_SUBSTRATE_BY_REPAIRED_S174_LINEAGE",
+  "historical_stage81a3r_library_source": {
     "path": "/Jepa project/stage81a3r_corrected_real_train.zip",
     "size_bytes": 50647044,
     "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
     "historical_created_at_utc": "2026-09-10T20:49:37+00:00"
   },
-  "frozen_loader_manifest": {
+  "historical_loader_manifest": {
     "sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
-    "match": true,
+    "match_with_stage81a3r_zip": true,
     "n_shards": 42
   },
-  "verification": {
+  "historical_verification": {
     "archive_members": 99,
     "count_files": 42,
     "meta_files": 42,
-    "pairs_manifest_matched": 42,
-    "mismatches": 0,
-    "total_shard_bytes": 48382320,
-    "stem_rule": "sha256('corrected|' + matrix_id)[:16]"
+    "pairs_loader_manifest_matched": 42,
+    "mismatches_against_historical_loader_manifest": 0
   },
-  "status_after_recovery": "RAW_CORRECTED_S174_CACHE_AUTHENTICATED__CAN_BUILD_CANONICAL_V78_MARGINAL_AUTHORITY",
-  "still_required_before_scientific_execution": [
-    "implement canonical corrected-cache reader under RED->GREEN tests",
-    "build V78_MARGINAL_AUTHORITY_V1 directly from authenticated bytes",
-    "authenticate derived authority in V78 preexecution gate",
-    "rerun focused V78 and inherited V77 spillover CI"
-  ],
-  "hard_boundaries": {
+  "current_v78_repaired_s174_lineage": {
+    "source_archive": "/Jepa project/s174_rebuilt_real_train_v1.rar",
+    "source_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "corrected_calibration_sha256": "f6ba2c725a5437cc8455fff418027d36efe9ea9430fbd0a5765df62dedca6068",
+    "meta_digest_semantic_sha256": "b876e13526f51d5a4199ca750ad09065c5ab8a20aeca39dff3d8c385f2241f46",
+    "direct_stage81a3r_cross_authentication": {
+      "count_matches": 7,
+      "count_total": 42,
+      "meta_matches": 7,
+      "meta_total": 42,
+      "paired_matches": 7,
+      "paired_differences": 35
+    }
+  },
+  "supersession": {
+    "receipt": "results/v78/V78_S174_SUBSTRATE_DISTINCTION_V1.json",
+    "ruling": "Stage81A3R corrected ZIP is valid historical custody but is not byte-equivalent to the current Macha S174-rebuilt cache and may not satisfy the current V78 repaired-S174 preexecution gate",
     "f0_f3_scientific_execution": false,
-    "training_authorized": false,
-    "e4_authorized": false,
-    "test_or_morabito_access": false,
-    "post_outcome_retuning": false
+    "training_authorized": false
   }
 }
