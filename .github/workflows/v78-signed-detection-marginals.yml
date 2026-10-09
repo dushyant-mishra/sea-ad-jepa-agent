@@ -49,6 +49,15 @@ jobs:
             scripts
             results/v77
             results/v78
+            results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part01.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part02.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part03.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part04.txt
+            results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part01.txt
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part02.txt
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part03.txt
             custody/synthetic_dataset_20261008
           if-no-files-found: error
           retention-days: 1
