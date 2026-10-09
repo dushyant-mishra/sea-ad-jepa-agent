@@ -77,10 +77,19 @@ def test_cache_builder_derives_compact_authority_from_authenticated_shards(tmp_p
     assert out["canonical_corrected_train"] is False
     assert out["source"]["n_shards"] == 42
     assert out["source"]["paired_meta_manifest_verified"] is True
-    assert out["rank_scrubbed_abundance"]["n_addresses"] == 41238
-    assert out["rank_scrubbed_abundance"]["n_zero"] == 41238 - 42
+    abundance = out["rank_scrubbed_abundance"]
+    assert abundance["n_addresses"] == 41238
+    assert abundance["n_zero"] == 41238 - 42
+    assert abundance["n_positive"] == 42
+    assert "positive_abundance_sorted" not in abundance
+    assert len(abundance["positive_abundance_quantile_probs"]) == 1001
+    assert len(abundance["positive_abundance_quantiles"]) == 1001
+    reconstructed = B.assign_rank_scrubbed_abundance(abundance, seed=7302, n_addresses=41238)
+    assert reconstructed.shape == (41238,)
+    assert np.count_nonzero(reconstructed) == 42
     depth = out["depth_marginals"]
     assert depth["fallback_rule"] == B.FALLBACK_RULE
+    assert len(depth["quantile_probs"]) == 21
     assert depth["global"]["n_cells"] == expected_cells
     assert depth["operators"]["0"]["n_cells"] == 50
     assert depth["operators"]["1"]["n_cells"] == 1
