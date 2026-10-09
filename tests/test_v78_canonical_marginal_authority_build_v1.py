@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-BUILDER = ROOT / "scripts" / "v77" / "build_v78_marginal_authority.py"
+BUILDER = ROOT / "scripts" / "v77" / "build_v78_repaired_s174_marginal_authority.py"
 BRIDGE = ROOT / "results" / "v78" / "V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
 
 
