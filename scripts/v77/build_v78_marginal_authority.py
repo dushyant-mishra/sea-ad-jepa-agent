@@ -23,7 +23,8 @@ EXPECTED_N_SHARDS = 42
 ABUNDANCE_PERMUTATION_STREAM = 14000
 FALLBACK_MIN_CELLS = 50
 FALLBACK_RULE = "operator_if_n>=50_else_source_if_n>=50_else_global"
-QUANTILE_PROBS = np.linspace(0.0, 1.0, 101, dtype=np.float64)
+ABUNDANCE_QUANTILE_PROBS = np.linspace(0.0, 1.0, 1001, dtype=np.float64)
+DEPTH_QUANTILE_PROBS = np.linspace(0.0, 1.0, 21, dtype=np.float64)
 
 _DENY_FIELD_TOKENS = (
     "pathology", "diagnos", "braak", "cerad", "disease", "target", "query",
@@ -100,6 +101,7 @@ def validate_source_contract(source: dict, canonical: bool = False) -> dict:
 
 
 def build_rank_scrubbed_abundance(per_address_positive_count_abundance: np.ndarray) -> dict:
+    """Exact sorted representation retained for small fixtures/general governance tests."""
     x = np.asarray(per_address_positive_count_abundance, dtype=np.float64)
     if x.ndim != 1 or len(x) == 0:
         raise ValueError("per-address abundance must be a nonempty 1-D array")
@@ -117,6 +119,32 @@ def build_rank_scrubbed_abundance(per_address_positive_count_abundance: np.ndarr
     }
 
 
+def build_rank_scrubbed_abundance_quantiles(per_address_positive_count_abundance: np.ndarray) -> dict:
+    """Compact canonical representation of the empirical positive-abundance geometry."""
+    x = np.asarray(per_address_positive_count_abundance, dtype=np.float64)
+    if x.ndim != 1 or len(x) == 0:
+        raise ValueError("per-address abundance must be a nonempty 1-D array")
+    if np.any(~np.isfinite(x)) or np.any(x < 0):
+        raise ValueError("per-address abundance must be finite and nonnegative")
+    pos = np.sort(x[x > 0])
+    if len(pos) == 0:
+        qvals = np.zeros(len(ABUNDANCE_QUANTILE_PROBS), dtype=np.float64)
+    else:
+        qvals = np.quantile(pos, ABUNDANCE_QUANTILE_PROBS)
+    return {
+        "identity_scrubbed": True,
+        "rank_scrubbed": True,
+        "representation": "POSITIVE_EMPIRICAL_QUANTILES_1001",
+        "n_addresses": int(len(x)),
+        "n_zero": int((x == 0).sum()),
+        "n_positive": int(len(pos)),
+        "positive_abundance_quantile_probs": [float(v) for v in ABUNDANCE_QUANTILE_PROBS],
+        "positive_abundance_quantiles": [float(v) for v in qvals],
+        "assignment_stream": ABUNDANCE_PERMUTATION_STREAM,
+        "content_policy": "EMPIRICAL_DISTRIBUTION_ONLY__IDENTITY_SCRUBBED",
+    }
+
+
 def _permutation(seed: int, n: int) -> np.ndarray:
     rng = np.random.default_rng(np.random.SeedSequence([int(seed), ABUNDANCE_PERMUTATION_STREAM]))
     return rng.permutation(int(n))
@@ -128,9 +156,32 @@ def assign_rank_scrubbed_abundance(authority: dict, seed: int, n_addresses: int)
         raise RuntimeError("abundance authority address count mismatch")
     if authority.get("identity_scrubbed") is not True or authority.get("rank_scrubbed") is not True:
         raise PermissionError("abundance authority is not identity/rank scrubbed")
-    pos = np.asarray(authority.get("positive_abundance_sorted", []), dtype=np.float64)
-    n_zero = int(authority.get("n_zero", n_addresses - len(pos)))
-    if n_zero < 0 or n_zero + len(pos) != n_addresses:
+
+    if "positive_abundance_sorted" in authority:
+        pos = np.asarray(authority.get("positive_abundance_sorted", []), dtype=np.float64)
+        n_positive = int(len(pos))
+    else:
+        n_positive = int(authority.get("n_positive", -1))
+        qprobs = np.asarray(authority.get("positive_abundance_quantile_probs", []), dtype=np.float64)
+        qvals = np.asarray(authority.get("positive_abundance_quantiles", []), dtype=np.float64)
+        if n_positive < 0 or qprobs.ndim != 1 or qvals.ndim != 1 or len(qprobs) != len(qvals) or len(qprobs) < 2:
+            raise RuntimeError("compact abundance authority geometry is malformed")
+        if np.any(~np.isfinite(qprobs)) or np.any(~np.isfinite(qvals)):
+            raise RuntimeError("compact abundance authority contains nonfinite geometry")
+        if qprobs[0] != 0.0 or qprobs[-1] != 1.0 or np.any(np.diff(qprobs) < 0):
+            raise RuntimeError("compact abundance quantile probabilities are invalid")
+        if np.any(qvals < 0) or np.any(np.diff(qvals) < -1e-12):
+            raise RuntimeError("compact abundance quantiles must be nonnegative and ordered")
+        if n_positive == 0:
+            pos = np.empty(0, dtype=np.float64)
+        elif n_positive == 1:
+            pos = np.asarray([qvals[-1]], dtype=np.float64)
+        else:
+            ranks = np.linspace(0.0, 1.0, n_positive, dtype=np.float64)
+            pos = np.interp(ranks, qprobs, qvals)
+
+    n_zero = int(authority.get("n_zero", n_addresses - n_positive))
+    if n_zero < 0 or n_zero + n_positive != n_addresses:
         raise RuntimeError("abundance authority cardinality mismatch")
     values = np.concatenate([np.zeros(n_zero, dtype=np.float64), pos])
     order = _permutation(int(seed), n_addresses)
@@ -258,8 +309,8 @@ def _depth_entry(library: np.ndarray, detected: np.ndarray, source: str | None =
             rho = 0.0
     rec = {
         "n_cells": int(len(library)),
-        "library_quantiles": [float(x) for x in np.quantile(library, QUANTILE_PROBS)],
-        "detected_quantiles": [float(x) for x in np.quantile(detected, QUANTILE_PROBS)],
+        "library_quantiles": [float(x) for x in np.quantile(library, DEPTH_QUANTILE_PROBS)],
+        "detected_quantiles": [float(x) for x in np.quantile(detected, DEPTH_QUANTILE_PROBS)],
         "log1p_library_vs_detected_pearson": rho,
     }
     if source is not None:
@@ -390,7 +441,7 @@ def build_from_corrected_cache(cache_root: Path, operator_mapping, loader_manife
 
     depth = {
         "fallback_rule": FALLBACK_RULE,
-        "quantile_probs": [float(x) for x in QUANTILE_PROBS],
+        "quantile_probs": [float(x) for x in DEPTH_QUANTILE_PROBS],
         "global": _depth_entry(np.concatenate(global_lib), np.concatenate(global_det)),
         "sources": {},
         "operators": {},
@@ -424,7 +475,7 @@ def build_from_corrected_cache(cache_root: Path, operator_mapping, loader_manife
             "paired_meta_manifest_verified": True,
             "fields_read": list(source["fields_read"]),
         },
-        "rank_scrubbed_abundance": build_rank_scrubbed_abundance(abundance),
+        "rank_scrubbed_abundance": build_rank_scrubbed_abundance_quantiles(abundance),
         "depth_marginals": depth,
         "canonical_corrected_train": bool(canonical),
         "training_authorized": False,
