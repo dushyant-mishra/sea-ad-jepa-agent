@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -9,6 +10,8 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "scripts" / "v77" / "build_v78_marginal_authority.py"
+BRIDGE = ROOT / "results" / "v78" / "V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
+CORRECTED_CAL = ROOT / "results" / "v77" / "s174_replay" / "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json"
 EXPECTED_REGISTRY_SHA = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 
 
@@ -120,3 +123,40 @@ def test_real_build_fails_closed_without_exact_cache_and_operator_mapping(tmp_pa
     missing = tmp_path / "missing-cache"
     with pytest.raises(FileNotFoundError):
         B.build_from_corrected_cache(missing, operator_mapping=None)
+
+
+def test_operator_bridge_exactly_covers_corrected_s174_shards():
+    bridge = json.loads(BRIDGE.read_text())
+    cal = json.loads(CORRECTED_CAL.read_text())
+    assert bridge["schema"] == "V78_S174_SHARD_OPERATOR_BRIDGE_V1"
+    assert bridge["claim_class"] == "CUSTODY_DERIVATION__NON_AUTHORIZING"
+    assert bridge["source_bundle"]["sha256"] == "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    assert bridge["source_member"]["sha256"] == "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+    rows = bridge["rows"]
+    assert len(rows) == 42
+    assert sorted(r["operator_index"] for r in rows) == list(range(42))
+    assert len({r["matrix_id"] for r in rows}) == 42
+    assert len({r["stem"] for r in rows}) == 42
+    for r in rows:
+        expected = hashlib.sha256(("corrected|" + r["matrix_id"]).encode()).hexdigest()[:16]
+        assert r["stem"] == expected
+    corrected_stems = {
+        Path(r["file"]).name.removesuffix(".counts.npz")
+        for r in cal["source"]["shard_digests"]
+    }
+    assert {r["stem"] for r in rows} == corrected_stems
+    assert {r["source"] for r in rows} == {"HVS", "SEA_AD", "NPH52"}
+
+
+def test_operator_bridge_is_accepted_only_when_complete_and_unique():
+    B = _load()
+    bridge = json.loads(BRIDGE.read_text())
+    rec = B.validate_operator_bridge(bridge)
+    assert rec["n_operators"] == 42
+    assert rec["operator_indices"] == list(range(42))
+    bad = json.loads(json.dumps(bridge)); bad["rows"] = bad["rows"][:-1]
+    with pytest.raises(RuntimeError):
+        B.validate_operator_bridge(bad)
+    dup = json.loads(json.dumps(bridge)); dup["rows"][1]["stem"] = dup["rows"][0]["stem"]
+    with pytest.raises(RuntimeError):
+        B.validate_operator_bridge(dup)
