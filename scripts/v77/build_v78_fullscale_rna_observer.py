@@ -4,6 +4,8 @@
 This module intentionally leaves the proven V77 observer untouched. It separates the
 selection propensity from positive-count weights so F2 can change detection topology
 without changing biological `rel`, structural support, or per-cell depth targets.
+F3 may replace only the positive-count baseline geometry while preserving the
+biological multiplier already present in `rel`.
 """
 from __future__ import annotations
 
@@ -16,6 +18,29 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import build_v77_fullscale_rna_observer_v2 as BASE  # noqa: E402
+
+
+def f3_positive_count_weights(rel, original_baseline, assigned_baseline):
+    """Replace only baseline abundance geometry, preserving biological modulation.
+
+    V77 builds `rel` from a registry baseline multiplied by all background/biological
+    effects in exp-space. F3 therefore factors out that original baseline and applies
+    the rank-scrubbed assigned baseline only for positive-count allocation. Detection
+    selection must continue to use the unmodified biological `rel`.
+    """
+    rel = np.asarray(rel, dtype=np.float64)
+    original = np.asarray(original_baseline, dtype=np.float64)
+    assigned = np.asarray(assigned_baseline, dtype=np.float64)
+    if rel.ndim != 2 or original.ndim != 1 or assigned.ndim != 1:
+        raise ValueError("rel must be 2-D and baselines 1-D")
+    if rel.shape[1] != len(original) or len(original) != len(assigned):
+        raise ValueError("baseline length must match rel gene axis")
+    if np.any(~np.isfinite(rel)) or np.any(~np.isfinite(original)) or np.any(~np.isfinite(assigned)):
+        raise ValueError("F3 weights require finite inputs")
+    if np.any(rel < 0) or np.any(original <= 0) or np.any(assigned < 0):
+        raise ValueError("rel/assigned must be nonnegative and original baseline strictly positive")
+    biological_multiplier = rel / original[None, :]
+    return biological_multiplier * assigned[None, :]
 
 
 def sparse_counts_separated(rel, sup, ids, lib, det, mseed,
