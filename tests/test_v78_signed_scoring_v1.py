@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 import numpy as np
@@ -48,7 +49,8 @@ def test_v78_wrapper_preserves_v77_legacy_score_exactly():
     cls = np.repeat(np.array([0, 1], dtype=np.int16), 200)
     expected = V.score_matched(counts, universe, cls, n_hvg=6)
     got = S.score_v78(counts, universe, cls, n_hvg=6)
-    assert got["legacy"] == expected
+    # Canonical JSON preserves literal NaN tokens, avoiding Python's NaN != NaN object-comparison trap.
+    assert json.dumps(got["legacy"], sort_keys=True, allow_nan=True) == json.dumps(expected, sort_keys=True, allow_nan=True)
     assert got["selection_rule"] == V.RULE
     assert got["signed_detection"]["strong_threshold"] == 0.3
     assert got["signed_detection"]["selected_gene_count"] == 6
