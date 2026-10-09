@@ -1,0 +1,31 @@
+{
+  "audit": "S174_TD_DOWNSTREAM_JOIN_V1",
+  "executed_at": "2026-10-09",
+  "physical_assets": {
+    "s174_rebuilt_real_train_v1.rar": {"bytes": 47964366, "sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f"},
+    "stage81a3r_corrected_real_train.zip": {"bytes": 50647044, "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48"},
+    "JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip": {"bytes": 92478083, "sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"},
+    "full104_discovery_subset.npz": {"bytes": 50646637, "sha256": "615e57e3f45cc2bc020e3b48ed5401a9aa65323d82a919e7d577e9642e34be8f"},
+    "td50_HVS.npz": {"bytes": 2265931, "sha256": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb", "rows": 1129},
+    "td50_NPH52.npz": {"bytes": 2616689, "sha256": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe", "rows": 1310},
+    "td50_SEA_AD.npz": {"bytes": 44852581, "sha256": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4", "rows": 22561}
+  },
+  "td50_keys": ["S", "tau", "global_row", "source_library", "detected", "donor", "operator"],
+  "recovered_td41_td58_file_count": 155,
+  "recovered_td_text_file_count": 101,
+  "recovered_td_code_file_count": 78,
+  "s174_join_marker_hit_count_in_recovered_td_text": 0,
+  "s174_vs_older_corrected_train": {
+    "matching_shard_basenames": 42,
+    "changed_shard_pairs": 35,
+    "changed_member_crcs": 70,
+    "total_members_compared": 84
+  },
+  "stage_adjudication": {
+    "TD56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD57B": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY"
+  },
+  "open_join": "S174 corrected HVS/SEA-AD shard hashes -> corrected 50K sparse matrix + corrected td50_HVS/td50_SEA_AD metadata/global_row receipt -> exact TD stage executor -> rerun result/root",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
