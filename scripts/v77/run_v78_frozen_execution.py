@@ -96,6 +96,18 @@ def require_ready_gate(gate_receipt: dict, expected_marginal_sha256: str) -> Non
         raise PermissionError("V78 frozen execution gate binding failed: " + ", ".join(failures))
 
 
+def _operator_source_labels_from_depth_authority(op, depth_authority: dict) -> np.ndarray:
+    """Resolve source labels from the bridge-bound F3 authority, never truth position."""
+    operators = depth_authority.get("operators", {})
+    labels = []
+    for value in np.asarray(op, dtype=np.int64):
+        rec = operators.get(str(int(value)))
+        if not isinstance(rec, dict) or rec.get("source") not in {"HVS", "NPH52", "SEA_AD"}:
+            raise RuntimeError(f"F3 depth authority lacks authenticated source for operator {int(value)}")
+        labels.append(str(rec["source"]))
+    return np.asarray(labels)
+
+
 def _truth_classes(root: Path, n_cells: int) -> np.ndarray:
     truth = Path(root) / "hidden_truth"
     tm = json.loads((truth / "TRUTH_MANIFEST.json").read_text())
@@ -160,21 +172,25 @@ def observe_frozen_arm(root: Path, arm: str, marginal_authority: dict | None,
     else:
         background = "v1"
 
+    f3_assigned = None
+    f3_original_baseline = None
+    if arm == "F3":
+        if marginal_authority is None:
+            raise RuntimeError("F3 requires marginal authority")
+        f3_assigned = MARGINAL.assign_rank_scrubbed_abundance(
+            marginal_authority["rank_scrubbed_abundance"], int(seed), BASE.N
+        )
+        f3_original_baseline = np.exp(
+            BASE.AU.AddressUniverse(int(seed)).log_abundance.astype(np.float64)
+        )
+
     if arm in {"F2", "F3"}:
         def sparse_with_signed(rel, sup, ids, lib, det, mseed):
             field = SIGNED.field(int(seed), np.asarray(ids, dtype=np.int64), rel.shape[1])
             weight_rel = None
             if arm == "F3":
-                if marginal_authority is None:
-                    raise RuntimeError("F3 requires marginal authority")
-                assigned = MARGINAL.assign_rank_scrubbed_abundance(
-                    marginal_authority["rank_scrubbed_abundance"], int(seed), rel.shape[1]
-                )
-                original_baseline = np.exp(
-                    BASE.AU.AddressUniverse(int(seed)).log_abundance.astype(np.float64)
-                )
                 weight_rel = V78OBS.f3_positive_count_weights(
-                    rel, original_baseline, assigned
+                    rel, f3_original_baseline, f3_assigned
                 )
             return V78OBS.sparse_counts_separated(
                 rel, sup, ids, lib, det, mseed,
@@ -187,10 +203,9 @@ def observe_frozen_arm(root: Path, arm: str, marginal_authority: dict | None,
             raise RuntimeError("F3 requires marginal authority")
         MARGINAL.validate_runtime_authority(marginal_authority)
         depth_authority = marginal_authority["depth_marginals"]
-        operator_sources = np.asarray(tm["operator_sources"]).astype(str)
 
         def depth_from_repaired_authority(ids, op, sup, qc, operator_ids, qprobs, mseed):
-            source_labels = operator_sources[np.asarray(op, dtype=np.int64)]
+            source_labels = _operator_source_labels_from_depth_authority(op, depth_authority)
             lib, det, _used = V78OBS.depth_targets_from_authority(
                 ids, op, source_labels, sup, depth_authority, mseed
             )
