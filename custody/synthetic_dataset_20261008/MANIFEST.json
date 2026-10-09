@@ -1,0 +1,73 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_CUSTODY_MANIFEST_20261008_V1",
+  "created_date": "2026-10-08",
+  "lane": "synthetic_dataset_etl_to_generator",
+  "canonical_implementation": {
+    "branch": "impl/v77-class-propagation-20261008",
+    "pr": 240,
+    "head": "f3a5d142d3e02b0650d6f52ef97a11232e0a4dc7",
+    "base": "f88338713b173edb3acbc90662e607ce45b5878b",
+    "latest_clean_ci_run": 37856498507,
+    "latest_clean_ci_status": "PASS"
+  },
+  "scientific_ruling": {
+    "E1": "PASS_ISOLATION__EXACT_SCORE_EQUALITY_WITH_E0",
+    "E2": "MECHANISTIC_DIRECTION_SUPPORTED__ADEQUACY_REJECTED_FULL_PANEL",
+    "E3": "REJECTED__T5_WRONG_DIRECTION_AND_NO_COHERENT_FULL_PANEL_REPAIR",
+    "overall": "CLASS_MECHANISM_MATTERS_BUT_E0_E3_FAMILY_INSUFFICIENT__NO_ARM_PROMOTED",
+    "e4_authorized": false,
+    "training_authorized": false,
+    "post_outcome_retuning_authorized": false
+  },
+  "custody_objects": {
+    "frozen_evaluation_universe.npz": {
+      "size_bytes": 57822,
+      "sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763",
+      "preserved_in_git": true,
+      "canonical_addresses": 14417,
+      "registry_addresses": 41238
+    },
+    "address_namespace.csv": {
+      "size_bytes": 24946770,
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "preserved_in_git": false,
+      "reason": "large authenticated registry already covered by calibration custody; hash-bound here"
+    },
+    "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip": {
+      "size_bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "preserved_in_git": false
+    },
+    "V77_CLASS_PROPAGATION_TOURNAMENT_AUDIT_20261008_COMPLETED.md": {
+      "size_bytes": 6622,
+      "sha256": "414f0f68ab369c91077f3b81e6e6eb6f969fbb5714ec85a25660e6c853df2377",
+      "preserved_in_git": true
+    },
+    "v77-runtime-snapshot-v2.zip": {
+      "size_bytes": 10192770,
+      "sha256": "6610926ca3264da7d3b4bc3ca6c8e0ee4d368aa336d2a02443d630e00efd2cc3",
+      "preserved_in_git": false,
+      "note": "temporary execution snapshot; branch plumbing removed after use; identity recorded only"
+    }
+  },
+  "next_family": {
+    "status": "prospective_design_to_be_written_after_custody_checkpoint",
+    "F0": "E2 reproduction control",
+    "F1": "E2 + existing BackgroundV2 ablation",
+    "F2": "E2 + separate signed detection-propensity latent layer",
+    "F3": "F2 + separately calibrated positive-count/library marginals",
+    "e2_scale_retuning_authorized": false
+  },
+  "hard_boundaries": [
+    "no JEPA training",
+    "no runtime/EMA/checkpoint redesign",
+    "no target-discovery changes",
+    "no 353-ID remap",
+    "no TEST/Morabito",
+    "no 500K",
+    "no Stage 4",
+    "no E4",
+    "no production target/representation/EMA freeze",
+    "no post-outcome tuning"
+  ]
+}
