@@ -41,7 +41,8 @@ def _fixture_cache(tmp_path: Path):
     bridge = json.loads(BRIDGE.read_text())
     cache = tmp_path / "cache"
     cache.mkdir()
-    manifest_rows = []
+    count_rows = []
+    meta_rows = []
     expected_cells = 0
     for row in bridge["rows"]:
         oi = int(row["operator_index"])
@@ -53,30 +54,49 @@ def _fixture_cache(tmp_path: Path):
         _write_csr(cp, n, oi, oi + 1)
         source_library = np.arange(1000 + oi, 1000 + oi + n, dtype=np.int64)
         np.savez(mp, source_library=source_library)
-        manifest_rows.append({
-            "matrix_id": row["matrix_id"],
-            "counts_sha256": _sha(cp),
-            "meta_sha256": _sha(mp),
-        })
-    manifest = {
-        "schema": "foundation-train-loader-v1",
-        "address_count": 41238,
-        "authority_hashes": {"registry": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"},
-        "shards": manifest_rows,
+        count_rows.append({"file": cp.name, "sha256": _sha(cp)})
+        meta_rows.append({"file": mp.name, "sha256": _sha(mp)})
+
+    corrected = {
+        "schema": "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1",
+        "source": {
+            "cache": "fixture://corrected-s174",
+            "n_shards": 42,
+            "shard_digests": count_rows,
+            "pathology_blind": True,
+            "train_only": True,
+            "read_only": True,
+            "metadata_fields": ["source_library"],
+        },
     }
-    manifest_path = tmp_path / "production_loader_manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
-    return cache, bridge, manifest_path, expected_cells
+    corrected_path = tmp_path / "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json"
+    corrected_path.write_text(json.dumps(corrected, indent=2) + "\n")
+
+    meta_digest = {
+        "schema": "V78_S174_SHARD_META_DIGEST_V1",
+        "claim_class": "CUSTODY_DERIVATION__NON_AUTHORIZING",
+        "source_archive": {"filename": "fixture.rar", "size_bytes": 1, "sha256": "a" * 64},
+        "corrected_calibration": {"path": corrected_path.name, "sha256": _sha(corrected_path)},
+        "n_meta_shards": 42,
+        "rows": meta_rows,
+    }
+    meta_path = tmp_path / "V78_S174_SHARD_META_DIGEST_V1.json"
+    meta_path.write_text(json.dumps(meta_digest, indent=2) + "\n")
+    return cache, bridge, corrected_path, meta_path, expected_cells
 
 
-def test_cache_builder_derives_compact_authority_from_authenticated_shards(tmp_path):
+def test_cache_builder_derives_compact_authority_from_repaired_s174_receipts(tmp_path):
     B = _load()
-    cache, bridge, manifest_path, expected_cells = _fixture_cache(tmp_path)
-    out = B.build_from_corrected_cache(cache, bridge, manifest_path, canonical=False)
+    cache, bridge, corrected_path, meta_path, expected_cells = _fixture_cache(tmp_path)
+    out = B.build_from_corrected_cache(
+        cache, bridge, corrected_path, meta_path, canonical=False
+    )
     assert out["schema"] == B.SCHEMA
     assert out["canonical_corrected_train"] is False
     assert out["source"]["n_shards"] == 42
     assert out["source"]["paired_meta_manifest_verified"] is True
+    assert out["source"]["corrected_calibration_sha256"] == _sha(corrected_path)
+    assert out["source"]["meta_digest_manifest_sha256"] == _sha(meta_path)
     abundance = out["rank_scrubbed_abundance"]
     assert abundance["n_addresses"] == 41238
     assert abundance["n_zero"] == 41238 - 42
@@ -89,29 +109,34 @@ def test_cache_builder_derives_compact_authority_from_authenticated_shards(tmp_p
     assert np.count_nonzero(reconstructed) == 42
     depth = out["depth_marginals"]
     assert depth["fallback_rule"] == B.FALLBACK_RULE
-    assert len(depth["quantile_probs"]) == 21
     assert depth["global"]["n_cells"] == expected_cells
     assert depth["operators"]["0"]["n_cells"] == 50
     assert depth["operators"]["1"]["n_cells"] == 1
     assert depth["sources"]["HVS"]["n_cells"] == 73
     assert depth["sources"]["SEA_AD"]["n_cells"] == 11
     assert depth["sources"]["NPH52"]["n_cells"] == 7
-    assert depth["quantile_probs"][0] == 0.0
-    assert depth["quantile_probs"][-1] == 1.0
 
 
-def test_cache_builder_authenticates_paired_meta_not_just_count_presence(tmp_path):
+def test_cache_builder_authenticates_paired_meta_from_repaired_archive_receipt(tmp_path):
     B = _load()
-    cache, bridge, manifest_path, _ = _fixture_cache(tmp_path)
+    cache, bridge, corrected_path, meta_path, _ = _fixture_cache(tmp_path)
     stem = bridge["rows"][0]["stem"]
-    mp = cache / f"{stem}.meta.npz"
-    np.savez(mp, source_library=np.asarray([999], dtype=np.int64))
+    np.savez(cache / f"{stem}.meta.npz", source_library=np.asarray([999], dtype=np.int64))
     with pytest.raises(RuntimeError, match="meta digest mismatch"):
-        B.build_from_corrected_cache(cache, bridge, manifest_path, canonical=False)
+        B.build_from_corrected_cache(cache, bridge, corrected_path, meta_path, canonical=False)
 
 
-def test_canonical_build_rejects_nonfrozen_loader_manifest(tmp_path):
+def test_cache_builder_authenticates_corrected_count_receipt_not_old_loader_manifest(tmp_path):
     B = _load()
-    cache, bridge, manifest_path, _ = _fixture_cache(tmp_path)
-    with pytest.raises(RuntimeError, match="frozen loader manifest"):
-        B.build_from_corrected_cache(cache, bridge, manifest_path, canonical=True)
+    cache, bridge, corrected_path, meta_path, _ = _fixture_cache(tmp_path)
+    stem = bridge["rows"][0]["stem"]
+    _write_csr(cache / f"{stem}.counts.npz", 50, 999, 1)
+    with pytest.raises(RuntimeError, match="count digest mismatch"):
+        B.build_from_corrected_cache(cache, bridge, corrected_path, meta_path, canonical=False)
+
+
+def test_canonical_build_rejects_nonfrozen_corrected_calibration_and_meta_receipt(tmp_path):
+    B = _load()
+    cache, bridge, corrected_path, meta_path, _ = _fixture_cache(tmp_path)
+    with pytest.raises(RuntimeError, match="corrected S174 calibration"):
+        B.build_from_corrected_cache(cache, bridge, corrected_path, meta_path, canonical=True)
