@@ -1,0 +1,38 @@
+{
+  "adjudication": {
+    "td56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "td57b": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "td59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY"
+  },
+  "audit_date": "2026-10-09",
+  "different_or_missing_count": 70,
+  "direct_s174_marker_hits_in_recovered_td_text": [],
+  "key_recovered_artifacts": {
+    "compute_td50_source.py": {"bytes": 2962, "sha256": "c479b1283c07f646d01c63066300b2c2e257e4017316f23a1fda28361b297665"},
+    "run_td56_hvs.py": {"bytes": 4982, "sha256": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43"},
+    "run_td56_nph.py": {"bytes": 4986, "sha256": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162"},
+    "run_td56_sea.py": {"bytes": 4988, "sha256": "31749787e934d8ad80373c8903083d26fdb65a711c1fca80c948315cc94b7b11"},
+    "td57b_fixed_relational_recurrence.py": {"bytes": 16672, "sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e"},
+    "td57b_p0_hvs.json": {"bytes": 13326, "sha256": "fbee6cef249533523ba97558f52f388a378c4e5aa86c5be630b0ed9d20085d2f"},
+    "td57b_p0_nph52.json": {"bytes": 13323, "sha256": "114cc044ae66fe5c530412c6ca2d9f469eaba048fe0b1f256e746fe0093a5557"},
+    "td57b_p0_seaad.json": {"bytes": 13366, "sha256": "d149a37c40c43d03c49c8e1783f87a233f64874ef920f8fabe0a9e3d0b846c1e"},
+    "td57b_p1_hvs.json": {"bytes": 13354, "sha256": "560e5fafc0844320e69854023c9a5b4f8728a463f95bb9fe4825b7593b01ff37"},
+    "td57b_p1_nph52.json": {"bytes": 13350, "sha256": "9b83565b2d6315c239f9a156bd90ae0cce4902cd5ed666a1cc24e08ef911ed98"},
+    "td57b_p1_seaad.json": {"bytes": 13367, "sha256": "110a3741b9f56030832fe8f003c2b4cd0dbc478416c2bdeb59b8f9b2deae01c6"}
+  },
+  "local_assets": [
+    {"bytes": 92478083, "name": "JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip", "role": "historical_td41_td58_archive", "sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"},
+    {"bytes": 50647044, "name": "stage81a3r_corrected_real_train.zip", "role": "pre_s174_corrected_real_train_archive", "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48"},
+    {"bytes": 47964366, "name": "s174_rebuilt_real_train_v1.rar", "role": "s174_rebuilt_real_train_archive", "sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f"}
+  ],
+  "residual_gap": "exact corrected S174 shard -> corrected 50K/TD50 global_row rematerialization -> stage-specific TD56/TD57B/TD59 rerun receipt",
+  "s174_rar_member_count": 85,
+  "s174_rar_npz_member_count": 84,
+  "same_size_and_crc_count": 14,
+  "schema_version": "1.0",
+  "stage_vs_s174_npz_members_compared": 84,
+  "td_archive_binary_file_count": 57,
+  "td_archive_extracted_file_count": 155,
+  "td_archive_text_file_count": 98,
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
