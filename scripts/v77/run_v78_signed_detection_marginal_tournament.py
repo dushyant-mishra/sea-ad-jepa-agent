@@ -28,6 +28,7 @@ CLASS_PROGRAM_SCALE = float(CLASS_OBSERVER.CLASS_PROGRAM_SCALE)
 EXPECTED_CLASS_AUTHORITY_SHA256 = "a4f5e325a54014d87d6380f81ce48922a6558f05ffafdaf7c59c1dc3ae705014"
 EXPECTED_EVALUATION_UNIVERSE_SHA256 = "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763"
 EXPECTED_E2_CELLS = 2500
+EXPECTED_CORRECTED_TRAIN_CELLS = 4726
 CORRECTED_CALIBRATION = ROOT / "results" / "v77" / "s174_replay" / "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json"
 
 
@@ -115,8 +116,9 @@ def _authenticate_corrected_cache(cache_root: Path) -> tuple[bool, dict]:
     """Authenticate corrected count shards and require paired metadata shards.
 
     The committed corrected calibration records the exact 42 count-shard digests. Metadata
-    shards are also required physically because F3 depth strata are cell-level, but no attempt
-    is made to infer their contents from the count summaries.
+    shards are also required physically because F3 depth strata are cell-level. Paired meta
+    digests are authenticated during canonical marginal-authority construction against the
+    frozen production loader manifest and are explicitly bound in that authority receipt.
     """
     cache_root = Path(cache_root)
     if not cache_root.is_dir() or not CORRECTED_CALIBRATION.exists():
@@ -152,6 +154,7 @@ def preexecution_gate(e2_reference: Path, operator_bridge: Path,
     """
     blockers: list[str] = []
     details: dict = {}
+    bridge_rec = None
 
     try:
         ref = load_e2_reference(Path(e2_reference))
@@ -176,7 +179,6 @@ def preexecution_gate(e2_reference: Path, operator_bridge: Path,
         blockers.append("s174_shard_operator_bridge")
         details["operator_bridge"] = {"status": "FAILED", "reason": str(exc)}
 
-    authority = None
     authority_path = Path(marginal_authority)
     if not authority_path.is_file():
         blockers.append("canonical_f3_marginal_authority")
@@ -187,15 +189,26 @@ def preexecution_gate(e2_reference: Path, operator_bridge: Path,
             MARGINAL.validate_runtime_authority(authority)
             canonical = authority.get("canonical_corrected_train") is True
             training_flag = authority.get("training_authorized") is True
-            if not canonical:
+            source = authority.get("source", {})
+            provenance_checks = {
+                "n_shards_42": int(source.get("n_shards", -1)) == MARGINAL.EXPECTED_N_SHARDS,
+                "n_cells_4726": int(source.get("n_cells", -1)) == EXPECTED_CORRECTED_TRAIN_CELLS,
+                "registry_sha256": source.get("registry_sha256") == MARGINAL.EXPECTED_REGISTRY_SHA256,
+                "loader_manifest_sha256": source.get("loader_manifest_sha256") == MARGINAL.EXPECTED_LOADER_MANIFEST_SHA256,
+                "paired_meta_manifest_verified": source.get("paired_meta_manifest_verified") is True,
+                "operator_bridge_sha256": bridge_rec is not None and source.get("operator_bridge_sha256") == bridge_rec.get("bridge_sha256"),
+            }
+            provenance_ok = all(provenance_checks.values())
+            if not canonical or not provenance_ok:
                 blockers.append("canonical_f3_marginal_authority")
             if training_flag:
                 blockers.append("training_authorization_contamination")
             details["marginal_authority"] = {
-                "status": "AUTHENTICATED" if canonical and not training_flag else "REJECTED",
+                "status": "AUTHENTICATED" if canonical and provenance_ok and not training_flag else "REJECTED",
                 "sha256": _sha256_file(authority_path),
                 "canonical_corrected_train": canonical,
                 "training_authorized": training_flag,
+                "provenance_checks": provenance_checks,
             }
         except Exception as exc:
             blockers.append("canonical_f3_marginal_authority")
