@@ -1,0 +1,37 @@
+{
+  "schema": "V78_SIGNED_DETECTION_MARGINAL_SCIENTIFIC_RULING_V1",
+  "date": "2026-10-09",
+  "claim_class": "SCIENTIFIC_FALSIFICATION_RULING__NO_ARM_PROMOTION",
+  "source_receipt": "results/v78/V78_SIGNED_DETECTION_MARGINAL_TOURNAMENT_V1.json",
+  "real_reference_status": "DESCRIPTIVE_ONLY__S159_NOT_BINARY_AUTHORITY",
+  "rulings": {
+    "F0": {
+      "status": "PASS_EXACT_E2_REPRODUCTION__BASELINE_ONLY",
+      "reason": "The frozen E2 legacy score is reproduced and serves only as the reference baseline."
+    },
+    "F1": {
+      "status": "DIRECTIONAL_SIGNED_RATIO_SUCCESS__ADEQUACY_REJECTED",
+      "reason": "BackgroundV2 moves the strong-edge positive/negative detection ratio from 1800.31 to 67.74, near the corrected real descriptive reference 59.02, but mean degree and transitivity collapse, the E2 T5 direction is erased, and abundance/depth are strongly distorted. A single ratio match is insufficient."
+    },
+    "F2": {
+      "status": "SIGNED_DETECTION_HYPOTHESIS_FALSIFIED_AT_FROZEN_GEOMETRY",
+      "reason": "The preregistered signed selection field reduces rather than increases negative strong-edge prevalence, worsens the ratio to 8154.09, collapses degree/transitivity, and erases the E2 T5 improvement. This falsifies the frozen mechanism/scale, not every possible signed-detection model."
+    },
+    "F3": {
+      "status": "COUNT_MARGINAL_REPAIR_INADEQUATE__NO_SIGNED_TOPOLOGY_RETENTION",
+      "reason": "Repaired-S174 rank-scrubbed abundance moves max/median toward the corrected real reference, but top-1-percent share and detected depth move away, signed topology deteriorates further, and T5 remains inconsistent with the E2 broad-class direction."
+    }
+  },
+  "interpretation": {
+    "background_v2": "Contains structure capable of generating substantially more negative detection dependence, but not with adequate joint topology/marginal realism under the frozen configuration.",
+    "signed_detection_field": "The independent preregistered signed selection field is not an adequate explanation of the missing corrected detection topology at the frozen geometry and magnitude.",
+    "marginal_replacement": "Abundance/depth marginals alone cannot rescue signed topology; marginal and dependence mechanisms interact and require a prospective successor model.",
+    "next_mechanism_family": "UNSELECTED__DO_NOT_RETUNE_V78__AWAIT_PROSPECTIVE_V79_DESIGN_AND_IDENTITY_SCRUBBED_DATASET_GEOMETRY"
+  },
+  "promoted_arm": null,
+  "no_post_outcome_retuning": true,
+  "training_authorized": false,
+  "e4_authorized": false,
+  "test_or_morabito_access": false,
+  "target_discovery_changes": false
+}

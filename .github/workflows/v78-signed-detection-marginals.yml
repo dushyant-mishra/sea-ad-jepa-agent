@@ -1,0 +1,72 @@
+name: V78 signed detection marginals
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v77/run_v78_signed_detection_marginal_tournament.py'
+      - 'scripts/v77/run_v78_frozen_execution.py'
+      - 'scripts/v77/v78_signed_detection.py'
+      - 'scripts/v77/build_v78_fullscale_rna_observer.py'
+      - 'scripts/v77/build_v78_marginal_authority.py'
+      - 'scripts/v77/v78_signed_scoring.py'
+      - 'tests/test_v78_signed_detection_marginals_v1.py'
+      - 'tests/test_v78_marginal_authority_v1.py'
+      - 'tests/test_v78_canonical_marginal_authority_build_v1.py'
+      - 'tests/test_v78_signed_scoring_v1.py'
+      - 'tests/test_v78_f3_depth_runtime_v1.py'
+      - 'tests/test_v78_preexecution_gate_v1.py'
+      - 'tests/test_v78_frozen_execution_driver_v1.py'
+      - 'results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json'
+      - 'results/v78/V78_S174_CACHE_RECOVERY_CUSTODY_V1.json'
+      - 'results/v78/V78_S174_SUBSTRATE_DISTINCTION_V1.json'
+      - 'results/v78/V78_MARGINAL_AUTHORITY_CUSTODY_V1.json'
+      - 'results/v78/V78_PREEXECUTION_GATE_READY_V1.json'
+      - 'results/v78/V78_FROZEN_LOCAL_TOURNAMENT_CUSTODY_V1.json'
+      - 'results/v78/V78_FROZEN_LOCAL_SCIENTIFIC_RULING_V1.json'
+      - 'results/v78/V78_SIGNED_DETECTION_MARGINAL_TOURNAMENT_V1.json'
+      - 'results/v78/V78_SIGNED_DETECTION_MARGINAL_SCIENTIFIC_RULING_V1.json'
+      - '.github/workflows/v78-signed-detection-marginals.yml'
+      - 'docs/superpowers/plans/2026-10-09-v78-signed-detection-marginals.md'
+      - 'docs/superpowers/specs/2026-10-08-v78-signed-detection-marginals-design.md'
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install numpy scipy pytest
+      - name: V78 focused contract
+        run: >-
+          pytest -q
+          tests/test_v78_signed_detection_marginals_v1.py
+          tests/test_v78_marginal_authority_v1.py
+          tests/test_v78_canonical_marginal_authority_build_v1.py
+          tests/test_v78_signed_scoring_v1.py
+          tests/test_v78_f3_depth_runtime_v1.py
+          tests/test_v78_preexecution_gate_v1.py
+          tests/test_v78_frozen_execution_driver_v1.py
+      - name: Package temporary V78 execution snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: v78-execution-snapshot-${{ github.event.pull_request.head.sha }}
+          path: |
+            scripts
+            results/v77
+            results/v78
+            results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part01.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part02.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part03.txt
+            results/v64/calibration/V73_FULL104_POPULATION_TRIPLETS.part04.txt
+            results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part01.txt
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part02.txt
+            results/v64/calibration/V74_FULL104_RNA_QC_50K_V2.part03.txt
+            custody/synthetic_dataset_20261008
+          if-no-files-found: error
+          retention-days: 1

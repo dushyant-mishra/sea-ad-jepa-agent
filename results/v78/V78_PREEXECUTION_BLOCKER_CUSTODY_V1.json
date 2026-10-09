@@ -1,0 +1,57 @@
+{
+  "schema": "V78_PREEXECUTION_BLOCKER_CUSTODY_V1",
+  "claim_class": "NON_AUTHORIZING_CUSTODY_CHECKPOINT",
+  "date": "2026-10-09",
+  "implementation_head_before_checkpoint": "06da0e2a212fda57d02934a50aabb6c4e8af4cda",
+  "draft_pr": 242,
+  "design_base": "8ccafc3adf5eb6a7b96167d499475f84c2f874dd",
+  "status": "BLOCKED_BEFORE_SCIENTIFIC_EXECUTION",
+  "mechanics_status": "DATA_INDEPENDENT_V78_CONTRACTS_GREEN",
+  "ci": {
+    "v78_workflow_run": 37958959796,
+    "v78_conclusion": "success",
+    "v77_spillover_workflow_run": 37958959833,
+    "v77_spillover_conclusion": "success"
+  },
+  "closed_custody": {
+    "e2_reference": "results/v77/V77_CLASS_PROPAGATION_TOURNAMENT_V1.json",
+    "class_authority_sha256": "a4f5e325a54014d87d6380f81ce48922a6558f05ffafdaf7c59c1dc3ae705014",
+    "evaluation_universe_sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "operator_bridge": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "operator_count": 42,
+    "operator_indices": "0..41",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "support_by_operator_member_sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+  },
+  "semantic_ruling": {
+    "source_library": "PER_CELL_LIBRARY_TOTAL__NOT_OPERATOR_IDENTITY",
+    "operator_identity": "HASH_BOUND_CORRECTED_SHARD_TO_MATRIX_TO_FROZEN_OPERATOR_INDEX"
+  },
+  "implemented_contracts": [
+    "F0 exact committed-E2 reference binding",
+    "F1 BackgroundV2-only freeze",
+    "F2 signed detection field with disjoint streams",
+    "F2 zero-field exact V77 sparse-count reproduction",
+    "F2 signed selection can change gene identities while preserving detected/library totals",
+    "F3 rank-scrubbed abundance authority governance",
+    "F3 positive-count baseline replacement isolated from F2 selection",
+    "F3 frozen operator-to-source-to-global depth fallback runtime",
+    "signed topology diagnostics layered on unchanged V77 scoring",
+    "2K 42-of-42 operator support preservation",
+    "preexecution gate forbids early F0-F2 execution"
+  ],
+  "remaining_blockers": [
+    "exact corrected S174 TRAIN count shard bytes",
+    "paired corrected S174 TRAIN meta shard bytes",
+    "canonical V78 marginal authority built directly from those authenticated bytes"
+  ],
+  "hard_boundaries": {
+    "scientific_execution": false,
+    "training_authorized": false,
+    "real_data_training": false,
+    "e4_authorized": false,
+    "test_or_morabito_access": false,
+    "post_outcome_retuning": false
+  }
+}

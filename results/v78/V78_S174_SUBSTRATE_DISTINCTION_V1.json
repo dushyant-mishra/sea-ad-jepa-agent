@@ -1,0 +1,52 @@
+{
+  "schema": "V78_S174_SUBSTRATE_DISTINCTION_V1",
+  "date": "2026-10-09",
+  "claim_class": "CUSTODY_DIFFERENTIATION__NON_AUTHORIZING",
+  "v78_branch_head_before_receipt": "ce0ccc6d528a4c892d2afd50dd7ba9cd65a551e2",
+  "historical_stage81a3r_archive": {
+    "library_path": "/Jepa project/stage81a3r_corrected_real_train.zip",
+    "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+    "size_bytes": 50647044,
+    "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "structural_pairs": 42
+  },
+  "macha_s174_repaired_archive": {
+    "library_path": "/Jepa project/s174_rebuilt_real_train_v1.rar",
+    "sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "size_bytes": 47964366,
+    "corrected_calibration_sha256": "f6ba2c725a5437cc8455fff418027d36efe9ea9430fbd0a5765df62dedca6068",
+    "meta_digest_semantic_sha256": "b876e13526f51d5a4199ca750ad09065c5ab8a20aeca39dff3d8c385f2241f46",
+    "structural_pairs": 42
+  },
+  "direct_cross_authentication": {
+    "method": "hash each extracted Stage81A3R count/meta NPZ against the current repaired-S174 corrected-calibration count digests and V78 repaired-meta digest receipt",
+    "count_shards_matching_repaired_s174": 7,
+    "count_shards_total": 42,
+    "meta_shards_matching_repaired_s174": 7,
+    "meta_shards_total": 42,
+    "paired_shards_matching_both": 7,
+    "paired_shards_differing": 35,
+    "matching_stems": [
+      "01a8084c32680dfb",
+      "5a1c193be7cd49cc",
+      "65db086233248c4c",
+      "697169906cb1a773",
+      "728ef515d050d789",
+      "868d05542e5e7cf2",
+      "e5ef92fa6bf68bb4"
+    ]
+  },
+  "ruling": {
+    "stage81a3r_zip_is_byte_equivalent_to_macha_repaired_cache": false,
+    "historical_loader_manifest_is_valid_identity_root_for_current_repaired_s174": false,
+    "v78_f3_must_use_current_repaired_s174_lineage": true,
+    "f0_f3_scientific_execution_authorized": false,
+    "reason": "current preexecution gate correctly requires the repaired-S174 calibration/meta/archive lineage; the Stage81A3R ZIP cannot substitute because 35/42 shard pairs differ"
+  },
+  "hard_boundaries": {
+    "training_authorized": false,
+    "e4_authorized": false,
+    "target_discovery_changes": false,
+    "post_outcome_retuning": false
+  }
+}

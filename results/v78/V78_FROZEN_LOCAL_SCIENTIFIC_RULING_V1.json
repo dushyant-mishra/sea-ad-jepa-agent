@@ -1,0 +1,37 @@
+{
+  "schema": "V78_FROZEN_LOCAL_SCIENTIFIC_RULING_V1",
+  "date": "2026-10-09",
+  "claim_class": "SCIENTIFIC_FALSIFICATION_RULING__NO_ARM_PROMOTION",
+  "source_receipt": "results/v78/V78_FROZEN_LOCAL_TOURNAMENT_CUSTODY_V1.json",
+  "real_reference_status": "DESCRIPTIVE_ONLY__S159_NOT_BINARY_AUTHORITY",
+  "rulings": {
+    "F0": {
+      "status": "PASS_EXACT_E2_REPRODUCTION__BASELINE_ONLY",
+      "reason": "complete committed E2 legacy score reproduced exactly before successor arms"
+    },
+    "F1": {
+      "status": "DIRECTIONAL_SIGNED_RATIO_SUCCESS__ADEQUACY_REJECTED",
+      "reason": "BackgroundV2 moves detection positive/negative ratio from 1800.31 to 67.74, near corrected real 59.02, but collapses unsigned dependence, erases E2 T5 direction, and strongly distorts abundance/depth; a ratio match alone cannot qualify the arm"
+    },
+    "F2": {
+      "status": "SIGNED_DETECTION_HYPOTHESIS_FALSIFIED_AT_FROZEN_GEOMETRY",
+      "reason": "negative strong-edge fraction falls rather than rises, positive/negative ratio worsens to 8154.09, mean degree/transitivity collapse, and E2 T5 improvement is erased"
+    },
+    "F3": {
+      "status": "COUNT_MARGINAL_REPAIR_INADEQUATE__NO_SIGNED_TOPOLOGY_RETENTION",
+      "reason": "abundance max/median moves toward corrected real but top-1% share and detected depth move away; signed topology worsens further and T5 remains inconsistent with E2 broad-class improvement"
+    }
+  },
+  "causal_interpretation": {
+    "background_v2": "contains geometry capable of generating substantially more negative detection dependence, but under corrected S174 references it does so with severe loss of unsigned topology and marginal realism",
+    "explicit_signed_detection_field": "the preregistered independent signed selection field is not a viable explanation of the missing corrected detection topology at the frozen geometry/scale",
+    "rank_scrubbed_abundance_depth": "marginal replacement alone cannot rescue topology and is only partially directional for abundance",
+    "next_mechanism_family": "UNSELECTED__DO_NOT_RETUNE_V78; use prospective successor design informed by independent dataset-geometry work"
+  },
+  "no_post_outcome_retuning": true,
+  "promoted_arm": null,
+  "training_authorized": false,
+  "e4_authorized": false,
+  "test_or_morabito_access": false,
+  "target_discovery_changes": false
+}

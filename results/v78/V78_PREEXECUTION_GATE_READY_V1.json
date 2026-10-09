@@ -1,0 +1,56 @@
+{
+  "schema": "V78_PREEXECUTION_GATE_V1",
+  "status": "READY",
+  "blockers": [],
+  "details": {
+    "e2_reference": {
+      "status": "AUTHENTICATED",
+      "seed": 7302,
+      "class_authority_sha256": "a4f5e325a54014d87d6380f81ce48922a6558f05ffafdaf7c59c1dc3ae705014",
+      "evaluation_universe_sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763"
+    },
+    "operator_bridge": {
+      "status": "AUTHENTICATED",
+      "n_operators": 42,
+      "operator_indices": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41],
+      "bridge_sha256": "ddbe7ba09cf6bf62fc1135f4bfd081601dc43fde23e61a4cf3206e3bd7655c55",
+      "source_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "source_member_sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+    },
+    "marginal_authority": {
+      "status": "AUTHENTICATED",
+      "sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+      "canonical_corrected_train": true,
+      "training_authorized": false,
+      "provenance_checks": {
+        "n_shards_42": true,
+        "n_cells_4726": true,
+        "registry_sha256": true,
+        "corrected_calibration_sha256": true,
+        "meta_digest_semantic_sha256": true,
+        "repaired_archive_sha256": true,
+        "paired_meta_manifest_verified": true,
+        "operator_bridge_sha256": true
+      }
+    },
+    "corrected_train_cache": {
+      "status": "AUTHENTICATED",
+      "n_count_shards": 42,
+      "n_meta_shards": 42,
+      "stems": ["01a8084c32680dfb","0428d814f189ca87","117e1b89adbf25e4","120794b6773c7cf9","15b1f72fcc49200e","16632e1b92d2409b","1cf08334d3b12f5f","246008367b5ed2fb","2bfa3b9301efa393","3230dd0fe3beb954","46a2e68f12d45643","4777ea704d910eee","4a3db0b3a3ee23e5","4be84f5869689fe5","57791abbd401df2b","58baaeadf44eab57","5a104c17a7d6e5cf","5a1c193be7cd49cc","5dab94333efd8e21","62544b4c7ab48cd1","65db086233248c4c","697169906cb1a773","701d4db85fd51088","728ef515d050d789","7da7c897180c16b5","868d05542e5e7cf2","8a1613e724707595","97c509331469cc92","9fc20935b65302ee","a410358f191a3e4c","a6a34c7d7c6723a0","bbffd755c3f71256","c70df1e5200f419f","c9d1fc26b487b582","d35f9b260b727137","dd26eaeaed7d104f","de88e08b50c44dbe","dfcb594c1abeb0c0","e31a8c262e8be576","e38be9d52b6f8e0b","e5ef92fa6bf68bb4","fa1d6cf6e74837f2"]
+    },
+    "operator_support_2k": {
+      "status": "PASS",
+      "n_cells": 2000,
+      "seed": 7302,
+      "n_operators": 42,
+      "operators_present": 42,
+      "minimum_operator_count": 1,
+      "operator_counts": [1,2,1,5,13,1,6,1,2,1,13,4,1,1,1,3,4,2,7,1,8,7,1,1,8,2,19,8,7,4,56,68,278,77,61,114,51,225,280,322,152,181]
+    }
+  },
+  "f0_f2_early_execution_authorized": false,
+  "training_authorized": false,
+  "post_outcome_retuning_authorized": false,
+  "e4_authorized": false
+}
