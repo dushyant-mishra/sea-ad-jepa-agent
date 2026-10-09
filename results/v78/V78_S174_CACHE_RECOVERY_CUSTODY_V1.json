@@ -1,0 +1,40 @@
+{
+  "schema": "V78_S174_CACHE_RECOVERY_CUSTODY_V1",
+  "date": "2026-10-09",
+  "claim_class": "CUSTODY_AUTHENTICATION__NON_AUTHORIZING",
+  "supersedes_blocker_component": "missing exact corrected S174 TRAIN count/meta shard bytes",
+  "library_source": {
+    "path": "/Jepa project/stage81a3r_corrected_real_train.zip",
+    "size_bytes": 50647044,
+    "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+    "historical_created_at_utc": "2026-09-10T20:49:37+00:00"
+  },
+  "frozen_loader_manifest": {
+    "sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "match": true,
+    "n_shards": 42
+  },
+  "verification": {
+    "archive_members": 99,
+    "count_files": 42,
+    "meta_files": 42,
+    "pairs_manifest_matched": 42,
+    "mismatches": 0,
+    "total_shard_bytes": 48382320,
+    "stem_rule": "sha256('corrected|' + matrix_id)[:16]"
+  },
+  "status_after_recovery": "RAW_CORRECTED_S174_CACHE_AUTHENTICATED__CAN_BUILD_CANONICAL_V78_MARGINAL_AUTHORITY",
+  "still_required_before_scientific_execution": [
+    "implement canonical corrected-cache reader under RED->GREEN tests",
+    "build V78_MARGINAL_AUTHORITY_V1 directly from authenticated bytes",
+    "authenticate derived authority in V78 preexecution gate",
+    "rerun focused V78 and inherited V77 spillover CI"
+  ],
+  "hard_boundaries": {
+    "f0_f3_scientific_execution": false,
+    "training_authorized": false,
+    "e4_authorized": false,
+    "test_or_morabito_access": false,
+    "post_outcome_retuning": false
+  }
+}
