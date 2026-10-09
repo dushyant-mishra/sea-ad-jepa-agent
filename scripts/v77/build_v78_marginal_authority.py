@@ -5,7 +5,7 @@ This module intentionally separates two things:
 
 1. governance/compact-authority mechanics, which are testable with synthetic fixtures; and
 2. the canonical corrected-TRAIN build, which must fail closed unless the exact repaired
-   cache bytes and an authenticated operator mapping are physically available.
+   cache bytes and an authenticated shard-to-operator bridge are physically available.
 
 It must never reconstruct the canonical authority from calibration/envelope summaries.
 """
@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 
 SCHEMA = "V78_MARGINAL_AUTHORITY_V1"
+OPERATOR_BRIDGE_SCHEMA = "V78_S174_SHARD_OPERATOR_BRIDGE_V1"
 EXPECTED_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 EXPECTED_N_ADDRESSES = 41238
 EXPECTED_N_SHARDS = 42
@@ -141,6 +142,53 @@ def choose_depth_stratum(operator_n: int, source_n: int) -> str:
     return "global"
 
 
+def validate_operator_bridge(bridge: dict) -> dict:
+    """Validate a custody bridge from corrected-cache shard stem to frozen operator index.
+
+    The bridge is metadata-only and non-authorizing. It is allowed to carry matrix identity because
+    it never enters synthetic biology or runtime model inputs; the compact F3 authority later stores
+    only the derived stratum summaries and bridge digest.
+    """
+    if not isinstance(bridge, dict) or bridge.get("schema") != OPERATOR_BRIDGE_SCHEMA:
+        raise RuntimeError("operator bridge schema mismatch")
+    if bridge.get("claim_class") != "CUSTODY_DERIVATION__NON_AUTHORIZING":
+        raise PermissionError("operator bridge must remain non-authorizing custody")
+    source_bundle = bridge.get("source_bundle", {})
+    source_member = bridge.get("source_member", {})
+    if not _is_sha256(source_bundle.get("sha256")) or not _is_sha256(source_member.get("sha256")):
+        raise RuntimeError("operator bridge lacks source digests")
+    rows = bridge.get("rows", [])
+    if not isinstance(rows, list) or len(rows) != EXPECTED_N_SHARDS:
+        raise RuntimeError(f"operator bridge requires exactly {EXPECTED_N_SHARDS} rows")
+    indices, matrices, stems = [], [], []
+    for row in rows:
+        if not isinstance(row, dict):
+            raise RuntimeError("malformed operator bridge row")
+        oi = int(row.get("operator_index", -1))
+        matrix_id = str(row.get("matrix_id", ""))
+        source = str(row.get("source", ""))
+        stem = str(row.get("stem", ""))
+        if source not in {"HVS", "SEA_AD", "NPH52"}:
+            raise RuntimeError(f"unknown operator source {source!r}")
+        if not matrix_id or not stem:
+            raise RuntimeError("operator bridge row lacks matrix/stem")
+        expected_stem = hashlib.sha256(("corrected|" + matrix_id).encode()).hexdigest()[:16]
+        if stem != expected_stem:
+            raise RuntimeError(f"operator bridge stem mismatch for {matrix_id}")
+        indices.append(oi); matrices.append(matrix_id); stems.append(stem)
+    if sorted(indices) != list(range(EXPECTED_N_SHARDS)):
+        raise RuntimeError("operator bridge indices must be exactly 0..41")
+    if len(set(matrices)) != EXPECTED_N_SHARDS or len(set(stems)) != EXPECTED_N_SHARDS:
+        raise RuntimeError("operator bridge matrix IDs and stems must be one-to-one")
+    return {
+        "n_operators": EXPECTED_N_SHARDS,
+        "operator_indices": sorted(indices),
+        "bridge_sha256": _canonical_json_sha256(bridge),
+        "source_bundle_sha256": source_bundle["sha256"],
+        "source_member_sha256": source_member["sha256"],
+    }
+
+
 def _walk_keys(obj: object):
     if isinstance(obj, dict):
         for key, value in obj.items():
@@ -196,21 +244,22 @@ def build_from_arrays(source: dict, per_address_abundance: np.ndarray,
 
 
 def build_from_corrected_cache(cache_root: Path, operator_mapping) -> dict:
-    """Canonical entrypoint; deliberately fail closed until exact custody is present.
+    """Canonical entrypoint; deliberately fail closed until exact cache custody is present.
 
-    A corrected cache alone is insufficient: the V78 preregistration requires an authenticated
-    mapping from corrected TRAIN cells/source libraries to the frozen 42 observation operators.
-    Summary calibration JSON is not an acceptable substitute for either input.
+    The S174 rebuild's `source_library` metadata is the physical library total, not an operator
+    identifier. Operator identity therefore comes only from the authenticated shard->matrix->operator
+    bridge. Summary calibration JSON is not an acceptable substitute for corrected count bytes.
     """
     cache_root = Path(cache_root)
     if not cache_root.exists():
         raise FileNotFoundError(f"exact corrected TRAIN cache unavailable: {cache_root}")
     if operator_mapping is None:
         raise PermissionError(
-            "authenticated source-library/cell -> observation-operator mapping is required; "
+            "authenticated corrected-shard -> observation-operator bridge is required; "
             "refusing to infer operator identity from source_library"
         )
+    validate_operator_bridge(operator_mapping)
     raise RuntimeError(
-        "canonical corrected-TRAIN authority build is not enabled until cache shard digests and "
-        "operator mapping custody are authenticated against the frozen V78 source receipt"
+        "canonical corrected-TRAIN authority build is not enabled until the exact 42 corrected "
+        "count/meta shard bytes authenticate against the frozen S174 digest receipt"
     )
