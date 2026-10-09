@@ -23,6 +23,8 @@ on:
       - 'results/v78/V78_PREEXECUTION_GATE_READY_V1.json'
       - 'results/v78/V78_FROZEN_LOCAL_TOURNAMENT_CUSTODY_V1.json'
       - 'results/v78/V78_FROZEN_LOCAL_SCIENTIFIC_RULING_V1.json'
+      - 'results/v78/V78_SIGNED_DETECTION_MARGINAL_TOURNAMENT_V1.json'
+      - 'results/v78/V78_SIGNED_DETECTION_MARGINAL_SCIENTIFIC_RULING_V1.json'
       - '.github/workflows/v78-signed-detection-marginals.yml'
       - 'docs/superpowers/plans/2026-10-09-v78-signed-detection-marginals.md'
       - 'docs/superpowers/specs/2026-10-08-v78-signed-detection-marginals-design.md'
