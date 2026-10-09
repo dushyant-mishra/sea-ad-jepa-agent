@@ -1,0 +1,455 @@
+{
+ "schema": "TD_RELATIONAL_G4G5_LOCAL_EXECUTION_20261009",
+ "terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_BEFORE_G4_G5__MANIFEST_FILE_SHA_MISMATCH__WINDOWS_CRLF_SERIALIZATION",
+ "g4_g5_status": "NOT_EXECUTED: the driver stopped at its manifest file-hash check, before the mapping audit started",
+ "stop_rule": "failure preserved exactly; no code change, no rerun, no file normalization, no value read; stop",
+ "git": {
+  "branch": "exec/td-relational-g4g5-local-20261009",
+  "head": "a6c57e4e92b23756f5c49183eaa15d55f39cc325",
+  "pr243_impl_head": "a6c57e4e92b23756f5c49183eaa15d55f39cc325",
+  "executor_git_blobs": {
+   "scripts/v5/run_td_relational_replay_preflight.py": "4f0a18f38f09d71ef43fb5b2cd195794d19e30c4",
+   "scripts/v5/build_td_relational_replay_manifest.py": "03dc4949e7e04040db5f85e331da72c5dcab86e6",
+   "scripts/v5/audit_td_relational_replay_mapping_preflight.py": "ed2d62744a21f28e0de5153471aef7fb67ac5c73"
+  },
+  "executor_sha256": {
+   "scripts/v5/run_td_relational_replay_preflight.py": "a8124aa3bf12288701c5a62187980a0af066caee2bf1789f958eab9e47fb0ba0",
+   "scripts/v5/build_td_relational_replay_manifest.py": "bb4e54828839580b2ae6c7afa015d62e4e1f781b7dcade20388e698e57c6421e",
+   "scripts/v5/audit_td_relational_replay_mapping_preflight.py": "01efd6f388743be1e85bd8cc510571e294547809300cab7241f253890604200d"
+  },
+  "worktree": "D:/jepa_wt_td_g4g5_20261009",
+  "tree_clean_before_run": true
+ },
+ "environment": {
+  "machine": "canonical local Windows workstation",
+  "os": "Windows-10-10.0.26200-SP0",
+  "python": "3.9.7",
+  "python_executable": "C:\\Users\\dushy\\anaconda3\\python.exe",
+  "numpy": "1.24.2",
+  "pandas": "1.5.3",
+  "h5py": "3.2.1",
+  "command": "python scripts/v5/run_td_relational_replay_preflight.py",
+  "cwd": "D:/jepa_wt_td_g4g5_20261009",
+  "start_utc": "2026-10-09T22:00:35Z",
+  "end_utc": "2026-10-09T22:00:49Z",
+  "driver_exit_code": 1
+ },
+ "inputs": {
+  "sample_freeze": {
+   "path": "D:/Jepa project/exports/foundation_corpus_discovery_v1/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv",
+   "bytes": 14700106,
+   "sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+   "frozen_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+   "matches_frozen": true
+  },
+  "provenance": {
+   "path": "D:/Jepa project/results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+   "bytes": 5764358,
+   "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+   "frozen_sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+   "matches_frozen": true
+  },
+  "collision_ledger": {
+   "path": "D:/Jepa project-stage81a3r-20260814/results/v4/stage81a3r_expression_materialization_collision_ledger.csv.gz",
+   "bytes": 1101503,
+   "sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+   "frozen_sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+   "matches_frozen": true
+  },
+  "calibration_zip": {
+   "path": "D:/Jepa project/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+   "bytes": 410278055,
+   "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+   "authority_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+   "authority_bytes": 410278055,
+   "matches_authority": true,
+   "placed_from": "D:/jepa_v5_outputs_20260925/calib_reassembled/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+   "placed_from_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+   "placement": "byte-for-byte copy to the canonical path the driver reads; SHA-256 verified after copy"
+  },
+  "td_artifacts_zip": {
+   "path": "D:/Jepa project/JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip",
+   "bytes": 92478083,
+   "sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+   "authority_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+   "authority_bytes": 92478083,
+   "matches_authority": true,
+   "placed_from": "C:/Users/dushy/Downloads/JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip",
+   "placed_from_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+   "placement": "byte-for-byte copy to the canonical path the driver reads; SHA-256 verified after copy"
+  }
+ },
+ "not_used": {
+  "path": "D:/Jepa project/exports/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+  "bytes": 1093202356,
+  "why": "same filename but not the authority bundle (size differs from 410,278,055)"
+ },
+ "h5ad_sources": {
+  "n": 35,
+  "all_match_s174_freeze_bytes_and_sha256": true,
+  "total_bytes": 323643986614,
+  "rows": [
+   {
+    "matrix_id": "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+    "path": "data/external/v4/living_human/hvs/19cd530b-622c-4bd8-b738-dbf169412cb0.h5ad",
+    "bytes": 431473246,
+    "frozen_bytes": 431473246,
+    "sha256": "dd0f4174cda92cc8087d532bc06520595566ca775a70efc7716d616c8b6eeefa",
+    "frozen_sha256": "dd0f4174cda92cc8087d532bc06520595566ca775a70efc7716d616c8b6eeefa",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::38374d1b-6549-4429-b59a-ff2706dacd96",
+    "path": "data/external/v4/living_human/hvs/38374d1b-6549-4429-b59a-ff2706dacd96.h5ad",
+    "bytes": 803923602,
+    "frozen_bytes": 803923602,
+    "sha256": "90138e508ee2cb9d82b2090904c3499b66f34e92bfef7853e483980fec523709",
+    "frozen_sha256": "90138e508ee2cb9d82b2090904c3499b66f34e92bfef7853e483980fec523709",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c",
+    "path": "data/external/v4/living_human/hvs/42c9001a-3a29-4952-aaa0-b55e73851a5c.h5ad",
+    "bytes": 61610897,
+    "frozen_bytes": 61610897,
+    "sha256": "f76413b30139fbeea70a11ed8cbaed6e0c7f68dcccea73b7d9c02b81c8f55f0c",
+    "frozen_sha256": "f76413b30139fbeea70a11ed8cbaed6e0c7f68dcccea73b7d9c02b81c8f55f0c",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd",
+    "path": "data/external/v4/living_human/hvs/4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd.h5ad",
+    "bytes": 1801583012,
+    "frozen_bytes": 1801583012,
+    "sha256": "941d2d8d6b6d1fd625af0270752053485ebeaccf3560b41bc76ff274d0ac21a6",
+    "frozen_sha256": "941d2d8d6b6d1fd625af0270752053485ebeaccf3560b41bc76ff274d0ac21a6",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9",
+    "path": "data/external/v4/living_human/hvs/57f3c92b-a07a-41da-b660-88eb9f93c4c9.h5ad",
+    "bytes": 7604282325,
+    "frozen_bytes": 7604282325,
+    "sha256": "da84d4c6144b2b95be372343d82015e41b36d7a4d0828ab4d464b606b4fc3b64",
+    "frozen_sha256": "da84d4c6144b2b95be372343d82015e41b36d7a4d0828ab4d464b606b4fc3b64",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d",
+    "path": "data/external/v4/living_human/hvs/5e9da577-f665-44af-b9b4-fa0d5ad1964d.h5ad",
+    "bytes": 32831267,
+    "frozen_bytes": 32831267,
+    "sha256": "101c074a0af5ba94fb2224174113a2cd388d474f2dffee7dc1e2831e56372124",
+    "frozen_sha256": "101c074a0af5ba94fb2224174113a2cd388d474f2dffee7dc1e2831e56372124",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::5fff0955-173e-407d-b160-64f513ca6db6",
+    "path": "data/external/v4/living_human/hvs/5fff0955-173e-407d-b160-64f513ca6db6.h5ad",
+    "bytes": 2510495710,
+    "frozen_bytes": 2510495710,
+    "sha256": "3948d6d325fe73d95f13d6746eda3c269ed717953d1d9cbff2e57120f10281c4",
+    "frozen_sha256": "3948d6d325fe73d95f13d6746eda3c269ed717953d1d9cbff2e57120f10281c4",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::6201fd7d-f35b-4487-bace-99426881237b",
+    "path": "data/external/v4/living_human/hvs/6201fd7d-f35b-4487-bace-99426881237b.h5ad",
+    "bytes": 519242982,
+    "frozen_bytes": 519242982,
+    "sha256": "83f72f6ab8b234b8a1040e2754aa1d030137162eb72143cf21d0cf7a0a80188d",
+    "frozen_sha256": "83f72f6ab8b234b8a1040e2754aa1d030137162eb72143cf21d0cf7a0a80188d",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::77dc6994-2777-4fad-a445-4ff7d143a682",
+    "path": "data/external/v4/living_human/hvs/77dc6994-2777-4fad-a445-4ff7d143a682.h5ad",
+    "bytes": 690905441,
+    "frozen_bytes": 690905441,
+    "sha256": "b924e51d355d81660397ebb3b0b5693d0008d6ec14f3c9b31d038c6a9b97f04e",
+    "frozen_sha256": "b924e51d355d81660397ebb3b0b5693d0008d6ec14f3c9b31d038c6a9b97f04e",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::7958eba0-1d79-42e3-8947-a198f98578f2",
+    "path": "data/external/v4/living_human/hvs/7958eba0-1d79-42e3-8947-a198f98578f2.h5ad",
+    "bytes": 136057698,
+    "frozen_bytes": 136057698,
+    "sha256": "56dc9ac20dddf5cac50a843418ddefeaf2ed2d4ed1475fbf600c0bf4f514eaa8",
+    "frozen_sha256": "56dc9ac20dddf5cac50a843418ddefeaf2ed2d4ed1475fbf600c0bf4f514eaa8",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa",
+    "path": "data/external/v4/living_human/hvs/7b96819c-598c-47a1-9cea-f410fc0c37fa.h5ad",
+    "bytes": 4551204610,
+    "frozen_bytes": 4551204610,
+    "sha256": "9dc829cecac4ab347258e1d53f24058e1dbf2d3bd6b58eb6c61f2b28b63738b3",
+    "frozen_sha256": "9dc829cecac4ab347258e1d53f24058e1dbf2d3bd6b58eb6c61f2b28b63738b3",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551",
+    "path": "data/external/v4/living_human/hvs/7be9f52d-7eef-4bdd-a0ba-c8f2d4986551.h5ad",
+    "bytes": 1636005614,
+    "frozen_bytes": 1636005614,
+    "sha256": "eb1b40b9b005aa951dfa9f65d35b840819208bc66b8367230083d8d3ed5f56ea",
+    "frozen_sha256": "eb1b40b9b005aa951dfa9f65d35b840819208bc66b8367230083d8d3ed5f56ea",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf",
+    "path": "data/external/v4/living_human/hvs/8dfadc37-e19c-4d4b-80d8-cee48e732bcf.h5ad",
+    "bytes": 362143265,
+    "frozen_bytes": 362143265,
+    "sha256": "3a5b23b1f10d36c289bc21b0a35e68c84f968f987e8054bc3f38bb930ef65bd6",
+    "frozen_sha256": "3a5b23b1f10d36c289bc21b0a35e68c84f968f987e8054bc3f38bb930ef65bd6",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f",
+    "path": "data/external/v4/living_human/hvs/900faaa3-adec-4fd9-81b0-1e90a2ab256f.h5ad",
+    "bytes": 56315767,
+    "frozen_bytes": 56315767,
+    "sha256": "97ab56b2838605fc5f1ad66def3a4da92aa1488b51cf4f2e951fe1eeed9faebb",
+    "frozen_sha256": "97ab56b2838605fc5f1ad66def3a4da92aa1488b51cf4f2e951fe1eeed9faebb",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d",
+    "path": "data/external/v4/living_human/hvs/9adebd17-bc24-47b6-acdb-0db488bc602d.h5ad",
+    "bytes": 580150889,
+    "frozen_bytes": 580150889,
+    "sha256": "b50f1ba3df9070c2ba2cccf3903f1b674a1899428cd9848297d518a2df0ed2d8",
+    "frozen_sha256": "b50f1ba3df9070c2ba2cccf3903f1b674a1899428cd9848297d518a2df0ed2d8",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb",
+    "path": "data/external/v4/living_human/hvs/a9b5738d-997d-433f-8d86-12dbfc8f01fb.h5ad",
+    "bytes": 915602861,
+    "frozen_bytes": 915602861,
+    "sha256": "42db887ce090dad2f818e7fd3db0bcf254493f32c384f7a71aea4903f7fc0e30",
+    "frozen_sha256": "42db887ce090dad2f818e7fd3db0bcf254493f32c384f7a71aea4903f7fc0e30",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2",
+    "path": "data/external/v4/living_human/hvs/ab88770a-7a74-4da5-a166-d68f02d644f2.h5ad",
+    "bytes": 1381262772,
+    "frozen_bytes": 1381262772,
+    "sha256": "64e65a838b8b6d3af2eeccd25cf84fa4f9c460dd241ffc72f7a19f9a10f75500",
+    "frozen_sha256": "64e65a838b8b6d3af2eeccd25cf84fa4f9c460dd241ffc72f7a19f9a10f75500",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241",
+    "path": "data/external/v4/living_human/hvs/bb3c4200-5c1b-4f8a-a846-e021919b7241.h5ad",
+    "bytes": 729030048,
+    "frozen_bytes": 729030048,
+    "sha256": "ad24ed9233760ba435eb560597592a219af136f01a446312da3d59a0a7372fc2",
+    "frozen_sha256": "ad24ed9233760ba435eb560597592a219af136f01a446312da3d59a0a7372fc2",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354",
+    "path": "data/external/v4/living_human/hvs/c3b47645-c927-4a0a-868f-eb7640ea3354.h5ad",
+    "bytes": 3057153024,
+    "frozen_bytes": 3057153024,
+    "sha256": "0110b9d093ff24d7f143db59123fc0520463566541978abb9cc3b25205336e2b",
+    "frozen_sha256": "0110b9d093ff24d7f143db59123fc0520463566541978abb9cc3b25205336e2b",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+    "path": "data/external/v4/living_human/hvs/c5e9db26-7b51-4290-b721-dd540ac906b1.h5ad",
+    "bytes": 313044672,
+    "frozen_bytes": 313044672,
+    "sha256": "4d291126bbdbcde0dfa55b5c3a394907704d4d651f0067632bb81a1bedeebdd1",
+    "frozen_sha256": "4d291126bbdbcde0dfa55b5c3a394907704d4d651f0067632bb81a1bedeebdd1",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97",
+    "path": "data/external/v4/living_human/hvs/c9143d44-4c95-4f06-8edc-e03d3491ab97.h5ad",
+    "bytes": 3217779656,
+    "frozen_bytes": 3217779656,
+    "sha256": "45bad0af8c6b71afce464130ebf7adf1a50bdbae8c7b38189b1fef2e44feb15d",
+    "frozen_sha256": "45bad0af8c6b71afce464130ebf7adf1a50bdbae8c7b38189b1fef2e44feb15d",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::d1303087-592a-4c3d-aa3e-21de203927dc",
+    "path": "data/external/v4/living_human/hvs/d1303087-592a-4c3d-aa3e-21de203927dc.h5ad",
+    "bytes": 2558526832,
+    "frozen_bytes": 2558526832,
+    "sha256": "df065a3c9337d0324540024f1668a6684c951dc80c80ad3434d8ff4100aa9d77",
+    "frozen_sha256": "df065a3c9337d0324540024f1668a6684c951dc80c80ad3434d8ff4100aa9d77",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::e813d04b-7833-4b02-b14f-0247d6128516",
+    "path": "data/external/v4/living_human/hvs/e813d04b-7833-4b02-b14f-0247d6128516.h5ad",
+    "bytes": 172050087,
+    "frozen_bytes": 172050087,
+    "sha256": "a81dd49bb28be31e1aaf22d6e62f07bc0751e88ce03ca0314c6fa287140d3ae2",
+    "frozen_sha256": "a81dd49bb28be31e1aaf22d6e62f07bc0751e88ce03ca0314c6fa287140d3ae2",
+    "matches": true
+   },
+   {
+    "matrix_id": "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96",
+    "path": "data/external/v4/living_human/hvs/f8975a92-8ddb-4dde-adbe-977a4b3e4e96.h5ad",
+    "bytes": 52926761,
+    "frozen_bytes": 52926761,
+    "sha256": "f3cc0a5c09b92d52c61193bb90a5182752df48a4b902cc758756f03798120e05",
+    "frozen_sha256": "f3cc0a5c09b92d52c61193bb90a5182752df48a4b902cc758756f03798120e05",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_ang_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/AnG/SEAAD_AnG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 5326721562,
+    "frozen_bytes": 5326721562,
+    "sha256": "6015e7e9248ad5e4f1f63ce0820f6ea98e1bc429851e82d6a5ef69868d799839",
+    "frozen_sha256": "6015e7e9248ad5e4f1f63ce0820f6ea98e1bc429851e82d6a5ef69868d799839",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_caudate_rna_all_2025",
+    "path": "data/external/v4/sea_ad/multiregion/Caudate_Nucleus/CaH_all_nuclei.2025-12-29.h5ad",
+    "bytes": 128171432912,
+    "frozen_bytes": 128171432912,
+    "sha256": "be2dc3122b6bed7e4c67330ef509b6d7ddaff022a8dd28f6a578d772daf3f7d5",
+    "frozen_sha256": "be2dc3122b6bed7e4c67330ef509b6d7ddaff022a8dd28f6a578d772daf3f7d5",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_fi_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/FI/SEAAD_FI_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 5389393159,
+    "frozen_bytes": 5389393159,
+    "sha256": "bc8e32100dbc7377583414f07b946d956b02b186d164441fffed5ac1e53d47f8",
+    "frozen_sha256": "bc8e32100dbc7377583414f07b946d956b02b186d164441fffed5ac1e53d47f8",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_hip_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/HIP/SEAAD_HIP_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 4976204965,
+    "frozen_bytes": 4976204965,
+    "sha256": "4320d457052c18435143f3dd2caac3916c9e6180161a309cb53876ddbb871d36",
+    "frozen_sha256": "4320d457052c18435143f3dd2caac3916c9e6180161a309cb53876ddbb871d36",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_itg_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/ITG/SEAAD_ITG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 11472832562,
+    "frozen_bytes": 11472832562,
+    "sha256": "e2251622888ace5b6d15f92cb8620d6e8f416cb0ee663c1d8ee87ff84d48cd24",
+    "frozen_sha256": "e2251622888ace5b6d15f92cb8620d6e8f416cb0ee663c1d8ee87ff84d48cd24",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_lec_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/LEC/SEAAD_LEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 4241947425,
+    "frozen_bytes": 4241947425,
+    "sha256": "f1e332cc6a742c92fef14e6faf2e5bb088b68885e6eab922929c86428f12c565",
+    "frozen_sha256": "f1e332cc6a742c92fef14e6faf2e5bb088b68885e6eab922929c86428f12c565",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_mec_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/MEC/SEAAD_MEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 25705658446,
+    "frozen_bytes": 25705658446,
+    "sha256": "7204d0e31ef25eeb68bb8a20a2ae650f533698a1d4e36612387ceddda864d455",
+    "frozen_sha256": "7204d0e31ef25eeb68bb8a20a2ae650f533698a1d4e36612387ceddda864d455",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_mtg_rna_final_2026",
+    "path": "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 32978570763,
+    "frozen_bytes": 32978570763,
+    "sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+    "frozen_sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+    "path": "data/external/v4/sea_ad/a9_dlpfc/SEAAD_DFC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 38520614071,
+    "frozen_bytes": 38520614071,
+    "sha256": "d637a7fbe51a098b7624149bc9fcf141dac2b8733e13e93ac4cde0ea6606ac1a",
+    "frozen_sha256": "d637a7fbe51a098b7624149bc9fcf141dac2b8733e13e93ac4cde0ea6606ac1a",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_stg_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/STG/SEAAD_STG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 16144376554,
+    "frozen_bytes": 16144376554,
+    "sha256": "3d832b56cf6aef91b5e62e416aa2109d39ef8b9f71b39463e2d323ace785cee5",
+    "frozen_sha256": "3d832b56cf6aef91b5e62e416aa2109d39ef8b9f71b39463e2d323ace785cee5",
+    "matches": true
+   },
+   {
+    "matrix_id": "sea_ad_v1c_rna_final_2026",
+    "path": "data/external/v4/sea_ad/multiregion/V1C/SEAAD_V1C_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 16540631157,
+    "frozen_bytes": 16540631157,
+    "sha256": "5b8fe467fb35d3e48eadbb5c06b14b73b822eb9b265722f0d8401538552898a3",
+    "frozen_sha256": "5b8fe467fb35d3e48eadbb5c06b14b73b822eb9b265722f0d8401538552898a3",
+    "matches": true
+   }
+  ]
+ },
+ "macha_s174_freeze": {
+  "resolved_ref": "claude/s174-train-cache-rebuild-20261007 (local ref at 750cb83c8c0535cc67a70d58b62db5607bd7d01e)",
+  "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+  "frozen_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
+ },
+ "driver_stderr": "Traceback (most recent call last):\n  File \"D:\\jepa_wt_td_g4g5_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 189, in <module>\n    raise SystemExit(main())\n  File \"D:\\jepa_wt_td_g4g5_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 148, in main\n    require_hash(manifest, EXPECTED_MANIFEST_SHA256, \"9,216-address replay manifest\")\n  File \"D:\\jepa_wt_td_g4g5_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 67, in require_hash\n    raise RuntimeError(f\"{label} SHA mismatch: {actual} != {expected}: {path}\")\nRuntimeError: 9,216-address replay manifest SHA mismatch: 923475ae3fafa38a1c38b644032f0d83d2214033231cc3143029c16ae25bbf67 != 4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660: D:\\jepa_wt_td_g4g5_20261009\\results\\target_discovery\\td_relational_corrected_replay_20261007\\preflight_v1\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv\n",
+ "generated_in_frozen_namespace": {
+  "namespace": "results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1",
+  "files": {
+   "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv": {
+    "bytes": 423920,
+    "sha256": "923475ae3fafa38a1c38b644032f0d83d2214033231cc3143029c16ae25bbf67"
+   },
+   "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json": {
+    "bytes": 1535,
+    "sha256": "6d9d5103dab72c9c2e6354fe2edecba7e5419ce5cfcdafe06e458c9a76605c13"
+   },
+   "S174_REBUILD_FREEZE_V1.json": {
+    "bytes": 39276,
+    "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
+   }
+  },
+  "preflight_result_written": false
+ },
+ "diagnosis": {
+  "builder_status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+  "builder_replay_addresses": 9216,
+  "builder_internal_validations": 31,
+  "builder_internal_validations_all_true": true,
+  "builder_receipt_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+  "manifest_file_sha256_as_written": "923475ae3fafa38a1c38b644032f0d83d2214033231cc3143029c16ae25bbf67",
+  "manifest_crlf_line_endings": 9217,
+  "manifest_bare_lf": 0,
+  "manifest_sha256_with_lf_line_endings": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+  "lf_normalized_equals_frozen": true,
+  "reading": "the builder computes the manifest hash on LF text and reports the frozen value with all 31 internal checks true; it then writes the file with Path.write_text, which on Windows translates each newline to CRLF. The driver re-hashes the bytes on disk and fails closed. The 9,216-address content is the frozen content; the defect is platform-dependent serialization in the frozen code"
+ },
+ "value_read_statement": "no expression arrays were opened. The manifest builder read only FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz and FOUNDATION_SUPPORT_ADDRESS_RECURRENCE.csv (support/identity metadata) from the calibration bundle and td57b_p0_hvs.json, td57b_p1_hvs.json and td57c_p0_hvs.json (address views) from the TD archive. The mapping audit, which would open H5AD var/obs only, never started",
+ "namespace_warning": "the driver's freshness guard checks only PREFLIGHT_RESULT.json, so a rerun into this namespace would overwrite these partial files; they are committed here so the failure survives",
+ "options_for_the_target_discovery_lane": [
+  "fix the frozen builder to write the manifest bytes with explicit LF (for example open(path, 'w', newline='\\n') or write_bytes), review it, and rerun into a fresh or explicitly superseding namespace",
+  "or approve running the unchanged frozen code on Linux/WSL, where text mode writes LF, recording the environment change",
+  "in either case do not edit the CRLF file to make the hash pass"
+ ],
+ "g6_g7": "not executed and not authorized; no runtime authorization artifact was created",
+ "boundaries": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
