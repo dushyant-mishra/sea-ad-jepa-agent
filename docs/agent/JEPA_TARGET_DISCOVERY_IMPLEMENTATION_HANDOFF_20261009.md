@@ -1,6 +1,6 @@
 # JEPA target-discovery implementation handoff — 2026-10-09
 
-Status: `IMPLEMENTATION_SURFACE_RECOVERED_THROUGH_G7__G1_G2_REPRODUCED__G4_G5_WAITING_ON_CANONICAL_LOCAL_ASSETS__NO_VALUE_READ_AUTHORITY`
+Status: `IMPLEMENTATION_SURFACE_RECOVERED_THROUGH_G7__G1_G2_REPRODUCED__G4_G5_WAITING_ON_CANONICAL_LOCAL_ASSETS__BAYESIAN_SPIKE_PREREGISTERED__NO_VALUE_READ_AUTHORITY`
 
 ## Governing scientific state
 
@@ -82,6 +82,32 @@ Underlying mapping terminal:
 
 If G4/G5 fails, preserve the failure receipt and stop. No gene/cell substitution, no collision-policy change and no expression-value inspection is allowed as a repair shortcut.
 
+## Bayesian target-evidence method spike
+
+A separate, non-authorizing Bayesian replication spike has now been prospectively preregistered at:
+
+`docs/agent/JEPA_TARGET_DISCOVERY_BAYESIAN_SPIKE_PREREG_20261009.md`
+
+Current spike state:
+
+`SPIKE_PREREGISTERED__HISTORICAL_ONLY__NON_AUTHORIZING__NO_CORRECTED_REPLAY_INGESTED`
+
+The exact historical TD41-TD58 archive was materialized read-only for this spike. No Bayesian fit or posterior result is yet a project authority.
+
+The frozen question is whether a dependency-aware skeptical hierarchical model can summarize historical TD57B/TD57C/TD59 case-level margins and posterior-predictive replication without using historical PASS/FAIL labels during fitting and without treating related rows as independent experiments.
+
+Constraints:
+
+- historical verdict labels are withheld during fitting and consulted only afterward as an external sanity check;
+- corrected replay outputs from Macha/G4-G7 are not ingested before model definition and synthetic calibration close;
+- no target-level posterior or target ranking is permitted in this spike;
+- TD57C historical failure cannot be rescued or relabeled;
+- duplicate/correlated evidence must not inflate confidence;
+- prior sensitivity and synthetic falsification checks are mandatory;
+- failure of calibration terminates the spike rather than triggering post-hoc tuning.
+
+The Bayesian work is a method sidecar only and does not alter the current G4/G5 execution frontier.
+
 ## G6/G7 boundary
 
 G6/G7 are implementation-ready but not authorized to execute.
@@ -99,4 +125,4 @@ Until an explicit owner decision is made after G4/G5:
 
 For target discovery, this document and draft PR #243 supersede the residual-work instruction in PR #237 that told successors to continue searching for a corrected 50K/TD50 replay bridge. That search is closed: the implementation package was found and recovered; execution is now gated by the exact canonical local G4/G5 inputs.
 
-PR #237 remains the custody/scientific-history base. PR #243 is the current target-discovery implementation successor. Do not merge either without explicit authorization.
+PR #237 remains the custody/scientific-history base. PR #243 is the current target-discovery implementation successor and also carries the non-authorizing Bayesian method spike preregistration. Do not merge either without explicit authorization.
