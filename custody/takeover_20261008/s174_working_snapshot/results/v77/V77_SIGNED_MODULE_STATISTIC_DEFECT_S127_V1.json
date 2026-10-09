@@ -1,0 +1,122 @@
+{
+  "schema": "V77_SIGNED_MODULE_STATISTIC_DEFECT_S127_V1",
+  "recorded_utc": "2026-10-06T00:51:48Z",
+  "head": "9e0a7d3674fdc6db1df78ad7b1b1c5bff20169c2",
+  "severity": "HIGH__SUPERSEDES_EVERY_CEILING_MEASURED_SO_FAR",
+  "DEFECT": {
+    "id": "S127",
+    "statement": "the frozen oracle statistic is an UNWEIGHTED CPM-log1p mean over a planted module's addresses. Every planted module has MIXED-SIGN loadings, built as sign(normal) * scale. The unweighted mean of a mixed-sign module is a SYMMETRIC function of its driver, so it destroys the signal by construction.",
+    "mechanism_is_a_priori": "this is not an outcome-driven observation. For a module with half its loadings at +s and half at -s, a driver z>0 raises the + addresses and lowers the -, and z<0 does the reverse. The unweighted mean is therefore approximately even in z and a linear readout of it is near zero whatever the effect size.",
+    "how_it_surfaced": "ATAC module scores came back at approximately zero despite a repaired noise scale. Binning accessibility by driver decile showed a clean U-SHAPE rather than a flat line: the planted effect was reaching the data at full strength and the statistic was averaging it away."
+  },
+  "DEMONSTRATION_ATAC": {
+    "module": "B6_rung_hidden0, 260 regions, planted at 1.45 x z_partial[0]",
+    "fraction_of_module_regions_accessible_by_driver_decile": [
+      {
+        "decile": 0,
+        "z_range": [
+          -3.18,
+          -1.24
+        ],
+        "module": 0.4778,
+        "genome_baseline": 0.1859,
+        "ratio": 2.57
+      },
+      {
+        "decile": 4,
+        "z_range": [
+          -0.23,
+          0.01
+        ],
+        "module": 0.1737,
+        "genome_baseline": 0.1731,
+        "ratio": 1.003
+      },
+      {
+        "decile": 9,
+        "z_range": [
+          1.26,
+          3.16
+        ],
+        "module": 0.5152,
+        "genome_baseline": 0.1792,
+        "ratio": 2.876
+      }
+    ],
+    "reading": "the effect is enormous at BOTH tails and absent in the middle. The linear correlation of the unweighted mean with its own driver is only +0.0907."
+  },
+  "DEMONSTRATION_RNA": {
+    "note": "single-module held-out R2, unweighted mean versus signed projection onto the planted loading",
+    "rows": [
+      {
+        "module": "B6_rung0",
+        "unweighted": -0.0018,
+        "signed_projection": -0.0041
+      },
+      {
+        "module": "B6_rung1",
+        "unweighted": 0.0268,
+        "signed_projection": 0.7351
+      },
+      {
+        "module": "B6_rung2",
+        "unweighted": 0.0274,
+        "signed_projection": 0.9286
+      },
+      {
+        "module": "B6_rung3",
+        "unweighted": 0.001,
+        "signed_projection": 0.9481
+      },
+      {
+        "module": "B6_rung4",
+        "unweighted": 0.05,
+        "signed_projection": 0.9637
+      }
+    ],
+    "caveat": "the previously reported ladder used the JOINT 37-module design matrix, not a single module, so it is not a like-for-like comparison. The joint OLS can partially reconstruct a signed combination from correlated module means, which is why it reported 0.054 to 0.512 rather than near zero. The signed projection still exceeds the joint unweighted design substantially, so the under-read is real in both settings."
+  },
+  "WHAT_IS_SUPERSEDED": {
+    "every_ceiling_measured_before_this_record": true,
+    "specifically": [
+      "the B6 RNA ladder -0.007/0.054/0.210/0.362/0.512",
+      "the B1, B2, B5, D1 activity and E1 default-reader numbers",
+      "the B3 and E2 average-precision numbers",
+      "all four component-specific detect values, which use the same module scores"
+    ],
+    "NOT_superseded": [
+      "the off-twin REJECT results, which remain valid: a statistic that under-reads still correctly returns approximately zero when the effect is removed",
+      "the observer output itself; the expensive generated data is unaffected and reusable",
+      "the real TRAIN calibration measurements, which do not use module scores",
+      "the RNA-versus-real covariance gap, which is a correlation-distribution measurement"
+    ]
+  },
+  "DIRECTION_OF_THE_ERROR": {
+    "the_statistic_UNDER_reads": true,
+    "so_corrected_ceilings_will_be_HIGHER": true,
+    "why_that_matters": "a higher oracle ceiling makes the denominator larger in model-recovery-over-recoverable-truth, so every future model claim becomes HARDER to satisfy, not easier. The correction is conservative with respect to model claims, which is the direction that guards against self-flattery.",
+    "this_is_not_a_threshold_relaxation": true
+  },
+  "PROPOSED_REPAIR_NOT_YET_APPLIED": {
+    "statistic": "signed projection: score = (X_cpm_log1p[:, module] @ planted_sign_vector) / len(module), replacing the unweighted mean",
+    "is_using_the_sign_vector_legitimate": "yes, for an ORACLE ceiling. The oracle is already given module MEMBERSHIP from truth; the loading SIGN is the same class of information. The universal label still applies: this measures recoverability given perfect module discovery, now including perfect sign knowledge, and is an upper bound.",
+    "alternative_rejected": "making module loadings single-signed. Real programs have up and down components, so single-signed modules would be less realistic. The defect is in the readout, not in the construction.",
+    "governance": "this changes a FROZEN statistic, so it must land as an explicit amendment with this demonstration attached, not as a silent edit. No pass threshold is changed by it.",
+    "required_before_acceptance": [
+      "re-run the off-twin controls under the signed statistic; reject must still hold",
+      "re-measure every component and compare against its unchanged designed class",
+      "state explicitly that C2's designed band is unchanged and that its verdict may move"
+    ]
+  },
+  "SELF_AUDIT_NOTE": "the project has now hit the same lesson three times in one cycle: B4's band, C2's ratio, and now signed modules. The common form is that a statistic chosen for convenience silently destroys the planted structure. The standing rule should be that for every planted component, the readout is derived FROM THE PLANTING MECHANISM and demonstrated to recover a known-strength effect before any ceiling is reported.",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

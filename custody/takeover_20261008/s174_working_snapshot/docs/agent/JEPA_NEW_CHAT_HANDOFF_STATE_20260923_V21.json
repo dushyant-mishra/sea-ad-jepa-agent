@@ -1,0 +1,92 @@
+{
+  "schema": "JEPA_PARALLEL_HANDOFF_STATE_V21",
+  "date": "2026-09-23",
+  "status": "CURRENT_PARALLEL_IMPLEMENTATIONS_PENDING_INTEGRATION__GSE311359_GUIDE_ID_STOP",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
+  "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+  "boundaries": {
+    "jepa_training": "OFF",
+    "audit_b_n1": "UNOPENED",
+    "rare_tail_molecular": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "therapeutic_ranking": "OFF"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_core": 17186,
+    "corrected_derivative_sha256": "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc4800b",
+    "quarantined_old_derivative_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "whole_pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "adapter": "PR83_PHYSICAL_PREFLIGHT_PASS__PR85_REDTEAM_PASS",
+    "n1": "STOP_N1_NOT_AUTHORIZED",
+    "all104_level4_raw_reaggregation": "UNPROVED",
+    "physical_burden_stream": "UNOPENED"
+  },
+  "experimental": {
+    "source_assets_authenticated": 16,
+    "studies": 8,
+    "GSE301119": {
+      "count_parity": "PASS",
+      "raw_integer_pseudobulk": "PASS",
+      "engagement": "PASS",
+      "transcriptome_wide_de": "NOT_EXECUTED_AS_LAST_VERIFIED",
+      "bio_donors": 2
+    },
+    "GSE293118": {
+      "identity": "PASS",
+      "same_named_gene_engagement_targets": 6,
+      "noncoding_cis_targets": "NOT_QUALIFIED"
+    },
+    "GSE254205": {
+      "bulk_3_contrasts": "PHYSICAL_V1_EXECUTED",
+      "assay_detection_v2": "CPU_SYNTHETIC_PASS__PHYSICAL_RERUN_PENDING",
+      "remaining_arms": "NOT_EXECUTED"
+    },
+    "GSE311359": {
+      "physical_v1": "HISTORICAL_PRODUCER_ONLY",
+      "cells": 105509,
+      "confidently_assigned_v1": 27737,
+      "guide_features": 381,
+      "guide_names_distinct": 379,
+      "guide_name_collision": "BIN1_3_ENTRIES",
+      "guide_level_qualification": "STOP_UNTIL_REVIEWED_FEATURE_ID_TO_GUIDE_LIBRARY_AND_V2_RERUN",
+      "independent_redteam": "PR92_7_PASSED"
+    },
+    "GSE178317": {
+      "lane_pairing": "PASS",
+      "crispr_guide_to_cell": "STOP_NO_GUIDE_FEATURES_IN_DEPOSITED_ASSETS",
+      "bulk_LPS_context": "USABLE_SEPARATELY"
+    },
+    "GSE175721": {
+      "physical": "PASS",
+      "guide_cell_join": "NOT_EXECUTED"
+    },
+    "GSE241858": {
+      "physical": "PASS",
+      "bulk_genotype_context": "NOT_EXECUTED"
+    },
+    "GSE240609": {
+      "physical": "PASS",
+      "bulk_coculture": "NOT_EXECUTED"
+    }
+  },
+  "review_pr_heads_as_observed": {
+    "77": "f34fae312a3006e9eefaa1dfb85749037de9dddd",
+    "82": "d65c45745ba36ff93c384d435af1edcc99982453",
+    "83": "6ff12edb8f97287ae994f41b5217350a453e6d77",
+    "84": "4c350e0b3efd992ea02b128c3fbbed21e6a67c5b",
+    "85": "0bccba8ce62d9006539b8d7a0f649faf906255fd",
+    "86": "0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91",
+    "87": "52ed6e27205ef72ac7f0c7c6f8dbdad059806220",
+    "88": "03c5ff97decbad38cd0b688c16e1bcd226654c51",
+    "89": "06c2b498d13d289382e804340d98baa736dea3ee",
+    "90": "3669e5c2a9f3e9466ce269efcbd696c4c28746b2",
+    "91": "56600f66492b18af20edcfe5d11761d2cdca9383",
+    "92": "bc09c0f432db6e17bec3047baeb0812975043937"
+  },
+  "rule": "REFETCH_LIVE_HEADS_AND_REVIEW_SOURCE+CI_BEFORE_CHANGES;_SYNTHETIC_TESTS_ARE_NOT_PHYSICAL_AUTHORITY"
+}

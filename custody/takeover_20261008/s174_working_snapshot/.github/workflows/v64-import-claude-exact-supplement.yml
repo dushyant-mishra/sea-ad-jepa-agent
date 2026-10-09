@@ -1,0 +1,31 @@
+name: V64 import Claude exact supplement receipts
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/v64-import-claude-exact-supplement.yml'
+  workflow_dispatch:
+
+jobs:
+  import-exact-supplement:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch Claude successor ref
+        run: git fetch origin claude/v64-exact-sampler-successor-20260930
+      - name: Materialize exact supplement directory
+        run: |
+          mkdir -p claude_exact_supplement
+          git archive origin/claude/v64-exact-sampler-successor-20260930 results/v64/nihcard_exact_supplement | tar -x -C claude_exact_supplement --strip-components=3
+          find claude_exact_supplement -type f -print0 | sort -z | xargs -0 sha256sum > claude_exact_supplement/FILE_SHA256.txt
+      - name: Upload supplement receipts and payloads
+        uses: actions/upload-artifact@v4
+        with:
+          name: v64-claude-exact-supplement
+          path: claude_exact_supplement/
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,266 @@
+{
+  "title": "S174 corrected replay: old and corrected numbers side by side",
+  "schema": "S174_REPLAY_SUMMARY_V1",
+  "status": "CORRECTED_REPLAY_COMPLETE for the nine affected V77 real-data results. Old results stay in results/v77 unchanged; corrected ones are in results/v77/s174_replay under the same names",
+  "cache": {
+    "old": "data/cache/stage81a3r_corrected_real_train (S174: scrambled gene axis for HVS and SEA-AD)",
+    "corrected": "data/cache/s174_rebuilt_real_train_v1 (fresh gene-ID join; authorized by G1b)",
+    "same_cells": true
+  },
+  "S149": {
+    "question": "how much of the frozen pooled real detection topology does cohort coverage alone produce?",
+    "pooled_vs_coverage_only_null": [
+      {
+        "statistic": "frac_abs_gt_0p3",
+        "pooled_old": 0.6148,
+        "pooled_corrected": 0.1348,
+        "null_old": 0.5463,
+        "null_corrected": 0.0042,
+        "null_share_old": 0.8885,
+        "null_share_corrected": 0.0314
+      },
+      {
+        "statistic": "median_abs_corr",
+        "pooled_old": 0.377,
+        "pooled_corrected": 0.1946,
+        "null_old": 0.3273,
+        "null_corrected": 0.013,
+        "null_share_old": 0.8682,
+        "null_share_corrected": 0.0667
+      },
+      {
+        "statistic": "mean_degree",
+        "pooled_old": 1843.804,
+        "pooled_corrected": 404.3647,
+        "null_old": 1638.2193,
+        "null_corrected": 12.6873,
+        "null_share_old": 0.8885,
+        "null_share_corrected": 0.0314
+      },
+      {
+        "statistic": "largest_community_frac",
+        "pooled_old": 0.763,
+        "pooled_corrected": 0.1367,
+        "null_old": 0.6777,
+        "null_corrected": 0.0567,
+        "null_share_old": 0.8882,
+        "null_share_corrected": 0.4146
+      },
+      {
+        "statistic": "transitivity",
+        "pooled_old": 0.8871,
+        "pooled_corrected": 0.6672,
+        "null_old": 0.8967,
+        "null_corrected": 0.8652,
+        "null_share_old": 1.0108,
+        "null_share_corrected": 1.2967
+      }
+    ],
+    "within_single_stratum_frac_abs_gt_0p3": [
+      {
+        "stratum": "HVS",
+        "old": 0.0768,
+        "corrected": 0.1083
+      },
+      {
+        "stratum": "NPH52",
+        "old": 0.0312,
+        "corrected": 0.2078
+      },
+      {
+        "stratum": "SEA_AD",
+        "old": 0.0602,
+        "corrected": 0.2319
+      }
+    ],
+    "coverage_strata": {
+      "agreement_old": 1.0,
+      "agreement_corrected": 1.0,
+      "cells_per_stratum_old": {
+        "HVS": 3072,
+        "NPH52": 246,
+        "SEA_AD": 1408,
+        "NONE": 0
+      },
+      "cells_per_stratum_corrected": {
+        "HVS": 3072,
+        "NPH52": 246,
+        "SEA_AD": 1408,
+        "NONE": 0
+      }
+    },
+    "answer": "Under the corrected input, cohort coverage alone reproduces about 3% of the pooled fraction of strong correlations (0.0042 of 0.1348), not about 89% (0.546 of 0.615). The pooled value itself falls from 0.615 to 0.135 and now lies within the range of the single-cohort values (0.108 to 0.232) rather than far above them",
+    "what_survives": [
+      "cohort coverage still identifies the study perfectly (agreement 1.0 before and after)"
+    ],
+    "what_does_not": [
+      "pooled real dependence dominated by cohort composition: 3% of it, not 89%, is produced by coverage alone",
+      "'within one study the dependence is several times weaker': within-study values are now at or above the pooled one"
+    ],
+    "interpretation_rule": "per the owner: S149 was not assumed false; its input was corrupted, and this corrected replay decides. The pooled-composition headline does not survive; the strata finding does",
+    "status": "S149_CORRECTED: the old numbers are history of a corrupted input; the corrected numbers are the evidence"
+  },
+  "detection_envelope_points": [
+    {
+      "statistic": "frac_abs_gt_0p3",
+      "old": 0.6148,
+      "corrected": 0.1348
+    },
+    {
+      "statistic": "median_abs_corr",
+      "old": 0.377,
+      "corrected": 0.1946
+    },
+    {
+      "statistic": "var_top10_pc",
+      "old": 0.5602,
+      "corrected": 0.3349
+    },
+    {
+      "statistic": "mean_degree",
+      "old": 1843.804,
+      "corrected": 404.3647
+    },
+    {
+      "statistic": "transitivity",
+      "old": 0.8871,
+      "corrected": 0.6672
+    },
+    {
+      "statistic": "pos_over_neg_ratio",
+      "old": 1.6686,
+      "corrected": 59.0185
+    }
+  ],
+  "expression_envelope_points": [
+    {
+      "statistic": "frac_abs_gt_0p3",
+      "old": 0.5621,
+      "corrected": 0.0242
+    },
+    {
+      "statistic": "median_abs_corr",
+      "old": 0.3291,
+      "corrected": 0.0562
+    },
+    {
+      "statistic": "var_top10_pc",
+      "old": 0.5089,
+      "corrected": 0.262
+    },
+    {
+      "statistic": "mean_degree",
+      "old": 1685.8173,
+      "corrected": 72.7047
+    },
+    {
+      "statistic": "transitivity",
+      "old": 0.8605,
+      "corrected": 0.5127
+    },
+    {
+      "statistic": "substitute_frac",
+      "old": 0.1983,
+      "corrected": 0.0167
+    }
+  ],
+  "topology": [
+    {
+      "statistic": "T5 mean within-class median |corr|",
+      "old": 0.3329,
+      "corrected": 0.0418
+    },
+    {
+      "statistic": "T3 global transitivity",
+      "old": 0.8605,
+      "corrected": 0.5127
+    },
+    {
+      "statistic": "T1 mean degree",
+      "old": 1685.8173,
+      "corrected": 72.7047
+    }
+  ],
+  "abundance_envelope_points": [
+    {
+      "statistic": "abundance_max_over_median_nonzero",
+      "old": 1976.6481,
+      "corrected": 2273.2075
+    },
+    {
+      "statistic": "top1pct_count_share",
+      "old": 0.2457,
+      "corrected": 0.2741
+    }
+  ],
+  "evaluation_universe": {
+    "old": 19569,
+    "corrected": 14417,
+    "shared": 11230,
+    "jaccard": 0.4935
+  },
+  "within_cohort_v2": {
+    "points": [
+      {
+        "statistic": "HVS.detection.frac_abs_gt_0p3",
+        "old": 0.1146,
+        "corrected": 0.1146
+      },
+      {
+        "statistic": "HVS.detection.median_abs_corr",
+        "old": 0.1944,
+        "corrected": 0.1944
+      },
+      {
+        "statistic": "HVS.expression.frac_abs_gt_0p3",
+        "old": 0.0169,
+        "corrected": 0.0169
+      },
+      {
+        "statistic": "HVS.expression.median_abs_corr",
+        "old": 0.0545,
+        "corrected": 0.0545
+      },
+      {
+        "statistic": "HVS.expression.var_top10_pc",
+        "old": 0.2336,
+        "corrected": 0.2336
+      },
+      {
+        "statistic": "SEA_AD.detection.frac_abs_gt_0p3",
+        "old": 0.2394,
+        "corrected": 0.2427
+      },
+      {
+        "statistic": "SEA_AD.detection.median_abs_corr",
+        "old": 0.2273,
+        "corrected": 0.2285
+      },
+      {
+        "statistic": "SEA_AD.expression.frac_abs_gt_0p3",
+        "old": 0.0375,
+        "corrected": 0.0382
+      },
+      {
+        "statistic": "SEA_AD.expression.median_abs_corr",
+        "old": 0.0665,
+        "corrected": 0.0667
+      },
+      {
+        "statistic": "SEA_AD.expression.var_top10_pc",
+        "old": 0.2793,
+        "corrected": 0.2811
+      }
+    ],
+    "reading": "HVS is bit-identical: inside one family the scramble was only a relabelling, so label-free within-cohort statistics were never affected. SEA-AD moves slightly because collision exclusion now removes the right genes and recovers others. NPH52 is below the eligibility floor in both"
+  },
+  "consequences_for_the_synthetic_lane": "the corrected real expression geometry (median |corr| among highly variable genes 0.056, 2.4% of pairs above 0.3, 26% of variance in the top 10 components) is close to the original synthetic generator's (0.0675 and 2.3%), whereas the old targets (0.329, 56%, 51%) were produced by the scramble. The V77 Step 3 background search, the factor-family falsification and the Observer-V2 decision were judged against the old targets and are re-scored in the next phase; nothing is tuned on these outcomes",
+  "identity_note": "the 353 historical-Ensembl-ID-to-different-symbol mappings were followed as frozen and remain flagged for the identity lane",
+  "side_by_side": {
+    "path": "results/v77/s174_replay/S174_REPLAY_SIDE_BY_SIDE_V1.json",
+    "sha256": "ffc2cd36d6463aede69e63f0dd1c068f21fc837ca1436831105bbc0fe263fbcc",
+    "note": "every numeric leaf of the nine results, old beside corrected"
+  },
+  "recorded_utc": "2026-10-07T20:35:42Z",
+  "head_when_recorded": "4ab8e2101f2e595d9a97df05517d6e672768ecec"
+}

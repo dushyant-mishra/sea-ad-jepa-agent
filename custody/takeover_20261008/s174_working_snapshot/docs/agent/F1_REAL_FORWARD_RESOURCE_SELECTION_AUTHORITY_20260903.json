@@ -1,0 +1,85 @@
+{
+  "authority_type": "PROSPECTIVE_PRE_RESULT_ENGINEERING_SELECTION",
+  "date": "2026-09-03",
+  "scope": "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_ONLY",
+  "forbidden": [
+    "biological_metric_selection",
+    "real_F1_adjudication",
+    "training",
+    "backward",
+    "optimizer",
+    "EMA_update",
+    "reader_validation_or_oracle",
+    "DEV",
+    "SEALED",
+    "pathology"
+  ],
+  "candidate_process_isolation": "FRESH_SUBPROCESS_PER_CANDIDATE",
+  "warmup_repetitions": 1,
+  "timed_repetitions": 3,
+  "aggregation": "MEDIAN",
+  "selection_rule": "SMALLEST_SAFE_CONFIGURATION_WITH_MEDIAN_THROUGHPUT_AT_LEAST_0.95_TIMES_FASTEST_SAFE",
+  "gpu": {
+    "batch_candidates": "POWERS_OF_TWO_FROM_1_UNTIL_FIXTURE_EXHAUSTION_OR_HARD_SAFETY_FAILURE",
+    "max_peak_torch_reserved_fraction_of_total_vram": 0.85,
+    "cuda_oom_is_unsafe": true
+  },
+  "reader": {
+    "block_candidates": "POWERS_OF_TWO_MULTIPLES_OF_SELECTED_FORWARD_BATCH_UNTIL_FIXTURE_EXHAUSTION_OR_HARD_SAFETY_FAILURE"
+  },
+  "cpu": {
+    "worker_candidates": "0_THEN_POWERS_OF_TWO_THROUGH_MAX_1_PHYSICAL_CORES_MINUS_2_PLUS_EXACT_MAX_IF_ABSENT",
+    "max_peak_rss_fraction_of_candidate_start_memavailable": 0.8,
+    "swap_activity_delta_required": 0
+  },
+  "prefetch": {
+    "candidates": "POWERS_OF_TWO_FROM_1_WHILE_RAM_SAFE",
+    "pinning_order": ["OFF", "ON"]
+  },
+  "fixed_semantics": {
+    "torch_no_grad": true,
+    "backward": false,
+    "dtype_tuning": false,
+    "model_precision_change": false,
+    "same_fixture_for_all_candidates": true
+  },
+  "required_measurements": [
+    "candidate_identity",
+    "forward_batch",
+    "reader_block",
+    "workers",
+    "prefetch",
+    "pinned_memory",
+    "median_forwards_per_second",
+    "median_cells_or_query_identities_per_second",
+    "reader_seconds",
+    "constructor_seconds",
+    "host_to_device_seconds",
+    "model_forward_seconds",
+    "target_context_reduction_seconds",
+    "teacher_correct_null_role_seconds",
+    "cuda_allocated_bytes",
+    "cuda_reserved_bytes",
+    "cuda_peak_bytes",
+    "process_peak_rss_bytes",
+    "candidate_start_memavailable_bytes",
+    "swap_before_bytes",
+    "swap_after_bytes",
+    "major_minor_page_faults",
+    "gpu_utilization_if_available",
+    "counts_exact",
+    "parity_pass"
+  ],
+  "hard_failures": [
+    "CUDA_OOM",
+    "PEAK_RESERVED_VRAM_GT_85_PERCENT",
+    "SWAP_ACTIVITY_INCREASE",
+    "PEAK_RSS_GT_80_PERCENT_START_MEMAVAILABLE",
+    "NONFINITE_OR_INCOMPLETE_OUTPUT",
+    "HASH_OR_IDENTITY_MISMATCH",
+    "FIREWALL_VIOLATION",
+    "STORAGE_OR_READER_INTEGRITY_FAILURE"
+  ],
+  "page_cache_is_swap": false,
+  "terminal_success": "PASS_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_AWAITING_EXTERNAL_REVIEW"
+}

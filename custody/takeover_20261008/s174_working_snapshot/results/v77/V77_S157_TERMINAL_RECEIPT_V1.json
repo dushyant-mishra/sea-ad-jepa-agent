@@ -1,0 +1,87 @@
+{
+  "schema": "V77_S157_TERMINAL_RECEIPT_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "status": "FROZEN_TERMINAL: immutable unless new evidence changes it; changes require a successor receipt naming this one",
+  "accepted_by": "the reviewer lane and the owner, on the remote state eb98ede1",
+  "recorded_utc": "2026-10-07T02:53:34Z",
+  "head_when_recorded": "eb98ede1419adb48fec6b82bfdcbdaffa4ae54c1",
+  "scope": "DEVELOPMENT_CALIBRATION: one realization, truth seed 7302, 2,000 cells; ZERO_UPDATE; linear diagnostic readouts",
+  "TERMINAL_STATEMENTS": [
+    {
+      "id": "T1",
+      "statement": "The exact same-assay semantic twin remains observationally indistinguishable.",
+      "evidence": "model-facing structures byte-identical (RED_1 True); every statistic bitwise equal under every context arm, raw identity included (RED_2 maximum difference 0.0); verdict NON_IDENTIFIABLE_BY_DESIGN"
+    },
+    {
+      "id": "T2",
+      "statement": "Raw source/operator identity can separate some operator-linked nuisances, but it is an EXPLORATORY POSITIVE CONTROL, never a production model input.",
+      "evidence": "raw identity cut the operator nuisance from 0.872 to 0.374 and separated the worlds; restriction recorded in register addendum 2 and the bridge"
+    },
+    {
+      "id": "T3",
+      "statement": "Lawful depth and support descriptors did not resolve the operator twin.",
+      "evidence": "nuisance R2 0.904 under depth plus support, 0.903 depth only, 0.872 support only; all NOT_SEPARATED"
+    },
+    {
+      "id": "T4",
+      "statement": "The measurable-address count behaves as an identity proxy and cannot be assumed biologically innocuous.",
+      "evidence": "as a lookup key it identifies the operator for 0.956 of test cells, although its linear leakage is about 0.03"
+    },
+    {
+      "id": "T5",
+      "statement": "The current synthetic state signal is weak enough that S157 does not establish cell-state biology.",
+      "evidence": "in NULL the chosen state's latent is not recoverable from 20 unsupervised components of student evidence (test R2 -0.026)"
+    },
+    {
+      "id": "T6",
+      "statement": "Every seed-7302 result is DEVELOPMENT_CALIBRATION only, never independent confirmation.",
+      "evidence": "one realization, inspected many times since 4e95aac4 (S166)"
+    },
+    {
+      "id": "T7",
+      "statement": "No target, representation, estimand, weighting, threshold, multimodal object or biological winner is selected.",
+      "evidence": "pre-registration, scores and handoff all leave these UNSET; the multimodal table names candidates only"
+    }
+  ],
+  "SUPERSEDED_OLDER_STATEMENTS": [
+    {
+      "where": "scripts/v77/v77_synthetic_batch_adapter.py at 5c644ced and adaa07fe (PERMITTED_METADATA comment)",
+      "statement": "source, operator, library size and n_measured are 'lawful physical descriptors a model or diagnostic may see'",
+      "superseded_by": "85ed84ae (operator context, not model inputs), register addendum 2 (raw identity is not a learned covariate), T2 and T4 here",
+      "status": "SUPERSEDED; not rewritten"
+    },
+    {
+      "where": "results/v77/REHEARSAL_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1.json field_visibility",
+      "statement": "source_index, operator_index and n_measured are LAWFUL_OPERATOR_CONTEXT",
+      "superseded_by": "T2 and T4",
+      "status": "SCOPED, NOT SUPERSEDED: valid for the plumbing run, which learns nothing; not a licence for learned use"
+    },
+    {
+      "where": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json component B1",
+      "statement": "the cell-state mixture is RECOVERABLE with an oracle ceiling of 0.55-0.75 from permitted RNA",
+      "superseded_by": "T5",
+      "status": "DESIGN INTENT, NOT DEMONSTRATED: never measured on the repaired world; the realized state is not recoverable from unsupervised components"
+    },
+    {
+      "where": "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json and _V2 (material_pivot, accept_low/high)",
+      "statement": "within-cohort envelopes as the replacement calibration target and acceptance rule",
+      "superseded_by": "V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1",
+      "status": "WITHDRAWN EARLIER; restated so no S157 reading revives it"
+    }
+  ],
+  "STILL_OPEN": [
+    "S149 target, estimand and weighting (real-data scientific lane)",
+    "S159 interval rule (real-data scientific lane)",
+    "S157 as a decision: which independent evidence object, if any (deciding lane)",
+    "mutation and executed q-safety proofs (runtime lane)"
+  ],
+  "EVIDENCE": {
+    "results/v77/V77_S157_PAIRED_CHALLENGE_PREREGISTRATION_V1.json": "628d8be0f50b94ee4d6974161f25bd58ecba5ea5c2b38327f7dd3438cd47ed55",
+    "results/v77/V77_S157_CHALLENGE_WORLDS_BUILD_V1.json": "0c31195edea7ab8278079d60e37f9a79ab25675ff895376275b0fff2d19e6ae9",
+    "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARM1_V1.json": "637e86c2cabed2cef7bf5efa474f600cb49b0caf810abb5fc0a77d0e37f061c9",
+    "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARMS_V1.json": "23e613979e5014ce29797b0e4585a66fbea4fded2ceaaed2751d3f29f6e18153",
+    "results/v77/V77_S157_CONTEXT_ABLATION_SUMMARY_V1.json": "85c13f5db4075ad0e8bcf2cb4f6341eb0723ace138241a5826f9b33d3297f78a",
+    "results/v77/V77_S157_LINEAGE_CROSSWALK_V1.json": "58f85f7ed91f1ab96ad9ec24072528d6dbbf7f0067935a6e661b2b1313ba4649",
+    "docs/agent/V77_S157_MULTIMODAL_HANDOFF_REQUIREMENTS.md": "78080bbe6bb0123fea4a65124b8fbd548d12ae5a0c06752255e00b73e9804102"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260917_RIDGE8_T1_SPILLOVER_V1",
+  "date": "2026-09-17",
+  "branch": "analysis/v5-ridge8-expanded-validation-20260917",
+  "training_authority": false,
+  "protected_outcomes_opened": false,
+  "d_shared_outcomes_opened": false,
+  "masking_authority": "OPEN_EXPLORATORY_RIDGE8_LEAD_NOT_PRODUCTION_AUTHORITY",
+  "scientific_target": "BIOLOGICAL_CELLULAR_STATE_WITH_QUERY_LOCAL_STATE__NOT_HIDDEN_GENE_SCALAR",
+  "ridge8_outside800_32": {
+    "relative_drop_pct": 10.549031,
+    "target_win": "31/32",
+    "ci": [0.006861, 0.014994]
+  },
+  "nonlinear_outside800_32": {
+    "ridge8_relative_drop_pct": 6.215738,
+    "top8_relative_drop_pct": 4.172662,
+    "ridge8_target_win": "29/32",
+    "top8_target_win": "24/32"
+  },
+  "t1_fixture": {
+    "status": "HISTORICAL_DEFECTIVE_TRAINING_LINEAGE_STRESS_ONLY",
+    "u200_uniform_query_cosine_error": 0.605672,
+    "u200_ridge8_query_cosine_error": 0.605669,
+    "conclusion": "TARGETED_MASK_IDENTITY_HAS_NEGLIGIBLE_EFFECT_ON_HISTORICAL_T1_QUERY_LOCAL_STATE"
+  },
+  "highest_priority_open": [
+    "remaining_rna_necessity_gate",
+    "teacher_target_semantics_successor",
+    "prospective_full104_masking_freeze",
+    "evidence_budget_authority",
+    "geometry_and_ema_authority"
+  ],
+  "forbidden_spillover": [
+    "post_u0_t1_as_healthy_teacher_authority",
+    "hidden_gene_scalar_as_jepa_target",
+    "historical_qid_f1_revival",
+    "stage81a3_scope_extension_to_full104",
+    "legacy_pooled_context_source_interpretation",
+    "provenance_mismatched_001375ec_npz"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "ADDRESS_REGISTRY": {
+    "identifier_invariant": "molecular_address_id is unique across all rows",
+    "informative_path": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+    "not_value_derived": {
+      "dataset_or_source_family_used_in_address_id": false,
+      "deterministic_ordering": true,
+      "expression_values_accessed": false
+    },
+    "ordering_invariant": "molecular_address_index is contiguous 0..N-1 and strictly increasing in file order",
+    "path_is_not_identity": true,
+    "recovery_provenance": "stage81a2r foundation molecular address registry derivation; injectivity audit docs/history/results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json",
+    "role": "canonical molecular-address universe for the current FULL104 population",
+    "row_count": 41238,
+    "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "size_bytes": 24946770
+  },
+  "FULL104_SUBSTRATE": {
+    "addresses": 41238,
+    "blocks": 8915,
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "role": "expression Level-4 block manifest root",
+    "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "OPERATOR_ADDRESS_OBSERVATION_STATE": {
+    "note": "previously bound nowhere by hash; the field named registry_observation_state_binding_sha256 carried the REGISTRY hash instead",
+    "role": "operator x address measurement-state matrix; DISTINCT artifact, not the registry",
+    "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "shape": "uint8 (42, 41238)"
+  },
+  "SUPPORT_ESTIMABILITY": {
+    "distinct_from_address_registry_role": true,
+    "note": "the SAME artifact legitimately serves this role; closure enforces equality across support_authority_sha256, measurement_support_authority_sha256 and support_eligibility_authority_sha256. That is a composite relationship, not a defect.",
+    "role": "measurement-support / eligibility root"
+  },
+  "approved_provider_policy_vocabulary": {
+    "enforced_by": "src/sea_ad_jepa/v5/current_target_address_provider_authority_v1.py",
+    "gradient_policy_id": [
+      "CONTEXT_EVIDENCE_TO_PREDICTION_GRADIENT_REACHABLE_V1"
+    ],
+    "not_frozen_here": [
+      "width",
+      "depth",
+      "geometry",
+      "mask fraction",
+      "optimizer",
+      "EMA timescale",
+      "seed",
+      "proposal law"
+    ],
+    "parameter_sharing_policy_id": [
+      "SHARED_TRAINABLE_ADDRESS_QUERY_MECHANISM_V1"
+    ],
+    "query_provider_id": [
+      "V5_SHARED_ADDRESS_QUERY_PROVIDER_V1"
+    ],
+    "replay_policy_id": [
+      "FULL_PROVIDER_STATE_DETERMINISTIC_REPLAY_V1"
+    ]
+  },
+  "authority_id": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916",
+  "canonical_authority_digest": "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676",
+  "custody_and_replay": {
+    "fail_closed_on": [
+      "hash mismatch",
+      "row-count mismatch",
+      "ordering mismatch",
+      "duplicate ids"
+    ],
+    "heavy_artifact_not_committed_to_git": true,
+    "identity_is_content_plus_invariants_not_path": true,
+    "verification_contract": [
+      "sha256 == canonical registry sha256",
+      "row_count == 41238",
+      "molecular_address_index contiguous 0..41237 strictly increasing",
+      "molecular_address_id unique"
+    ]
+  },
+  "date": "2026-09-16",
+  "field_safety": {
+    "model_facing": [
+      "molecular_address_index",
+      "molecular_address_id"
+    ],
+    "prohibited": [
+      "symbol",
+      "biotype",
+      "contributing_source_feature_count",
+      "contributing_source_families",
+      "contributing_source_dataset_ids",
+      "canonical_cell_id",
+      "selection_row",
+      "donor_id",
+      "expression_row"
+    ],
+    "provenance_only": [
+      "identity_class",
+      "current_ensembl_gene_id",
+      "legacy_source_exact_id",
+      "source_native_anchor",
+      "identity_authority",
+      "identity_evidence",
+      "measurement_support_provenance",
+      "registry_semantic_hash"
+    ]
+  },
+  "resolves": [
+    "REG-1",
+    "REG-2",
+    "REG-4"
+  ],
+  "schema": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1",
+  "supersession": {
+    "corrected_binding": "this authority binds ADDRESS_REGISTRY and OPERATOR_ADDRESS_OBSERVATION_STATE separately",
+    "corrected_role": "ADDRESS_REGISTRY sha256",
+    "defect": "field name implies a registry<->observation-state binding but carries only the REGISTRY hash; the observation-state artifact (852cb3ec...) is bound nowhere",
+    "forbidden_for": "new provider binding",
+    "frozen_artifact_edited_in_place": false,
+    "original_artifact": "docs/agent/V5_PRIMARY_REPRESENTATION_FEATURE_PARENTS_20260915.json",
+    "original_field": "registry_observation_state_binding_sha256",
+    "original_remains_valid_for": "its original primary-representation feature-parent scope",
+    "original_value": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+  },
+  "training_authorized": false
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "V77_SPILLOVER_DISPOSITIONS_V1",
+  "audit_record": "V77_SPILLOVER_AUDIT_PHASE3_BEFORE.json",
+  "audit_sha256": "10ece8ed771373a8ef2591ec68e91d7eca01b742e6dd5d341be85a5b5f85b7e9",
+  "phase": "PHASE3_REGULATORY_CIRCULARITY_before",
+  "structural_pass": true,
+  "dispositions": [
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_historical_spillover_audit.py",
+      "line": 57,
+      "text": "hits = S.text_checks_lines([(\"x.md\", [\"identifiability is resolved by the new generator\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "planted positive claim in the audit's own fixture"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_s157_terminal_frozen.py",
+      "line": 48,
+      "text": "mutated[\"TERMINAL_STATEMENTS\"][0][\"statement\"] = \"The exact same-assay semantic twin is resolved.\"",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the deliberate mutation proving the S157 freeze guard can fail"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+      "line": 88,
+      "text": "\"text\": \"A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim.\"",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "principle P5_LOCALITY: a caveat restricting any twin-breaking claim to its own dataset, not a claim that a twin is broken"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+      "line": 16,
+      "text": "- **P5_LOCALITY.** A twin broken in one dataset is broken there. Transfer to another dataset is a separate claim.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the rendered P5_LOCALITY caveat"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_ADVERSARIAL_SELF_AUDIT_V1.json",
+      "line": 59,
+      "text": "\"finding\": \"two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdi",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "records defect S163 as a finding to repair"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+      "line": 437,
+      "text": "\"defect\": \"the pooled expression calibration describes itself as a calibration TARGET\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "register entry naming defect S165"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "scripts/v77/v77_regulatory_graph.py",
+      "line": 2,
+      "text": "\"\"\"Deterministic SCENIC+-like regulatory ground truth: TF -> enhancer region -> target gene.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the synthetic world's planted, oracle-only regulatory truth"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_INDEPENDENT_EVIDENCE_MATRIX_V1.json",
+      "line": 385,
+      "text": "\"name\": \"SCENIC+ eRegulons built on an independent multiome, applied to the query\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "row title of R5b; the same row classifies it as assay-class circular, static and unable to break a lineage twin"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+      "line": 17,
+      "text": "\"review_lane_instruction\": \"isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "review-lane instruction for the synthetic generator"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "docs/agent/V77_INDEPENDENT_EVIDENCE_MATRIX.md",
+      "line": 222,
+      "text": "### R5b. SCENIC+ eRegulons built on an independent multiome, applied to the query",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "rendered row title of R5b, carrying the same caveats"
+    }
+  ],
+  "note": "text checks are pattern searches; a clean check is not proof of absence"
+}

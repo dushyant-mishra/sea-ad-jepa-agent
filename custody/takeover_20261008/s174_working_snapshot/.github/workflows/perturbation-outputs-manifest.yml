@@ -1,0 +1,135 @@
+name: Perturbation committed-outputs SHA-256 manifest
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/outputs/**'
+      - 'analysis/therapeutic_perturbation_etl/evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/manifest_committed_outputs_v1.py'
+      - '.github/workflows/perturbation-outputs-manifest.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/outputs/**'
+      - 'analysis/therapeutic_perturbation_etl/evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/manifest_committed_outputs_v1.py'
+      - '.github/workflows/perturbation-outputs-manifest.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-committed-outputs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Fails closed on a missing file, an unmanifested extra file, a byte-size
+      # mismatch or a SHA-256 mismatch. Exit status is the gate; no grep of the
+      # output decides the result.
+      - name: Verify every committed output against the manifest
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/manifest_committed_outputs_v1.py \
+            --mode verify --repo .
+
+      # A manifest that silently covers nothing would pass the check above, so
+      # assert the expected population explicitly.
+      - name: Assert the manifest is non-empty and internally consistent
+        run: |
+          python - <<'PY'
+          import json, sys
+          m = json.load(open("analysis/therapeutic_perturbation_etl/evidence/"
+                             "COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json"))
+          files = m["files"]
+          fail = []
+          if len(files) != m["file_count"]:
+              fail.append("file_count %d != %d entries" % (m["file_count"], len(files)))
+          if not files:
+              fail.append("manifest covers no files")
+          if sum(f["bytes"] for f in files) != m["total_bytes"]:
+              fail.append("total_bytes disagrees with the sum of entries")
+          for f in files:
+              if len(f["sha256"]) != 64 or not all(c in "0123456789abcdef" for c in f["sha256"]):
+                  fail.append("%s: sha256 is not 64 lowercase hex chars" % f["path"])
+              if f["sha256"] == f.get("git_blob_id_NOT_A_CONTENT_SHA256"):
+                  fail.append("%s: content digest equals the git blob id, which "
+                              "means a blob id was recorded as a SHA-256" % f["path"])
+              if not f.get("producer"):
+                  fail.append("%s: no producer recorded" % f["path"])
+              if f["bytes"] <= 0:
+                  fail.append("%s: non-positive byte size" % f["path"])
+          if fail:
+              print("=== MANIFEST SELF-CONSISTENCY: FAIL ===")
+              for x in fail:
+                  print("  " + x)
+              sys.exit(1)
+          print("=== MANIFEST SELF-CONSISTENCY: PASS ===")
+          print("  %d files, %d bytes, all digests 64-hex and distinct from blob ids"
+                % (len(files), m["total_bytes"]))
+          PY
+
+      # The verifier is only worth running if it actually fails. Prove each
+      # failure mode on a scratch copy rather than trusting that it would.
+      - name: Adversarial - verifier must reject tampering
+        run: |
+          python - <<'PY'
+          import json, os, shutil, subprocess, sys, tempfile
+          REPO = os.getcwd()
+          S = "analysis/therapeutic_perturbation_etl/scripts/manifest_committed_outputs_v1.py"
+          OUT = "analysis/therapeutic_perturbation_etl/outputs"
+
+          def run(repo):
+              return subprocess.run([sys.executable, S, "--mode", "verify",
+                                     "--repo", repo],
+                                    capture_output=True, text=True).returncode
+
+          failures = []
+          with tempfile.TemporaryDirectory() as tmp:
+              work = os.path.join(tmp, "repo")
+              shutil.copytree(REPO, work, ignore=shutil.ignore_patterns(".git"))
+              if run(work) != 0:
+                  failures.append("clean copy did not verify")
+
+              victim = os.path.join(work, OUT, "gse178317",
+                                    "gse178317_target_engagement_v2.csv")
+
+              # 1. extra unmanifested file
+              extra = os.path.join(work, OUT, "gse178317", "_adversary.tmp")
+              open(extra, "w").write("x")
+              if run(work) == 0:
+                  failures.append("accepted an unmanifested extra file")
+              os.remove(extra)
+
+              # 2. missing file
+              body = open(victim, "rb").read()
+              os.remove(victim)
+              if run(work) == 0:
+                  failures.append("accepted a missing file")
+              open(victim, "wb").write(body)
+
+              # 3. same-size content change (digest check must catch it alone)
+              i = body.find(b"0")
+              open(victim, "wb").write(body[:i] + b"9" + body[i + 1:])
+              if run(work) == 0:
+                  failures.append("accepted a same-size content change")
+              open(victim, "wb").write(body)
+
+              # 4. size change
+              open(victim, "wb").write(body + b"\n")
+              if run(work) == 0:
+                  failures.append("accepted a byte-size change")
+              open(victim, "wb").write(body)
+
+              if run(work) != 0:
+                  failures.append("did not verify after restoration")
+
+          if failures:
+              print("=== ADVERSARIAL: FAIL ===")
+              for f in failures:
+                  print("  " + f)
+              sys.exit(1)
+          print("=== ADVERSARIAL: PASS ===")
+          print("  rejected extra, missing, same-size tamper and size change; "
+                "verified clean and restored states")
+          PY

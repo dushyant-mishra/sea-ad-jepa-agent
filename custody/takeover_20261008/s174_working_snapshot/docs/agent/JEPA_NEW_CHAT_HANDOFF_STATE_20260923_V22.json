@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_PARALLEL_HANDOFF_STATE_V22_ADDENDUM",
+  "date": "2026-09-23",
+  "status": "POST_BULK_PHYSICAL_V1__GSE311359_GUIDE_ID_STOP__NO_N1_OR_TRAINING",
+  "prior_full_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
+  "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
+  "v22_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
+  "physical_producer": {
+    "pr77_head_as_observed": "3e293a43e4d6dfb6bba85eaf188bdbbe5ecb2821",
+    "GSE241858": {
+      "baseline_samples": 12,
+      "cytokine_samples": 23,
+      "genes": 28395,
+      "baseline_genes_detected": 20509,
+      "cytokine_genes_detected": 24157,
+      "clone_units_per_genotype": 2,
+      "analysis": "PHYSICAL_BULK_V1_PRODUCER__CLONE_AVERAGED__NOT_CRISPR"
+    },
+    "GSE240609": {
+      "samples": 4,
+      "genes": 27154,
+      "detected": 19045,
+      "replicates_per_genotype_cross": 1,
+      "biological_uncertainty_estimable": false,
+      "material": "CD11B_PURIFIED_MICROGLIA_AFTER_NEURON_COCULTURE",
+      "public_annotated_gsm_titles": {
+        "GSM7703564": "APOE3CH-WT",
+        "GSM7703567": "APOE3CH-PSEN1",
+        "GSM7703569": "APOE3-WT",
+        "GSM7703571": "APOE3-PSEN1"
+      },
+      "public_metadata_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE240609",
+      "v1_producer": "PHYSICAL_EXECUTION_REPORTED",
+      "v2_public_geo_authority": "CPU_TEST_PASS_9_0_SKIPPED__PHYSICAL_V2_NOT_EXECUTED"
+    }
+  },
+  "independent_review": {
+    "pr92_head": "bc09c0f432db6e17bec3047baeb0812975043937",
+    "pr92_ci": "PASS_7_ZERO_SKIPPED",
+    "gse311359_guide_names": "381_FEATURES_379_DISTINCT_3_BIN1_COLLISION__STOP_GUIDE_LEVEL_AUTHORITY",
+    "pr94_head": "9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf",
+    "pr94_ci": "PASS_9_ZERO_SKIPPED",
+    "pr94_physical_rerun": "NOT_EXECUTED",
+    "source_semantics_corrected_to": "PURIFIED_MICROGLIA_POST_COCULTURE"
+  },
+  "unchanged_boundaries": {
+    "jepa_training": "OFF",
+    "n1": "UNOPENED_NOT_AUTHORIZED",
+    "rare_tail_molecular": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "therapeutic_ranking": "OFF"
+  },
+  "startup_rule": "READ_V22_ADDENDUM_THEN_V21_FULL_HANDOFF_AND_SEP15_HISTORICAL_AUDITS__REFETCH_LIVE_PR_HEADS__DO_NOT_TREAT_CPU_CI_AS_REAL_BULK_REQUALIFICATION"
+}

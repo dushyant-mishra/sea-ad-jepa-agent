@@ -1,0 +1,84 @@
+{
+  "schema": "JEPA_V70_ROUTE_A_PREFLIGHT_ADDENDUM_V1",
+  "date": "2026-10-01",
+  "status": "GSE214979_ROUTE_A_STRUCTURALLY_READY_FOR_NETWORK_INFERENCE__NO_NETWORK_YET",
+  "supersedes_approximations": {
+    "prior_microglia_approx": "~2872",
+    "exact_all_microglia": 3179,
+    "exact_default_development_microglia": 2534,
+    "exact_default_development_donors": 12
+  },
+  "route_a_readiness": {
+    "exact_source_and_subset_custody": true,
+    "motif_resource_custody": true,
+    "disease_pathology_used_for_network_selection": false,
+    "full104_exact_identity_crosswalk_complete": true,
+    "donor_and_feature_observation_preflight_complete": true,
+    "scenicplus_network_inferred": false
+  },
+  "donor_measurement_boundary": {
+    "donor_cell_counts": {
+      "3329": 211,
+      "3586": 152,
+      "4305": 347,
+      "4313": 17,
+      "4443": 171,
+      "4481": 233,
+      "4482": 415,
+      "4627": 241,
+      "HCT17HEX": 264,
+      "HCTZZT": 26,
+      "NT1261": 192,
+      "NT1271": 265
+    },
+    "low_n_warning": "4313 has 17 nuclei and HCTZZT has 26. Do not invent or tune a donor-cell threshold from downstream agreement; report donor-stability sensitivity prospectively."
+  },
+  "observed_feature_support": {
+    "genes": {
+      "submitted": 36601,
+      "any_cell": 25630,
+      "one_percent_cells": 12848,
+      "all_12_donors": 6877
+    },
+    "peaks": {
+      "submitted": 150614,
+      "any_cell": 149590,
+      "one_percent_cells": 43450,
+      "all_12_donors": 12319
+    }
+  },
+  "full104_crosswalk": {
+    "exact_addresses": 35704,
+    "full104_fraction": 0.8658033852272177,
+    "gse_gene_fraction": 0.9754924728832546,
+    "common_all_three_sources": 17345,
+    "common_all_three_sources_total": 17346,
+    "all_42_operators": 17185,
+    "all_42_operators_total": 17186
+  },
+  "next_execution_boundary": [
+    "Macha: acquire and SHA-pin 59.3GB fragments and build Route B",
+    "Macha: infer/freeze Route-A submitted-peak network without pathology and before Stage-4 outcome",
+    "Macha: infer independent Route-B consensus-region network and run donor/control qualification",
+    "Macha: return frozen program tables under V70 return manifest contract",
+    "Sol: independently audit returned networks and compute program-level FULL104/NIH-CARD crosswalks",
+    "Only later: separately authorize real Stage-4 and external biological validation"
+  ],
+  "intentionally_not_done": [
+    "no eRegulon/network inference",
+    "no Stage-4 biological correspondence",
+    "no Morabito biological outcome",
+    "no teacher-state materialization",
+    "no recoverability TEST",
+    "no training"
+  ],
+  "governance": {
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "TD60": "BLOCKED"
+  }
+}

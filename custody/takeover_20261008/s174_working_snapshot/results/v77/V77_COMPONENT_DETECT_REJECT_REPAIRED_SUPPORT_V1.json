@@ -1,0 +1,262 @@
+{
+  "schema": "V77_COMPONENT_DETECT_REJECT_REPAIRED_SUPPORT_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "question": "do the frozen component statistics still detect and reject on worlds with repaired support?",
+  "instrument": "v77_component_oracle_v4_signed (unchanged); thresholds as frozen, read from the statistics",
+  "ceiling_label": "ORACLE_CEILING_UNDER_KNOWN_SUPPORT_AND_KNOWN_SIGN",
+  "worlds": {
+    "ON_full": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\on_full",
+      "suppress": null,
+      "commands": [
+        "python scripts/v77/build_v77_extended_truth.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\on_full --cells 2000 --shard-size 500 --seed 7302 --world FULL",
+        "python scripts/v77/build_v77_fullscale_rna_observer_v2.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\on_full --seed 7302 --background v1"
+      ],
+      "support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+      "realized_support_fraction_by_source": {
+        "HVS": 0.45433823172801785,
+        "NPH52": 0.8060694579681922,
+        "SEA_AD": 0.8507666977365625
+      },
+      "observer_shard_sha256": [
+        "91e05116804fe68f9299b72b9b73feacc0306ef70543fef759237b3486cb1313",
+        "0ec54b5aff93cfb791aeff63c850fabbfcc4f1cdc5c80e490cb29bf5b9b2fa39",
+        "85982550cd3f4ee6cc99df0251de78484d595e15bdac6396b39411a1f957c013",
+        "484125f3f30e8130c53651d68a53c120a0679ba964199d9b5a29c730d4b576bd"
+      ]
+    },
+    "OFF_B4": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_B4",
+      "suppress": "B4",
+      "commands": [
+        "python scripts/v77/build_v77_extended_truth.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_B4 --cells 2000 --shard-size 500 --seed 7302 --world FULL",
+        "python scripts/v77/build_v77_fullscale_rna_observer_v2.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_B4 --seed 7302 --background v1 --suppress B4"
+      ],
+      "support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+      "realized_support_fraction_by_source": {
+        "HVS": 0.45433823172801785,
+        "NPH52": 0.8060694579681922,
+        "SEA_AD": 0.8507666977365625
+      },
+      "observer_shard_sha256": [
+        "02077048756d4d4265267401253ca8c16c4db4a4c124068e5a55d92a4fd7ec66",
+        "42f3e37e5ae11d87bd0842e36b1c41d729c421c6b88e1c7ed00645984a1a3c0d",
+        "a46f52aec6cd44306f2bb0966c71e7249fae0774cef5b56160a02ef5f08ebc17",
+        "f043bfcffebe3ab7b376865d37c7c1ee68ae43b2a1a10bf15a4b7a3f493a2eac"
+      ]
+    },
+    "OFF_C1": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C1",
+      "suppress": "C1",
+      "commands": [
+        "python scripts/v77/build_v77_extended_truth.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C1 --cells 2000 --shard-size 500 --seed 7302 --world FULL",
+        "python scripts/v77/build_v77_fullscale_rna_observer_v2.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C1 --seed 7302 --background v1 --suppress C1"
+      ],
+      "support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+      "realized_support_fraction_by_source": {
+        "HVS": 0.45433823172801785,
+        "NPH52": 0.8060694579681922,
+        "SEA_AD": 0.8507666977365625
+      },
+      "observer_shard_sha256": [
+        "616630d17cfeb105f9b918fac336b4f5485a558f9110f82b9192b0139d792d06",
+        "7a35a3ec675432483f8d461119ce7819b273442a3c5533bb50ddc4a193743dbd",
+        "ec301b11c2bf5186b311956723d769fa82eb5b681e0bbf9f2d286e9837fd61bd",
+        "b2d3cef4427b44369e5c569783f3d04caf19686b127a874806e3893f850e8a03"
+      ]
+    },
+    "OFF_C2": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C2",
+      "suppress": "C2",
+      "commands": [
+        "python scripts/v77/build_v77_extended_truth.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C2 --cells 2000 --shard-size 500 --seed 7302 --world FULL",
+        "python scripts/v77/build_v77_fullscale_rna_observer_v2.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C2 --seed 7302 --background v1 --suppress C2"
+      ],
+      "support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+      "realized_support_fraction_by_source": {
+        "HVS": 0.45433823172801785,
+        "NPH52": 0.8060694579681922,
+        "SEA_AD": 0.8507666977365625
+      },
+      "observer_shard_sha256": [
+        "bfb1e1460377a017071d3ce9f4c3540457f1274585ab5c96c508dea4dcc4b902",
+        "887cd27f5ae5134a8285f303c7699eba5fe15983c5ef33cf492ee827c6789788",
+        "b8cdad694fbb010d25421739dd2a19250e4a8ae68d859a6139f98dd5635757e3",
+        "61e90ff3f9c48ed4aefd73445999eb2b3d013e57d2c8aab952b66f8e8d99b10f"
+      ]
+    },
+    "OFF_C3": {
+      "root": "D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C3",
+      "suppress": "C3",
+      "commands": [
+        "python scripts/v77/build_v77_extended_truth.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C3 --cells 2000 --shard-size 500 --seed 7302 --world FULL",
+        "python scripts/v77/build_v77_fullscale_rna_observer_v2.py --root D:\\jepa_v77_synthetic_custody_20261005\\detect_reject_v2_s146s147\\off_C3 --seed 7302 --background v1 --suppress C3"
+      ],
+      "support_rule": "S146_S147_NAME_MAPPED_REGISTRY_RELATIVE_V1",
+      "realized_support_fraction_by_source": {
+        "HVS": 0.45433823172801785,
+        "NPH52": 0.8060694579681922,
+        "SEA_AD": 0.8507666977365625
+      },
+      "observer_shard_sha256": [
+        "ea28506f0865588458a05bb4dc92fe98820267e4ba9c43836cb24fc3a4005666",
+        "015d609cb696731406fcb21371f6bc219a9bbe95a78f6053df1102e2d0093416",
+        "16f75e401c62f6830debd11a422e360af1155c2bd0263afd79050639876bdd8f",
+        "b096efbf803e873ecce84433c151417dac875127c4051c64c746737fe82307d4"
+      ]
+    }
+  },
+  "results": {
+    "B4": {
+      "statistic": "band_value_not_pseudotime",
+      "primary": "r2_band",
+      "on_value": 0.8502684499537796,
+      "detect": false,
+      "off_value": -0.03545604208772324,
+      "off_limit": 0.05,
+      "reject": true,
+      "pre_repair_signed_value": 0.7437603425209143,
+      "pre_repair_verdict": "OUTSIDE_DESIGNED_CLASS__MORE_RECOVERABLE_THAN_DESIGNED",
+      "on_detail": {
+        "statistic": "band_value_not_pseudotime",
+        "r2_band": 0.8502684499537796,
+        "r2_pseudotime_diagnostic_only": -0.018020563598945216,
+        "pass_range": [
+          0.25,
+          0.45
+        ],
+        "passes": false,
+        "off_twin_must_be_below": 0.05
+      },
+      "off_detail": {
+        "statistic": "band_value_not_pseudotime",
+        "r2_band": -0.03545604208772324,
+        "r2_pseudotime_diagnostic_only": -0.01527825192228116,
+        "pass_range": [
+          0.25,
+          0.45
+        ],
+        "passes": false,
+        "off_twin_must_be_below": 0.05
+      }
+    },
+    "C1": {
+      "statistic": "full_minus_additive_gap",
+      "primary": "gap",
+      "on_value": 0.2554818966313851,
+      "detect": true,
+      "off_value": -0.004937115491634669,
+      "off_limit": 0.01,
+      "reject": true,
+      "pre_repair_signed_value": 0.22604070200990412,
+      "pre_repair_verdict": "PASS",
+      "on_detail": {
+        "statistic": "full_minus_additive_gap",
+        "r2_full": 0.9450870376120495,
+        "r2_additive_summary": 0.6896051409806644,
+        "gap": 0.2554818966313851,
+        "pass_threshold": 0.05,
+        "passes": true,
+        "off_twin_must_be_below": 0.01
+      },
+      "off_detail": {
+        "statistic": "full_minus_additive_gap",
+        "r2_full": -0.0380393819178122,
+        "r2_additive_summary": -0.03310226642617753,
+        "gap": -0.004937115491634669,
+        "pass_threshold": 0.05,
+        "passes": false,
+        "off_twin_must_be_below": 0.01
+      }
+    },
+    "C2": {
+      "statistic": "ratio_features",
+      "primary": "r2_ratio_features",
+      "on_value": 0.5004025199945988,
+      "detect": true,
+      "off_value": 0.0039688778451708595,
+      "off_limit": 0.05,
+      "reject": true,
+      "pre_repair_signed_value": 0.48535014768103046,
+      "pre_repair_verdict": "PASS",
+      "on_detail": {
+        "statistic": "ratio_features",
+        "r2_linear_over_module_scores": -0.03880472515128419,
+        "r2_ratio_features": 0.5004025199945988,
+        "improvement": 0.539207245145883,
+        "pass_range": [
+          0.4,
+          0.6
+        ],
+        "pass_improvement_threshold": 0.05,
+        "passes": true,
+        "off_twin_must_be_below": 0.05,
+        "freeze_note": "this freeze predicted C2 would fail its designed band"
+      },
+      "off_detail": {
+        "statistic": "ratio_features",
+        "r2_linear_over_module_scores": -0.039951178013923005,
+        "r2_ratio_features": 0.0039688778451708595,
+        "improvement": 0.043920055859093865,
+        "pass_range": [
+          0.4,
+          0.6
+        ],
+        "pass_improvement_threshold": 0.05,
+        "passes": false,
+        "off_twin_must_be_below": 0.05,
+        "freeze_note": "this freeze predicted C2 would fail its designed band"
+      }
+    },
+    "C3": {
+      "statistic": "depth_and_support_coupling_not_a_module_quantity",
+      "primary": "max_abs_corr",
+      "on_value": 0.09875133968709258,
+      "detect": true,
+      "off_value": 0.015069275138696213,
+      "off_limit": 0.02,
+      "reject": true,
+      "pre_repair_signed_value": 0.09875133968709258,
+      "pre_repair_verdict": "PASS",
+      "on_detail": {
+        "statistic": "depth_and_support_coupling_not_a_module_quantity",
+        "abs_corr_bioqc_vs_library": 0.09875133968709258,
+        "max_abs_corr": 0.09875133968709258,
+        "world_A_reference": 0.0086,
+        "pass_threshold": 0.05,
+        "passes": true,
+        "off_twin_must_be_below": 0.02
+      },
+      "off_detail": {
+        "statistic": "depth_and_support_coupling_not_a_module_quantity",
+        "abs_corr_bioqc_vs_library": 0.015069275138696213,
+        "max_abs_corr": 0.015069275138696213,
+        "world_A_reference": 0.0086,
+        "pass_threshold": 0.05,
+        "passes": false,
+        "off_twin_must_be_below": 0.02
+      }
+    }
+  },
+  "summary": {
+    "detect": 3,
+    "reject": 4,
+    "of": 4
+  },
+  "command": "python scripts/v77/run_v77_component_detect_reject_v2.py --worlds-dir D:/jepa_v77_synthetic_custody_20261005/detect_reject_v2_s146s147 --out results/v77/V77_COMPONENT_DETECT_REJECT_REPAIRED_SUPPORT_V1.json",
+  "source_commit": "8497916e5a9d9b232597ac1891b6c630d3b17931",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "scripts/v77/run_v77_component_detect_reject_v2.py": "0ccaace2b5fa6b1653c0ad295a7370a4f2beeee8696f29782ecfe0070fd22d14",
+    "scripts/v77/build_v77_extended_truth.py": "ef620a19b90225433024867b3de657eb96bbef305f30ecc062c7bbeb151cbfb5",
+    "scripts/v77/build_v77_fullscale_rna_observer_v2.py": "62cb52e1277c7fc957295333c12e23ac426cb02419f5e1aeed8ed8f4493ce082",
+    "scripts/v77/v77_component_oracle_v4_signed.py": "04e53c78f043efa6fb892035b4338a65b1b0ad04d60fdd0ef7aaa1a0908bf080",
+    "scripts/v77/v77_component_oracle_v3.py": "c47f411d394c21a76e687bb497a97a6c915e76d710da69ccd8666a2eb9fb8fe4",
+    "scripts/v77/v77_measure_oracle_ceilings_v2.py": "3c85c1b57298e1208e1569afafd372ab83744838be7a3f45e08285e2fe834fad",
+    "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7",
+    "scripts/v64/v73_full104_qc_calibration.py": "33813280065ad824a3514758dbeef9e78c859cf5091daf5031fb98eb96b8f65c",
+    "scripts/v64/v73_full104_population_geometry.py": "5905c88c791fa59e208f703382ff68e395c4c2cbba5fee6bc49c8d81a9dd36df"
+  },
+  "thresholds_changed": false,
+  "no_training_performed": true
+}

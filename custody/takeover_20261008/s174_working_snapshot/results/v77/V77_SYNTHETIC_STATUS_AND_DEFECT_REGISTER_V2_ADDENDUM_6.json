@@ -1,0 +1,51 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_6",
+  "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and addenda 1-5",
+  "record_type": "AUDIT RECORD, written by hand from the committed repair and replay records",
+  "lane": "claude/s174-train-cache-rebuild-20261007 (separate real-data lane, not PR #228)",
+  "recorded_utc": "2026-10-07T20:36:32Z",
+  "head_when_recorded": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+  "S174_UPDATE": {
+    "status": "REPAIRED__REBUILT_CACHE_AUTHORIZED_BY_G1B__CORRECTED_REPLAYS_COMPLETE",
+    "rebuild": "fresh gene-ID join from physical H5AD columns; same cells; NPH carried over; old cache untouched",
+    "gates": "frozen G1 FAILED as pre-registered and is not amended; successor gate G1b, frozen before it ran, PASSED all seven requirements exactly; G2-G6 passed",
+    "old_cache_characterization": "the old cache equals the scrambled positional map exactly in all 35 HVS and SEA-AD matrices",
+    "affected_results": "all nine replayed into results/v77/s174_replay; the old files are unchanged history"
+  },
+  "S149_UPDATE": {
+    "status": "CORRECTED",
+    "finding": "cohort coverage alone reproduces about 3% of the pooled strong-correlation fraction under the corrected input (0.0042 of 0.1348), not about 89% (0.546 of 0.615)",
+    "survives": "cohort coverage identifies the study perfectly",
+    "does_not_survive": [
+      "pooled real dependence dominated by cohort composition",
+      "within one study the dependence is several times weaker"
+    ],
+    "rule": "not assumed false in advance; decided by the corrected replay, as the owner required"
+  },
+  "DOWNSTREAM_NEXT": {
+    "material": [
+      "V77_BG_CANDIDATE_SEARCH_ROUND1-2 and V77_BG_SEARCH_ROUND1-7 (scored against the old expression envelope)",
+      "V77_STEP3_BACKGROUND_CALIBRATION_RESULT_V1",
+      "V77_STEP3_FACTOR_FAMILY_FALSIFICATION_V1",
+      "V77_OBSERVER_V2_DECISION_RECEIPT_V1 and V77_OBSERVER_V2_AUDIT_CORRECTION_V1"
+    ],
+    "superseded_by_the_replay_itself": [
+      "V77_REPRODUCTION_ABUNDANCE_ENVELOPE_V1",
+      "V77_REPRODUCTION_REAL_TOPOLOGY_AFTER_T5_EXTRACTION_V1"
+    ],
+    "not_material": [
+      "V77_SUPERSEDED_REBUILD_CUSTODY_V1",
+      "V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1",
+      "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2",
+      "V77_S157_TERMINAL_RECEIPT_V1",
+      "V77_S157_LINEAGE_CROSSWALK_V1"
+    ],
+    "note": "S157's conclusions concern the synthetic generator and do not depend on which addresses the evaluation universe holds; its crosswalk row on S149 is now historical and is superseded by S149_UPDATE"
+  },
+  "IDENTITY_FLAG": "353 historical-Ensembl-ID-to-different-symbol mappings followed as frozen; flagged for the identity lane; not tuned",
+  "evidence": {
+    "results/v77/S174_REBUILD_G1B_RESULT_V1.json": "c450815c0c91f84654ab10ac1d40897d5293c4d109d42f7b6561bdf3eaf7b7f9",
+    "results/v77/s174_replay/S174_REPLAY_SUMMARY_V1.json": "5d83d8ac226da12122674864e9e899ccfb548c2029654d968f3a7efa7f435a5b",
+    "results/v77/s174_replay/S174_REPLAY_SIDE_BY_SIDE_V1.json": "ffc2cd36d6463aede69e63f0dd1c068f21fc837ca1436831105bbc0fe263fbcc"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "objects": [
+    {
+      "bytes": 2265931,
+      "file": "td50_HVS.npz",
+      "keys": {
+        "S": {"dtype": "float64", "shape": [1129, 256]},
+        "detected": {"dtype": "int64", "max": 9780, "min": 910, "shape": [1129]},
+        "donor": {"error": "Object arrays cannot be loaded when allow_pickle=False", "load_status": "OBJECT_ARRAY_NOT_LOADED_ALLOW_PICKLE_FALSE"},
+        "global_row": {"dtype": "int64", "max": 24993, "min": 78, "shape": [1129]},
+        "operator": {"dtype": "int64", "shape": [1129], "unique_count": 23},
+        "source_library": {"dtype": "int64", "shape": [1129], "unique_count": 1113},
+        "tau": {"dtype": "float64", "shape": [1129, 64]}
+      },
+      "sha256": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb"
+    },
+    {
+      "bytes": 2616689,
+      "file": "td50_NPH52.npz",
+      "keys": {
+        "S": {"dtype": "float64", "shape": [1310, 256]},
+        "detected": {"dtype": "int64", "max": 12432, "min": 583, "shape": [1310]},
+        "donor": {"error": "Object arrays cannot be loaded when allow_pickle=False", "load_status": "OBJECT_ARRAY_NOT_LOADED_ALLOW_PICKLE_FALSE"},
+        "global_row": {"dtype": "int64", "max": 24998, "min": 5, "shape": [1310]},
+        "operator": {"dtype": "int64", "shape": [1310], "unique_count": 7},
+        "source_library": {"dtype": "int64", "shape": [1310], "unique_count": 1264},
+        "tau": {"dtype": "float64", "shape": [1310, 64]}
+      },
+      "sha256": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe"
+    },
+    {
+      "bytes": 44852581,
+      "file": "td50_SEA_AD.npz",
+      "keys": {
+        "S": {"dtype": "float64", "shape": [22561, 256]},
+        "detected": {"dtype": "int64", "max": 13181, "min": 33, "shape": [22561]},
+        "donor": {"error": "Object arrays cannot be loaded when allow_pickle=False", "load_status": "OBJECT_ARRAY_NOT_LOADED_ALLOW_PICKLE_FALSE"},
+        "global_row": {"dtype": "int64", "max": 24999, "min": 0, "shape": [22561]},
+        "operator": {"dtype": "int64", "shape": [22561], "unique_count": 11},
+        "source_library": {"dtype": "int64", "shape": [22561], "unique_count": 18535},
+        "tau": {"dtype": "float64", "shape": [22561, 64]}
+      },
+      "sha256": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4"
+    }
+  ],
+  "schema_version": "1.0"
+}

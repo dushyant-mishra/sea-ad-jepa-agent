@@ -1,0 +1,80 @@
+{
+  "O1_null_capture_constant": {
+    "max_over_median": 560.7962646484375,
+    "top1": 0.24171262979507446,
+    "median_abs_corr": 0.14610227761834854,
+    "frac_abs_gt_0p3": 0.010728242747582528,
+    "transitivity": 0.39064033499951445,
+    "mean_degree": 32.174,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 10728242.747582527,
+    "t5": 0.9848339935521865,
+    "detected_per_cell": 6090.0,
+    "genes_kept": 23891
+  },
+  "O2_capture_independent_moderate": {
+    "max_over_median": 1199.3338623046875,
+    "top1": 0.28725066781044006,
+    "median_abs_corr": 0.14285069997191002,
+    "frac_abs_gt_0p3": 0.008649327553628988,
+    "transitivity": 0.3719103182672218,
+    "mean_degree": 25.939333333333334,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 8649327.553628989,
+    "t5": 0.9794012005789678,
+    "detected_per_cell": 5288.5,
+    "genes_kept": 19825
+  },
+  "O3_capture_independent_wide": {
+    "max_over_median": 3511.69921875,
+    "top1": 0.3887094259262085,
+    "median_abs_corr": 0.1377919702579861,
+    "frac_abs_gt_0p3": 0.0064550405690785816,
+    "transitivity": 0.383899938282275,
+    "mean_degree": 19.358666666666668,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 6455040.569078581,
+    "t5": 0.9825292448307502,
+    "detected_per_cell": 3593.0,
+    "genes_kept": 12468
+  },
+  "O4_capture_anticorrelated": {
+    "max_over_median": 861.7765502929688,
+    "top1": 0.24506257474422455,
+    "median_abs_corr": 0.14640976382434115,
+    "frac_abs_gt_0p3": 0.01026808936312104,
+    "transitivity": 0.37317128695705715,
+    "mean_degree": 30.794,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 10268089.363121038,
+    "t5": 0.9804857508245665,
+    "detected_per_cell": 6829.0,
+    "genes_kept": 28884
+  },
+  "O5_poorly_captured_subpopulation": {
+    "max_over_median": 1243.0648193359375,
+    "top1": 0.3016788363456726,
+    "median_abs_corr": 0.14181677783726687,
+    "frac_abs_gt_0p3": 0.0082431921751695,
+    "transitivity": 0.3908766304743861,
+    "mean_degree": 24.721333333333334,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 8243192.1751695,
+    "t5": 0.9837042849255365,
+    "detected_per_cell": 4526.5,
+    "genes_kept": 15657
+  },
+  "O6_wide_capture_plus_cell_state": {
+    "max_over_median": 4021.545166015625,
+    "top1": 0.3998086154460907,
+    "median_abs_corr": 0.22205620598517933,
+    "frac_abs_gt_0p3": 0.10949627653662332,
+    "transitivity": 0.6650094079765686,
+    "mean_degree": 328.3793333333333,
+    "largest_community_frac": 0.0003333333333333333,
+    "pos_over_neg_ratio": 109496276.53662331,
+    "t5": 0.9906169993357475,
+    "detected_per_cell": 3577.0,
+    "genes_kept": 13487
+  }
+}

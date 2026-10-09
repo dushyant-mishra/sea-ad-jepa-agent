@@ -1,0 +1,280 @@
+{
+  "schema": "V77_COVERAGE_STRATA_VALIDATION_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "question": "are the detection-inferred coverage strata the real studies, and how is the cache weighted?",
+  "inferred_vs_true_study_for_cells_of_production_donors": {
+    "rows": "true study from the population authority's operators",
+    "cols": "inferred stratum",
+    "table": {
+      "HVS": {
+        "HVS": 2059,
+        "NPH52": 0,
+        "SEA_AD": 0,
+        "NONE": 0
+      },
+      "NPH52": {
+        "HVS": 0,
+        "NPH52": 218,
+        "SEA_AD": 0,
+        "NONE": 0
+      },
+      "SEA_AD": {
+        "HVS": 0,
+        "NPH52": 0,
+        "SEA_AD": 1015,
+        "NONE": 0
+      }
+    },
+    "cells": 3292,
+    "agreeing": 3292,
+    "agreement": 1.0,
+    "production_donors_measured_by_more_than_one_study": []
+  },
+  "median_detected_per_cell_by_stratum": {
+    "HVS": 4427.5,
+    "NPH52": 3717.5,
+    "SEA_AD": 4960.5
+  },
+  "weighting": {
+    "calibration_cache": {
+      "cells": {
+        "HVS": 3072,
+        "NPH52": 246,
+        "SEA_AD": 1408
+      },
+      "donors_by_majority_stratum": {
+        "HVS": 62,
+        "SEA_AD": 68,
+        "NPH52": 19
+      },
+      "cell_fraction": {
+        "HVS": 0.6500211595429539,
+        "NPH52": 0.052052475666525606,
+        "SEA_AD": 0.29792636479052054
+      },
+      "donor_fraction": {
+        "HVS": 0.4161073825503356,
+        "SEA_AD": 0.4563758389261745,
+        "NPH52": 0.12751677852348994
+      },
+      "cells_per_donor": {
+        "min": 2,
+        "median": 37.0,
+        "max": 74
+      }
+    },
+    "production_full104": {
+      "cells": {
+        "SEA_AD": 4118213,
+        "NPH52": 236476,
+        "HVS": 198718
+      },
+      "donors": {
+        "HVS": 41,
+        "SEA_AD": 46,
+        "NPH52": 17
+      },
+      "cell_fraction": {
+        "SEA_AD": 0.9044245331023562,
+        "NPH52": 0.05193385963521381,
+        "HVS": 0.04364160726243009
+      },
+      "donor_fraction": {
+        "HVS": 0.3942307692307692,
+        "SEA_AD": 0.4423076923076923,
+        "NPH52": 0.16346153846153846
+      }
+    },
+    "donors_shared": 104,
+    "cache_only_donors": 45
+  },
+  "source": {
+    "cache": "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1",
+    "n_shards": 42,
+    "shard_digests": [
+      {
+        "file": "01a8084c32680dfb.counts.npz",
+        "sha256": "7fb4c75e17dad66a25a38bae62c20f631debfb8933e6396a3636dbfce4916ceb"
+      },
+      {
+        "file": "0428d814f189ca87.counts.npz",
+        "sha256": "a234c3564b23b595a0580f0a170776e7e60880206c4aef8383ba55b195dcb4a7"
+      },
+      {
+        "file": "117e1b89adbf25e4.counts.npz",
+        "sha256": "4540020dd671e4388f324d5a2381c360bf0f35b2681913682cbf9c1c1e655d50"
+      },
+      {
+        "file": "120794b6773c7cf9.counts.npz",
+        "sha256": "6652b6500ca7e48c0893a967d901f41bb74738ef92d7a95e1166953d317ea2dc"
+      },
+      {
+        "file": "15b1f72fcc49200e.counts.npz",
+        "sha256": "f3cb9bcb3acd18feebd2d012fcea2bd55c5bf8fba4f3f17259723a3c942fc579"
+      },
+      {
+        "file": "16632e1b92d2409b.counts.npz",
+        "sha256": "55c679ac3672166c1a14a0ad2492c5a6f1298701cfa32f61d4edd128b6b922a0"
+      },
+      {
+        "file": "1cf08334d3b12f5f.counts.npz",
+        "sha256": "0a8ac927e1596b8d8d33164c0b4cf62e30661532ee342bd2a84e681a468de55e"
+      },
+      {
+        "file": "246008367b5ed2fb.counts.npz",
+        "sha256": "3e0127b2ca95021d55a43c2998ea1e475a748d15551ffdad4fe98343a32b9734"
+      },
+      {
+        "file": "2bfa3b9301efa393.counts.npz",
+        "sha256": "65fe643c2d8e88614bc28dfb587c7723e949d03c77487678eb90fd70618610d0"
+      },
+      {
+        "file": "3230dd0fe3beb954.counts.npz",
+        "sha256": "ab5f9f3e78f9b100db08a41a4d8888d777097725b29eadf557551c059b03dccf"
+      },
+      {
+        "file": "46a2e68f12d45643.counts.npz",
+        "sha256": "8a19c7b71a05358b6eda65d65577153708c5b66a8d951fbcb0c7e42d42167459"
+      },
+      {
+        "file": "4777ea704d910eee.counts.npz",
+        "sha256": "5920d9a0226845336e5a2a28d7a04f76b069654850da5bd6c43def9276a74475"
+      },
+      {
+        "file": "4a3db0b3a3ee23e5.counts.npz",
+        "sha256": "e4b34412e644f42be97d2f90c246cf2ad052b52741b758f0149a673af7eb4f10"
+      },
+      {
+        "file": "4be84f5869689fe5.counts.npz",
+        "sha256": "34f44355d2724fd581b2a17b266a0314611a765466963869a00f6d39f6689858"
+      },
+      {
+        "file": "57791abbd401df2b.counts.npz",
+        "sha256": "4d8bb21c0823aafbff0cb3ccf50dce85a6f154120f7529cc51c6fcb56d083eb3"
+      },
+      {
+        "file": "58baaeadf44eab57.counts.npz",
+        "sha256": "b46375033f4e2363dadd1b30471bac800f11a1602b96d4cda5704fd72a59e6a9"
+      },
+      {
+        "file": "5a104c17a7d6e5cf.counts.npz",
+        "sha256": "6b1f86c3bbf375750e3335d1a3e598a8c3cc174e1cefb61acf7908642f8ebfe0"
+      },
+      {
+        "file": "5a1c193be7cd49cc.counts.npz",
+        "sha256": "3343c4a143e340e4445d69d31ff94f8191ef57905094e63107468c71539caace"
+      },
+      {
+        "file": "5dab94333efd8e21.counts.npz",
+        "sha256": "2e3a3e418389c081c46bc8bce4934b04898a86b4cb7361f5bd363dcd3457c974"
+      },
+      {
+        "file": "62544b4c7ab48cd1.counts.npz",
+        "sha256": "5d76ba5750f12665170f5329101516d656a53aa10cc4c56259f15754396ec9d3"
+      },
+      {
+        "file": "65db086233248c4c.counts.npz",
+        "sha256": "b4bbdce37d026e3bafac1b0dbbf4919c5de773752c6e8051eb88faec3f7c3c28"
+      },
+      {
+        "file": "697169906cb1a773.counts.npz",
+        "sha256": "adfae9c892591e743929d8aeb6874d76832b8f34f8739f49e850979091684221"
+      },
+      {
+        "file": "701d4db85fd51088.counts.npz",
+        "sha256": "cb0174a25260f63446336534294161ade1a335008781b886306b5481d60b63a4"
+      },
+      {
+        "file": "728ef515d050d789.counts.npz",
+        "sha256": "ba7a239611552074a759bbcb29331af1a68adee6f0df9f13b6cc9e2abd7f116a"
+      },
+      {
+        "file": "7da7c897180c16b5.counts.npz",
+        "sha256": "aaeb5e0d68601ec40f82f01db1e9a12d1f6c0e2cf1e1e55e42f74627efdf950d"
+      },
+      {
+        "file": "868d05542e5e7cf2.counts.npz",
+        "sha256": "454120fb1a7d3a693def16b5bfb7a00c018d477d76332e0297c83c79201bb736"
+      },
+      {
+        "file": "8a1613e724707595.counts.npz",
+        "sha256": "8f961de2abf731dc559d4f0604e5277889642ad76ddb550acb1cbc4720a4e268"
+      },
+      {
+        "file": "97c509331469cc92.counts.npz",
+        "sha256": "8dc9429276682c376da1192047211c088e910eb9622746f16a3ef023b134d70c"
+      },
+      {
+        "file": "9fc20935b65302ee.counts.npz",
+        "sha256": "9caaaf291fe6fb8ac04104723ddb247063aaa508606788fd1e081d82c51af3a7"
+      },
+      {
+        "file": "a410358f191a3e4c.counts.npz",
+        "sha256": "ba5292b3eb2865d547379f7a97cdae82b4a2e0a1206742f03144d75f5fddbf68"
+      },
+      {
+        "file": "a6a34c7d7c6723a0.counts.npz",
+        "sha256": "4a77a21902e51c28f41ed3624d823ec94177b675179cbc69cdf37394f51540aa"
+      },
+      {
+        "file": "bbffd755c3f71256.counts.npz",
+        "sha256": "c07fc6b1255ec696ab93cd1a28f32603f8eeced8d965decf770524f06576526e"
+      },
+      {
+        "file": "c70df1e5200f419f.counts.npz",
+        "sha256": "2dcc49f894bee8c6274a3ca85244f5c35eaffeb4812ffb39119604352754355d"
+      },
+      {
+        "file": "c9d1fc26b487b582.counts.npz",
+        "sha256": "267b8f4f3b3b8653b7bf184808e04657104657128a93128b670397fec04e0efa"
+      },
+      {
+        "file": "d35f9b260b727137.counts.npz",
+        "sha256": "a974943c9d7fe6d45cc33f96c8c6caa365de84198e2918ac5401270961514feb"
+      },
+      {
+        "file": "dd26eaeaed7d104f.counts.npz",
+        "sha256": "7aadb0274a75f6cf46ad967a49acd0aa4a9c3de688241e98534728c94a2e3483"
+      },
+      {
+        "file": "de88e08b50c44dbe.counts.npz",
+        "sha256": "645df92bab23d274048c4d7fa15b55a13ec5c2f5daadde0531aa807d2712aade"
+      },
+      {
+        "file": "dfcb594c1abeb0c0.counts.npz",
+        "sha256": "72eb1e3ea01f6b57c28a8f93f6d6a287e8f70fa4654440d1fcf84afdd5fc497d"
+      },
+      {
+        "file": "e31a8c262e8be576.counts.npz",
+        "sha256": "09bc5d8b830b358e178e6b3d317aa2bd8761d19018dcaa16b09cf0fb651a3c66"
+      },
+      {
+        "file": "e38be9d52b6f8e0b.counts.npz",
+        "sha256": "1fa3a1f4dfddf1c84b776f109e5bfb803f59ae12129d76f72d09d30105440da8"
+      },
+      {
+        "file": "e5ef92fa6bf68bb4.counts.npz",
+        "sha256": "9b0d2ad075750f52c964c21584d9fa0ab7ef02f7df2f42d6cde8cea5514f6647"
+      },
+      {
+        "file": "fa1d6cf6e74837f2.counts.npz",
+        "sha256": "4066948f9b26fbf0a59a1f6716b4c5665a61b6d4dd659271d8de72638b96c2b1"
+      }
+    ],
+    "population_authority": "results\\v64\\V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json",
+    "pathology_blind": true,
+    "train_only": true,
+    "read_only": true,
+    "metadata_csvs_opened": false
+  },
+  "command": "python scripts/v77/validate_v77_coverage_strata.py --out results/v77/s174_replay/V77_COVERAGE_STRATA_VALIDATION_V1.json --cache D:/Jepa project/data/cache/s174_rebuilt_real_train_v1",
+  "source_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "scripts/v77/validate_v77_coverage_strata.py": "13d1a64bd51d722d1c25f12c21bbe02d99c3d8a2d40e34a28f90718ea43175bb",
+    "scripts/v77/build_v77_real_calibration.py": "81d516704a8414084a11742ab3ea7aeed0aca64b35077a5e2f49b3c34d097504",
+    "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7",
+    "scripts/v64/v73_full104_population_geometry.py": "5905c88c791fa59e208f703382ff68e395c4c2cbba5fee6bc49c8d81a9dd36df"
+  },
+  "no_training_performed": true
+}

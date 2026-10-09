@@ -1,0 +1,117 @@
+{
+  "schema": "V77_DYNAMIC_RANGE_VERDICT_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "recorded_utc": "2026-10-06T21:02:51Z",
+  "head": "5c644cedd0b52a1507a76c64ffce95db00f9481d",
+  "tournament_receipt": {
+    "path": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V1.json",
+    "sha256": "044e3229edeeb2668c934056da4b430875e5acfc6209228a452c162c8f30e468"
+  },
+  "VERDICT": "HYPOTHESIS_CONFIRMED__ALL_ARMS_REJECTED_BY_PREDECLARED_RULES",
+  "THE_HYPOTHESIS_IS_CONFIRMED": {
+    "claim": "insufficient latent rate dynamic range is why the topology did not survive Poisson realization",
+    "evidence": "holding the capture parameterization, cell state, realization rule, scoring, seed and evaluation universe fixed, and varying ONLY dynamic range, transitivity rises monotonically: 0.3555 at the 3.3-fold baseline, 0.7881 at 12-fold, 0.9072 at 55-fold, 0.9199 at 245-fold and 0.9303 under true on/off switching. Mean degree rises 8.4 to 929.",
+    "the_real_transitivity_envelope_is_crossed": "DR3, DR4 and DR5 all EXCEED the real 0.8871, so the mechanism is not merely sufficient, it overshoots",
+    "structural_arm_DR5": "true on/off switching, where an off module is driven to a silent floor rather than reduced, gives the highest transitivity at 0.9303, consistent with the near-absent to clearly-present excursion the real detection topology implies"
+  },
+  "BUT_EVERY_ARM_IS_REJECTED": {
+    "rule_applied": "the rejection rules declared before any result was seen",
+    "per_arm": {
+      "DR1_scale_1p20_baseline": {
+        "topology_transitivity": 0.35545503665921263,
+        "mean_degree": 8.364666666666666,
+        "frac_abs_gt_0p3": 0.0027891519395354006,
+        "abundance_max_median": 26753.361328125,
+        "median_detected_per_cell": 2082.5,
+        "t5": 0.9888366325316991,
+        "REJECTED": true,
+        "rejection_reasons": [
+          "abundance max/median 26753.4 outside frozen envelope [1804.8, 2187.7]",
+          "depth marginal distorted: 2082 detected per cell against a real 4467"
+        ]
+      },
+      "DR2_scale_2p50": {
+        "topology_transitivity": 0.7880608343370822,
+        "mean_degree": 529.384,
+        "frac_abs_gt_0p3": 0.17652017339113038,
+        "abundance_max_median": 30848.2890625,
+        "median_detected_per_cell": 1882.5,
+        "t5": 1.07211776924387,
+        "REJECTED": true,
+        "rejection_reasons": [
+          "abundance max/median 30848.3 outside frozen envelope [1804.8, 2187.7]",
+          "abundance WORSENS versus the baseline arm (30848.3 against 26753.4)",
+          "depth marginal distorted: 1882 detected per cell against a real 4467"
+        ]
+      },
+      "DR3_scale_4p00": {
+        "topology_transitivity": 0.907190017129882,
+        "mean_degree": 888.672,
+        "frac_abs_gt_0p3": 0.296322774258086,
+        "abundance_max_median": 32790.96875,
+        "median_detected_per_cell": 1741.5,
+        "t5": 1.220195831523209,
+        "REJECTED": true,
+        "rejection_reasons": [
+          "abundance max/median 32791.0 outside frozen envelope [1804.8, 2187.7]",
+          "abundance WORSENS versus the baseline arm (32791.0 against 26753.4)",
+          "depth marginal distorted: 1742 detected per cell against a real 4467",
+          "T5 drift to 1.2202 against a real 1.0120"
+        ]
+      },
+      "DR4_scale_5p50": {
+        "topology_transitivity": 0.919931651984067,
+        "mean_degree": 929.2753333333334,
+        "frac_abs_gt_0p3": 0.3098617316883406,
+        "abundance_max_median": 32807.3671875,
+        "median_detected_per_cell": 1686.0,
+        "t5": 1.2385945698763021,
+        "REJECTED": true,
+        "rejection_reasons": [
+          "abundance max/median 32807.4 outside frozen envelope [1804.8, 2187.7]",
+          "abundance WORSENS versus the baseline arm (32807.4 against 26753.4)",
+          "depth marginal distorted: 1686 detected per cell against a real 4467",
+          "T5 drift to 1.2386 against a real 1.0120"
+        ]
+      },
+      "DR5_true_on_off": {
+        "topology_transitivity": 0.9302777214224387,
+        "mean_degree": 879.2833333333333,
+        "frac_abs_gt_0p3": 0.29319217516950097,
+        "abundance_max_median": 34382.79296875,
+        "median_detected_per_cell": 1566.0,
+        "t5": 1.1848561859203859,
+        "REJECTED": true,
+        "rejection_reasons": [
+          "abundance max/median 34382.8 outside frozen envelope [1804.8, 2187.7]",
+          "abundance WORSENS versus the baseline arm (34382.8 against 26753.4)",
+          "depth marginal distorted: 1566 detected per cell against a real 4467",
+          "T5 drift to 1.1849 against a real 1.0120"
+        ]
+      }
+    },
+    "the_conflict_has_MOVED_NOT_DISAPPEARED": "dynamic range buys transitivity and pays for it in the abundance and depth marginals. Driving module-off genes toward silence concentrates counts into fewer genes, so abundance max/median rises from 26753 at baseline to 34383 under on/off switching against a frozen envelope of 1805 to 2188, and median detected genes per cell falls to 1566 to 2082 against a real 4467.",
+    "degree_and_correlation_also_only_half": "mean degree reaches 929 against a real 1844, and the fraction above 0.3 reaches 0.3099 against a real 0.6148, so even the arms that overshoot transitivity are only half way on connectivity",
+    "t5_drift": "DR3 1.2202, DR4 1.2386 and DR5 1.1849 against a real 1.0120. This is NOT the class-separation cheat the guard exists to catch, which would push the ratio below 1; within-class correlation is exceeding pooled. It is recorded as drift from real, not as a guard violation."
+  },
+  "WHAT_THIS_ESTABLISHES_AND_WHAT_IT_DOES_NOT": {
+    "established": [
+      "dynamic range is the operative lever for topology under Poisson realization",
+      "the previous causal narrowing was correct in direction",
+      "true on/off switching is mechanistically the strongest variant"
+    ],
+    "not_established": [
+      "that any member of this family can satisfy the joint envelope",
+      "that abundance and topology are jointly reachable; the conflict has only moved from abundance-versus-coupling to abundance-versus-dynamic-range"
+    ],
+    "superseded": "nothing; the previous corrections stand"
+  },
+  "NEXT_FALSIFIABLE_TARGET": "the new conflict is concentration. Large excursions silence genes, which concentrates counts and empties cells. A candidate mechanism is that real silencing is MODULE-LOCAL rather than global: a cell silences the modules it is not using while the rest of the transcriptome retains its abundance and depth. That predicts high transitivity WITHOUT the abundance concentration seen here, and it is testable with the same frozen panel.",
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "optimizer_or_EMA_executed": false,
+    "stage_A": "NOT_AUTHORIZED",
+    "production_world_rebuild": "NOT_AUTHORIZED",
+    "promotion": "NOT_QUALIFIED"
+  }
+}

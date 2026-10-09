@@ -1,0 +1,23 @@
+{
+  "schema": "V77_REPRODUCTION_RECEIPT_V1",
+  "what": "real TRAIN topology calibration after moving T5 into class_conditional_t5 (S140)",
+  "frozen": {
+    "path": "results/v77/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json",
+    "sha256": "8039d7d4a4d982b8d9d8a633ffd01e1a08f1a50c069a009f8e3fb428f63625b7",
+    "bytes": 10067
+  },
+  "reproduced": {
+    "path": "D:/jepa_v77_synthetic_custody_20261005/repro_20261006/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.reproduced.json",
+    "sha256": "8039d7d4a4d982b8d9d8a633ffd01e1a08f1a50c069a009f8e3fb428f63625b7",
+    "bytes": 10067
+  },
+  "byte_identical": true,
+  "parsed_identical": true,
+  "n_leaves": 155,
+  "differing_leaves": [],
+  "n_differing_leaves": 0,
+  "producer_command": "python scripts/v77/build_v77_topology_calibration.py --out D:/jepa_v77_synthetic_custody_20261005/repro_20261006/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.reproduced.json",
+  "source_commit": "adaa07fec82a3a5254c899aaf0dd8dbf3202d618",
+  "provenance_status": "CLEAN_COMMITTED_HEAD",
+  "rule": "byte identity, decided before the comparison; no tolerance is applied after seeing it"
+}

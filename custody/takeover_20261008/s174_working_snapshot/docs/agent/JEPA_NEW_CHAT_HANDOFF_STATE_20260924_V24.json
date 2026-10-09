@@ -1,0 +1,46 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V24",
+  "date": "2026-09-24",
+  "status": "CURRENT_NO_TRAINING_OR_N1_AUTHORITY",
+  "main": "992887776602de59c516798b0e04b9d9a0065d20",
+  "active": {
+    "experimental_pr77": "c81ad41b485f16d4aa82dbe4cffca5d23aa93927",
+    "full104_adapter_merge": "64148023740d57777666faff15395262d4b0e3da",
+    "gse254205_pr86": "0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91",
+    "gse301119_support_pr91": "56600f66492b18af20edcfe5d11761d2cdca9383",
+    "gse311359_stop_pr92": "bc09c0f432db6e17bec3047baeb0812975043937",
+    "gse240609_pr94": "9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf"
+  },
+  "superseded": {
+    "pr99": "STALE_DO_NOT_MERGE_AS_IS",
+    "pr100": "SUPERSEDED_BY_PR102",
+    "pr101": "MERGED_INTO_PR77",
+    "pr102": "MERGED_INTO_PR77"
+  },
+  "restrictions": [
+    "TRAINING_OFF",
+    "AUDIT_B_N1_UNOPENED",
+    "PROTECTED_FULL104_OUTCOMES_UNOPENED",
+    "D_SHARED_G5_UNOPENED",
+    "RARE_TAIL_MOLECULAR_UNOPENED",
+    "THERAPEUTIC_RANKING_OFF"
+  ],
+  "gse178317": {
+    "physical_v2_result": "NOT_QUALIFIED_OR_COMMITTED_AT_AUDITED_HEAD",
+    "scope": "DEVELOPMENT_ONLY",
+    "biological_uncertainty_estimable": false,
+    "prospective_confirmation_eligible": false
+  },
+  "benchmark_overlap": {
+    "gene_space": "MEASURED",
+    "donor_cell_line_overlap": "NOT_CHECKED",
+    "cell_barcode_overlap": "NOT_CHECKED"
+  },
+  "next": [
+    "GSE178317_V2_INPUT_BINDING_AND_PHYSICAL_AUDIT",
+    "BENCHMARK_DONOR_CELL_LINE_BARCODE_OVERLAP",
+    "AUTHENTICATED_CROSS_STUDY_ANNOTATION",
+    "GSE254205_AND_GSE240609_PHYSICAL_V2",
+    "REMAINING_GSE254205_ASSAYS"
+  ]
+}

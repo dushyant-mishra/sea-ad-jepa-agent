@@ -1,0 +1,53 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2_ADDENDUM_2",
+  "amends": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json and ADDENDUM_1",
+  "record_type": "AUDIT RECORD, written by hand",
+  "recorded_utc": "2026-10-07T02:03:12Z",
+  "head_when_recorded": "a3e272ba5fcab65f3b0f613b1ba32c53df2e5ad2",
+  "ACCEPTED_BASELINE": {
+    "commit": "a3e272ba5fcab65f3b0f613b1ba32c53df2e5ad2",
+    "status": "SYNTHETIC_PLUMBING_CHECKPOINT, accepted by the reviewer lane and the owner on 2026-10-06",
+    "caveats": [
+      "the 55 of 55 V77 test pass at a3e272ba is LOCAL execution evidence on this machine (Python 3.9.7, numpy 1.24.2, scipy 1.10.1, pytest 6.2.4); GitHub shows no check runs and no statuses for that commit",
+      "raw source_index and operator_index are authenticated measurement context, not authorized learned covariates (below)"
+    ],
+    "preserved_unchanged": "results/v77/REHEARSAL_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1.json, sha256 e5062dbe2f5a26e958a785104329beb0f710c1efd4903eea9fa6934a346ff76c"
+  },
+  "OBSERVATION_CONTEXT_RESTRICTION": {
+    "raw_identity_fields": [
+      "source_index",
+      "operator_index"
+    ],
+    "status": "AUTHENTICATED_MEASUREMENT_CONTEXT__NOT_AN_AUTHORIZED_LEARNED_COVARIATE",
+    "production_observation_context": "requires real-data scientific-lane approval; should encode defensible measurement properties, not unrestricted dataset identity",
+    "rationale": "a model given raw study or operator identity can memorise which experiment produced a cell instead of learning the measurement process; in pooled real TRAIN cells study membership is the strongest structure in the data (S149), so this is the most available shortcut",
+    "where_recorded": [
+      "scripts/v77/v77_qualification_bridge.py docstring and OBSERVATION_CONTEXT_RESTRICTION, written into every future bridge receipt",
+      "this register"
+    ],
+    "plumbing_exception": "the ZERO_UPDATE plumbing qualification passes them as LAWFUL_OPERATOR_CONTEXT only because it computes no representation"
+  },
+  "NEW_ENTRY": {
+    "id": "S169",
+    "introduced": "4e95aac4 address universe (registry resolution)",
+    "defect": "the canonical address registry, 24,946,770 bytes, sha256 7d61ed7b..., is not in the current tree; the address universe found it through a fallback path on this machine",
+    "why_it_matters": "every V77 world build and 10 of the 55 V77 tests depended on a file whose location was recorded nowhere a clean checkout could follow; the bytes were in fact recoverable from GitHub, from the commit that froze them (95d2cafe, in main's history), but nothing pointed there",
+    "caught": "while scoping remote CI",
+    "caught_by": "SELF_AUDIT",
+    "fix": "the V77 CI workflow restores the registry from 95d2cafe and verifies its SHA-256 before any test; the fallback path in the address universe is left unchanged here",
+    "status": "MITIGATED_FOR_CI__CUSTODY_POINTER_RECORDED"
+  },
+  "TEST_EVIDENCE_PLAN": {
+    "local_at_a3e272ba": "55 of 55 passed (local)",
+    "remote": "the whole V77 suite, 55 tests, on GitHub Actions with zero skips allowed, the registry restored from 95d2cafe and the shared interface checked out at f6d63b2f; result recorded in the Phase 1 checkpoint receipt"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "zero_update_only": true,
+    "target_winner": null,
+    "estimand_selected": null,
+    "threshold_selected": null,
+    "representation_winner": null,
+    "runtime_work": false
+  }
+}

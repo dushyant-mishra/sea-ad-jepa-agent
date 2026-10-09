@@ -1,0 +1,324 @@
+{
+ "head": "86907199c6d564476a4d44ce9206b9e83971ad5c",
+ "interface": {
+  "commit": "f6d63b2f53209786e3c45e7545b9bd442838a3d4",
+  "package_file_sha256": {
+   "__init__.py": "f6412a61d32913c782041749a34533e1fe5044535cb7ac9f37d84cf22bec2d86",
+   "authorities.py": "e7860110b4b8e782ddecba96e297bba8b89610c82d2246d725e7ce24b021ee78",
+   "canonical.py": "6a4629a25a16635ca3bdab73cb64f57e7e40a285206672a981a42b06931780cb",
+   "identity.py": "ba11931eff9a3beb7c890c0a39c7cce3cf664d16a983ba0f54f418d1d1ac2788",
+   "lifecycle.py": "f2a9dd718c861348dd79a39ecc3d8604633cd78953829c406fe9c8172558ee25",
+   "oracle.py": "d4f2c555be0c63cca737eea87b6d6ad6a9869b67dbbf55c278d4765d8660f334",
+   "pipeline.py": "1f8e52f36aad6c6df3dea668498044f36c79781914883440eb0ae26dbe844e4f",
+   "protocol.py": "4c00b5fd996cc220cec4fa201a390ac23b5e5c439046f507a721020485cd993c",
+   "qsafe.py": "a7b77b432a151a98b8d3037c3313860291c50441e7c2b29ef782ff53f435a756",
+   "receipts.py": "cfb653b75b2df43b0622e1ae84161d37ec5d75bd28d654987e1873090a2c928c",
+   "visibility.py": "6686a345f9f8ff7c25312497362ccc9ebd251ce4b8bc4399d593dabe42925674"
+  }
+ },
+ "arms": {
+  "NULL": {
+   "full_world": {
+    "n_cells": 2000,
+    "adapter_digests": {
+     "model": "99d0588d7cd64e1774538b0d7f66b0a6a0ed2e4575cdf73a270d42f41801bcce",
+     "operator_context": "e3dc552c9d817a610b589c55618832e731761477b20456de2e542443ba05968c",
+     "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+     "readout": "a0207dca40471709ed1320920f0412f3fa5adb53ae54aed2ecaa5c48b4bab3b0"
+    }
+   },
+   "rehearsal_batch": {
+    "n_cells": 500,
+    "n_features": 19569,
+    "adapter_model_digest": "ace72cd450f4a7200fcaa6dd29ece0907d3b859fafbb195500ad0924fefb61d3",
+    "feature_identity_digest": "90fcbedf75893ff9bb8da4ac94b70d0d3b0b5a461d519835c65943ff9b5c0c0b",
+    "operator_identity_digest": "03b920e4d13d1ad19eab93bfa0471a73bded3e526cb48bad2262f0796ee9c102",
+    "measurement_support_digest": "f167956bd0a7ecc96c8b524556ea17f612381f2b848e8d6ea40c08995372be4c",
+    "batch_scientific_identity_digest": "df60e2515bd284d4e067e2d5d7122e221db1c7405394ac636d16045a151c70e9",
+    "synthetic_realization_id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION",
+    "field_visibility": {
+     "gene_ids": "MODEL_VISIBLE",
+     "student_expression": "MODEL_VISIBLE",
+     "measurement_mask": "MODEL_VISIBLE",
+     "hidden_target_mask": "MODEL_VISIBLE",
+     "source_index": "LAWFUL_OPERATOR_CONTEXT",
+     "operator_index": "LAWFUL_OPERATOR_CONTEXT",
+     "visible_library_size": "LAWFUL_OPERATOR_CONTEXT",
+     "n_measured": "LAWFUL_OPERATOR_CONTEXT",
+     "donor_id": "SPLIT_ONLY",
+     "query_counts": "READOUT_ONLY",
+     "full_library_size": "READOUT_ONLY",
+     "global_cell_index": "PROVENANCE_ONLY",
+     "observer_manifest_sha256": "PROVENANCE_ONLY"
+    }
+   },
+   "zero_update_plumbing": {
+    "output_digest": "010d05d9c786224911542d9a325b063afcfda606cd9d3ed2f3cdbb82f3ef3904",
+    "provenance_receipt_digest": "16138d72dacff92282e80179582d888bd7d9fca7857dcbf0eb75f4866551bdbe",
+    "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+    "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+    "seen_by_representation_function": {
+     "model_inputs": [
+      "gene_ids",
+      "hidden_target_mask",
+      "measurement_mask",
+      "student_expression"
+     ],
+     "lawful_operator_context": [
+      "n_measured",
+      "operator_index",
+      "source_index",
+      "visible_library_size"
+     ],
+     "readout_only": [
+      "full_library_size",
+      "query_counts"
+     ],
+     "split_only": [
+      "donor_id"
+     ]
+    }
+   },
+   "hidden_value_invariance": {
+    "hidden_entries_changed": 234798,
+    "model_digest_unchanged": true,
+    "operator_context_digest_unchanged": true,
+    "split_digest_unchanged": true,
+    "readout_digest_changed": true,
+    "leaky_control_digest_changed": true,
+    "verdict": "PASS",
+    "reading": "the probe passes the adapter and refuses the leaky control: changing only hidden values moves the readout and the leaky view, never the model view or the context"
+   }
+  },
+  "BIO": {
+   "full_world": {
+    "n_cells": 2000,
+    "adapter_digests": {
+     "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+     "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+     "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+     "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    }
+   },
+   "rehearsal_batch": {
+    "n_cells": 500,
+    "n_features": 19569,
+    "adapter_model_digest": "e90791efa8bc94bca11665134eaa2c2a9be86b8abef3cd1b09d4567029c3460b",
+    "feature_identity_digest": "90fcbedf75893ff9bb8da4ac94b70d0d3b0b5a461d519835c65943ff9b5c0c0b",
+    "operator_identity_digest": "03b920e4d13d1ad19eab93bfa0471a73bded3e526cb48bad2262f0796ee9c102",
+    "measurement_support_digest": "f34bb77b208f6c435c559091d3e2c7b8c6926ed41d14594055b0667841750cf1",
+    "batch_scientific_identity_digest": "6d33e0399c82b59929dea887608db10da14357e47c7ba7618a40286682a48e8e",
+    "synthetic_realization_id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION",
+    "field_visibility": {
+     "gene_ids": "MODEL_VISIBLE",
+     "student_expression": "MODEL_VISIBLE",
+     "measurement_mask": "MODEL_VISIBLE",
+     "hidden_target_mask": "MODEL_VISIBLE",
+     "source_index": "LAWFUL_OPERATOR_CONTEXT",
+     "operator_index": "LAWFUL_OPERATOR_CONTEXT",
+     "visible_library_size": "LAWFUL_OPERATOR_CONTEXT",
+     "n_measured": "LAWFUL_OPERATOR_CONTEXT",
+     "donor_id": "SPLIT_ONLY",
+     "query_counts": "READOUT_ONLY",
+     "full_library_size": "READOUT_ONLY",
+     "global_cell_index": "PROVENANCE_ONLY",
+     "observer_manifest_sha256": "PROVENANCE_ONLY"
+    }
+   },
+   "zero_update_plumbing": {
+    "output_digest": "010d05d9c786224911542d9a325b063afcfda606cd9d3ed2f3cdbb82f3ef3904",
+    "provenance_receipt_digest": "3785517b8d20c10e76e0437e2ff809eeb58e77860e45b1c1c263f51a05d4f9d3",
+    "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+    "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+    "seen_by_representation_function": {
+     "model_inputs": [
+      "gene_ids",
+      "hidden_target_mask",
+      "measurement_mask",
+      "student_expression"
+     ],
+     "lawful_operator_context": [
+      "n_measured",
+      "operator_index",
+      "source_index",
+      "visible_library_size"
+     ],
+     "readout_only": [
+      "full_library_size",
+      "query_counts"
+     ],
+     "split_only": [
+      "donor_id"
+     ]
+    }
+   },
+   "hidden_value_invariance": {
+    "hidden_entries_changed": 234942,
+    "model_digest_unchanged": true,
+    "operator_context_digest_unchanged": true,
+    "split_digest_unchanged": true,
+    "readout_digest_changed": true,
+    "leaky_control_digest_changed": true,
+    "verdict": "PASS",
+    "reading": "the probe passes the adapter and refuses the leaky control: changing only hidden values moves the readout and the leaky view, never the model view or the context"
+   }
+  },
+  "TWIN_EXACT": {
+   "full_world": {
+    "n_cells": 2000,
+    "adapter_digests": {
+     "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+     "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+     "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+     "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    }
+   },
+   "rehearsal_batch": {
+    "n_cells": 500,
+    "n_features": 19569,
+    "adapter_model_digest": "e90791efa8bc94bca11665134eaa2c2a9be86b8abef3cd1b09d4567029c3460b",
+    "feature_identity_digest": "90fcbedf75893ff9bb8da4ac94b70d0d3b0b5a461d519835c65943ff9b5c0c0b",
+    "operator_identity_digest": "03b920e4d13d1ad19eab93bfa0471a73bded3e526cb48bad2262f0796ee9c102",
+    "measurement_support_digest": "f34bb77b208f6c435c559091d3e2c7b8c6926ed41d14594055b0667841750cf1",
+    "batch_scientific_identity_digest": "6d33e0399c82b59929dea887608db10da14357e47c7ba7618a40286682a48e8e",
+    "synthetic_realization_id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION",
+    "field_visibility": {
+     "gene_ids": "MODEL_VISIBLE",
+     "student_expression": "MODEL_VISIBLE",
+     "measurement_mask": "MODEL_VISIBLE",
+     "hidden_target_mask": "MODEL_VISIBLE",
+     "source_index": "LAWFUL_OPERATOR_CONTEXT",
+     "operator_index": "LAWFUL_OPERATOR_CONTEXT",
+     "visible_library_size": "LAWFUL_OPERATOR_CONTEXT",
+     "n_measured": "LAWFUL_OPERATOR_CONTEXT",
+     "donor_id": "SPLIT_ONLY",
+     "query_counts": "READOUT_ONLY",
+     "full_library_size": "READOUT_ONLY",
+     "global_cell_index": "PROVENANCE_ONLY",
+     "observer_manifest_sha256": "PROVENANCE_ONLY"
+    }
+   },
+   "zero_update_plumbing": {
+    "output_digest": "010d05d9c786224911542d9a325b063afcfda606cd9d3ed2f3cdbb82f3ef3904",
+    "provenance_receipt_digest": "57e562ecb245cdd2a9bd491cae7304173372e51dc064e4e98ec3718992df809e",
+    "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+    "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+    "seen_by_representation_function": {
+     "model_inputs": [
+      "gene_ids",
+      "hidden_target_mask",
+      "measurement_mask",
+      "student_expression"
+     ],
+     "lawful_operator_context": [
+      "n_measured",
+      "operator_index",
+      "source_index",
+      "visible_library_size"
+     ],
+     "readout_only": [
+      "full_library_size",
+      "query_counts"
+     ],
+     "split_only": [
+      "donor_id"
+     ]
+    }
+   },
+   "hidden_value_invariance": {
+    "hidden_entries_changed": 234942,
+    "model_digest_unchanged": true,
+    "operator_context_digest_unchanged": true,
+    "split_digest_unchanged": true,
+    "readout_digest_changed": true,
+    "leaky_control_digest_changed": true,
+    "verdict": "PASS",
+    "reading": "the probe passes the adapter and refuses the leaky control: changing only hidden values moves the readout and the leaky view, never the model view or the context"
+   }
+  },
+  "TWIN_OPERATOR": {
+   "full_world": {
+    "n_cells": 2000,
+    "adapter_digests": {
+     "model": "9ca19c541772d120008ded8fd7d8057ce032490642991f12a98c2001d6a17576",
+     "operator_context": "550d9e36cee4a46a2b78ee6ec8f49a1386805e24832beb7c178188dcad67e573",
+     "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+     "readout": "5b676e8877c362505d9e33b26c2dc33fba61a8ad7e1d2585da2a51f12e369b2d"
+    }
+   },
+   "rehearsal_batch": {
+    "n_cells": 500,
+    "n_features": 19569,
+    "adapter_model_digest": "754809d81be3c1cc9ea5b5bfe1f0d08cb3722afcd44122d9838fb8ea40fcee79",
+    "feature_identity_digest": "90fcbedf75893ff9bb8da4ac94b70d0d3b0b5a461d519835c65943ff9b5c0c0b",
+    "operator_identity_digest": "03b920e4d13d1ad19eab93bfa0471a73bded3e526cb48bad2262f0796ee9c102",
+    "measurement_support_digest": "d8e64dd5702e07efe970eac7bc833fb9e7ca1523aa8e43c21fa25c13e1cef696",
+    "batch_scientific_identity_digest": "0f9eae5cb16f9cdd26402331083a9acd4d33d7d10adf360f74b546c9b9bcb61d",
+    "synthetic_realization_id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION",
+    "field_visibility": {
+     "gene_ids": "MODEL_VISIBLE",
+     "student_expression": "MODEL_VISIBLE",
+     "measurement_mask": "MODEL_VISIBLE",
+     "hidden_target_mask": "MODEL_VISIBLE",
+     "source_index": "LAWFUL_OPERATOR_CONTEXT",
+     "operator_index": "LAWFUL_OPERATOR_CONTEXT",
+     "visible_library_size": "LAWFUL_OPERATOR_CONTEXT",
+     "n_measured": "LAWFUL_OPERATOR_CONTEXT",
+     "donor_id": "SPLIT_ONLY",
+     "query_counts": "READOUT_ONLY",
+     "full_library_size": "READOUT_ONLY",
+     "global_cell_index": "PROVENANCE_ONLY",
+     "observer_manifest_sha256": "PROVENANCE_ONLY"
+    }
+   },
+   "zero_update_plumbing": {
+    "output_digest": "010d05d9c786224911542d9a325b063afcfda606cd9d3ed2f3cdbb82f3ef3904",
+    "provenance_receipt_digest": "6dec16f4f495838178e41369d260a38884a4ac407b58b5e3b04327ca8065e78b",
+    "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+    "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN",
+    "seen_by_representation_function": {
+     "model_inputs": [
+      "gene_ids",
+      "hidden_target_mask",
+      "measurement_mask",
+      "student_expression"
+     ],
+     "lawful_operator_context": [
+      "n_measured",
+      "operator_index",
+      "source_index",
+      "visible_library_size"
+     ],
+     "readout_only": [
+      "full_library_size",
+      "query_counts"
+     ],
+     "split_only": [
+      "donor_id"
+     ]
+    }
+   },
+   "hidden_value_invariance": {
+    "hidden_entries_changed": 235070,
+    "model_digest_unchanged": true,
+    "operator_context_digest_unchanged": true,
+    "split_digest_unchanged": true,
+    "readout_digest_changed": true,
+    "leaky_control_digest_changed": true,
+    "verdict": "PASS",
+    "reading": "the probe passes the adapter and refuses the leaky control: changing only hidden values moves the readout and the leaky view, never the model view or the context"
+   }
+  }
+ },
+ "executor_sha256": {
+  "scripts/v77/build_v77_runtime_handoff.py": "367752952358c7a4c77af2cce2bd4a31a075a75a33e147ce280369de93ec75f7",
+  "scripts/v77/v77_qualification_bridge.py": "a303c1bb00107761ab3af53df1b34242c8befcdbef857e4dcb990d422c11862a",
+  "scripts/v77/v77_synthetic_batch_adapter.py": "15092b16d1a71241e8e5883ff228b5d89595073d79e8df70adaf63641103c4d6",
+  "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+ },
+ "command": "python scripts/v77/build_v77_runtime_handoff.py --worlds-dir D:/jepa_v77_synthetic_custody_20261005/s157_challenge_v1 --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --interface-worktree D:/jepa_wt_qualification_iface_f6d63b2f --rehearsal-cells 500 --out results/v77/V77_RUNTIME_HANDOFF_RUN_V1.json"
+}

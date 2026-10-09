@@ -1,0 +1,142 @@
+{
+  "schema": "V5_STAGE_A_REGISTRY_BINDING_FAIL_CLOSED_CONTRACT_V1",
+  "date": "2026-09-16",
+  "status": "FAIL_CLOSED__REGISTRY_PROVENANCE_RECOVERED_BUT_AUTHORITY_BINDING_ABSENT",
+  "disposition": "NO_PROVIDER_IMPLEMENTED",
+  "why_fail_closed": [
+    "Registry provenance is recovered and independently verified (section recovered_provenance).",
+    "But no current authority declares WHICH artifact is the canonical target-address registry.",
+    "TargetAddressQueryAuthorityV1 requires the field address_registry_authority_sha256; that field",
+    "is populated nowhere in the repository. Implementing a provider would therefore require",
+    "choosing the registry myself, which is exactly the improvisation the task forbids."
+  ],
+
+  "recovered_provenance": {
+    "candidate_registry": {
+      "path": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "size_bytes": 24946770,
+      "tracked_in_git": false,
+      "rows": 41238,
+      "columns": 15,
+      "ordering": "molecular_address_index contiguous 0..41237, strictly increasing",
+      "identifier": "molecular_address_id unique across all 41238 rows (41238 distinct)",
+      "sufficient_to_replay_an_address_id_exactly": true,
+      "name_caveat": "file is named 'candidate' and lives under a v4 results path; NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY"
+    },
+    "full104_population_binding": {
+      "materialization_contract": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/MATERIALIZATION_CONTRACT.json",
+      "declared_addresses": 41238,
+      "declared_cells": 4553407,
+      "declared_donors": 104,
+      "declared_operators": 42,
+      "declared_block_rows": 512,
+      "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "block_manifest_sha256_verified_on_disk": true,
+      "blocks": 8915,
+      "cells_by_source": {"HVS": 198718, "NPH52": 236476, "SEA_AD": 4118213},
+      "parent_artifacts": {
+        "selection_sha256": "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b",
+        "selection_manifest_sha256": "3db3614bf544b183143f39b27bad516b3a7a75284df4b2410d9f3e99f0b0842e",
+        "freeze_manifest_sha256": "a92e436142c2ac85ae51756640d9f1961c5a17955a49951dbef2d5b8d138afb2",
+        "code_sha256": "575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b",
+        "asset_authentication_sha256": "d8bccf6c315b928ea5fc5f384c6eaa7eb7c4690dc5f35e4eb6b3f7161e5aa9ea"
+      },
+      "lineage_proof": {
+        "method": "read six real Level-4 count blocks spanning operators 0..41 and checked their CSR column indices",
+        "blocks_probed": ["op00/block-00000", "op25/block-00297", "op28/block-00441", "op31/block-00708", "op33/block-00030", "op41/block-00248"],
+        "declared_block_sha256_verified": "6 of 6 MATCH",
+        "observed_address_index_range": [0, 41236],
+        "within_registry_space_0_41237": true,
+        "conclusion": "the FULL104 Level-4 expression blocks index into exactly this 41238-address universe"
+      }
+    },
+    "observation_state_parent": {
+      "path": "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "arrays": {"states": "uint8 (42, 41238)", "molecular_address_index": "int32 (41238,)", "operator_index": "int32 (42,)", "matrix_id": "<U61 (42,)", "state_names": "<U29 (3,)"},
+      "state_names": ["STRUCTURALLY_UNMEASURED", "MEASURED_SCALAR", "MEASURED_COLLISION_UNRESOLVED"],
+      "common_core_derivation": "addresses whose state is identical across all 42 operators",
+      "common_core_count": 17186,
+      "common_core_all_measured_scalar": true,
+      "matches_expected_17186": true,
+      "caveat": "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY"
+    },
+    "independent_registry_properties": {
+      "source": "docs/history/results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json (tracked)",
+      "dataset_or_source_family_used_in_address_id": false,
+      "expression_values_accessed": false,
+      "deterministic_ordering": true,
+      "one_row_per_matrix_address": true,
+      "final_distinct_universal_molecular_addresses": 41238,
+      "significance": "the address ID itself is NOT derived from observed values, QC, or source family"
+    }
+  },
+
+  "missing_evidence_blocking_a_provider": [
+    {
+      "id": "REG-1",
+      "missing": "a current authority artifact that declares the canonical target-address registry",
+      "required_field": "address_registry_authority_sha256 (required by TargetAddressQueryAuthorityV1)",
+      "observed": "this field name is populated in NO document or artifact in the repository",
+      "why_blocking": "without it the provider would have to select its own registry, which is improvisation"
+    },
+    {
+      "id": "REG-2",
+      "missing": "a single consistent role name for the registry artifact across current authorities",
+      "observed": "sha256 7d61ed7b... is bound by THREE current Sept-15 authorities under THREE different role names: 'support_authority_sha256' (V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json), 'support_eligibility_authority_sha256' (V5_BASE_TRAINING_ESTIMAND_AUTHORITY_20260915.json), and 'registry_observation_state_binding_sha256' (V5_PRIMARY_REPRESENTATION_FEATURE_PARENTS_20260915.json)",
+      "why_blocking": "the third name is actively misleading: the observation-state NPZ has a DIFFERENT sha256 (852cb3ec...), so a field named 'registry_observation_state_binding_sha256' carries the registry CSV hash. A future provider binding by field name could bind the wrong artifact.",
+      "severity": "this is a defect in the CURRENT authority set, not in the spillover work"
+    },
+    {
+      "id": "REG-3",
+      "missing": "resolution of an apparent conflict about whether address identity may be a model input",
+      "observed": "MATERIALIZATION_CONTRACT.json asserts identity_is_audit_metadata_not_model_input: true, while the Stage-A task states address identity may key a shared trainable query mechanism",
+      "why_blocking": "these may be compatible (the contract plausibly means gene-identity ANNOTATION, not the address index) but the distinction is not written down anywhere, and guessing it is a design choice I am not authorized to make"
+    },
+    {
+      "id": "REG-4",
+      "missing": "an authority decision on registry custody",
+      "observed": "the registry is untracked in git, 24.9 MB, on the heavy-data machine only",
+      "why_blocking": "replay binding needs a declared custody/verification path, not an ad-hoc local file reference"
+    },
+    {
+      "id": "REG-5",
+      "missing": "declared query_provider_id / query_artifact_sha256 / replay_policy_id / parameter_sharing_policy_id / gradient_policy_id values",
+      "observed": "TargetAddressQueryAuthorityV1 validates these as nonempty free strings; no current artifact enumerates lawful values",
+      "why_blocking": "the authority validates shape, not legitimacy; any string passes"
+    }
+  ],
+
+  "field_safety_classification": {
+    "policy": "the provider receives the MINIMUM lawful identity needed to distinguish addresses",
+    "CANONICAL_ADDRESS_IDENTITY": ["molecular_address_index", "molecular_address_id"],
+    "PROVENANCE_ONLY_NOT_MODEL_INPUT": [
+      "identity_class", "current_ensembl_gene_id", "legacy_source_exact_id", "source_native_anchor",
+      "identity_authority", "identity_evidence", "measurement_support_provenance", "registry_semantic_hash"
+    ],
+    "FORBIDDEN_TARGET_OR_QC_DERIVED": [
+      {"field": "symbol", "reason": "biological annotation"},
+      {"field": "biotype", "reason": "biological annotation"},
+      {"field": "contributing_source_feature_count", "reason": "source-specific occurrence frequency"},
+      {"field": "contributing_source_families", "reason": "source identity derived"},
+      {"field": "contributing_source_dataset_ids", "reason": "source/dataset identity derived"}
+    ],
+    "lawful_columns": 2,
+    "total_columns": 15,
+    "note": "address identity may key a shared trainable query mechanism; it must not become an imported biological memory"
+  },
+
+  "boundaries_enforced": [
+    "TRAINING_OFF",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY",
+    "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY",
+    "QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH",
+    "DO_NOT_UNLOCK_V5_BY_RECEIPT_ONLY"
+  ],
+  "no_protected_data_read": true,
+  "no_training_executed": true,
+  "read_only_with_respect_to_full104": true
+}

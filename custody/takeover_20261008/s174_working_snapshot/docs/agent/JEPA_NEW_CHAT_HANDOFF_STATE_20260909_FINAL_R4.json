@@ -1,0 +1,162 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4",
+  "status": "HANDOFF_READY__NO_TRAINING_AUTHORITY",
+  "github": {
+    "repository": "dushyant-mishra/sea-ad-jepa-agent",
+    "main_before_r4": "c107c47903e976fe512254d2a7ae1efb78985619",
+    "v5_branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "v5_head": "e17c61643c30d219a4434566f828cdf3171381ae",
+    "t0_branch": "t0/v20-pathology-blind-materialization-20260908",
+    "t0_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "latest_v5_remote_ci_receipt_observed": false
+  },
+  "population": {
+    "partition": "reader_fit",
+    "cells": 4553407,
+    "unique_stable_keys": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "groups": 1400,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "support_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "t0": {
+    "primary_terminal": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "p_upper": 0.021,
+    "alpha": 0.025,
+    "beta": 124.94507515835764,
+    "hc3_se": 65.48932245523241,
+    "t": 1.9078694125102356,
+    "n": 18,
+    "residual_df": 13,
+    "permutations": 9999,
+    "tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "tail_qc_p_upper": 0.018,
+    "tail_qc_veto": true,
+    "tail_disease_test_run": false,
+    "frozen_code_published": true,
+    "input_authorities_published": true,
+    "replay_blocker": "BIT_EXACT_FLOAT_EQUALITY_ACROSS_UNRECORDED_NUMERIC_STACK",
+    "beta_max_abs_replay_diff": 5.9e-21,
+    "beta_max_rel_replay_diff": 2.8e-12,
+    "sensitivity_recovery_code_committed": true,
+    "sensitivity_recovery_completed": false
+  },
+  "c2": {
+    "mechanics_status": "PRODUCTION_GEOMETRY_GATE_ADOPTION_PROVED__NO_TRAINING_AUTHORITY",
+    "historical_failure": "BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST",
+    "protected_tensors": 48,
+    "gate_suites": "44 passed, 0 skipped",
+    "full_task_report": "57 passed, 0 skipped",
+    "historical_128x8": {
+      "gate_rejected": 48,
+      "exact_zero": 48,
+      "adam_moments_created": 0,
+      "params_moved": 0
+    },
+    "successor_128x8": {
+      "dead_gradients": 0,
+      "zero_adam_moments": 0,
+      "move_beyond_decay": 48,
+      "all_criteria": true
+    },
+    "oom_blocker": false,
+    "real_t1_peak_allocated_gib": 5.54,
+    "real_t1_peak_reserved_gib": 5.75,
+    "corrected_peak_allocated_gib": 5.4186,
+    "corrected_peak_reserved_gib": 5.7031,
+    "real_loader_gated_training_update_run": false
+  },
+  "schedule_v3": {
+    "authority": false,
+    "H": 5267086,
+    "ess_fraction": 0.5000000953357726,
+    "previous_H": 5267085,
+    "previous_ess_fraction": 0.49999986825272125,
+    "repeat_cap": 32,
+    "group_floor_sensitivity": 16,
+    "weight_ratio": 67.17245370370371,
+    "ledger_raw_sha256": "e05f4a524748cf427b1c3e899a5b672641566c772aa91da8a2a56dae2b9a3c97",
+    "ledger_domain_sha256": "23a5c52e2b472604a9e32c71e114b4752094950180c8d155c7ee45dd95ce8c23",
+    "replayed_byte_identically_twice": true
+  },
+  "cap34_diagnostic": {
+    "authority": false,
+    "conditional_on_64x": true,
+    "minimum_compatible_cap": 34,
+    "cap33_ratio": 65.13692480359147,
+    "cap34_ratio": 63.22113289760349,
+    "floor1_H": 5255116,
+    "floor1_ess": 0.500000153433392
+  },
+  "dimensions": {
+    "D_shared": null,
+    "D_private": null,
+    "D_total": null,
+    "D_obs": null,
+    "d_gene": null,
+    "full_reader_required": true,
+    "historical_non_authorities": [
+      5,
+      96,
+      160,
+      224,
+      320,
+      512
+    ]
+  },
+  "full_reader_expression": {
+    "status": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+    "required_shard_pairs": 42,
+    "historical_blocks": 8915,
+    "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328"
+  },
+  "query_precision": {
+    "authority": false,
+    "risk_fraction": 0.05,
+    "Q": 21,
+    "Q_minus_1": 20,
+    "worst_ratio": 0.0476703666914567,
+    "previous_worst_ratio": 0.05006881843151968
+  },
+  "support_family": {
+    "COMMON_CORE": 0.607055395953596,
+    "OPERATOR_NATIVE": 0.392944604046404
+  },
+  "ema": {
+    "numeric_half_life_frozen": false,
+    "time_unit": "successful_scientific_base_presentations",
+    "worst_donor_gap": 11384,
+    "worst_operator_gap": 37117,
+    "worst_source_gap": 218
+  },
+  "relational": {
+    "TD57B": "24/24 PASS",
+    "TD59": "24/24 PASS pilot",
+    "TD57C": "failed/closed",
+    "TD60_authorized": false,
+    "TD57B_qc_shortcut_range": [
+      0.55234375,
+      0.6564968785030993
+    ],
+    "TD59_qc_shortcut_range": [
+      0.4804257516370549,
+      0.5566964285714286
+    ],
+    "shortcut_increment_margin_frozen": false
+  },
+  "closed_gates": {
+    "training": false,
+    "successor_u0": false,
+    "TD60": false,
+    "D1_real": false,
+    "reader_validation": false,
+    "reader_oracle": false,
+    "DEV": false,
+    "SEALED": false,
+    "protected_populations": false
+  }
+}

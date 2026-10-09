@@ -1,0 +1,111 @@
+{
+  "schema": "V77_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1",
+  "claim_namespace": "SYNTHETIC_PIPELINE_ANTICHEAT_REHEARSAL",
+  "claim_ceiling": "NO_CLAIM: qualifies the synthetic data path only; no representation, model or target",
+  "interface": {
+    "commit": "f6d63b2f53209786e3c45e7545b9bd442838a3d4",
+    "package_file_sha256": {
+      "__init__.py": "f6412a61d32913c782041749a34533e1fe5044535cb7ac9f37d84cf22bec2d86",
+      "authorities.py": "e7860110b4b8e782ddecba96e297bba8b89610c82d2246d725e7ce24b021ee78",
+      "canonical.py": "6a4629a25a16635ca3bdab73cb64f57e7e40a285206672a981a42b06931780cb",
+      "identity.py": "ba11931eff9a3beb7c890c0a39c7cce3cf664d16a983ba0f54f418d1d1ac2788",
+      "lifecycle.py": "f2a9dd718c861348dd79a39ecc3d8604633cd78953829c406fe9c8172558ee25",
+      "oracle.py": "d4f2c555be0c63cca737eea87b6d6ad6a9869b67dbbf55c278d4765d8660f334",
+      "pipeline.py": "1f8e52f36aad6c6df3dea668498044f36c79781914883440eb0ae26dbe844e4f",
+      "protocol.py": "4c00b5fd996cc220cec4fa201a390ac23b5e5c439046f507a721020485cd993c",
+      "qsafe.py": "a7b77b432a151a98b8d3037c3313860291c50441e7c2b29ef782ff53f435a756",
+      "receipts.py": "cfb653b75b2df43b0622e1ae84161d37ec5d75bd28d654987e1873090a2c928c",
+      "visibility.py": "6686a345f9f8ff7c25312497362ccc9ebd251ce4b8bc4399d593dabe42925674"
+    }
+  },
+  "protocol_digest": "9a10c0bc7738bdac065eec1a2c6295617a763cf798324729d5ca220071326166",
+  "unset_by_design": [
+    "estimand_spec",
+    "deciding thresholds",
+    "target_evidence_construction_id",
+    "split_resampling_protocol_id",
+    "representation_stability_protocol_id",
+    "transport_ood_axes",
+    "evaluation weights",
+    "target spec",
+    "split"
+  ],
+  "authority": {
+    "scope": "SYNTHETIC_PIPELINE_VALIDITY",
+    "evaluation_authorized": true,
+    "mutation": "NOT_AUTHORIZED",
+    "claim_level": "NO_CLAIM",
+    "basis": "reviewer-lane instruction item 8, relayed by the owner"
+  },
+  "batch": {
+    "experiment_run_id": "v77-zero-update-plumbing-20fc5a5c493f",
+    "n_observations": 32,
+    "n_features": 19569,
+    "scientific_identity_digest": "ea285b1cd270087fb1ad7e1f3d7e6fd3dda05dbb24938c3744d49b977e68140a",
+    "feature_identity_digest": "90fcbedf75893ff9bb8da4ac94b70d0d3b0b5a461d519835c65943ff9b5c0c0b",
+    "operator_identity_digest": "b6b357d7264987a23123a736b2b30bf4ff061140af9b3e7ee3ea0223ae00162a",
+    "measurement_support_digest": "0cfd901444998c7c45cb9183c5aa381848f818786ca38f807b01c4545ff57ffe",
+    "producer_support_digest": "bdafda5a5c914d02815c2e71bb3d2af4f08a0cce4afeb7e6bcd2e1a7241fd3c7",
+    "batch_measurement_digest": "bdafda5a5c914d02815c2e71bb3d2af4f08a0cce4afeb7e6bcd2e1a7241fd3c7",
+    "field_visibility": {
+      "gene_ids": "MODEL_VISIBLE",
+      "student_expression": "MODEL_VISIBLE",
+      "measurement_mask": "MODEL_VISIBLE",
+      "hidden_target_mask": "MODEL_VISIBLE",
+      "source_index": "LAWFUL_OPERATOR_CONTEXT",
+      "operator_index": "LAWFUL_OPERATOR_CONTEXT",
+      "visible_library_size": "LAWFUL_OPERATOR_CONTEXT",
+      "n_measured": "LAWFUL_OPERATOR_CONTEXT",
+      "donor_id": "SPLIT_ONLY",
+      "query_counts": "READOUT_ONLY",
+      "full_library_size": "READOUT_ONLY",
+      "global_cell_index": "PROVENANCE_ONLY",
+      "observer_manifest_sha256": "PROVENANCE_ONLY"
+    },
+    "synthetic_realization_id": "V77_SEED7302_ba16e2f270360094",
+    "challenge_partition": "DEVELOPMENT_CALIBRATION"
+  },
+  "seen_by_the_representation_function": {
+    "model_inputs": [
+      "gene_ids",
+      "hidden_target_mask",
+      "measurement_mask",
+      "student_expression"
+    ],
+    "lawful_operator_context": [
+      "n_measured",
+      "operator_index",
+      "source_index",
+      "visible_library_size"
+    ],
+    "readout_only": [
+      "full_library_size",
+      "query_counts"
+    ],
+    "split_only": [
+      "donor_id"
+    ]
+  },
+  "frozen_outputs": {
+    "run_id": "v77-zero-update-plumbing-20fc5a5c493f",
+    "output_digest": "2ea0f060600eb4293c206f643f8e8e556d38d59c9aa04ee0437ea9c816cd810a",
+    "provenance_receipt_digest": "90b3b643397af37ece1c0010f73e5f4eeb0c87a166249da7e340ad75694565d2",
+    "mutation_proof_status": "NOT_PROVEN_BY_SHARED_INTERFACE",
+    "q_safety_execution_proof_status": "POLICY_ONLY_NOT_EXECUTION_PROVEN"
+  },
+  "oracle": {
+    "digest": "70a411f871ffabeb8e792692d7c8c54d9926f8de166c4ca91c459bee7b44f470",
+    "status": "held outside the batch, sealed, not unblinded"
+  },
+  "adapter_provenance_digest": "55c697065441064de611f0f4b2d73c5eb4d7bc3dde9e8de7035ccb1dc19bf984",
+  "command": "python scripts/v77/v77_qualification_bridge.py --world D:/jepa_v77_synthetic_custody_20261005/worlds/fs_smoke_s161 --observer-dir FULLSCALE_V2_CANONICAL_sharded --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --interface-worktree D:/jepa_wt_qualification_iface_f6d63b2f --max-cells 32 --out results/v77/REHEARSAL_ZERO_UPDATE_PLUMBING_QUALIFICATION_V1.json",
+  "source_commit": "20fc5a5c493ff9789b2c33dbe02a475c8b638f80",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED",
+  "executor_sha256": {
+    "v77_qualification_bridge.py": "f182b2a98997051b541cf2bfb318a4292b0afddf9972ea4577cf960835dbdaa3",
+    "v77_synthetic_batch_adapter.py": "15092b16d1a71241e8e5883ff228b5d89595073d79e8df70adaf63641103c4d6",
+    "v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+  },
+  "no_training_performed": true,
+  "no_mutation": true
+}

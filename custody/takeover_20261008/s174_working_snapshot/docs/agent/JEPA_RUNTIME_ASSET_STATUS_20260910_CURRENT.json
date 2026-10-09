@@ -1,0 +1,106 @@
+{
+  "schema": "JEPA_RUNTIME_ASSET_STATUS_CURRENT_V3",
+  "date": "2026-09-11",
+  "status": "RUNTIME_ASSETS_HASH_VERIFIED_WITH_CORRECTED_TRAIN_CACHE_AND_ONE_PROVENANCE_MISMATCH",
+  "runtime_root": "/mnt/data",
+  "verification_scope": "presence_size_sha256_plus_recorded_semantic_binding_where_available",
+  "assets": {
+    "foundation_calibration_bundle": {
+      "path": "/mnt/data/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "size_bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "hash_verified": true
+    },
+    "discovery_expression_part001": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "size_bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "hash_verified": true
+    },
+    "discovery_expression_part002": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "size_bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "hash_verified": true
+    },
+    "discovery_expression_assembled_stream": {
+      "construction": "part001 || part002",
+      "size_bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "hash_verified": true
+    },
+    "parts_sha256_csv": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "size_bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "hash_verified": true
+    },
+    "checkpoints_zip": {
+      "path": "/mnt/data/checkpoints.zip",
+      "size_bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "hash_verified": true
+    },
+    "t1_checkpoint_u0200_zip": {
+      "path": "/mnt/data/t1_checkpoint_u0200.zip",
+      "size_bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "hash_verified": true
+    },
+    "expression_zip": {
+      "path": "/mnt/data/expression.zip",
+      "size_bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "hash_verified": true
+    },
+    "corrected_train_cache_zip": {
+      "path": "/mnt/data/stage81a3r_corrected_real_train.zip",
+      "size_bytes": 50647044,
+      "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+      "hash_verified": true,
+      "semantic_binding": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
+      "counts_meta_pairs": 42,
+      "physical_train_rows": 4726,
+      "addresses": 41238,
+      "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+      "note": "Authentic corrected TRAIN cache only. It is not the 4,553,407-cell FULL104 reader-fit expression store and cannot satisfy production FULL104 closure."
+    },
+    "operator_address_state_npz": {
+      "path": "/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "observed_size_bytes": 1531109,
+      "observed_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "historical_expected_size_bytes": 4985,
+      "historical_expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
+      "hash_verified": false,
+      "status": "PROVENANCE_MISMATCH_DO_NOT_USE",
+      "note": "Do not use this runtime NPZ as the historical operator-address authority unless its provenance is separately reconciled."
+    }
+  },
+  "v5_smoke_policy": {
+    "allowed": true,
+    "label": "REAL_DATA_SMOKE_NON_AUTHORITY",
+    "executed_in_prior_v5_work": true,
+    "required_inputs": "use only assets whose expected identity is hash-verified; exclude operator_address_state_npz while mismatch remains",
+    "may_test": [
+      "real expression identity and data path",
+      "V5 reader compatibility",
+      "query masking and representation firewall mechanics",
+      "forward mechanics",
+      "bounded protected-gradient mechanics if runtime supports torch/CUDA",
+      "same-cell perturbation mechanics",
+      "packing/order identity preservation"
+    ],
+    "may_not_set": [
+      "FULL104 expression closure",
+      "production dimensions",
+      "biology thresholds",
+      "schedule thresholds",
+      "scientific conclusions",
+      "postqualification",
+      "training authority"
+    ]
+  },
+  "full104_expression_status": "STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING",
+  "required_full104_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+  "training_authorized": false
+}

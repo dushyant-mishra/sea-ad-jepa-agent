@@ -1,0 +1,384 @@
+{
+  "authority_inputs": {
+    "mechanics_inventory": {
+      "bundle_member": "sampler/t1_encoder_fit_inventory.csv",
+      "sha256": "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30"
+    },
+    "metadata_sqlite": {
+      "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+    },
+    "support_by_operator": {
+      "bundle_member": "support/FOUNDATION_SUPPORT_BY_OPERATOR.csv",
+      "sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+    }
+  },
+  "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "data_first_implications": [
+    "Do not derive production group size, replay cap, batch geometry, or relational estimability from the 3,292-cell mechanics inventory.",
+    "Treat donor-by-operator support as ragged. Equal-size group batches are an execution choice, not a property of reader_fit.",
+    "Report evidence both as within-operator visible fraction and as visible fraction of the 41,238-address universe.",
+    "Separate scientific cell selection from compute microbatch packing.",
+    "Production schedule quantities must be derived from full reader_fit support and separately frozen; this descriptive profile does not authorize training."
+  ],
+  "execution_authorized": false,
+  "mechanics_3292_comparison": {
+    "cells": 3292,
+    "cells_per_group_quantiles": {
+      "0": 1.0,
+      "0.01": 1.0,
+      "0.05": 2.0,
+      "0.1": 2.0,
+      "0.25": 2.0,
+      "0.5": 2.0,
+      "0.75": 3.0,
+      "0.9": 3.0,
+      "0.95": 4.0,
+      "0.99": 4.0,
+      "1": 5.0
+    },
+    "donor_operator_groups": 1400,
+    "group_fraction_lt_3": 0.7292857142857143,
+    "groups_lt_3": 1021,
+    "interpretation": "The mechanics inventory spans the same 1,400 donor-by-operator combinations but subsamples only 1-5 cells per combination; its group-size distribution is not production geometry."
+  },
+  "population": "reader_fit",
+  "reader_fit": {
+    "cell_weighted_measured_fraction_of_universe": 0.8310221074412093,
+    "cell_weighted_measured_scalar_addresses": 34269.68966666059,
+    "cell_weighted_visible_addresses_at_historical_40pct": 20562.212970419732,
+    "cell_weighted_visible_fraction_of_universe_at_historical_40pct": 0.4986229441393795,
+    "cells": 4553407,
+    "donor_cells_quantiles": {
+      "0": 81.0,
+      "0.01": 1635.23,
+      "0.05": 2886.55,
+      "0.1": 3420.8,
+      "0.25": 4714.5,
+      "0.5": 14749.0,
+      "0.75": 57754.25,
+      "0.9": 140105.9,
+      "0.95": 150994.8,
+      "0.99": 168966.88999999998,
+      "1": 174111.0
+    },
+    "donor_operator_count_quantiles": {
+      "0": 1.0,
+      "0.01": 2.0,
+      "0.05": 3.0,
+      "0.1": 3.0,
+      "0.25": 7.0,
+      "0.5": 11.0,
+      "0.75": 23.0,
+      "0.9": 24.0,
+      "0.95": 24.0,
+      "0.99": 24.0,
+      "1": 24.0
+    },
+    "donor_operator_groups": {
+      "cell_fraction_in_groups_ge_128": 0.9946890317513897,
+      "cell_fraction_in_groups_ge_16": 0.9997230645097177,
+      "cell_fraction_in_groups_ge_2": 0.999995827300305,
+      "cell_fraction_in_groups_ge_3": 0.9999870426693682,
+      "cell_fraction_in_groups_ge_32": 0.9992497925179981,
+      "cell_fraction_in_groups_ge_4": 0.9999751834176036,
+      "cell_fraction_in_groups_ge_64": 0.9979470317500719,
+      "cell_fraction_in_groups_ge_8": 0.9999020513650548,
+      "cells": 4553407,
+      "cells_in_groups_ge_128": 4529224,
+      "cells_in_groups_ge_16": 4552146,
+      "cells_in_groups_ge_2": 4553388,
+      "cells_in_groups_ge_3": 4553348,
+      "cells_in_groups_ge_32": 4549991,
+      "cells_in_groups_ge_4": 4553294,
+      "cells_in_groups_ge_64": 4544059,
+      "cells_in_groups_ge_8": 4552961,
+      "cells_per_group_quantiles": {
+        "0": 1.0,
+        "0.01": 1.0,
+        "0.05": 4.0,
+        "0.1": 10.0,
+        "0.25": 46.0,
+        "0.5": 228.0,
+        "0.75": 3169.0,
+        "0.9": 13114.800000000021,
+        "0.95": 16497.64999999999,
+        "0.99": 26455.589999999997,
+        "1": 42209.0
+      },
+      "group_fraction_ge_128": 0.5892857142857143,
+      "group_fraction_ge_16": 0.8628571428571429,
+      "group_fraction_ge_2": 0.9864285714285714,
+      "group_fraction_ge_3": 0.9721428571428572,
+      "group_fraction_ge_32": 0.7964285714285714,
+      "group_fraction_ge_4": 0.9592857142857143,
+      "group_fraction_ge_64": 0.7057142857142857,
+      "group_fraction_ge_8": 0.9142857142857143,
+      "groups": 1400,
+      "groups_ge_128": 825,
+      "groups_ge_16": 1208,
+      "groups_ge_2": 1381,
+      "groups_ge_3": 1361,
+      "groups_ge_32": 1115,
+      "groups_ge_4": 1343,
+      "groups_ge_64": 988,
+      "groups_ge_8": 1280
+    },
+    "donor_operator_groups_by_source": {
+      "HVS": {
+        "cell_fraction_in_groups_ge_128": 0.8824011916384021,
+        "cell_fraction_in_groups_ge_16": 0.993654324218239,
+        "cell_fraction_in_groups_ge_2": 0.9999043871214485,
+        "cell_fraction_in_groups_ge_3": 0.9997030968508137,
+        "cell_fraction_in_groups_ge_32": 0.9828098108877907,
+        "cell_fraction_in_groups_ge_4": 0.9994313549854568,
+        "cell_fraction_in_groups_ge_64": 0.9529584637526545,
+        "cell_fraction_in_groups_ge_8": 0.9977556134824224,
+        "cells": 198718,
+        "cells_in_groups_ge_128": 175349,
+        "cells_in_groups_ge_16": 197457,
+        "cells_in_groups_ge_2": 198699,
+        "cells_in_groups_ge_3": 198659,
+        "cells_in_groups_ge_32": 195302,
+        "cells_in_groups_ge_4": 198605,
+        "cells_in_groups_ge_64": 189370,
+        "cells_in_groups_ge_8": 198272,
+        "cells_per_group_quantiles": {
+          "0": 1.0,
+          "0.01": 1.0,
+          "0.05": 3.0,
+          "0.1": 5.0,
+          "0.25": 23.0,
+          "0.5": 84.5,
+          "0.75": 254.0,
+          "0.9": 538.6000000000001,
+          "0.95": 849.8999999999999,
+          "0.99": 1612.3699999999992,
+          "1": 2819.0
+        },
+        "group_fraction_ge_128": 0.4029535864978903,
+        "group_fraction_ge_16": 0.7974683544303798,
+        "group_fraction_ge_2": 0.979957805907173,
+        "group_fraction_ge_3": 0.9588607594936709,
+        "group_fraction_ge_32": 0.6993670886075949,
+        "group_fraction_ge_4": 0.939873417721519,
+        "group_fraction_ge_64": 0.5654008438818565,
+        "group_fraction_ge_8": 0.8734177215189873,
+        "groups": 948,
+        "groups_ge_128": 382,
+        "groups_ge_16": 756,
+        "groups_ge_2": 929,
+        "groups_ge_3": 909,
+        "groups_ge_32": 663,
+        "groups_ge_4": 891,
+        "groups_ge_64": 536,
+        "groups_ge_8": 828
+      },
+      "NPH52": {
+        "cell_fraction_in_groups_ge_128": 0.9965577902197263,
+        "cell_fraction_in_groups_ge_16": 1.0,
+        "cell_fraction_in_groups_ge_2": 1.0,
+        "cell_fraction_in_groups_ge_3": 1.0,
+        "cell_fraction_in_groups_ge_32": 1.0,
+        "cell_fraction_in_groups_ge_4": 1.0,
+        "cell_fraction_in_groups_ge_64": 1.0,
+        "cell_fraction_in_groups_ge_8": 1.0,
+        "cells": 236476,
+        "cells_in_groups_ge_128": 235662,
+        "cells_in_groups_ge_16": 236476,
+        "cells_in_groups_ge_2": 236476,
+        "cells_in_groups_ge_3": 236476,
+        "cells_in_groups_ge_32": 236476,
+        "cells_in_groups_ge_4": 236476,
+        "cells_in_groups_ge_64": 236476,
+        "cells_in_groups_ge_8": 236476,
+        "cells_per_group_quantiles": {
+          "0": 64.0,
+          "0.01": 65.32,
+          "0.05": 103.0,
+          "0.1": 161.20000000000002,
+          "0.25": 412.0,
+          "0.5": 839.0,
+          "0.75": 2532.0,
+          "0.9": 7838.400000000002,
+          "0.95": 9219.199999999999,
+          "0.99": 9532.2,
+          "1": 9600.0
+        },
+        "group_fraction_ge_128": 0.9174311926605505,
+        "group_fraction_ge_16": 1.0,
+        "group_fraction_ge_2": 1.0,
+        "group_fraction_ge_3": 1.0,
+        "group_fraction_ge_32": 1.0,
+        "group_fraction_ge_4": 1.0,
+        "group_fraction_ge_64": 1.0,
+        "group_fraction_ge_8": 1.0,
+        "groups": 109,
+        "groups_ge_128": 100,
+        "groups_ge_16": 109,
+        "groups_ge_2": 109,
+        "groups_ge_3": 109,
+        "groups_ge_32": 109,
+        "groups_ge_4": 109,
+        "groups_ge_64": 109,
+        "groups_ge_8": 109
+      },
+      "SEA_AD": {
+        "cell_fraction_in_groups_ge_128": 1.0,
+        "cell_fraction_in_groups_ge_16": 1.0,
+        "cell_fraction_in_groups_ge_2": 1.0,
+        "cell_fraction_in_groups_ge_3": 1.0,
+        "cell_fraction_in_groups_ge_32": 1.0,
+        "cell_fraction_in_groups_ge_4": 1.0,
+        "cell_fraction_in_groups_ge_64": 1.0,
+        "cell_fraction_in_groups_ge_8": 1.0,
+        "cells": 4118213,
+        "cells_in_groups_ge_128": 4118213,
+        "cells_in_groups_ge_16": 4118213,
+        "cells_in_groups_ge_2": 4118213,
+        "cells_in_groups_ge_3": 4118213,
+        "cells_in_groups_ge_32": 4118213,
+        "cells_in_groups_ge_4": 4118213,
+        "cells_in_groups_ge_64": 4118213,
+        "cells_in_groups_ge_8": 4118213,
+        "cells_per_group_quantiles": {
+          "0": 706.0,
+          "0.01": 1573.44,
+          "0.05": 3282.9,
+          "0.1": 4265.6,
+          "0.25": 6326.5,
+          "0.5": 11255.0,
+          "0.75": 15666.0,
+          "0.9": 21599.4,
+          "0.95": 24938.1,
+          "0.99": 35941.43999999994,
+          "1": 42209.0
+        },
+        "group_fraction_ge_128": 1.0,
+        "group_fraction_ge_16": 1.0,
+        "group_fraction_ge_2": 1.0,
+        "group_fraction_ge_3": 1.0,
+        "group_fraction_ge_32": 1.0,
+        "group_fraction_ge_4": 1.0,
+        "group_fraction_ge_64": 1.0,
+        "group_fraction_ge_8": 1.0,
+        "groups": 343,
+        "groups_ge_128": 343,
+        "groups_ge_16": 343,
+        "groups_ge_2": 343,
+        "groups_ge_3": 343,
+        "groups_ge_32": 343,
+        "groups_ge_4": 343,
+        "groups_ge_64": 343,
+        "groups_ge_8": 343
+      }
+    },
+    "donors": 104,
+    "operator_cells_quantiles": {
+      "0": 179.0,
+      "0.01": 219.59,
+      "0.05": 300.65000000000003,
+      "0.1": 798.1,
+      "0.25": 3223.5,
+      "0.5": 14983.0,
+      "0.75": 124459.0,
+      "0.9": 405232.0999999999,
+      "0.95": 627966.8999999994,
+      "0.99": 693733.8999999997,
+      "1": 732360.0
+    },
+    "operator_donor_count_quantiles": {
+      "0": 14.0,
+      "0.01": 14.0,
+      "0.05": 16.0,
+      "0.1": 16.0,
+      "0.25": 27.0,
+      "0.5": 40.5,
+      "0.75": 41.0,
+      "0.9": 41.0,
+      "0.95": 41.949999999999996,
+      "0.99": 45.17999999999999,
+      "1": 46.0
+    },
+    "operator_support_by_source": {
+      "HVS": {
+        "measured_scalar_addresses": {
+          "max": 18736,
+          "median": 18736.0,
+          "min": 18736
+        },
+        "operators": 24,
+        "visible_at_historical_40pct": {
+          "max": 11242,
+          "median": 11242.0,
+          "min": 11242
+        },
+        "visible_fraction_of_41238_at_historical_40pct": {
+          "max": 0.2726126388282652,
+          "median": 0.2726126388282652,
+          "min": 0.2726126388282652
+        }
+      },
+      "NPH52": {
+        "measured_scalar_addresses": {
+          "max": 34405,
+          "median": 32445.0,
+          "min": 30294
+        },
+        "operators": 7,
+        "visible_at_historical_40pct": {
+          "max": 20643,
+          "median": 19467.0,
+          "min": 18177
+        },
+        "visible_fraction_of_41238_at_historical_40pct": {
+          "max": 0.500581987487269,
+          "median": 0.47206460061108685,
+          "min": 0.44078277317037684
+        }
+      },
+      "SEA_AD": {
+        "measured_scalar_addresses": {
+          "max": 35076,
+          "median": 35076.0,
+          "min": 35076
+        },
+        "operators": 11,
+        "visible_at_historical_40pct": {
+          "max": 21046,
+          "median": 21046.0,
+          "min": 21046
+        },
+        "visible_fraction_of_41238_at_historical_40pct": {
+          "max": 0.5103545273776614,
+          "median": 0.5103545273776614,
+          "min": 0.5103545273776614
+        }
+      }
+    },
+    "operators": 42,
+    "sources": [
+      {
+        "cells": 198718,
+        "donors": 41,
+        "operators": 24,
+        "source": "HVS"
+      },
+      {
+        "cells": 236476,
+        "donors": 17,
+        "operators": 7,
+        "source": "NPH52"
+      },
+      {
+        "cells": 4118213,
+        "donors": 46,
+        "operators": 11,
+        "source": "SEA_AD"
+      }
+    ]
+  },
+  "schema": "READER_FIT_DATA_GEOMETRY_PROFILE_V1",
+  "training_authorized": false,
+  "vocabulary_size": 41238
+}

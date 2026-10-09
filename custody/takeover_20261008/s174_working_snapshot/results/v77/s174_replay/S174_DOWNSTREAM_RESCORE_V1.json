@@ -1,0 +1,1578 @@
+{
+ "schema": "S174_DOWNSTREAM_RESCORE_V1",
+ "scope": "item 6 of the authorized dependency order (the background-search rounds, both Step 3 verdicts and the Observer-V2 decision), plus the records found to depend on the same targets: the substate search rounds, the substate family decision and the T5 reference they all cite",
+ "rule": "each record's own recorded rule and premises are applied unchanged; nothing is generated, tuned or selected; no new threshold is introduced and no verdict is computed by one. The corrected envelopes are the corrected form of the references those records used: pooled, composition-inclusive references, not endorsed here as biological targets. Whether S149's correction changes their standing is for the owner and the real-data lane",
+ "record_path": "results/v77/s174_replay/S174_DOWNSTREAM_RESCORE_V1.json",
+ "S159": {
+  "points_outside_their_own_band": {
+   "V77_REAL_CALIBRATION_ENVELOPE_V1.json::old": [],
+   "V77_REAL_CALIBRATION_ENVELOPE_V1.json::corrected": [
+    "median_abs_corr"
+   ],
+   "V77_REAL_DETECTION_ENVELOPE_V1.json::old": [],
+   "V77_REAL_DETECTION_ENVELOPE_V1.json::corrected": [
+    "transitivity"
+   ],
+   "V77_REAL_ABUNDANCE_ENVELOPE_V1.json::old": [],
+   "V77_REAL_ABUNDANCE_ENVELOPE_V1.json::corrected": []
+  },
+  "resampling": {
+   "unit": "donor",
+   "n_bootstrap": 20
+  },
+  "consequence": "under the recorded rule a candidate identical to the corrected real point would fail on these targets; a count of targets inside the band is therefore capped below the number of targets and is read beside the ratio to the point"
+ },
+ "background_rounds": {
+  "recorded_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "faithful_to_recorded_counts": true,
+  "duplicates_counted_once": {
+   "V77_BG_CANDIDATE_SEARCH_ROUND1": {
+    "same_as": "V77_BG_SEARCH_ROUND1",
+    "same_candidates": true,
+    "same_recorded_statistics": true
+   },
+   "V77_BG_CANDIDATE_SEARCH_ROUND2": {
+    "same_as": "V77_BG_SEARCH_ROUND2",
+    "same_candidates": true,
+    "same_recorded_statistics": true
+   }
+  },
+  "entries": 18,
+  "distinct_candidates": 16,
+  "accepted_under_old": 0,
+  "accepted_under_corrected": 0,
+  "max_inside_old": 5,
+  "max_inside_corrected": 2,
+  "position_of_recorded_entries": {
+   "median_abs_corr": {
+    "finite_entries": 18,
+    "old_point": 0.3291,
+    "corrected_point": 0.0562,
+    "observed_range": [
+     0.0134,
+     0.3528
+    ],
+    "below_old_point": 14,
+    "above_old_point": 4,
+    "below_corrected_point": 3,
+    "above_corrected_point": 15
+   },
+   "frac_abs_gt_0p3": {
+    "finite_entries": 18,
+    "old_point": 0.5621,
+    "corrected_point": 0.0242,
+    "observed_range": [
+     0.0,
+     0.5875
+    ],
+    "below_old_point": 16,
+    "above_old_point": 2,
+    "below_corrected_point": 5,
+    "above_corrected_point": 13
+   },
+   "var_top10_pc": {
+    "finite_entries": 18,
+    "old_point": 0.5089,
+    "corrected_point": 0.262,
+    "observed_range": [
+     0.0283,
+     0.6885
+    ],
+    "below_old_point": 9,
+    "above_old_point": 9,
+    "below_corrected_point": 4,
+    "above_corrected_point": 14
+   },
+   "mean_degree": {
+    "finite_entries": 18,
+    "old_point": 1685.8173,
+    "corrected_point": 72.7047,
+    "observed_range": [
+     0.0,
+     1761.9713
+    ],
+    "below_old_point": 16,
+    "above_old_point": 2,
+    "below_corrected_point": 5,
+    "above_corrected_point": 13
+   },
+   "transitivity": {
+    "finite_entries": 17,
+    "old_point": 0.8605,
+    "corrected_point": 0.5127,
+    "observed_range": [
+     0.2834,
+     0.9527
+    ],
+    "below_old_point": 10,
+    "above_old_point": 7,
+    "below_corrected_point": 4,
+    "above_corrected_point": 13
+   }
+  },
+  "rounds": [
+   {
+    "round": "V77_BG_SEARCH_ROUND1",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "C0_baseline_independent",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.0134,
+       "frac_abs_gt_0p3": 0.0154,
+       "var_top10_pc": 0.1231,
+       "mean_degree": 46.044,
+       "transitivity": 0.6052
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 0.2392,
+       "frac_abs_gt_0p3": 0.6333,
+       "var_top10_pc": 0.4697,
+       "mean_degree": 0.6333,
+       "transitivity": 1.1804
+      }
+     },
+     {
+      "candidate": "C1_coherent_balanced",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.0145,
+       "frac_abs_gt_0p3": 0.0065,
+       "var_top10_pc": 0.1069,
+       "mean_degree": 19.5407,
+       "transitivity": 0.44
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 0.2574,
+       "frac_abs_gt_0p3": 0.2688,
+       "var_top10_pc": 0.4081,
+       "mean_degree": 0.2688,
+       "transitivity": 0.8582
+      }
+     },
+     {
+      "candidate": "C2_coherent_more_factors",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.0177,
+       "frac_abs_gt_0p3": 0.0,
+       "var_top10_pc": 0.0283,
+       "mean_degree": 0.0,
+       "transitivity": null
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 0.3147,
+       "frac_abs_gt_0p3": 0.0,
+       "var_top10_pc": 0.1079,
+       "mean_degree": 0.0,
+       "transitivity": null
+      }
+     }
+    ],
+    "best_old": 0,
+    "best_corrected": 0
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND2",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "C6_few_dominant_global",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 1,
+      "old_n_inside_recomputed": 1,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.1053,
+       "frac_abs_gt_0p3": 0.0658,
+       "var_top10_pc": 0.4436,
+       "mean_degree": 197.382,
+       "transitivity": 0.8641
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 1.8733,
+       "frac_abs_gt_0p3": 2.7148,
+       "var_top10_pc": 1.6932,
+       "mean_degree": 2.7148,
+       "transitivity": 1.6853
+      }
+     },
+     {
+      "candidate": "C7_dominant_tuned_noise",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 1,
+      "old_n_inside_recomputed": 1,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.1307,
+       "frac_abs_gt_0p3": 0.1241,
+       "var_top10_pc": 0.5137,
+       "mean_degree": 372.258,
+       "transitivity": 0.9527
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 2.3263,
+       "frac_abs_gt_0p3": 5.1201,
+       "var_top10_pc": 1.9606,
+       "mean_degree": 5.1201,
+       "transitivity": 1.8582
+      }
+     },
+     {
+      "candidate": "C8_dominant_plus_midband",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 2,
+      "of": 11,
+      "inside_corrected": [
+       "transitivity",
+       "frac_pos_gt_0p3"
+      ],
+      "observed": {
+       "median_abs_corr": 0.0716,
+       "frac_abs_gt_0p3": 0.0191,
+       "var_top10_pc": 0.2858,
+       "mean_degree": 57.2787,
+       "transitivity": 0.5124
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 1.2733,
+       "frac_abs_gt_0p3": 0.7878,
+       "var_top10_pc": 1.0909,
+       "mean_degree": 0.7878,
+       "transitivity": 0.9993
+      }
+     }
+    ],
+    "best_old": 1,
+    "best_corrected": 2
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND3",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "E2_two_dominant_calibrated",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.1396,
+       "frac_abs_gt_0p3": 0.0931,
+       "var_top10_pc": 0.3353,
+       "mean_degree": 279.0747,
+       "transitivity": 0.6194
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 2.4833,
+       "frac_abs_gt_0p3": 3.8385,
+       "var_top10_pc": 1.2798,
+       "mean_degree": 3.8385,
+       "transitivity": 1.2081
+      }
+     }
+    ],
+    "best_old": 0,
+    "best_corrected": 0
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND4",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "E2_two_dominant_calibrated",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 4,
+      "old_n_inside_recomputed": 4,
+      "corrected_n_inside": 1,
+      "of": 11,
+      "inside_corrected": [
+       "mean_signed_corr"
+      ],
+      "observed": {
+       "median_abs_corr": 0.3405,
+       "frac_abs_gt_0p3": 0.5201,
+       "var_top10_pc": 0.6885,
+       "mean_degree": 1559.8587,
+       "transitivity": 0.9133
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 6.0585,
+       "frac_abs_gt_0p3": 21.4547,
+       "var_top10_pc": 2.6279,
+       "mean_degree": 21.4547,
+       "transitivity": 1.7813
+      }
+     },
+     {
+      "candidate": "C6_few_dominant_global",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.2155,
+       "frac_abs_gt_0p3": 0.3144,
+       "var_top10_pc": 0.6784,
+       "mean_degree": 943.0153,
+       "transitivity": 0.5482
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 3.8343,
+       "frac_abs_gt_0p3": 12.9705,
+       "var_top10_pc": 2.5891,
+       "mean_degree": 12.9705,
+       "transitivity": 1.0692
+      }
+     }
+    ],
+    "best_old": 4,
+    "best_corrected": 1
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND5",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "F1_two_dom_more_mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.2334,
+       "frac_abs_gt_0p3": 0.4358,
+       "var_top10_pc": 0.4835,
+       "mean_degree": 1306.87,
+       "transitivity": 0.9109
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 4.1526,
+       "frac_abs_gt_0p3": 17.975,
+       "var_top10_pc": 1.8452,
+       "mean_degree": 17.975,
+       "transitivity": 1.7766
+      }
+     },
+     {
+      "candidate": "F2_two_dom_strong_mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 1,
+      "of": 11,
+      "inside_corrected": [
+       "var_top10_pc"
+      ],
+      "observed": {
+       "median_abs_corr": 0.1164,
+       "frac_abs_gt_0p3": 0.0375,
+       "var_top10_pc": 0.2633,
+       "mean_degree": 112.3853,
+       "transitivity": 0.3842
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 2.0716,
+       "frac_abs_gt_0p3": 1.5458,
+       "var_top10_pc": 1.0051,
+       "mean_degree": 1.5458,
+       "transitivity": 0.7493
+      }
+     },
+     {
+      "candidate": "F3_three_dom_rich_mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.0841,
+       "frac_abs_gt_0p3": 0.0066,
+       "var_top10_pc": 0.232,
+       "mean_degree": 19.644,
+       "transitivity": 0.2834
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 1.4955,
+       "frac_abs_gt_0p3": 0.2702,
+       "var_top10_pc": 0.8853,
+       "mean_degree": 0.2702,
+       "transitivity": 0.5527
+      }
+     }
+    ],
+    "best_old": 0,
+    "best_corrected": 1
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND6",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "G1_interp_60mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 4,
+      "old_n_inside_recomputed": 4,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.3408,
+       "frac_abs_gt_0p3": 0.5171,
+       "var_top10_pc": 0.6732,
+       "mean_degree": 1550.8233,
+       "transitivity": 0.9263
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 6.0644,
+       "frac_abs_gt_0p3": 21.3305,
+       "var_top10_pc": 2.5693,
+       "mean_degree": 21.3305,
+       "transitivity": 1.8066
+      }
+     },
+     {
+      "candidate": "G2_interp_90mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.3027,
+       "frac_abs_gt_0p3": 0.5015,
+       "var_top10_pc": 0.6093,
+       "mean_degree": 1503.8553,
+       "transitivity": 0.9364
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 5.3867,
+       "frac_abs_gt_0p3": 20.6844,
+       "var_top10_pc": 2.3255,
+       "mean_degree": 20.6844,
+       "transitivity": 1.8263
+      }
+     },
+     {
+      "candidate": "G3_interp_120mid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 1,
+      "old_n_inside_recomputed": 1,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.2648,
+       "frac_abs_gt_0p3": 0.4752,
+       "var_top10_pc": 0.5409,
+       "mean_degree": 1425.2713,
+       "transitivity": 0.9357
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 4.7117,
+       "frac_abs_gt_0p3": 19.6036,
+       "var_top10_pc": 2.0645,
+       "mean_degree": 19.6036,
+       "transitivity": 1.8249
+      }
+     }
+    ],
+    "best_old": 4,
+    "best_corrected": 0
+   },
+   {
+    "round": "V77_BG_SEARCH_ROUND7",
+    "envelope_source": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "rows": [
+     {
+      "candidate": "H1_dom_cover82",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 5,
+      "old_n_inside_recomputed": 5,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.3528,
+       "frac_abs_gt_0p3": 0.5732,
+       "var_top10_pc": 0.6537,
+       "mean_degree": 1719.0513,
+       "transitivity": 0.775
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 6.2769,
+       "frac_abs_gt_0p3": 23.6443,
+       "var_top10_pc": 2.495,
+       "mean_degree": 23.6443,
+       "transitivity": 1.5116
+      }
+     },
+     {
+      "candidate": "H2_dom_cover70",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 4,
+      "old_n_inside_recomputed": 4,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.3502,
+       "frac_abs_gt_0p3": 0.5875,
+       "var_top10_pc": 0.6355,
+       "mean_degree": 1761.9713,
+       "transitivity": 0.7395
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 6.2309,
+       "frac_abs_gt_0p3": 24.2346,
+       "var_top10_pc": 2.4256,
+       "mean_degree": 24.2346,
+       "transitivity": 1.4424
+      }
+     },
+     {
+      "candidate": "H3_dom_cover82_richmid",
+      "recorded_verdict": "REJECT",
+      "recorded_n_inside": 0,
+      "old_n_inside_recomputed": 0,
+      "corrected_n_inside": 0,
+      "of": 11,
+      "inside_corrected": [],
+      "observed": {
+       "median_abs_corr": 0.288,
+       "frac_abs_gt_0p3": 0.4792,
+       "var_top10_pc": 0.5552,
+       "mean_degree": 1437.0127,
+       "transitivity": 0.7686
+      },
+      "observed_over_corrected_point": {
+       "median_abs_corr": 5.1247,
+       "frac_abs_gt_0p3": 19.7651,
+       "var_top10_pc": 2.119,
+       "mean_degree": 19.7651,
+       "transitivity": 1.499
+      }
+     }
+    ],
+    "best_old": 5,
+    "best_corrected": 0
+   }
+  ]
+ },
+ "step3": {
+  "recorded_verdict": "STEP_3_NOT_CLOSED__LATENT_MECHANISM_SOLVED__OBSERVATION_MODEL_IS_THE_BINDING_CONSTRAINT",
+  "premise_1_latent_mechanism_matched_real": {
+   "recorded_claim": "the latent layer reproduces real dependence geometry closely on five of six targets",
+   "candidate": "C6_few_dominant_global",
+   "rows": [
+    {
+     "statistic": "median_abs_corr",
+     "latent": 0.3447,
+     "old_real": 0.3291,
+     "corrected_real": 0.0562,
+     "latent_over_old": 1.0476,
+     "latent_over_corrected": 6.134
+    },
+    {
+     "statistic": "frac_abs_gt_0p3",
+     "latent": 0.5563,
+     "old_real": 0.5621,
+     "corrected_real": 0.0242,
+     "latent_over_old": 0.9896,
+     "latent_over_corrected": 22.945
+    },
+    {
+     "statistic": "frac_pos_gt_0p3",
+     "latent": 0.2781,
+     "old_real": 0.2964,
+     "corrected_real": 0.0184,
+     "latent_over_old": 0.9383,
+     "latent_over_corrected": 15.1229
+    },
+    {
+     "statistic": "frac_neg_lt_m0p3",
+     "latent": 0.2781,
+     "old_real": 0.2657,
+     "corrected_real": 0.0059,
+     "latent_over_old": 1.0467,
+     "latent_over_corrected": 47.5315
+    },
+    {
+     "statistic": "mean_degree",
+     "latent": 1668.2107,
+     "old_real": 1685.8173,
+     "corrected_real": 72.7047,
+     "latent_over_old": 0.9896,
+     "latent_over_corrected": 22.945
+    },
+    {
+     "statistic": "transitivity",
+     "latent": 0.5491,
+     "old_real": 0.8605,
+     "corrected_real": 0.5127,
+     "latent_over_old": 0.6382,
+     "latent_over_corrected": 1.071
+    }
+   ],
+   "latent_inside_old_band": 3,
+   "latent_inside_corrected_band": 0,
+   "of": 6,
+   "reading": "the 5 statistics the record called close are 6.134 to 47.5315 times the corrected points; transitivity, the one it missed, is 1.071 times"
+  },
+  "premise_2_observation_attenuates_correlation": {
+   "recorded_claim": "after observation the best candidates reach median |corr| about 0.22 against a target of 0.33, mean degree about 950 against 1686, transitivity about 0.55 against 0.86, while var_top10_pc runs HIGH at 0.68 against 0.509",
+   "recorded_binding_constraint": "the observation model, not the latent generator",
+   "recorded_figures": {
+    "median_abs_corr": {
+     "recorded_post_observation": 0.22,
+     "recorded_target": 0.33,
+     "old_point": 0.3291,
+     "corrected_point": 0.0562,
+     "over_old_point": 0.6686,
+     "over_corrected_point": 3.9145
+    },
+    "mean_degree": {
+     "recorded_post_observation": 950.0,
+     "recorded_target": 1686.0,
+     "old_point": 1685.8173,
+     "corrected_point": 72.7047,
+     "over_old_point": 0.5635,
+     "over_corrected_point": 13.0666
+    },
+    "transitivity": {
+     "recorded_post_observation": 0.55,
+     "recorded_target": 0.86,
+     "old_point": 0.8605,
+     "corrected_point": 0.5127,
+     "over_old_point": 0.6392,
+     "over_corrected_point": 1.0727
+    },
+    "var_top10_pc": {
+     "recorded_post_observation": 0.68,
+     "recorded_target": 0.509,
+     "old_point": 0.5089,
+     "corrected_point": 0.262,
+     "over_old_point": 1.3361,
+     "over_corrected_point": 2.5953
+    }
+   },
+   "reading": "the recorded figures fell short of the old target on median_abs_corr, mean_degree, transitivity; 3 of those 3 are above the corrected point (median_abs_corr, mean_degree, transitivity), so there the shortfall the record attributed to the observation model exists only against the old target; the figure it recorded as running high stays high against the corrected point: var_top10_pc (2.5953 times)"
+  },
+  "premise_3_correlation_and_rank_cannot_both_be_met": {
+   "recorded_claim": "fewer dominant factors raise correlation but push the rank too low; more factors lower correlation. Within this model family the two cannot be satisfied together after observation.",
+   "recorded_figures_above_corrected_point": {
+    "median_abs_corr": true,
+    "var_top10_pc": true
+   },
+   "reading": "the trap was stated for raising correlation toward the old target without pushing the rank too low; against the corrected targets the recorded figures are above the real value on both, so meeting them would need lower correlation and a less dominant top-10 rank together, which is not the trade-off recorded"
+  }
+ },
+ "factor_family": {
+  "recorded_verdict": "FACTOR_MODEL_FAMILY_FALSIFIED__INCLUDING_THE_TWO_LAYER_HURDLE_EXTENSION",
+  "invariant": {
+   "recorded_statistic": "global transitivity",
+   "recorded_real": 0.8871,
+   "recorded_envelope": [
+    0.8752,
+    0.8928
+   ],
+   "recorded_reading": "0.515 to 0.775, never once approaching 0.875",
+   "old_detection": {
+    "point": 0.8871,
+    "band": [
+     0.8752,
+     0.8928
+    ],
+    "point_inside_own_band": true
+   },
+   "corrected_detection": {
+    "point": 0.6672,
+    "band": [
+     0.6454,
+     0.667
+    ],
+    "point_inside_own_band": false
+   },
+   "corrected_expression": {
+    "point": 0.5127,
+    "band": [
+     0.5019,
+     0.5184
+    ],
+    "point_inside_own_band": true
+   },
+   "recorded_configurations": [
+    0.6896,
+    0.6931,
+    0.6895,
+    0.6972,
+    0.7067,
+    0.707,
+    0.515,
+    0.5773,
+    0.5186,
+    0.775,
+    0.7395
+   ],
+   "family_range": [
+    0.515,
+    0.775
+   ],
+   "corrected_points_inside_family_range": {
+    "detection": true,
+    "expression": false
+   },
+   "configurations_inside_corrected_detection_band": 0,
+   "configurations_inside_corrected_expression_band": 1,
+   "edge_density": {
+    "n_hvg": 3000,
+    "old_detection": 0.6148,
+    "corrected_detection": 0.1348
+   },
+   "recorded_layer": "detection",
+   "reading": "the record's invariant is on the detection layer (its recorded real 0.8871 is the old detection point) and falsified the family because transitivity never approached it at an edge density of 0.6148. The corrected detection value 0.6672 is inside the range the family produced [0.515, 0.775], at an edge density of 0.1348, so the stated reason no longer holds. The corrected expression value 0.5127 is below the lowest recorded value 0.515. This does not show that the family fits the corrected targets: that was never scored"
+  },
+  "second_structural_tension": {
+   "recorded_claim": "the correlation targets and the rank/community targets move in opposite directions under every lever tested",
+   "evidence": [
+    {
+     "candidate": "H1 single-layer",
+     "median_abs_corr": 0.3528,
+     "var_top10_pc": 0.6537,
+     "largest_community": 0.9833,
+     "recorded_inside": "5 of 11",
+     "over_corrected_point": {
+      "median_abs_corr": 6.2775,
+      "var_top10_pc": 2.4949,
+      "largest_community_frac": 4.1373
+     }
+    },
+    {
+     "candidate": "independent fraction 0.40",
+     "median_abs_corr": 0.1515,
+     "var_top10_pc": 0.5669,
+     "largest_community": 0.7177,
+     "recorded_inside": "1 of 11",
+     "over_corrected_point": {
+      "median_abs_corr": 2.6957,
+      "var_top10_pc": 2.1636,
+      "largest_community_frac": 3.0198
+     }
+    }
+   ],
+   "corrected_points": {
+    "median_abs_corr": 0.0562,
+    "var_top10_pc": 0.262,
+    "largest_community_frac": 0.2377
+   }
+  },
+  "two_layer_findings": {
+   "recorded": {
+    "the_conceptual_shift_was_correct": "real covariance is driven heavily by correlated detection: binarised real RNA has median |corr| 0.3770 against its own CPM-log1p 0.3291",
+    "detection_asymmetry_mechanism_confirmed": "real detection is positively skewed at a positive-over-negative ratio of 1.669 and mean signed correlation 0.102, against 1.116 and 0.032 for expression. A shared positive-only cell-activity factor reproduces this: candidate H_D1 reached 1.7150, inside the envelope of 1.605 to 1.731. Balanced-sign factors alone cannot.",
+    "community_structure_is_controllable": "an explicit independent-gene fraction moves the largest-community fraction across the real value: 0.9993 at 0%, 0.8373 at 25% and 0.7177 at 40%, against a real 0.7630. var_top10_pc reaches 0.5669 inside its envelope at 40%."
+   },
+   "real_side_old_and_corrected": {
+    "median_abs_corr": {
+     "detection_old": 0.377,
+     "detection_corrected": 0.1946,
+     "expression_old": 0.3291,
+     "expression_corrected": 0.0562
+    },
+    "pos_over_neg_ratio": {
+     "detection_old": 1.6686,
+     "detection_corrected": 59.0185,
+     "expression_old": 1.1156,
+     "expression_corrected": 3.1432
+    },
+    "mean_signed_corr": {
+     "detection_old": 0.1016,
+     "detection_corrected": 0.1774,
+     "expression_old": 0.0322,
+     "expression_corrected": 0.0257
+    },
+    "largest_community_frac": {
+     "detection_old": 0.763,
+     "detection_corrected": 0.1367,
+     "expression_old": 0.8243,
+     "expression_corrected": 0.2377
+    },
+    "var_top10_pc": {
+     "detection_old": 0.5602,
+     "detection_corrected": 0.3349,
+     "expression_old": 0.5089,
+     "expression_corrected": 0.262
+    }
+   },
+   "detection_carries_more_dependence_than_expression": true,
+   "detection_more_positively_skewed_than_expression": true,
+   "reading": "detection still carries more dependence than expression (corrected 0.1946 against 0.0562) and is still more positively skewed, so the direction of the two-layer findings survives; their magnitudes, and every synthetic value the record placed inside an old envelope, were measured against the inflated targets"
+  }
+ },
+ "observer_v2": {
+  "recorded_decision": "OBSERVER_V2_SUPPORTED_FOR_NEXT_STAGE",
+  "recorded_answer": "YES for the coupling. Decoupling removes the trade-off: at FULL abundance scale the topology is nearly restored, with the fraction above 0.3 at 0.6154 against a real 0.6148 and mean degree at 1846 against a real 1844. The abundance marginal is retained rather than collapsed. The residual gap is a DIFFERENT mechanism.",
+  "cited_evidence_realization_isolation": {
+   "rows": [
+    {
+     "variant": "decoupled + DETERMINISTIC threshold",
+     "median_abs_corr": {
+      "value": 0.3486,
+      "old_point": 0.377,
+      "corrected_point": 0.1946,
+      "over_old": 0.9247,
+      "over_corrected": 1.7917
+     },
+     "frac_abs_gt_0p3": {
+      "value": 0.6154,
+      "old_point": 0.6148,
+      "corrected_point": 0.1348,
+      "over_old": 1.001,
+      "over_corrected": 4.5642
+     },
+     "transitivity": {
+      "value": 0.8238,
+      "old_point": 0.8871,
+      "corrected_point": 0.6672,
+      "over_old": 0.9287,
+      "over_corrected": 1.2346
+     },
+     "mean_degree": {
+      "value": 1846,
+      "old_point": 1843.804,
+      "corrected_point": 404.3647,
+      "over_old": 1.0012,
+      "over_corrected": 4.5652
+     },
+     "abundance_max_over_median_nonzero": {
+      "value": 2908.1,
+      "old_point": 1976.6481,
+      "corrected_point": 2273.2075,
+      "over_old": 1.4712,
+      "over_corrected": 1.2793
+     },
+     "top1pct_count_share": {
+      "value": 0.3647,
+      "old_point": 0.2457,
+      "corrected_point": 0.2741,
+      "over_old": 1.4845,
+      "over_corrected": 1.3306
+     }
+    },
+    {
+     "variant": "decoupled + POISSON realization",
+     "median_abs_corr": {
+      "value": 0.1364,
+      "old_point": 0.377,
+      "corrected_point": 0.1946,
+      "over_old": 0.3618,
+      "over_corrected": 0.7011
+     },
+     "frac_abs_gt_0p3": {
+      "value": 0.0059,
+      "old_point": 0.6148,
+      "corrected_point": 0.1348,
+      "over_old": 0.0096,
+      "over_corrected": 0.0438
+     },
+     "transitivity": {
+      "value": 0.3558,
+      "old_point": 0.8871,
+      "corrected_point": 0.6672,
+      "over_old": 0.4011,
+      "over_corrected": 0.5332
+     },
+     "mean_degree": {
+      "value": 18,
+      "old_point": 1843.804,
+      "corrected_point": 404.3647,
+      "over_old": 0.0098,
+      "over_corrected": 0.0445
+     },
+     "abundance_max_over_median_nonzero": {
+      "value": 3429.4,
+      "old_point": 1976.6481,
+      "corrected_point": 2273.2075,
+      "over_old": 1.735,
+      "over_corrected": 1.5086
+     },
+     "top1pct_count_share": {
+      "value": 0.3865,
+      "old_point": 0.2457,
+      "corrected_point": 0.2741,
+      "over_old": 1.5733,
+      "over_corrected": 1.4101
+     }
+    },
+    {
+     "variant": "REAL",
+     "median_abs_corr": {
+      "value": 0.377,
+      "old_point": 0.377,
+      "corrected_point": 0.1946,
+      "over_old": 1.0001,
+      "over_corrected": 1.9377
+     },
+     "frac_abs_gt_0p3": {
+      "value": 0.6148,
+      "old_point": 0.6148,
+      "corrected_point": 0.1348,
+      "over_old": 1.0,
+      "over_corrected": 4.5597
+     },
+     "transitivity": {
+      "value": 0.8871,
+      "old_point": 0.8871,
+      "corrected_point": 0.6672,
+      "over_old": 1.0,
+      "over_corrected": 1.3295
+     },
+     "mean_degree": {
+      "value": 1843.8,
+      "old_point": 1843.804,
+      "corrected_point": 404.3647,
+      "over_old": 1.0,
+      "over_corrected": 4.5597
+     },
+     "abundance_max_over_median_nonzero": {
+      "value": 1976.6,
+      "old_point": 1976.6481,
+      "corrected_point": 2273.2075,
+      "over_old": 1.0,
+      "over_corrected": 0.8695
+     },
+     "top1pct_count_share": {
+      "value": 0.2457,
+      "old_point": 0.2457,
+      "corrected_point": 0.2741,
+      "over_old": 1.0001,
+      "over_corrected": 0.8964
+     }
+    }
+   ],
+   "ratio_span_to_corrected_points": {
+    "decoupled + DETERMINISTIC threshold": [
+     1.2346,
+     4.5652
+    ],
+    "decoupled + POISSON realization": [
+     0.0438,
+     0.7011
+    ],
+    "REAL": [
+     1.3295,
+     4.5597
+    ]
+   },
+   "reading": "the decision cited the deterministic-threshold variant reproducing the real fraction above 0.3 and mean degree essentially exactly; those real values are the old detection points. Against the corrected points, on the four topology statistics, the deterministic variant is 1.2346 to 4.5652 times the real value and the Poisson variant, recorded as destroying detection correlation, 0.0438 to 0.7011 times"
+  },
+  "roster": {
+   "recorded_every_candidate_failed_on_topology": true,
+   "recorded_best": "O6_wide_capture_plus_cell_state, transitivity 0.6650 and degree 328",
+   "rows": [
+    {
+     "candidate": "O1_null_capture_constant",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 0,
+     "topology_inside_corrected_targets": [],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 0.7509,
+      "frac_abs_gt_0p3": 0.0796,
+      "transitivity": 0.5855,
+      "mean_degree": 0.0796,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 0.2467,
+     "top1pct_count_share_inside_old": false,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 0.8819
+    },
+    {
+     "candidate": "O2_capture_independent_moderate",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 0,
+     "topology_inside_corrected_targets": [],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 0.7342,
+      "frac_abs_gt_0p3": 0.0641,
+      "transitivity": 0.5574,
+      "mean_degree": 0.0641,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 0.5276,
+     "top1pct_count_share_inside_old": false,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 1.048
+    },
+    {
+     "candidate": "O3_capture_independent_wide",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 0,
+     "topology_inside_corrected_targets": [],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 0.7082,
+      "frac_abs_gt_0p3": 0.0479,
+      "transitivity": 0.5754,
+      "mean_degree": 0.0479,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 1.5448,
+     "top1pct_count_share_inside_old": false,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 1.4182
+    },
+    {
+     "candidate": "O4_capture_anticorrelated",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 0,
+     "topology_inside_corrected_targets": [],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 0.7525,
+      "frac_abs_gt_0p3": 0.0762,
+      "transitivity": 0.5593,
+      "mean_degree": 0.0762,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 0.3791,
+     "top1pct_count_share_inside_old": true,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 0.8941
+    },
+    {
+     "candidate": "O5_poorly_captured_subpopulation",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 0,
+     "topology_inside_corrected_targets": [],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 0.7289,
+      "frac_abs_gt_0p3": 0.0611,
+      "transitivity": 0.5858,
+      "mean_degree": 0.0611,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 0.5468,
+     "top1pct_count_share_inside_old": false,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 1.1006
+    },
+    {
+     "candidate": "O6_wide_capture_plus_cell_state",
+     "topology_inside_old": 0,
+     "topology_inside_corrected": 1,
+     "topology_inside_corrected_targets": [
+      "transitivity"
+     ],
+     "of": 5,
+     "over_corrected_point": {
+      "median_abs_corr": 1.1413,
+      "frac_abs_gt_0p3": 0.8121,
+      "transitivity": 0.9967,
+      "mean_degree": 0.8121,
+      "largest_community_frac": 0.0024
+     },
+     "abundance_max_over_median_nonzero_inside_old": false,
+     "abundance_max_over_median_nonzero_inside_corrected": false,
+     "abundance_max_over_median_nonzero_over_corrected_point": 1.7691,
+     "top1pct_count_share_inside_old": false,
+     "top1pct_count_share_inside_corrected": false,
+     "top1pct_count_share_over_corrected_point": 1.4586
+    }
+   ]
+  },
+  "diagnosed_residual": {
+   "recorded_claim": "real detection reaches a correlation of 0.377 at comparable depth, so real biological rate swings must carry genes from effectively absent to clearly present, not from 1.5 counts to 5.",
+   "recorded_handoff": "Issue 1 hands the generator a precise, falsifiable requirement: biological dynamic range across a module switch must be large relative to the detection threshold. That is a quantitative target, not a free parameter.",
+   "old_real_detection_median_abs_corr": 0.377,
+   "corrected_real_detection_median_abs_corr": 0.1946,
+   "roster_median_abs_corr_range": [
+    0.1378,
+    0.2221
+   ],
+   "corrected_point_inside_roster_range": true,
+   "roster_frac_abs_gt_0p3_over_corrected_point": {
+    "O1_null_capture_constant": 0.0796,
+    "O2_capture_independent_moderate": 0.0641,
+    "O3_capture_independent_wide": 0.0479,
+    "O4_capture_anticorrelated": 0.0762,
+    "O5_poorly_captured_subpopulation": 0.0611,
+    "O6_wide_capture_plus_cell_state": 0.8121
+   },
+   "reading": "the median the residual was quantified on now lies inside the roster's own range; the corrected real fraction above 0.3 (0.1348) lies above the roster's range [0.0065, 0.1095], which is 0.0479 to 0.8121 times the real value"
+  },
+  "abundance_retained": {
+   "recorded_claim": "O2 at 1199 and O5 at 1243 against a real 1977, versus a collapse to about 10 under the old abundance-shrinking workaround",
+   "old_real": 1976.6481,
+   "corrected_real": 2273.2075
+  },
+  "caveat": "roster and isolation statistics were computed with each arm's own prevalence filter, which the audit correction showed to be material; the audit correction's canonical-universe numbers were computed on the old cache-derived universe and are pending a synthetic replay"
+ },
+ "substate_search": {
+  "faithful_to_recorded_counts": true,
+  "of": 11,
+  "rounds": [
+   {
+    "round": "V77_SUBSTATE_SEARCH_ROUND1",
+    "recorded_headline_target": {
+     "statistic": "transitivity",
+     "real": 0.8871,
+     "envelope": [
+      0.8752,
+      0.8928
+     ],
+     "factor_family_range": [
+      0.515,
+      0.775
+     ]
+    },
+    "rows": [
+     {
+      "candidate": "S1_coarse",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.3159,
+       "frac_abs_gt_0p3": 0.1553,
+       "transitivity": 1.089,
+       "mean_degree": 0.1553,
+       "largest_community_frac": 0.0512
+      }
+     },
+     {
+      "candidate": "S2_medium",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 1,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.2496,
+       "frac_abs_gt_0p3": 0.0525,
+       "transitivity": 1.0243,
+       "mean_degree": 0.0525,
+       "largest_community_frac": 0.0415
+      }
+     },
+     {
+      "candidate": "S3_fine",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.2264,
+       "frac_abs_gt_0p3": 0.0077,
+       "transitivity": 1.0672,
+       "mean_degree": 0.0077,
+       "largest_community_frac": 0.0171
+      }
+     },
+     {
+      "candidate": "S4_coarse_lownoise",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.4288,
+       "frac_abs_gt_0p3": 0.4056,
+       "transitivity": 1.2207,
+       "mean_degree": 0.4056,
+       "largest_community_frac": 0.8024
+      }
+     }
+    ]
+   },
+   {
+    "round": "V77_SUBSTATE_SEARCH_ROUND2",
+    "recorded_headline_target": {
+     "statistic": "transitivity",
+     "real": 0.8871,
+     "envelope": [
+      0.8752,
+      0.8928
+     ],
+     "factor_family_range": [
+      0.515,
+      0.775
+     ]
+    },
+    "rows": [
+     {
+      "candidate": "L1_two_giant",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.7333,
+       "frac_abs_gt_0p3": 0.4446,
+       "transitivity": 1.0152,
+       "mean_degree": 0.4446,
+       "largest_community_frac": 0.0073
+      }
+     },
+     {
+      "candidate": "L2_three_giant",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.5914,
+       "frac_abs_gt_0p3": 0.2661,
+       "transitivity": 1.0527,
+       "mean_degree": 0.2661,
+       "largest_community_frac": 0.2732
+      }
+     },
+     {
+      "candidate": "L3_four_giant_lownoise",
+      "recorded_expression_inside": 1,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 1,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.6644,
+       "frac_abs_gt_0p3": 0.7495,
+       "transitivity": 1.0579,
+       "mean_degree": 0.7495,
+       "largest_community_frac": 1.661
+      }
+     },
+     {
+      "candidate": "L4_two_giant_morestates",
+      "recorded_expression_inside": 0,
+      "recorded_detection_inside": 0,
+      "expression_inside_old": 0,
+      "detection_inside_old": 0,
+      "expression_inside_corrected": 0,
+      "detection_inside_corrected": 0,
+      "detection_inside_corrected_targets": [],
+      "detection_over_corrected_point": {
+       "median_abs_corr": 0.6653,
+       "frac_abs_gt_0p3": 0.3218,
+       "transitivity": 1.0904,
+       "mean_degree": 0.3218,
+       "largest_community_frac": 0.0024
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "substate_family_decision": {
+  "recorded_decision": "SUPPORTED_FOR_NEXT_STAGE__WITH_TWO_NAMED_UNRESOLVED_ISSUES",
+  "recorded_headline": "the transitivity envelope was entered for the first time. Transitivity is the single invariant that falsified the factor/hurdle family, where it never left 0.515 to 0.775 across 37 candidates. The discrete sub-state family reaches 0.8844, inside the envelope of 0.8752 to 0.8928, while mean degree and the fraction above 0.3 land essentially on target.",
+  "headline_setting": {
+   "generator": "L1_two_giant: two giant near-disjoint modules switched by 40 hidden sub-states",
+   "observation": "free global threshold, detected count as an outcome, no selection noise",
+   "abundance_prior_scale": 0.3,
+   "rows": [
+    {
+     "statistic": "median_abs_corr",
+     "measured": 0.3549,
+     "recorded_real": 0.377,
+     "corrected_point": 0.1946,
+     "over_corrected": 1.8241,
+     "inside_old_band": true,
+     "inside_corrected_band": false
+    },
+    {
+     "statistic": "frac_abs_gt_0p3",
+     "measured": 0.6188,
+     "recorded_real": 0.6148,
+     "corrected_point": 0.1348,
+     "over_corrected": 4.5894,
+     "inside_old_band": true,
+     "inside_corrected_band": false
+    },
+    {
+     "statistic": "transitivity",
+     "measured": 0.8844,
+     "recorded_real": 0.8871,
+     "corrected_point": 0.6672,
+     "over_corrected": 1.3255,
+     "inside_old_band": true,
+     "inside_corrected_band": false
+    },
+    {
+     "statistic": "mean_degree",
+     "measured": 1855.9,
+     "recorded_real": 1843.8,
+     "corrected_point": 404.3647,
+     "over_corrected": 4.5897,
+     "inside_old_band": true,
+     "inside_corrected_band": false
+    },
+    {
+     "statistic": "largest_community_frac",
+     "measured": 0.921,
+     "recorded_real": 0.763,
+     "corrected_point": 0.1367,
+     "over_corrected": 6.739,
+     "inside_old_band": false,
+     "inside_corrected_band": false
+    }
+   ],
+   "inside_old_band": 4,
+   "inside_corrected_band": 0,
+   "of": 5
+  },
+  "credited_change": {
+   "recorded_claim": "block-switching produced near-perfect cliques at the LATENT layer immediately: latent transitivity 0.9649 to 0.9999 on the first giant-module candidates. The observation model then capped observed transitivity at 0.60 to 0.75, the SAME ceiling the factor family hit. So both families failed for one shared reason, and the generator family was never the binding constraint.",
+   "recorded_culprit": "the exact per-cell detected-count constraint. Every prior variant forced each cell to detect exactly k features. In real data that count is an OUTCOME of the cell's state, not a constraint on it.",
+   "models": [
+    {
+     "model": "A exact per-cell top-k, the previous default",
+     "over_corrected": {
+      "median_abs_corr": 0.735,
+      "frac_abs_gt_0p3": 0.4621,
+      "transitivity": 1.0319,
+      "mean_degree": 0.4622,
+      "largest_community_frac": 0.0073
+     }
+    },
+    {
+     "model": "B free global threshold, count is an outcome, with selection noise",
+     "over_corrected": {
+      "median_abs_corr": 1.3759,
+      "frac_abs_gt_0p3": 3.0705,
+      "transitivity": 1.1375,
+      "mean_degree": 3.0707,
+      "largest_community_frac": 5.6539
+     }
+    },
+    {
+     "model": "C free global threshold, no selection noise",
+     "over_corrected": {
+      "median_abs_corr": 1.6668,
+      "frac_abs_gt_0p3": 4.0821,
+      "transitivity": 1.1975,
+      "mean_degree": 4.082,
+      "largest_community_frac": 7.0295
+     }
+    },
+    {
+     "model": "REAL binarised",
+     "over_corrected": {
+      "median_abs_corr": 1.9377,
+      "frac_abs_gt_0p3": 4.5597,
+      "transitivity": 1.3295,
+      "mean_degree": 4.5597,
+      "largest_community_frac": 5.5829
+     }
+    }
+   ],
+   "statistics_where_C_is_further_from_the_corrected_point_than_A": [
+    "median_abs_corr",
+    "frac_abs_gt_0p3",
+    "transitivity",
+    "mean_degree"
+   ],
+   "of": 5,
+   "reading": "against the corrected points the free-threshold model the record moved to (C) is further from the real value than the exact top-k default it replaced (A) on 4 of 5 statistics (median_abs_corr, frac_abs_gt_0p3, transitivity, mean_degree)"
+  },
+  "abundance_dial": {
+   "recorded_claim": "a wide abundance spread gives each gene its own effective detection threshold, which breaks cliques apart under thresholding. Narrowing it lets genes in a switched module cross together. The dial brackets the target cleanly: transitivity 0.8220 at x0.5, 0.8844 at x0.3 and 0.9410 at x0.2.",
+   "settings": {
+    "x0.5": {
+     "transitivity": 0.822,
+     "over_corrected": 1.2319,
+     "inside_old_band": false,
+     "inside_corrected_band": false
+    },
+    "x0.3": {
+     "transitivity": 0.8844,
+     "over_corrected": 1.3255,
+     "inside_old_band": true,
+     "inside_corrected_band": false
+    },
+    "x0.2": {
+     "transitivity": 0.941,
+     "over_corrected": 1.4103,
+     "inside_old_band": false,
+     "inside_corrected_band": false
+    }
+   },
+   "reading": "the dial brackets the old target; none of the 3 recorded settings is inside the corrected band"
+  },
+  "issue_2_sign_balance_and_community": {
+   "recorded": {
+    "severity": "MEDIUM, both previously responded to known levers",
+    "pos_over_neg_ratio": {
+     "observed": "astronomically high, effectively no negative correlations",
+     "real_detection": 1.669,
+     "cause": "two giant single-signed modules with no selection noise"
+    },
+    "largest_community_frac": {
+     "observed": 0.921,
+     "real": 0.763,
+     "known_lever": "the independent-gene fraction, which previously moved this across the real value at 0.9993, 0.8373 and 0.7177"
+    },
+    "tension_to_watch": "more modules would improve sign balance but previously lowered transitivity, so these must be calibrated jointly rather than in sequence"
+   },
+   "real_detection_pos_over_neg": {
+    "old": 1.6686,
+    "corrected": 59.0185
+   },
+   "real_detection_largest_community": {
+    "old": 0.763,
+    "corrected": 0.1367
+   }
+  },
+  "issue_1_note": "the abundance figures this issue quotes (6685, 0.322) were computed over all 41,238 addresses of the old cache and are not recomputed here; on the filtered universe the corrected abundance points are in the observer V2 section"
+ },
+ "t5_guard": {
+  "recorded_real_reference": 1.012,
+  "old_real": 1.0118,
+  "corrected_real": 0.7435,
+  "corrected_pooled_median_abs_corr": 0.0562,
+  "corrected_mean_within_class_median_abs_corr": 0.0418,
+  "recorded_guard": "this is the escape-route closer. If a successor generator reproduces the pooled statistics while its within-class ratio collapses toward zero, its dependence is pure class separation and it must FAIL calibration.",
+  "recorded_synthetic_ranges": {
+   "background rounds": [
+    0.9982,
+    2.4089
+   ],
+   "factor family": [
+    0.9982,
+    1.0632
+   ],
+   "observer V2 roster": [
+    0.9794,
+    0.9906
+   ],
+   "substate search rounds": [
+    0.9926,
+    1.1128
+   ],
+   "substate family": [
+    0.9926,
+    1.1128
+   ]
+  },
+  "lowest_recorded_synthetic": 0.9794,
+  "every_recorded_range_above_corrected_real": true,
+  "successor_requirement_recorded": "real transitivity, real community size spectrum and the real detection asymmetry are all natural consequences of cells occupying a finite set of states in which coherent gene blocks are jointly on or off. T5 remains the guard: such a model must still produce within-class correlation equal to pooled, which the real data shows at a ratio of 1.012, so the states cannot simply be the broad cell classes.",
+  "substate_structural_argument_recorded": "hidden sub-states are drawn INDEPENDENTLY of the annotated cell class, so they are orthogonal to it by construction. The family cannot produce its structure by separating known classes.",
+  "reading": "the guard fails a candidate whose ratio collapses toward zero, and no recorded candidate did (lowest 0.9794). But the real ratio is 0.7435, not 1.0118: within-class dependence is about 74% of pooled, so part of the real pooled dependence is class separation. Every recorded synthetic range lies above the corrected real ratio. The inferences built on a ratio of about 1, that real dependence carries essentially no class separation and that a successor's states cannot simply be the broad cell classes, rested on the old input"
+ },
+ "pending_synthetic_replay": {
+  "V77_REALIZATION_ISOLATION_RECEIPT_V1.json": "scores synthetic counts on the cache-derived evaluation universe",
+  "V77_REALIZATION_ISOLATION_RECEIPT_V2.json": "scores synthetic counts on the cache-derived evaluation universe",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V1.json": "scores synthetic counts on the cache-derived evaluation universe",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": "scores synthetic counts on the cache-derived evaluation universe",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "exploratory; same universe dependence",
+  "V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "exploratory; same universe dependence",
+  "V77_OBSERVER_V2_AUDIT_CORRECTION_V1.json": "its canonical-universe numbers come from the realization isolation",
+  "V77_DYNAMIC_RANGE_VERDICT_V1.json": "the verdict on the dynamic-range tournament; it also quotes the old detection points"
+ },
+ "not_material": {
+  "V77_S157_PAIRED_CHALLENGE_SCORE_ARM1_V1.json / _ARMS_V1.json / _PREREGISTRATION_V1.json": "the universe is only the address set of synthetic twin worlds; the identifiability conclusions do not depend on which genes it holds (as recorded when S174 was registered)",
+  "V77_CONTEXT_SHORTCUT_AUDIT_V1.json": "DIAGNOSTIC_ONLY; study recoverability from support and depth does not depend on gene identity",
+  "REHEARSAL_* and V77_RUNTIME_HANDOFF_*": "plumbing and runtime lane (kept separate from this repair by the owner); the universe is an index set there; flagged, not replayed"
+ },
+ "classified_elsewhere": {
+  "V77_REPRODUCTION_ABUNDANCE_ENVELOPE_V1.json": "superseded by the replay itself (addendum 6)",
+  "V77_REPRODUCTION_REAL_TOPOLOGY_AFTER_T5_EXTRACTION_V1.json": "superseded by the replay itself (addendum 6)",
+  "V77_SUPERSEDED_REBUILD_CUSTODY_V1.json": "not material (addendum 6)",
+  "V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1.json": "not material (addendum 6)",
+  "V77_S157_LINEAGE_CROSSWALK_V1.json": "not material; its S149 row is superseded by the S149 update (addendum 6)",
+  "V77_S157_TERMINAL_RECEIPT_V1.json": "not material (addendum 6)",
+  "V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json": "superseded by V2 before S174 (S159); V2 is replayed"
+ },
+ "inputs": {
+  "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json": "2367d3c146d298d68246cadcd37e426f7d9e4c01ecc3c3fb7d24e31d0b9853d4",
+  "results/v77/V77_REAL_DETECTION_ENVELOPE_V1.json": "e5d26cb5219a03cf78a5b80733da587177253cf3f9ea66a5b671dd28b62bb979",
+  "results/v77/V77_REAL_ABUNDANCE_ENVELOPE_V1.json": "b590c7f69063b3a5743eafcf4ea1ce2ac47624a9f0dd5bbfb74bbd4b85c9d979",
+  "results/v77/s174_replay/V77_REAL_CALIBRATION_ENVELOPE_V1.json": "ff26d38311bd4a245bd0f01ef3b4c11a1770e8fd3e18919740b1e646216ec7f2",
+  "results/v77/s174_replay/V77_REAL_DETECTION_ENVELOPE_V1.json": "d9f63bb93b8082ff4af90577e0013244c38b92851c2044ab365ca3461199e073",
+  "results/v77/s174_replay/V77_REAL_ABUNDANCE_ENVELOPE_V1.json": "ee8e00afdf6c84f84017478fed3ac0b827ede4c8d74431367a358ed122d3d22f",
+  "results/v77/V77_STEP3_BACKGROUND_CALIBRATION_RESULT_V1.json": "89ed625c1bd42a83ffd3e07f0f090411ff5d08f8c221e37c2742adfbfb740ee7",
+  "results/v77/V77_STEP3_FACTOR_FAMILY_FALSIFICATION_V1.json": "164fa2abac55d945b326c48b11e67c665eea0e1f6c20317bc772146fe16ca4fa",
+  "results/v77/V77_OBSERVER_V2_DECISION_RECEIPT_V1.json": "f323a082316600cc9aa794b197b7650c0034a6c175ce967fc5af7d9e7890c777",
+  "results/v77/V77_SUBSTATE_FAMILY_DECISION_V1.json": "7fee090e1b1661b160f9f17987fbd8e834d89cdf88234e4a4f1119d14e468cd0",
+  "results/v77/V77_BG_SEARCH_ROUND1.json": "4c896b48fce8f34c63d0d32f209444801a50418dac998eb212c10c006ab54b6d",
+  "results/v77/V77_BG_SEARCH_ROUND2.json": "59e74950d88cc3f259a8fe979d08554b3b5f1f92d59761b7183d1750b2f7d457",
+  "results/v77/V77_BG_SEARCH_ROUND3.json": "08e5e73e0cf59ddc86d4ca83eb90f0fdcc6717d6fd92a42366cfd65abb35015e",
+  "results/v77/V77_BG_SEARCH_ROUND4.json": "8c122139a0d3243ecc8204eaf558ceb1b910aa4b953cf166b0416850bc9f5bdf",
+  "results/v77/V77_BG_SEARCH_ROUND5.json": "7f9fde4f88f5671f8c112363f56273d23f02a6c9ad0032d144d9d2137ace8a5e",
+  "results/v77/V77_BG_SEARCH_ROUND6.json": "04b295734ab82c7cd046c3de6b40a94683e7f1f289ee4bfcf5009c86f8c95053",
+  "results/v77/V77_BG_SEARCH_ROUND7.json": "34da54f240dbb0758c2b26c9d39e45bcee3b0cb8f12f31676be2645a0bb0c0d5",
+  "results/v77/V77_BG_CANDIDATE_SEARCH_ROUND1.json": "4c896b48fce8f34c63d0d32f209444801a50418dac998eb212c10c006ab54b6d",
+  "results/v77/V77_BG_CANDIDATE_SEARCH_ROUND2.json": "59e74950d88cc3f259a8fe979d08554b3b5f1f92d59761b7183d1750b2f7d457",
+  "results/v77/V77_SUBSTATE_SEARCH_ROUND1.json": "521d901c7a59c0d68aaa843588cc2e197652559647f5e0cf7ff03048bba2f1da",
+  "results/v77/V77_SUBSTATE_SEARCH_ROUND2.json": "8b5a7ffe793908560a5f5a74846842e2407c61b8e6eec0bbd12726601235d10e",
+  "results/v77/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json": "8039d7d4a4d982b8d9d8a633ffd01e1a08f1a50c069a009f8e3fb428f63625b7",
+  "results/v77/s174_replay/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json": "32b7e09aea4778e2565ddb4a7c79e388bd57076fae72b96ce0e171ab1a9dbeb0"
+ },
+ "code_sha256": "7912dd8505ca4c49338623904e0a5b78c0a9986aef234b9d20e69cc08e16c1ad"
+}

@@ -1,0 +1,168 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "C6_few_dominant_global": {
+      "note": "few DOMINANT factors spanning nearly all addresses with balanced signs. Rationale: for the MEDIAN pair to reach |corr| 0.33 the variance must be dominated by a small number of shared factors, which is also what var_top10_pc 0.509 implies. More factors dilute: 400 factors put each gene in ~12 and drove degree to zero.",
+      "n_factors": 1856,
+      "seconds": 29.1,
+      "latent": {
+        "median_abs_corr": 0.3447358310222626,
+        "frac_abs_gt_0p3": 0.5562556407691452,
+        "var_top10_pc": 0.87766015625,
+        "mean_degree": 1668.2106666666666,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.5491373285115464,
+        "substitute_frac": 0.9996666666666667,
+        "frac_pos_gt_0p3": 0.2781356007558075,
+        "frac_neg_lt_m0p3": 0.2781200400133378,
+        "pos_over_neg_ratio": 1.0000559497347583,
+        "mean_signed_corr": 0.00020687842334154993,
+        "t5_within_over_pooled": 0.9942198480242417
+      },
+      "observed": {
+        "median_abs_corr": 0.10528190433979034,
+        "frac_abs_gt_0p3": 0.0658159386462154,
+        "var_top10_pc": 0.44364701334635415,
+        "mean_degree": 197.382,
+        "largest_community_frac": 0.5513333333333333,
+        "transitivity": 0.8641023276257807,
+        "substitute_frac": 0.004333333333333333,
+        "frac_pos_gt_0p3": 0.0658159386462154,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 65815938.6462154,
+        "mean_signed_corr": 0.0010573908220976591,
+        "t5_within_over_pooled": 1.0163425696782045
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": true,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 1,
+      "n_targets": 11,
+      "t5_observed": 1.0163425696782045,
+      "verdict": "REJECT"
+    },
+    "C7_dominant_tuned_noise": {
+      "note": "C6 with a weaker tail so the dominant axes carry a larger share of each gene's variance",
+      "n_factors": 1745,
+      "seconds": 26.6,
+      "latent": {
+        "median_abs_corr": 0.37445493042469025,
+        "frac_abs_gt_0p3": 0.635620762476381,
+        "var_top10_pc": 0.9318700358072917,
+        "mean_degree": 1906.2266666666667,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.7031837431643151,
+        "substitute_frac": 1.0,
+        "frac_pos_gt_0p3": 0.3177374680449039,
+        "frac_neg_lt_m0p3": 0.31788329443147717,
+        "pos_over_neg_ratio": 0.9995412580996618,
+        "mean_signed_corr": 0.00011822172382380813,
+        "t5_within_over_pooled": 1.0054560135014006
+      },
+      "observed": {
+        "median_abs_corr": 0.13074133545160294,
+        "frac_abs_gt_0p3": 0.12412737579193064,
+        "var_top10_pc": 0.5137090646395618,
+        "mean_degree": 372.258,
+        "largest_community_frac": 0.9723333333333334,
+        "transitivity": 0.9527026808536492,
+        "substitute_frac": 0.12433333333333334,
+        "frac_pos_gt_0p3": 0.12412737579193064,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 124127375.79193063,
+        "mean_signed_corr": 0.0013372626854106784,
+        "t5_within_over_pooled": 1.019103054009699
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": true,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 1,
+      "n_targets": 11,
+      "t5_observed": 1.019103054009699,
+      "verdict": "REJECT"
+    },
+    "C8_dominant_plus_midband": {
+      "note": "C6 with a mid band restored, aiming to keep degree high without saturating |corr|",
+      "n_factors": 1793,
+      "seconds": 25.1,
+      "latent": {
+        "median_abs_corr": 0.21950209140777588,
+        "frac_abs_gt_0p3": 0.3460386795598533,
+        "var_top10_pc": 0.771077392578125,
+        "mean_degree": 1037.77,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.45413518027912525,
+        "substitute_frac": 0.6763333333333333,
+        "frac_pos_gt_0p3": 0.17292608647326888,
+        "frac_neg_lt_m0p3": 0.17311259308658442,
+        "pos_over_neg_ratio": 0.9989226282733674,
+        "mean_signed_corr": -5.593362948275171e-05,
+        "t5_within_over_pooled": 1.0071138054084838
+      },
+      "observed": {
+        "median_abs_corr": 0.07156264409422874,
+        "frac_abs_gt_0p3": 0.019099255307324665,
+        "var_top10_pc": 0.2858201090494792,
+        "mean_degree": 57.278666666666666,
+        "largest_community_frac": 0.17366666666666666,
+        "transitivity": 0.5123796710182589,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.019099255307324665,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 19099255.307324663,
+        "mean_signed_corr": 0.0010581642854958773,
+        "t5_within_over_pooled": 1.063235828486323
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.063235828486323,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}

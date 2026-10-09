@@ -1,0 +1,16 @@
+{
+  "schema": "jepa-mandatory-implementation-verifier-policy-v1",
+  "version": "1",
+  "status": "FROZEN_PROJECT_GOVERNANCE",
+  "mandatory": true,
+  "veto_power": true,
+  "runs_before_expensive_compute": true,
+  "implementer_can_self_certify": false,
+  "independent_reference_required_for_high_risk_code": true,
+  "mutation_testing_required": true,
+  "verifier_written_tests_required": true,
+  "no_implicit_expiration": true,
+  "high_risk_code_families": ["selection_rules", "null_logic", "query_logic", "evidence_masks", "stopping_rules", "scientific_endpoints", "aggregation", "statistical_decision", "dataset_derived_parameters", "D_selection", "sufficient_statistics", "cache_and_dedup_identity", "shard_reconciliation", "firewall", "provenance_roots"],
+  "pass_terminal": "PASS_IMPLEMENTATION_VERIFIER",
+  "stop_terminals": ["STOP_IMPLEMENTATION_VERIFIER_CONTRACT_MISMATCH", "STOP_IMPLEMENTATION_VERIFIER_INDEPENDENCE_VIOLATION", "STOP_IMPLEMENTATION_VERIFIER_REFERENCE_MISMATCH", "STOP_IMPLEMENTATION_VERIFIER_MUTATION_SURVIVED", "STOP_IMPLEMENTATION_VERIFIER_TEST_FAILURE", "STOP_IMPLEMENTATION_VERIFIER_PROVENANCE_MISMATCH", "STOP_IMPLEMENTATION_VERIFIER_INCOMPLETE_COVERAGE"]
+}

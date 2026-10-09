@@ -1,0 +1,111 @@
+{
+  "schema": "V77_COMPONENT_SUFFICIENT_STATISTIC_FREEZE_V2_GOVERNANCE_REPAIR",
+  "status": "FROZEN_PROSPECTIVE__STILL_BEFORE_THE_DECIDING_V2_REBUILD",
+  "recorded_utc": "2026-10-06T00:03:52Z",
+  "head": "d028aef25a4d0d8ca87d638ec6f3eda0307656c4",
+  "AMENDS": {
+    "path": "results/v77/V77_COMPONENT_SUFFICIENT_STATISTIC_FREEZE_V1.json",
+    "sha256": "c202440f7570c9edd3e9f605c7c45c6ba8a4bdfa9dd48845cd11c7e1a1330de5",
+    "v1_bytes_unchanged": true,
+    "why_a_successor_not_an_edit": "V1 was published and is cited by the detect/reject results. The corrected method is recorded beside it so the change of construction is visible."
+  },
+  "REPAIR_CLASS": "GOVERNANCE_METHOD_REPAIR__NO_SCIENTIFIC_THRESHOLD_CHANGED",
+  "no_threshold_changed": true,
+  "thresholds_carried_forward_verbatim_from_v1": {
+    "B4_transient": "R2(band) within the Phase 4 designed range 0.25 to 0.45",
+    "C1_interaction": "gap > 0.05",
+    "C2_local_gain": "ratio-feature R2 within the Phase 4 designed range 0.40 to 0.60, AND ratio R2 minus linear R2 > 0.05",
+    "C3_biology_x_operator": "max |corr| > 0.05, against the World A reference of 0.0086",
+    "D1_graph_recovery": "average precision at least 3x the positive base rate, AND decoy regions must not score above bound regions on average"
+  },
+  "THE_DEFECT": {
+    "found_by": "the parallel review lane, reading the frozen document after the S125 repair landed",
+    "stale_text_in_v1": "the same --components selection with the one component removed, identical seed 7302",
+    "why_it_is_wrong": "that is the VACUOUS construction already rejected as S125. Removing a component from the --components selection removes it from the TRUTH, so its statistic is never computed and 'did not run' gets scored as 'correctly rejected'.",
+    "severity": "HIGH as governance. The code was already repaired and the reported detect/reject results were produced with the CORRECT construction, so no published number is affected. But the frozen document still instructed the wrong method, and anyone following it would have reproduced S125.",
+    "published_results_affected": "NONE"
+  },
+  "CORRECTED_OFF_AND_NULL_TWIN_CONSTRUCTION": {
+    "rule": "an off-twin suppresses a component's OBSERVATION CONTRIBUTION ONLY. Everything else is held identical so the statistic remains executable and comparable.",
+    "requirements": [
+      "the truth latent for the component is RETAINED, so the statistic can still be computed",
+      "the planted module allocation is RETAINED and byte-identical to the signal world, so the statistic is evaluated over exactly the same addresses",
+      "only the component's contribution to eta is suppressed, by gating its effect scale to zero",
+      "the same seed, 7302, and the same measurement seed",
+      "the statistic MUST execute in the off-twin; a statistic that is skipped is not a control",
+      "rejection means the measured statistic collapses toward its null band, not that it is absent"
+    ],
+    "implementation": {
+      "flag": "build_v77_fullscale_rna_observer_v2.py --suppress <COMPONENT>",
+      "mechanism": "modules are still allocated when gated to zero, so module_address_sets are byte-identical between a world and its twin",
+      "oracle_behaviour": "v77_component_oracle_v3.py selects statistics by TRUTH availability, not by observer-enabled components, so a suppressed component is still measured"
+    },
+    "verification_already_performed": {
+      "module_address_sets_identical_world_vs_twin": true,
+      "all_four_statistics_executed_in_the_twin": true,
+      "results": [
+        {
+          "component": "B4",
+          "signal": 0.3812,
+          "off_twin": -0.0202,
+          "null_band": "< 0.05",
+          "reject": "PASS"
+        },
+        {
+          "component": "C1",
+          "signal": 0.0737,
+          "off_twin": -0.0237,
+          "null_band": "< 0.01",
+          "reject": "PASS"
+        },
+        {
+          "component": "C2",
+          "signal": 0.1525,
+          "off_twin": -0.0033,
+          "null_band": "< 0.05",
+          "reject": "PASS"
+        },
+        {
+          "component": "C3",
+          "signal": 0.0988,
+          "off_twin": 0.0151,
+          "null_band": "< 0.02",
+          "reject": "PASS"
+        }
+      ]
+    },
+    "supersedes": "OFF_AND_NULL_TWIN_REQUIREMENT.construction in V1"
+  },
+  "EVERYTHING_ELSE_IN_V1_REMAINS_IN_FORCE": [
+    "the five component-specific sufficient statistics and their estimands",
+    "every pass criterion, carried forward verbatim above",
+    "the prior-observation disclosures, including the prediction that C2 would fail",
+    "the universal ORACLE_CEILING_UNDER_KNOWN_SUPPORT label",
+    "the default module-score reader for B1, B2, B3, B5, B6, D1 activity, E1 and E2",
+    "the rule that a measured class contradicting its designed class is a construction failure"
+  ],
+  "S125_HISTORY_PRESERVED": {
+    "defect": "the first off-twin control was vacuous; statistics were skipped rather than nulled",
+    "code_repaired_at": "d028aef2",
+    "document_repaired_at": "this artifact",
+    "lesson": "a control that can be satisfied by a computation NOT HAPPENING is not a control. Every control must name the value it expects to see, and that value must be reachable."
+  },
+  "NEXT_IN_ORDER": [
+    "1. DONE - this freeze-text repair",
+    "2. full repaired v2 B/C/D/E rebuild at production cell counts",
+    "3. complete frozen oracle matrix",
+    "4. resolve or withdraw C2 under its two-attempt stopping rule",
+    "5. freeze the synthetic JEPA training and checkpoint-ladder protocol",
+    "6. only then run the pipeline and generate synthetic checkpoints"
+  ],
+  "GOVERNANCE": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

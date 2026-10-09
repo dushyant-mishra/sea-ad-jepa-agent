@@ -1,0 +1,19 @@
+{
+  "schema": "V75_RUN_BOUNDARY_VALIDATION_V1",
+  "status": "PASS__PROTECTED_BOUNDARIES_HOLD",
+  "checks": {
+    "pathology_absent": true,
+    "training_off": true,
+    "multimodal_training_off": true,
+    "stage4_not_authorized": true,
+    "real_correspondence_unopened": true,
+    "morabito_protected": true,
+    "recoverability_test_sealed": true,
+    "required_control_worlds_present": true,
+    "manifest_digests_match_receipt": true,
+    "model_facing_truth_firewalls_hold": true,
+    "paired_multiome_same_cell_identity": true
+  },
+  "blockers": [],
+  "claim_scope": "machine validation of protected-data and manifest-integrity boundaries only; no biological or learned-state qualification"
+}

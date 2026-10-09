@@ -1,0 +1,178 @@
+{
+  "schema": "V77_STEP3_BACKGROUND_CALIBRATION_RESULT_V1",
+  "recorded_utc": "2026-10-06T13:37:30Z",
+  "head": "2f018dbe5725c08cbff5352f6e15b27a26fcf95d",
+  "VERDICT": "STEP_3_NOT_CLOSED__LATENT_MECHANISM_SOLVED__OBSERVATION_MODEL_IS_THE_BINDING_CONSTRAINT",
+  "declared_rather_than_tuned_further": true,
+  "TARGET_SOURCES": {
+    "global": {
+      "path": "results/v77/V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1.json",
+      "sha256": "f1a6169e1e05289059457add839bcc28270f55b0a736b530b365cdce183bb13a"
+    },
+    "topology": {
+      "path": "results/v77/V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1.json",
+      "sha256": "8039d7d4a4d982b8d9d8a633ffd01e1a08f1a50c069a009f8e3fb428f63625b7"
+    },
+    "donor_resampled_envelope": {
+      "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+      "sha256": "2367d3c146d298d68246cadcd37e426f7d9e4c01ecc3c3fb7d24e31d0b9853d4"
+    },
+    "targets_unchanged_throughout": true
+  },
+  "GUARD_A_SIGNED_TOPOLOGY_ADDED": {
+    "why": "absolute-correlation targets cannot distinguish realistic structure from excess anti-correlation",
+    "real_values": {
+      "frac_pos_gt_0p3": 0.2964,
+      "frac_neg_lt_m0p3": 0.2657,
+      "pos_over_neg_ratio": 1.1156,
+      "mean_signed_corr": 0.0322
+    },
+    "finding_that_changed_the_design": "real RNA is nearly SIGN-BALANCED at a ratio of 1.12. This falsified the initial 'coherent positive blocks' hypothesis, which would have driven that ratio far above 1, and redirected the design to coherent MAGNITUDE with BALANCED signs."
+  },
+  "GUARD_B_DONOR_RESAMPLED_ENVELOPES": {
+    "unit": "donor, because cells within a donor are not independent",
+    "n_donors": 149,
+    "n_bootstrap": 24,
+    "why": "the frozen point estimates are themselves sample statistics; calibrating to them exactly would be tuning to noise",
+    "example_widths": {
+      "median_abs_corr": [
+        0.3064,
+        0.3443
+      ],
+      "frac_abs_gt_0p3": [
+        0.5143,
+        0.5921
+      ],
+      "mean_degree": [
+        1542.4,
+        1775.7
+      ],
+      "transitivity": [
+        0.8327,
+        0.873
+      ]
+    }
+  },
+  "LAYER_SEPARATION_REQUIRED_AND_PERFORMED": {
+    "rule": "latent eta geometry and observed-RNA geometry are measured and reported separately",
+    "why": "so a candidate cannot compensate for observation losses by making latent biology absurdly correlated"
+  },
+  "THE_LATENT_MECHANISM_IS_SOLVED": {
+    "mechanism": "coherent MAGNITUDE with BALANCED SIGNS, over a few dominant overlapping factors",
+    "derivation": [
+      "independent normal loadings make correlation accumulate as a RANDOM WALK, because for two genes sharing a factor the product of their loadings has mean zero",
+      "the signed envelope shows real RNA is nearly sign-balanced, so coherent POSITIVE blocks are wrong",
+      "many factors DILUTE: at 400 factors each gene sits in about 12 and mean degree fell to zero",
+      "therefore variance must be dominated by a FEW factors that most genes share, which is also what var_top10_pc of 0.509 implies"
+    ],
+    "best_latent_candidate": "C6_few_dominant_global",
+    "latent_versus_real": {
+      "median_abs_corr": [
+        0.3447,
+        0.3291
+      ],
+      "frac_abs_gt_0p3": [
+        0.5563,
+        0.5621
+      ],
+      "frac_pos_gt_0p3": [
+        0.2781,
+        0.2964
+      ],
+      "frac_neg_lt_m0p3": [
+        0.2781,
+        0.2657
+      ],
+      "mean_degree": [
+        1668.2,
+        1685.8
+      ],
+      "transitivity": [
+        0.5491,
+        0.8605
+      ]
+    },
+    "reading": "the latent layer reproduces real dependence geometry closely on five of six targets"
+  },
+  "THE_ABUNDANCE_PRIOR_IS_LOAD_BEARING": {
+    "finding": "the candidate harness initially omitted the registry-derived abundance prior that the real observer carries. Adding it restored anti-correlation from exactly zero to 0.1395 and raised mean degree from 197 to 943, with no change to the observation model.",
+    "why": "without a heavy-tailed abundance prior every address is equivalent, detection is near-binary, and censoring at zero destroys the negative tail of the correlation distribution entirely",
+    "consequence": "the observation model was NOT reopened on this evidence, which was the correct call"
+  },
+  "WHY_STEP_3_IS_NOT_CLOSED": {
+    "binding_constraint": "the observation model, not the latent generator",
+    "systematic_failure": "after observation the best candidates reach median |corr| about 0.22 against a target of 0.33, mean degree about 950 against 1686, transitivity about 0.55 against 0.86, while var_top10_pc runs HIGH at 0.68 against 0.509",
+    "the_structural_trap": "fewer dominant factors raise correlation but push the rank too low; more factors lower correlation. Within this model family the two cannot be satisfied together after observation.",
+    "candidates_tested": 13,
+    "stopping_rule_invoked": "the instruction was to stop and report if no simple factor model can do this, rather than tuning indefinitely. That condition is reached."
+  },
+  "REOPENING_THE_OBSERVATION_MODEL_IS_NOW_WARRANTED": {
+    "precondition_stated_in_advance": "only reopen the observation model if a good latent generator repeatedly fails after observation in a systematic way",
+    "precondition_met": true,
+    "evidence": [
+      "a latent generator matching real geometry on five of six targets exists",
+      "it fails after observation across 13 candidates",
+      "the failure is systematic and directional: correlation is attenuated by about 40% while low-rank-ness is preserved or raised",
+      "the earlier Bernoulli alternative was already tested and did not help, so the replacement must be reasoned rather than guessed"
+    ],
+    "not_done_in_this_commit": true
+  },
+  "FAILED_CANDIDATE_HISTORY_PRESERVED": [
+    {
+      "id": "C0_baseline_independent",
+      "result": "REJECT 0/11",
+      "reason": "independent loadings, random-walk correlation"
+    },
+    {
+      "id": "C1_coherent_balanced",
+      "result": "REJECT 0/11",
+      "reason": "coherent but too few factors"
+    },
+    {
+      "id": "C2_coherent_more_factors",
+      "result": "REJECT 0/11",
+      "reason": "400 factors diluted degree to zero"
+    },
+    {
+      "id": "C6_few_dominant_global",
+      "result": "REJECT 1/11 observed, but BEST LATENT",
+      "reason": "latent correct, observation attenuates"
+    },
+    {
+      "id": "C7_dominant_tuned_noise",
+      "result": "REJECT 1/11",
+      "reason": "hit var_top10_pc only"
+    },
+    {
+      "id": "C8_dominant_plus_midband",
+      "result": "REJECT 0/11",
+      "reason": "mid band diluted the dominant axes"
+    },
+    {
+      "id": "D1..D5 dominant-scale sweep",
+      "result": "REJECT",
+      "reason": "more or stronger dominant factors monotonically worsened degree and correlation"
+    }
+  ],
+  "WHAT_IS_NOT_CLAIMED": [
+    "no candidate is frozen as the successor background",
+    "no world is regenerated and no 100K run is authorised",
+    "no threshold or target was moved at any point",
+    "the old 100K ceilings remain void",
+    "no model has been trained and no biological interpretation is offered"
+  ],
+  "STILL_OUTSTANDING_FROM_THE_MANDATE": [
+    "item 6: the A_REPLICA control statistic is not yet defined or frozen",
+    "step 3 closure, pending the observation-model question"
+  ],
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "production_target_winner": "NONE",
+    "500K": "NOT_AUTHORIZED",
+    "stage_4": "NOT_AUTHORIZED",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "world_A": "LOCKED_UNTOUCHED",
+    "model_evaluation": "NOT_STARTED"
+  }
+}

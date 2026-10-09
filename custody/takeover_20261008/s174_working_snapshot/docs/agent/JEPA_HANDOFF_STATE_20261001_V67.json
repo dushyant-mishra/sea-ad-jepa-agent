@@ -1,0 +1,150 @@
+{
+  "schema": "JEPA_HANDOFF_STATE_20261001_V67",
+  "date": "2026-10-01",
+  "status": "PHASE_A_ACCEPTED__PHASE_B_ACCEPTED__PARALLEL_LANES_INTEGRATION_FROZEN__STAGE4_SEALED__TRAINING_OFF",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "audited_heads": {
+    "chatgpt_exact_tested_head": "ffef012884a5953d552d8e5ee335ba0da656a199",
+    "chatgpt_architecture_smoke_run": 36866125611,
+    "chatgpt_tests_passed": 192,
+    "chatgpt_git_custody_repo_authorities": 10,
+    "claude_last_audited_head": "f1dc9bd08057d88d33f27382ceb531b15e323ef9"
+  },
+  "governance": {
+    "phaseA": "ACCEPTED",
+    "phaseB_measurement_substrate": "ACCEPTED",
+    "stage4": "NOT_AUTHORIZED",
+    "correspondence_opened": false,
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "recoverability_TEST": "SEALED",
+    "Morabito": "PROTECTED",
+    "TD60": "BLOCKED"
+  },
+  "phaseB": {
+    "aggregate_binding": "2a5404842ec64028789ef2b9cdc13604d80e4aee39298faa8faba70071894f52",
+    "qualifying_donors": 282,
+    "microglia": 84129,
+    "metacells": 3231,
+    "genes": 4372,
+    "intervals": 32153,
+    "pairs": 37419,
+    "t5_rows": 10552158,
+    "t3_nnz": 6624289,
+    "t4_nnz": 55467544,
+    "pairs_meeting_minimum_donors": 36794,
+    "b6_current_git_blob": "29c248ded42aecd35650699c360512e965ce9345",
+    "b6_current_sha256": "2fd8356b07fd3d4e50007c941fcc8bcdda4a118509775955ded82d90b98ed671",
+    "availability_states": [
+      "MEASURED",
+      "NOT_MEASURED_RNA_ZERO_COVERAGE",
+      "NOT_MEASURED_ATAC_ZERO_COVERAGE",
+      "NOT_MEASURED_RNA_ZERO_VARIANCE",
+      "NOT_MEASURED_ATAC_ZERO_VARIANCE"
+    ]
+  },
+  "stage4": {
+    "method_and_custody_status": "DESIGN/PREFLIGHT HARDENED__EXECUTION_NOT_GRANTABLE",
+    "claude_authority": "results/v64/phase_b_design/V64_STAGE4_EXECUTION_AUTHORITY_V1.json",
+    "claude_closed_findings": [
+      "S68",
+      "S69",
+      "S70",
+      "S72",
+      "S73",
+      "S74",
+      "S75",
+      "S76",
+      "S77",
+      "S79",
+      "S80"
+    ],
+    "open_findings": {
+      "S71": "executor does not exist; G16/G17 remain unsatisfied",
+      "S81": "consumer-schema G18 is incomplete at artifact level: must verify T3/T4 nnz, aggregate binding, pair_gene/pair_interval resolution, metacell IDs, and all-shard axis/dictionary agreement"
+    },
+    "chatgpt_authority_v5": "results/v64/V66_STAGE4_EXECUTION_AUTHORITY_CONTRACT_V5.json",
+    "chatgpt_v5_custody": "source_commit + git_blob + materialized-worktree blob equality for 10 repo-resident authorities",
+    "chatgpt_v5_ci": "PASS on run 36866125611",
+    "independent_audit": "results/v64/V67_CLAUDE_F1DC_STAGE4_INDEPENDENT_AUDIT_V1.json",
+    "claude_repair_instruction": "docs/agent/V67_CLAUDE_STAGE4_S81_REPAIR_20261001.md"
+  },
+  "architecture_lane": {
+    "topology": {
+      "teacher": "Z_global ⊕ Z_query ⊕ Z_reg_shared ⊕ Z_reg_private",
+      "rna_student_target": "Z_global ⊕ Z_query ⊕ Z_reg_shared",
+      "private_rule": "Z_reg_private is teacher-only and is never forced into the RNA student"
+    },
+    "integration_contract": "results/v64/V67_TWO_LANE_INTEGRATION_RECOVERABILITY_CONTRACT_V1.json",
+    "teacher_state_contract": "results/v64/V67_PRIVILEGED_TEACHER_STATE_CONSTRUCTION_CONTRACT_V1.json",
+    "key_integration_rule": "Stage-4 correspondence is a qualification gate for a regulatory evidence family; aggregate Delta/LCB/p-values are not teacher-state coordinates or student inputs.",
+    "recoverability_rule": "Only donor-held-out RNA-recoverable teacher-state subspaces may enter Z_reg_shared; unrecoverable privileged state remains Z_reg_private.",
+    "recoverability_selection_data": [
+      "TRAIN",
+      "VALIDATION"
+    ],
+    "recoverability_test": "SEALED"
+  },
+  "synthetic_qualifications": {
+    "mask_uncertainty_anticollapse_v2": {
+      "artifact": "results/v64/V67_NESTED_MODALITY_MASK_UNCERTAINTY_ANTICOLLAPSE_SYNTHETIC_QUALIFICATION_V2.json",
+      "status": "PASS_SOFTWARE_SEMANTICS_ONLY",
+      "rna_shared_r2": 0.9738620199703149,
+      "multimodal_shared_r2": 0.9771418264160454,
+      "rna_private_r2": 0.9332823328500037,
+      "multimodal_private_r2": 0.9964972690510607,
+      "uncertainty_ratio": 19.25771606159564,
+      "counterfactual_gate_can_fail": true,
+      "v1": "SUPERSEDED_AFTER_F2"
+    },
+    "heldout_source_observation_operator_v2": {
+      "artifact": "results/v64/V67_HELDOUT_SOURCE_OBSERVATION_OPERATOR_SYNTHETIC_QUALIFICATION_V2.json",
+      "status": "PASS_SOFTWARE_SEMANTICS_ONLY",
+      "raw_mean_r2": 0.6221530106364588,
+      "operator_aware_mean_r2": 0.998264709572037,
+      "max_descriptor_relative_error": 0.001567285695984138,
+      "heldout_descriptor_is_estimated_from": "independent synthetic technical calibration channel",
+      "misspecification_counterfactual_can_fail": true
+    },
+    "evidence_vs_measurement_v1": {
+      "artifact": "results/v64/V67_EVIDENCE_VS_MEASUREMENT_RESPONSE_SYNTHETIC_QUALIFICATION_V1.json",
+      "status": "PASS_SOFTWARE_SEMANTICS_ONLY",
+      "evidence_relative_error_reduction": 0.8486957798811289,
+      "measurement_relative_error_reduction": 0.7444866928265119,
+      "falsification_tests": "same-evidence relabel and same-noise relabel both fail their intended gates"
+    }
+  },
+  "audits": {
+    "claude_redteam_chatgpt": "results/v64/V67_CLAUDE_REDTEAM_OF_CHATGPT_WORK_V1.json",
+    "claude_redteam_chatgpt_stage4": "results/v64/V67_CLAUDE_REDTEAM_OF_CHATGPT_STAGE4_AUTHORITY_V1.json",
+    "chatgpt_audit_claude_f1dc": "results/v64/V67_CLAUDE_F1DC_STAGE4_INDEPENDENT_AUDIT_V1.json",
+    "data_source_map": "docs/agent/V67_CLAUDE_DATA_SOURCE_MAP_CHATGPT_ENV_20261001.md"
+  },
+  "completed_here": [
+    "accepted Claude F1/F2/F3 critiques and repaired the synthetic producers/tests/CI",
+    "reconciled V2 receipts to exact CI producer outputs",
+    "implemented evidence-vs-measurement response synthetic qualification with falsifiable negative controls",
+    "froze two-lane integration/recoverability contract",
+    "froze privileged teacher-state construction boundary",
+    "repaired ChatGPT Stage-4 Git custody with V5 source-commit/blob/worktree binding",
+    "integration-tested 10 repo authority Git bindings",
+    "re-audited Claude S78 and opened S81 for the remaining artifact-level semantic gap"
+  ],
+  "do_not_claim": [
+    "synthetic passes are real biological validation",
+    "held-out-source synthetic mechanics solve real technology transfer",
+    "uncertainty synthetic ratios calibrate real biological uncertainty",
+    "Stage 4 is authorized",
+    "Stage-4 aggregate result is a teacher latent coordinate",
+    "recoverability TEST has been opened",
+    "real multimodal JEPA training has begun"
+  ],
+  "next_actions": [
+    "Claude repairs S81 only and stops for independent audit.",
+    "Claude independently audits ChatGPT work after its prior c965d770 audit boundary, including V2 synthetic repairs, V5 Git custody, evidence-vs-measurement qualification, and integration contracts.",
+    "After S81 is accepted, implement Stage-4 executor with G16/G17 and stop for audit before execution.",
+    "Only after executor audit, authorize and execute Stage 4 once under the frozen design.",
+    "If Stage-4 evidence is interpretable, build a separately audited privileged teacher-feature producer; do not use Stage-4 Delta/p-values as latent features.",
+    "Run recoverability TRAIN/VALIDATION under the frozen integration contract; keep TEST sealed until its separate prospective authorization."
+  ]
+}

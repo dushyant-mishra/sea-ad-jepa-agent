@@ -1,0 +1,13 @@
+experiment_id,class,question,design,main_conclusion,decision_ids
+EXP-HIST-ANCHOR-U500,CAUSAL_INTERVENTION,Does anchor help biology?,CURRENT vs JEPA_ONLY vs ANCHOR_ONLY,Anchor rejected,DEC-001
+EXP-HIST-V6R4-EXPOSURE,MECHANICS_DIAGNOSTIC,Is query/address exposure limiting?,"E=0,1,2,4,8",Exposure bottleneck closed,DEC-002
+EXP-HIST-CORE-HALO,BIOLOGY_DIAGNOSTIC,Does halo support rare biology?,Core-only vs core+halo,Core+halo materially improves rare inference,DEC-004
+EXP-20260822-V6R5B,BIOLOGY_DIAGNOSTIC,Does frozen-u0 target support contextual biology?,"Correct/query-only/shuffled; 1,942 cells/70 donors","Small real H gain, ~95% cell-global, diffuse routing",DEC-007;DEC-011
+EXP-20260822-TEACHER-2VIEW,TEACHER_QUALIFICATION,Can a trained richer-evidence teacher learn biology?,2-view source-controlled teacher,Broad/weak/local/innovation stronger than random teacher,DEC-008
+EXP-20260822-TEACHER-DIM,TEACHER_QUALIFICATION,How does teacher width affect biology?,16/32/64/96/128/160-D,Width interacts with biology class,DEC-008
+EXP-20260822-CASCADE16,STUDENT_QUALIFICATION,Does tier-hiding cascade help?,16-D teacher,Small apparent gains; non-robust,DEC-006
+EXP-20260822-CASCADE64,STUDENT_QUALIFICATION,Does tier-hiding replicate with stronger teacher?,64-D teacher,Hurts broad/weak/local/innovation,DEC-006
+EXP-20260822-CASCADE64-BAL,STUDENT_QUALIFICATION,Does matched balanced tier-hiding help?,16 uniform vs 8 uniform+2/tier,Still hurts biology,DEC-006
+EXP-20260822-MULTIVIEW,TEACHER_QUALIFICATION,Do >2 teacher views help?,2/4/8 views x 64/128/160-D,4 views help 64-D; 8 help 128-D weak/innovation; stability improves,DEC-009
+EXP-20260823-PROD41K-PHASE-E,ENGINEERING_GATE,Can the authorized production 41K four-view EMA teacher path execute with exact mechanics and restart?,"4,726 FOUNDATION TRAIN cells; 10 updates; effective batch 128; microbatch calibration 8->4->2->1; exact disk restart",PASS engineering only; microbatch 8; peak reserved 5.988 GiB; no T1 or biology claim,DEC-008;DEC-012
+EXP-20260823-PROD41K-TEACHER-T1,TEACHER_QUALIFICATION,Does the learned production 41K EMA H gain biology on encoder-held-out FOUNDATION TRAIN donors?,"104 encoder/probe-fit donors; 22 validation + 23 oracle held-out donors; fixed updates 0/10/25/50/100/200/205; four-view production path; cap8",OPTIMIZATION_INCOMPLETE_AND_TEACHER_BIOLOGY_NOT_QUALIFIED_AT_CAP8; expand lawful inventory before same-design continuation,DEC-008;DEC-012;DEC-013

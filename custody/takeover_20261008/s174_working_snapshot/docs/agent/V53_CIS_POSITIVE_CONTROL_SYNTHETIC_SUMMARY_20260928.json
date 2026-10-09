@@ -1,0 +1,107 @@
+{
+  "schema": "jepa_v53_cis_positive_control_synthetic_summary_v1",
+  "date": "2026-09-28",
+  "base_sha": "b5c970de0a956188019a6d757a85ca9a31b2ee66",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "synthetic_technical_only": true,
+    "real_regulatory_biology_opened": false,
+    "protected_outcomes_opened": false
+  },
+  "claude_red_failure": {
+    "mechanism": "signed averaging cancels mixed-direction cis effects",
+    "reported_technical_arm": 0.0142,
+    "reported_biological_arm": 0.0029
+  },
+  "pairwise_tournament": {
+    "n18_selected": "spearman_abs_full",
+    "holdout_margin": -0.058952528379772995,
+    "diagnostics": {
+      "neg_locus_full_median": -0.0019349845201238648,
+      "neg_locus_partial_median": 0.05985552115583073,
+      "pos_mixed_excluded_qc_median": 0.0501805985552116,
+      "pos_mixed_inclusive_qc_median": -0.01689886480908154
+    },
+    "verdict": "RED"
+  },
+  "atac_pc1_tournament": {
+    "n18": {
+      "pos_coherent_median": 0.21375128998968007,
+      "pos_mixed_median": 0.09765221878224961,
+      "pos_sparse_median": 0.12345201238390095,
+      "neg_locus_median": -0.004385964912280715
+    },
+    "verdict": "RED"
+  },
+  "transported_module_tournament": {
+    "development_donors": 12,
+    "confirmation_donors": 18,
+    "confirmation_design": "separate_nucleus",
+    "selected_candidate": "rank_ridge_full_l8.0",
+    "candidate_selection": "development_seeds_only",
+    "holdout_margin": -0.1310200497020143,
+    "holdout": {
+      "NEG_INDEPENDENT": {
+        "q10": -0.09709737032356489,
+        "median": 0.019853464109399074,
+        "q90": 0.10006712852504128
+      },
+      "NEG_DEV_SAME_NUC": {
+        "q10": -0.06664412641900462,
+        "median": 0.009486891654632942,
+        "q90": 0.08581590545250697
+      },
+      "NEG_DONOR_GLOBAL": {
+        "q10": -0.03693851515061075,
+        "median": 0.00397095401188229,
+        "q90": 0.04188725109549764
+      },
+      "NEG_LOCUS": {
+        "q10": -0.03955078180920054,
+        "median": -0.010266693725342925,
+        "q90": 0.024891329818076464
+      },
+      "POS_COHERENT": {
+        "q10": 0.13715161643007742,
+        "median": 0.23123130968476285,
+        "q90": 0.4141276683485452
+      },
+      "POS_MIXED": {
+        "q10": 0.0498508381209658,
+        "median": 0.1921434668975361,
+        "q90": 0.329900677717454
+      },
+      "POS_SPARSE": {
+        "q10": 0.0775473019068253,
+        "median": 0.1621582301701079,
+        "q90": 0.29075779911165667
+      },
+      "POS_MIXED_WEAK": {
+        "q10": -0.030952921176973028,
+        "median": 0.02888435593437698,
+        "q90": 0.0987370924413972
+      }
+    },
+    "weak_positive_role": "POWER_DIAGNOSTIC_ONLY",
+    "verdict": "IMPROVED_BUT_NOT_QUALIFIED"
+  },
+  "design_inferences": [
+    "signed averaging is invalid for mixed-direction cis effects",
+    "full locus matching is load-bearing",
+    "program-inclusive QC can destroy the planted positive",
+    "cross-cohort frozen transport is more discriminating than same-cohort raw correlation",
+    "same-nucleus-only development nuisance largely collapses in separate-nucleus confirmation",
+    "strict held-out separation is still not achieved"
+  ],
+  "claim_boundary": "exact semantic twins remain non-identifiable from observables",
+  "next_state": "CIS_POSITIVE_SIGNATURE_IMPROVED_BUT_NOT_QUALIFIED__TRANSPORTED_MODULE_ROUTE_PROMISING__REAL_BIOLOGY_STILL_CLOSED",
+  "local_artifact_sha256": {
+    "pairwise_producer": "c666f74ded102554867231289d60eec475d5232601b7862992f732c12b7e391f",
+    "pairwise_result": "0c3638cd54a9ebcbbfc57857d74b4e5f40f7492c29186c58d92580e4ccd9209a",
+    "pc1_producer": "d5a46b303ba1804da05951697ed8e588cad5ec19aeebf5fff3dd25ec30d2fe5e",
+    "pc1_result": "0ae2b5303bda857389b21506213eea3437964566ad2f1b6add8e8ed784d669d3",
+    "transported_producer": "626127294a5eaad5f6be181ea98024f08392fe93fe2b7d66921b37015f8a8ff6",
+    "transported_result": "69cd16bf9d99a4940620addf4d6bc7e8c5aa1ea29cde06d6002e734b71f46b49"
+  }
+}

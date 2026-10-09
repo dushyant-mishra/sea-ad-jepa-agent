@@ -1,0 +1,78 @@
+name: V65 build promoter dual ledger from frozen source artifact
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v64/build_promoter_dual_ledger_v2.py'
+      - 'tests/test_v65_promoter_dual_ledger_v2.py'
+      - 'results/v64/V65_PROMOTER_SOURCE_BYTE_CUSTODY_V1.json'
+      - 'results/v64/V65_PROMOTER_INTERVAL_OVERLAP_INDEPENDENT_AUDIT_V1.json'
+      - '.github/workflows/v65-build-promoter-dual-ledger.yml'
+  workflow_dispatch:
+
+jobs:
+  build-dual-ledger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download frozen source-byte custody artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: v64-open-promoter-regulatory-resources
+          path: frozen_sources
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36796557671
+      - name: Verify frozen source hashes
+        run: |
+          test "$(sha256sum frozen_sources/open_resource_cache_v1/GENCODE_V50_COMPREHENSIVE_CHR_GTF__01__gencode.v50.annotation.gtf.gz | cut -d' ' -f1)" = "83fba3e9b03f0b8c958f3595c6c350adc55f468abf8b0e47b6d5284cfe13a453"
+          test "$(sha256sum 'frozen_sources/open_resource_cache_v1/FANTOM5_HG38_CAGE_PEAK_COORDINATES__01__hg38_fair+new_CAGE_peaks_phase1and2.bed.gz' | cut -d' ' -f1)" = "7e007c3e1fd7a2e24404ad9d5a57d27f76cd7920a6fdc1acaa06b5c4fcfcb018"
+          test "$(sha256sum frozen_sources/open_resource_cache_v1/SCREEN_REGISTRY_V4_GRCH38_PLS__01__GRCh38-cCREs.PLS.bed | cut -d' ' -f1)" = "65443e5ace6db2f1cb067616afc426510cdb8b9ed7e890f2a29b52cd0b15533b"
+          test "$(sha256sum frozen_sources/open_resource_cache_v1/DONG_ROUSSOS_2024_AUTOMATED_SUPPLEMENTS_7_9__01__41467_2024_54448_MOESM9_ESM.xlsx | cut -d' ' -f1)" = "6a46fd3bfdff213ca11111975ef01958be8238c349559e90dca43e5857a1d1dd"
+      - name: Install ledger dependency
+        run: python -m pip install openpyxl
+      - name: Build annotation-first dual promoter ledger
+        run: |
+          mkdir -p promoter_dual_ledger_v2
+          python scripts/v64/build_promoter_dual_ledger_v2.py \
+            --gencode-gtf frozen_sources/open_resource_cache_v1/GENCODE_V50_COMPREHENSIVE_CHR_GTF__01__gencode.v50.annotation.gtf.gz \
+            --screen-pls frozen_sources/open_resource_cache_v1/SCREEN_REGISTRY_V4_GRCH38_PLS__01__GRCh38-cCREs.PLS.bed \
+            --dong-data7 frozen_sources/open_resource_cache_v1/DONG_ROUSSOS_2024_AUTOMATED_SUPPLEMENTS_7_9__01__41467_2024_54448_MOESM9_ESM.xlsx \
+            --fantom-bed 'frozen_sources/open_resource_cache_v1/FANTOM5_HG38_CAGE_PEAK_COORDINATES__01__hg38_fair+new_CAGE_peaks_phase1and2.bed.gz' \
+            --transcript-output promoter_dual_ledger_v2/PROMOTER_TRANSCRIPT_LEDGER.tsv.gz \
+            --tss-output promoter_dual_ledger_v2/EXACT_TSS_LEDGER.tsv.gz \
+            --membership-output promoter_dual_ledger_v2/TRANSCRIPT_TO_TSS_MEMBERSHIP.tsv.gz \
+            --receipt promoter_dual_ledger_v2/V65_PROMOTER_DUAL_LEDGER_RECEIPT_V1.json
+      - name: Enforce frozen denominators and evidence coverage
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open("promoter_dual_ledger_v2/V65_PROMOTER_DUAL_LEDGER_RECEIPT_V1.json"))
+          assert p["transcript_promoter_records"] == 644292, p
+          assert p["exact_tss_loci"] == 389280, p
+          assert p["genes"] == 78733, p
+          e=p["exact_tss_evidence_coverage"]
+          assert e["screen_pls_overlap"] == 178778, e
+          assert e["fantom_same_strand_overlap"] == 126712, e
+          assert e["fantom_exact_representative_tss"] == 25321, e
+          assert e["screen_fantom_joint_states"] == {
+              "screen_and_fantom":102060,
+              "screen_only":76718,
+              "fantom_only":24652,
+              "neither":185850,
+          }, e
+          print("V65_PROMOTER_DUAL_LEDGER_PASS", json.dumps(p, sort_keys=True))
+          PY
+      - name: Upload dual ledger artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v65-promoter-dual-ledger
+          path: promoter_dual_ledger_v2/
+          if-no-files-found: error
+          retention-days: 30

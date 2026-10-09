@@ -1,0 +1,23 @@
+{
+  "schema": "V77_REPRODUCTION_RECEIPT_V1",
+  "what": "frozen real abundance envelope from its committed producer (S141)",
+  "frozen": {
+    "path": "results/v77/V77_REAL_ABUNDANCE_ENVELOPE_V1.json",
+    "sha256": "b590c7f69063b3a5743eafcf4ea1ce2ac47624a9f0dd5bbfb74bbd4b85c9d979",
+    "bytes": 7404
+  },
+  "reproduced": {
+    "path": "D:/jepa_v77_synthetic_custody_20261005/repro_20261006/V77_REAL_ABUNDANCE_ENVELOPE_V1.reproduced.json",
+    "sha256": "b590c7f69063b3a5743eafcf4ea1ce2ac47624a9f0dd5bbfb74bbd4b85c9d979",
+    "bytes": 7404
+  },
+  "byte_identical": true,
+  "parsed_identical": true,
+  "n_leaves": 110,
+  "differing_leaves": [],
+  "n_differing_leaves": 0,
+  "producer_command": "python scripts/v77/build_v77_abundance_envelope.py --out D:/jepa_v77_synthetic_custody_20261005/repro_20261006/V77_REAL_ABUNDANCE_ENVELOPE_V1.reproduced.json",
+  "source_commit": "adaa07fec82a3a5254c899aaf0dd8dbf3202d618",
+  "provenance_status": "CLEAN_COMMITTED_HEAD",
+  "rule": "byte identity, decided before the comparison; no tolerance is applied after seeing it"
+}

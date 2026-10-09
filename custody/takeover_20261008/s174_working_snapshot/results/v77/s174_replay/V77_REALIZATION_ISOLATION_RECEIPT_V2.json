@@ -1,0 +1,198 @@
+{
+  "schema": "V77_REALIZATION_ISOLATION_RECEIPT_V2",
+  "supersedes": {
+    "receipt": "results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V1.json",
+    "why": "S139/S140: V1 gene selection did not match the real envelope"
+  },
+  "scorers": {
+    "v1_binary_hvg": "retained for reproduction only (S139, S140)",
+    "matched_to_real_envelopes": "genes chosen by CPM-log1p expression variance on the frozen universe, then each layer scored on that same gene set; T5 on the expression layer with the real 200-cell floor"
+  },
+  "provenance_status": "CLEAN_COMMITTED_HEAD",
+  "executor_sha256": {
+    "run_v77_realization_isolation.py": "3832dcb675e0f505844472882d235db38d58fa7cae8394127cf3ddd7e0d183a9",
+    "v77_matched_scoring.py": "ec7624542abec89a811f610dd9cdf987f554824de292c2183fb1220cdcb45e3d",
+    "v77_substate_generator.py": "ccfad8dd91059f94f78122aece3afdd3a5cab27fb935c880456404de3cdd3af8",
+    "v77_observer_v2_capture.py": "dcda2f3123150ffa89c2a8a43ed984c09d2fa43acaf23c0c3a9de76794b8d1e2",
+    "v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7",
+    "build_v77_calibration_envelope.py": "0f9fe5ddb84a16894d5018d9fd6f14bd4b41693e20d058f4f8467be8960da847",
+    "build_v77_topology_calibration.py": "60c242290bca14b3860507028932c3f8c2cdba397a26d6e01a0d8db6117ec4dc"
+  },
+  "question": "does stochastic counting, alone, destroy the recovered dependence topology?",
+  "held_identical_between_arms": [
+    "sub-state generator and its eta",
+    "capture propensity kappa",
+    "cell measurement state",
+    "abundance at full scale",
+    "rate field",
+    "seed",
+    "evaluation universe"
+  ],
+  "single_variable": "realization: deterministic threshold versus Poisson",
+  "command": "python scripts/v77/run_v77_realization_isolation.py --universe D:/jepa_v77_synthetic_custody_20261005/s174_replay/frozen_evaluation_universe.npz --out results/v77/s174_replay/V77_REALIZATION_ISOLATION_RECEIPT_V2.json --cells 2500 --seed 20261006 --generator L1_two_giant --capture O3_capture_independent_wide",
+  "source_commit": "a6075ffcce6b89572f0e17731f8415cf1d22d6f3",
+  "seed": 20261006,
+  "cells": 2500,
+  "generator": "L1_two_giant",
+  "capture": "O3_capture_independent_wide",
+  "evaluation_universe": {
+    "path": "D:/jepa_v77_synthetic_custody_20261005/s174_replay/frozen_evaluation_universe.npz",
+    "n_genes": 14417,
+    "name": "TRAIN_PREVALENCE05_19569",
+    "sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763"
+  },
+  "comparability_fix": "BOTH arms scored on the frozen universe, not on each arm's own prevalence filter, which previously gave vertex sets of 12,468 to 28,884 genes and made the comparison non-promotion-grade",
+  "arms": {
+    "A_deterministic": {
+      "realization": "deterministic threshold on rate; detection is a function of rate alone",
+      "abundance_max_median__TRAIN_PREVALENCE05_19569": 6146.580037664784,
+      "top1pct_count_share__TRAIN_PREVALENCE05_19569": 0.4835322487842679,
+      "expressed_fraction_in_universe": 0.551432336824582,
+      "topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL": {
+        "median_abs_corr": 0.2888041452981164,
+        "frac_abs_gt_0p3": 0.4688218294987218,
+        "var_top10_pc": 0.5479924105916096,
+        "mean_degree": 1405.9966666666667,
+        "largest_community_frac": 0.91,
+        "transitivity": 0.7359719956908232,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.4688218294987218,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 468821829.4987218,
+        "mean_signed_corr": 0.28813270832616844,
+        "universe_size": 14417,
+        "nonzero_variance_genes_in_universe": 7780,
+        "genes_lost_by_candidate": 6637
+      },
+      "matched_to_real_envelopes": {
+        "rule": "genes chosen by CPM-log1p expression variance on the frozen universe, then each layer scored on that same gene set; T5 on the expression layer with the real 200-cell floor",
+        "detection": {
+          "median_abs_corr": 0.1578989227516246,
+          "frac_abs_gt_0p3": 0.2818415027231299,
+          "var_top10_pc": 0.48574868957306633,
+          "mean_degree": 845.2426666666667,
+          "largest_community_frac": 0.771,
+          "transitivity": 0.7436259171890368,
+          "substitute_frac": 0.012666666666666666,
+          "frac_pos_gt_0p3": 0.2818415027231299,
+          "frac_neg_lt_m0p3": 0.0,
+          "pos_over_neg_ratio": 281841502.72312987,
+          "mean_signed_corr": 0.19554753554425902,
+          "selected_genes_with_constant_detection": 170
+        },
+        "expression": {
+          "median_abs_corr": 0.16422098930462242,
+          "frac_abs_gt_0p3": 0.20249372012893185,
+          "var_top10_pc": 0.4269302670518832,
+          "mean_degree": 607.2786666666667,
+          "largest_community_frac": 0.5266666666666666,
+          "transitivity": 0.6444313743516696,
+          "substitute_frac": 0.0,
+          "frac_pos_gt_0p3": 0.13957430254529288,
+          "frac_neg_lt_m0p3": 0.06291941758363899,
+          "pos_over_neg_ratio": 2.218302519405179,
+          "mean_signed_corr": 0.026635488323370145
+        },
+        "t5": {
+          "within_over_pooled": 1.0165586303561092,
+          "pooled_median_abs_corr": 0.16422098930462242,
+          "mean_within_class_median_abs_corr": 0.16694026396323222,
+          "classes_used": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "min_class_cells": 200
+        },
+        "abundance": {
+          "abundance_max_over_median_nonzero": 6146.580037664784,
+          "top1pct_count_share": 0.4835322487842679,
+          "expressed_fraction": 0.551432336824582
+        },
+        "canonical_genes_detected": 7950,
+        "canonical_genes_lost": 6467,
+        "median_detected_per_cell": 2155.0
+      },
+      "median_detected_per_cell": 4197.5
+    },
+    "B_poisson": {
+      "realization": "Poisson(rate); identical rate field, stochastic counting",
+      "abundance_max_median__TRAIN_PREVALENCE05_19569": 20147.592592592595,
+      "top1pct_count_share__TRAIN_PREVALENCE05_19569": 0.48583866515068247,
+      "expressed_fraction_in_universe": 0.9529028230561143,
+      "topology_v1_binary_hvg__NOT_COMPARABLE_TO_REAL": {
+        "median_abs_corr": 0.11483559206334915,
+        "frac_abs_gt_0p3": 0.002401467155718573,
+        "var_top10_pc": 0.1932927391212773,
+        "mean_degree": 7.202,
+        "largest_community_frac": 0.0003333333333333333,
+        "transitivity": 0.34119663670103717,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.002401467155718573,
+        "frac_neg_lt_m0p3": 0.0,
+        "pos_over_neg_ratio": 2401467.155718573,
+        "mean_signed_corr": 0.11290176153045081,
+        "universe_size": 14417,
+        "nonzero_variance_genes_in_universe": 13729,
+        "genes_lost_by_candidate": 688
+      },
+      "matched_to_real_envelopes": {
+        "rule": "genes chosen by CPM-log1p expression variance on the frozen universe, then each layer scored on that same gene set; T5 on the expression layer with the real 200-cell floor",
+        "detection": {
+          "median_abs_corr": 0.09947601544021814,
+          "frac_abs_gt_0p3": 0.0024481493831277094,
+          "var_top10_pc": 0.18971975419397877,
+          "mean_degree": 7.342,
+          "largest_community_frac": 0.0003333333333333333,
+          "transitivity": 0.33768797574107307,
+          "substitute_frac": 0.0,
+          "frac_pos_gt_0p3": 0.0024481493831277094,
+          "frac_neg_lt_m0p3": 0.0,
+          "pos_over_neg_ratio": 2448149.3831277094,
+          "mean_signed_corr": 0.10133615174602041,
+          "selected_genes_with_constant_detection": 9
+        },
+        "expression": {
+          "median_abs_corr": 0.052644824546638574,
+          "frac_abs_gt_0p3": 0.008442814271423809,
+          "var_top10_pc": 0.16687393500494718,
+          "mean_degree": 25.32,
+          "largest_community_frac": 0.050666666666666665,
+          "transitivity": 0.4895470671647144,
+          "substitute_frac": 0.0,
+          "frac_pos_gt_0p3": 0.006277203512281872,
+          "frac_neg_lt_m0p3": 0.002165610759141936,
+          "pos_over_neg_ratio": 2.898583453089715,
+          "mean_signed_corr": 0.00943590399394883
+        },
+        "t5": {
+          "within_over_pooled": 1.208719906889884,
+          "pooled_median_abs_corr": 0.052644824546638574,
+          "mean_within_class_median_abs_corr": 0.06363284742424725,
+          "classes_used": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "min_class_cells": 200
+        },
+        "abundance": {
+          "abundance_max_over_median_nonzero": 20147.592592592595,
+          "top1pct_count_share": 0.48583866515068247,
+          "expressed_fraction": 0.9529028230561143
+        },
+        "canonical_genes_detected": 13738,
+        "canonical_genes_lost": 679,
+        "median_detected_per_cell": 1783.0
+      },
+      "median_detected_per_cell": 3595.0,
+      "mean_count_per_detected_gene": 4.917304515838623
+    }
+  }
+}

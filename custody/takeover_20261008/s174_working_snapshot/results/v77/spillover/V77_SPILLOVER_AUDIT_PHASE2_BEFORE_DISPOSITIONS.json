@@ -1,0 +1,58 @@
+{
+  "schema": "V77_SPILLOVER_DISPOSITIONS_V1",
+  "audit_record": "V77_SPILLOVER_AUDIT_PHASE2_BEFORE.json",
+  "audit_sha256": "265ddfcd8fb40fc59df024a25ad91bd4777c2626999ce77700853d4793ad017d",
+  "phase": "PHASE2_EVIDENCE_MATRIX_before",
+  "structural_pass": true,
+  "dispositions": [
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_historical_spillover_audit.py",
+      "line": 57,
+      "text": "hits = S.text_checks_lines([(\"x.md\", [\"identifiability is resolved by the new generator\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "planted positive claim in the audit's own fixture (same fixture as Phase 1, one line lower after an import)"
+    },
+    {
+      "check": "V47_V48_OVERWRITTEN",
+      "file": "tests/v77/test_v77_s157_terminal_frozen.py",
+      "line": 48,
+      "text": "mutated[\"TERMINAL_STATEMENTS\"][0][\"statement\"] = \"The exact same-assay semantic twin is resolved.\"",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the deliberate mutation that proves the S157 freeze guard can fail; it asserts the mutated digest differs"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_ADVERSARIAL_SELF_AUDIT_V1.json",
+      "line": 59,
+      "text": "\"finding\": \"two search executors still issued verdicts against the pooled envelopes (S163); the pooled expression calibration still calls itself a calibration target (S165); the V1 dynamic-range verdi",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "records defect S163 as a finding to repair; does not use pooled topology as a target"
+    },
+    {
+      "check": "S149_POOLED_AS_TARGET",
+      "file": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2.json",
+      "line": 437,
+      "text": "\"defect\": \"the pooled expression calibration describes itself as a calibration TARGET\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "register entry naming defect S165; describes the defect, does not assert it"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "scripts/v77/v77_regulatory_graph.py",
+      "line": 2,
+      "text": "\"\"\"Deterministic SCENIC+-like regulatory ground truth: TF -> enhancer region -> target gene.",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "the synthetic world's planted, oracle-only regulatory truth; no claim about real SCENIC+"
+    },
+    {
+      "check": "SCENIC_ATAC_CIRCULAR",
+      "file": "results/v77/V77_PHASE4_WORLD_EXTENSION_SPEC_V1.json",
+      "line": 17,
+      "text": "\"review_lane_instruction\": \"isolate each regime one at a time, and treat SCENIC+-like truth, richer perturbations and spatial biology as required before Phase 3 is finalised\",",
+      "disposition": "FALSE_POSITIVE",
+      "reason": "review-lane instruction for the synthetic generator; no independence claim about real SCENIC+"
+    }
+  ],
+  "note": "text checks are pattern searches; a clean check is not proof of absence"
+}

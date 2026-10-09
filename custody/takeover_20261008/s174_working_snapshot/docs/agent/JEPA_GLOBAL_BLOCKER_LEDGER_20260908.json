@@ -1,0 +1,208 @@
+{
+  "schema": "JEPA_GLOBAL_BLOCKER_LEDGER_V2",
+  "date": "2026-09-08",
+  "canonical_branch": "main",
+  "role": "EXTERNAL_REVIEW__NO_EXECUTION_AUTHORITY",
+  "current_critical_path": [
+    "T0_EXECUTION_SUBSTRATE_CLOSURE",
+    "V5_REMAINING_PREEXECUTION_AUTHORITY_FREEZE",
+    "F1B_C3_FINAL_MECHANICS_BINDING_FOR_QUALIFICATION",
+    "V5_RUNTIME_INTEGRATION_AND_MECHANICAL_QUALIFICATION",
+    "FULL_READER_EXPOSURE_DEFINED_TEACHER_TRAINING",
+    "TD60_LEARNED_TEACHER_RELATIONAL_CONTINUITY",
+    "D1_AND_PARTIAL_EVIDENCE_STUDENT_DOWNSTREAM"
+  ],
+  "blockers": [
+    {
+      "id": "T0_B2_LOGICAL_ROOT_CHAIN",
+      "priority": "P0",
+      "lane": "T0",
+      "class": "HARD_STOP",
+      "source_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "summary": "Logical B2 root does not yet bind the population closure and all execution-used identities/paths with stored == recomputed == externally expected verification.",
+      "evidence": "tests/v4/test_t0_b2_logical_chain_external_red_v2.py"
+    },
+    {
+      "id": "T0_B2_RAW_H5AD_NOT_AUTHENTICATED",
+      "priority": "P0",
+      "lane": "T0",
+      "class": "HARD_STOP",
+      "source_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "summary": "source_library proof still accepts caller row values/provenance rather than extracting layers/UMIs from the exact authenticated MTG H5AD source.",
+      "evidence": "tests/v4/test_t0_b2_raw_source_external_red_v1.py"
+    },
+    {
+      "id": "T0_AGE_SEX_CANDIDATE_PARENT_UNBOUND",
+      "priority": "P0",
+      "lane": "T0",
+      "class": "HARD_STOP",
+      "source_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "summary": "Age/sex source is authenticated but the candidate donor universe is not yet bound to an authenticated parent.",
+      "evidence": "tests/v4/test_t0_age_sex_external_parent_red_v1.py"
+    },
+    {
+      "id": "V5_SUPPORT_AWARE_EVIDENCE_SCHEDULE_UNFROZEN",
+      "priority": "P0",
+      "lane": "TeacherStudentV5",
+      "class": "DESIGN_STOP",
+      "summary": "Evidence/view/block schedule remains unfrozen across the 18,736-to-35,076 measured-support range.",
+      "evidence": "target_discovery/CURRENT_STATUS_20260908.json teacher_student_v5_data_first.evidence_schedule_frozen=false",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150"
+    },
+    {
+      "id": "V5_EMA_AND_BIOLOGICAL_CHECKPOINT_MILESTONE_UNFROZEN",
+      "priority": "P0",
+      "lane": "TeacherStudentV5",
+      "class": "DESIGN_STOP",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150",
+      "summary": "Base proposal V3 and the exactly-one-reader-fit-population-equivalent presentation horizon are frozen, but EMA half-life in exposure units and the decision-bearing learned-teacher checkpoint milestone within that horizon remain unfrozen.",
+      "evidence": "TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json ema_half_life_frozen=false"
+    },
+    {
+      "id": "V5_GPU_RNG_KERNEL_NOT_QUALIFIED",
+      "priority": "P0",
+      "lane": "TeacherStudentV5",
+      "class": "IMPLEMENTATION_STOP",
+      "summary": "V2 keyed RNG contract/reference exists, but an optimized GPU implementation still needs exact parity/packing invariance review before training.",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150"
+    },
+    {
+      "id": "V5_RUNTIME_NOT_INTEGRATED",
+      "priority": "P0",
+      "lane": "TeacherStudentV5",
+      "class": "IMPLEMENTATION_STOP",
+      "summary": "Current V5 update remains inactive/reference mechanics; no reviewed end-to-end production trainer binds data, masks, objective, packing, RNG, optimizer, EMA, checkpoint and resume.",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150"
+    },
+    {
+      "id": "V5_TRAINING_MODE_EQUIVALENCE_NOT_CLOSED",
+      "priority": "P1",
+      "lane": "TeacherStudentV5",
+      "class": "IMPLEMENTATION_STOP",
+      "summary": "Packing/RNG tests exist, but final full training-mode gradient/optimizer/EMA equivalence under calibrated microbatch partitioning remains required.",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150"
+    },
+    {
+      "id": "V5_HARDWARE_COST_CALIBRATION_MISSING",
+      "priority": "P1",
+      "lane": "TeacherStudentV5",
+      "class": "EXECUTION_STOP",
+      "summary": "Token/memory/cost geometry must be calibrated on target hardware before a production microbatch budget can be frozen.",
+      "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150"
+    },
+    {
+      "id": "F1B_C3_MOVEMENT_RULE_NOT_AUTHORIZED",
+      "priority": "P0",
+      "lane": "F1B_C3",
+      "class": "MECHANICS_STOP",
+      "source_head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "summary": "Current mechanics successor hard-codes a 2x movement-over-decay margin not independently frozen by the attack authority."
+    },
+    {
+      "id": "F1B_C3_PREDICTOR_REGISTRY_NOT_FROZEN",
+      "priority": "P0",
+      "lane": "F1B_C3",
+      "class": "MECHANICS_STOP",
+      "source_head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "summary": "Mandatory predictor parameters are derived dynamically rather than bound by an exact reviewed registry."
+    },
+    {
+      "id": "F1B_C3_NOT_END_TO_END_TRAINER",
+      "priority": "P0",
+      "lane": "F1B_C3",
+      "class": "INTEGRATION_STOP",
+      "summary": "Attack-hardened protected-update mechanics are not yet a frozen end-to-end trainer."
+    },
+    {
+      "id": "TEACHER_CHECKPOINT_CLOCK_CONTRADICTION",
+      "priority": "P0",
+      "lane": "TeacherStudent/TargetDiscovery",
+      "class": "CROSS_LANE_CONTRACT_STOP",
+      "summary": "TD60 still names successor u40 as learned teacher, while full-reader V5 correctly separates mechanics updates from biological exposure. TD60 must be amended prospectively before execution."
+    },
+    {
+      "id": "TD60_NO_LAWFUL_LEARNED_TEACHER",
+      "priority": "P1",
+      "lane": "TargetDiscovery",
+      "class": "DEPENDENCY_STOP",
+      "summary": "TD60 cannot run until a lawful V5 full-reader learned-teacher checkpoint exists under the corrected exposure authority."
+    },
+    {
+      "id": "F1_REAL_EXECUTION_UNAUTHORIZED",
+      "priority": "P2_PARALLEL",
+      "lane": "F1",
+      "class": "AUTHORIZATION_GATE",
+      "source_head": "a884f558970479278bc21f3f2274dc24bee89758",
+      "summary": "Real F1 producer/replay remains prefreeze; no real biological sweep is authorized."
+    },
+    {
+      "id": "D1_HEALTHY_TEACHER_DEPENDENCY",
+      "priority": "P2_AFTER_TEACHER",
+      "lane": "D1",
+      "class": "DEPENDENCY_STOP",
+      "source_head": "c13c06c103a588fc95bb93174730bf26dd613884",
+      "summary": "D1 V2 waits for a lawful qualified full-reader teacher and frozen canonical readout/qualification authority.",
+      "terminal": "WAIT_HEALTHY_TRAINED_TEACHER"
+    },
+    {
+      "id": "D1_FINAL_INDEPENDENT_CLOSURE_PENDING",
+      "priority": "P2_AFTER_TEACHER",
+      "lane": "D1",
+      "class": "REVIEW_GATE",
+      "summary": "No final independent closure terminal over the complete current D1 V2 pipeline has been established."
+    }
+  ],
+  "resolved_on_2026_09_08": [
+    {
+      "id": "GLOBAL_AUTHORITY_INDEX_STALE",
+      "resolution": "Consolidated main authority/supersession/startup governance published and subsequently corrected to the current V5/T0 state."
+    },
+    {
+      "id": "TEACHER_STUDENT_LINEAGE_NOT_CONSOLIDATED",
+      "resolution": "All historical lineages are reachable from main; branch names are now hygiene only."
+    },
+    {
+      "id": "V5_SCIENTIFIC_ESTIMAND_UNFROZEN",
+      "resolution": "Superseded by V5 scientific target authority V2 and relational proposal authority V2 on c7b1663. Base proposal remains separately open."
+    },
+    {
+      "id": "V5_RNG_AUTHORITY_NOT_SINGLE_CANONICAL_RUNTIME",
+      "resolution": "Active V5 surface now names RNG contract V2; older RNG helpers are preserved as proof/history only. Production GPU implementation remains open."
+    },
+    {
+      "id": "V5_BASE_PROPOSAL_UNFROZEN",
+      "resolution": "Resolved by TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3 at 028989a5f1504e4d6403a44e7c90d37172c54150; scientific target remains donor-uniform and exact p/q correction is mandatory."
+    },
+    {
+      "id": "V5_PRESENTATION_HORIZON_UNFROZEN",
+      "resolution": "Resolved by TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1: exactly 4,553,407 presentations, no automatic extension, with frozen repeat/group-coverage/ESS/importance-conditioning constraints."
+    }
+  ],
+  "healthy_or_preserved": [
+    {
+      "id": "POPULATION_ACCESS_REGISTRY",
+      "status": "FROZEN_HEALTHY",
+      "root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
+    },
+    {
+      "id": "RELATIONAL_TARGET_DISCOVERY",
+      "status": "SCIENTIFICALLY_ALIVE",
+      "note": "TD57B and TD59 survive; do not restart fixed-coordinate target search."
+    },
+    {
+      "id": "HISTORICAL_3292_MECHANICS_BASE",
+      "status": "MECHANICS_ONLY",
+      "note": "Preserve for bounded mechanics qualification; never use as full-reader biology schedule."
+    }
+  ],
+  "forbidden_until_resolved": [
+    "production T0",
+    "numeric confirmation AT8 access",
+    "production V5 training",
+    "TD60 decision-bearing execution",
+    "real D1",
+    "reader_validation/oracle opening",
+    "foundation development/sealed opening",
+    "unauthorized pathology access"
+  ]
+}

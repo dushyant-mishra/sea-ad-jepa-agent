@@ -1,0 +1,591 @@
+{
+  "schema": "V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V2",
+  "supersedes": "results/v77/V77_SYNTHETIC_STATUS_AND_DEFECT_REGISTER_V1.json (its S124, S125 entries stand)",
+  "recorded_utc": "2026-10-07T00:24:01Z",
+  "head_when_recorded": "99cb4d3ba0f8c0d392d5c52fbe8efd458786dfe0",
+  "record_type": "AUDIT RECORD, written by hand from the receipts listed; not an executor output",
+  "SYNTHETIC_STATUS": {
+    "previous": "SUPPORTED_FOR_NEXT_STAGE__ISSUE_1_NARROWED__PROMOTION_NOT_YET_QUALIFIED (6821f164)",
+    "current": "CALIBRATION_TARGET_UNDER_REVIEW__S149",
+    "meaning": "generator topology calibration is suspended until the real-data scientific lane decides the calibration target, estimand and weighting, because the pooled real envelopes mainly measure cohort composition. The world builder's measurement structure is repaired (S146, S147), component detect/reject holds on repaired worlds, and the adapter is repaired and integration-verified. Runtime, optimizer and EMA work belongs to the runtime lane (PRs 221-223), not this branch.",
+    "qualified": [
+      "repaired structural support (954cee9e), checked against every operator's QC keep",
+      "adapter three-state semantics and value-independent targets (adaa07fe, 2f5e394c)",
+      "matched scoring reproduces the real calibration byte-identically (3edc982e)",
+      "component detect/reject on repaired support: 3 detect, 4 reject; B4 more recoverable than designed (2038c4f2)"
+    ],
+    "not_qualified": [
+      "any generator as matching real biology",
+      "the real detection envelope as a biology target",
+      "the pooled expression envelope and T1-T5 as biology targets (composition-dominated, measured)",
+      "the within-cohort measurements as a target or acceptance rule (candidate diagnostic only; S159 open)",
+      "activating on/off switching (untested)",
+      "promotion of any world"
+    ]
+  },
+  "DEFECT_REGISTER": [
+    {
+      "id": "S128",
+      "introduced": "5c644ced",
+      "defect": "adapter measurement_mask was all ones",
+      "why_it_matters": "collapsed STRUCTURALLY_UNMEASURED into measured zero, a hard project invariant",
+      "caught": "before any forward pass",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe",
+      "status": "REPAIRED",
+      "evidence": "REHEARSAL_ADAPTER_INTEGRATION_V1"
+    },
+    {
+      "id": "S129",
+      "introduced": "0627b2e7 (run at 5c644ced)",
+      "defect": "DR5 thresholded eta at a global median instead of switching modules",
+      "why_it_matters": "the predeclared on/off arm was never run; its V1 values were reported as on/off switching",
+      "caught": "after the V1 receipt and verdict were committed; no consumer used them",
+      "caught_by": "SELF_AUDIT",
+      "fix": "d4dc65ed, rerun 3edc982e",
+      "status": "REPAIRED; V1 DR5 values withdrawn",
+      "evidence": "V77_DYNAMIC_RANGE_TOURNAMENT_V2"
+    },
+    {
+      "id": "S130",
+      "introduced": "6821f164",
+      "defect": "abundance max/median on the frozen universe divides by the median of NONZERO gene means",
+      "why_it_matters": "a candidate that detects many universe genes rarely gets a small denominator, so the statistic also penalises detection coverage",
+      "caught": "after the DR verdict cited it",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none; the frozen metric is unchanged",
+      "status": "RECORDED; must be read as coverage-sensitive wherever quoted",
+      "evidence": "v77_matched_scoring.py docstring"
+    },
+    {
+      "id": "S131",
+      "introduced": "c4f12597 / 0627b2e7",
+      "defect": "envelope key abundance_max_over_median_nonzero vs tournament key abundance_max_median__TRAIN_PREVALENCE05_19569",
+      "why_it_matters": "the verdict script had to guess which key to read",
+      "caught": "after commit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "d4dc65ed",
+      "status": "RETIRED: matched scoring reports under the envelope's own key from the same function",
+      "evidence": null
+    },
+    {
+      "id": "S132",
+      "introduced": "5c644ced",
+      "defect": "hidden targets drawn only from DETECTED entries; the value-independence test compared means within 3 SD and could not fail",
+      "why_it_matters": "every hidden target was nonzero: the mask leaked the target's value and the loss could never be asked about a measured zero",
+      "caught": "before any forward pass",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe",
+      "status": "REPAIRED",
+      "evidence": "integration: 15.0% of detected and 15.0% of measured-zero entries hidden"
+    },
+    {
+      "id": "S133",
+      "introduced": "5c644ced",
+      "defect": "one random stream across rows; global_cell_index accepted and ignored",
+      "why_it_matters": "a cell's hidden targets depended on its row position and its predecessors",
+      "caught": "before any forward pass",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S134",
+      "introduced": "uncommitted S128 repair",
+      "defect": "support rebuilt from registry coverage with a hard-coded seed, without operator attrition, with detections OR-ed in, and inheriting S146",
+      "why_it_matters": "would have relabelled a count on an unsupported address as measured instead of exposing a broken world",
+      "caught": "before commit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe",
+      "status": "REPAIRED_BEFORE_COMMIT",
+      "evidence": null
+    },
+    {
+      "id": "S135",
+      "introduced": "4e95aac4",
+      "defect": "observer recorded only a per-cell support COUNT, not which addresses were measurable",
+      "why_it_matters": "no consumer could know which zeros were structural without re-implementing the observer",
+      "caught": "while repairing the adapter",
+      "caught_by": "SELF_AUDIT",
+      "fix": "954cee9e (support_mask_packed)",
+      "status": "REPAIRED for new worlds; pre-repair worlds are refused by the adapter",
+      "evidence": null
+    },
+    {
+      "id": "S136",
+      "introduced": "5c644ced",
+      "defect": "truth truncated by position with no alignment check; operator/source defaulted to zero; donor_index dropped",
+      "why_it_matters": "latents could attach to the wrong cells silently",
+      "caught": "before any forward pass",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S137",
+      "introduced": "uncommitted",
+      "defect": "first S128 regression fixture covered by every source; the never-carry-counts test was vacuous under the OR",
+      "why_it_matters": "a regression test that fails on the repair too protects nothing",
+      "caught": "by running it against the repair",
+      "caught_by": "SELF_AUDIT",
+      "fix": "adaa07fe (fixture asserts its own informativeness)",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S138",
+      "introduced": "uncommitted S129 repair",
+      "defect": "on/off silencing ignored module sign",
+      "why_it_matters": "a repressive module's genes stayed low in both states",
+      "caught": "before any corrected DR5 result existed",
+      "caught_by": "SELF_AUDIT",
+      "fix": "d4dc65ed",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S139",
+      "introduced": "detection-layer scorers of d76631b6, 6821f164, 0627b2e7 (and the inline Observer-V2 scoring); 4f89b0d3 not individually checked",
+      "defect": "synthetic genes chosen by binary-detection variance; the frozen real envelope chooses by expression variance, then binarises",
+      "why_it_matters": "synthetic-versus-real detection topology was computed on different gene sets",
+      "caught": "after the verdicts were committed",
+      "caught_by": "SELF_AUDIT",
+      "fix": "d4dc65ed; reruns 3edc982e",
+      "status": "REPAIRED",
+      "evidence": "deterministic arm frac>0.3 0.5208 (v1) vs 0.2641 (matched)"
+    },
+    {
+      "id": "S140",
+      "introduced": "same scorers",
+      "defect": "synthetic T5 on the binary layer with a 150-cell floor; real T5 on CPM-log1p with a 200-cell floor",
+      "why_it_matters": "the verdict's 'T5 drift to 1.22' compared different statistics",
+      "caught": "after commit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "d4dc65ed (one shared function); real calibration reproduced byte-identically 3edc982e",
+      "status": "REPAIRED",
+      "evidence": "matched T5 for DR3-DR5 1.016-1.020 against real 1.0118"
+    },
+    {
+      "id": "S141",
+      "introduced": "c4f12597",
+      "defect": "the frozen abundance envelope had no committed producer (inline, transcript line 59147)",
+      "why_it_matters": "the envelope that rejected every DR arm could not be regenerated from the repository",
+      "caught": "while auditing the abundance rejections",
+      "caught_by": "SELF_AUDIT",
+      "fix": "8b163312; reproduced byte-identically 3edc982e",
+      "status": "REPAIRED; freeze-before-evaluation claim supported by transcript ordering (17:53:35Z vs 18:21:58Z)",
+      "evidence": null
+    },
+    {
+      "id": "S142",
+      "introduced": "from 4e95aac4",
+      "defect": "pathlib.write_text wrote CRLF: 26 receipts and 13 scripts committed CRLF, the rest LF",
+      "why_it_matters": "a core.autocrlf=true checkout would rewrite LF files and break recorded digests",
+      "caught": "spillover audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "af03220c (-text for results/v77 and scripts/v77; nothing renormalised)",
+      "status": "PROTECTED",
+      "evidence": null
+    },
+    {
+      "id": "S143",
+      "introduced": "5c644ced message",
+      "defect": "said 26 oracle-only fields; there were 25",
+      "why_it_matters": "a factual error in a commit message",
+      "caught": "after commit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none (history is not rewritten); 26 now, with donor_index",
+      "status": "RECORDED",
+      "evidence": null
+    },
+    {
+      "id": "S144",
+      "introduced": "d76631b6",
+      "defect": "the sub-state family headline (transitivity 0.8844) was produced inline, on per-candidate gene sets, with binary-variance selection, under a superseded deterministic observer with a free threshold",
+      "why_it_matters": "the 'transitivity envelope entered' claim has no committed, comparable basis",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "not re-scored: the configuration is superseded and S149 removes the absolute target",
+      "status": "ABSOLUTE CLAIM WITHDRAWN; the within-instrument comparison with the factor family is not re-verified",
+      "evidence": null
+    },
+    {
+      "id": "S145",
+      "introduced": "v64 QC module",
+      "defect": "QC authority path is relative to the working directory",
+      "why_it_matters": "the observer works only when launched from the repository root",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "c449fb56 (reads resolve against the repository root; recorded strings unchanged)",
+      "status": "REPAIRED; identical objects from the root, works from elsewhere, committed code still fails elsewhere",
+      "evidence": null
+    },
+    {
+      "id": "S146",
+      "introduced": "4e95aac4",
+      "defect": "truth source_index (SEA_AD, NPH52, HVS) indexed coverage rows (HVS, NPH52, SEA_AD); a comment claimed the orders matched",
+      "why_it_matters": "HVS and SEA-AD coverage swapped in every canonical V2 world; SEA-AD cells (90%) received HVS coverage",
+      "caught": "while repairing the adapter",
+      "caught_by": "SELF_AUDIT",
+      "fix": "954cee9e",
+      "status": "REPAIRED; pre-repair V2 worlds keep the defect and are refused",
+      "evidence": "off_B4 support 0.3871 -> 0.8508 (SEA_AD)"
+    },
+    {
+      "id": "S147",
+      "introduced": "4e95aac4",
+      "defect": "registry-relative operator attrition applied again inside cohort coverage",
+      "why_it_matters": "coverage gap counted twice: HVS-operator cells about 0.21 instead of 0.4543",
+      "caught": "while repairing the adapter",
+      "caught_by": "SELF_AUDIT",
+      "fix": "954cee9e",
+      "status": "REPAIRED",
+      "evidence": "HVS operator keep equals HVS coverage to nine digits"
+    },
+    {
+      "id": "S148",
+      "introduced": "4e95aac4 onward, 11 commits",
+      "defect": "19 .pyc files committed via git add -f",
+      "why_it_matters": "bytecode churn in every commit; main never contained them",
+      "caught": "spillover audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "af03220c (git rm --cached)",
+      "status": "REPAIRED; no large file swept in (125 files, largest 66 KB)",
+      "evidence": null
+    },
+    {
+      "id": "S149",
+      "introduced": "the calibration design itself (9e0a7d36, 4f89b0d3 onward)",
+      "defect": "the frozen real detection topology is dominated by cohort composition, and synthetic calibration worlds modelled no cohort structure",
+      "why_it_matters": "a null with no dependence reproduces 89% of real correlation density and degree and exceeds real transitivity; within one cohort the real dependence is about a tenth as dense",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "measured 3cec0c36; strata validated against the true studies fd21f649 (100% of 3,292 cells); within-cohort measurements recorded (66bd9bed, 6ab62c22; relabelled 3ac06576, f0f03d1c)",
+      "status": "MEASURED AND VALIDATED; within-cohort measurements are a CANDIDATE CALIBRATION DIAGNOSTIC for review; the real-data scientific lane decides any target, estimand and weighting",
+      "evidence": "V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1, V77_COVERAGE_STRATA_VALIDATION_V1, V77_REAL_WITHIN_COHORT_ENVELOPE_V1"
+    },
+    {
+      "id": "S150",
+      "introduced": "development check",
+      "defect": "first T5 equivalence check had no class above the 200-cell floor; NaN compared to NaN",
+      "why_it_matters": "a check that could not pass or fail meaningfully",
+      "caught": "before it was relied on",
+      "caught_by": "SELF_AUDIT",
+      "fix": "rerun with five classes above the floor and one below: identical",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S151",
+      "introduced": "tooling",
+      "defect": "the shell transport rewrote backslash sequences: a heredoc failed and a line continuation was swallowed in the observer edit",
+      "why_it_matters": "the swallowed continuation left valid, semantically identical code; worse cases could have changed strings silently",
+      "caught": "inspection before commit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "edits now go through files written directly and an exact-match helper that refuses no-op, ambiguous or mixed-line-ending edits",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S152",
+      "introduced": "V77_DYNAMIC_RANGE_TOURNAMENT_V1 and V77_REALIZATION_ISOLATION_RECEIPT_V1",
+      "defect": "source_commit names 5c644ced and c4f12597, but the executors were first committed in 0627b2e7 and 6821f164",
+      "why_it_matters": "both receipts ran from uncommitted files while naming a commit",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "numbers reproduced exactly from committed code at adaa07fe (3edc982e); V1 receipts are not edited",
+      "status": "RECORDED",
+      "evidence": null
+    },
+    {
+      "id": "S153",
+      "introduced": "d4dc65ed executors",
+      "defect": "executor digests taken when writing the receipt, not before the work",
+      "why_it_matters": "an edit during a run would be misrecorded",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "ef70461a",
+      "status": "REPAIRED; V2 digests verified against committed blobs",
+      "evidence": null
+    },
+    {
+      "id": "S154",
+      "introduced": "d4dc65ed executors",
+      "defect": "the clean-tree check ignored untracked files",
+      "why_it_matters": "an uncommitted executor would pass it, which is how S152 happened",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "ef70461a",
+      "status": "REPAIRED; the tracked check is shown to separate tracked from untracked files",
+      "evidence": null
+    },
+    {
+      "id": "S155",
+      "introduced": "V1 scorers",
+      "defect": "'canonical genes lost' counted genes detected in EVERY cell (zero binary variance) as lost",
+      "why_it_matters": "6821f164 said the deterministic arm destroys 9,964 genes; 9,773 are never detected and 191 are detected in every cell",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "matched scoring reports never-detected genes",
+      "status": "RECORDED",
+      "evidence": null
+    },
+    {
+      "id": "S156",
+      "introduced": "0627b2e7 design",
+      "defect": "DR5 was declared structurally different without checking module signs; at this seed both L1_two_giant modules are repressive",
+      "why_it_matters": "DR5 is close to strong graded repression (DR4); activating on/off switching was never tested",
+      "caught": "this audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none",
+      "status": "RECORDED",
+      "evidence": null
+    },
+    {
+      "id": "S157",
+      "introduced": "the T5 reference (V77_REAL_TRAIN_TOPOLOGY_CALIBRATION_V1)",
+      "defect": "the pooled T5 reference of 1.0118 is itself composition-driven: within one cohort it is {'HVS': 0.7747, 'SEA_AD': 0.8092}",
+      "why_it_matters": "pooling across cohorts masked real class structure; synthetic worlds (T5 about 1.02, sub-states independent of class by design) carry LESS class structure than real cells within a cohort, the opposite of the drift the guard watches for",
+      "caught": "within-cohort envelope",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none: T5 is not redefined or weakened",
+      "status": "RECORDED; whether the generator should carry class-linked biology is an owner and reviewer decision",
+      "evidence": null
+    },
+    {
+      "id": "S158",
+      "introduced": "run_v77_dynamic_range_tournament.py",
+      "defect": "the receipt's universe label was hard-coded, whatever file was passed",
+      "why_it_matters": "scoring on a within-cohort universe would have produced a mislabelled receipt",
+      "caught": "before any such run",
+      "caught_by": "SELF_AUDIT",
+      "fix": "f48bafaa (name is an argument, checked against the file)",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S159",
+      "introduced": "6ab62c22 (inherited percentile rule of the pooled builders)",
+      "defect": "the inherited 5-95% percentile range excludes its own real point for 2 of 30 metrics in HVS and 5 of 30 in SEA_AD, all displaced upward",
+      "why_it_matters": "a range that excludes the real value would reject a generator matching it",
+      "caught": "self-audit of 6ab62c22, before any synthetic scoring",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none authoritative: candidate re-centred interval recorded (df7f82a2; relabelled 3ac06576); V1 ranges and all replicates preserved (f0f03d1c)",
+      "status": "OPEN",
+      "evidence": null
+    },
+    {
+      "id": "S160",
+      "introduced": "check written for df7f82a2",
+      "defect": "a containment check on the re-centred interval was true by construction",
+      "why_it_matters": "a check that cannot fail is not evidence",
+      "caught": "before it was cited",
+      "caught_by": "SELF_AUDIT",
+      "fix": "not counted; the falsifiable check, V2 reproducing V1 exactly from its replicates (60 of 60), replaced it",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S161",
+      "introduced": "5c644ced adapter design",
+      "defect": "source and operator indices reach the batch from the hidden-truth folder, not from the observer",
+      "why_it_matters": "operator context should be authenticated from the producer side",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "next adapter step: producer-side source/operator identity",
+      "status": "OPEN",
+      "evidence": null
+    },
+    {
+      "id": "S162",
+      "introduced": "5c644ced adapter design",
+      "defect": "source, operator, library size and cell index sit inside the model-visible batch",
+      "why_it_matters": "in V5 they are operator context, not encoder inputs; PR 223 separates model inputs from lawful operator context",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "next adapter step: split model inputs from operator context",
+      "status": "OPEN",
+      "evidence": null
+    },
+    {
+      "id": "S163",
+      "introduced": "run_v77_background_search, run_v77_substate_search",
+      "defect": "both issue verdicts against the POOLED envelopes",
+      "why_it_matters": "a rerun would silently treat composition-confounded topology as authoritative",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "99cb4d3b (refuse without explicit acknowledgement; output stamped)",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S164",
+      "introduced": "component oracles v3, v4",
+      "defect": "worlds were measured without checking their support rule",
+      "why_it_matters": "measuring a pre-repair world silently restores S146/S147 semantics",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "99cb4d3b (refuse pre-repair worlds unless reproduction is explicit)",
+      "status": "REPAIRED",
+      "evidence": null
+    },
+    {
+      "id": "S165",
+      "introduced": "9e0a7d36",
+      "defect": "the pooled expression calibration describes itself as a calibration TARGET",
+      "why_it_matters": "it is composition-dominated even more than the detection layer",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "none; historical receipt not edited",
+      "status": "RECORDED",
+      "evidence": null
+    },
+    {
+      "id": "S166",
+      "introduced": "every V77 2,000-cell world",
+      "defect": "all share truth seed 7302 and the dynamic-range arms share seed 20261006, so they are one planted realization inspected many times",
+      "why_it_matters": "re-measurements under repaired support are not independent evidence; 'built fresh' means rebuilt, not new",
+      "caught": "adversarial self-audit",
+      "caught_by": "SELF_AUDIT",
+      "fix": "no confirmatory claim is made from them; a confirmatory run needs a never-inspected seed",
+      "status": "RECORDED",
+      "evidence": null
+    }
+  ],
+  "CLAIM_CORRECTIONS": {
+    "0627b2e7 V77_DYNAMIC_RANGE_VERDICT_V1": [
+      {
+        "claim": "transitivity 0.9303 under true on/off switching",
+        "status": "WITHDRAWN (S129)",
+        "replacement": "corrected DR5: 0.9256 under the v1 scorer, 0.9125 matched"
+      },
+      {
+        "claim": "DR3, DR4 and DR5 exceed the real 0.8871: the mechanism overshoots",
+        "status": "NOT BIOLOGICALLY INTERPRETABLE (S149)",
+        "replacement": "they still exceed the pooled real envelope under matched scoring (0.904-0.913), but the pooled envelope is composition-dominated; within-cohort measurements (a candidate diagnostic) put real transitivity at 0.64 (HVS) and 0.70 (SEA_AD)"
+      },
+      {
+        "claim": "degree and correlation density only half way to real",
+        "status": "WITHDRAWN (S149)",
+        "replacement": "matched 0.25 and about 770 against pooled 0.61 and 1844; against within-cohort measurements, positions differ by cohort and no arm sits near real on every measure (exploratory placement in V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1; diagnostic only)"
+      },
+      {
+        "claim": "T5 drift 1.18-1.24 against a real 1.012",
+        "status": "WITHDRAWN (S140)",
+        "replacement": "matched T5: DR1 1.1638, DR2 1.0347, DR3 1.0200, DR4 1.0175, DR5 1.0159"
+      },
+      {
+        "claim": "true on/off switching is mechanistically the strongest variant",
+        "status": "WITHDRAWN (S129, S156)",
+        "replacement": "DR5 is close to DR4 at this seed; activating switching untested"
+      },
+      {
+        "claim": "every arm is rejected by the predeclared rules",
+        "status": "STANDS AS A RULE OUTCOME",
+        "replacement": "all arms still fail the frozen depth and abundance limits, but those limits are pooled-cohort statistics (S149) and the abundance statistic is coverage-sensitive (S130), so the rejection carries no biological explanation"
+      },
+      {
+        "claim": "dynamic range is the operative lever for topology under Poisson realization",
+        "status": "STANDS IN DIRECTION",
+        "replacement": "monotone DR1 to DR4 under both scorers; the size needed is unknown because the target is confounded"
+      },
+      {
+        "claim": "next falsifiable target: module-local silencing",
+        "status": "SUPERSEDED (S149, S156)",
+        "replacement": "the calibration target must be settled first; activating module-local switching remains untested"
+      },
+      {
+        "claim": "prediction recorded before the V2 run: DR5 detects fewer genes per cell than DR4 and fails depth",
+        "status": "DIRECTION HELD, MAGNITUDE WRONG",
+        "replacement": "1,674 against 1,686; silencing was 0.397 of addresses as predicted, but DR4's repression is already near silence, so depth barely moved"
+      }
+    ],
+    "6821f164 V77_OBSERVER_V2_AUDIT_CORRECTION_V1": [
+      {
+        "claim": "the deterministic arm destroys 9,964 of 19,569 canonical genes",
+        "status": "CORRECTED (S155)",
+        "replacement": "9,773 never detected; 191 detected in every cell"
+      },
+      {
+        "claim": "canonical-universe frac>0.3 0.5208, transitivity 0.7645, degree 1562",
+        "status": "CORRECTED (S139)",
+        "replacement": "matched gene selection: 0.2641, 0.7369, 792.1"
+      },
+      {
+        "claim": "counting noise alone collapses the topology",
+        "status": "STANDS",
+        "replacement": "matched: transitivity 0.7369 -> 0.3477, degree 792.1 -> 9.0"
+      },
+      {
+        "claim": "consistent with insufficient latent rate dynamic range",
+        "status": "STANDS, TARGET CONFOUNDED (S149)",
+        "replacement": "the dynamic range 'required' was calibrated against a composition-dominated envelope"
+      }
+    ],
+    "c4f12597 Observer-V2 candidates": [
+      {
+        "claim": "topology comparisons against the real detection envelope",
+        "status": "INHERIT S139 AND S149",
+        "replacement": "superseded by the realization isolation V2 and by S149"
+      },
+      {
+        "claim": "abundance envelope frozen before candidates were evaluated",
+        "status": "SUPPORTED (S141)",
+        "replacement": "transcript ordering, and byte-identical reproduction from a committed producer"
+      }
+    ],
+    "d76631b6 sub-state family decision": [
+      {
+        "claim": "transitivity envelope entered (0.8844)",
+        "status": "WITHDRAWN (S144, S149)",
+        "replacement": null
+      }
+    ],
+    "9e0a7d36 / 4f89b0d3 real calibration envelopes": [
+      {
+        "claim": "the real detection envelope is a calibration target for planted biology",
+        "status": "NOT VALID AS STATED (S149)",
+        "replacement": "pooled over cohorts and composition-dominated"
+      },
+      {
+        "claim": "V77_REAL_TRAIN_EXPRESSION_CALIBRATION_V1: 'a calibration TARGET for the synthetic background covariance'",
+        "status": "NOT VALID AS STATED (S149, S165)",
+        "replacement": "the expression layer is even more composition-dominated: within one cohort, frac|corr|>0.3 is 0.017 (HVS) and 0.038 (SEA_AD) against 0.562 pooled"
+      }
+    ]
+  },
+  "OPEN_FOR_DECISION": [
+    "S149, for the real-data scientific lane: whether and how the within-cohort measurements (candidate diagnostic: V77_REAL_WITHIN_COHORT_ENVELOPE_V1/V2) become a calibration target, estimand or weighting.",
+    "S159, OPEN: the inherited percentile ranges can exclude their own real point; the re-centred interval and the equal-cell-count comparison are candidate repairs for review, not authority.",
+    "S149 consequence: the Step-3 family decisions (factor family falsified, sub-state family supported) were made against inflated pooled transitivity and need a prospective re-test once a target is decided.",
+    "S157: whether synthetic worlds should carry class-linked biology (real within-cohort T5 0.77-0.81).",
+    "Rehearsal target freeze: 83% of hidden targets are measured zeros under value-independent eligibility; the target and loss must be designed for that, not tuned after seeing outcomes.",
+    "Not done, optional: whether A_REPLICA's 0.982 recovery is explained by library size or class."
+  ],
+  "EVIDENCE": {
+    "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2.json": "a7de6ce2a3aafc4619156f5fc93e42e24e1130cbae52a430be7475107d9a443b",
+    "results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V2.json": "29c416ac517f95191c70d86327cb1947e072f5f771b2820e8f920421a6562cdf",
+    "results/v77/V77_REPRODUCTION_REAL_TOPOLOGY_AFTER_T5_EXTRACTION_V1.json": "bc54097773312f439228b4fd45302a9a9b0853d528af3a399ddcac906c3655f1",
+    "results/v77/V77_REPRODUCTION_ABUNDANCE_ENVELOPE_V1.json": "87108fe46750655d5acbe028d0a7aecb0494af54675ffc2f836fa0d581eaecb8",
+    "results/v77/V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1.json": "0c854fd18d4a9d2fdd93bc25c8cf779a09ad668208f6bbd434549ae013b94c13",
+    "results/v77/REHEARSAL_ADAPTER_INTEGRATION_V1.json": "be01294b82a684cf423cd1347e564006264c2af9c02c35b5b8852b889f1fefa8",
+    "results/v77/V77_COVERAGE_STRATA_VALIDATION_V1.json": "1af2bb9cc18b3c9f7d94b71d22fca69fbec883d3935b89fdae2ebb77aa8312cb",
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json": "a2682f6c6ccfc5a500bc3a6d57ab671594e6273406d9a4d332b393dcb5cfd5be",
+    "results/v77/V77_COMPONENT_DETECT_REJECT_REPAIRED_SUPPORT_V1.json": "71694ab3452596857b2ee395022973cfa702740fa5cdabf11cc4615db974bd88",
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json": "5bfd007c3f9b66bff8653152869b02e1b4c8960a895974051be303dde76e1a29",
+    "results/v77/V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1.json": "9b80fd5d31d40da9023eccd3ff47c6b1300f674b7ded4c561533a08d2e980985",
+    "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "889fc1f606aff7479cbe7a3e900270cfbc2991bc908922b346bf612baec15a36",
+    "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "a0fe509adc9af686597f6d9497ee4761bd1a37fb7d23b467deb89bca13d80057"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "optimizer_or_EMA_executed": false,
+    "stage_A": "NOT_AUTHORIZED",
+    "production_world_rebuild": "NOT_AUTHORIZED",
+    "promotion": "NOT_QUALIFIED",
+    "frozen_envelopes_edited": false,
+    "thresholds_moved": false
+  }
+}

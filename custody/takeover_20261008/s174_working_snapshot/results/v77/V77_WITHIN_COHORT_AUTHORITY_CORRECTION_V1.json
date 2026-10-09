@@ -1,0 +1,316 @@
+{
+  "schema": "V77_WITHIN_COHORT_AUTHORITY_CORRECTION_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "record_type": "AUDIT RECORD, written by hand; every number is read from the receipts it cites",
+  "recorded_utc": "2026-10-07T00:16:13Z",
+  "head_when_recorded": "3ac06576ef022bd3d9493c34470851be6c852615",
+  "trigger": "reviewer-lane audit of this lane, relayed by the owner on 2026-10-06",
+  "AUTHORITY": {
+    "status_of_within_cohort_measurements": "CANDIDATE_CALIBRATION_DIAGNOSTIC__SCIENTIFIC_EVIDENCE_FOR_REVIEW",
+    "decides_calibration_target_estimand_and_weighting": "the real-data scientific lane",
+    "synthetic_pass_fail_use": "NOT AUTHORIZED for V77_REAL_WITHIN_COHORT_ENVELOPE_V1, _V2, their inherited percentile ranges, or the candidate re-centred ranges",
+    "pooled_envelopes": "unchanged; composition-inclusive references; also not a biological target (S149)"
+  },
+  "WITHDRAWN_LANGUAGE": [
+    {
+      "where": "commit 66bd9bed message and executor docstring",
+      "phrase": "MATERIAL PIVOT, LOGGED ... the replacement target"
+    },
+    {
+      "where": "commit 6ab62c22 message",
+      "phrase": "this file is the calibration target for planted biology from here on"
+    },
+    {
+      "where": "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json fields status and material_pivot",
+      "phrase": "FROZEN_BEFORE_ANY_SYNTHETIC_WORLD_IS_SCORED_AGAINST_IT; to_target"
+    },
+    {
+      "where": "commit df7f82a2 message and executor docstring",
+      "phrase": "V2 ACCEPTANCE RULE ... acceptance = ..."
+    },
+    {
+      "where": "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json fields acceptance_rule, comparison_protocol, material_pivot, ACCEPTANCE_ENVELOPES.*.accept_low/high",
+      "phrase": "the re-centred interval presented as the acceptance rule"
+    }
+  ],
+  "HOW_TO_READ_THE_PRESERVED_FILES": {
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json": "within-cohort point estimates and the INHERITED percentile ranges, unedited",
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json": "identical points and inherited ranges (reproduced exactly from its stored replicates, 60 of 60) plus all 24 replicates per metric; its accept_low/accept_high are the CANDIDATE re-centred range, not an acceptance rule",
+    "scripts/v77/build_v77_within_cohort_envelope.py at 3ac06576": "same computation, corrected labels"
+  },
+  "S159_OPEN_METHODOLOGICAL_DEFECT": {
+    "defect": "the inherited percentile range can exclude its own real point estimate",
+    "measured": {
+      "HVS": {
+        "metrics": 30,
+        "point_outside_inherited_range": [
+          {
+            "metric": "expression.median_abs_corr",
+            "point": 0.05454122382372603,
+            "inherited_range": [
+              0.05484297783336761,
+              0.05840047444736045
+            ],
+            "resample_median_minus_point": 0.002085592282106384
+          },
+          {
+            "metric": "t5.within_over_pooled",
+            "point": 0.7747191280512261,
+            "inherited_range": [
+              0.827365883130477,
+              0.9097219373936616
+            ],
+            "resample_median_minus_point": 0.09152490922929524
+          }
+        ]
+      },
+      "SEA_AD": {
+        "metrics": 30,
+        "point_outside_inherited_range": [
+          {
+            "metric": "detection.largest_community_frac",
+            "point": 0.23166666666666666,
+            "inherited_range": [
+              0.24516666666666667,
+              0.31385
+            ],
+            "resample_median_minus_point": 0.04183333333333336
+          },
+          {
+            "metric": "expression.median_abs_corr",
+            "point": 0.06648370528091659,
+            "inherited_range": [
+              0.0694746585473766,
+              0.07275207214162548
+            ],
+            "resample_median_minus_point": 0.004317340556942564
+          },
+          {
+            "metric": "expression.var_top10_pc",
+            "point": 0.2793480021015319,
+            "inherited_range": [
+              0.2817799006196803,
+              0.29211800697075396
+            ],
+            "resample_median_minus_point": 0.00635121687100304
+          },
+          {
+            "metric": "expression.largest_community_frac",
+            "point": 0.24833333333333332,
+            "inherited_range": [
+              0.24948333333333333,
+              0.27695000000000003
+            ],
+            "resample_median_minus_point": 0.015999999999999986
+          },
+          {
+            "metric": "t5.within_over_pooled",
+            "point": 0.809178800839818,
+            "inherited_range": [
+              0.888079782254868,
+              0.9528620870717674
+            ],
+            "resample_median_minus_point": 0.11404794536191054
+          }
+        ]
+      }
+    },
+    "likely_mechanism": "a with-replacement donor resample keeps about 63% distinct cells, and correlation-magnitude statistics rise as distinct cells fall",
+    "preserved": [
+      "V1 inherited ranges",
+      "V2 inherited ranges and all replicates"
+    ],
+    "candidate_repair": "[point - (median - q05), point + (q95 - median)]; recorded for review, NOT authoritative",
+    "candidate_comparison_protocol": "score synthetic worlds at the stratum's own number of cells; for review",
+    "decision_owner": "the real-data scientific lane, with the owner"
+  },
+  "EXPLORATORY_PLACEMENT": {
+    "label": "EXPLORATORY__ARMS_ALREADY_SEEN",
+    "may": [
+      "diagnose where the already-seen dynamic-range arms sit relative to HVS and SEA_AD"
+    ],
+    "may_not": [
+      "select a synthetic family",
+      "redefine any acceptance rule",
+      "issue pass or fail"
+    ],
+    "reading": "no arm sits near the real within-cohort point on every measure; detection density is bracketed by DR2-DR3; expression-layer dependence is denser than real in every arm from DR2 up; T5 is above 1 in every arm against 0.77-0.81 real; every arm detects roughly a third as many genes per cell as real",
+    "per_cohort": {
+      "HVS": {
+        "receipt": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json",
+        "analysis_status": "EXPLORATORY__ARMS_ALREADY_SEEN",
+        "cells": 3072,
+        "universe": "TRAIN_WITHIN_HVS_PREVALENCE05_13326",
+        "source_commit": "df7f82a2fc7e47a4498b517bf93ef32642613003",
+        "positions": {
+          "detection.frac_abs_gt_0p3": {
+            "real_within_cohort_point": 0.1146210959208625,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.0016752250750250084,
+              "DR2_scale_2p50": 0.12177059019673224,
+              "DR3_scale_4p00": 0.21909014115816383,
+              "DR4_scale_5p50": 0.23750027787040123,
+              "DR5_true_on_off": 0.23969345337334666
+            }
+          },
+          "detection.transitivity": {
+            "real_within_cohort_point": 0.6358993455521378,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.3690642015955426,
+              "DR2_scale_2p50": 0.7742988452400954,
+              "DR3_scale_4p00": 0.8695976884730559,
+              "DR4_scale_5p50": 0.8816512674694467,
+              "DR5_true_on_off": 0.8839252510345079
+            }
+          },
+          "detection.mean_degree": {
+            "real_within_cohort_point": 343.7486666666667,
+            "arms": {
+              "DR1_scale_1p20_baseline": 5.024,
+              "DR2_scale_2p50": 365.19,
+              "DR3_scale_4p00": 657.0513333333333,
+              "DR4_scale_5p50": 712.2633333333333,
+              "DR5_true_on_off": 718.8406666666667
+            }
+          },
+          "expression.frac_abs_gt_0p3": {
+            "real_within_cohort_point": 0.01689829943314438,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.007490052239635434,
+              "DR2_scale_2p50": 0.07859175280649106,
+              "DR3_scale_4p00": 0.14501856174280317,
+              "DR4_scale_5p50": 0.162648882960987,
+              "DR5_true_on_off": 0.1649403134378126
+            }
+          },
+          "expression.transitivity": {
+            "real_within_cohort_point": 0.44541362638603343,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.5221611772305517,
+              "DR2_scale_2p50": 0.5789292746660448,
+              "DR3_scale_4p00": 0.6615081971827852,
+              "DR4_scale_5p50": 0.7098518210678667,
+              "DR5_true_on_off": 0.7322888164442295
+            }
+          },
+          "t5.within_over_pooled": {
+            "real_within_cohort_point": 0.7747191280512261,
+            "arms": {
+              "DR1_scale_1p20_baseline": 1.2249496264603292,
+              "DR2_scale_2p50": 1.0485489832891048,
+              "DR3_scale_4p00": 1.0283665518657275,
+              "DR4_scale_5p50": 1.0238092651480526,
+              "DR5_true_on_off": 1.023241183294769
+            }
+          },
+          "median_detected_per_cell_in_universe": {
+            "real_within_cohort_point": 4349.5,
+            "arms": {
+              "DR1_scale_1p20_baseline": 1608.5,
+              "DR2_scale_2p50": 1450.0,
+              "DR3_scale_4p00": 1333.0,
+              "DR4_scale_5p50": 1293.0,
+              "DR5_true_on_off": 1277.5
+            }
+          }
+        }
+      },
+      "SEA_AD": {
+        "receipt": "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json",
+        "analysis_status": "EXPLORATORY__ARMS_ALREADY_SEEN",
+        "cells": 1408,
+        "universe": "TRAIN_WITHIN_SEA_AD_PREVALENCE05_14948",
+        "source_commit": "df7f82a2fc7e47a4498b517bf93ef32642613003",
+        "positions": {
+          "detection.frac_abs_gt_0p3": {
+            "real_within_cohort_point": 0.23939913304434812,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.002406579971101478,
+              "DR2_scale_2p50": 0.09853151050350116,
+              "DR3_scale_4p00": 0.19172124041347116,
+              "DR4_scale_5p50": 0.21228453929087474,
+              "DR5_true_on_off": 0.215188618428365
+            }
+          },
+          "detection.transitivity": {
+            "real_within_cohort_point": 0.7012820743552791,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.3271288331919679,
+              "DR2_scale_2p50": 0.7461155871244651,
+              "DR3_scale_4p00": 0.8261389255323348,
+              "DR4_scale_5p50": 0.8418703670753589,
+              "DR5_true_on_off": 0.8465165489055027
+            }
+          },
+          "detection.mean_degree": {
+            "real_within_cohort_point": 717.958,
+            "arms": {
+              "DR1_scale_1p20_baseline": 7.217333333333333,
+              "DR2_scale_2p50": 295.496,
+              "DR3_scale_4p00": 574.972,
+              "DR4_scale_5p50": 636.6413333333334,
+              "DR5_true_on_off": 645.3506666666667
+            }
+          },
+          "expression.frac_abs_gt_0p3": {
+            "real_within_cohort_point": 0.03754162498610648,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.004673557852617539,
+              "DR2_scale_2p50": 0.05360120040013338,
+              "DR3_scale_4p00": 0.10679937757030121,
+              "DR4_scale_5p50": 0.12350694676003113,
+              "DR5_true_on_off": 0.12602467489163055
+            }
+          },
+          "expression.transitivity": {
+            "real_within_cohort_point": 0.5238948510114652,
+            "arms": {
+              "DR1_scale_1p20_baseline": 0.47952345735367535,
+              "DR2_scale_2p50": 0.5495869297874572,
+              "DR3_scale_4p00": 0.6017942671382905,
+              "DR4_scale_5p50": 0.6385932194597314,
+              "DR5_true_on_off": 0.6491549330555125
+            }
+          },
+          "t5.within_over_pooled": {
+            "real_within_cohort_point": 0.809178800839818,
+            "arms": {
+              "DR1_scale_1p20_baseline": 1.4777452136610183,
+              "DR2_scale_2p50": 1.1414405957287037,
+              "DR3_scale_4p00": 1.0758784245397934,
+              "DR4_scale_5p50": 1.0602682225114115,
+              "DR5_true_on_off": 1.0598472886234975
+            }
+          },
+          "median_detected_per_cell_in_universe": {
+            "real_within_cohort_point": 4711.5,
+            "arms": {
+              "DR1_scale_1p20_baseline": 1405.5,
+              "DR2_scale_2p50": 1262.0,
+              "DR3_scale_4p00": 1188.5,
+              "DR4_scale_5p50": 1150.0,
+              "DR5_true_on_off": 1146.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "EVIDENCE": {
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json": "a2682f6c6ccfc5a500bc3a6d57ab671594e6273406d9a4d332b393dcb5cfd5be",
+    "results/v77/V77_REAL_WITHIN_COHORT_ENVELOPE_V2.json": "5bfd007c3f9b66bff8653152869b02e1b4c8960a895974051be303dde76e1a29",
+    "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_HVS_EXPLORATORY.json": "889fc1f606aff7479cbe7a3e900270cfbc2991bc908922b346bf612baec15a36",
+    "results/v77/V77_DYNAMIC_RANGE_TOURNAMENT_V2__WITHIN_SEA_AD_EXPLORATORY.json": "a0fe509adc9af686597f6d9497ee4761bd1a37fb7d23b467deb89bca13d80057"
+  },
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "synthetic_mutation": false,
+    "real_RNA_execution": false,
+    "representation_winner": null,
+    "target_winner": null,
+    "estimand_selected": null,
+    "threshold_selected": null,
+    "TEST_access": false,
+    "Morabito": false
+  }
+}

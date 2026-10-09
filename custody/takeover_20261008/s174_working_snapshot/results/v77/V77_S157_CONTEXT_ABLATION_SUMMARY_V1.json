@@ -1,0 +1,140 @@
+{
+  "schema": "V77_S157_CONTEXT_ABLATION_SUMMARY_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "derived_from": {
+    "path": "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARMS_V1.json",
+    "sha256": "23e613979e5014ce29797b0e4585a66fbea4fded2ceaaed2751d3f29f6e18153",
+    "source_commit": "fec1b41ad2eb017c65eb571a29798d87b5e3fbe4"
+  },
+  "recorded_utc": "2026-10-07T02:24:45Z",
+  "key_question": "Can defensible measurement descriptors remove nuisance variation without simply allowing the model to memorize dataset identity?",
+  "answer_in_this_challenge": "NO. The lawful descriptors available (visible depth, measurable-address count) neither remove the operator-linked capture nuisance nor separate the biological world from its operator twin; only raw dataset identity does, and raw identity is an exploratory positive control, never a design.",
+  "why": "the nuisance is a gene-specific capture bias tied to operators; depth and coverage counts do not measure gene-specific capture, so adjusting for them cannot remove it. A defensible descriptor would have to measure the capture process itself (for example technical spike-ins or protocol and chemistry variables that physically set the capture of these genes), not stand in for which dataset a cell came from",
+  "table_module_readout": {
+    "ARM1": {
+      "status": "PREREGISTERED",
+      "biological_discrimination_r2": 0.8528793323771284,
+      "nuisance_discrimination_r2": 0.8722755257778709,
+      "module_context_share_BIO": null,
+      "module_context_share_TWIN_OPERATOR": null,
+      "linear_identity_leakage": 0.0,
+      "separation": "NOT_APPLICABLE_NO_CONTEXT"
+    },
+    "ARM2": {
+      "status": "PREREGISTERED",
+      "biological_discrimination_r2": 0.8889194543946606,
+      "nuisance_discrimination_r2": 0.9039668075850684,
+      "module_context_share_BIO": {
+        "r2": 0.042450621273367184,
+        "ci95": [
+          0.0176879650985417,
+          0.06341998348399329
+        ]
+      },
+      "module_context_share_TWIN_OPERATOR": {
+        "r2": 0.05229681328787139,
+        "ci95": [
+          0.03477785202756608,
+          0.06746229779208479
+        ]
+      },
+      "linear_identity_leakage": 0.03135794668487927,
+      "separation": "NOT_SEPARATED"
+    },
+    "ARM2_DEPTH_ONLY": {
+      "status": "EXPLORATORY_DECOMPOSITION",
+      "biological_discrimination_r2": 0.8897390040016816,
+      "nuisance_discrimination_r2": 0.9025392473561573,
+      "module_context_share_BIO": {
+        "r2": 0.044476199581451104,
+        "ci95": [
+          0.01954610293537105,
+          0.06563501546789849
+        ]
+      },
+      "module_context_share_TWIN_OPERATOR": {
+        "r2": 0.04927524833875607,
+        "ci95": [
+          0.031514074878293885,
+          0.06418226243752344
+        ]
+      },
+      "linear_identity_leakage": 0.004038119025767968,
+      "separation": "NOT_SEPARATED"
+    },
+    "ARM2_SUPPORT_ONLY": {
+      "status": "EXPLORATORY_DECOMPOSITION",
+      "biological_discrimination_r2": 0.8510944296372471,
+      "nuisance_discrimination_r2": 0.8723425182617027,
+      "module_context_share_BIO": {
+        "r2": -0.008432942338825633,
+        "ci95": [
+          -0.017925219262233148,
+          -0.0030826710535583834
+        ]
+      },
+      "module_context_share_TWIN_OPERATOR": {
+        "r2": -4.370067623882257e-05,
+        "ci95": [
+          -0.006652232707400713,
+          0.00042031446714266567
+        ]
+      },
+      "linear_identity_leakage": 0.028209175438599375,
+      "separation": "NOT_SEPARATED"
+    },
+    "ARM3": {
+      "status": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+      "biological_discrimination_r2": 0.8241735610483348,
+      "nuisance_discrimination_r2": 0.374339979076586,
+      "module_context_share_BIO": {
+        "r2": -0.04304073853877233,
+        "ci95": [
+          -0.07019191821898749,
+          -0.008593930106484252
+        ]
+      },
+      "module_context_share_TWIN_OPERATOR": {
+        "r2": 0.41650638275106044,
+        "ci95": [
+          0.35933495632199597,
+          0.47270370229007613
+        ]
+      },
+      "linear_identity_leakage": 0.9995534378789349,
+      "separation": "SEPARABLE"
+    }
+  },
+  "support_count_as_identity_key": {
+    "fraction_of_test_cells_whose_operator_it_identifies": 0.956,
+    "reading": "the measurable-address count is fixed by source and operator here, so as a lookup key it identifies the operator for almost every cell even though a LINEAR adjustment cannot use it (linear leakage about 0.03). A learned model with any nonlinearity could memorise dataset identity through it; it is not a safe 'lawful' covariate"
+  },
+  "exact_twin": {
+    "verdict": "NON_IDENTIFIABLE_BY_DESIGN",
+    "reading": "identical under every arm, raw identity included: the exact twin is tied to state exactly as the biology is, so no context can separate them"
+  },
+  "raw_identity_cost": "residualizing on raw identity lowered biological recoverability from 0.853 to 0.824 even though state is independent of operator in this world; with real study-composition confounding (S149) it would remove more biology",
+  "caveats": [
+    "linear residualization and linear readouts; they understate what a nonlinear model could extract from identity proxies",
+    "the operator set reached 571 cells against the state's 366, so the twin copied the program's size only approximately",
+    "BIO and TWIN_OPERATOR latents share their noise by design, which produces cross-recoverability near 0.3",
+    "the depth and support splits of ARM2 were not pre-registered and are labelled EXPLORATORY_DECOMPOSITION",
+    "one realization, seed 7302: DEVELOPMENT_CALIBRATION, never independent confirmation"
+  ],
+  "red_checks": {
+    "RED_1_exact_twin_byte_identical": true,
+    "RED_1_shown_able_to_fail_by_one_count": true,
+    "RED_2_exact_twin_scored_identically": true,
+    "RED_2_bitwise_equal": true,
+    "RED_2_max_abs_difference": 0.0,
+    "RED_2_tolerance": 1e-09,
+    "RED_3_schema_identical": true,
+    "RED_4_unblinding_before_freezing_refused": true
+  },
+  "authority": {
+    "training": "OFF",
+    "mode": "ZERO_UPDATE",
+    "raw_identity_arm": "EXPLORATORY_POSITIVE_CONTROL_ONLY",
+    "representation_target_estimand_weighting_threshold_selected": false
+  }
+}

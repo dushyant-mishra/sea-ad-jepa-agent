@@ -1,0 +1,61 @@
+name: V26 V5 synthetic mechanics (no real training)
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/qualified_optimizer_guard_v3.py'
+      - 'tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py'
+      - '.github/workflows/v26-v5-synthetic-mechanics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated CPU mechanics dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy
+          python -m pip install --disable-pip-version-check 'torch==2.7.0' --index-url https://download.pytorch.org/whl/cpu
+      - name: Run existing inactive V5 mechanics plus exact guard red-team
+        env:
+          PYTHONPATH: src:.
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q -p no:randomly --strict-markers \
+            tests/test_teacher_student_v5_inactive_update_reference.py \
+            tests/test_teacher_student_v5_latest_closure_v1.py \
+            tests/test_v5_current_preexecution_receipt_training_optimizer_v2.py \
+            --junitxml=/tmp/v26-v5-mechanics.xml | tee /tmp/v26-v5-mechanics.txt
+      - name: Fail closed on skipped/failed/uncollected tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse('/tmp/v26-v5-mechanics.xml').getroot()
+          suite = root if root.tag == 'testsuite' else root.find('testsuite')
+          if suite is None:
+              raise SystemExit('STOP_V26_V5_SYNTHETIC_NO_TEST_SUITE')
+          counts = {k: int(suite.attrib.get(k, 0)) for k in ('tests', 'errors', 'failures', 'skipped')}
+          required = {
+              'test_optimizer_v3_step_proof_is_single_use_and_rejects_replayed_cursor',
+              'test_optimizer_v3_must_acknowledge_completed_step_before_arming_next',
+              'test_optimizer_v3_wrong_step_cursor_fails_before_step_and_does_not_advance',
+              'test_inactive_reference_update_steps_once_has_no_teacher_grad_and_exact_ema',
+              'test_inactive_reference_checkpoint_resume_matches_uninterrupted_two_update_path',
+          }
+          observed = {t.attrib.get('name') for t in suite.iter('testcase')}
+          if counts['tests'] < 20 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
+              raise SystemExit(f'STOP_V26_V5_SYNTHETIC_INCOMPLETE: counts={counts} missing={sorted(required-observed)}')
+          print(f"PASS_V26_V5_SYNTHETIC_MECHANICS__NOT_TRAINING: {counts['tests']} passed, zero skipped")
+          PY

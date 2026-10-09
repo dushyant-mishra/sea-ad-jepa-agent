@@ -1,0 +1,82 @@
+{
+  "schema": "jepa_v52_r2_r4_recovery_manifest_v1",
+  "date": "2026-09-28",
+  "base_sha": "e25fa145e1fbbc74a71a2a8e66291dc4710de2ae",
+  "branch": "audit/v52-r2-r4-recovery-closeout-20260928",
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "protected_outcomes_opened_by_v52": false,
+    "real_regulatory_biology_opened_by_v52": false
+  },
+  "recovered_archives": [
+    {
+      "name": "CLAUDE_R2_LOCAL_SCRIPTS.zip",
+      "git_encoding": "base64_text",
+      "git_path": "docs/agent/recovered-v52-20260928/CLAUDE_R2_LOCAL_SCRIPTS.zip.b64",
+      "decoded_sha256": "337bd8823e006febc1f5103b00b48c7953e3a91e3fb257a4d02d90c04b4af571",
+      "decoded_size_bytes": 13536,
+      "remote_blob_sha1": "22aef305dda5af3c85e8e0108e829695b40101e6"
+    },
+    {
+      "name": "out_stage75f-specificity.zip",
+      "custody_disposition": "chat_recovery_archive_sha_pinned__not_redundantly_mirrored_in_git",
+      "decoded_sha256": "be6614c58304a2b19c41b542f8379fb31e6adca39082d4982496344f9004c3b5",
+      "decoded_size_bytes": 15970,
+      "note": "A first monolithic base64 mirror was detected as truncated during V52 remote-byte verification and was deleted; the authoritative recovered archive remains SHA-pinned chat custody."
+    },
+    {
+      "name": "out_seaad-spatial.zip",
+      "git_encoding": "base64_text",
+      "git_path": "docs/agent/recovered-v52-20260928/out_seaad-spatial.zip.b64",
+      "decoded_sha256": "8dbe6faef5690207639b10b7818bedb743fbdf14b9dd5029d965b7d93c937420",
+      "decoded_size_bytes": 13001,
+      "remote_blob_sha1": "65ad33c25d8e09f390284b79891efd5af5d2bc3a"
+    }
+  ],
+  "recovered_r2_source": {
+    "producer_sha256": "6accb237a29718668146eb3dab5c54638c969363d71a40a95fbab3c88925ee1e",
+    "adversarial_harness_sha256": "77ee49b6167b0181cc2bd46dcda91132ab22586ebaf7ed230d2958657a408ee7",
+    "historical_files_modified": false
+  },
+  "r2_full_run": {
+    "status": "RECOVERED_COMPLETE",
+    "annotation_supply_shuffles": 20000,
+    "tf_label_assignments_exact": 3628800,
+    "direct_exact_permutation_p": 0.74769841,
+    "extended_exact_permutation_p": 0.846347,
+    "direct_supply_preserving_p": 0.06464677,
+    "extended_supply_preserving_p": 0.12014399,
+    "validated_eregulon_network": false,
+    "biological_regulatory_claim": "NONE"
+  },
+  "mut5_successor": {
+    "script_path": "scripts/lane_r2/laneR2_mut5_producer_path_regression_v2.py",
+    "script_sha256": "97fc5a503dca9a76e20797522b14af97e1c9b96036c19dd35d7bca22fdc38f00",
+    "test_path": "tests/test_lane_r2_mut5_producer_path_regression_v2.py",
+    "test_sha256": "80d324f8ff0589e5e31615cb890a2d539bc99f90920be1e1e6f70189a4ff1a08",
+    "local_execution": {
+      "pytest": "1 passed",
+      "producer_exit_code": 0,
+      "exact_assignments": 720,
+      "direct_distinct_null_values": 1,
+      "extended_distinct_null_values": 1,
+      "direct_null_is_degenerate_constant": true,
+      "extended_null_is_degenerate_constant": true,
+      "verdict": "PASS_PRODUCER_DEGENERACY_PATH_EXERCISED"
+    },
+    "remote_blob_verification": {
+      "script_git_blob_sha1": "d0c297559b31c5adfa2a097faa93bf3208e59e1f",
+      "test_git_blob_sha1": "ecd123b99dea156d4f4a5a6c96ab290b48b381c5",
+      "script_sha256_matches_local_executed_bytes": true,
+      "test_sha256_matches_local_executed_bytes": true,
+      "fresh_pytest": "1 passed in 2.03s"
+    }
+  },
+  "r4": {
+    "status": "STRUCTURAL_RESULT_RECOVERED__INTERNALLY_CONSISTENT__PRODUCER_NOT_YET_CUSTODIED",
+    "primary_json_sha256": "19029146db80485afe3e48f3444340b3f66e144fcd26df2fcdfd442607640f26",
+    "full_state_spatial_validation_supported": false
+  },
+  "scientific_next_blocker": "RED_CIS_POSITIVE_CONTROL__SYNTHETIC_TECHNICAL_DIAGNOSIS_REQUIRED"
+}

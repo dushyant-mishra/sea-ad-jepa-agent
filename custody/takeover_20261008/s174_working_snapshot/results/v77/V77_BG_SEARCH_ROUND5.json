@@ -1,0 +1,168 @@
+{
+  "schema": "V77_BACKGROUND_CANDIDATE_SEARCH_V1",
+  "envelope_source": {
+    "path": "results/v77/V77_REAL_CALIBRATION_ENVELOPE_V1.json",
+    "schema": "V77_REAL_CALIBRATION_ENVELOPE_V1"
+  },
+  "smoke_scale": {
+    "cells": 3000,
+    "addresses": 41238,
+    "n_hvg": 3000,
+    "seed": 20261006
+  },
+  "t5_real_reference": 1.012,
+  "acceptance_rule": "a candidate must land inside the donor-resampled 5th-to-95th percentile envelope on EVERY target individually; improvement alone is not acceptance",
+  "candidates": {
+    "F1_two_dom_more_mid": {
+      "note": "E2 plus a richer mid band to raise rank and break the single giant component",
+      "n_factors": 895,
+      "seconds": 23.8,
+      "latent": {
+        "median_abs_corr": 0.4831942319869995,
+        "frac_abs_gt_0p3": 0.5315311770590196,
+        "var_top10_pc": 0.7510005493978311,
+        "mean_degree": 1594.062,
+        "largest_community_frac": 1.0,
+        "transitivity": 0.9131443529634239,
+        "substitute_frac": 0.794,
+        "frac_pos_gt_0p3": 0.26624585973102144,
+        "frac_neg_lt_m0p3": 0.2652853173279982,
+        "pos_over_neg_ratio": 1.0036207899204448,
+        "mean_signed_corr": 0.0007018247852101922,
+        "t5_within_over_pooled": 0.9968742344252018
+      },
+      "observed": {
+        "median_abs_corr": 0.23338070511817932,
+        "frac_abs_gt_0p3": 0.43576858952984326,
+        "var_top10_pc": 0.48346468233523093,
+        "mean_degree": 1306.87,
+        "largest_community_frac": 0.9323333333333333,
+        "transitivity": 0.9108636350139094,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.23560831388240525,
+        "frac_neg_lt_m0p3": 0.20016027564743805,
+        "pos_over_neg_ratio": 1.1770982684766347,
+        "mean_signed_corr": 0.011914302594959736,
+        "t5_within_over_pooled": 1.003831731549541
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.003831731549541,
+      "verdict": "REJECT"
+    },
+    "F2_two_dom_strong_mid": {
+      "note": "F1 with a stronger mid band, trading some dominant share for rank",
+      "n_factors": 808,
+      "seconds": 25.0,
+      "latent": {
+        "median_abs_corr": 0.22816115617752075,
+        "frac_abs_gt_0p3": 0.4387284650439035,
+        "var_top10_pc": 0.44504874227284685,
+        "mean_degree": 1315.7466666666667,
+        "largest_community_frac": 0.9183333333333333,
+        "transitivity": 0.9100003856753783,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.21951139268645103,
+        "frac_neg_lt_m0p3": 0.2192170723574525,
+        "pos_over_neg_ratio": 1.0013425976628254,
+        "mean_signed_corr": 0.00012029712524963543,
+        "t5_within_over_pooled": 0.9984655896121529
+      },
+      "observed": {
+        "median_abs_corr": 0.1164235845208168,
+        "frac_abs_gt_0p3": 0.03747426920084473,
+        "var_top10_pc": 0.26334765625,
+        "mean_degree": 112.38533333333334,
+        "largest_community_frac": 0.008666666666666666,
+        "transitivity": 0.38416564782274054,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.029079248638435033,
+        "frac_neg_lt_m0p3": 0.008395020562409691,
+        "pos_over_neg_ratio": 3.4638686614590233,
+        "mean_signed_corr": 0.003167315386235714,
+        "t5_within_over_pooled": 1.0233492867610228
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.0233492867610228,
+      "verdict": "REJECT"
+    },
+    "F3_three_dom_rich_mid": {
+      "note": "three dominant factors with a rich mid band, aiming at var_top10 near 0.509",
+      "n_factors": 959,
+      "seconds": 23.8,
+      "latent": {
+        "median_abs_corr": 0.14735208451747894,
+        "frac_abs_gt_0p3": 0.18623496721129265,
+        "var_top10_pc": 0.39132039388020834,
+        "mean_degree": 558.5186666666667,
+        "largest_community_frac": 0.4523333333333333,
+        "transitivity": 0.7701073911583132,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.09299788818495054,
+        "frac_neg_lt_m0p3": 0.09323707902634211,
+        "pos_over_neg_ratio": 0.9974345952931023,
+        "mean_signed_corr": -8.611383964307606e-05,
+        "t5_within_over_pooled": 1.0266408548699344
+      },
+      "observed": {
+        "median_abs_corr": 0.08405058830976486,
+        "frac_abs_gt_0p3": 0.006550183394464821,
+        "var_top10_pc": 0.23195825048488367,
+        "mean_degree": 19.644,
+        "largest_community_frac": 0.0006666666666666666,
+        "transitivity": 0.28335751075633736,
+        "substitute_frac": 0.0,
+        "frac_pos_gt_0p3": 0.005905968656218739,
+        "frac_neg_lt_m0p3": 0.000644214738246082,
+        "pos_over_neg_ratio": 9.167701863354036,
+        "mean_signed_corr": 0.0016423752531409264,
+        "t5_within_over_pooled": 1.05666465208396
+      },
+      "inside_envelope": {
+        "median_abs_corr": false,
+        "frac_abs_gt_0p3": false,
+        "var_top10_pc": false,
+        "mean_degree": false,
+        "largest_community_frac": false,
+        "transitivity": false,
+        "substitute_frac": false,
+        "frac_pos_gt_0p3": false,
+        "frac_neg_lt_m0p3": false,
+        "pos_over_neg_ratio": false,
+        "mean_signed_corr": false
+      },
+      "n_targets_inside": 0,
+      "n_targets": 11,
+      "t5_observed": 1.05666465208396,
+      "verdict": "REJECT"
+    }
+  },
+  "failed_candidates_preserved": true
+}

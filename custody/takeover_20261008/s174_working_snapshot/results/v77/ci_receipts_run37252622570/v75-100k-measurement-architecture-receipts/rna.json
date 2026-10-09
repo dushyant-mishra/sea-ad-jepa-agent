@@ -1,0 +1,167 @@
+{
+  "schema": "V75_FULL104_SHARDED_OBSERVER_MANIFEST_V5_MEASUREMENT_SEED_SEPARATED",
+  "seed": 7302,
+  "truth_seed": 7302,
+  "measurement_seed": 8501,
+  "n_cells": 100000,
+  "n_genes": 96,
+  "n_donors": 104,
+  "n_operators": 42,
+  "source_counts": {
+    "SEA_AD": 90443,
+    "NPH52": 5193,
+    "HVS": 4364
+  },
+  "structural_missingness": true,
+  "hidden_truth_path_exposed": false,
+  "donor_assignment_status": "QUALIFIED_EMPIRICAL_READER_FIT_GROUP_APPORTIONMENT",
+  "operator_assignment_status": "QUALIFIED_EMPIRICAL_SOURCE_OPERATOR_NESTING",
+  "empirical_qc_calibration": {
+    "authority_path": "results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json",
+    "authority_sha256": "66b7501c7bb9de2590b809154df33ac6b4a59bd294719945c36c70f507a0180c",
+    "sampling_frame": "FOUNDATION_CORPUS_DISCOVERY_V1_20260824 frozen 50k sample; fit104-aware population metadata, pathology-blind calibration authority",
+    "qualification": "sampled operator-level technical QC marginals shape a 96-gene per-measured-address projection; sampled QC is descriptive and does not define biological thresholds",
+    "depth_and_detected_support_are_consumed": true,
+    "support_depth_dependence": "GAUSSIAN_COPULA_FROM_FROZEN_OPERATOR_SUMMARY",
+    "dependence_parameter_note": "within-operator log1p-library-vs-detected Pearson is used as an approximate Gaussian-copula rho; this is a transparent synthetic dependence approximation, not a claim of exact real joint-distribution recovery",
+    "measured_zero_is_derived_from_detected_support": true,
+    "sampled_qc_is_descriptive_not_biological_threshold": true
+  },
+  "master_truth_digest_binding": [
+    {
+      "file": "TRUTH_000000000_000010000.npz",
+      "sha256": "1f47d5a6de685b9e73e49edc90d9cafe7b1557bafe1ad57ab79d00788092e925"
+    },
+    {
+      "file": "TRUTH_000010000_000020000.npz",
+      "sha256": "a86e358b4e228d2057c79f46787c6e56461088c4b5c65056aac9825e1031d72f"
+    },
+    {
+      "file": "TRUTH_000020000_000030000.npz",
+      "sha256": "716a8697028fca260ce5b1ba72c1a2f074a7b95e67e5eb7bf6436e8d11b2913a"
+    },
+    {
+      "file": "TRUTH_000030000_000040000.npz",
+      "sha256": "e5f018b301bbf8be235683fe537c2168ad3b4a55a0b664577bd78e86ad01977f"
+    },
+    {
+      "file": "TRUTH_000040000_000050000.npz",
+      "sha256": "d6f9f63ab52b6d36d06ade2a97da97a1bc45e1ca520c41486abab64e2acb5a97"
+    },
+    {
+      "file": "TRUTH_000050000_000060000.npz",
+      "sha256": "8775862ca357d0a67aa7bbb9dfdb3eae96c0e9a0eb27211dd0eed059fa47cbd0"
+    },
+    {
+      "file": "TRUTH_000060000_000070000.npz",
+      "sha256": "91f654d10d18abd6f97c2b78972ecba5323e1aaabc2d39794ff98bdce10557a1"
+    },
+    {
+      "file": "TRUTH_000070000_000080000.npz",
+      "sha256": "00d6ddb9c842fc2ebd2f1ae615a0ac0b815e47adf51e2ba9fc829010b2304293"
+    },
+    {
+      "file": "TRUTH_000080000_000090000.npz",
+      "sha256": "f3707c6beeba6d19907953ae4236a8c927cad76d02768bad0dbf2867a10583e7"
+    },
+    {
+      "file": "TRUTH_000090000_000100000.npz",
+      "sha256": "bb5811d31ad991452f685cb9af451aa2ee8b7e2c5bf5af6244da4de8e4d4a3f6"
+    }
+  ],
+  "observation_operator_seed": 7302,
+  "measurement_realization_seed": 8501,
+  "count_randomization": "stateless biology-weighted support selection plus exact integer allocation keyed by global_cell_index x gene identity and measurement realization seed; realised panel depth and support equal stored technical targets",
+  "shards": [
+    {
+      "start": 0,
+      "stop": 10000,
+      "cells": 10000,
+      "rna_file": "RNA_000000000_000010000.npz",
+      "rna_sha256": "e1cc21fdda08f002aa8f2c2014b73e5aed9ab7426cade204d051b16cd3ee7ddc",
+      "metadata_file": "META_000000000_000010000.csv.gz",
+      "metadata_sha256": "d6621a73bf70e1deb8203b68e4423a35fc1c68403e63c33ebc92b98e993767e9"
+    },
+    {
+      "start": 10000,
+      "stop": 20000,
+      "cells": 10000,
+      "rna_file": "RNA_000010000_000020000.npz",
+      "rna_sha256": "f963888d7a4c4151dde327bf460c5986faeb5ce2ca8dc03315e972a4e2265c2b",
+      "metadata_file": "META_000010000_000020000.csv.gz",
+      "metadata_sha256": "23779034465e1aa99ef8e08e716ec2d247083b1ebee83ddaa22bf5049be273bc"
+    },
+    {
+      "start": 20000,
+      "stop": 30000,
+      "cells": 10000,
+      "rna_file": "RNA_000020000_000030000.npz",
+      "rna_sha256": "9324dc7b80a204760e695b40f6f267777f7c6e813c82ba8744e5a2c7f243f473",
+      "metadata_file": "META_000020000_000030000.csv.gz",
+      "metadata_sha256": "bf8fcb2ff3647a3c4ec81f19be0be90f94fc05ae5a4be9408d92ab3d9f04c402"
+    },
+    {
+      "start": 30000,
+      "stop": 40000,
+      "cells": 10000,
+      "rna_file": "RNA_000030000_000040000.npz",
+      "rna_sha256": "ce267c61484234f100f158004030b2e29bff4f6cba2f77272376d14f1dc6ce8c",
+      "metadata_file": "META_000030000_000040000.csv.gz",
+      "metadata_sha256": "3ba51bdfc52be318d4e5b24c4ac1dc6aee5b409e3aa5a64b634e82e1ae331206"
+    },
+    {
+      "start": 40000,
+      "stop": 50000,
+      "cells": 10000,
+      "rna_file": "RNA_000040000_000050000.npz",
+      "rna_sha256": "0578b423da777c3e71f686f7afbcb5b45088580600245468064ccfdd3c206e99",
+      "metadata_file": "META_000040000_000050000.csv.gz",
+      "metadata_sha256": "9b89b27b8a92bbf5373b0628d59eb9eb58cc91fe2277c9fe06e2e28c2753cbae"
+    },
+    {
+      "start": 50000,
+      "stop": 60000,
+      "cells": 10000,
+      "rna_file": "RNA_000050000_000060000.npz",
+      "rna_sha256": "ea9556b10542241730d82a6916cbe0c231b3a47e4ac22beec4f73a521829904d",
+      "metadata_file": "META_000050000_000060000.csv.gz",
+      "metadata_sha256": "21832011b7c6387aebbf0e5e5bcf6ccad606434add8a196f346b16c789611ee9"
+    },
+    {
+      "start": 60000,
+      "stop": 70000,
+      "cells": 10000,
+      "rna_file": "RNA_000060000_000070000.npz",
+      "rna_sha256": "8fd2c4c9890a7dc2b30db67e03179b3eafa084e84ca3361d456f48629614423c",
+      "metadata_file": "META_000060000_000070000.csv.gz",
+      "metadata_sha256": "b4eae2eeeb329fb1df975f662321474da68bb8c78156b5d7bbb7d18f6156dd2e"
+    },
+    {
+      "start": 70000,
+      "stop": 80000,
+      "cells": 10000,
+      "rna_file": "RNA_000070000_000080000.npz",
+      "rna_sha256": "f90348db00983f90efc6ad5e8106cd8dbbde6cd14bcfa60fe848914be27f951d",
+      "metadata_file": "META_000070000_000080000.csv.gz",
+      "metadata_sha256": "e01cea2add4fd9f0c9cf771d23c4e9150495c2486d8d65601e78c13513feb4ac"
+    },
+    {
+      "start": 80000,
+      "stop": 90000,
+      "cells": 10000,
+      "rna_file": "RNA_000080000_000090000.npz",
+      "rna_sha256": "8505ec5671422eb4a3ad91ad1c5f78ec0c3981e0fad1789b338a9af19c6d3dc8",
+      "metadata_file": "META_000080000_000090000.csv.gz",
+      "metadata_sha256": "d8f7fd93d6456c95dfbe35b5abdc85916868cf50523cf0b61f464c92faae28e0"
+    },
+    {
+      "start": 90000,
+      "stop": 100000,
+      "cells": 10000,
+      "rna_file": "RNA_000090000_000100000.npz",
+      "rna_sha256": "0ff295588b01bf9f9178e05699bfa3b4688e15a24bb81601f025bac6be9786c8",
+      "metadata_file": "META_000090000_000100000.csv.gz",
+      "metadata_sha256": "3530271e361ad75318669195d3afa8ffc1fde8458c1dd73e19d1883b16cc3628"
+    }
+  ]
+}

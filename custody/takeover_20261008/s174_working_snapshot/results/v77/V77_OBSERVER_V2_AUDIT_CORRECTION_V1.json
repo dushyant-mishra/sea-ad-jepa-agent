@@ -1,0 +1,86 @@
+{
+  "schema": "V77_OBSERVER_V2_AUDIT_CORRECTION_V1",
+  "recorded_utc": "2026-10-06T20:31:57Z",
+  "head": "c4f1259757471a09931de576a6e6c095c6ab210a",
+  "corrects": "results/v77/V77_OBSERVER_V2_DECISION_RECEIPT_V1.json at c4f12597",
+  "LANE_STATUS": "SUPPORTED_FOR_NEXT_STAGE__ISSUE_1_NARROWED__PROMOTION_NOT_YET_QUALIFIED",
+  "CORRECTION_1_HISTORICAL_OVERCLAIM": {
+    "withdrawn": "the generator was never the binding constraint",
+    "adopted": "the observation model was the dominant shared bottleneck revealed by the Step-3 experiments, so the earlier 37 generator failures cannot be cleanly attributed to generator structure alone",
+    "why": "the stronger sentence asserts something never tested; the 37 candidates were never re-run under the repaired observer"
+  },
+  "CORRECTION_2_EVALUATION_UNIVERSE_WAS_NOT_FIXED": {
+    "severity": "MATERIAL, not procedural",
+    "defect": "every candidate was independently prevalence-filtered on its OWN counts before topology was scored, giving vertex sets of 12,468 to 28,884 genes against a canonical 19,569. Topology was compared across different graphs.",
+    "why_it_biases_upward": "an observer that makes canonical genes vanish was rewarded with a smaller, easier graph instead of being penalised for losing them",
+    "fix": {
+      "frozen_universe": "TRAIN_PREVALENCE05_19569",
+      "artifact": "results/v77/V77_FROZEN_EVALUATION_UNIVERSE_V1.json",
+      "rule": "undetected genes remain zero columns and contribute nothing, which is the penalty"
+    },
+    "naming_disambiguated": {
+      "canonical": "metric__TRAIN_PREVALENCE05_19569",
+      "diagnostic_only": "metric__FULL_REGISTRY_41238",
+      "only_canonical_quoted_against_envelopes": true
+    }
+  },
+  "CORRECTION_3_HEADLINE_NUMBERS_WERE_INFLATED": {
+    "retracted_claim": "the previously reported essentially-exact match of frac>0.3 at 0.6154 against a real 0.6148 and mean degree 1846 against 1844 does NOT hold on the canonical universe",
+    "as_reported_under_per_arm_filtering": {
+      "frac_abs_gt_0p3": 0.6154,
+      "transitivity": 0.8238,
+      "mean_degree": 1846,
+      "abundance_max_median": 2908.1
+    },
+    "on_the_frozen_canonical_universe": {
+      "frac_abs_gt_0p3": 0.5207598088251639,
+      "transitivity": 0.7645488879536756,
+      "mean_degree": 1561.7586666666666,
+      "abundance_max_median": 7625.780373831776,
+      "canonical_genes_lost": 9964
+    },
+    "real": {
+      "frac_abs_gt_0p3": 0.6148,
+      "transitivity": 0.8871,
+      "mean_degree": 1843.8,
+      "abundance_max_median": 1976.6
+    },
+    "the_decisive_new_fact": "the deterministic arm destroys 9,964 of 19,569 canonical genes, more than half the real universe. Under per-arm filtering that destruction was invisible because topology was then scored only on the survivors.",
+    "abundance_also_outside_envelope": "7625.8 deterministic and 26753.4 Poisson against a frozen envelope of 1804.75 to 2187.67, so the abundance claim is downgraded from demonstrated to untested"
+  },
+  "WHAT_SURVIVES_THE_CORRECTION": {
+    "qualitative_finding_holds": "between two arms identical in generator, capture, cell state, abundance, rate field and seed, stochastic counting ALONE collapses transitivity from 0.7645 to 0.3555 and mean degree from 1561.8 to 8.4",
+    "now_with_executable_provenance": true,
+    "abundance_compression_no_longer_required": "still supported in direction, since the full abundance term is retained in both arms, but the marginal is not yet inside its envelope"
+  },
+  "CORRECTION_4_CAUSAL_CLAIM_SOFTENED": {
+    "withdrawn": "the residual belongs to the generator, not the observer",
+    "adopted": "with the current fixed generator and the current biologically motivated independent-capture Poisson observer, introducing counting noise destroys the recovered dependence topology. This is consistent with insufficient latent rate dynamic range, which makes generator dynamic range the next falsifiable target.",
+    "why": "the experiment has not exhausted every biologically reasonable stochastic observation model"
+  },
+  "EXECUTABLE_PROVENANCE_NOW_COMMITTED": {
+    "executor": "scripts/v77/run_v77_realization_isolation.py",
+    "receipt": "results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V1.json",
+    "command": "python scripts/v77/run_v77_realization_isolation.py --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --out results/v77/V77_REALIZATION_ISOLATION_RECEIPT_V1.json --cells 2500 --seed 20261006 --generator L1_two_giant --capture O3_capture_independent_wide",
+    "seed": 20261006,
+    "source_commit": "c4f1259757471a09931de576a6e6c095c6ab210a",
+    "universe_sha256": "e7ad8e5aa74f2fe6ecdaf6d6dbbaef54882a02897639f7c3dc50268f502d351a",
+    "single_variable": "realization only; generator, capture, cell state, abundance and seed identical"
+  },
+  "NEXT_SEQUENCE_ACCEPTED": [
+    "1 DONE wording corrected",
+    "2 DONE evaluation universe frozen and comparison rerun",
+    "3 DONE deterministic-versus-Poisson executor, command, seed and receipt committed",
+    "4 freeze Observer-V2 and vary generator dynamic range ONLY",
+    "5 predeclare a small mechanistic dynamic-range family, not a continuous tuning search",
+    "6 only then Issue 2 sign and community co-calibration",
+    "7 rerun A_REPLICA when a combination is proposed for promotion"
+  ],
+  "AUTHORITY_UNCHANGED": {
+    "training": "OFF",
+    "stage_A": "NOT_AUTHORIZED",
+    "production_world_rebuild": "NOT_AUTHORIZED",
+    "runtime_mutation_path": "UNTOUCHED",
+    "completed_runtime_audits": "NOT_REOPENED"
+  }
+}

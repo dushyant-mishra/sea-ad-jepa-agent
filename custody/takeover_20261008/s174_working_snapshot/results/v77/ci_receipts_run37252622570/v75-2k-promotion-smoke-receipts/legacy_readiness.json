@@ -1,0 +1,77 @@
+{
+  "schema": "V75_SYNTHETIC_STRESS_PROMOTION_READINESS_V5",
+  "status": "READY_FOR_100K_STRESS_ONLY",
+  "authorized_scale": "100K_STRESS_ONLY",
+  "explicitly_not_authorized": [
+    "500K_STRESS",
+    "FULL_4553407",
+    "TRAINING",
+    "STAGE4_REAL_CORRESPONDENCE",
+    "RECOVERABILITY_TEST"
+  ],
+  "checks": {
+    "source_amendment_prospective": true,
+    "calibration_contract_frozen": true,
+    "sampled_qc_amendment_frozen": true,
+    "population_authority_qualified": true,
+    "sampled_qc_authority_qualified": true,
+    "truth_binds_population_authority": true,
+    "rna_binds_qc_authority": true,
+    "source_counts_match_observers": true,
+    "donor_structure_qualified": true,
+    "operator_structure_qualified": true,
+    "realised_operator_support_complete": true,
+    "paired_multiome_same_cell": true,
+    "paired_multiome_truth_firewall": true,
+    "fragment_truth_firewall": true,
+    "fragment_byte_linkage_qualified": true,
+    "fragment_resource_calibrated": true
+  },
+  "blockers": [],
+  "source_counts": {
+    "SEA_AD": 1809,
+    "NPH52": 104,
+    "HVS": 87
+  },
+  "current_assignment_status": {
+    "donor": "QUALIFIED_EMPIRICAL_READER_FIT_GROUP_APPORTIONMENT",
+    "operator": "QUALIFIED_EMPIRICAL_SOURCE_OPERATOR_NESTING"
+  },
+  "bindings": {
+    "population_authority": {
+      "path": "results/v64/V73_FULL104_POPULATION_GEOMETRY_AUTHORITY_V1.json",
+      "sha256": "1e54be5c26e8d15eeb238de1ca602a80f5ae3bd4918160b91807c381f7634855"
+    },
+    "sampled_qc_authority": {
+      "path": "results/v64/V74_FULL104_RNA_QC_CALIBRATION_AUTHORITY_50K_V2.json",
+      "sha256": "66b7501c7bb9de2590b809154df33ac6b4a59bd294719945c36c70f507a0180c"
+    },
+    "truth_manifest": {
+      "path": "/tmp/v75_legacy/hidden_truth/TRUTH_MANIFEST.json",
+      "sha256": "66946e2c479e5f7330ed5138e888226f5cf540e38558b2186a7a697a346a5c27"
+    },
+    "full104_manifest": {
+      "path": "/tmp/v75_legacy/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "sha256": "37f07194bb5b7f905e63268d1e9f1feb872944fb0070a8d5d5b4d775b1949d9e"
+    },
+    "paired_multiome_manifest": {
+      "path": "/tmp/v75_legacy/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "sha256": "f5a160086e538ae7fcf88bc63a2cfb9188c165ae56eda0881f12488c8e51c1bb"
+    },
+    "fragment_manifest": {
+      "path": "/tmp/v75_legacy/observable_raw/PAIRED_MULTIOME_fragments/SYNTHETIC_FRAGMENT_MANIFEST.json",
+      "sha256": "d3cf668cbabec222f0a5838ac835934ba3e0fc61e7c28a3fbae68b6ddd4f0c86"
+    },
+    "fragment_linkage_receipt": {
+      "path": "/tmp/v75_receipts/fragment_linkage.json",
+      "sha256": "5df98a55a1e3a7c938c8e5f572d050b9c48341cc301ec8fe8447d6dfa33ccee5"
+    },
+    "resource_receipt": {
+      "path": "/tmp/v75_receipts/resource.json",
+      "sha256": "ecab8aead9220cc0d97e3932c30f3c6fe7e1fd5bdfa14179c4912680ac4630a4"
+    }
+  },
+  "real_correspondence_opened": false,
+  "recoverability_TEST_opened": false,
+  "training_authorized": false
+}

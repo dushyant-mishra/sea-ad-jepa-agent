@@ -1,0 +1,138 @@
+{
+  "schema": "JEPA_HANDOFF_STATE_20260930_V64",
+  "date": "2026-09-30",
+  "handoff_branch": "handoff/jepa-v64-target-architecture-20260930",
+  "base_canonical": {
+    "branch": "chatgpt/v64-e2-single-source-successor-20260929",
+    "verified_head_at_handoff_start": "23255baaf81381d5c22c655a605642db27f2a173"
+  },
+  "claude_execution": {
+    "branch": "claude/v64-nihcard-realism-design-20260929",
+    "verified_head_at_handoff_start": "fc3736d215c3d75eac9d31d181465771c2036503",
+    "frozen_historical_branch": "claude/v64-nihcard-e2-design-20260929",
+    "frozen_historical_head": "6d08386f"
+  },
+  "governance": {
+    "training": "OFF",
+    "td60": "BLOCKED",
+    "phaseB": "STOPPED_PENDING_PHASE_A_REAUDIT",
+    "stage4": "NOT_AUTHORISED",
+    "Morabito": "PROTECTED",
+    "correspondence_opened": false
+  },
+  "current_scientific_hypothesis": {
+    "status": "HYPOTHESIS_NOT_IMPLEMENTED",
+    "factors": [
+      "Z_global(cell)",
+      "Z_query(cell,q)",
+      "Z_reg(cell,q)",
+      "Z_response(cell,q/intervention)"
+    ],
+    "principle": "Evidence types constrain a latent biological state; they are not automatically concatenated target features."
+  },
+  "qualified_facts": {
+    "nihcard_rna": {
+      "n_cells": 1501089,
+      "n_genes": 38606,
+      "bytes": 18439154935,
+      "md5": "f628b17aab355f80b912e3c715543cbd"
+    },
+    "nihcard_atac": {
+      "n_cells": 1501089,
+      "n_peaks": 521217,
+      "bytes": 14508702462,
+      "md5": "b71589e0033e391e2fe97c1ae3928a7f"
+    },
+    "microglia": {
+      "n_nuclei": 87384,
+      "n_donors": 357,
+      "n_donors_ge100": 282
+    },
+    "e2": {
+      "edges": 20709,
+      "genes": 5253,
+      "promoter_anchors": 7390
+    },
+    "e2_nihcard_resolved_genes": 5143,
+    "e2_fraction_nihcard_gene_universe": 0.1332,
+    "nihcard_rna_measurable_mg_genes": 17063,
+    "nihcard_measurable_atac_peaks": 520299,
+    "nihcard_total_atac_peaks": 521217
+  },
+  "evidence_independence": {
+    "status": "QUALIFIED_ASSOCIATION__NOT_CAUSAL_INDEPENDENCE",
+    "anchored_measurable": {
+      "n": 4874,
+      "median_detection": 0.043,
+      "p25": 0.013,
+      "p75": 0.128
+    },
+    "measurable_unanchored": {
+      "n": 12189,
+      "median_detection": 0.009,
+      "p25": 0.003,
+      "p75": 0.037
+    },
+    "median_ratio": 4.92,
+    "degree1": {
+      "n": 1567,
+      "median_detection": 0.03
+    },
+    "degree_ge10": {
+      "n": 417,
+      "median_detection": 0.168
+    },
+    "degree_ratio": 5.57,
+    "p_degree": "3.376e-60",
+    "interpretation": "Nott/E2 and NIH-CARD measurability share expression/activity selection; resource count is not evidence-independence count."
+  },
+  "edge_mass_concentration": {
+    "top_1pct": 0.084,
+    "top_5pct": 0.254,
+    "top_10pct": 0.383,
+    "top_25pct": 0.622,
+    "genes_degree1": 1725,
+    "degree1_gene_fraction": 0.328,
+    "degree1_edge_mass_fraction": 0.083,
+    "implication": "Future edge-level auxiliary loss requires prospective hierarchical weighting; gene-first normalization is the default scientific concern, not a frozen loss."
+  },
+  "exact_control_sampler": {
+    "status": "NOT_YET_QUALIFIED",
+    "total_edge_sides": 41412,
+    "total_band_positions": 1905484412,
+    "affine_interior_positions": 1888432882,
+    "affine_fraction": 0.99105,
+    "supplement_positions": 17051530,
+    "supplement_fraction": 0.00895,
+    "edge_sides_with_supplement": 1635,
+    "edge_side_fraction_with_supplement": 0.0395,
+    "final_required_set": "A_exact = A_interior UNION A_supplement",
+    "supplement_scope": [
+      "block boundaries",
+      "chain gaps",
+      "inverted/query-minus-strand regions",
+      "all candidate regions not proven safe for affine interior mapping"
+    ],
+    "next_gate": "complete frozen exact-sampler qualification before Phase-A rerun"
+  },
+  "superseded_traps": [
+    "Phase-A 15646 retained result from 9ed92fff is diagnostic only.",
+    "512-draw bounded-search design a129ce5a is rejected for existence classification.",
+    "historical 14-D Mahalanobis span verdict is withdrawn; only commensurable subspace claims survive.",
+    "hierarchical calibration contract V1 is rejected/superseded.",
+    "do not use remembered 15758 FULL104 gene denominator without committed source authority."
+  ],
+  "immediate_next_actions": [
+    "Fetch current canonical and Claude heads and audit any movement after the recorded SHAs.",
+    "Finish A_supplement implementation including minus-strand/gap/boundary source starts through real liftOver.",
+    "Run the full frozen exact-sampler test contract with zero set mismatch.",
+    "Rerun Phase A and stop for independent audit.",
+    "Only then open Phase B matrix reads and Part-3 empirical metacell precision.",
+    "Build all-resource query-evidence atlas with separate coverage and evidence-independence axes.",
+    "Then run factorized-target architecture tournament before freezing final teacher target."
+  ],
+  "handoff_docs": [
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260930_V64_TARGET_ARCHITECTURE_EXACT_CONTROLS.md",
+    "chat_runtime_20260930/CHAT_RUNTIME_EXCLUSIVE_ASSET_CUSTODY_20260930_V2.json"
+  ]
+}

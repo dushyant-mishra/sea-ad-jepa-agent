@@ -1,0 +1,264 @@
+{
+  "schema": "V77_S157_PAIRED_CHALLENGE_SCORE_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "mode": "ZERO_UPDATE; diagnostic PCA and linear readouts only, not a representation candidate",
+  "preregistration": {
+    "path": "results/v77/V77_S157_PAIRED_CHALLENGE_PREREGISTRATION_V1.json",
+    "sha256": "628d8be0f50b94ee4d6974161f25bd58ecba5ea5c2b38327f7dd3438cd47ed55"
+  },
+  "build": {
+    "path": "results/v77/V77_S157_CHALLENGE_WORLDS_BUILD_V1.json",
+    "sha256": "0c31195edea7ab8278079d60e37f9a79ab25675ff895376275b0fff2d19e6ae9"
+  },
+  "realization": "seed 7302, 2,000 cells, DEVELOPMENT_CALIBRATION",
+  "arms_scored": [
+    "ARM1"
+  ],
+  "red_checks": {
+    "RED_1_exact_twin_byte_identical": true,
+    "RED_1_shown_able_to_fail_by_one_count": true,
+    "RED_2_exact_twin_scored_identically": true,
+    "RED_2_bitwise_equal": true,
+    "RED_2_max_abs_difference": 0.0,
+    "RED_2_tolerance": 1e-09,
+    "RED_3_schema_identical": true,
+    "RED_4_unblinding_before_freezing_refused": true
+  },
+  "model_facing_digests": {
+    "NULL": {
+      "model": "99d0588d7cd64e1774538b0d7f66b0a6a0ed2e4575cdf73a270d42f41801bcce",
+      "operator_context": "e3dc552c9d817a610b589c55618832e731761477b20456de2e542443ba05968c",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "a0207dca40471709ed1320920f0412f3fa5adb53ae54aed2ecaa5c48b4bab3b0"
+    },
+    "BIO": {
+      "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+      "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    },
+    "TWIN_EXACT": {
+      "model": "68f91abe87ba89d3aa88745791caebe7b80e12197064aababd6b40f5861b094e",
+      "operator_context": "6a19d2cab78ca6cc89e882247166d9997900ef1d5ea0bd72c0ce4ee0e8bf6536",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "c29273a79141274d1cba40c3769716f4cd2343787279a77c059198e59282d3a7"
+    },
+    "TWIN_OPERATOR": {
+      "model": "9ca19c541772d120008ded8fd7d8057ce032490642991f12a98c2001d6a17576",
+      "operator_context": "550d9e36cee4a46a2b78ee6ec8f49a1386805e24832beb7c178188dcad67e573",
+      "split_context": "28def1575cff80c307e2972cba51d0cbf57e52f4f85108b3d3957d9fe1f6fd5a",
+      "readout": "5b676e8877c362505d9e33b26c2dc33fba61a8ad7e1d2585da2a51f12e369b2d"
+    }
+  },
+  "frozen": {
+    "frozen_feature_digest": "0ab1ad2b07c9960691be958e757cbdfcc34a3de5acfc9f3dfbec8cfcd70dbecd",
+    "sequence": "FROZEN_BEFORE_ANY_ORACLE_ACCESS"
+  },
+  "oracle_spec_digests": {
+    "NULL": null,
+    "BIO": "55fcb22489726e6889f95200641e0967c741d66ade7272cb5573e9ee070b6311",
+    "TWIN_EXACT": "4cf0dc0685fd18dabacef02c0f10fff609100e872dbd167ed71c53d3680629c3",
+    "TWIN_OPERATOR": "a2d2c9862778173b137e0459b639df649a7a31f5de5c377c4eaefb284d69588a"
+  },
+  "design_adequacy": {
+    "rule": "BIO, ARM1, MODULE test R2 >= 0.3",
+    "pass_": true
+  },
+  "exact_twin_verdict": "NON_IDENTIFIABLE_BY_DESIGN",
+  "operator_twin_separation": {
+    "ARM1": "NOT_APPLICABLE_NO_CONTEXT"
+  },
+  "run_verdict": "SCORED",
+  "results": {
+    "NULL": {
+      "kind": "NULL",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": -0.0008562617800997874,
+              "ci95": [
+                -0.006778519612283433,
+                8.034258640642626e-05
+              ]
+            },
+            "PCS": {
+              "r2": -0.02563428195385109,
+              "ci95": [
+                -0.04621242488960926,
+                -0.009077132798814742
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": -0.004075164918496688,
+              "ci95": [
+                -0.010921190226492971,
+                -0.0003132271245069923
+              ]
+            },
+            "PCS": {
+              "r2": -0.025535895358047123,
+              "ci95": [
+                -0.04939148609638155,
+                -0.0074971116417737
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        }
+      }
+    },
+    "BIO": {
+      "kind": "BIO",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8528793323771284,
+              "ci95": [
+                0.8358940275500433,
+                0.866025248086994
+              ]
+            },
+            "PCS": {
+              "r2": 0.7242828739745162,
+              "ci95": [
+                0.6702410268848893,
+                0.7635762010535356
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29094628042935855,
+              "ci95": [
+                0.2519615139408747,
+                0.3255490701437039
+              ]
+            },
+            "PCS": {
+              "r2": 0.19930625658021173,
+              "ci95": [
+                0.15563401662184442,
+                0.23475207624539074
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        }
+      }
+    },
+    "TWIN_EXACT": {
+      "kind": "TWIN_EXACT",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.8528793323771284,
+              "ci95": [
+                0.8358940275500433,
+                0.866025248086994
+              ]
+            },
+            "PCS": {
+              "r2": 0.7242828739745162,
+              "ci95": [
+                0.6702410268848893,
+                0.7635762010535356
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.29094628042935855,
+              "ci95": [
+                0.2519615139408747,
+                0.3255490701437039
+              ]
+            },
+            "PCS": {
+              "r2": 0.19930625658021173,
+              "ci95": [
+                0.15563401662184442,
+                0.23475207624539074
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        }
+      }
+    },
+    "TWIN_OPERATOR": {
+      "kind": "TWIN_OPERATOR",
+      "arms": {
+        "ARM1": {
+          "status": "PREREGISTERED",
+          "bio_latent": {
+            "MODULE": {
+              "r2": 0.3095410457664016,
+              "ci95": [
+                0.2678755591180078,
+                0.3487152063353261
+              ]
+            },
+            "PCS": {
+              "r2": 0.20166570433034725,
+              "ci95": [
+                0.15914364455321994,
+                0.24236337663775345
+              ]
+            }
+          },
+          "operator_latent": {
+            "MODULE": {
+              "r2": 0.8722755257778709,
+              "ci95": [
+                0.8582660127118759,
+                0.8880989174331441
+              ]
+            },
+            "PCS": {
+              "r2": 0.7855660251571454,
+              "ci95": [
+                0.7637441785333529,
+                0.8055334227006371
+              ]
+            }
+          },
+          "module_context_share": null,
+          "identity_leakage": {
+            "mean_operator_indicator_r2": 0.0,
+            "operators_scored": 0
+          }
+        }
+      }
+    }
+  },
+  "command": "python scripts/v77/run_v77_s157_identifiability.py --worlds-dir D:/jepa_v77_synthetic_custody_20261005/s157_challenge_v1 --universe D:/jepa_v77_synthetic_custody_20261005/frozen_evaluation_universe.npz --arms ARM1 --out results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARM1_V1.json",
+  "source_commit": "5357ac24ad2476491afcd90cb2e0b156d2a0d2e0",
+  "provenance_status": "CLEAN_COMMITTED_HEAD__EXECUTORS_TRACKED_AND_UNMODIFIED",
+  "executor_sha256": {
+    "scripts/v77/run_v77_s157_identifiability.py": "c67525cd8e21fa39532e99f65ee70d369551962fabaf314f0cd6ed6d87c75d54",
+    "scripts/v77/v77_synthetic_batch_adapter.py": "15092b16d1a71241e8e5883ff228b5d89595073d79e8df70adaf63641103c4d6",
+    "scripts/v77/build_v77_fullscale_rna_observer_v2.py": "a96bae91b1024d56c3356ccea621fee8046370a6200870161ea0f00230636b3a",
+    "scripts/v77/v77_address_universe.py": "46a117ea56c27afe43d4c1e514a678a43468327c57969049d0cb5a29f1ac78d7"
+  },
+  "no_training_performed": true
+}

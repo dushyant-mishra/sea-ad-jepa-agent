@@ -1,0 +1,510 @@
+#!/usr/bin/env python3
+"""Build and validate deterministic, agent-neutral JEPA work checkpoints."""
+
+from __future__ import annotations
+
+import argparse
+import copy
+import hashlib
+import json
+import os
+import subprocess
+import tempfile
+from pathlib import Path
+from typing import Any
+
+
+REQUIRED_STATE_FIELDS = (
+    "active_agent",
+    "authorities",
+    "gates",
+    "unresolved_blockers",
+    "assets",
+    "next_authorized_actions",
+    "allowed_tracked_modifications",
+    "allowed_untracked_files",
+)
+
+
+def canonical_json_bytes(value: Any) -> bytes:
+    """Return deterministic UTF-8 JSON bytes for JSON-compatible *value*."""
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def semantic_sha256(payload: dict[str, Any]) -> str:
+    """Hash a checkpoint excluding only its self-referential root field."""
+    semantic = copy.deepcopy(payload)
+    semantic.pop("checkpoint_semantic_sha256", None)
+    return hashlib.sha256(canonical_json_bytes(semantic)).hexdigest()
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _git(worktree: Path, *args: str, allow_failure: bool = False) -> str | None:
+    completed = subprocess.run(
+        ["git", "-c", "safe.directory=*", "-C", str(worktree), *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode:
+        if allow_failure:
+            return None
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise RuntimeError(f"git {' '.join(args)} failed: {detail}")
+    return completed.stdout.strip()
+
+
+def _git_bytes(worktree: Path, *args: str) -> bytes | None:
+    """Return raw stdout bytes, or None on failure.
+
+    Object payloads must never round-trip through text mode: universal-newline
+    decoding would rewrite CRLF inside a blob and change its digest, which is
+    the exact defect this module previously exhibited.
+    """
+    completed = subprocess.run(
+        ["git", "-c", "safe.directory=*", "-C", str(worktree), *args],
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode:
+        return None
+    return completed.stdout
+
+
+def canonical_authority_path(relative: Any) -> str | None:
+    """Return the canonical repository-relative identity, or None if unusable.
+
+    An authority declaration is an identity, not a query. Passed through as a
+    Git pathspec, ``:authority.txt`` and ``./authority.txt`` both resolved to
+    the committed ``authority.txt`` blob, so three different declarations named
+    the same authority; and a bare join let ``../outside`` address a file
+    outside the repository entirely. Only one spelling of a path is accepted so
+    a declaration cannot be laundered through an alias.
+
+    Rejected: anything non-string or empty, a NUL, a backslash (Windows and Git
+    separator ambiguity), a colon (both pathspec magic ``:(literal)`` and a
+    Windows drive), and any empty, ``.`` or ``..`` component, which also
+    excludes absolute and UNC forms.
+    """
+    if not isinstance(relative, str) or not relative:
+        return None
+    if any(ch in relative for ch in ("\x00", "\\", ":")):
+        return None
+    parts = relative.split("/")
+    if any(part in ("", ".", "..") for part in parts):
+        return None
+    return "/".join(parts)
+
+
+def tracked_blob_at(worktree: Path, commit: str, relative: str) -> dict[str, str] | None:
+    """Describe *relative* as recorded in *commit*, or None if it is not there.
+
+    Reports the tree mode, object type and object id without reading the
+    payload, so a caller can reject a symlink or submodule before hashing
+    anything.
+
+    The lookup is literal and the returned path must equal the declared
+    identity exactly, so pathspec magic cannot alias one authority into
+    another.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    listing = _git(
+        worktree,
+        "--literal-pathspecs",
+        "ls-tree",
+        "--full-tree",
+        commit,
+        "--",
+        canonical,
+        allow_failure=True,
+    )
+    if not listing:
+        return None
+    head, _, path = listing.partition("\t")
+    if path.strip('"') != canonical:
+        return None
+    fields = head.split()
+    if len(fields) != 3 or not path:
+        return None
+    mode, object_type, oid = fields
+    return {"mode": mode, "type": object_type, "oid": oid}
+
+
+def authority_worktree_oid(worktree: Path, relative: str) -> str | None:
+    """Object id the worktree copy would produce, or None if unreadable.
+
+    ``git hash-object --path`` applies the same clean filter a commit would, so
+    the result is directly comparable with a tree entry's object id without any
+    line-ending handling in Python. It neither writes an object nor touches the
+    index.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    target = Path(worktree) / canonical
+    if not target.is_file():
+        return None
+    oid = _git(
+        worktree,
+        "--literal-pathspecs",
+        "hash-object",
+        "--path=%s" % canonical,
+        str(target),
+        allow_failure=True,
+    )
+    return oid or None
+
+
+def authority_index_entry(worktree: Path, relative: str) -> dict[str, str] | None:
+    """Stage-0 index mode and object id for *relative*, or None if absent.
+
+    The index is a third copy of an authority, alongside the bound tree and the
+    worktree, and it has to be checked. Comparing only the worktree let a staged
+    replacement hide: stage different bytes, restore the worktree to the frozen
+    bytes, declare the path in ``allowed_tracked_modifications``, and both the
+    global dirty-list gate and the authority gate reported clean.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    listing = _git(
+        worktree,
+        "--literal-pathspecs",
+        "ls-files",
+        "--stage",
+        "--",
+        canonical,
+        allow_failure=True,
+    )
+    if not listing:
+        return None
+    for line in listing.splitlines():
+        head, _, path = line.partition("\t")
+        fields = head.split()
+        if len(fields) != 3 or path.strip('"') != canonical:
+            continue
+        mode, oid, stage = fields
+        if stage != "0":
+            continue
+        return {"mode": mode, "oid": oid, "stage": stage}
+    return None
+
+
+def authority_path_dirty(
+    worktree: Path, relative: str, bound_oid: str, bound_mode: str | None = None
+) -> bool:
+    """True unless the worktree copy is exactly the authority *bound_oid* names.
+
+    Dirtiness has to be measured against the commit the checkpoint is bound to,
+    not against whatever HEAD happens to be now. Comparing with ``git status``
+    asked the wrong question: after a later commit replaced a declared
+    authority, the worktree was clean with respect to the new HEAD, so a
+    completely different file could sit in place of the authority and raise no
+    authority-level complaint at all.
+
+    Both the index and the worktree must match the bound authority, and the
+    index mode must match too. A `--chmod` change preserves the blob object id,
+    so comparing object ids alone let a staged 100644 to 100755 flip slip past
+    the authority gate whenever the path was a declared modification. A missing
+    or unreadable path in either place is dirty, so absence fails closed.
+    """
+    index_entry = authority_index_entry(worktree, relative)
+    if index_entry is None or index_entry["oid"] != bound_oid:
+        return True
+    if bound_mode is not None and index_entry["mode"] != str(bound_mode):
+        return True
+    return authority_worktree_oid(worktree, relative) != bound_oid
+
+
+def resolve_local_authority(
+    worktree: Path,
+    relative: str,
+    declared_untracked: set[str],
+    actual_untracked: set[str],
+) -> tuple[Path | None, str | None]:
+    """Resolve a local, untracked authority, or explain why it is not one.
+
+    A miss in the bound tree previously fell straight through to
+    ``Path(worktree) / relative``, so any path the checkpoint named became an
+    authority as long as its digest matched. That accepted a file outside the
+    repository and an undeclared local file. A local authority must therefore
+    be declared in ``allowed_untracked_files``, actually be in the untracked
+    inventory, live inside the worktree, and not be a symlink. Because the
+    inventory honours ``--exclude-standard``, an ignored file is not eligible
+    either.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None, "AUTHORITY_PATH_NOT_CANONICAL"
+    if canonical not in declared_untracked or canonical not in actual_untracked:
+        return None, "AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED"
+    root = Path(worktree).resolve()
+    raw = Path(worktree) / canonical
+    if raw.is_symlink():
+        return None, "AUTHORITY_LOCAL_IS_SYMLINK"
+    try:
+        target = raw.resolve(strict=True)
+    except OSError:
+        return None, "AUTHORITY_MISSING"
+    if target == root or root not in target.parents:
+        return None, "AUTHORITY_OUTSIDE_WORKTREE"
+    if not target.is_file():
+        return None, "AUTHORITY_MISSING"
+    return target, None
+
+
+def sha256_tracked_blob(worktree: Path, oid: str) -> str | None:
+    """SHA-256 the exact Git object payload for *oid*, or None if unreadable.
+
+    The existence check runs before the digest so a failed lookup can never be
+    mistaken for the digest of empty bytes.
+    """
+    if _git(worktree, "cat-file", "-e", oid, allow_failure=True) is None:
+        return None
+    payload = _git_bytes(worktree, "cat-file", "blob", oid)
+    if payload is None:
+        return None
+    return hashlib.sha256(payload).hexdigest()
+
+
+def resolve_canonical_repo(worktree: Path) -> Path:
+    """Return the canonical repository root that owns *worktree*.
+
+    A linked worktree resolves to the repository holding the shared object
+    store, not to itself. This lets an arriving peer validate a checkpoint
+    knowing only its own worktree, without hardcoding the canonical path.
+    """
+    common = _git(Path(worktree), "rev-parse", "--git-common-dir")
+    common_path = Path(common or ".git")
+    if not common_path.is_absolute():
+        common_path = Path(worktree) / common_path
+    return common_path.resolve().parent
+
+
+def _git_snapshot(repo: Path, worktree: Path) -> dict[str, Any]:
+    head = _git(worktree, "rev-parse", "HEAD")
+    branch = _git(worktree, "branch", "--show-current")
+    origin_main = _git(worktree, "rev-parse", "origin/main", allow_failure=True)
+    remote_url = _git(repo, "remote", "get-url", "origin", allow_failure=True)
+    tracked = sorted(
+        set(
+            filter(
+                None,
+                (_git(worktree, "diff", "--name-only", "--relative") or "").splitlines()
+                + (
+                    _git(worktree, "diff", "--cached", "--name-only", "--relative")
+                    or ""
+                ).splitlines(),
+            )
+        )
+    )
+    untracked = sorted(
+        filter(
+            None,
+            (
+                _git(worktree, "ls-files", "--others", "--exclude-standard") or ""
+            ).splitlines(),
+        )
+    )
+    return {
+        "repo_path": str(repo.resolve()),
+        "worktree_path": str(worktree.resolve()),
+        "branch": branch,
+        "head_sha": head,
+        "origin_main_sha": origin_main,
+        "origin_url": remote_url,
+        "tracked_modifications": tracked,
+        "untracked_files": untracked,
+    }
+
+
+def build_checkpoint(repo: Path, worktree: Path, state: dict[str, Any]) -> dict[str, Any]:
+    """Bind declared scientific/engineering state to the current Git/filesystem state."""
+    missing = [key for key in REQUIRED_STATE_FIELDS if key not in state]
+    if missing:
+        raise ValueError(f"missing required state fields: {missing}")
+    checkpoint = copy.deepcopy(state)
+    checkpoint["schema"] = "JEPA_WORK_CHECKPOINT_V1"
+    checkpoint["git"] = _git_snapshot(Path(repo), Path(worktree))
+    checkpoint["checkpoint_semantic_sha256"] = semantic_sha256(checkpoint)
+    return checkpoint
+
+
+def validate_checkpoint(
+    checkpoint: dict[str, Any], repo: Path, worktree: Path
+) -> list[str]:
+    """Return all fail-closed checkpoint mismatches; an empty list means PASS."""
+    errors: list[str] = []
+    if checkpoint.get("schema") != "JEPA_WORK_CHECKPOINT_V1":
+        errors.append("SCHEMA_MISMATCH")
+    if checkpoint.get("checkpoint_semantic_sha256") != semantic_sha256(checkpoint):
+        errors.append("CHECKPOINT_SEMANTIC_SHA256_MISMATCH")
+
+    try:
+        actual = _git_snapshot(Path(repo), Path(worktree))
+    except RuntimeError as exc:
+        return errors + [f"GIT_STATE_UNAVAILABLE:{exc}"]
+    expected = checkpoint.get("git", {})
+    comparisons = (
+        ("head_sha", "HEAD_MISMATCH"),
+        ("branch", "BRANCH_MISMATCH"),
+        ("origin_main_sha", "ORIGIN_MAIN_MISMATCH"),
+        ("origin_url", "ORIGIN_URL_MISMATCH"),
+        ("repo_path", "REPO_PATH_MISMATCH"),
+        ("worktree_path", "WORKTREE_PATH_MISMATCH"),
+    )
+    for key, label in comparisons:
+        if expected.get(key) != actual.get(key):
+            errors.append(f"{label}:{expected.get(key)!r}!={actual.get(key)!r}")
+
+    declared_tracked = sorted(checkpoint.get("allowed_tracked_modifications", []))
+    declared_untracked = sorted(checkpoint.get("allowed_untracked_files", []))
+    if actual["tracked_modifications"] != declared_tracked:
+        errors.append(
+            "TRACKED_MODIFICATIONS_MISMATCH:"
+            f"{actual['tracked_modifications']!r}!={declared_tracked!r}"
+        )
+    if actual["untracked_files"] != declared_untracked:
+        errors.append(
+            f"UNTRACKED_FILES_MISMATCH:{actual['untracked_files']!r}!={declared_untracked!r}"
+        )
+
+    authorities = checkpoint.get("authorities")
+    if not isinstance(authorities, list) or not authorities:
+        errors.append("AUTHORITIES_MISSING")
+    else:
+        # A tracked authority is a Git object, not a file on a particular
+        # platform. Hashing its worktree bytes made every declared digest
+        # unverifiable wherever Git rewrites line endings on checkout
+        # (core.autocrlf), because the declared value is the blob digest. The
+        # bytes therefore come from the object database, pinned to the commit
+        # this checkpoint is bound to. Genuinely untracked local authorities
+        # keep disk-byte hashing, so the two byte semantics stay distinct.
+        bound_head = (checkpoint.get("git") or {}).get("head_sha")
+        declared_untracked_set = set(declared_untracked)
+        actual_untracked_set = set(actual["untracked_files"])
+        for authority in authorities:
+            relative = authority.get("path") if isinstance(authority, dict) else None
+            expected_hash = authority.get("sha256") if isinstance(authority, dict) else None
+            if not relative or not expected_hash:
+                errors.append(f"AUTHORITY_DECLARATION_INVALID:{authority!r}")
+                continue
+            canonical = canonical_authority_path(relative)
+            if canonical is None:
+                errors.append(f"AUTHORITY_PATH_NOT_CANONICAL:{relative!r}")
+                continue
+            entry = (
+                tracked_blob_at(Path(worktree), bound_head, canonical)
+                if bound_head
+                else None
+            )
+            if entry is None:
+                if not bound_head:
+                    errors.append(f"AUTHORITY_BOUND_HEAD_MISSING:{canonical}")
+                    continue
+                target, reason = resolve_local_authority(
+                    Path(worktree),
+                    canonical,
+                    declared_untracked_set,
+                    actual_untracked_set,
+                )
+                if target is None:
+                    errors.append(f"{reason}:{canonical}")
+                    continue
+                actual_hash = sha256_file(target)
+                if actual_hash != expected_hash:
+                    errors.append(
+                        f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
+                    )
+                continue
+            if entry["type"] != "blob" or entry["mode"] not in {"100644", "100755"}:
+                errors.append(
+                    f"AUTHORITY_NOT_REGULAR_FILE:{canonical}:"
+                    f"{entry['mode']}:{entry['type']}"
+                )
+                continue
+            if authority_path_dirty(
+                Path(worktree), canonical, entry["oid"], entry["mode"]
+            ):
+                errors.append(f"AUTHORITY_DIRTY:{canonical}")
+                continue
+            actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])
+            if actual_hash is None:
+                errors.append(f"AUTHORITY_OBJECT_UNREADABLE:{canonical}:{entry['oid']}")
+                continue
+            if actual_hash != expected_hash:
+                errors.append(
+                    f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
+                )
+    return errors
+
+
+def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
+    """Durably publish canonical JSON using a sibling staging file."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, staging_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".staging", dir=path.parent
+    )
+    staging = Path(staging_name)
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(canonical_json_bytes(payload) + b"\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(staging, path)
+    except BaseException:
+        staging.unlink(missing_ok=True)
+        raise
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    for command in ("build", "validate"):
+        child = subparsers.add_parser(command)
+        child.add_argument("--repo", type=Path, default=None)
+        child.add_argument("--worktree", type=Path, required=True)
+    build = subparsers.choices["build"]
+    build.add_argument("--state", type=Path, required=True)
+    build.add_argument("--output", type=Path, required=True)
+    validate = subparsers.choices["validate"]
+    validate.add_argument("--checkpoint", type=Path, required=True)
+    return parser
+
+
+def main() -> int:
+    args = _parser().parse_args()
+    repo = args.repo or resolve_canonical_repo(args.worktree)
+    if args.command == "build":
+        state = json.loads(args.state.read_text(encoding="utf-8"))
+        checkpoint = build_checkpoint(repo, args.worktree, state)
+        atomic_write_json(args.output, checkpoint)
+        print(checkpoint["checkpoint_semantic_sha256"])
+        return 0
+    checkpoint = json.loads(args.checkpoint.read_text(encoding="utf-8"))
+    errors = validate_checkpoint(checkpoint, repo, args.worktree)
+    if errors:
+        print(json.dumps({"status": "STOP", "errors": errors}, indent=2))
+        return 1
+    print(json.dumps({"status": "PASS", "checkpoint": str(args.checkpoint)}))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

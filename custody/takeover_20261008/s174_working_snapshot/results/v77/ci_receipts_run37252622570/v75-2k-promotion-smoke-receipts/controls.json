@@ -1,0 +1,97 @@
+{
+  "schema": "V75_CONTROL_TWINS_RECEIPT_V1",
+  "status": "SYNTHETIC_CONTROL_MATERIALIZED__NO_MODEL_QUALIFICATION",
+  "truth_seed": 7302,
+  "n_cells_per_world": 2000,
+  "shard_size": 333,
+  "worlds": {
+    "measurement_null_a": {
+      "root": "/tmp/v75_controls/measurement_null_a",
+      "truth_manifest": "/tmp/v75_controls/measurement_null_a/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "66946e2c479e5f7330ed5138e888226f5cf540e38558b2186a7a697a346a5c27",
+      "rna_manifest": "/tmp/v75_controls/measurement_null_a/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "2791e476578ebd7b293fcec24073ac3990c2bfbc6819875802e70edc9d70025d",
+      "multiome_manifest": "/tmp/v75_controls/measurement_null_a/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "3f490ca2c87705da813d1e153d52abdafdc272ab082defac2a4b6657fd0bd83e",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 2000,
+      "source_counts": {
+        "SEA_AD": 1809,
+        "NPH52": 104,
+        "HVS": 87
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "measurement_null_b": {
+      "root": "/tmp/v75_controls/measurement_null_b",
+      "truth_manifest": "/tmp/v75_controls/measurement_null_b/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "66946e2c479e5f7330ed5138e888226f5cf540e38558b2186a7a697a346a5c27",
+      "rna_manifest": "/tmp/v75_controls/measurement_null_b/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "46aebec6b5765a09a2aad92f0ea966c0c9b7c8dc16a1ce166dc9938018b46141",
+      "multiome_manifest": "/tmp/v75_controls/measurement_null_b/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "1beb3383614b2f0ab11096b4452a80e027559b8f40f0e8069e9b7c0ec03d5c2c",
+      "truth_seed": 7302,
+      "measurement_seed": 8502,
+      "n_cells": 2000,
+      "source_counts": {
+        "SEA_AD": 1809,
+        "NPH52": 104,
+        "HVS": 87
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 0
+    },
+    "biology_positive": {
+      "root": "/tmp/v75_controls/biology_positive",
+      "truth_manifest": "/tmp/v75_controls/biology_positive/hidden_truth/TRUTH_MANIFEST.json",
+      "truth_manifest_sha256": "5b1fd8261bf7ac1322b8214dee125007b46df07c725218d115197c128109e5ed",
+      "rna_manifest": "/tmp/v75_controls/biology_positive/observable_raw/FULL104_like_sharded/FULL104_SHARDED_MANIFEST.json",
+      "rna_manifest_sha256": "f8dc7ddeb387635bf74eec447de14476e20dd4794c7a4b81941836a3dd5df7b7",
+      "multiome_manifest": "/tmp/v75_controls/biology_positive/observable_raw/PAIRED_MULTIOME_like_sharded/PAIRED_MULTIOME_SHARDED_MANIFEST.json",
+      "multiome_manifest_sha256": "56dfb3b01d522a306c4f1db1ec5cfe97d09570f38b807c6f7973fb7fb2e7923d",
+      "truth_seed": 7302,
+      "measurement_seed": 8501,
+      "n_cells": 2000,
+      "source_counts": {
+        "SEA_AD": 1809,
+        "NPH52": 104,
+        "HVS": 87
+      },
+      "paired_same_cell_identity": true,
+      "n_targeted_cells": 500
+    }
+  },
+  "measurement_null": {
+    "world_a_measurement_seed": 8501,
+    "world_b_measurement_seed": 8502,
+    "biology_identical": true,
+    "population_identical": true,
+    "observation_operator_mapping_identical": true
+  },
+  "biology_positive": {
+    "reference_world": "measurement_null_a",
+    "measurement_seed": 8501,
+    "target_rule": "global_cell_index % 4 == 0",
+    "target_modulo": 4,
+    "target_remainder": 0,
+    "delta_z_global_0": 1.0,
+    "n_targeted_cells": 500,
+    "measurement_conditions_matched_to_reference": true
+  },
+  "claim_boundary": {
+    "learned_160d_jepa_evaluated": false,
+    "biological_claim_qualified": false,
+    "purpose": "materialize identifiable measurement-null and biology-positive controls for later learned-state qualification"
+  },
+  "governance": {
+    "training": "OFF",
+    "multimodal_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED",
+    "Morabito": "PROTECTED",
+    "recoverability_TEST": "SEALED",
+    "pathology_used": false
+  }
+}

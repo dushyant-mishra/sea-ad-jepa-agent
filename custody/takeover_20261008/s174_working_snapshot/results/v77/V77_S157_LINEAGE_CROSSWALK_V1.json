@@ -1,0 +1,74 @@
+{
+  "schema": "V77_S157_LINEAGE_CROSSWALK_V1",
+  "claim_class": "V77_SYNTHETIC_WORLD_QUALIFICATION",
+  "recorded_utc": "2026-10-07T02:26:48Z",
+  "crosswalk": [
+    {
+      "lineage": "V47 technical-twin failure",
+      "source": "docs/agent/chat-exclusive-v51-20260928/CHAT_SOURCE_02_V47_HANDOFF_USER_UPLOAD_20260928.md; docs/agent/JEPA_NEW_CHAT_HANDOFF_20260928_V51_REGULATORY_REDTEAM.md section 4",
+      "what_it_showed": "a technical-only shared latent state, with no biology, beats the matched wrong-cell null; under gene-specific differential capture, observed-depth adjustment did not remove the nuisance and only an oracle hidden-capture covariate did",
+      "v77_status": "REPRESENTED",
+      "v77_evidence": "TWIN_OPERATOR's capture program is as recoverable from evidence as BIO's biology (0.872 versus 0.853); lawful depth and coverage descriptors leave it in place (0.904); only raw identity, standing in for the hidden capture covariate, removes most of it (0.374)",
+      "agrees": true
+    },
+    {
+      "lineage": "V48 RNA-only semantic-twin non-identifiability",
+      "source": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260928_V51_REGULATORY_REDTEAM.md section 4",
+      "what_it_showed": "if the permitted observables are identical and only the hidden interpretation differs, no statistic over them can pass biology and fail the technical twin: INSUFFICIENTLY_SPECIFIC_AGAINST_UNOBSERVED_TECHNICAL_STATE__SAME_ASSAY_OBSERVABLES_NONIDENTIFIABLE",
+      "v77_status": "REPRESENTED, END TO END",
+      "v77_evidence": "TWIN_EXACT's model-facing structures are byte-identical to BIO's (RED_1 True), every statistic matches bitwise (RED_2 max difference 0.0), under every context arm including raw identity; reproduced through the repaired 41,238-address observer, the canonical adapter and blind scoring rather than on a reduced feature world",
+      "agrees": true
+    },
+    {
+      "lineage": "V63 modelled-nuisance success",
+      "source": "results/v63/V63_E2_IDENTIFIABILITY_BENCHMARK_V1.json; docs/agent/V63_TASK8_TOURNAMENT_RESULT_20260929.md",
+      "what_it_showed": "with an externally linked correspondence, the tested nuisance classes were rejected (ALL_TESTED_NEGATIVES_REJECTED: NEG0_clean, NEG1_measured_technical, NEG2_hidden_quality, NEG3_activity_confound, NEG4_geometry_confound); the claim covers the simulated nuisance classes only",
+      "v77_status": "NOT REPRODUCIBLE HERE: no external object in the S157 challenge",
+      "v77_evidence": "the S157 challenge is RNA plus measurement context only; it separates the operator twin only with raw identity, an exploratory positive control, never with lawful descriptors. V63's separation came from an external link that this challenge deliberately does not include",
+      "agrees": true
+    },
+    {
+      "lineage": "V63 exact twin and the anchor-keyed twin of Task 8",
+      "source": "results/v63/V63_E2_IDENTIFIABILITY_BENCHMARK_V1.json (NEG5); docs/agent/V63_TASK8_TOURNAMENT_RESULT_20260929.md",
+      "what_it_showed": "NEG5's observables equal POS1's, so it is NON_IDENTIFIABLE_BY_DESIGN and needs an external measurement, not a cleverer statistic; Task 8 showed a twin keyed to the anchor itself can pass an external-anchor test",
+      "v77_status": "REPRESENTED for the same-assay twin; the anchor-keyed twin is NOT represented",
+      "v77_evidence": "TWIN_EXACT reproduces NEG5's verdict; an external object, and a twin keyed to it, are outside this challenge and are carried into the Phase 5 requirements",
+      "agrees": true
+    },
+    {
+      "lineage": "S149 within-study versus pooled dependence",
+      "source": "results/v77/V77_REAL_COVERAGE_CONFOUND_DIAGNOSTIC_V1.json; V77_COVERAGE_STRATA_VALIDATION_V1.json; V77_REAL_WITHIN_COHORT_ENVELOPE_V1.json (candidate diagnostic only)",
+      "what_it_showed": "pooled real dependence is dominated by study composition; within one study it is several times weaker, and inferred strata are the real studies",
+      "v77_status": "PARTIALLY REPRESENTED",
+      "v77_evidence": "study-specific structural support is now modelled per element, and the measurable-address count identifies the operator for 0.956 of cells; but biology is independent of operator in this realization (state by operator chi-squared p = 0.71), so the study-composition confounding that makes raw-identity adjustment remove real biology is absent (biology here fell only from 0.853 to 0.824)",
+      "agrees": true
+    }
+  ],
+  "v77_now_represents": [
+    "the exact same-assay semantic twin, end to end through the repaired observer, canonical adapter and blind scoring",
+    "gene-specific capture nuisance tied to measurement operators, on the full canonical address space",
+    "the failure of measured depth and coverage descriptors to remove gene-specific capture (V47's observed-depth result)",
+    "dataset-identity proxies among 'lawful' descriptors: the measurable-address count keys the operator",
+    "study-specific structural support, per element, so the measurement mask itself reveals the study"
+  ],
+  "v77_still_cannot_represent": [
+    "biology confounded with study composition (state is independent of operator in this realization)",
+    "strong cell-class structure: the chosen state is not linearly recoverable from 20 components in NULL, and synthetic within-class structure is weaker than real within-cohort T5 of 0.77 to 0.81 (S157)",
+    "real chemistry-specific capture differences beyond the one planted bias",
+    "an independent regulatory object in the challenge, and a twin keyed to it (V63 Task 8)",
+    "within-cohort dependence magnitudes: the generator is not calibrated to them, and those envelopes are a candidate diagnostic without real-data-lane authority"
+  ],
+  "fundamentally_non_identifiable_from_same_assay_rna": [
+    "any capture process whose joint law with every permitted observable equals the biological program's (V48, V63 NEG5, V77 TWIN_EXACT), under every context including raw identity",
+    "capture nuisance tied to the biological state itself, for example cell-type-specific capture or dissociation effects: measurement context cannot separate what is not linked to measurement identity",
+    "an operator-linked nuisance, unless a measured capture covariate or raw identity is available; lawful depth and coverage descriptors do not suffice"
+  ],
+  "claim_discipline": "no claim that a better synthetic generator has solved identifiability: BIO and TWIN_EXACT have byte-identical observables, and the operator twin separates only with raw identity",
+  "stop_condition": "A: the repaired RNA synthetic challenge still has an exact semantic twin; NON_IDENTIFIABLE from same-assay RNA. The minimum independent evidence is specified in the Phase 5 requirements",
+  "evidence": {
+    "results/v77/V77_S157_PAIRED_CHALLENGE_SCORE_ARMS_V1.json": "23e613979e5014ce29797b0e4585a66fbea4fded2ceaaed2751d3f29f6e18153",
+    "results/v77/V77_S157_CONTEXT_ABLATION_SUMMARY_V1.json": "85c13f5db4075ad0e8bcf2cb4f6341eb0723ace138241a5826f9b33d3297f78a",
+    "results/v77/V77_S157_CHALLENGE_WORLDS_BUILD_V1.json": "0c31195edea7ab8278079d60e37f9a79ab25675ff895376275b0fff2d19e6ae9",
+    "results/v63/V63_E2_IDENTIFIABILITY_BENCHMARK_V1.json": "087e026132c8ae4d96b695196560f965d2b5a299ee5f6043fea13a2c9ce01460"
+  }
+}

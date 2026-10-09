@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-09",
+  "status": "PASS_WITH_AUTHORITY_LIMITS",
+  "authority": {
+    "target_winner": "NONE",
+    "representation_winner": "NONE",
+    "real_training": "OFF",
+    "stage4": "NOT_AUTHORIZED",
+    "real_correspondence": "UNOPENED"
+  },
+  "expression_41k_split": {
+    "part001_matches_ledger": true,
+    "part002_matches_ledger": true,
+    "reassembled_bytes": 607959761,
+    "reassembled_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "ledger_expected_bytes": 607959761,
+    "ledger_expected_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "reassembly_matches_ledger": true,
+    "zip_crc_test": "PASS",
+    "note": "Fresh mounted parts are 303,979,881 and 303,979,880 bytes. Any earlier transient inventory describing a 536,870,912 + 71,088,849 split is superseded for these mounted bytes."
+  },
+  "td34": {
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "observation_state_member": "FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+    "observation_state_bytes": 227532,
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "states_shape": [42, 41238],
+    "states_dtype": "uint8",
+    "common_support_count": 17186,
+    "vector_hashes": {
+      "sorted_common_support": "a4095c0e70141cacbcb940a2455480e9666452de4d41875360e9b4573c05a4f4",
+      "td25_hash_ordered_17186": "48b311c8abe1c25912277c2c4aaafb595035649ab7e3929bed5655167bd8a310",
+      "first_2048": "13616d28a3e0c1e517b8b465e19e4ce7d209fc9e796391c041519fdcf1542b12"
+    },
+    "panel_hashes": [
+      "45414005bf84af3d85a2bdd5062f8c00b0163872a2f95848efaa8a55d89f4976",
+      "c34ec8a677c688501a5b5a4a1ab2d2d02c06610fe9f42e4c94ea973acbe2ce44",
+      "b7b863962dda2d68ef9c66b0b88d2ad7a0ea1578241b40dc25a3bfc2cf9b7e56",
+      "df5aa4d410d6f51fbcf7796ced7093d2ad807cca398ce36d9e6512651ef6a0d5"
+    ],
+    "classification": "TD34_EXACT_PANEL_MEMBERSHIP_REPRODUCED__CANONICAL_UPSTREAM_SUPPORT_BOUND__SELECTION_RULE_HASH_BOUND__NO_TARGET_AUTHORITY"
+  },
+  "asset_manifest": "custody/handoff_20261009/LOCAL_ASSET_CUSTODY_MANIFEST.csv",
+  "verification_script": "scripts/audit/verify_handoff_custody_20261009.py"
+}

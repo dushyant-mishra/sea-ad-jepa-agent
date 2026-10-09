@@ -1,0 +1,37 @@
+{
+  "common_core": {
+    "addresses": 17186,
+    "csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "fraction_of_41238": 0.4167515398418934,
+    "generator": "scripts/agent/profile_reader_fit_support_overlap_v1.py",
+    "materialization": "DETERMINISTIC_FROM_FROZEN_SUPPORT_AUTHORITY__NOT_DUPLICATED_IN_REPOSITORY",
+    "support_profile": "docs/agent/READER_FIT_SUPPORT_OVERLAP_PROFILE_V1.json"
+  },
+  "execution_authorized": false,
+  "rule": "No percentage mask may be interpreted as an equal cross-operator evidence dose without universe-relative support telemetry.",
+  "schema": "TEACHER_STUDENT_V5_COMMON_CORE_ANCHOR_CANDIDATE_V1",
+  "scientific_connection": {
+    "interpretation": "A common-core anchor view is aligned to molecular support used by qualified donor-recurrent relational discovery; it is not introduced post hoc from outcome labels.",
+    "td59_prospective_screen_sha256": "ca356e6de74aecf1e486772ffd869796e2b5b68b79de86c53f499f6341dc061e",
+    "td59_requirement": "all-42-operator common-scalar intersection exactly 17,186 Molecular Ledger addresses",
+    "td59_views_drawn_from_common_ranking": true
+  },
+  "status": "ADMISSIBLE_VIEW_FAMILY__NUMERICAL_SCHEDULE_UNFROZEN",
+  "student_view_families": {
+    "COMMON_CORE_ANCHOR": {
+      "eligible_addresses": "EXACT_17186_COMMON_CORE",
+      "target_gene_count": null,
+      "visible_gene_count": null
+    },
+    "NATIVE_SUPPORT_COVERAGE": {
+      "eligible_addresses": "ALL_OPERATOR_NATIVE_MEASURED_SCALAR",
+      "target_gene_count": null,
+      "visible_gene_count": null
+    }
+  },
+  "target_genes_per_block": null,
+  "teacher_view": "ALL_NATIVE_MEASURED_SCALAR_ADDRESSES",
+  "training_authorized": false,
+  "view_family_weights": null,
+  "views_per_family": null
+}

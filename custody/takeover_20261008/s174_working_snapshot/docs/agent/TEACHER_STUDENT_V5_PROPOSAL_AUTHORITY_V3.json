@@ -1,0 +1,91 @@
+{
+  "base": {
+    "active_extrema": {
+      "coverage_floor_group": {
+        "donor_cells": 6948,
+        "donor_id": "H19.03.319",
+        "group_cells": 1,
+        "groups_per_donor": 24,
+        "operator_index": 2,
+        "source": "HVS"
+      },
+      "repeat_ceiling_cell": {
+        "donor_cells": 81,
+        "donor_id": "human_NPH_906",
+        "group_cells": 81,
+        "groups_per_donor": 1,
+        "operator_index": 36,
+        "source": "NPH52"
+      }
+    },
+    "coefficients": {
+      "alpha_target": {
+        "denominator": 1173046947290933909,
+        "float": 0.04326092454217784,
+        "numerator": 50747095471185150
+      },
+      "beta_operator_coverage": {
+        "denominator": 1173046947290933909,
+        "float": 0.004634836426997731,
+        "numerator": 5436880721882508
+      },
+      "gamma_source_uniform": {
+        "denominator": 265996376719,
+        "float": 0.9521042390308244,
+        "numerator": 253256277841
+      }
+    },
+    "components": {
+      "p_target_per_cell": "1 / (D * donor_cells)",
+      "q_group_per_cell": "1 / (D * donor_operator_groups_for_donor * donor_operator_group_cells)",
+      "q_source_per_cell": "1 / (S * source_cells)"
+    },
+    "derived_metrics": {
+      "expected_presentations_by_source": {
+        "HVS": 1531083.387731026,
+        "NPH52": 1480755.1815924018,
+        "SEA_AD": 1541568.4306765725
+      },
+      "importance_ess_fraction": 0.5993992196029957,
+      "importance_weight_max": 16.89149676519468,
+      "importance_weight_max_to_min_ratio": 57.8322200737568,
+      "importance_weight_min": 0.2920776125082518,
+      "max_expected_per_cell_exposure": 32.0,
+      "min_expected_donor_operator_group_presentations": 16.0,
+      "proposal_probability_mass": 1.0
+    },
+    "family": "CONVEX_MIXTURE__DONOR_TARGET__SOURCE_UNIFORM__DONOR_OPERATOR_COVERAGE_V1",
+    "importance_correction": "w_i = p_target_i / q_i; scientific mass remains the frozen donor-uniform target and is not replaced by proposal mass.",
+    "proposal_policy_id": "MAX_TARGET_MASS_SUBJECT_TO_EXPOSURE_COVERAGE_CONDITIONING_V1",
+    "scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "selection_rule": "Maximize alpha_target in q=alpha*p_target+beta*q_group+gamma*q_source subject to the frozen horizon constraints; beta,gamma>=0 and alpha+beta+gamma=1. Exact p/q correction is mandatory.",
+    "tie_break": "If alpha_target is tied, choose the minimum beta_operator_coverage; if still tied, lexicographically smallest exact rational coefficient tuple."
+  },
+  "compute_packing_can_change_scientific_mass": false,
+  "execution_authorized": false,
+  "presentation_horizon_authority": {
+    "path": "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json",
+    "sha256": "5969202b44d4c56bd5d3701b1b84eab2a251ea76b5a9e8bb7fa4732a971c1fc7"
+  },
+  "reader_fit_group_counts": {
+    "decoded_csv_sha256": "e79c03765b8c88a8755d37313b76fd384d8a3f1221c2ee79af0a2b7af0a86d28",
+    "decoded_gzip_sha256": "e427b56363b93aa2352f599c58bd0bed9d4f19f193ad20bdf5ab4c0b77bb3aee",
+    "path": "docs/agent/READER_FIT_DONOR_OPERATOR_COUNTS_V1.csv.gz.b64",
+    "rows": 1400,
+    "transport_encoding": "BASE64_OF_DETERMINISTIC_GZIP_MTIME0",
+    "transport_sha256": "be7a6ef46a523532a95a364ad8e601f9d764a1fcd7cde55d5ca781e2a8467cb1"
+  },
+  "relational": {
+    "importance_correction_required": false,
+    "operator_role": "ADMISSIBILITY_BOUNDARY_ONLY",
+    "proposal_equals_target": true,
+    "proposal_policy_id": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+    "triplet_budget": null,
+    "triplet_budget_is_scientific_weight": false
+  },
+  "schema": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3",
+  "scientific_target_authority": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json",
+  "status": "BASE_AND_RELATIONAL_PROPOSALS_FROZEN_ALGORITHMICALLY__TRAINING_UNAUTHORIZED",
+  "supersedes": "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2.json",
+  "training_authorized": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "safety": "Inspected with numpy allow_pickle=False; donor object arrays were intentionally not loaded.",
+  "results": [
+    {"file":"td56_HVS_result.npz","bytes":5326,"sha256":"ac6dd050689952698ffd18a5bffcf0251132508e20f695eb675b5e7ddc246c4a","obs":0.7975611268875292,"p95":0.5541568459026214,"donor_rs_shape":[30],"null_shape":[64]},
+    {"file":"td56_HVS_numericpair_result.npz","bytes":5326,"sha256":"368e2dfce4158d3b3d72ea160cde7675ec6340792584f2c8df5e6626fdbae3e6","obs":0.8171162159106867,"p95":0.5610812634137304,"donor_rs_shape":[30],"null_shape":[64]},
+    {"file":"td56_HVS_secondblock_result.npz","bytes":5326,"sha256":"bdfeb5797c7a8b4520784fb7c09c9e7df7ff2a13204f5fdb78f763bc0f32865e","obs":0.8208022002637183,"p95":0.5810705795232837,"donor_rs_shape":[30],"null_shape":[64]},
+    {"file":"td56_NPH52_result.npz","bytes":4302,"sha256":"caa190e708b632b106250f9d27272f1d3f32a88520539bcf9451ee8b9ee07be7","obs":0.8007195125139487,"p95":0.599058490878713,"donor_rs_shape":[16],"null_shape":[64]},
+    {"file":"td56_NPH52_numericpair_result.npz","bytes":4302,"sha256":"ccbcc0ea8c547a2ba323acb3bdc5cd211b16528e2c33874fecacd3a44e0121be","obs":0.8070469339099572,"p95":0.5984434296512016,"donor_rs_shape":[16],"null_shape":[64]},
+    {"file":"td56_NPH52_secondblock_result.npz","bytes":4302,"sha256":"d253890390f0dc99c585cd628155227a4ac6763a30414326347f73a16e011058","obs":0.8158430192302639,"p95":0.6230300657199798,"donor_rs_shape":[16],"null_shape":[64]},
+    {"file":"td56_SEA_AD_result.npz","bytes":5968,"sha256":"ec57015dbc1b1c0dab30ffd3429b8e400898402408868f1641e431beef14157b","obs":0.878225040309338,"p95":0.7526605766241186,"donor_rs_shape":[46],"null_shape":[64]},
+    {"file":"td56_SEA_AD_numericpair_result.npz","bytes":5968,"sha256":"8bb0b68116652bcd396765f03c62df6e4f4414a8afc59715d1b05d856b8bc47b","obs":0.8783750067614475,"p95":0.757841740196117,"donor_rs_shape":[46],"null_shape":[64]},
+    {"file":"td56_SEA_AD_secondblock_result.npz","bytes":5968,"sha256":"0b449d38e4b32ae09c846eeb9c1275dd23bf6f5a2f268c2074fd91e0106cb50e","obs":0.878042380126626,"p95":0.7525641843632861,"donor_rs_shape":[46],"null_shape":[64]}
+  ]
+}
