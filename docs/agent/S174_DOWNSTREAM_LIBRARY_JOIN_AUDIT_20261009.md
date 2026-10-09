@@ -12,19 +12,22 @@ It does **not** reopen target discovery, TD34, TD57C, TD60, Nott, SCENIC+, NIH-C
 
 1. `/Jepa project/s174_rebuilt_real_train_v1.rar`
    - Library size: 47,964,366 bytes.
+   - Physical SHA-256 in this audit: `88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f`.
    - RAR directory is readable in the audit runtime.
    - Inventory: 42 `*.counts.npz` + 42 `*.meta.npz` members (plus directory entry).
    - The member basename set matches the 42-shard corrected TRAIN family.
    - This runtime did not have an extraction backend capable of extracting RAR members, so per-member SHA-256 values were **not** recomputed from this RAR. Do not promote basename/header agreement to byte-identity proof.
 
 2. `/Jepa project/stage81a3r_corrected_real_train.zip`
+   - Physical SHA-256: `3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48`.
    - Materialized and inspected separately as an older corrected-real-TRAIN package.
    - It is **not** byte-equivalent to the S174 RAR shard family: 35/42 shard pairs changed; 70/84 member CRCs differ.
    - The seven unchanged shard pairs are consistent with the NPH52 family, matching S174's documented rule that NPH52 is carried byte-identically while HVS/SEA-AD are rebuilt.
 
 3. `/Jepa project/JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip`
+   - Physical SHA-256: `c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417`.
    - Materialized and fully extracted for this audit.
-   - Contains historical TD56 executors/results and TD57/TD57B executors/results/replay files.
+   - Contains 155 recovered files including historical TD56 executors/results and TD57/TD57B executors/results/replay files.
    - No TD59 first-run executor/result bytes are present in this TD41-TD58 package, as expected from its historical scope.
 
 ## Canonical S174 repair receipts
@@ -45,20 +48,13 @@ The later commit `46d8eaa8fa23cd60762a8a90c55b84e8d86364b2` replayed V77 synthet
 
 Inspection of the recovered TD executors shows that TD56/TD57/TD58 do not consume the S174 TRAIN shard directory directly. They consume a frozen 50K sparse matrix plus source-specific TD50 metadata keyed by `global_row`.
 
-Historical TD50 metadata hashes bound in the recovered executors are:
+Historical TD50 metadata hashes physically verified in this audit are:
 
 - `td50_HVS.npz` — `d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb`
 - `td50_NPH52.npz` — `9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe`
 - `td50_SEA_AD.npz` — `ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4`
 
-Historical sparse-matrix component hashes include:
-
-- `data.npy` — `0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e`
-- `indices.npy` — `f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771`
-- `indptr.npy` — `58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1`
-- `shape.npy` — `5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb`
-
-The recovered TD50 metadata objects carry `global_row`, `source_library`, `detected`, `donor`, and `operator` fields.
+The recovered TD50 metadata objects carry `S`, `tau`, `global_row`, `source_library`, `detected`, `donor`, and `operator` fields. Row counts are HVS 1,129; NPH52 1,310; SEA-AD 22,561.
 
 Therefore the required corrected lineage is not merely:
 
@@ -120,6 +116,19 @@ Original first-run executor/result bytes: **STILL NOT RECOVERED BY THIS AUDIT**.
 Classification remains:
 
 `TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY`
+
+## New durable custody/publication surface
+
+This audit is now accompanied by:
+
+- `custody/handoff_20261009/S174_TD_AUDIT_PACKAGE_MANIFEST.csv`
+- `custody/handoff_20261009/README_S174_TD_RECOVERED_PAYLOAD.md`
+- `custody/handoff_20261009/S174_TD_PHYSICAL_ASSET_MANIFEST.csv`
+- `scripts/audit/audit_s174_td_downstream_join_20261009.py`
+- `results/audit/S174_TD_DOWNSTREAM_JOIN_RESULT_20261009.json`
+- `docs/agent/JEPA_NEW_AGENT_HANDOFF_20261009_POST_S174_DOWNSTREAM_AUDIT.md`
+
+A complete 155-file recovered TD manifest and an exact 78-file recovered source-code bundle were also generated locally and are preserved by SHA-256 in the package manifest. Large/human-derived binaries remain custody-by-hash instead of being newly published as Git blobs.
 
 ## Important interpretation
 
