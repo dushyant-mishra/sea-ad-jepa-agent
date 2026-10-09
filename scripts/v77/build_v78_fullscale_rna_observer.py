@@ -5,7 +5,8 @@ This module intentionally leaves the proven V77 observer untouched. It separates
 selection propensity from positive-count weights so F2 can change detection topology
 without changing biological `rel`, structural support, or per-cell depth targets.
 F3 may replace only the positive-count baseline geometry while preserving the
-biological multiplier already present in `rel`.
+biological multiplier already present in `rel`, and may replace depth targets only
+through the frozen compact operator→source→global marginal authority.
 """
 from __future__ import annotations
 
@@ -18,6 +19,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import build_v77_fullscale_rna_observer_v2 as BASE  # noqa: E402
+
+F3_FALLBACK_RULE = "operator_if_n>=50_else_source_if_n>=50_else_global"
+F3_MIN_STRATUM_CELLS = 50
 
 
 def f3_positive_count_weights(rel, original_baseline, assigned_baseline):
@@ -41,6 +45,105 @@ def f3_positive_count_weights(rel, original_baseline, assigned_baseline):
         raise ValueError("rel/assigned must be nonnegative and original baseline strictly positive")
     biological_multiplier = rel / original[None, :]
     return biological_multiplier * assigned[None, :]
+
+
+def _validate_depth_entry(entry: dict, qprobs: np.ndarray, label: str) -> dict:
+    if not isinstance(entry, dict):
+        raise RuntimeError(f"depth authority entry {label} must be a dict")
+    if int(entry.get("n_cells", -1)) < 0:
+        raise RuntimeError(f"depth authority entry {label} has invalid n_cells")
+    for key in ("library_quantiles", "detected_quantiles"):
+        vals = np.asarray(entry.get(key, []), dtype=np.float64)
+        if vals.ndim != 1 or len(vals) != len(qprobs) or np.any(~np.isfinite(vals)):
+            raise RuntimeError(f"depth authority entry {label} has invalid {key}")
+        if np.any(vals < 0):
+            raise RuntimeError(f"depth authority entry {label} has negative {key}")
+    rho = float(entry.get("log1p_library_vs_detected_pearson", 0.0) or 0.0)
+    if not np.isfinite(rho) or rho < -1.0 or rho > 1.0:
+        raise RuntimeError(f"depth authority entry {label} has invalid correlation")
+    return entry
+
+
+def depth_targets_from_authority(ids, op_index, source_labels, sup, depth_authority, mseed):
+    """Realize F3 depth targets from the compact frozen marginal authority only.
+
+    The fallback is fixed prospectively: operator if >=50 corrected TRAIN cells,
+    otherwise source if >=50, otherwise global. Randomness exactly follows V77's
+    Gaussian-copula depth realization streams; only the quantile/correlation source
+    is replaced. No outcome-dependent regrouping is permitted.
+    """
+    ids = np.asarray(ids, dtype=np.int64)
+    op_index = np.asarray(op_index, dtype=np.int64)
+    source_labels = np.asarray(source_labels).astype(str)
+    sup = np.asarray(sup, dtype=bool)
+    n = len(ids)
+    if op_index.shape != (n,) or source_labels.shape != (n,) or sup.ndim != 2 or sup.shape[0] != n:
+        raise ValueError("F3 depth inputs have inconsistent cell axes")
+    if not isinstance(depth_authority, dict) or depth_authority.get("fallback_rule") != F3_FALLBACK_RULE:
+        raise RuntimeError("F3 depth authority fallback rule mismatch")
+    qprobs = np.asarray(depth_authority.get("quantile_probs", []), dtype=np.float64)
+    if qprobs.ndim != 1 or len(qprobs) < 2 or np.any(~np.isfinite(qprobs)):
+        raise RuntimeError("F3 depth authority has invalid quantile probabilities")
+    if np.any(np.diff(qprobs) < 0) or qprobs[0] < 0 or qprobs[-1] > 1:
+        raise RuntimeError("F3 depth quantile probabilities must be ordered within [0,1]")
+    global_entry = _validate_depth_entry(depth_authority.get("global"), qprobs, "global")
+    operators = depth_authority.get("operators", {})
+    sources = depth_authority.get("sources", {})
+    if not isinstance(operators, dict) or not isinstance(sources, dict):
+        raise RuntimeError("F3 depth authority strata must be dictionaries")
+
+    ids_u = ids.astype(np.uint64, copy=False)
+    zd = BASE.T.normal(int(mseed) + 701, ids_u, 951)
+    zi = BASE.T.normal(int(mseed) + 704, ids_u, 954)
+    ud = BASE._ncdf(zd)
+    lib = np.empty(n, dtype=np.float64)
+    det = np.empty(n, dtype=np.float64)
+    used: list[str] = []
+
+    for i in range(n):
+        op_key = str(int(op_index[i]))
+        source = str(source_labels[i])
+        op_entry = operators.get(op_key)
+        if op_entry is not None:
+            op_entry = _validate_depth_entry(op_entry, qprobs, f"operator:{op_key}")
+            declared_source = op_entry.get("source")
+            if declared_source is not None and str(declared_source) != source:
+                raise RuntimeError(
+                    f"operator {op_key} belongs to source {declared_source!r}, not cell source {source!r}"
+                )
+        source_entry = sources.get(source)
+        if source_entry is not None:
+            source_entry = _validate_depth_entry(source_entry, qprobs, f"source:{source}")
+
+        if op_entry is not None and int(op_entry["n_cells"]) >= F3_MIN_STRATUM_CELLS:
+            entry = op_entry
+            label = f"operator:{op_key}"
+        elif source_entry is not None and int(source_entry["n_cells"]) >= F3_MIN_STRATUM_CELLS:
+            entry = source_entry
+            label = f"source:{source}"
+        else:
+            entry = global_entry
+            label = "global"
+        used.append(label)
+
+        rho = float(np.clip(float(entry.get("log1p_library_vs_detected_pearson", 0.0) or 0.0), -.98, .98))
+        zs = rho * float(zd[i]) + np.sqrt(max(0.0, 1.0 - rho * rho)) * float(zi[i])
+        lib[i] = BASE.Q.interp_quantiles(
+            np.asarray([ud[i]], dtype=np.float64), qprobs,
+            np.asarray(entry["library_quantiles"], dtype=np.float64),
+        )[0]
+        det[i] = BASE.Q.interp_quantiles(
+            np.asarray([BASE._ncdf(np.asarray([zs]))[0]], dtype=np.float64), qprobs,
+            np.asarray(entry["detected_quantiles"], dtype=np.float64),
+        )[0]
+
+    navail = sup.sum(1).astype(np.int64)
+    det_i = np.rint(det).astype(np.int64)
+    det_i = np.minimum(np.maximum(det_i, 1), np.maximum(navail, 1))
+    if np.any(navail <= 0):
+        raise RuntimeError("F3 depth realization encountered a cell with no structural support")
+    lib_i = np.maximum(np.rint(lib).astype(np.int64), det_i)
+    return lib_i, det_i, used
 
 
 def sparse_counts_separated(rel, sup, ids, lib, det, mseed,
