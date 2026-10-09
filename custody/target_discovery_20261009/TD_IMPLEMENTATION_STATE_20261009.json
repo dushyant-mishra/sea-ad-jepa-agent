@@ -42,6 +42,35 @@
       "raw HVS/SEA-AD H5AD matrices bound by S174_REBUILD_FREEZE_V1"
     ]
   },
+  "bayesian_spike": {
+    "status": "SPIKE_PREREGISTERED__HISTORICAL_ONLY__NON_AUTHORIZING__NO_CORRECTED_REPLAY_INGESTED",
+    "preregistration": "docs/agent/JEPA_TARGET_DISCOVERY_BAYESIAN_SPIKE_PREREG_20261009.md",
+    "historical_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+    "historical_archive_materialized_read_only": true,
+    "historical_verdict_labels_used_for_fit": false,
+    "corrected_replay_ingested": false,
+    "posterior_results_authoritative": false,
+    "target_ranking_allowed": false,
+    "planned_stages": [
+      "TD57B",
+      "TD57C",
+      "TD59"
+    ],
+    "planned_primary_outputs": [
+      "posterior_stage_margin",
+      "posterior_probability_margin_gt_zero",
+      "source_heterogeneity",
+      "posterior_predictive_positive_margin_new_case"
+    ],
+    "mandatory_falsification": [
+      "null_calibration",
+      "one_source_only_signal",
+      "duplicate_dependency_resistance",
+      "sign_flipping_source_heterogeneity",
+      "shared_positive_recovery",
+      "prior_sensitivity"
+    ]
+  },
   "stage_classification": {
     "TD56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
     "TD57B": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
@@ -53,6 +82,6 @@
   "supersession": {
     "pr237_residual_search_instruction": "SUPERSEDED_BY_PR243_IMPLEMENTATION_RECOVERY",
     "pr237_role": "SCIENTIFIC_AND_CUSTODY_BASE",
-    "pr243_role": "CURRENT_TARGET_DISCOVERY_IMPLEMENTATION_SUCCESSOR"
+    "pr243_role": "CURRENT_TARGET_DISCOVERY_IMPLEMENTATION_SUCCESSOR_AND_NONAUTHORIZING_BAYESIAN_METHOD_SPIKE"
   }
 }
