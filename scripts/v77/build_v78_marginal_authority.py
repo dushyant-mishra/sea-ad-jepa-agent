@@ -103,12 +103,11 @@ def build_rank_scrubbed_abundance(per_address_positive_count_abundance: np.ndarr
         "n_zero": int((x == 0).sum()),
         "positive_abundance_sorted": [float(v) for v in pos],
         "assignment_stream": ABUNDANCE_PERMUTATION_STREAM,
-        "content_policy": "EMPIRICAL_DISTRIBUTION_ONLY__NO_REAL_ADDRESS_IDENTITY",
+        "content_policy": "EMPIRICAL_DISTRIBUTION_ONLY__IDENTITY_SCRUBBED",
     }
 
 
 def _permutation(seed: int, n: int) -> np.ndarray:
-    # SeedSequence provides an explicit independent stream namespace. No gene metadata enters.
     rng = np.random.default_rng(np.random.SeedSequence([int(seed), ABUNDANCE_PERMUTATION_STREAM]))
     return rng.permutation(int(n))
 
