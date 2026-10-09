@@ -1,0 +1,58 @@
+{
+  "schema": "JEPA_TARGET_DISCOVERY_IMPLEMENTATION_STATE_V1",
+  "date": "2026-10-09",
+  "scientific_base_sha": "813ead17570dbb4b6a5a58ebe6dc84fed8aa0438",
+  "current_pr": 243,
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "closed_work": {
+    "broad_target_discovery_archaeology": true,
+    "td34_genealogy": true,
+    "corrected_replay_implementation_search": true,
+    "g1_g2_manifest_identity_reproduction": true
+  },
+  "fresh_reexecution": {
+    "status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+    "builder_git_blob_sha": "03dc4949e7e04040db5f85e331da72c5dcab86e6",
+    "common_core_rows": 17186,
+    "replay_addresses": 9216,
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "sample_a_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "expression_values_read": false,
+    "receipt": "results/audit/TD_RELATIONAL_REPLAY_9216_REEXECUTION_20261009.json"
+  },
+  "implementation": {
+    "g4_g5_recovered": true,
+    "g6_materializer_recovered": true,
+    "g7_s174_overlap_auditor_recovered": true,
+    "value_read_authorization_created": false,
+    "g6_executed": false,
+    "g7_executed": false,
+    "corrected_stage_replay_executed": false
+  },
+  "next_gate": {
+    "name": "G4_G5_VALUE_BLIND_PREFLIGHT",
+    "required_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
+    "required_mapping_terminal": "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND",
+    "local_executor": "Macha canonical D: environment",
+    "required_local_assets": [
+      "stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+      "stage81a3r_expression_materialization_collision_ledger.csv.gz",
+      "raw HVS/SEA-AD H5AD matrices bound by S174_REBUILD_FREEZE_V1"
+    ]
+  },
+  "stage_classification": {
+    "TD56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD57B": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD57C": "HISTORICAL_FROZEN_FAIL_PRESERVED__CORRECTED_REPLAY_MUST_OBEY_SEQUENTIAL_FIREWALL",
+    "TD58": "FALSIFICATION_ONLY__NO_TARGET_AUTHORITY",
+    "TD59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY",
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+  },
+  "supersession": {
+    "pr237_residual_search_instruction": "SUPERSEDED_BY_PR243_IMPLEMENTATION_RECOVERY",
+    "pr237_role": "SCIENTIFIC_AND_CUSTODY_BASE",
+    "pr243_role": "CURRENT_TARGET_DISCOVERY_IMPLEMENTATION_SUCCESSOR"
+  }
+}
