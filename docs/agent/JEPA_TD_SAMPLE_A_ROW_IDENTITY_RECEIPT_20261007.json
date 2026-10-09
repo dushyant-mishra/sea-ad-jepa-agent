@@ -1,0 +1,52 @@
+{
+  "checks": {
+    "HVS_count": true,
+    "HVS_donor_exact": true,
+    "HVS_global_row_exact": true,
+    "HVS_operator_exact": true,
+    "NPH52_count": true,
+    "NPH52_donor_exact": true,
+    "NPH52_global_row_exact": true,
+    "NPH52_operator_exact": true,
+    "SEA_AD_count": true,
+    "SEA_AD_donor_exact": true,
+    "SEA_AD_global_row_exact": true,
+    "SEA_AD_operator_exact": true,
+    "cell_identity_tuple_unique_A": true,
+    "expression_not_read_before_freeze_A": true,
+    "in_original_t1_zero_A": true,
+    "rows_50000": true,
+    "sample_A_25000": true,
+    "sample_A_first_25000_rows": true,
+    "sample_freeze_sha256": true,
+    "sample_row_0_24999": true,
+    "stable_key_unique_A": true
+  },
+  "sample_A_identity_columns": [
+    "global_row",
+    "sample_row",
+    "source",
+    "matrix_id",
+    "operator_index",
+    "local_row",
+    "donor_id",
+    "cell_id",
+    "stable_key"
+  ],
+  "sample_A_identity_csv_sha256": "8fad0f85129b902876048f94ac15399a116d064294cc7849c72c740b1a8c2573",
+  "sample_A_rows": 25000,
+  "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+  "schema": "JEPA_TD_SAMPLE_A_ROW_IDENTITY_RECEIPT_V1",
+  "scope": "metadata/provenance only; no expression values read; no target/training authority",
+  "source_counts": {
+    "HVS": 1129,
+    "NPH52": 1310,
+    "SEA_AD": 22561
+  },
+  "source_identity_sha256": {
+    "HVS": "88e6662f7b5c8c0e022b7abdb14c35bfaae114538c02d32cb0fe5fc6d9857b3d",
+    "NPH52": "69c4b578e64b4d42507ac32b26da3932dd36b2db18997ccd76734d1aea6ce6de",
+    "SEA_AD": "063e0ccd86aa033db7d45de58f480a4ccebed1a281d0bb162452a7a63ea09250"
+  },
+  "status": "PASS_EXACT_HISTORICAL_SAMPLE_A_ROW_IDENTITY"
+}

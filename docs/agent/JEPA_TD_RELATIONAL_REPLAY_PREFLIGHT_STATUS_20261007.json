@@ -1,0 +1,76 @@
+{
+  "schema": "JEPA_TD_RELATIONAL_REPLAY_PREFLIGHT_STATUS_V3",
+  "date": "2026-10-07",
+  "status": "PREFLIGHT_CODE_AND_AUTHORITIES_CLOSED__CANONICAL_LOCAL_G4_G5_RUN_REMAINS",
+  "gates": {
+    "G1_exact_9216_historical_replay_manifest": {
+      "status": "PASS",
+      "receipt": "docs/agent/JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT_20261007.json",
+      "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660"
+    },
+    "G2_exact_25000_sample_A_row_identity": {
+      "status": "PASS",
+      "receipt": "docs/agent/JEPA_TD_SAMPLE_A_ROW_IDENTITY_RECEIPT_20261007.json",
+      "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+    },
+    "G3_raw_HVS_SEAAD_source_asset_identity_and_identifier_join": {
+      "status": "PASS_INHERITED_CROSS_LANE_AUTHORITY",
+      "macha_branch": "claude/s174-train-cache-rebuild-20261007",
+      "freeze_commit": "cf4d4708af68d32c8c1ec73b1a4b09294b2df6ef",
+      "g1b_pass_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+      "ci_confirmed_code_commit": "46d8eaa8fa23cd60762a8a90c55b84e8d86364b2",
+      "freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+      "interpretation": "All 24 HVS and 11 SEA-AD raw H5ADs were hash-bound before count read. Corrected join is physical var identifier -> frozen provenance exact Ensembl ID -> molecular address; positional source_feature_index is not used. Macha G1b later passed exactly. This is inherited implementation/source authority, not TD outcome authority."
+    },
+    "G4_TD_specific_9216_address_one_to_one_coverage_on_all_HVS_SEAAD_matrices": {
+      "status": "OPEN_CANONICAL_LOCAL_RUN__DRIVER_FROZEN",
+      "driver": "scripts/v5/run_td_relational_replay_preflight.py",
+      "executor": "scripts/v5/audit_td_relational_replay_mapping_preflight.py",
+      "rule": "Every exact frozen TD address must resolve to exactly one non-collision physical column in every required HVS/SEA-AD matrix; no replacement address permitted.",
+      "value_blind": true
+    },
+    "G5_exact_sample_A_cell_resolution_in_raw_HVS_SEAAD_obs": {
+      "status": "OPEN_CANONICAL_LOCAL_RUN__DRIVER_FROZEN",
+      "driver": "scripts/v5/run_td_relational_replay_preflight.py",
+      "executor": "scripts/v5/audit_td_relational_replay_mapping_preflight.py",
+      "rule": "For every Sample-A HVS/SEA-AD row, raw obs[local_row] must equal the frozen cell_id exactly.",
+      "value_blind": true
+    },
+    "G6_sample_A_whole_cell_raw_library_total": {
+      "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md",
+      "rule": "For every exact Sample-A cell, sum every raw count in the physical row before address filtering and require exact equality to preserved TD50 source_library. Zero tolerance.",
+      "historical_detected_nnz": "DIAGNOSTIC_ONLY_NOT_A_PASS_GATE",
+      "reason_detected_not_gate": "TD50 detected was historical 41K CSR nnz after the defective mapping; corrected SEA-AD collision exclusions can legitimately alter post-mapping nnz."
+    },
+    "G7_cross_check_against_existing_S174_value_authority": {
+      "status": "OPEN_AFTER_G4_G5__SEPARATE_VALUE_AUTHORITY_REQUIRED",
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_G6_G7_PREFREEZE_20261007.md",
+      "binding_reference_commit": "4ab8e2101f2e595d9a97df05517d6e672768ecec",
+      "binding_reference_result": "results/v77/S174_REBUILD_G1B_RESULT_V1.json",
+      "rule": "Use all natural Sample-A/S174 overlapping cells and replay addresses; require exact raw-count equality with zero tolerance. Never manufacture overlap. If no natural overlap exists, report NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP."
+    },
+    "G8_new_immutable_output_namespace": {
+      "status": "PASS_NAMESPACE_FROZEN_BEFORE_REAL_VALUES",
+      "authority": "docs/agent/JEPA_TD_RELATIONAL_IMMUTABLE_NAMESPACE_FREEZE_20261007.json",
+      "preflight": "results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1",
+      "corrected_value_cache": "data/cache/td_relational_corrected_sampleA_9216_v1",
+      "replay_results": "results/target_discovery/td_relational_corrected_replay_20261007/value_replay_v1"
+    }
+  },
+  "operational_authority": {
+    "runbook": "docs/agent/JEPA_TD_RELATIONAL_PREFLIGHT_RUNBOOK_20261007.md",
+    "one_command_driver": "scripts/v5/run_td_relational_replay_preflight.py",
+    "driver_test": "tests/v5/test_run_td_relational_replay_preflight.py",
+    "mapping_test": "tests/v5/test_audit_td_relational_replay_mapping_preflight.py",
+    "remote_CI_status_on_this_branch": "NO_STATUS_RETURNED",
+    "required_local_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
+  },
+  "current_terminal": "STOP_TD_RELATIONAL_CORRECTED_REPLAY_PREFLIGHT_INCOMPLETE_UNTIL_CANONICAL_LOCAL_G4_G5_PASS",
+  "target_selected": false,
+  "representation_selected": false,
+  "td60_authorized": false,
+  "real_value_replay_authorized": false,
+  "training_authorized": false,
+  "protected_data_authorized": false
+}

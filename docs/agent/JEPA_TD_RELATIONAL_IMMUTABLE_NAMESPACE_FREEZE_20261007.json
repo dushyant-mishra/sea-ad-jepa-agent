@@ -1,0 +1,26 @@
+{
+  "schema": "JEPA_TD_RELATIONAL_IMMUTABLE_NAMESPACE_FREEZE_V1",
+  "date": "2026-10-07",
+  "status": "PASS_NAMESPACE_FROZEN_BEFORE_REAL_VALUE_REPLAY",
+  "scope": "namespace/governance only; no expression values read; no replay or training authority",
+  "namespaces": {
+    "preflight": "results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1",
+    "corrected_value_cache": "data/cache/td_relational_corrected_sampleA_9216_v1",
+    "replay_results": "results/target_discovery/td_relational_corrected_replay_20261007/value_replay_v1"
+  },
+  "rules": [
+    "Historical FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K and all historical TD outputs are immutable and must never be overwritten.",
+    "The corrected cache contains exactly the historical 25,000 Sample-A rows and only the exact 9,216 historical replay addresses while retaining logical canonical shape 25000 x 41238.",
+    "No replacement gene, replacement cell, replacement matrix, new common core, new threshold, new donor split, or new locality fraction may be introduced into this replay namespace.",
+    "If any frozen namespace already exists, the executor must STOP rather than overwrite it. Existing content may be reused only after an exact manifest/hash identity check under a separately recorded receipt.",
+    "Preflight artifacts, corrected-value artifacts, and replay-result artifacts remain separate namespaces.",
+    "A PASS in the preflight namespace does not itself authorize opening count arrays or writing the corrected-value cache.",
+    "The corrected-value cache may be written only after the value-blind mapping preflight passes and the separately explicit value-materialization authority is present.",
+    "Replay results may be written only from the frozen corrected-value cache and exact historical executors/rules.",
+    "No TEST, DEV/SEALED, pathology, Morabito, GSE214979, TD60, model fitting, EMA update, or training is authorized by this namespace freeze."
+  ],
+  "target_selected": false,
+  "representation_selected": false,
+  "real_value_replay_authorized": false,
+  "training_authorized": false
+}
