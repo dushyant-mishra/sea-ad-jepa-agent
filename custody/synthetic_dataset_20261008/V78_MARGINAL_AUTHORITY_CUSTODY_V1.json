@@ -1,0 +1,26 @@
+{
+  "schema": "SYNTHETIC_LANE_V78_MARGINAL_AUTHORITY_CUSTODY_V1",
+  "date": "2026-10-09",
+  "library_path": "/Jepa project/V78_MARGINAL_AUTHORITY_V1.json",
+  "size_bytes": 89377,
+  "sha256": "b75310f1663b7fad63cb1dcaa6a7e926c19aaecc8cc4d021322101195f1c25d2",
+  "source": {
+    "corrected_cache_zip_sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+    "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "operator_bridge_sha256": "ddbe7ba09cf6bf62fc1135f4bfd081601dc43fde23e61a4cf3206e3bd7655c55",
+    "paired_meta_manifest_verified": true,
+    "n_shards": 42,
+    "n_cells": 4726
+  },
+  "geometry": {
+    "n_addresses": 41238,
+    "n_positive_abundance": 35459,
+    "n_zero_abundance": 5779,
+    "abundance_quantile_points": 1001,
+    "depth_quantile_points": 21,
+    "global_median_source_library": 14430.0,
+    "global_median_detected_addresses": 4467.0
+  },
+  "authority": "NON_TRAINING__SCIENTIFIC_EXECUTION_REQUIRES_V78_PREEXECUTION_GATE_READY"
+}
