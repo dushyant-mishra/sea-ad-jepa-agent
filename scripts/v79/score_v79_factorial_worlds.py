@@ -11,6 +11,7 @@ from .build_v79_factorial_worlds import FactorialWorlds, WorldArm
 CANONICAL_THRESHOLD = 0.30
 SENSITIVITY_THRESHOLDS = (0.10, 0.20, 0.30, 0.40)
 _CELL_BLOCK = 128
+_QPROBS = np.asarray([0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0], dtype=np.float64)
 
 
 def _default_legacy_modules():
@@ -28,7 +29,7 @@ def _sparse_hvg_material(counts, universe: np.ndarray, n_hvg: int) -> dict[str, 
     """Frozen CPM-log1p HVG rule without densifying the whole evaluation universe.
 
     Zeros remain zeros after log1p, so per-gene variance is exactly E[x^2] - E[x]^2 and can be
-    computed from the sparse transformed matrix.  Only the selected genes are then materialized.
+    computed from the sparse transformed matrix. Only the selected genes are then materialized.
     """
     X = sparse.csr_matrix(counts, dtype=np.float64)
     universe = np.asarray(universe, dtype=np.int64)
@@ -145,6 +146,36 @@ def _build_base_strata(loc, broad_class: np.ndarray, depth: np.ndarray) -> np.nd
     return out.astype(str)
 
 
+def _grouped_marginal_views(X: sparse.csr_matrix, broad: np.ndarray, regime: np.ndarray) -> dict[str, Any]:
+    """Distributional endpoints required by the frozen design without exposing gene identities."""
+    X = sparse.csr_matrix(X)
+    lib = np.asarray(X.sum(1)).ravel().astype(np.float64)
+    det = np.asarray((X > 0).sum(1)).ravel().astype(np.float64)
+
+    def summarize(labels: np.ndarray) -> dict[str, Any]:
+        labels = np.asarray(labels).astype(str)
+        out: dict[str, Any] = {}
+        for label in sorted(np.unique(labels).tolist()):
+            ix = np.flatnonzero(labels == label)
+            sub = X[ix]
+            positive = np.asarray(sub.data, dtype=np.float64)
+            pq = np.quantile(positive, _QPROBS) if len(positive) else np.full(len(_QPROBS), np.nan)
+            out[str(label)] = {
+                "n_cells": int(len(ix)),
+                "quantile_probs": _QPROBS.tolist(),
+                "library_size_quantiles": np.quantile(lib[ix], _QPROBS).astype(float).tolist(),
+                "detected_feature_quantiles": np.quantile(det[ix], _QPROBS).astype(float).tolist(),
+                "positive_count_n": int(len(positive)),
+                "positive_count_quantiles": np.asarray(pq, dtype=float).tolist(),
+            }
+        return out
+
+    return {
+        "by_broad_class": summarize(broad),
+        "by_observation_regime": summarize(regime),
+    }
+
+
 def score_world(world: WorldArm, universe: np.ndarray, *,
                 legacy_score_fn: Callable | None = None,
                 localization_backend=None, n_hvg: int = 3000) -> dict[str, Any]:
@@ -194,6 +225,7 @@ def score_world(world: WorldArm, universe: np.ndarray, *,
             "L3": l3,
             "L4": l4,
         },
+        "marginal_views": _grouped_marginal_views(X, broad, regime),
         "thresholds": {
             "canonical": CANONICAL_THRESHOLD,
             "sensitivity": list(SENSITIVITY_THRESHOLDS),
