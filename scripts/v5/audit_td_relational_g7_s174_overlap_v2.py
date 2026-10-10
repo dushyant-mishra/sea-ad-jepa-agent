@@ -195,10 +195,50 @@ def validate_s174_payload(data, indices, indptr, shape) -> None:
         raise RuntimeError("S174 raw counts must be finite, nonnegative and exactly integer-valued")
 
 
+def _require_exact_sha(path: Path, expected_sha: str, label: str) -> str:
+    path = Path(path)
+    if not path.is_file():
+        raise RuntimeError(f"missing {label}: {path}")
+    actual = common.sha256_file(path)
+    if actual != str(expected_sha):
+        raise RuntimeError(f"{label} SHA mismatch immediately before use: {actual} != {expected_sha}: {path}")
+    return actual
+
+
+def load_s174_cell_index(meta_path: Path, expected_sha: str) -> tuple[np.ndarray, dict[str, int], str]:
+    """Reauthenticate an S174 meta shard immediately before using cell identity rows."""
+    immediate_sha = _require_exact_sha(meta_path, expected_sha, "S174 meta shard")
+    with np.load(meta_path, allow_pickle=False) as meta:
+        if "cell_id" not in meta.files:
+            raise RuntimeError(f"S174 meta shard lacks cell_id: {meta_path}")
+        cells = meta["cell_id"].astype(str)
+    if len(set(cells.tolist())) != len(cells):
+        raise RuntimeError(f"duplicate S174 cell_id values are forbidden: {meta_path}")
+    where = {cell: index for index, cell in enumerate(cells)}
+    return cells, where, immediate_sha
+
+
+def load_s174_count_matrix(counts_path: Path, expected_sha: str):
+    """Reauthenticate an S174 count shard immediately before opening count values."""
+    immediate_sha = _require_exact_sha(counts_path, expected_sha, "S174 counts shard")
+    from scipy import sparse
+    with np.load(counts_path, allow_pickle=False) as payload:
+        data = payload["data"].copy()
+        indices = payload["indices"].copy()
+        indptr = payload["indptr"].copy()
+        shape = tuple(payload["shape"])
+    validate_s174_payload(data, indices, indptr, shape)
+    matrix = sparse.csr_matrix((data, indices, indptr), shape=shape)
+    return matrix, immediate_sha
+
+
 def sparse_row_dict(matrix, row_index: int, addresses: set[int]) -> dict[int, int]:
     row = matrix.getrow(row_index)
+    row_indices = np.asarray(row.indices, dtype=np.int64)
+    if len(row_indices) != len(np.unique(row_indices)):
+        raise RuntimeError(f"duplicate S174 CSR address index in row {row_index}")
     output: dict[int, int] = {}
-    for address0, value0 in zip(row.indices, row.data):
+    for address0, value0 in zip(row_indices, row.data):
         address = int(address0)
         value = common.strict_raw_integer(value0)
         if address in addresses and value:
@@ -337,13 +377,13 @@ def main() -> int:
 
     g1b_result, g1b_freeze, g1b_result_sha256, g1b_freeze_sha256 = load_g1b_authority_from_pass_commit(g7_path)
     verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b_freeze)
+    shard_authority = g1b_freeze["rebuilt_cache"]["shards"]
 
     replay, sample_a, provenance, collision, freeze = load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
     matrices = {str(item["matrix_id"]): item for item in freeze["matrices"]}
     source_root = Path(args.source_root)
 
-    from scipy import sparse
     import h5py
 
     total_overlap = total_checked = total_mismatches = 0
@@ -357,23 +397,25 @@ def main() -> int:
             raise RuntimeError(f"matrix absent from Macha freeze: {mid}")
         study = str(group.source.iloc[0])
         stem = str(matrix_rec["stem"])
+        authority = shard_authority.get(stem)
+        if authority is None:
+            raise RuntimeError(f"S174 shard absent from immutable G1b authority: {stem}")
         meta_path = Path(args.s174_cache_root) / f"{stem}.meta.npz"
         counts_path = Path(args.s174_cache_root) / f"{stem}.counts.npz"
 
-        with np.load(meta_path, allow_pickle=False) as meta:
-            s174_cells = meta["cell_id"].astype(str)
-        where_s174 = {cell: index for index, cell in enumerate(s174_cells)}
+        s174_cells, where_s174, immediate_meta_sha = load_s174_cell_index(meta_path, authority["meta"])
         overlap = group[group.cell_id.astype(str).isin(where_s174)].copy()
         if overlap.empty:
             per_matrix.append({"matrix_id": mid, "study": study, "overlap_cells": 0,
                                "checked_entries": 0, "mismatches": 0,
+                               "s174_meta_sha256_immediate": immediate_meta_sha,
+                               "s174_counts_sha256_immediate": None,
                                "s174_count_values_opened": False, "physical_h5ad_values_opened": False})
             continue
 
-        with np.load(counts_path, allow_pickle=False) as payload:
-            validate_s174_payload(payload["data"], payload["indices"], payload["indptr"], payload["shape"])
-            s174_matrix = sparse.csr_matrix((payload["data"], payload["indices"], payload["indptr"]),
-                                            shape=tuple(payload["shape"]))
+        s174_matrix, immediate_counts_sha = load_s174_count_matrix(counts_path, authority["counts"])
+        if s174_matrix.shape[0] != len(s174_cells):
+            raise RuntimeError(f"S174 meta/count row geometry changed before overlap use: {stem}")
 
         fprov = provenance[provenance.source_dataset_id.astype(str).eq(FAMILY[study])]
         if fprov.source_exact_ensembl_id.astype(str).duplicated().any():
@@ -407,6 +449,8 @@ def main() -> int:
         per_matrix.append({"matrix_id": mid, "study": study, "overlap_cells": int(len(overlap)),
                            "checked_entries": int(checked), "mismatches": int(mismatches),
                            "physical_source_sha256_verified": verified_physical_sources[mid],
+                           "s174_meta_sha256_immediate": immediate_meta_sha,
+                           "s174_counts_sha256_immediate": immediate_counts_sha,
                            "s174_count_values_opened": True, "physical_h5ad_values_opened": True})
 
     status = overlap_status(total_overlap, total_mismatches)
