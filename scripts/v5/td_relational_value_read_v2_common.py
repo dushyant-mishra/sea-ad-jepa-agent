@@ -16,7 +16,10 @@ from pathlib import Path
 
 PREFLIGHT_SCHEMA = "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3"
 MAPPING_SCHEMA = "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3"
-PREFLIGHT_PASS = "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
+DRIVER_PASS = "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
+MAPPING_PASS = "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND"
+# Historical test/helper alias; never use this to validate a mapping receipt.
+PREFLIGHT_PASS = DRIVER_PASS
 
 VALUE_AUTH_SCHEMA = "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2"
 VALUE_AUTHORIZATION = "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY"
@@ -73,7 +76,6 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
 
 
 def canonical_text_sha256(path: Path) -> str:
-    """Hash executable text with newline normalization so CRLF/LF checkout policy cannot change identity."""
     raw = Path(path).read_bytes()
     canonical = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
     return hashlib.sha256(canonical).hexdigest()
@@ -92,7 +94,6 @@ def _git_root(path: Path) -> Path:
 
 
 def git_commit_sha(path: Path) -> str:
-    """Bind execution to the exact repository commit containing the candidate code."""
     root = _git_root(path)
     try:
         commit = subprocess.check_output(
@@ -108,7 +109,6 @@ def git_commit_sha(path: Path) -> str:
 
 
 def require_git_clean_path(path: Path) -> None:
-    """Reject tracked-code drift while tolerating Git's configured newline clean filters."""
     path = Path(path).resolve()
     root = _git_root(path)
     try:
@@ -136,7 +136,6 @@ def require_git_clean_path(path: Path) -> None:
 
 
 def code_identity(g6_path: Path, g7_path: Path) -> dict[str, str]:
-    """Return platform-stable identity for every local code surface controlling the value boundary."""
     common_path = Path(__file__).resolve()
     g6_path = Path(g6_path).resolve()
     g7_path = Path(g7_path).resolve()
@@ -182,7 +181,6 @@ def load_runtime_authorization(
     g6_path: Path,
     g7_path: Path,
 ) -> dict:
-    """Validate a separately created V2 authority against exact evidence and platform-stable code identity."""
     rec = _read_json(path, "runtime value authorization")
     if rec.get("schema") != VALUE_AUTH_SCHEMA:
         raise RuntimeError("value authorization schema mismatch")
@@ -219,7 +217,7 @@ def load_runtime_authorization(
 def _validate_mapping_receipt(mapping: dict) -> None:
     if mapping.get("schema") != MAPPING_SCHEMA:
         raise RuntimeError("mapping schema mismatch")
-    if mapping.get("status") != PREFLIGHT_PASS:
+    if mapping.get("status") != MAPPING_PASS:
         raise RuntimeError(f"mapping preflight is not PASS: {mapping.get('status')}")
     if mapping.get("sample_A_contract") != EXPECTED_SAMPLE_A_CONTRACT:
         raise RuntimeError("Sample-A V3 contract mismatch; require A_NATURAL_MIXTURE / 25000 / exact source counts / 34 H5 matrices")
@@ -242,7 +240,6 @@ def load_bound_preflight(
     expected_preflight_sha: str,
     expected_mapping_sha: str,
 ) -> tuple[dict, dict]:
-    """Validate exact V3 PASS evidence by bytes and semantics; reject old/pass-only JSON."""
     preflight_path = Path(preflight_path)
     mapping_path = Path(mapping_path)
     if sha256_file(preflight_path) != expected_preflight_sha:
@@ -256,7 +253,7 @@ def load_bound_preflight(
     preflight = _read_json(preflight_path, "V3 preflight receipt")
     if preflight.get("schema") != PREFLIGHT_SCHEMA:
         raise RuntimeError("preflight schema mismatch")
-    if preflight.get("status") != PREFLIGHT_PASS:
+    if preflight.get("status") != DRIVER_PASS:
         raise RuntimeError(f"value-blind preflight is not PASS: {preflight.get('status')}")
     _require_false(preflight, "real_value_replay_authorized", "preflight receipt")
     _require_false(preflight, "training_authorized", "preflight receipt")
@@ -282,7 +279,6 @@ def load_bound_preflight(
 
 
 def verify_source_file(path: Path, source_rec: dict) -> str:
-    """Authenticate physical source bytes immediately before any caller opens value arrays."""
     path = Path(path)
     if not path.is_file():
         raise RuntimeError(f"source file missing: {path}")
@@ -297,7 +293,6 @@ def verify_source_file(path: Path, source_rec: dict) -> str:
 
 
 def strict_raw_integer(value) -> int:
-    """Return an exact nonnegative integer raw count; never round transformed/fractional values."""
     numeric = float(value)
     if not math.isfinite(numeric):
         raise RuntimeError("raw count must be finite")
