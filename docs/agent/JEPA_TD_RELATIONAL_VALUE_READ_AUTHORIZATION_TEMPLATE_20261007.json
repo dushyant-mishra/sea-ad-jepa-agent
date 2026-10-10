@@ -1,9 +1,9 @@
 {
-  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V2",
+  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3",
   "status": "TEMPLATE_ONLY__NOT_AUTHORITY__DO_NOT_RENAME_AND_USE_WITHOUT_EXPLICIT_OWNER_AUTHORIZATION",
-  "required_runtime_schema_if_authorized": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V1",
-  "required_runtime_authorization_if_authorized": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY",
-  "required_runtime_scope_if_authorized": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads; NPH52 historical clean-path pass-through; G6/G7 only; no target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
+  "required_runtime_schema_if_authorized": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+  "required_runtime_authorization_if_authorized": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+  "required_runtime_scope_if_authorized": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads; NPH52 historical clean-path pass-through; hardened G6/G7 integrity checks only; no corrected TD56/TD57B/TD57C/TD59 biological replay, target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
   "required_g6_entrypoint_if_authorized": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
   "forbidden_g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA.py",
   "required_g7_entrypoint_if_authorized": "scripts/v5/audit_td_relational_g7_s174_overlap.py",
@@ -12,17 +12,18 @@
   "g7_success_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
   "g7_not_estimable_terminal": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
   "g7_not_estimable_is_not_pass": true,
+  "biological_replay_authorized": false,
   "training_authorized": false,
   "real_value_read_authorized_by_this_file": false,
-  "replay_authorized_by_this_file": false,
   "instructions": [
-    "This template is deliberately not accepted as authority by the materializer or G7 auditor.",
-    "Only after explicit owner authorization may a separate runtime JSON be created with the exact required runtime schema, authorization string, scope string, and training_authorized=false.",
-    "Future authorization must bind the hardened V2 G6 entrypoint. Direct invocation of the historical V1 materializer is outside authorization because V1 silently rounded physical values before the preauthorization hardening review.",
-    "The V2 entrypoint reuses the frozen V1 mechanics but replaces raw-value decoding with strict finite nonnegative integer validation before normalization.",
-    "G7 must use every natural overlap and zero tolerance. NOT_ESTIMABLE is a stop/non-pass state, not technical success.",
-    "Do not broaden the scope, add target selection, replay biological verdicts, or infer authorization from executable code.",
-    "G4/G5 must already have PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND before any value-read authorization can be created or used.",
-    "Even G6+G7 PASS does not authorize TD56/TD57B/TD59 corrected biological replay; that requires a separate owner decision after receipt review."
+    "This file is a template only and is deliberately rejected as runtime authority.",
+    "A future runtime authorization can exist only after an exact G4/G5 PASS and a new explicit owner decision.",
+    "That runtime authorization must use the exact V2 schema/token/scope above and must bind both exact hardened entrypoint paths.",
+    "The historical V1 runtime schema/token is not valid for the hardened path and must not be reused.",
+    "Direct invocation of the historical V1 materializer is outside any future authorization.",
+    "The V2 materializer requires finite nonnegative exact integer raw counts before normalization; it may not round fractional values.",
+    "G7 compares every natural HVS/SEA Sample-A x S174 cell overlap across all frozen replay addresses after G4/G5 establishes their mapping; S174 cache geometry is the full 41,238-address canonical space, not the later 14,417 analysis universe.",
+    "G7 NOT_ESTIMABLE is a stop/non-pass state, not technical success.",
+    "Even G6+G7 PASS does not authorize corrected TD56/TD57B/TD57C/TD59 biological replay; that requires another owner decision after receipt review."
   ]
 }
