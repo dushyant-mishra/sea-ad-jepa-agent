@@ -1,62 +1,71 @@
-# JEPA Target Discovery — G6/G7 preauthorization readiness review
+# JEPA Target Discovery — G6/G7 preauthorization review, self-audit corrected
 
 Date: 2026-10-09
 
-Status: `PREAUTHORIZATION_REVIEW_COMPLETE__G6_G7_STILL_UNAUTHORIZED`
+Status: `PREAUTHORIZATION_REVIEW_CORRECTED__G6_G7_STILL_UNAUTHORIZED__NO_VALUE_READ`
 
-This review was performed while canonical G4/G5 remains pending on PR #248. It does **not** authorize any expression-value read, corrected-value materialization, TD56/TD57B/TD59 biological replay, target selection, TD60, Stage 4, or training.
+This review was performed while canonical G4/G5 remains pending on PR #248. It does **not** authorize any expression-value read, corrected-value materialization, corrected TD56/TD57B/TD57C/TD59 biological replay, target selection, TD60, Stage 4, or training.
 
 Hard terminal remains:
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
-## Why this review was done now
+## Why this review exists
 
-If the post-CRLF G4/G5 value-blind preflight passes, the next possible operation would be the first corrected expression-value read. The dormant G6/G7 code was therefore audited before any owner authorization so that authorization, if later granted, is not used to discover avoidable engineering defects.
+If the hardened G4/G5 value-blind preflight passes, the next possible operation would be the first corrected expression-value read. The dormant G6/G7 code was therefore audited before any owner authorization so authorization, if later granted, is not used to discover avoidable engineering defects.
 
-## G6 scientific purpose
+## G6 purpose
 
-G6 does not test whether the relational biology survives. It tests whether the corrected physical HVS/SEA rows are internally consistent with the frozen historical Sample-A cell identities and whole-cell raw library totals.
+G6 is an integrity check, not the biological replay. For the exact 25,000 historical Sample-A cells:
 
-For the exact 25,000 historical Sample-A cells:
-
-- HVS/SEA-AD values are read from the corrected physical-ID path;
+- HVS/SEA-AD values would be re-read by corrected physical-ID mapping;
 - NPH52 remains the authenticated unaffected historical pass-through path;
-- only the exact frozen 9,216 TD56–TD59 addresses are retained in the corrected sparse cache;
+- only the exact frozen 9,216 TD56–TD59 addresses are retained;
 - HVS/SEA normalization remains `log1p(raw_count * 10000 / verified_whole_cell_library_total)`;
-- historical detected-gene counts are diagnostic only and cannot be a pass/fail gate.
+- historical detected-gene counts are diagnostic only.
 
 G6 PASS remains:
-
 `PASS_TD_G6_SOURCE_LIBRARY_EXACT`
 
 Any whole-cell library mismatch remains terminal:
-
 `STOP_TD_G6_SOURCE_LIBRARY_MISMATCH`
 
-## G6 issue found and corrected prospectively
+## G6 defect found before execution
 
-The historical V1 implementation decoded physical H5AD values with `int(round(float(v)))`. That is unsafe as an authorization boundary because the value-blind G4/G5 preflight intentionally never opens expression arrays and therefore does not itself prove that every stored physical value is an integer raw count.
+Historical V1 decoded physical values with `int(round(float(v)))`. Because G4/G5 deliberately does not open expression arrays, this could silently turn a fractional/transformed value into an apparent integer raw count.
 
-No G6 value read has ever been executed, so this defect affected no result.
+No G6 value read has ever been executed, so no scientific result was affected.
 
-The authorized candidate entrypoint is now:
-
+Hardened candidate:
 `scripts/v5/materialize_td_relational_corrected_sampleA_v2.py`
 
-V2 reuses the frozen V1 implementation but replaces the row-value decoder in-memory before V1 `main()` executes. Every HVS/SEA physical value must be finite, nonnegative, and exactly integer-valued. Fractional/transformed values fail closed rather than being rounded.
+V2 requires every HVS/SEA physical value to be finite, nonnegative, and exactly integer-valued before normalization. Fractional, NaN, infinite, or negative values fail closed.
 
-The historical V1 entrypoint remains in the repository for lineage only:
-
+Historical V1 remains lineage only:
 `scripts/v5/materialize_td_relational_corrected_sampleA.py`
 
-It is explicitly outside any future authorization produced from the revised template.
+## Authorization defect found by self-audit and corrected
 
-## G7 scientific purpose
+The first version of this hardening said that future authorization was “V2 only,” but reused the historical V1 runtime schema/token. That was not a sufficient mechanical boundary because the historical V1 loader could also consume that token.
 
-G7 is an independent cross-lane corroboration against the already-authenticated S174 cache. It uses every naturally overlapping HVS/SEA Sample-A cell and every one of the exact 9,216 replay addresses, comparing raw integer counts with zero tolerance.
+The corrected design now gives the hardened path its own runtime authority surface:
 
-No extra cell or address may be selected to manufacture overlap.
+- schema: `JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2`
+- token: `AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY`
+- exact G6 entrypoint binding: `scripts/v5/materialize_td_relational_corrected_sampleA_v2.py`
+- exact G7 entrypoint binding: `scripts/v5/audit_td_relational_g7_s174_overlap.py`
+- `training_authorized=false`
+- `biological_replay_authorized=false`
+
+The V2 wrapper monkey-patches both the historical V1 authorization loader and row decoder before invoking the preserved mechanics. Therefore an old V1 authorization is rejected by V2, and a future V2 authorization is not valid for the historical V1 loader.
+
+The authorization template is still **template only**. No runtime authorization exists.
+
+## G7 purpose
+
+G7 is independent cross-lane corroboration against the authenticated S174 rebuilt cache. It uses every natural HVS/SEA Sample-A cell overlap and the exact 9,216 replay addresses, comparing raw integer counts with zero tolerance.
+
+No extra cell or address may be selected based on values.
 
 Possible terminals:
 
@@ -64,79 +73,68 @@ Possible terminals:
 - `STOP_TD_G7_S174_CROSSCHECK_MISMATCH`
 - `NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP`
 
-## G7 issue found and corrected prospectively
+## G7 defects found before execution
 
-The previous implementation correctly labeled zero natural overlap as `NOT_ESTIMABLE`, but returned process exit code 0 for that state. That could allow an automation layer to confuse an unestimable corroboration with command success.
+The historical implementation had two avoidable hazards:
 
-No G7 execution has occurred, so this defect affected no result.
+1. zero natural overlap was labeled `NOT_ESTIMABLE` but returned process exit code 0;
+2. S174 reference values were cast with `int(...)` without an explicit finite/exact-integer check.
 
-The hardened G7 implementation now:
+The hardened G7 path now:
 
-- loads the hardened V2 G6 value decoder;
-- independently rejects fractional/non-integer S174 reference values rather than silently casting them;
+- loads the hardened V2 materializer/authorization surface;
+- requires finite, nonnegative, exactly integer S174 reference counts;
 - returns process success only for `PASS_TD_G7_S174_EXACT_OVERLAP`;
 - returns non-success for both mismatch and `NOT_ESTIMABLE`;
-- continues to write an immutable receipt before returning.
+- writes an immutable receipt.
 
-`NOT_ESTIMABLE` remains scientifically informative but is explicitly **not a PASS**.
+`NOT_ESTIMABLE` is not a PASS.
+
+## G7 address-universe self-audit
+
+A self-audit questioned whether comparing all 9,216 replay addresses exceeded the S174 “checked set.” The underlying S174 rebuild implementation resolves this: rebuilt HVS/SEA cache matrices are stored in the full canonical `N_ADDR = 41,238` address space. The later 14,417-address V77 analysis universe is not the cache storage geometry.
+
+Therefore all 9,216 frozen TD replay addresses can lawfully be cross-checked against S174 **after** G4/G5 has established that those exact addresses resolve one-to-one under the corrected mapping. G7 additionally checks that the S174 cache has 41,238 columns before comparison.
 
 ## Revised authorization template
 
-`docs/agent/JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_20261007.json` has been revised to template schema V2.
+Canonical template path:
+`docs/agent/JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_20261007.json`
 
-It remains a template only and creates no authority.
+Current template schema:
+`JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3`
 
-A future runtime authorization may be created only after explicit owner authorization and only after an authenticated:
+It remains non-authorizing. A runtime authorization may be created only after:
 
-`PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND`
+1. canonical self-audit-hardened G4/G5 PASS;
+2. review of the G4/G5 receipts;
+3. a new explicit owner decision;
+4. qualification of the #251 focused regression tests on the canonical/repository environment.
 
-The template binds:
+## What G6/G7 PASS would mean
 
-- G6 entrypoint: `materialize_td_relational_corrected_sampleA_v2.py`;
-- direct V1 materializer invocation: forbidden;
-- G7 entrypoint: `audit_td_relational_g7_s174_overlap.py`;
-- exact historical 25,000-cell / 9,216-address scope;
-- training remains false;
-- replay remains false.
+G6+G7 PASS would support the integrity of the corrected value-reading path. It would **not** establish that the historical relational biology survived.
 
-## What G6/G7 PASS would and would not mean
+It would not:
+- select a target;
+- relabel TD57C;
+- authorize corrected TD56/TD57B/TD57C/TD59 biological replay;
+- authorize TD60;
+- authorize training.
 
-If G6 and G7 both PASS, we would know that the corrected value-reading path is behaving consistently enough to consider the **actual corrected biological replay**.
+A separate owner decision remains mandatory after G6/G7 receipt review before biological replay.
 
-It would **not** mean that TD56, TD57B, or TD59 survived biologically.
+## Ordered frontier
 
-It would **not** select a target.
-
-It would **not** authorize the TD56/TD57B/TD59 replay itself.
-
-It would **not** authorize training.
-
-After G6/G7 receipts are reviewed, a separate explicit owner decision is required before any corrected historical biological replay.
-
-## Current ordered frontier
-
-1. Macha runs post-repair G4/G5 on the canonical Windows machine from PR #248 in the frozen fresh namespace.
-2. Any G4/G5 failure is preserved and stops the lane.
-3. If G4/G5 PASS, stop and return the receipts to the owner.
-4. Only then may the owner explicitly authorize the exact G6/G7 value-read scope.
-5. If authorized, use the hardened V2 G6 entrypoint and hardened G7 auditor from this review branch/successor.
-6. G6 or G7 mismatch stops.
-7. G7 `NOT_ESTIMABLE` is not a PASS and must be separately adjudicated; do not manufacture overlap.
-8. Even G6+G7 PASS stops before corrected TD56/TD57B/TD59 biological replay for a separate owner decision.
+1. Macha runs canonical self-audit-hardened G4/G5 from PR #248.
+2. Any failure is preserved and stops.
+3. If G4/G5 PASS, return receipts; do not create a value authorization.
+4. Review and qualify #251 regression tests against the then-current #248 base.
+5. Only after a new owner decision may a V2 runtime authorization be created.
+6. If authorized, run only hardened V2 G6 + hardened G7.
+7. G6 mismatch, G7 mismatch, or G7 `NOT_ESTIMABLE` stops for review.
+8. Even G6+G7 PASS stops before corrected biological replay for another owner decision.
 
 ## Verification qualification
 
-The changes in this review are code/test/documentation preparation only. The present ChatGPT execution environment cannot access the repository checkout or canonical H5AD/S174 assets, and this repository has no registered GitHub Actions workflow. Therefore no CI or canonical-machine test PASS is claimed here.
-
-The branch contains regression tests for:
-
-- rejecting fractional raw values in the hardened G6 reader;
-- preserving whole-row library totals before mapping filters;
-- exact 9,216-address filtering behavior;
-- exact authorization scope and preflight terminal requirements;
-- rejecting modified S174 shard hashes;
-- rejecting fractional S174 reference values;
-- exact overlap mismatch behavior;
-- non-success exit for G7 `NOT_ESTIMABLE`.
-
-These tests must be executed in the repository context before any future value-read authorization is acted on.
+No G6/G7 values have been read. No CI or canonical-machine test PASS is claimed for #251 at this time. The branch contains tests for V2-only authorization, strict raw integer values, immutable output, S174 shard hashes, overlap mismatch, and `NOT_ESTIMABLE` process failure. Those tests must execute before any future value-read authorization is acted on.
