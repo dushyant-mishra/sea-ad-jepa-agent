@@ -79,17 +79,24 @@ def canonical_text_sha256(path: Path) -> str:
     return hashlib.sha256(canonical).hexdigest()
 
 
-def git_commit_sha(path: Path) -> str:
-    """Bind execution to the exact repository commit containing the candidate code."""
-    path = Path(path).resolve()
+def _git_root(path: Path) -> Path:
     try:
         root = subprocess.check_output(
-            ["git", "-C", str(path.parent), "rev-parse", "--show-toplevel"],
+            ["git", "-C", str(Path(path).resolve().parent), "rev-parse", "--show-toplevel"],
             stderr=subprocess.STDOUT,
             text=True,
         ).strip()
+    except subprocess.CalledProcessError as exc:
+        raise RuntimeError(f"cannot resolve implementation git root: {exc.output}") from exc
+    return Path(root).resolve()
+
+
+def git_commit_sha(path: Path) -> str:
+    """Bind execution to the exact repository commit containing the candidate code."""
+    root = _git_root(path)
+    try:
         commit = subprocess.check_output(
-            ["git", "-C", root, "rev-parse", "HEAD"],
+            ["git", "-C", str(root), "rev-parse", "HEAD"],
             stderr=subprocess.STDOUT,
             text=True,
         ).strip()
@@ -100,11 +107,41 @@ def git_commit_sha(path: Path) -> str:
     return commit
 
 
+def require_git_clean_path(path: Path) -> None:
+    """Reject tracked-code drift while tolerating Git's configured newline clean filters."""
+    path = Path(path).resolve()
+    root = _git_root(path)
+    try:
+        relative = path.relative_to(root).as_posix()
+    except ValueError as exc:
+        raise RuntimeError(f"controlling script is outside repository root: {path}") from exc
+    result = subprocess.run(
+        ["git", "-C", str(root), "diff", "--quiet", "HEAD", "--", relative],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if result.returncode == 1:
+        raise RuntimeError(f"controlling script has uncommitted drift: {relative}")
+    if result.returncode != 0:
+        raise RuntimeError(f"cannot verify controlling script cleanliness: {relative}: {result.stderr}")
+    tracked = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if tracked.returncode != 0:
+        raise RuntimeError(f"controlling script is not tracked at implementation commit: {relative}")
+
+
 def code_identity(g6_path: Path, g7_path: Path) -> dict[str, str]:
     """Return platform-stable identity for every local code surface controlling the value boundary."""
     common_path = Path(__file__).resolve()
     g6_path = Path(g6_path).resolve()
     g7_path = Path(g7_path).resolve()
+    for path in (common_path, g6_path, g7_path):
+        require_git_clean_path(path)
     commits = {git_commit_sha(common_path), git_commit_sha(g6_path), git_commit_sha(g7_path)}
     if len(commits) != 1:
         raise RuntimeError(f"G6/G7/common code are not from one implementation commit: {sorted(commits)}")
