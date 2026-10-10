@@ -98,16 +98,33 @@ def fit_with_retry(design, y, likelihood, seed, chains, warmup, draws, depth=Tru
     return dict(run=run, attempts=attempts, diagnosed=attempts[-1]["diagnosed"])
 
 
-def summarize(run, design, likelihood, mask=None) -> dict:
-    fr = M.realized_fractions(M.flatten_chains(run["samples"]), design, likelihood, mask=mask)
+def summarize(run, design, likelihood, mask=None, typical_offset=None, components=M.COMPONENTS) -> dict:
+    """Per component: the fraction summaries, and the absolute realized variance (per-gene posterior median and
+    90% interval), which a generator needs as a magnitude as well as a share."""
+    fr = M.realized_fractions(M.flatten_chains(run["samples"]), design, likelihood, components=components, mask=mask,
+                              typical_offset=typical_offset)
     out = {}
-    for k, (_, frac) in fr.items():
+    for k, (var, frac) in fr.items():
         med = np.median(frac, 1)                                     # across-gene median, per draw
         out[k] = dict(across_gene_median_q=[float(v) for v in np.quantile(med, [0.05, 0.5, 0.95])],
                       per_gene_median=[float(v) for v in np.median(frac, 0)],
                       per_gene_q05=[float(v) for v in np.quantile(frac, 0.05, 0)],
-                      per_gene_q95=[float(v) for v in np.quantile(frac, 0.95, 0)])
+                      per_gene_q95=[float(v) for v in np.quantile(frac, 0.95, 0)],
+                      variance_per_gene_median=[float(v) for v in np.median(var, 0)],
+                      variance_per_gene_q05=[float(v) for v in np.quantile(var, 0.05, 0)],
+                      variance_per_gene_q95=[float(v) for v in np.quantile(var, 0.95, 0)])
     return out
+
+
+HYPER_SITES = ("m_op", "s_op", "m_donor", "s_donor", "m_dk", "s_dk", "m_res", "s_res", "m_phi", "s_phi")
+
+
+def hyperparameters(run) -> dict:
+    """Posterior 5/50/95% of the population hyperparameters: m_x is the typical per-gene log sd of component x,
+    s_x the spread of per-gene log sds across genes. Anonymous by construction (no gene index)."""
+    flat = M.flatten_chains(run["samples"])
+    return {k: [float(v) for v in np.quantile(np.asarray(flat[k], dtype=np.float64), [0.05, 0.5, 0.95])]
+            for k in HYPER_SITES if k in flat}
 
 
 def phase_response(phase: str, d: dict, X, gene_count: int) -> dict:
@@ -152,7 +169,8 @@ def main() -> None:
         diagnosed=res["diagnosed"], attempts=res["attempts"],
         interpretation=("estimates may be read" if res["diagnosed"] else
                         "NOT_DIAGNOSED: estimates are recorded but must not be interpreted"),
-        fractions=summarize(res["run"], des, lik), responses=responses,
+        fractions=summarize(res["run"], des, lik), hyperparameters=hyperparameters(res["run"]),
+        responses=responses,
         gene_sample=dict(n=None if genes is None else int(len(genes)), seed=DA.GENE_SAMPLE_SEED,
                          internal_address_indices=None if genes is None else [int(g) for g in genes]),
         environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__),

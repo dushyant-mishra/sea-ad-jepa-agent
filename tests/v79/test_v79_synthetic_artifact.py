@@ -21,8 +21,11 @@ COMPS = ("cls", "src", "op", "donor", "dk", "res")
 def phase(diagnosed=True, n=20, responses=None):
     rng = np.random.default_rng(n)
     fr = {c: dict(across_gene_median_q=[0.1, 0.2, 0.3], per_gene_median=rng.random(n).tolist(),
-                  per_gene_q05=rng.random(n).tolist(), per_gene_q95=rng.random(n).tolist()) for c in COMPS}
-    return dict(diagnosed=diagnosed, fractions=fr, responses=responses)
+                  per_gene_q05=rng.random(n).tolist(), per_gene_q95=rng.random(n).tolist(),
+                  variance_per_gene_median=rng.random(n).tolist(), variance_per_gene_q05=rng.random(n).tolist(),
+                  variance_per_gene_q95=rng.random(n).tolist()) for c in COMPS}
+    hyper = {k: [0.1, 0.2, 0.3] for k in ("m_op", "s_op", "m_donor", "s_donor", "m_dk", "s_dk")}
+    return dict(diagnosed=diagnosed, fractions=fr, responses=responses, hyperparameters=hyper)
 
 
 def ppc(diag=True):
@@ -66,8 +69,11 @@ def test_builds_population_summaries_only(tmp_path):
     assert max(len(x) for x in all_lists(art)) <= 5                 # no per-gene vectors
     a = art["variance_fractions"]["A_log1p_cp10k"]
     assert a["status"] == "CONVERGED" and set(a["fractions"]) == set(B.LABEL.values())
+    assert set(a["population_hyperparameters_posterior_q05_q50_q95"]) >= {"m_donor", "s_donor"}
+    assert len(a["fractions"]["donor"]["absolute_variance_spread_q10_q25_q50_q75_q90"]) == 5
     b0 = art["variance_fractions"]["B0_depth_and_detected_features"]["fractions"]
     assert set(b0) == {"log_source_library", "log_detected_features"}
+    assert "absolute_variance_median" in b0["log_source_library"]["operator"]
     assert art["variance_fractions"]["C_positive_magnitude"]["family"] == "ztnb"
     json.dumps(art)
 

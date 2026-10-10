@@ -221,13 +221,9 @@ def full(a) -> None:
     w = data["mask"]
     typical = (data["offset"][:, None] * w).sum(0) / np.maximum(w.sum(0), 1)
     lik = "ztnb" if a.family == "ztnb" else "gaussian"
-    fr = M.realized_fractions(M.flatten_chains(res["run"]["samples"]), des, lik, mask=w,
-                              typical_offset=typical if lik == "ztnb" else None)
-    frac = {}
-    for x, (_, f) in fr.items():
-        frac[x] = dict(across_gene_median_q=np.quantile(np.median(f, 1), [0.05, 0.5, 0.95]),
-                       per_gene_median=np.median(f, 0), per_gene_q05=np.quantile(f, 0.05, 0),
-                       per_gene_q95=np.quantile(f, 0.95, 0))
+    import run_v79_inference as INF
+    frac = INF.summarize(res["run"], des, lik, mask=w, typical_offset=typical if lik == "ztnb" else None)
+    hyper = INF.hyperparameters(res["run"])
     rec = dict(schema="V79_PHASE_C_INTERNAL_V1", status="INTERNAL__NOT_SYNTHETIC_CONSUMABLE", family=a.family,
                residual_convention=("Nakagawa, Johnson & Schielzeth 2017 log-normal approximation ln(1 + 1/lambda + "
                                     "1/phi) for the NB2 parent (a convention for the truncated model)"
@@ -238,7 +234,7 @@ def full(a) -> None:
                diagnosed=res["diagnosed"],
                interpretation=("estimates may be read" if res["diagnosed"] else
                                "NOT_DIAGNOSED: estimates are recorded but must not be interpreted"),
-               detected_share_per_gene=w.mean(0), fractions=frac,
+               detected_share_per_gene=w.mean(0), fractions=frac, hyperparameters=hyper,
                gene_sample=dict(n=int(len(data["genes"])), seed=DA.GENE_SAMPLE_SEED,
                                 internal_address_indices=data["genes"]),
                environment=env(), wall_seconds=time.time() - t0, lane=FW.LANE_TERMINAL)

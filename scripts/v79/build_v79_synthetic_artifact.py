@@ -47,7 +47,10 @@ def sha(p: Path) -> str:
 
 
 def fractions(rec: dict) -> dict:
-    """Population summaries of a phase's variance fractions; nothing per gene."""
+    """Population summaries of a phase's variance fractions and magnitudes; nothing per gene. Magnitudes: the
+    spread across genes of each component's absolute realized variance (posterior medians), and the population
+    hyperparameters (m_x: typical per-gene log sd; s_x: its spread across genes), from which a generator can draw
+    anonymous per-gene effect sizes."""
     if not rec.get("diagnosed"):
         return dict(status="NOT_CONVERGED", note="estimates exist internally but are not interpreted or exported")
     out = {}
@@ -56,7 +59,13 @@ def fractions(rec: dict) -> dict:
         out[LABEL[comp]] = dict(
             across_gene_median_posterior_q05_q50_q95=[float(v) for v in f["across_gene_median_q"]],
             per_gene_median_spread_q10_q25_q50_q75_q90=[float(v) for v in np.quantile(med, SPREAD_Q)])
-    return dict(status="CONVERGED", n_genes_summarised=int(len(med)), fractions=out)
+        if "variance_per_gene_median" in f:
+            v = np.asarray(f["variance_per_gene_median"], dtype=np.float64)
+            out[LABEL[comp]]["absolute_variance_spread_q10_q25_q50_q75_q90"] = \
+                [float(x) for x in np.quantile(v, SPREAD_Q)]
+    hyper = {k: v for k, v in (rec.get("hyperparameters") or {}).items()}
+    return dict(status="CONVERGED", n_genes_summarised=int(len(med)), fractions=out,
+                population_hyperparameters_posterior_q05_q50_q95=hyper)
 
 
 def responses(rec: dict) -> dict:
@@ -67,7 +76,11 @@ def responses(rec: dict) -> dict:
     out = {}
     for i, name in enumerate(rec["responses"]):
         out[name] = {LABEL[c]: dict(posterior_median=float(f["per_gene_median"][i]),
-                                    q05_q95=[float(f["per_gene_q05"][i]), float(f["per_gene_q95"][i])])
+                                    q05_q95=[float(f["per_gene_q05"][i]), float(f["per_gene_q95"][i])],
+                                    **({} if "variance_per_gene_median" not in f else dict(
+                                        absolute_variance_median=float(f["variance_per_gene_median"][i]),
+                                        absolute_variance_q05_q95=[float(f["variance_per_gene_q05"][i]),
+                                                                   float(f["variance_per_gene_q95"][i])])))
                      for c, f in rec["fractions"].items()}
     return dict(status="CONVERGED", fractions=out)
 

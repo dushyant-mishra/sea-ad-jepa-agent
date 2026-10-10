@@ -215,7 +215,13 @@ def build() -> dict:
                       "evaluated on counts; this fixes the only valid evaluation without changing the rule")),
             dict(id="A3", date="2026-10-10", before_real_data=True,
                  change="the zero-truncated NB must pass the recovery suite; the retry rule applies to recovery fits",
-                 why="a likelihood new in Phase C gets the same simulation qualification as A and B (stricter)")],
+                 why="a likelihood new in Phase C gets the same simulation qualification as A and B (stricter)"),
+            dict(id="A4", date="2026-10-10", before_real_data=True,
+                 change=("Output B also exports magnitudes: the across-gene spread of each component's absolute "
+                         "realized variance, the population hyperparameters (typical per-gene log sd and its "
+                         "spread across genes), and B0's absolute depth and detected-feature variances by component"),
+                 why=("the consumer (PR #253 sections 8.1, 8.2 and 15) needs anonymous effect-magnitude and "
+                      "capture-spread distributions, not only shares; no estimand or rule changes"))],
         amended_from_sha256="1807ddb1b9071f5465873e076ebd6a1fbab6b5fcc14e7ec87bd505525144833b",
         terminal_authority=[FW.LANE_TERMINAL, "no target winner", "no representation winner",
                             "no JEPA training authority", "no E4 authority", "no protected-data authority",

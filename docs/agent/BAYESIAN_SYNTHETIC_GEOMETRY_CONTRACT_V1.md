@@ -347,6 +347,7 @@ V78 F0-F3 is untouched: seeds, definitions, effect sizes, scoring, evaluation un
 - **A1** (2026-10-10; before real data: True): parameterization text corrected: per-gene log sds are centred (the V1 text said non-centred; self-audit entry 10), and donor_class effects are non-centred for detection (self-audit entry 16) and for the Phase C families. Why: centring is a sampler setting; the model and its posterior are unchanged; the text must state what runs.
 - **A2** (2026-10-10; before real data: True): Phase C details: offset, dispersion prior, count-scale scoring, residual convention. Why: the frozen family rule compares a log-count density with a count probability unless both are evaluated on counts; this fixes the only valid evaluation without changing the rule.
 - **A3** (2026-10-10; before real data: True): the zero-truncated NB must pass the recovery suite; the retry rule applies to recovery fits. Why: a likelihood new in Phase C gets the same simulation qualification as A and B (stricter).
+- **A4** (2026-10-10; before real data: True): Output B also exports magnitudes: the across-gene spread of each component's absolute realized variance, the population hyperparameters (typical per-gene log sd and its spread across genes), and B0's absolute depth and detected-feature variances by component. Why: the consumer (PR #253 sections 8.1, 8.2 and 15) needs anonymous effect-magnitude and capture-spread distributions, not only shares; no estimand or rule changes.
 
 ## Terminal authority
 
