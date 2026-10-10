@@ -4,7 +4,12 @@
 Reads only file bytes plus identity/support metadata from H5AD files (var/obs). It never opens
 raw/X or X count arrays. The scientific question is deliberately narrow: do the exact 9,216
 historical TD addresses and exact 25,000 Sample-A cells remain resolvable under the already-audited
-S174 identifier join, with the physical H5AD bytes still matching the frozen S174 authority?
+S174 identifier join, with all 35 physical H5AD bytes still matching the frozen S174 authority?
+
+Custody and Sample-A geometry are deliberately separate:
+- all 35 S174-frozen HVS/SEA-AD H5ADs must authenticate byte-for-byte;
+- Sample A is the frozen A_NATURAL_MIXTURE population and occupies 34 of those 35 matrices;
+- only those 34 Sample-A matrices undergo var/obs mapping and cell-row checks.
 """
 from __future__ import annotations
 
@@ -24,6 +29,9 @@ EXPECTED_COLLISION_SHA = "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d68
 EXPECTED_MACHA_FREEZE_SHA = "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
 N_REPLAY = 9_216
 N_SAMPLE_A = 25_000
+N_FROZEN_H5 = 35
+N_SAMPLE_A_H5 = 34
+SAMPLE_A_LABEL = "A_NATURAL_MIXTURE"
 SOURCE_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 VAR_ID_COLUMN = {"HVS": "_index", "SEA_AD": "gene_ids"}
 FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
@@ -102,6 +110,39 @@ def replay_address_coverage(var_ids, id_to_address, ledger_ids, replay_addresses
     }
 
 
+def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
+    """Select the historically frozen Sample-A population by its actual frozen label."""
+    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy()
+    if enforce_geometry:
+        if len(selected) != N_SAMPLE_A:
+            raise RuntimeError(
+                f"Sample-A geometry mismatch for {SAMPLE_A_LABEL}: {len(selected)} != {N_SAMPLE_A}"
+            )
+        got = selected.source.value_counts().to_dict()
+        if got != SOURCE_COUNTS:
+            raise RuntimeError(f"Sample-A source counts mismatch: {got}")
+    return selected
+
+
+def source_authentication_checks(
+    *,
+    sample_matrix_ids: set[str],
+    sample_authenticated_ids: set[str],
+    frozen_matrix_ids: set[str],
+    frozen_authenticated_ids: set[str],
+) -> dict[str, bool]:
+    """Keep whole-substrate custody separate from Sample-A mapping geometry."""
+    return {
+        "sample_A_h5_matrix_count_exact_34": len(sample_matrix_ids) == N_SAMPLE_A_H5,
+        "all_sample_A_h5_matrices_present": sample_authenticated_ids == sample_matrix_ids,
+        "frozen_h5_matrix_count_exact_35": len(frozen_matrix_ids) == N_FROZEN_H5,
+        "all_35_h5_source_sha256_verified": (
+            len(frozen_authenticated_ids) == N_FROZEN_H5
+            and frozen_authenticated_ids == frozen_matrix_ids
+        ),
+    }
+
+
 def load_authorities(args):
     replay = Path(args.replay_manifest)
     sample = Path(args.sample_freeze)
@@ -124,12 +165,7 @@ def load_authorities(args):
     freeze = json.loads(mf.read_text(encoding="utf-8"))
     if len(r) != N_REPLAY or r.molecular_address_index.nunique() != N_REPLAY:
         raise RuntimeError("replay manifest geometry mismatch")
-    a = s[s["sample"].astype(str).eq("A")].copy()
-    if len(a) != N_SAMPLE_A:
-        raise RuntimeError("Sample-A geometry mismatch")
-    got = a.source.value_counts().to_dict()
-    if got != SOURCE_COUNTS:
-        raise RuntimeError(f"Sample-A source counts mismatch: {got}")
+    a = select_sample_a(s, enforce_geometry=True)
     return checks, r, a, p, c, freeze
 
 
@@ -138,26 +174,39 @@ def audit(args) -> dict:
 
     checks, replay, sample_a, prov, collision, freeze = load_authorities(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
-    matrices = {m["matrix_id"]: m for m in freeze["matrices"]}
+    matrices = {str(m["matrix_id"]): m for m in freeze["matrices"]}
+    frozen_matrix_ids = set(matrices)
+    sample_matrix_ids = set(sample_a.loc[~sample_a.source.eq("NPH52"), "matrix_id"].astype(str))
     details = []
     root = Path(args.source_root)
     all_mapping = True
     all_cells = True
     all_sources = True
+    sample_authenticated_ids: set[str] = set()
+    frozen_authenticated_ids: set[str] = set()
 
+    # Sample-A matrices: authenticate bytes immediately before value-blind var/obs metadata reads,
+    # then test the frozen 9,216-address mapping and exact Sample-A cell rows.
     for mid, rows in sample_a[~sample_a.source.eq("NPH52")].groupby("matrix_id", sort=True):
+        mid = str(mid)
         study = str(rows.source.iloc[0])
         if mid not in matrices:
             details.append({"matrix_id": mid, "study": study, "status": "MISSING_FROM_MACHA_FREEZE"})
             all_sources = False
+            all_mapping = False
+            all_cells = False
             continue
         m = matrices[mid]
         source_path = root / str(m["source"]["path"])
         try:
             verified_source_sha = verify_source_file(source_path, m["source"])
+            sample_authenticated_ids.add(mid)
+            frozen_authenticated_ids.add(mid)
         except RuntimeError as e:
-            details.append({"matrix_id": str(mid), "study": study, "status": "SOURCE_AUTHORITY_MISMATCH", "error": str(e)})
+            details.append({"matrix_id": mid, "study": study, "status": "SOURCE_AUTHORITY_MISMATCH", "error": str(e)})
             all_sources = False
+            all_mapping = False
+            all_cells = False
             continue
 
         family = FAMILY[study]
@@ -165,7 +214,7 @@ def audit(args) -> dict:
         if fprov.source_exact_ensembl_id.astype(str).duplicated().any():
             raise RuntimeError(f"nonunique provenance identifier in {family}")
         id_to_address = dict(zip(fprov.source_exact_ensembl_id.astype(str), fprov.molecular_address_index.astype(int)))
-        ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(str(mid)), "source_exact_ensembl_id"].astype(str))
+        ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(mid), "source_exact_ensembl_id"].astype(str))
 
         with h5py.File(source_path, "r") as h:
             # VALUE-BLIND BOUNDARY: only var and obs are opened after byte-level source authentication.
@@ -181,7 +230,7 @@ def audit(args) -> dict:
         cell_exact = in_bounds and bool(np.array_equal(obs_ids[local_rows].astype(str), cell_ids))
         all_cells &= cell_exact
         details.append({
-            "matrix_id": str(mid),
+            "matrix_id": mid,
             "study": study,
             "status": "PASS" if mapping_ok and cell_exact else "FAIL",
             "sample_A_cells": int(len(rows)),
@@ -195,23 +244,69 @@ def audit(args) -> dict:
             "sample_A_cell_local_row_exact": cell_exact,
             "source_path": str(m["source"]["path"]),
             "source_sha256_verified": verified_source_sha,
+            "custody_role": "SAMPLE_A_MAPPING_AND_CUSTODY",
         })
 
-    expected_h5 = set(sample_a.loc[~sample_a.source.eq("NPH52"), "matrix_id"].astype(str))
-    authenticated_h5 = {d["matrix_id"] for d in details if d.get("source_sha256_verified")}
+    # The S174 freeze contains one additional H5AD not used by Sample A. It is still part of the
+    # authenticated corrected substrate and must be byte-verified, but no Sample-A mapping/cell
+    # claim is made for it and its H5AD metadata are not opened.
+    for mid in sorted(frozen_matrix_ids - sample_matrix_ids):
+        m = matrices[mid]
+        source_path = root / str(m["source"]["path"])
+        try:
+            verified_source_sha = verify_source_file(source_path, m["source"])
+            frozen_authenticated_ids.add(mid)
+            details.append({
+                "matrix_id": mid,
+                "study": str(m.get("study", "")),
+                "status": "PASS_CUSTODY_ONLY_NOT_IN_SAMPLE_A",
+                "sample_A_cells": 0,
+                "source_path": str(m["source"]["path"]),
+                "source_sha256_verified": verified_source_sha,
+                "custody_role": "GLOBAL_S174_CUSTODY_ONLY",
+                "h5_metadata_opened": False,
+            })
+        except RuntimeError as e:
+            details.append({
+                "matrix_id": mid,
+                "study": str(m.get("study", "")),
+                "status": "SOURCE_AUTHORITY_MISMATCH",
+                "error": str(e),
+                "custody_role": "GLOBAL_S174_CUSTODY_ONLY",
+            })
+            all_sources = False
+
+    source_checks = source_authentication_checks(
+        sample_matrix_ids=sample_matrix_ids,
+        sample_authenticated_ids=sample_authenticated_ids,
+        frozen_matrix_ids=frozen_matrix_ids,
+        frozen_authenticated_ids=frozen_authenticated_ids,
+    )
+    checks.update(source_checks)
     checks.update({
-        "all_sample_A_h5_matrices_present": authenticated_h5 == expected_h5,
-        "all_35_h5_source_sha256_verified": authenticated_h5 == expected_h5 and len(authenticated_h5) == 35,
         "all_9216_addresses_one_to_one": bool(all_mapping),
         "all_sample_A_h5_cell_rows_exact": bool(all_cells),
-        "source_files_exactly_hash_bound": bool(all_sources),
+        "source_files_exactly_hash_bound": bool(all_sources and source_checks["all_35_h5_source_sha256_verified"]),
         "count_arrays_never_opened_by_design": True,
     })
     status = "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND" if all(checks.values()) else "FAIL_TD_RELATIONAL_MAPPING_PREFLIGHT"
     return {
-        "schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V2",
+        "schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3",
         "status": status,
-        "scope": "value-blind HVS/SEA-AD source-byte authentication, mapping and Sample-A row identity only; no count arrays read",
+        "scope": (
+            "value-blind authentication of all 35 frozen HVS/SEA-AD source bytes; mapping and exact cell-row "
+            "identity on the 34 H5AD matrices actually occupied by frozen Sample A; no count arrays read"
+        ),
+        "sample_A_contract": {
+            "label": SAMPLE_A_LABEL,
+            "cells": N_SAMPLE_A,
+            "source_counts": SOURCE_COUNTS,
+            "h5_matrices": N_SAMPLE_A_H5,
+        },
+        "substrate_custody_contract": {
+            "frozen_h5_matrices": N_FROZEN_H5,
+            "all_frozen_h5_bytes_must_authenticate": True,
+        },
         "inherited_authority": {
             "macha_branch": "claude/s174-train-cache-rebuild-20261007",
             "macha_freeze_commit": "cf4d4708af68d32c8c1ec73b1a4b09294b2df6ef",
