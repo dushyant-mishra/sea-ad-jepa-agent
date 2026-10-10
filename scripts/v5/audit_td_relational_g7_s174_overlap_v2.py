@@ -5,8 +5,8 @@ THIS FILE DOES NOT AUTHORIZE A VALUE READ.
 
 It requires the same separately created V2 runtime authorization and repaired V3 G4/G5 evidence as
 standalone G6 V2, plus a genuine G6 V2 PASS receipt bound to those same evidence/code bytes. It
-independently authenticates the exact G1b PASS result, S174 shards and physical H5AD bytes, rereads
-only natural Sample-A HVS/SEA overlaps, and compares all exact 9,216 replay addresses with zero tolerance.
+independently authenticates the exact G1b PASS result/freeze pair, S174 shards and physical H5AD
+bytes, rereads only natural Sample-A HVS/SEA overlaps, and compares all exact 9,216 replay addresses.
 """
 from __future__ import annotations
 
@@ -60,7 +60,6 @@ EXPECTED_MACHA_FREEZE_SHA = common.EXPECTED_INPUT_HASHES["macha_freeze_sha256"]
 
 def h5_strings(group, name: str) -> np.ndarray:
     import h5py
-
     if name == "_index":
         name = group.attrs.get("_index", "_index")
         name = name.decode() if isinstance(name, bytes) else str(name)
@@ -108,7 +107,7 @@ def corrected_row(indices, values, col_to_address: dict[int, int], replay_addres
 
 
 def compare_rows(current: dict[int, int], reference: dict[int, int], addresses: set[int]) -> dict[str, int]:
-    mismatches = sum(int(current.get(address, 0)) != int(reference.get(address, 0)) for address in addresses)
+    mismatches = sum(int(current.get(a, 0)) != int(reference.get(a, 0)) for a in addresses)
     return {"checked": len(addresses), "mismatches": int(mismatches)}
 
 
@@ -137,27 +136,43 @@ def validate_g1b_result(result: dict) -> None:
     if freeze.get("path") != G1B_FREEZE_REPO_PATH or freeze.get("sha256") != G1B_FREEZE_SHA256:
         raise RuntimeError("G1b result freeze authority mismatch")
     requirements = result.get("requirements") or {}
-    missing_or_false = [f"R{i}" for i in range(1, 8) if requirements.get(f"R{i}") is not True]
-    if missing_or_false:
-        raise RuntimeError(f"G1b result requirement(s) not PASS: {missing_or_false}")
+    failed = [f"R{i}" for i in range(1, 8) if requirements.get(f"R{i}") is not True]
+    if failed:
+        raise RuntimeError(f"G1b result requirement(s) not PASS: {failed}")
 
 
-def load_g1b_result_from_pass_commit(anchor_path: Path) -> tuple[dict, str]:
+def validate_g1b_freeze(freeze: dict) -> None:
+    if freeze.get("schema") != "S174_REBUILD_G1B_FREEZE_V1":
+        raise RuntimeError("unexpected G1b freeze schema")
+    if freeze.get("status") != "FROZEN__NO_COUNT_READ":
+        raise RuntimeError("unexpected G1b freeze status")
+    if not (freeze.get("rebuilt_cache") or {}).get("shards"):
+        raise RuntimeError("G1b freeze contains no rebuilt-cache shard authority")
+
+
+def _git_show_bytes(anchor_path: Path, commit: str, repo_path: str) -> bytes:
     root = common._git_root(Path(anchor_path))
-    spec = f"{G1B_PASS_COMMIT}:{G1B_RESULT_REPO_PATH}"
+    spec = f"{commit}:{repo_path}"
     try:
-        raw = subprocess.check_output(
-            ["git", "-C", str(root), "show", spec],
-            stderr=subprocess.STDOUT,
-        )
+        return subprocess.check_output(["git", "-C", str(root), "show", spec], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
-        raise RuntimeError(f"cannot resolve exact G1b PASS result {spec}: {exc.output.decode(errors='replace')}") from exc
+        raise RuntimeError(f"cannot resolve exact git authority {spec}: {exc.output.decode(errors='replace')}") from exc
+
+
+def load_g1b_authority_from_pass_commit(anchor_path: Path) -> tuple[dict, dict, str, str]:
+    result_raw = _git_show_bytes(anchor_path, G1B_PASS_COMMIT, G1B_RESULT_REPO_PATH)
+    freeze_raw = _git_show_bytes(anchor_path, G1B_PASS_COMMIT, G1B_FREEZE_REPO_PATH)
+    freeze_sha = hashlib.sha256(freeze_raw).hexdigest()
+    if freeze_sha != G1B_FREEZE_SHA256:
+        raise RuntimeError(f"exact G1b freeze bytes at pass commit do not match frozen SHA: {freeze_sha}")
     try:
-        result = json.loads(raw.decode("utf-8"))
+        result = json.loads(result_raw.decode("utf-8"))
+        freeze = json.loads(freeze_raw.decode("utf-8"))
     except Exception as exc:
-        raise RuntimeError("exact G1b PASS result is not valid UTF-8 JSON") from exc
+        raise RuntimeError("G1b pass-commit authority is not valid UTF-8 JSON") from exc
     validate_g1b_result(result)
-    return result, hashlib.sha256(raw).hexdigest()
+    validate_g1b_freeze(freeze)
+    return result, freeze, hashlib.sha256(result_raw).hexdigest(), freeze_sha
 
 
 def validate_s174_payload(data, indices, indptr, shape) -> None:
@@ -176,12 +191,8 @@ def validate_s174_payload(data, indices, indptr, shape) -> None:
     if len(indices) and (np.any(indices < 0) or np.any(indices >= N_ADDR)):
         raise RuntimeError("S174 CSR address index out of 41238-column bounds")
     numeric = data.astype(np.float64, copy=False)
-    if not np.isfinite(numeric).all():
-        raise RuntimeError("S174 raw counts must be finite")
-    if np.any(numeric < 0):
-        raise RuntimeError("S174 raw counts must be nonnegative")
-    if not np.equal(numeric, np.floor(numeric)).all():
-        raise RuntimeError("S174 raw counts must be exactly integer-valued")
+    if not np.isfinite(numeric).all() or np.any(numeric < 0) or not np.equal(numeric, np.floor(numeric)).all():
+        raise RuntimeError("S174 raw counts must be finite, nonnegative and exactly integer-valued")
 
 
 def sparse_row_dict(matrix, row_index: int, addresses: set[int]) -> dict[int, int]:
@@ -263,15 +274,11 @@ def bind_execution(args):
     g7_path = Path(__file__).resolve()
     g6_path = g7_path.with_name("materialize_td_relational_corrected_sampleA_v2.py")
     auth = common.load_runtime_authorization(
-        Path(args.value_authorization),
-        preflight_path=Path(args.preflight_result),
-        mapping_path=Path(args.mapping_receipt),
-        g6_path=g6_path,
-        g7_path=g7_path,
+        Path(args.value_authorization), preflight_path=Path(args.preflight_result),
+        mapping_path=Path(args.mapping_receipt), g6_path=g6_path, g7_path=g7_path,
     )
     preflight, mapping = common.load_bound_preflight(
-        Path(args.preflight_result),
-        Path(args.mapping_receipt),
+        Path(args.preflight_result), Path(args.mapping_receipt),
         expected_preflight_sha=auth["preflight_result_sha256"],
         expected_mapping_sha=auth["mapping_receipt_sha256"],
     )
@@ -294,12 +301,9 @@ def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
     if not path.is_file():
         raise RuntimeError(f"missing required G6 PASS receipt: {path}")
     receipt = json.loads(path.read_text(encoding="utf-8"))
-    if receipt.get("schema") != G6_RECEIPT_SCHEMA:
-        raise RuntimeError("G7 requires JEPA_TD_RELATIONAL_G6_RECEIPT_V2")
-    if receipt.get("status") != G6_PASS:
-        raise RuntimeError(f"G7 requires G6 PASS before execution: {receipt.get('status')}")
-    trace = receipt.get("authority_trace")
-    if trace != expected_trace:
+    if receipt.get("schema") != G6_RECEIPT_SCHEMA or receipt.get("status") != G6_PASS:
+        raise RuntimeError(f"G7 requires G6 V2 PASS before execution: {receipt.get('schema')} / {receipt.get('status')}")
+    if receipt.get("authority_trace") != expected_trace:
         raise RuntimeError("G6 PASS receipt is not bound to the same preflight/authorization/code bytes")
     for key in ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized"):
         if receipt.get(key) is not False:
@@ -318,7 +322,6 @@ def main() -> int:
     parser.add_argument("--provenance", required=True)
     parser.add_argument("--collision-ledger", required=True)
     parser.add_argument("--macha-freeze", required=True)
-    parser.add_argument("--macha-g1b-freeze", required=True)
     parser.add_argument("--s174-cache-root", required=True)
     parser.add_argument("--source-root", required=True)
     parser.add_argument("--out", required=True)
@@ -332,11 +335,8 @@ def main() -> int:
     authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
     load_g6_pass_receipt(Path(args.g6_receipt), authority_trace)
 
-    g1b_result, g1b_result_sha256 = load_g1b_result_from_pass_commit(g7_path)
-    if common.sha256_file(Path(args.macha_g1b_freeze)) != G1B_FREEZE_SHA256:
-        raise RuntimeError("Macha G1b freeze SHA mismatch")
-    g1b = json.loads(Path(args.macha_g1b_freeze).read_text(encoding="utf-8"))
-    verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b)
+    g1b_result, g1b_freeze, g1b_result_sha256, g1b_freeze_sha256 = load_g1b_authority_from_pass_commit(g7_path)
+    verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b_freeze)
 
     replay, sample_a, provenance, collision, freeze = load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
@@ -346,9 +346,7 @@ def main() -> int:
     from scipy import sparse
     import h5py
 
-    total_overlap = 0
-    total_checked = 0
-    total_mismatches = 0
+    total_overlap = total_checked = total_mismatches = 0
     per_matrix: list[dict] = []
     verified_physical_sources: dict[str, str] = {}
 
@@ -367,34 +365,21 @@ def main() -> int:
         where_s174 = {cell: index for index, cell in enumerate(s174_cells)}
         overlap = group[group.cell_id.astype(str).isin(where_s174)].copy()
         if overlap.empty:
-            per_matrix.append({
-                "matrix_id": mid,
-                "study": study,
-                "overlap_cells": 0,
-                "checked_entries": 0,
-                "mismatches": 0,
-                "s174_count_values_opened": False,
-                "physical_h5ad_values_opened": False,
-            })
+            per_matrix.append({"matrix_id": mid, "study": study, "overlap_cells": 0,
+                               "checked_entries": 0, "mismatches": 0,
+                               "s174_count_values_opened": False, "physical_h5ad_values_opened": False})
             continue
 
         with np.load(counts_path, allow_pickle=False) as payload:
             validate_s174_payload(payload["data"], payload["indices"], payload["indptr"], payload["shape"])
-            s174_matrix = sparse.csr_matrix(
-                (payload["data"], payload["indices"], payload["indptr"]),
-                shape=tuple(payload["shape"]),
-            )
+            s174_matrix = sparse.csr_matrix((payload["data"], payload["indices"], payload["indptr"]),
+                                            shape=tuple(payload["shape"]))
 
         fprov = provenance[provenance.source_dataset_id.astype(str).eq(FAMILY[study])]
         if fprov.source_exact_ensembl_id.astype(str).duplicated().any():
             raise RuntimeError(f"nonunique provenance identifier: {study}")
-        id_to_address = dict(zip(
-            fprov.source_exact_ensembl_id.astype(str),
-            fprov.molecular_address_index.astype(int),
-        ))
-        ledger_ids = set(collision.loc[
-            collision.matrix_id.astype(str).eq(mid), "source_exact_ensembl_id"
-        ].astype(str))
+        id_to_address = dict(zip(fprov.source_exact_ensembl_id.astype(str), fprov.molecular_address_index.astype(int)))
+        ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(mid), "source_exact_ensembl_id"].astype(str))
         physical_path = source_root / str(matrix_rec["source"]["path"])
 
         verified_physical_sources[mid] = common.verify_source_file(physical_path, matrix_rec["source"])
@@ -404,19 +389,13 @@ def main() -> int:
             obs = h5_strings(handle["obs"], "exp_component_name")
             node = handle[str(matrix_rec["slot"])]
             indptr = node["indptr"]
-            mismatches = 0
-            checked = 0
+            mismatches = checked = 0
             for row in overlap.itertuples(index=False):
                 local_row = int(row.local_row)
                 if local_row < 0 or local_row >= len(obs) or str(obs[local_row]) != str(row.cell_id):
                     raise RuntimeError(f"G7 raw row identity drift: {mid} {row.cell_id}")
                 lo, hi = int(indptr[local_row]), int(indptr[local_row + 1])
-                current, _ = corrected_row(
-                    node["indices"][lo:hi],
-                    node["data"][lo:hi],
-                    col_to_address,
-                    replay_addresses,
-                )
+                current, _ = corrected_row(node["indices"][lo:hi], node["data"][lo:hi], col_to_address, replay_addresses)
                 reference = sparse_row_dict(s174_matrix, where_s174[str(row.cell_id)], replay_addresses)
                 comparison = compare_rows(current, reference, replay_addresses)
                 checked += comparison["checked"]
@@ -425,16 +404,10 @@ def main() -> int:
         total_overlap += len(overlap)
         total_checked += checked
         total_mismatches += mismatches
-        per_matrix.append({
-            "matrix_id": mid,
-            "study": study,
-            "overlap_cells": int(len(overlap)),
-            "checked_entries": int(checked),
-            "mismatches": int(mismatches),
-            "physical_source_sha256_verified": verified_physical_sources[mid],
-            "s174_count_values_opened": True,
-            "physical_h5ad_values_opened": True,
-        })
+        per_matrix.append({"matrix_id": mid, "study": study, "overlap_cells": int(len(overlap)),
+                           "checked_entries": int(checked), "mismatches": int(mismatches),
+                           "physical_source_sha256_verified": verified_physical_sources[mid],
+                           "s174_count_values_opened": True, "physical_h5ad_values_opened": True})
 
     status = overlap_status(total_overlap, total_mismatches)
     receipt = {
@@ -445,6 +418,7 @@ def main() -> int:
         "macha_g1b_result_git_content_sha256": g1b_result_sha256,
         "macha_g1b_result_schema": g1b_result["schema"],
         "macha_g1b_requirements_all_pass": True,
+        "macha_g1b_freeze_git_content_sha256": g1b_freeze_sha256,
         "macha_g1b_freeze_sha256": G1B_FREEZE_SHA256,
         "s174_verified_shards": int(verified_shards),
         "s174_verified_shard_sha256": shard_hashes,
@@ -453,10 +427,7 @@ def main() -> int:
         "checked_cell_address_entries": int(total_checked),
         "mismatches": int(total_mismatches),
         "per_matrix": per_matrix,
-        "authority_trace": {
-            **authority_trace,
-            "g6_receipt_sha256": common.sha256_file(Path(args.g6_receipt)),
-        },
+        "authority_trace": {**authority_trace, "g6_receipt_sha256": common.sha256_file(Path(args.g6_receipt))},
         "no_overlap_is_not_pass": total_overlap == 0,
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
@@ -465,11 +436,7 @@ def main() -> int:
     }
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "status": status,
-        "overlap_cells": int(total_overlap),
-        "mismatches": int(total_mismatches),
-    }, sort_keys=True))
+    print(json.dumps({"status": status, "overlap_cells": int(total_overlap), "mismatches": int(total_mismatches)}, sort_keys=True))
     return exit_code_for_status(status)
 
 
