@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 """Value-blind preflight for the corrected TD56->TD59 relational replay.
 
-Reads only identity/support metadata from H5AD files (var/obs plus file stat). It never opens
+Reads only file bytes plus identity/support metadata from H5AD files (var/obs). It never opens
 raw/X or X count arrays. The scientific question is deliberately narrow: do the exact 9,216
 historical TD addresses and exact 25,000 Sample-A cells remain resolvable under the already-audited
-S174 identifier join?
-
-Expected inputs are frozen historical authorities. The S174 freeze is inherited cross-lane
-source-asset authority; this script does not re-hash ~390 GB of H5ADs.
+S174 identifier join, with the physical H5AD bytes still matching the frozen S174 authority?
 """
 from __future__ import annotations
 
@@ -38,6 +35,20 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
         for b in iter(lambda: f.read(chunk), b""):
             h.update(b)
     return h.hexdigest()
+
+
+def verify_source_file(path: Path, source_rec: dict) -> str:
+    path = Path(path)
+    if not path.is_file():
+        raise RuntimeError(f"source file missing: {path}")
+    expected_size = int(source_rec["bytes"])
+    if path.stat().st_size != expected_size:
+        raise RuntimeError(f"source size mismatch: {path.stat().st_size} != {expected_size}: {path}")
+    actual = sha256_file(path)
+    expected = str(source_rec["sha256"])
+    if actual != expected:
+        raise RuntimeError(f"source SHA mismatch: {actual} != {expected}: {path}")
+    return actual
 
 
 def h5_strings(group, name: str) -> np.ndarray:
@@ -142,10 +153,13 @@ def audit(args) -> dict:
             continue
         m = matrices[mid]
         source_path = root / str(m["source"]["path"])
-        if not source_path.is_file() or source_path.stat().st_size != int(m["source"]["bytes"]):
-            details.append({"matrix_id": mid, "study": study, "status": "SOURCE_FILE_MISSING_OR_SIZE_MISMATCH"})
+        try:
+            verified_source_sha = verify_source_file(source_path, m["source"])
+        except RuntimeError as e:
+            details.append({"matrix_id": str(mid), "study": study, "status": "SOURCE_AUTHORITY_MISMATCH", "error": str(e)})
             all_sources = False
             continue
+
         family = FAMILY[study]
         fprov = prov[prov.source_dataset_id.astype(str).eq(family)]
         if fprov.source_exact_ensembl_id.astype(str).duplicated().any():
@@ -154,7 +168,7 @@ def audit(args) -> dict:
         ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(str(mid)), "source_exact_ensembl_id"].astype(str))
 
         with h5py.File(source_path, "r") as h:
-            # VALUE-BLIND BOUNDARY: only var and obs are opened.
+            # VALUE-BLIND BOUNDARY: only var and obs are opened after byte-level source authentication.
             var_ids = h5_strings(h["var"], VAR_ID_COLUMN[study])
             obs_ids = h5_strings(h["obs"], "exp_component_name")
         cov = replay_address_coverage(var_ids, id_to_address, ledger_ids, replay_addresses)
@@ -180,24 +194,24 @@ def audit(args) -> dict:
             "excluded_columns": cov["excluded_columns"],
             "sample_A_cell_local_row_exact": cell_exact,
             "source_path": str(m["source"]["path"]),
-            "source_sha256_inherited_from_macha_freeze": str(m["source"]["sha256"]),
-            "source_sha_not_rehashed_here": True,
+            "source_sha256_verified": verified_source_sha,
         })
 
     expected_h5 = set(sample_a.loc[~sample_a.source.eq("NPH52"), "matrix_id"].astype(str))
-    audited_h5 = {d["matrix_id"] for d in details if d.get("status") != "MISSING_FROM_MACHA_FREEZE"}
+    authenticated_h5 = {d["matrix_id"] for d in details if d.get("source_sha256_verified")}
     checks.update({
-        "all_sample_A_h5_matrices_present": audited_h5 == expected_h5,
+        "all_sample_A_h5_matrices_present": authenticated_h5 == expected_h5,
+        "all_35_h5_source_sha256_verified": authenticated_h5 == expected_h5 and len(authenticated_h5) == 35,
         "all_9216_addresses_one_to_one": bool(all_mapping),
         "all_sample_A_h5_cell_rows_exact": bool(all_cells),
-        "source_files_present_and_size_bound": bool(all_sources),
+        "source_files_exactly_hash_bound": bool(all_sources),
         "count_arrays_never_opened_by_design": True,
     })
     status = "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND" if all(checks.values()) else "FAIL_TD_RELATIONAL_MAPPING_PREFLIGHT"
     return {
-        "schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V1",
+        "schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V2",
         "status": status,
-        "scope": "value-blind HVS/SEA-AD mapping and Sample-A row identity only; no count arrays read",
+        "scope": "value-blind HVS/SEA-AD source-byte authentication, mapping and Sample-A row identity only; no count arrays read",
         "inherited_authority": {
             "macha_branch": "claude/s174-train-cache-rebuild-20261007",
             "macha_freeze_commit": "cf4d4708af68d32c8c1ec73b1a4b09294b2df6ef",
