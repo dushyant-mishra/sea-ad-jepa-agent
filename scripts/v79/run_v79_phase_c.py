@@ -233,6 +233,8 @@ def full(a) -> None:
                gene_sample=dict(n=int(len(data["genes"])), seed=DA.GENE_SAMPLE_SEED,
                                 internal_address_indices=data["genes"]),
                environment=env(), wall_seconds=time.time() - t0, lane=FW.LANE_TERMINAL)
+    rec["posterior_draws"] = INF.save_posterior_draws(res["run"], OUT / "V79_PHASE_C_DRAWS_V1.npz")
+    rec["typical_offset_per_gene"] = typical
     write(OUT / "V79_PHASE_C_INTERNAL_V1.json", rec)
     print("phase C", a.family, "diagnosed", res["diagnosed"])
 

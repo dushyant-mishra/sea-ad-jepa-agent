@@ -230,7 +230,22 @@ def build() -> dict:
                  why=("the rule takes the maximum R-hat over several hundred per-gene sites, which fluctuates near "
                       "1.01 at ESS about 1,000 even when chains mix (Gaussian recovery S1: m_dk R-hat 1.0134 with "
                       "ESS 1,019); more draws shrink that noise without moving a threshold; decided on simulation "
-                      "only, before any real data"))],
+                      "only, before any real data")),
+            dict(id="A6", date="2026-10-10", before_real_data=True,
+                 change=("outputs widened on the owner's instruction (best defensible generative model of corrected "
+                         "TRAIN): every real fit saves 200 thinned posterior draws (internal); two posterior-"
+                         "generative authorities replace the single Output B: BIOLOGY (H1: hyperparameter draws, "
+                         "class-effect magnitude and unnamed profile, donor and donor-class effect spreads, residual "
+                         "spread, baseline level, variance fractions, Q5, D1 geometry) and OBSERVATION (H2: source and "
+                         "operator effect magnitudes with source names, B0 capture and depth, detection propensity and "
+                         "depth slopes, count dispersion, joint per-gene depth slopes); per-gene values only as "
+                         "anonymous samples in a reproducible hash-seeded order; an INTERNAL realism diagnostic keeps "
+                         "the full fitted realization and is never planted truth or synthetic-consumable; held-out PPC "
+                         "adds network geometry (strong and signed edges, degree, transitivity) pooled and within class, "
+                         "depth tertile and source, and count dispersion and tail; PPC failures are carried into both "
+                         "authorities as limitations"),
+                 why=("the synthetic-world lane (PR #253 H1/H2/H3) needs fitted generative structure, not only "
+                      "summary shares; no model, prior, likelihood or estimand changes; firewall unchanged"))],
         amended_from_sha256="1807ddb1b9071f5465873e076ebd6a1fbab6b5fcc14e7ec87bd505525144833b",
         terminal_authority=[FW.LANE_TERMINAL, "no target winner", "no representation winner",
                             "no JEPA training authority", "no E4 authority", "no protected-data authority",

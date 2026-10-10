@@ -111,6 +111,20 @@ def summarize(run, design, likelihood, mask=None, typical_offset=None, component
 
 
 HYPER_SITES = ("m_op", "s_op", "m_donor", "s_donor", "m_dk", "s_dk", "m_res", "s_res", "m_phi", "s_phi")
+N_SAVED_DRAWS = 200
+
+
+def save_posterior_draws(run, path, n_draws: int = N_SAVED_DRAWS) -> dict:
+    """Evenly thinned posterior draws of every sampled site (INTERNAL; the authorities and the realism
+    diagnostic are built from these). Returns the file's identity."""
+    flat = M.flatten_chains(run["samples"])
+    n = next(iter(flat.values())).shape[0]
+    sel = (np.arange(n_draws) * n) // n_draws
+    arrays = {k: np.asarray(v)[sel].astype(np.float32) for k, v in flat.items() if not k.endswith("_decentered")}
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, **arrays)
+    return dict(path=path.name, sha256=sha_file(path), n_draws=int(n_draws), sites=sorted(arrays))
 
 
 def hyperparameters(run) -> dict:
@@ -160,6 +174,8 @@ def main() -> None:
     rec = dict(
         schema=f"V79_PHASE_{a.phase}_INTERNAL_V1", status="INTERNAL__NOT_SYNTHETIC_CONSUMABLE",
         phase=a.phase, likelihood=lik, preconditions=pre, settings=vars(a), seed=seed,
+        design_levels=dict(class_levels=[str(x) for x in di["class_levels"]],
+                           source_levels=[str(x) for x in di["source_levels"]]),
         diagnosed=res["diagnosed"], attempts=res["attempts"],
         interpretation=("estimates may be read" if res["diagnosed"] else
                         "NOT_DIAGNOSED: estimates are recorded but must not be interpreted"),
@@ -169,6 +185,7 @@ def main() -> None:
                          internal_address_indices=None if genes is None else [int(g) for g in genes]),
         environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__),
         wall_seconds=time.time() - t0, lane=FW.LANE_TERMINAL)
+    rec["posterior_draws"] = save_posterior_draws(res["run"], Path(a.out_dir) / f"V79_PHASE_{a.phase}_DRAWS_V1.npz")
     out = Path(a.out_dir) / f"V79_PHASE_{a.phase}_INTERNAL_V1.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8", newline=chr(10)) as fh:
