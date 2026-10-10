@@ -96,9 +96,12 @@ def design_arrays(di: dict) -> dict:
 
 
 # Centring per likelihood, chosen on simulated designs (contract: a sampler setting, never chosen on real data).
-# Detection: a donor-class level has about 11 binary cells, too little to pin a logit effect, so it is non-centred.
-# Phase C models only detected cells (fewer still per donor-class level), so both candidate families start there.
-CENTRING = {"gaussian": {}, "gaussian_masked": {"dk": 0.0}, "bernoulli": {"dk": 0.0}, "ztnb": {"dk": 0.0}}
+# Detection: a donor-class level has about 11 binary cells, too little to pin a logit effect or its per-gene sd,
+# so both are non-centred (self-audit 16, 22: centred effects failed R-hat; with effects alone non-centred the
+# divergences sat at small donor-class sds; experiment E3 with both: 0 divergences, R-hat 1.007, ESS 524).
+# Phase C models only detected cells (fewer still per donor-class level) and starts from the same setting.
+NC_DK = {"dk": 0.0, "logsd_dk": 0.0}
+CENTRING = {"gaussian": {}, "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DK), "ztnb": dict(NC_DK)}
 
 
 def centring_key(likelihood: str, mask) -> str:
