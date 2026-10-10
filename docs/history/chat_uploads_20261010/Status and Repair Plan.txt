@@ -1,0 +1,7 @@
+Started, and the working branch is being updated continuously:
+
+`planning/v5-dataset-first-production-closure-20260912`
+
+I kept the source branch `repair/v5-qualified-target-guard-20260911` untouched.
+
+This raw historical chat artifact is preserved verbatim on the audit branch. Its current authority status is historical-only; newer audited PR/custody state supersedes any conflicting implication.
