@@ -5,8 +5,9 @@ This driver performs only provenance/identity work:
 1. regenerates and byte-validates the exact historical 9,216-address manifest;
 2. exact-hashes the frozen calibration and TD historical archives;
 3. extracts the frozen Macha S174 asset inventory from its branch and hash-verifies it;
-4. runs the value-blind HVS/SEA-AD source-byte, mapping + Sample-A row audit;
-5. writes a receipt in a fixed immutable namespace.
+4. authenticates all 35 frozen HVS/SEA-AD H5AD source bytes, while applying Sample-A mapping/cell
+   checks only to the 34 H5AD matrices actually occupied by frozen A_NATURAL_MIXTURE;
+5. writes a structured PASS receipt, or a structured mapping failure receipt, in a fresh immutable namespace.
 
 It never authorizes or reads real expression values. It stops after G4/G5.
 """
@@ -52,7 +53,7 @@ def canonical_paths(project_root: Path, stage81a3r_root: Path) -> dict[str, Path
 
 
 def default_output_dir(repo_root: Path) -> Path:
-    return Path(repo_root) / "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened"
+    return Path(repo_root) / "results/target_discovery/td_relational_corrected_replay_20261010/preflight_v4_sampleA_custody_split"
 
 
 def assert_fresh_output(out: Path) -> None:
@@ -94,6 +95,33 @@ def run_checked(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
             + "STDOUT:\n" + p.stdout + "\nSTDERR:\n" + p.stderr
         )
     return p
+
+
+def write_failure_receipt(
+    out: Path,
+    *,
+    phase: str,
+    terminal: str,
+    error: str,
+    command: list[str],
+    inputs: dict[str, str],
+) -> Path:
+    """Write a non-authorizing structured receipt without pretending a failed mapping step passed."""
+    receipt = {
+        "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_FAILURE_RECEIPT_V1",
+        "status": terminal,
+        "phase": phase,
+        "error": str(error),
+        "command": list(map(str, command)),
+        "inputs": inputs,
+        "real_value_replay_authorized": False,
+        "training_authorized": False,
+    }
+    path = Path(out) / "PREFLIGHT_FAILURE.json"
+    if path.exists():
+        raise RuntimeError(f"refusing to overwrite existing failure receipt: {path}")
+    path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
 
 
 def extract_macha_freeze(repo_root: Path, out_path: Path) -> None:
@@ -163,28 +191,77 @@ def main() -> int:
     manifest = out / "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv"
     require_hash(manifest, EXPECTED_MANIFEST_SHA256, "9,216-address replay manifest")
 
+    input_hashes = {
+        "sample_freeze_sha256": sha256_file(paths["sample_freeze"]),
+        "provenance_sha256": sha256_file(paths["provenance"]),
+        "collision_ledger_sha256": sha256_file(paths["collision_ledger"]),
+        **archive_hashes,
+        "macha_freeze_sha256": sha256_file(macha_freeze),
+        "replay_manifest_sha256": sha256_file(manifest),
+    }
+
     pcmd = mapping_command(args.python, repo_root, paths, out, macha_freeze)
-    run_checked(pcmd, repo_root)
+    try:
+        run_checked(pcmd, repo_root)
+    except RuntimeError as e:
+        failure_path = write_failure_receipt(
+            out,
+            phase="G4_G5_MAPPING_PREFLIGHT",
+            terminal="FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING",
+            error=str(e),
+            command=pcmd,
+            inputs=input_hashes,
+        )
+        raise RuntimeError(f"mapping preflight failed; structured failure receipt: {failure_path}\n{e}") from e
+
     preflight_path = out / "TD_RELATIONAL_MAPPING_PREFLIGHT.json"
     preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    expected_schema = "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3"
     expected_status = "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND"
-    if preflight.get("status") != expected_status:
-        raise RuntimeError(f"mapping preflight did not PASS: {preflight.get('status')}")
+    if preflight.get("schema") != expected_schema or preflight.get("status") != expected_status:
+        failure_path = write_failure_receipt(
+            out,
+            phase="G4_G5_MAPPING_PREFLIGHT",
+            terminal="FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING_RECEIPT",
+            error=f"mapping receipt schema/status mismatch: {preflight.get('schema')} / {preflight.get('status')}",
+            command=pcmd,
+            inputs=input_hashes,
+        )
+        raise RuntimeError(f"mapping preflight did not produce required V3 PASS; receipt: {failure_path}")
+
+    required_mapping_checks = {
+        "sample_A_h5_matrix_count_exact_34",
+        "all_sample_A_h5_matrices_present",
+        "frozen_h5_matrix_count_exact_35",
+        "all_35_h5_source_sha256_verified",
+        "all_9216_addresses_one_to_one",
+        "all_sample_A_h5_cell_rows_exact",
+        "source_files_exactly_hash_bound",
+        "count_arrays_never_opened_by_design",
+    }
+    mapping_checks = preflight.get("checks", {})
+    missing_or_false = sorted(k for k in required_mapping_checks if mapping_checks.get(k) is not True)
+    if missing_or_false:
+        failure_path = write_failure_receipt(
+            out,
+            phase="G4_G5_MAPPING_PREFLIGHT",
+            terminal="FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING_CHECKS",
+            error=f"required mapping checks missing/false: {missing_or_false}",
+            command=pcmd,
+            inputs=input_hashes,
+        )
+        raise RuntimeError(f"mapping preflight checks incomplete; receipt: {failure_path}")
 
     receipt = {
-        "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V2",
+        "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3",
         "status": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
-        "scope": "G1-G5 only; exact archive/source bytes + identity/mapping; no count arrays read; no real-value replay/training authority",
-        "inputs": {
-            "sample_freeze_sha256": sha256_file(paths["sample_freeze"]),
-            "provenance_sha256": sha256_file(paths["provenance"]),
-            "collision_ledger_sha256": sha256_file(paths["collision_ledger"]),
-            **archive_hashes,
-            "macha_freeze_sha256": sha256_file(macha_freeze),
-            "replay_manifest_sha256": sha256_file(manifest),
-        },
+        "scope": (
+            "G1-G5 only; exact archive/source bytes + identity/mapping; all 35 frozen H5AD bytes authenticated, "
+            "Sample-A mapping applied to its exact 34 H5AD matrices; no count arrays read; no real-value replay/training authority"
+        ),
+        "inputs": input_hashes,
         "mapping_receipt_schema": preflight.get("schema"),
-        "mapping_checks": preflight.get("checks"),
+        "mapping_checks": mapping_checks,
         "commands": {
             "manifest": mcmd,
             "mapping_preflight": pcmd,
@@ -194,7 +271,7 @@ def main() -> int:
             "manifest_receipt": str(out / "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json"),
             "mapping_preflight": str(preflight_path),
         },
-        "next_gate": "separate owner decision for hardened V2 G6/G7 corrected-value integrity checks",
+        "next_gate": "owner review; G6/G7 remain unauthorized and require a separately qualified standalone-V2 value path",
         "real_value_replay_authorized": False,
         "training_authorized": False,
     }

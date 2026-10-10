@@ -2,6 +2,8 @@ import hashlib
 import importlib.util
 from pathlib import Path
 
+import pandas as pd
+
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts" / "v5" / "audit_td_relational_replay_mapping_preflight.py"
 
@@ -71,3 +73,48 @@ def test_source_file_must_match_frozen_size_and_sha(tmp_path):
         assert "source" in str(e).lower() and ("size" in str(e).lower() or "sha" in str(e).lower())
     else:
         raise AssertionError("source-byte drift must fail closed")
+
+
+def test_sample_a_label_is_frozen_natural_mixture_not_literal_A():
+    m = load_module()
+    frame = pd.DataFrame(
+        {
+            "sample": ["A_NATURAL_MIXTURE", "A_NATURAL_MIXTURE", "B_COVERAGE_DISCOVERY"],
+            "source": ["HVS", "SEA_AD", "HVS"],
+            "matrix_id": ["h1", "s1", "h2"],
+        }
+    )
+    selected = m.select_sample_a(frame, enforce_geometry=False)
+    assert len(selected) == 2
+    assert set(selected["sample"]) == {"A_NATURAL_MIXTURE"}
+    assert m.SAMPLE_A_LABEL == "A_NATURAL_MIXTURE"
+
+
+def test_35_file_custody_is_distinct_from_34_matrix_sample_a_geometry():
+    m = load_module()
+    frozen = {f"m{i:02d}" for i in range(35)}
+    sample_a = set(sorted(frozen)[:34])
+    checks = m.source_authentication_checks(
+        sample_matrix_ids=sample_a,
+        sample_authenticated_ids=sample_a,
+        frozen_matrix_ids=frozen,
+        frozen_authenticated_ids=frozen,
+    )
+    assert checks["sample_A_h5_matrix_count_exact_34"] is True
+    assert checks["all_sample_A_h5_matrices_present"] is True
+    assert checks["frozen_h5_matrix_count_exact_35"] is True
+    assert checks["all_35_h5_source_sha256_verified"] is True
+
+
+def test_missing_unused_35th_file_fails_global_custody_even_if_sample_a_is_complete():
+    m = load_module()
+    frozen = {f"m{i:02d}" for i in range(35)}
+    sample_a = set(sorted(frozen)[:34])
+    checks = m.source_authentication_checks(
+        sample_matrix_ids=sample_a,
+        sample_authenticated_ids=sample_a,
+        frozen_matrix_ids=frozen,
+        frozen_authenticated_ids=sample_a,
+    )
+    assert checks["all_sample_A_h5_matrices_present"] is True
+    assert checks["all_35_h5_source_sha256_verified"] is False

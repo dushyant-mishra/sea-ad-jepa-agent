@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -28,7 +29,7 @@ def test_output_namespace_is_fixed_and_immutable(tmp_path):
     m = load_module()
     out = m.default_output_dir(tmp_path)
     assert out.as_posix().endswith(
-        "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened"
+        "results/target_discovery/td_relational_corrected_replay_20261010/preflight_v4_sampleA_custody_split"
     )
     out.mkdir(parents=True)
     (out / "PREFLIGHT_RESULT.json").write_text("{}\n", encoding="utf-8")
@@ -80,7 +81,7 @@ def test_static_archive_authorities_are_exact_hash_gates(tmp_path):
 def test_mapping_command_is_value_blind_and_complete(tmp_path):
     m = load_module()
     paths = m.canonical_paths(Path("D:/Jepa project"), Path("D:/Jepa project-stage81a3r-20260814"))
-    out = tmp_path / "preflight_v3"
+    out = tmp_path / "preflight_v4"
     cmd = m.mapping_command(Path("python"), Path("D:/repo"), paths, out, out / "S174_REBUILD_FREEZE_V1.json")
     text = " ".join(map(str, cmd))
     assert "audit_td_relational_replay_mapping_preflight.py" in text
@@ -90,3 +91,23 @@ def test_mapping_command_is_value_blind_and_complete(tmp_path):
     assert "--collision-ledger" in text
     assert "--macha-freeze" in text
     assert "--out" in text
+
+
+def test_mapping_failure_receipt_is_structured_and_non_authorizing(tmp_path):
+    m = load_module()
+    out = tmp_path / "preflight_v4"
+    out.mkdir()
+    receipt_path = m.write_failure_receipt(
+        out,
+        phase="G4_G5_MAPPING_PREFLIGHT",
+        terminal="FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING",
+        error="example failure",
+        command=["python", "mapping.py"],
+        inputs={"replay_manifest_sha256": "abc"},
+    )
+    payload = json.loads(receipt_path.read_text(encoding="utf-8"))
+    assert payload["schema"] == "JEPA_TD_RELATIONAL_PREFLIGHT_FAILURE_RECEIPT_V1"
+    assert payload["status"].startswith("FAIL_")
+    assert payload["phase"] == "G4_G5_MAPPING_PREFLIGHT"
+    assert payload["real_value_replay_authorized"] is False
+    assert payload["training_authorized"] is False
