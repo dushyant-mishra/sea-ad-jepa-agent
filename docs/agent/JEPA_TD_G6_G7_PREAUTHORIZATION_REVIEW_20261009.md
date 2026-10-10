@@ -46,82 +46,61 @@ Historical V1 remains lineage only:
 
 ## Authorization defect found by self-audit and corrected
 
-The first version of this hardening said that future authorization was “V2 only,” but reused the historical V1 runtime schema/token. That was not a sufficient mechanical boundary because the historical V1 loader could also consume that token.
+The first version of this hardening said future authorization was “V2 only,” but reused the historical V1 runtime schema/token. That was not a sufficient mechanical boundary because the historical V1 loader could also consume that token.
 
-The corrected design now gives the hardened path its own runtime authority surface:
+The corrected design gives the hardened path its own runtime authority surface:
 
 - schema: `JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2`
 - token: `AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY`
-- exact G6 entrypoint binding: `scripts/v5/materialize_td_relational_corrected_sampleA_v2.py`
-- exact G7 entrypoint binding: `scripts/v5/audit_td_relational_g7_s174_overlap.py`
+- exact G6 entrypoint: `scripts/v5/materialize_td_relational_corrected_sampleA_v2.py`
+- exact G7 entrypoint: `scripts/v5/audit_td_relational_g7_s174_overlap.py`
 - `training_authorized=false`
 - `biological_replay_authorized=false`
 
-The V2 wrapper monkey-patches both the historical V1 authorization loader and row decoder before invoking the preserved mechanics. Therefore an old V1 authorization is rejected by V2, and a future V2 authorization is not valid for the historical V1 loader.
+The V2 wrapper replaces both the historical V1 authorization loader and row decoder in-memory before invoking the preserved mechanics. An old V1 authorization is rejected by V2, while a future V2 authorization is not accepted by the historical V1 loader.
 
-The authorization template is still **template only**. No runtime authorization exists.
+The authorization template remains template-only. No runtime authorization exists.
 
-## G7 purpose
+## G7 purpose and hardening
 
-G7 is independent cross-lane corroboration against the authenticated S174 rebuilt cache. It uses every natural HVS/SEA Sample-A cell overlap and the exact 9,216 replay addresses, comparing raw integer counts with zero tolerance.
-
-No extra cell or address may be selected based on values.
+G7 is independent cross-lane corroboration against the authenticated S174 rebuilt cache. It uses every natural HVS/SEA Sample-A cell overlap and the exact 9,216 replay addresses, comparing raw integer counts with zero tolerance. No extra cell or address may be selected based on values.
 
 Possible terminals:
-
 - `PASS_TD_G7_S174_EXACT_OVERLAP`
 - `STOP_TD_G7_S174_CROSSCHECK_MISMATCH`
 - `NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP`
 
-## G7 defects found before execution
-
-The historical implementation had two avoidable hazards:
+Historical G7 had two avoidable hazards before any execution:
 
 1. zero natural overlap was labeled `NOT_ESTIMABLE` but returned process exit code 0;
-2. S174 reference values were cast with `int(...)` without an explicit finite/exact-integer check.
+2. S174 reference values were cast with `int(...)` without explicit finite/exact-integer validation.
 
-The hardened G7 path now:
-
-- loads the hardened V2 materializer/authorization surface;
-- requires finite, nonnegative, exactly integer S174 reference counts;
-- returns process success only for `PASS_TD_G7_S174_EXACT_OVERLAP`;
-- returns non-success for both mismatch and `NOT_ESTIMABLE`;
-- checks S174 cache column geometry is exactly the canonical 41,238-address space before comparison;
-- writes an immutable receipt.
-
-`NOT_ESTIMABLE` is not a PASS.
+The hardened G7 path now loads the hardened V2 materializer/authorization surface, requires finite/nonnegative/exact-integer S174 reference values, returns process success only for an exact-overlap PASS, returns non-success for mismatch and `NOT_ESTIMABLE`, checks S174 cache column geometry is exactly 41,238, and writes an immutable receipt.
 
 ## G7 address-universe self-audit
 
-A self-audit questioned whether comparing all 9,216 replay addresses exceeded the S174 “checked set.” The underlying S174 rebuild implementation resolves this: rebuilt HVS/SEA cache matrices are stored as CSR matrices with shape `(cells, N_ADDR)` where `N_ADDR = 41,238`. The later 14,417-address V77 analysis universe is not the cache storage geometry.
+A self-audit questioned whether all 9,216 replay addresses exceeded the S174 comparison universe. The S174 rebuild source resolves this: HVS/SEA rebuilt cache matrices are explicitly created with `N_ADDR = 41,238` columns. The later 14,417-address V77 analysis universe is not the cache storage geometry.
 
-Therefore all 9,216 frozen TD replay addresses can lawfully be cross-checked against S174 **after** G4/G5 establishes that those exact addresses resolve one-to-one under the corrected mapping. Sparse absence in either raw/cache row is interpreted as zero only inside this already-defined 41,238-address space.
+Therefore all 9,216 frozen TD replay addresses can lawfully be cross-checked against S174 after G4/G5 establishes that those exact addresses resolve one-to-one under the corrected mapping. Sparse absence is treated as zero only within this already-defined canonical 41,238-address matrix.
 
 ## Revised authorization template
 
-Canonical template path:
+Canonical template:
 `docs/agent/JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_20261007.json`
 
-Current template schema:
+Template schema:
 `JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3`
 
-It remains non-authorizing. A runtime authorization may be created only after:
+It remains non-authorizing. A V2 runtime authorization may be created only after:
 
 1. canonical self-audit-hardened G4/G5 PASS;
-2. review of the G4/G5 receipts;
-3. a new explicit owner decision;
-4. qualification of the #251 focused regression tests on the canonical/repository environment.
+2. owner review of the G4/G5 receipts;
+3. qualification of #251 tests against the then-current #248 base;
+4. a new explicit owner decision.
 
 ## What G6/G7 PASS would mean
 
-G6+G7 PASS would support the integrity of the corrected value-reading path. It would **not** establish that the historical relational biology survived.
-
-It would not:
-- select a target;
-- relabel TD57C;
-- authorize corrected TD56/TD57B/TD57C/TD59 biological replay;
-- authorize TD60;
-- authorize training.
+G6+G7 PASS would support integrity of the corrected value-reading path. It would not establish that historical relational biology survived, select a target, relabel TD57C, authorize corrected biological replay, authorize TD60, or authorize training.
 
 A separate owner decision remains mandatory after G6/G7 receipt review before biological replay.
 
@@ -129,8 +108,8 @@ A separate owner decision remains mandatory after G6/G7 receipt review before bi
 
 1. Macha runs canonical self-audit-hardened G4/G5 from PR #248.
 2. Any failure is preserved and stops.
-3. If G4/G5 PASS, return receipts; do not create a value authorization.
-4. Review and qualify #251 regression tests against the then-current #248 base.
+3. If G4/G5 PASS, return receipts and do not create a value authorization.
+4. Refresh/reconcile #251 against the exact #248 execution code if needed and qualify #251 tests.
 5. Only after a new owner decision may a V2 runtime authorization be created.
 6. If authorized, run only hardened V2 G6 + hardened G7.
 7. G6 mismatch, G7 mismatch, or G7 `NOT_ESTIMABLE` stops for review.
