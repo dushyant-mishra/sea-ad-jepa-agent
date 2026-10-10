@@ -27,7 +27,9 @@ def test_canonical_paths_are_explicit_and_cross_lane_collision_path_is_separate(
 def test_output_namespace_is_fixed_and_immutable(tmp_path):
     m = load_module()
     out = m.default_output_dir(tmp_path)
-    assert out.as_posix().endswith("results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1")
+    assert out.as_posix().endswith(
+        "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened"
+    )
     out.mkdir(parents=True)
     (out / "PREFLIGHT_RESULT.json").write_text("{}\n", encoding="utf-8")
     try:
@@ -78,7 +80,7 @@ def test_static_archive_authorities_are_exact_hash_gates(tmp_path):
 def test_mapping_command_is_value_blind_and_complete(tmp_path):
     m = load_module()
     paths = m.canonical_paths(Path("D:/Jepa project"), Path("D:/Jepa project-stage81a3r-20260814"))
-    out = tmp_path / "preflight_v1"
+    out = tmp_path / "preflight_v3"
     cmd = m.mapping_command(Path("python"), Path("D:/repo"), paths, out, out / "S174_REBUILD_FREEZE_V1.json")
     text = " ".join(map(str, cmd))
     assert "audit_td_relational_replay_mapping_preflight.py" in text
