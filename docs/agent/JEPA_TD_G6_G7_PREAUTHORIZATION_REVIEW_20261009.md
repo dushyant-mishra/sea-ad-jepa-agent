@@ -86,15 +86,16 @@ The hardened G7 path now:
 - requires finite, nonnegative, exactly integer S174 reference counts;
 - returns process success only for `PASS_TD_G7_S174_EXACT_OVERLAP`;
 - returns non-success for both mismatch and `NOT_ESTIMABLE`;
+- checks S174 cache column geometry is exactly the canonical 41,238-address space before comparison;
 - writes an immutable receipt.
 
 `NOT_ESTIMABLE` is not a PASS.
 
 ## G7 address-universe self-audit
 
-A self-audit questioned whether comparing all 9,216 replay addresses exceeded the S174 “checked set.” The underlying S174 rebuild implementation resolves this: rebuilt HVS/SEA cache matrices are stored in the full canonical `N_ADDR = 41,238` address space. The later 14,417-address V77 analysis universe is not the cache storage geometry.
+A self-audit questioned whether comparing all 9,216 replay addresses exceeded the S174 “checked set.” The underlying S174 rebuild implementation resolves this: rebuilt HVS/SEA cache matrices are stored as CSR matrices with shape `(cells, N_ADDR)` where `N_ADDR = 41,238`. The later 14,417-address V77 analysis universe is not the cache storage geometry.
 
-Therefore all 9,216 frozen TD replay addresses can lawfully be cross-checked against S174 **after** G4/G5 has established that those exact addresses resolve one-to-one under the corrected mapping. G7 additionally checks that the S174 cache has 41,238 columns before comparison.
+Therefore all 9,216 frozen TD replay addresses can lawfully be cross-checked against S174 **after** G4/G5 establishes that those exact addresses resolve one-to-one under the corrected mapping. Sparse absence in either raw/cache row is interpreted as zero only inside this already-defined 41,238-address space.
 
 ## Revised authorization template
 
