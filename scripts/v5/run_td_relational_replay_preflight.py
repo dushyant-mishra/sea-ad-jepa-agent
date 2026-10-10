@@ -54,9 +54,15 @@ def default_output_dir(repo_root: Path) -> Path:
 
 def assert_fresh_output(out: Path) -> None:
     out = Path(out)
-    terminal = out / "PREFLIGHT_RESULT.json"
-    if terminal.exists():
-        raise RuntimeError(f"immutable preflight namespace already contains {terminal}; do not overwrite")
+    if not out.exists():
+        return
+    existing = sorted(p.name for p in out.iterdir())
+    if existing:
+        preview = ", ".join(existing[:5])
+        more = "" if len(existing) <= 5 else f" (+{len(existing) - 5} more)"
+        raise RuntimeError(
+            f"immutable preflight namespace is non-empty; existing artifact(s): {preview}{more}; do not overwrite"
+        )
 
 
 def require_hash(path: Path, expected: str, label: str) -> None:
