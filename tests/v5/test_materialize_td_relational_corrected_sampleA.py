@@ -75,6 +75,17 @@ def test_corrected_row_keeps_only_frozen_replay_addresses():
     assert row == {100: 3}
 
 
+def test_corrected_row_rejects_fractional_values_in_raw_count_slot():
+    m = load_module()
+    try:
+        m.corrected_row([0], [1.25], {0: 100}, {100})
+    except RuntimeError as e:
+        text = str(e).lower()
+        assert "integer" in text or "raw count" in text
+    else:
+        raise AssertionError("fractional values in a raw-count slot must fail closed, never be rounded")
+
+
 def test_output_namespace_refuses_overwrite(tmp_path):
     m = load_module()
     out = tmp_path / "cache"
