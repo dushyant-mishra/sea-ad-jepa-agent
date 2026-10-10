@@ -1,0 +1,41 @@
+name: V79 factorial memory hardening
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/**'
+      - 'tests/test_v79_*'
+      - '.github/workflows/v79-factorial-memory-hardening.yml'
+  workflow_dispatch:
+
+jobs:
+  focused-v79:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - name: Install focused dependencies
+        run: python -m pip install --upgrade 'pip==26.2.1' 'numpy==2.4.6' 'scipy==1.17.1' 'pytest==9.1.1'
+      - name: Diagnose pre-hardening and hardened observer fixture under one environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          fixture='import hashlib, numpy as np; from scripts.v79.v79_hierarchical_biology import generate_latent_biology; from scripts.v79.v79_observation_operator import observe_latent_biology; bio={"class_frequencies":[0.4,0.6],"substates_per_class":[2,3],"substate_prevalence":[1.0,1.0],"module_size_distribution":[5,8],"n_modules_per_substate":2,"n_continuous_factors":3,"substate_effect_scale":1.0,"continuous_factor_scale":0.05,"donor_effect_scale":0.05,"baseline_log_mean":-0.2,"baseline_log_sd":0.2}; support=np.ones((2,48),dtype=bool); support[1,::4]=False; obs={"regime_ids":["OBS_A","OBS_B"],"structural_support":support.tolist(),"capture_log_mean":[-0.2,-0.8],"capture_log_sd":[0.15,0.20],"gene_propensity":np.linspace(0.6,1.4,48).tolist(),"realization_family":"independent_thinning","molecule_scale":6.0}; z=generate_latent_biology(bio,160,48,8,seed=41); labels=np.resize(np.array(["OBS_A","OBS_B"]),160); out=observe_latent_biology(z,obs,labels,seed=77); print("numpy",np.__version__); print("counts",out.counts_hash); print("capture",hashlib.sha256(np.ascontiguousarray(out.capture_efficiency).view(np.uint8)).hexdigest())'
+          git worktree add --detach /tmp/v79-base 1a0ab6e1108af924ca13e81caa3c70f3101d251c
+          (cd /tmp/v79-base && PYTHONPATH=. python -c "$fixture") | tee /tmp/base.fixture
+          PYTHONPATH=. python -c "$fixture" | tee /tmp/head.fixture
+          diff -u /tmp/base.fixture /tmp/head.fixture
+      - name: Run V79 factorial focused suite
+        run: >-
+          python -m pytest -q
+          tests/test_v79_hierarchical_biology_v1.py
+          tests/test_v79_observation_operator_v1.py
+          tests/test_v79_factorial_worlds_v1.py
+          tests/test_v79_factorial_scoring_v1.py
+          tests/test_v79_factorial_gate_v1.py
+          tests/test_v79_memory_hardening_v1.py
