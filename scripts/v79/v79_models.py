@@ -92,13 +92,16 @@ def design_arrays(di: dict) -> dict:
     return d
 
 
-def vc_model(*args, effect_centered: float = 1.0, **kwargs):
+def vc_model(*args, effect_centered: float = 1.0, logsd_centered: float = 1.0, **kwargs):
+    """Both effects and per-gene log sds are centred by default: each gene's spread is pinned by its own data
+    (149 donors, 426 donor-classes, 42 operators), and a non-centred log sd in that regime makes the narrow
+    funnel that forces tiny NUTS steps (self-audit entries 3 and 10)."""
     def config(site):
         name = site["name"]
         if name.endswith("_decentered"):
             return None
-        if name.startswith("logsd_"):
-            return LocScaleReparam(centered=0.0)
+        if name.startswith("logsd_") and logsd_centered != 1.0:
+            return LocScaleReparam(centered=logsd_centered)
         if name.startswith("a_") and effect_centered != 1.0:
             return LocScaleReparam(centered=effect_centered)
         return None
@@ -161,21 +164,25 @@ def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None
 
 def realized_fractions(samples: dict, design: dict, likelihood: str, components=COMPONENTS, mask=None) -> dict:
     """Per draw and gene: realized variance of each component's effects over the observed cells (over the
-    detected cells when a mask is given), the residual variance, and their fractions. Returns numpy arrays
-    (draws x genes) as (variance, fraction) pairs."""
+    detected cells when a mask is given), the residual variance, and their fractions. Computed from level effects
+    and per-level cell counts, never by expanding effects to every cell. Returns (variance, fraction) pairs of
+    numpy arrays (draws x genes)."""
     out, tot = {}, None
-    w = None if mask is None else np.asarray(mask, dtype=np.float64)
     for x in components:
         eff = np.asarray(samples[f"a_{x}"], dtype=np.float64)
         if x in design.get("basis", {}):                                          # within-parent coefficients
             eff = np.einsum("lk,dkg->dlg", design["basis"][x], eff)
-        # eff: draws x levels x genes
-        per_cell = eff[:, np.asarray(design[x]), :]                              # draws x cells x genes
-        if w is None:
-            v = per_cell.var(1)
+        idx = np.asarray(design[x])
+        n_lev = eff.shape[1]
+        if mask is None:
+            cnt = np.bincount(idx, minlength=n_lev).astype(np.float64)[:, None]   # levels x 1
         else:
-            mean = (per_cell * w[None]).sum(1, keepdims=True) / np.clip(w.sum(0), 1, None)[None, None, :]
-            v = (((per_cell - mean) ** 2) * w[None]).sum(1) / np.clip(w.sum(0), 1, None)[None, :]
+            m = np.asarray(mask, dtype=np.float64)                                # cells x genes
+            cnt = np.zeros((n_lev, m.shape[1]))
+            np.add.at(cnt, idx, m)                                                # levels x genes
+        n = cnt.sum(0)                                                            # (1,) or (genes,)
+        mean = (eff * cnt[None]).sum(1) / n                                       # draws x genes
+        v = (cnt[None] * (eff - mean[:, None, :]) ** 2).sum(1) / n
         out[x] = v
         tot = v if tot is None else tot + v
     if likelihood == "gaussian":
@@ -190,10 +197,15 @@ def realized_fractions(samples: dict, design: dict, likelihood: str, components=
 def run_nuts(model_kwargs: dict, n_chains: int, warmup: int, draws: int, seed: int, target_accept: float = 0.9,
              max_tree_depth: int = 10) -> dict:
     kernel = NUTS(vc_model, target_accept_prob=target_accept, max_tree_depth=max_tree_depth)
-    mcmc = MCMC(kernel, num_warmup=warmup, num_samples=draws, num_chains=n_chains,
-                chain_method="parallel" if n_chains <= jax.local_device_count() else "sequential", progress_bar=False)
+    if jax.default_backend() == "gpu":
+        method = "vectorized"                              # one GPU: chains advance together in one program
+    else:
+        method = "parallel" if n_chains <= jax.local_device_count() else "sequential"
+    mcmc = MCMC(kernel, num_warmup=warmup, num_samples=draws, num_chains=n_chains, chain_method=method,
+                progress_bar=False)
     t0 = time.time()
     mcmc.run(jax.random.PRNGKey(seed), extra_fields=("diverging", "num_steps"), **model_kwargs)
+    jax.block_until_ready(mcmc.get_samples())        # JAX dispatches asynchronously; time the real work
     secs = time.time() - t0
     extra = mcmc.get_extra_fields(group_by_chain=True)
     return dict(mcmc=mcmc, samples=mcmc.get_samples(group_by_chain=True), seconds=secs,

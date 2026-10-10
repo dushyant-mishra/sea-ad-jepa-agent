@@ -21,6 +21,15 @@ GENE_SAMPLE_SEED = 20261009
 N_DECILES = 10
 
 
+def local_path(p) -> str:
+    """Windows drive paths ("D:/x") become WSL mount paths ("/mnt/d/x") when running on Linux; else unchanged."""
+    import os
+    s = str(p).replace("\\", "/")
+    if os.name == "posix" and len(s) > 2 and s[1] == ":" and s[0].isalpha():
+        return f"/mnt/{s[0].lower()}{s[2:]}"
+    return s
+
+
 def load_counts(cache_root, bridge_path) -> sparse.csr_matrix:
     root = FW.check_path(cache_root)
     blocks = []

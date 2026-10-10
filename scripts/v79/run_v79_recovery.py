@@ -85,7 +85,10 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
     for x, (_, frac) in fr.items():
         lo, hi = np.quantile(frac, [0.05, 0.95], axis=0)
         truth = sim["truth_frac"].get(x)
-        planted = mod is None and truth is not None and np.all(sim["truth_var"][x] > 0)
+        # score a component when the scenario plants it (residual is always planted for the Gaussian); realized
+        # truth can be small but nonzero for an absent component under the model's bookkeeping, so it is not used
+        planted_sd = SIM.SCENARIOS[scen].get(x, None) if x != "res" else (1.0 if likelihood == "gaussian" else 0.0)
+        planted = mod is None and truth is not None and bool(planted_sd and planted_sd > 0)
         per[x] = dict(gene_median=[float(v) for v in np.median(frac, 0)],
                       across_gene_median_q=[float(v) for v in np.quantile(np.median(frac, 1), [0.05, 0.5, 0.95])],
                       truth=[float(v) for v in truth] if truth is not None else None,
@@ -130,7 +133,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=20261009)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    d = FW.load_cell_design(CACHE, BRIDGE)
+    d = FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE))
     di = DA.design_indices(d)
     res, t0 = {}, time.time()
     for i, name in enumerate(a.fits.split(",")):
