@@ -10,19 +10,122 @@ from .build_v79_factorial_worlds import FactorialWorlds, WorldArm
 
 CANONICAL_THRESHOLD = 0.30
 SENSITIVITY_THRESHOLDS = (0.10, 0.20, 0.30, 0.40)
+_CELL_BLOCK = 128
 
 
-def _default_legacy_score():
-    mod = importlib.import_module("scripts.v77.v77_matched_scoring")
-    return mod.score_matched
+def _default_legacy_modules():
+    ms = importlib.import_module("scripts.v77.v77_matched_scoring")
+    tc = importlib.import_module("scripts.v77.build_v77_topology_calibration")
+    env = importlib.import_module("scripts.v77.build_v77_calibration_envelope")
+    return ms, tc, env
 
 
 def _default_localization_backend():
     return importlib.import_module("scripts.v79.v79_detection_localization")
 
 
-def _dense_if_needed(x):
-    return x.toarray() if sparse.issparse(x) else np.asarray(x)
+def _sparse_hvg_material(counts, universe: np.ndarray, n_hvg: int) -> dict[str, Any]:
+    """Frozen CPM-log1p HVG rule without densifying the whole evaluation universe.
+
+    Zeros remain zeros after log1p, so per-gene variance is exactly E[x^2] - E[x]^2 and can be
+    computed from the sparse transformed matrix.  Only the selected genes are then materialized.
+    """
+    X = sparse.csr_matrix(counts, dtype=np.float64)
+    universe = np.asarray(universe, dtype=np.int64)
+    lib = np.asarray(X.sum(1)).ravel()
+    Xk = X[:, universe].astype(np.float64)
+    if Xk.nnz:
+        denom = np.repeat(np.maximum(lib, 1.0), np.diff(Xk.indptr))
+        Xk.data = np.log1p(Xk.data / denom * 1e4)
+    mean = np.asarray(Xk.mean(axis=0)).ravel()
+    mean_sq = np.asarray(Xk.power(2).mean(axis=0)).ravel()
+    variance = np.maximum(mean_sq - mean * mean, 0.0)
+    sel = np.argsort(-variance)[: min(int(n_hvg), len(universe))]
+    Ld = np.asarray(Xk[:, sel].todense(), dtype=np.float64)
+    H = (Ld - Ld.mean(0)) / (Ld.std(0) + 1e-9)
+    C = (H.T @ H) / len(H)
+    return {
+        "X": X,
+        "lib": lib,
+        "sel": np.asarray(sel, dtype=np.int64),
+        "hvg_idx": universe[sel],
+        "Ld": Ld,
+        "C": np.asarray(C, dtype=np.float64),
+    }
+
+
+def _sparse_legacy_score(counts, universe: np.ndarray, cls: np.ndarray, n_hvg: int,
+                         prepared: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    ms, tc, env = _default_legacy_modules()
+    p = dict(prepared) if prepared is not None else _sparse_hvg_material(counts, universe, n_hvg)
+    X = p["X"]
+    sel = np.asarray(p["sel"], dtype=np.int64)
+    Ld = np.asarray(p["Ld"], dtype=np.float64)
+    C = np.asarray(p["C"], dtype=np.float64)
+    nh = Ld.shape[1]
+    selected = np.arange(nh, dtype=np.int64)
+    det = np.asarray((X[:, np.asarray(universe, dtype=np.int64)[sel]] > 0).todense(), dtype=np.float64)
+    det_stats = env.stats_from_logmatrix(det, selected, nh)
+    expr_stats = env.stats_from_logmatrix(Ld, selected, nh)
+    per_class, pooled, within = tc.class_conditional_t5(Ld, selected, C, np.asarray(cls))
+    sub = X[:, np.asarray(universe, dtype=np.int64)]
+    ab = env.abundance_stats(sub, p["lib"][:, None])
+    detected_by_gene = np.asarray((sub > 0).sum(0)).ravel()
+    det_constant = int((det.std(0) == 0).sum())
+    return {
+        "rule": ms.RULE,
+        "detection": dict(det_stats, selected_genes_with_constant_detection=det_constant),
+        "expression": expr_stats,
+        "t5": {
+            "within_over_pooled": (float(within / pooled) if pooled > 0 else float("nan")),
+            "pooled_median_abs_corr": pooled,
+            "mean_within_class_median_abs_corr": within,
+            "classes_used": list(per_class),
+            "min_class_cells": tc.MIN_CLASS_CELLS,
+        },
+        "abundance": ab,
+        "canonical_genes_detected": int((detected_by_gene > 0).sum()),
+        "canonical_genes_lost": int(len(universe) - (detected_by_gene > 0).sum()),
+        "median_detected_per_cell": float(np.median(np.asarray((sub > 0).sum(1)).ravel())),
+    }
+
+
+def _sparse_l0_l2(loc, counts, universe: np.ndarray, broad: np.ndarray, n_hvg: int,
+                   prepared: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    p = dict(prepared) if prepared is not None else _sparse_hvg_material(counts, universe, n_hvg)
+    X = p["X"]
+    sel = np.asarray(p["sel"], dtype=np.int64)
+    hvg_idx = np.asarray(p["hvg_idx"], dtype=np.int64)
+    broad = np.asarray(broad).astype(str)
+    H = np.asarray((X[:, hvg_idx] > 0).todense(), dtype=np.float64)
+    rec = loc._corr_from_binary(H)
+    l0 = {
+        "corr": rec["corr"],
+        "summary": loc.summarize_corr(rec["corr"]),
+        "n_cells": rec["n_cells"],
+        "variable_gene_count": rec["variable_gene_count"],
+        "constant_gene_count": rec["constant_gene_count"],
+    }
+    l1 = loc.localize_by_labels(H, broad, np.arange(H.shape[1], dtype=np.int64), retain_stratum_corr=True)
+    sub = X[:, np.asarray(universe, dtype=np.int64)]
+    detected_depth = np.asarray((sub > 0).sum(1)).ravel().astype(np.float64)
+    library_depth = np.asarray(X.sum(1)).ravel().astype(np.float64)
+    l2_primary = loc._depth_localization(X, universe, broad, sel, detected_depth,
+                                         "detected_feature_count", True, True)
+    l2_sensitivity = loc._depth_localization(X, universe, broad, sel, library_depth,
+                                             "library_size", False, True)
+    return {
+        "selection": {
+            "selected_positions": sel,
+            "selected_universe_ids": hvg_idx,
+            "selection_rule": importlib.import_module("scripts.v77.v77_matched_scoring").RULE,
+            "n_hvg_requested": int(n_hvg),
+            "n_selected": int(len(sel)),
+        },
+        "L0": l0,
+        "L1": l1,
+        "L2": {"primary": l2_primary, "sensitivity": l2_sensitivity},
+    }
 
 
 def _build_base_strata(loc, broad_class: np.ndarray, depth: np.ndarray) -> np.ndarray:
@@ -45,18 +148,28 @@ def _build_base_strata(loc, broad_class: np.ndarray, depth: np.ndarray) -> np.nd
 def score_world(world: WorldArm, universe: np.ndarray, *,
                 legacy_score_fn: Callable | None = None,
                 localization_backend=None, n_hvg: int = 3000) -> dict[str, Any]:
-    legacy = legacy_score_fn or _default_legacy_score()
     loc = localization_backend or _default_localization_backend()
     counts = world.observed.counts
     universe = np.asarray(universe, dtype=np.int64)
     broad = np.asarray(world.latent.broad_class)
 
-    legacy_result = legacy(_dense_if_needed(counts), universe, broad, n_hvg=int(n_hvg))
-    l02 = loc.build_l0_l2(counts, universe, broad, n_hvg=int(n_hvg), retain_stratum_corr=True)
+    prepared = None
+    if legacy_score_fn is None or localization_backend is None:
+        prepared = _sparse_hvg_material(counts, universe, int(n_hvg))
+    if legacy_score_fn is None:
+        legacy_result = _sparse_legacy_score(counts, universe, broad, int(n_hvg), prepared)
+    else:
+        legacy_result = legacy_score_fn(counts, universe, broad, n_hvg=int(n_hvg))
+    if localization_backend is None:
+        l02 = _sparse_l0_l2(loc, counts, universe, broad, int(n_hvg), prepared)
+    else:
+        l02 = loc.build_l0_l2(counts, universe, broad, n_hvg=int(n_hvg), retain_stratum_corr=True)
+
     sel = np.asarray(l02["selection"]["selected_positions"], dtype=np.int64)
-    sub_det = (sparse.csr_matrix(counts)[:, universe] > 0).astype(float)
-    H = np.asarray(sub_det[:, sel].todense())
-    depth = np.asarray(sub_det.sum(1)).ravel()
+    selected_ids = np.asarray(l02["selection"].get("selected_universe_ids", universe[sel]), dtype=np.int64)
+    X = sparse.csr_matrix(counts)
+    H = np.asarray((X[:, selected_ids] > 0).todense(), dtype=np.float64)
+    depth = np.asarray((X[:, universe] > 0).sum(1)).ravel()
     base = _build_base_strata(loc, broad, depth)
     regime = np.asarray(world.observed.regime_labels).astype(str)
     l3 = loc.localize_operator_source(H, base, regime, regime, retain_stratum_corr=True)
@@ -64,8 +177,7 @@ def score_world(world: WorldArm, universe: np.ndarray, *,
     # localization may lawfully pool across observation regime while preserving the
     # same class+depth support floor. This is a synthetic causal view, not a relabeling
     # of the real-data nested L4 object.
-    donor_base = base
-    l4 = loc.localize_donor(H, donor_base, np.asarray(world.latent.donor), retain_stratum_corr=True)
+    l4 = loc.localize_donor(H, base, np.asarray(world.latent.donor), retain_stratum_corr=True)
     l4["synthetic_donor_view"] = "BALANCED_CROSS_SOURCE_BY_DESIGN"
 
     return {
@@ -90,22 +202,32 @@ def score_world(world: WorldArm, universe: np.ndarray, *,
 
 
 def _latent_distance(a: WorldArm, b: WorldArm) -> float:
-    xa = np.asarray(a.latent.latent_abundance, dtype=float)
-    xb = np.asarray(b.latent.latent_abundance, dtype=float)
+    xa = a.latent.latent_abundance
+    xb = b.latent.latent_abundance
     if xa.shape != xb.shape:
         raise ValueError("counterfactual latent shapes must match")
-    denom = float(np.mean(np.abs(xa)) + np.mean(np.abs(xb)) + 1e-12)
-    return float(np.mean(np.abs(xa - xb)) / denom)
+    total_a = total_b = total_diff = 0.0
+    for lo in range(0, xa.shape[0], _CELL_BLOCK):
+        hi = min(lo + _CELL_BLOCK, xa.shape[0])
+        aa = np.asarray(xa[lo:hi], dtype=np.float64)
+        bb = np.asarray(xb[lo:hi], dtype=np.float64)
+        total_a += float(np.abs(aa).sum(dtype=np.float64))
+        total_b += float(np.abs(bb).sum(dtype=np.float64))
+        total_diff += float(np.abs(aa - bb).sum(dtype=np.float64))
+    n = float(xa.size)
+    denom = total_a / n + total_b / n + 1e-12
+    return float((total_diff / n) / denom)
 
 
 def _observed_distance(a: WorldArm, b: WorldArm) -> float:
-    xa = sparse.csr_matrix(a.observed.counts, dtype=float)
-    xb = sparse.csr_matrix(b.observed.counts, dtype=float)
+    xa = sparse.csr_matrix(a.observed.counts)
+    xb = sparse.csr_matrix(b.observed.counts)
     if xa.shape != xb.shape:
         raise ValueError("counterfactual observed shapes must match")
     diff = xa - xb
-    numerator = float(np.abs(diff.data).sum())
-    denom = float(np.abs(xa.data).sum() + np.abs(xb.data).sum() + 1e-12)
+    numerator = float(np.abs(diff.data.astype(np.float64, copy=False)).sum())
+    denom = float(np.abs(xa.data.astype(np.float64, copy=False)).sum()
+                  + np.abs(xb.data.astype(np.float64, copy=False)).sum() + 1e-12)
     return numerator / denom
 
 
