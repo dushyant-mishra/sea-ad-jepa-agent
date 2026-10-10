@@ -19,6 +19,7 @@ sys.path.insert(0, str(HERE.parents[0] / "v77"))
 
 import v79_detection_localization as LOC  # noqa: E402
 import run_v78_signed_detection_marginal_tournament as V78  # noqa: E402
+import run_v77_class_propagation_tournament as V77  # noqa: E402
 
 SCHEMA_GATE = "V79_DETECTION_LOCALIZATION_PREEXECUTION_GATE_V1"
 SCHEMA_CANONICAL = "V79_DETECTION_LOCALIZATION_CANONICAL_V1"
@@ -66,6 +67,15 @@ def preexecution_gate(e2_reference, operator_bridge, marginal_authority, correct
         "v78_retuning_authorized": False,
         "synthetic_arm_promoted": None,
     }
+
+
+def load_evaluation_universe(path: Path) -> np.ndarray:
+    """Authenticate the exact frozen corrected-TRAIN evaluation-universe bytes before use."""
+    return V77.load_universe(
+        Path(path),
+        V78.EXPECTED_EVALUATION_UNIVERSE_SHA256,
+        V77.CORRECTED_UNIVERSE_NAME,
+    )
 
 
 def require_execution_authority(gate: dict) -> None:
@@ -349,8 +359,7 @@ def main() -> None:
     _atomic_json(out / RECEIPT_FILENAMES["gate"], gate)
     require_execution_authority(gate)
     X, cls, src, op, donor = load_corrected_train(Path(a.corrected_cache_root), Path(a.operator_bridge))
-    with np.load(a.evaluation_universe_npz, allow_pickle=False) as z:
-        universe = np.asarray(z["evaluation_universe"], dtype=np.int64)
+    universe = load_evaluation_universe(Path(a.evaluation_universe_npz))
     run_localization(X, universe, cls, src, op, donor, gate, output_dir=out)
 
 
