@@ -7,7 +7,9 @@ Each draw reweights the 4,726 corrected TRAIN cells (donor masses ~ Dirichlet(1)
 libraries are fixed from the full data, as in the historical donor bootstrap.
 
   worker  computes draws i with i % workers == worker (seeds from (seed, i), so the split does not change any
-          draw); worker 0 also computes the full-data point (uniform weights)
+          draw); worker 0 also computes the full-data point (uniform weights, always on the CPU path).
+          --backend gpu runs the draws' dense work on CUDA (v79_geometry_gpu; equivalence with the CPU path is
+          tested: integer statistics identical, continuous within 1e-9 relative)
   merge   checks every draw is present exactly once; per statistic: posterior quantiles, the full-data point,
           the resampling shift (posterior median - point) and the historical with-replacement band from the
           corrected envelopes (S159 is measured, not repaired)
@@ -62,16 +64,25 @@ def worker(a) -> None:
     prep, design = load_prep()
     donors = design["donor_id"]
     keys = design["row"].astype(str)                     # internal only: stable cell order within donor
-    out = dict(worker=a.worker, workers=a.workers, seed=a.seed, draws={}, point=None)
+    out = dict(worker=a.worker, workers=a.workers, seed=a.seed, backend=a.backend, draws={}, point=None,
+               environment=dict(python=sys.version.split()[0], numpy=np.__version__))
     t0 = time.time()
     if a.worker == 0:
         out["point"] = flatten(GE.geometry(prep, np.full(prep["n_cells"], 1.0 / prep["n_cells"])))
+    if a.backend == "gpu":
+        import torch
+        import v79_geometry_gpu as GG
+        gprep = GG.to_gpu(prep)
+        out["environment"].update(torch=torch.__version__, device=torch.cuda.get_device_name(0))
+        geom = lambda w: GG.geometry(prep, gprep, w)  # noqa: E731
+    else:
+        geom = lambda w: GE.geometry(prep, w)  # noqa: E731
     for i in range(a.draws):
         if i % a.workers != a.worker:
             continue
         rng = np.random.default_rng([a.seed, i])
         w = GE.nested_dirichlet_weights(donors, rng, cell_keys=[f"{s}|{r}" for s, r in zip(design["stem"], keys)])
-        out["draws"][str(i)] = flatten(GE.geometry(prep, w))
+        out["draws"][str(i)] = flatten(geom(w))
     out["seconds"] = time.time() - t0
     path = Path(a.out_dir) / f"d1_part_{a.worker:02d}_of_{a.workers:02d}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -117,6 +128,7 @@ def merge(a) -> None:
         rows[s] = {k: (float(v) if isinstance(v, (np.floating, float)) else v) for k, v in row.items()}
     rec = dict(schema="V79_PHASE_D1_INTERNAL_V1", status="INTERNAL__NOT_SYNTHETIC_CONSUMABLE", draws=a.draws,
                seed=a.seed, parts=[p.name for p in parts],
+               backends=sorted({json.loads(p.read_text(encoding="utf-8")).get("backend", "cpu") for p in parts}),
                method=("nested Bayesian bootstrap: donor Dirichlet(1) x within-donor cell Dirichlet(1); genes, HVGs "
                        "and libraries fixed from the full data; statistics exactly as the corrected builders"),
                statistics=rows, lane=FW.LANE_TERMINAL)
@@ -134,6 +146,7 @@ def main() -> None:
     ap.add_argument("--worker", type=int, default=0)
     ap.add_argument("--seed", type=int, default=20261009)
     ap.add_argument("--out-dir", default=str(ROOT / "results/v79/internal/d1"))
+    ap.add_argument("--backend", choices=["cpu", "gpu"], default="cpu")
     a = ap.parse_args()
     worker(a) if a.mode == "worker" else merge(a)
 
