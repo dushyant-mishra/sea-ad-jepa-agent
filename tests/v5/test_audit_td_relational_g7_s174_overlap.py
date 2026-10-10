@@ -48,3 +48,10 @@ def test_no_overlap_is_not_fabricated():
     assert m.overlap_status(0, 0) == "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"
     assert m.overlap_status(3, 0) == "PASS_TD_G7_S174_EXACT_OVERLAP"
     assert m.overlap_status(3, 1) == "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"
+
+
+def test_not_estimable_is_not_process_success():
+    m = load_module()
+    assert m.exit_code_for_status("PASS_TD_G7_S174_EXACT_OVERLAP") == 0
+    assert m.exit_code_for_status("NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP") != 0
+    assert m.exit_code_for_status("STOP_TD_G7_S174_CROSSCHECK_MISMATCH") != 0
