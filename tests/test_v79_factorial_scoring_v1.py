@@ -94,6 +94,22 @@ def test_localization_reports_pooled_class_depth_source_and_donor_views():
     assert any(c[0] == "l4" for c in loc.calls)
 
 
+def test_distributional_endpoints_include_class_and_observation_marginal_views():
+    w = arm(n_cells=400, n_donors=2)
+    out = score_world(w, np.arange(64), legacy_score_fn=fake_legacy, localization_backend=FakeLoc(), n_hvg=32)
+    views = out["marginal_views"]
+    assert set(views) == {"by_broad_class", "by_observation_regime"}
+    assert sum(v["n_cells"] for v in views["by_broad_class"].values()) == 400
+    assert sum(v["n_cells"] for v in views["by_observation_regime"].values()) == 400
+    for groups in views.values():
+        for rec in groups.values():
+            assert rec["quantile_probs"] == [0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0]
+            assert len(rec["library_size_quantiles"]) == 7
+            assert len(rec["detected_feature_quantiles"]) == 7
+            assert len(rec["positive_count_quantiles"]) == 7
+            assert rec["positive_count_n"] > 0
+
+
 def manifest():
     return validate_arm_manifest({
         "arm_names": ["H0","H1","H2","H3","C_OBS","C_BIO"],
