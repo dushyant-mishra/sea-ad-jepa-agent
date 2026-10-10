@@ -10,6 +10,8 @@ Repair branch:
 **Canonical execution code freeze:**
 `b3ff8366f28280e7d3269c305efa6317a05c8834`
 
+The current PR head may be later only because this runbook was updated after the code freeze. Before execution, confirm the diff from `b3ff8366...` to the chosen head is documentation-only; otherwise execute the exact code freeze.
+
 Parent implementation:
 `impl/td-relational-corrected-preflight-20261009@6716f044fcbefeb39bddf505c09a82378ce602e8`
 
