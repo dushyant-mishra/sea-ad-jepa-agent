@@ -35,6 +35,7 @@ ROOT = HERE.parents[1]
 CACHE = "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1"
 BRIDGE = ROOT / "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
 RHAT_MAX, ESS_MIN = 1.01, 400
+RETRY_ACCEPT = (0.9, 0.95, 0.99)        # the contract's retry rule, applied to recovery fits as to real fits
 FITS = {  # name: (planted scenario, fit modification)
     "S1_present": ("S1_present", None),
     "S0_class_absent": ("S0_class_absent", None),
@@ -63,7 +64,7 @@ def permuted_design(di: dict, seed: int) -> dict:
 def diagnose(run: dict, likelihood: str, components) -> dict:
     sites = ["mu", "b_depth"] + [f"m_{x}" for x in components if x not in M.FIXED] + \
             [f"s_{x}" for x in components if x not in M.FIXED] + [f"logsd_{x}" for x in components if x not in M.FIXED] + \
-            [f"theta_{x}" for x in components if x in M.FIXED] + (["m_res", "s_res", "logsd_res"] if likelihood == "gaussian" else [])
+            [f"theta_{x}" for x in components if x in M.FIXED] + (["m_res", "s_res", "logsd_res"] if likelihood == "gaussian" else []) +             (["m_phi", "s_phi", "logphi"] if likelihood == "ztnb" else [])
     conv = M.convergence(run["samples"], sites)
     worst_rhat = max(v["max_rhat"] for v in conv.values())
     worst_ess = min(min(v["min_ess_bulk"], v["min_ess_tail"]) for v in conv.values())
@@ -77,30 +78,41 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
     scen, mod = FITS[name]
     # the world depends on the planted scenario only, so S1, S2 and S5 fit the same S1 data; the sampler seed
     # depends on the fit
-    sim_seed = 1_000_000 + list(SIM.SCENARIOS).index(scen) + (500 if likelihood == "bernoulli" else 0)
+    sim_seed = 1_000_000 + list(SIM.SCENARIOS).index(scen) + {"gaussian": 0, "bernoulli": 500, "ztnb": 700}[likelihood]
     sim = SIM.simulate(di, SIM.SCENARIOS[scen], n_genes, likelihood, seed=sim_seed)
     fdi = permuted_design(di, seed + 7) if mod == "permute_class" else di
     comps = tuple(c for c in M.COMPONENTS if not (mod == "drop_donor" and c in ("donor", "dk")))
     des = M.design_arrays(fdi)
     import jax.numpy as jnp
-    run = M.run_nuts(dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood, components=comps),
-                     n_chains=chains, warmup=warmup, draws=draws, seed=seed, max_tree_depth=max_tree_depth)
-    fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, likelihood, components=comps)
+    kw = dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood, components=comps)
+    if likelihood == "ztnb":
+        kw.update(mask=jnp.asarray(sim["mask"]), offset=jnp.asarray(sim["offset"]))
+    attempts = []
+    for ta in RETRY_ACCEPT:                     # escalate only on divergences, as the contract's retry rule
+        run = M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
+                         max_tree_depth=max_tree_depth)
+        dg = diagnose(run, likelihood, comps)
+        attempts.append(dict(target_accept=ta, seconds=run["seconds"], divergences=run["divergences"],
+                             worst_rhat=dg["worst_rhat"], worst_ess=dg["worst_ess"], diagnosed=dg["diagnosed"]))
+        if sum(run["divergences"]) == 0:
+            break
+    fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, likelihood, components=comps,
+                              mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
     per = {}
     for x, (_, frac) in fr.items():
         lo, hi = np.quantile(frac, [0.05, 0.95], axis=0)
         truth = sim["truth_frac"].get(x)
         # score a component when the scenario plants it (residual is always planted for the Gaussian); realized
         # truth can be small but nonzero for an absent component under the model's bookkeeping, so it is not used
-        planted_sd = SIM.SCENARIOS[scen].get(x, None) if x != "res" else (1.0 if likelihood == "gaussian" else 0.0)
+        planted_sd = SIM.SCENARIOS[scen].get(x, None) if x != "res" else (0.0 if likelihood == "bernoulli" else 1.0)
         planted = mod is None and truth is not None and bool(planted_sd and planted_sd > 0)
         per[x] = dict(gene_median=[float(v) for v in np.median(frac, 0)],
                       across_gene_median_q=[float(v) for v in np.quantile(np.median(frac, 1), [0.05, 0.5, 0.95])],
                       truth=[float(v) for v in truth] if truth is not None else None,
                       planted_and_scored=bool(planted),
                       covered=[bool(a) for a in ((truth >= lo) & (truth <= hi))] if planted else None)
-    return dict(scenario=scen, modification=mod, components=list(comps), components_result=per,
-                diagnostics=diagnose(run, likelihood, comps))
+    diag = dict(dg, attempts=attempts)
+    return dict(scenario=scen, modification=mod, components=list(comps), components_result=per, diagnostics=diag)
 
 
 def combine(out: str, parts) -> None:
@@ -133,7 +145,7 @@ def main() -> None:
         combine(sys.argv[2], sys.argv[3:])
         return
     ap = argparse.ArgumentParser()
-    ap.add_argument("--likelihood", choices=["gaussian", "bernoulli"], required=True)
+    ap.add_argument("--likelihood", choices=["gaussian", "bernoulli", "ztnb"], required=True)
     ap.add_argument("--fits", default=",".join(FITS))
     ap.add_argument("--genes", type=int, default=20)
     ap.add_argument("--chains", type=int, default=4)

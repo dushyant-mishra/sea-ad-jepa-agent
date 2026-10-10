@@ -110,6 +110,22 @@ def summarize(run, design, likelihood, mask=None) -> dict:
     return out
 
 
+def phase_response(phase: str, d: dict, X, gene_count: int) -> dict:
+    """The response matrix of a phase, built once here for the fit and for the held-out checks."""
+    if phase == "B0":
+        n_det = np.asarray((X > 0).sum(1)).ravel().astype(np.float64)
+        y = np.stack([np.log(np.asarray(d["source_library"], dtype=np.float64)), np.log(np.maximum(n_det, 1))], 1)
+        return dict(y=y.astype(np.float32), likelihood="gaussian", depth=False, genes=None,
+                    responses=["log_source_library", "log_detected_features"])
+    genes = DA.stratified_gene_sample(X, gene_count)
+    if phase == "A":
+        lib = np.asarray(X.sum(1)).ravel()
+        return dict(y=DA.cp10k_log1p(X, genes, lib).astype(np.float32), likelihood="gaussian", depth=True,
+                    genes=genes, responses=None)
+    return dict(y=(X[:, genes].toarray() > 0).astype(np.float32), likelihood="bernoulli", depth=True, genes=genes,
+                responses=None)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--phase", choices=["A", "B", "B0"], required=True)
@@ -126,24 +142,9 @@ def main() -> None:
     des = M.design_arrays(di)
     X = DA.load_counts(DA.local_path(CACHE), DA.local_path(BRIDGE))
     t0 = time.time()
-    if a.phase == "B0":
-        n_det = np.asarray((X > 0).sum(1)).ravel().astype(np.float64)
-        y = np.stack([np.log(np.asarray(d["source_library"], dtype=np.float64)), np.log(np.maximum(n_det, 1))], 1)
-        res = fit_with_retry(des, y.astype(np.float32), "gaussian", seed, a.chains, a.warmup, a.draws, depth=False)
-        genes = None
-        responses = ["log_source_library", "log_detected_features"]
-    else:
-        genes = DA.stratified_gene_sample(X, pre["gene_count"])
-        if a.phase == "A":
-            lib = np.asarray(X.sum(1)).ravel()
-            y = DA.cp10k_log1p(X, genes, lib).astype(np.float32)
-            lik = "gaussian"
-        else:
-            y = (X[:, genes].toarray() > 0).astype(np.float32)
-            lik = "bernoulli"
-        res = fit_with_retry(des, y, lik, seed, a.chains, a.warmup, a.draws)
-        responses = None
-    lik = "bernoulli" if a.phase == "B" else "gaussian"
+    pr = phase_response(a.phase, d, X, pre["gene_count"])
+    lik, genes, responses = pr["likelihood"], pr["genes"], pr["responses"]
+    res = fit_with_retry(des, pr["y"], lik, seed, a.chains, a.warmup, a.draws, depth=pr["depth"])
     import jax
     rec = dict(
         schema=f"V79_PHASE_{a.phase}_INTERNAL_V1", status="INTERNAL__NOT_SYNTHETIC_CONSUMABLE",

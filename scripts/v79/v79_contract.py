@@ -90,8 +90,11 @@ def build() -> dict:
                               "orthonormal contrasts. operator and donor: random effects within source; donor_class: "
                               "random effect within class; each on a block-orthonormal within-parent sum-to-zero "
                               "basis, coefficients ~ N(0, sd_x[g]). Per-gene log sd_x[g] ~ N(m_x, s_x) shared across "
-                              "genes (non-centred); m_x ~ N(log 0.3, 1), s_x ~ HalfNormal(0.5); mu ~ N(data centre, "
-                              "2.5); b ~ N(0, 1). Effects centred (sampler setting chosen on simulations only)"),
+                              "genes; m_x ~ N(log 0.3, 1), s_x ~ HalfNormal(0.5); mu ~ N(data centre, 2.5); "
+                              "b ~ N(0, 1). Sampler parameterization (centring changes the sampler's geometry, not "
+                              "the posterior; chosen on simulations only): per-gene log sds centred; effects centred, "
+                              "except donor_class effects non-centred for detection and for both Phase C families "
+                              "(amendment A1)"),
             interpretation={"class": "between-class differences", "source": "between-source differences",
                             "operator": "operator variation within a source", "donor": "donor variation within a source",
                             "donor_class": "donor-specific class deviation within a class",
@@ -109,6 +112,20 @@ def build() -> dict:
                 "C": "positive magnitude conditional on detection; candidate families log-normal on log count and "
                      "zero-truncated negative binomial with log-depth offset; family chosen by held-out-donor log "
                      "predictive density per positive observation (rule frozen here)",
+                "C_detail": ("amendment A2. Offset: log of the cached-address library (the Phase A library); the "
+                             "depth covariate is as in A and B. Log-normal: Gaussian on log count minus the offset over "
+                             "detected cells. Zero-truncated NB: NB2(mean exp(eta + offset), dispersion phi[g]) "
+                             "conditioned on a positive count; log phi[g] ~ N(m_phi, s_phi), m_phi ~ N(log 2, 1.5), "
+                             "s_phi ~ HalfNormal(0.5). Both families are scored on the count scale, because a density "
+                             "on log count and a probability on count are not comparable: the log-normal as the "
+                             "probability it puts on [k - 1/2, k + 1/2) renormalised above 1/2. Pointwise lpd = log "
+                             "mean over 1,000 thinned draws with new donor and donor-class effects; family score = "
+                             "mean over every held-out positive observation; the higher score wins; the paired "
+                             "difference's donor-clustered standard error is a diagnostic only. Variance fractions of "
+                             "the NB family use the Nakagawa, Johnson & Schielzeth (2017) log-normal approximation "
+                             "ln(1 + 1/lambda + 1/phi), lambda = exp(mu + mean offset over the gene's detected cells "
+                             "+ total component variance / 2): a labelled convention for the truncated model. Counts "
+                             "that are not non-negative integers stop Phase C"),
                 "D1": "nested donor-then-cell Bayesian bootstrap (Dirichlet(1) weights) of the geometry statistics "
                       "exactly as the corrected reference builders define them (both layers, pooled and within-class, "
                       "T5, signed, eigenspectrum, abundance, depth); 1,000 draws (quantile Monte Carlo error about "
@@ -136,7 +153,9 @@ def build() -> dict:
             tree_depth="fraction of iterations at maximum depth reported",
             failing_fit="a fit that misses any criterion is reported as NOT_DIAGNOSED and its estimates are not interpreted"),
         simulation_recovery=dict(
-            design="planted worlds on the real grouping structure (identity-free), Gaussian and Bernoulli",
+            design=("planted worlds on the real grouping structure (identity-free), Gaussian and Bernoulli; and "
+                    "(amendment A3) the zero-truncated NB, new in Phase C, which must pass the same suite before Phase "
+                    "C real inference. The inference retry rule applies to every recovery fit"),
             scenarios={"S1_present": "every component present at known magnitude",
                        "S0_class_absent": "class variance zero, others present",
                        "S2_class_permuted": "S1 data fitted with class labels permuted within source",
@@ -183,6 +202,21 @@ def build() -> dict:
                    "353 historical ID remediation", "E4 donor x class synthetic implementation", "JEPA training",
                    "optimizer, EMA or runtime changes", "TEST/Morabito", "Stage 4", "500K",
                    "production target or representation selection"],
+        amendments=[
+            dict(id="A1", date="2026-10-10", before_real_data=True,
+                 change=("parameterization text corrected: per-gene log sds are centred (the V1 text said non-centred; "
+                         "self-audit entry 10), and donor_class effects are non-centred for detection (self-audit "
+                         "entry 16) and for the Phase C families"),
+                 why=("centring is a sampler setting; the model and its posterior are unchanged; the text must state "
+                      "what runs")),
+            dict(id="A2", date="2026-10-10", before_real_data=True,
+                 change="Phase C details: offset, dispersion prior, count-scale scoring, residual convention",
+                 why=("the frozen family rule compares a log-count density with a count probability unless both are "
+                      "evaluated on counts; this fixes the only valid evaluation without changing the rule")),
+            dict(id="A3", date="2026-10-10", before_real_data=True,
+                 change="the zero-truncated NB must pass the recovery suite; the retry rule applies to recovery fits",
+                 why="a likelihood new in Phase C gets the same simulation qualification as A and B (stricter)")],
+        amended_from_sha256="1807ddb1b9071f5465873e076ebd6a1fbab6b5fcc14e7ec87bd505525144833b",
         terminal_authority=[FW.LANE_TERMINAL, "no target winner", "no representation winner",
                             "no JEPA training authority", "no E4 authority", "no protected-data authority",
                             "no production synthetic arm authority"])
@@ -209,7 +243,12 @@ def render(c: dict) -> str:
                     L.append(f"**{k.replace('_', ' ')}:** {v}")
                     L.append("")
         elif isinstance(obj, list):
-            L.extend(f"- {x}" for x in obj)
+            for x in obj:
+                if isinstance(x, dict) and "id" in x:
+                    L.append(f"- **{x['id']}** ({x['date']}; before real data: {x['before_real_data']}): "
+                             f"{x['change']}. Why: {x['why']}.")
+                else:
+                    L.append(f"- {x}")
             L.append("")
         else:
             L.extend([str(obj), ""])
@@ -218,7 +257,9 @@ def render(c: dict) -> str:
                        ("models", "Models"), ("inference", "Inference"), ("diagnostics", "Diagnostics"),
                        ("simulation_recovery", "Simulation recovery"), ("validation", "Validation plan"),
                        ("s159", "S159"), ("outputs", "Outputs"), ("v78", "Relationship to V78"),
-                       ("non_goals", "Non-goals"), ("terminal_authority", "Terminal authority")]:
+                       ("non_goals", "Non-goals"),
+                       ("amendments", f"Amendments before real-data inference (from {c['amended_from_sha256'][:12]})"),
+                       ("terminal_authority", "Terminal authority")]:
         section(title, c[key])
     return NL.join(L) + NL
 

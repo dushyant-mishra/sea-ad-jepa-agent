@@ -203,7 +203,7 @@ Estimate the population geometry and uncertainty structure of corrected S174 TRA
 
 **linear predictor:** eta[c,g] = mu[g] + class[k,g] + source[s,g] + operator[o,g] + donor[d,g] + donor_class[j,g] + b[g] * log_library_centered[c]
 
-**parameterization:** class and source: fixed effects, exchangeable sum-to-zero N(0, 1.5) prior on K-1 orthonormal contrasts. operator and donor: random effects within source; donor_class: random effect within class; each on a block-orthonormal within-parent sum-to-zero basis, coefficients ~ N(0, sd_x[g]). Per-gene log sd_x[g] ~ N(m_x, s_x) shared across genes (non-centred); m_x ~ N(log 0.3, 1), s_x ~ HalfNormal(0.5); mu ~ N(data centre, 2.5); b ~ N(0, 1). Effects centred (sampler setting chosen on simulations only)
+**parameterization:** class and source: fixed effects, exchangeable sum-to-zero N(0, 1.5) prior on K-1 orthonormal contrasts. operator and donor: random effects within source; donor_class: random effect within class; each on a block-orthonormal within-parent sum-to-zero basis, coefficients ~ N(0, sd_x[g]). Per-gene log sd_x[g] ~ N(m_x, s_x) shared across genes; m_x ~ N(log 0.3, 1), s_x ~ HalfNormal(0.5); mu ~ N(data centre, 2.5); b ~ N(0, 1). Sampler parameterization (centring changes the sampler's geometry, not the posterior; chosen on simulations only): per-gene log sds centred; effects centred, except donor_class effects non-centred for detection and for both Phase C families (amendment A1)
 
 **interpretation:**
 
@@ -224,6 +224,7 @@ Estimate the population geometry and uncertainty structure of corrected S174 TRA
 - B0: cell-level Gaussian models of log library size (source_library) and log detected features, same components, no depth covariate (Q9)
 - B: Bernoulli-logit detection, residual pi^2/3 on the logit scale
 - C: positive magnitude conditional on detection; candidate families log-normal on log count and zero-truncated negative binomial with log-depth offset; family chosen by held-out-donor log predictive density per positive observation (rule frozen here)
+- C_detail: amendment A2. Offset: log of the cached-address library (the Phase A library); the depth covariate is as in A and B. Log-normal: Gaussian on log count minus the offset over detected cells. Zero-truncated NB: NB2(mean exp(eta + offset), dispersion phi[g]) conditioned on a positive count; log phi[g] ~ N(m_phi, s_phi), m_phi ~ N(log 2, 1.5), s_phi ~ HalfNormal(0.5). Both families are scored on the count scale, because a density on log count and a probability on count are not comparable: the log-normal as the probability it puts on [k - 1/2, k + 1/2) renormalised above 1/2. Pointwise lpd = log mean over 1,000 thinned draws with new donor and donor-class effects; family score = mean over every held-out positive observation; the higher score wins; the paired difference's donor-clustered standard error is a diagnostic only. Variance fractions of the NB family use the Nakagawa, Johnson & Schielzeth (2017) log-normal approximation ln(1 + 1/lambda + 1/phi), lambda = exp(mu + mean offset over the gene's detected cells + total component variance / 2): a labelled convention for the truncated model. Counts that are not non-negative integers stop Phase C
 - D1: nested donor-then-cell Bayesian bootstrap (Dirichlet(1) weights) of the geometry statistics exactly as the corrected reference builders define them (both layers, pooled and within-class, T5, signed, eigenspectrum, abundance, depth); 1,000 draws (quantile Monte Carlo error about 0.7 percentile points at the 5th and 95th)
 - D2: model-based residual dependence (low-rank factor layer): specified in a V2 contract after Phases A-C qualify; not part of V1 real inference
 
@@ -267,7 +268,7 @@ Estimate the population geometry and uncertainty structure of corrected S174 TRA
 
 ## Simulation recovery
 
-**design:** planted worlds on the real grouping structure (identity-free), Gaussian and Bernoulli
+**design:** planted worlds on the real grouping structure (identity-free), Gaussian and Bernoulli; and (amendment A3) the zero-truncated NB, new in Phase C, which must pass the same suite before Phase C real inference. The inference retry rule applies to every recovery fit
 
 **scenarios:**
 
@@ -340,6 +341,12 @@ V78 F0-F3 is untouched: seeds, definitions, effect sizes, scoring, evaluation un
 - Stage 4
 - 500K
 - production target or representation selection
+
+## Amendments before real-data inference (from 1807ddb1b907)
+
+- **A1** (2026-10-10; before real data: True): parameterization text corrected: per-gene log sds are centred (the V1 text said non-centred; self-audit entry 10), and donor_class effects are non-centred for detection (self-audit entry 16) and for the Phase C families. Why: centring is a sampler setting; the model and its posterior are unchanged; the text must state what runs.
+- **A2** (2026-10-10; before real data: True): Phase C details: offset, dispersion prior, count-scale scoring, residual convention. Why: the frozen family rule compares a log-count density with a count probability unless both are evaluated on counts; this fixes the only valid evaluation without changing the rule.
+- **A3** (2026-10-10; before real data: True): the zero-truncated NB must pass the recovery suite; the retry rule applies to recovery fits. Why: a likelihood new in Phase C gets the same simulation qualification as A and B (stricter).
 
 ## Terminal authority
 

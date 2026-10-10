@@ -7,6 +7,9 @@ For gene g and cell c with broad class k, source s, observation operator o, dono
 
   gaussian   y[c,g] ~ Normal(eta[c,g], sd_res[g])            (Phase A log1p CP10K; Phase C positive log counts)
   bernoulli  y[c,g] ~ Bernoulli(logit = eta[c,g])           (Phase B detection; residual pi^2/3 on the logit scale)
+  ztnb       y[c,g] | y > 0 ~ zero-truncated NegBin(mean = exp(eta[c,g] + offset[c]), dispersion phi[g])
+             (Phase C positive counts; offset = log library; residual on the log scale ln(1 + 1/mean + 1/phi),
+             the distribution-specific variance of Nakagawa, Johnson & Schielzeth 2017)
 
 Class and source have three levels each: they are fixed effects with an exchangeable sum-to-zero N(0, 1.5) prior,
 parameterized by K-1 coefficients on an orthonormal sum-to-zero basis, so no direction is left that only the prior
@@ -92,18 +95,33 @@ def design_arrays(di: dict) -> dict:
     return d
 
 
-def vc_model(*args, effect_centered: float = 1.0, logsd_centered: float = 1.0, **kwargs):
+# Centring per likelihood, chosen on simulated designs (contract: a sampler setting, never chosen on real data).
+# Detection: a donor-class level has about 11 binary cells, too little to pin a logit effect, so it is non-centred.
+# Phase C models only detected cells (fewer still per donor-class level), so both candidate families start there.
+CENTRING = {"gaussian": {}, "gaussian_masked": {"dk": 0.0}, "bernoulli": {"dk": 0.0}, "ztnb": {"dk": 0.0}}
+
+
+def centring_key(likelihood: str, mask) -> str:
+    return "gaussian_masked" if likelihood == "gaussian" and mask is not None else likelihood
+
+
+def vc_model(*args, effect_centered=None, logsd_centered: float = 1.0, **kwargs):
     """Both effects and per-gene log sds are centred by default: each gene's spread is pinned by its own data
     (149 donors, 426 donor-classes, 42 operators), and a non-centred log sd in that regime makes the narrow
     funnel that forces tiny NUTS steps (self-audit entries 3 and 10)."""
+    if effect_centered is None:
+        effect_centered = CENTRING[centring_key(kwargs.get("likelihood", "gaussian"), kwargs.get("mask"))]
+
     def config(site):
         name = site["name"]
         if name.endswith("_decentered"):
             return None
         if name.startswith("logsd_") and logsd_centered != 1.0:
             return LocScaleReparam(centered=logsd_centered)
-        if name.startswith("a_") and effect_centered != 1.0:
-            return LocScaleReparam(centered=effect_centered)
+        if name.startswith("a_"):
+            c = effect_centered.get(name[2:], 1.0) if isinstance(effect_centered, dict) else effect_centered
+            if c != 1.0:
+                return LocScaleReparam(centered=c)
         return None
     return reparam(_vc_model, config=config)(*args, **kwargs)
 
@@ -115,9 +133,13 @@ def sum_to_zero_basis(k: int) -> np.ndarray:
     return q[:, : k - 1]
 
 
-def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None, depth=True):
+def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None, depth=True, offset=None):
     N, G = y.shape
-    if likelihood == "gaussian":
+    if likelihood == "ztnb":
+        w = mask if mask is not None else (y > 0)
+        lc = jnp.where(w, jnp.log(jnp.clip(y, 1.0)) - offset[:, None], 0.0)
+        center = lc.sum(0) / jnp.clip(w.sum(0), 1)
+    elif likelihood == "gaussian":
         if mask is not None:
             center = jnp.where(mask, y, 0.0).sum(0) / jnp.clip(mask.sum(0), 1)
         else:
@@ -145,6 +167,19 @@ def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None
         with numpyro.plate(f"levels_{x}", P.shape[1], dim=-2), numpyro.plate(f"genes_{x}_l", G, dim=-1):
             th = numpyro.sample(f"a_{x}", dist.Normal(0.0, jnp.exp(logsd)))
         eta = eta + P @ th
+    if likelihood == "ztnb":
+        m_phi = numpyro.sample("m_phi", dist.Normal(math.log(2.0), 1.5))
+        s_phi = numpyro.sample("s_phi", dist.HalfNormal(0.5))
+        with numpyro.plate("genes_phi", G, dim=-1):
+            logphi = numpyro.sample("logphi", dist.Normal(m_phi, s_phi))
+        phi = jnp.exp(logphi)
+        mean = jnp.exp(eta + offset[:, None])
+        w = mask if mask is not None else (y > 0)
+        lp = dist.NegativeBinomial2(mean, phi).log_prob(jnp.where(w, y, 1.0))
+        log_p0 = phi * (logphi - jnp.log(phi + mean))                 # log P(y = 0) under the parent NB
+        lp = lp - jnp.log(-jnp.expm1(log_p0))                          # stable log(1 - P0) when P0 is near 1
+        numpyro.factor("y_ztnb", jnp.where(w, lp, 0.0).sum())
+        return
     if likelihood == "gaussian":
         m_r = numpyro.sample("m_res", dist.Normal(0.0, 1.5))
         s_r = numpyro.sample("s_res", dist.HalfNormal(0.5))
@@ -162,7 +197,8 @@ def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None
             numpyro.sample("y", dist.Bernoulli(logits=eta), obs=y)
 
 
-def realized_fractions(samples: dict, design: dict, likelihood: str, components=COMPONENTS, mask=None) -> dict:
+def realized_fractions(samples: dict, design: dict, likelihood: str, components=COMPONENTS, mask=None,
+                       typical_offset=None) -> dict:
     """Per draw and gene: realized variance of each component's effects over the observed cells (over the
     detected cells when a mask is given), the residual variance, and their fractions. Computed from level effects
     and per-level cell counts, never by expanding effects to every cell. Returns (variance, fraction) pairs of
@@ -187,6 +223,14 @@ def realized_fractions(samples: dict, design: dict, likelihood: str, components=
         tot = v if tot is None else tot + v
     if likelihood == "gaussian":
         res = np.exp(np.asarray(samples["logsd_res"], dtype=np.float64)) ** 2
+    elif likelihood == "ztnb":
+        # Nakagawa, Johnson & Schielzeth (2017) log-normal approximation for the NB2 parent, a CONVENTION for the
+        # truncated model: lambda = exp(mu + mean offset over the gene's detected cells + total component variance/2)
+        if typical_offset is None:
+            raise ValueError("ztnb fractions need typical_offset (per gene: mean log-depth offset over detected cells)")
+        lam = np.exp(np.asarray(samples["mu"], dtype=np.float64) + np.asarray(typical_offset)[None, :] + 0.5 * tot)
+        phi = np.exp(np.asarray(samples["logphi"], dtype=np.float64))
+        res = np.log1p(1.0 / lam + 1.0 / phi)
     else:
         res = np.full_like(tot, LOGISTIC_RESIDUAL_VAR)
     out["res"] = res

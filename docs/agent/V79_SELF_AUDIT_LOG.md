@@ -56,3 +56,18 @@ matrix adapted; adaptation was not complete. Extrapolated cost on CPU: about 20-
   to be optimized with exactness preserved before 1,000 draws.
 - `timeout` from Git Bash on a native Windows process: verify it fires (check process start time) rather than
   assuming.
+
+## 2026-10-10: detection qualification, Phase C and validation code
+
+| # | what happened | cost | fix | rule adopted |
+|---|---|---|---|---|
+| 16 | Detection qualification at contract settings failed on the donor-class hyperparameters (m_dk R-hat 1.08, ESS 31; s_dk R-hat 1.19, ESS 15; 1,465 s, 0 divergences, 80 steps): a donor-class level has about 11 binary cells, too few to pin a centred logit effect | one 25-minute fit | Donor-class effects non-centred for detection only (`CENTRING`), chosen on simulation. Requalification: worst R-hat 1.0049, worst ESS 438, 39 steps, 853 s, but 3 divergences in one chain, so the contract's retry rule applies; requalified at target_accept 0.95 | Choose centring per component and likelihood from the information per level; requalify at contract settings after every sampler change |
+| 17 | The recovery runner did not apply the contract's retry rule, so one divergence would have failed a fit the rule retries | found before the suite ran | Retry rule in the recovery, held-out PPC and Phase C runners | Every fitting runner applies the same diagnostics and retry rule |
+| 18 | The contract text still said per-gene log sds are non-centred, while the code centred them since entry 10 | found by rereading the contract against the code before real inference | Amendment A1, before any real data; previous contract hash recorded | Reread the contract against the code at every gate |
+| 19 | Phase C's frozen family rule compares a density on log count with a probability on count; the raw log densities are on different measures | found while implementing | Both families scored on the count scale (amendment A2); a test checks the rule picks the generating family in both directions | Before applying a model-comparison rule, check the scores are on the same measure |
+| 20 | The delegated PPC agent stopped on the session rate limit mid-task | none; its 428-line module and 9 tests were complete and passing | Coordinator reviewed and extended it (positive-count families, signed dependence, eigenspectrum, quantiles, held-out lpd, per-fold runs) | Check a stopped agent's partial output before redoing it |
+| 21 | `grep -c $''` in this Git Bash counted every line, a false CRLF alarm | a few minutes | Bytes checked with Python; the contract test already does this | Check line endings on bytes, not with shell escapes |
+
+Simulation choices for the zero-truncated NB (sampler and recovery only, never tuned on real data): log mean
+count at average depth N(-0.5, 1.5) (about 0.03 to 12 counts, detection about 3% to 90%), log dispersion
+N(log 2, 0.3). Gaussian and Bernoulli simulated worlds were checked byte-identical before and after the change.
