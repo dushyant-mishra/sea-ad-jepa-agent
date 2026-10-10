@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_TD_TARGET_DISCOVERY_FRONTIER_POST_PR259_V1",
+  "schema": "JEPA_TD_TARGET_DISCOVERY_FRONTIER_POST_PR259_V2",
   "date": "2026-10-10",
   "g4g5": {
     "status": "PASS_VALUE_BLIND_TECHNICAL_DATA_INTEGRITY_ONLY",
@@ -11,15 +11,23 @@
     "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
     "expression_values_read": false
   },
-  "next": {
+  "g6g7_candidate": {
     "pr": 258,
-    "head": "c5d9c64cf42dc8c12d91672458689c0a0a67f472",
-    "action": "QUALIFICATION_ONLY_AGAINST_EXACT_PR259_RECEIPT_BYTES",
+    "superseded_head": "c5d9c64cf42dc8c12d91672458689c0a0a67f472",
+    "status": "SUPERSEDED_BEFORE_QUALIFICATION__DO_NOT_QUALIFY_OR_EXECUTE",
+    "reason": [
+      "S174 meta/count shard files are globally hash-checked but not re-hashed immediately before later overlap value use",
+      "duplicate S174 cell_id values could silently collapse in dictionary construction",
+      "duplicate S174 CSR address indices within a row could silently overwrite in dictionary conversion"
+    ],
+    "audit_doc": "docs/agent/TD_G7_S174_IMMEDIATE_REAUTH_AUDIT_20261010.md",
+    "required_successor": "implement immediate S174 meta/count reauthentication, duplicate-cell guard, duplicate-address guard, focused tests, then qualify against exact PR259 receipt bytes",
     "g6_g7_execution_forbidden": true,
     "value_authorization_creation_forbidden": true
   },
   "future_sequence": [
-    "qualify PR258/successor focused tests and exact PR259 receipt compatibility",
+    "create/fix successor to PR258 with the recorded G7 fail-closed custody repair",
+    "qualify successor focused tests and exact PR259 receipt compatibility",
     "owner review",
     "separate explicit owner authorization for G6/G7 integrity scope only",
     "run G6; any mismatch stops",
