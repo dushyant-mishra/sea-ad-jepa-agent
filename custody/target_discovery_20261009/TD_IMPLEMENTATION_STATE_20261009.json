@@ -1,0 +1,112 @@
+{
+  "schema": "JEPA_TARGET_DISCOVERY_IMPLEMENTATION_STATE_V2",
+  "date": "2026-10-09",
+  "scientific_base_sha": "813ead17570dbb4b6a5a58ebe6dc84fed8aa0438",
+  "current_pr": 243,
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "closed_work": {
+    "broad_target_discovery_archaeology": true,
+    "td34_genealogy": true,
+    "corrected_replay_implementation_search": true,
+    "g1_g2_manifest_identity_reproduction": true,
+    "s174_rar_transfer_custody_verification": true
+  },
+  "fresh_reexecution": {
+    "status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+    "builder_git_blob_sha": "03dc4949e7e04040db5f85e331da72c5dcab86e6",
+    "common_core_rows": 17186,
+    "replay_addresses": 9216,
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "sample_a_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "expression_values_read": false,
+    "receipt": "results/audit/TD_RELATIONAL_REPLAY_9216_REEXECUTION_20261009.json"
+  },
+  "s174_transfer_custody": {
+    "pr": 244,
+    "head": "eb3f92045e95ee4e5a85a864d1ec5922fe8f3d16",
+    "terminal": "PASS_S174_RAR_EXACTLY_MATCHES_G1B_AUTHORIZED_CORRECTED_CACHE",
+    "rar_bytes": 47964366,
+    "rar_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "exact_matches": "84/84",
+    "scientific_finding_changed": false
+  },
+  "implementation": {
+    "g4_g5_recovered": true,
+    "g6_materializer_recovered": true,
+    "g7_s174_overlap_auditor_recovered": true,
+    "value_read_authorization_created": false,
+    "g6_executed": false,
+    "g7_executed": false,
+    "corrected_stage_replay_executed": false
+  },
+  "g4_g5_execution": {
+    "pr": 245,
+    "head": "bf6ddda4e1b020fdb959812036b957c40166fede",
+    "implementation_head_used": "a6c57e4e92b23756f5c49183eaa15d55f39cc325",
+    "terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_BEFORE_G4_G5__MANIFEST_FILE_SHA_MISMATCH__WINDOWS_CRLF_SERIALIZATION",
+    "g4_g5_executed": false,
+    "mapping_audit_started": false,
+    "expression_values_read": false,
+    "builder_internal_terminal": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+    "builder_internal_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "windows_crlf_file_sha256_prefix": "923475ae",
+    "cause": "Path.write_text platform newline translation produced CRLF physical bytes on Windows; driver re-hash failed closed",
+    "all_required_input_authorities_verified": true,
+    "h5ad_files_verified": 35,
+    "h5ad_total_bytes": 323643986614,
+    "preserved_records": [
+      "docs/agent/TD_RELATIONAL_G4G5_LOCAL_EXECUTION_20261009.md",
+      "docs/agent/TD_RELATIONAL_G4G5_LOCAL_EXECUTION_20261009.json"
+    ]
+  },
+  "next_gate": {
+    "name": "REPAIR_PLATFORM_STABLE_MANIFEST_SERIALIZATION_THEN_RERUN_G4_G5",
+    "preferred_repair": "TDD: make manifest physical bytes explicitly LF and rerun into a fresh/superseding namespace",
+    "also_review": "freshness guard currently checks only PREFLIGHT_RESULT.json despite partial failed-run files",
+    "required_success_terminal_after_repair": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
+    "required_mapping_terminal": "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND",
+    "forbidden_shortcut": "do not edit the failed CRLF manifest in place to make its hash pass"
+  },
+  "bayesian_spike": {
+    "status": "SPIKE_PREREGISTERED__HISTORICAL_ONLY__NON_AUTHORIZING__NO_CORRECTED_REPLAY_INGESTED__NOT_YET_EXECUTED",
+    "preregistration": "docs/agent/JEPA_TARGET_DISCOVERY_BAYESIAN_SPIKE_PREREG_20261009.md",
+    "historical_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+    "historical_archive_materialized_read_only": true,
+    "historical_verdict_labels_used_for_fit": false,
+    "corrected_replay_ingested": false,
+    "posterior_results_exist": false,
+    "posterior_results_authoritative": false,
+    "target_ranking_allowed": false,
+    "planned_stages": ["TD57B", "TD57C", "TD59"],
+    "planned_primary_outputs": [
+      "posterior_stage_margin",
+      "posterior_probability_margin_gt_zero",
+      "source_heterogeneity",
+      "posterior_predictive_positive_margin_new_case"
+    ],
+    "mandatory_falsification": [
+      "null_calibration",
+      "one_source_only_signal",
+      "duplicate_dependency_resistance",
+      "sign_flipping_source_heterogeneity",
+      "shared_positive_recovery",
+      "prior_sensitivity"
+    ]
+  },
+  "stage_classification": {
+    "TD56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD57B": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+    "TD57C": "HISTORICAL_FROZEN_FAIL_PRESERVED__CORRECTED_REPLAY_MUST_OBEY_SEQUENTIAL_FIREWALL",
+    "TD58": "FALSIFICATION_ONLY__NO_TARGET_AUTHORITY",
+    "TD59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY",
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+  },
+  "routing": {
+    "pr237_role": "SCIENTIFIC_AND_CUSTODY_BASE",
+    "pr243_role": "CURRENT_TARGET_DISCOVERY_IMPLEMENTATION_SUCCESSOR_AND_NONAUTHORIZING_BAYESIAN_METHOD_SPIKE",
+    "pr244_role": "S174_TRANSFER_CUSTODY_EVIDENCE_DO_NOT_MERGE_AS_SCIENTIFIC_CHANGE",
+    "pr245_role": "PRESERVED_FAILED_G4_G5_EXECUTION_RECORD_DO_NOT_MERGE_AS_PASS"
+  }
+}

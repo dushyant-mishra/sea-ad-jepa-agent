@@ -1,0 +1,15 @@
+{
+  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V1",
+  "status": "TEMPLATE_ONLY__NOT_AUTHORITY__DO_NOT_RENAME_AND_USE_WITHOUT_EXPLICIT_OWNER_AUTHORIZATION",
+  "required_runtime_schema_if_authorized": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V1",
+  "required_runtime_authorization_if_authorized": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY",
+  "required_runtime_scope_if_authorized": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads; NPH52 historical clean-path pass-through; G6/G7 only; no target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
+  "training_authorized": false,
+  "real_value_read_authorized_by_this_file": false,
+  "instructions": [
+    "This template is deliberately not accepted by the materializer or G7 auditor.",
+    "Only after explicit owner authorization may a separate runtime JSON be created with the exact required runtime schema, authorization string, scope string, and training_authorized=false.",
+    "Do not broaden the scope, add target selection, or infer authorization from the existence of executable code.",
+    "G4/G5 must already have PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND before any value-read authorization can be used."
+  ]
+}

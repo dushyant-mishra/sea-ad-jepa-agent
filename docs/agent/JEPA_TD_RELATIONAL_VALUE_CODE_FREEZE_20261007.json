@@ -1,0 +1,19 @@
+{
+  "schema": "JEPA_TD_RELATIONAL_VALUE_CODE_FREEZE_V1",
+  "date": "2026-10-07",
+  "status": "CODE_FROZEN__NOT_EXECUTION_AUTHORITY",
+  "git_blob_sha": {
+    "scripts/v5/materialize_td_relational_corrected_sampleA.py": "2f74546b09bb80ad46d817b08f3eb1a902ee0aca",
+    "scripts/v5/audit_td_relational_g7_s174_overlap.py": "789ba0f019727b94fd77056dbfad91ee9280f4c9"
+  },
+  "rules": [
+    "This file freezes code identity only; it does not authorize any value read.",
+    "Before a future value-stage run, current Git blob identity for each script must equal the frozen value here or a new prospective code-freeze review is required.",
+    "Any code edit after this freeze invalidates the old code identity for value-stage authority.",
+    "G4/G5 PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND remains required before any value-stage authority can be used.",
+    "A separate owner value-read authorization remains required even when code identity matches.",
+    "Training, EMA, TD60, target selection, TEST, DEV/SEALED, pathology, Morabito and external biology remain unauthorized."
+  ],
+  "real_value_read_authorized": false,
+  "training_authorized": false
+}
