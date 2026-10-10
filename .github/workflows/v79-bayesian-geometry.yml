@@ -1,0 +1,43 @@
+name: V79 Bayesian synthetic-geometry tests
+
+# Pure-Python V79 tests: firewall, contract consistency, custody-receipt binding and geometry maths.
+# Tests that need the local corrected TRAIN cache skip here (the bytes are local-only); skips are listed with
+# reasons, and local-only evidence is reported as local.
+
+on:
+  push:
+    branches:
+      - analysis/v79-bayesian-synthetic-geometry-20261009
+    paths:
+      - scripts/v79/**
+      - tests/v79/**
+      - docs/agent/BAYESIAN_SYNTHETIC_GEOMETRY_CONTRACT_V1.*
+      - results/v79/**
+      - .github/workflows/v79-bayesian-geometry.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v79-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - run: python -m pip install --disable-pip-version-check numpy==1.24.2 scipy==1.10.1 pandas==1.5.3 pytest==6.2.4
+      - name: Run the V79 suite
+        run: |
+          set -o pipefail
+          python --version
+          python -m pytest -q -rsx -p no:cacheprovider --junitxml=v79_suite_junit.xml tests/v79 | tee v79_suite.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v79-suite-junit
+          path: |
+            v79_suite_junit.xml
+            v79_suite.log
