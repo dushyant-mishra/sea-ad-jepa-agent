@@ -1,11 +1,13 @@
 import sys, json, time, numpy as np
-sys.path.insert(0, "D:/jepa_wt_v79_bayes_20261009/scripts/v79")
+from pathlib import Path
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))                  # imports from this file's own tree (a frozen snapshot stays frozen)
 import v79_firewall as FW, v79_data as DA, v79_models as M, v79_simulate as SIM
 import jax.numpy as jnp
 # usage: run_v79_qualification.py <gaussian|bernoulli|ztnb|lognormal> [target_accept]; S1 world, 10 genes, contract schedule
 # lognormal: the Phase C log-normal family (Gaussian on log count minus offset over detected cells) fitted to the
 # ztnb world; its fractions are compared with the ztnb truth only descriptively (different family, no coverage rule)
-d = FW.load_cell_design("D:/Jepa project/data/cache/s174_rebuilt_real_train_v1", "D:/jepa_wt_v79_bayes_20261009/results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json")
+d = FW.load_cell_design(DA.local_path("D:/Jepa project/data/cache/s174_rebuilt_real_train_v1"), DA.local_path(HERE.parents[1] / "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"))
 di = DA.design_indices(d); des = M.design_arrays(di)
 lik = sys.argv[1]
 ta = float(sys.argv[2]) if len(sys.argv) > 2 else 0.9
@@ -47,4 +49,5 @@ if div.any():
     for x in ("op", "donor", "dk"):
         s_ = np.asarray(flat[f"s_{x}"]); loc[f"s_{x}_low_decile_share"] = float((s_[div] <= np.quantile(s_, 0.1)).mean())
     out["divergence_location"] = loc
+out["code_dir"] = str(HERE)
 print(json.dumps(out, indent=1), flush=True)
