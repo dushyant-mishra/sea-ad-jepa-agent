@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import inspect
 import json
 from pathlib import Path
 
@@ -15,6 +16,17 @@ def load_module():
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def mutate_same_size(path: Path) -> None:
+    raw = bytearray(path.read_bytes())
+    assert raw
+    raw[-1] ^= 1
+    path.write_bytes(bytes(raw))
 
 
 def test_overlap_status_is_pass_only_for_real_exact_overlap():
@@ -122,6 +134,25 @@ def test_sparse_reference_row_uses_strict_integer_semantics():
         raise AssertionError("fractional S174 row value must fail")
 
 
+def test_sparse_reference_row_rejects_duplicate_addresses():
+    m = load_module()
+
+    class Row:
+        indices = np.asarray([10, 10], dtype=np.int64)
+        data = np.asarray([1.0, 2.0], dtype=np.float64)
+
+    class X:
+        def getrow(self, _):
+            return Row()
+
+    try:
+        m.sparse_row_dict(X(), 7, {10})
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower() and "address" in str(e).lower()
+    else:
+        raise AssertionError("duplicate S174 CSR addresses must fail closed")
+
+
 def test_compare_rows_checks_all_replay_addresses_including_implicit_zeros():
     m = load_module()
     got = m.compare_rows({10: 2}, {10: 2}, {10, 20, 30})
@@ -143,6 +174,71 @@ def test_same_size_changed_physical_source_is_rejected(tmp_path):
         pass
     else:
         raise AssertionError("G7 must reject same-size changed H5AD before reread")
+
+
+def test_s174_meta_is_reauthenticated_immediately_before_cell_use(tmp_path):
+    m = load_module()
+    p = tmp_path / "x.meta.npz"
+    np.savez(p, cell_id=np.asarray(["a", "b"]))
+    expected = sha(p)
+    cells, where, actual = m.load_s174_cell_index(p, expected)
+    assert cells.tolist() == ["a", "b"]
+    assert where == {"a": 0, "b": 1}
+    assert actual == expected
+    mutate_same_size(p)
+    try:
+        m.load_s174_cell_index(p, expected)
+    except RuntimeError as e:
+        assert "sha" in str(e).lower() and "meta" in str(e).lower()
+    else:
+        raise AssertionError("changed S174 meta bytes must fail before cell-id use")
+
+
+def test_s174_duplicate_cell_ids_are_rejected(tmp_path):
+    m = load_module()
+    p = tmp_path / "dup.meta.npz"
+    np.savez(p, cell_id=np.asarray(["same", "same"]))
+    try:
+        m.load_s174_cell_index(p, sha(p))
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower() and "cell_id" in str(e).lower()
+    else:
+        raise AssertionError("duplicate S174 cell IDs must fail closed")
+
+
+def test_s174_counts_are_reauthenticated_immediately_before_value_use(tmp_path):
+    m = load_module()
+    p = tmp_path / "x.counts.npz"
+    np.savez(
+        p,
+        data=np.asarray([1], dtype=np.int64),
+        indices=np.asarray([0], dtype=np.int64),
+        indptr=np.asarray([0, 1], dtype=np.int64),
+        shape=np.asarray([1, 41_238], dtype=np.int64),
+    )
+    expected = sha(p)
+    matrix, actual = m.load_s174_count_matrix(p, expected)
+    assert matrix.shape == (1, 41_238)
+    assert actual == expected
+    mutate_same_size(p)
+    try:
+        m.load_s174_count_matrix(p, expected)
+    except RuntimeError as e:
+        assert "sha" in str(e).lower() and "counts" in str(e).lower()
+    else:
+        raise AssertionError("changed S174 count bytes must fail before count-value use")
+
+
+def test_no_overlap_control_flow_precedes_s174_count_open_and_receipt_records_immediate_hashes():
+    m = load_module()
+    source = inspect.getsource(m.main)
+    no_overlap = source.index("if overlap.empty:")
+    count_open = source.index("load_s174_count_matrix")
+    assert no_overlap < count_open
+    assert '"s174_meta_sha256_immediate"' in source
+    assert '"s174_counts_sha256_immediate"' in source
+    before_count_open = source[no_overlap:count_open]
+    assert '"s174_count_values_opened": False' in before_count_open
 
 
 def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
