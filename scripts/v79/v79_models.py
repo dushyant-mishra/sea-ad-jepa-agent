@@ -116,8 +116,10 @@ def vc_model(*args, effect_centered=None, logsd_centered: float = 1.0, **kwargs)
         name = site["name"]
         if name.endswith("_decentered"):
             return None
-        if name.startswith("logsd_") and logsd_centered != 1.0:
-            return LocScaleReparam(centered=logsd_centered)
+        if name.startswith("logsd_"):
+            # per-site override, e.g. CENTRING[...]["logsd_dk"] = 0.0 (a per-gene sd weakly pinned by its data)
+            c = effect_centered.get(name, logsd_centered) if isinstance(effect_centered, dict) else logsd_centered
+            return LocScaleReparam(centered=c) if c != 1.0 else None
         if name.startswith("a_"):
             c = effect_centered.get(name[2:], 1.0) if isinstance(effect_centered, dict) else effect_centered
             if c != 1.0:
