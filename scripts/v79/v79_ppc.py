@@ -474,18 +474,12 @@ def run_heldout(di: dict, y, likelihood: str, k: int, seed: int, chains: int, wa
             continue
         train_di, tr, te, tm = split_design(di, held)
         des = M.design_arrays(train_di)
-        attempts, run = [], None
-        for ta in accepts:
-            kw = dict(design=des, y=jnp.asarray(y[tr]), likelihood=likelihood, components=comps, depth=depth)
-            run = M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed + 1 + f,
-                             target_accept=ta, max_tree_depth=max_tree_depth)
-            diag = RI.diagnose(run["samples"], likelihood, comps)
-            ok = sum(run["divergences"]) == 0 and diag["worst_rhat"] <= RI.RHAT_MAX and diag["worst_ess"] >= RI.ESS_MIN
-            attempts.append(dict(target_accept=ta, seconds=run["seconds"], divergences=run["divergences"],
-                                 mean_steps=run["mean_steps"], worst_rhat=diag["worst_rhat"],
-                                 worst_ess=diag["worst_ess"], diagnosed=bool(ok)))
-            if sum(run["divergences"]) == 0:
-                break
+        import v79_sampler_rules as SR
+        kw = dict(design=des, y=jnp.asarray(y[tr]), likelihood=likelihood, components=comps, depth=depth)
+        run, _, attempts = SR.fit_with_rules(
+            lambda ta, ext: M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed + 1 + f,
+                                       target_accept=ta, max_tree_depth=max_tree_depth, extend_from=ext),
+            lambda r: RI.diagnose(r["samples"], likelihood, comps), accepts=accepts)
         flat = M.flatten_chains(run["samples"])
         sel = thin_indices(flat["mu"].shape[0], n_pred_draws)
         plan = make_plan(tm)

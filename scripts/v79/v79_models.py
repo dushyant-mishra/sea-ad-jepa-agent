@@ -252,7 +252,26 @@ def realized_fractions(samples: dict, design: dict, likelihood: str, components=
 
 
 def run_nuts(model_kwargs: dict, n_chains: int, warmup: int, draws: int, seed: int, target_accept: float = 0.9,
-             max_tree_depth: int = 10) -> dict:
+             max_tree_depth: int = 10, extend_from: dict | None = None) -> dict:
+    """NUTS with the contract settings. extend_from (amendment A5): continue that run's chains for `draws` more
+    iterations from their last state with the adapted step size and mass matrix (no new warm-up); samples,
+    divergence flags and step counts are concatenated with the earlier draws."""
+    if extend_from is not None:
+        mcmc = extend_from["mcmc"]
+        mcmc.post_warmup_state = mcmc.last_state
+        t0 = time.time()
+        mcmc.run(mcmc.post_warmup_state.rng_key, extra_fields=("diverging", "num_steps"), **model_kwargs)
+        jax.block_until_ready(mcmc.get_samples())
+        secs = time.time() - t0
+        new = mcmc.get_samples(group_by_chain=True)
+        extra = mcmc.get_extra_fields(group_by_chain=True)
+        div = np.concatenate([extend_from["diverging_flags"], np.asarray(extra["diverging"])], axis=1)
+        steps = np.concatenate([extend_from["num_steps"], np.asarray(extra["num_steps"])], axis=1)
+        samples = {k: np.concatenate([np.asarray(extend_from["samples"][k]), np.asarray(new[k])], axis=1)
+                   for k in new}
+        return dict(mcmc=mcmc, samples=samples, seconds=extend_from["seconds"] + secs,
+                    divergences=[int(x) for x in div.sum(1)], diverging_flags=div, num_steps=steps,
+                    mean_steps=float(steps.mean()), draws_per_chain=int(div.shape[1]), extended=True)
     kernel = NUTS(vc_model, target_accept_prob=target_accept, max_tree_depth=max_tree_depth)
     if jax.default_backend() == "gpu":
         method = "vectorized"                              # one GPU: chains advance together in one program
@@ -266,9 +285,10 @@ def run_nuts(model_kwargs: dict, n_chains: int, warmup: int, draws: int, seed: i
     jax.block_until_ready(mcmc.get_samples())        # JAX dispatches asynchronously; time the real work
     secs = time.time() - t0
     extra = mcmc.get_extra_fields(group_by_chain=True)
+    div, steps = np.asarray(extra["diverging"]), np.asarray(extra["num_steps"])
     return dict(mcmc=mcmc, samples=mcmc.get_samples(group_by_chain=True), seconds=secs,
-                divergences=[int(x) for x in np.asarray(extra["diverging"]).sum(1)],
-                mean_steps=float(np.asarray(extra["num_steps"]).mean()))
+                divergences=[int(x) for x in div.sum(1)], diverging_flags=div, num_steps=steps,
+                mean_steps=float(steps.mean()), draws_per_chain=int(div.shape[1]), extended=False)
 
 
 def convergence(grouped: dict, sites) -> dict:

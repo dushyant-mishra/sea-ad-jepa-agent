@@ -34,8 +34,8 @@ from v79_recovery_rules import criteria  # noqa: E402
 ROOT = HERE.parents[1]
 CACHE = "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1"
 BRIDGE = ROOT / "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
-RHAT_MAX, ESS_MIN = 1.01, 400
-RETRY_ACCEPT = (0.9, 0.95, 0.99)        # the contract's retry rule, applied to recovery fits as to real fits
+import v79_sampler_rules as SR  # noqa: E402  the contract's retry and extension rules, as for real fits
+RHAT_MAX, ESS_MIN = SR.RHAT_MAX, SR.ESS_MIN
 FITS = {  # name: (planted scenario, fit modification)
     "S1_present": ("S1_present", None),
     "S0_class_absent": ("S0_class_absent", None),
@@ -87,15 +87,10 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
     kw = dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood, components=comps)
     if likelihood == "ztnb":
         kw.update(mask=jnp.asarray(sim["mask"]), offset=jnp.asarray(sim["offset"]))
-    attempts = []
-    for ta in RETRY_ACCEPT:                     # escalate only on divergences, as the contract's retry rule
-        run = M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
-                         max_tree_depth=max_tree_depth)
-        dg = diagnose(run, likelihood, comps)
-        attempts.append(dict(target_accept=ta, seconds=run["seconds"], divergences=run["divergences"],
-                             worst_rhat=dg["worst_rhat"], worst_ess=dg["worst_ess"], diagnosed=dg["diagnosed"]))
-        if sum(run["divergences"]) == 0:
-            break
+    run, dg, attempts = SR.fit_with_rules(
+        lambda ta, ext: M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
+                                   max_tree_depth=max_tree_depth, extend_from=ext),
+        lambda r: diagnose(r, likelihood, comps))
     fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, likelihood, components=comps,
                               mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
     per = {}

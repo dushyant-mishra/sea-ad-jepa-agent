@@ -221,7 +221,16 @@ def build() -> dict:
                          "realized variance, the population hyperparameters (typical per-gene log sd and its "
                          "spread across genes), and B0's absolute depth and detected-feature variances by component"),
                  why=("the consumer (PR #253 sections 8.1, 8.2 and 15) needs anonymous effect-magnitude and "
-                      "capture-spread distributions, not only shares; no estimand or rule changes"))],
+                      "capture-spread distributions, not only shares; no estimand or rule changes")),
+            dict(id="A5", date="2026-10-10", before_real_data=True,
+                 change=("sampler extension: a fit with no divergence that misses R-hat or ESS continues the same "
+                         "chains once for the same number of draws (no new warm-up) and is diagnosed on all draws; "
+                         "divergences still escalate target_accept; thresholds unchanged; applied to every fit "
+                         "(recovery, real phases, held-out folds) through v79_sampler_rules"),
+                 why=("the rule takes the maximum R-hat over several hundred per-gene sites, which fluctuates near "
+                      "1.01 at ESS about 1,000 even when chains mix (Gaussian recovery S1: m_dk R-hat 1.0134 with "
+                      "ESS 1,019); more draws shrink that noise without moving a threshold; decided on simulation "
+                      "only, before any real data"))],
         amended_from_sha256="1807ddb1b9071f5465873e076ebd6a1fbab6b5fcc14e7ec87bd505525144833b",
         terminal_authority=[FW.LANE_TERMINAL, "no target winner", "no representation winner",
                             "no JEPA training authority", "no E4 authority", "no protected-data authority",

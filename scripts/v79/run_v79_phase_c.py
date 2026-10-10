@@ -96,16 +96,11 @@ def diagnose(samples, family: str) -> dict:
 def fit(kw: dict, family: str, seed: int, a) -> dict:
     import run_v79_inference as INF
     import v79_models as M
-    attempts, run = [], None
-    for ta in INF.RETRY_ACCEPT:
-        run = M.run_nuts(kw, n_chains=a.chains, warmup=a.warmup, draws=a.draws, seed=seed, target_accept=ta)
-        dg = diagnose(run["samples"], family)
-        ok = sum(run["divergences"]) == 0 and dg["worst_rhat"] <= INF.RHAT_MAX and dg["worst_ess"] >= INF.ESS_MIN
-        attempts.append(dict(target_accept=ta, seconds=run["seconds"], divergences=run["divergences"],
-                             mean_steps=run["mean_steps"], worst_rhat=dg["worst_rhat"], worst_ess=dg["worst_ess"],
-                             diagnosed=bool(ok)))
-        if sum(run["divergences"]) == 0:
-            break
+    import v79_sampler_rules as SR
+    run, _, attempts = SR.fit_with_rules(
+        lambda ta, ext: M.run_nuts(kw, n_chains=a.chains, warmup=a.warmup, draws=a.draws, seed=seed,
+                                   target_accept=ta, extend_from=ext),
+        lambda r: diagnose(r["samples"], family))
     return dict(run=run, attempts=attempts, diagnosed=attempts[-1]["diagnosed"],
                 centring=M.CENTRING[M.centring_key(kw["likelihood"], kw.get("mask"))])
 

@@ -38,7 +38,7 @@ out = dict(lik=lik, centring=M.CENTRING[M.centring_key(lik_fit, kw.get("mask"))]
 if lik == "ztnb":
     lp = np.median(np.asarray(flat["logphi"]), 0)
     out["logphi_recovery"] = dict(est=[float(v) for v in lp], truth=[float(v) for v in sim["truth_logphi"]])
-div = np.asarray(r["mcmc"].get_extra_fields(group_by_chain=False)["diverging"]).astype(bool)
+div = np.asarray(r["diverging_flags"]).reshape(-1).astype(bool)
 if div.any():
     # where the divergences sit: per random component and gene, the share of divergent draws whose log sd lies
     # in that gene's lowest decile (0.1 expected if unrelated)

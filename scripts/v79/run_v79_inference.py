@@ -39,8 +39,8 @@ CONTRACT = ROOT / "docs/agent/BAYESIAN_SYNTHETIC_GEOMETRY_CONTRACT_V1.json"
 BENCHMARK = ROOT / "results/v79/V79_COMPUTE_BENCHMARK_V1.json"
 RECOVERY = [ROOT / "results/v79/V79_SIMULATION_RECOVERY_gaussian.json",
             ROOT / "results/v79/V79_SIMULATION_RECOVERY_bernoulli.json"]
-RHAT_MAX, ESS_MIN = 1.01, 400
-RETRY_ACCEPT = (0.9, 0.95, 0.99)
+import v79_sampler_rules as SR  # noqa: E402
+RHAT_MAX, ESS_MIN, RETRY_ACCEPT = SR.RHAT_MAX, SR.ESS_MIN, SR.RETRY_ACCEPT
 
 
 def sha_file(p) -> str:
@@ -82,19 +82,13 @@ def diagnose(samples, likelihood: str, components) -> dict:
 
 def fit_with_retry(design, y, likelihood, seed, chains, warmup, draws, depth=True, mask=None) -> dict:
     import jax.numpy as jnp
-    attempts = []
-    for ta in RETRY_ACCEPT:
-        kw = dict(design=design, y=jnp.asarray(y), likelihood=likelihood, depth=depth)
-        if mask is not None:
-            kw["mask"] = jnp.asarray(mask)
-        run = M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta)
-        diag = diagnose(run["samples"], likelihood, M.COMPONENTS)
-        ok = sum(run["divergences"]) == 0 and diag["worst_rhat"] <= RHAT_MAX and diag["worst_ess"] >= ESS_MIN
-        attempts.append(dict(target_accept=ta, seconds=run["seconds"], divergences=run["divergences"],
-                             mean_steps=run["mean_steps"], worst_rhat=diag["worst_rhat"], worst_ess=diag["worst_ess"],
-                             diagnosed=ok))
-        if ok or sum(run["divergences"]) == 0:
-            break                           # the retry rule escalates only on divergences
+    kw = dict(design=design, y=jnp.asarray(y), likelihood=likelihood, depth=depth)
+    if mask is not None:
+        kw["mask"] = jnp.asarray(mask)
+    run, _, attempts = SR.fit_with_rules(
+        lambda ta, ext: M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
+                                   extend_from=ext),
+        lambda r: diagnose(r["samples"], likelihood, M.COMPONENTS))
     return dict(run=run, attempts=attempts, diagnosed=attempts[-1]["diagnosed"])
 
 
