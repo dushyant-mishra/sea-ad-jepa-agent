@@ -19,7 +19,7 @@ Therefore a same-path replacement after the global hash pass but before the over
 
 This is the same class of time-of-check/time-of-use problem already fixed prospectively for physical H5AD reads.
 
-## Required repair
+## Required repair for immediate-use custody
 
 A successor G7 must:
 
@@ -49,6 +49,19 @@ A successor G7 must require:
 
 Duplicate `cell_id` is a custody/identity failure and cannot be resolved by choosing first/last occurrence.
 
+## Finding 3 — duplicate CSR addresses inside one S174 row can overwrite silently
+
+Current `sparse_row_dict()` assigns one dictionary entry per sparse address. If an S174 CSR row contained the same address index more than once, later entries would overwrite earlier entries in the dictionary.
+
+The immutable G1b bytes are trusted historical custody, but G7 is intended to be an independent exact corroboration gate. It should therefore fail closed on ambiguous CSR row representation rather than relying on implicit dictionary behavior.
+
+For every S174 count shard whose values are actually opened for natural overlap, the successor must require:
+- valid CSR indptr geometry;
+- address indices in `[0, 41238)`;
+- no duplicate address indices within any row used by the overlap comparison.
+
+Sorted index order is not itself a biological requirement, so the gate need not reject merely unsorted-but-unique rows. It must reject duplicates instead of summing, choosing first, or choosing last.
+
 ## Required regression tests
 
 Before successor qualification, focused tests must prove:
@@ -56,10 +69,11 @@ Before successor qualification, focused tests must prove:
 1. same-size changed S174 `meta.npz` after global custody but before overlap metadata read is rejected;
 2. same-size changed S174 `counts.npz` after global custody but before count-array read is rejected;
 3. duplicate S174 `cell_id` values fail closed;
-4. a no-overlap shard never opens its count-value arrays;
-5. an overlap shard records both immediate meta and immediate counts hashes;
-6. physical H5AD immediate SHA recheck remains intact;
-7. G7 mismatch and NOT_ESTIMABLE remain non-success exits.
+4. duplicate address indices within an overlap S174 CSR row fail closed;
+5. a no-overlap shard never opens its count-value arrays;
+6. an overlap shard records both immediate meta and immediate counts hashes;
+7. physical H5AD immediate SHA recheck remains intact;
+8. G7 mismatch and NOT_ESTIMABLE remain non-success exits.
 
 ## Disposition
 
