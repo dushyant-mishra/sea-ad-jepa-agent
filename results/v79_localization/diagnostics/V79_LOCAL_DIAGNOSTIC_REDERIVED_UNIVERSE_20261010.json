@@ -1,0 +1,82 @@
+{
+  "status": "LOCAL_DIAGNOSTIC__SEMANTIC_UNIVERSE_REDERIVED__CANONICAL_NPZ_BYTE_GATE_NOT_CLAIMED",
+  "substrate": {
+    "n_cells": 4726,
+    "n_addresses": 41238,
+    "universe_n": 14417,
+    "repaired_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "repaired_marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+    "semantic_universe_rule": "corrected TRAIN detection_rate > 0.05",
+    "semantic_universe_int64_sha256": "73239446d7c953f6d8feffa5ec188c2603ef46c90d5c58fa370dc20e18491b60",
+    "selected_3000_int64_sha256": "d7de51c38bc033a4506906c242fbe13a13ff3b55fe68770f31196a8597953af5",
+    "full_registry_median_detected_per_cell": 4495.5,
+    "evaluation_universe_median_detected_per_cell": 4351.0,
+    "extracted_84_member_manifest_sha256": "d5a37008ea5e46540f678693424bf7651891c508c6208bdb917f71145f71198c"
+  },
+  "L0": {
+    "ratio": 59.018503859093606,
+    "neg_frac": 0.002246526619984439,
+    "pos_frac": 0.13258663999110815,
+    "genes_with_neg": 0.24033333333333334,
+    "median_abs_corr": 0.19456419986728402,
+    "strong_edge_fraction": 0.1348331666110926,
+    "mean_degree": 404.36466666666666,
+    "transitivity": 0.6672406627478484
+  },
+  "L1": {
+    "ratio": 1.2251091249220536,
+    "neg_frac": 0.0021389352006224295,
+    "pos_frac": 0.002620429031899522,
+    "genes_with_neg": 0.081,
+    "median_abs_corr": 0.10762146235651177,
+    "strong_edge_fraction": 0.004759364232521952,
+    "mean_degree": 14.273333333333333,
+    "transitivity": 0.8664616492583123
+  },
+  "L2_detected_depth": {
+    "ratio": 1.035631004570469,
+    "neg_frac": 0.00238323885739691,
+    "pos_frac": 0.002468156052017339,
+    "genes_with_neg": 0.08366666666666667,
+    "median_abs_corr": 0.02045964401285936,
+    "strong_edge_fraction": 0.004851394909414249,
+    "mean_degree": 14.549333333333333,
+    "transitivity": 0.8680460022327169
+  },
+  "L2_library_depth_sensitivity": {
+    "ratio": 1.0491083932405938,
+    "neg_frac": 0.0023810158941869513,
+    "pos_frac": 0.002497943759030788,
+    "genes_with_neg": 0.085,
+    "median_abs_corr": 0.020674551460953507,
+    "strong_edge_fraction": 0.004878959653217739,
+    "mean_degree": 14.632,
+    "transitivity": 0.8694071514086712
+  },
+  "L3": {
+    "ratio": 326.5,
+    "neg_frac": 8.891852839835501e-07,
+    "pos_frac": 0.0002903189952206291,
+    "genes_with_neg": 0.0016666666666666668,
+    "median_abs_corr": 0.017067412293941736,
+    "strong_edge_fraction": 0.00029120818050461266,
+    "mean_degree": 0.8733333333333333,
+    "transitivity": 0.8126811174220471
+  },
+  "L4": null,
+  "support_counts": {
+    "L1": 3,
+    "L2": 15,
+    "L3": 20,
+    "L4": 0
+  },
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "synthetic_arm_promoted": null,
+  "L5_canonical": {
+    "levels_used": ["L1", "L2", "L3"],
+    "persistent_positive_count": 39,
+    "persistent_negative_count": 4,
+    "total_pairs": 4498500
+  }
+}
