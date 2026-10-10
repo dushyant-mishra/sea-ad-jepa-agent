@@ -1,203 +1,105 @@
 {
-  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261009_V2",
+  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261009_V3",
   "date": "2026-10-09",
-  "handoff_branch": "handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete",
-  "handoff_parent": "6716f044fcbefeb39bddf505c09a82378ce602e8",
   "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
-  "active_surfaces": {
-    "pr237": {
-      "role": "custody_scientific_history_base",
-      "branch": "handoff/jepa-20261008-complete-runtime-s174-takeover",
-      "head": "813ead17570dbb4b6a5a58ebe6dc84fed8aa0438",
-      "merge": "do_not_merge_without_explicit_owner_authorization"
-    },
-    "pr243": {
-      "role": "current_target_discovery_g1_g7_implementation_base",
-      "branch": "impl/td-relational-corrected-preflight-20261009",
-      "head_at_handoff_creation": "6716f044fcbefeb39bddf505c09a82378ce602e8",
-      "merge": "do_not_merge_without_explicit_owner_authorization"
-    },
-    "pr244": {
-      "role": "s174_transfer_custody_evidence",
-      "branch": "custody/s174-cache-transfer-verification-20261009",
-      "head": "eb3f92045e95ee4e5a85a864d1ec5922fe8f3d16",
-      "terminal": "PASS_S174_RAR_EXACTLY_MATCHES_G1B_AUTHORIZED_CORRECTED_CACHE",
-      "merge": "do_not_merge_as_scientific_change"
-    },
-    "pr245": {
-      "role": "preserved_failed_td_g4_g5_execution_record",
-      "branch": "exec/td-relational-g4g5-local-20261009",
-      "head": "bf6ddda4e1b020fdb959812036b957c40166fede",
-      "terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_BEFORE_G4_G5__MANIFEST_FILE_SHA_MISMATCH__WINDOWS_CRLF_SERIALIZATION",
-      "g4_g5_executed": false,
-      "merge": "do_not_merge_as_pass"
-    },
-    "pr248": {
-      "role": "live_g4_g5_engineering_repair_and_canonical_rerun_runbook",
-      "branch": "fix/td-preflight-platform-stable-serialization-20261009",
-      "head": "1ecb3a5eebbeccfec7a6cce95a75ae4cfe498049",
-      "repair_code_freeze": "1dbf37d5c9a4684e4bac73b9a86fb3875782e23e",
-      "canonical_machine_qualified": false,
-      "merge": "do_not_merge_without_explicit_owner_authorization"
-    },
-    "pr249": {
-      "role": "terminated_bayesian_method_spike",
-      "branch": "analysis/td-bayesian-historical-ledger-20261009",
-      "head_at_termination_record": "3f39a08edb5102442ab24dc65b964636528a291a",
-      "terminal": "SAMPLER_NOT_ESTIMABLE",
-      "disposition": "STOP_THIS_BAYESIAN_FORMULATION__DO_NOT_TUNE_TO_HISTORICAL_OUTCOMES",
-      "historical_fit_executed": false,
-      "merge": "do_not_merge_as_scientific_authority"
-    },
-    "pr251": {
-      "role": "g6_g7_preauthorization_hardening_only",
-      "branch": "review/td-g6g7-preauthorization-hardening-20261009",
-      "head_at_review_record": "9f06d31875938d73028fccfb6774cf0fb33c70fb",
-      "value_read_authorized": false,
-      "value_read_executed": false,
-      "merge": "do_not_merge_without_explicit_owner_authorization"
-    }
-  },
-  "s174": {
-    "defect": "historical TRAIN cache scrambled HVS and SEA_AD physical gene labels/columns",
-    "g1": "historical_fail_preserved",
-    "g1b": "passed_after_owner_authorization",
-    "corrected_cache_root": "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1",
-    "corrected_cache_files": 84,
-    "transfer_rar": {
-      "path": "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1.rar",
-      "bytes": 47964366,
-      "sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
-      "exact_authority_matches": "84/84"
-    },
-    "corrected_science": {
-      "cohort_coverage_pooled_correlation_fraction_approx": 0.03,
-      "median_abs_gene_gene_r_approx": 0.056,
-      "cell_class_pooled_correlation_fraction_approx": 0.26,
-      "superseded": [
-        "latent_mechanism_solved_observation_bottleneck",
-        "factor_family_falsification_on_corrupted_substrate",
-        "substate_and_observer_v2_supported_for_next_stage"
-      ],
-      "still_stands": [
-        "no_candidate_accepted",
-        "detection_carries_more_dependence_than_expression"
-      ]
-    }
-  },
+  "canonical_cold_start_pr": 247,
   "target_discovery": {
-    "td34": "TD34_EXACT_PANEL_MEMBERSHIP_REPRODUCED__CANONICAL_UPSTREAM_SUPPORT_BOUND__SELECTION_RULE_HASH_BOUND__NO_TARGET_AUTHORITY",
-    "td56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
-    "td57b": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
-    "td57c": "HISTORICAL_FROZEN_FAIL_PRESERVED__CORRECTED_REPLAY_MUST_OBEY_SEQUENTIAL_FIREWALL",
-    "td58": "FALSIFICATION_ONLY__NO_TARGET_AUTHORITY",
-    "td59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY",
-    "td60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY",
-    "historical_td_archive": {
-      "bytes": 92478083,
-      "sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
+    "historical_classifications": {
+      "td34": "TD34_EXACT_PANEL_MEMBERSHIP_REPRODUCED__CANONICAL_UPSTREAM_SUPPORT_BOUND__SELECTION_RULE_HASH_BOUND__NO_TARGET_AUTHORITY",
+      "td56": "HISTORICAL_RELATIONAL_EVIDENCE__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+      "td57b": "HISTORICAL_PROSPECTIVE_SUCCESS__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_TARGET_AUTHORITY",
+      "td57c": "HISTORICAL_FROZEN_FAIL_PRESERVED__NO_RETROACTIVE_RESCUE",
+      "td58": "FALSIFICATION_ONLY__NO_TARGET_AUTHORITY",
+      "td59": "TD59_STATISTIC_REPRODUCED__CORRECTED_SUBSTRATE_REPLAY_NOT_BOUND__NO_PRODUCTION_LOCALITY_OR_TRAINING_AUTHORITY",
+      "td60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
     },
-    "sample_a_freeze": {
+    "sample_a": {
       "rows": 25000,
-      "hvs": 1129,
-      "nph52": 1310,
-      "sea_ad": 22561,
+      "HVS": 1129,
+      "NPH52": 1310,
+      "SEA_AD": 22561,
       "sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
     },
     "replay_manifest": {
       "common_core": 17186,
       "replay_addresses": 9216,
       "sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
-      "fresh_reexecution_terminal": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
-      "expression_values_read": false
+      "historical_manifest_reconstruction": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST"
     },
     "g4_g5": {
-      "status": "AWAITING_POST_REPAIR_CANONICAL_RERUN",
+      "status": "AWAITING_SELF_AUDIT_HARDENED_CANONICAL_RERUN",
       "preserved_failed_attempt_pr": 245,
+      "failed_attempt_head": "bf6ddda4e1b020fdb959812036b957c40166fede",
+      "failed_attempt_terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_BEFORE_G4_G5__MANIFEST_FILE_SHA_MISMATCH__WINDOWS_CRLF_SERIALIZATION",
       "repair_pr": 248,
-      "repair_code_freeze": "1dbf37d5c9a4684e4bac73b9a86fb3875782e23e",
-      "fresh_namespace": "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v2_post_crlf_repair",
+      "execution_code_freeze": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+      "fresh_namespace": "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened",
+      "self_audit_repairs": [
+        "platform_stable_LF_manifest_bytes",
+        "nonempty_namespace_fails_closed",
+        "calibration_bundle_exact_SHA_enforced_in_driver",
+        "TD41_TD58_archive_exact_SHA_enforced_in_driver",
+        "all_35_HVS_SEA_H5ADs_rehashed_against_S174_freeze_in_mapping_audit",
+        "safe_fresh_namespace_is_driver_default"
+      ],
+      "required_mapping_schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V2",
       "required_mapping_terminal": "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND",
+      "required_driver_schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V2",
       "required_driver_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
-      "mapping_audit_started_in_preserved_attempt": false,
       "expression_values_read": false,
-      "next_action": "Macha canonical Windows post-repair G4/G5 rerun; any failure stops; PASS stops for owner decision"
+      "next": "Macha runs exact code freeze on canonical Windows machine; any failure stops; PASS stops before G6/G7"
     },
     "g6_g7": {
-      "historical_implementation_recovered": true,
-      "preauthorization_hardening_pr": 251,
-      "authorized": false,
-      "executed": false,
-      "historical_v1_direct_invocation_future_authorized": false,
-      "required_future_g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
-      "required_future_g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap.py",
-      "required_owner_token_after_g4_g5_pass": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY",
-      "g6_success_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
-      "g7_success_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
-      "g7_not_estimable_terminal": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
-      "g7_not_estimable_is_pass": false,
-      "corrected_biological_replay_authorized_by_g6_g7_pass": false
+      "status": "PREAUTHORIZATION_ONLY__UNAUTHORIZED__UNEXECUTED",
+      "preauthorization_pr": 251,
+      "pr251_currently_mergeable": false,
+      "must_reconcile_to_exact_g4_g5_execution_lineage_before_any_use": true,
+      "historical_v1_future_authorized": false,
+      "required_future_runtime_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+      "required_future_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+      "required_g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+      "required_g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap.py",
+      "template_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3",
+      "authorization_exists": false,
+      "value_read_executed": false,
+      "biological_replay_authorized": false,
+      "training_authorized": false,
+      "g7_s174_cache_geometry": 41238,
+      "g7_not_estimable_is_pass": false
     }
   },
+  "custody": {
+    "s174_transfer_pr": 244,
+    "s174_terminal": "PASS_S174_RAR_EXACTLY_MATCHES_G1B_AUTHORIZED_CORRECTED_CACHE",
+    "s174_rar_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
+  },
   "bayesian_spike": {
-    "preregistration": "docs/agent/JEPA_TARGET_DISCOVERY_BAYESIAN_SPIKE_PREREG_20261009.md",
     "pr": 249,
     "status": "SAMPLER_NOT_ESTIMABLE",
     "disposition": "STOP_THIS_BAYESIAN_FORMULATION__DO_NOT_TUNE_TO_HISTORICAL_OUTCOMES",
     "historical_fit_executed": false,
-    "posterior_results_exist": false,
     "corrected_replay_ingested": false,
-    "historical_labels_used_for_fit": false,
-    "target_ranking_allowed": false,
-    "restart_requires_new_prospective_question_and_preregistration": true
+    "restart_requires_new_question_and_preregistration": true
   },
-  "synthetic_context": {
-    "pr240": {
-      "head": "f3a5d142d3e02b0650d6f52ef97a11232e0a4dc7",
-      "e1": "exact_isolation_pass",
-      "e2": "directionally_supports_broad_class_but_inadequate",
-      "e3": "wrong_direction_rejected",
-      "promoted_arm": null
-    },
-    "pr242": {
-      "head_at_audit": "e959d9a732698ae9a41e8cb1f6c10052d7390326",
-      "f1": "partial_signed_ratio_improvement_but_global_inadequacy",
-      "f2": "signed_field_hypothesis_falsified",
-      "f3": "marginal_repair_inadequate",
-      "promoted_arm": null
-    }
-  },
-  "runtime_context": {
-    "canonical_runtime_pr224_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
-    "shared_interface_pr226_head": "e83bb8d90bbabefdfe6bfa7c5dfff994d7a41005",
-    "bounded_synthetic_mutation_pr236_head": "8495c9f0a753dbb25c90bc27e65f28c4ee2e471e",
-    "real_training_authorized": false
-  },
-  "do_not_resurrect": [
-    "pre_S174_89_percent_cohort_coverage_interpretation",
-    "pre_S174_median_abs_r_0_33_reference",
-    "latent_mechanism_solved_observation_bottleneck_claim",
-    "corrupted_substrate_factor_family_falsification",
-    "corrupted_substrate_substate_observer_v2_support",
-    "Stage81A3R_zip_as_byte_equivalent_to_Macha_S174_repair",
-    "search_for_missing_corrected_TD_replay_implementation",
-    "TD60_failed_wording",
-    "TD57C_postfailure_diagnostic_rescue",
-    "independence_assumption_for_24_related_TD_cases",
-    "S159_bands_as_hard_gates",
-    "failed_PR249_bayesian_formulation"
-  ],
   "ordered_next_actions": [
-    "Macha: qualify PR248 focused G1-G5 tests on canonical repository context",
-    "Macha: rerun value-blind G4/G5 on canonical Windows machine into frozen fresh namespace",
-    "any G4/G5 failure: preserve and stop",
-    "if G4/G5 PASS: stop for explicit owner G6/G7 authorization",
-    "before acting on any G6/G7 authorization: qualify PR251 regression tests and bind hardened V2/G7 entrypoints",
-    "if authorized: execute G6 then G7 only within exact frozen 25000-cell/9216-address scope",
-    "G6 mismatch or G7 mismatch: preserve and stop",
-    "G7 NOT_ESTIMABLE: stop for owner adjudication; do not manufacture overlap",
-    "even G6+G7 PASS: stop before corrected TD56/TD57B/TD59 biological replay for separate owner authorization",
-    "Bayesian PR249 remains terminated; do not feed corrected replay into it",
-    "never let any sidecar relabel historical TD57C or select a target without new authority"
+    "Macha: execute only PR248 code freeze b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "Macha: run focused manifest/driver/mapping tests",
+    "Macha: run value-blind G4/G5 into preflight_v3_self_audit_hardened",
+    "any failure: preserve exact namespace and stop",
+    "PASS: preserve receipts in draft execution record and stop before G6/G7",
+    "do not create any value-read authorization from the G4/G5 run",
+    "after receipt review: reconcile and qualify PR251 before any possible G6/G7 owner decision",
+    "Bayesian PR249 remains closed as a method formulation"
+  ],
+  "do_not_resurrect": [
+    "PR245_namespace_reuse_or_manual_CRLF_normalization",
+    "pre_self_audit_PR248_execution_SHA_1dbf37d5",
+    "pre_self_audit_preflight_v2_post_crlf_repair_namespace_as_authoritative_run",
+    "historical_V1_G6_authorization_token_for_future_execution",
+    "failed_PR249_bayesian_formulation",
+    "TD57C_postfailure_rescue",
+    "TD60_failed_wording"
   ]
 }
