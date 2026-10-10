@@ -1,0 +1,30 @@
+name: V79 factorial memory hardening
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/**'
+      - 'tests/test_v79_*'
+      - '.github/workflows/v79-factorial-memory-hardening.yml'
+  workflow_dispatch:
+
+jobs:
+  focused-v79:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused dependencies
+        run: python -m pip install --upgrade pip numpy scipy pytest
+      - name: Run V79 factorial focused suite
+        run: >-
+          python -m pytest -q
+          tests/test_v79_hierarchical_biology_v1.py
+          tests/test_v79_observation_operator_v1.py
+          tests/test_v79_factorial_worlds_v1.py
+          tests/test_v79_factorial_scoring_v1.py
+          tests/test_v79_factorial_gate_v1.py
+          tests/test_v79_memory_hardening_v1.py
