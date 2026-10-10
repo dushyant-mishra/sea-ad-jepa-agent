@@ -1,0 +1,53 @@
+{
+  "schema": "JEPA_TD_HISTORICAL_REPLAY_EXECUTOR_INVENTORY_STATUS_V1",
+  "date": "2026-10-10",
+  "status": "PARTIAL_INVENTORY_COMPLETE__EXECUTOR_RECOVERY_REQUIRED_BEFORE_ADAPTER_IMPLEMENTATION",
+  "historical_snapshot_ref": "f5a8ebeddbcd52a94274a7f72ecda1f71b82d777",
+  "rule": "Do not reconstruct a historical decision-bearing executor from prose when exact code or an execution binding is recoverable from repository/archive history. Adapter implementation remains blocked until each stage's executable lineage is hash-bound.",
+  "stages": {
+    "TD56": {
+      "iteration_dir": "target_discovery/iterations/td56s_disjoint_gene_relational_geometry",
+      "prospective_screen_blob_sha": "809ad4d67823fc1bacbf753a5f777ecc58903a59",
+      "result_blob_sha": "41976554b30aaae913d09ef86b6d29ac329bc45e",
+      "prospective_freeze_commit": "d257fd3cf4957ecbb1ab3f03a06e54d043a1326f",
+      "root_executor_file_present_in_iteration_dir": false,
+      "disposition": "recover exact primary-screen executor lineage from repository/archive/local-execution bindings before adapter code"
+    },
+    "TD57B": {
+      "iteration_dir": "target_discovery/iterations/td57b_independent_triplet_recurrence",
+      "prospective_screen_blob_sha": "59af658893477db36f8bb09e4f2db3f9971daac7",
+      "result_blob_sha": "c2da6d60de57d15e773961a03fd3ca4a88331f4c",
+      "case_table_blob_sha": "922df89b56012842cb3eb883c297eafd09116c00",
+      "fast_wrapper_path": "target_discovery/iterations/td57b_independent_triplet_recurrence/td57b_exact_fast_wrapper.py",
+      "fast_wrapper_blob_sha": "61547cabe3acba79e82e226ad006e1c43630e633",
+      "fixed_executor_path": "target_discovery/iterations/td57b_independent_triplet_recurrence/td57b_fixed_relational_recurrence.py",
+      "fixed_executor_blob_sha": "2b838e37257bef56eb64afa842e84a1daf6fc218",
+      "implementation_freeze_commit": "ae18a2224cecb73daa3e4c748195dbde7c8f6b4f",
+      "disposition": "exact code surfaces are recoverable; verify local/fast execution binding before adapter implementation"
+    },
+    "TD57C": {
+      "iteration_dir": "target_discovery/iterations/td57c_three_view_local_geometry",
+      "prospective_screen_blob_sha": "64c75b69f8515728d480fc090664a8f884c4085c",
+      "result_blob_sha": "cf285bda85e651bd3eaa58070e4a0d7432eef13e",
+      "feasibility_audit_blob_sha": "2e211e36e63ac2b14736a45202993b2fccf3287d",
+      "root_executor_file_present_in_iteration_dir": false,
+      "historical_terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
+      "disposition": "recover exact failed-screen executor lineage before adapter implementation; reproducing the historical FAIL is mandatory qualification"
+    },
+    "TD59": {
+      "iteration_dir": "target_discovery/iterations/td59_mesoscale_half_locality",
+      "prospective_screen_blob_sha": "842b3d332351bc491f977ac5071f7025ef6204e9",
+      "result_blob_sha": "782480b828ec79f94efd83c2a52563ec67118307",
+      "case_table_blob_sha": "06926bb9260743941a177fc9d69076b43f293609",
+      "preoutcome_binding_blob_sha": "0d9e1ac8b9ac477c7e2532dec3b5d11b0bc09ab8",
+      "replay_closure_tree_sha": "523b14174702328a8957a1d243dd78c705fb88c2",
+      "root_executor_file_present_in_iteration_dir": false,
+      "disposition": "resolve executor through preoutcome binding/replay-closure history and hash-bind exact decision-bearing code before adapter implementation"
+    }
+  },
+  "adapter_implementation_authorized": false,
+  "corrected_replay_authorized": false,
+  "target_selection_authorized": false,
+  "training_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
