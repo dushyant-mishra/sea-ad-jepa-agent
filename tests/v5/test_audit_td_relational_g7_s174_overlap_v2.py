@@ -27,6 +27,44 @@ def test_overlap_status_is_pass_only_for_real_exact_overlap():
     assert m.exit_code_for_status("NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP") != 0
 
 
+def test_g1b_result_requires_pass_all_requirements_and_exact_freeze_sha():
+    m = load_module()
+    result = {
+        "schema": "S174_REBUILD_G1B_RESULT_V1",
+        "freeze": {"path": m.G1B_FREEZE_REPO_PATH, "sha256": m.G1B_FREEZE_SHA256},
+        "requirements": {f"R{i}": True for i in range(1, 8)},
+        "G1b_pass": True,
+    }
+    m.validate_g1b_result(result)
+
+    bad = json.loads(json.dumps(result))
+    bad["G1b_pass"] = False
+    try:
+        m.validate_g1b_result(bad)
+    except RuntimeError as e:
+        assert "pass" in str(e).lower()
+    else:
+        raise AssertionError("G1b result without PASS must be rejected")
+
+    bad = json.loads(json.dumps(result))
+    bad["requirements"]["R4"] = False
+    try:
+        m.validate_g1b_result(bad)
+    except RuntimeError as e:
+        assert "requirement" in str(e).lower()
+    else:
+        raise AssertionError("failed G1b requirement must be rejected")
+
+    bad = json.loads(json.dumps(result))
+    bad["freeze"]["sha256"] = "0" * 64
+    try:
+        m.validate_g1b_result(bad)
+    except RuntimeError as e:
+        assert "freeze" in str(e).lower()
+    else:
+        raise AssertionError("G1b result bound to wrong freeze must be rejected")
+
+
 def test_s174_payload_requires_full_41238_geometry_and_integer_data():
     m = load_module()
     m.validate_s174_payload(
@@ -113,8 +151,13 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
         "preflight_result_sha256": "p",
         "mapping_receipt_sha256": "m",
         "authorization_sha256": "a",
+        "implementation_commit_sha": "c" * 40,
+        "common_script_sha256": "common",
         "g6_script_sha256": "g6",
         "g7_script_sha256": "g7",
+        "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+        "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+        "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
         "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
         "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
     }
