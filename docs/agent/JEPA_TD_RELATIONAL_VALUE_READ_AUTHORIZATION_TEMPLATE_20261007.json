@@ -1,29 +1,16 @@
 {
   "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3",
-  "status": "TEMPLATE_ONLY__NOT_AUTHORITY__DO_NOT_RENAME_AND_USE_WITHOUT_EXPLICIT_OWNER_AUTHORIZATION",
-  "required_runtime_schema_if_authorized": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
-  "required_runtime_authorization_if_authorized": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
-  "required_runtime_scope_if_authorized": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads; NPH52 historical clean-path pass-through; hardened G6/G7 integrity checks only; no corrected TD56/TD57B/TD57C/TD59 biological replay, target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
-  "required_g6_entrypoint_if_authorized": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
-  "forbidden_g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA.py",
-  "required_g7_entrypoint_if_authorized": "scripts/v5/audit_td_relational_g7_s174_overlap.py",
-  "required_preflight_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
-  "g6_success_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
-  "g7_success_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
-  "g7_not_estimable_terminal": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
-  "g7_not_estimable_is_not_pass": true,
+  "status": "SUPERSEDED_TEMPLATE__NOT_RUNTIME_AUTHORITY__DO_NOT_USE",
+  "superseded_by": "docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-design.md",
+  "reason": "The wrapper-era template did not bind the exact G4/G5 preflight receipt SHA or exact G6/G7 code SHAs and is therefore not sufficient as a future runtime authorization boundary.",
+  "runtime_authorization_exists": false,
+  "real_value_read_authorized_by_this_file": false,
   "biological_replay_authorized": false,
   "training_authorized": false,
-  "real_value_read_authorized_by_this_file": false,
   "instructions": [
-    "This file is a template only and is deliberately rejected as runtime authority.",
-    "A future runtime authorization can exist only after an exact G4/G5 PASS and a new explicit owner decision.",
-    "That runtime authorization must use the exact V2 schema/token/scope above and must bind both exact hardened entrypoint paths.",
-    "The historical V1 runtime schema/token is not valid for the hardened path and must not be reused.",
-    "Direct invocation of the historical V1 materializer is outside any future authorization.",
-    "The V2 materializer requires finite nonnegative exact integer raw counts before normalization; it may not round fractional values.",
-    "G7 compares every natural HVS/SEA Sample-A x S174 cell overlap across all frozen replay addresses after G4/G5 establishes their mapping; S174 cache geometry is the full 41,238-address canonical space, not the later 14,417 analysis universe.",
-    "G7 NOT_ESTIMABLE is a stop/non-pass state, not technical success.",
-    "Even G6+G7 PASS does not authorize corrected TD56/TD57B/TD57C/TD59 biological replay; that requires another owner decision after receipt review."
+    "Do not rename or adapt this superseded template into a runtime authorization.",
+    "Do not execute the current wrapper-based V2 materializer under this template.",
+    "A future authorization surface must be generated only from the standalone V2 design after successful G4/G5 receipt review, TDD qualification of the standalone successor, and a new explicit owner decision.",
+    "Historical V1 schema/token remain invalid for any future hardened path."
   ]
 }
