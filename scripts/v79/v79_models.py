@@ -108,7 +108,10 @@ NC_DONOR_DK = {"dk": 0.0, "logsd_dk": 0.0, "donor": 0.0, "logsd_donor": 0.0}
 # S0 and S1; self-audit 29); a donor-class level has about 11 cells, so small donor-class sds are weakly pinned.
 # ZTNB: Q9 (10 genes, donor and donor-class non-centred) converged on the full site set (R-hat 1.0047, ESS 823,
 # 0 divergences); self-audit 38.
-CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DONOR_DK),
+# Phase C log-normal (Gaussian over detected cells): Q8 (donor and donor-class non-centred) failed on the per-gene
+# operator log sd (R-hat 1.0187, ESS 147); Q10 fully non-centred converged (R-hat 1.0051, ESS 1,016); self-audit 40.
+NC_ALL = {"op": 0.0, "logsd_op": 0.0, "donor": 0.0, "logsd_donor": 0.0, "dk": 0.0, "logsd_dk": 0.0}
+CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_ALL), "bernoulli": dict(NC_DONOR_DK),
             "ztnb": dict(NC_DONOR_DK)}
 
 

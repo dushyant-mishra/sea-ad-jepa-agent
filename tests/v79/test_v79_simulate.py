@@ -64,3 +64,22 @@ def test_fractions_sum_to_one_and_absent_components_are_zero_where_they_must_be(
     for x in ("donor", "dk", "cls"):
         assert np.allclose(sim["truth_var"][x], 0.0)
     assert np.all(sim["truth_var"]["op"] > 0)
+
+
+def test_lognormal_world_masks_on_the_predictor_and_scores_detected_cells():
+    import numpy as np
+    rng = np.random.default_rng(0)
+    n = 600
+    cls = rng.integers(0, 3, n); src = rng.integers(0, 2, n)
+    op = src * 3 + rng.integers(0, 3, n); donor = src * 10 + rng.integers(0, 10, n)
+    keys = sorted(set(zip(donor.tolist(), cls.tolist())))
+    lut = {k: i for i, k in enumerate(keys)}
+    dk = np.array([lut[(a, b)] for a, b in zip(donor.tolist(), cls.tolist())])
+    d = dict(n=n, cls=cls, src=src, op=op, donor=donor, dk=dk, n_cls=3, n_src=2, n_op=6, n_donor=20, n_dk=len(keys),
+             log_lib_centered=rng.normal(0, .3, n), log_lib=rng.normal(9, .3, n))
+    sim = SIM.simulate(d, SIM.SCENARIOS["S1_present"], 8, "lognormal", seed=3)
+    rate = sim["mask"].mean(0)
+    assert rate.min() > 0.01 and rate.max() < 0.99
+    assert np.all(sim["y"][~sim["mask"]] == 0)
+    tot = sum(sim["truth_frac"].values())
+    assert np.allclose(tot, 1.0)

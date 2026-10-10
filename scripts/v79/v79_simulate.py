@@ -65,6 +65,27 @@ def simulate(design: dict, scenario: dict, n_genes: int, likelihood: str, seed: 
     for x in ("cls", "src"):
         mu_model = mu_model + model_eff[x].mean(0)
         model_eff[x] = model_eff[x] - model_eff[x].mean(0, keepdims=True)
+    if likelihood == "lognormal":
+        # Phase C log-normal world: Gaussian log count (minus offset) observed on detected cells only, with
+        # detection depending on the linear predictor (not on the noise), so the masked model is the true model
+        sd_res = scenario["res"] * np.exp(rng.normal(0.0, GENE_SD_SPREAD, n_genes))
+        ylog = eta + rng.normal(0.0, 1.0, eta.shape) * sd_res[None, :]
+        a = rng.normal(0.0, 1.5, n_genes)                         # detection rates about 5% to 95%
+        p = 1.0 / (1.0 + np.exp(-(a[None, :] + (eta - eta.mean(0, keepdims=True)))))
+        mask = rng.random(eta.shape) < p
+        nd = np.maximum(mask.sum(0), 1)
+        realized = {}
+        for x in COMPONENTS:
+            e = model_eff[x][design[x]]
+            m = (e * mask).sum(0) / nd
+            realized[x] = (((e - m) ** 2) * mask).sum(0) / nd
+        realized["res"] = sd_res ** 2
+        tot = sum(realized[k] for k in realized)
+        out = dict(y=np.where(mask, ylog, 0.0).astype(np.float32), mask=mask, truth_var=realized,
+                   truth_frac={k: v / tot for k, v in realized.items()})
+        if return_parts:
+            out.update(eta=eta, mu=mu, mu_model=mu_model, b=b, model_eff=model_eff)
+        return out
     if likelihood == "ztnb":
         logphi = rng.normal(ZTNB_LOG_PHI[0], ZTNB_LOG_PHI[1], n_genes)
         phi = np.exp(logphi)

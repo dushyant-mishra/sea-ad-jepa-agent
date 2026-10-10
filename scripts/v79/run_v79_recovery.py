@@ -78,20 +78,24 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
     scen, mod = FITS[name]
     # the world depends on the planted scenario only, so S1, S2 and S5 fit the same S1 data; the sampler seed
     # depends on the fit
-    sim_seed = 1_000_000 + list(SIM.SCENARIOS).index(scen) + {"gaussian": 0, "bernoulli": 500, "ztnb": 700}[likelihood]
+    sim_seed = 1_000_000 + list(SIM.SCENARIOS).index(scen) + {"gaussian": 0, "bernoulli": 500, "ztnb": 700,
+                                                                "lognormal": 900}[likelihood]
+    lik_model = "gaussian" if likelihood == "lognormal" else likelihood     # the log-normal family is a masked Gaussian
     sim = SIM.simulate(di, SIM.SCENARIOS[scen], n_genes, likelihood, seed=sim_seed)
     fdi = permuted_design(di, seed + 7) if mod == "permute_class" else di
     comps = tuple(c for c in M.COMPONENTS if not (mod == "drop_donor" and c in ("donor", "dk")))
     des = M.design_arrays(fdi)
     import jax.numpy as jnp
-    kw = dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood, components=comps)
+    kw = dict(design=des, y=jnp.asarray(sim["y"]), likelihood=lik_model, components=comps)
     if likelihood == "ztnb":
         kw.update(mask=jnp.asarray(sim["mask"]), offset=jnp.asarray(sim["offset"]))
+    if likelihood == "lognormal":
+        kw.update(mask=jnp.asarray(sim["mask"]))
     run, dg, attempts = SR.fit_with_rules(
         lambda ta, ext: M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
                                    max_tree_depth=max_tree_depth, extend_from=ext),
-        lambda r: diagnose(r, likelihood, comps))
-    fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, likelihood, components=comps,
+        lambda r: diagnose(r, lik_model, comps))
+    fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, lik_model, components=comps,
                               mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
     per = {}
     for x, (_, frac) in fr.items():
@@ -140,7 +144,7 @@ def main() -> None:
         combine(sys.argv[2], sys.argv[3:])
         return
     ap = argparse.ArgumentParser()
-    ap.add_argument("--likelihood", choices=["gaussian", "bernoulli", "ztnb"], required=True)
+    ap.add_argument("--likelihood", choices=["gaussian", "bernoulli", "ztnb", "lognormal"], required=True)
     ap.add_argument("--fits", default=",".join(FITS))
     ap.add_argument("--genes", type=int, default=20)
     ap.add_argument("--chains", type=int, default=4)
@@ -154,7 +158,7 @@ def main() -> None:
                     help="JSON override of v79_models.CENTRING for this likelihood (sampler experiments only; recorded)")
     a = ap.parse_args()
     if a.centring:
-        key = M.centring_key("gaussian" if a.likelihood == "lognormal" else a.likelihood, None)
+        key = "gaussian_masked" if a.likelihood == "lognormal" else M.centring_key(a.likelihood, None)
         M.CENTRING[key] = json.loads(a.centring)
     d = FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE))
     di = DA.design_indices(d)
