@@ -27,7 +27,7 @@ def sha(path: Path) -> str:
 def valid_mapping(m):
     return {
         "schema": m.MAPPING_SCHEMA,
-        "status": m.PREFLIGHT_PASS,
+        "status": m.MAPPING_PASS,
         "sample_A_contract": {
             "label": "A_NATURAL_MIXTURE",
             "cells": 25000,
@@ -47,7 +47,7 @@ def valid_mapping(m):
 def valid_preflight(m, mapping: dict):
     return {
         "schema": m.PREFLIGHT_SCHEMA,
-        "status": m.PREFLIGHT_PASS,
+        "status": m.DRIVER_PASS,
         "inputs": dict(m.EXPECTED_INPUT_HASHES),
         "mapping_receipt_schema": mapping["schema"],
         "mapping_checks": mapping["checks"],
@@ -98,7 +98,7 @@ def make_bound_files(tmp_path, m):
 
 def test_bare_pass_only_preflight_is_rejected(tmp_path):
     m = load_module()
-    p = write_json(tmp_path / "preflight.json", {"status": m.PREFLIGHT_PASS})
+    p = write_json(tmp_path / "preflight.json", {"status": m.DRIVER_PASS})
     mp = write_json(tmp_path / "mapping.json", valid_mapping(m))
     try:
         m.load_bound_preflight(p, mp, expected_preflight_sha=sha(p), expected_mapping_sha=sha(mp))
@@ -106,6 +106,13 @@ def test_bare_pass_only_preflight_is_rejected(tmp_path):
         assert "schema" in str(e).lower() or "inputs" in str(e).lower()
     else:
         raise AssertionError("bare PASS-only preflight must be rejected")
+
+
+def test_real_mapping_and_driver_terminals_are_distinct():
+    m = load_module()
+    assert m.MAPPING_PASS == "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND"
+    assert m.DRIVER_PASS == "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
+    assert m.MAPPING_PASS != m.DRIVER_PASS
 
 
 def test_old_v2_preflight_schema_is_rejected(tmp_path):
