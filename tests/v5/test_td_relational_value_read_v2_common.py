@@ -56,17 +56,27 @@ def valid_preflight(m, mapping: dict):
     }
 
 
+def fake_code_identity(m, g6_path, g7_path):
+    return {
+        "implementation_commit_sha": "a" * 40,
+        "common_script_sha256": m.canonical_text_sha256(Path(m.__file__)),
+        "g6_script_sha256": m.canonical_text_sha256(g6_path),
+        "g7_script_sha256": m.canonical_text_sha256(g7_path),
+        "common_entrypoint": m.COMMON_ENTRYPOINT,
+        "g6_entrypoint": m.G6_ENTRYPOINT,
+        "g7_entrypoint": m.G7_ENTRYPOINT,
+    }
+
+
 def valid_auth(m, preflight_path, mapping_path, g6_path, g7_path):
+    identity = m.code_identity(g6_path, g7_path)
     return {
         "schema": m.VALUE_AUTH_SCHEMA,
         "authorization": m.VALUE_AUTHORIZATION,
         "scope": m.VALUE_SCOPE,
         "preflight_result_sha256": sha(preflight_path),
         "mapping_receipt_sha256": sha(mapping_path),
-        "g6_script_sha256": sha(g6_path),
-        "g7_script_sha256": sha(g7_path),
-        "g6_entrypoint": m.G6_ENTRYPOINT,
-        "g7_entrypoint": m.G7_ENTRYPOINT,
+        **identity,
         "training_authorized": False,
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
@@ -81,6 +91,7 @@ def make_bound_files(tmp_path, m):
     g7_path = tmp_path / "g7.py"
     g6_path.write_text("# g6\n", encoding="utf-8")
     g7_path.write_text("# g7\n", encoding="utf-8")
+    m.code_identity = lambda left, right: fake_code_identity(m, left, right)
     auth_path = write_json(tmp_path / "auth.json", valid_auth(m, preflight_path, mapping_path, g6_path, g7_path))
     return preflight_path, mapping_path, g6_path, g7_path, auth_path
 
@@ -178,7 +189,41 @@ def test_wrong_g6_or_g7_code_sha_is_rejected(tmp_path):
     except RuntimeError as e:
         assert "g6" in str(e).lower() and "sha" in str(e).lower()
     else:
-        raise AssertionError("changed G6 bytes must invalidate authority")
+        raise AssertionError("changed G6 code must invalidate authority")
+
+
+def test_shared_common_module_and_commit_are_bound(tmp_path):
+    m = load_module()
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    rec = json.loads(auth.read_text())
+    rec["common_script_sha256"] = "0" * 64
+    write_json(auth, rec)
+    try:
+        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+    except RuntimeError as e:
+        assert "common" in str(e).lower() and "sha" in str(e).lower()
+    else:
+        raise AssertionError("changed shared custody module identity must invalidate authority")
+
+    rec = valid_auth(m, p, mp, g6, g7)
+    rec["implementation_commit_sha"] = "b" * 40
+    write_json(auth, rec)
+    try:
+        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+    except RuntimeError as e:
+        assert "commit" in str(e).lower()
+    else:
+        raise AssertionError("wrong implementation commit must invalidate authority")
+
+
+def test_code_identity_is_lf_crlf_stable(tmp_path):
+    m = load_module()
+    lf = tmp_path / "lf.py"
+    crlf = tmp_path / "crlf.py"
+    lf.write_bytes(b"x = 1\ny = 2\n")
+    crlf.write_bytes(b"x = 1\r\ny = 2\r\n")
+    assert m.canonical_text_sha256(lf) == m.canonical_text_sha256(crlf)
+    assert m.sha256_file(lf) != m.sha256_file(crlf)
 
 
 def test_wrong_entrypoint_or_true_authority_boolean_is_rejected(tmp_path):
