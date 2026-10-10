@@ -106,7 +106,10 @@ NC_DK = {"dk": 0.0, "logsd_dk": 0.0}
 NC_DONOR_DK = {"dk": 0.0, "logsd_dk": 0.0, "donor": 0.0, "logsd_donor": 0.0}
 # Gaussian too: at 20 genes the centred per-gene donor-class log sd failed (R-hat 1.035, ESS 66-113 in recovery
 # S0 and S1; self-audit 29); a donor-class level has about 11 cells, so small donor-class sds are weakly pinned.
-CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DONOR_DK), "ztnb": dict(NC_DK)}
+# ZTNB: Q9 (10 genes, donor and donor-class non-centred) converged on the full site set (R-hat 1.0047, ESS 823,
+# 0 divergences); self-audit 38.
+CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DONOR_DK),
+            "ztnb": dict(NC_DONOR_DK)}
 
 
 def centring_key(likelihood: str, mask) -> str:
