@@ -91,42 +91,55 @@ No target-level quantity exists.
 
 ## 5. Frozen synthetic scenarios
 
-All scenarios use fixed, exact seven block values. No random data generation is used for primary pass/fail calibration, so reruns are byte-stable.
+All scenarios use fixed, exact seven block values in this order:
+
+`A/HVS, A/NPH52, A/SEA_AD, B/HVS, C/HVS, C/NPH52, C/SEA_AD`.
+
+No random data generation is used for primary pass/fail calibration, so reruns are byte-stable.
+
+### Numerical well-posedness correction made before any posterior execution
+
+An earlier draft used perfectly additive constant fixtures (for example all zeros or all +2). Before any posterior was opened, that was identified as mathematically unsuitable for a location model with a half-normal residual-scale prior: a perfectly fitted fixture can drive `sigma -> 0` and make calibration about a scale-boundary degeneracy rather than the intended replication question.
+
+Therefore the frozen fixtures below include small deterministic stage×source interaction offsets. They preserve the intended null/source-specific/sign-flip/shared-positive scientific structure while ensuring nonzero residual variation. This correction is prospective and was made before simulation; no acceptance threshold was changed.
 
 ### S0 — null
 
-All seven block margins = `0.0`.
+Exact vector:
 
-Purpose: a null must not generate strong positive replication confidence.
+`[+0.20, -0.20, 0.00, +0.05, -0.20, +0.20, +0.05]`
+
+Purpose: margins centered near zero with small non-additive variation must not generate strong positive replication confidence.
 
 ### S1 — one-source-only signal
 
-HVS blocks for A/B/C = `+2.0`; NPH52 and SEA_AD blocks for A/C = `0.0`.
+Exact vector:
 
-Purpose: a source-specific positive effect must not be mistaken for stage-general replication.
+`[+2.00, -0.10, +0.10, +2.10, +1.90, +0.10, -0.10]`
+
+Purpose: a source-specific HVS positive effect, with only small near-zero variation in the other sources, must not be mistaken for stage-general replication.
 
 ### S2 — duplicate attack
 
-Start from S0, then present 20 exact duplicate copies of every HVS case identity to the *ledger layer*.
+Start from the S0 identities, then present 20 exact duplicate copies of every HVS case identity to the *ledger layer*.
 
 Purpose: the dependency ledger must reject duplicate identities before posterior fitting. There is no Bayesian tolerance for this scenario; accepting the duplicated ledger is failure.
 
 ### S3 — sign-flipping sources
 
-For stages A and C:
-- HVS `+2.0`;
-- NPH52 `-2.0`;
-- SEA_AD `+2.0`.
+Exact vector:
 
-Stage B HVS = `+2.0` because B has no other source by design.
+`[+2.00, -2.00, +2.00, +2.05, +1.80, -2.20, +2.10]`
 
-Purpose: source heterogeneity must prevent a confident source-general interpretation for A/C despite two positive sources.
+Purpose: strong source sign heterogeneity must prevent a confident source-general interpretation for A/C despite two positive sources.
 
 ### S4 — genuinely shared positive signal
 
-All seven block margins = `+2.0`.
+Exact vector:
 
-Purpose: the model must recover a clearly shared positive effect for stages with multi-source evidence.
+`[+1.80, +2.00, +2.20, +2.05, +2.10, +1.90, +2.00]`
+
+Purpose: a consistently positive multi-source effect with modest non-additive variation must be recoverable for stages A/C.
 
 Stage B remains one-source-only and is **not** required to satisfy the same source-general criterion as A/C.
 
