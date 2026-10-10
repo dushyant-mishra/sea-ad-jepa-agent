@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 from pathlib import Path
 
@@ -50,6 +51,28 @@ def test_output_namespace_rejects_partial_failed_run_artifacts(tmp_path):
         assert "non-empty" in text or "artifact" in text
     else:
         raise AssertionError("partial failed-run artifacts must fail closed")
+
+
+def test_static_archive_authorities_are_exact_hash_gates(tmp_path):
+    m = load_module()
+    cal = tmp_path / "cal.zip"
+    td = tmp_path / "td.zip"
+    cal.write_bytes(b"calibration-authority")
+    td.write_bytes(b"td-authority")
+    m.EXPECTED_CALIBRATION_SHA256 = hashlib.sha256(cal.read_bytes()).hexdigest()
+    m.EXPECTED_TD_ARTIFACTS_SHA256 = hashlib.sha256(td.read_bytes()).hexdigest()
+    got = m.verify_static_archives({"calibration_zip": cal, "td_artifacts_zip": td})
+    assert got == {
+        "calibration_zip_sha256": m.EXPECTED_CALIBRATION_SHA256,
+        "td_artifacts_zip_sha256": m.EXPECTED_TD_ARTIFACTS_SHA256,
+    }
+    td.write_bytes(b"changed")
+    try:
+        m.verify_static_archives({"calibration_zip": cal, "td_artifacts_zip": td})
+    except RuntimeError as e:
+        assert "td41" in str(e).lower() or "sha mismatch" in str(e).lower()
+    else:
+        raise AssertionError("changed TD archive must fail closed")
 
 
 def test_mapping_command_is_value_blind_and_complete(tmp_path):
