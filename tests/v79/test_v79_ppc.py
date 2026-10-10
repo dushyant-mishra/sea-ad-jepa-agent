@@ -264,6 +264,8 @@ def test_positive_statistics_use_detected_cells_only():
     st = PPC.positive_statistics(counts, mask, meta)
     assert st["pos_q50"][0] == 3 and np.isnan(st["pos_q50"][1])
     assert np.isclose(st["pos_mean_log"][0], np.log(27) / 3)
+    assert np.isclose(st["pos_dispersion_index"][0], np.var([1, 3, 9]) / np.mean([1, 3, 9]))
+    assert np.isclose(st["pos_tail_ratio_q95_q50"][0], np.quantile([1, 3, 9], 0.95) / 3)
     # donor means of log count: donor 0 (log1+log3)/2, donor 1 log9
     d = np.array([np.log(3) / 2, np.log(9)])
     assert np.isclose(st["pos_donor_heterogeneity_gene"][0], d.var())
@@ -289,3 +291,31 @@ def test_donor_class_support_uses_the_clustered_two_se_rule():
     assert not undiag["supported"]
     with pytest.raises(ValueError):
         PPC.heldout_lpd_comparison(_lpd_rec([1, 1, 1, 1], ns), _lpd_rec([0, 0, 0, 0], [100, 100, 100, 99]))
+
+
+# ---------------------------------------------------------------- network and conditioned geometry
+
+def test_class_driven_edges_vanish_when_conditioned_on_class():
+    rng = np.random.default_rng(4)
+    n = 1200
+    cls = np.repeat([0, 1], n // 2)
+    shift = np.where(cls == 1, 3.0, 0.0)[:, None]
+    H = shift + rng.standard_normal((n, 4))                    # 4 genes that differ only by class
+    meta = dict(cls=cls, src=np.zeros(n, dtype=int), donor=np.arange(n) % 30, op=np.arange(n) % 5,
+                depth=rng.standard_normal(n))
+    st = PPC.ppc_statistics(H, meta, min_class_cells=200)
+    assert st["pooled_frac_abs_gt_0p3"] == 1.0 and st["pooled_mean_degree"] == 3.0
+    assert st["pooled_transitivity"] == pytest.approx(1.0)
+    assert st["within_class_frac_abs_gt_0p3"] == 0.0 and st["within_class_mean_degree"] == 0.0
+    assert st["within_source_frac_abs_gt_0p3"] == 1.0           # one source: conditioning on it changes nothing
+    assert st["within_depth_tertile_frac_abs_gt_0p3"] == 1.0    # depth unrelated to the class shift
+
+
+def test_network_signed_edges():
+    rng = np.random.default_rng(5)
+    z = rng.standard_normal((3000, 1))
+    H = np.hstack([z, z + 0.1 * rng.standard_normal((3000, 1)), -z + 0.1 * rng.standard_normal((3000, 1))])
+    net = PPC._network(H)
+    # pairs: (0,1) positive, (0,2) and (1,2) negative; off-diagonal entries counted in both orders
+    assert net["frac_pos_gt_0p3"] == pytest.approx(1 / 3) and net["frac_neg_lt_m0p3"] == pytest.approx(2 / 3)
+    assert net["mean_degree"] == 2.0 and net["transitivity"] == pytest.approx(1.0)

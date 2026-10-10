@@ -274,6 +274,13 @@ def make_plan(cells_meta: dict) -> dict:
         plan[x] = dict(A=A, inv=inv)
     cls = np.asarray(cells_meta["cls"])
     plan["class_cells"] = [np.where(cls == c)[0] for c in np.unique(cls)]
+    src = np.asarray(cells_meta["src"])
+    plan["source_cells"] = [np.where(src == c)[0] for c in np.unique(src)]
+    if "depth" in cells_meta:                                   # held-out depth on the training centring
+        dep = np.asarray(cells_meta["depth"], dtype=np.float64)
+        edges = np.quantile(dep, [1 / 3, 2 / 3])
+        tert = np.searchsorted(edges, dep, side="right")
+        plan["depth_tertile_cells"] = [np.where(tert == t)[0] for t in range(3)]
     return plan
 
 
@@ -282,6 +289,29 @@ def _median_abs_corr(H: np.ndarray) -> float:
     n = H.shape[0]
     C = GEO.weighted_corr(H, np.full(n, 1.0 / n))
     return float(np.quantile(np.abs(C[~np.eye(C.shape[0], dtype=bool)]), 0.5))
+
+
+def _network(H: np.ndarray) -> dict:
+    """The builders' network statistics on the sampled genes (thresholds from build_v77_topology_calibration):
+    median |r|, share of |r| > 0.3, positive and negative strong-edge shares, mean degree, transitivity."""
+    n = H.shape[0]
+    C = GEO.weighted_corr(H, np.full(n, 1.0 / n))
+    off = C[~np.eye(C.shape[0], dtype=bool)]
+    thr = GEO.TC.CORR_THRESHOLD
+    deg, trans, _ = GEO.TC.topology(C)
+    return dict(median_abs_corr=float(np.quantile(np.abs(off), 0.5)), frac_abs_gt_0p3=float((np.abs(off) > thr).mean()),
+                frac_pos_gt_0p3=float((off > thr).mean()), frac_neg_lt_m0p3=float((off < -thr).mean()),
+                mean_degree=float(deg.mean()), transitivity=float(trans))
+
+
+def _conditioned(H: np.ndarray, groups, min_cells: int) -> dict:
+    """Unweighted mean over groups with at least min_cells cells of each _network statistic (NaN when none);
+    the conditioned views of the localization ladder (class, depth tertile, source)."""
+    blocks = [_network(H[idx]) for idx in groups if len(idx) >= max(int(min_cells), 3)]
+    if not blocks:
+        return {k: float("nan") for k in ("median_abs_corr", "frac_abs_gt_0p3", "frac_pos_gt_0p3",
+                                           "frac_neg_lt_m0p3", "mean_degree", "transitivity")}
+    return {k: float(np.nanmean([b[k] for b in blocks])) for k in blocks[0]}
 
 
 def _signed_and_spectrum(H: np.ndarray) -> dict:
@@ -311,6 +341,8 @@ def positive_statistics(counts, mask, cells_meta: dict) -> dict:
     G = y.shape[1]
     out = {f"pos_q{int(round(q * 100)):02d}": np.full(G, np.nan) for q in QUANTILES}
     out["pos_mean_log"] = np.full(G, np.nan)
+    out["pos_dispersion_index"] = np.full(G, np.nan)          # variance / mean of the positive counts
+    out["pos_tail_ratio_q95_q50"] = np.full(G, np.nan)        # abundance tail
     for name in ("donor", "op"):
         out[f"pos_{name}_heterogeneity_gene"] = np.full(G, np.nan)
     for g in range(G):
@@ -321,6 +353,8 @@ def positive_statistics(counts, mask, cells_meta: dict) -> dict:
             out[f"pos_q{int(round(q * 100)):02d}"][g] = np.quantile(v, q)
         lv = np.log(v)
         out["pos_mean_log"][g] = lv.mean()
+        out["pos_dispersion_index"][g] = v.var() / v.mean()
+        out["pos_tail_ratio_q95_q50"][g] = np.quantile(v, 0.95) / np.quantile(v, 0.5)
         for name in ("donor", "op"):
             codes = np.asarray(cells_meta[name])[w[:, g]]
             _, inv = np.unique(codes, return_inverse=True)
@@ -365,6 +399,12 @@ def ppc_statistics(y, cells_meta: dict, detection: bool = False, min_class_cells
     if y.shape[1] >= 3:
         out["pooled_median_abs_corr"] = _median_abs_corr(y)
         out.update(_signed_and_spectrum(y))
+        out.update({f"pooled_{k}": v for k, v in _network(y).items() if k != "median_abs_corr"})
+        views = [("within_class", plan["class_cells"]), ("within_source", plan["source_cells"])]
+        if "depth_tertile_cells" in plan:
+            views.append(("within_depth_tertile", plan["depth_tertile_cells"]))
+        for name, groups in views:
+            out.update({f"{name}_{k}": v for k, v in _conditioned(y, groups, min_class_cells).items()})
         meds = [_median_abs_corr(y[idx]) for idx in plan["class_cells"] if len(idx) >= max(int(min_class_cells), 2)]
         out["within_class_median_abs_corr"] = float(np.mean(meds)) if meds else float("nan")
     return out
