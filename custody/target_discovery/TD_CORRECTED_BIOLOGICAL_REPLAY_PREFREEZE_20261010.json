@@ -30,7 +30,15 @@
   "replay_objects": [
     {
       "stage": "TD56",
-      "role": "foundational disjoint-view relational geometry",
+      "role": "foundational disjoint-view within-donor relational geometry",
+      "historical_prospective_freeze": "d257fd3cf4957ecbb1ab3f03a06e54d043a1326f",
+      "historical_status": "TD56S_DISJOINT_GENE_RELATIONAL_GEOMETRY_SURVIVES__NO_TARGET_AUTHORITY",
+      "historical_terminal_pass": "TD56S_DISJOINT_GENE_RELATIONAL_GEOMETRY_SURVIVES__FREEZE_DONOR_BLOCK_AND_CROSS_SOURCE_SCALE_GATE_NEXT",
+      "historical_reference": {
+        "HVS": {"observed": 0.7975611, "null_p95": 0.5541568},
+        "NPH52": {"observed": 0.8007195, "null_p95": 0.5990585},
+        "SEA_AD": {"observed": 0.8782250, "null_p95": 0.7526606}
+      },
       "outcome_classification_only": ["QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED", "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE"]
     },
     {
