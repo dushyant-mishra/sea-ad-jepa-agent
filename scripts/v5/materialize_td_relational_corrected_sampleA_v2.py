@@ -8,6 +8,7 @@ must bind this V2 entrypoint; the V1 entrypoint is retained only as historical i
 from __future__ import annotations
 
 import importlib.util
+import math
 from pathlib import Path
 
 
@@ -45,7 +46,7 @@ sha256_file = _v1.sha256_file
 def raw_integer(v0) -> int:
     """Decode one physical raw-count value without silently rounding transformed/fractional data."""
     x = float(v0)
-    if not (x >= 0.0):
+    if not math.isfinite(x) or x < 0.0:
         raise RuntimeError("negative or non-finite raw count")
     v = int(x)
     if float(v) != x:
