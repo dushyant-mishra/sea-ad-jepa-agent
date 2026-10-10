@@ -180,11 +180,17 @@ def _vc_model(design, y, likelihood="gaussian", components=COMPONENTS, mask=None
         with numpyro.plate("genes_phi", G, dim=-1):
             logphi = numpyro.sample("logphi", dist.Normal(m_phi, s_phi))
         phi = jnp.exp(logphi)
-        mean = jnp.exp(eta + offset[:, None])
+        log_mean = eta + offset[:, None]
         w = mask if mask is not None else (y > 0)
-        lp = dist.NegativeBinomial2(mean, phi).log_prob(jnp.where(w, y, 1.0))
-        log_p0 = phi * (logphi - jnp.log(phi + mean))                 # log P(y = 0) under the parent NB
-        lp = lp - jnp.log(-jnp.expm1(log_p0))                          # stable log(1 - P0) when P0 is near 1
+        yy = jnp.where(w, y, 1.0)
+        # NB2 log pmf without the data-only constant -lgamma(y + 1) (posterior unchanged; one lgamma per entry
+        # saved), written with softplus so that tiny means stay finite in float32 (self-audit 32):
+        #   phi * log(phi / (phi + mean)) = -phi * softplus(d),  y * log(mean / (phi + mean)) = -y * softplus(-d)
+        d = log_mean - logphi
+        log_p0 = -phi * jax.nn.softplus(d)                              # log P(y = 0) under the parent NB
+        lp = (jax.scipy.special.gammaln(yy + phi) - jax.scipy.special.gammaln(phi)
+              + log_p0 - yy * jax.nn.softplus(-d))
+        lp = lp - jnp.log(-jnp.expm1(log_p0))                           # log P(y > 0), stable as P0 -> 1
         numpyro.factor("y_ztnb", jnp.where(w, lp, 0.0).sum())
         return
     if likelihood == "gaussian":
@@ -252,8 +258,9 @@ def run_nuts(model_kwargs: dict, n_chains: int, warmup: int, draws: int, seed: i
         method = "vectorized"                              # one GPU: chains advance together in one program
     else:
         method = "parallel" if n_chains <= jax.local_device_count() else "sequential"
+    # V79_PROGRESS=1 streams per-chain progress to stderr (self-audit 31: a timed-out run must leave evidence)
     mcmc = MCMC(kernel, num_warmup=warmup, num_samples=draws, num_chains=n_chains, chain_method=method,
-                progress_bar=False)
+                progress_bar=os.environ.get("V79_PROGRESS") == "1")
     t0 = time.time()
     mcmc.run(jax.random.PRNGKey(seed), extra_fields=("diverging", "num_steps"), **model_kwargs)
     jax.block_until_ready(mcmc.get_samples())        # JAX dispatches asynchronously; time the real work

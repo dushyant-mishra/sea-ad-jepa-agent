@@ -27,9 +27,9 @@ FAMILIES = ("lognormal", "ztnb")
 def ztnb_logpmf(y, mean, phi):
     """log P(Y = y | Y > 0) for NB2(mean, phi) truncated at zero; y >= 1."""
     y, mean, phi = (np.asarray(v, dtype=np.float64) for v in (y, mean, phi))
-    lp = (gammaln(y + phi) - gammaln(phi) - gammaln(y + 1.0)
-          + phi * (np.log(phi) - np.log(phi + mean)) + y * (np.log(mean) - np.log(phi + mean)))
-    log_p0 = phi * (np.log(phi) - np.log(phi + mean))
+    d = np.log(mean) - np.log(phi)
+    log_p0 = -phi * np.logaddexp(0.0, d)                     # phi * log(phi / (phi + mean)), stable for tiny means
+    lp = gammaln(y + phi) - gammaln(phi) - gammaln(y + 1.0) + log_p0 - y * np.logaddexp(0.0, -d)
     return lp - np.log(-np.expm1(log_p0))
 
 
