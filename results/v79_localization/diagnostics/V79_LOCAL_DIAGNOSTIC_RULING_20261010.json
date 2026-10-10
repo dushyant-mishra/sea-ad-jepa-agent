@@ -1,0 +1,58 @@
+{
+  "schema": "V79_DETECTION_LOCALIZATION_LOCAL_DIAGNOSTIC_RULING_V1",
+  "status": "LOCAL_DIAGNOSTIC__SEMANTIC_UNIVERSE_REDERIVED__CANONICAL_NPZ_BYTE_GATE_NOT_CLAIMED",
+  "claim_class": "TRAIN_ONLY_LOCALIZATION__NON_PROMOTING__NONCANONICAL_CUSTODY",
+  "custody": {
+    "n_cells": 4726,
+    "n_addresses": 41238,
+    "universe_n": 14417,
+    "repaired_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "repaired_marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+    "semantic_universe_rule": "corrected TRAIN detection_rate > 0.05",
+    "semantic_universe_int64_sha256": "73239446d7c953f6d8feffa5ec188c2603ef46c90d5c58fa370dc20e18491b60",
+    "selected_3000_int64_sha256": "d7de51c38bc033a4506906c242fbe13a13ff3b55fe68770f31196a8597953af5",
+    "full_registry_median_detected_per_cell": 4495.5,
+    "evaluation_universe_median_detected_per_cell": 4351.0,
+    "extracted_84_member_manifest_sha256": "d5a37008ea5e46540f678693424bf7651891c508c6208bdb917f71145f71198c"
+  },
+  "validation": {
+    "L0_exact_reference_reproduction": true,
+    "L0_pos_over_neg_ratio": 59.018503859093606,
+    "L0_median_abs_corr": 0.19456419986728402,
+    "L0_strong_edge_fraction": 0.1348331666110926,
+    "L0_mean_degree": 404.36466666666666,
+    "L0_transitivity": 0.6672406627478484
+  },
+  "scientific_ruling": {
+    "broad_class": "MATERIAL_CONTRIBUTOR_TO_POOLED_POSITIVE_CODETECTION_TOPOLOGY",
+    "depth": "MATERIAL_FOR_TYPICAL_CORRELATION_MAGNITUDE__DOES_NOT_BY_ITSELF_REMOVE_RESIDUAL_STRONG_NEGATIVE_TAIL",
+    "source": "STRONG_ASSOCIATION_WITH_RESIDUAL_SIGNED_TOPOLOGY__MEASUREMENT_VS_BIOLOGY_SOURCE_CONFOUNDING_NOT_SEPARATED_HERE",
+    "donor": "UNRESOLVED__NO_SUPPORTED_L4_STRATA",
+    "residual": "ONLY_4_NEGATIVE_STRONG_EDGES_PERSIST_ACROSS_AVAILABLE_L1_L2_L3_COMBINED_VIEWS",
+    "next_design_family": "FACTORIAL_BIOLOGICAL_HIERARCHY_X_OBSERVATION_PROCESS_TOURNAMENT",
+    "unique_causal_winner_claimed": false
+  },
+  "key_values": {
+    "L0_ratio": 59.018503859093606,
+    "L1_ratio": 1.2251091249220536,
+    "L2_detected_depth_ratio": 1.035631004570469,
+    "L3_ratio": 326.5,
+    "L0_positive_fraction": 0.13258663999110815,
+    "L1_positive_fraction": 0.002620429031899522,
+    "L0_negative_fraction": 0.002246526619984439,
+    "L1_negative_fraction": 0.0021389352006224295,
+    "L2_negative_fraction": 0.00238323885739691,
+    "L3_negative_fraction": 8.891852839835501e-07,
+    "L5_persistent_negative_count": 4
+  },
+  "limitations": [
+    "Historical frozen evaluation-universe NPZ container bytes with SHA-256 e950e967... were not recovered in this runtime; semantic membership was rederived from authenticated corrected TRAIN.",
+    "L3 is source-fallback dominated because no operator-level nested stratum met the preregistered support floor.",
+    "Source association cannot by itself distinguish measurement effects from source-linked biological composition.",
+    "L4 donor localization is unsupported under the preregistered nested support rule.",
+    "No Bayesian uncertainty authority is applied to these descriptive localization magnitudes."
+  ],
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "synthetic_arm_promoted": null
+}
