@@ -9,6 +9,8 @@ d = FW.load_cell_design("D:/Jepa project/data/cache/s174_rebuilt_real_train_v1",
 di = DA.design_indices(d); des = M.design_arrays(di)
 lik = sys.argv[1]
 ta = float(sys.argv[2]) if len(sys.argv) > 2 else 0.9
+# optional third argument: a JSON centring override for a sampler experiment, e.g. '{"dk": 0.0, "donor": 0.0}'
+override = json.loads(sys.argv[3]) if len(sys.argv) > 3 else None
 sim = SIM.simulate(di, SIM.SCENARIOS["S1_present"], 10, "ztnb" if lik == "lognormal" else lik, seed=1)
 kw = dict(design=des, y=jnp.asarray(sim["y"]), likelihood=lik)
 if lik == "ztnb":
@@ -19,6 +21,8 @@ if lik == "lognormal":
     lik_fit = "gaussian"
 else:
     lik_fit = lik
+if override is not None:
+    M.CENTRING[M.centring_key(kw["likelihood"], kw.get("mask"))] = override
 r = M.run_nuts(kw, n_chains=4, warmup=1000, draws=1000, seed=5, target_accept=ta)
 flat = M.flatten_chains(r["samples"])
 fr = M.realized_fractions(flat, des, lik_fit, mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
@@ -31,4 +35,16 @@ out = dict(lik=lik, centring=M.CENTRING[M.centring_key(lik_fit, kw.get("mask"))]
 if lik == "ztnb":
     lp = np.median(np.asarray(flat["logphi"]), 0)
     out["logphi_recovery"] = dict(est=[float(v) for v in lp], truth=[float(v) for v in sim["truth_logphi"]])
+div = np.asarray(r["mcmc"].get_extra_fields(group_by_chain=False)["diverging"]).astype(bool)
+if div.any():
+    # where the divergences sit: per random component and gene, the share of divergent draws whose log sd lies
+    # in that gene's lowest decile (0.1 expected if unrelated)
+    loc = {}
+    for x in ("op", "donor", "dk"):
+        v = np.asarray(flat[f"logsd_{x}"])
+        low = v <= np.quantile(v, 0.1, axis=0)[None, :]
+        loc[x] = [float(z) for z in low[div].mean(0)]
+    for x in ("op", "donor", "dk"):
+        s_ = np.asarray(flat[f"s_{x}"]); loc[f"s_{x}_low_decile_share"] = float((s_[div] <= np.quantile(s_, 0.1)).mean())
+    out["divergence_location"] = loc
 print(json.dumps(out, indent=1), flush=True)
