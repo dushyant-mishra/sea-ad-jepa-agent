@@ -101,6 +101,24 @@ HVS Panel 0:
     assert all("verdict" not in r and "pass" not in r for r in rows)
 
 
+def test_expected_historical_case_topology_is_frozen_and_complete():
+    m = load_module()
+    rows = []
+    for stage in ("TD57B", "TD59"):
+        for source in ("HVS", "NPH52", "SEA_AD"):
+            for panel in (0, 1):
+                for split in (0, 1):
+                    for half in (0, 1):
+                        rows.append(m.decorate_dependencies({"stage": stage, "source": source, "panel": panel, "split": split, "half": half}))
+    for split in (0, 1):
+        for half in (0, 1):
+            rows.append(m.decorate_dependencies({"stage": "TD57C", "source": "HVS", "panel": 0, "split": split, "half": half}))
+    assert len(rows) == 52
+    m.validate_expected_topology(rows)
+    with pytest.raises(ValueError, match="historical case topology mismatch"):
+        m.validate_expected_topology(rows[:-1])
+
+
 def test_receipt_blocks_fit_until_exact_td57c_cases_are_supplied():
     m = load_module()
     rows = [
