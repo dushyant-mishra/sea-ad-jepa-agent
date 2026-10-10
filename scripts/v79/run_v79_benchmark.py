@@ -78,13 +78,27 @@ def main() -> None:
     ap.add_argument("--warmup", type=int, default=1000)
     ap.add_argument("--draws", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=20261009)
+    ap.add_argument("--qualification", nargs="*", default=None,
+                    help="likelihood=path pairs of committed qualification records (contract settings, same model "
+                         "code) whose full-fit wall times are used instead of refitting")
     ap.add_argument("--out", default=str(ROOT / "results/v79/V79_COMPUTE_BENCHMARK_V1.json"))
     a = ap.parse_args()
     import jax
     _DI = DA.design_indices(FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE)))
     des = M.design_arrays(_DI)
     grads = {lik: {g: grad_timing(des, g, lik) for g in (10, 30, 60)} for lik in ("gaussian", "bernoulli")}
-    fits = {lik: full_fit(des, a.fit_genes, lik, a.chains, a.warmup, a.draws, a.seed) for lik in ("gaussian", "bernoulli")}
+    if a.qualification:
+        fits = {}
+        for pair in a.qualification:
+            lik, path = pair.split("=", 1)
+            q = json.loads(Path(path).read_text(encoding="utf-8"))
+            fits[lik] = dict(seconds=q["seconds"], mean_steps=q["mean_steps"], divergences=q["divergences"],
+                             worst_rhat=max(v["max_rhat"] for v in q["conv"].values()),
+                             worst_ess=min(min(v["min_ess_bulk"], v["min_ess_tail"]) for v in q["conv"].values()),
+                             source=str(path))
+    else:
+        fits = {lik: full_fit(des, a.fit_genes, lik, a.chains, a.warmup, a.draws, a.seed)
+                for lik in ("gaussian", "bernoulli")}
     proj = {}
     for lik in fits:
         base = grads[lik][a.fit_genes]["gradient_ms"]

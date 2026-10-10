@@ -29,6 +29,7 @@ import v79_data as DA  # noqa: E402
 import v79_firewall as FW  # noqa: E402
 import v79_models as M  # noqa: E402
 import v79_simulate as SIM  # noqa: E402
+from v79_recovery_rules import criteria  # noqa: E402
 
 ROOT = HERE.parents[1]
 CACHE = "D:/Jepa project/data/cache/s174_rebuilt_real_train_v1"
@@ -71,15 +72,19 @@ def diagnose(run: dict, likelihood: str, components) -> dict:
                 seconds=run["seconds"], diagnosed=ok, per_site=conv)
 
 
-def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup: int, draws: int, seed: int) -> dict:
+def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup: int, draws: int, seed: int,
+        max_tree_depth: int = 10) -> dict:
     scen, mod = FITS[name]
-    sim = SIM.simulate(di, SIM.SCENARIOS[scen], n_genes, likelihood, seed=seed)
+    # the world depends on the planted scenario only, so S1, S2 and S5 fit the same S1 data; the sampler seed
+    # depends on the fit
+    sim_seed = 1_000_000 + list(SIM.SCENARIOS).index(scen) + (500 if likelihood == "bernoulli" else 0)
+    sim = SIM.simulate(di, SIM.SCENARIOS[scen], n_genes, likelihood, seed=sim_seed)
     fdi = permuted_design(di, seed + 7) if mod == "permute_class" else di
     comps = tuple(c for c in M.COMPONENTS if not (mod == "drop_donor" and c in ("donor", "dk")))
     des = M.design_arrays(fdi)
     import jax.numpy as jnp
     run = M.run_nuts(dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood, components=comps),
-                     n_chains=chains, warmup=warmup, draws=draws, seed=seed)
+                     n_chains=chains, warmup=warmup, draws=draws, seed=seed, max_tree_depth=max_tree_depth)
     fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, likelihood, components=comps)
     per = {}
     for x, (_, frac) in fr.items():
@@ -98,31 +103,35 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
                 diagnostics=diagnose(run, likelihood, comps))
 
 
-def criteria(res: dict) -> dict:
-    out = {}
-    s1 = res["S1_present"]["components_result"]
-    for name, r in res.items():
-        cov = [c for x in r["components_result"].values() if x["planted_and_scored"] for c in x["covered"]]
-        if cov:
-            n = len(cov)
-            bound = stats.binom.ppf(0.01, n, 0.9) / n
-            out[f"{name}.coverage"] = dict(observed=float(np.mean(cov)), bound=float(bound), n=n,
-                                           pass_=bool(np.mean(cov) >= bound))
-    s1_cls_q05 = s1["cls"]["across_gene_median_q"][0]
-    for name in ("S0_class_absent", "S2_class_permuted", "S3_donor_only", "S4_operator_only"):
-        q95 = res[name]["components_result"]["cls"]["across_gene_median_q"][2]
-        out[f"{name}.no_invented_class"] = dict(q95=q95, s1_q05=s1_cls_q05, pass_=bool(q95 < s1_cls_q05))
-    out["S5_labels_removed.labels_matter"] = dict(
-        s5_res_q05=res["S5_labels_removed"]["components_result"]["res"]["across_gene_median_q"][0],
-        s1_res_q95=s1["res"]["across_gene_median_q"][2],
-        pass_=bool(res["S5_labels_removed"]["components_result"]["res"]["across_gene_median_q"][0]
-                   > s1["res"]["across_gene_median_q"][2]))
-    diagnosed = {name: r["diagnostics"]["diagnosed"] for name, r in res.items()}
-    out["all_fits_diagnosed"] = dict(per_fit=diagnosed, pass_=all(diagnosed.values()))
-    return out
+def combine(out: str, parts) -> None:
+    """Merge per-fit records (one process per fit) and apply the contract's pass rules once."""
+    recs = [json.loads(Path(p).read_text(encoding="utf-8")) for p in parts]
+    liks = {r["likelihood"] for r in recs}
+    if len(liks) != 1:
+        raise SystemExit(f"parts mix likelihoods: {liks}")
+    fits = {}
+    for r in recs:
+        for k, v in r["fits"].items():
+            if k in fits:
+                raise SystemExit(f"duplicate fit {k}")
+            fits[k] = v
+    missing = sorted(set(FITS) - set(fits))
+    rec = dict(schema="V79_SIMULATION_RECOVERY_V1", likelihood=liks.pop(), parts=[str(p) for p in parts],
+               settings=[r["settings"] for r in recs], fits=fits, missing_fits=missing,
+               criteria=criteria(fits) if not missing else None, environment=recs[0]["environment"],
+               wall_seconds_per_part=[r["wall_seconds"] for r in recs])
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+    with open(out, "w", encoding="utf-8", newline=chr(10)) as fh:
+        fh.write(json.dumps(rec, indent=1) + chr(10))
+    print("combined", len(fits), "fits; missing", missing)
+    if rec["criteria"]:
+        print({k: v["pass_"] for k, v in rec["criteria"].items()})
 
 
 def main() -> None:
+    if len(sys.argv) > 1 and sys.argv[1] == "--combine":
+        combine(sys.argv[2], sys.argv[3:])
+        return
     ap = argparse.ArgumentParser()
     ap.add_argument("--likelihood", choices=["gaussian", "bernoulli"], required=True)
     ap.add_argument("--fits", default=",".join(FITS))
@@ -131,13 +140,16 @@ def main() -> None:
     ap.add_argument("--warmup", type=int, default=1000)
     ap.add_argument("--draws", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=20261009)
+    ap.add_argument("--max-tree-depth", type=int, default=10,
+                    help="plumbing smoke tests only; recovery evidence uses the contract's 10")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     d = FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE))
     di = DA.design_indices(d)
     res, t0 = {}, time.time()
-    for i, name in enumerate(a.fits.split(",")):
-        res[name] = fit(name, di, a.likelihood, a.genes, a.chains, a.warmup, a.draws, a.seed + 101 * i)
+    for name in a.fits.split(","):
+        res[name] = fit(name, di, a.likelihood, a.genes, a.chains, a.warmup, a.draws,
+                        a.seed + 101 * list(FITS).index(name), a.max_tree_depth)
         print(name, "diagnosed", res[name]["diagnostics"]["diagnosed"], "rhat", round(res[name]["diagnostics"]["worst_rhat"], 3),
               "ess", round(res[name]["diagnostics"]["worst_ess"]), "s", round(res[name]["diagnostics"]["seconds"]), flush=True)
     import jax
