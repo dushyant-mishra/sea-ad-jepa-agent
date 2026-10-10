@@ -24,6 +24,17 @@ def test_compare_rows_treats_missing_as_zero():
     assert m.compare_rows({}, {}, {10, 20}) == {"checked": 2, "mismatches": 0}
 
 
+def test_raw_integer_rejects_fractional_reference_count():
+    m = load_module()
+    assert m.raw_integer(3.0) == 3
+    try:
+        m.raw_integer(3.25)
+    except RuntimeError as e:
+        assert "integer" in str(e).lower() or "raw" in str(e).lower()
+    else:
+        raise AssertionError("fractional S174 reference count must fail closed")
+
+
 def test_verify_cache_hashes(tmp_path):
     m = load_module()
     cache = tmp_path / "cache"; cache.mkdir()
