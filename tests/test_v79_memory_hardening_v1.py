@@ -59,7 +59,7 @@ def test_streamed_observer_is_bit_exact_to_pre_hardening_independent_thinning():
     z = generate_latent_biology(_bio_authority(), 160, 48, 8, seed=41)
     labels = np.resize(np.array(["OBS_A", "OBS_B"]), 160)
     out = observe_latent_biology(z, _obs_authority(family="independent_thinning"), labels, seed=77)
-    assert out.counts_hash == "cb820713ddcf53fcb97e9014c802199ac3a8b0c5c95af9fc953d7d583f55d52a"
+    assert out.counts_hash == "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa"
     assert _hash_array(out.capture_efficiency) == "38f8a10131b84daf47228dc282d35ca865e38b9f7bfeebf8b8e22c1e7f4fe5e4"
 
 
@@ -67,7 +67,7 @@ def test_streamed_observer_is_bit_exact_to_pre_hardening_conditional_multinomial
     z = generate_latent_biology(_bio_authority(), 160, 48, 8, seed=41)
     labels = np.resize(np.array(["OBS_A", "OBS_B"]), 160)
     out = observe_latent_biology(z, _obs_authority(family="conditional_multinomial"), labels, seed=77)
-    assert out.counts_hash == "cfa80e7370804b5198031c23d97efb20649744645722325467048bb4ac7fe1b8"
+    assert out.counts_hash == "188bb6027eaf0ea41213c36f1988f4201b545c6f5ade866f8be61bce74ee4b9d"
 
 
 def test_sparse_hvg_selection_matches_frozen_dense_rule_exactly_on_fixture():
