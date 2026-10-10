@@ -206,6 +206,8 @@ def choose(a) -> None:
 def full(a) -> None:
     import v79_models as M
     choice = json.loads((OUT / "V79_PHASE_C_FAMILY_CHOICE_INTERNAL_V1.json").read_text(encoding="utf-8"))
+    if a.family == "auto" and choice["comparison"] is not None:
+        a.family = choice["comparison"]["winner"]
     if choice["comparison"] is None or choice["comparison"]["winner"] != a.family:
         raise SystemExit(f"refusing: {a.family} is not the recorded winner ({choice['decision']})")
     pre = gate()
@@ -247,7 +249,7 @@ def full(a) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["fold", "choose", "full"])
-    ap.add_argument("--family", choices=list(PC.FAMILIES))
+    ap.add_argument("--family", choices=list(PC.FAMILIES) + ["auto"], help="auto (full only): the recorded winner")
     ap.add_argument("--fold", type=int, default=0)
     ap.add_argument("--chains", type=int, default=4)
     ap.add_argument("--warmup", type=int, default=1000)
@@ -255,6 +257,8 @@ def main() -> None:
     a = ap.parse_args()
     if a.mode in ("fold", "full") and not a.family:
         raise SystemExit("--family is required")
+    if a.mode == "fold" and a.family == "auto":
+        raise SystemExit("--family auto is only for full")
     {"fold": fold, "choose": choose, "full": full}[a.mode](a)
 
 

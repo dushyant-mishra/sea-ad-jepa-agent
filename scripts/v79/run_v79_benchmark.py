@@ -37,13 +37,27 @@ PYRO_EVIDENCE = dict(framework="Pyro 1.9.1 on PyTorch 2.7.0+cu128 (env sea-ad-je
                      note="recorded from the self-audit log; not re-run")
 
 
+LIKELIHOODS = ("gaussian", "bernoulli", "ztnb", "lognormal")     # lognormal: Phase C Gaussian over detected cells
+
+
+def bench_kwargs(des, n_genes: int, likelihood: str, seed: int) -> dict:
+    import jax.numpy as jnp
+    sim = SIM.simulate(dict(_DI), SIM.SCENARIOS["S1_present"], n_genes,
+                       "ztnb" if likelihood == "lognormal" else likelihood, seed=seed)
+    if likelihood == "ztnb":
+        return dict(design=des, y=jnp.asarray(sim["y"]), likelihood="ztnb", mask=jnp.asarray(sim["mask"]),
+                    offset=jnp.asarray(sim["offset"]))
+    if likelihood == "lognormal":
+        ylog = np.where(sim["mask"], np.log(np.maximum(sim["y"], 1.0)) - sim["offset"][:, None], 0.0)
+        return dict(design=des, y=jnp.asarray(ylog.astype(np.float32)), likelihood="gaussian",
+                    mask=jnp.asarray(sim["mask"]))
+    return dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood)
+
+
 def grad_timing(des, n_genes: int, likelihood: str, reps: int = 30) -> dict:
     import jax
-    import jax.numpy as jnp
     from numpyro.infer.util import initialize_model
-    sim = SIM.simulate(dict(_DI), SIM.SCENARIOS["S1_present"], n_genes, likelihood, seed=11)
-    info = initialize_model(jax.random.PRNGKey(0), M.vc_model,
-                            model_kwargs=dict(design=des, y=jnp.asarray(sim["y"]), likelihood=likelihood))
+    info = initialize_model(jax.random.PRNGKey(0), M.vc_model, model_kwargs=bench_kwargs(des, n_genes, likelihood, 11))
     f, g, z = jax.jit(info.potential_fn), jax.jit(jax.grad(info.potential_fn)), info.param_info.z
     jax.block_until_ready(f(z))
     jax.block_until_ready(g(z))
@@ -79,23 +93,42 @@ def main() -> None:
     ap.add_argument("--draws", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=20261009)
     ap.add_argument("--qualification", nargs="*", default=None,
-                    help="likelihood=path pairs of committed qualification records (contract settings, same model "
-                         "code) whose full-fit wall times are used instead of refitting")
+                    help="likelihood=path[+path...] of committed qualification records (contract settings, same model "
+                         "code) whose full-fit wall times are used instead of refitting; '+' joins a retry sequence, "
+                         "whose times are summed (a real fit may need every attempt)")
+    ap.add_argument("--gradients-out", default=None, help="measure gradient timings only and save them here")
+    ap.add_argument("--gradients-in", default=None, help="use gradient timings saved by --gradients-out")
     ap.add_argument("--out", default=str(ROOT / "results/v79/V79_COMPUTE_BENCHMARK_V1.json"))
     a = ap.parse_args()
     import jax
     _DI = DA.design_indices(FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE)))
     des = M.design_arrays(_DI)
-    grads = {lik: {g: grad_timing(des, g, lik) for g in (10, 30, 60)} for lik in ("gaussian", "bernoulli")}
+    if a.gradients_in:
+        gin = json.loads(Path(a.gradients_in).read_text(encoding="utf-8"))
+        grads = {lik: {int(g): v for g, v in d.items()} for lik, d in gin["gradient_timing"].items()}
+        grad_env = gin["environment"]
+    else:
+        grads = {lik: {g: grad_timing(des, g, lik) for g in (10, 30, 60)} for lik in LIKELIHOODS}
+        grad_env = dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__,
+                        devices=[str(x) for x in jax.devices()], xla_flags=__import__("os").environ.get("XLA_FLAGS"))
+    if a.gradients_out:
+        with open(a.gradients_out, "w", encoding="utf-8", newline=chr(10)) as fh:
+            fh.write(json.dumps(dict(gradient_timing=grads, environment=grad_env), indent=1) + chr(10))
+        print("gradient timings saved", a.gradients_out)
+        return
     if a.qualification:
         fits = {}
         for pair in a.qualification:
-            lik, path = pair.split("=", 1)
-            q = json.loads(Path(path).read_text(encoding="utf-8"))
-            fits[lik] = dict(seconds=q["seconds"], mean_steps=q["mean_steps"], divergences=q["divergences"],
+            lik, paths = pair.split("=", 1)
+            seq = [json.loads(Path(p).read_text(encoding="utf-8")) for p in paths.split("+")]
+            q = seq[-1]
+            fits[lik] = dict(seconds=sum(x["seconds"] for x in seq), mean_steps=q["mean_steps"],
+                             divergences=q["divergences"],
                              worst_rhat=max(v["max_rhat"] for v in q["conv"].values()),
                              worst_ess=min(min(v["min_ess_bulk"], v["min_ess_tail"]) for v in q["conv"].values()),
-                             source=str(path))
+                             attempts=[dict(target_accept=x.get("target_accept", 0.9), seconds=x["seconds"],
+                                            divergences=x["divergences"]) for x in seq],
+                             source=paths)
     else:
         fits = {lik: full_fit(des, a.fit_genes, lik, a.chains, a.warmup, a.draws, a.seed)
                 for lik in ("gaussian", "bernoulli")}
@@ -113,6 +146,7 @@ def main() -> None:
         schema="V79_COMPUTE_BENCHMARK_V1", data="simulated responses on the real corrected-TRAIN design; no expression read",
         environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__,
                          devices=[str(x) for x in jax.devices()]),
+        gradient_environment=grad_env,
         pyro_attempt=PYRO_EVIDENCE, gradient_timing=grads, full_fit=dict(genes=a.fit_genes, settings=vars(a), fits=fits),
         projection=dict(seconds_by_genes=proj, worst_by_genes=worst,
                         assumption="steps per iteration do not grow with the gene count; checked at the first real fit"),
