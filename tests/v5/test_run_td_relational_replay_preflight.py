@@ -37,6 +37,21 @@ def test_output_namespace_is_fixed_and_immutable(tmp_path):
         raise AssertionError("existing preflight result must fail closed")
 
 
+def test_output_namespace_rejects_partial_failed_run_artifacts(tmp_path):
+    m = load_module()
+    out = m.default_output_dir(tmp_path)
+    out.mkdir(parents=True)
+    (out / "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv").write_bytes(b"partial\r\n")
+    try:
+        m.assert_fresh_output(out)
+    except RuntimeError as e:
+        text = str(e).lower()
+        assert "immutable" in text
+        assert "non-empty" in text or "artifact" in text
+    else:
+        raise AssertionError("partial failed-run artifacts must fail closed")
+
+
 def test_mapping_command_is_value_blind_and_complete(tmp_path):
     m = load_module()
     paths = m.canonical_paths(Path("D:/Jepa project"), Path("D:/Jepa project-stage81a3r-20260814"))
