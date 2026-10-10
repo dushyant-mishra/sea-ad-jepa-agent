@@ -143,19 +143,23 @@ def _selection_receipt(selection: dict) -> dict:
     }
 
 
-def _support_rows(view: dict) -> list[dict]:
+def _support_rows(view: dict, n_selected: int, canonical: bool) -> list[dict]:
+    pair_count = int(int(n_selected) * max(int(n_selected) - 1, 0) // 2)
     rows = []
     for row in view.get("strata", []):
-        keep = {k: v for k, v in row.items() if k not in {"corr", "summary"}}
+        keep = {k: v for k, v in row.items() if k != "corr"}
+        keep["n_pairwise_correlations"] = pair_count
+        keep["canonical"] = bool(canonical)
+        keep["sensitivity_only"] = not bool(canonical)
         rows.append(keep)
     return rows
 
 
-def _canonical_level(view: dict) -> dict:
+def _canonical_level(view: dict, n_selected: int, canonical: bool = True) -> dict:
     return {
         "summary": view.get("summary"),
         "n_supported_strata": int(view.get("n_supported_strata", 0)),
-        "strata": _support_rows(view),
+        "strata": _support_rows(view, n_selected, canonical),
     }
 
 
@@ -271,10 +275,10 @@ def run_localization(counts, universe, broad_class, source_labels, operator_labe
         "L0": {"summary": l0l2["L0"]["summary"], "n_cells": l0l2["L0"]["n_cells"],
                "variable_gene_count": l0l2["L0"]["variable_gene_count"],
                "constant_gene_count": l0l2["L0"]["constant_gene_count"]},
-        "L1": _canonical_level(l0l2["L1"]),
-        "L2": _canonical_level(l0l2["L2"]["primary"]),
-        "L3": _canonical_level(l3),
-        "L4": {**_canonical_level(l4), "interpretation": "BIOLOGICAL_OR_AMBIGUOUS"},
+        "L1": _canonical_level(l0l2["L1"], len(sel), True),
+        "L2": _canonical_level(l0l2["L2"]["primary"], len(sel), True),
+        "L3": _canonical_level(l3, len(sel), True),
+        "L4": {**_canonical_level(l4, len(sel), True), "interpretation": "BIOLOGICAL_OR_AMBIGUOUS"},
         "L5": l5,
         "canonical_threshold": LOC.CANONICAL_THRESHOLD,
         "training_authorized": False,
@@ -284,7 +288,7 @@ def run_localization(counts, universe, broad_class, source_labels, operator_labe
     sensitivity = {
         "schema": SCHEMA_SENSITIVITY,
         "claim_class": "DESCRIPTIVE_SENSITIVITY_ONLY",
-        "library_depth_L2": _canonical_level(l0l2["L2"]["sensitivity"]),
+        "library_depth_L2": _canonical_level(l0l2["L2"]["sensitivity"], len(sel), False),
         "thresholds": list(LOC.SENSITIVITY_THRESHOLDS),
         "L5_threshold_sweep": l5.get("thresholds", {}),
         "training_authorized": False,
