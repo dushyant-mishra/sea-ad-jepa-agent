@@ -285,8 +285,7 @@ def _authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> dict:
         "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
         "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
         "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
-        "g6_script_sha256": common.sha256_file(g6_path),
-        "g7_script_sha256": common.sha256_file(g7_path),
+        **common.code_identity(g6_path, g7_path),
         "authorization_schema": auth["schema"],
         "authorization_token": auth["authorization"],
     }
