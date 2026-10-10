@@ -60,7 +60,8 @@ def test_streamed_observer_is_bit_exact_to_pre_hardening_independent_thinning():
     labels = np.resize(np.array(["OBS_A", "OBS_B"]), 160)
     out = observe_latent_biology(z, _obs_authority(family="independent_thinning"), labels, seed=77)
     assert out.counts_hash == "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa"
-    assert _hash_array(out.capture_efficiency) == "38f8a10131b84daf47228dc282d35ca865e38b9f7bfeebf8b8e22c1e7f4fe5e4"
+    # Verified in CI against untouched #253 under the same NumPy environment.
+    assert _hash_array(out.capture_efficiency) == "51eb035286393d38733c3224ae31b5a518afdd6e6a46d5baaf7a0320e9d68f12"
 
 
 def test_streamed_observer_is_bit_exact_to_pre_hardening_conditional_multinomial():
