@@ -155,7 +155,12 @@ def main() -> None:
     ap.add_argument("--max-tree-depth", type=int, default=10,
                     help="plumbing smoke tests only; recovery evidence uses the contract's 10")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--centring", default=None,
+                    help="JSON override of v79_models.CENTRING for this likelihood (sampler experiments only; recorded)")
     a = ap.parse_args()
+    if a.centring:
+        key = M.centring_key("gaussian" if a.likelihood == "lognormal" else a.likelihood, None)
+        M.CENTRING[key] = json.loads(a.centring)
     d = FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE))
     di = DA.design_indices(d)
     res, t0 = {}, time.time()
@@ -166,6 +171,7 @@ def main() -> None:
               "ess", round(res[name]["diagnostics"]["worst_ess"]), "s", round(res[name]["diagnostics"]["seconds"]), flush=True)
     import jax
     rec = dict(schema="V79_SIMULATION_RECOVERY_V1", likelihood=a.likelihood, settings=vars(a),
+               centring_used={k: dict(v) for k, v in M.CENTRING.items()},
                fits=res, criteria=criteria(res) if set(FITS) <= set(res) else None,
                environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__,
                                 devices=[str(x) for x in jax.devices()]),
