@@ -1,0 +1,28 @@
+{
+  "authority_hashes": {
+    "biology": {
+      "actual": "RECOMPUTE_FROM_BYTES_AT_GATE",
+      "expected": "a5a9094930672ecdfb38aca6caca76e5654a58e00c2746f24c035468fe554d0a"
+    },
+    "observation": {
+      "actual": "RECOMPUTE_FROM_BYTES_AT_GATE",
+      "expected": "8036c4b007235c6a6858e4e282259b571d7d1e583899157f0e4dac1778453fc1"
+    },
+    "registry": {
+      "actual": "RECOMPUTE_FROM_BYTES_AT_GATE",
+      "expected": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "repaired_marginal": {
+      "actual": "RECOMPUTE_FROM_BYTES_AT_GATE",
+      "expected": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1"
+    }
+  },
+  "pathology_accessed": false,
+  "post_outcome_arm_mutation": false,
+  "preregistered_manifest_hash": "f2285bb82f6552e98dee1472d4dd2b0a3e6fa3fab923abffd8e94da7713ab892",
+  "schema": "V79_FACTORIAL_CUSTODY_V1",
+  "target_discovery_modified": false,
+  "test_or_morabito_accessed": false,
+  "training_authorized": false,
+  "v78_base_sha": "e959d9a732698ae9a41e8cb1f6c10052d7390326"
+}
