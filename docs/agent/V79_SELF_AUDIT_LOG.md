@@ -34,3 +34,19 @@ Warm-up trace after fixes 7-8 (simulated data, 10 genes, 1 chain, 150 warm-up it
 CPU): step size grew from 0.003 to 0.02 and steps per iteration fell from about 590 to about 300 as the mass
 matrix adapted; adaptation was not complete. Extrapolated cost on CPU: about 20-30 min per 10-gene fit, hours at
 60 genes. A JAX-CUDA environment in WSL is being built and benchmarked in parallel.
+
+## 2026-10-10: geometry module (D1) and observations
+
+- The Bayesian-bootstrap geometry module (written by a delegated agent, re-run and verified by the coordinator
+  before commit) reproduces every corrected reference statistic with uniform weights: graph statistics bit-exact,
+  continuous statistics within 4e-15 relative, abundance within 2.1e-14 (required 1e-9). 17 tests pass in both
+  environments locally; the real-data test skips in CI because the cache bytes are local-only.
+- Two library definitions are in use and both are kept, labelled: the reference builders' CP10K denominator is
+  the sum over the 41,238 cached addresses; the model depth covariate uses `source_library` (at least the cached
+  sum; ratio minimum 0.961; log correlation 1.0000).
+- One of the 3,000 HVGs is detected in every TRAIN cell, so the reference detection layer gives it zero
+  correlations by the builder's convention; kept as is for comparability.
+- One draw takes about 24 s on a contended CPU (dense trace(A^3) five times per draw, full eigendecompositions);
+  to be optimized with exactness preserved before 1,000 draws.
+- `timeout` from Git Bash on a native Windows process: verify it fires (check process start time) rather than
+  assuming.
