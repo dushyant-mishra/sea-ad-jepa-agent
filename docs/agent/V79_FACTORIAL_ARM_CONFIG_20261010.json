@@ -1,0 +1,21 @@
+{
+  "arm_names": [
+    "H0",
+    "H1",
+    "H2",
+    "H3",
+    "C_OBS",
+    "C_BIO"
+  ],
+  "balancing_rule": "BALANCED_WITHIN_BROAD_CLASS",
+  "biology_seed": 7901,
+  "cell_count": 4000,
+  "counterfactual_biology_seed": 7903,
+  "crossing_seed": 7904,
+  "donor_count": 2,
+  "endpoint_version": "V79_FACTORIAL_ENDPOINTS_V1",
+  "h2_realization_family": "independent_thinning",
+  "h3_realization_family": "independent_thinning",
+  "observation_seed": 7902,
+  "training_authorized": false
+}
