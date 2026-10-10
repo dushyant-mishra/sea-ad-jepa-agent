@@ -27,10 +27,10 @@ def test_frozen_scenario_geometry_and_values():
         ("C", "NPH52"),
         ("C", "SEA_AD"),
     )
-    assert np.array_equal(m.SCENARIOS["S0"], np.zeros(7))
-    assert np.array_equal(m.SCENARIOS["S1"], np.array([2.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0]))
-    assert np.array_equal(m.SCENARIOS["S3"], np.array([2.0, -2.0, 2.0, 2.0, 2.0, -2.0, 2.0]))
-    assert np.array_equal(m.SCENARIOS["S4"], np.full(7, 2.0))
+    assert np.array_equal(m.SCENARIOS["S0"], np.array([0.20, -0.20, 0.00, 0.05, -0.20, 0.20, 0.05]))
+    assert np.array_equal(m.SCENARIOS["S1"], np.array([2.00, -0.10, 0.10, 2.10, 1.90, 0.10, -0.10]))
+    assert np.array_equal(m.SCENARIOS["S3"], np.array([2.00, -2.00, 2.00, 2.05, 1.80, -2.20, 2.10]))
+    assert np.array_equal(m.SCENARIOS["S4"], np.array([1.80, 2.00, 2.20, 2.05, 2.10, 1.90, 2.00]))
 
 
 def test_source_effect_parameterization_is_exactly_zero_sum():
@@ -44,7 +44,7 @@ def test_source_effect_parameterization_is_exactly_zero_sum():
 
 def test_null_log_posterior_is_sign_symmetric_for_location_effects():
     m = load_module()
-    y = m.SCENARIOS["S0"]
+    y = np.zeros(7)
     prior = m.PRIOR_REGIMES["reference"]
     theta = np.array([0.2, -0.1, 0.3, 0.25, -0.15, np.log(0.8), np.log(1.1)])
     mirror = theta.copy()
