@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import subprocess
 from pathlib import Path
 
 PREFLIGHT_SCHEMA = "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3"
@@ -26,6 +27,7 @@ VALUE_SCOPE = (
     "TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology"
 )
 
+COMMON_ENTRYPOINT = "scripts/v5/td_relational_value_read_v2_common.py"
 G6_ENTRYPOINT = "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py"
 G7_ENTRYPOINT = "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py"
 
@@ -70,13 +72,60 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
     return digest.hexdigest()
 
 
+def canonical_text_sha256(path: Path) -> str:
+    """Hash executable text with newline normalization so CRLF/LF checkout policy cannot change identity."""
+    raw = Path(path).read_bytes()
+    canonical = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(canonical).hexdigest()
+
+
+def git_commit_sha(path: Path) -> str:
+    """Bind execution to the exact repository commit containing the candidate code."""
+    path = Path(path).resolve()
+    try:
+        root = subprocess.check_output(
+            ["git", "-C", str(path.parent), "rev-parse", "--show-toplevel"],
+            stderr=subprocess.STDOUT,
+            text=True,
+        ).strip()
+        commit = subprocess.check_output(
+            ["git", "-C", root, "rev-parse", "HEAD"],
+            stderr=subprocess.STDOUT,
+            text=True,
+        ).strip()
+    except subprocess.CalledProcessError as exc:
+        raise RuntimeError(f"cannot resolve implementation git commit: {exc.output}") from exc
+    if len(commit) != 40:
+        raise RuntimeError(f"invalid implementation git commit SHA: {commit!r}")
+    return commit
+
+
+def code_identity(g6_path: Path, g7_path: Path) -> dict[str, str]:
+    """Return platform-stable identity for every local code surface controlling the value boundary."""
+    common_path = Path(__file__).resolve()
+    g6_path = Path(g6_path).resolve()
+    g7_path = Path(g7_path).resolve()
+    commits = {git_commit_sha(common_path), git_commit_sha(g6_path), git_commit_sha(g7_path)}
+    if len(commits) != 1:
+        raise RuntimeError(f"G6/G7/common code are not from one implementation commit: {sorted(commits)}")
+    return {
+        "implementation_commit_sha": next(iter(commits)),
+        "common_script_sha256": canonical_text_sha256(common_path),
+        "g6_script_sha256": canonical_text_sha256(g6_path),
+        "g7_script_sha256": canonical_text_sha256(g7_path),
+        "common_entrypoint": COMMON_ENTRYPOINT,
+        "g6_entrypoint": G6_ENTRYPOINT,
+        "g7_entrypoint": G7_ENTRYPOINT,
+    }
+
+
 def _read_json(path: Path, label: str) -> dict:
     path = Path(path)
     if not path.is_file():
         raise RuntimeError(f"missing {label}: {path}")
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # fail closed on malformed evidence
+    except Exception as exc:
         raise RuntimeError(f"invalid {label} JSON: {path}: {exc}") from exc
     if not isinstance(value, dict):
         raise RuntimeError(f"invalid {label}: top level must be an object")
@@ -96,7 +145,7 @@ def load_runtime_authorization(
     g6_path: Path,
     g7_path: Path,
 ) -> dict:
-    """Validate a separately created V2 authority against exact evidence and code bytes."""
+    """Validate a separately created V2 authority against exact evidence and platform-stable code identity."""
     rec = _read_json(path, "runtime value authorization")
     if rec.get("schema") != VALUE_AUTH_SCHEMA:
         raise RuntimeError("value authorization schema mismatch")
@@ -116,16 +165,17 @@ def load_runtime_authorization(
     expected = {
         "preflight_result_sha256": sha256_file(Path(preflight_path)),
         "mapping_receipt_sha256": sha256_file(Path(mapping_path)),
-        "g6_script_sha256": sha256_file(Path(g6_path)),
-        "g7_script_sha256": sha256_file(Path(g7_path)),
-        "g6_entrypoint": G6_ENTRYPOINT,
-        "g7_entrypoint": G7_ENTRYPOINT,
+        **code_identity(Path(g6_path), Path(g7_path)),
     }
     for key, actual in expected.items():
         if rec.get(key) != actual:
             if key.endswith("sha256"):
                 raise RuntimeError(f"runtime authorization {key} SHA binding mismatch")
-            raise RuntimeError(f"runtime authorization entrypoint binding mismatch: {key}")
+            if key.endswith("entrypoint"):
+                raise RuntimeError(f"runtime authorization entrypoint binding mismatch: {key}")
+            if key == "implementation_commit_sha":
+                raise RuntimeError("runtime authorization implementation commit binding mismatch")
+            raise RuntimeError(f"runtime authorization binding mismatch: {key}")
     return rec
 
 
