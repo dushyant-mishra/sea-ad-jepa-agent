@@ -1,0 +1,203 @@
+{
+  "authority_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "code": {
+    "code_blobs_at_head": {
+      "scripts/v5/audit_td_relational_replay_mapping_preflight.py": "51772241efcb14192bcbfd617ce22de3f73259dc",
+      "scripts/v5/build_td_relational_replay_manifest.py": "f7a4db00fd41d8263bb61aabc7630c66d4fddb3f",
+      "scripts/v5/run_td_relational_replay_preflight.py": "ca6eef8bd09e85dc674a6ddf93f76aa9e06b0e35"
+    },
+    "execution_branch": "exec/td-relational-g4g5-self-audit-hardened-20261009",
+    "execution_code_sha": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "git_core_autocrlf_effective": "false",
+    "gitattributes_rules_matching_namespace": [],
+    "head_before_tests": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "macha_freeze_blob": "a80a9fa1c0433659fc32a6c622427dbcbdf0bbe6",
+    "macha_ref_local": "750cb83c8c0535cc67a70d58b62db5607bd7d01e",
+    "macha_ref_origin": "f88338713b173edb3acbc90662e607ce45b5878b",
+    "pr248_delta_from_code_freeze": [
+      "docs/agent/TD_RELATIONAL_G4G5_POST_CRLF_REPAIR_EXECUTION_20261009.md"
+    ],
+    "pr248_head_at_fetch": "1000106beed41bdba5d5e57f2947664e435435b1",
+    "status_short_after_driver": "",
+    "status_short_before_tests": "",
+    "worktree": "D:/jepa_wt_td_g4g5_v3_20261009"
+  },
+  "do_not_merge": true,
+  "driver": {
+    "any_expression_array_opened": false,
+    "any_h5ad_opened": false,
+    "command": "python scripts/v5/run_td_relational_replay_preflight.py --output-dir results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened",
+    "cwd": "D:/jepa_wt_td_g4g5_v3_20261009",
+    "end_utc": "2026-10-10T04:11:56.973Z",
+    "exit_code": 1,
+    "gates": [
+      {
+        "result": "PASS",
+        "step": "fresh_namespace_check"
+      },
+      {
+        "result": "PASS",
+        "sha256": {
+          "collision_ledger": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+          "provenance": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+          "sample_freeze": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+        },
+        "step": "sample_freeze_provenance_collision_hash_gates"
+      },
+      {
+        "result": "PASS",
+        "sha256": {
+          "calibration_zip": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+          "td_artifacts_zip": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
+        },
+        "step": "static_archive_hash_gates"
+      },
+      {
+        "result": "PASS",
+        "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+        "step": "macha_freeze_extract_and_hash"
+      },
+      {
+        "builder_schema": "JEPA_TD_RELATIONAL_REPLAY_MANIFEST_RECEIPT_V1",
+        "builder_status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+        "builder_validations_total": 31,
+        "builder_validations_true": 31,
+        "common_core_rows": 17186,
+        "last_fully_completed_gate": true,
+        "manifest_crlf_pairs": 0,
+        "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+        "replay_addresses": 9216,
+        "result": "PASS",
+        "step": "manifest_builder_and_driver_manifest_hash_gate"
+      },
+      {
+        "completed_substeps": [
+          "five authority SHA checks inside load_authorities",
+          "replay manifest geometry 9216 unique"
+        ],
+        "error": "RuntimeError: Sample-A geometry mismatch",
+        "failed_at": "audit_td_relational_replay_mapping_preflight.py:129 load_authorities Sample-A geometry check (len(a) != 25000), before per-matrix loop at line 148",
+        "result": "FAIL",
+        "step": "g4_g5_mapping_audit"
+      }
+    ],
+    "mapping_began": "mapping-audit process started and loaded authority CSV/JSON tables; no H5AD hashed or opened, no address mapping, no cell-row comparison",
+    "start_utc": "2026-10-10T04:11:23.564Z",
+    "stderr": "Traceback (most recent call last):\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 208, in <module>\r\n    raise SystemExit(main())\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 167, in main\r\n    run_checked(pcmd, repo_root)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 91, in run_checked\r\n    raise RuntimeError(\r\nRuntimeError: command failed\r\nCMD: C:\\Users\\dushy\\anaconda3\\python.exe D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py --replay-manifest results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv --sample-freeze D:\\Jepa project\\exports\\foundation_corpus_discovery_v1\\FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv --provenance D:\\Jepa project\\results\\v4\\stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz --collision-ledger D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz --macha-freeze results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\S174_REBUILD_FREEZE_V1.json --source-root D:\\Jepa project --out results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\TD_RELATIONAL_MAPPING_PREFLIGHT.json\r\nSTDOUT:\r\n\r\nSTDERR:\r\nTraceback (most recent call last):\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 248, in <module>\r\n    raise SystemExit(main())\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 239, in main\r\n    rec = audit(args)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 139, in audit\r\n    checks, replay, sample_a, prov, collision, freeze = load_authorities(args)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261009\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 129, in load_authorities\r\n    raise RuntimeError(\"Sample-A geometry mismatch\")\r\nRuntimeError: Sample-A geometry mismatch\r\n\r\n",
+    "stdout": ""
+  },
+  "environment": {
+    "h5py": "3.2.1",
+    "hdf5": "1.10.6",
+    "launch_shell": "Git Bash",
+    "numpy": "1.24.2",
+    "os": "Windows 11 Pro 10.0.26200 (platform.platform()=Windows-10-10.0.26200-SP0)",
+    "pandas": "1.5.3",
+    "pytest": "6.2.4",
+    "python": "3.9.7 (default, Sep 16 2021, 16:59:28) [MSC v.1916 64 bit (AMD64)]",
+    "python_executable": "C:/Users/dushy/anaconda3/python.exe",
+    "scipy": "1.10.1"
+  },
+  "namespace": {
+    "driver_receipt_written": false,
+    "files_after_failure": {
+      "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv": {
+        "bytes": 414703,
+        "crlf_pairs": 0,
+        "sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660"
+      },
+      "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json": {
+        "bytes": 1535,
+        "crlf_pairs": 42,
+        "sha256": "6d9d5103dab72c9c2e6354fe2edecba7e5419ce5cfcdafe06e458c9a76605c13"
+      },
+      "S174_REBUILD_FREEZE_V1.json": {
+        "bytes": 39276,
+        "crlf_pairs": 0,
+        "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
+      }
+    },
+    "mapping_receipt_written": false,
+    "path": "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened",
+    "precheck": "ABSENT (parent results/target_discovery also absent)",
+    "status_after": "SPENT_NON_EMPTY__PRESERVED_UNCHANGED"
+  },
+  "not_done": [
+    "code/test/hash/path/input/collision/mapping-policy change",
+    "rerun or alternate namespace",
+    "G6",
+    "G7",
+    "value-read authorization JSON",
+    "old V1 authorization token",
+    "TD56/TD57B/TD57C/TD59/TD60 replay",
+    "training"
+  ],
+  "post_failure_diagnosis": {
+    "class": "POST_HOC_READ_ONLY_VALUE_BLIND_DIAGNOSTIC__NOT_PART_OF_FROZEN_RUN__NOT_A_QUALIFICATION",
+    "inputs_read": [
+      "FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv (sample/source/matrix_id label counts only inspected)",
+      "extracted S174_REBUILD_FREEZE_V1.json (matrices[].matrix_id, source.path)"
+    ],
+    "label_literal": {
+      "code": "audit_td_relational_replay_mapping_preflight.py:127 s['sample'].astype(str).eq('A')",
+      "contract_definition": "docs/agent/JEPA_TD_RELATIONAL_CORRECTED_25K_REPLAY_CONTRACT_20261007.md:35 A_NATURAL_MIXTURE",
+      "frozen_labels": {
+        "A_NATURAL_MIXTURE": 25000,
+        "B_COVERAGE_DISCOVERY": 25000
+      },
+      "rows_matching_A": 0,
+      "same_literal_also_in": "scripts/v5/materialize_td_relational_corrected_sampleA.py:218 (G6; not run)"
+    },
+    "latent_second_blocker": {
+      "A_NATURAL_MIXTURE_non_NPH52_h5_matrix_ids": 34,
+      "A_NATURAL_MIXTURE_source_counts": {
+        "HVS": 1129,
+        "NPH52": 1310,
+        "SEA_AD": 22561
+      },
+      "A_subset_of_freeze": true,
+      "B_COVERAGE_DISCOVERY_non_NPH52_h5_matrix_ids": 35,
+      "consequence": "check all_35_h5_source_sha256_verified requires len(authenticated_h5)==35 but only Sample-A matrices are hashed; a label-only fix would still produce FAIL",
+      "decision_owner": "deciding lane (hash all 35 S174 H5ADs vs change expected count); not adopted here",
+      "freeze_matrix_not_in_A": "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d",
+      "matches_code_SOURCE_COUNTS": true,
+      "s174_freeze_matrices": 35
+    }
+  },
+  "preserved_untouched": [
+    "PR #245 / bf6ddda4e1b020fdb959812036b957c40166fede and its namespace/manifest",
+    "repair freeze 1dbf37d5c9a4684e4bac73b9a86fb3875782e23e",
+    "namespace preflight_v2_post_crlf_repair",
+    "PR #251"
+  ],
+  "raw_logs_outside_repo": {
+    "dir": "D:/jepa_td_g4g5_v3_20261009_logs",
+    "sha256": {
+      "driver_meta.txt": "35a6d4a532e86cdc29afae4d87e822234208ace368fe9d31f38bdc49f2225da4",
+      "driver_stderr.txt": "1bee510e64d34a23dc50e7c9aa316bb6d75e9a73bdde28352d64e47de50c3b3f",
+      "driver_stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pytest_meta.txt": "f6fc200589b61437e01b77437911d08824ed0037997546c23dd8ec04e88305f1",
+      "pytest_rs_supplementary_stdout.txt": "1e37e0afe2a9c15f0735deb3e432f00bf28e7e248a66d7ac1b30d9057ffd826d",
+      "pytest_stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pytest_stdout.txt": "e897d0c095e0291331cdd172f917dc3ed15e31455faffa5bb0994ae053dc9e7f"
+    }
+  },
+  "recorded_terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING_ENTRY__SAMPLE_A_GEOMETRY_MISMATCH__LABEL_LITERAL_A_VS_A_NATURAL_MIXTURE",
+  "recorded_terminal_note": "assigned by this execution report; the driver writes no failure receipt",
+  "schema": "JEPA_TD_RELATIONAL_G4G5_HARDENED_EXECUTION_RECORD_V1",
+  "tests": {
+    "command": "python -m pytest -q tests/v5/test_build_td_relational_replay_manifest.py tests/v5/test_run_td_relational_replay_preflight.py tests/v5/test_audit_td_relational_replay_mapping_preflight.py",
+    "coverage_gap": "no test runs load_authorities/audit against the real frozen Sample-A CSV; mapping tests are synthetic-fixture only",
+    "end_utc": "2026-10-10T04:10:51.326Z",
+    "env_TD_CALIBRATION_ZIP_and_TD_ARTIFACTS_ZIP": "unset",
+    "evidence_class": "LOCAL_EXECUTION_NOT_CI",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 12,
+    "skip_reason_from_supplementary_rs_run": "tests\\v5\\test_build_td_relational_replay_manifest.py:45: external replay authorities not supplied",
+    "skipped": 1,
+    "start_utc": "2026-10-10T04:10:43.140Z",
+    "stdout": "..s..........                                                            [100%]\r\n============================== warnings summary ===============================\r\nC:\\Users\\dushy\\anaconda3\\lib\\site-packages\\pyreadline\\py3k_compat.py:8\r\n  C:\\Users\\dushy\\anaconda3\\lib\\site-packages\\pyreadline\\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\r\n    return isinstance(x, collections.Callable)\r\n\r\ntests/v5/test_build_td_relational_replay_manifest.py::test_pair_hash_is_deterministic\r\ntests/v5/test_build_td_relational_replay_manifest.py::test_pair_hash_is_deterministic\r\n  C:\\Users\\dushy\\anaconda3\\lib\\site-packages\\numexpr\\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\r\n    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/warnings.html\r\n12 passed, 1 skipped, 3 warnings in 4.30s\r\n",
+    "supplementary_rs_stdout": "..s..........                                                            [100%]\r\n=========================== short test summary info ===========================\r\nSKIPPED [1] tests\\v5\\test_build_td_relational_replay_manifest.py:45: external replay authorities not supplied\r\n12 passed, 1 skipped in 4.55s\r\n"
+  }
+}
