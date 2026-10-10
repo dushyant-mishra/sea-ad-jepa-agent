@@ -175,7 +175,6 @@ def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[s
         meta_sha = common.sha256_file(meta_path)
         if counts_sha != rec["counts"] or meta_sha != rec["meta"]:
             raise RuntimeError(f"S174 G1b-authorized cache hash mismatch: {stem}")
-        # Global custody checks inspect shape/cell identity geometry only; count data are not opened here.
         with np.load(counts_path, allow_pickle=False) as payload:
             shape = tuple(int(x) for x in payload["shape"])
             if len(shape) != 2 or shape[1] != N_ADDR:
@@ -250,8 +249,7 @@ def expected_authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> 
         "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
         "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
         "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
-        "g6_script_sha256": common.sha256_file(g6_path),
-        "g7_script_sha256": common.sha256_file(g7_path),
+        **common.code_identity(g6_path, g7_path),
         "authorization_schema": auth["schema"],
         "authorization_token": auth["authorization"],
     }
@@ -345,7 +343,6 @@ def main() -> int:
             })
             continue
 
-        # Count arrays are opened only for a shard with genuine natural overlap.
         with np.load(counts_path, allow_pickle=False) as payload:
             validate_s174_payload(payload["data"], payload["indices"], payload["indptr"], payload["shape"])
             s174_matrix = sparse.csr_matrix(
