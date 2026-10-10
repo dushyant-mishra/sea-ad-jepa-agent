@@ -1,0 +1,75 @@
+{
+  "schema": "JEPA_SYNTHETIC_LANE_FINAL_TAKEOVER_STATE_V1",
+  "date": "2026-10-09",
+  "claim_class": "NON_TRAINING_SYNTHETIC_LANE_TAKEOVER",
+  "implementation": {
+    "pr": 242,
+    "branch": "impl/v78-signed-detection-marginals-20261009",
+    "audited_head_sha": "e959d9a732698ae9a41e8cb1f6c10052d7390326",
+    "status": "V78_COMPLETE_FALSIFICATION_BASELINE__NO_ARM_PROMOTED"
+  },
+  "handoff_branch": "handoff/jepa-synthetic-v78-final-takeover-20261009",
+  "ci": {
+    "v78_run_id": 37998229856,
+    "v78_conclusion": "success",
+    "v77_spillover_run_id": 37998229898,
+    "v77_spillover_conclusion": "success"
+  },
+  "corrected_substrate": {
+    "canonical_current_library_path": "/Jepa project/s174_rebuilt_real_train_v1.rar",
+    "size_bytes": 47964366,
+    "sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "count_shards": 42,
+    "meta_shards": 42,
+    "corrected_calibration_sha256": "f6ba2c725a5437cc8455fff418027d36efe9ea9430fbd0a5765df62dedca6068",
+    "meta_digest_semantic_sha256": "b876e13526f51d5a4199ca750ad09065c5ab8a20aeca39dff3d8c385f2241f46",
+    "historical_non_equivalent_archive": {
+      "path": "/Jepa project/stage81a3r_corrected_real_train.zip",
+      "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+      "status": "VALID_HISTORICAL_CUSTODY__NOT_CURRENT_V78_SUBSTRATE"
+    }
+  },
+  "authorities": {
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "evaluation_universe_sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763",
+    "class_authority_sha256": "a4f5e325a54014d87d6380f81ce48922a6558f05ffafdaf7c59c1dc3ae705014",
+    "operator_bridge_sha256": "ddbe7ba09cf6bf62fc1135f4bfd081601dc43fde23e61a4cf3206e3bd7655c55",
+    "marginal_authority_library_path": "/Jepa project/V78_MARGINAL_AUTHORITY_REPAIRED_V1.json",
+    "marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1"
+  },
+  "preexecution_gate": {
+    "receipt": "results/v78/V78_PREEXECUTION_GATE_READY_V1.json",
+    "status": "READY",
+    "blockers": []
+  },
+  "tournament": {
+    "receipt": "results/v78/V78_SIGNED_DETECTION_MARGINAL_TOURNAMENT_V1.json",
+    "ruling": "results/v78/V78_SIGNED_DETECTION_MARGINAL_SCIENTIFIC_RULING_V1.json",
+    "cells": 2500,
+    "seed": 7302,
+    "measurement_seed": 7302,
+    "raw_library_path": "/Jepa project/V78_FROZEN_LOCAL_TOURNAMENT_20261009.json",
+    "raw_library_sha256": "981ea94af5fdfec258f7e620fa1fd2d4cb883b8330846f02c6aa258a45daacd3",
+    "promoted_arm": null,
+    "outcomes": {
+      "F0": "PASS_EXACT_E2_REPRODUCTION__BASELINE_ONLY",
+      "F1": "DIRECTIONAL_SIGNED_RATIO_SUCCESS__ADEQUACY_REJECTED",
+      "F2": "SIGNED_DETECTION_HYPOTHESIS_FALSIFIED_AT_FROZEN_GEOMETRY",
+      "F3": "COUNT_MARGINAL_REPAIR_INADEQUATE__NO_SIGNED_TOPOLOGY_RETENTION"
+    }
+  },
+  "next": {
+    "synthetic_lane": "PROSPECTIVE_V79_DESIGN_ONLY__NO_V78_RETUNING",
+    "parallel_macha": "TRAIN_ONLY_BAYESIAN_DATASET_GEOMETRY__IDENTITY_SCRUBBED_OUTPUT",
+    "target_discovery": "SEPARATE_LANE__NO_OVERLAP"
+  },
+  "hard_boundaries": {
+    "training_authorized": false,
+    "e4_authorized": false,
+    "test_or_morabito_authorized": false,
+    "stage4_or_500k_authorized": false,
+    "target_discovery_changes_authorized": false,
+    "id353_repair_authorized": false,
+    "post_outcome_v78_retuning_authorized": false
+  }
+}
