@@ -1,0 +1,3 @@
+artifact,sha256,canonical_preserved_path,status
+Status and Repair Plan.txt,cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56,docs/history/chat_uploads_20261010/Status and Repair Plan.txt,HISTORICAL_ONLY
+WSL execution issue.txt,cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e,PR247:docs/history/chat_uploads_20261010/WSL execution issue.txt,HISTORICAL_ONLY_CANONICAL_RAW_ON_HANDOFF_BRANCH
