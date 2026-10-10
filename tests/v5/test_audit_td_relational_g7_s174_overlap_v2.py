@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 
 import numpy as np
@@ -104,6 +105,50 @@ def test_same_size_changed_physical_source_is_rejected(tmp_path):
         pass
     else:
         raise AssertionError("G7 must reject same-size changed H5AD before reread")
+
+
+def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
+    m = load_module()
+    expected_trace = {
+        "preflight_result_sha256": "p",
+        "mapping_receipt_sha256": "m",
+        "authorization_sha256": "a",
+        "g6_script_sha256": "g6",
+        "g7_script_sha256": "g7",
+        "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+        "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+    }
+    path = tmp_path / "g6.json"
+    receipt = {
+        "schema": m.G6_RECEIPT_SCHEMA,
+        "status": m.G6_PASS,
+        "authority_trace": dict(expected_trace),
+        "biological_replay_authorized": False,
+        "target_selection_authorized": False,
+        "td60_authorized": False,
+        "training_authorized": False,
+    }
+    path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+    assert m.load_g6_pass_receipt(path, expected_trace)["status"] == m.G6_PASS
+
+    receipt["status"] = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
+    path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+    try:
+        m.load_g6_pass_receipt(path, expected_trace)
+    except RuntimeError as e:
+        assert "g6 pass" in str(e).lower()
+    else:
+        raise AssertionError("G7 must not run after failed G6")
+
+    receipt["status"] = m.G6_PASS
+    receipt["authority_trace"]["g7_script_sha256"] = "different"
+    path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+    try:
+        m.load_g6_pass_receipt(path, expected_trace)
+    except RuntimeError as e:
+        assert "same preflight" in str(e).lower() or "same" in str(e).lower()
+    else:
+        raise AssertionError("G7 must reject differently bound G6 receipt")
 
 
 def test_v2_schema_is_distinct_from_historical_v1():
