@@ -28,7 +28,8 @@ if override is not None:
 r = M.run_nuts(kw, n_chains=4, warmup=1000, draws=1000, seed=5, target_accept=ta)
 flat = M.flatten_chains(r["samples"])
 fr = M.realized_fractions(flat, des, lik_fit, mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
-sites = ["m_donor","m_op","m_dk","s_donor","s_op","s_dk","mu","b_depth"] + (["m_res"] if lik_fit=="gaussian" else []) + (["m_phi","s_phi","logphi"] if lik=="ztnb" else [])
+# the contract's full diagnostic set: hyperparameters, every per-gene log sd, intercepts, depth slopes, contrasts
+sites = ["mu", "b_depth"] + [f"{p}_{x}" for x in ("op", "donor", "dk") for p in ("m", "s", "logsd")] +         ["theta_cls", "theta_src"] + (["m_res", "s_res", "logsd_res"] if lik_fit == "gaussian" else []) +         (["m_phi", "s_phi", "logphi"] if lik == "ztnb" else [])
 conv = M.convergence(r["samples"], sites)
 out = dict(lik=lik, centring=M.CENTRING[M.centring_key(lik_fit, kw.get("mask"))], target_accept=ta, seconds=r["seconds"], divergences=r["divergences"], mean_steps=r["mean_steps"], conv=conv,
            recovery={x: dict(cov90=float(np.mean((sim["truth_frac"][x] >= np.quantile(fr[x][1], .05, 0)) & (sim["truth_frac"][x] <= np.quantile(fr[x][1], .95, 0)))),

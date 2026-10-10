@@ -101,7 +101,9 @@ def design_arrays(di: dict) -> dict:
 # divergences sat at small donor-class sds; experiment E3 with both: 0 divergences, R-hat 1.007, ESS 524).
 # Phase C models only detected cells (fewer still per donor-class level) and starts from the same setting.
 NC_DK = {"dk": 0.0, "logsd_dk": 0.0}
-CENTRING = {"gaussian": {}, "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DK), "ztnb": dict(NC_DK)}
+# Gaussian too: at 20 genes the centred per-gene donor-class log sd failed (R-hat 1.035, ESS 66-113 in recovery
+# S0 and S1; self-audit 29); a donor-class level has about 11 cells, so small donor-class sds are weakly pinned.
+CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_DK), "bernoulli": dict(NC_DK), "ztnb": dict(NC_DK)}
 
 
 def centring_key(likelihood: str, mask) -> str:
