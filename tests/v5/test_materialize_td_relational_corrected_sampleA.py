@@ -14,34 +14,66 @@ def load_module():
     return m
 
 
-def test_value_authority_requires_exact_scope(tmp_path):
-    m = load_module()
-    p = tmp_path / "auth.json"
-    p.write_text(json.dumps({
+def valid_auth(m):
+    return {
         "schema": m.VALUE_AUTH_SCHEMA,
         "authorization": m.VALUE_AUTHORIZATION,
         "scope": m.VALUE_SCOPE,
+        "g6_entrypoint": m.REQUIRED_G6_ENTRYPOINT,
+        "g7_entrypoint": m.REQUIRED_G7_ENTRYPOINT,
         "training_authorized": False,
-    }) + "\n")
+        "biological_replay_authorized": False,
+    }
+
+
+def test_value_authority_requires_exact_v2_scope_and_entrypoints(tmp_path):
+    m = load_module()
+    p = tmp_path / "auth.json"
+    p.write_text(json.dumps(valid_auth(m)) + "\n")
     rec = m.load_value_authority(p)
     assert rec["authorization"] == m.VALUE_AUTHORIZATION
+    assert rec["g6_entrypoint"] == m.REQUIRED_G6_ENTRYPOINT
 
 
-def test_value_authority_rejects_wrong_scope(tmp_path):
+def test_value_authority_rejects_old_v1_schema_token(tmp_path):
     m = load_module()
     p = tmp_path / "auth.json"
     p.write_text(json.dumps({
-        "schema": m.VALUE_AUTH_SCHEMA,
-        "authorization": m.VALUE_AUTHORIZATION,
-        "scope": "broader-than-frozen",
+        "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V1",
+        "authorization": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY",
+        "scope": m.VALUE_SCOPE,
         "training_authorized": False,
     }) + "\n")
+    try:
+        m.load_value_authority(p)
+    except RuntimeError as e:
+        assert "schema" in str(e).lower() or "authorization" in str(e).lower()
+    else:
+        raise AssertionError("historical V1 authorization must not authorize hardened V2 execution")
+
+
+def test_value_authority_rejects_wrong_scope_or_entrypoint(tmp_path):
+    m = load_module()
+    p = tmp_path / "auth.json"
+    rec = valid_auth(m)
+    rec["scope"] = "broader-than-frozen"
+    p.write_text(json.dumps(rec) + "\n")
     try:
         m.load_value_authority(p)
     except RuntimeError as e:
         assert "scope" in str(e).lower()
     else:
         raise AssertionError("wrong scope must fail closed")
+
+    rec = valid_auth(m)
+    rec["g6_entrypoint"] = "scripts/v5/materialize_td_relational_corrected_sampleA.py"
+    p.write_text(json.dumps(rec) + "\n")
+    try:
+        m.load_value_authority(p)
+    except RuntimeError as e:
+        assert "entrypoint" in str(e).lower()
+    else:
+        raise AssertionError("historical V1 entrypoint must fail closed")
 
 
 def test_preflight_requires_exact_pass(tmp_path):
@@ -75,15 +107,15 @@ def test_corrected_row_keeps_only_frozen_replay_addresses():
     assert row == {100: 3}
 
 
-def test_corrected_row_rejects_fractional_values_in_raw_count_slot():
+def test_corrected_row_rejects_fractional_and_nonfinite_values_in_raw_count_slot():
     m = load_module()
-    try:
-        m.corrected_row([0], [1.25], {0: 100}, {100})
-    except RuntimeError as e:
-        text = str(e).lower()
-        assert "integer" in text or "raw count" in text
-    else:
-        raise AssertionError("fractional values in a raw-count slot must fail closed, never be rounded")
+    for bad in (1.25, float("nan"), float("inf"), -1):
+        try:
+            m.corrected_row([0], [bad], {0: 100}, {100})
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError(f"invalid raw-count value must fail closed: {bad!r}")
 
 
 def test_output_namespace_refuses_overwrite(tmp_path):
