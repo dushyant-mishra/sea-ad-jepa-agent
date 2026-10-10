@@ -1,0 +1,115 @@
+............................F.                                           [100%]
+================================== FAILURES ===================================
+_______________ test_g7_requires_same_authority_g6_pass_receipt _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1183/test_g7_requires_same_authorit0')
+
+    def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
+        m = load_module()
+        expected_trace = {
+            "preflight_result_sha256": "p",
+            "mapping_receipt_sha256": "m",
+            "authorization_sha256": "a",
+            "implementation_commit_sha": "c" * 40,
+            "common_script_sha256": "common",
+            "g6_script_sha256": "g6",
+            "g7_script_sha256": "g7",
+            "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+            "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+            "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+            "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+            "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+        }
+        path = tmp_path / "g6.json"
+        receipt = {
+            "schema": m.G6_RECEIPT_SCHEMA,
+            "status": m.G6_PASS,
+            "authority_trace": dict(expected_trace),
+            "biological_replay_authorized": False,
+            "target_selection_authorized": False,
+            "td60_authorized": False,
+            "training_authorized": False,
+        }
+        path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+        assert m.load_g6_pass_receipt(path, expected_trace)["status"] == m.G6_PASS
+    
+        receipt["status"] = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
+        path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+        try:
+>           m.load_g6_pass_receipt(path, expected_trace)
+
+tests\v5\test_audit_td_relational_g7_s174_overlap_v2.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1183/test_g7_requires_same_authorit0/g6.json')
+expected_trace = {'authorization_schema': 'JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2', 'authorization_sha256': 'a', 'authorization...CORRECTED_VALUE_MATERIALIZATION_V2_ONLY', 'common_entrypoint': 'scripts/v5/td_relational_value_read_v2_common.py', ...}
+
+    def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
+        path = Path(path)
+        if not path.is_file():
+            raise RuntimeError(f"missing required G6 PASS receipt: {path}")
+        receipt = json.loads(path.read_text(encoding="utf-8"))
+        if receipt.get("schema") != G6_RECEIPT_SCHEMA or receipt.get("status") != G6_PASS:
+>           raise RuntimeError(f"G7 requires G6 V2 PASS before execution: {receipt.get('schema')} / {receipt.get('status')}")
+E           RuntimeError: G7 requires G6 V2 PASS before execution: JEPA_TD_RELATIONAL_G6_RECEIPT_V2 / STOP_TD_G6_SOURCE_LIBRARY_MISMATCH
+
+scripts\v5\audit_td_relational_g7_s174_overlap_v2.py:305: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1183/test_g7_requires_same_authorit0')
+
+    def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
+        m = load_module()
+        expected_trace = {
+            "preflight_result_sha256": "p",
+            "mapping_receipt_sha256": "m",
+            "authorization_sha256": "a",
+            "implementation_commit_sha": "c" * 40,
+            "common_script_sha256": "common",
+            "g6_script_sha256": "g6",
+            "g7_script_sha256": "g7",
+            "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+            "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+            "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+            "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+            "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+        }
+        path = tmp_path / "g6.json"
+        receipt = {
+            "schema": m.G6_RECEIPT_SCHEMA,
+            "status": m.G6_PASS,
+            "authority_trace": dict(expected_trace),
+            "biological_replay_authorized": False,
+            "target_selection_authorized": False,
+            "td60_authorized": False,
+            "training_authorized": False,
+        }
+        path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+        assert m.load_g6_pass_receipt(path, expected_trace)["status"] == m.G6_PASS
+    
+        receipt["status"] = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
+        path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+        try:
+            m.load_g6_pass_receipt(path, expected_trace)
+        except RuntimeError as e:
+>           assert "g6 pass" in str(e).lower()
+E           AssertionError: assert 'g6 pass' in 'g7 requires g6 v2 pass before execution: jepa_td_relational_g6_receipt_v2 / stop_td_g6_source_library_mismatch'
+E            +  where 'g7 requires g6 v2 pass before execution: jepa_td_relational_g6_receipt_v2 / stop_td_g6_source_library_mismatch' = <built-in method lower of str object at 0x000001B206155670>()
+E            +    where <built-in method lower of str object at 0x000001B206155670> = 'G7 requires G6 V2 PASS before execution: JEPA_TD_RELATIONAL_G6_RECEIPT_V2 / STOP_TD_G6_SOURCE_LIBRARY_MISMATCH'.lower
+E            +      where 'G7 requires G6 V2 PASS before execution: JEPA_TD_RELATIONAL_G6_RECEIPT_V2 / STOP_TD_G6_SOURCE_LIBRARY_MISMATCH' = str(RuntimeError('G7 requires G6 V2 PASS before execution: JEPA_TD_RELATIONAL_G6_RECEIPT_V2 / STOP_TD_G6_SOURCE_LIBRARY_MISMATCH'))
+
+tests\v5\test_audit_td_relational_g7_s174_overlap_v2.py:182: AssertionError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+1 failed, 29 passed, 3 warnings in 54.09s
+pytest exit 1
