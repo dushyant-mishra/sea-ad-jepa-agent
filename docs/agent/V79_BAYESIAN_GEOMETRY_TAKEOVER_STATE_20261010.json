@@ -1,0 +1,36 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_TAKEOVER_STATE_V1",
+  "date": "2026-10-10",
+  "lane": "MACHA_BAYESIAN_DATASET_GEOMETRY",
+  "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+  "source_head": "ba61ed4cfca6747e32c21aeabbeed6453e5ea31e",
+  "audit_branch": "audit/v79-bayesian-geometry-snapshot-20261010",
+  "audit_head": "2fa0b3ec705cd616123172c1a78b17be32ccab6a",
+  "handoff_branch": "handoff/v79-bayesian-geometry-takeover-20261010",
+  "status": "SIMULATION_QUALIFICATION_INCOMPLETE",
+  "real_data_authorized": false,
+  "real_expression_fit_started": false,
+  "scrubbed_geometry_artifact_qualified": false,
+  "synthetic_world_consumption_authorized": false,
+  "training_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "target_discovery_modified": false,
+  "v78_retuning_authorized": false,
+  "required_first_action": "RECONCILE_EXTERNAL_RUNNING_JOB_OUTPUTS_WITH_EXACT_SNAPSHOT_HASHES",
+  "required_next_sequence": [
+    "select_per_likelihood_sampler_parameterization_from_prospective_simulation_experiments",
+    "rerun_full_detection_gaussian_lognormal_ztnb_recovery_suites",
+    "pass_all_recovery_contract_criteria",
+    "run_compute_benchmark_and_freeze_gene_and_fold_counts",
+    "only_then_run_real_corrected_train_phases",
+    "run_heldout_ppc_q5_and_bootstrap",
+    "build_and_audit_identity_scrubbed_output_b"
+  ],
+  "parallel_lane_firewalls": {
+    "target_discovery": "SEPARATE_PR_259",
+    "factorial_synthetic_world": "SEPARATE_PR_253_256_257",
+    "historical_td_bayesian_spike": "SEPARATE_PR_249",
+    "v78": "FROZEN"
+  }
+}
