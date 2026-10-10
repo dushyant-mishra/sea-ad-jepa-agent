@@ -25,6 +25,8 @@ EXPECTED_MANIFEST_SHA256 = "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47
 EXPECTED_SAMPLE_FREEZE_SHA256 = "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
 EXPECTED_PROVENANCE_SHA256 = "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51"
 EXPECTED_COLLISION_SHA256 = "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+EXPECTED_CALIBRATION_SHA256 = "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+EXPECTED_TD_ARTIFACTS_SHA256 = "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
 
 
 def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
@@ -71,6 +73,15 @@ def require_hash(path: Path, expected: str, label: str) -> None:
     actual = sha256_file(path)
     if actual != expected:
         raise RuntimeError(f"{label} SHA mismatch: {actual} != {expected}: {path}")
+
+
+def verify_static_archives(paths: dict[str, Path]) -> dict[str, str]:
+    require_hash(paths["calibration_zip"], EXPECTED_CALIBRATION_SHA256, "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip")
+    require_hash(paths["td_artifacts_zip"], EXPECTED_TD_ARTIFACTS_SHA256, "TD41-TD58 historical archive")
+    return {
+        "calibration_zip_sha256": sha256_file(paths["calibration_zip"]),
+        "td_artifacts_zip_sha256": sha256_file(paths["td_artifacts_zip"]),
+    }
 
 
 def run_checked(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
@@ -141,20 +152,18 @@ def main() -> int:
     require_hash(paths["sample_freeze"], EXPECTED_SAMPLE_FREEZE_SHA256, "FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv")
     require_hash(paths["provenance"], EXPECTED_PROVENANCE_SHA256, "Stage81A2R provenance")
     require_hash(paths["collision_ledger"], EXPECTED_COLLISION_SHA256, "Stage81A3R collision ledger")
-    for k in ("calibration_zip", "td_artifacts_zip"):
-        if not paths[k].is_file():
-            raise RuntimeError(f"missing required authority {k}: {paths[k]}")
+    archive_hashes = verify_static_archives(paths)
 
     macha_freeze = out / "S174_REBUILD_FREEZE_V1.json"
     extract_macha_freeze(repo_root, macha_freeze)
 
     mcmd = manifest_command(args.python, repo_root, paths, out)
-    mrun = run_checked(mcmd, repo_root)
+    run_checked(mcmd, repo_root)
     manifest = out / "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv"
     require_hash(manifest, EXPECTED_MANIFEST_SHA256, "9,216-address replay manifest")
 
     pcmd = mapping_command(args.python, repo_root, paths, out, macha_freeze)
-    prun = run_checked(pcmd, repo_root)
+    run_checked(pcmd, repo_root)
     preflight_path = out / "TD_RELATIONAL_MAPPING_PREFLIGHT.json"
     preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
     expected_status = "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND"
@@ -169,6 +178,7 @@ def main() -> int:
             "sample_freeze_sha256": sha256_file(paths["sample_freeze"]),
             "provenance_sha256": sha256_file(paths["provenance"]),
             "collision_ledger_sha256": sha256_file(paths["collision_ledger"]),
+            **archive_hashes,
             "macha_freeze_sha256": sha256_file(macha_freeze),
             "replay_manifest_sha256": sha256_file(manifest),
         },
@@ -181,7 +191,7 @@ def main() -> int:
             "manifest_receipt": str(out / "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json"),
             "mapping_preflight": str(preflight_path),
         },
-        "next_gate": "G6 whole-cell raw library-size + detected-feature sentinels during separately authorized corrected materialization",
+        "next_gate": "separate owner decision for hardened G6/G7 corrected-value integrity checks",
         "real_value_replay_authorized": False,
         "training_authorized": False,
     }
