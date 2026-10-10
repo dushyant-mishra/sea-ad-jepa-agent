@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 from pathlib import Path
 
@@ -55,3 +56,18 @@ def test_unrelated_unmapped_feature_does_not_replace_required_gene():
     assert cov["resolved"] == 1
     assert cov["missing"] == []
     assert cov["excluded_columns"] == {"UNMAPPED": 1}
+
+
+def test_source_file_must_match_frozen_size_and_sha(tmp_path):
+    m = load_module()
+    p = tmp_path / "source.h5ad"
+    p.write_bytes(b"exact-source-bytes")
+    rec = {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+    assert m.verify_source_file(p, rec) == rec["sha256"]
+    p.write_bytes(b"changed-source--")  # same intent: byte drift must not be accepted
+    try:
+        m.verify_source_file(p, rec)
+    except RuntimeError as e:
+        assert "source" in str(e).lower() and ("size" in str(e).lower() or "sha" in str(e).lower())
+    else:
+        raise AssertionError("source-byte drift must fail closed")

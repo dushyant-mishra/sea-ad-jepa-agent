@@ -17,6 +17,7 @@ TD59_SLICES={(0,'Z'):(6144,6656),(0,'X'):(6656,7168),(0,'Y'):(7168,7680),(1,'Z')
 
 def sha_bytes(b:bytes)->str:return hashlib.sha256(b).hexdigest()
 def digest(s:str)->bytes:return hashlib.sha256(s.encode()).digest()
+def write_lf_bytes(path:Path,text:str)->None:Path(path).write_bytes(text.encode('utf-8'))
 def pair_hash(genes:np.ndarray,prefix:str,panel:int,view:str)->str:
     rows=[]
     for a in range(511):
@@ -60,7 +61,7 @@ def main()->int:
     role={p:(stage,panel,view) for lo,hi,stage,panel,view in RANGES for p in range(lo,hi+1)}; idx=recurrence.set_index('molecular_address_index'); out=[]
     for p,g in enumerate(ranked[:9216]):
         rr=idx.loc[int(g)]; stage,panel,view=role[p]; out.append({'rank_position':p,'molecular_address_index':int(g),'molecular_address_id':str(rr['molecular_address_id']),'symbol':str(rr['symbol']),'historical_stage':stage,'panel':panel,'view':view})
-    df=pd.DataFrame(out); a.manifest_out.parent.mkdir(parents=True,exist_ok=True); text=df.to_csv(index=False,lineterminator='\n'); a.manifest_out.write_text(text,encoding='utf-8'); msha=sha_bytes(text.encode()); validation['manifest_sha']=msha==EXPECTED_MANIFEST_SHA
+    df=pd.DataFrame(out); a.manifest_out.parent.mkdir(parents=True,exist_ok=True); text=df.to_csv(index=False,lineterminator='\n'); write_lf_bytes(a.manifest_out,text); msha=sha_bytes(text.encode()); validation['manifest_sha']=msha==EXPECTED_MANIFEST_SHA
     status='PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST' if all(validation.values()) else 'FAIL_REPLAY_MANIFEST_VALIDATION'
     receipt={'schema':'JEPA_TD_RELATIONAL_REPLAY_MANIFEST_RECEIPT_V1','status':status,'common_core_rows':len(common),'common_core_csv_sha256':sha_bytes(core_bytes),'replay_addresses':len(df),'manifest_sha256':msha,'validation':validation,'scope':'metadata/provenance only; no expression values read; no target/training authority'}
     a.receipt_out.write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n',encoding='utf-8'); print(json.dumps(receipt,sort_keys=True)); return 0 if status.startswith('PASS') else 2
