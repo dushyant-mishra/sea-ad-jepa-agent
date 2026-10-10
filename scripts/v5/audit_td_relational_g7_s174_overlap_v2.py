@@ -5,14 +5,16 @@ THIS FILE DOES NOT AUTHORIZE A VALUE READ.
 
 It requires the same separately created V2 runtime authorization and repaired V3 G4/G5 evidence as
 standalone G6 V2, plus a genuine G6 V2 PASS receipt bound to those same evidence/code bytes. It
-independently authenticates S174 shards and physical H5AD bytes, rereads only natural Sample-A
-HVS/SEA overlaps, and compares all exact 9,216 replay addresses with zero tolerance.
+independently authenticates the exact G1b PASS result, S174 shards and physical H5AD bytes, rereads
+only natural Sample-A HVS/SEA overlaps, and compares all exact 9,216 replay addresses with zero tolerance.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -38,6 +40,8 @@ G7_MISMATCH = "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"
 G7_NOT_ESTIMABLE = "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"
 G1B_FREEZE_SHA256 = "0513421e45865f290bddf8b0be56d64c7d9c5297bf0150ea6b9df286514b5f8f"
 G1B_PASS_COMMIT = "4ab8e2101f2e595d9a97df05517d6e672768ecec"
+G1B_FREEZE_REPO_PATH = "results/v77/S174_REBUILD_G1B_FREEZE_V1.json"
+G1B_RESULT_REPO_PATH = "results/v77/S174_REBUILD_G1B_RESULT_V1.json"
 
 N_ADDR = 41_238
 N_SAMPLE_A = 25_000
@@ -124,8 +128,39 @@ def exit_code_for_status(status: str) -> int:
     return 2
 
 
+def validate_g1b_result(result: dict) -> None:
+    if result.get("schema") != "S174_REBUILD_G1B_RESULT_V1":
+        raise RuntimeError("unexpected G1b result schema")
+    if result.get("G1b_pass") is not True:
+        raise RuntimeError("G1b result is not PASS")
+    freeze = result.get("freeze") or {}
+    if freeze.get("path") != G1B_FREEZE_REPO_PATH or freeze.get("sha256") != G1B_FREEZE_SHA256:
+        raise RuntimeError("G1b result freeze authority mismatch")
+    requirements = result.get("requirements") or {}
+    missing_or_false = [f"R{i}" for i in range(1, 8) if requirements.get(f"R{i}") is not True]
+    if missing_or_false:
+        raise RuntimeError(f"G1b result requirement(s) not PASS: {missing_or_false}")
+
+
+def load_g1b_result_from_pass_commit(anchor_path: Path) -> tuple[dict, str]:
+    root = common._git_root(Path(anchor_path))
+    spec = f"{G1B_PASS_COMMIT}:{G1B_RESULT_REPO_PATH}"
+    try:
+        raw = subprocess.check_output(
+            ["git", "-C", str(root), "show", spec],
+            stderr=subprocess.STDOUT,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise RuntimeError(f"cannot resolve exact G1b PASS result {spec}: {exc.output.decode(errors='replace')}") from exc
+    try:
+        result = json.loads(raw.decode("utf-8"))
+    except Exception as exc:
+        raise RuntimeError("exact G1b PASS result is not valid UTF-8 JSON") from exc
+    validate_g1b_result(result)
+    return result, hashlib.sha256(raw).hexdigest()
+
+
 def validate_s174_payload(data, indices, indptr, shape) -> None:
-    """Validate a shard whose values are actually being used for natural-overlap comparison."""
     shape = tuple(int(x) for x in shape)
     if len(shape) != 2 or shape[1] != N_ADDR:
         raise RuntimeError(f"S174 cache geometry must have exactly 41238 columns: {shape}")
@@ -161,7 +196,6 @@ def sparse_row_dict(matrix, row_index: int, addresses: set[int]) -> dict[int, in
 
 
 def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[str, dict[str, str]]]:
-    """Authenticate every shard by bytes and structure without globally inspecting count values."""
     shards = g1b_freeze.get("rebuilt_cache", {}).get("shards", {})
     if not shards:
         raise RuntimeError("G1b freeze contains no rebuilt cache shard authority")
@@ -298,6 +332,7 @@ def main() -> int:
     authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
     load_g6_pass_receipt(Path(args.g6_receipt), authority_trace)
 
+    g1b_result, g1b_result_sha256 = load_g1b_result_from_pass_commit(g7_path)
     if common.sha256_file(Path(args.macha_g1b_freeze)) != G1B_FREEZE_SHA256:
         raise RuntimeError("Macha G1b freeze SHA mismatch")
     g1b = json.loads(Path(args.macha_g1b_freeze).read_text(encoding="utf-8"))
@@ -407,6 +442,9 @@ def main() -> int:
         "status": status,
         "scope": "all natural HVS/SEA Sample-A x S174 cell overlaps; all exact 9216 replay addresses; raw integer counts; zero tolerance",
         "macha_g1b_pass_commit": G1B_PASS_COMMIT,
+        "macha_g1b_result_git_content_sha256": g1b_result_sha256,
+        "macha_g1b_result_schema": g1b_result["schema"],
+        "macha_g1b_requirements_all_pass": True,
         "macha_g1b_freeze_sha256": G1B_FREEZE_SHA256,
         "s174_verified_shards": int(verified_shards),
         "s174_verified_shard_sha256": shard_hashes,
