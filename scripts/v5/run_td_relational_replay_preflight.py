@@ -3,9 +3,10 @@
 
 This driver performs only provenance/identity work:
 1. regenerates and byte-validates the exact historical 9,216-address manifest;
-2. extracts the frozen Macha S174 asset inventory from its branch and hash-verifies it;
-3. runs the value-blind HVS/SEA-AD mapping + Sample-A row audit;
-4. writes a receipt in a fixed immutable namespace.
+2. exact-hashes the frozen calibration and TD historical archives;
+3. extracts the frozen Macha S174 asset inventory from its branch and hash-verifies it;
+4. runs the value-blind HVS/SEA-AD source-byte, mapping + Sample-A row audit;
+5. writes a receipt in a fixed immutable namespace.
 
 It never authorizes or reads real expression values. It stops after G4/G5.
 """
@@ -51,7 +52,7 @@ def canonical_paths(project_root: Path, stage81a3r_root: Path) -> dict[str, Path
 
 
 def default_output_dir(repo_root: Path) -> Path:
-    return Path(repo_root) / "results/target_discovery/td_relational_corrected_replay_20261007/preflight_v1"
+    return Path(repo_root) / "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened"
 
 
 def assert_fresh_output(out: Path) -> None:
@@ -171,9 +172,9 @@ def main() -> int:
         raise RuntimeError(f"mapping preflight did not PASS: {preflight.get('status')}")
 
     receipt = {
-        "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V1",
+        "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V2",
         "status": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
-        "scope": "G1-G5 only; no count arrays read; no real-value replay/training authority",
+        "scope": "G1-G5 only; exact archive/source bytes + identity/mapping; no count arrays read; no real-value replay/training authority",
         "inputs": {
             "sample_freeze_sha256": sha256_file(paths["sample_freeze"]),
             "provenance_sha256": sha256_file(paths["provenance"]),
@@ -182,6 +183,8 @@ def main() -> int:
             "macha_freeze_sha256": sha256_file(macha_freeze),
             "replay_manifest_sha256": sha256_file(manifest),
         },
+        "mapping_receipt_schema": preflight.get("schema"),
+        "mapping_checks": preflight.get("checks"),
         "commands": {
             "manifest": mcmd,
             "mapping_preflight": pcmd,
@@ -191,7 +194,7 @@ def main() -> int:
             "manifest_receipt": str(out / "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json"),
             "mapping_preflight": str(preflight_path),
         },
-        "next_gate": "separate owner decision for hardened G6/G7 corrected-value integrity checks",
+        "next_gate": "separate owner decision for hardened V2 G6/G7 corrected-value integrity checks",
         "real_value_replay_authorized": False,
         "training_authorized": False,
     }
