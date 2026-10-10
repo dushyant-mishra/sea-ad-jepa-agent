@@ -1,0 +1,51 @@
+{
+  "schema": "JEPA_TD_TARGET_DISCOVERY_FRONTIER_POST_PR259_V1",
+  "date": "2026-10-10",
+  "g4g5": {
+    "status": "PASS_VALUE_BLIND_TECHNICAL_DATA_INTEGRITY_ONLY",
+    "pr": 259,
+    "execution_record_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
+    "executed_code_sha": "bf253a4dd62d943398f9ff59ed8b1e74777140a5",
+    "driver_receipt_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+    "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "expression_values_read": false
+  },
+  "next": {
+    "pr": 258,
+    "head": "c5d9c64cf42dc8c12d91672458689c0a0a67f472",
+    "action": "QUALIFICATION_ONLY_AGAINST_EXACT_PR259_RECEIPT_BYTES",
+    "g6_g7_execution_forbidden": true,
+    "value_authorization_creation_forbidden": true
+  },
+  "future_sequence": [
+    "qualify PR258/successor focused tests and exact PR259 receipt compatibility",
+    "owner review",
+    "separate explicit owner authorization for G6/G7 integrity scope only",
+    "run G6; any mismatch stops",
+    "run G7; mismatch or NOT_ESTIMABLE stops for adjudication",
+    "review G6/G7 receipts",
+    "second separate owner authorization for corrected biological replay",
+    "replay all already-frozen TD56, TD57B, TD57C, TD59 objects under their original internal rules",
+    "stop before target selection, TD60, or training"
+  ],
+  "corrected_replay_prefreeze": {
+    "audit_branch": "review/td-g6g7-preauthorization-hardening-20261009",
+    "science_spec": "docs/superpowers/specs/2026-10-10-td-corrected-biological-replay-prefreeze.md",
+    "machine_prefreeze": "custody/target_discovery/TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_20261010.json",
+    "adapter_plan": "docs/superpowers/plans/2026-10-10-td-corrected-replay-adapter-qualification.md",
+    "execution_authority_created": false
+  },
+  "historical_state": {
+    "TD56": "historical PASS evidence requiring corrected replay",
+    "TD57B": "historical 24/24 PASS evidence requiring corrected replay",
+    "TD57C": "historical prospective FAIL remains immutable",
+    "TD59": "historical 24/24 p95 PASS, 22/24 null-max diagnostic, requiring corrected replay",
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+  },
+  "target_selected": false,
+  "representation_selected": false,
+  "training_authorized": false,
+  "stage4_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
