@@ -1,0 +1,204 @@
+{
+  "authority_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "code": {
+    "code_blobs_at_head": {
+      "scripts/v5/audit_td_relational_replay_mapping_preflight.py": "51772241efcb14192bcbfd617ce22de3f73259dc",
+      "scripts/v5/build_td_relational_replay_manifest.py": "f7a4db00fd41d8263bb61aabc7630c66d4fddb3f",
+      "scripts/v5/run_td_relational_replay_preflight.py": "ca6eef8bd09e85dc674a6ddf93f76aa9e06b0e35"
+    },
+    "execution_branch": "exec/td-relational-g4g5-self-audit-hardened-20261010",
+    "execution_code_sha": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "git_core_autocrlf_effective": "false",
+    "git_core_autocrlf_note": "repo-local false overrides system true",
+    "gitattributes_rules_matching_namespace": [],
+    "head_before_tests": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "macha_freeze_blob": "a80a9fa1c0433659fc32a6c622427dbcbdf0bbe6",
+    "macha_ref_local": "750cb83c8c0535cc67a70d58b62db5607bd7d01e",
+    "macha_ref_origin": "f88338713b173edb3acbc90662e607ce45b5878b",
+    "pr248_delta_from_code_freeze": [
+      "docs/agent/TD_RELATIONAL_G4G5_POST_CRLF_REPAIR_EXECUTION_20261009.md"
+    ],
+    "pr248_head_at_fetch": "1000106beed41bdba5d5e57f2947664e435435b1",
+    "status_short_after_driver": "",
+    "status_short_before_tests": "",
+    "worktree": "D:/jepa_wt_td_g4g5_v3_20261010"
+  },
+  "do_not_merge": true,
+  "driver": {
+    "any_expression_array_opened": false,
+    "any_h5ad_opened": false,
+    "command": "python scripts/v5/run_td_relational_replay_preflight.py --output-dir results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened",
+    "cwd": "D:/jepa_wt_td_g4g5_v3_20261010",
+    "end_utc": "2026-10-10T05:55:42.213195400Z",
+    "exit_code": 1,
+    "gate_inference_note": "intermediate gate PASS results are inferred from the driver's sequential code path (each gate raises on failure) plus the files present; the driver prints no per-gate log",
+    "gates": [
+      {
+        "result": "PASS",
+        "step": "fresh_namespace_check"
+      },
+      {
+        "result": "PASS",
+        "sha256": {
+          "collision_ledger": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+          "provenance": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+          "sample_freeze": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+        },
+        "step": "sample_freeze_provenance_collision_hash_gates"
+      },
+      {
+        "result": "PASS",
+        "sha256": {
+          "calibration_zip": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+          "td_artifacts_zip": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
+        },
+        "step": "static_archive_hash_gates"
+      },
+      {
+        "result": "PASS",
+        "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+        "step": "macha_freeze_extract_and_hash"
+      },
+      {
+        "builder_schema": "JEPA_TD_RELATIONAL_REPLAY_MANIFEST_RECEIPT_V1",
+        "builder_status": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+        "builder_validations_total": 31,
+        "builder_validations_true": 31,
+        "common_core_rows": 17186,
+        "last_fully_completed_gate": true,
+        "manifest_crlf_pairs": 0,
+        "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+        "replay_addresses": 9216,
+        "result": "PASS",
+        "step": "manifest_builder_and_driver_manifest_hash_gate"
+      },
+      {
+        "completed_substeps": [
+          "five authority SHA checks inside load_authorities",
+          "replay manifest geometry 9216 unique"
+        ],
+        "error": "RuntimeError: Sample-A geometry mismatch",
+        "failed_at": "audit_td_relational_replay_mapping_preflight.py:129 load_authorities, after the line-127 selection s['sample'].eq('A'), before any H5AD is hashed or opened",
+        "result": "FAIL",
+        "step": "g4_g5_mapping_audit"
+      }
+    ],
+    "mapping_began": "mapping-audit subprocess started and loaded authority CSV/JSON tables; no H5AD hashed or opened, no address mapping, no cell-row comparison",
+    "start_utc": "2026-10-10T05:53:40.501516400Z",
+    "stderr": "Traceback (most recent call last):\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 208, in <module>\r\n    raise SystemExit(main())\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 167, in main\r\n    run_checked(pcmd, repo_root)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\run_td_relational_replay_preflight.py\", line 91, in run_checked\r\n    raise RuntimeError(\r\nRuntimeError: command failed\r\nCMD: C:\\Users\\dushy\\anaconda3\\python.exe D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py --replay-manifest results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv --sample-freeze D:\\Jepa project\\exports\\foundation_corpus_discovery_v1\\FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv --provenance D:\\Jepa project\\results\\v4\\stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz --collision-ledger D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz --macha-freeze results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\S174_REBUILD_FREEZE_V1.json --source-root D:\\Jepa project --out results\\target_discovery\\td_relational_corrected_replay_20261009\\preflight_v3_self_audit_hardened\\TD_RELATIONAL_MAPPING_PREFLIGHT.json\r\nSTDOUT:\r\n\r\nSTDERR:\r\nTraceback (most recent call last):\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 248, in <module>\r\n    raise SystemExit(main())\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 239, in main\r\n    rec = audit(args)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 139, in audit\r\n    checks, replay, sample_a, prov, collision, freeze = load_authorities(args)\r\n  File \"D:\\jepa_wt_td_g4g5_v3_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py\", line 129, in load_authorities\r\n    raise RuntimeError(\"Sample-A geometry mismatch\")\r\nRuntimeError: Sample-A geometry mismatch\r\n\r\n",
+    "stdout": ""
+  },
+  "environment": {
+    "h5py": "3.2.1",
+    "hdf5": "1.10.6",
+    "launch_shell": "Git Bash",
+    "numpy": "1.24.2",
+    "os": "Windows 11 Pro 10.0.26200 (platform.platform()=Windows-10-10.0.26200-SP0)",
+    "packages_installed_or_upgraded": false,
+    "pandas": "1.5.3",
+    "pytest": "6.2.4",
+    "python": "3.9.7 (default, Sep 16 2021, 16:59:28) [MSC v.1916 64 bit (AMD64)]",
+    "python_executable": "C:/Users/dushy/anaconda3/python.exe",
+    "scipy": "1.10.1"
+  },
+  "known_blockers_not_rederived_here": {
+    "class": "CITED_FROM_PR252_SECTION_7_AND_COORDINATOR_VERIFICATION__NOT_RECOMPUTED_IN_THIS_RUN",
+    "decision_owner": "deciding lane; no repair adopted here",
+    "label_literal": "audit line 127 selects sample == 'A'; frozen Sample-A rows are labelled A_NATURAL_MIXTURE",
+    "latent_second_blocker": "Sample A spans 34 of the 35 S174-frozen H5ADs, so all_35_h5_source_sha256_verified cannot be true under a label-only fix"
+  },
+  "namespace": {
+    "driver_receipt_written": false,
+    "files_after_failure": {
+      "JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv": {
+        "bytes": 414703,
+        "crlf_pairs": 0,
+        "equals_pr252_committed_bytes": true,
+        "git_blob": "b6bb27b65a29fb253a8155440e3f0747a56e9437",
+        "sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660"
+      },
+      "JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json": {
+        "bytes": 1535,
+        "crlf_pairs": 42,
+        "equals_pr252_committed_bytes": true,
+        "git_blob": "b128c39af2c178db639e2b76ff8cdf5e584fabac",
+        "sha256": "6d9d5103dab72c9c2e6354fe2edecba7e5419ce5cfcdafe06e458c9a76605c13"
+      },
+      "S174_REBUILD_FREEZE_V1.json": {
+        "bytes": 39276,
+        "crlf_pairs": 0,
+        "equals_pr252_committed_bytes": true,
+        "git_blob": "a80a9fa1c0433659fc32a6c622427dbcbdf0bbe6",
+        "sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
+      }
+    },
+    "mapping_receipt_written": false,
+    "path": "results/target_discovery/td_relational_corrected_replay_20261009/preflight_v3_self_audit_hardened",
+    "precheck": "ABSENT (parent results/target_discovery/td_relational_corrected_replay_20261009 also absent in the new worktree); rechecked absent after tests",
+    "status_after": "SPENT_NON_EMPTY__PRESERVED_UNCHANGED"
+  },
+  "not_done": [
+    "code/test/hash/path/input/collision/mapping-policy change",
+    "rerun or alternate namespace",
+    "G6",
+    "G7",
+    "value-read authorization JSON",
+    "old V1 authorization token",
+    "TD56/TD57B/TD57C/TD59/TD60 replay",
+    "training",
+    "post-failure diagnosis on frozen inputs (already recorded in PR #252)"
+  ],
+  "preserved_untouched": [
+    "PR #252 / branch exec/td-relational-g4g5-self-audit-hardened-20261009 / worktree D:/jepa_wt_td_g4g5_v3_20261009 (read-only git show and log-file reads only)",
+    "PR #245 / bf6ddda4e1b020fdb959812036b957c40166fede and its namespace/manifest",
+    "PR #251 (not executed)",
+    "worktrees D:/jepa_wt_v79_bayes_20261009, D:/jepa_wt_td_g4g5_20261009, D:/jepa_wt_s174_custody_20261009, D:/jepa_wt_s174_rebuild_20261007"
+  ],
+  "raw_logs_outside_repo": {
+    "dir": "D:/jepa_td_g4g5_v3_20261010_logs",
+    "sha256": {
+      "driver_command.txt": "9f1053d906558df0e29c17b74c9609950d1644535c9462b8ba5adb990dc11b67",
+      "driver_cwd.txt": "9682f65e5303605c2bb16b3da5460d702eac4373dba9358ffe71c62274a62ee5",
+      "driver_end_utc.txt": "7a3925f0fd1ad7d04da2d92d60e718390d703f89be5a27c284cc92e148ce7d3d",
+      "driver_exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "driver_start_utc.txt": "f97959c91905a865bf5beedf836da6bdad4d8e50407e6e9d6ba3c9345745bdf5",
+      "driver_stderr.log": "b9c4689061849fa549ca41cf34d30a4f4ac95b5e9b009e9312540249613d12a1",
+      "driver_stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pytest.log": "d711836701836d2259bf373642fa640f531084e2acee9c5979783a7426a99269",
+      "pytest_end_utc.txt": "359e6500fd76330252b0656fdb50ebeb2d8e4541b19b7ac8afb40e11003b75ed",
+      "pytest_exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "pytest_start_utc.txt": "4b7ffb5bfc0b31150aa0ec29302c50c58e14cdb9804e0346313b0385da0c1f9d"
+    }
+  },
+  "recorded_terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING_ENTRY__SAMPLE_A_GEOMETRY_MISMATCH__LABEL_LITERAL_A_VS_A_NATURAL_MIXTURE",
+  "recorded_terminal_note": "assigned by this execution record; the driver writes no failure receipt. Same terminal as PR #252.",
+  "reproduces_pr252": {
+    "namespace_file_count_equal": true,
+    "namespace_files_byte_identical": true,
+    "pr": 252,
+    "pr252_commit": "636085510d6fa56ec62ec03dbcc6c97958faa058",
+    "same_exception": "RuntimeError: Sample-A geometry mismatch",
+    "same_raise_site": "scripts/v5/audit_td_relational_replay_mapping_preflight.py:129 load_authorities",
+    "stderr_identical_after_worktree_path_normalization": true,
+    "stderr_normalization": "replace b'jepa_wt_td_g4g5_v3_20261010' with b'jepa_wt_td_g4g5_v3_20261009' (8 occurrences); no other byte differs",
+    "stderr_sha256_pr252": "1bee510e64d34a23dc50e7c9aa316bb6d75e9a73bdde28352d64e47de50c3b3f",
+    "stderr_sha256_this_run": "b9c4689061849fa549ca41cf34d30a4f4ac95b5e9b009e9312540249613d12a1",
+    "verdict": "REPRODUCED_BYTE_FOR_BYTE (namespace files); trace identical modulo worktree directory name"
+  },
+  "schema": "JEPA_TD_RELATIONAL_G4G5_HARDENED_EXECUTION_RECORD_V1",
+  "tests": {
+    "command": "python -m pytest -q tests/v5/test_build_td_relational_replay_manifest.py tests/v5/test_run_td_relational_replay_preflight.py tests/v5/test_audit_td_relational_replay_mapping_preflight.py",
+    "coverage_gap": "no test runs load_authorities/audit against the real frozen Sample-A CSV; mapping tests are synthetic-fixture only",
+    "end_utc": "2026-10-10T05:53:14Z",
+    "env_TD_CALIBRATION_ZIP_and_TD_ARTIFACTS_ZIP": "unset",
+    "evidence_class": "LOCAL_EXECUTION_NOT_CI",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 12,
+    "skip_reason_source": "test source line 45: pytest.skip('external replay authorities not supplied') when TD_CALIBRATION_ZIP or TD_ARTIFACTS_ZIP is unset; no supplementary -rs run was made in this execution",
+    "skipped": 1,
+    "skipped_test": "tests/v5/test_build_td_relational_replay_manifest.py::test_rebuild_manifest_against_external_authorities",
+    "start_utc": "2026-10-10T05:52:49Z",
+    "stdout": "..s..........                                                            [100%]\r\n============================== warnings summary ===============================\r\nC:\\Users\\dushy\\anaconda3\\lib\\site-packages\\pyreadline\\py3k_compat.py:8\r\n  C:\\Users\\dushy\\anaconda3\\lib\\site-packages\\pyreadline\\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\r\n    return isinstance(x, collections.Callable)\r\n\r\ntests/v5/test_build_td_relational_replay_manifest.py::test_pair_hash_is_deterministic\r\ntests/v5/test_build_td_relational_replay_manifest.py::test_pair_hash_is_deterministic\r\n  C:\\Users\\dushy\\anaconda3\\lib\\site-packages\\numexpr\\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\r\n    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/warnings.html\r\n12 passed, 1 skipped, 3 warnings in 14.78s\r\n"
+  }
+}
