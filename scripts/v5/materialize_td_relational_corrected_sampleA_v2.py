@@ -64,6 +64,11 @@ TD50_SHA = {
     "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
     "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
 }
+INPUT_AUTHORITY_HASHES = {
+    **common.EXPECTED_INPUT_HASHES,
+    "historical_csr_sha256": dict(HIST_CSR_SHA),
+    "td50_member_sha256": dict(TD50_SHA),
+}
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -74,6 +79,35 @@ def assert_empty_output(out: Path) -> None:
     out = Path(out)
     if out.exists() and any(out.iterdir()):
         raise RuntimeError(f"immutable output namespace is not empty; refusing overwrite: {out}")
+
+
+def begin_namespace(out: Path, authority_trace: dict) -> Path:
+    """Spend the namespace immediately so every later failure leaves durable evidence."""
+    out = Path(out)
+    assert_empty_output(out)
+    if not out.exists():
+        out.mkdir(parents=True, exist_ok=False)
+    marker = out / "G6_EXECUTION_START.json"
+    if marker.exists():
+        raise RuntimeError(f"G6 execution-start marker already exists: {marker}")
+    marker.write_text(
+        json.dumps(
+            {
+                "schema": "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1",
+                "status": "STARTED_NOT_A_PASS",
+                "authority_trace": authority_trace,
+                "biological_replay_authorized": False,
+                "target_selection_authorized": False,
+                "td60_authorized": False,
+                "training_authorized": False,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return marker
 
 
 def h5_strings(group, name: str) -> np.ndarray:
@@ -265,6 +299,7 @@ def _write_g6_stop(out: Path, status: str, *, authority_trace: dict, mismatches:
         "mismatch_count": len(mismatches),
         "preview": mismatches[:50],
         "authority_trace": authority_trace,
+        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
@@ -294,9 +329,7 @@ def main() -> int:
     authority_trace = _authority_trace(args, auth, g6_path, g7_path)
 
     out = Path(args.output_dir)
-    assert_empty_output(out)
-    if not out.exists():
-        out.mkdir(parents=True, exist_ok=False)
+    begin_namespace(out, authority_trace)
 
     replay, sample_a, provenance, collision, freeze = load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
@@ -341,7 +374,6 @@ def main() -> int:
         ].astype(str))
         src = source_root / str(matrix["source"]["path"])
 
-        # TOCTOU boundary: this exact SHA verification occurs immediately before opening H5AD values.
         verified_source_shas[mid] = common.verify_source_file(src, matrix["source"])
         with h5py.File(src, "r") as handle:
             var_ids = h5_strings(handle["var"], VAR_ID_COLUMN[study])
@@ -391,7 +423,6 @@ def main() -> int:
         _write_g6_stop(out, G6_MISMATCH, authority_trace=authority_trace, mismatches=g6_mismatches)
         raise RuntimeError(f"G6 source-library mismatch in {len(g6_mismatches)} rows")
 
-    # NPH52 exact historical clean-path pass-through after archive/CSR authentication.
     for row in sample_a[sample_a.source.eq("NPH52")].itertuples(index=False):
         sample_row = int(row.sample_row)
         grow = int(row.global_row)
@@ -437,6 +468,7 @@ def main() -> int:
         "source_library_exact_rows": N_SAMPLE_A,
         "verified_source_h5ad_sha256": verified_source_shas,
         "authority_trace": authority_trace,
+        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
         "historical_detected_is_diagnostic_only": True,
         "detected_changed_rows": int(np.sum(detected_historical != detected_corrected)),
         "values_sha256": common.sha256_file(values_path),
@@ -461,6 +493,7 @@ def main() -> int:
         "verified_source_h5ad_sha256": verified_source_shas,
         "mapping_diagnostics": mapping_diagnostics,
         "authority_trace": authority_trace,
+        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
         "g6_receipt": "G6_RECEIPT.json",
         "g7_status": "PENDING_SEPARATE_INDEPENDENT_CROSSCHECK",
         "biological_replay_authorized": False,
