@@ -1,0 +1,78 @@
+{
+  "schema": "V79_FACTORIAL_NATIVE_AUDIT_STATE_V1",
+  "date": "2026-10-10",
+  "lane": "synthetic_world_factorial_biology_observation",
+  "implementation_pr": 253,
+  "implementation_branch": "design/v79-factorial-biology-observer-20261010",
+  "implementation_pr_head_before_audit": "1a0ab6e1108af924ca13e81caa3c70f3101d251c",
+  "frozen_v78_base": "e959d9a732698ae9a41e8cb1f6c10052d7390326",
+  "parent_localization_pr": 250,
+  "parent_localization_head": "62a1ff8cd93bd4250cd6ca11c93c7f3e9e6d6123",
+  "local_native_tip": "f278e1699e2e05b87df929f62597dfeba6ea53aa",
+  "local_git_history": [
+    "f278e16 (HEAD -> design-v79-native) fix: compact and authenticate V79 preexecution authorities",
+    "557832c docs: freeze V79 factorial tournament preexecution",
+    "64560c2 fix: harden V79 custody and memory use",
+    "c4ce3da fix: harden V79 world custody and donor view",
+    "88bdcfc feat: support identity-scrubbed abundance baseline",
+    "776a627 feat: add fail-closed V79 factorial tournament",
+    "cf806a7 feat: score V79 factorial synthetic worlds",
+    "aab7897 feat: build V79 factorial synthetic worlds",
+    "8b97f31 feat: add V79 observation operator",
+    "61fc060 feat: add anonymous V79 hierarchical biology"
+  ],
+  "verification": {
+    "focused_tests": {
+      "command": "pytest tests/test_v79_hierarchical_biology_v1.py tests/test_v79_observation_operator_v1.py tests/test_v79_factorial_worlds_v1.py tests/test_v79_factorial_scoring_v1.py tests/test_v79_factorial_gate_v1.py -q",
+      "passed": 84,
+      "failed": 0
+    },
+    "preexecution_replay": {
+      "status": "READY",
+      "blockers": [],
+      "training_authorized": false,
+      "scientific_arm_outputs_generated": false
+    }
+  },
+  "manifest": {
+    "schema": "V79_FACTORIAL_ARM_MANIFEST_V1",
+    "semantic_sha256": "f2285bb82f6552e98dee1472d4dd2b0a3e6fa3fab923abffd8e94da7713ab892",
+    "arms": ["H0", "H1", "H2", "H3", "C_OBS", "C_BIO"],
+    "cells": 4000,
+    "synthetic_donors": 2
+  },
+  "file_sha256": {
+    "scripts/v79/v79_hierarchical_biology.py": "8281ae455f8765d1df39a3250152e6bcf55e01d4a2d58c6ce95e774694eaadd7",
+    "scripts/v79/v79_observation_operator.py": "cc6f25011c89acea2a5bc8e5ae9825299ea473d4de893932825d38e37756904d",
+    "scripts/v79/build_v79_factorial_worlds.py": "1a100066f96c3e3a05498eda609b17d9e5fcc82a7c3cf192dbaebd5b7c45bc11",
+    "scripts/v79/score_v79_factorial_worlds.py": "e0100e29e21a49efba59f8c0cd720be2f9836fb558d62c9878c661aefcf3dc26",
+    "scripts/v79/run_v79_factorial_tournament.py": "48503668fc9c8c27cc2e06856e8ffa28e8b479895d8593da6fa7b05df30e5cda",
+    "tests/test_v79_hierarchical_biology_v1.py": "2a8fd00a18a6e5201a322584757696287de87b0c9f93c6236630b2822539a1d7",
+    "tests/test_v79_observation_operator_v1.py": "0c16fedd7bcee52e57ba5c7f2a3174c5eafe85ad58d47a4d13a782ddf7d33694",
+    "tests/test_v79_factorial_worlds_v1.py": "0fe61311e4c7e256ce0104521e0d119e748aba0b07108e37bde41f08b39f0715",
+    "tests/test_v79_factorial_scoring_v1.py": "bba5b44994eeaf82865dce3acd4b636d41bc4a64582e6e5fdae6fe27fe1a6384",
+    "tests/test_v79_factorial_gate_v1.py": "4a4c9a1614afee7c62c54c1133eabda2265065cb132672196c01913778dce0aa",
+    "docs/agent/V79_FACTORIAL_ARM_CONFIG_20261010.json": "d6976905cccef68b2c637d14eeb8f23ab7a782bb2e79294e69de7532e049690a",
+    "docs/agent/V79_FACTORIAL_CUSTODY_20261010.json": "7693fd01f277bdc58312f8f70f75ebc09109a19acd33d02143eb44eefdb59769",
+    "docs/agent/V79_FACTORIAL_TOURNAMENT_PREEXECUTION_20261010.md": "7cd721b2c4c817bb7f34bb3e740a09449fe4b963a7ac859d466d675c3ca2daac",
+    "results/v79_factorial/V79_BIOLOGY_AUTHORITY_V1.json": "a5a9094930672ecdfb38aca6caca76e5654a58e00c2746f24c035468fe554d0a",
+    "results/v79_factorial/V79_OBSERVATION_AUTHORITY_V1.json": "8036c4b007235c6a6858e4e282259b571d7d1e583899157f0e4dac1778453fc1",
+    "results/v79_factorial/V79_FACTORIAL_ARM_MANIFEST_V1.json": "3ac220dab3db96fe34e799e5ac19352d93cd9cdcec367c72528ffe7175040dec",
+    "results/v79_factorial/V79_FACTORIAL_PREEXECUTION_GATE_V1.json": "7cd8105882dcebc0e895a68ccaca904db32cc5ed0cdbe8b5295b625871f21143"
+  },
+  "external_custody": {
+    "canonical_address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "repaired_v78_marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+    "repaired_s174_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f"
+  },
+  "boundaries": {
+    "training_authorized": false,
+    "scientific_tournament_executed": false,
+    "v78_retuning_authorized": false,
+    "test_or_morabito_accessed": false,
+    "pathology_accessed": false,
+    "target_discovery_modified": false,
+    "macha_bayesian_lane_modified": false
+  },
+  "parallel_lane_note": "Macha Bayesian geometry work remains separate; no intermediate Bayesian sampler/recovery outputs are consumed by this frozen V79 preexecution package. Target discovery remains separate and untouched."
+}
