@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """G7 exact cross-check for corrected TD Sample-A reads against Macha's G1b-authorized S174 cache.
 
-THIS SCRIPT DOES NOT AUTHORIZE A VALUE READ. It requires the same exact-scope value authorization
+THIS SCRIPT DOES NOT AUTHORIZE A VALUE READ. It requires the same exact-scope V2 value authorization
 as the corrected Sample-A materializer and an exact PASS value-blind preflight receipt.
 
 It uses every natural HVS/SEA-AD cell-ID overlap between historical Sample-A and the frozen S174
 cache. It never selects extra cells to create overlap. Raw integer counts on every frozen 9,216
-address are compared with zero tolerance. If there is no natural overlap, the result is explicitly
-NOT_ESTIMABLE and returns a non-success process exit.
+address are compared with zero tolerance. S174 cache geometry is the full 41,238 canonical-address
+space; the later 14,417 analysis universe is not this cache's storage geometry. If there is no natural
+overlap, the result is explicitly NOT_ESTIMABLE and returns a non-success process exit.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -43,8 +45,8 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
 
 def raw_integer(v0) -> int:
     x = float(v0)
-    if not (x >= 0.0):
-        raise RuntimeError("negative or non-finite raw reference count")
+    if not math.isfinite(x) or x < 0.0:
+        raise RuntimeError(f"negative or non-finite raw S174 reference count: {x!r}")
     v = int(x)
     if float(v) != x:
         raise RuntimeError(f"non-integer value encountered in raw S174 reference count: {x!r}")
@@ -155,6 +157,8 @@ def main() -> int:
 
         z = np.load(counts_path, allow_pickle=False)
         Xs = sparse.csr_matrix((z["data"], z["indices"], z["indptr"]), shape=tuple(z["shape"]))
+        if Xs.shape[1] != M.N_ADDR:
+            raise RuntimeError(f"S174 cache address geometry mismatch for {stem}: {Xs.shape}")
         fprov = prov[prov.source_dataset_id.astype(str).eq(M.FAMILY[study])]
         id_to_address = dict(zip(fprov.source_exact_ensembl_id.astype(str), fprov.molecular_address_index.astype(int)))
         ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(str(mid)), "source_exact_ensembl_id"].astype(str))
@@ -187,8 +191,9 @@ def main() -> int:
     rec = {
         "schema": "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2",
         "status": status,
-        "scope": "all natural HVS/SEA Sample-A x S174 cell overlaps; all exact 9216 replay addresses; raw integer counts; zero tolerance",
-        "materializer_entrypoint": "materialize_td_relational_corrected_sampleA_v2.py",
+        "scope": "all natural HVS/SEA Sample-A x S174 cell overlaps; all exact 9216 replay addresses in the full 41238-address S174 cache; raw integer counts; zero tolerance",
+        "materializer_entrypoint": M.REQUIRED_G6_ENTRYPOINT,
+        "value_authorization_schema": M.VALUE_AUTH_SCHEMA,
         "macha_g1b_pass_commit": G1B_PASS_COMMIT,
         "macha_g1b_freeze_sha256": G1B_FREEZE_SHA256,
         "s174_verified_shards": verified_shards,
