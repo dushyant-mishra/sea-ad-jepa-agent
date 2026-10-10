@@ -31,11 +31,16 @@ For block margin `y_ts`:
 
 `y_ts ~ StudentT(nu=4, loc=mu_t + beta_s, scale=sigma)`
 
+with source effects constrained to sum to zero across HVS/NPH52/SEA_AD.
+
 Priors:
 
 - `mu_t ~ Normal(0, k_mu)`;
-- `beta_s ~ Normal(0, k_source)` with a zero-sum centering transform across the three sources;
+- `tau_source ~ HalfNormal(k_source)`;
+- centered source effects `beta_s | tau_source` follow the zero-sum conditional Gaussian induced by three exchangeable `Normal(0, tau_source)` effects;
 - `sigma ~ HalfNormal(k_sigma)`.
+
+`tau_source` is therefore an inferred source-heterogeneity scale, not a fixed source spread. This is required by the parent preregistration's source-heterogeneity posterior and gives the new-source posterior predictive distribution a direct meaning: for every posterior draw, a new source effect is drawn as `Normal(0, tau_source)`.
 
 The source centering constraint prevents the global location from being duplicated between stage and source effects.
 
@@ -63,7 +68,7 @@ Frozen sampler settings:
 - retained posterior draws total: 8,000;
 - proposal adaptation occurs during burn-in only, targeting acceptance 0.20–0.50;
 - no adaptation after burn-in;
-- initialization at zero stage/source effects and log-sigma 0;
+- initialization at zero stage/source effects, `log(tau_source)=0`, and `log(sigma)=0`;
 - numerical failure/non-finite density is a calibration failure.
 
 The sampler is a method-spike implementation, not production Bayesian infrastructure.
@@ -74,11 +79,12 @@ For each stage `t`:
 
 - `P(mu_t > 0)`;
 - median and central 90% interval of `mu_t`;
-- posterior predictive `P(y_new_source,t > 0)` where a new source effect is drawn from the fitted source-effect empirical posterior geometry and Student-t residual noise is added.
+- posterior predictive `P(y_new_source,t > 0)` where `beta_new ~ Normal(0, tau_source)` and Student-t residual noise is added per posterior draw.
 
-For the observed-source set:
+For source heterogeneity:
 
-- posterior source-effect spread;
+- posterior median and central 90% interval of `tau_source`;
+- posterior observed-source effects;
 - posterior predictive sign-consistency across three synthetic new source draws.
 
 No target-level quantity exists.
