@@ -103,6 +103,34 @@ def parse_td57c_result_markdown(text: str, source_path: str) -> list[dict[str, A
     return rows
 
 
+def expected_case_identities() -> set[str]:
+    ids: set[str] = set()
+    for stage in ("TD57B", "TD59"):
+        for source in ("HVS", "NPH52", "SEA_AD"):
+            for panel in (0, 1):
+                for split in (0, 1):
+                    for half in (0, 1):
+                        ids.add(f"{stage}::{source}::P{panel}::S{split}::H{half}")
+    for split in (0, 1):
+        for half in (0, 1):
+            ids.add(f"TD57C::HVS::P0::S{split}::H{half}")
+    return ids
+
+
+def validate_expected_topology(rows: list[dict[str, Any]]) -> None:
+    actual = [str(r["case_identity"]) for r in rows]
+    if len(actual) != len(set(actual)):
+        raise ValueError("historical case topology mismatch: duplicate case identity")
+    expected = expected_case_identities()
+    if set(actual) != expected:
+        missing = sorted(expected - set(actual))
+        extra = sorted(set(actual) - expected)
+        raise ValueError(
+            f"historical case topology mismatch: expected {len(expected)} cases, got {len(actual)}; "
+            f"missing={missing[:5]} extra={extra[:5]}"
+        )
+
+
 def aggregate_stage_source_blocks(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen: set[str] = set()
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -188,6 +216,7 @@ def main() -> int:
     rows.extend(parse_case_table(b_text, "TD57B", str(b_path.relative_to(root))))
     rows.extend(parse_td57c_result_markdown(c_text, str(c_path.relative_to(root))))
     rows.extend(parse_case_table(m_text, "TD59", str(m_path.relative_to(root))))
+    validate_expected_topology(rows)
     blocks = aggregate_stage_source_blocks(rows)
     receipt = build_receipt(rows)
     receipt["source_sha256"] = {
