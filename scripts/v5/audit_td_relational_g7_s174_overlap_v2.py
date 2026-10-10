@@ -4,8 +4,9 @@
 THIS FILE DOES NOT AUTHORIZE A VALUE READ.
 
 It requires the same separately created V2 runtime authorization and repaired V3 G4/G5 evidence as
-standalone G6 V2. It independently authenticates S174 shards and physical H5AD bytes, rereads only
-natural Sample-A HVS/SEA overlaps, and compares all exact 9,216 replay addresses with zero tolerance.
+standalone G6 V2, plus a genuine G6 V2 PASS receipt bound to those same evidence/code bytes. It
+independently authenticates S174 shards and physical H5AD bytes, rereads only natural Sample-A
+HVS/SEA overlaps, and compares all exact 9,216 replay addresses with zero tolerance.
 """
 from __future__ import annotations
 
@@ -30,6 +31,8 @@ def _load_common():
 common = _load_common()
 
 G7_SCHEMA = "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2"
+G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
+G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
 G7_PASS = "PASS_TD_G7_S174_EXACT_OVERLAP"
 G7_MISMATCH = "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"
 G7_NOT_ESTIMABLE = "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"
@@ -122,6 +125,7 @@ def exit_code_for_status(status: str) -> int:
 
 
 def validate_s174_payload(data, indices, indptr, shape) -> None:
+    """Validate a shard whose values are actually being used for natural-overlap comparison."""
     shape = tuple(int(x) for x in shape)
     if len(shape) != 2 or shape[1] != N_ADDR:
         raise RuntimeError(f"S174 cache geometry must have exactly 41238 columns: {shape}")
@@ -157,6 +161,7 @@ def sparse_row_dict(matrix, row_index: int, addresses: set[int]) -> dict[int, in
 
 
 def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[str, dict[str, str]]]:
+    """Authenticate every shard by bytes and structure without globally inspecting count values."""
     shards = g1b_freeze.get("rebuilt_cache", {}).get("shards", {})
     if not shards:
         raise RuntimeError("G1b freeze contains no rebuilt cache shard authority")
@@ -170,9 +175,12 @@ def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[s
         meta_sha = common.sha256_file(meta_path)
         if counts_sha != rec["counts"] or meta_sha != rec["meta"]:
             raise RuntimeError(f"S174 G1b-authorized cache hash mismatch: {stem}")
+        # Global custody checks inspect shape/cell identity geometry only; count data are not opened here.
         with np.load(counts_path, allow_pickle=False) as payload:
-            validate_s174_payload(payload["data"], payload["indices"], payload["indptr"], payload["shape"])
-            n_rows = int(tuple(payload["shape"])[0])
+            shape = tuple(int(x) for x in payload["shape"])
+            if len(shape) != 2 or shape[1] != N_ADDR:
+                raise RuntimeError(f"S174 cache geometry must have exactly 41238 columns: {stem}: {shape}")
+            n_rows = int(shape[0])
         with np.load(meta_path, allow_pickle=False) as meta:
             if "cell_id" not in meta.files or len(meta["cell_id"]) != n_rows:
                 raise RuntimeError(f"S174 meta/count row geometry mismatch: {stem}")
@@ -237,11 +245,42 @@ def bind_execution(args):
     return auth, preflight, mapping, g6_path, g7_path
 
 
+def expected_authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> dict:
+    return {
+        "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
+        "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
+        "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
+        "g6_script_sha256": common.sha256_file(g6_path),
+        "g7_script_sha256": common.sha256_file(g7_path),
+        "authorization_schema": auth["schema"],
+        "authorization_token": auth["authorization"],
+    }
+
+
+def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
+    path = Path(path)
+    if not path.is_file():
+        raise RuntimeError(f"missing required G6 PASS receipt: {path}")
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    if receipt.get("schema") != G6_RECEIPT_SCHEMA:
+        raise RuntimeError("G7 requires JEPA_TD_RELATIONAL_G6_RECEIPT_V2")
+    if receipt.get("status") != G6_PASS:
+        raise RuntimeError(f"G7 requires G6 PASS before execution: {receipt.get('status')}")
+    trace = receipt.get("authority_trace")
+    if trace != expected_trace:
+        raise RuntimeError("G6 PASS receipt is not bound to the same preflight/authorization/code bytes")
+    for key in ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized"):
+        if receipt.get(key) is not False:
+            raise RuntimeError(f"G6 PASS receipt must keep {key}=false")
+    return receipt
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--preflight-result", required=True)
     parser.add_argument("--mapping-receipt", required=True)
     parser.add_argument("--value-authorization", required=True)
+    parser.add_argument("--g6-receipt", required=True)
     parser.add_argument("--replay-manifest", required=True)
     parser.add_argument("--sample-freeze", required=True)
     parser.add_argument("--provenance", required=True)
@@ -258,6 +297,9 @@ def main() -> int:
         raise RuntimeError(f"immutable G7 receipt already exists: {out}")
 
     auth, _, _, g6_path, g7_path = bind_execution(args)
+    authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
+    load_g6_pass_receipt(Path(args.g6_receipt), authority_trace)
+
     if common.sha256_file(Path(args.macha_g1b_freeze)) != G1B_FREEZE_SHA256:
         raise RuntimeError("Macha G1b freeze SHA mismatch")
     g1b = json.loads(Path(args.macha_g1b_freeze).read_text(encoding="utf-8"))
@@ -298,9 +340,12 @@ def main() -> int:
                 "overlap_cells": 0,
                 "checked_entries": 0,
                 "mismatches": 0,
+                "s174_count_values_opened": False,
+                "physical_h5ad_values_opened": False,
             })
             continue
 
+        # Count arrays are opened only for a shard with genuine natural overlap.
         with np.load(counts_path, allow_pickle=False) as payload:
             validate_s174_payload(payload["data"], payload["indices"], payload["indptr"], payload["shape"])
             s174_matrix = sparse.csr_matrix(
@@ -320,7 +365,6 @@ def main() -> int:
         ].astype(str))
         physical_path = source_root / str(matrix_rec["source"]["path"])
 
-        # Independent G7 TOCTOU boundary: re-hash immediately before its own physical value reread.
         verified_physical_sources[mid] = common.verify_source_file(physical_path, matrix_rec["source"])
         with h5py.File(physical_path, "r") as handle:
             var_ids = h5_strings(handle["var"], VAR_ID_COLUMN[study])
@@ -356,6 +400,8 @@ def main() -> int:
             "checked_entries": int(checked),
             "mismatches": int(mismatches),
             "physical_source_sha256_verified": verified_physical_sources[mid],
+            "s174_count_values_opened": True,
+            "physical_h5ad_values_opened": True,
         })
 
     status = overlap_status(total_overlap, total_mismatches)
@@ -373,13 +419,8 @@ def main() -> int:
         "mismatches": int(total_mismatches),
         "per_matrix": per_matrix,
         "authority_trace": {
-            "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
-            "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
-            "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
-            "g6_script_sha256": common.sha256_file(g6_path),
-            "g7_script_sha256": common.sha256_file(g7_path),
-            "authorization_schema": auth["schema"],
-            "authorization_token": auth["authorization"],
+            **authority_trace,
+            "g6_receipt_sha256": common.sha256_file(Path(args.g6_receipt)),
         },
         "no_overlap_is_not_pass": total_overlap == 0,
         "biological_replay_authorized": False,
