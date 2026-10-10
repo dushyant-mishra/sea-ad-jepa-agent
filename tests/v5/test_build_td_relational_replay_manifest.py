@@ -29,6 +29,15 @@ def test_pair_hash_is_deterministic():
     )
 
 
+def test_manifest_writer_persists_exact_lf_bytes(tmp_path):
+    module = load_module()
+    out = tmp_path / "manifest.csv"
+    text = "a,b\n1,2\n"
+    module.write_lf_bytes(out, text)
+    assert out.read_bytes() == text.encode("utf-8")
+    assert b"\r\n" not in out.read_bytes()
+
+
 def test_rebuild_manifest_against_external_authorities(tmp_path):
     cal = os.environ.get("TD_CALIBRATION_ZIP")
     td = os.environ.get("TD_ARTIFACTS_ZIP")
