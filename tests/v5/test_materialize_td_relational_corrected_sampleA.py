@@ -3,11 +3,11 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "scripts" / "v5" / "materialize_td_relational_corrected_sampleA.py"
+SCRIPT = ROOT / "scripts" / "v5" / "materialize_td_relational_corrected_sampleA_v2.py"
 
 
 def load_module():
-    spec = importlib.util.spec_from_file_location("td_corrected_materializer", SCRIPT)
+    spec = importlib.util.spec_from_file_location("td_corrected_materializer_v2", SCRIPT)
     m = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(m)
@@ -62,7 +62,7 @@ def test_raw_library_total_is_before_mapping_filter():
     m = load_module()
     indices = [0, 1, 2, 3]
     values = [5, 7, 11, 13]
-    col_to_address = {0: 100, 2: 200}  # columns 1 and 3 are excluded/unmapped
+    col_to_address = {0: 100, 2: 200}
     row, total = m.corrected_row(indices, values, col_to_address, {100, 200})
     assert total == 36
     assert row == {100: 5, 200: 11}
