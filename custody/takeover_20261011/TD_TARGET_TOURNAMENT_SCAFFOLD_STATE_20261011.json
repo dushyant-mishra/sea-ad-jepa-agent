@@ -1,14 +1,25 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCIENCE_HARNESS_110_GREEN__PRECISION_NUMERIC_CUSTODY_FAIL_CLOSED__QUERY_LINEAGE_COMPLETE__MATCHED_NULL_NAMESPACE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "LAST_QUALIFIED_SYNTHETIC_SCIENCE_HARNESS_110_GREEN_AT_8325B574__CURRENT_HEAD_DONOR_INDEPENDENCE_SEMANTIC_REPAIR_ASSIMILATED_PENDING_FRESH_REQUALIFICATION__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
+  "last_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
+  "current_head_after_semantic_repair": "3fbce74121f9c3f52db0e66186177854ddcb9f2c",
+  "current_head_qualified": false,
   "focused_test_result": {
     "passed": 110,
     "failed": 0,
     "errors": 0,
-    "scope": "new synthetic/metadata-only science-harness tests",
-    "accounting": "106-green state with old 7-test precision suite; numeric-custody hardening expands that suite to 11 (+4 net)"
+    "scope": "last qualified synthetic/metadata-only science-harness state at 8325b574382fa76fa6da0e1d388eb903068533a4",
+    "accounting": "106-green state with old 7-test precision suite; numeric-custody hardening expands that suite to 11 (+4 net); current semantic-repair head requires a fresh rerun before these counts may be attributed to it"
+  },
+  "pending_requalification": {
+    "reason": "donor membership disjointness was previously serialized as broader case-level statistical independence",
+    "assimilated_from_pr": 278,
+    "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a",
+    "active_branch_script_blob": "412dbff491b410570dcc24e4f091405c6022aef1",
+    "active_branch_test_blob": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f",
+    "required_before_new_green_claim": "fresh focused qualification on the current exact branch head"
   },
   "qualified_components": {
     "gate_evidence_role_and_hash_binding": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md",
@@ -28,6 +39,8 @@
     "gate_status_auto_adjudicated_from_case_coverage": false,
     "donor_resampling_dependence_audit": true,
     "overlapping_case_rows_can_supply_independent_n": false,
+    "disjoint_case_rows_can_supply_independent_n": false,
+    "donor_membership_disjointness_is_broader_independence": false,
     "matched_wrong_cell_null_exact_stratum_bijection": true,
     "matched_null_singletons_remain_not_estimable": true,
     "query_lineage_exact_graph_role_coverage": true,
@@ -45,8 +58,8 @@
     "tests/v5/test_td_target_tournament_prefreeze.py": "1b38edb1f470733a8e84f44bde8fb12067205fee",
     "scripts/v5/td_gate_case_coverage.py": "40a4801a1df2172b18f1ee983570622ccdf903e2",
     "tests/v5/test_td_gate_case_coverage.py": "9bd3357b9487f518681b9e624d49e0e418f18e62",
-    "scripts/v5/td_donor_resampling_audit.py": "4a5d0a08d6b1d1bdc4e0c188a909c39e5f0fb195",
-    "tests/v5/test_td_donor_resampling_audit.py": "f736c4b2c876a187bf9edff6a5fac266dcf13e5f",
+    "scripts/v5/td_donor_resampling_audit.py": "412dbff491b410570dcc24e4f091405c6022aef1",
+    "tests/v5/test_td_donor_resampling_audit.py": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f",
     "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
     "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc",
     "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
@@ -58,6 +71,7 @@
     "initial_decision_family_completeness_inferred_by_helper": false,
     "gate_pass_policy_invented_by_coverage_helper": false,
     "overlapping_donor_resamples_treated_as_independent": false,
+    "disjoint_donor_memberships_treated_as_case_level_independence": false,
     "matched_null_singletons_crossed_or_relaxed": false,
     "teacher_aux_q_is_automatically_biological_truth": false,
     "technology_equivalence_margin_defined": false,
