@@ -1,0 +1,56 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V1",
+  "date": "2026-10-11",
+  "lane": "bayesian_synthetic_geometry",
+  "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+  "audited_source_head": "ba61ed4cfca6747e32c21aeabbeed6453e5ea31e",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "snapshot_terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
+  "next_controller_action": "RECONCILE_LIVE_MACHA_BRANCH_BEFORE_ISSUING_STATE_DEPENDENT_INSTRUCTIONS",
+  "qualification_order": [
+    "reconcile_external_jobs",
+    "finish_bernoulli_parameterization_and_recovery",
+    "finish_gaussian_recovery",
+    "finish_lognormal_recovery",
+    "finish_ztnb_recovery",
+    "freeze_compute_benchmark",
+    "fit_corrected_train_only_if_gates_pass",
+    "run_heldout_ppc_and_q5",
+    "adjudicate_count_family",
+    "build_biology_geometry_authority",
+    "build_observation_geometry_authority",
+    "complete_self_audit"
+  ],
+  "integration_policy": {
+    "goal": "REAL_STATISTICAL_GEOMETRY_PLUS_SYNTHETIC_CAUSAL_IDENTITY",
+    "preserve_rich_posterior_structure": true,
+    "consume_provisional_sampler_outputs": false,
+    "post_outcome_rescue_allowed": false,
+    "field_level_mapping_required": true,
+    "factorial_lane_direct_edits_by_macha": false
+  },
+  "required_terminal_artifacts": [
+    "recovery_suite_results",
+    "benchmark_receipt",
+    "real_fit_receipts",
+    "convergence_diagnostics",
+    "heldout_ppc",
+    "q5_donor_x_class_ruling",
+    "count_family_ruling",
+    "biology_geometry_authority",
+    "observation_geometry_authority",
+    "self_audit",
+    "machine_readable_active_state"
+  ],
+  "boundaries": {
+    "training_authorized": false,
+    "test_or_morabito_allowed": false,
+    "pathology_allowed": false,
+    "target_discovery_allowed": false,
+    "scenic_atac_target_evidence_allowed": false,
+    "v78_outcome_retune_allowed": false,
+    "stage4_500k_allowed": false
+  },
+  "qualified_terminal_label": "BAYESIAN_GEOMETRY_QUALIFIED_FOR_SYNTHETIC_INTEGRATION"
+}
