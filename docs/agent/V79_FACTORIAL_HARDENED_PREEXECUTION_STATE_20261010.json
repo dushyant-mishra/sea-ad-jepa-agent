@@ -1,0 +1,55 @@
+{
+  "schema": "V79_FACTORIAL_HARDENED_PREEXECUTION_STATE_V1",
+  "date": "2026-10-10",
+  "implementation_pr": 262,
+  "implementation_branch": "fix/v79-factorial-memory-hardening-20261010",
+  "implementation_head": "36d51b6c554c21918289bc4f8c9b363cb2ecc0fa",
+  "parent_factorial_pr": 253,
+  "parent_factorial_head": "1a0ab6e1108af924ca13e81caa3c70f3101d251c",
+  "frozen_v78_base": "e959d9a732698ae9a41e8cb1f6c10052d7390326",
+  "verification": {
+    "workflow": "V79 factorial memory hardening",
+    "run_id": 38084642870,
+    "job_id": 114308511231,
+    "conclusion": "SUCCESS",
+    "tests_passed": 89,
+    "tests_failed": 0,
+    "python": "3.11.17",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pytest": "9.1.1",
+    "base_vs_head_same_runtime_fixture": "PASS",
+    "frozen_hvg_rule_equivalence": "PASS"
+  },
+  "repairs": {
+    "latent_biology_registry_dense_temporaries": "FIXED_BY_CELL_BLOCK_MATERIALIZATION",
+    "observer_registry_dense_rate_and_count_temporaries": "FIXED_BY_SPARSE_STREAMING",
+    "scorer_full_registry_or_universe_densification": "FIXED_BY_SPARSE_PRESELECTION",
+    "class_and_observation_distributional_views": "IMPLEMENTED"
+  },
+  "reproducibility_note": {
+    "raw_capture_float_bytes_cross_cpu": "NOT_STABLE_IDENTIFIER",
+    "same_runtime_base_vs_head_rng_semantics": "EXACT",
+    "fixture_integer_count_hash": "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa"
+  },
+  "frozen_artifact_store": {
+    "pr": 256,
+    "branch": "audit/v79-factorial-preexecution-20261010",
+    "head": "f8667ec218c624a40d3e333ba576e7289ae70a26"
+  },
+  "custody": {
+    "repaired_s174_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "repaired_v78_marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "frozen_evaluation_universe_npz_sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763"
+  },
+  "terminal": "HARDENED_PREEXECUTION_IMPLEMENTATION_GREEN__SCIENTIFIC_TOURNAMENT_NOT_EXECUTED",
+  "scientific_arm_outputs_generated": false,
+  "synthetic_arm_promoted": null,
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "target_discovery_modified": false,
+  "macha_provisional_outputs_consumed": false
+}
