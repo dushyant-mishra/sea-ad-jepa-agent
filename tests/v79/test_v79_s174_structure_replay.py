@@ -218,18 +218,25 @@ def test_operator_sensitivities_are_recorded_for_exactly_the_frozen_set(tmp_path
 def test_replay_entrypoint_writes_the_frozen_operator_penalty_record(tmp_path):
     import subprocess
 
+    import build_v79_structural_support as B
+
     npz, rec = _cache(tmp_path)
     out = tmp_path / "replay.json"
+    ops = np.unique(np.load(npz)["op"])
+    s_npz = tmp_path / "support.npz"                 # every entry measured: structural support is now mandatory
+    s_rec = B.write_support(s_npz, np.ones((len(ops), 2), dtype=bool), ops, np.array([11, 22]),
+                            cache_npz_sha256=hashlib.sha256(npz.read_bytes()).hexdigest(), provenance={})
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "v79" / "run_v79_s174_structure_replay.py"), str(npz),
-                        str(rec), str(out), "--genes", "2", "--support-genes", "2", "--permutations", "9"],
+                        str(rec), str(out), "--genes", "2", "--support-genes", "2", "--permutations", "9",
+                        "--support", str(s_npz), "--support-record", str(s_rec)],
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stderr[-2000:]
     res = json.loads(out.read_text(encoding="utf-8"))
-    assert res["schema"] == "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3"
+    assert res["schema"] == "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED"
     assert res["operator_penalty"]["primary_lambda"] == 1.0
     assert res["operator_penalty"]["sensitivity_set"] == [0.25, 1.0, 4.0]
     for part in ("detection", "positive_lognormal"):
         rob = res["operator_increment_robustness"][part]
         assert set(rob["by_lambda"]) == {"0.25", "1.0", "4.0"}
         assert rob["ruling"] in ("SUPPORTED", "NOT_SUPPORTED", "PRIOR_SENSITIVE__UNRESOLVED")
-    assert res["terminal"].startswith("EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__")
+    assert res["terminal"].startswith("MASK_CORRECTED_EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__")
