@@ -43,3 +43,46 @@ def test_singleton_stratum_is_not_estimable():
 def test_duplicate_cell_id_rejected():
     rs = rows(3) + [rows(3)[0]]
     with pytest.raises(ValueError): m.build_matched_wrong_cell_map(rs, 'x')
+
+
+def test_empty_or_nul_seed_rejected():
+    for seed in ['', '   ', 'bad\0seed']:
+        with pytest.raises(m.NullContractError):
+            m.build_matched_wrong_cell_map(rows(3), seed)
+
+
+def test_nul_or_empty_cell_id_rejected():
+    for bad in ['', '   ', 'c\0x']:
+        rs=rows(3); rs[0]=dict(rs[0]); rs[0]['cell_id']=bad
+        with pytest.raises(m.NullContractError):
+            m.build_matched_wrong_cell_map(rs,'seed')
+
+
+def test_stratum_fields_must_be_nonempty_nul_free_strings():
+    for field in m.STRATUM_KEYS:
+        for bad in ['', '   ', 'x\0y', 1, None]:
+            rs=rows(3); rs[0]=dict(rs[0]); rs[0][field]=bad
+            with pytest.raises(m.NullContractError):
+                m.build_matched_wrong_cell_map(rs,'seed')
+
+
+def test_missing_or_extra_row_fields_rejected():
+    rs=rows(3); del rs[0]['support_key']
+    with pytest.raises(m.NullContractError):
+        m.build_matched_wrong_cell_map(rs,'seed')
+    rs=rows(3); rs[0]['extra']='x'
+    with pytest.raises(m.NullContractError):
+        m.build_matched_wrong_cell_map(rs,'seed')
+
+
+def test_mapping_is_bijection_within_each_stratum():
+    rs=rows(5)+[
+      dict(cell_id=f'z{i}',donor_id='d2',operator_id='o2',support_key='s2',depth_bin='b2',detection_bin='k2')
+      for i in range(4)
+    ]
+    mp=m.build_matched_wrong_cell_map(rs,'seed')
+    by={r['cell_id']:r for r in rs}
+    assert len(set(mp.values()))==len(mp)
+    for key in {tuple(r[k] for k in m.STRATUM_KEYS) for r in rs}:
+        ids={r['cell_id'] for r in rs if tuple(r[k] for k in m.STRATUM_KEYS)==key}
+        assert {mp[x] for x in ids} == ids
