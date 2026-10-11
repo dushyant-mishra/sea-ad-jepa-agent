@@ -233,8 +233,13 @@ def test_no_overlap_control_flow_precedes_s174_count_open_and_receipt_records_im
     m = load_module()
     source = inspect.getsource(m.main)
     no_overlap = source.index("if overlap.empty:")
-    count_open = source.index("load_s174_count_matrix")
+    # since 16f05bd3 main opens S174 counts only through the counterpart-authenticating helper, which is the sole
+    # caller of load_s174_count_matrix (behavioural check: tests/v5/test_td_g7_synthetic_end_to_end.py)
+    assert "load_s174_count_matrix" not in source
+    count_open = source.index("open_authenticated_overlap_count_sources")
     assert no_overlap < count_open
+    helper = inspect.getsource(m.open_authenticated_overlap_count_sources)
+    assert helper.index("verify_source_file") < helper.index("load_s174_count_matrix")
     assert '"s174_meta_sha256_immediate"' in source
     assert '"s174_counts_sha256_immediate"' in source
     before_count_open = source[no_overlap:count_open]

@@ -301,3 +301,73 @@ def g7_expected_trace(w) -> dict:
                            value_authorization=str(b.auth), owner_decision=str(b.owner_decision))
     auth = json.loads(Path(b.auth).read_text(encoding="utf-8"))
     return w.g7.expected_authority_trace(args, auth, G6_SCRIPT, G7_SCRIPT)
+
+
+# S174 cache shards per stem: the S174 cell ids each shard holds. h1 and s1 overlap Sample A naturally (2 cells each);
+# s2 holds no Sample-A cell; x9 belongs to no Sample-A matrix but is still under the global G1b hash pass.
+S174_CELLS_OVERLAP = {"h1": ["other_h1", "h1_cell2", "h1_cell0"], "s1": ["s1_cell3", "s1_cell1"],
+                      "s2": ["zz_a", "zz_b"], "x9": ["q0"]}
+S174_CELLS_NO_OVERLAP = {"h1": ["other_h1"], "s1": ["s1_none"], "s2": ["zz_a"], "x9": ["q0"]}
+
+
+def s174_row(stem: str, cid: str) -> dict:
+    """S174 counts in address space: the physical row's replay-address raw counts, plus non-replay noise."""
+    mid = next((m for m, spec in MATRICES.items() if spec["stem"] == stem), None)
+    row = {0: 7}  # a non-replay address that G7 must ignore
+    if mid is not None and cid.startswith(f"{stem}_cell"):
+        local = int(cid.split("_cell")[1])
+        col_addr = column_address(mid)
+        for j, raw in physical_row(mid, local).items():
+            a = col_addr.get(j)
+            if a is not None:
+                row[a] = raw
+    return row
+
+
+def build_s174_cache(root: Path, cells: dict, *, perturb: tuple | None = None) -> tuple:
+    """Write synthetic S174 shards; perturb=(stem, cell_id, address, delta) plants one count mismatch."""
+    root = Path(root)
+    root.mkdir(parents=True)
+    shards = {}
+    for stem, ids in cells.items():
+        data, indices, indptr = [], [], [0]
+        for cid in ids:
+            row = s174_row(stem, cid)
+            if perturb and perturb[0] == stem and perturb[1] == cid:
+                row[perturb[2]] = row.get(perturb[2], 0) + perturb[3]
+            for a in sorted(row):
+                indices.append(a)
+                data.append(row[a])
+            indptr.append(len(indices))
+        np.savez(root / f"{stem}.counts.npz", data=np.asarray(data, dtype=np.float32),
+                 indices=np.asarray(indices, dtype=np.int32), indptr=np.asarray(indptr, dtype=np.int64),
+                 shape=np.asarray([len(ids), N_ADDR], dtype=np.int64))
+        np.savez(root / f"{stem}.meta.npz", cell_id=np.asarray(ids))
+        shards[stem] = {"counts": sha(root / f"{stem}.counts.npz"), "meta": sha(root / f"{stem}.meta.npz")}
+    freeze = {"schema": "S174_REBUILD_G1B_FREEZE_V1", "status": "FROZEN__NO_COUNT_READ",
+              "rebuilt_cache": {"shards": shards}}
+    result = {"schema": "S174_REBUILD_G1B_RESULT_V1", "G1b_pass": True, "synthetic": True}
+    return freeze, result
+
+
+def g7_argv(w, out: Path, cache_root: Path) -> list:
+    b = w.gate
+    return ["audit_td_relational_g7_s174_overlap_v2.py",
+            "--preflight-result", str(b.preflight), "--mapping-receipt", str(b.mapping),
+            "--value-authorization", str(b.auth), "--owner-decision", str(b.owner_decision),
+            "--g6-receipt", str(w.g6_receipt), "--replay-manifest", str(b.replay_manifest),
+            "--sample-freeze", str(w.sample_freeze), "--provenance", str(w.provenance),
+            "--collision-ledger", str(w.collision_ledger), "--macha-freeze", str(w.macha_freeze),
+            "--s174-cache-root", str(cache_root), "--source-root", str(w.source_root), "--out", str(out)]
+
+
+def run_g7(w, monkeypatch, tmp_path, *, cells: dict, perturb: tuple | None = None, name: str = "g7") -> tuple:
+    """Run the REAL G7 main on the synthetic world; the G1b authority (read from git in production) is replaced by
+    the synthetic freeze for this test only. Returns (exit code, receipt path)."""
+    cache_root = Path(tmp_path) / f"s174_{name}"
+    freeze, result = build_s174_cache(cache_root, cells, perturb=perturb)
+    monkeypatch.setattr(w.g7, "load_g1b_authority_from_pass_commit",
+                        lambda anchor: (result, freeze, "synthetic-g1b-result", "synthetic-g1b-freeze"))
+    out = Path(tmp_path) / f"{name}_out" / "G7_RECEIPT.json"
+    monkeypatch.setattr(sys, "argv", g7_argv(w, out, cache_root))
+    return w.g7.main(), out

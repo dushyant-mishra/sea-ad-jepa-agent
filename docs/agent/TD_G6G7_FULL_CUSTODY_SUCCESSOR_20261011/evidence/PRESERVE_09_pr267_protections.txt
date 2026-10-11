@@ -1,0 +1,78 @@
+# PRESERVE_09 PR #267 protections, preservation tests (no production change), working tree over fac669e62956c98c79db452330d049ff0f572a6d
+# note: the stale source-inspection test (broken at 16f05bd3 when main's count open moved into open_authenticated_overlap_count_sources) is re-anchored on that helper; it now also asserts main never calls load_s174_count_matrix directly and the helper authenticates the physical H5AD before loading S174 counts. New behavioural tests run the real G7 main on synthetic S174 shards.
+# utc: 2026-10-11T16:11:03Z
+ tests/v5/td_g6g7_synthetic_world.py                | 70 ++++++++++++++++++++++
+ .../test_audit_td_relational_g7_s174_overlap_v2.py |  7 ++-
+ 2 files changed, 76 insertions(+), 1 deletion(-)
+production scripts unchanged vs HEAD
+...........................                                              [100%]
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+____ test_g7_exact_natural_overlap_passes_and_checks_every_replay_address _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_exact_natural_overlap_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+________________ test_g7_single_count_mismatch_is_non_success _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_single_count_mismatch_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 1, "overlap_cells": 4, "status": "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"}
+________ test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught ________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_mismatch_at_an_implici0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 1, "overlap_cells": 4, "status": "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"}
+____ test_g7_zero_natural_overlap_is_not_estimable_and_never_opens_counts _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_zero_natural_overlap_i0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 0, "status": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"}
+_______________ test_g7_attempt_is_spent_after_a_completed_run ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_attempt_is_spent_after0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_______________ test_g7_refuses_a_g1b_shard_whose_bytes_changed _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1233\\test_g7_refuses_a_g1b_shard_wh0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_exact_natural_overlap_passes_and_checks_every_replay_address
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_single_count_mismatch_is_non_success
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_zero_natural_overlap_is_not_estimable_and_never_opens_counts
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_attempt_is_spent_after_a_completed_run
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_refuses_a_g1b_shard_whose_bytes_changed
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_overlap_status_is_pass_only_for_real_exact_overlap
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g1b_result_requires_pass_all_requirements_and_exact_freeze_sha
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_payload_requires_full_41238_geometry_and_integer_data
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_sparse_reference_row_uses_strict_integer_semantics
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_sparse_reference_row_rejects_duplicate_addresses
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_compare_rows_checks_all_replay_addresses_including_implicit_zeros
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_same_size_changed_physical_source_is_rejected
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_meta_is_reauthenticated_immediately_before_cell_use
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_duplicate_cell_ids_are_rejected
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_counts_are_reauthenticated_immediately_before_value_use
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_no_overlap_control_flow_precedes_s174_count_open_and_receipt_records_immediate_hashes
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g7_requires_same_authority_g6_pass_receipt
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_v2_schema_is_distinct_from_historical_v1
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g7_corrected_row_rejects_duplicate_physical_column_indices
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_physical_h5_auth_failure_prevents_s174_count_loader
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_spends_attempt_and_rejects_retry
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_rejects_preexisting_final_receipt
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_path_is_sidecar_of_final_receipt
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_concurrent_start_has_exactly_one_winner
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_survives_a_later_failure_and_blocks_retry
+27 passed, 3 warnings in 15.35s
+# exit=0
+## mutation check (each mutation applied to scripts/v5/audit_td_relational_g7_s174_overlap_v2.py, tests run, file restored with git checkout)
+== M1 zero overlap reported as PASS
+FAILED test_g7_zero_natural_overlap_is_not_estimable_and_never_opens_counts
+1 failed, 5 passed, 3 warnings in 16.92s
+== M2 implicit zeros skipped in comparison
+FAILED test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught
+1 failed, 5 passed, 3 warnings in 18.70s
+== M3 a mismatch counted as success
+FAILED test_g7_single_count_mismatch_is_non_success
+FAILED test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught
+2 failed, 4 passed, 3 warnings in 15.80s
+production file restored clean
