@@ -4,6 +4,21 @@ import hashlib, json
 from collections import Counter
 
 PREFREEZE_SCHEMA='JEPA_TD_TARGET_TOURNAMENT_PREFREEZE_MANIFEST_V1'
+PREFREEZE_FIELDS={
+    'schema','fixture_only','family_alpha','multiplicity_method','decision_family_size',
+    'decision_family_registry_sha256','alpha_eff','minimum_nonzero_donors_for_sign_resolution',
+    'minimum_permutation_draws_for_resolution','tournament_contract_sha256','null_seed_material',
+    'case_resolution','authority','manifest_sha256'
+}
+PREFREEZE_AUTHORITY_KEYS={
+    'value_read_authorized','real_tournament_authorized','target_selection_authorized',
+    'representation_selection_authorized','td60_authorized','stage4_authorized','training_authorized'
+}
+PREFREEZE_CASE_FIELDS={
+    'case_id','candidate_id','gate_id','source','analysis_tier','endpoint_id',
+    'available_donors_upper_bound','resolution_impossible_from_donor_upper_bound',
+    'estimability_proven','biological_result'
+}
 RECEIPT_FIELDS={
     'case_id','candidate_id','gate_id','source','analysis_tier','endpoint_id','status','evidence_sha256'
 }
@@ -23,7 +38,9 @@ def _valid_sha(v):
 
 
 def _validate_prefreeze(manifest):
-    if not isinstance(manifest,dict) or manifest.get('schema') != PREFREEZE_SCHEMA:
+    if not isinstance(manifest,dict) or set(manifest) != PREFREEZE_FIELDS:
+        raise CoverageError('prefreeze manifest fields must be exact')
+    if manifest.get('schema') != PREFREEZE_SCHEMA:
         raise CoverageError('invalid prefreeze manifest schema')
     stated=manifest.get('manifest_sha256')
     if not _valid_sha(stated):
@@ -33,9 +50,25 @@ def _validate_prefreeze(manifest):
         raise CoverageError('prefreeze manifest hash mismatch')
     if manifest.get('fixture_only') is not True:
         raise CoverageError('current coverage helper requires fixture prefreeze')
+    auth=manifest.get('authority')
+    if (
+        not isinstance(auth,dict)
+        or set(auth) != PREFREEZE_AUTHORITY_KEYS
+        or any(v is not False for v in auth.values())
+    ):
+        raise CoverageError('prefreeze authority must be exact and false')
     rows=manifest.get('case_resolution')
     if not isinstance(rows,list) or not rows:
         raise CoverageError('prefreeze case_resolution required')
+    for row in rows:
+        if not isinstance(row,dict) or set(row) != PREFREEZE_CASE_FIELDS:
+            raise CoverageError('prefreeze case_resolution fields must be exact')
+        if row.get('estimability_proven') is not False:
+            raise CoverageError('prefreeze cannot claim estimability before outcomes')
+        if row.get('biological_result') != 'NOT_OPENED':
+            raise CoverageError('prefreeze biological_result must remain NOT_OPENED')
+        if type(row.get('resolution_impossible_from_donor_upper_bound')) is not bool:
+            raise CoverageError('resolution_impossible_from_donor_upper_bound must be boolean')
     return rows,stated
 
 
