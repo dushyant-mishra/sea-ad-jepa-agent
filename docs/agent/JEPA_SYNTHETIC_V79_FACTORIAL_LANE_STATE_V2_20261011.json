@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V2",
+  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V3",
   "date": "2026-10-11",
   "canonical_handoff_pr": 265,
   "implementation": {
@@ -10,7 +10,8 @@
   "audit": {
     "pr": 264,
     "branch": "audit/v79-factorial-preexecution-hardened-20261010",
-    "receipt_closeout_commit": "e59f7f3ffad78ea6f560a99471facb1b0191a287"
+    "receipt_closeout_commit": "e59f7f3ffad78ea6f560a99471facb1b0191a287",
+    "detection_failure_addendum_commit": "9b2c1cf5f8812a5a93296a71c9ec90ee4e3dcd05"
   },
   "verification": {
     "workflow_run": 38147114407,
@@ -20,9 +21,7 @@
     "tests_failed": 0,
     "seconds": 1.04,
     "receipt_contract_tested": true,
-    "same_runner_base_vs_hardened_fixture": "PASS",
-    "integer_count_hash": "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa",
-    "capture_hash_same_runner": "51eb035286393d38733c3224ae31b5a518afdd6e6a46d5baaf7a0320e9d68f12"
+    "same_runner_base_vs_hardened_fixture": "PASS"
   },
   "internal_engineering": {
     "registry_scale_biology_memory": "CLOSED",
@@ -32,20 +31,32 @@
     "distributional_endpoint_completion": "CLOSED",
     "bounded_atomic_identity_scrubbed_receipts": "CLOSED"
   },
-  "macha_acceptance_boundary": {
+  "macha_upstream": {
     "controller_pr": 261,
+    "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+    "latest_audited_code_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
     "provisional_outputs_consumable": false,
-    "v1_detection_s4_failure_must_be_preserved": true,
-    "v2_detection_is_final_precommitted_attempt": true,
-    "central_frozen_configuration_required": true,
-    "complete_recovery_required": true,
-    "code_config_snapshot_identity_required": true,
-    "actual_recovery_path_equivalence_required": true,
-    "corrected_train_before_simulation_qualification": false,
-    "compact_authenticated_real_analysis_cache_required_before_heavy_real_fit": true
+    "detection_v1_status": "FAILED_S4",
+    "detection_v2_status": "FAILED_S4_TERMINAL_NOT_QUALIFIED",
+    "detection_v2_limiting_ess": 362,
+    "detection_frozen_minimum_ess": 400,
+    "detection_v3_allowed": false,
+    "threshold_change_allowed": false,
+    "gaussian_status": "QUALIFICATION_PENDING",
+    "lognormal_status": "QUALIFICATION_PENDING",
+    "ztnb_status": "QUALIFICATION_PENDING"
+  },
+  "integration_policy": {
+    "macha_detection_parameters_qualified_for_h2_h3": false,
+    "remaining_families_may_be_evaluated_independently": true,
+    "successor_authority_must_mark_failed_detection_unqualified": true,
+    "post_outcome_authority_choice_allowed": false,
+    "corrected_train_before_required_simulation_qualification": false,
+    "fresh_preexecution_required_after_material_authority_change": true
   },
   "remaining_external_gates": [
-    "MACHA_TERMINAL_AUTHORITY_RULING",
+    "TERMINAL_GAUSSIAN_LOGNORMAL_ZTNB_QUALIFICATION_RULINGS",
+    "PROSPECTIVE_FINAL_H1_H2_AUTHORITY_DECISION",
     "FINAL_H1_H2_AUTHORITY_FREEZE",
     "EXTERNAL_REGISTRY_BYTES_AVAILABLE",
     "REPAIRED_MARGINAL_BYTES_AVAILABLE",
@@ -58,5 +69,5 @@
   "test_or_morabito_accessed": false,
   "pathology_accessed": false,
   "target_discovery_modified": false,
-  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__WAITING_ON_UPSTREAM_QUALIFIED_AUTHORITY_AND_FINAL_BYTE_CUSTODY__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
+  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__MACHA_DETECTION_NOT_QUALIFIED__OTHER_MACHA_FAMILIES_PENDING__FINAL_H1_H2_AUTHORITY_DECISION_PENDING__FINAL_BYTE_CUSTODY_REPLAY_PENDING__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
 }
