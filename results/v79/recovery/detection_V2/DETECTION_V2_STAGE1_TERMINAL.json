@@ -1,0 +1,168 @@
+{
+ "schema": "V79_DETECTION_V2_STAGE1_TERMINAL_V1",
+ "precommitment": "self-audit 48 and controller ruling 2026-10-11: V2 (DETECTION_V2_NC_ALL) is the final precommitted detection attempt; complete V2 on S0, S1 and S4; if any fails, detection is NOT QUALIFIED; no V3, no further sampler tuning, thresholds unchanged",
+ "fits": {
+  "S4_operator_only": {
+   "part": "part_bernoulli_S4_operator_only.json",
+   "part_sha256": "fcb72e4a5b2df86743cbcfee7a5dd4077a15eadaac5a4a12db3dedc3785d1bb1",
+   "code_snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
+   "sampler_config": "DETECTION_V2_NC_ALL",
+   "sampler_config_sha256": "53d98e694ddcf5cfbe2b223c4e25f79653d2f932afa88ffd7ae937fbce3e1fd7",
+   "sampler_rules": "A5_V2_DIVERGENT_EXTENSION_ESCALATES",
+   "counts_loaded": false,
+   "diagnosed": false,
+   "worst_rhat": 1.0050606796610788,
+   "worst_ess": 361.8761303230284,
+   "attempts": [
+    {
+     "target_accept": 0.9,
+     "extended": false,
+     "divergences": [
+      1,
+      0,
+      0,
+      3
+     ],
+     "worst_rhat": 1.0094294853790067,
+     "worst_ess": 306.15068880203444,
+     "diagnosed": false,
+     "seconds": 1633.4284784793854
+    },
+    {
+     "target_accept": 0.95,
+     "extended": false,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0174229728270856,
+     "worst_ess": 176.58694147584026,
+     "diagnosed": false,
+     "seconds": 1514.980572938919
+    },
+    {
+     "target_accept": 0.95,
+     "extended": true,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0050606796610788,
+     "worst_ess": 361.8761303230284,
+     "diagnosed": false,
+     "seconds": 2090.8188676834106
+    }
+   ]
+  },
+  "S0_class_absent": {
+   "part": "part_bernoulli_S0_class_absent.json",
+   "part_sha256": "730f96438fc0308c589e20292d99756c3a51fc68464105f3e1ce295d255826f3",
+   "code_snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
+   "sampler_config": "DETECTION_V2_NC_ALL",
+   "sampler_config_sha256": "53d98e694ddcf5cfbe2b223c4e25f79653d2f932afa88ffd7ae937fbce3e1fd7",
+   "sampler_rules": "A5_V2_DIVERGENT_EXTENSION_ESCALATES",
+   "counts_loaded": false,
+   "diagnosed": false,
+   "worst_rhat": 1.0164214952448754,
+   "worst_ess": 469.60084084814224,
+   "attempts": [
+    {
+     "target_accept": 0.9,
+     "extended": false,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0114405621419817,
+     "worst_ess": 311.0274217085111,
+     "diagnosed": false,
+     "seconds": 1511.689662694931
+    },
+    {
+     "target_accept": 0.9,
+     "extended": true,
+     "divergences": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "worst_rhat": 1.009375482949313,
+     "worst_ess": 697.7901437739596,
+     "diagnosed": false,
+     "seconds": 2012.4278926849365
+    },
+    {
+     "target_accept": 0.95,
+     "extended": false,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0230724899345274,
+     "worst_ess": 213.73961772964543,
+     "diagnosed": false,
+     "seconds": 1314.5726404190063
+    },
+    {
+     "target_accept": 0.95,
+     "extended": true,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0164214952448754,
+     "worst_ess": 469.60084084814224,
+     "diagnosed": false,
+     "seconds": 1969.4202072620392
+    }
+   ]
+  },
+  "S1_present": {
+   "part": "part_bernoulli_S1_present.json",
+   "part_sha256": "981a5d26507b0cbece5a32734e195d9f08f5727a3647be7b51e4aff713a423fb",
+   "code_snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
+   "sampler_config": "DETECTION_V2_NC_ALL",
+   "sampler_config_sha256": "53d98e694ddcf5cfbe2b223c4e25f79653d2f932afa88ffd7ae937fbce3e1fd7",
+   "sampler_rules": "A5_V2_DIVERGENT_EXTENSION_ESCALATES",
+   "counts_loaded": false,
+   "diagnosed": true,
+   "worst_rhat": 1.0070804301018856,
+   "worst_ess": 620.2806951277586,
+   "attempts": [
+    {
+     "target_accept": 0.9,
+     "extended": false,
+     "divergences": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "worst_rhat": 1.0070804301018856,
+     "worst_ess": 620.2806951277586,
+     "diagnosed": true,
+     "seconds": 1155.52632522583
+    }
+   ]
+  }
+ },
+ "failed_worlds": [
+  "S4_operator_only",
+  "S0_class_absent"
+ ],
+ "terminal": "DETECTION_NOT_QUALIFIED__V2_FAILED_S0_AND_S4__NO_V3",
+ "consequence": "the Bernoulli detection family has no qualified recovery suite; S2, S3 and S5 are not run under V2; the full S0-S5 detection suite is not run",
+ "sha_binding_note": "part SHA-256 values were computed after the runs (scheduler at snapshot 0bc45513 logged empty out_sha256; self-audit 52); they bind the files as committed, not a prospective ledger record",
+ "training_authorized": false
+}

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import time
 from datetime import datetime, timezone
@@ -17,11 +18,25 @@ from datetime import datetime, timezone
 import psutil
 
 
+def _self_and_ancestors() -> set:
+    pids = {os.getpid()}
+    try:
+        pids.update(p.pid for p in psutil.Process().parents())
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        pass
+    return pids
+
+
 def find(pattern: str):
+    """The fitting runner (a run_v79_*.py python process) whose command line matches; never this monitor itself,
+    whose own command line carries the same pattern (self-audit 54)."""
     rx = re.compile(pattern)
+    skip = _self_and_ancestors()
     for p in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
-            if p.info["name"] and p.info["name"].lower().startswith("python") and rx.search(" ".join(p.info["cmdline"] or [])):
+            cmd = " ".join(p.info["cmdline"] or [])
+            if (p.info["pid"] not in skip and p.info["name"] and p.info["name"].lower().startswith("python")
+                    and re.search(r"run_v79_\w+\.py", cmd) and rx.search(cmd)):
                 return p
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             continue
