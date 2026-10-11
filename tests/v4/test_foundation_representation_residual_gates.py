@@ -22,6 +22,9 @@ matrix_label_identifiability = G.matrix_label_identifiability
 adjudicate_heldout_donor_evidence = G.adjudicate_heldout_donor_evidence
 adjudicate_conditional_technology_imprint = G.adjudicate_conditional_technology_imprint
 adjudicate_resource_benchmark = G.adjudicate_resource_benchmark
+adjudicate_successor_donor_transfer = G.adjudicate_successor_donor_transfer
+adjudicate_successor_matrix_transfer = G.adjudicate_successor_matrix_transfer
+adjudicate_successor_conditional_technology = G.adjudicate_successor_conditional_technology
 
 
 def test_matrix_identifiability_is_leave_one_matrix_out_and_reports_missing_broad_labels():
@@ -82,6 +85,63 @@ def test_cpu_resource_benchmark_cannot_satisfy_final_production_gpu_gate():
     assert out["final_production_resource_gate_pass"] is False
     assert out["recommended_cpu_batch_ceiling"] == 4
     assert out["training_authorized"] is False
+
+
+def test_successor_donor_contract_uses_prefrozen_permutation_envelopes_not_posthoc_numeric_margin():
+    rec = {
+        "contract_frozen_before_candidate_evaluation": True,
+        "scope": "HELDOUT_TRAIN_DONORS",
+        "biology_observed": 0.61,
+        "biology_permutation_q95": 0.42,
+        "source_residual_observed": 0.08,
+        "source_residual_permutation_q95": 0.10,
+        "operator_residual_observed": 0.09,
+        "operator_residual_permutation_q95": 0.11,
+        "support_residual_observed": 0.02,
+        "support_residual_permutation_q95": 0.03,
+    }
+    out = adjudicate_successor_donor_transfer(rec)
+    assert out["donor_transfer_qualified"] is True
+    assert out["training_authorized"] is False
+    rec["source_residual_observed"] = 0.2
+    assert adjudicate_successor_donor_transfer(rec)["donor_transfer_qualified"] is False
+
+
+def test_successor_donor_contract_refuses_retrospective_freeze():
+    with pytest.raises(ValueError, match="must be frozen before"):
+        adjudicate_successor_donor_transfer({"contract_frozen_before_candidate_evaluation": False})
+
+
+def test_successor_matrix_contract_reports_identifiability_and_requires_every_evaluable_matrix_to_beat_null_without_identity_leakage():
+    rows = [
+        {"matrix_id":"A","total_cells":100,"eligible_cells":90,"biology_observed":0.7,"biology_permutation_q95":0.4,"matrix_residual_observed":0.08,"matrix_residual_permutation_q95":0.1},
+        {"matrix_id":"B","total_cells":100,"eligible_cells":50,"biology_observed":0.6,"biology_permutation_q95":0.45,"matrix_residual_observed":0.07,"matrix_residual_permutation_q95":0.09},
+        {"matrix_id":"C","total_cells":100,"eligible_cells":0,"biology_observed":None,"biology_permutation_q95":None,"matrix_residual_observed":None,"matrix_residual_permutation_q95":None},
+    ]
+    out = adjudicate_successor_matrix_transfer(rows, contract_frozen_before_candidate_evaluation=True)
+    assert out["identifiable_cell_fraction"] == pytest.approx(140/300)
+    assert out["evaluable_matrices"] == 2
+    assert out["nonidentifiable_matrices"] == ["C"]
+    assert out["matrix_transfer_qualified"] is True
+    rows[1]["biology_observed"] = 0.3
+    assert adjudicate_successor_matrix_transfer(rows, contract_frozen_before_candidate_evaluation=True)["matrix_transfer_qualified"] is False
+
+
+def test_successor_conditional_technology_contract_requires_heldout_scope_and_no_state_increment_beyond_permutation_envelope():
+    rec = {
+        "contract_frozen_before_candidate_evaluation": True,
+        "scope": "HELDOUT_DONORS_OR_HELDOUT_MATRICES",
+        "biology_observed": 0.65,
+        "biology_permutation_q95": 0.44,
+        "biology_control_source_score": 0.58,
+        "biology_plus_state_source_score": 0.60,
+        "source_increment_permutation_q95": 0.03,
+    }
+    out = adjudicate_successor_conditional_technology(rec)
+    assert out["residual_source_increment"] == pytest.approx(0.02)
+    assert out["technology_invariance_qualified"] is True
+    rec["biology_plus_state_source_score"] = 0.75
+    assert adjudicate_successor_conditional_technology(rec)["technology_invariance_qualified"] is False
 
 
 def _load_cli():
