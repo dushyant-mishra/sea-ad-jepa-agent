@@ -67,7 +67,7 @@ def test_mandatory_gate_failure_rejects_even_with_high_score():
 def test_c5_is_never_foundation_candidate():
     c = contract(); out = m.adjudicate(c, [receipt('C5_REGULATORY_SPECIALIST')])
     assert out['foundation_eligible'] == []
-    assert out['optional_specialists_eligible'] == ['C5_REGULATORY_SPECIALLIST'] if False else ['C5_REGULATORY_SPECIALIST']
+    assert out['optional_specialists_eligible'] == ['C5_REGULATORY_SPECIALIST']
     assert out['target_selected'] is False
 
 
