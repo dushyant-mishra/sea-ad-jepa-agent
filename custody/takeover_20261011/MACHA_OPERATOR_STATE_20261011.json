@@ -66,7 +66,8 @@
   "parallel_science_lane": {
     "branch": "science/td-target-tournament-scaffold-20261011",
     "draft_pr": 275,
-    "current_focused_terminal": "SYNTHETIC_SCIENCE_HARNESS_67_GREEN__GATE_EVIDENCE_ROLE_AND_HASH_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+    "current_focused_terminal": "SYNTHETIC_SCIENCE_HARNESS_110_GREEN__PRECISION_NUMERIC_CUSTODY_FAIL_CLOSED__QUERY_LINEAGE_COMPLETE__MATCHED_NULL_NAMESPACE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+    "focused_test_result": "110 passed / 0 failed / 0 errors",
     "historical_executor_audit": "docs/agent/TD_HISTORICAL_EXECUTOR_FRESH_SCIENTIFIC_AUDIT_20261011.md",
     "authority_separate_from_g6g7": true
   },
