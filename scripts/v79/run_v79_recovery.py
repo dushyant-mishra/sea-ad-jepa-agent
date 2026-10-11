@@ -113,7 +113,7 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
     run, dg, attempts = SR.fit_with_rules(
         lambda ta, ext: M.run_nuts(kw, n_chains=chains, warmup=warmup, draws=draws, seed=seed, target_accept=ta,
                                    max_tree_depth=max_tree_depth, extend_from=ext),
-        lambda r: diagnose(r, lik_model, comps))
+        lambda r: diagnose(r, lik_model, comps), locate=lambda r: divergence_location(r, comps))
     fr = M.realized_fractions(M.flatten_chains(run["samples"]), des, lik_model, components=comps,
                               mask=sim.get("mask"), typical_offset=sim.get("typical_offset"))
     per = {}

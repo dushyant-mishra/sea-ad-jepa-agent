@@ -71,3 +71,19 @@ def test_divergent_extensions_at_every_level_end_not_diagnosed():
     _, _, att = SR.fit_with_rules(run, diag)
     assert [c for c in calls] == [(0.9, False), (0.9, True), (0.95, False), (0.95, True), (0.99, False), (0.99, True)]
     assert not att[-1]["diagnosed"]
+
+
+def test_every_divergent_attempt_records_where_its_divergences_sit():
+    """Self-audit 52(b): the divergence location of each attempt, not only of the final run, so an escalation
+    that ends in a non-divergent miss (detection V2 S4) is still diagnosable."""
+    run, diag, calls = scripted([(4, 1.02, 300), (0, 1.017, 177), (0, 1.005, 362)])
+    seen = []
+
+    def locate(r):
+        seen.append(r["divergences"][0])
+        return dict(n_divergent_draws=sum(r["divergences"]))
+
+    _, _, att = SR.fit_with_rules(run, diag, locate=locate)
+    assert [a["divergence_location"] for a in att] == [dict(n_divergent_draws=4), None, None]
+    assert seen == [4]  # located only when there are divergences
+    assert [a["diagnosed"] for a in att] == [False, False, False]  # the decision itself is unchanged

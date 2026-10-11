@@ -32,27 +32,30 @@ def converged(run: dict, diag: dict) -> bool:
     return sum(run["divergences"]) == 0 and diag["worst_rhat"] <= RHAT_MAX and diag["worst_ess"] >= ESS_MIN
 
 
-def fit_with_rules(run, diagnose, accepts=RETRY_ACCEPT):
+def fit_with_rules(run, diagnose, accepts=RETRY_ACCEPT, locate=None):
     """run(target_accept, extend_from) -> run record (divergences, seconds, mean_steps, ...);
-    diagnose(run) -> dict with worst_rhat and worst_ess. Returns (final run, its diagnosis, attempts)."""
+    diagnose(run) -> dict with worst_rhat and worst_ess; locate(run) -> where a run's divergences sit (recorded
+    for every attempt that diverged; never part of the decision). Returns (final run, its diagnosis, attempts)."""
     attempts, r, d = [], None, None
     for ta in accepts:
         r = run(ta, None)
         d = diagnose(r)
-        attempts.append(_attempt(ta, r, d, extended=False))
+        attempts.append(_attempt(ta, r, d, extended=False, locate=locate))
         if sum(r["divergences"]) > 0:
             continue                                   # retry rule: escalate target_accept
         if not attempts[-1]["diagnosed"]:
             r = run(ta, r)                             # A5: extend the same chains once
             d = diagnose(r)
-            attempts.append(_attempt(ta, r, d, extended=True))
+            attempts.append(_attempt(ta, r, d, extended=True, locate=locate))
             if sum(r["divergences"]) > 0:
                 continue                               # the senior retry rule: a divergence anywhere escalates
         break
     return r, d, attempts
 
 
-def _attempt(ta, r, d, extended):
+def _attempt(ta, r, d, extended, locate=None):
+    where = locate(r) if locate is not None and sum(r["divergences"]) > 0 else None
     return dict(target_accept=ta, extended=extended, seconds=r["seconds"], divergences=list(r["divergences"]),
                 mean_steps=r.get("mean_steps"), draws_per_chain=r.get("draws_per_chain"),
-                worst_rhat=d["worst_rhat"], worst_ess=d["worst_ess"], diagnosed=converged(r, d))
+                worst_rhat=d["worst_rhat"], worst_ess=d["worst_ess"], diagnosed=converged(r, d),
+                divergence_location=where)
