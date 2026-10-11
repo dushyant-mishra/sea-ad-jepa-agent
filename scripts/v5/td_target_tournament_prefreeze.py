@@ -33,6 +33,15 @@ ROLE_FIELDS = (
     'analysis_tier',
     'endpoint_id',
 )
+CONTRACT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1'
+CONTRACT_AUTHORITY_KEYS = {
+    'value_read_authorized',
+    'target_selection_authorized',
+    'representation_selection_authorized',
+    'td60_authorized',
+    'stage4_authorized',
+    'training_authorized',
+}
 
 
 class PrefreezeError(ValueError):
@@ -44,6 +53,57 @@ def _canonical_sha(obj):
         obj, sort_keys=True, separators=(',', ':'), ensure_ascii=False
     ).encode('utf-8')
     return hashlib.sha256(raw).hexdigest()
+
+
+def _validate_tournament_contract(contract):
+    if not isinstance(contract, dict) or contract.get('schema') != CONTRACT_SCHEMA:
+        raise PrefreezeError('invalid tournament contract schema')
+    if contract.get('fixture_only') is not True:
+        raise PrefreezeError('tournament contract must remain fixture_only=true')
+    auth=contract.get('authority')
+    if (
+        not isinstance(auth,dict)
+        or set(auth) != CONTRACT_AUTHORITY_KEYS
+        or any(v is not False for v in auth.values())
+    ):
+        raise PrefreezeError('tournament contract authority must be exact and false')
+    candidates=contract.get('candidate_ids')
+    foundation=contract.get('foundation_candidate_ids')
+    specialists=contract.get('optional_specialist_ids')
+    common=contract.get('mandatory_gates')
+    specific=contract.get('candidate_specific_gates')
+    if (
+        not isinstance(candidates,list) or not candidates
+        or len(set(candidates)) != len(candidates)
+        or any(not isinstance(x,str) or not x for x in candidates)
+    ):
+        raise PrefreezeError('invalid tournament candidate_ids')
+    if (
+        not isinstance(foundation,list) or not isinstance(specialists,list)
+        or set(foundation) & set(specialists)
+        or set(foundation) | set(specialists) != set(candidates)
+    ):
+        raise PrefreezeError('foundation/specialist candidate partition mismatch')
+    if (
+        not isinstance(common,list) or not common
+        or len(set(common)) != len(common)
+        or any(not isinstance(x,str) or not x for x in common)
+    ):
+        raise PrefreezeError('invalid mandatory_gates')
+    if not isinstance(specific,dict) or set(specific) != set(candidates):
+        raise PrefreezeError('candidate_specific_gates must cover exact candidates')
+    for cid,gates in specific.items():
+        if (
+            not isinstance(gates,list)
+            or len(set(gates)) != len(gates)
+            or any(not isinstance(x,str) or not x for x in gates)
+        ):
+            raise PrefreezeError(f'invalid candidate-specific gates: {cid}')
+    return contract
+
+
+def canonical_tournament_contract_sha256(contract):
+    return _canonical_sha(_validate_tournament_contract(contract))
 
 
 def _validate_cases(cases):
@@ -104,8 +164,26 @@ def build_prefreeze_manifest(config):
     ):
         raise PrefreezeError('authority must contain exact frozen keys, all false')
 
+    contract = config.get('tournament_contract')
+    _validate_tournament_contract(contract)
+    expected_contract_sha = canonical_tournament_contract_sha256(contract)
+    if sha != expected_contract_sha:
+        raise PrefreezeError('tournament contract SHA mismatch')
+
     cases = config.get('decision_cases')
     normalized = _validate_cases(cases)
+    common_gates=set(contract['mandatory_gates'])
+    specific=contract['candidate_specific_gates']
+    for case in normalized:
+        cid=case['candidate_id']
+        if cid not in specific:
+            raise PrefreezeError(f'case candidate absent from tournament contract: {cid}')
+        allowed=common_gates | set(specific[cid])
+        if case['gate_id'] not in allowed:
+            raise PrefreezeError(
+                f'case gate not allowed for candidate by tournament contract: {cid}: {case["gate_id"]}'
+            )
+
     registry_sha = config.get('decision_family_registry_sha256', '')
     if (
         not isinstance(registry_sha, str)
