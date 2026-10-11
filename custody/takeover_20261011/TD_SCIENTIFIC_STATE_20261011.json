@@ -1,0 +1,106 @@
+{
+  "schema": "JEPA_TD_SCIENTIFIC_STATE_V1",
+  "date": "2026-10-11",
+  "status": "SCIENTIFIC_REANALYSIS_COMPLETE__TARGET_TOURNAMENT_PREFROZEN__AWAITING_G6G7_ENGINEERING_QUALIFICATION",
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "authority": {
+    "value_read_authorized": false,
+    "owner_decision_exists": false,
+    "g6_executed": false,
+    "g7_executed": false,
+    "corrected_biological_replay_authorized": false,
+    "corrected_biological_replay_executed": false,
+    "td60_authorized": false,
+    "target_selected": false,
+    "representation_winner": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "accepted_current_integrity_evidence": {
+    "pr259_status": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
+    "execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
+    "executed_code": "bf253a4dd62d943398f9ff59ed8b1e74777140a5",
+    "driver_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+    "mapping_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "biological_recurrence_established": false
+  },
+  "engineering_state": {
+    "blocked_pr267_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
+    "pr268_red_head": "d8fa3024e06e265b77353c8382453e7ccbf2350f",
+    "macha_assignment": "CREATE_TEST_FIRST_COMPREHENSIVE_G6G7_CUSTODY_SUCCESSOR__QUALIFY__THEN_STOP_AT_VALUE_AUTHORITY_BOUNDARY",
+    "controlling_instruction": "docs/agent/MACHA_NEXT_INSTRUCTION_TD_FULL_CUSTODY_REPAIR_20261011.md"
+  },
+  "historical_scientific_state": {
+    "TD56S": "DISJOINT_GENE_WITHIN_DONOR_RELATIONAL_GEOMETRY_SURVIVES_HISTORICALLY__REQUIRES_CORRECTED_REPLAY",
+    "TD57B": {
+      "status": "HISTORICAL_PROSPECTIVE_PASS_24_OF_24__REQUIRES_CORRECTED_REPLAY",
+      "weakest_observed_minus_null_p95": 0.0375178074843
+    },
+    "TD57C": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
+    "TD59": {
+      "status": "HISTORICAL_PROSPECTIVE_PASS_24_OF_24__REQUIRES_CORRECTED_REPLAY",
+      "weakest_observed_minus_null_p95": 0.0011566307718604563,
+      "cases_above_null_max": 22,
+      "cases_total": 24
+    },
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+  },
+  "scientific_ruling": {
+    "strongest_historical_object": "scale_free_donor_recurrent_relational_order_with_broad_or_mesoscale_support",
+    "historically_falsified_primary_design": "nearest_third_fine_local_primary_relational_loss",
+    "production_nearest_half_constant_selected": false,
+    "universal_fixed_coordinate_target_selected": false,
+    "regulatory_graph_as_teacher_truth": false,
+    "current_scientific_incumbent_not_winner": "structured_multiscale_protocol_shared_state_plus_broad_mesoscale_relational_continuity_plus_measured_q_context_plus_support_and_separate_uncertainties"
+  },
+  "target_hypothesis_families": [
+    "C1_SHARED_EMERGENT_STATE_WITH_RELATIONAL_CONTINUITY",
+    "C2_MULTISCALE_RELATIONAL_STATE",
+    "C3_QUERY_CONDITIONED_MEASURED_CONTEXT",
+    "C4_STRUCTURED_SHARED_RELATIONAL_QUERY_PROTOCOL",
+    "C5_OPTIONAL_REGULATORY_CHROMATIN_SPECIALIST"
+  ],
+  "mandatory_falsifiers": [
+    "constant_or_training_mean",
+    "lawful_technical_operator_only",
+    "address_support_operator_shortcut",
+    "matched_wrong_cell_value_support_null",
+    "fine_neighborhood_wrong_cell_null_for_relational_candidates",
+    "q_count_only_for_query_candidates",
+    "q_excluded_teacher_ablation",
+    "source_specific_replication"
+  ],
+  "coverage_design": {
+    "universal_core": "lawful_RNA_shared_and_relational_state",
+    "conditional_query_head": "active_only_under_support_contract_else_abstain",
+    "optional_specialist": "regulatory_or_chromatin_only_when_independently_qualified_else_abstain",
+    "measurement_channel_separate": true,
+    "source_donor_hierarchical_weighting_required": true,
+    "forced_multimodal_imputation_forbidden": true
+  },
+  "multimodal_role": {
+    "stage75_regulatory": "SOFT_PRIOR_OR_FALSIFIER_ONLY",
+    "gse174367_snrna": "COACTIVITY_CONTEXT_NOT_CLEAN_EXTERNAL_VALIDATION",
+    "gse174367_snatac": "CHROMATIN_SUPPORT_ANNOTATION_NOT_CAUSAL_ENHANCER_VALIDATION",
+    "perturbation_assets": "POTENTIAL_STRONGER_FALSIFIER_AFTER_DEDICATED_PROVENANCE_NORMALIZATION_CONTRACT",
+    "circularity_control_required": true
+  },
+  "prefrozen_documents": {
+    "scientific_audit": "docs/agent/TD_SCIENTIFIC_TARGET_FRAMEWORK_AND_EVIDENCE_AUDIT_20261011.md",
+    "corrected_replay_interpretation": "docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md",
+    "multitarget_tournament": "docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze.md",
+    "local_evidence_inventory": "custody/takeover_20261011/TD_PROJECT_LOCAL_EVIDENCE_INVENTORY_20261011.json"
+  },
+  "next_sequence": [
+    "Macha qualifies comprehensive G6/G7 custody successor without real values",
+    "explicit owner decision AUTHORIZE_G6_G7_INTEGRITY_ONLY if desired",
+    "G6 then G7 integrity execution and independent audit",
+    "second explicit owner authority before corrected TD56/57B/57C/59 replay",
+    "apply prefrozen corrected-replay interpretation",
+    "execute prefrozen target tournament only if routed/authorized",
+    "select target only after tournament",
+    "representation selection remains separate",
+    "real training remains separately unauthorized"
+  ]
+}
