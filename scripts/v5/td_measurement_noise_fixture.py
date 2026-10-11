@@ -22,8 +22,8 @@ def _validate(counts, support, seed_material, cell_id):
         support = set(support)
     except Exception as exc:
         raise MeasurementFixtureError('support must be iterable') from exc
-    seed_material = str(seed_material)
-    cell_id = str(cell_id)
+    if not isinstance(seed_material, str) or not isinstance(cell_id, str):
+        raise MeasurementFixtureError('seed_material and cell_id must be exact strings')
     if not seed_material.strip():
         raise MeasurementFixtureError('seed_material must be nonempty')
     if not cell_id.strip():
