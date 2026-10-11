@@ -22,10 +22,19 @@ def _validate(counts, support, seed_material, cell_id):
         support = set(support)
     except Exception as exc:
         raise MeasurementFixtureError('support must be iterable') from exc
-    if not str(seed_material).strip():
+    seed_material = str(seed_material)
+    cell_id = str(cell_id)
+    if not seed_material.strip():
         raise MeasurementFixtureError('seed_material must be nonempty')
-    if not str(cell_id).strip():
+    if not cell_id.strip():
         raise MeasurementFixtureError('cell_id must be nonempty')
+    if '\0' in seed_material or '\0' in cell_id:
+        raise MeasurementFixtureError('seed_material and cell_id must be NUL-free')
+    for address in support:
+        if isinstance(address, bool) or type(address) is not int or address < 0:
+            raise MeasurementFixtureError(
+                'support addresses must be nonnegative exact Python integers'
+            )
     unknown = set(counts) - support
     if unknown:
         raise MeasurementFixtureError(
@@ -39,7 +48,7 @@ def _validate(counts, support, seed_material, cell_id):
                 'counts must be nonnegative exact Python integers'
             )
         clean[address] = value
-    return clean, support, str(seed_material), str(cell_id)
+    return clean, support, seed_material, cell_id
 
 
 def _byte(namespace, seed_material, cell_id, address, molecule_index):
