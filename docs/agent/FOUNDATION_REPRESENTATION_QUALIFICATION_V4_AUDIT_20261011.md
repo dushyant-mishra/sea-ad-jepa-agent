@@ -31,11 +31,12 @@ The matrix-transfer table also shows a structural limitation: many held-out HVS 
 
 ## Audit of PR #269
 
-The current implementation does not duplicate the old Stage81A3 computation. It adds three fail-closed current interfaces:
+The current implementation does not duplicate the old Stage81A3 computation. It provides four fail-closed current interfaces:
 
 1. historical-evidence requalification;
-2. prospective hierarchical dataset→donor→cell sampling;
-3. explicit dense-allocation/compact-cache resource planning.
+2. prospective hierarchical dataset/source→donor→cell sampling;
+3. explicit dense-allocation/compact-cache resource planning;
+4. an authenticated CLI that binds the source report SHA-256 and publishes an exclusive atomic receipt without overwrite.
 
 The requalification code correctly refuses to promote a historical report if pathology blindness, no-optimizer-update status, TRAIN-only expression scope, DEV/SEALED exclusion, or non-frozen production basis status differ from the preserved contract.
 
@@ -43,18 +44,29 @@ The transfer ladder is ordered and conjunctive: strong dataset/technology transf
 
 The observation-operator boundary reuses the existing physical-descriptor policy and rejects provenance shortcuts such as donor, matrix and dataset identity.
 
-The sampling module requires explicit sublinear exponents `0 < alpha < 1`; those exponents are inputs, not outcome-tuned parameters. It normalizes dataset mass, donor-conditional mass and per-cell conditional mass separately.
+The sampling module requires explicit sublinear exponents `0 < alpha < 1`; those exponents are inputs, not outcome-tuned parameters. It normalizes dataset/source mass, donor-conditional mass and per-cell conditional mass separately. A metadata-only audit has now prospectively frozen the primary exponents at `0.25`/`0.25` with fixed, non-adaptive `0.5`/`0.5` sensitivity; no expression outcome, pathology, target value or representation result was used to choose them.
 
 The resource guard explicitly forbids full-registry dense authority and allows only a selected-gene dense cache after a declared memory budget check. For 4,000 cells × 41,238 addresses × float32, a single dense matrix is 659,808,000 bytes before any additional intermediates. A 4,000 × 3,000 float32 selected cache is 48,000,000 bytes.
 
 ## Verification
 
-GitHub Actions run `38148597388` completed `SUCCESS` on PR #269 head `ccc3c71673fc3da7d3d18423afb61c85818e56c4` after two deliberately informative harness failures were corrected:
+TDD was completed on the final implementation head `685ff5c2b7988907e09ce7dcdca75990f81821d3`:
 
-- first failure: package import dragged in PyTorch even though the qualification utilities are dependency-light;
-- second failure: direct loading of a dataclass module was not registered in `sys.modules`.
+- RED run `38150302135`: `2 failed, 12 passed`, both failures being the expected missing authenticated CLI entry point;
+- GREEN run `38150355930`, job `114502345286`: **14 passed in 0.45 s**.
 
-The final dependency-light focused suite passed. The failures were test-harness/environment failures, not scientific endpoint failures.
+Earlier harness failures while making the dependency-light import path portable are preserved development evidence and were not scientific endpoint failures.
+
+## Subsequent evidence addenda
+
+The authenticated project-mounted calibration bundle adds a learned-representation shortcut result that is scientifically stronger than the old pre-learning technology result. See:
+
+- `docs/agent/FOUNDATION_REPRESENTATION_T1_SHORTCUT_AUDIT_ADDENDUM_20261011.md`;
+- `docs/agent/FOUNDATION_PROJECT_MOUNTED_DATA_CUSTODY_20261011.json`;
+- `docs/agent/FOUNDATION_RESOURCE_PATH_AUDIT_20261011.md`;
+- `results/v4/FOUNDATION_PRODUCTION_SAMPLING_AUTHORITY_V1.json`.
+
+The learned T1 result means technology invariance is **not currently qualified**; source/operator/support remain strongly decodable on held-out TRAIN donors. Because these variables are partly aliased with donor and biological composition, the evidence is not labeled proof of a purely technical causal failure. A conditional technology-imprint/invariance gate is required.
 
 ## Scientific ruling
 
@@ -62,7 +74,7 @@ The recovered historical evidence substantially advances the project, but it doe
 
 Current ruling:
 
-`HISTORICAL_FOUNDATION_EVIDENCE_REQUALIFIED__STABLE_SUBSPACE_WITH_ROTATING_AXES__BIOLOGY_AND_MEASUREMENT_UNCERTAINTY_SEPARATED__TWO_AXIS_OOD_SUPPORTED__DONOR_AND_MATRIX_TRANSFER_REMAIN_BLOCKERS__TRAINING_OFF`
+`FOUNDATION_REPRESENTATION_ENGINEERING_CLOSED__HISTORICAL_SUBSPACE_EVIDENCE_REQUALIFIED__LEARNED_T1_TECHNOLOGY_INVARIANCE_NOT_QUALIFIED__SAMPLING_AUTHORITY_FROZEN__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF`
 
 Consequences:
 
@@ -70,9 +82,10 @@ Consequences:
 - keep biological-evidence and measurement-depth response curves separate;
 - retain separate biological-support and measurement-domain OOD axes;
 - use the donor→matrix→dataset→technology escalation prospectively;
-- do not freeze a representation until donor and matrix transfer are requalified under the current substrate/vocabulary contract;
+- do not freeze a representation until donor and matrix transfer are requalified under the current final substrate/vocabulary contract;
+- require conditional technology-imprint/invariance analysis on the final representation;
 - do not expose donor/dataset/matrix identity as model inputs;
-- use hierarchical sampling only after its alpha values are prospectively approved;
+- use the prospectively frozen metadata-only sampler (`0.25` primary, `0.5` fixed sensitivity) without outcome-adaptive selection;
 - treat the historical 6.39 GB/5.03 GB runtime as historical evidence, not a production resource guarantee.
 
 ## Unchanged firewalls
