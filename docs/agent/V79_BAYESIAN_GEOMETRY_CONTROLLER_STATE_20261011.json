@@ -1,47 +1,82 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V3",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V4",
   "date": "2026-10-11",
   "lane": "bayesian_synthetic_geometry",
   "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
-  "live_source_head": "3798ac05dcfe9f2d226694200281872702253db7",
+  "live_source_head": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
   "audit_pr": 260,
   "handoff_pr": 261,
-  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
+  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE__DETECTION_TERMINAL_NOT_QUALIFIED__GAUSSIAN_LOGNORMAL_ZTNB_POST_CODE_PATH_RECOVERY_PENDING",
   "training_authorized": false,
   "corrected_train_authorized": false,
-  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R3.md",
+  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R4.md",
+  "code_path_qualification": {
+    "snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
+    "receipt": "results/v79/recovery/CODE_PATH_QUALIFICATION_0bc45513.json",
+    "recovery_e2e_gaussian": "PASS",
+    "recovery_e2e_bernoulli": "PASS",
+    "recovery_e2e_lognormal": "PASS",
+    "recovery_e2e_ztnb": "PASS",
+    "scheduler_e2e": "PASS",
+    "meaning": "EXECUTION_PATH_QUALIFIED__NOT_SCIENTIFIC_RECOVERY_PASS"
+  },
   "detection": {
     "v1_status": "FAILED_S4_DIVERGENCES_AT_0.9_AND_0.95__0.99_INFEASIBLE",
-    "v2_status": "PRECOMMITTED_FINAL_ATTEMPT__S0_S1_S4_RESULTS_NOT_YET_COMMITTED",
-    "v2_parameterization": "ALL_RANDOM_COMPONENTS_NONCENTRED",
-    "no_v3_allowed_if_v2_fails": true,
-    "full_s0_s5_required_if_v2_screen_passes": true,
-    "qualified": false
+    "v2_status": "FAILED_S4_TERMINAL_ESS",
+    "v2_parameterization": "DETECTION_V2_NC_ALL",
+    "v2_code_snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
+    "s4_worst_rhat": 1.0050606796610788,
+    "s4_worst_ess": 361.8761303230284,
+    "s4_ess_minimum": 400,
+    "s4_divergences": 0,
+    "qualified": false,
+    "v3_allowed": false,
+    "threshold_change_allowed": false,
+    "post_failure_tuning_allowed": false
   },
-  "gaussian": "INCOMPLETE__A5_COMPLIANT_RERUNS_AND_COMBINED_RECEIPT_PENDING",
-  "lognormal": "INCOMPLETE__S3_EXPOSED_A5_BUG__CORRECTED_RULE_RERUN_PENDING",
-  "ztnb": "INCOMPLETE__FULL_S0_S5_TERMINAL_RECEIPT_PENDING",
+  "gaussian": {
+    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
+    "qualified": false,
+    "pre_code_path_evidence_is_terminal_authority": false
+  },
+  "lognormal": {
+    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
+    "qualified": false,
+    "pre_code_path_evidence_is_terminal_authority": false
+  },
+  "ztnb": {
+    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
+    "qualified": false,
+    "pre_code_path_evidence_is_terminal_authority": false
+  },
   "state_quality": {
     "source_V79_ACTIVE_STATE_stale_relative_to_head": true,
-    "source_PROVENANCE_stale_relative_to_head": true
+    "source_V79_ACTIVE_STATE_updated_utc": "2026-10-11T08:05Z",
+    "source_V79_ACTIVE_STATE_head_at_write": "6082624a57a9e549a132f99da0616089db3862e7",
+    "current_root_PROVENANCE_present": false,
+    "historical_PROVENANCE_archived_pre_code_path": true
   },
-  "next_gate": "DETECTION_V2_S0_S1_S4_SCREEN_THEN_FULL_V2_S0_S5_IF_PASS",
+  "next_gate": "POST_CODE_PATH_QUALIFICATION_FULL_S0_S5_RECOVERY_FOR_GAUSSIAN_LOGNORMAL_ZTNB",
   "next_controller_instruction": [
-    "commit V2 S0/S1/S4 result payloads with full diagnostics and retry history",
-    "if any V2 screen world fails, stop detection and report NOT QUALIFIED; do not search V3",
-    "if V2 screen passes, run the exact same V2 parameterization across full S0-S5 and commit a combined receipt",
-    "refresh V79_ACTIVE_STATE.json and PROVENANCE.json",
-    "finish Gaussian, log-normal and ZTNB recovery under corrected A5",
-    "do not start corrected TRAIN until all required simulation recovery families pass"
+    "stop detection work; preserve V2 S4 as terminal NOT_QUALIFIED and do not launch V3",
+    "refresh V79_ACTIVE_STATE.json and publish current post-code-path recovery provenance",
+    "run Gaussian exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
+    "run log-normal exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
+    "run ZTNB exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
+    "if any required world fails after its allowed retry path, mark that family NOT_QUALIFIED and stop that family",
+    "do not start benchmark or corrected TRAIN until the corresponding family has terminal independent simulation qualification",
+    "keep detection explicitly UNQUALIFIED in any later observation authority"
   ],
   "boundaries": {
     "training_authorized": false,
+    "corrected_train_allowed_before_family_simulation_pass": false,
     "test_or_morabito_allowed": false,
     "pathology_allowed": false,
-    "target_discovery_allowed": false,
+    "target_discovery_in_this_lane": false,
     "scenic_atac_target_evidence_allowed": false,
     "v78_outcome_retune_allowed": false,
-    "stage4_500k_allowed": false
+    "stage4_500k_allowed": false,
+    "post_outcome_synthetic_rescue_allowed": false
   },
   "qualified_terminal_label": "BAYESIAN_GEOMETRY_QUALIFIED_FOR_SYNTHETIC_INTEGRATION"
 }
