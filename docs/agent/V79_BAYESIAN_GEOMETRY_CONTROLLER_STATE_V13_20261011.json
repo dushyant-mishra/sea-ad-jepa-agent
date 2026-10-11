@@ -1,0 +1,44 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V13",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "canonical_handoff_pr": 261,
+  "canonical_audit_pr": 260,
+  "world_generator_pr": 291,
+  "controller_contract_ratification_comment": 6114866796,
+  "controller_pairing_hold_comment": 6114906562,
+  "controller_pairing_ratification_comment": 6114933346,
+  "contract_v2_sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+  "pairing_amendment": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json",
+    "sha256": "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c",
+    "status": "RATIFIED_PROSPECTIVE_PRE_OUTCOME_SEMANTICS",
+    "worlds_generated_at_freeze": 0,
+    "qualification_fits_at_freeze": 0,
+    "q11_non_operator_seed_parent": 10,
+    "q11_operator_streams": [22, 23],
+    "common_random_numbers": true,
+    "all_q11_gates": "HARD_FAIL"
+  },
+  "pairing_tdd": {
+    "red": {"workflow": 38183033723, "job": 114599441055, "result": "5 passed / 3 failed exactly missing pairing functions"},
+    "green": {"workflow": 38183126875, "job": 114599720437, "result": "8 passed in 0.13 s"}
+  },
+  "scientific_state": {
+    "v2_core": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+    "source_interpretation": "predictive/acquisition-source structure among estimable measured comparisons",
+    "operator": "OUT_OF_CORE"
+  },
+  "authorization": {
+    "scenario_generator_engineering": true,
+    "realized_world_generation": false,
+    "benchmark": false,
+    "qualification_fitting": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "next_gate": "test-first scientific scenario generator for Q00-Q11 under Contract V2 plus pairing amendment; no realized world emission until full generator CI and controller audit",
+  "terminal_state": "Q10_Q11_PAIRING_AMENDMENT_RATIFIED__SCENARIO_GENERATOR_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
