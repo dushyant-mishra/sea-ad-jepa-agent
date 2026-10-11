@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import subprocess
 from pathlib import Path
 
@@ -73,6 +74,26 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
         for block in iter(lambda: handle.read(chunk), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def exclusive_create_json(path: Path, payload: dict) -> Path:
+    """Create a JSON file with true exclusive-create semantics (O_CREAT | O_EXCL).
+
+    Of any number of concurrent creators exactly one succeeds; every other one gets FileExistsError. The file is
+    never replaced or removed here, so a created attempt marker stays spent after any later success or failure.
+    """
+    path = Path(path)
+    data = (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0)
+    fd = os.open(path, flags, 0o644)
+    try:
+        view = memoryview(data)
+        while view:
+            view = view[os.write(fd, view):]
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+    return path
 
 
 def canonical_text_sha256(path: Path) -> str:

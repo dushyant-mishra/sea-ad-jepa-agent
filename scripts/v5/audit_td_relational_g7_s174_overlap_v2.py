@@ -372,24 +372,19 @@ def begin_g7_attempt(out: Path, authority_trace: dict, g6_receipt_sha256: str) -
     if out.exists() or marker.exists():
         raise RuntimeError(f"immutable G7 attempt already spent: receipt={out} marker={marker}")
     out.parent.mkdir(parents=True, exist_ok=True)
-    marker.write_text(
-        json.dumps(
-            {
-                "schema": "JEPA_TD_RELATIONAL_G7_EXECUTION_START_V1",
-                "status": "STARTED_NOT_A_PASS",
-                "authority_trace": authority_trace,
-                "g6_receipt_sha256": str(g6_receipt_sha256),
-                "biological_replay_authorized": False,
-                "target_selection_authorized": False,
-                "td60_authorized": False,
-                "training_authorized": False,
-            },
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    try:
+        common.exclusive_create_json(marker, {
+            "schema": "JEPA_TD_RELATIONAL_G7_EXECUTION_START_V1",
+            "status": "STARTED_NOT_A_PASS",
+            "authority_trace": authority_trace,
+            "g6_receipt_sha256": str(g6_receipt_sha256),
+            "biological_replay_authorized": False,
+            "target_selection_authorized": False,
+            "td60_authorized": False,
+            "training_authorized": False,
+        })
+    except FileExistsError as exc:
+        raise RuntimeError(f"immutable G7 attempt already spent: concurrent starter won marker={marker}") from exc
     return marker
 
 
