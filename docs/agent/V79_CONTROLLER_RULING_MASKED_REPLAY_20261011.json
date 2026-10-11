@@ -1,0 +1,42 @@
+{
+  "schema": "V79_CONTROLLER_RULING_MASKED_REPLAY_V1",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "source_pr": 288,
+  "source_pr_head": "c3cf9ad7472541bfb5ad632465c626c437f9a69c",
+  "source_summary_comment": 6114694791,
+  "controller_ruling_comment": 6114753697,
+  "masked_replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+  "masking_audit_sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+  "support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+  "mechanical_A_to_H_preserved": true,
+  "v2_core_model_freeze": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+  "source_term": {
+    "retain_in_v2_core": true,
+    "interpretation": "PREDICTIVE_OBSERVATION_STRUCTURE_TERM__NOT_UNIVERSAL_CAUSAL_BIOLOGY",
+    "magnitude_note": "V3 detection source magnitude was inflated by structural zeros; masked replay reduces magnitude without changing the design-class decision",
+    "single_source_genes": "UNEVALUABLE_FOR_CROSS_SOURCE_ESTIMAND__REPORTED_NOT_DROPPED"
+  },
+  "method_choices": {
+    "same_v3_panel_for_corrective_replay": "APPROVED__ISOLATES_SUPPORT_SEMANTICS_ONLY",
+    "preserve_contract_v1_and_write_new_v2": "APPROVED_AND_PREFERRED"
+  },
+  "contract_v2_draft": {
+    "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+    "substantive_amendments": "ACCEPTED_IN_PRINCIPLE",
+    "launch_authority": false,
+    "hard_statistical_gates": 260,
+    "alpha_per_gate": 0.0001923076923076923,
+    "genes_per_world": 44,
+    "total_fits": 1056,
+    "finalization_required": true
+  },
+  "next_gate": "FINALIZE_IMMUTABLE_CONTRACT_V2__BIND_CONTROLLER_RULING__BYTE_REPRODUCIBILITY_AND_CONSUMER_REJECTION_TESTS__STOP_FOR_REPORT",
+  "qualification_world_generation_authorized": false,
+  "qualification_fitting_authorized": false,
+  "corrected_train_posterior_inference_authorized": false,
+  "factorial_scientific_execution_authorized": false,
+  "training_authorized": false,
+  "terminal": "V2_CORE_FROZEN_AFTER_MASK_CORRECTED_S174_REPLAY__SOURCE_MAGNITUDE_REINTERPRETED__CONTRACT_V2_FINALIZATION_AUTHORIZED__WORLD_GENERATION_STILL_OFF__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF"
+}
