@@ -1,5 +1,5 @@
 """The compact analysis cache equals the current loader exactly (gene sample, selected counts, library, detected
-features) and refuses a shard whose bytes differ from the authority. Synthetic shards only (no real counts)."""
+features and design) and refuses a shard whose bytes differ from the authority. Synthetic shards only."""
 from __future__ import annotations
 
 import hashlib
@@ -47,11 +47,15 @@ def make_world(tmp: Path, seed=0):
 
 def test_cache_equals_the_current_loader(tmp_path):
     root, bridge, authority = make_world(tmp_path)
+    historical_design = DA.design_indices(FW.load_cell_design(root, bridge))
     for g in (10, 20):
         arrays, meta = C.build(root, bridge, authority, g)
         checks = C.verify_against_loader(arrays, root, bridge, g)
         assert all(checks.values()) and meta["shard_files_verified"] == 6
         assert arrays["counts_selected"].shape == (210, g) and len(arrays["gene_address_index"]) == g
+        for name, old_name in (("cls", "cls"), ("src", "src"), ("op", "op"), ("donor", "donor"), ("dk", "dk"),
+                               ("log_lib_centered", "log_lib_centered")):
+            assert np.array_equal(arrays[name], historical_design[old_name])
 
 
 def test_build_never_assembles_a_global_sparse_matrix(tmp_path, monkeypatch):
