@@ -54,6 +54,31 @@ def test_cache_equals_the_current_loader(tmp_path):
         assert arrays["counts_selected"].shape == (210, g) and len(arrays["gene_address_index"]) == g
 
 
+def test_build_never_assembles_a_global_sparse_matrix(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+
+    def forbidden_vstack(*args, **kwargs):
+        raise AssertionError("streaming cache must not scipy.sparse.vstack all shards")
+
+    monkeypatch.setattr(sparse, "vstack", forbidden_vstack)
+    arrays, meta = C.build(root, bridge, authority, 10)
+    assert arrays["counts_selected"].shape == (210, 10)
+    assert meta["streaming_passes"] == 2
+    assert meta["max_count_shards_resident"] == 1
+
+
+def test_verification_does_not_reload_the_global_matrix(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+    arrays, _ = C.build(root, bridge, authority, 10)
+
+    def forbidden_loader(*args, **kwargs):
+        raise AssertionError("verification must stream shards, not DA.load_counts/vstack the full matrix")
+
+    monkeypatch.setattr(DA, "load_counts", forbidden_loader)
+    checks = C.verify_against_loader(arrays, root, bridge, 10)
+    assert all(checks.values())
+
+
 def test_a_tampered_shard_is_refused(tmp_path):
     root, bridge, authority = make_world(tmp_path)
     p = root / "bbbb.counts.npz"
