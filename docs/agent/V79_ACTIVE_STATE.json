@@ -1,9 +1,9 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T20:13:20Z",
- "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
- "source_head_at_write": "02fb78c36473d9863ae9482619133c052ba4a480 (PR #283, CI run 38170751947 green) on exec/v79-s174-structure-replay-v3-20261011",
- "terminal_state": "EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__FROZEN_SENSITIVITY_0p25_1_4__DEVELOPMENT_ONLY__CONTROLLER_MODEL_FREEZE_REQUIRED__BAYESIAN_CONFIRMATION_OFF__TRAINING_OFF",
+ "updated_utc": "2026-10-11T21:00:21Z",
+ "branch": "feat/v79-v2-core-qualification-20261011",
+ "source_head_at_write": "2c230a70d9151e27b14ec2788d1309eb2ac81468 (PR #285, V3 replay) + V2_CORE contract commit",
+ "terminal_state": "V2_CORE_QUALIFICATION_CONTRACT_FROZEN__NO_QUALIFICATION_FIT_RUN__CONTROLLER_REVIEW_OF_CONTRACT_INVITED__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
@@ -49,9 +49,10 @@
  "open_defects": [
   "divergence_location is not yet wired into the inference, Phase C and PPC runners (self-audit 53)",
   "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark",
-  "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery"
+  "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery",
+  "S174 compact cache / V3 replay / planting calibration V1 treated 5.76% structurally_unmeasured entries (59/500 genes) as measured zeros; V2_CORE enforces the Stage81A2R support mask and the calibration was redone masked (V2); the clean-gene split keeps A-H qualitatively (contract section development_finding_structural_support); flagged for controller audit"
  ],
- "next_gate": "controller model-freeze decision (operator component); no NUTS, no old 18-fit campaign, no H0-H3, no training",
+ "next_gate": "implement V2_CORE model/world builder/runner/scorer test-first with green CI; generate and commit realized worlds + truth tables before any fit; engineering benchmark; then Q00-Q11 qualification; stop for controller audit",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -98,5 +99,16 @@
    "H_positive_lognormal": "STABLE_DEVELOPMENT_REPRESENTATION; ZTNB unadjudicated"
   },
   "candidate": "PARTIALLY_PRESERVED__OPERATOR_COMPONENT_WEAKENED"
+ },
+ "v2_core": {
+  "controller_freeze": "CANDIDATE_V2_CORE (PR #285 comment 6113335756)",
+  "contract": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+  "contract_sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+  "summary": "docs/agent/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.md",
+  "genes_per_world": 45,
+  "worlds": 12,
+  "statistical_gates": 264,
+  "alpha_per_gate": 0.0001893939393939394,
+  "qualification_fits_run": 0
  }
 }

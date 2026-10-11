@@ -12,3 +12,7 @@ outputs/f1_real_producer_replay_prefreeze_20260907/** -text
 # mixed for historical reasons (S142). Never translate them, or recorded digests stop matching.
 results/v77/** -text
 scripts/v77/** -text
+
+# V79 V2_CORE qualification contract and inputs: hashes are over raw bytes.
+results/v79/v2_core_qualification/** -text
+results/v79/development/v2_core_planting_calibration/** -text
