@@ -99,8 +99,8 @@ def validate_evidence_manifest(
 
     required = contract['candidate_gate_sets'][cid]
     gates = manifest.get('gates')
-    if not isinstance(gates, dict) or list(gates) != required:
-        raise AdjudicationV2Error('evidence manifest must contain the exact ordered candidate gate set')
+    if not isinstance(gates, dict) or set(gates) != set(required):
+        raise AdjudicationV2Error('evidence manifest must contain the exact candidate gate set')
     for gate in required:
         record = gates[gate]
         if not isinstance(record, dict) or set(record) != _GATE_RECORD_FIELDS:
@@ -176,6 +176,8 @@ def adjudicate(
         c2.validate_contract(contract)
     except c2.ContractV2Error as exc:
         raise AdjudicationV2Error(str(exc)) from exc
+    if not _is_sha256(expected_prefreeze_manifest_sha256):
+        raise AdjudicationV2Error('external prefreeze SHA must be an exact lowercase SHA-256')
     if not isinstance(receipts, list) or not isinstance(manifests, dict):
         raise AdjudicationV2Error('receipts must be a list and manifests a candidate map')
 
