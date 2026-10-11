@@ -51,6 +51,7 @@ jobs:
             tests/v5/test_td_gate_case_coverage.py \
             tests/v5/test_td_gate_case_coverage_envelope.py \
             tests/v5/test_td_gate_case_coverage_external_pin.py \
+            tests/v5/test_td_gate_case_coverage_v2.py \
             tests/v5/test_td_measurement_noise_fixture.py \
             tests/v5/test_td_precision_donor_identity.py \
             tests/v5/test_td_prefreeze_config_envelope.py \
