@@ -1,0 +1,88 @@
+{
+  "schema": "SYNTHETIC_FOUNDATION_LANE_CONTROLLER_STATE_V1",
+  "date": "2026-10-11",
+  "scope": "SYNTHETIC_DATASET_FOUNDATION_REPRESENTATION_V79_FACTORIAL_FULL104_DIMENSION_ONLY",
+  "target_discovery_is_separate_lane": true,
+  "foundation_representation": {
+    "implementation_pr": 269,
+    "implementation_head": "f0044c8b37991375aeeee56e1e47bfbaff7af528",
+    "residual_gates_pr": 276,
+    "audit_pr": 271,
+    "handoff_pr": 272,
+    "green_run": 38156521672,
+    "green_tests": 19,
+    "basis_uncertainty": "SUBSPACE_ONLY",
+    "learned_t1_technology_invariance": "NOT_QUALIFIED",
+    "canonical_matrix_total": 42,
+    "canonical_matrix_available": 34,
+    "canonical_matrix_unavailable": 8,
+    "matrix_v2_sha256": "9938144a00f7bad209506c809ff3fa54747dde10c34373358df7a89defe3f3e3",
+    "bounded_u205_biology_donor_ba": 0.4934640522875817,
+    "bounded_u205_biology_matrix_ba": 0.47759103641456585,
+    "bounded_u205_conditional_source_donor_ba": 0.96875,
+    "bounded_u205_conditional_source_matrix_ba": 0.96875,
+    "cpu_diagnostic_batch_ceiling": 4,
+    "successor_acceptance_contract_frozen": true,
+    "u0000_u0205_eligible_for_retroactive_promotion": false,
+    "representation_freeze_authorized": false,
+    "remaining_external": [
+      "FUTURE_UNOPENED_REPRESENTATION_UNDER_PREFROZEN_CONTRACT",
+      "FINAL_PRODUCTION_GPU_RESOURCE_BENCHMARK"
+    ]
+  },
+  "v79_factorial": {
+    "implementation_pr": 262,
+    "audit_pr": 264,
+    "handoff_pr": 265,
+    "engineering_green_run": 38147114407,
+    "engineering_green_tests": 94,
+    "scientific_tournament_run": false,
+    "macha_source_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+    "macha_detection_status": "TERMINAL_NOT_QUALIFIED",
+    "macha_detection_v2_s4_limiting_ess": 362,
+    "macha_detection_minimum_ess": 400,
+    "macha_detection_v3_allowed": false,
+    "macha_gaussian_status": "PENDING",
+    "macha_lognormal_status": "PENDING",
+    "macha_ztnb_status": "PENDING",
+    "macha_detection_consumable_for_h2_h3": false,
+    "remaining_external": [
+      "TERMINAL_OTHER_MACHA_FAMILY_RULINGS",
+      "PROSPECTIVE_FINAL_H1_H2_AUTHORITY_DECISION",
+      "FINAL_H1_H2_AUTHORITY_FREEZE",
+      "FINAL_BYTE_CUSTODY_REPLAY",
+      "INDEPENDENT_FINAL_GATE_AUDIT"
+    ]
+  },
+  "full104_dimension": {
+    "implementation_pr": 270,
+    "audit_pr": 273,
+    "handoff_pr": 274,
+    "engineering_green_run": 38149069861,
+    "engineering_green_tests": 17,
+    "precision_authority_closed": true,
+    "authenticated_metric_receipt_contract_closed": true,
+    "frozen_dimension_selector_present": true,
+    "physical_full104_present_in_current_runtime": false,
+    "D_shared": null,
+    "D_private": null,
+    "D_obs": null,
+    "D_total": null,
+    "remaining_external": [
+      "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+      "REAL_FULL_STREAM_DIMENSION_METRICS",
+      "AUTHENTICATED_METRIC_RECEIPT_VALIDATION",
+      "FROZEN_SELECTOR_APPLICATION",
+      "INDEPENDENT_NUMERICAL_AUDIT"
+    ]
+  },
+  "global_firewalls": {
+    "training_authorized": false,
+    "stage4_authorized": false,
+    "test_or_morabito_accessed": false,
+    "pathology_accessed": false,
+    "v78_retuning_authorized": false,
+    "factorial_post_outcome_rescue_authorized": false
+  },
+  "terminal": "SYNTHETIC_FOUNDATION_INTERNAL_ENGINEERING_MAXIMALLY_ADVANCED_WITH_AVAILABLE_BYTES__REPRESENTATION_U205_NOT_QUALIFIED__V79_DETECTION_NOT_QUALIFIED__FULL104_PHYSICAL_STORE_REQUIRED__SCIENTIFIC_FACTORIAL_NOT_RUN__TRAINING_OFF"
+}
