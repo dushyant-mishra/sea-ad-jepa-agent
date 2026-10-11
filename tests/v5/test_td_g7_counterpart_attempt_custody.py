@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import threading
 from pathlib import Path
 
 import pytest
@@ -77,3 +78,42 @@ def test_g7_attempt_marker_path_is_sidecar_of_final_receipt(tmp_path):
     out = tmp_path / "nested" / "G7_RECEIPT.json"
     marker = m.g7_attempt_marker_path(out)
     assert marker == out.with_name("G7_RECEIPT.json.STARTED_NOT_A_PASS.json")
+
+
+def test_g7_attempt_concurrent_start_has_exactly_one_winner(monkeypatch, tmp_path):
+    m = load_module()
+    out = tmp_path / "G7_RECEIPT.json"
+    trace = {"preflight_result_sha256": "p", "authorization_sha256": "a"}
+    marker = m.g7_attempt_marker_path(out)
+
+    original_write_text = Path.write_text
+    barrier = threading.Barrier(2)
+
+    def synchronized_write_text(self, *args, **kwargs):
+        if self == marker:
+            barrier.wait(timeout=5)
+        return original_write_text(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", synchronized_write_text)
+
+    successes = []
+    failures = []
+
+    def start_attempt():
+        try:
+            successes.append(m.begin_g7_attempt(out, trace, "g6sha"))
+        except Exception as exc:
+            failures.append(exc)
+
+    threads = [threading.Thread(target=start_attempt) for _ in range(2)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=10)
+
+    assert all(not thread.is_alive() for thread in threads)
+    assert len(successes) == 1
+    assert len(failures) == 1
+    assert isinstance(failures[0], RuntimeError)
+    assert "already spent" in str(failures[0])
+    assert marker.exists()
