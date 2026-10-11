@@ -1,0 +1,5 @@
+total 1024
+drwxr-xr-x 1 dushy 197609    0 Oct 11 15:54 .
+drwxr-xr-x 1 dushy 197609    0 Oct 11 14:30 ..
+-rw-r--r-- 1 dushy 197609 1428 Oct 11 15:54 G6_EXECUTION_START.json
+ae85dd14d17454a104204543312df332bedeae4ea45a9838f9fc9893a80e5894 *G6_EXECUTION_START.json

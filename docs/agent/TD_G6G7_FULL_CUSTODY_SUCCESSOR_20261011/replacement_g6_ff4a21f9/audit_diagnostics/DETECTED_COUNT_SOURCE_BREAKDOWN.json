@@ -1,0 +1,245 @@
+{
+ "schema": "TD_G6_FF4A21F9_DETECTED_COUNT_SOURCE_BREAKDOWN_AUDIT_V1",
+ "label": "POST_EXECUTION_AUDIT_DIAGNOSTIC__READ_ONLY__NOT_BIOLOGY__NO_G7_AUTHORITY",
+ "inputs": {
+  "meta_npz_sha256": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+  "receipt_sha256": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+  "manifest_sha256": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+  "read_from": "a SHA-256-verified copy (deleted after use)"
+ },
+ "definitions": "(G6 code at ff4a21f9, materialize_td_relational_corrected_sampleA_v2.py):\n  detected_corrected (HVS/SEA)  = count of nonzero physical entries whose column maps to a molecular address\n  detected_historical           = TD50 historical sentinel detected count for the row's global_row\n  NPH52 pass-through            : detected_corrected := detected_historical, so a change is impossible by construction\n  detected_changed_rows         = sum(detected_historical != detected_corrected)",
+ "receipt_detected_changed_rows": 22560,
+ "recomputed_detected_changed_rows": 22560,
+ "recomputed_equals_receipt": true,
+ "by_source": {
+  "HVS": {
+   "rows": 1129,
+   "changed_rows": 0,
+   "unchanged_rows": 1129,
+   "changed_delta_corrected_minus_historical": {
+    "n": 0
+   },
+   "changed_relative_delta": {
+    "n": 0
+   },
+   "changed_sign": {
+    "corrected_lower": 0,
+    "corrected_higher": 0
+   },
+   "detected_historical_all_rows": {
+    "n": 1129,
+    "mean": 4332.721877767936,
+    "q00": 910.0,
+    "q01": 1064.96,
+    "q05": 1426.0,
+    "q25": 2839.0,
+    "q50": 4311.0,
+    "q75": 5717.0,
+    "q95": 7357.199999999998,
+    "q99": 8535.880000000001,
+    "q100": 9780.0
+   },
+   "detected_corrected_all_rows": {
+    "n": 1129,
+    "mean": 4332.721877767936,
+    "q00": 910.0,
+    "q01": 1064.96,
+    "q05": 1426.0,
+    "q25": 2839.0,
+    "q50": 4311.0,
+    "q75": 5717.0,
+    "q95": 7357.199999999998,
+    "q99": 8535.880000000001,
+    "q100": 9780.0
+   }
+  },
+  "NPH52": {
+   "rows": 1310,
+   "changed_rows": 0,
+   "unchanged_rows": 1310,
+   "changed_delta_corrected_minus_historical": {
+    "n": 0
+   },
+   "changed_relative_delta": {
+    "n": 0
+   },
+   "changed_sign": {
+    "corrected_lower": 0,
+    "corrected_higher": 0
+   },
+   "detected_historical_all_rows": {
+    "n": 1310,
+    "mean": 4058.265648854962,
+    "q00": 583.0,
+    "q01": 765.09,
+    "q05": 1184.15,
+    "q25": 2379.25,
+    "q50": 3365.0,
+    "q75": 4973.25,
+    "q95": 9337.949999999999,
+    "q99": 10843.060000000005,
+    "q100": 12432.0
+   },
+   "detected_corrected_all_rows": {
+    "n": 1310,
+    "mean": 4058.265648854962,
+    "q00": 583.0,
+    "q01": 765.09,
+    "q05": 1184.15,
+    "q25": 2379.25,
+    "q50": 3365.0,
+    "q75": 4973.25,
+    "q95": 9337.949999999999,
+    "q99": 10843.060000000005,
+    "q100": 12432.0
+   }
+  },
+  "SEA_AD": {
+   "rows": 22561,
+   "changed_rows": 22560,
+   "unchanged_rows": 1,
+   "changed_delta_corrected_minus_historical": {
+    "n": 22560,
+    "mean": 115.39122340425531,
+    "q00": -4.0,
+    "q01": 18.0,
+    "q05": 40.0,
+    "q25": 82.0,
+    "q50": 117.0,
+    "q75": 149.0,
+    "q95": 187.0,
+    "q99": 210.0,
+    "q100": 262.0
+   },
+   "changed_relative_delta": {
+    "n": 22560,
+    "mean": 0.022944889869446383,
+    "q00": -0.030303030303030304,
+    "q01": 0.013416692012174297,
+    "q05": 0.016132550230676047,
+    "q25": 0.0195882406575065,
+    "q50": 0.022373608157896126,
+    "q75": 0.02567868864306746,
+    "q95": 0.0317979387648952,
+    "q99": 0.03690857568639173,
+    "q100": 0.054441260744985676
+   },
+   "changed_sign": {
+    "corrected_lower": 2,
+    "corrected_higher": 22558
+   },
+   "detected_historical_all_rows": {
+    "n": 22561,
+    "mean": 5287.523248082975,
+    "q00": 33.0,
+    "q01": 768.6,
+    "q05": 1601.0,
+    "q25": 3359.0,
+    "q50": 5248.0,
+    "q75": 7065.0,
+    "q95": 9269.0,
+    "q99": 10648.600000000013,
+    "q100": 13181.0
+   },
+   "detected_corrected_all_rows": {
+    "n": 22561,
+    "mean": 5402.90935685475,
+    "q00": 32.0,
+    "q01": 790.6,
+    "q05": 1648.0,
+    "q25": 3441.0,
+    "q50": 5364.0,
+    "q75": 7211.0,
+    "q95": 9449.0,
+    "q99": 10834.0,
+    "q100": 13379.0
+   }
+  }
+ },
+ "sea_ad_unchanged_rows": [
+  {
+   "sample_row_position": 2151,
+   "global_row": 2151,
+   "operator_index": 25,
+   "cell_id": "TGGACGGAGGTAAGCA-L8XR_221201_02_E02-1233285481",
+   "detected_historical": 430,
+   "detected_corrected": 430,
+   "source_library": 544
+  }
+ ],
+ "g6_mapping_diagnostics_excluded_by_study": {
+  "HVS": {},
+  "SEA_AD": {
+   "LEDGER_COLLISION": 16775
+  }
+ },
+ "sea_ad_nonpositive_delta_rows": [
+  {
+   "sample_row_position": 2151,
+   "global_row": 2151,
+   "operator_index": 25,
+   "detected_historical": 430,
+   "detected_corrected": 430,
+   "delta": 0,
+   "source_library": 544
+  },
+  {
+   "sample_row_position": 7664,
+   "global_row": 7664,
+   "operator_index": 25,
+   "detected_historical": 33,
+   "detected_corrected": 32,
+   "delta": -1,
+   "source_library": 35
+  },
+  {
+   "sample_row_position": 21508,
+   "global_row": 21508,
+   "operator_index": 26,
+   "detected_historical": 498,
+   "detected_corrected": 494,
+   "delta": -4,
+   "source_library": 681
+  }
+ ],
+ "sea_ad_spearman_delta_vs_detected_historical": 0.9185907476207136,
+ "macha_freeze_mapping_fields_by_study": {
+  "freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+  "by_study": {
+   "HVS": {
+    "matrices": 24,
+    "var_features": 449664,
+    "mapped_columns": 449664,
+    "collision_addresses": 0,
+    "old_positional_blocked": 0,
+    "mapped_columns_whose_address_differs_from_the_old_positional_map": 449640,
+    "cells": 3072
+   },
+   "SEA_AD": {
+    "matrices": 11,
+    "var_features": 402611,
+    "mapped_columns": 385836,
+    "collision_addresses": 7810,
+    "old_positional_blocked": 16775,
+    "mapped_columns_whose_address_differs_from_the_old_positional_map": 385825,
+    "cells": 1408,
+    "excluded_LEDGER_COLLISION": 16775
+   }
+  }
+ },
+ "namespace_hashes_before": {
+  "G6_EXECUTION_START.json": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+  "G6_RECEIPT.json": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+  "MANIFEST.json": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+  "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+  "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74"
+ },
+ "namespace_hashes_after": {
+  "G6_EXECUTION_START.json": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+  "G6_RECEIPT.json": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+  "MANIFEST.json": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+  "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+  "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74"
+ },
+ "namespace_unchanged": true
+}

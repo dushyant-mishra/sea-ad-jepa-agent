@@ -1,0 +1,11 @@
+{
+ "receipt_detected_changed_rows": 22560,
+ "recomputed_detected_changed_rows": 22560,
+ "namespace_unchanged": true
+}
+HVS rows 1129 changed 0 unchanged 1129 delta {'q00': None, 'q50': None, 'q100': None, 'mean': None} sign {'corrected_lower': 0, 'corrected_higher': 0}
+NPH52 rows 1310 changed 0 unchanged 1310 delta {'q00': None, 'q50': None, 'q100': None, 'mean': None} sign {'corrected_lower': 0, 'corrected_higher': 0}
+SEA_AD rows 22561 changed 22560 unchanged 1 delta {'q00': -4.0, 'q50': 117.0, 'q100': 262.0, 'mean': 115.39122340425531} sign {'corrected_lower': 2, 'corrected_higher': 22558}
+SEA_AD unchanged rows: [{'sample_row_position': 2151, 'global_row': 2151, 'operator_index': 25, 'cell_id': 'TGGACGGAGGTAAGCA-L8XR_221201_02_E02-1233285481', 'detected_historical': 430, 'detected_corrected': 430, 'source_library': 544}]
+excluded by study: {'HVS': {}, 'SEA_AD': {'LEDGER_COLLISION': 16775}}
+exit=0
