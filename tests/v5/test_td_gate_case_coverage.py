@@ -46,8 +46,20 @@ def receipts():
     ]
 
 
+def audit(p=None, r=None, *, candidate_id="C1_RELATIONAL_SHARED", gate_id="G1_DONOR_PRIMARY", expected_sha=None):
+    p = prefreeze() if p is None else p
+    expected_sha = p["manifest_sha256"] if expected_sha is None else expected_sha
+    return m.audit_gate_case_coverage(
+        p,
+        expected_prefreeze_manifest_sha256=expected_sha,
+        candidate_id=candidate_id,
+        gate_id=gate_id,
+        case_receipts=receipts() if r is None else r,
+    )
+
+
 def test_complete_coverage_is_accepted_without_gate_adjudication():
-    out=m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=receipts())
+    out=audit()
     assert out["coverage_complete"] is True
     assert out["expected_case_count"]==2
     assert out["status_counts"]=={"PASS":1,"FAIL":0,"NOT_ESTIMABLE":1}
@@ -56,53 +68,45 @@ def test_complete_coverage_is_accepted_without_gate_adjudication():
 
 
 def test_missing_case_rejected():
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=receipts()[:1])
+    with pytest.raises(m.CoverageError): audit(r=receipts()[:1])
 
 
 def test_extra_case_rejected():
     r=receipts()+[{"case_id":"extra","candidate_id":"C1_RELATIONAL_SHARED","gate_id":"G1_DONOR_PRIMARY","source":"SEA_AD","analysis_tier":"discovery","endpoint_id":"recurrence","status":"PASS","evidence_sha256":"3"*64}]
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=r)
+    with pytest.raises(m.CoverageError): audit(r=r)
 
 
 def test_role_relabel_rejected():
     r=receipts(); r[0]=dict(r[0]); r[0]["source"]="SEA_AD"
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=r)
+    with pytest.raises(m.CoverageError): audit(r=r)
 
 
 def test_duplicate_case_receipts_rejected():
     r=[receipts()[0],dict(receipts()[0])]
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=r)
+    with pytest.raises(m.CoverageError): audit(r=r)
 
 
 def test_altered_prefreeze_after_hash_rejected():
-    p=prefreeze(); p["case_resolution"][0]["source"]="SEA_AD"
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(p,candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=receipts())
+    p=prefreeze(); frozen_sha=p["manifest_sha256"]; p["case_resolution"][0]["source"]="SEA_AD"
+    with pytest.raises(m.CoverageError): audit(p=p, expected_sha=frozen_sha)
 
 
 def test_unknown_status_rejected():
     r=receipts(); r[0]=dict(r[0]); r[0]["status"]="MAYBE"
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=r)
+    with pytest.raises(m.CoverageError): audit(r=r)
 
 
 def test_bad_evidence_sha_rejected():
     r=receipts(); r[0]=dict(r[0]); r[0]["evidence_sha256"]="bad"
-    with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=r)
+    with pytest.raises(m.CoverageError): audit(r=r)
 
 
 def test_unknown_candidate_gate_pair_rejected():
     with pytest.raises(m.CoverageError):
-        m.audit_gate_case_coverage(prefreeze(),candidate_id="C5_REGULATORY_SPECIALIST",gate_id="M1_CIRCULARITY_CONTROL",case_receipts=[])
+        audit(candidate_id="C5_REGULATORY_SPECIALIST",gate_id="M1_CIRCULARITY_CONTROL",r=[])
 
 
 def test_output_authority_is_false_and_bundle_hash_deterministic():
-    a=m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=receipts())
-    b=m.audit_gate_case_coverage(prefreeze(),candidate_id="C1_RELATIONAL_SHARED",gate_id="G1_DONOR_PRIMARY",case_receipts=list(reversed(receipts())))
+    a=audit(); b=audit(r=list(reversed(receipts())))
     assert a["case_evidence_bundle_sha256"]==b["case_evidence_bundle_sha256"]
     assert all(v is False for v in a["authority"].values())
