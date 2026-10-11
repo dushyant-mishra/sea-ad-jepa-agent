@@ -1,0 +1,24 @@
+name: V79 V2_CORE contract finalization
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/build_v79_v2_core_contract.py'
+      - 'scripts/v79/validate_v79_v2_core_launch_contract.py'
+      - 'results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json'
+      - 'results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.sha256'
+      - 'tests/v79/test_v79_v2_core_contract_finalization.py'
+      - '.github/workflows/v79-v2-core-contract-finalization.yml'
+
+jobs:
+  contract-finalization-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install numpy scipy pytest
+      - run: python -m pytest tests/v79/test_v79_v2_core_contract_finalization.py -q
+      - run: python scripts/v79/build_v79_v2_core_contract.py . --check
