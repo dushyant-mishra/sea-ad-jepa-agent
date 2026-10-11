@@ -20,8 +20,8 @@ def load_module():
 def test_group_heldout_nearest_centroid_excludes_held_group_and_recovers_classes():
     mod = load_module()
     x = np.array([
-        [-3.0, 0.0], [-2.5, 0.1], [3.0, 0.0], [2.5, -0.1],
-        [-3.1, 0.2], [-2.6, -0.2], [3.1, 0.2], [2.6, -0.2],
+        [-3.0, 0.0], [-2.5, 0.0], [3.0, 0.0], [2.5, 0.0],
+        [-3.1, 0.0], [-2.6, 0.0], [3.1, 0.0], [2.6, 0.0],
     ])
     y = np.array(["A", "A", "B", "B", "A", "A", "B", "B"])
     groups = np.array(["g1", "g1", "g1", "g1", "g2", "g2", "g2", "g2"])
