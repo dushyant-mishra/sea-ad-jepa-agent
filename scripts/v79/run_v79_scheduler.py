@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
+import shutil
 import subprocess
 import time
 from datetime import datetime, timezone
@@ -27,6 +29,15 @@ def running_fits() -> int:
         return 10 ** 6                                  # unreadable: assume full, never oversubscribe
 
 
+def git_bash() -> str:
+    """Git Bash by PATH lookup. A bare "bash" in CreateProcess resolves System32 first, which is WSL's bash,
+    where /d/... and /c/... do not exist (self-audit 46: jobs failed silently and the slot count stayed low)."""
+    b = shutil.which("bash")
+    if not b or "system32" in b.lower() or "windowsapps" in b.lower():
+        raise SystemExit(f"refusing: bash resolves to {b!r}, not Git Bash")
+    return b
+
+
 def now() -> str:
     return datetime.now(timezone.utc).strftime("%H:%M:%SZ")
 
@@ -40,12 +51,14 @@ def main() -> None:
     ap.add_argument("--settle", type=int, default=120, help="seconds to wait after a launch before recounting")
     a = ap.parse_args()
     jobs = json.load(open(a.jobs, encoding="utf-8"))
+    bash = git_bash()
     for j in jobs:
         while running_fits() >= a.slots:
             time.sleep(60)
-        wrapped = (f'timeout {a.timeout} {j["cmd"]} > "{j["log"]}" 2>&1; '
+        # the whole job command (even a compound one) runs in its own Git Bash under the timeout and the redirect
+        wrapped = (f'timeout {a.timeout} "{bash}" -c {shlex.quote(j["cmd"])} > "{j["log"]}" 2>&1; '
                    f'echo "{j["name"]} exit $? $(date -u +%H:%M:%SZ)" >> "{a.progress}"')
-        subprocess.Popen(["bash", "-c", wrapped],
+        subprocess.Popen([bash, "-c", wrapped],
                          creationflags=subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS)
         with open(a.progress, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(f"{j['name']} start {now()}\n")
