@@ -5,3 +5,4 @@ ztnb S4_operator_only
 ztnb S5_labels_removed
 lognormal S4_operator_only
 lognormal S5_labels_removed
+lognormal S2_class_permuted
