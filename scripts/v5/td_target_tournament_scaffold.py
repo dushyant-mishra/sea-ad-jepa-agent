@@ -21,6 +21,40 @@ EXPECTED_GATES = [
     'G6_TRANSFER',
     'G7_NO_POSTHOC',
 ]
+EXPECTED_CANDIDATE_SPECIFIC_GATES = {
+    'C1_RELATIONAL_SHARED': [
+        'R1_SCALE_FREE_RELATIONAL_RECURRENCE',
+        'R2_FINE_LOCALITY_NOT_PRIMARY',
+        'R3_MATCHED_WRONG_CELL_DEFEAT',
+    ],
+    'C2_QUERY_MEASURED': [
+        'Q1_Q_SCALAR_STUDENT_ABSENT',
+        'Q2_Q_EXCLUDED_TEACHER_ABLATION',
+        'Q3_TARGET_NORMALIZATION_Q_FREE',
+        'Q4_Q_COUNT_ONLY_DEFEAT',
+    ],
+    'C3_LEARNED_SHARED': [
+        'L1_LEARNED_TEACHER_VIEW_CONTINUITY',
+        'L2_CONDITIONAL_TECHNOLOGY_IMPRINT',
+        'L3_EVIDENCE_RESPONSE',
+        'L4_MEASUREMENT_DEPTH_RESPONSE',
+        'L5_COLLAPSE_SHORTCUT_DEFEAT',
+    ],
+    'C4_STRUCTURED_COMPOSITE': [
+        'C4_INCREMENT_OVER_CONSTITUENTS',
+        'L1_LEARNED_TEACHER_VIEW_CONTINUITY',
+        'L2_CONDITIONAL_TECHNOLOGY_IMPRINT',
+        'Q1_Q_SCALAR_STUDENT_ABSENT',
+        'Q2_Q_EXCLUDED_TEACHER_ABLATION',
+        'Q3_TARGET_NORMALIZATION_Q_FREE',
+    ],
+    'C5_REGULATORY_SPECIALIST': [
+        'M1_CIRCULARITY_CONTROL',
+        'M2_INDEPENDENT_PROVENANCE',
+        'M3_CAUSAL_CLAIM_FALSE',
+        'M4_SUPPORT_ABSTENTION',
+    ],
+}
 CONTRACT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1'
 RECEIPT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_CANDIDATE_RECEIPT_V1'
 EXPECTED_CONTRACT_AUTHORITY_KEYS = {
@@ -67,6 +101,8 @@ def validate_contract(contract):
         raise ContractError('optional_specialist_ids differ from frozen scaffold')
     if contract.get('mandatory_gates') != EXPECTED_GATES:
         raise ContractError('mandatory_gates differ from frozen scaffold')
+    if contract.get('candidate_specific_gates') != EXPECTED_CANDIDATE_SPECIFIC_GATES:
+        raise ContractError('candidate_specific_gates differ from frozen scaffold')
     auth = contract.get('authority')
     if not isinstance(auth, dict):
         raise ContractError('authority object required')
@@ -85,9 +121,10 @@ def validate_candidate_receipt(receipt, contract):
     if cid not in contract['candidate_ids']:
         raise ReceiptError('unknown candidate_id')
     gates = receipt.get('gates')
-    if not isinstance(gates, dict) or set(gates) != set(contract['mandatory_gates']):
-        raise ReceiptError('receipt gates must exactly match frozen mandatory gates')
-    if any(type(gates[g]) is not bool for g in contract['mandatory_gates']):
+    required_gates = contract['mandatory_gates'] + contract['candidate_specific_gates'][cid]
+    if not isinstance(gates, dict) or set(gates) != set(required_gates):
+        raise ReceiptError('receipt gates must exactly match frozen candidate gate set')
+    if any(type(gates[g]) is not bool for g in required_gates):
         raise ReceiptError('gate values must be boolean')
     auth = receipt.get('authority')
     if not isinstance(auth, dict):
@@ -111,7 +148,8 @@ def adjudicate(contract, receipts):
         if cid in seen:
             raise ReceiptError(f'duplicate candidate receipt: {cid}')
         seen.add(cid)
-        failed_gates = [g for g in contract['mandatory_gates'] if receipt['gates'][g] is not True]
+        required_gates = contract['mandatory_gates'] + contract['candidate_specific_gates'][cid]
+        failed_gates = [g for g in required_gates if receipt['gates'][g] is not True]
         eligible = receipt['status'] == 'PASS' and not failed_gates
         if eligible and cid in contract['foundation_candidate_ids']:
             foundation_eligible.append(cid)
