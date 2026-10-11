@@ -78,35 +78,34 @@ def sha256_bytes(data: bytes) -> str:
 def assert_empty_output(out: Path) -> None:
     out = Path(out)
     if out.exists() and any(out.iterdir()):
-        raise RuntimeError(f"immutable output namespace is not empty; refusing overwrite: {out}")
+        raise RuntimeError(f"G6 attempt already spent: immutable output namespace is not empty; refusing overwrite: {out}")
 
 
 def begin_namespace(out: Path, authority_trace: dict) -> Path:
-    """Spend the namespace immediately so every later failure leaves durable evidence."""
+    """Spend the namespace immediately so every later failure leaves durable evidence.
+
+    The marker is created with exclusive-create semantics, so of any number of concurrent starters (new or existing
+    empty directory) exactly one wins and the others are rejected as already spent. The marker is never removed.
+    """
     out = Path(out)
     assert_empty_output(out)
-    if not out.exists():
-        out.mkdir(parents=True, exist_ok=False)
+    out.mkdir(parents=True, exist_ok=True)
     marker = out / "G6_EXECUTION_START.json"
-    if marker.exists():
-        raise RuntimeError(f"G6 execution-start marker already exists: {marker}")
-    marker.write_text(
-        json.dumps(
-            {
-                "schema": "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1",
-                "status": "STARTED_NOT_A_PASS",
-                "authority_trace": authority_trace,
-                "biological_replay_authorized": False,
-                "target_selection_authorized": False,
-                "td60_authorized": False,
-                "training_authorized": False,
-            },
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    try:
+        common.exclusive_create_json(marker, {
+            "schema": "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1",
+            "status": "STARTED_NOT_A_PASS",
+            "authority_trace": authority_trace,
+            "biological_replay_authorized": False,
+            "target_selection_authorized": False,
+            "td60_authorized": False,
+            "training_authorized": False,
+        })
+    except FileExistsError as exc:
+        raise RuntimeError(f"G6 attempt already spent: concurrent starter won marker={marker}") from exc
+    others = sorted(p.name for p in out.iterdir() if p.name != marker.name)
+    if others:
+        raise RuntimeError(f"G6 attempt already spent: namespace gained foreign files before the start marker: {others}")
     return marker
 
 
