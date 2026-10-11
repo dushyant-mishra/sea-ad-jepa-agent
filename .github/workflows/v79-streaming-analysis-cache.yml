@@ -5,6 +5,7 @@ on:
     paths:
       - 'scripts/v79/build_v79_analysis_cache.py'
       - 'scripts/v79/run_v79_s174_structure_replay.py'
+      - 'scripts/v79/run_v79_s174_structure_replay_masked.py'
       - 'scripts/v79/v79_data.py'
       - 'scripts/v79/v79_firewall.py'
       - 'scripts/v79/run_v79_scheduler.py'
