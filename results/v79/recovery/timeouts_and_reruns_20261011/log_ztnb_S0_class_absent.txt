@@ -1,0 +1,97 @@
+  0%|          | 0/2000 [00:00<?, ?it/s]Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s]
+  0%|          | 0/2000 [00:00<?, ?it/s][A
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A
+
+  0%|          | 0/2000 [00:00<?, ?it/s][A[A
+
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A[A
+
+
+  0%|          | 0/2000 [00:00<?, ?it/s][A[A[A
+
+
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A[A[A2026-10-10 18:41:53.805297: E external/xla/xla/service/slow_operation_alarm.cc:65] 
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+2026-10-10 18:43:29.398055: E external/xla/xla/service/slow_operation_alarm.cc:133] The operation took 3m35.7706955s
+
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+Running chain 0:   0%|          | 0/2000 [05:49<?, ?it/s]
+Running chain 1:   0%|          | 0/2000 [05:49<?, ?it/s][A
+
+Running chain 2:   0%|          | 0/2000 [05:49<?, ?it/s][A[A
+
+
+Running chain 3:   0%|          | 0/2000 [05:49<?, ?it/s][A[A[A
+Running chain 1:   5%|5         | 100/2000 [1:38:30<29:21:14, 55.62s/it][ARunning chain 0:   5%|5         | 100/2000 [1:39:55<29:48:02, 56.46s/it]
+
+Running chain 2:   5%|5         | 100/2000 [1:43:38<30:58:36, 58.69s/it][A[A
+
+
+Running chain 3:   5%|5         | 100/2000 [1:52:12<33:41:17, 63.83s/it][A[A[A
+Running chain 1:  10%|#         | 200/2000 [1:54:33<14:16:55, 28.56s/it][ARunning chain 0:  10%|#         | 200/2000 [1:58:22<14:52:49, 29.76s/it]
+
+Running chain 2:  10%|#         | 200/2000 [2:01:26<15:13:28, 30.45s/it][A[A
+
+
+Running chain 3:  10%|#         | 200/2000 [2:08:17<15:58:50, 31.96s/it][A[A[A
+Running chain 1:  15%|#5        | 300/2000 [2:10:54<9:26:43, 20.00s/it] [ARunning chain 0:  15%|#5        | 300/2000 [2:12:36<9:28:44, 20.07s/it] 
+
+Running chain 2:  15%|#5        | 300/2000 [2:17:16<9:51:41, 20.88s/it] [A[A
+
+
+Running chain 3:  15%|#5        | 300/2000 [2:22:32<10:02:40, 21.27s/it][A[A[A
+Running chain 1:  20%|##        | 400/2000 [2:24:07<6:46:14, 15.23s/it][ARunning chain 0:  20%|##        | 400/2000 [2:26:19<6:50:32, 15.40s/it]
+
+Running chain 2:  20%|##        | 400/2000 [2:29:30<6:54:19, 15.54s/it][A[A
+
+
+Running chain 3:  20%|##        | 400/2000 [2:33:59<6:55:38, 15.59s/it] [A[A[A
+Running chain 1:  25%|##5       | 500/2000 [2:36:31<5:10:35, 12.42s/it][ARunning chain 0:  25%|##5       | 500/2000 [2:37:58<5:09:06, 12.36s/it]
+
+Running chain 2:  25%|##5       | 500/2000 [2:41:26<5:12:53, 12.52s/it][A[A
+
+
+Running chain 3:  25%|##5       | 500/2000 [2:46:58<5:19:17, 12.77s/it][A[A[A
+Running chain 1:  30%|###       | 600/2000 [2:48:24<4:07:54, 10.62s/it][ARunning chain 0:  30%|###       | 600/2000 [2:49:48<4:06:43, 10.57s/it]
+
+Running chain 2:  30%|###       | 600/2000 [2:54:21<4:14:14, 10.90s/it][A[A
+
+
+Running chain 3:  30%|###       | 600/2000 [3:00:16<4:20:02, 11.14s/it][A[A[A
+Running chain 1:  35%|###5      | 700/2000 [3:00:17<3:25:28,  9.48s/it][ARunning chain 0:  35%|###5      | 700/2000 [3:01:58<3:25:58,  9.51s/it]
+
+Running chain 2:  35%|###5      | 700/2000 [3:07:47<3:35:59,  9.97s/it][A[A
+
+
+Running chain 3:  35%|###5      | 700/2000 [3:12:35<3:34:51,  9.92s/it][A[A[A
+Running chain 1:  40%|####      | 800/2000 [3:13:01<2:57:54,  8.90s/it][ARunning chain 0:  40%|####      | 800/2000 [3:13:03<2:51:56,  8.60s/it]
+
+Running chain 2:  40%|####      | 800/2000 [3:20:31<3:04:33,  9.23s/it][A[A
+Running chain 1:  45%|####5     | 900/2000 [3:25:11<2:33:56,  8.40s/it][A
+
+
+Running chain 3:  40%|####      | 800/2000 [3:25:15<3:03:36,  9.18s/it][A[A[ARunning chain 0:  45%|####5     | 900/2000 [3:25:30<2:31:07,  8.24s/it]
+
+Running chain 2:  45%|####5     | 900/2000 [3:33:11<2:39:51,  8.72s/it][A[A
+
+
+Running chain 3:  45%|####5     | 900/2000 [3:37:10<2:36:37,  8.54s/it][A[A[A
+Running chain 1:  50%|#####     | 1000/2000 [3:39:45<2:21:40,  8.50s/it][ARunning chain 0:  50%|#####     | 1000/2000 [3:39:51<2:19:17,  8.36s/it]
+
+Running chain 2:  50%|#####     | 1000/2000 [3:46:29<2:21:29,  8.49s/it][A[A
+
+
+Running chain 3:  50%|#####     | 1000/2000 [3:50:31<2:19:40,  8.38s/it][A[A[A
+Running chain 1:  55%|#####5    | 1100/2000 [3:51:16<2:00:12,  8.01s/it][ARunning chain 0:  55%|#####5    | 1100/2000 [3:51:26<1:58:54,  7.93s/it]
+
+Running chain 2:  55%|#####5    | 1100/2000 [3:57:49<1:59:36,  7.97s/it][A[A
+
+
+Running chain 3:  55%|#####5    | 1100/2000 [4:01:25<1:57:14,  7.82s/it][A[A[A
+Running chain 1:  60%|######    | 1200/2000 [4:01:37<1:39:32,  7.47s/it][ARunning chain 0:  60%|######    | 1200/2000 [4:02:00<1:39:13,  7.44s/it]
+
+Running chain 2:  60%|######    | 1200/2000 [4:07:04<1:36:28,  7.24s/it][A[A

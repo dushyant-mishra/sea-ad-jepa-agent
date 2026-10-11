@@ -1,0 +1,14 @@
+2026-10-10 15:36:58.940302: E external/xla/xla/service/slow_operation_alarm.cc:65] 
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+2026-10-10 15:37:37.479923: E external/xla/xla/service/slow_operation_alarm.cc:133] The operation took 2m38.6642541s
+
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+2026-10-10 19:29:43.674124: E external/xla/xla/service/slow_operation_alarm.cc:133] The operation took 4m37.3391271s
+
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************

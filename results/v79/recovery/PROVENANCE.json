@@ -1,0 +1,30 @@
+{
+ "schema": "V79_RECOVERY_PROVENANCE_V1",
+ "written_utc": "2026-10-11T06:50Z",
+ "equivalence_check": {
+  "script": "scripts/v79/check_v79_snapshot_equivalence.py",
+  "result": {
+   "gaussian": "11d95649 == ad5bbd17 (world bytes, sites, potential, gradient identical)",
+   "bernoulli": "aa00a5ac == ad5bbd17 (identical)",
+   "lognormal": "33ce9fee == ad5bbd17 (identical)"
+  }
+ },
+ "completed_parts": {
+  "part_gaussian_S0_class_absent.json": "11d95649",
+  "part_gaussian_S5_labels_removed.json": "11d95649",
+  "part_bernoulli_S0_class_absent.json": "aa00a5ac",
+  "part_bernoulli_S1_present.json": "aa00a5ac",
+  "part_bernoulli_S5_labels_removed.json": "aa00a5ac"
+ },
+ "running_from_earlier_snapshots": {
+  "bernoulli S4": "aa00a5ac",
+  "lognormal S2": "33ce9fee",
+  "lognormal S3": "33ce9fee"
+ },
+ "scheduled": {
+  "cpu (3 slots, run_v79_scheduler.py, SCHEDULER_JOBS_20261011.json)": "ad5bbd17",
+  "gpu (WSL JAX-CUDA, ZTNB S0-S5 sequential)": "ad5bbd17"
+ },
+ "note": "first-pass converged fits from snapshots before amendment A5 are valid under A5 (extension only acts on a miss); new parts record code_snapshot themselves",
+ "evidence_moved": "timeouts_and_reruns_20261011/ (killed logs, failed Gaussian S1 record, incomplete launcher combine)"
+}

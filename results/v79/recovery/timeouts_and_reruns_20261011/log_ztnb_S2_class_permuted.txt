@@ -1,0 +1,34 @@
+  0%|          | 0/2000 [00:00<?, ?it/s]Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s]
+  0%|          | 0/2000 [00:00<?, ?it/s][A
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A
+
+  0%|          | 0/2000 [00:00<?, ?it/s][A[A
+
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A[A
+
+
+  0%|          | 0/2000 [00:00<?, ?it/s][A[A[A
+
+
+Compiling.. :   0%|          | 0/2000 [00:00<?, ?it/s][A[A[A2026-10-10 22:56:16.242208: E external/xla/xla/service/slow_operation_alarm.cc:65] 
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+2026-10-10 22:58:02.977741: E external/xla/xla/service/slow_operation_alarm.cc:133] The operation took 3m46.9631777s
+
+********************************
+[Compiling module pmap__unnamed_wrapped_function_] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+Running chain 0:   0%|          | 0/2000 [05:58<?, ?it/s]
+Running chain 1:   0%|          | 0/2000 [05:58<?, ?it/s][A
+
+Running chain 2:   0%|          | 0/2000 [05:58<?, ?it/s][A[A
+
+
+Running chain 3:   0%|          | 0/2000 [05:59<?, ?it/s][A[A[A
+Running chain 1:   5%|5         | 100/2000 [1:50:56<33:14:15, 62.98s/it][A
+
+Running chain 2:   5%|5         | 100/2000 [2:06:07<38:02:47, 72.09s/it][A[ARunning chain 0:   5%|5         | 100/2000 [2:07:00<38:19:36, 72.62s/it]
+
+
+Running chain 3:   5%|5         | 100/2000 [2:12:01<39:54:55, 75.63s/it][A[A[A
