@@ -1,11 +1,26 @@
 {
-  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V2",
+  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V3",
   "date": "2026-10-11",
   "implementation_pr": 269,
-  "implementation_head": "ccc3c71673fc3da7d3d18423afb61c85818e56c4",
+  "implementation_head": "685ff5c2b7988907e09ce7dcdca75990f81821d3",
   "verification": {
-    "workflow_run": 38148597388,
-    "conclusion": "SUCCESS"
+    "red_workflow_run": 38150302135,
+    "red_result": "2_FAILED_12_PASSED__EXPECTED_MISSING_CLI",
+    "green_workflow_run": 38150355930,
+    "green_job": 114502345286,
+    "conclusion": "SUCCESS",
+    "tests_passed": 14,
+    "tests_failed": 0
+  },
+  "implementation_closed": {
+    "historical_report_requalification": true,
+    "source_report_sha_binding": true,
+    "exclusive_atomic_receipt_publication": true,
+    "receipt_overwrite_forbidden": true,
+    "authority_escalation_guard": true,
+    "hierarchical_sampling_mechanics": true,
+    "dense_resource_guard": true,
+    "observation_provenance_shortcut_guard": true
   },
   "historical_evidence": {
     "stage81a3_recovered": true,
@@ -54,6 +69,12 @@
     "outcome_tuned": false,
     "adaptive_sensitivity_choice_forbidden": true
   },
+  "project_mounted_data_custody": {
+    "record": "docs/agent/FOUNDATION_PROJECT_MOUNTED_DATA_CUSTODY_20261011.json",
+    "auxiliary_50k_expression_authenticated": true,
+    "auxiliary_50k_production_input_authorized": false,
+    "full104_expression_store_present": false
+  },
   "current_policy": {
     "transfer_ladder": ["donor", "matrix", "dataset", "technology"],
     "representation_freeze_authorized": false,
@@ -77,5 +98,5 @@
   "stage4_authorized": false,
   "test_or_morabito_accessed": false,
   "pathology_accessed": false,
-  "terminal": "HISTORICAL_FOUNDATION_EVIDENCE_REQUALIFIED__LEARNED_T1_TECHNOLOGY_INVARIANCE_NOT_QUALIFIED__SAMPLING_AUTHORITY_FROZEN__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
+  "terminal": "FOUNDATION_REPRESENTATION_ENGINEERING_CLOSED__HISTORICAL_SUBSPACE_EVIDENCE_REQUALIFIED__LEARNED_T1_TECHNOLOGY_INVARIANCE_NOT_QUALIFIED__SAMPLING_AUTHORITY_FROZEN__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
 }
