@@ -70,7 +70,7 @@ def evidence_manifest(c, r):
         'gates': {
             g: {
                 'status': 'PASS' if r['gates'][g] else 'FAIL',
-                'evidence_schema': 'SYNTHETIC_GATE_EVIDENCE_V1',
+                'evidence_schema': ev.expected_evidence_schema(g),
                 'evidence_sha256': (f'{i+1:x}' * 64)[:64],
             }
             for i, g in enumerate(required_gates(c, cid))

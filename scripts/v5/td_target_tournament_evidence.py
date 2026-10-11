@@ -27,6 +27,16 @@ def _is_sha256(value):
     )
 
 
+def expected_evidence_schema(gate):
+    if (
+        not isinstance(gate, str)
+        or not gate
+        or not all(ch.isalnum() or ch == '_' for ch in gate)
+    ):
+        raise EvidenceManifestError('invalid gate identifier for evidence schema')
+    return f'JEPA_TD_GATE_EVIDENCE_{gate}_V1'
+
+
 def canonical_manifest_sha256(manifest):
     raw = json.dumps(
         manifest, sort_keys=True, separators=(',', ':'), ensure_ascii=False
@@ -54,8 +64,8 @@ def validate_evidence_manifest(manifest, *, candidate_id, required_gates):
             raise EvidenceManifestError(f'invalid evidence record shape: {gate}')
         if record['status'] not in ALLOWED_STATUS:
             raise EvidenceManifestError(f'invalid evidence status: {gate}')
-        if not isinstance(record['evidence_schema'], str) or not record['evidence_schema'].strip():
-            raise EvidenceManifestError(f'evidence_schema required: {gate}')
+        if record.get('evidence_schema') != expected_evidence_schema(gate):
+            raise EvidenceManifestError(f'evidence_schema mismatch: {gate}')
         if not _is_sha256(record['evidence_sha256']):
             raise EvidenceManifestError(f'evidence_sha256 invalid: {gate}')
     authority = manifest.get('authority')

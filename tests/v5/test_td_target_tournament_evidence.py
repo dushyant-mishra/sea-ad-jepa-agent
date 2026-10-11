@@ -19,7 +19,7 @@ def manifest(status='PASS'):
         'gates': {
             g: {
                 'status': status,
-                'evidence_schema': 'SYNTHETIC_GATE_EVIDENCE_V1',
+                'evidence_schema': m.expected_evidence_schema(g),
                 'evidence_sha256': ('a' if g != 'G2' else 'b') * 64,
             }
             for g in GATES
@@ -93,7 +93,7 @@ def test_expected_schema_is_gate_specific_and_deterministic():
 
 def test_wrong_gate_evidence_schema_is_rejected():
     x = manifest()
-    x['gates']['G1']['evidence_schema'] = 'JEPA_TD_GATE_EVIDENCE_G2_V1'
+    x['gates']['G1']['evidence_schema'] = m.expected_evidence_schema('G2')
     with pytest.raises(m.EvidenceManifestError):
         m.validate_evidence_manifest(x, candidate_id='C2_QUERY_MEASURED', required_gates=GATES)
 
