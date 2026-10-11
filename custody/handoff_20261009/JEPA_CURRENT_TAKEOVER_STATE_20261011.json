@@ -1,0 +1,110 @@
+{
+  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261011_V1",
+  "date": "2026-10-11",
+  "supersedes_machine_state": "custody/handoff_20261009/JEPA_CURRENT_TAKEOVER_STATE_20261009.json",
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_cold_start_pr": 247,
+  "controlling_target_discovery_audit_pr": 251,
+  "target_discovery": {
+    "g4_g5": {
+      "status": "PASS_VALUE_BLIND_TECHNICAL_DATA_INTEGRITY_ONLY",
+      "execution_record_pr": 259,
+      "execution_record_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
+      "executed_code_sha": "bf253a4dd62d943398f9ff59ed8b1e74777140a5",
+      "driver_receipt_schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3",
+      "driver_terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
+      "driver_receipt_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+      "mapping_receipt_schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3",
+      "mapping_terminal": "PASS_TD_RELATIONAL_MAPPING_PREFLIGHT_VALUE_BLIND",
+      "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+      "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+      "sample_A_contract": {
+        "label": "A_NATURAL_MIXTURE",
+        "cells": 25000,
+        "HVS": 1129,
+        "NPH52": 1310,
+        "SEA_AD": 22561,
+        "sample_A_h5_matrices": 34,
+        "frozen_substrate_h5_matrices_authenticated": 35
+      },
+      "git_blob_line_endings": "EXACT_PR259_RECEIPT_BLOBS_PRESERVE_CRLF_BYTES",
+      "expression_values_read": false,
+      "biological_recurrence_conclusion": "NOT_TESTED"
+    },
+    "g6_g7": {
+      "status": "ENGINEERING_REPAIR_REQUIRED_BEFORE_QUALIFICATION__UNAUTHORIZED__UNEXECUTED",
+      "superseded_candidate_pr": 263,
+      "superseded_candidate_head": "a509c59238bcdc60b88fa265e7e4473760a41025",
+      "do_not_qualify_superseded_head": true,
+      "blocker": "G7 overlap path authenticates/opens S174 counts before authenticating the physical H5AD counterpart",
+      "blocker_audit": "docs/agent/TD_G7_COUNTERPART_AUTH_BEFORE_COUNT_READ_AUDIT_20261010.md",
+      "required_successor_order": [
+        "authenticate_S174_metadata_and_establish_natural_overlap",
+        "authenticate_physical_H5AD_exact_frozen_SHA",
+        "authenticate_S174_counts_exact_G1b_SHA",
+        "only_then_open_either_count_source"
+      ],
+      "required_regression": "physical_H5_auth_failure_with_overlap_must_prevent_S174_count_loader_invocation",
+      "runtime_authorization_exists": false,
+      "owner_decision_record_exists": false,
+      "owner_decision_binding_required_before_future_runtime_authority": true,
+      "owner_decision_audit": "docs/agent/TD_VALUE_AUTH_OWNER_DECISION_BINDING_AUDIT_20261010.md",
+      "value_read_executed": false,
+      "biological_replay_authorized": false,
+      "training_authorized": false
+    },
+    "historical_fixture_recovery": {
+      "status": "EXACT_EXECUTORS_AND_FIXTURES_RECOVERED_FOR_TD56_TD57B_TD57C",
+      "td41_td58_archive_library_file_id": "file_00000000e9ec81f6a58dc73acf9d7807",
+      "td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+      "historical_expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+      "fixture_manifest": "custody/target_discovery/TD_HISTORICAL_FIXTURE_MANIFEST_20261010.csv",
+      "semantic_rows": "custody/target_discovery/TD_HISTORICAL_FIXTURE_SEMANTIC_ROWS_20261010.csv",
+      "local_replay_qualification": "custody/target_discovery/TD_HISTORICAL_FIXTURE_LOCAL_REPLAY_QUALIFICATION_20261010.json",
+      "nph52_integrity_audit": "custody/target_discovery/TD_NPH52_HISTORICAL_PASSTHROUGH_INTEGRITY_AUDIT_20261010.json",
+      "local_byte_exact_replays": {
+        "TD56_HVS": true,
+        "TD56_NPH52": true,
+        "TD56_SEA_AD": true,
+        "TD57B_P0_HVS": true,
+        "TD57B_P0_NPH52": true,
+        "TD57B_P1_HVS": true,
+        "TD57B_P1_NPH52": true,
+        "TD57C_P0_HVS_historical_fail": true
+      },
+      "TD57B_SEA_AD_new_local_rerun_claimed": false,
+      "TD59_original_executor_bytes_recovered": false,
+      "TD59_admissible_reference": "validated_replay_closure_successor_sha256_870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085"
+    },
+    "corrected_biological_replay": {
+      "status": "PREFROZEN_NOT_AUTHORIZED_NOT_EXECUTED",
+      "prefreeze": "custody/target_discovery/TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_20261010.json",
+      "stages": ["TD56", "TD57B", "TD57C", "TD59"],
+      "td57c_historical_fail_immutable": true,
+      "td59_locality_fraction_tuning_forbidden": true,
+      "second_explicit_owner_authorization_required": true
+    }
+  },
+  "ordered_next_actions": [
+    "preserve_PR259_exact_value_blind_evidence",
+    "repair_G7_counterpart_auth_before_count_read_on_successor_candidate",
+    "add_regression_proving_physical_H5_auth_failure_prevents_S174_count_read",
+    "canonically_qualify_successor_against_focused_tests_and_exact_PR259_receipts_with_real_receipt_test_non_skipped",
+    "STOP_for_owner_review",
+    "only_explicit_owner_decision_record_may_enable_future_G6_G7_integrity_authorization",
+    "if_later_authorized_require_G6_PASS_then_G7_PASS_and_STOP_for_review",
+    "second_explicit_owner_authorization_required_before_corrected_TD56_TD57B_TD57C_TD59_replay",
+    "STOP_after_corrected_biological_replay_before_target_selection_TD60_or_training"
+  ],
+  "do_not_resurrect": [
+    "PR245_failed_namespace",
+    "PR252_or_PR254_failed_contract_runs",
+    "PR258_superseded_standalone_candidate",
+    "PR263_head_a509c59238bcdc60b88fa265e7e4473760a41025_for_qualification_or_execution",
+    "historical_V1_G6_authorization",
+    "wrapper_era_PR251_execution_code",
+    "failed_PR249_bayesian_formulation",
+    "TD57C_postfailure_rescue",
+    "TD60_failed_wording"
+  ]
+}
