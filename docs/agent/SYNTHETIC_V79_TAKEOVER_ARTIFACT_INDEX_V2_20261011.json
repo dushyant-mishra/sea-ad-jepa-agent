@@ -1,0 +1,110 @@
+{
+  "schema": "SYNTHETIC_V79_TAKEOVER_ARTIFACT_INDEX_V2",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery": "SEPARATE",
+  "canonical": {
+    "audit_pr": 260,
+    "handoff_pr": 261,
+    "audit_doc": "docs/agent/SYNTHETIC_V79_NEW_AGENT_TAKEOVER_AUDIT_20261011.md",
+    "audit_state": "docs/agent/SYNTHETIC_V79_AUDIT_STATE_20261011.json"
+  },
+  "historical_bayesian": {
+    "macha_source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+    "last_audited_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
+    "detection_v2_status": "NOT_QUALIFIED",
+    "old_gaussian_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb_status": "UNADJUDICATED__METHODOLOGICAL_HOLD"
+  },
+  "s174_authority": {
+    "local_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "authority_file": "results/v79/V79_S174_SHARD_AUTHORITY_V1.json",
+    "authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "bridge_file": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "n_cells": 4726,
+    "n_donors": 149,
+    "n_operators": 42,
+    "verified_files": 84,
+    "missing": 0,
+    "extra": 0
+  },
+  "g500": {
+    "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "bytes": 1071307,
+    "n_genes": 500,
+    "contains_real_counts": true,
+    "committed": false
+  },
+  "implementation_and_evidence_prs": {
+    "279": {
+      "purpose": "streaming cache + cache-only replay + scheduler hardening",
+      "verified_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+      "workflow": 38166126568,
+      "job": 114548954034,
+      "tests": "15 passed in 1.27 s",
+      "files": [
+        ".github/workflows/v79-streaming-analysis-cache.yml",
+        "scripts/v79/build_v79_analysis_cache.py",
+        "scripts/v79/run_v79_s174_structure_replay.py",
+        "scripts/v79/run_v79_scheduler.py",
+        "tests/v79/test_v79_analysis_cache.py",
+        "tests/v79/test_v79_s174_structure_replay.py",
+        "tests/v79/test_v79_scheduler_resource_defaults.py"
+      ]
+    },
+    "280": {
+      "purpose": "immutable first failed exact-S174 replay and convergence diagnosis",
+      "status": "FAILED_CLOSED_BEFORE_METRICS",
+      "files": [
+        "docs/agent/V79_S174_STRUCTURE_REPLAY_EXECUTION_RECORD_20261011.md",
+        "results/v79/development/s174_structure_replay/V79_S174_REPLAY_EXECUTION_PROVENANCE.json",
+        "results/v79/development/s174_structure_replay/V79_ANALYSIS_CACHE_G500_RECEIPT.json",
+        "results/v79/development/s174_structure_replay/V79_G500_PANEL_PREVALENCE_COVERAGE.json",
+        "results/v79/development/s174_structure_replay/diagnose_replay_convergence.py",
+        "results/v79/development/s174_structure_replay/V79_S174_REPLAY_CONVERGENCE_DIAGNOSIS.json"
+      ]
+    },
+    "283": {
+      "purpose": "prospectively frozen operator-penalty repair",
+      "head": "02fb78c36473d9863ae9482619133c052ba4a480",
+      "workflow": 38170751947,
+      "job": 114562666364,
+      "tests": "22 passed",
+      "primary_lambda": 1.0,
+      "sensitivity_lambdas": [0.25, 1.0, 4.0]
+    },
+    "285": {
+      "purpose": "completed exact-S174 replay and A-H evidence",
+      "head": "2c230a70d9151e27b14ec2788d1309eb2ac81468",
+      "files": [
+        "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md",
+        "results/v79/development/s174_structure_replay_v3/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3.json",
+        "results/v79/development/s174_structure_replay_v3/V79_S174_REPLAY_PER_GENE_NESTED_DELTAS.json"
+      ],
+      "controller_freeze_comment": 6113335756
+    }
+  },
+  "candidate_v2_core": {
+    "status": "FROZEN_FOR_NEW_SYNTHETIC_QUALIFICATION__NOT_QUALIFIED",
+    "detection": "detected ~ quadratic(log_library) + broad_class + source + donor_within_source",
+    "positive": "log(count)|count>0 ~ Normal(quadratic(log_library) + broad_class + source + donor_within_source, sigma)",
+    "operator": "OUT_OF_CORE",
+    "donor_class": "OUT",
+    "source_class": "OUT",
+    "positive_family": "LOGNORMAL_DEVELOPMENT_DEFAULT",
+    "ztnb": "UNADJUDICATED_CHALLENGER"
+  },
+  "factorial_downstream": {
+    "implementation_pr": 262,
+    "audit_pr": 264,
+    "handoff_pr": 265,
+    "implementation_head": "9110c3fae6d34e43463d56631f43004bda33beb8",
+    "workflow": 38147114407,
+    "job": 114492689105,
+    "tests": "94 passed in 1.04 s",
+    "scientific_execution": false
+  },
+  "next_gate": "FREEZE_V2_CORE_CONFIG_AND_NEW_SYNTHETIC_QUALIFICATION_CONTRACT__THEN_CONFIRMATORY_QUALIFICATION__STOP_FOR_AUDIT"
+}
