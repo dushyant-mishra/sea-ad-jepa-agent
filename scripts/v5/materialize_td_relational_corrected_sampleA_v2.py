@@ -33,9 +33,9 @@ def _load_common():
 
 common = _load_common()
 
-G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
-CACHE_SCHEMA = "JEPA_TD_RELATIONAL_CORRECTED_SAMPLE_A_CACHE_V2"
-G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+G6_RECEIPT_SCHEMA = common.G6_RECEIPT_SCHEMA
+CACHE_SCHEMA = common.G6_CACHE_SCHEMA
+G6_PASS = common.G6_PASS
 G6_MISMATCH = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
 
 EXPECTED_REPLAY_MANIFEST_SHA = common.EXPECTED_INPUT_HASHES["replay_manifest_sha256"]
@@ -53,27 +53,14 @@ SOURCE_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
 VAR_ID_COLUMN = {"HVS": "_index", "SEA_AD": "gene_ids"}
 
-HIST_CSR_SHA = {
-    "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
-    "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
-    "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
-    "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
-}
-TD50_SHA = {
-    "HVS": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb",
-    "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
-    "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
-}
+HIST_CSR_SHA = common.HIST_CSR_SHA  # same objects: one authority, shared with the G7 validator
+TD50_SHA = common.TD50_SHA
 SOURCE_LIBRARY_VERIFICATION_SCOPE = (
     "HVS/SEA rows were physically reread from authenticated H5AD bytes and each whole-row library was verified "
     "exactly against its TD50 sentinel; NPH52 rows are authenticated historical pass-through (hash-bound historical "
     "CSR and TD50 library) and were not independently physically reread"
 )
-INPUT_AUTHORITY_HASHES = {
-    **common.EXPECTED_INPUT_HASHES,
-    "historical_csr_sha256": dict(HIST_CSR_SHA),
-    "td50_member_sha256": dict(TD50_SHA),
-}
+INPUT_AUTHORITY_HASHES = common.g6_input_authority_hashes()  # import-time view; receipts call the function
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -95,10 +82,10 @@ def begin_namespace(out: Path, authority_trace: dict) -> Path:
     out = Path(out)
     assert_empty_output(out)
     out.mkdir(parents=True, exist_ok=True)
-    marker = out / "G6_EXECUTION_START.json"
+    marker = out / common.G6_START_MARKER_NAME
     try:
         common.exclusive_create_json(marker, {
-            "schema": "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1",
+            "schema": common.G6_START_SCHEMA,
             "status": "STARTED_NOT_A_PASS",
             "authority_trace": authority_trace,
             "biological_replay_authorized": False,
@@ -313,13 +300,13 @@ def _write_g6_stop(out: Path, status: str, *, authority_trace: dict, mismatches:
         "mismatch_count": len(mismatches),
         "preview": mismatches[:50],
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
+        "input_authority_hashes": common.g6_input_authority_hashes(),
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "G6_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_RECEIPT_NAME).write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -471,9 +458,9 @@ def main() -> int:
         dtype=np.float32,
     )
     matrix.sort_indices()
-    values_path = out / "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz"
+    values_path = out / common.G6_VALUES_NAME
     sparse.save_npz(values_path, matrix, compressed=True)
-    meta_path = out / "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
+    meta_path = out / common.G6_META_NAME
     np.savez_compressed(
         meta_path,
         source=source,
@@ -496,7 +483,7 @@ def main() -> int:
         "source_library_verification_scope": SOURCE_LIBRARY_VERIFICATION_SCOPE,
         "verified_source_h5ad_sha256": verified_source_shas,
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
+        "input_authority_hashes": common.g6_input_authority_hashes(),
         "historical_detected_is_diagnostic_only": True,
         "detected_changed_rows": int(np.sum(detected_historical != detected_corrected)),
         "values_sha256": common.sha256_file(values_path),
@@ -506,11 +493,11 @@ def main() -> int:
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "G6_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_RECEIPT_NAME).write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     manifest = {
         "schema": CACHE_SCHEMA,
-        "status": "MATERIALIZED_G6_V2_PASS__G7_PENDING",
+        "status": common.G6_MANIFEST_STATUS,
         "shape": [N_SAMPLE_A, N_ADDR],
         "stored_replay_addresses": N_REPLAY,
         "nnz": int(matrix.nnz),
@@ -521,15 +508,15 @@ def main() -> int:
         "verified_source_h5ad_sha256": verified_source_shas,
         "mapping_diagnostics": mapping_diagnostics,
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
-        "g6_receipt": "G6_RECEIPT.json",
+        "input_authority_hashes": common.g6_input_authority_hashes(),
+        "g6_receipt": common.G6_RECEIPT_NAME,
         "g7_status": "PENDING_SEPARATE_INDEPENDENT_CROSSCHECK",
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "MANIFEST.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_MANIFEST_NAME).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"status": receipt["status"], "nnz": int(matrix.nnz), "output": str(out)}, sort_keys=True))
     return 0
 

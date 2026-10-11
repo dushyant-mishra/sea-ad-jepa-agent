@@ -257,7 +257,7 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
         "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
         "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
     }
-    path = tmp_path / "g6.json"
+    path = tmp_path / "G6_RECEIPT.json"
     receipt = {
         "schema": m.G6_RECEIPT_SCHEMA,
         "status": m.G6_PASS,
@@ -268,7 +268,15 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
         "training_authorized": False,
     }
     path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
-    assert m.load_g6_pass_receipt(path, expected_trace)["status"] == m.G6_PASS
+    # Item 5: a PASS-looking receipt alone (no values, metadata, manifest or start marker) is a fabricated minimal
+    # receipt and must be refused; the genuine positive control is a real synthetic G6 run
+    # (tests/v5/test_td_g7_g6_prerequisite.py).
+    try:
+        m.load_g6_pass_receipt(path, expected_trace)
+    except RuntimeError as e:
+        assert "namespace" in str(e).lower()
+    else:
+        raise AssertionError("a fabricated minimal G6 PASS receipt must be refused")
 
     receipt["status"] = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
     path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")

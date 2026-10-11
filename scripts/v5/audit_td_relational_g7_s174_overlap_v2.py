@@ -33,8 +33,8 @@ def _load_common():
 common = _load_common()
 
 G7_SCHEMA = "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2"
-G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
-G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+G6_RECEIPT_SCHEMA = common.G6_RECEIPT_SCHEMA
+G6_PASS = common.G6_PASS
 G7_PASS = "PASS_TD_G7_S174_EXACT_OVERLAP"
 G7_MISMATCH = "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"
 G7_NOT_ESTIMABLE = "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"
@@ -353,19 +353,96 @@ def expected_authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> 
     }
 
 
+FALSE_FLAGS = ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized")
+
+
+def _require_false_flags(rec: dict, label: str) -> None:
+    for key in FALSE_FLAGS:
+        if rec.get(key) is not False:
+            raise RuntimeError(f"{label} must keep {key}=false")
+
+
+def _read_g6_json(path: Path, label: str) -> dict:
+    try:
+        rec = json.loads(Path(path).read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise RuntimeError(f"G6 {label} unreadable: {path}: {exc}") from exc
+    if not isinstance(rec, dict):
+        raise RuntimeError(f"G6 {label} is not a JSON object: {path}")
+    return rec
+
+
 def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
+    """Require a genuine, complete, same-authority G6 PASS execution, not merely a PASS-looking receipt.
+
+    The receipt's namespace must hold exactly the G6 PASS files: start marker, receipt, manifest, values and
+    metadata. Values and metadata must hash to what the receipt and manifest bind; receipt, manifest and start marker
+    must carry the same authority trace and the exact G6 input-authority hashes; the receipt must report the frozen
+    Sample-A coverage (physical reread vs NPH52 pass-through). Returns the receipt with the verified SHA-256 of every
+    G6 file under "g7_verified_g6_execution_sha256".
+    """
     path = Path(path)
     if not path.is_file():
         raise RuntimeError(f"missing required G6 PASS receipt: {path}")
-    receipt = json.loads(path.read_text(encoding="utf-8"))
+    if path.name != common.G6_RECEIPT_NAME:
+        raise RuntimeError(f"G6 receipt must be {common.G6_RECEIPT_NAME} inside its G6 namespace: {path}")
+    receipt = _read_g6_json(path, "receipt")
     if receipt.get("schema") != G6_RECEIPT_SCHEMA or receipt.get("status") != G6_PASS:
-        raise RuntimeError(f"G7 requires G6 V2 PASS before execution: {receipt.get('schema')} / {receipt.get('status')}")
+        raise RuntimeError(f"G7 requires G6 PASS (V2 receipt) before execution: {receipt.get('schema')} / {receipt.get('status')}")
     if receipt.get("authority_trace") != expected_trace:
         raise RuntimeError("G6 PASS receipt is not bound to the same preflight/authorization/code bytes")
-    for key in ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized"):
-        if receipt.get(key) is not False:
-            raise RuntimeError(f"G6 PASS receipt must keep {key}=false")
-    return receipt
+    _require_false_flags(receipt, "G6 PASS receipt")
+
+    namespace = path.parent
+    present = {p.name for p in namespace.iterdir()}
+    if present != set(common.G6_PASS_FILES):
+        raise RuntimeError(f"G6 namespace is not one complete PASS execution: missing="
+                           f"{sorted(set(common.G6_PASS_FILES) - present)} foreign={sorted(present - set(common.G6_PASS_FILES))}")
+
+    expected_inputs = common.g6_input_authority_hashes()
+    if receipt.get("input_authority_hashes") != expected_inputs:
+        raise RuntimeError("G6 receipt input-authority hashes differ from the exact G6 authorities")
+    physical = SOURCE_COUNTS["HVS"] + SOURCE_COUNTS["SEA_AD"]
+    coverage = {"rows": N_SAMPLE_A, "total_sample_a_rows": N_SAMPLE_A,
+                "hvs_sea_physically_reread_source_library_verified_rows": physical,
+                "nph52_authenticated_historical_passthrough_rows": SOURCE_COUNTS["NPH52"]}
+    for key, want in coverage.items():
+        if receipt.get(key) != want:
+            raise RuntimeError(f"G6 receipt Sample-A coverage mismatch: {key}={receipt.get(key)!r} != {want}")
+    if "source_library_exact_rows" in receipt:
+        raise RuntimeError("G6 receipt claims every Sample-A row was physically reread; refusing old coverage semantics")
+
+    hashes = {"receipt": common.sha256_file(path)}
+    for key, name in (("values", common.G6_VALUES_NAME), ("meta", common.G6_META_NAME)):
+        actual = common.sha256_file(namespace / name)
+        if actual != receipt.get(f"{key}_sha256"):
+            raise RuntimeError(f"G6 {key} artifact SHA does not match the G6 receipt: {name}")
+        hashes[key] = actual
+
+    manifest = _read_g6_json(namespace / common.G6_MANIFEST_NAME, "manifest")
+    want_manifest = {
+        "schema": common.G6_CACHE_SCHEMA, "status": common.G6_MANIFEST_STATUS, "shape": [N_SAMPLE_A, N_ADDR],
+        "values_path": common.G6_VALUES_NAME, "values_sha256": hashes["values"],
+        "meta_path": common.G6_META_NAME, "meta_sha256": hashes["meta"],
+        "g6_receipt": common.G6_RECEIPT_NAME, "authority_trace": expected_trace,
+        "input_authority_hashes": expected_inputs,
+        "verified_source_h5ad_sha256": receipt.get("verified_source_h5ad_sha256"),
+    }
+    for key, want in want_manifest.items():
+        if manifest.get(key) != want:
+            raise RuntimeError(f"G6 manifest does not bind the same execution: {key}")
+    _require_false_flags(manifest, "G6 manifest")
+    hashes["manifest"] = common.sha256_file(namespace / common.G6_MANIFEST_NAME)
+
+    marker = _read_g6_json(namespace / common.G6_START_MARKER_NAME, "start marker")
+    if marker.get("schema") != common.G6_START_SCHEMA or marker.get("status") != "STARTED_NOT_A_PASS":
+        raise RuntimeError("G6 execution-start marker schema/status mismatch")
+    if marker.get("authority_trace") != expected_trace:
+        raise RuntimeError("G6 execution-start marker is not bound to the same authority")
+    _require_false_flags(marker, "G6 execution-start marker")
+    hashes["start_marker"] = common.sha256_file(namespace / common.G6_START_MARKER_NAME)
+
+    return {**receipt, "g7_verified_g6_execution_sha256": hashes}
 
 
 def g7_attempt_marker_path(out: Path) -> Path:
@@ -419,8 +496,8 @@ def main() -> int:
     auth, _, _, g6_path, g7_path = bind_execution(args)
     authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
     g6_receipt_path = Path(args.g6_receipt)
-    load_g6_pass_receipt(g6_receipt_path, authority_trace)
-    g6_receipt_sha256 = common.sha256_file(g6_receipt_path)
+    g6_execution_sha256 = load_g6_pass_receipt(g6_receipt_path, authority_trace)["g7_verified_g6_execution_sha256"]
+    g6_receipt_sha256 = g6_execution_sha256["receipt"]
     begin_g7_attempt(out, authority_trace, g6_receipt_sha256)
 
     g1b_result, g1b_freeze, g1b_result_sha256, g1b_freeze_sha256 = load_g1b_authority_from_pass_commit(g7_path)
@@ -524,7 +601,8 @@ def main() -> int:
         "checked_cell_address_entries": int(total_checked),
         "mismatches": int(total_mismatches),
         "per_matrix": per_matrix,
-        "authority_trace": {**authority_trace, "g6_receipt_sha256": g6_receipt_sha256},
+        "authority_trace": {**authority_trace, "g6_receipt_sha256": g6_receipt_sha256,
+                            "g6_execution_sha256": g6_execution_sha256},
         "g7_attempt_marker": g7_attempt_marker_path(out).name,
         "no_overlap_is_not_pass": total_overlap == 0,
         "biological_replay_authorized": False,

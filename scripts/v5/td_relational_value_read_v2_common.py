@@ -61,6 +61,42 @@ EXPECTED_INPUT_HASHES = {
 PR259_DRIVER_SHA256 = "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae"
 PR259_MAPPING_SHA256 = "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0"
 
+# Historical authorities G6 reads (NPH52 pass-through CSR and TD50 sentinels). Defined once here so the G6 writer and
+# the G7 validator of G6 receipts use the same values.
+HIST_CSR_SHA = {
+    "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
+    "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+    "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+    "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
+}
+TD50_SHA = {
+    "HVS": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb",
+    "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
+    "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
+}
+
+# The G6 PASS execution namespace: written by G6, validated file by file by G7.
+G6_START_MARKER_NAME = "G6_EXECUTION_START.json"
+G6_START_SCHEMA = "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1"
+G6_RECEIPT_NAME = "G6_RECEIPT.json"
+G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
+G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+G6_MANIFEST_NAME = "MANIFEST.json"
+G6_CACHE_SCHEMA = "JEPA_TD_RELATIONAL_CORRECTED_SAMPLE_A_CACHE_V2"
+G6_MANIFEST_STATUS = "MATERIALIZED_G6_V2_PASS__G7_PENDING"
+G6_VALUES_NAME = "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz"
+G6_META_NAME = "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
+G6_PASS_FILES = frozenset({G6_START_MARKER_NAME, G6_RECEIPT_NAME, G6_MANIFEST_NAME, G6_VALUES_NAME, G6_META_NAME})
+
+
+def g6_input_authority_hashes() -> dict:
+    return {
+        **EXPECTED_INPUT_HASHES,
+        "historical_csr_sha256": dict(HIST_CSR_SHA),
+        "td50_member_sha256": dict(TD50_SHA),
+    }
+
+
 REQUIRED_MAPPING_CHECKS = (
     "sample_A_h5_matrix_count_exact_34",
     "all_sample_A_h5_matrices_present",
