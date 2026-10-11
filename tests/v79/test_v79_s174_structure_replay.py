@@ -1,8 +1,8 @@
 """Prospective contract for the cheap corrected-S174 model-structure replay.
 
 Synthetic arrays only. The replay must consume a compact cache, keep donors intact across folds, preserve a
-prevalence-spanning panel when subsetting a larger cache, and support residual permutation diagnostics without
-opening the 41K shards.
+prevalence-spanning panel when subsetting a larger cache, use a full-rank operator-within-source basis, and support
+residual permutation diagnostics without opening the 41K shards.
 """
 from __future__ import annotations
 
@@ -67,6 +67,13 @@ def test_donor_folds_never_split_a_donor(tmp_path):
     assert len(seen) == len(np.unique(d["donor"]))
 
 
+def test_operator_within_source_design_is_full_rank(tmp_path):
+    npz, rec = _cache(tmp_path)
+    d = R.load_compact_cache(npz, rec)
+    X = R.design_matrix(d, "depth_class_source_operator")
+    assert np.linalg.matrix_rank(X) == X.shape[1]
+
+
 def test_nested_detection_replay_detects_strong_class_signal(tmp_path):
     npz, rec = _cache(tmp_path)
     d = R.load_compact_cache(npz, rec)
@@ -101,3 +108,16 @@ def test_residual_group_permutation_detects_strong_group_structure():
     out = R.permutation_group_support(residual, groups, strata, seed=11, n_perm=99)
     assert out["supported"] is True
     assert out["observed"] > out["null_q95"]
+
+
+def test_operator_support_removes_pure_donor_residual():
+    rng = np.random.default_rng(12)
+    # Each donor spans two operators; only donor effects are planted.
+    donor = np.repeat(np.arange(18), 20)
+    src = np.repeat(np.arange(3), 120)
+    within = np.tile(np.repeat([0, 1], 10), 18)
+    op = src * 2 + within
+    donor_effect = rng.normal(scale=1.0, size=18)
+    residual = donor_effect[donor] + rng.normal(scale=.05, size=len(donor))
+    out = R.operator_support_after_donor_centering(residual, op, donor, src, seed=15, n_perm=99)
+    assert out["observed"] <= out["null_q95"]
