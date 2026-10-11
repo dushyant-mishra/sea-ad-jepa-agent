@@ -22,6 +22,7 @@ _ALLOWED = {
     "baseline_abundance_quantiles",
 }
 _OPTIONAL = {"baseline_abundance_quantile_probs", "baseline_abundance_quantiles"}
+_CELL_BLOCK = 128
 
 
 @dataclass(frozen=True)
@@ -76,11 +77,10 @@ def validate_biology_authority(authority: Mapping[str, Any]) -> BiologyAuthority
     if not ms or any(x < 1 for x in ms):
         raise ValueError("module_size_distribution must contain positive sizes")
 
-    numeric_positive = ["n_modules_per_substate", "n_continuous_factors"]
-    for name in numeric_positive:
+    for name in ("n_modules_per_substate", "n_continuous_factors"):
         if int(authority[name]) < 1:
             raise ValueError(f"{name} must be positive")
-    for name in ["substate_effect_scale", "continuous_factor_scale", "donor_effect_scale", "baseline_log_sd"]:
+    for name in ("substate_effect_scale", "continuous_factor_scale", "donor_effect_scale", "baseline_log_sd"):
         if float(authority[name]) < 0:
             raise ValueError(f"{name} must be nonnegative")
 
@@ -123,6 +123,13 @@ def _hash_array(x: np.ndarray) -> str:
 
 def generate_latent_biology(authority: Mapping[str, Any] | BiologyAuthority, n_cells: int,
                             n_genes: int, n_donors: int, seed: int) -> LatentBiology:
+    """Generate the same frozen latent world while bounding peak dense memory.
+
+    The original implementation accumulated a full float64 cell x gene log-abundance matrix and
+    then allocated another full float64 abundance matrix before casting to float32.  At the frozen
+    4,000 x 41,238 scale that creates multiple >1 GiB temporaries.  We preserve RNG draw order and
+    float64 arithmetic, but materialize the final float32 abundance matrix in cell blocks.
+    """
     a = authority if isinstance(authority, BiologyAuthority) else validate_biology_authority(authority)
     if n_cells < 1 or n_genes < 2 or n_donors < 1:
         raise ValueError("n_cells, n_genes, and n_donors must be positive")
@@ -151,9 +158,10 @@ def generate_latent_biology(authority: Mapping[str, Any] | BiologyAuthority, n_c
         baseline_log = np.log(np.clip(baseline, 1e-12, None)) + a.baseline_log_mean
     else:
         baseline_log = rng.normal(a.baseline_log_mean, a.baseline_log_sd, size=n_genes)
-    log_abundance = np.broadcast_to(baseline_log, (n_cells, n_genes)).copy()
 
-    # Anonymous coherent blocks: membership is sampled only from canonical positions.
+    # Draw all anonymous substate modules in the original order, but retain one effect vector per
+    # realized state instead of immediately broadcasting it into a full cell x gene matrix.
+    state_effects: dict[tuple[int, int], np.ndarray] = {}
     for cls, n_states in enumerate(a.substates_per_class):
         for st in range(n_states):
             ix = np.flatnonzero((broad_class == cls) & (substate == st))
@@ -166,28 +174,38 @@ def generate_latent_biology(authority: Mapping[str, Any] | BiologyAuthority, n_c
                 genes = rng.choice(n_genes, size=m, replace=False)
                 sign = rng.choice(np.asarray([-1.0, 1.0]))
                 effect[genes] += sign * a.substate_effect_scale
-            log_abundance[ix] += effect
+            state_effects[(cls, st)] = effect
 
     continuous_factors = rng.normal(size=(n_cells, a.n_continuous_factors))
     continuous_loadings = rng.normal(0.0, a.continuous_factor_scale,
                                      size=(a.n_continuous_factors, n_genes))
-    log_abundance += continuous_factors @ continuous_loadings
-
     donor_loadings = rng.normal(0.0, a.donor_effect_scale, size=(n_donors, n_genes))
-    log_abundance += donor_loadings[donor]
     donor_total = rng.normal(0.0, a.donor_effect_scale, size=n_donors)
     cell_total_noise = rng.normal(0.0, a.continuous_factor_scale, size=n_cells)
     biological_total_scale = np.exp(donor_total[donor] + cell_total_noise)
 
-    latent_abundance = np.exp(np.clip(log_abundance, -20.0, 20.0))
-    latent_abundance *= biological_total_scale[:, None]
+    latent_abundance = np.empty((n_cells, n_genes), dtype=np.float32)
+    for lo in range(0, n_cells, _CELL_BLOCK):
+        hi = min(lo + _CELL_BLOCK, n_cells)
+        block = np.broadcast_to(baseline_log, (hi - lo, n_genes)).copy()
+        cls_block = broad_class[lo:hi]
+        state_block = substate[lo:hi]
+        for (cls, st), effect in state_effects.items():
+            local = np.flatnonzero((cls_block == cls) & (state_block == st))
+            if len(local):
+                block[local] += effect
+        block += continuous_factors[lo:hi] @ continuous_loadings
+        block += donor_loadings[donor[lo:hi]]
+        abundance = np.exp(np.clip(block, -20.0, 20.0))
+        abundance *= biological_total_scale[lo:hi, None]
+        latent_abundance[lo:hi] = abundance.astype(np.float32)
 
     arrays = {
         "broad_class": broad_class.astype(np.int64),
         "substate": substate.astype(np.int64),
         "donor": donor.astype(np.int64),
         "continuous_factors": continuous_factors.astype(np.float32),
-        "latent_abundance": latent_abundance.astype(np.float32),
+        "latent_abundance": latent_abundance,
         "biological_total_scale": biological_total_scale.astype(np.float32),
     }
     for arr in arrays.values():

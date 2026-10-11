@@ -16,6 +16,7 @@ _ALLOWED = {
 }
 _REQUIRED_BASE = {"regime_ids", "capture_log_mean", "capture_log_sd", "realization_family", "molecule_scale"}
 _FAMILIES = {"independent_thinning", "conditional_multinomial"}
+_CELL_BLOCK = 128
 
 
 @dataclass(frozen=True)
@@ -113,8 +114,21 @@ def _csr_hash(x: sparse.csr_matrix) -> str:
     return h.hexdigest()
 
 
+def _stack_csr_blocks(blocks: list[sparse.csr_matrix], shape: tuple[int, int]) -> sparse.csr_matrix:
+    if not blocks:
+        return sparse.csr_matrix(shape, dtype=np.int64)
+    return sparse.vstack(blocks, format="csr", dtype=np.int64)
+
+
 def observe_latent_biology(latent: LatentBiology, authority: Mapping[str, Any] | ObservationAuthority,
                            regime_labels: np.ndarray, seed: int) -> ObservationResult:
+    """Observe a latent world without registry-scale dense count/rate temporaries.
+
+    Sampling order and float64 rate arithmetic are preserved.  The independent-thinning path
+    consumes the same NumPy RNG stream in row-major cell blocks; the conditional-multinomial path
+    preserves its original row-wise draw order.  Only materialization changes: sampled blocks are
+    converted immediately to CSR rather than accumulating a full int64 cell x gene matrix.
+    """
     a = authority if isinstance(authority, ObservationAuthority) else validate_observation_authority(authority)
     labels = np.asarray(regime_labels).astype(str)
     n_cells, n_genes = latent.latent_abundance.shape
@@ -128,30 +142,52 @@ def observe_latent_biology(latent: LatentBiology, authority: Mapping[str, Any] |
 
     rng = np.random.default_rng(int(seed))
     support_table = np.asarray(a.structural_support, dtype=bool)
-    support = np.vstack([support_table[regime_to_ix[x]] for x in labels])
-    cap_mean = np.asarray([a.capture_log_mean[regime_to_ix[x]] for x in labels])
-    cap_sd = np.asarray([a.capture_log_sd[regime_to_ix[x]] for x in labels])
+    regime_index = np.asarray([regime_to_ix[x] for x in labels], dtype=np.int64)
+    # The support matrix is retained in the public result contract, but all larger numeric
+    # temporaries are block-local.
+    support = support_table[regime_index]
+    cap_mean = np.asarray(a.capture_log_mean, dtype=np.float64)[regime_index]
+    cap_sd = np.asarray(a.capture_log_sd, dtype=np.float64)[regime_index]
     capture_efficiency = np.exp(rng.normal(cap_mean, cap_sd))
     propensity = np.asarray(a.gene_propensity, dtype=np.float64)
 
-    base = latent.latent_abundance * propensity[None, :] * support
+    blocks: list[sparse.csr_matrix] = []
     if a.realization_family == "independent_thinning":
-        rate = base * capture_efficiency[:, None] * a.molecule_scale
-        dense = rng.poisson(np.clip(rate, 0.0, 1e8)).astype(np.int64)
+        for lo in range(0, n_cells, _CELL_BLOCK):
+            hi = min(lo + _CELL_BLOCK, n_cells)
+            base = (np.asarray(latent.latent_abundance[lo:hi], dtype=np.float64)
+                    * propensity[None, :] * support[lo:hi])
+            rate = base * capture_efficiency[lo:hi, None] * a.molecule_scale
+            sampled = rng.poisson(np.clip(rate, 0.0, 1e8)).astype(np.int64)
+            blocks.append(sparse.csr_matrix(sampled))
+        counts = _stack_csr_blocks(blocks, (n_cells, n_genes))
     elif a.realization_family == "conditional_multinomial":
-        dense = np.zeros((n_cells, n_genes), dtype=np.int64)
         biological_mass = np.asarray(latent.latent_abundance.sum(1)).ravel()
         expected_total = biological_mass * capture_efficiency * a.molecule_scale
         totals = rng.poisson(np.clip(expected_total, 0.0, 1e8))
+        indptr = np.zeros(n_cells + 1, dtype=np.int64)
+        indices_parts: list[np.ndarray] = []
+        data_parts: list[np.ndarray] = []
+        nnz = 0
         for i in range(n_cells):
-            weights = base[i]
+            weights = (np.asarray(latent.latent_abundance[i], dtype=np.float64)
+                       * propensity * support[i])
+            total = int(totals[i])
             s = float(weights.sum())
-            if totals[i] > 0 and s > 0:
-                dense[i] = rng.multinomial(int(totals[i]), weights / s)
+            if total > 0 and s > 0:
+                draw = rng.multinomial(total, weights / s)
+                nz = np.flatnonzero(draw)
+                if len(nz):
+                    indices_parts.append(nz.astype(np.int64, copy=False))
+                    data_parts.append(draw[nz].astype(np.int64, copy=False))
+                    nnz += len(nz)
+            indptr[i + 1] = nnz
+        indices = np.concatenate(indices_parts) if indices_parts else np.empty(0, dtype=np.int64)
+        data = np.concatenate(data_parts) if data_parts else np.empty(0, dtype=np.int64)
+        counts = sparse.csr_matrix((data, indices, indptr), shape=(n_cells, n_genes))
     else:  # pragma: no cover - validator prevents this
         raise ValueError("unsupported realization family")
 
-    counts = sparse.csr_matrix(dense)
     lib = np.asarray(counts.sum(1)).ravel().astype(np.int64)
     det = np.asarray((counts > 0).sum(1)).ravel().astype(np.int64)
     support.setflags(write=False)
