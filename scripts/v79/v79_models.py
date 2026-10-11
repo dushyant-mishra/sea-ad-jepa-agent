@@ -42,6 +42,11 @@ import time
 
 os.environ.setdefault("XLA_FLAGS", "--xla_force_host_platform_device_count=8")
 import jax  # noqa: E402
+
+# Full float32 matmuls everywhere. On Ampere GPUs JAX's default float32 matmul precision is TF32 (about 3 significant
+# digits): the potential of a 20-gene ZTNB world was off by 15 units (gradient by 7e-4 relative), enough to freeze NUTS
+# chains with no divergence flagged (R-hat 3; self-audit 49). On CPU this setting changes nothing.
+jax.config.update("jax_default_matmul_precision", "highest")
 import jax.numpy as jnp  # noqa: E402
 import numpy as np  # noqa: E402
 import numpyro  # noqa: E402
