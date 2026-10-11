@@ -1,0 +1,50 @@
+{
+  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261010_V1",
+  "date": "2026-10-10",
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_handoff_pr": 247,
+  "target_discovery": {
+    "implementation_base_pr": 243,
+    "repair_pr": 248,
+    "repair_code_freeze": "b3ff8366f28280e7d3269c305efa6317a05c8834",
+    "execution_record_prs": [252, 254],
+    "execution_terminal": "FAIL_TD_RELATIONAL_PREFLIGHT_DRIVER_AT_G4_G5_MAPPING_ENTRY__SAMPLE_A_GEOMETRY_MISMATCH__LABEL_LITERAL_A_VS_A_NATURAL_MIXTURE",
+    "execution_reproduced_twice": true,
+    "manifest_builder_terminal": "PASS_EXACT_HISTORICAL_RELATIONAL_REPLAY_MANIFEST",
+    "manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "h5ad_opened_before_failure": false,
+    "expression_arrays_opened": false,
+    "g6_g7_authorized": false,
+    "g6_g7_executed": false,
+    "diagnosis": {
+      "sample_label_literal_bug": "code expects A; freeze uses A_NATURAL_MIXTURE",
+      "latent_second_blocker": "Sample A spans 34 of 35 S174-frozen H5AD matrices while current gate requires 35; requires adjudication, not automatic threshold edit"
+    },
+    "g6_g7_review_pr": 251,
+    "g6_g7_wrapper_status": "SUPERSEDED_BY_STANDALONE_V2_DESIGN__DO_NOT_EXECUTE_CURRENT_WRAPPER",
+    "standalone_v2_design": "docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-design.md",
+    "bayesian_pr": 249,
+    "bayesian_terminal": "SAMPLER_NOT_ESTIMABLE",
+    "bayesian_disposition": "STOP_THIS_BAYESIAN_FORMULATION__DO_NOT_TUNE_TO_HISTORICAL_OUTCOMES"
+  },
+  "chat_surface_custody": {
+    "sweep_doc": "docs/agent/JEPA_CHAT_SURFACE_CUSTODY_SWEEP_20261010.md",
+    "inventory": "custody/chat_surface_20261010/CHAT_LOCAL_ARTIFACT_INVENTORY_20261010.csv",
+    "zip_member_index": "custody/chat_surface_20261010/CHAT_LOCAL_ZIP_MEMBER_INDEX_20261010.csv",
+    "npz_structure_audit": "custody/chat_surface_20261010/OPERATOR_ADDRESS_STATE_NPZ_STRUCTURE_AUDIT_20261010.json",
+    "raw_history": [
+      "docs/history/chat_uploads_20261010/Status and Repair Plan.txt",
+      "docs/history/chat_uploads_20261010/WSL execution issue.txt"
+    ],
+    "heavy_assets_duplicated_into_git": false,
+    "heavy_assets_policy": "exact size/SHA and embedded/member manifests committed; raw heavy bytes remain external immutable custody"
+  },
+  "ordered_next_actions": [
+    "Do not rerun b3ff8366 unchanged; two independent execution records reproduce the same deterministic failure.",
+    "Adjudicate the Sample-A label correction and the 34-of-35 source-authentication contract prospectively before code repair.",
+    "Preserve PR252 and PR254 as immutable failed execution records.",
+    "Do not execute current PR251 wrapper code.",
+    "Do not create any G6/G7 value-read authorization.",
+    "No corrected TD56/TD57B/TD57C/TD59 biological replay or training until new explicit authority exists."
+  ]
+}

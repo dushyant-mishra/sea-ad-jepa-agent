@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_CHAT_NPZ_STRUCTURE_AUDIT_V1",
+  "file": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+  "bytes": 1531109,
+  "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+  "status": "PROVENANCE_MISMATCH_DO_NOT_USE",
+  "safety_note": "Structure inspected without unpickling object arrays; no authority inferred.",
+  "arrays": [
+    {"member":"molecular_address_id.npy","dtype":"|O","shape":[41238],"fortran_order":false},
+    {"member":"raw__broad_common.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__weak_distributed.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__local.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__local_core.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__local_halo.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__core_halo.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__sparse_marker_like.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__innovation_tail.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__recurrent_5pct.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"raw__recurrent_1pct.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__broad_common.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__weak_distributed.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__local.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__local_core.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__local_halo.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__core_halo.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__sparse_marker_like.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__innovation_tail.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__recurrent_5pct.npy","dtype":"<f4","shape":[41238],"fortran_order":false},
+    {"member":"l2__recurrent_1pct.npy","dtype":"<f4","shape":[41238],"fortran_order":false}
+  ]
+}

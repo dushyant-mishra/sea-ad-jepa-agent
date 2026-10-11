@@ -1,0 +1,144 @@
+{
+  "schema": "JEPA_TD_PROJECT_LOCAL_EVIDENCE_INVENTORY_V1",
+  "date": "2026-10-11",
+  "status": "INVENTORIED_AND_REHASHED__HISTORICAL_SCIENTIFIC_DESIGN_EVIDENCE_ONLY",
+  "authority_boundary": {
+    "current_value_read_authorized": false,
+    "corrected_biological_replay_authorized": false,
+    "target_selected": false,
+    "representation_winner": false,
+    "training_authorized": false,
+    "stage4_authorized": false
+  },
+  "local_files_rehashed_this_audit": [
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "role": "historical pathology-blind calibration/design evidence"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "role": "historical discovery expression archive part"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "role": "historical discovery expression archive part"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "role": "part checksum ledger"
+    },
+    {
+      "name": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "role": "historical checkpoint/mechanics evidence; not biology qualification"
+    },
+    {
+      "name": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "role": "historical expression/mechanics evidence"
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "role": "historical T1 checkpoint; not current target authority"
+    },
+    {
+      "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "role": "forbidden",
+      "classification": "PROVENANCE_MISMATCH_DO_NOT_USE"
+    },
+    {
+      "name": "Status and Repair Plan.txt",
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "role": "raw historical chat/project narrative; no direct authority"
+    },
+    {
+      "name": "WSL execution issue.txt",
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "role": "raw historical architecture/design narrative; no direct authority"
+    }
+  ],
+  "known_assembled_expression_identity": {
+    "assembled_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "inner_expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "note": "Previously reconstructed and audited historical expression identity; no corrected-data authority."
+  },
+  "calibration_bundle_findings_recomputed_or_read_this_audit": {
+    "address_count": 41238,
+    "support_recurrence": {
+      "source_family_0": 289,
+      "source_family_1": 10334,
+      "source_family_2": 13269,
+      "source_family_3": 17346,
+      "measured_in_at_least_2_source_families": 30615,
+      "scalar_measured_in_all_42_operators": 17186,
+      "mean_operators_scalar_measured": 25.750594112226587
+    },
+    "fit104_source_support": {
+      "HVS": {
+        "cells": 198718,
+        "operators": 24,
+        "cell_weighted_measured_scalar_fraction": 0.4543382317280179
+      },
+      "NPH52": {
+        "cells": 236476,
+        "operators": 7,
+        "cell_weighted_measured_scalar_fraction": 0.8070538124992247,
+        "collision_unresolved_fraction": 0.01321247542322785
+      },
+      "SEA_AD": {
+        "cells": 4118213,
+        "operators": 11,
+        "cell_weighted_measured_scalar_fraction": 0.8505747126436781,
+        "collision_unresolved_fraction": 0.01721712983170862
+      }
+    },
+    "historical_H_address_operator_decomposition": {
+      "u0_rich_H_address_plus_operator_explained_variance": 0.9993835355992263,
+      "u0_partial_H_address_plus_operator_explained_variance": 0.999501071579173,
+      "u205_rich_H_address_plus_operator_explained_variance": 0.9995448024121543,
+      "u205_partial_H_address_plus_operator_explained_variance": 0.9998580190530139,
+      "scientific_implication": "Target stability/learnability cannot qualify biology without explicit address/support/operator falsifiers."
+    },
+    "historical_synthetic_mechanism_stress": {
+      "balanced_reference_u500_jepa_loss": 0.0008534114786016289,
+      "balanced_reference_u500_biology_factor_R2": -0.22338010370731354,
+      "balanced_reference_u500_source_balanced_accuracy": 1.0,
+      "balanced_reference_u500_support_count_R2": 0.9972242712974548,
+      "empirical_heterogeneous_u500_jepa_loss": 0.0007978003486641683,
+      "empirical_heterogeneous_u500_biology_factor_R2": -0.24826708436012268,
+      "empirical_heterogeneous_u500_source_balanced_accuracy": 1.0,
+      "empirical_heterogeneous_u500_support_count_R2": 0.9954959154129028,
+      "scientific_implication": "Low JEPA loss and noncollapse do not establish recovery of planted biology."
+    }
+  },
+  "use_policy": {
+    "allowed": [
+      "historical failure-mode reconstruction",
+      "target-hypothesis design",
+      "prospective null and leakage design",
+      "coverage/support analysis",
+      "comparison with frozen historical results"
+    ],
+    "forbidden_without_separate_authority": [
+      "claim current corrected biological recurrence",
+      "create G6/G7 value-read authority",
+      "select target",
+      "select representation winner",
+      "authorize Stage4",
+      "authorize real training"
+    ]
+  }
+}

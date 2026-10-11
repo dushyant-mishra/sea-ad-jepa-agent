@@ -1,0 +1,24 @@
+{
+  "schema": "JEPA_TD_G7_SUCCESSOR_PR263_HANDOFF_V1",
+  "date": "2026-10-10",
+  "pr": 263,
+  "branch": "fix/td-g7-s174-immediate-reauth-20261010",
+  "head_sha": "a509c59238bcdc60b88fa265e7e4473760a41025",
+  "status": "IMPLEMENTED__UNQUALIFIED__DO_NOT_EXECUTE_G6_G7",
+  "superseded_pr258_head": "c5d9c64cf42dc8c12d91672458689c0a0a67f472",
+  "repair_complete_in_code": [
+    "immediate S174 meta SHA before cell_id use",
+    "duplicate S174 cell_id rejection",
+    "immediate S174 counts SHA before count-array use",
+    "duplicate S174 CSR address rejection in compared rows",
+    "per-matrix immediate-use hash telemetry"
+  ],
+  "real_pr259_compat_test": "tests/v5/test_td_relational_pr259_real_receipt_compat.py",
+  "github_status_checks": [],
+  "coordinator_test_pass_claimed": false,
+  "next": "qualify PR263 exact head on canonical machine using focused tests and exact PR259 physical receipt bytes; then STOP",
+  "value_authorization_creation_forbidden_during_qualification": true,
+  "g6_g7_execution_forbidden_during_qualification": true,
+  "training_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

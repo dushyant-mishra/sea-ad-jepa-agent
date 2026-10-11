@@ -1,0 +1,18 @@
+category,role,branch_or_pr,head_or_sha,path_or_asset,status
+handoff,current_state_overlay,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/handoff_20261010/JEPA_CURRENT_TAKEOVER_STATE_20261010.json,CURRENT
+audit,chat_surface_sweep,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,docs/agent/JEPA_CHAT_SURFACE_CUSTODY_SWEEP_20261010.md,CURRENT
+audit,chat_local_inventory,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/CHAT_LOCAL_ARTIFACT_INVENTORY_20261010.csv,CURRENT
+audit,archive_member_index,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/CHAT_LOCAL_ZIP_MEMBER_INDEX_20261010.csv,CURRENT
+audit,npz_structure_audit,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/OPERATOR_ADDRESS_STATE_NPZ_STRUCTURE_AUDIT_20261010.json,PROVENANCE_MISMATCH_DO_NOT_USE
+audit,raw_status_repair_history,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,docs/history/chat_uploads_20261010/Status and Repair Plan.txt,HISTORICAL_ONLY
+audit,raw_wsl_scientific_design_history,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,docs/history/chat_uploads_20261010/WSL execution issue.txt,HISTORICAL_ONLY
+data,discovery_split_checksums,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv,CUSTODY_ONLY
+data,discovery_sample_freeze,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/expression__FOUNDATION_DISCOVERY_SAMPLE_FREEZE.json,HISTORICAL_AUTHORITY_RECORD
+data,discovery_expression_audit,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/expression__FOUNDATION_DISCOVERY_EXPRESSION_AUDIT.json,HISTORICAL_AUDIT_RECORD
+data,checkpoint_manifest,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/checkpoints__checkpoint_manifest.json,HISTORICAL_CHECKPOINT_RECORD
+data,calibration_bundle_status,PR247 handoff/jepa-20261009-post-td-g4g5-crlf-bayes-complete,CURRENT_HEAD,custody/chat_surface_20261010/FOUNDATION_CALIBRATION_BUNDLE_20260824__BUNDLE_STATUS.json,CUSTODY_ONLY
+target_discovery,g4g5_failure_record_1,PR252 exec/td-relational-g4g5-self-audit-hardened-20261009,636085510d6fa56ec62ec03dbcc6c97958faa058,docs/agent/TD_RELATIONAL_G4G5_HARDENED_EXECUTION_20261009.md,FAIL_REPRODUCED
+target_discovery,g4g5_failure_record_2,PR254 exec/td-relational-g4g5-self-audit-hardened-20261010,37a5fc2ce1da6409ea86c205c1c3d272afc5417f,docs/agent/TD_RELATIONAL_G4G5_HARDENED_EXECUTION_20261010.md,FAIL_REPRODUCED
+target_discovery,g6_g7_standalone_v2_design,PR251 review/td-g6g7-preauthorization-hardening-20261009,CURRENT_HEAD,docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-design.md,DESIGN_ONLY_NO_AUTHORITY
+target_discovery,g6_g7_wrapper,PR251 review/td-g6g7-preauthorization-hardening-20261009,CURRENT_HEAD,scripts/v5/materialize_td_relational_corrected_sampleA_v2.py,SUPERSEDED_DO_NOT_EXECUTE
+target_discovery,bayesian_method,PR249 analysis/td-bayesian-historical-ledger-20261009,3f39a08edb5102442ab24dc65b964636528a291a,docs/agent/JEPA_TD_BAYESIAN_SYNTHETIC_CALIBRATION_RESULT_20261009.md,SAMPLER_NOT_ESTIMABLE_STOP

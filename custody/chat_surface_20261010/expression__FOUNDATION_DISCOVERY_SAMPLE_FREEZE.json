@@ -1,0 +1,19 @@
+{
+  "schema": "foundation-discovery-sample-freeze-v1",
+  "selection_seed": "FOUNDATION_CORPUS_DISCOVERY_V1_20260824",
+  "frozen_before_selected_expression_read": true,
+  "sample_a_rows": 25000,
+  "sample_b_rows": 25000,
+  "samples_disjoint": true,
+  "original_t1_excluded": true,
+  "sample_a": "donor-proportional largest-remainder quotas; deterministic minimum hash; empirical source/operator/class mixture retained within donor",
+  "sample_b": "one deterministic representative per observed source/operator/native/broad/support stratum, then deterministic donor-primary round-robin fill",
+  "manifest": {"path":"FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv","sha256":"79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"},
+  "controlling_inputs": {
+    "configs\\v4\\stage81a3_foundation_heterogeneity_reality_audit.yaml": "bb2446607235e9ab56bbc2f470108d789ac7e804ba7c106d619488c7eb236d72",
+    "results\\v4\\stage81a2_canonical_asset_registry.csv": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f",
+    "exports\\contextual_biology_v6r5a_20260822\\reader_donor_split.csv": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "exports\\prod41k_teacher_t1_20260823\\t1_encoder_fit_inventory.csv": "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30"
+  },
+  "firewalls": {"fit_donors":104,"heldout_donors_metadata_only":45,"heldout_expression_read":false,"dev_expression_read":false,"sealed_expression_read":false,"pathology_read":false}
+}
