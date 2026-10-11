@@ -115,6 +115,7 @@ def test_mandatory_gate_failure_rejects_even_with_high_score():
     out = adjudicate(c, [r])
     assert 'C1_RELATIONAL_SHARED' not in out['foundation_eligible']
     assert out['rejected']['C1_RELATIONAL_SHARED']['failed_gates'] == ['G3_SHORTCUT_DEFEAT']
+    assert out['rejected']['C1_RELATIONAL_SHARED']['not_estimable_gates'] == []
 
 
 def test_c5_is_never_foundation_candidate():
@@ -221,7 +222,7 @@ def test_gate_boolean_must_match_evidence_status():
     with pytest.raises(m.ReceiptError): m.adjudicate(c, [r], {r['candidate_id']: mf})
 
 
-def test_not_estimable_evidence_cannot_project_to_passing_gate():
+def test_not_estimable_evidence_is_not_reported_as_biological_failure():
     c = contract(); r = receipt('C1_RELATIONAL_SHARED'); mf = evidence_manifest(c, r)
     first = required_gates(c, r['candidate_id'])[0]
     mf['gates'][first]['status'] = 'NOT_ESTIMABLE'
@@ -229,4 +230,6 @@ def test_not_estimable_evidence_cannot_project_to_passing_gate():
     r['evidence_manifest_sha256'] = ev.canonical_manifest_sha256(mf)
     out = m.adjudicate(c, [r], {r['candidate_id']: mf})
     assert r['candidate_id'] not in out['foundation_eligible']
-    assert first in out['rejected'][r['candidate_id']]['failed_gates']
+    rejected = out['rejected'][r['candidate_id']]
+    assert first not in rejected['failed_gates']
+    assert first in rejected['not_estimable_gates']
