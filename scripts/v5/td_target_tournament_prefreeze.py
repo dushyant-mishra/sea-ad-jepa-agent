@@ -1,6 +1,7 @@
 """Outcome-blind target-tournament prefreeze manifest construction."""
 import hashlib
 import json
+import math
 
 from td_target_tournament_precision import (
     minimum_donors_for_sign_resolution,
@@ -145,10 +146,12 @@ def build_prefreeze_manifest(config):
         raise PrefreezeError('current prefreeze scaffold must remain fixture_only=true')
     if config.get('multiplicity_method') != 'BONFERRONI':
         raise PrefreezeError('only frozen BONFERRONI method supported')
-    try:
-        family_alpha = float(config['family_alpha'])
-    except Exception as exc:
-        raise PrefreezeError('family_alpha required') from exc
+    family_alpha = config.get('family_alpha')
+    if isinstance(family_alpha, bool) or type(family_alpha) not in (int, float):
+        raise PrefreezeError('family_alpha must be an exact JSON numeric value')
+    family_alpha = float(family_alpha)
+    if not math.isfinite(family_alpha):
+        raise PrefreezeError('family_alpha must be finite')
     if not (0.0 < family_alpha < 1.0):
         raise PrefreezeError('family_alpha must be in (0,1)')
     sha = config.get('tournament_contract_sha256', '')
