@@ -1,22 +1,29 @@
 {
   "blocks": 6,
   "bounded_cpu_resource_evidence": true,
+  "checkpoint_file_bytes": 54517013,
   "checkpoint_sha256": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa",
   "checkpoint_update": 205,
   "device": "cpu",
   "final_gpu_benchmark_pending": true,
   "final_production_resource_gate_pass": false,
   "heads": 4,
+  "io_measurement_note": "Linux /proc/self/io measured after Python/model-code import and around truth-table+checkpoint load plus inference. rchar is logical filesystem read volume. read_bytes is physical storage I/O and was zero under the warm page cache, so it must not be interpreted as a zero-I/O cold-start claim.",
   "measurements": [
     {"cells": 1, "inference_seconds": 1.02887615100002, "peak_rss_kib": 771468, "process_wall_seconds": 2.99},
     {"cells": 4, "inference_seconds": 4.519504849999976, "peak_rss_kib": 1628044, "process_wall_seconds": 6.45},
     {"cells": 12, "inference_seconds_range": [13.436370378999982, 15.483932559999971], "peak_rss_kib_range": [1733320, 1733516], "process_wall_seconds_range": [15.38, 17.36]}
   ],
+  "measured_io": [
+    {"cells": 1, "load_seconds": 0.06444817800002056, "inference_seconds": 1.282900097000038, "peak_rss_kib": 771448, "logical_rchar_bytes": 55556223, "physical_read_bytes_warm_cache": 0},
+    {"cells": 4, "load_seconds": 0.045914267999933145, "inference_seconds": 4.896565600000031, "peak_rss_kib": 1633532, "logical_rchar_bytes": 55543550, "physical_read_bytes_warm_cache": 0}
+  ],
   "rationale": "12-cell batching raises peak RSS to about 1.65 GiB without throughput advantage; <=4 is a conservative laptop-safe CPU ceiling pending GPU profiling.",
   "recommended_cpu_batch_ceiling": 4,
   "schema": "FOUNDATION_T1_CPU_RESOURCE_BENCHMARK_V1",
-  "terminal": "BOUNDED_CPU_RESOURCE_EVIDENCE__FINAL_PRODUCTION_GPU_BENCHMARK_PENDING",
+  "terminal": "BOUNDED_CPU_RAM_IO_WALLTIME_EVIDENCE__FINAL_PRODUCTION_GPU_BENCHMARK_PENDING",
   "training_authorized": false,
+  "truth_table_file_bytes": 4960396,
   "truth_table_sha256": "2aca870343b65f2deabe32fdc8e18bd26211f505e8bcb3b6f2d53cb0dc6573c3",
   "vocabulary_size": 41238,
   "width": 160
