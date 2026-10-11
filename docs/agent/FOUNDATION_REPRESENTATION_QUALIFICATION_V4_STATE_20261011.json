@@ -1,5 +1,5 @@
 {
-  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V1",
+  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V2",
   "date": "2026-10-11",
   "implementation_pr": 269,
   "implementation_head": "ccc3c71673fc3da7d3d18423afb61c85818e56c4",
@@ -27,12 +27,40 @@
     "peak_cpu_rss_bytes_historical": 6387449856,
     "temporary_disk_bytes_historical": 5030195626
   },
+  "learned_t1_shortcut_evidence": {
+    "custody_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "fit_donors": 104,
+    "heldout_train_donors": 45,
+    "u205_rich_H_source_balanced_accuracy": 1.0,
+    "u205_rich_H_operator_balanced_accuracy": 0.7632058297,
+    "u205_rich_H_support_count_r2": 0.9998000749,
+    "u205_partial_H_source_balanced_accuracy": 1.0,
+    "u205_partial_H_operator_balanced_accuracy": 0.5213534553,
+    "u205_rich_CELL_source_balanced_accuracy": 1.0,
+    "u205_rich_CELL_operator_balanced_accuracy": 0.4839259268,
+    "u205_partial_CELL_source_balanced_accuracy": 0.9047619,
+    "u205_partial_CELL_operator_balanced_accuracy": 0.1915752,
+    "technology_invariance": "NOT_QUALIFIED",
+    "causal_pure_technical_failure_claim_authorized": false,
+    "interpretation": "SOURCE_OPERATOR_SUPPORT_REMAIN_HIGHLY_DECODABLE_BUT_ARE_PARTLY_ALIASED_WITH_BIOLOGY_AND_DONOR; CONDITIONAL_INVARIANCE_REQUIRED"
+  },
+  "production_sampling": {
+    "authority_file": "results/v4/FOUNDATION_PRODUCTION_SAMPLING_AUTHORITY_V1.json",
+    "donor_weights_file": "results/v4/FOUNDATION_PRODUCTION_SAMPLING_DONOR_WEIGHTS_V1.csv",
+    "primary_source_alpha": 0.25,
+    "primary_donor_alpha": 0.25,
+    "fixed_sensitivity_source_alpha": 0.5,
+    "fixed_sensitivity_donor_alpha": 0.5,
+    "outcome_tuned": false,
+    "adaptive_sensitivity_choice_forbidden": true
+  },
   "current_policy": {
     "transfer_ladder": ["donor", "matrix", "dataset", "technology"],
     "representation_freeze_authorized": false,
     "coordinate_specific_certainty_authorized": false,
     "two_axis_ood_required": true,
     "biology_and_measurement_uncertainty_must_remain_separate": true,
+    "conditional_technology_imprint_test_required": true,
     "hierarchical_sampling_required": true,
     "sampling_exponents_outcome_tuned": false,
     "full_registry_dense_default_authorized": false,
@@ -41,7 +69,7 @@
   "remaining_representation_gates": [
     "CURRENT_DONOR_TRANSFER_REQUALIFICATION",
     "CURRENT_MATRIX_TRANSFER_REQUALIFICATION_WITH_EXPLICIT_VOCABULARY_IDENTIFIABILITY",
-    "PROSPECTIVE_SAMPLING_ALPHA_APPROVAL",
+    "CONDITIONAL_TECHNOLOGY_IMPRINT_REQUALIFICATION_ON_FINAL_REPRESENTATION",
     "CURRENT_RESOURCE_BENCHMARK_ON_FINAL_EXECUTION_PATH"
   ],
   "training_authorized": false,
@@ -49,5 +77,5 @@
   "stage4_authorized": false,
   "test_or_morabito_accessed": false,
   "pathology_accessed": false,
-  "terminal": "HISTORICAL_FOUNDATION_EVIDENCE_REQUALIFIED__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
+  "terminal": "HISTORICAL_FOUNDATION_EVIDENCE_REQUALIFIED__LEARNED_T1_TECHNOLOGY_INVARIANCE_NOT_QUALIFIED__SAMPLING_AUTHORITY_FROZEN__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
 }
