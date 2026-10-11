@@ -131,21 +131,11 @@ Historical discovery-expression package was reconstructed exactly from uploaded 
 - assembled ZIP SHA `63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`
 - inner historical expression NPZ SHA `4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92`
 
-Fresh historical-only local reruns reproduced archived output bytes exactly for:
-- TD56 HVS
-- TD56 NPH52
-- TD56 SEA_AD
-- TD57B Panel-0 HVS
-- TD57B Panel-0 NPH52
-- TD57B Panel-1 HVS
-- TD57B Panel-1 NPH52
-- TD57C Panel-0 HVS, including the historical FAIL and expected non-success exit
+Fresh historical-only local reruns reproduced archived output bytes exactly for TD56 HVS/NPH52/SEA_AD, TD57B Panel-0 HVS/NPH52, TD57B Panel-1 HVS/NPH52, and TD57C Panel-0 HVS including the historical FAIL and expected non-success exit.
 
 Do not claim a new local TD57B SEA_AD replay: those two heavy cases were not completed in this coordinator container. The historical project self-audit separately records exact-fast SEA_AD replays as byte-identical.
 
-NPH52 pass-through audit on the exact authenticated historical CSR found:
-- 0/1,310 NPH52 Sample-A rows with duplicate CSR address indices
-- 0/25,000 Sample-A rows with duplicate CSR address indices
+NPH52 pass-through audit on the exact authenticated historical CSR found 0/1,310 NPH52 Sample-A rows and 0/25,000 Sample-A rows with duplicate CSR address indices.
 
 TD59 is the documented exception. Original executor bytes with SHA `3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0` remain unrecovered. The independently validated replay-closure successor SHA `870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085` is the only admissible executable statistic reference. Never relabel it as original TD59 bytes.
 
@@ -166,7 +156,7 @@ Rules:
 
 - corrected S174 rebuilt RAR SHA-256: `88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f`
 - calibration bundle SHA-256: `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444`
-- TD41-TD58 historical archive SHA-256: `c84849f5568f526f8311d1b46b599502596c5d0be74fa588747a4e72b2e` is NOT the archive hash; do not confuse it with the expression split part. The real TD41-TD58 archive hash is `c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417`.
+- TD41-TD58 historical archive SHA-256: `c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417`
 - Sample-A freeze SHA-256: `79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6`
 - source provenance SHA-256: `df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51`
 - collision ledger SHA-256: `f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722`
@@ -188,21 +178,21 @@ The correct Sample-A/custody contract is not "34 instead of 35". It is **34/34 S
 Large local binaries are not duplicated into Git. They are bound by exact filename, bytes, SHA-256 and archive/member manifests. Current inventory includes:
 - `66e64913-959f-4a7c-bbfe-6ff906fb281d.npz` — 1,531,109 bytes — SHA `001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70` — provenance mismatch, DO NOT USE as authority.
 - `FOUNDATION_CALIBRATION_BUNDLE_20260824.zip` — 410,278,055 bytes — SHA `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444`.
-- discovery-expression split parts — 303,979,881 and 303,979,880 bytes — SHAs `b8163f...72b2e` and `5bc2ec...6875`.
+- discovery-expression split parts — 303,979,881 and 303,979,880 bytes — SHAs `b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e` and `5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875`.
 - `checkpoints.zip` — 71,356,460 bytes — SHA `ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c`.
 - `expression.zip` — 3,599,456 bytes — SHA `1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4`.
 - `t1_checkpoint_u0200.zip` — 233,729,581 bytes — SHA `0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c`.
 - `Status and Repair Plan.txt` and `WSL execution issue.txt` are preserved raw historical chat files on the handoff/audit custody surfaces.
-- new chat-local `Pasted markdown.md` — 36,211 bytes — SHA `9ad8789389fa020b7432ec3a43d2fd4640ebaf34f52432fa88322671e61771a5`; it contains Macha's PR259 report plus parallel V79/Bayesian log material. It is preserved as history only and grants no target-discovery authority.
+- `Pasted markdown.md` — 36,211 bytes — SHA `9ad8789389fa020b7432ec3a43d2fd4640ebaf34f52432fa88322671e61771a5`; raw chat history only, no target-discovery authority.
 
 ## 11. Immediate next action for the new agent
 
 Do **not** run G6/G7.
 
-First inspect the current PR #267 head and the qualification contract. Have the canonical machine qualify exactly `16f05bd3845565bb2c24d70143d447d7ef2b8904`:
+First inspect current PR #267 and the qualification contract. Have the canonical machine qualify exactly `16f05bd3845565bb2c24d70143d447d7ef2b8904`:
 1. fresh clean worktree at exact head;
 2. run focused common/G6/G7 tests plus `test_td_g7_counterpart_attempt_custody.py`;
-3. provide the exact PR259 driver and mapping receipt files, with exact physical SHAs `62f2...8bae` and `6a97...8e0`;
+3. provide the exact PR259 driver and mapping receipt files, with exact physical SHAs `62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae` and `6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0`;
 4. run the exact-PR259 compatibility test and require 1 passed / 0 skipped / 0 failed;
 5. record environment/logs and confirm no production code edit, no authorization object, no G6/G7 execution, and no expression/count read;
 6. open/preserve an evidence-only draft qualification record;
