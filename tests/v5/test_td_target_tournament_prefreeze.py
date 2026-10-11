@@ -18,13 +18,40 @@ def _registry_sha(cases):
     return hashlib.sha256(raw).hexdigest()
 
 
+def tournament_contract():
+    return {
+      'schema':'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1',
+      'fixture_only':True,
+      'authority':{
+        'value_read_authorized':False,'target_selection_authorized':False,
+        'representation_selection_authorized':False,'td60_authorized':False,
+        'stage4_authorized':False,'training_authorized':False,
+      },
+      'candidate_ids':['C1_RELATIONAL_SHARED','C2_QUERY_MEASURED','C3_LEARNED_SHARED','C4_STRUCTURED_COMPOSITE','C5_REGULATORY_SPECIALIST'],
+      'foundation_candidate_ids':['C1_RELATIONAL_SHARED','C2_QUERY_MEASURED','C3_LEARNED_SHARED','C4_STRUCTURED_COMPOSITE'],
+      'optional_specialist_ids':['C5_REGULATORY_SPECIALIST'],
+      'mandatory_gates':['G1_DONOR_PRIMARY','G2_SOURCE_REPLICATION','G3_SHORTCUT_DEFEAT','G4_INFORMATION_ASYMMETRY','G5_SUPPORT_ABSTENTION','G6_TRANSFER','G7_NO_POSTHOC'],
+      'candidate_specific_gates':{
+        'C1_RELATIONAL_SHARED':['R1_SCALE_FREE_RELATIONAL_RECURRENCE'],
+        'C2_QUERY_MEASURED':['Q1_Q_SCALAR_STUDENT_ABSENT'],
+        'C3_LEARNED_SHARED':['L1_LEARNED_TEACHER_VIEW_CONTINUITY'],
+        'C4_STRUCTURED_COMPOSITE':['C4_INCREMENT_OVER_CONSTITUENTS'],
+        'C5_REGULATORY_SPECIALIST':['M1_CIRCULARITY_CONTROL'],
+      },
+    }
+
+
+def _contract_sha(contract):
+    return hashlib.sha256(json.dumps(contract,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+
+
 def raw_cases(n=20):
     candidates=['C1_RELATIONAL_SHARED','C2_QUERY_MEASURED','C3_LEARNED_SHARED','C4_STRUCTURED_COMPOSITE']
     sources=['HVS','NPH52','SEA_AD']
     return [{
         'case_id':f'case_{i:02d}',
         'candidate_id':candidates[i%4],
-        'gate_id':f'G{i%7+1}_FIXTURE',
+        'gate_id':'G1_DONOR_PRIMARY',
         'source':sources[i%3],
         'analysis_tier':f'tier_{i//12}',
         'endpoint_id':f'endpoint_{i}',
@@ -34,12 +61,14 @@ def raw_cases(n=20):
 
 def config(n=20):
     cases=raw_cases(n)
+    contract=tournament_contract()
     return {
         'schema':'JEPA_TD_TARGET_TOURNAMENT_PREFREEZE_CONFIG_V1',
         'fixture_only':True,
         'family_alpha':0.05,
         'multiplicity_method':'BONFERRONI',
-        'tournament_contract_sha256':'a'*64,
+        'tournament_contract':contract,
+        'tournament_contract_sha256':_contract_sha(contract),
         'null_seed_material':'fixture-seed',
         'decision_cases':cases,
         'decision_family_registry_sha256':_registry_sha(cases),
@@ -95,6 +124,31 @@ def test_missing_role_field_rejected():
 def test_production_registry_hash_matches_frozen_test_canonicalization():
     c=config(4)
     assert m.canonical_decision_family_sha256(c['decision_cases']) == c['decision_family_registry_sha256']
+
+
+def test_production_contract_hash_matches_test_canonicalization():
+    c=config(3)
+    assert m.canonical_tournament_contract_sha256(c['tournament_contract']) == c['tournament_contract_sha256']
+
+
+def test_contract_change_after_hash_freeze_is_rejected():
+    c=config(3)
+    c['tournament_contract']['mandatory_gates']=list(c['tournament_contract']['mandatory_gates'])+['G8_FAKE']
+    with pytest.raises(m.PrefreezeError): m.build_prefreeze_manifest(c)
+
+
+def test_unknown_candidate_role_rejected_even_with_rehashed_registry():
+    c=config(3)
+    c['decision_cases'][0]['candidate_id']='C9_NOT_FROZEN'
+    c['decision_family_registry_sha256']=_registry_sha(c['decision_cases'])
+    with pytest.raises(m.PrefreezeError): m.build_prefreeze_manifest(c)
+
+
+def test_gate_not_allowed_for_candidate_rejected_even_with_rehashed_registry():
+    c=config(3)
+    c['decision_cases'][0]['gate_id']='M1_CIRCULARITY_CONTROL'
+    c['decision_family_registry_sha256']=_registry_sha(c['decision_cases'])
+    with pytest.raises(m.PrefreezeError): m.build_prefreeze_manifest(c)
 
 
 def test_low_donor_upper_bound_is_proven_impossible_not_failed_biology():
