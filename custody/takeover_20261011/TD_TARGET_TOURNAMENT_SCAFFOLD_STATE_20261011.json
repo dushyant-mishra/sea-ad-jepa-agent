@@ -1,35 +1,26 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCIENCE_HARNESS_67_GREEN__GATE_EVIDENCE_ROLE_AND_HASH_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCIENCE_HARNESS_76_GREEN__GATE_EVIDENCE_BOUND__DONOR_RESAMPLE_DEPENDENCE_EXPLICIT__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
-  "qualified_implementation_test_head": "9a13ccc606b21f1c7d23d57bd17731a7969d611f",
-  "qualification_record_commit": "34de27fedbe1099137ab9d03b5ee73427634d331",
+  "qualified_gate_evidence_head": "9a13ccc606b21f1c7d23d57bd17731a7969d611f",
+  "gate_evidence_qualification_record_commit": "34de27fedbe1099137ab9d03b5ee73427634d331",
+  "donor_resampling_green_commit": "b61ff24c72729cad824409f5f0a71ae7b9026af7",
+  "donor_resampling_qualification_commit": "6f4f9ccb5015e80778e3341e0e99c785b3b8e6f1",
   "focused_test_result": {
-    "passed": 67,
+    "passed": 76,
     "failed": 0,
     "errors": 0,
-    "scope": "new synthetic science-harness tests only",
-    "verification_note": "32/32 affected scaffold+evidence suites rerun after gate-schema hardening; other 35 tests unchanged from prior 64-green qualification"
+    "scope": "new synthetic/metadata-only science-harness tests",
+    "verification_note": "67 previously qualified focused tests plus exact 9/9 donor-resampling dependence suite; no prior production helper changed by donor addendum"
   },
-  "red_evidence": [
-    "initial modules absent: 3 collection errors",
-    "authority completeness: 2 failed / 8 passed before fail-closed repair",
-    "candidate-specific gate expansion: 7 failed / 7 passed before repair",
-    "precision module absent: collection RED",
-    "prefreeze module absent: collection RED",
-    "identity/support expansion: 13 failed / 3 passed before Q5/L6 repair",
-    "measurement-noise fixture module absent: collection RED",
-    "measurement PRF namespace: 2 failed / 8 passed before address/NUL hardening",
-    "gate-evidence manifest module absent: collection RED",
-    "adjudicator accepted naked gate booleans: 18 failed / 3 passed before evidence-manifest binding",
-    "gate-schema relabeling: 3 RED failures before exact per-gate evidence-schema enforcement"
-  ],
   "capabilities": {
     "candidate_adjudication_fixture_only": true,
     "candidate_specific_gate_validation": true,
     "gate_evidence_manifest_hash_binding": true,
     "gate_evidence_schema_role_binding": true,
+    "donor_resampling_dependence_audit": true,
+    "case_rows_can_supply_independent_n_when_donors_overlap": false,
     "matched_wrong_cell_null_metadata_only": true,
     "query_lineage_leakage_guard": true,
     "outcome_blind_precision_resolution": true,
@@ -40,6 +31,14 @@
     "opens_biological_file": false,
     "trains_model": false,
     "issues_authority": false
+  },
+  "donor_resampling_contract": {
+    "schema": "JEPA_TD_DONOR_RESAMPLING_DEPENDENCE_AUDIT_V1",
+    "biological_unit": "unique donor",
+    "overlapping_case_rows_are_independent_replicates": false,
+    "disjoint_membership_implies_only": "CASE_MEMBERSHIPS_DISJOINT__NO_BROADER_INDEPENDENCE_CLAIM",
+    "module_git_blob": "4a5d0a08d6b1d1bdc4e0c188a909c39e5f0fb195",
+    "test_git_blob": "f736c4b2c876a187bf9edff6a5fac266dcf13e5f"
   },
   "gate_evidence_contract": {
     "manifest_schema": "JEPA_TD_TARGET_TOURNAMENT_GATE_EVIDENCE_MANIFEST_V1",
@@ -69,12 +68,8 @@
     "minimum_permutation_draws_at_alpha_0_01": 99,
     "historical_null_counts_inherited": false
   },
-  "git_identity": {
-    "scripts/v5/td_target_tournament_evidence.py": "131b8e89997f7e13262d2a7745f990f4a00b377b",
-    "tests/v5/test_td_target_tournament_evidence.py": "2f638f19cd2361f998e79802c17a75019b04611b",
-    "tests/v5/test_td_target_tournament_scaffold.py": "3457787a6bc1f17ed4a3a9bad95f60370a3f9409"
-  },
   "historical_design_calibration": "custody/takeover_20261011/TD_TARGET_TOURNAMENT_DESIGN_CALIBRATION_V1.json",
+  "historical_executor_fresh_audit": "docs/agent/TD_HISTORICAL_EXECUTOR_FRESH_SCIENTIFIC_AUDIT_20261011.md",
   "mechanistic_shortcut_audit": "docs/agent/TD_HISTORICAL_TOKEN_IDENTITY_SHORTCUT_MECHANISM_AUDIT_20261011.md",
   "measurement_noise_prefreeze": "docs/superpowers/specs/2026-10-11-td-measurement-noise-floor-prefreeze.md",
   "authority": {
