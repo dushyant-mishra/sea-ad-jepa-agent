@@ -1,0 +1,44 @@
+{
+  "schema": "V79_FACTORIAL_POSTAUDIT_HARDENING_STATE_V1",
+  "date": "2026-10-10",
+  "audit_pr": 256,
+  "audit_branch": "audit/v79-factorial-preexecution-20261010",
+  "hardening_pr": 262,
+  "hardening_branch": "fix/v79-factorial-memory-hardening-20261010",
+  "hardening_head": "3419dfc9bbc0410298b21b55e2caddd07ed82a27",
+  "base_implementation_pr": 253,
+  "base_implementation_head": "1a0ab6e1108af924ca13e81caa3c70f3101d251c",
+  "changed_files": [
+    "scripts/v79/v79_hierarchical_biology.py",
+    "scripts/v79/v79_observation_operator.py",
+    "scripts/v79/score_v79_factorial_worlds.py"
+  ],
+  "defects": [
+    "full_float64_cell_gene_intermediates_in_latent_generator",
+    "full_dense_support_rate_count_materialization_in_observer",
+    "full_registry_and_universe_dense_materialization_in_scorer"
+  ],
+  "verification": {
+    "previous_84_test_receipt_applies_to_hardening_head": false,
+    "github_actions_runs_returned_for_hardening_head": false,
+    "full_focused_suite_reverified_on_hardening_head": false,
+    "equivalence_tests_completed": false,
+    "preexecution_gate_replayed_on_hardening_head": false,
+    "scientific_outputs_generated": false
+  },
+  "macha_lane": {
+    "audit_pr": 260,
+    "handoff_pr": 261,
+    "terminal": "SIMULATION_QUALIFICATION_INCOMPLETE",
+    "qualified_posterior_generative_authority_consumed": false
+  },
+  "boundaries": {
+    "training_authorized": false,
+    "v78_retuning_authorized": false,
+    "test_or_morabito_accessed": false,
+    "pathology_accessed": false,
+    "target_discovery_modified": false,
+    "post_outcome_retuning_allowed": false
+  },
+  "next_gate": "VERIFY_PR262_EQUIVALENCE_AND_TESTS_THEN_FREEZE_MACHA_INTEGRATION_DECISION_BEFORE_SCIENTIFIC_TOURNAMENT"
+}
