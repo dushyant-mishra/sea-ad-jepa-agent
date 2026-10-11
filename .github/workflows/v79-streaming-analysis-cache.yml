@@ -14,6 +14,7 @@ on:
       - 'tests/v79/test_v79_s174_structural_support.py'
       - 'tests/v79/fixtures/run_v79_s174_structure_replay_v3_02fb78c3.py'
       - 'scripts/v79/build_v79_structural_support.py'
+      - 'scripts/v79/compare_v79_s174_replay_masking.py'
       - '.github/workflows/v79-streaming-analysis-cache.yml'
 
 jobs:

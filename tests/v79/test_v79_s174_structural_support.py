@@ -366,3 +366,28 @@ def test_builder_refuses_a_nonzero_count_on_an_unmeasured_entry(world):
     auth = _authority_csv(world["tmp"] / "auth.csv.gz", _authority_rows(_support_matrix()))
     with pytest.raises(SystemExit, match="STOP"):
         B.build(npz, rec, bridge, auth, world["tmp"] / "x.npz", pins=_pins(npz, bridge, auth))
+
+
+# --------------------------------------------------------------------------------------- old-vs-masked comparison
+def test_masking_audit_reproduces_v3_deltas_and_reports_a_masked_change(world):
+    import compare_v79_s174_replay_masking as C
+
+    clean = world["counts"].copy()
+    r_old, out_old = _run_replay(world, "cmp_v3", clean, script=V3_REPLAY, with_support=False)
+    r_new, out_new = _run_replay(world, "cmp_v4", clean)                    # the real mask: genes 1 and 2 affected
+    assert r_old.returncode == 0 and r_new.returncode == 0, (r_old.stderr[-2000:], r_new.stderr[-2000:])
+    deltas = world["tmp"] / "v3_deltas.json"
+    deltas.write_text(json.dumps({"parts": C.nested_deltas(json.loads(out_old.read_text(encoding="utf-8")))}),
+                      encoding="utf-8")
+    res = C.compare(out_old, out_new, deltas, world["tmp"] / "audit.json")
+    assert res["v3_deltas_reproduced_exactly"] is True
+    assert res["replay_genes_affected"] == [FULL_ABSENT_GENE, PARTIAL_GENE]
+    assert set(res["questions_A_to_H"]) == {"A_quadratic_depth", "B_broad_class", "C_source", "D_operator", "E_donor",
+                                            "F_operator_beyond_donor", "G_donor_class", "H_positive_lognormal"}
+    assert res["positive_part_identical_to_v3"]["per_gene_positive"] is True     # no positives on unmeasured entries
+    c = res["nested_steps"]["detection"]["C_source"]
+    assert c["old_v3"]["median"] != c["masked"]["median"] or c["old_v3"]["mean"] != c["masked"]["mean"]
+    bad = world["tmp"] / "bad_deltas.json"
+    bad.write_text(json.dumps({"parts": {}}), encoding="utf-8")
+    with pytest.raises(SystemExit, match="STOP"):
+        C.compare(out_old, out_new, bad, world["tmp"] / "audit2.json")
