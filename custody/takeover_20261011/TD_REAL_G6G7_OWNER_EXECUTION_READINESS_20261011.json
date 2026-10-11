@@ -1,0 +1,71 @@
+{
+  "downstream_authority": {
+    "corrected_td56_td57b_td57c_td59_authorized": false,
+    "representation_selection_authorized": false,
+    "stage4_authorized": false,
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "training_authorized": false
+  },
+  "execution_environment_audit": {
+    "clean_exact_fafd4309_worktree_available_here": false,
+    "foundation_calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "foundation_calibration_contains_required_h5ad_or_historical_csr": false,
+    "foundation_discovery_expression_combined_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "foundation_discovery_expression_zip_contents": "single 619411556-byte NPZ; no H5AD",
+    "mounted_h5ad_files_found": 0,
+    "mounted_historical_csr_arrays_found": 0,
+    "ordinary_git_network_access": false,
+    "project_title_search_for_h5ad_or_historical_csr": "NO_RESULTS"
+  },
+  "g6": {
+    "attempt_spent": false,
+    "authorized": true,
+    "blockers": [
+      "exact authenticated HVS/SEA physical H5AD source tree unavailable",
+      "authenticated historical 50K CSR arrays unavailable",
+      "exact clean git worktree at fafd4309 unavailable; production code_identity requires it"
+    ],
+    "executed": false,
+    "status": "AUTHORIZED_BUT_NOT_EXECUTABLE_IN_THIS_ENVIRONMENT"
+  },
+  "g7": {
+    "attempt_spent": false,
+    "authorized": true,
+    "executed": false,
+    "status": "BLOCKED_UNTIL_G6_GENUINE_PASS"
+  },
+  "lane": "REAL_TARGET_DISCOVERY_ONLY",
+  "owner_decision": {
+    "created": true,
+    "decision": "AUTHORIZE_G6_G7_INTEGRITY_ONLY",
+    "path": "custody/owner_decisions/20261011/TD_G6G7_OWNER_DECISION_fafd4309.json",
+    "physical_sha256": "36599b7ade189e051b6e156d53ea1acd4caf42794f26b152d7eada0513a1a273"
+  },
+  "qualification": {
+    "coordinator_external_audit": "ACCEPTED_QUALIFIED_FOR_OWNER_DECISION__NO_VALUE_READ",
+    "focused_suite": {
+      "failed": 0,
+      "passed": 217,
+      "skipped": 0
+    },
+    "pr259_compatibility": {
+      "failed": 0,
+      "passed": 1,
+      "skipped": 0
+    }
+  },
+  "qualified_implementation_commit_sha": "fafd4309cc086c95076cefdc94064e8b66e58ae4",
+  "runtime_authorization": {
+    "biological_replay_authorized": false,
+    "created": true,
+    "path": "custody/owner_decisions/20261011/TD_G6G7_RUNTIME_AUTHORIZATION_fafd4309.json",
+    "physical_sha256": "7cc66f601d6fc294ef9255f4e9ac4b1e1f16db56d1ddf52cf1fb839646fc91fa",
+    "scope": "G6/G7 integrity only",
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "training_authorized": false
+  },
+  "schema": "JEPA_TD_REAL_G6G7_OWNER_EXECUTION_READINESS_V1",
+  "terminal": "OWNER_AUTHORIZED_G6G7_INTEGRITY_ONLY__EXECUTION_ENVIRONMENT_NOT_READY__G6_ATTEMPT_UNSPENT__NO_BIOLOGICAL_REPLAY_AUTHORITY"
+}
