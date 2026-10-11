@@ -3,6 +3,8 @@
 This module intentionally does not read biological matrices and cannot emit target authority.
 """
 
+import td_target_tournament_evidence as evidence
+
 EXPECTED_CANDIDATES = [
     'C1_RELATIONAL_SHARED',
     'C2_QUERY_MEASURED',
@@ -115,7 +117,7 @@ def validate_contract(contract):
     _assert_all_false(auth, ContractError, 'authority')
 
 
-def validate_candidate_receipt(receipt, contract):
+def validate_candidate_receipt(receipt, contract, evidence_manifest):
     validate_contract(contract)
     if receipt.get('schema') != RECEIPT_SCHEMA:
         raise ReceiptError('wrong receipt schema')
@@ -130,6 +132,17 @@ def validate_candidate_receipt(receipt, contract):
         raise ReceiptError('receipt gates must exactly match frozen candidate gate set')
     if any(type(gates[g]) is not bool for g in required_gates):
         raise ReceiptError('gate values must be boolean')
+    try:
+        manifest_sha = evidence.validate_evidence_manifest(
+            evidence_manifest, candidate_id=cid, required_gates=required_gates
+        )
+    except evidence.EvidenceManifestError as exc:
+        raise ReceiptError(f'invalid evidence manifest for {cid}: {exc}') from exc
+    if receipt.get('evidence_manifest_sha256') != manifest_sha:
+        raise ReceiptError('candidate receipt evidence-manifest SHA binding mismatch')
+    projection = evidence.gate_boolean_projection(evidence_manifest)
+    if gates != projection:
+        raise ReceiptError('candidate gate booleans do not match evidence-manifest statuses')
     auth = receipt.get('authority')
     if not isinstance(auth, dict):
         raise ReceiptError('receipt authority object required')
@@ -140,18 +153,31 @@ def validate_candidate_receipt(receipt, contract):
         raise ReceiptError('unsupported status')
 
 
-def adjudicate(contract, receipts):
+def adjudicate(contract, receipts, evidence_manifests):
     validate_contract(contract)
-    foundation_eligible = []
-    optional_specialists_eligible = []
-    rejected = {}
+    if not isinstance(evidence_manifests, dict):
+        raise ReceiptError('candidate evidence manifests must be supplied as a mapping')
     seen = set()
+    candidate_ids = []
     for receipt in receipts:
-        validate_candidate_receipt(receipt, contract)
-        cid = receipt['candidate_id']
+        if not isinstance(receipt, dict):
+            raise ReceiptError('candidate receipt must be an object')
+        cid = receipt.get('candidate_id')
+        if cid not in contract['candidate_ids']:
+            raise ReceiptError('unknown candidate_id')
         if cid in seen:
             raise ReceiptError(f'duplicate candidate receipt: {cid}')
         seen.add(cid)
+        candidate_ids.append(cid)
+    if set(evidence_manifests) != set(candidate_ids):
+        raise ReceiptError('evidence-manifest candidate set must exactly match candidate receipts')
+
+    foundation_eligible = []
+    optional_specialists_eligible = []
+    rejected = {}
+    for receipt in receipts:
+        cid = receipt['candidate_id']
+        validate_candidate_receipt(receipt, contract, evidence_manifests[cid])
         required_gates = contract['mandatory_gates'] + contract['candidate_specific_gates'][cid]
         failed_gates = [g for g in required_gates if receipt['gates'][g] is not True]
         eligible = receipt['status'] == 'PASS' and not failed_gates
