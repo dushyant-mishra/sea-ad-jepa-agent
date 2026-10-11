@@ -129,14 +129,19 @@ def test_c5_is_never_foundation_candidate():
 def test_no_passing_foundation_candidate_emits_redesign_terminal():
     c = contract(); rs = [receipt(cid, status='FAIL') for cid in c['foundation_candidate_ids']]
     out = adjudicate(c, rs)
+    assert out['tournament_complete'] is True
     assert out['terminal'] == 'NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION'
     assert out['target_selected'] is False
 
 
-def test_passing_foundation_candidates_only_become_selection_eligible():
+def test_passing_foundation_candidate_is_individually_eligible_but_tournament_incomplete():
     c = contract(); out = adjudicate(c, [receipt('C1_RELATIONAL_SHARED')])
     assert out['foundation_eligible'] == ['C1_RELATIONAL_SHARED']
-    assert out['terminal'] == 'CANDIDATES_ELIGIBLE_FOR_TARGET_SELECTION__NO_TARGET_AUTHORITY'
+    assert out['tournament_complete'] is False
+    assert out['missing_foundation_candidates'] == [
+        'C2_QUERY_MEASURED', 'C3_LEARNED_SHARED', 'C4_STRUCTURED_COMPOSITE'
+    ]
+    assert out['terminal'] == 'TOURNAMENT_INCOMPLETE__FOUNDATION_CANDIDATES_MISSING__NO_TARGET_AUTHORITY'
     assert out['target_selected'] is False
 
 
@@ -236,11 +241,20 @@ def test_not_estimable_evidence_is_not_reported_as_biological_failure():
     assert first in rejected['not_estimable_gates']
 
 
-def test_not_estimable_foundation_state_does_not_emit_redesign_terminal():
-    c = contract(); r = receipt('C1_RELATIONAL_SHARED'); mf = evidence_manifest(c, r)
-    first = required_gates(c, r['candidate_id'])[0]
-    mf['gates'][first]['status'] = 'NOT_ESTIMABLE'
-    r['gates'][first] = False
-    r['evidence_manifest_sha256'] = ev.canonical_manifest_sha256(mf)
-    out = m.adjudicate(c, [r], {r['candidate_id']: mf})
+def test_complete_not_estimable_foundation_state_does_not_emit_redesign_terminal():
+    c = contract()
+    receipts = []
+    manifests = {}
+    for cid in c['foundation_candidate_ids']:
+        r = receipt(cid, status='FAIL', gate_value=False)
+        mf = evidence_manifest(c, r)
+        if cid == 'C1_RELATIONAL_SHARED':
+            r['status'] = 'NOT_ESTIMABLE'
+            for gate in mf['gates']:
+                mf['gates'][gate]['status'] = 'NOT_ESTIMABLE'
+        r['evidence_manifest_sha256'] = ev.canonical_manifest_sha256(mf)
+        receipts.append(r)
+        manifests[cid] = mf
+    out = m.adjudicate(c, receipts, manifests)
+    assert out['tournament_complete'] is True
     assert out['terminal'] == 'NO_TARGET_WINNER__FOUNDATION_EVIDENCE_NOT_ESTIMABLE__NO_TARGET_AUTHORITY'
