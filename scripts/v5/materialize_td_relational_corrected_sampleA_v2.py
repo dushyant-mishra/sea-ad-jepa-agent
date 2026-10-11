@@ -347,11 +347,12 @@ def main() -> int:
     source_library_corrected = np.zeros(N_SAMPLE_A, dtype=np.int64)
     detected_corrected = np.full(N_SAMPLE_A, -1, dtype=np.int64)
     detected_historical = np.zeros(N_SAMPLE_A, dtype=np.int64)
-    source = sample_a.source.astype(str).to_numpy()
-    donor = sample_a.donor_id.astype(str).to_numpy()
+    # fixed-width unicode, never object arrays: the metadata artifact must load without unpickling
+    source = sample_a.source.astype(str).to_numpy(dtype=str)
+    donor = sample_a.donor_id.astype(str).to_numpy(dtype=str)
     operator = sample_a.operator_index.astype(int).to_numpy()
     global_row = sample_a.global_row.astype(int).to_numpy()
-    cell_id = sample_a.cell_id.astype(str).to_numpy()
+    cell_id = sample_a.cell_id.astype(str).to_numpy(dtype=str)
     g6_mismatches: list[dict] = []
     physically_reread_rows = 0
     nph52_passthrough_rows = 0

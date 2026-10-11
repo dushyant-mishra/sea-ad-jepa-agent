@@ -16,7 +16,7 @@ META = "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
 
 
 def load(w):
-    return w.g7.load_g6_pass_receipt(w.g6_receipt, W.g7_expected_trace(w))
+    return w.g7.load_g6_pass_receipt(w.g6_receipt, W.g7_expected_trace(w), **W.g7_prerequisite_inputs(w))
 
 
 def edit_json(path: Path, change) -> None:
@@ -50,7 +50,7 @@ def test_fabricated_minimal_pass_receipt_is_refused(tmp_path, monkeypatch):
         "target_selection_authorized": False, "td60_authorized": False, "training_authorized": False}) + "\n",
         encoding="utf-8")
     with pytest.raises(RuntimeError):
-        w.g7.load_g6_pass_receipt(fake, W.g7_expected_trace(w))
+        w.g7.load_g6_pass_receipt(fake, W.g7_expected_trace(w), **W.g7_prerequisite_inputs(w))
 
 
 @pytest.mark.parametrize("name", [VALUES, META, "MANIFEST.json", "G6_EXECUTION_START.json"])
@@ -122,7 +122,7 @@ def test_wrong_expected_authority_trace_is_refused(tmp_path, monkeypatch):
     trace = W.g7_expected_trace(w)
     trace["mapping_receipt_sha256"] = "0" * 64
     with pytest.raises(RuntimeError, match="same"):
-        w.g7.load_g6_pass_receipt(w.g6_receipt, trace)
+        w.g7.load_g6_pass_receipt(w.g6_receipt, trace, **W.g7_prerequisite_inputs(w))
 
 
 def test_foreign_file_in_the_g6_namespace_is_refused(tmp_path, monkeypatch):
@@ -138,4 +138,4 @@ def test_g6_execution_copied_without_its_start_marker_is_refused(tmp_path, monke
     shutil.copytree(w.g6_out, copy)
     (copy / "G6_EXECUTION_START.json").unlink()
     with pytest.raises(RuntimeError):
-        w.g7.load_g6_pass_receipt(copy / "G6_RECEIPT.json", W.g7_expected_trace(w))
+        w.g7.load_g6_pass_receipt(copy / "G6_RECEIPT.json", W.g7_expected_trace(w), **W.g7_prerequisite_inputs(w))

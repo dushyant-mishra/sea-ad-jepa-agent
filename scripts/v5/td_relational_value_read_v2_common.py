@@ -89,6 +89,114 @@ G6_META_NAME = "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
 G6_PASS_FILES = frozenset({G6_START_MARKER_NAME, G6_RECEIPT_NAME, G6_MANIFEST_NAME, G6_VALUES_NAME, G6_META_NAME})
 
 
+G6_VALUES_KEYS = frozenset({"data", "indices", "indptr", "format", "shape"})
+G6_META_FIELDS = ("source", "donor", "operator", "global_row", "cell_id", "source_library", "detected_historical",
+                  "detected_corrected")
+G6_META_STRING_FIELDS = ("source", "donor", "cell_id")
+
+
+def _npz_arrays_without_pickle(raw: bytes, label: str) -> dict:
+    """Every array of an NPZ held in memory; refuses anything that is not a pickle-free NPZ archive."""
+    import io
+
+    import numpy as np
+
+    try:
+        with np.load(io.BytesIO(raw), allow_pickle=False) as payload:
+            return {key: payload[key] for key in payload.files}
+    except Exception as exc:
+        raise RuntimeError(f"{label} is not a pickle-free NPZ archive: {type(exc).__name__}: {exc}") from exc
+
+
+def validate_g6_values_artifact(raw: bytes, *, n_rows: int, n_cols: int, replay_addresses, expected_nnz) -> None:
+    """Structural custody check of the G6 values artifact: exactly the canonical CSR that G6 writes.
+
+    Shape n_rows x n_cols; indptr of length n_rows + 1, starting at 0, monotone, ending at nnz; indices in
+    [0, n_cols) and strictly increasing within every row (sorted, no duplicate address); float32 finite values;
+    every stored address one of the frozen replay addresses; nnz equal to the manifest's. Nothing is repaired.
+    This inspects G6's structure only; it is never a reference for G7's biological cross-check.
+    """
+    import numpy as np
+
+    label = "G6 values artifact"
+    z = _npz_arrays_without_pickle(raw, label)
+    if set(z) != G6_VALUES_KEYS:
+        raise RuntimeError(f"{label} keys {sorted(z)} are not the CSR payload keys {sorted(G6_VALUES_KEYS)}")
+    fmt = z["format"]
+    fmt_text = fmt.item().decode("ascii", "replace") if fmt.dtype.kind == "S" else str(fmt.item()) if fmt.dtype.kind == "U" else None
+    if fmt.shape != () or fmt_text != "csr":
+        raise RuntimeError(f"{label} format must be csr: {fmt!r}")
+    shape = z["shape"]
+    if shape.ndim != 1 or shape.dtype.kind not in "iu" or shape.tolist() != [n_rows, n_cols]:
+        raise RuntimeError(f"{label} shape must be exactly [{n_rows}, {n_cols}]: {shape.tolist()}")
+    data, indices, indptr = z["data"], z["indices"], z["indptr"]
+    if data.ndim != 1 or data.dtype != np.float32:
+        raise RuntimeError(f"{label} data must be one-dimensional float32: {data.dtype} {data.shape}")
+    if indices.ndim != 1 or indices.dtype.kind not in "iu" or indptr.ndim != 1 or indptr.dtype.kind not in "iu":
+        raise RuntimeError(f"{label} indices/indptr must be one-dimensional integer arrays")
+    if len(indptr) != n_rows + 1:
+        raise RuntimeError(f"{label} indptr length {len(indptr)} != {n_rows + 1}")
+    ip = indptr.astype(np.int64)
+    if ip[0] != 0 or np.any(np.diff(ip) < 0):
+        raise RuntimeError(f"{label} indptr must start at 0 and be monotone")
+    if not (ip[-1] == len(indices) == len(data)):
+        raise RuntimeError(f"{label} CSR lengths inconsistent: indptr[-1]={ip[-1]} indices={len(indices)} data={len(data)}")
+    idx = indices.astype(np.int64)
+    if len(idx) and (idx.min() < 0 or idx.max() >= n_cols):
+        raise RuntimeError(f"{label} address index outside [0, {n_cols})")
+    if len(idx) > 1:
+        within_row = np.ones(len(idx) - 1, dtype=bool)
+        starts = ip[1:-1]
+        within_row[starts[(starts > 0) & (starts < len(idx))] - 1] = False
+        if np.any(np.diff(idx)[within_row] <= 0):
+            raise RuntimeError(f"{label} addresses must be strictly increasing within each row (no duplicates)")
+    if not np.isfinite(data).all():
+        raise RuntimeError(f"{label} stored values must be finite")
+    if not np.isin(idx, np.asarray(sorted(int(a) for a in replay_addresses), dtype=np.int64)).all():
+        raise RuntimeError(f"{label} stores a value outside the frozen replay addresses")
+    if isinstance(expected_nnz, bool) or not isinstance(expected_nnz, int) or len(data) != expected_nnz:
+        raise RuntimeError(f"{label} nnz {len(data)} does not match the manifest nnz {expected_nnz!r}")
+
+
+def validate_g6_meta_artifact(raw: bytes, *, sample_a, source_counts: dict) -> None:
+    """Structural custody check of the G6 metadata artifact: exactly G6's eight row-level fields, one entry per frozen
+    Sample-A row, in frozen Sample-A order and identity (source, donor, operator, global row, cell ID)."""
+    from collections import Counter
+
+    import numpy as np
+
+    label = "G6 metadata artifact"
+    z = _npz_arrays_without_pickle(raw, label)
+    if set(z) != set(G6_META_FIELDS):
+        raise RuntimeError(f"{label} fields {sorted(z)} are not exactly {list(G6_META_FIELDS)}")
+    n = len(sample_a)
+    for key in G6_META_FIELDS:
+        if z[key].ndim != 1 or len(z[key]) != n:
+            raise RuntimeError(f"{label} field {key} has shape {z[key].shape}; every field needs exactly ({n},)")
+        want_kind = "U" if key in G6_META_STRING_FIELDS else "iu"
+        if z[key].dtype.kind not in want_kind:
+            raise RuntimeError(f"{label} field {key} has dtype {z[key].dtype}")
+    frozen = {
+        "source": sample_a.source.astype(str).tolist(),
+        "donor": sample_a.donor_id.astype(str).tolist(),
+        "cell_id": sample_a.cell_id.astype(str).tolist(),
+        "operator": sample_a.operator_index.astype(int).tolist(),
+        "global_row": sample_a.global_row.astype(int).tolist(),
+    }
+    for key, want in frozen.items():
+        if z[key].tolist() != want:
+            raise RuntimeError(f"{label} field {key} differs from the frozen Sample-A rows (identity or order)")
+    if dict(Counter(z["source"].tolist())) != dict(source_counts):
+        raise RuntimeError(f"{label} source counts differ from the frozen Sample-A geometry")
+    if np.any(z["source_library"] <= 0):
+        raise RuntimeError(f"{label} source_library must be positive")
+    if np.any(z["detected_historical"] < 0) or np.any(z["detected_corrected"] < 0):
+        raise RuntimeError(f"{label} detected counts must be nonnegative")
+    nph = z["source"] == "NPH52"
+    if np.any(z["detected_corrected"][nph] != z["detected_historical"][nph]):
+        raise RuntimeError(f"{label} NPH52 pass-through rows must keep detected_corrected == detected_historical")
+
+
 def g6_input_authority_hashes() -> dict:
     return {
         **EXPECTED_INPUT_HASHES,

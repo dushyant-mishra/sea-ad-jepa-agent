@@ -372,14 +372,16 @@ def _read_g6_json(path: Path, label: str) -> dict:
     return rec
 
 
-def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
+def load_g6_pass_receipt(path: Path, expected_trace: dict, *, replay_addresses=None, sample_a=None) -> dict:
     """Require a genuine, complete, same-authority G6 PASS execution, not merely a PASS-looking receipt.
 
     The receipt's namespace must hold exactly the G6 PASS files: start marker, receipt, manifest, values and
     metadata. Values and metadata must hash to what the receipt and manifest bind; receipt, manifest and start marker
     must carry the same authority trace and the exact G6 input-authority hashes; the receipt must report the frozen
-    Sample-A coverage (physical reread vs NPH52 pass-through). Returns the receipt with the verified SHA-256 of every
-    G6 file under "g7_verified_g6_execution_sha256".
+    Sample-A coverage (physical reread vs NPH52 pass-through). The hash-bound values and metadata payloads are then
+    opened (without pickle) and validated structurally against the frozen geometry, replay addresses and Sample-A
+    rows, so recomputed hashes around malformed artifacts still fail. Returns the receipt with the verified SHA-256
+    of every G6 file under "g7_verified_g6_execution_sha256".
     """
     path = Path(path)
     if not path.is_file():
@@ -413,11 +415,14 @@ def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
         raise RuntimeError("G6 receipt claims every Sample-A row was physically reread; refusing old coverage semantics")
 
     hashes = {"receipt": common.sha256_file(path)}
+    payloads: dict[str, bytes] = {}
     for key, name in (("values", common.G6_VALUES_NAME), ("meta", common.G6_META_NAME)):
-        actual = common.sha256_file(namespace / name)
+        raw = (namespace / name).read_bytes()  # hashed and later validated from these same bytes
+        actual = hashlib.sha256(raw).hexdigest()
         if actual != receipt.get(f"{key}_sha256"):
             raise RuntimeError(f"G6 {key} artifact SHA does not match the G6 receipt: {name}")
         hashes[key] = actual
+        payloads[key] = raw
 
     manifest = _read_g6_json(namespace / common.G6_MANIFEST_NAME, "manifest")
     want_manifest = {
@@ -441,6 +446,14 @@ def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
         raise RuntimeError("G6 execution-start marker is not bound to the same authority")
     _require_false_flags(marker, "G6 execution-start marker")
     hashes["start_marker"] = common.sha256_file(namespace / common.G6_START_MARKER_NAME)
+
+    # Semantic custody check of the hash-bound payloads: a namespace whose hashes were recomputed around malformed
+    # artifacts must still fail. Structure only; G7's biological cross-check stays physical H5AD vs S174.
+    if replay_addresses is None or sample_a is None:
+        raise RuntimeError("G6 artifact semantic validation requires the exact replay addresses and frozen Sample-A rows")
+    common.validate_g6_values_artifact(payloads["values"], n_rows=N_SAMPLE_A, n_cols=N_ADDR,
+                                       replay_addresses=replay_addresses, expected_nnz=manifest.get("nnz"))
+    common.validate_g6_meta_artifact(payloads["meta"], sample_a=sample_a, source_counts=SOURCE_COUNTS)
 
     return {**receipt, "g7_verified_g6_execution_sha256": hashes}
 
@@ -496,7 +509,12 @@ def main() -> int:
     auth, _, _, g6_path, g7_path = bind_execution(args)
     authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
     g6_receipt_path = Path(args.g6_receipt)
-    g6_execution_sha256 = load_g6_pass_receipt(g6_receipt_path, authority_trace)["g7_verified_g6_execution_sha256"]
+    # pinned metadata inputs (no count values) first: the G6 prerequisite validates G6's artifacts against them
+    replay, sample_a, provenance, collision, freeze = load_inputs(args)
+    replay_addresses = set(replay.molecular_address_index.astype(int))
+    g6_execution_sha256 = load_g6_pass_receipt(
+        g6_receipt_path, authority_trace, replay_addresses=replay_addresses, sample_a=sample_a
+    )["g7_verified_g6_execution_sha256"]
     g6_receipt_sha256 = g6_execution_sha256["receipt"]
     begin_g7_attempt(out, authority_trace, g6_receipt_sha256)
 
@@ -504,8 +522,6 @@ def main() -> int:
     verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b_freeze)
     shard_authority = g1b_freeze["rebuilt_cache"]["shards"]
 
-    replay, sample_a, provenance, collision, freeze = load_inputs(args)
-    replay_addresses = set(replay.molecular_address_index.astype(int))
     matrices = {str(item["matrix_id"]): item for item in freeze["matrices"]}
     source_root = Path(args.source_root)
 

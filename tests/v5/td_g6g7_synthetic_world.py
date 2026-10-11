@@ -303,6 +303,15 @@ def g7_expected_trace(w) -> dict:
     return w.g7.expected_authority_trace(args, auth, G6_SCRIPT, G7_SCRIPT)
 
 
+def g7_prerequisite_inputs(w) -> dict:
+    """The replay addresses and frozen Sample-A rows, loaded by G7's own pinned load_inputs (as main does)."""
+    args = SimpleNamespace(replay_manifest=str(w.gate.replay_manifest), sample_freeze=str(w.sample_freeze),
+                           provenance=str(w.provenance), collision_ledger=str(w.collision_ledger),
+                           macha_freeze=str(w.macha_freeze))
+    replay, sample_a, _, _, _ = w.g7.load_inputs(args)
+    return {"replay_addresses": set(replay.molecular_address_index.astype(int)), "sample_a": sample_a}
+
+
 # S174 cache shards per stem: the S174 cell ids each shard holds. h1 and s1 overlap Sample A naturally (2 cells each);
 # s2 holds no Sample-A cell; x9 belongs to no Sample-A matrix but is still under the global G1b hash pass.
 S174_CELLS_OVERLAP = {"h1": ["other_h1", "h1_cell2", "h1_cell0"], "s1": ["s1_cell3", "s1_cell1"],

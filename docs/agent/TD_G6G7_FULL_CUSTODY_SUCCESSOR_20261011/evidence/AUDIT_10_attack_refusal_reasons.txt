@@ -1,0 +1,45 @@
+values csc_format                                           G6 values artifact format must be csr: array(b'csc', dtype='|S3')
+values data_dtype_float64                                   G6 values artifact data must be one-dimensional float32: float64 (16,)
+values data_indices_length_mismatch                         G6 values artifact CSR lengths inconsistent: indptr[-1]=16 indices=16 data=15
+values duplicate_address_in_row                             G6 values artifact addresses must be strictly increasing within each row (no duplicates)
+values extra_payload_key                                    G6 values artifact keys ['data', 'extra', 'format', 'indices', 'indptr', 'shape'] are not the CSR payload keys ['data', 'format', 'indices', 'indptr', 'shape']
+values index_negative                                       G6 values artifact address index outside [0, 12)
+values index_out_of_range                                   G6 values artifact address index outside [0, 12)
+values indices_float_dtype                                  G6 values artifact indices/indptr must be one-dimensional integer arrays
+values indptr_end_inconsistent_with_payload                 G6 values artifact CSR lengths inconsistent: indptr[-1]=16 indices=17 data=17
+values indptr_non_monotone                                  G6 values artifact indptr must start at 0 and be monotone
+values indptr_nonzero_start                                 G6 values artifact indptr must start at 0 and be monotone
+values indptr_wrong_length                                  G6 values artifact indptr length 12 != 13
+values inf_value                                            G6 values artifact stored values must be finite
+values missing_indptr                                       G6 values artifact keys ['data', 'format', 'indices', 'shape'] are not the CSR payload keys ['data', 'format', 'indices', 'indptr', 'shape']
+values nan_value                                            G6 values artifact stored values must be finite
+values negative_inf_value                                   G6 values artifact stored values must be finite
+values pickled_object_data                                  G6 values artifact is not a pickle-free NPZ archive: ValueError: Object arrays cannot be loaded when allow_pickle=False
+values shape_not_two_dimensional                            G6 values artifact shape must be exactly [12, 12]: [12, 12, 1]
+values shape_wrong_columns_minus                            G6 values artifact shape must be exactly [12, 12]: [12, 11]
+values shape_wrong_columns_plus                             G6 values artifact shape must be exactly [12, 12]: [12, 13]
+values shape_wrong_rows                                     G6 values artifact shape must be exactly [12, 12]: [13, 12]
+values unsorted_addresses_in_row                            G6 values artifact addresses must be strictly increasing within each row (no duplicates)
+values value_at_non_replay_address                          G6 values artifact stores a value outside the frozen replay addresses
+meta   all_fields_one_row_short                             G6 metadata artifact field source has shape (11,); every field needs exactly (12,)
+meta   cell_id_changed                                      G6 metadata artifact field cell_id differs from the frozen Sample-A rows (identity or order)
+meta   donor_changed                                        G6 metadata artifact field donor differs from the frozen Sample-A rows (identity or order)
+meta   extra_field                                          G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'donor', 'extra', 'global_row', 'operator', 'source', 'source_library'] are
+meta   global_row_changed                                   G6 metadata artifact field global_row differs from the frozen Sample-A rows (identity or order)
+meta   global_row_float_dtype                               G6 metadata artifact field global_row has dtype float64
+meta   missing_cell_id                                      G6 metadata artifact fields ['detected_corrected', 'detected_historical', 'donor', 'global_row', 'operator', 'source', 'source_library'] are not exactly ['sourc
+meta   missing_detected_corrected                           G6 metadata artifact fields ['cell_id', 'detected_historical', 'donor', 'global_row', 'operator', 'source', 'source_library'] are not exactly ['source', 'donor'
+meta   missing_detected_historical                          G6 metadata artifact fields ['cell_id', 'detected_corrected', 'donor', 'global_row', 'operator', 'source', 'source_library'] are not exactly ['source', 'donor',
+meta   missing_donor                                        G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'global_row', 'operator', 'source', 'source_library'] are not exactly ['sou
+meta   missing_global_row                                   G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'donor', 'operator', 'source', 'source_library'] are not exactly ['source',
+meta   missing_operator                                     G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'donor', 'global_row', 'source', 'source_library'] are not exactly ['source
+meta   missing_source                                       G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'donor', 'global_row', 'operator', 'source_library'] are not exactly ['sour
+meta   missing_source_library                               G6 metadata artifact fields ['cell_id', 'detected_corrected', 'detected_historical', 'donor', 'global_row', 'operator', 'source'] are not exactly ['source', 'do
+meta   negative_detected                                    G6 metadata artifact detected counts must be nonnegative
+meta   nonpositive_source_library                           G6 metadata artifact source_library must be positive
+meta   nph52_detected_corrected_diverges_from_historical    G6 metadata artifact NPH52 pass-through rows must keep detected_corrected == detected_historical
+meta   one_field_one_row_long                               G6 metadata artifact field donor has shape (13,); every field needs exactly (12,)
+meta   operator_changed                                     G6 metadata artifact field operator differs from the frozen Sample-A rows (identity or order)
+meta   pickled_object_cell_id                               G6 metadata artifact is not a pickle-free NPZ archive: ValueError: Object arrays cannot be loaded when allow_pickle=False
+meta   row_order_swapped_consistently                       G6 metadata artifact field source differs from the frozen Sample-A rows (identity or order)
+meta   source_changed                                       G6 metadata artifact field source differs from the frozen Sample-A rows (identity or order)

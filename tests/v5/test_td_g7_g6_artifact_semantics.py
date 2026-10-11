@@ -194,3 +194,33 @@ def test_g7_cross_check_does_not_use_g6_values_as_its_reference(tmp_path, monkey
     rec = json.loads(Path(out).read_text(encoding="utf-8"))
     assert rc == 0 and rec["status"] == "PASS_TD_G7_S174_EXACT_OVERLAP"
     assert (rec["natural_overlap_cells"], rec["checked_cell_address_entries"], rec["mismatches"]) == (4, 12, 0)
+
+
+# ---------------------------------------------------------------- production constants (GREEN-only additions)
+def _csr_bytes(n_rows, n_cols, rows_with_address3=1):
+    import io
+
+    indptr = np.zeros(n_rows + 1, dtype=np.int32)
+    indptr[1:] = rows_with_address3
+    buf = io.BytesIO()
+    np.savez_compressed(buf, data=np.ones(rows_with_address3, dtype=np.float32),
+                        indices=np.full(rows_with_address3, 3, dtype=np.int32), indptr=indptr,
+                        format=np.asarray(b"csr"), shape=np.asarray([n_rows, n_cols], dtype=np.int64))
+    return buf.getvalue()
+
+
+def test_values_validator_requires_exactly_25000_by_41238_in_production():
+    g7 = W.load_script(W.G7_SCRIPT, "g7_production_geometry")
+    assert (g7.N_SAMPLE_A, g7.N_ADDR, g7.N_REPLAY) == (25_000, 41_238, 9_216)
+    common = g7.common
+    kw = dict(n_rows=g7.N_SAMPLE_A, n_cols=g7.N_ADDR, replay_addresses={3}, expected_nnz=1)
+    common.validate_g6_values_artifact(_csr_bytes(25_000, 41_238), **kw)
+    for rows, cols in ((24_999, 41_238), (25_001, 41_238), (25_000, 41_237), (25_000, 14_417)):
+        with pytest.raises(RuntimeError, match="G6 values artifact"):
+            common.validate_g6_values_artifact(_csr_bytes(rows, cols), **kw)
+
+
+def test_prerequisite_refuses_without_the_frozen_inputs(tmp_path, monkeypatch):
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    with pytest.raises(RuntimeError, match="semantic validation requires"):
+        w.g7.load_g6_pass_receipt(w.g6_receipt, W.g7_expected_trace(w))
