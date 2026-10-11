@@ -1,5 +1,3 @@
-import importlib.util
-import math
 import sys
 from pathlib import Path
 import pytest
@@ -10,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import td_target_tournament_evidence as ev
 import td_target_tournament_scaffold as sc
+import td_target_tournament_prefreeze as pf
 
 
 def contract():
@@ -94,3 +93,15 @@ def test_candidate_receipt_score_must_be_finite_exact_number():
         c, mf, r = receipt(score=bad)
         with pytest.raises(sc.ReceiptError):
             sc.validate_candidate_receipt(r, c, mf)
+
+
+def test_prefreeze_contract_validator_rejects_shadow_claim_field():
+    c = contract(); c['target_selected'] = True
+    with pytest.raises(pf.PrefreezeError):
+        pf.canonical_tournament_contract_sha256(c)
+
+
+def test_prefreeze_contract_validator_freezes_claim_boundary():
+    c = contract(); c['claim_boundary'] = 'REAL_TARGET_AUTHORITY'
+    with pytest.raises(pf.PrefreezeError):
+        pf.canonical_tournament_contract_sha256(c)
