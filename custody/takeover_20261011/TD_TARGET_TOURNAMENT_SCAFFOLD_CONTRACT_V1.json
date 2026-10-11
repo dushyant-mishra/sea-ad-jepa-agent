@@ -1,0 +1,36 @@
+{
+  "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1",
+  "fixture_only": true,
+  "authority": {
+    "value_read_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "candidate_ids": [
+    "C1_RELATIONAL_SHARED",
+    "C2_QUERY_MEASURED",
+    "C3_LEARNED_SHARED",
+    "C4_STRUCTURED_COMPOSITE",
+    "C5_REGULATORY_SPECIALIST"
+  ],
+  "foundation_candidate_ids": [
+    "C1_RELATIONAL_SHARED",
+    "C2_QUERY_MEASURED",
+    "C3_LEARNED_SHARED",
+    "C4_STRUCTURED_COMPOSITE"
+  ],
+  "optional_specialist_ids": ["C5_REGULATORY_SPECIALIST"],
+  "mandatory_gates": [
+    "G1_DONOR_PRIMARY",
+    "G2_SOURCE_REPLICATION",
+    "G3_SHORTCUT_DEFEAT",
+    "G4_INFORMATION_ASYMMETRY",
+    "G5_SUPPORT_ABSTENTION",
+    "G6_TRANSFER",
+    "G7_NO_POSTHOC"
+  ],
+  "claim_boundary": "SYNTHETIC_SCAFFOLD_ONLY__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY"
+}
