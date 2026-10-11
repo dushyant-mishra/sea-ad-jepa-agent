@@ -34,8 +34,8 @@ z = info.param_info.z
 out = {}
 for name, dev, prec in (("gpu_default", jax.devices("gpu")[0], None), ("gpu_highest", jax.devices("gpu")[0], "highest"),
                         ("cpu", jax.devices("cpu")[0], None)):
-    zd = jax.device_put(z, dev)
-    kwd = jax.device_put(kw, dev)
+    put = lambda tree: jax.tree_util.tree_map(lambda v: jax.device_put(v, dev) if hasattr(v, "shape") else v, tree)  # noqa: E731
+    zd, kwd = put(z), put(kw)                         # arrays only; the likelihood name stays a string
     info_d = initialize_model(jax.random.PRNGKey(3), M.vc_model, model_kwargs=kwd)
     if prec:
         with jax.default_matmul_precision(prec):
