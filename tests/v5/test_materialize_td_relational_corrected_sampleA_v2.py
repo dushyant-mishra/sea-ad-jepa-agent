@@ -19,11 +19,18 @@ def load_module():
 
 def test_sample_a_selection_uses_frozen_label_not_literal_A():
     m = load_module()
+    # Real Sample-A freeze schema (every column G6 requires); like the real file, no physical global_row.
     frame = pd.DataFrame({
         "sample": ["A", "A_NATURAL_MIXTURE", "B_COVERAGE_DISCOVERY"],
         "sample_row": [0, 1, 2],
         "source": ["HVS", "HVS", "SEA_AD"],
+        "matrix_id": ["HVS::m0", "HVS::m1", "SEA_AD::m2"],
+        "operator_index": [0, 1, 2],
+        "local_row": [0, 1, 2],
+        "donor_id": ["donor_0", "donor_1", "donor_2"],
+        "cell_id": ["cell_0", "cell_1", "cell_2"],
     })
+    assert "global_row" not in frame.columns
     got = m.select_sample_a(frame, enforce_geometry=False)
     assert got["sample"].tolist() == ["A_NATURAL_MIXTURE"]
 
