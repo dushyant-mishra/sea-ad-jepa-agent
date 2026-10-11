@@ -1,8 +1,8 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T17:23:47Z",
+ "updated_utc": "2026-10-11T17:32:58Z",
  "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
- "source_head_at_write": "01fb8f629f60117e3c4d82542634eccca0749ca5",
+ "source_head_at_write": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6",
  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
@@ -17,15 +17,15 @@
    "downstream": "UNQUALIFIED; never filled or inferred"
   },
   "gaussian": {
-   "status": "ELIGIBLE__FRESH_S0_S5_RECOVERY_PENDING",
+   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
    "frozen_config": "GAUSSIAN_NC_DK_V1"
   },
   "lognormal": {
-   "status": "ELIGIBLE__FRESH_S0_S5_RECOVERY_PENDING",
+   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
    "frozen_config": "LOGNORMAL_NC_ALL_V1"
   },
   "ztnb": {
-   "status": "ELIGIBLE__FRESH_S0_S5_RECOVERY_PENDING",
+   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
    "frozen_config": "ZTNB_NC_DONOR_DK_V1"
   }
  },
@@ -36,16 +36,45 @@
  ],
  "qualified_code_path": {
   "fit_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
-  "record": "results/v79/recovery/CODE_PATH_QUALIFICATION_d9d8cac6.json"
+  "record": "results/v79/recovery/CODE_PATH_QUALIFICATION_d9d8cac6.json",
+  "orchestration_snapshot": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6"
  },
- "active_scheduler_jobs": "none running at this write (detection stage-1 scheduler finished 2026-10-11T17:18Z); the fresh family-suite jobs are recorded here at launch",
+ "active_scheduler_jobs": {
+  "scheduler": "/d/v79_runs/306ca8af/scripts/v79/run_v79_scheduler.py (orchestration snapshot 306ca8af), --slots 1 --timeout 43200",
+  "jobs_file": "results/v79/recovery/SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json",
+  "jobs_file_sha256": "d84b638bee4b7aa36df6ecd6c53890b6d29b23a9cf1ea6ddf222d00a391487b4",
+  "jobs": [
+   "gaussian fresh S1_present",
+   "gaussian fresh S0_class_absent",
+   "gaussian fresh S2_class_permuted",
+   "gaussian fresh S3_donor_only",
+   "gaussian fresh S4_operator_only",
+   "gaussian fresh S5_labels_removed",
+   "lognormal fresh S1_present",
+   "lognormal fresh S0_class_absent",
+   "lognormal fresh S2_class_permuted",
+   "lognormal fresh S3_donor_only",
+   "lognormal fresh S4_operator_only",
+   "lognormal fresh S5_labels_removed",
+   "ztnb fresh S1_present",
+   "ztnb fresh S0_class_absent",
+   "ztnb fresh S2_class_permuted",
+   "ztnb fresh S3_donor_only",
+   "ztnb fresh S4_operator_only",
+   "ztnb fresh S5_labels_removed"
+  ],
+  "fit_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+  "gate": "/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py before every fit",
+  "ledger": "results/v79/recovery/LEDGER.jsonl",
+  "resource_benchmark": "results/v79/recovery/fresh_d9d8cac6/RESOURCES_gaussian_S1_alone.json (fixed monitor, first fit alone)"
+ },
  "non_authoritative": [
   "results/v79/recovery/evidence_pre_code_path_qualification_20261011/ (including its PROVENANCE.json): pre-qualification evidence only, never terminal authority"
  ],
  "open_defects": [
-  "snapshot_v79.sh does not archive scripts/v77/build_v77_topology_calibration.py, which v79_geometry and v79_ppc import: geometry/PPC phases cannot run from a snapshot until fixed (recovery unaffected)",
   "divergence_location is not yet wired into the inference, Phase C and PPC runners (self-audit 53)",
-  "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark"
+  "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark",
+  "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery"
  ],
  "next_gate": "FRESH_POST_CODE_PATH_S0_S5_TERMINAL_RECOVERY_RULINGS_FOR_GAUSSIAN_LOGNORMAL_ZTNB, then stop and report",
  "parallel_lanes": {
@@ -61,5 +90,9 @@
   "no V78 outcome-driven retuning",
   "no post-outcome synthetic rescue",
   "no target-discovery work in this lane"
- ]
+ ],
+ "provenance": {
+  "record": "results/v79/recovery/POST_CODE_PATH_PROVENANCE_V1.json",
+  "sha256": "f71e124fa09c99b69d16b555c47cf4b4720f3b60eb87c8d7546d4123cb127a31"
+ }
 }

@@ -1,0 +1,164 @@
+[
+ {
+  "name": "gaussian fresh S1_present",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S1_present",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S1_present.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S1_present.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S1_present --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S1_present.json\""
+ },
+ {
+  "name": "gaussian fresh S0_class_absent",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S0_class_absent",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S0_class_absent.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S0_class_absent.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S0_class_absent --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S0_class_absent.json\""
+ },
+ {
+  "name": "gaussian fresh S2_class_permuted",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S2_class_permuted",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S2_class_permuted.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S2_class_permuted.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S2_class_permuted --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S2_class_permuted.json\""
+ },
+ {
+  "name": "gaussian fresh S3_donor_only",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S3_donor_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S3_donor_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S3_donor_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S3_donor_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S3_donor_only.json\""
+ },
+ {
+  "name": "gaussian fresh S4_operator_only",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S4_operator_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S4_operator_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S4_operator_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S4_operator_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S4_operator_only.json\""
+ },
+ {
+  "name": "gaussian fresh S5_labels_removed",
+  "device": "cpu",
+  "family": "gaussian",
+  "world": "S5_labels_removed",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S5_labels_removed.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S5_labels_removed.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian\" gaussian && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood gaussian --fits S5_labels_removed --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/gaussian/part_gaussian_S5_labels_removed.json\""
+ },
+ {
+  "name": "lognormal fresh S1_present",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S1_present",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S1_present.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S1_present.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S1_present --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S1_present.json\""
+ },
+ {
+  "name": "lognormal fresh S0_class_absent",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S0_class_absent",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S0_class_absent.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S0_class_absent.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S0_class_absent --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S0_class_absent.json\""
+ },
+ {
+  "name": "lognormal fresh S2_class_permuted",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S2_class_permuted",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S2_class_permuted.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S2_class_permuted.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S2_class_permuted --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S2_class_permuted.json\""
+ },
+ {
+  "name": "lognormal fresh S3_donor_only",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S3_donor_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S3_donor_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S3_donor_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S3_donor_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S3_donor_only.json\""
+ },
+ {
+  "name": "lognormal fresh S4_operator_only",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S4_operator_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S4_operator_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S4_operator_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S4_operator_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S4_operator_only.json\""
+ },
+ {
+  "name": "lognormal fresh S5_labels_removed",
+  "device": "cpu",
+  "family": "lognormal",
+  "world": "S5_labels_removed",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/log_lognormal_S5_labels_removed.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S5_labels_removed.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal\" lognormal && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood lognormal --fits S5_labels_removed --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/lognormal/part_lognormal_S5_labels_removed.json\""
+ },
+ {
+  "name": "ztnb fresh S1_present",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S1_present",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S1_present.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S1_present.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S1_present --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S1_present.json\""
+ },
+ {
+  "name": "ztnb fresh S0_class_absent",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S0_class_absent",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S0_class_absent.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S0_class_absent.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S0_class_absent --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S0_class_absent.json\""
+ },
+ {
+  "name": "ztnb fresh S2_class_permuted",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S2_class_permuted",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S2_class_permuted.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S2_class_permuted.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S2_class_permuted --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S2_class_permuted.json\""
+ },
+ {
+  "name": "ztnb fresh S3_donor_only",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S3_donor_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S3_donor_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S3_donor_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S3_donor_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S3_donor_only.json\""
+ },
+ {
+  "name": "ztnb fresh S4_operator_only",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S4_operator_only",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S4_operator_only.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S4_operator_only.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S4_operator_only --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S4_operator_only.json\""
+ },
+ {
+  "name": "ztnb fresh S5_labels_removed",
+  "device": "cpu",
+  "family": "ztnb",
+  "world": "S5_labels_removed",
+  "log": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/log_ztnb_S5_labels_removed.txt",
+  "out": "D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S5_labels_removed.json",
+  "cmd": "\"/c/Users/dushy/anaconda3/python.exe\" \"/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py\" \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb\" ztnb && env XLA_FLAGS=\"--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false\" V79_PROGRESS=1 \"/c/Users/dushy/anaconda3/envs/v79-bayes/python.exe\" \"/d/v79_runs/d9d8cac6/scripts/v79/run_v79_recovery.py\" --likelihood ztnb --fits S5_labels_removed --genes 20 --out \"D:/jepa_wt_v79_bayes_20261009/results/v79/recovery/fresh_d9d8cac6/ztnb/part_ztnb_S5_labels_removed.json\""
+ }
+]

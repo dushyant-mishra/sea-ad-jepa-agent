@@ -1,0 +1,181 @@
+{
+ "schema": "V79_POST_CODE_PATH_PROVENANCE_V1",
+ "utc": "2026-10-11T17:32:33Z",
+ "written_at_source_head": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6",
+ "purpose": "current provenance authority for the fresh post-code-path-qualification S0-S5 recovery suites of the three eligible families; supersedes nothing older as authority because the archived pre-qualification PROVENANCE.json was never authority",
+ "fit_code_snapshot": {
+  "commit": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+  "path": "/d/v79_runs/d9d8cac6",
+  "code_path_qualification": "results/v79/recovery/CODE_PATH_QUALIFICATION_d9d8cac6.json",
+  "code_path_qualification_sha256": "fdf184511b4a4100629c5429b35c4daa0e1bc2893d8c38132154f046293f2959"
+ },
+ "orchestration_snapshot": {
+  "commit": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6",
+  "path": "/d/v79_runs/306ca8af",
+  "contents_used": [
+   "scripts/v79/run_v79_scheduler.py",
+   "scripts/v79/v79_family_gate.py"
+  ],
+  "tests_inside_snapshot": "unit 140 passed, 6 skipped (e2e); scheduler e2e 2 passed (incl. SKIPPED_FAMILY_STOPPED class and exact out_sha256)"
+ },
+ "frozen_sampler_configs": {
+  "gaussian": {
+   "key": "gaussian",
+   "name": "GAUSSIAN_NC_DK_V1",
+   "centring": {
+    "dk": 0.0,
+    "logsd_dk": 0.0
+   },
+   "matmul_precision": "highest",
+   "sha256": "877875c95d715e00ef9aeed0d8ab7de106cfa9a7b4eba81e70384cbcc4a84294"
+  },
+  "lognormal": {
+   "key": "gaussian_masked",
+   "name": "LOGNORMAL_NC_ALL_V1",
+   "centring": {
+    "op": 0.0,
+    "logsd_op": 0.0,
+    "donor": 0.0,
+    "logsd_donor": 0.0,
+    "dk": 0.0,
+    "logsd_dk": 0.0
+   },
+   "matmul_precision": "highest",
+   "sha256": "f9d5259d6ef26389ac7d9d820c3c2e1a6dba0748dc84560e7daa429187747613"
+  },
+  "ztnb": {
+   "key": "ztnb",
+   "name": "ZTNB_NC_DONOR_DK_V1",
+   "centring": {
+    "dk": 0.0,
+    "logsd_dk": 0.0,
+    "donor": 0.0,
+    "logsd_donor": 0.0
+   },
+   "matmul_precision": "highest",
+   "sha256": "ace0c15967f5c9a9ed6d53b6caf503e28735ed77bd2cfb256b63ed01c96361f2"
+  }
+ },
+ "sampler_rules": {
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "retry": [
+   0.9,
+   0.95,
+   0.99
+  ],
+  "version": "A5_V2_DIVERGENT_EXTENSION_ESCALATES",
+  "sha256": "b4336cdac6a8bc3a169d2a293816f1639f4489d25c5f95f46a798afacd22a584"
+ },
+ "matmul_precision": "highest",
+ "settings": {
+  "genes": 20,
+  "chains": 4,
+  "warmup": 1000,
+  "draws": 1000,
+  "max_tree_depth": 10,
+  "device": "cpu",
+  "xla_flags": "--xla_force_host_platform_device_count=4 --xla_cpu_multi_thread_eigen=false"
+ },
+ "worlds": {
+  "S1_present": {
+   "scenario": "S1_present",
+   "modification": null,
+   "simulation_seed": {
+    "gaussian": 1000000,
+    "lognormal": 1000900,
+    "ztnb": 1000700
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": null
+  },
+  "S0_class_absent": {
+   "scenario": "S0_class_absent",
+   "modification": null,
+   "simulation_seed": {
+    "gaussian": 1000001,
+    "lognormal": 1000901,
+    "ztnb": 1000701
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": null
+  },
+  "S2_class_permuted": {
+   "scenario": "S1_present",
+   "modification": "permute_class",
+   "simulation_seed": {
+    "gaussian": 1000000,
+    "lognormal": 1000900,
+    "ztnb": 1000700
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": 20261016
+  },
+  "S3_donor_only": {
+   "scenario": "S3_donor_only_no_class",
+   "modification": null,
+   "simulation_seed": {
+    "gaussian": 1000002,
+    "lognormal": 1000902,
+    "ztnb": 1000702
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": null
+  },
+  "S4_operator_only": {
+   "scenario": "S4_operator_only_no_class",
+   "modification": null,
+   "simulation_seed": {
+    "gaussian": 1000003,
+    "lognormal": 1000903,
+    "ztnb": 1000703
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": null
+  },
+  "S5_labels_removed": {
+   "scenario": "S1_present",
+   "modification": "drop_donor",
+   "simulation_seed": {
+    "gaussian": 1000000,
+    "lognormal": 1000900,
+    "ztnb": 1000700
+   },
+   "sampler_seed": 20261009,
+   "design_permutation_seed": null
+  }
+ },
+ "seed_note": "simulation seeds are derived in run_v79_recovery.fit (1,000,000 + scenario index + family offset); S1, S2 and S5 fit the same planted S1 world; S2 permutes class labels with seed + 7; S5 drops donor and donor-class components",
+ "jobs_file": "results/v79/recovery/SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json",
+ "jobs_file_sha256": "d84b638bee4b7aa36df6ecd6c53890b6d29b23a9cf1ea6ddf222d00a391487b4",
+ "job_order": "family-major (gaussian, lognormal, ztnb); within each family S1 first, then S0, S2, S3, S4, S5",
+ "ledger": "results/v79/recovery/LEDGER.jsonl",
+ "output_root": "results/v79/recovery/fresh_d9d8cac6/<family>/",
+ "fail_closed_gate": "v79_family_gate.py before every fit: a family with any failed completed world (not diagnosed after the frozen retry/extension path, coverage below the binomial bound, or a failed control against S1) is NOT_QUALIFIED; FAMILY_STOPPED_<family>.json is written once and remaining worlds are SKIPPED_FAMILY_STOPPED",
+ "family_terminal": "one combined receipt per family (run_v79_recovery.py --combine from the fit snapshot) over its complete S0-S5 suite; a family is qualified only on a complete suite with terminal PASS",
+ "concurrency": "one fit at a time until the single-fit resource benchmark (fixed monitor, self-audit 54) is written for the first fit",
+ "detection": {
+  "status": "TERMINAL_NOT_QUALIFIED",
+  "ruling": "DETECTION_FAMILY_NOT_QUALIFIED",
+  "record": "results/v79/recovery/detection_V2/DETECTION_V2_STAGE1_TERMINAL.json",
+  "excluded_from_this_run": true
+ },
+ "non_authoritative": [
+  "results/v79/recovery/evidence_pre_code_path_qualification_20261011/ including PROVENANCE.json"
+ ],
+ "real_data": {
+  "counts_loaded": false,
+  "real_data_inference_started": false,
+  "corrected_train": "BLOCKED"
+ },
+ "firewalls": [
+  "no JEPA training",
+  "no H0/H1/H2/H3 factorial execution",
+  "no TEST/Morabito",
+  "no pathology",
+  "no V78 outcome-driven retuning",
+  "no post-outcome synthetic rescue",
+  "no target-discovery work"
+ ],
+ "training_authorized": false
+}
