@@ -1,0 +1,35 @@
+# RED_07 G6 receipt coverage semantics via the real G6 entrypoint on a synthetic world, code at 3bb5490b071bfc01e1a8a32917562027df6e2451
+# utc: 2026-10-11T15:45:36Z
+.F..                                                                     [100%]
+================================== FAILURES ===================================
+______ test_g6_receipt_separates_physical_reread_from_nph52_passthrough _______
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1217/test_g6_receipt_separates_phys0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000028604FD8490>
+
+    def test_g6_receipt_separates_physical_reread_from_nph52_passthrough(tmp_path, monkeypatch):
+        w = W.build_g6_world(tmp_path, monkeypatch)
+        assert W.run_g6(w, monkeypatch) == 0
+        rec = receipt(w)
+        physical = W.SOURCE_COUNTS["HVS"] + W.SOURCE_COUNTS["SEA_AD"]
+>       assert rec["hvs_sea_physically_reread_source_library_verified_rows"] == physical
+E       KeyError: 'hvs_sea_physically_reread_source_library_verified_rows'
+
+tests\v5\test_td_g6_synthetic_end_to_end.py:46: KeyError
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1217\\test_g6_receipt_separates_phys0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_____ test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1217\\test_g6_end_to_end_materialize0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_production_coverage_is_23690_reread_plus_1310_passthrough
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_library_mismatch_stops_and_keeps_the_spent_marker
+FAILED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_receipt_separates_physical_reread_from_nph52_passthrough
+1 failed, 3 passed, 3 warnings in 9.68s
+# exit=0

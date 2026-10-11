@@ -117,9 +117,13 @@ def rewrite_authorization(m, b, **overrides) -> Path:
     return write_json(b.auth, authorization_record(m, b, **overrides))
 
 
-def build_gate(tmp_path: Path, m, monkeypatch) -> SimpleNamespace:
+DEFAULT_REPLAY_CSV = b"molecular_address_index,gene\n3,G3\n5,G5\n8,G8\n"
+
+
+def build_gate(tmp_path: Path, m, monkeypatch, replay_csv: bytes = DEFAULT_REPLAY_CSV) -> SimpleNamespace:
     """Synthetic receipts, replay manifest, code files and authorization, with the gate's PR #259 pins pointed at the
-    synthetic receipt bytes (monkeypatch; restored after the test)."""
+    synthetic receipt bytes (monkeypatch; restored after the test). Set any other EXPECTED_INPUT_HASHES entries
+    before calling, so the synthetic preflight embeds them."""
     tmp_path = Path(tmp_path)
     b = SimpleNamespace(
         mapping=tmp_path / "mapping.json",
@@ -130,7 +134,7 @@ def build_gate(tmp_path: Path, m, monkeypatch) -> SimpleNamespace:
         auth=tmp_path / "auth.json",
         owner_decision=tmp_path / "owner_decision.json",
     )
-    b.replay_manifest.write_bytes(b"molecular_address_index,gene\n3,G3\n5,G5\n8,G8\n")
+    b.replay_manifest.write_bytes(replay_csv)
     monkeypatch.setitem(m.EXPECTED_INPUT_HASHES, "replay_manifest_sha256", sha(b.replay_manifest))
     write_json(b.mapping, valid_mapping(m))
     write_json(b.preflight, valid_preflight(m, json.loads(b.mapping.read_text(encoding="utf-8"))))
