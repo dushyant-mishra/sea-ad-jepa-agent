@@ -1,15 +1,30 @@
 from pathlib import Path
-import sys
+import importlib.util
 
 import numpy as np
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+ROOT = Path(__file__).resolve().parents[2]
+V4 = ROOT / "src" / "sea_ad_jepa" / "v4"
 
-from sea_ad_jepa.v4.foundation_qualification_v4 import requalify_historical_report
-from sea_ad_jepa.v4.foundation_sampling import hierarchical_sampling_plan
-from sea_ad_jepa.v4.foundation_resource_guard import compact_cache_plan, dense_bytes
-from sea_ad_jepa.v4.observation_process import assert_no_provenance_inputs
+
+def load(name: str):
+    path = V4 / f"{name}.py"
+    spec = importlib.util.spec_from_file_location(f"qualification_v4_{name}", path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+QUAL = load("foundation_qualification_v4")
+SAMP = load("foundation_sampling")
+RES = load("foundation_resource_guard")
+OBS = load("observation_process")
+requalify_historical_report = QUAL.requalify_historical_report
+hierarchical_sampling_plan = SAMP.hierarchical_sampling_plan
+compact_cache_plan, dense_bytes = RES.compact_cache_plan, RES.dense_bytes
+assert_no_provenance_inputs = OBS.assert_no_provenance_inputs
 
 
 def historical_report():
@@ -40,10 +55,7 @@ def historical_report():
             "development_expression_forbidden": True,
             "sealed_expression_forbidden": True,
         },
-        "performance": {
-            "peak_cpu_rss_bytes": 6387449856,
-            "temporary_disk_bytes": 5030195626,
-        },
+        "performance": {"peak_cpu_rss_bytes": 6387449856, "temporary_disk_bytes": 5030195626},
     }
 
 
@@ -60,15 +72,13 @@ def test_historical_requalification_preserves_subspace_only_and_blocks_current_f
 
 
 def test_requalification_fails_closed_if_historical_run_not_pathology_blind():
-    report = historical_report()
-    report["governance"]["pathology_blind"] = False
+    report = historical_report(); report["governance"]["pathology_blind"] = False
     with pytest.raises(ValueError, match="pathology_blind"):
         requalify_historical_report(report)
 
 
 def test_requalification_fails_closed_if_optimizer_updates_occurred():
-    report = historical_report()
-    report["governance"]["neural_optimizer_updates"] = 1
+    report = historical_report(); report["governance"]["neural_optimizer_updates"] = 1
     with pytest.raises(ValueError, match="optimizer"):
         requalify_historical_report(report)
 
@@ -83,8 +93,7 @@ def test_hierarchical_sampling_is_sublinear_normalized_and_not_cell_uniform():
     plan = hierarchical_sampling_plan(
         {"A": 100, "B": 10_000},
         {"A": {"A1": 50, "A2": 50}, "B": {"B1": 1000, "B2": 9000}},
-        dataset_alpha=0.5,
-        donor_alpha=0.5,
+        dataset_alpha=0.5, donor_alpha=0.5,
     )
     assert np.isclose(sum(plan["dataset_probability"].values()), 1.0)
     assert np.isclose(sum(plan["donor_mass"].values()), 1.0)
@@ -102,13 +111,7 @@ def test_hierarchical_sampling_rejects_non_sublinear_alpha(alpha):
 
 def test_resource_guard_forbids_full_registry_dense_but_allows_selected_cache():
     assert dense_bytes(4000, 41238, 4) == 659_808_000
-    plan = compact_cache_plan(
-        n_cells=4000,
-        registry_genes=41238,
-        selected_genes=3000,
-        dtype_bytes=4,
-        dense_budget_bytes=128 * 1024 * 1024,
-    )
+    plan = compact_cache_plan(4000, 41238, 3000, 4, 128 * 1024 * 1024)
     assert plan["full_registry_dense_authorized"] is False
     assert plan["selected_dense_authorized"] is True
     assert plan["selected_dense_bytes"] == 48_000_000
