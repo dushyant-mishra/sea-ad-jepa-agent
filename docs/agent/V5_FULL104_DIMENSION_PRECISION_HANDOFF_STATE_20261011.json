@@ -1,0 +1,34 @@
+{
+  "schema": "V5_FULL104_DIMENSION_PRECISION_HANDOFF_STATE_V1",
+  "date": "2026-10-11",
+  "implementation_pr": 270,
+  "audit_pr": 273,
+  "implementation_head": "e7362af9271927b02169b594c41249c1a5927016",
+  "verification": {
+    "workflow_run": 38149069861,
+    "tests_passed": 17,
+    "tests_failed": 0,
+    "conclusion": "SUCCESS"
+  },
+  "engineering_closed": [
+    "PROSPECTIVE_MONTE_CARLO_PRECISION_AUTHORITY",
+    "AUTHENTICATED_FULL_STREAM_METRIC_RECEIPT_CONTRACT",
+    "FIXTURE_AND_SYNTHETIC_METRIC_REJECTION",
+    "PHYSICAL_BINDING_AND_PRECISION_SHA_BINDING",
+    "FROZEN_DOWNSTREAM_DIMENSION_SELECTOR_INTERFACE"
+  ],
+  "physical_blockers": [
+    "CURRENT_BYTE_FULL104_PHYSICAL_CLOSURE",
+    "REAL_FULL_STREAM_DIMENSION_METRIC_EXECUTION",
+    "RETURNED_METRIC_RECEIPT_VALIDATION",
+    "D_SHARED_D_PRIVATE_D_OBS_SELECTION",
+    "INDEPENDENT_NUMERICAL_OUTCOME_AUDIT"
+  ],
+  "project_mounted_full104_expression_present": false,
+  "D_shared": null,
+  "D_private": null,
+  "D_obs": null,
+  "D_total": null,
+  "training_authorized": false,
+  "terminal": "FULL104_STATISTICAL_AND_RETURN_RECEIPT_ENGINEERING_CLOSED__PHYSICAL_FULL_STREAM_EXECUTION_PENDING__D_SHARED_D_PRIVATE_D_OBS_UNSET__TRAINING_OFF"
+}
