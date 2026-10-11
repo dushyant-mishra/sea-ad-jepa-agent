@@ -285,7 +285,9 @@ def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[s
 
 
 def select_sample_a(frame: pd.DataFrame) -> pd.DataFrame:
-    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
+        "sample_row", key=lambda rows: rows.astype(int), kind="stable"
+    )  # numeric order: the freeze is read with dtype=str
     if len(selected) != N_SAMPLE_A:
         raise RuntimeError("Sample-A geometry mismatch")
     if selected.source.value_counts().to_dict() != SOURCE_COUNTS:

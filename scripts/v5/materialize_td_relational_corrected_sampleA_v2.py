@@ -163,7 +163,9 @@ def corrected_row(indices, values, col_to_address: dict[int, int], replay_addres
 
 
 def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
-    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
+        "sample_row", key=lambda rows: rows.astype(int), kind="stable"
+    )  # numeric order: the freeze is read with dtype=str
     if enforce_geometry:
         if len(selected) != N_SAMPLE_A:
             raise RuntimeError(f"Sample-A geometry mismatch: {len(selected)} != {N_SAMPLE_A}")
