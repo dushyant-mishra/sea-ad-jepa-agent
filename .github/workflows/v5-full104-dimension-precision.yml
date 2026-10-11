@@ -1,0 +1,21 @@
+name: V5 FULL104 dimension precision authority
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5_anticheat/derive_monte_carlo_precision_authority_v1.py'
+      - 'tests/v5_anticheat/test_full104_monte_carlo_precision_authority_v1.py'
+      - '.github/workflows/v5-full104-dimension-precision.yml'
+  workflow_dispatch:
+
+jobs:
+  precision-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pytest
+      - run: python -m pytest -q tests/v5_anticheat/test_full104_monte_carlo_precision_authority_v1.py
