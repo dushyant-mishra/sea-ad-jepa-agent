@@ -1,0 +1,28 @@
+{
+ "schema": "V79_G500_PANEL_PREVALENCE_COVERAGE_V1",
+ "cache_npz_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+ "n_genes": 500,
+ "prevalence_quantiles": {
+  "0.0": 0.05014811680067711,
+  "0.05": 0.059236140499365215,
+  "0.1": 0.07380448582310623,
+  "0.25": 0.12320143884892086,
+  "0.5": 0.2416419805332205,
+  "0.75": 0.4411764705882353,
+  "0.9": 0.6469530258146426,
+  "0.95": 0.7920334320778671,
+  "1.0": 0.9485823106220905
+ },
+ "prevalence_bins": {
+  "[0.05,0.1)": 96,
+  "[0.1,0.2)": 113,
+  "[0.2,0.3)": 83,
+  "[0.3,0.5)": 103,
+  "[0.5,0.7)": 63,
+  "[0.7,0.9)": 31,
+  "[0.9,1.0001)": 11
+ },
+ "universe_size_above_floor": 14417,
+ "prevalence_floor": 0.05,
+ "note": "summary statistics only; no gene symbols, Ensembl IDs, molecular addresses or target identities"
+}
