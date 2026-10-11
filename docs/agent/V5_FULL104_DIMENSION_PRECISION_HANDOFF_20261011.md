@@ -15,7 +15,9 @@ Independent audit: PR #273.
 - The frozen downstream D_shared/D_private/D_obs selector already exists and remains separate.
 
 Fresh implementation verification:
-- GitHub Actions run `38149052609` — SUCCESS.
+- GitHub Actions run `38149069861` — SUCCESS.
+- focused precision + metric-receipt suite: **17 passed in 0.02 s**.
+- implementation head: `e7362af9271927b02169b594c41249c1a5927016`.
 
 ## What remains physical
 
