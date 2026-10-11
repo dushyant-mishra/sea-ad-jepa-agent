@@ -82,6 +82,7 @@ def rehash(manifest):
 def audit(p):
     return cov.audit_gate_case_coverage(
         p,
+        expected_prefreeze_manifest_sha256=p['manifest_sha256'],
         candidate_id='C1_RELATIONAL_SHARED',
         gate_id='G1_DONOR_PRIMARY',
         case_receipts=receipts(),
