@@ -46,7 +46,7 @@ import jax  # noqa: E402
 # Full float32 matmuls everywhere. On Ampere GPUs JAX's default float32 matmul precision is TF32 (about 3 significant
 # digits): the potential of a 20-gene ZTNB world was off by 15 units (gradient by 7e-4 relative), enough to freeze NUTS
 # chains with no divergence flagged (R-hat 3; self-audit 49). On CPU this setting changes nothing.
-jax.config.update("jax_default_matmul_precision", "highest")
+jax.config.update("jax_default_matmul_precision", "highest")   # MATMUL_PRECISION below records it
 import jax.numpy as jnp  # noqa: E402
 import numpy as np  # noqa: E402
 import numpyro  # noqa: E402
@@ -116,8 +116,31 @@ NC_DONOR_DK = {"dk": 0.0, "logsd_dk": 0.0, "donor": 0.0, "logsd_donor": 0.0}
 # Phase C log-normal (Gaussian over detected cells): Q8 (donor and donor-class non-centred) failed on the per-gene
 # operator log sd (R-hat 1.0187, ESS 147); Q10 fully non-centred converged (R-hat 1.0051, ESS 1,016); self-audit 40.
 NC_ALL = {"op": 0.0, "logsd_op": 0.0, "donor": 0.0, "logsd_donor": 0.0, "dk": 0.0, "logsd_dk": 0.0}
-CENTRING = {"gaussian": dict(NC_DK), "gaussian_masked": dict(NC_ALL), "bernoulli": dict(NC_DONOR_DK),
-            "ztnb": dict(NC_DONOR_DK)}
+# FROZEN, NAMED sampler configurations: the only authority for recovery suites and real fits. Every output records
+# the configuration's name and SHA-256 (sampler_config_identity). No launcher override exists (controller ruling
+# 2026-10-11). Detection: V1 (donor and donor-class non-centred) FAILED recovery S4 (divergent at 0.9 and 0.95);
+# V2 below (every random component non-centred) is the final precommitted attempt (self-audit 48).
+SAMPLER_CONFIGS = {
+    "gaussian": ("GAUSSIAN_NC_DK_V1", NC_DK),
+    "gaussian_masked": ("LOGNORMAL_NC_ALL_V1", NC_ALL),
+    "bernoulli": ("DETECTION_V2_NC_ALL", NC_ALL),
+    "ztnb": ("ZTNB_NC_DONOR_DK_V1", NC_DONOR_DK),
+}
+CENTRING = {k: dict(v[1]) for k, v in SAMPLER_CONFIGS.items()}
+MATMUL_PRECISION = "highest"
+
+
+def sampler_config_identity(key: str) -> dict:
+    """Name, centring and SHA-256 of the frozen configuration for a centring key, checked against what the model
+    will actually use (CENTRING), so a mutated table cannot pass as the frozen one."""
+    import hashlib
+    import json as _json
+    name, cfg = SAMPLER_CONFIGS[key]
+    if CENTRING[key] != cfg:
+        raise RuntimeError(f"CENTRING[{key!r}] differs from frozen {name}: {CENTRING[key]} vs {cfg}")
+    payload = _json.dumps(dict(name=name, centring=cfg, matmul_precision=MATMUL_PRECISION), sort_keys=True)
+    return dict(key=key, name=name, centring=dict(cfg), matmul_precision=MATMUL_PRECISION,
+                sha256=hashlib.sha256(payload.encode()).hexdigest())
 
 
 def centring_key(likelihood: str, mask) -> str:

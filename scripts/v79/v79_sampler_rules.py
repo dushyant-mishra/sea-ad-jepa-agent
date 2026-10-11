@@ -16,6 +16,16 @@ from __future__ import annotations
 
 RHAT_MAX, ESS_MIN = 1.01, 400
 RETRY_ACCEPT = (0.9, 0.95, 0.99)
+RULES_VERSION = "A5_V2_DIVERGENT_EXTENSION_ESCALATES"
+
+
+def rules_identity() -> dict:
+    import hashlib
+    import json
+    payload = json.dumps(dict(rhat_max=RHAT_MAX, ess_min=ESS_MIN, retry=RETRY_ACCEPT, version=RULES_VERSION),
+                         sort_keys=True)
+    return dict(rhat_max=RHAT_MAX, ess_min=ESS_MIN, retry=list(RETRY_ACCEPT), version=RULES_VERSION,
+                sha256=hashlib.sha256(payload.encode()).hexdigest())
 
 
 def converged(run: dict, diag: dict) -> bool:

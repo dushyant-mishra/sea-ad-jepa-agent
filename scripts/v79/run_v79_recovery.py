@@ -115,28 +115,17 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
 
 
 def combine(out: str, parts) -> None:
-    """Merge per-fit records (one process per fit) and apply the contract's pass rules once."""
+    """One terminal receipt per likelihood suite (v79_recovery_rules.combine_parts refuses mixed configurations,
+    snapshots, schemas or duplicated worlds); every part file is hash-bound in the receipt."""
+    import hashlib
+    from v79_recovery_rules import combine_parts
     recs = [json.loads(Path(p).read_text(encoding="utf-8")) for p in parts]
-    liks = {r["likelihood"] for r in recs}
-    if len(liks) != 1:
-        raise SystemExit(f"parts mix likelihoods: {liks}")
-    fits = {}
-    for r in recs:
-        for k, v in r["fits"].items():
-            if k in fits:
-                raise SystemExit(f"duplicate fit {k}")
-            fits[k] = v
-    missing = sorted(set(FITS) - set(fits))
-    rec = dict(schema="V79_SIMULATION_RECOVERY_V1", likelihood=liks.pop(), parts=[str(p) for p in parts],
-               settings=[r["settings"] for r in recs], fits=fits, missing_fits=missing,
-               criteria=criteria(fits) if not missing else None, environment=recs[0]["environment"],
-               wall_seconds_per_part=[r["wall_seconds"] for r in recs])
+    rec = combine_parts(recs)
+    rec["parts"] = {Path(p).name: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in parts}
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8", newline=chr(10)) as fh:
         fh.write(json.dumps(rec, indent=1) + chr(10))
-    print("combined", len(fits), "fits; missing", missing)
-    if rec["criteria"]:
-        print({k: v["pass_"] for k, v in rec["criteria"].items()})
+    print(rec["likelihood"], rec["terminal"], "missing", rec["missing_worlds"])
 
 
 def main() -> None:
@@ -154,12 +143,9 @@ def main() -> None:
     ap.add_argument("--max-tree-depth", type=int, default=10,
                     help="plumbing smoke tests only; recovery evidence uses the contract's 10")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--centring", default=None,
-                    help="JSON override of v79_models.CENTRING for this likelihood (sampler experiments only; recorded)")
     a = ap.parse_args()
-    if a.centring:
-        key = "gaussian_masked" if a.likelihood == "lognormal" else M.centring_key(a.likelihood, None)
-        M.CENTRING[key] = json.loads(a.centring)
+    key = "gaussian_masked" if a.likelihood == "lognormal" else a.likelihood
+    config = M.sampler_config_identity(key)            # the frozen configuration this run must use (no override)
     d = FW.load_cell_design(DA.local_path(CACHE), DA.local_path(BRIDGE))
     di = DA.design_indices(d)
     res, t0 = {}, time.time()
@@ -170,9 +156,15 @@ def main() -> None:
               "ess", round(res[name]["diagnostics"]["worst_ess"]), "s", round(res[name]["diagnostics"]["seconds"]), flush=True)
     import jax
     snap = HERE.parents[1] / "SNAPSHOT_COMMIT.txt"            # written by snapshot_v79.sh
-    rec = dict(schema="V79_SIMULATION_RECOVERY_V1", likelihood=a.likelihood, settings=vars(a),
+    if M.sampler_config_identity(key) != config:
+        raise RuntimeError("sampler configuration changed during the run")
+    import numpyro
+    import arviz
+    rec = dict(schema="V79_SIMULATION_RECOVERY_V2", likelihood=a.likelihood, settings=vars(a),
                code_snapshot=snap.read_text(encoding="utf-8").strip() if snap.exists() else "LIVE_TREE_NOT_A_SNAPSHOT",
-               centring_used={k: dict(v) for k, v in M.CENTRING.items()},
+               sampler_config=config, sampler_rules=SR.rules_identity(),
+               versions=dict(numpyro=numpyro.__version__, arviz=arviz.__version__),
+               counts_loaded=False,                     # recovery uses design metadata and simulated worlds only
                fits=res, criteria=criteria(res) if set(FITS) <= set(res) else None,
                environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__,
                                 devices=[str(x) for x in jax.devices()]),
