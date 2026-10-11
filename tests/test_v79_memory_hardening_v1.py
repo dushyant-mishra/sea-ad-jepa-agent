@@ -5,8 +5,14 @@ from scipy import sparse
 
 from scripts.v79.v79_hierarchical_biology import generate_latent_biology
 from scripts.v79.v79_observation_operator import observe_latent_biology
-from scripts.v79.score_v79_factorial_worlds import _sparse_hvg_material
+from scripts.v79.score_v79_factorial_worlds import (
+    _sparse_hvg_material,
+    _sparse_legacy_score,
+    _sparse_l0_l2,
+)
+from scripts.v79 import v79_detection_localization as LOC
 from scripts.v77 import build_v77_topology_calibration as TC
+from scripts.v77 import v77_matched_scoring as V77
 
 
 def _bio_authority():
@@ -43,6 +49,36 @@ def _hash_array(x):
     return hashlib.sha256(np.ascontiguousarray(x).view(np.uint8)).hexdigest()
 
 
+def _assert_nested_equivalent(a, b, *, path="root", atol=1e-12):
+    if isinstance(a, dict):
+        assert isinstance(b, dict), path
+        assert set(a) == set(b), path
+        for key in a:
+            _assert_nested_equivalent(a[key], b[key], path=f"{path}.{key}", atol=atol)
+        return
+    if isinstance(a, (list, tuple)):
+        assert isinstance(b, (list, tuple)), path
+        assert len(a) == len(b), path
+        for i, (x, y) in enumerate(zip(a, b)):
+            _assert_nested_equivalent(x, y, path=f"{path}[{i}]", atol=atol)
+        return
+    if isinstance(a, np.ndarray):
+        assert isinstance(b, np.ndarray), path
+        assert a.shape == b.shape, path
+        if np.issubdtype(a.dtype, np.number):
+            assert np.allclose(a, b, rtol=0.0, atol=atol, equal_nan=True), path
+        else:
+            assert np.array_equal(a, b), path
+        return
+    if isinstance(a, (float, np.floating)):
+        if np.isnan(a):
+            assert np.isnan(b), path
+        else:
+            assert np.isclose(a, b, rtol=0.0, atol=atol), path
+        return
+    assert a == b, path
+
+
 def test_streamed_biology_is_bit_exact_to_pre_hardening_fixture():
     z = generate_latent_biology(_bio_authority(), 160, 48, 8, seed=41)
     assert z.truth_hashes == {
@@ -60,8 +96,6 @@ def test_streamed_observer_is_bit_exact_to_pre_hardening_independent_thinning():
     labels = np.resize(np.array(["OBS_A", "OBS_B"]), 160)
     out = observe_latent_biology(z, _obs_authority(family="independent_thinning"), labels, seed=77)
     assert out.counts_hash == "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa"
-    # Raw normal floating bytes can differ across runner CPU families. Recreate the exact
-    # pre-hardening capture rule in-process and require exact equality in the active runtime.
     regime_index = np.arange(160, dtype=np.int64) % 2
     cap_mean = np.asarray([-0.2, -0.8], dtype=np.float64)[regime_index]
     cap_sd = np.asarray([0.15, 0.20], dtype=np.float64)[regime_index]
@@ -87,3 +121,20 @@ def test_sparse_hvg_selection_matches_frozen_dense_rule_exactly_on_fixture():
     assert np.array_equal(got["hvg_idx"], hvg_idx)
     assert np.array_equal(got["Ld"], Ld[:, sel])
     assert np.allclose(got["C"], C, rtol=0.0, atol=1e-12)
+
+
+def test_sparse_scoring_matches_pre_hardening_v77_and_l0_l2_endpoints():
+    rng = np.random.default_rng(1901)
+    counts = sparse.csr_matrix(rng.poisson(0.30, size=(480, 180)).astype(np.int64))
+    universe = np.arange(160, dtype=np.int64)
+    broad = np.repeat(np.array(["A", "B"]), 240)
+    n_hvg = 48
+
+    old_legacy = V77.score_matched(counts.toarray(), universe, broad, n_hvg=n_hvg)
+    prepared = _sparse_hvg_material(counts, universe, n_hvg)
+    new_legacy = _sparse_legacy_score(counts, universe, broad, n_hvg, prepared)
+    _assert_nested_equivalent(old_legacy, new_legacy, path="legacy")
+
+    old_loc = LOC.build_l0_l2(counts, universe, broad, n_hvg=n_hvg, retain_stratum_corr=True)
+    new_loc = _sparse_l0_l2(LOC, counts, universe, broad, n_hvg, prepared)
+    _assert_nested_equivalent(old_loc, new_loc, path="localization")
