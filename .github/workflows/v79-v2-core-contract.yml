@@ -1,0 +1,41 @@
+name: V79 V2_CORE contract launch authority
+
+# Byte-for-byte contract regeneration and launch-authority semantics. Pinned to the V79 Bayesian environment lock
+# (results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt: Python 3.11, numpy 2.0.2, scipy 1.17.1),
+# because the contract embeds SciPy-derived numbers that must regenerate exactly.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/build_v79_v2_core_contract.py'
+      - 'scripts/v79/v79_v2_core_launch.py'
+      - 'tests/v79/test_v79_v2_core_launch_authority.py'
+      - 'results/v79/v2_core_qualification/**'
+      - 'results/v79/development/s174_structure_replay_v4_masked/**'
+      - 'results/v79/development/v2_core_planting_calibration/**'
+      - '.github/workflows/v79-v2-core-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check numpy==2.0.2 scipy==1.17.1 pytest
+      - name: Launch-authority and byte-for-byte contract tests
+        run: |
+          set -o pipefail
+          python --version
+          python -m pytest tests/v79/test_v79_v2_core_launch_authority.py -q -rA -p no:cacheprovider | tee v79_contract_authority.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v79-contract-authority-log
+          path: v79_contract_authority.log
