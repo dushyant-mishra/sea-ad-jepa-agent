@@ -72,9 +72,11 @@ Constraints:
 
 A small development recovery probe on the actual donor/operator crossing recovered the main planted directions but showed leakage between unrestricted donor/operator dummies. Therefore the next Bayesian implementation must use the constrained source-nested random effects, not unrestricted fixed identities.
 
-## Next lawful gate
+## Exact S174 boundary
 
-Do not restart expensive confirmation yet. The only remaining model-development gate before a new confirmatory freeze is an exact replay of the same nested comparisons on corrected S174 TRAIN counts (4,726 cells / 149 donors / 42 operators), without changing comparison metrics after viewing results.
+GitHub contains an authenticated custody receipt for the repaired corrected-TRAIN cache at `D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1`, with 42 count shards + 42 metadata shards and exact per-file SHA-256 identities. The raw shard bytes themselves are not mounted in this controller environment and are not committed to GitHub. Therefore exact 4,726-cell S174 model-development replay cannot honestly be executed here.
+
+This is the only remaining model-development gate before a new confirmatory freeze. Replay the same nested comparisons on corrected S174 TRAIN counts (4,726 cells / 149 donors / 42 operators) without changing comparison metrics after viewing results.
 
 If exact S174 preserves these structural conclusions, freeze Candidate V2 and only then generate fresh untouched synthetic qualification worlds. Do not reuse the old confirmatory worlds as the sole confirmation set.
 
