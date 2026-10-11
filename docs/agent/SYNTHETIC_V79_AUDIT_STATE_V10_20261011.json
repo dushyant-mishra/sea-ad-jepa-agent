@@ -1,0 +1,43 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V10",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "contract_prs": [289, 290],
+  "world_generator_pr": 291,
+  "controller_pr290_repair_comment": 6115051726,
+  "controller_pr291_hold_comment": 6115054911,
+  "audit_verdict": "DUAL_LAUNCH_AUTHORITY_NOT_ALLOWED__PR290_SCIENCE_AND_GATE_PASS__CROSS_PLATFORM_BYTE_REPRODUCIBILITY_BLOCKS_RATIFICATION__PR291_FROZEN__NO_WORLD_REALIZATION__FITTING_OFF__TRAINING_OFF",
+  "pr290": {
+    "head": "5394d036ccd423f9c61267fbdfeef6edd4912d37",
+    "reported_final_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "semantic_finalization": "PASS",
+    "launch_gate": "PASS",
+    "windows_ci": "30 passed",
+    "linux_issue": "reported power differs only in last binary digit; final exact bytes therefore differ",
+    "blocking_repair": "load/hash-check immutable accepted V2 draft and transform only finalization fields; do not recompute accepted draft statistical derived values"
+  },
+  "pr289": {
+    "sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+    "status": "MUST_NOT_COEXIST_AS_SECOND_CANONICAL_AUTHORITY"
+  },
+  "pr291": {
+    "latest_green": {"workflow": 38183909388, "job": 114602059598, "result": "24 passed in 0.33 s"},
+    "realized_worlds": 0,
+    "benchmark_runs": 0,
+    "qualification_fits": 0,
+    "status": "FROZEN_PENDING_CANONICAL_AUTHORITY_REBIND"
+  },
+  "authorization": {
+    "contract_reproducibility_repair": true,
+    "generator_changes": false,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "CANONICAL_CONTRACT_V2_AUTHORITY_REPAIR_PENDING__PR291_FROZEN_WITH_24_TESTS_GREEN__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
