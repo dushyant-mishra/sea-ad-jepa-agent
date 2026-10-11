@@ -1,0 +1,1555 @@
+# RED_10 G6 artifact semantic validation: self-consistent forged-NPZ attacks through the real G7 entrypoint, over production code at 2fcc47ea624b04540a7ff6fb9a7ef5157c532c9d (prior qualified implementation candidate 43cac77d + docs-only commits)
+# software/custody tests on synthetic fixtures only; not biological evidence
+# note: first capture failed at import (Python 3.9 needs from __future__ import annotations for 'bytes | None'); fixed before commit; this is the recapture
+# utc: 2026-10-11T16:51:49Z
+# production scripts vs 43cac77d: [] (empty = identical)
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.                        [100%]
+================================== FAILURES ===================================
+_____ test_self_consistent_forged_values_artifact_is_refused[csc_format] ______
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6954AEE0>
+attack = 'csc_format'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va0/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6954AEE0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va0')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A877D90>
+attack = 'data_dtype_float64'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va1/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A877D90>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va1')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A903100>
+attack = 'data_indices_length_mismatch'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va2/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A903100>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va2')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A9031F0>
+attack = 'duplicate_address_in_row'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va3/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A9031F0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va3')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_values_artifact_is_refused[extra_payload_key] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677F2B20>
+attack = 'extra_payload_key'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va4/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677F2B20>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va4')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+___ test_self_consistent_forged_values_artifact_is_refused[index_negative] ____
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC676EF5E0>
+attack = 'index_negative'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va5/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC676EF5E0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va5')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[index_out_of_range] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1AE50>
+attack = 'index_out_of_range'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va6/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1AE50>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va6')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va7')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A91AD30>
+attack = 'indices_float_dtype'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va7/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A91AD30>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va7')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va8')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677F9310>
+attack = 'indptr_end_inconsistent_with_payload'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va8/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677F9310>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va8')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va9')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EEFFEB0>
+attack = 'indptr_non_monotone'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va9/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EEFFEB0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va9')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va10')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF4C970>
+attack = 'indptr_nonzero_start'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va10/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF4C970>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va10')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va11')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8E9D60>
+attack = 'indptr_wrong_length'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va11/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8E9D60>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va11')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+______ test_self_consistent_forged_values_artifact_is_refused[inf_value] ______
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va12')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EED52B0>
+attack = 'inf_value'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va12/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EED52B0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va12')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+___ test_self_consistent_forged_values_artifact_is_refused[missing_indptr] ____
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va13')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF63430>
+attack = 'missing_indptr'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va13/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF63430>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va13')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+______ test_self_consistent_forged_values_artifact_is_refused[nan_value] ______
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va14')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EEE3460>
+attack = 'nan_value'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va14/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EEE3460>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va14')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[negative_inf_value] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va15')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF63B80>
+attack = 'negative_inf_value'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va15/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF63B80>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va15')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[pickled_object_data] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va16')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A08E430>
+attack = 'pickled_object_data'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va16/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A08E430>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va16')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va17')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF6C5E0>
+attack = 'shape_not_two_dimensional'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va17/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF6C5E0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va17')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va18')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6956E610>
+attack = 'shape_wrong_columns_minus'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va18/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6956E610>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va18')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va19')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0A9AF0>
+attack = 'shape_wrong_columns_plus'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va19/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0A9AF0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va19')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows] ___
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va20')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A811190>
+attack = 'shape_wrong_rows'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va20/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A811190>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va20')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va21')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF18A00>
+attack = 'unsorted_addresses_in_row'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va21/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF18A00>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va21')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va22')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A877910>
+attack = 'value_at_non_replay_address'
+
+    @pytest.mark.parametrize("attack", sorted(VALUE_ATTACKS))
+    def test_self_consistent_forged_values_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        g = genuine_values(w)
+        VALUE_ATTACKS[attack](g)
+        forge(w, values=g)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va22/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A877910>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_va22')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_va22\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_____________ test_values_artifact_that_is_not_an_npz_is_refused ______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_values_artifact_that_is_n0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF09430>
+
+    def test_values_artifact_that_is_not_an_npz_is_refused(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        forge(w, raw_values=b"not an npz archive\n")
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_values_artifact_that_is...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_values_artifact_that_is_n0/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF09430>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_values_artifact_that_is_n0')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_values_artifact_that_is_n0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8F0250>
+attack = 'all_fields_one_row_short'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me0/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8F0250>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me0')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677DBD30>
+attack = 'cell_id_changed'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me1/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC677DBD30>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me1')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[donor_changed] ___
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A05CAC0>
+attack = 'donor_changed'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me2/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A05CAC0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me2')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+____ test_self_consistent_forged_metadata_artifact_is_refused[extra_field] ____
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8F6640>
+attack = 'extra_field'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me3/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A8F6640>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me3')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A074DF0>
+attack = 'global_row_changed'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me4/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A074DF0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me4')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1A310>
+attack = 'global_row_float_dtype'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me5/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1A310>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me5')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF098E0>
+attack = 'missing_cell_id'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me6/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF098E0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me6')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me7')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0CB1F0>
+attack = 'missing_detected_corrected'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me7/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0CB1F0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me7')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me8')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0CB940>
+attack = 'missing_detected_historical'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me8/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0CB940>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me8')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[missing_donor] ___
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me9')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0F2340>
+attack = 'missing_donor'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me9/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0F2340>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me9')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me10')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A14B6D0>
+attack = 'missing_global_row'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me10/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A14B6D0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me10')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_operator] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me11')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A19BCD0>
+attack = 'missing_operator'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me11/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A19BCD0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me11')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_source] ___
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me12')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A1BEB80>
+attack = 'missing_source'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me12/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A1BEB80>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me12')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me13')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A2039D0>
+attack = 'missing_source_library'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me13/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A2039D0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me13')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[negative_detected] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me14')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A192E80>
+attack = 'negative_detected'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me14/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A192E80>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me14')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me15')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A2302E0>
+attack = 'nonpositive_source_library'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me15/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A2302E0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me15')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me16')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A15A880>
+attack = 'nph52_detected_corrected_diverges_from_historical'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me16/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A15A880>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me16')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me17')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A175100>
+attack = 'one_field_one_row_long'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me17/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A175100>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me17')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[operator_changed] __
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me18')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A1FF100>
+attack = 'operator_changed'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me18/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A1FF100>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me18')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me19')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A949790>
+attack = 'pickled_object_cell_id'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me19/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC6A949790>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me19')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me20')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A14B400>
+attack = 'row_order_swapped_consistently'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me20/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A14B400>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me20')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[source_changed] ___
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me21')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1D7F0>
+attack = 'source_changed'
+
+    @pytest.mark.parametrize("attack", sorted(META_ATTACKS))
+    def test_self_consistent_forged_metadata_artifact_is_refused(tmp_path, monkeypatch, attack):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        m = genuine_meta(w)
+        META_ATTACKS[attack](m)
+        forge(w, meta=m)
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_...:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me21/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC7EF1D7F0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_self_consistent_forged_me21')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_self_consistent_forged_me21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+____________ test_metadata_artifact_that_is_not_an_npz_is_refused _____________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_metadata_artifact_that_is0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A141310>
+
+    def test_metadata_artifact_that_is_not_an_npz_is_refused(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        forge(w, raw_meta=b"not an npz archive\n")
+>       assert_g7_refuses_before_spending(w, monkeypatch, tmp_path)
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(root=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_metadata_artifact_that_...C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_metadata_artifact_that_is0/g6_out/G6_RECEIPT.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A141310>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_metadata_artifact_that_is0')
+
+    def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+        with pytest.raises(RuntimeError, match=REFUSAL):
+>           W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:66: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_metadata_artifact_that_is0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+________________ test_genuine_g6_artifacts_load_without_pickle ________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1243/test_genuine_g6_artifacts_load0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DC0A0333D0>
+
+    def test_genuine_g6_artifacts_load_without_pickle(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        for name in (VALUES, META):
+            with np.load(w.g6_out / name, allow_pickle=False) as z:
+                for k in z.files:
+>                   z[k]
+
+tests\v5\test_td_g7_g6_artifact_semantics.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\dushy\anaconda3\lib\site-packages\numpy\lib\npyio.py:253: in __getitem__
+    return format.read_array(bytes,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fp = <zipfile.ZipExtFile name='source.npy' mode='r' compress_type=deflate>
+allow_pickle = False, pickle_kwargs = {'encoding': 'ASCII', 'fix_imports': True}
+
+    def read_array(fp, allow_pickle=False, pickle_kwargs=None, *,
+                   max_header_size=_MAX_HEADER_SIZE):
+        """
+        Read an array from an NPY file.
+    
+        Parameters
+        ----------
+        fp : file_like object
+            If this is not a real file object, then this may take extra memory
+            and time.
+        allow_pickle : bool, optional
+            Whether to allow writing pickled data. Default: False
+    
+            .. versionchanged:: 1.16.3
+                Made default False in response to CVE-2019-6446.
+    
+        pickle_kwargs : dict
+            Additional keyword arguments to pass to pickle.load. These are only
+            useful when loading object arrays saved on Python 2 when using
+            Python 3.
+        max_header_size : int, optional
+            Maximum allowed size of the header.  Large headers may not be safe
+            to load securely and thus require explicitly passing a larger value.
+            See :py:meth:`ast.literal_eval()` for details.
+            This option is ignored when `allow_pickle` is passed.  In that case
+            the file is by definition trusted and the limit is unnecessary.
+    
+        Returns
+        -------
+        array : ndarray
+            The array from the data on disk.
+    
+        Raises
+        ------
+        ValueError
+            If the data is invalid, or allow_pickle=False and the file contains
+            an object array.
+    
+        """
+        if allow_pickle:
+            # Effectively ignore max_header_size, since `allow_pickle` indicates
+            # that the input is fully trusted.
+            max_header_size = 2**64
+    
+        version = read_magic(fp)
+        _check_version(version)
+        shape, fortran_order, dtype = _read_array_header(
+                fp, version, max_header_size=max_header_size)
+        if len(shape) == 0:
+            count = 1
+        else:
+            count = numpy.multiply.reduce(shape, dtype=numpy.int64)
+    
+        # Now read the actual data.
+        if dtype.hasobject:
+            # The array contained Python objects. We need to unpickle the data.
+            if not allow_pickle:
+>               raise ValueError("Object arrays cannot be loaded when "
+                                 "allow_pickle=False")
+E               ValueError: Object arrays cannot be loaded when allow_pickle=False
+
+C:\Users\dushy\anaconda3\lib\site-packages\numpy\lib\format.py:787: ValueError
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_genuine_g6_artifacts_load0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_________ test_g7_cross_check_does_not_use_g6_values_as_its_reference _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1243\\test_g7_cross_check_does_not_u0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_g7_cross_check_does_not_use_g6_values_as_its_reference
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[csc_format]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[extra_payload_key]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_negative]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_out_of_range]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[inf_value]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[missing_indptr]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[nan_value]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[negative_inf_value]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[pickled_object_data]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_values_artifact_that_is_not_an_npz_is_refused
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[donor_changed]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[extra_field]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_donor]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_operator]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[negative_detected]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[operator_changed]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[source_changed]
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_metadata_artifact_that_is_not_an_npz_is_refused
+FAILED tests/v5/test_td_g7_g6_artifact_semantics.py::test_genuine_g6_artifacts_load_without_pickle
+48 failed, 1 passed, 3 warnings in 80.22s (0:01:20)
+# exit=0
