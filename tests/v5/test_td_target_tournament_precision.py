@@ -34,6 +34,7 @@ def test_mixed_donors_do_not_pass():
 def test_zero_deltas_are_reported_as_ties_and_excluded():
     out = m.sign_recurrence_gate([1,1,1,1,1,1,0,0], alpha_eff=0.05)
     assert out['n_ties'] == 2 and out['n_nonzero'] == 6
+    assert out['n_positive']+out['n_negative']+out['n_ties']==out['n_total']
 
 
 def test_minimum_permutation_draws_are_derived_from_alpha_resolution():
@@ -42,6 +43,29 @@ def test_minimum_permutation_draws_are_derived_from_alpha_resolution():
 
 
 def test_invalid_alpha_rejected():
-    for a in [0,1,-0.1,1.1]:
+    for a in [0,1,-0.1,1.1,float('nan'),float('inf'),True,'0.05']:
         with pytest.raises(ValueError):
             m.minimum_donors_for_sign_resolution(a)
+
+
+def test_nonfinite_or_nonnumeric_deltas_rejected():
+    for bad in [float('nan'),float('inf'),float('-inf'),'1',True,None]:
+        with pytest.raises(m.PrecisionContractError):
+            m.sign_recurrence_gate([1,1,bad],0.05)
+
+
+def test_deltas_must_be_list_of_exact_json_numeric_values():
+    for bad in [(1,2), '12', {1,2}]:
+        with pytest.raises(m.PrecisionContractError):
+            m.sign_recurrence_gate(bad,0.05)
+
+
+def test_exact_sign_p_requires_exact_nonnegative_integer_counts():
+    for args in [(True,6),(1.0,6),(1,6.0),(-1,6),(7,6)]:
+        with pytest.raises(ValueError):
+            m.exact_two_sided_sign_p(*args)
+
+
+def test_empty_delta_list_is_valid_but_not_estimable():
+    out=m.sign_recurrence_gate([],0.05)
+    assert out['n_total']==0 and out['resolution_estimable'] is False and out['pass'] is False
