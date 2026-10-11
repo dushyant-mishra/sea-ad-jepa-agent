@@ -21,10 +21,11 @@ Current qualified synthetic scope includes:
 - outcome-blind donor-sign/permutation resolution helpers;
 - outcome-blind decision-family prefreeze manifest construction;
 - historical metadata-only quantitative design calibration;
-- explicit 84-cell truth-table role audit.
+- explicit 84-cell truth-table role audit;
+- historical token-identity/support shortcut mechanism audit.
 
 Focused reconstructed-harness result at latest qualification:
-`39 passed / 0 failed / 0 errors`
+`41 passed / 0 failed / 0 errors`
 
 No repository-wide CI result is claimed; GitHub Actions had no run for the science PR head at the time checked.
 
@@ -35,19 +36,20 @@ No repository-wide CI result is claimed; GitHub Actions had no run for the scien
 3. Validation contains zero NPH52 donors; oracle contains only two NPH52 donors. `NOT_ESTIMABLE` must remain distinct from biological FAIL.
 4. Donor/sign and null/permutation resolution are derived from prospectively frozen effective alpha; historical 64/256/999/1000 null counts are not inherited by habit.
 5. Learned-state candidates C3/C4 require a conditional technology-imprint gate.
-6. C2 requires q-scalar exclusion from the student, q-free target normalization, q-excluded-teacher ablation and q-count-only defeat.
-7. C5 remains optional-specialist only and requires circularity control + independent provenance; it cannot become causal teacher truth by assertion.
-8. The historical 84-cell truth-table cannot support the primary donor+operator-preserving wrong-cell null: 82/83 donor×operator×support strata are singleton; only 2/84 cells have a within-stratum counterpart.
+6. Historical source code shows gene-identity embeddings plus the physical support mask can expose source/operator structure even without an explicit operator embedding. Therefore C3/C4 additionally require `L6_IDENTITY_SUPPORT_BASELINE_DEFEAT`.
+7. C2 requires q-scalar exclusion from the student, q-free target normalization, q-excluded-teacher ablation, q-count-only defeat, and `Q5_Q_ADDRESS_ONLY_DEFEAT`.
+8. C5 remains optional-specialist only and requires circularity control + independent provenance; it cannot become causal teacher truth by assertion.
+9. The historical 84-cell truth-table cannot support the primary donor+operator-preserving wrong-cell null: 82/83 donor×operator×support strata are singleton; only 2/84 cells have a within-stratum counterpart.
 
 ## Relation to Macha
 
 Macha's current branch remains:
 `fix/td-g6g7-full-custody-successor-20261011`
 
-Last coordinator check saw it at:
-`611b90785d031b381353d169294d3e6cab4971de`
+Last coordinator code audit saw it at:
+`3e4dde56fc7a0177d6b6a2fdc1467e7feb6534fb`
 
-At that checkpoint it was exactly two commits beyond PR #268 and limited to G7 atomic-attempt-marker repair/evidence plus common helper changes. The science branch does not overlap that code path.
+At that checkpoint it had completed test-first G6 atomic start, G7 atomic attempt, and duplicate-index rejection. The science branch does not overlap that code path. Known custody blockers still visible at that checkpoint included owner-decision binding / exact PR259 physical SHA enforcement, complete G6-PASS materialization validation in G7, and corrected G6 physical-reread/pass-through receipt semantics; therefore the branch was still mid-repair and not qualifiable.
 
 Macha must continue the full custody assignment and must not treat PR #275 as permission for value reads or real tournament execution.
 
