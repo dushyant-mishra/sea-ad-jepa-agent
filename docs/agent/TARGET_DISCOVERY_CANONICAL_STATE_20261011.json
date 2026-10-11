@@ -95,10 +95,16 @@
   },
   "pr275_tournament_governance": {
     "pr": 275,
-    "head": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+    "head": "01987c3d0363c38dbb7a72d0a0e7935255c48748",
     "lane": "SYNTHETIC_METADATA_ONLY_GOVERNANCE",
+    "v2_adjudicator_test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+    "v2_adjudicator_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
+    "v2_adjudicator_focused_result": "10_passed_0_failed__SCOPED_ONLY",
+    "last_full_harness_qualification": "110_passed_0_failed_0_errors_at_8325b574382fa76fa6da0e1d388eb903068533a4",
+    "current_head_fully_qualified": false,
+    "next_requirement": "FRESH_FULL_SYNTHETIC_METADATA_ONLY_REQUALIFICATION_ON_ONE_EXACT_CURRENT_HEAD",
     "real_execution_authority": false,
-    "current_priority": "SECONDARY_TO_G6_G7_AND_CORRECTED_REPLAY"
+    "current_priority": "PARALLEL_SECONDARY_TO_REAL_G6_G7_AND_CORRECTED_REPLAY"
   },
   "v79_parallel_lane": {
     "pr": 280,
