@@ -67,6 +67,18 @@ def test_build_never_assembles_a_global_sparse_matrix(tmp_path, monkeypatch):
     assert meta["max_count_shards_resident"] == 1
 
 
+def test_build_does_not_reread_metadata_after_authentication(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+
+    def forbidden_design(*args, **kwargs):
+        raise AssertionError("build must derive design from the authenticated metadata bytes already read")
+
+    monkeypatch.setattr(FW, "load_cell_design", forbidden_design)
+    arrays, meta = C.build(root, bridge, authority, 10)
+    assert len(arrays["donor"]) == 210
+    assert meta["metadata_from_authenticated_bytes"] is True
+
+
 def test_verification_does_not_reload_the_global_matrix(tmp_path, monkeypatch):
     root, bridge, authority = make_world(tmp_path)
     arrays, _ = C.build(root, bridge, authority, 10)
