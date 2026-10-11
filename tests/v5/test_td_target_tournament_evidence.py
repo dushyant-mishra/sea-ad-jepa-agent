@@ -84,3 +84,22 @@ def test_gate_boolean_projection_maps_only_pass_to_true():
 def test_canonical_hash_changes_when_evidence_changes():
     a = manifest(); b = manifest(); b['gates']['G1']['evidence_sha256'] = 'c' * 64
     assert m.canonical_manifest_sha256(a) != m.canonical_manifest_sha256(b)
+
+
+def test_expected_schema_is_gate_specific_and_deterministic():
+    assert m.expected_evidence_schema('G1') == 'JEPA_TD_GATE_EVIDENCE_G1_V1'
+    assert m.expected_evidence_schema('Q1') != 'JEPA_TD_GATE_EVIDENCE_G1_V1'
+
+
+def test_wrong_gate_evidence_schema_is_rejected():
+    x = manifest()
+    x['gates']['G1']['evidence_schema'] = 'JEPA_TD_GATE_EVIDENCE_G2_V1'
+    with pytest.raises(m.EvidenceManifestError):
+        m.validate_evidence_manifest(x, candidate_id='C2_QUERY_MEASURED', required_gates=GATES)
+
+
+def test_generic_schema_is_rejected_even_with_valid_hash():
+    x = manifest()
+    x['gates']['G1']['evidence_schema'] = 'SYNTHETIC_GATE_EVIDENCE_V1'
+    with pytest.raises(m.EvidenceManifestError):
+        m.validate_evidence_manifest(x, candidate_id='C2_QUERY_MEASURED', required_gates=GATES)
