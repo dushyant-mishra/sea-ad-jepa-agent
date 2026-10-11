@@ -5,11 +5,12 @@ Status: `SYNTHETIC_SCAFFOLD_QUALIFIED_LOCALLY__NO_REAL_VALUE_EXECUTION__NO_TARGE
 Implementation branch: `science/td-target-tournament-scaffold-20261011`
 
 Qualified implementation/test head before this qualification update:
-`18590d2b4c2a1a9ab19dd2612f39c1dfc069bf39`
+`19a19a0eebff495baa38791988200340f2db59db`
 
 ## Qualified pure helpers
 
 - `scripts/v5/td_target_tournament_scaffold.py`
+- `scripts/v5/td_target_tournament_evidence.py`
 - `scripts/v5/td_target_tournament_nulls.py`
 - `scripts/v5/td_query_information_guard.py`
 - `scripts/v5/td_target_tournament_precision.py`
@@ -20,73 +21,67 @@ No helper implements a biological target statistic, biological file reader, neur
 
 ## Preserved TDD sequence
 
-1. Initial three modules absent -> 3 collection errors; minimal implementation -> 18 passed.
-2. Truncated authority-map tests -> 2 failed / 8 passed; fail-closed repair -> 21 passed.
+1. Initial scaffold modules absent -> RED; minimal implementation -> 18 passed.
+2. Truncated authority maps -> 2 failed / 8 passed; fail-closed repair -> 21 passed.
 3. Candidate-specific gate expansion -> 7 failed / 7 passed; repair -> 25 passed.
 4. Precision helper absent -> collection RED; implementation -> 32 combined passed.
 5. Prefreeze-manifest helper absent -> collection RED; implementation -> 39 combined passed.
-6. Identity/support shortcut expansion -> old frozen contract failed broadly (`13 failed / 3 passed` locally); Q5/L6 repair -> 41 combined passed.
-7. Measurement-noise fixture absent -> collection RED; first implementation -> 49 combined passed.
-8. Measurement PRF namespace self-audit added exact address typing and NUL-boundary attacks; inherited fixture failed exactly those two tests (`2 failed / 8 passed`).
-9. Minimal namespace repair -> current complete focused science harness:
+6. Identity/support shortcut expansion -> old frozen contract failed broadly (`13 failed / 3 passed`); Q5/L6 repair -> 41 combined passed.
+7. Measurement-noise fixture absent -> collection RED; implementation -> 49 combined passed.
+8. Measurement PRF namespace attacks -> 2 failed / 8 passed; address/NUL hardening -> 51 combined passed.
+9. Gate-evidence manifest helper absent -> collection RED; implementation -> 8/8 evidence tests GREEN.
+10. Adjudicator integration tests then failed broadly because the old API accepted naked gate booleans (`18 failed / 3 passed` in the scaffold file). Evidence-manifest binding was implemented minimally.
+11. Current complete focused science harness:
 
-`51 passed in 0.06s`
+`64 passed in 0.07s`
 
-## Candidate-specific shortcut gates
+## Gate evidence is now cryptographically bound
 
-- C2 additionally requires `Q5_Q_ADDRESS_ONLY_DEFEAT`.
-- C3/C4 additionally require `L6_IDENTITY_SUPPORT_BASELINE_DEFEAT`.
+A candidate receipt is no longer accepted from gate booleans alone.
 
-These gates are motivated by the historical architecture audit showing that trainable gene identity plus the physical support mask can carry source/operator information without any explicit operator embedding.
+For every common and candidate-specific gate, a candidate-specific manifest must contain exactly:
+
+- gate status: `PASS`, `FAIL`, or `NOT_ESTIMABLE`;
+- nonempty evidence schema;
+- lowercase SHA-256 of the bound evidence artifact.
+
+The manifest must contain the exact required gate set and all authority fields false. The candidate receipt binds the canonical manifest SHA-256. Adjudication verifies:
+
+1. the supplied manifest is structurally valid;
+2. its candidate ID and exact gate set match the receipt/contract;
+3. its canonical SHA equals the receipt binding;
+4. receipt gate booleans exactly equal `status == PASS` from the manifest;
+5. the set of supplied evidence manifests exactly equals the set of candidate receipts;
+6. altered, missing, mismatched, extra or post-binding evidence fails closed;
+7. `NOT_ESTIMABLE` projects to a failed eligibility gate, never a PASS.
+
+This remains a compact evidence-binding layer, not proof that the underlying scientific evidence itself is valid. The underlying evidence artifacts still require their own qualified schemas/executors.
+
+## Scientific shortcut gates
+
+- C2 requires q-count-only and q-address-only defeat plus q-free student/normalization controls.
+- C3/C4 require conditional technology-imprint control and identity+support-only baseline defeat.
+- C5 remains optional-specialist only and requires independent provenance/circularity control.
 
 ## Measurement/noise reference fixture
 
-The fixture uses version `JEPA_TD_MEASUREMENT_PSEUDOREPLICATE_PRF_V1` and SHA-256-based per-molecule assignment to provide exact complementary 50/50 splits and nested 25/50/75/100% thinning.
-
-Qualified invariants now include:
-
-- exact count conservation per supported molecular address;
-- explicit measured-zero preservation;
-- no unsupported address manufacture;
-- supported addresses must be nonnegative exact Python integers (booleans rejected);
-- fixture counts must be nonnegative exact Python integers (booleans rejected);
-- seed and cell identity must be nonempty and NUL-free, preventing separator/preimage ambiguity;
-- deterministic same-seed behavior and changed realizations under changed seed;
-- caller inputs are not mutated.
-
-It opens no files and does not define a technology-equivalence margin. Real count-split/depth execution remains separately unauthorized and molecule subsampling is not independent biological remeasurement.
-
-## Null, leakage, precision, and prefreeze guarantees
-
-- matched wrong-cell reassignment preserves donor/operator/support/depth-bin/detection-bin and changes identity;
-- singleton strata are `NOT_ESTIMABLE`, never silently crossed;
-- direct/transitive q-scalar ancestry into student or target normalization is rejected;
-- q-address conditioning and separately recorded teacher-only q auxiliary evidence remain distinguishable;
-- supplied predeclared alpha determines exact donor-sign/permutation resolution floors;
-- the prefreeze manifest freezes the complete decision family before outcomes and leaves biological results `NOT_OPENED`.
-
-## Historical/design audits bound to this scaffold
-
-- `docs/agent/TD_HISTORICAL_QUANTITATIVE_DESIGN_CALIBRATION_20261011.md`
-- `custody/takeover_20261011/TD_TARGET_TOURNAMENT_DESIGN_CALIBRATION_V1.json`
-- `docs/agent/TD_84_CELL_TRUTH_TABLE_ROLE_AUDIT_20261011.md`
-- `docs/agent/TD_HISTORICAL_TOKEN_IDENTITY_SHORTCUT_MECHANISM_AUDIT_20261011.md`
-- `docs/superpowers/specs/2026-10-11-td-measurement-noise-floor-prefreeze.md`
+The fixture provides exact complementary 50/50 same-cell split and nested 25/50/75/100% thinning, with exact count conservation, support preservation, strict nonnegative integer address/count semantics, NUL-free deterministic PRF identities, and no file access. It defines no technology-equivalence margin and is not independent biological remeasurement.
 
 ## Static no-value/no-training audit
 
-AST inspection across all six production helpers found no `h5py`, `anndata`, `scanpy`, `torch`, `numpy`, `scipy`, corrected-value reader, matrix-open call, optimizer, or model-fit call.
+All seven production helpers use only Python standard-library functionality. Static inspection finds no biological matrix readers, `h5py`, `anndata`, `scanpy`, `torch`, `numpy`, `scipy`, optimizer, or model-fit path.
 
-## Exact current SHA-256 identities for measurement fixture
+## Exact SHA-256 identities for evidence-binding artifacts
 
-- `scripts/v5/td_measurement_noise_fixture.py` — `64357c8f45b22b6b765c761aa7497946a227452251b9aa582b57c3567d090e2b`
-- `tests/v5/test_td_measurement_noise_fixture.py` — `728ab4ea198d5f93ccb2171fef78f989e037c8c3383faed3add4235712df5c21`
+- `scripts/v5/td_target_tournament_scaffold.py` — `3440ff951b3f6d9fa320d196ce2d1fab61d3c204c452bd4c24ee04d69fd22f72`
+- `tests/v5/test_td_target_tournament_scaffold.py` — `d71d6b6158e0b2e62bf9c7f19facc8b99094273011a71d6b5a68e038c4248ea7`
+- `scripts/v5/td_target_tournament_evidence.py` — `f97586605d2bbce34c042b4e707ae940daf938b3f8fd418e295f9763ba2e72f6`
+- `tests/v5/test_td_target_tournament_evidence.py` — `be530f557533fb8bd1de5718e58f9911c7ecc3cb1c6ec50f36135ffc1fddcadc`
 
-Shortcut-gate identities remain:
+Current measurement fixture identities:
 
-- scaffold module — `f2dd398e437d6a014a820e7430feadfc70d4c4ef21f361f7f3255a882f69d209`
-- scaffold tests — `2635438920990941c442f321c541e7be469c4bff833b7535f7792ba1e9a8f237`
-- contract — `e3594769db122362c0c824046bf1bf6cce199f531bf454c13953188286cd999a`
+- module — `64357c8f45b22b6b765c761aa7497946a227452251b9aa582b57c3567d090e2b`
+- tests — `728ab4ea198d5f93ccb2171fef78f989e037c8c3383faed3add4235712df5c21`
 
 ## Limitation
 
@@ -97,4 +92,4 @@ Repository-wide pytest has not run in the reconstructed local harness. Draft PR 
 No corrected values, raw-count execution, G6/G7, corrected replay, real tournament, target selection, representation selection, TD60, Stage4, pathology, or training are authorized.
 
 Terminal:
-`SYNTHETIC_SCIENCE_HARNESS_51_GREEN__MEASUREMENT_PRF_NAMESPACE_HARDENED__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY`
+`SYNTHETIC_SCIENCE_HARNESS_64_GREEN__GATE_EVIDENCE_MANIFESTS_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY`
