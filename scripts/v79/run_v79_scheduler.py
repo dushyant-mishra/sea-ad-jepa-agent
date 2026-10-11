@@ -66,7 +66,9 @@ def wrapped(job: dict, bash: str, timeout: int, ledger: str) -> str:
     return (f'timeout {timeout} "{bash}" -c {shlex.quote(inner)} > "{job["log"]}" 2>&1; rc=$?; '
             f'if [ "$rc" = 124 ]; then cls=TIMEOUT; elif [ "$rc" = 0 ] && [ -f "{out}" ]; then cls=OUTPUT_WRITTEN; '
             f'else cls=LAUNCH_OR_RUNTIME_FAILURE; fi; '
-            f'sha=$( [ -f "{out}" ] && sha256sum "{out}" | cut -c1-64 || echo none ); '
+            # stdin from /dev/null: a detached job has no console, and sha256sum otherwise fails silently in the pipe
+            f'if [ -f "{out}" ]; then sha=$(sha256sum "{out}" </dev/null 2>/dev/null | cut -c1-64); '
+            f'[ ${{#sha}} = 64 ] || sha=UNAVAILABLE; else sha=none; fi; '
             f'printf \'{{"event":"end","name":"%s","utc":"%s","exit":%s,"class":"%s","out":"%s","out_sha256":"%s"}}\\n\' '
             f'{shlex.quote(job["name"])} "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$rc" "$cls" {shlex.quote(out)} "$sha" '
             f'>> "{ledger}"')

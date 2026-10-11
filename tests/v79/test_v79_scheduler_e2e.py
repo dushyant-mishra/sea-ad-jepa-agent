@@ -50,7 +50,13 @@ def test_scheduler_records_every_outcome_class(tmp_path):
                    "timeout": "TIMEOUT", "gpu": "OUTPUT_WRITTEN"}, cls
     starts = [json.loads(x) for x in ledger.read_text(encoding="utf-8").splitlines() if '"start"' in x]
     assert {s["name"] for s in starts} == set(cls)
-    assert [e for e in ends if e["name"] == "ok"][0]["out_sha256"] != "none"
+    # every written output is bound by its exact SHA-256 (an empty or placeholder value is a provenance failure)
+    import hashlib
+    for e in ends:
+        if e["class"] == "OUTPUT_WRITTEN":
+            assert e["out_sha256"] == hashlib.sha256(out[e["name"]].read_bytes()).hexdigest(), e
+        else:
+            assert e["out_sha256"] == "none", e
 
 
 def test_machine_wide_fit_count_is_readable():
