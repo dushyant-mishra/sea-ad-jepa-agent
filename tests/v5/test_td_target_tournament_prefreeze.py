@@ -1,5 +1,6 @@
 import hashlib, importlib.util, json, sys
 from pathlib import Path
+import math
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -182,3 +183,10 @@ def test_manifest_hash_is_deterministic_and_outcome_free():
     a=m.build_prefreeze_manifest(config(3)); b=m.build_prefreeze_manifest(config(3))
     assert a['manifest_sha256']==b['manifest_sha256']
     assert 'outcome' not in str(a).lower()
+
+
+@pytest.mark.parametrize('bad_alpha', ['0.05', True, False, float('nan'), float('inf'), float('-inf')])
+def test_family_alpha_must_be_exact_finite_json_numeric_not_coerced(bad_alpha):
+    c=config(3); c['family_alpha']=bad_alpha
+    with pytest.raises(m.PrefreezeError):
+        m.build_prefreeze_manifest(c)
