@@ -232,6 +232,15 @@ def load_s174_count_matrix(counts_path: Path, expected_sha: str):
     return matrix, immediate_sha
 
 
+def open_authenticated_overlap_count_sources(
+    *, physical_path: Path, physical_source_record: dict, counts_path: Path, expected_counts_sha: str
+):
+    """Authenticate both counterpart files before opening either source's count values."""
+    physical_sha = common.verify_source_file(Path(physical_path), physical_source_record)
+    s174_matrix, counts_sha = load_s174_count_matrix(Path(counts_path), expected_counts_sha)
+    return s174_matrix, counts_sha, physical_sha
+
+
 def sparse_row_dict(matrix, row_index: int, addresses: set[int]) -> dict[int, int]:
     row = matrix.getrow(row_index)
     row_indices = np.asarray(row.indices, dtype=np.int64)
@@ -351,6 +360,39 @@ def load_g6_pass_receipt(path: Path, expected_trace: dict) -> dict:
     return receipt
 
 
+def g7_attempt_marker_path(out: Path) -> Path:
+    out = Path(out)
+    return out.with_name(out.name + ".STARTED_NOT_A_PASS.json")
+
+
+def begin_g7_attempt(out: Path, authority_trace: dict, g6_receipt_sha256: str) -> Path:
+    """Spend a G7 attempt before value-bearing work and never reuse it after failure."""
+    out = Path(out)
+    marker = g7_attempt_marker_path(out)
+    if out.exists() or marker.exists():
+        raise RuntimeError(f"immutable G7 attempt already spent: receipt={out} marker={marker}")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text(
+        json.dumps(
+            {
+                "schema": "JEPA_TD_RELATIONAL_G7_EXECUTION_START_V1",
+                "status": "STARTED_NOT_A_PASS",
+                "authority_trace": authority_trace,
+                "g6_receipt_sha256": str(g6_receipt_sha256),
+                "biological_replay_authorized": False,
+                "target_selection_authorized": False,
+                "td60_authorized": False,
+                "training_authorized": False,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return marker
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--preflight-result", required=True)
@@ -368,12 +410,13 @@ def main() -> int:
     args = parser.parse_args()
 
     out = Path(args.out)
-    if out.exists():
-        raise RuntimeError(f"immutable G7 receipt already exists: {out}")
 
     auth, _, _, g6_path, g7_path = bind_execution(args)
     authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
-    load_g6_pass_receipt(Path(args.g6_receipt), authority_trace)
+    g6_receipt_path = Path(args.g6_receipt)
+    load_g6_pass_receipt(g6_receipt_path, authority_trace)
+    g6_receipt_sha256 = common.sha256_file(g6_receipt_path)
+    begin_g7_attempt(out, authority_trace, g6_receipt_sha256)
 
     g1b_result, g1b_freeze, g1b_result_sha256, g1b_freeze_sha256 = load_g1b_authority_from_pass_commit(g7_path)
     verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b_freeze)
@@ -413,10 +456,6 @@ def main() -> int:
                                "s174_count_values_opened": False, "physical_h5ad_values_opened": False})
             continue
 
-        s174_matrix, immediate_counts_sha = load_s174_count_matrix(counts_path, authority["counts"])
-        if s174_matrix.shape[0] != len(s174_cells):
-            raise RuntimeError(f"S174 meta/count row geometry changed before overlap use: {stem}")
-
         fprov = provenance[provenance.source_dataset_id.astype(str).eq(FAMILY[study])]
         if fprov.source_exact_ensembl_id.astype(str).duplicated().any():
             raise RuntimeError(f"nonunique provenance identifier: {study}")
@@ -424,7 +463,16 @@ def main() -> int:
         ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(mid), "source_exact_ensembl_id"].astype(str))
         physical_path = source_root / str(matrix_rec["source"]["path"])
 
-        verified_physical_sources[mid] = common.verify_source_file(physical_path, matrix_rec["source"])
+        s174_matrix, immediate_counts_sha, physical_sha = open_authenticated_overlap_count_sources(
+            physical_path=physical_path,
+            physical_source_record=matrix_rec["source"],
+            counts_path=counts_path,
+            expected_counts_sha=authority["counts"],
+        )
+        verified_physical_sources[mid] = physical_sha
+        if s174_matrix.shape[0] != len(s174_cells):
+            raise RuntimeError(f"S174 meta/count row geometry changed before overlap use: {stem}")
+
         with h5py.File(physical_path, "r") as handle:
             var_ids = h5_strings(handle["var"], VAR_ID_COLUMN[study])
             col_to_address, _ = identifier_map(var_ids, id_to_address, ledger_ids)
@@ -471,14 +519,14 @@ def main() -> int:
         "checked_cell_address_entries": int(total_checked),
         "mismatches": int(total_mismatches),
         "per_matrix": per_matrix,
-        "authority_trace": {**authority_trace, "g6_receipt_sha256": common.sha256_file(Path(args.g6_receipt))},
+        "authority_trace": {**authority_trace, "g6_receipt_sha256": g6_receipt_sha256},
+        "g7_attempt_marker": g7_attempt_marker_path(out).name,
         "no_overlap_is_not_pass": total_overlap == 0,
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
-    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"status": status, "overlap_cells": int(total_overlap), "mismatches": int(total_mismatches)}, sort_keys=True))
     return exit_code_for_status(status)
