@@ -1,0 +1,55 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V15",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "canonical_handoff_pr": 261,
+  "canonical_audit_pr": 260,
+  "world_generator_pr": 291,
+  "contract_v2_sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+  "pairing_amendment_sha256": "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c",
+  "baseline_planting_design": {
+    "red": {
+      "workflow": 38183602785,
+      "job": 114601131766,
+      "result": "11 passed / 6 failed; failures exactly six missing baseline-design/planting primitives"
+    },
+    "implementation_module": "scripts/v79/v79_v2_core_planting.py",
+    "implementation_commit": "689f09b798b2f0aeab779e25dd57aca8adf23901",
+    "green_head": "a2e45b663425f7cd755e1b7860b3c7d31d8437c3",
+    "green": {
+      "workflow": 38183731145,
+      "job": 114601522282,
+      "result": "17 passed in 0.30 s"
+    },
+    "verified": [
+      "BASE design deterministic from shared SeedSequence key [100,0,0]",
+      "donor counts resampled from source-specific S174 donor-cell-count support",
+      "class sampled iid from S174 class proportions",
+      "log library sampled iid from pooled S174 values",
+      "operator sampled only from matrices belonging to that source",
+      "p5-p95 empirical Latin hypercube deterministic and one stratum per gene",
+      "masked calibration pools reproduce contract-builder semantics",
+      "detection intercept bisection hits target prevalence over measured cells",
+      "shared donor-factor construction has exactly half genes lambda=0.6 and within-source-centred effects"
+    ]
+  },
+  "world_realization": {
+    "realized_worlds": 0,
+    "truth_tables": 0,
+    "benchmark_runs": 0,
+    "qualification_fits": 0,
+    "physical_emitter": "HARD_STOP"
+  },
+  "authorization": {
+    "observation_generator_engineering": true,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fitting": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "next_gate": "TDD detection/lognormal observation generation, measured-mask enforcement, heldout replicate/common-random-number semantics, and Q10/Q11 operator-only realized difference; no files emitted",
+  "terminal_state": "BASELINE_PLANTING_DESIGN_GREEN__OBSERVATION_GENERATOR_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
