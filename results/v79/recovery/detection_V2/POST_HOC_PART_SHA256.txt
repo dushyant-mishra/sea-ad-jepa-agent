@@ -1,0 +1,3 @@
+# Post-hoc SHA-256 binding (2026-10-11): these parts were written under snapshot 0bc45513, whose scheduler logged an empty out_sha256 (self-audit 52). Bound by hand after the runs; not a prospective ledger record.
+730f96438fc0308c589e20292d99756c3a51fc68464105f3e1ce295d255826f3 *results/v79/recovery/detection_V2/part_bernoulli_S0_class_absent.json
+fcb72e4a5b2df86743cbcfee7a5dd4077a15eadaac5a4a12db3dedc3785d1bb1 *results/v79/recovery/detection_V2/part_bernoulli_S4_operator_only.json
