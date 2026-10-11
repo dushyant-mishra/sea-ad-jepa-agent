@@ -20,7 +20,6 @@ PAYLOAD_SHA = "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3"
 
 
 def _fixture_design() -> dict[str, np.ndarray]:
-    # Small crossed fixture with 3 sources, 6 donors and 6 matrices/operators.
     src = np.repeat(np.arange(3), 8)
     donor = np.repeat(np.arange(6), 4)
     cls = np.tile(np.arange(3), 8)
@@ -34,7 +33,6 @@ def _fixture_design() -> dict[str, np.ndarray]:
 def _mini_payload() -> dict:
     payload = json.loads(PAYLOAD.read_text(encoding="utf-8"))
     payload["worlds"]["genes_per_world"] = 6
-    # Keep the actual frozen world list and seed scheme, but shrink G for fixture tests only.
     return payload
 
 
@@ -93,3 +91,45 @@ def test_manifest_binds_final_contract_payload_truth_and_zero_fits(tmp_path: Pat
     assert manifest["benchmark_run"] is False
     assert manifest["opaque_world_id"] == hashlib.sha256(b"V2CORE|Q00_BASELINE").hexdigest()[:12]
     assert manifest["generated_outputs"] == {"truth.json": "abc", "world.npz": "def"}
+
+
+def test_pairing_amendment_is_required_and_controller_bound():
+    amendment = G.load_pairing_amendment(ROOT)
+    assert amendment["schema"] == "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1"
+    assert amendment["controller_comment"] == 6114906562
+    assert amendment["final_contract_sha256"] == FINAL_SHA
+    assert amendment["qualification_payload_sha256"] == PAYLOAD_SHA
+    assert amendment["worlds_generated_at_freeze"] == 0
+    assert amendment["qualification_fits_at_freeze"] == 0
+
+
+def test_q11_reuses_q10_seed_identity_except_operator_offset_streams():
+    amendment = G.load_pairing_amendment(ROOT)
+    for stream in [1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24]:
+        assert G.effective_seed_world_index(11, stream, amendment) == 10
+    assert G.effective_seed_world_index(11, 22, amendment) == 11
+    assert G.effective_seed_world_index(11, 23, amendment) == 11
+    assert G.effective_seed_world_index(10, 22, amendment) == 10
+
+
+def test_q10_q11_pairing_validator_allows_only_operator_fields_to_differ():
+    amendment = G.load_pairing_amendment(ROOT)
+    base = {
+        "design_sha": "d",
+        "support_sha": "s",
+        "core_parameters_sha": "p",
+        "donor_effects_sha": "u",
+        "factor_loading_sha": "f",
+        "base_detection_noise_sha": "nd",
+        "base_positive_noise_sha": "np",
+        "operator_offsets_detection_sha": None,
+        "operator_offsets_positive_sha": None,
+    }
+    q11 = dict(base)
+    q11["operator_offsets_detection_sha"] = "od"
+    q11["operator_offsets_positive_sha"] = "op"
+    G.validate_q10_q11_pairing(base, q11, amendment)
+    bad = dict(q11)
+    bad["donor_effects_sha"] = "changed"
+    with pytest.raises(SystemExit):
+        G.validate_q10_q11_pairing(base, bad, amendment)
