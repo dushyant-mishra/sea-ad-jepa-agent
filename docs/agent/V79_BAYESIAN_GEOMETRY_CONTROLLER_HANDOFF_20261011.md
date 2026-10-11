@@ -1,108 +1,84 @@
-# V79 Bayesian Geometry Controller Handoff — 2026-10-11
+# V79 Bayesian geometry controller handoff — model-development correction
 
-## Purpose
+Date: 2026-10-11
 
-This document is for the supervising agent. Always inspect Macha's live source branch before issuing state-dependent instructions.
+This handoff controls only the synthetic/V79 Bayesian dataset-geometry lane. Target discovery is separate.
 
-## Canonical lane
+## Current ruling
 
-Source branch: `analysis/v79-bayesian-synthetic-geometry-20261009`
+The previous plan to immediately complete Gaussian/log-normal/ZTNB S0-S5 confirmation under the old frozen model family is superseded by an empirical model-development hold.
 
-Audit PR: #260
+Bernoulli/detection V2 remains terminally `NOT_QUALIFIED` under its frozen confirmatory contract. That failure is preserved and is not being reinterpreted as a pass.
 
-Handoff PR: #261
+Gaussian/log-normal/ZTNB under the old monolithic hierarchy are **UNADJUDICATED** rather than failed; their queued confirmatory campaign remains on hold.
 
-Latest live source head reconciled by the controller: `ea0102132eb25b3d282988181c95387bf4f57ff6`
+## New empirical development evidence
 
-Latest reconciliation: `docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R2.md`
+Controller-side development used the authenticated auxiliary 50K fit-population expression substrate, donor-balanced to 10,379 cells across 104 fit donors, 42 operators and 3 sources. Twenty identity-blind addresses span prevalence ~0.05-0.87. Three held-out-donor folds were used. Count replay from log1p10k + source_library reproduced the used normalized entries to max absolute error 8.88e-16.
 
-Current terminal state: `SIMULATION_QUALIFICATION_INCOMPLETE`
+Canonical development records:
+- `docs/agent/V79_BAYESIAN_MODEL_DEVELOPMENT_V2_CANDIDATE_20261011.md`
+- `results/v79/development/V79_BAYESIAN_MODEL_DEVELOPMENT_V2_EVIDENCE_COMPACT.json`
 
-## Current Bernoulli ruling
+### Detection hierarchy
+Held-out-donor binary log loss:
+- depth linear 0.466368
+- depth quadratic 0.463706
+- + broad class 0.416760
+- + source 0.330816
+- + operator 0.322037
+- source×class + operator 0.322219
 
-The live provenance map claims Bernoulli S0, S1 and S5 are completed. However, the actual completed Bernoulli result JSON payloads are not committed at the expected recovery paths on the live branch, so final R-hat, ESS, divergences, recovery values and A5 status cannot yet be independently audited from GitHub.
+Broad class and source are essential; operator adds a smaller reproducible gain; source×class is not earned.
 
-Bernoulli S2 and S3 were killed in the earlier oversubscribed run and require completion under the bounded scheduler. S4 remains running from an equivalent earlier snapshot.
+### Positive-magnitude hierarchy
+Count-scale lognormal held-out-donor LPD:
+- depth -2.233011
+- + class -2.187061
+- + source -2.080901
+- + operator -2.039129
 
-Therefore Bernoulli is **not freeze-ready**.
+Operator improves mean LPD by +0.041772 and wins 17/20 genes. Quadratic depth improves +0.005326 and wins 16/20 genes.
 
-Next Bernoulli instruction:
-1. commit completed S0/S1/S5 JSON payloads;
-2. explicitly record whether A5 extension was needed and commit the final post-extension result if used;
-3. finish S2/S3/S4 under the bounded scheduler/equivalent frozen snapshot;
-4. commit all six S0-S5 records plus one combined recovery receipt;
-5. freeze Bernoulli only if all preregistered recovery/convergence criteria pass.
+### Random-effect evidence
+After fixed depth/class/source/operator structure:
+- donor residual structure exceeds within-source permutation q95 in 12/12 detection genes and 10/12 positive genes;
+- operator residual structure exceeds q95 in 9/12 detection genes and 8/12 positive genes;
+- donor×class increment beyond donor main effect clears q95 in only 3/12 detection and 5/12 positive genes; mean detection excess is below null.
 
-Do not start corrected TRAIN yet.
+Therefore donor and operator remain; donor×class is removed from the default next candidate.
 
-## Qualification order
+### Positive family
+Lognormal is the development default because it is stable and predictive. ZTNB is not declared scientifically inferior: a direct truncated-NB stress test was numerically unstable and produced zero genes with 3/3 converged folds, while earlier bounded evidence showed near-tied positive-family predictive scores. ZTNB remains a challenger for exact S174 replay only if implemented stably.
 
-1. complete and independently audit Bernoulli recovery;
-2. finish Gaussian recovery;
-3. finish log-normal recovery;
-4. finish ZTNB recovery;
-5. freeze compute benchmark;
-6. begin corrected-TRAIN fits only after simulation gates pass;
-7. run held-out PPC and Q5 donor×class adjudication;
-8. adjudicate positive-count family;
-9. build biology geometry authority;
-10. build observation geometry authority;
-11. complete self-audit and independent downstream audit.
+## Candidate V2
 
-## Scientific integration policy
+Per gene, modularly:
 
-Build the richest defensible probabilistic generative model of corrected TRAIN. Preserve posterior distributions and uncertainty where useful.
+Detection:
+`detected ~ Bernoulli(logit^-1(intercept + quadratic(log_library) + broad_class + source + operator_re + donor_re))`
 
-Biology-side qualified posterior geometry may prospectively parameterize H1. Observation-side qualified posterior geometry may prospectively parameterize H2. H3 composes the independently qualified layers.
+Positive magnitude:
+`log(count) | count>0 ~ Normal(intercept + quadratic(log_library) + broad_class + source + operator_re + donor_re, sigma)`
 
-Protect identity, not geometry. The desired product is:
+Constraints:
+- broad class and source are fixed constrained contrasts;
+- operator random intercept is constrained within source;
+- donor random intercept is constrained within source;
+- no donor×class default layer;
+- no free matrix/dataset identity effect;
+- genes are fit modularly, not in the previous monolithic hyper-sd hierarchy;
+- across-gene geometry is estimated second-stage from the per-gene posterior summaries.
 
-`real statistical geometry + synthetic causal identity`
+A small development recovery probe on the actual donor/operator crossing recovered the main planted directions but showed leakage between unrestricted donor/operator dummies. Therefore the next Bayesian implementation must use the constrained source-nested random effects, not unrestricted fixed identities.
 
-Do not transfer exact real gene-to-program assignments, named pathways/regulons, exact class×gene signatures, exact donor×gene signatures, target-discovery ranks/panels, SCENIC+/ATAC target evidence, pathology-derived effects, TEST/Morabito information, or winner information into planted causal truth.
+## Next lawful gate
 
-## Variable semantics
+Do not restart expensive confirmation yet. The only remaining model-development gate before a new confirmatory freeze is an exact replay of the same nested comparisons on corrected S174 TRAIN counts (4,726 cells / 149 donors / 42 operators), without changing comparison metrics after viewing results.
 
-Do not collapse broad class, donor, donor×class, source, measurement operator, and depth/capture into one generic batch variable. Source may mix biology and measurement. Operator is a measurement axis. Donor carries biology. Depth can be downstream of both biology and measurement.
+If exact S174 preserves these structural conclusions, freeze Candidate V2 and only then generate fresh untouched synthetic qualification worlds. Do not reuse the old confirmatory worlds as the sole confirmation set.
 
-Posterior association is not automatically causal identification.
+Current terminal:
+`DEVELOPMENT_CANDIDATE_V2__TWO_PART_MODEL__CLASS_SOURCE_OPERATOR_DONOR_DEPTH_EARNED__DONOR_CLASS_NOT_EARNED__MODULAR_GENE_FITS_REQUIRED__EXACT_S174_REPLAY_PENDING__OLD_CONFIRMATORY_CAMPAIGN_ON_HOLD__TRAINING_OFF`
 
-## Real-data acceptance requirements
-
-After simulation qualification and benchmark freeze, corrected-TRAIN fitting must satisfy convergence and held-out posterior predictive checks covering at least:
-- library size;
-- detected genes/cell;
-- gene detection prevalence;
-- positive-count abundance and tails;
-- dispersion;
-- signed detection correlation structure;
-- degree/transitivity/eigenspectrum;
-- class/depth/source/operator-conditioned structure;
-- positive-expression covariance;
-- class, donor, donor×class, source, operator and residual effect spreads.
-
-Q5 must adjudicate whether donor×class materially improves held-out prediction. Do not keep it only because the richer training fit looks better.
-
-## Required terminal authorities
-
-Macha's final qualified package must include separate generator-consumable biology and observation geometry authorities. Each must record schema/version, source SHA, authenticated corrected-TRAIN custody, model family, posterior draw/subsample policy, uncertainty representation, deterministic hashes, absence of forbidden identity fields, and `training_authorized=false`.
-
-A narrative report alone is not enough.
-
-## Fixed prohibitions
-
-Until separately authorized:
-- no TEST/Morabito;
-- no pathology;
-- no target-discovery ranks or panels;
-- no SCENIC+/ATAC target evidence;
-- no target or representation winner information;
-- no Stage4/500K;
-- no V78 outcome-driven retuning;
-- no JEPA training/checkpoint generation;
-- no provisional Bayesian outputs consumed by the factorial lane;
-- no post-outcome synthetic-arm rescue.
-
-## Qualified terminal label
-
-Use `BAYESIAN_GEOMETRY_QUALIFIED_FOR_SYNTHETIC_INTEGRATION` only after all required simulation recovery suites pass, parameterizations and benchmark are frozen, corrected-TRAIN fits and convergence diagnostics are complete, held-out PPC and Q5 are adjudicated, count family is ruled, biology and observation authorities exist with exact hashes, self-audit is complete, and `training_authorized=false`.
+Hard firewalls remain: no corrected-TRAIN posterior authority, no H0-H3 factorial execution, no TEST/Morabito/pathology, no target-discovery work in this lane, no V78 outcome-driven retuning, no Stage4 and no JEPA training.
