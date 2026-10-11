@@ -233,3 +233,13 @@ def test_not_estimable_evidence_is_not_reported_as_biological_failure():
     rejected = out['rejected'][r['candidate_id']]
     assert first not in rejected['failed_gates']
     assert first in rejected['not_estimable_gates']
+
+
+def test_not_estimable_foundation_state_does_not_emit_redesign_terminal():
+    c = contract(); r = receipt('C1_RELATIONAL_SHARED'); mf = evidence_manifest(c, r)
+    first = required_gates(c, r['candidate_id'])[0]
+    mf['gates'][first]['status'] = 'NOT_ESTIMABLE'
+    r['gates'][first] = False
+    r['evidence_manifest_sha256'] = ev.canonical_manifest_sha256(mf)
+    out = m.adjudicate(c, [r], {r['candidate_id']: mf})
+    assert out['terminal'] == 'NO_TARGET_WINNER__FOUNDATION_EVIDENCE_NOT_ESTIMABLE__NO_TARGET_AUTHORITY'
