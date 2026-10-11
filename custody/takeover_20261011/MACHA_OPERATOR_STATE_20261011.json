@@ -4,7 +4,7 @@
   "status": "CURRENT_OPERATOR_STATE__NO_VALUE_AUTHORITY",
   "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "coordinator_handoff": "docs/agent/JEPA_MACHA_OPERATOR_HANDOFF_20261011.md",
-  "current_instruction": "docs/agent/MACHA_NEXT_INSTRUCTION_PR267_20261011.md",
+  "current_instruction": "docs/agent/MACHA_NEXT_INSTRUCTION_PR268_ATOMIC_CUSTODY_20261011.md",
   "target_discovery": {
     "accepted_g4g5_execution_pr": 259,
     "accepted_g4g5_execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
@@ -12,11 +12,15 @@
     "driver_receipt_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
     "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
-    "current_candidate_pr": 267,
-    "current_candidate_branch": "fix/td-g7-counterpart-auth-immutable-attempt-20261011",
-    "current_candidate_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
-    "current_candidate_status": "IMPLEMENTED__UNQUALIFIED__DO_NOT_EXECUTE_G6_G7",
-    "current_assignment": "QUALIFY_PR267_ONLY_THEN_STOP",
+    "blocked_candidate_pr": 267,
+    "blocked_candidate_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
+    "blocked_candidate_status": "BLOCKED_CONCURRENT_ATTEMPT_RACE__DO_NOT_QUALIFY__DO_NOT_EXECUTE",
+    "blocker_audit": "docs/agent/TD_PR267_CONCURRENT_ATTEMPT_CUSTODY_AUDIT_20261011.md",
+    "current_candidate_pr": 268,
+    "current_candidate_branch": "fix/td-g7-atomic-attempt-create-20261011",
+    "current_candidate_head": "d8fa3024e06e265b77353c8382453e7ccbf2350f",
+    "current_candidate_status": "RED_TEST_COMMITTED__PRODUCTION_REPAIR_PENDING__DO_NOT_EXECUTE_G6_G7",
+    "current_assignment": "REPAIR_PR268_ATOMIC_ATTEMPT_CUSTODY__QUALIFY_SUCCESSOR__THEN_STOP_AT_VALUE_AUTHORITY_BOUNDARY",
     "value_authorization_exists": false,
     "owner_decision_exists": false,
     "g6_executed": false,
@@ -24,10 +28,12 @@
     "corrected_biological_replay_executed": false
   },
   "qualification_acceptance": {
+    "concurrent_single_winner_regression_required": true,
     "real_pr259_receipt_test_required": true,
     "required_real_receipt_result": "1 passed / 0 skipped / 0 failed",
-    "stop_after_qualification": true,
-    "owner_review_required_after_pass": true
+    "routine_owner_review_required_after_engineering_pass": false,
+    "stop_at_value_read_authority_boundary": true,
+    "explicit_owner_value_authorization_still_required": true
   },
   "parallel_bayesian_lane": {
     "authority_separate_from_target_discovery": true,
