@@ -12,13 +12,13 @@ Detection candidates, nested in order:
   depth_class_source
   depth_class_source_operator
 
-Positive-count candidates use the same nested structures with a Gaussian model on log positive count. This is a
-stable development diagnostic, not the final positive-family adjudication; ZTNB remains a separate challenger.
+Positive-count candidates use the same nested structures with a Gaussian model on log positive count. Operator
+fixed proxies are encoded within source so source+operator is full rank. ZTNB remains a separate challenger.
 
-Random-effect *support* is assessed cheaply from fixed-structure residuals by within-stratum permutation:
+Random-effect support is assessed cheaply from fixed-structure residuals by restricted permutation:
 - donor support after depth+class+source+operator;
-- operator support after depth+class+source;
-- donor×class increment after removing the donor mean from full-model residuals.
+- operator support after depth+class+source, after removing donor means and permuting within donor;
+- donor×class increment after removing donor means and permuting within donor.
 These diagnostics decide what hierarchy deserves a later Bayesian random-effect model; they are not substitutes
 for Bayesian posterior estimation.
 """
@@ -71,11 +71,7 @@ def load_compact_cache(npz_path, receipt_path) -> dict[str, np.ndarray]:
 
 
 def select_panel_positions(prevalence: np.ndarray, n: int, seed: int = SEED, bins: int = 10) -> np.ndarray:
-    """Identity-blind prevalence-spanning subpanel from an already frozen cache panel.
-
-    Rank bins are used rather than raw quantile edges so ties cannot create empty bins. Allocation is as even as
-    possible across bins; any remainder is assigned deterministically to the first bins after a seeded rotation.
-    """
+    """Identity-blind prevalence-spanning subpanel from an already frozen cache panel."""
     p = np.asarray(prevalence, dtype=np.float64)
     m = len(p)
     if n <= 0:
@@ -129,6 +125,17 @@ def _one_hot(v: np.ndarray) -> np.ndarray:
     return np.column_stack([(v == x).astype(np.float64) for x in lev[1:]])
 
 
+def _nested_child_one_hot(child: np.ndarray, parent: np.ndarray) -> np.ndarray:
+    """Reference-coded child-within-parent indicators, full rank beside parent main effects."""
+    child, parent = np.asarray(child), np.asarray(parent)
+    cols = []
+    for p in np.unique(parent):
+        levels = np.unique(child[parent == p])
+        for level in levels[1:]:
+            cols.append((child == level).astype(np.float64))
+    return np.column_stack(cols) if cols else np.empty((len(child), 0), dtype=np.float64)
+
+
 def design_matrix(data: dict, model: str) -> np.ndarray:
     d = np.asarray(data["log_lib_centered"], dtype=np.float64)
     cols = [np.ones(len(d)), d]
@@ -142,7 +149,7 @@ def design_matrix(data: dict, model: str) -> np.ndarray:
         oh = _one_hot(data["src"])
         cols.extend(oh.T)
     if model == "depth_class_source_operator":
-        oh = _one_hot(data["op"])
+        oh = _nested_child_one_hot(data["op"], data["src"])
         cols.extend(oh.T)
     return np.column_stack(cols).astype(np.float64, copy=False)
 
@@ -182,7 +189,6 @@ def _normal_lpd(y: np.ndarray, mu: np.ndarray, sigma: float) -> np.ndarray:
 
 
 def _between_group_stat(residual: np.ndarray, groups: np.ndarray) -> float:
-    """Size-weighted variance of group means around the overall residual mean."""
     residual, groups = np.asarray(residual, dtype=np.float64), np.asarray(groups)
     overall = float(residual.mean())
     total, n = 0.0, 0
@@ -265,8 +271,22 @@ def _center_within(x: np.ndarray, groups: np.ndarray) -> np.ndarray:
     return out
 
 
+def operator_support_after_donor_centering(residual: np.ndarray, operator: np.ndarray, donor: np.ndarray,
+                                           source: np.ndarray, seed: int = SEED, n_perm: int = 99) -> dict:
+    """Operator support beyond donor: center donor means, then permute within donor.
+
+    Donors are expected to be source-specific in S174, so within-donor permutation also respects source nesting.
+    `source` is accepted and checked to make that assumption explicit.
+    """
+    residual, operator, donor, source = map(np.asarray, (residual, operator, donor, source))
+    for d in np.unique(donor):
+        if len(np.unique(source[donor == d])) != 1:
+            raise ValueError("operator support requires each donor to belong to one source")
+    centered = _center_within(residual, donor)
+    return permutation_group_support(centered, operator, donor, seed, n_perm)
+
+
 def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: int = 99) -> dict:
-    """Cheap support checks for donor/operator/donor×class in both hurdle parts."""
     counts = np.asarray(data["counts_selected"])[:, gene].astype(np.float64)
     y = (counts > 0).astype(np.float64)
 
@@ -280,7 +300,7 @@ def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: i
 
     det = {
         "donor": permutation_group_support(det_full_resid, data["donor"], data["src"], seed + 1, n_perm),
-        "operator": permutation_group_support(det_noop_resid, data["op"], data["src"], seed + 2, n_perm),
+        "operator": operator_support_after_donor_centering(det_noop_resid, data["op"], data["donor"], data["src"], seed + 2, n_perm),
         "donor_class_increment": permutation_group_support(det_dc_resid, data["dk"], data["donor"], seed + 3, n_perm),
     }
 
@@ -296,7 +316,7 @@ def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: i
         pos_dc_resid = _center_within(pos_full_resid, donor_pos)
         positive = {
             "donor": permutation_group_support(pos_full_resid, donor_pos, data["src"][pos], seed + 11, n_perm),
-            "operator": permutation_group_support(pos_noop_resid, data["op"][pos], data["src"][pos], seed + 12, n_perm),
+            "operator": operator_support_after_donor_centering(pos_noop_resid, data["op"][pos], donor_pos, data["src"][pos], seed + 12, n_perm),
             "donor_class_increment": permutation_group_support(pos_dc_resid, data["dk"][pos], donor_pos, seed + 13, n_perm),
         }
     return {"gene_position": int(gene), "detection": det, "positive": positive}
@@ -331,10 +351,8 @@ def main() -> None:
     ap.add_argument("cache")
     ap.add_argument("receipt")
     ap.add_argument("out")
-    ap.add_argument("--genes", type=int, default=200,
-                    help="prevalence-balanced identity-blind panel positions used for nested held-out-donor comparisons")
-    ap.add_argument("--support-genes", type=int, default=50,
-                    help="subset of the replay panel used for residual random-effect support diagnostics")
+    ap.add_argument("--genes", type=int, default=200)
+    ap.add_argument("--support-genes", type=int, default=50)
     ap.add_argument("--permutations", type=int, default=99)
     ap.add_argument("--folds", type=int, default=3)
     ap.add_argument("--seed", type=int, default=SEED)
@@ -354,21 +372,19 @@ def main() -> None:
     rec = {
         "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V2",
         "status": "DEVELOPMENT_ONLY__NOT_CONFIRMATORY__NOT_SYNTHETIC_CONSUMABLE",
-        "cache_sha256": sha256(Path(a.cache)),
-        "receipt_sha256": sha256(Path(a.receipt)),
+        "cache_sha256": sha256(Path(a.cache)), "receipt_sha256": sha256(Path(a.receipt)),
         "n_cells": int(len(data["donor"])), "n_donors": int(len(np.unique(data["donor"]))),
         "n_cache_genes": int(data["counts_selected"].shape[1]), "n_replay_genes": int(len(panel)),
         "n_support_genes": int(len(support_panel)), "folds": int(a.folds), "seed": int(a.seed),
         "permutations": int(a.permutations), "models": list(MODELS), "ridge": RIDGE,
+        "operator_encoding": "REFERENCE_CODED_WITHIN_SOURCE__FULL_RANK_WITH_SOURCE_MAIN_EFFECT",
+        "operator_support_null": "DONOR_CENTERED_RESIDUALS__PERMUTED_WITHIN_DONOR",
         "panel_positions_internal": panel.tolist(), "support_panel_positions_internal": support_panel.tolist(),
-        "panel_prevalence_range": [float(data["prevalence_selected"][panel].min()),
-                                   float(data["prevalence_selected"][panel].max())],
+        "panel_prevalence_range": [float(data["prevalence_selected"][panel].min()), float(data["prevalence_selected"][panel].max())],
         "detection_summary": summarize(det, "mean_logloss"),
         "positive_lognormal_summary": summarize(pos, "mean_lpd"),
-        "random_effect_support": {
-            "detection": summarize_support(support, "detection"),
-            "positive": summarize_support(support, "positive"),
-        },
+        "random_effect_support": {"detection": summarize_support(support, "detection"),
+                                  "positive": summarize_support(support, "positive")},
         "per_gene_detection": det, "per_gene_positive": pos, "per_gene_random_effect_support": support,
         "boundaries": {"bayesian_posterior_inference": False, "confirmatory_qualification": False,
                        "factorial_execution": False, "training_authorized": False},
