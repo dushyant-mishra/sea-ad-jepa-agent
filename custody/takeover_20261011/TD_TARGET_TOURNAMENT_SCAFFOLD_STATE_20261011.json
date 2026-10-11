@@ -1,14 +1,14 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCIENCE_HARNESS_106_GREEN__QUERY_LINEAGE_COMPLETE__MATCHED_NULL_NAMESPACE_BOUND__PREFREEZE_CONTRACT_AND_CASE_COVERAGE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCIENCE_HARNESS_110_GREEN__PRECISION_NUMERIC_CUSTODY_FAIL_CLOSED__QUERY_LINEAGE_COMPLETE__MATCHED_NULL_NAMESPACE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "focused_test_result": {
-    "passed": 106,
+    "passed": 110,
     "failed": 0,
     "errors": 0,
     "scope": "new synthetic/metadata-only science-harness tests",
-    "accounting": "101-green state with old 6-test q-lineage suite; structural-completeness hardening expands that suite to 11 (+5 net)"
+    "accounting": "106-green state with old 7-test precision suite; numeric-custody hardening expands that suite to 11 (+4 net)"
   },
   "qualified_components": {
     "gate_evidence_role_and_hash_binding": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md",
@@ -17,7 +17,8 @@
     "prefreeze_tournament_contract_binding": "docs/agent/TD_PREFREEZE_TOURNAMENT_CONTRACT_BINDING_QUALIFICATION_20261011.md",
     "gate_case_coverage": "docs/agent/TD_GATE_CASE_COVERAGE_QUALIFICATION_20261011.md",
     "matched_wrong_cell_null_namespace": "docs/agent/TD_MATCHED_WRONG_CELL_NULL_NAMESPACE_QUALIFICATION_20261011.md",
-    "query_lineage_graph_contract": "docs/agent/TD_QUERY_LINEAGE_CONTRACT_QUALIFICATION_20261011.md"
+    "query_lineage_graph_contract": "docs/agent/TD_QUERY_LINEAGE_CONTRACT_QUALIFICATION_20261011.md",
+    "precision_numeric_custody": "docs/agent/TD_PRECISION_NUMERIC_CUSTODY_QUALIFICATION_20261011.md"
   },
   "capabilities": {
     "candidate_adjudication_fixture_only": true,
@@ -30,8 +31,9 @@
     "matched_wrong_cell_null_exact_stratum_bijection": true,
     "matched_null_singletons_remain_not_estimable": true,
     "query_lineage_exact_graph_role_coverage": true,
-    "query_lineage_unknown_or_undeclared_nodes_rejected": true,
     "query_lineage_transitive_q_leakage_rejected": true,
+    "precision_nonfinite_or_coerced_inputs_rejected": true,
+    "precision_sign_accounting_invariant": true,
     "outcome_blind_precision_resolution": true,
     "synthetic_same_cell_count_split_and_depth_thinning": true,
     "opens_biological_file_or_matrix": false,
@@ -48,7 +50,9 @@
     "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
     "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc",
     "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
-    "tests/v5/test_td_query_information_guard.py": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98"
+    "tests/v5/test_td_query_information_guard.py": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98",
+    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256",
+    "tests/v5/test_td_target_tournament_precision.py": "0ece35df49b63b58fe5480fba064610d31fb6ca8"
   },
   "scientific_boundaries": {
     "initial_decision_family_completeness_inferred_by_helper": false,
