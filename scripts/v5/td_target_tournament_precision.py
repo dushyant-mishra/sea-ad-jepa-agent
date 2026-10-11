@@ -56,11 +56,38 @@ def exact_two_sided_sign_p(successes, n_nonzero):
     return min(1.0, 2.0 * min(lower, upper))
 
 
-def sign_recurrence_gate(deltas, alpha_eff):
+def _validate_donor_deltas(donor_deltas):
+    if not isinstance(donor_deltas, list):
+        raise PrecisionContractError('donor_deltas must be a list')
+    seen = set()
+    normalized = []
+    for i, record in enumerate(donor_deltas):
+        if not isinstance(record, dict) or set(record) != {'donor_id', 'delta'}:
+            raise PrecisionContractError(
+                'each donor_deltas record must contain exactly donor_id and delta'
+            )
+        donor_id = record['donor_id']
+        if (
+            not isinstance(donor_id, str)
+            or not donor_id
+            or donor_id != donor_id.strip()
+            or '\0' in donor_id
+        ):
+            raise PrecisionContractError(
+                f'donor_deltas[{i}].donor_id must be an exact nonempty NUL-free trimmed string'
+            )
+        if donor_id in seen:
+            raise PrecisionContractError(f'duplicate donor_id: {donor_id}')
+        seen.add(donor_id)
+        delta = _exact_number(record['delta'], f'donor_deltas[{i}].delta')
+        normalized.append((donor_id, delta))
+    return normalized
+
+
+def sign_recurrence_gate(donor_deltas, alpha_eff):
     alpha_eff = _validate_alpha(alpha_eff)
-    if not isinstance(deltas, list):
-        raise PrecisionContractError('deltas must be a list')
-    clean = [_exact_number(x, f'deltas[{i}]') for i, x in enumerate(deltas)]
+    normalized = _validate_donor_deltas(donor_deltas)
+    clean = [delta for _, delta in normalized]
     positives = sum(x > 0 for x in clean)
     negatives = sum(x < 0 for x in clean)
     ties = sum(x == 0 for x in clean)
@@ -71,11 +98,12 @@ def sign_recurrence_gate(deltas, alpha_eff):
     p = exact_two_sided_sign_p(positives, n)
     estimable = n >= min_n
     return {
-        'n_total': len(clean),
-        'n_nonzero': n,
-        'n_positive': positives,
-        'n_negative': negatives,
-        'n_ties': ties,
+        'donor_ids_bound': True,
+        'n_total_donors': len(clean),
+        'n_nonzero_donors': n,
+        'n_positive_donors': positives,
+        'n_negative_donors': negatives,
+        'n_tied_donors': ties,
         'minimum_nonzero_donors_for_resolution': min_n,
         'resolution_estimable': estimable,
         'two_sided_p': p,
