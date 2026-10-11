@@ -21,11 +21,17 @@ def load(key):
 
 
 def frame(n_rows, order):
+    """Rows in the given file order, with the real Sample-A freeze schema (every column G6 requires) and, like the
+    real file, no physical global_row."""
     sources = (["HVS"] * 3 + ["SEA_AD"] * (n_rows - 6) + ["NPH52"] * 3)
-    rows = [{"sample": "A_NATURAL_MIXTURE", "sample_row": str(i), "source": sources[i], "cell_id": f"c{i}"}
+    rows = [{"sample": "A_NATURAL_MIXTURE", "sample_row": str(i), "source": sources[i], "matrix_id": f"{sources[i]}::m",
+             "operator_index": "0", "local_row": str(i), "donor_id": f"donor_{i % 4}", "cell_id": f"c{i}"}
             for i in order]
-    rows.append({"sample": "B_COVERAGE_DISCOVERY", "sample_row": "0", "source": "HVS", "cell_id": "b0"})
-    return pd.DataFrame(rows).astype(str)
+    rows.append({"sample": "B_COVERAGE_DISCOVERY", "sample_row": "0", "source": "HVS", "matrix_id": "HVS::m",
+                 "operator_index": "0", "local_row": "0", "donor_id": "donor_b", "cell_id": "b0"})
+    out = pd.DataFrame(rows).astype(str)
+    assert "global_row" not in out.columns
+    return out
 
 
 @pytest.mark.parametrize("key", ["g6", "g7"])

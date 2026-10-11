@@ -52,6 +52,14 @@ SAMPLE_A_LABEL = "A_NATURAL_MIXTURE"
 SOURCE_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
 VAR_ID_COLUMN = {"HVS": "_index", "SEA_AD": "gene_ids"}
+SAMPLE_FREEZE_REQUIRED_COLUMNS = frozenset({
+    "sample", "sample_row", "source", "matrix_id", "operator_index", "local_row", "donor_id", "cell_id"
+})
+REPLAY_REQUIRED_COLUMNS = frozenset({"molecular_address_index"})
+PROVENANCE_REQUIRED_COLUMNS = frozenset({
+    "source_dataset_id", "source_exact_ensembl_id", "molecular_address_index"
+})
+COLLISION_REQUIRED_COLUMNS = frozenset({"matrix_id", "source_exact_ensembl_id"})
 
 HIST_CSR_SHA = common.HIST_CSR_SHA  # same objects: one authority, shared with the G7 validator
 TD50_SHA = common.TD50_SHA
@@ -154,8 +162,34 @@ def corrected_row(indices, values, col_to_address: dict[int, int], replay_addres
     return row, total
 
 
+def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+    missing = sorted(set(required) - set(frame.columns))
+    if missing:
+        raise RuntimeError(f"{label} missing required columns: {missing}")
+
+
 def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
-    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
+    """Bind the historical CSR row before filtering, then select Sample A.
+
+    The authenticated 50K sample freeze does not physically store ``global_row``. Historical
+    Target Discovery authority defines it as the original freeze-file row position and requires
+    that binding before any filter/merge. A pre-existing explicit global_row is retained for
+    historical synthetic fixtures; the real frozen file follows the derived path.
+    """
+    _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+    bound = frame.copy()
+    if "global_row" not in bound.columns:
+        bound["global_row"] = np.arange(len(bound), dtype=np.int64)
+    else:
+        try:
+            explicit = pd.to_numeric(bound["global_row"], errors="raise").to_numpy(dtype=np.int64)
+        except Exception as exc:
+            raise RuntimeError("sample freeze explicit global_row is not exact integer-valued") from exc
+        if len(explicit) != len(bound) or len(np.unique(explicit)) != len(explicit) or np.any(explicit < 0):
+            raise RuntimeError("sample freeze explicit global_row must be unique nonnegative row identities")
+        bound["global_row"] = explicit
+
+    selected = bound[bound["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
         "sample_row", key=lambda rows: rows.astype(int), kind="stable"
     )  # numeric order: the freeze is read with dtype=str
     if enforce_geometry:
@@ -216,6 +250,18 @@ def verify_historical_csr(root: Path):
     return data, indices, indptr, shape
 
 
+def validate_historical_row_binding(sample_a: pd.DataFrame, historical_library: dict, historical_detected: dict,
+                                    historical_shape: tuple) -> None:
+    rows = sample_a["global_row"].astype(int).to_numpy()
+    if len(rows) != len(np.unique(rows)):
+        raise RuntimeError("Sample-A global_row binding is not one-to-one")
+    if len(rows) and (rows.min() < 0 or rows.max() >= int(historical_shape[0])):
+        raise RuntimeError("Sample-A global_row lies outside historical CSR row range")
+    row_set = set(int(x) for x in rows)
+    if row_set != set(historical_library) or row_set != set(historical_detected):
+        raise RuntimeError("Sample-A global_row binding does not exactly match TD50 sentinel rows")
+
+
 def nph_historical_row(global_row: int, data, indices, indptr, replay_addresses: set[int]):
     lo, hi = int(indptr[global_row]), int(indptr[global_row + 1])
     row_indices = np.asarray(indices[lo:hi], dtype=np.int64)
@@ -250,13 +296,18 @@ def load_inputs(args):
         _require_file_hash(path, expected, label)
 
     replay = pd.read_csv(require["replay_manifest"][0])
+    _require_columns(replay, REPLAY_REQUIRED_COLUMNS, "replay manifest")
     if len(replay) != N_REPLAY or replay.molecular_address_index.nunique() != N_REPLAY:
         raise RuntimeError("replay manifest geometry mismatch")
     sample = pd.read_csv(require["sample_freeze"][0], dtype=str)
     sample_a = select_sample_a(sample, enforce_geometry=True)
     provenance = pd.read_csv(require["provenance"][0], low_memory=False)
+    _require_columns(provenance, PROVENANCE_REQUIRED_COLUMNS, "source provenance")
     collision = pd.read_csv(require["collision_ledger"][0], low_memory=False)
+    _require_columns(collision, COLLISION_REQUIRED_COLUMNS, "collision ledger")
     freeze = json.loads(require["macha_freeze"][0].read_text(encoding="utf-8"))
+    if not isinstance(freeze, dict) or not isinstance(freeze.get("matrices"), list):
+        raise RuntimeError("Macha freeze must contain a matrices list")
     return replay, sample_a, provenance, collision, freeze
 
 
@@ -331,16 +382,23 @@ def main() -> int:
     auth, _, _, g6_path, g7_path = bind_execution(args)
     authority_trace = _authority_trace(args, auth, g6_path, g7_path)
 
-    out = Path(args.output_dir)
-    begin_namespace(out, authority_trace)
-
+    # Metadata-only compatibility and historical row binding are fully checked before the
+    # immutable G6 attempt marker is created. No H5AD count/value dataset is opened here.
     replay, sample_a, provenance, collision, freeze = load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
     td50 = read_td50(Path(args.td_artifacts_zip))
     historical_library, historical_detected = sentinel_maps(td50)
-    hdata, hindices, hindptr, _ = verify_historical_csr(Path(args.historical_csr_root))
+    hdata, hindices, hindptr, historical_shape = verify_historical_csr(Path(args.historical_csr_root))
+    validate_historical_row_binding(sample_a, historical_library, historical_detected, historical_shape)
 
     matrices = {str(item["matrix_id"]): item for item in freeze["matrices"]}
+    missing_matrices = sorted(set(sample_a.loc[~sample_a.source.eq("NPH52"), "matrix_id"].astype(str)) - set(matrices))
+    if missing_matrices:
+        raise RuntimeError(f"Sample-A matrices absent from Macha freeze: {missing_matrices}")
+
+    out = Path(args.output_dir)
+    begin_namespace(out, authority_trace)
+
     rows_out: list[int] = []
     cols_out: list[int] = []
     vals_out: list[float] = []
