@@ -245,7 +245,20 @@ def build() -> dict:
                          "depth tertile and source, and count dispersion and tail; PPC failures are carried into both "
                          "authorities as limitations"),
                  why=("the synthetic-world lane (PR #253 H1/H2/H3) needs fitted generative structure, not only "
-                      "summary shares; no model, prior, likelihood or estimand changes; firewall unchanged"))],
+                      "summary shares; no model, prior, likelihood or estimand changes; firewall unchanged")),
+            dict(id="A7", date="2026-10-11", before_real_data=True,
+                 change=("benchmark measurement condition, fixed before any benchmark number exists: 'one 4-chain fit on "
+                         "the qualified hardware' means one fit running alone (default XLA threading, no other fits), "
+                         "measured once per likelihood family (Gaussian, detection, ZTNB, log-normal) at 10 genes on "
+                         "the S1 world with the contract schedule and the frozen sampler settings, after every recovery "
+                         "suite passes; projection to 20-60 genes by the ratio of gradient times measured alone; the gene "
+                         "count is the largest multiple of 10 (at most 60) whose projected fit is within 2 hours for every "
+                         "family (one gene sample for A, B and C); folds 5 if that projected fit is within 30 minutes, "
+                         "else 2. Production runs fits in up to 4 parallel slots (16 cores); each fit then takes longer "
+                         "than its alone time, a scheduling cost recorded with every fit, not a rule breach. No gene "
+                         "batching unless the rule yields no feasible count, in which case the lane stops and asks"),
+                 why=("under production load every fit runs 3-4 times slower, which would make the rule depend on how "
+                      "many jobs share the machine; the literal reading measures the hardware, not the schedule"))],
         amended_from_sha256="1807ddb1b9071f5465873e076ebd6a1fbab6b5fcc14e7ec87bd505525144833b",
         terminal_authority=[FW.LANE_TERMINAL, "no target winner", "no representation winner",
                             "no JEPA training authority", "no E4 authority", "no protected-data authority",
