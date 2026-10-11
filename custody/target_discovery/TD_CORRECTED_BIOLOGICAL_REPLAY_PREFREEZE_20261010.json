@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_V1",
+  "schema": "JEPA_TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_V2",
   "date": "2026-10-10",
   "status": "PREFROZEN__NO_EXECUTION_AUTHORITY__NO_TARGET_AUTHORITY__NO_TRAINING_AUTHORITY",
   "purpose": "Prospective audit replay of already-opened historical TD56, TD57B, TD57C and TD59 on the corrected Sample-A value surface after separately reviewed G6/G7 integrity evidence.",
@@ -12,12 +12,18 @@
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
     "terminal": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND"
   },
+  "executor_provenance": {
+    "ledger": "custody/target_discovery/TD_CORRECTED_REPLAY_EXECUTOR_PROVENANCE_LEDGER_20261010.json",
+    "td59_addendum": "docs/superpowers/specs/2026-10-10-td59-replay-provenance-addendum.md",
+    "rule": "No corrected replay adapter may be implemented from prose when exact historical executable bytes or a separately validated replay-equivalence closure is the controlling reference."
+  },
   "required_before_replay": [
-    "PR258 or successor standalone G6/G7 value path qualified against exact PR259 receipt bytes",
+    "PR263 or a reviewed successor standalone G6/G7 value path qualified against exact PR259 receipt bytes",
     "separate explicit owner authorization for G6/G7 integrity execution",
     "G6 exact PASS_TD_G6_SOURCE_LIBRARY_EXACT",
     "G7 exact PASS_TD_G7_S174_EXACT_OVERLAP",
-    "second separate explicit owner authorization for corrected biological replay"
+    "second separate explicit owner authorization for corrected biological replay",
+    "stage-specific historical executor provenance/equivalence requirements in the executor-provenance ledger satisfied"
   ],
   "sample_A": {
     "label": "A_NATURAL_MIXTURE",
@@ -39,11 +45,14 @@
         "NPH52": {"observed": 0.8007195, "null_p95": 0.5990585},
         "SEA_AD": {"observed": 0.8782250, "null_p95": 0.7526606}
       },
+      "executor_provenance_status": "REQUIRES_EXACT_PACKAGE_RECOVERY_OR_SEPARATE_EQUIVALENCE_CLOSURE",
       "outcome_classification_only": ["QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED", "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE"]
     },
     {
       "stage": "TD57B",
       "historical_implementation_freeze": "ae18a2224cecb73daa3e4c748195dbde7c8f6b4f",
+      "local_decision_executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "executor_provenance_status": "ORIGINAL_LOGIC_GIT_PRESERVED_AND_LOCAL_EXECUTOR_SHA_BOUND",
       "full_survival_cases": 24,
       "historical_terminal_pass": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT",
       "historical_terminal_fail": "NO_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER__TD57B_FAIL",
@@ -52,6 +61,8 @@
     {
       "stage": "TD57C",
       "historical_status": "FAILED_PROSPECTIVELY",
+      "local_decision_executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+      "executor_provenance_status": "EXACT_SHA_BOUND__RECOVER_FROM_AUTHENTICATED_SEP8_PACKAGE_BEFORE_ADAPTER_IMPLEMENTATION",
       "historical_terminal_fail": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
       "historical_terminal_pass": "TD57C_THREE_VIEW_FINE_LOCAL_RELATIONAL_GEOMETRY_SURVIVES__FIXED_CONCORDANCE_LOCAL_MINING_ADMISSIBLE_FOR_RELATIONAL_OBJECTIVE_QUALIFICATION",
       "selector_fraction": "nearest_one_third",
@@ -61,6 +72,10 @@
     {
       "stage": "TD59",
       "selector_fraction": "nearest_one_half_only",
+      "original_executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+      "original_executor_bytes_recovered": false,
+      "successor_replay_executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "executor_provenance_status": "ORIGINAL_BYTES_MISSING__USE_VALIDATED_REPLAY_CLOSURE_SUCCESSOR_AS_EXECUTABLE_STATISTIC_REFERENCE",
       "historical_terminal_pass": "TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY",
       "historical_terminal_fail": "NO_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE__TD59_FAIL__STOP_LOCALITY_FRACTION_TUNING_ON_50K",
       "historical_reference": {"cases_passed": 24, "cases_total": 24, "weakest_observed_minus_null_p95": 0.0011566307718604563, "cases_beating_null_max": 22},
@@ -76,7 +91,8 @@
     "source_dropping_forbidden": true,
     "pathology_or_external_holdout_forbidden": true,
     "historical_TD57C_failure_relabel_forbidden": true,
-    "not_estimable_is_pass": false
+    "not_estimable_is_pass": false,
+    "reimplementation_from_prose_without_provenance_closure_forbidden": true
   },
   "required_stop_after_replay": true,
   "value_read_authorization_created_by_this_prefreeze": false,
