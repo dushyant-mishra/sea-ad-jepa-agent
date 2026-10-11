@@ -9,19 +9,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import td_g6g7_gate_fixtures as F  # noqa: E402
 
-FLAGS = ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized")
-
-
-def synthetic_owner_decision(m, commit="a" * 40) -> dict:
-    return {
-        "schema": "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1",
-        "decision": "AUTHORIZE_G6_G7_INTEGRITY_ONLY",
-        "authorized_pr259_preflight_driver_sha256": m.PR259_DRIVER_SHA256,
-        "authorized_pr259_mapping_receipt_sha256": m.PR259_MAPPING_SHA256,
-        "qualified_implementation_commit_sha": commit,
-        **{flag: False for flag in FLAGS},
-        "synthetic_test_fixture_not_an_owner_decision": True,
-    }
+FLAGS = F.OWNER_DECISION_FLAGS
+synthetic_owner_decision = F.synthetic_owner_decision
 
 
 def build(tmp_path, monkeypatch, **decision_overrides):
@@ -109,7 +98,7 @@ def test_owner_decision_edited_after_authorization_is_refused(tmp_path, monkeypa
 
 def test_authorization_must_bind_the_owner_decision_sha(tmp_path, monkeypatch):
     m, b = build(tmp_path, monkeypatch)
-    F.rewrite_authorization(m, b)  # authorization without owner_decision_sha256
+    F.rewrite_authorization(m, b, owner_decision_sha256=None)  # authorization without owner_decision_sha256
     with pytest.raises(RuntimeError, match="owner_decision_sha256"):
         gate(m, b)
 

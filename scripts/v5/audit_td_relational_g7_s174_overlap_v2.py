@@ -329,6 +329,7 @@ def bind_execution(args):
         Path(args.value_authorization), preflight_path=Path(args.preflight_result),
         mapping_path=Path(args.mapping_receipt), g6_path=g6_path, g7_path=g7_path,
         replay_manifest_path=Path(args.replay_manifest),
+        owner_decision_path=Path(args.owner_decision),
     )
     preflight, mapping = common.load_bound_preflight(
         Path(args.preflight_result), Path(args.mapping_receipt),
@@ -340,6 +341,7 @@ def bind_execution(args):
 
 def expected_authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> dict:
     return {
+        "owner_decision_sha256": common.sha256_file(Path(args.owner_decision)),
         "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
         "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
         "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
@@ -397,6 +399,8 @@ def main() -> int:
     parser.add_argument("--preflight-result", required=True)
     parser.add_argument("--mapping-receipt", required=True)
     parser.add_argument("--value-authorization", required=True)
+    parser.add_argument("--owner-decision", required=True,
+                        help="Immutable owner-decision record (AUTHORIZE_G6_G7_INTEGRITY_ONLY); never created by this code")
     parser.add_argument("--g6-receipt", required=True)
     parser.add_argument("--replay-manifest", required=True)
     parser.add_argument("--sample-freeze", required=True)

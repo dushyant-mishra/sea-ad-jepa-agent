@@ -31,6 +31,16 @@ VALUE_SCOPE = (
     "TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology"
 )
 
+# Immutable owner decision that must precede any runtime value authorization. This module never creates one.
+OWNER_DECISION_SCHEMA = "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1"
+OWNER_DECISION = "AUTHORIZE_G6_G7_INTEGRITY_ONLY"
+OWNER_DECISION_FALSE_FLAGS = (
+    "biological_replay_authorized",
+    "target_selection_authorized",
+    "td60_authorized",
+    "training_authorized",
+)
+
 COMMON_ENTRYPOINT = "scripts/v5/td_relational_value_read_v2_common.py"
 G6_ENTRYPOINT = "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py"
 G7_ENTRYPOINT = "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py"
@@ -220,6 +230,35 @@ def require_pr259_physical_bytes(preflight_path: Path, mapping_path: Path, repla
             )
 
 
+def load_owner_decision(path, *, implementation_commit_sha: str) -> tuple[dict, str]:
+    """Verify the immutable owner-decision record; return it with its physical SHA-256."""
+    if path is None:
+        raise RuntimeError("runtime authorization requires an immutable owner-decision record")
+    path = Path(path)
+    if not path.is_file():
+        raise RuntimeError(f"owner-decision record missing: {path}")
+    physical_sha = sha256_file(path)
+    rec = _read_json(path, "owner-decision record")
+    if rec.get("schema") != OWNER_DECISION_SCHEMA:
+        raise RuntimeError("owner-decision schema mismatch")
+    if rec.get("decision") != OWNER_DECISION:
+        raise RuntimeError(f"owner-decision string mismatch; require exactly {OWNER_DECISION}")
+    if rec.get("authorized_pr259_preflight_driver_sha256") != PR259_DRIVER_SHA256:
+        raise RuntimeError("owner-decision does not name the exact PR #259 preflight driver receipt SHA")
+    if rec.get("authorized_pr259_mapping_receipt_sha256") != PR259_MAPPING_SHA256:
+        raise RuntimeError("owner-decision does not name the exact PR #259 mapping receipt SHA")
+    if rec.get("qualified_implementation_commit_sha") != implementation_commit_sha:
+        raise RuntimeError("owner-decision qualified implementation commit does not match the executing code")
+    for flag in OWNER_DECISION_FALSE_FLAGS:
+        if rec.get(flag) is not False:
+            raise RuntimeError(f"owner-decision must explicitly keep {flag}=false")
+    extra = sorted(k for k, v in rec.items()
+                   if k.endswith("_authorized") and k not in OWNER_DECISION_FALSE_FLAGS and v is not False)
+    if extra:
+        raise RuntimeError(f"owner-decision may authorize G6/G7 integrity only; refusing {extra}")
+    return rec, physical_sha
+
+
 def load_runtime_authorization(
     path: Path,
     *,
@@ -228,6 +267,7 @@ def load_runtime_authorization(
     g6_path: Path,
     g7_path: Path,
     replay_manifest_path: Path | None = None,
+    owner_decision_path: Path | None = None,
 ) -> dict:
     rec = _read_json(path, "runtime value authorization")
     if rec.get("schema") != VALUE_AUTH_SCHEMA:
@@ -245,12 +285,17 @@ def load_runtime_authorization(
     ):
         _require_false(rec, key, label)
 
+    identity = code_identity(Path(g6_path), Path(g7_path))
+    _, owner_decision_sha = load_owner_decision(
+        owner_decision_path, implementation_commit_sha=identity["implementation_commit_sha"]
+    )
     require_pr259_physical_bytes(preflight_path, mapping_path, replay_manifest_path)
     expected = {
+        "owner_decision_sha256": owner_decision_sha,
         "preflight_result_sha256": sha256_file(Path(preflight_path)),
         "mapping_receipt_sha256": sha256_file(Path(mapping_path)),
         "replay_manifest_sha256": sha256_file(Path(replay_manifest_path)),
-        **code_identity(Path(g6_path), Path(g7_path)),
+        **identity,
     }
     for key, actual in expected.items():
         if rec.get(key) != actual:

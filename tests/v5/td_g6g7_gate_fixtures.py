@@ -1,4 +1,4 @@
-"""Synthetic fixtures for the TD V2 G6/G7 runtime-authorization gate.
+"""Synthetic fixtures for the TD V2 G6/G7 runtime-authorization gate (synthetic owner decision included).
 
 Every file built here is synthetic and lives under pytest's tmp_path. Nothing here creates, reads or stands in for a
 real owner decision, a real runtime value authorization or the real PR #259 receipts; the gate's pinned PR #259 SHAs
@@ -75,11 +75,30 @@ def fake_code_identity(m, g6_path, g7_path, commit: str = "a" * 40) -> dict:
     }
 
 
+OWNER_DECISION_FLAGS = ("biological_replay_authorized", "target_selection_authorized", "td60_authorized",
+                        "training_authorized")
+
+
+def synthetic_owner_decision(m, commit: str = "a" * 40) -> dict:
+    """A SYNTHETIC owner-decision record for tests; it names the gate's (monkeypatched) PR #259 pins."""
+    return {
+        "schema": "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1",
+        "decision": "AUTHORIZE_G6_G7_INTEGRITY_ONLY",
+        "authorized_pr259_preflight_driver_sha256": m.PR259_DRIVER_SHA256,
+        "authorized_pr259_mapping_receipt_sha256": m.PR259_MAPPING_SHA256,
+        "qualified_implementation_commit_sha": commit,
+        **{flag: False for flag in OWNER_DECISION_FLAGS},
+        "synthetic_test_fixture_not_an_owner_decision": True,
+    }
+
+
 def authorization_record(m, b, **overrides) -> dict:
+    """Synthetic runtime authorization; an override of None removes that key."""
     rec = {
         "schema": m.VALUE_AUTH_SCHEMA,
         "authorization": m.VALUE_AUTHORIZATION,
         "scope": m.VALUE_SCOPE,
+        "owner_decision_sha256": sha(b.owner_decision),
         "preflight_result_sha256": sha(b.preflight),
         "mapping_receipt_sha256": sha(b.mapping),
         "replay_manifest_sha256": sha(b.replay_manifest),
@@ -90,7 +109,7 @@ def authorization_record(m, b, **overrides) -> dict:
         "td60_authorized": False,
     }
     rec.update(overrides)
-    return rec
+    return {k: v for k, v in rec.items() if v is not None}
 
 
 def rewrite_authorization(m, b, **overrides) -> Path:
@@ -109,6 +128,7 @@ def build_gate(tmp_path: Path, m, monkeypatch) -> SimpleNamespace:
         g6=tmp_path / "g6.py",
         g7=tmp_path / "g7.py",
         auth=tmp_path / "auth.json",
+        owner_decision=tmp_path / "owner_decision.json",
     )
     b.replay_manifest.write_bytes(b"molecular_address_index,gene\n3,G3\n5,G5\n8,G8\n")
     monkeypatch.setitem(m.EXPECTED_INPUT_HASHES, "replay_manifest_sha256", sha(b.replay_manifest))
@@ -119,12 +139,13 @@ def build_gate(tmp_path: Path, m, monkeypatch) -> SimpleNamespace:
     monkeypatch.setattr(m, "code_identity", lambda left, right: fake_code_identity(m, left, right))
     monkeypatch.setattr(m, "PR259_DRIVER_SHA256", sha(b.preflight), raising=False)
     monkeypatch.setattr(m, "PR259_MAPPING_SHA256", sha(b.mapping), raising=False)
+    write_json(b.owner_decision, synthetic_owner_decision(m))
     rewrite_authorization(m, b)
     return b
 
 
 def call_gate(m, b, **overrides):
     kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
-                  g6_path=b.g6, g7_path=b.g7)
+                  g6_path=b.g6, g7_path=b.g7, owner_decision_path=b.owner_decision)
     kwargs.update(overrides)
     return m.load_runtime_authorization(b.auth, **kwargs)

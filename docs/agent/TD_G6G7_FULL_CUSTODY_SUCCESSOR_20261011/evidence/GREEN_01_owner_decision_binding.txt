@@ -1,0 +1,26 @@
+# GREEN_01 owner-decision binding, working tree over 4656a5f7902df930ed1080b0b9f42235d1bdc723
+# note: shared synthetic gate fixture now builds a synthetic owner decision by default; owner-decision test file reuses it (dedupe) and its no-binding case removes the key explicitly (owner_decision_sha256=None)
+# utc: 2026-10-11T15:36:37Z
+ .../v5/audit_td_relational_g7_s174_overlap_v2.py   |  4 ++
+ ...terialize_td_relational_corrected_sampleA_v2.py |  4 ++
+ scripts/v5/td_relational_value_read_v2_common.py   | 47 +++++++++++++++++++++-
+ tests/v5/td_g6g7_gate_fixtures.py                  | 27 +++++++++++--
+ tests/v5/test_td_g6g7_owner_decision_binding.py    | 17 ++------
+ 5 files changed, 81 insertions(+), 18 deletions(-)
+## semantic demonstration (current signature, replay manifest supplied, no owner decision; expected: refused):
+authorization with no owner-decision record: refused: RuntimeError: runtime authorization requires an immutable owner-decision record
+........................................................................ [ 68%]
+.................................                                        [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+105 passed, 3 warnings in 11.58s
+# exit=0
