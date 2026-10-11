@@ -1,0 +1,686 @@
+.............F.......................................................... [ 32%]
+...............................................F.F.F.................... [ 65%]
+........................................................................ [ 98%]
+...                                                                      [100%]
+================================== FAILURES ===================================
+___________ test_sample_a_selection_uses_frozen_label_not_literal_A ___________
+
+    def test_sample_a_selection_uses_frozen_label_not_literal_A():
+        m = load_module()
+        frame = pd.DataFrame({
+            "sample": ["A", "A_NATURAL_MIXTURE", "B_COVERAGE_DISCOVERY"],
+            "sample_row": [0, 1, 2],
+            "source": ["HVS", "HVS", "SEA_AD"],
+        })
+>       got = m.select_sample_a(frame, enforce_geometry=False)
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:179: in select_sample_a
+    _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                  sample  sample_row  source
+0                     A           0     HVS
+1     A_NATURAL_MIXTURE           1     HVS
+2  B_COVERAGE_DISCOVERY           2  SEA_AD
+required = frozenset({'cell_id', 'donor_id', 'local_row', 'matrix_id', 'operator_index', 'sample', ...})
+label = 'sample freeze'
+
+    def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+        missing = sorted(set(required) - set(frame.columns))
+        if missing:
+>           raise RuntimeError(f"{label} missing required columns: {missing}")
+E           RuntimeError: sample freeze missing required columns: ['cell_id', 'donor_id', 'local_row', 'matrix_id', 'operator_index']
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:168: RuntimeError
+____________ test_text_sample_rows_are_ordered_numerically[12-g6] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000175676049A0>
+key = 'g6', n_rows = 12
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:179: in select_sample_a
+    _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                   sample sample_row  source cell_id
+0      A_NATURAL_MIXTURE         11   NPH52     c11
+1      A_NATUR...    HVS      c1
+11     A_NATURAL_MIXTURE          0     HVS      c0
+12  B_COVERAGE_DISCOVERY          0     HVS      b0
+required = frozenset({'cell_id', 'donor_id', 'local_row', 'matrix_id', 'operator_index', 'sample', ...})
+label = 'sample freeze'
+
+    def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+        missing = sorted(set(required) - set(frame.columns))
+        if missing:
+>           raise RuntimeError(f"{label} missing required columns: {missing}")
+E           RuntimeError: sample freeze missing required columns: ['donor_id', 'local_row', 'matrix_id', 'operator_index']
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:168: RuntimeError
+___________ test_text_sample_rows_are_ordered_numerically[1000-g6] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000175676784F0>
+key = 'g6', n_rows = 1000
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:179: in select_sample_a
+    _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                     sample sample_row  source cell_id
+0        A_NATURAL_MIXTURE        999   NPH52    c999
+1        A...TURAL_MIXTURE          0     HVS      c0
+1000  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+[1001 rows x 4 columns]
+required = frozenset({'cell_id', 'donor_id', 'local_row', 'matrix_id', 'operator_index', 'sample', ...})
+label = 'sample freeze'
+
+    def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+        missing = sorted(set(required) - set(frame.columns))
+        if missing:
+>           raise RuntimeError(f"{label} missing required columns: {missing}")
+E           RuntimeError: sample freeze missing required columns: ['donor_id', 'local_row', 'matrix_id', 'operator_index']
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:168: RuntimeError
+______________ test_a_genuinely_missing_row_is_still_refused[g6] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000175677BA790>
+key = 'g6'
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    def test_a_genuinely_missing_row_is_still_refused(monkeypatch, key):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", 12)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": 6})
+        f = frame(13, list(range(13)))
+        f = f[f.sample_row != "7"]  # 12 rows with the right source counts, but row 7 missing and row 12 present
+        with pytest.raises(RuntimeError, match="order"):
+>           m.select_sample_a(f) if key == "g7" else m.select_sample_a(f, enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                   sample sample_row  source cell_id
+0      A_NATURAL_MIXTURE          0     HVS      c0
+1      A_NATUR...  NPH52     c11
+12     A_NATURAL_MIXTURE         12   NPH52     c12
+13  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+    def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
+        """Bind the historical CSR row before filtering, then select Sample A.
+    
+        The authenticated 50K sample freeze does not physically store ``global_row``. Historical
+        Target Discovery authority defines it as the original freeze-file row position and requires
+        that binding before any filter/merge. A pre-existing explicit global_row is retained for
+        historical synthetic fixtures; the real frozen file follows the derived path.
+        """
+>       _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                   sample sample_row  source cell_id
+0      A_NATURAL_MIXTURE          0     HVS      c0
+1      A_NATUR...  NPH52     c11
+12     A_NATURAL_MIXTURE         12   NPH52     c12
+13  B_COVERAGE_DISCOVERY          0     HVS      b0
+required = frozenset({'cell_id', 'donor_id', 'local_row', 'matrix_id', 'operator_index', 'sample', ...})
+label = 'sample freeze'
+
+    def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+        missing = sorted(set(required) - set(frame.columns))
+        if missing:
+>           raise RuntimeError(f"{label} missing required columns: {missing}")
+E           RuntimeError: sample freeze missing required columns: ['donor_id', 'local_row', 'matrix_id', 'operator_index']
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:168: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000175677BA790>
+key = 'g6'
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    def test_a_genuinely_missing_row_is_still_refused(monkeypatch, key):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", 12)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": 6})
+        f = frame(13, list(range(13)))
+        f = f[f.sample_row != "7"]  # 12 rows with the right source counts, but row 7 missing and row 12 present
+        with pytest.raises(RuntimeError, match="order"):
+>           m.select_sample_a(f) if key == "g7" else m.select_sample_a(f, enforce_geometry=True)
+E           AssertionError: Regex pattern 'order' does not match "sample freeze missing required columns: ['donor_id', 'local_row', 'matrix_id', 'operator_index']".
+
+tests\v5\test_td_v2_sample_a_row_order.py:52: AssertionError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_____ test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g6_end_to_end_materialize0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_g6_receipt_separates_physical_reread_from_nph52_passthrough _______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g6_receipt_separates_phys0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_genuine_g6_pass_execution_is_accepted_and_its_trace_matches_g7s_own_expectation _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_genuine_g6_pass_execution0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_fabricated_minimal_pass_receipt_is_refused _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_fabricated_minimal_pass_r0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_missing_g6_artifact_is_re0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_missing_g6_artifact_is_re1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____________ test_missing_g6_artifact_is_refused[MANIFEST.json] ______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_missing_g6_artifact_is_re2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_missing_g6_artifact_is_refused[G6_EXECUTION_START.json] _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_missing_g6_artifact_is_re3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_altered_g6_artifact_bytes0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_altered_g6_artifact_bytes1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_wrong_start_marker_is_refused[status] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_wrong_start_marker_is_ref0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_wrong_start_marker_is_refused[schema] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_wrong_start_marker_is_ref1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________________ test_wrong_start_marker_is_refused[trace] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_wrong_start_marker_is_ref2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________________ test_wrong_start_marker_is_refused[flag] ___________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_wrong_start_marker_is_ref3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_mismatched_manifest_is_refused[values_sha] _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_mismatched_manifest_is_refused[meta_sha] ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_mismatched_manifest_is_refused[values_path] _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_mismatched_manifest_is_refused[receipt_name] ______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[status] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[trace] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[inputs] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_mismatched_manifest_is_refused[sources] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_mismatched_manifest_is_re7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_corrupted_g6_receipt_is_refused[trace] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_corrupted_g6_receipt_is_refused[inputs] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_corrupted_g6_receipt_is_refused[hist_csr] ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_corrupted_g6_receipt_is_refused[nph_rows] ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_corrupted_g6_receipt_is_refused[total_rows] _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________ test_corrupted_g6_receipt_is_refused[old_all_rows_claim] ___________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_corrupted_g6_receipt_is_refused[values_sha] _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_corrupted_g6_receipt_is_refused[flag] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_corrupted_g6_receipt_is_r7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_wrong_expected_authority_trace_is_refused ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_wrong_expected_authority_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_foreign_file_in_the_g6_namespace_is_refused _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_foreign_file_in_the_g6_na0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_g6_execution_copied_without_its_start_marker_is_refused _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g6_execution_copied_witho0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_g7_exact_natural_overlap_passes_and_checks_every_replay_address _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_exact_natural_overlap_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+________________ test_g7_single_count_mismatch_is_non_success _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_single_count_mismatch_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 1, "overlap_cells": 4, "status": "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"}
+________ test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught ________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_mismatch_at_an_implici0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 1, "overlap_cells": 4, "status": "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"}
+____ test_g7_zero_natural_overlap_is_not_estimable_and_never_opens_counts _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_zero_natural_overlap_i0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 0, "status": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"}
+_______________ test_g7_attempt_is_spent_after_a_completed_run ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_attempt_is_spent_after0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_______________ test_g7_refuses_a_g1b_shard_whose_bytes_changed _______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_refuses_a_g1b_shard_wh0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____ test_self_consistent_forged_values_artifact_is_refused[csc_format] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_values_artifact_is_refused[extra_payload_key] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_values_artifact_is_refused[index_negative] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[index_out_of_range] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_self_consistent_forged_values_artifact_is_refused[inf_value] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_values_artifact_is_refused[missing_indptr] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_self_consistent_forged_values_artifact_is_refused[nan_value] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[negative_inf_value] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[pickled_object_data] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_va22\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____________ test_values_artifact_that_is_not_an_npz_is_refused ______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_values_artifact_that_is_n0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[donor_changed] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_self_consistent_forged_metadata_artifact_is_refused[extra_field] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[missing_donor] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_operator] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_source] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[negative_detected] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[operator_changed] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[source_changed] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_self_consistent_forged_me21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____________ test_metadata_artifact_that_is_not_an_npz_is_refused _____________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_metadata_artifact_that_is0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_genuine_g6_artifacts_load_without_pickle ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_genuine_g6_artifacts_load0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________ test_g7_cross_check_does_not_use_g6_values_as_its_reference _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_g7_cross_check_does_not_u0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_____________ test_prerequisite_refuses_without_the_frozen_inputs _____________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1267\\test_prerequisite_refuses_with0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_bare_pass_only_preflight_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_real_mapping_and_driver_terminals_are_distinct
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_old_v2_preflight_schema_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_missing_required_mapping_check_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_mapping_sample_contract_must_be_34_and_35
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_changed_preflight_bytes_break_authorization_binding
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_old_v1_authorization_schema_and_token_are_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_wrong_g6_or_g7_code_sha_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_shared_common_module_and_commit_are_bound
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_code_identity_is_lf_crlf_stable
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_wrong_entrypoint_or_true_authority_boolean_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_same_size_byte_change_is_rejected
+PASSED tests/v5/test_td_relational_value_read_v2_common.py::test_strict_raw_integer_rejects_fractional_nonfinite_and_negative
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_corrected_row_strict_integer_and_whole_row_total_before_filter
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_corrected_row_rejects_fractional_nonfinite_negative
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_output_namespace_is_immutable
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_begin_namespace_spends_even_initially_empty_directory
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_v2_output_schemas_are_distinct_from_v1
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_historical_csr_hash_drift_is_rejected
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_source_record_sha_helper_is_used_without_size_only_acceptance
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_input_authority_ledger_includes_historical_nph_and_td50_hashes
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_nonexistent_directory_has_one_winner
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_existing_empty_directory_has_one_winner
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_nph_historical_row_rejects_duplicate_address_indices_before_materialization
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_nph_historical_row_passes_historical_values_through_unmodified
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_corrected_row_rejects_duplicate_physical_column_indices
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_overlap_status_is_pass_only_for_real_exact_overlap
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g1b_result_requires_pass_all_requirements_and_exact_freeze_sha
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_payload_requires_full_41238_geometry_and_integer_data
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_sparse_reference_row_uses_strict_integer_semantics
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_sparse_reference_row_rejects_duplicate_addresses
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_compare_rows_checks_all_replay_addresses_including_implicit_zeros
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_same_size_changed_physical_source_is_rejected
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_meta_is_reauthenticated_immediately_before_cell_use
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_duplicate_cell_ids_are_rejected
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_s174_counts_are_reauthenticated_immediately_before_value_use
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_no_overlap_control_flow_precedes_s174_count_open_and_receipt_records_immediate_hashes
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g7_requires_same_authority_g6_pass_receipt
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_v2_schema_is_distinct_from_historical_v1
+PASSED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g7_corrected_row_rejects_duplicate_physical_column_indices
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_physical_h5_auth_failure_prevents_s174_count_loader
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_spends_attempt_and_rejects_retry
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_rejects_preexisting_final_receipt
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_path_is_sidecar_of_final_receipt
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_concurrent_start_has_exactly_one_winner
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner
+PASSED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_marker_survives_a_later_failure_and_blocks_retry
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_constants_are_the_exact_owner_decision_contract
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_valid_synthetic_owner_decision_is_accepted_and_bound
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_authorization_without_an_owner_decision_record_is_refused
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_missing_owner_decision_file_is_refused
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[schema-JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[schema-None]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[decision-AUTHORIZE_G6_G7_INTEGRITY_ONLY ]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[decision-AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[decision-None]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[authorized_pr259_preflight_driver_sha256-0000000000000000000000000000000000000000000000000000000000000000]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[authorized_pr259_preflight_driver_sha256-None]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[authorized_pr259_mapping_receipt_sha256-0000000000000000000000000000000000000000000000000000000000000000]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[authorized_pr259_mapping_receipt_sha256-None]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[qualified_implementation_commit_sha-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_contract_fields_are_exact[qualified_implementation_commit_sha-None]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[True-biological_replay_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[True-target_selection_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[True-td60_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[True-training_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[None-biological_replay_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[None-target_selection_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[None-td60_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[None-training_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[false-biological_replay_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[false-target_selection_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[false-td60_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[false-training_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[0-biological_replay_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[0-target_selection_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[0-td60_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_must_keep_each_flag_explicitly_false[0-training_authorized]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_may_not_authorize_anything_else
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_owner_decision_edited_after_authorization_is_refused
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_authorization_must_bind_the_owner_decision_sha
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_g6_and_g7_pass_the_owner_decision_to_the_gate_and_trace_its_sha[materialize_td_relational_corrected_sampleA_v2.py]
+PASSED tests/v5/test_td_g6g7_owner_decision_binding.py::test_g6_and_g7_pass_the_owner_decision_to_the_gate_and_trace_its_sha[audit_td_relational_g7_s174_overlap_v2.py]
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_gate_pins_are_the_exact_audited_physical_shas
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_pristine_pinned_bytes_are_accepted
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_receipt_with_authorization_built_around_it_is_refused[preflight]
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_receipt_with_authorization_built_around_it_is_refused[mapping]
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_replay_manifest_with_authorization_built_around_it_is_refused
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_gate_refuses_when_no_replay_manifest_is_supplied
+PASSED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_authorization_must_bind_the_replay_manifest_sha
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_no_rounding_or_truncating_call_anywhere_in_the_v2_value_path
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_rounding_scanner_catches_a_planted_round
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[1.5]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[-1.0]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[nan]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[-inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[1.5]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[-1.0]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[nan]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[-inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-global_row]
+PASSED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[12-g7]
+PASSED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[1000-g7]
+PASSED tests/v5/test_td_v2_sample_a_row_order.py::test_a_genuinely_missing_row_is_still_refused[g7]
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_receipt_separates_physical_reread_from_nph52_passthrough
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_production_coverage_is_23690_reread_plus_1310_passthrough
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_library_mismatch_stops_and_keeps_the_spent_marker
+PASSED tests/v5/test_td_g6_global_row_binding.py::test_sample_a_derives_global_row_from_freeze_position_without_source_column
+PASSED tests/v5/test_td_g6_global_row_binding.py::test_global_row_is_assigned_before_filtering_not_from_reset_sample_row
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_genuine_g6_pass_execution_is_accepted_and_its_trace_matches_g7s_own_expectation
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_fabricated_minimal_pass_receipt_is_refused
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[MANIFEST.json]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[G6_EXECUTION_START.json]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[status]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[schema]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[trace]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[flag]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[values_sha]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[meta_sha]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[values_path]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[receipt_name]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[status]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[trace]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[inputs]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[sources]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[trace]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[inputs]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[hist_csr]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[nph_rows]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[total_rows]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[old_all_rows_claim]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[values_sha]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[flag]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_expected_authority_trace_is_refused
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_foreign_file_in_the_g6_namespace_is_refused
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_g6_execution_copied_without_its_start_marker_is_refused
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_exact_natural_overlap_passes_and_checks_every_replay_address
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_single_count_mismatch_is_non_success
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_mismatch_at_an_implicit_zero_replay_address_is_caught
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_zero_natural_overlap_is_not_estimable_and_never_opens_counts
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_attempt_is_spent_after_a_completed_run
+PASSED tests/v5/test_td_g7_synthetic_end_to_end.py::test_g7_refuses_a_g1b_shard_whose_bytes_changed
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[csc_format]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[extra_payload_key]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_negative]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_out_of_range]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[inf_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[missing_indptr]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[nan_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[negative_inf_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[pickled_object_data]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_values_artifact_that_is_not_an_npz_is_refused
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[donor_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[extra_field]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_donor]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_operator]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[negative_detected]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[operator_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[source_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_metadata_artifact_that_is_not_an_npz_is_refused
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_genuine_g6_artifacts_load_without_pickle
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_g7_cross_check_does_not_use_g6_values_as_its_reference
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_values_validator_requires_exactly_25000_by_41238_in_production
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_prerequisite_refuses_without_the_frozen_inputs
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_sample_a_selection_uses_frozen_label_not_literal_A
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[12-g6]
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[1000-g6]
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_a_genuinely_missing_row_is_still_refused[g6]
+4 failed, 215 passed, 3 warnings in 31.71s
+# exit=1

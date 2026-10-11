@@ -1,0 +1,6 @@
+# exact real Sample-A freeze compatibility
+# path=/d/Jepa project/exports/foundation_corpus_discovery_v1/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv
+79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6 */d/Jepa project/exports/foundation_corpus_discovery_v1/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv
+PASS_REAL_SAMPLE_FREEZE_SCHEMA_AND_GLOBAL_ROW_BINDING
+rows 25000 source_counts {'SEA_AD': 22561, 'NPH52': 1310, 'HVS': 1129}
+# exit=0
