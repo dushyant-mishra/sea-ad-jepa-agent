@@ -65,6 +65,8 @@ def wrapped(job: dict, bash: str, timeout: int, ledger: str) -> str:
     out = job["out"]
     return (f'timeout {timeout} "{bash}" -c {shlex.quote(inner)} > "{job["log"]}" 2>&1; rc=$?; '
             f'if [ "$rc" = 124 ]; then cls=TIMEOUT; elif [ "$rc" = 0 ] && [ -f "{out}" ]; then cls=OUTPUT_WRITTEN; '
+            # exit 10 from v79_family_gate.py: the family already failed a world, so this world is not run
+            f'elif [ "$rc" = 10 ] && [ ! -f "{out}" ]; then cls=SKIPPED_FAMILY_STOPPED; '
             f'else cls=LAUNCH_OR_RUNTIME_FAILURE; fi; '
             # stdin from /dev/null: a detached job has no console, and sha256sum otherwise fails silently in the pipe
             f'if [ -f "{out}" ]; then sha=$(sha256sum "{out}" </dev/null 2>/dev/null | cut -c1-64); '

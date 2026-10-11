@@ -31,6 +31,31 @@ def criteria(res: dict) -> dict:
     return out
 
 
+def world_failures(fits: dict) -> dict:
+    """The frozen suite criteria, attributed to worlds and evaluated on whichever worlds exist so far (for the
+    fail-closed family gate). A world fails if it is not diagnosed, if its own planted-component coverage is below
+    the binomial bound, or, once S1 exists, if its cross-world control fails (no_invented_class for S0/S2/S3/S4,
+    labels_matter for S5). Same tests and thresholds as criteria(); nothing new is decided here."""
+    out = {name: [] for name in fits}
+    for name, r in fits.items():
+        if not r["diagnostics"]["diagnosed"]:
+            out[name].append("not_diagnosed")
+        cov = [c for x in r["components_result"].values() if x["planted_and_scored"] for c in x["covered"]]
+        if cov and np.mean(cov) < stats.binom.ppf(0.01, len(cov), 0.9) / len(cov):
+            out[name].append("coverage")
+    if "S1_present" in fits:
+        s1 = fits["S1_present"]["components_result"]
+        for name in ("S0_class_absent", "S2_class_permuted", "S3_donor_only", "S4_operator_only"):
+            if name in fits and not (fits[name]["components_result"]["cls"]["across_gene_median_q"][2]
+                                     < s1["cls"]["across_gene_median_q"][0]):
+                out[name].append("no_invented_class")
+        if "S5_labels_removed" in fits and not (
+                fits["S5_labels_removed"]["components_result"]["res"]["across_gene_median_q"][0]
+                > s1["res"]["across_gene_median_q"][2]):
+            out["S5_labels_removed"].append("labels_matter")
+    return out
+
+
 SCENARIOS_REQUIRED = ("S1_present", "S0_class_absent", "S2_class_permuted", "S3_donor_only", "S4_operator_only",
                       "S5_labels_removed")
 

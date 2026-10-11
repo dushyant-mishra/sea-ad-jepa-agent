@@ -28,11 +28,13 @@ def wsl(p: Path) -> str:
 
 
 def test_scheduler_records_every_outcome_class(tmp_path):
-    out = {k: tmp_path / f"{k}.out" for k in ("ok", "fail", "noout", "timeout", "gpu")}
+    out = {k: tmp_path / f"{k}.out" for k in ("ok", "fail", "noout", "timeout", "gpu", "skipped")}
     jobs = [dict(name="ok", cmd=f"echo fine > {msys(out['ok'])}", log=msys(tmp_path / "ok.log"), out=msys(out["ok"])),
             dict(name="fail", cmd="exit 3", log=msys(tmp_path / "fail.log"), out=msys(out["fail"])),
             dict(name="noout", cmd="true", log=msys(tmp_path / "noout.log"), out=msys(out["noout"])),
             dict(name="timeout", cmd="sleep 30", log=msys(tmp_path / "t.log"), out=msys(out["timeout"])),
+            # the family gate's exit code: a stopped family's remaining world, neither launch failure nor statistics
+            dict(name="skipped", cmd="exit 10", log=msys(tmp_path / "s.log"), out=msys(out["skipped"])),
             dict(name="gpu", device="gpu", cmd=f"echo from-wsl > {wsl(out['gpu'])}", log=msys(tmp_path / "g.log"),
                  out=msys(out["gpu"]))]
     jf, ledger = tmp_path / "jobs.json", tmp_path / "ledger.jsonl"
@@ -47,7 +49,7 @@ def test_scheduler_records_every_outcome_class(tmp_path):
         time.sleep(2)
     cls = {e["name"]: e["class"] for e in ends}
     assert cls == {"ok": "OUTPUT_WRITTEN", "fail": "LAUNCH_OR_RUNTIME_FAILURE", "noout": "LAUNCH_OR_RUNTIME_FAILURE",
-                   "timeout": "TIMEOUT", "gpu": "OUTPUT_WRITTEN"}, cls
+                   "timeout": "TIMEOUT", "gpu": "OUTPUT_WRITTEN", "skipped": "SKIPPED_FAMILY_STOPPED"}, cls
     starts = [json.loads(x) for x in ledger.read_text(encoding="utf-8").splitlines() if '"start"' in x]
     assert {s["name"] for s in starts} == set(cls)
     # every written output is bound by its exact SHA-256 (an empty or placeholder value is a provenance failure)
