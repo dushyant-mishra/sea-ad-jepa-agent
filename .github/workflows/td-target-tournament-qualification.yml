@@ -26,10 +26,12 @@ jobs:
           python -m pip install pytest numpy pandas scipy scikit-learn
       - name: Record exact head and environment
         run: |
-          echo "HEAD=$(git rev-parse HEAD)"
-          git status --short
-          python --version
-          python - <<'PY'
+          mkdir -p qualification
+          {
+            echo "HEAD=$(git rev-parse HEAD)"
+            echo "STATUS_BEFORE=[$(git status --short)]"
+            python --version
+            python - <<'PY'
           import numpy, pandas, scipy, sklearn, pytest
           print('numpy', numpy.__version__)
           print('pandas', pandas.__version__)
@@ -37,8 +39,10 @@ jobs:
           print('sklearn', sklearn.__version__)
           print('pytest', pytest.__version__)
           PY
+          } | tee qualification/environment.txt
       - name: Run exact synthetic and metadata-only tournament harness
         run: |
+          set -o pipefail
           python -m pytest -q \
             tests/v5/test_td_donor_resampling_audit.py \
             tests/v5/test_td_gate_case_coverage.py \
@@ -56,8 +60,19 @@ jobs:
             tests/v5/test_td_target_tournament_precision.py \
             tests/v5/test_td_target_tournament_prefreeze.py \
             tests/v5/test_td_target_tournament_scaffold.py \
-            tests/v5/test_td_tournament_completeness.py
+            tests/v5/test_td_tournament_completeness.py \
+            | tee qualification/pytest.txt
       - name: Confirm worktree unchanged
         run: |
-          test -z "$(git status --short)"
-          echo "PASS_WORKTREE_CLEAN_AFTER_FOCUSED_QUALIFICATION"
+          STATUS="$(git status --short --untracked-files=no)"
+          echo "STATUS_AFTER_TRACKED=[$STATUS]" | tee qualification/worktree.txt
+          test -z "$STATUS"
+          echo "PASS_WORKTREE_CLEAN_AFTER_FOCUSED_QUALIFICATION" | tee -a qualification/worktree.txt
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-target-tournament-qualification-${{ github.sha }}
+          path: qualification/
+          if-no-files-found: error
+          retention-days: 90
