@@ -17,6 +17,22 @@ EXPECTED_AUTHORITY_KEYS = {
     'stage4_authorized',
     'training_authorized',
 }
+CASE_FIELDS = (
+    'case_id',
+    'candidate_id',
+    'gate_id',
+    'source',
+    'analysis_tier',
+    'endpoint_id',
+    'available_donors_upper_bound',
+)
+ROLE_FIELDS = (
+    'candidate_id',
+    'gate_id',
+    'source',
+    'analysis_tier',
+    'endpoint_id',
+)
 
 
 class PrefreezeError(ValueError):
@@ -28,6 +44,38 @@ def _canonical_sha(obj):
         obj, sort_keys=True, separators=(',', ':'), ensure_ascii=False
     ).encode('utf-8')
     return hashlib.sha256(raw).hexdigest()
+
+
+def _validate_cases(cases):
+    if not isinstance(cases, list) or not cases:
+        raise PrefreezeError('nonempty decision_cases required')
+    ids=[]
+    roles=set()
+    normalized=[]
+    for case in cases:
+        if not isinstance(case, dict) or set(case) != set(CASE_FIELDS):
+            raise PrefreezeError('decision case fields must exactly match frozen role schema')
+        for key in CASE_FIELDS[:-1]:
+            if not isinstance(case[key], str) or not case[key]:
+                raise PrefreezeError(f'{key} must be nonempty string')
+        n=case['available_donors_upper_bound']
+        if type(n) is not int or n < 0:
+            raise PrefreezeError(
+                'available_donors_upper_bound must be nonnegative integer'
+            )
+        ids.append(case['case_id'])
+        role=tuple(case[k] for k in ROLE_FIELDS)
+        if role in roles:
+            raise PrefreezeError('duplicate decision role tuple')
+        roles.add(role)
+        normalized.append({k:case[k] for k in CASE_FIELDS})
+    if len(set(ids)) != len(ids):
+        raise PrefreezeError('case_id values must be unique nonempty strings')
+    return sorted(normalized, key=lambda x:x['case_id'])
+
+
+def canonical_decision_family_sha256(cases):
+    return _canonical_sha(_validate_cases(cases))
 
 
 def build_prefreeze_manifest(config):
@@ -55,32 +103,35 @@ def build_prefreeze_manifest(config):
         or any(v is not False for v in auth.values())
     ):
         raise PrefreezeError('authority must contain exact frozen keys, all false')
-    cases = config.get('decision_cases')
-    if not isinstance(cases, list) or not cases:
-        raise PrefreezeError('nonempty decision_cases required')
-    ids = [c.get('case_id') for c in cases]
-    if (
-        any(not isinstance(x, str) or not x for x in ids)
-        or len(set(ids)) != len(ids)
-    ):
-        raise PrefreezeError('case_id values must be unique nonempty strings')
-    for case in cases:
-        n = case.get('available_donors_upper_bound')
-        if type(n) is not int or n < 0:
-            raise PrefreezeError(
-                'available_donors_upper_bound must be nonnegative integer'
-            )
 
-    family_size = len(cases)
+    cases = config.get('decision_cases')
+    normalized = _validate_cases(cases)
+    registry_sha = config.get('decision_family_registry_sha256', '')
+    if (
+        not isinstance(registry_sha, str)
+        or len(registry_sha) != 64
+        or any(c not in '0123456789abcdef' for c in registry_sha)
+    ):
+        raise PrefreezeError('decision_family_registry_sha256 must be lowercase SHA-256')
+    actual_registry_sha = _canonical_sha(normalized)
+    if registry_sha != actual_registry_sha:
+        raise PrefreezeError('decision family registry SHA mismatch')
+
+    family_size = len(normalized)
     alpha_eff = family_alpha / family_size
     min_donors = minimum_donors_for_sign_resolution(alpha_eff)
     min_perm = minimum_permutation_draws_for_resolution(alpha_eff)
     resolution = []
-    for case in cases:
+    for case in normalized:
         upper = case['available_donors_upper_bound']
         resolution.append(
             {
                 'case_id': case['case_id'],
+                'candidate_id': case['candidate_id'],
+                'gate_id': case['gate_id'],
+                'source': case['source'],
+                'analysis_tier': case['analysis_tier'],
+                'endpoint_id': case['endpoint_id'],
                 'available_donors_upper_bound': upper,
                 'resolution_impossible_from_donor_upper_bound': upper < min_donors,
                 'estimability_proven': False,
@@ -94,6 +145,7 @@ def build_prefreeze_manifest(config):
         'family_alpha': family_alpha,
         'multiplicity_method': 'BONFERRONI',
         'decision_family_size': family_size,
+        'decision_family_registry_sha256': actual_registry_sha,
         'alpha_eff': alpha_eff,
         'minimum_nonzero_donors_for_sign_resolution': min_donors,
         'minimum_permutation_draws_for_resolution': min_perm,
