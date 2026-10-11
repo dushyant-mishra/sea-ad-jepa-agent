@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """G7 exact cross-check for corrected TD Sample-A reads against Macha's G1b-authorized S174 cache.
 
-THIS SCRIPT DOES NOT AUTHORIZE A VALUE READ. It requires the same exact-scope value authorization
+THIS SCRIPT DOES NOT AUTHORIZE A VALUE READ. It requires the same exact-scope V2 value authorization
 as the corrected Sample-A materializer and an exact PASS value-blind preflight receipt.
 
 It uses every natural HVS/SEA-AD cell-ID overlap between historical Sample-A and the frozen S174
 cache. It never selects extra cells to create overlap. Raw integer counts on every frozen 9,216
-address are compared with zero tolerance. If there is no natural overlap, the result is explicitly
-NOT_ESTIMABLE rather than a fabricated test.
+address are compared with zero tolerance. S174 cache geometry is the full 41,238 canonical-address
+space; the later 14,417 analysis universe is not this cache's storage geometry. If there is no natural
+overlap, the result is explicitly NOT_ESTIMABLE and returns a non-success process exit.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -25,8 +27,8 @@ G1B_PASS_COMMIT = "4ab8e2101f2e595d9a97df05517d6e672768ecec"
 
 
 def _load_materializer():
-    p = Path(__file__).resolve().with_name("materialize_td_relational_corrected_sampleA.py")
-    spec = importlib.util.spec_from_file_location("td_materializer", p)
+    p = Path(__file__).resolve().with_name("materialize_td_relational_corrected_sampleA_v2.py")
+    spec = importlib.util.spec_from_file_location("td_materializer_v2", p)
     m = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(m)
@@ -41,8 +43,18 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
     return h.hexdigest()
 
 
+def raw_integer(v0) -> int:
+    x = float(v0)
+    if not math.isfinite(x) or x < 0.0:
+        raise RuntimeError(f"negative or non-finite raw S174 reference count: {x!r}")
+    v = int(x)
+    if float(v) != x:
+        raise RuntimeError(f"non-integer value encountered in raw S174 reference count: {x!r}")
+    return v
+
+
 def compare_rows(current: dict[int, int], reference: dict[int, int], addresses: set[int]) -> dict[str, int]:
-    mismatches = sum(int(current.get(a, 0)) != int(reference.get(a, 0)) for a in addresses)
+    mismatches = sum(current.get(a, 0) != reference.get(a, 0) for a in addresses)
     return {"checked": len(addresses), "mismatches": int(mismatches)}
 
 
@@ -68,9 +80,18 @@ def overlap_status(overlap_cells: int, mismatches: int) -> str:
     return "PASS_TD_G7_S174_EXACT_OVERLAP"
 
 
+def exit_code_for_status(status: str) -> int:
+    return 0 if status == "PASS_TD_G7_S174_EXACT_OVERLAP" else 2
+
+
 def sparse_row_dict(X, r: int, addresses: set[int]) -> dict[int, int]:
     row = X.getrow(r)
-    return {int(a): int(v) for a, v in zip(row.indices, row.data) if int(a) in addresses and int(v) != 0}
+    out: dict[int, int] = {}
+    for a0, v0 in zip(row.indices, row.data):
+        a = int(a0)
+        if a in addresses and float(v0) != 0.0:
+            out[a] = raw_integer(v0)
+    return out
 
 
 def main() -> int:
@@ -96,7 +117,9 @@ def main() -> int:
     g1b = json.loads(Path(args.macha_g1b_freeze).read_text(encoding="utf-8"))
     verified_shards = verify_cache_hashes(Path(args.s174_cache_root), g1b)
 
-    class A: pass
+    class A:
+        pass
+
     a = A()
     a.replay_manifest = args.replay_manifest
     a.sample_freeze = args.sample_freeze
@@ -134,6 +157,8 @@ def main() -> int:
 
         z = np.load(counts_path, allow_pickle=False)
         Xs = sparse.csr_matrix((z["data"], z["indices"], z["indptr"]), shape=tuple(z["shape"]))
+        if Xs.shape[1] != M.N_ADDR:
+            raise RuntimeError(f"S174 cache address geometry mismatch for {stem}: {Xs.shape}")
         fprov = prov[prov.source_dataset_id.astype(str).eq(M.FAMILY[study])]
         id_to_address = dict(zip(fprov.source_exact_ensembl_id.astype(str), fprov.molecular_address_index.astype(int)))
         ledger_ids = set(collision.loc[collision.matrix_id.astype(str).eq(str(mid)), "source_exact_ensembl_id"].astype(str))
@@ -144,7 +169,8 @@ def main() -> int:
             obs = M.h5_strings(h["obs"], "exp_component_name")
             node = h[str(m["slot"])]
             ip = node["indptr"]
-            mm = 0; checked = 0
+            mm = 0
+            checked = 0
             for row in overlap.itertuples(index=False):
                 er = int(row.local_row)
                 if str(obs[er]) != str(row.cell_id):
@@ -153,16 +179,21 @@ def main() -> int:
                 current, _ = M.corrected_row(node["indices"][lo:hi], node["data"][lo:hi], col_to_address, replay_addresses)
                 reference = sparse_row_dict(Xs, where_s174[str(row.cell_id)], replay_addresses)
                 c = compare_rows(current, reference, replay_addresses)
-                checked += c["checked"]; mm += c["mismatches"]
-            total_overlap += len(overlap); total_checked += checked; total_mismatches += mm
+                checked += c["checked"]
+                mm += c["mismatches"]
+            total_overlap += len(overlap)
+            total_checked += checked
+            total_mismatches += mm
             per_matrix.append({"matrix_id": str(mid), "study": study, "overlap_cells": int(len(overlap)),
                                "checked_entries": int(checked), "mismatches": int(mm)})
 
     status = overlap_status(total_overlap, total_mismatches)
     rec = {
-        "schema": "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V1",
+        "schema": "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2",
         "status": status,
-        "scope": "all natural HVS/SEA Sample-A x S174 cell overlaps; all exact 9216 replay addresses; raw integer counts; zero tolerance",
+        "scope": "all natural HVS/SEA Sample-A x S174 cell overlaps; all exact 9216 replay addresses in the full 41238-address S174 cache; raw integer counts; zero tolerance",
+        "materializer_entrypoint": M.REQUIRED_G6_ENTRYPOINT,
+        "value_authorization_schema": M.VALUE_AUTH_SCHEMA,
         "macha_g1b_pass_commit": G1B_PASS_COMMIT,
         "macha_g1b_freeze_sha256": G1B_FREEZE_SHA256,
         "s174_verified_shards": verified_shards,
@@ -181,7 +212,7 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rec, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"status": status, "overlap_cells": total_overlap, "mismatches": total_mismatches}, sort_keys=True))
-    return 0 if status in ("PASS_TD_G7_S174_EXACT_OVERLAP", "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP") else 2
+    return exit_code_for_status(status)
 
 
 if __name__ == "__main__":

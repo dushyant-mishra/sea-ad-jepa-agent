@@ -1,0 +1,965 @@
+{
+ "schema": "S174_REBUILD_FREEZE_V1",
+ "status": "FROZEN__NO_COUNT_READ",
+ "authorization": "owner, 2026-10-07: full TRAIN cache rebuild by a fresh gene-ID join from physical H5AD columns; decoder kept as an independent cross-check; collisions explicit; recover the 682 SEA-AD columns where possible; no TEST, pathology-dependent selection, mutation, training or model fitting; freeze hashes and code SHA before execution; old-against-new receipts; separate lane from PR #228",
+ "lane": {
+  "branch": "claude/s174-train-cache-rebuild-20261007",
+  "stacked_on": "claude/v77-synthetic-premise-custody-20261005@976d2be6"
+ },
+ "old_cache": "D:\\Jepa project\\data\\cache\\stage81a3r_corrected_real_train",
+ "new_cache": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+ "policy": {
+  "join": "physical var identifier -> family provenance source_exact_ensembl_id -> molecular_address_index",
+  "never_used": "the family source_feature_index applied to physical columns",
+  "collisions": "excluded, never summed; recorded as MEASURED_COLLISION_UNRESOLVED; ledger collisions matched by Ensembl ID plus any join collision",
+  "cells": "exactly the old cache's cells in the old order",
+  "nph": "carried over byte-identically",
+  "library": "every count in the physical row, as the old builder computed it"
+ },
+ "matrices": [
+  {
+   "matrix_id": "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+   "study": "HVS",
+   "stem": "de88e08b50c44dbe",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/19cd530b-622c-4bd8-b738-dbf169412cb0.h5ad",
+    "bytes": 431473246,
+    "sha256": "dd0f4174cda92cc8087d532bc06520595566ca775a70efc7716d616c8b6eeefa"
+   },
+   "old_cache": {
+    "counts_sha256": "dd0d65374de7b78d5d1cc0c5e11c5dfef4b52c66c960f692779525de53483cfe",
+    "meta_sha256": "0a9e2e83780b33ada735f10133ca5c155a31a6075455c5daf4eb37bbd5159678"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "21850cb0a9a5dac1100e658d5a8726d629341a150f9b27284c32d213801fe5d9",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::38374d1b-6549-4429-b59a-ff2706dacd96",
+   "study": "HVS",
+   "stem": "5a104c17a7d6e5cf",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/38374d1b-6549-4429-b59a-ff2706dacd96.h5ad",
+    "bytes": 803923602,
+    "sha256": "90138e508ee2cb9d82b2090904c3499b66f34e92bfef7853e483980fec523709"
+   },
+   "old_cache": {
+    "counts_sha256": "0566fa4ee9471e84a5dca3bd4b30c461bb72ce5d80a077b13f8bcc9e62895cdc",
+    "meta_sha256": "c993335eaf295dad21a8763b462abda5eadad6e5e8f1f7fa44867b187f67b614"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "6c62ee2335f7624ab4c61958719fd26928306db63e85d60f7e59082320437398",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c",
+   "study": "HVS",
+   "stem": "fa1d6cf6e74837f2",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/42c9001a-3a29-4952-aaa0-b55e73851a5c.h5ad",
+    "bytes": 61610897,
+    "sha256": "f76413b30139fbeea70a11ed8cbaed6e0c7f68dcccea73b7d9c02b81c8f55f0c"
+   },
+   "old_cache": {
+    "counts_sha256": "864758a444e5b0d31c4eb2d5bbd3cbec2f32543c0ec8bc50ae102edddc8a9ed1",
+    "meta_sha256": "4450ebf6a553631e30ccee337e412b36bfd2484d544e2e53641bf3dce6c2ec8e"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "63427a5cc34add6a2cf55815faadcaa5fccb58c44380c98a6c266924e5fbbea5",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd",
+   "study": "HVS",
+   "stem": "701d4db85fd51088",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd.h5ad",
+    "bytes": 1801583012,
+    "sha256": "941d2d8d6b6d1fd625af0270752053485ebeaccf3560b41bc76ff274d0ac21a6"
+   },
+   "old_cache": {
+    "counts_sha256": "54b5223c7aa485e3ab4e9d677f65af3b051e5e071303a16c43738906b4bfa1e5",
+    "meta_sha256": "d6233772cf220869aaaccd7e7ab78726c5e07bcf071df547bebb01b6a00c24f7"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "964b1df0cdbb360098096e34b936de7d90b3c32a2963a9cba08c34002ffd52e1",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9",
+   "study": "HVS",
+   "stem": "5dab94333efd8e21",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/57f3c92b-a07a-41da-b660-88eb9f93c4c9.h5ad",
+    "bytes": 7604282325,
+    "sha256": "da84d4c6144b2b95be372343d82015e41b36d7a4d0828ab4d464b606b4fc3b64"
+   },
+   "old_cache": {
+    "counts_sha256": "632c529f10db97432a7b741cc99ff19a25bec201061aab15b67fb92ace518457",
+    "meta_sha256": "3a5928ee3008a54339dd97c0e5c7b82430ce903197574cda2c35a4820a738547"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "648da49e2fb5985dd5ec0348ac45439485d13cd8d254a4627d6407144d3e208e",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d",
+   "study": "HVS",
+   "stem": "a410358f191a3e4c",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/5e9da577-f665-44af-b9b4-fa0d5ad1964d.h5ad",
+    "bytes": 32831267,
+    "sha256": "101c074a0af5ba94fb2224174113a2cd388d474f2dffee7dc1e2831e56372124"
+   },
+   "old_cache": {
+    "counts_sha256": "e6a85b0965ca7d2f059bb1b9bbbc83a277c35d3e73bdb4e491c9071162947add",
+    "meta_sha256": "c53a5c789de7e3e2da09ce4c3f45d0e241fcabc4339674d690054e4a80023b2b"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "60dfd868deca09e7586a97feb81260ebe9f9671377f5ce796368788a66ce1223",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::5fff0955-173e-407d-b160-64f513ca6db6",
+   "study": "HVS",
+   "stem": "46a2e68f12d45643",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/5fff0955-173e-407d-b160-64f513ca6db6.h5ad",
+    "bytes": 2510495710,
+    "sha256": "3948d6d325fe73d95f13d6746eda3c269ed717953d1d9cbff2e57120f10281c4"
+   },
+   "old_cache": {
+    "counts_sha256": "a45446ac8064d6dd4fbc5715cf6e31a4584e205b25d10a5dc93f454acb4a1608",
+    "meta_sha256": "8867cbb3ce89c60b8c7c144b8716eb75ca6576ec81f087ced6a3b550166d47c1"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "e9e86080074b21c0f987f83d774637b4441a4636405cbf0335f81358107dc965",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::6201fd7d-f35b-4487-bace-99426881237b",
+   "study": "HVS",
+   "stem": "7da7c897180c16b5",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/6201fd7d-f35b-4487-bace-99426881237b.h5ad",
+    "bytes": 519242982,
+    "sha256": "83f72f6ab8b234b8a1040e2754aa1d030137162eb72143cf21d0cf7a0a80188d"
+   },
+   "old_cache": {
+    "counts_sha256": "1dcbe94d2b8ebf37145f7e147bdb20238abe63d82ab01e2a84ed49de407ea36e",
+    "meta_sha256": "615c0a9f02955ace501325371c385768089b36aeea26289380e4fb9e003c1fb8"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "fb9c11bd44dc042bb11fd852e61f54480fe4fb7ac00855204379d61fae0b5768",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::77dc6994-2777-4fad-a445-4ff7d143a682",
+   "study": "HVS",
+   "stem": "c9d1fc26b487b582",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/77dc6994-2777-4fad-a445-4ff7d143a682.h5ad",
+    "bytes": 690905441,
+    "sha256": "b924e51d355d81660397ebb3b0b5693d0008d6ec14f3c9b31d038c6a9b97f04e"
+   },
+   "old_cache": {
+    "counts_sha256": "cdc07bf7fc868df5c924575c394c7cd02a5f05c321cb039f594e2aa65b9d5d7f",
+    "meta_sha256": "16cbaefe352b7f5a7ad49194e39d0b76b2ca9dda53341ab5322551ee5459c025"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "8400e9bb83d0036826db7dae95899ca21fab775a989251658c48ce1aa2ca8183",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::7958eba0-1d79-42e3-8947-a198f98578f2",
+   "study": "HVS",
+   "stem": "d35f9b260b727137",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/7958eba0-1d79-42e3-8947-a198f98578f2.h5ad",
+    "bytes": 136057698,
+    "sha256": "56dc9ac20dddf5cac50a843418ddefeaf2ed2d4ed1475fbf600c0bf4f514eaa8"
+   },
+   "old_cache": {
+    "counts_sha256": "3713d758e7c10373a268f09efa8ace7bb29660d6a0230aa1ee03641f0c254369",
+    "meta_sha256": "21e3dbd4dfd539dba950b005a724d8d328f1acaa98ad09ffe24721eab72213de"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "88783b469a1707bbacb34648b4b427077b4df926aaf81cc2b9083e4b269b4e93",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa",
+   "study": "HVS",
+   "stem": "117e1b89adbf25e4",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/7b96819c-598c-47a1-9cea-f410fc0c37fa.h5ad",
+    "bytes": 4551204610,
+    "sha256": "9dc829cecac4ab347258e1d53f24058e1dbf2d3bd6b58eb6c61f2b28b63738b3"
+   },
+   "old_cache": {
+    "counts_sha256": "0366ec50f1ec489c311206a487f4d4e625f1dc9fdc2b79c7ca3ff2f4d91b44de",
+    "meta_sha256": "88b4de9edbd8285bb976b671b355d38b4c1874c9587de3a261016bd8c2da09a6"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "b91b33490d8451ab52abedef2092ccc8c116e14abf2dcb66f9069d233f39c0fb",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551",
+   "study": "HVS",
+   "stem": "120794b6773c7cf9",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/7be9f52d-7eef-4bdd-a0ba-c8f2d4986551.h5ad",
+    "bytes": 1636005614,
+    "sha256": "eb1b40b9b005aa951dfa9f65d35b840819208bc66b8367230083d8d3ed5f56ea"
+   },
+   "old_cache": {
+    "counts_sha256": "4b2a9f2cec21ee9142d027d86931aa32a0643631631a29bde3731b4a922dddae",
+    "meta_sha256": "b12df41c563eb80f336e86241dd07db3b3b13110eeb227b6eb7159c219353a6d"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "ea2f5add50919683e2d358b559ac1024fe2039a346212e2f8ac5881d4f037b1b",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf",
+   "study": "HVS",
+   "stem": "dd26eaeaed7d104f",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/8dfadc37-e19c-4d4b-80d8-cee48e732bcf.h5ad",
+    "bytes": 362143265,
+    "sha256": "3a5b23b1f10d36c289bc21b0a35e68c84f968f987e8054bc3f38bb930ef65bd6"
+   },
+   "old_cache": {
+    "counts_sha256": "bc63c152418d95262d2a4047fd5281736dd67a1b3834808b8a29ad4db07a1611",
+    "meta_sha256": "237173e9eb1a786a49fdccfd25b5206b7c8c0ee1122b02648cb9ad5f980899fa"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "c35663ca532d02bf594d297163239f6e9183c40d1f4460c519a4c55c12dbc26c",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f",
+   "study": "HVS",
+   "stem": "4777ea704d910eee",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/900faaa3-adec-4fd9-81b0-1e90a2ab256f.h5ad",
+    "bytes": 56315767,
+    "sha256": "97ab56b2838605fc5f1ad66def3a4da92aa1488b51cf4f2e951fe1eeed9faebb"
+   },
+   "old_cache": {
+    "counts_sha256": "d90eb06676a8e54ed6a44e0871f24fc31bfa8d1e2fb6a4b7e68d768bae49c865",
+    "meta_sha256": "e9b52dce9ac3050c4c27b78b539bfb4f684515aefaced3cd8b7dfd3fc75d339a"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "872b5372d8958d88eb5652f6c6fbc3ba1c53e6efb6738a73a104a462cb53dcfc",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d",
+   "study": "HVS",
+   "stem": "1cf08334d3b12f5f",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/9adebd17-bc24-47b6-acdb-0db488bc602d.h5ad",
+    "bytes": 580150889,
+    "sha256": "b50f1ba3df9070c2ba2cccf3903f1b674a1899428cd9848297d518a2df0ed2d8"
+   },
+   "old_cache": {
+    "counts_sha256": "33be459c3c53f3e30ca4aa8f3565c17855a15269bb3327732d08393c758d59e5",
+    "meta_sha256": "669b19a16ee0ffc25c96c9768843e8d3677eae450b8c1c0db0be4649b34b3066"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "e0f269339f2857c1db95ab63849e97f3249c15f4dd483d4ee1cea2735237ab48",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb",
+   "study": "HVS",
+   "stem": "e38be9d52b6f8e0b",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/a9b5738d-997d-433f-8d86-12dbfc8f01fb.h5ad",
+    "bytes": 915602861,
+    "sha256": "42db887ce090dad2f818e7fd3db0bcf254493f32c384f7a71aea4903f7fc0e30"
+   },
+   "old_cache": {
+    "counts_sha256": "ae2f5f5d3a0bdd94017a9fd1886fdc659bf169f33095a6a27dd559ef5b21ab7f",
+    "meta_sha256": "775835635f9105f122c02c8be92f222e553906a77c1a57a2f589ef310cd80764"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "59ab99733bbc2d67e42b89f30cadb43ffe9476225ffcf338f327563d5d4440b6",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2",
+   "study": "HVS",
+   "stem": "58baaeadf44eab57",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/ab88770a-7a74-4da5-a166-d68f02d644f2.h5ad",
+    "bytes": 1381262772,
+    "sha256": "64e65a838b8b6d3af2eeccd25cf84fa4f9c460dd241ffc72f7a19f9a10f75500"
+   },
+   "old_cache": {
+    "counts_sha256": "83724b6fbc3772fcb07c3e315b3e8ac8eb7040b1477dd0629d0c57f1b129d6d3",
+    "meta_sha256": "df0c055c0bca89a96f7f14d65d1a662db52d96a6f87742bd845c0167b96576ea"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "c21e116f6eba6160b3f8df37a375662d80348803b23367fd787f2c083761a3c3",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241",
+   "study": "HVS",
+   "stem": "bbffd755c3f71256",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/bb3c4200-5c1b-4f8a-a846-e021919b7241.h5ad",
+    "bytes": 729030048,
+    "sha256": "ad24ed9233760ba435eb560597592a219af136f01a446312da3d59a0a7372fc2"
+   },
+   "old_cache": {
+    "counts_sha256": "93a947c6c5ed2ce8b2ecf4e8917a16843c10bfe2adb99901a12941cd820665ad",
+    "meta_sha256": "0594adcb43202c3cc24e28edf6f6a040fe9cc4fd96df7ed04d1c9f000c3b8441"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "c8b3a8797863dbe95759e28c298abfa91fd4a4173b19b04bb985837cbead44bd",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354",
+   "study": "HVS",
+   "stem": "246008367b5ed2fb",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/c3b47645-c927-4a0a-868f-eb7640ea3354.h5ad",
+    "bytes": 3057153024,
+    "sha256": "0110b9d093ff24d7f143db59123fc0520463566541978abb9cc3b25205336e2b"
+   },
+   "old_cache": {
+    "counts_sha256": "093c1ef9e77bad83aac31679fed92eb79e42094426113d7b09cc74d53067edae",
+    "meta_sha256": "2f81941d2e1b4526590d0a490e9308d0aa820de422d468ceb4dcf199f06be78d"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "a23be8410ecf1006646d0ca596b88096cd495f571c98499cc3b16a668e7651d6",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1",
+   "study": "HVS",
+   "stem": "c70df1e5200f419f",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/c5e9db26-7b51-4290-b721-dd540ac906b1.h5ad",
+    "bytes": 313044672,
+    "sha256": "4d291126bbdbcde0dfa55b5c3a394907704d4d651f0067632bb81a1bedeebdd1"
+   },
+   "old_cache": {
+    "counts_sha256": "abeca26304408b5440fd5f9b31d25d735e353c5631b80584c885789d074418ba",
+    "meta_sha256": "5854584b74c6bc7fb94a62a886ff69198ffa702671fc1357b1bba691a230e3d2"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "bbebbb987e33bd128bb44a8b942c47e9d419a4c9daade6e6b8195ef549104cbd",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97",
+   "study": "HVS",
+   "stem": "62544b4c7ab48cd1",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/c9143d44-4c95-4f06-8edc-e03d3491ab97.h5ad",
+    "bytes": 3217779656,
+    "sha256": "45bad0af8c6b71afce464130ebf7adf1a50bdbae8c7b38189b1fef2e44feb15d"
+   },
+   "old_cache": {
+    "counts_sha256": "5bb9daaf89ed94b4bb0d5f025722e18eac0ba8da310dfee0c280361be16f4080",
+    "meta_sha256": "e9dae43a788e445729dbedb0eb7ef4af44195306235a4e93406774aafa24bcc9"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "fa85c430e015922dc8228e22414dfcf652b4ee25d609bee2a9704340a6f1853e",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::d1303087-592a-4c3d-aa3e-21de203927dc",
+   "study": "HVS",
+   "stem": "57791abbd401df2b",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/d1303087-592a-4c3d-aa3e-21de203927dc.h5ad",
+    "bytes": 2558526832,
+    "sha256": "df065a3c9337d0324540024f1668a6684c951dc80c80ad3434d8ff4100aa9d77"
+   },
+   "old_cache": {
+    "counts_sha256": "4476fa4acb904861fa11dbb09eda151e2e4015d12886b5c19fcbd99dc19e0192",
+    "meta_sha256": "4eba140865a22b10253eac10a5957fa984a28cffb50f78376e09e83290e46c27"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "be39c345f3294387abca779c09c8cdb468eb7f3b3322283cf02606ebd7b3f8a9",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::e813d04b-7833-4b02-b14f-0247d6128516",
+   "study": "HVS",
+   "stem": "16632e1b92d2409b",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/e813d04b-7833-4b02-b14f-0247d6128516.h5ad",
+    "bytes": 172050087,
+    "sha256": "a81dd49bb28be31e1aaf22d6e62f07bc0751e88ce03ca0314c6fa287140d3ae2"
+   },
+   "old_cache": {
+    "counts_sha256": "5e9f66073e4170234e6e14b97b5124a20143847745837b8881f79ce71d9a3f74",
+    "meta_sha256": "05786b1acf9c2c2502d73d53cf6d9efb08fc38eaa09ae5cb758d74a948543394"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "012cb7f550d66f32738da6fcd09624347cd28da9fd4617fd1b8df4bb395c4849",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96",
+   "study": "HVS",
+   "stem": "4be84f5869689fe5",
+   "slot": "raw/X",
+   "source": {
+    "path": "data/external/v4/living_human/hvs/f8975a92-8ddb-4dde-adbe-977a4b3e4e96.h5ad",
+    "bytes": 52926761,
+    "sha256": "f3cc0a5c09b92d52c61193bb90a5182752df48a4b902cc758756f03798120e05"
+   },
+   "old_cache": {
+    "counts_sha256": "d795e06aa290a08a587a7bb657ce4b816e9248bce21ad725d4b3b7de986a06f9",
+    "meta_sha256": "bd341aacc4b40e4394005ef47a5f61b3f1ad77e614caef78704b81cbeb567a6a"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "ac8f53eaf00d16717ab0439c10b3b08f0d6ffc1e4c4bf567743305ad7c79157c",
+   "all_donors_train": true,
+   "var_features": 18736,
+   "mapped_columns": 18736,
+   "excluded": {},
+   "collision_addresses": 0,
+   "old_positional_blocked": 0,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 18735
+  },
+  {
+   "matrix_id": "sea_ad_ang_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "e31a8c262e8be576",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/AnG/SEAAD_AnG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 5326721562,
+    "sha256": "6015e7e9248ad5e4f1f63ce0820f6ea98e1bc429851e82d6a5ef69868d799839"
+   },
+   "old_cache": {
+    "counts_sha256": "f7b4dc0978b4af397e6137206b77729ea932356d9d403f87bbc3d2fc1711d72f",
+    "meta_sha256": "af2f30f049601a4c8de4595ea87d2a529500ed21ea146a5083ff6231b196055b"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "8fea23c1b389bc868c02464dba7fc281edff42b204469e28c72f387e6ce6f90b",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_caudate_rna_all_2025",
+   "study": "SEA_AD",
+   "stem": "3230dd0fe3beb954",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/Caudate_Nucleus/CaH_all_nuclei.2025-12-29.h5ad",
+    "bytes": 128171432912,
+    "sha256": "be2dc3122b6bed7e4c67330ef509b6d7ddaff022a8dd28f6a578d772daf3f7d5"
+   },
+   "old_cache": {
+    "counts_sha256": "da6c8d3bd23e6e7810c68e3203fa22258aee0fc375b856cfe5ff134d0a9dcd64",
+    "meta_sha256": "46b14cd417d2960ca1a969bdb4e274b7d6bbcd71403503c04181e78b8313d9b9"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "996adfa1b416d868df527c02e9c086e68ccc429e0590e5701b3ef7ed583000d1",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_fi_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "a6a34c7d7c6723a0",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/FI/SEAAD_FI_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 5389393159,
+    "sha256": "bc8e32100dbc7377583414f07b946d956b02b186d164441fffed5ac1e53d47f8"
+   },
+   "old_cache": {
+    "counts_sha256": "c12d89d87a1ee7be381cb6e1c5f63ac2f4b74866ae8f1cd2980764c584294813",
+    "meta_sha256": "f51a316ee2157ae4186793e33fb0caf5aa842a34eb561d901a628d0938d9aa41"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "334a2cb79aebe929c7b6dae222725f785c15667ed6eef0fcb434510da2f436d7",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_hip_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "8a1613e724707595",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/HIP/SEAAD_HIP_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 4976204965,
+    "sha256": "4320d457052c18435143f3dd2caac3916c9e6180161a309cb53876ddbb871d36"
+   },
+   "old_cache": {
+    "counts_sha256": "df454df2cd6a2338edbc85b6c292d5e94316c77e8897d8d321d25bbb91bbdcc7",
+    "meta_sha256": "ee6b0aef984873d92d67affa7d7d7e57df38aaca826b4bb29ae2057b8288c6cf"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "c0a2ac158428293e21232ef011bb1549fcb6739ee501c3ae6a04ab2e45ad21a2",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_itg_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "4a3db0b3a3ee23e5",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/ITG/SEAAD_ITG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 11472832562,
+    "sha256": "e2251622888ace5b6d15f92cb8620d6e8f416cb0ee663c1d8ee87ff84d48cd24"
+   },
+   "old_cache": {
+    "counts_sha256": "adb3b414d2c8d7c98ad7b673487ee4d8baba96a38dc95249c7cff6be5750a36c",
+    "meta_sha256": "5fa7cd515e02774db2d70546943c0c322786cd4f54a38d172b853669bf9eb491"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "b405d08c1ddb0752e0966cef4cc773555b7196edea1168c643bab4d0008e8a15",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_lec_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "97c509331469cc92",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/LEC/SEAAD_LEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 4241947425,
+    "sha256": "f1e332cc6a742c92fef14e6faf2e5bb088b68885e6eab922929c86428f12c565"
+   },
+   "old_cache": {
+    "counts_sha256": "b2a847d6f0eeef5de1b43633878ac6af9b038c9e8a3d5d5eccda581c7d6f5e67",
+    "meta_sha256": "db54d7fc7729740dd48816f6f303a8f7a7f1a7b54f5f95ef705f7e3c53118ea0"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "0369c524da755b409c5757a5381a5c443fc8cc99c70cf628fc89a07a7992d97e",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_mec_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "15b1f72fcc49200e",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/MEC/SEAAD_MEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 25705658446,
+    "sha256": "7204d0e31ef25eeb68bb8a20a2ae650f533698a1d4e36612387ceddda864d455"
+   },
+   "old_cache": {
+    "counts_sha256": "4a9e007d47be60b413e7b472b0b8bbe8f70ade35bb67397557fdc532f5bc66b3",
+    "meta_sha256": "17df2287a7d050e3c4263ffb69b7ccd198c2a6e0a3178fb7a01affda7dadebab"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "2e045f70122b930224ed7cb55b83c31d367cccbc0b3bd8422d37af4ff969ddf5",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_mtg_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "0428d814f189ca87",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 32978570763,
+    "sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
+   },
+   "old_cache": {
+    "counts_sha256": "10becd678eab4c8c27c0c4387507c35687573f703fb39445d32987b250dea38d",
+    "meta_sha256": "26788bfadf53626fbac07c1afad03dad11cdb247b17bb0de30c8429ceaa8566e"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "b550a0bacd18a1f579484e9c2d077a3c3142e3a007478baa159653f2683cac9e",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "dfcb594c1abeb0c0",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/a9_dlpfc/SEAAD_DFC_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 38520614071,
+    "sha256": "d637a7fbe51a098b7624149bc9fcf141dac2b8733e13e93ac4cde0ea6606ac1a"
+   },
+   "old_cache": {
+    "counts_sha256": "8f916bcf233bd1962529655539d1078a78b1f153ed5015931c3ef8251176a2a2",
+    "meta_sha256": "7fc57be09cbd57154c99b1171706ec9417efac6c68fc0c4d0805257f9897addd"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "2a5bc7e3470192d5956905a91c52695a3b5a9fd86d684986602fadc1c24796fd",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_stg_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "2bfa3b9301efa393",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/STG/SEAAD_STG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 16144376554,
+    "sha256": "3d832b56cf6aef91b5e62e416aa2109d39ef8b9f71b39463e2d323ace785cee5"
+   },
+   "old_cache": {
+    "counts_sha256": "15ae730671e9a20ef5b9fd2516e661a343f8c255712ea51125b9d4c5f96f6072",
+    "meta_sha256": "2afd1e423dfba4778dedc0b69d11b4a17cc81cab1f5ba4912b99367f49d3dd44"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "fa3054c5acd8cce5a498071a83cc54647172690125e9a981e307b08b71146b08",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  },
+  {
+   "matrix_id": "sea_ad_v1c_rna_final_2026",
+   "study": "SEA_AD",
+   "stem": "9fc20935b65302ee",
+   "slot": "layers/UMIs",
+   "source": {
+    "path": "data/external/v4/sea_ad/multiregion/V1C/SEAAD_V1C_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "bytes": 16540631157,
+    "sha256": "5b8fe467fb35d3e48eadbb5c06b14b73b822eb9b265722f0d8401538552898a3"
+   },
+   "old_cache": {
+    "counts_sha256": "d03a3fcdf7688f6e6db3664185a13ad4998fb07f4de86014d562783a78202e46",
+    "meta_sha256": "f22bc674198fe3f61d9edbaca6ae06e0dffe2904fdffe062b276531341c8ce87"
+   },
+   "cells": 128,
+   "cell_ids_sha256": "531813fd8bd954b16d5f104e7b1bde8de00f9c853ce2645cc447a80ca5ef6872",
+   "all_donors_train": true,
+   "var_features": 36601,
+   "mapped_columns": 35076,
+   "excluded": {
+    "LEDGER_COLLISION": 1525
+   },
+   "collision_addresses": 710,
+   "old_positional_blocked": 1525,
+   "mapped_columns_whose_address_differs_from_the_old_positional_map": 35075
+  }
+ ],
+ "nph_shards": [
+  {
+   "stem": "01a8084c32680dfb",
+   "counts_sha256": "7fb4c75e17dad66a25a38bae62c20f631debfb8933e6396a3636dbfce4916ceb",
+   "meta_sha256": "a40e48fea6d7efde77d256ec2163510d7512796cb12f65fedcfe6aeae3033ea3"
+  },
+  {
+   "stem": "5a1c193be7cd49cc",
+   "counts_sha256": "3343c4a143e340e4445d69d31ff94f8191ef57905094e63107468c71539caace",
+   "meta_sha256": "95df939c9081544f21daee62356cd6608eee81fcb8c92b0bd2e8e66ff828874e"
+  },
+  {
+   "stem": "65db086233248c4c",
+   "counts_sha256": "b4bbdce37d026e3bafac1b0dbbf4919c5de773752c6e8051eb88faec3f7c3c28",
+   "meta_sha256": "7b5bb824e7f6fbb1a83d2b5848fa5303d7bea01c7b061a9bdb6b030d298c00b6"
+  },
+  {
+   "stem": "697169906cb1a773",
+   "counts_sha256": "adfae9c892591e743929d8aeb6874d76832b8f34f8739f49e850979091684221",
+   "meta_sha256": "cd9350766f705fb6e59fef81484a24ebe888e4e1ac12ce5123fdfc23d5ff3dd7"
+  },
+  {
+   "stem": "728ef515d050d789",
+   "counts_sha256": "ba7a239611552074a759bbcb29331af1a68adee6f0df9f13b6cc9e2abd7f116a",
+   "meta_sha256": "634482ddead165bec32d046ba1d684484b175bf062b5a2b86729a4851963316e"
+  },
+  {
+   "stem": "868d05542e5e7cf2",
+   "counts_sha256": "454120fb1a7d3a693def16b5bfb7a00c018d477d76332e0297c83c79201bb736",
+   "meta_sha256": "8e984dd149f668fd626426e6c20af82b7dff8e44acb6f84840ca07093b82141d"
+  },
+  {
+   "stem": "e5ef92fa6bf68bb4",
+   "counts_sha256": "9b0d2ad075750f52c964c21584d9fa0ab7ef02f7df2f42d6cde8cea5514f6647",
+   "meta_sha256": "d15fc3a5c99c018df82bfffe25f8fceda489dc1cacc9c2d705aaa1adf01f1327"
+  }
+ ],
+ "inputs": {
+  "D:\\Jepa project\\results\\v4\\stage81a2r_foundation_molecular_address_registry_candidate.csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "D:\\Jepa project\\results\\v4\\stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+  "D:\\Jepa project\\results\\v4\\stage81a2_canonical_asset_registry.csv": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f",
+  "D:\\Jepa project\\results\\v4\\stage81a2_matrix_semantics_contract.csv": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
+  "D:\\Jepa project\\results\\v4\\stage81a2_split_registry.csv": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+  "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+ },
+ "decoders": {
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_HVS__c5e9db26-7b51-4290-b721-dd540ac906b1.npz": "0c1ce35092b25c774d7358c57eac1d9cd73087a90c90b87946160dee539d9c57",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_ang_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_caudate_rna_all_2025.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_fi_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_hip_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_itg_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_lec_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_mec_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_mtg_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_pfc_a9_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_stg_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_all\\decoder_sea_ad_v1c_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_v2\\decoder_HVS__19cd530b-622c-4bd8-b738-dbf169412cb0.npz": "0c1ce35092b25c774d7358c57eac1d9cd73087a90c90b87946160dee539d9c57",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_v2\\decoder_HVS__c5e9db26-7b51-4290-b721-dd540ac906b1.npz": "0c1ce35092b25c774d7358c57eac1d9cd73087a90c90b87946160dee539d9c57",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_v2\\decoder_sea_ad_caudate_rna_all_2025.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_v2\\decoder_sea_ad_mtg_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a",
+  "D:\\jepa_v5_outputs_20260925\\l4_decoder_v2\\decoder_sea_ad_pfc_a9_rna_final_2026.npz": "0af8b1cbae7f10594f243f7c181ad451d530d45c0636b8404722e5c74129800a"
+ },
+ "gates": [
+  "G1 rebuilt rows equal an independent re-read through the S174 probe's ID join",
+  "G2 decoded old cache agrees with the rebuilt cache >= 0.99 wherever a decoder exists",
+  "G3 per-cell library totals equal the old source_library",
+  "G4 NPH shards byte-identical",
+  "G5 every donor TRAIN"
+ ],
+ "code": {
+  "path": "scripts/v77/rebuild_s174_train_cache.py",
+  "sha256": "b5c50e0cd3d8d61b3656bb2baa53b6a2320c027401997d56e2e05230e4a00d2c",
+  "head": "7de5bb6a5b89d697b50990c1b599fdec5f7f61ea"
+ },
+ "governance": [
+  "TRAIN only",
+  "obs read: exp_component_name only",
+  "no pathology field read",
+  "no TEST, mutation, training or model fitting"
+ ]
+}

@@ -24,6 +24,18 @@ def test_compare_rows_treats_missing_as_zero():
     assert m.compare_rows({}, {}, {10, 20}) == {"checked": 2, "mismatches": 0}
 
 
+def test_raw_integer_rejects_fractional_nonfinite_and_negative_reference_counts():
+    m = load_module()
+    assert m.raw_integer(3.0) == 3
+    for bad in (3.25, float("nan"), float("inf"), -1):
+        try:
+            m.raw_integer(bad)
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError(f"invalid S174 reference count must fail closed: {bad!r}")
+
+
 def test_verify_cache_hashes(tmp_path):
     m = load_module()
     cache = tmp_path / "cache"; cache.mkdir()
@@ -48,3 +60,10 @@ def test_no_overlap_is_not_fabricated():
     assert m.overlap_status(0, 0) == "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"
     assert m.overlap_status(3, 0) == "PASS_TD_G7_S174_EXACT_OVERLAP"
     assert m.overlap_status(3, 1) == "STOP_TD_G7_S174_CROSSCHECK_MISMATCH"
+
+
+def test_not_estimable_is_not_process_success():
+    m = load_module()
+    assert m.exit_code_for_status("PASS_TD_G7_S174_EXACT_OVERLAP") == 0
+    assert m.exit_code_for_status("NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP") != 0
+    assert m.exit_code_for_status("STOP_TD_G7_S174_CROSSCHECK_MISMATCH") != 0

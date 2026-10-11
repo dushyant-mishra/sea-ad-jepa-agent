@@ -1,0 +1,14 @@
+archive,member,uncompressed_bytes,compressed_bytes,crc32
+FOUNDATION_CALIBRATION_BUNDLE_20260824.zip,FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/BUNDLE_SHA256_MANIFEST.csv,23351,6973,51008665
+FOUNDATION_CALIBRATION_BUNDLE_20260824.zip,FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/BUNDLE_STATUS.json,346,219,bf13c2b1
+checkpoints.zip,checkpoints/checkpoint_manifest.json,2201,702,6ebedef4
+checkpoints.zip,checkpoints/t1_checkpoint_u0000.pt,26831531,24644440,a14091df
+checkpoints.zip,checkpoints/t1_checkpoint_u0205.pt,54517013,46710488,d15044c2
+expression.zip,expression/expression/FOUNDATION_DISCOVERY_EXPRESSION_AUDIT.json,13985,4531,6e621a98
+expression.zip,expression/expression/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv,14700106,2337722,9b6143a6
+expression.zip,expression/expression/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.json,1582,866,01de808c
+t1_checkpoint_u0200.zip,t1_checkpoint_u0200.pt,54517013,46706521,2c931ee9
+t1_checkpoint_u0200.zip,t1_checkpoint_u0010.pt,54517013,46790541,a8a494a7
+t1_checkpoint_u0200.zip,t1_checkpoint_u0025.pt,54517013,46765484,a4b587ed
+t1_checkpoint_u0200.zip,t1_checkpoint_u0050.pt,54517013,46752949,21fce0f8
+t1_checkpoint_u0200.zip,t1_checkpoint_u0100.pt,54517013,46713104,f3f11acc

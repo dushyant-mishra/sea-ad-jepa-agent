@@ -1,15 +1,16 @@
 {
-  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V1",
-  "status": "TEMPLATE_ONLY__NOT_AUTHORITY__DO_NOT_RENAME_AND_USE_WITHOUT_EXPLICIT_OWNER_AUTHORIZATION",
-  "required_runtime_schema_if_authorized": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V1",
-  "required_runtime_authorization_if_authorized": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY",
-  "required_runtime_scope_if_authorized": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads; NPH52 historical clean-path pass-through; G6/G7 only; no target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
-  "training_authorized": false,
+  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_TEMPLATE_V3",
+  "status": "SUPERSEDED_TEMPLATE__NOT_RUNTIME_AUTHORITY__DO_NOT_USE",
+  "superseded_by": "docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-design.md",
+  "reason": "The wrapper-era template did not bind the exact G4/G5 preflight receipt SHA or exact G6/G7 code SHAs and is therefore not sufficient as a future runtime authorization boundary.",
+  "runtime_authorization_exists": false,
   "real_value_read_authorized_by_this_file": false,
+  "biological_replay_authorized": false,
+  "training_authorized": false,
   "instructions": [
-    "This template is deliberately not accepted by the materializer or G7 auditor.",
-    "Only after explicit owner authorization may a separate runtime JSON be created with the exact required runtime schema, authorization string, scope string, and training_authorized=false.",
-    "Do not broaden the scope, add target selection, or infer authorization from the existence of executable code.",
-    "G4/G5 must already have PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND before any value-read authorization can be used."
+    "Do not rename or adapt this superseded template into a runtime authorization.",
+    "Do not execute the current wrapper-based V2 materializer under this template.",
+    "A future authorization surface must be generated only from the standalone V2 design after successful G4/G5 receipt review, TDD qualification of the standalone successor, and a new explicit owner decision.",
+    "Historical V1 schema/token remain invalid for any future hardened path."
   ]
 }
