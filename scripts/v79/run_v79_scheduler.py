@@ -10,8 +10,12 @@ mechanically, never statistically:
   LAUNCH_OR_RUNTIME_FAILURE any other exit, or exit 0 without the output file
 A statistical verdict comes only from the output file itself (v79_recovery_rules.combine_parts).
 
+The resource-safe default is one machine-wide fit. A measured single Gaussian recovery fit used about 10.3 of 16
+logical CPUs on average and drove whole-machine CPU to about 93%, so concurrency above one must be an explicit
+operator override rather than the default.
+
 Job file: JSON list of {"name", "cmd", "log", "out", "device": "cpu"|"gpu"}. A gpu cmd is a Linux command line run
-inside WSL. Usage: run_v79_scheduler.py <jobs.json> <ledger.jsonl> [--slots 2] [--timeout 43200] [--settle 120]
+inside WSL. Usage: run_v79_scheduler.py <jobs.json> <ledger.jsonl> [--slots 1] [--timeout 43200] [--settle 120]
 """
 from __future__ import annotations
 
@@ -25,6 +29,8 @@ from datetime import datetime, timezone
 
 WIN_FIT = "run_v79_(recovery|qualification|inference|phase_c|ppc_heldout|benchmark)"
 WSL_FIT = r"^/home/[^ ]*/python[0-9.]* -u [^ ]*run_v79_(recovery|qualification|inference|phase_c|ppc_heldout|benchmark)"
+DEFAULT_SLOTS = 1
+DEFAULT_SETTLE_SECONDS = 120
 
 
 def windows_fits() -> int:
@@ -80,9 +86,10 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("jobs")
     ap.add_argument("ledger")
-    ap.add_argument("--slots", type=int, default=2)
+    ap.add_argument("--slots", type=int, default=DEFAULT_SLOTS)
     ap.add_argument("--timeout", type=int, default=43200)
-    ap.add_argument("--settle", type=int, default=120, help="seconds to wait after a launch before recounting")
+    ap.add_argument("--settle", type=int, default=DEFAULT_SETTLE_SECONDS,
+                    help="seconds to wait after a launch before recounting")
     a = ap.parse_args()
     jobs = json.load(open(a.jobs, encoding="utf-8"))
     for j in jobs:
