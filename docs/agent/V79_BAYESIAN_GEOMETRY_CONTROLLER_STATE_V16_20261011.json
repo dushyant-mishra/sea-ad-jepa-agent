@@ -1,0 +1,61 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V16",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "canonical_handoff_pr": 261,
+  "canonical_audit_pr": 260,
+  "competing_contract_finalization_prs": [289, 290],
+  "world_generator_pr": 291,
+  "controller_pr290_repair_comment": 6115051726,
+  "controller_pr291_hold_comment": 6115054911,
+  "authority_status": {
+    "pr289_sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+    "pr290_current_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "canonical_launch_authority": "NONE_PENDING_PR290_CROSS_PLATFORM_REPAIR",
+    "reason": "PR290 is semantically preferred but its final bytes currently differ across Windows/Linux because finalization recomputes a SciPy-derived reported power value; PR289 must not coexist as a second canonical authority"
+  },
+  "pr290_audit": {
+    "scientific_payload": "PASS",
+    "launch_gate_design": "PASS",
+    "legacy_v1_v2draft_rejection": "PASS",
+    "tamper_semantics": "PASS",
+    "worlds_or_fits_generated": 0,
+    "blocking_issue": "cross-platform byte reproducibility",
+    "required_repair": "hash-check/load immutable accepted V2 draft cbfa332b... and apply only finalization fields; do not recompute draft statistical reporting values during launch-authority finalization; prove identical Linux/Windows final SHA"
+  },
+  "pr291_engineering_evidence": {
+    "current_contract_binding": "PROVISIONAL_8be47cb2...",
+    "scenario_and_planting_layers": "GREEN",
+    "observation_green": {
+      "workflow": 38183909388,
+      "job": 114602059598,
+      "result": "24 passed in 0.33 s on Ubuntu/Python 3.11.17"
+    },
+    "realized_worlds": 0,
+    "truth_tables": 0,
+    "benchmark_runs": 0,
+    "qualification_fits": 0,
+    "status": "FROZEN_PENDING_CANONICAL_AUTHORITY_REBIND"
+  },
+  "after_pr290_repair": [
+    "ratify one canonical final Contract V2 SHA",
+    "retire PR289 as noncanonical duplicate authority",
+    "rebase/rebind PR291 to PR290 final authority",
+    "use v79_v2_core_launch.require_launch_authority as sole gate",
+    "regenerate Q10/Q11 pairing amendment with identical semantics but canonical SHA binding",
+    "rerun generator suites on Linux and Windows",
+    "resume physical-emitter engineering only after controller audit"
+  ],
+  "authorization": {
+    "pr290_reproducibility_repair": true,
+    "further_world_generator_changes": false,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fitting": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal_state": "CANONICAL_CONTRACT_V2_AUTHORITY_REPAIR_PENDING__PR291_FROZEN_WITH_24_TESTS_GREEN__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
