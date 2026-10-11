@@ -2,10 +2,24 @@
 import math
 
 
+class PrecisionContractError(ValueError):
+    pass
+
+
+def _exact_number(value, label):
+    if isinstance(value, bool) or type(value) not in (int, float):
+        raise PrecisionContractError(f'{label} must be an exact JSON numeric value')
+    numeric = float(value)
+    if not math.isfinite(numeric):
+        raise PrecisionContractError(f'{label} must be finite')
+    return numeric
+
+
 def _validate_alpha(alpha_eff):
-    if not (0.0 < float(alpha_eff) < 1.0):
+    numeric = _exact_number(alpha_eff, 'alpha_eff')
+    if not (0.0 < numeric < 1.0):
         raise ValueError('alpha_eff must be in (0,1)')
-    return float(alpha_eff)
+    return numeric
 
 
 def minimum_donors_for_sign_resolution(alpha_eff):
@@ -25,7 +39,15 @@ def _binom_tail_le(k, n):
 
 
 def exact_two_sided_sign_p(successes, n_nonzero):
-    if n_nonzero < 0 or successes < 0 or successes > n_nonzero:
+    if (
+        isinstance(successes, bool)
+        or isinstance(n_nonzero, bool)
+        or type(successes) is not int
+        or type(n_nonzero) is not int
+        or n_nonzero < 0
+        or successes < 0
+        or successes > n_nonzero
+    ):
         raise ValueError('invalid sign counts')
     if n_nonzero == 0:
         return 1.0
@@ -36,15 +58,20 @@ def exact_two_sided_sign_p(successes, n_nonzero):
 
 def sign_recurrence_gate(deltas, alpha_eff):
     alpha_eff = _validate_alpha(alpha_eff)
-    positives = sum(float(x) > 0 for x in deltas)
-    negatives = sum(float(x) < 0 for x in deltas)
-    ties = sum(float(x) == 0 for x in deltas)
+    if not isinstance(deltas, list):
+        raise PrecisionContractError('deltas must be a list')
+    clean = [_exact_number(x, f'deltas[{i}]') for i, x in enumerate(deltas)]
+    positives = sum(x > 0 for x in clean)
+    negatives = sum(x < 0 for x in clean)
+    ties = sum(x == 0 for x in clean)
+    if positives + negatives + ties != len(clean):
+        raise AssertionError('sign accounting invariant failed')
     n = positives + negatives
     min_n = minimum_donors_for_sign_resolution(alpha_eff)
     p = exact_two_sided_sign_p(positives, n)
     estimable = n >= min_n
     return {
-        'n_total': len(deltas),
+        'n_total': len(clean),
         'n_nonzero': n,
         'n_positive': positives,
         'n_negative': negatives,
