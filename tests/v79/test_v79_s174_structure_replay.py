@@ -1,8 +1,8 @@
 """Prospective contract for the cheap corrected-S174 model-structure replay.
 
-Synthetic arrays only. The replay must consume a compact cache, keep donors intact across folds, and never need the
-41K shard loader. Statistical tests use strong fixtures so they test implementation semantics, not borderline
-model-selection thresholds.
+Synthetic arrays only. The replay must consume a compact cache, keep donors intact across folds, preserve a
+prevalence-spanning panel when subsetting a larger cache, and support residual permutation diagnostics without
+opening the 41K shards.
 """
 from __future__ import annotations
 
@@ -28,7 +28,6 @@ def _cache(tmp: Path):
     cls = np.tile(np.repeat(np.arange(3), 6), n_donor)
     op = (src * 2 + (donor % 2)).astype(np.int64)
     depth = rng.normal(size=len(donor))
-    # Gene 0 has a strong class detection effect; gene 1 is depth-only.
     eta0 = -0.3 + 1.8 * (cls == 1) - 1.4 * (cls == 2) + 0.4 * depth
     eta1 = -0.2 + 0.8 * depth
     p = 1 / (1 + np.exp(-np.c_[eta0, eta1]))
@@ -81,3 +80,24 @@ def test_positive_replay_uses_only_positive_counts(tmp_path):
     out = R.evaluate_positive_gene(d, gene=0, k=3, seed=20261011)
     assert out["n_positive"] == int((d["counts_selected"][:, 0] > 0).sum())
     assert np.isfinite(out["models"]["depth_class_source_operator"]["mean_lpd"])
+
+
+def test_subpanel_stays_prevalence_stratified():
+    p = np.array([.05,.85,.15,.65,.25,.45,.35,.75,.55,.95] * 5)
+    pos = R.select_panel_positions(p, 20, seed=17)
+    chosen = p[pos]
+    assert len(pos) == 20 and len(np.unique(pos)) == 20
+    assert chosen.min() <= .15 and chosen.max() >= .85
+    hist, _ = np.histogram(chosen, bins=[0,.2,.4,.6,.8,1.01])
+    assert np.all(hist > 0)
+
+
+def test_residual_group_permutation_detects_strong_group_structure():
+    rng = np.random.default_rng(8)
+    groups = np.repeat(np.arange(12), 20)
+    strata = np.repeat(np.arange(3), 80)
+    effects = np.array([-2.0,-1.2,-.7,-.2,.2,.7,1.2,2.0,-1.5,1.5,-.9,.9])
+    residual = effects[groups] + rng.normal(scale=.15, size=len(groups))
+    out = R.permutation_group_support(residual, groups, strata, seed=11, n_perm=99)
+    assert out["supported"] is True
+    assert out["observed"] > out["null_q95"]
