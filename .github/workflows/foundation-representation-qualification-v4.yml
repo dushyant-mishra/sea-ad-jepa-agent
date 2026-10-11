@@ -30,6 +30,7 @@ jobs:
         run: python -m pip install --upgrade numpy scipy pytest
       - name: Run focused qualification suite
         run: >-
+          PYTHONPATH=src:.
           python -m pytest -q
           tests/v4/test_foundation_representation_qualification_v4.py
           tests/v4/test_foundation_representation_qualification_v4_cli.py
