@@ -92,6 +92,9 @@ def identifier_map(var_ids, id_to_address: dict[str, int], ledger_ids: set[str])
 
 
 def corrected_row(indices, values, col_to_address: dict[int, int], replay_addresses: set[int]):
+    column_indices = np.asarray(indices, dtype=np.int64)
+    if len(column_indices) != len(np.unique(column_indices)):
+        raise RuntimeError("duplicate physical H5AD column index within one row at G7 reread; refusing to sum or pick a winner")
     row: dict[int, int] = {}
     total = 0
     for j0, v0 in zip(indices, values):

@@ -145,6 +145,9 @@ def identifier_map(var_ids, id_to_address: dict[str, int], ledger_ids: set[str])
 
 def corrected_row(indices, values, col_to_address: dict[int, int], replay_addresses: set[int]):
     """Strict raw-count decoder; whole physical row contributes to library total before filtering."""
+    column_indices = np.asarray(indices, dtype=np.int64)
+    if len(column_indices) != len(np.unique(column_indices)):
+        raise RuntimeError("duplicate physical H5AD column index within one row; refusing to sum or pick a winner")
     row: dict[int, int] = {}
     total = 0
     for j0, v0 in zip(indices, values):
@@ -221,8 +224,11 @@ def verify_historical_csr(root: Path):
 
 def nph_historical_row(global_row: int, data, indices, indptr, replay_addresses: set[int]):
     lo, hi = int(indptr[global_row]), int(indptr[global_row + 1])
+    row_indices = np.asarray(indices[lo:hi], dtype=np.int64)
+    if len(row_indices) != len(np.unique(row_indices)):
+        raise RuntimeError(f"duplicate NPH52 historical CSR address index in global row {global_row}")
     row: dict[int, float] = {}
-    for a0, v0 in zip(indices[lo:hi], data[lo:hi]):
+    for a0, v0 in zip(row_indices, data[lo:hi]):
         address = int(a0)
         value = float(v0)
         if not np.isfinite(value):
