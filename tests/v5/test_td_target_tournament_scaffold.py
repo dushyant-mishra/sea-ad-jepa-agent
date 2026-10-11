@@ -25,6 +25,13 @@ def contract():
         'foundation_candidate_ids': ['C1_RELATIONAL_SHARED','C2_QUERY_MEASURED','C3_LEARNED_SHARED','C4_STRUCTURED_COMPOSITE'],
         'optional_specialist_ids': ['C5_REGULATORY_SPECIALIST'],
         'mandatory_gates': ['G1_DONOR_PRIMARY','G2_SOURCE_REPLICATION','G3_SHORTCUT_DEFEAT','G4_INFORMATION_ASYMMETRY','G5_SUPPORT_ABSTENTION','G6_TRANSFER','G7_NO_POSTHOC'],
+        'candidate_specific_gates': {
+            'C1_RELATIONAL_SHARED': ['R1_SCALE_FREE_RELATIONAL_RECURRENCE','R2_FINE_LOCALITY_NOT_PRIMARY','R3_MATCHED_WRONG_CELL_DEFEAT'],
+            'C2_QUERY_MEASURED': ['Q1_Q_SCALAR_STUDENT_ABSENT','Q2_Q_EXCLUDED_TEACHER_ABLATION','Q3_TARGET_NORMALIZATION_Q_FREE','Q4_Q_COUNT_ONLY_DEFEAT'],
+            'C3_LEARNED_SHARED': ['L1_LEARNED_TEACHER_VIEW_CONTINUITY','L2_CONDITIONAL_TECHNOLOGY_IMPRINT','L3_EVIDENCE_RESPONSE','L4_MEASUREMENT_DEPTH_RESPONSE','L5_COLLAPSE_SHORTCUT_DEFEAT'],
+            'C4_STRUCTURED_COMPOSITE': ['C4_INCREMENT_OVER_CONSTITUENTS','L1_LEARNED_TEACHER_VIEW_CONTINUITY','L2_CONDITIONAL_TECHNOLOGY_IMPRINT','Q1_Q_SCALAR_STUDENT_ABSENT','Q2_Q_EXCLUDED_TEACHER_ABLATION','Q3_TARGET_NORMALIZATION_Q_FREE'],
+            'C5_REGULATORY_SPECIALIST': ['M1_CIRCULARITY_CONTROL','M2_INDEPENDENT_PROVENANCE','M3_CAUSAL_CLAIM_FALSE','M4_SUPPORT_ABSTENTION'],
+        },
     }
 
 
@@ -36,7 +43,7 @@ def receipt(cid, *, status='PASS', score=1.0, gate_value=True):
         'candidate_id': cid,
         'status': status,
         'aggregate_score': score,
-        'gates': {g: gate_value for g in c['mandatory_gates']},
+        'gates': {g: gate_value for g in c['mandatory_gates'] + c['candidate_specific_gates'][cid]},
         'authority': {
             'target_selected': False,
             'representation_selected': False,
@@ -105,3 +112,31 @@ def test_receipt_rejects_missing_authority_key():
 def test_duplicate_candidate_receipts_rejected():
     c = contract(); r = receipt('C1_RELATIONAL_SHARED')
     with pytest.raises(m.ReceiptError): m.adjudicate(c, [r, dict(r)])
+
+
+def test_learned_candidate_requires_conditional_technology_imprint_gate():
+    c = contract(); r = receipt('C3_LEARNED_SHARED')
+    del r['gates']['L2_CONDITIONAL_TECHNOLOGY_IMPRINT']
+    with pytest.raises(m.ReceiptError): m.validate_candidate_receipt(r, c)
+
+
+def test_query_candidate_specific_gate_failure_blocks_promotion():
+    c = contract(); r = receipt('C2_QUERY_MEASURED', score=999.0)
+    r['gates']['Q2_Q_EXCLUDED_TEACHER_ABLATION'] = False
+    out = m.adjudicate(c, [r])
+    assert 'C2_QUERY_MEASURED' not in out['foundation_eligible']
+    assert out['rejected']['C2_QUERY_MEASURED']['failed_gates'] == ['Q2_Q_EXCLUDED_TEACHER_ABLATION']
+
+
+def test_composite_requires_increment_over_constituents():
+    c = contract(); r = receipt('C4_STRUCTURED_COMPOSITE')
+    r['gates']['C4_INCREMENT_OVER_CONSTITUENTS'] = False
+    out = m.adjudicate(c, [r])
+    assert 'C4_STRUCTURED_COMPOSITE' not in out['foundation_eligible']
+
+
+def test_specialist_requires_independent_provenance():
+    c = contract(); r = receipt('C5_REGULATORY_SPECIALIST')
+    r['gates']['M2_INDEPENDENT_PROVENANCE'] = False
+    out = m.adjudicate(c, [r])
+    assert out['optional_specialists_eligible'] == []
