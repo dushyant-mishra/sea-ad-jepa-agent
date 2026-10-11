@@ -1,0 +1,33 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V8",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "world_generator_pr": 291,
+  "controller_pairing_ratification_comment": 6114933346,
+  "audit_verdict": "SCENARIO_GENERATOR_SEMANTICS_PASS__PAIRING_AND_SUPPORT_GEOMETRY_ENFORCED__NO_WORLD_REALIZATION__FITTING_OFF__TRAINING_OFF",
+  "green": {
+    "workflow": 38183469439,
+    "job": 114600739390,
+    "result": "11 passed in 0.21 s",
+    "head": "97daa0ae9ef5a021958cbb0c976e074b66917f8d"
+  },
+  "verified": [
+    "full G structural-support composition exactly 1/3/1 with NPH52 partial 3-of-7 matrices",
+    "Q01-Q09 frozen modifications",
+    "Q11 operator offsets paired, deterministic, 0.5 x donor SD, centred within source",
+    "Q10/Q11 non-operator truth pairing guard",
+    "realization authorization remains separate and physical emitter remains STOP"
+  ],
+  "authorization": {
+    "baseline_planting_and_design_engineering": true,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "SCENARIO_GENERATOR_SEMANTICS_GREEN__BASELINE_PLANTING_DESIGN_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
