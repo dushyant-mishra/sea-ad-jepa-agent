@@ -5,17 +5,22 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import os
 import tempfile
 from pathlib import Path
 
-from sea_ad_jepa.v4.foundation_residual_gates import (
-    adjudicate_conditional_technology_imprint,
-    adjudicate_heldout_donor_evidence,
-    adjudicate_resource_benchmark,
-    matrix_label_identifiability,
-)
+ROOT = Path(__file__).resolve().parents[2]
+MODULE = ROOT / "src" / "sea_ad_jepa" / "v4" / "foundation_residual_gates.py"
+_spec = importlib.util.spec_from_file_location("foundation_residual_gates_runtime", MODULE)
+_gates = importlib.util.module_from_spec(_spec)
+assert _spec.loader is not None
+_spec.loader.exec_module(_gates)
+adjudicate_conditional_technology_imprint = _gates.adjudicate_conditional_technology_imprint
+adjudicate_heldout_donor_evidence = _gates.adjudicate_heldout_donor_evidence
+adjudicate_resource_benchmark = _gates.adjudicate_resource_benchmark
+matrix_label_identifiability = _gates.matrix_label_identifiability
 
 
 def sha256_file(path: str | Path) -> str:
