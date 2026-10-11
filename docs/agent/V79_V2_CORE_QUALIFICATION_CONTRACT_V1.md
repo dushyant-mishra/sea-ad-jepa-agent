@@ -1,5 +1,7 @@
 # V79 V2_CORE: frozen model and prospective synthetic-qualification contract (V1)
 
+> **SUPERSEDED (2026-10-11, PR #286 controller ruling 6113874774).** This V1 contract (SHA-256 `70edabb8…`) is historical pre-controller draft evidence only, never launch authority. Its JSON is kept unchanged. The amended candidate is `V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.md`, which is pending controller acceptance.
+
 Date: 2026-10-11
 
 Status: `FROZEN_BEFORE_ANY_QUALIFICATION_FIT`. No qualification fit and no world generation has run.

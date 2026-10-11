@@ -1,6 +1,6 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T22:36:20Z",
+ "updated_utc": "2026-10-11T22:39:09Z",
  "branch": "fix/v79-s174-structural-support-mask-20261011 (PR #288, base PR #286 branch)",
  "source_head_at_write": "d255092c (comparison code; masked replay code ed6359e4; CI green)",
  "terminal_state": "MASK_CORRECTED_EXACT_S174_REPLAY_COMPLETE__V2_CORE_CONTROLLER_REVIEW_REQUIRED__QUALIFICATION_WORLDS_NOT_GENERATED__TRAINING_OFF",
@@ -112,6 +112,21 @@
    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
    "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
    "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY"
+  },
+  "contract_v2_draft": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+   "provisional_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION",
+   "launch_authority": false,
+   "summary": "docs/agent/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.md",
+   "gate_counts": {
+    "hard_statistical": 260,
+    "hard_rule": 28,
+    "limit_statistical": 4
+   },
+   "alpha_per_gate": 0.0001923076923076923,
+   "genes_per_world": 44,
+   "fits": 1056
   }
  },
  "controller_state": {
