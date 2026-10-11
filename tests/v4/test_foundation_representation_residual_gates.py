@@ -4,15 +4,24 @@ from pathlib import Path
 
 import pytest
 
-from sea_ad_jepa.v4.foundation_residual_gates import (
-    adjudicate_conditional_technology_imprint,
-    adjudicate_heldout_donor_evidence,
-    adjudicate_resource_benchmark,
-    matrix_label_identifiability,
-)
-
 ROOT = Path(__file__).resolve().parents[2]
+MODULE = ROOT / "src" / "sea_ad_jepa" / "v4" / "foundation_residual_gates.py"
 SCRIPT = ROOT / "scripts" / "v4" / "audit_foundation_representation_residual_gates_v1.py"
+
+
+def _load_module():
+    spec = importlib.util.spec_from_file_location("foundation_residual_gates", MODULE)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+G = _load_module()
+matrix_label_identifiability = G.matrix_label_identifiability
+adjudicate_heldout_donor_evidence = G.adjudicate_heldout_donor_evidence
+adjudicate_conditional_technology_imprint = G.adjudicate_conditional_technology_imprint
+adjudicate_resource_benchmark = G.adjudicate_resource_benchmark
 
 
 def test_matrix_identifiability_is_leave_one_matrix_out_and_reports_missing_broad_labels():
