@@ -7,6 +7,7 @@ world semantics. Neither authority alone permits realized world bytes.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -22,7 +23,6 @@ REALIZATION_AUTH_SCHEMA = "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1"
 
 
 def seed_for(*, world_index: int, gene_index: int, stream: int, root: int) -> int:
-    """Stable uint32 seed keyed only by effective scientific identity."""
     ss = np.random.SeedSequence(entropy=int(root), spawn_key=(int(world_index), int(gene_index), int(stream)))
     return int(ss.generate_state(1, dtype=np.uint32)[0])
 
@@ -53,11 +53,6 @@ def load_pairing_amendment(root: Path) -> dict:
 
 
 def effective_seed_world_index(world_index: int, stream: int, amendment: dict) -> int:
-    """Apply the frozen paired-counterfactual seed identity.
-
-    Q11 inherits Q10 for every base stream. Only operator offset streams 22/23
-    retain Q11 world identity and therefore add new randomness.
-    """
     pair = amendment["paired_counterfactual"]
     q10 = int(pair["parent_world"]["world_index"])
     q11 = int(pair["child_world"]["world_index"])
@@ -68,10 +63,8 @@ def effective_seed_world_index(world_index: int, stream: int, amendment: dict) -
 
 
 def validate_q10_q11_pairing(q10: dict, q11: dict, amendment: dict) -> None:
-    """Fail closed unless Q10/Q11 truth differs only in operator-offset fields."""
     allowed = {"operator_offsets_detection_sha", "operator_offsets_positive_sha"}
-    keys = set(q10) | set(q11)
-    for key in keys - allowed:
+    for key in (set(q10) | set(q11)) - allowed:
         if q10.get(key) != q11.get(key):
             raise SystemExit(f"STOP: Q10/Q11 non-operator truth differs: {key}")
     if q10.get("operator_offsets_detection_sha") not in (None, "") or q10.get("operator_offsets_positive_sha") not in (None, ""):
@@ -94,7 +87,6 @@ def array_bundle_sha(bundle: dict[str, np.ndarray]) -> str:
 
 
 def scientific_truth_sha(obj: Any) -> str:
-    """Hash scientific truth canonically; poison/storage bytes are not implicit truth."""
     def canon(x: Any) -> Any:
         if isinstance(x, np.ndarray):
             return {"__array__": _arr_record(x)}
@@ -119,41 +111,144 @@ def build_designs(payload: dict, *, base_design: dict[str, np.ndarray], s174_des
     return out
 
 
-def _matrix_levels(design: dict[str, np.ndarray]) -> np.ndarray:
-    return np.unique(np.asarray(design["op"], dtype=np.int64))
+def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, world_index: int,
+                             genes: int | None = None, amendment: dict | None = None) -> np.ndarray:
+    """Build the frozen cell×gene structural support truth.
 
-
-def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, world_index: int, genes: int | None = None,
-                             amendment: dict | None = None) -> np.ndarray:
+    For the real G=44 qualification this is exactly five genes with composition
+    1 single-source-measured / 3 one-source-absent / 1 partial NPH52 (3 of 7
+    NPH52 matrices unmeasured). Tiny fixtures use a proportional fallback.
+    """
     G = int(genes if genes is not None else payload["worlds"]["genes_per_world"])
-    n_cell = len(np.asarray(design["src"]))
     op = np.asarray(design["op"], dtype=np.int64)
     src = np.asarray(design["src"], dtype=np.int64)
-    support = np.ones((n_cell, G), dtype=bool)
-    frac = 59.0 / 500.0
-    n_struct = min(G, max(1, round(frac * G)))
+    support = np.ones((len(src), G), dtype=bool)
+    rule = payload["worlds"]["structural_support_rule"]
+    n_struct = int(rule["genes_with_structural_absence_per_world"]) if G == int(payload["worlds"]["genes_per_world"]) else min(G, max(1, round(59.0 / 500.0 * G)))
     wi = effective_seed_world_index(world_index, 1, amendment) if amendment is not None else int(world_index)
     rng = np.random.default_rng(seed_for(world_index=wi, gene_index=9999, stream=1, root=int(payload["seeds"]["root"])))
     structural_genes = np.sort(rng.choice(G, size=n_struct, replace=False))
-    for j, g in enumerate(structural_genes):
-        if j == 0 and n_struct >= 3:
-            keep_source = int(rng.choice(np.unique(src)))
-            support[:, g] = src == keep_source
-        elif j == n_struct - 1 and n_struct >= 2:
-            candidate_sources = [int(s) for s in np.unique(src) if len(np.unique(op[src == s])) >= 2]
-            if candidate_sources:
-                s = int(rng.choice(candidate_sources))
-                ops = np.unique(op[src == s])
-                n_drop = max(1, len(ops) // 2)
-                drop = set(int(x) for x in rng.choice(ops, size=n_drop, replace=False))
-                support[:, g] = np.array([not (int(ss) == s and int(oo) in drop) for ss, oo in zip(src, op)], dtype=bool)
-            else:
-                absent_source = int(rng.choice(np.unique(src)))
-                support[:, g] = src != absent_source
-        else:
-            absent_source = int(rng.choice(np.unique(src)))
-            support[:, g] = src != absent_source
+    sources = np.sort(np.unique(src))
+
+    if n_struct == 5:
+        # 1) one gene measured in exactly one source, source selected uniformly.
+        g = structural_genes[0]
+        keep = int(rng.choice(sources))
+        support[:, g] = src == keep
+
+        # 2) three genes each fully absent in one source, weighted 38:20:10 (HVS:NPH52:SEA_AD).
+        weights = np.asarray([38.0, 20.0, 10.0], dtype=float)
+        if len(sources) != 3:
+            raise SystemExit("STOP: frozen support rule requires three sources")
+        weights /= weights.sum()
+        for g in structural_genes[1:4]:
+            absent = int(rng.choice(sources, p=weights))
+            support[:, g] = src != absent
+
+        # 3) one partial gene: exactly floor(7/2)=3 of NPH52's 7 matrices absent.
+        nph52 = int(sources[1])
+        nph_ops = np.unique(op[src == nph52])
+        if len(nph_ops) != 7:
+            raise SystemExit(f"STOP: frozen partial-support rule requires 7 NPH52 matrices, got {len(nph_ops)}")
+        g = structural_genes[4]
+        drop = set(int(x) for x in rng.choice(nph_ops, size=3, replace=False))
+        support[:, g] = np.array([not (int(s) == nph52 and int(o) in drop) for s, o in zip(src, op)], dtype=bool)
+        return support
+
+    # Tiny-fixture fallback: preserve the measured-vs-unmeasured code path without pretending 1/3/1 composition fits.
+    for g in structural_genes:
+        absent = int(rng.choice(sources))
+        support[:, g] = src != absent
     return support
+
+
+def _rescale_donor_effects(part: dict, new_sd: np.ndarray) -> None:
+    part["donor_sd"] = np.asarray(new_sd, dtype=float)
+    if "donor_z" in part:
+        part["donor_effects"] = np.asarray(part["donor_z"], dtype=float) * part["donor_sd"][None, :]
+    elif np.all(part["donor_sd"] == 0):
+        part["donor_effects"] = np.zeros_like(np.asarray(part["donor_effects"], dtype=float))
+
+
+def _sparse_prevalence(G: int, world_index: int, payload: dict) -> np.ndarray:
+    root = int(payload["seeds"]["root"])
+    perm_rng = np.random.default_rng(seed_for(world_index=world_index, gene_index=9999, stream=50, root=root))
+    perm = perm_rng.permutation(G)
+    out = np.empty(G, dtype=float)
+    lo, hi = np.log(0.005), np.log(0.05)
+    for g in range(G):
+        jitter = np.random.default_rng(seed_for(world_index=world_index, gene_index=g, stream=10, root=root)).uniform()
+        level = (perm[g] + jitter) / G
+        out[g] = np.exp(lo + level * (hi - lo))
+    return out
+
+
+def apply_world_modifications(base_truth: dict, world_def: dict, payload: dict) -> dict:
+    """Apply only the prospectively frozen Q01-Q09 modification semantics."""
+    out = copy.deepcopy(base_truth)
+    mods = world_def.get("modifications", {})
+    fixed = payload["worlds"]["planting_magnitudes"]["fixed_magnitudes"]
+    G = len(out["detection"]["donor_sd"])
+
+    donor_mod = mods.get("donor_sd")
+    if donor_mod in ("weak", "strong"):
+        key = f"{donor_mod}_donor_sd"
+        _rescale_donor_effects(out["detection"], np.full(G, float(fixed[key]["detection"])))
+        _rescale_donor_effects(out["positive"], np.full(G, float(fixed[key]["positive"])))
+    elif donor_mod == "absent":
+        _rescale_donor_effects(out["detection"], np.zeros(G))
+        _rescale_donor_effects(out["positive"], np.zeros(G))
+
+    if mods.get("source") == "weak":
+        for part_name in ("detection", "positive"):
+            arr = np.asarray(out[part_name]["source_contrasts"], dtype=float)
+            signs = np.where(arr < 0, -1.0, 1.0)
+            out[part_name]["source_contrasts"] = signs * float(fixed["weak_abs_source"][part_name])
+    elif mods.get("source") == "absent":
+        for p in ("detection", "positive"):
+            out[p]["source_contrasts"] = np.zeros_like(out[p]["source_contrasts"], dtype=float)
+
+    if mods.get("class") == "absent":
+        for p in ("detection", "positive"):
+            out[p]["class_contrasts"] = np.zeros_like(out[p]["class_contrasts"], dtype=float)
+
+    if mods.get("depth2") == "absent":
+        for p in ("detection", "positive"):
+            out[p]["depth2"] = np.zeros_like(out[p]["depth2"], dtype=float)
+
+    if mods.get("prevalence") == "sparse":
+        out["detection"]["prevalence"] = _sparse_prevalence(G, int(world_def["index"]), payload)
+
+    if mods.get("sigma") == "tail":
+        out["positive"]["sigma"] = np.full(G, float(fixed["tail_sigma"]))
+
+    return out
+
+
+def generate_operator_offsets(design: dict[str, np.ndarray], *, donor_sd: float, world_index: int,
+                              gene_index: int, part: str, payload: dict, amendment: dict) -> np.ndarray:
+    """Generate Q11 operator offsets and centre them unweighted within source."""
+    if part not in ("detection", "positive"):
+        raise ValueError("part must be detection or positive")
+    stream = 22 if part == "detection" else 23
+    wi = effective_seed_world_index(world_index, stream, amendment)
+    root = int(payload["seeds"]["root"])
+    rng = np.random.default_rng(seed_for(world_index=wi, gene_index=gene_index, stream=stream, root=root))
+    op = np.asarray(design["op"], dtype=np.int64)
+    src = np.asarray(design["src"], dtype=np.int64)
+    if np.min(op) < 0:
+        raise SystemExit("STOP: operator IDs must be nonnegative integer codes")
+    out = np.zeros(int(np.max(op)) + 1, dtype=float)
+    scale = 0.5 * float(donor_sd)
+    for s in np.unique(src):
+        ops = np.unique(op[src == s])
+        for o in ops:
+            if len(np.unique(src[op == o])) != 1:
+                raise SystemExit("STOP: operator maps to multiple sources")
+        raw = rng.normal(0.0, scale, size=len(ops))
+        raw -= raw.mean()
+        out[ops] = raw
+    return out
 
 
 def apply_poison(counts: np.ndarray, support: np.ndarray, *, poison: int = -1) -> np.ndarray:
