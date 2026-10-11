@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V3",
+  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V4",
   "date": "2026-10-11",
   "canonical_handoff_pr": 265,
   "implementation": {
@@ -10,8 +10,7 @@
   "audit": {
     "pr": 264,
     "branch": "audit/v79-factorial-preexecution-hardened-20261010",
-    "receipt_closeout_commit": "e59f7f3ffad78ea6f560a99471facb1b0191a287",
-    "detection_failure_addendum_commit": "9b2c1cf5f8812a5a93296a71c9ec90ee4e3dcd05"
+    "upstream_bayesian_sync_addendum": "docs/agent/V79_FACTORIAL_UPSTREAM_BAYESIAN_HOLD_AND_S174_REPLAY_AUDIT_ADDENDUM_20261011.md"
   },
   "verification": {
     "workflow_run": 38147114407,
@@ -33,29 +32,42 @@
   },
   "macha_upstream": {
     "controller_pr": 261,
+    "audit_pr": 260,
+    "resource_replay_pr": 279,
+    "physical_execution_pr": 280,
     "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
-    "latest_audited_code_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+    "latest_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
     "provisional_outputs_consumable": false,
-    "detection_v1_status": "FAILED_S4",
     "detection_v2_status": "FAILED_S4_TERMINAL_NOT_QUALIFIED",
-    "detection_v2_limiting_ess": 362,
+    "detection_v2_limiting_ess": 361.8761303230284,
     "detection_frozen_minimum_ess": 400,
-    "detection_v3_allowed": false,
-    "threshold_change_allowed": false,
-    "gaussian_status": "QUALIFICATION_PENDING",
-    "lognormal_status": "QUALIFICATION_PENDING",
-    "ztnb_status": "QUALIFICATION_PENDING"
+    "old_gaussian_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_18_fit_campaign_authorized": false,
+    "current_candidate_status": "DEVELOPMENT_ONLY__NOT_AUTHORITY",
+    "physical_s174_g500_cache": "PASS",
+    "physical_s174_g500_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "first_exact_s174_structure_replay": "FAILED_CLOSED_BEFORE_METRICS__OPERATOR_LOGISTIC_NONCONVERGENCE",
+    "operator_nonconverged_fits": 155,
+    "operator_total_fits": 600,
+    "prospective_repair_primary_lambda": 1.0,
+    "prospective_repair_sensitivity_lambdas": [0.25, 1.0, 4.0]
   },
   "integration_policy": {
     "macha_detection_parameters_qualified_for_h2_h3": false,
-    "remaining_families_may_be_evaluated_independently": true,
-    "successor_authority_must_mark_failed_detection_unqualified": true,
+    "old_gaussian_lognormal_ztnb_qualified_for_h2_h3": false,
+    "current_candidate_qualified_for_h2_h3": false,
+    "remaining_old_families_may_continue_without_controller_reopening": false,
+    "successor_authority_must_be_frozen_prospectively": true,
     "post_outcome_authority_choice_allowed": false,
-    "corrected_train_before_required_simulation_qualification": false,
-    "fresh_preexecution_required_after_material_authority_change": true
+    "fresh_preexecution_required_after_material_authority_change": true,
+    "factorial_scientific_execution_authorized": false
   },
   "remaining_external_gates": [
-    "TERMINAL_GAUSSIAN_LOGNORMAL_ZTNB_QUALIFICATION_RULINGS",
+    "REPAIRED_EXACT_S174_STRUCTURE_REPLAY_AND_CONTROLLER_RULING",
+    "PROSPECTIVE_BAYESIAN_CANDIDATE_FREEZE_IF_SUPPORTED",
+    "NEW_UNTOUCHED_SYNTHETIC_QUALIFICATION_WORLDS_AND_TERMINAL_RULING",
     "PROSPECTIVE_FINAL_H1_H2_AUTHORITY_DECISION",
     "FINAL_H1_H2_AUTHORITY_FREEZE",
     "EXTERNAL_REGISTRY_BYTES_AVAILABLE",
@@ -69,5 +81,5 @@
   "test_or_morabito_accessed": false,
   "pathology_accessed": false,
   "target_discovery_modified": false,
-  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__MACHA_DETECTION_NOT_QUALIFIED__OTHER_MACHA_FAMILIES_PENDING__FINAL_H1_H2_AUTHORITY_DECISION_PENDING__FINAL_BYTE_CUSTODY_REPLAY_PENDING__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
+  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__UPSTREAM_BAYESIAN_MODEL_DEVELOPMENT_ACTIVE__FIRST_EXACT_S174_STRUCTURE_REPLAY_FAILED_CLOSED_BEFORE_METRICS__NO_QUALIFIED_MACHA_AUTHORITY__FINAL_H1_H2_AUTHORITY_DECISION_PENDING__FRESH_PREEXECUTION_REPLAY_REQUIRED_AFTER_AUTHORITY_FREEZE__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
 }
