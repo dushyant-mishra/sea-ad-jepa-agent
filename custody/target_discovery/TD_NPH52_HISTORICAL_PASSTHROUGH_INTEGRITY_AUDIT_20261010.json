@@ -1,0 +1,20 @@
+{
+  "schema": "JEPA_TD_NPH52_HISTORICAL_PASSTHROUGH_INTEGRITY_AUDIT_V1",
+  "date": "2026-10-10",
+  "status": "PASS_AUTHENTICATED_HISTORICAL_CSR_ROWS_HAVE_NO_DUPLICATE_ADDRESS_INDICES__NO_NEW_AUTHORITY",
+  "input_authority": {
+    "historical_expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "indices_npy_sha256": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+    "indptr_npy_sha256": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+    "td50_nph52_sha256": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe"
+  },
+  "nph52_sample_A_rows_checked": 1310,
+  "nph52_rows_with_duplicate_csr_indices": 0,
+  "all_sample_A_rows_checked": 25000,
+  "all_sample_A_rows_with_duplicate_csr_indices": 0,
+  "interpretation": "The exact authenticated historical NPH52 pass-through is row-address unambiguous under the existing dictionary extraction semantics. No corrective rewrite or duplicate-collapsing policy is needed and none is authorized.",
+  "corrected_value_read_authorized": false,
+  "biological_replay_authorized": false,
+  "target_selection_authorized": false,
+  "training_authorized": false
+}
