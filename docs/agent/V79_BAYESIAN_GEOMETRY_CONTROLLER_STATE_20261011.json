@@ -1,18 +1,44 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V5",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V6",
   "date": "2026-10-11",
   "lane": "bayesian_synthetic_geometry",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
   "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
   "live_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
   "audit_pr": 260,
   "handoff_pr": 261,
   "resource_replay_pr": 279,
-  "terminal_state": "DEVELOPMENT_CANDIDATE_V2__RESOURCE_SAFE_EXACT_S174_STRUCTURE_REPLAY_READY__PHYSICAL_S174_REPLAY_PENDING__OLD_CONFIRMATORY_CAMPAIGN_ON_HOLD__TRAINING_OFF",
+  "physical_execution_pr": 280,
+  "factorial_implementation_pr": 262,
+  "factorial_audit_pr": 264,
+  "factorial_handoff_pr": 265,
+  "canonical_takeover_handoff": "docs/agent/SYNTHETIC_V79_COMPLETE_TAKEOVER_HANDOFF_20261011.md",
+  "terminal_state": "EXACT_S174_STRUCTURE_REPLAY_FAILED_CLOSED__OPERATOR_MODEL_LOGISTIC_NONCONVERGENCE__NO_METRICS_COMPUTED__PROSPECTIVE_OPERATOR_REGULARIZATION_REPAIR_APPROVED__BAYESIAN_CONFIRMATION_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
   "training_authorized": false,
+  "factorial_scientific_execution_authorized": false,
   "corrected_train": {
     "development_structure_replay_authorized": true,
     "bayesian_posterior_inference_authorized": false,
     "parameter_export_authorized": false
+  },
+  "corrected_s174_custody": {
+    "cache_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "do_not_reconstruct_from_50k": true,
+    "n_cells": 4726,
+    "n_donors": 149,
+    "donors_by_source": {"HVS": 62, "NPH52": 19, "SEA_AD": 68},
+    "cells_by_source": {"HVS": 3072, "NPH52": 246, "SEA_AD": 1408},
+    "n_operators": 42,
+    "n_sources": 3,
+    "n_broad_classes": 3,
+    "n_donor_class_groups": 426,
+    "shard_authority": "results/v79/V79_S174_SHARD_AUTHORITY_V1.json",
+    "shard_authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "operator_bridge": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "operator_bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "physical_shards_verified": 84,
+    "missing_shards": 0,
+    "extra_shards": 0
   },
   "detection": {
     "v1_status": "FAILED_S4",
@@ -22,73 +48,150 @@
     "v2_ess_minimum": 400,
     "v2_divergences": 0,
     "qualified": false,
-    "old_v3_rescue_allowed": false,
-    "interpretation": "the specific frozen hierarchical Bernoulli V2 failed; later empirical development supports a separate detection process, so detection as a concept is not ruled out"
+    "old_confirmatory_v3_rescue_allowed": false,
+    "interpretation": "specific frozen hierarchical Bernoulli V2 failed; empirical development still supports a separate detection process"
   },
   "old_model_families": {
     "gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
     "lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
     "ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD",
-    "old_18_fit_campaign_authorized": false
+    "old_18_fit_campaign_authorized": false,
+    "old_scheduler_restart_authorized": false
+  },
+  "auxiliary_empirical_tournament": {
+    "status": "DEVELOPMENT_ONLY",
+    "n_cells": 10379,
+    "n_fit_donors": 104,
+    "heldout_donor_folds": 3,
+    "one_piece_nb2_fixed_depth_lpd": -1.43373,
+    "one_piece_nb2_free_depth_lpd": -1.40428,
+    "hurdle_lognormal_lpd": -1.30285,
+    "hurdle_ztnb_lpd": -1.30617,
+    "nb2_fixed_depth_zero_logloss": 0.37573,
+    "nb2_free_depth_zero_logloss": 0.35608,
+    "explicit_detection_logloss": 0.26179,
+    "ruling": "TWO_PART_DETECTION_PLUS_POSITIVE_MAGNITUDE_SUPPORTED__POSITIVE_FAMILY_UNRESOLVED"
   },
   "empirical_development_candidate": {
-    "status": "DEVELOPMENT_CANDIDATE_V2__AUXILIARY_FIT_POPULATION",
+    "status": "DEVELOPMENT_CANDIDATE_V2__NOT_QUALIFIED",
     "architecture": "TWO_PART_HURDLE",
     "depth": "QUADRATIC_CENTERED_LOG_LIBRARY",
     "fixed_effects": ["BROAD_CLASS", "SOURCE"],
-    "random_effects_candidate": ["OPERATOR_WITHIN_SOURCE", "DONOR_WITHIN_SOURCE"],
+    "hierarchical_effects_candidate": ["OPERATOR_WITHIN_SOURCE", "DONOR_WITHIN_SOURCE"],
     "donor_class_default": false,
+    "source_class_default": false,
+    "free_matrix_or_dataset_identity": false,
     "fit_unit": "MODULAR_PER_GENE",
     "across_gene_geometry": "SECOND_STAGE_META_DISTRIBUTION",
     "positive_family_development_default": "LOGNORMAL",
-    "ztnb_status": "CHALLENGER_PENDING_STABLE_EXACT_S174_DEVELOPMENT_REPLAY",
-    "important_audit_correction": "auxiliary operator residual-support counts used a weaker source-stratified null and are provisional; exact S174 replay uses donor-centered residuals and within-donor permutation to test operator beyond donor"
+    "ztnb_status": "CHALLENGER__NOT_REJECTED",
+    "operator_support_audit_correction": "exact S174 must use donor-centered residuals and within-donor permutation; earlier auxiliary source-stratified operator support is provisional"
   },
   "resource_safe_replay": {
     "pr": 279,
     "branch": "fix/v79-streaming-analysis-cache-20261011",
-    "implementation_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
-    "documented_pr_head": "615b55eb03b95630484b18d47de0ef7340368d37",
+    "verified_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+    "execution_snapshot_head": "615b55eb03b95630484b18d47de0ef7340368d37",
     "workflow_run": 38166126568,
     "workflow_job": 114548954034,
     "tests": "15 passed in 1.27 s",
+    "important_files": [
+      ".github/workflows/v79-streaming-analysis-cache.yml",
+      "scripts/v79/build_v79_analysis_cache.py",
+      "scripts/v79/run_v79_s174_structure_replay.py",
+      "scripts/v79/run_v79_scheduler.py",
+      "tests/v79/test_v79_analysis_cache.py",
+      "tests/v79/test_v79_s174_structure_replay.py",
+      "tests/v79/test_v79_scheduler_resource_defaults.py",
+      "docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md"
+    ],
     "cache_contract": {
       "streaming_passes": 2,
       "max_count_shards_resident": 1,
       "global_sparse_assembly": false,
       "metadata_from_authenticated_bytes": true
     },
-    "structure_replay": {
-      "reads_41k_shards_after_cache_build": false,
-      "jax_or_nuts": false,
-      "default_cache_panel_genes": 500,
-      "replay_genes": 200,
-      "support_genes": 50,
-      "heldout_donor_folds": 3,
-      "permutations": 99,
-      "operator_fixed_proxy": "REFERENCE_CODED_WITHIN_SOURCE__FULL_RANK",
-      "operator_support_null": "DONOR_CENTERED_RESIDUALS__PERMUTED_WITHIN_DONOR"
-    },
-    "execution_contract": "docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md"
+    "scheduler": {
+      "default_machine_wide_heavy_fits": 1,
+      "default_settle_seconds": 120
+    }
+  },
+  "physical_g500_cache": {
+    "status": "PASS",
+    "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "bytes": 1071307,
+    "committed": false,
+    "rebuild_required": false,
+    "rebuild_only_if_hash_or_custody_fails": true,
+    "n_genes": 500,
+    "universe_prevalence_ge_0p05": 14417,
+    "prevalence_min": 0.05,
+    "prevalence_median": 0.242,
+    "prevalence_max": 0.949
+  },
+  "first_physical_structure_replay": {
+    "status": "FAILED_CLOSED_BEFORE_METRICS",
+    "replay_genes": 200,
+    "support_genes": 50,
+    "heldout_donor_folds": 3,
+    "permutations": 99,
+    "seed": 20261011,
+    "metrics_computed": false,
+    "simpler_model_nonconvergence": 0,
+    "operator_model_nonconverged_fits": 155,
+    "operator_model_total_fits": 600,
+    "genes_with_any_operator_failure": 84,
+    "operator_fits_with_any_constant_training_level": 351,
+    "cause": "QUASI_SEPARATION__TINY_COMMON_RIDGE_1E-4_CONTROLS_OPERATOR_COEFFICIENTS",
+    "execution_record": "PR_280__docs/agent/V79_S174_STRUCTURE_REPLAY_EXECUTION_RECORD_20261011.md",
+    "diagnosis_script": "PR_280__results/v79/development/s174_structure_replay/diagnose_replay_convergence.py",
+    "diagnosis_result": "PR_280__results/v79/development/s174_structure_replay/V79_S174_REPLAY_CONVERGENCE_DIAGNOSIS.json"
+  },
+  "prospective_operator_repair": {
+    "decision_fixed_before_predictive_metrics": true,
+    "primary_operator_lambda": 1.0,
+    "primary_operator_prior_sd": 1.0,
+    "frozen_sensitivity_lambdas": [0.25, 1.0, 4.0],
+    "approx_prior_sds": [2.0, 1.0, 0.5],
+    "penalized_columns": "OPERATOR_WITHIN_SOURCE_ONLY",
+    "apply_to_detection_and_positive_proxy": true,
+    "do_not_change": ["FOLDS", "G500_CACHE", "PANEL_RULE", "SUPPORT_PANEL_RULE", "SEED", "METRICS", "COVARIATES", "MAXITER", "PRIMARY_CONVERGENCE_CRITERION"],
+    "operator_supported_rule": "same-direction and materially present increment across all frozen lambdas",
+    "operator_prior_sensitive_rule": "if conclusion materially changes across lambdas => PRIOR_SENSITIVE__UNRESOLVED",
+    "operator_support_null": "DONOR_CENTERED_RESIDUALS__PERMUTED_WITHIN_DONOR",
+    "required_tdd": [
+      "ONLY_OPERATOR_COLUMNS_RECEIVE_NEW_PENALTY",
+      "SOURCE_PLUS_OPERATOR_WITHIN_SOURCE_DESIGN_FULL_RANK",
+      "SEPARATED_SYNTHETIC_OPERATOR_LEVELS_CONVERGE_AT_PRIMARY_LAMBDA_1",
+      "NON_OPERATOR_NESTED_OUTPUTS_UNCHANGED",
+      "SENSITIVITY_SET_EXACTLY_0P25_1_4_AND_NOT_ADAPTIVE"
+    ],
+    "controller_comment_id": 6112948943
+  },
+  "macha_next_gate": {
+    "instruction": "IMPLEMENT_OPERATOR_REGULARIZATION_REPAIR_TEST_FIRST_ON_PR_279_LINE__CI_GREEN__VERIFY_EXISTING_G500_HASH__RERUN_SAME_CACHE_ONLY_S174_REPLAY_PRIMARY_LAMBDA_1_PLUS_FROZEN_SENSITIVITIES__COMMIT_A_TO_H_AND_STOP",
+    "new_bayesian_nuts_work_authorized": false,
+    "old_18_fit_restart_authorized": false,
+    "g500_rebuild_authorized_without_hash_failure": false
+  },
+  "downstream_factorial": {
+    "implementation_pr": 262,
+    "implementation_head": "9110c3fae6d34e43463d56631f43004bda33beb8",
+    "verification": "94 passed in 1.04 s",
+    "internal_engineering_closed": true,
+    "scientific_tournament_run": false,
+    "macha_detection_authority_qualified": false,
+    "old_remaining_family_status": "METHODOLOGICAL_HOLD__NOT_AUTHORITY",
+    "current_candidate_status": "DEVELOPMENT_ONLY__NOT_AUTHORITY",
+    "final_h1_h2_authority_decision_pending": true,
+    "fresh_byte_authenticated_preexecution_replay_required_after_any_material_authority_change": true
   },
   "resource_evidence": {
     "historical_single_gaussian_fit_peak_rss_gb": 1.32,
     "historical_single_gaussian_fit_mean_proc_cpus": 10.28,
     "historical_single_gaussian_fit_mean_machine_cpu_pct": 93.1,
     "historical_single_gaussian_fit_wall_seconds": 1561.5,
-    "ruling": "heavy Bayesian fitting is CPU-bound more than expression-I/O-bound; scheduler default is one machine-wide fit"
-  },
-  "next_gate": "PHYSICAL_AUTHENTICATED_S174_STREAMING_CACHE_BUILD_AND_STRUCTURE_REPLAY",
-  "next_gate_inputs": {
-    "cache_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
-    "bridge": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
-    "authority": "results/v79/V79_S174_SHARD_AUTHORITY_V1.json"
-  },
-  "post_replay_rule": "If exact S174 preserves the two-part/class/source/operator/donor structure and does not support donor-class as a default layer, freeze Candidate V2 and generate NEW untouched synthetic qualification worlds. If it contradicts the auxiliary development result, return to model development. Do not reuse the old confirmation campaign as authority.",
-  "macha": {
-    "heavy_execution_status": "STOPPED",
-    "new_bayesian_nuts_work_authorized": false,
-    "old_scheduler_restart_authorized": false
+    "ruling": "HEAVY_BAYESIAN_FITTING_CPU_BOUND_MORE_THAN_EXPRESSION_IO_BOUND"
   },
   "boundaries": {
     "test_or_morabito_allowed": false,
