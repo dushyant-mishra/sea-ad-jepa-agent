@@ -37,7 +37,9 @@ def _valid_sha(v):
     return isinstance(v,str) and len(v)==64 and all(c in '0123456789abcdef' for c in v)
 
 
-def _validate_prefreeze(manifest):
+def _validate_prefreeze(manifest, expected_prefreeze_manifest_sha256):
+    if not _valid_sha(expected_prefreeze_manifest_sha256):
+        raise CoverageError('expected prefreeze manifest SHA must be lowercase SHA-256')
     if not isinstance(manifest,dict) or set(manifest) != PREFREEZE_FIELDS:
         raise CoverageError('prefreeze manifest fields must be exact')
     if manifest.get('schema') != PREFREEZE_SCHEMA:
@@ -45,6 +47,8 @@ def _validate_prefreeze(manifest):
     stated=manifest.get('manifest_sha256')
     if not _valid_sha(stated):
         raise CoverageError('invalid prefreeze manifest SHA')
+    if stated != expected_prefreeze_manifest_sha256:
+        raise CoverageError('prefreeze manifest SHA differs from external frozen pin')
     core=dict(manifest); core.pop('manifest_sha256',None)
     if _canonical_sha(core) != stated:
         raise CoverageError('prefreeze manifest hash mismatch')
@@ -72,8 +76,17 @@ def _validate_prefreeze(manifest):
     return rows,stated
 
 
-def audit_gate_case_coverage(prefreeze_manifest, *, candidate_id, gate_id, case_receipts):
-    rows,prefreeze_sha=_validate_prefreeze(prefreeze_manifest)
+def audit_gate_case_coverage(
+    prefreeze_manifest,
+    *,
+    expected_prefreeze_manifest_sha256,
+    candidate_id,
+    gate_id,
+    case_receipts,
+):
+    rows,prefreeze_sha=_validate_prefreeze(
+        prefreeze_manifest, expected_prefreeze_manifest_sha256
+    )
     expected=[
         r for r in rows
         if r.get('candidate_id')==candidate_id and r.get('gate_id')==gate_id
