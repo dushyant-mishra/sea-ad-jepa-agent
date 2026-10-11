@@ -1,14 +1,14 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCAFFOLD_QUALIFIED__IDENTITY_SUPPORT_SHORTCUT_GATES_BOUND__41_FOCUSED_TESTS_GREEN__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCIENCE_HARNESS_49_GREEN__MEASUREMENT_REFERENCE_FIXTURE_QUALIFIED__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
-  "qualified_implementation_test_contract_head": "20d6a1246e48cde4d9d8993c19b8cd2d20cf4c87",
+  "qualified_implementation_test_head": "ca9d11d4f78a51f5c4c1e7693f6c07037eff8a8e",
   "focused_test_result": {
-    "passed": 41,
+    "passed": 49,
     "failed": 0,
     "errors": 0,
-    "scope": "new synthetic scaffold tests only"
+    "scope": "new synthetic science-harness tests only"
   },
   "red_evidence": [
     "initial modules absent: 3 collection errors",
@@ -16,44 +16,9 @@
     "candidate-specific gate expansion: 7 failed / 7 passed before repair",
     "precision module absent: collection RED",
     "prefreeze module absent: collection RED",
-    "identity/support mechanism expansion: old frozen contract failed broadly (13 failed / 3 passed) before Q5/L6 repair"
+    "identity/support expansion: 13 failed / 3 passed before Q5/L6 repair",
+    "measurement-noise fixture module absent: collection RED"
   ],
-  "candidate_specific_constraints": {
-    "C1_RELATIONAL_SHARED": [
-      "scale_free_relational_recurrence",
-      "fine_locality_not_primary",
-      "matched_wrong_cell_defeat"
-    ],
-    "C2_QUERY_MEASURED": [
-      "q_scalar_student_absent",
-      "q_excluded_teacher_ablation",
-      "target_normalization_q_free",
-      "q_count_only_defeat",
-      "q_address_only_defeat"
-    ],
-    "C3_LEARNED_SHARED": [
-      "learned_teacher_view_continuity",
-      "conditional_technology_imprint",
-      "evidence_response",
-      "measurement_depth_response",
-      "collapse_shortcut_defeat",
-      "identity_support_baseline_defeat"
-    ],
-    "C4_STRUCTURED_COMPOSITE": [
-      "increment_over_constituents",
-      "learned_teacher_view_continuity",
-      "conditional_technology_imprint",
-      "query_leakage_controls",
-      "q_address_only_defeat",
-      "identity_support_baseline_defeat"
-    ],
-    "C5_REGULATORY_SPECIALIST": [
-      "circularity_control",
-      "independent_provenance",
-      "causal_claim_false",
-      "support_abstention"
-    ]
-  },
   "capabilities": {
     "candidate_adjudication_fixture_only": true,
     "candidate_specific_gate_validation": true,
@@ -61,9 +26,21 @@
     "query_lineage_leakage_guard": true,
     "outcome_blind_precision_resolution": true,
     "outcome_blind_prefreeze_manifest": true,
+    "synthetic_same_cell_count_split": true,
+    "synthetic_nested_depth_thinning": true,
     "opens_biological_matrix": false,
+    "opens_biological_file": false,
     "trains_model": false,
     "issues_authority": false
+  },
+  "measurement_reference_fixture": {
+    "prf_version": "JEPA_TD_MEASUREMENT_PSEUDOREPLICATE_PRF_V1",
+    "split": "deterministic complementary 50/50",
+    "depth_grid": [0.25, 0.5, 0.75, 1.0],
+    "exact_count_conservation": true,
+    "support_universe_preserved": true,
+    "technology_equivalence_margin_defined": false,
+    "independent_biological_remeasurement_claim": false
   },
   "precision_rules": {
     "alpha_selected_by_helper": false,
@@ -80,17 +57,21 @@
     "scripts/v5/td_query_information_guard.py": "55a87fbeb6a8825af941b36abc0ebc3ab14366b751357dc0fc5d37ec14438a41",
     "scripts/v5/td_target_tournament_precision.py": "519b0b607b7365e005d42f2360a738381e94e1a4e5b13efdd0362e56df278eeb",
     "scripts/v5/td_target_tournament_prefreeze.py": "69da225f5138bce13028304f47c6802ade2a53d892aab168cd8542c6ab6508d4",
+    "scripts/v5/td_measurement_noise_fixture.py": "4e2933afb94f5dcdf39cdcb46bc0f5928a2244eacbbf30b9d6500ee012ddf5c4",
     "tests/v5/test_td_target_tournament_scaffold.py": "2635438920990941c442f321c541e7be469c4bff833b7535f7792ba1e9a8f237",
     "tests/v5/test_td_target_tournament_nulls.py": "1b95fd21396394e1d1fcaf342cb7955406698e0434ece20084d050e8c6b94386",
     "tests/v5/test_td_query_information_guard.py": "9c33caa62c5f473d2586a40ab3fd3fe2edd73827f048722b06c209b3a10260a6",
     "tests/v5/test_td_target_tournament_precision.py": "40582508948f0a7e7e8d3be6e760574c477dc4ce6f5fbbe5cb8553099ee2345e",
     "tests/v5/test_td_target_tournament_prefreeze.py": "f1584beb0c8818e6f714d6b6047e5f451794cd95a72ae1136e49a5fe77fa8e84",
+    "tests/v5/test_td_measurement_noise_fixture.py": "0fe117e47c7d56210ff60f39705bedab709cbe5f57062df67b8ba4b2a50bc77a",
     "custody/takeover_20261011/TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1.json": "e3594769db122362c0c824046bf1bf6cce199f531bf454c13953188286cd999a"
   },
   "historical_design_calibration": "custody/takeover_20261011/TD_TARGET_TOURNAMENT_DESIGN_CALIBRATION_V1.json",
   "mechanistic_shortcut_audit": "docs/agent/TD_HISTORICAL_TOKEN_IDENTITY_SHORTCUT_MECHANISM_AUDIT_20261011.md",
+  "measurement_noise_prefreeze": "docs/superpowers/specs/2026-10-11-td-measurement-noise-floor-prefreeze.md",
   "authority": {
     "value_read_authorized": false,
+    "raw_count_execution_authorized": false,
     "g6_authorized": false,
     "g7_authorized": false,
     "corrected_biological_replay_authorized": false,
