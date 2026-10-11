@@ -35,6 +35,12 @@ ROLE_FIELDS = (
     'endpoint_id',
 )
 CONTRACT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1'
+CONTRACT_CLAIM_BOUNDARY = 'SYNTHETIC_SCAFFOLD_ONLY__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY'
+CONTRACT_FIELDS = {
+    'schema', 'fixture_only', 'authority', 'candidate_ids',
+    'foundation_candidate_ids', 'optional_specialist_ids', 'mandatory_gates',
+    'claim_boundary', 'candidate_specific_gates',
+}
 CONTRACT_AUTHORITY_KEYS = {
     'value_read_authorized',
     'target_selection_authorized',
@@ -57,10 +63,14 @@ def _canonical_sha(obj):
 
 
 def _validate_tournament_contract(contract):
-    if not isinstance(contract, dict) or contract.get('schema') != CONTRACT_SCHEMA:
+    if not isinstance(contract, dict) or set(contract) != CONTRACT_FIELDS:
+        raise PrefreezeError('tournament contract fields must be exact')
+    if contract.get('schema') != CONTRACT_SCHEMA:
         raise PrefreezeError('invalid tournament contract schema')
     if contract.get('fixture_only') is not True:
         raise PrefreezeError('tournament contract must remain fixture_only=true')
+    if contract.get('claim_boundary') != CONTRACT_CLAIM_BOUNDARY:
+        raise PrefreezeError('tournament contract claim_boundary mismatch')
     auth=contract.get('authority')
     if (
         not isinstance(auth,dict)
