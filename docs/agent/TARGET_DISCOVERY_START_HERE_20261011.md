@@ -10,13 +10,14 @@ For a new agent taking over the **real target-discovery lane**, read in this ord
 6. `docs/agent/TARGET_DISCOVERY_HISTORY_AND_AUDIT_LESSONS_20261011.md`
 7. `docs/agent/TARGET_DISCOVERY_EVIDENCE_CODE_DATA_INDEX_20261011.md`
 8. `docs/agent/MACHA_TARGET_DISCOVERY_AND_PARALLEL_LANE_RUNBOOK_20261011.md`
-9. Fresh successful qualification evidence at `qual/td-g6-global-row-successor-ff4a21f9-20261011@8622f57e67389e3899e76ca7b1dfcc6addd4a3e6`
-10. Failed predecessor qualification evidence at `qual/td-g6-global-row-successor-7e482cf5-20261011@e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
-11. `docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md`
-12. `target_discovery/HANDOFF_CURRENT_20260907.md`
-13. `target_discovery/iterations/td33_global_row_binding_guard/TD33_SUMMARY.json`
-14. PR #282 exact successor code/diff, PR #277 historical custody qualification/evidence, and PR #259 G4/G5 value-blind evidence.
-15. PR #275 V2 tournament governance only after the real G6/G7/corrected-replay critical path is understood.
+9. `docs/agent/TD_V2_GOVERNANCE_QUALIFICATION_20261011.md`
+10. Fresh successful G6-successor qualification evidence at `qual/td-g6-global-row-successor-ff4a21f9-20261011@8622f57e67389e3899e76ca7b1dfcc6addd4a3e6`
+11. Failed predecessor qualification evidence at `qual/td-g6-global-row-successor-7e482cf5-20261011@e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
+12. `docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md`
+13. `target_discovery/HANDOFF_CURRENT_20260907.md`
+14. `target_discovery/iterations/td33_global_row_binding_guard/TD33_SUMMARY.json`
+15. PR #282 exact successor code/diff, PR #277 historical custody qualification/evidence, and PR #259 G4/G5 value-blind evidence.
+16. PR #275 V2 tournament governance only after the real G6/G7/corrected-replay critical path is understood.
 
 Current hard terminal:
 
@@ -85,6 +86,31 @@ The first real G6 at `fafd4309` remains preserved as:
 It is not a biological failure. `G6_OUT_fafd4309` is immutable historical evidence.
 
 Replacement G6 is now authorized exactly once under the fresh authority above. G7 is **not operationally authorized** until the replacement G6 output is externally audited and accepted.
+
+## Parallel V2 governance state
+
+PR #275 is separate synthetic/metadata-only governance. Current exact head:
+
+`0cbe6244756df3d1b7ed1ef4e1643aae0f94e875`
+
+Qualification terminal:
+
+`PASS_FULL_SYNTHETIC_METADATA_ONLY_V2_AUTHENTICATED_REGISTRY_TO_ADJUDICATION_CHAIN_197_OF_197`
+
+Evidence:
+
+- GitHub Actions run `38183565983`
+- job `114601031751`
+- artifact `11718374988`
+- artifact digest `sha256:585f7799e0aba4935b37b28319570025de67ecf73d9aa7523a5bf6abeb74de61`
+- **197 passed / 0 failed / 0 errors**
+- clean before and after.
+
+Qualified chain:
+
+`V2 contract + execution context + authenticated candidate×gate governance registry -> external V2 prefreeze pin -> exact case coverage -> gate evidence -> full candidate manifest -> receipt -> adjudication`
+
+This qualification is governance/software-only. It does not authorize a real tournament, biological value reads, target selection, TD60, Stage4, or training. Full RED→GREEN lineage is in `TD_V2_GOVERNANCE_QUALIFICATION_20261011.md`.
 
 Corrected TD56/57B/57C/59 remain blocked.
 TD60 remains never qualifyingly executed and must never be called failed.
