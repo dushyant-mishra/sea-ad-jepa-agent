@@ -1,65 +1,40 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCIENCE_HARNESS_101_GREEN__MATCHED_NULL_NAMESPACE_BOUND__PREFREEZE_CONTRACT_AND_CASE_COVERAGE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCIENCE_HARNESS_106_GREEN__QUERY_LINEAGE_COMPLETE__MATCHED_NULL_NAMESPACE_BOUND__PREFREEZE_CONTRACT_AND_CASE_COVERAGE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "focused_test_result": {
-    "passed": 101,
+    "passed": 106,
     "failed": 0,
     "errors": 0,
     "scope": "new synthetic/metadata-only science-harness tests",
-    "accounting": "96-green state with old 5-test matched-null suite; namespace hardening expands that suite to 10 (+5 net)"
+    "accounting": "101-green state with old 6-test q-lineage suite; structural-completeness hardening expands that suite to 11 (+5 net)"
   },
   "qualified_components": {
-    "gate_evidence_role_and_hash_binding": {
-      "head": "9a13ccc606b21f1c7d23d57bd17731a7969d611f",
-      "qualification": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md"
-    },
-    "donor_resampling_dependence": {
-      "green_commit": "b61ff24c72729cad824409f5f0a71ae7b9026af7",
-      "qualification": "docs/agent/TD_DONOR_RESAMPLING_DEPENDENCE_QUALIFICATION_20261011.md"
-    },
-    "prefreeze_decision_registry": {
-      "green_commit": "3b796d9d96b3b8cbf2499672beabf46d9380471d",
-      "qualification": "docs/agent/TD_PREFREEZE_DECISION_FAMILY_REGISTRY_QUALIFICATION_20261011.md"
-    },
-    "prefreeze_tournament_contract_binding": {
-      "green_commit": "54a04f708fbbe42d7f6f0db60b1b831815c3c337",
-      "qualification": "docs/agent/TD_PREFREEZE_TOURNAMENT_CONTRACT_BINDING_QUALIFICATION_20261011.md"
-    },
-    "gate_case_coverage": {
-      "green_commit": "46cbfa5a0db37931afa55936d90d5439677474af",
-      "qualification": "docs/agent/TD_GATE_CASE_COVERAGE_QUALIFICATION_20261011.md"
-    },
-    "matched_wrong_cell_null_namespace": {
-      "green_commit": "a3a5dc241a0a602aa6a03ea41413463ee8a234c9",
-      "qualification": "docs/agent/TD_MATCHED_WRONG_CELL_NULL_NAMESPACE_QUALIFICATION_20261011.md"
-    }
+    "gate_evidence_role_and_hash_binding": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md",
+    "donor_resampling_dependence": "docs/agent/TD_DONOR_RESAMPLING_DEPENDENCE_QUALIFICATION_20261011.md",
+    "prefreeze_decision_registry": "docs/agent/TD_PREFREEZE_DECISION_FAMILY_REGISTRY_QUALIFICATION_20261011.md",
+    "prefreeze_tournament_contract_binding": "docs/agent/TD_PREFREEZE_TOURNAMENT_CONTRACT_BINDING_QUALIFICATION_20261011.md",
+    "gate_case_coverage": "docs/agent/TD_GATE_CASE_COVERAGE_QUALIFICATION_20261011.md",
+    "matched_wrong_cell_null_namespace": "docs/agent/TD_MATCHED_WRONG_CELL_NULL_NAMESPACE_QUALIFICATION_20261011.md",
+    "query_lineage_graph_contract": "docs/agent/TD_QUERY_LINEAGE_CONTRACT_QUALIFICATION_20261011.md"
   },
   "capabilities": {
     "candidate_adjudication_fixture_only": true,
-    "candidate_specific_gate_validation": true,
-    "gate_evidence_manifest_hash_binding": true,
-    "gate_evidence_schema_role_binding": true,
-    "prefreeze_full_tournament_contract_hash_binding": true,
-    "prefreeze_case_candidate_gate_contract_validation": true,
-    "prefreeze_role_explicit_decision_family_hash_binding": true,
-    "postfreeze_family_shrinkage_rejected": true,
+    "gate_evidence_role_and_hash_binding": true,
+    "prefreeze_contract_and_role_registry_binding": true,
     "exact_frozen_case_coverage_audit": true,
     "gate_status_auto_adjudicated_from_case_coverage": false,
     "donor_resampling_dependence_audit": true,
-    "case_rows_can_supply_independent_n_when_donors_overlap": false,
-    "matched_wrong_cell_null_metadata_only": true,
-    "matched_wrong_cell_null_exact_row_schema": true,
-    "matched_wrong_cell_null_nul_free_versioned_prf": true,
-    "matched_wrong_cell_null_within_stratum_bijection": true,
-    "singleton_matched_null_strata_remain_not_estimable": true,
-    "query_lineage_leakage_guard": true,
+    "overlapping_case_rows_can_supply_independent_n": false,
+    "matched_wrong_cell_null_exact_stratum_bijection": true,
+    "matched_null_singletons_remain_not_estimable": true,
+    "query_lineage_exact_graph_role_coverage": true,
+    "query_lineage_unknown_or_undeclared_nodes_rejected": true,
+    "query_lineage_transitive_q_leakage_rejected": true,
     "outcome_blind_precision_resolution": true,
-    "synthetic_same_cell_count_split": true,
-    "synthetic_nested_depth_thinning": true,
-    "opens_biological_matrix": false,
-    "opens_biological_file": false,
+    "synthetic_same_cell_count_split_and_depth_thinning": true,
+    "opens_biological_file_or_matrix": false,
     "trains_model": false,
     "issues_authority": false
   },
@@ -71,13 +46,16 @@
     "scripts/v5/td_donor_resampling_audit.py": "4a5d0a08d6b1d1bdc4e0c188a909c39e5f0fb195",
     "tests/v5/test_td_donor_resampling_audit.py": "f736c4b2c876a187bf9edff6a5fac266dcf13e5f",
     "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
-    "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc"
+    "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc",
+    "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
+    "tests/v5/test_td_query_information_guard.py": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98"
   },
   "scientific_boundaries": {
     "initial_decision_family_completeness_inferred_by_helper": false,
     "gate_pass_policy_invented_by_coverage_helper": false,
     "overlapping_donor_resamples_treated_as_independent": false,
     "matched_null_singletons_crossed_or_relaxed": false,
+    "teacher_aux_q_is_automatically_biological_truth": false,
     "technology_equivalence_margin_defined": false,
     "historical_null_counts_inherited": false
   },
