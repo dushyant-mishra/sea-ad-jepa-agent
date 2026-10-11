@@ -1,25 +1,23 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_METADATA_ONLY_GOVERNANCE_FULLY_QUALIFIED_167_GREEN__V2_ADJUDICATOR_RED2_GREEN12_HARDENED__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_METADATA_ONLY_V2_GOVERNANCE_CHAIN_FULLY_QUALIFIED_187_GREEN__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
-  "qualified_code_head": "a93c54673d753c55fb45e0c989b93de7245763de",
-  "current_head_qualified_code_equivalent": true,
+  "qualified_code_head": "b82196646a76f43f4c5a716fa5028198875f7255",
   "qualification": {
     "workflow": ".github/workflows/td-target-tournament-qualification.yml",
-    "workflow_run_id": 38181957959,
-    "workflow_job_id": 114596225820,
-    "artifact_id": 11717628412,
-    "artifact_name": "td-target-tournament-qualification-a93c54673d753c55fb45e0c989b93de7245763de",
-    "artifact_digest": "sha256:80c27278fa45d281fefb69cda304a0fa06cea4776fff6a83571f815c39281d77",
-    "passed": 167,
+    "workflow_run_id": 38182665509,
+    "workflow_job_id": 114598344411,
+    "artifact_id": 11718082529,
+    "artifact_name": "td-target-tournament-qualification-b82196646a76f43f4c5a716fa5028198875f7255",
+    "artifact_digest": "sha256:04982a1e4caaa4edd51ee480350dd9e4011d26446b9d69e1a18c17f573a1083c",
+    "passed": 187,
     "failed": 0,
     "errors": 0,
-    "elapsed_seconds": 0.30,
-    "test_modules": 17,
+    "elapsed_seconds": 0.18,
     "status_before": "CLEAN",
     "tracked_status_after": "CLEAN",
-    "terminal": "PASS_FULL_SYNTHETIC_METADATA_ONLY_TARGET_TOURNAMENT_GOVERNANCE_167_OF_167",
+    "terminal": "PASS_FULL_SYNTHETIC_METADATA_ONLY_V2_TARGET_TOURNAMENT_GOVERNANCE_CHAIN_187_OF_187",
     "environment": {
       "python": "3.11.17",
       "numpy": "2.4.6",
@@ -28,113 +26,98 @@
       "scikit_learn": "1.9.1",
       "pytest": "9.1.1"
     },
-    "scope": "synthetic/metadata-only target-tournament governance only; no biological matrix/value read, no model training, no target authority"
+    "scope": "synthetic/metadata-only V2 governance chain only; no biological matrix/value read, no real target tournament, no model training, no target authority"
   },
   "historical_full_qualification": {
     "head": "8325b574382fa76fa6da0e1d388eb903068533a4",
     "passed": 110,
     "failed": 0,
     "errors": 0,
-    "superseded_for_current_code": true,
-    "preserved_as_history": true
+    "preserved_as_history": true,
+    "superseded_for_current_code": true
   },
-  "v2_adjudicator": {
+  "v2_chain": {
+    "spec_path": "docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md",
+    "spec_git_blob_sha": "d996c5044fe8fd0367d4f573347409c065604a88",
+    "contract_module": "scripts/v5/td_target_tournament_contract_v2.py",
+    "prefreeze_module": "scripts/v5/td_target_tournament_prefreeze_v2.py",
+    "coverage_module": "scripts/v5/td_gate_case_coverage_v2.py",
+    "gate_evidence_module": "scripts/v5/td_target_tournament_gate_evidence_v2.py",
+    "adjudicator_module": "scripts/v5/td_target_tournament_adjudicator_v2.py",
+    "frozen_chain": "external V2 prefreeze SHA -> exact gate-case coverage -> gate evidence artifact -> candidate evidence manifest -> candidate receipt -> tournament adjudication",
+    "execution_context_bound": [
+      "executor_code_identity_sha256",
+      "population_registry_sha256",
+      "donor_registry_sha256",
+      "source_registry_sha256",
+      "operator_registry_sha256",
+      "support_registry_sha256",
+      "teacher_student_evidence_rights_sha256",
+      "split_registry_sha256",
+      "observation_descriptor_sha256",
+      "corrected_replay_evidence_sha256"
+    ],
+    "coverage_adjudicates_gate_status": false,
+    "gate_specific_executor_defines_estimand_and_decision_rule": true,
+    "gate_evidence_binds_coverage_audit": true,
+    "candidate_manifest_binds_gate_artifact_sha": true,
+    "not_estimable_preserved": true,
+    "target_selection_authorized": false
+  },
+  "v2_adjudicator_lineage": {
     "original_test_contract_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
     "initial_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
     "initial_focused_result": "10 passed / 0 failed",
     "edge_hardening_red_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead",
     "edge_hardening_red_result": "2 failed / 10 passed",
     "edge_hardening_green_commit": "74c25f5d7f5827244dc8516e49e20e0034631432",
-    "edge_hardening_green_result": "12 passed / 0 failed",
-    "external_prefreeze_pin_validated_even_for_empty_tournament": true,
-    "json_object_key_order_is_not_scientific_gate_order": true,
-    "not_estimable_is_distinct_from_fail": true,
-    "c4_cannot_rescue_failed_or_not_estimable_constituents": true,
-    "optional_specialist_cannot_change_foundation_terminal": true,
-    "adjudicator_can_select_target": false
+    "edge_hardening_green_result": "12 passed / 0 failed"
   },
-  "repair_history": [
-    {
-      "finding": "donor membership disjointness was serialized as broader case-level statistical independence",
-      "resolution": "independent_n_from_case_rows always null; donor_memberships_pairwise_disjoint only; unique donors remain biological_unit_n",
-      "assimilated_from_pr": 278,
-      "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a"
-    },
-    {
-      "finding": "prefreeze family_alpha silently accepted numeric strings and other coercible inputs",
-      "red_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76",
-      "green_commit": "f36e30e241a53b73be73dbaa81846d930011319b"
-    },
-    {
-      "finding": "NOT_ESTIMABLE gate evidence was serialized as biological FAIL",
-      "red_commit": "acc5aa4a873b56c3bdf9556cc40a95c1811d3091",
-      "green_commit": "0544e0a7c1972426315493f4fd6c370b137fb25b"
-    },
-    {
-      "finding": "top-level tournament terminal collapsed NOT_ESTIMABLE into redesign/failure",
-      "red_commit": "392e6e791e636bbc4cade25b785aaacdadabf6f6",
-      "green_commit": "bf55a7c8fe85a80c85234a9d61edfb8adb3a7b06"
-    },
-    {
-      "finding": "measurement pseudoreplicate seed_material and cell_id were silently string-coerced",
-      "red_commit": "2d6d3be99173db26f769780131bdcb11f913e508",
-      "green_commit": "09c4a0f59495f515501bfb661ee82393b416cae3"
-    },
-    {
-      "finding": "tournament contract, evidence manifest, and candidate receipt allowed shadow claims and malformed aggregate_score",
-      "red_commit": "d80fac3ce6bf35a26daef8ecc8094e53a1cc0e11",
-      "evidence_green_commit": "d8e0e12af9a174267fda37f266ae48b957344f94",
-      "scaffold_green_commit": "8db18f96e191d34b249e7153e6161a81edc0772c"
-    },
-    {
-      "finding": "prefreeze independent contract validator ignored extra contract fields and frozen claim boundary",
-      "red_commit": "807cf7b2c8a567759089f3d6ec32ae2d09f0a18a",
-      "green_commit": "fa36433d047455f28ea9b627b89b654414a31075"
-    },
-    {
-      "finding": "prefreeze config accepted extra shadow fields and coerced null seed material",
-      "red_commit": "37bdfecbb669004209b2357a9f48a67e4954da1b",
-      "green_commit": "49a9856c66907bfd741a0a368863bc1f9b2e4501"
-    },
-    {
-      "finding": "coverage bridge accepted self-consistently rehashed prefreeze manifests carrying shadow claims, true authority, or pre-open biological results",
-      "red_commits": [
-        "927e8eb61b86a2808e09d9674baee90d3a5d2221",
-        "49a621e095730bb76ddd4f18fd1608f3f61a4659"
-      ],
-      "green_commit": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6"
-    },
-    {
-      "finding": "V2 frozen contract and tests lacked a production adjudicator",
-      "red_test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
-      "green_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe"
-    },
-    {
-      "finding": "empty tournament could bypass external prefreeze-SHA validation and gate-object insertion order was treated as semantic",
-      "red_test_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead",
-      "green_implementation_commit": "74c25f5d7f5827244dc8516e49e20e0034631432"
-    }
+  "v2_prefreeze_lineage": {
+    "red_test_commit": "9c5d492c1555291a8be180f36871caa20ce819a3",
+    "red_workflow_commit": "af22e58fd90cded5a02bec6676650e1e0bedd0ad",
+    "red_result": "1 collection error: missing td_target_tournament_prefreeze_v2",
+    "green_implementation_commit": "0b6989b31a3814ce22d463e6dbdc189dc340152c",
+    "green_result": "174 passed / 0 failed",
+    "green_artifact_digest": "sha256:79e8062a0e61e26858081e0ae81f85db302b67cef6bb556e8300c23c56765894"
+  },
+  "v2_coverage_lineage": {
+    "red_test_commit": "c81f13e9777d24544ae454b2d9561d88f8c2155d",
+    "red_workflow_commit": "4026e1ee62d92eae40f32cd3cceaa011286563cc",
+    "red_result": "1 collection error: missing td_gate_case_coverage_v2",
+    "green_implementation_commit": "bf7e98bd8bf451826e92c6d6c87c747e7a4fb824",
+    "green_result": "180 passed / 0 failed",
+    "green_artifact_digest": "sha256:d72d70dec88f53bda29be006bc96ffdde6d5c256062e8124369f0639ebf30b3c"
+  },
+  "v2_gate_evidence_lineage": {
+    "red_test_commit": "98f1a9cfc36a08da40e68c7dc87cdd6ea0ffa90a",
+    "red_workflow_commit": "52e22a77ae7fa81865da01a1bd384528f812a15d",
+    "red_result": "1 collection error: missing td_target_tournament_gate_evidence_v2",
+    "green_implementation_commit": "b82196646a76f43f4c5a716fa5028198875f7255",
+    "green_result": "187 passed / 0 failed",
+    "green_artifact_digest": "sha256:04982a1e4caaa4edd51ee480350dd9e4011d26446b9d69e1a18c17f573a1083c"
+  },
+  "preserved_repairs": [
+    "donor membership disjointness is not broader case-level statistical independence",
+    "prefreeze family_alpha rejects numeric-string/boolean/non-finite coercion",
+    "NOT_ESTIMABLE remains distinct from FAIL",
+    "measurement pseudoreplicate seed material and cell identity are strict",
+    "contract/evidence/receipt shadow claims fail closed",
+    "prefreeze claim boundary is exact",
+    "coverage rejects shadow claims, true authority, and pre-open biological results",
+    "empty tournament cannot bypass external prefreeze SHA validation",
+    "JSON gate-object insertion order is not scientific gate order"
   ],
   "scientific_boundaries": {
-    "not_estimable_is_distinct_from_fail": true,
     "aggregate_score_can_override_mandatory_gate": false,
-    "gate_case_coverage_auto_adjudicates_gate_status": false,
-    "donor_membership_disjointness_is_case_level_independence": false,
-    "numeric_strings_can_shape_prefreeze_authority": false,
-    "non_string_seed_material_can_shape_null_namespace": false,
-    "shadow_top_level_claims_are_allowed": false,
-    "prefreeze_can_claim_opened_biology": false,
-    "matched_null_singletons_crossed_or_relaxed": false,
-    "teacher_aux_q_is_automatically_biological_truth": false,
-    "technology_equivalence_margin_defined": false,
-    "historical_null_counts_inherited": false,
-    "v2_adjudication_can_select_a_winner": false,
-    "v2_optional_specialist_can_change_foundation_terminal": false,
+    "coverage_layer_invents_gate_pass_policy": false,
     "c4_can_rescue_failed_or_not_estimable_constituents": false,
-    "empty_tournament_can_bypass_external_prefreeze_pin_validation": false,
-    "json_gate_object_order_is_scientific_gate_order": false
+    "optional_specialist_can_change_foundation_terminal": false,
+    "v2_adjudication_can_select_a_winner": false,
+    "prefreeze_can_claim_opened_biology": false,
+    "real_tournament_is_authorized": false
   },
-  "next_science_requirement": "Do not execute a real target tournament yet. First complete real G6/G7 and corrected TD56/57B/57C/59 replay under their separate authority. Then bind any future real tournament to corrected evidence and a fresh explicit owner decision.",
+  "next_science_requirement": "Do not execute a real target tournament yet. First complete replacement G6, external G6 audit, possible G7, external G7 audit, separately authorized corrected TD56/TD57B/TD57C/TD59 replay, and frozen replay interpretation. Only then instantiate the V2 execution context and decision family under a fresh explicit owner decision.",
   "authority": {
     "value_read_authorized": false,
     "raw_count_execution_authorized": false,
