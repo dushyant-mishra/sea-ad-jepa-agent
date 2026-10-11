@@ -3,6 +3,7 @@
 This module intentionally does not read biological matrices and cannot emit target authority.
 """
 
+import math
 import td_target_tournament_evidence as evidence
 
 EXPECTED_CANDIDATES = [
@@ -63,6 +64,16 @@ EXPECTED_CANDIDATE_SPECIFIC_GATES = {
 }
 CONTRACT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1'
 RECEIPT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_CANDIDATE_RECEIPT_V1'
+CLAIM_BOUNDARY = 'SYNTHETIC_SCAFFOLD_ONLY__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY'
+CONTRACT_FIELDS = {
+    'schema', 'fixture_only', 'authority', 'candidate_ids',
+    'foundation_candidate_ids', 'optional_specialist_ids', 'mandatory_gates',
+    'claim_boundary', 'candidate_specific_gates',
+}
+RECEIPT_FIELDS = {
+    'schema', 'fixture', 'candidate_id', 'status', 'aggregate_score', 'gates',
+    'evidence_manifest_sha256', 'authority',
+}
 EXPECTED_CONTRACT_AUTHORITY_KEYS = {
     'value_read_authorized',
     'target_selection_authorized',
@@ -94,11 +105,24 @@ def _assert_all_false(mapping, exc_type, label):
             raise exc_type(f'{label}.{key} must be false')
 
 
+def _finite_exact_number(value, label):
+    if isinstance(value, bool) or type(value) not in (int, float):
+        raise ReceiptError(f'{label} must be an exact JSON numeric value')
+    numeric = float(value)
+    if not math.isfinite(numeric):
+        raise ReceiptError(f'{label} must be finite')
+    return numeric
+
+
 def validate_contract(contract):
+    if not isinstance(contract, dict) or set(contract) != CONTRACT_FIELDS:
+        raise ContractError('contract fields must exactly match frozen scaffold')
     if contract.get('schema') != CONTRACT_SCHEMA:
         raise ContractError('wrong contract schema')
     if contract.get('fixture_only') is not True:
         raise ContractError('scaffold contract must remain fixture_only=true')
+    if contract.get('claim_boundary') != CLAIM_BOUNDARY:
+        raise ContractError('claim_boundary differs from frozen scaffold')
     if contract.get('candidate_ids') != EXPECTED_CANDIDATES:
         raise ContractError('candidate_ids differ from frozen scaffold')
     if contract.get('foundation_candidate_ids') != EXPECTED_FOUNDATION:
@@ -119,10 +143,13 @@ def validate_contract(contract):
 
 def validate_candidate_receipt(receipt, contract, evidence_manifest):
     validate_contract(contract)
+    if not isinstance(receipt, dict) or set(receipt) != RECEIPT_FIELDS:
+        raise ReceiptError('receipt fields must exactly match frozen scaffold')
     if receipt.get('schema') != RECEIPT_SCHEMA:
         raise ReceiptError('wrong receipt schema')
     if receipt.get('fixture') is not True:
         raise ReceiptError('scaffold accepts synthetic fixture receipts only')
+    _finite_exact_number(receipt.get('aggregate_score'), 'aggregate_score')
     cid = receipt.get('candidate_id')
     if cid not in contract['candidate_ids']:
         raise ReceiptError('unknown candidate_id')
