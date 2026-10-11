@@ -169,7 +169,9 @@ def main() -> None:
         print(name, "diagnosed", res[name]["diagnostics"]["diagnosed"], "rhat", round(res[name]["diagnostics"]["worst_rhat"], 3),
               "ess", round(res[name]["diagnostics"]["worst_ess"]), "s", round(res[name]["diagnostics"]["seconds"]), flush=True)
     import jax
+    snap = HERE.parents[1] / "SNAPSHOT_COMMIT.txt"            # written by snapshot_v79.sh
     rec = dict(schema="V79_SIMULATION_RECOVERY_V1", likelihood=a.likelihood, settings=vars(a),
+               code_snapshot=snap.read_text(encoding="utf-8").strip() if snap.exists() else "LIVE_TREE_NOT_A_SNAPSHOT",
                centring_used={k: dict(v) for k, v in M.CENTRING.items()},
                fits=res, criteria=criteria(res) if set(FITS) <= set(res) else None,
                environment=dict(python=sys.version.split()[0], platform=platform.platform(), jax=jax.__version__,
