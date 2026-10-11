@@ -23,6 +23,21 @@ EXPECTED_GATES = [
 ]
 CONTRACT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1'
 RECEIPT_SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_CANDIDATE_RECEIPT_V1'
+EXPECTED_CONTRACT_AUTHORITY_KEYS = {
+    'value_read_authorized',
+    'target_selection_authorized',
+    'representation_selection_authorized',
+    'td60_authorized',
+    'stage4_authorized',
+    'training_authorized',
+}
+EXPECTED_RECEIPT_AUTHORITY_KEYS = {
+    'target_selected',
+    'representation_selected',
+    'stage4_authorized',
+    'training_authorized',
+    'value_read_authorized',
+}
 
 
 class ContractError(ValueError):
@@ -55,6 +70,8 @@ def validate_contract(contract):
     auth = contract.get('authority')
     if not isinstance(auth, dict):
         raise ContractError('authority object required')
+    if set(auth) != EXPECTED_CONTRACT_AUTHORITY_KEYS:
+        raise ContractError('authority keys differ from frozen scaffold')
     _assert_all_false(auth, ContractError, 'authority')
 
 
@@ -75,6 +92,8 @@ def validate_candidate_receipt(receipt, contract):
     auth = receipt.get('authority')
     if not isinstance(auth, dict):
         raise ReceiptError('receipt authority object required')
+    if set(auth) != EXPECTED_RECEIPT_AUTHORITY_KEYS:
+        raise ReceiptError('receipt authority keys differ from frozen scaffold')
     _assert_all_false(auth, ReceiptError, 'receipt.authority')
     if receipt.get('status') not in {'PASS', 'FAIL', 'NOT_ESTIMABLE'}:
         raise ReceiptError('unsupported status')
