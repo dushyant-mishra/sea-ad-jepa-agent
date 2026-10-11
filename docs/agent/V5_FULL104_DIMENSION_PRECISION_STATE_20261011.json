@@ -1,11 +1,14 @@
 {
-  "schema": "V5_FULL104_DIMENSION_PRECISION_STATE_V1",
+  "schema": "V5_FULL104_DIMENSION_PRECISION_STATE_V2",
   "date": "2026-10-11",
   "implementation_pr": 270,
   "implementation_head": "e7362af9271927b02169b594c41249c1a5927016",
   "verification": {
-    "workflow_run": 38149052609,
-    "conclusion": "SUCCESS"
+    "workflow_run": 38149069861,
+    "job": 114498484317,
+    "conclusion": "SUCCESS",
+    "tests_passed": 17,
+    "tests_failed": 0
   },
   "prospective_mechanics": {
     "precision_replicates_from_error_budget": true,
