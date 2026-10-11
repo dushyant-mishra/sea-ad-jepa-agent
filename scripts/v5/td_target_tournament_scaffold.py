@@ -198,11 +198,18 @@ def adjudicate(contract, receipts, evidence_manifests):
 
     foundation_eligible.sort(key=contract['foundation_candidate_ids'].index)
     optional_specialists_eligible.sort(key=contract['optional_specialist_ids'].index)
-    terminal = (
-        'CANDIDATES_ELIGIBLE_FOR_TARGET_SELECTION__NO_TARGET_AUTHORITY'
-        if foundation_eligible
-        else 'NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION'
+    foundation_not_estimable = any(
+        rejected.get(cid, {}).get('not_estimable_gates')
+        or rejected.get(cid, {}).get('status') == 'NOT_ESTIMABLE'
+        for cid in contract['foundation_candidate_ids']
+        if cid in rejected
     )
+    if foundation_eligible:
+        terminal = 'CANDIDATES_ELIGIBLE_FOR_TARGET_SELECTION__NO_TARGET_AUTHORITY'
+    elif foundation_not_estimable:
+        terminal = 'NO_TARGET_WINNER__FOUNDATION_EVIDENCE_NOT_ESTIMABLE__NO_TARGET_AUTHORITY'
+    else:
+        terminal = 'NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION'
     return {
         'schema': 'JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_ADJUDICATION_V1',
         'fixture_only': True,
