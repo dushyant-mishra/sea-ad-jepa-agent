@@ -1,70 +1,120 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "LAST_FULLY_QUALIFIED_SYNTHETIC_HARNESS_110_GREEN_AT_8325B574__CURRENT_V2_ADJUDICATOR_RED2_GREEN12_HARDENED__FULL_CURRENT_HEAD_REQUALIFICATION_PENDING__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_METADATA_ONLY_GOVERNANCE_FULLY_QUALIFIED_167_GREEN__V2_ADJUDICATOR_RED2_GREEN12_HARDENED__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
-  "last_fully_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
-  "code_head_before_this_state_record": "74c25f5d7f5827244dc8516e49e20e0034631432",
-  "current_head_qualified": false,
-  "historical_full_focused_result": {
+  "qualified_code_head": "a93c54673d753c55fb45e0c989b93de7245763de",
+  "current_head_qualified_code_equivalent": true,
+  "qualification": {
+    "workflow": ".github/workflows/td-target-tournament-qualification.yml",
+    "workflow_run_id": 38181957959,
+    "workflow_job_id": 114596225820,
+    "artifact_id": 11717628412,
+    "artifact_name": "td-target-tournament-qualification-a93c54673d753c55fb45e0c989b93de7245763de",
+    "artifact_digest": "sha256:80c27278fa45d281fefb69cda304a0fa06cea4776fff6a83571f815c39281d77",
+    "passed": 167,
+    "failed": 0,
+    "errors": 0,
+    "elapsed_seconds": 0.30,
+    "test_modules": 17,
+    "status_before": "CLEAN",
+    "tracked_status_after": "CLEAN",
+    "terminal": "PASS_FULL_SYNTHETIC_METADATA_ONLY_TARGET_TOURNAMENT_GOVERNANCE_167_OF_167",
+    "environment": {
+      "python": "3.11.17",
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scipy": "1.17.1",
+      "scikit_learn": "1.9.1",
+      "pytest": "9.1.1"
+    },
+    "scope": "synthetic/metadata-only target-tournament governance only; no biological matrix/value read, no model training, no target authority"
+  },
+  "historical_full_qualification": {
+    "head": "8325b574382fa76fa6da0e1d388eb903068533a4",
     "passed": 110,
     "failed": 0,
     "errors": 0,
-    "scope": "synthetic/metadata-only science harness at exact historical head 8325b574382fa76fa6da0e1d388eb903068533a4",
-    "may_be_attributed_to_current_head": false
+    "superseded_for_current_code": true,
+    "preserved_as_history": true
   },
-  "targeted_verification_after_repairs": {
-    "tournament_envelope_regression": {"result": "10 passed", "scope": "shadow-claim envelope, frozen claim boundary, malformed aggregate_score"},
-    "prefreeze_config_red": {"result": "5 failed before fix", "scope": "extra config shadow claim plus four non-string null-seed cases"},
-    "prefreeze_config_green": {"result": "5 passed after fix", "scope": "same exact regression cases"},
-    "prefreeze_existing_suite": {"result": "23 passed", "scope": "reconstructed existing prefreeze test file against repaired implementation"},
-    "coverage_bridge_red": {"result": "3 failed before fix", "scope": "rehashed top-level shadow claim, true authority flag, prefreeze biological_result PASS"},
-    "coverage_bridge_green_plus_existing": {"result": "13 passed", "scope": "3 attack regressions plus existing 10 coverage tests"},
-    "v2_adjudicator_initial_green": {
-      "result": "10 passed",
-      "implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
-      "test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
-      "scope": "exact V2 external prefreeze binding; evidence/receipt envelopes; PASS/FAIL/NOT_ESTIMABLE; complete-foundation requirement; C4 constituent blocking; C5 specialist isolation; no target/training authority"
-    },
-    "v2_adjudicator_edge_hardening_red": {
-      "result": "2 failed / 10 passed",
-      "test_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead",
-      "scope": "empty tournament must validate external prefreeze SHA; JSON object insertion order must not become scientific gate order"
-    },
-    "v2_adjudicator_edge_hardening_green": {
-      "result": "12 passed / 0 failed",
-      "implementation_commit": "74c25f5d7f5827244dc8516e49e20e0034631432",
-      "verification_environment": "local reconstructed four-file harness from exact GitHub connector contents",
-      "repository_wide_qualification": false
-    },
-    "qualification_boundary": "TARGETED_REGRESSIONS_ONLY__NOT_A_FULL_CURRENT_HEAD_QUALIFICATION"
+  "v2_adjudicator": {
+    "original_test_contract_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+    "initial_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
+    "initial_focused_result": "10 passed / 0 failed",
+    "edge_hardening_red_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead",
+    "edge_hardening_red_result": "2 failed / 10 passed",
+    "edge_hardening_green_commit": "74c25f5d7f5827244dc8516e49e20e0034631432",
+    "edge_hardening_green_result": "12 passed / 0 failed",
+    "external_prefreeze_pin_validated_even_for_empty_tournament": true,
+    "json_object_key_order_is_not_scientific_gate_order": true,
+    "not_estimable_is_distinct_from_fail": true,
+    "c4_cannot_rescue_failed_or_not_estimable_constituents": true,
+    "optional_specialist_cannot_change_foundation_terminal": true,
+    "adjudicator_can_select_target": false
   },
-  "repairs_since_last_full_qualification": [
-    {"finding": "donor membership disjointness was serialized as broader case-level statistical independence", "resolution": "independent_n_from_case_rows always null; donor_memberships_pairwise_disjoint only; unique donors remain biological_unit_n", "assimilated_from_pr": 278, "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a"},
-    {"finding": "prefreeze family_alpha silently accepted numeric strings and other coercible inputs", "red_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76", "green_commit": "f36e30e241a53b73be73dbaa81846d930011319b"},
-    {"finding": "NOT_ESTIMABLE gate evidence was serialized as biological FAIL", "red_commit": "acc5aa4a873b56c3bdf9556cc40a95c1811d3091", "green_commit": "0544e0a7c1972426315493f4fd6c370b137fb25b"},
-    {"finding": "top-level tournament terminal collapsed NOT_ESTIMABLE into redesign/failure", "red_commit": "392e6e791e636bbc4cade25b785aaacdadabf6f6", "green_commit": "bf55a7c8fe85a80c85234a9d61edfb8adb3a7b06"},
-    {"finding": "measurement pseudoreplicate seed_material and cell_id were silently string-coerced", "red_commit": "2d6d3be99173db26f769780131bdcb11f913e508", "green_commit": "09c4a0f59495f515501bfb661ee82393b416cae3"},
-    {"finding": "tournament contract, evidence manifest, and candidate receipt allowed extra top-level shadow claims; claim_boundary was not enforced; aggregate_score accepted malformed numeric values", "red_commit": "d80fac3ce6bf35a26daef8ecc8094e53a1cc0e11", "evidence_green_commit": "d8e0e12af9a174267fda37f266ae48b957344f94", "scaffold_green_commit": "8db18f96e191d34b249e7153e6161a81edc0772c"},
-    {"finding": "prefreeze's independent tournament-contract validator also ignored extra contract fields and frozen claim_boundary", "red_commit": "807cf7b2c8a567759089f3d6ec32ae2d09f0a18a", "green_commit": "fa36433d047455f28ea9b627b89b654414a31075"},
-    {"finding": "prefreeze config accepted extra shadow fields and coerced null_seed_material through str()", "red_commit": "37bdfecbb669004209b2357a9f48a67e4954da1b", "green_commit": "49a9856c66907bfd741a0a368863bc1f9b2e4501"},
-    {"finding": "coverage bridge accepted self-consistently rehashed prefreeze manifests carrying shadow claims, true authority, or pre-open biological results", "red_commits": ["927e8eb61b86a2808e09d9674baee90d3a5d2221", "49a621e095730bb76ddd4f18fd1608f3f61a4659"], "green_commit": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6"},
-    {"finding": "V2 had a frozen contract and adjudicator tests but no production evidence-manifest -> candidate-receipt -> tournament-adjudication implementation", "red_test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0", "green_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe", "focused_result": "10 passed", "scope": "synthetic/metadata-only V2 governance"},
-    {"finding": "V2 adjudicator did not validate an external prefreeze SHA when the receipt set was empty and incorrectly made JSON gate-object insertion order semantic", "red_test_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead", "green_implementation_commit": "74c25f5d7f5827244dc8516e49e20e0034631432", "focused_result": "12 passed / 0 failed"}
+  "repair_history": [
+    {
+      "finding": "donor membership disjointness was serialized as broader case-level statistical independence",
+      "resolution": "independent_n_from_case_rows always null; donor_memberships_pairwise_disjoint only; unique donors remain biological_unit_n",
+      "assimilated_from_pr": 278,
+      "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a"
+    },
+    {
+      "finding": "prefreeze family_alpha silently accepted numeric strings and other coercible inputs",
+      "red_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76",
+      "green_commit": "f36e30e241a53b73be73dbaa81846d930011319b"
+    },
+    {
+      "finding": "NOT_ESTIMABLE gate evidence was serialized as biological FAIL",
+      "red_commit": "acc5aa4a873b56c3bdf9556cc40a95c1811d3091",
+      "green_commit": "0544e0a7c1972426315493f4fd6c370b137fb25b"
+    },
+    {
+      "finding": "top-level tournament terminal collapsed NOT_ESTIMABLE into redesign/failure",
+      "red_commit": "392e6e791e636bbc4cade25b785aaacdadabf6f6",
+      "green_commit": "bf55a7c8fe85a80c85234a9d61edfb8adb3a7b06"
+    },
+    {
+      "finding": "measurement pseudoreplicate seed_material and cell_id were silently string-coerced",
+      "red_commit": "2d6d3be99173db26f769780131bdcb11f913e508",
+      "green_commit": "09c4a0f59495f515501bfb661ee82393b416cae3"
+    },
+    {
+      "finding": "tournament contract, evidence manifest, and candidate receipt allowed shadow claims and malformed aggregate_score",
+      "red_commit": "d80fac3ce6bf35a26daef8ecc8094e53a1cc0e11",
+      "evidence_green_commit": "d8e0e12af9a174267fda37f266ae48b957344f94",
+      "scaffold_green_commit": "8db18f96e191d34b249e7153e6161a81edc0772c"
+    },
+    {
+      "finding": "prefreeze independent contract validator ignored extra contract fields and frozen claim boundary",
+      "red_commit": "807cf7b2c8a567759089f3d6ec32ae2d09f0a18a",
+      "green_commit": "fa36433d047455f28ea9b627b89b654414a31075"
+    },
+    {
+      "finding": "prefreeze config accepted extra shadow fields and coerced null seed material",
+      "red_commit": "37bdfecbb669004209b2357a9f48a67e4954da1b",
+      "green_commit": "49a9856c66907bfd741a0a368863bc1f9b2e4501"
+    },
+    {
+      "finding": "coverage bridge accepted self-consistently rehashed prefreeze manifests carrying shadow claims, true authority, or pre-open biological results",
+      "red_commits": [
+        "927e8eb61b86a2808e09d9674baee90d3a5d2221",
+        "49a621e095730bb76ddd4f18fd1608f3f61a4659"
+      ],
+      "green_commit": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6"
+    },
+    {
+      "finding": "V2 frozen contract and tests lacked a production adjudicator",
+      "red_test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+      "green_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe"
+    },
+    {
+      "finding": "empty tournament could bypass external prefreeze-SHA validation and gate-object insertion order was treated as semantic",
+      "red_test_commit": "e3a5aedfa687881bd2f307ce2fb59450f6738ead",
+      "green_implementation_commit": "74c25f5d7f5827244dc8516e49e20e0034631432"
+    }
   ],
-  "current_git_blobs": {
-    "scripts/v5/td_target_tournament_scaffold.py": "dbda7c1e50113ea2c1f7aef6e092d1b343436766",
-    "scripts/v5/td_target_tournament_evidence.py": "d433d4566024d33818fd7c1132ec41e567b66448",
-    "scripts/v5/td_target_tournament_prefreeze.py": "ef0ad35b0a1dac0a56bad0b6ed1d1426e66beb68",
-    "scripts/v5/td_gate_case_coverage.py": "b3837ff04e7c098669dfd59485f916f191a4d19a",
-    "scripts/v5/td_donor_resampling_audit.py": "412dbff491b410570dcc24e4f091405c6022aef1",
-    "scripts/v5/td_measurement_noise_fixture.py": "17263abf3bb9b943f1062c31281fd84cf298702d",
-    "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
-    "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
-    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256",
-    "scripts/v5/td_target_tournament_contract_v2.py": "534f4d40574c4787680b062fa0b2acfc67471b12",
-    "scripts/v5/td_target_tournament_adjudicator_v2.py": "c09d1653117f36a67e120e742e1804c13e8009e9"
-  },
   "scientific_boundaries": {
     "not_estimable_is_distinct_from_fail": true,
     "aggregate_score_can_override_mandatory_gate": false,
@@ -84,7 +134,7 @@
     "empty_tournament_can_bypass_external_prefreeze_pin_validation": false,
     "json_gate_object_order_is_scientific_gate_order": false
   },
-  "next_qualification_requirement": "Run the complete focused synthetic/metadata-only science-harness suite from one exact clean current code head after audit hardening stabilizes; preserve exact head, environment, test count and zero-failure evidence. Do not backfill the historical 110-green result or the scoped 12-green V2 adjudicator result as full-branch qualification.",
+  "next_science_requirement": "Do not execute a real target tournament yet. First complete real G6/G7 and corrected TD56/57B/57C/59 replay under their separate authority. Then bind any future real tournament to corrected evidence and a fresh explicit owner decision.",
   "authority": {
     "value_read_authorized": false,
     "raw_count_execution_authorized": false,
