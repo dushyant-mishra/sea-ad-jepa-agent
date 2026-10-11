@@ -52,9 +52,11 @@ The validator deliberately does **not** select a dimension. After a lawful recei
 
 ## Verification
 
-Fresh GitHub Actions run `38149052609` completed `SUCCESS` on the expanded precision + metric-receipt contract at PR #270 head `e7362af9271927b02169b594c41249c1a5927016`.
+Fresh GitHub Actions run `38149069861` completed `SUCCESS` on PR #270 head `e7362af9271927b02169b594c41249c1a5927016` after the workflow included both the precision-authority and metric-receipt test files.
 
-The earlier RED/partial runs are preserved as development evidence; this audit relies on the fresh successful run after the full contract was included in CI.
+Focused result: **17 passed in 0.02 s**.
+
+The earlier RED/partial runs are preserved as development evidence; this audit relies on the fresh successful run at the final implementation head.
 
 ## Audit ruling
 
