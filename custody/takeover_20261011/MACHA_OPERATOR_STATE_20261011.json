@@ -1,11 +1,12 @@
 {
   "schema": "JEPA_MACHA_OPERATOR_STATE_V1",
   "date": "2026-10-11",
-  "status": "FULL_TD_AUDIT_COMPLETE__COMPREHENSIVE_CUSTODY_REPAIR_REQUIRED__NO_VALUE_AUTHORITY",
+  "status": "G6G7_SUCCESSOR_MAJORITY_REPAIRED__PREMATURE_QUALIFICATION_BLOCKED__G6_CACHE_CONTENT_VALIDATION_REQUIRED__NO_VALUE_AUTHORITY",
   "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "coordinator_handoff": "docs/agent/JEPA_MACHA_OPERATOR_HANDOFF_20261011.md",
   "controlling_target_discovery_audit": "docs/agent/TD_MACHA_TARGET_DISCOVERY_FULL_SCRIPT_OUTPUT_AUDIT_20261011.md",
   "current_instruction": "docs/agent/MACHA_NEXT_INSTRUCTION_TD_FULL_CUSTODY_REPAIR_20261011.md",
+  "fresh_followup": "docs/agent/TD_G6_CACHE_CONTENT_VALIDATION_FOLLOWUP_20261011.md",
   "target_discovery": {
     "accepted_g4g5_execution_pr": 259,
     "accepted_g4g5_execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
@@ -15,24 +16,30 @@
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
     "blocked_candidate_pr": 267,
     "blocked_candidate_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
-    "blocked_candidate_status": "BLOCKED_MULTIPLE_CUSTODY_DEFECTS__DO_NOT_QUALIFY__DO_NOT_EXECUTE",
     "red_test_pr": 268,
     "red_test_head": "d8fa3024e06e265b77353c8382453e7ccbf2350f",
-    "red_test_status": "VALID_G7_CONCURRENCY_RED__REPAIR_SCOPE_INCOMPLETE",
-    "current_assignment": "CREATE_TEST_FIRST_COMPREHENSIVE_G6G7_CUSTODY_SUCCESSOR__QUALIFY__THEN_STOP_AT_VALUE_AUTHORITY_BOUNDARY",
-    "audit_findings_high": [
-      "OWNER_DECISION_RECORD_NOT_RUNTIME_VERIFIED",
-      "EXACT_PR259_PHYSICAL_RECEIPT_SHA_NOT_RUNTIME_PINNED",
-      "G6_EXECUTION_START_NOT_ATOMIC_FOR_PREEXISTING_EMPTY_NAMESPACE",
-      "G7_EXECUTION_START_NOT_ATOMIC"
+    "successor_branch": "fix/td-g6g7-full-custody-successor-20261011",
+    "premature_qualified_implementation_head": "43cac77da52446f6391874eb8f5be7ce3ed4e0f7",
+    "premature_qualification_evidence_commit": "6ab9a404922816be9f53b37508871080fe5de43b",
+    "premature_qualification_result": "166 passed / 0 failed / 0 skipped; exact PR259 compatibility 1 passed / 0 skipped / 0 failed",
+    "premature_qualification_accepted": false,
+    "premature_qualification_block_reason": "implementation head does not validate actual G6 values/meta NPZ content geometry; byte/hash self-consistency alone can certify a malformed cache",
+    "current_assignment": "ADD_TEST_FIRST_G6_CACHE_CONTENT_VALIDATION__CREATE_NEW_IMPLEMENTATION_HEAD__REQUALIFY__THEN_STOP_AT_VALUE_AUTHORITY_BOUNDARY",
+    "closed_findings": [
+      "OWNER_DECISION_RECORD_RUNTIME_VERIFIED",
+      "EXACT_PR259_PHYSICAL_RECEIPT_AND_REPLAY_SHA_RUNTIME_PINNED",
+      "G6_EXECUTION_START_ATOMIC",
+      "G7_EXECUTION_START_ATOMIC",
+      "G6_G7_STRICT_INTEGER_NO_ROUND",
+      "NPH52_AND_PHYSICAL_DUPLICATE_INDICES_REJECTED",
+      "G6_ROW_SEMANTICS_SPLIT_23690_PHYSICAL_1310_PASS_THROUGH_25000_TOTAL",
+      "G7_G6_PASS_FIVE_FILE_NAMESPACE_HASH_AUTHORITY_AND_MARKER_VALIDATION",
+      "PR267_G7_COUNTERPART_AND_NOT_ESTIMABLE_PROTECTIONS_PRESERVED"
     ],
-    "audit_findings_additional": [
-      "G7_G6_PASS_RECEIPT_VALIDATION_UNDERSPECIFIED",
-      "S174_UPSTREAM_ROUNDS_PHYSICAL_VALUES_BEFORE_G1B_COMPARISON",
-      "G6_RECEIPT_OVERSTATES_PHYSICAL_REREAD_ROW_COUNT",
-      "NPH52_CSR_DUPLICATE_INDICES_NOT_LOCALLY_REJECTED",
-      "TD57C_P1_IS_PROSPECTIVE_DEFINITION_NOT_HISTORICAL_EXECUTION_OUTPUT"
+    "open_findings": [
+      "G7_G6_PASS_CACHE_CONTENT_GEOMETRY_NOT_VALIDATED"
     ],
+    "historical_nonblocking_note": "S174 upstream G1b builder/probe used rounding; later V2 G6/G7 strict raw-integer validation must remain. Do not retroactively relabel G1b.",
     "value_authorization_exists": false,
     "owner_decision_exists": false,
     "g6_executed": false,
@@ -45,12 +52,23 @@
     "owner_decision_binding_regressions_required": true,
     "exact_pr259_physical_sha_enforcement_required": true,
     "complete_g6_receipt_materialization_validation_required": true,
+    "g6_values_npz_actual_csr_geometry_validation_required": true,
+    "g6_meta_npz_actual_row_and_required_array_validation_required": true,
+    "stored_replay_addresses_9216_binding_required": true,
     "nph_duplicate_index_rejection_required": true,
     "real_pr259_receipt_test_required": true,
     "required_real_receipt_result": "1 passed / 0 skipped / 0 failed",
+    "fresh_clean_worktree_requalification_after_new_implementation_head_required": true,
     "routine_owner_review_required_after_engineering_pass": false,
     "stop_at_value_read_authority_boundary": true,
     "explicit_owner_value_authorization_still_required": true
+  },
+  "parallel_science_lane": {
+    "branch": "science/td-target-tournament-scaffold-20261011",
+    "draft_pr": 275,
+    "current_focused_terminal": "SYNTHETIC_SCIENCE_HARNESS_67_GREEN__GATE_EVIDENCE_ROLE_AND_HASH_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+    "historical_executor_audit": "docs/agent/TD_HISTORICAL_EXECUTOR_FRESH_SCIENTIFIC_AUDIT_20261011.md",
+    "authority_separate_from_g6g7": true
   },
   "parallel_bayesian_lane": {
     "authority_separate_from_target_discovery": true,
