@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V2",
+  "date": "2026-10-11",
+  "canonical_handoff_pr": 265,
+  "implementation": {
+    "pr": 262,
+    "branch": "fix/v79-factorial-memory-hardening-20261010",
+    "head": "9110c3fae6d34e43463d56631f43004bda33beb8"
+  },
+  "audit": {
+    "pr": 264,
+    "branch": "audit/v79-factorial-preexecution-hardened-20261010",
+    "receipt_closeout_commit": "e59f7f3ffad78ea6f560a99471facb1b0191a287"
+  },
+  "verification": {
+    "workflow_run": 38147114407,
+    "job": 114492689105,
+    "conclusion": "SUCCESS",
+    "tests_passed": 94,
+    "tests_failed": 0,
+    "seconds": 1.04,
+    "receipt_contract_tested": true,
+    "same_runner_base_vs_hardened_fixture": "PASS",
+    "integer_count_hash": "3d1f4e7a710d96d2328a5deea8fb1919a122aa7902206594a0609a9d53b59afa",
+    "capture_hash_same_runner": "51eb035286393d38733c3224ae31b5a518afdd6e6a46d5baaf7a0320e9d68f12"
+  },
+  "internal_engineering": {
+    "registry_scale_biology_memory": "CLOSED",
+    "registry_scale_observation_memory": "CLOSED",
+    "sparse_scoring": "CLOSED",
+    "legacy_endpoint_equivalence": "CLOSED",
+    "distributional_endpoint_completion": "CLOSED",
+    "bounded_atomic_identity_scrubbed_receipts": "CLOSED"
+  },
+  "macha_acceptance_boundary": {
+    "controller_pr": 261,
+    "provisional_outputs_consumable": false,
+    "v1_detection_s4_failure_must_be_preserved": true,
+    "v2_detection_is_final_precommitted_attempt": true,
+    "central_frozen_configuration_required": true,
+    "complete_recovery_required": true,
+    "code_config_snapshot_identity_required": true,
+    "actual_recovery_path_equivalence_required": true,
+    "corrected_train_before_simulation_qualification": false,
+    "compact_authenticated_real_analysis_cache_required_before_heavy_real_fit": true
+  },
+  "remaining_external_gates": [
+    "MACHA_TERMINAL_AUTHORITY_RULING",
+    "FINAL_H1_H2_AUTHORITY_FREEZE",
+    "EXTERNAL_REGISTRY_BYTES_AVAILABLE",
+    "REPAIRED_MARGINAL_BYTES_AVAILABLE",
+    "FRESH_BYTE_AUTHENTICATED_PREEXECUTION_REPLAY",
+    "INDEPENDENT_FINAL_GATE_AUDIT"
+  ],
+  "scientific_tournament_run": false,
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "target_discovery_modified": false,
+  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__WAITING_ON_UPSTREAM_QUALIFIED_AUTHORITY_AND_FINAL_BYTE_CUSTODY__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
+}
