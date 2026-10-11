@@ -1,0 +1,3 @@
+# tracked G6/G7 V2 output files (expected: none)
+none
+# old fafd4309 authority records remain historical and are not successor authority
