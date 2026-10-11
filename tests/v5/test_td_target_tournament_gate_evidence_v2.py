@@ -20,11 +20,15 @@ PREFREEZE = sha('prefreeze')
 CONTEXT = sha('context')
 COVERAGE = sha('coverage')
 EXECUTOR = sha('executor')
+ESTIMAND = sha('estimand')
 RULE = sha('decision-rule')
 PAYLOAD = sha('payload')
 
 
-def artifact(gate='Q1_Q_SCALAR_STUDENT_ABSENT', status='PASS', executor=EXECUTOR, rule=RULE):
+def artifact(
+    gate='Q1_Q_SCALAR_STUDENT_ABSENT', status='PASS',
+    executor=EXECUTOR, estimand=ESTIMAND, rule=RULE,
+):
     return {
         'schema': a2.expected_evidence_schema(gate),
         'fixture_only': True,
@@ -34,6 +38,7 @@ def artifact(gate='Q1_Q_SCALAR_STUDENT_ABSENT', status='PASS', executor=EXECUTOR
         'execution_context_sha256': CONTEXT,
         'coverage_audit_sha256': COVERAGE,
         'qualified_gate_executor_sha256': executor,
+        'estimand_sha256': estimand,
         'decision_rule_sha256': rule,
         'status': status,
         'evidence_payload_sha256': PAYLOAD,
@@ -41,7 +46,10 @@ def artifact(gate='Q1_Q_SCALAR_STUDENT_ABSENT', status='PASS', executor=EXECUTOR
     }
 
 
-def validate(art, *, gate='Q1_Q_SCALAR_STUDENT_ABSENT', coverage=COVERAGE, executor=EXECUTOR, rule=RULE):
+def validate(
+    art, *, gate='Q1_Q_SCALAR_STUDENT_ABSENT', coverage=COVERAGE,
+    executor=EXECUTOR, estimand=ESTIMAND, rule=RULE,
+):
     return ge2.validate_gate_evidence_artifact_v2(
         art,
         expected_candidate_id='C3_QUERY_MEASURED',
@@ -50,11 +58,12 @@ def validate(art, *, gate='Q1_Q_SCALAR_STUDENT_ABSENT', coverage=COVERAGE, execu
         expected_execution_context_sha256=CONTEXT,
         expected_coverage_audit_sha256=coverage,
         expected_qualified_gate_executor_sha256=executor,
+        expected_estimand_sha256=estimand,
         expected_decision_rule_sha256=rule,
     )
 
 
-def test_gate_evidence_binds_prefreeze_context_coverage_executor_rule_and_payload():
+def test_gate_evidence_binds_prefreeze_context_coverage_executor_estimand_rule_and_payload():
     art = artifact()
     assert validate(art) == ge2.canonical_sha256(art)
 
@@ -71,9 +80,11 @@ def test_gate_evidence_rejects_self_consistent_coverage_substitution():
         validate(art)
 
 
-def test_gate_evidence_rejects_posthoc_executor_or_decision_rule_substitution():
+def test_gate_evidence_rejects_posthoc_executor_estimand_or_decision_rule_substitution():
     with pytest.raises(ge2.GateEvidenceV2Error):
         validate(artifact(executor=sha('posthoc-executor')))
+    with pytest.raises(ge2.GateEvidenceV2Error):
+        validate(artifact(estimand=sha('posthoc-estimand')))
     with pytest.raises(ge2.GateEvidenceV2Error):
         validate(artifact(rule=sha('posthoc-rule')))
 
@@ -97,9 +108,12 @@ def test_candidate_manifest_builder_requires_exact_gate_artifact_set_and_hashes_
     gate_ids = ['Q1_Q_SCALAR_STUDENT_ABSENT', 'Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR']
     coverage = {gate: sha(f'coverage-{gate}') for gate in gate_ids}
     executors = {gate: sha(f'executor-{gate}') for gate in gate_ids}
+    estimands = {gate: sha(f'estimand-{gate}') for gate in gate_ids}
     rules = {gate: sha(f'rule-{gate}') for gate in gate_ids}
     artifacts = {
-        gate: artifact(gate=gate, executor=executors[gate], rule=rules[gate])
+        gate: artifact(
+            gate=gate, executor=executors[gate], estimand=estimands[gate], rule=rules[gate]
+        )
         for gate in gate_ids
     }
     for gate in gate_ids:
@@ -112,6 +126,7 @@ def test_candidate_manifest_builder_requires_exact_gate_artifact_set_and_hashes_
         expected_execution_context_sha256=CONTEXT,
         expected_coverage_audit_sha256_by_gate=coverage,
         expected_qualified_gate_executor_sha256_by_gate=executors,
+        expected_estimand_sha256_by_gate=estimands,
         expected_decision_rule_sha256_by_gate=rules,
     )
     assert manifest['schema'] == a2.EVIDENCE_SCHEMA
@@ -126,10 +141,12 @@ def test_candidate_manifest_builder_rejects_missing_gate_artifact():
     gate_ids = ['Q1_Q_SCALAR_STUDENT_ABSENT', 'Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR']
     coverage = {gate: sha(f'coverage-{gate}') for gate in gate_ids}
     executors = {gate: sha(f'executor-{gate}') for gate in gate_ids}
+    estimands = {gate: sha(f'estimand-{gate}') for gate in gate_ids}
     rules = {gate: sha(f'rule-{gate}') for gate in gate_ids}
     artifacts = {
         'Q1_Q_SCALAR_STUDENT_ABSENT': artifact(
             executor=executors['Q1_Q_SCALAR_STUDENT_ABSENT'],
+            estimand=estimands['Q1_Q_SCALAR_STUDENT_ABSENT'],
             rule=rules['Q1_Q_SCALAR_STUDENT_ABSENT'],
         )
     }
@@ -142,5 +159,6 @@ def test_candidate_manifest_builder_rejects_missing_gate_artifact():
             expected_execution_context_sha256=CONTEXT,
             expected_coverage_audit_sha256_by_gate=coverage,
             expected_qualified_gate_executor_sha256_by_gate=executors,
+            expected_estimand_sha256_by_gate=estimands,
             expected_decision_rule_sha256_by_gate=rules,
         )
