@@ -1,0 +1,83 @@
+{
+  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_LANE_STATE_V5",
+  "date": "2026-10-11",
+  "canonical_handoff_pr": 265,
+  "implementation": {
+    "pr": 262,
+    "branch": "fix/v79-factorial-memory-hardening-20261010",
+    "head": "9110c3fae6d34e43463d56631f43004bda33beb8"
+  },
+  "audit": {
+    "pr": 264,
+    "branch": "audit/v79-factorial-preexecution-hardened-20261010"
+  },
+  "verification": {
+    "workflow_run": 38147114407,
+    "job": 114492689105,
+    "conclusion": "SUCCESS",
+    "tests_passed": 94,
+    "tests_failed": 0,
+    "seconds": 1.04,
+    "receipt_contract_tested": true,
+    "same_runner_base_vs_hardened_fixture": "PASS"
+  },
+  "internal_engineering": {
+    "registry_scale_biology_memory": "CLOSED",
+    "registry_scale_observation_memory": "CLOSED",
+    "sparse_scoring": "CLOSED",
+    "legacy_endpoint_equivalence": "CLOSED",
+    "distributional_endpoint_completion": "CLOSED",
+    "bounded_atomic_identity_scrubbed_receipts": "CLOSED"
+  },
+  "upstream_bayesian": {
+    "controller_pr": 261,
+    "audit_pr": 260,
+    "streaming_pr": 279,
+    "first_failed_replay_pr": 280,
+    "operator_repair_pr": 283,
+    "completed_replay_pr": 285,
+    "historical_detection_v2": "NOT_QUALIFIED",
+    "old_gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "exact_s174_replay": "COMPLETE__DEVELOPMENT_ONLY",
+    "candidate_v2_core": "FROZEN_FOR_NEW_SYNTHETIC_QUALIFICATION__NOT_YET_QUALIFIED",
+    "candidate_detection": "quadratic_depth + broad_class + source + donor_within_source",
+    "candidate_positive": "lognormal(quadratic_depth + broad_class + source + donor_within_source)",
+    "operator_main_effect": "OUT_OF_CORE__SEPARATE_DEVELOPMENT",
+    "donor_class": "OUT",
+    "source_class": "OUT",
+    "lognormal": "DEVELOPMENT_DEFAULT",
+    "ztnb": "UNADJUDICATED_CHALLENGER",
+    "current_bayesian_authority_consumable": false
+  },
+  "integration_policy": {
+    "current_candidate_qualified_for_h2_h3": false,
+    "operator_extension_qualified_for_h2_h3": false,
+    "old_model_outputs_qualified_for_h2_h3": false,
+    "v2_core_must_receive_new_untouched_synthetic_qualification": true,
+    "successor_authority_must_be_frozen_prospectively": true,
+    "post_outcome_authority_choice_allowed": false,
+    "fresh_preexecution_required_after_material_authority_change": true,
+    "independent_final_audit_required": true,
+    "factorial_scientific_execution_authorized": false
+  },
+  "remaining_external_gates": [
+    "FREEZE_EXACT_V2_CORE_BAYESIAN_CONFIG_AND_PRIORS",
+    "FREEZE_NEW_UNTOUCHED_SYNTHETIC_QUALIFICATION_WORLDS_AND_CONTRACT",
+    "TERMINAL_V2_CORE_SYNTHETIC_QUALIFICATION_RULING",
+    "INDEPENDENT_CONTROLLER_AUDIT_OF_QUALIFICATION",
+    "IF_PASS_CORRECTED_TRAIN_POSTERIOR_AUTHORITY_FIT_AND_AUDIT",
+    "PROSPECTIVE_FINAL_H1_H2_AUTHORITY_DECISION",
+    "FINAL_H1_H2_AUTHORITY_FREEZE",
+    "FRESH_BYTE_AUTHENTICATED_PREEXECUTION_REPLAY",
+    "INDEPENDENT_FINAL_FACTORIAL_GATE_AUDIT"
+  ],
+  "scientific_tournament_run": false,
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "target_discovery_modified": false,
+  "terminal": "FACTORIAL_INTERNAL_ENGINEERING_CLOSED__V2_CORE_FROZEN_UPSTREAM_FOR_NEW_SYNTHETIC_QUALIFICATION__OPERATOR_EXTENSION_NOT_AUTHORITY__NO_QUALIFIED_BAYESIAN_POSTERIOR_AUTHORITY__FRESH_PREEXECUTION_REPLAY_REQUIRED_AFTER_FUTURE_AUTHORITY_FREEZE__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF"
+}
