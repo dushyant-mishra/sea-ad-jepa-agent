@@ -1,98 +1,123 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "LAST_QUALIFIED_SYNTHETIC_SCIENCE_HARNESS_110_GREEN_AT_8325B574__CURRENT_HEAD_SEMANTIC_AND_NUMERIC_CUSTODY_REPAIRS_ASSIMILATED_PENDING_FRESH_REQUALIFICATION__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "LAST_FULLY_QUALIFIED_SYNTHETIC_HARNESS_110_GREEN_AT_8325B574__CURRENT_REPAIRED_CODE_HEAD_AB502355_PENDING_FRESH_FULL_REQUALIFICATION__TARGETED_REGRESSIONS_GREEN__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
-  "last_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
+  "last_fully_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
+  "code_head_before_this_state_record": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6",
   "current_head_qualified": false,
-  "focused_test_result": {
+  "historical_full_focused_result": {
     "passed": 110,
     "failed": 0,
     "errors": 0,
-    "scope": "last qualified synthetic/metadata-only science-harness state at 8325b574382fa76fa6da0e1d388eb903068533a4",
-    "accounting": "historical 110-green result only; current repaired head requires a fresh rerun before any new green count is claimed"
+    "scope": "synthetic/metadata-only science harness at exact historical head 8325b574382fa76fa6da0e1d388eb903068533a4",
+    "may_be_attributed_to_current_head": false
   },
-  "pending_requalification": {
-    "repairs": [
-      {
-        "finding": "donor membership disjointness was serialized as broader case-level statistical independence",
-        "assimilated_from_pr": 278,
-        "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a",
-        "active_branch_script_blob": "412dbff491b410570dcc24e4f091405c6022aef1",
-        "active_branch_test_blob": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f"
-      },
-      {
-        "finding": "prefreeze family_alpha used float coercion and accepted numeric strings despite exact numeric-custody rules",
-        "test_first_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76",
-        "repair_commit": "f36e30e241a53b73be73dbaa81846d930011319b",
-        "active_branch_script_blob": "ac54e07563d7498cac6906a71ed11c26701085d7",
-        "active_branch_test_blob": "cb9bd3dfe2e6007efb0d8246663fe088fe349b28"
-      }
-    ],
-    "required_before_new_green_claim": "fresh focused qualification on one exact current branch head after both repairs"
+  "targeted_verification_after_repairs": {
+    "tournament_envelope_regression": {
+      "result": "10 passed",
+      "scope": "shadow-claim envelope, frozen claim boundary, malformed aggregate_score"
+    },
+    "prefreeze_config_red": {
+      "result": "5 failed before fix",
+      "scope": "extra config shadow claim plus four non-string null-seed cases"
+    },
+    "prefreeze_config_green": {
+      "result": "5 passed after fix",
+      "scope": "same exact regression cases"
+    },
+    "prefreeze_existing_suite": {
+      "result": "23 passed",
+      "scope": "reconstructed existing prefreeze test file against repaired implementation"
+    },
+    "coverage_bridge_red": {
+      "result": "3 failed before fix",
+      "scope": "rehashed top-level shadow claim, true authority flag, prefreeze biological_result PASS"
+    },
+    "coverage_bridge_green_plus_existing": {
+      "result": "13 passed",
+      "scope": "3 attack regressions plus existing 10 coverage tests"
+    },
+    "qualification_boundary": "TARGETED_REGRESSIONS_ONLY__NOT_A_FULL_CURRENT_HEAD_QUALIFICATION"
   },
-  "qualified_components": {
-    "gate_evidence_role_and_hash_binding": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md",
-    "donor_resampling_dependence": "docs/agent/TD_DONOR_RESAMPLING_DEPENDENCE_QUALIFICATION_20261011.md",
-    "prefreeze_decision_registry": "docs/agent/TD_PREFREEZE_DECISION_FAMILY_REGISTRY_QUALIFICATION_20261011.md",
-    "prefreeze_tournament_contract_binding": "docs/agent/TD_PREFREEZE_TOURNAMENT_CONTRACT_BINDING_QUALIFICATION_20261011.md",
-    "gate_case_coverage": "docs/agent/TD_GATE_CASE_COVERAGE_QUALIFICATION_20261011.md",
-    "matched_wrong_cell_null_namespace": "docs/agent/TD_MATCHED_WRONG_CELL_NULL_NAMESPACE_QUALIFICATION_20261011.md",
-    "query_lineage_graph_contract": "docs/agent/TD_QUERY_LINEAGE_CONTRACT_QUALIFICATION_20261011.md",
-    "precision_numeric_custody": "docs/agent/TD_PRECISION_NUMERIC_CUSTODY_QUALIFICATION_20261011.md"
-  },
-  "capabilities": {
-    "candidate_adjudication_fixture_only": true,
-    "gate_evidence_role_and_hash_binding": true,
-    "prefreeze_contract_and_role_registry_binding": true,
-    "exact_frozen_case_coverage_audit": true,
-    "gate_status_auto_adjudicated_from_case_coverage": false,
-    "donor_resampling_dependence_audit": true,
-    "overlapping_case_rows_can_supply_independent_n": false,
-    "disjoint_case_rows_can_supply_independent_n": false,
-    "donor_membership_disjointness_is_broader_independence": false,
-    "prefreeze_family_alpha_coercion_allowed": false,
-    "matched_wrong_cell_null_exact_stratum_bijection": true,
-    "matched_null_singletons_remain_not_estimable": true,
-    "query_lineage_exact_graph_role_coverage": true,
-    "query_lineage_transitive_q_leakage_rejected": true,
-    "precision_nonfinite_or_coerced_inputs_rejected": true,
-    "precision_sign_accounting_invariant": true,
-    "outcome_blind_precision_resolution": true,
-    "synthetic_same_cell_count_split_and_depth_thinning": true,
-    "opens_biological_file_or_matrix": false,
-    "trains_model": false,
-    "issues_authority": false
-  },
+  "repairs_since_last_full_qualification": [
+    {
+      "finding": "donor membership disjointness was serialized as broader case-level statistical independence",
+      "resolution": "independent_n_from_case_rows always null; donor_memberships_pairwise_disjoint only; unique donors remain biological_unit_n",
+      "assimilated_from_pr": 278,
+      "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a"
+    },
+    {
+      "finding": "prefreeze family_alpha silently accepted numeric strings and other coercible inputs",
+      "red_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76",
+      "green_commit": "f36e30e241a53b73be73dbaa81846d930011319b"
+    },
+    {
+      "finding": "NOT_ESTIMABLE gate evidence was serialized as biological FAIL",
+      "red_commit": "acc5aa4a873b56c3bdf9556cc40a95c1811d3091",
+      "green_commit": "0544e0a7c1972426315493f4fd6c370b137fb25b"
+    },
+    {
+      "finding": "top-level tournament terminal collapsed NOT_ESTIMABLE into redesign/failure",
+      "red_commit": "392e6e791e636bbc4cade25b785aaacdadabf6f6",
+      "green_commit": "bf55a7c8fe85a80c85234a9d61edfb8adb3a7b06"
+    },
+    {
+      "finding": "measurement pseudoreplicate seed_material and cell_id were silently string-coerced",
+      "red_commit": "2d6d3be99173db26f769780131bdcb11f913e508",
+      "green_commit": "09c4a0f59495f515501bfb661ee82393b416cae3"
+    },
+    {
+      "finding": "tournament contract, evidence manifest, and candidate receipt allowed extra top-level shadow claims; claim_boundary was not enforced; aggregate_score accepted malformed numeric values",
+      "red_commit": "d80fac3ce6bf35a26daef8ecc8094e53a1cc0e11",
+      "evidence_green_commit": "d8e0e12af9a174267fda37f266ae48b957344f94",
+      "scaffold_green_commit": "8db18f96e191d34b249e7153e6161a81edc0772c"
+    },
+    {
+      "finding": "prefreeze's independent tournament-contract validator also ignored extra contract fields and frozen claim_boundary",
+      "red_commit": "807cf7b2c8a567759089f3d6ec32ae2d09f0a18a",
+      "green_commit": "fa36433d047455f28ea9b627b89b654414a31075"
+    },
+    {
+      "finding": "prefreeze config accepted extra shadow fields and coerced null_seed_material through str()",
+      "red_commit": "37bdfecbb669004209b2357a9f48a67e4954da1b",
+      "green_commit": "49a9856c66907bfd741a0a368863bc1f9b2e4501"
+    },
+    {
+      "finding": "coverage bridge accepted self-consistently rehashed prefreeze manifests carrying shadow claims, true authority, or pre-open biological results",
+      "red_commits": [
+        "927e8eb61b86a2808e09d9674baee90d3a5d2221",
+        "49a621e095730bb76ddd4f18fd1608f3f61a4659"
+      ],
+      "green_commit": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6"
+    }
+  ],
   "current_git_blobs": {
-    "scripts/v5/td_target_tournament_prefreeze.py": "ac54e07563d7498cac6906a71ed11c26701085d7",
-    "tests/v5/test_td_target_tournament_prefreeze.py": "cb9bd3dfe2e6007efb0d8246663fe088fe349b28",
-    "scripts/v5/td_gate_case_coverage.py": "40a4801a1df2172b18f1ee983570622ccdf903e2",
-    "tests/v5/test_td_gate_case_coverage.py": "9bd3357b9487f518681b9e624d49e0e418f18e62",
+    "scripts/v5/td_target_tournament_scaffold.py": "dbda7c1e50113ea2c1f7aef6e092d1b343436766",
+    "scripts/v5/td_target_tournament_evidence.py": "d433d4566024d33818fd7c1132ec41e567b66448",
+    "scripts/v5/td_target_tournament_prefreeze.py": "ef0ad35b0a1dac0a56bad0b6ed1d1426e66beb68",
+    "scripts/v5/td_gate_case_coverage.py": "b3837ff04e7c098669dfd59485f916f191a4d19a",
     "scripts/v5/td_donor_resampling_audit.py": "412dbff491b410570dcc24e4f091405c6022aef1",
-    "tests/v5/test_td_donor_resampling_audit.py": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f",
+    "scripts/v5/td_measurement_noise_fixture.py": "17263abf3bb9b943f1062c31281fd84cf298702d",
     "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
-    "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc",
     "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
-    "tests/v5/test_td_query_information_guard.py": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98",
-    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256",
-    "tests/v5/test_td_target_tournament_precision.py": "0ece35df49b63b58fe5480fba064610d31fb6ca8"
+    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256"
   },
   "scientific_boundaries": {
-    "initial_decision_family_completeness_inferred_by_helper": false,
-    "gate_pass_policy_invented_by_coverage_helper": false,
-    "overlapping_donor_resamples_treated_as_independent": false,
-    "disjoint_donor_memberships_treated_as_case_level_independence": false,
-    "prefreeze_numeric_strings_treated_as_frozen_numeric_authority": false,
+    "not_estimable_is_distinct_from_fail": true,
+    "aggregate_score_can_override_mandatory_gate": false,
+    "gate_case_coverage_auto_adjudicates_gate_status": false,
+    "donor_membership_disjointness_is_case_level_independence": false,
+    "numeric_strings_can_shape_prefreeze_authority": false,
+    "non_string_seed_material_can_shape_null_namespace": false,
+    "shadow_top_level_claims_are_allowed": false,
+    "prefreeze_can_claim_opened_biology": false,
     "matched_null_singletons_crossed_or_relaxed": false,
     "teacher_aux_q_is_automatically_biological_truth": false,
     "technology_equivalence_margin_defined": false,
     "historical_null_counts_inherited": false
   },
-  "historical_design_calibration": "custody/takeover_20261011/TD_TARGET_TOURNAMENT_DESIGN_CALIBRATION_V1.json",
-  "historical_executor_fresh_audit": "docs/agent/TD_HISTORICAL_EXECUTOR_FRESH_SCIENTIFIC_AUDIT_20261011.md",
-  "mechanistic_shortcut_audit": "docs/agent/TD_HISTORICAL_TOKEN_IDENTITY_SHORTCUT_MECHANISM_AUDIT_20261011.md",
-  "measurement_noise_prefreeze": "docs/superpowers/specs/2026-10-11-td-measurement-noise-floor-prefreeze.md",
+  "next_qualification_requirement": "Run the complete focused synthetic/metadata-only science-harness suite from one exact clean current code head after audit hardening stabilizes; preserve exact head, environment, test count and zero-failure evidence. Do not backfill the historical 110-green result.",
   "authority": {
     "value_read_authorized": false,
     "raw_count_execution_authorized": false,
