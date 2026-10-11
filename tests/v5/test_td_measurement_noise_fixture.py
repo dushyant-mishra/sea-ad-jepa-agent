@@ -71,3 +71,16 @@ def test_input_objects_are_not_mutated():
     m.split_counts(counts, support, seed_material='s', cell_id='c')
     m.nested_depth_thinning(counts, support, seed_material='s', cell_id='c')
     assert counts == before_counts and support == before_support
+
+
+def test_addresses_must_be_nonnegative_exact_integers():
+    for support, counts in [({'1'}, {'1': 1}), ({-1}, {-1: 1}), ({True}, {True: 1})]:
+        with pytest.raises(m.MeasurementFixtureError):
+            m.split_counts(counts, support, seed_material='s', cell_id='c')
+
+
+def test_seed_and_cell_id_must_be_nul_free():
+    with pytest.raises(m.MeasurementFixtureError):
+        m.split_counts({1: 1}, {1}, seed_material='a\0b', cell_id='c')
+    with pytest.raises(m.MeasurementFixtureError):
+        m.split_counts({1: 1}, {1}, seed_material='s', cell_id='a\0b')
