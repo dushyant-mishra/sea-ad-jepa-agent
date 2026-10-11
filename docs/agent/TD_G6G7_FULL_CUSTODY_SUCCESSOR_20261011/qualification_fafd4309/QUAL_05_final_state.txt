@@ -1,0 +1,8 @@
+final_exact_head=fafd4309cc086c95076cefdc94064e8b66e58ae4
+tracked_status_after=[]
+untracked_after=[]
+focused_suite_counts=[217 passed, 3 warnings in 115.73s (0:01:55)]
+real_pr259_compat_counts=[1 passed, 1 warning in 0.41s]
+focused_suite_exit=0
+real_pr259_compat_exit=0
+utc_end=2026-10-11T17:07:03Z

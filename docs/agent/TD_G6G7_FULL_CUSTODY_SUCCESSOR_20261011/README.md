@@ -2,13 +2,15 @@
 
 Date: 2026-10-11
 
-Status: `PR277_NEAR_QUALIFIED__RESIDUAL_G6_ARTIFACT_SEMANTIC_VALIDATION_REQUIRED__NO_VALUE_AUTHORITY`
+Status: `QUALIFIED_FOR_OWNER_DECISION__NO_VALUE_READ` at implementation head **`fafd4309cc086c95076cefdc94064e8b66e58ae4`**
 
-> **Status correction (2026-10-11, coordinator audit).** The qualification of `43cac77d` below remains valid evidence
-> for what it tested, but it does not qualify the successor. G7's G6 prerequisite checks artifact hashes and
-> linkage, not the contents of the materialized values and metadata NPZ files. A forged namespace with
-> self-consistently recomputed hashes can pass. Until that residual defect is repaired and independently
-> requalified, `QUALIFIED_FOR_OWNER_DECISION__NO_VALUE_READ` is withdrawn.
+> **History of this status.** `43cac77d` was qualified first, and that qualification is kept below as evidence for
+> what it tested. A coordinator audit then found a residual defect: G7's G6 prerequisite checked artifact hashes and
+> linkage but never opened the materialized values and metadata NPZ files, so a forged namespace with
+> self-consistently recomputed hashes could pass. The status was withdrawn
+> (`PR277_NEAR_QUALIFIED__RESIDUAL_G6_ARTIFACT_SEMANTIC_VALIDATION_REQUIRED__NO_VALUE_AUTHORITY`). The defect was
+> repaired test-first (item 10) and independently requalified at `fafd4309`. `43cac77d` is superseded and must not be
+> named in an owner decision.
 
 Hard terminal: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
@@ -28,10 +30,11 @@ The only real files any test read are the three PR #259 value-blind artifacts: t
 | | commit |
 |---|---|
 | Inherited base (PR #268 head) | `d8fa3024e06e265b77353c8382453e7ccbf2350f` |
-| Implementation head (qualified) | `43cac77da52446f6391874eb8f5be7ce3ed4e0f7` |
+| Prior candidate (superseded by the residual repair) | `43cac77da52446f6391874eb8f5be7ce3ed4e0f7` |
+| **Implementation head (qualified)** | **`fafd4309cc086c95076cefdc94064e8b66e58ae4`** |
 | Branch | `fix/td-g6g7-full-custody-successor-20261011` |
 
-Commits after the implementation head add only this record, its evidence and the qualification runner (`docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/`).
+Commits after the implementation head add only this record and its evidence (`docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/`).
 
 ## Inherited baseline: three failures, not one
 
@@ -174,6 +177,35 @@ The inherited unit tests still cover the rest of the PR #267 protections:
 - 41,238-column geometry;
 - counterpart authentication.
 
+### Item 10 (residual, coordinator audit): semantic validation of the G6 NPZ payloads
+
+RED: `RED_10`. Every attack starts from a genuine synthetic G6 PASS namespace. It replaces the values or metadata NPZ and rewrites every corresponding SHA, plus the manifest `nnz`, in `G6_RECEIPT.json` and `MANIFEST.json`, so the namespace stays hash-consistent. The real G7 entrypoint then runs on a world where the independent cross-check would otherwise PASS. The inherited code accepted all 47 forged namespaces and went on to PASS. A related sub-finding: genuine G6 metadata could only be loaded by unpickling, because G6 wrote its strings as object arrays.
+
+GREEN: `GREEN_10` (attack file 51/51; focused suite 217/217). `AUDIT_10_attack_refusal_reasons.txt` shows each of the 45 parametrized attacks refused by the check aimed at it. None is accepted.
+
+What changed:
+- `common.validate_g6_values_artifact` checks the values artifact. It requires:
+  - the exact CSR keys and the `csr` format;
+  - shape exactly `N_SAMPLE_A × N_ADDR`, which is 25,000 × 41,238 in production (tested on the production constants);
+  - `indptr` of length rows + 1, starting at 0, monotone, and ending at nnz = len(indices) = len(data);
+  - indices in [0, 41238) and strictly increasing within each row (sorted, no duplicates; the G6 writer always produces canonical CSR);
+  - float32 finite values;
+  - every stored address one of the frozen replay addresses;
+  - nnz equal to the manifest's `nnz`.
+- `common.validate_g6_meta_artifact` checks the metadata artifact. It requires:
+  - exactly the eight G6 fields: source, donor, operator, global row, cell ID, source library, historical detected count and corrected detected count;
+  - exactly N_SAMPLE_A entries in every field;
+  - string fields as fixed-width unicode and count fields as integers;
+  - source, donor, operator, global row and cell ID equal to the frozen Sample-A rows, element by element and in frozen order;
+  - frozen source counts;
+  - positive source libraries and nonnegative detected counts;
+  - NPH52 pass-through rows keeping corrected detected = historical detected.
+- Both validators load **without pickle**, from the same bytes that were hashed, so the file cannot change between the hash check and validation. Neither repairs anything.
+- G7 calls both validators inside `load_g6_pass_receipt`, after the hash, manifest and start-marker checks. G7 `main` now loads its pinned metadata inputs (replay manifest and Sample-A freeze; no count values) before the prerequisite, so a refusal still happens before the G7 attempt is spent.
+- G6 writes its metadata strings as fixed-width unicode, not pickled object arrays. Without this, a G7 validator that unpickled a forged file could execute arbitrary code.
+
+**Independence rule kept.** G6's artifacts are inspected only to establish that the G6 PASS prerequisite is a genuine, structurally valid execution. G7's biological cross-check is unchanged: authenticated physical H5AD against authenticated S174. `test_g7_cross_check_does_not_use_g6_values_as_its_reference` shows that a structurally valid, hash-consistent change to G6's values leaves G7's comparison unchanged. The limit this implies is stated under residual risks.
+
 ## Additional fail-closed findings (beyond the nine items; flagged for the owner)
 
 These go beyond the nine listed items. Each only refuses input that is malformed or misread, and none changes a value on well-formed input. The owner may veto any of them.
@@ -187,9 +219,28 @@ These go beyond the nine listed items. Each only refuses input that is malformed
 - **No real data was examined.** The NPH52 duplicate-index check and the physical duplicate-column check have never run on real data, because reading those arrays is outside this assignment. If real data violates either check, G6 will stop, and that stop must be preserved.
 - **Code identity is synthetic in every test.** Every synthetic test replaces `code_identity` (git cleanliness and commit identity) with a fixed fake. The real function is exercised only at real execution time.
 - **G1b authority is synthetic in end-to-end tests.** The production G1b authority is read from git at `4ab8e210`. The G7 end-to-end tests replace it with a synthetic freeze. The G1b result and freeze validators keep their inherited unit tests.
+- **G7 cannot detect a structurally valid forgery of G6's numbers.** It can't detect a hash-consistent forgery of G6's numeric values either. That is by design: G6's values must never become G7's reference. Custody of those numbers rests on three things: the hash chain (receipt, manifest, start marker and the same authority trace), the exclusive G6 start marker, and the requirement that G6 itself ran under the bound owner decision.
 - **Gate fixtures redirect the pins.** The synthetic gate fixtures point the PR #259 pins at synthetic receipts. Only `QUAL_02` checks the real pins against the real files.
 
-## Canonical qualification
+## Canonical qualification at `fafd4309` (current)
+
+Run: `qualification_runner.sh <out> /d/jepa_wt_td_g6g7_qual_fafd4309 fafd4309… 43cac77d…`, using the runner copy committed inside the qualified commit. It ran from a fresh, clean, detached worktree created at `fafd4309`. All logs are written outside that worktree, to `qualification_fafd4309/`. The qualification worktree was never edited, and nothing was rerun.
+
+| check | result | log |
+|---|---|---|
+| initial and final exact head | `fafd4309cc086c95076cefdc94064e8b66e58ae4` both | `QUAL_00`, `QUAL_05` |
+| tracked status before and after; untracked files | clean; none | `QUAL_00`, `QUAL_05` |
+| versions | Python 3.9.7, numpy 1.24.2, pandas 1.5.3, scipy 1.10.1, h5py 3.2.1, pytest 6.2.4 | `QUAL_00` |
+| complete focused suite (12 files: the 11 below plus `test_td_g7_g6_artifact_semantics.py`) | **217 passed, 0 failed, 0 skipped** | `QUAL_01` |
+| `python -m pytest -q tests/v5/test_td_relational_pr259_real_receipt_compat.py -rs` against the original physical PR #259 files | **1 passed / 0 skipped / 0 failed** | `QUAL_02` |
+| real driver, mapping and replay-manifest SHAs | equal to the pins; replay-manifest pin MATCH | `QUAL_02` |
+| changed files since prior candidate `43cac77d` | the 3 production scripts; the synthetic world helper; the new attack test file; the prerequisite tests; record and evidence (17 files) | `QUAL_03` |
+| production script SHA-256 (raw = LF-canonical) | common `23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea`; G6 `614af59cf6f4f0a8910235fcdef8b8b3ec1aae47ecf98c30bfaa3eaa1b3a07ad`; G7 `f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe` | `QUAL_03` |
+| no real owner decision, authorization or G6/G7 output | the schemas appear only in code, tests, this record, the runner's search pattern and pytest output; no tracked G6/G7 output file | `QUAL_04` |
+
+These are local execution results on the canonical Windows machine; CI did not run them. The compatibility test depends on the PR #259 files outside this branch. Every other test is synthetic and self-contained. The synthetic fixtures are software and custody tests only, not biological evidence.
+
+## Earlier canonical qualification at `43cac77d` (superseded; kept as evidence)
 
 Run: `qualification_runner.sh` (in this folder), from a fresh, clean, detached worktree created at the implementation head (`/d/jepa_wt_td_g6g7_qual_20261011`). All logs are written outside that worktree, to `qualification_43cac77d/`. The qualification worktree was never edited, and nothing was rerun.
 
@@ -209,7 +260,16 @@ These results are local execution evidence on the canonical Windows machine; CI 
 
 ## Next owner decision
 
-The first owner decision after this record is the explicit value-integrity authorization `AUTHORIZE_G6_G7_INTEGRITY_ONLY`, written as an immutable record to the contract under item 1. It must name the qualified implementation commit `43cac77da52446f6391874eb8f5be7ce3ed4e0f7`.
+The first owner decision after this record is the explicit value-integrity authorization `AUTHORIZE_G6_G7_INTEGRITY_ONLY`, written as an immutable record to the contract under item 1. It must name the qualified implementation commit **`fafd4309cc086c95076cefdc94064e8b66e58ae4`**. The superseded `43cac77d` must not be named.
+
+After that command, and only once a separately audited immutable owner-decision record and a bound runtime authorization exist, the authorized sequence is:
+1. run real G6 once;
+2. audit its receipt and materialization;
+3. if it is a genuine PASS, run real G7 once;
+4. audit G7;
+5. stop.
+
+A mismatch, malformed real input, duplicate-address failure or `NOT_ESTIMABLE` is a non-success and is preserved. Even a successful G6/G7 does not authorize corrected biological replay.
 
 Until then, the following remain unauthorized:
 - G6/G7 on real values;

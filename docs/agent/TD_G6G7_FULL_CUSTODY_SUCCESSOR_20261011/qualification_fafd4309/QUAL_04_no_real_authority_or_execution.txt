@@ -1,0 +1,20 @@
+# files mentioning the owner-decision schema (expected: code and tests only)
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/README.md
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/RED_01_owner_decision_binding.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_runner.sh
+scripts/v5/td_relational_value_read_v2_common.py
+tests/v5/td_g6g7_gate_fixtures.py
+tests/v5/test_td_g6g7_owner_decision_binding.py
+# files mentioning the V2 runtime-authorization schema (expected: code, tests, template docs only)
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/GREEN_04_g7_atomic_attempt_marker.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/GREEN_06_nph_and_physical_duplicate_indices.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/GREEN_X1_sample_a_numeric_row_order.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/RED_00_inherited_baseline_d8fa3024.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/RED_01_owner_decision_binding.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_43cac77d/QUAL_01_full_focused_suite.txt
+docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_runner.sh
+scripts/v5/td_relational_value_read_v2_common.py
+tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py
+tests/v5/test_td_g6g7_owner_decision_binding.py
+# tracked G6/G7 V2 output files (expected: none)
+none
