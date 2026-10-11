@@ -1,19 +1,28 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCAFFOLD_QUALIFIED__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCAFFOLD_QUALIFIED__CANDIDATE_SPECIFIC_GATES_FROZEN__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "base_scientific_audit_head": "318e6badb38a879f0109bdc318b75340bb230f81",
-  "qualified_implementation_test_head": "7ef08e44bdee698115617213a59c71362bebe9a7",
+  "qualified_implementation_test_contract_head": "7a8a681476d81b3e4d84c20986bebd790c213dba",
   "branch": "science/td-target-tournament-scaffold-20261011",
+  "draft_pr": 275,
   "focused_test_result": {
-    "passed": 21,
+    "passed": 25,
     "failed": 0,
     "errors": 0,
     "scope": "new synthetic scaffold tests only"
   },
   "red_evidence": [
     "initial: 3 collection errors because all three production modules were absent",
-    "self_audit: 2 failed / 8 passed because truncated authority objects were incorrectly accepted"
+    "authority self-audit: 2 failed / 8 passed because truncated authority objects were incorrectly accepted",
+    "candidate-specific expansion: 7 failed / 7 passed because coarse adjudicator did not understand candidate-specific scientific gates"
   ],
+  "candidate_specific_constraints": {
+    "C1_RELATIONAL_SHARED": ["scale_free_relational_recurrence", "fine_locality_not_primary", "matched_wrong_cell_defeat"],
+    "C2_QUERY_MEASURED": ["q_scalar_student_absent", "q_excluded_teacher_ablation", "target_normalization_q_free", "q_count_only_defeat"],
+    "C3_LEARNED_SHARED": ["learned_teacher_view_continuity", "conditional_technology_imprint", "evidence_response", "measurement_depth_response", "collapse_shortcut_defeat"],
+    "C4_STRUCTURED_COMPOSITE": ["increment_over_constituents", "learned_teacher_view_continuity", "conditional_technology_imprint", "query_leakage_controls"],
+    "C5_REGULATORY_SPECIALIST": ["circularity_control", "independent_provenance", "causal_claim_false", "support_abstention"]
+  },
   "static_no_value_audit": {
     "h5py_import": false,
     "anndata_import": false,
@@ -24,13 +33,13 @@
     "training_calls": false
   },
   "sha256": {
-    "scripts/v5/td_target_tournament_scaffold.py": "a7b45804be5eb2d94a919b5e63a110968e45a46d6dd58cdde9346777ff967f4b",
+    "scripts/v5/td_target_tournament_scaffold.py": "68af489178dffa7bdad67e01e4acd806906067893da686845a63441130e1505c",
     "scripts/v5/td_target_tournament_nulls.py": "f57a878ff466d15f232c964d50d643baa0660ff24486513f99116247ae255b8f",
     "scripts/v5/td_query_information_guard.py": "55a87fbeb6a8825af941b36abc0ebc3ab14366b751357dc0fc5d37ec14438a41",
-    "tests/v5/test_td_target_tournament_scaffold.py": "b4f0ef85b4905706caa575cf926a144296155bcb2c8fdfe02794b380d1684cce",
+    "tests/v5/test_td_target_tournament_scaffold.py": "fa8411ec42ab66970e01d43959cc9adcb758e7fc5bf991398660f80bb6824abb",
     "tests/v5/test_td_target_tournament_nulls.py": "1b95fd21396394e1d1fcaf342cb7955406698e0434ece20084d050e8c6b94386",
     "tests/v5/test_td_query_information_guard.py": "9c33caa62c5f473d2586a40ab3fd3fe2edd73827f048722b06c209b3a10260a6",
-    "custody/takeover_20261011/TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1.json": "1a673b28a9293f23b53dbe3d68a65d26e387ef8bdb93182f706f9aac46ff90d7"
+    "custody/takeover_20261011/TD_TARGET_TOURNAMENT_SCAFFOLD_CONTRACT_V1.json": "a335f92026132cf7a5a4b161864e3728ae85da0f400b8f970113fe7438e5d4ac"
   },
   "authority": {
     "value_read_authorized": false,
@@ -44,5 +53,5 @@
     "stage4_authorized": false,
     "training_authorized": false
   },
-  "next_use": "May be used only for synthetic fixtures and future compact receipt adjudication after separate scientific/data authority."
+  "next_use": "Synthetic fixtures and future compact receipt adjudication only after separate scientific/data authority."
 }
