@@ -14,7 +14,7 @@
     "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
     "blocked_candidate_pr": 267,
-    "blocked_candidate_head": "16f05bd3845565bb2c24d70143d4473760a41025",
+    "blocked_candidate_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
     "blocked_candidate_status": "BLOCKED_MULTIPLE_CUSTODY_DEFECTS__DO_NOT_QUALIFY__DO_NOT_EXECUTE",
     "red_test_pr": 268,
     "red_test_head": "d8fa3024e06e265b77353c8382453e7ccbf2350f",
