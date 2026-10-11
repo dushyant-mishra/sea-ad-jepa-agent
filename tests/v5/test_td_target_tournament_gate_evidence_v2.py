@@ -156,9 +156,10 @@ def test_gate_evidence_rejects_shadow_claim_and_true_authority():
 
 def candidate_fixture():
     cid='C3_QUERY_MEASURED'
-    gate_ids=['Q1_Q_SCALAR_STUDENT_ABSENT','Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR']
+    con=contract()
+    gate_ids=list(con['candidate_gate_sets'][cid])
     reg=registry(); ctx=execution_context(reg)
-    bindings=gr2.bind_registry_to_execution_context(reg, contract(), ctx)[cid]
+    bindings=gr2.bind_registry_to_execution_context(reg, con, ctx)[cid]
     context_sha=p2.canonical_execution_context_sha256(ctx)
     coverage={gate: sha(f'coverage-{gate}') for gate in gate_ids}
     artifacts={}
@@ -210,6 +211,22 @@ def test_candidate_manifest_builder_rejects_registry_substitution_against_frozen
             gate_governance_registry=altered,
             tournament_contract=contract(),
             expected_coverage_audit_sha256_by_gate=coverage,
+        )
+
+
+def test_candidate_manifest_builder_rejects_incomplete_required_gate_set_even_if_artifacts_match_subset():
+    cid, gate_ids, reg, ctx, coverage, artifacts=candidate_fixture()
+    subset=gate_ids[:-1]
+    with pytest.raises(ge2.GateEvidenceV2Error):
+        ge2.build_candidate_evidence_manifest_v2(
+            candidate_id=cid,
+            required_gates=subset,
+            gate_artifacts={gate: artifacts[gate] for gate in subset},
+            expected_prefreeze_manifest_sha256=PREFREEZE,
+            execution_context=ctx,
+            gate_governance_registry=reg,
+            tournament_contract=contract(),
+            expected_coverage_audit_sha256_by_gate={gate: coverage[gate] for gate in subset},
         )
 
 
