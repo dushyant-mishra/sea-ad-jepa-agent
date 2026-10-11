@@ -44,3 +44,39 @@ def test_cycle_is_rejected():
     graph = {'student_head':['a'], 'a':['b'], 'b':['a']}
     roles = {'student_head':'student_sink','a':'derived','b':'derived'}
     with pytest.raises(m.DependencyCycleError): m.assert_query_safe(graph, roles)
+
+
+def test_graph_parent_missing_role_is_rejected():
+    graph={'student_head':['hidden'], 'hidden':[]}
+    roles={'student_head':'student_sink'}
+    with pytest.raises(m.QueryContractError): m.assert_query_safe(graph,roles)
+
+
+def test_role_only_node_is_rejected():
+    graph={'student_head':[]}
+    roles={'student_head':'student_sink','ghost':'q_scalar'}
+    with pytest.raises(m.QueryContractError): m.assert_query_safe(graph,roles)
+
+
+def test_unknown_role_is_rejected():
+    graph={'student_head':['x'],'x':[]}
+    roles={'student_head':'student_sink','x':'whatever_user_says'}
+    with pytest.raises(m.QueryContractError): m.assert_query_safe(graph,roles)
+
+
+def test_parent_list_must_be_list_of_unique_declared_strings():
+    bad_graphs=[
+      {'student_head':'q_scalar','q_scalar':[]},
+      {'student_head':['q_scalar','q_scalar'],'q_scalar':[]},
+      {'student_head':[1],1:[]},
+    ]
+    for graph in bad_graphs:
+        roles={node:('student_sink' if node=='student_head' else 'q_scalar') for node in graph}
+        with pytest.raises(m.QueryContractError): m.assert_query_safe(graph,roles)
+
+
+def test_node_names_must_be_nonempty_nul_free_strings():
+    for bad in ['', '   ', 'a\0b', 1]:
+        graph={'student_head':[bad],bad:[]}
+        roles={'student_head':'student_sink',bad:'lawful_evidence'}
+        with pytest.raises(m.QueryContractError): m.assert_query_safe(graph,roles)
