@@ -60,7 +60,14 @@ def test_divergent_at_every_target_accept_is_not_diagnosed():
     assert [c[0] for c in calls] == [0.9, 0.95, 0.99] and not att[-1]["diagnosed"]
 
 
-def test_divergence_in_the_extension_fails():
-    run, diag, calls = scripted([(0, 1.02, 300), (1, 1.004, 900)])
+def test_divergence_in_the_extension_escalates_target_accept():
+    run, diag, calls = scripted([(0, 1.02, 300), (1, 1.004, 900), (0, 1.004, 900)])
     _, _, att = SR.fit_with_rules(run, diag)
-    assert calls == [(0.9, False), (0.9, True)] and not att[-1]["diagnosed"]
+    assert calls == [(0.9, False), (0.9, True), (0.95, False)] and att[-1]["diagnosed"]
+
+
+def test_divergent_extensions_at_every_level_end_not_diagnosed():
+    run, diag, calls = scripted([(0, 1.02, 300), (1, 1.0, 900)] * 3)
+    _, _, att = SR.fit_with_rules(run, diag)
+    assert [c for c in calls] == [(0.9, False), (0.9, True), (0.95, False), (0.95, True), (0.99, False), (0.99, True)]
+    assert not att[-1]["diagnosed"]

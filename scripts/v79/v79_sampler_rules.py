@@ -9,7 +9,8 @@ PPC, Phase C). JAX-free so CI tests every branch.
                 chains once for the same number of draws, with no new warm-up, and diagnose all draws. The
                 maximum R-hat over several hundred per-gene sites fluctuates near 1.01 at ESS ~1,000 even when
                 chains mix (about 1 + c / ESS-per-chain); more draws shrink that noise without moving a threshold.
-                Divergences in the extension count. Applied once; a fit still failing is NOT_DIAGNOSED.
+                Applied once per target_accept. A divergence in the extension triggers the retry rule (refit at the
+                next target_accept), as any divergence does; a fit still failing after 0.99 is NOT_DIAGNOSED.
 """
 from __future__ import annotations
 
@@ -35,6 +36,8 @@ def fit_with_rules(run, diagnose, accepts=RETRY_ACCEPT):
             r = run(ta, r)                             # A5: extend the same chains once
             d = diagnose(r)
             attempts.append(_attempt(ta, r, d, extended=True))
+            if sum(r["divergences"]) > 0:
+                continue                               # the senior retry rule: a divergence anywhere escalates
         break
     return r, d, attempts
 

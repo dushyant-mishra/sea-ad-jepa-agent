@@ -300,7 +300,7 @@
    "id": "A5",
    "date": "2026-10-10",
    "before_real_data": true,
-   "change": "sampler extension: a fit with no divergence that misses R-hat or ESS continues the same chains once for the same number of draws (no new warm-up) and is diagnosed on all draws; divergences still escalate target_accept; thresholds unchanged; applied to every fit (recovery, real phases, held-out folds) through v79_sampler_rules",
+   "change": "sampler extension: a fit with no divergence that misses R-hat or ESS continues the same chains once for the same number of draws (no new warm-up) and is diagnosed on all draws; a divergence in the original draws or in the extension escalates target_accept under the retry rule (corrected 2026-10-11: the first implementation stopped after a divergent extension, contrary to the senior retry rule); thresholds unchanged; applied to every fit (recovery, real phases, held-out folds) through v79_sampler_rules",
    "why": "the rule takes the maximum R-hat over several hundred per-gene sites, which fluctuates near 1.01 at ESS about 1,000 even when chains mix (Gaussian recovery S1: m_dk R-hat 1.0134 with ESS 1,019); more draws shrink that noise without moving a threshold; decided on simulation only, before any real data"
   },
   {
