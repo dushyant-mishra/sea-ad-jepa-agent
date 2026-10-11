@@ -41,6 +41,7 @@ def test_recovery_suite_end_to_end(tmp_path):
         assert rec["counts_loaded"] is False and rec["code_snapshot"]
         f = rec["fits"][w]
         assert f["diagnostics"]["attempts"] and "per_site" in f["diagnostics"]
+        assert "divergence_location" in f["diagnostics"]
         if w == "S5_labels_removed":
             assert f["components"] == ["cls", "src", "op"]
         if w == "S2_class_permuted":

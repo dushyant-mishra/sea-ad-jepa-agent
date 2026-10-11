@@ -73,6 +73,25 @@ def diagnose(run: dict, likelihood: str, components) -> dict:
                 seconds=run["seconds"], diagnosed=ok, per_site=conv)
 
 
+def divergence_location(run: dict, comps) -> dict | None:
+    """Where the final run's divergent draws sit (self-audit 51: a failure must be diagnosable): for each random
+    component, the share of divergent draws whose per-gene log sd lies in that gene's lowest decile (0.1 expected
+    if unrelated) and the same for the across-gene spread s_x. None when there is no divergence."""
+    div = np.asarray(run["diverging_flags"]).reshape(-1).astype(bool)
+    if not div.any():
+        return None
+    flat = M.flatten_chains(run["samples"])
+    out = dict(n_divergent_draws=int(div.sum()), n_draws=int(div.size))
+    for x in comps:
+        if x in M.FIXED:
+            continue
+        v = np.asarray(flat[f"logsd_{x}"])
+        out[f"logsd_{x}_low_decile_share_per_gene"] = [float(z) for z in (v <= np.quantile(v, 0.1, axis=0))[div].mean(0)]
+        s_ = np.asarray(flat[f"s_{x}"])
+        out[f"s_{x}_low_decile_share"] = float((s_[div] <= np.quantile(s_, 0.1)).mean())
+    return out
+
+
 def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup: int, draws: int, seed: int,
         max_tree_depth: int = 10) -> dict:
     scen, mod = FITS[name]
@@ -110,7 +129,7 @@ def fit(name: str, di: dict, likelihood: str, n_genes: int, chains: int, warmup:
                       truth=[float(v) for v in truth] if truth is not None else None,
                       planted_and_scored=bool(planted),
                       covered=[bool(a) for a in ((truth >= lo) & (truth <= hi))] if planted else None)
-    diag = dict(dg, attempts=attempts)
+    diag = dict(dg, attempts=attempts, divergence_location=divergence_location(run, comps))
     return dict(scenario=scen, modification=mod, components=list(comps), components_result=per, diagnostics=diag)
 
 
