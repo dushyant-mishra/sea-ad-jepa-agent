@@ -1,0 +1,36 @@
+{
+  "schema": "V5_FULL104_DIMENSION_PRECISION_STATE_V1",
+  "date": "2026-10-11",
+  "implementation_pr": 270,
+  "implementation_head": "e7362af9271927b02169b594c41249c1a5927016",
+  "verification": {
+    "workflow_run": 38149052609,
+    "conclusion": "SUCCESS"
+  },
+  "prospective_mechanics": {
+    "precision_replicates_from_error_budget": true,
+    "historical_replicate_constants_authorized": false,
+    "physical_binding_hash_required": true,
+    "precision_authority_hash_required": true,
+    "full_stream_required": true,
+    "fixture_forbidden": true,
+    "synthetic_forbidden": true,
+    "full_refit_matched_null_required": true,
+    "held_donor_required": true,
+    "held_operator_required": true,
+    "consecutive_rank_sweep_required": true
+  },
+  "remaining_physical_gates": [
+    "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+    "ACTUAL_FULL_STREAM_DIMENSION_METRIC_COMPUTATION",
+    "VALIDATE_AUTHENTICATED_DIMENSION_METRIC_RECEIPT",
+    "APPLY_FROZEN_D_SHARED_D_PRIVATE_D_OBS_SELECTORS",
+    "INDEPENDENT_NUMERICAL_OUTCOME_AUDIT"
+  ],
+  "D_shared": null,
+  "D_private": null,
+  "D_obs": null,
+  "D_total": null,
+  "training_authorized": false,
+  "terminal": "FULL104_PRECISION_AND_METRIC_RECEIPT_MECHANICS_GREEN__PHYSICAL_FULL_STREAM_EXECUTION_PENDING__NO_DIMENSION_VALUES__TRAINING_OFF"
+}
