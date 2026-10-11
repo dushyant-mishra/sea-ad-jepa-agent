@@ -21,6 +21,7 @@ QUAL = load("foundation_qualification_v4")
 SAMP = load("foundation_sampling")
 RES = load("foundation_resource_guard")
 OBS = load("observation_process")
+STAB = load("foundation_state_stability")
 requalify_historical_report = QUAL.requalify_historical_report
 hierarchical_sampling_plan = SAMP.hierarchical_sampling_plan
 compact_cache_plan, dense_bytes = RES.compact_cache_plan, RES.dense_bytes
@@ -57,6 +58,17 @@ def historical_report():
         },
         "performance": {"peak_cpu_rss_bytes": 6387449856, "temporary_disk_bytes": 5030195626},
     }
+
+
+def test_rotated_basis_is_same_subspace_even_when_axes_change():
+    reference = np.eye(6)[:, :2]
+    theta = np.pi / 4
+    rotation = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+    candidate = reference @ rotation
+    rec = STAB.principal_angle_metrics(reference, candidate)
+    assert np.allclose(rec["canonical_correlations"], 1.0)
+    match = STAB.hungarian_axis_match(reference, candidate)
+    assert np.min(match["absolute_correlation"]) < 1.0
 
 
 def test_historical_requalification_preserves_subspace_only_and_blocks_current_freeze():
