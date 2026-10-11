@@ -1,0 +1,22 @@
+{
+ "schema": "V79_S174_DESIGN_ONLY_V1",
+ "source_cache_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+ "keys": [
+  "log_lib_centered",
+  "cls",
+  "src",
+  "donor",
+  "op"
+ ],
+ "n_cells": 4726,
+ "n_donors": 149,
+ "n_operators": 42,
+ "donors_per_source": [
+  62,
+  19,
+  68
+ ],
+ "npz": "V79_S174_DESIGN_ONLY_V1.npz",
+ "npz_sha256": "10e3c472543d948d673d91f7dadd15dbd77809a7b0d15f528eb9fd38d0c85a62",
+ "expression_read": false
+}
