@@ -4,15 +4,17 @@ For a new agent taking over the **real target-discovery lane**, read in this ord
 
 1. `docs/agent/TARGET_DISCOVERY_CANONICAL_TAKEOVER_20261011.md`
 2. `docs/agent/TARGET_DISCOVERY_CANONICAL_STATE_20261011.json`
-3. `docs/agent/TARGET_DISCOVERY_EVIDENCE_CODE_DATA_INDEX_20261011.md`
-4. `docs/agent/MACHA_TARGET_DISCOVERY_AND_PARALLEL_LANE_RUNBOOK_20261011.md`
-5. `docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md`
-6. `target_discovery/HANDOFF_CURRENT_20260907.md`
-7. `target_discovery/iterations/td33_global_row_binding_guard/TD33_SUMMARY.json`
-8. PR #282 exact executable successor head and diff
-9. PR #277 historical custody qualification/evidence
-10. PR #259 G4/G5 value-blind evidence
-11. PR #275 V2 tournament governance only after the real G6/G7/corrected-replay critical path is understood.
+3. `docs/agent/TD_G6_ATTEMPT0_EXECUTION_RECORD_20261011.md`
+4. `docs/agent/TARGET_DISCOVERY_HISTORY_AND_AUDIT_LESSONS_20261011.md`
+5. `docs/agent/TARGET_DISCOVERY_EVIDENCE_CODE_DATA_INDEX_20261011.md`
+6. `docs/agent/MACHA_TARGET_DISCOVERY_AND_PARALLEL_LANE_RUNBOOK_20261011.md`
+7. `docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md`
+8. `target_discovery/HANDOFF_CURRENT_20260907.md`
+9. `target_discovery/iterations/td33_global_row_binding_guard/TD33_SUMMARY.json`
+10. PR #282 exact executable successor head and diff
+11. PR #277 historical custody qualification/evidence
+12. PR #259 G4/G5 value-blind evidence
+13. PR #275 V2 tournament governance only after the real G6/G7/corrected-replay critical path is understood.
 
 Current hard terminal:
 
