@@ -2,8 +2,8 @@
 """Deterministic V79 V2_CORE synthetic-world generator primitives.
 
 Engineering only until a separate controller realization-authorization receipt exists.
-The final Contract V2 is launch authority for the qualification specification, but
-it deliberately does not itself authorize realized world bytes.
+The final Contract V2 plus the prospective Q10/Q11 pairing amendment define the
+world semantics. Neither authority alone permits realized world bytes.
 """
 from __future__ import annotations
 
@@ -16,22 +16,75 @@ import numpy as np
 
 FINAL_CONTRACT_SHA256 = "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d"
 QUALIFICATION_PAYLOAD_SHA256 = "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3"
+PAIRING_AMENDMENT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json"
+PAIRING_AMENDMENT_SHA256 = "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c"
 REALIZATION_AUTH_SCHEMA = "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1"
 
 
 def seed_for(*, world_index: int, gene_index: int, stream: int, root: int) -> int:
-    """Stable uint32 seed keyed only by scientific identity."""
+    """Stable uint32 seed keyed only by effective scientific identity."""
     ss = np.random.SeedSequence(entropy=int(root), spawn_key=(int(world_index), int(gene_index), int(stream)))
     return int(ss.generate_state(1, dtype=np.uint32)[0])
 
 
+def load_pairing_amendment(root: Path) -> dict:
+    path = root / PAIRING_AMENDMENT_REL
+    if not path.exists():
+        raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+    raw = path.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    if digest != PAIRING_AMENDMENT_SHA256:
+        raise SystemExit("STOP: Q10/Q11 pairing amendment SHA mismatch")
+    sidecar = path.with_suffix(".sha256")
+    if not sidecar.exists() or sidecar.read_text(encoding="utf-8").strip() != f"{digest}  {path.name}":
+        raise SystemExit("STOP: Q10/Q11 pairing amendment sidecar mismatch")
+    a = json.loads(raw)
+    if a.get("schema") != "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1":
+        raise SystemExit("STOP: wrong pairing amendment schema")
+    if a.get("controller_comment") != 6114906562:
+        raise SystemExit("STOP: pairing amendment controller binding mismatch")
+    if a.get("final_contract_sha256") != FINAL_CONTRACT_SHA256 or a.get("qualification_payload_sha256") != QUALIFICATION_PAYLOAD_SHA256:
+        raise SystemExit("STOP: pairing amendment authority binding mismatch")
+    if a.get("worlds_generated_at_freeze") != 0 or a.get("qualification_fits_at_freeze") != 0:
+        raise SystemExit("STOP: pairing amendment was not frozen pre-outcome")
+    if a.get("authorization", {}).get("world_realization") is not False:
+        raise SystemExit("STOP: pairing amendment may not itself authorize realization")
+    return a
+
+
+def effective_seed_world_index(world_index: int, stream: int, amendment: dict) -> int:
+    """Apply the frozen paired-counterfactual seed identity.
+
+    Q11 inherits Q10 for every base stream. Only operator offset streams 22/23
+    retain Q11 world identity and therefore add new randomness.
+    """
+    pair = amendment["paired_counterfactual"]
+    q10 = int(pair["parent_world"]["world_index"])
+    q11 = int(pair["child_world"]["world_index"])
+    new_streams = {int(v) for v in pair["q11_new_randomness_only"].values()}
+    if int(world_index) == q11 and int(stream) not in new_streams:
+        return q10
+    return int(world_index)
+
+
+def validate_q10_q11_pairing(q10: dict, q11: dict, amendment: dict) -> None:
+    """Fail closed unless Q10/Q11 truth differs only in operator-offset fields."""
+    allowed = {"operator_offsets_detection_sha", "operator_offsets_positive_sha"}
+    keys = set(q10) | set(q11)
+    for key in keys - allowed:
+        if q10.get(key) != q11.get(key):
+            raise SystemExit(f"STOP: Q10/Q11 non-operator truth differs: {key}")
+    if q10.get("operator_offsets_detection_sha") not in (None, "") or q10.get("operator_offsets_positive_sha") not in (None, ""):
+        raise SystemExit("STOP: Q10 must not contain operator perturbation")
+    if not q11.get("operator_offsets_detection_sha") or not q11.get("operator_offsets_positive_sha"):
+        raise SystemExit("STOP: Q11 must contain both frozen operator perturbations")
+    if amendment["paired_counterfactual"].get("all_q11_gates_remain") != "HARD_FAIL":
+        raise SystemExit("STOP: Q11 hard-gate authority changed")
+
+
 def _arr_record(a: np.ndarray) -> dict[str, Any]:
     c = np.ascontiguousarray(a)
-    return {
-        "dtype": c.dtype.str,
-        "shape": list(c.shape),
-        "sha256": hashlib.sha256(c.tobytes(order="C")).hexdigest(),
-    }
+    return {"dtype": c.dtype.str, "shape": list(c.shape), "sha256": hashlib.sha256(c.tobytes(order="C")).hexdigest()}
 
 
 def array_bundle_sha(bundle: dict[str, np.ndarray]) -> str:
@@ -59,7 +112,6 @@ def scientific_truth_sha(obj: Any) -> str:
 
 
 def build_designs(payload: dict, *, base_design: dict[str, np.ndarray], s174_design: dict[str, np.ndarray]) -> dict[str, dict[str, np.ndarray]]:
-    """Bind worlds to the two prospectively frozen designs without copying scientific identities."""
     out: dict[str, dict[str, np.ndarray]] = {}
     for w in payload["worlds"]["world_list"]:
         src = base_design if w["design"] == "BASE" else s174_design
@@ -71,32 +123,23 @@ def _matrix_levels(design: dict[str, np.ndarray]) -> np.ndarray:
     return np.unique(np.asarray(design["op"], dtype=np.int64))
 
 
-def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, world_index: int, genes: int | None = None) -> np.ndarray:
-    """Build deterministic matrix×gene structural measurement support as cell×gene truth.
-
-    The composition follows the frozen contract in proportion to G, with safeguards for
-    tiny unit-test fixtures. All randomness is scientific-identity keyed.
-    """
+def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, world_index: int, genes: int | None = None,
+                             amendment: dict | None = None) -> np.ndarray:
     G = int(genes if genes is not None else payload["worlds"]["genes_per_world"])
     n_cell = len(np.asarray(design["src"]))
     op = np.asarray(design["op"], dtype=np.int64)
     src = np.asarray(design["src"], dtype=np.int64)
-    operators = _matrix_levels(design)
     support = np.ones((n_cell, G), dtype=bool)
-
     frac = 59.0 / 500.0
     n_struct = min(G, max(1, round(frac * G)))
-    rng = np.random.default_rng(seed_for(world_index=world_index, gene_index=9999, stream=1, root=int(payload["seeds"]["root"])))
+    wi = effective_seed_world_index(world_index, 1, amendment) if amendment is not None else int(world_index)
+    rng = np.random.default_rng(seed_for(world_index=wi, gene_index=9999, stream=1, root=int(payload["seeds"]["root"])))
     structural_genes = np.sort(rng.choice(G, size=n_struct, replace=False))
-
     for j, g in enumerate(structural_genes):
-        # For realistic G, exercise three frozen structural-support motifs:
-        # one single-source-measured, one partial-within-source, remaining one-source-absent.
         if j == 0 and n_struct >= 3:
             keep_source = int(rng.choice(np.unique(src)))
             support[:, g] = src == keep_source
         elif j == n_struct - 1 and n_struct >= 2:
-            # Partial matrix-level absence inside a source that has >=2 matrices.
             candidate_sources = [int(s) for s in np.unique(src) if len(np.unique(op[src == s])) >= 2]
             if candidate_sources:
                 s = int(rng.choice(candidate_sources))
@@ -140,6 +183,7 @@ def build_manifest(*, world_name: str, world_index: int, truth: dict, final_cont
         "opaque_world_id": opaque_world_id(world_name),
         "final_contract_sha256": final_contract_sha,
         "qualification_payload_sha256": payload_sha,
+        "pairing_amendment_sha256": PAIRING_AMENDMENT_SHA256,
         "scientific_truth_sha256": scientific_truth_sha(truth),
         "generated_outputs": dict(sorted(generated_files.items())),
         "qualification_fits_run": 0,
@@ -155,6 +199,8 @@ def validate_realization_authorization(authorization: dict | None) -> dict:
         raise SystemExit("STOP: wrong realization authorization schema")
     if authorization.get("final_contract_sha256") != FINAL_CONTRACT_SHA256:
         raise SystemExit("STOP: authorization does not bind final Contract V2")
+    if authorization.get("pairing_amendment_sha256") != PAIRING_AMENDMENT_SHA256:
+        raise SystemExit("STOP: authorization does not bind Q10/Q11 pairing amendment")
     if authorization.get("world_generation_authorized") is not True:
         raise SystemExit("STOP: world generation is not authorized")
     if authorization.get("qualification_fitting_authorized") is not False:
@@ -167,6 +213,5 @@ def validate_realization_authorization(authorization: dict | None) -> dict:
 
 
 def realize_worlds(payload: dict, design: dict[str, np.ndarray], out_dir: Path, authorization: dict | None) -> None:
-    """Fail-closed realization entrypoint. Full realization is deliberately not invoked in engineering tests."""
     validate_realization_authorization(authorization)
     raise SystemExit("STOP: realization engine not yet controller-audited for physical Q00-Q11 emission")
