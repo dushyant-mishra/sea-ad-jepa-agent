@@ -1,16 +1,50 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V1",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V2",
   "date": "2026-10-11",
   "lane": "bayesian_synthetic_geometry",
   "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
-  "audited_source_head": "ba61ed4cfca6747e32c21aeabbeed6453e5ea31e",
+  "live_source_head": "ea0102132eb25b3d282988181c95387bf4f57ff6",
   "audit_pr": 260,
   "handoff_pr": 261,
-  "snapshot_terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
-  "next_controller_action": "RECONCILE_LIVE_MACHA_BRANCH_BEFORE_ISSUING_STATE_DEPENDENT_INSTRUCTIONS",
+  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
+  "training_authorized": false,
+  "corrected_train_authorized": false,
+  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R2.md",
+  "runtime_reconciliation": {
+    "previous_controller_checked_head": "c54019545c15e4b9932a79639e8de4659e0d822e",
+    "live_branch_commits_ahead": 2,
+    "machine_wide_scheduler_added": true,
+    "snapshot_equivalence_recorded": true,
+    "old_timeout_failures_classified_as_runtime_not_scientific": true
+  },
+  "bernoulli": {
+    "provenance_claims_completed": [
+      "S0_class_absent",
+      "S1_present",
+      "S5_labels_removed"
+    ],
+    "running_from_earlier_snapshot": [
+      "S4_operator_only"
+    ],
+    "old_timeout_rerun_required": [
+      "S2_class_permuted",
+      "S3_donor_only"
+    ],
+    "completed_payloads_committed_at_expected_paths": false,
+    "a5_final_status_independently_auditable": false,
+    "freeze_ready": false,
+    "status": "PARTIAL_RECOVERY_EVIDENCE__COMPLETED_PAYLOADS_NOT_COMMITTED__S2_S3_S4_INCOMPLETE__NOT_FREEZE_READY"
+  },
+  "next_gate": "BERNOULLI_S0_S5_COMPLETE_COMMITTED_RECOVERY_AND_COMBINED_RECEIPT",
+  "next_controller_instruction": [
+    "commit completed Bernoulli S0/S1/S5 JSON payloads",
+    "make final A5 extension status explicit",
+    "finish Bernoulli S2/S3/S4 under bounded scheduler",
+    "commit all S0-S5 outputs and one combined recovery receipt",
+    "freeze Bernoulli only if every preregistered recovery/convergence criterion passes"
+  ],
   "qualification_order": [
-    "reconcile_external_jobs",
-    "finish_bernoulli_parameterization_and_recovery",
+    "complete_and_audit_bernoulli_recovery",
     "finish_gaussian_recovery",
     "finish_lognormal_recovery",
     "finish_ztnb_recovery",
@@ -30,19 +64,6 @@
     "field_level_mapping_required": true,
     "factorial_lane_direct_edits_by_macha": false
   },
-  "required_terminal_artifacts": [
-    "recovery_suite_results",
-    "benchmark_receipt",
-    "real_fit_receipts",
-    "convergence_diagnostics",
-    "heldout_ppc",
-    "q5_donor_x_class_ruling",
-    "count_family_ruling",
-    "biology_geometry_authority",
-    "observation_geometry_authority",
-    "self_audit",
-    "machine_readable_active_state"
-  ],
   "boundaries": {
     "training_authorized": false,
     "test_or_morabito_allowed": false,
