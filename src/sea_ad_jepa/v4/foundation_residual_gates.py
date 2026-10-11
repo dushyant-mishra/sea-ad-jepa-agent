@@ -8,6 +8,12 @@ from collections import defaultdict
 import math
 from typing import Any, Iterable, Mapping
 
+CANONICAL_BROAD_CLASSES = frozenset({
+    "Neuronal: GABAergic",
+    "Neuronal: Glutamatergic",
+    "Non-neuronal and Non-neural",
+})
+
 
 def _finite(value: Any, name: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
@@ -40,7 +46,9 @@ def matrix_label_identifiability(rows: Iterable[Mapping[str, Any]]) -> list[dict
                 other_native.update(labels)
         seen = sum(bool(r.get("native_class")) and r["native_class"] in other_native for r in rr)
         unseen = sorted({r.get("native_class", "") for r in rr if r.get("native_class") and r["native_class"] not in other_native})
-        broad_n = sum(bool(r.get("broad_class", "").strip()) for r in rr)
+        broad_values = [r.get("broad_class", "").strip() for r in rr]
+        broad_n = sum(v in CANONICAL_BROAD_CLASSES for v in broad_values)
+        noncanonical_broad = sorted({v for v in broad_values if v and v not in CANONICAL_BROAD_CLASSES})
         if broad_n == 0:
             broad_state = "UNAVAILABLE"
         elif broad_n == len(rr):
@@ -58,6 +66,7 @@ def matrix_label_identifiability(rows: Iterable[Mapping[str, Any]]) -> list[dict
             "unseen_native_labels": unseen,
             "broad_label_available_fraction": broad_n / len(rr),
             "broad_label_identifiability": broad_state,
+            "noncanonical_broad_labels": noncanonical_broad,
         })
     return out
 
@@ -128,11 +137,7 @@ def adjudicate_resource_benchmark(record: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def adjudicate_successor_donor_transfer(record: Mapping[str, Any]) -> dict[str, Any]:
-    """Prospective donor-transfer gate for a future, unopened representation candidate.
-
-    The rule is null-calibrated rather than margin-tuned: biology must exceed its
-    permutation envelope while residual source/operator/support prediction must not.
-    """
+    """Prospective donor-transfer gate for a future, unopened representation candidate."""
     _require_prefrozen(record)
     if str(record.get("scope")) != "HELDOUT_TRAIN_DONORS":
         raise ValueError("successor donor gate requires HELDOUT_TRAIN_DONORS scope")
