@@ -4,6 +4,8 @@ import argparse
 import hashlib
 import json
 import os
+import re
+import tempfile
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Mapping
@@ -12,6 +14,34 @@ from .build_v79_factorial_worlds import ArmManifest, canonical_manifest_json, ma
 from .score_v79_factorial_worlds import compare_factorial_mechanisms
 
 FROZEN_V78_BASE_SHA = "e959d9a732698ae9a41e8cb1f6c10052d7390326"
+MAX_RECEIPT_JSON_BYTES = 1 << 20
+_FORBIDDEN_RECEIPT_KEYS = {
+    "corr",
+    "corr_matrix",
+    "correlation_matrix",
+    "stratum_corr",
+    "selected_positions",
+    "selected_universe_ids",
+    "internal_address_indices",
+    "molecular_address",
+    "molecular_addresses",
+    "address_index",
+    "address_indices",
+    "gene_id",
+    "gene_ids",
+    "gene_symbol",
+    "gene_symbols",
+    "feature_name",
+    "feature_names",
+}
+_FORBIDDEN_RECEIPT_KEY_FRAGMENTS = (
+    "molecular_address",
+    "address_index",
+    "gene_symbol",
+    "gene_id",
+    "feature_name",
+)
+_GENE_ID_PATTERN = re.compile(r"\bENS[A-Z]*G\d{6,}\b", re.IGNORECASE)
 _FALSE_FLAGS = (
     "test_or_morabito_accessed",
     "pathology_accessed",
@@ -25,6 +55,42 @@ def _sha256_file(path: str | Path) -> str:
         for block in iter(lambda: fh.read(1 << 20), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def _receipt_json_bytes(obj: Any, *, pretty: bool = False) -> bytes:
+    if pretty:
+        text = json.dumps(obj, sort_keys=True, indent=2, allow_nan=False) + "\n"
+    else:
+        text = json.dumps(obj, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return text.encode("utf-8")
+
+
+def _walk_receipt_payload(obj: Any, path: str = "payload"):
+    if isinstance(obj, Mapping):
+        for key, value in obj.items():
+            key_text = str(key)
+            yield path, key_text, value
+            yield from _walk_receipt_payload(value, f"{path}.{key_text}")
+    elif isinstance(obj, (list, tuple)):
+        for i, value in enumerate(obj):
+            yield from _walk_receipt_payload(value, f"{path}[{i}]")
+
+
+def validate_receipt_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Fail closed on internal identities, retained correlation matrices, or unbounded scientific receipts."""
+    clean = dict(payload)
+    for path, key, value in _walk_receipt_payload(clean):
+        lk = key.lower()
+        if lk in _FORBIDDEN_RECEIPT_KEYS or any(fragment in lk for fragment in _FORBIDDEN_RECEIPT_KEY_FRAGMENTS):
+            raise ValueError(f"forbidden receipt key at {path}: {key}")
+        if isinstance(value, str) and _GENE_ID_PATTERN.search(value):
+            raise ValueError(f"forbidden gene identity in receipt payload at {path}.{key}")
+    encoded = _receipt_json_bytes(clean)
+    if len(encoded) > MAX_RECEIPT_JSON_BYTES:
+        raise ValueError(
+            f"receipt payload exceeds {MAX_RECEIPT_JSON_BYTES} byte bound: {len(encoded)} bytes"
+        )
+    return clean
 
 
 def bind_authority_file_hashes(contract: Mapping[str, Any], paths: Mapping[str, str | Path]) -> dict[str, Any]:
@@ -120,6 +186,7 @@ def terminal_ruling(evidence: Mapping[str, Mapping[str, Any]], checks: Mapping[s
 def make_receipt(kind: str, contract: Mapping[str, Any], manifest: Mapping[str, Any] | ArmManifest,
                  payload: Mapping[str, Any]) -> dict[str, Any]:
     m = validate_arm_manifest(manifest)
+    clean_payload = validate_receipt_payload(payload)
     return {
         "schema": f"V79_FACTORIAL_{str(kind).upper()}_V1",
         "v78_base_sha": contract.get("v78_base_sha"),
@@ -137,16 +204,34 @@ def make_receipt(kind: str, contract: Mapping[str, Any], manifest: Mapping[str, 
         "test_or_morabito_accessed": False,
         "pathology_accessed": False,
         "target_discovery_modified": False,
-        "payload": dict(payload),
+        "payload": clean_payload,
     }
 
 
 def _atomic_json(path: Path, obj: Mapping[str, Any]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(obj, sort_keys=True, indent=2) + "\n")
-    os.replace(tmp, path)
+    data = _receipt_json_bytes(obj, pretty=True)
+    if len(data) > MAX_RECEIPT_JSON_BYTES:
+        raise ValueError(f"receipt exceeds {MAX_RECEIPT_JSON_BYTES} byte bound: {len(data)} bytes")
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as fh:
+            tmp_path = Path(fh.name)
+            fh.write(data)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp_path, path)
+        tmp_path = None
+    finally:
+        if tmp_path is not None:
+            tmp_path.unlink(missing_ok=True)
 
 
 def run_preexecution_only(contract: Mapping[str, Any], manifest: Mapping[str, Any] | ArmManifest, out_dir: Path) -> dict[str, Any]:
