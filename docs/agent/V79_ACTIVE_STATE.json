@@ -1,72 +1,47 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T17:32:58Z",
+ "updated_utc": "2026-10-11T17:56:41Z",
  "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
- "source_head_at_write": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6",
- "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
+ "source_head_at_write": "abff3f2a9c653b79c93a6b68dcb126f5cd855f30",
+ "terminal_state": "BAYESIAN_MODEL_DEVELOPMENT_HOLD__DETECTION_NOT_QUALIFIED__GAUSSIAN_LOGNORMAL_ZTNB_UNADJUDICATED__EMPIRICAL_TRAIN_CHARACTERIZATION_REQUIRED_BEFORE_NEW_CONFIRMATORY_QUALIFICATION__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
- "corrected_train": "BLOCKED: no corrected-TRAIN fit, PPC, Q5, posterior geometry authority or parameter export until a family has complete S0-S5 recovery, terminal PASS, a committed combined receipt and independent controller audit",
+ "corrected_train": "BLOCKED for posterior inference under the current frozen models; corrected TRAIN is to be used only for the empirical development dossier once the controller approves its plan (decisions D1-D5)",
  "families": {
   "detection (bernoulli)": {
-   "status": "TERMINAL_NOT_QUALIFIED",
+   "status": "NOT_QUALIFIED",
    "ruling": "DETECTION_FAMILY_NOT_QUALIFIED",
    "v3_allowed": false,
    "evidence": "results/v79/recovery/detection_V2/DETECTION_V2_STAGE1_TERMINAL.json",
    "downstream": "UNQUALIFIED; never filled or inferred"
   },
   "gaussian": {
-   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
+   "status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
    "frozen_config": "GAUSSIAN_NC_DK_V1"
   },
   "lognormal": {
-   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
+   "status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
    "frozen_config": "LOGNORMAL_NC_ALL_V1"
   },
   "ztnb": {
-   "status": "FRESH_S0_S5_RECOVERY_RUNNING",
+   "status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
    "frozen_config": "ZTNB_NC_DONOR_DK_V1"
   }
  },
- "eligible_recovery_families": [
-  "gaussian",
-  "lognormal",
-  "ztnb"
- ],
+ "eligible_recovery_families": "none scheduled: confirmatory recovery is paused for all families until the empirical development phase is specified and a candidate is selected",
  "qualified_code_path": {
   "fit_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
   "record": "results/v79/recovery/CODE_PATH_QUALIFICATION_d9d8cac6.json",
   "orchestration_snapshot": "306ca8afb58eef9faf8dbcd547a31a7fd1d5b8a6"
  },
  "active_scheduler_jobs": {
-  "scheduler": "/d/v79_runs/306ca8af/scripts/v79/run_v79_scheduler.py (orchestration snapshot 306ca8af), --slots 1 --timeout 43200",
-  "jobs_file": "results/v79/recovery/SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json",
-  "jobs_file_sha256": "d84b638bee4b7aa36df6ecd6c53890b6d29b23a9cf1ea6ddf222d00a391487b4",
-  "jobs": [
-   "gaussian fresh S1_present",
-   "gaussian fresh S0_class_absent",
-   "gaussian fresh S2_class_permuted",
-   "gaussian fresh S3_donor_only",
-   "gaussian fresh S4_operator_only",
-   "gaussian fresh S5_labels_removed",
-   "lognormal fresh S1_present",
-   "lognormal fresh S0_class_absent",
-   "lognormal fresh S2_class_permuted",
-   "lognormal fresh S3_donor_only",
-   "lognormal fresh S4_operator_only",
-   "lognormal fresh S5_labels_removed",
-   "ztnb fresh S1_present",
-   "ztnb fresh S0_class_absent",
-   "ztnb fresh S2_class_permuted",
-   "ztnb fresh S3_donor_only",
-   "ztnb fresh S4_operator_only",
-   "ztnb fresh S5_labels_removed"
+  "scheduler": "STOPPED 2026-10-11T17:52:59Z (CONTROLLER_METHODOLOGICAL_HOLD); no job running after the hold is resolved (see receipt)",
+  "jobs_file": "results/v79/recovery/SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json (preserved unchanged)",
+  "launched": [
+   "gaussian fresh S1_present"
   ],
-  "fit_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
-  "gate": "/d/v79_runs/306ca8af/scripts/v79/v79_family_gate.py before every fit",
-  "ledger": "results/v79/recovery/LEDGER.jsonl",
-  "resource_benchmark": "results/v79/recovery/fresh_d9d8cac6/RESOURCES_gaussian_S1_alone.json (fixed monitor, first fit alone)"
+  "not_launched": 17
  },
  "non_authoritative": [
   "results/v79/recovery/evidence_pre_code_path_qualification_20261011/ (including its PROVENANCE.json): pre-qualification evidence only, never terminal authority"
@@ -76,7 +51,7 @@
   "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark",
   "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery"
  ],
- "next_gate": "FRESH_POST_CODE_PATH_S0_S5_TERMINAL_RECOVERY_RULINGS_FOR_GAUSSIAN_LOGNORMAL_ZTNB, then stop and report",
+ "next_gate": "controller decisions D1-D5 on docs/agent/V79_TRAIN_EMPIRICAL_DEVELOPMENT_DOSSIER_PLAN.md; no expensive execution until then",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -89,10 +64,23 @@
   "no pathology",
   "no V78 outcome-driven retuning",
   "no post-outcome synthetic rescue",
-  "no target-discovery work in this lane"
+  "no target-discovery work in this lane",
+  "no provisional Bayesian parameters exported into the synthetic generator"
  ],
  "provenance": {
   "record": "results/v79/recovery/POST_CODE_PATH_PROVENANCE_V1.json",
   "sha256": "f71e124fa09c99b69d16b555c47cf4b4720f3b60eb87c8d7546d4123cb127a31"
- }
+ },
+ "controller_hold": {
+  "name": "CONTROLLER_METHODOLOGICAL_HOLD",
+  "utc": "2026-10-11T17:52:59Z",
+  "reason": "frozen families were being qualified before empirical model development on corrected TRAIN; recovery under worlds generated from the assumed model shows implementation consistency, not fitness for the real data",
+  "is_statistical_failure": false,
+  "receipt": "results/v79/recovery/fresh_d9d8cac6/CONTROLLER_METHODOLOGICAL_HOLD_RECEIPT.json"
+ },
+ "development_history": [
+  "detection V1/V2 recovery and stage-1 terminal (results/v79/recovery/detection_V2/)",
+  "pre-code-path-qualification recovery evidence (results/v79/recovery/evidence_pre_code_path_qualification_20261011/)",
+  "fresh-campaign provenance and job list (POST_CODE_PATH_PROVENANCE_V1.json, SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json), preserved unchanged"
+ ]
 }

@@ -1,0 +1,90 @@
+{
+ "schema": "V79_CONTROLLER_METHODOLOGICAL_HOLD_RECEIPT_V1",
+ "hold": "CONTROLLER_METHODOLOGICAL_HOLD",
+ "is_statistical_failure": false,
+ "reason": "families were being qualified before empirical model development on corrected TRAIN; recovery under worlds generated from the assumed model shows implementation/recovery consistency, not that the model fits the real data",
+ "instruction_received_utc": "2026-10-11T17:52Z",
+ "scheduler": {
+  "pid": 7668,
+  "path": "/d/v79_runs/306ca8af/scripts/v79/run_v79_scheduler.py",
+  "stopped_utc": "2026-10-11T17:52:59Z",
+  "stopped_before_any_successor_launch": true
+ },
+ "jobs_file": {
+  "path": "results/v79/recovery/SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json",
+  "sha256": "d84b638bee4b7aa36df6ecd6c53890b6d29b23a9cf1ea6ddf222d00a391487b4",
+  "unchanged": true
+ },
+ "provenance": {
+  "path": "results/v79/recovery/POST_CODE_PATH_PROVENANCE_V1.json",
+  "sha256": "f71e124fa09c99b69d16b555c47cf4b4720f3b60eb87c8d7546d4123cb127a31",
+  "unchanged": true
+ },
+ "launched": [
+  {
+   "job": "gaussian fresh S1_present",
+   "started_utc": "2026-10-11T17:33:13Z",
+   "fit_snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+   "config": "GAUSSIAN_NC_DK_V1",
+   "rule_fixed_before_outcome": "finish if it completes within its first attempt (then DEVELOPMENT_EVIDENCE_ONLY); terminate cleanly as soon as any further attempt starts",
+   "observed": "first attempt (2,000 iterations) ended without settling the fit; a second attempt (extension or retry under A5) began 2026-10-11T17:59:02Z",
+   "terminated_utc": "2026-10-11T17:59:18Z",
+   "termination": "outer wrapper bash 53356 first (so no misleading end record), then timeout 39680, env 10652, fit python 35632",
+   "part_written": false,
+   "status": "TERMINATED_BY_CONTROLLER_HOLD__NO_RESULT",
+   "interpretation": "no ruling: the frozen retry/extension path was interrupted, so nothing about Gaussian qualification follows; not NOT_QUALIFIED",
+   "preserved": {
+    "log": "results/v79/recovery/fresh_d9d8cac6/gaussian/log_gaussian_S1_present.txt",
+    "log_sha256": "a1b69590b255284222c5073f2719b6d5888f035e7632905071ba51528b91c502",
+    "resource_measurement": "results/v79/recovery/fresh_d9d8cac6/RESOURCES_gaussian_S1_alone.json",
+    "resource_measurement_sha256": "cda2706509be559da93df97659f1655e4c527032a3f8fd7d6b6f0351463e0070"
+   }
+  }
+ ],
+ "not_launched": [
+  "gaussian fresh S0_class_absent",
+  "gaussian fresh S2_class_permuted",
+  "gaussian fresh S3_donor_only",
+  "gaussian fresh S4_operator_only",
+  "gaussian fresh S5_labels_removed",
+  "lognormal fresh S1_present",
+  "lognormal fresh S0_class_absent",
+  "lognormal fresh S2_class_permuted",
+  "lognormal fresh S3_donor_only",
+  "lognormal fresh S4_operator_only",
+  "lognormal fresh S5_labels_removed",
+  "ztnb fresh S1_present",
+  "ztnb fresh S0_class_absent",
+  "ztnb fresh S2_class_permuted",
+  "ztnb fresh S3_donor_only",
+  "ztnb fresh S4_operator_only",
+  "ztnb fresh S5_labels_removed"
+ ],
+ "ledger_annotation": {
+  "event": "controller_hold",
+  "name": "gaussian fresh S1_present",
+  "utc": "2026-10-11T18:00:12Z",
+  "class": "CONTROLLER_METHODOLOGICAL_HOLD",
+  "statistical_result": false,
+  "detail": "scheduler stopped 2026-10-11T17:52:59Z; this fit was terminated 2026-10-11T17:59:18Z after its first attempt did not settle it (a second attempt had started); no part written; not NOT_QUALIFIED"
+ },
+ "resource_benchmark_development_evidence": "first single-fit measurement (fixed monitor): 1,561 s covering the first attempt, peak RSS 1.32 GB, mean 10.3 logical CPUs (max 11.0 of 16), min free RAM 9.98 GB, disk read 22 MB; two such fits would oversubscribe the CPU",
+ "rulings": {
+  "detection (bernoulli) V2": "NOT_QUALIFIED (genuine, frozen confirmatory test)",
+  "gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+  "lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+  "ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD"
+ },
+ "frozen_and_unchanged": [
+  "GAUSSIAN_NC_DK_V1",
+  "LOGNORMAL_NC_ALL_V1",
+  "ZTNB_NC_DONOR_DK_V1",
+  "priors",
+  "sampler rules A5_V2"
+ ],
+ "nothing_deleted_or_rewritten": true,
+ "corrected_train_posterior_inference": "NOT STARTED; blocked under the current frozen models",
+ "next": "docs/agent/V79_TRAIN_EMPIRICAL_DEVELOPMENT_DOSSIER_PLAN.md (proposed; awaiting controller decisions D1-D5)",
+ "lane_state": "BAYESIAN_MODEL_DEVELOPMENT_HOLD__DETECTION_NOT_QUALIFIED__GAUSSIAN_LOGNORMAL_ZTNB_UNADJUDICATED__EMPIRICAL_TRAIN_CHARACTERIZATION_REQUIRED_BEFORE_NEW_CONFIRMATORY_QUALIFICATION__TRAINING_OFF",
+ "training_authorized": false
+}
