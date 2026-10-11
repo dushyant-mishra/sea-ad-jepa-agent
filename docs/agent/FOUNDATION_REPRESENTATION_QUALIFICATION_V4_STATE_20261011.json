@@ -1,0 +1,99 @@
+{
+  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V4",
+  "date": "2026-10-11",
+  "implementation_pr": 269,
+  "implementation_head": "f0044c8b37991375aeeee56e1e47bfbaff7af528",
+  "verification": {
+    "base_green_workflow_run": 38150355930,
+    "base_green_tests_passed": 14,
+    "current_transfer_red_run": 38156315568,
+    "current_transfer_red_result": "4_FAILED_14_PASSED__EXPECTED_MISSING_MODULE",
+    "current_transfer_cli_red_run": 38156416415,
+    "current_transfer_cli_red_result": "2_FAILED_17_PASSED__FIXTURE_DEFECT_PLUS_EXPECTED_MISSING_CLI",
+    "current_green_workflow_run": 38156521672,
+    "current_green_job": 114520523294,
+    "current_tests_passed": 19,
+    "current_tests_failed": 0,
+    "current_seconds": 0.52,
+    "conclusion": "SUCCESS"
+  },
+  "implementation_closed": {
+    "historical_report_requalification": true,
+    "source_report_sha_binding": true,
+    "exclusive_atomic_receipt_publication": true,
+    "receipt_overwrite_forbidden": true,
+    "authority_escalation_guard": true,
+    "hierarchical_sampling_mechanics": true,
+    "dense_resource_guard": true,
+    "observation_provenance_shortcut_guard": true,
+    "replayable_current_transfer_diagnostic": true,
+    "conditional_source_imprint_diagnostic": true
+  },
+  "historical_evidence": {
+    "state_subspace": "STABLE",
+    "state_axes": "ROTATING_WITHIN_STABLE_SUBSPACE",
+    "basis_uncertainty": "SUBSPACE_ONLY",
+    "biological_evidence_response": "DISTINCT",
+    "measurement_depth_response": "SUPPORTED",
+    "biology_measurement_separation": "SUPPORTED",
+    "two_axis_domain_support": "INFORMATIVE",
+    "cross_donor_transfer": "WEAK",
+    "cross_matrix_transfer": "WEAK",
+    "cross_dataset_transfer": "STRONG",
+    "cross_technology_transfer": "STRONG"
+  },
+  "current_u205_evidence": {
+    "heldout_train_donors": 45,
+    "rich_H_source_balanced_accuracy": 1.0,
+    "rich_H_operator_balanced_accuracy": 0.7632058297,
+    "rich_H_support_count_r2": 0.9998000749,
+    "rich_H_broad_annotation_balanced_accuracy": 0.495018,
+    "bounded_84_cell_broad_biology_donor_balanced_accuracy": 0.4934640522875817,
+    "bounded_84_cell_broad_biology_matrix_balanced_accuracy": 0.47759103641456585,
+    "bounded_84_cell_conditional_source_donor_balanced_accuracy": 0.96875,
+    "bounded_84_cell_conditional_source_matrix_balanced_accuracy": 0.96875,
+    "technology_invariance": "NOT_QUALIFIED",
+    "representation_freeze_qualified": false
+  },
+  "matrix_identifiability": {
+    "authority_file": "results/v4/FOUNDATION_MATRIX_LABEL_IDENTIFIABILITY_V2.csv",
+    "authority_sha256": "9938144a00f7bad209506c809ff3fa54747dde10c34373358df7a89defe3f3e3",
+    "total_matrices": 42,
+    "canonical_broad_available": 34,
+    "canonical_broad_unavailable": 8,
+    "nph52_unavailable": 7,
+    "sea_ad_caudate_unavailable_for_canonical_broad_endpoint": true
+  },
+  "production_sampling": {
+    "primary_source_alpha": 0.25,
+    "primary_donor_alpha": 0.25,
+    "fixed_sensitivity_source_alpha": 0.5,
+    "fixed_sensitivity_donor_alpha": 0.5,
+    "outcome_tuned": false,
+    "adaptive_sensitivity_choice_forbidden": true
+  },
+  "resource_state": {
+    "cpu_diagnostic_batch_ceiling": 4,
+    "fresh_batch1_peak_rss_kib": 770252,
+    "fresh_batch4_peak_rss_kib": 1626632,
+    "final_production_gpu_benchmark_complete": false,
+    "full104_physical_store_present_here": false
+  },
+  "successor_acceptance": {
+    "prefrozen_contract_exists": true,
+    "u0000_u0205_excluded_from_prospective_promotion": true,
+    "future_unopened_candidate_required_for_promotion": true
+  },
+  "remaining_external_gates": [
+    "FUTURE_UNOPENED_REPRESENTATION_EVALUATION_UNDER_PREFROZEN_CONTRACT",
+    "FINAL_PRODUCTION_GPU_RAM_IO_WALLTIME_BENCHMARK",
+    "FULL104_PHYSICAL_BIND_AND_NUMERICAL_DIMENSION_EXECUTION"
+  ],
+  "representation_freeze_authorized": false,
+  "training_authorized": false,
+  "target_discovery_value_read_authorized": false,
+  "stage4_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "terminal": "FOUNDATION_RESIDUAL_GATES_MEASURED__SUCCESSOR_ACCEPTANCE_RULES_FROZEN__LEARNED_T1_INVARIANCE_NOT_QUALIFIED__CANONICAL_MATRIX_IDENTIFIABILITY_34_OF_42__FINAL_GPU_AND_FULL104_PHYSICAL_GATES_PENDING__REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
+}

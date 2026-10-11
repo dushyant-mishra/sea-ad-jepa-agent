@@ -1,0 +1,136 @@
+{
+  "broad_biology_transfer": {
+    "donor": {
+      "accuracy": 0.4852941176470588,
+      "balanced_accuracy": 0.4934640522875817,
+      "classes": [
+        "Neuronal: GABAergic",
+        "Neuronal: Glutamatergic",
+        "Non-neuronal and Non-neural"
+      ],
+      "n_scored": 68
+    },
+    "matrix": {
+      "accuracy": 0.47058823529411764,
+      "balanced_accuracy": 0.47759103641456585,
+      "classes": [
+        "Neuronal: GABAergic",
+        "Neuronal: Glutamatergic",
+        "Non-neuronal and Non-neural"
+      ],
+      "n_scored": 68
+    }
+  },
+  "candidate": "T1_U205_41K_ENCODER",
+  "cohort": {
+    "broad_label_scored_cells": 68,
+    "cells": 84,
+    "donors": 54,
+    "matrices": 42,
+    "sources": {
+      "HVS": 48,
+      "NPH52": 14,
+      "SEA_AD": 22
+    }
+  },
+  "conditional_source_imprint_after_broad_class_residualization": {
+    "donor": {
+      "accuracy": 0.9558823529411765,
+      "balanced_accuracy": 0.96875,
+      "confusion": {
+        "HVS": {
+          "HVS": 45,
+          "SEA_AD": 3
+        },
+        "SEA_AD": {
+          "HVS": 0,
+          "SEA_AD": 20
+        }
+      },
+      "n_scored": 68
+    },
+    "matrix": {
+      "accuracy": 0.9558823529411765,
+      "balanced_accuracy": 0.96875,
+      "confusion": {
+        "HVS": {
+          "HVS": 45,
+          "SEA_AD": 3
+        },
+        "SEA_AD": {
+          "HVS": 0,
+          "SEA_AD": 20
+        }
+      },
+      "n_scored": 68
+    }
+  },
+  "date": "2026-10-11",
+  "input_hashes": {
+    "checkpoint_u205": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa",
+    "matrix_identifiability_csv": "9938144a00f7bad209506c809ff3fa54747dde10c34373358df7a89defe3f3e3",
+    "state_chunks": {
+      "FOUNDATION_84_CELL_U205_STATE_000_020.npz": "3fff335f496945a6b23033cf76a4470fb360a46324f6cc2f46dda43dbcf3b4da",
+      "FOUNDATION_84_CELL_U205_STATE_020_040.npz": "7da128d48ab968fd99b6d903f65210917d0fb5abd20e4e6eeb7cbdc823c945e9",
+      "FOUNDATION_84_CELL_U205_STATE_040_060.npz": "60352a8f58df3e5ffd3aa9eec1f54f19a6073f61be1e2f883ccf0726dde0ea49",
+      "FOUNDATION_84_CELL_U205_STATE_060_072.npz": "85882e69dec9bd6295278a6a0da41c1744deee290d69e9bc7c15b4a35821b95b",
+      "FOUNDATION_84_CELL_U205_STATE_072_084.npz": "021ce0e79b9970bbb45ec688c55f077ccea0eb9b18c7e0bd97d07048b045d548"
+    },
+    "truth_table_metadata_csv": "b505972bd57a034fa0805652e97e00e3ae93afc141b5aa4b16d9bd400a2d43ba",
+    "truth_table_npz": "2aca870343b65f2deabe32fdc8e18bd26211f505e8bcb3b6f2d53cb0dc6573c3"
+  },
+  "limitations": [
+    "84-cell truth-table is a bounded diagnostic with two cells per matrix, not a full-power production transfer study.",
+    "Broad-class transfer is scored only on the three canonical broad classes with sufficient support.",
+    "Conditional source imprint excludes NPH52 because broad labels are unavailable under the frozen identifiability table.",
+    "No threshold was tuned to these outcomes; metrics are descriptive and fail closed."
+  ],
+  "matrix_label_identifiability": {
+    "available": 34,
+    "by_source": {
+      "HVS": {
+        "available": 24,
+        "total": 24,
+        "unavailable": 0
+      },
+      "NPH52": {
+        "available": 0,
+        "total": 7,
+        "unavailable": 7
+      },
+      "SEA_AD": {
+        "available": 10,
+        "total": 11,
+        "unavailable": 1
+      }
+    },
+    "matrices_total": 42,
+    "unavailable": 8
+  },
+  "resource_benchmark_cpu": {
+    "batch_1": {
+      "model_seconds": 1.3000515310000083,
+      "peak_rss_kib": 770252,
+      "process_wall_seconds": 3.32
+    },
+    "batch_4": {
+      "model_seconds": 6.658867563000058,
+      "peak_rss_kib": 1626632,
+      "process_wall_seconds": 8.57
+    },
+    "laptop_safe_cpu_batch_ceiling_for_diagnostics": 4,
+    "status": "BOUNDED_CPU_DIAGNOSTIC__NOT_GPU_PRODUCTION_BENCHMARK",
+    "threads": 2
+  },
+  "ruling": {
+    "conditional_technology_imprint": "STRONG_RESIDUAL_SOURCE_SIGNAL_HVS_VS_SEAAD",
+    "factorial_execution_authorized": false,
+    "heldout_donor_broad_biology": "WEAK_ON_BOUNDED_84_CELL_DIAGNOSTIC",
+    "heldout_matrix_broad_biology": "WEAK_ON_BOUNDED_84_CELL_DIAGNOSTIC",
+    "nph52_conditional_source_test": "NOT_ESTIMABLE_NO_CANONICAL_BROAD_LABELS",
+    "representation_freeze_authorized": false,
+    "training_authorized": false
+  },
+  "schema": "FOUNDATION_CURRENT_U205_TRANSFER_DIAGNOSTIC_V1",
+  "scope": "TRAIN_ONLY_PATHOLOGY_BLIND_TARGET_BLIND_DESCRIPTIVE_DIAGNOSTIC"
+}
