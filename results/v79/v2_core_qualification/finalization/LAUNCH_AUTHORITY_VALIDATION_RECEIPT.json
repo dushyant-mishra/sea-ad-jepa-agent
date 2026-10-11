@@ -1,0 +1,128 @@
+{
+ "schema": "V79_V2_CORE_LAUNCH_AUTHORITY_VALIDATION_RECEIPT_V1",
+ "label": "COMPUTED_BY_RUNNING_v79_v2_core_launch.require_launch_authority_ON_THE_COMMITTED_FILES (local, v79-bayes env)",
+ "gate_module_sha256": "cc39bad1a7c711f18e98ffbb18c48a445dfcea662447face8b0f1823f88b7f9b",
+ "final": {
+  "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+  "sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "result": "ACCEPTED",
+  "status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+  "launch_authority": true,
+  "content": "ACCEPTED_ON_CONTENT"
+ },
+ "v1": {
+  "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+  "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+  "result": "REFUSED",
+  "reason": "REFUSED as V2_CORE launch authority: V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json is not V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+  "content": "REFUSED_ON_CONTENT: REFUSED as V2_CORE launch authority: schema 'V79_V2_CORE_QUALIFICATION_CONTRACT_V1'"
+ },
+ "v2_draft": {
+  "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+  "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+  "result": "REFUSED",
+  "reason": "REFUSED as V2_CORE launch authority: V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json is not V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+  "content": "REFUSED_ON_CONTENT: REFUSED as V2_CORE launch authority: status 'PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION' is not FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN"
+ },
+ "accepted_values_reproduced": {
+  "worlds": 12,
+  "genes_per_world": 44,
+  "n_fits": 1056,
+  "gate_counts": {
+   "total": 292,
+   "hard_statistical": 260,
+   "hard_rule": 28,
+   "limit_statistical": 4,
+   "limit_rule": 0,
+   "descriptive_metric_families": 5
+  },
+  "familywise_false_fail": 0.05,
+  "alpha_per_gate": 0.0001923076923076923,
+  "alpha_equals_0p05_over_260": true,
+  "limit_gates": [
+   [
+    "Q01_WEAK_DONOR",
+    "detection",
+    "BIAS_DONOR_SD"
+   ],
+   [
+    "Q01_WEAK_DONOR",
+    "positive",
+    "BIAS_DONOR_SD"
+   ],
+   [
+    "Q08_SPARSE_DETECTION",
+    "positive",
+    "BIAS_DONOR_SD"
+   ],
+   [
+    "Q09_POSITIVE_TAIL",
+    "positive",
+    "BIAS_DONOR_SD"
+   ]
+  ],
+  "q11_all_hard_fail": true,
+  "evidence": {
+   "contract_v1": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+    "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+    "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY"
+   },
+   "contract_v2_draft": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+    "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+    "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION"
+   },
+   "masked_replay": {
+    "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+    "sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683"
+   },
+   "masking_audit": {
+    "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+    "sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41"
+   },
+   "support_mask": {
+    "record_path": "results/v79/development/s174_structure_replay_v4_masked/V79_G500_STRUCTURAL_SUPPORT_V1.json",
+    "measured_op_gene_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+    "npz_sha256": "6203fb2c5008c71e5275a3cec7e85d52e041787a058149efbf27f15c591a1017",
+    "record_sha256": "a6023902d953f98fb0fbd2a22d53361627f9b6a299c8730ef2ba7b9776a9f286"
+   },
+   "g500_cache": {
+    "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "receipt_sha256": "3a5ed9ef40e849ab9aa78b324cbca406772f412e1844fd327e12d04507587351",
+    "bound_by": "support record cache binding; calibration and masked replay cache_sha256 agree"
+   },
+   "structural_support_authority": {
+    "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+    "commit": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+    "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+   },
+   "s174_operator_bridge": {
+    "path": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92"
+   },
+   "planting_calibration_masked": {
+    "path": "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json",
+    "sha256": "49379ee09fcf7496919e570f83710ee772ca407ca0d20268a9af1f4e132f533c"
+   },
+   "s174_design_only": {
+    "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz",
+    "sha256": "10e3c472543d948d673d91f7dadd15dbd77809a7b0d15f528eb9fd38d0c85a62"
+   },
+   "s174_design_only_record": {
+    "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.json",
+    "sha256": "1a1295c34157b2d8629732a36cf1fe6592f6181872b41bd7d19151092b413fbb"
+   },
+   "structural_support_dev": {
+    "path": "results/v79/development/v2_core_planting_calibration/V79_G500_STRUCTURAL_SUPPORT_DEV.json",
+    "sha256": "d70781af34ec5263d515ee1ad7f9410b426a6516cd7a7d46e0a69c32ae6f41c2"
+   },
+   "env_lock": {
+    "path": "results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt",
+    "sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+   }
+  },
+  "qualification_worlds_generated": 0,
+  "qualification_fits_run": 0
+ }
+}

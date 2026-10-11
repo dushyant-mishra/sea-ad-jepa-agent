@@ -1,9 +1,9 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T22:39:09Z",
- "branch": "fix/v79-s174-structural-support-mask-20261011 (PR #288, base PR #286 branch)",
- "source_head_at_write": "d255092c (comparison code; masked replay code ed6359e4; CI green)",
- "terminal_state": "MASK_CORRECTED_EXACT_S174_REPLAY_COMPLETE__V2_CORE_CONTROLLER_REVIEW_REQUIRED__QUALIFICATION_WORLDS_NOT_GENERATED__TRAINING_OFF",
+ "updated_utc": "2026-10-11T23:16:05Z",
+ "branch": "feat/v79-v2-core-contract-final-20261011 (PR #290, base PR #288 branch)",
+ "source_head_at_write": "0898f89a (CI green: run 38183422953, job 114600601441, 30 passed)",
+ "terminal_state": "V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_FROZEN__QUALIFICATION_WORLDS_NOT_GENERATED__CONTROLLER_PRELAUNCH_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
@@ -52,7 +52,7 @@
   "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery",
   "RESOLVED IN EVIDENCE, PENDING CONTROLLER REVIEW: V3 replay / calibration V1 treated structurally unmeasured entries as zeros; masked replay V4 committed with an old-vs-masked audit"
  ],
- "next_gate": "controller review of the masked exact-S174 replay (A-H audit) and of the draft amended V2_CORE contract; no world generation, no benchmark, no qualification fit",
+ "next_gate": "controller pre-launch review of the final V2 contract; then world generation as a separate gate",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -116,7 +116,7 @@
   "contract_v2_draft": {
    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
    "provisional_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
-   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION",
+   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION (historical; not launch authority)",
    "launch_authority": false,
    "summary": "docs/agent/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.md",
    "gate_counts": {
@@ -127,15 +127,32 @@
    "alpha_per_gate": 0.0001923076923076923,
    "genes_per_world": 44,
    "fits": 1056
-  }
+  },
+  "contract_v2_final": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+   "sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+   "status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+   "launch_authority": true,
+   "launch_gate": "scripts/v79/v79_v2_core_launch.py require_launch_authority()",
+   "ci": {
+    "run": 38183422953,
+    "job": 114600601441,
+    "tests": "30 passed",
+    "runner": "windows, Python 3.11.9, numpy 2.0.2, scipy 1.17.1"
+   },
+   "receipts": "results/v79/v2_core_qualification/finalization/"
+  },
+  "qualification_worlds_generated": 0
  },
  "controller_state": {
   "pr286_ruling": "6113874774",
   "pre_launch_terminal": "V2_CORE_STRUCTURE_PROVISIONALLY_PRESERVED__STRUCTURAL_SUPPORT_EVIDENCE_CORRECTION_REQUIRED__Q11_DONOR_AND_PPC_HARD_GATES_REQUIRED__QUALIFICATION_WORLD_GENERATION_NOT_YET_AUTHORIZED__TRAINING_OFF",
   "handoff_pr261": "V9",
-  "audit_pr260": "V3"
+  "audit_pr260": "V3",
+  "pr288_ruling": "6114753697",
+  "v2_core_model_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY"
  },
- "qualification_world_generation": "BLOCKED until controller review of the masked replay and acceptance of the amended contract",
+ "qualification_world_generation": "OFF until the controller's pre-launch review of the final V2 contract (world generation is a clean subsequent gate)",
  "s174_structure_replay_v4_masked": {
   "result": "docs/agent/V79_S174_STRUCTURE_REPLAY_V4_MASKED_RESULT_20261011.md",
   "replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
@@ -145,5 +162,6 @@
   "removed_fraction_replay_panel": 0.06665467625899281,
   "mechanical_A_to_H_preserved": true,
   "decision": "CONTROLLER"
- }
+ },
+ "source_term_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal source biology, not causal, not a biological mechanism; single-source genes: cross-source estimand UNDEFINED"
 }

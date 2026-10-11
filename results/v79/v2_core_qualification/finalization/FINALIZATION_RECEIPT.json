@@ -1,0 +1,92 @@
+{
+ "schema": "V79_V2_CORE_CONTRACT_V2_FINALIZATION_RECEIPT_V1",
+ "label": "ENGINEERING_RECORD_WRITTEN_AFTER_THE_RUNS_FROM_FILES_AND_CI_LOGS (no estimated value)",
+ "ruling": "PR #288 controller ruling 6114753697",
+ "final_contract": {
+  "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+  "sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "sha256_file": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26  V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json"
+ },
+ "historical_unchanged": {
+  "v1": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+  "v2_draft": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3"
+ },
+ "commits": {
+  "red": "41b256d0166508bcb2bff5b3220a3533f0e43f5a",
+  "green": "213468ce248c7d4bc69aace81134e039ddfb3bcf",
+  "ci_environment_fixes": [
+   "fddfe26cacde309112c38a8ad0f5047545bf9965",
+   "eeeb709567a5b29efc84998ee05f6ef6c65eebea",
+   "0898f89a6cbbbee8cc9d9eeb11b56446b563e2ba"
+  ]
+ },
+ "ci": [
+  {
+   "run": 38182442072,
+   "job": 114597662483,
+   "head": "41b256d0",
+   "runner": "ubuntu",
+   "conclusion": "failure",
+   "meaning": "RED as intended (gate module and final contract absent)"
+  },
+  {
+   "run": 38182826433,
+   "job": 114598823396,
+   "head": "213468ce",
+   "runner": "ubuntu",
+   "conclusion": "failure",
+   "result": "29 passed, 1 failed",
+   "meaning": "byte-for-byte draft regeneration differs on Linux in one reported float (see linux_numeric_finding)"
+  },
+  {
+   "run": 38183159542,
+   "job": 114599820211,
+   "head": "fddfe26c",
+   "runner": "windows",
+   "conclusion": "failure",
+   "meaning": "infrastructure: checkout 'Filename too long' before any test"
+  },
+  {
+   "run": 38183281302,
+   "job": 114600180966,
+   "head": "eeeb7095",
+   "runner": "windows",
+   "conclusion": "failure",
+   "meaning": "infrastructure: setup-python has no 3.11.17 for Windows 2025"
+  },
+  {
+   "run": 38183422953,
+   "job": 114600601441,
+   "head": "0898f89a",
+   "runner": "windows (Python 3.11.9, numpy 2.0.2, scipy 1.17.1)",
+   "conclusion": "success",
+   "result": "30 passed",
+   "meaning": "GREEN: launch-authority semantics and byte-for-byte regeneration of the final and the draft"
+  }
+ ],
+ "builder_check_local": [
+  "draft rebuild identical: cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+  "final rebuild identical: 57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "exit=0"
+ ],
+ "linux_numeric_finding": {
+  "observation": "With the same pins on Linux (python:3.11 container on this machine, Python 3.11.17, numpy 2.0.2, scipy 1.17.1) the builder reproduces every field except worlds.gene_count_derivation.power: 0.8003456396475286 (Linux) vs 0.8003456396475284 (Windows, committed).",
+  "impact": "none on any accepted quantity: G = 44, t_critical, alpha, gates, LIMIT set and arithmetic are identical; the reported power differs in the last binary digit only",
+  "handling": "byte-for-byte regeneration is checked in the locked Windows environment (the environment lock and the qualification runtime are Windows); the accepted bytes were not altered",
+  "evidence": [
+   "LINUX_DIAGNOSTIC_python311_docker.txt",
+   "diag_linux.py"
+  ],
+  "controller_option": "if platform-independent bytes are wanted, a future contract generation could round reported derived floats to a fixed precision; that would change the accepted bytes and needs a controller decision"
+ },
+ "commit_message_note": "the RED commit message misspells the final status as ...LAUNCH_AUTHORIZATION; code, tests and contract use FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+ "not_generated": {
+  "qualification_worlds": 0,
+  "truth_tables": 0,
+  "world_manifests": 0,
+  "benchmark_outputs": 0,
+  "qualification_fits": 0,
+  "posterior_samples": 0
+ },
+ "terminal": "V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_FROZEN__QUALIFICATION_WORLDS_NOT_GENERATED__CONTROLLER_PRELAUNCH_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF"
+}
