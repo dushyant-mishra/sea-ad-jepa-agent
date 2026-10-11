@@ -13,6 +13,9 @@ Machine prefreeze:
 Executor-provenance ledger:
 `custody/target_discovery/TD_CORRECTED_REPLAY_EXECUTOR_PROVENANCE_LEDGER_20261010.json`
 
+TD57C recovery receipt:
+`custody/target_discovery/TD57C_EXECUTOR_RECOVERY_RECEIPT_20261010.json`
+
 TD59 provenance addendum:
 `docs/superpowers/specs/2026-10-10-td59-replay-provenance-addendum.md`
 
@@ -30,24 +33,32 @@ The historical target-discovery executors only need the A_NATURAL_MIXTURE rows a
 
 Do not rebuild or infer values outside the G6 cache.
 
-## Task 1 — inventory exact historical executors and freezes
+## Task 1 — executor provenance is now resolved stage by stage
 
-Before implementation, use the executor-provenance ledger to resolve for TD56, TD57B, TD57C and TD59:
-- historical implementation path;
-- historical implementation/freeze commit or file SHA;
-- all script/blob SHAs used for the result where multiple source-specific implementations existed;
-- exact panel/ranking positions;
-- exact output schemas/terminals;
-- exact historical input hashes needed for fixture qualification.
+The authenticated Project-Library archive:
 
-Stage-specific provenance rules are mandatory:
+`JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip`
 
-- **TD57B:** use the Git-preserved implementation lineage and exact local decision-executor SHA binding.
-- **TD57C:** the Sep-8 package binding records that the core script was packaged. Recover authenticated package bytes and require exact SHA-256 `530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c` before adapter implementation. If exact bytes cannot be recovered, STOP; do not reconstruct from prose. A separately frozen independent reconstruction/equivalence closure would be required before proceeding.
-- **TD59:** the original executor bytes are explicitly documented as unrecovered. Do not chase or fabricate them. Use the already-qualified replay-closure successor SHA-256 `870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085` as the executable historical-statistic reference, while preserving original executor SHA `3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0` as historical provenance only.
-- **TD56:** recover exact decision-bearing script bytes from authenticated package/history where available. If a required primary executor is not recoverable, establish a separately audited equivalence closure before corrected values are opened; do not reimplement from prose.
+has exact frozen SHA-256:
 
-No adapter code may be written for a stage until that stage's executable-provenance rule is satisfied.
+`c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417`
+
+and size 92,478,083 bytes.
+
+A 2026-10-10 exhaustive Project-Library audit recovered and independently SHA-verified these historical executors from that archive:
+
+- TD56 HVS primary: `run_td56_hvs.py` → `a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43`
+- TD56 NPH52 primary: `run_td56_nph.py` → `090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162`
+- TD56 SEA_AD exact-fast primary: `run_td56_sea_fast.py` → `c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866`
+- TD57B local decision executor: `td57b_fixed_relational_recurrence.py` → `1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e`
+- TD57B fast wrapper: `td57b_fast_wrapper.py` → `808fb293a87d0020adc0f332742f3fa9b99c9c8ec5a88e50504a719ad4183a70`
+- TD57C local decision executor: `td57c_three_view_local_geometry.py` → `530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c`
+
+TD57C package recovery is therefore **closed**. Do not reconstruct TD57C from prose.
+
+TD59 is the sole exception: the project already established that its original executor bytes were not recovered. Use the already-qualified replay-closure successor SHA-256 `870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085` as the executable historical-statistic reference, while preserving original executor SHA `3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0` as historical provenance only.
+
+No adapter code may be written for a stage except against its admissible executable reference above.
 
 ## Task 2 — define one read-only adapter API
 
@@ -79,20 +90,22 @@ For every historical stage:
 
 For TD59, “admissible historical executable reference” means the validated replay-closure successor, not the missing original bytes.
 
-Qualification must include at least the historically decision-bearing primary screens, not only unit-level helper tests.
+Qualification must include the historically decision-bearing primary screens, not only helper tests.
 
-## Task 4 — TD56 special requirements
+## Task 4 — TD56 equivalence
 
-Historical TD56 had:
-- prospective freeze `d257fd3cf4957ecbb1ab3f03a06e54d043a1326f`;
-- HVS/NPH52/SEA_AD primary PASS;
-- an exact SEA_AD fast-vs-naive comparison with max absolute difference 0.0;
-- a pair-ordering ambiguity audit that was non-material;
-- an independent next-2048-pair robustness audit.
+Use the exact recovered primary executors above. The decision-bearing corrected TD56 object remains the prospectively frozen primary screen.
 
-The corrected replay's decision-bearing TD56 object is the prospectively frozen primary screen. The historical adversarial/robustness reruns remain audit history and must not become extra corrected PASS requirements unless separately prefrozen before corrected values are opened.
+Require identity on authenticated historical values for:
+- selected gene views and fixed pair identities;
+- source-specific sampled cell pairs;
+- donor×operator strata;
+- matched null identities;
+- observed/null statistics;
+- source PASS decisions;
+- terminal.
 
-Adapter equivalence should nevertheless demonstrate that the chosen canonical pair-preimage interpretation reproduces the recorded historical primary terminal.
+Historical adversarial/robustness reruns remain audit history and must not become extra corrected PASS requirements unless separately prefrozen before corrected values are opened.
 
 ## Task 5 — TD57B equivalence
 
@@ -110,10 +123,13 @@ Historical reference 24/24 PASS is not a tuning target; it is the expected resul
 
 ## Task 6 — TD57C equivalence
 
+Use the exact recovered executor bytes SHA-256:
+
+`530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c`
+
 The adapter qualification must reproduce the historical **failure**, not merely execute successfully.
 
 At minimum require:
-- exact recovered TD57C executor bytes SHA-256 `530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c`, or a separately frozen replacement closure if and only if exact package recovery is proven impossible;
 - same Panel-0 HVS structural donor set;
 - same nearest-third Z-selected triplet identities;
 - same donor halves;
@@ -146,7 +162,7 @@ Require identity of:
 - 22/24 null-max diagnostic count;
 - stage terminal.
 
-The old weakest p95 margin is descriptive, not a code-tuning target. Never call the replay-closure successor the original TD59 executor.
+Never call the replay-closure successor the original TD59 executor.
 
 ## Task 8 — fail-closed code identity
 
@@ -155,12 +171,14 @@ A future replay execution authorization, if ever created, must bind:
 - exact G7 receipt hash;
 - exact replay adapter code identity;
 - exact admissible stage executor identities from the provenance ledger;
+- exact authenticated TD41-TD58 archive SHA;
 - exact science-prefreeze SHA;
 - exact machine-prefreeze SHA;
 - exact executor-provenance ledger SHA;
+- exact TD57C recovery-receipt SHA;
 - exact TD59 provenance-addendum SHA.
 
-The adapter/executors must be Git-tracked and clean. Platform newline policy must not change code identity semantics.
+The adapter/executors must be Git-tracked and clean where Git-tracked copies are used. Platform newline policy must not change code identity semantics. Historical executor identity is the exact recovered/archive member SHA, not a rewritten working-tree copy.
 
 ## Task 9 — corrected replay namespaces
 
@@ -169,9 +187,7 @@ Each corrected stage gets a fresh immutable namespace. Never reuse historical re
 Recommended logical structure:
 `results/target_discovery/corrected_replay_20261010/<stage>/attempt_001/`
 
-An execution-start marker spends a namespace immediately.
-
-Any failure leaves the namespace immutable and preserved.
+An execution-start marker spends a namespace immediately. Any failure leaves the namespace immutable and preserved.
 
 ## Task 10 — output comparison contract
 
@@ -193,6 +209,6 @@ Before corrected replay:
 - G6/G7 require a separate explicit owner decision;
 - G6/G7 must both PASS;
 - then corrected biological replay requires another explicit owner decision;
-- stage-specific executor provenance/equivalence requirements must be satisfied.
+- historical-fixture adapter equivalence must pass for every stage.
 
 After all corrected replay receipts, STOP again before target selection, TD60, or training.
