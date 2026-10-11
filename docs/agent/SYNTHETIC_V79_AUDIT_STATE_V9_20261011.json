@@ -1,0 +1,32 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V9",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "world_generator_pr": 291,
+  "audit_verdict": "BASELINE_PLANTING_AND_DESIGN_PASS__MASKED_CALIBRATION_AND_SHARED_BASE_DESIGN_ENFORCED__NO_WORLD_REALIZATION__FITTING_OFF__TRAINING_OFF",
+  "green": {
+    "workflow": 38183731145,
+    "job": 114601522282,
+    "result": "17 passed in 0.30 s",
+    "head": "a2e45b663425f7cd755e1b7860b3c7d31d8437c3"
+  },
+  "verified": [
+    "BASE design uses shared [100,0,0] key and S174-supported resampling",
+    "masked calibration pools match contract builder",
+    "p5-p95 LHS stratification deterministic",
+    "measured-cell detection intercept calibration exact by bisection",
+    "donor effects share factor geometry and are centred within source"
+  ],
+  "authorization": {
+    "observation_generator_engineering": true,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "BASELINE_PLANTING_DESIGN_GREEN__OBSERVATION_GENERATOR_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
