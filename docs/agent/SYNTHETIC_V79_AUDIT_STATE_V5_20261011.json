@@ -1,0 +1,68 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V5",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "contract_finalization_pr": 289,
+  "controller_contract_ratification_comment": 6114866796,
+  "audit_verdict": "PASS_CONTRACT_V2_FINALIZATION__REQUIRED_INPUTS_HASH_BOUND__GENERATED_OUTPUTS_BOUNDED__WORLD_GENERATOR_ENGINEERING_ONLY_AUTHORIZED__QUALIFICATION_FITTING_OFF__TRAINING_OFF",
+  "final_contract": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+    "sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+    "launch_authority": true,
+    "world_generation_authorized": false,
+    "qualification_fits_run": 0,
+    "effective_architecture": "small final authority envelope over immutable controller-accepted V2 draft payload"
+  },
+  "audited_required_inputs": {
+    "v2_draft_payload_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+    "historical_v1_sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+    "masked_replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+    "masking_audit_sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+    "structural_support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab"
+  },
+  "audited_generated_outputs": [
+    "V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+    "V79_V2_CORE_QUALIFICATION_CONTRACT_V2.sha256",
+    "finalizer",
+    "launch-authority validator",
+    "focused finalization tests",
+    "focused CI workflow"
+  ],
+  "pr289_changed_files_count": 6,
+  "no_world_truth_benchmark_or_fit_artifacts_in_pr289": true,
+  "tdd": {
+    "red": {"workflow": 38182336825, "job": 114597338900, "result": "expected missing-validator failure"},
+    "green": {"workflow": 38182583719, "job": 114598120066, "result": "5 passed and byte-for-byte rebuild identical"}
+  },
+  "frozen_scientific_state": {
+    "v2_core": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+    "source_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not causal source biology",
+    "operator": "OUT_OF_CORE",
+    "donor_class": "OUT",
+    "source_class": "OUT"
+  },
+  "qualification_contract": {
+    "worlds": 12,
+    "genes_per_world": 44,
+    "planned_fits": 1056,
+    "hard_statistical_gates": 260,
+    "hard_rule_gates": 28,
+    "limit_statistical_gates": 4,
+    "alpha_per_gate": 0.0001923076923076923,
+    "q11_all_hard": true,
+    "first_fail_terminal_lock": true
+  },
+  "next_allowed_work": "test-first world-generator and truth/manifest engineering only; no qualification fit",
+  "authorization": {
+    "world_generator_engineering": true,
+    "realized_world_generation_before_generator_green": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_RATIFIED__WORLD_GENERATOR_ENGINEERING_AUTHORIZED__QUALIFICATION_FITS_OFF__TRAINING_OFF"
+}
