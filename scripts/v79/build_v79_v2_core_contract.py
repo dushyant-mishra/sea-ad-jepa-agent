@@ -22,13 +22,23 @@ from pathlib import Path
 import numpy as np
 from scipy import stats
 
-SCHEMA = "V79_V2_CORE_QUALIFICATION_CONTRACT_V1"
-CONTRACT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json"
+SCHEMA = "V79_V2_CORE_QUALIFICATION_CONTRACT_V2"
+CONTRACT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json"
+CONTRACT_STATUS = "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION"
+SUPERSEDED = {  # preserved unchanged at its path; historical pre-controller draft, never launch authority
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+    "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+    "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY",
+    "superseded_by_ruling": "PR #286 controller ruling 6113874774",
+}
 INPUTS = {
     "s174_design_only": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz",
     "s174_design_only_record": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.json",
     "planting_calibration_masked": "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json",
     "structural_support_dev": "results/v79/development/v2_core_planting_calibration/V79_G500_STRUCTURAL_SUPPORT_DEV.json",
+    "structural_support_v1_record": "results/v79/development/s174_structure_replay_v4_masked/V79_G500_STRUCTURAL_SUPPORT_V1.json",
+    "masked_replay": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+    "masking_audit": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
     "env_lock": "results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt",
 }
 
@@ -113,6 +123,13 @@ WORLDS = [
     ("Q11_OMITTED_OPERATOR", "S174", {"operator": "omitted_perturbation"}),
 ]
 FIXED_TYPES = ["intercept", "depth1", "depth2", "class", "source"]
+DESCRIPTIVE_METRICS = [
+    "per type: correlation and RMSE of posterior mean vs truth across genes; sign agreement",
+    "donor: Spearman rank of donor effects; calibration slope of truth on posterior mean; shrinkage factor",
+    "detection held-out (same donors, new donors): mean log loss vs oracle, 10-bin calibration, predicted vs observed prevalence, low-prevalence (planted < 0.05) subset",
+    "positive held-out: mean LPD vs oracle (new donors integrated by %d-node Gauss-Hermite)" % GH_NODES,
+    "PPC statistics and p-values per gene; Q11 minus Q10 contrasts; second stage",
+]
 ABSENT_TYPE = {"source": "source", "class": "class", "depth2": "depth2"}
 # Worlds that by construction put a donor SD near zero or under weak information. Under a proper half-normal prior,
 # the posterior mean there moves away from the boundary, so standardized bias is an expected Bayesian property and
@@ -179,14 +196,15 @@ def planting(mags: dict) -> dict:
 
 
 def world_gates(name: str, mods: dict) -> list[dict]:
-    """Every gate for one world, both parts. kind: STAT (counts toward multiplicity) or RULE (deterministic)."""
+    """Every gate for one world, both parts. kind: STAT (statistical) or RULE (deterministic). verdict_class FAIL
+    (hard) everywhere, including every Q11 donor and PPC gate (PR #286 ruling B), except the four donor-SD bias gates
+    in WEAK_DONOR_IDENTIFICATION, which are LIMIT."""
     gates = []
-    limit_world = mods.get("operator") == "omitted_perturbation"
     for part in ("detection", "positive"):
         absent = {ABSENT_TYPE[k] for k, v in mods.items() if v == "absent" and k in ABSENT_TYPE}
         donor_absent = mods.get("donor_sd") == "absent"
         present_fixed = [t for t in FIXED_TYPES if t not in absent]
-        cls = lambda family: ("LIMIT" if limit_world and family in ("donor", "ppc") else "FAIL")
+        cls = lambda family: "FAIL"
         g = lambda gate, kind, family, **kw: gates.append(dict(world=name, part=part, gate=gate, kind=kind,
                                                                verdict_class=cls(family), **kw))
         g("CONVERGENCE_ALL_FITS_DIAGNOSED", "RULE", "convergence")
@@ -256,11 +274,29 @@ def build(root: Path) -> dict:
     design_rec = json.loads((root / INPUTS["s174_design_only_record"]).read_text(encoding="utf-8"))
     if design_rec["npz_sha256"] != hashes["s174_design_only"]:
         raise SystemExit("STOP: design-only npz does not match its record")
+    # The masked planting calibration may be used only if its measurement-support join reproduces under the committed,
+    # tested builder (PR #286 ruling): the same operator x gene mask hash in all three records.
+    support_v1 = json.loads((root / INPUTS["structural_support_v1_record"]).read_text(encoding="utf-8"))
+    support_dev = json.loads((root / INPUTS["structural_support_dev"]).read_text(encoding="utf-8"))
+    join = {"committed_builder_mask_sha256": support_v1["measured_op_gene_sha256"],
+            "development_mask_sha256": support_dev["op_x_gene_sha256"],
+            "calibration_mask_sha256": cal["structural_support"]["op_x_gene_sha256"]}
+    if len(set(join.values())) != 1 or not support_v1.get("reproduces_development_mask", {}).get("match"):
+        raise SystemExit(f"STOP: the masked calibration's support join does not reproduce: {join}")
+    audit = json.loads((root / INPUTS["masking_audit"]).read_text(encoding="utf-8"))
+    if audit["inputs"]["masked_replay"]["sha256"] != hashes["masked_replay"]:
+        raise SystemExit("STOP: the masking audit does not describe the committed masked replay")
     mags = calibration_magnitudes(cal)
     plant = planting(mags)
     gates = [g for name, _, mods in WORLDS for g in world_gates(name, mods)]
-    n_stat = sum(g["kind"] == "STAT" for g in gates)
-    alpha_test = FAMILYWISE_FALSE_FAIL / n_stat
+    n_stat_hard = sum(g["kind"] == "STAT" and g["verdict_class"] == "FAIL" for g in gates)
+    counts = {"total": len(gates),
+              "hard_statistical": n_stat_hard,
+              "hard_rule": sum(g["kind"] == "RULE" and g["verdict_class"] == "FAIL" for g in gates),
+              "limit_statistical": sum(g["kind"] == "STAT" and g["verdict_class"] == "LIMIT" for g in gates),
+              "limit_rule": sum(g["kind"] == "RULE" and g["verdict_class"] == "LIMIT" for g in gates),
+              "descriptive_metric_families": len(DESCRIPTIVE_METRICS)}
+    alpha_test = FAMILYWISE_FALSE_FAIL / n_stat_hard
     gene = derive_gene_count(alpha_test)
     G = gene["G"]
     n_struct = round(STRUCTURAL_GENE_FRACTION * G)
@@ -269,7 +305,12 @@ def build(root: Path) -> dict:
     contract = {
         "schema": SCHEMA,
         "name": "V79_V2_CORE_FROZEN_MODEL_AND_PROSPECTIVE_SYNTHETIC_QUALIFICATION_CONTRACT",
-        "status": "FROZEN_BEFORE_ANY_QUALIFICATION_FIT",
+        "status": CONTRACT_STATUS,
+        "launch_authority": False,
+        "launch_condition": ("controller acceptance of the masked exact-S174 replay and of this amended contract; "
+                             "until then no world generation, no truth table, no benchmark and no qualification fit"),
+        "supersedes": SUPERSEDED,
+        "structural_support_join_reproduced": join,
         "authority": {
             "controller_model_freeze": "CANDIDATE_V2_CORE (PR #285 comment 6113335756)",
             "development_evidence": "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md (replay SHA-256 78db6d31...)",
@@ -421,6 +462,15 @@ def build(root: Path) -> dict:
                 "single_source_measured_choice": "measured source drawn uniformly",
                 "partial_rule": "a seeded floor(7/2)=3 of the 7 NPH52 matrices are unmeasured (development: partial absence only in NPH52)",
                 "poison": "structurally unmeasured entries are written as -1 so any read of them is detectable",
+                "world_truth": ("each world's cell x gene support mask is part of its truth, written with the world "
+                                "data and hash-bound in the world manifest before any fit"),
+                "required_tests_before_generation": [
+                    "measured zero enters detection as y=0; an unmeasured entry enters no likelihood, metric or score",
+                    "a fully unmeasured source x gene is excluded (no zero prevalence, no source effect from it)",
+                    "partial NPH52-style matrix-level support is resolved per matrix x gene, never per source",
+                    "a poison value on an entry the mask declares measured is detected and refused",
+                    "changing the poison value with the mask fixed changes no fitted or scored output",
+                ],
                 "partial_count_note": "one partial gene per world exercises the code path; it is not frequency-matched (dev 3/500)",
             },
             "world_list": [
@@ -440,7 +490,10 @@ def build(root: Path) -> dict:
                 "operator=omitted_perturbation": (
                     "per gene and part, matrix offsets o_m ~ N(0, (%.1f x that gene's donor SD)^2), centred within "
                     "source (unweighted), added to the linear predictor; never fitted. On the S174 design matrices are "
-                    "single-class in HVS/NPH52, so offsets partly mimic source x class structure." % OPERATOR_SD_FRACTION),
+                    "single-class in HVS/NPH52, so offsets partly mimic source x class structure. Q11 is a MILD "
+                    "omitted-operator stress: a PASS qualifies robustness only to this frozen perturbation magnitude, "
+                    "not to stronger operator effects, and it does not qualify an operator-free model universally."
+                    % OPERATOR_SD_FRACTION),
             },
             "heldout_replicates": {
                 "same_donors": "same design and planted donor effects, new observation noise",
@@ -460,13 +513,7 @@ def build(root: Path) -> dict:
                 "class and source level effects. Donor effects are scored for donors with >=1 informative "
                 "observation. Truth and posterior are transformed identically."),
             "quantity_types": FIXED_TYPES + ["donor_sd", "donor_effects", "sigma"],
-            "descriptive_metrics": [
-                "per type: correlation and RMSE of posterior mean vs truth across genes; sign agreement",
-                "donor: Spearman rank of donor effects; calibration slope of truth on posterior mean; shrinkage factor",
-                "detection held-out (same donors, new donors): mean log loss vs oracle, 10-bin calibration, predicted vs observed prevalence, low-prevalence (planted < 0.05) subset",
-                "positive held-out: mean LPD vs oracle (new donors integrated by %d-node Gauss-Hermite)" % GH_NODES,
-                "PPC statistics and p-values per gene; Q11 minus Q10 contrasts; second stage",
-            ],
+            "descriptive_metrics": DESCRIPTIVE_METRICS,
             "descriptive_rationale": ("Predictive excess over the oracle has no data-independent acceptance threshold "
                                       "that is not a pure convention. Parameter calibration already gates generative "
                                       "correctness. Predictive metrics serve as implementation cross-checks and as "
@@ -485,8 +532,11 @@ def build(root: Path) -> dict:
         },
         "gates": {
             "multiplicity": {
-                "familywise_false_fail": FAMILYWISE_FALSE_FAIL, "n_statistical_gates": n_stat,
-                "alpha_per_gate": alpha_test, "method": "Bonferroni over every STAT gate in all worlds and parts",
+                "familywise_false_fail": FAMILYWISE_FALSE_FAIL, "n_hard_statistical_gates": n_stat_hard,
+                "alpha_per_gate": alpha_test, "gate_counts": counts,
+                "method": ("Bonferroni over every hard (FAIL-class) statistical gate in all worlds and parts. LIMIT-class "
+                           "statistical gates are evaluated at the same alpha but cannot fail qualification, so they "
+                           "do not enter the family."),
                 "rationale": ("A correctly specified, well-implemented V2_CORE should fail no world by chance with "
                               "probability above 5%. RULE gates are deterministic and carry no alpha."),
             },
@@ -525,21 +575,30 @@ def build(root: Path) -> dict:
             "list": gates,
         },
         "terminal_logic": {
-            "world_verdict": ("FAIL if any FAIL-class gate fails. PASS_WITH_LIMITS if only LIMIT-class gates fail "
-                              "(Q11 donor and PPC gates: an omitted operator is expected to be partly absorbed into "
-                              "donor effects, and this is reported as a limit of what a real result can mean). "
-                              "PASS otherwise."),
+            "world_verdict": ("FAIL if any FAIL-class gate fails. PASS_WITH_LIMITS if only LIMIT-class gates fail; "
+                              "the LIMIT class is exactly the four donor-SD bias gates in Q01 (both parts), Q08 "
+                              "positive and Q09 positive, whose coverage gates stay hard. PASS otherwise. Every Q11 "
+                              "gate (fixed, donor and PPC) is hard: Q11 exists to test whether omitted measurement "
+                              "structure is absorbed into donor biology or degrades model adequacy, and it must be able "
+                              "to disqualify V2_CORE."),
+            "terminal_lock": ("The first FAIL-class gate failure in any world immediately and irreversibly locks the "
+                              "combined terminal of this qualification generation to "
+                              "V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED. Every world result produced after that "
+                              "point is labelled POST_TERMINAL_DIAGNOSTIC__CANNOT_RESCUE_QUALIFICATION. Such results "
+                              "may map failure modes, but they cannot change the combined FAIL, select a model variant, "
+                              "relax a gate or authorize downstream work."),
+            "post_terminal_label": "POST_TERMINAL_DIAGNOSTIC__CANNOT_RESCUE_QUALIFICATION",
             "combined": {
                 "PASS": "V2_CORE_SYNTHETIC_QUALIFICATION_PASS__CONTROLLER_AUDIT_REQUIRED__REAL_TRAIN_POSTERIOR_INFERENCE_STILL_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
                 "FAIL": "V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED__NO_TUNING__CONTROLLER_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_INFERENCE_OFF__TRAINING_OFF",
                 "INFRASTRUCTURE": "V2_CORE_SYNTHETIC_QUALIFICATION_INCOMPLETE__INFRASTRUCTURE_STOP__CONTROLLER_REVIEW_REQUIRED",
             },
             "rule": "PASS iff all 12 worlds are PASS or PASS_WITH_LIMITS; FAIL if any world FAILs",
-            "run_policy": ("All 12 worlds run to completion in the fixed order Q00..Q11 regardless of earlier world "
-                           "verdicts, because nothing about later worlds can change and the full verdict map is "
-                           "more informative for controller review. An infrastructure failure (crash, input hash "
-                           "mismatch, poison read) stops immediately. No tuning, no reruns with changed settings, "
-                           "and no resurrection of a failed fit."),
+            "run_policy": ("PR #286 ruling A (approved with terminal lock): the precommitted worlds run in the fixed "
+                           "order Q00..Q11. After the terminal lock they continue only as post-terminal diagnostics. "
+                           "Infrastructure, custody, poison-read and hash failures STOP immediately. No tuning, no "
+                           "reruns with changed settings, no adaptive world change after generation, and no "
+                           "resurrection of a failed fit."),
             "stopping": "after the combined receipt: STOP for controller audit in every outcome",
         },
         "resources": {
@@ -576,6 +635,15 @@ def build(root: Path) -> dict:
                      "code. Scoring runs only after every fit of a world is complete. The operator knows the mapping, "
                      "and no intervention is permitted between launch and the receipt, so analyst unblinding cannot "
                      "steer an outcome."),
+        "ratified_conventions": {
+            "ruling": "PR #286 controller ruling 6113874774, part C: ratified for this qualification generation only",
+            "bias_materiality_std": {"value": BIAS_MATERIALITY_STD,
+                                     "scope": "prospective practical-significance convention, not a universal inferential threshold"},
+            "population_donor_sd_ratio": {"value": list(POP_DONOR_RATIO_BOUNDS), "scope": "prospective recovery convention"},
+            "donor_absent_floor": {"fraction_of_dev_p05_donor_sd": DONOR_SD_FLOOR_FRACTION,
+                                   "scope": "Q07 only; values in worlds.planting_magnitudes.fixed_magnitudes.donor_absent_floor"},
+            "q11_operator_sd_fraction": {"value": OPERATOR_SD_FRACTION, "scope": "deliberately mild omitted-operator stress only"},
+        },
         "declared_limitations": [
             "Positive values are continuous lognormal; integer discretization of real counts (mass at 1) is not tested (ZTNB question).",
             "Planting magnitudes come from ridge proxies; development donor SDs are shrinkage-biased low.",
@@ -586,18 +654,16 @@ def build(root: Path) -> dict:
             "About 1% of development genes show near-separated detection source effects in measured cells (|contrast| about 8). These are not planted, and the N(0,1.5) prior would shrink them.",
         ],
         "development_finding_structural_support": {
-            "finding": ("The V3 replay and the V1 planting calibration treated 5.76% of cell-gene entries (59/500 "
-                        "genes) as measured zeros although Stage81A2R marks them structurally_unmeasured. 56 genes "
-                        "are fully unmeasured in >=1 source and 3 are partially unmeasured within NPH52. No nonzero "
-                        "count falls on an unmeasured entry, so the authority and the cache agree."),
-            "effect_on_ratified_answers": ("Descriptive post-hoc split of the V3 per-gene deltas. Detection source gain "
-                                           "in the 28 affected replay genes: median +0.088. In the 172 clean genes: "
-                                           "median +0.00094, 74% improved, so source in detection remains supported. "
-                                           "Operator (lambda=1) clean-gene median is +0.00055 with 56% improved, "
-                                           "unchanged. Positive part is unaffected. The support panel on clean "
-                                           "genes: donor 28/45 and 18/45; operator-beyond-donor 34/45 and 21/45."),
-            "consequence_here": "V2_CORE enforces the support mask in the likelihood; worlds include structural absence; calibration V2 is masked",
-            "controller_note": "flagged for controller audit; it does not change the V2_CORE term set",
+            "finding": ("The V3 replay and the V1 planting calibration treated structurally unmeasured entries as "
+                        "measured zeros. The corrective masked replay and its old-vs-masked A-H audit are the "
+                        "authority; their numbers are not restated here."),
+            "masked_replay": {"path": INPUTS["masked_replay"], "sha256": hashes["masked_replay"]},
+            "masking_audit": {"path": INPUTS["masking_audit"], "sha256": hashes["masking_audit"],
+                              "mechanical_A_to_H_preserved": all(q["mechanical_class_preserved"]
+                                                                 for q in audit["questions_A_to_H"].values())},
+            "consequence_here": ("V2_CORE enforces the support mask in the likelihood; worlds include structural "
+                                 "absence as hash-bound truth; calibration V2 is masked and its join reproduces"),
+            "controller_decision": "PENDING: whether V2_CORE remains frozen unchanged after the masked replay",
         },
     }
     return contract
@@ -620,7 +686,7 @@ def main() -> None:
     digest = hashlib.sha256(out.read_bytes()).hexdigest()
     out.with_suffix(".sha256").write_text(f"{digest}  {out.name}\n", encoding="utf-8", newline="\n")
     print(json.dumps({"sha256": digest, "G": c["worlds"]["genes_per_world"],
-                      "n_stat_gates": c["gates"]["multiplicity"]["n_statistical_gates"],
+                      "gate_counts": c["gates"]["multiplicity"]["gate_counts"],
                       "alpha_per_gate": c["gates"]["multiplicity"]["alpha_per_gate"],
                       "gene_derivation": c["worlds"]["gene_count_derivation"],
                       "binomial": c["gates"]["binomial_reference_thresholds"],

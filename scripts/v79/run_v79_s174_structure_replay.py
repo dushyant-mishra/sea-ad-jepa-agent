@@ -21,6 +21,14 @@ Random-effect support is assessed cheaply from fixed-structure residuals by rest
 - donor×class increment after removing donor means and permuting within donor.
 These diagnostics decide what hierarchy deserves a later Bayesian random-effect model; they are not substitutes
 for Bayesian posterior estimation.
+
+Structural measurement support (PR #286 controller ruling 6113874774): MEASURED_SCALAR != STRUCTURALLY_UNMEASURED.
+A cell-gene entry is MEASURED iff the cell's operator (= Stage81A2R matrix) measures the gene's address, as given by
+a hash-bound support artifact from build_v79_structural_support.py. Every fit, held-out metric and permutation test
+runs only over measured entries of that gene. A measured zero is a detection observation y=0, and an unmeasured
+entry is never read as an observation. Design columns, panels, folds and seeds are unchanged: masking removes rows
+only. Support is mandatory at the entrypoint. The `measured=None` default of the per-gene functions means "every
+entry measured" and serves only unit tests on fully measured fixtures.
 """
 from __future__ import annotations
 
@@ -53,6 +61,11 @@ OPERATOR_RULING_CONVENTION = (
     "increment > 0, and the 95% gene-bootstrap interval of that median (2000 resamples, fixed seed) excludes 0. "
     "Genes share cells and donors, so the gene bootstrap is optimistic. SUPPORTED: materially present at all three "
     "lambdas. NOT_SUPPORTED: materially present at none. Otherwise PRIOR_SENSITIVE__UNRESOLVED.")
+REPLAY_SCHEMA = "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED"
+SUPPORT_SCHEMA = "V79_G500_STRUCTURAL_SUPPORT_V1"
+REPLAY_TERMINAL = ("MASK_CORRECTED_EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__FROZEN_SENSITIVITY_"
+                   "0p25_1_4__DEVELOPMENT_ONLY__V2_CORE_CONTROLLER_REVIEW_REQUIRED__QUALIFICATION_WORLDS_NOT_GENERATED__"
+                   "TRAINING_OFF")
 
 
 def sha256(path: Path) -> str:
@@ -85,6 +98,88 @@ def load_compact_cache(npz_path, receipt_path) -> dict[str, np.ndarray]:
     if out["counts_selected"].shape[1] != len(out["prevalence_selected"]):
         raise SystemExit("STOP: cache gene panel and prevalence vector disagree")
     return out
+
+
+def load_structural_support(npz_path, record_path, data: dict, cache_npz_sha256: str) -> dict:
+    """Hash-bound operator x gene support for exactly this cache. Operators are matched by value."""
+    npz_path, record_path = Path(npz_path), Path(record_path)
+    rec = json.loads(record_path.read_text(encoding="utf-8"))
+    if rec.get("schema") != SUPPORT_SCHEMA:
+        raise SystemExit("STOP: structural support record has the wrong schema")
+    if rec.get("npz") != npz_path.name or rec.get("npz_sha256") != sha256(npz_path):
+        raise SystemExit("STOP: structural support bytes do not match their record")
+    if rec.get("cache_npz_sha256") != cache_npz_sha256:
+        raise SystemExit("STOP: structural support is bound to a different cache")
+    with np.load(npz_path, allow_pickle=False) as z:
+        m = np.asarray(z["measured_op_gene"])
+        levels = np.asarray(z["operator_levels"]).astype(np.int64)
+        addresses = np.asarray(z["gene_address_index"]).astype(np.int64)
+    if m.dtype != bool or m.shape != (len(levels), len(addresses)):
+        raise SystemExit("STOP: structural support array has the wrong type or shape")
+    if hashlib.sha256(np.ascontiguousarray(m).tobytes()).hexdigest() != rec.get("measured_op_gene_sha256"):
+        raise SystemExit("STOP: structural support array does not match its recorded hash")
+    if not np.array_equal(addresses, np.asarray(data["gene_address_index"]).astype(np.int64)):
+        raise SystemExit("STOP: structural support genes differ from the cache genes")
+    order = np.argsort(levels, kind="mergesort")
+    levels, m = levels[order], m[order]
+    if len(np.unique(levels)) != len(levels):
+        raise SystemExit("STOP: duplicate operator levels in structural support")
+    op = np.asarray(data["op"]).astype(np.int64)
+    rows = np.searchsorted(levels, op)
+    if np.any(rows >= len(levels)) or np.any(levels[np.minimum(rows, len(levels) - 1)] != op):
+        raise SystemExit("STOP: a cache operator has no structural support row")
+    return {"measured_op_gene": m, "operator_levels": levels, "cell_rows": rows, "record": rec,
+            "npz_sha256": rec["npz_sha256"], "record_sha256": sha256(record_path)}
+
+
+def gene_measured_mask(data: dict, support: dict, gene: int) -> np.ndarray:
+    """Cells whose operator (= matrix) measures this gene. Never collapsed to source."""
+    return support["measured_op_gene"][support["cell_rows"], int(gene)].copy()
+
+
+def check_measured_counts(data: dict, support: dict) -> None:
+    """Every MEASURED entry must be a nonnegative integer count. Unmeasured entries are not inspected; a poison value
+    on a measured entry means the support and the cache disagree, and the replay stops."""
+    counts = np.asarray(data["counts_selected"])
+    if not np.issubdtype(counts.dtype, np.integer):
+        raise SystemExit("STOP: cache counts are not integers")
+    for g in range(counts.shape[1]):
+        m = gene_measured_mask(data, support, g)
+        if np.any(counts[m, g] < 0):
+            raise SystemExit(f"STOP: invalid (poison?) count on a measured entry of cache gene {g}")
+
+
+def _measured(data: dict, gene: int, measured) -> np.ndarray:
+    n = len(np.asarray(data["donor"]))
+    if measured is None:
+        return np.ones(n, dtype=bool)
+    m = np.asarray(measured, dtype=bool)
+    if m.shape != (n,):
+        raise ValueError("measured mask must have one entry per cell")
+    return m
+
+
+def _observed_counts(data: dict, gene: int, m: np.ndarray) -> np.ndarray:
+    """The gene's counts with unmeasured entries replaced by 0; they are excluded by the mask wherever used, so the
+    placeholder value never reaches a likelihood, metric or permutation test."""
+    return np.where(m, np.asarray(data["counts_selected"])[:, gene], 0)
+
+
+def measured_observation_table(data: dict, gene: int, measured) -> dict:
+    m = _measured(data, gene, measured)
+    c = _observed_counts(data, gene, m)
+    src = np.asarray(data["src"])
+    by_source = {}
+    for s in np.unique(src):
+        cells = src == s
+        nm = int((cells & m).sum())
+        nd = int(((c > 0) & cells & m).sum())
+        by_source[str(int(s))] = {"n_cells": int(cells.sum()), "n_measured": nm, "n_detected": nd,
+                                  "prevalence_measured": (float(nd / nm) if nm else None)}
+    return {"n_cells": int(len(m)), "n_measured": int(m.sum()),
+            "measured_sources": int(sum(v["n_measured"] > 0 for v in by_source.values())),
+            "sources_with_positive": int(sum(v["n_detected"] > 0 for v in by_source.values())),
+            "by_source": by_source}
 
 
 def select_panel_positions(prevalence: np.ndarray, n: int, seed: int = SEED, bins: int = 10) -> np.ndarray:
@@ -279,15 +374,19 @@ def permutation_group_support(residual: np.ndarray, groups: np.ndarray, strata: 
             "n_perm": int(n_perm), "supported": bool(observed > q95)}
 
 
-def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED) -> dict:
-    y = (np.asarray(data["counts_selected"])[:, gene] > 0).astype(np.float64)
+def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED, measured=None) -> dict:
+    m = _measured(data, gene, measured)
+    y = (_observed_counts(data, gene, m) > 0).astype(np.float64)
     folds = donor_folds(data["donor"], data["src"], k, seed)
+    empty_test_folds = sum(1 for test in folds if not (test & m).any())
     out = {}
-    for model in MODELS[:-1]:  # non-operator models: the original frozen path, unchanged
+    for model in MODELS[:-1]:  # non-operator models: the original frozen path, restricted to measured entries
         X = design_matrix(data, model)
         losses = []
         for test in folds:
-            train = ~test
+            train, test = (~test) & m, test & m
+            if not test.any():
+                continue
             beta = _logistic_fit(X[train], y[train])
             losses.append(_bernoulli_logloss(y[test], X[test] @ beta))
         loss = np.concatenate(losses)
@@ -298,7 +397,9 @@ def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED)
         pen = operator_penalty_vector(data, OPERATOR_MODEL, lam)
         losses, failed = [], 0
         for test in folds:
-            train = ~test
+            train, test = (~test) & m, test & m
+            if not test.any():
+                continue
             try:
                 beta = _logistic_fit(X[train], y[train], penalty=pen)
             except RuntimeError:
@@ -314,13 +415,15 @@ def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED)
             sens[str(lam)] = {"mean_logloss": float(loss.mean()), "n_test_predictions": int(len(loss)),
                               "converged": True, "failed_folds": 0}
     out[OPERATOR_MODEL] = sens[str(OPERATOR_LAMBDA_PRIMARY)]
-    return {"gene_position": int(gene), "prevalence": float(y.mean()), "models": out,
-            "operator_penalty_sensitivity": sens}
+    return {"gene_position": int(gene), "prevalence": float(y[m].mean()), "models": out,
+            "operator_penalty_sensitivity": sens, "n_measured": int(m.sum()),
+            "heldout_folds_without_measured_cells": int(empty_test_folds)}
 
 
-def evaluate_positive_gene(data: dict, gene: int, k: int = 3, seed: int = SEED) -> dict:
-    counts = np.asarray(data["counts_selected"])[:, gene].astype(np.float64)
-    pos = counts > 0
+def evaluate_positive_gene(data: dict, gene: int, k: int = 3, seed: int = SEED, measured=None) -> dict:
+    m = _measured(data, gene, measured)
+    counts = _observed_counts(data, gene, m).astype(np.float64)
+    pos = (counts > 0) & m
     folds = donor_folds(data["donor"], data["src"], k, seed)
 
     def run(X, penalty=None):
@@ -368,23 +471,25 @@ def operator_support_after_donor_centering(residual: np.ndarray, operator: np.nd
     return permutation_group_support(centered, operator, donor, seed, n_perm)
 
 
-def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: int = 99) -> dict:
-    counts = np.asarray(data["counts_selected"])[:, gene].astype(np.float64)
+def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: int = 99, measured=None) -> dict:
+    m = _measured(data, gene, measured)
+    counts = _observed_counts(data, gene, m).astype(np.float64)[m]   # measured entries only, from here on
     y = (counts > 0).astype(np.float64)
+    donor, src, op, dk = (np.asarray(data[k])[m] for k in ("donor", "src", "op", "dk"))
 
-    X_full = design_matrix(data, "depth_class_source_operator")
+    X_full = design_matrix(data, "depth_class_source_operator")[m]
     pen_full = operator_penalty_vector(data, OPERATOR_MODEL, OPERATOR_LAMBDA_PRIMARY)
     b_full = _logistic_fit(X_full, y, penalty=pen_full)
     det_full_resid = y - expit(X_full @ b_full)
-    X_noop = design_matrix(data, "depth_class_source")
+    X_noop = design_matrix(data, "depth_class_source")[m]
     b_noop = _logistic_fit(X_noop, y)
     det_noop_resid = y - expit(X_noop @ b_noop)
-    det_dc_resid = _center_within(det_full_resid, data["donor"])
+    det_dc_resid = _center_within(det_full_resid, donor)
 
     det = {
-        "donor": permutation_group_support(det_full_resid, data["donor"], data["src"], seed + 1, n_perm),
-        "operator": operator_support_after_donor_centering(det_noop_resid, data["op"], data["donor"], data["src"], seed + 2, n_perm),
-        "donor_class_increment": permutation_group_support(det_dc_resid, data["dk"], data["donor"], seed + 3, n_perm),
+        "donor": permutation_group_support(det_full_resid, donor, src, seed + 1, n_perm),
+        "operator": operator_support_after_donor_centering(det_noop_resid, op, donor, src, seed + 2, n_perm),
+        "donor_class_increment": permutation_group_support(det_dc_resid, dk, donor, seed + 3, n_perm),
     }
 
     pos = counts > 0
@@ -395,14 +500,14 @@ def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: i
         pos_full_resid = z - X_full[pos] @ bf
         bn, _ = _ridge_linear_fit(X_noop[pos], z)
         pos_noop_resid = z - X_noop[pos] @ bn
-        donor_pos = data["donor"][pos]
+        donor_pos = donor[pos]
         pos_dc_resid = _center_within(pos_full_resid, donor_pos)
         positive = {
-            "donor": permutation_group_support(pos_full_resid, donor_pos, data["src"][pos], seed + 11, n_perm),
-            "operator": operator_support_after_donor_centering(pos_noop_resid, data["op"][pos], donor_pos, data["src"][pos], seed + 12, n_perm),
-            "donor_class_increment": permutation_group_support(pos_dc_resid, data["dk"][pos], donor_pos, seed + 13, n_perm),
+            "donor": permutation_group_support(pos_full_resid, donor_pos, src[pos], seed + 11, n_perm),
+            "operator": operator_support_after_donor_centering(pos_noop_resid, op[pos], donor_pos, src[pos], seed + 12, n_perm),
+            "donor_class_increment": permutation_group_support(pos_dc_resid, dk[pos], donor_pos, seed + 13, n_perm),
         }
-    return {"gene_position": int(gene), "detection": det, "positive": positive}
+    return {"gene_position": int(gene), "detection": det, "positive": positive, "n_measured": int(m.sum())}
 
 
 def summarize(per_gene: list[dict], metric: str) -> dict:
@@ -465,11 +570,14 @@ def operator_increment_ruling(per_gene: list[dict], metric: str, higher_is_bette
 
 
 def build_parser() -> argparse.ArgumentParser:
-    """Command line. The operator penalty and its sensitivity set are frozen constants, deliberately not options."""
+    """Command line. The operator penalty and its sensitivity set are frozen constants, deliberately not options.
+    Structural support is mandatory: the replay never runs with unmeasured entries read as zeros."""
     ap = argparse.ArgumentParser()
     ap.add_argument("cache")
     ap.add_argument("receipt")
     ap.add_argument("out")
+    ap.add_argument("--support", required=True, help="structural support npz (build_v79_structural_support.py)")
+    ap.add_argument("--support-record", required=True, help="its JSON record, bound to the cache bytes")
     ap.add_argument("--genes", type=int, default=200)
     ap.add_argument("--support-genes", type=int, default=50)
     ap.add_argument("--permutations", type=int, default=99)
@@ -478,26 +586,64 @@ def build_parser() -> argparse.ArgumentParser:
     return ap
 
 
-def main() -> None:
-    a = build_parser().parse_args()
-    data = load_compact_cache(a.cache, a.receipt)
-    panel = select_panel_positions(data["prevalence_selected"], min(a.genes, data["counts_selected"].shape[1]), a.seed)
-    support_panel_local = select_panel_positions(data["prevalence_selected"][panel], min(a.support_genes, len(panel)), a.seed + 101)
+def _undefined_estimands(det: list[dict], pos: list[dict], support: list[dict]) -> list[dict]:
+    """Estimands that the masked data cannot define for a gene under the unchanged rules (reported, never dropped)."""
+    out = []
+    for g in det:
+        obs = g["measured_observations"]
+        if obs["measured_sources"] < 2:
+            out.append({"gene_position": g["gene_position"], "part": "detection", "estimand": "C_source",
+                        "reason": "measured in %d source(s)" % obs["measured_sources"]})
+        if g["heldout_folds_without_measured_cells"]:
+            out.append({"gene_position": g["gene_position"], "part": "detection", "estimand": "heldout_metric",
+                        "reason": "%d held-out fold(s) without measured cells" % g["heldout_folds_without_measured_cells"]})
+    for g, gd in zip(pos, det):
+        n_pos_src = gd["measured_observations"]["sources_with_positive"]
+        if n_pos_src < 2:
+            out.append({"gene_position": g["gene_position"], "part": "positive", "estimand": "C_source",
+                        "reason": "positives in %d source(s)" % n_pos_src})
+        if g["models"]["depth_linear"]["n_positive_test_predictions"] == 0:
+            out.append({"gene_position": g["gene_position"], "part": "positive", "estimand": "heldout_metric",
+                        "reason": "no positive held-out predictions"})
+    for g in support:
+        if g["positive"] is None:
+            out.append({"gene_position": g["gene_position"], "part": "positive", "estimand": "E_F_G_support",
+                        "reason": "too few measured positives for the residual permutation tests"})
+    return out
+
+
+def run_replay(data: dict, support: dict, genes: int = 200, support_genes: int = 50, permutations: int = 99,
+               folds: int = 3, seed: int = SEED) -> dict:
+    """The masked replay. Panels, folds, seeds, models, metrics and permutation logic are exactly those of V3; only
+    structurally unmeasured entries are removed from every fit, metric and permutation test."""
+    check_measured_counts(data, support)
+    # Panel selection uses the cache's frozen all-cell prevalence covariate, unchanged from V3, so the masked replay
+    # evaluates exactly the same genes; measured-cell prevalence is reported per gene.
+    panel = select_panel_positions(data["prevalence_selected"], min(genes, data["counts_selected"].shape[1]), seed)
+    support_panel_local = select_panel_positions(data["prevalence_selected"][panel], min(support_genes, len(panel)),
+                                                 seed + 101)
     support_panel = panel[support_panel_local]
+    mask = {int(g): gene_measured_mask(data, support, int(g)) for g in panel.tolist()}
 
     det, pos = [], []
     for g in panel.tolist():
-        det.append(evaluate_detection_gene(data, g, a.folds, a.seed))
-        pos.append(evaluate_positive_gene(data, g, a.folds, a.seed))
-    support = [residual_support_for_gene(data, int(g), a.seed + int(i) * 100, a.permutations)
-               for i, g in enumerate(support_panel.tolist())]
+        rec_d = evaluate_detection_gene(data, g, folds, seed, measured=mask[g])
+        rec_d["measured_observations"] = measured_observation_table(data, g, mask[g])
+        det.append(rec_d)
+        pos.append(evaluate_positive_gene(data, g, folds, seed, measured=mask[g]))
+    sup = [residual_support_for_gene(data, int(g), seed + int(i) * 100, permutations, measured=mask[int(g)])
+           for i, g in enumerate(support_panel.tolist())]
 
     operator_robustness = {
-        "detection": operator_increment_ruling(det, "mean_logloss", higher_is_better=False, seed=a.seed),
-        "positive_lognormal": operator_increment_ruling(pos, "mean_lpd", higher_is_better=True, seed=a.seed + 1),
+        "detection": operator_increment_ruling(det, "mean_logloss", higher_is_better=False, seed=seed),
+        "positive_lognormal": operator_increment_ruling(pos, "mean_lpd", higher_is_better=True, seed=seed + 1),
     }
-    rec = {
-        "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3",
+    n_cells = int(len(data["donor"]))
+    unmeasured_panel = int(sum((~mask[int(g)]).sum() for g in panel.tolist()))
+    unmeasured_support = int(sum((~mask[int(g)]).sum() for g in support_panel.tolist()))
+    srec = support["record"]
+    return {
+        "schema": REPLAY_SCHEMA,
         "operator_penalty": {
             "decision": "PR #280 controller ruling 2026-10-11T19:40:47Z (before any replay metric)",
             "primary_lambda": OPERATOR_LAMBDA_PRIMARY, "sensitivity_set": list(OPERATOR_LAMBDA_SET),
@@ -511,30 +657,62 @@ def main() -> None:
             "same at every lambda in the frozen set"),
         "donor_and_donor_class_support_lambda": OPERATOR_LAMBDA_PRIMARY,
         "status": "DEVELOPMENT_ONLY__NOT_CONFIRMATORY__NOT_SYNTHETIC_CONSUMABLE",
-        "cache_sha256": sha256(Path(a.cache)), "receipt_sha256": sha256(Path(a.receipt)),
-        "n_cells": int(len(data["donor"])), "n_donors": int(len(np.unique(data["donor"]))),
+        "structural_support": {
+            "ruling": "PR #286 controller ruling 6113874774",
+            "support_npz_sha256": support["npz_sha256"], "support_record_sha256": support["record_sha256"],
+            "support_record": {k: v for k, v in srec.items() if k != "operator_levels"},
+            "semantics": ("measured zero = detection y=0; structurally unmeasured = outside every likelihood, metric "
+                          "and permutation test"),
+            "resolution": "operator (= Stage81A2R matrix) x gene",
+            "entries_in_replay_panel": n_cells * int(len(panel)),
+            "entries_unmeasured_in_replay_panel": unmeasured_panel,
+            "fraction_unmeasured_in_replay_panel": float(unmeasured_panel / (n_cells * len(panel))),
+            "entries_in_support_panel": n_cells * int(len(support_panel)),
+            "entries_unmeasured_in_support_panel": unmeasured_support,
+            "fraction_unmeasured_in_support_panel": float(unmeasured_support / (n_cells * len(support_panel))),
+        },
+        "replay_genes_affected_by_support": sorted(int(g) for g in panel.tolist() if not mask[int(g)].all()),
+        "support_genes_affected_by_support": sorted(int(g) for g in support_panel.tolist() if not mask[int(g)].all()),
+        "undefined_estimands": _undefined_estimands(det, pos, sup),
+        "panel_selection": ("unchanged from V3: identity-blind prevalence-balanced selection on the cache's frozen "
+                            "all-cell prevalence_selected, so the masked replay evaluates the same genes"),
+        "n_cells": n_cells, "n_donors": int(len(np.unique(data["donor"]))),
         "n_cache_genes": int(data["counts_selected"].shape[1]), "n_replay_genes": int(len(panel)),
-        "n_support_genes": int(len(support_panel)), "folds": int(a.folds), "seed": int(a.seed),
-        "permutations": int(a.permutations), "models": list(MODELS), "ridge": RIDGE,
+        "n_support_genes": int(len(support_panel)), "folds": int(folds), "seed": int(seed),
+        "permutations": int(permutations), "models": list(MODELS), "ridge": RIDGE,
         "operator_encoding": "REFERENCE_CODED_WITHIN_SOURCE__FULL_RANK_WITH_SOURCE_MAIN_EFFECT",
         "operator_support_null": "DONOR_CENTERED_RESIDUALS__PERMUTED_WITHIN_DONOR",
         "panel_positions_internal": panel.tolist(), "support_panel_positions_internal": support_panel.tolist(),
-        "panel_prevalence_range": [float(data["prevalence_selected"][panel].min()), float(data["prevalence_selected"][panel].max())],
+        "panel_prevalence_range": [float(data["prevalence_selected"][panel].min()),
+                                   float(data["prevalence_selected"][panel].max())],
         "detection_summary": summarize(det, "mean_logloss"),
         "positive_lognormal_summary": summarize(pos, "mean_lpd"),
-        "random_effect_support": {"detection": summarize_support(support, "detection"),
-                                  "positive": summarize_support(support, "positive")},
-        "per_gene_detection": det, "per_gene_positive": pos, "per_gene_random_effect_support": support,
+        "random_effect_support": {"detection": summarize_support(sup, "detection"),
+                                  "positive": summarize_support(sup, "positive")},
+        "per_gene_detection": det, "per_gene_positive": pos, "per_gene_random_effect_support": sup,
         "boundaries": {"bayesian_posterior_inference": False, "confirmatory_qualification": False,
-                       "factorial_execution": False, "training_authorized": False},
-        "terminal": ("EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__FROZEN_SENSITIVITY_0p25_1_4__"
-                     "DEVELOPMENT_ONLY__CONTROLLER_MODEL_FREEZE_REQUIRED__BAYESIAN_CONFIRMATION_OFF__TRAINING_OFF")
+                       "factorial_execution": False, "training_authorized": False,
+                       "qualification_worlds_generated": False},
+        "terminal": REPLAY_TERMINAL,
     }
-    out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
+
+
+def main() -> None:
+    a = build_parser().parse_args()
+    data = load_compact_cache(a.cache, a.receipt)
+    support = load_structural_support(a.support, a.support_record, data, sha256(Path(a.cache)))
+    rec = run_replay(data, support, a.genes, a.support_genes, a.permutations, a.folds, a.seed)
+    rec["cache_sha256"] = sha256(Path(a.cache))
+    rec["receipt_sha256"] = sha256(Path(a.receipt))
+    out = Path(a.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rec, indent=1, allow_nan=False) + "\n", encoding="utf-8")
-    print(json.dumps({"out": str(out), "n_cells": rec["n_cells"], "n_replay_genes": len(panel),
-                      "n_support_genes": len(support_panel), "detection": rec["detection_summary"],
-                      "positive": rec["positive_lognormal_summary"], "support": rec["random_effect_support"]}))
+    print(json.dumps({"out": str(out), "n_cells": rec["n_cells"], "n_replay_genes": rec["n_replay_genes"],
+                      "n_support_genes": rec["n_support_genes"], "detection": rec["detection_summary"],
+                      "positive": rec["positive_lognormal_summary"], "support": rec["random_effect_support"],
+                      "unmeasured_fraction_replay_panel":
+                          rec["structural_support"]["fraction_unmeasured_in_replay_panel"],
+                      "undefined_estimands": len(rec["undefined_estimands"])}))
 
 
 if __name__ == "__main__":
