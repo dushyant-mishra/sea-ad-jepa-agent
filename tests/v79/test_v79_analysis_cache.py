@@ -1,5 +1,5 @@
 """The compact analysis cache equals the current loader exactly (gene sample, selected counts, library, detected
-features) and refuses a shard whose bytes differ from the authority. Synthetic shards only (no real counts)."""
+features and design) and refuses a shard whose bytes differ from the authority. Synthetic shards only."""
 from __future__ import annotations
 
 import hashlib
@@ -47,11 +47,52 @@ def make_world(tmp: Path, seed=0):
 
 def test_cache_equals_the_current_loader(tmp_path):
     root, bridge, authority = make_world(tmp_path)
+    historical_design = DA.design_indices(FW.load_cell_design(root, bridge))
     for g in (10, 20):
         arrays, meta = C.build(root, bridge, authority, g)
         checks = C.verify_against_loader(arrays, root, bridge, g)
         assert all(checks.values()) and meta["shard_files_verified"] == 6
         assert arrays["counts_selected"].shape == (210, g) and len(arrays["gene_address_index"]) == g
+        for name, old_name in (("cls", "cls"), ("src", "src"), ("op", "op"), ("donor", "donor"), ("dk", "dk"),
+                               ("log_lib_centered", "log_lib_centered")):
+            assert np.array_equal(arrays[name], historical_design[old_name])
+
+
+def test_build_never_assembles_a_global_sparse_matrix(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+
+    def forbidden_vstack(*args, **kwargs):
+        raise AssertionError("streaming cache must not scipy.sparse.vstack all shards")
+
+    monkeypatch.setattr(sparse, "vstack", forbidden_vstack)
+    arrays, meta = C.build(root, bridge, authority, 10)
+    assert arrays["counts_selected"].shape == (210, 10)
+    assert meta["streaming_passes"] == 2
+    assert meta["max_count_shards_resident"] == 1
+
+
+def test_build_does_not_reread_metadata_after_authentication(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+
+    def forbidden_design(*args, **kwargs):
+        raise AssertionError("build must derive design from the authenticated metadata bytes already read")
+
+    monkeypatch.setattr(FW, "load_cell_design", forbidden_design)
+    arrays, meta = C.build(root, bridge, authority, 10)
+    assert len(arrays["donor"]) == 210
+    assert meta["metadata_from_authenticated_bytes"] is True
+
+
+def test_verification_does_not_reload_the_global_matrix(tmp_path, monkeypatch):
+    root, bridge, authority = make_world(tmp_path)
+    arrays, _ = C.build(root, bridge, authority, 10)
+
+    def forbidden_loader(*args, **kwargs):
+        raise AssertionError("verification must stream shards, not DA.load_counts/vstack the full matrix")
+
+    monkeypatch.setattr(DA, "load_counts", forbidden_loader)
+    checks = C.verify_against_loader(arrays, root, bridge, 10)
+    assert all(checks.values())
 
 
 def test_a_tampered_shard_is_refused(tmp_path):
