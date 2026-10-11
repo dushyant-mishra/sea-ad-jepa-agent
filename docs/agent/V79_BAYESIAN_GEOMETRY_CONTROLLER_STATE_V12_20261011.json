@@ -1,0 +1,70 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V12",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "canonical_handoff_pr": 261,
+  "canonical_audit_pr": 260,
+  "contract_finalization_pr": 289,
+  "world_generator_pr": 291,
+  "controller_contract_ratification_comment": 6114866796,
+  "controller_pairing_hold_comment": 6114906562,
+  "final_contract": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+    "sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+    "status": "RATIFIED_BUT_WORLD_REALIZATION_REQUIRES_PROSPECTIVE_PAIRING_AMENDMENT"
+  },
+  "world_generator_engineering": {
+    "pr": 291,
+    "branch": "feat/v79-v2-core-world-generator-20261011",
+    "red_workflow": 38182827136,
+    "red_job": 114598825335,
+    "red_result": "expected missing generator module",
+    "firewall_layer_green_pending_record": true,
+    "realized_worlds": 0,
+    "qualification_fits": 0
+  },
+  "pairing_defect": {
+    "finding": "Q11-minus-Q10 was intended to isolate omitted operator structure, but the frozen payload seeds all planting/noise by world_index; Q10=10 and Q11=11 would independently redraw core truth/noise under literal implementation",
+    "why_material": "same design alone is insufficient for a paired omitted-operator contrast; independently redrawn biology/donor/noise would confound Q11-minus-Q10",
+    "outcome_exposure": "NONE__NO_WORLD_BYTES_OR_TRUTH_TABLES_GENERATED",
+    "classification": "PROSPECTIVE_CONTRACT_SEMANTICS_CORRECTION__NOT_OUTCOME_DRIVEN_RETUNING"
+  },
+  "controller_pairing_rule": {
+    "q11_inherits_q10": [
+      "design",
+      "structural_support_mask",
+      "all non-operator planted core parameters",
+      "donor effects and shared donor factor",
+      "factor-loading assignment",
+      "base detection observation noise",
+      "base positive observation noise"
+    ],
+    "q11_differs_only_by": [
+      "operator_offsets_detection_stream_22",
+      "operator_offsets_positive_stream_23"
+    ],
+    "operator_offsets": "centred within source; magnitude remains 0.5 x gene donor SD",
+    "common_random_numbers": true,
+    "q11_gate_status": "ALL_HARD_FAIL_UNCHANGED"
+  },
+  "required_before_generator_resume": [
+    "create immutable V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json",
+    "bind Contract V2 SHA and immutable payload SHA",
+    "bind controller comment 6114906562",
+    "record worlds_generated=0 and qualification_fits=0",
+    "RED/GREEN tests proving amendment required",
+    "tests proving Q10/Q11 non-operator truth hashes identical and only operator offset fields differ",
+    "controller audit and ratification of amendment"
+  ],
+  "authorization": {
+    "world_generator_engineering_beyond_pairing_amendment": false,
+    "realized_world_generation": false,
+    "benchmark": false,
+    "qualification_fitting": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal_state": "WORLD_GENERATOR_ENGINEERING_HOLD__Q10_Q11_PAIRING_AMENDMENT_REQUIRED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
