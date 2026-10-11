@@ -1,0 +1,78 @@
+# RED_04 G7 atomic attempt marker, tests at working tree over inherited production code d8fa3024e06e265b77353c8382453e7ccbf2350f
+# utc: 2026-10-11T15:14:10Z
+....FF.                                                                  [100%]
+================================== FAILURES ===================================
+___________ test_g7_attempt_concurrent_start_has_exactly_one_winner ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001366DC2F5E0>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_concurrent_sta0')
+
+    def test_g7_attempt_concurrent_start_has_exactly_one_winner(monkeypatch, tmp_path):
+        m = load_module()
+        out = tmp_path / "G7_RECEIPT.json"
+        trace = {"preflight_result_sha256": "p", "authorization_sha256": "a"}
+        marker = m.g7_attempt_marker_path(out)
+    
+        original_write_text = Path.write_text
+        barrier = threading.Barrier(2)
+    
+        def synchronized_write_text(self, *args, **kwargs):
+            if self == marker:
+                barrier.wait(timeout=5)
+            return original_write_text(self, *args, **kwargs)
+    
+        monkeypatch.setattr(Path, "write_text", synchronized_write_text)
+    
+        successes = []
+        failures = []
+    
+        def start_attempt():
+            try:
+                successes.append(m.begin_g7_attempt(out, trace, "g6sha"))
+            except Exception as exc:
+                failures.append(exc)
+    
+        threads = [threading.Thread(target=start_attempt) for _ in range(2)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join(timeout=10)
+    
+        assert all(not thread.is_alive() for thread in threads)
+>       assert len(successes) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_concurrent_sta0/G7_RECEIPT...pData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_concurrent_sta0/G7_RECEIPT.json.STARTED_NOT_A_PASS.json')])
+
+tests\v5\test_td_g7_counterpart_attempt_custody.py:115: AssertionError
+_____ test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001366DCCF640>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_forced_simulta0')
+
+    def test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner(monkeypatch, tmp_path):
+        m = load_module()
+        out = tmp_path / "G7_RECEIPT.json"
+        marker = m.g7_attempt_marker_path(out)
+        _force_simultaneous_marker_creation(monkeypatch, marker)
+        successes, failures = _race(lambda: m.begin_g7_attempt(out, {"t": "x"}, "g6sha"))
+>       assert len(successes) == 1 and len(failures) == 1
+E       AssertionError: assert (2 == 1)
+E        +  where 2 = len([WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_forced_simulta0/G7_RECEIPT...pData/Local/Temp/pytest-of-dushy/pytest-1198/test_g7_attempt_forced_simulta0/G7_RECEIPT.json.STARTED_NOT_A_PASS.json')])
+
+tests\v5\test_td_g7_counterpart_attempt_custody.py:169: AssertionError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+tests/v5/test_td_g7_counterpart_attempt_custody.py::test_physical_h5_auth_failure_prevents_s174_count_loader
+tests/v5/test_td_g7_counterpart_attempt_custody.py::test_physical_h5_auth_failure_prevents_s174_count_loader
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_concurrent_start_has_exactly_one_winner
+FAILED tests/v5/test_td_g7_counterpart_attempt_custody.py::test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner
+2 failed, 5 passed, 3 warnings in 6.08s
+# exit=1
