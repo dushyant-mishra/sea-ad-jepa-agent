@@ -6,11 +6,13 @@ on:
       - 'src/sea_ad_jepa/v4/foundation_qualification_v4.py'
       - 'src/sea_ad_jepa/v4/foundation_sampling.py'
       - 'src/sea_ad_jepa/v4/foundation_resource_guard.py'
+      - 'src/sea_ad_jepa/v4/foundation_current_transfer_v1.py'
       - 'src/sea_ad_jepa/v4/observation_process.py'
       - 'src/sea_ad_jepa/v4/foundation_state_stability.py'
       - 'scripts/v4/requalify_foundation_representation_v4.py'
       - 'tests/v4/test_foundation_representation_qualification_v4.py'
       - 'tests/v4/test_foundation_representation_qualification_v4_cli.py'
+      - 'tests/v4/test_foundation_current_transfer_v1.py'
       - '.github/workflows/foundation-representation-qualification-v4.yml'
   workflow_dispatch:
 
@@ -30,3 +32,4 @@ jobs:
           python -m pytest -q
           tests/v4/test_foundation_representation_qualification_v4.py
           tests/v4/test_foundation_representation_qualification_v4_cli.py
+          tests/v4/test_foundation_current_transfer_v1.py
