@@ -29,7 +29,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Exact bytes on checkout
-        run: git config --global core.autocrlf false
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
