@@ -2,9 +2,9 @@
 
 Gate-specific executors remain responsible for estimands and decision rules. This
 module authenticates their output envelope and binds it to the exact V2
-prefreeze, execution context, coverage audit, frozen executor, frozen estimand,
-and frozen decision rule before a candidate manifest is constructed. It opens no
-biology and creates no authority.
+prefreeze, execution context, coverage audit, frozen gate-governance registry,
+and its executor/estimand/decision-rule identities before a candidate manifest
+is constructed. It opens no biology and creates no authority.
 """
 from __future__ import annotations
 
@@ -12,6 +12,8 @@ import hashlib
 import json
 
 import td_target_tournament_adjudicator_v2 as a2
+import td_target_tournament_gate_registry_v2 as gr2
+import td_target_tournament_prefreeze_v2 as p2
 
 
 class GateEvidenceV2Error(ValueError):
@@ -100,21 +102,22 @@ def validate_gate_evidence_artifact_v2(
         raise GateEvidenceV2Error('gate-evidence estimand binding mismatch')
     if artifact.get('decision_rule_sha256') != expected_decision_rule_sha256:
         raise GateEvidenceV2Error('gate-evidence decision-rule binding mismatch')
-    for key in ('evidence_payload_sha256',):
-        if not _is_sha256(artifact.get(key)):
-            raise GateEvidenceV2Error(f'gate-evidence {key} must be lowercase SHA-256')
+    if not _is_sha256(artifact.get('evidence_payload_sha256')):
+        raise GateEvidenceV2Error('gate-evidence evidence_payload_sha256 must be lowercase SHA-256')
     if artifact.get('status') not in ALLOWED_STATUS:
         raise GateEvidenceV2Error('gate-evidence status must be PASS, FAIL, or NOT_ESTIMABLE')
     _validate_authority(artifact.get('authority'))
     return canonical_sha256(artifact)
 
 
-def _validate_expected_gate_map(value, required_gates, label):
+def _validate_coverage_map(value, required_gates):
     if not isinstance(value, dict) or set(value) != set(required_gates):
-        raise GateEvidenceV2Error(f'{label} must cover the exact required gate set')
+        raise GateEvidenceV2Error('coverage-audit SHA map must cover the exact required gate set')
     for gate in required_gates:
         if not _is_sha256(value[gate]):
-            raise GateEvidenceV2Error(f'{label}.{gate} must be lowercase SHA-256')
+            raise GateEvidenceV2Error(
+                f'coverage-audit SHA map.{gate} must be lowercase SHA-256'
+            )
 
 
 def build_candidate_evidence_manifest_v2(
@@ -123,58 +126,49 @@ def build_candidate_evidence_manifest_v2(
     required_gates,
     gate_artifacts,
     expected_prefreeze_manifest_sha256,
-    expected_execution_context_sha256,
+    execution_context,
+    gate_governance_registry,
+    tournament_contract,
     expected_coverage_audit_sha256_by_gate,
-    expected_qualified_gate_executor_sha256_by_gate,
-    expected_estimand_sha256_by_gate,
-    expected_decision_rule_sha256_by_gate,
 ):
     if not isinstance(candidate_id, str) or not candidate_id:
         raise GateEvidenceV2Error('candidate_id must be nonempty string')
-    if (
-        not isinstance(required_gates, list)
-        or not required_gates
-        or len(required_gates) != len(set(required_gates))
-        or any(not isinstance(gate, str) or not gate for gate in required_gates)
-    ):
-        raise GateEvidenceV2Error('required_gates must be a nonempty unique string list')
     if not _is_sha256(expected_prefreeze_manifest_sha256):
         raise GateEvidenceV2Error('expected prefreeze SHA must be lowercase SHA-256')
-    if not _is_sha256(expected_execution_context_sha256):
-        raise GateEvidenceV2Error('expected execution-context SHA must be lowercase SHA-256')
-    if not isinstance(gate_artifacts, dict) or set(gate_artifacts) != set(required_gates):
-        raise GateEvidenceV2Error('gate_artifacts must cover the exact required gate set')
 
-    _validate_expected_gate_map(
-        expected_coverage_audit_sha256_by_gate, required_gates, 'coverage-audit SHA map'
-    )
-    _validate_expected_gate_map(
-        expected_qualified_gate_executor_sha256_by_gate,
-        required_gates,
-        'qualified gate-executor SHA map',
-    )
-    _validate_expected_gate_map(
-        expected_estimand_sha256_by_gate, required_gates, 'estimand SHA map'
-    )
-    _validate_expected_gate_map(
-        expected_decision_rule_sha256_by_gate, required_gates, 'decision-rule SHA map'
-    )
+    try:
+        p2.canonical_execution_context_sha256(execution_context)
+        bindings = gr2.bind_registry_to_execution_context(
+            gate_governance_registry, tournament_contract, execution_context
+        )
+    except (p2.PrefreezeV2Error, gr2.GateRegistryV2Error) as exc:
+        raise GateEvidenceV2Error(str(exc)) from exc
 
+    if candidate_id not in tournament_contract.get('candidate_gate_sets', {}):
+        raise GateEvidenceV2Error('candidate absent from frozen V2 tournament contract')
+    frozen_gates = list(tournament_contract['candidate_gate_sets'][candidate_id])
+    if required_gates != frozen_gates:
+        raise GateEvidenceV2Error('required_gates must exactly equal frozen candidate gate set')
+    if not isinstance(gate_artifacts, dict) or set(gate_artifacts) != set(frozen_gates):
+        raise GateEvidenceV2Error('gate_artifacts must cover the exact frozen candidate gate set')
+    _validate_coverage_map(expected_coverage_audit_sha256_by_gate, frozen_gates)
+
+    expected_context_sha = p2.canonical_execution_context_sha256(execution_context)
+    candidate_bindings = bindings[candidate_id]
     records = {}
-    for gate in required_gates:
+    for gate in frozen_gates:
+        bound = candidate_bindings[gate]
         artifact = gate_artifacts[gate]
         artifact_sha = validate_gate_evidence_artifact_v2(
             artifact,
             expected_candidate_id=candidate_id,
             expected_gate_id=gate,
             expected_prefreeze_manifest_sha256=expected_prefreeze_manifest_sha256,
-            expected_execution_context_sha256=expected_execution_context_sha256,
+            expected_execution_context_sha256=expected_context_sha,
             expected_coverage_audit_sha256=expected_coverage_audit_sha256_by_gate[gate],
-            expected_qualified_gate_executor_sha256=(
-                expected_qualified_gate_executor_sha256_by_gate[gate]
-            ),
-            expected_estimand_sha256=expected_estimand_sha256_by_gate[gate],
-            expected_decision_rule_sha256=expected_decision_rule_sha256_by_gate[gate],
+            expected_qualified_gate_executor_sha256=bound['qualified_gate_executor_sha256'],
+            expected_estimand_sha256=bound['estimand_sha256'],
+            expected_decision_rule_sha256=bound['decision_rule_sha256'],
         )
         records[gate] = {
             'status': artifact['status'],
