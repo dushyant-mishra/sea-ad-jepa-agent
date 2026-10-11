@@ -204,3 +204,37 @@ def test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent
         else:
             raise AssertionError("a spent G6 namespace must never start again")
     assert marker.read_bytes() == raw
+
+
+def test_nph_historical_row_rejects_duplicate_address_indices_before_materialization():
+    m = load_module()
+    data = np.asarray([1.25, 2.5, 3.75], dtype=np.float32)
+    indptr = np.asarray([0, 3], dtype=np.int64)
+    # duplicate inside the replay set, and duplicate outside it (rejected before any dictionary materialization)
+    for indices, replay in (([5, 7, 5], {5, 7}), ([5, 9, 9], {5})):
+        try:
+            m.nph_historical_row(0, data, np.asarray(indices, dtype=np.int64), indptr, replay)
+        except RuntimeError as e:
+            assert "duplicate" in str(e).lower() and "nph" in str(e).lower()
+        else:
+            raise AssertionError(f"duplicate NPH52 CSR address indices must fail closed: {indices}")
+
+
+def test_nph_historical_row_passes_historical_values_through_unmodified():
+    m = load_module()
+    data = np.asarray([1.25, 0.0, 3.75, 0.1], dtype=np.float32)
+    indices = np.asarray([5, 6, 7, 8], dtype=np.int64)
+    indptr = np.asarray([0, 4], dtype=np.int64)
+    row = m.nph_historical_row(0, data, indices, indptr, {5, 6, 7})
+    assert row == {5: float(np.float32(1.25)), 7: float(np.float32(3.75))}
+
+
+def test_g6_corrected_row_rejects_duplicate_physical_column_indices():
+    m = load_module()
+    # column 2 is duplicated and unmapped: the inherited decoder silently double-counts it into the library total
+    try:
+        m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower()
+    else:
+        raise AssertionError("duplicate physical H5AD column indices must fail closed in G6")

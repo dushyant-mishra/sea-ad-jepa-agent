@@ -293,3 +293,13 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
 def test_v2_schema_is_distinct_from_historical_v1():
     m = load_module()
     assert m.G7_SCHEMA == "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2"
+
+
+def test_g7_corrected_row_rejects_duplicate_physical_column_indices():
+    m = load_module()
+    try:
+        m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower()
+    else:
+        raise AssertionError("duplicate physical H5AD column indices must fail closed in G7")
