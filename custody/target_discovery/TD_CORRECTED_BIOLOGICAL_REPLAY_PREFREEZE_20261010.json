@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_V2",
+  "schema": "JEPA_TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_V3",
   "date": "2026-10-10",
   "status": "PREFROZEN__NO_EXECUTION_AUTHORITY__NO_TARGET_AUTHORITY__NO_TRAINING_AUTHORITY",
   "purpose": "Prospective audit replay of already-opened historical TD56, TD57B, TD57C and TD59 on the corrected Sample-A value surface after separately reviewed G6/G7 integrity evidence.",
@@ -14,7 +14,9 @@
   },
   "executor_provenance": {
     "ledger": "custody/target_discovery/TD_CORRECTED_REPLAY_EXECUTOR_PROVENANCE_LEDGER_20261010.json",
+    "td57c_recovery_receipt": "custody/target_discovery/TD57C_EXECUTOR_RECOVERY_RECEIPT_20261010.json",
     "td59_addendum": "docs/superpowers/specs/2026-10-10-td59-replay-provenance-addendum.md",
+    "authenticated_td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
     "rule": "No corrected replay adapter may be implemented from prose when exact historical executable bytes or a separately validated replay-equivalence closure is the controlling reference."
   },
   "required_before_replay": [
@@ -23,7 +25,7 @@
     "G6 exact PASS_TD_G6_SOURCE_LIBRARY_EXACT",
     "G7 exact PASS_TD_G7_S174_EXACT_OVERLAP",
     "second separate explicit owner authorization for corrected biological replay",
-    "stage-specific historical executor provenance/equivalence requirements in the executor-provenance ledger satisfied"
+    "stage-specific historical executor equivalence requirements in the executor-provenance ledger satisfied"
   ],
   "sample_A": {
     "label": "A_NATURAL_MIXTURE",
@@ -45,14 +47,14 @@
         "NPH52": {"observed": 0.8007195, "null_p95": 0.5990585},
         "SEA_AD": {"observed": 0.8782250, "null_p95": 0.7526606}
       },
-      "executor_provenance_status": "REQUIRES_EXACT_PACKAGE_RECOVERY_OR_SEPARATE_EQUIVALENCE_CLOSURE",
+      "executor_provenance_status": "PRIMARY_EXECUTOR_BYTES_RECOVERED_FROM_AUTHENTICATED_TD41_TD58_ARCHIVE",
       "outcome_classification_only": ["QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED", "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE"]
     },
     {
       "stage": "TD57B",
       "historical_implementation_freeze": "ae18a2224cecb73daa3e4c748195dbde7c8f6b4f",
       "local_decision_executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
-      "executor_provenance_status": "ORIGINAL_LOGIC_GIT_PRESERVED_AND_LOCAL_EXECUTOR_SHA_BOUND",
+      "executor_provenance_status": "ORIGINAL_EXECUTOR_BYTES_RECOVERED_AND_GIT_LOGIC_PRESERVED",
       "full_survival_cases": 24,
       "historical_terminal_pass": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT",
       "historical_terminal_fail": "NO_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER__TD57B_FAIL",
@@ -62,7 +64,7 @@
       "stage": "TD57C",
       "historical_status": "FAILED_PROSPECTIVELY",
       "local_decision_executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
-      "executor_provenance_status": "EXACT_SHA_BOUND__RECOVER_FROM_AUTHENTICATED_SEP8_PACKAGE_BEFORE_ADAPTER_IMPLEMENTATION",
+      "executor_provenance_status": "PASS_EXACT_ORIGINAL_EXECUTOR_BYTES_RECOVERED_FROM_AUTHENTICATED_TD41_TD58_ARCHIVE",
       "historical_terminal_fail": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
       "historical_terminal_pass": "TD57C_THREE_VIEW_FINE_LOCAL_RELATIONAL_GEOMETRY_SURVIVES__FIXED_CONCORDANCE_LOCAL_MINING_ADMISSIBLE_FOR_RELATIONAL_OBJECTIVE_QUALIFICATION",
       "selector_fraction": "nearest_one_third",
