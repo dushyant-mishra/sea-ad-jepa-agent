@@ -1,0 +1,141 @@
+{
+  "schema": "SYNTHETIC_V79_TAKEOVER_ARTIFACT_INDEX_V2",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery": "SEPARATE",
+  "canonical": {
+    "audit_pr": 260,
+    "handoff_pr": 261,
+    "handoff_doc": "docs/agent/SYNTHETIC_V79_NEW_AGENT_TAKEOVER_HANDOFF_20261011.md",
+    "controller_state": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_20261011.json",
+    "macha_contract": "docs/agent/SYNTHETIC_V79_MACHA_V2_CORE_QUALIFICATION_CONTRACT_20261011.md"
+  },
+  "historical_bayesian": {
+    "macha_source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+    "last_audited_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
+    "detection_v2_status": "NOT_QUALIFIED",
+    "old_gaussian_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal_status": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb_status": "UNADJUDICATED__METHODOLOGICAL_HOLD"
+  },
+  "s174_authority": {
+    "local_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "authority_file": "results/v79/V79_S174_SHARD_AUTHORITY_V1.json",
+    "authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "bridge_file": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "n_cells": 4726,
+    "n_donors": 149,
+    "n_operators": 42,
+    "n_sources": 3,
+    "n_broad_classes": 3,
+    "verified_files": 84,
+    "missing": 0,
+    "extra": 0
+  },
+  "g500": {
+    "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "bytes": 1071307,
+    "n_genes": 500,
+    "contains_real_counts": true,
+    "committed": false,
+    "reuse_without_rebuild": true
+  },
+  "pr279_streaming_and_replay_code": {
+    "pr": 279,
+    "branch": "fix/v79-streaming-analysis-cache-20261011",
+    "verified_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+    "execution_snapshot": "615b55eb03b95630484b18d47de0ef7340368d37",
+    "workflow_run": 38166126568,
+    "workflow_job": 114548954034,
+    "tests": "15 passed in 1.27 s",
+    "files": [
+      ".github/workflows/v79-streaming-analysis-cache.yml",
+      "scripts/v79/build_v79_analysis_cache.py",
+      "scripts/v79/run_v79_s174_structure_replay.py",
+      "scripts/v79/run_v79_scheduler.py",
+      "tests/v79/test_v79_analysis_cache.py",
+      "tests/v79/test_v79_s174_structure_replay.py",
+      "tests/v79/test_v79_scheduler_resource_defaults.py",
+      "docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md"
+    ]
+  },
+  "pr280_first_failed_replay": {
+    "pr": 280,
+    "head": "2f4b77e7290397130d681c47b82337115e9e9585",
+    "files": [
+      "docs/agent/V79_S174_STRUCTURE_REPLAY_EXECUTION_RECORD_20261011.md",
+      "results/v79/development/s174_structure_replay/V79_S174_REPLAY_EXECUTION_PROVENANCE.json",
+      "results/v79/development/s174_structure_replay/V79_ANALYSIS_CACHE_G500_RECEIPT.json",
+      "results/v79/development/s174_structure_replay/V79_G500_PANEL_PREVALENCE_COVERAGE.json",
+      "results/v79/development/s174_structure_replay/diagnose_replay_convergence.py",
+      "results/v79/development/s174_structure_replay/V79_S174_REPLAY_CONVERGENCE_DIAGNOSIS.json",
+      "results/v79/development/s174_structure_replay/replay.stdout.txt",
+      "results/v79/development/s174_structure_replay/replay.stderr.txt"
+    ],
+    "status": "FAILED_CLOSED_BEFORE_METRICS__OPERATOR_QUASI_SEPARATION"
+  },
+  "pr283_operator_repair": {
+    "pr": 283,
+    "head": "02fb78c36473d9863ae9482619133c052ba4a480",
+    "workflow_run": 38170751947,
+    "workflow_job": 114562666364,
+    "tests": "22 passed",
+    "important_files": [
+      "scripts/v79/run_v79_s174_structure_replay.py",
+      "tests/v79/test_v79_s174_structure_replay.py",
+      "docs/agent/V79_S174_OPERATOR_PENALTY_REPAIR_20261011/RED_operator_penalty.txt",
+      "docs/agent/V79_S174_OPERATOR_PENALTY_REPAIR_20261011/GREEN_operator_penalty.txt"
+    ],
+    "primary_lambda": 1.0,
+    "sensitivity_lambdas": [0.25, 1.0, 4.0]
+  },
+  "pr285_completed_replay": {
+    "pr": 285,
+    "head": "2c230a70d9151e27b14ec2788d1309eb2ac81468",
+    "files": [
+      "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md",
+      "results/v79/development/s174_structure_replay_v3/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3.json",
+      "results/v79/development/s174_structure_replay_v3/V79_S174_REPLAY_PER_GENE_NESTED_DELTAS.json",
+      "results/v79/development/s174_structure_replay_v3/replay.stdout.txt",
+      "results/v79/development/s174_structure_replay_v3/replay.stderr.txt"
+    ],
+    "controller_freeze_comment_id": 6113335756,
+    "A": "QUADRATIC_DEPTH_SUPPORTED_BOTH",
+    "B": "BROAD_CLASS_SUPPORTED_BOTH",
+    "C": "SOURCE_SUPPORTED_DETECTION__WEAK_POSITIVE",
+    "D": "OPERATOR_DETECTION_PRIOR_SENSITIVE__POSITIVE_NOT_SUPPORTED",
+    "E": "DONOR_SUPPORTED",
+    "F": "OPERATOR_RESIDUAL_STRUCTURE_PRESENT_NOT_TRANSFERABLE_AS_FIXED_EFFECT",
+    "G": "DONOR_CLASS_OUT",
+    "H": "LOGNORMAL_STABLE__ZTNB_UNADJUDICATED"
+  },
+  "candidate_v2_core": {
+    "status": "FROZEN_FOR_NEW_SYNTHETIC_QUALIFICATION__NOT_QUALIFIED",
+    "detection": "detected ~ quadratic(log_library) + broad_class + source + donor_within_source",
+    "positive": "log(count)|count>0 ~ Normal(quadratic(log_library) + broad_class + source + donor_within_source, sigma)",
+    "operator": "OUT_OF_CORE",
+    "donor_class": "OUT",
+    "source_class": "OUT",
+    "positive_family": "LOGNORMAL_DEVELOPMENT_DEFAULT",
+    "ztnb": "UNADJUDICATED_CHALLENGER"
+  },
+  "factorial_downstream": {
+    "implementation_pr": 262,
+    "implementation_head": "9110c3fae6d34e43463d56631f43004bda33beb8",
+    "audit_pr": 264,
+    "handoff_pr": 265,
+    "workflow_run": 38147114407,
+    "workflow_job": 114492689105,
+    "tests": "94 passed in 1.04 s",
+    "scientific_execution": false,
+    "fresh_preexecution_replay_required_after_future_authority_freeze": true
+  },
+  "next_gate": {
+    "deliverable": "V79_V2_CORE_FROZEN_MODEL_AND_PROSPECTIVE_SYNTHETIC_QUALIFICATION_CONTRACT",
+    "new_worlds": ["Q0", "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11"],
+    "corrected_train_nuts": false,
+    "factorial_science": false,
+    "training": false
+  }
+}
