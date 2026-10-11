@@ -1,9 +1,13 @@
 import hashlib
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import td_g6g7_gate_fixtures as F  # noqa: E402
+
 SCRIPT = ROOT / "scripts" / "v5" / "td_relational_value_read_v2_common.py"
 
 
@@ -56,44 +60,20 @@ def valid_preflight(m, mapping: dict):
     }
 
 
-def fake_code_identity(m, g6_path, g7_path):
-    return {
-        "implementation_commit_sha": "a" * 40,
-        "common_script_sha256": m.canonical_text_sha256(Path(m.__file__)),
-        "g6_script_sha256": m.canonical_text_sha256(g6_path),
-        "g7_script_sha256": m.canonical_text_sha256(g7_path),
-        "common_entrypoint": m.COMMON_ENTRYPOINT,
-        "g6_entrypoint": m.G6_ENTRYPOINT,
-        "g7_entrypoint": m.G7_ENTRYPOINT,
-    }
-
-
 def valid_auth(m, preflight_path, mapping_path, g6_path, g7_path):
-    identity = m.code_identity(g6_path, g7_path)
-    return {
-        "schema": m.VALUE_AUTH_SCHEMA,
-        "authorization": m.VALUE_AUTHORIZATION,
-        "scope": m.VALUE_SCOPE,
-        "preflight_result_sha256": sha(preflight_path),
-        "mapping_receipt_sha256": sha(mapping_path),
-        **identity,
-        "training_authorized": False,
-        "biological_replay_authorized": False,
-        "target_selection_authorized": False,
-        "td60_authorized": False,
-    }
+    """Valid synthetic authorization for the files bound by make_bound_files (shared gate fixture)."""
+    return F.authorization_record(m, m._gate_fixture)
 
 
-def make_bound_files(tmp_path, m):
-    mapping_path = write_json(tmp_path / "mapping.json", valid_mapping(m))
-    preflight_path = write_json(tmp_path / "preflight.json", valid_preflight(m, json.loads(mapping_path.read_text())))
-    g6_path = tmp_path / "g6.py"
-    g7_path = tmp_path / "g7.py"
-    g6_path.write_text("# g6\n", encoding="utf-8")
-    g7_path.write_text("# g7\n", encoding="utf-8")
-    m.code_identity = lambda left, right: fake_code_identity(m, left, right)
-    auth_path = write_json(tmp_path / "auth.json", valid_auth(m, preflight_path, mapping_path, g6_path, g7_path))
-    return preflight_path, mapping_path, g6_path, g7_path, auth_path
+def make_bound_files(tmp_path, m, monkeypatch):
+    b = F.build_gate(tmp_path, m, monkeypatch)
+    m._gate_fixture = b
+    return b.preflight, b.mapping, b.g6, b.g7, b.auth
+
+
+def gate(m, auth, p, mp, g6, g7):
+    """The runtime gate with the synthetic replay manifest of make_bound_files."""
+    return F.call_gate(m, m._gate_fixture, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
 
 
 def test_bare_pass_only_preflight_is_rejected(tmp_path):
@@ -158,13 +138,13 @@ def test_mapping_sample_contract_must_be_34_and_35(tmp_path):
         raise AssertionError("Sample-A mapping contract must stay 34 while substrate custody stays 35")
 
 
-def test_changed_preflight_bytes_break_authorization_binding(tmp_path):
+def test_changed_preflight_bytes_break_authorization_binding(tmp_path, monkeypatch):
     m = load_module()
-    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m, monkeypatch)
     rec = json.loads(auth.read_text())
     p.write_text(p.read_text() + " ", encoding="utf-8")
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "preflight" in str(e).lower() and "sha" in str(e).lower()
     else:
@@ -172,41 +152,41 @@ def test_changed_preflight_bytes_break_authorization_binding(tmp_path):
     assert rec["preflight_result_sha256"] != sha(p)
 
 
-def test_old_v1_authorization_schema_and_token_are_rejected(tmp_path):
+def test_old_v1_authorization_schema_and_token_are_rejected(tmp_path, monkeypatch):
     m = load_module()
-    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m, monkeypatch)
     rec = json.loads(auth.read_text())
     rec["schema"] = "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V1"
     rec["authorization"] = "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_ONLY"
     write_json(auth, rec)
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "schema" in str(e).lower() or "token" in str(e).lower()
     else:
         raise AssertionError("historical V1 authority must be rejected")
 
 
-def test_wrong_g6_or_g7_code_sha_is_rejected(tmp_path):
+def test_wrong_g6_or_g7_code_sha_is_rejected(tmp_path, monkeypatch):
     m = load_module()
-    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m, monkeypatch)
     g6.write_text("# changed g6 same authority stale\n", encoding="utf-8")
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "g6" in str(e).lower() and "sha" in str(e).lower()
     else:
         raise AssertionError("changed G6 code must invalidate authority")
 
 
-def test_shared_common_module_and_commit_are_bound(tmp_path):
+def test_shared_common_module_and_commit_are_bound(tmp_path, monkeypatch):
     m = load_module()
-    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m, monkeypatch)
     rec = json.loads(auth.read_text())
     rec["common_script_sha256"] = "0" * 64
     write_json(auth, rec)
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "common" in str(e).lower() and "sha" in str(e).lower()
     else:
@@ -216,7 +196,7 @@ def test_shared_common_module_and_commit_are_bound(tmp_path):
     rec["implementation_commit_sha"] = "b" * 40
     write_json(auth, rec)
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "commit" in str(e).lower()
     else:
@@ -233,14 +213,14 @@ def test_code_identity_is_lf_crlf_stable(tmp_path):
     assert m.sha256_file(lf) != m.sha256_file(crlf)
 
 
-def test_wrong_entrypoint_or_true_authority_boolean_is_rejected(tmp_path):
+def test_wrong_entrypoint_or_true_authority_boolean_is_rejected(tmp_path, monkeypatch):
     m = load_module()
-    p, mp, g6, g7, auth = make_bound_files(tmp_path, m)
+    p, mp, g6, g7, auth = make_bound_files(tmp_path, m, monkeypatch)
     rec = json.loads(auth.read_text())
     rec["g7_entrypoint"] = "scripts/v5/wrong.py"
     write_json(auth, rec)
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "entrypoint" in str(e).lower()
     else:
@@ -250,7 +230,7 @@ def test_wrong_entrypoint_or_true_authority_boolean_is_rejected(tmp_path):
     rec["biological_replay_authorized"] = True
     write_json(auth, rec)
     try:
-        m.load_runtime_authorization(auth, preflight_path=p, mapping_path=mp, g6_path=g6, g7_path=g7)
+        gate(m, auth, p, mp, g6, g7)
     except RuntimeError as e:
         assert "biological" in str(e).lower()
     else:

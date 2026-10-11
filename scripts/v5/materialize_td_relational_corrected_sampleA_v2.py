@@ -275,6 +275,7 @@ def bind_execution(args):
         mapping_path=Path(args.mapping_receipt),
         g6_path=g6_path,
         g7_path=g7_path,
+        replay_manifest_path=Path(args.replay_manifest),
     )
     preflight, mapping = common.load_bound_preflight(
         Path(args.preflight_result),

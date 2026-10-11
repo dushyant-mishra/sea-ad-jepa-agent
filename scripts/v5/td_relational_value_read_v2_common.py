@@ -45,6 +45,12 @@ EXPECTED_INPUT_HASHES = {
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
 }
 
+# Exact physical bytes of the accepted PR #259 value-blind receipts. The runtime gate accepts these bytes only: a
+# semantically identical but reserialized or reformatted copy is refused. The replay manifest is pinned by
+# EXPECTED_INPUT_HASHES["replay_manifest_sha256"] above.
+PR259_DRIVER_SHA256 = "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae"
+PR259_MAPPING_SHA256 = "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0"
+
 REQUIRED_MAPPING_CHECKS = (
     "sample_A_h5_matrix_count_exact_34",
     "all_sample_A_h5_matrices_present",
@@ -194,6 +200,26 @@ def _require_false(rec: dict, key: str, label: str) -> None:
         raise RuntimeError(f"{label} must explicitly keep {key}=false")
 
 
+def require_pr259_physical_bytes(preflight_path: Path, mapping_path: Path, replay_manifest_path) -> None:
+    """The exact audited physical bytes only; an authorization built around altered bytes cannot rescue them."""
+    if replay_manifest_path is None:
+        raise RuntimeError("runtime authorization requires the exact replay manifest file")
+    for label, path, expected in (
+        ("PR #259 preflight driver receipt", preflight_path, PR259_DRIVER_SHA256),
+        ("PR #259 mapping receipt", mapping_path, PR259_MAPPING_SHA256),
+        ("replay manifest", replay_manifest_path, EXPECTED_INPUT_HASHES["replay_manifest_sha256"]),
+    ):
+        path = Path(path)
+        if not path.is_file():
+            raise RuntimeError(f"missing {label}: {path}")
+        actual = sha256_file(path)
+        if actual != expected:
+            raise RuntimeError(
+                f"{label} physical SHA mismatch; only the exact audited bytes are accepted "
+                f"(reserialized or altered copies are refused): {actual} != {expected}"
+            )
+
+
 def load_runtime_authorization(
     path: Path,
     *,
@@ -201,6 +227,7 @@ def load_runtime_authorization(
     mapping_path: Path,
     g6_path: Path,
     g7_path: Path,
+    replay_manifest_path: Path | None = None,
 ) -> dict:
     rec = _read_json(path, "runtime value authorization")
     if rec.get("schema") != VALUE_AUTH_SCHEMA:
@@ -218,9 +245,11 @@ def load_runtime_authorization(
     ):
         _require_false(rec, key, label)
 
+    require_pr259_physical_bytes(preflight_path, mapping_path, replay_manifest_path)
     expected = {
         "preflight_result_sha256": sha256_file(Path(preflight_path)),
         "mapping_receipt_sha256": sha256_file(Path(mapping_path)),
+        "replay_manifest_sha256": sha256_file(Path(replay_manifest_path)),
         **code_identity(Path(g6_path), Path(g7_path)),
     }
     for key, actual in expected.items():

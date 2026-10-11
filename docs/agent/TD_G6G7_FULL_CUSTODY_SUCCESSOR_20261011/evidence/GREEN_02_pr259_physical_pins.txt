@@ -1,0 +1,27 @@
+# GREEN_02 PR #259 physical pins, working tree over d0deb2b4654ba1b875d4800194239a71e04d0de3
+# note: existing gate tests in test_td_relational_value_read_v2_common.py migrated to the shared synthetic gate fixture (call sites only; mutations and assertions unchanged)
+# utc: 2026-10-11T15:32:27Z
+# CAVEAT: the old-signature demonstration below now refuses every case only because the replay manifest is missing; its no_owner_decision_record line is NOT evidence for item 1 (still open at this commit). Item-2 specific refusals are shown by the new pin tests.
+ .../v5/audit_td_relational_g7_s174_overlap_v2.py   |  1 +
+ ...terialize_td_relational_corrected_sampleA_v2.py |  1 +
+ scripts/v5/td_relational_value_read_v2_common.py   | 29 ++++++++
+ .../v5/test_td_relational_value_read_v2_common.py  | 82 ++++++++--------------
+ 4 files changed, 62 insertions(+), 51 deletions(-)
+## semantic demonstration with the old gate signature (expected now: refused):
+reserialized_preflight: refused: RuntimeError: runtime authorization requires the exact replay manifest file
+reserialized_mapping: refused: RuntimeError: runtime authorization requires the exact replay manifest file
+no_owner_decision_record: refused: RuntimeError: runtime authorization requires the exact replay manifest file
+.....................................................................    [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+69 passed, 3 warnings in 8.01s
+# exit=0
