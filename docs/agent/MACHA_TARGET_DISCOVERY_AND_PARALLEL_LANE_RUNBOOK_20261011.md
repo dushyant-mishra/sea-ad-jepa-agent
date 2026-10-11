@@ -6,15 +6,19 @@ This is the controlling coordination note for Macha while the new agent takes ov
 
 ### Lane A — REAL target discovery
 
-Allowed current work:
+Current allowed work:
 
-- qualify PR #282 successor on the canonical machine;
-- preserve/return qualification logs;
-- after explicit owner/auditor approval only: execute replacement G6 once under fresh owner/runtime authority;
-- later, only after external G6 audit: execute G7 if explicitly authorized.
+- preserve the completed failed qualification record for PR #282 head `7e482cf50f73a5cecda16482777129dd3ca725a6`;
+- wait for a new exact successor commit after stale synthetic test fixtures are repaired;
+- when explicitly handed a new exact SHA, run the same qualification gates on that SHA only and stop for audit;
+- after explicit owner/auditor approval only, execute replacement G6 once under fresh owner/runtime authority;
+- later, only after external G6 audit, execute G7 if explicitly authorized.
 
 Forbidden unless separately authorized:
 
+- ad-hoc patching of the canonical execution environment;
+- rerunning qualification at `7e482cf5` and calling it a new qualification;
+- creating owner/runtime authority before a fresh successor qualification is accepted;
 - corrected TD56/57B/57C/59 replay;
 - TD60;
 - target selection;
@@ -59,28 +63,80 @@ Start-marker SHA:
 
 `ae85dd14d17454a104204543312df332bedeae4ea45a9838f9fc9893a80e5894`
 
-## 3. Current immediate task — qualify PR #282, do not run G6
+No G6 receipt exists for Attempt 0. No corrected H5AD value array was opened.
 
-Exact branch:
+## 3. Completed successor qualification at 7e482cf5 — preserve and do not rerun
+
+Implementation branch:
 
 `fix/td-g6-global-row-binding-successor-20261011`
 
-Exact head to qualify:
+Exact qualified candidate that failed:
 
 `7e482cf50f73a5cecda16482777129dd3ca725a6`
 
-Do not qualify a moving branch name without recording exact SHA first.
+Qualification evidence branch:
 
-Create a fresh clean detached worktree at that exact head.
+`qual/td-g6-global-row-successor-7e482cf5-20261011`
+
+Qualification evidence commit:
+
+`e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
+
+Raw evidence directory:
+
+`docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_7e482cf5/`
+
+Files:
+
+- `QUAL_00_environment.txt`
+- `QUAL_01_full_focused_suite.txt`
+- `QUAL_02_real_sample_freeze_schema.txt`
+- `QUAL_03_real_pr259_compat.txt`
+- `QUAL_04_changed_files_and_hashes.txt`
+- `QUAL_05_no_successor_authority_or_execution.txt`
+- `QUAL_06_final_state.txt`
+
+Gate results:
+
+1. Focused suite: **FAIL — 4 failed / 215 passed**.
+2. Real Sample-A freeze: **PASS** — `PASS_REAL_SAMPLE_FREEZE_SCHEMA_AND_GLOBAL_ROW_BINDING`; 25,000 rows; exact source counts; physical `global_row` absent as expected.
+3. Real PR #259 compatibility: **PASS — 1 passed / 0 skipped / 0 failed**.
+4. Worktree clean before and after.
+
+No patch was made during qualification. No rerun occurred. No owner/runtime authority was created. No G6 or G7 was run.
+
+The four failures are stale synthetic unit-test fixtures that invoke the hardened G6 `select_sample_a()` without the real required schema (`donor_id`, `local_row`, `matrix_id`, `operator_index`, and where applicable `cell_id`). Gate 2 demonstrates that the authenticated real Sample-A file satisfies the strengthened contract.
+
+Classification:
+
+`FAILED_GATE_1_STALE_SYNTHETIC_FIXTURES__REAL_SAMPLE_GATE_PASS__PR259_COMPAT_PASS__NO_EXECUTION_AUTHORITY`
+
+Do not reinterpret this as a real-data failure.
+
+## 4. Current immediate Macha state — STOP until a new exact successor SHA is issued
+
+The owner/auditor repair decision is to preserve the stronger production selector contract and repair the stale test fixtures to the real schema. This code repair is being handled on the PR #282 development lane, not by ad-hoc edits in the execution environment.
+
+Until a new exact successor SHA is explicitly handed to you:
+
+- do not rerun `qualification_runner.sh` at `7e482cf5`;
+- do not modify the seven evidence files;
+- do not create a new qualification folder for the same head;
+- do not create owner/runtime authority;
+- do not create a replacement G6 output namespace;
+- do not run G6/G7;
+- do not touch `G6_OUT_fafd4309`.
+
+If asked for status, report only the exact failed qualification above and downstream blocks.
+
+## 5. When a new exact PR #282 successor SHA is issued
+
+Create a fresh clean detached worktree at the exact SHA. Record exact HEAD before doing anything.
 
 Run the qualification runner from that exact worktree:
 
 `docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_runner.sh`
-
-Suggested canonical paths:
-
-- qualification worktree: `D:\jepa_wt_td_g6_fixqual_20261011`
-- qualification output: `D:\jepa_td_real_g6_20261011\qualification_global_row_successor`
 
 The qualification must remain no-value with respect to corrected H5AD count/expression arrays.
 
@@ -88,7 +144,8 @@ The qualification must remain no-value with respect to corrected H5AD count/expr
 
 1. **Focused G6/G7 suite**
    - must include `tests/v5/test_td_g6_global_row_binding.py`;
-   - no failure/error/skip may be silently omitted from the report.
+   - the formerly stale fixtures must now exercise the real G6 schema rather than bypass it;
+   - no failure/error/skip may be silently omitted.
 
 2. **Exact production Sample-A freeze compatibility**
    - file SHA must be `79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6`;
@@ -110,23 +167,11 @@ The qualification must remain no-value with respect to corrected H5AD count/expr
 
 ### Return to owner/auditor
 
-Return all qualification files, especially:
-
-- `QUAL_00_environment.txt`
-- `QUAL_01_full_focused_suite.txt`
-- `QUAL_02_real_sample_freeze_schema.txt`
-- `QUAL_03_real_pr259_compat.txt`
-- `QUAL_04_changed_files_and_hashes.txt`
-- `QUAL_05_no_successor_authority_or_execution.txt`
-- `QUAL_06_final_state.txt`
-
-If naming differs slightly because the runner version changed, return the complete qualification output directory listing and every log.
-
-Then STOP.
+Return every qualification log and the complete output directory listing. Then STOP.
 
 Do **not** create owner/runtime authorization yourself unless explicitly instructed after audit.
 
-## 4. What counts as qualification failure
+## 6. What counts as qualification failure
 
 Any of the following fails closed:
 
@@ -135,18 +180,18 @@ Any of the following fails closed:
 - focused test failure/error;
 - real-sample schema test fails or is absent;
 - real-sample freeze SHA mismatch;
-- `global_row` derivation not exactly 0..24999 for Sample A;
+- `global_row` derivation not exactly `0..24999` for Sample A;
 - PR259 compatibility skip/failure;
 - unexpected code-identity drift;
 - any corrected H5AD value/count read during qualification.
 
 On failure, preserve logs and stop. Do not repair and rerun in the same qualification record without owner/auditor review.
 
-## 5. Replacement G6 — only after fresh authority
+## 7. Replacement G6 — only after fresh accepted qualification and fresh authority
 
-After qualification is accepted, the owner/auditor will issue:
+After a new successor qualification is accepted, the owner/auditor will issue:
 
-- a new owner decision bound to the exact qualified successor implementation SHA;
+- a new owner decision bound to the exact newly qualified successor implementation SHA;
 - a new runtime authorization bound to that owner decision and exact implementation identities;
 - a new fresh output namespace.
 
@@ -170,7 +215,7 @@ Once the replacement G6 marker is created:
 - stop after G6;
 - do not run G7 automatically.
 
-## 6. Expected replacement G6 success contract
+## 8. Expected replacement G6 success contract
 
 Expected exact G6 receipt terminal:
 
@@ -205,7 +250,7 @@ On success return:
 
 Then STOP for external audit.
 
-## 7. G7
+## 9. G7
 
 G7 remains blocked until the owner/auditor accepts replacement G6.
 
@@ -213,7 +258,7 @@ If later authorized, G7 must compare authenticated physical H5AD values against 
 
 Stop after G7 and return all evidence for audit before any biological replay.
 
-## 8. Corrected biological replay
+## 10. Corrected biological replay
 
 Macha must not run corrected TD56/57B/57C/59 merely because G6/G7 pass.
 
@@ -230,7 +275,7 @@ Historical outcomes remain immutable:
 
 A corrected TD57C PASS would be divergence, not retroactive correction of the historical FAIL.
 
-## 9. TD60 / target / training
+## 11. TD60 / target / training
 
 TD60 remains:
 
@@ -242,7 +287,7 @@ No target winner exists.
 No representation winner exists.
 Stage4 and training are off.
 
-## 10. Reporting discipline
+## 12. Reporting discipline
 
 Every report should state:
 
@@ -253,15 +298,15 @@ Every report should state:
 - exact terminal;
 - what downstream actions remain unauthorized.
 
-Do not use phrases such as “passed biology” for custody or schema checks.
+Do not use phrases such as “passed biology” for custody, schema or compatibility checks.
 
-## 11. If Claude Code safety blocks local public-data work
+## 13. If Claude Code safety blocks local research-data work
 
 Do not route around a safety denial using unrelated tool mechanisms.
 
-For the public research datasets in this project, report the exact blocked command and classifier reason. The owner may run a reviewed command/script directly or grant a narrow permission. The block is an execution-tooling event, not scientific evidence.
+Report the exact blocked command and classifier reason. The owner may run a reviewed command/script directly or grant a narrow permission. Public availability alone is not sufficient justification for unrestricted handling. Any exception must remain narrow to the authorized local research workflow and avoid unnecessary export of donor/pathology records.
 
-## 12. V79 parallel lane reminder
+## 14. V79 parallel lane reminder
 
 If directed to resume V79:
 
