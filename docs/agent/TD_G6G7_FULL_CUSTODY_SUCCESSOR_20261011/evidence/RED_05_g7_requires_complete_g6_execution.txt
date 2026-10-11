@@ -1,0 +1,669 @@
+# RED_05 G6->G7 prerequisite, tests over code at b9c8cec429647cfcd04eb3f97bf0f194918d0c6e (positive control = real G6 run on the synthetic world)
+# utc: 2026-10-11T15:58:58Z
+.FFFFFFFFFFFFFFFFFFF.FFFFFF..FF                                          [100%]
+================================== FAILURES ===================================
+_______________ test_fabricated_minimal_pass_receipt_is_refused _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_fabricated_minimal_pass_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001554AC3BDF0>
+
+    def test_fabricated_minimal_pass_receipt_is_refused(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        fake_dir = Path(tmp_path) / "fabricated"
+        fake_dir.mkdir()
+        fake = fake_dir / "G6_RECEIPT.json"
+        fake.write_text(json.dumps({
+            "schema": "JEPA_TD_RELATIONAL_G6_RECEIPT_V2", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
+            "authority_trace": W.g7_expected_trace(w), "biological_replay_authorized": False,
+            "target_selection_authorized": False, "td60_authorized": False, "training_authorized": False}) + "\n",
+            encoding="utf-8")
+        with pytest.raises(RuntimeError):
+>           w.g7.load_g6_pass_receipt(fake, W.g7_expected_trace(w))
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:53: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_fabricated_minimal_pass_r0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_missing_g6_artifact_is_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548E3CC10>
+name = 'TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz'
+
+    @pytest.mark.parametrize("name", [VALUES, META, "MANIFEST.json", "G6_EXECUTION_START.json"])
+    def test_missing_g6_artifact_is_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        (w.g6_out / name).unlink()
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:61: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_missing_g6_artifact_is_re0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_missing_g6_artifact_is_re1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548ED8790>
+name = 'TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz'
+
+    @pytest.mark.parametrize("name", [VALUES, META, "MANIFEST.json", "G6_EXECUTION_START.json"])
+    def test_missing_g6_artifact_is_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        (w.g6_out / name).unlink()
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:61: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_missing_g6_artifact_is_re1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____________ test_missing_g6_artifact_is_refused[MANIFEST.json] ______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_missing_g6_artifact_is_re2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548E49BB0>
+name = 'MANIFEST.json'
+
+    @pytest.mark.parametrize("name", [VALUES, META, "MANIFEST.json", "G6_EXECUTION_START.json"])
+    def test_missing_g6_artifact_is_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        (w.g6_out / name).unlink()
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:61: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_missing_g6_artifact_is_re2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_missing_g6_artifact_is_refused[G6_EXECUTION_START.json] _________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_missing_g6_artifact_is_re3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548E49130>
+name = 'G6_EXECUTION_START.json'
+
+    @pytest.mark.parametrize("name", [VALUES, META, "MANIFEST.json", "G6_EXECUTION_START.json"])
+    def test_missing_g6_artifact_is_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        (w.g6_out / name).unlink()
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:61: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_missing_g6_artifact_is_re3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_altered_g6_artifact_bytes0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548EC61F0>
+name = 'TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz'
+
+    @pytest.mark.parametrize("name", [VALUES, META])
+    def test_altered_g6_artifact_bytes_are_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        flip_last_byte(w.g6_out / name)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:69: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_altered_g6_artifact_bytes0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_altered_g6_artifact_bytes1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548ED8460>
+name = 'TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz'
+
+    @pytest.mark.parametrize("name", [VALUES, META])
+    def test_altered_g6_artifact_bytes_are_refused(tmp_path, monkeypatch, name):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        flip_last_byte(w.g6_out / name)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:69: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_altered_g6_artifact_bytes1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_wrong_start_marker_is_refused[status] __________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_wrong_start_marker_is_ref0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548EC6730>
+change = <function <lambda> at 0x000001554AC113A0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(status="STARTED_AND_PASSED"),
+        lambda r: r.update(schema="JEPA_TD_RELATIONAL_G6_EXECUTION_START_V0"),
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r.update(training_authorized=True),
+    ], ids=["status", "schema", "trace", "flag"])
+    def test_wrong_start_marker_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "G6_EXECUTION_START.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:82: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_wrong_start_marker_is_ref0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_wrong_start_marker_is_refused[schema] __________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_wrong_start_marker_is_ref1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A5D7BE0>
+change = <function <lambda> at 0x000001554AC11430>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(status="STARTED_AND_PASSED"),
+        lambda r: r.update(schema="JEPA_TD_RELATIONAL_G6_EXECUTION_START_V0"),
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r.update(training_authorized=True),
+    ], ids=["status", "schema", "trace", "flag"])
+    def test_wrong_start_marker_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "G6_EXECUTION_START.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:82: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_wrong_start_marker_is_ref1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________________ test_wrong_start_marker_is_refused[trace] __________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_wrong_start_marker_is_ref2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548EF37F0>
+change = <function <lambda> at 0x000001554AC114C0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(status="STARTED_AND_PASSED"),
+        lambda r: r.update(schema="JEPA_TD_RELATIONAL_G6_EXECUTION_START_V0"),
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r.update(training_authorized=True),
+    ], ids=["status", "schema", "trace", "flag"])
+    def test_wrong_start_marker_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "G6_EXECUTION_START.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:82: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_wrong_start_marker_is_ref2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________________ test_wrong_start_marker_is_refused[flag] ___________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_wrong_start_marker_is_ref3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A5D4520>
+change = <function <lambda> at 0x000001554AC11550>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(status="STARTED_AND_PASSED"),
+        lambda r: r.update(schema="JEPA_TD_RELATIONAL_G6_EXECUTION_START_V0"),
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r.update(training_authorized=True),
+    ], ids=["status", "schema", "trace", "flag"])
+    def test_wrong_start_marker_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "G6_EXECUTION_START.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:82: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_wrong_start_marker_is_ref3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_mismatched_manifest_is_refused[values_sha] _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A5D4D00>
+change = <function <lambda> at 0x000001554AC11670>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_mismatched_manifest_is_refused[meta_sha] ________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001554BFCE8E0>
+change = <function <lambda> at 0x000001554AC11700>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_mismatched_manifest_is_refused[values_path] _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A5F3040>
+change = <function <lambda> at 0x000001554AC11790>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_mismatched_manifest_is_refused[receipt_name] ______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548ED8CA0>
+change = <function <lambda> at 0x000001554AC11820>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[status] _________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A647C10>
+change = <function <lambda> at 0x000001554AC118B0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[trace] __________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000015548E3C130>
+change = <function <lambda> at 0x000001554AC11940>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_mismatched_manifest_is_refused[inputs] _________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A6477F0>
+change = <function <lambda> at 0x000001554AC119D0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_mismatched_manifest_is_refused[sources] _________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_mismatched_manifest_is_re7')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A654E80>
+change = <function <lambda> at 0x000001554AC11A60>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(meta_sha256="0" * 64),
+        lambda r: r.update(values_path="OTHER.npz"),
+        lambda r: r.update(g6_receipt="OTHER.json"),
+        lambda r: r.update(status="MATERIALIZED_G6_V1"),
+        lambda r: r["authority_trace"].update(g6_script_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(provenance_sha256="0" * 64),
+        lambda r: r.update(verified_source_h5ad_sha256={}),
+    ], ids=["values_sha", "meta_sha", "values_path", "receipt_name", "status", "trace", "inputs", "sources"])
+    def test_mismatched_manifest_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_out / "MANIFEST.json", change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:99: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_mismatched_manifest_is_re7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_corrupted_g6_receipt_is_refused[inputs] _________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A6A1CA0>
+change = <function <lambda> at 0x000001554AC11C10>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_corrupted_g6_receipt_is_refused[hist_csr] ________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A6A15B0>
+change = <function <lambda> at 0x000001554AC11CA0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_corrupted_g6_receipt_is_refused[nph_rows] ________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A6BC190>
+change = <function <lambda> at 0x000001554AC11D30>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_corrupted_g6_receipt_is_refused[total_rows] _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A6E8E80>
+change = <function <lambda> at 0x000001554AC11DC0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________ test_corrupted_g6_receipt_is_refused[old_all_rows_claim] ___________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A618C10>
+change = <function <lambda> at 0x000001554AC11E50>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_corrupted_g6_receipt_is_refused[values_sha] _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_corrupted_g6_receipt_is_r6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A611970>
+change = <function <lambda> at 0x000001554AC11EE0>
+
+    @pytest.mark.parametrize("change", [
+        lambda r: r["authority_trace"].update(owner_decision_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"].update(sample_freeze_sha256="0" * 64),
+        lambda r: r["input_authority_hashes"]["historical_csr_sha256"].update({"data.npy": "0" * 64}),
+        lambda r: r.update(nph52_authenticated_historical_passthrough_rows=r.get(
+            "nph52_authenticated_historical_passthrough_rows", 0) + 1),
+        lambda r: r.update(total_sample_a_rows=r.get("total_sample_a_rows", 0) - 1),
+        lambda r: r.update(source_library_exact_rows=r.get("total_sample_a_rows")),
+        lambda r: r.update(values_sha256="0" * 64),
+        lambda r: r.update(td60_authorized=True),
+    ], ids=["trace", "inputs", "hist_csr", "nph_rows", "total_rows", "old_all_rows_claim", "values_sha", "flag"])
+    def test_corrupted_g6_receipt_is_refused(tmp_path, monkeypatch, change):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        edit_json(w.g6_receipt, change)
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:117: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______________ test_foreign_file_in_the_g6_namespace_is_refused _______________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_foreign_file_in_the_g6_na0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A640040>
+
+    def test_foreign_file_in_the_g6_namespace_is_refused(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        (w.g6_out / "notes.txt").write_text("x\n", encoding="utf-8")
+        with pytest.raises(RuntimeError):
+>           load(w)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:132: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_foreign_file_in_the_g6_na0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_g6_execution_copied_without_its_start_marker_is_refused _________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1223/test_g6_execution_copied_witho0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001556A66FC40>
+
+    def test_g6_execution_copied_without_its_start_marker_is_refused(tmp_path, monkeypatch):
+        w = W.build_g7_world(tmp_path, monkeypatch)
+        copy = Path(tmp_path) / "copied"
+        shutil.copytree(w.g6_out, copy)
+        (copy / "G6_EXECUTION_START.json").unlink()
+        with pytest.raises(RuntimeError):
+>           w.g7.load_g6_pass_receipt(copy / "G6_RECEIPT.json", W.g7_expected_trace(w))
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_g6_prerequisite.py:141: Failed
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_g6_execution_copied_witho0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_ test_genuine_g6_pass_execution_is_accepted_and_its_trace_matches_g7s_own_expectation _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_genuine_g6_pass_execution0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_corrupted_g6_receipt_is_refused[trace] _________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________________ test_corrupted_g6_receipt_is_refused[flag] __________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_corrupted_g6_receipt_is_r7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______________ test_wrong_expected_authority_trace_is_refused ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1223\\test_wrong_expected_authority_0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_genuine_g6_pass_execution_is_accepted_and_its_trace_matches_g7s_own_expectation
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[trace]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[flag]
+PASSED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_expected_authority_trace_is_refused
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_fabricated_minimal_pass_receipt_is_refused
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[MANIFEST.json]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_missing_g6_artifact_is_refused[G6_EXECUTION_START.json]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_altered_g6_artifact_bytes_are_refused[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[status]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[schema]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[trace]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_wrong_start_marker_is_refused[flag]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[values_sha]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[meta_sha]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[values_path]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[receipt_name]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[status]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[trace]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[inputs]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_mismatched_manifest_is_refused[sources]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[inputs]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[hist_csr]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[nph_rows]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[total_rows]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[old_all_rows_claim]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_corrupted_g6_receipt_is_refused[values_sha]
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_foreign_file_in_the_g6_namespace_is_refused
+FAILED tests/v5/test_td_g7_g6_prerequisite.py::test_g6_execution_copied_without_its_start_marker_is_refused
+27 failed, 4 passed, 3 warnings in 46.92s
+# exit=0

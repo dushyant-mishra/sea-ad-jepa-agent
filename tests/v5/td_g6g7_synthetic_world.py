@@ -259,3 +259,45 @@ def build_g6_world(tmp_path, monkeypatch, *, library_offsets: dict | None = None
 def run_g6(w, monkeypatch) -> int:
     monkeypatch.setattr(sys, "argv", g6_argv(w, w.gate, w.g6_out))
     return w.g6.main()
+
+
+def point_g7_at_world(g7, w, monkeypatch) -> None:
+    """Pin the G7 module (and its own common instance) to the same synthetic world and gate as G6."""
+    common, g6common = g7.common, w.g6.common
+    for attr, value in (("N_ADDR", N_ADDR), ("N_SAMPLE_A", N_SAMPLE_A), ("N_REPLAY", len(REPLAY)),
+                        ("SOURCE_COUNTS", dict(SOURCE_COUNTS))):
+        monkeypatch.setattr(g7, attr, value)
+    for key, value in g6common.EXPECTED_INPUT_HASHES.items():
+        monkeypatch.setitem(common.EXPECTED_INPUT_HASHES, key, value)
+    for attr in ("HIST_CSR_SHA", "TD50_SHA"):  # single authority in common once G7 validates G6 input hashes
+        if hasattr(common, attr):
+            for key, value in getattr(g6common, attr).items():
+                monkeypatch.setitem(getattr(common, attr), key, value)
+    for attr, key in (("EXPECTED_REPLAY_MANIFEST_SHA", "replay_manifest_sha256"),
+                      ("EXPECTED_SAMPLE_FREEZE_SHA", "sample_freeze_sha256"),
+                      ("EXPECTED_PROVENANCE_SHA", "provenance_sha256"),
+                      ("EXPECTED_COLLISION_SHA", "collision_ledger_sha256"),
+                      ("EXPECTED_MACHA_FREEZE_SHA", "macha_freeze_sha256")):
+        monkeypatch.setattr(g7, attr, g6common.EXPECTED_INPUT_HASHES[key])
+    monkeypatch.setattr(common, "PR259_DRIVER_SHA256", g6common.PR259_DRIVER_SHA256, raising=False)
+    monkeypatch.setattr(common, "PR259_MAPPING_SHA256", g6common.PR259_MAPPING_SHA256, raising=False)
+    monkeypatch.setattr(common, "code_identity", lambda left, right: F.fake_code_identity(common, left, right))
+
+
+def build_g7_world(tmp_path, monkeypatch) -> SimpleNamespace:
+    """A genuine synthetic G6 PASS execution, plus a G7 module pointed at the same world."""
+    w = build_g6_world(tmp_path, monkeypatch)
+    assert run_g6(w, monkeypatch) == 0
+    w.g7 = load_script(G7_SCRIPT, "td_g7_synthetic_world")
+    point_g7_at_world(w.g7, w, monkeypatch)
+    w.g6_receipt = w.g6_out / "G6_RECEIPT.json"
+    return w
+
+
+def g7_expected_trace(w) -> dict:
+    """The trace G7 itself expects for this gate, computed by G7's own code (not copied from the G6 receipt)."""
+    b = w.gate
+    args = SimpleNamespace(preflight_result=str(b.preflight), mapping_receipt=str(b.mapping),
+                           value_authorization=str(b.auth), owner_decision=str(b.owner_decision))
+    auth = json.loads(Path(b.auth).read_text(encoding="utf-8"))
+    return w.g7.expected_authority_trace(args, auth, G6_SCRIPT, G7_SCRIPT)
