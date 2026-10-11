@@ -22,18 +22,23 @@ def test_detects_overlapping_resamples_and_unique_biological_units():
     out=m.audit_cases(cases())
     assert out["case_count"]==4
     assert out["unique_donors"]==6
-    assert out["all_cases_pairwise_independent"] is False
+    assert out["donor_memberships_pairwise_disjoint"] is False
+    assert "all_cases_pairwise_independent" not in out
+    assert out["independent_n_from_case_rows"] is None
     assert out["terminal"]=="ROBUSTNESS_RESAMPLES_NOT_INDEPENDENT_REPLICATES"
     assert out["max_case_memberships_per_donor"]==2
 
 
-def test_disjoint_cases_can_be_called_independent_by_membership_only():
+def test_disjoint_cases_are_only_membership_disjoint_not_proven_independent():
     cs=[
       {"case_id":"a","source":"HVS","donor_ids":["d1","d2"]},
       {"case_id":"b","source":"HVS","donor_ids":["d3","d4"]},
     ]
     out=m.audit_cases(cs)
-    assert out["all_cases_pairwise_independent"] is True
+    assert out["donor_memberships_pairwise_disjoint"] is True
+    assert "all_cases_pairwise_independent" not in out
+    assert out["independent_n_from_case_rows"] is None
+    assert out["biological_unit_n"]==4
     assert out["terminal"]=="CASE_MEMBERSHIPS_DISJOINT__NO_BROADER_INDEPENDENCE_CLAIM"
 
 
@@ -78,7 +83,11 @@ def test_authority_is_always_false():
     }
 
 
-def test_case_count_is_never_returned_as_independent_n_when_overlap_exists():
-    out=m.audit_cases(cases())
-    assert out["independent_n_from_case_rows"] is None
-    assert out["biological_unit_n"]==6
+def test_case_count_is_never_returned_as_independent_n():
+    for cs in (cases(), [
+      {"case_id":"a","source":"HVS","donor_ids":["d1","d2"]},
+      {"case_id":"b","source":"HVS","donor_ids":["d3","d4"]},
+    ]):
+        out=m.audit_cases(cs)
+        assert out["independent_n_from_case_rows"] is None
+        assert out["biological_unit_n"]==len({d for rec in cs for d in rec["donor_ids"]})
