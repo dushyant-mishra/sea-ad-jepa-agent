@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """V79 compact analysis cache for corrected TRAIN, with bounded shard residency.
 
-Count shards are never globally concatenated. Pass 1 authenticates one shard at a time and accumulates only
-per-address detection counts plus per-cell library/detected-feature summaries. The frozen identity-blind gene
-sample is selected from that prevalence vector. Pass 2 reopens one authenticated count shard at a time and
-copies only the selected columns into a compact dense panel. At most one count shard CSR is resident at once.
+Count shards are never globally concatenated. Pass 1 authenticates one count shard and its paired metadata shard
+at a time, parses the allowlisted design fields from those exact authenticated metadata bytes, and accumulates
+only per-address detection counts plus per-cell library/detected-feature summaries. The frozen identity-blind gene
+sample is selected from that prevalence vector. Pass 2 reopens one authenticated count shard at a time and copies
+only the selected columns into a compact dense panel. At most one count shard CSR is resident at once.
 
-The historical full-matrix loader remains untouched for reproducibility. `verify_against_loader` now verifies the
-same quantities by an independent bounded shard stream, so verification also cannot accidentally rebuild the full
-41K matrix. Synthetic tests establish equality to the historical loader path.
+The historical full-matrix loader remains untouched for reproducibility. `verify_against_loader` verifies selected
+count quantities by an independent bounded stream, while synthetic tests also compare the design arrays against
+the historical firewall loader. Real execution therefore needs exactly two count-shard passes and one metadata
+read, with every consumed file hash-bound to the committed S174 authority.
 """
 from __future__ import annotations
 
@@ -47,6 +49,19 @@ def _count_matrix_from_bytes(b: bytes, name: str) -> sparse.csr_matrix:
         return sparse.csr_matrix((z["data"], z["indices"], z["indptr"]), shape=shape)
 
 
+def _meta_from_verified_bytes(b: bytes, name: str) -> dict[str, np.ndarray]:
+    """Firewall-equivalent allowlisted metadata read from already authenticated bytes."""
+    with np.load(io.BytesIO(b), allow_pickle=False) as z:
+        present = list(z.files)
+        bad = [f for f in present if FW.denied_field(f)]
+        if bad:
+            raise FW.FirewallError(f"meta shard {name} carries denied fields {bad}")
+        missing = [f for f in FW.ALLOWED_META_FIELDS if f not in present]
+        if missing:
+            raise FW.FirewallError(f"meta shard {name} lacks allowlisted fields {missing}")
+        return {f: np.asarray(z[f]) for f in FW.ALLOWED_META_FIELDS}
+
+
 def _authority(authority) -> dict:
     raw = json.loads(Path(authority).read_text(encoding="utf-8"))["files"]
     if isinstance(raw, list):
@@ -58,27 +73,45 @@ def _rows(bridge) -> list[dict]:
     return sorted(FW.load_bridge(bridge), key=lambda r: r["operator_index"])
 
 
-def _first_pass(root: Path, rows: list[dict], auth: dict) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[int], dict]:
-    """Authenticate one shard at a time; return prevalence numerator and per-cell summaries."""
+def _first_pass(root: Path, rows: list[dict], auth: dict) -> tuple:
+    """Authenticate one shard pair at a time; return marginals, row summaries and authenticated design."""
     det = np.zeros(DA.N_ADDRESSES, dtype=np.int64)
     libraries, detected, shard_sizes = [], [], []
     verified = {}
+    design = {k: [] for k in ("donor_id", "raw_class", "source_library", "operator", "source")}
+
     for r in rows:
-        # Authenticate metadata bytes here as part of the custody pass. Metadata are parsed later only through FW.
         meta_name = f"{r['stem']}.meta.npz"
         mb = read_verified(root / meta_name, auth)
         verified[meta_name] = sha(mb)
+        m = _meta_from_verified_bytes(mb, meta_name)
+        n_meta = len(m["cell_id"])
+        if len(set(m["cell_id"].tolist())) != n_meta:
+            raise FW.FirewallError(f"duplicate cell_id inside shard {r['stem']}")
+        if not all(len(m[f]) == n_meta for f in FW.ALLOWED_META_FIELDS):
+            raise SystemExit(f"STOP: metadata fields disagree on rows in {meta_name}")
 
         count_name = f"{r['stem']}.counts.npz"
         cb = read_verified(root / count_name, auth)
         verified[count_name] = sha(cb)
         X = _count_matrix_from_bytes(cb, count_name)
+        if X.shape[0] != n_meta:
+            raise SystemExit(f"STOP: count/meta row mismatch for {r['stem']}")
+
         shard_sizes.append(int(X.shape[0]))
         det += np.bincount(X.indices[X.data > 0], minlength=DA.N_ADDRESSES)
         libraries.append(np.asarray(X.sum(1)).ravel())
         detected.append(np.asarray((X > 0).sum(1)).ravel())
-        del X, cb, mb
-    return det, np.concatenate(libraries), np.concatenate(detected), shard_sizes, verified
+        design["donor_id"].extend(m["donor_id"].astype(str).tolist())
+        design["raw_class"].extend(m["broad_cell_class"].astype(str).tolist())
+        design["source_library"].extend(m["source_library"].astype(np.int64).tolist())
+        design["operator"].extend([int(r["operator_index"])] * n_meta)
+        design["source"].extend([r["source"]] * n_meta)
+        del X, cb, mb, m
+
+    d = {k: np.asarray(v) for k, v in design.items()}
+    d["broad_class"] = FW.harmonize_class(d["raw_class"])
+    return det, np.concatenate(libraries), np.concatenate(detected), shard_sizes, verified, d
 
 
 def _second_pass_selected(root: Path, rows: list[dict], auth: dict, genes: np.ndarray,
@@ -108,7 +141,7 @@ def build(cache_root, bridge, authority, gene_count: int) -> tuple:
     auth = _authority(authority)
     rows = _rows(bridge)
 
-    det, lib, n_det, shard_sizes, verified = _first_pass(root, rows, auth)
+    det, lib, n_det, shard_sizes, verified, d = _first_pass(root, rows, auth)
     n = int(sum(shard_sizes))
     if n <= 0:
         raise SystemExit("STOP: no cells in corrected TRAIN shards")
@@ -116,7 +149,6 @@ def build(cache_root, bridge, authority, gene_count: int) -> tuple:
     genes = DA.stratified_gene_sample(None, gene_count, prevalence_all=prevalence)
     counts = _second_pass_selected(root, rows, auth, genes, shard_sizes)
 
-    d = FW.load_cell_design(root, bridge)
     di = DA.design_indices(d)
     if len(d["donor_id"]) != n:
         raise SystemExit("STOP: design and counts disagree on the number of cells")
@@ -131,7 +163,7 @@ def build(cache_root, bridge, authority, gene_count: int) -> tuple:
                 prevalence_floor=DA.PREVALENCE_FLOOR, universe_size=int((prevalence > DA.PREVALENCE_FLOOR).sum()),
                 prevalence_sha256=sha(prevalence.tobytes()), shard_files_verified=len(verified),
                 shard_sha256=verified, streaming_passes=2, max_count_shards_resident=1,
-                global_sparse_assembly=False,
+                global_sparse_assembly=False, metadata_from_authenticated_bytes=True,
                 levels=dict(n_cls=di["n_cls"], n_src=di["n_src"], n_op=di["n_op"],
                             n_donor=di["n_donor"], n_dk=di["n_dk"]),
                 class_levels=[str(x) for x in di["class_levels"]], source_levels=[str(x) for x in di["source_levels"]])
@@ -139,7 +171,7 @@ def build(cache_root, bridge, authority, gene_count: int) -> tuple:
 
 
 def verify_against_loader(arrays: dict, cache_root, bridge, gene_count: int) -> dict:
-    """Independent bounded-stream equivalence verification; deliberately never calls DA.load_counts/vstack."""
+    """Independent bounded-stream count equivalence verification; deliberately never calls DA.load_counts/vstack."""
     root = Path(cache_root)
     rows = _rows(bridge)
     genes_expected = np.asarray(arrays["gene_address_index"])
@@ -173,8 +205,6 @@ def verify_against_loader(arrays: dict, cache_root, bridge, gene_count: int) -> 
 def main() -> None:
     root, bridge, authority, g, out = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4]), Path(sys.argv[5])
     arrays, meta = build(root, bridge, authority, g)
-    # Real execution stays two-pass. Exact equivalence to the historical loader is enforced by synthetic fixture
-    # tests; authenticated shard hashes bind real execution to those same bytes without a third/fourth full read.
     meta["verified_against_loader"] = "SYNTHETIC_EQUIVALENCE_TEST_REQUIRED__REAL_RUN_NOT_REREAD"
     out.mkdir(parents=True, exist_ok=True)
     npz = out / f"V79_ANALYSIS_CACHE_G{g}.npz"
