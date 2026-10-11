@@ -313,6 +313,27 @@ def verify_source_file(path: Path, source_rec: dict) -> str:
     return actual
 
 
+def strict_integer_array(values, label: str):
+    """Exact nonnegative integers as int64, or RuntimeError; never truncates (no astype on fractional values)."""
+    import numpy as np
+
+    array = np.asarray(values)
+    if array.dtype.kind in "iu":
+        if array.size and array.min() < 0:
+            raise RuntimeError(f"{label} must be nonnegative")
+        return array.astype(np.int64)
+    if array.dtype.kind != "f":
+        raise RuntimeError(f"{label} has non-numeric dtype {array.dtype}")
+    numeric = array.astype(np.float64)
+    if not np.isfinite(numeric).all():
+        raise RuntimeError(f"{label} must be finite")
+    if np.any(numeric < 0):
+        raise RuntimeError(f"{label} must be nonnegative")
+    if not np.equal(numeric, np.floor(numeric)).all():
+        raise RuntimeError(f"{label} must be exactly integer-valued; truncation is forbidden")
+    return numeric.astype(np.int64)
+
+
 def strict_raw_integer(value) -> int:
     numeric = float(value)
     if not math.isfinite(numeric):

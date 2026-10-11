@@ -196,9 +196,9 @@ def sentinel_maps(td50):
     library, detected = {}, {}
     for source, payload in td50.items():
         for grow, source_library, det in zip(
-            payload["global_row"].astype(int),
-            payload["source_library"].astype(np.int64),
-            payload["detected"].astype(np.int64),
+            common.strict_integer_array(payload["global_row"], f"TD50 {source} global_row"),
+            common.strict_integer_array(payload["source_library"], f"TD50 {source} source_library"),
+            common.strict_integer_array(payload["detected"], f"TD50 {source} detected"),
         ):
             library[int(grow)] = int(source_library)
             detected[int(grow)] = int(det)
