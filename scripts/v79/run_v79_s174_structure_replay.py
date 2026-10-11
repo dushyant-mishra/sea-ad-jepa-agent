@@ -36,6 +36,23 @@ from scipy.special import expit
 SEED = 20261011
 RIDGE = 1e-4
 MODELS = ("depth_linear", "depth_quad", "depth_class", "depth_class_source", "depth_class_source_operator")
+OPERATOR_MODEL = "depth_class_source_operator"
+
+# PR #280 controller ruling (2026-10-11T19:40:47Z, before any replay metric existed): operator-within-source
+# columns get an explicit ridge penalty, primary lambda = 1 (Gaussian prior SD 1 on the linear predictor), in both
+# hurdle parts; intercept, depth, class and source keep their frozen treatment. The sensitivity set is frozen and is
+# deliberately not a command-line option, so it cannot be adapted after seeing outcomes.
+OPERATOR_LAMBDA_PRIMARY = 1.0
+OPERATOR_LAMBDA_SET = (0.25, 1.0, 4.0)
+OPERATOR_BOOTSTRAP_RESAMPLES = 2000
+OPERATOR_RULING_CONVENTION = (
+    "Convention fixed in code before any replay metric existed (Macha, pending controller ratification). At each "
+    "lambda the per-gene operator increment is loss(depth_class_source) - loss(operator) for detection (held-out "
+    "log loss) and lpd(operator) - lpd(depth_class_source) for positive magnitude (held-out lognormal LPD), so "
+    "positive means operator helps. 'Materially present' at a lambda: no failed fit at that lambda, median per-gene "
+    "increment > 0, and the 95% gene-bootstrap interval of that median (2000 resamples, fixed seed) excludes 0. "
+    "Genes share cells and donors, so the gene bootstrap is optimistic. SUPPORTED: materially present at all three "
+    "lambdas. NOT_SUPPORTED: materially present at none. Otherwise PRIOR_SENSITIVE__UNRESOLVED.")
 
 
 def sha256(path: Path) -> str:
@@ -154,17 +171,48 @@ def design_matrix(data: dict, model: str) -> np.ndarray:
     return np.column_stack(cols).astype(np.float64, copy=False)
 
 
-def _logistic_fit(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+def operator_column_mask(data: dict, model: str) -> np.ndarray:
+    """True for the operator-within-source columns of a model's design (they are the last columns), else False."""
+    mask = np.zeros(design_matrix(data, model).shape[1], dtype=bool)
+    if model == OPERATOR_MODEL:
+        k = _nested_child_one_hot(data["op"], data["src"]).shape[1]
+        if k:
+            mask[-k:] = True
+    return mask
+
+
+def operator_penalty_vector(data: dict, model: str, operator_lambda: float) -> np.ndarray:
+    """Per-column ridge penalty: intercept 0, the frozen RIDGE elsewhere, operator_lambda on operator columns only."""
+    mask = operator_column_mask(data, model)
+    pen = np.full(mask.shape, RIDGE, dtype=np.float64)
+    pen[0] = 0.0
+    pen[mask] = float(operator_lambda)
+    return pen
+
+
+def _logistic_fit(X: np.ndarray, y: np.ndarray, penalty: np.ndarray | None = None) -> np.ndarray:
+    """penalty=None is the original frozen path (RIDGE on every non-intercept column), unchanged."""
     y = np.asarray(y, dtype=np.float64)
     p = X.shape[1]
-    def objective(beta):
-        eta = X @ beta
-        nll = np.logaddexp(0.0, eta).sum() - np.dot(y, eta)
-        return float(nll + 0.5 * RIDGE * np.dot(beta[1:], beta[1:]))
-    def grad(beta):
-        g = X.T @ (expit(X @ beta) - y)
-        g[1:] += RIDGE * beta[1:]
-        return g
+    if penalty is None:
+        def objective(beta):
+            eta = X @ beta
+            nll = np.logaddexp(0.0, eta).sum() - np.dot(y, eta)
+            return float(nll + 0.5 * RIDGE * np.dot(beta[1:], beta[1:]))
+        def grad(beta):
+            g = X.T @ (expit(X @ beta) - y)
+            g[1:] += RIDGE * beta[1:]
+            return g
+    else:
+        pen = np.asarray(penalty, dtype=np.float64)
+        if pen.shape != (p,):
+            raise ValueError("penalty vector must have one entry per design column")
+        def objective(beta):
+            eta = X @ beta
+            nll = np.logaddexp(0.0, eta).sum() - np.dot(y, eta)
+            return float(nll + 0.5 * np.dot(pen * beta, beta))
+        def grad(beta):
+            return X.T @ (expit(X @ beta) - y) + pen * beta
     res = minimize(objective, np.zeros(p), jac=grad, method="L-BFGS-B", options={"maxiter": 300, "ftol": 1e-10})
     if not res.success and np.linalg.norm(grad(res.x), ord=np.inf) > 1e-4:
         raise RuntimeError(f"logistic fit did not converge: {res.message}")
@@ -176,9 +224,16 @@ def _bernoulli_logloss(y: np.ndarray, eta: np.ndarray) -> np.ndarray:
     return np.logaddexp(0.0, eta) - y * eta
 
 
-def _ridge_linear_fit(X: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, float]:
-    eye = np.eye(X.shape[1]); eye[0, 0] = 0.0
-    beta = np.linalg.solve(X.T @ X + RIDGE * eye, X.T @ y)
+def _ridge_linear_fit(X: np.ndarray, y: np.ndarray, penalty: np.ndarray | None = None) -> tuple[np.ndarray, float]:
+    """penalty=None is the original frozen path (RIDGE on every non-intercept column), unchanged."""
+    if penalty is None:
+        eye = np.eye(X.shape[1]); eye[0, 0] = 0.0
+        beta = np.linalg.solve(X.T @ X + RIDGE * eye, X.T @ y)
+    else:
+        pen = np.asarray(penalty, dtype=np.float64)
+        if pen.shape != (X.shape[1],):
+            raise ValueError("penalty vector must have one entry per design column")
+        beta = np.linalg.solve(X.T @ X + np.diag(pen), X.T @ y)
     resid = y - X @ beta
     sigma = float(np.sqrt(max(np.mean(resid * resid), 1e-8)))
     return beta, sigma
@@ -228,7 +283,7 @@ def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED)
     y = (np.asarray(data["counts_selected"])[:, gene] > 0).astype(np.float64)
     folds = donor_folds(data["donor"], data["src"], k, seed)
     out = {}
-    for model in MODELS:
+    for model in MODELS[:-1]:  # non-operator models: the original frozen path, unchanged
         X = design_matrix(data, model)
         losses = []
         for test in folds:
@@ -237,30 +292,57 @@ def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED)
             losses.append(_bernoulli_logloss(y[test], X[test] @ beta))
         loss = np.concatenate(losses)
         out[model] = {"mean_logloss": float(loss.mean()), "n_test_predictions": int(len(loss))}
-    return {"gene_position": int(gene), "prevalence": float(y.mean()), "models": out}
+    X = design_matrix(data, OPERATOR_MODEL)
+    sens = {}
+    for lam in OPERATOR_LAMBDA_SET:
+        pen = operator_penalty_vector(data, OPERATOR_MODEL, lam)
+        losses, failed = [], 0
+        for test in folds:
+            train = ~test
+            try:
+                beta = _logistic_fit(X[train], y[train], penalty=pen)
+            except RuntimeError:
+                if lam == OPERATOR_LAMBDA_PRIMARY:
+                    raise  # every primary fit must converge, or the replay fails closed
+                failed += 1
+                continue
+            losses.append(_bernoulli_logloss(y[test], X[test] @ beta))
+        if failed:
+            sens[str(lam)] = {"mean_logloss": None, "n_test_predictions": 0, "converged": False, "failed_folds": failed}
+        else:
+            loss = np.concatenate(losses)
+            sens[str(lam)] = {"mean_logloss": float(loss.mean()), "n_test_predictions": int(len(loss)),
+                              "converged": True, "failed_folds": 0}
+    out[OPERATOR_MODEL] = sens[str(OPERATOR_LAMBDA_PRIMARY)]
+    return {"gene_position": int(gene), "prevalence": float(y.mean()), "models": out,
+            "operator_penalty_sensitivity": sens}
 
 
 def evaluate_positive_gene(data: dict, gene: int, k: int = 3, seed: int = SEED) -> dict:
     counts = np.asarray(data["counts_selected"])[:, gene].astype(np.float64)
     pos = counts > 0
     folds = donor_folds(data["donor"], data["src"], k, seed)
-    out = {}
-    for model in MODELS:
-        X = design_matrix(data, model)
+
+    def run(X, penalty=None):
         lpds = []
         for test_donor in folds:
             train = (~test_donor) & pos
             test = test_donor & pos
             if train.sum() <= X.shape[1] or not test.any():
                 continue
-            beta, sigma = _ridge_linear_fit(X[train], np.log(counts[train]))
+            beta, sigma = _ridge_linear_fit(X[train], np.log(counts[train]), penalty=penalty)
             lpds.append(_normal_lpd(np.log(counts[test]), X[test] @ beta, sigma))
         if not lpds:
-            out[model] = {"mean_lpd": float("nan"), "n_positive_test_predictions": 0}
-        else:
-            lpd = np.concatenate(lpds)
-            out[model] = {"mean_lpd": float(lpd.mean()), "n_positive_test_predictions": int(len(lpd))}
-    return {"gene_position": int(gene), "n_positive": int(pos.sum()), "models": out}
+            return {"mean_lpd": float("nan"), "n_positive_test_predictions": 0}
+        lpd = np.concatenate(lpds)
+        return {"mean_lpd": float(lpd.mean()), "n_positive_test_predictions": int(len(lpd))}
+
+    out = {model: run(design_matrix(data, model)) for model in MODELS[:-1]}  # original frozen path, unchanged
+    X = design_matrix(data, OPERATOR_MODEL)
+    sens = {str(lam): run(X, operator_penalty_vector(data, OPERATOR_MODEL, lam)) for lam in OPERATOR_LAMBDA_SET}
+    out[OPERATOR_MODEL] = sens[str(OPERATOR_LAMBDA_PRIMARY)]
+    return {"gene_position": int(gene), "n_positive": int(pos.sum()), "models": out,
+            "operator_penalty_sensitivity": sens}
 
 
 def _center_within(x: np.ndarray, groups: np.ndarray) -> np.ndarray:
@@ -291,7 +373,8 @@ def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: i
     y = (counts > 0).astype(np.float64)
 
     X_full = design_matrix(data, "depth_class_source_operator")
-    b_full = _logistic_fit(X_full, y)
+    pen_full = operator_penalty_vector(data, OPERATOR_MODEL, OPERATOR_LAMBDA_PRIMARY)
+    b_full = _logistic_fit(X_full, y, penalty=pen_full)
     det_full_resid = y - expit(X_full @ b_full)
     X_noop = design_matrix(data, "depth_class_source")
     b_noop = _logistic_fit(X_noop, y)
@@ -308,7 +391,7 @@ def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: i
     positive = None
     if int(pos.sum()) > X_full.shape[1] + 5:
         z = np.log(counts[pos])
-        bf, _ = _ridge_linear_fit(X_full[pos], z)
+        bf, _ = _ridge_linear_fit(X_full[pos], z, penalty=pen_full)
         pos_full_resid = z - X_full[pos] @ bf
         bn, _ = _ridge_linear_fit(X_noop[pos], z)
         pos_noop_resid = z - X_noop[pos] @ bn
@@ -346,7 +429,43 @@ def summarize_support(per_gene: list[dict], part: str) -> dict:
     return out
 
 
-def main() -> None:
+def operator_increment_ruling(per_gene: list[dict], metric: str, higher_is_better: bool, seed: int = SEED) -> dict:
+    """Operator increment over depth_class_source at each frozen lambda, and the pre-registered robustness ruling
+    (OPERATOR_RULING_CONVENTION). Never selects a lambda."""
+    rng = np.random.default_rng(seed + 9000)
+    by_lambda, material = {}, {}
+    for lam in OPERATOR_LAMBDA_SET:
+        key = str(lam)
+        failed = sum(1 for g in per_gene if g["operator_penalty_sensitivity"][key].get("converged") is False)
+        deltas = []
+        for g in per_gene:
+            base = g["models"]["depth_class_source"][metric]
+            op = g["operator_penalty_sensitivity"][key][metric]
+            if base is None or op is None or not (np.isfinite(base) and np.isfinite(op)):
+                continue
+            deltas.append(op - base if higher_is_better else base - op)
+        d = np.asarray(deltas, dtype=np.float64)
+        if d.size:
+            boot = np.median(rng.choice(d, size=(OPERATOR_BOOTSTRAP_RESAMPLES, d.size), replace=True), axis=1)
+            lo, hi = (float(x) for x in np.quantile(boot, [0.025, 0.975]))
+            med = float(np.median(d))
+        else:
+            lo = hi = med = None
+        mat = bool(failed == 0 and d.size and med > 0 and lo > 0)
+        material[key] = mat
+        by_lambda[key] = {"n_genes": int(d.size), "failed_genes": int(failed), "median_increment": med,
+                          "mean_increment": float(d.mean()) if d.size else None,
+                          "fraction_genes_improved": float((d > 0).mean()) if d.size else None,
+                          "median_increment_bootstrap_95": [lo, hi], "materially_present": mat}
+    n_material = sum(material.values())
+    ruling = ("SUPPORTED" if n_material == len(OPERATOR_LAMBDA_SET) else
+              "NOT_SUPPORTED" if n_material == 0 else "PRIOR_SENSITIVE__UNRESOLVED")
+    return {"primary_lambda": OPERATOR_LAMBDA_PRIMARY, "lambda_set": list(OPERATOR_LAMBDA_SET),
+            "by_lambda": by_lambda, "ruling": ruling, "convention": OPERATOR_RULING_CONVENTION}
+
+
+def build_parser() -> argparse.ArgumentParser:
+    """Command line. The operator penalty and its sensitivity set are frozen constants, deliberately not options."""
     ap = argparse.ArgumentParser()
     ap.add_argument("cache")
     ap.add_argument("receipt")
@@ -356,7 +475,11 @@ def main() -> None:
     ap.add_argument("--permutations", type=int, default=99)
     ap.add_argument("--folds", type=int, default=3)
     ap.add_argument("--seed", type=int, default=SEED)
-    a = ap.parse_args()
+    return ap
+
+
+def main() -> None:
+    a = build_parser().parse_args()
     data = load_compact_cache(a.cache, a.receipt)
     panel = select_panel_positions(data["prevalence_selected"], min(a.genes, data["counts_selected"].shape[1]), a.seed)
     support_panel_local = select_panel_positions(data["prevalence_selected"][panel], min(a.support_genes, len(panel)), a.seed + 101)
@@ -369,8 +492,24 @@ def main() -> None:
     support = [residual_support_for_gene(data, int(g), a.seed + int(i) * 100, a.permutations)
                for i, g in enumerate(support_panel.tolist())]
 
+    operator_robustness = {
+        "detection": operator_increment_ruling(det, "mean_logloss", higher_is_better=False, seed=a.seed),
+        "positive_lognormal": operator_increment_ruling(pos, "mean_lpd", higher_is_better=True, seed=a.seed + 1),
+    }
     rec = {
-        "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V2",
+        "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3",
+        "operator_penalty": {
+            "decision": "PR #280 controller ruling 2026-10-11T19:40:47Z (before any replay metric)",
+            "primary_lambda": OPERATOR_LAMBDA_PRIMARY, "sensitivity_set": list(OPERATOR_LAMBDA_SET),
+            "applies_to": "operator-within-source columns only, in both hurdle parts; intercept unpenalized; "
+                          "depth, class and source keep RIDGE",
+            "primary_fits_must_converge": True, "sensitivity_failures_recorded_not_rescued": True},
+        "operator_increment_robustness": operator_robustness,
+        "operator_support_lambda_invariant": (
+            "operator support is computed from depth+class+source residuals (no operator columns), donor-centred and "
+            "permuted within donor, exactly as frozen; the operator penalty cannot change it, so its result is the "
+            "same at every lambda in the frozen set"),
+        "donor_and_donor_class_support_lambda": OPERATOR_LAMBDA_PRIMARY,
         "status": "DEVELOPMENT_ONLY__NOT_CONFIRMATORY__NOT_SYNTHETIC_CONSUMABLE",
         "cache_sha256": sha256(Path(a.cache)), "receipt_sha256": sha256(Path(a.receipt)),
         "n_cells": int(len(data["donor"])), "n_donors": int(len(np.unique(data["donor"]))),
@@ -388,7 +527,8 @@ def main() -> None:
         "per_gene_detection": det, "per_gene_positive": pos, "per_gene_random_effect_support": support,
         "boundaries": {"bayesian_posterior_inference": False, "confirmatory_qualification": False,
                        "factorial_execution": False, "training_authorized": False},
-        "terminal": "S174_STRUCTURE_REPLAY_COMPLETE__DEVELOPMENT_ONLY__CONTROLLER_REVIEW_REQUIRED"
+        "terminal": ("EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__FROZEN_SENSITIVITY_0p25_1_4__"
+                     "DEVELOPMENT_ONLY__CONTROLLER_MODEL_FREEZE_REQUIRED__BAYESIAN_CONFIRMATION_OFF__TRAINING_OFF")
     }
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rec, indent=1, allow_nan=False) + "\n", encoding="utf-8")

@@ -1,0 +1,35 @@
+# GREEN operator-penalty repair, working tree over f4d55ef5af93cc80a3d14cc932ffcd1d787064bd
+# utc: 2026-10-11T20:04:35Z
+ scripts/v79/run_v79_s174_structure_replay.py | 198 +++++++++++++++++++++++----
+ tests/v79/test_v79_s174_structure_replay.py  |  20 +++
+ 2 files changed, 189 insertions(+), 29 deletions(-)
+......................                                                   [100%]
+============================== warnings summary ===============================
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/v79/test_v79_analysis_cache.py::test_cache_equals_the_current_loader
+PASSED tests/v79/test_v79_analysis_cache.py::test_build_never_assembles_a_global_sparse_matrix
+PASSED tests/v79/test_v79_analysis_cache.py::test_build_does_not_reread_metadata_after_authentication
+PASSED tests/v79/test_v79_analysis_cache.py::test_verification_does_not_reload_the_global_matrix
+PASSED tests/v79/test_v79_analysis_cache.py::test_a_tampered_shard_is_refused
+PASSED tests/v79/test_v79_scheduler_resource_defaults.py::test_scheduler_defaults_to_one_machine_wide_fit
+PASSED tests/v79/test_v79_scheduler_resource_defaults.py::test_scheduler_keeps_a_nonzero_settle_window
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_cache_receipt_is_hash_bound
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_donor_folds_never_split_a_donor
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_operator_within_source_design_is_full_rank
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_nested_detection_replay_detects_strong_class_signal
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_positive_replay_uses_only_positive_counts
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_subpanel_stays_prevalence_stratified
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_residual_group_permutation_detects_strong_group_structure
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_operator_support_removes_pure_donor_residual
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_operator_penalty_set_is_frozen_and_not_a_cli_option
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_only_operator_within_source_columns_receive_the_operator_penalty
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_penalized_operator_design_stays_full_rank
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_separated_operator_levels_converge_at_primary_lambda
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_non_operator_nested_outputs_are_unchanged_by_the_repair
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_operator_sensitivities_are_recorded_for_exactly_the_frozen_set
+PASSED tests/v79/test_v79_s174_structure_replay.py::test_replay_entrypoint_writes_the_frozen_operator_penalty_record
+22 passed, 1 warning in 2.32s
+# exit=0

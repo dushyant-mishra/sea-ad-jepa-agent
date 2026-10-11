@@ -1,0 +1,53 @@
+# RED operator-penalty repair tests over PR #279 head 615b55eb03b95630484b18d47de0ef7340368d37
+# utc: 2026-10-11T20:01:42Z
+........FF.F.F                                                           [100%]
+================================== FAILURES ===================================
+__________ test_operator_penalty_set_is_frozen_and_not_a_cli_option ___________
+
+    def test_operator_penalty_set_is_frozen_and_not_a_cli_option():
+>       assert R.OPERATOR_LAMBDA_PRIMARY == 1.0
+E       AttributeError: module 'run_v79_s174_structure_replay' has no attribute 'OPERATOR_LAMBDA_PRIMARY'
+
+tests\v79\test_v79_s174_structure_replay.py:146: AttributeError
+____ test_only_operator_within_source_columns_receive_the_operator_penalty ____
+
+    def test_only_operator_within_source_columns_receive_the_operator_penalty():
+        d, _ = _separated_operator_data()
+        X = R.design_matrix(d, "depth_class_source_operator")
+>       mask = R.operator_column_mask(d, "depth_class_source_operator")
+E       AttributeError: module 'run_v79_s174_structure_replay' has no attribute 'operator_column_mask'
+
+tests\v79\test_v79_s174_structure_replay.py:156: AttributeError
+__________ test_separated_operator_levels_converge_at_primary_lambda __________
+
+    def test_separated_operator_levels_converge_at_primary_lambda():
+        d, y = _separated_operator_data()
+        X = R.design_matrix(d, "depth_class_source_operator")
+>       beta = R._logistic_fit(X, y, penalty=R.operator_penalty_vector(d, "depth_class_source_operator", R.OPERATOR_LAMBDA_PRIMARY))
+E       AttributeError: module 'run_v79_s174_structure_replay' has no attribute 'operator_penalty_vector'
+
+tests\v79\test_v79_s174_structure_replay.py:178: AttributeError
+_____ test_operator_sensitivities_are_recorded_for_exactly_the_frozen_set _____
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1263/test_operator_sensitivities_ar0')
+
+    def test_operator_sensitivities_are_recorded_for_exactly_the_frozen_set(tmp_path):
+        npz, rec = _cache(tmp_path)
+        d = R.load_compact_cache(npz, rec)
+        det = R.evaluate_detection_gene(d, 0, 3, 20261011)
+        pos = R.evaluate_positive_gene(d, 0, 3, 20261011)
+        for out in (det, pos):
+>           sens = out["operator_penalty_sensitivity"]
+E           KeyError: 'operator_penalty_sensitivity'
+
+tests\v79\test_v79_s174_structure_replay.py:213: KeyError
+============================== warnings summary ===============================
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v79/test_v79_s174_structure_replay.py::test_operator_penalty_set_is_frozen_and_not_a_cli_option
+FAILED tests/v79/test_v79_s174_structure_replay.py::test_only_operator_within_source_columns_receive_the_operator_penalty
+FAILED tests/v79/test_v79_s174_structure_replay.py::test_separated_operator_levels_converge_at_primary_lambda
+FAILED tests/v79/test_v79_s174_structure_replay.py::test_operator_sensitivities_are_recorded_for_exactly_the_frozen_set
+4 failed, 10 passed, 1 warning in 0.93s
+# exit=0
