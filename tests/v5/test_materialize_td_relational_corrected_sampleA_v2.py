@@ -118,3 +118,123 @@ def test_input_authority_ledger_includes_historical_nph_and_td50_hashes():
     assert m.INPUT_AUTHORITY_HASHES["historical_csr_sha256"] == m.HIST_CSR_SHA
     assert m.INPUT_AUTHORITY_HASHES["td50_member_sha256"] == m.TD50_SHA
     assert m.INPUT_AUTHORITY_HASHES["sample_freeze_sha256"] == m.EXPECTED_SAMPLE_FREEZE_SHA
+
+
+def _force_simultaneous_marker_creation(monkeypatch, marker: Path, parties: int = 2):
+    """Hold every starter at the marker-creation primitive (Path.write_text or os.open) until all have arrived."""
+    import os
+    import threading
+
+    barrier = threading.Barrier(parties)
+    original_write_text = Path.write_text
+    original_open = os.open
+
+    def synchronized_write_text(self, *args, **kwargs):
+        if Path(self) == marker:
+            barrier.wait(timeout=5)
+        return original_write_text(self, *args, **kwargs)
+
+    def synchronized_open(path, *args, **kwargs):
+        if Path(path) == marker:
+            barrier.wait(timeout=5)
+        return original_open(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", synchronized_write_text)
+    monkeypatch.setattr(os, "open", synchronized_open)
+
+
+def _race(start, parties: int = 2):
+    import threading
+
+    successes, failures = [], []
+
+    def run():
+        try:
+            successes.append(start())
+        except Exception as exc:  # noqa: BLE001 - the test classifies every outcome
+            failures.append(exc)
+
+    threads = [threading.Thread(target=run) for _ in range(parties)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=10)
+    assert all(not thread.is_alive() for thread in threads)
+    return successes, failures
+
+
+def _assert_one_winner(m, out, successes, failures):
+    assert len(successes) == 1 and len(failures) == 1, (successes, failures)
+    assert isinstance(failures[0], RuntimeError) and "already spent" in str(failures[0]), failures
+    marker = out / "G6_EXECUTION_START.json"
+    assert marker.exists() and sorted(p.name for p in out.iterdir()) == ["G6_EXECUTION_START.json"]
+    import json
+
+    rec = json.loads(marker.read_text(encoding="utf-8"))
+    assert rec["status"] == "STARTED_NOT_A_PASS" and rec["training_authorized"] is False
+
+
+def test_g6_start_forced_race_into_nonexistent_directory_has_one_winner(monkeypatch, tmp_path):
+    m = load_module()
+    out = tmp_path / "new" / "g6"
+    _force_simultaneous_marker_creation(monkeypatch, out / "G6_EXECUTION_START.json")
+    successes, failures = _race(lambda: m.begin_namespace(out, {"preflight_result_sha256": "abc"}))
+    _assert_one_winner(m, out, successes, failures)
+
+
+def test_g6_start_forced_race_into_existing_empty_directory_has_one_winner(monkeypatch, tmp_path):
+    m = load_module()
+    out = tmp_path / "g6"
+    out.mkdir()
+    _force_simultaneous_marker_creation(monkeypatch, out / "G6_EXECUTION_START.json")
+    successes, failures = _race(lambda: m.begin_namespace(out, {"preflight_result_sha256": "abc"}))
+    _assert_one_winner(m, out, successes, failures)
+
+
+def test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent(tmp_path):
+    m = load_module()
+    out = tmp_path / "g6"
+    marker = m.begin_namespace(out, {"preflight_result_sha256": "abc"})
+    raw = marker.read_bytes()
+    for _ in range(2):
+        try:
+            m.begin_namespace(out, {"preflight_result_sha256": "other"})
+        except RuntimeError as e:
+            assert "already spent" in str(e)
+        else:
+            raise AssertionError("a spent G6 namespace must never start again")
+    assert marker.read_bytes() == raw
+
+
+def test_nph_historical_row_rejects_duplicate_address_indices_before_materialization():
+    m = load_module()
+    data = np.asarray([1.25, 2.5, 3.75], dtype=np.float32)
+    indptr = np.asarray([0, 3], dtype=np.int64)
+    # duplicate inside the replay set, and duplicate outside it (rejected before any dictionary materialization)
+    for indices, replay in (([5, 7, 5], {5, 7}), ([5, 9, 9], {5})):
+        try:
+            m.nph_historical_row(0, data, np.asarray(indices, dtype=np.int64), indptr, replay)
+        except RuntimeError as e:
+            assert "duplicate" in str(e).lower() and "nph" in str(e).lower()
+        else:
+            raise AssertionError(f"duplicate NPH52 CSR address indices must fail closed: {indices}")
+
+
+def test_nph_historical_row_passes_historical_values_through_unmodified():
+    m = load_module()
+    data = np.asarray([1.25, 0.0, 3.75, 0.1], dtype=np.float32)
+    indices = np.asarray([5, 6, 7, 8], dtype=np.int64)
+    indptr = np.asarray([0, 4], dtype=np.int64)
+    row = m.nph_historical_row(0, data, indices, indptr, {5, 6, 7})
+    assert row == {5: float(np.float32(1.25)), 7: float(np.float32(3.75))}
+
+
+def test_g6_corrected_row_rejects_duplicate_physical_column_indices():
+    m = load_module()
+    # column 2 is duplicated and unmapped: the inherited decoder silently double-counts it into the library total
+    try:
+        m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower()
+    else:
+        raise AssertionError("duplicate physical H5AD column indices must fail closed in G6")

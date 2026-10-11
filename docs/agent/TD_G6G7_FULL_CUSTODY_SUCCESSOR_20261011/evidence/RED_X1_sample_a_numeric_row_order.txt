@@ -1,0 +1,167 @@
+# RED_X1 (extra finding) Sample-A text sort, tests over code at cc31b67d6679e7e63459b7e23e851610d81e5ab0
+# note: first capture's missing-row case relabelled a source and failed on source counts; corrected before commit; this is the recapture
+# utc: 2026-10-11T15:39:50Z
+FFFF..                                                                   [100%]
+================================== FAILURES ===================================
+____________ test_text_sample_rows_are_ordered_numerically[12-g6] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DF6C3E7FD0>
+key = 'g6', n_rows = 12
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                   sample sample_row  source cell_id
+0      A_NATURAL_MIXTURE         11   NPH52     c11
+1      A_NATUR...    HVS      c1
+11     A_NATURAL_MIXTURE          0     HVS      c0
+12  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+    def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
+        selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+        if enforce_geometry:
+            if len(selected) != N_SAMPLE_A:
+                raise RuntimeError(f"Sample-A geometry mismatch: {len(selected)} != {N_SAMPLE_A}")
+            if selected.source.value_counts().to_dict() != SOURCE_COUNTS:
+                raise RuntimeError("Sample-A source counts mismatch")
+            if selected.sample_row.astype(int).tolist() != list(range(N_SAMPLE_A)):
+>               raise RuntimeError("Sample-A row order mismatch")
+E               RuntimeError: Sample-A row order mismatch
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:173: RuntimeError
+____________ test_text_sample_rows_are_ordered_numerically[12-g7] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DF6C50EC70>
+key = 'g7', n_rows = 12
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                   sample sample_row  source cell_id
+0      A_NATURAL_MIXTURE         11   NPH52     c11
+1      A_NATUR...    HVS      c1
+11     A_NATURAL_MIXTURE          0     HVS      c0
+12  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+    def select_sample_a(frame: pd.DataFrame) -> pd.DataFrame:
+        selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+        if len(selected) != N_SAMPLE_A:
+            raise RuntimeError("Sample-A geometry mismatch")
+        if selected.source.value_counts().to_dict() != SOURCE_COUNTS:
+            raise RuntimeError("Sample-A source counts mismatch")
+        if selected.sample_row.astype(int).tolist() != list(range(N_SAMPLE_A)):
+>           raise RuntimeError("Sample-A row order mismatch")
+E           RuntimeError: Sample-A row order mismatch
+
+scripts\v5\audit_td_relational_g7_s174_overlap_v2.py:294: RuntimeError
+___________ test_text_sample_rows_are_ordered_numerically[1000-g6] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DF6C453610>
+key = 'g6', n_rows = 1000
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                     sample sample_row  source cell_id
+0        A_NATURAL_MIXTURE        999   NPH52    c999
+1        A...TURAL_MIXTURE          0     HVS      c0
+1000  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+[1001 rows x 4 columns]
+
+    def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
+        selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+        if enforce_geometry:
+            if len(selected) != N_SAMPLE_A:
+                raise RuntimeError(f"Sample-A geometry mismatch: {len(selected)} != {N_SAMPLE_A}")
+            if selected.source.value_counts().to_dict() != SOURCE_COUNTS:
+                raise RuntimeError("Sample-A source counts mismatch")
+            if selected.sample_row.astype(int).tolist() != list(range(N_SAMPLE_A)):
+>               raise RuntimeError("Sample-A row order mismatch")
+E               RuntimeError: Sample-A row order mismatch
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:173: RuntimeError
+___________ test_text_sample_rows_are_ordered_numerically[1000-g7] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DF6C50C2B0>
+key = 'g7', n_rows = 1000
+
+    @pytest.mark.parametrize("key", ["g6", "g7"])
+    @pytest.mark.parametrize("n_rows", [12, 1000])
+    def test_text_sample_rows_are_ordered_numerically(monkeypatch, key, n_rows):
+        m = load(key)
+        monkeypatch.setattr(m, "N_SAMPLE_A", n_rows)
+        monkeypatch.setattr(m, "SOURCE_COUNTS", {"HVS": 3, "NPH52": 3, "SEA_AD": n_rows - 6})
+        order = list(range(n_rows))[::-1]  # file order deliberately not the frozen order
+>       selected = m.select_sample_a(frame(n_rows, order)) if key == "g7" else m.select_sample_a(frame(n_rows, order),
+                                                                                                  enforce_geometry=True)
+
+tests\v5\test_td_v2_sample_a_row_order.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+frame =                     sample sample_row  source cell_id
+0        A_NATURAL_MIXTURE        999   NPH52    c999
+1        A...TURAL_MIXTURE          0     HVS      c0
+1000  B_COVERAGE_DISCOVERY          0     HVS      b0
+
+[1001 rows x 4 columns]
+
+    def select_sample_a(frame: pd.DataFrame) -> pd.DataFrame:
+        selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+        if len(selected) != N_SAMPLE_A:
+            raise RuntimeError("Sample-A geometry mismatch")
+        if selected.source.value_counts().to_dict() != SOURCE_COUNTS:
+            raise RuntimeError("Sample-A source counts mismatch")
+        if selected.sample_row.astype(int).tolist() != list(range(N_SAMPLE_A)):
+>           raise RuntimeError("Sample-A row order mismatch")
+E           RuntimeError: Sample-A row order mismatch
+
+scripts\v5\audit_td_relational_g7_s174_overlap_v2.py:294: RuntimeError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[12-g6]
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[12-g7]
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[1000-g6]
+FAILED tests/v5/test_td_v2_sample_a_row_order.py::test_text_sample_rows_are_ordered_numerically[1000-g7]
+4 failed, 2 passed, 3 warnings in 7.35s
+# exit=1

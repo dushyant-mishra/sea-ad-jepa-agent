@@ -45,6 +45,9 @@ def test_exact_pr259_v3_receipts_are_accepted_without_value_authority():
     assert sha256(mapping) == MAPPING_SHA
 
     m = load_common()
+    # the runtime gate's physical-byte pins (and the owner-decision contract that names them) are these exact files
+    assert m.PR259_DRIVER_SHA256 == DRIVER_SHA == sha256(driver)
+    assert m.PR259_MAPPING_SHA256 == MAPPING_SHA == sha256(mapping)
     preflight, mapping_rec = m.load_bound_preflight(
         driver,
         mapping,

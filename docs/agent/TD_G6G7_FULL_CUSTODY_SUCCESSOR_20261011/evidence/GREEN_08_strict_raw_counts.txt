@@ -1,0 +1,19 @@
+# GREEN_08 strict raw-count semantics, working tree over 197be62309618eb2cbb52770be536633538d146d
+# utc: 2026-10-11T15:27:48Z
+ ...aterialize_td_relational_corrected_sampleA_v2.py |  6 +++---
+ scripts/v5/td_relational_value_read_v2_common.py    | 21 +++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 3 deletions(-)
+.......................................................                  [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+55 passed, 3 warnings in 5.47s
+# exit=0

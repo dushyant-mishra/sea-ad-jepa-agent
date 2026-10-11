@@ -117,3 +117,67 @@ def test_g7_attempt_concurrent_start_has_exactly_one_winner(monkeypatch, tmp_pat
     assert isinstance(failures[0], RuntimeError)
     assert "already spent" in str(failures[0])
     assert marker.exists()
+
+
+def _force_simultaneous_marker_creation(monkeypatch, marker: Path, parties: int = 2):
+    """Hold every starter at the point where it creates the marker until all have arrived, whichever primitive the
+    implementation uses (Path.write_text or os.open), so the race is forced rather than left to the scheduler."""
+    import os
+
+    barrier = threading.Barrier(parties)
+    original_write_text = Path.write_text
+    original_open = os.open
+
+    def synchronized_write_text(self, *args, **kwargs):
+        if Path(self) == marker:
+            barrier.wait(timeout=5)
+        return original_write_text(self, *args, **kwargs)
+
+    def synchronized_open(path, *args, **kwargs):
+        if Path(path) == marker:
+            barrier.wait(timeout=5)
+        return original_open(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", synchronized_write_text)
+    monkeypatch.setattr(os, "open", synchronized_open)
+
+
+def _race(start, parties: int = 2):
+    successes, failures = [], []
+
+    def run():
+        try:
+            successes.append(start())
+        except Exception as exc:  # noqa: BLE001 - the test classifies every outcome
+            failures.append(exc)
+
+    threads = [threading.Thread(target=run) for _ in range(parties)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=10)
+    assert all(not thread.is_alive() for thread in threads)
+    return successes, failures
+
+
+def test_g7_attempt_forced_simultaneous_creation_has_exactly_one_winner(monkeypatch, tmp_path):
+    m = load_module()
+    out = tmp_path / "G7_RECEIPT.json"
+    marker = m.g7_attempt_marker_path(out)
+    _force_simultaneous_marker_creation(monkeypatch, marker)
+    successes, failures = _race(lambda: m.begin_g7_attempt(out, {"t": "x"}, "g6sha"))
+    assert len(successes) == 1 and len(failures) == 1
+    assert isinstance(failures[0], RuntimeError) and "already spent" in str(failures[0])
+    rec = json.loads(marker.read_text(encoding="utf-8"))
+    assert rec["status"] == "STARTED_NOT_A_PASS" and rec["g6_receipt_sha256"] == "g6sha"
+
+
+def test_g7_attempt_marker_survives_a_later_failure_and_blocks_retry(tmp_path):
+    m = load_module()
+    out = tmp_path / "G7_RECEIPT.json"
+    marker = m.begin_g7_attempt(out, {"t": "x"}, "g6sha")
+    raw = marker.read_bytes()
+    # a later failure inside the attempt does not remove or rewrite the spent marker
+    with pytest.raises(RuntimeError, match="already spent"):
+        m.begin_g7_attempt(out, {"t": "y"}, "other")
+    assert marker.read_bytes() == raw

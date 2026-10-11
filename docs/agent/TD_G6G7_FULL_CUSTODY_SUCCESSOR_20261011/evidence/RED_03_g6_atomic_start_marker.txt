@@ -1,0 +1,131 @@
+# RED_03 G6 atomic start marker, tests over inherited G6 production code at 611b90785d031b381353d169294d3e6cab4971de
+# utc: 2026-10-11T15:17:39Z
+.........FFF                                                             [100%]
+================================== FAILURES ===================================
+_____ test_g6_start_forced_race_into_nonexistent_directory_has_one_winner _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001994DAE2670>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into0')
+
+    def test_g6_start_forced_race_into_nonexistent_directory_has_one_winner(monkeypatch, tmp_path):
+        m = load_module()
+        out = tmp_path / "new" / "g6"
+        _force_simultaneous_marker_creation(monkeypatch, out / "G6_EXECUTION_START.json")
+        successes, failures = _race(lambda: m.begin_namespace(out, {"preflight_result_sha256": "abc"}))
+>       _assert_one_winner(m, out, successes, failures)
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_g6_v2' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\materialize_td_relational_corrected_sampleA_v2.py'>
+out = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into0/new/g6')
+successes = []
+failures = [FileExistsError(17, 'Cannot create a file when that file already exists'), BrokenBarrierError()]
+
+    def _assert_one_winner(m, out, successes, failures):
+>       assert len(successes) == 1 and len(failures) == 1, (successes, failures)
+E       AssertionError: ([], [FileExistsError(17, 'Cannot create a file when that file already exists'), BrokenBarrierError()])
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:167: AssertionError
+___ test_g6_start_forced_race_into_existing_empty_directory_has_one_winner ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001994DB54D90>
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1')
+
+    def test_g6_start_forced_race_into_existing_empty_directory_has_one_winner(monkeypatch, tmp_path):
+        m = load_module()
+        out = tmp_path / "g6"
+        out.mkdir()
+        _force_simultaneous_marker_creation(monkeypatch, out / "G6_EXECUTION_START.json")
+        successes, failures = _race(lambda: m.begin_namespace(out, {"preflight_result_sha256": "abc"}))
+>       _assert_one_winner(m, out, successes, failures)
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_g6_v2' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\materialize_td_relational_corrected_sampleA_v2.py'>
+out = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6')
+successes = [WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXEC...sers/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXECUTION_START.json')]
+failures = []
+
+    def _assert_one_winner(m, out, successes, failures):
+>       assert len(successes) == 1 and len(failures) == 1, (successes, failures)
+E       AssertionError: ([WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXE...dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXECUTION_START.json')], [])
+E       assert (2 == 1)
+E        +  where 2 = len([WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXEC...sers/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_start_forced_race_into1/g6/G6_EXECUTION_START.json')])
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:167: AssertionError
+_ test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_spent_namespace_is_rej0')
+
+    def test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent(tmp_path):
+        m = load_module()
+        out = tmp_path / "g6"
+        marker = m.begin_namespace(out, {"preflight_result_sha256": "abc"})
+        raw = marker.read_bytes()
+        for _ in range(2):
+            try:
+>               m.begin_namespace(out, {"preflight_result_sha256": "other"})
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+out = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_spent_namespace_is_rej0/g6')
+authority_trace = {'preflight_result_sha256': 'other'}
+
+    def begin_namespace(out: Path, authority_trace: dict) -> Path:
+        """Spend the namespace immediately so every later failure leaves durable evidence."""
+        out = Path(out)
+>       assert_empty_output(out)
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+out = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_spent_namespace_is_rej0/g6')
+
+    def assert_empty_output(out: Path) -> None:
+        out = Path(out)
+        if out.exists() and any(out.iterdir()):
+>           raise RuntimeError(f"immutable output namespace is not empty; refusing overwrite: {out}")
+E           RuntimeError: immutable output namespace is not empty; refusing overwrite: C:\Users\dushy\AppData\Local\Temp\pytest-of-dushy\pytest-1203\test_g6_spent_namespace_is_rej0\g6
+
+scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:81: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1203/test_g6_spent_namespace_is_rej0')
+
+    def test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent(tmp_path):
+        m = load_module()
+        out = tmp_path / "g6"
+        marker = m.begin_namespace(out, {"preflight_result_sha256": "abc"})
+        raw = marker.read_bytes()
+        for _ in range(2):
+            try:
+                m.begin_namespace(out, {"preflight_result_sha256": "other"})
+            except RuntimeError as e:
+>               assert "already spent" in str(e)
+E               AssertionError: assert 'already spent' in 'immutable output namespace is not empty; refusing overwrite: C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1203\\test_g6_spent_namespace_is_rej0\\g6'
+E                +  where 'immutable output namespace is not empty; refusing overwrite: C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1203\\test_g6_spent_namespace_is_rej0\\g6' = str(RuntimeError('immutable output namespace is not empty; refusing overwrite: C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1203\\test_g6_spent_namespace_is_rej0\\g6'))
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:203: AssertionError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_nonexistent_directory_has_one_winner
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_existing_empty_directory_has_one_winner
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent
+3 failed, 9 passed, 3 warnings in 11.60s
+# exit=1

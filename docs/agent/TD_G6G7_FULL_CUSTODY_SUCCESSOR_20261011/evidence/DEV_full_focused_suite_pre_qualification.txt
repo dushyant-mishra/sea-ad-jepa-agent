@@ -1,0 +1,8 @@
+# DEV_FULL_SUITE dev worktree, working tree over ee06fe43dbec94085d5a4988a9f497cacd8f3e0b (pre-qualification sanity; canonical qualification runs in a fresh clean worktree)
+# utc: 2026-10-11T16:14:23Z
+ M tests/v5/test_td_relational_pr259_real_receipt_compat.py
+?? docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/evidence/DEV_full_focused_suite_pre_qualification.txt
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+166 passed, 3 warnings in 62.94s (0:01:02)
+# exit=0

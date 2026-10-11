@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import subprocess
 from pathlib import Path
 
@@ -30,6 +31,16 @@ VALUE_SCOPE = (
     "TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology"
 )
 
+# Immutable owner decision that must precede any runtime value authorization. This module never creates one.
+OWNER_DECISION_SCHEMA = "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1"
+OWNER_DECISION = "AUTHORIZE_G6_G7_INTEGRITY_ONLY"
+OWNER_DECISION_FALSE_FLAGS = (
+    "biological_replay_authorized",
+    "target_selection_authorized",
+    "td60_authorized",
+    "training_authorized",
+)
+
 COMMON_ENTRYPOINT = "scripts/v5/td_relational_value_read_v2_common.py"
 G6_ENTRYPOINT = "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py"
 G7_ENTRYPOINT = "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py"
@@ -43,6 +54,156 @@ EXPECTED_INPUT_HASHES = {
     "macha_freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
 }
+
+# Exact physical bytes of the accepted PR #259 value-blind receipts. The runtime gate accepts these bytes only: a
+# semantically identical but reserialized or reformatted copy is refused. The replay manifest is pinned by
+# EXPECTED_INPUT_HASHES["replay_manifest_sha256"] above.
+PR259_DRIVER_SHA256 = "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae"
+PR259_MAPPING_SHA256 = "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0"
+
+# Historical authorities G6 reads (NPH52 pass-through CSR and TD50 sentinels). Defined once here so the G6 writer and
+# the G7 validator of G6 receipts use the same values.
+HIST_CSR_SHA = {
+    "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
+    "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+    "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+    "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
+}
+TD50_SHA = {
+    "HVS": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb",
+    "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
+    "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
+}
+
+# The G6 PASS execution namespace: written by G6, validated file by file by G7.
+G6_START_MARKER_NAME = "G6_EXECUTION_START.json"
+G6_START_SCHEMA = "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1"
+G6_RECEIPT_NAME = "G6_RECEIPT.json"
+G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
+G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+G6_MANIFEST_NAME = "MANIFEST.json"
+G6_CACHE_SCHEMA = "JEPA_TD_RELATIONAL_CORRECTED_SAMPLE_A_CACHE_V2"
+G6_MANIFEST_STATUS = "MATERIALIZED_G6_V2_PASS__G7_PENDING"
+G6_VALUES_NAME = "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz"
+G6_META_NAME = "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
+G6_PASS_FILES = frozenset({G6_START_MARKER_NAME, G6_RECEIPT_NAME, G6_MANIFEST_NAME, G6_VALUES_NAME, G6_META_NAME})
+
+
+G6_VALUES_KEYS = frozenset({"data", "indices", "indptr", "format", "shape"})
+G6_META_FIELDS = ("source", "donor", "operator", "global_row", "cell_id", "source_library", "detected_historical",
+                  "detected_corrected")
+G6_META_STRING_FIELDS = ("source", "donor", "cell_id")
+
+
+def _npz_arrays_without_pickle(raw: bytes, label: str) -> dict:
+    """Every array of an NPZ held in memory; refuses anything that is not a pickle-free NPZ archive."""
+    import io
+
+    import numpy as np
+
+    try:
+        with np.load(io.BytesIO(raw), allow_pickle=False) as payload:
+            return {key: payload[key] for key in payload.files}
+    except Exception as exc:
+        raise RuntimeError(f"{label} is not a pickle-free NPZ archive: {type(exc).__name__}: {exc}") from exc
+
+
+def validate_g6_values_artifact(raw: bytes, *, n_rows: int, n_cols: int, replay_addresses, expected_nnz) -> None:
+    """Structural custody check of the G6 values artifact: exactly the canonical CSR that G6 writes.
+
+    Shape n_rows x n_cols; indptr of length n_rows + 1, starting at 0, monotone, ending at nnz; indices in
+    [0, n_cols) and strictly increasing within every row (sorted, no duplicate address); float32 finite values;
+    every stored address one of the frozen replay addresses; nnz equal to the manifest's. Nothing is repaired.
+    This inspects G6's structure only; it is never a reference for G7's biological cross-check.
+    """
+    import numpy as np
+
+    label = "G6 values artifact"
+    z = _npz_arrays_without_pickle(raw, label)
+    if set(z) != G6_VALUES_KEYS:
+        raise RuntimeError(f"{label} keys {sorted(z)} are not the CSR payload keys {sorted(G6_VALUES_KEYS)}")
+    fmt = z["format"]
+    fmt_text = fmt.item().decode("ascii", "replace") if fmt.dtype.kind == "S" else str(fmt.item()) if fmt.dtype.kind == "U" else None
+    if fmt.shape != () or fmt_text != "csr":
+        raise RuntimeError(f"{label} format must be csr: {fmt!r}")
+    shape = z["shape"]
+    if shape.ndim != 1 or shape.dtype.kind not in "iu" or shape.tolist() != [n_rows, n_cols]:
+        raise RuntimeError(f"{label} shape must be exactly [{n_rows}, {n_cols}]: {shape.tolist()}")
+    data, indices, indptr = z["data"], z["indices"], z["indptr"]
+    if data.ndim != 1 or data.dtype != np.float32:
+        raise RuntimeError(f"{label} data must be one-dimensional float32: {data.dtype} {data.shape}")
+    if indices.ndim != 1 or indices.dtype.kind not in "iu" or indptr.ndim != 1 or indptr.dtype.kind not in "iu":
+        raise RuntimeError(f"{label} indices/indptr must be one-dimensional integer arrays")
+    if len(indptr) != n_rows + 1:
+        raise RuntimeError(f"{label} indptr length {len(indptr)} != {n_rows + 1}")
+    ip = indptr.astype(np.int64)
+    if ip[0] != 0 or np.any(np.diff(ip) < 0):
+        raise RuntimeError(f"{label} indptr must start at 0 and be monotone")
+    if not (ip[-1] == len(indices) == len(data)):
+        raise RuntimeError(f"{label} CSR lengths inconsistent: indptr[-1]={ip[-1]} indices={len(indices)} data={len(data)}")
+    idx = indices.astype(np.int64)
+    if len(idx) and (idx.min() < 0 or idx.max() >= n_cols):
+        raise RuntimeError(f"{label} address index outside [0, {n_cols})")
+    if len(idx) > 1:
+        within_row = np.ones(len(idx) - 1, dtype=bool)
+        starts = ip[1:-1]
+        within_row[starts[(starts > 0) & (starts < len(idx))] - 1] = False
+        if np.any(np.diff(idx)[within_row] <= 0):
+            raise RuntimeError(f"{label} addresses must be strictly increasing within each row (no duplicates)")
+    if not np.isfinite(data).all():
+        raise RuntimeError(f"{label} stored values must be finite")
+    if not np.isin(idx, np.asarray(sorted(int(a) for a in replay_addresses), dtype=np.int64)).all():
+        raise RuntimeError(f"{label} stores a value outside the frozen replay addresses")
+    if isinstance(expected_nnz, bool) or not isinstance(expected_nnz, int) or len(data) != expected_nnz:
+        raise RuntimeError(f"{label} nnz {len(data)} does not match the manifest nnz {expected_nnz!r}")
+
+
+def validate_g6_meta_artifact(raw: bytes, *, sample_a, source_counts: dict) -> None:
+    """Structural custody check of the G6 metadata artifact: exactly G6's eight row-level fields, one entry per frozen
+    Sample-A row, in frozen Sample-A order and identity (source, donor, operator, global row, cell ID)."""
+    from collections import Counter
+
+    import numpy as np
+
+    label = "G6 metadata artifact"
+    z = _npz_arrays_without_pickle(raw, label)
+    if set(z) != set(G6_META_FIELDS):
+        raise RuntimeError(f"{label} fields {sorted(z)} are not exactly {list(G6_META_FIELDS)}")
+    n = len(sample_a)
+    for key in G6_META_FIELDS:
+        if z[key].ndim != 1 or len(z[key]) != n:
+            raise RuntimeError(f"{label} field {key} has shape {z[key].shape}; every field needs exactly ({n},)")
+        want_kind = "U" if key in G6_META_STRING_FIELDS else "iu"
+        if z[key].dtype.kind not in want_kind:
+            raise RuntimeError(f"{label} field {key} has dtype {z[key].dtype}")
+    frozen = {
+        "source": sample_a.source.astype(str).tolist(),
+        "donor": sample_a.donor_id.astype(str).tolist(),
+        "cell_id": sample_a.cell_id.astype(str).tolist(),
+        "operator": sample_a.operator_index.astype(int).tolist(),
+        "global_row": sample_a.global_row.astype(int).tolist(),
+    }
+    for key, want in frozen.items():
+        if z[key].tolist() != want:
+            raise RuntimeError(f"{label} field {key} differs from the frozen Sample-A rows (identity or order)")
+    if dict(Counter(z["source"].tolist())) != dict(source_counts):
+        raise RuntimeError(f"{label} source counts differ from the frozen Sample-A geometry")
+    if np.any(z["source_library"] <= 0):
+        raise RuntimeError(f"{label} source_library must be positive")
+    if np.any(z["detected_historical"] < 0) or np.any(z["detected_corrected"] < 0):
+        raise RuntimeError(f"{label} detected counts must be nonnegative")
+    nph = z["source"] == "NPH52"
+    if np.any(z["detected_corrected"][nph] != z["detected_historical"][nph]):
+        raise RuntimeError(f"{label} NPH52 pass-through rows must keep detected_corrected == detected_historical")
+
+
+def g6_input_authority_hashes() -> dict:
+    return {
+        **EXPECTED_INPUT_HASHES,
+        "historical_csr_sha256": dict(HIST_CSR_SHA),
+        "td50_member_sha256": dict(TD50_SHA),
+    }
+
 
 REQUIRED_MAPPING_CHECKS = (
     "sample_A_h5_matrix_count_exact_34",
@@ -73,6 +234,26 @@ def sha256_file(path: Path, chunk: int = 8 << 20) -> str:
         for block in iter(lambda: handle.read(chunk), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def exclusive_create_json(path: Path, payload: dict) -> Path:
+    """Create a JSON file with true exclusive-create semantics (O_CREAT | O_EXCL).
+
+    Of any number of concurrent creators exactly one succeeds; every other one gets FileExistsError. The file is
+    never replaced or removed here, so a created attempt marker stays spent after any later success or failure.
+    """
+    path = Path(path)
+    data = (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0)
+    fd = os.open(path, flags, 0o644)
+    try:
+        view = memoryview(data)
+        while view:
+            view = view[os.write(fd, view):]
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+    return path
 
 
 def canonical_text_sha256(path: Path) -> str:
@@ -173,6 +354,55 @@ def _require_false(rec: dict, key: str, label: str) -> None:
         raise RuntimeError(f"{label} must explicitly keep {key}=false")
 
 
+def require_pr259_physical_bytes(preflight_path: Path, mapping_path: Path, replay_manifest_path) -> None:
+    """The exact audited physical bytes only; an authorization built around altered bytes cannot rescue them."""
+    if replay_manifest_path is None:
+        raise RuntimeError("runtime authorization requires the exact replay manifest file")
+    for label, path, expected in (
+        ("PR #259 preflight driver receipt", preflight_path, PR259_DRIVER_SHA256),
+        ("PR #259 mapping receipt", mapping_path, PR259_MAPPING_SHA256),
+        ("replay manifest", replay_manifest_path, EXPECTED_INPUT_HASHES["replay_manifest_sha256"]),
+    ):
+        path = Path(path)
+        if not path.is_file():
+            raise RuntimeError(f"missing {label}: {path}")
+        actual = sha256_file(path)
+        if actual != expected:
+            raise RuntimeError(
+                f"{label} physical SHA mismatch; only the exact audited bytes are accepted "
+                f"(reserialized or altered copies are refused): {actual} != {expected}"
+            )
+
+
+def load_owner_decision(path, *, implementation_commit_sha: str) -> tuple[dict, str]:
+    """Verify the immutable owner-decision record; return it with its physical SHA-256."""
+    if path is None:
+        raise RuntimeError("runtime authorization requires an immutable owner-decision record")
+    path = Path(path)
+    if not path.is_file():
+        raise RuntimeError(f"owner-decision record missing: {path}")
+    physical_sha = sha256_file(path)
+    rec = _read_json(path, "owner-decision record")
+    if rec.get("schema") != OWNER_DECISION_SCHEMA:
+        raise RuntimeError("owner-decision schema mismatch")
+    if rec.get("decision") != OWNER_DECISION:
+        raise RuntimeError(f"owner-decision string mismatch; require exactly {OWNER_DECISION}")
+    if rec.get("authorized_pr259_preflight_driver_sha256") != PR259_DRIVER_SHA256:
+        raise RuntimeError("owner-decision does not name the exact PR #259 preflight driver receipt SHA")
+    if rec.get("authorized_pr259_mapping_receipt_sha256") != PR259_MAPPING_SHA256:
+        raise RuntimeError("owner-decision does not name the exact PR #259 mapping receipt SHA")
+    if rec.get("qualified_implementation_commit_sha") != implementation_commit_sha:
+        raise RuntimeError("owner-decision qualified implementation commit does not match the executing code")
+    for flag in OWNER_DECISION_FALSE_FLAGS:
+        if rec.get(flag) is not False:
+            raise RuntimeError(f"owner-decision must explicitly keep {flag}=false")
+    extra = sorted(k for k, v in rec.items()
+                   if k.endswith("_authorized") and k not in OWNER_DECISION_FALSE_FLAGS and v is not False)
+    if extra:
+        raise RuntimeError(f"owner-decision may authorize G6/G7 integrity only; refusing {extra}")
+    return rec, physical_sha
+
+
 def load_runtime_authorization(
     path: Path,
     *,
@@ -180,6 +410,8 @@ def load_runtime_authorization(
     mapping_path: Path,
     g6_path: Path,
     g7_path: Path,
+    replay_manifest_path: Path | None = None,
+    owner_decision_path: Path | None = None,
 ) -> dict:
     rec = _read_json(path, "runtime value authorization")
     if rec.get("schema") != VALUE_AUTH_SCHEMA:
@@ -197,10 +429,17 @@ def load_runtime_authorization(
     ):
         _require_false(rec, key, label)
 
+    identity = code_identity(Path(g6_path), Path(g7_path))
+    _, owner_decision_sha = load_owner_decision(
+        owner_decision_path, implementation_commit_sha=identity["implementation_commit_sha"]
+    )
+    require_pr259_physical_bytes(preflight_path, mapping_path, replay_manifest_path)
     expected = {
+        "owner_decision_sha256": owner_decision_sha,
         "preflight_result_sha256": sha256_file(Path(preflight_path)),
         "mapping_receipt_sha256": sha256_file(Path(mapping_path)),
-        **code_identity(Path(g6_path), Path(g7_path)),
+        "replay_manifest_sha256": sha256_file(Path(replay_manifest_path)),
+        **identity,
     }
     for key, actual in expected.items():
         if rec.get(key) != actual:
@@ -290,6 +529,27 @@ def verify_source_file(path: Path, source_rec: dict) -> str:
     if actual != expected:
         raise RuntimeError(f"source SHA mismatch: {actual} != {expected}: {path}")
     return actual
+
+
+def strict_integer_array(values, label: str):
+    """Exact nonnegative integers as int64, or RuntimeError; never truncates (no astype on fractional values)."""
+    import numpy as np
+
+    array = np.asarray(values)
+    if array.dtype.kind in "iu":
+        if array.size and array.min() < 0:
+            raise RuntimeError(f"{label} must be nonnegative")
+        return array.astype(np.int64)
+    if array.dtype.kind != "f":
+        raise RuntimeError(f"{label} has non-numeric dtype {array.dtype}")
+    numeric = array.astype(np.float64)
+    if not np.isfinite(numeric).all():
+        raise RuntimeError(f"{label} must be finite")
+    if np.any(numeric < 0):
+        raise RuntimeError(f"{label} must be nonnegative")
+    if not np.equal(numeric, np.floor(numeric)).all():
+        raise RuntimeError(f"{label} must be exactly integer-valued; truncation is forbidden")
+    return numeric.astype(np.int64)
 
 
 def strict_raw_integer(value) -> int:

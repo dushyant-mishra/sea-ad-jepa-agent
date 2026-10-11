@@ -1,0 +1,212 @@
+# RED_02 PR #259 physical pins: new tests over gate code at cd36a07026da92d0d956942994db4d2e6bbffde1
+# utc: 2026-10-11T15:30:23Z
+## semantic demonstration with the inherited (old) gate signature:
+reserialized_preflight: ACCEPTED by the gate (defect)
+reserialized_mapping: ACCEPTED by the gate (defect)
+no_owner_decision_record: ACCEPTED by the gate (defect)
+## new tests:
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+_____________ test_gate_pins_are_the_exact_audited_physical_shas ______________
+
+    def test_gate_pins_are_the_exact_audited_physical_shas():
+        m = F.load_common()
+>       assert m.PR259_DRIVER_SHA256 == PR259_DRIVER
+E       AttributeError: module 'td_v2_common_gate_fixture' has no attribute 'PR259_DRIVER_SHA256'
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:20: AttributeError
+___________________ test_pristine_pinned_bytes_are_accepted ___________________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_pristine_pinned_bytes_are0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6BACB20>
+
+    def test_pristine_pinned_bytes_are_accepted(tmp_path, monkeypatch):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+>       rec = F.call_gate(m, b)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_pristine_pinned_byte...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_pristine_pinned_bytes_are0/auth.json'))
+overrides = {}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_pristine_pinned_bytes_are0...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_pristine_pinned_bytes_are0/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+_ test_reserialized_receipt_with_authorization_built_around_it_is_refused[preflight] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6B6C5E0>
+which = 'preflight'
+
+    @pytest.mark.parametrize("which", ["preflight", "mapping"])
+    def test_reserialized_receipt_with_authorization_built_around_it_is_refused(tmp_path, monkeypatch, which):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+        path = getattr(b, which)
+        original = json.loads(path.read_text(encoding="utf-8"))
+        F.write_json(path, original, indent=4)  # same JSON semantics, different physical bytes
+        assert json.loads(path.read_text(encoding="utf-8")) == original
+        F.rewrite_authorization(m, b)  # the authorization now binds the altered bytes' SHA
+        with pytest.raises(RuntimeError, match="PR #259"):
+>           F.call_gate(m, b)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with0/auth.json'))
+overrides = {}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with0...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with0/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+_ test_reserialized_receipt_with_authorization_built_around_it_is_refused[mapping] _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6B981C0>
+which = 'mapping'
+
+    @pytest.mark.parametrize("which", ["preflight", "mapping"])
+    def test_reserialized_receipt_with_authorization_built_around_it_is_refused(tmp_path, monkeypatch, which):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+        path = getattr(b, which)
+        original = json.loads(path.read_text(encoding="utf-8"))
+        F.write_json(path, original, indent=4)  # same JSON semantics, different physical bytes
+        assert json.loads(path.read_text(encoding="utf-8")) == original
+        F.rewrite_authorization(m, b)  # the authorization now binds the altered bytes' SHA
+        with pytest.raises(RuntimeError, match="PR #259"):
+>           F.call_gate(m, b)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with1/auth.json'))
+overrides = {}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with1...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_receipt_with1/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+_ test_reserialized_replay_manifest_with_authorization_built_around_it_is_refused _
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_replay_manif0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6C389A0>
+
+    def test_reserialized_replay_manifest_with_authorization_built_around_it_is_refused(tmp_path, monkeypatch):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+        raw = b.replay_manifest.read_bytes()
+        b.replay_manifest.write_bytes(raw.replace(b"\n", b"\r\n"))  # same CSV rows, different physical bytes
+        F.rewrite_authorization(m, b)
+        with pytest.raises(RuntimeError, match="replay manifest"):
+>           F.call_gate(m, b)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_replay_...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_replay_manif0/auth.json'))
+overrides = {}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_replay_manif0...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_reserialized_replay_manif0/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+____________ test_gate_refuses_when_no_replay_manifest_is_supplied ____________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_gate_refuses_when_no_repl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6B6C610>
+
+    def test_gate_refuses_when_no_replay_manifest_is_supplied(tmp_path, monkeypatch):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+        with pytest.raises(RuntimeError, match="replay manifest"):
+>           F.call_gate(m, b, replay_manifest_path=None)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_gate_refuses_when_no...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_gate_refuses_when_no_repl0/auth.json'))
+overrides = {'replay_manifest_path': None}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_gate_refuses_when_no_repl0...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_gate_refuses_when_no_repl0/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+____________ test_authorization_must_bind_the_replay_manifest_sha _____________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_authorization_must_bind_t0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C4D6B86F70>
+
+    def test_authorization_must_bind_the_replay_manifest_sha(tmp_path, monkeypatch):
+        m = F.load_common()
+        b = F.build_gate(tmp_path, m, monkeypatch)
+        F.rewrite_authorization(m, b, replay_manifest_sha256="0" * 64)
+        with pytest.raises(RuntimeError, match="replay_manifest_sha256"):
+>           F.call_gate(m, b)
+
+tests\v5\test_td_g6g7_pr259_physical_pins.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+m = <module 'td_v2_common_gate_fixture' from 'D:\\jepa_wt_td_pr258_qual_20261010\\scripts\\v5\\td_relational_value_read_v2_common.py'>
+b = namespace(mapping=WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_authorization_must_b...WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_authorization_must_bind_t0/auth.json'))
+overrides = {}
+kwargs = {'g6_path': WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_authorization_must_bind_t0...h('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1210/test_authorization_must_bind_t0/preflight.json'), ...}
+
+    def call_gate(m, b, **overrides):
+        kwargs = dict(preflight_path=b.preflight, mapping_path=b.mapping, replay_manifest_path=b.replay_manifest,
+                      g6_path=b.g6, g7_path=b.g7)
+        kwargs.update(overrides)
+>       return m.load_runtime_authorization(b.auth, **kwargs)
+E       TypeError: load_runtime_authorization() got an unexpected keyword argument 'replay_manifest_path'
+
+tests\v5\td_g6g7_gate_fixtures.py:130: TypeError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_gate_pins_are_the_exact_audited_physical_shas
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_pristine_pinned_bytes_are_accepted
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_receipt_with_authorization_built_around_it_is_refused[preflight]
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_receipt_with_authorization_built_around_it_is_refused[mapping]
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_reserialized_replay_manifest_with_authorization_built_around_it_is_refused
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_gate_refuses_when_no_replay_manifest_is_supplied
+FAILED tests/v5/test_td_g6g7_pr259_physical_pins.py::test_authorization_must_bind_the_replay_manifest_sha
+7 failed, 1 warning in 1.06s
+# exit=1

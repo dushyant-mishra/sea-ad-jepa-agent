@@ -1,0 +1,225 @@
+# GREEN_10 G6 artifact semantic validation, working tree over 2b0d0e87f33198684d02f5f64dfc39268d822556
+# software/custody tests on synthetic fixtures only; not biological evidence
+# changes: common.validate_g6_values_artifact / validate_g6_meta_artifact (pickle-free, from the same bytes that were hashed); G7 load_g6_pass_receipt calls them after the hash/manifest/marker checks; G7 main loads its pinned metadata inputs before the prerequisite (still before the attempt marker); G6 writes metadata strings as fixed-width unicode instead of pickled object arrays; prerequisite tests pass the frozen inputs; GREEN-only additions: production 25000 x 41238 geometry test and missing-inputs refusal test
+# utc: 2026-10-11T16:58:14Z
+ .../v5/audit_td_relational_g7_s174_overlap_v2.py   |  30 ++++--
+ ...terialize_td_relational_corrected_sampleA_v2.py |   7 +-
+ scripts/v5/td_relational_value_read_v2_common.py   | 108 +++++++++++++++++++++
+ tests/v5/td_g6g7_synthetic_world.py                |   9 ++
+ tests/v5/test_td_g7_g6_artifact_semantics.py       |  30 ++++++
+ tests/v5/test_td_g7_g6_prerequisite.py             |   8 +-
+ 6 files changed, 178 insertions(+), 14 deletions(-)
+## forged-artifact attacks:
+...................................................                      [100%]
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_____ test_self_consistent_forged_values_artifact_is_refused[csc_format] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_values_artifact_is_refused[extra_payload_key] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_values_artifact_is_refused[index_negative] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[index_out_of_range] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_self_consistent_forged_values_artifact_is_refused[inf_value] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_values_artifact_is_refused[missing_indptr] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_self_consistent_forged_values_artifact_is_refused[nan_value] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[negative_inf_value] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[pickled_object_data] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_va22\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____________ test_values_artifact_that_is_not_an_npz_is_refused ______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_values_artifact_that_is_n0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[donor_changed] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_self_consistent_forged_metadata_artifact_is_refused[extra_field] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me8\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_self_consistent_forged_metadata_artifact_is_refused[missing_donor] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me9\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me10\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_operator] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me11\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[missing_source] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me12\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me13\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[negative_detected] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me14\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me15\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me16\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me17\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[operator_changed] __
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me18\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me19\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me20\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__ test_self_consistent_forged_metadata_artifact_is_refused[source_changed] ___
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_self_consistent_forged_me21\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____________ test_metadata_artifact_that_is_not_an_npz_is_refused _____________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_metadata_artifact_that_is0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________________ test_genuine_g6_artifacts_load_without_pickle ________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_genuine_g6_artifacts_load0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________ test_g7_cross_check_does_not_use_g6_values_as_its_reference _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_g7_cross_check_does_not_u0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+_____________ test_prerequisite_refuses_without_the_frozen_inputs _____________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1248\\test_prerequisite_refuses_with0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[csc_format]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_dtype_float64]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[data_indices_length_mismatch]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[duplicate_address_in_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[extra_payload_key]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_negative]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[index_out_of_range]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indices_float_dtype]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_end_inconsistent_with_payload]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_non_monotone]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_nonzero_start]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[indptr_wrong_length]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[inf_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[missing_indptr]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[nan_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[negative_inf_value]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[pickled_object_data]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_not_two_dimensional]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_minus]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_columns_plus]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[shape_wrong_rows]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[unsorted_addresses_in_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_values_artifact_is_refused[value_at_non_replay_address]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_values_artifact_that_is_not_an_npz_is_refused
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[all_fields_one_row_short]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[cell_id_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[donor_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[extra_field]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[global_row_float_dtype]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_cell_id]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_corrected]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_detected_historical]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_donor]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_global_row]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_operator]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[missing_source_library]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[negative_detected]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nonpositive_source_library]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[nph52_detected_corrected_diverges_from_historical]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[one_field_one_row_long]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[operator_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[pickled_object_cell_id]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[row_order_swapped_consistently]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_self_consistent_forged_metadata_artifact_is_refused[source_changed]
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_metadata_artifact_that_is_not_an_npz_is_refused
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_genuine_g6_artifacts_load_without_pickle
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_g7_cross_check_does_not_use_g6_values_as_its_reference
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_values_validator_requires_exactly_25000_by_41238_in_production
+PASSED tests/v5/test_td_g7_g6_artifact_semantics.py::test_prerequisite_refuses_without_the_frozen_inputs
+51 passed, 3 warnings in 17.15s
+## complete focused suite (12 files):
+217 passed, 3 warnings in 28.63s
+# exit=0

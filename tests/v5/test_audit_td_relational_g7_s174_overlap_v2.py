@@ -233,8 +233,13 @@ def test_no_overlap_control_flow_precedes_s174_count_open_and_receipt_records_im
     m = load_module()
     source = inspect.getsource(m.main)
     no_overlap = source.index("if overlap.empty:")
-    count_open = source.index("load_s174_count_matrix")
+    # since 16f05bd3 main opens S174 counts only through the counterpart-authenticating helper, which is the sole
+    # caller of load_s174_count_matrix (behavioural check: tests/v5/test_td_g7_synthetic_end_to_end.py)
+    assert "load_s174_count_matrix" not in source
+    count_open = source.index("open_authenticated_overlap_count_sources")
     assert no_overlap < count_open
+    helper = inspect.getsource(m.open_authenticated_overlap_count_sources)
+    assert helper.index("verify_source_file") < helper.index("load_s174_count_matrix")
     assert '"s174_meta_sha256_immediate"' in source
     assert '"s174_counts_sha256_immediate"' in source
     before_count_open = source[no_overlap:count_open]
@@ -257,7 +262,7 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
         "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
         "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
     }
-    path = tmp_path / "g6.json"
+    path = tmp_path / "G6_RECEIPT.json"
     receipt = {
         "schema": m.G6_RECEIPT_SCHEMA,
         "status": m.G6_PASS,
@@ -268,7 +273,15 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
         "training_authorized": False,
     }
     path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
-    assert m.load_g6_pass_receipt(path, expected_trace)["status"] == m.G6_PASS
+    # Item 5: a PASS-looking receipt alone (no values, metadata, manifest or start marker) is a fabricated minimal
+    # receipt and must be refused; the genuine positive control is a real synthetic G6 run
+    # (tests/v5/test_td_g7_g6_prerequisite.py).
+    try:
+        m.load_g6_pass_receipt(path, expected_trace)
+    except RuntimeError as e:
+        assert "namespace" in str(e).lower()
+    else:
+        raise AssertionError("a fabricated minimal G6 PASS receipt must be refused")
 
     receipt["status"] = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
     path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
@@ -293,3 +306,13 @@ def test_g7_requires_same_authority_g6_pass_receipt(tmp_path):
 def test_v2_schema_is_distinct_from_historical_v1():
     m = load_module()
     assert m.G7_SCHEMA == "JEPA_TD_RELATIONAL_G7_S174_OVERLAP_V2"
+
+
+def test_g7_corrected_row_rejects_duplicate_physical_column_indices():
+    m = load_module()
+    try:
+        m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+    except RuntimeError as e:
+        assert "duplicate" in str(e).lower()
+    else:
+        raise AssertionError("duplicate physical H5AD column indices must fail closed in G7")

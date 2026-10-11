@@ -1,0 +1,65 @@
+# GREEN_07 G6 receipt coverage semantics, working tree over dee9310a498adf49743b0d6c844d6ac1eb1b5296
+# utc: 2026-10-11T15:46:47Z
+ .../materialize_td_relational_corrected_sampleA_v2.py | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+..............................................                           [100%]
+============================== warnings summary ===============================
+
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+_____ test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1218\\test_g6_end_to_end_materialize0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+______ test_g6_receipt_separates_physical_reread_from_nph52_passthrough _______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1218\\test_g6_receipt_separates_phys0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_end_to_end_materializes_exact_values_on_the_synthetic_world
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_receipt_separates_physical_reread_from_nph52_passthrough
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_production_coverage_is_23690_reread_plus_1310_passthrough
+PASSED tests/v5/test_td_g6_synthetic_end_to_end.py::test_g6_library_mismatch_stops_and_keeps_the_spent_marker
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_sample_a_selection_uses_frozen_label_not_literal_A
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_corrected_row_strict_integer_and_whole_row_total_before_filter
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_corrected_row_rejects_fractional_nonfinite_negative
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_output_namespace_is_immutable
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_begin_namespace_spends_even_initially_empty_directory
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_v2_output_schemas_are_distinct_from_v1
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_historical_csr_hash_drift_is_rejected
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_source_record_sha_helper_is_used_without_size_only_acceptance
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_input_authority_ledger_includes_historical_nph_and_td50_hashes
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_nonexistent_directory_has_one_winner
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_start_forced_race_into_existing_empty_directory_has_one_winner
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_spent_namespace_is_rejected_as_already_spent_and_marker_is_permanent
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_nph_historical_row_rejects_duplicate_address_indices_before_materialization
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_nph_historical_row_passes_historical_values_through_unmodified
+PASSED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_corrected_row_rejects_duplicate_physical_column_indices
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_no_rounding_or_truncating_call_anywhere_in_the_v2_value_path
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_rounding_scanner_catches_a_planted_round
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[1.5]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[-1.0]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[nan]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[-inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[1.5]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[-1.0]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[nan]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_s174_reference_rows_and_payload_reject_invalid_raw_counts[-inf]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-global_row]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-source_library]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-detected]
+PASSED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-global_row]
+46 passed, 3 warnings in 10.63s
+# exit=0

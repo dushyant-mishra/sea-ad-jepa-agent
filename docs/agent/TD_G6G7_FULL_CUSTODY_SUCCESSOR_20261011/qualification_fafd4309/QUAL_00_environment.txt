@@ -1,0 +1,15 @@
+utc_start=2026-10-11T17:04:43Z
+qualification_worktree=/d/jepa_wt_td_g6g7_qual_fafd4309
+initial_exact_head=fafd4309cc086c95076cefdc94064e8b66e58ae4
+expected_implementation_head=fafd4309cc086c95076cefdc94064e8b66e58ae4
+inherited_base=d8fa3024e06e265b77353c8382453e7ccbf2350f
+prior_qualified_candidate=43cac77da52446f6391874eb8f5be7ce3ed4e0f7
+tracked_status_before=[]
+untracked_before=[]
+python 3.9.7
+numpy 1.24.2
+pandas 1.5.3
+scipy 1.10.1
+h5py 3.2.1
+pytest 6.2.4
+python_executable=C:\Users\dushy\anaconda3\python.exe

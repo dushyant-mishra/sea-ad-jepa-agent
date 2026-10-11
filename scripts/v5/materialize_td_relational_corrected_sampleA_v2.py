@@ -33,9 +33,9 @@ def _load_common():
 
 common = _load_common()
 
-G6_RECEIPT_SCHEMA = "JEPA_TD_RELATIONAL_G6_RECEIPT_V2"
-CACHE_SCHEMA = "JEPA_TD_RELATIONAL_CORRECTED_SAMPLE_A_CACHE_V2"
-G6_PASS = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+G6_RECEIPT_SCHEMA = common.G6_RECEIPT_SCHEMA
+CACHE_SCHEMA = common.G6_CACHE_SCHEMA
+G6_PASS = common.G6_PASS
 G6_MISMATCH = "STOP_TD_G6_SOURCE_LIBRARY_MISMATCH"
 
 EXPECTED_REPLAY_MANIFEST_SHA = common.EXPECTED_INPUT_HASHES["replay_manifest_sha256"]
@@ -53,22 +53,14 @@ SOURCE_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
 VAR_ID_COLUMN = {"HVS": "_index", "SEA_AD": "gene_ids"}
 
-HIST_CSR_SHA = {
-    "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
-    "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
-    "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
-    "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
-}
-TD50_SHA = {
-    "HVS": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb",
-    "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
-    "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
-}
-INPUT_AUTHORITY_HASHES = {
-    **common.EXPECTED_INPUT_HASHES,
-    "historical_csr_sha256": dict(HIST_CSR_SHA),
-    "td50_member_sha256": dict(TD50_SHA),
-}
+HIST_CSR_SHA = common.HIST_CSR_SHA  # same objects: one authority, shared with the G7 validator
+TD50_SHA = common.TD50_SHA
+SOURCE_LIBRARY_VERIFICATION_SCOPE = (
+    "HVS/SEA rows were physically reread from authenticated H5AD bytes and each whole-row library was verified "
+    "exactly against its TD50 sentinel; NPH52 rows are authenticated historical pass-through (hash-bound historical "
+    "CSR and TD50 library) and were not independently physically reread"
+)
+INPUT_AUTHORITY_HASHES = common.g6_input_authority_hashes()  # import-time view; receipts call the function
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -78,35 +70,34 @@ def sha256_bytes(data: bytes) -> str:
 def assert_empty_output(out: Path) -> None:
     out = Path(out)
     if out.exists() and any(out.iterdir()):
-        raise RuntimeError(f"immutable output namespace is not empty; refusing overwrite: {out}")
+        raise RuntimeError(f"G6 attempt already spent: immutable output namespace is not empty; refusing overwrite: {out}")
 
 
 def begin_namespace(out: Path, authority_trace: dict) -> Path:
-    """Spend the namespace immediately so every later failure leaves durable evidence."""
+    """Spend the namespace immediately so every later failure leaves durable evidence.
+
+    The marker is created with exclusive-create semantics, so of any number of concurrent starters (new or existing
+    empty directory) exactly one wins and the others are rejected as already spent. The marker is never removed.
+    """
     out = Path(out)
     assert_empty_output(out)
-    if not out.exists():
-        out.mkdir(parents=True, exist_ok=False)
-    marker = out / "G6_EXECUTION_START.json"
-    if marker.exists():
-        raise RuntimeError(f"G6 execution-start marker already exists: {marker}")
-    marker.write_text(
-        json.dumps(
-            {
-                "schema": "JEPA_TD_RELATIONAL_G6_EXECUTION_START_V1",
-                "status": "STARTED_NOT_A_PASS",
-                "authority_trace": authority_trace,
-                "biological_replay_authorized": False,
-                "target_selection_authorized": False,
-                "td60_authorized": False,
-                "training_authorized": False,
-            },
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    out.mkdir(parents=True, exist_ok=True)
+    marker = out / common.G6_START_MARKER_NAME
+    try:
+        common.exclusive_create_json(marker, {
+            "schema": common.G6_START_SCHEMA,
+            "status": "STARTED_NOT_A_PASS",
+            "authority_trace": authority_trace,
+            "biological_replay_authorized": False,
+            "target_selection_authorized": False,
+            "td60_authorized": False,
+            "training_authorized": False,
+        })
+    except FileExistsError as exc:
+        raise RuntimeError(f"G6 attempt already spent: concurrent starter won marker={marker}") from exc
+    others = sorted(p.name for p in out.iterdir() if p.name != marker.name)
+    if others:
+        raise RuntimeError(f"G6 attempt already spent: namespace gained foreign files before the start marker: {others}")
     return marker
 
 
@@ -146,6 +137,9 @@ def identifier_map(var_ids, id_to_address: dict[str, int], ledger_ids: set[str])
 
 def corrected_row(indices, values, col_to_address: dict[int, int], replay_addresses: set[int]):
     """Strict raw-count decoder; whole physical row contributes to library total before filtering."""
+    column_indices = np.asarray(indices, dtype=np.int64)
+    if len(column_indices) != len(np.unique(column_indices)):
+        raise RuntimeError("duplicate physical H5AD column index within one row; refusing to sum or pick a winner")
     row: dict[int, int] = {}
     total = 0
     for j0, v0 in zip(indices, values):
@@ -161,7 +155,9 @@ def corrected_row(indices, values, col_to_address: dict[int, int], replay_addres
 
 
 def select_sample_a(frame: pd.DataFrame, *, enforce_geometry: bool = True) -> pd.DataFrame:
-    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values("sample_row")
+    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
+        "sample_row", key=lambda rows: rows.astype(int), kind="stable"
+    )  # numeric order: the freeze is read with dtype=str
     if enforce_geometry:
         if len(selected) != N_SAMPLE_A:
             raise RuntimeError(f"Sample-A geometry mismatch: {len(selected)} != {N_SAMPLE_A}")
@@ -194,9 +190,9 @@ def sentinel_maps(td50):
     library, detected = {}, {}
     for source, payload in td50.items():
         for grow, source_library, det in zip(
-            payload["global_row"].astype(int),
-            payload["source_library"].astype(np.int64),
-            payload["detected"].astype(np.int64),
+            common.strict_integer_array(payload["global_row"], f"TD50 {source} global_row"),
+            common.strict_integer_array(payload["source_library"], f"TD50 {source} source_library"),
+            common.strict_integer_array(payload["detected"], f"TD50 {source} detected"),
         ):
             library[int(grow)] = int(source_library)
             detected[int(grow)] = int(det)
@@ -222,8 +218,11 @@ def verify_historical_csr(root: Path):
 
 def nph_historical_row(global_row: int, data, indices, indptr, replay_addresses: set[int]):
     lo, hi = int(indptr[global_row]), int(indptr[global_row + 1])
+    row_indices = np.asarray(indices[lo:hi], dtype=np.int64)
+    if len(row_indices) != len(np.unique(row_indices)):
+        raise RuntimeError(f"duplicate NPH52 historical CSR address index in global row {global_row}")
     row: dict[int, float] = {}
-    for a0, v0 in zip(indices[lo:hi], data[lo:hi]):
+    for a0, v0 in zip(row_indices, data[lo:hi]):
         address = int(a0)
         value = float(v0)
         if not np.isfinite(value):
@@ -270,6 +269,8 @@ def bind_execution(args):
         mapping_path=Path(args.mapping_receipt),
         g6_path=g6_path,
         g7_path=g7_path,
+        replay_manifest_path=Path(args.replay_manifest),
+        owner_decision_path=Path(args.owner_decision),
     )
     preflight, mapping = common.load_bound_preflight(
         Path(args.preflight_result),
@@ -282,6 +283,7 @@ def bind_execution(args):
 
 def _authority_trace(args, auth: dict, g6_path: Path, g7_path: Path) -> dict:
     return {
+        "owner_decision_sha256": common.sha256_file(Path(args.owner_decision)),
         "preflight_result_sha256": common.sha256_file(Path(args.preflight_result)),
         "mapping_receipt_sha256": common.sha256_file(Path(args.mapping_receipt)),
         "authorization_sha256": common.sha256_file(Path(args.value_authorization)),
@@ -298,13 +300,13 @@ def _write_g6_stop(out: Path, status: str, *, authority_trace: dict, mismatches:
         "mismatch_count": len(mismatches),
         "preview": mismatches[:50],
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
+        "input_authority_hashes": common.g6_input_authority_hashes(),
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "G6_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_RECEIPT_NAME).write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -312,6 +314,8 @@ def main() -> int:
     parser.add_argument("--preflight-result", required=True)
     parser.add_argument("--mapping-receipt", required=True)
     parser.add_argument("--value-authorization", required=True)
+    parser.add_argument("--owner-decision", required=True,
+                        help="Immutable owner-decision record (AUTHORIZE_G6_G7_INTEGRITY_ONLY); never created by this code")
     parser.add_argument("--replay-manifest", required=True)
     parser.add_argument("--sample-freeze", required=True)
     parser.add_argument("--provenance", required=True)
@@ -343,12 +347,15 @@ def main() -> int:
     source_library_corrected = np.zeros(N_SAMPLE_A, dtype=np.int64)
     detected_corrected = np.full(N_SAMPLE_A, -1, dtype=np.int64)
     detected_historical = np.zeros(N_SAMPLE_A, dtype=np.int64)
-    source = sample_a.source.astype(str).to_numpy()
-    donor = sample_a.donor_id.astype(str).to_numpy()
+    # fixed-width unicode, never object arrays: the metadata artifact must load without unpickling
+    source = sample_a.source.astype(str).to_numpy(dtype=str)
+    donor = sample_a.donor_id.astype(str).to_numpy(dtype=str)
     operator = sample_a.operator_index.astype(int).to_numpy()
     global_row = sample_a.global_row.astype(int).to_numpy()
-    cell_id = sample_a.cell_id.astype(str).to_numpy()
+    cell_id = sample_a.cell_id.astype(str).to_numpy(dtype=str)
     g6_mismatches: list[dict] = []
+    physically_reread_rows = 0
+    nph52_passthrough_rows = 0
     mapping_diagnostics: list[dict] = []
     verified_source_shas: dict[str, str] = {}
     source_root = Path(args.source_root)
@@ -382,6 +389,7 @@ def main() -> int:
             indptr = node["indptr"]
             for row in group.itertuples(index=False):
                 sample_row = int(row.sample_row)
+                physically_reread_rows += 1
                 local_row = int(row.local_row)
                 if local_row < 0 or local_row >= len(obs) or str(obs[local_row]) != str(row.cell_id):
                     raise RuntimeError(f"cell row drift after preflight: {mid} row {local_row}")
@@ -424,6 +432,7 @@ def main() -> int:
 
     for row in sample_a[sample_a.source.eq("NPH52")].itertuples(index=False):
         sample_row = int(row.sample_row)
+        nph52_passthrough_rows += 1
         grow = int(row.global_row)
         old = nph_historical_row(grow, hdata, hindices, hindptr, replay_addresses)
         source_library_corrected[sample_row] = historical_library[grow]
@@ -434,6 +443,11 @@ def main() -> int:
             cols_out.append(address)
             vals_out.append(value)
 
+    expected_physical = SOURCE_COUNTS["HVS"] + SOURCE_COUNTS["SEA_AD"]
+    if (physically_reread_rows != expected_physical or nph52_passthrough_rows != SOURCE_COUNTS["NPH52"]
+            or physically_reread_rows + nph52_passthrough_rows != N_SAMPLE_A):
+        raise RuntimeError(f"Sample-A coverage mismatch: reread={physically_reread_rows} "
+                           f"passthrough={nph52_passthrough_rows} total={N_SAMPLE_A}")
     if np.any(source_library_corrected <= 0) or np.any(detected_corrected < 0):
         raise RuntimeError("incomplete Sample-A materialization metadata")
 
@@ -445,9 +459,9 @@ def main() -> int:
         dtype=np.float32,
     )
     matrix.sort_indices()
-    values_path = out / "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz"
+    values_path = out / common.G6_VALUES_NAME
     sparse.save_npz(values_path, matrix, compressed=True)
-    meta_path = out / "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
+    meta_path = out / common.G6_META_NAME
     np.savez_compressed(
         meta_path,
         source=source,
@@ -464,10 +478,13 @@ def main() -> int:
         "schema": G6_RECEIPT_SCHEMA,
         "status": G6_PASS,
         "rows": N_SAMPLE_A,
-        "source_library_exact_rows": N_SAMPLE_A,
+        "total_sample_a_rows": N_SAMPLE_A,
+        "hvs_sea_physically_reread_source_library_verified_rows": physically_reread_rows,
+        "nph52_authenticated_historical_passthrough_rows": nph52_passthrough_rows,
+        "source_library_verification_scope": SOURCE_LIBRARY_VERIFICATION_SCOPE,
         "verified_source_h5ad_sha256": verified_source_shas,
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
+        "input_authority_hashes": common.g6_input_authority_hashes(),
         "historical_detected_is_diagnostic_only": True,
         "detected_changed_rows": int(np.sum(detected_historical != detected_corrected)),
         "values_sha256": common.sha256_file(values_path),
@@ -477,11 +494,11 @@ def main() -> int:
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "G6_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_RECEIPT_NAME).write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     manifest = {
         "schema": CACHE_SCHEMA,
-        "status": "MATERIALIZED_G6_V2_PASS__G7_PENDING",
+        "status": common.G6_MANIFEST_STATUS,
         "shape": [N_SAMPLE_A, N_ADDR],
         "stored_replay_addresses": N_REPLAY,
         "nnz": int(matrix.nnz),
@@ -492,15 +509,15 @@ def main() -> int:
         "verified_source_h5ad_sha256": verified_source_shas,
         "mapping_diagnostics": mapping_diagnostics,
         "authority_trace": authority_trace,
-        "input_authority_hashes": INPUT_AUTHORITY_HASHES,
-        "g6_receipt": "G6_RECEIPT.json",
+        "input_authority_hashes": common.g6_input_authority_hashes(),
+        "g6_receipt": common.G6_RECEIPT_NAME,
         "g7_status": "PENDING_SEPARATE_INDEPENDENT_CROSSCHECK",
         "biological_replay_authorized": False,
         "target_selection_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
-    (out / "MANIFEST.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (out / common.G6_MANIFEST_NAME).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"status": receipt["status"], "nnz": int(matrix.nnz), "output": str(out)}, sort_keys=True))
     return 0
 

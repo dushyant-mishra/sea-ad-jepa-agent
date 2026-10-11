@@ -1,0 +1,66 @@
+# RED_06 NPH52 duplicate-index (+ extra: physical H5AD duplicate column) over inherited code at a211dfa45df220cd00a0a09a7e662b5a0734f85a
+# note: first capture had a malformed second NPH case (no duplicate); test corrected before commit, this is the recapture
+# utc: 2026-10-11T15:20:58Z
+.F.FF                                                                    [100%]
+================================== FAILURES ===================================
+_ test_nph_historical_row_rejects_duplicate_address_indices_before_materialization _
+
+    def test_nph_historical_row_rejects_duplicate_address_indices_before_materialization():
+        m = load_module()
+        data = np.asarray([1.25, 2.5, 3.75], dtype=np.float32)
+        indptr = np.asarray([0, 3], dtype=np.int64)
+        # duplicate inside the replay set, and duplicate outside it (rejected before any dictionary materialization)
+        for indices, replay in (([5, 7, 5], {5, 7}), ([5, 9, 9], {5})):
+            try:
+                m.nph_historical_row(0, data, np.asarray(indices, dtype=np.int64), indptr, replay)
+            except RuntimeError as e:
+                assert "duplicate" in str(e).lower() and "nph" in str(e).lower()
+            else:
+>               raise AssertionError(f"duplicate NPH52 CSR address indices must fail closed: {indices}")
+E               AssertionError: duplicate NPH52 CSR address indices must fail closed: [5, 7, 5]
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:220: AssertionError
+_______ test_g6_corrected_row_rejects_duplicate_physical_column_indices _______
+
+    def test_g6_corrected_row_rejects_duplicate_physical_column_indices():
+        m = load_module()
+        # column 2 is duplicated and unmapped: the inherited decoder silently double-counts it into the library total
+        try:
+            m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+        except RuntimeError as e:
+            assert "duplicate" in str(e).lower()
+        else:
+>           raise AssertionError("duplicate physical H5AD column indices must fail closed in G6")
+E           AssertionError: duplicate physical H5AD column indices must fail closed in G6
+
+tests\v5\test_materialize_td_relational_corrected_sampleA_v2.py:240: AssertionError
+_______ test_g7_corrected_row_rejects_duplicate_physical_column_indices _______
+
+    def test_g7_corrected_row_rejects_duplicate_physical_column_indices():
+        m = load_module()
+        try:
+            m.corrected_row(np.asarray([0, 2, 2]), np.asarray([1.0, 1.0, 1.0]), {0: 10}, {10})
+        except RuntimeError as e:
+            assert "duplicate" in str(e).lower()
+        else:
+>           raise AssertionError("duplicate physical H5AD column indices must fail closed in G7")
+E           AssertionError: duplicate physical H5AD column indices must fail closed in G7
+
+tests\v5\test_audit_td_relational_g7_s174_overlap_v2.py:305: AssertionError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_nph_historical_row_rejects_duplicate_address_indices_before_materialization
+FAILED tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py::test_g6_corrected_row_rejects_duplicate_physical_column_indices
+FAILED tests/v5/test_audit_td_relational_g7_s174_overlap_v2.py::test_g7_corrected_row_rejects_duplicate_physical_column_indices
+3 failed, 2 passed, 24 deselected, 3 warnings in 6.47s
+# exit=1
