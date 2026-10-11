@@ -8,6 +8,7 @@ mkdir -p "$DEST"
 git archive "$SHA" scripts/v79 tests/v79 results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json results/v79 \
   docs/agent/BAYESIAN_SYNTHETIC_GEOMETRY_CONTRACT_V1.json docs/agent/BAYESIAN_SYNTHETIC_GEOMETRY_CONTRACT_V1.md \
   results/v77/s174_replay results/v77/V77_CLASS_COMPOSITION_AUTHORITY_V1.json scripts/v77/build_v77_topology_calibration.py \
+  scripts/v77/build_v77_real_calibration.py \
   | tar -x -C "$DEST"
 echo "$SHA" > "$DEST/SNAPSHOT_COMMIT.txt"
 echo "snapshot $SHA -> $DEST"
