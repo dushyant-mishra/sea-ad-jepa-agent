@@ -1,0 +1,367 @@
+# RED_08 strict raw-count semantics over code at 3e4dde56fc7a0177d6b6a2fdc1467e7feb6534fb (preservation tests expected GREEN; TD50 sentinel truncation expected RED)
+# note: first capture's scanner flagged np.equal(x, np.floor(x)) integrality check in G7 validate_s174_payload; scanner narrowed to exempt only that exact comparator pattern and a planted-round positive control added; global_row added to the sentinel cases; this is the final recapture
+# utc: 2026-10-11T15:26:50Z
+............FFFFFFFFFFFFFFF                                              [100%]
+================================== FAILURES ===================================
+___ test_historical_td50_sentinels_are_never_truncated[1.5-source_library] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC662A00>
+field = 'source_library', bad = 1.5
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+______ test_historical_td50_sentinels_are_never_truncated[1.5-detected] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC6975E0>
+field = 'detected', bad = 1.5
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+_____ test_historical_td50_sentinels_are_never_truncated[1.5-global_row] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD71F250>
+field = 'global_row', bad = 1.5
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+___ test_historical_td50_sentinels_are_never_truncated[-1.0-source_library] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD714BE0>
+field = 'source_library', bad = -1.0
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+______ test_historical_td50_sentinels_are_never_truncated[-1.0-detected] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD735A90>
+field = 'detected', bad = -1.0
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+_____ test_historical_td50_sentinels_are_never_truncated[-1.0-global_row] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC7379D0>
+field = 'global_row', bad = -1.0
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+___ test_historical_td50_sentinels_are_never_truncated[nan-source_library] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC697F40>
+field = 'source_library', bad = nan
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+______ test_historical_td50_sentinels_are_never_truncated[nan-detected] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC62F820>
+field = 'detected', bad = nan
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+_____ test_historical_td50_sentinels_are_never_truncated[nan-global_row] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC6BAC40>
+field = 'global_row', bad = nan
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+___ test_historical_td50_sentinels_are_never_truncated[inf-source_library] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC737190>
+field = 'source_library', bad = inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+______ test_historical_td50_sentinels_are_never_truncated[inf-detected] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC6A11C0>
+field = 'detected', bad = inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+_____ test_historical_td50_sentinels_are_never_truncated[inf-global_row] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD71FC40>
+field = 'global_row', bad = inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+___ test_historical_td50_sentinels_are_never_truncated[-inf-source_library] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DC6BCDC0>
+field = 'source_library', bad = -inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+______ test_historical_td50_sentinels_are_never_truncated[-inf-detected] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD74ECA0>
+field = 'detected', bad = -inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+_____ test_historical_td50_sentinels_are_never_truncated[-inf-global_row] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000228DD747910>
+field = 'global_row', bad = -inf
+
+    @pytest.mark.parametrize("field", ["source_library", "detected", "global_row"])
+    @pytest.mark.parametrize("bad", BAD)
+    def test_historical_td50_sentinels_are_never_truncated(monkeypatch, field, bad):
+        g6 = load("g6_strict_td50", V5 / "materialize_td_relational_corrected_sampleA_v2.py")
+        monkeypatch.setattr(g6, "N_SAMPLE_A", 3)
+        payload = {"global_row": np.asarray([0.0, 1.0, 2.0]), "source_library": np.asarray([100.0, 200.0, 300.0]),
+                   "detected": np.asarray([10.0, 20.0, 30.0])}
+        library, detected = g6.sentinel_maps({"HVS": payload})
+        assert library == {0: 100, 1: 200, 2: 300} and detected == {0: 10, 1: 20, 2: 30}
+        payload[field] = payload[field].copy()
+        payload[field][1] = bad
+        with pytest.raises(RuntimeError):
+>           g6.sentinel_maps({"HVS": payload})
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_v2_strict_raw_count_semantics.py:104: Failed
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[1.5]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_g6_and_g7_physical_row_decoders_reject_invalid_raw_counts[1.5]
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-source_library]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-source_library]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-source_library]
+  D:\jepa_wt_td_pr258_qual_20261010\scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:200: RuntimeWarning: invalid value encountered in cast
+    payload["source_library"].astype(np.int64),
+
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-detected]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-detected]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-detected]
+  D:\jepa_wt_td_pr258_qual_20261010\scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:201: RuntimeWarning: invalid value encountered in cast
+    payload["detected"].astype(np.int64),
+
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-global_row]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-global_row]
+tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-global_row]
+  D:\jepa_wt_td_pr258_qual_20261010\scripts\v5\materialize_td_relational_corrected_sampleA_v2.py:199: RuntimeWarning: invalid value encountered in cast
+    payload["global_row"].astype(int),
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-source_library]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-detected]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[1.5-global_row]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-source_library]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-detected]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-1.0-global_row]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-source_library]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-detected]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[nan-global_row]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-source_library]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-detected]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[inf-global_row]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-source_library]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-detected]
+FAILED tests/v5/test_td_v2_strict_raw_count_semantics.py::test_historical_td50_sentinels_are_never_truncated[-inf-global_row]
+15 failed, 12 passed, 12 warnings in 5.48s
+# exit=1
