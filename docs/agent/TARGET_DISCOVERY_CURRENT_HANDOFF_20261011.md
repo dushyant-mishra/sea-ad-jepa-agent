@@ -6,261 +6,144 @@ Hard terminal:
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
-This document is the current-state addendum to the canonical takeover package in PR #284. It records the latest successor qualification result at exact implementation `7e482cf50f73a5cecda16482777129dd3ca725a6` and supersedes any older statement that PR #282 is merely "pending qualification".
+This is the current-state addendum to the canonical takeover package in PR #284. Historical/scientific detail remains in `TARGET_DISCOVERY_CANONICAL_TAKEOVER_20261011.md`; this file controls the immediate operational state.
 
-## 1. Latest event: PR #282 successor qualification failed at Gate 1
+## 1. Latest state: PR #282 successor is qualified for replacement G6 integrity execution
 
-Canonical qualification evidence branch:
-
-`qual/td-g6-global-row-successor-7e482cf5-20261011`
-
-Qualification evidence commit:
-
-`e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
-
-Parent implementation:
-
-`7e482cf50f73a5cecda16482777129dd3ca725a6`
-
-The worktree was clean before and after. No production patch was made during qualification, no rerun was performed, no owner/runtime authority was created, and neither G6 nor G7 was executed.
-
-### Gate results
-
-1. Focused G6/G7 suite: **FAIL — 4 failed / 215 passed**.
-2. Exact real Sample-A freeze schema/global-row compatibility: **PASS** with terminal `PASS_REAL_SAMPLE_FREEZE_SCHEMA_AND_GLOBAL_ROW_BINDING`; 25,000 rows; exact source counts; physical `global_row` absent as expected and derived from freeze-file position.
-3. Exact PR #259 physical compatibility: **PASS — 1 passed / 0 skipped / 0 failed**.
-4. Worktree integrity: clean before and after.
-
-The four focused-suite failures share one root cause: after the successor strengthened `select_sample_a()` to validate the real input schema, four older synthetic unit-test fixtures still called the G6 selector with deliberately minimal tables lacking required real columns such as `donor_id`, `local_row`, `matrix_id`, `operator_index`, and in one case `cell_id`.
-
-This is a **qualification-harness / stale-fixture regression**, not evidence that the authenticated real Sample-A file is incompatible. Gate 2 directly demonstrates that the real production freeze satisfies the strengthened contract.
-
-### Owner/auditor repair choice
-
-Preserve the stronger production selector contract. Repair the stale unit-test fixtures to instantiate the real schema expected by G6. Do **not** weaken `select_sample_a()` merely to keep underspecified synthetic fixtures green.
-
-Any repair requires:
-
-- a new exact PR #282 successor commit;
-- fresh qualification at that exact commit;
-- preservation of this failed qualification evidence;
-- no authority creation until fresh qualification is accepted.
-
-## 2. Raw qualification evidence
-
-The authoritative seven-file record is pinned by branch+commit above at:
-
-`docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_7e482cf5/`
-
-Files:
-
-- `QUAL_00_environment.txt`
-- `QUAL_01_full_focused_suite.txt`
-- `QUAL_02_real_sample_freeze_schema.txt`
-- `QUAL_03_real_pr259_compat.txt`
-- `QUAL_04_changed_files_and_hashes.txt`
-- `QUAL_05_no_successor_authority_or_execution.txt`
-- `QUAL_06_final_state.txt`
-
-Do not reconstruct or abbreviate the raw log and then call it the original. The evidence commit is the source of truth.
-
-## 3. Current G6/G7 state
-
-### Historical qualified predecessor
-
-PR #277 qualified implementation:
-
-`fafd4309cc086c95076cefdc94064e8b66e58ae4`
-
-Historical qualification there was `217 passed / 0 failed / 0 skipped`, plus PR #259 physical compatibility `1 passed / 0 skipped / 0 failed`.
-
-Its first real G6 execution is preserved as:
-
-`ATTEMPT_0_SCHEMA_QUALIFICATION_FAILURE__NO_H5AD_VALUE_READ`
-
-The real authenticated Sample-A freeze did not physically persist `global_row`; the predecessor had assumed it did. A start marker was written, then execution failed before any corrected H5AD expression/count array was opened.
-
-Do not alter or reuse `D:\jepa_td_real_g6_20261011\G6_OUT_fafd4309`.
-
-Start-marker SHA-256:
-
-`ae85dd14d17454a104204543312df332bedeae4ea45a9838f9fc9893a80e5894`
-
-No G6 receipt exists for Attempt 0. No biological conclusion exists.
-
-### PR #282 successor
-
-Branch:
+Executable branch:
 
 `fix/td-g6-global-row-binding-successor-20261011`
 
-Failed-qualified head:
+Exact qualified head:
 
-`7e482cf50f73a5cecda16482777129dd3ca725a6`
+`ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0`
 
-Important repair lineage:
+This commit is exactly one test-only child of failed-qualification head `7e482cf50f73a5cecda16482777129dd3ca725a6`. The only changed files are:
 
-- `e437f29646f61ac45b74df45e227999a5d603de1` — RED global-row regression.
-- `bf815958dc6cd601922dbb176e05cce7eb1a543b` — production global-row/pre-spend repair.
-- `4786925f6807cf9b96bc266fe708f21807a2086b` — earlier fixture correction.
-- `7e482cf50f73a5cecda16482777129dd3ca725a6` — qualification-runner hardening; now known to fail Gate 1 because four older synthetic fixtures are stale relative to the strengthened selector contract.
+- `tests/v5/test_materialize_td_relational_corrected_sampleA_v2.py`
+- `tests/v5/test_td_v2_sample_a_row_order.py`
 
-**Current qualification state:**
+The production `select_sample_a()` contract and common/G6/G7 production scripts were not weakened or changed by the fixture repair.
 
-`FAILED_GATE_1_STALE_SYNTHETIC_FIXTURES__REAL_SAMPLE_GATE_PASS__PR259_COMPAT_PASS__NO_EXECUTION_AUTHORITY`
+## 2. Fresh qualification — accepted
 
-Replacement G6 is blocked.
+Evidence branch:
 
-## 4. Data and custody authorities that remain valid
+`qual/td-g6-global-row-successor-ff4a21f9-20261011`
 
-### Historical 50K CSR
+Evidence commit:
 
-Outer ZIP SHA-256:
+`8622f57e67389e3899e76ca7b1dfcc6addd4a3e6`
 
-`63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`
+Authoritative raw evidence directory:
 
-Split parts:
+`docs/agent/TD_G6G7_FULL_CUSTODY_SUCCESSOR_20261011/qualification_ff4a21f9/`
 
-- part001 `b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e`
-- part002 `5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875`
+Accepted gates:
 
-CSR members:
+1. Focused G6/G7 suite including `test_td_g6_global_row_binding.py`: **219 passed / 0 failed**.
+2. Authenticated real Sample-A freeze SHA `79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6`: **PASS** with `PASS_REAL_SAMPLE_FREEZE_SCHEMA_AND_GLOBAL_ROW_BINDING`; no physical `global_row`; derived rows exactly `0..24999`; 25,000 rows with SEA_AD 22,561, NPH52 1,310, HVS 1,129.
+3. Exact PR #259 compatibility: **1 passed / 0 skipped / 0 failed**; replay manifest pin `4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660` matches.
+4. Exact head before/after `ff4a21f9...`; worktree clean before and after.
+5. No H5AD value read; no G6/G7 execution during qualification.
 
-- `data.npy` `0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e`
-- `indices.npy` `f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771`
-- `indptr.npy` `58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1`
-- `shape.npy` `5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb`
+Qualified production identities:
 
-Historical row authority remains:
+- common `23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea`
+- G6 `8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d`
+- G7 `f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe`
 
-`global_row = np.arange(len(freeze_csv))`
+Qualification terminal:
 
-assigned before any filtering or merge. Reset `sample_row` cannot define generic CSR row identity.
+`QUALIFIED_FOR_REPLACEMENT_G6_INTEGRITY_EXECUTION__NO_BIOLOGICAL_AUTHORITY`
 
-### Corrected substrate
+## 3. Fresh owner/runtime authority — created after external audit
 
-Corrected S174 substrate SHA-256:
+Owner decision:
 
-`88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f`
+`custody/owner_decisions/20261011/TD_G6G7_OWNER_DECISION_ff4a21f9.json`
 
-### PR #259 G4/G5 narrow integrity authority
+Physical SHA-256:
 
-- execution head `80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947`
-- executed code `bf253a4dd62d943398f9ff59ed8b1e74777140a5`
-- driver receipt SHA `62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae`
-- mapping receipt SHA `6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0`
-- replay manifest SHA `4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660`
+`3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a`
 
-Scope only: authenticated physical mapping and value-blind address resolution. This is not a biological PASS.
+Runtime authorization:
 
-## 5. Historical biological evidence — preserve exactly
+`custody/owner_decisions/20261011/TD_G6G7_RUNTIME_AUTHORIZATION_ff4a21f9.json`
 
-- TD56/TD56S: historical positive disjoint-view within-donor relational recurrence across HVS/NPH52/SEA_AD; requires corrected replay for current authority.
-- TD57B: historical prospective `24/24` positive; weakest observed-minus-null-p95 margin `+0.0375178074843`; requires corrected replay.
-- TD57C: immutable historical FAIL `NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL`; nearest-third Panel-0 HVS failed `2/4`. Never rescue or relabel. A later corrected PASS would be historical/corrected divergence.
-- TD59: historical `24/24` positive; weakest p95 margin `+0.0011566307718604563`; `22/24` above null max. Original executor remains unrecovered; replay-closure successor must never be called the original executor.
-- TD60: `PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY`. Never call TD60 failed.
+Physical SHA-256:
 
-Controlling corrected-replay interpretation:
+`28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7`
 
-`docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md`
+The authority binds exact implementation `ff4a21f9...`, exact common/G6/G7 identities, exact PR259 preflight/mapping/manifest pins, and keeps biological replay, target selection, TD60 and training explicitly false.
 
-Even the strongest corrected relational outcome does not itself select the target or authorize TD60/training.
+Operational authority is **replacement G6 only**. G7 remains blocked until external audit accepts the replacement G6 namespace.
 
-## 6. Scientific architecture to preserve
+## 4. Immediate Macha task
 
-Technology/acquisition is an observation operator, not unrestricted biology. Donor is the primary biological replication unit. Source→donor→cell hierarchy is mandatory. Biological uncertainty and measurement uncertainty remain separate. Unsupported targets abstain; measured zero remains a valid observation. Do not force modality imputation. Do not grant authority to named coordinates merely because they are stable. Low neural loss/noncollapse is not biological qualification.
+Execute replacement G6 exactly once from a fresh clean detached worktree at exact `ff4a21f9...`, under the fresh owner/runtime files above, into a fresh never-used namespace.
 
-Incumbent hypothesis only, not winner:
+Before execution:
 
-`T(c,q) = { Z_shared(c), R_broad/meso(c), Z_query(c,q), Support(c,q), U_bio(c,q), U_meas(c,q), optional Specialist(c,q) }`
+- materialize the two authority files byte-for-byte from the audit branch and verify the two physical SHA-256 values above;
+- verify exact HEAD/clean worktree and the three code identities;
+- verify PR259 driver/mapping/manifest pins;
+- verify historical CSR member hashes;
+- verify Sample-A freeze, provenance, collision ledger, Macha freeze and TD artifacts pins;
+- require the new namespace never existed.
 
-The broader foundation-design audits also identified two principles relevant later but not yet executable authority: observation-operator conditioning should use physically meaningful acquisition descriptors rather than free dataset IDs, and basis/subspace stability must be assessed before coordinate-specific uncertainty is treated as biologically meaningful.
+The repaired successor must complete metadata/schema/global-row/TD50/CSR compatibility checks before creating `G6_EXECUTION_START.json`.
 
-## 7. Query-aware target evidence
+After a start marker exists, preserve every outcome and do not repair or rerun in place.
 
-Historical developmental evidence supports measured q-conditioned non-q same-cell context with q-excluded normalization and q address only on the student side. Historical heldout R²:
+Expected PASS terminal:
 
-- q-specific `0.4300`
-- technical+q `0.3496`
-- q-agnostic `0.2760`
-- q-count-only `0.1610`
+`PASS_TD_G6_SOURCE_LIBRARY_EXACT`
 
-These are developmental evidence, not current target authority.
+Expected successful five-file namespace:
 
-Mandatory falsifiers remain q-count-only, q-address-only, q-agnostic, wrong-q, technical+q, q-excluded teacher, identity+support, matched wrong-cell and fine-neighborhood wrong-cell.
+- `G6_EXECUTION_START.json`
+- `G6_RECEIPT.json`
+- `MANIFEST.json`
+- `TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz`
+- `TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz`
 
-## 8. SCENIC+ / ATAC / Morabito
+Expected row accounting:
 
-Regulatory evidence is specialist/soft-prior/falsifier evidence only unless independently requalified.
+- HVS+SEA physical reread: 23,690
+- NPH52 authenticated historical pass-through: 1,310
+- total: 25,000
 
-Historical integrated summary:
+**STOP AFTER G6. DO NOT RUN G7.**
 
-- 7 TFs
-- 27 targets
-- 96 edges
-- Tier A: STAT1, ELF1, SPI1
-- Tier B: IRF8, BACH1, CEBPA, RELA
+## 5. Preserved predecessor records
 
-Morabito: RNA 4,126; ATAC 12,232. It is not pristine independent validation because relevant evidence has already been used historically.
+First real G6 at implementation `fafd4309cc086c95076cefdc94064e8b66e58ae4` remains:
 
-## 9. V2 target-tournament governance
+`ATTEMPT_0_SCHEMA_QUALIFICATION_FAILURE__NO_H5AD_VALUE_READ`
 
-PR #275 is governance-only relative to this critical path. V1 is scientifically superseded for future real tournament execution. V2 prefreeze is:
+`G6_OUT_fafd4309` remains immutable historical evidence; start-marker SHA `ae85dd14d17454a104204543312df332bedeae4ea45a9838f9fc9893a80e5894`.
 
-`docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md`
+Failed qualification of `7e482cf5...` remains immutable at:
 
-Do not run a real tournament until G6/G7 are accepted, corrected relational replay is audited, population/evidence rights/splits/support are frozen, and the V2 evidence→receipt→adjudication implementation is independently qualified.
+`qual/td-g6-global-row-successor-7e482cf5-20261011@e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
 
-No tournament terminal currently grants target authority.
+It failed Gate 1 with 4 stale synthetic fixture failures while real Sample-A and PR259 gates passed. Do not rewrite that history.
 
-## 10. Immediate next actions for the new agent
+## 6. Downstream state
 
-1. Audit PR #282 and the exact failed qualification evidence commit `e4d771cb...`.
-2. Patch only the stale tests/fixtures that are inconsistent with the strengthened real schema contract. Do not weaken production validation to satisfy synthetic shortcuts.
-3. Commit a new exact PR #282 head.
-4. Re-run the same qualification gates fresh at that exact head on the canonical machine. Preserve all logs, including any failure.
-5. If and only if all qualification gates PASS and the worktree/code identities are clean, prepare a **new** owner decision and **new** runtime authorization bound to the newly qualified implementation. Never reuse the `fafd4309` authority files.
-6. Macha then executes replacement G6 exactly once in a fresh never-used namespace and stops after G6.
-7. External auditor reviews all five G6 artifacts, hashes, receipt semantics and physical-source accounting before any G7 authorization.
-8. Only after G7 is separately authorized, executed, and externally audited may a separate corrected TD56/57B/57C/59 replay authority be considered.
-9. Do not jump to TD60, target selection, representation selection, Stage4 or training.
+G7: blocked pending external audit of replacement G6.
 
-## 11. Macha instructions now
+Corrected TD56/TD57B/TD57C/TD59 replay: blocked pending accepted G6+G7 and separate owner authority.
 
-Until a new PR #282 head is produced and handed back:
+Historical outcomes remain:
 
-- do not rerun qualification at `7e482cf5`;
-- do not patch the canonical execution environment ad hoc;
-- do not create owner/runtime authority;
-- do not create a replacement G6 output namespace;
-- do not touch `G6_OUT_fafd4309`;
-- do not run G6/G7;
-- preserve the seven qualification files and exact evidence commit.
+- TD56 historical positive;
+- TD57B historical 24/24 positive;
+- TD57C immutable historical FAIL;
+- TD59 historical 24/24 positive;
+- TD60 `PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY` — never call it failed.
 
-When a new exact successor head is issued, Macha should qualify that head only, report lane/branch/SHA, exact gate results, whether any corrected values were opened, whether any attempt marker was created, and stop for audit.
+No target winner. No representation winner. Stage4/training off.
 
-## 12. Read order for complete takeover
-
-1. `docs/agent/TARGET_DISCOVERY_CURRENT_HANDOFF_20261011.md` (this file)
-2. `docs/agent/TARGET_DISCOVERY_START_HERE_20261011.md`
-3. `docs/agent/TARGET_DISCOVERY_CANONICAL_TAKEOVER_20261011.md`
-4. `docs/agent/TARGET_DISCOVERY_CANONICAL_STATE_20261011.json`
-5. `docs/agent/TD_G6_ATTEMPT0_EXECUTION_RECORD_20261011.md`
-6. `docs/agent/TARGET_DISCOVERY_HISTORY_AND_AUDIT_LESSONS_20261011.md`
-7. `docs/agent/TARGET_DISCOVERY_EVIDENCE_CODE_DATA_INDEX_20261011.md`
-8. `docs/agent/MACHA_TARGET_DISCOVERY_AND_PARALLEL_LANE_RUNBOOK_20261011.md`
-9. raw qualification evidence branch+commit `qual/td-g6-global-row-successor-7e482cf5-20261011@e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0`
-10. corrected-replay interpretation prefreeze
-11. historical target-discovery handoff/TD33 guard
-12. PR #282 exact code and diff; PR #277 historical custody; PR #259 G4/G5 evidence; PR #275 V2 governance after the real critical path is understood.
-
-## 13. Claim boundary
-
-Nothing in this handoff creates biological authority. Current state remains:
-
-`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
-
-Immediate executable-development task:
-
-`REPAIR_STALE_G6_SYNTHETIC_TEST_FIXTURES__NEW_EXACT_COMMIT__FRESH_QUALIFICATION__NO_G6_EXECUTION`
+V79 remains a separate lane and must not contaminate this execution.
