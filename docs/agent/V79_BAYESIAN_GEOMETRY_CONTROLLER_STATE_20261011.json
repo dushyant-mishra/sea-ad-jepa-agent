@@ -1,5 +1,5 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V9",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V10",
   "date": "2026-10-11",
   "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
   "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
@@ -9,13 +9,15 @@
   "qualification_contract_head": "ae706096244b38e7691a3103fcb8dcd445745533",
   "qualification_contract_draft_sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
   "controller_pr286_comment": 6113874774,
-  "terminal_state": "V2_CORE_STRUCTURE_PROVISIONALLY_PRESERVED__STRUCTURAL_SUPPORT_EVIDENCE_CORRECTION_REQUIRED__Q11_DONOR_AND_PPC_HARD_GATES_REQUIRED__QUALIFICATION_WORLD_GENERATION_NOT_YET_AUTHORIZED__TRAINING_OFF",
+  "structural_support_correction_pr": 287,
+  "structural_support_correction_head": "edd8b02bd0be785768c9594cc341f91167e763c0",
+  "terminal_state": "STRUCTURAL_SUPPORT_CORRECTION_ENGINEERING_GREEN__PHYSICAL_MASKED_S174_REPLAY_PENDING__QUALIFICATION_WORLD_GENERATION_OFF__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
   "training_authorized": false,
   "qualification_world_generation_authorized": false,
   "qualification_fitting_authorized": false,
   "corrected_train_bayesian_posterior_inference_authorized": false,
   "factorial_scientific_execution_authorized": false,
-  "structural_support_correction": {
+  "structural_support_flaw": {
     "finding": "S174 compact cache / V3 replay treated structurally unmeasured entries as measured zeros",
     "unmeasured_cell_gene_fraction": 0.0576,
     "affected_g500_genes": 59,
@@ -30,9 +32,65 @@
       "interpretation": "source detection remains supported on clean measured genes but original effect magnitude was inflated by structural zeros"
     },
     "operator_donor_positive_interpretation": "essentially unchanged by descriptive split",
-    "required_corrective_replay": "same exact-S174 cheap replay with structural support mask; same panel/folds/seed/metrics/operator lambdas/support tests; only unmeasured entries excluded",
-    "model_structure_reopened": false,
-    "candidate_status": "PROVISIONALLY_PRESERVED_PENDING_MASKED_REPLAY"
+    "candidate_status": "PROVISIONALLY_PRESERVED_PENDING_PHYSICAL_MASKED_REPLAY"
+  },
+  "structural_support_engineering": {
+    "branch": "fix/v79-structural-support-replay-20261011",
+    "pr": 287,
+    "base_head": "ae706096244b38e7691a3103fcb8dcd445745533",
+    "historical_v3_runner_modified": false,
+    "masked_v4_runner": "scripts/v79/run_v79_s174_structure_replay_masked.py",
+    "comparison_tool": "scripts/v79/compare_v79_s174_masked_replay.py",
+    "tests": [
+      "tests/v79/test_v79_s174_structural_support.py",
+      "tests/v79/test_compare_v79_s174_masked_replay.py"
+    ],
+    "red": {
+      "workflow_run": 38180037104,
+      "workflow_job": 114590448910,
+      "result": "4 failed / 23 passed",
+      "interpretation": "expected failures on missing support loader/observation semantics and poison-value dependence"
+    },
+    "intermediate_green": {
+      "workflow_run": 38180282770,
+      "workflow_job": 114591187261,
+      "result": "27 passed in 1.96 s"
+    },
+    "final_green": {
+      "workflow_run": 38180476572,
+      "workflow_job": 114591768346,
+      "result": "30 passed in 2.35 s"
+    },
+    "verified_behaviors": [
+      "measured zero remains a real detection zero",
+      "structurally unmeasured entries never enter likelihood/scoring/support diagnostics",
+      "partial operator/matrix-level support inside a source is preserved",
+      "poison-value invariance",
+      "support-mask/cache identity mismatch fails closed",
+      "all-measured masked path reproduces historical V3 numerical fields",
+      "V3-vs-V4 comparison fails closed on cache/panel/support-panel/fold/seed/permutation mismatch",
+      "comparison reports A-H deltas without automating the controller model-freeze decision"
+    ]
+  },
+  "physical_masked_replay_next_gate": {
+    "status": "PENDING_LOCAL_AUTHENTICATED_G500_EXECUTION",
+    "reuse_g500_cache": true,
+    "g500_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "replay_genes": 200,
+    "support_genes": 50,
+    "heldout_donor_folds": 3,
+    "permutations": 99,
+    "seed": 20261011,
+    "operator_lambdas": [0.25, 1.0, 4.0],
+    "same_legacy_panel_selection": true,
+    "same_model_and_scoring_definitions": true,
+    "required_outputs": [
+      "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED result",
+      "machine-readable V3-vs-V4 masked comparison",
+      "corrected A-H tables and old-vs-masked numerical deltas",
+      "structural-support counts and provenance"
+    ],
+    "world_generation_before_controller_review": false
   },
   "qualification_contract_controller_rulings": {
     "continue_after_scientific_fail": {
@@ -56,17 +114,12 @@
       "q11_operator_size_0p5_x_donor_sd": "RATIFIED_AS_MILD_STRESS_ONLY__PASS_DOES_NOT_COVER_STRONGER_OPERATOR_EFFECTS"
     }
   },
-  "required_prelaunch_work": [
-    "test-first structural support in cheap S174 replay",
-    "corrected masked S174 replay plus old-vs-masked delta audit",
-    "tests proving measured-zero versus unmeasured distinction",
-    "tests for fully unmeasured source-gene combinations",
-    "tests for partial NPH52 matrix-level support",
-    "poison-value read/refusal tests and poison-value invariance under fixed mask",
-    "amend contract builder with Q11 donor/PPC hard-gate ruling",
+  "required_after_masked_replay_if_structure_preserved": [
+    "controller review of corrected A-H",
+    "amend qualification contract builder with Q11 donor/PPC hard-gate ruling",
     "recompute multiplicity and derived thresholds from builder",
-    "rebuild contract byte-for-byte and record new SHA",
-    "commit realized worlds/truth only after controller prelaunch conditions pass"
+    "rebuild contract byte-for-byte and record new launch-authority SHA",
+    "only then generate and commit realized worlds/truth tables before any fit"
   ],
   "candidate_v2_core": {
     "structure": "PROVISIONALLY_PRESERVED",
@@ -82,7 +135,7 @@
     "resource_streaming_pr": 279,
     "first_failed_replay_pr": 280,
     "operator_repair_pr": 283,
-    "completed_replay_pr": 285,
+    "completed_unmasked_replay_pr": 285,
     "factorial_implementation_pr": 262,
     "factorial_audit_pr": 264,
     "factorial_handoff_pr": 265,
@@ -98,6 +151,7 @@
     "scenic_atac_target_evidence_in_truth": false,
     "old_18_fit_restart": false,
     "corrected_train_posterior_fit": false,
+    "qualification_world_generation": false,
     "h0_h3_scientific_execution": false,
     "stage4_500k": false,
     "jepa_training": false
