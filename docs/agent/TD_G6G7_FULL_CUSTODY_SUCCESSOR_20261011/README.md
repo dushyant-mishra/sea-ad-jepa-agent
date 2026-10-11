@@ -2,7 +2,13 @@
 
 Date: 2026-10-11
 
-Status: `QUALIFIED_FOR_OWNER_DECISION__NO_VALUE_READ`
+Status: `PR277_NEAR_QUALIFIED__RESIDUAL_G6_ARTIFACT_SEMANTIC_VALIDATION_REQUIRED__NO_VALUE_AUTHORITY`
+
+> **Status correction (2026-10-11, coordinator audit).** The qualification of `43cac77d` below remains valid evidence
+> for what it tested, but it does not qualify the successor. G7's G6 prerequisite checks artifact hashes and
+> linkage, not the contents of the materialized values and metadata NPZ files. A forged namespace with
+> self-consistently recomputed hashes can pass. Until that residual defect is repaired and independently
+> requalified, `QUALIFIED_FOR_OWNER_DECISION__NO_VALUE_READ` is withdrawn.
 
 Hard terminal: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
