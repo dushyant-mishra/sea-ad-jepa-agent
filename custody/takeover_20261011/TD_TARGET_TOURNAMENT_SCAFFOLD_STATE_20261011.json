@@ -1,14 +1,14 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "SYNTHETIC_SCIENCE_HARNESS_96_GREEN__PREFREEZE_CONTRACT_AND_CASE_COVERAGE_BOUND__DONOR_RESAMPLE_DEPENDENCE_EXPLICIT__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "SYNTHETIC_SCIENCE_HARNESS_101_GREEN__MATCHED_NULL_NAMESPACE_BOUND__PREFREEZE_CONTRACT_AND_CASE_COVERAGE_BOUND__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "focused_test_result": {
-    "passed": 96,
+    "passed": 101,
     "failed": 0,
     "errors": 0,
     "scope": "new synthetic/metadata-only science-harness tests",
-    "accounting": "76-green state + prefreeze suite expansion 7->17 (+10 total across two hardening cycles net +10) + gate-case coverage suite +10 = 96"
+    "accounting": "96-green state with old 5-test matched-null suite; namespace hardening expands that suite to 10 (+5 net)"
   },
   "qualified_components": {
     "gate_evidence_role_and_hash_binding": {
@@ -30,6 +30,10 @@
     "gate_case_coverage": {
       "green_commit": "46cbfa5a0db37931afa55936d90d5439677474af",
       "qualification": "docs/agent/TD_GATE_CASE_COVERAGE_QUALIFICATION_20261011.md"
+    },
+    "matched_wrong_cell_null_namespace": {
+      "green_commit": "a3a5dc241a0a602aa6a03ea41413463ee8a234c9",
+      "qualification": "docs/agent/TD_MATCHED_WRONG_CELL_NULL_NAMESPACE_QUALIFICATION_20261011.md"
     }
   },
   "capabilities": {
@@ -46,6 +50,10 @@
     "donor_resampling_dependence_audit": true,
     "case_rows_can_supply_independent_n_when_donors_overlap": false,
     "matched_wrong_cell_null_metadata_only": true,
+    "matched_wrong_cell_null_exact_row_schema": true,
+    "matched_wrong_cell_null_nul_free_versioned_prf": true,
+    "matched_wrong_cell_null_within_stratum_bijection": true,
+    "singleton_matched_null_strata_remain_not_estimable": true,
     "query_lineage_leakage_guard": true,
     "outcome_blind_precision_resolution": true,
     "synthetic_same_cell_count_split": true,
@@ -61,12 +69,15 @@
     "scripts/v5/td_gate_case_coverage.py": "40a4801a1df2172b18f1ee983570622ccdf903e2",
     "tests/v5/test_td_gate_case_coverage.py": "9bd3357b9487f518681b9e624d49e0e418f18e62",
     "scripts/v5/td_donor_resampling_audit.py": "4a5d0a08d6b1d1bdc4e0c188a909c39e5f0fb195",
-    "tests/v5/test_td_donor_resampling_audit.py": "f736c4b2c876a187bf9edff6a5fac266dcf13e5f"
+    "tests/v5/test_td_donor_resampling_audit.py": "f736c4b2c876a187bf9edff6a5fac266dcf13e5f",
+    "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
+    "tests/v5/test_td_target_tournament_nulls.py": "fd5e106650e257c4603863550919eb131dea66dc"
   },
   "scientific_boundaries": {
     "initial_decision_family_completeness_inferred_by_helper": false,
     "gate_pass_policy_invented_by_coverage_helper": false,
     "overlapping_donor_resamples_treated_as_independent": false,
+    "matched_null_singletons_crossed_or_relaxed": false,
     "technology_equivalence_margin_defined": false,
     "historical_null_counts_inherited": false
   },
