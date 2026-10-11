@@ -1,0 +1,38 @@
+{
+  "schema": "JEPA_TD57C_EXECUTOR_RECOVERY_RECEIPT_V1",
+  "date": "2026-10-10",
+  "status": "PASS_EXACT_TD57C_EXECUTOR_RECOVERED_FROM_AUTHENTICATED_TD41_TD58_ARCHIVE",
+  "source_surface": "Project Library",
+  "source_library_file_id": "file_00000000e9ec81f6a58dc73acf9d7807",
+  "source_archive_name": "JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip",
+  "source_archive_size_bytes": 92478083,
+  "source_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+  "expected_archive_sha256_from_historical_binding": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+  "archive_sha_match": true,
+  "member": {
+    "path": "td57c_three_view_local_geometry.py",
+    "size_bytes": 19897,
+    "sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+    "expected_historical_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+    "sha_match": true
+  },
+  "historical_result_binding": {
+    "result_sha256": "f0201becf790d644247287d9f2eece1e558ace2b2cb06eb73fae3af91a72af1f",
+    "result_member": "td57c_p0_hvs.json",
+    "result_replay_member": "td57c_p0_hvs_replay.json"
+  },
+  "additional_recovered_executor_members": {
+    "run_td56_hvs.py": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+    "run_td56_nph.py": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
+    "run_td56_sea_fast.py": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866",
+    "td57b_fixed_relational_recurrence.py": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+    "td57b_fast_wrapper.py": "808fb293a87d0020adc0f332742f3fa9b99c9c8ec5a88e50504a719ad4183a70"
+  },
+  "custody_note": "The exact historical bytes remain inside the authenticated 92,478,083-byte archive. A transient non-byte-identical Git text transfer was detected and deleted before being accepted as authority. This receipt binds the original archive/member bytes instead.",
+  "historical_record_modified": false,
+  "corrected_replay_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
