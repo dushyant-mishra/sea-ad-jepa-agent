@@ -1,0 +1,11 @@
+{
+  "schema": "foundation-calibration-bundle-v1",
+  "files": 97,
+  "manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+  "dev_sealed_expression_included": false,
+  "pathology_fields_included": false,
+  "expression_cells": 50000,
+  "metadata_cells": 6351753,
+  "addresses": 41238,
+  "operators": 42
+}
