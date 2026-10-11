@@ -79,27 +79,28 @@ def rehash(manifest):
     return manifest
 
 
+def audit(p):
+    return cov.audit_gate_case_coverage(
+        p,
+        candidate_id='C1_RELATIONAL_SHARED',
+        gate_id='G1_DONOR_PRIMARY',
+        case_receipts=receipts(),
+    )
+
+
 def test_coverage_rejects_rehashed_prefreeze_with_shadow_claim_field():
-    p = prefreeze()
-    p['target_selected'] = True
-    rehash(p)
+    p = prefreeze(); p['target_selected'] = True; rehash(p)
     with pytest.raises(cov.CoverageError):
-        cov.audit_gate_case_coverage(
-            p,
-            candidate_id='C1_RELATIONAL_SHARED',
-            gate_id='G1_DONOR_PRIMARY',
-            case_receipts=receipts(),
-        )
+        audit(p)
 
 
 def test_coverage_rejects_rehashed_prefreeze_with_true_authority():
-    p = prefreeze()
-    p['authority']['target_selection_authorized'] = True
-    rehash(p)
+    p = prefreeze(); p['authority']['target_selection_authorized'] = True; rehash(p)
     with pytest.raises(cov.CoverageError):
-        cov.audit_gate_case_coverage(
-            p,
-            candidate_id='C1_RELATIONAL_SHARED',
-            gate_id='G1_DONOR_PRIMARY',
-            case_receipts=receipts(),
-        )
+        audit(p)
+
+
+def test_coverage_rejects_rehashed_prefreeze_with_opened_biological_result():
+    p = prefreeze(); p['case_resolution'][0]['biological_result'] = 'PASS'; rehash(p)
+    with pytest.raises(cov.CoverageError):
+        audit(p)
