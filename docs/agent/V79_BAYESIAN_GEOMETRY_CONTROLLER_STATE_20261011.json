@@ -1,69 +1,39 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V2",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V3",
   "date": "2026-10-11",
   "lane": "bayesian_synthetic_geometry",
   "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
-  "live_source_head": "ea0102132eb25b3d282988181c95387bf4f57ff6",
+  "live_source_head": "3798ac05dcfe9f2d226694200281872702253db7",
   "audit_pr": 260,
   "handoff_pr": 261,
   "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
   "training_authorized": false,
   "corrected_train_authorized": false,
-  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R2.md",
-  "runtime_reconciliation": {
-    "previous_controller_checked_head": "c54019545c15e4b9932a79639e8de4659e0d822e",
-    "live_branch_commits_ahead": 2,
-    "machine_wide_scheduler_added": true,
-    "snapshot_equivalence_recorded": true,
-    "old_timeout_failures_classified_as_runtime_not_scientific": true
+  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R3.md",
+  "detection": {
+    "v1_status": "FAILED_S4_DIVERGENCES_AT_0.9_AND_0.95__0.99_INFEASIBLE",
+    "v2_status": "PRECOMMITTED_FINAL_ATTEMPT__S0_S1_S4_RESULTS_NOT_YET_COMMITTED",
+    "v2_parameterization": "ALL_RANDOM_COMPONENTS_NONCENTRED",
+    "no_v3_allowed_if_v2_fails": true,
+    "full_s0_s5_required_if_v2_screen_passes": true,
+    "qualified": false
   },
-  "bernoulli": {
-    "provenance_claims_completed": [
-      "S0_class_absent",
-      "S1_present",
-      "S5_labels_removed"
-    ],
-    "running_from_earlier_snapshot": [
-      "S4_operator_only"
-    ],
-    "old_timeout_rerun_required": [
-      "S2_class_permuted",
-      "S3_donor_only"
-    ],
-    "completed_payloads_committed_at_expected_paths": false,
-    "a5_final_status_independently_auditable": false,
-    "freeze_ready": false,
-    "status": "PARTIAL_RECOVERY_EVIDENCE__COMPLETED_PAYLOADS_NOT_COMMITTED__S2_S3_S4_INCOMPLETE__NOT_FREEZE_READY"
+  "gaussian": "INCOMPLETE__A5_COMPLIANT_RERUNS_AND_COMBINED_RECEIPT_PENDING",
+  "lognormal": "INCOMPLETE__S3_EXPOSED_A5_BUG__CORRECTED_RULE_RERUN_PENDING",
+  "ztnb": "INCOMPLETE__FULL_S0_S5_TERMINAL_RECEIPT_PENDING",
+  "state_quality": {
+    "source_V79_ACTIVE_STATE_stale_relative_to_head": true,
+    "source_PROVENANCE_stale_relative_to_head": true
   },
-  "next_gate": "BERNOULLI_S0_S5_COMPLETE_COMMITTED_RECOVERY_AND_COMBINED_RECEIPT",
+  "next_gate": "DETECTION_V2_S0_S1_S4_SCREEN_THEN_FULL_V2_S0_S5_IF_PASS",
   "next_controller_instruction": [
-    "commit completed Bernoulli S0/S1/S5 JSON payloads",
-    "make final A5 extension status explicit",
-    "finish Bernoulli S2/S3/S4 under bounded scheduler",
-    "commit all S0-S5 outputs and one combined recovery receipt",
-    "freeze Bernoulli only if every preregistered recovery/convergence criterion passes"
+    "commit V2 S0/S1/S4 result payloads with full diagnostics and retry history",
+    "if any V2 screen world fails, stop detection and report NOT QUALIFIED; do not search V3",
+    "if V2 screen passes, run the exact same V2 parameterization across full S0-S5 and commit a combined receipt",
+    "refresh V79_ACTIVE_STATE.json and PROVENANCE.json",
+    "finish Gaussian, log-normal and ZTNB recovery under corrected A5",
+    "do not start corrected TRAIN until all required simulation recovery families pass"
   ],
-  "qualification_order": [
-    "complete_and_audit_bernoulli_recovery",
-    "finish_gaussian_recovery",
-    "finish_lognormal_recovery",
-    "finish_ztnb_recovery",
-    "freeze_compute_benchmark",
-    "fit_corrected_train_only_if_gates_pass",
-    "run_heldout_ppc_and_q5",
-    "adjudicate_count_family",
-    "build_biology_geometry_authority",
-    "build_observation_geometry_authority",
-    "complete_self_audit"
-  ],
-  "integration_policy": {
-    "goal": "REAL_STATISTICAL_GEOMETRY_PLUS_SYNTHETIC_CAUSAL_IDENTITY",
-    "preserve_rich_posterior_structure": true,
-    "consume_provisional_sampler_outputs": false,
-    "post_outcome_rescue_allowed": false,
-    "field_level_mapping_required": true,
-    "factorial_lane_direct_edits_by_macha": false
-  },
   "boundaries": {
     "training_authorized": false,
     "test_or_morabito_allowed": false,
