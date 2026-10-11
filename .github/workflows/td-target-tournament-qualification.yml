@@ -62,6 +62,7 @@ jobs:
             tests/v5/test_td_target_tournament_nulls.py \
             tests/v5/test_td_target_tournament_precision.py \
             tests/v5/test_td_target_tournament_prefreeze.py \
+            tests/v5/test_td_target_tournament_prefreeze_v2.py \
             tests/v5/test_td_target_tournament_scaffold.py \
             tests/v5/test_td_tournament_completeness.py \
             | tee qualification/pytest.txt
