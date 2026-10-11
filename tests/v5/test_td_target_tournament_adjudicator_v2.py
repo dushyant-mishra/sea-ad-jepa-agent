@@ -164,3 +164,21 @@ def test_receipt_score_and_envelope_are_fail_closed():
     rec['winner']=True
     with pytest.raises(a2.AdjudicationV2Error):
         a2.validate_candidate_receipt(rec, contract(), mf, expected_prefreeze_manifest_sha256=PREFREEZE_SHA)
+
+
+def test_empty_tournament_still_requires_valid_external_prefreeze_pin():
+    with pytest.raises(a2.AdjudicationV2Error):
+        a2.adjudicate(
+            contract(), [], {},
+            expected_prefreeze_manifest_sha256='not-a-sha',
+        )
+
+
+def test_gate_json_object_order_is_not_scientific_gate_order():
+    mf, rec = receipt('C1_SHARED_EMERGENT')
+    mf['gates'] = dict(reversed(list(mf['gates'].items())))
+    rec['evidence_manifest_sha256'] = a2.canonical_sha256(mf)
+    a2.validate_candidate_receipt(
+        rec, contract(), mf,
+        expected_prefreeze_manifest_sha256=PREFREEZE_SHA,
+    )
