@@ -1,25 +1,35 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "LAST_QUALIFIED_SYNTHETIC_SCIENCE_HARNESS_110_GREEN_AT_8325B574__CURRENT_HEAD_DONOR_INDEPENDENCE_SEMANTIC_REPAIR_ASSIMILATED_PENDING_FRESH_REQUALIFICATION__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "LAST_QUALIFIED_SYNTHETIC_SCIENCE_HARNESS_110_GREEN_AT_8325B574__CURRENT_HEAD_SEMANTIC_AND_NUMERIC_CUSTODY_REPAIRS_ASSIMILATED_PENDING_FRESH_REQUALIFICATION__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "last_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
-  "current_head_after_semantic_repair": "3fbce74121f9c3f52db0e66186177854ddcb9f2c",
   "current_head_qualified": false,
   "focused_test_result": {
     "passed": 110,
     "failed": 0,
     "errors": 0,
     "scope": "last qualified synthetic/metadata-only science-harness state at 8325b574382fa76fa6da0e1d388eb903068533a4",
-    "accounting": "106-green state with old 7-test precision suite; numeric-custody hardening expands that suite to 11 (+4 net); current semantic-repair head requires a fresh rerun before these counts may be attributed to it"
+    "accounting": "historical 110-green result only; current repaired head requires a fresh rerun before any new green count is claimed"
   },
   "pending_requalification": {
-    "reason": "donor membership disjointness was previously serialized as broader case-level statistical independence",
-    "assimilated_from_pr": 278,
-    "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a",
-    "active_branch_script_blob": "412dbff491b410570dcc24e4f091405c6022aef1",
-    "active_branch_test_blob": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f",
-    "required_before_new_green_claim": "fresh focused qualification on the current exact branch head"
+    "repairs": [
+      {
+        "finding": "donor membership disjointness was serialized as broader case-level statistical independence",
+        "assimilated_from_pr": 278,
+        "repair_source_head": "9bfb5d76e7b821d32abd75d3d2f27f95bf84966a",
+        "active_branch_script_blob": "412dbff491b410570dcc24e4f091405c6022aef1",
+        "active_branch_test_blob": "1eaefc2a27bcd3dcce5ff8ab9846811b07dbf81f"
+      },
+      {
+        "finding": "prefreeze family_alpha used float coercion and accepted numeric strings despite exact numeric-custody rules",
+        "test_first_commit": "477bf93fc5a93afd6bf5ef834d37987c4c4ebd76",
+        "repair_commit": "f36e30e241a53b73be73dbaa81846d930011319b",
+        "active_branch_script_blob": "ac54e07563d7498cac6906a71ed11c26701085d7",
+        "active_branch_test_blob": "cb9bd3dfe2e6007efb0d8246663fe088fe349b28"
+      }
+    ],
+    "required_before_new_green_claim": "fresh focused qualification on one exact current branch head after both repairs"
   },
   "qualified_components": {
     "gate_evidence_role_and_hash_binding": "docs/agent/TD_TARGET_TOURNAMENT_SCAFFOLD_QUALIFICATION_20261011.md",
@@ -41,6 +51,7 @@
     "overlapping_case_rows_can_supply_independent_n": false,
     "disjoint_case_rows_can_supply_independent_n": false,
     "donor_membership_disjointness_is_broader_independence": false,
+    "prefreeze_family_alpha_coercion_allowed": false,
     "matched_wrong_cell_null_exact_stratum_bijection": true,
     "matched_null_singletons_remain_not_estimable": true,
     "query_lineage_exact_graph_role_coverage": true,
@@ -54,8 +65,8 @@
     "issues_authority": false
   },
   "current_git_blobs": {
-    "scripts/v5/td_target_tournament_prefreeze.py": "392d2c29f5e0958fd14a5699ab40c66238abde78",
-    "tests/v5/test_td_target_tournament_prefreeze.py": "1b38edb1f470733a8e84f44bde8fb12067205fee",
+    "scripts/v5/td_target_tournament_prefreeze.py": "ac54e07563d7498cac6906a71ed11c26701085d7",
+    "tests/v5/test_td_target_tournament_prefreeze.py": "cb9bd3dfe2e6007efb0d8246663fe088fe349b28",
     "scripts/v5/td_gate_case_coverage.py": "40a4801a1df2172b18f1ee983570622ccdf903e2",
     "tests/v5/test_td_gate_case_coverage.py": "9bd3357b9487f518681b9e624d49e0e418f18e62",
     "scripts/v5/td_donor_resampling_audit.py": "412dbff491b410570dcc24e4f091405c6022aef1",
@@ -72,6 +83,7 @@
     "gate_pass_policy_invented_by_coverage_helper": false,
     "overlapping_donor_resamples_treated_as_independent": false,
     "disjoint_donor_memberships_treated_as_case_level_independence": false,
+    "prefreeze_numeric_strings_treated_as_frozen_numeric_authority": false,
     "matched_null_singletons_crossed_or_relaxed": false,
     "teacher_aux_q_is_automatically_biological_truth": false,
     "technology_equivalence_margin_defined": false,
