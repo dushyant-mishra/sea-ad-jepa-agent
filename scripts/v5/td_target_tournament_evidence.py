@@ -6,6 +6,7 @@ import json
 
 SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_GATE_EVIDENCE_MANIFEST_V1'
 ALLOWED_STATUS = {'PASS', 'FAIL', 'NOT_ESTIMABLE'}
+MANIFEST_FIELDS = {'schema', 'fixture', 'candidate_id', 'gates', 'authority'}
 EXPECTED_AUTHORITY_KEYS = {
     'target_selected',
     'representation_selected',
@@ -47,6 +48,8 @@ def canonical_manifest_sha256(manifest):
 def validate_evidence_manifest(manifest, *, candidate_id, required_gates):
     if not isinstance(manifest, dict):
         raise EvidenceManifestError('manifest must be an object')
+    if set(manifest) != MANIFEST_FIELDS:
+        raise EvidenceManifestError('evidence manifest fields must be exact')
     if manifest.get('schema') != SCHEMA:
         raise EvidenceManifestError('wrong evidence manifest schema')
     if manifest.get('fixture') is not True:
