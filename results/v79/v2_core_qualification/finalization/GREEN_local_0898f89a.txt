@@ -1,0 +1,34 @@
+..............................                                           [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_final_v2_contract_is_accepted_as_launch_authority
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_historical_contracts_are_refused_as_launch_authority[V1]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_historical_contracts_are_refused_as_launch_authority[V2_DRAFT]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_a_historical_contract_renamed_as_final_is_refused[V1]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_a_historical_contract_renamed_as_final_is_refused[V2_DRAFT]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_historical_contracts_keep_their_accepted_bytes_and_flags
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_tampered_final_bytes_are_refused
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_tampered_sha256_file_is_refused
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[alpha]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[controller_comment]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[controller_decision]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[extra_limit_gate]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[genes_per_world]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[hard_statistical_gate_count]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[launch_authority_flag]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[launch_status]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[masked_replay_hash]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[masking_audit_hash]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[planned_fits]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[q11_gate_downgraded]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[support_mask_hash]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[terminal_lock_removed]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_rehashed_semantic_tampering_is_refused[worlds_generated]
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_changed_evidence_files_on_disk_are_refused
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_final_contract_keeps_the_accepted_arithmetic
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_final_contract_binds_the_accepted_evidence_hashes
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_final_contract_states_the_narrowed_source_interpretation
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_final_differs_from_the_accepted_draft_only_in_finalization_fields
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_builder_regenerates_final_and_draft_byte_for_byte
+PASSED tests/v79/test_v79_v2_core_launch_authority.py::test_no_qualification_world_artifacts_exist
+30 passed in 4.44s
