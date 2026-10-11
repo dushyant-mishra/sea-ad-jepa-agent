@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261011_V1",
+  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261011_V2",
   "date": "2026-10-11",
   "supersedes_machine_state": "custody/handoff_20261009/JEPA_CURRENT_TAKEOVER_STATE_20261009.json",
   "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
@@ -27,7 +27,7 @@
         "sample_A_h5_matrices": 34,
         "frozen_substrate_h5_matrices_authenticated": 35
       },
-      "git_blob_line_endings": "EXACT_PR259_RECEIPT_BLOBS_PRESERVE_CRLF_BYTES",
+      "git_blob_line_endings": "PR259_DRIVER_AND_MAPPING_GIT_BLOBS_PRESERVE_CRLF_BYTES",
       "expression_values_read": false,
       "biological_recurrence_conclusion": "NOT_TESTED"
     },
@@ -36,15 +36,28 @@
       "superseded_candidate_pr": 263,
       "superseded_candidate_head": "a509c59238bcdc60b88fa265e7e4473760a41025",
       "do_not_qualify_superseded_head": true,
-      "blocker": "G7 overlap path authenticates/opens S174 counts before authenticating the physical H5AD counterpart",
-      "blocker_audit": "docs/agent/TD_G7_COUNTERPART_AUTH_BEFORE_COUNT_READ_AUDIT_20261010.md",
+      "prequalification_blockers": [
+        {
+          "name": "COUNTERPART_AUTH_BEFORE_COUNT_READ",
+          "audit": "docs/agent/TD_G7_COUNTERPART_AUTH_BEFORE_COUNT_READ_AUDIT_20261010.md",
+          "problem": "G7 overlap path authenticates/opens S174 counts before authenticating the physical H5AD counterpart",
+          "required_regression": "physical_H5_auth_failure_with_overlap_must_prevent_S174_count_loader_invocation"
+        },
+        {
+          "name": "IMMUTABLE_G7_ATTEMPT_CUSTODY",
+          "audit": "docs/agent/TD_G7_IMMUTABLE_ATTEMPT_CUSTODY_AUDIT_20261011.md",
+          "problem": "a failed G7 attempt can leave final --out absent and therefore allow reuse of the same logical attempt path",
+          "required_regression": "start_marker_spends_attempt_and_retry_same_output_is_rejected"
+        }
+      ],
       "required_successor_order": [
+        "validate_runtime_authority_and_same_authority_G6_PASS",
+        "spend_immutable_G7_attempt_marker",
         "authenticate_S174_metadata_and_establish_natural_overlap",
         "authenticate_physical_H5AD_exact_frozen_SHA",
         "authenticate_S174_counts_exact_G1b_SHA",
         "only_then_open_either_count_source"
       ],
-      "required_regression": "physical_H5_auth_failure_with_overlap_must_prevent_S174_count_loader_invocation",
       "runtime_authorization_exists": false,
       "owner_decision_record_exists": false,
       "owner_decision_binding_required_before_future_runtime_authority": true,
@@ -87,8 +100,8 @@
   },
   "ordered_next_actions": [
     "preserve_PR259_exact_value_blind_evidence",
-    "repair_G7_counterpart_auth_before_count_read_on_successor_candidate",
-    "add_regression_proving_physical_H5_auth_failure_prevents_S174_count_read",
+    "repair_G7_counterpart_auth_and_immutable_attempt_custody_together_on_successor_candidate",
+    "add_regressions_for_counterpart_auth_order_and_spent_failed_attempts",
     "canonically_qualify_successor_against_focused_tests_and_exact_PR259_receipts_with_real_receipt_test_non_skipped",
     "STOP_for_owner_review",
     "only_explicit_owner_decision_record_may_enable_future_G6_G7_integrity_authorization",
