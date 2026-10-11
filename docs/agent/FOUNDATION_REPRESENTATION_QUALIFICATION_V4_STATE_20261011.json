@@ -1,0 +1,53 @@
+{
+  "schema": "FOUNDATION_REPRESENTATION_QUALIFICATION_V4_STATE_V1",
+  "date": "2026-10-11",
+  "implementation_pr": 269,
+  "implementation_head": "ccc3c71673fc3da7d3d18423afb61c85818e56c4",
+  "verification": {
+    "workflow_run": 38148597388,
+    "conclusion": "SUCCESS"
+  },
+  "historical_evidence": {
+    "stage81a3_recovered": true,
+    "foundation_matrices": 36,
+    "donor_balanced_cells": 64057,
+    "molecular_features": 4096,
+    "candidate_state_dimension": 160,
+    "state_subspace": "STABLE",
+    "state_axes": "ROTATING_WITHIN_STABLE_SUBSPACE",
+    "basis_uncertainty": "SUBSPACE_ONLY",
+    "biological_evidence_response": "DISTINCT",
+    "measurement_depth_response": "SUPPORTED",
+    "biology_measurement_separation": "SUPPORTED",
+    "two_axis_domain_support": "INFORMATIVE",
+    "cross_donor_transfer": "WEAK",
+    "cross_matrix_transfer": "WEAK",
+    "cross_dataset_transfer": "STRONG",
+    "cross_technology_transfer": "STRONG",
+    "peak_cpu_rss_bytes_historical": 6387449856,
+    "temporary_disk_bytes_historical": 5030195626
+  },
+  "current_policy": {
+    "transfer_ladder": ["donor", "matrix", "dataset", "technology"],
+    "representation_freeze_authorized": false,
+    "coordinate_specific_certainty_authorized": false,
+    "two_axis_ood_required": true,
+    "biology_and_measurement_uncertainty_must_remain_separate": true,
+    "hierarchical_sampling_required": true,
+    "sampling_exponents_outcome_tuned": false,
+    "full_registry_dense_default_authorized": false,
+    "compact_authenticated_cache_required_for_heavy_real_fit": true
+  },
+  "remaining_representation_gates": [
+    "CURRENT_DONOR_TRANSFER_REQUALIFICATION",
+    "CURRENT_MATRIX_TRANSFER_REQUALIFICATION_WITH_EXPLICIT_VOCABULARY_IDENTIFIABILITY",
+    "PROSPECTIVE_SAMPLING_ALPHA_APPROVAL",
+    "CURRENT_RESOURCE_BENCHMARK_ON_FINAL_EXECUTION_PATH"
+  ],
+  "training_authorized": false,
+  "target_discovery_value_read_authorized": false,
+  "stage4_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "terminal": "HISTORICAL_FOUNDATION_EVIDENCE_REQUALIFIED__CURRENT_REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF"
+}
