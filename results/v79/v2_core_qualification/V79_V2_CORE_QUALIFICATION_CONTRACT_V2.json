@@ -1,0 +1,111 @@
+{
+ "schema": "V79_V2_CORE_QUALIFICATION_CONTRACT_V2_FINAL_AUTHORITY",
+ "name": "V79_V2_CORE_FROZEN_MODEL_AND_PROSPECTIVE_SYNTHETIC_QUALIFICATION_CONTRACT",
+ "status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+ "launch_authority": true,
+ "world_generation_authorized": false,
+ "qualification_fits_run": 0,
+ "controller_authority": {
+  "ruling_pr": 288,
+  "ruling_comment": 6114753697,
+  "model_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+  "source_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal causal source biology",
+  "single_source_gene_rule": "cross-source estimand undefined/unevaluable; do not count as source-effect evidence"
+ },
+ "required_inputs": {
+  "qualification_payload": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+   "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION",
+   "role": "immutable controller-accepted prospective qualification payload"
+  },
+  "historical_v1": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+   "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+   "role": "historical pre-controller draft; never launch authority"
+  },
+  "s174_design_only": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz",
+   "sha256": "10e3c472543d948d673d91f7dadd15dbd77809a7b0d15f528eb9fd38d0c85a62"
+  },
+  "s174_design_only_record": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.json",
+   "sha256": "1a1295c34157b2d8629732a36cf1fe6592f6181872b41bd7d19151092b413fbb"
+  },
+  "planting_calibration_masked": {
+   "path": "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json",
+   "sha256": "49379ee09fcf7496919e570f83710ee772ca407ca0d20268a9af1f4e132f533c"
+  },
+  "structural_support_dev": {
+   "path": "results/v79/development/v2_core_planting_calibration/V79_G500_STRUCTURAL_SUPPORT_DEV.json",
+   "sha256": "d70781af34ec5263d515ee1ad7f9410b426a6516cd7a7d46e0a69c32ae6f41c2"
+  },
+  "structural_support_v1_record": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_G500_STRUCTURAL_SUPPORT_V1.json",
+   "sha256": "a6023902d953f98fb0fbd2a22d53361627f9b6a299c8730ef2ba7b9776a9f286"
+  },
+  "masked_replay": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+   "sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683"
+  },
+  "masking_audit": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+   "sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41"
+  },
+  "env_lock": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt",
+   "sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+  },
+  "structural_support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab"
+ },
+ "accepted_qualification_arithmetic": {
+  "worlds": 12,
+  "genes_per_world": 44,
+  "planned_fits": 1056,
+  "hard_statistical_gates": 260,
+  "hard_rule_gates": 28,
+  "limit_statistical_gates": 4,
+  "familywise_false_fail": 0.05,
+  "alpha_per_gate": 0.0001923076923076923
+ },
+ "accepted_gate_policy": {
+  "limit_gates": [
+   "Q01_WEAK_DONOR/detection/BIAS_DONOR_SD",
+   "Q01_WEAK_DONOR/positive/BIAS_DONOR_SD",
+   "Q08_SPARSE_DETECTION/positive/BIAS_DONOR_SD",
+   "Q09_POSITIVE_TAIL/positive/BIAS_DONOR_SD"
+  ],
+  "q11_all_gates": "HARD_FAIL",
+  "first_scientific_fail_terminal": "V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED",
+  "post_terminal_label": "POST_TERMINAL_DIAGNOSTIC__CANNOT_RESCUE_QUALIFICATION",
+  "infrastructure_hash_custody_poison_failure": "STOP_IMMEDIATELY"
+ },
+ "boundaries": {
+  "training_authorized": false,
+  "real_train_posterior_inference": false,
+  "factorial_science": false,
+  "test_split": false,
+  "morabito": false,
+  "pathology": false,
+  "target_discovery": false,
+  "world_generation_before_controller_prelaunch_review": false
+ },
+ "generated_outputs_scope": [
+  "this final authority envelope",
+  "its SHA-256 sidecar",
+  "finalizer/validator code and tests",
+  "CI/regeneration evidence",
+  "updated controller/audit/handoff state"
+ ],
+ "explicitly_not_generated": [
+  "Q00-Q11 realized worlds",
+  "truth tables",
+  "world manifests",
+  "benchmark outputs",
+  "qualification fits",
+  "posterior samples",
+  "corrected-TRAIN posterior inference",
+  "factorial scientific outputs",
+  "JEPA checkpoints"
+ ]
+}
