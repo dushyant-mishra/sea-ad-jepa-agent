@@ -1,0 +1,49 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V6",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "world_generator_pr": 291,
+  "controller_pairing_hold_comment": 6114906562,
+  "audit_verdict": "PRE_OUTCOME_CONTRACT_DEFECT_CAUGHT__Q10_Q11_PAIRING_NOT_EXPLICIT_UNDER_WORLD_INDEX_SEEDING__AMENDMENT_REQUIRED_BEFORE_WORLD_REALIZATION__FITTING_OFF__TRAINING_OFF",
+  "evidence": {
+    "frozen_payload_says": [
+      "Q10 and Q11 use S174 design; Q11 modification is omitted_operator",
+      "descriptive metrics include Q11 minus Q10 contrasts",
+      "randomness keyed by world_index,gene_index,stream",
+      "Q10 world_index=10 and Q11 world_index=11",
+      "planting rule applies per world"
+    ],
+    "implication": "literal implementation independently redraws non-operator truth/noise, so Q11-minus-Q10 does not isolate operator",
+    "realized_worlds_at_discovery": 0,
+    "qualification_fits_at_discovery": 0
+  },
+  "required_correction": {
+    "type": "PROSPECTIVE_PAIRING_SEMANTICS_AMENDMENT",
+    "q11_inherits_exactly_from_q10": [
+      "design",
+      "structural support",
+      "core planted parameters",
+      "donor effects/factor",
+      "factor-loading assignment",
+      "base detection noise",
+      "base positive noise"
+    ],
+    "q11_only_new_randomness": ["operator offset stream 22", "operator offset stream 23"],
+    "operator_offsets_centred_within_source": true,
+    "operator_scale_rule_unchanged": "0.5 x gene donor SD",
+    "all_q11_gates_remain_hard": true
+  },
+  "authorization": {
+    "pairing_amendment_engineering": true,
+    "other_generator_engineering": false,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "WORLD_GENERATOR_ENGINEERING_HOLD__Q10_Q11_PAIRING_AMENDMENT_REQUIRED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
