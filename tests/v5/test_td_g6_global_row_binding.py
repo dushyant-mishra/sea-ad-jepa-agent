@@ -24,13 +24,27 @@ def load_g6():
     return module
 
 
+def row(sample: str, sample_row: int, source: str, *, suffix: str) -> dict:
+    """Minimal production-schema row: every physical column G6 dereferences, no global_row."""
+    return {
+        "sample": sample,
+        "sample_row": str(sample_row),
+        "source": source,
+        "matrix_id": f"{source}::{suffix}",
+        "operator_index": "0",
+        "local_row": "0",
+        "donor_id": f"donor_{suffix}",
+        "cell_id": f"cell_{suffix}",
+    }
+
+
 def test_sample_a_derives_global_row_from_freeze_position_without_source_column():
     g6 = load_g6()
     freeze = pd.DataFrame([
-        {"sample": "A_NATURAL_MIXTURE", "sample_row": "0", "source": "HVS"},
-        {"sample": "A_NATURAL_MIXTURE", "sample_row": "1", "source": "NPH52"},
-        {"sample": "B_COVERAGE_DISCOVERY", "sample_row": "0", "source": "HVS"},
-        {"sample": "B_COVERAGE_DISCOVERY", "sample_row": "1", "source": "SEA_AD"},
+        row("A_NATURAL_MIXTURE", 0, "HVS", suffix="a0"),
+        row("A_NATURAL_MIXTURE", 1, "NPH52", suffix="a1"),
+        row("B_COVERAGE_DISCOVERY", 0, "HVS", suffix="b0"),
+        row("B_COVERAGE_DISCOVERY", 1, "SEA_AD", suffix="b1"),
     ])
     assert "global_row" not in freeze.columns
 
@@ -43,9 +57,9 @@ def test_sample_a_derives_global_row_from_freeze_position_without_source_column(
 def test_global_row_is_assigned_before_filtering_not_from_reset_sample_row():
     g6 = load_g6()
     freeze = pd.DataFrame([
-        {"sample": "A_NATURAL_MIXTURE", "sample_row": "0", "source": "HVS"},
-        {"sample": "B_COVERAGE_DISCOVERY", "sample_row": "0", "source": "SEA_AD"},
-        {"sample": "A_NATURAL_MIXTURE", "sample_row": "1", "source": "NPH52"},
+        row("A_NATURAL_MIXTURE", 0, "HVS", suffix="a0"),
+        row("B_COVERAGE_DISCOVERY", 0, "SEA_AD", suffix="b0"),
+        row("A_NATURAL_MIXTURE", 1, "NPH52", suffix="a1"),
     ])
 
     selected = g6.select_sample_a(freeze, enforce_geometry=False)
