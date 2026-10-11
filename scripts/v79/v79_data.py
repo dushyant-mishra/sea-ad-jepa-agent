@@ -70,12 +70,15 @@ def universe(X: sparse.csr_matrix) -> np.ndarray:
     return np.where(prevalence(X) > PREVALENCE_FLOOR)[0]
 
 
-def stratified_gene_sample(X: sparse.csr_matrix, n_genes: int, seed: int = GENE_SAMPLE_SEED) -> np.ndarray:
-    """An identity-blind sample of the universe: equal numbers per prevalence decile, frozen seed."""
+def stratified_gene_sample(X: sparse.csr_matrix, n_genes: int, seed: int = GENE_SAMPLE_SEED,
+                           prevalence_all: np.ndarray | None = None) -> np.ndarray:
+    """An identity-blind sample of the universe: equal numbers per prevalence decile, frozen seed. Prevalence is
+    computed once over the matrix (or passed in from a cache); the sample is identical either way."""
     if n_genes % N_DECILES:
         raise ValueError(f"n_genes must be a multiple of {N_DECILES}")
-    u = universe(X)
-    p = prevalence(X)[u]
+    p_all = prevalence(X) if prevalence_all is None else np.asarray(prevalence_all)
+    u = np.where(p_all > PREVALENCE_FLOOR)[0]
+    p = p_all[u]
     edges = np.quantile(p, np.linspace(0, 1, N_DECILES + 1))
     dec = np.clip(np.searchsorted(edges, p, side="right") - 1, 0, N_DECILES - 1)
     rng = np.random.default_rng(seed)

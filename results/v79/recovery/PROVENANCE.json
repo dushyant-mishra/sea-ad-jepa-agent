@@ -26,5 +26,6 @@
   "gpu (WSL JAX-CUDA, ZTNB S0-S5 sequential)": "ad5bbd17"
  },
  "note": "first-pass converged fits from snapshots before amendment A5 are valid under A5 (extension only acts on a miss); new parts record code_snapshot themselves",
- "evidence_moved": "timeouts_and_reruns_20261011/ (killed logs, failed Gaussian S1 record, incomplete launcher combine)"
+ "evidence_moved": "timeouts_and_reruns_20261011/ (killed logs, failed Gaussian S1 record, incomplete launcher combine)",
+ "status": "SUPERSEDED_2026-10-11: S1-only equivalence is not sufficient (controller ruling); every suite is rerun under one frozen snapshot and combine refuses mixed snapshots; earlier parts are evidence only"
 }
