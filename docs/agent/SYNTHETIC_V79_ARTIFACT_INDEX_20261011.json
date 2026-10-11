@@ -1,0 +1,84 @@
+{
+  "schema": "SYNTHETIC_V79_ARTIFACT_INDEX_V1",
+  "date": "2026-10-11",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "lane": "SYNTHETIC_DATASET_V79",
+  "canonical_handoff": {
+    "pr": 261,
+    "branch": "handoff/v79-bayesian-geometry-takeover-20261010",
+    "human": "docs/agent/SYNTHETIC_V79_COMPLETE_TAKEOVER_HANDOFF_20261011.md",
+    "state": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_20261011.json",
+    "macha_next_contract": "docs/agent/SYNTHETIC_V79_MACHA_NEXT_EXECUTION_CONTRACT_20261011.md"
+  },
+  "canonical_audit": {
+    "pr": 260,
+    "branch": "audit/v79-bayesian-geometry-snapshot-20261010",
+    "human": "docs/agent/SYNTHETIC_V79_COMPLETE_TAKEOVER_AUDIT_20261011.md",
+    "state": "docs/agent/SYNTHETIC_V79_AUDIT_STATE_20261011.json"
+  },
+  "macha_source": {
+    "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+    "head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf"
+  },
+  "resource_implementation": {
+    "pr": 279,
+    "branch": "fix/v79-streaming-analysis-cache-20261011",
+    "verified_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+    "execution_snapshot_head": "615b55eb03b95630484b18d47de0ef7340368d37",
+    "workflow_run": 38166126568,
+    "workflow_job": 114548954034,
+    "tests": "15 passed in 1.27 s",
+    "files": [
+      ".github/workflows/v79-streaming-analysis-cache.yml",
+      "scripts/v79/build_v79_analysis_cache.py",
+      "scripts/v79/run_v79_s174_structure_replay.py",
+      "scripts/v79/run_v79_scheduler.py",
+      "tests/v79/test_v79_analysis_cache.py",
+      "tests/v79/test_v79_s174_structure_replay.py",
+      "tests/v79/test_v79_scheduler_resource_defaults.py",
+      "docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md"
+    ]
+  },
+  "physical_execution": {
+    "pr": 280,
+    "branch": "exec/v79-s174-structure-replay-20261011",
+    "first_record_head": "2f4b77e7290397130d681c47b82337115e9e9585",
+    "controller_repair_comment_id": 6112948943,
+    "files": [
+      "docs/agent/V79_ACTIVE_STATE.json",
+      "docs/agent/V79_S174_STRUCTURE_REPLAY_EXECUTION_RECORD_20261011.md",
+      "results/v79/development/s174_structure_replay/V79_ANALYSIS_CACHE_G500_RECEIPT.json",
+      "results/v79/development/s174_structure_replay/V79_G500_PANEL_PREVALENCE_COVERAGE.json",
+      "results/v79/development/s174_structure_replay/V79_S174_REPLAY_CONVERGENCE_DIAGNOSIS.json",
+      "results/v79/development/s174_structure_replay/V79_S174_REPLAY_EXECUTION_PROVENANCE.json",
+      "results/v79/development/s174_structure_replay/build_cache.stderr.txt",
+      "results/v79/development/s174_structure_replay/build_cache.stdout.txt",
+      "results/v79/development/s174_structure_replay/diagnose_replay_convergence.py",
+      "results/v79/development/s174_structure_replay/replay.stderr.txt",
+      "results/v79/development/s174_structure_replay/replay.stdout.txt"
+    ]
+  },
+  "physical_data_not_committed": {
+    "s174_cache_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "reason": "real corrected TRAIN counts; local authenticated data",
+    "authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "g500_compact_cache_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "g500_compact_cache_bytes": 1071307,
+    "g500_rebuild_policy": "REUSE_IF_HASH_AND_CUSTODY_PASS"
+  },
+  "downstream_factorial": {
+    "implementation_pr": 262,
+    "implementation_branch": "fix/v79-factorial-memory-hardening-20261010",
+    "implementation_head": "9110c3fae6d34e43463d56631f43004bda33beb8",
+    "audit_pr": 264,
+    "audit_branch": "audit/v79-factorial-preexecution-hardened-20261010",
+    "handoff_pr": 265,
+    "handoff_branch": "handoff/v79-factorial-hardened-takeover-20261010",
+    "verification_run": 38147114407,
+    "verification_job": 114492689105,
+    "tests": "94 passed in 1.04 s",
+    "scientific_tournament_run": false
+  },
+  "current_terminal": "EXACT_S174_STRUCTURE_REPLAY_FAILED_CLOSED__OPERATOR_MODEL_LOGISTIC_NONCONVERGENCE__NO_METRICS_COMPUTED__PROSPECTIVE_OPERATOR_REGULARIZATION_REPAIR_APPROVED__BAYESIAN_CONFIRMATION_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF"
+}

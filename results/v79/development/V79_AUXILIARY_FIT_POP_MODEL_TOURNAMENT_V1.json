@@ -1,0 +1,64 @@
+{
+  "schema": "V79_AUXILIARY_FIT_POP_MODEL_TOURNAMENT_V1",
+  "date": "2026-10-11",
+  "purpose": "Exploratory model development before any new confirmatory Bayesian recovery suite",
+  "scope": "AUXILIARY_50K_READER_FIT_POPULATION__MODEL_DEVELOPMENT_ONLY__NOT_S174_CONFIRMATORY_AUTHORITY",
+  "inputs": {
+    "expression_metadata_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+    "expression_part001_sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+    "expression_part002_sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+    "matrix": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K",
+    "count_reconstruction": "round(expm1(log1p10k) * source_library / 10000)",
+    "count_reconstruction_max_abs_log1p_error_200_rows": 8.881784197001252e-16
+  },
+  "design": {
+    "cells": 10379,
+    "donors": 104,
+    "max_cells_per_donor": 100,
+    "sources": {"HVS": 4100, "NPH52": 1679, "SEA_AD": 4600},
+    "broad_classes": {"GABAergic": 2478, "Glutamatergic": 4353, "NonNeuronal": 3547, "Other": 1},
+    "heldout_donor_folds": 3,
+    "genes": 10,
+    "gene_prevalence_range": [0.05000481741978996, 0.8662684266306966],
+    "gene_selection": "identity-blind address indices nearest fixed prevalence targets 0.05,0.08,0.12,0.20,0.30,0.40,0.50,0.60,0.75,0.90"
+  },
+  "candidate_models": [
+    "NB2 all counts with fixed library offset plus source/broad biology",
+    "NB2 all counts with free log-library slope plus source/broad biology",
+    "explicit logistic detection plus discrete-bin lognormal positive magnitude",
+    "explicit logistic detection plus zero-truncated NB2 positive magnitude"
+  ],
+  "heldout_donor_results": {
+    "NB2_fixed_depth_mean_lpd": -1.4337346785944045,
+    "NB2_free_depth_mean_lpd": -1.4042847148894677,
+    "hurdle_lognormal_mean_lpd": -1.3028489888286947,
+    "hurdle_ztnb_mean_lpd": -1.306171944483128,
+    "NB2_fixed_depth_detection_logloss": 0.3757327647805482,
+    "NB2_free_depth_detection_logloss": 0.3560833508198403,
+    "explicit_detection_logloss": 0.2617861800192255,
+    "hurdle_lognormal_minus_NB2_free_depth_lpd": 0.101435726060773,
+    "hurdle_ztnb_minus_NB2_fixed_depth_lpd": 0.12756273411127675,
+    "explicit_detection_logloss_improvement_vs_NB2_free_depth": 0.09429717080061477,
+    "hurdle_ztnb_minus_hurdle_lognormal_lpd": -0.0033229556544331655,
+    "per_gene_winners": {"hurdle_lognormal": 7, "hurdle_ztnb": 3},
+    "explicit_detection_better_than_NB2_free_depth_genes": "10_of_10",
+    "hurdle_lognormal_better_than_NB2_free_depth_genes": "9_of_10",
+    "hurdle_ztnb_better_than_NB2_free_depth_genes": "10_of_10"
+  },
+  "development_ruling": {
+    "one_piece_NB_supported_as_default": false,
+    "two_part_detection_plus_positive_magnitude_supported": true,
+    "old_hierarchical_bernoulli_model_rehabilitated": false,
+    "positive_family_winner": "UNRESOLVED__LOGNORMAL_AND_ZTNB_NEAR_TIE",
+    "recommended_next_model_generation": "SIMPLER_EMPIRICALLY_REGULARIZED_DETECTION_COMPONENT_PLUS_POSITIVE_MAGNITUDE_COMPONENT",
+    "reason": "Explicit detection adds consistent held-out-donor predictive information beyond NB-implied zeros, while the previous deep hierarchical Bernoulli parameterization already failed confirmatory recovery. Positive-family differences are too small here to justify an outcome-driven winner declaration."
+  },
+  "authority": {
+    "confirmatory_qualification": false,
+    "corrected_S174_authority": false,
+    "posterior_parameter_export_authorized": false,
+    "factorial_execution_authorized": false,
+    "training_authorized": false
+  },
+  "terminal": "EMPIRICAL_DEVELOPMENT_TOURNAMENT_COMPLETE__TWO_PART_MODEL_SUPPORTED__OLD_BERNOULLI_PARAMETERIZATION_REMAINS_FAILED__POSITIVE_FAMILY_UNRESOLVED__NEW_MODEL_DEVELOPMENT_REQUIRED"
+}

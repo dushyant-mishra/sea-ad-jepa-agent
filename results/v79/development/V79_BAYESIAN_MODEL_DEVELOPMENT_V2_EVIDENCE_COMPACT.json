@@ -1,0 +1,43 @@
+{
+  "candidate": {
+    "across_gene_geometry": "SECOND_STAGE_META_DISTRIBUTION_AFTER_PER_GENE_FITS",
+    "architecture": "TWO_PART_HURDLE",
+    "depth": "QUADRATIC_CENTERED_LOG_LIBRARY",
+    "donor_class_default": false,
+    "fit_unit": "MODULAR_PER_GENE",
+    "fixed_effects": ["BROAD_CLASS", "SOURCE"],
+    "positive_family_development_default": "LOGNORMAL",
+    "random_effects": ["OPERATOR_WITHIN_SOURCE", "DONOR_WITHIN_SOURCE"],
+    "ztnb_status": "CHALLENGER_PENDING_STABLE_EXACT_S174_REPLAY"
+  },
+  "confirmatory_authority": false,
+  "count_replay_max_abs_log1p_error": 8.881784197001252e-16,
+  "date": "2026-10-11",
+  "detection_logloss": {
+    "depth_linear": 0.46636806699,
+    "depth_quad": 0.46370613488,
+    "plus_class": 0.41676008153,
+    "plus_source": 0.33081565013,
+    "plus_operator": 0.32203671485,
+    "source_class_plus_operator": 0.32221884408
+  },
+  "donor_permutation_support": {"detection_genes_above_q95": 12, "positive_genes_above_q95": 10, "genes": 12},
+  "donorclass_increment_beyond_donor": {"detection_genes_above_q95": 3, "positive_genes_above_q95": 5, "genes": 12, "mean_detection_excess_vs_q95": -0.00214895178, "mean_positive_excess_vs_q95": 0.00021541407},
+  "exact_s174_replay_pending": true,
+  "heldout_donor_folds": 3,
+  "n_cells": 10379,
+  "n_donors": 104,
+  "n_genes": 20,
+  "n_operators": 42,
+  "n_sources": 3,
+  "naive_fixed_effect_recovery_warning": {"S3_donor_only_donor_var_fit": 0.2048404688, "S3_false_operator_var_fit": 0.0355929249, "S4_false_donor_var_fit": 0.0467465408, "S4_operator_only_operator_var_fit": 0.1604728814, "interpretation": "DONOR_OPERATOR_SEPARATION_REQUIRES_CONSTRAINED_RANDOM_EFFECTS_NOT_UNRESTRICTED_DUMMIES"},
+  "operator_permutation_support": {"detection_genes_above_q95": 9, "positive_genes_above_q95": 8, "genes": 12},
+  "positive_depth_quadratic": {"gene_wins": 16, "genes": 20, "mean_lpd_gain": 0.00532625628},
+  "positive_lognormal_lpd": {"depth": -2.23301138839, "plus_class": -2.18706104750, "plus_source": -2.08090101767, "plus_operator": -2.03912886004, "operator_delta_vs_source": 0.04177215763, "operator_gene_wins_vs_source": 17},
+  "prevalence_range": [0.0500048174, 0.8691588785],
+  "schema": "V79_BAYESIAN_MODEL_DEVELOPMENT_V2_EVIDENCE_COMPACT",
+  "scope": "AUXILIARY_50K_FIT_POPULATION__DEVELOPMENT_ONLY",
+  "terminal": "DEVELOPMENT_CANDIDATE_V2__EXACT_S174_REPLAY_PENDING__NO_CONFIRMATORY_AUTHORITY__TRAINING_OFF",
+  "training_authorized": false,
+  "ztnb_stress_test": {"genes_attempted": 20, "genes_with_3_of_3_converged_folds": 0, "ruling": "IMPLEMENTATION_UNSTABLE__NOT_FAMILY_RANKING_EVIDENCE"}
+}
