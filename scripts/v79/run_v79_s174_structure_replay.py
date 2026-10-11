@@ -14,8 +14,13 @@ Detection candidates, nested in order:
 
 Positive-count candidates use the same nested structures with a Gaussian model on log positive count. This is a
 stable development diagnostic, not the final positive-family adjudication; ZTNB remains a separate challenger.
-Donor/operator random-effect support is assessed separately and is not replaced by treating IDs as unrestricted
-fixed dummies.
+
+Random-effect *support* is assessed cheaply from fixed-structure residuals by within-stratum permutation:
+- donor support after depth+class+source+operator;
+- operator support after depth+class+source;
+- donor×class increment after removing the donor mean from full-model residuals.
+These diagnostics decide what hierarchy deserves a later Bayesian random-effect model; they are not substitutes
+for Bayesian posterior estimation.
 """
 from __future__ import annotations
 
@@ -60,7 +65,41 @@ def load_compact_cache(npz_path, receipt_path) -> dict[str, np.ndarray]:
     n = len(out["donor"])
     if out["counts_selected"].shape[0] != n or any(len(out[k]) != n for k in ("cls", "src", "op", "dk", "log_lib_centered")):
         raise SystemExit("STOP: compact cache row dimensions disagree")
+    if out["counts_selected"].shape[1] != len(out["prevalence_selected"]):
+        raise SystemExit("STOP: cache gene panel and prevalence vector disagree")
     return out
+
+
+def select_panel_positions(prevalence: np.ndarray, n: int, seed: int = SEED, bins: int = 10) -> np.ndarray:
+    """Identity-blind prevalence-spanning subpanel from an already frozen cache panel.
+
+    Rank bins are used rather than raw quantile edges so ties cannot create empty bins. Allocation is as even as
+    possible across bins; any remainder is assigned deterministically to the first bins after a seeded rotation.
+    """
+    p = np.asarray(prevalence, dtype=np.float64)
+    m = len(p)
+    if n <= 0:
+        raise ValueError("n must be positive")
+    if n >= m:
+        return np.arange(m, dtype=np.int64)
+    bins = min(int(bins), n, m)
+    order = np.argsort(p, kind="mergesort")
+    rank_bins = np.array_split(order, bins)
+    base, rem = divmod(n, bins)
+    if any(len(b) < base for b in rank_bins):
+        raise ValueError("cache panel is too small for balanced subpanel")
+    rng = np.random.default_rng(seed)
+    extra_order = np.roll(np.arange(bins), int(rng.integers(0, bins)))
+    extras = set(extra_order[:rem].tolist())
+    picked = []
+    for i, b in enumerate(rank_bins):
+        take = base + (1 if i in extras else 0)
+        if take > len(b):
+            raise ValueError("rank bin cannot supply requested balanced subpanel")
+        picked.extend(rng.choice(b, size=take, replace=False).tolist())
+    if len(picked) != n or len(set(picked)) != n:
+        raise RuntimeError("balanced panel selection failed uniqueness/size invariant")
+    return np.sort(np.asarray(picked, dtype=np.int64))
 
 
 def donor_folds(donor: np.ndarray, src: np.ndarray, k: int, seed: int) -> list[np.ndarray]:
@@ -72,7 +111,6 @@ def donor_folds(donor: np.ndarray, src: np.ndarray, k: int, seed: int) -> list[n
     assignment: dict[int, int] = {}
     for s in np.unique(src):
         ds = np.unique(donor[src == s])
-        # A donor spanning sources is assigned only once; such a design is unusual but fail consistently.
         ds = np.array([d for d in ds if int(d) not in assignment], dtype=donor.dtype)
         rng.shuffle(ds)
         for i, d in enumerate(ds):
@@ -114,7 +152,6 @@ def _logistic_fit(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     p = X.shape[1]
     def objective(beta):
         eta = X @ beta
-        # stable Bernoulli negative log likelihood
         nll = np.logaddexp(0.0, eta).sum() - np.dot(y, eta)
         return float(nll + 0.5 * RIDGE * np.dot(beta[1:], beta[1:]))
     def grad(beta):
@@ -142,6 +179,43 @@ def _ridge_linear_fit(X: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, float]:
 
 def _normal_lpd(y: np.ndarray, mu: np.ndarray, sigma: float) -> np.ndarray:
     return -0.5 * np.log(2 * np.pi * sigma * sigma) - 0.5 * ((y - mu) / sigma) ** 2
+
+
+def _between_group_stat(residual: np.ndarray, groups: np.ndarray) -> float:
+    """Size-weighted variance of group means around the overall residual mean."""
+    residual, groups = np.asarray(residual, dtype=np.float64), np.asarray(groups)
+    overall = float(residual.mean())
+    total, n = 0.0, 0
+    for g in np.unique(groups):
+        x = residual[groups == g]
+        if len(x) == 0:
+            continue
+        total += len(x) * (float(x.mean()) - overall) ** 2
+        n += len(x)
+    return float(total / max(n, 1))
+
+
+def permutation_group_support(residual: np.ndarray, groups: np.ndarray, strata: np.ndarray,
+                              seed: int = SEED, n_perm: int = 99) -> dict:
+    """Test residual group organization against residual permutations restricted within strata."""
+    residual = np.asarray(residual, dtype=np.float64)
+    groups, strata = np.asarray(groups), np.asarray(strata)
+    if not (len(residual) == len(groups) == len(strata)):
+        raise ValueError("residual/groups/strata lengths disagree")
+    if n_perm < 1:
+        raise ValueError("n_perm must be positive")
+    observed = _between_group_stat(residual, groups)
+    rng = np.random.default_rng(seed)
+    null = np.empty(n_perm, dtype=np.float64)
+    idx_by_stratum = [np.where(strata == s)[0] for s in np.unique(strata)]
+    for i in range(n_perm):
+        perm = residual.copy()
+        for ix in idx_by_stratum:
+            perm[ix] = residual[rng.permutation(ix)]
+        null[i] = _between_group_stat(perm, groups)
+    q95 = float(np.quantile(null, 0.95))
+    return {"observed": observed, "null_mean": float(null.mean()), "null_q95": q95,
+            "n_perm": int(n_perm), "supported": bool(observed > q95)}
 
 
 def evaluate_detection_gene(data: dict, gene: int, k: int = 3, seed: int = SEED) -> dict:
@@ -183,6 +257,51 @@ def evaluate_positive_gene(data: dict, gene: int, k: int = 3, seed: int = SEED) 
     return {"gene_position": int(gene), "n_positive": int(pos.sum()), "models": out}
 
 
+def _center_within(x: np.ndarray, groups: np.ndarray) -> np.ndarray:
+    out = np.asarray(x, dtype=np.float64).copy()
+    for g in np.unique(groups):
+        ix = groups == g
+        out[ix] -= out[ix].mean()
+    return out
+
+
+def residual_support_for_gene(data: dict, gene: int, seed: int = SEED, n_perm: int = 99) -> dict:
+    """Cheap support checks for donor/operator/donor×class in both hurdle parts."""
+    counts = np.asarray(data["counts_selected"])[:, gene].astype(np.float64)
+    y = (counts > 0).astype(np.float64)
+
+    X_full = design_matrix(data, "depth_class_source_operator")
+    b_full = _logistic_fit(X_full, y)
+    det_full_resid = y - expit(X_full @ b_full)
+    X_noop = design_matrix(data, "depth_class_source")
+    b_noop = _logistic_fit(X_noop, y)
+    det_noop_resid = y - expit(X_noop @ b_noop)
+    det_dc_resid = _center_within(det_full_resid, data["donor"])
+
+    det = {
+        "donor": permutation_group_support(det_full_resid, data["donor"], data["src"], seed + 1, n_perm),
+        "operator": permutation_group_support(det_noop_resid, data["op"], data["src"], seed + 2, n_perm),
+        "donor_class_increment": permutation_group_support(det_dc_resid, data["dk"], data["donor"], seed + 3, n_perm),
+    }
+
+    pos = counts > 0
+    positive = None
+    if int(pos.sum()) > X_full.shape[1] + 5:
+        z = np.log(counts[pos])
+        bf, _ = _ridge_linear_fit(X_full[pos], z)
+        pos_full_resid = z - X_full[pos] @ bf
+        bn, _ = _ridge_linear_fit(X_noop[pos], z)
+        pos_noop_resid = z - X_noop[pos] @ bn
+        donor_pos = data["donor"][pos]
+        pos_dc_resid = _center_within(pos_full_resid, donor_pos)
+        positive = {
+            "donor": permutation_group_support(pos_full_resid, donor_pos, data["src"][pos], seed + 11, n_perm),
+            "operator": permutation_group_support(pos_noop_resid, data["op"][pos], data["src"][pos], seed + 12, n_perm),
+            "donor_class_increment": permutation_group_support(pos_dc_resid, data["dk"][pos], donor_pos, seed + 13, n_perm),
+        }
+    return {"gene_position": int(gene), "detection": det, "positive": positive}
+
+
 def summarize(per_gene: list[dict], metric: str) -> dict:
     summary = {}
     for model in MODELS:
@@ -194,41 +313,72 @@ def summarize(per_gene: list[dict], metric: str) -> dict:
     return summary
 
 
+def summarize_support(per_gene: list[dict], part: str) -> dict:
+    out = {}
+    for component in ("donor", "operator", "donor_class_increment"):
+        recs = [g[part][component] for g in per_gene if g.get(part) is not None]
+        out[component] = {
+            "supported_genes": int(sum(r["supported"] for r in recs)),
+            "eligible_genes": int(len(recs)),
+            "mean_observed_minus_null_q95": (float(np.mean([r["observed"] - r["null_q95"] for r in recs]))
+                                               if recs else None),
+        }
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cache")
     ap.add_argument("receipt")
     ap.add_argument("out")
     ap.add_argument("--genes", type=int, default=200,
-                    help="number of already identity-blind cache-panel positions to evaluate")
+                    help="prevalence-balanced identity-blind panel positions used for nested held-out-donor comparisons")
+    ap.add_argument("--support-genes", type=int, default=50,
+                    help="subset of the replay panel used for residual random-effect support diagnostics")
+    ap.add_argument("--permutations", type=int, default=99)
     ap.add_argument("--folds", type=int, default=3)
     ap.add_argument("--seed", type=int, default=SEED)
     a = ap.parse_args()
     data = load_compact_cache(a.cache, a.receipt)
-    n_genes = min(a.genes, data["counts_selected"].shape[1])
+    panel = select_panel_positions(data["prevalence_selected"], min(a.genes, data["counts_selected"].shape[1]), a.seed)
+    support_panel_local = select_panel_positions(data["prevalence_selected"][panel], min(a.support_genes, len(panel)), a.seed + 101)
+    support_panel = panel[support_panel_local]
+
     det, pos = [], []
-    for g in range(n_genes):
+    for g in panel.tolist():
         det.append(evaluate_detection_gene(data, g, a.folds, a.seed))
         pos.append(evaluate_positive_gene(data, g, a.folds, a.seed))
+    support = [residual_support_for_gene(data, int(g), a.seed + int(i) * 100, a.permutations)
+               for i, g in enumerate(support_panel.tolist())]
+
     rec = {
-        "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V1",
+        "schema": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V2",
         "status": "DEVELOPMENT_ONLY__NOT_CONFIRMATORY__NOT_SYNTHETIC_CONSUMABLE",
         "cache_sha256": sha256(Path(a.cache)),
         "receipt_sha256": sha256(Path(a.receipt)),
         "n_cells": int(len(data["donor"])), "n_donors": int(len(np.unique(data["donor"]))),
-        "n_genes": int(n_genes), "folds": int(a.folds), "seed": int(a.seed),
-        "models": list(MODELS), "ridge": RIDGE,
+        "n_cache_genes": int(data["counts_selected"].shape[1]), "n_replay_genes": int(len(panel)),
+        "n_support_genes": int(len(support_panel)), "folds": int(a.folds), "seed": int(a.seed),
+        "permutations": int(a.permutations), "models": list(MODELS), "ridge": RIDGE,
+        "panel_positions_internal": panel.tolist(), "support_panel_positions_internal": support_panel.tolist(),
+        "panel_prevalence_range": [float(data["prevalence_selected"][panel].min()),
+                                   float(data["prevalence_selected"][panel].max())],
         "detection_summary": summarize(det, "mean_logloss"),
         "positive_lognormal_summary": summarize(pos, "mean_lpd"),
-        "per_gene_detection": det, "per_gene_positive": pos,
+        "random_effect_support": {
+            "detection": summarize_support(support, "detection"),
+            "positive": summarize_support(support, "positive"),
+        },
+        "per_gene_detection": det, "per_gene_positive": pos, "per_gene_random_effect_support": support,
         "boundaries": {"bayesian_posterior_inference": False, "confirmatory_qualification": False,
                        "factorial_execution": False, "training_authorized": False},
         "terminal": "S174_STRUCTURE_REPLAY_COMPLETE__DEVELOPMENT_ONLY__CONTROLLER_REVIEW_REQUIRED"
     }
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rec, indent=1, allow_nan=False) + "\n", encoding="utf-8")
-    print(json.dumps({"out": str(out), "n_cells": rec["n_cells"], "n_genes": n_genes,
-                      "detection": rec["detection_summary"], "positive": rec["positive_lognormal_summary"]}))
+    print(json.dumps({"out": str(out), "n_cells": rec["n_cells"], "n_replay_genes": len(panel),
+                      "n_support_genes": len(support_panel), "detection": rec["detection_summary"],
+                      "positive": rec["positive_lognormal_summary"], "support": rec["random_effect_support"]}))
 
 
 if __name__ == "__main__":
