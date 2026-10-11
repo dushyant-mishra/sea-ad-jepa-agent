@@ -9,6 +9,11 @@ from td_target_tournament_precision import (
 )
 
 SCHEMA = 'JEPA_TD_TARGET_TOURNAMENT_PREFREEZE_CONFIG_V1'
+CONFIG_FIELDS = {
+    'schema', 'fixture_only', 'family_alpha', 'multiplicity_method',
+    'tournament_contract', 'tournament_contract_sha256', 'null_seed_material',
+    'decision_cases', 'decision_family_registry_sha256', 'authority',
+}
 EXPECTED_AUTHORITY_KEYS = {
     'value_read_authorized',
     'real_tournament_authorized',
@@ -150,6 +155,8 @@ def canonical_decision_family_sha256(cases):
 
 
 def build_prefreeze_manifest(config):
+    if not isinstance(config, dict) or set(config) != CONFIG_FIELDS:
+        raise PrefreezeError('prefreeze config fields must be exact')
     if config.get('schema') != SCHEMA:
         raise PrefreezeError('wrong schema')
     if config.get('fixture_only') is not True:
@@ -167,8 +174,9 @@ def build_prefreeze_manifest(config):
     sha = config.get('tournament_contract_sha256', '')
     if len(sha) != 64 or any(c not in '0123456789abcdef' for c in sha):
         raise PrefreezeError('tournament_contract_sha256 must be lowercase SHA-256')
-    if not str(config.get('null_seed_material', '')).strip():
-        raise PrefreezeError('null_seed_material required')
+    null_seed = config.get('null_seed_material')
+    if not isinstance(null_seed, str) or not null_seed.strip() or '\0' in null_seed:
+        raise PrefreezeError('null_seed_material must be a nonempty NUL-free string')
     auth = config.get('authority')
     if (
         not isinstance(auth, dict)
@@ -241,7 +249,7 @@ def build_prefreeze_manifest(config):
         'minimum_nonzero_donors_for_sign_resolution': min_donors,
         'minimum_permutation_draws_for_resolution': min_perm,
         'tournament_contract_sha256': sha,
-        'null_seed_material': config['null_seed_material'],
+        'null_seed_material': null_seed,
         'case_resolution': resolution,
         'authority': dict(auth),
     }
