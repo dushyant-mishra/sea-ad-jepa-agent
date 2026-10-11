@@ -34,6 +34,8 @@ _CONFIG_FIELDS = {
 }
 _EXECUTION_CONTEXT_FIELDS = {
     'schema', 'fixture_only', 'executor_code_identity_sha256',
+    'gate_executor_registry_sha256', 'gate_estimand_registry_sha256',
+    'gate_decision_rule_registry_sha256',
     'population_registry_sha256', 'donor_registry_sha256',
     'source_registry_sha256', 'operator_registry_sha256',
     'support_registry_sha256', 'teacher_student_evidence_rights_sha256',
