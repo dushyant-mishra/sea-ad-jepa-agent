@@ -1,0 +1,63 @@
+name: TD target tournament focused qualification
+
+on:
+  push:
+    branches:
+      - science/td-target-tournament-scaffold-20261011
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused-test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest numpy pandas scipy scikit-learn
+      - name: Record exact head and environment
+        run: |
+          echo "HEAD=$(git rev-parse HEAD)"
+          git status --short
+          python --version
+          python - <<'PY'
+          import numpy, pandas, scipy, sklearn, pytest
+          print('numpy', numpy.__version__)
+          print('pandas', pandas.__version__)
+          print('scipy', scipy.__version__)
+          print('sklearn', sklearn.__version__)
+          print('pytest', pytest.__version__)
+          PY
+      - name: Run exact synthetic and metadata-only tournament harness
+        run: |
+          python -m pytest -q \
+            tests/v5/test_td_donor_resampling_audit.py \
+            tests/v5/test_td_gate_case_coverage.py \
+            tests/v5/test_td_gate_case_coverage_envelope.py \
+            tests/v5/test_td_gate_case_coverage_external_pin.py \
+            tests/v5/test_td_measurement_noise_fixture.py \
+            tests/v5/test_td_precision_donor_identity.py \
+            tests/v5/test_td_prefreeze_config_envelope.py \
+            tests/v5/test_td_query_information_guard.py \
+            tests/v5/test_td_target_tournament_adjudicator_v2.py \
+            tests/v5/test_td_target_tournament_contract_v2.py \
+            tests/v5/test_td_target_tournament_envelope_hardening.py \
+            tests/v5/test_td_target_tournament_evidence.py \
+            tests/v5/test_td_target_tournament_nulls.py \
+            tests/v5/test_td_target_tournament_precision.py \
+            tests/v5/test_td_target_tournament_prefreeze.py \
+            tests/v5/test_td_target_tournament_scaffold.py \
+            tests/v5/test_td_tournament_completeness.py
+      - name: Confirm worktree unchanged
+        run: |
+          test -z "$(git status --short)"
+          echo "PASS_WORKTREE_CLEAN_AFTER_FOCUSED_QUALIFICATION"
