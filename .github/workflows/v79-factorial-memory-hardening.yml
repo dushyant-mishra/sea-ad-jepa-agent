@@ -38,4 +38,5 @@ jobs:
           tests/test_v79_factorial_worlds_v1.py
           tests/test_v79_factorial_scoring_v1.py
           tests/test_v79_factorial_gate_v1.py
+          tests/test_v79_factorial_receipt_contract_v1.py
           tests/test_v79_memory_hardening_v1.py
