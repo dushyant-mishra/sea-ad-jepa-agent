@@ -84,3 +84,9 @@ def test_seed_and_cell_id_must_be_nul_free():
         m.split_counts({1: 1}, {1}, seed_material='a\0b', cell_id='c')
     with pytest.raises(m.MeasurementFixtureError):
         m.split_counts({1: 1}, {1}, seed_material='s', cell_id='a\0b')
+
+
+def test_seed_and_cell_id_must_be_exact_strings_not_coerced():
+    for seed, cell in [(7, 'c'), (True, 'c'), ('s', 7), ('s', False), (None, 'c')]:
+        with pytest.raises(m.MeasurementFixtureError):
+            m.split_counts({1: 1}, {1}, seed_material=seed, cell_id=cell)
