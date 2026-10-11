@@ -1,7 +1,6 @@
 import hashlib
 import json
 import sys
-from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -29,6 +28,9 @@ def execution_context():
         'schema': p2.EXECUTION_CONTEXT_SCHEMA,
         'fixture_only': True,
         'executor_code_identity_sha256': sha('code'),
+        'gate_executor_registry_sha256': sha('gate-executors'),
+        'gate_estimand_registry_sha256': sha('gate-estimands'),
+        'gate_decision_rule_registry_sha256': sha('gate-decision-rules'),
         'population_registry_sha256': sha('population'),
         'donor_registry_sha256': sha('donors'),
         'source_registry_sha256': sha('sources'),
@@ -114,6 +116,17 @@ def test_execution_context_is_exact_and_shadow_claims_fail_closed():
 def test_execution_context_hash_cannot_be_self_consistently_rewritten_without_config_pin_update():
     cfg = config()
     cfg['execution_context']['support_registry_sha256'] = sha('different-support')
+    with pytest.raises(p2.PrefreezeV2Error):
+        p2.build_prefreeze_manifest(cfg)
+
+
+def test_execution_context_freezes_gate_executor_estimand_and_decision_rule_registries():
+    ctx = execution_context()
+    assert ctx['gate_executor_registry_sha256'] == sha('gate-executors')
+    assert ctx['gate_estimand_registry_sha256'] == sha('gate-estimands')
+    assert ctx['gate_decision_rule_registry_sha256'] == sha('gate-decision-rules')
+    cfg = config()
+    cfg['execution_context']['gate_decision_rule_registry_sha256'] = 'not-a-sha'
     with pytest.raises(p2.PrefreezeV2Error):
         p2.build_prefreeze_manifest(cfg)
 
