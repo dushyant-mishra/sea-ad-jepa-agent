@@ -1,0 +1,37 @@
+{
+ "schema": "V79_CODE_PATH_QUALIFICATION_V1",
+ "snapshot": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+ "evidence": "local execution on the canonical Windows machine, not CI (NumPyro and real design metadata; CI skips these tests)",
+ "run_utc": "2026-10-11T16:28Z-16:58Z",
+ "concurrency_note": "ran while one detection fit (S0) was running: two fit processes at most",
+ "python_for_fits": "C:/Users/dushy/anaconda3/envs/v79-bayes/python.exe",
+ "results": {
+  "recovery e2e bernoulli (S0-S5 + combine)": "1 passed, 675 s",
+  "recovery e2e gaussian (S0-S5 + combine)": "1 passed, 479 s",
+  "recovery e2e lognormal (S0-S5 + combine)": "1 passed, 481 s",
+  "recovery e2e ztnb (S0-S5 + combine)": "1 passed, 114 s",
+  "scheduler e2e (every outcome class incl. exact out_sha256, WSL job, fit count)": "2 passed, 16 s"
+ },
+ "checks": [
+  "frozen sampler config name and SHA-256 in every part",
+  "sampler rules identity A5_V2_DIVERGENT_EXTENSION_ESCALATES",
+  "code_snapshot is a commit, not the live tree",
+  "counts_loaded false",
+  "S2 permute_class path",
+  "S5 components cls/src/op",
+  "attempt records; divergence_location present in every attempt and non-null exactly when that attempt diverged (self-audit 53)",
+  "combine writes one V79_RECOVERY_SUITE_RECEIPT_V1 with no missing worlds",
+  "scheduler ledger out_sha256 equals the written file's SHA-256 (self-audit 52)"
+ ],
+ "unit_tests_inside_snapshot": {
+  "result": "94 passed, 5 skipped, 3 failed; 2 test files not importable",
+  "cause": "snapshot completeness, not recovery code: snapshot_v79.sh does not archive docs/agent/BAYESIAN_SYNTHETIC_GEOMETRY_CONTRACT_V1.md (2 contract tests), results/v77/V77_CLASS_COMPOSITION_AUTHORITY_V1.json (1 firewall test) or scripts/v77/build_v77_topology_calibration.py (test_v79_geometry, test_v79_ppc)",
+  "same_tests_in_worktree": "pass (geometry + ppc: 32 passed, 1 skipped at head 01fb8f62)",
+  "impact": "none on recovery (the four recovery e2e runs above ran inside this snapshot); geometry/PPC phases cannot run from a snapshot until the archive list is fixed"
+ },
+ "recovery_code_identical_at_head": "run_v79_recovery.py, v79_models.py, v79_sampler_rules.py, v79_recovery_rules.py, v79_simulate.py, v79_data.py, v79_firewall.py: no diff between d9d8cac6 and 01fb8f62",
+ "test_files_sha256": {
+  "test_v79_recovery_e2e.py": "e32508c56f0eb579c834e0113bdea5fa0f4d4bb70bf30834524e7fc222e54e6c",
+  "test_v79_scheduler_e2e.py": "e4e0c0fe81c8df08d45d0f21ec660392e7a4dc88223760c84b86ea920fd1dbdd"
+ }
+}

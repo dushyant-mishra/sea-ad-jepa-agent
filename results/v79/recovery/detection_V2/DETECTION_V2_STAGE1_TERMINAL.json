@@ -161,8 +161,25 @@
   "S4_operator_only",
   "S0_class_absent"
  ],
- "terminal": "DETECTION_NOT_QUALIFIED__V2_FAILED_S0_AND_S4__NO_V3",
+ "terminal": "DETECTION_FAMILY_NOT_QUALIFIED",
  "consequence": "the Bernoulli detection family has no qualified recovery suite; S2, S3 and S5 are not run under V2; the full S0-S5 detection suite is not run",
  "sha_binding_note": "part SHA-256 values were computed after the runs (scheduler at snapshot 0bc45513 logged empty out_sha256; self-audit 52); they bind the files as committed, not a prospective ledger record",
- "training_authorized": false
+ "training_authorized": false,
+ "controller_ruling": {
+  "ruling": "DETECTION_FAMILY_NOT_QUALIFIED",
+  "utc": "2026-10-11",
+  "decisive_failure": "S4_operator_only: worst ESS 361.876 < 400 after the frozen retry/extension path",
+  "s0_s1_status": "preserved as audit evidence only; they cannot reverse the S4 failure",
+  "forbidden": [
+   "V3",
+   "threshold change",
+   "new centring scheme",
+   "prior change",
+   "sampler redesign",
+   "longer rescue",
+   "post-failure tuning"
+  ],
+  "downstream": "detection is UNQUALIFIED in any later biology/observation authority; never filled from a provisional Bernoulli fit or inferred from another family"
+ },
+ "terminal_detail": "V2 failed S4 (decisive) and S0; S1 passed (audit evidence only)"
 }
