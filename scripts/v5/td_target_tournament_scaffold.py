@@ -177,16 +177,24 @@ def adjudicate(contract, receipts, evidence_manifests):
     rejected = {}
     for receipt in receipts:
         cid = receipt['candidate_id']
-        validate_candidate_receipt(receipt, contract, evidence_manifests[cid])
+        manifest = evidence_manifests[cid]
+        validate_candidate_receipt(receipt, contract, manifest)
         required_gates = contract['mandatory_gates'] + contract['candidate_specific_gates'][cid]
-        failed_gates = [g for g in required_gates if receipt['gates'][g] is not True]
-        eligible = receipt['status'] == 'PASS' and not failed_gates
+        evidence_status = {g: manifest['gates'][g]['status'] for g in required_gates}
+        failed_gates = [g for g in required_gates if evidence_status[g] == 'FAIL']
+        not_estimable_gates = [g for g in required_gates if evidence_status[g] == 'NOT_ESTIMABLE']
+        unresolved_gates = [g for g in required_gates if evidence_status[g] != 'PASS']
+        eligible = receipt['status'] == 'PASS' and not unresolved_gates
         if eligible and cid in contract['foundation_candidate_ids']:
             foundation_eligible.append(cid)
         elif eligible and cid in contract['optional_specialist_ids']:
             optional_specialists_eligible.append(cid)
         else:
-            rejected[cid] = {'status': receipt['status'], 'failed_gates': failed_gates}
+            rejected[cid] = {
+                'status': receipt['status'],
+                'failed_gates': failed_gates,
+                'not_estimable_gates': not_estimable_gates,
+            }
 
     foundation_eligible.sort(key=contract['foundation_candidate_ids'].index)
     optional_specialists_eligible.sort(key=contract['optional_specialist_ids'].index)
