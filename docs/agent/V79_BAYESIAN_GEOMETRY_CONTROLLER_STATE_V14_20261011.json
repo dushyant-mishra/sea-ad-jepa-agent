@@ -1,0 +1,54 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V14",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "canonical_handoff_pr": 261,
+  "canonical_audit_pr": 260,
+  "world_generator_pr": 291,
+  "controller_pairing_ratification_comment": 6114933346,
+  "contract_v2_sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+  "pairing_amendment_sha256": "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c",
+  "generator_branch_head": "97daa0ae9ef5a021958cbb0c976e074b66917f8d",
+  "generator_layers": {
+    "firewall_and_pairing": "PASS",
+    "scenario_semantics": "PASS",
+    "physical_realization": "NOT_IMPLEMENTED__NOT_AUTHORIZED"
+  },
+  "scenario_semantics_tdd": {
+    "red": {
+      "workflow": 38183240906,
+      "job": 114600071056,
+      "result": "8 passed / 3 failed: NPH52 partial-support mismatch plus missing world-modification and operator-offset functions"
+    },
+    "implementation_commit": "6caa6262b3151f48d688f347af18b547d43c81c7",
+    "test_fixture_correction_commit": "97daa0ae9ef5a021958cbb0c976e074b66917f8d",
+    "green": {
+      "workflow": 38183469439,
+      "job": 114600739390,
+      "result": "11 passed in 0.21 s"
+    }
+  },
+  "verified_scenario_semantics": [
+    "Q00-Q09 share BASE design; Q10/Q11 share exact S174 design",
+    "Q11 inherits Q10 non-operator seed identity except streams 22/23",
+    "Q10/Q11 validator permits only operator-offset truth fields to differ",
+    "full G=44 structural support is exactly five genes with composition 1 single-source-measured / 3 one-source-absent / 1 partial NPH52",
+    "partial NPH52 case is exactly 3 of 7 NPH52 matrices unmeasured",
+    "Q01 weak donor / Q02 strong donor / Q03 weak source / Q04 source absent / Q05 class absent / Q06 quadratic absent / Q07 donor absent / Q08 sparse prevalence / Q09 positive-tail modifications match frozen payload",
+    "Q11 operator offsets deterministic, scaled 0.5 x donor SD, and unweighted-centred within source",
+    "poison bytes remain outside scientific truth",
+    "realization still requires separate controller authorization and remains hard-stopped"
+  ],
+  "authorization": {
+    "baseline_planting_and_design_engineering": true,
+    "physical_world_realization": false,
+    "benchmark": false,
+    "qualification_fitting": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "next_gate": "TDD baseline planting and design engine using masked calibration and frozen BASE/S174 design semantics; no world files emitted",
+  "terminal_state": "SCENARIO_GENERATOR_SEMANTICS_GREEN__BASELINE_PLANTING_DESIGN_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
