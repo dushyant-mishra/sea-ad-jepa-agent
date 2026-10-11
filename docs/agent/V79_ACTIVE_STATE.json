@@ -1,0 +1,95 @@
+{
+ "schema": "V79_ACTIVE_STATE_V1",
+ "updated_utc": "2026-10-11T00:25Z",
+ "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+ "head_at_write": "6082624a57a9e549a132f99da0616089db3862e7",
+ "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
+ "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
+ "training_authorized": false,
+ "real_data_inference_started": false,
+ "frozen_sampler_settings": {
+  "gaussian (Phase A, B0)": {
+   "non_centred": [
+    "dk effects",
+    "dk log sd"
+   ],
+   "evidence": "recovery S0 converged 1.0078/789; S1 marginal m_dk 1.0134/ESS 1019 (A5 rerun pending)",
+   "snapshot": "11d95649"
+  },
+  "bernoulli (Phase B)": {
+   "non_centred": [
+    "donor effects",
+    "donor log sd",
+    "dk effects",
+    "dk log sd"
+   ],
+   "evidence": "V1: S1 1.0081/647; S0 1.0106/351 on s_dk only (A5 case)",
+   "snapshot": "aa00a5ac"
+  },
+  "ztnb (Phase C)": {
+   "non_centred": [
+    "donor effects",
+    "donor log sd",
+    "dk effects",
+    "dk log sd"
+   ],
+   "evidence": "Q9 10 genes converged 1.0047/823, 0 divergences",
+   "snapshot": "5dcb7332"
+  },
+  "lognormal (Phase C, masked Gaussian)": {
+   "non_centred": [
+    "op",
+    "donor",
+    "dk effects and log sds"
+   ],
+   "evidence": "Q10 10 genes converged 1.0051/1016, 0 divergences",
+   "snapshot": "33ce9fee"
+  }
+ },
+ "running_jobs": {
+  "gaussian recovery S0-S5": {
+   "snapshot": "11d95649",
+   "out": "results/v79/recovery/part_gaussian_*.json",
+   "note": "S0, S1 done; S1 needs the A5 rerun; S2 in 0.95 retry"
+  },
+  "bernoulli recovery S0-S5": {
+   "snapshot": "aa00a5ac",
+   "out": "results/v79/recovery/part_bernoulli_*.json"
+  },
+  "ztnb recovery S0-S5": {
+   "snapshot": "5dcb7332",
+   "out": "results/v79/recovery/part_ztnb_*.json"
+  },
+  "lognormal recovery S0-S5": {
+   "snapshot": "33ce9fee",
+   "out": "results/v79/recovery/part_lognormal_*.json"
+  }
+ },
+ "amendments": [
+  "A1 log-sd centring text",
+  "A2 Phase C scoring",
+  "A3 ZTNB recovery",
+  "A4 magnitudes",
+  "A5 one chain extension",
+  "A6 posterior-generative authorities",
+  "A7 benchmark measured alone"
+ ],
+ "next_gates": [
+  "all four recovery suites pass (A5 rerun of Gaussian S1)",
+  "benchmark: one fit alone per family (A7)",
+  "real fits B0, A, B with held-out PPC and Q5",
+  "D1 bootstrap on GPU",
+  "Phase C folds, family choice, full fit",
+  "authorities + realism diagnostic",
+  "independent audit before any synthetic consumption"
+ ],
+ "superseded": [
+  "results/v79/recovery/superseded_centred_dk_20261010/",
+  "results/v79/recovery/superseded_ncdk_only_20261010/"
+ ],
+ "parallel_lanes": {
+  "target_discovery": "PR #259 G4/G5 PASS accepted; PR #258 qualification stopped (PR #266, test-message mismatch)",
+  "synthetic_worlds": "PR #253/#256/#257 (not modified here)"
+ },
+ "firewall_unchanged": true
+}
