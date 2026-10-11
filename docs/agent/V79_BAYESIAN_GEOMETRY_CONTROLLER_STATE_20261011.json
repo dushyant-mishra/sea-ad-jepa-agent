@@ -1,82 +1,104 @@
 {
-  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V4",
+  "schema": "V79_BAYESIAN_GEOMETRY_CONTROLLER_STATE_V5",
   "date": "2026-10-11",
   "lane": "bayesian_synthetic_geometry",
   "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
-  "live_source_head": "d9d8cac6fa65463529374c50a9c309e7eb7e5405",
+  "live_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
   "audit_pr": 260,
   "handoff_pr": 261,
-  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE__DETECTION_TERMINAL_NOT_QUALIFIED__GAUSSIAN_LOGNORMAL_ZTNB_POST_CODE_PATH_RECOVERY_PENDING",
+  "resource_replay_pr": 279,
+  "terminal_state": "DEVELOPMENT_CANDIDATE_V2__RESOURCE_SAFE_EXACT_S174_STRUCTURE_REPLAY_READY__PHYSICAL_S174_REPLAY_PENDING__OLD_CONFIRMATORY_CAMPAIGN_ON_HOLD__TRAINING_OFF",
   "training_authorized": false,
-  "corrected_train_authorized": false,
-  "latest_reconciliation": "docs/agent/V79_BAYESIAN_GEOMETRY_CONTROLLER_RECONCILIATION_20261011_R4.md",
-  "code_path_qualification": {
-    "snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
-    "receipt": "results/v79/recovery/CODE_PATH_QUALIFICATION_0bc45513.json",
-    "recovery_e2e_gaussian": "PASS",
-    "recovery_e2e_bernoulli": "PASS",
-    "recovery_e2e_lognormal": "PASS",
-    "recovery_e2e_ztnb": "PASS",
-    "scheduler_e2e": "PASS",
-    "meaning": "EXECUTION_PATH_QUALIFIED__NOT_SCIENTIFIC_RECOVERY_PASS"
+  "corrected_train": {
+    "development_structure_replay_authorized": true,
+    "bayesian_posterior_inference_authorized": false,
+    "parameter_export_authorized": false
   },
   "detection": {
-    "v1_status": "FAILED_S4_DIVERGENCES_AT_0.9_AND_0.95__0.99_INFEASIBLE",
+    "v1_status": "FAILED_S4",
     "v2_status": "FAILED_S4_TERMINAL_ESS",
-    "v2_parameterization": "DETECTION_V2_NC_ALL",
-    "v2_code_snapshot": "0bc455131cf80ce0ef563b6ccbf6301b1ee09f58",
-    "s4_worst_rhat": 1.0050606796610788,
-    "s4_worst_ess": 361.8761303230284,
-    "s4_ess_minimum": 400,
-    "s4_divergences": 0,
+    "v2_worst_rhat": 1.0050606796610788,
+    "v2_worst_ess": 361.8761303230284,
+    "v2_ess_minimum": 400,
+    "v2_divergences": 0,
     "qualified": false,
-    "v3_allowed": false,
-    "threshold_change_allowed": false,
-    "post_failure_tuning_allowed": false
+    "old_v3_rescue_allowed": false,
+    "interpretation": "the specific frozen hierarchical Bernoulli V2 failed; later empirical development supports a separate detection process, so detection as a concept is not ruled out"
   },
-  "gaussian": {
-    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
-    "qualified": false,
-    "pre_code_path_evidence_is_terminal_authority": false
+  "old_model_families": {
+    "gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_18_fit_campaign_authorized": false
   },
-  "lognormal": {
-    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
-    "qualified": false,
-    "pre_code_path_evidence_is_terminal_authority": false
+  "empirical_development_candidate": {
+    "status": "DEVELOPMENT_CANDIDATE_V2__AUXILIARY_FIT_POPULATION",
+    "architecture": "TWO_PART_HURDLE",
+    "depth": "QUADRATIC_CENTERED_LOG_LIBRARY",
+    "fixed_effects": ["BROAD_CLASS", "SOURCE"],
+    "random_effects_candidate": ["OPERATOR_WITHIN_SOURCE", "DONOR_WITHIN_SOURCE"],
+    "donor_class_default": false,
+    "fit_unit": "MODULAR_PER_GENE",
+    "across_gene_geometry": "SECOND_STAGE_META_DISTRIBUTION",
+    "positive_family_development_default": "LOGNORMAL",
+    "ztnb_status": "CHALLENGER_PENDING_STABLE_EXACT_S174_DEVELOPMENT_REPLAY",
+    "important_audit_correction": "auxiliary operator residual-support counts used a weaker source-stratified null and are provisional; exact S174 replay uses donor-centered residuals and within-donor permutation to test operator beyond donor"
   },
-  "ztnb": {
-    "status": "POST_CODE_PATH_FULL_S0_S5_RECOVERY_REQUIRED",
-    "qualified": false,
-    "pre_code_path_evidence_is_terminal_authority": false
+  "resource_safe_replay": {
+    "pr": 279,
+    "branch": "fix/v79-streaming-analysis-cache-20261011",
+    "implementation_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+    "documented_pr_head": "615b55eb03b95630484b18d47de0ef7340368d37",
+    "workflow_run": 38166126568,
+    "workflow_job": 114548954034,
+    "tests": "15 passed in 1.27 s",
+    "cache_contract": {
+      "streaming_passes": 2,
+      "max_count_shards_resident": 1,
+      "global_sparse_assembly": false,
+      "metadata_from_authenticated_bytes": true
+    },
+    "structure_replay": {
+      "reads_41k_shards_after_cache_build": false,
+      "jax_or_nuts": false,
+      "default_cache_panel_genes": 500,
+      "replay_genes": 200,
+      "support_genes": 50,
+      "heldout_donor_folds": 3,
+      "permutations": 99,
+      "operator_fixed_proxy": "REFERENCE_CODED_WITHIN_SOURCE__FULL_RANK",
+      "operator_support_null": "DONOR_CENTERED_RESIDUALS__PERMUTED_WITHIN_DONOR"
+    },
+    "execution_contract": "docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md"
   },
-  "state_quality": {
-    "source_V79_ACTIVE_STATE_stale_relative_to_head": true,
-    "source_V79_ACTIVE_STATE_updated_utc": "2026-10-11T08:05Z",
-    "source_V79_ACTIVE_STATE_head_at_write": "6082624a57a9e549a132f99da0616089db3862e7",
-    "current_root_PROVENANCE_present": false,
-    "historical_PROVENANCE_archived_pre_code_path": true
+  "resource_evidence": {
+    "historical_single_gaussian_fit_peak_rss_gb": 1.32,
+    "historical_single_gaussian_fit_mean_proc_cpus": 10.28,
+    "historical_single_gaussian_fit_mean_machine_cpu_pct": 93.1,
+    "historical_single_gaussian_fit_wall_seconds": 1561.5,
+    "ruling": "heavy Bayesian fitting is CPU-bound more than expression-I/O-bound; scheduler default is one machine-wide fit"
   },
-  "next_gate": "POST_CODE_PATH_QUALIFICATION_FULL_S0_S5_RECOVERY_FOR_GAUSSIAN_LOGNORMAL_ZTNB",
-  "next_controller_instruction": [
-    "stop detection work; preserve V2 S4 as terminal NOT_QUALIFIED and do not launch V3",
-    "refresh V79_ACTIVE_STATE.json and publish current post-code-path recovery provenance",
-    "run Gaussian exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
-    "run log-normal exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
-    "run ZTNB exact frozen S0-S5 under corrected A5 and commit all parts plus combined terminal receipt",
-    "if any required world fails after its allowed retry path, mark that family NOT_QUALIFIED and stop that family",
-    "do not start benchmark or corrected TRAIN until the corresponding family has terminal independent simulation qualification",
-    "keep detection explicitly UNQUALIFIED in any later observation authority"
-  ],
+  "next_gate": "PHYSICAL_AUTHENTICATED_S174_STREAMING_CACHE_BUILD_AND_STRUCTURE_REPLAY",
+  "next_gate_inputs": {
+    "cache_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "bridge": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+    "authority": "results/v79/V79_S174_SHARD_AUTHORITY_V1.json"
+  },
+  "post_replay_rule": "If exact S174 preserves the two-part/class/source/operator/donor structure and does not support donor-class as a default layer, freeze Candidate V2 and generate NEW untouched synthetic qualification worlds. If it contradicts the auxiliary development result, return to model development. Do not reuse the old confirmation campaign as authority.",
+  "macha": {
+    "heavy_execution_status": "STOPPED",
+    "new_bayesian_nuts_work_authorized": false,
+    "old_scheduler_restart_authorized": false
+  },
   "boundaries": {
-    "training_authorized": false,
-    "corrected_train_allowed_before_family_simulation_pass": false,
     "test_or_morabito_allowed": false,
     "pathology_allowed": false,
     "target_discovery_in_this_lane": false,
     "scenic_atac_target_evidence_allowed": false,
     "v78_outcome_retune_allowed": false,
     "stage4_500k_allowed": false,
-    "post_outcome_synthetic_rescue_allowed": false
-  },
-  "qualified_terminal_label": "BAYESIAN_GEOMETRY_QUALIFIED_FOR_SYNTHETIC_INTEGRATION"
+    "factorial_h0_h3_execution_allowed": false,
+    "post_outcome_synthetic_rescue_allowed": false,
+    "training_authorized": false
+  }
 }
