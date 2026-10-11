@@ -123,14 +123,20 @@ def test_poison_values_on_unmeasured_entries_cannot_change_replay_metrics():
     assert sup1 == sup2
 
 
+def _without_new_metadata(out: dict) -> dict:
+    out = deepcopy(out)
+    out.pop("n_measured", None)
+    return out
+
+
 def test_all_measured_mask_reproduces_legacy_outputs():
     legacy = _data()
     masked = deepcopy(legacy)
     masked["measured_selected"] = np.ones_like(masked["counts_selected"], dtype=bool)
 
-    assert LEGACY.evaluate_detection_gene(legacy, 0, 3, 20261011) == R.evaluate_detection_gene(masked, 0, 3, 20261011)
-    assert LEGACY.evaluate_positive_gene(legacy, 0, 3, 20261011) == R.evaluate_positive_gene(masked, 0, 3, 20261011)
-    assert LEGACY.residual_support_for_gene(legacy, 0, seed=20261011, n_perm=19) == R.residual_support_for_gene(masked, 0, seed=20261011, n_perm=19)
+    assert LEGACY.evaluate_detection_gene(legacy, 0, 3, 20261011) == _without_new_metadata(R.evaluate_detection_gene(masked, 0, 3, 20261011))
+    assert LEGACY.evaluate_positive_gene(legacy, 0, 3, 20261011) == _without_new_metadata(R.evaluate_positive_gene(masked, 0, 3, 20261011))
+    assert LEGACY.residual_support_for_gene(legacy, 0, seed=20261011, n_perm=19) == _without_new_metadata(R.residual_support_for_gene(masked, 0, seed=20261011, n_perm=19))
 
 
 def test_support_loader_refuses_cache_or_mask_identity_mismatch(tmp_path):
