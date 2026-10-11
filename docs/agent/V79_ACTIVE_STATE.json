@@ -1,6 +1,6 @@
 {
  "schema": "V79_ACTIVE_STATE_V1",
- "updated_utc": "2026-10-11T00:25Z",
+ "updated_utc": "2026-10-11T08:05Z",
  "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
  "head_at_write": "6082624a57a9e549a132f99da0616089db3862e7",
  "terminal_state": "SIMULATION_QUALIFICATION_INCOMPLETE",
@@ -42,27 +42,23 @@
     "donor",
     "dk effects and log sds"
    ],
-   "evidence": "Q10 10 genes converged 1.0051/1016, 0 divergences",
+   "evidence": "Q10 10 genes converged 1.0051/1016, 0 divergences; recovery S3 not converged under the old A5 implementation (divergent extension), rerunning under the corrected rule",
    "snapshot": "33ce9fee"
   }
  },
  "running_jobs": {
-  "gaussian recovery S0-S5": {
-   "snapshot": "11d95649",
-   "out": "results/v79/recovery/part_gaussian_*.json",
-   "note": "S0, S1 done; S1 needs the A5 rerun; S2 in 0.95 retry"
+  "cpu lane (2 slots, run_v79_scheduler.py, SCHEDULER_JOBS_CPU_V3_20261011.json)": {
+   "snapshot": "61df6088",
+   "queue": "gaussian S2-S4, bernoulli S2-S3, lognormal S0-S1"
   },
-  "bernoulli recovery S0-S5": {
-   "snapshot": "aa00a5ac",
-   "out": "results/v79/recovery/part_bernoulli_*.json"
+  "gpu lane (WSL JAX-CUDA, 3 slots, BFC allocator, run_v79_gpu_lane.sh, GPU_JOBS_V2_20261011.txt)": {
+   "snapshot": "61df6088",
+   "queue": "ztnb S3-S5, lognormal S3, S2, S4, S5"
   },
-  "ztnb recovery S0-S5": {
-   "snapshot": "5dcb7332",
-   "out": "results/v79/recovery/part_ztnb_*.json"
-  },
-  "lognormal recovery S0-S5": {
-   "snapshot": "33ce9fee",
-   "out": "results/v79/recovery/part_lognormal_*.json"
+  "in flight on earlier snapshots (check for divergent extensions afterwards)": {
+   "bernoulli S4 (cpu)": "aa00a5ac",
+   "gaussian S1 (cpu)": "ad5bbd17",
+   "ztnb S0-S2 (gpu)": "ad5bbd17"
   }
  },
  "amendments": [
@@ -91,5 +87,10 @@
   "target_discovery": "PR #259 G4/G5 PASS accepted; PR #258 qualification stopped (PR #266, test-message mismatch)",
   "synthetic_worlds": "PR #253/#256/#257 (not modified here)"
  },
- "firewall_unchanged": true
+ "firewall_unchanged": true,
+ "compute_notes": [
+  "8 physical cores (16 logical): CPU fits capped at 2",
+  "GPU NUTS is host-launch-bound: GPU fits add lanes but use CPU (self-audit 45)",
+  "BFC allocator with XLA_PYTHON_CLIENT_MEM_FRACTION=0.18 per GPU fit (JAX docs; platform allocator very slow)"
+ ]
 }
