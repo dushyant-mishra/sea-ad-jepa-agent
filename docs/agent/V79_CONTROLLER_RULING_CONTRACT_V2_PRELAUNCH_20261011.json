@@ -1,0 +1,38 @@
+{
+  "schema": "V79_CONTROLLER_RULING_CONTRACT_V2_PRELAUNCH_V1",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery_lane": "SEPARATE__DO_NOT_MIX",
+  "contract_pr": 290,
+  "contract_head": "5394d036ccd423f9c61267fbdfeef6edd4912d37",
+  "controller_comment": 6115053096,
+  "contract_path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json",
+  "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "contract_status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+  "model_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+  "source_term_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal source biology; not causal; single-source cross-source estimand UNDEFINED",
+  "platform_ruling": {
+    "accepted_regeneration_platform": "LOCKED_WINDOWS_QUALIFICATION_ENVIRONMENT",
+    "linux_diagnostic_difference": "worlds.gene_count_derivation.power only: 0.8003456396475286 Linux vs 0.8003456396475284 accepted Windows bytes",
+    "scientific_or_gate_effect": "NONE__G_44_ALPHA_T_CRITICAL_GATE_COUNTS_WORLD_DEFINITIONS_AND_PASS_FAIL_SEMANTICS_IDENTICAL",
+    "contract_bytes_changed": false,
+    "rounding_change_authorized": false,
+    "linux_role": "DIAGNOSTIC_ONLY_UNLESS_PROSPECTIVELY_AUTHORIZED"
+  },
+  "launch_authority_scope": "WORLD_GENERATION_ONLY",
+  "world_generation_authorized": true,
+  "engineering_benchmark_authorized": false,
+  "qualification_fitting_authorized": false,
+  "real_train_posterior_inference_authorized": false,
+  "factorial_scientific_execution_authorized": false,
+  "training_authorized": false,
+  "next_gate": [
+    "require final V2 launch authority with repository-root evidence rehash",
+    "generate Q00-Q11 realized worlds under frozen contract",
+    "write and hash-bind each world data/support mask/truth/seed/provenance/manifest",
+    "commit complete realized world package",
+    "verify package against frozen contract",
+    "STOP for controller audit before benchmark or fitting"
+  ],
+  "terminal": "V2_CORE_CONTRACT_V2_ACCEPTED__WORLD_GENERATION_AUTHORIZED__QUALIFICATION_FITS_OFF__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF"
+}
