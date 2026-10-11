@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\v79_runs\615b55eb\scripts\v79\run_v79_s174_structure_replay.py", line 401, in <module>
+    main()
+  File "D:\v79_runs\615b55eb\scripts\v79\run_v79_s174_structure_replay.py", line 367, in main
+    det.append(evaluate_detection_gene(data, g, a.folds, a.seed))
+  File "D:\v79_runs\615b55eb\scripts\v79\run_v79_s174_structure_replay.py", line 236, in evaluate_detection_gene
+    beta = _logistic_fit(X[train], y[train])
+  File "D:\v79_runs\615b55eb\scripts\v79\run_v79_s174_structure_replay.py", line 170, in _logistic_fit
+    raise RuntimeError(f"logistic fit did not converge: {res.message}")
+RuntimeError: logistic fit did not converge: STOP: TOTAL NO. of ITERATIONS REACHED LIMIT
