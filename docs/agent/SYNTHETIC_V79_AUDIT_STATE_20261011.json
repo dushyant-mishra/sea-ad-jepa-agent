@@ -1,0 +1,88 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V1",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery": "SEPARATE_PARALLEL_LANE",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "resource_pr": 279,
+  "execution_pr": 280,
+  "macha_source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+  "macha_source_head": "b06bd819abd7da1be0426767c6909f4cdc7cc7bf",
+  "audit_verdict": "PASS_ENGINEERING_AND_CUSTODY_TO_REPAIRED_S174_REPLAY__FIRST_STRUCTURE_REPLAY_FAILED_CLOSED_BEFORE_METRICS__PROSPECTIVE_OPERATOR_REGULARIZATION_REPAIR_FIXED_BEFORE_OUTCOMES__MODEL_NOT_QUALIFIED__FACTORIAL_SCIENCE_NOT_RUN__TRAINING_OFF",
+  "terminal_facts": {
+    "detection_v2": "NOT_QUALIFIED__S4_ESS_361P876_LT_400",
+    "old_gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "physical_s174_cache_build": "PASS",
+    "first_structure_replay": "FAILED_CLOSED_BEFORE_METRICS__OPERATOR_LOGISTIC_NONCONVERGENCE",
+    "questions_A_to_H": "UNANSWERED"
+  },
+  "s174": {
+    "n_cells": 4726,
+    "n_donors": 149,
+    "n_operators": 42,
+    "n_sources": 3,
+    "n_broad_classes": 3,
+    "authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "verified_shards": 84,
+    "missing_shards": 0,
+    "extra_shards": 0
+  },
+  "g500_cache": {
+    "status": "PASS__REUSE_UNLESS_CUSTODY_FAILS",
+    "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "bytes": 1071307,
+    "genes": 500,
+    "prevalence_min": 0.05,
+    "prevalence_median": 0.242,
+    "prevalence_max": 0.949,
+    "raw_cache_committed": false
+  },
+  "replay_failure": {
+    "metrics_computed": false,
+    "operator_nonconverged_fits": 155,
+    "operator_total_fits": 600,
+    "genes_with_any_failure": 84,
+    "operator_fits_with_constant_train_level": 351,
+    "simpler_model_failures": 0,
+    "cause": "QUASI_SEPARATION_WITH_TINY_COMMON_RIDGE"
+  },
+  "prospective_repair": {
+    "controller_comment_id": 6112948943,
+    "primary_lambda": 1.0,
+    "sensitivity_lambdas": [0.25, 1.0, 4.0],
+    "penalized_terms": "OPERATOR_WITHIN_SOURCE_ONLY",
+    "primary_fit_must_all_converge": true,
+    "operator_supported_only_if_robust_across_all_lambdas": true,
+    "operator_disagreement_label": "PRIOR_SENSITIVE__UNRESOLVED",
+    "operator_support_null": "DONOR_CENTERED_RESIDUALS__WITHIN_DONOR_PERMUTATION"
+  },
+  "resource_engineering": {
+    "pr": 279,
+    "verified_code_head": "2d5de281a171f0510d22a7408780fb069625ea02",
+    "workflow_run": 38166126568,
+    "workflow_job": 114548954034,
+    "tests": "15 passed in 1.27 s",
+    "streaming_passes": 2,
+    "max_count_shards_resident": 1,
+    "global_sparse_assembly": false,
+    "heavy_fit_default_concurrency": 1,
+    "heavy_fit_settle_seconds": 120
+  },
+  "next_allowed_work": "TEST_FIRST_OPERATOR_REGULARIZATION_REPAIR_ON_PR279_LINE__CI_GREEN__REUSE_HASH_VERIFIED_G500__RERUN_IDENTICAL_S174_REPLAY_WITH_PRIMARY_AND_FROZEN_SENSITIVITIES__COMMIT_A_TO_H__STOP_FOR_CONTROLLER",
+  "forbidden": [
+    "OLD_18_FIT_RESTART",
+    "BAYESIAN_NUTS_BEFORE_REPAIRED_REPLAY_REVIEW",
+    "H0_H3_SCIENTIFIC_EXECUTION",
+    "TEST_MORABITO",
+    "PATHOLOGY",
+    "TARGET_DISCOVERY_IN_THIS_LANE",
+    "V78_OUTCOME_RETUNE",
+    "STAGE4_500K",
+    "JEPA_TRAINING"
+  ],
+  "training_authorized": false
+}
