@@ -1,10 +1,10 @@
 {
   "schema": "JEPA_TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_V1",
-  "status": "LAST_FULLY_QUALIFIED_SYNTHETIC_HARNESS_110_GREEN_AT_8325B574__CURRENT_REPAIRED_CODE_HEAD_AB502355_PENDING_FRESH_FULL_REQUALIFICATION__TARGETED_REGRESSIONS_GREEN__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
+  "status": "LAST_FULLY_QUALIFIED_SYNTHETIC_HARNESS_110_GREEN_AT_8325B574__CURRENT_V2_ADJUDICATOR_IMPLEMENTED_AND_FOCUSED_10_GREEN__FULL_CURRENT_HEAD_REQUALIFICATION_PENDING__NO_REAL_VALUE_EXECUTION__NO_TARGET_AUTHORITY",
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "last_fully_qualified_head": "8325b574382fa76fa6da0e1d388eb903068533a4",
-  "code_head_before_this_state_record": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6",
+  "code_head_before_this_state_record": "31d1974465a3a5940688d4a9186d3002045adffe",
   "current_head_qualified": false,
   "historical_full_focused_result": {
     "passed": 110,
@@ -37,6 +37,14 @@
     "coverage_bridge_green_plus_existing": {
       "result": "13 passed",
       "scope": "3 attack regressions plus existing 10 coverage tests"
+    },
+    "v2_adjudicator_green": {
+      "result": "10 passed",
+      "scope": "exact V2 external prefreeze binding; evidence and receipt envelopes; PASS/FAIL/NOT_ESTIMABLE distinction; complete-foundation requirement; C4 constituent blocking; C5 specialist isolation; no target/training authority",
+      "implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
+      "test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+      "verification_environment": "local reconstructed four-file harness from exact GitHub connector contents",
+      "repository_wide_qualification": false
     },
     "qualification_boundary": "TARGETED_REGRESSIONS_ONLY__NOT_A_FULL_CURRENT_HEAD_QUALIFICATION"
   },
@@ -90,6 +98,13 @@
         "49a621e095730bb76ddd4f18fd1608f3f61a4659"
       ],
       "green_commit": "ab502355f4d562e4ed7e7913d1a1cae07c4ae6d6"
+    },
+    {
+      "finding": "V2 had a frozen contract and adjudicator tests but no production evidence-manifest -> candidate-receipt -> tournament-adjudication implementation",
+      "red_test_commit": "512da1f0fb9e5af130f11f2b1073451da61158d0",
+      "green_implementation_commit": "31d1974465a3a5940688d4a9186d3002045adffe",
+      "focused_result": "10 passed",
+      "scope": "synthetic/metadata-only V2 governance"
     }
   ],
   "current_git_blobs": {
@@ -101,7 +116,9 @@
     "scripts/v5/td_measurement_noise_fixture.py": "17263abf3bb9b943f1062c31281fd84cf298702d",
     "scripts/v5/td_target_tournament_nulls.py": "fb8eab95f22708a7c50e939ff18e597148a30268",
     "scripts/v5/td_query_information_guard.py": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
-    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256"
+    "scripts/v5/td_target_tournament_precision.py": "e89392610479551c6a6c911ff3d2d7698c74c256",
+    "scripts/v5/td_target_tournament_contract_v2.py": "534f4d40574c4787680b062fa0b2acfc67471b12",
+    "scripts/v5/td_target_tournament_adjudicator_v2.py": "98b3ce8979093cc85bae3aa7b1329d32bb17cd51"
   },
   "scientific_boundaries": {
     "not_estimable_is_distinct_from_fail": true,
@@ -115,9 +132,12 @@
     "matched_null_singletons_crossed_or_relaxed": false,
     "teacher_aux_q_is_automatically_biological_truth": false,
     "technology_equivalence_margin_defined": false,
-    "historical_null_counts_inherited": false
+    "historical_null_counts_inherited": false,
+    "v2_adjudication_can_select_a_winner": false,
+    "v2_optional_specialist_can_change_foundation_terminal": false,
+    "c4_can_rescue_failed_or_not_estimable_constituents": false
   },
-  "next_qualification_requirement": "Run the complete focused synthetic/metadata-only science-harness suite from one exact clean current code head after audit hardening stabilizes; preserve exact head, environment, test count and zero-failure evidence. Do not backfill the historical 110-green result.",
+  "next_qualification_requirement": "Run the complete focused synthetic/metadata-only science-harness suite from one exact clean current code head after audit hardening stabilizes; preserve exact head, environment, test count and zero-failure evidence. Do not backfill the historical 110-green result or the scoped 10-green V2 adjudicator result as full-branch qualification.",
   "authority": {
     "value_read_authorized": false,
     "raw_count_execution_authorized": false,
