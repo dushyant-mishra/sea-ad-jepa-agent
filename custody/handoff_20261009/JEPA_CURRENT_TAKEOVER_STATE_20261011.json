@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261011_V2",
+  "schema": "JEPA_CURRENT_TAKEOVER_STATE_20261011_V3",
   "date": "2026-10-11",
   "supersedes_machine_state": "custody/handoff_20261009/JEPA_CURRENT_TAKEOVER_STATE_20261009.json",
   "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
@@ -32,32 +32,42 @@
       "biological_recurrence_conclusion": "NOT_TESTED"
     },
     "g6_g7": {
-      "status": "ENGINEERING_REPAIR_REQUIRED_BEFORE_QUALIFICATION__UNAUTHORIZED__UNEXECUTED",
+      "status": "SUCCESSOR_IMPLEMENTED_UNQUALIFIED__UNAUTHORIZED__UNEXECUTED",
       "superseded_candidate_pr": 263,
       "superseded_candidate_head": "a509c59238bcdc60b88fa265e7e4473760a41025",
-      "do_not_qualify_superseded_head": true,
-      "prequalification_blockers": [
-        {
-          "name": "COUNTERPART_AUTH_BEFORE_COUNT_READ",
-          "audit": "docs/agent/TD_G7_COUNTERPART_AUTH_BEFORE_COUNT_READ_AUDIT_20261010.md",
-          "problem": "G7 overlap path authenticates/opens S174 counts before authenticating the physical H5AD counterpart",
-          "required_regression": "physical_H5_auth_failure_with_overlap_must_prevent_S174_count_loader_invocation"
-        },
-        {
-          "name": "IMMUTABLE_G7_ATTEMPT_CUSTODY",
-          "audit": "docs/agent/TD_G7_IMMUTABLE_ATTEMPT_CUSTODY_AUDIT_20261011.md",
-          "problem": "a failed G7 attempt can leave final --out absent and therefore allow reuse of the same logical attempt path",
-          "required_regression": "start_marker_spends_attempt_and_retry_same_output_is_rejected"
-        }
+      "current_candidate_pr": 267,
+      "current_candidate_head": "16f05bd3845565bb2c24d70143d447d7ef2b8904",
+      "current_candidate_branch": "fix/td-g7-counterpart-auth-immutable-attempt-20261011",
+      "current_candidate_mergeable": true,
+      "qualification_contract": "docs/agent/TD_PR267_CANONICAL_QUALIFICATION_20261011.md",
+      "candidate_diff_from_superseded_parent": {
+        "files_changed": 2,
+        "files": [
+          "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+          "tests/v5/test_td_g7_counterpart_attempt_custody.py"
+        ],
+        "g6_changed": false,
+        "common_changed": false,
+        "scientific_rule_changed": false
+      },
+      "repairs_implemented": [
+        "physical_H5AD_authentication_precedes_S174_count_loader_for_overlap_matrices",
+        "S174_count_shard_reauthenticates_immediately_before_opening_counts",
+        "immutable_G7_START_NOT_A_PASS_sidecar_spends_attempt_after_authority_plus_same_authority_G6_PASS",
+        "preexisting_start_marker_or_final_receipt_rejects_retry",
+        "failure_preserves_start_marker",
+        "success_does_not_erase_start_marker"
       ],
-      "required_successor_order": [
-        "validate_runtime_authority_and_same_authority_G6_PASS",
-        "spend_immutable_G7_attempt_marker",
-        "authenticate_S174_metadata_and_establish_natural_overlap",
-        "authenticate_physical_H5AD_exact_frozen_SHA",
-        "authenticate_S174_counts_exact_G1b_SHA",
-        "only_then_open_either_count_source"
+      "regressions_added": [
+        "physical_H5_auth_failure_prevents_S174_count_loader_invocation",
+        "attempt_marker_binds_authority_trace_and_G6_receipt_SHA",
+        "same_attempt_retry_rejected",
+        "preexisting_final_receipt_rejected",
+        "deterministic_marker_sidecar_path"
       ],
+      "github_workflow_runs_for_current_head": 0,
+      "canonical_pytest_pass_claimed": false,
+      "do_not_execute_before_qualification": true,
       "runtime_authorization_exists": false,
       "owner_decision_record_exists": false,
       "owner_decision_binding_required_before_future_runtime_authority": true,
@@ -100,9 +110,9 @@
   },
   "ordered_next_actions": [
     "preserve_PR259_exact_value_blind_evidence",
-    "repair_G7_counterpart_auth_and_immutable_attempt_custody_together_on_successor_candidate",
-    "add_regressions_for_counterpart_auth_order_and_spent_failed_attempts",
-    "canonically_qualify_successor_against_focused_tests_and_exact_PR259_receipts_with_real_receipt_test_non_skipped",
+    "canonically_qualify_exact_PR267_head_16f05bd3845565bb2c24d70143d447d7ef2b8904",
+    "require_focused_common_G6_G7_plus_new_custody_regression_tests",
+    "require_exact_PR259_real_receipt_compatibility_test_1_passed_0_skipped_0_failed",
     "STOP_for_owner_review",
     "only_explicit_owner_decision_record_may_enable_future_G6_G7_integrity_authorization",
     "if_later_authorized_require_G6_PASS_then_G7_PASS_and_STOP_for_review",
