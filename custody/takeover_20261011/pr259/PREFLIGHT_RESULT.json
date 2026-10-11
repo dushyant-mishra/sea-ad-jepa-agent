@@ -1,0 +1,70 @@
+{
+  "artifacts": {
+    "manifest": "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv",
+    "manifest_receipt": "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json",
+    "mapping_preflight": "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\TD_RELATIONAL_MAPPING_PREFLIGHT.json"
+  },
+  "commands": {
+    "manifest": [
+      "C:\\Users\\dushy\\anaconda3\\python.exe",
+      "D:\\jepa_wt_td_g4g5_v4_20261010\\scripts\\v5\\build_td_relational_replay_manifest.py",
+      "--calibration-zip",
+      "D:\\Jepa project\\FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "--td-artifacts-zip",
+      "D:\\Jepa project\\JEPA_TARGET_DISCOVERY_WORKING_ARTIFACTS_TD41_TD58_20260908.zip",
+      "--manifest-out",
+      "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv",
+      "--receipt-out",
+      "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\JEPA_TD_RELATIONAL_REPLAY_9216_RECEIPT.json"
+    ],
+    "mapping_preflight": [
+      "C:\\Users\\dushy\\anaconda3\\python.exe",
+      "D:\\jepa_wt_td_g4g5_v4_20261010\\scripts\\v5\\audit_td_relational_replay_mapping_preflight.py",
+      "--replay-manifest",
+      "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv",
+      "--sample-freeze",
+      "D:\\Jepa project\\exports\\foundation_corpus_discovery_v1\\FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv",
+      "--provenance",
+      "D:\\Jepa project\\results\\v4\\stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+      "--collision-ledger",
+      "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz",
+      "--macha-freeze",
+      "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\S174_REBUILD_FREEZE_V1.json",
+      "--source-root",
+      "D:\\Jepa project",
+      "--out",
+      "results\\target_discovery\\td_relational_corrected_replay_20261010\\preflight_v4_sampleA_custody_split\\TD_RELATIONAL_MAPPING_PREFLIGHT.json"
+    ]
+  },
+  "inputs": {
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "collision_ledger_sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+    "macha_freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+    "provenance_sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+    "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "td_artifacts_zip_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
+  },
+  "mapping_checks": {
+    "all_35_h5_source_sha256_verified": true,
+    "all_9216_addresses_one_to_one": true,
+    "all_sample_A_h5_cell_rows_exact": true,
+    "all_sample_A_h5_matrices_present": true,
+    "collision_ledger_sha": true,
+    "count_arrays_never_opened_by_design": true,
+    "frozen_h5_matrix_count_exact_35": true,
+    "macha_freeze_sha": true,
+    "provenance_sha": true,
+    "replay_manifest_sha": true,
+    "sample_A_h5_matrix_count_exact_34": true,
+    "sample_freeze_sha": true,
+    "source_files_exactly_hash_bound": true
+  },
+  "mapping_receipt_schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3",
+  "next_gate": "owner review; G6/G7 remain unauthorized and require a separately qualified standalone-V2 value path",
+  "real_value_replay_authorized": false,
+  "schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3",
+  "scope": "G1-G5 only; exact archive/source bytes + identity/mapping; all 35 frozen H5AD bytes authenticated, Sample-A mapping applied to its exact 34 H5AD matrices; no count arrays read; no real-value replay/training authority",
+  "status": "PASS_TD_RELATIONAL_PREFLIGHT_DRIVER_VALUE_BLIND",
+  "training_authorized": false
+}
