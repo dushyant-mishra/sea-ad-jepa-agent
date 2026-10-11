@@ -1,0 +1,56 @@
+{
+  "schema": "JEPA_SYNTHETIC_V79_FACTORIAL_TAKEOVER_ADDENDUM_STATE_V1",
+  "date": "2026-10-10",
+  "terminal": "PREEXECUTION_SCIENCE_FROZEN__MEMORY_HARDENING_PENDING_VERIFICATION__MACHA_QUALIFICATION_PENDING__SCIENTIFIC_TOURNAMENT_NOT_RUN__TRAINING_OFF",
+  "lineage": {
+    "v78_pr": 242,
+    "localization_pr": 250,
+    "factorial_implementation_pr": 253,
+    "factorial_audit_pr": 256,
+    "factorial_handoff_pr": 257,
+    "memory_hardening_pr": 262,
+    "macha_audit_pr": 260,
+    "macha_handoff_pr": 261
+  },
+  "memory_hardening": {
+    "branch": "fix/v79-factorial-memory-hardening-20261010",
+    "head": "3419dfc9bbc0410298b21b55e2caddd07ed82a27",
+    "verified_by_old_84_test_receipt": false,
+    "github_actions_runs_seen": false,
+    "equivalence_verification_complete": false,
+    "preexecution_replay_on_hardening_head_complete": false
+  },
+  "macha": {
+    "snapshot_terminal": "SIMULATION_QUALIFICATION_INCOMPLETE",
+    "qualified_posterior_generative_authority_consumed": false,
+    "integration_policy": "USE_RICH_IDENTITY_SCRUBBED_POSTERIOR_GENERATIVE_GEOMETRY_PROSPECTIVELY_BEFORE_TOURNAMENT_IF_QUALIFIED"
+  },
+  "custody": {
+    "frozen_v78_head": "e959d9a732698ae9a41e8cb1f6c10052d7390326",
+    "s174_archive_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f",
+    "repaired_v78_marginal_authority_sha256": "997280132e981b4c23fab97c479eab782a7d7b162944364062ca21e18c9324c1",
+    "canonical_address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "historical_evaluation_universe_npz_sha256": "e950e967dd593b253837017f8bda5c5a683d975074728f4b8fe20c27272b9763",
+    "evaluation_universe_name": "TRAIN_PREVALENCE05_19569",
+    "evaluation_universe_addresses": 14417
+  },
+  "next_order": [
+    "VERIFY_PR262_FOCUSED_TESTS_AND_EQUIVALENCE",
+    "RERUN_PREEXECUTION_ONLY_GATE_ON_VERIFIED_EXECUTION_HEAD",
+    "RECONCILE_MACHA_TERMINAL_OUTPUTS",
+    "FREEZE_ANY_QUALIFIED_BAYESIAN_TO_SYNTHETIC_AUTHORITY_MAPPING_PROSPECTIVELY",
+    "EXECUTE_H0_H1_H2_H3_C_OBS_C_BIO_ONCE",
+    "AUDIT_FALSIFICATION_AND_MECHANISM_RULING",
+    "ONLY_THEN_DECIDE_WHETHER_JEPA_TRAINING_CAN_OPEN"
+  ],
+  "boundaries": {
+    "scientific_tournament_executed": false,
+    "synthetic_arm_promoted": null,
+    "training_authorized": false,
+    "v78_retuning_authorized": false,
+    "test_or_morabito_accessed": false,
+    "pathology_accessed": false,
+    "target_discovery_modified": false,
+    "post_outcome_retuning_allowed": false
+  }
+}
