@@ -1,0 +1,69 @@
+{
+  "basis_uncertainty": "SUBSPACE_ONLY",
+  "biology_measurement_uncertainty": "SEPARATE_RESPONSES_SUPPORTED_HISTORICALLY",
+  "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "checkpoint_u205_sha256": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa",
+  "conditional_technology_imprint": {
+    "broad_class_only_balanced_accuracy": 0.5895833333333333,
+    "broad_class_plus_state_balanced_accuracy": 1.0,
+    "comparable_biology_cells": 68,
+    "comparable_biology_donors": 44,
+    "raw_source_balanced_accuracy": 1.0,
+    "residual_source_increment_over_broad_class": 0.41041666666666665,
+    "scope": "AUTHENTICATED_84_CELL_TRUTH_TABLE__FIT_POPULATION_ONLY",
+    "technology_invariance_qualified": false,
+    "within_shared_broad_class_balanced_accuracy": {
+      "Neuronal: GABAergic": 1.0,
+      "Neuronal: Glutamatergic": 1.0,
+      "Non-neuronal and Non-neural": 1.0
+    }
+  },
+  "date": "2026-10-11",
+  "heldout_donor_evidence": {
+    "broad_annotation_balanced_accuracy": 0.495018,
+    "broad_annotation_u205_minus_u0": 0.004386729,
+    "donor_transfer_qualified": false,
+    "evaluation_donors": 45,
+    "innovation_tail_r2": 0.650789,
+    "innovation_tail_u205_minus_u0": 0.003248402,
+    "operator_balanced_accuracy": 0.763206,
+    "reason": "No prefrozen pass threshold existed for promoting this learned candidate; technical/source predictability is extreme while broad biological annotation gains only 0.0044 BA over u0.",
+    "source_balanced_accuracy": 1.0,
+    "support_measured_count_r2": 0.9998
+  },
+  "matrix_identifiability": {
+    "all_broad_unavailable_source": "NPH52",
+    "broad_label_available_matrices": 35,
+    "broad_label_unavailable_matrices": 7,
+    "matrices": 42,
+    "matrix_ledger_sha256": "da3d7d91dbde7f3978615cdce7fa1d3f73f82ee23a5d4f0c29448717cecec213",
+    "matrix_transfer_performance_qualified": false,
+    "mean_leave_one_matrix_out_native_cell_coverage": 0.777693509836367,
+    "reason": "Identifiability accounting is closed, but no current final-representation per-matrix performance authority exists."
+  },
+  "pathology_accessed": false,
+  "remaining_gates": [
+    "TRUE_CURRENT_HELDOUT_DONOR_REPRESENTATION_PASS_CRITERION_OR_SUCCESSOR_PROSPECTIVE_TEST",
+    "CURRENT_FINAL_REPRESENTATION_MATRIX_PERFORMANCE_ON_IDENTIFIABLE_STRATA",
+    "HELDOUT_CONDITIONAL_TECHNOLOGY_INVARIANCE",
+    "FINAL_GPU_RAM_IO_WALLTIME_BENCHMARK",
+    "FULL104_PHYSICAL_DIMENSION_AUTHORITY"
+  ],
+  "representation_freeze_authorized": false,
+  "representation_winner": null,
+  "resource_benchmark": {
+    "bounded_cpu_resource_evidence": true,
+    "final_gpu_benchmark_pending": true,
+    "final_production_resource_gate_pass": false,
+    "recommended_cpu_batch_ceiling": 4
+  },
+  "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+  "sampling_authority": "FROZEN_ALPHA_0.25_0.25__SENSITIVITY_0.5_0.5",
+  "schema": "FOUNDATION_REPRESENTATION_RESIDUAL_GATES_V1",
+  "shortcut_atlas_sha256": "359f53d783b35bcfe448aca53ed58a76914298045299567d198b2693fbd1f8ef",
+  "stage4_authorized": false,
+  "target_discovery_value_read_authorized": false,
+  "terminal": "RESIDUAL_GATES_MEASURED__LEARNED_T1_INVARIANCE_NOT_QUALIFIED__MATRIX_IDENTIFIABILITY_ACCOUNTED__REPRESENTATION_FREEZE_BLOCKED__TRAINING_OFF",
+  "test_or_morabito_accessed": false,
+  "training_authorized": false
+}

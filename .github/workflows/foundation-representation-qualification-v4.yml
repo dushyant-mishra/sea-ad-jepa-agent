@@ -6,11 +6,15 @@ on:
       - 'src/sea_ad_jepa/v4/foundation_qualification_v4.py'
       - 'src/sea_ad_jepa/v4/foundation_sampling.py'
       - 'src/sea_ad_jepa/v4/foundation_resource_guard.py'
+      - 'src/sea_ad_jepa/v4/foundation_residual_gates.py'
       - 'src/sea_ad_jepa/v4/observation_process.py'
       - 'src/sea_ad_jepa/v4/foundation_state_stability.py'
       - 'scripts/v4/requalify_foundation_representation_v4.py'
+      - 'scripts/v4/audit_foundation_representation_residual_gates_v1.py'
       - 'tests/v4/test_foundation_representation_qualification_v4.py'
       - 'tests/v4/test_foundation_representation_qualification_v4_cli.py'
+      - 'tests/v4/test_foundation_representation_residual_gates.py'
+      - 'tests/v4/test_foundation_matrix_broad_label_harmonization.py'
       - '.github/workflows/foundation-representation-qualification-v4.yml'
   workflow_dispatch:
 
@@ -27,6 +31,9 @@ jobs:
         run: python -m pip install --upgrade numpy scipy pytest
       - name: Run focused qualification suite
         run: >-
+          PYTHONPATH=src:.
           python -m pytest -q
           tests/v4/test_foundation_representation_qualification_v4.py
           tests/v4/test_foundation_representation_qualification_v4_cli.py
+          tests/v4/test_foundation_representation_residual_gates.py
+          tests/v4/test_foundation_matrix_broad_label_harmonization.py

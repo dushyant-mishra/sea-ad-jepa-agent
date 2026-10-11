@@ -1,0 +1,36 @@
+{
+  "broad_class_only_balanced_accuracy": 0.5895833333333333,
+  "broad_class_plus_state_balanced_accuracy": 1.0,
+  "checkpoint_sha256": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa",
+  "checkpoint_update": 205,
+  "comparable_biology_cells": 68,
+  "comparable_biology_donors": 44,
+  "comparable_biology_sources": [
+    "HVS",
+    "SEA_AD"
+  ],
+  "donors": 54,
+  "grouping": "DONOR_GROUPED_5_FOLD_CV",
+  "heldout_transfer_authority": false,
+  "interpretation": "Residual source/acquisition information is strongly present in the learned u205 CELL state even within shared broad biological classes. This is fit-population evidence and does not prove a purely technical causal effect or held-out transfer.",
+  "pathology_accessed": false,
+  "raw_source_balanced_accuracy": 1.0,
+  "representation_freeze_authorized": false,
+  "residual_source_increment_over_broad_class": 0.41041666666666665,
+  "schema": "FOUNDATION_T1_CONDITIONAL_TECHNOLOGY_DIAGNOSTIC_V1",
+  "scope": "AUTHENTICATED_84_CELL_TRUTH_TABLE__FIT_POPULATION_ONLY",
+  "sources": 3,
+  "state": "EMA_TARGET_CELL_160D",
+  "target_discovery_value_read_authorized": false,
+  "technology_invariance_qualified": false,
+  "terminal": "RESIDUAL_SOURCE_IMPRINT_OBSERVED__FIT_POPULATION_DIAGNOSTIC__TECHNOLOGY_INVARIANCE_NOT_QUALIFIED",
+  "test_or_morabito_accessed": false,
+  "training_authorized": false,
+  "truth_table_metadata_sha256": "b505972bd57a034fa0805652e97e00e3ae93afc141b5aa4b16d9bd400a2d43ba",
+  "truth_table_sha256": "2aca870343b65f2deabe32fdc8e18bd26211f505e8bcb3b6f2d53cb0dc6573c3",
+  "within_shared_broad_class_balanced_accuracy": {
+    "Neuronal: GABAergic": 1.0,
+    "Neuronal: Glutamatergic": 1.0,
+    "Non-neuronal and Non-neural": 1.0
+  }
+}

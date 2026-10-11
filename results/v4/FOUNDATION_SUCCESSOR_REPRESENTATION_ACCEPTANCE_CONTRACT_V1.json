@@ -1,0 +1,43 @@
+{
+  "schema": "FOUNDATION_SUCCESSOR_REPRESENTATION_ACCEPTANCE_CONTRACT_V1",
+  "date_frozen": "2026-10-11",
+  "applies_to": "REPRESENTATION_CANDIDATES_FIRST_EVALUATED_AFTER_THIS_CONTRACT",
+  "explicitly_not_applicable_to": [
+    "u0000",
+    "u0205"
+  ],
+  "principle": "NULL_CALIBRATED_PROSPECTIVE_ACCEPTANCE__NO_POSTHOC_NUMERIC_MARGIN",
+  "donor_transfer": {
+    "scope": "HELDOUT_TRAIN_DONORS",
+    "biology_rule": "observed_biology_score > permutation_q95",
+    "nuisance_rules": {
+      "source": "residual_observed <= permutation_q95",
+      "operator": "residual_observed <= permutation_q95",
+      "support": "residual_observed <= permutation_q95"
+    },
+    "pass_rule": "biology_rule AND all nuisance_rules"
+  },
+  "matrix_transfer": {
+    "scope": "LEAVE_ONE_MATRIX_OUT",
+    "identifiability": "score biology only on cells whose evaluation labels are identifiable from non-held-out matrices; report all excluded cells and matrices",
+    "biology_rule_per_evaluable_matrix": "observed_biology_score > permutation_q95",
+    "matrix_residual_rule_per_evaluable_matrix": "residual_matrix_identity_score <= permutation_q95",
+    "pass_rule": "at least one evaluable matrix AND every evaluable matrix passes both rules",
+    "pooled_score_without_identifiability_ledger_forbidden": true
+  },
+  "conditional_technology_invariance": {
+    "scope": "HELDOUT_DONORS_OR_HELDOUT_MATRICES",
+    "biology_rule": "observed_biology_score > permutation_q95",
+    "source_increment": "biology_plus_state_source_score - biology_control_source_score",
+    "invariance_rule": "source_increment <= permutation_q95_of_increment_under_label_permutation",
+    "pass_rule": "biology_rule AND invariance_rule"
+  },
+  "multiple_testing": "permutation envelopes must be generated prospectively under the evaluation contract and corrected at the family level when multiple targets/strata are simultaneously verdict-bearing",
+  "current_u205_evidence_may_not_be_rejudged_under_this_contract": true,
+  "representation_freeze_authorized": false,
+  "training_authorized": false,
+  "target_discovery_value_read_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "terminal": "SUCCESSOR_ACCEPTANCE_RULES_FROZEN_PROSPECTIVELY__NO_CURRENT_REPRESENTATION_PROMOTION__TRAINING_OFF"
+}
