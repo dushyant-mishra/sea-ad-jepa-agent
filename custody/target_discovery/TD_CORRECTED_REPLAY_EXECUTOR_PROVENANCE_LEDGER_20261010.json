@@ -1,0 +1,73 @@
+{
+  "schema": "JEPA_TD_CORRECTED_REPLAY_EXECUTOR_PROVENANCE_LEDGER_V1",
+  "date": "2026-10-10",
+  "status": "PROVENANCE_LEDGER_ONLY__NO_VALUE_READ_AUTHORITY__NO_REPLAY_AUTHORITY",
+  "purpose": "Define the admissible historical execution reference for corrected replay adapter qualification without reconstructing missing historical algorithms from prose.",
+  "stages": {
+    "TD56": {
+      "status": "ORIGINAL_DECISION_LOGIC_BOUND__EXECUTOR_BYTES_REQUIRE_PACKAGE_RECOVERY_OR_EQUIVALENCE_CLOSURE",
+      "prospective_freeze_commit": "d257fd3cf4957ecbb1ab3f03a06e54d043a1326f",
+      "primary_screen": "target_discovery/iterations/td56s_disjoint_gene_relational_geometry/TD56S_PROSPECTIVE_SCREEN.md",
+      "result": "target_discovery/iterations/td56s_disjoint_gene_relational_geometry/TD56S_RESULT.md",
+      "known_script_sha256": {
+        "HVS_primary": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+        "SEA_AD_exact_fast": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866"
+      },
+      "historical_package_recovery": {
+        "light_package_sha256": "3714f4e8af44a20b518642f38508170f0f8f275f08d42cebec1dfe4979fd3554",
+        "working_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+        "package_binding": "target_discovery/HANDOFF_PACKAGE_BINDING_20260908.md",
+        "rule": "Do not implement a corrected TD56 adapter from prose alone. Recover exact decision-bearing script bytes from authenticated package/history where available, or create a separately audited equivalence closure before corrected values are opened."
+      },
+      "corrected_replay_authorized": false
+    },
+    "TD57B": {
+      "status": "ORIGINAL_EXECUTOR_LOGIC_GIT_PRESERVED_AND_LOCAL_EXECUTOR_SHA_BOUND",
+      "repository_implementation_commit": "ae18a2224cecb73daa3e4c748195dbde7c8f6b4f",
+      "repository_path": "target_discovery/iterations/td57b_independent_triplet_recurrence/td57b_fixed_relational_recurrence.py",
+      "local_decision_executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "local_binding": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_LOCAL_EXECUTION_BINDING.md",
+      "equivalence_requirement": "Adapter qualification must reproduce all decision-bearing TD57B case decisions and deterministic identities on authenticated historical values.",
+      "corrected_replay_authorized": false
+    },
+    "TD57C": {
+      "status": "ORIGINAL_EXECUTOR_SHA_BOUND__BYTES_RECORDED_AS_PACKAGED_BUT_NOT_CURRENTLY_ON_GIT_ITERATION_SURFACE",
+      "metadata_freeze_commit": "1a38eccaeaf55ddd2a88f5d3b9a573d7de037286",
+      "local_decision_executor_path": "/mnt/data/td57c_three_view_local_geometry.py",
+      "local_decision_executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+      "historical_result_terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
+      "package_binding": "target_discovery/HANDOFF_PACKAGE_BINDING_20260908.md",
+      "package_evidence": {
+        "light_package_sha256": "3714f4e8af44a20b518642f38508170f0f8f275f08d42cebec1dfe4979fd3554",
+        "working_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+        "recorded_contents": "Sep-8 handoff states TD56/TD57B/TD57C core scripts/results are in the lightweight package and TD41-TD58 scripts/results/forensics are in the broad working archive."
+      },
+      "qualification_blocker": "Before adapter implementation for TD57C, recover authenticated package bytes and require SHA-256 530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c. If exact bytes cannot be recovered, do not reimplement from prose; a separately frozen independent reconstruction/equivalence closure would be required.",
+      "corrected_replay_authorized": false
+    },
+    "TD59": {
+      "status": "ORIGINAL_EXECUTOR_BYTES_KNOWN_MISSING__SCIENTIFIC_STATISTIC_CLOSED_BY_INDEPENDENT_SUCCESSOR_REPLAY",
+      "original_executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+      "original_executor_bytes_recovered": false,
+      "original_result_json_bytes_recovered": false,
+      "replay_closure_status": "PASS_TD59_REPLAY_CLOSURE_BY_INDEPENDENT_RECONSTRUCTION__ORIGINAL_EXECUTOR_BYTES_NOT_RECOVERED",
+      "replay_closure_doc": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/TD59_REPLAY_CLOSURE_20260908.md",
+      "successor_executor_path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/td59_replay_closure_executor_v1.py",
+      "successor_executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "closure_evidence": {
+        "case_rows_exactly_matched": 24,
+        "decision_values_exactly_matched": ["observed", "null_p95", "null_max"],
+        "pass_booleans_exactly_reproduced": true,
+        "pair_hashes_reproduced": 6,
+        "structural_and_measurable_donor_counts_reproduced": true
+      },
+      "admissible_corrected_replay_reference": "Use the replay-closure successor as the executable TD59 statistic reference while preserving the original executor SHA as historical provenance. Never claim original executor bytes were recovered.",
+      "corrected_replay_authorized": false
+    }
+  },
+  "global_rule": "No corrected replay adapter may be written from prose when exact historical executable bytes or a separately validated replay-equivalence closure is the controlling reference.",
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
