@@ -1,0 +1,50 @@
+{
+  "schema": "FOUNDATION_PRODUCTION_SAMPLING_AUTHORITY_V1",
+  "date": "2026-10-11",
+  "scope": "METADATA_ONLY__OUTCOME_BLIND__NO_TRAINING_AUTHORITY",
+  "custody": {
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "embedded_metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "donor_weight_csv_sha256": "850a05615462c7242f0a2e91e356520451fd4081e259ab79c5d5a0b0e354b637"
+  },
+  "fit_population": {
+    "cells": 4553407,
+    "donors": 104,
+    "sources": {
+      "HVS": {"cells": 198718, "donors": 41},
+      "NPH52": {"cells": 236476, "donors": 17},
+      "SEA_AD": {"cells": 4118213, "donors": 46}
+    },
+    "donor_cell_count_min": 81,
+    "donor_cell_count_max": 174111
+  },
+  "primary": {
+    "dataset_or_source_alpha": 0.25,
+    "donor_alpha": 0.25,
+    "cell_policy": "UNIFORM_WITHIN_DONOR",
+    "source_probability": {
+      "HVS": 0.23934475427814675,
+      "NPH52": 0.24998352013086148,
+      "SEA_AD": 0.5106717255909918
+    },
+    "effective_donor_count_entropy": 96.351554,
+    "rationale": "OUTCOME_BLIND_COVERAGE_CONTROL__REDUCES_RAW_CORPUS_SIZE_DOMINANCE_WHILE_RETAINING_ALL_104_DONORS"
+  },
+  "fixed_sensitivity": {
+    "dataset_or_source_alpha": 0.5,
+    "donor_alpha": 0.5,
+    "cell_policy": "UNIFORM_WITHIN_DONOR",
+    "source_probability": {
+      "HVS": 0.1505,
+      "NPH52": 0.1642,
+      "SEA_AD": 0.6853
+    },
+    "effective_donor_count_entropy_approx": 84.436,
+    "adaptive_selection_forbidden": true
+  },
+  "outcome_tuned": false,
+  "pathology_used": false,
+  "target_discovery_values_used": false,
+  "representation_outcomes_used_to_choose_alpha": false,
+  "training_authorized": false
+}
