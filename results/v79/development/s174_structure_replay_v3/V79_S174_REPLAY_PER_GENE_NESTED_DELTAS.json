@@ -1,0 +1,165 @@
+{
+ "schema": "V79_S174_REPLAY_PER_GENE_NESTED_DELTAS_V1",
+ "label": "DESCRIPTIVE_POST_HOC_SUMMARY__NOT_A_PREDECLARED_RULE (only the operator ruling was predeclared)",
+ "replay_sha256_source": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3.json",
+ "sign": "positive delta = the richer model predicts held-out donors better (detection: lower log loss; positive: higher LPD)",
+ "bootstrap": "gene resampling of the median, 2000 resamples, seed 20261011+7000; genes share donors, so intervals are optimistic",
+ "parts": {
+  "detection": {
+   "A_quadratic_depth": {
+    "n_genes": 200,
+    "median": 0.00046772618479321015,
+    "mean": 0.001272792445118568,
+    "iqr": [
+     -1.8669730243031646e-05,
+     0.0016344007846646608
+    ],
+    "p10_p90": [
+     -0.00019538717530904746,
+     0.003613847670255954
+    ],
+    "fraction_improved": 0.73,
+    "median_bootstrap_95": [
+     0.0002548614115749914,
+     0.0006655468556783506
+    ]
+   },
+   "B_broad_class": {
+    "n_genes": 200,
+    "median": 0.002479935274162348,
+    "mean": 0.008244014632839202,
+    "iqr": [
+     0.000357576434620574,
+     0.009393375194218526
+    ],
+    "p10_p90": [
+     -0.00023617771275067642,
+     0.023855976772126482
+    ],
+    "fraction_improved": 0.845,
+    "median_bootstrap_95": [
+     0.0018695802150953122,
+     0.0032914639880416707
+    ]
+   },
+   "C_source": {
+    "n_genes": 200,
+    "median": 0.0014811540414466362,
+    "mean": 0.02257759075655812,
+    "iqr": [
+     0.000166180552364531,
+     0.006833842083592903
+    ],
+    "p10_p90": [
+     -0.0002656988462647003,
+     0.07111350224169564
+    ],
+    "fraction_improved": 0.78,
+    "median_bootstrap_95": [
+     0.000935236329597966,
+     0.002351157136092047
+    ]
+   },
+   "D_operator_lambda1": {
+    "n_genes": 200,
+    "median": 0.0003514061133116017,
+    "mean": 0.0075031044759020496,
+    "iqr": [
+     -0.0018143442646694347,
+     0.007259279853876671
+    ],
+    "p10_p90": [
+     -0.0037818592824715833,
+     0.03152439796165739
+    ],
+    "fraction_improved": 0.55,
+    "median_bootstrap_95": [
+     -0.00013731550939682924,
+     0.001876858529838571
+    ]
+   }
+  },
+  "positive_lognormal": {
+   "A_quadratic_depth": {
+    "n_genes": 200,
+    "median": 0.005433549381772151,
+    "mean": 0.008435967006772922,
+    "iqr": [
+     -0.0001687886719373699,
+     0.015639018827779183
+    ],
+    "p10_p90": [
+     -0.0024793384270691767,
+     0.022625449776878973
+    ],
+    "fraction_improved": 0.73,
+    "median_bootstrap_95": [
+     0.003734762489784367,
+     0.008702460977562276
+    ]
+   },
+   "B_broad_class": {
+    "n_genes": 200,
+    "median": 0.002458427941849084,
+    "mean": 0.010669392055105255,
+    "iqr": [
+     0.0001915334726193263,
+     0.012603408507457448
+    ],
+    "p10_p90": [
+     -0.002657540878415432,
+     0.028576463386945725
+    ],
+    "fraction_improved": 0.76,
+    "median_bootstrap_95": [
+     0.001846937732745968,
+     0.0035105731757803516
+    ]
+   },
+   "C_source": {
+    "n_genes": 200,
+    "median": 0.0007795883176990315,
+    "mean": 0.0035081884334986495,
+    "iqr": [
+     -0.0007979785351538843,
+     0.0054154502772530005
+    ],
+    "p10_p90": [
+     -0.003276844515638653,
+     0.011077345523750058
+    ],
+    "fraction_improved": 0.59,
+    "median_bootstrap_95": [
+     0.00021569955098993399,
+     0.0015495057273916541
+    ]
+   },
+   "D_operator_lambda1": {
+    "n_genes": 200,
+    "median": -0.009409045641658259,
+    "mean": -0.006537893050265019,
+    "iqr": [
+     -0.025362866378366253,
+     0.0037903618869267186
+    ],
+    "p10_p90": [
+     -0.05083038019399094,
+     0.0294337683269832
+    ],
+    "fraction_improved": 0.3,
+    "median_bootstrap_95": [
+     -0.011974379646258804,
+     -0.007038200617582924
+    ]
+   }
+  }
+ },
+ "support_chance_reference": {
+  "per_gene_level": 0.05,
+  "n_genes": 50,
+  "expected_by_chance": 2.5,
+  "binomial_q95": 5,
+  "binomial_q99": 7,
+  "note": "reference only: genes share donors, so supported-gene counts are not independent"
+ }
+}

@@ -1,9 +1,9 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T17:56:41Z",
+ "updated_utc": "2026-10-11T20:13:20Z",
  "branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
- "source_head_at_write": "abff3f2a9c653b79c93a6b68dcb126f5cd855f30",
- "terminal_state": "BAYESIAN_MODEL_DEVELOPMENT_HOLD__DETECTION_NOT_QUALIFIED__GAUSSIAN_LOGNORMAL_ZTNB_UNADJUDICATED__EMPIRICAL_TRAIN_CHARACTERIZATION_REQUIRED_BEFORE_NEW_CONFIRMATORY_QUALIFICATION__TRAINING_OFF",
+ "source_head_at_write": "02fb78c36473d9863ae9482619133c052ba4a480 (PR #283, CI run 38170751947 green) on exec/v79-s174-structure-replay-v3-20261011",
+ "terminal_state": "EXACT_S174_STRUCTURE_REPLAY_COMPLETE__PRIMARY_OPERATOR_LAMBDA_1__FROZEN_SENSITIVITY_0p25_1_4__DEVELOPMENT_ONLY__CONTROLLER_MODEL_FREEZE_REQUIRED__BAYESIAN_CONFIRMATION_OFF__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
@@ -51,7 +51,7 @@
   "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark",
   "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery"
  ],
- "next_gate": "controller decisions D1-D5 on docs/agent/V79_TRAIN_EMPIRICAL_DEVELOPMENT_DOSSIER_PLAN.md; no expensive execution until then",
+ "next_gate": "controller model-freeze decision (operator component); no NUTS, no old 18-fit campaign, no H0-H3, no training",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -82,5 +82,21 @@
   "detection V1/V2 recovery and stage-1 terminal (results/v79/recovery/detection_V2/)",
   "pre-code-path-qualification recovery evidence (results/v79/recovery/evidence_pre_code_path_qualification_20261011/)",
   "fresh-campaign provenance and job list (POST_CODE_PATH_PROVENANCE_V1.json, SCHEDULER_JOBS_FRESH_FAMILIES_d9d8cac6.json), preserved unchanged"
- ]
+ ],
+ "s174_structure_replay": {
+  "failed_closed_record": "docs/agent/V79_S174_STRUCTURE_REPLAY_EXECUTION_RECORD_20261011.md (PR #280)",
+  "repair": "PR #283 (operator-within-source penalty, primary lambda 1, frozen set {0.25,1,4})",
+  "result": "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md",
+  "answers": {
+   "A_depth_quadratic": "SUPPORTED",
+   "B_broad_class": "SUPPORTED",
+   "C_source": "SUPPORTED_detection__WEAK_positive",
+   "D_operator": "detection PRIOR_SENSITIVE__UNRESOLVED; positive NOT_SUPPORTED",
+   "E_donor": "SUPPORTED",
+   "F_operator_beyond_donor": "residual structure above chance; unresolved as a transferable effect",
+   "G_donor_class": "NOT_BROADLY_EARNED__STAYS_OUT",
+   "H_positive_lognormal": "STABLE_DEVELOPMENT_REPRESENTATION; ZTNB unadjudicated"
+  },
+  "candidate": "PARTIALLY_PRESERVED__OPERATOR_COMPONENT_WEAKENED"
+ }
 }
