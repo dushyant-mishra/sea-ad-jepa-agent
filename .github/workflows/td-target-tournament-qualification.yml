@@ -60,6 +60,7 @@ jobs:
             tests/v5/test_td_target_tournament_contract_v2.py \
             tests/v5/test_td_target_tournament_envelope_hardening.py \
             tests/v5/test_td_target_tournament_evidence.py \
+            tests/v5/test_td_target_tournament_gate_evidence_v2.py \
             tests/v5/test_td_target_tournament_nulls.py \
             tests/v5/test_td_target_tournament_precision.py \
             tests/v5/test_td_target_tournament_prefreeze.py \
