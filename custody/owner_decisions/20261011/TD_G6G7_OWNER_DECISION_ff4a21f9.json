@@ -1,0 +1,11 @@
+{
+  "authorized_pr259_mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+  "authorized_pr259_preflight_driver_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+  "biological_replay_authorized": false,
+  "decision": "AUTHORIZE_G6_G7_INTEGRITY_ONLY",
+  "qualified_implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+  "schema": "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1",
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}
