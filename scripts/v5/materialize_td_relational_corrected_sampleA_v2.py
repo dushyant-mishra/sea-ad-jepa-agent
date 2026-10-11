@@ -64,6 +64,11 @@ TD50_SHA = {
     "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
     "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4",
 }
+SOURCE_LIBRARY_VERIFICATION_SCOPE = (
+    "HVS/SEA rows were physically reread from authenticated H5AD bytes and each whole-row library was verified "
+    "exactly against its TD50 sentinel; NPH52 rows are authenticated historical pass-through (hash-bound historical "
+    "CSR and TD50 library) and were not independently physically reread"
+)
 INPUT_AUTHORITY_HASHES = {
     **common.EXPECTED_INPUT_HASHES,
     "historical_csr_sha256": dict(HIST_CSR_SHA),
@@ -361,6 +366,8 @@ def main() -> int:
     global_row = sample_a.global_row.astype(int).to_numpy()
     cell_id = sample_a.cell_id.astype(str).to_numpy()
     g6_mismatches: list[dict] = []
+    physically_reread_rows = 0
+    nph52_passthrough_rows = 0
     mapping_diagnostics: list[dict] = []
     verified_source_shas: dict[str, str] = {}
     source_root = Path(args.source_root)
@@ -394,6 +401,7 @@ def main() -> int:
             indptr = node["indptr"]
             for row in group.itertuples(index=False):
                 sample_row = int(row.sample_row)
+                physically_reread_rows += 1
                 local_row = int(row.local_row)
                 if local_row < 0 or local_row >= len(obs) or str(obs[local_row]) != str(row.cell_id):
                     raise RuntimeError(f"cell row drift after preflight: {mid} row {local_row}")
@@ -436,6 +444,7 @@ def main() -> int:
 
     for row in sample_a[sample_a.source.eq("NPH52")].itertuples(index=False):
         sample_row = int(row.sample_row)
+        nph52_passthrough_rows += 1
         grow = int(row.global_row)
         old = nph_historical_row(grow, hdata, hindices, hindptr, replay_addresses)
         source_library_corrected[sample_row] = historical_library[grow]
@@ -446,6 +455,11 @@ def main() -> int:
             cols_out.append(address)
             vals_out.append(value)
 
+    expected_physical = SOURCE_COUNTS["HVS"] + SOURCE_COUNTS["SEA_AD"]
+    if (physically_reread_rows != expected_physical or nph52_passthrough_rows != SOURCE_COUNTS["NPH52"]
+            or physically_reread_rows + nph52_passthrough_rows != N_SAMPLE_A):
+        raise RuntimeError(f"Sample-A coverage mismatch: reread={physically_reread_rows} "
+                           f"passthrough={nph52_passthrough_rows} total={N_SAMPLE_A}")
     if np.any(source_library_corrected <= 0) or np.any(detected_corrected < 0):
         raise RuntimeError("incomplete Sample-A materialization metadata")
 
@@ -476,7 +490,10 @@ def main() -> int:
         "schema": G6_RECEIPT_SCHEMA,
         "status": G6_PASS,
         "rows": N_SAMPLE_A,
-        "source_library_exact_rows": N_SAMPLE_A,
+        "total_sample_a_rows": N_SAMPLE_A,
+        "hvs_sea_physically_reread_source_library_verified_rows": physically_reread_rows,
+        "nph52_authenticated_historical_passthrough_rows": nph52_passthrough_rows,
+        "source_library_verification_scope": SOURCE_LIBRARY_VERIFICATION_SCOPE,
         "verified_source_h5ad_sha256": verified_source_shas,
         "authority_trace": authority_trace,
         "input_authority_hashes": INPUT_AUTHORITY_HASHES,
