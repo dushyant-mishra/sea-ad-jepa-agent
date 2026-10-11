@@ -1,0 +1,39 @@
+{
+  "schema": "JEPA_TD_G6_G7_STANDALONE_V2_CANDIDATE_STATE_V2",
+  "date": "2026-10-10",
+  "status": "SUPERSEDED_BEFORE_QUALIFICATION__DO_NOT_QUALIFY_OR_EXECUTE_HEAD_C5D9",
+  "pr": 258,
+  "branch": "impl/td-g6g7-standalone-v2-v3preflight-20261010",
+  "base_pr": 255,
+  "base_sha": "bf253a4dd62d943398f9ff59ed8b1e74777140a5",
+  "superseded_head_sha": "c5d9c64cf42dc8c12d91672458689c0a0a67f472",
+  "historical_v1_files_modified": false,
+  "ci_or_status_checks": [],
+  "pytest_executed_by_coordinator": false,
+  "runtime_value_authorization_exists": false,
+  "g6_g7_execution_authorized": false,
+  "biological_replay_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "supersession_reasons": [
+    "G7 does not re-hash S174 meta/count shard bytes immediately before later overlap value use",
+    "duplicate S174 cell_id values can silently collapse when building the row lookup dictionary",
+    "duplicate address indices within an S174 CSR row can silently overwrite when converted to a dictionary"
+  ],
+  "repair_audit": "docs/agent/TD_G7_S174_IMMEDIATE_REAUTH_AUDIT_20261010.md",
+  "required_successor_actions": [
+    "retain global all-shard G1b hash custody",
+    "re-hash overlap meta shard immediately before reading cell_id",
+    "reject duplicate cell_id within each used shard",
+    "re-hash overlap counts shard immediately before opening count values",
+    "reject duplicate CSR address indices within each compared row",
+    "record immediate-use hashes in G7 receipt",
+    "add regression tests for TOCTOU/duplicate-cell/duplicate-address cases",
+    "qualify successor against exact PR259 receipt bytes before any value authorization"
+  ],
+  "upstream_pr259_driver_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+  "upstream_pr259_mapping_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+  "corrected_replay_prefreeze": "custody/target_discovery/TD_CORRECTED_BIOLOGICAL_REPLAY_PREFREEZE_20261010.json",
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

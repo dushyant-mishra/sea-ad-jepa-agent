@@ -1,0 +1,19 @@
+{
+  "schema": "JEPA_TD_G6_G7_V3_PREFLIGHT_DESIGN_STATE_V1",
+  "date": "2026-10-10",
+  "status": "DESIGN_UPDATED__NO_EXECUTION_AUTHORITY",
+  "historical_base_spec": "docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-design.md",
+  "controlling_amendment": "docs/superpowers/specs/2026-10-10-td-g6-g7-standalone-v2-v3-preflight-amendment.md",
+  "implementation_plan": "docs/superpowers/plans/2026-10-10-td-g6-g7-standalone-v2-v3-preflight.md",
+  "accepted_preflight_driver_schema": "JEPA_TD_RELATIONAL_PREFLIGHT_DRIVER_RECEIPT_V3",
+  "accepted_mapping_schema": "JEPA_TD_RELATIONAL_MAPPING_PREFLIGHT_V3",
+  "sample_A_label": "A_NATURAL_MIXTURE",
+  "sample_A_cells": 25000,
+  "sample_A_h5_matrices": 34,
+  "s174_frozen_h5_custody_matrices": 35,
+  "runtime_value_authorization_exists": false,
+  "g6_g7_execution_authorized": false,
+  "biological_replay_authorized": false,
+  "training_authorized": false,
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
