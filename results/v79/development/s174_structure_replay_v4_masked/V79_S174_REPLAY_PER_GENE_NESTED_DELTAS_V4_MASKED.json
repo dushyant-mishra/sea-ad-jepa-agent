@@ -1,0 +1,158 @@
+{
+ "schema": "V79_S174_REPLAY_PER_GENE_NESTED_DELTAS_V1",
+ "label": "DESCRIPTIVE_POST_HOC_SUMMARY__NOT_A_PREDECLARED_RULE (only the operator ruling was predeclared)",
+ "replay_sha256_source": "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+ "replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+ "sign": "positive delta = the richer model predicts held-out donors better (detection: lower log loss; positive: higher LPD)",
+ "bootstrap": "gene resampling of the median, 2000 resamples, seed 20261011+7000; genes share donors, so intervals are optimistic",
+ "parts": {
+  "detection": {
+   "A_quadratic_depth": {
+    "n_genes": 200,
+    "median": 0.0003345401353781752,
+    "mean": 0.0010487616494871247,
+    "iqr": [
+     -9.273981019837507e-05,
+     0.0012690013084088736
+    ],
+    "p10_p90": [
+     -0.00031396061611130836,
+     0.0027039048623367563
+    ],
+    "fraction_improved": 0.67,
+    "median_bootstrap_95": [
+     0.00016569270695721006,
+     0.0005324652194322876
+    ]
+   },
+   "B_broad_class": {
+    "n_genes": 200,
+    "median": 0.0025907226947036455,
+    "mean": 0.008524437372360538,
+    "iqr": [
+     0.00027921192568659825,
+     0.010335831238538921
+    ],
+    "p10_p90": [
+     -0.0003049061023205234,
+     0.025798668816196815
+    ],
+    "fraction_improved": 0.82,
+    "median_bootstrap_95": [
+     0.001746704651592823,
+     0.0035873337493517593
+    ]
+   },
+   "C_source": {
+    "n_genes": 200,
+    "median": 0.000911696498225506,
+    "mean": 0.008951776761462667,
+    "iqr": [
+     0.0,
+     0.004557675298206013
+    ],
+    "p10_p90": [
+     -0.00027860494113563216,
+     0.009474051508605268
+    ],
+    "fraction_improved": 0.735,
+    "median_bootstrap_95": [
+     0.0005263997939316464,
+     0.001293393907225382
+    ]
+   },
+   "D_operator_lambda1": {
+    "n_genes": 200,
+    "median": 0.0005247291114463537,
+    "mean": 0.0075863850432181645,
+    "iqr": [
+     -0.0024020167116483027,
+     0.00833392955090842
+    ],
+    "p10_p90": [
+     -0.00396264695048823,
+     0.03152439796165739
+    ],
+    "fraction_improved": 0.55,
+    "median_bootstrap_95": [
+     -0.00013731550939682924,
+     0.00202019396469455
+    ]
+   }
+  },
+  "positive_lognormal": {
+   "A_quadratic_depth": {
+    "n_genes": 200,
+    "median": 0.005433549381772151,
+    "mean": 0.008435967006772922,
+    "iqr": [
+     -0.0001687886719373699,
+     0.015639018827779183
+    ],
+    "p10_p90": [
+     -0.0024793384270691767,
+     0.022625449776878973
+    ],
+    "fraction_improved": 0.73,
+    "median_bootstrap_95": [
+     0.003734762489784367,
+     0.008702460977562276
+    ]
+   },
+   "B_broad_class": {
+    "n_genes": 200,
+    "median": 0.002458427941849084,
+    "mean": 0.010669392055105255,
+    "iqr": [
+     0.0001915334726193263,
+     0.012603408507457448
+    ],
+    "p10_p90": [
+     -0.002657540878415432,
+     0.028576463386945725
+    ],
+    "fraction_improved": 0.76,
+    "median_bootstrap_95": [
+     0.001846937732745968,
+     0.0035105731757803516
+    ]
+   },
+   "C_source": {
+    "n_genes": 200,
+    "median": 0.0007795883176990315,
+    "mean": 0.0035081884334986495,
+    "iqr": [
+     -0.0007979785351538843,
+     0.0054154502772530005
+    ],
+    "p10_p90": [
+     -0.003276844515638653,
+     0.011077345523750058
+    ],
+    "fraction_improved": 0.59,
+    "median_bootstrap_95": [
+     0.00021569955098993399,
+     0.0015495057273916541
+    ]
+   },
+   "D_operator_lambda1": {
+    "n_genes": 200,
+    "median": -0.009409045641658259,
+    "mean": -0.006537893050265019,
+    "iqr": [
+     -0.025362866378366253,
+     0.0037903618869267186
+    ],
+    "p10_p90": [
+     -0.05083038019399094,
+     0.0294337683269832
+    ],
+    "fraction_improved": 0.3,
+    "median_bootstrap_95": [
+     -0.011974379646258804,
+     -0.007038200617582924
+    ]
+   }
+  }
+ }
+}

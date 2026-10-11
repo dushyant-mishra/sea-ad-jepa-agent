@@ -1,0 +1,76 @@
+{
+ "A_quadratic_depth": {
+  "detection": "POSITIVE",
+  "positive": "POSITIVE",
+  "mechanical_class_preserved": true
+ },
+ "B_broad_class": {
+  "detection": "POSITIVE",
+  "positive": "POSITIVE",
+  "mechanical_class_preserved": true
+ },
+ "C_source": {
+  "detection": "POSITIVE",
+  "positive": "POSITIVE",
+  "mechanical_class_preserved": true
+ },
+ "D_operator": {
+  "detection": "PRIOR_SENSITIVE__UNRESOLVED",
+  "positive": "NOT_SUPPORTED",
+  "mechanical_class_preserved": true
+ },
+ "E_donor": {
+  "detection": {
+   "supported_genes": 32,
+   "eligible_genes": 50,
+   "above_chance_q99": true,
+   "mean_excess_sign": "+",
+   "mean_observed_minus_null_q95": 0.0006931370480925697
+  },
+  "positive": {
+   "supported_genes": 19,
+   "eligible_genes": 50,
+   "above_chance_q99": true,
+   "mean_excess_sign": "-",
+   "mean_observed_minus_null_q95": -0.0009847869471752433
+  },
+  "mechanical_class_preserved": true
+ },
+ "F_operator_beyond_donor": {
+  "detection": {
+   "supported_genes": 37,
+   "eligible_genes": 50,
+   "above_chance_q99": true,
+   "mean_excess_sign": "+",
+   "mean_observed_minus_null_q95": 0.0027610256101708087
+  },
+  "positive": {
+   "supported_genes": 23,
+   "eligible_genes": 50,
+   "above_chance_q99": true,
+   "mean_excess_sign": "+",
+   "mean_observed_minus_null_q95": 0.008094065077480755
+  },
+  "mechanical_class_preserved": true
+ },
+ "G_donor_class": {
+  "detection": {
+   "supported_genes": 8,
+   "eligible_genes": 50,
+   "above_chance_q99": true,
+   "mean_excess_sign": "-",
+   "mean_observed_minus_null_q95": -0.0009306259299780853
+  },
+  "positive": {
+   "supported_genes": 3,
+   "eligible_genes": 50,
+   "above_chance_q99": false,
+   "mean_excess_sign": "-",
+   "mean_observed_minus_null_q95": -0.006750215598741147
+  },
+  "mechanical_class_preserved": true
+ },
+ "H_positive_lognormal": {
+  "mechanical_class_preserved": true
+ }
+}

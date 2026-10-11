@@ -1,9 +1,9 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T21:00:21Z",
- "branch": "feat/v79-v2-core-qualification-20261011",
- "source_head_at_write": "2c230a70d9151e27b14ec2788d1309eb2ac81468 (PR #285, V3 replay) + V2_CORE contract commit",
- "terminal_state": "V2_CORE_QUALIFICATION_CONTRACT_FROZEN__NO_QUALIFICATION_FIT_RUN__CONTROLLER_REVIEW_OF_CONTRACT_INVITED__TRAINING_OFF",
+ "updated_utc": "2026-10-11T22:36:20Z",
+ "branch": "fix/v79-s174-structural-support-mask-20261011 (PR #288, base PR #286 branch)",
+ "source_head_at_write": "d255092c (comparison code; masked replay code ed6359e4; CI green)",
+ "terminal_state": "MASK_CORRECTED_EXACT_S174_REPLAY_COMPLETE__V2_CORE_CONTROLLER_REVIEW_REQUIRED__QUALIFICATION_WORLDS_NOT_GENERATED__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
@@ -50,9 +50,9 @@
   "divergence_location is not yet wired into the inference, Phase C and PPC runners (self-audit 53)",
   "amendment A7 benchmark text requires every recovery suite to pass; with detection NOT_QUALIFIED it needs a controller ruling before the benchmark",
   "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery",
-  "S174 compact cache / V3 replay / planting calibration V1 treated 5.76% structurally_unmeasured entries (59/500 genes) as measured zeros; V2_CORE enforces the Stage81A2R support mask and the calibration was redone masked (V2); the clean-gene split keeps A-H qualitatively (contract section development_finding_structural_support); flagged for controller audit"
+  "RESOLVED IN EVIDENCE, PENDING CONTROLLER REVIEW: V3 replay / calibration V1 treated structurally unmeasured entries as zeros; masked replay V4 committed with an old-vs-masked audit"
  ],
- "next_gate": "implement V2_CORE model/world builder/runner/scorer test-first with green CI; generate and commit realized worlds + truth tables before any fit; engineering benchmark; then Q00-Q11 qualification; stop for controller audit",
+ "next_gate": "controller review of the masked exact-S174 replay (A-H audit) and of the draft amended V2_CORE contract; no world generation, no benchmark, no qualification fit",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -102,13 +102,33 @@
  },
  "v2_core": {
   "controller_freeze": "CANDIDATE_V2_CORE (PR #285 comment 6113335756)",
-  "contract": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
-  "contract_sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
   "summary": "docs/agent/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.md",
   "genes_per_world": 45,
   "worlds": 12,
   "statistical_gates": 264,
   "alpha_per_gate": 0.0001893939393939394,
-  "qualification_fits_run": 0
+  "qualification_fits_run": 0,
+  "contract_v1": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+   "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+   "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY"
+  }
+ },
+ "controller_state": {
+  "pr286_ruling": "6113874774",
+  "pre_launch_terminal": "V2_CORE_STRUCTURE_PROVISIONALLY_PRESERVED__STRUCTURAL_SUPPORT_EVIDENCE_CORRECTION_REQUIRED__Q11_DONOR_AND_PPC_HARD_GATES_REQUIRED__QUALIFICATION_WORLD_GENERATION_NOT_YET_AUTHORIZED__TRAINING_OFF",
+  "handoff_pr261": "V9",
+  "audit_pr260": "V3"
+ },
+ "qualification_world_generation": "BLOCKED until controller review of the masked replay and acceptance of the amended contract",
+ "s174_structure_replay_v4_masked": {
+  "result": "docs/agent/V79_S174_STRUCTURE_REPLAY_V4_MASKED_RESULT_20261011.md",
+  "replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+  "audit": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+  "audit_sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+  "support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+  "removed_fraction_replay_panel": 0.06665467625899281,
+  "mechanical_A_to_H_preserved": true,
+  "decision": "CONTROLLER"
  }
 }

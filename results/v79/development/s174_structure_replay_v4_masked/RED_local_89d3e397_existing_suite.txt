@@ -1,0 +1,22 @@
+..............F                                                          [100%]
+================================== FAILURES ===================================
+______ test_replay_entrypoint_writes_the_frozen_operator_penalty_record _______
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1269/test_replay_entrypoint_writes_0')
+
+    def test_replay_entrypoint_writes_the_frozen_operator_penalty_record(tmp_path):
+        import subprocess
+    
+>       import build_v79_structural_support as B
+E       ModuleNotFoundError: No module named 'build_v79_structural_support'
+
+tests\v79\test_v79_s174_structure_replay.py:221: ModuleNotFoundError
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ===========================
+FAILED tests/v79/test_v79_s174_structure_replay.py::test_replay_entrypoint_writes_the_frozen_operator_penalty_record
+1 failed, 14 passed, 1 warning in 0.96s

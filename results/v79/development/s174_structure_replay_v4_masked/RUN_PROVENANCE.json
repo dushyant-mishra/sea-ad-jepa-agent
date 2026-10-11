@@ -1,0 +1,106 @@
+{
+ "schema": "V79_S174_MASKED_REPLAY_RUN_PROVENANCE_V1",
+ "ruling": "PR #286 controller ruling 6113874774",
+ "label": "EXECUTION_RECORD_WRITTEN_AFTER_THE_RUN_FROM_THE_FILES_ON_DISK (hashes computed, nothing estimated)",
+ "code": {
+  "red_commit": "89d3e397",
+  "green_commit": "ed6359e4e326cd75880ee57213ddccca9d5710f9",
+  "comparison_commit": "d255092c18c919db4587b002a5bd236a72086abc",
+  "ci": [
+   {
+    "commit": "ed6359e4",
+    "workflow": "V79 streaming analysis cache",
+    "run": 38180383133,
+    "job": 114591484334,
+    "result": "39 passed",
+    "evidence": "CI"
+   },
+   {
+    "commit": "d255092c",
+    "workflow": "V79 streaming analysis cache",
+    "run": 38180830921,
+    "job": 114592834291,
+    "result": "40 passed",
+    "evidence": "CI"
+   }
+  ],
+  "local_tests": {
+   "red": [
+    "RED_local_89d3e397_new_suite.txt",
+    "RED_local_89d3e397_existing_suite.txt"
+   ],
+   "green": "GREEN_local_d255092c.txt (33 passed)",
+   "evidence": "LOCAL"
+  }
+ },
+ "execution": {
+  "support_builder_and_replay_snapshot": "D:/v79_runs/ed6359e4 (git archive of ed6359e4)",
+  "comparison_snapshot": "D:/v79_runs/d255092c (git archive of d255092c)",
+  "python": "3.9.7",
+  "numpy": "1.24.2",
+  "scipy": "1.10.1",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "replay_utc_start": "2026-10-11T22:27:47Z",
+  "replay_utc_end": "2026-10-11T22:30:14Z",
+  "replay_exit": 0,
+  "commands": {
+   "support": "python scripts/v79/build_v79_structural_support.py <cache> <receipt> results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json <authority csv.gz extracted from 95d2cafe> V79_G500_STRUCTURAL_SUPPORT_V1.npz --dev-reference-op-x-gene-sha256 12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+   "replay": "python scripts/v79/run_v79_s174_structure_replay.py <cache> <receipt> V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json --genes 200 --support-genes 50 --permutations 99 --folds 3 --seed 20261011 --support V79_G500_STRUCTURAL_SUPPORT_V1.npz --support-record V79_G500_STRUCTURAL_SUPPORT_V1.json",
+   "comparison": "python scripts/v79/compare_v79_s174_replay_masking.py <V3 replay> <masked replay> <V3 nested deltas> V79_S174_REPLAY_MASKING_AUDIT_V1.json --masked-deltas-out V79_S174_REPLAY_PER_GENE_NESTED_DELTAS_V4_MASKED.json"
+  },
+  "identical_to_v3": "same G500 cache, 200 replay / 50 support genes, 3 donor folds, 99 permutations, seed 20261011, models, metrics, operator lambda grid {0.25,1,4}, primary lambda 1, bootstrap convention, support logic; the only change is the structural-support row mask"
+ },
+ "inputs": {
+  "g500_cache": {
+   "path": "D:/v79_runs/615b55eb/results/v79/development/s174_structure_replay/V79_ANALYSIS_CACHE_G500.npz",
+   "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62"
+  },
+  "cache_receipt": {
+   "path": "D:/v79_runs/615b55eb/results/v79/development/s174_structure_replay/V79_ANALYSIS_CACHE_G500_RECEIPT.json",
+   "sha256": "3a5ed9ef40e849ab9aa78b324cbca406772f412e1844fd327e12d04507587351"
+  },
+  "bridge": {
+   "path": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+   "sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92"
+  },
+  "support_authority": {
+   "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+   "commit": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+   "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+  },
+  "v3_replay": {
+   "path": "results/v79/development/s174_structure_replay_v3/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3.json",
+   "sha256": "78db6d310797533f4af80652b45dc0b5b8b005fd7d990d7f1b760735c8c6f8bc"
+  },
+  "v3_nested_deltas": {
+   "path": "results/v79/development/s174_structure_replay_v3/V79_S174_REPLAY_PER_GENE_NESTED_DELTAS.json",
+   "sha256": "2d61221fa7b90e9767238959d1c68b475aabb646e10f07bcc9dc095d1bf9f559"
+  }
+ },
+ "outputs": {
+  "build_support.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "build_support.stdout.txt": "f3b60874f6e9486a88b35b4c36e0172fa3c6fb53b9b1e78207e67026c886707e",
+  "compare.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "compare.stdout.txt": "75031275965bd2c25ed65b06c84b1a5f22d20e75538b2f7eef6cab1244627ee5",
+  "GREEN_local_d255092c.txt": "e2175e97e12b8eab595dc883dd93e0ac4f0c39fe0b7d60724d1ec79cb7e1e8cc",
+  "RED_local_89d3e397_existing_suite.txt": "8410dea2153988bb105f0a7f7aaf322c8f2c0e5d7f979b060649dad8e586a121",
+  "RED_local_89d3e397_new_suite.txt": "30ae37f762408487259008751c8118b9af2d481716bd8d1b8beeb3a0cd89b126",
+  "replay.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "replay.stdout.txt": "c30903948a2a3861ac1b3a6b89361254e81eeaefef7b9f0de577ae5a9990a521",
+  "replay.timing.txt": "6b1f0ab2f0a028651ba542539f1644dbc9cef5af0c2f7eb4d17f768e1c093a57",
+  "V79_G500_STRUCTURAL_SUPPORT_V1.json": "a6023902d953f98fb0fbd2a22d53361627f9b6a299c8730ef2ba7b9776a9f286",
+  "V79_G500_STRUCTURAL_SUPPORT_V1.npz": "6203fb2c5008c71e5275a3cec7e85d52e041787a058149efbf27f15c591a1017",
+  "V79_S174_REPLAY_MASKING_AUDIT_V1.json": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+  "V79_S174_REPLAY_PER_GENE_NESTED_DELTAS_V4_MASKED.json": "adb581ea0178db7a34f460e1b2140bd02f2a117666c50268cadecec4c753072a",
+  "V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683"
+ },
+ "boundaries": {
+  "qualification_worlds_generated": false,
+  "truth_tables": false,
+  "benchmark": false,
+  "nuts": false,
+  "real_train_posterior": false,
+  "factorial_science": false,
+  "training_authorized": false
+ }
+}
