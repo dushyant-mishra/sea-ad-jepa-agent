@@ -1,4 +1,4 @@
-"""RED contract for corrected-S174 structural measurement support.
+"""Contract tests for corrected-S174 structural measurement support.
 
 The replay must distinguish a measured zero from a structurally unmeasured entry, respect matrix/operator-level
 support, and be invariant to poison values stored outside the measurement support mask.
@@ -15,7 +15,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "v79"))
-import run_v79_s174_structure_replay as R  # noqa: E402
+import run_v79_s174_structure_replay as LEGACY  # noqa: E402
+import run_v79_s174_structure_replay_masked as R  # noqa: E402
 
 
 def _data(seed: int = 41) -> dict:
@@ -70,7 +71,6 @@ def _support_files(tmp_path: Path, data: dict, op_gene: np.ndarray, cache_sha: s
 def test_measured_zero_and_structurally_unmeasured_are_distinct():
     d = _data()
     measured = np.ones_like(d["counts_selected"], dtype=bool)
-    # Same observed scalar value, different semantics.
     d["counts_selected"][0, 0] = 0
     d["counts_selected"][1, 0] = 0
     measured[1, 0] = False
@@ -78,8 +78,8 @@ def test_measured_zero_and_structurally_unmeasured_are_distinct():
 
     obs = R.gene_observation_masks(d, 0)
     assert obs["measured"][0]
-    assert not obs["detected"][0]          # measured zero is a real detection observation y=0
-    assert not obs["measured"][1]         # structurally unmeasured is outside the likelihood
+    assert not obs["detected"][0]
+    assert not obs["measured"][1]
     assert not obs["eligible_detection"][1]
     assert not obs["positive"][1]
     assert int(obs["eligible_detection"].sum()) == len(measured) - 1
@@ -89,7 +89,6 @@ def test_support_loader_preserves_partial_matrix_level_support(tmp_path):
     d = _data()
     ops = np.unique(d["op"])
     op_gene = np.ones((len(ops), 2), dtype=bool)
-    # Within source 1, one operator measures gene 0 and the other does not.
     src1_ops = np.unique(d["op"][d["src"] == 1])
     op_gene[np.where(ops == src1_ops[0])[0][0], 0] = False
     mask_path, rec_path = _support_files(tmp_path, d, op_gene)
@@ -98,7 +97,6 @@ def test_support_loader_preserves_partial_matrix_level_support(tmp_path):
     assert cell_gene.shape == d["counts_selected"].shape
     assert not cell_gene[d["op"] == src1_ops[0], 0].any()
     assert cell_gene[d["op"] == src1_ops[1], 0].all()
-    # The support decision is matrix/operator-level, not collapsed to the source.
     assert cell_gene[d["src"] == 1, 0].any()
     assert not cell_gene[d["src"] == 1, 0].all()
 
@@ -130,9 +128,9 @@ def test_all_measured_mask_reproduces_legacy_outputs():
     masked = deepcopy(legacy)
     masked["measured_selected"] = np.ones_like(masked["counts_selected"], dtype=bool)
 
-    assert R.evaluate_detection_gene(legacy, 0, 3, 20261011) == R.evaluate_detection_gene(masked, 0, 3, 20261011)
-    assert R.evaluate_positive_gene(legacy, 0, 3, 20261011) == R.evaluate_positive_gene(masked, 0, 3, 20261011)
-    assert R.residual_support_for_gene(legacy, 0, seed=20261011, n_perm=19) == R.residual_support_for_gene(masked, 0, seed=20261011, n_perm=19)
+    assert LEGACY.evaluate_detection_gene(legacy, 0, 3, 20261011) == R.evaluate_detection_gene(masked, 0, 3, 20261011)
+    assert LEGACY.evaluate_positive_gene(legacy, 0, 3, 20261011) == R.evaluate_positive_gene(masked, 0, 3, 20261011)
+    assert LEGACY.residual_support_for_gene(legacy, 0, seed=20261011, n_perm=19) == R.residual_support_for_gene(masked, 0, seed=20261011, n_perm=19)
 
 
 def test_support_loader_refuses_cache_or_mask_identity_mismatch(tmp_path):
