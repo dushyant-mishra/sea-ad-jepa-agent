@@ -1,7 +1,8 @@
 name: V79 V2_CORE contract launch authority
 
 # Byte-for-byte contract regeneration and launch-authority semantics, in the locked V79 Bayesian environment
-# (results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt): Windows, Python 3.11.17, numpy 2.0.2,
+# (results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt): Windows, Python 3.11 (the runner has no
+# 3.11.17 build; the SciPy-derived numbers come from the pinned SciPy wheel, not the Python patch release), numpy 2.0.2,
 # scipy 1.17.1. The contract embeds SciPy-derived numbers. On Linux, the same pinned versions give a reported power
 # (worlds.gene_count_derivation.power) that differs in the last binary digit: 0.8003456396475286 against
 # 0.8003456396475284. Every accepted quantity (G, t_critical, alpha, gates) is identical. The diagnosis was run
@@ -35,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.17'
+          python-version: '3.11'
       - run: python -m pip install --disable-pip-version-check numpy==2.0.2 scipy==1.17.1 pytest
       - name: Launch-authority and byte-for-byte contract tests
         shell: bash
