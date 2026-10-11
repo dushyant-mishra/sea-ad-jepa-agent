@@ -42,6 +42,9 @@ def test_recovery_suite_end_to_end(tmp_path):
         f = rec["fits"][w]
         assert f["diagnostics"]["attempts"] and "per_site" in f["diagnostics"]
         assert "divergence_location" in f["diagnostics"]
+        for a in f["diagnostics"]["attempts"]:  # self-audit 53: every divergent attempt is located
+            assert "divergence_location" in a
+            assert (a["divergence_location"] is not None) == (sum(a["divergences"]) > 0), a
         if w == "S5_labels_removed":
             assert f["components"] == ["cls", "src", "op"]
         if w == "S2_class_permuted":
