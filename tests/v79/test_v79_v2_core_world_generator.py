@@ -45,9 +45,10 @@ def _payload() -> dict:
 
 
 def _mini_payload() -> dict:
-    payload = _payload()
-    payload["worlds"]["genes_per_world"] = 6
-    return payload
+    # Keep the authoritative contract G=44 untouched. Toy tests that need six genes
+    # pass genes=6 explicitly; mutating genes_per_world would incorrectly invoke the
+    # full frozen five-gene structural-support composition on the tiny fixture.
+    return _payload()
 
 
 def _truth_fixture(genes: int = 6, donors: int = 4) -> dict:
@@ -177,7 +178,6 @@ def test_full_G_structural_support_has_frozen_1_3_1_composition():
         elif sum(full_by_source) == 2 and sum(measured_by_source) == 2:
             one_absent += 1
         else:
-            # Frozen partial case is NPH52/source 1 only: exactly 3 of its 7 matrices unmeasured.
             partial += 1
             assert full_by_source[0] and full_by_source[2]
             assert int((~support[design["src"] == 1, g]).sum()) == 3
