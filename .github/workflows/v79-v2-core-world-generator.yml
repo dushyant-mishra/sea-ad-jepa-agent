@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'scripts/v79/generate_v79_v2_core_worlds.py'
+      - 'scripts/v79/v79_v2_core_planting.py'
       - 'tests/v79/test_v79_v2_core_world_generator.py'
       - 'tests/v79/test_v79_v2_core_baseline_planting.py'
       - '.github/workflows/v79-v2-core-world-generator.yml'
