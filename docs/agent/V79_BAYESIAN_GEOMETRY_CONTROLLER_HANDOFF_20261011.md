@@ -1,4 +1,4 @@
-# V79 Bayesian geometry controller handoff — model-development correction
+# V79 Bayesian geometry controller handoff — empirical model development + resource-safe S174 replay
 
 Date: 2026-10-11
 
@@ -6,81 +6,128 @@ This handoff controls only the synthetic/V79 Bayesian dataset-geometry lane. Tar
 
 ## Current ruling
 
-The previous plan to immediately complete Gaussian/log-normal/ZTNB S0-S5 confirmation under the old frozen model family is superseded by an empirical model-development hold.
+The old plan to immediately complete Gaussian/log-normal/ZTNB S0-S5 confirmation is superseded by the methodological hold.
 
-Bernoulli/detection V2 remains terminally `NOT_QUALIFIED` under its frozen confirmatory contract. That failure is preserved and is not being reinterpreted as a pass.
+- Bernoulli/detection V2 remains terminally `NOT_QUALIFIED` under its frozen confirmatory contract (S4 worst ESS 361.876 < 400; R-hat 1.00506; 0 final divergences).
+- This failure applies to that specific hierarchical Bernoulli parameterization. Empirical development subsequently showed that a separate detection process itself is useful.
+- Gaussian/log-normal/ZTNB under the old monolithic hierarchy remain `UNADJUDICATED__METHODOLOGICAL_HOLD`.
+- The old 18-fit campaign stays stopped.
+- No Bayesian posterior inference is currently authorized.
 
-Gaussian/log-normal/ZTNB under the old monolithic hierarchy are **UNADJUDICATED** rather than failed; their queued confirmatory campaign remains on hold.
+Macha source branch is still held at `b06bd819abd7da1be0426767c6909f4cdc7cc7bf`.
 
-## New empirical development evidence
+## Auxiliary empirical development result
 
-Controller-side development used the authenticated auxiliary 50K fit-population expression substrate, donor-balanced to 10,379 cells across 104 fit donors, 42 operators and 3 sources. Twenty identity-blind addresses span prevalence ~0.05-0.87. Three held-out-donor folds were used. Count replay from log1p10k + source_library reproduced the used normalized entries to max absolute error 8.88e-16.
+The authenticated auxiliary fit population supported a simpler two-part model:
 
-Canonical development records:
+Detection:
+`detected ~ Bernoulli(logit^-1(intercept + quadratic(log_library) + broad_class + source + operator + donor))`
+
+Positive magnitude development default:
+`log(count) | count>0 ~ Normal(intercept + quadratic(log_library) + broad_class + source + operator + donor, sigma)`
+
+Development principles:
+- broad class + source are retained;
+- operator-within-source is retained as a candidate measurement component;
+- donor-within-source is retained as a biological population component;
+- donor×class is **not** a default layer;
+- genes are fit modularly rather than through the previous monolithic cross-gene hyper-SD hierarchy;
+- across-gene geometry is estimated second-stage;
+- lognormal is the stable positive-count development default;
+- ZTNB is a challenger, not rejected.
+
+Canonical auxiliary records:
 - `docs/agent/V79_BAYESIAN_MODEL_DEVELOPMENT_V2_CANDIDATE_20261011.md`
 - `results/v79/development/V79_BAYESIAN_MODEL_DEVELOPMENT_V2_EVIDENCE_COMPACT.json`
 
-### Detection hierarchy
-Held-out-donor binary log loss:
-- depth linear 0.466368
-- depth quadratic 0.463706
-- + broad class 0.416760
-- + source 0.330816
-- + operator 0.322037
-- source×class + operator 0.322219
+### Important self-audit correction
 
-Broad class and source are essential; operator adds a smaller reproducible gain; source×class is not earned.
+The earlier auxiliary residual-support count for operator used a weaker source-stratified permutation and could still carry donor composition. It is therefore **provisional**.
 
-### Positive-magnitude hierarchy
-Count-scale lognormal held-out-donor LPD:
-- depth -2.233011
-- + class -2.187061
-- + source -2.080901
-- + operator -2.039129
+The exact S174 replay now tests operator beyond donor correctly: residuals are centered within donor and the null permutes within donor. This correction was frozen before viewing S174 results.
 
-Operator improves mean LPD by +0.041772 and wins 17/20 genes. Quadratic depth improves +0.005326 and wins 16/20 genes.
+Held-out-donor predictive gains for operator in the auxiliary tournament remain valid development evidence, but the random-effect support claim must be adjudicated by the corrected S174 replay.
 
-### Random-effect evidence
-After fixed depth/class/source/operator structure:
-- donor residual structure exceeds within-source permutation q95 in 12/12 detection genes and 10/12 positive genes;
-- operator residual structure exceeds q95 in 9/12 detection genes and 8/12 positive genes;
-- donor×class increment beyond donor main effect clears q95 in only 3/12 detection and 5/12 positive genes; mean detection excess is below null.
+## Resource audit and repair
 
-Therefore donor and operator remain; donor×class is removed from the default next candidate.
+The historical real-data path repeatedly rebuilt the full 4,726 × 41,238 CSR matrix even though each model used a small gene panel. PR #279 replaces that path for model development.
 
-### Positive family
-Lognormal is the development default because it is stable and predictive. ZTNB is not declared scientifically inferior: a direct truncated-NB stress test was numerically unstable and produced zero genes with 3/3 converged folds, while earlier bounded evidence showed near-tied positive-family predictive scores. ZTNB remains a challenger for exact S174 replay only if implemented stably.
+Implementation PR: **#279**, branch `fix/v79-streaming-analysis-cache-20261011`.
 
-## Candidate V2
+Code head independently tested: `2d5de281a171f0510d22a7408780fb069625ea02`.
 
-Per gene, modularly:
+Focused GitHub Actions:
+- run `38166126568`
+- job `114548954034`
+- **15 passed in 1.27 s**
 
-Detection:
-`detected ~ Bernoulli(logit^-1(intercept + quadratic(log_library) + broad_class + source + operator_re + donor_re))`
+The latest PR #279 head adds only execution documentation after that green code head.
 
-Positive magnitude:
-`log(count) | count>0 ~ Normal(intercept + quadratic(log_library) + broad_class + source + operator_re + donor_re, sigma)`
+The compact-cache builder now:
+1. authenticates one count + metadata shard pair at a time;
+2. derives metadata design from the exact authenticated bytes already in memory;
+3. pass 1 computes prevalence, cached library and detected-feature count;
+4. selects the frozen identity-blind gene panel;
+5. pass 2 reopens one count shard at a time and copies only selected columns;
+6. never globally `vstack`s the 41K matrix.
 
-Constraints:
-- broad class and source are fixed constrained contrasts;
-- operator random intercept is constrained within source;
-- donor random intercept is constrained within source;
-- no donor×class default layer;
-- no free matrix/dataset identity effect;
-- genes are fit modularly, not in the previous monolithic hyper-sd hierarchy;
-- across-gene geometry is estimated second-stage from the per-gene posterior summaries.
+Receipt invariants:
+- `streaming_passes=2`;
+- `max_count_shards_resident=1`;
+- `global_sparse_assembly=false`;
+- `metadata_from_authenticated_bytes=true`.
 
-A small development recovery probe on the actual donor/operator crossing recovered the main planted directions but showed leakage between unrestricted donor/operator dummies. Therefore the next Bayesian implementation must use the constrained source-nested random effects, not unrestricted fixed identities.
+The replay then consumes only that hash-bound compact cache. It uses NumPy/SciPy, not JAX/NUTS.
 
-## Exact S174 boundary
+The operator predictive proxy is reference-coded within source so source + operator is full rank. The support diagnostics use:
+- donor after full fixed structure;
+- operator beyond donor: donor-centered residuals, permutation within donor;
+- donor×class beyond donor: donor-centered residuals, permutation within donor.
 
-GitHub contains an authenticated custody receipt for the repaired corrected-TRAIN cache at `D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1`, with 42 count shards + 42 metadata shards and exact per-file SHA-256 identities. The raw shard bytes themselves are not mounted in this controller environment and are not committed to GitHub. Therefore exact 4,726-cell S174 model-development replay cannot honestly be executed here.
+## Why this matters for the laptop
 
-This is the only remaining model-development gate before a new confirmatory freeze. Replay the same nested comparisons on corrected S174 TRAIN counts (4,726 cells / 149 donors / 42 operators) without changing comparison metrics after viewing results.
+The authenticated S174 cache is only about 49 MB. The large expression matrix is not the real heavy-fit bottleneck.
 
-If exact S174 preserves these structural conclusions, freeze Candidate V2 and only then generate fresh untouched synthetic qualification worlds. Do not reuse the old confirmatory worlds as the sole confirmation set.
+A measured historical Gaussian recovery fit used:
+- peak RSS ~1.32 GB;
+- ~10.3 of 16 logical CPUs on average;
+- ~93% whole-machine CPU;
+- ~26 minutes wall time.
+
+Therefore:
+- streaming removes unnecessary disk/RAM churn;
+- the heavy Bayesian bottleneck is sampler CPU;
+- scheduler default is now one machine-wide heavy fit with a 120-second settle window;
+- future Bayesian qualification should use modular per-gene fits rather than monolithic cross-gene NUTS where scientifically possible;
+- GPU is not assumed better for NUTS without a fresh benchmark.
+
+## Sole next gate: physical exact-S174 structure replay
+
+Do **not** reconstruct S174 from the larger 50K archive. The S174 repair deliberately preserves exactly the historical 4,726 cell IDs in their historical order and replaces only their expression values from corrected physical sources.
+
+Physical input on the local machine:
+- cache root: `D:\Jepa project\data\cache\s174_rebuilt_real_train_v1`
+- bridge: `results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json`
+- authority: `results/v79/V79_S174_SHARD_AUTHORITY_V1.json`
+
+Using PR #279 code, build one 500-gene compact cache, then run:
+- 200 identity-blind prevalence-balanced replay genes;
+- 3 held-out-donor folds;
+- 50 identity-blind support genes;
+- 99 frozen permutations.
+
+Full command contract is on PR #279 at:
+`docs/agent/V79_S174_STREAMING_STRUCTURE_REPLAY_EXECUTION_20261011.md`.
+
+This is **development-only** evidence. No posterior parameter export is allowed.
+
+## Post-replay decision
+
+If exact S174 preserves the structural conclusions—two-part observation model; broad class/source; operator and donor supported; donor×class not broadly earned—then freeze Candidate V2 and generate **new untouched synthetic qualification worlds**.
+
+If exact S174 contradicts the auxiliary development result, return to model development. Do not force the candidate through and do not reuse the old synthetic campaign as confirmatory authority.
 
 Current terminal:
-`DEVELOPMENT_CANDIDATE_V2__TWO_PART_MODEL__CLASS_SOURCE_OPERATOR_DONOR_DEPTH_EARNED__DONOR_CLASS_NOT_EARNED__MODULAR_GENE_FITS_REQUIRED__EXACT_S174_REPLAY_PENDING__OLD_CONFIRMATORY_CAMPAIGN_ON_HOLD__TRAINING_OFF`
+`DEVELOPMENT_CANDIDATE_V2__RESOURCE_SAFE_EXACT_S174_STRUCTURE_REPLAY_READY__PHYSICAL_S174_REPLAY_PENDING__OLD_CONFIRMATORY_CAMPAIGN_ON_HOLD__TRAINING_OFF`
 
-Hard firewalls remain: no corrected-TRAIN posterior authority, no H0-H3 factorial execution, no TEST/Morabito/pathology, no target-discovery work in this lane, no V78 outcome-driven retuning, no Stage4 and no JEPA training.
+Hard firewalls remain: no H0-H3 factorial outcomes, no TEST/Morabito/pathology, no target-discovery work in this lane, no V78 outcome-driven retuning, no Stage4 and no JEPA training.
