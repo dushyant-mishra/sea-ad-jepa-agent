@@ -1,0 +1,91 @@
+{
+  "schema": "TD_REGULAR_PROGRAM_MULTIMODAL_RECONCILIATION_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_REGULAR_BIOLOGY_RECONCILIATION__NO_RESULT_OPENED__NO_TARGET_AUTHORITY",
+  "purpose": "Apply the same downstream multimodal reconciliation discipline used for rare biology to the ordinary/continuous target-discovery biology represented by C1/C2/C3/C6/C4, without allowing ATAC, SCENIC+, Morabito, spatial or perturbation evidence to retrospectively redefine the frozen RNA target.",
+  "scope": {
+    "regular_biology_definition": "Common, continuous, intermediate-frequency or broadly recurrent biological state/program/geometry encoded by a frozen foundation candidate; not restricted to rare tails or discrete rare neighborhoods.",
+    "candidates": ["C1_SHARED_EMERGENT", "C2_RELATIONAL_SHARED_IF_ACTIVE", "C3_QUERY_MEASURED", "C6_SHARED_QUERY_COMPOSITE", "C4_STRUCTURED_COMPOSITE_IF_ACTIVE"],
+    "C5": "Regulatory specialist only; cannot rescue failed foundation biology."
+  },
+  "freeze_before_multimodal_rule": {
+    "required": true,
+    "freeze_objects": ["foundation candidate identity", "RNA target geometry", "program/state coordinates or contrasts", "query definition and q-safety for C3/C6/C4", "relational definition for C2/C4 if active", "state/contrast scoring rule", "donor-primary evaluation rule"],
+    "prohibition": "No ATAC/SCENIC+/Morabito/spatial/perturbation outcome may be used to alter the frozen RNA direction, state boundary, queried feature set, or target winner retrospectively."
+  },
+  "gse214979_same_nucleus": {
+    "role": "Primary same-physical-nucleus RNA+ATAC assay for ordinary TD biology after target freeze.",
+    "unit": "nucleus nested within donor; donor is biological replication unit",
+    "primary_questions": [
+      "Does the frozen RNA state/program/geometry correspond to reproducible chromatin/regulatory variation in the exact same nuclei?",
+      "Does ATAC sharpen, split or falsify the frozen RNA state without redefining it?",
+      "What privileged RNA+ATAC increment exists beyond RNA-only teacher state?",
+      "Which privileged increment is donor-held-out recoverable from full/partial RNA and which remains teacher-private?",
+      "Are observed increments robust to depth, detection, library/operator, feature support and matched/random regulatory controls?"
+    ],
+    "regular_state_views": ["continuous score gradients", "state contrasts/quartiles", "local neighborhoods", "query-conditioned contrasts", "relational-neighborhood contrasts if C2/C4 active"],
+    "identity_rule": "Primary deciding analysis excludes HCT17HEX/HCTZZT unless an independently authenticated correction predates outcome opening; sensitivity cannot rescue primary failure.",
+    "decision_classes": ["MULTIMODAL_SHARED_AND_RNA_RECOVERABLE", "MULTIMODAL_SHARED_PREDICTABLE_BUT_STOCHASTIC", "MULTIMODAL_SHARED_TEACHER_PRIVATE", "RNA_BIOLOGY_WITHOUT_DETECTABLE_ATAC_INCREMENT", "REGULATORY_INTERPRETATION_FALSIFIED", "NOT_ESTIMABLE"]
+  },
+  "morabito_gse174367": {
+    "role": "Donor-level separate-nucleus recurrence/transport test after the same-nucleus assay.",
+    "pairing": "RNA and ATAC are different nuclei; never create same-cell pairs.",
+    "primary_questions": [
+      "Across shared donors, does the frozen RNA program/state vary in the same direction as donor-level ATAC/regulatory support?",
+      "Does the frozen biology transport across a distinct acquisition/sample structure without requiring cell-level pairing?",
+      "Are donor-level associations robust to cell-composition, depth/support and source/operator descriptors?"
+    ],
+    "unit": "donor or prospectively defined donor×broad-cell-family summary",
+    "non_independence": "Development-exposed supporting asset; not pristine target-selection benchmark."
+  },
+  "scenic_stage75_regulatory": {
+    "role": "Mechanistic/regulatory interpretation layer for frozen regular biology, never an answer key.",
+    "allowed": ["motif/enhancer/regulon enrichment against frozen RNA states", "TF-program coherence", "candidate regulator prioritization", "teacher privileged features", "C5 specialist construction after qualification"],
+    "forbidden": ["retrospective target redefinition", "validated GRN claim", "causal claim from regulatory association", "mandatory graph topology without new topology-specific qualification"],
+    "historical_negative_prior": "Stage73R context graph did not beat target-shuffled or STRING controls; topology-specific superiority is not established."
+  },
+  "seaad_multiome": {
+    "role": "Internal same-nucleus corroboration after the primary GSE214979 analysis.",
+    "boundary": "SEA-AD contributed to the broader development ecosystem and is not pristine independent validation."
+  },
+  "spatial": {
+    "role": "Localize frozen regular programs/states where panel coverage is sufficient.",
+    "rule": "Missing program genes/features are missing evidence, not negative biology; spatial data cannot redefine the program."
+  },
+  "perturbation": {
+    "role": "Late R3 directional/causal-support layer for frozen programs and regulators after target and regulatory interpretation are fixed.",
+    "rule": "In-silico perturbation or exposed perturbation assets cannot by themselves establish causality or select the foundation target."
+  },
+  "recoverability_decomposition": {
+    "RNA_RECOVERABLE": "Privileged multimodal increment reproducibly predictable under donor holdout; eligible for shared teacher/student target block.",
+    "PREDICTABLE_BUT_STOCHASTIC": "Information is partially recoverable; use distributional/uncertainty target rather than deterministic point matching.",
+    "TEACHER_PRIVATE": "Biologically coherent privileged information is not reproducibly RNA-identifiable; retain in teacher/private interpretation and uncertainty, not student point loss.",
+    "NO_PRIVILEGED_INCREMENT": "Frozen RNA biology stands as RNA biology; absence of ATAC increment does not retrospectively invalidate an already-qualified RNA target unless a prospectively defined falsification condition is met.",
+    "NOT_ESTIMABLE": "Support/donor/identity geometry cannot decide."
+  },
+  "candidate_specific_questions": {
+    "C1_SHARED_EMERGENT": "Does the shared RNA state correspond to donor-recurrent same-nucleus chromatin/regulatory structure and transport across donors/sources?",
+    "C2_RELATIONAL_SHARED": "If replay keeps C2 active, do frozen relational neighborhoods/geometry have same-nucleus regulatory coherence beyond ordinary state similarity and operator effects?",
+    "C3_QUERY_MEASURED": "Does query-conditioned RNA state carry regulatory/chromatin information beyond shared state, query abundance, depth/detection and feature-support controls?",
+    "C6_SHARED_QUERY_COMPOSITE": "Does shared+query biology show multimodal increment beyond the stronger constituent C1 or C3 without adding shortcut/operator dependence?",
+    "C4_STRUCTURED_COMPOSITE": "If C2 is active, does adding relational structure to C6 yield a real multimodal biological increment beyond C6 rather than redundant/technical geometry?"
+  },
+  "evidence_ladder": [
+    "1_FREEZE_QUALIFIED_RNA_TARGET_AND_REGULAR_PROGRAMS",
+    "2_GSE214979_SAME_NUCLEUS_REGULATORY_COHERENCE_AND_RECOVERABILITY",
+    "3_MORABITO_DONOR_LEVEL_RNA_ATAC_RECURRENCE",
+    "4_SCENIC_STAGE75_REGULATORY_INTERPRETATION",
+    "5_INTERNAL_SEAAD_MULTIOME_CORROBORATION",
+    "6_SPATIAL_LOCALIZATION_WHERE_MEASURABLE",
+    "7_PERTURBATIONAL_DIRECTION_SUPPORT",
+    "8_RNA_RECOVERABLE_VS_TEACHER_PRIVATE_DECOMPOSITION_FOR_TEACHER_STUDENT_ARCHITECTURE"
+  ],
+  "nonrescue": [
+    "Multimodal PASS cannot select or rescue a foundation candidate that failed its mandatory RNA/relational/rare-program gates.",
+    "Multimodal FAIL cannot be used to retrospectively redefine the target to fit the modality.",
+    "C2/C4 cannot be rescued if corrected replay eliminates the relational component.",
+    "No pathology/clinical label may guide this reconciliation before target/representation freeze.",
+    "No single weighted cross-modality score is authorized."
+  ],
+  "non_authority_statement": "Design-only. No multimodal analysis, target selection, representation selection, TD60, Stage4 or real training authority is created."
+}
