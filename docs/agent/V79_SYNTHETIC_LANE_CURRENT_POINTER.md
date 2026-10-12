@@ -1,51 +1,81 @@
 # V79 synthetic lane — current takeover pointer
 
-Updated: 2026-10-12 17:08 UTC
+Updated: 2026-10-12 17:20 UTC
 
-Read first:
+## Read these first, in this order
 
-1. `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md`
+1. `results/v79/synthetic_lane_audit/deltas/20261012T1720Z_ARCHIVAL_CONSOLIDATION_AND_TAKEOVER_V1.md`
 2. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
-3. newest file under `results/v79/synthetic_lane_audit/deltas/`
+3. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
 4. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
+5. `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md` only if deeper historical context is needed.
+
+Do not repeat historical audits before the exact heads recorded below. Audit only newer deltas or concrete contradictions.
 
 ## Execution state first
 
-The original PR #299 one-shot engineering benchmark authority was consumed and failed closed after about 3 seconds, before any model fit, because the Windows resource monitor passed an incorrectly typed process handle into `GetProcessMemoryInfo`. Frozen failure evidence remains immutable on branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`, commit `b94367c6`.
+### Realization
 
-That bug is repaired and independently qualified on PR #308:
-- repair head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`;
-- RED run `38280964089`: real Windows monitor tests reproduced the failure (`2 failed / 117 passed`);
-- GREEN run `38281216579`: Windows PASS including real `_rss_bytes()` / `ResourceMonitor`; Linux PASS; static fit-side firewall PASS.
+Q00-Q11 were realized exactly once and byte-audited. Regeneration is forbidden.
 
-Fresh controller ruling on PR #308 comment `6128881654` authorizes **exactly one fresh engineering benchmark rerun** from clean exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`, using fresh package/custody/result directories only. Old failed outputs must never be overwritten or reused. If the fresh attempt fails closed, there is no automatic second retry.
+Frozen package authorities:
+- root manifest `84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de`
+- directory digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
+- blinded index `8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40`
+- complete 498-file ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
+- audit receipt `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
 
-Q00-Q11 qualification fits and scoring remain OFF.
+### Benchmark
 
-## Preferred live engineering topology
+The original PR #299 one-shot benchmark authority was consumed and **failed closed before fit 1** because of the Windows resource monitor ABI bug.
 
-- PR #300 historical campaign runner: `7172b201b13c61634b84b85254bf4406959b2b57`.
-- PR #305 reconciled scorer/executor integration base: `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`.
-- PR #306 active scorer-orchestrator engineering branch:
-  - current head: `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`;
-  - executor CI `38282050314`: Windows PASS, Linux PASS, static fit-side firewall PASS;
-  - scorer CI `38282050318`: Windows PASS, Linux PASS, static scorer firewall PASS;
-  - monitor repair + real Windows regression test are carried forward;
-  - first controller scoring-runner primitives are now GREEN: exact fit-ledger hash verification, canonical scoring-authorization validation, write-once JSON custody, frozen Q10/Q11 held-out model-metric convention, and downstream-off scoring-run receipt bindings.
-  - there is still **no enabled physical scoring CLI**; qualification scoring remains OFF.
-- PR #308 is the narrow benchmark-path repair and the only head currently authorized for the fresh benchmark rerun.
+Immutable evidence:
+- branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`
+- commit `b94367c6`
+- path `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`
 
-## Immediate actions
+This is infrastructure failure evidence only; no model fit, diagnostics or 72-hour projection were produced.
 
-1. External/local Windows agent: execute the single fresh engineering benchmark rerun only from exact PR #308 head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`, locked Windows environment, fresh directories, engineering seed root `31999999`, 2 genes x 2 parts, never scored.
-2. Preserve/report exact benchmark receipts/hashes. If projected qualification runtime exceeds 72 h, STOP with no setting changes. On any fail-closed error, preserve evidence and STOP; no automatic retry.
-3. Controller engineering may continue #306 from `d4e10c82…` toward full composition of existing scorer modules, but must not enable physical scoring without a post-campaign scoring authorization.
-4. Update #302/#303 after the benchmark outcome or the next material #306 milestone.
+PR #308 repairs that bug and is qualified:
+- exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
+- exactly 3 changed files
+- RED `38280964089`: real Windows failure reproduced
+- GREEN `38281216579`: Windows/Ubuntu PASS; fit-side firewall PASS
+- repair PASS `6128864889`
+- exactly one fresh rerun authority `6128881654`
+- canonical Macha instructions `6129078915`
+
+**One fresh engineering benchmark rerun is authorized only at exact #308 head `559a1c10...`; it has not yet been reported.** No automatic second retry exists.
+
+## Engineering topology
+
+Historical source lineages:
+- #300 campaign runner `7172b201b13c61634b84b85254bf4406959b2b57`
+- #301 historical scorer `7fe0204b2661f0d1492115c973a4da7a4a1646b6`
+
+Do not redo their old reconciliation.
+
+Preferred integration base:
+- #305 `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
+
+Active controller-scoring engineering:
+- #306 `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`
+- executor CI `38282050314`: Windows PASS, Ubuntu PASS, fit firewall PASS
+- scorer CI `38282050318`: Windows PASS, Ubuntu PASS, scorer firewall PASS
+- completed: planted held-out oracle, all five non-gating descriptive families, calibration/prevalence aggregation, initial scoring-runner custody/authorization/write-once primitives
+- no physical scoring authority
+
+## Immediate next actions
+
+1. **External/local Windows execution:** run the single authorized repaired engineering benchmark exactly once from #308 head `559a1c10...`, fresh package/custody/result directories, engineering seed root `31999999`, 2 genes x 2 parts, never scored. Report and STOP.
+2. **Controller after benchmark report:** audit only the new benchmark evidence. Do not authorize qualification fitting unless checkout/hash/environment/fit diagnostics/resource projection all satisfy the frozen gate.
+3. **Engineering in parallel:** if continuing #306, start from exact `d4e10c82...` and inspect only later commits. Physical scoring remains OFF until a complete 1,056-fit campaign exists and receives a separate post-campaign scoring authorization.
+4. Update #302/#303 after the benchmark outcome or any later material #306 milestone.
 
 ## Authority boundary
 
 - regenerate Q00-Q11: **FORBIDDEN**
-- fresh engineering benchmark rerun: **AUTHORIZED ONCE ONLY at PR #308 head `559a1c10…`**
+- fresh engineering benchmark: **ONE ATTEMPT AUTHORIZED at #308 `559a1c10...`; not yet reported**
 - Q00-Q11 qualification fits: **OFF**
 - qualification scoring: **OFF**
 - real TRAIN posterior: **OFF**
