@@ -4,8 +4,10 @@ on:
   pull_request:
     paths:
       - 'scripts/v79/v79_v2_core_fit_*.py'
+      - 'scripts/v79/v79_v2_core_runtime*.py'
       - 'scripts/v79/v79_v2_core_resource_monitor.py'
       - 'scripts/v79/run_v79_v2_core_benchmark.py'
+      - 'scripts/v79/prepare_v79_v2_core_engineering_benchmark.py'
       - 'scripts/v79/v79_v2_core_qualification_plan.py'
       - 'scripts/v79/v79_v2_core_seed_ledger.py'
       - 'scripts/v79/v79_v2_core_score.py'
@@ -42,6 +44,8 @@ jobs:
           tests/v79/test_v79_v2_core_fit_surface.py
           tests/v79/test_v79_v2_core_fit_model.py
           tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_fit_custody.py
+          tests/v79/test_v79_v2_core_runtime.py
           tests/v79/test_v79_v2_core_benchmark.py
           tests/v79/test_v79_v2_core_qualification_plan.py
           tests/v79/test_v79_v2_core_seed_ledger.py
@@ -56,6 +60,8 @@ jobs:
           tests/v79/test_v79_v2_core_fit_surface.py
           tests/v79/test_v79_v2_core_fit_model.py
           tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_fit_custody.py
+          tests/v79/test_v79_v2_core_runtime.py
           tests/v79/test_v79_v2_core_benchmark.py
           tests/v79/test_v79_v2_core_qualification_plan.py
           tests/v79/test_v79_v2_core_seed_ledger.py
@@ -69,8 +75,12 @@ jobs:
           from pathlib import Path
           fit_side = [
               Path('scripts/v79/v79_v2_core_fit_surface.py'),
+              Path('scripts/v79/v79_v2_core_fit_contract.py'),
+              Path('scripts/v79/v79_v2_core_fit_custody.py'),
               Path('scripts/v79/v79_v2_core_fit_model.py'),
               Path('scripts/v79/v79_v2_core_fit_runner.py'),
+              Path('scripts/v79/v79_v2_core_runtime.py'),
+              Path('scripts/v79/v79_v2_core_runtime_lock.py'),
               Path('scripts/v79/v79_v2_core_resource_monitor.py'),
               Path('scripts/v79/run_v79_v2_core_benchmark.py'),
               Path('scripts/v79/v79_v2_core_qualification_plan.py'),
@@ -79,11 +89,13 @@ jobs:
               text = p.read_text(encoding='utf-8')
               assert 'import v79_v2_core_score' not in text
               assert 'from v79_v2_core_score' not in text
-          bench_path = Path('scripts/v79/run_v79_v2_core_benchmark.py')
-          bench = bench_path.read_text(encoding='utf-8')
-          assert 'ENGINEERING_TEST_ONLY' in bench
-          assert 'QUALIFICATION_TRUTH_FREEZE' not in bench
+          bench = Path('scripts/v79/run_v79_v2_core_benchmark.py').read_text(encoding='utf-8')
+          for forbidden in ('generate_v79_v2_core_worlds', 'v79_v2_core_world_writer',
+                            'v79_v2_core_score', 'controller_truth', 'world_name', 'world_index'):
+              assert forbidden not in bench
+          assert 'v79_v2_core_fit_custody' in bench
+          assert 'expected_prep_receipt_sha256' in bench
           tree = ast.parse(bench)
           numeric_constants = [n.value for n in ast.walk(tree) if isinstance(n, ast.Constant) and isinstance(n.value, (int, float))]
-          assert 31999999 not in numeric_constants  # executable benchmark seed must come from Contract V2
+          assert 31999999 not in numeric_constants
           print('FIT_SIDE_TRUST_DOMAIN_AUDIT=PASS')
