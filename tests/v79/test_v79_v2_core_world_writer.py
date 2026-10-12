@@ -1,4 +1,4 @@
-"""RED/GREEN tests for deterministic physical world-package writing.
+"""RED/GREEN tests for deterministic, blinded physical world-package writing.
 
 All successful write tests use engineering seed 4242 only. The frozen
 qualification seed (31000000) is exercised only through fail-closed paths.
@@ -84,67 +84,100 @@ def _base_auth(w):
 
 def test_generator_bundle_hash_is_explicit_and_stable():
     w = _writer()
-    a = w.generator_bundle_sha256(ROOT)
-    b = w.generator_bundle_sha256(ROOT)
-    assert a == b
-    assert isinstance(a, str) and len(a) == 64
+    a = w.generator_bundle_sha256(ROOT); b = w.generator_bundle_sha256(ROOT)
+    assert a == b and isinstance(a, str) and len(a) == 64
     print(f"GENERATOR_BUNDLE_SHA256={a}")
 
 
+def _write_eng(w, tmp_path, payload, designs, amendment, name="set"):
+    return w.write_engineering_world_set(root=ROOT, payload=payload, cal=CAL,
+        designs=designs, amendment=amendment, out_dir=tmp_path / name)
+
+
 def test_engineering_world_set_roundtrip_is_byte_deterministic(tmp_path, engineering_payload, engineering_designs, amendment):
-    w = _writer(); a = tmp_path / "a"; b = tmp_path / "b"
-    ma = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
-        designs=engineering_designs, amendment=amendment, out_dir=a)
-    mb = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
-        designs=engineering_designs, amendment=amendment, out_dir=b)
+    w = _writer()
+    ma = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment, "a")
+    mb = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment, "b")
     assert ma["schema"] == "V79_V2_CORE_WORLD_SET_MANIFEST_V1"
-    assert ma["mode"] == "ENGINEERING_TEST_ONLY"
-    assert ma["seed_root"] == TEST_ROOT
-    assert ma["world_count"] == 12
-    assert ma["qualification_fits_run"] == 0
-    assert ma["benchmark_run"] is False
-    assert ma["training_authorized"] is False
+    assert ma["mode"] == "ENGINEERING_TEST_ONLY" and ma["seed_root"] == TEST_ROOT
+    assert ma["world_count"] == 12 and ma["qualification_fits_run"] == 0
+    assert ma["benchmark_run"] is False and ma["training_authorized"] is False
     assert ma["final_contract_sha256"] == G.FINAL_CONTRACT_SHA256
     assert ma["pairing_amendment_sha256"] == G.PAIRING_AMENDMENT_SHA256
-    assert len(ma["worlds"]) == 12
-    assert ma == mb
-    digest_a = w.directory_digest(a); digest_b = w.directory_digest(b)
-    assert digest_a == digest_b
-    print(f"ENGINEERING_WORLD_SET_DIGEST={digest_a}")
-    assert w.verify_world_set(a) == ma
-    assert w.verify_world_set(b) == mb
+    assert len(ma["worlds"]) == 12 and ma == mb
+    da = w.directory_digest(tmp_path / "a"); db = w.directory_digest(tmp_path / "b")
+    assert da == db
+    print(f"ENGINEERING_WORLD_SET_DIGEST={da}")
+    assert w.verify_world_set(tmp_path / "a") == ma
+    assert w.verify_world_set(tmp_path / "b") == mb
 
 
-def test_world_manifests_bind_data_support_truth_and_three_replicates(tmp_path, engineering_payload, engineering_designs, amendment):
+def test_blinded_fit_package_has_no_truth_world_names_operator_or_seed(tmp_path, engineering_payload, engineering_designs, amendment):
     w = _writer(); out = tmp_path / "set"
-    root_manifest = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
-        designs=engineering_designs, amendment=amendment, out_dir=out)
+    root_manifest = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment)
+    fit_index_path = out / root_manifest["blinded_fit_index_path"]
+    fit_index_raw = fit_index_path.read_text(encoding="utf-8")
+    fit_index = json.loads(fit_index_raw)
+    assert fit_index["schema"] == "V79_V2_CORE_BLINDED_FIT_INDEX_V1"
+    assert len(fit_index["worlds"]) == 12
+    for q in [f"Q{i:02d}" for i in range(12)]:
+        assert q not in fit_index_raw
+
     for rec in root_manifest["worlds"]:
-        wm = json.loads((out / rec["manifest_path"]).read_text(encoding="utf-8"))
-        assert wm["qualification_fits_run"] == 0
-        assert wm["benchmark_run"] is False
-        assert wm["training_authorized"] is False
-        names = set(wm["generated_outputs"])
-        assert "support.npy" in names
-        assert "observations/train/observed.npy" in names
-        assert "observations/same_donor/observed.npy" in names
-        assert "observations/new_donor/observed.npy" in names
-        assert "truth/detection/intercept.npy" in names
-        assert "truth/positive/donor_effects.npy" in names
-        assert "truth/new_donor/detection/donor_effects.npy" in names
+        opaque = rec["opaque_world_id"]
+        assert rec["world_name"].startswith("Q")
+        assert opaque in rec["fit_manifest_path"]
+        assert rec["world_name"] not in rec["fit_manifest_path"]
+        fm_path = out / rec["fit_manifest_path"]
+        fm_raw = fm_path.read_text(encoding="utf-8")
+        fm = json.loads(fm_raw)
+        assert fm["opaque_world_id"] == opaque
+        for forbidden in ("world_name", "world_index", "seed_root", "truth", "operator", "op.npy"):
+            assert forbidden not in fm_raw
+        names = set(fm["generated_outputs"])
+        assert names >= {
+            "design/src.npy", "design/donor.npy", "design/cls.npy", "design/log_lib.npy",
+            "support.npy", "observations/train/observed.npy",
+            "observations/same_donor/observed.npy", "observations/new_donor/observed.npy"
+        }
+        assert "design/op.npy" not in names
+        assert not any(x.startswith("truth/") for x in names)
+
+        tm = json.loads((out / rec["truth_manifest_path"]).read_text(encoding="utf-8"))
+        assert tm["world_name"] == rec["world_name"]
+        assert tm["world_index"] == rec["world_index"]
+        assert tm["opaque_world_id"] == opaque
+        truth_names = set(tm["generated_outputs"])
+        assert "design/op.npy" in truth_names
+        assert "truth/detection/intercept.npy" in truth_names
+        assert "truth/positive/donor_effects.npy" in truth_names
+        assert "truth/new_donor/detection/donor_effects.npy" in truth_names
+
+    # The entire blinded root must have opaque directory names and no controller truth files.
+    fit_root = out / root_manifest["blinded_fit_root"]
+    opaque_ids = {r["opaque_world_id"] for r in root_manifest["worlds"]}
+    assert {p.name for p in fit_root.iterdir() if p.is_dir()} == opaque_ids
+    assert not any("truth" in str(p.relative_to(fit_root)).lower() for p in fit_root.rglob("*"))
 
 
-def test_tamper_in_bound_world_file_fails_closed(tmp_path, engineering_payload, engineering_designs, amendment):
+def test_tamper_in_bound_fit_or_truth_file_fails_closed(tmp_path, engineering_payload, engineering_designs, amendment):
     w = _writer(); out = tmp_path / "set"
-    root_manifest = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
-        designs=engineering_designs, amendment=amendment, out_dir=out)
+    root_manifest = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment)
     rec = root_manifest["worlds"][0]
-    wm_path = out / rec["manifest_path"]
-    wm = json.loads(wm_path.read_text(encoding="utf-8"))
-    target = wm_path.parent / sorted(wm["generated_outputs"])[0]
-    target.write_bytes(target.read_bytes() + b"tamper")
+    fm = json.loads((out / rec["fit_manifest_path"]).read_text(encoding="utf-8"))
+    fit_target = (out / rec["fit_manifest_path"]).parent / sorted(fm["generated_outputs"])[0]
+    fit_target.write_bytes(fit_target.read_bytes() + b"tamper")
     with pytest.raises(SystemExit):
         w.verify_world_set(out)
+
+    out2 = tmp_path / "set2"
+    root_manifest = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment, "set2")
+    rec = root_manifest["worlds"][0]
+    tm = json.loads((out2 / rec["truth_manifest_path"]).read_text(encoding="utf-8"))
+    truth_target = (out2 / rec["truth_manifest_path"]).parent / sorted(tm["generated_outputs"])[0]
+    truth_target.write_bytes(truth_target.read_bytes() + b"tamper")
+    with pytest.raises(SystemExit):
+        w.verify_world_set(out2)
 
 
 def test_engineering_writer_refuses_frozen_qualification_seed(tmp_path, qualification_payload, amendment):
@@ -157,15 +190,12 @@ def test_engineering_writer_refuses_frozen_qualification_seed(tmp_path, qualific
 def test_qualification_loader_owns_all_frozen_scientific_inputs(qualification_payload, amendment):
     w = _writer()
     contract, payload, cal, designs, loaded_amendment = w.load_frozen_qualification_inputs(ROOT)
-    assert payload == qualification_payload
-    assert int(payload["seeds"]["root"]) == QUAL_ROOT
+    assert payload == qualification_payload and int(payload["seeds"]["root"]) == QUAL_ROOT
     assert loaded_amendment == amendment
     assert set(designs) == {x["name"] for x in payload["worlds"]["world_list"]}
-    assert hashlib.sha256(CAL_PATH.read_bytes()).hexdigest() == CAL_SHA
-    assert cal == CAL
+    assert hashlib.sha256(CAL_PATH.read_bytes()).hexdigest() == CAL_SHA and cal == CAL
     assert contract["inputs"]["planting_calibration_masked"]["sha256"] == CAL_SHA
-    params = set(inspect.signature(w.realize_qualification_worlds).parameters)
-    assert params == {"root", "out_dir", "authorization"}
+    assert set(inspect.signature(w.realize_qualification_worlds).parameters) == {"root", "out_dir", "authorization"}
 
 
 def test_qualification_authorization_binds_windows_environment_lock():
