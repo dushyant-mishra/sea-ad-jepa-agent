@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - science/td-target-tournament-scaffold-20261011
+      - science/td-real-target-tournament-executor-20261012
   workflow_dispatch:
 
 permissions:
@@ -81,6 +82,7 @@ jobs:
             tests/v5/test_td_corrected_replay_adapter_contract_v1.py \
             tests/v5/test_td_v79_c6_synthetic_extension_v1.py \
             tests/v5/test_td_target_convergence_v1.py \
+            tests/v5/test_td_real_tournament_contract_v1.py \
             | tee qualification/pytest.txt
       - name: Confirm tracked worktree unchanged
         run: |
