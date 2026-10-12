@@ -42,17 +42,17 @@ def test_single_survivor_requires_protected_confirmation():
 
 
 def test_multiple_survivors_require_complete_h2h_and_can_yield_unique_finalist():
-    s = statuses(C1_SHARED_EMERGENT="ELIGIBLE", C6_SHARED_QUERY_COMPOSITE="ELIGIBLE")
-    out = C.converge(s, comparisons=[pair("C1_SHARED_EMERGENT", "C6_SHARED_QUERY_COMPOSITE")])
+    s = statuses(C1_SHARED_EMERGENT="ELIGIBLE", C2_RELATIONAL_SHARED="ELIGIBLE")
+    out = C.converge(s, comparisons=[pair("C1_SHARED_EMERGENT", "C2_RELATIONAL_SHARED")])
     # all NONINFERIOR => strict component-subset simplicity chooses C1
     assert out["finalist"] == "C1_SHARED_EMERGENT"
     assert out["terminal"] == "PROTECTED_CONFIRMATION_REQUIRED__NO_TARGET_AUTHORITY"
 
 
 def test_multiple_incomparable_stays_multiple():
-    s = statuses(C2_RELATIONAL_SHARED="ELIGIBLE", C6_SHARED_QUERY_COMPOSITE="ELIGIBLE")
+    s = statuses(C1_SHARED_EMERGENT="ELIGIBLE", C3_QUERY_MEASURED="ELIGIBLE")
     out = C.converge(s, comparisons=[pair(
-        "C2_RELATIONAL_SHARED", "C6_SHARED_QUERY_COMPOSITE",
+        "C1_SHARED_EMERGENT", "C3_QUERY_MEASURED",
         BIOLOGICAL_INFORMATION="BETTER", DONOR_TRANSFER="WORSE",
     )])
     assert out["finalist"] is None
@@ -60,7 +60,7 @@ def test_multiple_incomparable_stays_multiple():
 
 
 def test_missing_h2h_is_unresolved_not_arbitrary_winner():
-    s = statuses(C1_SHARED_EMERGENT="ELIGIBLE", C3_QUERY_MEASURED="ELIGIBLE", C6_SHARED_QUERY_COMPOSITE="ELIGIBLE")
+    s = statuses(C1_SHARED_EMERGENT="ELIGIBLE", C2_RELATIONAL_SHARED="ELIGIBLE", C3_QUERY_MEASURED="ELIGIBLE")
     out = C.converge(s, comparisons=[pair("C1_SHARED_EMERGENT", "C3_QUERY_MEASURED")])
     assert out["finalist"] is None
     assert out["terminal"] == "HEAD_TO_HEAD_UNRESOLVED__NO_TARGET_AUTHORITY"
