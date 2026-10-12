@@ -30,7 +30,10 @@ def _seed_map(q): return {x["fit_id"]:SEED for x in q}
 
 
 def _qs(labels):
-    n=len(labels); return {"labels":list(labels),"mean":[0.0]*n,"sd":[1.0]*n,"q05":[-1.0]*n,"q50":[0.0]*n,"q95":[1.0]*n}
+    n=len(labels)
+    return {"labels":list(labels),"mean":[0.0]*n,"sd":[1.0]*n,
+            "q005":[-2.5]*n,"q025":[-2.0]*n,"q05":[-1.0]*n,"q50":[0.0]*n,
+            "q95":[1.0]*n,"q975":[2.0]*n,"q995":[2.5]*n}
 
 
 def _receipt(item):
@@ -97,6 +100,12 @@ def test_checkpoint_refuses_wrong_code_or_seed(tmp_path):
 
 def test_checkpoint_refuses_missing_gate_ready_output(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r.pop("scoring_summary")
+    _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
+
+
+def test_checkpoint_refuses_missing_95_or_99_interval(tmp_path):
+    q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r["scoring_summary"]["quantities"]["intercept"].pop("q995")
     _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
     with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
 
