@@ -22,6 +22,22 @@ Before a candidate target can use rare biology as positive qualification evidenc
 
 Possible outcomes include universal biology, biology with source-shifted prevalence, source-specific biology, observation-limited biology, operator artifact, or NOT_ESTIMABLE.
 
+## Bayesian reuse
+
+The failed 2026-10-09 Bayesian TD spike is **not revived**. Its key failure was conceptual as well as computational: a positive latent stage mean could appear when only one source carried the signal or when source signs conflicted. That pooled mean is not source-general recurrence.
+
+What is retained is the useful method discipline:
+
+- donor/source dependency ledger;
+- no pseudo-replication from repeated panels/splits/halves/cells;
+- duplicate-identity rejection before fitting;
+- explicit shared-substrate dependencies;
+- prospective synthetic calibration before real fitting;
+- adversarial null, one-source-only, sign-flip, duplicate and shared-positive scenarios;
+- prior sensitivity and new-source predictive reporting.
+
+A new prospective rare-program Bayesian design is frozen in `results/target_discovery/TD_BAYESIAN_RARE_PROGRAM_REASSESSMENT_PREFREEZE_V1.json`. Its primary object is source-specific donor recurrence, not a pooled source mean. A shared-program claim requires satisfactory donor recurrence in every required estimable source plus cross-source direction agreement. Source-shifted prevalence, source-specific biology, observation-limited biology and operator artifact are separate outcomes. No real Bayesian fit is authorized yet.
+
 ## Existing ETL reused
 
 No new acquisition is implied. The active ledger binds existing authenticated surfaces including:
@@ -47,6 +63,8 @@ Teacher state conceptually contains:
 The partial-RNA student point-predicts only qualified recoverable blocks. Privileged multimodal components that are predictable but stochastic become distributional/uncertainty targets; components not reproducibly recoverable from RNA remain teacher-private.
 
 Source/operator identity is never a biological latent target. Program state, prevalence and observation support are separate objects.
+
+Bayesian recurrence/observability uncertainty can later supply confidence/abstention metadata for target qualification and teacher-state decomposition, but it is not itself the JEPA target vector.
 
 ## Regulatory integration
 
