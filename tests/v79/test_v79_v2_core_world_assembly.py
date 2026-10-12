@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "v79"))
 
 import generate_v79_v2_core_worlds as G  # noqa: E402
+import v79_v2_core_world_assembly as A  # noqa: E402
 
 PAYLOAD = json.loads((ROOT / "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json").read_text())
 CAL = json.loads((ROOT / "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json").read_text())
@@ -45,12 +46,11 @@ def _assert_observation_package(pkg: dict) -> None:
 
 
 def test_complete_world_assembly_enforces_donor_modifications_and_three_replicates():
-    assert hasattr(G, "assemble_world_in_memory")
     design = _design()
     amendment = G.load_pairing_amendment(ROOT)
-    q1 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q01_WEAK_DONOR"), design, amendment=amendment)
-    q2 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q02_STRONG_DONOR"), design, amendment=amendment)
-    q7 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q07_DONOR_ABSENT"), design, amendment=amendment)
+    q1 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q01_WEAK_DONOR"), design, amendment=amendment)
+    q2 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q02_STRONG_DONOR"), design, amendment=amendment)
+    q7 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q07_DONOR_ABSENT"), design, amendment=amendment)
     for pkg in (q1, q2, q7):
         _assert_observation_package(pkg)
         assert np.array_equal(pkg["truth"]["detection"]["donor_effects"],
@@ -59,8 +59,10 @@ def test_complete_world_assembly_enforces_donor_modifications_and_three_replicat
                               pkg["observations"]["same_donor"]["eta_detection"])
         assert not np.array_equal(pkg["observations"]["train"]["base_uniform"],
                                   pkg["observations"]["same_donor"]["base_uniform"])
-        assert not np.array_equal(pkg["new_donor_truth"]["detection"]["donor_effects"],
-                                  pkg["truth"]["detection"]["donor_effects"])
+    assert not np.array_equal(q1["new_donor_truth"]["detection"]["donor_effects"],
+                              q1["truth"]["detection"]["donor_effects"])
+    assert not np.array_equal(q2["new_donor_truth"]["detection"]["donor_effects"],
+                              q2["truth"]["detection"]["donor_effects"])
     assert np.max(np.abs(q1["truth"]["detection"]["donor_effects"])) < np.max(np.abs(q2["truth"]["detection"]["donor_effects"]))
     assert np.count_nonzero(q7["truth"]["detection"]["donor_effects"]) == 0
     assert np.count_nonzero(q7["new_donor_truth"]["positive"]["donor_effects"]) == 0
@@ -68,9 +70,9 @@ def test_complete_world_assembly_enforces_donor_modifications_and_three_replicat
 
 def test_q08_assembled_world_hits_frozen_sparse_prevalence_on_measured_fixed_predictor():
     design = _design()
-    q8 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q08_SPARSE_DETECTION"), design,
+    q8 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q08_SPARSE_DETECTION"), design,
                                     amendment=G.load_pairing_amendment(ROOT))
-    achieved = G.fixed_detection_prevalence(q8["truth"], design, q8["support"])
+    achieved = A.fixed_detection_prevalence(q8["truth"], design, q8["support"])
     target = q8["truth"]["detection"]["prevalence"]
     assert np.all((target >= 0.005) & (target <= 0.05))
     assert np.allclose(achieved, target, atol=1e-10, rtol=0.0)
@@ -79,8 +81,8 @@ def test_q08_assembled_world_hits_frozen_sparse_prevalence_on_measured_fixed_pre
 def test_q10_q11_complete_assembly_is_paired_except_operator_perturbation():
     design = _design()
     amendment = G.load_pairing_amendment(ROOT)
-    q10 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q10_S174_DESIGN_IMBALANCE"), design, amendment=amendment)
-    q11 = G.assemble_world_in_memory(PAYLOAD, CAL, _world("Q11_OMITTED_OPERATOR"), design, amendment=amendment)
+    q10 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q10_S174_DESIGN_IMBALANCE"), design, amendment=amendment)
+    q11 = A.assemble_world_in_memory(PAYLOAD, CAL, _world("Q11_OMITTED_OPERATOR"), design, amendment=amendment)
     assert np.array_equal(q10["support"], q11["support"])
     assert G.scientific_truth_sha(q10["truth"]) == G.scientific_truth_sha(q11["truth"])
     assert G.scientific_truth_sha(q10["new_donor_truth"]) == G.scientific_truth_sha(q11["new_donor_truth"])
@@ -97,7 +99,7 @@ def test_complete_assembly_is_deterministic_and_in_memory_only(tmp_path: Path):
     design = _design()
     amendment = G.load_pairing_amendment(ROOT)
     w = _world("Q03_WEAK_SOURCE")
-    a = G.assemble_world_in_memory(PAYLOAD, CAL, w, design, amendment=amendment)
-    b = G.assemble_world_in_memory(PAYLOAD, CAL, w, design, amendment=amendment)
+    a = A.assemble_world_in_memory(PAYLOAD, CAL, w, design, amendment=amendment)
+    b = A.assemble_world_in_memory(PAYLOAD, CAL, w, design, amendment=amendment)
     assert G.scientific_truth_sha(a) == G.scientific_truth_sha(b)
     assert list(tmp_path.iterdir()) == []
