@@ -18,7 +18,9 @@ def _world(): return T.load_truth_set(ROOT/"results/v79/v2_core_realization_audi
 
 def _q(labels,mean=None):
     n=len(labels); m=np.zeros(n) if mean is None else np.asarray(mean,dtype=float)
-    return {"labels":list(labels),"mean":m.tolist(),"sd":np.ones(n).tolist(),"q05":(m-1).tolist(),"q50":m.tolist(),"q95":(m+1).tolist()}
+    return {"labels":list(labels),"mean":m.tolist(),"sd":np.ones(n).tolist(),
+            "q005":(m-2.5).tolist(),"q025":(m-2.0).tolist(),"q05":(m-1.0).tolist(),"q50":m.tolist(),
+            "q95":(m+1.0).tolist(),"q975":(m+2.0).tolist(),"q995":(m+2.5).tolist()}
 
 def _summary(part="detection",*,class_ident=None,source_ident=None,donors=(0,1)):
     ci=class_ident or {"mode":"helmert","observed_levels":[0,1,2],"reference_level":None}
@@ -56,16 +58,18 @@ def test_missing_levels_transform_truth_to_level_differences_and_identified_inte
     assert np.isclose(truth["intercept"][0],expected)
 
 
-def test_gene_score_computes_coverage_and_standardized_error_in_identified_space():
+def test_gene_score_computes_90_95_99_coverage_and_standardized_error_in_identified_space():
     w=_world(); s=_summary("positive")
     truth=Q.identified_truth_for_summary(w,"positive",3,s)
     for name,t in truth.items():
         labels=s["quantities"][name]["labels"]; a=np.asarray(t,dtype=float)
         s["quantities"][name]={"labels":labels,"mean":a.tolist(),"sd":np.ones(len(a)).tolist(),
-                               "q05":(a-0.5).tolist(),"q50":a.tolist(),"q95":(a+0.5).tolist()}
+                               "q005":(a-1.5).tolist(),"q025":(a-1.0).tolist(),"q05":(a-0.5).tolist(),"q50":a.tolist(),
+                               "q95":(a+0.5).tolist(),"q975":(a+1.0).tolist(),"q995":(a+1.5).tolist()}
     receipt={"schema":"V79_V2_CORE_FIT_RECORD_V1","execution_mode":"QUALIFICATION","opaque_world_id":w.opaque_world_id,
              "gene_index":3,"part":"positive","final_diagnosis":"COMPLETE","scoring_summary":s,"ppc":[{"name":"x","observed":0.0,"p_value":0.5}]}
     r=Q.score_gene_quantities(w,receipt)
     for x in r["quantities"].values():
-        assert all(x["covered90"])
+        assert all(x["covered90"]) and all(x["covered95"]) and all(x["covered99"])
         assert np.allclose(x["standardized_error"],0.0)
+        assert set(("q005","q025","q05","q95","q975","q995")) <= set(x)
