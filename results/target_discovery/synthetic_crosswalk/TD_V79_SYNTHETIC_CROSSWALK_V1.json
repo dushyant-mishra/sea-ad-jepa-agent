@@ -1,0 +1,278 @@
+{
+  "schema": "JEPA_TD_V79_SYNTHETIC_CROSSWALK_V1",
+  "status": "PROSPECTIVE_TARGET_DISCOVERY_SYNTHETIC_CROSSWALK_FROZEN__NO_SYNTHETIC_RESULT_OPENED_FOR_TARGET_SELECTION__NO_TARGET_AUTHORITY",
+  "source_design_commit": "57c08c18d4e96c497fb6436ca4464392ce7e67d7",
+  "synthetic_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "generator_head_at_freeze": "f45ee034d9bd0c603da5783fed2cf09ee2b16f20",
+  "evidence_classes": [
+    "DECISIVE_POSITIVE",
+    "DECISIVE_NEGATIVE",
+    "DIAGNOSTIC",
+    "NOT_ESTIMABLE"
+  ],
+  "worlds": {
+    "Q00_BASELINE": {"index": 0, "perturbation": "baseline"},
+    "Q01_WEAK_DONOR": {"index": 1, "perturbation": "donor_sd_weak"},
+    "Q02_STRONG_DONOR": {"index": 2, "perturbation": "donor_sd_strong"},
+    "Q03_WEAK_SOURCE": {"index": 3, "perturbation": "source_weak"},
+    "Q04_SOURCE_ABSENT": {"index": 4, "perturbation": "source_absent"},
+    "Q05_CLASS_ABSENT": {"index": 5, "perturbation": "class_absent"},
+    "Q06_QUADRATIC_DEPTH_ABSENT": {"index": 6, "perturbation": "quadratic_depth_absent"},
+    "Q07_DONOR_ABSENT": {"index": 7, "perturbation": "donor_sd_absent"},
+    "Q08_SPARSE_DETECTION": {"index": 8, "perturbation": "sparse_detection"},
+    "Q09_POSITIVE_TAIL": {"index": 9, "perturbation": "positive_tail"},
+    "Q10_S174_DESIGN_IMBALANCE": {"index": 10, "perturbation": "s174_design_imbalance"},
+    "Q11_OMITTED_OPERATOR": {"index": 11, "perturbation": "paired_omitted_operator"}
+  },
+  "candidates": {
+    "C1_SHARED_EMERGENT": {"foundation": true},
+    "C2_RELATIONAL_SHARED": {"foundation": true},
+    "C3_QUERY_MEASURED": {"foundation": true},
+    "C4_STRUCTURED_COMPOSITE": {"foundation": true},
+    "C5_REGULATORY_SPECIALIST": {"foundation": false}
+  },
+  "paired_counterfactual": {
+    "worlds": ["Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+    "non_operator_truth_identical_required": true,
+    "operator_perturbation_is_designated_difference": true,
+    "single_world_operator_invariance_allowed": false,
+    "collapse_cannot_satisfy_invariance": true
+  },
+  "new_donor_rule": {
+    "training_donor_identity_overlap_allowed": false,
+    "fixed_non_donor_truth_binding_required": true,
+    "new_donor_realization_required": true
+  },
+  "claims": [
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "WEAK_DONOR_CALIBRATION",
+      "worlds": ["Q01_WEAK_DONOR"],
+      "evidence_class": "DECISIVE_POSITIVE",
+      "target_gates": ["G4_DONOR_RECURRENCE"],
+      "required_truth_fields": ["donor_sd", "donor_effects"],
+      "expected_behavior": "weak planted donor signal must not be inflated into strong recurrence",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "STRONG_DONOR_RECURRENCE",
+      "worlds": ["Q02_STRONG_DONOR"],
+      "evidence_class": "DECISIVE_POSITIVE",
+      "target_gates": ["G4_DONOR_RECURRENCE", "G11_TRANSFER"],
+      "required_truth_fields": ["donor_sd", "donor_effects", "new_donor_truth"],
+      "expected_behavior": "strong planted donor component is detectable and transfers to held-out donors",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "SOURCE_NULL_LEAKAGE",
+      "worlds": ["Q04_SOURCE_ABSENT"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G5_SOURCE_REPLICATION", "G10_COLLAPSE_SHORTCUT_RESISTANCE"],
+      "required_truth_fields": ["source_contrasts"],
+      "expected_behavior": "candidate biological state must not require or reconstruct absent source truth",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "CLASS_NULL_HALLUCINATION",
+      "worlds": ["Q05_CLASS_ABSENT"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G2_NONTRIVIAL_BIOLOGICAL_CONTENT", "G10_COLLAPSE_SHORTCUT_RESISTANCE"],
+      "required_truth_fields": ["class_contrasts"],
+      "expected_behavior": "candidate must not hallucinate the absent planted broad-class component",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "DEPTH_NULL_HALLUCINATION",
+      "worlds": ["Q06_QUADRATIC_DEPTH_ABSENT"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G8_MEASUREMENT_ROBUSTNESS", "G10_COLLAPSE_SHORTCUT_RESISTANCE"],
+      "required_truth_fields": ["depth2"],
+      "expected_behavior": "candidate must not manufacture nonlinear depth biology when the quadratic term is absent",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "DONOR_NULL_FALSE_RECURRENCE",
+      "worlds": ["Q07_DONOR_ABSENT"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G4_DONOR_RECURRENCE", "G10_COLLAPSE_SHORTCUT_RESISTANCE"],
+      "required_truth_fields": ["donor_sd", "donor_effects"],
+      "expected_behavior": "candidate must not claim donor recurrence when planted donor effect is absent",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "SPARSE_SUPPORT_ABSTENTION",
+      "worlds": ["Q08_SPARSE_DETECTION"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G7_EVIDENCE_CONVERGENCE", "G8_MEASUREMENT_ROBUSTNESS", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["support", "detection_prevalence"],
+      "expected_behavior": "candidate widens measurement uncertainty or abstains rather than forcing biological certainty",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "PAIRED_OPERATOR_INVARIANCE",
+      "worlds": ["Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G8_MEASUREMENT_ROBUSTNESS", "G11_TRANSFER"],
+      "required_truth_fields": ["non_operator_truth_hash", "operator_offsets"],
+      "expected_behavior": "biological component remains stable across the canonical pair while measurement uncertainty may respond",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "WEAK_SOURCE_RESPONSE",
+      "worlds": ["Q03_WEAK_SOURCE"],
+      "evidence_class": "DIAGNOSTIC",
+      "target_gates": ["G5_SOURCE_REPLICATION"],
+      "required_truth_fields": ["source_contrasts"],
+      "expected_behavior": "source imprint should diminish as planted source effect weakens",
+      "failure_effect": "DIAGNOSTIC_ONLY"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "POSITIVE_TAIL_ROBUSTNESS",
+      "worlds": ["Q09_POSITIVE_TAIL"],
+      "evidence_class": "DIAGNOSTIC",
+      "target_gates": ["G8_MEASUREMENT_ROBUSTNESS"],
+      "required_truth_fields": ["sigma"],
+      "expected_behavior": "observation-tail difficulty should not be relabeled as biological state",
+      "failure_effect": "DIAGNOSTIC_ONLY"
+    },
+    {
+      "candidate": "C1_SHARED_EMERGENT",
+      "claim": "SHARED_MULTIGENE_LATENT_RECOVERY",
+      "worlds": [],
+      "evidence_class": "NOT_ESTIMABLE",
+      "target_gates": ["G9_LEARNED_TEACHER_CONTINUITY", "S1_DISJOINT_VIEW_RECURRENCE", "S2_DONOR_BALANCED_SUBSPACE_STABILITY"],
+      "required_truth_fields": [],
+      "expected_behavior": "requires independently planted multigene shared latent truth not present in current V79",
+      "failure_effect": "NO_SYNTHETIC_VERDICT"
+    },
+    {
+      "candidate": "C2_RELATIONAL_SHARED",
+      "claim": "INHERITED_C1_SYNTHETIC_FALSIFIERS",
+      "worlds": ["Q01_WEAK_DONOR", "Q02_STRONG_DONOR", "Q04_SOURCE_ABSENT", "Q05_CLASS_ABSENT", "Q06_QUADRATIC_DEPTH_ABSENT", "Q07_DONOR_ABSENT", "Q08_SPARSE_DETECTION", "Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G4_DONOR_RECURRENCE", "G8_MEASUREMENT_ROBUSTNESS", "G10_COLLAPSE_SHORTCUT_RESISTANCE", "G11_TRANSFER", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["inherited_C1_truth_bindings"],
+      "expected_behavior": "C2 inherits all applicable C1 nuisance, support and transfer falsifiers",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C2_RELATIONAL_SHARED",
+      "claim": "RELATIONAL_GEOMETRY_RECOVERY",
+      "worlds": [],
+      "evidence_class": "NOT_ESTIMABLE",
+      "target_gates": ["R1_SCALE_FREE_RELATIONAL_RECURRENCE", "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING", "R3_FINE_NEIGHBOR_WRONG_CELL_DEFEAT", "R4_INCREMENT_OVER_C1_SHARED"],
+      "required_truth_fields": [],
+      "expected_behavior": "requires independent planted relational geometry absent from current V79",
+      "failure_effect": "NO_SYNTHETIC_VERDICT"
+    },
+    {
+      "candidate": "C3_QUERY_MEASURED",
+      "claim": "UNSUPPORTED_QUERY_FORCING",
+      "worlds": ["Q08_SPARSE_DETECTION"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G8_MEASUREMENT_ROBUSTNESS", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["support", "detection_prevalence"],
+      "expected_behavior": "query-conditioned output abstains or widens measurement uncertainty when non-q context is unsupported",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C3_QUERY_MEASURED",
+      "claim": "QUERY_OPERATOR_LEAKAGE",
+      "worlds": ["Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G8_MEASUREMENT_ROBUSTNESS", "G11_TRANSFER"],
+      "required_truth_fields": ["non_operator_truth_hash", "operator_offsets"],
+      "expected_behavior": "query-conditioned biological context remains stable across the canonical operator pair",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C3_QUERY_MEASURED",
+      "claim": "QUERY_SHORTCUT_CONTROLS",
+      "worlds": ["Q00_BASELINE", "Q08_SPARSE_DETECTION", "Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DIAGNOSTIC",
+      "target_gates": ["Q4_Q_COUNT_ONLY_DEFEAT", "Q5_Q_ADDRESS_ONLY_DEFEAT", "Q6_QUERY_AGNOSTIC_DEFEAT", "Q7_WRONG_Q_DEFEAT", "Q8_TECHNICAL_PLUS_Q_DEFEAT"],
+      "required_truth_fields": ["observed_expression", "support"],
+      "expected_behavior": "shortcut arms are diagnostic until cross-gene q-conditioned truth is explicitly planted",
+      "failure_effect": "DIAGNOSTIC_ONLY"
+    },
+    {
+      "candidate": "C3_QUERY_MEASURED",
+      "claim": "QUERY_CONDITIONED_BIOLOGICAL_RECOVERY",
+      "worlds": [],
+      "evidence_class": "NOT_ESTIMABLE",
+      "target_gates": ["Q4_Q_COUNT_ONLY_DEFEAT", "Q5_Q_ADDRESS_ONLY_DEFEAT", "Q6_QUERY_AGNOSTIC_DEFEAT", "Q7_WRONG_Q_DEFEAT", "Q8_TECHNICAL_PLUS_Q_DEFEAT"],
+      "required_truth_fields": [],
+      "expected_behavior": "requires planted cross-gene query-conditioned biological truth absent from current V79",
+      "failure_effect": "NO_SYNTHETIC_VERDICT"
+    },
+    {
+      "candidate": "C4_STRUCTURED_COMPOSITE",
+      "claim": "INHERITED_FOUNDATION_FALSIFIERS",
+      "worlds": ["Q01_WEAK_DONOR", "Q02_STRONG_DONOR", "Q04_SOURCE_ABSENT", "Q05_CLASS_ABSENT", "Q06_QUADRATIC_DEPTH_ABSENT", "Q07_DONOR_ABSENT", "Q08_SPARSE_DETECTION", "Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DECISIVE_NEGATIVE",
+      "target_gates": ["G4_DONOR_RECURRENCE", "G8_MEASUREMENT_ROBUSTNESS", "G10_COLLAPSE_SHORTCUT_RESISTANCE", "G11_TRANSFER", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["inherited_C1_C2_C3_truth_bindings"],
+      "expected_behavior": "C4 inherits every applicable C1/C2/C3 mandatory synthetic falsifier",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C4_STRUCTURED_COMPOSITE",
+      "claim": "SUPPORT_UNCERTAINTY_DECOMPOSITION",
+      "worlds": ["Q08_SPARSE_DETECTION", "Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DECISIVE_POSITIVE",
+      "target_gates": ["G7_EVIDENCE_CONVERGENCE", "G8_MEASUREMENT_ROBUSTNESS", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["support", "non_operator_truth_hash", "operator_offsets"],
+      "expected_behavior": "biological components stay stable where truth is fixed while measurement/support uncertainty responds to evidence/operator changes",
+      "failure_effect": "ELIMINATE_CANDIDATE_ON_SYNTHETIC_FALSIFIER"
+    },
+    {
+      "candidate": "C4_STRUCTURED_COMPOSITE",
+      "claim": "INCREMENT_OVER_CONSTITUENTS_BIOLOGICAL_TRUTH",
+      "worlds": [],
+      "evidence_class": "NOT_ESTIMABLE",
+      "target_gates": ["C4_INCREMENT_OVER_CONSTITUENTS"],
+      "required_truth_fields": [],
+      "expected_behavior": "requires independently planted C2 relational and C3 query-conditioned truths absent from current V79",
+      "failure_effect": "NO_SYNTHETIC_VERDICT"
+    },
+    {
+      "candidate": "C5_REGULATORY_SPECIALIST",
+      "claim": "GENERIC_NUISANCE_BEHAVIOR",
+      "worlds": ["Q04_SOURCE_ABSENT", "Q07_DONOR_ABSENT", "Q08_SPARSE_DETECTION", "Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"],
+      "evidence_class": "DIAGNOSTIC",
+      "target_gates": ["G10_COLLAPSE_SHORTCUT_RESISTANCE", "G11_TRANSFER", "G12_COVERAGE_ABSTENTION"],
+      "required_truth_fields": ["source_contrasts", "donor_effects", "support", "operator_offsets"],
+      "expected_behavior": "generic nuisance behavior may be inspected but cannot promote regulatory biological truth",
+      "failure_effect": "DIAGNOSTIC_ONLY"
+    },
+    {
+      "candidate": "C5_REGULATORY_SPECIALIST",
+      "claim": "REGULATORY_CHROMATIN_RECOVERY",
+      "worlds": [],
+      "evidence_class": "NOT_ESTIMABLE",
+      "target_gates": ["M1_CIRCULARITY_CONTROL", "M2_INDEPENDENT_PROVENANCE", "M3_CAUSAL_CLAIM_FALSE", "M4_SUPPORT_ABSTENTION"],
+      "required_truth_fields": [],
+      "expected_behavior": "requires independently planted regulatory/chromatin truth; current V79 excludes SCENIC+/ATAC truth",
+      "failure_effect": "NO_SYNTHETIC_VERDICT"
+    }
+  ],
+  "authority": {
+    "synthetic_world_generation_authorized": false,
+    "synthetic_qualification_fitting_authorized": false,
+    "corrected_biological_replay_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}

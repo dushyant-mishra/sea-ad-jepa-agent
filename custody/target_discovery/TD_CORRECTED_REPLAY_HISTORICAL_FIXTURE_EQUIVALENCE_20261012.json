@@ -1,0 +1,99 @@
+{
+  "schema": "JEPA_TD_CORRECTED_REPLAY_HISTORICAL_FIXTURE_EQUIVALENCE_V1",
+  "date": "2026-10-12",
+  "purpose": "QUALIFY_HISTORICAL_FIXTURE_COMPATIBILITY_ONLY__NO_CORRECTED_VALUE_READ__NO_BIOLOGICAL_AUTHORITY",
+  "historical_inputs": {
+    "td41_td58_archive_sha256": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
+    "historical_expression_outer_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "historical_expression_inner_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "arrays": {
+      "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
+      "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
+      "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
+      "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb"
+    },
+    "observation_state_support_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "metadata_sha256": {
+      "HVS": "d6d30cb5ef791fdaaa6f751ee6d802f8e64e062ab641a48194dfc9b596609aeb",
+      "NPH52": "9de0c199414db0705d25cce18cb5007915bcf527c245ed039e2f966437c790fe",
+      "SEA_AD": "ab4fa37a2596de609b4245e82dec0ba7e4a43f95d03421acd46c5814eaaa57d4"
+    }
+  },
+  "TD56": {
+    "status": "PASS",
+    "method": "FRESH_EXACT_HISTORICAL_EXECUTOR_REPLAY",
+    "executor_sha256": {
+      "HVS": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+      "NPH52": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
+      "SEA_AD": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866"
+    },
+    "fresh_result_sha256": {
+      "HVS": "ac6dd050689952698ffd18a5bffcf0251132508e20f695eb675b5e7ddc246c4a",
+      "NPH52": "caa190e708b632b106250f9d27272f1d3f32a88520539bcf9451ee8b9ee07be7",
+      "SEA_AD": "ec57015dbc1b1c0dab30ffd3429b8e400898402408868f1641e431beef14157b"
+    },
+    "archived_result_sha256": {
+      "HVS": "ac6dd050689952698ffd18a5bffcf0251132508e20f695eb675b5e7ddc246c4a",
+      "NPH52": "caa190e708b632b106250f9d27272f1d3f32a88520539bcf9451ee8b9ee07be7",
+      "SEA_AD": "ec57015dbc1b1c0dab30ffd3429b8e400898402408868f1641e431beef14157b"
+    },
+    "comparison": "BYTE_IDENTICAL_ALL_THREE_SOURCES"
+  },
+  "TD57B": {
+    "status": "PASS",
+    "method": "FRESH_EXACT_HISTORICAL_FAST_WRAPPER_REPLAY",
+    "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+    "fast_wrapper_sha256": "808fb293a87d0020adc0f332742f3fa9b99c9c8ec5a88e50504a719ad4183a70",
+    "source_panel_result_sha256": {
+      "P0_HVS": "fbee6cef249533523ba97558f52f388a378c4e5aa86c5be630b0ed9d20085d2f",
+      "P0_NPH52": "114cc044ae66fe5c530412c6ca2d9f469eaba048fe0b1f256e746fe0093a5557",
+      "P0_SEA_AD": "d149a37c40c43d03c49c8e1783f87a233f64874ef920f8fabe0a9e3d0b846c1e",
+      "P1_HVS": "560e5fafc0844320e69854023c9a5b4f8728a463f95bb9fe4825b7593b01ff37",
+      "P1_NPH52": "9b83565b2d6315c239f9a156bd90ae0cce4902cd5ed666a1cc24e08ef911ed98",
+      "P1_SEA_AD": "110a3741b9f56030832fe8f003c2b4cd0dbc478416c2bdeb59b8f9b2deae01c6"
+    },
+    "comparison": "BYTE_IDENTICAL_ALL_SIX_SOURCE_PANEL_RESULTS",
+    "historical_terminal": "PASS"
+  },
+  "TD57C": {
+    "status": "PASS",
+    "method": "FRESH_EXACT_HISTORICAL_EXECUTOR_REPLAY_OF_DECISION_BEARING_STOPPING_CASE",
+    "executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+    "source_panel": "P0_HVS",
+    "fresh_result_sha256": "f0201becf790d644247287d9f2eece1e558ace2b2cb06eb73fae3af91a72af1f",
+    "archived_result_sha256": "f0201becf790d644247287d9f2eece1e558ace2b2cb06eb73fae3af91a72af1f",
+    "comparison": "BYTE_IDENTICAL",
+    "historical_stage_status": "FAIL",
+    "historical_terminal": "TD57C_SOURCE_PANEL_FAIL",
+    "interpretation": "EQUIVALENCE_PASS_MEANS_THE_HISTORICAL_FAIL_IS_REPRODUCED_EXACTLY__IT_DOES_NOT_RELABEL_TD57C_AS_A_BIOLOGICAL_PASS"
+  },
+  "TD59": {
+    "status": "PASS",
+    "method": "EXISTING_INDEPENDENT_SUCCESSOR_REPLAY_CLOSURE_ON_THE_SAME_IMMUTABLE_HISTORICAL_INPUTS",
+    "original_executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+    "original_executor_bytes_recovered": false,
+    "successor_executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+    "case_match_csv_sha256": "7af082b8f1b09ccca822b6fd27bef139aa0a802c03fdcf581d692f21b10436c1",
+    "exact_case_rows": 24,
+    "exact_case_rows_total": 24,
+    "exact_values_per_case": ["observed", "null_p95", "null_max"],
+    "all_pass_booleans_reproduced": true,
+    "replay_closure_status": "PASS_TD59_REPLAY_CLOSURE_BY_INDEPENDENT_RECONSTRUCTION__ORIGINAL_EXECUTOR_BYTES_NOT_RECOVERED"
+  },
+  "overall": {
+    "historical_fixture_equivalence": {
+      "TD56": "PASS",
+      "TD57B": "PASS",
+      "TD57C": "PASS",
+      "TD59": "PASS"
+    },
+    "terminal": "PASS_TD_CORRECTED_REPLAY_HISTORICAL_FIXTURE_EQUIVALENCE__NO_CORRECTED_VALUE_READ__NO_REPLAY_AUTHORITY",
+    "corrected_value_read_performed": false,
+    "corrected_replay_authorized": false,
+    "target_selected": false,
+    "representation_selected": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}

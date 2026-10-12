@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_TD_V79_C6_SYNTHETIC_EXTENSION_V1",
+  "status": "PROSPECTIVE_C6_SYNTHETIC_EVIDENCE_CONTRACT__NO_RESULTS_OPENED__NO_TARGET_AUTHORITY",
+  "candidate_id": "C6_SHARED_QUERY_COMPOSITE",
+  "base_crosswalk_schema": "JEPA_TD_V79_SYNTHETIC_CROSSWALK_V1",
+  "synthetic_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "claims": [
+    {"claim":"WEAK_DONOR_CALIBRATION","worlds":["Q01_WEAK_DONOR"],"evidence_class":"DECISIVE_POSITIVE","required_truth_fields":["donor_sd","donor_effects"],"expected_behavior":"C6 must not inflate weak planted donor structure"},
+    {"claim":"STRONG_DONOR_NEW_DONOR_TRANSFER","worlds":["Q02_STRONG_DONOR"],"evidence_class":"DECISIVE_POSITIVE","required_truth_fields":["donor_sd","donor_effects","new_donor_truth"],"expected_behavior":"C6 must recover strong donor signal appropriately and transfer to new donors"},
+    {"claim":"SOURCE_NULL_LEAKAGE","worlds":["Q04_SOURCE_ABSENT"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["source_contrasts"],"expected_behavior":"C6 must not require or reconstruct absent source truth"},
+    {"claim":"CLASS_NULL_HALLUCINATION","worlds":["Q05_CLASS_ABSENT"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["class_contrasts"],"expected_behavior":"C6 shared component must not hallucinate absent broad class truth"},
+    {"claim":"DEPTH_NULL_HALLUCINATION","worlds":["Q06_QUADRATIC_DEPTH_ABSENT"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["depth2"],"expected_behavior":"C6 must not relabel absent nonlinear depth structure as biology"},
+    {"claim":"DONOR_NULL_FALSE_RECURRENCE","worlds":["Q07_DONOR_ABSENT"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["donor_sd","donor_effects"],"expected_behavior":"C6 must not invent donor recurrence when donor truth is absent"},
+    {"claim":"SPARSE_SUPPORT_ABSTENTION","worlds":["Q08_SPARSE_DETECTION"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["support","detection_prevalence"],"expected_behavior":"C6 must abstain or widen measurement uncertainty rather than force unsupported certainty"},
+    {"claim":"PAIRED_OPERATOR_INVARIANCE","worlds":["Q10_S174_DESIGN_IMBALANCE","Q11_OMITTED_OPERATOR"],"evidence_class":"DECISIVE_NEGATIVE","required_truth_fields":["non_operator_truth_hash","operator_offsets"],"expected_behavior":"C6 biological components remain appropriately stable across the paired operator intervention while measurement uncertainty may respond"},
+    {"claim":"WEAK_SOURCE_RESPONSE","worlds":["Q03_WEAK_SOURCE"],"evidence_class":"DIAGNOSTIC","required_truth_fields":["source_contrasts"],"expected_behavior":"source imprint should diminish as planted source effect weakens"},
+    {"claim":"POSITIVE_TAIL_ROBUSTNESS","worlds":["Q09_POSITIVE_TAIL"],"evidence_class":"DIAGNOSTIC","required_truth_fields":["sigma"],"expected_behavior":"observation-tail difficulty should not be relabeled as biological state"},
+    {"claim":"QUERY_SHORTCUT_CONTROLS","worlds":["Q00_BASELINE","Q08_SPARSE_DETECTION","Q10_S174_DESIGN_IMBALANCE","Q11_OMITTED_OPERATOR"],"evidence_class":"DIAGNOSTIC","required_truth_fields":["observed_expression","support"],"expected_behavior":"query shortcut controls remain diagnostic until independent cross-gene query truth is planted"},
+    {"claim":"C6_INCREMENT_OVER_C1_C3_BIOLOGICAL_TRUTH","worlds":[],"evidence_class":"NOT_ESTIMABLE","required_truth_fields":[],"expected_behavior":"current V79 lacks independent truth for the biological increment of shared plus query composition"}
+  ],
+  "authority": {
+    "synthetic_world_generation_authorized": false,
+    "synthetic_qualification_fitting_authorized": false,
+    "corrected_biological_replay_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}

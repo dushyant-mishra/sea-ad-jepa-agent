@@ -1,0 +1,103 @@
+{
+  "schema": "JEPA_TD_TARGET_DISCOVERY_CURRENT_STATE_V1",
+  "date": "2026-10-12",
+  "branch": "science/td-target-tournament-scaffold-20261011",
+  "draft_pr": 275,
+  "status": "TD_TARGET_DISCOVERY_MACHINERY_READY_THROUGH_PROTECTED_CONFIRMATION_ROUTING__AUDITED_V79_REALIZATION_BOUND__CORRECTED_REPLAY_ADAPTER_CONTRACT_QUALIFIED__WAITING_ON_G7_OUTCOME_AND_HISTORICAL_FIXTURE_EQUIVALENCE__NO_TARGET_AUTHORITY",
+  "historical_state_preserved": "custody/takeover_20261011/TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_20261011.json",
+  "latest_code_qualification": {
+    "qualified_head": "e8dda431b03e9365d764665fea80c111ee053710",
+    "workflow_run_id": 38265363424,
+    "workflow_job_id": 114866049053,
+    "artifact_id": 11754471954,
+    "artifact_name": "td-target-tournament-qualification-e8dda431b03e9365d764665fea80c111ee053710",
+    "artifact_sha256": "6d968dc8903b333fcb097f23bea78d6a4cbb2eeac7d32318051daa1c379ff1c3",
+    "passed": 322,
+    "failed": 0,
+    "errors": 0,
+    "elapsed_seconds": 0.62,
+    "status_before": "CLEAN",
+    "tracked_status_after": "CLEAN"
+  },
+  "candidate_lattice": {
+    "foundation": ["C1_SHARED_EMERGENT", "C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED", "C6_SHARED_QUERY_COMPOSITE", "C4_STRUCTURED_COMPOSITE"],
+    "specialist": ["C5_REGULATORY_SPECIALIST"],
+    "c6_requires": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED"],
+    "c4_requires": ["C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED"],
+    "specialist_can_rescue_foundation": false
+  },
+  "qualified_metadata_modules": {
+    "corrected_replay_projection": "scripts/v5/td_corrected_replay_routing_v2.py",
+    "corrected_replay_adapter_contract": "scripts/v5/td_corrected_replay_adapter_contract_v1.py",
+    "candidate_routing": "scripts/v5/td_target_tournament_routing_v4.py",
+    "protected_head_to_head": "scripts/v5/td_protected_head_to_head_v2.py",
+    "synthetic_crosswalk_c1_c5": "scripts/v5/td_v79_synthetic_crosswalk_v1.py",
+    "synthetic_crosswalk_c6": "scripts/v5/td_v79_c6_synthetic_extension_v1.py",
+    "synthetic_realization_binding": "scripts/v5/td_v79_realization_binding_v1.py",
+    "final_convergence": "scripts/v5/td_target_convergence_v1.py"
+  },
+  "corrected_replay_adapter_readiness": {
+    "qualification_note": "docs/agent/TD_CORRECTED_REPLAY_ADAPTER_CONTRACT_QUALIFICATION_20261012.md",
+    "preflight_manifest": "custody/target_discovery/TD_CORRECTED_REPLAY_ADAPTER_PREFLIGHT_20261012.json",
+    "current_terminal": "BLOCKED_G7_NOT_EXTERNALLY_ACCEPTED__NO_REPLAY_AUTHORITY",
+    "historical_fixture_equivalence": {"TD56": "PENDING", "TD57B": "PENDING", "TD57C": "PENDING", "TD59": "PENDING"},
+    "corrected_value_read_performed": false,
+    "corrected_replay_authorized": false
+  },
+  "synthetic_contract": {
+    "v79_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "synthetic_can_falsify_where_truth_is_planted": true,
+    "synthetic_can_rescue_real_fail": false,
+    "synthetic_can_convert_real_not_estimable_to_pass": false,
+    "synthetic_can_select_target": false
+  },
+  "synthetic_realization": {
+    "realized": true,
+    "controller_independent_byte_audit_passed": true,
+    "realization_audit_pr": 297,
+    "realization_audit_head": "bb8923562144a0b19a6d80795adf727986893ded",
+    "realization_authority_head": "cd6425b29f3fbd70b6d93351feb7c188f8b17cc8",
+    "root_manifest_sha256": "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de",
+    "world_set_directory_digest_sha256": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "complete_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "audit_freeze_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "world_count": 12,
+    "q10_q11_non_operator_truth_identical": true,
+    "target_discovery_binding": "results/target_discovery/synthetic_crosswalk/TD_V79_REALIZATION_BINDING_V1.json",
+    "target_candidate_results_available": false,
+    "qualification_fits_consumed_by_target_discovery": false
+  },
+  "final_convergence_law": {
+    "zero_eligible": "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION",
+    "unresolved": "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY",
+    "single_or_unique_h2h_leader": "PROTECTED_CONFIRMATION_REQUIRED__NO_TARGET_AUTHORITY",
+    "multiple_incomparable": "MULTIPLE_QUALIFIED_TARGETS__INCOMPARABLE__NO_TARGET_AUTHORITY",
+    "head_to_head_unresolved": "HEAD_TO_HEAD_UNRESOLVED__NO_TARGET_AUTHORITY",
+    "confirmation_pass": "TARGET_CANDIDATE_CONFIRMED__OWNER_SELECTION_DECISION_REQUIRED__NO_TARGET_AUTHORITY",
+    "confirmation_fail": "PROTECTED_CONFIRMATION_FAILED__NO_TARGET_WINNER__REDESIGN",
+    "confirmation_not_estimable": "PROTECTED_CONFIRMATION_NOT_ESTIMABLE__NO_TARGET_AUTHORITY"
+  },
+  "real_data_gate": {
+    "g6_external_acceptance": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "g7_successor_qualified_head": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+    "g7_launch_package_head": "b8fd8421b3ad0e1a4e80c7054aa4d41375966dd4",
+    "g7_launch_audit_acceptance_commit": "564dcbf45e360331d4baedb9ca6f0e8b2325390d",
+    "g7_launch_audit_acceptance_sha256": "b1bcc74f3e508fed72669aa323e9b9a8e7ccb4d72050e2dcd8fa9339e1bc1525",
+    "g7_execution_released_once": true,
+    "g7_execution_accepted": false,
+    "corrected_td56_57b_57c_59_authorized": false,
+    "corrected_td56_57b_57c_59_executed": false
+  },
+  "next_external_sequence": ["execute exactly one released G7 attempt and externally audit its outcome", "complete historical-fixture adapter equivalence for TD56/TD57B/TD57C/TD59", "separately authorize corrected TD56/TD57B/TD57C/TD59 replay", "apply frozen corrected-replay interpretation", "instantiate real candidate gate execution", "execute applicable target-specific synthetic falsifiers against the exact bound V79 worlds", "route survivors and protected head-to-head if required", "protected confirmation", "explicit owner target selection"],
+  "authority": {
+    "value_read_authorized": false,
+    "g7_launch_released_once": true,
+    "corrected_biological_replay_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selected": false,
+    "representation_selected": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}
