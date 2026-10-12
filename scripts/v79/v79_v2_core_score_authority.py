@@ -25,7 +25,6 @@ EXPECTED_GATES=292
 class ScoreAuthorityRefused(RuntimeError): pass
 
 def _refuse(msg:str): raise ScoreAuthorityRefused(f"REFUSED V2_CORE scoring authority: {msg}")
-def _sha(path:Path)->str: return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def _canon(obj:Mapping)->bytes: return (json.dumps(dict(obj),sort_keys=True,separators=(",",":"),ensure_ascii=False)+"\n").encode("utf-8")
 def _hex64(value)->bool: return isinstance(value,str) and re.fullmatch(r"[0-9a-f]{64}",value) is not None
 
@@ -79,16 +78,18 @@ def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:s
     for label,value in (("scorer_code_sha",scorer_code_sha),("campaign_receipt_sha256",campaign_receipt_sha256),
                         ("scoring_authorization_sha256",scoring_authorization_sha256)):
         if not _hex64(value): _refuse(f"{label} must be 64-hex")
-    if not isinstance(gate_table,Mapping): _refuse("gate table missing")
+    if not isinstance(gate_table,Mapping) or gate_table.get("schema")!="V79_V2_CORE_GATE_SCORE_TABLE_V1": _refuse("gate table schema differs")
     rows=gate_table.get("rows"); terminal=gate_table.get("terminal")
     if not isinstance(rows,list) or len(rows)!=EXPECTED_GATES or not isinstance(terminal,Mapping): _refuse("gate table is incomplete")
     term=terminal.get("terminal")
-    if term not in {"V2_CORE_SYNTHETIC_QUALIFICATION_QUALIFIED","V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED"}:
-        _refuse("gate table terminal differs")
-    hard_fail=[r for r in rows if r.get("verdict_class")=="FAIL" and r.get("status")=="FAIL"]
-    limit_fail=[r for r in rows if r.get("verdict_class")=="LIMIT" and r.get("status")=="FAIL"]
+    if term not in {"V2_CORE_SYNTHETIC_QUALIFICATION_QUALIFIED","V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED"}: _refuse("gate table terminal differs")
+    hard_fail=[r for r in rows if r.get("verdict_class")=="FAIL" and r.get("passed") is False]
+    limit_fail=[r for r in rows if r.get("verdict_class")=="LIMIT" and r.get("passed") is False]
     expected_term="V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED" if hard_fail else "V2_CORE_SYNTHETIC_QUALIFICATION_QUALIFIED"
     if term!=expected_term: _refuse("terminal does not agree with hard-fail rows")
+    first_index=terminal.get("first_hard_fail_index")
+    expected_first=None if not hard_fail else next(i for i,r in enumerate(rows) if r.get("verdict_class")=="FAIL" and r.get("passed") is False)
+    if first_index!=expected_first: _refuse("terminal first-hard-fail index differs from gate rows")
     rec={
         "schema":ADJUDICATION_SCHEMA,
         "contract_sha256":CONTRACT_SHA256,
@@ -101,7 +102,7 @@ def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:s
         "hard_fail_count":len(hard_fail),
         "limit_fail_count":len(limit_fail),
         "terminal":term,
-        "first_hard_fail":terminal.get("first_hard_fail"),
+        "first_hard_fail_index":first_index,
         "gate_table_sha256":hashlib.sha256(_canon(gate_table)).hexdigest(),
         "descriptive_metrics":dict(descriptive_metrics or {}),
         "qualification_scoring_run":True,
