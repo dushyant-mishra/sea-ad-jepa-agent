@@ -1,0 +1,18 @@
+{
+  "schema": "JEPA_TD_G7_LAUNCH_AUDIT_ACCEPTANCE_V1",
+  "disposition": "ACCEPT_G7_SUCCESSOR_LAUNCH_PACKAGE__EXECUTE_G7_ONCE",
+  "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+  "authority_commit_sha": "b8fd8421b3ad0e1a4e80c7054aa4d41375966dd4",
+  "operational_authorization_sha256": "c171b91b853e9e136c28c3051cd3baae4e74a1be337f70b3d6ecdb175dd643ed",
+  "launcher_sha256": "c87fc4a299493fe9610765d559fbc0238ca7ab2854c2de92c6e49ceef14bb8e6",
+  "launch_checks_sha256": "dc832156756003c4bc117afb7e41950350082e1e78eac2a69ce02c7075955bac",
+  "fresh_g7_output_namespace": "D:/jepa_td_real_g6_20261011/G7_OUT_8d41fb98",
+  "single_g7_attempt": true,
+  "g6_execution_authorized": false,
+  "biological_replay_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "corrected_biological_replay_authorized": false,
+  "stage4_authorized": false
+}
