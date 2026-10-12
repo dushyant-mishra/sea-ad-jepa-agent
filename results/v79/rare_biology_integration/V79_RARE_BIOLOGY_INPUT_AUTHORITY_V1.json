@@ -1,0 +1,67 @@
+{
+  "schema": "v79-rare-biology-input-authority-v1",
+  "status": "PROSPECTIVE_INPUT_AUTHORITY__NO_REALIZATION_AUTHORITY",
+  "training_authorized": false,
+  "q00_q11_mutation_authorized": false,
+  "pathology_used": false,
+  "assets": {
+    "v6r5a_program_weights": {
+      "sha256_required": true,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "allowed_roles": ["historical_program_comparator", "topology_calibration"],
+      "forbidden_roles": ["new_rare_truth_by_global_threshold"]
+    },
+    "foundation_41k_50k_expression": {
+      "sha256_required": true,
+      "sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+      "allowed_roles": ["pathology_blind_calibration", "source_operator_shortcut_audit"],
+      "forbidden_roles": ["pathology_selection", "final_external_validation"]
+    },
+    "gse174367_morabito": {
+      "sha256_required": true,
+      "sha256": "6ba98a1af8772af08c8cdd5e5e63eebb0890daed48cac2e1b8961dcc67069b77",
+      "secondary_sha256": "ff7c46e755ec0e3fecb319c5b3dd9ac0ada318525746ebe7dddb8e2c0dcab87f",
+      "pairing": "separate_nuclei_donor_level",
+      "allowed_roles": ["post_freeze_donor_level_regulatory_support"],
+      "forbidden_roles": ["target_selection", "same_cell_validation", "pristine_external_confirmation"]
+    },
+    "gse214979": {
+      "sha256_required": false,
+      "sha256": null,
+      "pairing": "verified_same_nucleus_rna_atac",
+      "allowed_roles": ["conditional_post_freeze_same_nucleus_support"],
+      "forbidden_roles": ["causal_truth"]
+    },
+    "gse272082": {
+      "sha256_required": false,
+      "sha256": null,
+      "pairing": "candidate_paired_multiome_needs_authentication",
+      "allowed_roles": ["future_transport_after_authentication"],
+      "forbidden_roles": ["current_microglia_confirmation"]
+    },
+    "stage75_79_regulatory": {
+      "sha256_required": true,
+      "sha256": "996c4e6e6c86dae1f15cbc0970f548d56dfbb69faa43cf7fc93beda8f107f4b5",
+      "allowed_roles": ["regulatory_topology_template", "matched_graph_control_design"],
+      "forbidden_roles": ["causal_grn_truth", "validated_activation_repression"]
+    },
+    "spatial_context": {
+      "sha256_required": false,
+      "sha256": null,
+      "allowed_roles": ["context_identifiability", "post_freeze_measured_subset_validation"],
+      "forbidden_roles": ["full_41k_state_truth"]
+    },
+    "gse178317": {
+      "sha256_required": true,
+      "sha256": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+      "allowed_roles": ["perturbation_response_calibration", "post_freeze_support"],
+      "forbidden_roles": ["rare_state_definition"]
+    },
+    "v79_q00_q11": {
+      "sha256_required": true,
+      "sha256": "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de",
+      "allowed_roles": ["measurement_statistical_qualification"],
+      "forbidden_roles": ["rare_biology_truth", "regeneration", "mutation"]
+    }
+  }
+}
