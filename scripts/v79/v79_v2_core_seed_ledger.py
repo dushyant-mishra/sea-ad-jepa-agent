@@ -22,17 +22,25 @@ def _refuse(msg: str):
     raise SeedLedgerRefused(f"REFUSED V2_CORE seed ledger: {msg}")
 
 
+def _seed(root: int, world_index: int, gene_index: int, stream: int) -> int:
+    ss = np.random.SeedSequence(entropy=int(root), spawn_key=(int(world_index), int(gene_index), int(stream)))
+    return int(ss.generate_state(1, np.uint32)[0])
+
+
 def expected_fit_entry(contract: Mapping, *, world_index: int, opaque_world_id: str,
                        manifest_sha: str, gene_index: int, part: str) -> dict:
     if part not in {"detection", "positive"}:
         _refuse("unknown part")
     streams = contract["seeds"]["gene_streams"]
-    stream = int(streams["fit_det_primary" if part == "detection" else "fit_pos_primary"])
+    primary_stream = int(streams["fit_det_primary" if part == "detection" else "fit_pos_primary"])
+    escalation_stream = int(streams["fit_det_escalation" if part == "detection" else "fit_pos_escalation"])
     root = int(contract["seeds"]["root"])
-    ss = np.random.SeedSequence(entropy=root, spawn_key=(int(world_index), int(gene_index), stream))
-    seed = int(ss.generate_state(1, np.uint32)[0])
+    primary = _seed(root, world_index, gene_index, primary_stream)
+    escalation = _seed(root, world_index, gene_index, escalation_stream)
+    if primary == escalation:
+        _refuse("primary and escalation seeds unexpectedly collide")
     fid = R.fit_identity(opaque_world_id, manifest_sha, part, gene_index)
-    return {"fit_id": fid, "primary_seed": seed}
+    return {"fit_id": fid, "primary_seed": primary, "escalation_seed": escalation}
 
 
 def build_seed_ledger(contract: Mapping, root_manifest: Mapping, blinded_index: Mapping) -> list[dict]:
