@@ -1,0 +1,4 @@
+launcher_checkout=D:/jepa_wt_td_g7_launchroot_exec_b8fd8421 head=b8fd8421b3ad0e1a4e80c7054aa4d41375966dd4 status=[] utc_launch=2026-10-12T06:41:12Z
+command: bash scripts/v5/run_td_g7_successor_once.sh EXECUTE b8fd8421b3ad0e1a4e80c7054aa4d41375966dd4 c171b91b853e9e136c28c3051cd3baae4e74a1be337f70b3d6ecdb175dd643ed 564dcbf45e360331d4baedb9ca6f0e8b2325390d b1bcc74f3e508fed72669aa323e9b9a8e7ccb4d72050e2dcd8fa9339e1bc1525
+G7_EXIT_CODE=3 (0 PASS, 3 NOT_ESTIMABLE, 2 mismatch/stop, 1 exception; the marker and receipt are authoritative). STOP for external audit.
+launcher_exit=3 utc_end=2026-10-12T06:43:06Z

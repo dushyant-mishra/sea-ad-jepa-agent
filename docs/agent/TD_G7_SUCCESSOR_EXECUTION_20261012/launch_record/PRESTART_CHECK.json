@@ -1,0 +1,26 @@
+{
+  "accepted_g6_receipt_sha256": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+  "g1b_freeze_sha256": "0513421e45865f290bddf8b0be56d64c7d9c5297bf0150ea6b9df286514b5f8f",
+  "g1b_result_sha256": "c450815c0c91f84654ab10ac1d40897d5293c4d109d42f7b6561bdf3eaf7b7f9",
+  "g7_marker_created": false,
+  "g7_premarker_path": "PASS",
+  "hvs_sea_matrices_joined": 34,
+  "r2_prestart_replay": "PASS",
+  "s174_verified_shards": 35,
+  "sample_a_hvs_sea_rows": 23690,
+  "successor_authority_trace": {
+    "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+    "authorization_sha256": "be097fb21f58cbccea6b88cfad531eae4c8fbf3dc05582029f3d7dcc710bf1fa",
+    "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+    "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+    "common_script_sha256": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+    "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+    "g6_script_sha256": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+    "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+    "g7_script_sha256": "275dad00c6bd37ef11a34a376c703b4433ed40eae8d087c4d8f9535f88170412",
+    "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+    "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+    "owner_decision_sha256": "c1bac85b4da9f447590b9f7172fc69f612b878a7ad851fc29f4efd87f2f0eaf1",
+    "preflight_result_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae"
+  }
+}

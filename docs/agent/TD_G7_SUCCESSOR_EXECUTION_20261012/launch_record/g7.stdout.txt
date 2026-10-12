@@ -1,0 +1,1 @@
+{"mismatches": 0, "overlap_cells": 0, "status": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP"}

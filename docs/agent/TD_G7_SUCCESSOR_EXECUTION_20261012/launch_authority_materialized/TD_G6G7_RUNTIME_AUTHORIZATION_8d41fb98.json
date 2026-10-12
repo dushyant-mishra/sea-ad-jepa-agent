@@ -1,0 +1,27 @@
+{
+  "authorization": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+  "biological_replay_authorized": false,
+  "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+  "common_script_sha256": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+  "external_audit_reference": {
+    "classification": "ACCEPT_G7_SUCCESSOR_QUALIFICATION__8d41fb98__PREMARKER_DEFECT_REPAIRED__ACCEPTED_G6_PREDECESSOR_BRIDGE_CONFIRMED__NO_G7_EXECUTION_AUTHORITY_YET",
+    "pr": 296,
+    "review_id": 5486851355
+  },
+  "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+  "g6_execution_authorized": false,
+  "g6_script_sha256": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+  "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+  "g7_script_sha256": "275dad00c6bd37ef11a34a376c703b4433ed40eae8d087c4d8f9535f88170412",
+  "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+  "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+  "owner_decision_sha256": "c1bac85b4da9f447590b9f7172fc69f612b878a7ad851fc29f4efd87f2f0eaf1",
+  "preflight_result_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+  "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+  "schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+  "scope": "TRAIN-only historical A_NATURAL_MIXTURE 25000 cells; exact frozen 9216 TD56-TD59 addresses; HVS/SEA corrected physical-ID reads on exact Sample-A matrices; NPH52 authenticated historical clean-path pass-through; G6/G7 integrity only; no corrected TD biological replay, target selection, TD60, model fitting, EMA, training, TEST, DEV/SEALED, pathology, or external biology",
+  "scope_note": "R1 scope lock (external audit PR #296 review 5486851355): this authority covers the successor G7 run only. G6 must not be executed or rerun under it; the launcher invokes the G7 entrypoint only.",
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}
