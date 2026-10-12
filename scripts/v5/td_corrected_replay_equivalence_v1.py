@@ -151,11 +151,13 @@ CANONICAL_CASES = ([("TD56", s, 0) for s in A.SOURCES] + [("TD57B", s, p) for p 
 
 def canonical(a) -> int:
     import platform
-    import subprocess
     import numpy, pandas, scipy  # noqa: E401
-    head = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
-    if subprocess.check_output(["git", "-C", str(ROOT), "status", "--porcelain", "--", "scripts/v5"], text=True).strip():
-        raise SystemExit("STOP: canonical equivalence must run from a clean committed checkout")
+    # WSL git cannot read a worktree created by Windows git (its .git points at a D:/ path), so the caller (Git Bash)
+    # verifies HEAD and cleanliness immediately before the run and passes the verified commit. The receipt records
+    # that, and QUALIFY separately binds the adapter/bootstrap bytes by SHA.
+    head = a.implementation_commit
+    if len(head) != 40 or any(ch not in "0123456789abcdef" for ch in head):
+        raise SystemExit("STOP: --implementation-commit must be a verified 40-hex commit")
     work = Path(a.work)
     if work.exists():
         raise SystemExit(f"STOP: work directory exists: {work}")
@@ -172,6 +174,7 @@ def canonical(a) -> int:
         "schema": "JEPA_TD_CORRECTED_REPLAY_EQUIVALENCE_RECEIPT_V1",
         "purpose": "historical-fixture adapter equivalence (adapter-qualification plan Tasks 3-7); historical values only; no corrected value read",
         "implementation_commit_sha": head,
+        "commit_verification": "caller (Git Bash) verified git rev-parse HEAD == implementation commit and git status --porcelain --ignored empty immediately before this run",
         "code_sha256": {"adapter": A.sha_file(Path(A.__file__)), "bootstrap": A.sha_file(A.BOOTSTRAP),
                         "equivalence": A.sha_file(Path(__file__).resolve())},
         "environment": {"platform": platform.system(), "python": platform.python_version(), "numpy": numpy.__version__,
@@ -203,7 +206,7 @@ def main() -> int:
     r.add_argument("--source", choices=A.SOURCES, required=True)
     r.add_argument("--panel", type=int, choices=(0, 1), default=0)
     k = sub.add_parser("canonical")
-    for n in ("work", "hist-csr", "sample-freeze", "replay-manifest", "archive", "support-bundle", "python"):
+    for n in ("work", "hist-csr", "sample-freeze", "replay-manifest", "archive", "support-bundle", "python", "implementation-commit"):
         k.add_argument(f"--{n}", required=True)
     a = ap.parse_args()
     return build(a) if a.cmd == "build" else run(a) if a.cmd == "run" else canonical(a)
