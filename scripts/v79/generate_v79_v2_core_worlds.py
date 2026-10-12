@@ -2,8 +2,19 @@
 """Deterministic V79 V2_CORE synthetic-world generator primitives.
 
 Engineering only until a separate controller realization-authorization receipt exists.
-The final Contract V2 plus the prospective Q10/Q11 pairing amendment define the
-world semantics. Neither authority alone permits realized world bytes.
+The canonical final Contract V2 (PR #290, SHA-256 57e19295...) plus the prospective Q10/Q11 pairing amendment
+define the world semantics. Neither authority alone permits realized world bytes.
+
+Authority (controller rebind ruling 6115340528): the contract is obtained only through PR #290's
+v79_v2_core_launch.require_launch_authority(). This module keeps no competing contract validator. The
+non-canonical PR #289 contract is named once, as OBSOLETE_CONTRACT_SHA256, and only so that it can be refused.
+
+Pre-realization repairs (controller audit at PR #291 312bb302):
+- donor-strength worlds rescale the realized donor-effect arrays from one canonical latent field
+  (donor_raw_centered); a truth object without it is refused;
+- the detection intercept is solved per world after modifications and the structural-support mask, over
+  measured cells only (build_world_truth);
+- source codes follow canonical metadata (SOURCE_CODES, verified by source_code_mapping).
 """
 from __future__ import annotations
 
@@ -13,13 +24,26 @@ import json
 from pathlib import Path
 from typing import Any
 
+import sys
+
 import numpy as np
 
-FINAL_CONTRACT_SHA256 = "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import v79_v2_core_launch as L  # noqa: E402  (PR #290: the single launch-authority gate)
+import v79_v2_core_observation as O  # noqa: E402
+import v79_v2_core_planting as P  # noqa: E402
+
+FINAL_CONTRACT_SHA256 = L.FINAL_CONTRACT_SHA256
+OBSOLETE_CONTRACT_SHA256 = "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d"  # refused, never authority
 QUALIFICATION_PAYLOAD_SHA256 = "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3"
-PAIRING_AMENDMENT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json"
-PAIRING_AMENDMENT_SHA256 = "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c"
+PAIRING_AMENDMENT_REL = ("results/v79/v2_core_qualification_amendments/"
+                         "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json")
+PAIRING_AMENDMENT_SHA256 = "57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5"
+PAIRING_CONTROLLER_COMMENT = 6114906562
+REBIND_CONTROLLER_COMMENT = 6115340528
 REALIZATION_AUTH_SCHEMA = "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1"
+SOURCE_CODES = {"HVS": 0, "NPH52": 1, "SEA_AD": 2}
+CONTRACT_DIR = "results/v79/v2_core_qualification"
 
 
 def seed_for(*, world_index: int, gene_index: int, stream: int, root: int) -> int:
@@ -27,8 +51,47 @@ def seed_for(*, world_index: int, gene_index: int, stream: int, root: int) -> in
     return int(ss.generate_state(1, dtype=np.uint32)[0])
 
 
+def load_launch_contract(root: Path) -> tuple[dict, dict]:
+    """Canonical Contract V2 through the PR #290 gate, plus its immutable scientific payload (the accepted draft).
+
+    The payload's worlds/seeds/gates/priors/model must equal the contract's; any difference STOPs."""
+    root = Path(root)
+    contract = L.require_launch_authority(root / CONTRACT_DIR / L.FINAL_CONTRACT_NAME, root=root)
+    if contract.get("finalization", {}).get("from_accepted_draft_sha256") != QUALIFICATION_PAYLOAD_SHA256:
+        raise SystemExit("STOP: canonical contract does not derive from the immutable payload")
+    draft = contract["accepted_evidence"]["contract_v2_draft"]
+    raw = (root / draft["path"]).read_bytes()
+    if draft["sha256"] != QUALIFICATION_PAYLOAD_SHA256 or hashlib.sha256(raw).hexdigest() != QUALIFICATION_PAYLOAD_SHA256:
+        raise SystemExit("STOP: immutable qualification payload hash mismatch")
+    payload = json.loads(raw)
+    for key in ("worlds", "seeds", "gates", "priors", "model"):
+        if payload.get(key) != contract.get(key):
+            raise SystemExit(f"STOP: payload and canonical contract disagree on {key}")
+    return contract, payload
+
+
+def validate_pairing_amendment_content(a: dict) -> dict:
+    if a.get("schema") != "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1":
+        raise SystemExit("STOP: wrong pairing amendment schema")
+    if a.get("controller_comment") != PAIRING_CONTROLLER_COMMENT or a.get("rebind_controller_comment") != REBIND_CONTROLLER_COMMENT:
+        raise SystemExit("STOP: pairing amendment controller binding mismatch")
+    if a.get("final_contract_sha256") == OBSOLETE_CONTRACT_SHA256:
+        raise SystemExit("STOP: pairing amendment is bound to the obsolete non-canonical contract")
+    if a.get("final_contract_sha256") != FINAL_CONTRACT_SHA256 or a.get("qualification_payload_sha256") != QUALIFICATION_PAYLOAD_SHA256:
+        raise SystemExit("STOP: pairing amendment authority binding mismatch")
+    if a.get("worlds_generated_at_freeze") != 0 or a.get("qualification_fits_at_freeze") != 0:
+        raise SystemExit("STOP: pairing amendment was not frozen pre-outcome")
+    if a.get("authorization", {}).get("world_realization") is not False:
+        raise SystemExit("STOP: pairing amendment may not itself authorize realization")
+    pair = a.get("paired_counterfactual", {})
+    if pair.get("all_q11_gates_remain") != "HARD_FAIL" or \
+            {int(v) for v in pair.get("q11_new_randomness_only", {}).values()} != {22, 23}:
+        raise SystemExit("STOP: pairing amendment semantics changed")
+    return a
+
+
 def load_pairing_amendment(root: Path) -> dict:
-    path = root / PAIRING_AMENDMENT_REL
+    path = Path(root) / PAIRING_AMENDMENT_REL
     if not path.exists():
         raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
     raw = path.read_bytes()
@@ -38,18 +101,42 @@ def load_pairing_amendment(root: Path) -> dict:
     sidecar = path.with_suffix(".sha256")
     if not sidecar.exists() or sidecar.read_text(encoding="utf-8").strip() != f"{digest}  {path.name}":
         raise SystemExit("STOP: Q10/Q11 pairing amendment sidecar mismatch")
-    a = json.loads(raw)
-    if a.get("schema") != "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1":
-        raise SystemExit("STOP: wrong pairing amendment schema")
-    if a.get("controller_comment") != 6114906562:
-        raise SystemExit("STOP: pairing amendment controller binding mismatch")
-    if a.get("final_contract_sha256") != FINAL_CONTRACT_SHA256 or a.get("qualification_payload_sha256") != QUALIFICATION_PAYLOAD_SHA256:
-        raise SystemExit("STOP: pairing amendment authority binding mismatch")
-    if a.get("worlds_generated_at_freeze") != 0 or a.get("qualification_fits_at_freeze") != 0:
-        raise SystemExit("STOP: pairing amendment was not frozen pre-outcome")
-    if a.get("authorization", {}).get("world_realization") is not False:
-        raise SystemExit("STOP: pairing amendment may not itself authorize realization")
-    return a
+    return validate_pairing_amendment_content(json.loads(raw))
+
+
+def source_code_mapping(root: Path) -> dict[str, int]:
+    """Source name -> design code, from canonical metadata: the S174 operator bridge (operator -> source name)
+    joined to the authenticated S174 design-only arrays (operator -> source code)."""
+    root = Path(root)
+    bridge = L.ACCEPTED_EVIDENCE["s174_operator_bridge"]
+    braw = (root / bridge["path"]).read_bytes()
+    if hashlib.sha256(braw).hexdigest() != bridge["sha256"]:
+        raise SystemExit("STOP: S174 operator bridge hash mismatch")
+    op_source = {}
+    for r in json.loads(braw)["rows"]:
+        op_source.setdefault(int(r["operator_index"]), set()).add(str(r["source"]))
+    design = load_s174_design(root)
+    mapping: dict[str, set] = {}
+    for o in np.unique(design["op"]):
+        names = op_source.get(int(o), set())
+        if len(names) != 1:
+            raise SystemExit(f"STOP: operator {int(o)} has no unique bridge source")
+        mapping.setdefault(next(iter(names)), set()).update(int(c) for c in np.unique(design["src"][design["op"] == o]))
+    if any(len(v) != 1 for v in mapping.values()) or len({next(iter(v)) for v in mapping.values()}) != len(mapping):
+        raise SystemExit(f"STOP: source names and codes are not a bijection: {mapping}")
+    return {k: next(iter(v)) for k, v in sorted(mapping.items(), key=lambda kv: next(iter(kv[1])))}
+
+
+def load_s174_design(root: Path) -> dict[str, np.ndarray]:
+    """The authenticated value-blind S174 design (contract input s174_design_only)."""
+    rec = L.ACCEPTED_EVIDENCE["s174_design_only"]
+    path = Path(root) / "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz"
+    if hashlib.sha256(path.read_bytes()).hexdigest() != rec["sha256"]:
+        raise SystemExit("STOP: S174 design-only hash mismatch")
+    with np.load(path, allow_pickle=False) as z:
+        return {"src": np.asarray(z["src"], np.int64), "donor": np.asarray(z["donor"], np.int64),
+                "cls": np.asarray(z["cls"], np.int64), "op": np.asarray(z["op"], np.int64),
+                "log_lib": np.asarray(z["log_lib_centered"], np.float64)}
 
 
 def effective_seed_world_index(world_index: int, stream: int, amendment: dict) -> int:
@@ -131,22 +218,26 @@ def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, wo
     sources = np.sort(np.unique(src))
 
     if n_struct == 5:
+        # Source identities come from canonical metadata (SOURCE_CODES = source_code_mapping), never an assumed order.
+        if sorted(int(s) for s in sources) != sorted(SOURCE_CODES.values()):
+            raise SystemExit("STOP: frozen support rule requires the three canonical source codes")
+        name_of = {code: name for name, code in SOURCE_CODES.items()}
         # 1) one gene measured in exactly one source, source selected uniformly.
         g = structural_genes[0]
         keep = int(rng.choice(sources))
         support[:, g] = src == keep
 
-        # 2) three genes each fully absent in one source, weighted 38:20:10 (HVS:NPH52:SEA_AD).
-        weights = np.asarray([38.0, 20.0, 10.0], dtype=float)
-        if len(sources) != 3:
-            raise SystemExit("STOP: frozen support rule requires three sources")
+        # 2) three genes each fully absent in one source, weighted by the frozen per-source-name counts
+        #    (HVS:NPH52:SEA_AD = 38:20:10), mapped to codes through SOURCE_CODES.
+        weights = np.asarray([float(rule["one_source_absent_probabilities"][name_of[int(s)]]) for s in sources],
+                             dtype=float)
         weights /= weights.sum()
         for g in structural_genes[1:4]:
             absent = int(rng.choice(sources, p=weights))
             support[:, g] = src != absent
 
         # 3) one partial gene: exactly floor(7/2)=3 of NPH52's 7 matrices absent.
-        nph52 = int(sources[1])
+        nph52 = int(SOURCE_CODES["NPH52"])
         nph_ops = np.unique(op[src == nph52])
         if len(nph_ops) != 7:
             raise SystemExit(f"STOP: frozen partial-support rule requires 7 NPH52 matrices, got {len(nph_ops)}")
@@ -163,11 +254,13 @@ def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, wo
 
 
 def _rescale_donor_effects(part: dict, new_sd: np.ndarray) -> None:
+    """Realized donor effects = canonical latent field x donor SD, for every gene. The canonical latent field is
+    donor_raw_centered (build_donor_effects 'raw_centered'); a truth object without it is refused, so a world can
+    never change its recorded donor SD while keeping baseline-magnitude effects."""
+    if "donor_raw_centered" not in part:
+        raise SystemExit("STOP: donor rescale requires the canonical latent field donor_raw_centered")
     part["donor_sd"] = np.asarray(new_sd, dtype=float)
-    if "donor_z" in part:
-        part["donor_effects"] = np.asarray(part["donor_z"], dtype=float) * part["donor_sd"][None, :]
-    elif np.all(part["donor_sd"] == 0):
-        part["donor_effects"] = np.zeros_like(np.asarray(part["donor_effects"], dtype=float))
+    part["donor_effects"] = np.asarray(part["donor_raw_centered"], dtype=float) * part["donor_sd"][None, :]
 
 
 def _sparse_prevalence(G: int, world_index: int, payload: dict) -> np.ndarray:
@@ -223,6 +316,91 @@ def apply_world_modifications(base_truth: dict, world_def: dict, payload: dict) 
         out["positive"]["sigma"] = np.full(G, float(fixed["tail_sigma"]))
 
     return out
+
+
+def build_world_designs(root: Path, payload: dict) -> dict[str, dict[str, np.ndarray]]:
+    """BASE (shared key [100,0,0], S174 sizes) for Q00-Q09 and the exact S174 arrays for Q10/Q11."""
+    s174 = load_s174_design(root)
+    donors_per_source = tuple(int(len(np.unique(s174["donor"][s174["src"] == c]))) for c in sorted(SOURCE_CODES.values()))
+    if donors_per_source != (62, 19, 68):
+        raise SystemExit(f"STOP: S174 donors per source {donors_per_source} differ from the contract (62, 19, 68)")
+    base = P.build_base_design(s174, donors_per_source=donors_per_source, root=int(payload["seeds"]["root"]))
+    return build_designs(payload, base_design=base, s174_design=s174)
+
+
+def detection_nonintercept_predictor(design: dict[str, np.ndarray], det: dict) -> np.ndarray:
+    """Detection linear predictor without intercept, donor effects and operator offsets (the contract's
+    intercept-solve predictor; operator offsets are excluded so Q11 keeps Q10's non-operator truth)."""
+    z, q = O.depth_basis(design["log_lib"])
+    cls = np.asarray(design["cls"], dtype=np.int64)
+    src = np.asarray(design["src"], dtype=np.int64)
+    Hc = O.normalized_helmert(3)
+    Hs = O.normalized_helmert(3)
+    eta = z[:, None] * np.asarray(det["depth1"], float)[None, :] + q[:, None] * np.asarray(det["depth2"], float)[None, :]
+    eta = eta + Hc[cls] @ np.asarray(det["class_contrasts"], float).T + Hs[src] @ np.asarray(det["source_contrasts"], float).T
+    return eta
+
+
+def solve_detection_intercept_for_gene(nonintercept: np.ndarray, measured: np.ndarray, target: float) -> float:
+    """Intercept so that mean expit over MEASURED cells equals the planted prevalence; unmeasured cells never enter."""
+    return P.solve_detection_intercept(np.asarray(nonintercept, float), np.asarray(measured, bool),
+                                       target_prevalence=float(target))
+
+
+def _src_by_donor(design: dict[str, np.ndarray]) -> np.ndarray:
+    donor = np.asarray(design["donor"], dtype=np.int64)
+    src = np.asarray(design["src"], dtype=np.int64)
+    out = np.full(int(donor.max()) + 1, -1, dtype=np.int64)
+    for d in range(len(out)):
+        s = np.unique(src[donor == d])
+        if len(s) != 1:
+            raise SystemExit(f"STOP: donor {d} does not belong to exactly one source")
+        out[d] = int(s[0])
+    return out
+
+
+def build_world_truth(payload: dict, cal: dict, designs: dict[str, dict[str, np.ndarray]], world_def: dict,
+                      amendment: dict) -> dict:
+    """In-memory planted truth for one world (no disk emission).
+
+    Order (controller audit 312bb302): plant (LHS) -> donor latent field and effects -> frozen world modifications
+    (donor effects rescaled from the latent field) -> structural-support mask -> detection intercept solved per gene
+    over measured cells from the final non-donor predictor -> Q11 operator offsets (streams 22/23). For Q11 every
+    non-operator stream uses Q10's world index (pairing amendment), so Q11's non-operator truth equals Q10's.
+    """
+    wi = int(world_def["index"])
+    name = str(world_def["name"])
+    root = int(payload["seeds"]["root"])
+    G = int(payload["worlds"]["genes_per_world"])
+    design = designs[name]
+    parent = effective_seed_world_index(wi, 50, amendment)
+    plant = P.build_q00_planting(cal, payload, world_index=parent, G=G)
+    sbd = _src_by_donor(design)
+    truth = {}
+    for part in ("detection", "positive"):
+        don = P.build_donor_effects(sbd, plant[part]["donor_sd"], world_index=parent, part=part, root=root)
+        truth[part] = {**{k: np.asarray(v) for k, v in plant[part].items()},
+                       "donor_raw_centered": don["raw_centered"], "donor_effects": don["effects"],
+                       "factor_loading": don["lambda"]}
+    truth = apply_world_modifications(truth, world_def, payload)
+    support = build_structural_support(payload, design, world_index=wi, amendment=amendment)
+    nonint = detection_nonintercept_predictor(design, truth["detection"])
+    truth["detection"]["intercept"] = np.asarray(
+        [solve_detection_intercept_for_gene(nonint[:, g], support[:, g], truth["detection"]["prevalence"][g])
+         for g in range(G)], dtype=float)
+    offsets = None
+    if world_def.get("modifications", {}).get("operator") == "omitted_perturbation":
+        offsets = {part: np.column_stack([
+            generate_operator_offsets(design, donor_sd=float(truth[part]["donor_sd"][g]), world_index=wi, gene_index=g,
+                                      part=part, payload=payload, amendment=amendment) for g in range(G)])
+            for part in ("detection", "positive")}
+    return {"world": name, "world_index": wi, "seed_parent_world_index": parent, "detection": truth["detection"],
+            "positive": truth["positive"], "support": support, "operator_offsets": offsets}
+
+
+def non_operator_truth_sha(world_truth: dict) -> str:
+    return scientific_truth_sha({"detection": world_truth["detection"], "positive": world_truth["positive"],
+                                 "support": world_truth["support"]})
 
 
 def generate_operator_offsets(design: dict[str, np.ndarray], *, donor_sd: float, world_index: int,

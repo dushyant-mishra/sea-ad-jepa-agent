@@ -85,6 +85,16 @@ def truths(test_payload, designs):
             for w in test_payload["worlds"]["world_list"]}
 
 
+@pytest.fixture(scope="module")
+def unmodified(test_payload, designs):
+    """Each world's own planting with its modifications switched off (same world index, same seeds). Each world
+    draws its own Latin-hypercube and donor latent values, so the counterfactual for a modification is the same
+    world without it, never Q00."""
+    amendment = G.load_pairing_amendment(ROOT)
+    return {w["name"]: G.build_world_truth(test_payload, CAL, designs, {**w, "modifications": {}}, amendment)
+            for w in test_payload["worlds"]["world_list"]}
+
+
 # ------------------------------------------------------------------------------------ canonical authority rebind
 def test_generator_obtains_the_canonical_contract_only_through_the_launch_gate(launch):
     contract, payload = launch
@@ -160,9 +170,9 @@ def test_baseline_donor_effects_use_the_canonical_latent_field(truths):
 
 
 @pytest.mark.parametrize("world,key", [("Q01_WEAK_DONOR", "weak_donor_sd"), ("Q02_STRONG_DONOR", "strong_donor_sd")])
-def test_donor_strength_worlds_rescale_the_realized_effects(test_payload, truths, world, key):
+def test_donor_strength_worlds_rescale_the_realized_effects(test_payload, truths, unmodified, world, key):
     fm = test_payload["worlds"]["planting_magnitudes"]["fixed_magnitudes"][key]
-    base = truths["Q00_BASELINE"]
+    base = unmodified[world]                                         # the same world without the modification
     for part in ("detection", "positive"):
         t = truths[world][part]
         assert np.all(t["donor_sd"] == fm[part])
@@ -170,13 +180,14 @@ def test_donor_strength_worlds_rescale_the_realized_effects(test_payload, truths
         assert np.array_equal(t["donor_raw_centered"], base[part]["donor_raw_centered"])   # same latent draws
         ratio = t["donor_effects"].std(axis=0) / base[part]["donor_effects"].std(axis=0)
         assert np.allclose(ratio, fm[part] / base[part]["donor_sd"], rtol=1e-12)
-    assert not np.allclose(truths[world]["detection"]["donor_effects"], base["detection"]["donor_effects"])
+        assert not np.allclose(t["donor_effects"], base[part]["donor_effects"])
 
 
-def test_donor_absent_world_has_exactly_zero_donor_effects(truths):
+def test_donor_absent_world_has_exactly_zero_donor_effects(truths, unmodified):
     for part in ("detection", "positive"):
         t = truths["Q07_DONOR_ABSENT"][part]
         assert np.all(t["donor_sd"] == 0) and np.count_nonzero(t["donor_effects"]) == 0
+        assert np.count_nonzero(unmodified["Q07_DONOR_ABSENT"][part]["donor_effects"]) > 0
 
 
 def test_rescale_refuses_a_truth_object_without_the_canonical_latent_field(test_payload):
@@ -203,10 +214,12 @@ def test_sparse_world_realizes_its_sparse_prevalence(truths):
     assert np.all(t["intercept"] < truths["Q00_BASELINE"]["detection"]["intercept"].max())
 
 
-def test_intercepts_are_solved_after_modifications(truths):
-    q00, q04 = truths["Q00_BASELINE"]["detection"], truths["Q04_SOURCE_ABSENT"]["detection"]
-    assert np.array_equal(q04["prevalence"], q00["prevalence"])      # same planted target, different predictor
-    assert not np.allclose(q04["intercept"], q00["intercept"])
+@pytest.mark.parametrize("world", ["Q03_WEAK_SOURCE", "Q04_SOURCE_ABSENT", "Q05_CLASS_ABSENT",
+                                   "Q06_QUADRATIC_DEPTH_ABSENT"])
+def test_intercepts_are_solved_after_modifications(truths, unmodified, world):
+    mod, raw = truths[world]["detection"], unmodified[world]["detection"]
+    assert np.array_equal(mod["prevalence"], raw["prevalence"])      # same planted target, changed predictor
+    assert not np.allclose(mod["intercept"], raw["intercept"])       # so the intercept must be re-solved
 
 
 def test_unmeasured_cells_never_enter_the_intercept_solve(designs, truths):
