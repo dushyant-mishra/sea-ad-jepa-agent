@@ -22,7 +22,6 @@ def _fixture(part="detection",missing_source=False):
        "donor_sd":np.ones(shape)*0.5,"donor_raw":np.ones(shape+(2,))}
     if part=="detection": s.update(beta_depth1=np.ones(shape)*.2,beta_depth2=np.ones(shape)*-.1)
     else: s.update(gamma_depth1=np.ones(shape)*.2,gamma_depth2=np.ones(shape)*-.1,sigma=np.ones(shape)*.7)
-    # make source contrasts nonzero/correlated with alpha so derived-intercept summary must use joint draws
     s["source_contrasts"][...,0]=np.arange(n).reshape(shape)/20
     src=np.array([0,1,0,1] if missing_source else [0,1,2,0])
     data={"class_basis":_helmert3(),"source_basis":_helmert3(),
@@ -39,6 +38,7 @@ def test_all_factor_levels_score_frozen_helmert_contrasts():
     assert out["quantities"]["class"]["labels"]==["helmert_0","helmert_1"]
     assert out["quantities"]["source"]["labels"]==["helmert_0","helmert_1"]
     assert out["quantities"]["depth1"]["mean"]==[0.2]
+    assert set(out["quantities"]["depth1"])=={"labels","mean","sd","q005","q025","q05","q50","q95","q975","q995"}
 
 
 def test_missing_factor_level_scores_differences_and_joint_identified_intercept():
@@ -46,11 +46,15 @@ def test_missing_factor_level_scores_differences_and_joint_identified_intercept(
     out=I.scoring_ready_summary(s,d,part="detection")
     assert out["identification"]["source"]=={"mode":"level_differences","observed_levels":[0,1],"reference_level":0}
     assert out["quantities"]["source"]["labels"]==["level_1_minus_0"]
-    # direct joint-draw calculation for the identified intercept
     alpha=s["alpha"].reshape(-1); sc=s["source_contrasts"].reshape(-1,2); effects=sc@d["source_basis"].T
-    direct=alpha+effects[:,[0,1]].mean(axis=1)  # class effects are zero
+    direct=alpha+effects[:,[0,1]].mean(axis=1)
     assert np.isclose(out["quantities"]["intercept"]["mean"][0],direct.mean())
     assert np.isclose(out["quantities"]["intercept"]["sd"][0],direct.std(ddof=1))
+    q=out["quantities"]["intercept"]
+    assert np.isclose(q["q005"][0],np.quantile(direct,.005))
+    assert np.isclose(q["q025"][0],np.quantile(direct,.025))
+    assert np.isclose(q["q975"][0],np.quantile(direct,.975))
+    assert np.isclose(q["q995"][0],np.quantile(direct,.995))
 
 
 def test_donor_effects_include_only_informative_donors_and_positive_sigma():
