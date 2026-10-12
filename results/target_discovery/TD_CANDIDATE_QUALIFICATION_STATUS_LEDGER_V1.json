@@ -1,0 +1,134 @@
+{
+  "schema": "TD_CANDIDATE_QUALIFICATION_STATUS_LEDGER_V1",
+  "date": "2026-10-12",
+  "status": "AUDITED_STATUS_LEDGER__NO_NEW_BIOLOGICAL_AUTHORITY",
+  "purpose": "Consolidate the already-completed target-discovery qualification work so historical evidence, current authority, dependencies and remaining gates are not confused or repeated.",
+  "hard_boundary": "TARGET_PORTFOLIO_NONE_SELECTED__REPRESENTATION_NONE_SELECTED__TD60_OFF__STAGE4_OFF__TRAINING_OFF",
+  "governing_prefreeze": {
+    "multitarget_spec": "docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md",
+    "c6_extension": "docs/superpowers/specs/2026-10-12-td-c6-shared-query-composite-v1.md",
+    "qualified_decision_machinery_pr": 275,
+    "qualified_code_head": "e8dda431b03e9365d764665fea80c111ee053710",
+    "qualification_tests": "322 passed / 0 failed / 0 errors"
+  },
+  "qualification_semantics": {
+    "historical_evidence": "May constrain interpretation and avoid repeated work but does not by itself restore current authority after the corrected-substrate defect.",
+    "current_authority": "Requires exact current qualifying evidence under the prospectively frozen gate system.",
+    "not_estimable": "Never silently converted to FAIL or PASS.",
+    "portfolio_rule": "Multiple blocks may remain qualified if complementary; no rule forces a single target winner.",
+    "rare_common_rule": "Rare/common biology preservation is one cross-cutting target-quality property, not a separate target lane."
+  },
+  "candidate_status": {
+    "C1_SHARED_EMERGENT": {
+      "role": "shared/global biological state block",
+      "dependency": "none",
+      "historical_support": [
+        "Real-TRAIN global-state work established a biologically interpretable shared-state program with donor/operator-aware auditing.",
+        "Stage81A3/A3R and foundation work supplied shared-state recurrence, support, stability and observation-operator concepts.",
+        "Historical relational work also demonstrates that nontrivial shared cross-view geometry exists, but relational evidence is not required for C1 by definition."
+      ],
+      "already_qualified_infrastructure": ["G1-G12 + S1-S3 gate inheritance is machine-frozen", "candidate routing", "precision/dependence guards", "protected head-to-head", "zero/one/many convergence"],
+      "current_biological_authority": "UNRESOLVED__REAL_C1_GATE_RECEIPT_NOT_YET_COMPLETE",
+      "replay_dependency": "NONE",
+      "remaining_decisive_work": [
+        "instantiate exact real C1 gate evidence under the frozen tournament population/lineage",
+        "apply donor-primary recurrence/source/operator/depth/support controls",
+        "apply unified rare/common biology preservation requirement",
+        "apply transfer/abstention and shortcut falsifiers"
+      ],
+      "do_not_repeat": ["basic global-state architecture invention", "observation-operator rationale", "generic rare-vs-common lane split"]
+    },
+    "C2_RELATIONAL_SHARED": {
+      "role": "shared state plus explicit broad/mesoscale relational biology",
+      "dependency": "C1 plus corrected relational replay viability",
+      "historical_support": [
+        "TD56 historical positive relational recovery.",
+        "TD57B prospective 24/24 PASS across two panels, HVS/NPH52/SEA-AD, donor splits and halves.",
+        "TD57C prospective fine nearest-third FAIL; hard fine-locality is not qualified.",
+        "TD59 prospective nearest-half mesoscale 24/24 PASS; nearest-half is a pilot bracket, not a production constant."
+      ],
+      "current_biological_authority": "PENDING_CORRECTED_REPLAY",
+      "replay_dependency": "DIRECT__PR310_TD56_TD57B_TD57C_TD59",
+      "current_interpretive_constraint": "Historical evidence supports broad/mesoscale relational biology but current target authority was suspended by the corrected-substrate mapping defect.",
+      "remaining_decisive_work": [
+        "consume audited PR310 corrected replay only",
+        "if replay keeps C2 active, run C1 inheritance plus R1-R4 and unified rare/common preservation",
+        "if replay FAIL eliminates C2, do not rescue with downstream multimodal/regulatory evidence",
+        "if replay NOT_ESTIMABLE, keep C2 unresolved rather than failed"
+      ],
+      "do_not_repeat": ["TD56/57B/57C/59 redesign", "nearest-third rescue", "new locality search during replay"]
+    },
+    "C3_QUERY_MEASURED": {
+      "role": "query-conditioned measured contextual biological state block",
+      "dependency": "none",
+      "historical_support": [
+        "R5 established the correct rich-teacher / poorer-student scientific question and structured target semantics.",
+        "Local contextual candidate work demonstrated monotonic evidence convergence, singleton-mask validity, query-self leakage sensitivity and resistance to destructive trajectory effects.",
+        "Query-information guard and lineage machinery are already part of the qualified tournament scaffold."
+      ],
+      "current_biological_authority": "UNRESOLVED__REAL_C3_GATE_RECEIPT_NOT_YET_COMPLETE",
+      "replay_dependency": "NONE",
+      "remaining_decisive_work": [
+        "execute exact C3 G1-G8,G10-G12 plus Q1-Q8 receipts on the frozen real tournament surface",
+        "prove increment beyond q-count-only, q-address-only, query-agnostic, wrong-q and technical+q controls",
+        "apply unified rare/common biology preservation, donor/source transfer and support/abstention"
+      ],
+      "do_not_repeat": ["teacher-vs-student objective redesign", "query masking semantics invention", "local exploratory candidate search unless frozen C3 fails"]
+    },
+    "C6_SHARED_QUERY_COMPOSITE": {
+      "role": "shared + query portfolio/fused implementation without relational constraint",
+      "dependency": "C1 and C3 must both qualify",
+      "historical_support": ["Prospectively added before corrected replay outcomes to close the C1+C3 factorial cell and prevent post-hoc redefinition."],
+      "current_biological_authority": "BLOCKED_ON_C1_AND_C3_QUALIFICATION",
+      "replay_dependency": "NONE",
+      "remaining_decisive_work": [
+        "inherit every applicable C1 and C3 gate without compensation",
+        "run C6_INCREMENT_OVER_C1_C3 prospectively",
+        "verify fusion preserves both shared and query biology including rare/common regimes",
+        "verify no transfer, shortcut, coverage or uncertainty-separation regression"
+      ],
+      "synthetic_note": "Existing V79 C6 extension binds falsifiers but does not provide planted truth for the biological C6 increment unless separately prospectively planted.",
+      "do_not_repeat": ["rejustify why C6 exists", "make C6 relationally dependent"]
+    },
+    "C4_STRUCTURED_COMPOSITE": {
+      "role": "shared + query + relational portfolio/fused implementation",
+      "dependency": "C2 and C3, with C1 inherited through C2",
+      "historical_support": ["Prospectively defined incumbent composite hypothesis; no constituent may compensate for another failing or remaining unresolved."],
+      "current_biological_authority": "BLOCKED_ON_C2_REPLAY_AND_C3_QUALIFICATION",
+      "replay_dependency": "DIRECT_THROUGH_C2",
+      "remaining_decisive_work": [
+        "only if C2 remains active and C3 qualifies, inherit the union of all constituent gates",
+        "compare relational increment against C6 rather than rewarding component count",
+        "run C4_INCREMENT_OVER_CONSTITUENTS with donor-primary estimands",
+        "verify no loss of rare/common biology, transfer, support or uncertainty calibration"
+      ],
+      "do_not_repeat": ["allow C4 to rescue failed C2 or C3", "treat larger composite as automatically superior"]
+    },
+    "C5_REGULATORY_SPECIALIST": {
+      "role": "regulatory/chromatin specialist block",
+      "dependency": "independent specialist qualification; cannot rescue foundation failure",
+      "historical_support": [
+        "Stage75F/SCENIC+ supplies regulatory-program and motif evidence.",
+        "Stage73R controls show graph topology itself is not yet specifically qualified: graph beat no-graph but did not beat target-shuffled/STRING controls.",
+        "PR311 Stage75 tail work supplies donor-recurrent STAT1/SPI1-priority biological leads but not causal or target-selection authority."
+      ],
+      "current_biological_authority": "SPECIALIST_UNRESOLVED__NO_VALIDATED_GRN_OR_CAUSAL_AUTHORITY",
+      "replay_dependency": "NONE",
+      "remaining_decisive_work": [
+        "apply G1-G5,G10-G12 and M1-M4 under specialist rules",
+        "use same-nucleus GSE214979 after RNA target/program freeze to classify regulatory increments as recoverable, stochastic or teacher-private",
+        "use Morabito donor-level recurrence and SCENIC+/motif evidence only within their claim boundaries",
+        "retain causal claim false until perturbational evidence qualifies it"
+      ],
+      "do_not_repeat": ["hard-wire unqualified graph topology", "call SCENIC+ a truth set", "use C5 to rescue foundation failure"]
+    }
+  },
+  "cross_cutting_gates_added_by_current_integration": {
+    "rare_common_preservation": "Every active foundation block must preserve reproducible rare as well as common biology relevant to its scope; rarity is not a separate candidate family.",
+    "source_operator_decomposition": "Program identity, source prevalence/amplitude and observation support remain separate.",
+    "multimodal_reconciliation": "Post-freeze GSE214979/Morabito/SCENIC evidence characterizes/falsifies biological interpretation and teacher recoverability; it does not retrospectively choose the RNA target.",
+    "portfolio_complementarity": "Surviving blocks are tested for non-redundant lawful biological information and destructive interference before portfolio freeze."
+  },
+  "next_state_transition": "AUDITED_PR310_REPLAY_RESULT -> UPDATE_C2_C4 -> EXECUTE_FROZEN_REAL_GATE_RECEIPTS_FOR_C1_C3_AND_ACTIVE_RELATIONAL_CANDIDATES -> C6/C4_INCREMENT_TESTS_IF_DEPENDENCIES_PASS -> PORTFOLIO_CONVERGENCE",
+  "non_authority_statement": "This ledger inventories evidence and remaining work; it grants no new execution, target selection, representation, TD60, Stage4 or training authority."
+}
