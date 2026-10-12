@@ -18,7 +18,11 @@ package and validated fresh replay-only authority including the external launch-
   4. Every invocation's exit code, stdout/stderr/output SHAs and frozen outcome class are recorded exactly. Exit 0/2
      counts as PASS/FAIL only when the executor's own written result says so for this source and panel. A
      NOT_ESTIMABLE or IMPLEMENTATION_FAILURE is preserved, never coerced.
-  5. Per-stage receipts, the bundle receipt and the routing V2 projection under the ratified rule are written.
+  5. Per-stage receipts, the bundle receipt and the routing V2 projection under the ratified rule are written. Per
+     stage, the bundle also records universal qualification and source evidence descriptively: observed per-source
+     outcomes, source/panels the sequential stop left unobserved (missing evidence, never agreement), and same-panel
+     PASS/FAIL threshold discordance (failure to establish universality, never source heterogeneity). Source
+     heterogeneity stays unresolved: no prospectively frozen direct between-source test exists for this replay.
 No G6/G7 command, target tournament, TD60, Stage 4 or training is reachable from here.
 """
 from __future__ import annotations
@@ -41,6 +45,8 @@ HISTORICAL_STAGE_STATUS = {"TD56": "PASS", "TD57B": "PASS", "TD57C": "FAIL", "TD
 ROUTABLE = ("PASS", "FAIL", "NOT_ESTIMABLE")
 ROUTING_INPUT = "CORRECTED_REPLAY_ROUTING_INPUT_V2.json"
 NOT_PROJECTED = "NOT_PROJECTED__IMPLEMENTATION_FAILURE"
+SOURCE_HETEROGENEITY = "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST"
+UNOBSERVED = "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP"
 
 
 def tag(stage: str, source: str, panel) -> str:
@@ -109,20 +115,39 @@ def historical_comparison(stage: str, status: str) -> str:
             else "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED")
 
 
-def universal_source(stages: dict) -> str:
-    """Ratification-pending routing rule. A source disagreement is a PASS and a FAIL by two sources on the same stage
-    and panel, i.e. on the same test; under the frozen order the failing source is the later one. Sources after a
-    stage's first failure are not run, so a universal PASS means no disagreement was observed, not that every source
-    was replicated in every stage."""
-    for st in stages.values():
-        by_panel: dict = {}
-        for inv in st["invocations"]:
-            by_panel.setdefault(inv["panel"], []).append(inv["outcome"])
-        if any("PASS" in outs and "FAIL" in outs for outs in by_panel.values()):
-            return "FAIL"
-    if any(st["status"] == "NOT_ESTIMABLE" for st in stages.values()):
-        return "NOT_ESTIMABLE"
-    return "PASS"
+def source_record(stage: dict, order: list) -> dict:
+    """Descriptive per-stage source evidence; it never changes a route.
+
+    universal_qualification is ESTABLISHED only when every planned source/panel execution was observed and passed its
+    frozen per-source gate, and NOT_ESTABLISHED when an observed execution failed its gate; otherwise it is the stage
+    status. Source/panels the frozen sequential stop never ran are listed as unobserved: missing evidence, never
+    agreement. A PASS and a FAIL on the same panel is threshold discordance, recorded as failure to establish
+    universality. It is not a between-source test, so source heterogeneity stays unresolved."""
+    seen = {(i["panel"], i["source"]): i["outcome"] for i in stage["invocations"]}
+    observed = [{"panel": p, "source": s, "outcome": seen[(p, s)]} for p, s in order if (p, s) in seen]
+    unobserved = [{"panel": p, "source": s, "evidence": UNOBSERVED} for p, s in order if (p, s) not in seen]
+    panels = list(dict.fromkeys(p for p, _ in order))
+    discordance = [{"panel": p, "passed": [o["source"] for o in observed if o["panel"] == p and o["outcome"] == "PASS"],
+                    "failed": [o["source"] for o in observed if o["panel"] == p and o["outcome"] == "FAIL"]} for p in panels]
+    discordance = [d for d in discordance if d["passed"] and d["failed"]]
+    status = stage["status"]
+    return {"universal_qualification": {"PASS": "ESTABLISHED__EVERY_PLANNED_SOURCE_AND_PANEL_OBSERVED_PASS",
+                                        "FAIL": "NOT_ESTABLISHED__AN_OBSERVED_EXECUTION_FAILED_ITS_FROZEN_GATE"}.get(status, status),
+            "cross_source_pattern": ("ALL_PLANNED_OBSERVED_PASS" if status == "PASS" else
+                                     "THRESHOLD_DISCORDANCE_OBSERVED__UNIVERSALITY_NOT_ESTABLISHED" if discordance else
+                                     "NO_DISCORDANCE_OBSERVED__UNOBSERVED_SOURCES_ARE_MISSING_EVIDENCE" if unobserved else
+                                     "NO_DISCORDANCE_OBSERVED"),
+            "observed": observed, "unobserved": unobserved, "threshold_discordance": discordance,
+            "source_heterogeneity": SOURCE_HETEROGENEITY}
+
+
+def routing_universal_source(stages: dict) -> str:
+    """Ratification-pending routing V2 universal_source input. FAIL is reserved for formally established source
+    heterogeneity, which needs a prospectively frozen direct between-source test that this replay does not have, so it
+    is never produced. NOT_ESTIMABLE if any stage is NOT_ESTIMABLE, otherwise PASS. Routing V2 rules 1 and 9 therefore
+    never change a route here: the route is exactly the frozen TD56 -> TD57B -> TD57C -> TD59 stage hierarchy, a
+    function of the four stage statuses only."""
+    return "NOT_ESTIMABLE" if any(st["status"] == "NOT_ESTIMABLE" for st in stages.values()) else "PASS"
 
 
 PATTERNS = {  # docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md, verbatim labels
@@ -131,23 +156,26 @@ PATTERNS = {  # docs/superpowers/specs/2026-10-11-td-corrected-replay-interpreta
     "C": "CORRECTED_DISJOINT_GEOMETRY_PRESENT__DONOR_RECURRENT_SCALE_FREE_ORDER_NOT_CONFIRMED",
     "D": "CORRECTED_FOUNDATIONAL_DISJOINT_VIEW_RELATIONAL_OBJECT_NOT_CONFIRMED",
     "E": "HISTORICAL_CORRECTED_DIVERGENCE__FINE_LOCAL_RELATION_PRESENT_ON_CORRECTED_SUBSTRATE",
-    "G": "NO_UNIVERSAL_SOURCE_REPLICATION",
     "H": "NOT_ESTIMABLE__NO_BIOLOGICAL_PASS",
-}
+}  # Pattern G (source-specific disagreement) needs a frozen direct between-source test; none exists, so it is never assigned
+UNIVERSALITY_QUALIFIER = "UNIVERSALITY_NOT_ESTABLISHED__CROSS_SOURCE_THRESHOLD_DISCORDANCE"
 
 
-def frozen_interpretation(status: dict, universal: str | None) -> dict:
-    """Frozen Patterns A-E/G/H, applied upstream-first (principle 8). Pattern F (corrected TD59 PASS with materially
+def frozen_interpretation(status: dict, records: dict) -> dict:
+    """Frozen Patterns A-E/H, applied upstream-first (principle 8). Pattern F (corrected TD59 PASS with materially
     narrow HVS margins) has no frozen number, so any corrected TD59 PASS is flagged for auditor judgment and the HVS
-    TD59 margins are reported descriptively."""
+    TD59 margins are reported descriptively. Observed threshold discordance adds a descriptive universality qualifier;
+    it never assigns Pattern G and never changes the pattern."""
     if any(v == "IMPLEMENTATION_FAILURE" for v in status.values()):
         return {"pattern": None, "label": "INCOMPLETE__IMPLEMENTATION_FAILURE__NO_INTERPRETATION"}
     chain = (("TD56", "NOT_ESTIMABLE", "H"), ("TD56", "FAIL", "D"), ("TD57B", "NOT_ESTIMABLE", "H"), ("TD57B", "FAIL", "C"),
              ("TD57C", "NOT_ESTIMABLE", "H"), ("TD57C", "PASS", "E"), ("TD59", "NOT_ESTIMABLE", "H"), ("TD59", "FAIL", "B"))
     pattern = next((p for st, val, p in chain if status[st] == val), "A")
     out = {"pattern": pattern, "label": PATTERNS[pattern], "pattern_F_requires_auditor_judgment": status["TD59"] == "PASS"}
-    if universal == "FAIL":
-        out["source_qualifier"] = {"pattern": "G", "label": PATTERNS["G"]}
+    discordant = [st for st, r in records.items() if r["threshold_discordance"]]
+    if discordant:
+        out["universality_qualifier"] = {"label": UNIVERSALITY_QUALIFIER, "stages": discordant,
+                                         "source_heterogeneity": SOURCE_HETEROGENEITY, "pattern_G_assigned": False}
     return out
 
 
@@ -168,18 +196,23 @@ def routing_inputs(stages: dict) -> dict | None:
     if any(v not in ROUTABLE for v in status.values()):
         return None
     return {"td56": status["TD56"], "td57b": status["TD57B"], "td57c": status["TD57C"], "td59": status["TD59"],
-            "universal_source": universal_source(stages)}
+            "universal_source": routing_universal_source(stages)}
 
 
-def bundle_summary(stages: dict, ns: Path) -> tuple[dict, dict | None]:
+def stage_orders(c: dict) -> dict:
+    return {spec["stage"]: [tuple(x) for x in spec["invocation_order"]] for spec in c["stages"]}
+
+
+def bundle_summary(stages: dict, ns: Path, orders: dict) -> tuple[dict, dict | None]:
     """Everything in the bundle that follows from the stage receipts; the evidence validator recomputes it."""
     status = {k: v["status"] for k, v in stages.items()}
-    universal = universal_source(stages) if "IMPLEMENTATION_FAILURE" not in status.values() else None
+    records = {k: source_record(v, orders[k]) for k, v in stages.items()}
     ri = routing_inputs(stages)
     return {"stages": {k: {"status": v["status"], "terminal": v["terminal"], "historical_comparison": v["historical_comparison"]}
                        for k, v in stages.items()},
-            "universal_source": universal,
-            "frozen_interpretation": frozen_interpretation(status, universal),
+            "universal_qualification": records, "source_heterogeneity": SOURCE_HETEROGENEITY,
+            "routing_universal_source_input": ri["universal_source"] if ri is not None else None,
+            "frozen_interpretation": frozen_interpretation(status, records),
             "td59_hvs_case_margins": td59_hvs_case_margins(ns, stages),
             "routing": R.interpret_corrected_replay(**ri) if ri is not None else NOT_PROJECTED}, ri
 
@@ -254,7 +287,7 @@ def run(a) -> int:
                "terminal": stage_terminal(spec, status), "historical_comparison": historical_comparison(stage, status)}
         (sdir / f"{stage}_STAGE_RECEIPT.json").write_text(json.dumps(rec, indent=2, sort_keys=True) + "\n")
         stages[stage] = rec
-    summary, ri = bundle_summary(stages, ns)
+    summary, ri = bundle_summary(stages, ns, stage_orders(c))
     if ri is not None:
         (ns / ROUTING_INPUT).write_text(json.dumps(ri, indent=2, sort_keys=True) + "\n")
     bundle = {"schema": "JEPA_TD_CORRECTED_REPLAY_RECEIPT_V1", "marker": marker.name, "marker_sha256": A.sha_file(marker),

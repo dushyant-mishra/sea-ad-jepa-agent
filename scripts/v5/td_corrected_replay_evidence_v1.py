@@ -10,8 +10,9 @@ Nothing recorded is trusted; everything is recomputed from the bytes on disk:
     and output SHAs, the executor identity, and its outcome class recomputed from the exit code and the executor's
     own written result (TD56 obs/p95; module status/source/panel; the final stderr line); the stage status, a PASS
     only with every planned invocation, the terminal and the historical comparison;
-  - the bundle: every downstream flag false, and its stage summary, universal-source assessment, frozen
-    interpretation, TD59 HVS margins and routing projection all reproduced from the stage receipts. The routing
+  - the bundle: every downstream flag false, and its stage summary, per-stage universal qualification and source
+    records, routing universal_source input, frozen interpretation, TD59 HVS margins and routing projection all
+    reproduced from the stage receipts. The routing
     input file exists exactly when every stage is routable and equals the recomputed inputs.
 Cross-checks: module results must equal the payload the executor printed and follow from their own cases; a TD56
 PASS must match the printed PASS flag; no unrecorded file may sit in a stage directory, the executor directory or
@@ -225,7 +226,7 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
         if bundle.get("detected_field") != m.get("detected_field") or bundle.get("ratification_sha256") != m.get("ratification_sha256"):
             problems.append("bundle detected field or ratification differs from the marker")
         try:
-            summary, ri = X.bundle_summary(stages, ns)
+            summary, ri = X.bundle_summary(stages, ns, X.stage_orders(contract))
         except Exception as exc:  # noqa: BLE001
             summary, ri = None, None
             problems.append(f"bundle cannot be recomputed from the stage evidence ({type(exc).__name__})")

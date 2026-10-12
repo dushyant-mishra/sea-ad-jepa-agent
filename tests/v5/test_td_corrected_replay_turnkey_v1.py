@@ -10,6 +10,7 @@ import contextlib
 import copy
 import hashlib
 import io
+import itertools
 import json
 import os
 import re
@@ -393,18 +394,67 @@ def _stage(invs):
     return {"status": X.stage_status([i["outcome"] for i in invs]), "invocations": invs}
 
 
-def test_universal_source_compares_sources_on_the_same_panel():
-    p = lambda panel, s, o: {"panel": panel, "source": s, "outcome": o}  # noqa: E731
-    P0 = [p(0, "HVS", "PASS"), p(0, "NPH52", "PASS"), p(0, "SEA_AD", "PASS")]
-    assert X.universal_source({"TD56": _stage([p(None, s, "PASS") for s in A.SOURCES])}) == "PASS"
-    assert X.universal_source({"TD56": _stage([p(None, "HVS", "PASS"), p(None, "NPH52", "PASS"), p(None, "SEA_AD", "FAIL")])}) == "FAIL"
-    # review finding 1: a TD57C disagreement is FAIL in either panel (it used to be PASS in Panel 0 only)
-    assert X.universal_source({"TD57C": _stage([p(0, "HVS", "PASS"), p(0, "NPH52", "FAIL")])}) == "FAIL"
-    assert X.universal_source({"TD57C": _stage(P0 + [p(1, "HVS", "PASS"), p(1, "NPH52", "FAIL")])}) == "FAIL"
-    # no disagreement observed: a first failure, or a failure on a panel the other sources never ran
-    assert X.universal_source({"TD57C": _stage([p(0, "HVS", "FAIL")])}) == "PASS"
-    assert X.universal_source({"TD59": _stage(P0 + [p(1, "HVS", "FAIL")])}) == "PASS"
-    assert X.universal_source({"TD59": _stage([p(0, "HVS", "PASS"), p(0, "NPH52", "NOT_ESTIMABLE")])}) == "NOT_ESTIMABLE"
+ORDERS = {"TD56": [(None, s) for s in A.SOURCES], **{st: [(p, s) for p in (0, 1) for s in A.SOURCES] for st in ("TD57B", "TD57C", "TD59")}}
+_p = lambda panel, s, o: {"panel": panel, "source": s, "outcome": o}  # noqa: E731
+_P0 = [_p(0, "HVS", "PASS"), _p(0, "NPH52", "PASS"), _p(0, "SEA_AD", "PASS")]
+
+
+def test_threshold_discordance_is_failure_to_establish_universality_not_source_heterogeneity():
+    # audit of PR #307, item 8: a PASS/FAIL straddle is not automatically formal source heterogeneity
+    rec = X.source_record(_stage([_p(0, "HVS", "PASS"), _p(0, "NPH52", "FAIL")]), ORDERS["TD57C"])
+    assert rec["universal_qualification"] == "NOT_ESTABLISHED__AN_OBSERVED_EXECUTION_FAILED_ITS_FROZEN_GATE"
+    assert rec["cross_source_pattern"] == "THRESHOLD_DISCORDANCE_OBSERVED__UNIVERSALITY_NOT_ESTABLISHED"
+    assert rec["threshold_discordance"] == [{"panel": 0, "passed": ["HVS"], "failed": ["NPH52"]}]
+    assert rec["source_heterogeneity"] == X.SOURCE_HETEROGENEITY == "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST"
+    straddles = ({"TD56": _stage([_p(None, "HVS", "PASS"), _p(None, "NPH52", "PASS"), _p(None, "SEA_AD", "FAIL")])},
+                 {"TD57C": _stage([_p(0, "HVS", "PASS"), _p(0, "NPH52", "FAIL")])},
+                 {"TD59": _stage(_P0 + [_p(1, "HVS", "PASS"), _p(1, "NPH52", "FAIL")])})
+    assert all(X.routing_universal_source(st) == "PASS" for st in straddles)          # never FAIL
+    assert X.routing_universal_source({"TD59": _stage([_p(0, "HVS", "PASS"), _p(0, "NPH52", "NOT_ESTIMABLE")])}) == "NOT_ESTIMABLE"
+
+
+def test_source_order_censoring_is_missing_evidence_not_agreement():
+    rec = X.source_record(_stage([_p(0, "HVS", "FAIL")]), ORDERS["TD57C"])
+    assert [(u["panel"], u["source"]) for u in rec["unobserved"]] == [(0, "NPH52"), (0, "SEA_AD"), (1, "HVS"), (1, "NPH52"), (1, "SEA_AD")]
+    assert all(u["evidence"] == X.UNOBSERVED for u in rec["unobserved"]) and not rec["threshold_discordance"]
+    assert rec["cross_source_pattern"] == "NO_DISCORDANCE_OBSERVED__UNOBSERVED_SOURCES_ARE_MISSING_EVIDENCE"
+    assert "AGREE" not in json.dumps(rec).upper()
+    full = X.source_record(_stage(_P0 + [_p(1, s, "PASS") for s in A.SOURCES]), ORDERS["TD57C"])
+    assert full["universal_qualification"] == "ESTABLISHED__EVERY_PLANNED_SOURCE_AND_PANEL_OBSERVED_PASS" and not full["unobserved"]
+
+
+def _all_outcome_combinations():
+    """The complete logical outcome space under the frozen sequential stop (7 x 13^3 = 15,379)."""
+    seqs = {}
+    for st, order in ORDERS.items():
+        out = [[(pp, s, "PASS") for pp, s in order]]
+        for k in range(len(order)):
+            for bad in ("FAIL", "NOT_ESTIMABLE"):
+                out.append([(pp, s, "PASS") for pp, s in order[:k]] + [(order[k][0], order[k][1], bad)])
+        seqs[st] = out
+    for combo in itertools.product(*(seqs[st] for st in ORDERS)):
+        yield {st: _stage([_p(pp, s, o) for pp, s, o in seq]) for st, seq in zip(ORDERS, combo)}
+
+
+def test_over_the_whole_outcome_space_the_route_follows_only_the_frozen_stage_hierarchy():
+    import td_corrected_replay_routing_v2 as R
+    by_status, n = {}, 0
+    for stages in _all_outcome_combinations():
+        n += 1
+        ri = X.routing_inputs(stages)
+        assert ri["universal_source"] != "FAIL"
+        out = R.interpret_corrected_replay(**ri)
+        assert all(out[k] is False for k in ("corrected_replay_authorized", "target_selected", "representation_selected",
+                                             "td60_authorized", "stage4_authorized", "training_authorized"))
+        st = {k: v["status"] for k, v in stages.items()}
+        by_status.setdefault(tuple(st.values()), set()).add(out["biological_state"])
+        # the decisive stage of the frozen hierarchy; an upstream NOT_ESTIMABLE is never strengthened by a later straddle
+        decisive = next((st[k] for k, good in (("TD56", "PASS"), ("TD57B", "PASS"), ("TD57C", "FAIL")) if st[k] != good), st["TD59"])
+        if decisive == "NOT_ESTIMABLE":
+            assert out["v4_relational_status"] == "NOT_ESTIMABLE"
+        assert out["candidate_routes"]["C6_SHARED_QUERY_COMPOSITE"] == "ACTIVE_SUBJECT_TO_C1_C3"
+    assert n == 15379
+    assert all(len(v) == 1 for v in by_status.values())          # a function of the four stage statuses only
 
 
 PASS_TERMINAL = "PASS_TD_CORRECTED_REPLAY_TURNKEY_QUALIFICATION__NO_BIOLOGICAL_REPLAY_RUN__LAUNCH_AUDIT_REQUIRED"
@@ -528,21 +578,45 @@ def test_marker_precedes_corrected_values_and_every_stage_runs_in_frozen_order(t
     bundle = bundle_of(ns)
     assert {k: v["status"] for k, v in bundle["stages"].items()} == {"TD56": "PASS", "TD57B": "PASS", "TD57C": "FAIL", "TD59": "PASS"}
     assert bundle["frozen_interpretation"]["label"] == "CORRECTED_RELATIONAL_PROGRAM_CONSISTENT_WITH_HISTORICAL_SCALE_BRACKET"
-    assert bundle["universal_source"] == "PASS"
+    assert bundle["routing_universal_source_input"] == "PASS" and bundle["source_heterogeneity"] == X.SOURCE_HETEROGENEITY
     assert bundle["routing"]["biological_state"] == "BROAD_MESO_RELATIONAL_VIABLE__NOT_TARGET_WINNER"
     assert all(bundle[k] is False for k in G.DOWNSTREAM)
     assert EV.validate_evidence(ns, tmp_path / "rec")["verdict"] == "EVIDENCE_VALID__COMPLETE"
 
 
 @pytest.mark.parametrize("panel", [0, 1])
-def test_a_td57c_source_disagreement_routes_to_source_disagreement_in_either_panel(tmp_path, monkeypatch, panel):
-    ns, _ = run_stubbed(tmp_path, monkeypatch, {("TD57C", "NPH52", panel): "FAIL"})   # HVS passes the same panel first
-    bundle = bundle_of(ns)
-    assert bundle["stages"]["TD57C"]["status"] == "FAIL" and bundle["universal_source"] == "FAIL"
-    assert bundle["routing"]["biological_state"] == "SOURCE_DISAGREEMENT__UNIVERSAL_RELATIONAL_TARGET_NOT_QUALIFIED"
-    assert bundle["routing"]["v4_relational_status"] == "FAIL"
-    assert bundle["frozen_interpretation"]["source_qualifier"]["label"] == "NO_UNIVERSAL_SOURCE_REPLICATION"
+def test_td57c_threshold_discordance_routes_exactly_like_a_first_source_failure(tmp_path, monkeypatch, panel):
+    ns, _ = run_stubbed(tmp_path / "discordant", monkeypatch, {("TD57C", "NPH52", panel): "FAIL"})  # HVS passes the panel first
+    first, _ = run_stubbed(tmp_path / "first", monkeypatch, {("TD57C", "HVS", panel): "FAIL"})
+    b, f = bundle_of(ns), bundle_of(first)
+    assert b["stages"]["TD57C"]["status"] == f["stages"]["TD57C"]["status"] == "FAIL"
+    assert b["routing"]["biological_state"] == f["routing"]["biological_state"] == "BROAD_MESO_RELATIONAL_VIABLE__NOT_TARGET_WINNER"
+    assert b["routing_universal_source_input"] == "PASS" and b["source_heterogeneity"] == X.SOURCE_HETEROGENEITY
+    assert b["universal_qualification"]["TD57C"]["threshold_discordance"] == [{"panel": panel, "passed": ["HVS"], "failed": ["NPH52"]}]
+    q = b["frozen_interpretation"]
+    assert q["pattern"] == "A" and q["universality_qualifier"]["label"] == X.UNIVERSALITY_QUALIFIER
+    assert q["universality_qualifier"]["pattern_G_assigned"] is False and "universality_qualifier" not in f["frozen_interpretation"]
+    assert "SOURCE_DISAGREEMENT" not in json.dumps(b)
     assert EV.validate_evidence(ns)["verdict"] == "EVIDENCE_VALID__COMPLETE"
+
+
+def test_an_upstream_not_estimable_is_not_strengthened_by_a_later_straddle(tmp_path, monkeypatch):
+    ns, _ = run_stubbed(tmp_path, monkeypatch, {("TD56", "HVS", None): (float("nan"), 0.5), ("TD59", "NPH52", 0): "FAIL"})
+    b = bundle_of(ns)
+    assert b["stages"]["TD56"]["status"] == "NOT_ESTIMABLE" and b["universal_qualification"]["TD59"]["threshold_discordance"]
+    assert b["routing"]["biological_state"] == "NOT_ESTIMABLE__TD56__NO_BIOLOGICAL_PASS"
+    assert b["routing"]["candidate_routes"]["C2_RELATIONAL_SHARED"] == "UNRESOLVED_RELATIONAL_NOT_ESTIMABLE"
+    assert EV.validate_evidence(ns)["verdict"] == "EVIDENCE_VALID__COMPLETE"
+
+
+def test_no_source_averaging_rescues_a_failed_universal_qualification(tmp_path, monkeypatch):
+    # five of six TD59 source-panels pass; the SEA_AD P1 failure alone still fails the stage
+    ns, _ = run_stubbed(tmp_path, monkeypatch, {("TD57C", "HVS", 0): "FAIL", ("TD59", "SEA_AD", 1): "FAIL"})
+    b = bundle_of(ns)
+    rec = b["universal_qualification"]["TD59"]
+    assert sum(o["outcome"] == "PASS" for o in rec["observed"]) == 5 and rec["universal_qualification"].startswith("NOT_ESTABLISHED")
+    assert b["stages"]["TD59"]["status"] == "FAIL" and b["routing"]["biological_state"] == "BROAD_GLOBAL_ONLY__CURRENT_C2_NOT_QUALIFIED"
+    assert b["routing"]["source_averaging_rescue_allowed"] is False and "pooled" not in json.dumps(b).lower()
 
 
 def test_not_estimable_and_failures_are_preserved_and_stop_only_their_own_stage(tmp_path, monkeypatch):
@@ -564,7 +638,7 @@ def test_an_implementation_failure_is_preserved_and_never_routed(tmp_path, monke
     stage = next(iter(plan))[0]
     assert bundle["stages"][stage]["status"] == "IMPLEMENTATION_FAILURE"
     assert bundle["stages"][stage]["historical_comparison"] == "NOT_COMPARABLE__IMPLEMENTATION_FAILURE"
-    assert bundle["routing"] == X.NOT_PROJECTED and bundle["universal_source"] is None
+    assert bundle["routing"] == X.NOT_PROJECTED and bundle["routing_universal_source_input"] is None
     assert not (ns / X.ROUTING_INPUT).exists()
     assert EV.validate_evidence(ns)["verdict"] == "EVIDENCE_VALID__COMPLETE"
 
@@ -657,16 +731,18 @@ def test_the_printed_stage_summary_is_checked_against_the_bundle(tmp_path, monke
 
 def test_frozen_interpretation_patterns():
     st = lambda a, b, c, d: {"TD56": a, "TD57B": b, "TD57C": c, "TD59": d}  # noqa: E731
-    assert X.frozen_interpretation(st("FAIL", "PASS", "FAIL", "PASS"), "PASS")["pattern"] == "D"
-    c = X.frozen_interpretation(st("PASS", "FAIL", "FAIL", "PASS"), "PASS")
+    assert X.frozen_interpretation(st("FAIL", "PASS", "FAIL", "PASS"), {})["pattern"] == "D"
+    c = X.frozen_interpretation(st("PASS", "FAIL", "FAIL", "PASS"), {})
     assert c["pattern"] == "C" and c["pattern_F_requires_auditor_judgment"] is True    # any corrected TD59 PASS
-    assert X.frozen_interpretation(st("PASS", "PASS", "PASS", "PASS"), "PASS")["pattern"] == "E"
-    b = X.frozen_interpretation(st("PASS", "PASS", "FAIL", "FAIL"), "PASS")
+    assert X.frozen_interpretation(st("PASS", "PASS", "PASS", "PASS"), {})["pattern"] == "E"
+    b = X.frozen_interpretation(st("PASS", "PASS", "FAIL", "FAIL"), {})
     assert b["pattern"] == "B" and b["pattern_F_requires_auditor_judgment"] is False
-    assert X.frozen_interpretation(st("PASS", "PASS", "NOT_ESTIMABLE", "PASS"), "PASS")["pattern"] == "H"
-    g = X.frozen_interpretation(st("PASS", "PASS", "FAIL", "PASS"), "FAIL")
-    assert g["pattern"] == "A" and g["source_qualifier"]["label"] == "NO_UNIVERSAL_SOURCE_REPLICATION"
-    assert X.frozen_interpretation(st("IMPLEMENTATION_FAILURE", "PASS", "FAIL", "PASS"), None)["pattern"] is None
+    assert X.frozen_interpretation(st("PASS", "PASS", "NOT_ESTIMABLE", "PASS"), {})["pattern"] == "H"
+    disc = {"TD57C": X.source_record(_stage([_p(0, "HVS", "PASS"), _p(0, "NPH52", "FAIL")]), ORDERS["TD57C"])}
+    g = X.frozen_interpretation(st("PASS", "PASS", "FAIL", "PASS"), disc)
+    assert g["pattern"] == "A" and g["universality_qualifier"]["stages"] == ["TD57C"]
+    assert g["universality_qualifier"]["pattern_G_assigned"] is False and "G" not in X.PATTERNS
+    assert X.frozen_interpretation(st("IMPLEMENTATION_FAILURE", "PASS", "FAIL", "PASS"), {})["pattern"] is None
 
 
 def _writable(p: Path) -> Path:
@@ -675,7 +751,8 @@ def _writable(p: Path) -> Path:
 
 
 @pytest.mark.parametrize("attack", ["output", "status", "routing", "flag", "order", "relabel", "drop_inputs", "drop_routing",
-                                    "universal", "ledger", "truncate", "stderr", "printed", "cases", "td56_flag",
+                                    "universal", "heterogeneity", "qualification", "ledger", "truncate", "stderr", "printed",
+                                    "cases", "td56_flag",
                                     "stray_stage", "stray_root", "executor_copy", "later_stage_dir"])
 def test_evidence_tampering_is_detected(tmp_path, monkeypatch, attack):
     ns, _ = run_stubbed(tmp_path, monkeypatch, {})
@@ -709,7 +786,14 @@ def test_evidence_tampering_is_detected(tmp_path, monkeypatch, attack):
     elif attack == "drop_routing":
         (ns / X.ROUTING_INPUT).unlink()
     elif attack == "universal":
-        r = json.loads(bpath.read_text()); r["universal_source"] = "NOT_ESTIMABLE"; bpath.write_text(json.dumps(r))
+        r = json.loads(bpath.read_text()); r["routing_universal_source_input"] = "FAIL"; bpath.write_text(json.dumps(r))
+    elif attack == "heterogeneity":
+        r = json.loads(bpath.read_text()); r["source_heterogeneity"] = "ESTABLISHED"; bpath.write_text(json.dumps(r))
+    elif attack == "qualification":
+        r = json.loads(bpath.read_text())
+        r["universal_qualification"]["TD57B"]["universal_qualification"] = "NOT_ESTIMABLE"
+        r["universal_qualification"]["TD57C"]["unobserved"] = [{"panel": 1, "source": "SEA_AD", "evidence": "UNOBSERVED"}]
+        bpath.write_text(json.dumps(r))
     elif attack == "ledger":
         _writable(G.ledger_path(ns)).unlink()
     elif attack == "truncate":

@@ -225,32 +225,42 @@ def build(archive: Path) -> dict:
                                "options": ["detected_corrected", "detected_historical"], "proposed": "detected_corrected",
                                "status": "PROPOSED_PENDING_OWNER_RATIFICATION"},
             "routing_input_rule": {"question": "How are stage outcomes mapped to routing V2 inputs, including universal_source?",
-                                   "proposed": {"stage_inputs": "the frozen stage status (PASS/FAIL/NOT_ESTIMABLE); an IMPLEMENTATION_FAILURE yields no routing input",
-                                                "universal_source": ("FAIL if, in any stage and panel, one source PASSED that panel's invocation and another source FAILED the same "
-                                                                     "panel's invocation (the same test; under the frozen order the failing source is the later one); otherwise "
-                                                                     "NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS"),
-                                                "universal_source_reading": ("PASS means no source disagreement was observed under the frozen sequential order, not that every "
-                                                                             "source replicated every stage: sources after a stage's first failure are not run, so a disagreement "
-                                                                             "in which a later source would pass after an earlier source failed (e.g. SEA_AD PASS, HVS FAIL) "
-                                                                             "cannot be observed"),
-                                                "universal_source_examples": [
-                                                    "TD57C P0: HVS PASS, NPH52 FAIL -> FAIL (route SOURCE_DISAGREEMENT)",
-                                                    "TD57C P1 (after P0 all PASS): HVS PASS, NPH52 FAIL -> FAIL (same rule in either panel)",
-                                                    "TD57C P0: HVS FAIL (nothing else runs) -> no disagreement observed",
-                                                    "TD59 P0 all PASS, P1 HVS FAIL -> no disagreement observed (NPH52/SEA_AD were not run on P1)",
-                                                    "TD56: HVS PASS, NPH52 PASS, SEA_AD FAIL -> FAIL",
-                                                    "TD59 P0: HVS PASS, NPH52 NOT_ESTIMABLE -> not FAIL; NOT_ESTIMABLE through the stage status"],
-                                                "universal_source_consequences_for_ratification": [
-                                                    ("Routing V2 (frozen V1 law) checks universal_source first, so a FAIL overrides an upstream NOT_ESTIMABLE or a TD57C "
-                                                     "divergence: TD56 NOT_ESTIMABLE with TD59 P0 HVS PASS, NPH52 FAIL routes to SOURCE_DISAGREEMENT (V4 FAIL), "
-                                                     "not NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE)"),
-                                                    ("Which source fails first can decide the route: in that same state, TD59 P0 HVS FAIL (nothing after it runs) "
-                                                     "leaves NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE), while HVS PASS then NPH52 FAIL gives V4 FAIL"),
-                                                    ("Over all 15,379 outcome combinations the frozen order allows (logical possibilities, not probabilities), a "
-                                                     "universal FAIL changes the V4 route in 4,988: 4,984 NOT_ESTIMABLE -> FAIL, and 4 PASS -> FAIL, all through a "
-                                                     "TD57C source disagreement (TD57C P0 HVS PASS, NPH52 FAIL with TD59 PASS routes to SOURCE_DISAGREEMENT, "
-                                                     "not BROAD_MESO)")]},
-                                   "status": "PROPOSED_PENDING_OWNER_RATIFICATION"}},
+                                   "proposed": {
+                                       "stage_inputs": "the frozen stage status (PASS/FAIL/NOT_ESTIMABLE); an IMPLEMENTATION_FAILURE yields no routing input",
+                                       "universal_qualification": ("per stage, descriptive: ESTABLISHED only when every planned source/panel execution was observed and "
+                                                                   "passed its frozen per-source gate (stage PASS); NOT_ESTABLISHED when an observed execution failed "
+                                                                   "its frozen gate (stage FAIL); otherwise the stage status. Each record lists the observed per-source "
+                                                                   "outcomes, the source/panels the frozen sequential stop left unobserved, and any same-panel PASS/FAIL "
+                                                                   "threshold discordance"),
+                                       "source_order_censoring": ("source/panels not run because of the frozen sequential stop are missing evidence, recorded as "
+                                                                  "UNOBSERVED; they are never counted as agreement or as disagreement"),
+                                       "threshold_discordance": ("a PASS and a FAIL on the same stage and panel is recorded descriptively as failure to establish "
+                                                                 "universality; it is not a between-source test and is never labelled source heterogeneity"),
+                                       "source_heterogeneity": ("UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST for every stage; Pattern G "
+                                                                "(source-specific disagreement) is never assigned in this replay"),
+                                       "routing_v2_universal_source_input": ("FAIL is reserved for formally established source heterogeneity and is never produced; "
+                                                                             "NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS. Routing V2 rules 1 "
+                                                                             "(universal FAIL) and 9 (universal NOT_ESTIMABLE) therefore never change a route: the route "
+                                                                             "is exactly the frozen TD56 -> TD57B -> TD57C -> TD59 stage hierarchy, a function of the four "
+                                                                             "stage statuses only"),
+                                       "no_source_averaging": ("no pooled or cross-source averaged statistic exists or is computed; a stage PASS needs every planned "
+                                                               "source/panel PASS, so no source can rescue another source's frozen-gate failure"),
+                                       "examples": [
+                                           ("TD57C P0 HVS PASS, NPH52 FAIL, with TD56/TD57B/TD59 PASS -> TD57C FAIL; route BROAD_MESO (Pattern A) exactly as for "
+                                            "TD57C P0 HVS FAIL; TD57C universal qualification NOT_ESTABLISHED with threshold discordance on P0 and the "
+                                            "universality qualifier; source heterogeneity UNRESOLVED"),
+                                           ("TD56 NOT_ESTIMABLE with TD59 P0 HVS PASS, NPH52 FAIL -> NOT_ESTIMABLE__TD56: a later straddle never strengthens "
+                                            "an upstream NOT_ESTIMABLE"),
+                                           ("TD57C P0 HVS FAIL (nothing after it runs) -> NPH52/SEA_AD P0 and all of P1 UNOBSERVED; no agreement is recorded"),
+                                           "TD56 HVS PASS, NPH52 PASS, SEA_AD FAIL -> TD56 FAIL (frozen stage rule); discordance recorded; route TD56 FAIL",
+                                           "TD59 P0 HVS PASS, NPH52 NOT_ESTIMABLE -> TD59 NOT_ESTIMABLE; no discordance"],
+                                       "residual_source_order_dependence": ("the frozen stage rule takes the first non-PASS invocation, so when one source would FAIL "
+                                                                            "and another would be NOT_ESTIMABLE, the stage status (FAIL vs NOT_ESTIMABLE) depends "
+                                                                            "on which runs first; this is replay fidelity and is not changed")},
+                                   "status": "PROPOSED_PENDING_OWNER_RATIFICATION",
+                                   "amended_after": ("external audit of PR #307 (2026-10-12): "
+                                                     "NOT_ACCEPTED_FOR_EXECUTE_ONCE__SOURCE_QUALIFICATION_AND_SOURCE_HETEROGENEITY_MUST_BE_SEPARATED__ONE_SHOT_ATTEMPT_UNSPENT; "
+                                                     "superseded f5673f9b rule: a same-panel PASS/FAIL anywhere set universal_source FAIL")}},
         "interpretation_policy": {
             "routing_module": "scripts/v5/td_corrected_replay_routing_v2.py",
             "frozen_table": [
@@ -262,6 +272,9 @@ def build(archive: Path) -> dict:
                 "source disagreement -> no universal-source claim; do not average it away",
                 "any NOT_ESTIMABLE -> remains not estimable, never a biological PASS"],
             "pattern_F": "no frozen 'materially narrow' number: any corrected TD59 PASS is flagged for auditor judgment and the HVS TD59 case margins are reported",
+            "source_universality": ("the frozen 'source disagreement -> no universal-source claim' line is met descriptively: a stage with threshold "
+                                    "discordance makes no universal claim for that stage (universal qualification NOT_ESTABLISHED, universality "
+                                    "qualifier recorded); formal source heterogeneity stays unresolved and Pattern G is never assigned"),
             "historical_comparison_classes": ["QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
                                               "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE",
                                               "NOT_COMPARABLE__IMPLEMENTATION_FAILURE"]},
