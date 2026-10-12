@@ -19,13 +19,7 @@
     "tracked_status_after": "CLEAN"
   },
   "candidate_lattice": {
-    "foundation": [
-      "C1_SHARED_EMERGENT",
-      "C2_RELATIONAL_SHARED",
-      "C3_QUERY_MEASURED",
-      "C6_SHARED_QUERY_COMPOSITE",
-      "C4_STRUCTURED_COMPOSITE"
-    ],
+    "foundation": ["C1_SHARED_EMERGENT", "C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED", "C6_SHARED_QUERY_COMPOSITE", "C4_STRUCTURED_COMPOSITE"],
     "specialist": ["C5_REGULATORY_SPECIALIST"],
     "c6_requires": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED"],
     "c4_requires": ["C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED"],
@@ -63,16 +57,7 @@
     "corrected_td56_57b_57c_59_authorized": false,
     "corrected_td56_57b_57c_59_executed": false
   },
-  "next_external_sequence": [
-    "externally accepted G7 execution",
-    "separately authorized corrected TD56/TD57B/TD57C/TD59 replay",
-    "frozen corrected-replay interpretation",
-    "real candidate gate execution",
-    "synthetic falsifier evidence consumption where available",
-    "survivor routing and protected head-to-head if required",
-    "protected confirmation",
-    "explicit owner target selection"
-  ],
+  "next_external_sequence": ["externally accepted G7 execution", "separately authorized corrected TD56/TD57B/TD57C/TD59 replay", "frozen corrected-replay interpretation", "real candidate gate execution", "synthetic falsifier evidence consumption where available", "survivor routing and protected head-to-head if required", "protected confirmation", "explicit owner target selection"],
   "authority": {
     "value_read_authorized": false,
     "g7_authorized": false,
