@@ -1,0 +1,12 @@
+{
+  "schema": "TD_POST_REPLAY_AUTHORITY_TRANSITION_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_AUTHORITY_LADDER__NO_CURRENT_DOWNSTREAM_AUTHORITY",
+  "current_hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "ordered_authority_ladder": ["0_CORRECTED_REPLAY_AUDIT_RESULT", "1_CANDIDATE_GATE_UPDATE", "2_FOUNDATION_CANDIDATE_QUALIFICATION", "3_SURVIVOR_ADJUDICATION", "4_PROTECTED_CONFIRMATION", "5_EXPLICIT_TARGET_DECISION", "6_POST_FREEZE_MULTIMODAL_R1_R2_SUPPORT", "7_EXPLICIT_REPRESENTATION_DECISION", "8_TD60_OR_SUCCESSOR", "9_STAGE4_AUTHORITY", "10_REAL_TRAINING_AUTHORITY"],
+  "survivor_logic": {"zero_survivors": "REDESIGN__NO_TARGET_AUTHORITY", "one_survivor": "ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NOT_SELECTED", "multiple_survivors": "PROTECTED_HEAD_TO_HEAD_REQUIRED__NOT_SELECTED", "unresolved": "CONTINUE_ONLY_LAWFUL_TESTABLE_ROUTES"},
+  "rare_program_gate": {"applies_to": ["C1", "C3", "C6", "C2_if_active", "C4_if_active"], "rule": "Mandatory target-quality property but cannot rescue failure of an existing gate.", "source_shifted_rule": "Historical rare1/rare5 require source/operator-aware reassessment before use."},
+  "multimodal_boundary": {"foundation_selection": "Post-freeze multimodal outcomes may not retrospectively choose the foundation target.", "same_nucleus": "teacher decomposition/regulatory support", "separate_nucleus": "donor-level recurrence", "regulatory": "R2 interpretation and C5 specialist", "spatial": "localization where measurable", "perturbation": "R3 support after qualification"},
+  "automatic_promotion_prohibitions": ["corrected replay -> target winner", "single survivor -> target winner", "rare-program PASS -> target winner", "GSE214979 coherence -> target winner", "SCENIC+/motif support -> target winner", "Morabito recurrence -> pristine validation", "RNA/ATAC concordance -> causality", "in-silico perturbation -> causal validation", "representation winner -> Stage4", "runtime qualification -> scientific training authority"],
+  "non_authority_statement": "This file grants no authority; it freezes the transition law future explicit authorities must respect."
+}
