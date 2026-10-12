@@ -10,6 +10,8 @@ External audit (PR #296, review 5486851355) accepted the qualification at 8d41fb
   G6_OUT_ff4a21f9, a fresh G7 namespace, and fresh authority bound to 8d41fb98 / 23be96f8 / 8e6504e0 / 275dad00.
 
 Subcommands:
+  acceptance Validate the external launch-audit acceptance (EXECUTE only): it must bind this exact authority commit,
+             operational authorization, launcher and checks. The auditor creates it; this package never does.
   authority  Validate the three materialized authority records (R1, bindings, no reuse of spent ff4a21f9 authority).
   prestart   Run, read-only, everything G7's main() does before begin_g7_attempt, using G7's own functions from the
              exact execution worktree: bind_execution, expected_authority_trace, producer continuity, load_inputs and
@@ -64,7 +66,13 @@ OPERATIONAL_AUTHORIZATION = ("EXECUTE_G7_SUCCESSOR_ONCE_AT_8d41fb98__G7_ENTRYPOI
                              "G6_ff4a21f9__FRESH_OUTPUT__STOP_FOR_EXTERNAL_AUDIT")
 PRESTART_REQUIREMENTS = ["G7_OWN_PREMARKER_PATH_INCLUDING_BIND_EXECUTION", "G1B_AUTHORITY_LOAD",
                          "ALL_35_S174_SHARD_HASHES", "ALL_34_HVS_SEA_MATRICES_COVERED", "MATRIX_STEM_SHARD_JOIN",
-                         "PHYSICAL_SOURCES_PRESENT_AT_FROZEN_SIZES"]
+                         "PHYSICAL_SOURCES_PRESENT_AT_FROZEN_SIZES", "PROVENANCE_IDENTIFIERS_UNIQUE_PER_FAMILY"]
+PYTHON_ENVIRONMENT = {"interpreter": "C:/Users/dushy/anaconda3/python.exe", "python": "3.9.7", "numpy": "1.24.2",
+                      "pandas": "1.5.3", "scipy": "1.10.1", "h5py": "3.2.1"}   # the environment that qualified 8d41fb98
+LAUNCH_ACCEPTANCE_PATH = "custody/owner_decisions/20261012/TD_G7_LAUNCH_AUDIT_ACCEPTANCE_8d41fb98.json"
+LAUNCH_ACCEPTANCE_SCHEMA = "JEPA_TD_G7_LAUNCH_AUDIT_ACCEPTANCE_V1"
+LAUNCH_ACCEPTANCE_DISPOSITION = "ACCEPT_G7_SUCCESSOR_LAUNCH_PACKAGE__EXECUTE_G7_ONCE"
+FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
 FALSE_FLAGS = ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized")
 N_S174_SHARDS = 35
 N_HVS_SEA_MATRICES = 34
@@ -125,7 +133,10 @@ def validate_operational_authorization(rec: dict, *, owner_sha: str, runtime_sha
                    "g6_external_acceptance_source": G6_ACCEPTANCE_SOURCE, "g6_artifact_sha256": G6_ARTIFACTS,
                    "g6_receipt_path": G6_RECEIPT_PATH, "fresh_g7_output_namespace": G7_OUTPUT_NAMESPACE,
                    "launcher_sha256": launcher_sha, "launch_checks_sha256": checks_sha,
-                   "prestart_requirements": PRESTART_REQUIREMENTS, "fresh_output_required": True,
+                   "prestart_requirements": PRESTART_REQUIREMENTS, "python_environment": PYTHON_ENVIRONMENT,
+                   "launch_audit_acceptance_path": LAUNCH_ACCEPTANCE_PATH,
+                   "launch_audit_acceptance_schema": LAUNCH_ACCEPTANCE_SCHEMA,
+                   "launch_audit_acceptance_disposition": LAUNCH_ACCEPTANCE_DISPOSITION, "fresh_output_required": True,
                    "stop_after_g7": True, "requires_exact_launch_audit_before_execution": True,
                    "expected_g7_pass_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
                    "corrected_biological_replay_authorized": False, "stage4_authorized": False,
@@ -154,6 +165,26 @@ def validate_authority(owner: Path, runtime: Path, operational: Path, *, expecte
             "r1_scope_lock": "g6_execution_authorized=false in all three records; G7 entrypoint only"}
 
 
+def validate_launch_acceptance(acceptance: Path, *, expected_sha: str, authority_commit: str, operational: Path,
+                               launcher: Path, checks: Path) -> dict:
+    """EXECUTE release: the external auditor's committed acceptance of this exact launch package."""
+    actual = sha(acceptance)
+    if actual != expected_sha:
+        stop(f"launch-audit acceptance SHA {actual} is not {expected_sha}")
+    rec = load_json(acceptance)
+    _require(rec, {"schema": LAUNCH_ACCEPTANCE_SCHEMA, "disposition": LAUNCH_ACCEPTANCE_DISPOSITION,
+                   "implementation_commit_sha": IMPLEMENTATION_COMMIT, "authority_commit_sha": authority_commit,
+                   "operational_authorization_sha256": sha(operational), "launcher_sha256": sha(launcher),
+                   "launch_checks_sha256": sha(checks), "fresh_g7_output_namespace": G7_OUTPUT_NAMESPACE,
+                   "single_g7_attempt": True, "corrected_biological_replay_authorized": False,
+                   "stage4_authorized": False}, "launch-audit acceptance")
+    _require_g6_scope_lock(rec, "launch-audit acceptance")
+    extra = sorted(k for k, v in rec.items() if k.endswith("_authorized") and v is not False)
+    if extra:
+        stop(f"launch-audit acceptance may not authorize anything beyond the G7 run: {extra}")
+    return {"launch_audit_acceptance_sha256": actual, "launch_acceptance_check": "PASS"}
+
+
 def _load_module(path: Path, name: str):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
@@ -175,7 +206,7 @@ def prestart(exec_root: Path, args: argparse.Namespace) -> dict:
     if {k: trace[k] for k in CODE_IDENTITY} != CODE_IDENTITY:
         stop(f"executing code identity is not the qualified successor: {trace}")
     g7.require_g6_producer_code_continuity(trace)
-    replay, sample_a, _, _, macha = g7.load_inputs(args)
+    replay, sample_a, provenance, _, macha = g7.load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
     pred = g7.load_accepted_g6_predecessor(Path(args.g6_receipt), Path(args.g6_acceptance),
                                            replay_addresses=replay_addresses, sample_a=sample_a)
@@ -191,6 +222,10 @@ def prestart(exec_root: Path, args: argparse.Namespace) -> dict:
     shards = g1b_freeze["rebuilt_cache"]["shards"]
     if n_verified != N_S174_SHARDS or len(shards) != N_S174_SHARDS:
         stop(f"S174 shard count {n_verified}/{len(shards)} != {N_S174_SHARDS}")
+    for study in sorted(set(sample_a.source.astype(str)) - {"NPH52"}):   # G7 checks this after its marker
+        fprov = provenance[provenance.source_dataset_id.astype(str).eq(FAMILY[study])]
+        if fprov.empty or fprov.source_exact_ensembl_id.astype(str).duplicated().any():
+            stop(f"provenance identifiers missing or nonunique for {study}")
     matrices = {str(m["matrix_id"]): m for m in macha["matrices"]}
     joined = {}
     for mid0, group in sample_a[~sample_a.source.eq("NPH52")].groupby("matrix_id", sort=True):
@@ -224,6 +259,9 @@ def prestart(exec_root: Path, args: argparse.Namespace) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
+    acc = sub.add_parser("acceptance")
+    for name in ("acceptance", "expected-acceptance-sha256", "authority-commit", "operational-authorization", "launcher"):
+        acc.add_argument(f"--{name}", required=True)
     a = sub.add_parser("authority")
     for name in ("owner-decision", "runtime-authorization", "operational-authorization", "expected-operational-sha256",
                  "launcher"):
@@ -235,7 +273,12 @@ def main() -> int:
                  "s174-cache-root", "source-root"):
         p.add_argument(f"--{name}", required=True)
     args = ap.parse_args()
-    if args.cmd == "authority":
+    if args.cmd == "acceptance":
+        print(json.dumps(validate_launch_acceptance(
+            Path(args.acceptance), expected_sha=args.expected_acceptance_sha256, authority_commit=args.authority_commit,
+            operational=Path(args.operational_authorization), launcher=Path(args.launcher), checks=Path(__file__)),
+            indent=2, sort_keys=True))
+    elif args.cmd == "authority":
         out = validate_authority(Path(args.owner_decision), Path(args.runtime_authorization),
                                  Path(args.operational_authorization),
                                  expected_operational_sha=args.expected_operational_sha256,
