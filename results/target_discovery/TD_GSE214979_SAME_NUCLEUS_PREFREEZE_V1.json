@@ -1,0 +1,124 @@
+{
+  "schema": "TD_GSE214979_SAME_NUCLEUS_PREFREEZE_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_EXPERIMENT_DESIGN__NO_RESULT_OPENED__NO_TARGET_SELECTION_AUTHORITY",
+  "purpose": "Use authenticated same-nucleus RNA+ATAC in GSE214979 to measure what regulatory/chromatin information a frozen RNA target state captures, what privileged increment ATAC contributes, and which privileged components are recoverable from partial RNA without using multimodal agreement to select the foundation target retrospectively.",
+  "authenticated_surface": {
+    "pairing": "VERIFIED_SAME_NUCLEUS",
+    "overall_nuclei": 105332,
+    "overall_donors": 15,
+    "microglia_total_prior_audit": 3179,
+    "development_surface_cells": 2534,
+    "development_surface_donors": 12,
+    "genes": 36601,
+    "peaks": 150614,
+    "genes_detected_all_12_donors": 6877,
+    "peaks_detected_all_12_donors": 12319,
+    "matrix_sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2",
+    "metadata_sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+    "all_microglia_npz_sha256": "2ef3bf52186d005610a3aba26ce9a5b432c980d398032910c2521f95c3bf13bb",
+    "development_npz_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34"
+  },
+  "known_identity_defects": {
+    "affected_labels": ["HCT17HEX", "HCTZZT"],
+    "issue": "sex/age and region identity conflict consistent with possible pooled-lane label swap",
+    "donor_assignment": "genotype-demultiplexed/inferred",
+    "microglia_balance": "highly imbalanced across donors",
+    "rule": "These defects must be handled prospectively in all deciding analyses and may not be repaired after outcome inspection."
+  },
+  "required_preanalysis_branches": {
+    "PRIMARY": {
+      "rule": "Exclude nuclei belonging to the two identity-conflicted donor labels from deciding donor-held-out qualification unless an independently authenticated correction already exists before outcome opening.",
+      "reason": "A possible label swap contaminates biological metadata identity and therefore donor-level interpretation."
+    },
+    "SENSITIVITY": {
+      "rule": "Repeat with conflicted donors retained only under genotype-defined donor identity and with demographic/region covariates for those labels marked unavailable rather than repaired by guess.",
+      "role": "Sensitivity only; cannot rescue a primary failure."
+    }
+  },
+  "foundation_freeze_prerequisite": {
+    "required": true,
+    "rule": "The RNA target candidate, target coordinates/subspace, rare-program definitions, query definition and candidate-selection rule must be frozen before GSE214979 regulatory outcomes are used in a deciding R2 transition.",
+    "allowed_before_target_selection": "Mechanical/custody/coverage preflight only; no target-comparative multimodal outcome may be used to choose C1/C3/C6/C2/C4."
+  },
+  "units_and_splits": {
+    "biological_replication_unit": "donor",
+    "observation_unit": "nucleus nested within donor",
+    "split_order": "DONOR_FIRST",
+    "nucleus_level_random_split_for_deciding_result": false,
+    "stratification": "Preserve donor and known source/library structure without making disease/pathology a selection target.",
+    "small_n_rule": "Report donor-wise effects and leave NOT_ESTIMABLE when donor support is insufficient; many nuclei do not substitute for donor replication."
+  },
+  "teacher_views": {
+    "T_RNA": "Frozen lawful RNA evidence only.",
+    "T_RNA_ATAC": "Same frozen RNA plus same-nucleus ATAC/regulatory features that pass support and provenance gates.",
+    "student": "Prospectively masked/partial lawful RNA only; no ATAC, donor ID, dataset ID, pathology or target-statistic leakage."
+  },
+  "primary_quantities": {
+    "frozen_state_regulatory_coherence": "For each frozen state/program, donor-wise association with supported accessibility/regulon features.",
+    "delta_privileged": "Difference between stable T_RNA_ATAC state and the projection explainable by T_RNA within the frozen target geometry.",
+    "rna_recoverability": "Donor-held-out predictability of qualified privileged increments from partial RNA.",
+    "teacher_private_fraction": "Qualified privileged variance/information not reproducibly recoverable from RNA and therefore not a deterministic student point target.",
+    "rare_state_sharpening": "Whether qualified ATAC/regulatory evidence reproducibly sharpens, splits or falsifies a frozen rare RNA state across donors."
+  },
+  "candidate_specific_questions": {
+    "C1": "Does a frozen shared state align with recurrent accessibility/regulon programs?",
+    "C3": "Within shared state, does the query-conditioned increment align with query-specific accessibility/regulon context beyond query abundance/depth/detection?",
+    "C6": "Does the C3 increment carried within C6 provide regulatory information beyond C1 under the same donor split?",
+    "C2": "Only if active after corrected replay: do relational neighborhoods show regulatory coherence beyond source/order and generic topology effects?",
+    "C4": "Only if active: does relational structure add regulatory coherence beyond C6?",
+    "C5": "Can a qualified regulatory specialist block be defined with donor-held-out stability without becoming a foundation rescue?"
+  },
+  "controls": {
+    "mandatory": [
+      "RNA_ONLY_TEACHER",
+      "DEPTH_LIBRARY_SIZE",
+      "DETECTION_RATE",
+      "DONOR",
+      "SOURCE_LIBRARY_OPERATOR",
+      "FEATURE_SUPPORT_MASK",
+      "QUERY_ABUNDANCE_FOR_C3_C6",
+      "RANDOM_OR_MATCHED_REGULATORY_FEATURE_CONTROL",
+      "DONOR_LABEL_PERMUTATION_WHERE_STATISTIC_SUPPORTS_IT"
+    ],
+    "graph_claim_additional": [
+      "NO_GRAPH_OR_IDENTITY",
+      "STRICT_SHUFFLED_TOPOLOGY",
+      "GENE_LABEL_PERMUTATION",
+      "GENERIC_PRIOR_GRAPH"
+    ]
+  },
+  "support_and_missingness": {
+    "unsupported_feature": "MASK_MISSING",
+    "zero_fill_missing_privileged_evidence": false,
+    "minimum_support_rule": "A deciding regulatory feature must have prospectively sufficient donor and nucleus support; otherwise its result is NOT_ESTIMABLE.",
+    "rare_program_rule": "Rare state absence in a donor is not silently imputed; donor-wise support is reported and recurrence requirements are respected."
+  },
+  "decision_states": {
+    "R2_PASS": "Frozen state/program shows donor-recurrent regulatory coherence beyond mandatory nuisance/support controls, with effect direction/geometry sufficiently stable under the predeclared donor split and sensitivity analysis.",
+    "R2_FAIL": "A sufficiently supported frozen state/program shows no reproducible regulatory increment or apparent support is explained by nuisance/support/identity shortcuts.",
+    "R2_NOT_ESTIMABLE": "Donor support, feature support or identity integrity is insufficient for a deciding result.",
+    "RNA_RECOVERABLE": "Privileged increment is reproducibly predictable from partial RNA under donor-held-out evaluation.",
+    "PREDICTABLE_BUT_STOCHASTIC": "Distributional signal is recoverable but exact realized privileged state is not; use uncertainty/distributional target, not deterministic matching.",
+    "TEACHER_PRIVATE": "Privileged increment remains non-recoverable from RNA and is retained only in rich teacher/private biological uncertainty."
+  },
+  "failure_and_nonrescue_rules": {
+    "regulatory_fail_does_not_redefine_foundation": true,
+    "regulatory_pass_does_not_select_foundation": true,
+    "C2_C4_relational_fail_cannot_be_rescued": true,
+    "identity_conflict_cannot_be_repaired_using_outcomes": true,
+    "pathology_association_cannot_be_used_to_choose_regulatory_features": true
+  },
+  "outputs_required_when_executed": [
+    "exact input hashes and rows/nuclei/donor census",
+    "primary and sensitivity donor sets",
+    "coverage/support table per target/regulatory feature",
+    "donor-wise and aggregate effect table",
+    "nuisance/control comparison table",
+    "recoverability/private-state table",
+    "rare-program result table",
+    "claim-boundary receipt",
+    "sealed-test opening receipt if and only if separately authorized"
+  ],
+  "non_authority_statement": "This prefreeze does not execute GSE214979 analysis, open protected outcomes, select a target, authorize TD60, authorize representation selection, authorize Stage 4, or authorize training."
+}
