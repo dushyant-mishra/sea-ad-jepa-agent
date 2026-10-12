@@ -6,12 +6,14 @@
   "hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "cross_lane_provenance": {
     "PR311": "Analysis/provenance lane for real-TRAIN rare-biology integration and Stage75 detection-residual regulatory-tail findings.",
-    "PR312": "Active target-discovery integration/adjudication surface consuming the PR311 handoff.",
-    "rule": "The PR311 result is preserved there and handed directly into PR312; it is one evidence lineage, not two independent replications or competing interpretations."
+    "PR312": "Active target-discovery integration/adjudication surface consuming the PR311 handoff and the regular-biology multimodal reconciliation contracts.",
+    "rule": "The PR311 result is one evidence lineage after handoff into PR312; it is not an independent second replication."
   },
   "completed_design_work": {
     "candidate_architecture": "C1/C2/C3/C6/C4 foundation architecture with C5 specialist retained; dependencies and non-rescue rules preserved.",
     "corrected_replay_integration": "Macha PR310 remains canonical replay package; this lane consumes its eventual audited outcome and does not duplicate execution machinery.",
+    "regular_program_multimodal_reconciliation": "Full post-freeze reconciliation is now frozen for ordinary/continuous TD biology: GSE214979 same-nucleus RNA+ATAC, Morabito donor-level separate-nucleus recurrence, SCENIC/Stage75 interpretation, internal SEA-AD corroboration, spatial/perturbation follow-up and RNA-recoverable vs teacher-private decomposition.",
+    "regular_candidate_modality_matrix": "C1/C2/C3/C6/C4 now each have modality-specific downstream questions and failure pivots; multimodal evidence cannot be applied generically or used to rewrite the frozen RNA target.",
     "rare_program_gate": "Rare-program fitness is mandatory for every active foundation candidate; Stage81A3/PRRC logic reused rather than rebuilt.",
     "rare1_rare5_reconciliation": "Historical rare1/rare5 classified as one strongly source-shifted diagnostic direction requiring source/operator-aware reassessment before use.",
     "stage75_rare_lead_handoff": "PR311 Stage75 detection-residual rare-program result folded into PR312. All seven tested modules remain donor-recurrent after detected-gene correction; STAT1 is the priority prospective reassessment lead, with remaining summed-expression/quality confounding explicitly unresolved.",
@@ -19,21 +21,21 @@
     "bayesian_reuse": "Useful PR249 dependency-ledger/calibration principles retained; failed zero-sum stage-mean estimand and sampler explicitly rejected.",
     "bayesian_rare_program_design": "Donor-primary within-source recurrence, cross-source direction transport, source-shifted prevalence and observation-limited biology estimands frozen prospectively.",
     "multimodal_evidence_ledger": "Existing FULL104, Stage81A3, GSE214979, Morabito, SEA-AD multiome, regulatory, spatial and perturbation assets assigned roles with reuse/no-reacquisition rules.",
-    "rich_teacher_partial_student": "Recoverable vs teacher-private biology decomposition and uncertainty semantics frozen.",
+    "rich_teacher_partial_student": "Regular and rare biology now share the same recoverable/stochastic/teacher-private decomposition and uncertainty semantics.",
     "regulatory_integration": "Stage75F/SCENIC+ used as privileged regulatory evidence with historical topology negative prior; no validated-GRN claim.",
-    "same_nucleus_prefreeze": "GSE214979 role frozen for post-target same-nucleus RNA+ATAC identifiability and recoverability.",
+    "same_nucleus_prefreeze": "GSE214979 role frozen for post-target same-nucleus RNA+ATAC identifiability and recoverability for both regular and rare frozen biology.",
     "authority_ladder": "Replay -> candidate gates -> rare fitness -> survivor adjudication -> protected confirmation -> explicit target decision -> post-freeze multimodal support -> representation decision -> later authorities.",
     "contingency_pivot_law": "All major PASS/FAIL/NOT_ESTIMABLE/divergence/artifact outcomes now have predeclared pivots and non-rescue rules."
   },
   "remaining_execution_actions": [
     {"order": 1, "action": "CORRECTED_REPLAY_EXECUTION_AND_AUDIT", "owner": "MACHA_EXECUTION__THIS_LANE_AUDIT", "blocked_on": "exact PR310 owner ratification/launch acceptance and one authorized execution", "changes_candidate_set": true, "notes": "Determines C2/C4 status only; C6 unchanged."},
-    {"order": 2, "action": "SOURCE_OPERATOR_AWARE_RARE_PROGRAM_REASSESSMENT", "owner": "TARGET_DISCOVERY", "blocked_on": "separate explicit execution authority and access to already authenticated TRAIN/cached surfaces", "changes_candidate_set": false, "notes": "Prioritize PR311 STAT1 lead, then SPI1/other Stage75 tails; use historical rare1/rare5 as a confounded diagnostic control. Must not globally pool or prematurely regress source."},
+    {"order": 2, "action": "SOURCE_OPERATOR_AWARE_RARE_PROGRAM_REASSESSMENT", "owner": "TARGET_DISCOVERY", "blocked_on": "separate explicit execution authority and access to already authenticated TRAIN/cached surfaces", "changes_candidate_set": false, "notes": "Prioritize PR311 STAT1 lead, then SPI1/other Stage75 tails; use historical rare1/rare5 as a confounded diagnostic control."},
     {"order": 3, "action": "APPLY_RARE_PROGRAM_FITNESS_TO_EACH_ACTIVE_CANDIDATE", "owner": "TARGET_DISCOVERY", "blocked_on": "candidate readouts plus rare reassessment evidence", "changes_candidate_set": true, "notes": "C1/C3/C6 mandatory; C2/C4 only if replay leaves active."},
     {"order": 4, "action": "SURVIVOR_HEAD_TO_HEAD_AND_PROTECTED_CONFIRMATION", "owner": "TARGET_DISCOVERY", "blocked_on": "completion of all mandatory candidate gates including rare fitness", "changes_candidate_set": true, "notes": "One survivor still requires protected confirmation; multiple survivors use predeclared pairwise questions."},
     {"order": 5, "action": "EXPLICIT_FOUNDATION_TARGET_DECISION", "owner": "OWNER_AUTHORITY", "blocked_on": "audited survivor evidence", "changes_candidate_set": true, "notes": "No implicit promotion from technical PASS or single-survivor status."},
-    {"order": 6, "action": "POST_FREEZE_GSE214979_SAME_NUCLEUS_MULTIMODAL_DECOMPOSITION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "foundation target freeze and separate execution authority", "changes_candidate_set": false, "notes": "Measures regulatory/chromatin increment and RNA recoverability; cannot retrospectively choose target."},
-    {"order": 7, "action": "DONOR_LEVEL_MORABITO_AND_INTERNAL_SEAAD_MULTIMODAL_REPLICATION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "frozen program definitions from target/multimodal phase", "changes_candidate_set": false, "notes": "Morabito separate-nucleus donor-level only; SEA-AD internal corroboration not pristine external validation."},
-    {"order": 8, "action": "REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION", "owner": "DOWNSTREAM_INTERPRETATION", "blocked_on": "frozen programs and modality-specific qualification", "changes_candidate_set": false, "notes": "Interpretation/localization/causal-direction support only; each evidence class retains its claim boundary."},
+    {"order": 6, "action": "POST_FREEZE_GSE214979_SAME_NUCLEUS_RECONCILIATION_FOR_REGULAR_AND_RARE_BIOLOGY", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "foundation target/program freeze and separate execution authority", "changes_candidate_set": false, "notes": "Tests frozen C1/C2/C3/C6/C4 biology plus rare programs against same-nucleus chromatin/regulatory evidence and partitions privileged increment into RNA-recoverable, stochastic or teacher-private components."},
+    {"order": 7, "action": "DONOR_LEVEL_MORABITO_AND_INTERNAL_SEAAD_MULTIMODAL_REPLICATION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "frozen regular/rare program definitions from target/multimodal phase", "changes_candidate_set": false, "notes": "Morabito separate-nucleus donor-level only; SEA-AD internal corroboration not pristine external validation."},
+    {"order": 8, "action": "SCENIC_REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION", "owner": "DOWNSTREAM_INTERPRETATION", "blocked_on": "frozen regular/rare programs and modality-specific qualification", "changes_candidate_set": false, "notes": "Interpretation/localization/causal-direction support only; each evidence class retains its claim boundary."},
     {"order": 9, "action": "EXPLICIT_REPRESENTATION_DECISION_AND_LATER_TD60_STAGE4_TRAINING_AUTHORITIES", "owner": "OWNER_AUTHORITY", "blocked_on": "post-freeze multimodal/recoverability evidence and runtime/scientific gates", "changes_candidate_set": false, "notes": "No automatic authority propagation."}
   ],
   "work_that_must_not_be_repeated": [
@@ -46,8 +48,9 @@
     "GSE214637 as an independent cohort",
     "historical Stage73/73R graph topology claims as validated GRN",
     "pathology-guided target discovery",
-    "PR311 Stage75 rare-program handoff as if it were an independent second replication after being imported into PR312"
+    "PR311 Stage75 rare-program handoff as if it were an independent second replication after being imported into PR312",
+    "a second ad hoc regular-biology multimodal architecture outside TD_REGULAR_PROGRAM_MULTIMODAL_RECONCILIATION_V1 and TD_REGULAR_PROGRAM_CANDIDATE_MODALITY_MATRIX_V1"
   ],
-  "definition_of_design_lane_done": "All currently foreseeable scientific decision branches, pivots, evidence-role boundaries and non-rescue rules are frozen prospectively. Remaining work is execution/audit against future evidence, not additional architecture brainstorming unless a frozen contingency explicitly triggers redesign.",
+  "definition_of_design_lane_done": "Regular and rare TD biology now have symmetric post-freeze multimodal reconciliation, candidate-specific modality questions, teacher/student recoverability semantics, evidence-role boundaries and failure pivots. Remaining work is execution/audit against future evidence, not additional architecture brainstorming unless a frozen contingency explicitly triggers redesign.",
   "non_authority_statement": "Closeout does not authorize any blocked execution action."
 }
