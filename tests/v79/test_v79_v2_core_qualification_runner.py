@@ -30,6 +30,10 @@ def _receipt(item):
             "training_authorized":False,"final_diagnosis":"COMPLETE","attempts":[],"posterior_artifacts":{},"code_sha":"a"*40}
 
 
+def _write_receipt(path: Path, receipt: dict) -> None:
+    path.write_bytes((json.dumps(receipt,sort_keys=True,separators=(",",":"))+"\n").encode("utf-8"))
+
+
 def test_world_groups_preserve_opaque_order_and_det_then_pos_per_gene():
     groups=Q.group_queue_by_world(_queue())
     assert [g[0] for g in groups]==["000000000001","000000000002"]
@@ -38,27 +42,23 @@ def test_world_groups_preserve_opaque_order_and_det_then_pos_per_gene():
 
 def test_checkpoint_scan_accepts_exact_prefix_only(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir()
-    for item in q[:3]:
-        (out/f"fit_{item['fit_id']}.json").write_text(json.dumps(_receipt(item),sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
+    for item in q[:3]: _write_receipt(out/f"fit_{item['fit_id']}.json",_receipt(item))
     assert Q.completed_prefix(out,q)==3
-    (out/f"fit_{q[4]['fit_id']}.json").write_text(json.dumps(_receipt(q[4]),sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
-    with pytest.raises(Q.QualificationRunRefused):
-        Q.completed_prefix(out,q)
+    _write_receipt(out/f"fit_{q[4]['fit_id']}.json",_receipt(q[4]))
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
 
 
 def test_checkpoint_scan_refuses_tampered_existing_receipt(tmp_path):
-    q=_queue(); out=tmp_path/"r"; out.mkdir()
-    r=_receipt(q[0]); r["opaque_world_id"]="ffffffffffff"
-    (out/f"fit_{q[0]['fit_id']}.json").write_text(json.dumps(r,sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
-    with pytest.raises(Q.QualificationRunRefused):
-        Q.completed_prefix(out,q)
+    q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r["opaque_world_id"]="ffffffffffff"
+    _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
 
 
 def test_checkpoint_artifact_path_cannot_escape_result_root(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir(); escape=tmp_path/"escape.npz"; escape.write_bytes(b"x")
     import hashlib
     r=_receipt(q[0]); r["posterior_artifacts"]={"donor_effect_draws":{"path":"../escape.npz","sha256":hashlib.sha256(b"x").hexdigest()}}
-    (out/f"fit_{q[0]['fit_id']}.json").write_text(json.dumps(r,sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
+    _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
     with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
 
 
@@ -70,8 +70,7 @@ def test_campaign_summary_keeps_scoring_and_truth_off():
 
 def test_campaign_finalization_is_idempotent_after_all_fit_receipts_exist(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir()
-    for item in q:
-        (out/f"fit_{item['fit_id']}.json").write_text(json.dumps(_receipt(item),sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
+    for item in q: _write_receipt(out/f"fit_{item['fit_id']}.json",_receipt(item))
     a=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
     b=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
     assert a==b and a["qualification_fits_run"]==len(q)
@@ -80,8 +79,7 @@ def test_campaign_finalization_is_idempotent_after_all_fit_receipts_exist(tmp_pa
 def test_qualification_processes_import_no_controller_or_scoring_modules():
     forbidden={"generate_v79_v2_core_worlds","v79_v2_core_world_writer","v79_v2_core_launch","v79_v2_core_score"}
     for name in ("run_v79_v2_core_qualification.py","run_v79_v2_core_qualification_world.py"):
-        tree=ast.parse((HERE/name).read_text(encoding="utf-8"))
-        imported=set()
+        tree=ast.parse((HERE/name).read_text(encoding="utf-8")); imported=set()
         for node in ast.walk(tree):
             if isinstance(node,ast.Import): imported.update(alias.name for alias in node.names)
             elif isinstance(node,ast.ImportFrom) and node.module: imported.add(node.module)
