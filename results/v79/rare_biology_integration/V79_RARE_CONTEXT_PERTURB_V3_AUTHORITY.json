@@ -1,0 +1,36 @@
+{
+  "schema": "V79_RARE_CONTEXT_PERTURB_V3_AUTHORITY",
+  "date": "2026-10-12",
+  "status": "ONE_V3_REALIZATION_AND_CONTROLLER_STRUCTURAL_SCORE_AUTHORIZED",
+  "owner_instruction": "User explicitly instructed to keep pushing ahead; this authority advances only the already-specified synthetic spatial/perturbation layer.",
+  "bound_contract_git_blob_sha": "21f3c996a9be87075de959cf6333e820bc974199",
+  "bound_code": {
+    "context_perturb_git_blob_sha": "a79e7747a2709204454fcd2deca6fa8ddea35fac",
+    "test_git_blob_sha": "73bc9dd9e261ec4374d9b11d650deda3f1fb7854",
+    "base_generator_git_blob_sha": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f"
+  },
+  "authorized": {
+    "realization_attempts": 1,
+    "seed_root": 79302026,
+    "challenges": ["SPATIAL_CONDITIONED", "SPATIAL_INTRINSIC", "PERTURB_RESPONSE"],
+    "controller_structural_scoring": true,
+    "write_hash_bound_receipt": true
+  },
+  "preflight": [
+    "exact bound code blobs match executable bytes",
+    "4/4 V3 unit tests pass fresh",
+    "output namespace is fresh",
+    "contract is unchanged",
+    "no Q00-Q11 mutation or regeneration",
+    "no pathology/protected outcome opening"
+  ],
+  "not_authorized": {
+    "second_V3_realization": false,
+    "model_fitting": false,
+    "model_scoring": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  },
+  "terminal": "STOP_AFTER_PREFROZEN_V3_STRUCTURAL_SCORE__MODEL_SIDE_CONTEXT_OR_PERTURBATION_QUALIFICATION_REQUIRES_SEPARATE_AUTHORITY"
+}
