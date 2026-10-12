@@ -62,6 +62,10 @@ def forge(w, *, values=None, meta=None, raw_values: bytes | None = None, raw_met
 
 
 def assert_g7_refuses_before_spending(w, monkeypatch, tmp_path) -> None:
+    # Re-accept the forged namespace (synthetic acceptance and predecessor pins updated to the forged bytes), so the
+    # refusal comes from semantic payload validation and not from the predecessor hash pins. Without re-acceptance
+    # the pins refuse any altered artifact (test_td_g7_successor_global_row_and_g6_bridge.py).
+    W.accept_synthetic_g6(w, monkeypatch)
     with pytest.raises(RuntimeError, match=REFUSAL):
         W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
     out = Path(tmp_path) / "g7_out" / "G7_RECEIPT.json"
@@ -190,6 +194,7 @@ def test_g7_cross_check_does_not_use_g6_values_as_its_reference(tmp_path, monkey
     g = genuine_values(w)
     g["data"] = (g["data"] * np.float32(2.0)).astype(np.float32)
     forge(w, values=g)
+    W.accept_synthetic_g6(w, monkeypatch)  # pin the forged namespace as the accepted predecessor
     rc, out = W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
     rec = json.loads(Path(out).read_text(encoding="utf-8"))
     assert rc == 0 and rec["status"] == "PASS_TD_G7_S174_EXACT_OVERLAP"

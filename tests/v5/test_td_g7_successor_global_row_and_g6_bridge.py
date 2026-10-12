@@ -158,30 +158,59 @@ def test_any_altered_predecessor_artifact_fails(tmp_path, monkeypatch, name):
     victim = w.g6_out / name
     b = bytearray(victim.read_bytes()); b[len(b) // 2] ^= 1
     victim.write_bytes(bytes(b))
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="differs from the accepted execution"):
         _bridge(w)
+
+
+def _second_authorized_g6_execution(root, monkeypatch):
+    """A second genuine G6 PASS execution of the same synthetic world, under its own separately written owner
+    decision and runtime authorization. The synthetic world and gate are deterministic, so without a distinct
+    authority the second run reproduces the accepted bytes exactly (see the relocated-copy test below)."""
+    other = W.build_g6_world(root, monkeypatch)
+    decision = json.loads(other.gate.owner_decision.read_text(encoding="utf-8"))
+    decision["synthetic_execution"] = "second_historical_g6_execution"
+    other.gate.owner_decision.write_text(json.dumps(decision, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    W.F.rewrite_authorization(other.g6.common, other.gate)
+    assert W.run_g6(other, monkeypatch) == 0
+    return other
 
 
 def test_another_historical_g6_receipt_fails(tmp_path, monkeypatch):
     w = W.build_g7_world(tmp_path / "accepted", monkeypatch)
-    other = W.build_g6_world(tmp_path / "other", monkeypatch, library_offsets=None)
-    other.g6_out = tmp_path / "other_g6_out"
-    W.point_g6_at_world(other.g6, other, monkeypatch)
-    assert W.run_g6(other, monkeypatch) == 0                       # a genuine, but different, G6 PASS execution
-    with pytest.raises(RuntimeError):
-        _bridge(w, receipt=other.g6_out / "G6_RECEIPT.json")
+    other = _second_authorized_g6_execution(tmp_path / "other", monkeypatch)
+    other_receipt = other.g6_out / "G6_RECEIPT.json"
+    assert json.loads(other_receipt.read_text(encoding="utf-8"))["status"] == "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+    assert sha(other_receipt) != sha(w.g6_receipt)
+    with pytest.raises(RuntimeError, match="differs from the accepted execution"):
+        _bridge(w, receipt=other_receipt)
+
+
+def test_a_byte_identical_relocated_copy_is_the_same_accepted_execution(tmp_path, monkeypatch):
+    """Provenance is content-addressed: the five accepted files copied elsewhere are the same evidence."""
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    copy = tmp_path / "relocated" / "G6_OUT"
+    shutil.copytree(w.g6_out, copy)
+    assert _bridge(w, receipt=copy / "G6_RECEIPT.json")["g7_verified_g6_execution_sha256"]["receipt"] == sha(w.g6_receipt)
+    (copy / "EXTRA.txt").write_text("foreign\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="not the accepted predecessor execution"):
+        _bridge(w, receipt=copy / "G6_RECEIPT.json")
 
 
 def test_real_predecessor_pins_refuse_any_other_g6_execution(tmp_path, monkeypatch):
     w = W.build_g7_world(tmp_path, monkeypatch)
     monkeypatch.setattr(w.g7, "ACCEPTED_G6_PREDECESSOR", REAL_PREDECESSOR)
     shutil.copy(FIX / "TD_G6_EXTERNAL_ACCEPTANCE_ff4a21f9_20261011.json", tmp_path / "acc.json")
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="differs from the accepted execution"):   # the real acceptance passes
         _bridge(w, acceptance=tmp_path / "acc.json")
 
 
-@pytest.mark.parametrize("change", ["disposition", "commit", "artifacts", "authorizes_training", "authorizes_td60",
-                                    "authorizes_biology", "authorizes_targets", "missing"])
+ACCEPTANCE_REFUSAL = {"disposition": "external_audit_disposition", "commit": "accept this predecessor: implementation_commit_sha",
+                      "artifacts": "g6_artifact_sha256", "authorizes_training": "training_authorized=false",
+                      "authorizes_td60": "td60_authorized=false", "authorizes_biology": "biological_replay_authorized=false",
+                      "authorizes_targets": "target_selection_authorized=false", "missing": "missing G6 external acceptance"}
+
+
+@pytest.mark.parametrize("change", sorted(ACCEPTANCE_REFUSAL))
 def test_altered_or_missing_external_acceptance_fails(tmp_path, monkeypatch, change):
     w = W.build_g7_world(tmp_path, monkeypatch)
     rec = json.loads(w.g6_acceptance.read_text(encoding="utf-8"))
@@ -199,8 +228,17 @@ def test_altered_or_missing_external_acceptance_fails(tmp_path, monkeypatch, cha
         # rehash: even an acceptance whose pin is updated must still carry the accepted content
         pins = dict(w.g7.ACCEPTED_G6_PREDECESSOR, external_acceptance_sha256=sha(bad))
         monkeypatch.setattr(w.g7, "ACCEPTED_G6_PREDECESSOR", pins)
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=ACCEPTANCE_REFUSAL[change]):
         _bridge(w, acceptance=bad)
+
+
+def test_unrehashed_acceptance_edit_fails_on_the_pinned_acceptance_sha(tmp_path, monkeypatch):
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    rec = json.loads(w.g6_acceptance.read_text(encoding="utf-8"))
+    rec["note"] = "edited after acceptance"
+    w.g6_acceptance.write_text(json.dumps(rec, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="not the accepted record"):
+        _bridge(w)
 
 
 def test_g7_main_consumes_only_the_accepted_predecessor_and_records_both_identities(tmp_path, monkeypatch):
@@ -213,14 +251,29 @@ def test_g7_main_consumes_only_the_accepted_predecessor_and_records_both_identit
     assert r["authority_trace"]["g6_receipt_sha256"] == sha(w.g6_receipt)
     for key in ("biological_replay_authorized", "target_selection_authorized", "td60_authorized", "training_authorized"):
         assert r[key] is False
+    marker = json.loads(out.with_name(out.name + ".STARTED_NOT_A_PASS.json").read_text(encoding="utf-8"))
+    assert marker["g6_predecessor"] == r["g6_predecessor"]                        # GREEN-only addition
+    assert marker["g6_receipt_sha256"] == sha(w.g6_receipt)
 
 
 def test_g7_main_refuses_without_the_external_acceptance(tmp_path, monkeypatch):
     w = W.build_g7_world(tmp_path, monkeypatch)
     w.g6_acceptance = tmp_path / "missing_acceptance.json"
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="missing G6 external acceptance"):
         W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
     assert not (tmp_path / "g7_out").exists()                      # refused before the attempt marker
+
+
+@pytest.mark.parametrize("key", ["common_script_sha256", "g6_script_sha256"])
+def test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer(tmp_path, monkeypatch, key):
+    """GREEN-only addition: the successor replaces G7 only; common and G6 must stay the producer's exact code."""
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    pins = json.loads(json.dumps(w.g7.ACCEPTED_G6_PREDECESSOR))
+    pins["authority_trace"][key] = "0" * 64
+    monkeypatch.setattr(w.g7, "ACCEPTED_G6_PREDECESSOR", pins)
+    with pytest.raises(RuntimeError, match=f"differs from the accepted G6 producer: {key}"):
+        W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+    assert not (tmp_path / "g7_out").exists()
 
 
 # ------------------------------------------------------------------------------- 3. authority stays separate
