@@ -69,6 +69,7 @@ jobs:
             tests/v5/test_td_target_tournament_scaffold.py \
             tests/v5/test_td_tournament_completeness.py \
             tests/v5/test_td_v79_synthetic_crosswalk_v1.py \
+            tests/v5/test_td_v79_realization_binding_v1.py \
             tests/v5/test_td_target_tournament_routing_v3.py \
             tests/v5/test_td_protected_head_to_head_v1.py \
             tests/v5/test_td_target_tournament_v79_routing_integration_v1.py \
