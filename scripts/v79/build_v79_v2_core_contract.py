@@ -8,22 +8,37 @@ budget, and the planting magnitudes from the masked development calibration. Fit
 contract JSON and must refuse a JSON whose SHA-256 differs from the frozen value. The code never re-declares these
 numbers.
 
+Two variants come from the same code:
+  draft   the accepted V2 draft (PR #286 amendments). Historical: it is never rewritten, only regenerated and compared.
+  final   the immutable launch authority (PR #288 controller ruling 6114753697). It is the accepted draft plus a
+          bounded set of finalization fields; every other key is byte-identical to the draft (tested).
+Every input hash and every accepted number is checked against v79_v2_core_launch.py (the controller-accepted
+values). Any disagreement STOPs.
+
 Usage: build_v79_v2_core_contract.py <repo_root> [--check]
-  --check   rebuild in memory and compare to the committed JSON byte for byte (no write)
+  (no flag)  regenerate the draft and require it byte-identical to the committed draft; write the final contract and
+             its .sha256 only if absent (an existing final is never overwritten; a differing rebuild STOPs)
+  --check    regenerate both and compare byte for byte with the committed files and .sha256 (no write)
 """
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 
 import numpy as np
 from scipy import stats
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import v79_v2_core_launch as L  # noqa: E402  (controller-accepted values; single authority)
+
 SCHEMA = "V79_V2_CORE_QUALIFICATION_CONTRACT_V2"
-CONTRACT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json"
+CONTRACT_REL = "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json"  # draft variant
+FINAL_REL = "results/v79/v2_core_qualification/" + L.FINAL_CONTRACT_NAME
 CONTRACT_STATUS = "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION"
 SUPERSEDED = {  # preserved unchanged at its path; historical pre-controller draft, never launch authority
     "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
@@ -669,29 +684,161 @@ def build(root: Path) -> dict:
     return contract
 
 
+def finalize(root: Path, draft: dict) -> dict:
+    """The final launch authority: the accepted draft plus finalization fields only (PR #288 ruling 6114753697)."""
+    hashes = {k: sha(root / v) for k, v in INPUTS.items()}
+    for ikey, (ekey, field) in L.INPUT_EVIDENCE.items():
+        if hashes[ikey] != L.ACCEPTED_EVIDENCE[ekey][field]:
+            raise SystemExit(f"STOP: input {ikey} sha256 {hashes[ikey]} != accepted {L.ACCEPTED_EVIDENCE[ekey][field]}")
+    support = json.loads((root / INPUTS["structural_support_v1_record"]).read_text(encoding="utf-8"))
+    cal = json.loads((root / INPUTS["planting_calibration_masked"]).read_text(encoding="utf-8"))
+    replay = json.loads((root / INPUTS["masked_replay"]).read_text(encoding="utf-8"))
+    audit = json.loads((root / INPUTS["masking_audit"]).read_text(encoding="utf-8"))
+    v1, dr = L.ACCEPTED_EVIDENCE["contract_v1"], L.ACCEPTED_EVIDENCE["contract_v2_draft"]
+    bridge_rel = L.ACCEPTED_EVIDENCE["s174_operator_bridge"]["path"]
+    evidence = {
+        "contract_v1": {"path": v1["path"], "sha256": sha(root / v1["path"]), "status": v1["status"]},
+        "contract_v2_draft": {"path": dr["path"], "sha256": sha(root / dr["path"]),
+                              "status": json.loads((root / dr["path"]).read_text(encoding="utf-8"))["status"]},
+        "masked_replay": {"path": INPUTS["masked_replay"], "sha256": hashes["masked_replay"]},
+        "masking_audit": {"path": INPUTS["masking_audit"], "sha256": hashes["masking_audit"]},
+        "support_mask": {"record_path": INPUTS["structural_support_v1_record"],
+                         "measured_op_gene_sha256": support["measured_op_gene_sha256"],
+                         "npz_sha256": support["npz_sha256"], "record_sha256": hashes["structural_support_v1_record"]},
+        "g500_cache": {"sha256": support["cache_npz_sha256"], "receipt_sha256": support["cache_receipt_sha256"],
+                       "bound_by": "support record cache binding; calibration and masked replay cache_sha256 agree"},
+        "structural_support_authority": dict(support["authority"]),
+        "s174_operator_bridge": {"path": bridge_rel, "sha256": sha(root / bridge_rel)},
+        "planting_calibration_masked": {"path": INPUTS["planting_calibration_masked"],
+                                        "sha256": hashes["planting_calibration_masked"]},
+        "s174_design_only": {"path": INPUTS["s174_design_only"], "sha256": hashes["s174_design_only"]},
+        "s174_design_only_record": {"path": INPUTS["s174_design_only_record"],
+                                    "sha256": hashes["s174_design_only_record"]},
+        "structural_support_dev": {"path": INPUTS["structural_support_dev"], "sha256": hashes["structural_support_dev"]},
+        "env_lock": {"path": INPUTS["env_lock"], "sha256": hashes["env_lock"]},
+    }
+    evidence["structural_support_authority"].pop("columns_read", None)
+    for key, want in L.ACCEPTED_EVIDENCE.items():
+        for field, value in want.items():
+            if evidence[key].get(field) != value:
+                raise SystemExit(f"STOP: accepted evidence {key}.{field} = {evidence[key].get(field)!r}, expected {value!r}")
+    if cal["cache_sha256"] != evidence["g500_cache"]["sha256"] or replay["cache_sha256"] != evidence["g500_cache"]["sha256"]:
+        raise SystemExit("STOP: calibration, masked replay and support record disagree on the G500 cache")
+    if support["bridge"]["sha256"] != evidence["s174_operator_bridge"]["sha256"]:
+        raise SystemExit("STOP: support record and committed bridge disagree")
+    c_src = audit["nested_steps"]["detection"]["C_source"]
+    out = {}
+    for k, v in draft.items():
+        if k == "launch_condition":
+            continue
+        out[k] = copy.deepcopy(v)
+        if k == "status":
+            out[k] = L.FINAL_STATUS
+        elif k == "launch_authority":
+            out[k] = True
+            out["launch_authority_scope"] = (
+                "WORLD_GENERATION_GATE: this immutable contract authorizes generating Q00-Q11 exactly as specified "
+                "(ruling 6114753697 item 7.2). World generation is a clean subsequent gate and is never combined with "
+                "finalization. Every later step (truth tables committed before any fit, engineering benchmark, "
+                "qualification fits, receipt) runs only under this contract, unchanged.")
+            out["controller_ruling"] = {
+                "pr": L.CONTROLLER_RULING["pr"], "comment_id": L.CONTROLLER_RULING["comment_id"],
+                "terminal": ("V2_CORE_FROZEN_AFTER_MASK_CORRECTED_S174_REPLAY__SOURCE_MAGNITUDE_REINTERPRETED__"
+                             "CONTRACT_V2_FINALIZATION_AUTHORIZED__WORLD_GENERATION_STILL_OFF__REAL_TRAIN_POSTERIOR_OFF__"
+                             "FACTORIAL_SCIENCE_OFF__TRAINING_OFF"),
+                "prior_rulings": {"pr285_model_freeze": "6113335756", "pr286_prelaunch": "6113874774",
+                                  "pr288_correction_summary": "6114694791"}}
+            out["controller_model_decision"] = L.CONTROLLER_MODEL_DECISION
+            out["source_term_interpretation"] = {
+                "term_status": "IN",
+                "interpretation": ("Source is retained as predictive/acquisition-source structure among estimable "
+                                   "measured comparisons: reproducible acquisition/source-associated structure, under "
+                                   "the existing donor/source confounding limitations."),
+                "not_claimed": ["universal source biology", "causal source effect", "biological mechanism"],
+                "magnitude_correction": {
+                    "statement": ("The structural decision survived the masked replay; the magnitude interpretation "
+                                  "changed. V3 overstated the detection source increment because structurally "
+                                  "unmeasured entries were encoded as zeros."),
+                    "detection_source_increment_median": {"v3": c_src["old_v3"]["median"],
+                                                          "masked": c_src["masked"]["median"]},
+                    "detection_source_increment_mean": {"v3": c_src["old_v3"]["mean"], "masked": c_src["masked"]["mean"]},
+                    "source": {"path": INPUTS["masking_audit"], "sha256": hashes["masking_audit"]}},
+                "single_source_genes": ("For a gene measured in only one source, the cross-source estimand is "
+                                        "UNDEFINED/UNEVALUABLE. It is never zero-effect or positive-effect evidence "
+                                        "for source; the scoring identification rule scores no source quantity for it."),
+            }
+            out["accepted_evidence"] = evidence
+            out["qualification_worlds_generated"] = 0
+            out["qualification_fits_run"] = 0
+            out["finalization"] = {
+                "from_accepted_draft_sha256": evidence["contract_v2_draft"]["sha256"],
+                "rule": ("final = accepted draft + launch_authority_scope, controller_ruling, controller_model_decision, "
+                         "source_term_interpretation, accepted_evidence, qualification_worlds_generated, "
+                         "qualification_fits_run, finalization; status, launch_authority and the development "
+                         "finding's controller decision updated; launch_condition removed (met). Every other key is "
+                         "identical to the draft."),
+                "terminal": ("V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_FROZEN__QUALIFICATION_WORLDS_NOT_GENERATED__"
+                             "CONTROLLER_PRELAUNCH_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__"
+                             "TRAINING_OFF")}
+        elif k == "development_finding_structural_support":
+            out[k]["controller_decision"] = (L.CONTROLLER_MODEL_DECISION + " (PR #288 controller ruling "
+                                             + L.CONTROLLER_RULING["comment_id"] + ")")
+    check_accepted_arithmetic(out)
+    return out
+
+
+def check_accepted_arithmetic(c: dict) -> None:
+    """The builder's own derivation must reproduce the controller-accepted arithmetic exactly, or STOP."""
+    m = c["gates"]["multiplicity"]
+    got = {"worlds": len(c["worlds"]["world_list"]), "genes_per_world": c["worlds"]["genes_per_world"],
+           "n_fits": c["resources"]["estimate"]["n_fits"], "total_gates": len(c["gates"]["list"]),
+           "hard_statistical": m["gate_counts"]["hard_statistical"], "hard_rule": m["gate_counts"]["hard_rule"],
+           "limit_statistical": m["gate_counts"]["limit_statistical"], "limit_rule": m["gate_counts"]["limit_rule"],
+           "familywise_false_fail": m["familywise_false_fail"], "alpha_per_gate": m["alpha_per_gate"]}
+    bad = {k: (v, L.ACCEPTED_ARITHMETIC[k]) for k, v in got.items() if v != L.ACCEPTED_ARITHMETIC[k]}
+    if bad:
+        raise SystemExit(f"STOP: builder arithmetic differs from the accepted arithmetic: {bad}")
+
+
+def _text(c: dict) -> str:
+    return json.dumps(c, indent=1, sort_keys=False) + "\n"
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("root", type=Path)
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    c = build(a.root)
-    text = json.dumps(c, indent=1, sort_keys=False) + "\n"
-    out = a.root / CONTRACT_REL
+    draft = build(a.root)
+    check_accepted_arithmetic(draft)
+    draft_text = _text(draft)
+    draft_path = a.root / CONTRACT_REL
+    if draft_path.read_bytes() != draft_text.encode("utf-8"):
+        raise SystemExit("STOP: the builder no longer regenerates the accepted V2 draft byte for byte")
+    final_text = _text(finalize(a.root, draft))
+    final_path = a.root / FINAL_REL
+    digest = hashlib.sha256(final_text.encode("utf-8")).hexdigest()
+    side = f"{digest}  {final_path.name}\n"
     if a.check:
-        if out.read_text(encoding="utf-8") != text:
-            raise SystemExit("STOP: committed contract differs from a rebuild")
-        print("contract rebuild identical:", hashlib.sha256(text.encode()).hexdigest())
+        if not final_path.is_file() or final_path.read_bytes() != final_text.encode("utf-8"):
+            raise SystemExit("STOP: committed final contract differs from a rebuild")
+        if final_path.with_suffix(".sha256").read_text(encoding="utf-8") != side:
+            raise SystemExit("STOP: committed final .sha256 differs from the rebuilt contract hash")
+        if (draft_path.with_suffix(".sha256").read_text(encoding="utf-8").split()[0]
+                != hashlib.sha256(draft_text.encode("utf-8")).hexdigest()):
+            raise SystemExit("STOP: committed draft .sha256 differs from the regenerated draft")
+        print("draft rebuild identical:", hashlib.sha256(draft_text.encode("utf-8")).hexdigest())
+        print("final rebuild identical:", digest)
         return
-    out.write_text(text, encoding="utf-8", newline="\n")
-    digest = hashlib.sha256(out.read_bytes()).hexdigest()
-    out.with_suffix(".sha256").write_text(f"{digest}  {out.name}\n", encoding="utf-8", newline="\n")
-    print(json.dumps({"sha256": digest, "G": c["worlds"]["genes_per_world"],
-                      "gate_counts": c["gates"]["multiplicity"]["gate_counts"],
-                      "alpha_per_gate": c["gates"]["multiplicity"]["alpha_per_gate"],
-                      "gene_derivation": c["worlds"]["gene_count_derivation"],
-                      "binomial": c["gates"]["binomial_reference_thresholds"],
-                      "magnitudes": c["worlds"]["planting_magnitudes"]["fixed_magnitudes"],
-                      "estimate": c["resources"]["estimate"]}, indent=1))
+    if final_path.exists():
+        if final_path.read_bytes() != final_text.encode("utf-8"):
+            raise SystemExit("STOP: an immutable final contract exists and differs from this rebuild; never overwritten")
+        print("final contract already present and identical:", digest)
+        return
+    final_path.write_bytes(final_text.encode("utf-8"))
+    final_path.with_suffix(".sha256").write_bytes(side.encode("utf-8"))
+    print(json.dumps({"final": str(final_path), "sha256": digest,
+                      "draft_regenerated_sha256": hashlib.sha256(draft_text.encode("utf-8")).hexdigest()}, indent=1))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+python 3.11.17 numpy 2.0.2 scipy 1.17.1
+n_diffs 1
+.worlds.gene_count_derivation.power | linux: 0.8003456396475286 | committed: 0.8003456396475284
+text_identical False

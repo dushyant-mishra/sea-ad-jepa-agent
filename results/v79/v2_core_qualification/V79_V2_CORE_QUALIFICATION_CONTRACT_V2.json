@@ -1,29 +1,145 @@
 {
- "schema": "V79_V2_CORE_QUALIFICATION_CONTRACT_V2_FINAL_AUTHORITY",
+ "schema": "V79_V2_CORE_QUALIFICATION_CONTRACT_V2",
  "name": "V79_V2_CORE_FROZEN_MODEL_AND_PROSPECTIVE_SYNTHETIC_QUALIFICATION_CONTRACT",
  "status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
  "launch_authority": true,
- "world_generation_authorized": false,
- "qualification_fits_run": 0,
- "controller_authority": {
-  "ruling_pr": 288,
-  "ruling_comment": 6114753697,
-  "model_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
-  "source_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal causal source biology",
-  "single_source_gene_rule": "cross-source estimand undefined/unevaluable; do not count as source-effect evidence"
+ "launch_authority_scope": "WORLD_GENERATION_GATE: this immutable contract authorizes generating Q00-Q11 exactly as specified (ruling 6114753697 item 7.2). World generation is a clean subsequent gate and is never combined with finalization. Every later step (truth tables committed before any fit, engineering benchmark, qualification fits, receipt) runs only under this contract, unchanged.",
+ "controller_ruling": {
+  "pr": 288,
+  "comment_id": "6114753697",
+  "terminal": "V2_CORE_FROZEN_AFTER_MASK_CORRECTED_S174_REPLAY__SOURCE_MAGNITUDE_REINTERPRETED__CONTRACT_V2_FINALIZATION_AUTHORIZED__WORLD_GENERATION_STILL_OFF__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
+  "prior_rulings": {
+   "pr285_model_freeze": "6113335756",
+   "pr286_prelaunch": "6113874774",
+   "pr288_correction_summary": "6114694791"
+  }
  },
- "required_inputs": {
-  "qualification_payload": {
-   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
-   "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
-   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION",
-   "role": "immutable controller-accepted prospective qualification payload"
+ "controller_model_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+ "source_term_interpretation": {
+  "term_status": "IN",
+  "interpretation": "Source is retained as predictive/acquisition-source structure among estimable measured comparisons: reproducible acquisition/source-associated structure, under the existing donor/source confounding limitations.",
+  "not_claimed": [
+   "universal source biology",
+   "causal source effect",
+   "biological mechanism"
+  ],
+  "magnitude_correction": {
+   "statement": "The structural decision survived the masked replay; the magnitude interpretation changed. V3 overstated the detection source increment because structurally unmeasured entries were encoded as zeros.",
+   "detection_source_increment_median": {
+    "v3": 0.0014811540414466362,
+    "masked": 0.000911696498225506
+   },
+   "detection_source_increment_mean": {
+    "v3": 0.02257759075655812,
+    "masked": 0.008951776761462667
+   },
+   "source": {
+    "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+    "sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41"
+   }
   },
-  "historical_v1": {
+  "single_source_genes": "For a gene measured in only one source, the cross-source estimand is UNDEFINED/UNEVALUABLE. It is never zero-effect or positive-effect evidence for source; the scoring identification rule scores no source quantity for it."
+ },
+ "accepted_evidence": {
+  "contract_v1": {
    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
    "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
-   "role": "historical pre-controller draft; never launch authority"
+   "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY"
   },
+  "contract_v2_draft": {
+   "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+   "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+   "status": "PENDING_CONTROLLER_ACCEPTANCE__NO_WORLD_GENERATION"
+  },
+  "masked_replay": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+   "sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683"
+  },
+  "masking_audit": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+   "sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41"
+  },
+  "support_mask": {
+   "record_path": "results/v79/development/s174_structure_replay_v4_masked/V79_G500_STRUCTURAL_SUPPORT_V1.json",
+   "measured_op_gene_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+   "npz_sha256": "6203fb2c5008c71e5275a3cec7e85d52e041787a058149efbf27f15c591a1017",
+   "record_sha256": "a6023902d953f98fb0fbd2a22d53361627f9b6a299c8730ef2ba7b9776a9f286"
+  },
+  "g500_cache": {
+   "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+   "receipt_sha256": "3a5ed9ef40e849ab9aa78b324cbca406772f412e1844fd327e12d04507587351",
+   "bound_by": "support record cache binding; calibration and masked replay cache_sha256 agree"
+  },
+  "structural_support_authority": {
+   "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+   "commit": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+   "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+  },
+  "s174_operator_bridge": {
+   "path": "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json",
+   "sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92"
+  },
+  "planting_calibration_masked": {
+   "path": "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json",
+   "sha256": "49379ee09fcf7496919e570f83710ee772ca407ca0d20268a9af1f4e132f533c"
+  },
+  "s174_design_only": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz",
+   "sha256": "10e3c472543d948d673d91f7dadd15dbd77809a7b0d15f528eb9fd38d0c85a62"
+  },
+  "s174_design_only_record": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.json",
+   "sha256": "1a1295c34157b2d8629732a36cf1fe6592f6181872b41bd7d19151092b413fbb"
+  },
+  "structural_support_dev": {
+   "path": "results/v79/development/v2_core_planting_calibration/V79_G500_STRUCTURAL_SUPPORT_DEV.json",
+   "sha256": "d70781af34ec5263d515ee1ad7f9410b426a6516cd7a7d46e0a69c32ae6f41c2"
+  },
+  "env_lock": {
+   "path": "results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt",
+   "sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+  }
+ },
+ "qualification_worlds_generated": 0,
+ "qualification_fits_run": 0,
+ "finalization": {
+  "from_accepted_draft_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+  "rule": "final = accepted draft + launch_authority_scope, controller_ruling, controller_model_decision, source_term_interpretation, accepted_evidence, qualification_worlds_generated, qualification_fits_run, finalization; status, launch_authority and the development finding's controller decision updated; launch_condition removed (met). Every other key is identical to the draft.",
+  "terminal": "V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_FROZEN__QUALIFICATION_WORLDS_NOT_GENERATED__CONTROLLER_PRELAUNCH_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF"
+ },
+ "supersedes": {
+  "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json",
+  "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+  "status": "HISTORICAL_PRE_CONTROLLER_DRAFT__NOT_LAUNCH_AUTHORITY",
+  "superseded_by_ruling": "PR #286 controller ruling 6113874774"
+ },
+ "structural_support_join_reproduced": {
+  "committed_builder_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+  "development_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+  "calibration_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab"
+ },
+ "authority": {
+  "controller_model_freeze": "CANDIDATE_V2_CORE (PR #285 comment 6113335756)",
+  "development_evidence": "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md (replay SHA-256 78db6d31...)",
+  "base_commit": "2c230a70d9151e27b14ec2788d1309eb2ac81468",
+  "builder": "scripts/v79/build_v79_v2_core_contract.py"
+ },
+ "boundaries": {
+  "training_authorized": false,
+  "real_train_posterior_inference": false,
+  "factorial_science": false,
+  "test_split": false,
+  "morabito": false,
+  "pathology": false,
+  "target_discovery": false,
+  "scenic_atac_in_truth": false,
+  "operator_in_model": false,
+  "old_18_fit_campaign": false,
+  "bernoulli_v2_v3_rescue": false,
+  "stage4_500k": false,
+  "jepa_training_or_checkpoints": false
+ },
+ "inputs": {
   "s174_design_only": {
    "path": "results/v79/v2_core_qualification/inputs/V79_S174_DESIGN_ONLY_V1.npz",
    "sha256": "10e3c472543d948d673d91f7dadd15dbd77809a7b0d15f528eb9fd38d0c85a62"
@@ -55,57 +171,3656 @@
   "env_lock": {
    "path": "results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt",
    "sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+  }
+ },
+ "model": {
+  "name": "V2_CORE",
+  "unit": "one gene, two independent parts (detection, positive magnitude); genes are fitted separately",
+  "observation_support": "The likelihood runs only over STRUCTURALLY MEASURED cell-gene entries: those whose matrix measures the gene's address. This is the Stage81A2R matrix-level measurement support for real data, and the world support mask in synthetic worlds. Structurally unmeasured entries enter neither part. A measured zero is a detection observation y=0. This is the hard invariant MEASURED_SCALAR != STRUCTURALLY_UNMEASURED, not a model choice.",
+  "covariates": {
+   "z": "standardized log library over all cells of the design (population SD, ddof=0)",
+   "q": "z^2 - 1 (centred quadratic depth)",
+   "class": "3 broad classes, normalized Helmert sum-to-zero contrasts (3x2)",
+   "source": "3 sources, normalized Helmert sum-to-zero contrasts (3x2)",
+   "donor": "within-source normalized Helmert basis W (block diagonal; columns orthonormal; each block sums to zero within source); n_donor - 3 columns"
   },
-  "structural_support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab"
- },
- "accepted_qualification_arithmetic": {
-  "worlds": 12,
-  "genes_per_world": 44,
-  "planned_fits": 1056,
-  "hard_statistical_gates": 260,
-  "hard_rule_gates": 28,
-  "limit_statistical_gates": 4,
-  "familywise_false_fail": 0.05,
-  "alpha_per_gate": 0.0001923076923076923
- },
- "accepted_gate_policy": {
-  "limit_gates": [
-   "Q01_WEAK_DONOR/detection/BIAS_DONOR_SD",
-   "Q01_WEAK_DONOR/positive/BIAS_DONOR_SD",
-   "Q08_SPARSE_DETECTION/positive/BIAS_DONOR_SD",
-   "Q09_POSITIVE_TAIL/positive/BIAS_DONOR_SD"
+  "detection": "y_ig ~ Bernoulli(p_ig); logit p = alpha + beta1*z + beta2*q + B_class[class].c_class + B_source[source].c_source + u[donor]; u = W (sigma_d * eps), eps ~ N(0, I)",
+  "positive": "for measured y_ig > 0: log y_ig ~ Normal(mu_ig, sigma); mu = alpha+ + gamma1*z + gamma2*q + B_class[class].c+_class + B_source[source].c+_source + u+[donor]; u+ = W (tau * eps+)",
+  "excluded_terms": [
+   "operator / matrix",
+   "donor x class",
+   "source x class",
+   "dataset or matrix ID"
   ],
-  "q11_all_gates": "HARD_FAIL",
-  "first_scientific_fail_terminal": "V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED",
+  "positive_family": "lognormal (ZTNB is a separate unadjudicated challenger; no comparison here)",
+  "numerics": {
+   "dtype": "float64 (jax_enable_x64)",
+   "matmul_precision": "highest",
+   "backend": "CPU"
+  }
+ },
+ "parameterization": {
+  "contrasts": "constrained normalized Helmert sum-to-zero (class, source, donor-within-source)",
+  "donor": "non-centred in every world and both parts; no switching after any outcome",
+  "centred_parameterization": "not used anywhere"
+ },
+ "priors": {
+  "detection": {
+   "alpha": {
+    "dist": "Normal",
+    "loc": -1.2,
+    "scale": 2.5
+   },
+   "beta_depth1": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 2.0
+   },
+   "beta_depth2": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 0.5
+   },
+   "class_contrasts": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 1.5
+   },
+   "source_contrasts": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 1.5
+   },
+   "donor_sd": {
+    "dist": "HalfNormal",
+    "scale": 1.0
+   },
+   "donor_raw": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 1.0
+   }
+  },
+  "positive": {
+   "alpha": {
+    "dist": "Normal",
+    "loc": 0.5,
+    "scale": 1.0
+   },
+   "gamma_depth1": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 1.0
+   },
+   "gamma_depth2": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 0.5
+   },
+   "class_contrasts": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 0.75
+   },
+   "source_contrasts": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 0.5
+   },
+   "donor_sd": {
+    "dist": "HalfNormal",
+    "scale": 0.5
+   },
+   "donor_raw": {
+    "dist": "Normal",
+    "loc": 0.0,
+    "scale": 1.0
+   },
+   "sigma": {
+    "dist": "HalfNormal",
+    "scale": 1.0
+   }
+  }
+ },
+ "prior_rationale": "Weakly informative and scaled to the masked development ranges (structurally measured cells only; V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2). Rule: slopes, curvature and contrasts are centred at 0; intercepts are centred at the development median; each scale puts the development p99 magnitude within about 1.5 prior SD. The documented exception is the detection |source| p99 tail (about 7.9 logit), which reflects near-separation in about 1% of genes and is not planted. Donor and positive SDs are half-normal with scales above the development p99. The development donor SDs are ridge-shrunk and so biased low. Priors are frozen here and are never changed after a qualification outcome.",
+ "development_reference_quantiles_masked": {
+  "det": {
+   "n": 500,
+   "n_all_sources": 444,
+   "intercept_all_sources": {
+    "0.01": -7.456647933834384,
+    "0.05": -3.4452126708102857,
+    "0.1": -2.99083675100112,
+    "0.25": -2.1703640594301006,
+    "0.5": -1.1559061707194096,
+    "0.75": -0.10971506250474948,
+    "0.9": 1.188294259478086,
+    "0.95": 2.3621855095509785,
+    "0.99": 4.735136632428676
+   },
+   "depth": {
+    "0.01": 0.4706953603308884,
+    "0.05": 0.6345873680911857,
+    "0.1": 0.7294342893842474,
+    "0.25": 0.8359236265510978,
+    "0.5": 0.9785318467321658,
+    "0.75": 1.1783090465861656,
+    "0.9": 1.4732799558280183,
+    "0.95": 1.8135062310891243,
+    "0.99": 2.6385515835444364
+   },
+   "depth2": {
+    "0.01": -0.22094115047180482,
+    "0.05": -0.14081684515963067,
+    "0.1": -0.09849162822963073,
+    "0.25": -0.03260649773023094,
+    "0.5": 0.02871940802710897,
+    "0.75": 0.10543158395453883,
+    "0.9": 0.19342167794046367,
+    "0.95": 0.25019435822033176,
+    "0.99": 0.41831907373834926
+   },
+   "abs_cls": {
+    "0.01": 0.005432568861794027,
+    "0.05": 0.021203715542384136,
+    "0.1": 0.03707477618915764,
+    "0.25": 0.09824465891587206,
+    "0.5": 0.22981188295104762,
+    "0.75": 0.552058808484901,
+    "0.9": 1.0663109603908942,
+    "0.95": 1.3988501760401408,
+    "0.99": 2.298350515611302
+   },
+   "abs_src": {
+    "0.01": 0.006560239476708641,
+    "0.05": 0.025587371138925518,
+    "0.1": 0.04800310260614329,
+    "0.25": 0.12087741222366666,
+    "0.5": 0.24245601150021034,
+    "0.75": 0.44006574931915343,
+    "0.9": 0.7741183615659408,
+    "0.95": 1.2484413071950908,
+    "0.99": 7.8984830597805455
+   },
+   "donor_sd": {
+    "0.01": 0.32433920164693525,
+    "0.05": 0.3818885859309774,
+    "0.1": 0.3959577808904719,
+    "0.25": 0.4230047455432111,
+    "0.5": 0.4503006834962817,
+    "0.75": 0.47987213332148937,
+    "0.9": 0.5134912088683046,
+    "0.95": 0.5436683597053785,
+    "0.99": 0.6119588301440712
+   }
+  },
+  "pos": {
+   "n": 500,
+   "n_all_sources": 444,
+   "intercept_all_sources": {
+    "0.01": 0.005842845888855498,
+    "0.05": 0.04178234316199659,
+    "0.1": 0.06802395032940768,
+    "0.25": 0.13368603064296944,
+    "0.5": 0.2650697296498953,
+    "0.75": 0.5034542057356564,
+    "0.9": 0.9297249155288885,
+    "0.95": 1.4043775377529064,
+    "0.99": 2.0066649411161706
+   },
+   "depth": {
+    "0.01": 0.012687357801793,
+    "0.05": 0.03638999738153109,
+    "0.1": 0.056155981624078706,
+    "0.25": 0.09888114301415851,
+    "0.5": 0.17026789016698513,
+    "0.75": 0.3325030848574533,
+    "0.9": 0.6058221397976993,
+    "0.95": 0.7234151981280666,
+    "0.99": 0.9173350548668425
+   },
+   "depth2": {
+    "0.01": -0.05742364060980296,
+    "0.05": -0.01722759178691696,
+    "0.1": -0.003650928367972968,
+    "0.25": 0.01753262902485098,
+    "0.5": 0.047345039591927235,
+    "0.75": 0.09026850883581847,
+    "0.9": 0.12146491221303515,
+    "0.95": 0.14215591190343327,
+    "0.99": 0.16276854450855915
+   },
+   "abs_cls": {
+    "0.01": 0.000550332603747221,
+    "0.05": 0.004043713135941831,
+    "0.1": 0.008784530500582184,
+    "0.25": 0.023289860222297315,
+    "0.5": 0.052488270050784554,
+    "0.75": 0.1216007337764339,
+    "0.9": 0.26005089355903777,
+    "0.95": 0.418790169196215,
+    "0.99": 0.8953036747766221
+   },
+   "abs_src": {
+    "0.01": 5.894538578560968e-08,
+    "0.05": 0.0054584969768419235,
+    "0.1": 0.009339845595355944,
+    "0.25": 0.025465439310735083,
+    "0.5": 0.05610993374751112,
+    "0.75": 0.09854173517339636,
+    "0.9": 0.16576239363567025,
+    "0.95": 0.22123602590490377,
+    "0.99": 0.46849931160739655
+   },
+   "donor_sd": {
+    "0.01": 0.06616469955128489,
+    "0.05": 0.08759977409129621,
+    "0.1": 0.09828507039563938,
+    "0.25": 0.12605919417876446,
+    "0.5": 0.15297385909129357,
+    "0.75": 0.1862456702668351,
+    "0.9": 0.22596125784804053,
+    "0.95": 0.2572912465941349,
+    "0.99": 0.31845254268556245
+   },
+   "sigma": {
+    "0.01": 0.18122500879840436,
+    "0.05": 0.2136828593618032,
+    "0.1": 0.2547973187615331,
+    "0.25": 0.323990724169281,
+    "0.5": 0.44511999339954533,
+    "0.75": 0.5459438164682799,
+    "0.9": 0.6353410295034442,
+    "0.95": 0.728974979014208,
+    "0.99": 0.9757546921035544
+   }
+  },
+  "prevalence_measured_cells": {
+   "0.01": 0.05352729581041049,
+   "0.05": 0.06741430385103682,
+   "0.1": 0.08315700380871772,
+   "0.25": 0.14362039779940752,
+   "0.5": 0.26957257723233174,
+   "0.75": 0.46302369868810833,
+   "0.9": 0.6786753000331083,
+   "0.95": 0.7955776555226405,
+   "0.99": 0.9227845958527296
+  }
+ },
+ "second_stage": {
+  "status": "DESCRIPTIVE_IN_THIS_QUALIFICATION__NOT_GATED",
+  "across_gene_distribution": "Per part and scalar quantity type: posterior means m_g with posterior SDs s_g; m_g ~ N(mu, t^2 + s_g^2). Priors mu ~ N(prior loc, prior scale) and t ~ HalfNormal(prior scale), from the per-gene prior of that type. Exact 2-D grid posterior (401 x 401). Reported against the planted across-gene mean and SD.",
+  "cross_gene_donor_geometry": "Disattenuated correlation of posterior-mean donor effects between gene pairs: corr(E u_g, E u_h) / sqrt(rel_g rel_h), with rel_g = var_d(E u_dg) / (var_d(E u_dg) + mean_d var_post(u_dg)). Computed over shared donors with >=1 informative observation. Reported against the planted realized correlation."
+ },
+ "inference": {
+  "sampler": "NumPyro NUTS, diagonal mass matrix, default init (uniform radius 2)",
+  "chains": 4,
+  "warmup": 1000,
+  "draws": 1000,
+  "max_tree_depth": 10,
+  "chain_method": "parallel on 4 host CPU devices (one heavy fit at a time)",
+  "diagnostics": {
+   "rhat": "rank-normalized split R-hat (ArviZ) <= 1.01 on every site",
+   "ess": "bulk and tail ESS >= 400 on every site",
+   "divergences": "0 in the final attempt",
+   "sites": "every sampled site: alpha, slopes, contrasts, donor SD, every eps, sigma"
+  },
+  "diagnostic_rationale": "R-hat 1.01 and ESS 400 (100 per chain) follow Vehtari et al. 2021, as in the existing V79 rules (v79_sampler_rules.py). With ESS 400 the Monte Carlo SE of a posterior mean is SD/20, negligible against the 0.75 SD bias the gates target.",
+  "recovery_path": {
+   "version": "V2_CORE_ONE_ESCALATION_ONE_EXTENSION_V1",
+   "primary": "target_accept 0.9",
+   "escalation": "any divergence -> refit fresh at target_accept 0.99 with the attempt-1 seed. Used at most once per fit",
+   "extension": "no divergence but R-hat or ESS missed -> continue the same chains once for DRAWS more draws, with no new warm-up, and diagnose all draws. Used at most once per fit",
+   "escalation_value_rationale": "Only one escalation is allowed, so it uses the terminal value of the existing A5_V2 ladder (0.99). A remaining FAIL then reflects the posterior geometry, not too small an escalation.",
+   "otherwise": "NOT_DIAGNOSED -> the world fails CONVERGENCE_ALL_FITS_DIAGNOSED",
+   "no_other_changes": "no reparameterization, prior, init, tree-depth or warm-up change after any outcome"
+  },
+  "attempt_record_fields": [
+   "fit_id",
+   "seed",
+   "chains",
+   "warmup",
+   "draws_per_chain",
+   "target_accept",
+   "extended",
+   "divergences_per_chain",
+   "worst_rhat",
+   "worst_ess_bulk",
+   "worst_ess_tail",
+   "wall_seconds",
+   "process_cpu_seconds",
+   "peak_working_set_bytes",
+   "mean_tree_steps",
+   "jax_devices"
+  ]
+ },
+ "seeds": {
+  "root": 31000000,
+  "scheme": "numpy.random.SeedSequence(entropy=root, spawn_key=(world_index, gene_index, stream))",
+  "binding": "randomness is keyed by scientific identity (world, gene, stream), never by file layout",
+  "world_index": {
+   "Q00_BASELINE": 0,
+   "Q01_WEAK_DONOR": 1,
+   "Q02_STRONG_DONOR": 2,
+   "Q03_WEAK_SOURCE": 3,
+   "Q04_SOURCE_ABSENT": 4,
+   "Q05_CLASS_ABSENT": 5,
+   "Q06_QUADRATIC_DEPTH_ABSENT": 6,
+   "Q07_DONOR_ABSENT": 7,
+   "Q08_SPARSE_DETECTION": 8,
+   "Q09_POSITIVE_TAIL": 9,
+   "Q10_S174_DESIGN_IMBALANCE": 10,
+   "Q11_OMITTED_OPERATOR": 11
+  },
+  "shared_base_design_key": [
+   100,
+   0,
+   0
+  ],
+  "world_level_gene_index": 9999,
+  "world_streams": {
+   "structural_selection": 1,
+   "donor_factor_fit": 2,
+   "donor_factor_new_donors": 3,
+   "factor_loading_assignment": 4,
+   "lhs_permutations_base": 50
+  },
+  "gene_streams": {
+   "lhs_jitter": 10,
+   "contrast_signs": 11,
+   "donor_idiosyncratic_det": 12,
+   "donor_idiosyncratic_pos": 13,
+   "noise_det": 14,
+   "noise_pos": 15,
+   "heldout_same_donor_noise_det": 16,
+   "heldout_same_donor_noise_pos": 17,
+   "new_donor_idiosyncratic_det": 18,
+   "new_donor_idiosyncratic_pos": 19,
+   "new_donor_noise_det": 20,
+   "new_donor_noise_pos": 21,
+   "operator_offsets_det": 22,
+   "operator_offsets_pos": 23,
+   "structural_matrix_choice": 24,
+   "fit_det_primary": 30,
+   "fit_det_escalation": 31,
+   "fit_pos_primary": 40,
+   "fit_pos_escalation": 41
+  },
+  "jax_key": "jax.random.PRNGKey(SeedSequence(...).generate_state(1, numpy.uint32)[0])",
+  "engineering_benchmark_root": 31999999
+ },
+ "worlds": {
+  "genes_per_world": 44,
+  "gene_count_derivation": {
+   "G": 44,
+   "t_critical": 4.078615033457346,
+   "power": 0.8003456396475284,
+   "detectable_bias_std": 0.75,
+   "min_significant_mean_bias_std": 0.6148743513764025
+  },
+  "designs": {
+   "BASE": "Crossed design with S174 sizes. Donors per source (62, 19, 68). Cells per donor are resampled with replacement from that source's S174 cells-per-donor values. Each cell's class is drawn iid from the S174 class proportions. Each cell's log library is resampled iid from the pooled S174 log-library values. Each cell's matrix is drawn uniformly from its source's (24, 7, 11) matrices. Seeded once (key [100,0,0]) and shared by Q00-Q09, so between-world differences come only from the planted effects.",
+   "S174": "The exact S174 design arrays (V79_S174_DESIGN_ONLY_V1.npz): log library, broad class, source, donor, operator=matrix. This design has weak crossing: HVS/NPH52 matrices are single-class, NPH52 has 32 GABAergic and 32 Glutamatergic cells, and mean log library by class differs by about 1.45 SD."
+  },
+  "planting_Q00": {
+   "rule": "Latin hypercube over the development per-gene values. For each world and quantity type, level_j = p_lo + (p_hi - p_lo) * (perm_k(j) + U_j) / G, with a seeded permutation per type and seeded jitter per gene. The value is the empirical quantile (numpy 'linear') of the masked development per-gene values at level_j. Contrast magnitudes come from |contrast| values with seeded +-1 signs. The detection intercept is solved by bisection so that the mean of expit(linear predictor without donor) over measured cells equals the planted prevalence.",
+   "detection": [
+    "prevalence",
+    "depth1",
+    "depth2",
+    "abs_class",
+    "abs_source",
+    "donor_sd"
+   ],
+   "positive": [
+    "intercept",
+    "depth1",
+    "depth2",
+    "abs_class",
+    "abs_source",
+    "donor_sd",
+    "sigma"
+   ],
+   "donor_effects": "u = sd * P(lambda_g f + sqrt(1 - lambda_g^2) e_g), where P is within-source centering (equivalent in law to W eps), f is a world donor factor shared across genes and parts, and e_g is idiosyncratic. lambda_g = 0.6 for a seeded half of genes and 0 otherwise. Per gene the law is exactly the model's; the factor only exercises the descriptive second stage.",
+   "positive_values": "continuous lognormal (correct specification). Real positive counts are integers >= 1; discretization is NOT tested here (ZTNB question)."
+  },
+  "planting_magnitudes": {
+   "latin_hypercube_ranges": {
+    "detection": {
+     "depth1": {
+      "empirical_quantile_range": [
+       0.6345873680911857,
+       1.8135062310891243
+      ]
+     },
+     "depth2": {
+      "empirical_quantile_range": [
+       -0.14081684515963067,
+       0.25019435822033176
+      ]
+     },
+     "abs_class": {
+      "empirical_quantile_range": [
+       0.021203715542384136,
+       1.3988501760401408
+      ]
+     },
+     "abs_source": {
+      "empirical_quantile_range": [
+       0.025587371138925518,
+       1.2484413071950908
+      ]
+     },
+     "donor_sd": {
+      "empirical_quantile_range": [
+       0.3818885859309774,
+       0.5436683597053785
+      ]
+     },
+     "prevalence": {
+      "empirical_quantile_range": [
+       0.06741430385103682,
+       0.7955776555226405
+      ]
+     }
+    },
+    "positive": {
+     "depth1": {
+      "empirical_quantile_range": [
+       0.03638999738153109,
+       0.7234151981280666
+      ]
+     },
+     "depth2": {
+      "empirical_quantile_range": [
+       -0.01722759178691696,
+       0.14215591190343327
+      ]
+     },
+     "abs_class": {
+      "empirical_quantile_range": [
+       0.004043713135941831,
+       0.418790169196215
+      ]
+     },
+     "abs_source": {
+      "empirical_quantile_range": [
+       0.0054584969768419235,
+       0.22123602590490377
+      ]
+     },
+     "donor_sd": {
+      "empirical_quantile_range": [
+       0.08759977409129621,
+       0.2572912465941349
+      ]
+     },
+     "intercept": {
+      "empirical_quantile_range": [
+       0.04178234316199659,
+       1.4043775377529064
+      ]
+     },
+     "sigma": {
+      "empirical_quantile_range": [
+       0.2136828593618032,
+       0.728974979014208
+      ]
+     }
+    }
+   },
+   "fixed_magnitudes": {
+    "weak_donor_sd": {
+     "detection": 0.1909442929654887,
+     "positive": 0.043799887045648106
+    },
+    "strong_donor_sd": {
+     "detection": 1.087336719410757,
+     "positive": 0.5145824931882698
+    },
+    "weak_abs_source": {
+     "detection": 0.12087741222366666,
+     "positive": 0.025465439310735083
+    },
+    "tail_sigma": 1.457949958028416,
+    "donor_absent_floor": {
+     "detection": 0.038188858593097744,
+     "positive": 0.008759977409129621
+    }
+   }
+  },
+  "structural_support_rule": {
+   "genes_with_structural_absence_per_world": 5,
+   "derivation": "round(59/500 x G); development fraction of genes with any structurally unmeasured cell",
+   "composition": {
+    "single_source_measured": 1,
+    "one_source_fully_unmeasured": 3,
+    "partial_within_source": 1
+   },
+   "one_source_absent_probabilities": {
+    "HVS": 38,
+    "NPH52": 20,
+    "SEA_AD": 10
+   },
+   "single_source_measured_choice": "measured source drawn uniformly",
+   "partial_rule": "a seeded floor(7/2)=3 of the 7 NPH52 matrices are unmeasured (development: partial absence only in NPH52)",
+   "poison": "structurally unmeasured entries are written as -1 so any read of them is detectable",
+   "world_truth": "each world's cell x gene support mask is part of its truth, written with the world data and hash-bound in the world manifest before any fit",
+   "required_tests_before_generation": [
+    "measured zero enters detection as y=0; an unmeasured entry enters no likelihood, metric or score",
+    "a fully unmeasured source x gene is excluded (no zero prevalence, no source effect from it)",
+    "partial NPH52-style matrix-level support is resolved per matrix x gene, never per source",
+    "a poison value on an entry the mask declares measured is detected and refused",
+    "changing the poison value with the mask fixed changes no fitted or scored output"
+   ],
+   "partial_count_note": "one partial gene per world exercises the code path; it is not frequency-matched (dev 3/500)"
+  },
+  "world_list": [
+   {
+    "index": 0,
+    "name": "Q00_BASELINE",
+    "design": "BASE",
+    "modifications": {},
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 1,
+    "name": "Q01_WEAK_DONOR",
+    "design": "BASE",
+    "modifications": {
+     "donor_sd": "weak"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 2,
+    "name": "Q02_STRONG_DONOR",
+    "design": "BASE",
+    "modifications": {
+     "donor_sd": "strong"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 3,
+    "name": "Q03_WEAK_SOURCE",
+    "design": "BASE",
+    "modifications": {
+     "source": "weak"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 4,
+    "name": "Q04_SOURCE_ABSENT",
+    "design": "BASE",
+    "modifications": {
+     "source": "absent"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 5,
+    "name": "Q05_CLASS_ABSENT",
+    "design": "BASE",
+    "modifications": {
+     "class": "absent"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 6,
+    "name": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "design": "BASE",
+    "modifications": {
+     "depth2": "absent"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 7,
+    "name": "Q07_DONOR_ABSENT",
+    "design": "BASE",
+    "modifications": {
+     "donor_sd": "absent"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 8,
+    "name": "Q08_SPARSE_DETECTION",
+    "design": "BASE",
+    "modifications": {
+     "prevalence": "sparse"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 9,
+    "name": "Q09_POSITIVE_TAIL",
+    "design": "BASE",
+    "modifications": {
+     "sigma": "tail"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 10,
+    "name": "Q10_S174_DESIGN_IMBALANCE",
+    "design": "S174",
+    "modifications": {},
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   },
+   {
+    "index": 11,
+    "name": "Q11_OMITTED_OPERATOR",
+    "design": "S174",
+    "modifications": {
+     "operator": "omitted_perturbation"
+    },
+    "opaque_id_rule": "sha256('V2CORE|'+name)[:12]"
+   }
+  ],
+  "modification_semantics": {
+   "donor_sd=weak": "sigma_d and tau = 0.5 x development p05 for every gene",
+   "donor_sd=strong": "sigma_d and tau = 2.0 x development p95 for every gene",
+   "donor_sd=absent": "sigma_d = tau = 0; no donor factor",
+   "source=weak": "both |source contrasts| = development p25 of |source|, seeded signs",
+   "source=absent": "source contrasts = 0 in both parts",
+   "class=absent": "class contrasts = 0 in both parts",
+   "depth2=absent": "beta2 = gamma2 = 0",
+   "prevalence=sparse": "planted detection prevalence log-uniform Latin hypercube on [0.005, 0.05]",
+   "sigma=tail": "positive sigma = 2.0 x development p95 for every gene",
+   "operator=omitted_perturbation": "per gene and part, matrix offsets o_m ~ N(0, (0.5 x that gene's donor SD)^2), centred within source (unweighted), added to the linear predictor; never fitted. On the S174 design matrices are single-class in HVS/NPH52, so offsets partly mimic source x class structure. Q11 is a MILD omitted-operator stress: a PASS qualifies robustness only to this frozen perturbation magnitude, not to stronger operator effects, and it does not qualify an operator-free model universally."
+  },
+  "heldout_replicates": {
+   "same_donors": "same design and planted donor effects, new observation noise",
+   "new_donors": "same design slots, new donor effects (new f and e), new observation noise"
+  },
+  "truth_table": "Rules frozen here. The realized per-gene truth tables, world manifests and file SHA-256 are generated deterministically from these seeds and committed BEFORE any qualification fit."
+ },
+ "scoring": {
+  "interval": "central 90% posterior interval (0.05/0.95 quantiles of all retained draws)",
+  "standardized_error": "z = (posterior mean - truth) / posterior SD",
+  "identification": "For a factor (class or source), the scored quantities are the frozen Helmert contrasts when every level has >=1 informative observation in that part. Otherwise they are the level-effect differences against the first observed level. Informative means a measured cell for detection, or a positive measured cell for the positive part. The intercept is scored as alpha plus the mean of the observed class and source level effects. Donor effects are scored for donors with >=1 informative observation. Truth and posterior are transformed identically.",
+  "quantity_types": [
+   "intercept",
+   "depth1",
+   "depth2",
+   "class",
+   "source",
+   "donor_sd",
+   "donor_effects",
+   "sigma"
+  ],
+  "descriptive_metrics": [
+   "per type: correlation and RMSE of posterior mean vs truth across genes; sign agreement",
+   "donor: Spearman rank of donor effects; calibration slope of truth on posterior mean; shrinkage factor",
+   "detection held-out (same donors, new donors): mean log loss vs oracle, 10-bin calibration, predicted vs observed prevalence, low-prevalence (planted < 0.05) subset",
+   "positive held-out: mean LPD vs oracle (new donors integrated by 40-node Gauss-Hermite)",
+   "PPC statistics and p-values per gene; Q11 minus Q10 contrasts; second stage"
+  ],
+  "descriptive_rationale": "Predictive excess over the oracle has no data-independent acceptance threshold that is not a pure convention. Parameter calibration already gates generative correctness. Predictive metrics serve as implementation cross-checks and as reference values for later real-data held-out work.",
+  "ppc": {
+   "draws": 1000,
+   "p_value": "two-sided mid-p: 2*min(P(T_rep>T_obs)+P(=)/2, P(T_rep<T_obs)+P(=)/2), capped at 1",
+   "detection_statistics": [
+    "zero fraction overall",
+    "zero fraction by world z-decile (10)",
+    "zero fraction by observed class",
+    "zero fraction by observed source",
+    "SD across donors (>=5 measured cells) of donor detection fraction"
+   ],
+   "positive_statistics": [
+    "mean log positive",
+    "mean log positive by z-decile (deciles with >=5 positives)",
+    "variance of log positive",
+    "0.99 and 0.01 quantiles of log positive",
+    "SD across donors (>=3 positives) of donor mean log positive"
+   ],
+   "positive_replication": "conditional on the observed detection pattern (two-part model)",
+   "draws_rationale": "1000 replicates give MC SE about 0.003 at p = 0.01"
+  }
+ },
+ "gates": {
+  "multiplicity": {
+   "familywise_false_fail": 0.05,
+   "n_hard_statistical_gates": 260,
+   "alpha_per_gate": 0.0001923076923076923,
+   "gate_counts": {
+    "total": 292,
+    "hard_statistical": 260,
+    "hard_rule": 28,
+    "limit_statistical": 4,
+    "limit_rule": 0,
+    "descriptive_metric_families": 5
+   },
+   "method": "Bonferroni over every hard (FAIL-class) statistical gate in all worlds and parts. LIMIT-class statistical gates are evaluated at the same alpha but cannot fail qualification, so they do not enter the family.",
+   "rationale": "A correctly specified, well-implemented V2_CORE should fail no world by chance with probability above 5%. RULE gates are deterministic and carry no alpha."
+  },
+  "tests": {
+   "one_sided_t_lower_across_genes": "Per gene, the fraction c_g of its scored quantities whose interval covers the truth. FAIL iff mean(c) < nominal and t = (mean(c) - nominal) / (sd(c)/sqrt(n)) < -t_{1-alpha, n-1}. If sd(c) = 0, FAIL iff mean(c) < nominal - 0.10. Genes are the independent unit.",
+   "two_sided_t_across_genes_and_materiality": "Per gene, b_g = mean z over its quantities of that type. FAIL iff |t| > t_{1-alpha/2, n-1} and |mean(b)| > 0.50.",
+   "binomial_lower": "misses over n single quantities; FAIL iff P(Bin(n, 1-nominal) >= misses) < alpha",
+   "interval_excludes_zero_rate": "truth 0: per gene, the fraction of quantities whose interval excludes 0; same as one_sided_t_lower_across_genes applied to coverage of 0. Single-quantity types use binomial_lower. Rates at 95% and 99% are also reported.",
+   "binomial_upper": "FAIL iff P(Bin(n, nominal) >= count) < alpha",
+   "binomial_upper_q05_above_floor": "false positive iff the posterior 5% quantile of the donor SD exceeds the floor (0.1 x development p05 donor SD). FAIL iff P(Bin(n, 0.05) >= count) < alpha",
+   "TYPE_S": "among source quantities whose interval excludes 0, wrong-sign count; binomial_upper with nominal 0.05. With none excluded: no sign claims, the gate passes, power is reported as 0.",
+   "PPC_EXTREME_RATE": "count of (gene, statistic) with p < 0.01 over all genes; binomial_upper with nominal 0.01. Posterior predictive p-values are conservative under correct specification, so this is a false-fail-safe check.",
+   "POPULATION_DONOR_SD_RATIO": "mean over genes of posterior-mean donor SD / mean planted donor SD must lie in [0.80, 1.25] (CONVENTION). Gated only where the donor SD is well identified by construction: detection in Q00, Q02 and Q10, and positive in Q02. Elsewhere it is descriptive, because a weakly identified SD is expected to sit above a small truth under a proper prior.",
+   "CONVERGENCE_ALL_FITS_DIAGNOSED": "every fit of the world in that part ends diagnosed after the frozen recovery path"
+  },
+  "binomial_reference_thresholds": {
+   "coverage_single_n44_max_passing_misses": 13,
+   "coverage_single_n88_max_passing_misses": 20,
+   "donor_absent_n44_max_passing_false_positives": 9
+  },
+  "list": [
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "detection",
+    "gate": "POPULATION_DONOR_SD_RATIO",
+    "kind": "RULE",
+    "verdict_class": "FAIL",
+    "bounds": [
+     0.8,
+     1.25
+    ]
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q00_BASELINE",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "LIMIT",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd",
+    "limit_rationale": "donor SD planted at 0.5 x the smallest realistic value (Q01), or with about 1 positive cell per donor (Q08 positive), or under a residual SD of about 1.46 (Q09 positive): the posterior mean of a weakly identified SD sits above a small truth under any proper prior. A failure is reported as a limit on what a small real donor-SD estimate means; calibration (coverage) remains a FAIL-class gate"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "LIMIT",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd",
+    "limit_rationale": "donor SD planted at 0.5 x the smallest realistic value (Q01), or with about 1 positive cell per donor (Q08 positive), or under a residual SD of about 1.46 (Q09 positive): the posterior mean of a weakly identified SD sits above a small truth under any proper prior. A failure is reported as a limit on what a small real donor-SD estimate means; calibration (coverage) remains a FAIL-class gate"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q01_WEAK_DONOR",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "detection",
+    "gate": "POPULATION_DONOR_SD_RATIO",
+    "kind": "RULE",
+    "verdict_class": "FAIL",
+    "bounds": [
+     0.8,
+     1.25
+    ]
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q02_STRONG_DONOR",
+    "part": "positive",
+    "gate": "POPULATION_DONOR_SD_RATIO",
+    "kind": "RULE",
+    "verdict_class": "FAIL",
+    "bounds": [
+     0.8,
+     1.25
+    ]
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "TYPE_S_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "quantity_type": "source",
+    "nominal": 0.05
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "TYPE_S_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "quantity_type": "source",
+    "nominal": 0.05
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q03_WEAK_SOURCE",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "ABSENT_FALSE_POSITIVE_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "source",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "ABSENT_FALSE_POSITIVE_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "source",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q04_SOURCE_ABSENT",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "ABSENT_FALSE_POSITIVE_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "class",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "ABSENT_FALSE_POSITIVE_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "class",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q05_CLASS_ABSENT",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "ABSENT_FALSE_POSITIVE_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "depth2",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "ABSENT_FALSE_POSITIVE_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "interval_excludes_zero_rate",
+    "quantity_type": "depth2",
+    "nominal": 0.09999999999999998
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q06_QUADRATIC_DEPTH_ABSENT",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "ABSENT_FALSE_POSITIVE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper_q05_above_floor",
+    "quantity_type": "donor_sd",
+    "nominal": 0.05
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "ABSENT_FALSE_POSITIVE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper_q05_above_floor",
+    "quantity_type": "donor_sd",
+    "nominal": 0.05
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q07_DONOR_ABSENT",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "LIMIT",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd",
+    "limit_rationale": "donor SD planted at 0.5 x the smallest realistic value (Q01), or with about 1 positive cell per donor (Q08 positive), or under a residual SD of about 1.46 (Q09 positive): the posterior mean of a weakly identified SD sits above a small truth under any proper prior. A failure is reported as a limit on what a small real donor-SD estimate means; calibration (coverage) remains a FAIL-class gate"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q08_SPARSE_DETECTION",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "LIMIT",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd",
+    "limit_rationale": "donor SD planted at 0.5 x the smallest realistic value (Q01), or with about 1 positive cell per donor (Q08 positive), or under a residual SD of about 1.46 (Q09 positive): the posterior mean of a weakly identified SD sits above a small truth under any proper prior. A failure is reported as a limit on what a small real donor-SD estimate means; calibration (coverage) remains a FAIL-class gate"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q09_POSITIVE_TAIL",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "detection",
+    "gate": "POPULATION_DONOR_SD_RATIO",
+    "kind": "RULE",
+    "verdict_class": "FAIL",
+    "bounds": [
+     0.8,
+     1.25
+    ]
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q10_S174_DESIGN_IMBALANCE",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "detection",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "kind": "RULE",
+    "verdict_class": "FAIL"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "COVERAGE_FIXED_POOLED",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_types": [
+     "intercept",
+     "depth1",
+     "depth2",
+     "class",
+     "source"
+    ],
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_INTERCEPT",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "intercept"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH1",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth1"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_DEPTH2",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "depth2"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_CLASS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "class"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_SOURCE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "source"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "donor_sd",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_DONOR_SD",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "donor_sd"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "COVERAGE_DONOR_EFFECTS",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "one_sided_t_lower_across_genes",
+    "quantity_type": "donor_effects",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "COVERAGE_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_lower",
+    "quantity_type": "sigma",
+    "nominal": 0.9
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "BIAS_SIGMA",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "two_sided_t_across_genes_and_materiality",
+    "quantity_type": "sigma"
+   },
+   {
+    "world": "Q11_OMITTED_OPERATOR",
+    "part": "positive",
+    "gate": "PPC_EXTREME_RATE",
+    "kind": "STAT",
+    "verdict_class": "FAIL",
+    "test": "binomial_upper",
+    "nominal": 0.01
+   }
+  ]
+ },
+ "terminal_logic": {
+  "world_verdict": "FAIL if any FAIL-class gate fails. PASS_WITH_LIMITS if only LIMIT-class gates fail; the LIMIT class is exactly the four donor-SD bias gates in Q01 (both parts), Q08 positive and Q09 positive, whose coverage gates stay hard. PASS otherwise. Every Q11 gate (fixed, donor and PPC) is hard: Q11 exists to test whether omitted measurement structure is absorbed into donor biology or degrades model adequacy, and it must be able to disqualify V2_CORE.",
+  "terminal_lock": "The first FAIL-class gate failure in any world immediately and irreversibly locks the combined terminal of this qualification generation to V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED. Every world result produced after that point is labelled POST_TERMINAL_DIAGNOSTIC__CANNOT_RESCUE_QUALIFICATION. Such results may map failure modes, but they cannot change the combined FAIL, select a model variant, relax a gate or authorize downstream work.",
   "post_terminal_label": "POST_TERMINAL_DIAGNOSTIC__CANNOT_RESCUE_QUALIFICATION",
-  "infrastructure_hash_custody_poison_failure": "STOP_IMMEDIATELY"
+  "combined": {
+   "PASS": "V2_CORE_SYNTHETIC_QUALIFICATION_PASS__CONTROLLER_AUDIT_REQUIRED__REAL_TRAIN_POSTERIOR_INFERENCE_STILL_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
+   "FAIL": "V2_CORE_SYNTHETIC_QUALIFICATION_NOT_QUALIFIED__NO_TUNING__CONTROLLER_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_INFERENCE_OFF__TRAINING_OFF",
+   "INFRASTRUCTURE": "V2_CORE_SYNTHETIC_QUALIFICATION_INCOMPLETE__INFRASTRUCTURE_STOP__CONTROLLER_REVIEW_REQUIRED"
+  },
+  "rule": "PASS iff all 12 worlds are PASS or PASS_WITH_LIMITS; FAIL if any world FAILs",
+  "run_policy": "PR #286 ruling A (approved with terminal lock): the precommitted worlds run in the fixed order Q00..Q11. After the terminal lock they continue only as post-terminal diagnostics. Infrastructure, custody, poison-read and hash failures STOP immediately. No tuning, no reruns with changed settings, no adaptive world change after generation, and no resurrection of a failed fit.",
+  "stopping": "after the combined receipt: STOP for controller audit in every outcome"
  },
- "boundaries": {
-  "training_authorized": false,
-  "real_train_posterior_inference": false,
-  "factorial_science": false,
-  "test_split": false,
-  "morabito": false,
-  "pathology": false,
-  "target_discovery": false,
-  "world_generation_before_controller_prelaunch_review": false
+ "resources": {
+  "environment": "Windows, conda env v79-bayes (Python 3.11.17; see env_lock). No WSL fits and no simultaneous WSL/Windows fits.",
+  "concurrency": "one heavy job at a time; a heavy job is one world process fitting its genes serially (det then pos per gene)",
+  "settle_seconds_between_worlds": 120,
+  "xla_host_devices": 4,
+  "checkpoint": "atomic per-fit record (tmp + rename); a world restarts at its first missing or invalid fit record",
+  "compact_outputs": "per fit: JSON summaries (mean, SD, q05, q50, q95 per scalar; per donor) plus a float32 npz of 200 thinned donor-effect draws. No full chains are stored.",
+  "engineering_benchmark": "Before launch, 2 genes x 2 parts on an engineering world (seed root 31999999, never scored) measure the time and memory per fit. If the projection exceeds 72 h: STOP and report; no setting changes.",
+  "estimate": {
+   "label": "ESTIMATE__TO_BE_REPLACED_BY_ENGINEERING_BENCHMARK",
+   "n_fits": 1056,
+   "basis": "prior V79 CPU fit: 20 genes jointly, 4 chains x 2000 iterations, mean 63 leapfrog steps, 1,155 s, about 0.46 ms per gene-gradient. V2_CORE single gene, about 45 steps, 4 chains in parallel: about 45 s detection and 25 s positive, plus about 10 s JIT",
+   "per_world_hours": 1.1,
+   "total_hours_without_retries": 13.6,
+   "allowance_for_escalation_extension": "x1.2",
+   "peak_memory": "< 2 GB per fit process (4,726 cells, about 155 parameters)",
+   "cpu": "4 of 16 logical cores during a fit"
+  }
  },
- "generated_outputs_scope": [
-  "this final authority envelope",
-  "its SHA-256 sidecar",
-  "finalizer/validator code and tests",
-  "CI/regeneration evidence",
-  "updated controller/audit/handoff state"
+ "result_schemas": {
+  "fit_record": "V79_V2_CORE_FIT_RECORD_V1: fit_id, opaque world id, gene index, part, attempts[], final diagnosis, posterior summaries, ppc stats and p-values, input/contract/code hashes",
+  "world_result": "V79_V2_CORE_WORLD_RESULT_V1: world manifest hash, truth hash, per-type recovery metrics, every gate (statistic, threshold, pass), verdict, descriptive metrics, second stage, resources",
+  "receipt": "V79_V2_CORE_QUALIFICATION_RECEIPT_V1: contract SHA, code commit, environment, every world verdict and result hash, LIMIT list, combined terminal"
+ },
+ "blinding": "The fitting stage reads only the world data file (design, observations, support mask) under an opaque world ID. It has no path to the truth file and does not import the truth or scoring code. Scoring runs only after every fit of a world is complete. The operator knows the mapping, and no intervention is permitted between launch and the receipt, so analyst unblinding cannot steer an outcome.",
+ "ratified_conventions": {
+  "ruling": "PR #286 controller ruling 6113874774, part C: ratified for this qualification generation only",
+  "bias_materiality_std": {
+   "value": 0.5,
+   "scope": "prospective practical-significance convention, not a universal inferential threshold"
+  },
+  "population_donor_sd_ratio": {
+   "value": [
+    0.8,
+    1.25
+   ],
+   "scope": "prospective recovery convention"
+  },
+  "donor_absent_floor": {
+   "fraction_of_dev_p05_donor_sd": 0.1,
+   "scope": "Q07 only; values in worlds.planting_magnitudes.fixed_magnitudes.donor_absent_floor"
+  },
+  "q11_operator_sd_fraction": {
+   "value": 0.5,
+   "scope": "deliberately mild omitted-operator stress only"
+  }
+ },
+ "declared_limitations": [
+  "Positive values are continuous lognormal; integer discretization of real counts (mass at 1) is not tested (ZTNB question).",
+  "Planting magnitudes come from ridge proxies; development donor SDs are shrinkage-biased low.",
+  "Truths are fixed values, not prior draws, so coverage is not guaranteed nominal for weakly identified quantities. The gates test for material, significant deviation.",
+  "Detection operator remains PRIOR_SENSITIVE__UNRESOLVED (development). Q11 probes one mild omitted-operator rule only.",
+  "The second stage (across-gene distributions, cross-gene donor geometry) is descriptive only.",
+  "The S174 design (4,726 cells, 149 donors) is smaller than corrected TRAIN; transfer to TRAIN is approximate.",
+  "About 1% of development genes show near-separated detection source effects in measured cells (|contrast| about 8). These are not planted, and the N(0,1.5) prior would shrink them."
  ],
- "explicitly_not_generated": [
-  "Q00-Q11 realized worlds",
-  "truth tables",
-  "world manifests",
-  "benchmark outputs",
-  "qualification fits",
-  "posterior samples",
-  "corrected-TRAIN posterior inference",
-  "factorial scientific outputs",
-  "JEPA checkpoints"
- ]
+ "development_finding_structural_support": {
+  "finding": "The V3 replay and the V1 planting calibration treated structurally unmeasured entries as measured zeros. The corrective masked replay and its old-vs-masked A-H audit are the authority; their numbers are not restated here.",
+  "masked_replay": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V4_MASKED.json",
+   "sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683"
+  },
+  "masking_audit": {
+   "path": "results/v79/development/s174_structure_replay_v4_masked/V79_S174_REPLAY_MASKING_AUDIT_V1.json",
+   "sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+   "mechanical_A_to_H_preserved": true
+  },
+  "consequence_here": "V2_CORE enforces the support mask in the likelihood; worlds include structural absence as hash-bound truth; calibration V2 is masked and its join reproduces",
+  "controller_decision": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY (PR #288 controller ruling 6114753697)"
+ }
 }
