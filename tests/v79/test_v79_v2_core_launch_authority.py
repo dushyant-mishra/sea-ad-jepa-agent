@@ -228,5 +228,11 @@ def test_no_qualification_world_artifacts_exist():
     allowed = {"V79_V2_CORE_QUALIFICATION_CONTRACT_V1.json", "V79_V2_CORE_QUALIFICATION_CONTRACT_V1.sha256",
                "V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json", "V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.sha256",
                "V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json", "V79_V2_CORE_QUALIFICATION_CONTRACT_V2.sha256",
-               "inputs", "finalization"}
+               "inputs", "finalization", "authorization"}
+    assert "realized_worlds_v1" not in allowed
     assert {p.name for p in QDIR.iterdir()} <= allowed
+    # the prospective authorization directory holds only the frozen receipt and its sidecar, never a realized world
+    authorization = QDIR / "authorization"
+    if authorization.exists():
+        assert {p.name for p in authorization.iterdir()} == {
+            "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1.json", "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1.sha256"}
