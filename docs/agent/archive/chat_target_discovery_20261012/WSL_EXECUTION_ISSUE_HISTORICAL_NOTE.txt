@@ -1,0 +1,85 @@
+ARCHIVE STATUS: historical chat note; not current scientific or execution authority.
+ORIGINAL FILE: WSL execution issue.txt
+ORIGINAL SHA-256: cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e
+
+Yes. But at this point I would **not keep adding features**. I see about **four remaining improvements with genuinely high scientific value**. After those, additional complexity is more likely to hurt than help.
+
+The most important one is a conceptual upgrade to how we represent heterogeneous experiments.
+
+## 1. Treat technology as an **observation operator**, not a biological covariate
+
+Right now we have been thinking approximately:
+
+X + assay context -> z_biology.
+
+I think the cleaner formulation is:
+
+z_biology ->[measurement process O_t] X_observed
+
+and inference runs in the opposite direction:
+
+q(z_biology | X_observed, O_t)
+
+Here O_t describes how technology t observes biology.
+
+For example, even though FHRA showed every current matrix contains all 4,096 vocabulary genes, two technologies can still differ in capture efficiency, dropout/count sampling, relative sensitivity, nucleus versus whole-cell composition, sequencing depth, and technical variance. Their masks can both be all-one while their observation processes are still very different.
+
+This distinction is probably more important for the current real foundation corpus than structural missingness. The model's job is to recover a compatible belief about biology while knowing which observation operator produced the evidence. This is cleaner than putting a free dataset_id embedding into the biology encoder.
+
+What should be allowed into O_t: scRNA versus snRNA, platform/chemistry, measured vocabulary, sequencing depth, detected-gene characteristics, count-split estimated noise properties, and other documented acquisition characteristics. Not donor ID, arbitrary matrix ID, or an unrestricted dataset embedding.
+
+## 2. Distinguish invariance from legitimate biological change
+
+The state should be approximately invariant to measurement realization, sequencing noise, technical replicate and irrelevant assay differences, but sensitive/equivariant to cell state, cell type, tissue environment, brain region, real donor biology, age-related biology and other genuine molecular context.
+
+For the same biological cell, count-split states should agree. For compatible biology across technologies, states should agree to the extent biology is comparable. For genuinely different cells, states should differ even if making them similar would improve batch mixing. Avoid an objective whose goal is merely to make technology impossible to predict; instead ask how much unnecessary technology information remains after controlling for comparable biology.
+
+## 3. Audit 160-D basis axis/subspace stability
+
+A basis fitted on different donor-balanced subsets can preserve the same subspace while rotating individual axes. That matters if coordinate-specific uncertainty is interpreted biologically. Before freezing the real state basis, test principal angles, canonical correlations, Procrustes-aligned similarity, individual-coordinate stability and eigenvalue gaps across donor-balanced resamples / leave-donor-group-out fits.
+
+If the subspace is stable but axes rotate within groups, treat those groups as stable subspaces rather than pretending every coordinate is independently meaningful. This may justify uncertainty over stable blocks.
+
+## 4. Define biological uncertainty by an evidence-response curve
+
+Instead of only comparing 100% versus one mask level, compare 20/40/60/80/100% evidence for the same cell. Let z_i(p) be the inferred state at evidence fraction p. Examine C_i(p)=||z_i(p)-z_i(100)|| and Delta_i(p->p')=||z_i(p')-z_i(p)||.
+
+Biological uncertainty then means: how much the inferred biological state is expected to change if substantially more relevant molecular evidence becomes available. This survives different panels, spatial assays, technologies, sequencing depths and future multimodal evidence.
+
+## 5. Separate measurement-quality response curves
+
+For the exact same cell, compare states under 25/50/75/100% count depth. The evidence curve asks what changes with more biological information; the measurement curve asks what changes with better measurement of the same information. This supplies an experimental separation between U_bio and U_measurement.
+
+## 6. Information efficiency
+
+Different cells may require different amounts of evidence before the state stabilizes. A future scientific metric could be the minimum evidence required for a cell to enter a stable neighborhood of its high-evidence reference. This may matter for targeted panels and spatial assays but should not be promoted to a production metric without a prospective contract.
+
+## 7. Stronger transfer ladder
+
+Use held-out donor, then held-out matrix, then held-out dataset/study and, where scientifically possible, held-out technology. The last two are the strongest tests that a coordinate system is reusable rather than study-specific.
+
+## 8. Separate interpolation/extrapolation support
+
+Do not use one generic OOD score. Distinguish measurement-domain support from biological-support novelty. Familiar measurement plus unusual biology may be scientifically important rather than technical OOD. This matters especially for rare vulnerability/resilience states.
+
+## 9. Do not erase donor variability
+
+Some donor variation is nuisance, but some may be exactly the biology of interest. A new donor with an unusual but well-measured state should not automatically be projected toward the population average or dismissed as domain shift.
+
+## 10. Hierarchical sampling
+
+Avoid both uniform-cell sampling, which lets huge datasets dominate, and uniform-dataset sampling, which can massively overweight tiny datasets. Use a dataset -> donor -> cell hierarchy with prospectively frozen bounded weighting. Large cell counts must not secretly mean the largest dataset defines biology.
+
+## 11. Keep the molecular ledger as the high-resolution escape hatch
+
+The 4,096 x 160 molecular ledger retains fine molecular information while a 160-D accountable global state captures reproducible global biology. Therefore pooled PCA explained variance alone should not be used to judge the full architecture.
+
+## 12. Optional future shared/context decomposition
+
+Only if later evidence demands it, consider z=(z_shared,z_context), where shared state is biology recurring across donors/tissues/technologies and context state carries legitimate context-dependent biology. Measurement/domain effects stay outside both. Do not add this preemptively.
+
+Priority summary from the original note: observation-process abstraction, donor/matrix-balanced basis, subspace stability, evidence-vs-depth convergence, conditional technology imprint, held-out dataset/technology transfer, measurement-channel QC qualification, biological novelty versus measurement OOD, hierarchical production sampling; shared/context decomposition only if evidence demands it; no new nonlinear architecture and no pathology yet.
+
+Historical conceptual promise: the molecular ledger preserves what was measured; the global state captures reproducible biology; the observation model knows how the experiment measured it; biological uncertainty asks how the state could change with better biological evidence; measurement uncertainty asks how it could change if the same biology were remeasured; domain support asks whether the observation regime is familiar.
+
+NOTE: much of this conceptual note was later formalized in repository contracts/specifications, including the premise-qualification observation-operator work. Use the later prospective repository contracts as authority; preserve this file only to retain historical reasoning and avoid rediscovery.

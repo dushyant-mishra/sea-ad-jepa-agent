@@ -1,0 +1,98 @@
+{
+  "schema": "JEPA_TARGET_DISCOVERY_CURRENT_TAKEOVER_STATE_V1",
+  "date": "2026-10-12",
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_audit_branch": "audit/target-discovery-takeover-20261011",
+  "canonical_previous_handoff": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+  "canonical_current_audit_index": "docs/agent/TARGET_DISCOVERY_MASTER_AUDIT_INDEX_20261012.md",
+  "canonical_supersession_ledger": "docs/agent/TARGET_DISCOVERY_DUPLICATION_SUPERSESSION_LEDGER_20261012.md",
+  "technical_prerequisite": {
+    "g6_accepted": true,
+    "g6_producer_commit": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+    "g6_external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "g6_receipt_sha256": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+    "g6_values_sha256": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+    "g6_metadata_sha256": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+    "g7_implementation_commit": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+    "g7_executed_once": true,
+    "g7_terminal": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
+    "g7_pass": false,
+    "g7_marker_sha256": "2579b9a6a5cbfc89f4dd38082515a290681fc5413afeb95536b62bbfd46f2667",
+    "g7_receipt_sha256": "47f9be6e8fef3fa70c07fbe8011fa1360df72e26b8259fc9655a369768a97fcf",
+    "g7_diagnostic_commit": "0b50938e48f7c257b362a0c66899bc1caa0d27a1",
+    "g7_diagnostic_classification": "GENUINELY_DISJOINT_NATURAL_CELL_SETS",
+    "corrected_replay_prerequisite_closed": true,
+    "corrected_replay_prerequisite_closure_reason": "ACCEPTED_G6__ACCEPTED_G7_EXECUTION_INTEGRITY__G7_NOT_ESTIMABLE_DUE_TO_INDEPENDENTLY_DIAGNOSED_STRUCTURAL_DISJOINTNESS",
+    "claims_not_created": [
+      "G7_PASS",
+      "S174_SAMPLE_A_VALUE_AGREEMENT",
+      "BIOLOGICAL_TARGET_AUTHORITY"
+    ]
+  },
+  "corrected_replay": {
+    "production_owner": "MACHA",
+    "implementation_branch": "feat/td-corrected-replay-turnkey-20261012",
+    "implementation_head_observed": "f74632ed51a0ffc28ac46daf240debbb8c2d6e01",
+    "authority_branch": "authority/td-corrected-replay-launch-f74632ed-20261012",
+    "authority_head_observed": "635f9f00050234f4e90306e97bce131bf741d73c",
+    "historical_fixture_equivalence_cases_passed": 16,
+    "historical_fixture_equivalence_cases_total": 16,
+    "proposed_namespace": "D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",
+    "biological_replay_executed": false,
+    "launch_audit_acceptance_required": true,
+    "decision_ratification_required": true,
+    "duplicate_branch": "science/td-corrected-replay-turnkey-20261012",
+    "duplicate_branch_disposition": "QUARANTINED_DUPLICATE__REFERENCE_ONLY__DO_NOT_CONTINUE__DO_NOT_MERGE"
+  },
+  "target_tournament": {
+    "pr": 275,
+    "branch": "science/td-target-tournament-scaffold-20261011",
+    "qualified_executable_head": "e8dda431b03e9365d764665fea80c111ee053710",
+    "qualification_run": 38265363424,
+    "qualification_job": 114866049053,
+    "qualification_passed": 322,
+    "qualification_failed": 0,
+    "qualification_errors": 0,
+    "qualification_artifact": 11754471954,
+    "qualification_artifact_sha256": "6d968dc8903b333fcb097f23bea78d6a4cbb2eeac7d32318051daa1c379ff1c3",
+    "candidate_lattice": [
+      "C1_SHARED_EMERGENT",
+      "C2_RELATIONAL_SHARED",
+      "C3_QUERY_MEASURED",
+      "C6_SHARED_QUERY_COMPOSITE",
+      "C4_STRUCTURED_COMPOSITE",
+      "C5_REGULATORY_SPECIALIST"
+    ],
+    "real_target_tournament_executed": false,
+    "target_selected": false
+  },
+  "v79_target_discovery_binding": {
+    "worlds_realized": true,
+    "realization_audit_head": "bb8923562144a0b19a6d80795adf727986893ded",
+    "root_manifest_sha256": "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de",
+    "directory_digest_sha256": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "complete_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "audit_freeze_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "target_candidate_synthetic_results_exist": false,
+    "synthetic_pass_can_select_human_target": false
+  },
+  "authority": {
+    "biological_replay_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "next_action": "AUDIT_MACHA_CORRECTED_REPLAY_IMPLEMENTATION_AND_AUTHORITY_PACKAGE__DO_NOT_DUPLICATE_IMPLEMENTATION",
+  "do_not_repeat": [
+    "G4_G5_CRLF_AND_SAMPLE_A_FAILURE_AUDITS",
+    "G6_GLOBAL_ROW_HISTORICAL_AUDIT",
+    "G7_GLOBAL_ROW_SUCCESSOR_QUALIFICATION",
+    "G7_ONE_SHOT_EXECUTION",
+    "G7_CELL_ID_NAMESPACE_DIAGNOSTIC",
+    "HISTORICAL_TD56_TD57B_TD57C_TD59_RECONSTRUCTION",
+    "PR249_BAYESIAN_FORMULATION_CALIBRATION",
+    "V79_WORLD_REALIZATION"
+  ]
+}

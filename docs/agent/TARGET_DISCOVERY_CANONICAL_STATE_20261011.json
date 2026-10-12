@@ -1,0 +1,117 @@
+{
+  "blocked": {
+    "corrected_td56_td57b_td57c_td59": "BLOCKED_PENDING_ACCEPTED_G7",
+    "g6": false,
+    "g7": false,
+    "real_target_tournament": true,
+    "representation_selection": true,
+    "stage4": true,
+    "target_selection": true,
+    "td60": true,
+    "training": true
+  },
+  "date": "2026-10-11",
+  "g6": {
+    "accounting": {
+      "HVS_SEA_physical_reread": 23690,
+      "NPH52_passthrough": 1310,
+      "total": 25000
+    },
+    "artifact_sha256": {
+      "manifest": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+      "meta": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+      "receipt": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+      "start": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+      "values": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9"
+    },
+    "biological_authority": false,
+    "detected_changed_rows": {
+      "HVS": 0,
+      "NPH52": 0,
+      "SEA_AD": 22560,
+      "total": 22560
+    },
+    "evidence_branch": "evidence/td-g6-replacement-ff4a21f9-20261011",
+    "evidence_commit": "c595af589821bee28eb77e88e44b79dc81835e7a",
+    "execution_state": "EXECUTED_ONCE__PASS__EXTERNALLY_ACCEPTED",
+    "external_acceptance_path": "docs/agent/TD_G6_EXTERNAL_ACCEPTANCE_ff4a21f9_20261011.json",
+    "external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "external_audit_disposition": "ACCEPT_G6_PASS__VALUE_SUBSTRATE_AND_SOURCE_CUSTODY_CONFIRMED__NO_BIOLOGICAL_TARGET_AUTHORITY",
+    "terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+  },
+  "g7": {
+    "biological_replay_authorized": false,
+    "execution_state": "AUTHORIZED_ONCE__PENDING_EXECUTION_OR_RESULT",
+    "expected_pass_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
+    "fresh_output_required": true,
+    "one_attempt_only": true,
+    "operational_authorization_path": "custody/owner_decisions/20261011/TD_G7_OPERATIONAL_AUTHORIZATION_ff4a21f9.json",
+    "operational_authorization_sha256": "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee",
+    "stop_after_g7": true
+  },
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "historical_biology": {
+    "TD56": "HISTORICAL_POSITIVE__CORRECTED_REPLAY_REQUIRED",
+    "TD57B": "HISTORICAL_PASS_24_OF_24__CORRECTED_REPLAY_REQUIRED",
+    "TD57C": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
+    "TD59": "HISTORICAL_PASS_24_OF_24__CORRECTED_REPLAY_REQUIRED",
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+  },
+  "lane": "REAL_TARGET_DISCOVERY",
+  "macha": {
+    "current_task": "EXECUTE_G7_ONCE_AT_ff4a21f9_AGAINST_ACCEPTED_G6__STOP_FOR_EXTERNAL_AUDIT",
+    "must_use_existing_code_consumed_owner_decision_sha256": "3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a",
+    "must_use_existing_code_consumed_runtime_authorization_sha256": "28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7",
+    "must_verify_fresh_g7_operational_authorization_sha256": "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee",
+    "stop_after_g7": true
+  },
+  "master_handoff": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+  "pr259": {
+    "biological_authority": false,
+    "driver_receipt_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+    "execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
+    "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+    "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+    "state": "ACCEPTED_NARROW_TECHNICAL_DATA_INTEGRITY_PASS__VALUE_BLIND"
+  },
+  "pr275": {
+    "head": "0cbe6244756df3d1b7ed1ef4e1643aae0f94e875",
+    "qualification": "197_passed_0_failed_0_errors",
+    "state": "SYNTHETIC_METADATA_ONLY_GOVERNANCE__NO_REAL_EXECUTION_AUTHORITY"
+  },
+  "pr282": {
+    "branch": "fix/td-g6-global-row-binding-successor-20261011",
+    "code_identity_sha256": {
+      "common": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+      "g6": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+      "g7": "f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe"
+    },
+    "focused_suite": "219_passed_0_failed",
+    "pr": 282,
+    "qualification_evidence_commit": "8622f57e67389e3899e76ca7b1dfcc6addd4a3e6",
+    "qualified_head": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0"
+  },
+  "row_binding": {
+    "guard_terminal": "PASS_GLOBAL_ROW_BINDING__RESET_INDEX_FORBIDDEN",
+    "rule": "global_row=np.arange(len(freeze_csv)) before filtering or merging",
+    "sample_A_global_rows": [
+      0,
+      24999
+    ],
+    "sample_B_global_rows": [
+      25000,
+      49999
+    ]
+  },
+  "schema": "JEPA_TARGET_DISCOVERY_CANONICAL_TAKEOVER_STATE_V2",
+  "science_guardrails": {
+    "biological_and_measurement_uncertainty_separate": true,
+    "donor_is_biological_replication_unit": true,
+    "low_jepa_loss_is_not_biological_validation": true,
+    "measured_zero_is_valid": true,
+    "no_forced_modality_imputation": true,
+    "stable_latent_coordinates_are_not_authority": true,
+    "technology_is_observation_operator": true,
+    "unsupported_targets_abstain": true
+  }
+}
