@@ -1,0 +1,106 @@
+name: V79 V2_CORE qualification executor
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/v79_v2_core_fit_*.py'
+      - 'scripts/v79/v79_v2_core_runtime*.py'
+      - 'scripts/v79/v79_v2_core_resource_monitor.py'
+      - 'scripts/v79/run_v79_v2_core_benchmark.py'
+      - 'scripts/v79/prepare_v79_v2_core_engineering_benchmark.py'
+      - 'scripts/v79/v79_v2_core_qualification_plan.py'
+      - 'scripts/v79/v79_v2_core_seed_ledger.py'
+      - 'scripts/v79/v79_v2_core_score.py'
+      - 'tests/v79/test_v79_v2_core_*.py'
+      - '.github/workflows/v79-v2-core-qualification-executor.yml'
+      - 'docs/superpowers/plans/2026-10-12-v79-v2-core-qualification-executor.md'
+  workflow_dispatch:
+
+jobs:
+  executor-audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Preserve byte identity
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true || true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen V79 environment
+        run: python -m pip install --disable-pip-version-check -r results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt
+      - name: Run authority and executor tests (Windows byte authority)
+        if: runner.os == 'Windows'
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_fit_surface.py
+          tests/v79/test_v79_v2_core_fit_contract.py
+          tests/v79/test_v79_v2_core_fit_model.py
+          tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_fit_custody.py
+          tests/v79/test_v79_v2_core_runtime.py
+          tests/v79/test_v79_v2_core_benchmark_prep.py
+          tests/v79/test_v79_v2_core_benchmark.py
+          tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_seed_ledger.py
+          tests/v79/test_v79_v2_core_score.py
+          -q -rA -p no:cacheprovider
+      - name: Run authority and executor tests (Linux structural audit)
+        if: runner.os != 'Windows'
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_fit_surface.py
+          tests/v79/test_v79_v2_core_fit_contract.py
+          tests/v79/test_v79_v2_core_fit_model.py
+          tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_fit_custody.py
+          tests/v79/test_v79_v2_core_runtime.py
+          tests/v79/test_v79_v2_core_benchmark_prep.py
+          tests/v79/test_v79_v2_core_benchmark.py
+          tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_seed_ledger.py
+          tests/v79/test_v79_v2_core_score.py
+          -q -rA -p no:cacheprovider
+          -k 'not test_builder_regenerates_final_and_draft_byte_for_byte'
+      - name: Static fit-side trust-domain audit
+        shell: python
+        run: |
+          import ast
+          from pathlib import Path
+          fit_side = [
+              Path('scripts/v79/v79_v2_core_fit_surface.py'),
+              Path('scripts/v79/v79_v2_core_fit_contract.py'),
+              Path('scripts/v79/v79_v2_core_fit_custody.py'),
+              Path('scripts/v79/v79_v2_core_fit_model.py'),
+              Path('scripts/v79/v79_v2_core_fit_runner.py'),
+              Path('scripts/v79/v79_v2_core_runtime.py'),
+              Path('scripts/v79/v79_v2_core_runtime_lock.py'),
+              Path('scripts/v79/v79_v2_core_resource_monitor.py'),
+              Path('scripts/v79/run_v79_v2_core_benchmark.py'),
+              Path('scripts/v79/v79_v2_core_qualification_plan.py'),
+          ]
+          for p in fit_side:
+              text = p.read_text(encoding='utf-8')
+              assert 'import v79_v2_core_score' not in text
+              assert 'from v79_v2_core_score' not in text
+          bench = Path('scripts/v79/run_v79_v2_core_benchmark.py').read_text(encoding='utf-8')
+          for forbidden in ('generate_v79_v2_core_worlds', 'v79_v2_core_world_writer', 'v79_v2_core_launch',
+                            'prepare_v79_v2_core_engineering_benchmark', 'v79_v2_core_score',
+                            'controller_truth', 'world_name', 'world_index'):
+              assert forbidden not in bench
+          assert 'v79_v2_core_fit_custody' in bench
+          assert 'expected_prep_receipt_sha256' in bench
+          tree = ast.parse(bench)
+          numeric_constants = [n.value for n in ast.walk(tree) if isinstance(n, ast.Constant) and isinstance(n.value, (int, float))]
+          assert 31999999 not in numeric_constants
+          print('FIT_SIDE_TRUST_DOMAIN_AUDIT=PASS')
