@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
@@ -48,7 +49,8 @@ def _validate_quantity_summary(q:Mapping,name:str)->None:
     n=len(labels)
     for k in ("mean","sd","q005","q025","q05","q50","q95","q975","q995"):
         vals=q[k]
-        if not isinstance(vals,list) or len(vals)!=n or any(not isinstance(x,(int,float)) for x in vals): _refuse(f"scoring quantity {name}.{k} differs")
+        if not isinstance(vals,list) or len(vals)!=n or any(not isinstance(x,(int,float)) or not math.isfinite(float(x)) for x in vals):
+            _refuse(f"scoring quantity {name}.{k} differs")
 
 def _validate_scoring_summary(summary:Mapping,part:str)->None:
     if not isinstance(summary,Mapping) or summary.get("schema")!="V79_V2_CORE_IDENTIFIED_POSTERIOR_SUMMARY_V1" or summary.get("part")!=part:
@@ -63,6 +65,54 @@ def _validate_scoring_summary(summary:Mapping,part:str)->None:
     if not isinstance(quantities,Mapping) or set(quantities)!=expected: _refuse("identified quantity set differs")
     for name,q in quantities.items(): _validate_quantity_summary(q,name)
 
+def _finite_number(value, name:str)->float:
+    if not isinstance(value,(int,float)) or not math.isfinite(float(value)): _refuse(f"heldout {name} must be finite")
+    return float(value)
+
+def _validate_calibration(rows, n_measured:int)->None:
+    if not isinstance(rows,list) or len(rows)!=10: _refuse("heldout detection calibration must contain exactly 10 fixed bins")
+    total=0
+    for i,row in enumerate(rows):
+        if not isinstance(row,Mapping) or set(row)!={"bin_index","lower","upper","n","mean_predicted","observed_rate"}: _refuse("heldout calibration row schema differs")
+        if row.get("bin_index")!=i or abs(_finite_number(row.get("lower"),"bin lower")-i/10)>1e-12 or abs(_finite_number(row.get("upper"),"bin upper")-(i+1)/10)>1e-12:
+            _refuse("heldout calibration bin edges differ from frozen equal-width bins")
+        n=row.get("n")
+        if not isinstance(n,int) or n<0: _refuse("heldout calibration bin count differs")
+        total+=n
+        if n==0:
+            if row.get("mean_predicted") is not None or row.get("observed_rate") is not None: _refuse("empty heldout calibration bins must remain null")
+        else:
+            mp=_finite_number(row.get("mean_predicted"),"mean predicted"); obs=_finite_number(row.get("observed_rate"),"observed rate")
+            if not (0.0<=mp<=1.0 and 0.0<=obs<=1.0): _refuse("heldout calibration rate outside [0,1]")
+    if total!=n_measured: _refuse("heldout calibration bin counts do not sum to measured observations")
+
+def _validate_heldout_predictive(value:Mapping, part:str)->None:
+    if not isinstance(value,Mapping) or set(value)!={"same_donor","new_donor"}: _refuse("heldout predictive summary must contain same_donor and new_donor only")
+    raw=json.dumps(value,sort_keys=True).lower()
+    for forbidden in ("truth","oracle","q00","q11","operator","matrix"):
+        if forbidden in raw: _refuse(f"heldout predictive summary leaks forbidden identity: {forbidden}")
+    for mode in ("same_donor","new_donor"):
+        rec=value[mode]
+        if not isinstance(rec,Mapping): _refuse(f"heldout {mode} record missing")
+        if rec.get("replicate_mode")!=mode or rec.get("posterior_draws")!=200: _refuse(f"heldout {mode} mode/draw convention differs")
+        want_gh=None if mode=="same_donor" else 40
+        if rec.get("gauss_hermite_nodes")!=want_gh: _refuse(f"heldout {mode} Gauss-Hermite convention differs")
+        if part=="detection":
+            required={"schema","replicate_mode","posterior_draws","gauss_hermite_nodes","n_measured","mean_log_loss","predicted_prevalence","observed_prevalence","calibration_bins"}
+            if set(rec)!=required or rec.get("schema")!="V79_V2_CORE_DETECTION_HELDOUT_V1": _refuse("heldout detection schema differs")
+            n=rec.get("n_measured")
+            if not isinstance(n,int) or n<=0: _refuse("heldout detection measured count differs")
+            _finite_number(rec.get("mean_log_loss"),"detection log loss")
+            pp=_finite_number(rec.get("predicted_prevalence"),"predicted prevalence"); op=_finite_number(rec.get("observed_prevalence"),"observed prevalence")
+            if not (0<=pp<=1 and 0<=op<=1): _refuse("heldout prevalence outside [0,1]")
+            _validate_calibration(rec.get("calibration_bins"),n)
+        else:
+            required={"schema","replicate_mode","posterior_draws","gauss_hermite_nodes","n_positive","mean_lpd"}
+            if set(rec)!=required or rec.get("schema")!="V79_V2_CORE_POSITIVE_HELDOUT_V1": _refuse("heldout positive schema differs")
+            n=rec.get("n_positive")
+            if not isinstance(n,int) or n<=0: _refuse("heldout positive count differs")
+            _finite_number(rec.get("mean_lpd"),"positive mean LPD")
+
 def _validate_existing_receipt(path:Path,item:Mapping,*,expected_code_sha:str|None=None,expected_seed:int|None=None)->Mapping:
     try: raw=path.read_bytes(); r=json.loads(raw.decode("utf-8"))
     except Exception as exc: _refuse(f"unreadable existing fit receipt {path.name}: {exc}")
@@ -73,16 +123,13 @@ def _validate_existing_receipt(path:Path,item:Mapping,*,expected_code_sha:str|No
               "benchmark_run":False,"qualification_fits_run":1,"scoring_run":False,"truth_accessed":False,"training_authorized":False}
     for k,v in required.items():
         if r.get(k)!=v: _refuse(f"existing fit receipt mismatch {path.name}: {k}")
-    if expected_code_sha is not None and r.get("code_sha")!=expected_code_sha:
-        _refuse(f"existing fit receipt code SHA mismatch: {path.name}")
+    if expected_code_sha is not None and r.get("code_sha")!=expected_code_sha: _refuse(f"existing fit receipt code SHA mismatch: {path.name}")
     attempts=r.get("attempts")
     if not isinstance(attempts,list) or not attempts: _refuse(f"existing fit receipt has no attempts: {path.name}")
     if expected_seed is not None:
-        if any(a.get("seed")!=int(expected_seed) for a in attempts if isinstance(a,Mapping)) or any(not isinstance(a,Mapping) for a in attempts):
-            _refuse(f"existing fit receipt seed mismatch: {path.name}")
+        if any(a.get("seed")!=int(expected_seed) for a in attempts if isinstance(a,Mapping)) or any(not isinstance(a,Mapping) for a in attempts): _refuse(f"existing fit receipt seed mismatch: {path.name}")
     stages=[str(a.get("stage")) for a in attempts]
-    if stages[0]!="PRIMARY" or stages.count("ESCALATION")>1 or stages.count("EXTENSION")>1:
-        _refuse(f"existing fit receipt recovery path differs: {path.name}")
+    if stages[0]!="PRIMARY" or stages.count("ESCALATION")>1 or stages.count("EXTENSION")>1: _refuse(f"existing fit receipt recovery path differs: {path.name}")
     if r.get("final_diagnosis") not in {"COMPLETE","NOT_DIAGNOSED"}: _refuse(f"existing fit is not terminal: {path.name}")
     diag=r.get("final_diagnostics")
     if not isinstance(diag,Mapping) or not {"divergences","worst_rhat","worst_ess_bulk","worst_ess_tail","mean_tree_steps"}<=set(diag): _refuse("final diagnostics missing")
@@ -90,8 +137,8 @@ def _validate_existing_receipt(path:Path,item:Mapping,*,expected_code_sha:str|No
     ppc=r.get("ppc")
     if not isinstance(ppc,list) or not ppc: _refuse("PPC table missing")
     for row in ppc:
-        if not isinstance(row,Mapping) or set(row)!={"name","observed","p_value"} or not isinstance(row["name"],str) or not isinstance(row["p_value"],(int,float)) or not (0.0<=float(row["p_value"])<=1.0):
-            _refuse("PPC row differs")
+        if not isinstance(row,Mapping) or set(row)!={"name","observed","p_value"} or not isinstance(row["name"],str) or not isinstance(row["p_value"],(int,float)) or not (0.0<=float(row["p_value"])<=1.0): _refuse("PPC row differs")
+    _validate_heldout_predictive(r.get("heldout_predictive"),str(item["part"]))
     artifacts=r.get("posterior_artifacts",{})
     if not isinstance(artifacts,Mapping) or set(artifacts)!={"donor_effect_draws"}: _refuse("posterior artifact set differs")
     for rec in artifacts.values():
@@ -128,8 +175,7 @@ def finalize_campaign(result_dir:Path,queue:list[Mapping],*,code_sha:str,custody
     if completed_prefix(result_dir,queue,expected_code_sha=code_sha,seed_by_fit_id=seed_by_fit_id)!=len(queue): _refuse("cannot finalize incomplete campaign")
     rec=campaign_receipt_skeleton(code_sha=code_sha,custody_receipt_sha=custody_receipt_sha,fit_count=len(queue))
     for item in queue:
-        p=result_dir/f"fit_{item['fit_id']}.json"
-        seed=None if seed_by_fit_id is None else seed_by_fit_id.get(str(item["fit_id"]))
+        p=result_dir/f"fit_{item['fit_id']}.json"; seed=None if seed_by_fit_id is None else seed_by_fit_id.get(str(item["fit_id"]))
         _validate_existing_receipt(p,item,expected_code_sha=code_sha,expected_seed=seed)
         rec["fit_records"].append({"fit_id":item["fit_id"],"path":p.name,"sha256":_sha(p)})
     rec["qualification_fits_run"]=len(queue); raw=_canonical(rec); rp=result_dir/CAMPAIGN_RECEIPT_NAME
