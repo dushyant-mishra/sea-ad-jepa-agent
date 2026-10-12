@@ -14,6 +14,7 @@ on:
       - 'scripts/v79/build_v79_v2_core_pairing_amendment.py'
       - 'tests/v79/test_v79_v2_core_world_generator.py'
       - 'tests/v79/test_v79_v2_core_world_generator_rebind.py'
+      - 'tests/v79/test_v79_v2_core_remaining_hardening.py'
       - 'tests/v79/test_v79_v2_core_baseline_planting.py'
       - 'tests/v79/test_v79_v2_core_observation.py'
       - 'results/v79/v2_core_qualification/**'
@@ -49,7 +50,7 @@ jobs:
           python --version
           echo "generator_head=$(git rev-parse HEAD)"
           python -c "import sys; sys.path.insert(0, 'scripts/v79'); import generate_v79_v2_core_worlds as G; print('observed_canonical_contract_sha256=' + G.FINAL_CONTRACT_SHA256)"
-          python -m pytest tests/v79/test_v79_v2_core_world_generator.py tests/v79/test_v79_v2_core_world_generator_rebind.py tests/v79/test_v79_v2_core_baseline_planting.py tests/v79/test_v79_v2_core_observation.py -q -rA -p no:cacheprovider | tee v79_world_generator_${{ matrix.os }}.log
+          python -m pytest tests/v79/test_v79_v2_core_world_generator.py tests/v79/test_v79_v2_core_world_generator_rebind.py tests/v79/test_v79_v2_core_remaining_hardening.py tests/v79/test_v79_v2_core_baseline_planting.py tests/v79/test_v79_v2_core_observation.py -q -rA -p no:cacheprovider | tee v79_world_generator_${{ matrix.os }}.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
