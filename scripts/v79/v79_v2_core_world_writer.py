@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import platform
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,8 @@ import v79_v2_core_world_assembly as A
 
 QUALIFICATION_SEED_ROOT = 31_000_000
 ROOT_MANIFEST_NAME = "V79_V2_CORE_WORLD_SET_MANIFEST_V1.json"
+ENV_LOCK_SHA256 = "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+WINDOWS_EXECUTION_PLATFORM = "WINDOWS_LOCKED_QUALIFICATION_ENVIRONMENT"
 
 _BUNDLE_PATHS = (
     "scripts/v79/v79_v2_core_launch.py",
@@ -52,7 +55,6 @@ def _safe_rel(rel: str) -> Path:
 
 
 def _portable_rel(path: Path) -> str:
-    """Canonical manifest/ledger path syntax independent of host OS."""
     return path.as_posix()
 
 
@@ -215,6 +217,8 @@ def _write_world_set(*, root: Path, payload: dict, cal: dict, designs: dict[str,
         auth_raw = _json_bytes(authorization)
         (out_dir / "realization_authorization.json").write_bytes(auth_raw)
         root_manifest["realization_authorization_sha256"] = _sha256_bytes(auth_raw)
+        root_manifest["execution_platform"] = authorization["execution_platform"]
+        root_manifest["environment_lock_sha256"] = authorization["environment_lock_sha256"]
     _write_json(out_dir / ROOT_MANIFEST_NAME, root_manifest)
     verified = verify_world_set(out_dir)
     if verified != root_manifest:
@@ -232,15 +236,28 @@ def write_engineering_world_set(*, root: Path, payload: dict, cal: dict,
         out_dir=out_dir, mode="ENGINEERING_TEST_ONLY")
 
 
+def validate_qualification_authorization(authorization: dict | None, *, root: Path,
+                                         runtime_platform: str | None = None) -> dict:
+    auth = G.validate_realization_authorization(authorization)
+    actual_bundle = generator_bundle_sha256(root)
+    if auth.get("generator_bundle_sha256") != actual_bundle:
+        raise SystemExit("STOP: realization authorization does not bind the executing generator bundle")
+    if auth.get("environment_lock_sha256") != ENV_LOCK_SHA256:
+        raise SystemExit("STOP: realization authorization does not bind the frozen environment lock")
+    if auth.get("execution_platform") != WINDOWS_EXECUTION_PLATFORM:
+        raise SystemExit("STOP: realization authorization does not bind the locked Windows qualification environment")
+    host = str(runtime_platform if runtime_platform is not None else platform.system())
+    if host.lower() != "windows":
+        raise SystemExit(f"STOP: qualification world realization is Windows-only for this frozen generation; host={host}")
+    return auth
+
+
 def realize_qualification_worlds(*, root: Path, payload: dict, cal: dict,
                                  designs: dict[str, dict[str, np.ndarray]], amendment: dict,
                                  out_dir: Path, authorization: dict | None) -> dict:
     if int(payload["seeds"]["root"]) != QUALIFICATION_SEED_ROOT:
         raise SystemExit("STOP: qualification realization requires the frozen qualification seed")
-    auth = G.validate_realization_authorization(authorization)
-    actual_bundle = generator_bundle_sha256(root)
-    if auth.get("generator_bundle_sha256") != actual_bundle:
-        raise SystemExit("STOP: realization authorization does not bind the executing generator bundle")
+    auth = validate_qualification_authorization(authorization, root=root)
     return _write_world_set(
         root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
         out_dir=out_dir, mode="QUALIFICATION_TRUTH_FREEZE", authorization=auth)
@@ -267,6 +284,10 @@ def verify_world_set(out_dir: Path) -> dict:
         if not ap.is_file() or _sha256_file(ap) != root_manifest["realization_authorization_sha256"]:
             raise SystemExit("STOP: realization authorization file/hash mismatch")
         expected_files.add("realization_authorization.json")
+        auth = json.loads(ap.read_text(encoding="utf-8"))
+        if root_manifest.get("execution_platform") != auth.get("execution_platform") or \
+                root_manifest.get("environment_lock_sha256") != auth.get("environment_lock_sha256"):
+            raise SystemExit("STOP: root manifest authorization provenance mismatch")
 
     worlds = root_manifest.get("worlds")
     if not isinstance(worlds, list) or len(worlds) != int(root_manifest.get("world_count", -1)):
