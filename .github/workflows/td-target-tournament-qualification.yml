@@ -44,7 +44,7 @@ jobs:
           print('pytest', pytest.__version__)
           PY
           } | tee qualification/environment.txt
-      - name: Run exact synthetic and metadata-only tournament harness
+      - name: Run exact synthetic metadata and real-executor framework harness
         run: |
           set -o pipefail
           python -m pytest -q \
@@ -83,6 +83,12 @@ jobs:
             tests/v5/test_td_v79_c6_synthetic_extension_v1.py \
             tests/v5/test_td_target_convergence_v1.py \
             tests/v5/test_td_real_tournament_contract_v1.py \
+            tests/v5/test_td_real_tournament_case_ledger_v1.py \
+            tests/v5/test_td_real_candidate_adapters_v1.py \
+            tests/v5/test_td_real_tournament_falsifiers_v1.py \
+            tests/v5/test_td_real_tournament_gates_v1.py \
+            tests/v5/test_td_real_tournament_bundle_v1.py \
+            tests/v5/test_run_td_real_target_tournament_once.py \
             | tee qualification/pytest.txt
       - name: Confirm tracked worktree unchanged
         run: |
