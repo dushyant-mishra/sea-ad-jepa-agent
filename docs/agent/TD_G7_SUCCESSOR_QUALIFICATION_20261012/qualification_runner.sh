@@ -56,7 +56,8 @@ head=$(git rev-parse HEAD)
   "$PY" -c "import sys,numpy,pandas,scipy,h5py,pytest;print('python', sys.version.split()[0]);print('numpy', numpy.__version__);print('pandas', pandas.__version__);print('scipy', scipy.__version__);print('h5py', h5py.__version__);print('pytest', pytest.__version__)"
   echo "python_executable=$("$PY" -c 'import sys;print(sys.executable)')"
 } > "$OUT/QUAL_00_environment.txt" 2>&1
-if [ "$head" != "$EXPECT" ] || [ -n "$(git status --short --untracked-files=no)" ]; then
+# clean means no tracked change and no untracked file (a stray conftest.py would be loaded by pytest)
+if [ "$head" != "$EXPECT" ] || [ -n "$(git status --short)" ]; then
   echo "STOP: qualification worktree is not the clean expected head" >> "$OUT/QUAL_00_environment.txt"; exit 1
 fi
 ( cd "$G6NS" && ls -la && sha256sum * ) > "$OUT/ACCEPTED_G6_NAMESPACE_BEFORE.txt" 2>&1
@@ -73,18 +74,23 @@ rm -rf "$RED_TREE"; mkdir -p "$RED_TREE"
 {
   echo "# RED: git archive $RED scripts/v5 tests/v5; G7 canonical SHA in the RED tree:"
   git archive "$RED" scripts/v5 tests/v5 | tar -x -C "$RED_TREE"
-  "$PY" -c "import importlib.util,sys;s=importlib.util.spec_from_file_location('c',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);print(m.canonical_text_sha256(sys.argv[2]))" \
-    "$RED_TREE/scripts/v5/td_relational_value_read_v2_common.py" "$RED_TREE/scripts/v5/audit_td_relational_g7_s174_overlap_v2.py"
+  red_g7_sha=$("$PY" -c "import importlib.util,sys;s=importlib.util.spec_from_file_location('c',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);print(m.canonical_text_sha256(sys.argv[2]))" \
+    "$RED_TREE/scripts/v5/td_relational_value_read_v2_common.py" "$RED_TREE/scripts/v5/audit_td_relational_g7_s174_overlap_v2.py")
+  echo "red_tree_g7_canonical_sha256=$red_g7_sha (required f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe)"
   ( cd "$RED_TREE" && "$PY" -m pytest -q -p no:cacheprovider -rA $GLOBAL_ROW_TESTS )
   echo "# red_exit=$?"
 } > "$OUT/QUAL_02a_global_row_RED_at_red_commit.txt" 2>&1
 rm -rf "$RED_TREE"
-red_failed=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::" "$OUT/QUAL_02a_global_row_RED_at_red_commit.txt")
+RED_LOG="$OUT/QUAL_02a_global_row_RED_at_red_commit.txt"
+red_failed=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::" "$RED_LOG")
+red_keyerror=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::.* - KeyError: 'global_row'" "$RED_LOG")
+red_not_raised=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::.* - Failed: DID NOT RAISE" "$RED_LOG")
+red_sha_ok=$(grep -c "^red_tree_g7_canonical_sha256=f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe " "$RED_LOG")
 "$PY" -m pytest -q -p no:cacheprovider -rA $GLOBAL_ROW_TESTS > "$OUT/QUAL_02b_global_row_GREEN_at_head.txt" 2>&1
 rc2=$?
 echo "# exit=$rc2" >> "$OUT/QUAL_02b_global_row_GREEN_at_head.txt"
-rc_red=$(( red_failed == 4 ? 0 : 1 ))
-echo "# red_failed_tests=$red_failed (required 4)" >> "$OUT/QUAL_02a_global_row_RED_at_red_commit.txt"
+rc_red=$(( red_failed == 4 && red_keyerror == 2 && red_not_raised == 2 && red_sha_ok == 1 ? 0 : 1 ))
+echo "# red_failed_tests=$red_failed (required 4): KeyError 'global_row'=$red_keyerror (required 2), DID NOT RAISE=$red_not_raised (required 2), red G7 is f8e52710=$red_sha_ok (required 1)" >> "$RED_LOG"
 
 # 3. predecessor bridge and authority-separation tests (the complete successor test file)
 "$PY" -m pytest -q -p no:cacheprovider -rA "$NEW" > "$OUT/QUAL_03_successor_bridge_and_authority_tests.txt" 2>&1
@@ -153,8 +159,32 @@ PY
   git ls-files | grep -E "G6_EXECUTION_START|G6_RECEIPT|G7_RECEIPT|TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2|STARTED_NOT_A_PASS" || echo "none"
   echo "# custody/owner-decision files changed since $BASE (expected: none)"
   git diff --name-only "$BASE" "$head" -- custody || true
+  echo "# every tracked JSON owner decision or runtime authorization, with the commit it binds (none may bind $head)"
+  "$PY" - "$head" <<'PY'
+import json, subprocess, sys
+head = sys.argv[1]
+bad = []
+for path in subprocess.check_output(["git", "ls-files", "*.json"], text=True).split():
+    try:
+        rec = json.loads(open(path, encoding="utf-8").read())
+    except Exception:
+        continue
+    if not isinstance(rec, dict):
+        continue
+    schema = str(rec.get("schema", ""))
+    if "OWNER_DECISION" in schema or "AUTHORIZATION" in schema:
+        bound = rec.get("qualified_implementation_commit_sha") or rec.get("implementation_commit_sha")
+        print(path, schema, bound)
+        if bound == head:
+            bad.append(path)
+print("authority_binding_qualified_head:", bad or "none")
+sys.exit(1 if bad else 0)
+PY
+  echo "# authority_scan_exit=$?"
   echo "# end"
 } > "$OUT/QUAL_07_no_execution_no_authority.txt" 2>&1
+grep -q "^# authority_scan_exit=0$" "$OUT/QUAL_07_no_execution_no_authority.txt"
+rc_auth=$?
 ( cd "$G6NS" && ls -la && sha256sum * ) > "$OUT/ACCEPTED_G6_NAMESPACE_AFTER.txt" 2>&1
 cmp -s "$OUT/ACCEPTED_G6_NAMESPACE_BEFORE.txt" "$OUT/ACCEPTED_G6_NAMESPACE_AFTER.txt"
 rc_ns=$?
@@ -166,12 +196,12 @@ rc_g7out=$?
   echo "tracked_status_after=[$(git status --short --untracked-files=no)]"
   echo "untracked_after=[$(git status --short | grep '^??' | tr '\n' ' ')]"
   echo "focused_suite_counts=[$(grep -E '(passed|failed|skipped|error)' "$OUT/QUAL_01_full_focused_suite.txt" | grep -v '^#' | tail -1)]"
-  echo "global_row_red_failed=$red_failed (required 4)"
+  echo "global_row_red=failed $red_failed/4, KeyError global_row $red_keyerror/2, DID NOT RAISE $red_not_raised/2, red G7 f8e52710 $red_sha_ok/1"
   echo "global_row_green_counts=[$(grep -E '(passed|failed|error)' "$OUT/QUAL_02b_global_row_GREEN_at_head.txt" | grep -v '^#' | tail -1)]"
   echo "successor_test_file_counts=[$(grep -E '(passed|failed|error)' "$OUT/QUAL_03_successor_bridge_and_authority_tests.txt" | grep -v '^#' | tail -1)]"
   echo "real_g7_premarker_gate_terminal=[$(grep -o '"terminal": "[^"]*"' "$OUT/QUAL_04_real_g7_premarker_gate.json")]"
   echo "real_pr259_compat_counts=[$(grep -E '(passed|failed|skipped|error)' "$OUT/QUAL_05_real_pr259_compat.txt" | grep -v '^#' | tail -1)]"
-  echo "exits: focused=$rc1 red_rule=$rc_red green=$rc2 successor_file=$rc3 real_gate=$rc4 pr259=$rc5 g6_namespace_unchanged=$rc_ns no_g7_output=$rc_g7out"
+  echo "exits: focused=$rc1 red_rule=$rc_red green=$rc2 successor_file=$rc3 real_gate=$rc4 pr259=$rc5 g6_namespace_unchanged=$rc_ns no_g7_output=$rc_g7out no_authority_for_head=$rc_auth"
   echo "utc_end=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 } > "$OUT/QUAL_08_final_state.txt" 2>&1
-exit $(( rc1 != 0 || rc_red != 0 || rc2 != 0 || rc3 != 0 || rc4 != 0 || rc5 != 0 || rc_ns != 0 || rc_g7out != 0 ))
+exit $(( rc1 != 0 || rc_red != 0 || rc2 != 0 || rc3 != 0 || rc4 != 0 || rc5 != 0 || rc_ns != 0 || rc_g7out != 0 || rc_auth != 0 ))

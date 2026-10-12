@@ -16,6 +16,7 @@ import hashlib
 import json
 import shutil
 import sys
+from types import SimpleNamespace
 from pathlib import Path
 
 import pandas as pd
@@ -277,6 +278,57 @@ def test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer(tmp
 
 
 # ------------------------------------------------------------------------------- 3. authority stays separate
+SUCCESSOR_COMMIT = "b" * 40          # the synthetic G6 producer ran at "a" * 40 (fake_code_identity default)
+
+
+def _as_successor_code(w, monkeypatch) -> None:
+    """G7 now executes as a different commit than the G6 producer, as in the real successor run."""
+    common = w.g7.common
+    monkeypatch.setattr(common, "code_identity",
+                        lambda left, right: W.F.fake_code_identity(common, left, right, commit=SUCCESSOR_COMMIT))
+
+
+def _fresh_successor_authority(w, root: Path) -> SimpleNamespace:
+    """A synthetic stand-in for the owner's fresh successor authority: a new owner decision for the successor commit
+    and a runtime authorization bound to it, beside the same PR #259 receipts and replay manifest."""
+    root.mkdir()
+    gate = SimpleNamespace(**vars(w.gate))
+    gate.owner_decision, gate.auth = root / "owner_decision.json", root / "auth.json"
+    W.F.write_json(gate.owner_decision, W.F.synthetic_owner_decision(w.g7.common, commit=SUCCESSOR_COMMIT))
+    W.F.rewrite_authorization(w.g7.common, gate)
+    return gate
+
+
+def test_g7_runs_under_its_own_authority_distinct_from_the_g6_producer(tmp_path, monkeypatch):
+    """GREEN-only addition after independent review. In the shared synthetic gate the successor trace equals the
+    producer trace, so a bridge validating G6 against the successor's trace would pass every other test. Here the
+    two traces differ, as in the real run: G6 stays bound to its producer trace, and G7 runs under its own."""
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    producer = w.g7.ACCEPTED_G6_PREDECESSOR["authority_trace"]
+    _as_successor_code(w, monkeypatch)
+    w.gate = _fresh_successor_authority(w, tmp_path / "successor_authority")
+    rc, out = W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+    assert rc == 0
+    r = json.loads(out.read_text(encoding="utf-8"))
+    t = r["authority_trace"]
+    assert t["implementation_commit_sha"] == SUCCESSOR_COMMIT != producer["implementation_commit_sha"]
+    assert t["owner_decision_sha256"] == sha(w.gate.owner_decision) != producer["owner_decision_sha256"]
+    assert t["authorization_sha256"] == sha(w.gate.auth) != producer["authorization_sha256"]
+    assert {k: v for k, v in t.items() if k not in ("g6_receipt_sha256", "g6_execution_sha256")} != producer
+    assert r["g6_predecessor"]["authority_trace"] == producer
+    assert t["g6_receipt_sha256"] == sha(w.g6_receipt)
+
+
+def test_producer_authority_cannot_run_successor_code(tmp_path, monkeypatch):
+    """The synthetic counterpart of the real gate's N1: the producer's own owner decision and authorization, with the
+    G7 code executing as a different commit, are refused before the attempt marker."""
+    w = W.build_g7_world(tmp_path, monkeypatch)
+    _as_successor_code(w, monkeypatch)
+    with pytest.raises(RuntimeError, match="qualified implementation commit"):
+        W.run_g7(w, monkeypatch, tmp_path, cells=W.S174_CELLS_OVERLAP)
+    assert not (tmp_path / "g7_out").exists()
+
+
 def test_old_ff4a21f9_authority_cannot_authorize_successor_g7():
     common = W.load_script(W.F.COMMON, "common_successor_authority")
     old_owner = FIX / "TD_G6G7_OWNER_DECISION_ff4a21f9.json"

@@ -21,7 +21,8 @@ Read-only negative probes:
   N4. The spent ff4a21f9 G7 operational authorization binds the old G7 code and cannot release this successor.
 
 No G7 start marker, receipt or output is created. No H5AD file is opened, and h5py is never imported. No S174 count
-cache, TD56/57B/57C/59/TD60 or training. Nothing is written; the result is printed as JSON.
+cache, TD56/57B/57C/59/TD60 or training. The only write is N3's temporary directory holding the two ff4a21f9 code
+blobs, removed on exit. The result is printed as JSON.
 """
 from __future__ import annotations
 
