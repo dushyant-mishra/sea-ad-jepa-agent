@@ -1,0 +1,33 @@
+name: V79 V2_CORE qualification executor
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/v79_v2_core_fit_*.py'
+      - 'scripts/v79/run_v79_v2_core_benchmark.py'
+      - 'tests/v79/test_v79_v2_core_fit_*.py'
+      - 'tests/v79/test_v79_v2_core_benchmark.py'
+      - '.github/workflows/v79-v2-core-qualification-executor.yml'
+      - 'docs/superpowers/plans/2026-10-12-v79-v2-core-qualification-executor.md'
+  workflow_dispatch:
+
+jobs:
+  fit-surface-red-green:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Preserve byte identity
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true || true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install structural test dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.0.2 pytest
+      - name: Run fit-surface tests
+        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py -q -rA -p no:cacheprovider
