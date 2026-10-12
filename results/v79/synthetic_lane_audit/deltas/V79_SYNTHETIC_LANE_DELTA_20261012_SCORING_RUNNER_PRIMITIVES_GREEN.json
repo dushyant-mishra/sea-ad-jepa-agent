@@ -1,0 +1,40 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "date": "2026-10-12",
+  "scope": "controller scoring orchestrator first GREEN milestone",
+  "pr": 306,
+  "head": "d4e10c821847078bac6d4043b18b09bdfb6c5ef1",
+  "base_integration_head": "e976d0c1a03f6a54dadcbf7fe3086f832fd319d8",
+  "new_module": "scripts/v79/run_v79_v2_core_scoring.py",
+  "implemented_primitives": [
+    "hash-first exact campaign fit-record loading with extra/missing/tamper refusal",
+    "canonical scoring-authorization loading and scorer-head/campaign binding",
+    "canonical idempotent write-once JSON output",
+    "frozen Q10/Q11 new-donor held-out model metric convention by part",
+    "scoring-run receipt binding scored rows, gate table, descriptive metrics and adjudication while keeping downstream authorities false"
+  ],
+  "physical_scoring_entrypoint_enabled": false,
+  "ci": {
+    "executor_run": "38282050314",
+    "executor_windows": "PASS",
+    "executor_linux": "PASS",
+    "fit_side_static_firewall": "PASS",
+    "scorer_run": "38282050318",
+    "scorer_windows": "PASS",
+    "scorer_linux": "PASS",
+    "scorer_static_firewall": "PASS"
+  },
+  "authority": {
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "benchmark_track": {
+    "fresh_single_rerun_authority_pr": 308,
+    "controller_comment": "6128881654",
+    "authorized_head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+    "status": "AWAITING_EXTERNAL_EXECUTION_RESULT"
+  }
+}

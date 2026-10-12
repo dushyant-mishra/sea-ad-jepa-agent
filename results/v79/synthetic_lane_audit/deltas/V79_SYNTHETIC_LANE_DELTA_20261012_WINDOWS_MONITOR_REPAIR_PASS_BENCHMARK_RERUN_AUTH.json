@@ -1,0 +1,45 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "date": "2026-10-12",
+  "scope": "Windows resource-monitor repair qualification and fresh benchmark-only controller ruling",
+  "repair_pr": 308,
+  "repair_head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+  "base_pr": 300,
+  "base_head": "7172b201b13c61634b84b85254bf4406959b2b57",
+  "changed_files": [
+    ".github/workflows/v79-v2-core-qualification-executor.yml",
+    "scripts/v79/v79_v2_core_resource_monitor.py",
+    "tests/v79/test_v79_v2_core_resource_monitor_windows.py"
+  ],
+  "tdd": {
+    "red_run": "38280964089",
+    "red_windows": "2_FAILED_117_PASSED__GETPROCESSMEMORYINFO_FAILED",
+    "green_run": "38281216579",
+    "green_windows": "PASS_INCLUDING_UNMOCKED_RSS_AND_RESOURCE_MONITOR",
+    "green_linux": "PASS",
+    "static_fit_side_firewall": "PASS"
+  },
+  "historical_failed_attempt": {
+    "evidence_commit": "b94367c6",
+    "state": "IMMUTABLE_SPENT_FAILED_CLOSED_BEFORE_FIRST_FIT"
+  },
+  "controller_ruling": {
+    "pr": 308,
+    "comment_id": "6128881654",
+    "authorized_head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+    "scope": "ONE_FRESH_ENGINEERING_BENCHMARK_RERUN_ONLY",
+    "fresh_directories_required": true,
+    "automatic_second_retry": false,
+    "qualification_fits_authorized": false,
+    "scoring_authorized": false,
+    "training_authorized": false
+  },
+  "forward_port": {
+    "pr": 306,
+    "head_after_port": "33efb404caf81a47f976fb39f472c7537aed8f52",
+    "executor_ci_run": "38281486760",
+    "executor_windows": "PASS",
+    "executor_linux": "PASS",
+    "note": "scorer CI remains RED for the pre-existing scoring-orchestrator TDD step: missing run_v79_v2_core_scoring module; this is independent of the monitor repair"
+  }
+}

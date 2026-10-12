@@ -1,0 +1,41 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "recorded_at": "2026-10-12T16:07:00Z",
+  "pr": 306,
+  "head": "71273b3017c10811b6ddf4bccea78b2bf0f58c92",
+  "milestone": "DETECTION_HELDOUT_DESCRIPTIVE_CONTRACT_GREEN",
+  "red": {
+    "workflow_head": "0ccf5adb58c0bcdb6fe66a89e040a8e09b32b956",
+    "scorer_run": 38274440655,
+    "failure": "detection descriptive output omitted mean predicted/observed prevalence and 10-bin calibration; malformed empty calibration was not refused"
+  },
+  "implementation": {
+    "production_commit": "d685d5400c12ce8cd0ad1e53732e25ebd8542415",
+    "fixture_alignment_commit": "71273b3017c10811b6ddf4bccea78b2bf0f58c92",
+    "behavior": [
+      "require exactly 10 frozen detection calibration bins",
+      "aggregate calibration bins by cell-count weighting",
+      "report mean predicted prevalence, mean observed prevalence, and their mean difference",
+      "preserve model-minus-oracle log-loss and planted-low-prevalence subset as non-gating"
+    ]
+  },
+  "ci": {
+    "scorer_run": 38274937051,
+    "scorer_windows": "PASS",
+    "scorer_linux": "PASS",
+    "executor_run": 38274937118,
+    "executor_windows": "PASS",
+    "executor_linux": "PASS",
+    "fit_side_static_firewall": "PASS",
+    "scorer_static_firewall": "PASS"
+  },
+  "next": "planted-oracle heldout metrics under TDD; scoring execution remains OFF",
+  "execution_boundaries_unchanged": {
+    "world_regeneration": false,
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}

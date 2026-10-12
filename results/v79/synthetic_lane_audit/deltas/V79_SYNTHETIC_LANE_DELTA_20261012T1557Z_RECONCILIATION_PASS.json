@@ -1,0 +1,32 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "recorded_at": "2026-10-12T15:57:00Z",
+  "reconciliation_pr": 305,
+  "head": "e976d0c1a03f6a54dadcbf7fe3086f832fd319d8",
+  "base_head": "7172b201b13c61634b84b85254bf4406959b2b57",
+  "scorer_source_head": "7fe0204b2661f0d1492115c973a4da7a4a1646b6",
+  "port_commit": "189607959d1755cf09c478fcf9274057828f7cf0",
+  "test_only_repair_commit": "e976d0c1a03f6a54dadcbf7fe3086f832fd319d8",
+  "ci": {
+    "executor_run": 38273599874,
+    "executor_windows": "PASS",
+    "executor_linux": "PASS",
+    "scorer_run": 38273599632,
+    "scorer_windows": "PASS",
+    "scorer_linux": "PASS",
+    "fit_side_static_firewall": "PASS",
+    "scorer_static_firewall": "PASS"
+  },
+  "reconciliation_result": "ENGINEERING_PASS",
+  "scientific_bytes_changed_by_repair": false,
+  "production_scorer_bytes_changed_by_repair": false,
+  "next_structural_gap": "controller-only scoring orchestrator that verifies complete campaign + explicit scoring authorization, loads hash-bound truth, scores all 1056 fit records, evaluates 292 gates, computes five non-gating descriptive families, and writes immutable outputs",
+  "execution_boundaries_unchanged": {
+    "world_regeneration": false,
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}

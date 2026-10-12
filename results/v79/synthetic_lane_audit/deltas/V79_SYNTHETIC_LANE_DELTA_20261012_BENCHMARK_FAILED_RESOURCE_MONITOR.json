@@ -1,0 +1,47 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "date": "2026-10-12",
+  "scope": "engineering benchmark execution state and Windows resource monitor defect",
+  "benchmark": {
+    "authority_pr": 299,
+    "authority_comment": "6119596541",
+    "authorized_source_head": "2240fd82f1707399bb8b2b16d3d93fee23866067",
+    "single_authorized_execution": "SPENT",
+    "result": "FAILED_CLOSED_BEFORE_ANY_MODEL_FIT",
+    "failure_phase": "first resource-monitor read at benchmark startup",
+    "elapsed_seconds_reported": 3,
+    "qualification_worlds_fit": 0,
+    "scoring_run": false,
+    "rerun_authorized": false,
+    "evidence_branch": "evidence/v79-engineering-benchmark-attempt-2240fd82-20261012",
+    "evidence_commit": "b94367c6",
+    "evidence_path": "docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/"
+  },
+  "root_cause": {
+    "file": "scripts/v79/v79_v2_core_resource_monitor.py",
+    "function": "_rss_bytes",
+    "platform": "Windows",
+    "finding": "ctypes Win32 calls did not declare GetCurrentProcess.restype as HANDLE or GetProcessMemoryInfo argument types, allowing process-handle truncation / invalid call behavior before the first fit",
+    "required_repair": [
+      "declare GetCurrentProcess.restype = wintypes.HANDLE",
+      "declare GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, POINTER(PMC), wintypes.DWORD]",
+      "exercise _rss_bytes and ResourceMonitor through an unmocked Windows CI test"
+    ]
+  },
+  "repair": {
+    "pr": 308,
+    "branch": "fix/v79-windows-resource-monitor-20261012",
+    "base_pr": 300,
+    "base_head": "7172b201b13c61634b84b85254bf4406959b2b57",
+    "state_at_delta": "TDD_RED_IN_PROGRESS",
+    "execution_authority_changed": false
+  },
+  "controller_boundary": {
+    "benchmark_rerun": "OFF_UNTIL_NEW_CONTROLLER_RULING_AFTER_REPAIR_REQUALIFICATION",
+    "qualification_fits": "OFF",
+    "qualification_scoring": "OFF",
+    "real_train_posterior": "OFF",
+    "factorial_science": "OFF",
+    "jepa_training": "OFF"
+  }
+}

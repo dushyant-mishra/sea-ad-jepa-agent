@@ -1,0 +1,22 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_PREOUTCOME_CONVENTION_V1",
+  "recorded_at": "2026-10-12T16:16:00Z",
+  "status": "FROZEN_BEFORE_ANY_QUALIFICATION_FIT_OR_SCORING_OUTCOME",
+  "scope": "non-gating Q11 minus Q10 descriptive heldout scalar",
+  "contract_context": "Contract V2 requires detection/positive same- and new-donor predictive descriptives and Q11 minus Q10 contrasts, but does not name one scalar when the compact Q11-Q10 contrast table accepts one heldout metric per gene/part.",
+  "convention": {
+    "detection": "new_donor.mean_log_loss (model-only; lower is better)",
+    "positive": "new_donor.mean_lpd (model-only; higher is better)"
+  },
+  "rationale": "new-donor prediction is the stricter transfer summary and positive new-donor prediction already has an explicit frozen 40-node integration rule; same-donor values remain reported separately and are not discarded",
+  "gating": false,
+  "may_change_qualification_verdict": false,
+  "may_authorize_downstream": false,
+  "execution_boundaries_unchanged": {
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}

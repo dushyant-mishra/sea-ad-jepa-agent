@@ -1,0 +1,157 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_INDEX_V1",
+  "as_of": "2026-10-12T17:20:00Z",
+  "lane": "synthetic_dataset_v79_controller_audit",
+  "purpose": "Canonical cold-start takeover index. Preserve historical audits, immutable failure evidence, exact authorities, live engineering heads, code/data/result locations and execution boundaries so future agents audit only deltas and do not cross-contaminate lanes.",
+  "read_first": [
+    "docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md",
+    "results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json",
+    "results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv",
+    "results/v79/synthetic_lane_audit/deltas/",
+    "docs/agent/V79_SYNTHETIC_LANE_CURRENT_POINTER.md",
+    "docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md"
+  ],
+  "live_lineages": {
+    "historical_campaign_runner": {
+      "pr": 300,
+      "branch": "feat/v79-v2-core-qualification-campaign-runner-20261012",
+      "head": "7172b201b13c61634b84b85254bf4406959b2b57",
+      "status": "engineering historical source; qualification execution OFF"
+    },
+    "historical_controller_scorer": {
+      "pr": 301,
+      "branch": "feat/v79-v2-core-controller-scorer-20261012",
+      "head": "7fe0204b2661f0d1492115c973a4da7a4a1646b6",
+      "status": "historical scorer lineage; preserve as evidence, do not restart reconciliation"
+    },
+    "reconciled_integration": {
+      "pr": 305,
+      "branch": "feat/v79-v2-core-scorer-reconciled-20261012",
+      "head": "e976d0c1a03f6a54dadcbf7fe3086f832fd319d8",
+      "status": "preferred common scorer/executor integration base; four-way CI green at freeze"
+    },
+    "active_scoring_engineering": {
+      "pr": 306,
+      "branch": "feat/v79-v2-core-scoring-orchestrator-20261012",
+      "head": "d4e10c821847078bac6d4043b18b09bdfb6c5ef1",
+      "executor_ci_run": 38282050314,
+      "scorer_ci_run": 38282050318,
+      "ci_conclusion": "success on Windows and Ubuntu; both static trust-domain audits PASS",
+      "status": "engineering only; physical scoring OFF",
+      "completed": [
+        "five non-gating descriptive families",
+        "detection held-out prevalence and fixed 10-bin calibration aggregation",
+        "controller-only planted held-out oracle",
+        "monitor repair carried forward",
+        "controller scoring-runner custody/authorization/write-once primitives"
+      ]
+    },
+    "benchmark_repair_and_execution_authority": {
+      "pr": 308,
+      "branch": "fix/v79-windows-resource-monitor-20261012",
+      "head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+      "base_head": "7172b201b13c61634b84b85254bf4406959b2b57",
+      "changed_files": 3,
+      "red_ci_run": 38280964089,
+      "green_ci_run": 38281216579,
+      "repair_pass_comment": 6128864889,
+      "fresh_benchmark_authority_comment": 6128881654,
+      "execution_instruction_comment": 6129078915,
+      "status": "exactly one fresh engineering benchmark rerun authorized; no Q00-Q11 fitting/scoring authority"
+    }
+  },
+  "benchmark_history": {
+    "original_authority_head": "2240fd82f1707399bb8b2b16d3d93fee23866067",
+    "original_authority_pr": 299,
+    "original_attempt_status": "SPENT__FAILED_CLOSED_BEFORE_FIRST_FIT",
+    "failure_evidence_branch": "evidence/v79-engineering-benchmark-attempt-2240fd82-20261012",
+    "failure_evidence_commit": "b94367c6",
+    "failure_evidence_path": "docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/",
+    "failure_root_cause": "Windows ctypes ABI bug: GetCurrentProcess/GetProcessMemoryInfo handle/signatures not typed; ResourceMonitorRefused before run_nuts_attempt",
+    "failure_interpretation": "execution infrastructure failure only; no model fit, no resource projection, no biological/statistical inference",
+    "old_attempt_immutable": true,
+    "fresh_rerun_authorized": true,
+    "fresh_rerun_exact_head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+    "fresh_rerun_count_authorized": 1,
+    "fresh_rerun_reported": false,
+    "no_automatic_second_retry": true
+  },
+  "frozen_authorities": {
+    "contract_v2_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "pairing_amendment_sha256": "57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5",
+    "environment_lock_sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782",
+    "generator_writer_bundle_sha256": "119add636cffdb1db3b58c44dce6a2c5eee245f85c773e5822735537ae8dfc16",
+    "realization_authorization_sha256": "8a2140f8d8ae721f403871de4465db5f0f8caaf3ffa1be9ee71cff7f6d96bba9",
+    "realization_root_manifest_sha256": "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de",
+    "realization_directory_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "runtime_environment_receipt_sha256": "781d880ada58dfde06c9074401a15d49cf17887460987865655837884dbf9184",
+    "blinded_fit_index_sha256": "8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40",
+    "realization_complete_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "realization_audit_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+    "masked_replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+    "s174_shard_authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "s174_operator_bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "g500_cache_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62"
+  },
+  "historical_pr_chain": [
+    {"pr":260,"role":"Bayesian/synthetic audit","decision":"historical audit authority"},
+    {"pr":261,"role":"Bayesian/synthetic handoff","decision":"historical handoff authority"},
+    {"pr":262,"role":"downstream factorial implementation","decision":"historical engineering"},
+    {"pr":264,"role":"downstream factorial audit","decision":"historical audit authority"},
+    {"pr":265,"role":"downstream factorial handoff","decision":"historical handoff authority"},
+    {"pr":279,"role":"streaming/replay implementation","decision":"resource-safe exact-S174 path"},
+    {"pr":280,"role":"first exact-S174 replay","decision":"IMMUTABLE FAILED-CLOSED; operator-within-source quasi-separation; not biological absence/presence evidence"},
+    {"pr":283,"role":"operator repair","decision":"lambda=1 primary; sensitivities 0.25/1/4"},
+    {"pr":285,"role":"completed exact-S174 replay","decision":"A-H completed; V2_CORE structure established"},
+    {"pr":286,"role":"V2 qualification draft / structural missingness","decision":"draft; superseded"},
+    {"pr":288,"role":"mask-corrected S174 replay","decision":"structural missingness corrected; V2_CORE unchanged"},
+    {"pr":290,"role":"final immutable V2 contract","decision":"12 worlds; 44 genes/world; 1056 fits; 292 gates"},
+    {"pr":291,"role":"world generator engineering","head":"f45ee034d9bd0c603da5783fed2cf09ee2b16f20"},
+    {"pr":293,"role":"generator hardening","decision":"integrated into PR291; redundant branch closed"},
+    {"pr":294,"role":"physical world writer","head":"fe3aac751e2b8d2e58d5cb4d35af74ad58c823df"},
+    {"pr":295,"role":"realization authority + record","head":"cd6425b29f3fbd70b6d93351feb7c188f8b17cc8","decision":"Q00-Q11 realized once; never regenerate"},
+    {"pr":297,"role":"realization byte audit freeze","head":"bb8923562144a0b19a6d80795adf727986893ded","decision":"498-file ledger + controller truth evidence accepted"},
+    {"pr":299,"role":"blinded V2_CORE executor","head":"2240fd82f1707399bb8b2b16d3d93fee23866067","decision":"engineering PASS; original one-shot benchmark later spent and failed closed"},
+    {"pr":300,"role":"qualification campaign runner","head":"7172b201b13c61634b84b85254bf4406959b2b57","decision":"engineering only; Q00-Q11 fits OFF"},
+    {"pr":301,"role":"historical controller scorer","head":"7fe0204b2661f0d1492115c973a4da7a4a1646b6","decision":"preserve; superseded operationally by reconciliation"},
+    {"pr":302,"role":"canonical V79 audit branch","decision":"living audit/history/index; non-authorizing"},
+    {"pr":303,"role":"canonical V79 takeover handoff","decision":"living handoff; non-authorizing"},
+    {"pr":305,"role":"reconciled scorer/executor integration","head":"e976d0c1a03f6a54dadcbf7fe3086f832fd319d8","decision":"preferred integration base"},
+    {"pr":306,"role":"scoring orchestrator engineering","head":"d4e10c821847078bac6d4043b18b09bdfb6c5ef1","decision":"four-way CI green; physical scoring OFF"},
+    {"pr":308,"role":"Windows resource-monitor repair + benchmark rerun authority","head":"559a1c104c8f1f56d2c05509eecf6b9dc05846a5","decision":"repair qualified; exactly one fresh engineering benchmark rerun authorized"}
+  ],
+  "closed_scientific_decisions": {
+    "v2_core_detection": "detected ~ quadratic(log_library) + broad_class + source + donor_within_source",
+    "v2_core_positive": "log(count)|count>0 ~ Normal(quadratic(log_library)+broad_class+source+donor_within_source, sigma)",
+    "included": ["quadratic depth","broad class","source","donor-within-source hierarchical/partial pooled"],
+    "excluded": ["operator main","donor x class","source x class","arbitrary/free matrix or dataset identity"],
+    "positive_family": "lognormal qualification default",
+    "zt_nb_status": "unadjudicated challenger; not qualification authority",
+    "historical_detection_bernoulli_v2": "NOT_QUALIFIED because worst ESS 361.8761303230284 < 400; do not relax/resurrect"
+  },
+  "execution_boundaries": {
+    "world_regeneration": "FORBIDDEN",
+    "engineering_benchmark": "ONE fresh rerun authorized only at exact PR308 head 559a1c104c8f1f56d2c05509eecf6b9dc05846a5; report and STOP",
+    "qualification_fits": "OFF",
+    "qualification_scoring": "OFF",
+    "real_train_posterior": "OFF",
+    "factorial_science": "OFF",
+    "target_discovery": "SEPARATE LANE; do not import TD PRs/results as synthetic authority",
+    "test_morabito_pathology": "OFF",
+    "jepa_training": "OFF"
+  },
+  "local_conversation_artifacts_not_declared_repo_authority": [
+    {"name":"WSL execution issue.txt","size_bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e"},
+    {"name":"Status and Repair Plan.txt","size_bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","size_bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","size_bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","size_bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"},
+    {"name":"checkpoints.zip","size_bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","size_bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"},
+    {"name":"expression.zip","size_bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"},
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","size_bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"},
+    {"name":"t1_checkpoint_u0200.zip","size_bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"}
+  ],
+  "takeover_rule": "Read the current pointer, newest delta, this index and code/data/result locator. Do not repeat audits before the recorded exact heads. Audit only newer commits/evidence. Never regenerate Q00-Q11. Keep fit and controller-truth trust domains physically separate."
+}
