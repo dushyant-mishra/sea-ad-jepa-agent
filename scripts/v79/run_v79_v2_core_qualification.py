@@ -41,12 +41,12 @@ def group_queue_by_world(queue:list[Mapping])->list[tuple[str,list[Mapping]]]:
     return out
 
 def _validate_quantity_summary(q:Mapping,name:str)->None:
-    required={"labels","mean","sd","q05","q50","q95"}
+    required={"labels","mean","sd","q005","q025","q05","q50","q95","q975","q995"}
     if not isinstance(q,Mapping) or set(q)!=required: _refuse(f"scoring quantity {name} schema differs")
     labels=q["labels"]
     if not isinstance(labels,list) or any(not isinstance(x,str) for x in labels): _refuse(f"scoring quantity {name} labels differ")
     n=len(labels)
-    for k in ("mean","sd","q05","q50","q95"):
+    for k in ("mean","sd","q005","q025","q05","q50","q95","q975","q995"):
         vals=q[k]
         if not isinstance(vals,list) or len(vals)!=n or any(not isinstance(x,(int,float)) for x in vals): _refuse(f"scoring quantity {name}.{k} differs")
 
