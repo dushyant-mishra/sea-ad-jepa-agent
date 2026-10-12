@@ -25,10 +25,13 @@ def _raw_gene_truth(world:T.TruthWorld,part:str,gene_index:int)->dict[str,np.nda
     if part not in {"detection","positive"}: _refuse("unknown part")
     if not isinstance(gene_index,int) or not (0<=gene_index<44): _refuse("gene index outside frozen 44-gene panel")
     out={}
-    for name in ("intercept","depth1","depth2","class_contrasts","source_contrasts","donor_sd","donor_effects"):
+    for name in ("intercept","depth1","depth2","class_contrasts","source_contrasts","donor_sd"):
         a=world.load(f"truth/{part}/{name}.npy")
-        if a.shape[0]!=44: _refuse(f"truth {name} first dimension differs")
+        if a.shape[0]!=44: _refuse(f"truth {name} gene dimension differs")
         out[name]=np.asarray(a[gene_index],dtype=float)
+    donor=world.load(f"truth/{part}/donor_effects.npy")
+    if donor.ndim!=2 or donor.shape[1]!=44: _refuse("truth donor_effects must be donor x 44 genes")
+    out["donor_effects"]=np.asarray(donor[:,gene_index],dtype=float)
     if part=="positive":
         a=world.load("truth/positive/sigma.npy")
         if a.shape!=(44,): _refuse("positive sigma truth shape differs")
@@ -76,8 +79,7 @@ def _posterior_quantity(rec:Mapping,name:str)->dict:
 
 
 def identified_truth_for_summary(world:T.TruthWorld,part:str,gene_index:int,summary:Mapping)->dict[str,np.ndarray]:
-    if summary.get("schema")!="V79_V2_CORE_IDENTIFIED_POSTERIOR_SUMMARY_V1" or summary.get("part")!=part:
-        _refuse("identified summary schema/part differs")
+    if summary.get("schema")!="V79_V2_CORE_IDENTIFIED_POSTERIOR_SUMMARY_V1" or summary.get("part")!=part: _refuse("identified summary schema/part differs")
     ident=summary.get("identification"); qs=summary.get("quantities")
     if not isinstance(ident,Mapping) or not isinstance(qs,Mapping): _refuse("identified summary sections missing")
     raw=_raw_gene_truth(world,part,gene_index)
@@ -86,16 +88,10 @@ def identified_truth_for_summary(world:T.TruthWorld,part:str,gene_index:int,summ
     source_truth,source_effects=_identified_factor_truth(raw["source_contrasts"],ident.get("source",{}),source_post["labels"],factor="source")
     class_levels=ident["class"]["observed_levels"]; source_levels=ident["source"]["observed_levels"]
     intercept=float(np.asarray(raw["intercept"]).reshape(()))+float(np.mean(class_effects[class_levels]))+float(np.mean(source_effects[source_levels]))
-    out={
-        "intercept":np.asarray([intercept]),
-        "depth1":np.asarray([float(np.asarray(raw["depth1"]).reshape(()))]),
-        "depth2":np.asarray([float(np.asarray(raw["depth2"]).reshape(()))]),
-        "class":class_truth,
-        "source":source_truth,
-        "donor_sd":np.asarray([float(np.asarray(raw["donor_sd"]).reshape(()))]),
-    }
-    donor_post=_posterior_quantity(summary,"donor_effects"); donor_raw=np.asarray(raw["donor_effects"],dtype=float).reshape(-1)
-    donor_vals=[]
+    out={"intercept":np.asarray([intercept]),"depth1":np.asarray([float(np.asarray(raw["depth1"]).reshape(()))]),
+         "depth2":np.asarray([float(np.asarray(raw["depth2"]).reshape(()))]),"class":class_truth,"source":source_truth,
+         "donor_sd":np.asarray([float(np.asarray(raw["donor_sd"]).reshape(()))])}
+    donor_post=_posterior_quantity(summary,"donor_effects"); donor_raw=np.asarray(raw["donor_effects"],dtype=float).reshape(-1); donor_vals=[]
     for label in donor_post["labels"]:
         m=re.fullmatch(r"donor_(\d+)",label)
         if not m: _refuse("donor label differs")
@@ -106,8 +102,7 @@ def identified_truth_for_summary(world:T.TruthWorld,part:str,gene_index:int,summ
     if codes!=[int(x.split("_")[1]) for x in donor_post["labels"]]: _refuse("donor identification labels/codes differ")
     out["donor_effects"]=np.asarray(donor_vals,dtype=float)
     if part=="positive": out["sigma"]=np.asarray([float(np.asarray(raw["sigma"]).reshape(()))])
-    expected=set(out)
-    if set(qs)!=expected: _refuse(f"posterior quantity set differs: {set(qs)^expected}")
+    if set(qs)!=set(out): _refuse(f"posterior quantity set differs: {set(qs)^set(out)}")
     for name,truth in out.items():
         post=_posterior_quantity(summary,name)
         if len(truth)!=len(post["labels"]): _refuse(f"truth/posterior scalar count differs: {name}")
@@ -115,23 +110,16 @@ def identified_truth_for_summary(world:T.TruthWorld,part:str,gene_index:int,summ
 
 
 def score_gene_quantities(world:T.TruthWorld,fit_receipt:Mapping)->dict:
-    if fit_receipt.get("schema")!="V79_V2_CORE_FIT_RECORD_V1" or fit_receipt.get("execution_mode")!="QUALIFICATION":
-        _refuse("qualification fit receipt required")
+    if fit_receipt.get("schema")!="V79_V2_CORE_FIT_RECORD_V1" or fit_receipt.get("execution_mode")!="QUALIFICATION": _refuse("qualification fit receipt required")
     if fit_receipt.get("opaque_world_id")!=world.opaque_world_id: _refuse("fit/truth opaque world mismatch")
     part=str(fit_receipt.get("part")); gene=int(fit_receipt.get("gene_index",-1)); summary=fit_receipt.get("scoring_summary")
-    truth=identified_truth_for_summary(world,part,gene,summary)
-    rows={}
+    truth=identified_truth_for_summary(world,part,gene,summary); rows={}
     for name,t in truth.items():
         p=_posterior_quantity(summary,name); t=np.asarray(t,dtype=float).reshape(-1)
-        covered90=(p["q05"]<=t)&(t<=p["q95"])
-        covered95=(p["q025"]<=t)&(t<=p["q975"])
-        covered99=(p["q005"]<=t)&(t<=p["q995"])
-        z=(p["mean"]-t)/p["sd"]
+        covered90=(p["q05"]<=t)&(t<=p["q95"]); covered95=(p["q025"]<=t)&(t<=p["q975"]); covered99=(p["q005"]<=t)&(t<=p["q995"]); z=(p["mean"]-t)/p["sd"]
         rows[name]={"labels":p["labels"],"truth":t.tolist(),"posterior_mean":p["mean"].tolist(),"posterior_sd":p["sd"].tolist(),
                     "q005":p["q005"].tolist(),"q025":p["q025"].tolist(),"q05":p["q05"].tolist(),"q50":p["q50"].tolist(),
                     "q95":p["q95"].tolist(),"q975":p["q975"].tolist(),"q995":p["q995"].tolist(),
-                    "covered90":covered90.astype(bool).tolist(),"covered95":covered95.astype(bool).tolist(),"covered99":covered99.astype(bool).tolist(),
-                    "standardized_error":z.tolist()}
-    return {"opaque_world_id":world.opaque_world_id,"world_name":world.world_name,"world_index":world.world_index,
-            "gene_index":gene,"part":part,"final_diagnosis":fit_receipt.get("final_diagnosis"),"quantities":rows,
-            "ppc":fit_receipt.get("ppc")}
+                    "covered90":covered90.astype(bool).tolist(),"covered95":covered95.astype(bool).tolist(),"covered99":covered99.astype(bool).tolist(),"standardized_error":z.tolist()}
+    return {"opaque_world_id":world.opaque_world_id,"world_name":world.world_name,"world_index":world.world_index,"gene_index":gene,"part":part,
+            "final_diagnosis":fit_receipt.get("final_diagnosis"),"quantities":rows,"ppc":fit_receipt.get("ppc")}
