@@ -68,6 +68,15 @@ def test_campaign_summary_keeps_scoring_and_truth_off():
     assert r["scoring_run"] is False and r["truth_accessed"] is False and r["training_authorized"] is False
 
 
+def test_campaign_finalization_is_idempotent_after_all_fit_receipts_exist(tmp_path):
+    q=_queue(); out=tmp_path/"r"; out.mkdir()
+    for item in q:
+        (out/f"fit_{item['fit_id']}.json").write_text(json.dumps(_receipt(item),sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
+    a=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
+    b=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
+    assert a==b and a["qualification_fits_run"]==len(q)
+
+
 def test_qualification_processes_import_no_controller_or_scoring_modules():
     forbidden={"generate_v79_v2_core_worlds","v79_v2_core_world_writer","v79_v2_core_launch","v79_v2_core_score"}
     for name in ("run_v79_v2_core_qualification.py","run_v79_v2_core_qualification_world.py"):
