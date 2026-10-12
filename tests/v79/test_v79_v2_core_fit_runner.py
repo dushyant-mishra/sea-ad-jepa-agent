@@ -35,6 +35,9 @@ def test_recovery_path_is_finite_and_predeclared():
     assert R.next_recovery_action(c, [{"stage":"PRIMARY"}], good) == "COMPLETE"
     assert R.next_recovery_action(c, [{"stage":"PRIMARY"},{"stage":"ESCALATION"}], bad_div) == "NOT_DIAGNOSED"
     assert R.next_recovery_action(c, [{"stage":"PRIMARY"},{"stage":"EXTENSION"}], bad_ess) == "NOT_DIAGNOSED"
+    assert R.next_recovery_action(c, [{"stage":"PRIMARY"},{"stage":"EXTENSION"}], bad_div) == "NOT_DIAGNOSED"
+    assert R.next_recovery_action(c, [{"stage":"PRIMARY"},{"stage":"ESCALATION"}], bad_ess) == "EXTEND"
+    assert R.next_recovery_action(c, [{"stage":"PRIMARY"},{"stage":"ESCALATION"},{"stage":"EXTENSION"}], bad_ess) == "NOT_DIAGNOSED"
 
 
 def test_benchmark_mode_never_counts_as_qualification():
