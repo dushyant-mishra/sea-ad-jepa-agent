@@ -55,7 +55,7 @@ def _write_npz_once(path:Path,**arrays)->str:
 
 def _fit_one(*,fit_view:Mapping,world:F.BlindedWorld,item:Mapping,seed:int,code_sha:str,result_dir:Path,model_module,custody:C.QualificationCustody)->None:
     fid=str(item["fit_id"]); receipt_path=result_dir/f"fit_{fid}.json"; artifact_path=result_dir/f"donor_effect_draws_{fid}.npz"
-    if receipt_path.exists(): Q._validate_existing_receipt(receipt_path,item); return
+    if receipt_path.exists(): Q._validate_existing_receipt(receipt_path,item,expected_code_sha=code_sha,expected_seed=seed); return
     if artifact_path.exists(): _refuse(f"orphan posterior artifact exists without receipt: {artifact_path.name}")
     gene=F.load_gene_inputs(world,gene_index=int(item["gene_index"]),replicate="train")
     model=model_module.build_detection_model(fit_view,gene) if item["part"]=="detection" else model_module.build_positive_model(fit_view,gene)
@@ -97,7 +97,7 @@ def execute_world(root:Path,custody_dir:Path,result_dir:Path,*,expected_custody_
     if custody.receipt.get("executor_code_head")!=code_sha: _refuse("qualification custody was prepared for a different code head")
     items=[x for x in custody.queue if x["opaque_world_id"]==opaque_world_id]
     if not items or len(items)!=88: _refuse("opaque world does not contain frozen 88 fits")
-    prefix=Q.completed_prefix(result_dir,list(custody.queue)); first_missing=list(custody.queue)[prefix] if prefix<len(custody.queue) else None
+    prefix=Q.completed_prefix(result_dir,list(custody.queue),expected_code_sha=code_sha,seed_by_fit_id=custody.seed_by_fit_id); first_missing=list(custody.queue)[prefix] if prefix<len(custody.queue) else None
     if first_missing is None: return {"opaque_world_id":opaque_world_id,"completed":0,"already_complete":True}
     if first_missing["opaque_world_id"]!=opaque_world_id: _refuse("world worker does not own the first missing checkpoint")
     RL.validate_runtime(root,require_windows=True,required_cpu_devices=None); RT.configure_before_jax_import(custody.fit_contract)
@@ -107,9 +107,9 @@ def execute_world(root:Path,custody_dir:Path,result_dir:Path,*,expected_custody_
     world=F.load_blinded_world(custody.blinded_index,opaque_world_id); completed=0
     with RM.single_heavy_fit_lock(result_dir/"HEAVY_FIT.lock"):
         for item in items:
-            p=result_dir/f"fit_{item['fit_id']}.json"
-            if p.exists(): Q._validate_existing_receipt(p,item); continue
-            _fit_one(fit_view=custody.fit_contract,world=world,item=item,seed=int(custody.seed_by_fit_id[item["fit_id"]]),code_sha=code_sha,
+            p=result_dir/f"fit_{item['fit_id']}.json"; seed=int(custody.seed_by_fit_id[item["fit_id"]])
+            if p.exists(): Q._validate_existing_receipt(p,item,expected_code_sha=code_sha,expected_seed=seed); continue
+            _fit_one(fit_view=custody.fit_contract,world=world,item=item,seed=seed,code_sha=code_sha,
                      result_dir=result_dir,model_module=M,custody=custody); completed+=1
     return {"opaque_world_id":opaque_world_id,"completed":completed,"already_complete":False}
 
