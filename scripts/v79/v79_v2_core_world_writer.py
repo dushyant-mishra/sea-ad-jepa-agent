@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""Deterministic physical package writer for V79 V2_CORE worlds.
+"""Deterministic, blinded physical package writer for V79 V2_CORE worlds.
 
 Engineering writes are barred from the frozen qualification seed. Qualification
-realization owns and reloads all scientific inputs from authenticated repository
-bytes and requires a separate controller authorization bound to the exact generator
-bundle, frozen environment lock and locked Windows qualification environment.
+realization reloads all scientific inputs from authenticated repository bytes and
+requires controller authorization bound to the exact generator bundle, frozen
+environment lock and locked Windows qualification environment.
+
+The physical package has two separate surfaces:
+- ``blinded_fit_inputs``: opaque world IDs, permitted model covariates, support and
+  observations only. No truth, Q-label, seed root or operator/matrix identity.
+- ``controller_truth``: planted truth and the Q-label<->opaque mapping, inaccessible
+  to the fitting stage until scoring.
+
 This module never benchmarks or fits a model.
 """
 from __future__ import annotations
@@ -22,6 +29,9 @@ import v79_v2_core_world_assembly as A
 
 QUALIFICATION_SEED_ROOT = 31_000_000
 ROOT_MANIFEST_NAME = "V79_V2_CORE_WORLD_SET_MANIFEST_V1.json"
+FIT_ROOT_NAME = "blinded_fit_inputs"
+TRUTH_ROOT_NAME = "controller_truth"
+FIT_INDEX_NAME = "V79_V2_CORE_BLINDED_FIT_INDEX_V1.json"
 ENV_LOCK_SHA256 = "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
 WINDOWS_EXECUTION_PLATFORM = "WINDOWS_LOCKED_QUALIFICATION_ENVIRONMENT"
 
@@ -90,87 +100,116 @@ def _write_npy(path: Path, value: Any) -> str:
     return _sha256_file(path)
 
 
-def _record_array(outputs: dict[str, str], world_dir: Path, rel: str, value: Any) -> None:
+def _record_array(outputs: dict[str, str], base_dir: Path, rel: str, value: Any) -> None:
     safe = _safe_rel(rel)
-    outputs[_portable_rel(safe)] = _write_npy(world_dir / safe, value)
+    outputs[_portable_rel(safe)] = _write_npy(base_dir / safe, value)
 
 
-def _write_world_bundle(*, root: Path, payload: dict, design: dict[str, np.ndarray], bundle: dict,
-                        out_dir: Path, mode: str, bundle_sha: str) -> dict:
-    name = str(bundle["world"])
-    wi = int(bundle["world_index"])
-    world_dir = Path(out_dir) / name
-    if world_dir.exists():
-        raise SystemExit(f"STOP: world output already exists: {world_dir}")
-    world_dir.mkdir(parents=True, exist_ok=False)
-    outputs: dict[str, str] = {}
-
-    for key in ("src", "donor", "cls", "op", "log_lib"):
-        _record_array(outputs, world_dir, f"design/{key}.npy", design[key])
-    _record_array(outputs, world_dir, "support.npy", bundle["support"])
-
-    for part in ("detection", "positive"):
-        for key, value in sorted(bundle["truth"][part].items()):
-            _record_array(outputs, world_dir, f"truth/{part}/{key}.npy", value)
-
-    for part in ("detection", "positive"):
-        for key in ("donor_raw_centered", "donor_effects", "factor_loading"):
-            _record_array(outputs, world_dir, f"truth/new_donor/{part}/{key}.npy",
-                          bundle["new_donor_truth"][part][key])
-
-    offsets = bundle.get("operator_offsets")
-    if offsets is not None:
-        for part in ("detection", "positive"):
-            _record_array(outputs, world_dir, f"truth/operator_offsets/{part}.npy", offsets[part])
-
-    for rep in ("train", "same_donor", "new_donor"):
-        obs = bundle["observations"][rep]
-        _record_array(outputs, world_dir, f"observations/{rep}/observed.npy", obs["observed"])
-        _record_array(outputs, world_dir, f"observations/{rep}/detected.npy", obs["detected"])
-
-    truth_for_hash = {
+def _truth_for_hash(bundle: dict) -> dict:
+    return {
         "detection": bundle["truth"]["detection"],
         "positive": bundle["truth"]["positive"],
         "new_donor_truth": bundle["new_donor_truth"],
         "support": bundle["support"],
-        "operator_offsets": offsets,
+        "operator_offsets": bundle.get("operator_offsets"),
     }
-    record = {
-        "schema": "V79_V2_CORE_WORLD_RECORD_V1",
-        "world_name": name,
-        "world_index": wi,
-        "seed_parent_world_index": int(bundle["seed_parent_world_index"]),
-        "seed_root": int(payload["seeds"]["root"]),
-        "mode": mode,
-        "design_sha256": bundle["design_sha256"],
-        "scientific_truth_sha256": G.scientific_truth_sha(truth_for_hash),
+
+
+def _write_blinded_fit_bundle(*, out_dir: Path, design: dict[str, np.ndarray], bundle: dict,
+                              bundle_sha: str) -> dict:
+    opaque = G.opaque_world_id(str(bundle["world"]))
+    fit_dir = Path(out_dir) / FIT_ROOT_NAME / opaque
+    if fit_dir.exists():
+        raise SystemExit(f"STOP: blinded fit output already exists: {fit_dir}")
+    fit_dir.mkdir(parents=True, exist_ok=False)
+    outputs: dict[str, str] = {}
+
+    # Only covariates in frozen V2_CORE. Operator/matrix identity is deliberately absent.
+    for key in ("src", "donor", "cls", "log_lib"):
+        _record_array(outputs, fit_dir, f"design/{key}.npy", design[key])
+    _record_array(outputs, fit_dir, "support.npy", bundle["support"])
+    for rep in ("train", "same_donor", "new_donor"):
+        obs = bundle["observations"][rep]
+        _record_array(outputs, fit_dir, f"observations/{rep}/observed.npy", obs["observed"])
+        _record_array(outputs, fit_dir, f"observations/{rep}/detected.npy", obs["detected"])
+
+    manifest = {
+        "schema": "V79_V2_CORE_BLINDED_WORLD_DATA_MANIFEST_V1",
+        "opaque_world_id": opaque,
         "final_contract_sha256": G.FINAL_CONTRACT_SHA256,
         "pairing_amendment_sha256": G.PAIRING_AMENDMENT_SHA256,
         "generator_bundle_sha256": bundle_sha,
+        "generated_outputs": dict(sorted(outputs.items())),
         "benchmark_run": False,
         "qualification_fits_run": 0,
         "training_authorized": False,
     }
-    outputs["world_record.json"] = _write_json(world_dir / "world_record.json", record)
+    manifest_sha = _write_json(fit_dir / "manifest.json", manifest)
+    return {
+        "opaque_world_id": opaque,
+        "manifest_path": f"{FIT_ROOT_NAME}/{opaque}/manifest.json",
+        "manifest_sha256": manifest_sha,
+    }
 
-    manifest = G.build_manifest(
-        world_name=name, world_index=wi, truth=truth_for_hash,
-        final_contract_sha=G.FINAL_CONTRACT_SHA256,
-        payload_sha=G.QUALIFICATION_PAYLOAD_SHA256,
-        generated_files=outputs,
-    )
-    manifest.update({
-        "mode": mode,
+
+def _write_controller_truth_bundle(*, out_dir: Path, design: dict[str, np.ndarray], bundle: dict,
+                                   payload: dict, mode: str, bundle_sha: str,
+                                   fit_manifest_sha: str) -> dict:
+    name = str(bundle["world"])
+    wi = int(bundle["world_index"])
+    opaque = G.opaque_world_id(name)
+    truth_dir = Path(out_dir) / TRUTH_ROOT_NAME / opaque
+    if truth_dir.exists():
+        raise SystemExit(f"STOP: controller truth output already exists: {truth_dir}")
+    truth_dir.mkdir(parents=True, exist_ok=False)
+    outputs: dict[str, str] = {}
+
+    # Controller/scoring-only design details. Operator is hidden from the fitter.
+    _record_array(outputs, truth_dir, "design/op.npy", design["op"])
+    _record_array(outputs, truth_dir, "support.npy", bundle["support"])
+    for part in ("detection", "positive"):
+        for key, value in sorted(bundle["truth"][part].items()):
+            _record_array(outputs, truth_dir, f"truth/{part}/{key}.npy", value)
+    for part in ("detection", "positive"):
+        for key in ("donor_raw_centered", "donor_effects", "factor_loading"):
+            _record_array(outputs, truth_dir, f"truth/new_donor/{part}/{key}.npy",
+                          bundle["new_donor_truth"][part][key])
+    offsets = bundle.get("operator_offsets")
+    if offsets is not None:
+        for part in ("detection", "positive"):
+            _record_array(outputs, truth_dir, f"truth/operator_offsets/{part}.npy", offsets[part])
+
+    truth_obj = _truth_for_hash(bundle)
+    manifest = {
+        "schema": "V79_V2_CORE_CONTROLLER_TRUTH_MANIFEST_V1",
+        "world_name": name,
+        "world_index": wi,
+        "opaque_world_id": opaque,
+        "seed_parent_world_index": int(bundle["seed_parent_world_index"]),
         "seed_root": int(payload["seeds"]["root"]),
+        "mode": mode,
+        "design_sha256": bundle["design_sha256"],
+        "scientific_truth_sha256": G.scientific_truth_sha(truth_obj),
+        "blinded_fit_manifest_sha256": fit_manifest_sha,
+        "final_contract_sha256": G.FINAL_CONTRACT_SHA256,
+        "qualification_payload_sha256": G.QUALIFICATION_PAYLOAD_SHA256,
+        "pairing_amendment_sha256": G.PAIRING_AMENDMENT_SHA256,
         "generator_bundle_sha256": bundle_sha,
-    })
-    manifest_sha = _write_json(world_dir / "manifest.json", manifest)
+        "generated_outputs": dict(sorted(outputs.items())),
+        "benchmark_run": False,
+        "qualification_fits_run": 0,
+        "training_authorized": False,
+    }
+    manifest_sha = _write_json(truth_dir / "manifest.json", manifest)
     return {
         "world_name": name,
         "world_index": wi,
-        "relative_dir": name,
-        "manifest_path": f"{name}/manifest.json",
-        "manifest_sha256": manifest_sha,
+        "opaque_world_id": opaque,
+        "fit_manifest_path": f"{FIT_ROOT_NAME}/{opaque}/manifest.json",
+        "fit_manifest_sha256": fit_manifest_sha,
+        "truth_manifest_path": f"{TRUTH_ROOT_NAME}/{opaque}/manifest.json",
+        "truth_manifest_sha256": manifest_sha,
+        "scientific_truth_sha256": manifest["scientific_truth_sha256"],
     }
 
 
@@ -192,20 +231,50 @@ def _write_world_set(*, root: Path, payload: dict, cal: dict, designs: dict[str,
     out_dir = Path(out_dir)
     _ensure_empty_destination(out_dir)
     bundle_sha = generator_bundle_sha256(root)
-    worlds: list[dict] = []
+    authority_worlds: list[dict] = []
+    fit_index_worlds: list[dict] = []
+
     for world_def in payload["worlds"]["world_list"]:
+        name = str(world_def["name"])
         bundle = A.assemble_world_in_memory(payload, cal, designs, world_def, amendment)
-        worlds.append(_write_world_bundle(
-            root=root, payload=payload, design=designs[str(world_def["name"])], bundle=bundle,
-            out_dir=out_dir, mode=mode, bundle_sha=bundle_sha))
-    worlds.sort(key=lambda r: r["world_index"])
+        fit_rec = _write_blinded_fit_bundle(out_dir=out_dir, design=designs[name], bundle=bundle,
+                                            bundle_sha=bundle_sha)
+        truth_rec = _write_controller_truth_bundle(
+            out_dir=out_dir, design=designs[name], bundle=bundle, payload=payload, mode=mode,
+            bundle_sha=bundle_sha, fit_manifest_sha=fit_rec["manifest_sha256"])
+        authority_worlds.append(truth_rec)
+        fit_index_worlds.append({
+            "opaque_world_id": fit_rec["opaque_world_id"],
+            "manifest_path": f"{fit_rec['opaque_world_id']}/manifest.json",
+            "manifest_sha256": fit_rec["manifest_sha256"],
+        })
+
+    authority_worlds.sort(key=lambda r: r["world_index"])
+    fit_index_worlds.sort(key=lambda r: r["opaque_world_id"])
+    fit_index = {
+        "schema": "V79_V2_CORE_BLINDED_FIT_INDEX_V1",
+        "final_contract_sha256": G.FINAL_CONTRACT_SHA256,
+        "pairing_amendment_sha256": G.PAIRING_AMENDMENT_SHA256,
+        "generator_bundle_sha256": bundle_sha,
+        "world_count": len(fit_index_worlds),
+        "worlds": fit_index_worlds,
+        "benchmark_run": False,
+        "qualification_fits_run": 0,
+        "training_authorized": False,
+    }
+    fit_index_rel = f"{FIT_ROOT_NAME}/{FIT_INDEX_NAME}"
+    fit_index_sha = _write_json(out_dir / fit_index_rel, fit_index)
 
     root_manifest: dict[str, Any] = {
         "schema": "V79_V2_CORE_WORLD_SET_MANIFEST_V1",
         "mode": mode,
         "seed_root": int(payload["seeds"]["root"]),
-        "world_count": len(worlds),
-        "worlds": worlds,
+        "world_count": len(authority_worlds),
+        "worlds": authority_worlds,
+        "blinded_fit_root": FIT_ROOT_NAME,
+        "blinded_fit_index_path": fit_index_rel,
+        "blinded_fit_index_sha256": fit_index_sha,
+        "controller_truth_root": TRUTH_ROOT_NAME,
         "final_contract_sha256": G.FINAL_CONTRACT_SHA256,
         "qualification_payload_sha256": G.QUALIFICATION_PAYLOAD_SHA256,
         "pairing_amendment_sha256": G.PAIRING_AMENDMENT_SHA256,
@@ -232,9 +301,8 @@ def write_engineering_world_set(*, root: Path, payload: dict, cal: dict,
                                 out_dir: Path) -> dict:
     if int(payload["seeds"]["root"]) == QUALIFICATION_SEED_ROOT:
         raise SystemExit("STOP: engineering writer refuses the frozen qualification seed")
-    return _write_world_set(
-        root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
-        out_dir=out_dir, mode="ENGINEERING_TEST_ONLY")
+    return _write_world_set(root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
+                            out_dir=out_dir, mode="ENGINEERING_TEST_ONLY")
 
 
 def load_frozen_qualification_inputs(root: Path) -> tuple[dict, dict, dict, dict[str, dict[str, np.ndarray]], dict]:
@@ -255,7 +323,6 @@ def load_frozen_qualification_inputs(root: Path) -> tuple[dict, dict, dict, dict
 
 def validate_qualification_authorization(authorization: dict | None, *, root: Path,
                                          runtime_platform: str | None = None) -> dict:
-    # Re-validate the immutable contract and every bound evidence file before accepting authorization.
     G.load_launch_contract(root)
     auth = G.validate_realization_authorization(authorization)
     actual_bundle = generator_bundle_sha256(root)
@@ -277,9 +344,19 @@ def realize_qualification_worlds(*, root: Path, out_dir: Path, authorization: di
     if contract.get("qualification_worlds_generated") != 0 or contract.get("qualification_fits_run") != 0:
         raise SystemExit("STOP: canonical contract is not in the pre-generation/pre-fit state")
     auth = validate_qualification_authorization(authorization, root=root)
-    return _write_world_set(
-        root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
-        out_dir=out_dir, mode="QUALIFICATION_TRUTH_FREEZE", authorization=auth)
+    return _write_world_set(root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
+                            out_dir=out_dir, mode="QUALIFICATION_TRUTH_FREEZE", authorization=auth)
+
+
+def _verify_output_ledger(base_dir: Path, outputs: dict, expected_files: set[str], root_dir: Path) -> None:
+    if not isinstance(outputs, dict) or not outputs:
+        raise SystemExit("STOP: generated-output ledger missing")
+    for rel, digest in outputs.items():
+        safe = _safe_rel(str(rel))
+        fp = base_dir / safe
+        if not fp.is_file() or _sha256_file(fp) != digest:
+            raise SystemExit(f"STOP: package file hash mismatch: {fp}")
+        expected_files.add(_portable_rel(fp.relative_to(root_dir)))
 
 
 def verify_world_set(out_dir: Path) -> dict:
@@ -308,39 +385,67 @@ def verify_world_set(out_dir: Path) -> dict:
                 root_manifest.get("environment_lock_sha256") != auth.get("environment_lock_sha256"):
             raise SystemExit("STOP: root manifest authorization provenance mismatch")
 
-    worlds = root_manifest.get("worlds")
-    if not isinstance(worlds, list) or len(worlds) != int(root_manifest.get("world_count", -1)):
-        raise SystemExit("STOP: world-set count/list mismatch")
-    for rec in worlds:
-        safe_manifest = _safe_rel(rec["manifest_path"])
-        mrel = _portable_rel(safe_manifest)
-        mp = out_dir / safe_manifest
-        if not mp.is_file() or _sha256_file(mp) != rec["manifest_sha256"]:
-            raise SystemExit(f"STOP: world manifest hash mismatch: {mrel}")
-        expected_files.add(mrel)
-        wm = json.loads(mp.read_text(encoding="utf-8"))
-        if wm.get("world_name") != rec["world_name"] or int(wm.get("world_index", -1)) != int(rec["world_index"]):
-            raise SystemExit("STOP: root/world manifest identity mismatch")
-        if wm.get("generator_bundle_sha256") != root_manifest.get("generator_bundle_sha256"):
-            raise SystemExit("STOP: generator bundle mismatch within world set")
-        world_dir = mp.parent
-        outputs = wm.get("generated_outputs")
-        if not isinstance(outputs, dict) or not outputs:
-            raise SystemExit("STOP: world generated-output ledger missing")
-        for rel, digest in outputs.items():
-            safe = _safe_rel(str(rel))
-            fp = world_dir / safe
-            if not fp.is_file() or _sha256_file(fp) != digest:
-                raise SystemExit(f"STOP: world file hash mismatch: {wm['world_name']}/{rel}")
-            expected_files.add(_portable_rel(Path(rec["relative_dir"]) / safe))
+    fit_index_path = out_dir / _safe_rel(root_manifest["blinded_fit_index_path"])
+    if not fit_index_path.is_file() or _sha256_file(fit_index_path) != root_manifest["blinded_fit_index_sha256"]:
+        raise SystemExit("STOP: blinded fit index hash mismatch")
+    expected_files.add(_portable_rel(fit_index_path.relative_to(out_dir)))
+    fit_index = json.loads(fit_index_path.read_text(encoding="utf-8"))
+    if fit_index.get("schema") != "V79_V2_CORE_BLINDED_FIT_INDEX_V1":
+        raise SystemExit("STOP: wrong blinded fit index schema")
+    if fit_index.get("world_count") != root_manifest.get("world_count"):
+        raise SystemExit("STOP: blinded fit index world count mismatch")
+    # Critical blinding invariant: no Q-labels or truth references in fit index bytes.
+    raw_index = fit_index_path.read_text(encoding="utf-8")
+    if any(f"Q{i:02d}" in raw_index for i in range(12)) or "truth" in raw_index.lower():
+        raise SystemExit("STOP: blinded fit index leaks world identity or truth")
 
-    actual_files = {
-        _portable_rel(p.relative_to(out_dir))
-        for p in out_dir.rglob("*") if p.is_file()
-    }
+    root_worlds = root_manifest.get("worlds")
+    if not isinstance(root_worlds, list) or len(root_worlds) != int(root_manifest.get("world_count", -1)):
+        raise SystemExit("STOP: world-set count/list mismatch")
+    root_by_opaque = {r["opaque_world_id"]: r for r in root_worlds}
+    if len(root_by_opaque) != len(root_worlds):
+        raise SystemExit("STOP: duplicate opaque world ID")
+
+    for frec in fit_index.get("worlds", []):
+        opaque = frec["opaque_world_id"]
+        if opaque not in root_by_opaque:
+            raise SystemExit("STOP: blinded fit index contains unknown opaque ID")
+        fmp = out_dir / FIT_ROOT_NAME / _safe_rel(frec["manifest_path"])
+        if not fmp.is_file() or _sha256_file(fmp) != frec["manifest_sha256"]:
+            raise SystemExit("STOP: blinded fit manifest hash mismatch")
+        expected_files.add(_portable_rel(fmp.relative_to(out_dir)))
+        fm_raw = fmp.read_text(encoding="utf-8")
+        fm = json.loads(fm_raw)
+        if fm.get("schema") != "V79_V2_CORE_BLINDED_WORLD_DATA_MANIFEST_V1" or fm.get("opaque_world_id") != opaque:
+            raise SystemExit("STOP: invalid blinded world-data manifest")
+        if any(x in fm_raw for x in ("world_name", "world_index", "seed_root", "op.npy")) or "truth" in fm_raw.lower():
+            raise SystemExit("STOP: blinded world-data manifest leaks forbidden identity/truth/operator information")
+        if "design/op.npy" in fm.get("generated_outputs", {}):
+            raise SystemExit("STOP: operator identity leaked into blinded fit inputs")
+        _verify_output_ledger(fmp.parent, fm["generated_outputs"], expected_files, out_dir)
+        root_rec = root_by_opaque[opaque]
+        if root_rec["fit_manifest_sha256"] != frec["manifest_sha256"]:
+            raise SystemExit("STOP: controller/blinded fit manifest binding mismatch")
+
+    for rec in root_worlds:
+        tmp = out_dir / _safe_rel(rec["truth_manifest_path"])
+        if not tmp.is_file() or _sha256_file(tmp) != rec["truth_manifest_sha256"]:
+            raise SystemExit("STOP: controller truth manifest hash mismatch")
+        expected_files.add(_portable_rel(tmp.relative_to(out_dir)))
+        tm = json.loads(tmp.read_text(encoding="utf-8"))
+        if tm.get("schema") != "V79_V2_CORE_CONTROLLER_TRUTH_MANIFEST_V1":
+            raise SystemExit("STOP: wrong controller truth manifest schema")
+        if tm.get("world_name") != rec["world_name"] or int(tm.get("world_index", -1)) != int(rec["world_index"]):
+            raise SystemExit("STOP: controller truth identity mismatch")
+        if tm.get("opaque_world_id") != rec["opaque_world_id"] or tm.get("scientific_truth_sha256") != rec["scientific_truth_sha256"]:
+            raise SystemExit("STOP: controller truth opaque/hash binding mismatch")
+        if tm.get("blinded_fit_manifest_sha256") != rec["fit_manifest_sha256"]:
+            raise SystemExit("STOP: truth-to-fit manifest binding mismatch")
+        _verify_output_ledger(tmp.parent, tm["generated_outputs"], expected_files, out_dir)
+
+    actual_files = {_portable_rel(p.relative_to(out_dir)) for p in out_dir.rglob("*") if p.is_file()}
     if actual_files != expected_files:
-        missing = sorted(expected_files - actual_files)
-        extra = sorted(actual_files - expected_files)
+        missing = sorted(expected_files - actual_files); extra = sorted(actual_files - expected_files)
         raise SystemExit(f"STOP: world-set file ledger mismatch; missing={missing}, extra={extra}")
     return root_manifest
 
