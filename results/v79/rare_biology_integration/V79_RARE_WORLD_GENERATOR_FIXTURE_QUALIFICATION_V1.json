@@ -1,0 +1,22 @@
+{
+  "schema": "V79_RARE_WORLD_GENERATOR_FIXTURE_QUALIFICATION_V1",
+  "date": "2026-10-12",
+  "status": "LOCAL_FIXTURE_ENGINEERING_PASS__NOT_PRODUCTION_REALIZATION",
+  "tests": {"passed": 7, "failed": 0},
+  "local_command": "PYTHONPATH=. pytest -q tests/v79/test_v79_rare_biology_generator_v1.py",
+  "monte_carlo": {
+    "seeds": 100,
+    "n_donors": 66,
+    "cells_per_donor": 20,
+    "regime": "central",
+    "world": "same_nucleus",
+    "active_donor_fraction_mean": 0.260606,
+    "active_donor_fraction_2p5_97p5": [0.151515, 0.386742],
+    "cell_prevalence_mean": 0.048879,
+    "cell_prevalence_2p5_97p5": [0.021534, 0.079621],
+    "rna_atac_score_correlation_mean": 0.599098,
+    "rna_atac_score_correlation_2p5_97p5": [0.458979, 0.707660]
+  },
+  "interpretation": "The fixture generator reproduces donor-sparse central rarity with many exact-zero donors while source remains an observation operator. The same-nucleus RNA/ATAC correlation is planted synthetic truth and is not external biological validation.",
+  "non_authority": "This engineering fixture PASS does not authorize a production rare-world realization, model fitting, scoring, pathology opening, or JEPA training."
+}
