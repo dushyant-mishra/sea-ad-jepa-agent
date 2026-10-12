@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
+import numpy as np
+
 
 class FitRunnerRefused(RuntimeError):
     pass
@@ -47,14 +49,12 @@ def sampler_policy(contract: Mapping) -> SamplerPolicy:
         _refuse("unexpected recovery-path version")
     if "no reparameterization" not in str(rec.get("no_other_changes", "")):
         _refuse("recovery no-change lock missing")
-    rhat = _first_float(diag.get("rhat", ""))
-    ess = int(_first_float(diag.get("ess", "")))
     return SamplerPolicy(
         chains=int(inf["chains"]), warmup=int(inf["warmup"]), draws=int(inf["draws"]),
         max_tree_depth=int(inf["max_tree_depth"]),
         target_accept_primary=_first_float(rec["primary"]),
         target_accept_escalation=_first_float(rec["escalation"]),
-        rhat_max=rhat, ess_min=ess,
+        rhat_max=_first_float(diag.get("rhat", "")), ess_min=int(_first_float(diag.get("ess", ""))),
     )
 
 
@@ -70,8 +70,7 @@ def next_recovery_action(contract: Mapping, attempts: list[Mapping], diagnostics
     if evaluate_sampler_diagnostics(contract, diagnostics):
         return "COMPLETE"
     stages = [str(a.get("stage")) for a in attempts]
-    div = int(diagnostics.get("divergences", 0))
-    if div > 0:
+    if int(diagnostics.get("divergences", 0)) > 0:
         return "ESCALATE" if "ESCALATION" not in stages else "NOT_DIAGNOSED"
     return "EXTEND" if "EXTENSION" not in stages else "NOT_DIAGNOSED"
 
@@ -81,8 +80,7 @@ def fit_identity(opaque_world_id: str, world_manifest_sha: str, part: str, gene_
         _refuse("opaque world id required")
     if part not in {"detection", "positive"} or gene_index < 0:
         _refuse("invalid fit scientific identity")
-    payload = f"{opaque_world_id}|{world_manifest_sha}|{part}|{int(gene_index)}".encode()
-    return hashlib.sha256(payload).hexdigest()
+    return hashlib.sha256(f"{opaque_world_id}|{world_manifest_sha}|{part}|{int(gene_index)}".encode()).hexdigest()
 
 
 def new_fit_receipt(*, execution_mode: str, fit_id: str, opaque_world_id: str, gene_index: int, part: str,
@@ -92,28 +90,17 @@ def new_fit_receipt(*, execution_mode: str, fit_id: str, opaque_world_id: str, g
     if part not in {"detection", "positive"}:
         _refuse("unknown model part")
     return {
-        "schema": "V79_V2_CORE_FIT_RECORD_V1",
-        "execution_mode": execution_mode,
-        "fit_id": fit_id,
-        "opaque_world_id": opaque_world_id,
-        "gene_index": int(gene_index),
-        "part": part,
-        "input_manifest_sha256": input_manifest_sha,
-        "contract_sha256": contract_sha,
-        "code_sha": code_sha,
-        "attempts": [],
-        "final_diagnosis": None,
-        "posterior_artifacts": {},
+        "schema": "V79_V2_CORE_FIT_RECORD_V1", "execution_mode": execution_mode,
+        "fit_id": fit_id, "opaque_world_id": opaque_world_id, "gene_index": int(gene_index), "part": part,
+        "input_manifest_sha256": input_manifest_sha, "contract_sha256": contract_sha, "code_sha": code_sha,
+        "attempts": [], "final_diagnosis": None, "posterior_artifacts": {},
         "benchmark_run": execution_mode == "ENGINEERING_BENCHMARK",
         "qualification_fits_run": 1 if execution_mode == "QUALIFICATION" else 0,
-        "scoring_run": False,
-        "truth_accessed": False,
-        "training_authorized": False,
+        "scoring_run": False, "truth_accessed": False, "training_authorized": False,
     }
 
 
 def write_receipt_atomic(path: Path, receipt: Mapping) -> str:
-    """Write once. Existing identical bytes are idempotent; any mismatch is terminal."""
     path = Path(path)
     raw = (json.dumps(dict(receipt), sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode()
     digest = hashlib.sha256(raw).hexdigest()
@@ -126,30 +113,68 @@ def write_receipt_atomic(path: Path, receipt: Mapping) -> str:
     tmp = path.with_name(path.name + f".tmp.{os.getpid()}")
     if tmp.exists():
         _refuse(f"stale partial receipt exists: {tmp}")
-    tmp.write_bytes(raw)
-    os.replace(tmp, path)
+    tmp.write_bytes(raw); os.replace(tmp, path)
     return digest
 
 
-def planned_attempt(contract: Mapping, *, stage: str) -> dict:
+def planned_attempt(contract: Mapping, *, stage: str, previous_target_accept: float | None = None) -> dict:
     p = sampler_policy(contract)
-    if stage == "PRIMARY":
-        return {"stage":"PRIMARY", "chains":p.chains, "warmup":p.warmup, "draws_per_chain":p.draws,
-                "target_accept":p.target_accept_primary, "max_tree_depth":p.max_tree_depth, "extended":False}
-    if stage == "ESCALATION":
-        return {"stage":"ESCALATION", "chains":p.chains, "warmup":p.warmup, "draws_per_chain":p.draws,
-                "target_accept":p.target_accept_escalation, "max_tree_depth":p.max_tree_depth, "extended":False}
-    if stage == "EXTENSION":
-        return {"stage":"EXTENSION", "chains":p.chains, "warmup":0, "draws_per_chain":p.draws,
-                "target_accept":p.target_accept_primary, "max_tree_depth":p.max_tree_depth, "extended":True}
-    _refuse(f"unknown sampler stage {stage}")
+    if stage == "PRIMARY": ta, warm, ext = p.target_accept_primary, p.warmup, False
+    elif stage == "ESCALATION": ta, warm, ext = p.target_accept_escalation, p.warmup, False
+    elif stage == "EXTENSION":
+        if previous_target_accept is None:
+            _refuse("extension must inherit previous target_accept")
+        ta, warm, ext = float(previous_target_accept), 0, True
+    else:
+        _refuse(f"unknown sampler stage {stage}")
+    return {"stage":stage, "chains":p.chains, "warmup":warm, "draws_per_chain":p.draws,
+            "target_accept":ta, "max_tree_depth":p.max_tree_depth, "extended":ext}
 
 
-def run_nuts_attempt(*, contract: Mapping, model, seed: int, stage: str, post_warmup_state=None):
-    """Execute one frozen NUTS stage; no local schedule overrides are accepted."""
+def diagnostics_from_samples(samples_by_chain: Mapping[str, np.ndarray], *, divergences: int, mean_tree_steps: float) -> dict:
+    import arviz as az
+    if not samples_by_chain:
+        _refuse("no sampled sites for diagnostics")
+    idata = az.from_dict(posterior={k: np.asarray(v) for k, v in samples_by_chain.items()})
+    tab = az.summary(idata, kind="diagnostics", round_to=None)
+    if not {"r_hat", "ess_bulk", "ess_tail"}.issubset(tab.columns):
+        _refuse("ArviZ diagnostics missing required columns")
+    return {
+        "divergences": int(divergences),
+        "worst_rhat": float(np.nanmax(tab["r_hat"].to_numpy())),
+        "worst_ess_bulk": float(np.nanmin(tab["ess_bulk"].to_numpy())),
+        "worst_ess_tail": float(np.nanmin(tab["ess_tail"].to_numpy())),
+        "mean_tree_steps": float(mean_tree_steps),
+    }
+
+
+def combine_samples(a: Mapping[str, np.ndarray], b: Mapping[str, np.ndarray]) -> dict[str, np.ndarray]:
+    if set(a) != set(b):
+        _refuse("extension sampled-site set changed")
+    out = {}
+    for k in a:
+        x, y = np.asarray(a[k]), np.asarray(b[k])
+        if x.ndim < 2 or y.ndim < 2 or x.shape[0] != y.shape[0] or x.shape[2:] != y.shape[2:]:
+            _refuse(f"extension sample shape mismatch at {k}")
+        out[k] = np.concatenate([x, y], axis=1)
+    return out
+
+
+def posterior_summary(samples_by_chain: Mapping[str, np.ndarray]) -> dict:
+    out = {}
+    for k, v in samples_by_chain.items():
+        a = np.asarray(v); flat = a.reshape((-1,) + a.shape[2:])
+        out[k] = {"mean":np.mean(flat,0).tolist(), "sd":np.std(flat,0,ddof=1).tolist(),
+                  "q05":np.quantile(flat,.05,axis=0).tolist(), "q50":np.quantile(flat,.50,axis=0).tolist(),
+                  "q95":np.quantile(flat,.95,axis=0).tolist()}
+    return out
+
+
+def run_nuts_attempt(*, contract: Mapping, model, seed: int, stage: str,
+                     post_warmup_state=None, previous_target_accept: float | None = None):
     import jax
     from numpyro.infer import MCMC, NUTS
-    spec = planned_attempt(contract, stage=stage)
+    spec = planned_attempt(contract, stage=stage, previous_target_accept=previous_target_accept)
     kernel = NUTS(model, target_accept_prob=spec["target_accept"], max_tree_depth=spec["max_tree_depth"])
     mcmc = MCMC(kernel, num_warmup=spec["warmup"], num_samples=spec["draws_per_chain"],
                 num_chains=spec["chains"], chain_method="parallel", progress_bar=False)
@@ -159,5 +184,13 @@ def run_nuts_attempt(*, contract: Mapping, model, seed: int, stage: str, post_wa
         mcmc.post_warmup_state = post_warmup_state
     t0 = time.perf_counter()
     mcmc.run(jax.random.PRNGKey(int(seed)), extra_fields=("diverging", "num_steps"))
-    wall = time.perf_counter() - t0
-    return {"mcmc": mcmc, "wall_seconds": wall, "spec": spec}
+    return {"mcmc":mcmc, "wall_seconds":time.perf_counter()-t0, "spec":spec}
+
+
+def attempt_diagnostics(run: Mapping) -> tuple[dict, dict[str, np.ndarray]]:
+    m = run["mcmc"]
+    samples = {k: np.asarray(v) for k, v in m.get_samples(group_by_chain=True).items()}
+    extra = m.get_extra_fields(group_by_chain=True)
+    divergences = int(np.asarray(extra["diverging"]).sum())
+    mean_steps = float(np.asarray(extra["num_steps"]).mean())
+    return diagnostics_from_samples(samples, divergences=divergences, mean_tree_steps=mean_steps), samples
