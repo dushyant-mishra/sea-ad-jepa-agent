@@ -71,3 +71,10 @@ def test_lineage_tail_reports_positive_donors_without_promoting_thresholds():
     assert tail["diagnostic_only"] is True
     assert tail["positive_cells"] == 2
     assert tail["positive_donors"] == 2
+
+
+def test_sample_row_may_repeat_across_named_discovery_samples():
+    *_, meta = fixture()
+    meta["sample"] = ["A", "A", "B", "B"]
+    meta["sample_row"] = [0, 1, 0, 1]
+    C.validate_metadata(meta)
