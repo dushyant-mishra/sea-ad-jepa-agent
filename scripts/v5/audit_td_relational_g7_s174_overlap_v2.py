@@ -3,9 +3,10 @@
 
 THIS FILE DOES NOT AUTHORIZE A VALUE READ.
 
-It requires the same separately created V2 runtime authorization and repaired V3 G4/G5 evidence as
-standalone G6 V2, plus a genuine G6 V2 PASS receipt bound to those same evidence/code bytes. It
-independently authenticates the exact G1b PASS result/freeze pair, S174 shards and physical H5AD
+It requires its own separately created V2 owner decision and runtime authorization, bound to this G7's exact
+commit and code hashes. It also requires the one externally accepted G6 V2 PASS execution pinned in
+ACCEPTED_G6_PREDECESSOR. That execution was produced at ff4a21f9 under its own authority trace, and its
+common and G6 code must be byte-identical to this tree's. It independently authenticates the exact G1b PASS result/freeze pair, S174 shards and physical H5AD
 bytes, rereads only natural Sample-A HVS/SEA overlaps, and compares all exact 9,216 replay addresses.
 """
 from __future__ import annotations
@@ -50,6 +51,43 @@ SAMPLE_A_LABEL = "A_NATURAL_MIXTURE"
 SOURCE_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 FAMILY = {"HVS": "HVS_COMMON", "SEA_AD": "SEA_AD_COMMON"}
 VAR_ID_COLUMN = {"HVS": "_index", "SEA_AD": "gene_ids"}
+SAMPLE_FREEZE_REQUIRED_COLUMNS = frozenset({
+    "sample", "sample_row", "source", "matrix_id", "operator_index", "local_row", "donor_id", "cell_id"
+})
+
+# The one externally accepted G6 execution this G7 may consume: the replacement G6 run at ff4a21f9 (external
+# acceptance 2026-10-11). G6 and G7 have separate identities. G6 stays bound to the authority trace it ran under.
+# This G7 runs under its own fresh owner decision and runtime authorization, bound to its own commit and code
+# hashes. No other G6 execution, rerun or artifact edit satisfies this pin.
+G6_EXTERNAL_ACCEPTANCE_SCHEMA = "JEPA_TD_G6_EXTERNAL_AUDIT_ACCEPTANCE_V1"
+G6_ACCEPTANCE_TERMINAL = "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+ACCEPTED_G6_PREDECESSOR = {
+    "implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+    "external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "external_acceptance_disposition": "ACCEPT_G6_PASS__VALUE_SUBSTRATE_AND_SOURCE_CUSTODY_CONFIRMED__NO_BIOLOGICAL_TARGET_AUTHORITY",
+    "artifact_sha256": {
+        "G6_EXECUTION_START.json": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+        "G6_RECEIPT.json": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+        "MANIFEST.json": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+        "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+        "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+    },
+    "authority_trace": {
+        "authorization_schema": "JEPA_TD_RELATIONAL_VALUE_READ_AUTHORIZATION_V2",
+        "authorization_sha256": "28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7",
+        "authorization_token": "AUTHORIZE_EXACT_TD_SAMPLE_A_9216_CORRECTED_VALUE_MATERIALIZATION_V2_ONLY",
+        "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+        "common_script_sha256": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+        "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+        "g6_script_sha256": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+        "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+        "g7_script_sha256": "f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe",
+        "implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+        "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+        "owner_decision_sha256": "3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a",
+        "preflight_result_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+    },
+}
 
 EXPECTED_REPLAY_MANIFEST_SHA = common.EXPECTED_INPUT_HASHES["replay_manifest_sha256"]
 EXPECTED_SAMPLE_FREEZE_SHA = common.EXPECTED_INPUT_HASHES["sample_freeze_sha256"]
@@ -284,8 +322,33 @@ def verify_cache_hashes(cache_root: Path, g1b_freeze: dict) -> tuple[int, dict[s
     return len(shards), verified
 
 
+def _require_columns(frame: pd.DataFrame, required, label: str) -> None:
+    missing = sorted(set(required) - set(frame.columns))
+    if missing:
+        raise RuntimeError(f"{label} missing required columns: {missing}")
+
+
 def select_sample_a(frame: pd.DataFrame) -> pd.DataFrame:
-    selected = frame[frame["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
+    """Bind the historical CSR row before filtering, then select Sample A, exactly as the accepted G6 does.
+
+    The authenticated 50K sample freeze does not physically store ``global_row``. Historical Target Discovery
+    authority defines it as the original freeze-file row position, bound before any filter or sort. A pre-existing
+    explicit global_row is retained for historical synthetic fixtures; the real frozen file follows the derived path.
+    """
+    _require_columns(frame, SAMPLE_FREEZE_REQUIRED_COLUMNS, "sample freeze")
+    bound = frame.copy()
+    if "global_row" not in bound.columns:
+        bound["global_row"] = np.arange(len(bound), dtype=np.int64)
+    else:
+        try:
+            explicit = pd.to_numeric(bound["global_row"], errors="raise").to_numpy(dtype=np.int64)
+        except Exception as exc:
+            raise RuntimeError("sample freeze explicit global_row is not exact integer-valued") from exc
+        if len(explicit) != len(bound) or len(np.unique(explicit)) != len(explicit) or np.any(explicit < 0):
+            raise RuntimeError("sample freeze explicit global_row must be unique nonnegative row identities")
+        bound["global_row"] = explicit
+
+    selected = bound[bound["sample"].astype(str).eq(SAMPLE_A_LABEL)].copy().sort_values(
         "sample_row", key=lambda rows: rows.astype(int), kind="stable"
     )  # numeric order: the freeze is read with dtype=str
     if len(selected) != N_SAMPLE_A:
@@ -458,12 +521,79 @@ def load_g6_pass_receipt(path: Path, expected_trace: dict, *, replay_addresses=N
     return {**receipt, "g7_verified_g6_execution_sha256": hashes}
 
 
+G6_ROLE_FILES = {"receipt": common.G6_RECEIPT_NAME, "values": common.G6_VALUES_NAME, "meta": common.G6_META_NAME,
+                 "manifest": common.G6_MANIFEST_NAME, "start_marker": common.G6_START_MARKER_NAME}
+
+
+def load_accepted_g6_predecessor(receipt_path: Path, acceptance_path: Path, *, replay_addresses=None,
+                                 sample_a=None) -> dict:
+    """Accept only the one externally accepted G6 execution pinned in ACCEPTED_G6_PREDECESSOR.
+
+    The external acceptance record must be the pinned bytes, and it must state what was accepted: the disposition,
+    the producer commit, the five artifact hashes and the G6 PASS terminal. It must grant no replay, target, TD60 or
+    training authority. The G6 namespace must hold exactly the five accepted files, each byte-identical to its pin.
+    The full G6 PASS prerequisite then runs against the producer's own authority trace, never the successor's:
+    linkage, coverage and semantic payload validation. Finally, the bytes it validated must be the pinned bytes.
+    Returns the verified receipt plus a "g7_g6_predecessor" record of what was accepted.
+    """
+    pred = ACCEPTED_G6_PREDECESSOR
+    producer_trace = pred["authority_trace"]
+    if producer_trace.get("implementation_commit_sha") != pred["implementation_commit_sha"] or \
+            set(pred["artifact_sha256"]) != set(common.G6_PASS_FILES):
+        raise RuntimeError("accepted G6 predecessor pins are internally inconsistent")
+
+    acceptance_path = Path(acceptance_path)
+    if not acceptance_path.is_file():
+        raise RuntimeError(f"missing G6 external acceptance record: {acceptance_path}")
+    acceptance_sha = common.sha256_file(acceptance_path)
+    if acceptance_sha != pred["external_acceptance_sha256"]:
+        raise RuntimeError(f"G6 external acceptance is not the accepted record: {acceptance_sha}")
+    acceptance = _read_g6_json(acceptance_path, "external acceptance")
+    want = {"schema": G6_EXTERNAL_ACCEPTANCE_SCHEMA,
+            "external_audit_disposition": pred["external_acceptance_disposition"],
+            "implementation_commit_sha": pred["implementation_commit_sha"],
+            "g6_artifact_sha256": pred["artifact_sha256"],
+            "g6_terminal": G6_ACCEPTANCE_TERMINAL,
+            "g7_may_receive_fresh_operational_authority": True}
+    for key, value in want.items():
+        if acceptance.get(key) != value:
+            raise RuntimeError(f"G6 external acceptance does not accept this predecessor: {key}")
+    _require_false_flags(acceptance, "G6 external acceptance")
+
+    receipt_path = Path(receipt_path)
+    namespace = receipt_path.parent
+    if receipt_path.name != common.G6_RECEIPT_NAME or not namespace.is_dir():
+        raise RuntimeError(f"G6 receipt must be {common.G6_RECEIPT_NAME} inside its G6 namespace: {receipt_path}")
+    present = {p.name for p in namespace.iterdir()}
+    if present != set(pred["artifact_sha256"]):
+        raise RuntimeError(f"G6 namespace is not the accepted predecessor execution: missing="
+                           f"{sorted(set(pred['artifact_sha256']) - present)} foreign={sorted(present - set(pred['artifact_sha256']))}")
+    for name, expected in sorted(pred["artifact_sha256"].items()):
+        if common.sha256_file(namespace / name) != expected:
+            raise RuntimeError(f"G6 predecessor artifact differs from the accepted execution: {name}")
+
+    verified = load_g6_pass_receipt(receipt_path, producer_trace, replay_addresses=replay_addresses, sample_a=sample_a)
+    for role, name in G6_ROLE_FILES.items():
+        if verified["g7_verified_g6_execution_sha256"].get(role) != pred["artifact_sha256"][name]:
+            raise RuntimeError(f"validated G6 bytes are not the accepted predecessor's: {name}")
+    return {**verified, "g7_g6_predecessor": json.loads(json.dumps(pred))}
+
+
+def require_g6_producer_code_continuity(successor_trace: dict) -> None:
+    """The successor replaces G7 only: its common and G6 code must be byte-identical to the accepted producer's."""
+    producer = ACCEPTED_G6_PREDECESSOR["authority_trace"]
+    for key in ("common_script_sha256", "g6_script_sha256", "common_entrypoint", "g6_entrypoint", "g7_entrypoint"):
+        if successor_trace.get(key) != producer[key]:
+            raise RuntimeError(f"successor code differs from the accepted G6 producer: {key}")
+
+
 def g7_attempt_marker_path(out: Path) -> Path:
     out = Path(out)
     return out.with_name(out.name + ".STARTED_NOT_A_PASS.json")
 
 
-def begin_g7_attempt(out: Path, authority_trace: dict, g6_receipt_sha256: str) -> Path:
+def begin_g7_attempt(out: Path, authority_trace: dict, g6_receipt_sha256: str, *,
+                     g6_predecessor: dict | None = None) -> Path:
     """Spend a G7 attempt before value-bearing work and never reuse it after failure."""
     out = Path(out)
     marker = g7_attempt_marker_path(out)
@@ -476,6 +606,7 @@ def begin_g7_attempt(out: Path, authority_trace: dict, g6_receipt_sha256: str) -
             "status": "STARTED_NOT_A_PASS",
             "authority_trace": authority_trace,
             "g6_receipt_sha256": str(g6_receipt_sha256),
+            "g6_predecessor": g6_predecessor,
             "biological_replay_authorized": False,
             "target_selection_authorized": False,
             "td60_authorized": False,
@@ -494,6 +625,8 @@ def main() -> int:
     parser.add_argument("--owner-decision", required=True,
                         help="Immutable owner-decision record (AUTHORIZE_G6_G7_INTEGRITY_ONLY); never created by this code")
     parser.add_argument("--g6-receipt", required=True)
+    parser.add_argument("--g6-acceptance", required=True,
+                        help="External acceptance record of the one accepted G6 execution (ACCEPTED_G6_PREDECESSOR)")
     parser.add_argument("--replay-manifest", required=True)
     parser.add_argument("--sample-freeze", required=True)
     parser.add_argument("--provenance", required=True)
@@ -507,16 +640,18 @@ def main() -> int:
     out = Path(args.out)
 
     auth, _, _, g6_path, g7_path = bind_execution(args)
-    authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)
-    g6_receipt_path = Path(args.g6_receipt)
+    authority_trace = expected_authority_trace(args, auth, g6_path, g7_path)  # this G7's own authority
+    require_g6_producer_code_continuity(authority_trace)
     # pinned metadata inputs (no count values) first: the G6 prerequisite validates G6's artifacts against them
     replay, sample_a, provenance, collision, freeze = load_inputs(args)
     replay_addresses = set(replay.molecular_address_index.astype(int))
-    g6_execution_sha256 = load_g6_pass_receipt(
-        g6_receipt_path, authority_trace, replay_addresses=replay_addresses, sample_a=sample_a
-    )["g7_verified_g6_execution_sha256"]
+    predecessor = load_accepted_g6_predecessor(
+        Path(args.g6_receipt), Path(args.g6_acceptance), replay_addresses=replay_addresses, sample_a=sample_a
+    )
+    g6_execution_sha256 = predecessor["g7_verified_g6_execution_sha256"]
+    g6_predecessor = predecessor["g7_g6_predecessor"]
     g6_receipt_sha256 = g6_execution_sha256["receipt"]
-    begin_g7_attempt(out, authority_trace, g6_receipt_sha256)
+    begin_g7_attempt(out, authority_trace, g6_receipt_sha256, g6_predecessor=g6_predecessor)
 
     g1b_result, g1b_freeze, g1b_result_sha256, g1b_freeze_sha256 = load_g1b_authority_from_pass_commit(g7_path)
     verified_shards, shard_hashes = verify_cache_hashes(Path(args.s174_cache_root), g1b_freeze)
@@ -619,6 +754,7 @@ def main() -> int:
         "per_matrix": per_matrix,
         "authority_trace": {**authority_trace, "g6_receipt_sha256": g6_receipt_sha256,
                             "g6_execution_sha256": g6_execution_sha256},
+        "g6_predecessor": g6_predecessor,
         "g7_attempt_marker": g7_attempt_marker_path(out).name,
         "no_overlap_is_not_pass": total_overlap == 0,
         "biological_replay_authorized": False,

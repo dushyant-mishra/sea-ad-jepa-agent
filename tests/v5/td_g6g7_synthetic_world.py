@@ -284,13 +284,41 @@ def point_g7_at_world(g7, w, monkeypatch) -> None:
     monkeypatch.setattr(common, "code_identity", lambda left, right: F.fake_code_identity(common, left, right))
 
 
+G6_ACCEPTANCE_DISPOSITION = "ACCEPT_G6_PASS__VALUE_SUBSTRATE_AND_SOURCE_CUSTODY_CONFIRMED__NO_BIOLOGICAL_TARGET_AUTHORITY"
+
+
+def accept_synthetic_g6(w, monkeypatch) -> None:
+    """Stand-in for the external acceptance of this synthetic G6 PASS execution. Writes a synthetic acceptance
+    record and pins G7's accepted-predecessor constants to this exact execution. Production pins the real
+    externally accepted G6 at ff4a21f9 (ACCEPTED_G6_PREDECESSOR)."""
+    ns = w.g6_out
+    artifacts = {name: sha(ns / name) for name in sorted(w.g6.common.G6_PASS_FILES)}
+    trace = json.loads((ns / w.g6.common.G6_RECEIPT_NAME).read_text(encoding="utf-8"))["authority_trace"]
+    acceptance = {"schema": "JEPA_TD_G6_EXTERNAL_AUDIT_ACCEPTANCE_V1", "external_audit_disposition": G6_ACCEPTANCE_DISPOSITION,
+                  "implementation_commit_sha": trace["implementation_commit_sha"], "g6_artifact_sha256": artifacts,
+                  "g6_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT", "g7_may_receive_fresh_operational_authority": True,
+                  "biological_replay_authorized": False, "target_selection_authorized": False, "td60_authorized": False,
+                  "training_authorized": False}
+    w.g6_acceptance = ns.parent / "G6_EXTERNAL_ACCEPTANCE_synthetic.json"
+    w.g6_acceptance.write_text(json.dumps(acceptance, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    monkeypatch.setattr(w.g7, "ACCEPTED_G6_PREDECESSOR", {
+        "implementation_commit_sha": trace["implementation_commit_sha"],
+        "external_acceptance_sha256": sha(w.g6_acceptance),
+        "external_acceptance_disposition": G6_ACCEPTANCE_DISPOSITION,
+        "artifact_sha256": artifacts,
+        "authority_trace": trace,
+    })
+
+
 def build_g7_world(tmp_path, monkeypatch) -> SimpleNamespace:
-    """A genuine synthetic G6 PASS execution, plus a G7 module pointed at the same world."""
+    """A genuine synthetic G6 PASS execution, externally 'accepted' with synthetic pins, plus a G7 module pointed at
+    the same world."""
     w = build_g6_world(tmp_path, monkeypatch)
     assert run_g6(w, monkeypatch) == 0
     w.g7 = load_script(G7_SCRIPT, "td_g7_synthetic_world")
     point_g7_at_world(w.g7, w, monkeypatch)
     w.g6_receipt = w.g6_out / "G6_RECEIPT.json"
+    accept_synthetic_g6(w, monkeypatch)
     return w
 
 
@@ -364,7 +392,8 @@ def g7_argv(w, out: Path, cache_root: Path) -> list:
     return ["audit_td_relational_g7_s174_overlap_v2.py",
             "--preflight-result", str(b.preflight), "--mapping-receipt", str(b.mapping),
             "--value-authorization", str(b.auth), "--owner-decision", str(b.owner_decision),
-            "--g6-receipt", str(w.g6_receipt), "--replay-manifest", str(b.replay_manifest),
+            "--g6-receipt", str(w.g6_receipt), "--g6-acceptance", str(w.g6_acceptance),
+            "--replay-manifest", str(b.replay_manifest),
             "--sample-freeze", str(w.sample_freeze), "--provenance", str(w.provenance),
             "--collision-ledger", str(w.collision_ledger), "--macha-freeze", str(w.macha_freeze),
             "--s174-cache-root", str(cache_root), "--source-root", str(w.source_root), "--out", str(out)]
