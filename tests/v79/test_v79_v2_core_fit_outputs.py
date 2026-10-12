@@ -55,7 +55,8 @@ def test_detection_ppc_statistics_cover_contract_families():
 
 
 def test_positive_ppc_statistics_cover_contract_families():
-    ylog=np.linspace(-1,2,30); z=np.linspace(-2,2,30); donor=np.repeat(np.arange(5),6)
+    # Contract requires >=5 positives per z-decile before a decile mean is reported.
+    ylog=np.linspace(-1,2,60); z=np.linspace(-2,2,60); donor=np.repeat(np.arange(10),6)
     stats=O.positive_statistics(ylog,z=z,donor=donor,z_bin_count=10)
     names={x["name"] for x in stats}
     assert {"mean_log_positive","variance_log_positive","q01_log_positive","q99_log_positive","sd_donor_mean_log_positive"} <= names
