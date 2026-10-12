@@ -1,0 +1,11 @@
+final_exact_head=5f2532c6661195da7b2e41329aee11e6689f53ff
+tracked_status_after=[]
+untracked_after=[]
+focused_suite_counts=[250 passed, 3 warnings in 44.95s]
+global_row_red=failed 4/4, KeyError global_row 0/2, DID NOT RAISE 0/2, red G7 f8e52710 1/1
+global_row_green_counts=[4 passed, 3 warnings in 0.69s]
+successor_test_file_counts=[31 passed, 3 warnings in 9.53s]
+real_g7_premarker_gate_terminal=["terminal": "PASS_TD_G7_SUCCESSOR_REAL_SAMPLE_A_PREMARKER_GATE__NO_G7_MARKER__NO_H5AD__NO_AUTHORITY_CREATED"]
+real_pr259_compat_counts=[1 passed, 1 warning in 0.02s]
+exits: focused=0 red_rule=1 green=0 successor_file=0 real_gate=0 pr259=0 g6_namespace_unchanged=0 no_g7_output=0 no_authority_for_head=0
+utc_end=2026-10-12T04:14:33Z

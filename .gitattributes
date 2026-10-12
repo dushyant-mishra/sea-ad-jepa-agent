@@ -10,3 +10,7 @@ outputs/f1_real_producer_replay_prefreeze_20260907/** -text
 
 # G7 successor authority fixtures: byte-exact copies of the accepted authority files.
 tests/v5/fixtures/td_g7_successor/** -text
+
+# TD G7 successor qualification evidence: byte-exact copies of the run logs (SOURCE_SHA256.txt).
+docs/agent/TD_G7_SUCCESSOR_QUALIFICATION_20261012/qualification_8d41fb98/** -text
+docs/agent/TD_G7_SUCCESSOR_QUALIFICATION_20261012/superseded_runner_failure_5f2532c6/** -text

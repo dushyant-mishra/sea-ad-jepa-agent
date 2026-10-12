@@ -1,0 +1,369 @@
+# RED: git archive 9a87cc8efe54e471ded3ee711972ef494e242e01 scripts/v5 tests/v5; G7 canonical SHA in the RED tree:
+red_tree_g7_canonical_sha256=f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe (required f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe)
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_____ test_g7_binds_global_row_from_freeze_file_position_before_filtering _____
+
+self = Index(['sample', 'sample_row', 'source', 'matrix_id', 'operator_index',
+       'local_row', 'donor_id', 'cell_id'],
+      dtype='object')
+key = 'global_row', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+    
+            .. deprecated:: 1.4
+                Use index.get_indexer([item], method=...) instead.
+    
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) <= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        >>> unique_index = pd.Index(list('abc'))
+        >>> unique_index.get_loc('b')
+        1
+    
+        >>> monotonic_index = pd.Index(list('abbc'))
+        >>> monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        >>> non_monotonic_index = pd.Index(list('abcb'))
+        >>> non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+>               return self._engine.get_loc(casted_key)
+
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\indexes\base.py:3802: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\index.pyx:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\index.pyx:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\hashtable_class_helper.pxi:5745: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+E   KeyError: 'global_row'
+
+pandas\_libs\hashtable_class_helper.pxi:5753: KeyError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B2B03C6F40>
+
+    def test_g7_binds_global_row_from_freeze_file_position_before_filtering(monkeypatch):
+        g7 = W.load_script(W.G7_SCRIPT, "g7_global_row_regression")
+        _small_geometry(monkeypatch, g7)
+        selected = g7.select_sample_a(_frame())
+        assert selected.sample_row.astype(int).tolist() == [0, 1, 2]
+>       assert selected["global_row"].astype(int).tolist() == EXPECTED_GLOBAL_ROW_BY_SAMPLE_ROW
+
+tests\v5\test_td_g7_successor_global_row_and_g6_bridge.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\frame.py:3807: in __getitem__
+    indexer = self.columns.get_loc(key)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Index(['sample', 'sample_row', 'source', 'matrix_id', 'operator_index',
+       'local_row', 'donor_id', 'cell_id'],
+      dtype='object')
+key = 'global_row', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+    
+            .. deprecated:: 1.4
+                Use index.get_indexer([item], method=...) instead.
+    
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) <= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        >>> unique_index = pd.Index(list('abc'))
+        >>> unique_index.get_loc('b')
+        1
+    
+        >>> monotonic_index = pd.Index(list('abbc'))
+        >>> monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        >>> non_monotonic_index = pd.Index(list('abcb'))
+        >>> non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+                return self._engine.get_loc(casted_key)
+            except KeyError as err:
+>               raise KeyError(key) from err
+E               KeyError: 'global_row'
+
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\indexes\base.py:3804: KeyError
+_________ test_g7_and_accepted_g6_selectors_agree_on_historical_rows __________
+
+self = Index(['sample', 'sample_row', 'source', 'matrix_id', 'operator_index',
+       'local_row', 'donor_id', 'cell_id'],
+      dtype='object')
+key = 'global_row', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+    
+            .. deprecated:: 1.4
+                Use index.get_indexer([item], method=...) instead.
+    
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) <= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        >>> unique_index = pd.Index(list('abc'))
+        >>> unique_index.get_loc('b')
+        1
+    
+        >>> monotonic_index = pd.Index(list('abbc'))
+        >>> monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        >>> non_monotonic_index = pd.Index(list('abcb'))
+        >>> non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+>               return self._engine.get_loc(casted_key)
+
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\indexes\base.py:3802: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\index.pyx:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\index.pyx:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+
+pandas\_libs\hashtable_class_helper.pxi:5745: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+E   KeyError: 'global_row'
+
+pandas\_libs\hashtable_class_helper.pxi:5753: KeyError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B2B0907C70>
+
+    def test_g7_and_accepted_g6_selectors_agree_on_historical_rows(monkeypatch):
+        g6 = W.load_script(W.G6_SCRIPT, "g6_selector_reference")
+        g7 = W.load_script(W.G7_SCRIPT, "g7_selector_candidate")
+        for m in (g6, g7):
+            _small_geometry(monkeypatch, m)
+        a = g6.select_sample_a(_frame(), enforce_geometry=True)
+        b = g7.select_sample_a(_frame())
+>       assert a["global_row"].astype(int).tolist() == b["global_row"].astype(int).tolist() == EXPECTED_GLOBAL_ROW_BY_SAMPLE_ROW
+
+tests\v5\test_td_g7_successor_global_row_and_g6_bridge.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\frame.py:3807: in __getitem__
+    indexer = self.columns.get_loc(key)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Index(['sample', 'sample_row', 'source', 'matrix_id', 'operator_index',
+       'local_row', 'donor_id', 'cell_id'],
+      dtype='object')
+key = 'global_row', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+    
+            .. deprecated:: 1.4
+                Use index.get_indexer([item], method=...) instead.
+    
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) <= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        >>> unique_index = pd.Index(list('abc'))
+        >>> unique_index.get_loc('b')
+        1
+    
+        >>> monotonic_index = pd.Index(list('abbc'))
+        >>> monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        >>> non_monotonic_index = pd.Index(list('abcb'))
+        >>> non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+                return self._engine.get_loc(casted_key)
+            except KeyError as err:
+>               raise KeyError(key) from err
+E               KeyError: 'global_row'
+
+C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\indexes\base.py:3804: KeyError
+______________ test_g7_refuses_a_freeze_missing_required_columns ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B2B03D2910>
+
+    def test_g7_refuses_a_freeze_missing_required_columns(monkeypatch):
+        g7 = W.load_script(W.G7_SCRIPT, "g7_required_columns")
+        _small_geometry(monkeypatch, g7)
+        with pytest.raises(RuntimeError, match="missing required columns"):
+>           g7.select_sample_a(_frame().drop(columns=["local_row"]))
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_successor_global_row_and_g6_bridge.py:117: Failed
+______________ test_g7_validates_an_explicit_global_row_like_g6 _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B2B0721C40>
+
+    def test_g7_validates_an_explicit_global_row_like_g6(monkeypatch):
+        g7 = W.load_script(W.G7_SCRIPT, "g7_explicit_global_row")
+        _small_geometry(monkeypatch, g7)
+        f = _frame()
+        f["global_row"] = ["9", "9", "1", "2", "3", "4"]                    # duplicate identities
+        with pytest.raises(RuntimeError, match="global_row"):
+>           g7.select_sample_a(f)
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\v5\test_td_g7_successor_global_row_and_g6_bridge.py:126: Failed
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+- generated xml file: D:\jepa_td_real_g6_20261011\qualification_g7_successor_8d41fb98\QUAL_02a_global_row_RED_junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_binds_global_row_from_freeze_file_position_before_filtering
+FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_and_accepted_g6_selectors_agree_on_historical_rows
+FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_refuses_a_freeze_missing_required_columns
+FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_validates_an_explicit_global_row_like_g6
+4 failed, 3 warnings in 1.17s
+# red_exit=1
+red_reason test_g7_and_accepted_g6_selectors_agree_on_historical_rows => KeyError: 'global_row'
+red_reason test_g7_binds_global_row_from_freeze_file_position_before_filtering => KeyError: 'global_row'
+red_reason test_g7_refuses_a_freeze_missing_required_columns => Failed: DID NOT RAISE <class 'RuntimeError'>
+red_reason test_g7_validates_an_explicit_global_row_like_g6 => Failed: DID NOT RAISE <class 'RuntimeError'>
+red_reasons_ok=1
+# red_failed_tests=4 (required 4); per-test reasons exact=1 (required 1: 2 KeyError 'global_row', 2 DID NOT RAISE); red G7 is f8e52710=1 (required 1)

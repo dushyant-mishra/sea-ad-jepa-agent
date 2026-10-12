@@ -1,0 +1,20 @@
+....                                                                     [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_binds_global_row_from_freeze_file_position_before_filtering
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_and_accepted_g6_selectors_agree_on_historical_rows
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_refuses_a_freeze_missing_required_columns
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_validates_an_explicit_global_row_like_g6
+4 passed, 3 warnings in 0.69s
+# exit=0

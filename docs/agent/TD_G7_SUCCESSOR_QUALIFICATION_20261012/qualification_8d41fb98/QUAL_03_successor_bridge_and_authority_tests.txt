@@ -1,0 +1,122 @@
+...............................                                          [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21
+  C:\Users\dushy\anaconda3\lib\site-packages\numexpr\expressions.py:21: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    _np_version_forbids_neg_powint = LooseVersion(numpy.__version__) >= LooseVersion('1.12.0b1')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=================================== PASSES ====================================
+___________________ test_exact_accepted_predecessor_passes ____________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_exact_accepted_predecesso0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_any_altered_predecessor_artifact_fails[G6_EXECUTION_START.json] _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_any_altered_predecessor_a0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_any_altered_predecessor_artifact_fails[G6_RECEIPT.json] _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_any_altered_predecessor_a1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________ test_any_altered_predecessor_artifact_fails[MANIFEST.json] __________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_any_altered_predecessor_a2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_any_altered_predecessor_artifact_fails[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_any_altered_predecessor_a3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_any_altered_predecessor_artifact_fails[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_any_altered_predecessor_a4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________________ test_another_historical_g6_receipt_fails ___________________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_another_historical_g6_rec0\\accepted\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_another_historical_g6_rec0\\other\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____ test_a_byte_identical_relocated_copy_is_the_same_accepted_execution _____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_a_byte_identical_relocate0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________ test_real_predecessor_pins_refuse_any_other_g6_execution ___________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_real_predecessor_pins_ref0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+________ test_altered_or_missing_external_acceptance_fails[artifacts] _________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_altered_or_missing_external_acceptance_fails[authorizes_biology] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+____ test_altered_or_missing_external_acceptance_fails[authorizes_targets] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern2\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____ test_altered_or_missing_external_acceptance_fails[authorizes_td60] ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern3\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+___ test_altered_or_missing_external_acceptance_fails[authorizes_training] ____
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern4\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+__________ test_altered_or_missing_external_acceptance_fails[commit] __________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern5\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_______ test_altered_or_missing_external_acceptance_fails[disposition] ________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern6\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_________ test_altered_or_missing_external_acceptance_fails[missing] __________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_altered_or_missing_extern7\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____ test_unrehashed_acceptance_edit_fails_on_the_pinned_acceptance_sha ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_unrehashed_acceptance_edi0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_g7_main_consumes_only_the_accepted_predecessor_and_records_both_identities _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_g7_main_consumes_only_the0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+____________ test_g7_main_refuses_without_the_external_acceptance _____________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_g7_main_refuses_without_t0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer[common_script_sha256] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_g7_main_refuses_successor0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_ test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer[g6_script_sha256] _
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_g7_main_refuses_successor1\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+_____ test_g7_runs_under_its_own_authority_distinct_from_the_g6_producer ______
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_g7_runs_under_its_own_aut0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+{"mismatches": 0, "overlap_cells": 4, "status": "PASS_TD_G7_S174_EXACT_OVERLAP"}
+______________ test_producer_authority_cannot_run_successor_code ______________
+---------------------------- Captured stdout call -----------------------------
+{"nnz": 16, "output": "C:\\Users\\dushy\\AppData\\Local\\Temp\\pytest-of-dushy\\pytest-1299\\test_producer_authority_cannot0\\g6_out", "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"}
+=========================== short test summary info ===========================
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_binds_global_row_from_freeze_file_position_before_filtering
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_and_accepted_g6_selectors_agree_on_historical_rows
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_refuses_a_freeze_missing_required_columns
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_validates_an_explicit_global_row_like_g6
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_production_predecessor_pins_are_exactly_the_accepted_g6
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_exact_accepted_predecessor_passes
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_any_altered_predecessor_artifact_fails[G6_EXECUTION_START.json]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_any_altered_predecessor_artifact_fails[G6_RECEIPT.json]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_any_altered_predecessor_artifact_fails[MANIFEST.json]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_any_altered_predecessor_artifact_fails[TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_any_altered_predecessor_artifact_fails[TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_another_historical_g6_receipt_fails
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_a_byte_identical_relocated_copy_is_the_same_accepted_execution
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_real_predecessor_pins_refuse_any_other_g6_execution
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[artifacts]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[authorizes_biology]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[authorizes_targets]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[authorizes_td60]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[authorizes_training]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[commit]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[disposition]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_altered_or_missing_external_acceptance_fails[missing]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_unrehashed_acceptance_edit_fails_on_the_pinned_acceptance_sha
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_main_consumes_only_the_accepted_predecessor_and_records_both_identities
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_main_refuses_without_the_external_acceptance
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer[common_script_sha256]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_main_refuses_successor_code_that_is_not_the_accepted_g6_producer[g6_script_sha256]
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_g7_runs_under_its_own_authority_distinct_from_the_g6_producer
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_producer_authority_cannot_run_successor_code
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_old_ff4a21f9_authority_cannot_authorize_successor_g7
+PASSED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::test_successor_keeps_common_and_g6_byte_identical_to_the_accepted_execution
+31 passed, 3 warnings in 7.96s
+# exit=0

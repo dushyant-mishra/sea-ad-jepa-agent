@@ -1,0 +1,99 @@
+{
+  "1_real_freeze": {
+    "columns": [
+      "sample",
+      "sample_row",
+      "source",
+      "matrix_id",
+      "operator_index",
+      "local_row",
+      "donor_id",
+      "cell_id",
+      "native_class",
+      "broad_class",
+      "support_fingerprint",
+      "stable_key",
+      "in_original_t1",
+      "selection_seed",
+      "expression_read_before_freeze"
+    ],
+    "g7_equals_accepted_g6_selector": true,
+    "g7_global_row_first_last": [
+      0,
+      24999
+    ],
+    "g7_sample_a_rows": 25000,
+    "g7_source_counts": {
+      "HVS": 1129,
+      "NPH52": 1310,
+      "SEA_AD": 22561
+    },
+    "physical_global_row_column": false,
+    "rows": 50000,
+    "sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+  },
+  "2_g7_load_inputs": {
+    "input_sha256": {
+      "collision_ledger": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
+      "macha_freeze": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+      "provenance": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+      "replay_manifest": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
+      "sample_freeze": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+    },
+    "replay_addresses": 9216,
+    "sample_a_rows": 25000
+  },
+  "3_successor_code_identity": {
+    "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+    "common_script_sha256": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+    "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+    "g6_script_sha256": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+    "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+    "g7_script_sha256": "275dad00c6bd37ef11a34a376c703b4433ed40eae8d087c4d8f9535f88170412",
+    "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27"
+  },
+  "4_accepted_g6_predecessor": {
+    "external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "producer_commit": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+    "receipt_flags": {
+      "biological_replay_authorized": false,
+      "target_selection_authorized": false,
+      "td60_authorized": false,
+      "training_authorized": false
+    },
+    "status": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
+    "verified_sha256": {
+      "manifest": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+      "meta": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+      "receipt": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+      "start_marker": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+      "values": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9"
+    }
+  },
+  "N1_old_authority_refused": {
+    "old_authorization_binds": {
+      "g7_script_sha256": "f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe",
+      "implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0"
+    },
+    "refusal": "RuntimeError: owner-decision qualified implementation commit does not match the executing code",
+    "successor_binds": {
+      "g7_script_sha256": "275dad00c6bd37ef11a34a376c703b4433ed40eae8d087c4d8f9535f88170412",
+      "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27"
+    }
+  },
+  "N2_old_g6_namespace_refused": "RuntimeError: G6 namespace is not the accepted predecessor execution: missing=['G6_RECEIPT.json', 'MANIFEST.json', 'TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz', 'TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz'] foreign=[]",
+  "N3_old_g7_real_failure_reproduced": "AttributeError: 'DataFrame' object has no attribute 'global_row'",
+  "N4_old_g7_operational_authorization_cannot_release_successor": {
+    "authorization": "EXECUTE_G7_ONCE_AT_ff4a21f9__AGAINST_ACCEPTED_G6__FRESH_OUTPUT__STOP_FOR_EXTERNAL_AUDIT",
+    "binds": {
+      "g7_script_sha256": "f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe",
+      "implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0"
+    },
+    "sha256": "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee"
+  },
+  "authority_created": false,
+  "g7_marker_or_receipt_created": false,
+  "no_h5py_imported": true,
+  "schema": "JEPA_TD_G7_SUCCESSOR_REAL_PREMARKER_GATE_V1",
+  "terminal": "PASS_TD_G7_SUCCESSOR_REAL_SAMPLE_A_PREMARKER_GATE__NO_G7_MARKER__NO_H5AD__NO_AUTHORITY_CREATED"
+}

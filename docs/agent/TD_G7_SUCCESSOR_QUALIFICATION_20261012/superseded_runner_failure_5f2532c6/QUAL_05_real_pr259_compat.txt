@@ -1,0 +1,15 @@
+# command: python -m pytest -q tests/v5/test_td_relational_pr259_real_receipt_compat.py -rs
+# TD_PR259_PREFLIGHT_RESULT=/d/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/PREFLIGHT_RESULT.json
+# TD_PR259_MAPPING_RECEIPT=/d/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/TD_RELATIONAL_MAPPING_PREFLIGHT.json
+62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae */d/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/PREFLIGHT_RESULT.json
+6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0 */d/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/TD_RELATIONAL_MAPPING_PREFLIGHT.json
+4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660 */d/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv
+.                                                                        [100%]
+============================== warnings summary ===============================
+C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8
+  C:\Users\dushy\anaconda3\lib\site-packages\pyreadline\py3k_compat.py:8: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    return isinstance(x, collections.Callable)
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+1 passed, 1 warning in 0.02s
+# exit=0
