@@ -63,7 +63,7 @@ def _validate_scoring_summary(summary:Mapping,part:str)->None:
     if not isinstance(quantities,Mapping) or set(quantities)!=expected: _refuse("identified quantity set differs")
     for name,q in quantities.items(): _validate_quantity_summary(q,name)
 
-def _validate_existing_receipt(path:Path,item:Mapping)->Mapping:
+def _validate_existing_receipt(path:Path,item:Mapping,*,expected_code_sha:str|None=None,expected_seed:int|None=None)->Mapping:
     try: raw=path.read_bytes(); r=json.loads(raw.decode("utf-8"))
     except Exception as exc: _refuse(f"unreadable existing fit receipt {path.name}: {exc}")
     if _canonical(r)!=raw: _refuse(f"existing fit receipt not canonical: {path.name}")
@@ -73,6 +73,16 @@ def _validate_existing_receipt(path:Path,item:Mapping)->Mapping:
               "benchmark_run":False,"qualification_fits_run":1,"scoring_run":False,"truth_accessed":False,"training_authorized":False}
     for k,v in required.items():
         if r.get(k)!=v: _refuse(f"existing fit receipt mismatch {path.name}: {k}")
+    if expected_code_sha is not None and r.get("code_sha")!=expected_code_sha:
+        _refuse(f"existing fit receipt code SHA mismatch: {path.name}")
+    attempts=r.get("attempts")
+    if not isinstance(attempts,list) or not attempts: _refuse(f"existing fit receipt has no attempts: {path.name}")
+    if expected_seed is not None:
+        if any(a.get("seed")!=int(expected_seed) for a in attempts if isinstance(a,Mapping)) or any(not isinstance(a,Mapping) for a in attempts):
+            _refuse(f"existing fit receipt seed mismatch: {path.name}")
+    stages=[str(a.get("stage")) for a in attempts]
+    if stages[0]!="PRIMARY" or stages.count("ESCALATION")>1 or stages.count("EXTENSION")>1:
+        _refuse(f"existing fit receipt recovery path differs: {path.name}")
     if r.get("final_diagnosis") not in {"COMPLETE","NOT_DIAGNOSED"}: _refuse(f"existing fit is not terminal: {path.name}")
     diag=r.get("final_diagnostics")
     if not isinstance(diag,Mapping) or not {"divergences","worst_rhat","worst_ess_bulk","worst_ess_tail","mean_tree_steps"}<=set(diag): _refuse("final diagnostics missing")
@@ -92,7 +102,7 @@ def _validate_existing_receipt(path:Path,item:Mapping)->Mapping:
         if not ap.is_file() or _sha(ap)!=rec["sha256"]: _refuse(f"posterior artifact missing/hash mismatch: {ap.name}")
     return r
 
-def completed_prefix(result_dir:Path,queue:list[Mapping])->int:
+def completed_prefix(result_dir:Path,queue:list[Mapping],*,expected_code_sha:str|None=None,seed_by_fit_id:Mapping[str,int]|None=None)->int:
     result_dir=Path(result_dir)
     if not result_dir.exists(): return 0
     count=0; missing=False
@@ -102,7 +112,9 @@ def completed_prefix(result_dir:Path,queue:list[Mapping])->int:
         p=result_dir/f"fit_{item['fit_id']}.json"
         if p.is_file():
             if missing: _refuse("checkpoint is not a contiguous qualification prefix")
-            _validate_existing_receipt(p,item); count+=1
+            seed=None if seed_by_fit_id is None else seed_by_fit_id.get(str(item["fit_id"]))
+            if seed_by_fit_id is not None and seed is None: _refuse("checkpoint seed map missing fit identity")
+            _validate_existing_receipt(p,item,expected_code_sha=expected_code_sha,expected_seed=seed); count+=1
         else: missing=True
     return count
 
@@ -111,12 +123,14 @@ def campaign_receipt_skeleton(*,code_sha:str,custody_receipt_sha:str,fit_count:i
             "planned_fit_count":int(fit_count),"fit_records":[],"qualification_fits_run":0,"benchmark_run":False,
             "scoring_run":False,"truth_accessed":False,"training_authorized":False}
 
-def finalize_campaign(result_dir:Path,queue:list[Mapping],*,code_sha:str,custody_receipt_sha:str)->dict:
+def finalize_campaign(result_dir:Path,queue:list[Mapping],*,code_sha:str,custody_receipt_sha:str,seed_by_fit_id:Mapping[str,int]|None=None)->dict:
     result_dir=Path(result_dir)
-    if completed_prefix(result_dir,queue)!=len(queue): _refuse("cannot finalize incomplete campaign")
+    if completed_prefix(result_dir,queue,expected_code_sha=code_sha,seed_by_fit_id=seed_by_fit_id)!=len(queue): _refuse("cannot finalize incomplete campaign")
     rec=campaign_receipt_skeleton(code_sha=code_sha,custody_receipt_sha=custody_receipt_sha,fit_count=len(queue))
     for item in queue:
-        p=result_dir/f"fit_{item['fit_id']}.json"; _validate_existing_receipt(p,item)
+        p=result_dir/f"fit_{item['fit_id']}.json"
+        seed=None if seed_by_fit_id is None else seed_by_fit_id.get(str(item["fit_id"]))
+        _validate_existing_receipt(p,item,expected_code_sha=code_sha,expected_seed=seed)
         rec["fit_records"].append({"fit_id":item["fit_id"],"path":p.name,"sha256":_sha(p)})
     rec["qualification_fits_run"]=len(queue); raw=_canonical(rec); rp=result_dir/CAMPAIGN_RECEIPT_NAME
     if rp.exists():
@@ -134,9 +148,9 @@ def execute_campaign(root:Path,custody_dir:Path,result_dir:Path,*,expected_custo
     if custody.receipt.get("executor_code_head")!=code_sha: _refuse("qualification custody was prepared for a different code head")
     queue=list(custody.queue); groups=group_queue_by_world(queue)
     if len(groups)!=int(custody.fit_contract["resources"]["qualification_world_count"]): _refuse("opaque world count differs from fit contract")
-    done=completed_prefix(result_dir,queue)
+    done=completed_prefix(result_dir,queue,expected_code_sha=code_sha,seed_by_fit_id=custody.seed_by_fit_id)
     if not result_dir.exists(): result_dir.mkdir(parents=True,exist_ok=False)
-    if done==len(queue): return finalize_campaign(result_dir,queue,code_sha=code_sha,custody_receipt_sha=custody.receipt_sha256)
+    if done==len(queue): return finalize_campaign(result_dir,queue,code_sha=code_sha,custody_receipt_sha=custody.receipt_sha256,seed_by_fit_id=custody.seed_by_fit_id)
     worker=root/"scripts/v79"/WORLD_WORKER
     if not worker.is_file(): _refuse("qualification world worker is missing")
     settle=float(custody.fit_contract["resources"]["settle_seconds_between_worlds"]); cumulative=0
@@ -145,12 +159,12 @@ def execute_campaign(root:Path,custody_dir:Path,result_dir:Path,*,expected_custo
         if done>=end: cumulative=end; continue
         proc=subprocess.run([sys.executable,str(worker),str(root),str(custody_dir),str(result_dir),expected_custody_receipt_sha256,oid],cwd=root,check=False)
         if proc.returncode!=0: _refuse(f"world worker failed for opaque world {oid} with exit {proc.returncode}")
-        now=completed_prefix(result_dir,queue)
+        now=completed_prefix(result_dir,queue,expected_code_sha=code_sha,seed_by_fit_id=custody.seed_by_fit_id)
         if now<end: _refuse(f"world worker exited without completing its opaque world {oid}")
         done=now; cumulative=end
         if done<len(queue): time.sleep(settle)
     if done!=len(queue): _refuse("campaign ended before all frozen fits completed")
-    return finalize_campaign(result_dir,queue,code_sha=code_sha,custody_receipt_sha=custody.receipt_sha256)
+    return finalize_campaign(result_dir,queue,code_sha=code_sha,custody_receipt_sha=custody.receipt_sha256,seed_by_fit_id=custody.seed_by_fit_id)
 
 def main(argv=None):
     p=argparse.ArgumentParser(); p.add_argument("root"); p.add_argument("custody_dir"); p.add_argument("result_dir"); p.add_argument("expected_custody_receipt_sha256")
