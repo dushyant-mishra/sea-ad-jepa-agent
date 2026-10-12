@@ -12,6 +12,7 @@ import argparse
 import copy
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -81,6 +82,13 @@ def build_fit_contract_view(contract: dict) -> dict:
     FC.validate_fit_contract_view(view); return view
 
 
+def _compact_donor_draw_count(contract: dict) -> int:
+    text=str(contract["resources"]["compact_outputs"])
+    m=re.search(r"float32\s+npz\s+of\s+(\d+)\s+thinned\s+donor-effect\s+draws",text)
+    if not m: _refuse("cannot parse frozen compact donor-draw count")
+    return int(m.group(1))
+
+
 def _digest(base: Path) -> str:
     h=hashlib.sha256(); base=Path(base)
     for p in sorted((p for p in base.rglob("*") if p.is_file()), key=lambda x:x.relative_to(base).as_posix()):
@@ -118,7 +126,9 @@ def prepare(root: Path, package_dir: Path, authorization_path: Path, custody_dir
              "blinded_directory_digest":_digest(dst),
              "fit_contract_view_path":FIT_VIEW_NAME,"fit_contract_view_sha256":fit_view_sha,
              "authorization_path":AUTH_NAME,"authorization_sha256":auth_sha,
-             "fit_count":C.EXPECTED_FITS,"qualification_fits_run":0,"scoring_run":False,
+             "fit_count":C.EXPECTED_FITS,"ppc_draws":int(contract["ppc"]["draws"]),
+             "donor_draws_stored":_compact_donor_draw_count(contract),
+             "qualification_fits_run":0,"scoring_run":False,
              "truth_accessed":False,"training_authorized":False}
     receipt_sha=_write_once(custody_dir/RECEIPT_NAME,_canon(receipt))
     receipt["custody_receipt_sha256"]=receipt_sha
