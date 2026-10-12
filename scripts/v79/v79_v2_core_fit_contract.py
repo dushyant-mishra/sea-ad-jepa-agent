@@ -15,7 +15,7 @@ SOURCE_CONTRACT_SHA256 = "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc2
 SCHEMA = "V79_V2_CORE_FIT_CONTRACT_VIEW_V1"
 RESOURCE_KEYS = {
     "environment", "concurrency", "settle_seconds_between_worlds", "xla_host_devices",
-    "checkpoint", "compact_outputs", "engineering_benchmark", "estimate",
+    "checkpoint", "compact_outputs", "engineering_benchmark", "estimate", "qualification_world_count",
 }
 
 
@@ -56,6 +56,8 @@ def validate_fit_contract_view(view: Mapping) -> Mapping:
         _refuse("resource projection differs")
     if set(resources.get("estimate", {})) != {"n_fits"}:
         _refuse("resource estimate projection must expose only n_fits")
+    if int(resources.get("qualification_world_count", -1)) <= 0:
+        _refuse("qualification world count missing")
     if int(resources.get("xla_host_devices", -1)) != int(inf.get("chains", -2)):
         _refuse("XLA host-device count must equal frozen chain count")
     seeds = view.get("seeds", {})
@@ -65,7 +67,6 @@ def validate_fit_contract_view(view: Mapping) -> Mapping:
         _refuse("fit seed stream projection differs")
     if set(view.get("result_schemas", {})) != {"fit_record"}:
         _refuse("fit result-schema projection differs")
-    # The fit view may describe excluded operator/matrix terms, but may contain no world/gate identity.
     raw = json.dumps(dict(view), sort_keys=True)
     for forbidden in ("Q00_BASELINE", "Q11_OMITTED_OPERATOR", '"world_name"', '"world_index"', '"gates"'):
         if forbidden in raw:
