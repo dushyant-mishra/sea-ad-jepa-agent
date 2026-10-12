@@ -1,0 +1,171 @@
+{
+  "schema": "TD_POST_REPLAY_AUTHORITY_TRANSITION_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_AUTHORITY_LADDER__NO_CURRENT_DOWNSTREAM_AUTHORITY",
+  "purpose": "Prevent corrected replay, rare-program qualification, multimodal support, survivor status or regulatory evidence from silently promoting a target, representation or training decision.",
+  "current_hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "ordered_authority_ladder": [
+    {
+      "step": 0,
+      "name": "CORRECTED_REPLAY_AUDIT_RESULT",
+      "grants": ["scientific interpretation of corrected TD56/TD57B/TD57C/TD59 only"],
+      "does_not_grant": ["target selection", "representation selection", "TD60", "Stage4", "training"]
+    },
+    {
+      "step": 1,
+      "name": "CANDIDATE_GATE_UPDATE",
+      "grants": ["update C2/C4 relational activity state; preserve C1/C3 independence and C6 dependency rules"],
+      "does_not_grant": ["target winner"]
+    },
+    {
+      "step": 2,
+      "name": "FOUNDATION_CANDIDATE_QUALIFICATION",
+      "grants": ["candidate-specific eligibility after existing gates, rare-program fitness, shortcut/coverage/uncertainty checks"],
+      "does_not_grant": ["selection merely because one candidate remains"]
+    },
+    {
+      "step": 3,
+      "name": "SURVIVOR_ADJUDICATION",
+      "grants": ["eligible survivor set and next protected comparison"],
+      "does_not_grant": ["target winner"]
+    },
+    {
+      "step": 4,
+      "name": "PROTECTED_CONFIRMATION",
+      "grants": ["evidence for/against frozen survivor(s) on the specifically authorized protected confirmation surface"],
+      "does_not_grant": ["automatic target selection"]
+    },
+    {
+      "step": 5,
+      "name": "EXPLICIT_TARGET_DECISION",
+      "grants": ["foundation target winner only when a separate authority record explicitly names it"],
+      "does_not_grant": ["representation winner", "TD60", "Stage4", "training"]
+    },
+    {
+      "step": 6,
+      "name": "POST_FREEZE_MULTIMODAL_R1_R2_SUPPORT",
+      "grants": ["transport/regulatory interpretation of the already frozen target", "classification of RNA-recoverable versus teacher-private privileged state"],
+      "does_not_grant": ["retroactive target redefinition", "causal claim"]
+    },
+    {
+      "step": 7,
+      "name": "EXPLICIT_REPRESENTATION_DECISION",
+      "grants": ["representation choice only after its own protected comparison/authority"],
+      "does_not_grant": ["TD60", "Stage4", "training"]
+    },
+    {
+      "step": 8,
+      "name": "TD60_OR_SUCCESSOR",
+      "grants": ["only the specifically authorized downstream target/representation experiment"],
+      "does_not_grant": ["Stage4", "training unless separately stated"]
+    },
+    {
+      "step": 9,
+      "name": "STAGE4_AUTHORITY",
+      "grants": ["only the specifically authorized Stage4 scope"],
+      "does_not_grant": ["unbounded real training or protected outcome opening beyond scope"]
+    },
+    {
+      "step": 10,
+      "name": "REAL_TRAINING_AUTHORITY",
+      "grants": ["real training only under exact frozen target, representation, data, split, runtime and stopping contract"]
+    }
+  ],
+  "replay_to_candidate_mapping": {
+    "TD56_NOT_ESTIMABLE": {
+      "C2": "UNRESOLVED",
+      "C4": "UNRESOLVED",
+      "C1": "INDEPENDENTLY_TESTABLE",
+      "C3": "INDEPENDENTLY_TESTABLE",
+      "C6": "INDEPENDENTLY_TESTABLE_SUBJECT_TO_C1_C3_AND_INCREMENT"
+    },
+    "TD56_FAIL": {
+      "C2": "ELIMINATED_RELATIONAL_FAIL",
+      "C4": "BLOCKED_BY_RELATIONAL_CONSTITUENT",
+      "C1": "ACTIVE",
+      "C3": "ACTIVE",
+      "C6": "ACTIVE_SUBJECT_TO_C1_C3"
+    },
+    "TD57B_NOT_ESTIMABLE": {
+      "C2": "UNRESOLVED",
+      "C4": "UNRESOLVED"
+    },
+    "TD57B_FAIL": {
+      "C2": "ELIMINATED_RELATIONAL_FAIL",
+      "C4": "BLOCKED_BY_RELATIONAL_CONSTITUENT",
+      "note": "TD59 cannot rescue an upstream TD57B failure."
+    },
+    "TD57C_NOT_ESTIMABLE": {
+      "C2": "UNRESOLVED_FINE_LOCALITY",
+      "C4": "UNRESOLVED_FINE_LOCALITY"
+    },
+    "TD57C_PASS": {
+      "C2": "DIVERGENCE_REQUIRES_NEW_PROSPECTIVE_LOCALITY_EXPERIMENT",
+      "C4": "DIVERGENCE_REQUIRES_NEW_PROSPECTIVE_LOCALITY_EXPERIMENT",
+      "note": "Corrected PASS is historical/corrected divergence, never retroactive validation of the old locality claim."
+    },
+    "TD57C_FAIL__TD59_PASS": {
+      "C2": "VIABLE_BROAD_PLUS_MESOSCALE__FINE_HARD_LOCALITY_NOT_SUPPORTED",
+      "C4": "ACTIVE_ONLY_IF_OTHER_CONSTITUENTS_QUALIFY",
+      "note": "Not a target winner."
+    },
+    "TD57C_FAIL__TD59_FAIL": {
+      "C2": "CURRENT_STRUCTURED_RELATIONAL_FORM_NOT_QUALIFIED",
+      "C4": "BLOCKED_OR_REQUIRES_REDESIGN",
+      "note": "Broader relational recurrence may still exist, but current structured locality support is insufficient."
+    },
+    "ANY_NOT_ESTIMABLE": {
+      "rule": "Stop interpretation of that object; NOT_ESTIMABLE supplies no support and is never averaged into PASS."
+    }
+  },
+  "source_qualification_boundary": {
+    "universal_qualification": "Whether every required observed source satisfied its frozen per-source criterion.",
+    "source_heterogeneity": "Whether there is direct evidence that underlying source effects differ.",
+    "rule": "PASS/FAIL threshold-status discordance may show universal qualification was not established but does not by itself prove biological heterogeneity.",
+    "source_order": "Historical source execution order may be preserved for replay fidelity but is not a biological hierarchy.",
+    "new_heterogeneity_test_during_corrected_replay": false
+  },
+  "survivor_logic": {
+    "zero_survivors": "REDESIGN_FOUNDATION_TARGET_DISCOVERY__NO_TARGET_AUTHORITY",
+    "one_survivor": "ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NOT_SELECTED",
+    "multiple_survivors": "PROTECTED_HEAD_TO_HEAD_REQUIRED__NOT_SELECTED",
+    "unresolved_survivors": "CONTINUE_ONLY_LAWFUL_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
+  },
+  "rare_program_gate": {
+    "applies_to": ["C1", "C3", "C6", "C2_if_active", "C4_if_active"],
+    "rule": "Rare-program fitness is a mandatory target-quality property but cannot rescue failure of a pre-existing candidate gate.",
+    "not_estimable": "Retain candidate rare-program fitness as unresolved; do not convert missing stable rare evidence to PASS."
+  },
+  "multimodal_boundary": {
+    "foundation_selection": "Multimodal outcomes may not retrospectively choose the foundation target once designated post-freeze support.",
+    "same_nucleus": "Supports within-nucleus regulatory correspondence and teacher-state decomposition after freeze.",
+    "separate_nucleus": "Supports donor-level recurrence only.",
+    "SCENIC_plus_and_regulatory": "Supports R2 interpretation, privileged teacher construction and C5 specialist work; does not become a universal foundation answer key.",
+    "spatial": "Localization only when frozen program components are measured.",
+    "perturbation": "R3 direction support only under separate per-screen qualification."
+  },
+  "automatic_promotion_prohibitions": [
+    "corrected replay PASS -> target winner",
+    "single survivor -> target winner",
+    "rare-program PASS -> target winner",
+    "GSE214979 regulatory coherence -> target winner",
+    "SCENIC+/motif support -> target winner",
+    "Morabito recurrence -> pristine independent validation",
+    "RNA/ATAC concordance -> causal regulation",
+    "Stage74 in-silico perturbation agreement -> causal validation",
+    "representation winner -> Stage4 authority",
+    "technical runtime qualification -> scientific training authority"
+  ],
+  "required_authority_receipt_fields": [
+    "decision_name",
+    "exact git/data/contract identities",
+    "inputs opened",
+    "outcomes opened",
+    "scope granted",
+    "scope explicitly not granted",
+    "terminal state",
+    "superseded authorities",
+    "next lawful action"
+  ],
+  "non_authority_statement": "No authority is granted by this file. It freezes the transition law that future explicit authorities must respect."
+}
