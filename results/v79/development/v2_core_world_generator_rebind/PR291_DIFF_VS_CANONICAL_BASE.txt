@@ -1,0 +1,12 @@
+M	.gitattributes
+A	.github/workflows/v79-v2-core-world-generator.yml
+A	results/v79/v2_core_qualification_amendments/V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.json
+A	results/v79/v2_core_qualification_amendments/V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1.sha256
+A	scripts/v79/build_v79_v2_core_pairing_amendment.py
+A	scripts/v79/generate_v79_v2_core_worlds.py
+A	scripts/v79/v79_v2_core_observation.py
+A	scripts/v79/v79_v2_core_planting.py
+A	tests/v79/test_v79_v2_core_baseline_planting.py
+A	tests/v79/test_v79_v2_core_observation.py
+A	tests/v79/test_v79_v2_core_world_generator.py
+A	tests/v79/test_v79_v2_core_world_generator_rebind.py

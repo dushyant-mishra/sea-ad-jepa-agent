@@ -1,0 +1,175 @@
+{
+ "schema": "V79_V2_CORE_GENERATOR_REBIND_PROOF_V1",
+ "label": "TEST_SEED_ROOT_4242__IN_MEMORY_ONLY__NOT_A_QUALIFICATION_WORLD__NO_WORLD_ARTIFACTS",
+ "canonical_contract_sha256_observed": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+ "launch_gate_status": "FROZEN_PROSPECTIVE_LAUNCH_AUTHORITY__NO_QUALIFICATION_FIT_RUN",
+ "qualification_payload_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+ "pairing_amendment_sha256": "57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5",
+ "source_codes_from_canonical_metadata": {
+  "HVS": 0,
+  "NPH52": 1,
+  "SEA_AD": 2
+ },
+ "obsolete_contract_refusals": {
+  "pairing_amendment_bound_to_obsolete": "REFUSED: STOP: pairing amendment is bound to the obsolete non-canonical contract",
+  "realization_authorization_bound_to_obsolete": "REFUSED: STOP: authorization does not bind final Contract V2",
+  "manifest_bound_to_obsolete": "REFUSED: STOP: wrong final Contract V2 SHA"
+ },
+ "realize_worlds_with_canonical_authorization": "REFUSED: STOP: realization engine not yet controller-audited for physical Q00-Q11 emission",
+ "donor_rescaling": {
+  "Q01_WEAK_DONOR": {
+   "detection": {
+    "planted_donor_sd": [
+     0.1909442929654887
+    ],
+    "mean_realized_effect_sd_modified": 0.18886435365314982,
+    "mean_realized_effect_sd_unmodified_same_world": 0.4469274374560841,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 6556,
+    "latent_field_identical_to_unmodified": true
+   },
+   "positive": {
+    "planted_donor_sd": [
+     0.043799887045648106
+    ],
+    "mean_realized_effect_sd_modified": 0.04318473606793343,
+    "mean_realized_effect_sd_unmodified_same_world": 0.15425755306290015,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 6556,
+    "latent_field_identical_to_unmodified": true
+   }
+  },
+  "Q02_STRONG_DONOR": {
+   "detection": {
+    "planted_donor_sd": [
+     1.087336719410757
+    ],
+    "mean_realized_effect_sd_modified": 1.0663013979940579,
+    "mean_realized_effect_sd_unmodified_same_world": 0.44247748123791736,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 6556,
+    "latent_field_identical_to_unmodified": true
+   },
+   "positive": {
+    "planted_donor_sd": [
+     0.5145824931882698
+    ],
+    "mean_realized_effect_sd_modified": 0.4991326388220948,
+    "mean_realized_effect_sd_unmodified_same_world": 0.1520336445500864,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 6556,
+    "latent_field_identical_to_unmodified": true
+   }
+  },
+  "Q07_DONOR_ABSENT": {
+   "detection": {
+    "planted_donor_sd": [
+     0.0
+    ],
+    "mean_realized_effect_sd_modified": 0.0,
+    "mean_realized_effect_sd_unmodified_same_world": 0.452666344688557,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 0,
+    "latent_field_identical_to_unmodified": true
+   },
+   "positive": {
+    "planted_donor_sd": [
+     0.0
+    ],
+    "mean_realized_effect_sd_modified": 0.0,
+    "mean_realized_effect_sd_unmodified_same_world": 0.15279158130836848,
+    "max_abs_effects_minus_latent_x_sd": 0.0,
+    "nonzero_effects": 0,
+    "latent_field_identical_to_unmodified": true
+   }
+  }
+ },
+ "detection_prevalence_over_measured_cells": {
+  "Q00_BASELINE": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07081447827964484,
+   "target_max": 0.7610163534493608,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q01_WEAK_DONOR": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07301946547260228,
+   "target_max": 0.7750920494950154,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q02_STRONG_DONOR": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07278882776132035,
+   "target_max": 0.792733795409341,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q03_WEAK_SOURCE": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07395535869173007,
+   "target_max": 0.7935790655771261,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.08698113911629207,
+   "structural_genes": 5
+  },
+  "Q04_SOURCE_ABSENT": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.06772672628038691,
+   "target_max": 0.7539145154464664,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.15009312632817032,
+   "structural_genes": 5
+  },
+  "Q05_CLASS_ABSENT": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07306472581586962,
+   "target_max": 0.761357019642894,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.03419647293500406,
+   "structural_genes": 5
+  },
+  "Q06_QUADRATIC_DEPTH_ABSENT": {
+   "max_abs_achieved_minus_target_over_measured": 2.220446049250313e-16,
+   "target_min": 0.07301739675141716,
+   "target_max": 0.7783219067137027,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.013167609716674406,
+   "structural_genes": 5
+  },
+  "Q07_DONOR_ABSENT": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.0676433137834141,
+   "target_max": 0.792398804765463,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q08_SPARSE_DETECTION": {
+   "max_abs_achieved_minus_target_over_measured": 2.0816681711721685e-17,
+   "target_min": 0.0051631310726641105,
+   "target_max": 0.048882991939258554,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 3.547285580404468,
+   "structural_genes": 5
+  },
+  "Q09_POSITIVE_TAIL": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07339862734738288,
+   "target_max": 0.7539145154464664,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q10_S174_DESIGN_IMBALANCE": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07278882776132035,
+   "target_max": 0.778288365386686,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  },
+  "Q11_OMITTED_OPERATOR": {
+   "max_abs_achieved_minus_target_over_measured": 1.1102230246251565e-16,
+   "target_min": 0.07278882776132035,
+   "target_max": 0.778288365386686,
+   "mean_abs_intercept_change_vs_unmodified_same_world": 0.0,
+   "structural_genes": 5
+  }
+ },
+ "q10_q11_non_operator_truth_identical": true,
+ "launch_authority_module": "V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json"
+}

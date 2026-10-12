@@ -1,9 +1,9 @@
 {
  "schema": "V79_ACTIVE_STATE_V2",
- "updated_utc": "2026-10-11T23:16:05Z",
- "branch": "feat/v79-v2-core-contract-final-20261011 (PR #290, base PR #288 branch)",
- "source_head_at_write": "0898f89a (CI green: run 38183422953, job 114600601441, 30 passed)",
- "terminal_state": "V2_CORE_CONTRACT_V2_FINALIZED__LAUNCH_AUTHORITY_FROZEN__QUALIFICATION_WORLDS_NOT_GENERATED__CONTROLLER_PRELAUNCH_REVIEW_REQUIRED__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
+ "updated_utc": "2026-10-12T00:31:39Z",
+ "branch": "feat/v79-v2-core-world-generator-20261011 (PR #291, base PR #290 branch at 5394d036)",
+ "source_head_at_write": "959f071b (GREEN; CI run 38187673238 linux+windows 46/46)",
+ "terminal_state": "V2_CORE_WORLD_GENERATOR_CANONICALLY_REBOUND_AND_SCIENTIFICALLY_AUDITED__LINUX_WINDOWS_GREEN__DONOR_AND_PREVALENCE_GENERATOR_BUGS_FIXED__CONTROLLER_AUDIT_REQUIRED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
  "authority": "TRAIN_ONLY__BAYESIAN_DATASET_GEOMETRY__NON_TARGET__NON_TRAINING__NON_PROMOTING",
  "training_authorized": false,
  "real_data_inference_started": false,
@@ -52,7 +52,7 @@
   "fixed at 306ca8af: snapshot_v79.sh now archives the contract .md, the V77 class authority and scripts/v77 (unit suite 140 passed inside the snapshot); the fit snapshot d9d8cac6 predates the fix, which affects only its unit tests, not recovery",
   "RESOLVED IN EVIDENCE, PENDING CONTROLLER REVIEW: V3 replay / calibration V1 treated structurally unmeasured entries as zeros; masked replay V4 committed with an old-vs-masked audit"
  ],
- "next_gate": "controller pre-launch review of the final V2 contract; then world generation as a separate gate",
+ "next_gate": "controller audit of the rebound generator (open items: stream 24, new-donor replicate, Q11 intercept ratification); realization still disabled",
  "parallel_lanes": {
   "target_discovery": "separate lane (PR #277); not touched here",
   "synthetic_worlds": "PR #253 consumer; not modified here"
@@ -163,5 +163,22 @@
   "mechanical_A_to_H_preserved": true,
   "decision": "CONTROLLER"
  },
- "source_term_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal source biology, not causal, not a biological mechanism; single-source genes: cross-source estimand UNDEFINED"
+ "source_term_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not universal source biology, not causal, not a biological mechanism; single-source genes: cross-source estimand UNDEFINED",
+ "world_generator": {
+  "pr": 291,
+  "canonical_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "obsolete_refused": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d",
+  "pairing_amendment_sha256": "57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5",
+  "ci": {
+   "run": 38187673238,
+   "linux_job": 114613437023,
+   "windows_job": 114613437184,
+   "tests": "46 passed each"
+  },
+  "summary": "docs/agent/V79_V2_CORE_WORLD_GENERATOR_REBIND_20261012.md",
+  "realize_worlds": "FAILS_CLOSED",
+  "qualification_worlds_generated": 0,
+  "benchmarks": 0,
+  "qualification_fits_run": 0
+ }
 }

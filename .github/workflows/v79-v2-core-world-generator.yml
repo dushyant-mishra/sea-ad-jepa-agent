@@ -1,0 +1,60 @@
+name: V79 V2_CORE world generator
+
+# Full generator suite on Linux and on the locked Windows qualification environment (controller rulings 6115053096,
+# 6115121455 and 6115340528). Both jobs check out the same head and print the generator's observed canonical
+# contract SHA, so green on both binds one exact generator head. No world realization, benchmark or fit runs here.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/generate_v79_v2_core_worlds.py'
+      - 'scripts/v79/v79_v2_core_planting.py'
+      - 'scripts/v79/v79_v2_core_observation.py'
+      - 'scripts/v79/v79_v2_core_world_assembly.py'
+      - 'scripts/v79/v79_v2_core_launch.py'
+      - 'scripts/v79/build_v79_v2_core_pairing_amendment.py'
+      - 'tests/v79/test_v79_v2_core_world_generator.py'
+      - 'tests/v79/test_v79_v2_core_world_generator_rebind.py'
+      - 'tests/v79/test_v79_v2_core_remaining_hardening.py'
+      - 'tests/v79/test_v79_v2_core_world_assembly.py'
+      - 'tests/v79/test_v79_v2_core_baseline_planting.py'
+      - 'tests/v79/test_v79_v2_core_observation.py'
+      - 'results/v79/v2_core_qualification/**'
+      - 'results/v79/v2_core_qualification_amendments/**'
+      - '.github/workflows/v79-v2-core-world-generator.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  world-generator-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Exact bytes and long paths on checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check numpy==2.0.2 pytest
+      - name: Generator suite (records the exact head and the canonical contract SHA observed)
+        shell: bash
+        run: |
+          set -o pipefail
+          python --version
+          echo "generator_head=$(git rev-parse HEAD)"
+          python -c "import sys; sys.path.insert(0, 'scripts/v79'); import generate_v79_v2_core_worlds as G; print('observed_canonical_contract_sha256=' + G.FINAL_CONTRACT_SHA256)"
+          python -m pytest tests/v79/test_v79_v2_core_world_generator.py tests/v79/test_v79_v2_core_world_generator_rebind.py tests/v79/test_v79_v2_core_remaining_hardening.py tests/v79/test_v79_v2_core_world_assembly.py tests/v79/test_v79_v2_core_baseline_planting.py tests/v79/test_v79_v2_core_observation.py -q -rA -p no:cacheprovider | tee v79_world_generator_${{ matrix.os }}.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v79-world-generator-${{ matrix.os }}
+          path: v79_world_generator_${{ matrix.os }}.log
