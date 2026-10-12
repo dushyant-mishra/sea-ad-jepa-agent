@@ -1,0 +1,113 @@
+{
+  "schema": "TD_UNIFIED_TARGET_PORTFOLIO_MULTI_TEACHER_STUDENT_ARCHITECTURE_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_UNIFIED_ARCHITECTURE__NO_TARGET_SELECTION_OR_TRAINING_AUTHORITY",
+  "purpose": "Restore the project-wide target-discovery architecture as one unified biology program in which common, rare, query-conditioned, relational and regulatory biology are qualified together, and multiple target blocks/teachers/students may coexist when they capture demonstrably different lawful biological information.",
+  "historical_alignment": {
+    "world_model_goal": "Predict biologically meaningful multidimensional cellular molecular state, not hidden-gene imputation.",
+    "structured_target_precedent": "Historical R5 explicitly described a future target as [z_shared, z_query, eligible specialist state, support, uncertainty].",
+    "single_state_caveat": "Historical foundation work also allowed shared/context decomposition if one global state proved insufficient.",
+    "anti_zoo_rule": "Historical production work rejected a half-capacity dual-student default and architecture-zoo expansion; multiplicity must be earned by biological non-redundancy, not added by default."
+  },
+  "unification_rule": {
+    "rare_vs_regular": "There is no separate rare-biology TD. Rare biology is a regime/property of the same biological target portfolio and the same candidate qualification system.",
+    "target_discovery_output": "A qualified target portfolio may contain more than one biological block. The objective is not forced selection of one universal winner if multiple blocks capture complementary biology.",
+    "portfolio_selection_principle": "Retain every block that independently passes its mandatory gates and adds non-redundant lawful biological information without unacceptable shortcut, transfer, support or recoverability failure."
+  },
+  "candidate_to_portfolio_mapping": {
+    "C1_SHARED_EMERGENT": {
+      "portfolio_role": "shared/global biological state block",
+      "can_coexist_with": ["C3", "C2_if_active", "C5_specialist"],
+      "not_replaced_by": "rare-state or regulatory specialists"
+    },
+    "C3_QUERY_MEASURED": {
+      "portfolio_role": "query-conditioned local/contextual biological state block",
+      "can_coexist_with": ["C1", "C2_if_active", "C5_specialist"],
+      "rule": "Query-conditioned information is retained only if incremental beyond shared state and query-value/identity shortcuts."
+    },
+    "C2_RELATIONAL_SHARED": {
+      "portfolio_role": "relational/neighborhood biological state block",
+      "active_only_if": "corrected replay keeps C2 active",
+      "rule": "May coexist with C1/C3 if it adds relational information not reducible to them."
+    },
+    "C6_SHARED_QUERY_COMPOSITE": {
+      "portfolio_role": "candidate fused implementation of C1+C3",
+      "interpretation": "C6 competes with or operationally combines C1+C3 only if the fusion preserves both blocks and adds efficiency/coherence without biological loss. C6 PASS does not erase the conceptual distinction between shared and query-conditioned biology."
+    },
+    "C4_STRUCTURED_COMPOSITE": {
+      "portfolio_role": "candidate fused implementation of C1+C3+C2",
+      "active_only_if": "C2 active and C6/constituents qualified",
+      "interpretation": "C4 is a possible implementation of a multi-block portfolio, not proof that one monolithic latent should replace specialist blocks."
+    },
+    "C5_REGULATORY_SPECIALIST": {
+      "portfolio_role": "regulatory specialist target/teacher block",
+      "foundation_rescue": false,
+      "rule": "May coexist with foundation blocks after its own R2/R3 qualification; cannot rescue failure of all foundation biology."
+    }
+  },
+  "rare_biology_rule": {
+    "status": "CROSS_CUTTING_PROPERTY_NOT_SEPARATE_TARGET_FAMILY",
+    "application": "Every eligible portfolio block must preserve and truthfully represent both common and rare biology relevant to that block.",
+    "specialist_exception": "A genuinely rare-specific specialist block may be retained only if it captures reproducible information not representable by the shared/query/relational blocks and passes the same donor/source/operator controls.",
+    "stat1_example": "STAT1-like rare biology is a qualification/probing program for the unified portfolio, not a separate TD project."
+  },
+  "teacher_architecture": {
+    "principle": "Multiple teachers are allowed as evidence-specialized constructors of different target blocks; they must share authenticated cell/donor provenance and cannot vote each other into biological truth.",
+    "teachers": {
+      "T_SHARED_RNA": "Rich lawful RNA teacher for shared/global biology.",
+      "T_QUERY": "Query-conditioned teacher with rich same-cell evidence, allowed to use the query measurement as teacher evidence while proving contextual information beyond the scalar.",
+      "T_RELATIONAL": "Relational teacher only if C2 remains active; constructs neighborhood/relational state under corrected replay semantics.",
+      "T_REGULATORY_MULTIOME": "Privileged same-nucleus RNA+ATAC/regulatory teacher for qualified regulatory increments after foundation target/program freeze.",
+      "T_CONTEXT_PRIVILEGED": "Optional context/spatial or other privileged teacher for qualified context information when physically measured and biologically non-redundant."
+    },
+    "shared_core_preference": "Where teachers estimate overlapping biology, use a shared biological core plus teacher-specific adapters/heads rather than independent unconstrained latent universes.",
+    "teacher_private_rule": "Information present only in a privileged teacher remains teacher-private or distributional if not reproducibly recoverable from the student's evidence."
+  },
+  "student_architecture": {
+    "principle": "Multiple student functions/heads are allowed; separate full student models are justified only if a shared student demonstrably causes interference or cannot represent different evidence/abstention regimes.",
+    "default": "One full-capacity shared student/online backbone over lawful partial RNA plus qualified observation-operator descriptors, with biologically distinct heads/experts.",
+    "students_or_heads": {
+      "S_SHARED": "Predicts recoverable shared/global state.",
+      "S_QUERY": "Predicts q-conditioned local/contextual state from q-safe partial RNA plus query identity.",
+      "S_RELATIONAL": "Predicts relational block only if qualified and identifiable from student evidence.",
+      "S_REGULATORY": "Predicts RNA-recoverable regulatory component and calibrated uncertainty; does not point-predict teacher-private ATAC realization.",
+      "S_SUPPORT_UNCERTAINTY": "Predicts/propagates biological-evidence uncertainty, measurement uncertainty, support and abstention."
+    },
+    "separate_student_trigger": [
+      "stable negative transfer/interference between qualified target blocks under shared-backbone controls",
+      "incompatible observation/evidence requirements that cannot be represented by lawful heads/adapters",
+      "materially different abstention/support geometry where a shared predictor is scientifically misleading"
+    ],
+    "forbidden_default": "Do not create multiple half-capacity students or an architecture zoo merely because multiple target blocks exist."
+  },
+  "portfolio_qualification": {
+    "block_level": [
+      "biological fidelity",
+      "donor-primary recurrence/transport",
+      "source/operator/depth/support shortcut resistance",
+      "rare and common biology preservation",
+      "increment over simpler qualified blocks",
+      "student-side recoverability or truthful teacher-private classification"
+    ],
+    "joint_level": [
+      "complementarity/non-redundancy between blocks",
+      "no destructive interference when jointly represented",
+      "calibrated support/abstention per block",
+      "held-donor and held-dataset/technology transfer where lawful",
+      "no modality or pathology leakage into foundation selection"
+    ],
+    "outcomes": {
+      "SINGLE_BLOCK_PORTFOLIO": "Only one foundation block qualifies; specialists may still coexist later.",
+      "MULTI_BLOCK_PORTFOLIO": "Two or more complementary foundation blocks qualify and remain separate or jointly implemented.",
+      "FUSED_IMPLEMENTATION": "C6/C4-like fusion qualifies without erasing block-level accountability.",
+      "SPECIALIST_AUGMENTED_PORTFOLIO": "Foundation block(s) plus qualified regulatory/context specialists.",
+      "NO_QUALIFIED_PORTFOLIO": "Reopen target architecture prospectively."
+    }
+  },
+  "authority_correction": {
+    "replace_concept": "single target winner as mandatory terminal",
+    "with": "explicit qualified target-portfolio decision",
+    "rule": "Owner authority may select one, several, or a fused accountable set of target blocks based on predeclared block and joint qualification. No automatic promotion from survivor count."
+  },
+  "non_authority_statement": "This contract changes no current replay outcome, opens no protected result, and grants no target, representation, TD60, Stage4 or training authority."
+}
