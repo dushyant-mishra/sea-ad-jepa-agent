@@ -8,7 +8,8 @@ on:
       - 'scripts/v79/v79_v2_core_resource_monitor.py'
       - 'scripts/v79/run_v79_v2_core_benchmark.py'
       - 'scripts/v79/prepare_v79_v2_core_engineering_benchmark.py'
-      - 'scripts/v79/v79_v2_core_qualification_plan.py'
+      - 'scripts/v79/prepare_v79_v2_core_qualification_campaign.py'
+      - 'scripts/v79/v79_v2_core_qualification_*.py'
       - 'scripts/v79/v79_v2_core_seed_ledger.py'
       - 'scripts/v79/v79_v2_core_score.py'
       - 'tests/v79/test_v79_v2_core_*.py'
@@ -50,6 +51,7 @@ jobs:
           tests/v79/test_v79_v2_core_benchmark_prep.py
           tests/v79/test_v79_v2_core_benchmark.py
           tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_qualification_custody.py
           tests/v79/test_v79_v2_core_seed_ledger.py
           tests/v79/test_v79_v2_core_score.py
           -q -rA -p no:cacheprovider
@@ -68,6 +70,7 @@ jobs:
           tests/v79/test_v79_v2_core_benchmark_prep.py
           tests/v79/test_v79_v2_core_benchmark.py
           tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_qualification_custody.py
           tests/v79/test_v79_v2_core_seed_ledger.py
           tests/v79/test_v79_v2_core_score.py
           -q -rA -p no:cacheprovider
@@ -88,6 +91,7 @@ jobs:
               Path('scripts/v79/v79_v2_core_resource_monitor.py'),
               Path('scripts/v79/run_v79_v2_core_benchmark.py'),
               Path('scripts/v79/v79_v2_core_qualification_plan.py'),
+              Path('scripts/v79/v79_v2_core_qualification_custody.py'),
           ]
           for p in fit_side:
               text = p.read_text(encoding='utf-8')
@@ -103,4 +107,6 @@ jobs:
           tree = ast.parse(bench)
           numeric_constants = [n.value for n in ast.walk(tree) if isinstance(n, ast.Constant) and isinstance(n.value, (int, float))]
           assert 31999999 not in numeric_constants
+          qc = Path('scripts/v79/v79_v2_core_qualification_custody.py').read_text(encoding='utf-8')
+          assert 'controller_truth' in qc  # only as explicit forbidden-string firewall text
           print('FIT_SIDE_TRUST_DOMAIN_AUDIT=PASS')
